@@ -7,7 +7,7 @@ interface Props {
 
 export function PageWrapper(props: Props) {
 	return (
-		<div className={'h-screen overflow-y-auto px-20 lg:px-36  xl:px-[38rem]'}>
+		<div className={'h-screen max-w-[1080px] mx-auto'}>
 			{/* <userContext.Provider value={userContextValue}> */}
 			<NavbarLayout />
 			{props.children}

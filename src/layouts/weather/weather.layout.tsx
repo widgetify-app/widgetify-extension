@@ -51,8 +51,8 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="p-2 mx-1 rounded lg:mx-4">
-				<div className="flex flex-col gap-1 p-1">
+			<section className="rounded max-w-[30vw]">
+				<div className="flex flex-col gap-1">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 					<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">
 						{forecast?.length

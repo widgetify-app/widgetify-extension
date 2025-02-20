@@ -27,7 +27,7 @@ export function ArzLiveLayout() {
 
 	return (
 		<section>
-			<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">
+			<div className="grid grid-cols-4 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth max-w-[60vw] mx-auto">
 				{selectedCurrencies.map((currency, index) => (
 					<CurrencyBox key={index} code={currency} />
 				))}

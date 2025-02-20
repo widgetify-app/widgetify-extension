@@ -126,12 +126,13 @@ body {
 	body {
 		/* background: #121212;
 		color: white; */
-		/* background: url(https://iusnews.ir/images/news/461605/gallery/27421.jpg); */
-		background: rgba(0, 0, 0, .6);
-		background-image: url(https://images.unsplash.com/photo-1570030534989-31a8e6812fc9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=mohammad-amirahmadi-ShZzflXymPI-unsplash.jpg);
+		background: url(https://i.ibb.co/rR3bcwJG/Gd0-R21k-WIAAp-Ol2.jpg);
+		/* background: rgba(0, 0, 0, .6); */
+		/* background-image: url(https://images.unsplash.com/photo-1570030534989-31a8e6812fc9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=mohammad-amirahmadi-ShZzflXymPI-unsplash.jpg); */
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-attachment: fixed;
+		overflow: auto;
 	}
 
 	.custom-select-box hr {

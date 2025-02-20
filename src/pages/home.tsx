@@ -35,11 +35,11 @@ export function HomePage() {
 	)
 
 	const initialLayouts: LayoutItem[] = [
-		{
-			id: 'arz-live',
-			component: <ArzLiveLayout />,
-			moveable: true,
-		},
+		// {
+		// 	id: 'arz-live',
+		// 	component: <ArzLiveLayout />,
+		// 	moveable: true,
+		// },
 		{
 			id: 'weather',
 			component: <WeatherLayout />,
@@ -90,7 +90,7 @@ export function HomePage() {
 				setSelectedCity,
 			}}
 		>
-			<div className="flex flex-col min-h-screen bg-transparent">
+			<div className="flex flex-col bg-transparent">
 				{/* Search Section - Fixed at top */}
 				<div className="w-full ">
 					<SearchLayout />
@@ -103,7 +103,7 @@ export function HomePage() {
 							<div
 								{...provided.droppableProps}
 								ref={provided.innerRef}
-								className="grid grid-cols-1 lg:grid-cols-2"
+								className="flex justify-center gap-1"
 							>
 								{layouts.map((layout, index) => (
 									<Draggable key={layout.id} draggableId={layout.id} index={index}>
@@ -111,9 +111,9 @@ export function HomePage() {
 											<div
 												ref={provided.innerRef}
 												{...provided.draggableProps}
-												className={`h-fit
-                          ${layout.id === 'arz-live' ? ' lg:col-span-1' : ''}
-                          ${layout.id === 'weather' ? ' border-2' : ''}
+												className={`h-fit grid gap-2
+                          ${layout.id === 'arz-live' ? ' ' : ''}
+                          ${layout.id === 'weather' ? '' : ''}
                           ${layout.id === 'calendar' ? '' : ''}
                         `}
 											>
@@ -135,6 +135,8 @@ export function HomePage() {
 						)}
 					</Droppable>
 				</DragDropContext>
+
+				<ArzLiveLayout />
 			</div>
 		</storeContext.Provider>
 	)
