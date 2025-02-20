@@ -7,6 +7,7 @@ import { getFromStorage, setToStorage } from '../common/storage'
 import { type SelectedCity, storeContext } from '../context/setting.context'
 import { ArzLiveLayout } from '../layouts/arzLive/arzLive.layout'
 import CalendarLayout from '../layouts/calendar/calendar'
+import { SearchLayout } from '../layouts/search/search'
 import { WeatherLayout } from '../layouts/weather/weather.layout'
 
 type LayoutItem = {
@@ -63,7 +64,6 @@ export function HomePage() {
 
 	const onDragEnd = (result: DropResult) => {
 		const { destination, source } = result
-
 		if (!destination) return
 
 		const items = Array.from(layouts)
@@ -90,45 +90,54 @@ export function HomePage() {
 				setSelectedCity,
 			}}
 		>
-			<DragDropContext onDragEnd={onDragEnd}>
-				<Droppable droppableId="layouts">
-					{(provided) => (
-						<div
-							{...provided.droppableProps}
-							ref={provided.innerRef}
-							className="space-y-4"
-						>
-							{layouts.map((layout, index) => (
-								<Draggable key={layout.id} draggableId={layout.id} index={index}>
-									{(provided) =>
-										layout.moveable ? (
-											<div ref={provided.innerRef} {...provided.draggableProps}>
-												<div
-													{...provided.dragHandleProps}
-													className="p-2 cursor-move w-60"
-												>
-													<RxDragHandleDots2
-														className="text-gray-700 dark:text-gray-300"
-														size={20}
-													/>
-												</div>
-												<div>
-													<div>{layout.component}</div>
-												</div>
+			<div className="flex flex-col min-h-screen bg-transparent">
+				{/* Search Section - Fixed at top */}
+				<div className="w-full ">
+					<SearchLayout />
+				</div>
+
+				{/* Main Content */}
+				<DragDropContext onDragEnd={onDragEnd}>
+					<Droppable droppableId="layouts">
+						{(provided) => (
+							<div
+								{...provided.droppableProps}
+								ref={provided.innerRef}
+								className="grid grid-cols-1 lg:grid-cols-2"
+							>
+								{layouts.map((layout, index) => (
+									<Draggable key={layout.id} draggableId={layout.id} index={index}>
+										{(provided) => (
+											<div
+												ref={provided.innerRef}
+												{...provided.draggableProps}
+												className={`
+                          ${layout.id === 'arz-live' ? 'h-auto lg:col-span-1' : ''}
+                          ${layout.id === 'weather' ? 'h-auto' : ''}
+                          ${layout.id === 'calendar' ? 'h-auto' : ''}
+                        `}
+											>
+												{layout.moveable && (
+													<div
+														{...provided.dragHandleProps}
+														className="flex items-center transition-colors duration-200 rounded-t-xl hover:bg-neutral-800/50"
+													>
+														<RxDragHandleDots2 className="text-gray-400" size={20} />
+													</div>
+												)}
+												<div className="">{layout.component}</div>
 											</div>
-										) : (
-											<div>
-												<div>{layout.component}</div>
-											</div>
-										)
-									}
-								</Draggable>
-							))}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
-			</DragDropContext>
+										)}
+									</Draggable>
+								))}
+								{provided.placeholder}
+							</div>
+						)}
+					</Droppable>
+				</DragDropContext>
+			</div>
 		</storeContext.Provider>
 	)
 }
+
+//     backdrop-blur-md bg-neutral-900/70 rounded-xl

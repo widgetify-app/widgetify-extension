@@ -26,21 +26,12 @@ export function ArzLiveLayout() {
 	}, [])
 
 	return (
-		<section className="p-2 mx-1 rounded lg:mx-4">
-			<div className="flex items-center justify-between w-full px-1">
-				<h2 className="text-lg font-semibold dark:text-gray-200 font-[balooTamma] w-full">
-					🪙 ArzLive
-				</h2>
-				<span className="text-xs text-gray-500 dark:text-gray-400 font-[balooTamma] font-semibold  w-full text-end">
-					{jalaliMoment(updatedAt).format('jYYYY/jM/jD, HH:mm A')}
-				</span>
-			</div>
-			<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-x-hidden overflow-y-auto max-h-96 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 scroll-smooth">
+		<section>
+			<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">
 				{selectedCurrencies.map((currency, index) => (
 					<CurrencyBox key={index} code={currency} />
 				))}
-
-				<AddCurrencyBox loading={isLoading} supportCurrencies={data || []} />
+				<AddCurrencyBox supportCurrencies={data || []} />
 			</div>
 		</section>
 	)

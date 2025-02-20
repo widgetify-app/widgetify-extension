@@ -34,7 +34,7 @@ export const AddCurrencyBox = ({
 			<motion.div
 				whileHover={disabled ? {} : { scale: 1.02 }}
 				whileTap={disabled ? {} : { scale: 0.98 }}
-				className={`flex items-center justify-center h-24 p-3 rounded-xl bg-gradient-to-br from-neutral-100 to-neutral-50 dark:from-neutral-800 dark:to-neutral-900 shadow-lg transition-all cursor-pointer
+				className={`flex items-center justify-center h-24 p-3 rounded-xl bg-neutral-900/70 backdrop-blur-sm rounded-xl shadow-lg transition-all cursor-pointer
           ${
 						disabled
 							? 'opacity-50 cursor-not-allowed'

@@ -7,7 +7,7 @@ interface CurrentWeatherBoxProps {
 }
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	return (
-		<div className="h-full col-span-2 p-5 shadow-lg bg-gradient-to-br from-white to-gray-50 dark:from-neutral-800 dark:to-neutral-900 rounded-xl">
+		<div className="h-full col-span-2 p-5 shadow-lg bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 			<div className="flex items-start justify-between gap-4">
 				<div className="relative group">
 					<motion.img

@@ -24,17 +24,14 @@ const getEventTypeColor = (type: Event['type']) => {
 
 export function Events({ events, currentDate }: Prop) {
 	const shamsiEvents = getShamsiEvents(events, currentDate)
-
 	const gregorianEvents = getGregorianEvents(events, currentDate)
-
 	const hijriEvents = getHijriEvents(events, currentDate)
-
 	const selectedEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents]
 
 	return (
 		<div>
-			<h4 className="mb-2 text-lg text-gray-500 dark:text-gray-400">رویدادها</h4>
-			<div className="h-40 space-y-3 overflow-y-auto lg:h-32">
+			<h4 className="mb-3 text-lg text-gray-300">رویدادها</h4>
+			<div className="space-y-2 ">
 				{selectedEvents.length > 0 ? (
 					selectedEvents.map((event, index) => (
 						<div
@@ -42,9 +39,6 @@ export function Events({ events, currentDate }: Prop) {
 							className={`p-3 rounded-lg ${getEventTypeColor(event.isHoliday ? 'holiday' : 'event')}`}
 						>
 							<div className="font-medium">{event.title}</div>
-							{/* {event.description && (
-								<p className="mt-1 text-sm text-gray-300">{event.description}</p>
-							)} */}
 						</div>
 					))
 				) : (

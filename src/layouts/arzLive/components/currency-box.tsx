@@ -111,7 +111,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 			<motion.div
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
-				className="flex flex-col h-24 p-3 transition-shadow shadow-lg rounded-xl bg-gradient-to-br from-neutral-100 to-neutral-50 dark:from-neutral-800 dark:to-neutral-900 hover:shadow-xl"
+				className="flex flex-col h-24 p-3 transition-shadow shadow-lg rounded-xl bg-neutral-900/70 backdrop-blur-sm hover:shadow-xl"
 				onClick={() => toggleCurrencyModal()}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
@@ -145,12 +145,12 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 					</div>
 				</div>
 
-				<div className="relative flex items-end justify-between mt-auto">
+				<div className="relative flex items-end justify-between w-32 gap-1 mt-auto ">
 					{/* {currency?.changePercentage ? ( */}
 					<motion.div
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}
-						className={`flex items-center gap-1 text-xs font-medium ${
+						className={`absolute -left-1 bottom-4 flex items-center  text-xs font-medium ${
 							priceChange > 0 ? 'text-red-500' : 'text-green-500'
 						} ${currency?.changePercentage ? 'opacity-100' : 'invisible'}`}
 					>
@@ -159,7 +159,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 					</motion.div>
 					{/* // ) : null} */}
 					<motion.p
-						className="text-lg font-bold leading-none text-right text-gray-800 dark:text-gray-100"
+						className="text-sm font-bold leading-none text-right text-gray-800 dark:text-gray-100"
 						animate={{ scale: [1, 1.02, 1] }}
 						transition={{ duration: 0.3 }}
 					>

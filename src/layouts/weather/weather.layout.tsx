@@ -52,7 +52,7 @@ export function WeatherLayout() {
 	return (
 		<>
 			<section className="p-2 mx-1 rounded lg:mx-4">
-				<div className="flex items-center justify-between w-full px-1">
+				{/* <div className="flex items-center justify-between w-full px-1">
 					<h2 className="text-lg font-semibold dark:text-gray-200 font-[balooTamma]">
 						☂️ Weather
 					</h2>
@@ -64,14 +64,16 @@ export function WeatherLayout() {
 						<FaGears className="inline-block w-4 h-4" />
 						<span>{cityWeather?.city?.en || 'Options'}</span>
 					</div>
-				</div>
-				<div className="grid grid-cols-2 gap-2 p-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+				</div> */}
+				<div className="flex flex-col gap-1 p-1">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
-					{forecast?.length
-						? forecast.map((item) => (
-								<ForecastComponent forecast={item} key={item.temp} />
-							))
-						: null}
+					<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">
+						{forecast?.length
+							? forecast.map((item) => (
+									<ForecastComponent forecast={item} key={item.temp} />
+								))
+							: null}
+					</div>
 				</div>
 			</section>
 			<WeatherOptionsModal show={showModal} onClose={() => setShowModal(false)} />
