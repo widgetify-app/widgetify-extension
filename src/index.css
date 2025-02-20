@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/* Thin */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Thin.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Thin.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Thin.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Thin.ttf") format("truetype");
+	font-weight: 100;
+	font-style: thin;
+}
+
+/* ExtraLight */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.ttf") format("truetype");
+	font-weight: 200;
+	font-style: extralight;
+}
+
+/* Light */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Light.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Light.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Light.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-style: light;
+}
+
+/* Medium */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Medium.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Medium.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Medium.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: medium;
+}
+
+/* SemiBold */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: semibold;
+}
+
+/* Bold */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Bold.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Bold.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Bold.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: bold;
+}
+
+/* Black */
+@font-face {
+	font-family: "Vazir";
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Black.eot");
+	src: url("./assets/fonts/vazir/Vazirmatn-FD-Black.eot?#iefix") format("embedded-opentype"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Black.woff2") format("woff2"),
+		url("./assets/fonts/vazir/Vazirmatn-FD-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: black;
+}
+
+@font-face {
+	font-family: balooTamma;
+	src: url("./assets/fonts/BalooTamma/BalooTamma2-Bold.ttf");
+	font-weight: 700;
+	font-style: bold;
+}
+
+@font-face {
+	font-family: balooTamma;
+	src: url("./assets/fonts/BalooTamma/BalooTamma2-Medium.ttf");
+	font-weight: 500;
+	font-style: medium;
+}
+
+@font-face {
+	font-family: balooTamma;
+	src: url("./assets/fonts/BalooTamma/BalooTamma2-Regular.ttf");
+	font-weight: 400;
+	font-style: regular;
+}
+
+@font-face {
+	font-family: balooTamma;
+	src: url("./assets/fonts/BalooTamma/BalooTamma2-SemiBold.ttf");
+	font-weight: 600;
+	font-style: semibold;
+}
+
+
+
+
+body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	font-family: Vazir;
+	/* hex: */
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background: #121212;
+		color: white;
+	}
+
+	.custom-select-box hr {
+		color: #333333;
+	}
+
+	::-webkit-scrollbar {
+		width: 0.6em;
+		background-color: #1d1d1d5b;
+	}
+
+	/* scrolbar thumb */
+	::-webkit-scrollbar-thumb {
+		background-color: #292828be;
+		border-radius: 40px;
+	}
+
+	/* scrolbar thumb on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background-color: #1d1d1d;
+	}
+
+}
+
+@media (prefers-color-scheme: light) {
+	body {
+		background: #ddd;
+		color: black;
+	}
+
+	.custom-select-box hr {
+		color: #ddd;
+	}
+
+	::-webkit-scrollbar {
+		width: 0.6em;
+		background-color: #ababab5b;
+		border-radius: 10px;
+	}
+
+	/* scrolbar thumb */
+	::-webkit-scrollbar-thumb {
+		background-color: #676767be;
+		border-radius: 10px;
+	}
+
+	/* scrolbar thumb on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background-color: #1d1d1d;
+	}
+}
+
+
+
+
+.modal-backdrop {
+	background-color: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(5px);
+}

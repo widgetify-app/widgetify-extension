@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  widgetify-pwa:
+    build: .
+ #   ports:
+ #     - "8969:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "1G"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
