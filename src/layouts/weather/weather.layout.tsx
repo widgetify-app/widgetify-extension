@@ -52,19 +52,6 @@ export function WeatherLayout() {
 	return (
 		<>
 			<section className="p-2 mx-1 rounded lg:mx-4">
-				{/* <div className="flex items-center justify-between w-full px-1">
-					<h2 className="text-lg font-semibold dark:text-gray-200 font-[balooTamma]">
-						☂️ Weather
-					</h2>
-					<div
-						className="text-xs text-gray-500 dark:text-gray-400 font-[balooTamma] font-semibold flex items-center gap-1
-					hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
-						onClick={() => setShowModal(true)}
-					>
-						<FaGears className="inline-block w-4 h-4" />
-						<span>{cityWeather?.city?.en || 'Options'}</span>
-					</div>
-				</div> */}
 				<div className="flex flex-col gap-1 p-1">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 					<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">

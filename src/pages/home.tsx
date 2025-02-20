@@ -111,10 +111,10 @@ export function HomePage() {
 											<div
 												ref={provided.innerRef}
 												{...provided.draggableProps}
-												className={`
-                          ${layout.id === 'arz-live' ? 'h-auto lg:col-span-1' : ''}
-                          ${layout.id === 'weather' ? 'h-auto' : ''}
-                          ${layout.id === 'calendar' ? 'h-auto' : ''}
+												className={`h-fit
+                          ${layout.id === 'arz-live' ? ' lg:col-span-1' : ''}
+                          ${layout.id === 'weather' ? ' border-2' : ''}
+                          ${layout.id === 'calendar' ? '' : ''}
                         `}
 											>
 												{layout.moveable && (

@@ -43,7 +43,7 @@ export const PersianCalendar: React.FC = () => {
 	}
 
 	return (
-		<div className="grid w-full grid-cols-1 gap-1 mb-1 lg:grid-cols-2 lg:gap-2" dir="rtl">
+		<div className="grid w-full grid-cols-1 gap-1 mb-1 lg:gap-2" dir="rtl">
 			{/* Calendar Grid */}
 			<div className="overflow-hidden bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<div className="flex items-center justify-between p-4">
