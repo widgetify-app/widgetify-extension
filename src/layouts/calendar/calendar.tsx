@@ -27,7 +27,7 @@ const PERSIAN_MONTHS = [
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
 export const PersianCalendar: React.FC = () => {
-	const today = jalaliMoment()
+	const today = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
 
