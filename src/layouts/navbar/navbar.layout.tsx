@@ -9,7 +9,7 @@ export interface PageLink {
 }
 
 export function NavbarLayout(): JSX.Element {
-	const [showSettings, setShowSettings] = useState(true)
+	const [showSettings, setShowSettings] = useState(false)
 	return (
 		<>
 			<nav className="flex items-center justify-between pt-2">

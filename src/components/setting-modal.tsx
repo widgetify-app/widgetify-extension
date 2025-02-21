@@ -43,7 +43,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div className="pb-5" dir="rtl">
+			<div className="" dir="rtl">
 				<Tabs value={activeTab} orientation="horizontal">
 					<TabsBody className="flex-1">
 						{tabs.map(({ value, element }) => (

@@ -16,7 +16,7 @@ const sizeClasses = {
 	sm: 'w-full max-w-sm',
 	md: 'w-full max-w-md',
 	lg: 'w-full max-w-lg',
-	xl: 'w-[60vw] h-[60vh] max-h-[80vh] overflow-hidden',
+	xl: 'w-[60vw]  max-h-[80vh] overflow-hidden',
 }
 
 const Modal = ({

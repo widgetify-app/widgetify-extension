@@ -98,7 +98,7 @@ export const PersianCalendar: React.FC = () => {
 			</div>
 
 			{/* Tasks & Events Panel */}
-			<div className="p-4 bg-neutral-900/70 backdrop-blur-sm rounded-xl ">
+			<div className="p-4 w-72 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<h3 className="mb-4 text-xl font-medium text-gray-200">
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>

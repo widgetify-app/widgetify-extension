@@ -83,27 +83,33 @@ export function WeatherOptions() {
 				)}
 			</div>
 
-			{isSuccess && relatedCities && relatedCities.length > 0 && (
-				<div className="p-2 animate-fadeIn">
-					<div className="bg-white dark:bg-[#2d2d2d] rounded-lg border border-gray-200 dark:border-[#444] shadow-lg overflow-hidden">
+			{isSuccess && relatedCities?.length > 0 && (
+				<div className="mt-2 animate-fadeIn">
+					<div
+						className="bg-gray-50 dark:bg-[#2d2d2d] rounded-lg border border-gray-200 
+                        dark:border-[#444] overflow-hidden divide-y divide-gray-200 dark:divide-[#444]"
+					>
 						{relatedCities.map((city, index) => (
-							<div
+							<button
 								key={`${city.name}-${index}`}
-								className="p-3 cursor-pointer transition-colors duration-200 border-b last:border-b-0 border-gray-200 dark:border-[#444]
-                  hover:bg-gray-50 dark:hover:bg-[#333] active:bg-gray-100 dark:active:bg-[#3a3a3a]"
+								className="w-full flex items-center gap-3 p-3 text-right transition-colors duration-200
+                         hover:bg-gray-100 dark:hover:bg-[#333] active:bg-gray-200 
+                         dark:active:bg-[#3a3a3a] focus:outline-none focus:bg-gray-100 
+                         dark:focus:bg-[#333]"
 								onClick={() => handleSelect(`${city.name}:${city.lat}:${city.lon}`)}
 							>
-								<div className="flex items-center gap-2">
-									<span className="text-gray-700 dark:text-[#eee] text-[14px] font-[Vazir]">
+								<CiLocationOn className="text-gray-400 dark:text-gray-500 size-4" />
+								<div className="flex-1">
+									<span className="block text-gray-700 dark:text-[#eee] text-[14px] font-[Vazir]">
 										{city.name}
 									</span>
 									{city.state && (
-										<span className="text-gray-400 dark:text-gray-500 text-[12px] font-[Vazir]">
-											({city.state})
+										<span className="block text-gray-400 dark:text-gray-500 text-[12px] font-[Vazir]">
+											{city.state}
 										</span>
 									)}
 								</div>
-							</div>
+							</button>
 						))}
 					</div>
 				</div>
@@ -111,5 +117,3 @@ export function WeatherOptions() {
 		</div>
 	)
 }
-
-export default WeatherOptions
