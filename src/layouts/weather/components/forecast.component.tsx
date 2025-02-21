@@ -10,7 +10,7 @@ export function ForecastComponent({ forecast }: ForecastProps) {
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
-			className="flex flex-col items-center justify-center h-40 gap-2 p-3 transition-all duration-300 shadow-md bg-gradient-to-b bg-neutral-900/70 backdrop-blur-sm rounded-xl hover:shadow-lg"
+			className="flex flex-row items-center justify-around h-20 gap-2 p-3 transition-all duration-300 shadow-md bg-gradient-to-b bg-neutral-900/70 backdrop-blur-sm rounded-xl hover:shadow-lg"
 		>
 			<div className="text-sm font-medium text-gray-400 dark:text-gray-500">
 				{new Date(forecast.date).toLocaleTimeString([], {

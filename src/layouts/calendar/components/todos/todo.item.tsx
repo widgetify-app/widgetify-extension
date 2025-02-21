@@ -19,7 +19,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo }: Prop) {
 				className="w-4 h-4 border-gray-500 rounded "
 			/>
 			<span
-				className={`flex-1 text-gray-600 dark:text-gray-300 max-w-[220px] ${todo.completed ? 'line-through text-gray-400' : ''}`}
+				className={`flex-1 text-gray-600 dark:text-gray-300 overflow-clip w-[220px] ${todo.completed ? 'line-through text-gray-400' : ''}`}
 			>
 				{todo.text}
 			</span>

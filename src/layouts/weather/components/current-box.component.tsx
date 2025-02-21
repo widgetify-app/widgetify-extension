@@ -50,7 +50,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							</div>
 						)}
 						<p
-							className="pl-8 pr-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300"
+							className="pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 dark:text-gray-300"
 							dir="rtl"
 						>
 							{weather.ai?.description || weather.temperature.temp_description}

@@ -51,10 +51,10 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="rounded max-w-[30vw]">
+			<section className="rounded max-w-[30vw] w-[20vw]">
 				<div className="flex flex-col gap-1">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
-					<div className="grid grid-cols-2 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth">
+					<div className="grid grid-cols-2 grid-rows-2 gap-2 p-1 overflow-scroll overflow-y-auto overflow-x-clip scroll-smooth">
 						{forecast?.length
 							? forecast.map((item) => (
 									<ForecastComponent forecast={item} key={item.temp} />
