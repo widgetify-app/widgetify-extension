@@ -1,35 +1,33 @@
-import { useState } from 'react'
-
-import Modal from '../../../components/modal'
+import { useEffect, useRef, useState } from 'react'
+import { CiLocationOn } from 'react-icons/ci'
 import { useStore } from '../../../context/store.context'
 import { useGetRelatedCities } from '../../../services/getMethodHooks/weather/getRelatedCities'
 
-interface WeatherOptionsModalProps {
-	show: boolean
-	onClose: () => void
-}
-
-export function WeatherOptionsModal({ onClose, show }: WeatherOptionsModalProps) {
+export function WeatherOptions() {
 	const { setSelectedCity, selectedCity } = useStore()
-
-	const [inputValue, setInputValue] = useState<string | null>('')
+	const [inputValue, setInputValue] = useState('')
+	const [debouncedValue, setDebouncedValue] = useState('')
+	const inputRef = useRef(null)
 
 	const {
 		data: relatedCities,
 		isSuccess,
 		isLoading,
-	} = useGetRelatedCities(inputValue || '')
+	} = useGetRelatedCities(debouncedValue)
+
+	// Debounce input changes
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (inputValue.length >= 2) {
+				setDebouncedValue(inputValue)
+			}
+		}, 500) // Reduced from 1000ms to 500ms for better responsiveness
+
+		return () => clearTimeout(timer)
+	}, [inputValue])
 
 	const handleInputChange = (value: string) => {
-		if (value === '') {
-			return
-		}
-		if (value.length < 2) return
-
-		// delay the request to prevent too many requests
-		setTimeout(() => {
-			setInputValue(value)
-		}, 1000) // 1 seconds
+		setInputValue(value)
 	}
 
 	function handleSelect(selected: string) {
@@ -42,79 +40,76 @@ export function WeatherOptionsModal({ onClose, show }: WeatherOptionsModalProps)
 			lon: Number.parseFloat(lon),
 		}
 
-		if (city.city === selectedCity.city) return
-
+		if (city.city === selectedCity?.city) return
 		if (!city.lat || !city.lon) return
 
 		setSelectedCity(city)
-
-		setInputValue(null)
-		onClose()
+		setInputValue('')
+		setDebouncedValue('')
+		inputRef.current?.blur()
 	}
 
 	return (
-		<Modal
-			isOpen={show}
-			onClose={onClose}
-			closeOnBackdropClick={true}
-			direction="rtl"
-			title="تنظیمات آب و هوا"
-		>
-			<div className="w-full">
-				<div className="p-2">
+		<div className="w-full max-w-md mx-auto">
+			<div className="relative p-2">
+				<div className="relative">
 					<input
+						ref={inputRef}
 						type="text"
+						value={inputValue}
 						placeholder="نام شهر را وارد کنید ..."
-						className="w-full bg-gray-100 dark:bg-[#3e3e3e] dark:text-[#eee] text-gray-600 text-[13px] rounded-md p-2
-                  outline-none border-2 border-gray-200 dark:border-[#444] transition-all duration-300
-                  focus:ring-0 focus:ring-blue-500 focus:border-blue-500
-                  placeholder-gray-500 focus:placeholder-gray-500"
+						className="w-full bg-gray-50 dark:bg-[#2d2d2d] dark:text-[#eee] text-gray-700 text-[14px] rounded-lg p-3
+              outline-none border-2 border-gray-200 dark:border-[#444] transition-all duration-200 font-[Vazir]
+              focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20
+              placeholder-gray-400 hover:bg-gray-100 dark:hover:bg-[#333]"
 						onChange={(e) => handleInputChange(e.target.value)}
 					/>
-					{selectedCity?.city && (
-						<div className="flex flex-row items-center justify-between w-full mt-2">
-							<div className="flex items-center gap-1 bg-gray-200/40 dark:bg-[#444]/40 p-2 rounded-md">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									strokeWidth={1.5}
-									stroke="currentColor"
-									className="size-4 dark:text-[#e8e7e7] text-gray-600"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
-									/>
-								</svg>
-
-								<span className="text-gray-600 dark:text-[#eee] text-[13px] font-[Vazir]">
-									{selectedCity.city}
-								</span>
-							</div>
+					{isLoading && (
+						<div className="absolute -translate-y-1/2 left-3 top-1/2">
+							<div className="w-5 h-5 border-blue-500 rounded-full border-3 border-t-3 border-opacity-30 animate-spin border-t-blue-500" />
 						</div>
 					)}
 				</div>
-				{isLoading && (
-					<div className="flex items-center justify-center p-2">
-						<div className="w-6 h-6 ease-linear border-4 border-t-4 border-gray-200 rounded-full loader"></div>
-					</div>
-				)}
-				{isSuccess && relatedCities && relatedCities.length > 0 && (
-					<div className="p-2">
-						{relatedCities.map((city) => (
-							<div
-								key={city.name}
-								className="p-2 border-b border-gray-300 cursor-pointer dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-								onClick={() => handleSelect(`${city.name}:${city.lat}:${city.lon}`)}
-							>
-								{city.name} {city.state && `(${city.state})`}
-							</div>
-						))}
+
+				{selectedCity?.city && (
+					<div className="mt-3 animate-fadeIn">
+						<div className="flex items-center gap-2 p-3 border border-blue-100 rounded-lg bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800">
+							<CiLocationOn className='"text-blue-600 dark:text-blue-400 size-5' />
+							<span className="text-blue-700 dark:text-blue-300 text-[14px] font-[Vazir] font-medium">
+								{selectedCity.city}
+							</span>
+						</div>
 					</div>
 				)}
 			</div>
-		</Modal>
+
+			{isSuccess && relatedCities && relatedCities.length > 0 && (
+				<div className="p-2 animate-fadeIn">
+					<div className="bg-white dark:bg-[#2d2d2d] rounded-lg border border-gray-200 dark:border-[#444] shadow-lg overflow-hidden">
+						{relatedCities.map((city, index) => (
+							<div
+								key={`${city.name}-${index}`}
+								className="p-3 cursor-pointer transition-colors duration-200 border-b last:border-b-0 border-gray-200 dark:border-[#444]
+                  hover:bg-gray-50 dark:hover:bg-[#333] active:bg-gray-100 dark:active:bg-[#3a3a3a]"
+								onClick={() => handleSelect(`${city.name}:${city.lat}:${city.lon}`)}
+							>
+								<div className="flex items-center gap-2">
+									<span className="text-gray-700 dark:text-[#eee] text-[14px] font-[Vazir]">
+										{city.name}
+									</span>
+									{city.state && (
+										<span className="text-gray-400 dark:text-gray-500 text-[12px] font-[Vazir]">
+											({city.state})
+										</span>
+									)}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
+		</div>
 	)
 }
+
+export default WeatherOptions

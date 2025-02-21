@@ -1,4 +1,7 @@
-import { FaGithub } from 'react-icons/fa6'
+import { useState } from 'react'
+import { VscSettings } from 'react-icons/vsc'
+import { Colors } from '../../common/constant/colors.constant'
+import { SettingModal } from '../../components/setting-modal'
 
 export interface PageLink {
 	name: string
@@ -6,20 +9,23 @@ export interface PageLink {
 }
 
 export function NavbarLayout(): JSX.Element {
+	const [showSettings, setShowSettings] = useState(true)
 	return (
-		<nav className="flex items-center justify-between">
-			<div className="flex items-center">
-				<h1 className="text-2xl text-gray-100 font-[balooTamma]">Widgetify</h1>
-			</div>
+		<>
+			<nav className="flex items-center justify-between pt-2">
+				<div className="flex items-center">
+					<h1 className="text-2xl text-gray-100 font-[balooTamma]">Widgetify</h1>
+				</div>
 
-			<a
-				href="https://github.com/widgetify-app/widgetify-pwa"
-				target="_blank"
-				rel="noopener noreferrer"
-				className="flex items-center justify-center w-10 h-10  rounded-xl text-gray-400 hover:text-gray-300 hover:bg-[#252525] transition-colors"
-			>
-				<FaGithub size={22} />
-			</a>
-		</nav>
+				<button
+					className={`flex items-center justify-center w-10 h-10 text-gray-400 transition-all border shadow-lg rounded-xl hover:text-gray-300 ${Colors.bgItemGlass}`}
+					onClick={() => setShowSettings(true)}
+					aria-label="Settings"
+				>
+					<VscSettings size={22} />
+				</button>
+			</nav>
+			<SettingModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+		</>
 	)
 }

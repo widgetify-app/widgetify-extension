@@ -16,7 +16,7 @@ const sizeClasses = {
 	sm: 'w-full max-w-sm',
 	md: 'w-full max-w-md',
 	lg: 'w-full max-w-lg',
-	xl: 'w-full max-w-xl',
+	xl: 'w-[60vw] h-[60vh] max-h-[80vh] overflow-hidden',
 }
 
 const Modal = ({
@@ -40,17 +40,17 @@ const Modal = ({
 					dir={direction}
 				>
 					<motion.div
-						className={`bg-[#f2f2f2] dark:bg-[#1f1f1f] shadow-xl rounded-2xl p-6 ${sizeClasses[size]}`}
+						className={`bg-[#1c1c1c]  shadow-xl rounded-2xl p-6 ${sizeClasses[size]}`}
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
 						onClick={(e: any) => e.stopPropagation()}
 					>
 						<div className="flex items-center justify-between mb-4">
-							{title && <h2 className="text-lg font-semibold">{title}</h2>}
+							{title && <h2 className="text-lg font-semibold text-gray-200">{title}</h2>}
 							<button
 								onClick={onClose}
-								className="text-gray-500 hover:text-gray-800 dark:hover:text-gray-300"
+								className="flex text-gray-500 hover:text-gray-800 dark:hover:text-gray-300"
 							>
 								<AiOutlineClose size={20} />
 							</button>

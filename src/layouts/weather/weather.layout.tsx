@@ -9,7 +9,6 @@ import type { FetchedWeather } from '../../services/getMethodHooks/weather/weath
 import { useGetForecastWeatherByLatLon } from '../../services/getMethodHooks/weather/getForecastWeatherByLatLon'
 import { CurrentWeatherBox } from './components/current-box.component'
 import { ForecastComponent } from './components/forecast.component'
-import { WeatherOptionsModal } from './components/options-modal.component'
 
 export function WeatherLayout() {
 	const { selectedCity } = useStore()
@@ -28,8 +27,6 @@ export function WeatherLayout() {
 		useGetForecastWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
 			refetchInterval: ms('2m'),
 		})
-
-	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
 		async function load() {
@@ -71,7 +68,6 @@ export function WeatherLayout() {
 					</div>
 				</div>
 			</section>
-			<WeatherOptionsModal show={showModal} onClose={() => setShowModal(false)} />
 		</>
 	)
 }
