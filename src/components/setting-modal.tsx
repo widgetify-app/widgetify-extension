@@ -1,7 +1,8 @@
 import { Tab, TabPanel, Tabs, TabsBody, TabsHeader } from '@material-tailwind/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
-import { WeatherOptions } from '../layouts/weather/components/options-modal.component'
+import { BackgroundSetting } from '../layouts/setting/widgets/background'
+import { WeatherOptions } from '../layouts/setting/widgets/weather'
 import Modal from './modal'
 
 interface SettingModalProps {
@@ -27,11 +28,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 			label: 'تصویر زمینه',
 			value: 'backgrounds',
 			icon: <VscPaintcan size={20} />,
-			element: (
-				<div className="p-4">
-					<h2 className="text-lg font-semibold mb-4 font-[Vazir]">تنظیمات تصویر زمینه</h2>
-				</div>
-			),
+			element: <BackgroundSetting />,
 		},
 		{
 			label: 'آب هوا',
@@ -43,7 +40,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div className="" dir="rtl">
+			<div dir="rtl">
 				<Tabs value={activeTab} orientation="horizontal">
 					<TabsBody className="flex-1">
 						{tabs.map(({ value, element }) => (
