@@ -1,10 +1,10 @@
 import { motion } from 'motion/react'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { TiPlus } from 'react-icons/ti'
 import Modal from '../../../components/modal'
 import { MultiSelectDropdown } from '../../../components/selectBox/multiSelectDropdown.component'
-import { storeContext } from '../../../context/setting.context'
+import { useStore } from '../../../context/store.context'
 
 export type SupportedCurrencies = {
 	key: string
@@ -34,7 +34,7 @@ export const AddCurrencyBox = ({
 			<motion.div
 				whileHover={disabled ? {} : { scale: 1.02 }}
 				whileTap={disabled ? {} : { scale: 0.98 }}
-				className={`flex items-center justify-center h-24 p-3 rounded-xl bg-neutral-900/70 backdrop-blur-sm rounded-xl shadow-lg transition-all cursor-pointer
+				className={`flex items-center justify-center h-24 p-3 rounded-xl bg-neutral-900/70 backdrop-blur-sm shadow-lg transition-all cursor-pointer
           ${
 						disabled
 							? 'opacity-50 cursor-not-allowed'
@@ -73,7 +73,7 @@ export function SelectCurrencyModal({
 	show,
 	supportCurrencies,
 }: AddCurrencyModalProps) {
-	const { selectedCurrencies, setSelectedCurrencies } = useContext(storeContext)
+	const { selectedCurrencies, setSelectedCurrencies } = useStore()
 
 	const onClose = () => setShow(false)
 

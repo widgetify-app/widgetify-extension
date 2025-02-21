@@ -12,17 +12,22 @@ interface TodoContextType {
 }
 
 const TodoContext = createContext<TodoContextType | undefined>(undefined)
+
 export function TodoProvider({ children }: { children: ReactNode }) {
 	const [todos, setTodos] = useState<Todo[]>([])
 
 	useEffect(() => {
-		const todosFromStorage = getFromStorage(StoreKey.Todos)
-		if (todosFromStorage) {
-			setTodos(todosFromStorage as Todo[])
+		async function getTodos() {
+			const todosFromStorage = await getFromStorage(StoreKey.Todos)
+			if (todosFromStorage) {
+				setTodos(todosFromStorage as Todo[])
+			}
 		}
+
+		getTodos()
 	}, [])
 
-	const addTodo = (text: string, date: string) => {
+	const addTodo = async (text: string, date: string) => {
 		const todoList = [
 			...todos,
 			{ id: Math.random().toString(36).slice(2), text, completed: false, date },
@@ -30,7 +35,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
 
 		setTodos(todoList)
 
-		setToStorage(StoreKey.Todos, todoList)
+		await setToStorage(StoreKey.Todos, todoList)
 	}
 
 	const removeTodo = (id: string) => {

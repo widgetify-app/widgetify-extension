@@ -1,9 +1,8 @@
 import ms from 'ms'
-import { useContext, useEffect, useState } from 'react'
-import { FaGears } from 'react-icons/fa6'
+import { useEffect, useState } from 'react'
 import { StoreKey } from '../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../common/storage'
-import { storeContext } from '../../context/setting.context'
+import { useStore } from '../../context/store.context'
 import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
 import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
 
@@ -13,10 +12,8 @@ import { ForecastComponent } from './components/forecast.component'
 import { WeatherOptionsModal } from './components/options-modal.component'
 
 export function WeatherLayout() {
-	const { selectedCity } = useContext(storeContext)
-	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(
-		getFromStorage(StoreKey.CURRENT_WEATHER) || null,
-	)
+	const { selectedCity } = useStore()
+	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
 
 	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
 
@@ -33,6 +30,17 @@ export function WeatherLayout() {
 		})
 
 	const [showModal, setShowModal] = useState(false)
+
+	useEffect(() => {
+		async function load() {
+			const data = await getFromStorage<FetchedWeather>(StoreKey.CURRENT_WEATHER)
+			if (data) {
+				setCityWeather(data)
+			}
+		}
+
+		load()
+	}, [])
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {

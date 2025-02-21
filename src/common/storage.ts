@@ -1,15 +1,12 @@
+import browser from 'webextension-polyfill'
 import type { StoreKeyType } from './constant/store.key'
 
-export function setToStorage<T>(key: StoreKeyType, value: T) {
-	localStorage.setItem(key, JSON.stringify(value))
+export async function setToStorage<T>(key: StoreKeyType, value: T) {
+	browser.storage.local.set({ [key]: value })
 }
 
-export function getFromStorage<T>(key: StoreKeyType): T | null {
-	const value = localStorage.getItem(key)
+export async function getFromStorage<T>(key: StoreKeyType): Promise<T | null> {
+	const value = await browser.storage.local.get(key)
 	if (!value) return null
-	try {
-		return JSON.parse(value) as T
-	} catch {
-		return value as T
-	}
+	return value[key] as T
 }

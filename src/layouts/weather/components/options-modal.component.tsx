@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react'
-import { StoreKey } from '../../../common/constant/store.key'
-import { setToStorage } from '../../../common/storage'
+import { useState } from 'react'
+
 import Modal from '../../../components/modal'
-import { storeContext } from '../../../context/setting.context'
+import { useStore } from '../../../context/store.context'
 import { useGetRelatedCities } from '../../../services/getMethodHooks/weather/getRelatedCities'
 
 interface WeatherOptionsModalProps {
@@ -11,7 +10,7 @@ interface WeatherOptionsModalProps {
 }
 
 export function WeatherOptionsModal({ onClose, show }: WeatherOptionsModalProps) {
-	const { setSelectedCity, selectedCity } = useContext(storeContext)
+	const { setSelectedCity, selectedCity } = useStore()
 
 	const [inputValue, setInputValue] = useState<string | null>('')
 
@@ -48,7 +47,6 @@ export function WeatherOptionsModal({ onClose, show }: WeatherOptionsModalProps)
 		if (!city.lat || !city.lon) return
 
 		setSelectedCity(city)
-		setToStorage(StoreKey.SELECTED_CITY, city)
 
 		setInputValue(null)
 		onClose()

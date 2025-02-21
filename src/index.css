@@ -110,7 +110,7 @@
 
 body {
 	overflow-x: hidden;
-	overflow-y: hidden;
+	overflow-y: auto;
 	font-family: Vazir;
 	/* hex: */
 
@@ -119,73 +119,37 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-}
 
 
-@media (prefers-color-scheme: dark) {
-	body {
-		/* background: #121212;
-		color: white; */
-		background: url(https://images.unsplash.com/photo-1644136553088-0fd3519ed354?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-		/* background: url(https://i.ibb.co/rR3bcwJG/Gd0-R21k-WIAAp-Ol2.jpg); */
-		/* background: rgba(0, 0, 0, .6); */
-		/* background-image: url(https://images.unsplash.com/photo-1570030534989-31a8e6812fc9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=mohammad-amirahmadi-ShZzflXymPI-unsplash.jpg); */
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-attachment: fixed;
-		overflow: auto;
-	}
-
-	.custom-select-box hr {
-		color: #333333;
-	}
-
-	::-webkit-scrollbar {
-		width: 0.6em;
-		background-color: #1d1d1d5b;
-	}
-
-	/* scrolbar thumb */
-	::-webkit-scrollbar-thumb {
-		background-color: #292828be;
-		border-radius: 40px;
-	}
-
-	/* scrolbar thumb on hover */
-	::-webkit-scrollbar-thumb:hover {
-		background-color: #1d1d1d;
-	}
+	background: url(https://wallpapers.com/images/high/tehran-nasir-al-mulk-mosque-zhjlyfd6jheulzft.webp);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
 
 }
 
-@media (prefers-color-scheme: light) {
-	body {
-		background: #ddd;
-		color: black;
-	}
 
-	.custom-select-box hr {
-		color: #ddd;
-	}
 
-	::-webkit-scrollbar {
-		width: 0.6em;
-		background-color: #ababab5b;
-		border-radius: 10px;
-	}
-
-	/* scrolbar thumb */
-	::-webkit-scrollbar-thumb {
-		background-color: #676767be;
-		border-radius: 10px;
-	}
-
-	/* scrolbar thumb on hover */
-	::-webkit-scrollbar-thumb:hover {
-		background-color: #1d1d1d;
-	}
+.custom-select-box hr {
+	color: #333333;
 }
 
+::-webkit-scrollbar {
+	width: 0.6em;
+	background-color: #1d1d1d5b;
+}
+
+/* scrolbar thumb */
+::-webkit-scrollbar-thumb {
+	background-color: #292828be;
+	border-radius: 40px;
+}
+
+/* scrolbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+	background-color: #1d1d1d;
+}
 
 
 

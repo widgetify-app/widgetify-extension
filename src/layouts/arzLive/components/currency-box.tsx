@@ -18,9 +18,8 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: ms('3m'),
 	})
-	const [currency, setCurrency] = useState<FetchedCurrency | null>(
-		getFromStorage<FetchedCurrency>(`currency:${code}`) || null,
-	)
+
+	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
 
 	const [imgColor, setImgColor] = useState<string>()
 	const [displayPrice, setDisplayPrice] = useState(0)
@@ -37,6 +36,16 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		stiffness: 100,
 		damping,
 	})
+
+	useEffect(() => {
+		async function load() {
+			const currency = await getFromStorage<FetchedCurrency>(`currency:${code}`)
+			if (currency) {
+				setCurrency(currency)
+			}
+		}
+		load()
+	}, [code])
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
