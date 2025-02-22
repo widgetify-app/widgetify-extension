@@ -27,7 +27,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					</span>
 
 					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-						{weather.description.emoji} {weather.description.text}
+						
 					</p>
 
 					<div className="flex items-center justify-end gap-3 mt-2">

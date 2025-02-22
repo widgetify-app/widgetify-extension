@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../api'
+import { type ApiResponse, getMainClient } from '../api'
 
 export interface FetchedEvent {
 	isHoliday: boolean
@@ -28,6 +28,6 @@ export const useGetEvents = () => {
 
 async function getEvents(): Promise<FetchedAllEvents> {
 	const client = await getMainClient()
-	const { data } = await client.get<FetchedAllEvents>('/date/events')
-	return data ?? []
+	const { data } = await client.get<ApiResponse<FetchedAllEvents>>('/date/events')
+	return data.data ?? []
 }

@@ -4,6 +4,12 @@ const rawGithubApi = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
 })
 
+export interface ApiResponse<T> {
+	success: boolean
+	statusCode: number
+	data: T
+}
+
 export async function getMainClient(): Promise<AxiosInstance> {
 	if (import.meta.env.VITE_API) {
 		// return import.meta.env.VITE_API

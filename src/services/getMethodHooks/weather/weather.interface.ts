@@ -5,10 +5,6 @@ export interface FetchedWeather {
 	}
 	weather: {
 		label: string
-		description: {
-			text: string
-			emoji: string
-		}
 		icon: {
 			url: string
 			width: number

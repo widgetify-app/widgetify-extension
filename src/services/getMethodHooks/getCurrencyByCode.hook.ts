@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../api'
+import { type ApiResponse, getMainClient } from '../api'
 
 export interface FetchedCurrency {
 	name: {
@@ -33,6 +33,8 @@ export const useGetCurrencyByCode = (
 
 async function getSupportCurrencies(currency: string): Promise<FetchedCurrency> {
 	const client = await getMainClient()
-	const { data } = await client.get<FetchedCurrency>(`/v2/arz/${currency}`)
-	return data
+	const { data } = await client.get<ApiResponse<FetchedCurrency>>(
+		`/currencies/${currency}`,
+	)
+	return data.data
 }
