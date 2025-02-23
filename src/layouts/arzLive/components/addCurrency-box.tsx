@@ -84,7 +84,7 @@ export function SelectCurrencyModal({
 
 	return (
 		<Modal isOpen={show} onClose={onClose} size="sm" title="افزودن ارز" direction="rtl">
-			<div className="w-full" dir="rtl">
+			<div className="w-full">
 				<div>
 					<MultiSelectDropdown
 						options={getCurrencyOptions(supportCurrencies) as any}

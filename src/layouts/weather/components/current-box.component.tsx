@@ -47,10 +47,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								<BsRobot size={20} className="text-purple-600 dark:text-purple-400" />
 							</div>
 						)}
-						<p
-							className="pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 dark:text-gray-300"
-							dir="rtl"
-						>
+						<p className="pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 dark:text-gray-300">
 							{weather.ai?.description || weather.temperature.temp_description}
 						</p>
 						{weather.ai?.playlist && (

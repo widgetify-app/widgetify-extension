@@ -160,3 +160,11 @@ body {
 	background-color: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(5px);
 }
+
+
+@layer base {
+	body {
+		direction: rtl;
+		font-family: Vazirmatn, sans-serif;
+	}
+}

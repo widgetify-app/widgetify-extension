@@ -46,10 +46,7 @@ export const PwaInstallerModal = ({ show, onClose }: PwaInstallerModalProps) => 
 	if (!show) return null
 
 	return (
-		<div
-			className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-			dir="rtl"
-		>
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
 			<div className="w-full max-w-sm p-6 bg-white shadow-xl rounded-2xl dark:bg-neutral-800">
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">

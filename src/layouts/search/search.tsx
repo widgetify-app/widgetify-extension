@@ -1,14 +1,17 @@
-import { motion } from 'motion/react'
+import { Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react'
+import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { BsTools } from 'react-icons/bs'
 import { CiSearch } from 'react-icons/ci'
-import { FaPlus } from 'react-icons/fa6'
+import { FaPlus, FaTrash } from 'react-icons/fa6'
 import { AddBookmarkModal } from './add-bookmark.modal'
+
 interface Bookmark {
 	title: string
 	url: string
 	icon: string
 }
+
 export function SearchLayout() {
 	const GOOGLE_URL = 'https://www.google.com/search?q='
 	const [bookmarks, setBookmarks] = useState<Bookmark[]>([
@@ -23,15 +26,14 @@ export function SearchLayout() {
 			icon: 'https://cdn-icons-png.flaticon.com/512/25/25231.png',
 		},
 		{
-			title: 'Stack Overflow',
+			title: 'Stack Overflowwwwwwwwwwww',
 			url: 'https://stackoverflow.com',
 			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
 		},
 	])
+	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
-	const contextMenuRef = useRef<HTMLDivElement>(null)
-	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -41,9 +43,25 @@ export function SearchLayout() {
 		}
 	}
 
+	const handleDeleteBookmark = () => {
+		if (selectedBookmark) {
+			setBookmarks((prev) => prev.filter((b) => b.url !== selectedBookmark.url))
+			setSelectedBookmark(null)
+		}
+	}
+
+	const handleRightClick = (e: React.MouseEvent, bookmark: Bookmark) => {
+		e.preventDefault()
+		setSelectedBookmark(bookmark)
+		setContextMenuPos({ x: e.clientX, y: e.clientY })
+	}
+
+	// when click on the document, close the context menu
+	window.addEventListener('click', () => setSelectedBookmark(null))
+
 	return (
 		<>
-			<div className="flex flex-col items-center justify-center text-white" dir="rtl">
+			<div className="flex flex-col items-center justify-center text-white">
 				<form className="w-full" onSubmit={handleSubmit}>
 					<div className="relative overflow-hidden transition-all duration-300 shadow-xl backdrop-blur-sm bg-neutral-900/70 rounded-2xl hover:bg-neutral-800/80 group">
 						<input
@@ -61,23 +79,46 @@ export function SearchLayout() {
 						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none border-white/10 rounded-2xl group-hover:border-white/20" />
 					</div>
 				</form>
-				<div className="flex flex-row w-full gap-1 mt-3">
+
+				<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
 					{[...bookmarks, ...Array(Math.max(0, 5 - bookmarks.length))].map(
 						(bookmark, i) =>
 							bookmark ? (
-								<OptionButton
-									key={i}
-									onClick={() => window.open(bookmark.url)}
-									title={bookmark.title}
-									icon={
-										<motion.img
-											initial={{ scale: 0.9 }}
-											animate={{ scale: 1 }}
-											src={bookmark.icon}
-											className="transition-transform duration-300 group-hover:scale-110"
-										/>
-									}
-								/>
+								<Menu key={i} open={selectedBookmark?.url === bookmark.url}>
+									<MenuHandler>
+										<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
+											<OptionButton
+												onClick={() => window.open(bookmark.url)}
+												title={bookmark.title}
+												icon={
+													<motion.img
+														initial={{ scale: 0.9 }}
+														animate={{ scale: 1 }}
+														src={bookmark.icon}
+														className="transition-transform duration-300 group-hover:scale-110"
+													/>
+												}
+											/>
+										</div>
+									</MenuHandler>
+
+									<MenuList
+										className="bg-neutral-800 border-white/10 p-1  min-w-[150px]"
+										style={{
+											position: 'fixed',
+											left: contextMenuPos.x,
+											top: contextMenuPos.y,
+										}}
+									>
+										<MenuItem
+											className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 font-[Vazir]"
+											onClick={handleDeleteBookmark}
+										>
+											<FaTrash />
+											حذف
+										</MenuItem>
+									</MenuList>
+								</Menu>
 							) : (
 								<OptionButton
 									key={i}
@@ -89,6 +130,7 @@ export function SearchLayout() {
 					)}
 				</div>
 			</div>
+
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
@@ -103,20 +145,34 @@ type OptionButtonProps = {
 	title: string
 	icon: React.ReactNode
 }
+
 function OptionButton({ icon, onClick, title }: OptionButtonProps) {
+	const [isHovered, setIsHovered] = useState(false)
+
 	return (
-		<button
+		<motion.button
 			onClick={onClick}
-			className="relative flex flex-col items-center justify-center flex-1 p-4 overflow-hidden transition-all duration-300 border cursor-pointer group bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80 rounded-xl border-white/10 hover:border-white/20"
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+			whileHover={{ scale: 1.02 }}
+			className="relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80 rounded-xl border-white/10 hover:border-white/20 min-w-[5.4rem] max-w-[5.4rem]"
 		>
 			<div className="relative flex items-center justify-center w-8 h-8 mb-2">{icon}</div>
-			<span className="text-[10px] w-full text-center font-medium text-gray-400 transition-colors duration-300 group-hover:text-white">
+			<span className="text-[10px] w-full text-center font-medium text-gray-400 transition-colors duration-300 group-hover:text-white truncate">
 				{title}
 			</span>
+
+			{isHovered && (
+				<motion.div
+					initial={{ opacity: 0, y: -10 }}
+					animate={{ opacity: 0.9, y: 0 }}
+					className="absolute z-50 px-2 py-1 text-sm text-white transition-all duration-200 -translate-y-full rounded-lg bg-neutral-900/70 -top-2"
+				>
+					{title}
+				</motion.div>
+			)}
+
 			<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-white/5 to-transparent" />
-		</button>
+		</motion.button>
 	)
 }
-// className =
-// 	'object-contain w-full h-full transition-transform duration-300 group-hover:scale-110'
-// //

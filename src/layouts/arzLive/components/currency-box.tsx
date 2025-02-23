@@ -126,6 +126,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				onMouseUp={handleMouseUp}
 				onTouchStart={handleMouseDown}
 				onTouchEnd={handleMouseUp}
+				dir="ltr"
 			>
 				<div className="flex items-center space-x-2.5">
 					<div className="relative">
