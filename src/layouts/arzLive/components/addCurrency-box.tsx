@@ -34,7 +34,7 @@ export const AddCurrencyBox = ({
 			<motion.div
 				whileHover={disabled ? {} : { scale: 1.02 }}
 				whileTap={disabled ? {} : { scale: 0.98 }}
-				className={`flex items-center justify-center h-24 p-3 rounded-xl bg-neutral-900/70 backdrop-blur-sm shadow-lg transition-all cursor-pointer
+				className={`flex items-center gap-2 p-2 duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm shadow-lg transition-all cursor-pointer
           ${
 						disabled
 							? 'opacity-50 cursor-not-allowed'
@@ -42,12 +42,12 @@ export const AddCurrencyBox = ({
 					}`}
 				onClick={() => !disabled && setShowModal(true)}
 			>
-				<div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+				<div className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800">
 					{loading ? (
 						<AiOutlineLoading className="w-6 h-6 animate-spin" />
 					) : (
 						<>
-							<TiPlus className="w-6 h-6" />
+							<TiPlus className="w-4 h-4 text-gray-400" />
 						</>
 					)}
 				</div>

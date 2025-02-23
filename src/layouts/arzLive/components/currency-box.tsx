@@ -118,62 +118,52 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	return (
 		<>
 			<motion.div
-				whileHover={{ scale: 1.02 }}
-				whileTap={{ scale: 0.98 }}
-				className="flex flex-col h-24 p-3 transition-shadow shadow-lg rounded-xl bg-neutral-900/70 backdrop-blur-sm hover:shadow-xl"
+				whileHover={{ scale: 1.01 }}
+				whileTap={{ scale: 0.99 }}
+				className="flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80"
 				onClick={() => toggleCurrencyModal()}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
 				onTouchStart={handleMouseDown}
 				onTouchEnd={handleMouseUp}
 			>
-				<div className="flex items-center gap-3 mb-2">
+				<div className="flex items-center space-x-2.5">
 					<div className="relative">
 						<img
 							src={currency?.icon}
 							alt={currency?.name?.en}
-							className="object-cover w-6 h-6 rounded-full "
+							className="object-cover w-6 h-6 rounded-full"
 						/>
 						<div
-							className="absolute inset-0 border-2 rounded-full opacity-20"
+							className="absolute inset-0 border rounded-full border-opacity-20"
 							style={{ borderColor: imgColor }}
 						/>
-						<div
-							className="absolute inset-0 blur-xl opacity-30 "
-							style={{ backgroundColor: imgColor }}
-						/>
 					</div>
-
-					<div className="flex-1">
-						<p className="text-sm font-semibold text-right dark:text-gray-200">
-							{currency?.name.en}
-						</p>
-						<p className="text-xs text-right text-gray-500 dark:text-gray-400">
-							{code.toUpperCase()}
-						</p>
+					<div className="flex items-center space-x-2 text-sm font-medium text-gray-400">
+						<span className=" md:visible">{currency?.name?.en}</span>
+						<span className="text-xs text-gray-500">{code}</span>
 					</div>
 				</div>
 
-				<div className="relative flex items-end justify-between w-32 gap-1 mt-auto ">
-					{/* {currency?.changePercentage ? ( */}
-					<motion.div
-						initial={{ opacity: 0, x: -20 }}
-						animate={{ opacity: 1, x: 0 }}
-						className={`absolute -left-1 bottom-4 flex items-center  text-xs font-medium ${
-							priceChange > 0 ? 'text-red-500' : 'text-green-500'
-						} ${currency?.changePercentage ? 'opacity-100' : 'invisible'}`}
-					>
-						{priceChange > 0 ? <FaArrowUpLong /> : <FaArrowDownLong />}
-						<span>{Number(priceChange.toFixed()).toLocaleString()}</span>
-					</motion.div>
-					{/* // ) : null} */}
-					<motion.p
-						className="text-sm font-bold leading-none text-right text-gray-800 dark:text-gray-100"
+				<div className="flex items-baseline gap-2">
+					<motion.span
+						className="text-sm font-bold text-gray-200"
 						animate={{ scale: [1, 1.02, 1] }}
 						transition={{ duration: 0.3 }}
 					>
-						{displayPrice !== 0 ? displayPrice.toLocaleString() : ''}
-					</motion.p>
+						{displayPrice.toLocaleString()}
+					</motion.span>
+					{priceChange !== 0 && (
+						<span
+							className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
+						>
+							{priceChange > 0 ? (
+								<FaArrowUpLong className="inline" />
+							) : (
+								<FaArrowDownLong className="inline" />
+							)}
+						</span>
+					)}
 				</div>
 			</motion.div>
 			{currency && (

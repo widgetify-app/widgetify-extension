@@ -1,74 +1,40 @@
-import { DragDropContext, Draggable, type DropResult, Droppable } from '@hello-pangea/dnd'
-import { RxDragHandleDots2 } from 'react-icons/rx'
-
-import { useStore } from '../context/store.context'
 import { ArzLiveLayout } from '../layouts/arzLive/arzLive.layout'
+import CalendarLayout from '../layouts/calendar/calendar'
 import { SearchLayout } from '../layouts/search/search'
+import { WeatherLayout } from '../layouts/weather/weather.layout'
 
 export function HomePage() {
-	const { layouts, setLayouts } = useStore()
-
-	const onDragEnd = (result: DropResult) => {
-		const { destination, source } = result
-		if (!destination) return
-
-		const items = Array.from(layouts)
-		const [reorderedItem] = items.splice(source.index, 1)
-		items.splice(destination.index, 0, reorderedItem)
-
-		setLayouts(items)
-	}
-
 	return (
-		<div className="flex flex-col bg-transparent">
-			{/* Search Section - Fixed at top */}
-			<div className="w-full ">
-				<SearchLayout />
+		<div className="flex flex-col gap-4 p-4">
+			{/* Top Section */}
+			<div className="flex flex-col gap-4 lg:flex-row">
+				<div className="order-1 basis-128 lg:order-2 lg:flex-1">
+					<SearchLayout />
+				</div>
+
+				<div className="order-2 basis-64 lg:order-1 lg:w-96">
+					<ArzLiveLayout />
+				</div>
+
+				<div className="order-3 basis-64 lg:order-3 lg:w-96">
+					<div className="p-4 backdrop-blur-md bg-neutral-900/70 rounded-xl">
+						<div>Content 1</div>
+						<div>Content 2</div>
+						<div>Content 3</div>
+					</div>
+				</div>
 			</div>
 
 			{/* Main Content */}
-			<DragDropContext onDragEnd={onDragEnd}>
-				<Droppable droppableId="layouts">
-					{(provided) => (
-						<div
-							{...provided.droppableProps}
-							ref={provided.innerRef}
-							className="flex justify-center gap-1"
-						>
-							{layouts.map((layout, index) => (
-								<Draggable key={layout.id} draggableId={layout.id} index={index}>
-									{(provided) => (
-										<div
-											ref={provided.innerRef}
-											{...provided.draggableProps}
-											className={`h-fit grid gap-2
-                          ${layout.id === 'arz-live' ? ' ' : ''}
-                          ${layout.id === 'weather' ? '' : ''}
-                          ${layout.id === 'calendar' ? '' : ''}
-                        `}
-										>
-											{layout.moveable && (
-												<div
-													{...provided.dragHandleProps}
-													className="flex items-center transition-colors duration-200 rounded-t-xl hover:bg-neutral-800/50"
-												>
-													<RxDragHandleDots2 className="text-gray-400" size={20} />
-												</div>
-											)}
-											<div>{layout.component}</div>
-										</div>
-									)}
-								</Draggable>
-							))}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
-			</DragDropContext>
-
-			<ArzLiveLayout />
+			<div className="flex flex-col gap-4 md:flex-row">
+				<div className="md:w-1/3">
+					<WeatherLayout />
+				</div>
+				<div className="md:w-2/3">
+					<CalendarLayout />
+				</div>
+			</div>
 		</div>
 	)
 }
-
 //     backdrop-blur-md bg-neutral-900/70 rounded-xl

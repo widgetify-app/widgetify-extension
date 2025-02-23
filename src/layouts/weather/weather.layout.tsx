@@ -56,7 +56,7 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="rounded max-w-[30vw] w-[20vw]">
+			<section className="rounded ">
 				<div className="flex flex-col gap-1">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 					<div className="grid grid-cols-2 grid-rows-2 gap-2 p-1 overflow-scroll overflow-y-auto overflow-x-clip scroll-smooth">

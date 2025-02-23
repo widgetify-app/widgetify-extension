@@ -43,7 +43,10 @@ export const PersianCalendar: React.FC = () => {
 	}
 
 	return (
-		<div className="flex gap-1 mb-1 lg:gap-2" dir="rtl">
+		<div
+			className="flex flex-wrap justify-center gap-1 mb-1 md:flex-nowrap lg:gap-2"
+			dir="rtl"
+		>
 			{/* Calendar Grid */}
 			<div className="w-[22rem] overflow-hidden bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<div className="flex items-center justify-between p-4">
@@ -97,8 +100,8 @@ export const PersianCalendar: React.FC = () => {
 				</div>
 			</div>
 
-			{/* Tasks & Events Panel */}
-			<div className="p-4 w-72 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+			{/* Tasks  */}
+			<div className="p-4  w-72 h-[27rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<h3 className="mb-4 text-xl font-medium text-gray-200">
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>
@@ -110,7 +113,7 @@ export const PersianCalendar: React.FC = () => {
 }
 const CalendarLayout = () => {
 	return (
-		<section className="w-full" dir="rtl">
+		<section dir="rtl">
 			<TodoProvider>
 				<PersianCalendar />
 			</TodoProvider>

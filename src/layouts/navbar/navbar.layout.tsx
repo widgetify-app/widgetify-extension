@@ -12,7 +12,7 @@ export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	return (
 		<>
-			<nav className="flex items-center justify-between pt-2">
+			<nav className="flex items-center justify-between pt-2 ">
 				<div className="flex items-center">
 					<h1 className="text-2xl text-gray-100 font-[balooTamma]">Widgetify</h1>
 				</div>

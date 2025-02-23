@@ -8,14 +8,12 @@ interface Props {
 
 export function PageWrapper(props: Props) {
 	return (
-		<div className={'h-screen max-w-[1080px] mx-auto'}>
+		<div className={'h-screen max-w-[1080px]  mx-auto px-2 md:px-0'}>
 			<StoreProvider>
-				{/* <userContext.Provider value={userContextValue}> */}
 				<NavbarLayout />
 				{props.children}
 				<Toaster />
 			</StoreProvider>
-			{/* </userContext.Provider> */}
 		</div>
 	)
 }

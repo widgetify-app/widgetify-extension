@@ -7,13 +7,11 @@ export function ArzLiveLayout() {
 	const { selectedCurrencies } = useStore()
 
 	return (
-		<section>
-			<div className="grid grid-cols-4 gap-2 p-1 overflow-scroll overflow-y-auto md:grid-cols-4 max-h-96 overflow-x-clip scroll-smooth max-w-[60vw] mx-auto">
-				{selectedCurrencies.map((currency, index) => (
-					<CurrencyBox key={index} code={currency} />
-				))}
-				<AddCurrencyBox supportCurrencies={data || []} />
-			</div>
-		</section>
+		<div className="flex flex-col h-48 gap-1 px-2 overflow-x-hidden overflow-y-auto">
+			{selectedCurrencies.map((currency, index) => (
+				<CurrencyBox key={index} code={currency} />
+			))}
+			<AddCurrencyBox supportCurrencies={data || []} />
+		</div>
 	)
 }

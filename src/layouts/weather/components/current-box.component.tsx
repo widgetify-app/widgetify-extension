@@ -26,9 +26,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						{Math.round(weather.temperature.temp)}°C
 					</span>
 
-					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-						
-					</p>
+					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300"></p>
 
 					<div className="flex items-center justify-end gap-3 mt-2">
 						<div className="px-2 py-1 text-sm text-blue-600 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-500/20">
