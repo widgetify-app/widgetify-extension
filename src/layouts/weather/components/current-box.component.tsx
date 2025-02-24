@@ -8,7 +8,7 @@ interface CurrentWeatherBoxProps {
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	return (
 		<div className="h-full col-span-2 p-5 shadow-lg bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-			<div className="flex items-start justify-between gap-4">
+			<div className="flex flex-row-reverse items-start justify-between gap-4">
 				<div className="relative group">
 					<motion.img
 						initial={{ scale: 0.9 }}
@@ -21,14 +21,14 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					/>
 				</div>
 
-				<div className="flex-1 text-right">
+				<div className="flex-1">
 					<span className="text-4xl font-bold text-gray-800 dark:text-white">
 						{Math.round(weather.temperature.temp)}°C
 					</span>
 
 					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300"></p>
 
-					<div className="flex items-center justify-end gap-3 mt-2">
+					<div className="flex items-center justify-start gap-1 mt-2">
 						<div className="px-2 py-1 text-sm text-blue-600 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-500/20">
 							🌡️ {weather.temperature.humidity}%
 						</div>

@@ -1,4 +1,4 @@
-import { Tab, TabPanel, Tabs, TabsBody, TabsHeader } from '@material-tailwind/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
 import { BackgroundSetting } from '../layouts/setting/widgets/background'
@@ -40,39 +40,54 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div dir="rtl">
-				<Tabs value={activeTab} orientation="horizontal">
-					<TabsBody className="flex-1">
-						{tabs.map(({ value, element }) => (
-							<TabPanel key={value} value={value} className="overflow-auto h-96">
-								{element}
-							</TabPanel>
-						))}
-					</TabsBody>
+			<div dir="rtl" className="flex flex-col h-[600px]">
+				{/* Tab Content */}
+				<div className="relative flex-1 mb-4 overflow-hidden rounded-lg">
+					<AnimatePresence mode="wait">
+						{tabs.map(
+							({ value, element }) =>
+								activeTab === value && (
+									<motion.div
+										key={value}
+										className="absolute inset-0 overflow-auto rounded-lg bg-[#1c1c1c]/60 p-4"
+										initial={{ opacity: 0, y: -20 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: 20 }}
+										transition={{ duration: 0.2 }}
+									>
+										{element}
+									</motion.div>
+								),
+						)}
+					</AnimatePresence>
+				</div>
 
-					<TabsHeader
-						className="w-full bg-[#242424]"
-						indicatorProps={{
-							className: 'bg-blue-50  bg-[#1d1d1d]',
-						}}
-					>
-						{tabs.map(({ label, value, icon }) => (
-							<Tab
-								key={value}
-								value={value}
-								onClick={() => setActiveTab(value)}
-								className="flex items-center gap-2 p-2 hover:bg-gray-50 dark:hover:bg-[#1d1d1d] rounded transition-all duration-200"
-							>
-								<div className="flex items-center justify-start w-full gap-3">
-									<p className="text-gray-400">{icon}</p>
-									<span className="font-[Vazir] text-sm dark:text-[#e8e7e7] text-gray-400">
-										{label}
-									</span>
-								</div>
-							</Tab>
-						))}
-					</TabsHeader>
-				</Tabs>
+				{/* Bottom Tab Buttons */}
+				<div className="flex items-center gap-2 p-2 bg-[#1c1c1c]/60 rounded-lg mt-auto">
+					{tabs.map(({ label, value, icon }) => (
+						<motion.button
+							key={value}
+							onClick={() => setActiveTab(value)}
+							className={`relative flex items-center gap-3 px-4 py-2 rounded-lg transition-colors flex-1 justify-center ${
+								activeTab === value
+									? 'text-white'
+									: 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+							}`}
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
+						>
+							<span className="text-gray-400">{icon}</span>
+							<span className="font-[Vazir] text-sm">{label}</span>
+							{activeTab === value && (
+								<motion.div
+									className="absolute inset-0 rounded-lg bg-white/10 -z-10"
+									layoutId="activeTab"
+									transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+								/>
+							)}
+						</motion.button>
+					))}
+				</div>
 			</div>
 		</Modal>
 	)
