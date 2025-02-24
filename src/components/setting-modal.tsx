@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
-import { BackgroundSetting } from '../layouts/setting/widgets/background'
-import { WeatherOptions } from '../layouts/setting/widgets/weather'
+import { WallpaperSetting } from '../layouts/setting/tabs/wallpapers'
+import { WeatherOptions } from '../layouts/setting/tabs/weather'
 import Modal from './modal'
 
 interface SettingModalProps {
@@ -28,7 +28,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 			label: 'تصویر زمینه',
 			value: 'backgrounds',
 			icon: <VscPaintcan size={20} />,
-			element: <BackgroundSetting />,
+			element: <WallpaperSetting />,
 		},
 		{
 			label: 'آب هوا',
