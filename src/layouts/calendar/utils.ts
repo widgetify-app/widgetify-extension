@@ -29,19 +29,15 @@ export function convertShamsiToHijri(
 		'YYYY-MM-DD',
 	)
 
-	// تنظیم اختلاف بر اساس روز و ماه شمسی
 	if (shamsiMonth <= 6) {
-		// فروردین تا شهریور
 		if (shamsiDay <= 20) {
 			hijriDate = hijriDate.subtract(1, 'day')
 		}
 	} else if (shamsiMonth <= 11) {
-		// مهر تا بهمن
 		if (shamsiDay <= 21) {
 			hijriDate = hijriDate.subtract(1, 'day')
 		}
 	} else {
-		// اسفند
 		if (shamsiDay <= 20) {
 			hijriDate = hijriDate.subtract(1, 'day')
 		}

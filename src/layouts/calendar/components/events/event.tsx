@@ -31,7 +31,7 @@ export function Events({ events, currentDate }: Prop) {
 	return (
 		<div>
 			<h4 className="mb-3 text-lg text-gray-300">رویدادها</h4>
-			<div className="space-y-2 ">
+			<div className="space-y-2 overflow-y-auto max-h-40 min-h-40">
 				{selectedEvents.length > 0 ? (
 					selectedEvents.map((event, index) => (
 						<div

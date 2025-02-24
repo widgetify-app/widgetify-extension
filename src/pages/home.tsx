@@ -12,12 +12,8 @@ export function HomePage() {
 					<SearchLayout />
 				</div>
 
-				<div className="order-3 md:basis-64 lg:order-1 lg:w-96">
-					<div className="p-4 backdrop-blur-md bg-neutral-900/70 rounded-xl">
-						<div>Content 1</div>
-						<div>Content 2</div>
-						<div>Content 3</div>
-					</div>
+				<div className="flex flex-col order-3 gap-2 md:basis-64 lg:order-1 lg:w-96">
+					<div className="p-4 backdrop-blur-md bg-neutral-900/70 rounded-xl"></div>
 				</div>
 
 				<div className="order-2 md:basis-64 lg:order-3 lg:w-96">
