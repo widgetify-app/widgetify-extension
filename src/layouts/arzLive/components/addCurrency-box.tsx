@@ -32,25 +32,35 @@ export const AddCurrencyBox = ({
 	return (
 		<>
 			<motion.div
-				whileHover={disabled ? {} : { scale: 1.02 }}
-				whileTap={disabled ? {} : { scale: 0.98 }}
+				whileHover={
+					disabled
+						? {}
+						: {
+								scale: 1.05,
+								backgroundColor: 'rgba(63, 63, 70, 0.5)',
+							}
+				}
+				whileTap={disabled ? {} : { scale: 0.95 }}
 				className={`flex items-center gap-2 p-2 duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm shadow-lg transition-all cursor-pointer
-          ${
-						disabled
-							? 'opacity-50 cursor-not-allowed'
-							: 'hover:shadow-xl hover:bg-opacity-90'
-					}`}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl hover:bg-opacity-90'}`}
 				onClick={() => !disabled && setShowModal(true)}
+				initial={false}
+				animate={{
+					border: disabled ? '' : '1px solid rgba(161, 161, 170, 0.2)',
+				}}
 			>
-				<div className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800">
+				<motion.div
+					className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800"
+					whileHover={{ rotate: 90 }}
+					transition={{ type: 'spring', stiffness: 300 }}
+				>
 					{loading ? (
 						<AiOutlineLoading className="w-6 h-6 animate-spin" />
 					) : (
-						<>
-							<TiPlus className="w-4 h-4 text-gray-400" />
-						</>
+						<TiPlus className="w-4 h-4 text-gray-400" />
 					)}
-				</div>
+				</motion.div>
+				<span className="text-sm text-gray-400">افزودن ارز</span>
 			</motion.div>
 
 			<SelectCurrencyModal

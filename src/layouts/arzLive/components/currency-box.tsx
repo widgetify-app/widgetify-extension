@@ -118,9 +118,25 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	return (
 		<>
 			<motion.div
-				whileHover={{ scale: 1.01 }}
-				whileTap={{ scale: 0.99 }}
+				whileHover={{ scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
+				whileTap={{ scale: 0.98 }}
 				className="flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80"
+				style={{
+					border: '1px solid transparent',
+					borderColor: imgColor ? `${imgColor}20` : 'transparent',
+				}}
+				initial={{ opacity: 0, y: -10 }}
+				animate={{
+					opacity: 1,
+					y: 0,
+					borderColor: imgColor ? `${imgColor}30` : 'transparent',
+				}}
+				transition={{
+					type: 'spring',
+					stiffness: 150,
+					damping: 15,
+					borderColor: { duration: 0.3 },
+				}}
 				onClick={() => toggleCurrencyModal()}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}

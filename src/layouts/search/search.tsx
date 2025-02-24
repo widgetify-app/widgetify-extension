@@ -120,7 +120,7 @@ export function SearchLayout() {
 				<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
 					{[
 						...displayedBookmarks,
-						...Array(Math.max(0, 5 - displayedBookmarks.length)),
+						...Array(Math.max(0, 10 - displayedBookmarks.length)),
 					].map((bookmark, i) =>
 						bookmark ? (
 							<Menu key={i} open={selectedBookmark?.url === bookmark.url}>
