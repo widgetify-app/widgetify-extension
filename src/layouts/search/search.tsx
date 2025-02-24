@@ -26,6 +26,41 @@ export function SearchLayout() {
 			icon: 'https://cdn-icons-png.flaticon.com/512/25/25231.png',
 		},
 		{
+			title: 'گیت هاب',
+			url: 'https://github.com',
+			icon: 'https://cdn-icons-png.flaticon.com/512/25/25231.png',
+		},
+		{
+			title: 'گیت هاب',
+			url: 'https://github.com',
+			icon: 'https://cdn-icons-png.flaticon.com/512/25/25231.png',
+		},
+		{
+			title: 'Stack Overflowwwwwwwwwwww',
+			url: 'https://stackoverflow.com',
+			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
+		},
+		{
+			title: 'Stack Overflowwwwwwwwwwww',
+			url: 'https://stackoverflow.com',
+			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
+		},
+		{
+			title: 'Stack Overflowwwwwwwwwwww',
+			url: 'https://stackoverflow.com',
+			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
+		},
+		{
+			title: 'Stack Overflowwwwwwwwwwww',
+			url: 'https://stackoverflow.com',
+			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
+		},
+		{
+			title: 'Stack Overflowwwwwwwwwwww',
+			url: 'https://stackoverflow.com',
+			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
+		},
+		{
 			title: 'Stack Overflowwwwwwwwwwww',
 			url: 'https://stackoverflow.com',
 			icon: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico',
@@ -59,9 +94,11 @@ export function SearchLayout() {
 	// when click on the document, close the context menu
 	window.addEventListener('click', () => setSelectedBookmark(null))
 
+	const displayedBookmarks = bookmarks.slice(0, 10)
+
 	return (
 		<>
-			<div className="flex flex-col items-center justify-center text-white">
+			<div className="flex flex-col items-center justify-center text-white max-h-80">
 				<form className="w-full" onSubmit={handleSubmit}>
 					<div className="relative overflow-hidden transition-all duration-300 shadow-xl backdrop-blur-sm bg-neutral-900/70 rounded-2xl hover:bg-neutral-800/80 group">
 						<input
@@ -81,52 +118,54 @@ export function SearchLayout() {
 				</form>
 
 				<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
-					{[...bookmarks, ...Array(Math.max(0, 5 - bookmarks.length))].map(
-						(bookmark, i) =>
-							bookmark ? (
-								<Menu key={i} open={selectedBookmark?.url === bookmark.url}>
-									<MenuHandler>
-										<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
-											<OptionButton
-												onClick={() => window.open(bookmark.url)}
-												title={bookmark.title}
-												icon={
-													<motion.img
-														initial={{ scale: 0.9 }}
-														animate={{ scale: 1 }}
-														src={bookmark.icon}
-														className="transition-transform duration-300 group-hover:scale-110"
-													/>
-												}
-											/>
-										</div>
-									</MenuHandler>
+					{[
+						...displayedBookmarks,
+						...Array(Math.max(0, 5 - displayedBookmarks.length)),
+					].map((bookmark, i) =>
+						bookmark ? (
+							<Menu key={i} open={selectedBookmark?.url === bookmark.url}>
+								<MenuHandler>
+									<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
+										<OptionButton
+											onClick={() => window.open(bookmark.url)}
+											title={bookmark.title}
+											icon={
+												<motion.img
+													initial={{ scale: 0.9 }}
+													animate={{ scale: 1 }}
+													src={bookmark.icon}
+													className="transition-transform duration-300 group-hover:scale-110"
+												/>
+											}
+										/>
+									</div>
+								</MenuHandler>
 
-									<MenuList
-										className="bg-neutral-800 border-white/10 p-1  min-w-[150px]"
-										style={{
-											position: 'fixed',
-											left: contextMenuPos.x,
-											top: contextMenuPos.y,
-										}}
+								<MenuList
+									className="bg-neutral-800 border-white/10 p-1  min-w-[150px]"
+									style={{
+										position: 'fixed',
+										left: contextMenuPos.x,
+										top: contextMenuPos.y,
+									}}
+								>
+									<MenuItem
+										className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 font-[Vazir]"
+										onClick={handleDeleteBookmark}
 									>
-										<MenuItem
-											className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 font-[Vazir]"
-											onClick={handleDeleteBookmark}
-										>
-											<FaTrash />
-											حذف
-										</MenuItem>
-									</MenuList>
-								</Menu>
-							) : (
-								<OptionButton
-									key={i}
-									onClick={() => setShowAddBookmarkModal(true)}
-									title="افزودن"
-									icon={<FaPlus />}
-								/>
-							),
+										<FaTrash />
+										حذف
+									</MenuItem>
+								</MenuList>
+							</Menu>
+						) : (
+							<OptionButton
+								key={i}
+								onClick={() => setShowAddBookmarkModal(true)}
+								title="افزودن"
+								icon={<FaPlus />}
+							/>
+						),
 					)}
 				</div>
 			</div>

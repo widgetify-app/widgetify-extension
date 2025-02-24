@@ -33,8 +33,8 @@ export function Events({ events, currentDate }: Prop) {
 
 	// تنظیمات انیمیشن
 	const containerVariants = {
-		collapsed: { height: 160 }, // ارتفاع بسته شده (~40 = 160px)
-		expanded: { height: 320 }, // ارتفاع باز شده (~80 = 320px)
+		collapsed: { height: 110 }, // ارتفاع بسته شده (~40 = 160px)
+		expanded: { height: 220 }, // ارتفاع باز شده (~80 = 320px)
 	}
 
 	return (
