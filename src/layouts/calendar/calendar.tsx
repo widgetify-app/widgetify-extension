@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
+import { AnimatePresence } from 'motion/react'
 import type React from 'react'
 import { useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
@@ -6,6 +8,7 @@ import { TodoProvider, useTodo } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
 import { Events } from './components/events/event'
+import { TodoStats } from './components/todos/todo-stats'
 import { Todos } from './components/todos/todos'
 import { formatDateStr } from './utils'
 
@@ -101,7 +104,7 @@ export const PersianCalendar: React.FC = () => {
 			</div>
 
 			{/* Tasks  */}
-			<div className="p-4  w-72 h-[27rem]  bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+			<div className="p-4  w-80 h-[27rem]  bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<h3 className="mb-4 text-xl font-medium text-gray-200">
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>
@@ -111,12 +114,76 @@ export const PersianCalendar: React.FC = () => {
 		</div>
 	)
 }
+
 const CalendarLayout = () => {
+	const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar')
+
 	return (
 		<section dir="rtl">
 			<TodoProvider>
-				<PersianCalendar />
+				<AnimatePresence mode="wait">
+					{activeTab === 'calendar' ? (
+						<motion.div
+							key="calendar"
+							className="max-h-96 min-h-96"
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							exit={{ opacity: 0, x: 20 }}
+							transition={{ duration: 0.3 }}
+						>
+							<PersianCalendar />
+						</motion.div>
+					) : (
+						<motion.div
+							key="stats"
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							exit={{ opacity: 0, x: 20 }}
+							transition={{ duration: 0.3 }}
+							className="w-full max-w-2xl p-4 mx-auto max-h-96 min-h-96 bg-neutral-900/70 backdrop-blur-sm rounded-xl"
+						>
+							<h2 className="mb-4 text-xl font-medium text-gray-200">
+								آمار و تحلیل یادداشت‌ها
+							</h2>
+							<TodoStats />
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</TodoProvider>
+
+			<motion.div
+				className="relative flex justify-center mb-4"
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.3, delay: 0.2 }}
+			>
+				<div className="absolute inline-flex p-1 left-3 bottom-[20.9rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => setActiveTab('calendar')}
+						className={`px-4 py-2 rounded-lg transition-colors ${
+							activeTab === 'calendar'
+								? 'bg-blue-500 text-white'
+								: 'text-gray-400 hover:text-gray-300'
+						}`}
+					>
+						تقویم
+					</motion.button>
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => setActiveTab('stats')}
+						className={`px-4 py-2 rounded-lg transition-colors ${
+							activeTab === 'stats'
+								? 'bg-blue-500 text-white'
+								: 'text-gray-400 hover:text-gray-300'
+						}`}
+					>
+						آمار
+					</motion.button>
+				</div>
+			</motion.div>
 		</section>
 	)
 }
