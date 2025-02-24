@@ -39,7 +39,7 @@ export function SearchLayout() {
 		e.preventDefault()
 		const query = (e.target as HTMLFormElement).search.value
 		if (query.trim()) {
-			window.open(GOOGLE_URL + encodeURIComponent(query))
+			window.location.href = GOOGLE_URL + encodeURIComponent(query)
 		}
 	}
 
@@ -67,7 +67,7 @@ export function SearchLayout() {
 						<input
 							type="text"
 							name="search"
-							className="w-full py-4 pl-16 pr-6 text-lg text-right text-gray-200 placeholder-gray-400 transition-all duration-300 bg-transparent focus:outline-none"
+							className="w-full py-4 pl-16 pr-6 text-lg font-light text-right text-gray-200 transition-all duration-300 bg-transparent placeholder-gray-400/70 focus:outline-none"
 							placeholder="جستجو در گوگل..."
 						/>
 						<button
