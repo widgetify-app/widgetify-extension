@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
+import { FiExternalLink } from 'react-icons/fi'
 import { MdOutlineVideoSettings } from 'react-icons/md'
 import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage } from '../../../common/storage'
@@ -105,6 +106,24 @@ export function WallpaperSetting() {
 									{wallpaper.name}
 								</p>
 							</motion.div>
+
+							{/* Source Badge */}
+							{wallpaper.source && (
+								<motion.div
+									className="absolute px-2 py-1 rounded-md top-2 left-2 bg-black/50 backdrop-blur-sm"
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									onClick={(e) => {
+										e.stopPropagation()
+										window.open(wallpaper.source, '_blank')
+									}}
+								>
+									<div className="flex items-center gap-1">
+										<FiExternalLink size={14} className="text-white" />
+										<span className="text-xs text-white font-[Vazir]">منبع</span>
+									</div>
+								</motion.div>
+							)}
 						</motion.div>
 					))}
 				</div>

@@ -95,7 +95,7 @@ export const PersianCalendar: React.FC = () => {
 					))}
 				</div>
 
-				<div className="p-4 pb-2 border-neutral-800/50">
+				<div className="px-4 border-neutral-800/50">
 					<Events events={events} currentDate={selectedDate} />
 				</div>
 			</div>

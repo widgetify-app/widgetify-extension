@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import type { ReactNode } from 'react'
+import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 
 type ModalProps = {
@@ -30,7 +31,7 @@ const Modal = ({
 }: ModalProps) => {
 	if (!isOpen) return null
 
-	return (
+	return ReactDOM.createPortal(
 		<AnimatePresence>
 			<motion.div
 				className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/30"
@@ -63,7 +64,8 @@ const Modal = ({
 					<div className="p-4">{children}</div>
 				</motion.div>
 			</motion.div>
-		</AnimatePresence>
+		</AnimatePresence>,
+		document.body,
 	)
 }
 
