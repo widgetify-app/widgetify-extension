@@ -46,14 +46,11 @@ export const PersianCalendar: React.FC = () => {
 	}
 
 	return (
-		<div
-			className="flex flex-wrap justify-center gap-1 mb-1 md:flex-nowrap lg:gap-2"
-			dir="rtl"
-		>
+		<div className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row" dir="rtl">
 			{/* Calendar Grid */}
-			<div className="w-[22rem] overflow-hidden bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-				<div className="flex items-center justify-between p-4">
-					<h3 className="text-xl font-medium text-gray-200">
+			<div className="w-full overflow-hidden md:flex-1 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<div className="flex items-center justify-between p-3 md:p-4">
+					<h3 className="text-lg font-medium text-gray-200 md:text-xl">
 						{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
 					</h3>
 					<div className="flex gap-1">
@@ -74,7 +71,7 @@ export const PersianCalendar: React.FC = () => {
 					</div>
 				</div>
 
-				<div className="grid grid-cols-7 px-4 text-center">
+				<div className="grid grid-cols-7 px-3 text-center md:px-4">
 					{WEEKDAYS.map((day) => (
 						<div key={day} className="py-2 text-sm text-gray-400">
 							{day}
@@ -98,14 +95,14 @@ export const PersianCalendar: React.FC = () => {
 					))}
 				</div>
 
-				<div className="px-4 border-neutral-800/50">
+				<div className="px-3 md:px-4 border-neutral-800/50">
 					<Events events={events} currentDate={selectedDate} />
 				</div>
 			</div>
 
 			{/* Tasks  */}
-			<div className="p-4  w-80 h-[27rem]  bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-				<h3 className="mb-4 text-xl font-medium text-gray-200">
+			<div className="w-full md:w-80 p-3 md:p-4 h-auto min-h-[16rem] md:h-[27rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<h3 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>
 
@@ -125,7 +122,7 @@ const CalendarLayout = () => {
 					{activeTab === 'calendar' ? (
 						<motion.div
 							key="calendar"
-							className="max-h-96 min-h-96"
+							className="min-h-[16rem] md:min-h-96 md:max-h-96"
 							initial={{ opacity: 0, x: -20 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: 20 }}
@@ -140,9 +137,9 @@ const CalendarLayout = () => {
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: 20 }}
 							transition={{ duration: 0.3 }}
-							className="w-full max-w-2xl p-4 mx-auto max-h-96 min-h-96 bg-neutral-900/70 backdrop-blur-sm rounded-xl"
+							className="w-full max-w-2xl p-3 md:p-4 mx-auto min-h-[16rem] md:min-h-96 md:max-h-96 bg-neutral-900/70 backdrop-blur-sm rounded-xl"
 						>
-							<h2 className="mb-4 text-xl font-medium text-gray-200">
+							<h2 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
 								آمار و تحلیل یادداشت‌ها
 							</h2>
 							<TodoStats />
@@ -152,17 +149,17 @@ const CalendarLayout = () => {
 			</TodoProvider>
 
 			<motion.div
-				className="relative flex justify-center mb-4"
+				className="relative justify-center hidden mb-3 md:mb-4 md:flex"
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.3, delay: 0.2 }}
 			>
-				<div className="absolute inline-flex p-1 left-3 bottom-[20.9rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<div className="absolute inline-flex p-1 left-3 bottom-[10rem] md:bottom-[20.9rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 					<motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('calendar')}
-						className={`px-4 py-2 rounded-lg transition-colors ${
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
 							activeTab === 'calendar'
 								? 'bg-blue-500 text-white'
 								: 'text-gray-400 hover:text-gray-300'
@@ -174,7 +171,7 @@ const CalendarLayout = () => {
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('stats')}
-						className={`px-4 py-2 rounded-lg transition-colors ${
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
 							activeTab === 'stats'
 								? 'bg-blue-500 text-white'
 								: 'text-gray-400 hover:text-gray-300'

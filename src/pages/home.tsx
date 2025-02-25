@@ -39,20 +39,12 @@ export function HomePage() {
 			existingVideo.remove()
 		}
 
-		const blurAmount = wallpaper.blurAmount !== undefined ? wallpaper.blurAmount : 0
-
 		if (wallpaper.type === 'IMAGE') {
 			const gradient = wallpaper.isRetouchEnabled
 				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
-
-			if (blurAmount > 0) {
-				document.body.style.backdropFilter = `blur(${blurAmount}px)`
-			} else {
-				document.body.style.backdropFilter = ''
-			}
 
 			document.body.style.backgroundColor = ''
 		} else if (wallpaper.type === 'VIDEO') {
@@ -87,10 +79,6 @@ export function HomePage() {
 				activeFilters.push('brightness(0.7)')
 			}
 
-			if (blurAmount > 0) {
-				activeFilters.push(`blur(${blurAmount}px)`)
-			}
-
 			if (activeFilters.length > 0) {
 				video.style.filter = activeFilters.join(' ')
 			}
@@ -100,30 +88,30 @@ export function HomePage() {
 	}
 	return (
 		<StoreProvider>
-			<div className={'max-w-[1080px] mx-auto px-2 md:px-0 min-h-screen flex flex-col'}>
+			<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
 				<NavbarLayout />
-				<div className="flex flex-col items-center justify-center flex-1 w-full gap-2 p-4">
+				<div className="flex flex-col items-center justify-center flex-1 w-full gap-3 p-2 md:p-4">
 					{/* Top Section */}
-					<div className="flex flex-col gap-4 pr-4 lg:flex-row">
-						<div className="order-1 md:basis-128 lg:order-2 lg:flex-1">
-							<SearchLayout />
-						</div>
-
-						<div className="order-3 md:basis-64 lg:order-1 lg:w-96">
+					<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+						<div className="order-3 w-full lg:w-1/4 lg:order-1">
 							<WidgetifyLayout />
 						</div>
 
-						<div className="order-2 md:basis-64 lg:order-3 lg:w-96">
+						<div className="order-1 w-full lg:w-2/4 lg:order-2">
+							<SearchLayout />
+						</div>
+
+						<div className="order-2 w-full lg:w-1/4 lg:order-3">
 							<ArzLiveLayout />
 						</div>
 					</div>
 
 					{/* Main Content */}
-					<div className="flex flex-col gap-4 md:flex-row">
-						<div className="md:w-2/3">
+					<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
+						<div className="w-full md:w-2/3">
 							<CalendarLayout />
 						</div>
-						<div className="md:w-1/3">
+						<div className="w-full md:w-1/3">
 							<WeatherLayout />
 						</div>
 					</div>
@@ -132,4 +120,3 @@ export function HomePage() {
 		</StoreProvider>
 	)
 }
-//     backdrop-blur-md bg-neutral-900/70 rounded-xl

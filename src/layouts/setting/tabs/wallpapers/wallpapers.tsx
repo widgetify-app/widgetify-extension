@@ -10,7 +10,6 @@ import { WallpaperItem } from './item.wallpaper'
 export function WallpaperSetting() {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
-	const [blurAmount, setBlurAmount] = useState<number>(1)
 	const { data: fetchedWallpaper } = useGetWallpapers()
 
 	useEffect(() => {
@@ -19,7 +18,6 @@ export function WallpaperSetting() {
 			if (wallpaper) {
 				setSelectedBackground(wallpaper.id)
 				setIsRetouchEnabled(wallpaper.isRetouchEnabled)
-				setBlurAmount(wallpaper.blurAmount !== undefined ? wallpaper.blurAmount : 0)
 			}
 		}
 
@@ -38,7 +36,6 @@ export function WallpaperSetting() {
 			type: selectedBg?.type,
 			src: selectedBg.src,
 			isRetouchEnabled: isRetouchEnabled,
-			blurAmount: blurAmount,
 		}
 
 		// Save to storage
@@ -49,7 +46,7 @@ export function WallpaperSetting() {
 		})
 
 		window.dispatchEvent(event)
-	}, [selectedBackground, isRetouchEnabled, blurAmount])
+	}, [selectedBackground, isRetouchEnabled])
 
 	return (
 		<motion.div
@@ -88,24 +85,6 @@ export function WallpaperSetting() {
 							با فعال کردن این گزینه تصویر زمینه شما تاریک تر خواهد شد
 						</p>
 					</div>
-				</div>
-
-				<div className="p-4 rounded-xl bg-white/5">
-					<p className="mb-2 font-medium font-[Vazir] text-gray-200">میزان تاری (Blur)</p>
-					<div className="flex items-center gap-4">
-						<input
-							type="range"
-							min="1"
-							max="20"
-							value={blurAmount}
-							onChange={(e) => setBlurAmount(Number.parseInt(e.target.value))}
-							className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-						/>
-						<span className="text-center text-gray-300 min-w-8">{blurAmount}</span>
-					</div>
-					<p className="mt-2 text-sm font-[Vazir] text-gray-400">
-						با افزایش مقدار، تصویر زمینه تار‌تر خواهد شد
-					</p>
 				</div>
 			</div>
 
