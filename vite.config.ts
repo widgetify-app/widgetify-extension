@@ -1,7 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension'
 
 function generateManifest() {
@@ -22,6 +21,7 @@ export default defineConfig({
 		tailwindcss(),
 		webExtension({
 			manifest: generateManifest,
+			browser: 'chrome',
 		}),
 	],
 })

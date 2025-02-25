@@ -165,3 +165,23 @@ body {
 		font-family: Vazirmatn, sans-serif;
 	}
 }
+
+.backdrop-blur-md {
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	/* Fallback for browsers that don't support backdrop-filter */
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdrop-blur-lg {
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	/* Fallback for browsers that don't support backdrop-filter */
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-bg {
+	background-color: rgba(28, 28, 28, 0.8);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+}
