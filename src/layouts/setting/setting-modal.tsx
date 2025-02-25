@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
-import { WallpaperSetting } from '../layouts/setting/tabs/wallpapers/wallpapers'
-import { WeatherOptions } from '../layouts/setting/tabs/weather'
-import Modal from './modal'
+import Modal from '../../components/modal'
+import { GeneralSettingTab } from './tabs/general/general'
+import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
+import { WeatherOptions } from './tabs/weather'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -18,11 +19,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 			label: 'عمومی',
 			value: 'general',
 			icon: <VscSettingsGear size={20} />,
-			element: (
-				<div className="p-4">
-					<h2 className="text-lg font-semibold mb-4 font-[Vazir]">تنظیمات عمومی</h2>
-				</div>
-			),
+			element: <GeneralSettingTab />,
 		},
 		{
 			label: 'تصویر زمینه',

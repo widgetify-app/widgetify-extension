@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { VscSettings } from 'react-icons/vsc'
 import { Colors } from '../../common/constant/colors.constant'
-import { SettingModal } from '../../components/setting-modal'
+import { SettingModal } from '../setting/setting-modal'
 
 export interface PageLink {
 	name: string
