@@ -11,14 +11,11 @@
 		"test": "npx tailwindcss init"
 	},
 	"dependencies": {
-		"@hello-pangea/dnd": "^18.0.1",
 		"@material-tailwind/react": "^2.1.10",
 		"@tanstack/react-query": "5.66.0",
-		"add": "2.0.6",
 		"axios": "1.7.9",
 		"chart.js": "^4.4.7",
 		"jalali-moment": "3.3.11",
-		"lucide-react": "^0.475.0",
 		"moment": "^2.30.1",
 		"moment-hijri": "^3.0.0",
 		"motion": "12.3.1",
