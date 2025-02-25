@@ -22,7 +22,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				</div>
 
 				<div className="flex-1">
-					<span className="text-4xl font-bold text-gray-800 dark:text-white">
+					<span className="text-4xl font-bold text-gray-800 dark:text-white" dir="ltr">
 						{Math.round(weather.temperature.temp)}°C
 					</span>
 
