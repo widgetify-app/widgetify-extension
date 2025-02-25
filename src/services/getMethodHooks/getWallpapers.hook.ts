@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse, getMainClient } from '../api'
+import { getMainClient } from '../api'
 
 export type FetchedWallpaper = {
 	id: string
@@ -29,6 +29,6 @@ export const useGetWallpapers = () => {
 
 async function getWallpapers(): Promise<FetchedWallpaperResponse> {
 	const client = await getMainClient()
-	const { data } = await client.get<ApiResponse<FetchedWallpaperResponse>>('/wallpapers')
-	return data.data
+	const { data } = await client.get<FetchedWallpaperResponse>('/wallpapers')
+	return data
 }

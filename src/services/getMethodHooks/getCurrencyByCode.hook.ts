@@ -33,8 +33,6 @@ export const useGetCurrencyByCode = (
 
 async function getSupportCurrencies(currency: string): Promise<FetchedCurrency> {
 	const client = await getMainClient()
-	const { data } = await client.get<ApiResponse<FetchedCurrency>>(
-		`/currencies/${currency}`,
-	)
-	return data.data
+	const { data } = await client.get<FetchedCurrency>(`/currencies/${currency}`)
+	return data
 }

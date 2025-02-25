@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse, getMainClient } from '../api'
+import { getMainClient } from '../api'
 
 export type SupportedCurrencies = {
 	key: string
@@ -22,8 +22,6 @@ export const useGetSupportCurrencies = () => {
 
 async function getSupportCurrencies(): Promise<SupportedCurrencies> {
 	const client = await getMainClient()
-	const { data } = await client.get<ApiResponse<SupportedCurrencies>>(
-		'/currencies/supported-list',
-	)
-	return data.data
+	const { data } = await client.get<SupportedCurrencies>('/currencies/supported-list')
+	return data
 }

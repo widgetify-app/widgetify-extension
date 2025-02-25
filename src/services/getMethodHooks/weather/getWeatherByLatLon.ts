@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse, getMainClient } from '../../api'
+import { getMainClient } from '../../api'
 import type { FetchedWeather } from './weather.interface'
 
 async function fetchWeatherByLatLon(lat: number, lon: number): Promise<FetchedWeather> {
 	const client = await getMainClient()
 
-	const response = await client.get<ApiResponse<FetchedWeather>>(
+	const response = await client.get<FetchedWeather>(
 		`/weather/current?lat=${lat}&lon=${lon}`,
 	)
-	return response.data.data
+	return response.data
 }
 
 export function useGetWeatherByLatLon(

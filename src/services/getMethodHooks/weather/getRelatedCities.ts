@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse, getMainClient } from '../../api'
+import { getMainClient } from '../../api'
 
 async function fetchRelatedCities(city: string): Promise<any[]> {
 	if (city.length > 1) {
 		const client = await getMainClient()
 
-		const response = await client.get<ApiResponse<any>>(`/weather/cities?city=${city}`)
-		return response.data.data
+		const response = await client.get<any>(`/weather/cities?city=${city}`)
+		return response.data
 	}
 
 	return []
