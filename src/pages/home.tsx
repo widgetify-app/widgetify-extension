@@ -39,21 +39,28 @@ export function HomePage() {
 			existingVideo.remove()
 		}
 
+		const blurAmount = wallpaper.blurAmount !== undefined ? wallpaper.blurAmount : 0
+
 		if (wallpaper.type === 'IMAGE') {
-			// Set background image for image type
 			const gradient = wallpaper.isRetouchEnabled
 				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
 				: ''
+
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
-			// Reset any video-specific styles
+
+			if (blurAmount > 0) {
+				document.body.style.backdropFilter = `blur(${blurAmount}px)`
+			} else {
+				document.body.style.backdropFilter = ''
+			}
+
 			document.body.style.backgroundColor = ''
 		} else if (wallpaper.type === 'VIDEO') {
-			// Clear background image
 			document.body.style.backgroundImage = ''
-			// Set a background color instead
+			document.body.style.backdropFilter = ''
+
 			document.body.style.backgroundColor = '#000'
 
-			// Create video element
 			const video = document.createElement('video')
 			video.id = 'background-video'
 			video.src = wallpaper.src
@@ -62,7 +69,6 @@ export function HomePage() {
 			video.muted = true
 			video.playsInline = true
 
-			// Style video element to fill the background
 			Object.assign(video.style, {
 				position: 'fixed',
 				right: '0',
@@ -75,16 +81,23 @@ export function HomePage() {
 				objectFit: 'cover',
 			})
 
-			// Apply retouch filter if enabled
+			const activeFilters = []
+
 			if (wallpaper.isRetouchEnabled) {
-				video.style.filter = 'brightness(0.7)'
+				activeFilters.push('brightness(0.7)')
 			}
 
-			// Add video element to the body
+			if (blurAmount > 0) {
+				activeFilters.push(`blur(${blurAmount}px)`)
+			}
+
+			if (activeFilters.length > 0) {
+				video.style.filter = activeFilters.join(' ')
+			}
+
 			document.body.prepend(video)
 		}
 	}
-
 	return (
 		<StoreProvider>
 			<div className={'max-w-[1080px] mx-auto px-2 md:px-0 min-h-screen flex flex-col'}>

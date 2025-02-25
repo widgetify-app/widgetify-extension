@@ -4,7 +4,7 @@ import { type ApiResponse, getMainClient } from '../api'
 export type FetchedWallpaper = {
 	id: string
 	name: string
-	fileKey: string
+	src: string
 	type: 'IMAGE' | 'VIDEO'
 	source: string
 	category: string

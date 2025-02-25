@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
-import { WallpaperSetting } from '../layouts/setting/tabs/wallpapers'
+import { WallpaperSetting } from '../layouts/setting/tabs/wallpapers/wallpapers'
 import { WeatherOptions } from '../layouts/setting/tabs/weather'
 import Modal from './modal'
 
