@@ -5,7 +5,6 @@ interface Prop {
 	onAdd: (
 		text: string,
 		priority: 'low' | 'medium' | 'high',
-		dueTime?: string,
 		category?: string,
 		notes?: string,
 	) => void
@@ -15,16 +14,14 @@ export function TodoInput({ onAdd }: Prop) {
 	const [text, setText] = useState('')
 	const [showAdvanced, setShowAdvanced] = useState(false)
 	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
-	const [dueTime, setDueTime] = useState('')
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 		if (text.trim()) {
-			onAdd(text.trim(), priority, dueTime, category, notes)
+			onAdd(text.trim(), priority, category, notes)
 			setText('')
-			setDueTime('')
 			setCategory('')
 			setNotes('')
 			setPriority('medium')
@@ -57,8 +54,8 @@ export function TodoInput({ onAdd }: Prop) {
 			</form>
 
 			{showAdvanced && (
-				<div className="absolute left-0 right-0 z-10 grid grid-cols-2 gap-2 p-4 mt-2 border rounded-lg shadow-lg top-full bg-gray-800/95 backdrop-blur-md border-gray-700/50">
-					<div className="flex items-center gap-2">
+				<div className="absolute left-0 right-0 z-10 flex flex-col gap-2 p-4 mt-2 border rounded-lg shadow-lg top-full bg-gray-800/95 backdrop-blur-md border-gray-700/50">
+					<div className="flex items-center w-full gap-2">
 						<FiFlag className="text-gray-400" />
 						<select
 							value={priority}
@@ -69,17 +66,6 @@ export function TodoInput({ onAdd }: Prop) {
 							<option value="medium">اولویت متوسط</option>
 							<option value="high">اولویت زیاد</option>
 						</select>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<FiClock className="text-gray-400" />
-						<input
-							type="time"
-							value={dueTime}
-							onChange={(e) => setDueTime(e.target.value)}
-							className="flex-1 px-2 py-1.5 text-sm text-gray-300 rounded bg-gray-700/70 hover:bg-gray-700/90 transition-colors focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-							placeholder="زمان"
-						/>
 					</div>
 
 					<div className="flex items-center col-span-2 gap-2">

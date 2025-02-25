@@ -4,7 +4,6 @@ export interface Todo {
 	completed: boolean
 	date: string
 	priority: 'low' | 'medium' | 'high'
-	dueTime?: string
 	category?: string
 	notes?: string
 }

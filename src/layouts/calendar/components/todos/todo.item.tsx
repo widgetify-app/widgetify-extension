@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FiChevronDown, FiChevronUp, FiClock, FiEdit, FiTrash2 } from 'react-icons/fi'
+import { FiChevronDown, FiChevronUp, FiEdit, FiTrash2 } from 'react-icons/fi'
 import { CustomCheckbox } from '../../../../components/checkbox'
 import type { Todo } from '../../interface/todo.interface'
 
@@ -22,7 +22,6 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
 	const [text, setText] = useState(todo.text)
 	const [notes, setNotes] = useState(todo.notes || '')
 	const [priority, setPriority] = useState(todo.priority)
-	const [dueTime, setDueTime] = useState(todo.dueTime || '')
 	const [category, setCategory] = useState(todo.category || '')
 
 	const handleEdit = () => {
@@ -35,7 +34,6 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
 			text,
 			notes,
 			priority,
-			dueTime,
 			category,
 		})
 		setEditing(false)
@@ -135,16 +133,6 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
 				>
 					{editing ? (
 						<>
-							<div className="flex items-center gap-2">
-								<label className="text-xs text-gray-400">زمان:</label>
-								<input
-									type="time"
-									value={dueTime}
-									onChange={(e) => setDueTime(e.target.value)}
-									className="flex-1 px-2 py-1 text-sm text-gray-200 rounded bg-gray-700/40"
-								/>
-							</div>
-
 							<div className="flex items-center gap-2">
 								<label className="text-xs text-gray-400">دسته‌بندی:</label>
 								<input
