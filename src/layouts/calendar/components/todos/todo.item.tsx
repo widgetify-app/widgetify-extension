@@ -72,13 +72,6 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
 					/>
 				)}
 
-				{/* {todo.dueTime && !editing && (
-					<span className="flex items-center gap-1 text-xs text-gray-400">
-						<FiClock size={10} />
-						{todo.dueTime}
-					</span>
-				)} */}
-
 				<div className="flex flex-col gap-1">
 					{todo.category && !editing && (
 						<span

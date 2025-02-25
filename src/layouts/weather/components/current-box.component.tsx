@@ -39,7 +39,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				</div>
 			</div>
 
-			<div className="relative p-3 mt-4 rounded-lg bg-gray-100/80 dark:bg-neutral-800/50">
+			<div className="relative p-3 mt-4 overflow-hidden rounded-lg min-h-28 max-h-28 bg-gray-100/80 dark:bg-neutral-800/50">
 				<div className="flex items-center gap-3">
 					<div className="flex-1">
 						{weather.ai?.description && (
@@ -47,7 +47,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								<BsRobot size={20} className="text-purple-600 dark:text-purple-400" />
 							</div>
 						)}
-						<p className="pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 dark:text-gray-300">
+						<p className="h-24 pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 truncate text-wrap w-72 dark:text-gray-300">
 							{weather.ai?.description || weather.temperature.temp_description}
 						</p>
 						{weather.ai?.playlist && (

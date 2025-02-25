@@ -9,7 +9,6 @@ interface TodoContextType {
 		text: string,
 		date: string,
 		priority?: 'low' | 'medium' | 'high',
-		dueTime?: string,
 		category?: string,
 		notes?: string,
 	) => void
@@ -35,7 +34,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		text: string,
 		date: string,
 		priority: 'low' | 'medium' | 'high' = 'medium',
-		dueTime?: string,
 		category?: string,
 		notes?: string,
 	) => {
@@ -47,7 +45,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				completed: false,
 				date,
 				priority,
-				dueTime,
 				category,
 				notes,
 			},

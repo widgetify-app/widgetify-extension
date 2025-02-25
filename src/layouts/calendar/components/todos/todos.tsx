@@ -28,22 +28,15 @@ export function Todos({ currentDate }: TodoProp) {
 		selectedDateTodos = [...selectedDateTodos].sort(
 			(a, b) => priorityValues[b.priority] - priorityValues[a.priority],
 		)
-	} else if (sort === 'time') {
-		selectedDateTodos = [...selectedDateTodos].sort((a, b) => {
-			if (!a.dueTime) return 1
-			if (!b.dueTime) return -1
-			return a.dueTime.localeCompare(b.dueTime)
-		})
 	}
 
 	const handleAddTodo = (
 		text: string,
 		priority: 'low' | 'medium' | 'high',
-		dueTime?: string,
 		category?: string,
 		notes?: string,
 	) => {
-		addTodo(text, selectedDateStr, priority, dueTime, category, notes)
+		addTodo(text, selectedDateStr, priority, category, notes)
 	}
 
 	const getCompletionStats = () => {
