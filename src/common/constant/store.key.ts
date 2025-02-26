@@ -8,5 +8,8 @@ export enum StoreKey {
 	LAYOUT_COUNTS = 'LAYOUT_COUNTS',
 	Todos = 'Todos',
 	Wallpaper = 'Wallpaper',
+	UserProfile = 'UserProfile',
+	Bookmarks = 'Bookmarks',
+	DeletedBookmarks = 'DeletedBookmarks',
 }
 export type StoreKeyType = StoreKey | `currency:${string}`

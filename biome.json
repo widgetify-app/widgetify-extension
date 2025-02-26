@@ -29,11 +29,15 @@
 				"noLabelWithoutControl": "off"
 			},
 			"style": {
-				"useSelfClosingElements": "off"
+				"useSelfClosingElements": "off",
+				"noParameterAssign": "off"
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
 				"noArrayIndexKey": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off"
 			}
 		}
 	},

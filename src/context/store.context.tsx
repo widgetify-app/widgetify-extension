@@ -1,27 +1,31 @@
-import React, { createContext, useEffect } from 'react'
+import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
-import CalendarLayout from '../layouts/calendar/calendar'
-import { WeatherLayout } from '../layouts/weather/weather.layout'
+
 export interface SelectedCity {
 	city: string
 	lat: number
 	lon: number
 }
 
-export type LayoutItem = {
+export interface LocalBookmark {
 	id: string
-	component: React.ReactNode
-	moveable: boolean
+	title: string
+	url: string
+	icon: string
+	isLocal: boolean
+	pinned: boolean
 }
 
 export interface StoreContext {
 	selectedCurrencies: Array<string>
 	setSelectedCurrencies: (currencies: Array<string>) => void
-	layouts: LayoutItem[]
-	setLayouts: (layouts: LayoutItem[]) => void
+
 	selectedCity: SelectedCity
 	setSelectedCity: (city: SelectedCity) => void
+
+	bookmarks: LocalBookmark[]
+	setBookmarks: (bookmarks: LocalBookmark[]) => void
 }
 
 export const storeContext = createContext<StoreContext>({
@@ -34,58 +38,24 @@ export const storeContext = createContext<StoreContext>({
 	},
 	setSelectedCity: () => {},
 
-	layouts: [],
-	setLayouts: () => {},
+	bookmarks: [],
+	setBookmarks: () => {},
 })
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [selectedCurrencies, setSelectedCurrencies] = React.useState<Array<string>>([
-		'USD',
-		'EUR',
-		'GRAM',
-	])
-	const [selectedCity, setSelectedCity] = React.useState<SelectedCity>({
-		city: 'Tehran',
-		lat: 35.6892523,
-		lon: 51.3896004,
-	})
-
-	const initialLayouts: LayoutItem[] = [
-		{
-			id: 'weather',
-			component: <WeatherLayout />,
-			moveable: true,
-		},
-		{
-			id: 'calendar',
-			component: <CalendarLayout />,
-			moveable: true,
-		},
-	]
-
-	const [layouts, setLayouts] = React.useState<LayoutItem[]>([])
+	const [selectedCurrencies, setSelectedCurrencies] = useState<string[] | null>(null)
+	const [selectedCity, setSelectedCity] = useState<SelectedCity | null>(null)
+	const [bookmarks, setBookmarks] = useState<LocalBookmark[] | null>(null)
 
 	useEffect(() => {
 		async function load() {
-			const storedCurrencies = await getFromStorage(StoreKey.CURRENCIES)
-			const storedCity = await getFromStorage(StoreKey.SELECTED_CITY)
-			const storedOrder = await getFromStorage<string[]>(StoreKey.LAYOUT_ORDER)
-			if (storedCurrencies) {
-				setSelectedCurrencies(storedCurrencies as any)
-			}
-			if (storedCity) {
-				setSelectedCity(storedCity as any)
-			}
-			console.log('storedOrder:', storedOrder)
-			if (storedOrder?.length) {
-				const mapped = storedOrder
-					.map((id) => initialLayouts.find((layout) => layout.id === id))
-					.filter((layout): layout is LayoutItem => layout !== undefined)
+			const storedCurrencies = await getFromStorage<string[]>(StoreKey.CURRENCIES)
+			const storedCity = await getFromStorage<SelectedCity>(StoreKey.SELECTED_CITY)
+			const storedBookmarks = await getFromStorage<LocalBookmark[]>(StoreKey.Bookmarks)
 
-				setLayouts(mapped)
-			} else {
-				setLayouts(initialLayouts)
-			}
+			setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
+			setSelectedCity(storedCity ?? { city: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
+			setBookmarks(storedBookmarks ?? [])
 		}
 
 		load()
@@ -99,6 +69,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 	}, [selectedCurrencies])
 
 	useEffect(() => {
+		console.log('selectedCity')
 		async function save() {
 			await setToStorage(StoreKey.SELECTED_CITY, selectedCity)
 		}
@@ -107,13 +78,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
 	useEffect(() => {
 		async function save() {
-			await setToStorage(
-				StoreKey.LAYOUT_ORDER,
-				layouts.map((layout) => layout.id),
-			)
+			console.log('SAVE')
+			if (Array.isArray(bookmarks)) {
+				const localBookMarks = bookmarks.filter((bookmark) => bookmark.isLocal)
+				await setToStorage(StoreKey.Bookmarks, localBookMarks)
+			}
 		}
 		save()
-	}, [layouts])
+	}, [bookmarks])
+
+	if (selectedCurrencies === null || selectedCity === null || bookmarks === null) {
+		return null
+	}
 
 	return (
 		<storeContext.Provider
@@ -122,8 +98,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 				setSelectedCurrencies,
 				selectedCity,
 				setSelectedCity,
-				layouts,
-				setLayouts,
+				bookmarks,
+				setBookmarks,
 			}}
 		>
 			{children}

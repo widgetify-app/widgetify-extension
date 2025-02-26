@@ -1,27 +1,19 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
-import Modal from '../../components/modal'
-
-interface Bookmark {
-	title: string
-	url: string
-	icon: string
-}
+import { v4 as uuidv4 } from 'uuid'
+import Modal from '../../../components/modal'
+import type { LocalBookmark } from '../../../context/store.context'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
-	onAdd: (bookmark: Bookmark) => void
+	onAdd: (bookmark: LocalBookmark) => void
 }
 
 type IconSource = 'auto' | 'upload' | 'url'
-
+const empty = { title: '', url: '', icon: '', id: '', isLocal: true, pinned: false }
 export function AddBookmarkModal({ isOpen, onClose, onAdd }: AddBookmarkModalProps) {
-	const [formData, setFormData] = useState<Bookmark>({
-		title: '',
-		url: '',
-		icon: '',
-	})
+	const [formData, setFormData] = useState<LocalBookmark>(empty)
 
 	const [iconSource, setIconSource] = useState<IconSource>('auto')
 	const [isUploading, setIsUploading] = useState(false)
@@ -29,54 +21,78 @@ export function AddBookmarkModal({ isOpen, onClose, onAdd }: AddBookmarkModalPro
 
 	const getFaviconFromUrl = (url: string) => {
 		try {
+			if (!url.startsWith('http://') && !url.startsWith('https://')) {
+				url = `http://${url}`
+			}
 			const urlObj = new URL(url)
 			return `${urlObj.protocol}//${urlObj.hostname}/favicon.ico`
-		} catch {
+		} catch (er) {
 			return ''
 		}
 	}
 
-	const handleChange =
-		(field: keyof Bookmark) => (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (field: keyof LocalBookmark) => {
+		return (e: React.ChangeEvent<HTMLInputElement>) => {
 			const value = e.target.value
-			setFormData((prev) => ({
-				...prev,
-				[field]: value,
-				...(field === 'url' && iconSource === 'auto'
-					? {
-							icon: value
-								? `https://${new URL(value.startsWith('http') ? value : `https://${value}`).host}/favicon.ico`
-								: '',
-						}
-					: {}),
-			}))
+
+			setFormData((prev) => {
+				if (field === 'url' && iconSource === 'auto') {
+					return handleUrlFieldChange(prev, value)
+				}
+
+				return {
+					...prev,
+					[field]: value,
+				}
+			})
 		}
+	}
+
+	const handleUrlFieldChange = (prev: LocalBookmark, value: string): LocalBookmark => {
+		let icon = ''
+		if (value) {
+			try {
+				const url = value.startsWith('http') ? value : `https://${value}`
+				icon = `https://${new URL(url).host}/favicon.ico`
+			} catch {}
+		}
+
+		return {
+			...prev,
+			url: value,
+			icon,
+		}
+	}
 
 	const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
 			setIsUploading(true)
-			// اینجا می‌تونید لاجیک آپلود فایل رو پیاده‌سازی کنید
-			// مثلا:
-			// const iconUrl = await uploadFile(file);
-			// setFormData(prev => ({ ...prev, icon: iconUrl }));
-			setTimeout(() => setIsUploading(false), 1000) // این فقط برای نمایشه
+			//todo local file
+			setTimeout(() => setIsUploading(false), 1000)
 		}
 	}
 
 	const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const url = e.target.value
-		setFormData((prev) => ({
-			...prev,
-			url,
-			icon: getFaviconFromUrl(url),
-		}))
+		setFormData((prev) => {
+			return {
+				...prev,
+				url,
+				icon: getFaviconFromUrl(url),
+			}
+		})
 	}
 
 	const handleAdd = () => {
 		if (formData.title.trim() && formData.url.trim()) {
-			onAdd(formData)
-			setFormData({ title: '', url: '', icon: '' })
+			onAdd({
+				...formData,
+				isLocal: true,
+				pinned: false,
+				id: uuidv4(),
+			})
+			setFormData(empty)
 			setIconSource('auto')
 			onClose()
 		}
@@ -122,15 +138,7 @@ export function AddBookmarkModal({ isOpen, onClose, onAdd }: AddBookmarkModalPro
 
 				{formData.icon && (
 					<div className="flex items-center gap-2 p-2 bg-[#1E1E1E] border border-[#333] rounded-lg">
-						<img
-							src={formData.icon}
-							alt="favicon"
-							className="w-6 h-6"
-							onError={(e) => {
-								// اگر آیکون لود نشد، از یک آیکون پیش‌فرض استفاده کن
-								e.currentTarget.src = '/default-favicon.png'
-							}}
-						/>
+						<img src={formData.icon} alt="favicon" className="w-6 h-6" />
 						<span className="text-sm text-gray-400">پیش‌نمایش آیکون</span>
 					</div>
 				)}
@@ -210,9 +218,9 @@ export function AddBookmarkModal({ isOpen, onClose, onAdd }: AddBookmarkModalPro
 								src={`https://${new URL(formData.url.startsWith('http') ? formData.url : `https://${formData.url}`).host}/favicon.ico`}
 								alt="favicon"
 								className="w-4 h-4"
-								onError={(e) => {
-									e.currentTarget.src = '/default-favicon.ico'
-								}}
+								// onError={(e) => {
+								// 	e.currentTarget.src = '/default-favicon.ico'
+								// }}
 							/>
 							آیکون به صورت خودکار از سایت دریافت می‌شود
 						</motion.div>
