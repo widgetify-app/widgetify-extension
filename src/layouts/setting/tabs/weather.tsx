@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
+import { TextInput } from '../../../components/text-input'
 import { useStore } from '../../../context/store.context'
 import { useGetRelatedCities } from '../../../services/getMethodHooks/weather/getRelatedCities'
 
@@ -35,16 +36,11 @@ export function WeatherOptions() {
 		>
 			<div className="relative p-2">
 				<div className="relative">
-					<input
+					<TextInput
 						ref={inputRef}
-						type="text"
 						value={inputValue}
+						onChange={(value) => setInputValue(value)}
 						placeholder="نام شهر را وارد کنید ..."
-						className="w-full bg-white/5 text-gray-200 text-[14px] rounded-xl p-3
-              outline-none border border-white/10 transition-all duration-200 font-[Vazir]
-              focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
-              placeholder-gray-400 hover:bg-white/10"
-						onChange={(e) => setInputValue(e.target.value)}
 					/>
 					{isLoading && (
 						<motion.div
