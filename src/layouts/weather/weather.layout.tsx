@@ -2,16 +2,16 @@ import ms from 'ms'
 import { useEffect, useState } from 'react'
 import { StoreKey } from '../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../common/storage'
-import { useStore } from '../../context/store.context'
 import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
 import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
 
+import { useWeatherStore } from '../../context/weather.context'
 import { useGetForecastWeatherByLatLon } from '../../services/getMethodHooks/weather/getForecastWeatherByLatLon'
 import { CurrentWeatherBox } from './components/current-box.component'
 import { ForecastComponent } from './components/forecast.component'
 
 export function WeatherLayout() {
-	const { selectedCity } = useStore()
+	const { selectedCity } = useWeatherStore()
 	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
 
 	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
@@ -39,14 +39,12 @@ export function WeatherLayout() {
 		load()
 	}, [])
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (forecastData) {
 			setForecast([...forecastData])
 		}
 	}, [forecastUpdatedAt])
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (data) {
 			setCityWeather(data)

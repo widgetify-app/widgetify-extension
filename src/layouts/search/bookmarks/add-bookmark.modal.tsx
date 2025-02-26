@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import Modal from '../../../components/modal'
-import type { LocalBookmark } from '../../../context/store.context'
+import type { LocalBookmark } from '../../../context/bookmark.context'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean

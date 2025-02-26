@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import type { FetchedForecast } from '../../../services/getMethodHooks/weather/weather.interface'
 
 interface ForecastProps {
 	forecast: {

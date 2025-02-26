@@ -4,7 +4,7 @@ import { AiOutlineLoading } from 'react-icons/ai'
 import { TiPlus } from 'react-icons/ti'
 import Modal from '../../../components/modal'
 import { MultiSelectDropdown } from '../../../components/selectBox/multiSelectDropdown.component'
-import { useStore } from '../../../context/store.context'
+import { useCurrencyStore } from '../../../context/currency.context'
 
 export type SupportedCurrencies = {
 	key: string
@@ -83,7 +83,7 @@ export function SelectCurrencyModal({
 	show,
 	supportCurrencies,
 }: AddCurrencyModalProps) {
-	const { selectedCurrencies, setSelectedCurrencies } = useStore()
+	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
 
 	const onClose = () => setShow(false)
 

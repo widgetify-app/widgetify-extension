@@ -1,6 +1,6 @@
 import type jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
-import { useTodo } from '../../../../context/todo.context'
+import { useTodoStore } from '../../../../context/todo.context'
 import { formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
 import { TodoItem } from './todo.item'
@@ -10,7 +10,7 @@ type TodoProp = {
 }
 
 export function Todos({ currentDate }: TodoProp) {
-	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodo()
+	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
 	const selectedDateStr = formatDateStr(currentDate.clone())

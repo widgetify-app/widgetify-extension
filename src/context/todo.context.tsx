@@ -1,6 +1,8 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { StoreKey } from '../common/constant/store.key'
+import { setToStorage } from '../common/storage'
 import type { Todo } from '../layouts/calendar/interface/todo.interface'
 
 interface TodoContextType {
@@ -21,13 +23,18 @@ interface TodoContextType {
 const TodoContext = createContext<TodoContextType | undefined>(undefined)
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
-	const [todos, setTodos] = useState<Todo[]>(() => {
-		const savedTodos = localStorage.getItem('todos')
-		return savedTodos ? JSON.parse(savedTodos) : []
-	})
+	const [todos, setTodos] = useState<Todo[] | null>(null)
 
 	useEffect(() => {
-		localStorage.setItem('todos', JSON.stringify(todos))
+		const storedTodos = localStorage.getItem(StoreKey.Todos)
+		if (storedTodos) {
+			setTodos(JSON.parse(storedTodos))
+		}
+	}, [])
+
+	useEffect(() => {
+		if (todos === null) return
+		setToStorage(StoreKey.Todos, todos)
 	}, [todos])
 
 	const addTodo = (
@@ -38,7 +45,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		notes?: string,
 	) => {
 		setTodos((prev) => [
-			...prev,
+			...(prev as Todo[]),
 			{
 				id: uuidv4(),
 				text,
@@ -52,39 +59,52 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const removeTodo = (id: string) => {
-		setTodos((prev) => prev.filter((todo) => todo.id !== id))
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.filter((todo) => todo.id !== id)
+		})
 	}
 
 	const toggleTodo = (id: string) => {
-		setTodos((prev) =>
-			prev.map((todo) =>
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.map((todo) =>
 				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-			),
-		)
+			)
+		})
 	}
 
 	const updateTodo = (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
-		setTodos((prev) =>
-			prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo)),
-		)
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo))
+		})
 	}
 
 	const clearCompleted = (date?: string) => {
-		setTodos((prev) =>
-			prev.filter((todo) => !todo.completed || (date && todo.date !== date)),
-		)
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.filter((todo) => !todo.completed || (date && todo.date !== date))
+		})
 	}
 
 	return (
 		<TodoContext.Provider
-			value={{ todos, addTodo, removeTodo, toggleTodo, updateTodo, clearCompleted }}
+			value={{
+				todos: todos || [],
+				addTodo,
+				removeTodo,
+				toggleTodo,
+				updateTodo,
+				clearCompleted,
+			}}
 		>
 			{children}
 		</TodoContext.Provider>
 	)
 }
 
-export function useTodo() {
+export function useTodoStore() {
 	const context = useContext(TodoContext)
 	if (context === undefined) {
 		throw new Error('useTodo must be used within a TodoProvider')

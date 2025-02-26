@@ -1,5 +1,6 @@
 import { CiSearch } from 'react-icons/ci'
 
+import { BookmarkProvider } from '../../context/bookmark.context'
 import { BookmarksComponent } from './bookmarks/bookmarks'
 
 export function SearchLayout() {
@@ -12,7 +13,6 @@ export function SearchLayout() {
 			window.location.href = GOOGLE_URL + encodeURIComponent(query)
 		}
 	}
-	console.log('SearchLayout: ', 'rendered')
 	return (
 		<>
 			<div className="flex flex-col items-center justify-center text-white max-h-80">
@@ -33,8 +33,9 @@ export function SearchLayout() {
 						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none border-white/10 rounded-2xl group-hover:border-white/20" />
 					</div>
 				</form>
-
-				<BookmarksComponent />
+				<BookmarkProvider>
+					<BookmarksComponent />
+				</BookmarkProvider>
 			</div>
 		</>
 	)

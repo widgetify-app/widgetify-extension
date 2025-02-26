@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 import { FaPlus, FaTrash } from 'react-icons/fa6'
 import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../../common/storage'
-import { type LocalBookmark, useStore } from '../../../context/store.context'
+import { type LocalBookmark, useBookmarkStore } from '../../../context/bookmark.context'
 import { useGetBookmarks } from '../../../services/getMethodHooks/getBookmarks.hook'
 import { AddBookmarkModal } from './add-bookmark.modal'
 import { BookmarkItem } from './bookmark-item'
 import type { Bookmark } from './bookmark.interface'
 export function BookmarksComponent() {
-	const { bookmarks, setBookmarks } = useStore()
+	const { bookmarks, setBookmarks } = useBookmarkStore()
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })

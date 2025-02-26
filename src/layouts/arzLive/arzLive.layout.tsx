@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
-import { useStore } from '../../context/store.context'
+import { useCurrencyStore } from '../../context/currency.context'
 import { useGetSupportCurrencies } from '../../services/getMethodHooks/getSupportCurrencies.hook'
 import { AddCurrencyBox } from './components/addCurrency-box'
 import { CurrencyBox } from './components/currency-box'
 
 export function ArzLiveLayout() {
 	const { data } = useGetSupportCurrencies()
-	const { selectedCurrencies } = useStore()
+	const { selectedCurrencies } = useCurrencyStore()
 	const [isExpanded, setIsExpanded] = useState(false)
 
 	const ITEM_HEIGHT = 48

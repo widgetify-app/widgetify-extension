@@ -4,7 +4,7 @@ import { AnimatePresence } from 'motion/react'
 import type React from 'react'
 import { useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { TodoProvider, useTodo } from '../../context/todo.context'
+import { TodoProvider, useTodoStore } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
 import { Events } from './components/events/event'
@@ -39,7 +39,7 @@ export const PersianCalendar: React.FC = () => {
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
 	const emptyDays = (firstDayOfMonth + 1) % 7
 	const selectedDateStr = formatDateStr(selectedDate)
-	const { todos } = useTodo()
+	const { todos } = useTodoStore()
 
 	const changeMonth = (delta: number) => {
 		setCurrentDate((prev) => prev.clone().add(delta, 'jMonth'))

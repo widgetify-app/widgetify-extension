@@ -2,11 +2,11 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
 import { TextInput } from '../../../components/text-input'
-import { useStore } from '../../../context/store.context'
+import { useWeatherStore } from '../../../context/weather.context'
 import { useGetRelatedCities } from '../../../services/getMethodHooks/weather/getRelatedCities'
 
 export function WeatherOptions() {
-	const { setSelectedCity, selectedCity } = useStore()
+	const { setSelectedCity, selectedCity } = useWeatherStore()
 	const [inputValue, setInputValue] = useState('')
 	const [debouncedValue, setDebouncedValue] = useState('')
 	const inputRef = useRef(null)

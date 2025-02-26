@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useTodo } from '../../../../context/todo.context'
+import { useTodoStore } from '../../../../context/todo.context'
 
 export function TodoStats() {
-	const { todos } = useTodo()
+	const { todos } = useTodoStore()
 
 	const stats = useMemo(() => {
 		const totalTodos = todos.length
