@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import React, { useState } from 'react'
 import { FiExternalLink } from 'react-icons/fi'
 import { MdOutlineVideoSettings } from 'react-icons/md'
 import type { FetchedWallpaper } from '../../../../services/getMethodHooks/getWallpapers.hook'
@@ -8,26 +9,37 @@ interface WallpaperItemProps {
 	selectedBackground: string | null
 	setSelectedBackground: (id: string) => void
 }
-export function WallpaperItem({
+
+export const WallpaperItem = React.memo(function WallpaperItem({
 	wallpaper,
 	selectedBackground,
 	setSelectedBackground,
 }: WallpaperItemProps) {
+	const [isLoading, setIsLoading] = useState(true)
+	const isSelected = selectedBackground === wallpaper.id
+
 	return (
 		<motion.div
 			key={wallpaper.src}
 			className={`relative aspect-video cursor-pointer rounded-xl overflow-hidden 
-                ${selectedBackground === wallpaper.id ? 'ring-2 ring-blue-500' : ''}
+                ${isSelected ? 'ring-2 ring-blue-500' : ''}
                 backdrop-blur-sm bg-black/20`}
 			onClick={() => setSelectedBackground(wallpaper.id)}
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.98 }}
 		>
+			{isLoading && (
+				<div className="absolute inset-0 flex items-center justify-center bg-black/30">
+					<div className="w-5 h-5 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+				</div>
+			)}
+
 			{wallpaper.type === 'IMAGE' ? (
 				<img
 					src={`${wallpaper.src}`}
 					alt={wallpaper.name}
 					className="object-cover w-full h-full"
+					onLoad={() => setIsLoading(false)}
 				/>
 			) : (
 				<>
@@ -35,9 +47,11 @@ export function WallpaperItem({
 						src={wallpaper.src}
 						className="object-cover w-full h-full"
 						muted
-						autoPlay
+						autoPlay={isSelected}
 						loop
 						playsInline
+						preload={isSelected ? 'auto' : 'metadata'}
+						onLoadedData={() => setIsLoading(false)}
 					/>
 					{/* Add Video Badge */}
 					<motion.div
@@ -81,4 +95,4 @@ export function WallpaperItem({
 			)}
 		</motion.div>
 	)
-}
+})

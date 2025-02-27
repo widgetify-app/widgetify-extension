@@ -160,7 +160,7 @@ export function BookmarksComponent() {
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
-				onAdd={(bookmark) => addBookmark(bookmark)} // FIXED: Use context's addBookmark
+				onAdd={(bookmark) => addBookmark(bookmark)}
 				parentId={currentFolderId}
 			/>
 		</>
