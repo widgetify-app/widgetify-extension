@@ -1,19 +1,22 @@
-import { Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react'
-import { motion } from 'framer-motion'
+import { Menu, MenuHandler } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
-import { FaPlus, FaTrash } from 'react-icons/fa6'
 import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../../common/storage'
-import { type LocalBookmark, useBookmarkStore } from '../../../context/bookmark.context'
+import { useBookmarkStore } from '../../../context/bookmark.context'
 import { useGetBookmarks } from '../../../services/getMethodHooks/getBookmarks.hook'
-import { AddBookmarkModal } from './add-bookmark.modal'
-import { BookmarkItem } from './bookmark-item'
-import type { Bookmark } from './bookmark.interface'
+import { AddBookmarkModal } from './components/add-bookmark.modal'
+import { BookmarkContextMenu } from './components/bookmark-context-menu'
+import { BookmarkItem } from './components/bookmark-item'
+import { FolderPath } from './components/folder-path'
+import type { Bookmark, FolderPathItem } from './types/bookmark.types'
+
 export function BookmarksComponent() {
-	const { bookmarks, setBookmarks } = useBookmarkStore()
+	const { bookmarks, setBookmarks, getCurrentFolderItems } = useBookmarkStore()
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
+	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
+	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
 	const { data: fetchedBookmarks } = useGetBookmarks()
 
@@ -23,6 +26,22 @@ export function BookmarksComponent() {
 		return () => document.removeEventListener('click', handleClickOutside)
 	}, [])
 
+	useEffect(() => {
+		if (Array.isArray(fetchedBookmarks)) {
+			const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
+
+			const pinnedBookmarks = fetchedBookmarks.map((bookmark) => ({
+				...bookmark,
+				isLocal: false,
+				type: 'BOOKMARK' as const,
+				pinned: true,
+				parentId: null,
+			}))
+
+			setBookmarks([...pinnedBookmarks, ...unpinnedBookmarks])
+		}
+	}, [fetchedBookmarks])
+
 	const handleDeleteBookmark = async () => {
 		if (!selectedBookmark) return
 
@@ -30,22 +49,40 @@ export function BookmarksComponent() {
 			(bookmark) => !bookmark.pinned && bookmark.id === selectedBookmark.id,
 		)
 
-		if (bookmarkIndex !== -1) {
-			const bookmark = bookmarks[bookmarkIndex]
+		if (bookmarkIndex === -1) return
 
-			if (!bookmark.isLocal) {
+		const bookmark = bookmarks[bookmarkIndex]
+
+		// Handle folder deletion
+		if (bookmark.type === 'FOLDER') {
+			await handleFolderDeletion(bookmark)
+		}
+
+		// Track remote bookmark deletion
+		if (!bookmark.isLocal) {
+			const deletedBookmarks =
+				(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+			deletedBookmarks.push(bookmark.id)
+			await setToStorage(StoreKey.DeletedBookmarks, deletedBookmarks)
+		}
+
+		// Update bookmarks state
+		const newBookmarks = [...bookmarks]
+		newBookmarks.splice(bookmarkIndex, 1)
+		setBookmarks(newBookmarks)
+		setSelectedBookmark(null)
+	}
+
+	const handleFolderDeletion = async (bookmark: Bookmark) => {
+		const itemsToDelete = bookmarks.filter((b) => b.parentId === bookmark.id)
+
+		for (const item of itemsToDelete) {
+			if (!item.isLocal) {
 				const deletedBookmarks =
 					(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
-
-				deletedBookmarks.push(bookmark.id)
+				deletedBookmarks.push(item.id)
 				await setToStorage(StoreKey.DeletedBookmarks, deletedBookmarks)
 			}
-
-			const newBookmarks = [...bookmarks]
-			newBookmarks.splice(bookmarkIndex, 1)
-			setBookmarks(newBookmarks)
-
-			setSelectedBookmark(null)
 		}
 	}
 
@@ -57,101 +94,67 @@ export function BookmarksComponent() {
 		}
 	}
 
-	const onAddBookmark = (bookmark: LocalBookmark) => {
-		setBookmarks([...bookmarks, bookmark])
+	const handleBookmarkClick = (bookmark: Bookmark) => {
+		if (bookmark.type === 'FOLDER') {
+			setCurrentFolderId(bookmark.id)
+			setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
+		} else {
+			window.open(bookmark.url)
+		}
 	}
 
-	const displayedBookmarks = bookmarks
+	const handleBackClick = () => {
+		if (folderPath.length === 0) return
+
+		const newPath = [...folderPath]
+		newPath.pop()
+		setFolderPath(newPath)
+		setCurrentFolderId(newPath[newPath.length - 1]?.id ?? null)
+	}
+
+	const currentFolderItems = getCurrentFolderItems(currentFolderId)
+	const displayedBookmarks = currentFolderItems
 		.slice(0, 10)
-		.concat(new Array(Math.max(0, 10 - bookmarks.length)).fill(null))
-
-	useEffect(() => {
-		if (Array.isArray(fetchedBookmarks)) {
-			for (const bookmark of fetchedBookmarks) {
-				const index = bookmarks.findIndex((b) => b.id === bookmark.id)
-				if (index === -1) {
-					bookmarks.unshift({
-						...bookmark,
-						isLocal: false,
-					})
-
-					setBookmarks([...bookmarks])
-				}
-			}
-		}
-	}, [fetchedBookmarks])
+		.concat(new Array(Math.max(0, 10 - currentFolderItems.length)).fill(null))
 
 	return (
 		<>
 			<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
-						bookmark.pinned ? (
-							<BookmarkItem
-								key={bookmark.id}
-								onClick={() => window.open(bookmark.url)}
-								title={bookmark.title}
-								icon={
-									<motion.img
-										initial={{ scale: 0.9 }}
-										animate={{ scale: 1 }}
-										src={bookmark.icon}
-										className="transition-transform duration-300 group-hover:scale-110"
+						<Menu key={i} open={selectedBookmark?.id === bookmark.id}>
+							<MenuHandler>
+								<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
+									<BookmarkItem
+										bookmark={bookmark}
+										onClick={() => handleBookmarkClick(bookmark)}
 									/>
-								}
-							/>
-						) : (
-							<Menu key={i} open={selectedBookmark?.url === bookmark.url}>
-								<MenuHandler>
-									<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
-										<BookmarkItem
-											onClick={() => window.open(bookmark.url)}
-											title={bookmark.title}
-											icon={
-												<motion.img
-													initial={{ scale: 0.9 }}
-													animate={{ scale: 1 }}
-													src={bookmark.icon}
-													className="transition-transform duration-300 group-hover:scale-110"
-												/>
-											}
-										/>
-									</div>
-								</MenuHandler>
-
-								<MenuList
-									className="bg-neutral-800 border-white/10 p-1 min-w-[150px]"
-									style={{
-										position: 'fixed',
-										left: contextMenuPos.x,
-										top: contextMenuPos.y,
-									}}
-								>
-									<MenuItem
-										className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 font-[Vazir]"
-										onClick={handleDeleteBookmark}
-									>
-										<FaTrash />
-										حذف
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						)
+								</div>
+							</MenuHandler>
+							{selectedBookmark?.id === bookmark.id && (
+								<BookmarkContextMenu
+									position={contextMenuPos}
+									onDelete={handleDeleteBookmark}
+								/>
+							)}
+						</Menu>
 					) : (
 						<BookmarkItem
 							key={i}
+							bookmark={null}
 							onClick={() => setShowAddBookmarkModal(true)}
-							title="افزودن"
-							icon={<FaPlus />}
 						/>
 					),
 				)}
 			</div>
 
+			<FolderPath folderPath={folderPath} onBackClick={handleBackClick} />
+
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
-				onAdd={onAddBookmark}
+				onAdd={(bookmark) => setBookmarks([...bookmarks, bookmark])}
+				parentId={currentFolderId}
 			/>
 		</>
 	)
