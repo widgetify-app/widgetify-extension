@@ -5,10 +5,6 @@ export interface FetchedWeather {
 	}
 	weather: {
 		label: string
-		description: {
-			text: string
-			emoji: string
-		}
 		icon: {
 			url: string
 			width: number
@@ -38,4 +34,12 @@ export interface FetchedForecast {
 	temp: number
 	icon: string
 	date: string
+}
+
+export interface FetchedCity {
+	name: string
+	country: string
+	state: string | null
+	lat: number
+	lon: number
 }

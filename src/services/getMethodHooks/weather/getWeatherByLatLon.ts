@@ -2,13 +2,12 @@ import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 import type { FetchedWeather } from './weather.interface'
 
-async function fetchWeatherByLatLon(
-	lat: number,
-	lon: number,
-): Promise<FetchedWeather | null> {
+async function fetchWeatherByLatLon(lat: number, lon: number): Promise<FetchedWeather> {
 	const client = await getMainClient()
 
-	const response = await client.get(`/weather/current?lat=${lat}&lon=${lon}`)
+	const response = await client.get<FetchedWeather>(
+		`/weather/current?lat=${lat}&lon=${lon}`,
+	)
 	return response.data
 }
 

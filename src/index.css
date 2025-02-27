@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 /* Thin */
 @font-face {
 	font-family: "Vazir";
@@ -114,15 +116,15 @@ body {
 	font-family: "Vazir", sans-serif;
 	/* hex: */
 
+	background: rgb(2, 0, 36);
+	background: linear-gradient(194deg, rgb(2 0 26) 0%, rgb(10 10 103) 35%, rgb(124 0 255) 100%);
+
 	height: 100vh;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 
-
-	/* background: url(https://wallpapers.com/images/high/tehran-nasir-al-mulk-mosque-zhjlyfd6jheulzft.webp); */
-	background: url('https://i.postimg.cc/YSRJ4Lf3/back.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -157,4 +159,32 @@ body {
 .modal-backdrop {
 	background-color: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(5px);
+}
+
+
+@layer base {
+	body {
+		direction: rtl;
+		font-family: Vazirmatn, sans-serif;
+	}
+}
+
+.backdrop-blur-md {
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	/* Fallback for browsers that don't support backdrop-filter */
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdrop-blur-lg {
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	/* Fallback for browsers that don't support backdrop-filter */
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-bg {
+	background-color: rgba(28, 28, 28, 0.8);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
 }

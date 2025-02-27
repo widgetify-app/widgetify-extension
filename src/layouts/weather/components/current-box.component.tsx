@@ -8,7 +8,7 @@ interface CurrentWeatherBoxProps {
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	return (
 		<div className="h-full col-span-2 p-5 shadow-lg bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-			<div className="flex items-start justify-between gap-4">
+			<div className="flex flex-row-reverse items-start justify-between gap-4">
 				<div className="relative group">
 					<motion.img
 						initial={{ scale: 0.9 }}
@@ -21,16 +21,14 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					/>
 				</div>
 
-				<div className="flex-1 text-right">
-					<span className="text-4xl font-bold text-gray-800 dark:text-white">
+				<div className="flex-1">
+					<span className="text-4xl font-bold text-gray-800 dark:text-white" dir="ltr">
 						{Math.round(weather.temperature.temp)}°C
 					</span>
 
-					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-						{weather.description.emoji} {weather.description.text}
-					</p>
+					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300"></p>
 
-					<div className="flex items-center justify-end gap-3 mt-2">
+					<div className="flex items-center justify-start gap-1 mt-2">
 						<div className="px-2 py-1 text-sm text-blue-600 bg-blue-100 rounded-lg dark:text-blue-300 dark:bg-blue-500/20">
 							🌡️ {weather.temperature.humidity}%
 						</div>
@@ -41,7 +39,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				</div>
 			</div>
 
-			<div className="relative p-3 mt-4 rounded-lg bg-gray-100/80 dark:bg-neutral-800/50">
+			<div className="relative p-3 mt-4 overflow-hidden rounded-lg min-h-28 max-h-28 bg-gray-100/80 dark:bg-neutral-800/50">
 				<div className="flex items-center gap-3">
 					<div className="flex-1">
 						{weather.ai?.description && (
@@ -49,10 +47,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								<BsRobot size={20} className="text-purple-600 dark:text-purple-400" />
 							</div>
 						)}
-						<p
-							className="pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 dark:text-gray-300"
-							dir="rtl"
-						>
+						<p className="h-24 pl-8 pr-2 text-sm font-light leading-relaxed text-gray-700 truncate text-wrap w-72 dark:text-gray-300">
 							{weather.ai?.description || weather.temperature.temp_description}
 						</p>
 						{weather.ai?.playlist && (

@@ -1,8 +1,11 @@
-import { motion } from 'motion/react'
-import type { FetchedForecast } from '../../../services/getMethodHooks/weather/weather.interface'
+import { motion } from 'framer-motion'
 
 interface ForecastProps {
-	forecast: FetchedForecast
+	forecast: {
+		temp: number
+		icon: string
+		date: string
+	}
 }
 
 export function ForecastComponent({ forecast }: ForecastProps) {
@@ -12,28 +15,50 @@ export function ForecastComponent({ forecast }: ForecastProps) {
 			animate={{ y: 0, opacity: 1 }}
 			className="flex flex-row items-center justify-around h-20 gap-2 p-3 transition-all duration-300 shadow-md bg-gradient-to-b bg-neutral-900/70 backdrop-blur-sm rounded-xl hover:shadow-lg"
 		>
-			<div className="text-sm font-medium text-gray-400 dark:text-gray-500">
-				{new Date(forecast.date).toLocaleTimeString([], {
-					hour: '2-digit',
-					minute: '2-digit',
-				})}
+			{/* Time Section */}
+			<div className="flex flex-col items-center gap-1">
+				<div className="text-xs font-semibold tracking-wide uppercase text-neutral-400">
+					{new Date(forecast.date).toLocaleDateString('fa-IR', {
+						weekday: 'short',
+					})}
+				</div>
+				<div className="px-3 py-1 text-sm font-medium rounded-full text-neutral-300 bg-neutral-700/30">
+					{new Date(forecast.date).toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit',
+						hour12: false,
+					})}
+				</div>
 			</div>
 
+			{/* Weather Icon */}
 			<div className="relative group">
-				<motion.img
-					src={forecast.icon}
-					alt="forecast"
-					className="w-10 h-10 transition-transform duration-300 group-hover:scale-110"
-					initial={{ scale: 0.8 }}
-					animate={{ scale: 1 }}
-					transition={{ duration: 0.3 }}
-				/>
-				<div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-md -z-10" />
+				<motion.div
+					initial={{ rotate: 0 }}
+					whileHover={{ rotate: [0, -15, 15, 0] }}
+					transition={{ duration: 0.6 }}
+					className="p-2"
+				>
+					<motion.img
+						src={forecast.icon}
+						alt="weather status"
+						className="w-14 h-14 drop-shadow-weatherIcon"
+						initial={{ scale: 0.8 }}
+						animate={{ scale: 1 }}
+						transition={{ duration: 0.3 }}
+					/>
+				</motion.div>
+				<div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-lg -z-10" />
 			</div>
 
-			<div className="text-xl font-bold text-transparent bg-gradient-to-r from-gray-700 to-gray-500 dark:from-gray-200 dark:to-gray-400 bg-clip-text">
-				{Math.round(forecast.temp)}°C
-			</div>
+			{/* Temperature */}
+			<motion.div
+				initial={{ scale: 0.9 }}
+				animate={{ scale: 1 }}
+				className="text-2xl font-extrabold text-transparent bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text drop-shadow-temperature"
+			>
+				{Math.round(forecast.temp)}°
+			</motion.div>
 		</motion.div>
 	)
 }

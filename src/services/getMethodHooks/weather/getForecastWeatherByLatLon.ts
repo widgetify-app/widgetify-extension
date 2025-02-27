@@ -8,7 +8,9 @@ async function fetchForecastWeatherByLatLon(
 ): Promise<FetchedForecast[]> {
 	const client = await getMainClient()
 
-	const response = await client.get(`/weather/forecast?lat=${lat}&lon=${lon}`)
+	const response = await client.get<FetchedForecast[]>(
+		`/weather/forecast?lat=${lat}&lon=${lon}`,
+	)
 	return response.data
 }
 

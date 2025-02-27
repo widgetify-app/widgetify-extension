@@ -1,6 +1,9 @@
 export interface Todo {
 	id: string
-	date: string // format: "MM-DD"
 	text: string
 	completed: boolean
+	date: string
+	priority: 'low' | 'medium' | 'high'
+	category?: string
+	notes?: string
 }

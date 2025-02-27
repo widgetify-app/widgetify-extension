@@ -1,65 +1,115 @@
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { Todo } from '../layouts/calendar/interface/todo.interface'
 
 interface TodoContextType {
 	todos: Todo[]
-	addTodo: (text: string, date: string) => void
+	addTodo: (
+		text: string,
+		date: string,
+		priority?: 'low' | 'medium' | 'high',
+		category?: string,
+		notes?: string,
+	) => void
 	removeTodo: (id: string) => void
 	toggleTodo: (id: string) => void
-	setTodos: (todos: Todo[]) => void
+	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
+	clearCompleted: (date?: string) => void
 }
 
-const TodoContext = createContext<TodoContextType | undefined>(undefined)
+const TodoContext = createContext<TodoContextType | null>(null)
 
-export function TodoProvider({ children }: { children: ReactNode }) {
-	const [todos, setTodos] = useState<Todo[]>([])
+export function TodoProvider({ children }: { children: React.ReactNode }) {
+	const [todos, setTodos] = useState<Todo[] | null>(null)
 
 	useEffect(() => {
 		async function getTodos() {
-			const todosFromStorage = await getFromStorage(StoreKey.Todos)
-			if (todosFromStorage) {
-				setTodos(todosFromStorage as Todo[])
-			}
+			const todos = await getFromStorage<Todo[]>(StoreKey.Todos)
+			setTodos(todos)
 		}
 
 		getTodos()
 	}, [])
 
-	const addTodo = async (text: string, date: string) => {
-		const todoList = [
-			...todos,
-			{ id: Math.random().toString(36).slice(2), text, completed: false, date },
-		]
+	useEffect(() => {
+		if (todos === null) return
+		setToStorage(StoreKey.Todos, todos)
+	}, [todos])
 
-		setTodos(todoList)
-
-		await setToStorage(StoreKey.Todos, todoList)
+	const addTodo = (
+		text: string,
+		date: string,
+		priority: 'low' | 'medium' | 'high' = 'medium',
+		category?: string,
+		notes?: string,
+	) => {
+		const old = todos || []
+		setTodos([
+			...old,
+			{
+				id: uuidv4(),
+				text,
+				completed: false,
+				date,
+				priority,
+				category,
+				notes,
+			},
+		])
 	}
 
 	const removeTodo = (id: string) => {
-		setTodos(todos.filter((todo) => todo.id !== id))
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.filter((todo) => todo.id !== id)
+		})
 	}
 
 	const toggleTodo = (id: string) => {
-		setTodos(
-			todos.map((todo) =>
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.map((todo) =>
 				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-			),
-		)
+			)
+		})
+	}
+
+	const updateTodo = (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo))
+		})
+	}
+
+	const clearCompleted = (date?: string) => {
+		setTodos((prev) => {
+			if (!prev) return null
+			return prev.filter((todo) => !todo.completed || (date && todo.date !== date))
+		})
 	}
 
 	return (
-		<TodoContext.Provider value={{ todos, addTodo, removeTodo, toggleTodo, setTodos }}>
+		<TodoContext.Provider
+			value={{
+				todos: todos || [],
+				addTodo,
+				removeTodo,
+				toggleTodo,
+				updateTodo,
+				clearCompleted,
+			}}
+		>
 			{children}
 		</TodoContext.Provider>
 	)
 }
 
-export function useTodo() {
+export function useTodoStore() {
 	const context = useContext(TodoContext)
-	if (context === undefined) {
+	if (!context) {
 		throw new Error('useTodo must be used within a TodoProvider')
 	}
 	return context

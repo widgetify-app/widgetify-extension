@@ -1,11 +1,14 @@
+import { motion } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
+import { AnimatePresence } from 'motion/react'
 import type React from 'react'
 import { useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { TodoProvider, useTodo } from '../../context/todo.context'
+import { TodoProvider, useTodoStore } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
 import { Events } from './components/events/event'
+import { TodoStats } from './components/todos/todo-stats'
 import { Todos } from './components/todos/todos'
 import { formatDateStr } from './utils'
 
@@ -36,18 +39,18 @@ export const PersianCalendar: React.FC = () => {
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
 	const emptyDays = (firstDayOfMonth + 1) % 7
 	const selectedDateStr = formatDateStr(selectedDate)
-	const { todos } = useTodo()
+	const { todos } = useTodoStore()
 
 	const changeMonth = (delta: number) => {
 		setCurrentDate((prev) => prev.clone().add(delta, 'jMonth'))
 	}
 
 	return (
-		<div className="flex gap-1 mb-1 lg:gap-2" dir="rtl">
+		<div className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row" dir="rtl">
 			{/* Calendar Grid */}
-			<div className="w-[22rem] overflow-hidden bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-				<div className="flex items-center justify-between p-4">
-					<h3 className="text-xl font-medium text-gray-200">
+			<div className="w-full overflow-hidden md:flex-1 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<div className="flex items-center justify-between p-3 md:p-4">
+					<h3 className="text-lg font-medium text-gray-200 md:text-xl">
 						{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
 					</h3>
 					<div className="flex gap-1">
@@ -68,7 +71,7 @@ export const PersianCalendar: React.FC = () => {
 					</div>
 				</div>
 
-				<div className="grid grid-cols-7 px-4 text-center">
+				<div className="grid grid-cols-7 px-3 text-center md:px-4">
 					{WEEKDAYS.map((day) => (
 						<div key={day} className="py-2 text-sm text-gray-400">
 							{day}
@@ -92,14 +95,14 @@ export const PersianCalendar: React.FC = () => {
 					))}
 				</div>
 
-				<div className="p-4 pb-2 overflow-y-auto border-neutral-800/50 max-h-40 min-h-40">
+				<div className="px-3 md:px-4 border-neutral-800/50">
 					<Events events={events} currentDate={selectedDate} />
 				</div>
 			</div>
 
-			{/* Tasks & Events Panel */}
-			<div className="p-4 w-72 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-				<h3 className="mb-4 text-xl font-medium text-gray-200">
+			{/* Tasks  */}
+			<div className="w-full md:w-80 p-3 md:p-4 h-auto min-h-[16rem] md:h-[27rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<h3 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>
 
@@ -108,12 +111,76 @@ export const PersianCalendar: React.FC = () => {
 		</div>
 	)
 }
+
 const CalendarLayout = () => {
+	const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar')
+
 	return (
-		<section className="w-full" dir="rtl">
+		<section dir="rtl">
 			<TodoProvider>
-				<PersianCalendar />
+				<AnimatePresence mode="wait">
+					{activeTab === 'calendar' ? (
+						<motion.div
+							key="calendar"
+							className="min-h-[16rem] md:min-h-96 md:max-h-96"
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							exit={{ opacity: 0, x: 20 }}
+							transition={{ duration: 0.3 }}
+						>
+							<PersianCalendar />
+						</motion.div>
+					) : (
+						<motion.div
+							key="stats"
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							exit={{ opacity: 0, x: 20 }}
+							transition={{ duration: 0.3 }}
+							className="w-full max-w-2xl p-3 md:p-4 mx-auto min-h-[16rem] md:min-h-96 md:max-h-96 bg-neutral-900/70 backdrop-blur-sm rounded-xl"
+						>
+							<h2 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
+								آمار و تحلیل یادداشت‌ها
+							</h2>
+							<TodoStats />
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</TodoProvider>
+
+			<motion.div
+				className="relative justify-center hidden mb-3 md:mb-4 md:flex"
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.3, delay: 0.2 }}
+			>
+				<div className="absolute inline-flex p-1 left-3 bottom-[10rem] md:bottom-[20.9rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => setActiveTab('calendar')}
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
+							activeTab === 'calendar'
+								? 'bg-blue-500 text-white'
+								: 'text-gray-400 hover:text-gray-300'
+						}`}
+					>
+						تقویم
+					</motion.button>
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => setActiveTab('stats')}
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
+							activeTab === 'stats'
+								? 'bg-blue-500 text-white'
+								: 'text-gray-400 hover:text-gray-300'
+						}`}
+					>
+						آمار
+					</motion.button>
+				</div>
+			</motion.div>
 		</section>
 	)
 }
