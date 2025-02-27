@@ -14,20 +14,26 @@ export function FolderPath({ folderPath, onBackClick }: FolderPathProps) {
 		<div className="flex items-center justify-between w-full mt-4 mb-2">
 			<button
 				onClick={onBackClick}
-				className="flex items-center gap-2 px-3 py-2 font-medium text-blue-400 transition-all duration-300 rounded-lg hover:bg-blue-500/10 hover:text-blue-300 active:scale-95"
+				className="flex items-center gap-2 px-3 py-2 font-medium transition-all duration-300 border rounded-lg text-white/80 bg-white/10 backdrop-blur-sm border-white/10 hover:bg-indigo-500/20 hover:text-white hover:border-indigo-400/30 active:scale-95"
 			>
 				<FaArrowLeft />
 				<span>بازگشت</span>
 			</button>
 
 			<div className="flex items-center overflow-x-auto max-w-[60%] scrollbar-hide">
-				<div className="flex items-center gap-1 px-3 py-1.5 text-sm bg-neutral-800/50 rounded-lg text-gray-300">
+				<div
+					className="flex items-center gap-1 px-3 py-1.5 text-sm 
+                bg-white/8 backdrop-filter backdrop-blur-md border border-white/15 rounded-lg 
+                text-gray-300 shadow-sm transition-all duration-300"
+				>
 					{folderPath.map((folder, index) => (
 						<span key={folder.id} className="whitespace-nowrap">
-							{index > 0 && <span className="mx-1 text-gray-500">/</span>}
+							{index > 0 && <span className="mx-1 text-indigo-200/40">/</span>}
 							<span
 								className={
-									index === folderPath.length - 1 ? 'font-medium text-blue-400' : ''
+									index === folderPath.length - 1
+										? 'font-medium text-indigo-200'
+										: 'text-gray-300/80 hover:text-white transition-colors'
 								}
 							>
 								{folder.title}
