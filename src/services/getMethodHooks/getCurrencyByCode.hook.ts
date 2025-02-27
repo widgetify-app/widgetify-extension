@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { type ApiResponse, getMainClient } from '../api'
+import { getMainClient } from '../api'
 
 export interface FetchedCurrency {
 	name: {

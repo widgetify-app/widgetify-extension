@@ -28,7 +28,6 @@ function isTouchCapable() {
 		document.createEvent('TouchEvent')
 		return true
 	} catch (e) {
-		console.log('notsp======')
 		return false
 	}
 }
