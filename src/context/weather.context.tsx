@@ -3,9 +3,10 @@ import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 
 export interface SelectedCity {
-	city: string
+	name: string
 	lat: number
 	lon: number
+	state?: string | null
 }
 
 export interface WeatherContext {
@@ -15,9 +16,10 @@ export interface WeatherContext {
 
 export const weatherContext = createContext<WeatherContext>({
 	selectedCity: {
-		city: '',
+		name: '',
 		lat: 0,
 		lon: 0,
+		state: null,
 	},
 	setSelectedCity: () => {},
 })
@@ -30,7 +32,7 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		async function load() {
 			const storedCity = await getFromStorage<SelectedCity>(StoreKey.SELECTED_CITY)
-			setSelectedCity(storedCity ?? { city: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
+			setSelectedCity(storedCity ?? { name: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
 		}
 
 		load()

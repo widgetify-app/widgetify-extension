@@ -35,3 +35,11 @@ export interface FetchedForecast {
 	icon: string
 	date: string
 }
+
+export interface FetchedCity {
+	name: string
+	country: string
+	state: string | null
+	lat: number
+	lon: number
+}

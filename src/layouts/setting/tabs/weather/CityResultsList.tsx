@@ -1,10 +1,10 @@
 import { motion } from 'motion/react'
 import { CiLocationOn } from 'react-icons/ci'
-import type { City } from '../../../../types/weather'
+import type { FetchedCity } from '../../../../services/getMethodHooks/weather/weather.interface'
 
 interface CityResultsListProps {
-	cities: Array<{ name: string; state?: string; lat: number; lon: number }>
-	onSelectCity: (city: City) => void
+	cities: Array<FetchedCity>
+	onSelectCity: (city: FetchedCity) => void
 }
 
 export function CityResultsList({ cities, onSelectCity }: CityResultsListProps) {
@@ -23,11 +23,7 @@ export function CityResultsList({ cities, onSelectCity }: CityResultsListProps) 
 						key={`${city.name}-${index}`}
 						className="flex items-center w-full gap-3 p-3 text-right transition-colors duration-200 hover:bg-white/5 active:bg-white/10 focus:outline-none"
 						onClick={() => {
-							onSelectCity({
-								city: city.name,
-								lat: city.lat,
-								lon: city.lon,
-							})
+							onSelectCity(city)
 						}}
 						whileHover={{ scale: 1.01 }}
 						whileTap={{ scale: 0.99 }}

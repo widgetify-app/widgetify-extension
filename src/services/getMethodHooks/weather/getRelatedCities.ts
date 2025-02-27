@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../../api'
+import type { FetchedCity } from './weather.interface'
 
-async function fetchRelatedCities(city: string): Promise<any[]> {
+async function fetchRelatedCities(city: string): Promise<FetchedCity[]> {
 	if (city.length > 1) {
 		const client = await getMainClient()
 

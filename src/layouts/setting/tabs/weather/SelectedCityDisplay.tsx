@@ -1,13 +1,13 @@
 import { motion } from 'motion/react'
 import { CiLocationOn } from 'react-icons/ci'
-import type { City } from '../../../../types/weather'
+import type { SelectedCity } from '../../../../context/weather.context'
 
 interface SelectedCityDisplayProps {
-	city: City | null
+	city: SelectedCity | null
 }
 
 export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
-	if (!city?.city) return null
+	if (!city) return null
 
 	return (
 		<motion.div
@@ -19,7 +19,7 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 			<div className="flex items-center gap-2 p-3 border rounded-xl bg-blue-500/10 border-blue-500/20">
 				<CiLocationOn className="text-blue-400 size-5" />
 				<span className="text-blue-300 text-[14px] font-[Vazir] font-medium">
-					{city.city}
+					{city.name}
 				</span>
 			</div>
 		</motion.div>

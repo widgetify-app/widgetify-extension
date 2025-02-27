@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
-import { useWeatherStore } from '../../../../context/weather.context'
+import { type SelectedCity, useWeatherStore } from '../../../../context/weather.context'
 import { useDebouncedValue } from '../../../../hooks/useDebouncedValue'
 import { useGetRelatedCities } from '../../../../services/getMethodHooks/weather/getRelatedCities'
 import { CityResultsList } from './CityResultsList'
@@ -10,7 +10,7 @@ import { SelectedCityDisplay } from './SelectedCityDisplay'
 export function WeatherOptions() {
 	const { setSelectedCity, selectedCity } = useWeatherStore()
 	const [inputValue, setInputValue] = useState('')
-	const inputRef = useRef(null)
+	const inputRef = useRef<HTMLInputElement>(null)
 
 	const debouncedValue = useDebouncedValue(inputValue.length >= 2 ? inputValue : '', 500)
 
@@ -21,7 +21,7 @@ export function WeatherOptions() {
 		error,
 	} = useGetRelatedCities(debouncedValue)
 
-	const handleSelectCity = (city) => {
+	const handleSelectCity = (city: SelectedCity) => {
 		setSelectedCity(city)
 		setInputValue('')
 		inputRef.current?.blur()
