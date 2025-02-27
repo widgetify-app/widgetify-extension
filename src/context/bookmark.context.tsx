@@ -1,7 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { Bookmark } from '../layouts/search/bookmarks/types/bookmark.types'
+
+const MAX_BOOKMARK_SIZE = 1024 * 1024
 
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
@@ -65,28 +68,112 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			: currentFolderBookmarks
 	}
 
+	const getBookmarkDataSize = (bookmark: Bookmark): number => {
+		try {
+			const json = JSON.stringify(bookmark)
+			return new Blob([json]).size
+		} catch (e) {
+			return Number.POSITIVE_INFINITY
+		}
+	}
+
+	const compressImageData = (imageData: string): string => {
+		if (!imageData.startsWith('data:image')) {
+			return imageData
+		}
+
+		try {
+			const base64 = imageData.split(',')[1]
+			const binaryString = window.atob(base64)
+			const length = binaryString.length
+
+			if (length > 2 * 1024 * 1024) {
+				throw new Error('Image is too large to process')
+			}
+
+			const img = new Image()
+			const canvas = document.createElement('canvas')
+			const ctx = canvas.getContext('2d')
+			const maxDimension = 48
+
+			canvas.width = maxDimension
+			canvas.height = maxDimension
+			img.src = imageData
+
+			try {
+				ctx?.drawImage(img, 0, 0, maxDimension, maxDimension)
+				return canvas.toDataURL('image/webp', 0.6)
+			} catch (e) {
+				return imageData.substring(0, 50000)
+			}
+		} catch (err) {
+			console.error('Error in image compression:', err)
+			throw err
+		}
+	}
+
+	const prepareBookmarkForStorage = (bookmark: Bookmark): Bookmark => {
+		const processedBookmark = { ...bookmark, isLocal: true }
+
+		if (processedBookmark.customImage && processedBookmark.customImage.length > 50000) {
+			try {
+				processedBookmark.customImage = compressImageData(processedBookmark.customImage)
+			} catch (err) {
+				console.error('Error compressing image:', err)
+				toast.error('خطا در پردازش تصویر. از تصویر پیش‌فرض استفاده می‌شود.')
+
+				if (processedBookmark.type === 'BOOKMARK') {
+					processedBookmark.customImage = undefined
+				}
+			}
+		}
+
+		return processedBookmark
+	}
+
 	const addBookmark = async (bookmark: Bookmark) => {
 		try {
-			const newBookmark = { ...bookmark, isLocal: true }
-			const updatedBookmarks = [...bookmarks, newBookmark]
-			setBookmarks(updatedBookmarks)
+			const bookmarkSize = getBookmarkDataSize(bookmark)
+			if (bookmarkSize > MAX_BOOKMARK_SIZE) {
+				toast.error('تصویر انتخاب شده خیلی بزرگ است. لطفاً تصویر کوچکتری انتخاب کنید.')
+				return
+			}
 
+			const newBookmark = prepareBookmarkForStorage(bookmark)
+			const updatedBookmarks = [...bookmarks, newBookmark]
+
+			try {
+				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
+				if (testData.length > 5 * 1024 * 1024) {
+					toast.error(
+						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.',
+					)
+					return
+				}
+			} catch (e) {
+				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
+				return
+			}
+
+			setBookmarks(updatedBookmarks)
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage(StoreKey.Bookmarks, localBookmarks)
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
+			toast.error('خطا در افزودن بوکمارک')
 		}
 	}
 
-	const getNestedItems = (parentId: string): string[] => {
+	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {
+		visited.add(parentId)
 		const result: string[] = []
 		const children = bookmarks.filter((b) => b.parentId === parentId)
 
 		for (const child of children) {
 			result.push(child.id)
 
-			if (child.type === 'FOLDER') {
-				const nestedItems = getNestedItems(child.id)
+			if (child.type === 'FOLDER' && !visited.has(child.id)) {
+				const nestedItems = getNestedItems(child.id, new Set(visited))
 				for (const nestedItem of nestedItems) {
 					result.push(nestedItem)
 				}
@@ -104,7 +191,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			let itemsToDelete = [id]
 
 			if (bookmarkToDelete.type === 'FOLDER') {
-				itemsToDelete = [...itemsToDelete, ...getNestedItems(id)]
+				const nestedItems = getNestedItems(id)
+				itemsToDelete = [...itemsToDelete, ...nestedItems]
 			}
 
 			const updatedBookmarks = bookmarks.filter((b) => !itemsToDelete.includes(b.id))

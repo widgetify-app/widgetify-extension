@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { FaFolder } from 'react-icons/fa'
+import { FaFolder, FaFolderOpen } from 'react-icons/fa'
 import type { Bookmark } from '../types/bookmark.types'
 
 interface BookmarkItemProps {
@@ -15,18 +15,83 @@ export function BookmarkItem({ bookmark, onClick }: BookmarkItemProps) {
 		return <EmptyBookmarkSlot onClick={onClick} />
 	}
 
+	if (bookmark.type === 'FOLDER') {
+		return <FolderBookmarkItem bookmark={bookmark} onClick={onClick} />
+	}
+
 	return (
 		<motion.button
 			onClick={onClick}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={getBookmarkClassName(bookmark)}
+			className="relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80 rounded-xl border-white/10 hover:border-white/20 min-w-[5.4rem] max-w-[5.4rem]"
 		>
 			<BookmarkIcon bookmark={bookmark} />
 			<BookmarkTitle title={bookmark.title} />
 			{isHovered && <BookmarkTooltip title={bookmark.title} />}
-			<BackgroundOverlay />
+			<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-white/5 to-transparent rounded-xl" />
+		</motion.button>
+	)
+}
+
+function FolderBookmarkItem({
+	bookmark,
+	onClick,
+}: { bookmark: Bookmark; onClick: () => void }) {
+	const [isHovered, setIsHovered] = useState(false)
+	const displayIcon =
+		bookmark.customImage ||
+		(isHovered ? (
+			<FaFolderOpen className="w-6 h-6 text-blue-400" />
+		) : (
+			<FaFolder className="w-6 h-6 text-blue-400" />
+		))
+
+	return (
+		<motion.button
+			onClick={onClick}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+			whileHover={{ scale: 1.02 }}
+			className="relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl border-blue-400/20 hover:border-blue-400/40 min-w-[5.4rem] max-w-[5.4rem] backdrop-blur-md bg-blue-900/10 hover:bg-blue-800/20 shadow-sm"
+		>
+			{/* Glass highlight effect */}
+			<div className="absolute inset-0 overflow-hidden rounded-xl">
+				<div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-blue-300/10 to-transparent" />
+				<div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-blue-900/20 to-transparent" />
+			</div>
+
+			{/* Folder tab */}
+			<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
+
+			{/* Icon with folder style */}
+			<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
+				{typeof displayIcon === 'string' ? (
+					<motion.img
+						initial={{ scale: 0.9 }}
+						animate={{ scale: 1 }}
+						src={displayIcon}
+						className="transition-transform duration-300 group-hover:scale-110"
+						alt={bookmark.title}
+					/>
+				) : (
+					displayIcon
+				)}
+			</div>
+
+			{/* Title */}
+			<span className="relative z-10 text-[10px] w-full text-center font-medium text-gray-200 transition-colors duration-300 group-hover:text-white truncate">
+				{bookmark.title}
+			</span>
+
+			{/* Glass reflection */}
+			<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-blue-400/10 to-transparent rounded-xl" />
+
+			{/* Glass highlight edge */}
+			<div className="absolute inset-0 border rounded-xl border-white/5" />
+
+			{isHovered && <BookmarkTooltip title={bookmark.title} />}
 		</motion.button>
 	)
 }
@@ -45,7 +110,18 @@ function EmptyBookmarkSlot({ onClick }: { onClick: () => void }) {
 }
 
 function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
-	const displayIcon = getDisplayIcon(bookmark)
+	// Handle different bookmark types correctly
+	let displayIcon: string | React.ReactNode
+
+	if (bookmark.customImage) {
+		displayIcon = bookmark.customImage
+	} else if (bookmark.type === 'BOOKMARK') {
+		// Access icon property safely when we know it's a BookmarkItem
+		displayIcon = bookmark.icon
+	} else {
+		// For folders, provide a default icon if not using customImage
+		displayIcon = <FaFolder className="w-6 h-6 text-blue-400" />
+	}
 
 	return (
 		<div className="relative flex items-center justify-center w-8 h-8 mb-2">
@@ -82,33 +158,4 @@ function BookmarkTooltip({ title }: { title: string }) {
 			{title}
 		</motion.div>
 	)
-}
-
-function BackgroundOverlay() {
-	return (
-		<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-white/5 to-transparent rounded-xl" />
-	)
-}
-
-function getDisplayIcon(bookmark: Bookmark): React.ReactNode | string {
-	if (bookmark.customImage) {
-		return bookmark.customImage
-	}
-
-	if (bookmark.type === 'FOLDER') {
-		return bookmark.folderIcon || <FaFolder className="w-6 h-6 text-blue-400" />
-	}
-
-	return bookmark.icon
-}
-
-function getBookmarkClassName(bookmark: Bookmark): string {
-	const baseClasses =
-		'relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group backdrop-blur-sm rounded-xl border-white/10 hover:border-white/20 min-w-[5.4rem] max-w-[5.4rem]'
-	const typeClasses =
-		bookmark.type === 'FOLDER'
-			? 'bg-blue-900/20 hover:bg-blue-800/30'
-			: 'bg-neutral-900/70 hover:bg-neutral-800/80'
-
-	return `${baseClasses} ${typeClasses}`
 }

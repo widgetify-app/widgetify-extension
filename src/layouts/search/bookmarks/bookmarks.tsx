@@ -11,7 +11,8 @@ import { FolderPath } from './components/folder-path'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
-	const { bookmarks, setBookmarks, getCurrentFolderItems } = useBookmarkStore()
+	const { bookmarks, setBookmarks, getCurrentFolderItems, addBookmark } =
+		useBookmarkStore()
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
@@ -27,19 +28,28 @@ export function BookmarksComponent() {
 	}, [])
 
 	useEffect(() => {
-		if (Array.isArray(fetchedBookmarks)) {
-			const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
+		if (!Array.isArray(fetchedBookmarks)) return
 
-			const pinnedBookmarks = fetchedBookmarks.map((bookmark) => ({
-				...bookmark,
-				isLocal: false,
-				type: 'BOOKMARK' as const,
-				pinned: true,
-				parentId: null,
-			}))
+		async function processFetched() {
+			const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
+			const deletedBookmarks =
+				(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+
+			const pinnedBookmarks = []
+			for (const bookmark of fetchedBookmarks) {
+				if (deletedBookmarks.includes(bookmark.id) && !bookmark.pinned) continue
+				pinnedBookmarks.push({
+					...bookmark,
+					isLocal: false,
+					type: 'BOOKMARK' as const,
+					parentId: null,
+				})
+			}
 
 			setBookmarks([...pinnedBookmarks, ...unpinnedBookmarks])
 		}
+
+		processFetched()
 	}, [fetchedBookmarks])
 
 	const handleDeleteBookmark = async () => {
@@ -53,12 +63,10 @@ export function BookmarksComponent() {
 
 		const bookmark = bookmarks[bookmarkIndex]
 
-		// Handle folder deletion
 		if (bookmark.type === 'FOLDER') {
 			await handleFolderDeletion(bookmark)
 		}
 
-		// Track remote bookmark deletion
 		if (!bookmark.isLocal) {
 			const deletedBookmarks =
 				(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
@@ -66,7 +74,6 @@ export function BookmarksComponent() {
 			await setToStorage(StoreKey.DeletedBookmarks, deletedBookmarks)
 		}
 
-		// Update bookmarks state
 		const newBookmarks = [...bookmarks]
 		newBookmarks.splice(bookmarkIndex, 1)
 		setBookmarks(newBookmarks)
@@ -153,7 +160,7 @@ export function BookmarksComponent() {
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
-				onAdd={(bookmark) => setBookmarks([...bookmarks, bookmark])}
+				onAdd={(bookmark) => addBookmark(bookmark)} // FIXED: Use context's addBookmark
 				parentId={currentFolderId}
 			/>
 		</>
