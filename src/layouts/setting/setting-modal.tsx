@@ -4,7 +4,7 @@ import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
 import Modal from '../../components/modal'
 import { GeneralSettingTab } from './tabs/general/general'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
-import { WeatherOptions } from './tabs/weather'
+import { WeatherOptions } from './tabs/weather/weather'
 
 interface SettingModalProps {
 	isOpen: boolean

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 
@@ -30,7 +30,6 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		async function load() {
 			const storedCity = await getFromStorage<SelectedCity>(StoreKey.SELECTED_CITY)
-
 			setSelectedCity(storedCity ?? { city: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
 		}
 
@@ -38,8 +37,8 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [])
 
 	useEffect(() => {
-		console.log('selectedCity')
 		async function save() {
+			if (selectedCity === null) return
 			await setToStorage(StoreKey.SELECTED_CITY, selectedCity)
 		}
 		save()

@@ -90,37 +90,37 @@ export function HomePage() {
 	}
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
-			<NavbarLayout />
-			<div className="flex flex-col items-center justify-center flex-1 w-full gap-3 p-2 md:p-4">
-				{/* Top Section */}
-				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
-					<div className="order-3 w-full lg:w-1/4 lg:order-1">
-						<WidgetifyLayout />
+			<WeatherProvider>
+				<NavbarLayout />
+				<div className="flex flex-col items-center justify-center flex-1 w-full gap-3 p-2 md:p-4">
+					{/* Top Section */}
+					<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+						<div className="order-3 w-full lg:w-1/4 lg:order-1">
+							<WidgetifyLayout />
+						</div>
+
+						<div className="order-1 w-full lg:w-2/4 lg:order-2">
+							<SearchLayout />
+						</div>
+
+						<div className="order-2 w-full lg:w-1/4 lg:order-3">
+							<CurrencyProvider>
+								<ArzLiveLayout />
+							</CurrencyProvider>
+						</div>
 					</div>
 
-					<div className="order-1 w-full lg:w-2/4 lg:order-2">
-						<SearchLayout />
-					</div>
-
-					<div className="order-2 w-full lg:w-1/4 lg:order-3">
-						<CurrencyProvider>
-							<ArzLiveLayout />
-						</CurrencyProvider>
-					</div>
-				</div>
-
-				{/* Main Content */}
-				<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
-					<div className="w-full md:w-2/3">
-						<CalendarLayout />
-					</div>
-					<div className="w-full md:w-1/3">
-						<WeatherProvider>
+					{/* Main Content */}
+					<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
+						<div className="w-full md:w-2/3">
+							<CalendarLayout />
+						</div>
+						<div className="w-full md:w-1/3">
 							<WeatherLayout />
-						</WeatherProvider>
+						</div>
 					</div>
 				</div>
-			</div>
+			</WeatherProvider>
 			<Toaster />
 		</div>
 	)
