@@ -2,7 +2,7 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { StoreKey } from '../common/constant/store.key'
-import { setToStorage } from '../common/storage'
+import { getFromStorage, setToStorage } from '../common/storage'
 import type { Todo } from '../layouts/calendar/interface/todo.interface'
 
 interface TodoContextType {
@@ -20,16 +20,18 @@ interface TodoContextType {
 	clearCompleted: (date?: string) => void
 }
 
-const TodoContext = createContext<TodoContextType | undefined>(undefined)
+const TodoContext = createContext<TodoContextType | null>(null)
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 
 	useEffect(() => {
-		const storedTodos = localStorage.getItem(StoreKey.Todos)
-		if (storedTodos) {
-			setTodos(JSON.parse(storedTodos))
+		async function getTodos() {
+			const todos = await getFromStorage<Todo[]>(StoreKey.Todos)
+			setTodos(todos)
 		}
+
+		getTodos()
 	}, [])
 
 	useEffect(() => {
@@ -44,8 +46,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		category?: string,
 		notes?: string,
 	) => {
-		setTodos((prev) => [
-			...(prev as Todo[]),
+		const old = todos || []
+		setTodos([
+			...old,
 			{
 				id: uuidv4(),
 				text,
