@@ -106,7 +106,7 @@ export function BookmarksComponent() {
 			setCurrentFolderId(bookmark.id)
 			setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
 		} else {
-			window.open(bookmark.url)
+			window.location.href = bookmark.url
 		}
 	}
 

@@ -7,7 +7,6 @@ interface FolderPathProps {
 }
 
 export function FolderPath({ folderPath, onBackClick }: FolderPathProps) {
-	// Don't render anything if we're at the root level
 	if (folderPath.length === 0) return null
 
 	return (
