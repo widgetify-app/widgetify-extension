@@ -1,11 +1,15 @@
 import { motion } from 'motion/react'
 import { BsRobot } from 'react-icons/bs'
+import { useWeatherStore } from '../../../context/weather.context'
 import type { FetchedWeather } from '../../../services/getMethodHooks/weather/weather.interface'
+import { unitsFlag } from '../unitSymbols'
 
 interface CurrentWeatherBoxProps {
 	weather: FetchedWeather['weather']
 }
+
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
+	const { weatherSettings } = useWeatherStore()
 	return (
 		<div className="h-full col-span-2 p-5 shadow-lg bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 			<div className="flex flex-row-reverse items-start justify-between gap-4">
@@ -23,7 +27,8 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 				<div className="flex-1">
 					<span className="text-4xl font-bold text-gray-800 dark:text-white" dir="ltr">
-						{Math.round(weather.temperature.temp)}°C
+						{Math.round(weather.temperature.temp)}
+						{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 					</span>
 
 					<p className="mt-1 text-sm text-gray-600 dark:text-gray-300"></p>

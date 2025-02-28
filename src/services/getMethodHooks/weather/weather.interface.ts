@@ -43,3 +43,11 @@ export interface FetchedCity {
 	lat: number
 	lon: number
 }
+
+export type TemperatureUnit = 'standard' | 'metric' | 'imperial'
+
+export interface WeatherSettings {
+	forecastCount: number
+	temperatureUnit: TemperatureUnit
+	useAI: boolean
+}

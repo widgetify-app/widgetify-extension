@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { unitsFlag } from '../unitSymbols'
 
 interface ForecastProps {
 	forecast: {
@@ -6,9 +7,10 @@ interface ForecastProps {
 		icon: string
 		date: string
 	}
+	unit: keyof typeof unitsFlag
 }
 
-export function ForecastComponent({ forecast }: ForecastProps) {
+export function ForecastComponent({ forecast, unit }: ForecastProps) {
 	return (
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
@@ -48,7 +50,7 @@ export function ForecastComponent({ forecast }: ForecastProps) {
 						transition={{ duration: 0.3 }}
 					/>
 				</motion.div>
-				<div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-lg -z-10" />
+				<div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10" />
 			</div>
 
 			{/* Temperature */}
@@ -57,7 +59,8 @@ export function ForecastComponent({ forecast }: ForecastProps) {
 				animate={{ scale: 1 }}
 				className="text-2xl font-extrabold text-transparent bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text drop-shadow-temperature"
 			>
-				{Math.round(forecast.temp)}°
+				{Math.round(forecast.temp)}
+				<span className="text-lg font-medium">{unitsFlag[unit]}</span>
 			</motion.div>
 		</motion.div>
 	)
