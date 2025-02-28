@@ -7,6 +7,7 @@ import type { StoredWallpaper } from '../../../../common/wallpaper.interface'
 import CustomCheckbox from '../../../../components/checkbox'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
 import { WallpaperItem } from './item.wallpaper'
+import Analytics from '../../../../analytics'
 
 export function WallpaperSetting() {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
@@ -60,13 +61,32 @@ export function WallpaperSetting() {
 		window.dispatchEvent(event)
 	}, [selectedWallpaper, isRetouchEnabled])
 
-	const handleSelectBackground = useCallback((id: string) => {
-		setSelectedBackground(id)
-	}, [])
+	const handleSelectBackground = useCallback(
+		(id: string) => {
+			setSelectedBackground(id)
+
+			// Track wallpaper selection
+			const selectedWp = fetchedWallpaper?.wallpapers?.find((wp) => wp.id === id)
+			if (selectedWp) {
+				Analytics.featureUsed('wallpaper_changed', {
+					wallpaper_id: id,
+					wallpaper_name: selectedWp.name || 'unnamed',
+					wallpaper_type: selectedWp.type,
+				})
+			}
+		},
+		[fetchedWallpaper],
+	)
 
 	const toggleRetouch = useCallback(() => {
 		setIsRetouchEnabled((prev) => !prev)
-	}, [])
+
+		// Track retouch filter toggle
+		Analytics.featureUsed('wallpaper_retouch_toggled', {
+			enabled: !isRetouchEnabled,
+			wallpaper_id: selectedBackground || 'none',
+		})
+	}, [isRetouchEnabled, selectedBackground])
 
 	return (
 		<motion.div

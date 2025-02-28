@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FiClock, FiFlag, FiTag } from 'react-icons/fi'
+import Analytics from '../../../../analytics'
 
 interface Prop {
 	onAdd: (
@@ -21,6 +22,9 @@ export function TodoInput({ onAdd }: Prop) {
 		e.preventDefault()
 		if (text.trim()) {
 			onAdd(text.trim(), priority, category, notes)
+
+			Analytics.featureUsed('todo_added')
+
 			setText('')
 			setCategory('')
 			setNotes('')

@@ -13,4 +13,4 @@ export enum StoreKey {
 	DeletedBookmarks = 'DeletedBookmarks',
 	Show_Welcome_Modal = 'Show_Welcome_Modal',
 }
-export type StoreKeyType = StoreKey | `currency:${string}`
+export type StoreKeyType = StoreKey | `currency:${string}` | 'ga_client_id'

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
+import Analytics from '../../../../analytics'
 import { type SelectedCity, useWeatherStore } from '../../../../context/weather.context'
 import { useDebouncedValue } from '../../../../hooks/useDebouncedValue'
 import { useGetRelatedCities } from '../../../../services/getMethodHooks/weather/getRelatedCities'
@@ -23,6 +24,14 @@ export function WeatherOptions() {
 
 	const handleSelectCity = (city: SelectedCity) => {
 		setSelectedCity(city)
+
+		Analytics.featureUsed('weather_city_selected', {
+			city_name: city.name,
+			state: city.state,
+			latitude: city.lat,
+			longitude: city.lon,
+		})
+
 		setInputValue('')
 		inputRef.current?.blur()
 	}

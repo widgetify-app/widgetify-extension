@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import Analytics from '../analytics'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { StoredWallpaper } from '../common/wallpaper.interface'
@@ -26,6 +27,8 @@ export function HomePage() {
 		}
 
 		checkWelcomeModal()
+
+		Analytics.pageView('Home', '/')
 	}, [])
 
 	const handleGetStarted = () => {
