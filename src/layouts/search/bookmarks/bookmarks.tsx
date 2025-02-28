@@ -4,7 +4,7 @@ import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage } from '../../../common/storage'
 import { useBookmarkStore } from '../../../context/bookmark.context'
 import {
-	type FetchedBookmark,
+	type FetchedSuggestionsBookmark,
 	useGetBookmarks,
 } from '../../../services/getMethodHooks/getBookmarks.hook'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
@@ -31,7 +31,7 @@ export function BookmarksComponent() {
 
 		const pinnedBookmarks: Bookmark[] = []
 
-		function handleBookmark(bookmark: FetchedBookmark) {
+		function handleBookmark(bookmark: FetchedSuggestionsBookmark) {
 			if (deletedBookmarks.includes(bookmark.id)) return
 
 			if (bookmark.type === 'FOLDER') {

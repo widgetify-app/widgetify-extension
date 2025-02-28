@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../api'
 
-export interface FetchedBookmark {
+export interface FetchedSuggestionsBookmark {
 	id: string
 	title: string
 	url: string
@@ -9,11 +9,11 @@ export interface FetchedBookmark {
 	pinned: boolean
 	type: 'BOOKMARK' | 'FOLDER'
 	parentId: string
-	children: FetchedBookmark[]
+	children: FetchedSuggestionsBookmark[]
 }
 
 export const useGetBookmarks = () => {
-	return useQuery<FetchedBookmark[]>({
+	return useQuery<FetchedSuggestionsBookmark[]>({
 		queryKey: ['getBookmarks'],
 		queryFn: async () => getBookmarks(),
 		retry: 0,
@@ -21,9 +21,11 @@ export const useGetBookmarks = () => {
 	})
 }
 
-async function getBookmarks(): Promise<FetchedBookmark[]> {
+async function getBookmarks(): Promise<FetchedSuggestionsBookmark[]> {
 	const client = await getMainClient()
-	const { data } = await client.get<FetchedBookmark[]>('/bookmarks')
+	const { data } = await client.get<FetchedSuggestionsBookmark[]>(
+		'/bookmarks/suggestions',
+	)
 	console.log('fetched bookmarks', data)
 	return data
 }
