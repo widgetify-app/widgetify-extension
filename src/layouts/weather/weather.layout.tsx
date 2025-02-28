@@ -1,4 +1,3 @@
-import ms from 'ms'
 import { useEffect, useState } from 'react'
 import { StoreKey } from '../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../common/storage'
@@ -20,12 +19,12 @@ export function WeatherLayout() {
 		selectedCity.lat,
 		selectedCity.lon,
 		{
-			refetchInterval: ms('10m'), // 10 minutes
+			refetchInterval: 0,
 		},
 	)
 	const { data: forecastData, dataUpdatedAt: forecastUpdatedAt } =
 		useGetForecastWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
-			refetchInterval: ms('2m'),
+			refetchInterval: 0,
 		})
 
 	useEffect(() => {

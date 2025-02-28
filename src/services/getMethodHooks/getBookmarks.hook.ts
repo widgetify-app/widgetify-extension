@@ -7,6 +7,9 @@ export interface FetchedBookmark {
 	url: string
 	icon: string
 	pinned: boolean
+	type: 'BOOKMARK' | 'FOLDER'
+	parentId: string
+	children: FetchedBookmark[]
 }
 
 export const useGetBookmarks = () => {
@@ -21,5 +24,6 @@ export const useGetBookmarks = () => {
 async function getBookmarks(): Promise<FetchedBookmark[]> {
 	const client = await getMainClient()
 	const { data } = await client.get<FetchedBookmark[]>('/bookmarks')
+	console.log('fetched bookmarks', data)
 	return data
 }

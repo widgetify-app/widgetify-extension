@@ -18,7 +18,6 @@ export interface BookmarkItem extends BaseBookmark {
 
 export interface FolderItem extends BaseBookmark {
 	type: 'FOLDER'
-	folderIcon?: string
 }
 
 export type Bookmark = BookmarkItem | FolderItem

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp, FiEdit, FiTrash2 } from 'react-icons/fi'
-import { CustomCheckbox } from '../../../../components/checkbox'
+import CustomCheckbox from '../../../../components/checkbox'
 import type { Todo } from '../../interface/todo.interface'
 
 interface Prop {

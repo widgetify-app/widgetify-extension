@@ -4,7 +4,7 @@ import { StoreKey } from '../../../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../../../common/storage'
 import { preloadImages } from '../../../../common/utils/preloadImages'
 import type { StoredWallpaper } from '../../../../common/wallpaper.interface'
-import { CustomCheckbox } from '../../../../components/checkbox'
+import CustomCheckbox from '../../../../components/checkbox'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
 import { WallpaperItem } from './item.wallpaper'
 

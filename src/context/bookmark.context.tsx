@@ -29,13 +29,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
-			try {
-				const storedBookmarks = await getFromStorage<Bookmark[]>(StoreKey.Bookmarks)
-				if (Array.isArray(storedBookmarks)) {
-					setBookmarks(storedBookmarks)
-				}
-			} catch (error) {
-				console.error('Error loading bookmarks:', error)
+			const storedBookmarks = await getFromStorage<Bookmark[]>(StoreKey.Bookmarks)
+			if (Array.isArray(storedBookmarks)) {
+				setBookmarks(storedBookmarks)
 			}
 		}
 		loadBookmarks()
@@ -43,12 +39,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		const saveBookmarks = async () => {
-			try {
-				const localBookmarks = bookmarks.filter((b) => b.isLocal)
-				await setToStorage(StoreKey.Bookmarks, localBookmarks)
-			} catch (error) {
-				console.error('Error saving bookmarks:', error)
-			}
+			const localBookmarks = bookmarks.filter((b) => b.isLocal)
+			await setToStorage(StoreKey.Bookmarks, localBookmarks)
 		}
 
 		const hasLocalBookmarks = bookmarks.some((b) => b.isLocal)
@@ -82,33 +74,28 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			return imageData
 		}
 
+		const base64 = imageData.split(',')[1]
+		const binaryString = window.atob(base64)
+		const length = binaryString.length
+
+		if (length > 2 * 1024 * 1024) {
+			throw new Error('Image is too large to process')
+		}
+
+		const img = new Image()
+		const canvas = document.createElement('canvas')
+		const ctx = canvas.getContext('2d')
+		const maxDimension = 48
+
+		canvas.width = maxDimension
+		canvas.height = maxDimension
+		img.src = imageData
+
 		try {
-			const base64 = imageData.split(',')[1]
-			const binaryString = window.atob(base64)
-			const length = binaryString.length
-
-			if (length > 2 * 1024 * 1024) {
-				throw new Error('Image is too large to process')
-			}
-
-			const img = new Image()
-			const canvas = document.createElement('canvas')
-			const ctx = canvas.getContext('2d')
-			const maxDimension = 48
-
-			canvas.width = maxDimension
-			canvas.height = maxDimension
-			img.src = imageData
-
-			try {
-				ctx?.drawImage(img, 0, 0, maxDimension, maxDimension)
-				return canvas.toDataURL('image/webp', 0.6)
-			} catch (e) {
-				return imageData.substring(0, 50000)
-			}
-		} catch (err) {
-			console.error('Error in image compression:', err)
-			throw err
+			ctx?.drawImage(img, 0, 0, maxDimension, maxDimension)
+			return canvas.toDataURL('image/webp', 0.6)
+		} catch (e) {
+			return imageData.substring(0, 50000)
 		}
 	}
 
@@ -119,7 +106,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			try {
 				processedBookmark.customImage = compressImageData(processedBookmark.customImage)
 			} catch (err) {
-				console.error('Error compressing image:', err)
 				toast.error('خطا در پردازش تصویر. از تصویر پیش‌فرض استفاده می‌شود.')
 
 				if (processedBookmark.type === 'BOOKMARK') {
@@ -159,7 +145,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage(StoreKey.Bookmarks, localBookmarks)
 		} catch (error) {
-			console.error('Error adding bookmark:', error)
 			toast.error('خطا در افزودن بوکمارک')
 		}
 	}
@@ -187,22 +172,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const bookmarkToDelete = bookmarks.find((b) => b.id === id)
 		if (!bookmarkToDelete) return
 
-		try {
-			let itemsToDelete = [id]
+		let itemsToDelete = [id]
 
-			if (bookmarkToDelete.type === 'FOLDER') {
-				const nestedItems = getNestedItems(id)
-				itemsToDelete = [...itemsToDelete, ...nestedItems]
-			}
-
-			const updatedBookmarks = bookmarks.filter((b) => !itemsToDelete.includes(b.id))
-			setBookmarks(updatedBookmarks)
-
-			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-			await setToStorage(StoreKey.Bookmarks, localBookmarks)
-		} catch (error) {
-			console.error('Error deleting bookmark:', error)
+		if (bookmarkToDelete.type === 'FOLDER') {
+			const nestedItems = getNestedItems(id)
+			itemsToDelete = [...itemsToDelete, ...nestedItems]
 		}
+
+		const updatedBookmarks = bookmarks.filter((b) => !itemsToDelete.includes(b.id))
+		setBookmarks(updatedBookmarks)
+
+		const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
+		await setToStorage(StoreKey.Bookmarks, localBookmarks)
+
+		const deletedList = (await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+		deletedList.push(...itemsToDelete)
+		await setToStorage(StoreKey.DeletedBookmarks, deletedList)
 	}
 
 	return (

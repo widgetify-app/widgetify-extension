@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { memo } from 'react'
 
 interface CustomCheckboxProps {
 	checked: boolean
@@ -6,7 +7,8 @@ interface CustomCheckboxProps {
 	label?: string
 }
 
-export const CustomCheckbox = ({ checked, onChange, label }: CustomCheckboxProps) => {
+const CustomCheckbox = ({ checked, onChange, label }: CustomCheckboxProps) => {
+	console.log('CustomCheckbox')
 	return (
 		<motion.label
 			className="relative flex items-center cursor-pointer group"
@@ -55,3 +57,5 @@ export const CustomCheckbox = ({ checked, onChange, label }: CustomCheckboxProps
 		</motion.label>
 	)
 }
+
+export default memo(CustomCheckbox)

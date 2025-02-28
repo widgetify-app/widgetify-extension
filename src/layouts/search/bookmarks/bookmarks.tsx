@@ -1,9 +1,12 @@
 import { Menu, MenuHandler } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
 import { StoreKey } from '../../../common/constant/store.key'
-import { getFromStorage, setToStorage } from '../../../common/storage'
+import { getFromStorage } from '../../../common/storage'
 import { useBookmarkStore } from '../../../context/bookmark.context'
-import { useGetBookmarks } from '../../../services/getMethodHooks/getBookmarks.hook'
+import {
+	type FetchedBookmark,
+	useGetBookmarks,
+} from '../../../services/getMethodHooks/getBookmarks.hook'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
 import { BookmarkItem } from './components/bookmark-item'
@@ -11,7 +14,7 @@ import { FolderPath } from './components/folder-path'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
-	const { bookmarks, setBookmarks, getCurrentFolderItems, addBookmark } =
+	const { bookmarks, setBookmarks, getCurrentFolderItems, addBookmark, deleteBookmark } =
 		useBookmarkStore()
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
@@ -21,77 +24,60 @@ export function BookmarksComponent() {
 
 	const { data: fetchedBookmarks } = useGetBookmarks()
 
-	useEffect(() => {
-		const handleClickOutside = () => setSelectedBookmark(null)
-		document.addEventListener('click', handleClickOutside)
-		return () => document.removeEventListener('click', handleClickOutside)
-	}, [])
+	const processFetchedBookmark = async () => {
+		const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
+		const deletedBookmarks =
+			(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
 
-	useEffect(() => {
-		if (!Array.isArray(fetchedBookmarks)) return
+		const pinnedBookmarks: Bookmark[] = []
 
-		async function processFetched() {
-			const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
-			const deletedBookmarks =
-				(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+		function handleBookmark(bookmark: FetchedBookmark) {
+			if (deletedBookmarks.includes(bookmark.id)) return
 
-			const pinnedBookmarks = []
-			for (const bookmark of fetchedBookmarks) {
-				if (deletedBookmarks.includes(bookmark.id) && !bookmark.pinned) continue
+			if (bookmark.type === 'FOLDER') {
 				pinnedBookmarks.push({
-					...bookmark,
+					id: bookmark.id,
+					title: bookmark.title,
+					type: 'FOLDER',
+					parentId: bookmark.parentId,
 					isLocal: false,
-					type: 'BOOKMARK' as const,
-					parentId: null,
+					pinned: bookmark.pinned,
+				})
+			} else {
+				pinnedBookmarks.push({
+					id: bookmark.id,
+					title: bookmark.title,
+					type: 'BOOKMARK',
+					parentId: bookmark.parentId,
+					isLocal: false,
+					pinned: bookmark.pinned,
+					url: bookmark.url,
+					icon: bookmark.icon,
 				})
 			}
 
-			setBookmarks([...pinnedBookmarks, ...unpinnedBookmarks])
-		}
-
-		processFetched()
-	}, [fetchedBookmarks])
-
-	const handleDeleteBookmark = async () => {
-		if (!selectedBookmark) return
-
-		const bookmarkIndex = bookmarks.findIndex(
-			(bookmark) => !bookmark.pinned && bookmark.id === selectedBookmark.id,
-		)
-
-		if (bookmarkIndex === -1) return
-
-		const bookmark = bookmarks[bookmarkIndex]
-
-		if (bookmark.type === 'FOLDER') {
-			await handleFolderDeletion(bookmark)
-		}
-
-		if (!bookmark.isLocal) {
-			const deletedBookmarks =
-				(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
-			deletedBookmarks.push(bookmark.id)
-			await setToStorage(StoreKey.DeletedBookmarks, deletedBookmarks)
-		}
-
-		const newBookmarks = [...bookmarks]
-		newBookmarks.splice(bookmarkIndex, 1)
-		setBookmarks(newBookmarks)
-		setSelectedBookmark(null)
-	}
-
-	const handleFolderDeletion = async (bookmark: Bookmark) => {
-		const itemsToDelete = bookmarks.filter((b) => b.parentId === bookmark.id)
-
-		for (const item of itemsToDelete) {
-			if (!item.isLocal) {
-				const deletedBookmarks =
-					(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
-				deletedBookmarks.push(item.id)
-				await setToStorage(StoreKey.DeletedBookmarks, deletedBookmarks)
+			for (const child of bookmark.children) {
+				handleBookmark(child)
 			}
 		}
+
+		for (const bookmark of fetchedBookmarks) {
+			handleBookmark(bookmark)
+		}
+
+		setBookmarks([...pinnedBookmarks, ...unpinnedBookmarks])
 	}
+
+	useEffect(() => {
+		processFetchedBookmark()
+	}, [fetchedBookmarks])
+
+	useEffect(() => {
+		const handleClickOutside = () => setSelectedBookmark(null)
+		document.addEventListener('click', handleClickOutside)
+
+		return () => document.removeEventListener('click', handleClickOutside)
+	}, [])
 
 	const handleRightClick = (e: React.MouseEvent, bookmark: Bookmark) => {
 		e.preventDefault()
@@ -141,7 +127,7 @@ export function BookmarksComponent() {
 							{selectedBookmark?.id === bookmark.id && (
 								<BookmarkContextMenu
 									position={contextMenuPos}
-									onDelete={handleDeleteBookmark}
+									onDelete={() => deleteBookmark(bookmark.id)}
 								/>
 							)}
 						</Menu>
