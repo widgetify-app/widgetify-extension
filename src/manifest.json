@@ -15,6 +15,13 @@
 	"chrome_url_overrides": {
 		"newtab": "src/index.html"
 	},
+	"host_permissions": [
+		"https://*github.com/*",
+		"https://*.githubusercontent.com/*",
+		"https://api.widgetify.ir/*",
+		"https://www.google.com/*",
+		"https://www.google-analytics.com/"
+	],
 	"options_ui": {
 		"page": "src/index.html",
 		"open_in_tab": true
