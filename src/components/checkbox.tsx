@@ -8,7 +8,6 @@ interface CustomCheckboxProps {
 }
 
 const CustomCheckbox = ({ checked, onChange, label }: CustomCheckboxProps) => {
-	console.log('CustomCheckbox')
 	return (
 		<motion.label
 			className="relative flex items-center cursor-pointer group"

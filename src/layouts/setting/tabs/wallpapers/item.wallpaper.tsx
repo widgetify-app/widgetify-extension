@@ -15,7 +15,6 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 	selectedBackground,
 	setSelectedBackground,
 }: WallpaperItemProps) {
-	console.log('WallpaperItem')
 	const [isLoading, setIsLoading] = useState(true)
 	const isSelected = selectedBackground === wallpaper.id
 

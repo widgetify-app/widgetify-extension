@@ -77,7 +77,6 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 		key: K,
 		value: WeatherSettings[K],
 	) => {
-		console.log(key, value)
 		if (key === 'forecastCount' && ((value as number) < 1 || (value as number) > 10)) {
 			value = 4 as WeatherSettings[K]
 		}

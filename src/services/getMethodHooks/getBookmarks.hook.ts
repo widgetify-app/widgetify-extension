@@ -26,6 +26,5 @@ async function getBookmarks(): Promise<FetchedSuggestionsBookmark[]> {
 	const { data } = await client.get<FetchedSuggestionsBookmark[]>(
 		'/bookmarks/suggestions',
 	)
-	console.log('fetched bookmarks', data)
 	return data
 }
