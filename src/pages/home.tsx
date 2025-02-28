@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { StoredWallpaper } from '../common/wallpaper.interface'
+import { ExtensionInstalledModal } from '../components/extension-installed-modal'
 import { CurrencyProvider } from '../context/currency.context'
 import { WeatherProvider } from '../context/weather.context'
 import { ArzLiveLayout } from '../layouts/arzLive/arzLive.layout'
@@ -13,6 +14,25 @@ import { WeatherLayout } from '../layouts/weather/weather.layout'
 import { WidgetifyLayout } from '../layouts/widgetify-card/widgetify.layout'
 
 export function HomePage() {
+	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
+
+	useEffect(() => {
+		async function checkWelcomeModal() {
+			const shouldShowWelcome = await getFromStorage<boolean>(StoreKey.Show_Welcome_Modal)
+			if (shouldShowWelcome) {
+				setShowWelcomeModal(true)
+				await setToStorage(StoreKey.Show_Welcome_Modal, false)
+			}
+		}
+
+		checkWelcomeModal()
+	}, [])
+
+	const handleGetStarted = () => {
+		setShowWelcomeModal(false)
+		window.dispatchEvent(new Event('openSettings'))
+	}
+
 	useEffect(() => {
 		window.addEventListener('wallpaperChanged', (eventData: any) => {
 			const wallpaper: StoredWallpaper = eventData.detail
@@ -88,12 +108,12 @@ export function HomePage() {
 			document.body.prepend(video)
 		}
 	}
+
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
 			<WeatherProvider>
 				<NavbarLayout />
 				<div className="flex flex-col items-center justify-center flex-1 w-full gap-3 p-2 md:p-4">
-					{/* Top Section */}
 					<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
 						<div className="order-3 w-full lg:w-1/4 lg:order-1">
 							<WidgetifyLayout />
@@ -110,7 +130,6 @@ export function HomePage() {
 						</div>
 					</div>
 
-					{/* Main Content */}
 					<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
 						<div className="w-full md:w-2/3">
 							<CalendarLayout />
@@ -122,6 +141,11 @@ export function HomePage() {
 				</div>
 			</WeatherProvider>
 			<Toaster />
+			<ExtensionInstalledModal
+				show={showWelcomeModal}
+				onClose={() => setShowWelcomeModal(false)}
+				onGetStarted={handleGetStarted}
+			/>
 		</div>
 	)
 }

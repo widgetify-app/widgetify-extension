@@ -11,5 +11,6 @@ export enum StoreKey {
 	General_setting = 'General_setting',
 	Bookmarks = 'Bookmarks',
 	DeletedBookmarks = 'DeletedBookmarks',
+	Show_Welcome_Modal = 'Show_Welcome_Modal',
 }
 export type StoreKeyType = StoreKey | `currency:${string}`

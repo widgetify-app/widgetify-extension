@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VscSettings } from 'react-icons/vsc'
 import { Colors } from '../../common/constant/colors.constant'
 import { SettingModal } from '../setting/setting-modal'
@@ -10,6 +10,18 @@ export interface PageLink {
 
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
+	useEffect(() => {
+		const handleOpenSettings = () => {
+			setShowSettings(true)
+		}
+
+		window.addEventListener('openSettings', handleOpenSettings)
+
+		return () => {
+			window.removeEventListener('openSettings', handleOpenSettings)
+		}
+	}, [])
+
 	return (
 		<>
 			<nav className="flex items-center justify-between px-4 pt-2">
