@@ -1,37 +1,10 @@
 import { motion } from 'motion/react'
-import { useCallback, useEffect, useState } from 'react'
-
-import { StoreKey } from '../../../../common/constant/store.key'
-import { getFromStorage, setToStorage } from '../../../../common/storage'
 import CustomCheckbox from '../../../../components/checkbox'
+import { useGeneralSetting } from '../../../../context/general-setting.context'
 
-interface GeneralData {
-	analyticsEnabled: boolean
-}
 export function GeneralSettingTab() {
-	const [generalSetting, setGeneralSetting] = useState<GeneralData>({
-		analyticsEnabled: false,
-	})
-
-	useEffect(() => {
-		async function getUserProfile() {
-			const data = await getFromStorage<GeneralData>(StoreKey.General_setting)
-			if (data) {
-				setGeneralSetting(data)
-			}
-		}
-
-		getUserProfile()
-	}, [])
-
-	const handleAnalyticsChange = useCallback(() => {
-		const item = {
-			...generalSetting,
-			analyticsEnabled: !generalSetting.analyticsEnabled,
-		}
-		setGeneralSetting(item)
-		setToStorage(StoreKey.General_setting, item)
-	}, [generalSetting])
+	const { analyticsEnabled, setAnalyticsEnabled, enablePets, setEnablePets } =
+		useGeneralSetting()
 
 	return (
 		<motion.div
@@ -40,25 +13,39 @@ export function GeneralSettingTab() {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
 		>
-			<h1 className="mb-6 text-2xl font-semibold text-gray-200 font-[Vazir]">
-				تنظیمات عمومی
-			</h1>
-
 			{/* Google Analytics Toggle */}
 			<div className="mb-6">
-				<h2 className="mb-4 text-xl font-semibold text-gray-200 font-[Vazir]">
-					حریم خصوصی
-				</h2>
+				<h2 className="mb-4 text-xl font-semibold text-gray-200 ">حریم خصوصی</h2>
 				<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
 					<CustomCheckbox
-						checked={generalSetting.analyticsEnabled}
-						onChange={handleAnalyticsChange}
+						checked={analyticsEnabled}
+						onChange={() => setAnalyticsEnabled(!analyticsEnabled)}
 					/>
-					<div onClick={() => handleAnalyticsChange()} className="cursor-pointer">
-						<p className="font-medium font-[Vazir] text-gray-200">گوگل آنالیتیکس</p>
-						<p className="text-sm font-[Vazir] text-gray-400">
+					<div
+						onClick={() => setAnalyticsEnabled(!analyticsEnabled)}
+						className="cursor-pointer"
+					>
+						<p className="font-medium text-gray-200">گوگل آنالیتیکس</p>
+						<p className="text-sm font-light text-gray-400">
 							با فعال کردن این گزینه، آمار استفاده از برنامه برای بهبود عملکرد جمع‌آوری
 							می‌شود. هیچ اطلاعات شخصی ارسال نخواهد شد
+						</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Pets Toggle */}
+			<div className="mb-6">
+				<h2 className="mb-4 text-xl font-semibold text-gray-200 ">قابلیت‌های ظاهری</h2>
+				<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
+					<CustomCheckbox
+						checked={enablePets}
+						onChange={() => setEnablePets(!enablePets)}
+					/>
+					<div onClick={() => setEnablePets(!enablePets)} className="cursor-pointer">
+						<p className="font-medium text-gray-200">نمایش حیوان خانگی</p>
+						<p className="text-sm font-light text-gray-400">
+							نمایش حیوان خانگی تعاملی روی صفحه اصلی
 						</p>
 					</div>
 				</div>
