@@ -17,7 +17,7 @@ export function BookmarkContextMenu({ position, onDelete }: BookmarkContextMenuP
 			}}
 		>
 			<MenuItem
-				className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 font-[Vazir]"
+				className="flex items-center gap-2 text-red-400 hover:bg-red-500/10  "
 				onClick={onDelete}
 			>
 				<FaTrash />

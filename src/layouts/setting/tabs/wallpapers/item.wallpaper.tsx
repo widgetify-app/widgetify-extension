@@ -61,7 +61,7 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 					>
 						<div className="flex items-center gap-1">
 							<MdOutlineVideoSettings size={14} className="text-white" />
-							<span className="text-xs text-white font-[Vazir]">ویدیو</span>
+							<span className="text-xs text-white  ">ویدیو</span>
 						</div>
 					</motion.div>
 				</>
@@ -71,7 +71,7 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 			>
-				<p className="absolute bottom-2 w-full text-sm text-center font-[Vazir] text-white">
+				<p className="absolute bottom-2 w-full text-sm text-center   text-white">
 					{wallpaper.name}
 				</p>
 			</motion.div>
@@ -89,7 +89,7 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 				>
 					<div className="flex items-center gap-1">
 						<FiExternalLink size={14} className="text-white" />
-						<span className="text-xs text-white font-[Vazir]">منبع</span>
+						<span className="text-xs text-white  ">منبع</span>
 					</div>
 				</motion.div>
 			)}

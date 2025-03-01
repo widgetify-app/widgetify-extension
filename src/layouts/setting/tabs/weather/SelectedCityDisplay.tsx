@@ -18,9 +18,7 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 		>
 			<div className="flex items-center gap-2 p-3 border rounded-xl bg-blue-500/10 border-blue-500/20">
 				<CiLocationOn className="text-blue-400 size-5" />
-				<span className="text-blue-300 text-[14px] font-[Vazir] font-medium">
-					{city.name}
-				</span>
+				<span className="text-blue-300 text-[14px]   font-medium">{city.name}</span>
 			</div>
 		</motion.div>
 	)

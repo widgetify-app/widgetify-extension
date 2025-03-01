@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import Analytics from '../../../../analytics'
 import { StoreKey } from '../../../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../../../common/storage'
 import { preloadImages } from '../../../../common/utils/preloadImages'
@@ -7,7 +8,6 @@ import type { StoredWallpaper } from '../../../../common/wallpaper.interface'
 import CustomCheckbox from '../../../../components/checkbox'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
 import { WallpaperItem } from './item.wallpaper'
-import Analytics from '../../../../analytics'
 
 export function WallpaperSetting() {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
@@ -96,9 +96,7 @@ export function WallpaperSetting() {
 			transition={{ duration: 0.3 }}
 		>
 			<div>
-				<h2 className="mb-4 text-xl font-semibold text-gray-200 font-[Vazir]">
-					تصویر زمینه
-				</h2>
+				<h2 className="mb-4 text-xl font-semibold text-gray-200 ">تصویر زمینه</h2>
 				<div className="h-64 pr-2 overflow-y-auto custom-scrollbar">
 					{isLoading ? (
 						<div className="flex items-center justify-center h-full">
@@ -106,7 +104,7 @@ export function WallpaperSetting() {
 						</div>
 					) : error ? (
 						<div className="p-4 text-center text-red-400 bg-red-500/10 rounded-xl">
-							<p className="font-[Vazir]">خطا در بارگذاری تصاویر زمینه</p>
+							<p className="">خطا در بارگذاری تصاویر زمینه</p>
 						</div>
 					) : (
 						<div className="grid grid-cols-3 gap-4 p-2">
@@ -127,8 +125,8 @@ export function WallpaperSetting() {
 				<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
 					<CustomCheckbox checked={isRetouchEnabled} onChange={setIsRetouchEnabled} />
 					<div onClick={toggleRetouch} className="cursor-pointer">
-						<p className="font-medium font-[Vazir] text-gray-200">فیلتر تصویر</p>
-						<p className="text-sm font-[Vazir] text-gray-400">
+						<p className="font-medium text-gray-200">فیلتر تصویر</p>
+						<p className="text-sm font-light text-gray-400">
 							با فعال کردن این گزینه تصویر زمینه شما تاریک تر خواهد شد
 						</p>
 					</div>

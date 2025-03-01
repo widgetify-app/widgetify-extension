@@ -74,7 +74,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 							whileTap={{ scale: 0.98 }}
 						>
 							<span className="text-gray-400">{icon}</span>
-							<span className="font-[Vazir] text-sm">{label}</span>
+							<span className="  text-sm">{label}</span>
 							{activeTab === value && (
 								<motion.div
 									className="absolute inset-0 rounded-lg bg-white/10 -z-10"

@@ -30,13 +30,9 @@ export function CityResultsList({ cities, onSelectCity }: CityResultsListProps) 
 					>
 						<CiLocationOn className="text-gray-400 size-4" />
 						<div className="flex-1">
-							<span className="block text-gray-200 text-[14px] font-[Vazir]">
-								{city.name}
-							</span>
+							<span className="block text-gray-200 text-[14px]  ">{city.name}</span>
 							{city.state && (
-								<span className="block text-gray-400 text-[12px] font-[Vazir]">
-									{city.state}
-								</span>
+								<span className="block text-gray-400 text-[12px]  ">{city.state}</span>
 							)}
 						</div>
 					</motion.button>
