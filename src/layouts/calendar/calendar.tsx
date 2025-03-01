@@ -2,8 +2,9 @@ import { motion } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
 import { AnimatePresence } from 'motion/react'
 import type React from 'react'
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { FiCalendar } from 'react-icons/fi'
 import { TodoProvider, useTodoStore } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
@@ -34,6 +35,31 @@ export const PersianCalendar: React.FC = () => {
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
 
+	const isCurrentMonthToday = useMemo(() => {
+		const realToday = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+		return (
+			currentDate.jMonth() === realToday.jMonth() &&
+			currentDate.jYear() === realToday.jYear()
+		)
+	}, [currentDate])
+
+	const isTodaySelected = useMemo(() => {
+		const realToday = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+		return (
+			selectedDate.jDate() === realToday.jDate() &&
+			selectedDate.jMonth() === realToday.jMonth() &&
+			selectedDate.jYear() === realToday.jYear()
+		)
+	}, [selectedDate])
+
+	const showTodayButton = !isCurrentMonthToday || !isTodaySelected
+
+	const goToToday = useCallback(() => {
+		const realToday = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+		setCurrentDate(realToday.clone())
+		setSelectedDate(realToday.clone())
+	}, [])
+
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
 	const { data: events } = useGetEvents()
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
@@ -54,6 +80,17 @@ export const PersianCalendar: React.FC = () => {
 						{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
 					</h3>
 					<div className="flex gap-1">
+						{showTodayButton && (
+							<motion.button
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								onClick={goToToday}
+								className="flex items-center gap-1 px-2 py-1 text-sm font-medium text-blue-400 transition-colors rounded-lg bg-blue-500/10 hover:bg-blue-500/20"
+							>
+								<FiCalendar size={14} />
+								<span>امروز</span>
+							</motion.button>
+						)}
 						<button
 							onClick={() => changeMonth(-1)}
 							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg hover:bg-neutral-800/50"
