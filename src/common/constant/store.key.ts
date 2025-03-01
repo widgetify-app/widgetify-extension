@@ -8,6 +8,7 @@ export enum StoreKey {
 	LAYOUT_COUNTS = 'LAYOUT_COUNTS',
 	Todos = 'Todos',
 	Wallpaper = 'Wallpaper',
+	Custom_Wallpaper = 'custom_wallpaper',
 	General_setting = 'General_setting',
 	Bookmarks = 'Bookmarks',
 	DeletedBookmarks = 'DeletedBookmarks',

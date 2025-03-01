@@ -1,20 +1,25 @@
 import { motion } from 'motion/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import Analytics from '../../../../analytics'
-import { StoreKey } from '../../../../common/constant/store.key'
-import { getFromStorage, setToStorage } from '../../../../common/storage'
+import { useEffect } from 'react'
 import { preloadImages } from '../../../../common/utils/preloadImages'
-import type { StoredWallpaper } from '../../../../common/wallpaper.interface'
-import CustomCheckbox from '../../../../components/checkbox'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
-import { WallpaperItem } from './item.wallpaper'
+import { RetouchFilter } from './components/retouch-filter.component'
+import { UploadArea } from './components/upload-area.component'
+import { WallpaperGallery } from './components/wallpaper-gallery.component'
+import { useWallpaper } from './hooks/use-wallpaper'
 
 export function WallpaperSetting() {
-	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
-	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
 	const { data: fetchedWallpaper, isLoading, error } = useGetWallpapers()
 
-	// Preload images when data is available
+	const {
+		selectedBackground,
+		isRetouchEnabled,
+		customWallpaper,
+		allWallpapers,
+		handleSelectBackground,
+		toggleRetouch,
+		handleCustomWallpaperChange,
+	} = useWallpaper(fetchedWallpaper?.wallpapers)
+
 	useEffect(() => {
 		if (fetchedWallpaper?.wallpapers) {
 			const imageUrls = fetchedWallpaper.wallpapers
@@ -25,69 +30,6 @@ export function WallpaperSetting() {
 		}
 	}, [fetchedWallpaper])
 
-	useEffect(() => {
-		async function getWallpaper() {
-			const wallpaper = await getFromStorage<StoredWallpaper>(StoreKey.Wallpaper)
-			if (wallpaper) {
-				setSelectedBackground(wallpaper.id)
-				setIsRetouchEnabled(wallpaper.isRetouchEnabled)
-			}
-		}
-
-		getWallpaper()
-	}, [])
-
-	const selectedWallpaper = useMemo(() => {
-		return fetchedWallpaper?.wallpapers?.find((bg) => bg.id === selectedBackground)
-	}, [fetchedWallpaper, selectedBackground])
-
-	useEffect(() => {
-		if (!selectedWallpaper) return
-
-		const wallpaperData = {
-			id: selectedWallpaper.id,
-			type: selectedWallpaper?.type,
-			src: selectedWallpaper.src,
-			isRetouchEnabled: isRetouchEnabled,
-		}
-
-		// Save to storage
-		setToStorage(StoreKey.Wallpaper, wallpaperData)
-
-		const event = new CustomEvent('wallpaperChanged', {
-			detail: wallpaperData,
-		})
-
-		window.dispatchEvent(event)
-	}, [selectedWallpaper, isRetouchEnabled])
-
-	const handleSelectBackground = useCallback(
-		(id: string) => {
-			setSelectedBackground(id)
-
-			// Track wallpaper selection
-			const selectedWp = fetchedWallpaper?.wallpapers?.find((wp) => wp.id === id)
-			if (selectedWp) {
-				Analytics.featureUsed('wallpaper_changed', {
-					wallpaper_id: id,
-					wallpaper_name: selectedWp.name || 'unnamed',
-					wallpaper_type: selectedWp.type,
-				})
-			}
-		},
-		[fetchedWallpaper],
-	)
-
-	const toggleRetouch = useCallback(() => {
-		setIsRetouchEnabled((prev) => !prev)
-
-		// Track retouch filter toggle
-		Analytics.featureUsed('wallpaper_retouch_toggled', {
-			enabled: !isRetouchEnabled,
-			wallpaper_id: selectedBackground || 'none',
-		})
-	}, [isRetouchEnabled, selectedBackground])
-
 	return (
 		<motion.div
 			className="w-full max-w-xl mx-auto"
@@ -96,59 +38,47 @@ export function WallpaperSetting() {
 			transition={{ duration: 0.3 }}
 		>
 			<div>
-				<h2 className="mb-4 text-xl font-semibold text-gray-200 ">تصویر زمینه</h2>
+				<h2 className="mb-4 text-xl font-semibold text-gray-200">تصویر زمینه</h2>
+
+				<div className="mb-6">
+					<UploadArea
+						customWallpaper={customWallpaper}
+						onWallpaperChange={handleCustomWallpaperChange}
+					/>
+				</div>
+
+				<h3 className="mb-3 font-medium text-gray-300 text-md">گالری</h3>
 				<div className="h-64 pr-2 overflow-y-auto custom-scrollbar">
-					{isLoading ? (
-						<div className="flex items-center justify-center h-full">
-							<div className="w-8 h-8 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
-						</div>
-					) : error ? (
-						<div className="p-4 text-center text-red-400 bg-red-500/10 rounded-xl">
-							<p className="">خطا در بارگذاری تصاویر زمینه</p>
-						</div>
-					) : (
-						<div className="grid grid-cols-3 gap-4 p-2">
-							{fetchedWallpaper.wallpapers.map((wallpaper) => (
-								<WallpaperItem
-									wallpaper={wallpaper}
-									key={wallpaper.id}
-									selectedBackground={selectedBackground}
-									setSelectedBackground={handleSelectBackground}
-								/>
-							))}
-						</div>
-					)}
+					<WallpaperGallery
+						isLoading={isLoading}
+						error={error}
+						wallpapers={allWallpapers}
+						selectedBackground={selectedBackground}
+						onSelectBackground={handleSelectBackground}
+					/>
 				</div>
 			</div>
 
 			<div className="flex flex-col gap-4 mt-6">
-				<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
-					<CustomCheckbox checked={isRetouchEnabled} onChange={setIsRetouchEnabled} />
-					<div onClick={toggleRetouch} className="cursor-pointer">
-						<p className="font-medium text-gray-200">فیلتر تصویر</p>
-						<p className="text-sm font-light text-gray-400">
-							با فعال کردن این گزینه تصویر زمینه شما تاریک تر خواهد شد
-						</p>
-					</div>
-				</div>
+				<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
 			</div>
 
-			<style jsx>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    width: 6px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 10px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: rgba(255, 255, 255, 0.2);
-                    border-radius: 10px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: rgba(255, 255, 255, 0.3);
-                }
-            `}</style>
+			<style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
 		</motion.div>
 	)
 }

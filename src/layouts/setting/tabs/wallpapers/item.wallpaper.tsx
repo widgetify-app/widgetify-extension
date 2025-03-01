@@ -2,10 +2,10 @@ import { motion } from 'motion/react'
 import React, { useState } from 'react'
 import { FiExternalLink } from 'react-icons/fi'
 import { MdOutlineVideoSettings } from 'react-icons/md'
-import type { FetchedWallpaper } from '../../../../services/getMethodHooks/getWallpapers.hook'
+import type { Wallpaper } from '../../../../common/wallpaper.interface'
 
 interface WallpaperItemProps {
-	wallpaper: FetchedWallpaper
+	wallpaper: Wallpaper
 	selectedBackground: string | null
 	setSelectedBackground: (id: string) => void
 }
@@ -61,7 +61,7 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 					>
 						<div className="flex items-center gap-1">
 							<MdOutlineVideoSettings size={14} className="text-white" />
-							<span className="text-xs text-white  ">ویدیو</span>
+							<span className="text-xs text-white ">ویدیو</span>
 						</div>
 					</motion.div>
 				</>
@@ -71,7 +71,7 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 			>
-				<p className="absolute bottom-2 w-full text-sm text-center   text-white">
+				<p className="absolute w-full text-sm text-center text-white bottom-2">
 					{wallpaper.name}
 				</p>
 			</motion.div>
@@ -89,9 +89,15 @@ export const WallpaperItem = React.memo(function WallpaperItem({
 				>
 					<div className="flex items-center gap-1">
 						<FiExternalLink size={14} className="text-white" />
-						<span className="text-xs text-white  ">منبع</span>
+						<span className="text-xs text-white ">منبع</span>
 					</div>
 				</motion.div>
+			)}
+
+			{wallpaper.isCustom && (
+				<div className="absolute top-1 left-1 bg-blue-500 py-0.5 px-2 text-xs rounded text-white">
+					محلی
+				</div>
 			)}
 		</motion.div>
 	)
