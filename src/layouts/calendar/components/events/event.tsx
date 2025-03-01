@@ -1,26 +1,29 @@
 import { motion } from 'framer-motion'
 import type jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiCalendar, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import type { FetchedAllEvents } from '../../../../services/getMethodHooks/getEvents.hook'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils'
 
 interface Prop {
-	// events: Event[]
 	events: FetchedAllEvents
 	currentDate: jalaliMoment.Moment
 }
 
-const getEventTypeColor = (type: Event['type']) => {
-	switch (type) {
-		case 'holiday':
-			return 'bg-red-500/10 text-red-500'
-		case 'event':
-			return 'bg-blue-500/10 text-blue-500'
-		case 'news':
-			return 'bg-yellow-500/10 text-yellow-500'
-		default:
-			return 'bg-gray-500/10 text-gray-500'
+const getEventTypeStyles = (isHoliday: boolean) => {
+	if (isHoliday) {
+		return {
+			container:
+				'bg-gradient-to-r from-red-500/10 to-red-400/5 border-r-2 border-red-500',
+			icon: 'text-red-400',
+			title: 'text-red-400',
+		}
+	}
+	return {
+		container:
+			'bg-gradient-to-r from-blue-500/10 to-blue-400/5 border-r-2 border-blue-500',
+		icon: 'text-blue-400',
+		title: 'text-blue-400',
 	}
 }
 
@@ -31,19 +34,33 @@ export function Events({ events, currentDate }: Prop) {
 	const hijriEvents = getHijriEvents(events, currentDate)
 	const selectedEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents]
 
-	// تنظیمات انیمیشن
 	const containerVariants = {
-		collapsed: { height: 110 }, // ارتفاع بسته شده (~40 = 160px)
-		expanded: { height: 220 }, // ارتفاع باز شده (~80 = 320px)
+		collapsed: { height: 110 },
+		expanded: { height: 'auto', maxHeight: 320 },
+	}
+
+	const listVariants = {
+		collapsed: { opacity: 1 },
+		expanded: { opacity: 1 },
+	}
+
+	const itemVariants = {
+		initial: { opacity: 0, y: 10 },
+		animate: (i: number) => ({
+			opacity: 1,
+			y: 0,
+			transition: { delay: i * 0.05 },
+		}),
 	}
 
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<h4 className="text-lg text-gray-300">رویدادها</h4>
+				<h4 className="flex items-center text-lg font-medium text-gray-300">رویدادها</h4>
 				<button
 					onClick={() => setIsExpanded(!isExpanded)}
-					className="p-1.5 text-gray-400 rounded-lg hover:bg-gray-700/30 transition-colors"
+					className="p-1.5 text-gray-400 rounded-lg hover:bg-gray-700/30 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+					aria-label={isExpanded ? 'بستن لیست' : 'نمایش کامل'}
 				>
 					{isExpanded ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
 				</button>
@@ -53,30 +70,64 @@ export function Events({ events, currentDate }: Prop) {
 				variants={containerVariants}
 				initial="collapsed"
 				animate={isExpanded ? 'expanded' : 'collapsed'}
-				className="space-y-2 overflow-y-auto rounded-lg bg-neutral-800/30"
-				style={{ maxHeight: 320 }}
+				className="overflow-y-auto rounded-lg"
 				transition={{ type: 'spring', damping: 20, stiffness: 100 }}
 			>
-				<div className="p-2">
+				<motion.div className="p-2" variants={listVariants}>
 					{selectedEvents.length > 0 ? (
-						selectedEvents.map((event, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								className={`p-3 rounded-lg mb-2 last:mb-0 ${getEventTypeColor(
-									event.isHoliday ? 'holiday' : 'event',
-								)}`}
-							>
-								<div className="font-medium">{event.title}</div>
-							</motion.div>
-						))
+						selectedEvents.map((event, index) => {
+							const styles = getEventTypeStyles(event.isHoliday)
+
+							return (
+								<motion.div
+									key={index}
+									custom={index}
+									variants={itemVariants}
+									initial="initial"
+									animate="animate"
+									className={`${styles.container} p-3 rounded-lg mb-2 last:mb-0 flex items-start`}
+									whileHover={{ x: 3, transition: { duration: 0.2 } }}
+								>
+									{event.icon ? (
+										<img
+											src={event.icon}
+											alt=""
+											className="object-contain w-8 h-8 p-1 ml-2 rounded-md bg-white/10"
+											onError={(e) => {
+												e.currentTarget.style.display = 'none'
+											}}
+										/>
+									) : (
+										<div
+											className={`flex-shrink-0 w-8 h-8 ml-2 rounded-md bg-white/5 flex items-center justify-center ${styles.icon}`}
+										>
+											{event.isHoliday ? '⛱️' : '🎉'}
+										</div>
+									)}
+
+									<div className="flex-1">
+										<div className={`font-medium ${styles.title}`}>{event.title}</div>
+										<div className="mt-1 text-xs text-gray-400">
+											{event.isHoliday ? 'تعطیل رسمی' : 'رویداد'}
+										</div>
+									</div>
+								</motion.div>
+							)
+						})
 					) : (
-						<div className="py-4 text-center text-gray-400">
-							رویدادی برای این روز ثبت نشده است
-						</div>
+						<motion.div
+							className="py-8 text-center"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 0.2 }}
+						>
+							<div className="inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-neutral-700/30">
+								<FiCalendar className="text-gray-400" size={24} />
+							</div>
+							<div className="text-gray-400">رویدادی برای این روز ثبت نشده است</div>
+						</motion.div>
 					)}
-				</div>
+				</motion.div>
 			</motion.div>
 		</div>
 	)
