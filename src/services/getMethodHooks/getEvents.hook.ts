@@ -6,6 +6,7 @@ export interface FetchedEvent {
 	title: string
 	day: number
 	month: number
+	icon: string | null //e.g https://.../icon.png|gif|jpg
 }
 export interface FetchedAllEvents {
 	shamsiEvents: FetchedEvent[]
