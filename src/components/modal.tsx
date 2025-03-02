@@ -49,7 +49,7 @@ const Modal = ({
 					onClick={(e: any) => e.stopPropagation()}
 				>
 					<div className="flex items-center justify-between p-4 border-b border-gray-700/30">
-						{title && <h2 className="text-lg font-semibold text-gray-200  ">{title}</h2>}
+						{title && <h2 className="text-lg font-semibold text-gray-200 ">{title}</h2>}
 						<button
 							onClick={onClose}
 							className="p-1 text-gray-400 transition-colors rounded-lg hover:bg-gray-700/30 hover:text-gray-200"

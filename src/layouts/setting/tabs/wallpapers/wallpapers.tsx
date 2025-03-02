@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { useEffect } from 'react'
-import { FiImage, FiSettings } from 'react-icons/fi'
 import { preloadImages } from '../../../../common/utils/preloadImages'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
 import { GlassPanel } from './components/glass-panel'
