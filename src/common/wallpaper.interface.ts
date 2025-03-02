@@ -5,6 +5,7 @@ export interface Wallpaper {
 	src: string
 	isCustom?: boolean
 	source?: string
+	category?: string
 }
 
 export interface StoredWallpaper {

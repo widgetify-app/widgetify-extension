@@ -1,7 +1,9 @@
-import { motion } from 'motion/react'
+import { motion } from 'framer-motion'
 import { useEffect } from 'react'
+import { FiImage, FiSettings } from 'react-icons/fi'
 import { preloadImages } from '../../../../common/utils/preloadImages'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
+import { GlassPanel } from './components/glass-panel'
 import { RetouchFilter } from './components/retouch-filter.component'
 import { UploadArea } from './components/upload-area.component'
 import { WallpaperGallery } from './components/wallpaper-gallery.component'
@@ -9,7 +11,6 @@ import { useWallpaper } from './hooks/use-wallpaper'
 
 export function WallpaperSetting() {
 	const { data: fetchedWallpaper, isLoading, error } = useGetWallpapers()
-
 	const {
 		selectedBackground,
 		isRetouchEnabled,
@@ -24,6 +25,7 @@ export function WallpaperSetting() {
 		if (fetchedWallpaper?.wallpapers) {
 			const imageUrls = fetchedWallpaper.wallpapers
 				.filter((wp) => wp.type === 'IMAGE')
+				.slice(0, 5)
 				.map((wp) => wp.src)
 
 			preloadImages(imageUrls)
@@ -37,18 +39,15 @@ export function WallpaperSetting() {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
 		>
-			<div>
-				<h2 className="mb-4 text-xl font-semibold text-gray-200">تصویر زمینه</h2>
-
-				<div className="mb-6">
+			<div className="space-y-4">
+				<GlassPanel title="تصویر زمینه" delay={0.1}>
 					<UploadArea
 						customWallpaper={customWallpaper}
 						onWallpaperChange={handleCustomWallpaperChange}
 					/>
-				</div>
+				</GlassPanel>
 
-				<h3 className="mb-3 font-medium text-gray-300 text-md">گالری</h3>
-				<div className="h-64 pr-2 overflow-y-auto custom-scrollbar">
+				<GlassPanel title="گالری" delay={0.2}>
 					<WallpaperGallery
 						isLoading={isLoading}
 						error={error}
@@ -56,14 +55,14 @@ export function WallpaperSetting() {
 						selectedBackground={selectedBackground}
 						onSelectBackground={handleSelectBackground}
 					/>
-				</div>
+				</GlassPanel>
+
+				<GlassPanel title="تنظیمات" delay={0.3}>
+					<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
+				</GlassPanel>
 			</div>
 
-			<div className="flex flex-col gap-4 mt-6">
-				<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
-			</div>
-
-			<style>{`
+			<style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }

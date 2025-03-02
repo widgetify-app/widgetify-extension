@@ -20,7 +20,7 @@ import { WidgetifyLayout } from '../layouts/widgetify-card/widgetify.layout'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
-	top: 'justify-start',
+	top: 'justify-start  mt-10',
 }
 
 // Separate component to access context
