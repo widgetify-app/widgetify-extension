@@ -1,12 +1,5 @@
 
 # Widgetify - ویجتیفای
-
-  
-
-![Widgetify Logo](https://widgetify.ir/assets/logo.png)
-
-  
-
 وب سایت رسمی: [widgetify.ir](https://widgetify.ir)
 
   
