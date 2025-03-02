@@ -6,7 +6,10 @@ import { getFromStorage, setToStorage } from '../common/storage'
 import type { StoredWallpaper } from '../common/wallpaper.interface'
 import { ExtensionInstalledModal } from '../components/extension-installed-modal'
 import { CurrencyProvider } from '../context/currency.context'
-import { GeneralSettingProvider } from '../context/general-setting.context'
+import {
+	GeneralSettingProvider,
+	useGeneralSetting,
+} from '../context/general-setting.context'
 import { WeatherProvider } from '../context/weather.context'
 import { ArzLiveLayout } from '../layouts/arzLive/arzLive.layout'
 import CalendarLayout from '../layouts/calendar/calendar'
@@ -14,6 +17,47 @@ import { NavbarLayout } from '../layouts/navbar/navbar.layout'
 import { SearchLayout } from '../layouts/search/search'
 import { WeatherLayout } from '../layouts/weather/weather.layout'
 import { WidgetifyLayout } from '../layouts/widgetify-card/widgetify.layout'
+
+const layoutPositions: Record<string, string> = {
+	center: 'justify-center',
+	top: 'justify-start',
+}
+
+// Separate component to access context
+function ContentSection() {
+	const { contentAlignment } = useGeneralSetting()
+
+	return (
+		<div
+			className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 p-2 md:p-4`}
+		>
+			<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+				<div className="order-3 w-full lg:w-1/4 lg:order-1">
+					<WidgetifyLayout />
+				</div>
+
+				<div className="order-1 w-full lg:w-2/4 lg:order-2">
+					<SearchLayout />
+				</div>
+
+				<div className="order-2 w-full lg:w-1/4 lg:order-3">
+					<CurrencyProvider>
+						<ArzLiveLayout />
+					</CurrencyProvider>
+				</div>
+			</div>
+
+			<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
+				<div className="w-full md:w-2/3">
+					<CalendarLayout />
+				</div>
+				<div className="w-full md:w-1/3">
+					<WeatherLayout />
+				</div>
+			</div>
+		</div>
+	)
+}
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
@@ -118,32 +162,7 @@ export function HomePage() {
 			<WeatherProvider>
 				<GeneralSettingProvider>
 					<NavbarLayout />
-					<div className="flex flex-col items-center justify-center flex-1 w-full gap-3 p-2 md:p-4">
-						<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
-							<div className="order-3 w-full lg:w-1/4 lg:order-1">
-								<WidgetifyLayout />
-							</div>
-
-							<div className="order-1 w-full lg:w-2/4 lg:order-2">
-								<SearchLayout />
-							</div>
-
-							<div className="order-2 w-full lg:w-1/4 lg:order-3">
-								<CurrencyProvider>
-									<ArzLiveLayout />
-								</CurrencyProvider>
-							</div>
-						</div>
-
-						<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
-							<div className="w-full md:w-2/3">
-								<CalendarLayout />
-							</div>
-							<div className="w-full md:w-1/3">
-								<WeatherLayout />
-							</div>
-						</div>
-					</div>
+					<ContentSection />
 				</GeneralSettingProvider>
 			</WeatherProvider>
 			<Toaster />
