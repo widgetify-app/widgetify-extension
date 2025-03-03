@@ -77,7 +77,7 @@ function FolderBookmarkItem({
 				)}
 			</div>
 
-			<span className="relative z-10 text-[10px] w-full text-center font-medium text-gray-200 transition-colors duration-300 group-hover:text-white truncate">
+			<span className="relative z-10 text-[.5rem] w-full text-center font-medium text-gray-200 transition-colors duration-300 group-hover:text-white truncate">
 				{bookmark.title}
 			</span>
 
