@@ -1,4 +1,3 @@
-import { Menu, MenuHandler } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
 import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage } from '../../../common/storage'
@@ -83,7 +82,12 @@ export function BookmarksComponent() {
 		e.preventDefault()
 		if (!bookmark.pinned) {
 			setSelectedBookmark(bookmark)
-			setContextMenuPos({ x: e.clientX, y: e.clientY })
+			// get parent
+			const parent = e.currentTarget
+			if (parent) {
+				const rect = parent.getBoundingClientRect()
+				setContextMenuPos({ x: rect.right - 120, y: rect.top + 80 })
+			}
 		}
 	}
 
@@ -115,22 +119,12 @@ export function BookmarksComponent() {
 			<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
-						<Menu key={i} open={selectedBookmark?.id === bookmark.id}>
-							<MenuHandler>
-								<div onContextMenu={(e) => handleRightClick(e, bookmark)}>
-									<BookmarkItem
-										bookmark={bookmark}
-										onClick={() => handleBookmarkClick(bookmark)}
-									/>
-								</div>
-							</MenuHandler>
-							{selectedBookmark?.id === bookmark.id && (
-								<BookmarkContextMenu
-									position={contextMenuPos}
-									onDelete={() => deleteBookmark(bookmark.id)}
-								/>
-							)}
-						</Menu>
+						<div key={i} onContextMenu={(e) => handleRightClick(e, bookmark)}>
+							<BookmarkItem
+								bookmark={bookmark}
+								onClick={() => handleBookmarkClick(bookmark)}
+							/>
+						</div>
 					) : (
 						<BookmarkItem
 							key={i}
@@ -138,6 +132,15 @@ export function BookmarksComponent() {
 							onClick={() => setShowAddBookmarkModal(true)}
 						/>
 					),
+				)}
+				{selectedBookmark && (
+					<BookmarkContextMenu
+						position={contextMenuPos}
+						onDelete={() => {
+							deleteBookmark(selectedBookmark.id)
+							setSelectedBookmark(null)
+						}}
+					/>
 				)}
 			</div>
 
