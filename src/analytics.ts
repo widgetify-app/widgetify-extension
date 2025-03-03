@@ -1,4 +1,3 @@
-// Updated analytics.ts
 import { v4 as uuidv4 } from 'uuid'
 import { StoreKey } from './common/constant/store.key'
 import { getFromStorage, setToStorage } from './common/storage'

@@ -5,6 +5,7 @@ import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
+import { v4 as uuidv4 } from 'uuid'
 import { TodoProvider, useTodoStore } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
@@ -76,7 +77,7 @@ export const PersianCalendar: React.FC = () => {
 			{/* Calendar Grid */}
 			<div className="w-full overflow-hidden md:flex-1 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
 				<div className="flex items-center justify-between p-3 md:p-4">
-					<h3 className="text-lg font-medium text-gray-200 md:text-xl">
+					<h3 className="font-medium text-gray-200 text-md">
 						{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
 					</h3>
 					<div className="flex gap-1">
@@ -127,7 +128,7 @@ export const PersianCalendar: React.FC = () => {
 							selectedDateStr={selectedDateStr}
 							setSelectedDate={setSelectedDate}
 							todos={todos}
-							key={i + 1}
+							key={uuidv4()}
 						/>
 					))}
 				</div>
