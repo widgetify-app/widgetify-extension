@@ -74,10 +74,15 @@ export function AddBookmarkModal({
 		if (type === 'FOLDER') {
 			onAdd(baseBookmark as Bookmark)
 		} else {
+			let newUrl = url
+			if (!url.startsWith('http://') && !url.startsWith('https://')) {
+				newUrl = `https://${url}`
+			}
+
 			onAdd({
 				...baseBookmark,
 				type: 'BOOKMARK',
-				url: url.trim(),
+				url: newUrl.trim(),
 				icon: customImage || icon,
 			} as Bookmark)
 		}
