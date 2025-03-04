@@ -231,7 +231,10 @@ export const DogComponent = () => {
 	}
 
 	return (
-		<div ref={containerRef} className="absolute bottom-0 w-full h-full overflow-hidden">
+		<div
+			ref={containerRef}
+			className="absolute bottom-0 hidden w-full h-32 overflow-hidden lg:flex"
+		>
 			<div
 				className="absolute transition-transform duration-300"
 				style={{
