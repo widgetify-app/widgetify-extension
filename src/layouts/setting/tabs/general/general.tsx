@@ -8,6 +8,8 @@ export function GeneralSettingTab() {
 		setAnalyticsEnabled,
 		enablePets,
 		setEnablePets,
+		petName,
+		setPetName,
 		contentAlignment,
 		setContentAlignment,
 	} = useGeneralSetting()
@@ -43,17 +45,35 @@ export function GeneralSettingTab() {
 			{/* Pets Toggle */}
 			<div className="mb-6">
 				<h2 className="mb-4 text-xl font-semibold text-gray-200">قابلیت‌های ظاهری</h2>
-				<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
-					<CustomCheckbox
-						checked={enablePets}
-						onChange={() => setEnablePets(!enablePets)}
-					/>
-					<div onClick={() => setEnablePets(!enablePets)} className="cursor-pointer">
-						<p className="font-medium text-gray-200">نمایش حیوان خانگی</p>
-						<p className="text-sm font-light text-gray-400">
-							نمایش حیوان خانگی تعاملی روی صفحه اصلی
-						</p>
+				<div className="flex flex-col gap-4">
+					<div className="flex items-start gap-3 p-4 rounded-xl bg-white/5">
+						<CustomCheckbox
+							checked={enablePets}
+							onChange={() => setEnablePets(!enablePets)}
+						/>
+						<div onClick={() => setEnablePets(!enablePets)} className="cursor-pointer">
+							<p className="font-medium text-gray-200">نمایش حیوان خانگی</p>
+							<p className="text-sm font-light text-gray-400">
+								نمایش حیوان خانگی تعاملی روی صفحه اصلی
+							</p>
+						</div>
 					</div>
+
+					{enablePets && (
+						<div className="p-4 rounded-xl bg-white/5">
+							<p className="mb-3 font-medium text-gray-200">نام حیوان خانگی</p>
+							<input
+								type="text"
+								value={petName}
+								onChange={(e) => setPetName(e.target.value)}
+								placeholder="آکیتا"
+								className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-500 text-gray-200"
+							/>
+							<p className="mt-2 text-xs text-gray-400">
+								در صورت خالی بودن، نام پیش‌فرض "آکیتا" استفاده می‌شود.
+							</p>
+						</div>
+					)}
 				</div>
 			</div>
 

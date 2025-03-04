@@ -4,9 +4,12 @@ import lie from '../../../assets/animals/akita_lie_8fps.gif'
 import running from '../../../assets/animals/akita_run_8fps.gif'
 import swipe from '../../../assets/animals/akita_swipe_8fps.gif'
 import walking from '../../../assets/animals/akita_walk_fast_8fps.gif'
+import { useGeneralSetting } from '../../../context/general-setting.context'
 
 export const DogComponent = () => {
+	const { petName } = useGeneralSetting()
 	const containerRef = useRef<HTMLDivElement>(null)
+	const dogRef = useRef<HTMLDivElement>(null)
 	const [position, setPosition] = useState({ x: 30, y: 0 })
 	const [direction, setDirection] = useState(1)
 	const [action, setAction] = useState<
@@ -18,6 +21,7 @@ export const DogComponent = () => {
 	)
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
+	const [showName, setShowName] = useState(false)
 
 	const DOG_SIZE = 32
 	const WALK_SPEED = 1.8
@@ -201,15 +205,42 @@ export const DogComponent = () => {
 
 	useEffect(() => {
 		const container = containerRef.current
+		const dogElement = dogRef.current
+
 		if (container) {
 			container.addEventListener('click', handleClick)
 		}
+
 		return () => {
 			if (container) {
 				container.removeEventListener('click', handleClick)
 			}
 		}
 	}, [handleClick])
+
+	useEffect(() => {
+		const dogElement = dogRef.current
+
+		const handleMouseEnter = () => {
+			setShowName(true)
+		}
+
+		const handleMouseLeave = () => {
+			setShowName(false)
+		}
+
+		if (dogElement) {
+			dogElement.addEventListener('mouseenter', handleMouseEnter)
+			dogElement.addEventListener('mouseleave', handleMouseLeave)
+		}
+
+		return () => {
+			if (dogElement) {
+				dogElement.removeEventListener('mouseenter', handleMouseEnter)
+				dogElement.removeEventListener('mouseleave', handleMouseLeave)
+			}
+		}
+	}, [])
 
 	const getGif = () => {
 		switch (action) {
@@ -236,7 +267,8 @@ export const DogComponent = () => {
 			className="absolute bottom-0 hidden w-full h-32 overflow-hidden lg:flex"
 		>
 			<div
-				className="absolute transition-transform duration-300"
+				ref={dogRef}
+				className="absolute transition-transform duration-300 cursor-pointer"
 				style={{
 					left: `${position.x}px`,
 					bottom: `${position.y}px`,
@@ -245,6 +277,11 @@ export const DogComponent = () => {
 					height: `${DOG_SIZE}px`,
 				}}
 			>
+				{showName && (
+					<div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm">
+						{petName}
+					</div>
+				)}
 				<img
 					src={getGif()}
 					alt="Interactive Dog"
