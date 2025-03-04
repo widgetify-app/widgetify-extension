@@ -25,7 +25,6 @@ export const DogComponent = () => {
 	const CLIMB_SPEED = 1.2
 	const MAX_HEIGHT = 100
 
-	const IDLE_DURATION = { min: 2000, max: 5000 }
 	const WALK_DURATION = { min: 3000, max: 8000 }
 	const RUN_DURATION = { min: 1500, max: 4000 }
 	const REST_DURATION = { min: 5000, max: 10000 }
@@ -58,6 +57,12 @@ export const DogComponent = () => {
 				const clickX = e.clientX - rect.left
 				const bounds = getMovementBounds()
 				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
+
+				if (isMovingToTarget) {
+					setIsMovingToTarget(false)
+					setTargetX(null)
+				}
+
 				setTargetX(clampedX)
 				setIsMovingToTarget(true)
 
@@ -73,7 +78,7 @@ export const DogComponent = () => {
 				}
 			}
 		},
-		[action, getMovementBounds],
+		[action, getMovementBounds, isMovingToTarget],
 	)
 
 	const updateBehavior = useCallback(() => {
@@ -131,24 +136,25 @@ export const DogComponent = () => {
 		if (isMovingToTarget && targetX !== null && action === 'walk') {
 			setPosition((prev) => {
 				const bounds = getMovementBounds()
-				const speed = direction > 0 ? WALK_SPEED : -WALK_SPEED
-				let newX = prev.x + speed
+				const delta = targetX - prev.x
+				const distance = Math.abs(delta)
 
-				if (targetX > prev.x) {
-					setDirection(1)
-				} else if (targetX < prev.x) {
-					setDirection(-1)
-				}
-
-				if ((direction > 0 && newX >= targetX) || (direction < 0 && newX <= targetX)) {
-					newX = targetX
-					setTargetX(null)
+				if (distance <= WALK_SPEED) {
 					setIsMovingToTarget(false)
+					setTargetX(null)
 					setAction('idle')
+					return { x: targetX, y: prev.y }
 				}
 
-				newX = Math.max(bounds.minX, Math.min(bounds.maxX, newX))
-				return { x: newX, y: prev.y }
+				const newDirection = delta > 0 ? 1 : -1
+				setDirection(newDirection)
+
+				const newX = prev.x + newDirection * WALK_SPEED
+
+				return {
+					x: Math.max(bounds.minX, Math.min(bounds.maxX, newX)),
+					y: prev.y,
+				}
 			})
 		} else if (action === 'walk' || action === 'run') {
 			setPosition((prev) => {
