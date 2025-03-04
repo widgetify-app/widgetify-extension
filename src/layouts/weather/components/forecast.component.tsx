@@ -57,7 +57,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 			<motion.div
 				initial={{ scale: 0.9 }}
 				animate={{ scale: 1 }}
-				className="text-2xl font-extrabold text-transparent bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text drop-shadow-temperature"
+				className="text-2xl font-extrabold text-transparent bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text drop-shadow-temperature"
 			>
 				{Math.round(forecast.temp)}
 				<span className="text-lg font-medium">{unitsFlag[unit]}</span>
