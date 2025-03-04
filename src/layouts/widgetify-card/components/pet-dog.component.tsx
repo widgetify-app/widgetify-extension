@@ -218,13 +218,13 @@ export const DogComponent = () => {
 			case 'run':
 				return running
 			case 'sit':
-				return swipe
+				return lie
 			case 'stand':
-				return idle
+				return swipe
 			case 'climb':
 				return walking
 			case 'idle':
-				return lie
+				return idle
 			default:
 				return idle
 		}
