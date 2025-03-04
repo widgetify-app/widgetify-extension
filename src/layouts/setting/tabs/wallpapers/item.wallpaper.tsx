@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react'
-import { FiPlayCircle } from 'react-icons/fi'
+import { FiExternalLink, FiPlayCircle } from 'react-icons/fi'
 import type { Wallpaper } from '../../../../common/wallpaper.interface'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
@@ -46,6 +46,13 @@ export const WallpaperItem = React.memo(
 		}, [wallpaper])
 
 		const elementRef = useLazyLoad(loadContent)
+
+		const handleSourceClick = (e: React.MouseEvent) => {
+			e.stopPropagation() // Prevent selecting the wallpaper
+			if (wallpaper.source) {
+				window.open(wallpaper.source, '_blank', 'noopener,noreferrer')
+			}
+		}
 
 		return (
 			<div
@@ -152,6 +159,17 @@ export const WallpaperItem = React.memo(
 				{wallpaper.name && loaded && !error && (
 					<div className="absolute bottom-0 left-0 right-0 p-1 px-2 text-xs font-medium text-gray-200 truncate bg-gradient-to-t from-black/80 to-transparent">
 						{wallpaper.name}
+					</div>
+				)}
+
+				{/* Source Link */}
+				{wallpaper.source && loaded && !error && (
+					<div
+						onClick={handleSourceClick}
+						className="absolute p-1 transition-colors rounded-full cursor-pointer bottom-2 left-2 bg-black/30 backdrop-blur-sm hover:bg-black/50"
+						title="منبع تصویر"
+					>
+						<FiExternalLink className="w-3 h-3 text-white/80" />
 					</div>
 				)}
 			</div>
