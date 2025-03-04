@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
-import { VscCloud, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
+import { VscCloud, VscInfo, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
 import Modal from '../../components/modal'
+import { AboutUsTab } from './tabs/about-us/about-us'
 import { GeneralSettingTab } from './tabs/general/general'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
@@ -32,6 +33,12 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 			value: 'weather',
 			icon: <VscCloud size={20} />,
 			element: <WeatherOptions />,
+		},
+		{
+			label: 'درباره ما',
+			value: 'about',
+			icon: <VscInfo size={20} />,
+			element: <AboutUsTab />,
 		},
 	]
 
@@ -74,7 +81,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 							whileTap={{ scale: 0.98 }}
 						>
 							<span className="text-gray-400">{icon}</span>
-							<span className="  text-sm">{label}</span>
+							<span className="text-sm">{label}</span>
 							{activeTab === value && (
 								<motion.div
 									className="absolute inset-0 rounded-lg bg-white/10 -z-10"
