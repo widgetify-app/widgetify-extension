@@ -220,3 +220,31 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
 	-moz-appearance: textfield;
 }
+
+
+
+
+/* Add this to your CSS file */
+.weather-forecast-slider {
+	padding-bottom: 25px !important;
+	/* Space for pagination bullets */
+}
+
+.weather-forecast-slider .swiper-slide {
+	width: auto;
+	max-width: 150px;
+}
+
+.weather-forecast-slider .swiper-pagination {
+	bottom: 0;
+}
+
+.weather-forecast-slider .swiper-pagination-bullet {
+	background-color: rgba(147, 197, 253, 0.7);
+	/* blue-300 with opacity */
+}
+
+.weather-forecast-slider .swiper-pagination-bullet-active {
+	background-color: rgb(96, 165, 250);
+	/* blue-400 */
+}

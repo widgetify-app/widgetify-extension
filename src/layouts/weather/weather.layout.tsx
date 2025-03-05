@@ -1,24 +1,27 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { getFromStorage, setToStorage } from '../../common/storage'
-import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
-import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
-
-import { Colors } from '../../common/constant/colors.constant'
 import { useWeatherStore } from '../../context/weather.context'
 import { useGetForecastWeatherByLatLon } from '../../services/getMethodHooks/weather/getForecastWeatherByLatLon'
+import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
+import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
 import { CurrentWeatherBox } from './components/current-box.component'
 import { ForecastComponent } from './components/forecast.component'
+//@ts-ignore
+import 'swiper/css'
+//@ts-ignore
+import 'swiper/css/pagination'
+//@ts-ignore
+import 'swiper/css/navigation'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FreeMode, Navigation, Pagination } from 'swiper/modules'
 
 export function WeatherLayout() {
 	const { selectedCity, weatherSettings } = useWeatherStore()
 	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
 	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
-	const [isExpanded, setIsExpanded] = useState(false)
-	const contentRef = useRef<HTMLDivElement>(null)
-
-	// Track content height for animation
-	const [contentHeight, setContentHeight] = useState(210)
+	if (selectedCity === null) return null
 
 	const { data, dataUpdatedAt } = useGetWeatherByLatLon(
 		selectedCity.lat,
@@ -60,58 +63,39 @@ export function WeatherLayout() {
 		}
 	}, [dataUpdatedAt])
 
-	// Measure content height when content or expanded state changes
-	useEffect(() => {
-		if (contentRef.current && isExpanded) {
-			setContentHeight(contentRef.current.scrollHeight)
-		}
-	}, [forecast, isExpanded])
-
-	const visibleItems = isExpanded ? forecast : forecast?.slice(0, 4)
-	const hasMoreItems = forecast && forecast.length > 4
-
-	// Toggle with smooth animation
-	const toggleExpand = () => {
-		if (!isExpanded && contentRef.current) {
-			// Before expanding, measure content height
-			setContentHeight(contentRef.current.scrollHeight)
-		}
-		setIsExpanded((prev) => !prev)
-	}
-
 	return (
 		<>
 			<section className="rounded">
-				<div className="flex flex-col gap-1">
+				<div className="flex flex-col gap-2">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
 					<motion.div
-						ref={contentRef}
-						className="relative overflow-hidden rounded-lg "
-						animate={{
-							height: isExpanded ? contentHeight : 210,
-							opacity: 1,
-						}}
+						className="relative p-1 mt-2 overflow-hidden"
 						initial={{ opacity: 0.9 }}
-						transition={{
-							height: {
-								duration: 0.5,
-								ease: [0.04, 0.62, 0.23, 0.98], // Custom smooth easing
-							},
-							opacity: { duration: 0.3 },
-						}}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.3 }}
 					>
-						<div className="grid grid-cols-2 grid-rows-2 gap-2 p-1 overflow-visible">
-							<AnimatePresence>
-								{visibleItems?.map((item, index) => (
+						<Swiper
+							modules={[Pagination, Navigation, FreeMode]}
+							spaceBetween={8}
+							slidesPerView="auto"
+							freeMode={true}
+							pagination={false}
+							navigation={{
+								nextEl: '.swiper-button-next-custom',
+								prevEl: '.swiper-button-prev-custom',
+							}}
+							className="py-2 weather-forecast-slider"
+							dir="ltr"
+						>
+							{forecast?.map((item, index) => (
+								<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
 									<motion.div
-										key={`${item.date}-${index}`}
-										initial={index >= 4 ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
+										initial={{ opacity: 0, y: 10 }}
 										animate={{ opacity: 1, y: 0 }}
-										exit={index >= 4 ? { opacity: 0, y: -10 } : {}}
 										transition={{
 											duration: 0.3,
-											delay: index >= 4 ? index * 0.05 : 0,
+											delay: index * 0.05,
 										}}
 									>
 										<ForecastComponent
@@ -119,49 +103,46 @@ export function WeatherLayout() {
 											unit={weatherSettings.temperatureUnit}
 										/>
 									</motion.div>
-								))}
-							</AnimatePresence>
-						</div>
+								</SwiperSlide>
+							))}
 
-						{hasMoreItems && (
-							<div
-								className={`absolute bottom-0 left-0 right-0 flex items-center justify-center ${Colors.bgDiv}`}
-							>
-								<motion.button
-									onClick={toggleExpand}
-									className="flex items-center justify-center w-full py-1 transition-colors backdrop-blur-sm hover:bg-gray-700/80"
-									whileTap={{ scale: 0.95 }}
-								>
-									<motion.div
-										animate={{ rotate: isExpanded ? 180 : 0 }}
-										transition={{
-											duration: 0.5,
-											delay: isExpanded ? 0 : 0.1,
-											ease: 'anticipate',
-										}}
-									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="w-5 h-5 text-blue-300"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												fillRule="evenodd"
-												d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-												clipRule="evenodd"
-											/>
-										</svg>
-									</motion.div>
-									<span className="sr-only">
-										{isExpanded ? 'نمایش کمتر' : 'نمایش بیشتر'}
-									</span>
-								</motion.button>
+							<div className="absolute left-0 z-10 flex items-center justify-center w-8 h-8 text-white transition-all -translate-y-1/2 rounded-full shadow-lg cursor-pointer swiper-button-prev-custom top-1/2 bg-gray-800/80 backdrop-blur-lg hover:bg-gray-700/90">
+								<FiChevronLeft size={20} />
 							</div>
-						)}
+
+							<div className="absolute right-0 z-10 flex items-center justify-center w-8 h-8 text-white transition-all -translate-y-1/2 rounded-full shadow-lg cursor-pointer swiper-button-next-custom top-1/2 bg-gray-800/80 backdrop-blur-lg hover:bg-gray-700/90">
+								<FiChevronRight size={20} />
+							</div>
+						</Swiper>
 					</motion.div>
 				</div>
 			</section>
+
+			<style>{`
+  .weather-forecast-slider {
+    padding-right: 12px !important;
+    padding-left: 12px !important;
+    padding-bottom: 5px !important; 
+  }
+  .weather-forecast-slider .swiper-slide {
+    width: auto;
+    height: auto;
+  }
+  .swiper-button-prev-custom, .swiper-button-next-custom {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+    transition: all 0.2s ease;
+  }
+  .weather-forecast-slider:hover .swiper-button-prev-custom,
+  .weather-forecast-slider:hover .swiper-button-next-custom {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  .swiper-button-disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed;
+  }
+`}</style>
 		</>
 	)
 }
