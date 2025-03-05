@@ -1,10 +1,21 @@
+import { motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { LuBone } from 'react-icons/lu'
 import idle from '../../../assets/animals/akita_idle_8fps.gif'
 import lie from '../../../assets/animals/akita_lie_8fps.gif'
 import running from '../../../assets/animals/akita_run_8fps.gif'
 import swipe from '../../../assets/animals/akita_swipe_8fps.gif'
 import walking from '../../../assets/animals/akita_walk_fast_8fps.gif'
 import { useGeneralSetting } from '../../../context/general-setting.context'
+
+// تعریف نوع داده برای استخوان‌ها
+interface Bone {
+	id: number
+	x: number
+	y: number
+	collected: boolean
+	dropping: boolean
+}
 
 export const DogComponent = () => {
 	const { petName } = useGeneralSetting()
@@ -16,18 +27,23 @@ export const DogComponent = () => {
 		'idle' | 'walk' | 'run' | 'sit' | 'stand' | 'climb'
 	>('idle')
 	const [actionTimer, setActionTimer] = useState(0)
-	const [behaviorState, setBehaviorState] = useState<'roaming' | 'resting' | 'climbing'>(
-		'resting',
-	)
+	const [behaviorState, setBehaviorState] = useState<
+		'roaming' | 'resting' | 'climbing' | 'chasing'
+	>('resting')
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
 	const [showName, setShowName] = useState(false)
+	// اضافه کردن state برای استخوان‌ها
+	const [bones, setBones] = useState<Bone[]>([])
+	const [boneIdCounter, setBoneIdCounter] = useState(0)
 
 	const DOG_SIZE = 32
 	const WALK_SPEED = 1.8
 	const RUN_SPEED = 3.5
 	const CLIMB_SPEED = 1.2
 	const MAX_HEIGHT = 100
+	const BONE_FALL_SPEED = 2
+	const BONE_SIZE = 24
 
 	const WALK_DURATION = { min: 3000, max: 8000 }
 	const RUN_DURATION = { min: 1500, max: 4000 }
@@ -53,6 +69,7 @@ export const DogComponent = () => {
 		return action === 'run' ? RUN_SPEED : WALK_SPEED
 	}, [action])
 
+	// تغییر تابع کلیک برای افزودن استخوان به جای حرکت مستقیم حیوان
 	const handleClick = useCallback(
 		(e: MouseEvent) => {
 			const container = containerRef.current
@@ -62,30 +79,73 @@ export const DogComponent = () => {
 				const bounds = getMovementBounds()
 				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
 
-				if (isMovingToTarget) {
-					setIsMovingToTarget(false)
-					setTargetX(null)
+				// افزودن استخوان جدید
+				const newBone: Bone = {
+					id: boneIdCounter,
+					x: clampedX,
+					y: -BONE_SIZE, // شروع از بالای صفحه
+					collected: false,
+					dropping: true,
 				}
 
-				setTargetX(clampedX)
-				setIsMovingToTarget(true)
+				setBones((prev) => [...prev, newBone])
+				setBoneIdCounter((prev) => prev + 1)
 
+				// تغییر رفتار حیوان برای تعقیب استخوان جدید
 				if (action === 'sit' || action === 'idle') {
 					setAction('stand')
 					setTimeout(() => {
-						setAction('walk')
-						setBehaviorState('roaming')
-					}, 500)
+						setAction('run')
+						setBehaviorState('chasing')
+					}, 300)
 				} else {
-					setAction('walk')
-					setBehaviorState('roaming')
+					setAction('run')
+					setBehaviorState('chasing')
 				}
 			}
 		},
-		[action, getMovementBounds, isMovingToTarget],
+		[action, getMovementBounds, boneIdCounter],
 	)
 
+	// یافتن نزدیک‌ترین استخوان قابل دسترس
+	const findNearestBone = useCallback(() => {
+		const availableBones = bones.filter(
+			(bone) => !bone.collected && !bone.dropping && bone.y <= 5,
+		)
+
+		if (availableBones.length === 0) return null
+
+		let nearest = availableBones[0]
+		let minDistance = Math.abs(position.x - nearest.x)
+
+		for (let i = 1; i < availableBones.length; i++) {
+			const distance = Math.abs(position.x - availableBones[i].x)
+			if (distance < minDistance) {
+				minDistance = distance
+				nearest = availableBones[i]
+			}
+		}
+
+		return nearest
+	}, [bones, position.x])
+
 	const updateBehavior = useCallback(() => {
+		// بررسی وجود استخوان در دسترس
+		const nearestBone = findNearestBone()
+
+		if (nearestBone) {
+			// تغییر حالت به تعقیب استخوان
+			if (behaviorState !== 'chasing') {
+				setBehaviorState('chasing')
+				setAction('run')
+			}
+
+			// تنظیم هدف حرکت به سمت استخوان
+			setTargetX(nearestBone.x)
+			setIsMovingToTarget(true)
+			return
+		}
+
 		if (!isMovingToTarget && actionTimer <= 0) {
 			const random = Math.random()
 			if (behaviorState === 'roaming') {
@@ -116,6 +176,11 @@ export const DogComponent = () => {
 						Math.random() * (REST_DURATION.max - REST_DURATION.min) + REST_DURATION.min,
 					),
 				)
+			} else if (behaviorState === 'chasing' && !nearestBone) {
+				// وقتی تعقیب تمام شده و استخوانی باقی نمانده
+				setBehaviorState('resting')
+				setAction('idle')
+				setActionTimer(2000)
 			} else {
 				setBehaviorState('roaming')
 				const shouldRun = Math.random() > 0.6
@@ -132,28 +197,73 @@ export const DogComponent = () => {
 		} else if (!isMovingToTarget) {
 			setActionTimer((prev) => prev - 16)
 		}
-	}, [actionTimer, behaviorState, isNearWall, isMovingToTarget])
+	}, [actionTimer, behaviorState, isNearWall, isMovingToTarget, findNearestBone])
 
 	const physicsUpdate = useCallback(() => {
+		// به‌روزرسانی موقعیت استخوان‌ها
+		setBones((prevBones) =>
+			prevBones.map((bone) => {
+				if (bone.collected) return bone
+
+				if (bone.dropping) {
+					const newY = bone.y + BONE_FALL_SPEED
+					// وقتی استخوان به زمین رسید
+					if (newY >= 0) {
+						return { ...bone, y: 0, dropping: false }
+					}
+					return { ...bone, y: newY }
+				}
+
+				// بررسی برخورد با حیوان
+				const distance = Math.abs(bone.x - position.x)
+				if (!bone.collected && !bone.dropping && distance < DOG_SIZE / 1.5) {
+					// نمایش یک انیمیشن
+					setAction('stand')
+					setTimeout(() => setAction(behaviorState === 'chasing' ? 'run' : 'walk'), 500)
+
+					// علامت‌گذاری استخوان به عنوان جمع‌شده
+					return { ...bone, collected: true }
+				}
+
+				return bone
+			}),
+		)
+
+		// حذف استخوان‌های جمع‌شده بعد از مدتی
+		if (bones.some((b) => b.collected)) {
+			setTimeout(() => {
+				setBones((prev) => prev.filter((b) => !b.collected))
+			}, 2000)
+		}
+
 		updateBehavior()
 
-		if (isMovingToTarget && targetX !== null && action === 'walk') {
+		if (isMovingToTarget && targetX !== null && (action === 'walk' || action === 'run')) {
 			setPosition((prev) => {
 				const bounds = getMovementBounds()
 				const delta = targetX - prev.x
 				const distance = Math.abs(delta)
+				const speed = action === 'run' ? RUN_SPEED : WALK_SPEED
 
-				if (distance <= WALK_SPEED) {
+				if (distance <= speed) {
 					setIsMovingToTarget(false)
 					setTargetX(null)
-					setAction('idle')
+					if (behaviorState === 'chasing') {
+						// حیوان به استخوان رسیده است - ادامه تعقیب استخوان بعدی
+						const nextBone = findNearestBone()
+						if (!nextBone) {
+							setAction('idle')
+						}
+					} else {
+						setAction('idle')
+					}
 					return { x: targetX, y: prev.y }
 				}
 
 				const newDirection = delta > 0 ? 1 : -1
 				setDirection(newDirection)
 
-				const newX = prev.x + newDirection * WALK_SPEED
+				const newX = prev.x + newDirection * speed
 
 				return {
 					x: Math.max(bounds.minX, Math.min(bounds.maxX, newX)),
@@ -196,6 +306,9 @@ export const DogComponent = () => {
 		getMovementBounds,
 		getCurrentSpeed,
 		updateBehavior,
+		bones,
+		position.x,
+		findNearestBone,
 	])
 
 	useEffect(() => {
@@ -265,6 +378,30 @@ export const DogComponent = () => {
 			ref={containerRef}
 			className="absolute hidden w-full h-32 overflow-hidden -bottom-3 lg:flex"
 		>
+			{/* نمایش استخوان‌ها */}
+			{bones.map(
+				(bone) =>
+					!bone.collected && (
+						<motion.div
+							key={bone.id}
+							className="absolute"
+							style={{
+								left: `${bone.x}px`,
+								bottom: `${bone.y}px`,
+								width: `${BONE_SIZE}px`,
+								height: `${BONE_SIZE}px`,
+							}}
+							animate={bone.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
+							transition={{ duration: 0.5 }}
+						>
+							<LuBone
+								size={BONE_SIZE}
+								className={`text-amber-200 drop-shadow-md ${bone.dropping ? 'animate-bounce' : ''}`}
+							/>
+						</motion.div>
+					),
+			)}
+
 			<div
 				ref={dogRef}
 				className="absolute transition-transform duration-300 cursor-pointer"
@@ -274,6 +411,7 @@ export const DogComponent = () => {
 					transform: `scaleX(${direction})`,
 					width: `${DOG_SIZE}px`,
 					height: `${DOG_SIZE}px`,
+					zIndex: 10,
 				}}
 			>
 				{showName && (
