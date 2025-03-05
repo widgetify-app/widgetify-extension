@@ -167,59 +167,77 @@ export function AddBookmarkModal({
 			title={`✨ ${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
 		>
-			<motion.div className="flex flex-col gap-4 p-4">
-				<div className="flex gap-2 mb-4">
-					<TypeSelector type={type} setType={setType} />
-				</div>
+			<div className="fixed-height-container relative min-h-[280px]">
+				<motion.div className="flex flex-col gap-4 p-4">
+					<div className="flex gap-2 mb-4">
+						<TypeSelector type={type} setType={setType} />
+					</div>
 
-				<div className="mb-4">{renderIconPreview()}</div>
-				<input
-					type="file"
-					ref={fileInputRef}
-					className="hidden"
-					accept="image/*"
-					onChange={handleImageUpload}
-				/>
+					<div className="mb-4">{renderIconPreview()}</div>
+					<input
+						type="file"
+						ref={fileInputRef}
+						className="hidden"
+						accept="image/*"
+						onChange={handleImageUpload}
+					/>
 
-				<motion.input
-					type="text"
-					placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					className="w-full px-4 py-3 text-right text-white bg-[#1E1E1E] border border-[#333] rounded-lg"
-				/>
+					<motion.input
+						type="text"
+						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						className="w-full px-4 py-3 text-right text-white bg-[#1E1E1E] border border-[#333] rounded-lg"
+					/>
 
-				<AnimatePresence>
-					{type === 'BOOKMARK' && (
-						<motion.input
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: 'auto' }}
-							exit={{ opacity: 0, height: 0 }}
-							type="text"
-							placeholder="آدرس لینک"
-							value={url}
-							onChange={handleUrlChange}
-							className="w-full px-4 py-3 text-right text-white bg-[#1E1E1E] border border-[#333] rounded-lg"
-						/>
-					)}
-				</AnimatePresence>
+					<div className="url-field-container relative h-[54px]">
+						<AnimatePresence mode="popLayout">
+							{type === 'BOOKMARK' && (
+								<motion.input
+									initial={{ opacity: 0, y: -10 }}
+									animate={{
+										opacity: 1,
+										y: 0,
+										transition: {
+											type: 'spring',
+											stiffness: 500,
+											damping: 30,
+										},
+									}}
+									exit={{
+										opacity: 0,
+										y: 10,
+										transition: {
+											duration: 0.15,
+										},
+									}}
+									type="text"
+									placeholder="آدرس لینک"
+									value={url}
+									onChange={handleUrlChange}
+									className="w-full px-4 py-3 text-right text-white absolute bg-[#1E1E1E] border border-[#333] rounded-lg"
+								/>
+							)}
+						</AnimatePresence>
+					</div>
 
-				<div className="flex justify-between mt-4">
-					<button
-						onClick={onClose}
-						className="px-4 py-2 text-gray-400 border rounded-lg border-white/10 hover:bg-white/5"
-					>
-						لغو
-					</button>
-					<button
-						onClick={handleAdd}
-						className="px-4 py-2 text-white rounded-lg bg-blue-500/80 hover:bg-blue-500"
-						disabled={!title.trim() || (type === 'BOOKMARK' && !url.trim())}
-					>
-						افزودن
-					</button>
-				</div>
-			</motion.div>
+					<div className="flex justify-between mt-4">
+						<button
+							onClick={onClose}
+							className="px-4 py-2 text-gray-400 border rounded-lg border-white/10 hover:bg-white/5"
+						>
+							لغو
+						</button>
+						<button
+							onClick={handleAdd}
+							className="px-4 py-2 text-white rounded-lg bg-blue-500/80 hover:bg-blue-500"
+							disabled={!title.trim() || (type === 'BOOKMARK' && !url.trim())}
+						>
+							افزودن
+						</button>
+					</div>
+				</motion.div>
+			</div>
 		</Modal>
 	)
 }
