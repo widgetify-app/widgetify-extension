@@ -3,7 +3,6 @@ import Analytics from './analytics'
 import { setToStorage } from './common/storage'
 
 browser.runtime.onInstalled.addListener(async (details) => {
-	console.log('Extension installed')
 	if (details.reason === 'install') {
 		await setToStorage('showWelcomeModal', true)
 
@@ -26,7 +25,6 @@ browser.runtime.onInstalled.addListener(async (details) => {
 })
 
 browser.runtime.onStartup.addListener(() => {
-	console.log('open')
 	// Track extension startup
 	Analytics.featureUsed('Startup')
 })

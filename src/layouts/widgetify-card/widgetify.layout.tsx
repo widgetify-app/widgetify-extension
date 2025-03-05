@@ -7,10 +7,9 @@ export const WidgetifyLayout = () => {
 	const { enablePets } = useGeneralSetting()
 	const random = ['گوجه', 'هندونه 🍉', 'بلبل جان', 'باهوش 🧠']
 	const [userName, setUserName] = useState<string>('')
-	// Set the random name only once when component mounts
 	useEffect(() => {
 		setUserName(random[Math.floor(Math.random() * random.length)])
-	}, []) // Empty dependency array ensures this runs only once
+	}, [])
 
 	return (
 		<div className="h-full p-3 bg-neutral-900/70 backdrop-blur-sm rounded-2xl max-h-80">
