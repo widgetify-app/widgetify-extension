@@ -1,5 +1,8 @@
 import type jalaliMoment from 'jalali-moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { StoreKey } from '../../../../common/constant/store.key'
+import { getFromStorage, setToStorage } from '../../../../common/storage'
 import { useTodoStore } from '../../../../context/todo.context'
 import { formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
@@ -13,7 +16,29 @@ export function Todos({ currentDate }: TodoProp) {
 	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
+	const [blurMode, setBlurMode] = useState<boolean>(false)
 	const selectedDateStr = formatDateStr(currentDate.clone())
+
+	useEffect(() => {
+		async function loadBlurMode() {
+			try {
+				const savedBlurMode = await getFromStorage<boolean>(StoreKey.Todo_Blur_Mode)
+				if (savedBlurMode !== null) {
+					setBlurMode(savedBlurMode)
+				}
+			} catch (error) {
+				console.error('Error loading blur mode:', error)
+			}
+		}
+
+		loadBlurMode()
+	}, [])
+
+	const handleBlurModeToggle = () => {
+		const newBlurMode = !blurMode
+		setBlurMode(newBlurMode)
+		setToStorage(StoreKey.Todo_Blur_Mode, newBlurMode)
+	}
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
 
@@ -50,7 +75,21 @@ export function Todos({ currentDate }: TodoProp) {
 
 	return (
 		<div>
-			<h4 className="mb-3 text-lg text-gray-300">یادداشت‌های روز</h4>
+			<div className="flex items-center justify-between mb-3">
+				<h4 className="text-lg text-gray-300">یادداشت‌های روز</h4>
+
+				<button
+					onClick={handleBlurModeToggle}
+					className={`p-1.5 rounded-full transition-colors ${
+						blurMode
+							? 'bg-blue-600 text-white'
+							: 'bg-gray-700/50 text-gray-400 hover:text-gray-300 hover:bg-gray-700'
+					}`}
+					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها (حالت استریم)'}
+				>
+					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
+				</button>
+			</div>
 
 			{selectedDateTodos.length > 0 && (
 				<div className="mb-4">
@@ -104,7 +143,9 @@ export function Todos({ currentDate }: TodoProp) {
 				</select>
 			</div>
 
-			<div className="pr-1 space-y-2 overflow-y-auto max-h-48">
+			<div
+				className={`pr-1 space-y-2 overflow-y-auto max-h-48 ${blurMode ? 'blur-mode' : ''}`}
+			>
 				{selectedDateTodos.length > 0 ? (
 					selectedDateTodos.map((todo) => (
 						<TodoItem
@@ -113,6 +154,7 @@ export function Todos({ currentDate }: TodoProp) {
 							deleteTodo={removeTodo}
 							toggleTodo={toggleTodo}
 							updateTodo={updateTodo}
+							blurMode={blurMode}
 						/>
 					))
 				) : (
@@ -122,6 +164,13 @@ export function Todos({ currentDate }: TodoProp) {
 					</div>
 				)}
 			</div>
+
+			<style>{`
+                .blur-mode {
+                    filter: blur(5px);
+                    pointer-events: none;
+                }
+            `}</style>
 		</div>
 	)
 }

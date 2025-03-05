@@ -14,5 +14,6 @@ export enum StoreKey {
 	DeletedBookmarks = 'DeletedBookmarks',
 	Show_Welcome_Modal = 'Show_Welcome_Modal',
 	WEATHER_SETTINGS = 'WEATHER_SETTINGS',
+	Todo_Blur_Mode = 'todo_blur_mode',
 }
 export type StoreKeyType = StoreKey | `currency:${string}` | 'ga_client_id'

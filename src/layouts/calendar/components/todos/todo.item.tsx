@@ -8,6 +8,7 @@ interface Prop {
 	toggleTodo: (id: string) => void
 	deleteTodo: (id: string) => void
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
+	blurMode?: boolean
 }
 
 const translatedPriority = {
@@ -16,7 +17,13 @@ const translatedPriority = {
 	high: 'زیاد',
 }
 
-export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
+export function TodoItem({
+	todo,
+	deleteTodo,
+	toggleTodo,
+	updateTodo,
+	blurMode = false,
+}: Prop) {
 	const [expanded, setExpanded] = useState(false)
 	const [editing, setEditing] = useState(false)
 	const [text, setText] = useState(todo.text)
@@ -53,7 +60,9 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, updateTodo }: Prop) {
 	}
 
 	return (
-		<div className="overflow-hidden transition-all duration-200 rounded-lg bg-gray-300/80 dark:bg-neutral-800/50 group">
+		<div
+			className={`overflow-hidden transition-all duration-200 rounded-lg bg-gray-300/80 dark:bg-neutral-800/50 group ${blurMode ? 'blur-item' : ''}`}
+		>
 			<div className="flex items-center gap-2 p-3">
 				<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
 				{!editing ? (
