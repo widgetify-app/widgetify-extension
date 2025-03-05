@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { BsRobot } from 'react-icons/bs'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
 import { useWeatherStore } from '../../../context/weather.context'
 import type { FetchedWeather } from '../../../services/getMethodHooks/weather/weather.interface'
@@ -80,25 +81,25 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 			<motion.div
 				variants={fadeInUp}
-				className="relative p-4 mt-5 overflow-hidden transition-colors shadow-inner rounded-xl bg-neutral-800/10 backdrop-blur-sm hover:bg-neutral-800/60"
+				className="relative p-2 mt-5 overflow-hidden transition-colors shadow-inner rounded-xl bg-neutral-800/10 backdrop-blur-sm hover:bg-neutral-800/60"
 			>
-				<div className="flex items-center gap-3">
+				<div className="flex gap-3 overflow-y-auto min-h-28 max-h-28">
 					<div className="flex-1">
 						{weather.ai?.description && (
 							<motion.div
-								className="absolute flex items-center gap-2 left-4 top-4"
+								className="absolute flex items-center gap-2 left-4 top-0 p-1.5"
 								initial={{ opacity: 0, x: -10 }}
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.5 }}
 							>
 								<span className="text-xs font-medium text-purple-600 dark:text-purple-400">
-									AI-powered
+									AI
 								</span>
 							</motion.div>
 						)}
 
 						<div className="relative pl-8 pr-2">
-							<p className="py-2 text-sm leading-relaxed text-gray-700 transition-all duration-300 dark:text-gray-300 line-clamp-3 hover:line-clamp-none">
+							<p className="py-2 text-sm leading-relaxed text-gray-700 transition-all duration-300 dark:text-gray-300 line-clamp-none">
 								{weather.ai?.description || weather.temperature.temp_description}
 							</p>
 
