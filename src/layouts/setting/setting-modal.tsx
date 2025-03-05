@@ -44,35 +44,14 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div dir="rtl" className="flex flex-col h-[600px]">
-				{/* Tab Content */}
-				<div className="relative flex-1 mb-4 overflow-hidden rounded-lg">
-					<AnimatePresence mode="wait">
-						{tabs.map(
-							({ value, element }) =>
-								activeTab === value && (
-									<motion.div
-										key={value}
-										className="absolute inset-0 overflow-auto rounded-lg bg-[#1c1c1c]/60 p-4"
-										initial={{ opacity: 0, y: -20 }}
-										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: 20 }}
-										transition={{ duration: 0.2 }}
-									>
-										{element}
-									</motion.div>
-								),
-						)}
-					</AnimatePresence>
-				</div>
-
-				{/* Bottom Tab Buttons */}
-				<div className="flex items-center gap-2 p-2 bg-[#1c1c1c]/60 rounded-lg mt-auto">
+			<div dir="rtl" className="flex flex-row h-[600px] gap-4">
+				{/* Right Side Tab Buttons */}
+				<div className="flex flex-col gap-2 p-2 bg-[#1c1c1c]/60 rounded-lg w-48 shrink-0">
 					{tabs.map(({ label, value, icon }) => (
 						<motion.button
 							key={value}
 							onClick={() => setActiveTab(value)}
-							className={`relative flex items-center gap-3 px-4 py-2 rounded-lg transition-colors flex-1 justify-center ${
+							className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-colors justify-start ${
 								activeTab === value
 									? 'text-white'
 									: 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
@@ -91,6 +70,27 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 							)}
 						</motion.button>
 					))}
+				</div>
+
+				{/* Tab Content - Takes remaining space */}
+				<div className="relative flex-1 overflow-hidden rounded-lg">
+					<AnimatePresence mode="wait">
+						{tabs.map(
+							({ value, element }) =>
+								activeTab === value && (
+									<motion.div
+										key={value}
+										className="absolute inset-0 overflow-auto rounded-lg bg-[#1c1c1c]/60 p-4"
+										initial={{ opacity: 0, x: 20 }}
+										animate={{ opacity: 1, x: 0 }}
+										exit={{ opacity: 0, x: -20 }}
+										transition={{ duration: 0.2 }}
+									>
+										{element}
+									</motion.div>
+								),
+						)}
+					</AnimatePresence>
 				</div>
 			</div>
 		</Modal>
