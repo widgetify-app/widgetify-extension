@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FiClock, FiFlag, FiTag } from 'react-icons/fi'
+import { FiFlag, FiTag } from 'react-icons/fi'
 import Analytics from '../../../../analytics'
 
 interface Prop {
