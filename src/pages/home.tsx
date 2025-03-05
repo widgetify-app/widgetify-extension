@@ -22,7 +22,6 @@ const layoutPositions: Record<string, string> = {
 	top: 'justify-start  mt-10',
 }
 
-// Separate component to access context
 function ContentSection() {
 	const { contentAlignment } = useGeneralSetting()
 
@@ -93,6 +92,8 @@ export function HomePage() {
 			const wallpaper = await getFromStorage('wallpaper')
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
+			} else {
+				//todo: get default wallpaper from server
 			}
 		}
 
