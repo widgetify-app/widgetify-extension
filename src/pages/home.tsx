@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Analytics from '../analytics'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { StoredWallpaper } from '../common/wallpaper.interface'
 import { ExtensionInstalledModal } from '../components/extension-installed-modal'
@@ -64,10 +63,10 @@ export function HomePage() {
 
 	useEffect(() => {
 		async function checkWelcomeModal() {
-			const shouldShowWelcome = await getFromStorage<boolean>(StoreKey.Show_Welcome_Modal)
+			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
 			if (shouldShowWelcome) {
 				setShowWelcomeModal(true)
-				await setToStorage(StoreKey.Show_Welcome_Modal, false)
+				await setToStorage('showWelcomeModal', false)
 			}
 		}
 
@@ -86,12 +85,12 @@ export function HomePage() {
 			const wallpaper: StoredWallpaper = eventData.detail
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
-				setToStorage(StoreKey.Wallpaper, wallpaper)
+				setToStorage('wallpaper', wallpaper)
 			}
 		})
 
 		async function loadWallpaper() {
-			const wallpaper = await getFromStorage<StoredWallpaper>(StoreKey.Wallpaper)
+			const wallpaper = await getFromStorage('wallpaper')
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			}

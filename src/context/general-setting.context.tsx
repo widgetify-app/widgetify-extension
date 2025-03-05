@@ -1,6 +1,5 @@
 import type React from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 
 export interface GeneralData {
@@ -34,7 +33,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	useEffect(() => {
 		async function loadGeneralSettings() {
 			try {
-				const storedSettings = await getFromStorage<GeneralData>(StoreKey.General_setting)
+				const storedSettings = await getFromStorage('generalSettings')
 
 				if (storedSettings) {
 					setSettings({
@@ -58,8 +57,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 					[key]: value,
 				}
 
-				setToStorage(StoreKey.General_setting, newSettings)
-				console.log(`Updated setting ${key}:`, value)
+				setToStorage('generalSettings', newSettings)
 				return newSettings
 			})
 		},

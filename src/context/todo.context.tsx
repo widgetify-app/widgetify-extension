@@ -1,7 +1,6 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { Todo } from '../layouts/calendar/interface/todo.interface'
 
@@ -27,7 +26,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		async function getTodos() {
-			const todos = await getFromStorage<Todo[]>(StoreKey.Todos)
+			const todos = await getFromStorage('todos')
 			setTodos(todos)
 		}
 
@@ -36,7 +35,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (todos === null) return
-		setToStorage(StoreKey.Todos, todos)
+		setToStorage('todos', todos)
 	}, [todos])
 
 	const addTodo = (

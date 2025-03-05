@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { StoreKey } from '../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../common/storage'
 import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
 import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
@@ -39,7 +38,7 @@ export function WeatherLayout() {
 
 	useEffect(() => {
 		async function load() {
-			const data = await getFromStorage<FetchedWeather>(StoreKey.CURRENT_WEATHER)
+			const data = await getFromStorage('currentWeather')
 			if (data) {
 				setCityWeather(data)
 			}
@@ -57,7 +56,7 @@ export function WeatherLayout() {
 	useEffect(() => {
 		if (data) {
 			setCityWeather(data)
-			setToStorage(StoreKey.CURRENT_WEATHER, data)
+			setToStorage('currentWeather', data)
 		}
 	}, [dataUpdatedAt])
 

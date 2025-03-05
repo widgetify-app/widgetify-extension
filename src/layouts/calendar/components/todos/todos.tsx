@@ -1,7 +1,6 @@
 import type jalaliMoment from 'jalali-moment'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { StoreKey } from '../../../../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../../../../common/storage'
 import { useTodoStore } from '../../../../context/todo.context'
 import { formatDateStr } from '../../utils'
@@ -22,7 +21,7 @@ export function Todos({ currentDate }: TodoProp) {
 	useEffect(() => {
 		async function loadBlurMode() {
 			try {
-				const savedBlurMode = await getFromStorage<boolean>(StoreKey.Todo_Blur_Mode)
+				const savedBlurMode = await getFromStorage('todoBlurMode')
 				if (savedBlurMode !== null) {
 					setBlurMode(savedBlurMode)
 				}
@@ -37,7 +36,7 @@ export function Todos({ currentDate }: TodoProp) {
 	const handleBlurModeToggle = () => {
 		const newBlurMode = !blurMode
 		setBlurMode(newBlurMode)
-		setToStorage(StoreKey.Todo_Blur_Mode, newBlurMode)
+		setToStorage('todoBlurMode', newBlurMode)
 	}
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)

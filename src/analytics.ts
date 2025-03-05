@@ -1,18 +1,17 @@
 import { v4 as uuidv4 } from 'uuid'
-import { StoreKey } from './common/constant/store.key'
 import { getFromStorage, setToStorage } from './common/storage'
 
 const GA_MEASUREMENT_ID = 'G-7Z0R61E5BZ'
 const GA_API_SECRET = 'mqy2svrEQOu-qC-K4yxJdw'
 async function getClientId(): Promise<string> {
-	const data = await getFromStorage<{ ga_client_id?: string }>('ga_client_id')
+	const data = await getFromStorage('gaClientId')
 
 	let clientId: string
 	if (data?.ga_client_id) {
 		clientId = data.ga_client_id
 	} else {
 		clientId = uuidv4()
-		await setToStorage('ga_client_id', { ga_client_id: clientId })
+		await setToStorage('gaClientId', { ga_client_id: clientId })
 	}
 
 	return clientId
@@ -20,7 +19,7 @@ async function getClientId(): Promise<string> {
 
 const Analytics = (() => {
 	async function pageView(pageTitle: string, pagePath: string): Promise<void> {
-		const setting = await getFromStorage<any>(StoreKey.General_setting)
+		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) return
 
 		const clientId = await getClientId()
@@ -45,7 +44,7 @@ const Analytics = (() => {
 		eventName: string,
 		eventParams: Record<string, any> = {},
 	): Promise<void> {
-		const setting = await getFromStorage<any>(StoreKey.General_setting)
+		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) {
 			console.log('Analytics disabled, skipping event:', eventName)
 			return
@@ -77,7 +76,7 @@ const Analytics = (() => {
 	}
 
 	async function error(errorMessage: string, errorSource: string): Promise<void> {
-		const setting = await getFromStorage<any>(StoreKey.General_setting)
+		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) return
 
 		await event('error', {

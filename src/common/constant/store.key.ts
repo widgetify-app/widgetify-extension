@@ -1,19 +1,27 @@
-export enum StoreKey {
-	CURRENCIES = 'CURRENCIES',
-	hasShownPwaModal = 'hasShownPwaModal',
-	CURRENCY_UPDATED_AT = 'CURRENCY_UPDATED_AT',
-	SELECTED_CITY = 'SELECTED_CITY',
-	CURRENT_WEATHER = 'CURRENT_WEATHER',
-	LAYOUT_ORDER = 'LAYOUT_ORDER',
-	LAYOUT_COUNTS = 'LAYOUT_COUNTS',
-	Todos = 'Todos',
-	Wallpaper = 'Wallpaper',
-	Custom_Wallpaper = 'custom_wallpaper',
-	General_setting = 'General_setting',
-	Bookmarks = 'Bookmarks',
-	DeletedBookmarks = 'DeletedBookmarks',
-	Show_Welcome_Modal = 'Show_Welcome_Modal',
-	WEATHER_SETTINGS = 'WEATHER_SETTINGS',
-	Todo_Blur_Mode = 'todo_blur_mode',
+import type { SelectedCity } from '../../context/weather.context'
+import type { Todo } from '../../layouts/calendar/interface/todo.interface'
+import type { Bookmark } from '../../layouts/search/bookmarks/types/bookmark.types'
+import type { FetchedCurrency } from '../../services/getMethodHooks/getCurrencyByCode.hook'
+import type {
+	FetchedWeather,
+	WeatherSettings,
+} from '../../services/getMethodHooks/weather/weather.interface'
+import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
+
+export interface StorageKV {
+	currencies: string[]
+	hasShownPwaModal: boolean
+	selectedCity: SelectedCity | null
+	currentWeather: FetchedWeather
+	todos: Todo[]
+	wallpaper: StoredWallpaper
+	customWallpaper: Wallpaper
+	generalSettings: Record<string, any>
+	bookmarks: Bookmark[]
+	deletedBookmarkIds: string[]
+	showWelcomeModal: boolean
+	weatherSettings: WeatherSettings
+	todoBlurMode: boolean
+	[key: `currency:${string}`]: FetchedCurrency
+	gaClientId: { ga_client_id: string }
 }
-export type StoreKeyType = StoreKey | `currency:${string}` | 'ga_client_id'

@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { WeatherSettings } from '../services/getMethodHooks/weather/weather.interface'
 
@@ -52,8 +51,8 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		async function load() {
 			const [storedCity, storedSettings] = await Promise.all([
-				getFromStorage<SelectedCity>(StoreKey.SELECTED_CITY),
-				getFromStorage<WeatherSettings>(StoreKey.WEATHER_SETTINGS),
+				getFromStorage('selectedCity'),
+				getFromStorage('weatherSettings'),
 			])
 
 			setSelectedCity(storedCity || { name: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
@@ -66,8 +65,8 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		async function save() {
 			await Promise.all([
-				setToStorage(StoreKey.SELECTED_CITY, selectedCity),
-				setToStorage(StoreKey.WEATHER_SETTINGS, weatherSettings),
+				setToStorage('selectedCity', selectedCity),
+				setToStorage('weatherSettings', weatherSettings),
 			])
 		}
 		if (!isLoading) save()

@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { Bookmark } from '../layouts/search/bookmarks/types/bookmark.types'
 
@@ -29,7 +28,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
-			const storedBookmarks = await getFromStorage<Bookmark[]>(StoreKey.Bookmarks)
+			const storedBookmarks = await getFromStorage('bookmarks')
 			if (Array.isArray(storedBookmarks)) {
 				setBookmarks(storedBookmarks)
 			}
@@ -40,7 +39,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		const saveBookmarks = async () => {
 			const localBookmarks = bookmarks.filter((b) => b.isLocal)
-			await setToStorage(StoreKey.Bookmarks, localBookmarks)
+			await setToStorage('bookmarks', localBookmarks)
 		}
 
 		const hasLocalBookmarks = bookmarks.some((b) => b.isLocal)
@@ -143,7 +142,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			setBookmarks(updatedBookmarks)
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-			await setToStorage(StoreKey.Bookmarks, localBookmarks)
+			await setToStorage('bookmarks', localBookmarks)
 		} catch (error) {
 			toast.error('خطا در افزودن بوکمارک')
 		}
@@ -183,11 +182,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		setBookmarks(updatedBookmarks)
 
 		const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-		await setToStorage(StoreKey.Bookmarks, localBookmarks)
+		await setToStorage('bookmarks', localBookmarks)
 
-		const deletedList = (await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+		const deletedList = (await getFromStorage('deletedBookmarkIds')) || []
 		deletedList.push(...itemsToDelete)
-		await setToStorage(StoreKey.DeletedBookmarks, deletedList)
+		await setToStorage('deletedBookmarkIds', deletedList)
 	}
 
 	return (

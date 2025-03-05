@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { StoreKey } from '../../../common/constant/store.key'
 import { getFromStorage } from '../../../common/storage'
 import { useBookmarkStore } from '../../../context/bookmark.context'
 import {
@@ -25,8 +24,7 @@ export function BookmarksComponent() {
 
 	const processFetchedBookmark = async () => {
 		const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
-		const deletedBookmarks =
-			(await getFromStorage<string[]>(StoreKey.DeletedBookmarks)) || []
+		const deletedBookmarks = (await getFromStorage('deletedBookmarkIds')) || []
 
 		const pinnedBookmarks: Bookmark[] = []
 

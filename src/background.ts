@@ -1,12 +1,11 @@
 import browser from 'webextension-polyfill'
 import Analytics from './analytics'
-import { StoreKey } from './common/constant/store.key'
 import { setToStorage } from './common/storage'
 
 browser.runtime.onInstalled.addListener(async (details) => {
 	console.log('Extension installed')
 	if (details.reason === 'install') {
-		await setToStorage(StoreKey.Show_Welcome_Modal, true)
+		await setToStorage('showWelcomeModal', true)
 
 		const manifest = browser.runtime.getManifest()
 

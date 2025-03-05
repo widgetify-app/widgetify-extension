@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { StoreKey } from '../common/constant/store.key'
 import { getFromStorage, setToStorage } from '../common/storage'
 
 export interface StoreContext {
@@ -19,7 +18,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		async function load() {
-			const storedCurrencies = await getFromStorage<string[]>(StoreKey.CURRENCIES)
+			const storedCurrencies = await getFromStorage('currencies')
 
 			setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
 		}
@@ -29,7 +28,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		async function save() {
-			await setToStorage(StoreKey.CURRENCIES, selectedCurrencies)
+			await setToStorage('currencies', selectedCurrencies || [])
 		}
 		save()
 	}, [selectedCurrencies])

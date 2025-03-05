@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { StoreKey } from '../../../../../common/constant/store.key'
-import { getFromStorage, setToStorage } from '../../../../../common/storage'
 import Analytics from '../../../../../analytics'
-import type {
-	StoredWallpaper,
-	Wallpaper,
-} from '../../../../../common/wallpaper.interface'
+import { getFromStorage, setToStorage } from '../../../../../common/storage'
+import type { Wallpaper } from '../../../../../common/wallpaper.interface'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
@@ -14,13 +10,13 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 
 	useEffect(() => {
 		async function getWallpaper() {
-			const wallpaper = await getFromStorage<StoredWallpaper>(StoreKey.Wallpaper)
+			const wallpaper = await getFromStorage('wallpaper')
 			if (wallpaper) {
 				setSelectedBackground(wallpaper.id)
 				setIsRetouchEnabled(wallpaper.isRetouchEnabled)
 
 				if (wallpaper.id === 'custom-wallpaper') {
-					const customWp = await getFromStorage<Wallpaper>(StoreKey.Custom_Wallpaper)
+					const customWp = await getFromStorage('customWallpaper')
 					if (customWp) {
 						setCustomWallpaper(customWp)
 					}
@@ -58,10 +54,10 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 			isRetouchEnabled: isRetouchEnabled,
 		}
 
-		setToStorage(StoreKey.Wallpaper, wallpaperData)
+		setToStorage('wallpaper', wallpaperData)
 
 		if (selectedWallpaper.id === 'custom-wallpaper') {
-			setToStorage(StoreKey.Custom_Wallpaper, selectedWallpaper)
+			setToStorage('customWallpaper', selectedWallpaper)
 		}
 
 		const event = new CustomEvent('wallpaperChanged', {
