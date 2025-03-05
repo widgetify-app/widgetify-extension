@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { preloadImages } from '../../../../common/utils/preloadImages'
+import { SectionPanel } from '../../../../components/section-panel'
 import { useGetWallpapers } from '../../../../services/getMethodHooks/getWallpapers.hook'
-import { GlassPanel } from './components/glass-panel'
 import { RetouchFilter } from './components/retouch-filter.component'
 import { UploadArea } from './components/upload-area.component'
 import { WallpaperGallery } from './components/wallpaper-gallery.component'
@@ -39,14 +39,14 @@ export function WallpaperSetting() {
 			transition={{ duration: 0.3 }}
 		>
 			<div className="space-y-4">
-				<GlassPanel title="تصویر زمینه" delay={0.1}>
+				<SectionPanel title="تصویر زمینه" delay={0.1}>
 					<UploadArea
 						customWallpaper={customWallpaper}
 						onWallpaperChange={handleCustomWallpaperChange}
 					/>
-				</GlassPanel>
+				</SectionPanel>
 
-				<GlassPanel title="گالری" delay={0.2}>
+				<SectionPanel title="گالری" delay={0.2}>
 					<WallpaperGallery
 						isLoading={isLoading}
 						error={error}
@@ -54,11 +54,11 @@ export function WallpaperSetting() {
 						selectedBackground={selectedBackground}
 						onSelectBackground={handleSelectBackground}
 					/>
-				</GlassPanel>
+				</SectionPanel>
 
-				<GlassPanel title="تنظیمات" delay={0.3}>
+				<SectionPanel title="تنظیمات" delay={0.3}>
 					<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
-				</GlassPanel>
+				</SectionPanel>
 			</div>
 
 			<style jsx global>{`

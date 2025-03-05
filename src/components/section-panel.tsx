@@ -1,16 +1,16 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 
-interface GlassPanelProps {
+interface SectionPanelProps {
 	title: string
 	children: ReactNode
 	delay?: number
 }
 
-export function GlassPanel({ title, children, delay = 0 }: GlassPanelProps) {
+export function SectionPanel({ title, children, delay = 0 }: SectionPanelProps) {
 	return (
 		<motion.div
-			className="overflow-hidden border shadow-lg rounded-xl backdrop-filter backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border-white/10"
+			className="overflow-hidden rounded-xl"
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay }}
