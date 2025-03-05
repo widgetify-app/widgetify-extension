@@ -12,6 +12,10 @@ export interface GeneralData {
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
+	setEnablePets: (value: boolean) => void
+	setAnalyticsEnabled: (value: boolean) => void
+	setPetName: (value: string) => void
+	setContentAlignment: (value: 'center' | 'top') => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
@@ -49,20 +53,45 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	const updateSetting = useCallback(
 		<K extends keyof GeneralData>(key: K, value: GeneralData[K]) => {
 			setSettings((prevSettings) => {
-				const finalValue =
-					key === 'petName' && value === '' ? DEFAULT_SETTINGS.petName : value
-
 				const newSettings = {
 					...prevSettings,
-					[key]: finalValue,
+					[key]: value,
 				}
 
 				setToStorage(StoreKey.General_setting, newSettings)
-
+				console.log(`Updated setting ${key}:`, value)
 				return newSettings
 			})
 		},
 		[],
+	)
+
+	const setEnablePets = useCallback(
+		(value: boolean) => {
+			updateSetting('enablePets', value)
+		},
+		[updateSetting],
+	)
+
+	const setAnalyticsEnabled = useCallback(
+		(value: boolean) => {
+			updateSetting('analyticsEnabled', value)
+		},
+		[updateSetting],
+	)
+
+	const setPetName = useCallback(
+		(value: string) => {
+			updateSetting('petName', value)
+		},
+		[updateSetting],
+	)
+
+	const setContentAlignment = useCallback(
+		(value: 'center' | 'top') => {
+			updateSetting('contentAlignment', value)
+		},
+		[updateSetting],
 	)
 
 	if (!isInitialized) {
@@ -72,6 +101,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	const contextValue: GeneralSettingContextType = {
 		...settings,
 		updateSetting,
+		setEnablePets,
+		setAnalyticsEnabled,
+		setPetName,
+		setContentAlignment,
 	}
 
 	return (
@@ -88,13 +121,5 @@ export function useGeneralSetting() {
 		throw new Error('useGeneralSetting must be used within a GeneralSettingProvider')
 	}
 
-	return {
-		...context,
-		setEnablePets: (value: boolean) => context.updateSetting('enablePets', value),
-		setAnalyticsEnabled: (value: boolean) =>
-			context.updateSetting('analyticsEnabled', value),
-		setPetName: (value: string) => context.updateSetting('petName', value),
-		setContentAlignment: (value: 'center' | 'top') =>
-			context.updateSetting('contentAlignment', value),
-	}
+	return context
 }

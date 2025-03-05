@@ -278,8 +278,11 @@ export const DogComponent = () => {
 				}}
 			>
 				{showName && (
-					<div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm">
-						{petName}
+					<div
+						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
+						style={{ transform: `scaleX(${direction})` }}
+					>
+						{petName || 'آکیتا'}
 					</div>
 				)}
 				<img
