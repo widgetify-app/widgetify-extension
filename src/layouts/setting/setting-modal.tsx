@@ -51,7 +51,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 						<motion.button
 							key={value}
 							onClick={() => setActiveTab(value)}
-							className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-colors justify-start ${
+							className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-colors justify-start cursor-pointer ${
 								activeTab === value
 									? 'text-white'
 									: 'text-gray-400 hover:text-gray-200 hover:bg-white/5'

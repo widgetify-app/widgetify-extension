@@ -30,7 +30,7 @@ export function WeatherSettings({
 							onClick={() =>
 								updateSettings('forecastCount', Math.max(1, forecastCount - 1))
 							}
-							className="flex items-center justify-center w-8 h-8 text-lg text-white border-l bg-blue-700/40 hover:bg-blue-700/60 rounded-r-md border-white/10"
+							className="flex items-center justify-center w-8 h-8 text-lg text-white border-l cursor-pointer bg-blue-700/40 hover:bg-blue-700/60 rounded-r-md border-white/10"
 						>
 							−
 						</button>
@@ -49,7 +49,7 @@ export function WeatherSettings({
 							onClick={() =>
 								updateSettings('forecastCount', Math.min(10, forecastCount + 1))
 							}
-							className="flex items-center justify-center w-8 h-8 text-lg text-white border-r bg-blue-700/40 hover:bg-blue-700/60 rounded-l-md border-white/10"
+							className="flex items-center justify-center w-8 h-8 text-lg text-white border-r cursor-pointer bg-blue-700/40 hover:bg-blue-700/60 rounded-l-md border-white/10"
 						>
 							+
 						</button>
@@ -71,7 +71,7 @@ export function WeatherSettings({
 						].map((option) => (
 							<button
 								key={option.value}
-								className={`px-3 py-1.5 min-w-[40px] text-sm font-medium transition ${
+								className={`px-3 py-1.5 min-w-[40px] text-sm font-medium transition cursor-pointer ${
 									temperatureUnit === option.value
 										? 'bg-blue-700 text-white'
 										: 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'

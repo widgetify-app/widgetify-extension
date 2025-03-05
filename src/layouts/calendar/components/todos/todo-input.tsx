@@ -45,13 +45,13 @@ export function TodoInput({ onAdd }: Prop) {
 				<button
 					type="button"
 					onClick={() => setShowAdvanced(!showAdvanced)}
-					className="px-3 py-2 text-gray-400 transition-colors rounded-lg bg-gray-700/50 hover:bg-gray-600/50"
+					className="px-3 py-2 text-gray-400 transition-colors rounded-lg cursor-pointer bg-gray-700/50 hover:bg-gray-600/50"
 				>
 					{showAdvanced ? '▲' : '▼'}
 				</button>
 				<button
 					type="submit"
-					className="px-4 py-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
+					className="px-4 py-2 text-white transition-colors bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-600"
 				>
 					افزودن
 				</button>

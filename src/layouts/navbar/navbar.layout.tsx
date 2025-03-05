@@ -30,7 +30,7 @@ export function NavbarLayout(): JSX.Element {
 				</div>
 
 				<button
-					className={`flex items-center justify-center w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
+					className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
 					onClick={() => setShowSettings(true)}
 					aria-label="Settings"
 				>

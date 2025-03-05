@@ -47,7 +47,7 @@ export function DayItem({
 			key={day}
 			onClick={() => setSelectedDate(cellDate)}
 			className={`
-        relative p-2 rounded-lg text-sm transition-colors
+        relative p-2 rounded-lg text-sm transition-colors cursor-pointer
         ${isHoliday ? 'text-red-400' : 'text-gray-600 dark:text-gray-300'}
         ${isSelected ? 'bg-blue-500/20' : 'hover:bg-gray-700/50'}
         ${hasEvent || hasTodo ? 'font-bold' : ''}

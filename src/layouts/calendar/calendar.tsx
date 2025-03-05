@@ -86,7 +86,7 @@ export const PersianCalendar: React.FC = () => {
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
 								onClick={goToToday}
-								className="flex items-center gap-1 px-2 py-1 text-sm font-medium text-blue-400 transition-colors rounded-lg bg-blue-500/10 hover:bg-blue-500/20"
+								className="flex items-center gap-1 px-2 py-1 text-sm font-medium text-blue-400 transition-colors rounded-lg cursor-pointer bg-blue-500/10 hover:bg-blue-500/20"
 							>
 								<FiCalendar size={14} />
 								<span>امروز</span>
@@ -94,14 +94,14 @@ export const PersianCalendar: React.FC = () => {
 						)}
 						<button
 							onClick={() => changeMonth(-1)}
-							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg hover:bg-neutral-800/50"
+							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg cursor-pointer hover:bg-neutral-800/50"
 						>
 							<FaChevronRight size={12} />
 							<span>ماه قبل</span>
 						</button>
 						<button
 							onClick={() => changeMonth(1)}
-							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg hover:bg-neutral-800/50"
+							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg cursor-pointer hover:bg-neutral-800/50"
 						>
 							<span>ماه بعد</span>
 							<FaChevronLeft size={12} />
@@ -197,7 +197,7 @@ const CalendarLayout = () => {
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('calendar')}
-						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors cursor-pointer ${
 							activeTab === 'calendar'
 								? 'bg-blue-500 text-white'
 								: 'text-gray-400 hover:text-gray-300'
@@ -209,7 +209,7 @@ const CalendarLayout = () => {
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('stats')}
-						className={`px-3 md:px-4 py-2 rounded-lg transition-colors ${
+						className={`px-3 md:px-4 py-2 rounded-lg transition-colors cursor-pointer ${
 							activeTab === 'stats'
 								? 'bg-blue-500 text-white'
 								: 'text-gray-400 hover:text-gray-300'

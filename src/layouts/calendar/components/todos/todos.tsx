@@ -79,12 +79,12 @@ export function Todos({ currentDate }: TodoProp) {
 
 				<button
 					onClick={handleBlurModeToggle}
-					className={`p-1.5 rounded-full transition-colors ${
+					className={`p-1.5 rounded-full transition-colors cursor-pointer ${
 						blurMode
 							? 'bg-blue-600 text-white'
 							: 'bg-gray-700/50 text-gray-400 hover:text-gray-300 hover:bg-gray-700'
 					}`}
-					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها (حالت استریم)'}
+					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
 				>
 					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
 				</button>
@@ -113,19 +113,19 @@ export function Todos({ currentDate }: TodoProp) {
 				<div className="flex gap-1 text-xs">
 					<button
 						onClick={() => setFilter('all')}
-						className={`px-2 py-1 rounded ${filter === 'all' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${filter === 'all' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
 					>
 						همه
 					</button>
 					<button
 						onClick={() => setFilter('active')}
-						className={`px-2 py-1 rounded ${filter === 'active' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${filter === 'active' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
 					>
 						فعال
 					</button>
 					<button
 						onClick={() => setFilter('completed')}
-						className={`px-2 py-1 rounded ${filter === 'completed' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${filter === 'completed' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
 					>
 						تکمیل شده
 					</button>

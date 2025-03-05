@@ -84,7 +84,7 @@ export function GeneralSettingTab() {
 						<div className="flex gap-3">
 							<button
 								onClick={() => setContentAlignment('center')}
-								className={`flex-1 p-3 rounded-lg transition border ${
+								className={`flex-1 p-3 rounded-lg transition border cursor-pointer ${
 									contentAlignment === 'center'
 										? 'border-blue-500 bg-blue-500/10'
 										: 'border-gray-700 bg-white/5 hover:bg-white/10'
@@ -99,7 +99,7 @@ export function GeneralSettingTab() {
 							</button>
 							<button
 								onClick={() => setContentAlignment('top')}
-								className={`flex-1 p-3 rounded-lg transition border ${
+								className={`flex-1 p-3 rounded-lg transition border cursor-pointer ${
 									contentAlignment === 'top'
 										? 'border-blue-500 bg-blue-500/10'
 										: 'border-gray-700 bg-white/5 hover:bg-white/10'

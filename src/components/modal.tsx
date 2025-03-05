@@ -52,7 +52,7 @@ const Modal = ({
 						{title && <h2 className="text-lg font-semibold text-gray-200 ">{title}</h2>}
 						<button
 							onClick={onClose}
-							className="p-1 text-gray-400 transition-colors rounded-lg hover:bg-gray-700/30 hover:text-gray-200"
+							className="p-1 text-gray-400 transition-colors rounded-lg cursor-pointer hover:bg-gray-700/30 hover:text-gray-200"
 						>
 							<AiOutlineClose size={20} />
 						</button>

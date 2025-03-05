@@ -26,7 +26,7 @@ export function SearchLayout() {
 						/>
 						<button
 							type="submit"
-							className="absolute p-2 text-blue-400 transition-all duration-300 -translate-y-1/2 rounded-lg left-3 top-1/2 bg-blue-500/10 hover:bg-blue-500/20 hover:text-blue-300"
+							className="absolute p-2 text-blue-400 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-3 top-1/2 bg-blue-500/10 hover:bg-blue-500/20 hover:text-blue-300"
 						>
 							<CiSearch size={20} />
 						</button>
