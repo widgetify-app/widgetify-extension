@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
+import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
 import browser from 'webextension-polyfill'
 import { SectionPanel } from '../../../../components/section-panel'
@@ -42,7 +42,24 @@ export function AboutUsTab() {
 
 			{/* Links Section */}
 			<SectionPanel title="لینک‌های ارتباطی" delay={0.1}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+					<motion.a
+						href="https://widgetify.ir/donate"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex flex-col items-center justify-center p-4 transition-all border rounded-xl bg-green-900/30 backdrop-blur-sm border-white/5 hover:border-green-400/20 hover:bg-green-900/40 hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]"
+						whileHover={{ y: -5 }}
+						transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+					>
+						<div className="flex items-center justify-center w-12 h-12 mb-3 rounded-full bg-green-800/50">
+							<FaDonate size={24} className="text-green-200" />
+						</div>
+						<h3 className="text-sm font-medium text-white">حمایت مالی</h3>
+						<p className="mt-1 text-xs text-center text-gray-400">
+							کمک به توسعه ویجتیفای
+						</p>
+					</motion.a>
+
 					<motion.a
 						href="https://github.com/widgetify-app"
 						target="_blank"
