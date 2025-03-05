@@ -109,6 +109,28 @@
 
 
 
+@font-face {
+	font-family: digiHamishe;
+	src: url("./assets/fonts/DigiHamishe/DigiHamishe-Regular.ttf");
+	font-weight: 400;
+	font-style: regular;
+}
+
+@font-face {
+	font-family: digiHamishe;
+	src: url("./assets/fonts/DigiHamishe/DigiHamishe-Bold.ttf");
+	font-weight: 600;
+	font-style: semibold;
+}
+
+
+@font-face {
+	font-family: digiLalezarPlus;
+	src: url("./assets/fonts/digiLaleh/DigiLalezarPlus.ttf");
+	font-weight: 500;
+	font-style: medium;
+}
+
 
 body {
 	overflow-x: hidden;

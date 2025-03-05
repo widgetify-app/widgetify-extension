@@ -23,7 +23,13 @@ const layoutPositions: Record<string, string> = {
 }
 
 function ContentSection() {
-	const { contentAlignment } = useGeneralSetting()
+	const { contentAlignment, fontFamily } = useGeneralSetting()
+
+	useEffect(() => {
+		if (fontFamily) {
+			document.body.style.fontFamily = `"${fontFamily}", sans-serif`
+		}
+	}, [fontFamily])
 
 	return (
 		<div
