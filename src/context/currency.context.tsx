@@ -30,7 +30,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 		async function save() {
 			await setToStorage('currencies', selectedCurrencies || [])
 		}
-		save()
+		if (Array.isArray(selectedCurrencies)) save()
 	}, [selectedCurrencies])
 
 	return (

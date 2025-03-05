@@ -5,6 +5,7 @@ export async function setToStorage<K extends keyof StorageKV>(
 	key: K,
 	value: StorageKV[K],
 ) {
+	console.log(`key: ${key}`, value)
 	browser.storage.local.set({ [key]: value })
 }
 

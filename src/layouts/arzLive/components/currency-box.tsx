@@ -39,7 +39,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 
 	useEffect(() => {
 		async function load() {
-			const currency = await getFromStorage<FetchedCurrency>(`currency:${code}`)
+			const currency = await getFromStorage(`currency:${code}`)
 			if (currency) {
 				setCurrency(currency)
 			}
@@ -47,7 +47,6 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		load()
 	}, [code])
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (data) {
 			setCurrency(data)
@@ -65,7 +64,6 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		}
 	}, [currency?.icon])
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (currency?.price) {
 			if (prevPriceRef.current !== currency.price) {
@@ -120,7 +118,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 			<motion.div
 				whileHover={{ scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
 				whileTap={{ scale: 0.98 }}
-				className="flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80"
+				className="flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80"
 				style={{
 					border: '1px solid transparent',
 					borderColor: imgColor ? `${imgColor}20` : 'transparent',
