@@ -14,14 +14,14 @@ const getEventTypeStyles = (isHoliday: boolean) => {
 	if (isHoliday) {
 		return {
 			container:
-				'bg-gradient-to-r from-red-500/10 to-red-400/5 border-r-2 border-red-500',
+				'bg-gradient-to-r from-red-500/15 to-red-400/5 border-r-2 border-red-500 shadow-sm shadow-red-500/10',
 			icon: 'text-red-400',
 			title: 'text-red-400',
 		}
 	}
 	return {
 		container:
-			'bg-gradient-to-r from-blue-500/10 to-blue-400/5 border-r-2 border-blue-500',
+			'bg-gradient-to-r from-blue-500/15 to-blue-400/5 border-r-2 border-blue-500 shadow-sm shadow-blue-500/10',
 		icon: 'text-blue-400',
 		title: 'text-blue-400',
 	}
@@ -55,7 +55,7 @@ export function Events({ events, currentDate }: Prop) {
 
 	return (
 		<div>
-			<div className="flex items-center justify-between mb-3">
+			<div className="flex items-center justify-between mb-1">
 				<h4 className="flex items-center text-lg font-medium text-gray-300">رویدادها</h4>
 				<button
 					onClick={() => setIsExpanded(!isExpanded)}
@@ -85,38 +85,29 @@ export function Events({ events, currentDate }: Prop) {
 									variants={itemVariants}
 									initial="initial"
 									animate="animate"
-									className={`${styles.container} p-3 rounded-lg mb-2 last:mb-0 flex items-start`}
+									className={`${styles.container} rounded-lg p-1 mb-2 px-2 last:mb-0 flex items-center`}
 									whileHover={{ x: 3, transition: { duration: 0.2 } }}
 								>
 									{event.icon ? (
 										<img
 											src={event.icon}
 											alt=""
-											className="object-contain w-8 h-8 p-1 ml-2 rounded-md bg-white/10"
+											className="object-contain w-4 h-4 p-1 ml-2 rounded-md bg-white/10"
 											onError={(e) => {
 												e.currentTarget.style.display = 'none'
 											}}
 										/>
-									) : (
-										<div
-											className={`flex-shrink-0 w-8 h-8 ml-2 rounded-md bg-white/5 flex items-center justify-center ${styles.icon}`}
-										>
-											{event.isHoliday ? '⛱️' : '🎉'}
-										</div>
-									)}
+									) : null}
 
 									<div className="flex-1">
 										<div className={`font-medium ${styles.title}`}>{event.title}</div>
-										<div className="mt-1 text-xs text-gray-400">
-											{event.isHoliday ? 'تعطیل رسمی' : 'رویداد'}
-										</div>
 									</div>
 								</motion.div>
 							)
 						})
 					) : (
 						<motion.div
-							className="py-8 text-center"
+							className="py-2 text-center"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ delay: 0.2 }}
