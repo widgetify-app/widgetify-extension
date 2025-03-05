@@ -11,8 +11,8 @@ export interface SelectedCity {
 }
 
 export interface WeatherContext {
-	selectedCity: SelectedCity
-	setSelectedCity: (city: SelectedCity) => void
+	selectedCity: SelectedCity | null
+	setSelectedCity: (city: SelectedCity | null) => void
 	weatherSettings: WeatherSettings
 	updateWeatherSettings: <K extends keyof WeatherSettings>(
 		key: K,
@@ -41,7 +41,7 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [isLoading, setIsLoading] = useState(true)
-	const [selectedCity, setSelectedCity] = useState<SelectedCity>({
+	const [selectedCity, setSelectedCity] = useState<SelectedCity | null>({
 		name: '',
 		lat: 0,
 		lon: 0,

@@ -187,3 +187,14 @@ body {
 	-webkit-backdrop-filter: blur(16px);
 	backdrop-filter: blur(16px);
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Hide the spinner in Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
