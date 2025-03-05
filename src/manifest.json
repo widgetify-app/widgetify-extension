@@ -11,16 +11,17 @@
 		"48": "icons/icon48.png",
 		"128": "icons/icon128.png"
 	},
-	"permissions": ["storage", "tabs", "alarms"],
+	"permissions": ["storage", "tabs"],
 	"chrome_url_overrides": {
 		"newtab": "src/index.html"
 	},
 	"host_permissions": [
-		"https://*github.com/*",
-		"https://*.githubusercontent.com/*",
+		"https://github.com/*",
+		"https://raw.githubusercontent.com/*",
+		"https://api.github.com/*",
 		"https://api.widgetify.ir/*",
-		"https://www.google.com/*",
-		"https://www.google-analytics.com/"
+		"https://www.google.com/search*",
+		"https://www.google-analytics.com/collect*"
 	],
 	"options_ui": {
 		"page": "src/index.html",

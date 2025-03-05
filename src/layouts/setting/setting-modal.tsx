@@ -46,7 +46,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
 			<div dir="rtl" className="flex flex-row h-[600px] gap-4">
 				{/* Right Side Tab Buttons */}
-				<div className="flex flex-col gap-2 p-2 bg-[#1c1c1c]/60 rounded-lg w-48 shrink-0">
+				<div className="flex flex-col w-48 gap-2 p-2 rounded-lg shrink-0">
 					{tabs.map(({ label, value, icon }) => (
 						<motion.button
 							key={value}
@@ -80,7 +80,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 								activeTab === value && (
 									<motion.div
 										key={value}
-										className="absolute inset-0 overflow-auto rounded-lg bg-[#1c1c1c]/60 p-4"
+										className="absolute inset-0 p-4 overflow-auto rounded-lg"
 										initial={{ opacity: 0, x: 20 }}
 										animate={{ opacity: 1, x: 0 }}
 										exit={{ opacity: 0, x: -20 }}

@@ -1,9 +1,11 @@
 import { motion } from 'motion/react'
 import { FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
+import browser from 'webextension-polyfill'
 import { SectionPanel } from '../../../../components/section-panel'
 
 export function AboutUsTab() {
+	const manifest = browser.runtime.getManifest()
 	return (
 		<motion.div
 			className="w-full max-w-2xl mx-auto"
@@ -28,7 +30,7 @@ export function AboutUsTab() {
 					ویجتیفای
 				</h1>
 				<div className="inline-flex items-center px-3 py-1 mb-6 text-xs font-medium text-blue-200 border rounded-full bg-blue-900/30 backdrop-blur-sm border-blue-700/30">
-					<span>نسخه ۱.۰.۰ بتا</span>
+					<span>نسخه {manifest.version}</span>
 				</div>
 
 				{/* Description */}
