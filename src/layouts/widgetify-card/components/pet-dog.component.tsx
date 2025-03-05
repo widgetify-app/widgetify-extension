@@ -205,7 +205,6 @@ export const DogComponent = () => {
 
 	useEffect(() => {
 		const container = containerRef.current
-		const dogElement = dogRef.current
 
 		if (container) {
 			container.addEventListener('click', handleClick)
@@ -264,7 +263,7 @@ export const DogComponent = () => {
 	return (
 		<div
 			ref={containerRef}
-			className="absolute bottom-0 hidden w-full h-32 overflow-hidden lg:flex"
+			className="absolute hidden w-full h-32 overflow-hidden -bottom-3 lg:flex"
 		>
 			<div
 				ref={dogRef}
