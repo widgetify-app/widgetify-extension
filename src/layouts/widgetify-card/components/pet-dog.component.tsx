@@ -8,7 +8,6 @@ import swipe from '../../../assets/animals/akita_swipe_8fps.gif'
 import walking from '../../../assets/animals/akita_walk_fast_8fps.gif'
 import { useGeneralSetting } from '../../../context/general-setting.context'
 
-// تعریف نوع داده برای استخوان‌ها
 interface Bone {
 	id: number
 	x: number
@@ -33,7 +32,7 @@ export const DogComponent = () => {
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
 	const [showName, setShowName] = useState(false)
-	// اضافه کردن state برای استخوان‌ها
+
 	const [bones, setBones] = useState<Bone[]>([])
 	const [boneIdCounter, setBoneIdCounter] = useState(0)
 
@@ -69,7 +68,6 @@ export const DogComponent = () => {
 		return action === 'run' ? RUN_SPEED : WALK_SPEED
 	}, [action])
 
-	// تغییر تابع کلیک برای افزودن استخوان به جای حرکت مستقیم حیوان
 	const handleClick = useCallback(
 		(e: MouseEvent) => {
 			const container = containerRef.current
@@ -79,11 +77,10 @@ export const DogComponent = () => {
 				const bounds = getMovementBounds()
 				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
 
-				// افزودن استخوان جدید
 				const newBone: Bone = {
 					id: boneIdCounter,
 					x: clampedX,
-					y: -BONE_SIZE, // شروع از بالای صفحه
+					y: -BONE_SIZE,
 					collected: false,
 					dropping: true,
 				}
@@ -91,7 +88,6 @@ export const DogComponent = () => {
 				setBones((prev) => [...prev, newBone])
 				setBoneIdCounter((prev) => prev + 1)
 
-				// تغییر رفتار حیوان برای تعقیب استخوان جدید
 				if (action === 'sit' || action === 'idle') {
 					setAction('stand')
 					setTimeout(() => {
@@ -107,7 +103,6 @@ export const DogComponent = () => {
 		[action, getMovementBounds, boneIdCounter],
 	)
 
-	// یافتن نزدیک‌ترین استخوان قابل دسترس
 	const findNearestBone = useCallback(() => {
 		const availableBones = bones.filter(
 			(bone) => !bone.collected && !bone.dropping && bone.y <= 5,
@@ -130,17 +125,14 @@ export const DogComponent = () => {
 	}, [bones, position.x])
 
 	const updateBehavior = useCallback(() => {
-		// بررسی وجود استخوان در دسترس
 		const nearestBone = findNearestBone()
 
 		if (nearestBone) {
-			// تغییر حالت به تعقیب استخوان
 			if (behaviorState !== 'chasing') {
 				setBehaviorState('chasing')
 				setAction('run')
 			}
 
-			// تنظیم هدف حرکت به سمت استخوان
 			setTargetX(nearestBone.x)
 			setIsMovingToTarget(true)
 			return
@@ -177,7 +169,6 @@ export const DogComponent = () => {
 					),
 				)
 			} else if (behaviorState === 'chasing' && !nearestBone) {
-				// وقتی تعقیب تمام شده و استخوانی باقی نمانده
 				setBehaviorState('resting')
 				setAction('idle')
 				setActionTimer(2000)
@@ -200,28 +191,24 @@ export const DogComponent = () => {
 	}, [actionTimer, behaviorState, isNearWall, isMovingToTarget, findNearestBone])
 
 	const physicsUpdate = useCallback(() => {
-		// به‌روزرسانی موقعیت استخوان‌ها
 		setBones((prevBones) =>
 			prevBones.map((bone) => {
 				if (bone.collected) return bone
 
 				if (bone.dropping) {
 					const newY = bone.y + BONE_FALL_SPEED
-					// وقتی استخوان به زمین رسید
+
 					if (newY >= 0) {
 						return { ...bone, y: 0, dropping: false }
 					}
 					return { ...bone, y: newY }
 				}
 
-				// بررسی برخورد با حیوان
 				const distance = Math.abs(bone.x - position.x)
 				if (!bone.collected && !bone.dropping && distance < DOG_SIZE / 1.5) {
-					// نمایش یک انیمیشن
 					setAction('stand')
 					setTimeout(() => setAction(behaviorState === 'chasing' ? 'run' : 'walk'), 500)
 
-					// علامت‌گذاری استخوان به عنوان جمع‌شده
 					return { ...bone, collected: true }
 				}
 
@@ -229,7 +216,6 @@ export const DogComponent = () => {
 			}),
 		)
 
-		// حذف استخوان‌های جمع‌شده بعد از مدتی
 		if (bones.some((b) => b.collected)) {
 			setTimeout(() => {
 				setBones((prev) => prev.filter((b) => !b.collected))
@@ -249,7 +235,6 @@ export const DogComponent = () => {
 					setIsMovingToTarget(false)
 					setTargetX(null)
 					if (behaviorState === 'chasing') {
-						// حیوان به استخوان رسیده است - ادامه تعقیب استخوان بعدی
 						const nextBone = findNearestBone()
 						if (!nextBone) {
 							setAction('idle')
