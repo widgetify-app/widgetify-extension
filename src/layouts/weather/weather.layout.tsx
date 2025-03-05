@@ -121,7 +121,6 @@ export function WeatherLayout() {
 			<style>{`
   .weather-forecast-slider {
     padding-right: 12px !important;
-    padding-left: 12px !important;
     padding-bottom: 5px !important; 
   }
   .weather-forecast-slider .swiper-slide {
