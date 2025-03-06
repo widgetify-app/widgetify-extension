@@ -15,7 +15,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
-			className="flex flex-col items-center justify-between h-36 w-24  p-2.5 transition-all duration-300 shadow-md bg-gradient-to-b from-neutral-900/70 to-neutral-800/70 backdrop-blur-sm rounded-xl hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 border border-white/5"
+			className="flex flex-col items-center justify-between w-24 h-32 p-2 transition-all duration-300 border shadow-md bg-gradient-to-b from-neutral-900/70 to-neutral-800/70 backdrop-blur-sm rounded-xl hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 border-white/5"
 		>
 			{/* Time Section */}
 			<div className="flex flex-col items-center gap-0.5 w-full">
@@ -43,7 +43,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 					<motion.img
 						src={forecast.icon}
 						alt="weather status"
-						className="w-12 h-12 drop-shadow-weatherIcon"
+						className="w-10 h-10 drop-shadow-weatherIcon"
 						initial={{ scale: 0.8 }}
 						animate={{ scale: 1 }}
 						transition={{ duration: 0.3 }}
