@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from 'motion/react'
-import type { ReactNode } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 
@@ -17,7 +17,7 @@ const sizeClasses = {
 	sm: 'w-full max-w-sm',
 	md: 'w-full max-w-md',
 	lg: 'w-full max-w-lg',
-	xl: 'w-full max-w-4xl  overflow-y-auto',
+	xl: 'w-full max-w-4xl overflow-y-auto max-h-[80vh]',
 }
 
 const Modal = ({
@@ -29,6 +29,26 @@ const Modal = ({
 	closeOnBackdropClick = true,
 	direction = 'ltr',
 }: ModalProps) => {
+	useEffect(() => {
+		if (isOpen) {
+			const scrollY = window.scrollY
+
+			document.body.style.position = 'fixed'
+			document.body.style.top = `-${scrollY}px`
+			document.body.style.width = '100%'
+			document.body.style.overflowY = 'scroll'
+
+			return () => {
+				document.body.style.position = ''
+				document.body.style.top = ''
+				document.body.style.width = ''
+				document.body.style.overflowY = ''
+
+				window.scrollTo(0, scrollY)
+			}
+		}
+	}, [isOpen])
+
 	if (!isOpen) return null
 
 	return ReactDOM.createPortal(
@@ -46,18 +66,21 @@ const Modal = ({
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.95, opacity: 0 }}
-					onClick={(e: any) => e.stopPropagation()}
+					onClick={(e) => e.stopPropagation()}
 				>
 					<div className="flex items-center justify-between p-4 border-b border-gray-700/30">
-						{title && <h2 className="text-lg font-semibold text-gray-200 ">{title}</h2>}
+						{title && <h2 className="text-lg font-semibold text-gray-200">{title}</h2>}
 						<button
 							onClick={onClose}
 							className="p-1 text-gray-400 transition-colors rounded-lg cursor-pointer hover:bg-gray-700/30 hover:text-gray-200"
+							aria-label="Close modal"
 						>
 							<AiOutlineClose size={20} />
 						</button>
 					</div>
-					<div className="p-4">{children}</div>
+					<div className={`p-4 ${size === 'xl' ? 'overflow-y-auto' : ''}`}>
+						{children}
+					</div>
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>,
