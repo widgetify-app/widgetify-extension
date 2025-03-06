@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { FiExternalLink, FiPlayCircle } from 'react-icons/fi'
+import { wallpaperCategoryTranslations } from '../../../../common/constants/translations'
 import type { Wallpaper } from '../../../../common/wallpaper.interface'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
@@ -7,21 +8,6 @@ interface WallpaperItemProps {
 	wallpaper: Wallpaper
 	selectedBackground: string | null
 	setSelectedBackground: (id: string) => void
-}
-
-// Define Persian translations for wallpaper categories
-const categoryTranslations: Record<string, string> = {
-	Tehran: 'تهران',
-	Dubai: 'دبی',
-	Desert: 'کویر',
-	Sea: 'دریا',
-	Forest: 'جنگل',
-	Mountain: 'کوهستان',
-	Sky: 'آسمان',
-	Space: 'فضا',
-	Abstract: 'انتزاعی',
-	City: 'شهر',
-	Other: 'سایر',
 }
 
 export const WallpaperItem = React.memo(
@@ -48,7 +34,7 @@ export const WallpaperItem = React.memo(
 		const elementRef = useLazyLoad(loadContent)
 
 		const handleSourceClick = (e: React.MouseEvent) => {
-			e.stopPropagation() // Prevent selecting the wallpaper
+			e.stopPropagation()
 			if (wallpaper.source) {
 				window.open(wallpaper.source, '_blank', 'noopener,noreferrer')
 			}
@@ -152,7 +138,7 @@ export const WallpaperItem = React.memo(
 
 				{wallpaper.category && loaded && !error && (
 					<div className="absolute top-2 left-2 px-2 py-0.5 text-xs bg-black/30 backdrop-blur-sm text-white/90 rounded-full">
-						{categoryTranslations[wallpaper.category] || wallpaper.category}
+						{wallpaperCategoryTranslations[wallpaper.category] || wallpaper.category}
 					</div>
 				)}
 

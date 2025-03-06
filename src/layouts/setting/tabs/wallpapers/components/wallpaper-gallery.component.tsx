@@ -4,6 +4,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { FiGrid, FiImage, FiTag, FiVideo } from 'react-icons/fi'
 import type { Wallpaper } from '../../../../../common/wallpaper.interface'
 import { WallpaperItem } from '../item.wallpaper'
+import { CategoryPanel } from './category-panel.component'
 
 interface WallpaperGalleryProps {
 	isLoading: boolean
@@ -13,21 +14,7 @@ interface WallpaperGalleryProps {
 	onSelectBackground: (id: string) => void
 }
 
-type FilterType = 'all' | 'image' | 'video'
-
-const categoryTranslations: Record<string, string> = {
-	Tehran: 'تهران',
-	Dubai: 'دبی',
-	Desert: 'کویر',
-	Sea: 'دریا',
-	Forest: 'جنگل',
-	Mountain: 'کوهستان',
-	Sky: 'آسمان',
-	Space: 'فضا',
-	Abstract: 'انتزاعی',
-	City: 'شهر',
-	Other: 'سایر',
-}
+type FilterType = 'all' | 'image' | 'video' | 'by-category'
 
 function FilterButton({
 	type,
@@ -67,33 +54,6 @@ function FilterButton({
 	)
 }
 
-function CategoryChip({
-	category,
-	activeCategory,
-	onClick,
-	disabled,
-}: {
-	category: string
-	activeCategory: string | null
-	onClick: () => void
-	disabled: boolean
-}) {
-	return (
-		<button
-			onClick={onClick}
-			className={`flex items-center gap-1 py-1 px-3 rounded-full text-xs transition-colors ${
-				category === activeCategory
-					? 'bg-purple-500/30 text-purple-300 shadow-inner'
-					: 'bg-white/5 text-gray-300 hover:bg-white/10'
-			}`}
-			disabled={disabled}
-		>
-			<FiTag size={12} />
-			<span>{categoryTranslations[category] || category}</span>
-		</button>
-	)
-}
-
 export function WallpaperGallery({
 	isLoading,
 	error,
@@ -102,7 +62,7 @@ export function WallpaperGallery({
 	onSelectBackground,
 }: WallpaperGalleryProps) {
 	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
-	const [activeCategory, setActiveCategory] = useState<string | null>(null)
+	const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
 	const [isTransitioning, setIsTransitioning] = useState(false)
 	const galleryRef = useRef<HTMLDivElement>(null)
 
@@ -116,20 +76,27 @@ export function WallpaperGallery({
 		return [...new Set(categories)].sort()
 	}, [wallpapers])
 
+	const wallpapersByCategory = useMemo(() => {
+		const result: Record<string, Wallpaper[]> = {}
+
+		for (const category of availableCategories) {
+			result[category] = wallpapers.filter((w) => w.category === category)
+		}
+
+		return result
+	}, [wallpapers, availableCategories])
+
 	const filteredWallpapers = useMemo(() => {
 		let filtered = wallpapers
 
-		if (activeFilter !== 'all') {
-			const filterType = activeFilter === 'image' ? 'IMAGE' : 'VIDEO'
-			filtered = filtered.filter((wallpaper) => wallpaper.type === filterType)
-		}
-
-		if (activeCategory) {
-			filtered = filtered.filter((wallpaper) => wallpaper.category === activeCategory)
+		if (activeFilter === 'image') {
+			filtered = filtered.filter((wallpaper) => wallpaper.type === 'IMAGE')
+		} else if (activeFilter === 'video') {
+			filtered = filtered.filter((wallpaper) => wallpaper.type === 'VIDEO')
 		}
 
 		return filtered
-	}, [wallpapers, activeFilter, activeCategory])
+	}, [wallpapers, activeFilter])
 
 	const handleFilterChange = useCallback(
 		(filter: FilterType) => {
@@ -147,29 +114,21 @@ export function WallpaperGallery({
 		[activeFilter],
 	)
 
-	const handleCategoryChange = useCallback(
-		(category: string | null) => {
-			if (category === activeCategory) {
-				setActiveCategory(null)
-				return
+	const toggleCategoryExpand = useCallback((category: string) => {
+		setExpandedCategories((prev) => {
+			const newSet = new Set(prev)
+			if (newSet.has(category)) {
+				newSet.delete(category)
+			} else {
+				newSet.add(category)
 			}
-
-			setIsTransitioning(true)
-			setActiveCategory(category)
-
-			if (galleryRef.current) {
-				galleryRef.current.scrollTop = 0
-			}
-
-			setTimeout(() => setIsTransitioning(false), 300)
-		},
-		[activeCategory],
-	)
+			return newSet
+		})
+	}, [])
 
 	const resetFilters = useCallback(() => {
 		setIsTransitioning(true)
 		setActiveFilter('all')
-		setActiveCategory(null)
 
 		if (galleryRef.current) {
 			galleryRef.current.scrollTop = 0
@@ -215,7 +174,7 @@ export function WallpaperGallery({
 	const videoCount = wallpapers.filter((w) => w.type === 'VIDEO').length
 
 	return (
-		<div className="space-y-3 ">
+		<div className="space-y-3">
 			<div className="flex p-1 rounded-lg backdrop-blur-sm bg-white/5">
 				<FilterButton
 					type="all"
@@ -244,36 +203,45 @@ export function WallpaperGallery({
 					onClick={() => handleFilterChange('video')}
 					disabled={isTransitioning}
 				/>
+				<FilterButton
+					type="by-category"
+					icon={<FiTag size={16} />}
+					label="دسته‌بندی"
+					activeFilter={activeFilter}
+					count={availableCategories.length}
+					onClick={() => handleFilterChange('by-category')}
+					disabled={isTransitioning}
+				/>
 			</div>
-
-			{availableCategories.length > 0 && (
-				<div className="flex flex-wrap gap-2 pb-1">
-					{availableCategories.map((category) => (
-						<CategoryChip
-							key={category}
-							category={category}
-							activeCategory={activeCategory}
-							onClick={() => handleCategoryChange(category)}
-							disabled={isTransitioning}
-						/>
-					))}
-				</div>
-			)}
 
 			<div
 				ref={galleryRef}
 				className="h-64 p-2 overflow-x-hidden overflow-y-auto custom-scrollbar"
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
-				<AnimatePresence>
+				<AnimatePresence mode="wait">
 					<motion.div
-						key={`${activeFilter}-${activeCategory}`}
+						key={`${activeFilter}`}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.2 }}
 					>
-						{filteredWallpapers.length > 0 ? (
+						{activeFilter === 'by-category' ? (
+							<div className="space-y-2">
+								{availableCategories.map((category) => (
+									<CategoryPanel
+										key={category}
+										category={category}
+										wallpapers={wallpapersByCategory[category]}
+										isExpanded={expandedCategories.has(category)}
+										onToggleExpand={() => toggleCategoryExpand(category)}
+										selectedBackground={selectedBackground}
+										onSelectBackground={onSelectBackground}
+									/>
+								))}
+							</div>
+						) : filteredWallpapers.length > 0 ? (
 							<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
 								{filteredWallpapers.map((wallpaper) => (
 									<div key={wallpaper.id} className="transform-gpu">
@@ -297,15 +265,13 @@ export function WallpaperGallery({
 									)}
 								</div>
 								<p className="text-sm text-gray-400">موردی یافت نشد</p>
-								{(activeFilter !== 'all' || activeCategory) && (
-									<button
-										onClick={resetFilters}
-										className="px-3 py-1 mt-3 text-xs text-blue-300 transition-colors rounded-lg bg-blue-500/20 hover:bg-blue-500/30"
-										disabled={isTransitioning}
-									>
-										نمایش همه
-									</button>
-								)}
+								<button
+									onClick={resetFilters}
+									className="px-3 py-1 mt-3 text-xs text-blue-300 transition-colors rounded-lg bg-blue-500/20 hover:bg-blue-500/30"
+									disabled={isTransitioning}
+								>
+									نمایش همه
+								</button>
 							</div>
 						)}
 					</motion.div>
