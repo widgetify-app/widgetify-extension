@@ -11,6 +11,7 @@ type ModalProps = {
 	children: ReactNode
 	direction?: 'rtl' | 'ltr'
 	closeOnBackdropClick?: boolean
+	showCloseButton?: boolean
 }
 
 const sizeClasses = {
@@ -28,6 +29,7 @@ const Modal = ({
 	children,
 	closeOnBackdropClick = true,
 	direction = 'ltr',
+	showCloseButton = true,
 }: ModalProps) => {
 	useEffect(() => {
 		if (isOpen) {
@@ -70,13 +72,11 @@ const Modal = ({
 				>
 					<div className="flex items-center justify-between p-4 border-b border-gray-700/30">
 						{title && <h2 className="text-lg font-semibold text-gray-200">{title}</h2>}
-						<button
-							onClick={onClose}
-							className="p-1 text-gray-400 transition-colors rounded-lg cursor-pointer hover:bg-gray-700/30 hover:text-gray-200"
-							aria-label="Close modal"
-						>
-							<AiOutlineClose size={20} />
-						</button>
+						{showCloseButton ? (
+							<button onClick={onClose} className="p-2 rounded-full hover:bg-gray-700/30">
+								<AiOutlineClose size={20} className="text-gray-200" />
+							</button>
+						) : null}
 					</div>
 					<div className={`p-4 ${size === 'xl' ? 'overflow-y-auto' : ''}`}>
 						{children}
