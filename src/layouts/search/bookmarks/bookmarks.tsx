@@ -114,7 +114,7 @@ export function BookmarksComponent() {
 
 	return (
 		<>
-			<div className="flex flex-row flex-wrap justify-center w-full gap-1 mt-3">
+			<div className="flex flex-row flex-wrap justify-center w-full gap-1.5 mt-5  p-2">
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div key={i} onContextMenu={(e) => handleRightClick(e, bookmark)}>
