@@ -14,11 +14,6 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			sampleText: 'نمونه متن با فونت وزیر',
 		},
 		{
-			value: 'digiHamishe',
-			label: 'دیجی همیشه',
-			sampleText: 'نمونه متن با فونت دیجی همیشه',
-		},
-		{
 			value: 'digiLalezarPlus',
 			label: 'دیجی لاله‌زار پلاس',
 			sampleText: 'بهار زندگی',
