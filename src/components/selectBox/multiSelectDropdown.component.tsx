@@ -39,15 +39,6 @@ export const MultiSelectDropdown = ({
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const searchInputRef = useRef<HTMLInputElement>(null)
 
-	const flatOptions = useMemo(() => {
-		if (Array.isArray(options) && options.length > 0) {
-			if ('options' in options[0]) {
-				return (options as OptionsGroup[]).flatMap((group) => group.options)
-			}
-		}
-		return options as Option[]
-	}, [options])
-
 	const filteredOptions = useMemo(() => {
 		if (!searchTerm) {
 			if (Array.isArray(options) && options.length > 0 && 'options' in options[0]) {
