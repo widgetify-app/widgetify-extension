@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { BsRobot } from 'react-icons/bs'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
 import { useWeatherStore } from '../../../context/weather.context'
 import type { FetchedWeather } from '../../../services/getMethodHooks/weather/weather.interface'
@@ -91,9 +92,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.5 }}
 							>
-								<span className="text-xs font-medium text-purple-600 dark:text-purple-400">
-									AI
-								</span>
+								<BsRobot className="text-xl text-purple-600 dark:text-purple-400" />
 							</motion.div>
 						)}
 
