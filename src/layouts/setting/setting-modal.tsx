@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { VscCloud, VscInfo, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
@@ -45,18 +46,16 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 	]
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		if (isActive) {
-			return theme === 'light' ? 'text-blue-600' : 'text-white'
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 hover:text-gray-800 hover:bg-gray-100/80'
-			case 'dark':
-				return 'text-gray-400 hover:text-gray-200 hover:bg-gray-700/50'
-			default: // glass
-				return 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
-		}
+		return clsx({
+			'text-blue-600 bg-blue-50': isActive && theme === 'light', // light mode
+			'text-white bg-neutral-700/20': isActive && theme !== 'light', // dark/glass mode
+			'text-gray-600 hover:text-gray-800 hover:bg-gray-100/80':
+				!isActive && theme === 'light', // not active light mode
+			'text-gray-400 hover:text-gray-200 hover:bg-gray-700/50':
+				!isActive && theme === 'dark', // not active dark mode
+			'text-gray-400 hover:text-gray-200 hover:bg-white/5':
+				!isActive && theme !== 'light' && theme !== 'dark', // not active glass mode
+		})
 	}
 
 	const getTabIconStyle = () => {
@@ -67,17 +66,6 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 				return 'text-gray-500'
 			default:
 				return 'text-gray-400'
-		}
-	}
-
-	const getActiveTabBackgroundStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-50'
-			case 'dark':
-				return 'bg-blue-900/20'
-			default:
-				return 'bg-white/10'
 		}
 	}
 
@@ -95,13 +83,6 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 						>
 							<span className={getTabIconStyle()}>{icon}</span>
 							<span className="text-sm">{label}</span>
-							{activeTab === value && (
-								<motion.div
-									className={`absolute inset-0 rounded-lg ${getActiveTabBackgroundStyle()} -z-10`}
-									layoutId="activeTab"
-									transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-								/>
-							)}
 						</motion.button>
 					))}
 				</div>

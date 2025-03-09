@@ -17,9 +17,9 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 	const getCardStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gradient-to-b from-gray-100/90 to-gray-200/90 border-gray-300/30 hover:shadow-lg hover:from-gray-100/90 hover:to-gray-300/80 shadow-sm'
+				return 'bg-gradient-to-b from-gray-100 to-gray-200 border-gray-300/30 hover:shadow-lg hover:from-gray-100/90 hover:to-gray-300/80 shadow-sm'
 			case 'dark':
-				return 'bg-gradient-to-b from-neutral-900/70 to-neutral-800/70 border-white/5 hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 shadow-md'
+				return 'bg-gradient-to-b from-neutral-900 to-neutral-800 border-white/5 hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 shadow-md'
 			default: // glass
 				return 'bg-gradient-to-b from-black/30 to-black/40 border-white/5 hover:shadow-lg hover:from-black/40 hover:to-black/50 shadow-md backdrop-blur-md'
 		}
