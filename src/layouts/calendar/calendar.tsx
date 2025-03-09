@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
-import { AnimatePresence } from 'motion/react'
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
 import { v4 as uuidv4 } from 'uuid'
+import { useTheme } from '../../context/theme.context'
 import { TodoProvider, useTodoStore } from '../../context/todo.context'
 import { useGetEvents } from '../../services/getMethodHooks/getEvents.hook'
 import { DayItem } from './components/day'
@@ -32,6 +33,7 @@ const PERSIAN_MONTHS = [
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
 export const PersianCalendar: React.FC = () => {
+	const { theme, themeUtils } = useTheme()
 	const today = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
@@ -72,12 +74,55 @@ export const PersianCalendar: React.FC = () => {
 		setCurrentDate((prev) => prev.clone().add(delta, 'jMonth'))
 	}
 
+	// Theme-specific styles
+	const getHeaderTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			default:
+				return 'text-gray-200'
+		}
+	}
+
+	const getMonthNavigationStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600 hover:bg-gray-100/80'
+			case 'dark':
+				return 'text-gray-300 hover:bg-neutral-800/50'
+			default: // glass
+				return 'text-gray-300 hover:bg-white/10'
+		}
+	}
+
+	const getWeekdayHeaderStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500'
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getEventsSectionStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'border-gray-200/50'
+			case 'dark':
+				return 'border-neutral-800/50'
+			default: // glass
+				return 'border-white/10'
+		}
+	}
+
 	return (
 		<div className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row" dir="rtl">
 			{/* Calendar Grid */}
-			<div className="w-full overflow-hidden md:flex-1 bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+			<div
+				className={`w-full overflow-hidden md:flex-1 rounded-xl ${themeUtils.getCardBackground()}`}
+			>
 				<div className="flex items-center justify-between p-3 md:p-4">
-					<h3 className="font-medium text-gray-200 text-md">
+					<h3 className={`font-medium text-md ${getHeaderTextStyle()}`}>
 						{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
 					</h3>
 					<div className="flex gap-1">
@@ -94,14 +139,14 @@ export const PersianCalendar: React.FC = () => {
 						)}
 						<button
 							onClick={() => changeMonth(-1)}
-							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg cursor-pointer hover:bg-neutral-800/50"
+							className={`flex items-center gap-1 px-2 py-1 text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 						>
 							<FaChevronRight size={12} />
 							<span>ماه قبل</span>
 						</button>
 						<button
 							onClick={() => changeMonth(1)}
-							className="flex items-center gap-1 px-2 py-1 text-sm text-gray-300 rounded-lg cursor-pointer hover:bg-neutral-800/50"
+							className={`flex items-center gap-1 px-2 py-1 text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 						>
 							<span>ماه بعد</span>
 							<FaChevronLeft size={12} />
@@ -111,7 +156,7 @@ export const PersianCalendar: React.FC = () => {
 
 				<div className="grid grid-cols-7 px-3 text-center md:px-4">
 					{WEEKDAYS.map((day) => (
-						<div key={day} className="py-2 text-sm text-gray-400">
+						<div key={day} className={`py-2 text-sm ${getWeekdayHeaderStyle()}`}>
 							{day}
 						</div>
 					))}
@@ -133,14 +178,18 @@ export const PersianCalendar: React.FC = () => {
 					))}
 				</div>
 
-				<div className="px-3 md:px-4 border-neutral-800/50">
+				<div className={`px-3 md:px-4 ${getEventsSectionStyle()}`}>
 					<Events events={events} currentDate={selectedDate} />
 				</div>
 			</div>
 
 			{/* Tasks  */}
-			<div className="w-full md:w-80 p-3 md:p-4 h-auto min-h-[16rem] md:h-[27rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
-				<h3 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
+			<div
+				className={`w-full md:w-80 p-3 md:p-4 h-auto min-h-[16rem] md:h-[27rem] backdrop-blur-sm rounded-xl ${themeUtils.getCardBackground()}`}
+			>
+				<h3
+					className={`mb-3 text-lg font-medium md:mb-4 md:text-xl ${getHeaderTextStyle()}`}
+				>
 					{PERSIAN_MONTHS[selectedDate.jMonth()]} {selectedDate.jDate()}
 				</h3>
 
@@ -151,7 +200,49 @@ export const PersianCalendar: React.FC = () => {
 }
 
 const CalendarLayout = () => {
+	const { theme } = useTheme()
 	const [activeTab, setActiveTab] = useState<'calendar' | 'stats'>('calendar')
+
+	// Theme-specific styles for layout
+	const getStatsContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/90 shadow-sm'
+			case 'dark':
+				return 'bg-neutral-900/70'
+			default: // glass
+				return 'bg-black/30'
+		}
+	}
+
+	const getTabContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/90'
+			case 'dark':
+				return 'bg-neutral-900/70'
+			default: // glass
+				return 'bg-black/50'
+		}
+	}
+
+	const getInactiveTabStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500 hover:text-gray-700'
+			default:
+				return 'text-gray-400 hover:text-gray-300'
+		}
+	}
+
+	const getHeaderTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			default:
+				return 'text-gray-200'
+		}
+	}
 
 	return (
 		<section dir="rtl">
@@ -175,9 +266,11 @@ const CalendarLayout = () => {
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: 20 }}
 							transition={{ duration: 0.3 }}
-							className="w-full max-w-2xl p-3 md:p-4 mx-auto min-h-[16rem] md:min-h-96 md:max-h-96 bg-neutral-900/70 backdrop-blur-sm rounded-xl"
+							className={`w-full max-w-2xl p-3 md:p-4 mx-auto min-h-[16rem] md:min-h-96 md:max-h-96 backdrop-blur-sm rounded-xl ${getStatsContainerStyle()}`}
 						>
-							<h2 className="mb-3 text-lg font-medium text-gray-200 md:mb-4 md:text-xl">
+							<h2
+								className={`mb-3 text-lg font-medium md:mb-4 md:text-xl ${getHeaderTextStyle()}`}
+							>
 								آمار و تحلیل یادداشت‌ها
 							</h2>
 							<TodoStats />
@@ -192,15 +285,15 @@ const CalendarLayout = () => {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.3, delay: 0.2 }}
 			>
-				<div className="absolute inline-flex p-1 left-3 bottom-[10rem] md:bottom-[20.9rem] bg-neutral-900/70 backdrop-blur-sm rounded-xl">
+				<div
+					className={`absolute inline-flex p-1 left-3 bottom-[10rem] md:bottom-[20.9rem] backdrop-blur-sm rounded-xl ${getTabContainerStyle()}`}
+				>
 					<motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('calendar')}
 						className={`px-3 md:px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-							activeTab === 'calendar'
-								? 'bg-blue-500 text-white'
-								: 'text-gray-400 hover:text-gray-300'
+							activeTab === 'calendar' ? 'bg-blue-500 text-white' : getInactiveTabStyle()
 						}`}
 					>
 						تقویم
@@ -210,9 +303,7 @@ const CalendarLayout = () => {
 						whileTap={{ scale: 0.95 }}
 						onClick={() => setActiveTab('stats')}
 						className={`px-3 md:px-4 py-2 rounded-lg transition-colors cursor-pointer ${
-							activeTab === 'stats'
-								? 'bg-blue-500 text-white'
-								: 'text-gray-400 hover:text-gray-300'
+							activeTab === 'stats' ? 'bg-blue-500 text-white' : getInactiveTabStyle()
 						}`}
 					>
 						آمار

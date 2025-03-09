@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../context/theme.context'
 import { unitsFlag } from '../unitSymbols'
 
 interface ForecastProps {
@@ -11,20 +12,69 @@ interface ForecastProps {
 }
 
 export function ForecastComponent({ forecast, unit }: ForecastProps) {
+	const { theme } = useTheme()
+
+	const getCardStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gradient-to-b from-gray-100/90 to-gray-200/90 border-gray-300/30 hover:shadow-lg hover:from-gray-100/90 hover:to-gray-300/80 shadow-sm'
+			case 'dark':
+				return 'bg-gradient-to-b from-neutral-900/70 to-neutral-800/70 border-white/5 hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 shadow-md'
+			default: // glass
+				return 'bg-gradient-to-b from-black/30 to-black/40 border-white/5 hover:shadow-lg hover:from-black/40 hover:to-black/50 shadow-md backdrop-blur-md'
+		}
+	}
+
+	const getWeekdayStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+			case 'dark':
+				return 'text-neutral-400'
+			default: // glass
+				return 'text-neutral-400'
+		}
+	}
+
+	const getTimeStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700 bg-gray-200/50'
+			case 'dark':
+				return 'text-neutral-300'
+			default: // glass
+				return 'text-neutral-300'
+		}
+	}
+
+	const getTemperatureStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'from-gray-700 to-gray-900'
+
+			default:
+				return 'from-gray-200 to-gray-400'
+		}
+	}
+
 	return (
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
-			className="flex flex-col items-center justify-between w-24 h-32 p-2 transition-all duration-300 border shadow-md bg-gradient-to-b from-neutral-900/70 to-neutral-800/70 backdrop-blur-sm rounded-xl hover:shadow-lg hover:from-neutral-800/70 hover:to-neutral-700/70 border-white/5"
+			className={`flex flex-col items-center justify-between w-24 h-32 p-2 transition-all duration-300 border shadow-md ${getCardStyle()} rounded-xl`}
 		>
 			{/* Time Section */}
 			<div className="flex flex-col items-center gap-0.5 w-full">
-				<div className="text-xs font-semibold tracking-wide uppercase text-neutral-400">
+				<div
+					className={`text-xs font-semibold tracking-wide uppercase ${getWeekdayStyle()}`}
+				>
 					{new Date(forecast.date).toLocaleDateString('fa-IR', {
 						weekday: 'short',
 					})}
 				</div>
-				<div className="px-2 py-0.5 text-xs font-medium rounded-full text-neutral-300  w-full text-center">
+				<div
+					className={`px-2 py-0.5 text-xs font-medium rounded-full ${getTimeStyle()} w-full text-center`}
+				>
 					{new Date(forecast.date).toLocaleTimeString([], {
 						hour: '2-digit',
 						minute: '2-digit',
@@ -56,7 +106,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 			<motion.div
 				initial={{ scale: 0.9 }}
 				animate={{ scale: 1 }}
-				className="text-2xl font-extrabold text-transparent bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text drop-shadow-temperature"
+				className={`text-2xl font-extrabold text-transparent bg-gradient-to-r ${getTemperatureStyle()} bg-clip-text drop-shadow-temperature`}
 			>
 				{Math.round(forecast.temp)}
 				<span className="text-lg font-medium">{unitsFlag[unit]}</span>

@@ -2,6 +2,7 @@ import type jalaliMoment from 'jalali-moment'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { getFromStorage, setToStorage } from '../../../../common/storage'
+import { useTheme } from '../../../../context/theme.context'
 import { useTodoStore } from '../../../../context/todo.context'
 import { formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
@@ -12,6 +13,7 @@ type TodoProp = {
 }
 
 export function Todos({ currentDate }: TodoProp) {
+	const { theme } = useTheme()
 	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
@@ -70,20 +72,97 @@ export function Todos({ currentDate }: TodoProp) {
 		return { total, completed, percentage }
 	}
 
+	// Theme-specific styles
+	const getHeaderStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			default:
+				return 'text-gray-300'
+		}
+	}
+
+	const getBlurModeButtonStyle = (isActive: boolean) => {
+		if (isActive) {
+			return 'bg-blue-600 text-white'
+		}
+
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-300/70 text-gray-600 hover:text-gray-800 hover:bg-gray-300'
+			case 'dark':
+				return 'bg-gray-700/50 text-gray-400 hover:text-gray-300 hover:bg-gray-700'
+			default: // glass
+				return 'bg-gray-700/30 text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
+		}
+	}
+
+	const getProgressBarBgStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-300'
+			case 'dark':
+				return 'bg-gray-700'
+			default: // glass
+				return 'bg-gray-700/50'
+		}
+	}
+
+	const getStatsTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getFilterButtonStyle = (isActive: boolean) => {
+		if (isActive) {
+			switch (theme) {
+				case 'light':
+					return 'bg-blue-100 text-blue-700'
+				default:
+					return 'bg-blue-500/20 text-blue-400'
+			}
+		}
+
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600 hover:text-gray-800'
+			default:
+				return 'text-gray-400 hover:text-gray-300'
+		}
+	}
+
+	const getSelectStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700 bg-transparent border-none focus:ring-0'
+			default:
+				return 'text-gray-400 bg-transparent border-none focus:ring-0'
+		}
+	}
+
+	const getEmptyStateStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500'
+			default:
+				return 'text-gray-500'
+		}
+	}
+
 	const stats = getCompletionStats()
 
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<h4 className="text-lg text-gray-300">یادداشت‌های روز</h4>
+				<h4 className={`text-lg ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
 				<button
 					onClick={handleBlurModeToggle}
-					className={`p-1.5 rounded-full transition-colors cursor-pointer ${
-						blurMode
-							? 'bg-blue-600 text-white'
-							: 'bg-gray-700/50 text-gray-400 hover:text-gray-300 hover:bg-gray-700'
-					}`}
+					className={`p-1.5 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
 					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
 				>
 					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
@@ -92,13 +171,13 @@ export function Todos({ currentDate }: TodoProp) {
 
 			{selectedDateTodos.length > 0 && (
 				<div className="mb-4">
-					<div className="h-2 mb-2 bg-gray-700 rounded-full">
+					<div className={`h-2 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
 						<div
 							className="h-2 bg-green-500 rounded-full"
 							style={{ width: `${stats.percentage}%` }}
 						></div>
 					</div>
-					<div className="flex justify-between text-xs text-gray-400">
+					<div className={`flex justify-between text-xs ${getStatsTextStyle()}`}>
 						<span>
 							{stats.completed} از {stats.total} انجام شده
 						</span>
@@ -113,19 +192,19 @@ export function Todos({ currentDate }: TodoProp) {
 				<div className="flex gap-1 text-xs">
 					<button
 						onClick={() => setFilter('all')}
-						className={`px-2 py-1 cursor-pointer rounded ${filter === 'all' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
 					>
 						همه
 					</button>
 					<button
 						onClick={() => setFilter('active')}
-						className={`px-2 py-1 cursor-pointer rounded ${filter === 'active' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
 					>
 						فعال
 					</button>
 					<button
 						onClick={() => setFilter('completed')}
-						className={`px-2 py-1 cursor-pointer rounded ${filter === 'completed' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-400 hover:text-gray-300'}`}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
 					>
 						تکمیل شده
 					</button>
@@ -134,7 +213,7 @@ export function Todos({ currentDate }: TodoProp) {
 				<select
 					value={sort}
 					onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
-					className="text-xs text-gray-400 bg-transparent border-none focus:ring-0"
+					className={getSelectStyle()}
 				>
 					<option value="default">مرتب‌سازی: پیش‌فرض</option>
 					<option value="priority">مرتب‌سازی: اولویت</option>
@@ -157,7 +236,7 @@ export function Todos({ currentDate }: TodoProp) {
 						/>
 					))
 				) : (
-					<div className="py-6 text-center text-gray-500">
+					<div className={`py-6 text-center ${getEmptyStateStyle()}`}>
 						<p>یادداشتی برای امروز ندارید.</p>
 						<p className="text-sm">یک یادداشت جدید اضافه کنید!</p>
 					</div>

@@ -1,7 +1,8 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import Analytics from '../../../../analytics'
 import { SectionPanel } from '../../../../components/section-panel'
+import { useTheme } from '../../../../context/theme.context'
 import { type SelectedCity, useWeatherStore } from '../../../../context/weather.context'
 import { useDebouncedValue } from '../../../../hooks/useDebouncedValue'
 import { useGetRelatedCities } from '../../../../services/getMethodHooks/weather/getRelatedCities'
@@ -11,6 +12,7 @@ import { SelectedCityDisplay } from './SelectedCityDisplay'
 import { WeatherSettings } from './weather-settings'
 
 export function WeatherOptions() {
+	const { theme } = useTheme()
 	const { setSelectedCity, selectedCity, weatherSettings, updateWeatherSettings } =
 		useWeatherStore()
 
@@ -47,6 +49,17 @@ export function WeatherOptions() {
 
 	const handleCloseDropdown = () => {
 		setIsDropdownOpen(false)
+	}
+
+	const getErrorStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-red-600 border-red-400/30 bg-red-500/10'
+			case 'dark':
+				return 'text-red-300 border-red-400/20 bg-red-900/20'
+			default: // glass
+				return 'text-red-300 border-red-400/20 bg-red-900/20'
+		}
 	}
 
 	return (
@@ -99,10 +112,10 @@ export function WeatherOptions() {
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								className="p-3 text-sm text-right text-red-300 border rounded-lg border-red-400/20 bg-red-900/20 backdrop-blur-sm"
+								className={`p-3 text-sm text-right border rounded-lg backdrop-blur-sm ${getErrorStyle()}`}
 							>
 								<div className="font-medium">خطا در دریافت اطلاعات</div>
-								<div className="mt-1 text-red-300/80">
+								<div className="mt-1 opacity-80">
 									لطفا اتصال اینترنت خود را بررسی کرده و مجدداً تلاش کنید.
 								</div>
 							</motion.div>

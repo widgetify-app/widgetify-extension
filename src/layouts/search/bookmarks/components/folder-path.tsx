@@ -1,45 +1,54 @@
-import { FaArrowLeft } from 'react-icons/fa6'
 import type { FolderPathItem } from '../types/bookmark.types'
 
-interface FolderPathProps {
+type FolderPathProps = {
 	folderPath: FolderPathItem[]
 	onBackClick: () => void
+	theme?: string
 }
 
-export function FolderPath({ folderPath, onBackClick }: FolderPathProps) {
+export function FolderPath({
+	folderPath,
+	onBackClick,
+	theme = 'glass',
+}: FolderPathProps) {
 	if (folderPath.length === 0) return null
 
-	return (
-		<div className="flex items-center justify-between w-full mt-4 mb-2">
-			<button
-				onClick={onBackClick}
-				className="flex items-center gap-2 px-3 py-2 font-medium transition-all duration-300 border rounded-lg text-white/80 bg-white/10 backdrop-blur-sm border-white/10 hover:bg-indigo-500/20 hover:text-white hover:border-indigo-400/30 active:scale-95"
-			>
-				<FaArrowLeft />
-				<span>بازگشت</span>
-			</button>
+	const getPathStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-white/80 text-gray-700'
+			case 'dark':
+				return 'bg-gray-800/90 text-gray-300'
+			default:
+				return 'bg-neutral-900/60 backdrop-blur-sm text-gray-300'
+		}
+	}
 
-			<div className="flex items-center overflow-x-auto max-w-[60%] scrollbar-hide">
-				<div
-					className="flex items-center gap-1 px-3 py-1.5 text-sm 
-                bg-white/8 backdrop-filter backdrop-blur-md border border-white/15 rounded-lg 
-                text-gray-300 shadow-sm transition-all duration-300"
-				>
-					{folderPath.map((folder, index) => (
-						<span key={folder.id} className="whitespace-nowrap">
-							{index > 0 && <span className="mx-1 text-indigo-200/40">/</span>}
-							<span
-								className={
-									index === folderPath.length - 1
-										? 'font-medium text-indigo-200'
-										: 'text-gray-300/80 hover:text-white transition-colors'
-								}
-							>
-								{folder.title}
-							</span>
-						</span>
-					))}
-				</div>
+	const getPathItemStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-blue-600'
+			case 'dark':
+				return 'text-blue-400'
+			default:
+				return 'text-blue-400'
+		}
+	}
+
+	return (
+		<div
+			className={`flex items-center px-2 py-1 mt-2 text-xs rounded-lg ${getPathStyle()}`}
+		>
+			<button onClick={onBackClick} className="p-1 ml-1">
+				⬅️
+			</button>
+			<div className="flex items-center">
+				{folderPath.map((item, index) => (
+					<span key={item.id} className="flex items-center">
+						{index > 0 && <span className="mx-1">›</span>}
+						<span className={getPathItemStyle()}>{item.title}</span>
+					</span>
+				))}
 			</div>
 		</div>
 	)

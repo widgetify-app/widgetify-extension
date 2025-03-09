@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
-import Select, { type InputActionMeta, type SelectInstance } from 'react-select'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { FiCheck, FiChevronDown, FiSearch, FiX } from 'react-icons/fi'
+import { useTheme } from '../../context/theme.context'
 
 interface Option {
 	value: string
@@ -12,212 +13,291 @@ interface OptionsGroup {
 	options: Option[]
 }
 
-interface MultiSelectDropdownProps {
-	options: Option[] | OptionsGroup
-	values: {
-		value: string
-		label: string
-	}[]
-	limit?: number
-	onChange: (values: string[]) => void
-	placeholder?: string
+interface ValueOption {
+	value: string
+	label: string
 }
 
-function isTouchCapable() {
-	try {
-		document.createEvent('TouchEvent')
-		return true
-	} catch (e) {
-		return false
-	}
+interface MultiSelectDropdownProps {
+	options: Option[] | OptionsGroup[]
+	values: ValueOption[]
+	limit?: number
+	onChange: (values: ValueOption[]) => void
+	placeholder?: string
 }
 
 export const MultiSelectDropdown = ({
 	options,
-	values,
+	values = [],
 	limit,
 	onChange,
-	placeholder,
+	placeholder = 'انتخاب کنید...',
 }: MultiSelectDropdownProps) => {
-	const selectRef = useRef<SelectInstance<Option> | null>(null)
+	const { theme } = useTheme()
+	const [isOpen, setIsOpen] = useState(false)
+	const [searchTerm, setSearchTerm] = useState('')
+	const dropdownRef = useRef<HTMLDivElement>(null)
+	const searchInputRef = useRef<HTMLInputElement>(null)
 
-	const handleChange = (selectedValue: any) => {
-		if (!selectedValue) return []
-		if (limit && selectedValue?.length > limit) return values
-		const selectedValuesMapped = selectedValue.map((value: { value: any }) => value.value)
-		return onChange(selectedValuesMapped)
+	const flatOptions = useMemo(() => {
+		if (Array.isArray(options) && options.length > 0) {
+			if ('options' in options[0]) {
+				return (options as OptionsGroup[]).flatMap((group) => group.options)
+			}
+		}
+		return options as Option[]
+	}, [options])
+
+	const filteredOptions = useMemo(() => {
+		if (!searchTerm) {
+			if (Array.isArray(options) && options.length > 0 && 'options' in options[0]) {
+				return options as OptionsGroup[]
+			}
+			return options
+		}
+
+		const searchTermLower = searchTerm.toLowerCase()
+
+		if (Array.isArray(options) && options.length > 0 && 'options' in options[0]) {
+			return (options as OptionsGroup[])
+				.map((group) => ({
+					...group,
+					options: group.options.filter(
+						(option) =>
+							option.label.toLowerCase().includes(searchTermLower) ||
+							option.labelEn?.toLowerCase().includes(searchTermLower),
+					),
+				}))
+				.filter((group) => group.options.length > 0)
+		}
+
+		return (options as Option[]).filter(
+			(option) =>
+				option.label.toLowerCase().includes(searchTermLower) ||
+				option.labelEn?.toLowerCase().includes(searchTermLower),
+		)
+	}, [options, searchTerm])
+
+	const isOptionSelected = (optionValue: string) => {
+		return values.some((v) => v.value === optionValue)
 	}
 
-	// Avoid input reset on select item
-	// @see https://github.com/JedWatson/react-select/blob/master/storybook/stories/OnSelectKeepsInput.stories.tsx
-	const handleInputChange = (
-		inputValue: string,
-		{ action, prevInputValue }: InputActionMeta,
-	) => (action === 'input-change' ? inputValue : prevInputValue)
+	const handleSelect = (option: Option) => {
+		const isSelected = isOptionSelected(option.value)
+		let newValues: ValueOption[]
 
-	// I specifically avoided using the `blurInputOnSelect` prop because it causes
-	// an undesirable lag. When `blurInputOnSelect` is enabled, the input briefly gains
-	// focus and then blurs, which creates a flickering effect and feels unpolished.
-	// This custom solution ensures that the input never gains focus during events like
-	// "add" or "remove", while still allowing the user to focus it by clicking.
-	useEffect(() => {
-		if (selectRef.current) {
-			if (!selectRef.current.inputRef) {
+		if (isSelected) {
+			newValues = values.filter((val) => val.value !== option.value)
+		} else {
+			if (limit && values.length >= limit) {
 				return
 			}
+			newValues = [...values, { value: option.value, label: option.label }]
+		}
 
-			// Override the focus method to prevent auto-focus
-			const originalFocus = selectRef.current.inputRef.focus
-			selectRef.current.inputRef.focus = () => null
+		onChange(newValues)
+	}
 
-			// Override the onControlMouseDown method to temporarily restore the original focus
-			// behavior during user interactions (e.g., clicking on the search input)
-			const originalOnControlMouseDown = selectRef.current.onControlMouseDown
-			selectRef.current.onControlMouseDown = (...args) => {
-				if (!selectRef.current || !selectRef.current.inputRef) {
-					return
-				}
+	const handleRemoveOption = (value: string) => {
+		onChange(values.filter((val) => val.value !== value))
+	}
 
-				selectRef.current.inputRef.focus = originalFocus
-				originalOnControlMouseDown(...args)
-				selectRef.current.inputRef.focus = () => null
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+				setIsOpen(false)
 			}
+		}
 
-			// Cleanup on unmount
-			return () => {
-				if (selectRef.current) {
-					selectRef.current.onControlMouseDown = originalOnControlMouseDown
-
-					if (selectRef.current.inputRef) {
-						selectRef.current.inputRef.focus = originalFocus
-					}
-				}
-			}
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
 		}
 	}, [])
 
-	return (
-		<div className="relative custom-select-box">
-			<Select
-				ref={selectRef}
-				value={values}
-				options={options as any}
-				onChange={handleChange}
-				onInputChange={handleInputChange}
-				placeholder={placeholder}
-				isMulti={true}
-				autoFocus={!isTouchCapable()}
-				menuIsOpen={true}
-				isClearable={false}
-				isSearchable={true}
-				blurInputOnSelect={false}
-				closeMenuOnSelect={false}
-				closeMenuOnScroll={false}
-				hideSelectedOptions={false}
-				backspaceRemovesValue={false}
-				controlShouldRenderValue={false}
-				menuPlacement="bottom"
-				formatOptionLabel={(option: Option) =>
-					option.labelEn ? (
-						<div className="flex justify-between">
-							<span>{option.label}</span>
-							<span>{option.labelEn}</span>
-						</div>
-					) : (
-						option.label
-					)
+	useEffect(() => {
+		if (isOpen && searchInputRef.current) {
+			setTimeout(() => searchInputRef.current?.focus(), 100)
+		}
+	}, [isOpen])
+
+	const getStyles = () => {
+		switch (theme) {
+			case 'light':
+				return {
+					container: 'bg-white border-gray-200 shadow-sm',
+					dropdown: 'bg-white border-gray-200 shadow-lg',
+					selectedBadge: 'bg-blue-50 text-blue-600 border-blue-100',
+					groupHeading: 'text-gray-500 bg-gray-50',
+					option: 'hover:bg-gray-50',
+					selectedOption: 'bg-blue-50 text-blue-700',
+					inputText: 'text-gray-700 placeholder-gray-400',
+					searchIcon: 'text-gray-400',
+					checkIcon: 'text-blue-500',
 				}
-				styles={{
-					control: (base) => ({
-						...base,
-						backgroundColor: undefined,
-						borderColor: undefined,
-					}),
-					input: (base) => ({
-						...base,
-						cursor: 'text',
-						padding: 0,
-						margin: 0,
-						color: undefined,
-					}),
-					menu: (base) => ({
-						...base,
-						position: 'relative',
-						marginBottom: 0,
-						marginTop: undefined,
-						backgroundColor: undefined,
-						borderColor: undefined,
-						boxShadow: undefined,
-					}),
-					menuList: (base) => ({
-						...base,
-						paddingTop: undefined,
-						paddingBottom: undefined,
-					}),
-					groupHeading: (base) => ({
-						...base,
-						fontWeight: undefined,
-						fontSize: undefined,
-						color: undefined,
-					}),
-					option: (base) => ({
-						...base,
-						cursor: 'pointer',
-						backgroundColor: undefined,
-						borderColor: undefined,
-						color: undefined,
-						':active': {
-							backgroundColor: undefined,
-						},
-					}),
-					indicatorsContainer: () => ({
-						display: 'none',
-					}),
-				}}
-				classNames={{
-					control: () => `
-                    	bg-white dark:bg-[#3f3f3f] 
-                        border-gray-200 dark:border-gray-600`,
-					input: () => `
-                    	w-full dark:text-gray-100`,
-					menu: () => `
-                    	mt-3`,
-					group: () => `
-                        mb-3 last:mb-0 px-1 rounded-md shadow-xs
-                        bg-white dark:bg-[#3f3f3f]  
-                        border-gray-200 dark:border-gray-600`,
-					groupHeading: () => `
-                        w-full pb-1 bg-transparent 
-                        text-gray-600 dark:text-gray-100
-                        font-extrabold text-center`,
-					option: (state) => `
-                        w-full mb-1 last:mb-0 rounded-md 
-                        text-gray-700 dark:text-gray-300
-                        ${
-													state.isSelected
-														? `
-                        	bg-green-200 dark:bg-green-400/30
-                        	hover:bg-red-200 dark:hover:bg-red-400/30
-                        	active:bg-red-300 dark:active:bg-red-600/30`
-														: `
-                            hover:bg-gray-200 dark:hover:bg-black/20
-                            active:bg-gray-300 dark:active:bg-black/30`
-												}`,
-					menuList: () => `
-						pe-1 -me-1
-                        [&::-webkit-scrollbar]:w-1
-                        [&::-webkit-scrollbar-track]:bg-transparent
-                        [&::-webkit-scrollbar-track]:rounded-lg
-                        [&::-webkit-scrollbar-thumb]:bg-gray-300
-                        [&::-webkit-scrollbar-thumb]:rounded-lg
-                        [&::-webkit-scrollbar-thumb]:border-solid
-                        dark:[&::-webkit-scrollbar-thumb]:bg-gray-600
-                        hover:[&::-webkit-scrollbar-thumb]:bg-gray-400
-                        dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-500
-                        [&::-webkit-scrollbar-thumb]:transition-colors
-                        [&::-webkit-scrollbar-thumb]:duration-200`,
-				}}
-			/>
+			case 'dark':
+				return {
+					container: 'bg-gray-800 border-gray-700 shadow-md',
+					dropdown: 'bg-gray-800 border-gray-700 shadow-lg',
+					selectedBadge: 'bg-blue-900/50 text-blue-300 border-blue-800/60',
+					groupHeading: 'text-gray-300 bg-gray-700/50',
+					option: 'hover:bg-gray-700 text-gray-300',
+					selectedOption: 'bg-blue-900/30 text-blue-300',
+					inputText: 'text-gray-200 placeholder-gray-500',
+					searchIcon: 'text-gray-500',
+					checkIcon: 'text-blue-400',
+				}
+			default:
+				return {
+					container: 'bg-black/20 border-gray-700/30 backdrop-blur-sm shadow-md',
+					dropdown: 'bg-black/30 border-gray-700/30 backdrop-blur-md shadow-lg',
+					selectedBadge: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+					groupHeading: 'text-gray-300 bg-white/5',
+					option: 'hover:bg-white/10 text-gray-400',
+					selectedOption: 'bg-blue-500/20 text-blue-300',
+					inputText: 'text-gray-200 placeholder-gray-500',
+					searchIcon: 'text-gray-500',
+					checkIcon: 'text-blue-400',
+				}
+		}
+	}
+
+	const styles = getStyles()
+
+	return (
+		<div ref={dropdownRef} className="relative w-full">
+			{/* Main input container */}
+			<div
+				className={`flex flex-wrap items-center gap-2 min-h-10 p-2 border rounded-lg cursor-pointer transition-colors ${styles.container}`}
+				onClick={() => setIsOpen(!isOpen)}
+			>
+				{/* Selected items badges */}
+				{values.length > 0 ? (
+					<div className="flex flex-wrap gap-1.5">
+						{values.map((option) => (
+							<div
+								key={option.value}
+								className={`flex items-center gap-1 px-2 py-0.5 text-sm rounded-md border ${styles.selectedBadge}`}
+								onClick={(e) => {
+									e.stopPropagation()
+									handleRemoveOption(option.value)
+								}}
+							>
+								<span>{option.label}</span>
+								<FiX size={14} className="cursor-pointer hover:opacity-80" />
+							</div>
+						))}
+					</div>
+				) : (
+					<div className={`text-sm ${styles.inputText}`}>{placeholder}</div>
+				)}
+
+				<div className="flex-grow" />
+				<FiChevronDown className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+			</div>
+
+			{/* Dropdown */}
+			{isOpen && (
+				<div
+					className={`absolute z-50 mt-1 w-full max-h-64 overflow-hidden rounded-lg border ${styles.dropdown}`}
+				>
+					{/* Search input */}
+					<div className="flex items-center p-2 border-b border-gray-200 dark:border-gray-700">
+						<FiSearch className={`mx-2 ${styles.searchIcon}`} />
+						<input
+							ref={searchInputRef}
+							type="text"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
+							placeholder="جستجو..."
+							className={`w-full p-1 outline-none bg-transparent ${styles.inputText}`}
+							onClick={(e) => e.stopPropagation()}
+						/>
+						{searchTerm && (
+							<button
+								className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+								onClick={(e) => {
+									e.stopPropagation()
+									setSearchTerm('')
+								}}
+							>
+								<FiX size={14} />
+							</button>
+						)}
+					</div>
+
+					{/* Options list */}
+					<div className="overflow-y-auto max-h-48">
+						{Array.isArray(filteredOptions) &&
+							filteredOptions.length > 0 &&
+							('options' in filteredOptions[0]
+								? (filteredOptions as OptionsGroup[]).map((group) => (
+										<div key={group.label}>
+											<div
+												className={`sticky top-0 p-2 text-xs font-semibold ${styles.groupHeading}`}
+											>
+												{group.label}
+											</div>
+											{group.options.map((option) => (
+												<div
+													key={option.value}
+													className={`flex items-center justify-between p-3 cursor-pointer transition ${
+														isOptionSelected(option.value)
+															? styles.selectedOption
+															: styles.option
+													}`}
+													onClick={(e) => {
+														e.stopPropagation()
+														handleSelect(option)
+													}}
+												>
+													<div className="flex justify-between w-full">
+														<span>{option.label}</span>
+														{option.labelEn && (
+															<span className="text-xs opacity-60">{option.labelEn}</span>
+														)}
+													</div>
+													{isOptionSelected(option.value) && (
+														<FiCheck className={styles.checkIcon} />
+													)}
+												</div>
+											))}
+										</div>
+									))
+								: (filteredOptions as Option[]).map((option) => (
+										<div
+											key={option.value}
+											className={`flex items-center justify-between p-3 cursor-pointer transition ${
+												isOptionSelected(option.value)
+													? styles.selectedOption
+													: styles.option
+											}`}
+											onClick={(e) => {
+												e.stopPropagation()
+												handleSelect(option)
+											}}
+										>
+											<div className="flex justify-between w-full">
+												<span>{option.label}</span>
+												{option.labelEn && (
+													<span className="text-xs opacity-60">{option.labelEn}</span>
+												)}
+											</div>
+											{isOptionSelected(option.value) && (
+												<FiCheck className={styles.checkIcon} />
+											)}
+										</div>
+									)))}
+
+						{/* No results */}
+						{(!Array.isArray(filteredOptions) || filteredOptions.length === 0) && (
+							<div className="p-4 text-center text-gray-500 dark:text-gray-400">
+								موردی یافت نشد
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

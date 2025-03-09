@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
+import { useTheme } from '../../../../context/theme.context'
 import { useTodoStore } from '../../../../context/todo.context'
 
 export function TodoStats() {
 	const { todos } = useTodoStore()
+	const { theme } = useTheme()
 
 	const stats = useMemo(() => {
 		const totalTodos = todos.length
@@ -38,18 +40,120 @@ export function TodoStats() {
 		}
 	}, [todos])
 
+	// Theme-specific styles
+	const getContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/80'
+			case 'dark':
+				return 'bg-neutral-800/50'
+			default: // glass
+				return 'bg-black/30'
+		}
+	}
+
+	const getHeaderStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+
+			default:
+				return 'text-gray-300'
+		}
+	}
+
+	const getCardStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-white/70'
+			case 'dark':
+				return 'bg-neutral-700/30'
+			default: // glass
+				return 'bg-white/10'
+		}
+	}
+
+	const getLabelStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getValueStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-800'
+
+			default:
+				return 'text-gray-200'
+		}
+	}
+
+	const getProgressBarBgStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-300'
+
+			default:
+				return 'bg-gray-700'
+		}
+	}
+
+	const getCategoryCountStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-100/60 text-blue-600'
+			default:
+				return 'bg-blue-500/20 text-blue-400'
+		}
+	}
+
+	const getCategoryTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+
+			default:
+				return 'text-gray-300'
+		}
+	}
+
+	const getPriorityBarColors = () => {
+		switch (theme) {
+			case 'light':
+				return {
+					high: 'bg-red-400/70',
+					medium: 'bg-yellow-400/70',
+					low: 'bg-green-400/70',
+				}
+
+			default:
+				return {
+					high: 'bg-red-500/60',
+					medium: 'bg-yellow-500/60',
+					low: 'bg-green-500/60',
+				}
+		}
+	}
+
+	const priorityColors = getPriorityBarColors()
+
 	return (
-		<div className="p-4 mt-4 bg-neutral-800/50 rounded-xl">
-			<h4 className="mb-3 text-lg text-gray-300">آمار کلی</h4>
+		<div className={`p-4 mt-4 ${getContainerStyle()} rounded-xl`}>
+			<h4 className={`mb-3 text-lg ${getHeaderStyle()}`}>آمار کلی</h4>
 
 			<div className="grid grid-cols-2 gap-3">
-				<div className="p-3 rounded-lg bg-neutral-700/30">
-					<span className="text-xs text-gray-400">تکمیل شده</span>
+				<div className={`p-3 rounded-lg ${getCardStyle()}`}>
+					<span className={`text-xs ${getLabelStyle()}`}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
-						<span className="text-xl text-gray-200">{stats.completedTodos}</span>
-						<span className="text-sm text-gray-400">از {stats.totalTodos}</span>
+						<span className={`text-xl ${getValueStyle()}`}>{stats.completedTodos}</span>
+						<span className={`text-sm ${getLabelStyle()}`}>از {stats.totalTodos}</span>
 					</div>
-					<div className="h-1 mt-2 bg-gray-700 rounded-full">
+					<div className={`h-1 mt-2 ${getProgressBarBgStyle()} rounded-full`}>
 						<div
 							className="h-1 bg-green-500 rounded-full"
 							style={{ width: `${stats.completionRate}%` }}
@@ -57,54 +161,56 @@ export function TodoStats() {
 					</div>
 				</div>
 
-				<div className="p-3 rounded-lg bg-neutral-700/30">
-					<span className="text-xs text-gray-400">اولویت‌ها</span>
+				<div className={`p-3 rounded-lg ${getCardStyle()}`}>
+					<span className={`text-xs ${getLabelStyle()}`}>اولویت‌ها</span>
 					<div className="flex justify-between mt-2">
 						<div className="text-center">
 							<div className="flex items-end h-10">
 								<div
-									className="w-6 rounded-t bg-red-500/60"
+									className={`w-6 rounded-t ${priorityColors.high}`}
 									style={{
 										height: `${(stats.priorityStats.high / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}
 								></div>
 							</div>
-							<span className="text-xs text-gray-400">زیاد</span>
+							<span className={`text-xs ${getLabelStyle()}`}>زیاد</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-10">
 								<div
-									className="w-6 rounded-t bg-yellow-500/60"
+									className={`w-6 rounded-t ${priorityColors.medium}`}
 									style={{
 										height: `${(stats.priorityStats.medium / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}
 								></div>
 							</div>
-							<span className="text-xs text-gray-400">متوسط</span>
+							<span className={`text-xs ${getLabelStyle()}`}>متوسط</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-10">
 								<div
-									className="w-6 rounded-t bg-green-500/60"
+									className={`w-6 rounded-t ${priorityColors.low}`}
 									style={{
 										height: `${(stats.priorityStats.low / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}
 								></div>
 							</div>
-							<span className="text-xs text-gray-400">کم</span>
+							<span className={`text-xs ${getLabelStyle()}`}>کم</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			{stats.topCategories.length > 0 && (
-				<div className="p-3 mt-3 rounded-lg bg-neutral-700/30">
-					<span className="text-xs text-gray-400">دسته‌بندی‌های پرکاربرد</span>
+				<div className={`p-3 mt-3 rounded-lg ${getCardStyle()}`}>
+					<span className={`text-xs ${getLabelStyle()}`}>دسته‌بندی‌های پرکاربرد</span>
 					<div className="mt-2 space-y-2">
 						{stats.topCategories.map(([category, count]) => (
 							<div key={category} className="flex items-center justify-between">
-								<span className="text-sm text-gray-300">{category}</span>
-								<span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">
+								<span className={`text-sm ${getCategoryTextStyle()}`}>{category}</span>
+								<span
+									className={`text-xs px-2 py-0.5 rounded-full ${getCategoryCountStyle()}`}
+								>
 									{count}
 								</span>
 							</div>

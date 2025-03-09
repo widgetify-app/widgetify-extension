@@ -10,6 +10,7 @@ interface AddBookmarkModalProps {
 	onClose: () => void
 	onAdd: (bookmark: Bookmark) => void
 	parentId: string | null
+	theme?: string
 }
 
 export function AddBookmarkModal({
@@ -17,6 +18,7 @@ export function AddBookmarkModal({
 	onClose,
 	onAdd,
 	parentId = null,
+	theme = 'glass',
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [title, setTitle] = useState('')
@@ -26,6 +28,52 @@ export function AddBookmarkModal({
 	const [iconSource, setIconSource] = useState<'auto' | 'upload' | 'url'>('auto')
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
+	// Theme-specific styling functions
+	const getInputStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-white border border-gray-300 text-gray-800'
+			case 'dark':
+				return 'bg-neutral-800 border border-neutral-700 text-white'
+			default: // glass
+				return 'bg-[#1E1E1E] border border-[#333] text-white'
+		}
+	}
+
+	const getButtonStyle = (primary = false) => {
+		if (primary) {
+			switch (theme) {
+				case 'light':
+					return 'bg-blue-500 hover:bg-blue-600 text-white'
+				case 'dark':
+					return 'bg-blue-600 hover:bg-blue-700 text-white'
+				default: // glass
+					return 'bg-blue-500/80 hover:bg-blue-500 text-white'
+			}
+		}
+
+		switch (theme) {
+			case 'light':
+				return 'border border-gray-300 text-gray-600 hover:bg-gray-100'
+			case 'dark':
+				return 'border border-gray-700 text-gray-300 hover:bg-gray-700/50'
+			default: // glass
+				return 'border border-white/10 text-gray-400 hover:bg-white/5'
+		}
+	}
+
+	const getIconPreviewStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'border-gray-300 hover:bg-gray-100'
+			case 'dark':
+				return 'border-gray-700 hover:bg-gray-700/50'
+			default: // glass
+				return 'border-white/10 hover:bg-neutral-800/50'
+		}
+	}
+
+	// Existing functions
 	const getFaviconFromUrl = (url: string): string => {
 		try {
 			if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -140,7 +188,9 @@ export function AddBookmarkModal({
 					<img
 						src={icon}
 						alt="Favicon"
-						className="object-contain w-full h-full p-2 transition-opacity border rounded-lg border-white/10 group-hover:opacity-75"
+						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg ${
+							theme === 'light' ? 'border-gray-300' : 'border-white/10'
+						} group-hover:opacity-75`}
 						onError={(e) => {
 							;(e.target as HTMLImageElement).style.display = 'none'
 						}}
@@ -151,7 +201,7 @@ export function AddBookmarkModal({
 
 		return (
 			<div
-				className="flex items-center justify-center w-12 h-12 mx-auto transition-colors border rounded-lg cursor-pointer border-white/10 hover:bg-neutral-800/50"
+				className={`flex items-center justify-center w-12 h-12 mx-auto transition-colors border rounded-lg cursor-pointer ${getIconPreviewStyle()}`}
 				onClick={handlePreviewClick}
 			>
 				<FaImage className="w-6 h-6 text-gray-500" />
@@ -170,7 +220,7 @@ export function AddBookmarkModal({
 			<div className="fixed-height-container relative min-h-[280px]">
 				<motion.div className="flex flex-col gap-4 p-4">
 					<div className="flex gap-2 mb-4">
-						<TypeSelector type={type} setType={setType} />
+						<TypeSelector type={type} setType={setType} theme={theme} />
 					</div>
 
 					<div className="mb-4">{renderIconPreview()}</div>
@@ -187,7 +237,7 @@ export function AddBookmarkModal({
 						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
-						className="w-full px-4 py-3 text-right text-white bg-[#1E1E1E] border border-[#333] rounded-lg"
+						className={`w-full px-4 py-3 text-right rounded-lg ${getInputStyle()}`}
 					/>
 
 					<div className="url-field-container relative h-[54px]">
@@ -215,7 +265,7 @@ export function AddBookmarkModal({
 									placeholder="آدرس لینک"
 									value={url}
 									onChange={handleUrlChange}
-									className="w-full px-4 py-3 text-right text-white absolute bg-[#1E1E1E] border border-[#333] rounded-lg"
+									className={`w-full px-4 py-3 text-right absolute rounded-lg ${getInputStyle()}`}
 								/>
 							)}
 						</AnimatePresence>
@@ -224,13 +274,13 @@ export function AddBookmarkModal({
 					<div className="flex justify-between mt-4">
 						<button
 							onClick={onClose}
-							className="px-4 py-2 text-gray-400 border rounded-lg border-white/10 hover:bg-white/5"
+							className={`px-4 py-2 rounded-lg ${getButtonStyle(false)}`}
 						>
 							لغو
 						</button>
 						<button
 							onClick={handleAdd}
-							className="px-4 py-2 text-white rounded-lg bg-blue-500/80 hover:bg-blue-500"
+							className={`px-4 py-2 rounded-lg ${getButtonStyle(true)}`}
 							disabled={!title.trim() || (type === 'BOOKMARK' && !url.trim())}
 						>
 							افزودن
@@ -245,18 +295,40 @@ export function AddBookmarkModal({
 function TypeSelector({
 	type,
 	setType,
+	theme = 'glass',
 }: {
 	type: BookmarkType
 	setType: (type: BookmarkType) => void
+	theme?: string
 }) {
+	const getActiveStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-500 text-white'
+			case 'dark':
+				return 'bg-blue-600 text-white'
+			default:
+				return 'bg-blue-500/80 text-white'
+		}
+	}
+
+	const getInactiveStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200 text-gray-700'
+			case 'dark':
+				return 'bg-neutral-700 text-gray-300'
+			default:
+				return 'bg-neutral-800 text-gray-400'
+		}
+	}
+
 	return (
 		<>
 			<button
 				onClick={() => setType('BOOKMARK')}
 				className={`flex-1 py-2 rounded-lg transition-colors ${
-					type === 'BOOKMARK'
-						? 'bg-blue-500/80 text-white'
-						: 'bg-neutral-800 text-gray-400'
+					type === 'BOOKMARK' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>
 				بوکمارک
@@ -264,7 +336,7 @@ function TypeSelector({
 			<button
 				onClick={() => setType('FOLDER')}
 				className={`flex-1 py-2 rounded-lg transition-colors ${
-					type === 'FOLDER' ? 'bg-blue-500/80 text-white' : 'bg-neutral-800 text-gray-400'
+					type === 'FOLDER' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>
 				پوشه

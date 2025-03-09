@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { useCurrencyStore } from '../../context/currency.context'
+import { useTheme } from '../../context/theme.context'
 import { useGetSupportCurrencies } from '../../services/getMethodHooks/getSupportCurrencies.hook'
 import { AddCurrencyBox } from './components/addCurrency-box'
 import { CurrencyBox } from './components/currency-box'
@@ -9,6 +10,7 @@ import { CurrencyBox } from './components/currency-box'
 export function ArzLiveLayout() {
 	const { data } = useGetSupportCurrencies()
 	const { selectedCurrencies } = useCurrencyStore()
+	const { theme, themeUtils } = useTheme()
 	const [isExpanded, setIsExpanded] = useState(false)
 
 	const ITEM_HEIGHT = 48
@@ -21,13 +23,24 @@ export function ArzLiveLayout() {
 		expanded: { height: ITEM_HEIGHT * totalItems },
 	}
 
+	const getExpandButtonStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600 bg-gray-300/50 hover:bg-gray-400/50'
+			case 'dark':
+				return 'text-gray-400 bg-neutral-800/50 hover:bg-neutral-700/50'
+			default: // glass
+				return 'text-gray-300 bg-black/30 hover:bg-black/40'
+		}
+	}
+
 	return (
 		<div className="relative">
 			<motion.div
 				variants={containerVariants}
 				animate={isExpanded ? 'expanded' : 'collapsed'}
 				initial="collapsed"
-				className="flex flex-col gap-1 px-2 py-2 rounded-2xl bg-neutral-900/70 backdrop-blur-sm min-h-80"
+				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl min-h-80 ${themeUtils.getCardBackground()}`}
 				style={{ overflow: 'hidden' }}
 				transition={{
 					type: 'spring',
@@ -38,7 +51,7 @@ export function ArzLiveLayout() {
 			>
 				{selectedCurrencies.map((currency, index) => (
 					<motion.div
-						key={index}
+						key={`${currency}-${index}`}
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.3 }}
@@ -51,14 +64,14 @@ export function ArzLiveLayout() {
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ duration: 0.2 }}
 				>
-					<AddCurrencyBox supportCurrencies={data || []} />
+					<AddCurrencyBox supportCurrencies={data || []} theme={theme} />
 				</motion.div>
 			</motion.div>
 
 			{showExpandButton && (
 				<motion.button
 					onClick={() => setIsExpanded(!isExpanded)}
-					className="absolute p-1 text-gray-400 transition-colors translate-x-1/2 rounded-full bottom-1 right-1/2 bg-neutral-800/50 hover:bg-neutral-700/50"
+					className={`absolute p-1 transition-colors translate-x-1/2 rounded-full bottom-1 right-1/2 ${getExpandButtonStyle()}`}
 					whileHover={{ scale: 1.1 }}
 					whileTap={{ scale: 0.9 }}
 				>

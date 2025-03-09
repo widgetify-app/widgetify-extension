@@ -24,4 +24,5 @@ export interface StorageKV {
 	todoBlurMode: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
+	theme: 'light' | 'dark' | 'glass'
 }

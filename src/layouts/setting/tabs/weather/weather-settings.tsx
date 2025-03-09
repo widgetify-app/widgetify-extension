@@ -1,4 +1,4 @@
-import { FaInfoCircle } from 'react-icons/fa'
+import { useTheme } from '../../../../context/theme.context'
 import type { TemperatureUnit } from '../../../../services/getMethodHooks/weather/weather.interface'
 
 interface WeatherSettingsProps {
@@ -14,6 +14,87 @@ export function WeatherSettings({
 	useAI,
 	updateSettings,
 }: WeatherSettingsProps) {
+	const { theme } = useTheme()
+
+	const getButtonStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-600/30 hover:bg-blue-600/40 text-blue-800 border-white/20'
+			case 'dark':
+				return 'bg-blue-700/40 hover:bg-blue-700/60 text-white border-white/10'
+			default: // glass
+				return 'bg-blue-700/40 hover:bg-blue-700/60 text-white border-white/10'
+		}
+	}
+
+	const getInputStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/60 text-gray-800 border-gray-300/30 focus:ring-blue-500'
+			case 'dark':
+				return 'bg-gray-800/30 text-white border-white/10 focus:ring-blue-500'
+			default: // glass
+				return 'bg-gray-800/30 text-white border-white/10 focus:ring-blue-500'
+		}
+	}
+
+	const getSelectedUnitStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-600 text-white'
+
+			default:
+				return 'bg-blue-700 text-white'
+		}
+	}
+
+	const getUnselectedUnitStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200/70 text-gray-700 hover:bg-gray-300/70'
+			case 'dark':
+				return 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
+			default: // glass
+				return 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
+		}
+	}
+
+	const getToggleContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-100/60 border-blue-300/30'
+			case 'dark':
+				return 'bg-blue-900/10 border-white/10'
+			default: // glass
+				return 'bg-blue-900/10 border-white/10'
+		}
+	}
+
+	const getToggleTrackStyle = (enabled: boolean) => {
+		if (enabled) {
+			return theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'
+		}
+		return theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
+	}
+
+	const getHintTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getLabelStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			default:
+				return 'text-white'
+		}
+	}
+
 	return (
 		<div className="space-y-6">
 			{/* Forecast Count */}
@@ -21,7 +102,7 @@ export function WeatherSettings({
 				<div className="flex items-center justify-between">
 					<label
 						htmlFor="forecastCount"
-						className="flex items-center text-sm font-medium text-white"
+						className={`flex items-center text-sm font-medium ${getLabelStyle()}`}
 					>
 						<span>تعداد پیش‌بینی</span>
 					</label>
@@ -30,7 +111,7 @@ export function WeatherSettings({
 							onClick={() =>
 								updateSettings('forecastCount', Math.max(1, forecastCount - 1))
 							}
-							className="flex items-center justify-center w-8 h-8 text-lg text-white border-l cursor-pointer bg-blue-700/40 hover:bg-blue-700/60 rounded-r-md border-white/10"
+							className={`flex items-center justify-center w-8 h-8 text-lg border-l cursor-pointer ${getButtonStyle()} rounded-r-md`}
 						>
 							−
 						</button>
@@ -43,13 +124,13 @@ export function WeatherSettings({
 							onChange={(e) =>
 								updateSettings('forecastCount', Number.parseInt(e.target.value) || 4)
 							}
-							className="w-16 h-8 px-2 text-center text-white border-x bg-gray-800/30 border-white/10 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+							className={`w-16 h-8 px-2 text-center border-x ${getInputStyle()} focus:outline-none`}
 						/>
 						<button
 							onClick={() =>
 								updateSettings('forecastCount', Math.min(10, forecastCount + 1))
 							}
-							className="flex items-center justify-center w-8 h-8 text-lg text-white border-r cursor-pointer bg-blue-700/40 hover:bg-blue-700/60 rounded-l-md border-white/10"
+							className={`flex items-center justify-center w-8 h-8 text-lg border-r cursor-pointer ${getButtonStyle()} rounded-l-md`}
 						>
 							+
 						</button>
@@ -60,7 +141,7 @@ export function WeatherSettings({
 			{/* Temperature Unit */}
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
-					<label htmlFor="tempUnit" className="text-sm font-medium text-white">
+					<label htmlFor="tempUnit" className={`text-sm font-medium ${getLabelStyle()}`}>
 						واحد دما
 					</label>
 					<div className="flex overflow-hidden border rounded-md border-white/10">
@@ -73,8 +154,8 @@ export function WeatherSettings({
 								key={option.value}
 								className={`px-3 py-1.5 min-w-[40px] text-sm font-medium transition cursor-pointer ${
 									temperatureUnit === option.value
-										? 'bg-blue-700 text-white'
-										: 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
+										? getSelectedUnitStyle()
+										: getUnselectedUnitStyle()
 								}`}
 								onClick={() => updateSettings('temperatureUnit', option.value)}
 							>
@@ -84,7 +165,7 @@ export function WeatherSettings({
 						))}
 					</div>
 				</div>
-				<div className="text-xs font-light text-right text-gray-400">
+				<div className={`text-xs font-light text-right ${getHintTextStyle()}`}>
 					{temperatureUnit === 'metric' &&
 						'واحد سلسیوس در بیشتر کشورهای جهان استفاده می‌شود'}
 					{temperatureUnit === 'imperial' &&
@@ -94,12 +175,14 @@ export function WeatherSettings({
 			</div>
 
 			{/* AI Toggle */}
-			<div className="flex items-center justify-between p-4 border rounded-lg bg-blue-900/10 backdrop-blur-sm border-white/10">
+			<div
+				className={`flex items-center justify-between p-4 border rounded-lg backdrop-blur-sm ${getToggleContainerStyle()}`}
+			>
 				<div className="flex flex-col">
-					<label htmlFor="useAI" className="text-sm font-medium text-white">
+					<label htmlFor="useAI" className={`text-sm font-medium ${getLabelStyle()}`}>
 						استفاده از هوش مصنوعی
 					</label>
-					<span className="text-xs font-light text-gray-400">
+					<span className={`text-xs font-light ${getHintTextStyle()}`}>
 						توصیف شرایط آب و هوا با زبانی طبیعی با کمک هوش مصنوعی
 					</span>
 				</div>
@@ -112,9 +195,7 @@ export function WeatherSettings({
 						onChange={() => updateSettings('useAI', !useAI)}
 					/>
 					<div
-						className={`relative w-14 h-7 rounded-full transition-colors ${
-							useAI ? 'bg-blue-600' : 'bg-gray-700'
-						}`}
+						className={`relative w-14 h-7 rounded-full transition-colors ${getToggleTrackStyle(useAI)}`}
 					>
 						<div
 							className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-md transition-transform ${

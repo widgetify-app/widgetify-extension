@@ -165,12 +165,12 @@ export function HomePage() {
 
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
-			<WeatherProvider>
-				<GeneralSettingProvider>
+			<GeneralSettingProvider>
+				<WeatherProvider>
 					<NavbarLayout />
 					<ContentSection />
-				</GeneralSettingProvider>
-			</WeatherProvider>
+				</WeatherProvider>
+			</GeneralSettingProvider>
 			<Toaster />
 			<ExtensionInstalledModal
 				show={showWelcomeModal}

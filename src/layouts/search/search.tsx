@@ -1,10 +1,33 @@
 import { CiSearch } from 'react-icons/ci'
-
 import { BookmarkProvider } from '../../context/bookmark.context'
+import { useTheme } from '../../context/theme.context'
 import { BookmarksComponent } from './bookmarks/bookmarks'
 
 export function SearchLayout() {
 	const GOOGLE_URL = 'https://www.google.com/search?q='
+	const { theme, themeUtils } = useTheme()
+
+	const getSearchBoxBackground = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-white hover:bg-white/95'
+			case 'dark':
+				return 'bg-neutral-800  hover:bg-neutral-700/90'
+			default:
+				return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80'
+		}
+	}
+
+	const getSearchButtonStyles = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-blue-600 bg-blue-100/80 hover:bg-blue-200/90 hover:text-blue-700'
+			case 'dark':
+				return 'text-blue-300 bg-blue-500/20 hover:bg-blue-500/30 hover:text-blue-200'
+			default:
+				return 'text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 hover:text-blue-300'
+		}
+	}
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -13,24 +36,29 @@ export function SearchLayout() {
 			window.location.href = GOOGLE_URL + encodeURIComponent(query)
 		}
 	}
+
 	return (
 		<>
-			<div className="flex flex-col items-center justify-center text-white max-h-80">
+			<div className="flex flex-col items-center justify-center max-h-80">
 				<form className="w-full" onSubmit={handleSubmit}>
-					<div className="relative overflow-hidden transition-all duration-300 shadow-xl backdrop-blur-sm bg-neutral-900/70 rounded-2xl hover:bg-neutral-800/80 group">
+					<div
+						className={`relative overflow-hidden transition-all duration-300 shadow-xl rounded-2xl group ${getSearchBoxBackground()}`}
+					>
 						<input
 							type="text"
 							name="search"
-							className="w-full py-4 pl-16 pr-6 text-lg font-light text-right text-gray-200 transition-all duration-300 bg-transparent placeholder-gray-400/70 focus:outline-none"
+							className={`w-full py-4 pl-16 pr-6 text-lg font-light text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
 							placeholder="جستجو در گوگل..."
 						/>
 						<button
 							type="submit"
-							className="absolute p-2 text-blue-400 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-3 top-1/2 bg-blue-500/10 hover:bg-blue-500/20 hover:text-blue-300"
+							className={`absolute p-2 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-3 top-1/2 ${getSearchButtonStyles()}`}
 						>
 							<CiSearch size={20} />
 						</button>
-						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none border-white/10 rounded-2xl group-hover:border-white/20" />
+						<div
+							className={`absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl ${themeUtils.getBorderColor()}`}
+						/>
 					</div>
 				</form>
 				<BookmarkProvider>

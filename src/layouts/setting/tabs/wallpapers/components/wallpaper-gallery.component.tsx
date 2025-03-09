@@ -3,6 +3,7 @@ import type React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { FiGrid, FiImage, FiTag, FiVideo } from 'react-icons/fi'
 import type { Wallpaper } from '../../../../../common/wallpaper.interface'
+import { useTheme } from '../../../../../context/theme.context'
 import { WallpaperItem } from '../item.wallpaper'
 import { CategoryPanel } from './category-panel.component'
 
@@ -33,20 +34,51 @@ function FilterButton({
 	onClick: () => void
 	disabled: boolean
 }) {
+	const { theme } = useTheme()
+
+	const getButtonStyle = () => {
+		if (activeFilter === type) {
+			switch (theme) {
+				case 'light':
+					return 'bg-blue-500/20 text-blue-600 shadow-inner'
+				case 'dark':
+					return 'bg-blue-500/30 text-blue-300 shadow-inner'
+				default: // glass
+					return 'bg-blue-500/30 text-blue-300 shadow-inner'
+			}
+		}
+
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600 hover:bg-gray-100/70'
+			case 'dark':
+				return 'text-gray-300 hover:bg-gray-700/50'
+			default: // glass
+				return 'text-gray-400 hover:bg-white/5'
+		}
+	}
+
+	const getBadgeStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-500/20 text-blue-700'
+			case 'dark':
+				return 'bg-blue-500/30 text-blue-300'
+			default: // glass
+				return 'bg-blue-500/30 text-blue-300'
+		}
+	}
+
 	return (
 		<button
 			onClick={onClick}
-			className={`flex items-center gap-1 py-1.5 px-3 rounded-lg transition-colors ${
-				activeFilter === type
-					? 'bg-blue-500/30 text-blue-300 shadow-inner'
-					: 'text-gray-400 hover:bg-white/5'
-			}`}
+			className={`flex items-center gap-1 py-1.5 px-3 rounded-lg transition-colors ${getButtonStyle()}`}
 			disabled={disabled}
 		>
 			{icon}
 			<span className="text-sm">{label}</span>
 			{activeFilter === type && (
-				<span className="px-1.5 py-0.5 ml-1 text-xs bg-blue-500/30 rounded-full">
+				<span className={`px-1.5 py-0.5 ml-1 text-xs rounded-full ${getBadgeStyle()}`}>
 					{count}
 				</span>
 			)}
@@ -61,10 +93,74 @@ export function WallpaperGallery({
 	selectedBackground,
 	onSelectBackground,
 }: WallpaperGalleryProps) {
+	const { theme, themeUtils } = useTheme()
 	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
 	const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
 	const [isTransitioning, setIsTransitioning] = useState(false)
 	const galleryRef = useRef<HTMLDivElement>(null)
+
+	const getFilterContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/50 backdrop-blur-sm'
+			case 'dark':
+				return 'bg-gray-800/50 backdrop-blur-sm'
+			default: // glass
+				return 'bg-white/5 backdrop-blur-sm'
+		}
+	}
+
+	const getGalleryStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/30'
+			case 'dark':
+				return 'bg-gray-900/30'
+			default: // glass
+				return ''
+		}
+	}
+
+	const getErrorContainerStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-red-500/10'
+			default:
+				return 'bg-red-500/10'
+		}
+	}
+
+	const getErrorIconStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-red-500/10 text-red-500'
+
+			default:
+				return 'bg-red-500/20 text-red-400'
+		}
+	}
+
+	const getEmptyStateStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200/50 text-gray-500'
+			case 'dark':
+				return 'bg-gray-800/30 text-gray-400'
+			default: // glass
+				return 'bg-gray-700/30 text-gray-400'
+		}
+	}
+
+	const getEmptyStateButtonStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-blue-700 bg-blue-500/10 hover:bg-blue-500/20'
+			case 'dark':
+				return 'text-blue-300 bg-blue-500/20 hover:bg-blue-500/30'
+			default: // glass
+				return 'text-blue-300 bg-blue-500/20 hover:bg-blue-500/30'
+		}
+	}
 
 	const availableCategories = useMemo(() => {
 		if (!wallpapers?.length) return []
@@ -141,21 +237,22 @@ export function WallpaperGallery({
 		return (
 			<div className="flex flex-col items-center justify-center h-full py-6">
 				<div className="w-8 h-8 rounded-full border-3 border-t-blue-500 border-blue-500/30 animate-spin"></div>
-				<p className="mt-3 text-sm text-gray-400">در حال بارگذاری...</p>
+				<p className={`mt-3 text-sm ${themeUtils.getDescriptionTextStyle()}`}>
+					در حال بارگذاری...
+				</p>
 			</div>
 		)
 	}
 
 	if (error) {
 		return (
-			<div className="flex flex-col items-center justify-center p-4 text-center rounded-lg bg-red-500/10">
-				<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-red-500/20">
-					<svg
-						className="w-5 h-5 text-red-400"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
+			<div
+				className={`flex flex-col items-center justify-center p-4 text-center rounded-lg ${getErrorContainerStyle()}`}
+			>
+				<div
+					className={`flex items-center justify-center w-10 h-10 mb-3 rounded-full ${getErrorIconStyle()}`}
+				>
+					<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							strokeLinecap="round"
 							strokeLinejoin="round"
@@ -165,7 +262,9 @@ export function WallpaperGallery({
 					</svg>
 				</div>
 				<h4 className="text-base font-medium text-red-400">خطا در بارگذاری</h4>
-				<p className="mt-1 text-xs text-gray-400">لطفا مجددا تلاش کنید</p>
+				<p className={`mt-1 text-xs ${themeUtils.getDescriptionTextStyle()}`}>
+					لطفا مجددا تلاش کنید
+				</p>
 			</div>
 		)
 	}
@@ -175,7 +274,7 @@ export function WallpaperGallery({
 
 	return (
 		<div className="space-y-3">
-			<div className="flex p-1 rounded-lg backdrop-blur-sm bg-white/5">
+			<div className={`flex p-1 rounded-lg ${getFilterContainerStyle()}`}>
 				<FilterButton
 					type="all"
 					icon={<FiGrid size={16} />}
@@ -216,7 +315,7 @@ export function WallpaperGallery({
 
 			<div
 				ref={galleryRef}
-				className="p-2 overflow-x-hidden overflow-y-auto h-72 custom-scrollbar"
+				className={`p-2 overflow-x-hidden overflow-y-auto h-72 custom-scrollbar rounded-lg ${getGalleryStyle()}`}
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
 				<AnimatePresence mode="wait">
@@ -255,19 +354,23 @@ export function WallpaperGallery({
 							</div>
 						) : (
 							<div className="flex flex-col items-center justify-center py-6 text-center">
-								<div className="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-gray-700/30">
+								<div
+									className={`flex items-center justify-center w-10 h-10 mb-2 rounded-full ${getEmptyStateStyle()}`}
+								>
 									{activeFilter === 'image' ? (
-										<FiImage className="text-gray-400" size={18} />
+										<FiImage size={18} />
 									) : activeFilter === 'video' ? (
-										<FiVideo className="text-gray-400" size={18} />
+										<FiVideo size={18} />
 									) : (
-										<FiGrid className="text-gray-400" size={18} />
+										<FiGrid size={18} />
 									)}
 								</div>
-								<p className="text-sm text-gray-400">موردی یافت نشد</p>
+								<p className={`text-sm ${themeUtils.getDescriptionTextStyle()}`}>
+									موردی یافت نشد
+								</p>
 								<button
 									onClick={resetFilters}
-									className="px-3 py-1 mt-3 text-xs text-blue-300 transition-colors rounded-lg bg-blue-500/20 hover:bg-blue-500/30"
+									className={`px-3 py-1 mt-3 text-xs transition-colors rounded-lg ${getEmptyStateButtonStyle()}`}
 									disabled={isTransitioning}
 								>
 									نمایش همه

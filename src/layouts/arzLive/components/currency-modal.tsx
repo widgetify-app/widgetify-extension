@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
 import Modal from '../../../components/modal'
+import { useTheme } from '../../../context/theme.context'
 import { CurrencyChart } from './currency-chart'
 
 interface CurrencyModalComponentProps {
@@ -24,6 +25,59 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
+	const { theme } = useTheme()
+
+	const getTitleStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-800'
+			case 'dark':
+				return 'text-gray-200'
+			default: // glass
+				return 'text-white'
+		}
+	}
+
+	const getSubtitleStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500'
+
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getPriceStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-900'
+
+			default:
+				return 'text-gray-200'
+		}
+	}
+
+	const getButtonHoverStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'hover:bg-gray-100'
+			case 'dark':
+				return 'hover:bg-gray-800'
+			default: // glass
+				return 'hover:bg-white/10'
+		}
+	}
+
+	const getIconStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500'
+
+			default:
+				return 'text-gray-400'
+		}
+	}
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
@@ -51,10 +105,8 @@ export const CurrencyModalComponent = ({
 				</motion.div>
 
 				<div className="text-center">
-					<p className="text-xl font-bold text-gray-800 dark:text-gray-200">
-						{currency?.name.en}
-					</p>
-					<p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+					<p className={`text-xl font-bold ${getTitleStyle()}`}>{currency?.name.en}</p>
+					<p className={`text-sm font-medium ${getSubtitleStyle()}`}>
 						{code.toUpperCase()}
 					</p>
 				</div>
@@ -65,14 +117,14 @@ export const CurrencyModalComponent = ({
 						whileHover={{ scale: 1.02 }}
 					>
 						<PriceChangeComponent priceChange={priceChange} />
-						<p className="text-xl font-bold text-gray-900 dark:text-gray-200">
+						<p className={`text-xl font-bold ${getPriceStyle()}`}>
 							{displayPrice.toLocaleString()}
 						</p>
 
 						{currency?.priceHistory?.length ? (
 							<motion.button
 								onClick={() => setShowChart(!showChart)}
-								className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+								className={`p-1 rounded-lg ${getButtonHoverStyle()}`}
 								whileHover={{ scale: 1.1 }}
 								whileTap={{ scale: 0.9 }}
 							>
@@ -80,7 +132,7 @@ export const CurrencyModalComponent = ({
 									animate={{ rotate: showChart ? 0 : 180 }}
 									transition={{ type: 'spring' }}
 								>
-									<FaChartLine className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+									<FaChartLine className={`w-5 h-5 ${getIconStyle()}`} />
 								</motion.div>
 							</motion.button>
 						) : null}
@@ -105,7 +157,7 @@ export const CurrencyModalComponent = ({
 
 				{/* Additional currency info */}
 				{currency?.type === 'crypto' && (
-					<p className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+					<p className={`text-sm font-medium text-center ${getSubtitleStyle()}`}>
 						${Number(currency.price.toFixed()).toLocaleString()}
 					</p>
 				)}
@@ -115,9 +167,12 @@ export const CurrencyModalComponent = ({
 }
 
 interface Prop {
-	priceChange: number
+	priceChange: number | null
 }
+
 export function PriceChangeComponent({ priceChange }: Prop) {
+	if (priceChange === null) return null
+
 	return (
 		<motion.div
 			className={`flex items-center text-sm ${

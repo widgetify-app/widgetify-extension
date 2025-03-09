@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
+import { useTheme } from '../../../context/theme.context'
 import { useWeatherStore } from '../../../context/weather.context'
 import type { FetchedWeather } from '../../../services/getMethodHooks/weather/weather.interface'
 import { unitsFlag } from '../unitSymbols'
@@ -11,6 +12,7 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings } = useWeatherStore()
+	const { theme, themeUtils } = useTheme()
 
 	const fadeInUp = {
 		hidden: { opacity: 0, y: 20 },
@@ -19,6 +21,77 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 			y: 0,
 			transition: { duration: 0.5 },
 		},
+	}
+
+	const getTemperatureGradient = () => {
+		switch (theme) {
+			case 'light':
+				return 'from-gray-700 to-gray-900'
+			default:
+				return 'from-gray-100 to-gray-300'
+		}
+	}
+
+	const getHumidityPillStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-blue-700 bg-blue-100/80 hover:bg-blue-100'
+			case 'dark':
+				return 'text-blue-200 bg-blue-500/30 hover:bg-blue-500/40'
+			default: // glass
+				return 'text-blue-100 bg-blue-500/20 hover:bg-blue-500/30'
+		}
+	}
+
+	const getWindPillStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-green-700 bg-green-100/80 hover:bg-green-100'
+			case 'dark':
+				return 'text-green-200 bg-green-500/30 hover:bg-green-500/40'
+			default: // glass
+				return 'text-green-100 bg-green-500/20 hover:bg-green-500/30'
+		}
+	}
+
+	const getDescriptionBoxStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/70 hover:bg-gray-200/80'
+			case 'dark':
+				return 'bg-neutral-800/10 hover:bg-neutral-800/60'
+			default: // glass
+				return 'bg-white/5 hover:bg-white/10'
+		}
+	}
+
+	const getDescriptionTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			case 'dark':
+				return 'text-gray-300'
+			default: // glass
+				return 'text-gray-200'
+		}
+	}
+
+	const getAiIconStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-purple-600'
+			default:
+				return 'text-purple-400'
+		}
+	}
+
+	const getPlaylistLinkStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-purple-600 hover:text-purple-800 bg-purple-100'
+			default:
+				return 'text-purple-400 hover:text-purple-300 bg-purple-900/30'
+		}
 	}
 
 	return (
@@ -33,7 +106,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					},
 				},
 			}}
-			className="h-full col-span-2 p-5 shadow-lg bg-gradient-to-br from-neutral-900/80 to-neutral-800/70 backdrop-blur-sm rounded-xl"
+			className={`h-full col-span-2 p-5 shadow-lg bg-gradient-to-br ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
 		>
 			<div className="flex flex-row-reverse items-start justify-between gap-4">
 				<motion.div
@@ -54,7 +127,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				<div className="flex-1">
 					<motion.span
 						variants={fadeInUp}
-						className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-300 dark:from-white dark:to-gray-200"
+						className={`text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${getTemperatureGradient()}`}
 						dir="ltr"
 					>
 						{Math.round(weather.temperature.temp)}
@@ -67,11 +140,15 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						variants={fadeInUp}
 						className="flex flex-wrap items-center gap-2 mt-3"
 					>
-						<div className="px-3 py-1.5 flex items-center gap-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-full dark:text-blue-200 dark:bg-blue-500/30 transition-all hover:shadow-md">
+						<div
+							className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getHumidityPillStyle()}`}
+						>
 							<WiHumidity size={20} className="flex-shrink-0" />
 							<span>{weather.temperature.humidity}%</span>
 						</div>
-						<div className="px-3 py-1.5 flex items-center gap-2 text-sm font-medium text-green-600 bg-green-100 rounded-full dark:text-green-200 dark:bg-green-500/30 transition-all hover:shadow-md">
+						<div
+							className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getWindPillStyle()}`}
+						>
 							<WiStrongWind size={20} className="flex-shrink-0" />
 							<span>{weather.temperature.wind_speed} m/s</span>
 						</div>
@@ -81,7 +158,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 			<motion.div
 				variants={fadeInUp}
-				className="relative p-2 mt-5 overflow-hidden transition-colors shadow-inner rounded-xl bg-neutral-800/10 backdrop-blur-sm hover:bg-neutral-800/60"
+				className={`relative p-2 mt-5 overflow-hidden transition-colors shadow-inner rounded-xl backdrop-blur-sm ${getDescriptionBoxStyle()}`}
 			>
 				<div className="flex gap-3 overflow-y-auto min-h-28 max-h-28">
 					<div className="flex-1">
@@ -92,12 +169,14 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.5 }}
 							>
-								<BsRobot className="text-xl text-purple-600 dark:text-purple-400" />
+								<BsRobot className={`text-xl ${getAiIconStyle()}`} />
 							</motion.div>
 						)}
 
 						<div className="relative pl-8 pr-2">
-							<p className="py-2 text-sm leading-relaxed text-gray-700 transition-all duration-300 dark:text-gray-300 line-clamp-none">
+							<p
+								className={`py-2 text-sm leading-relaxed transition-all duration-300 line-clamp-none ${getDescriptionTextStyle()}`}
+							>
 								{weather.ai?.description || weather.temperature.temp_description}
 							</p>
 
@@ -109,11 +188,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 									href={weather.ai.playlist}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex items-center gap-2 mt-2 text-xs font-medium text-purple-600 transition-colors dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
+									className={`inline-flex items-center gap-2 mt-2 text-xs font-medium transition-colors ${getPlaylistLinkStyle()}`}
 								>
-									<span className="p-1 bg-purple-100 rounded-full dark:bg-purple-900/30">
-										🎵
-									</span>
+									<span className="p-1 rounded-full">🎵</span>
 									<span>پلی‌لیست پیشنهادی</span>
 								</motion.a>
 							)}

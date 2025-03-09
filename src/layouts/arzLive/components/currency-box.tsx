@@ -1,9 +1,10 @@
-import { motion, useMotionValue, useSpring } from 'motion/react'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import ms from 'ms'
 import { useEffect, useRef, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { getMainColorFromImage } from '../../../common/color'
 import { getFromStorage, setToStorage } from '../../../common/storage'
+import { useTheme } from '../../../context/theme.context'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
@@ -15,12 +16,12 @@ interface CurrencyBoxProps {
 }
 
 export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
+	const { theme } = useTheme()
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: ms('3m'),
 	})
 
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
-
 	const [imgColor, setImgColor] = useState<string>()
 	const [displayPrice, setDisplayPrice] = useState(0)
 	const [priceChange, setPriceChange] = useState(0)
@@ -113,12 +114,50 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		}
 	}
 
+	const getBoxStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/70 hover:bg-gray-200/80'
+			case 'dark':
+				return 'bg-neutral-900/70 hover:bg-neutral-800/80'
+			default: // glass
+				return 'bg-black/20 hover:bg-black/30'
+		}
+	}
+
+	const getCodeStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-500'
+			default:
+				return 'text-gray-500'
+		}
+	}
+
+	const getNameStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-700'
+			default:
+				return 'text-gray-400'
+		}
+	}
+
+	const getPriceStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-800'
+			default:
+				return 'text-gray-200'
+		}
+	}
+
 	return (
 		<>
 			<motion.div
 				whileHover={{ scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
 				whileTap={{ scale: 0.98 }}
-				className="flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80"
+				className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer backdrop-blur-sm ${getBoxStyle()}`}
 				style={{
 					border: '1px solid transparent',
 					borderColor: imgColor ? `${imgColor}20` : 'transparent',
@@ -154,15 +193,15 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 							style={{ borderColor: imgColor }}
 						/>
 					</div>
-					<div className="flex items-center space-x-2 text-sm font-medium text-gray-400">
-						<span className=" md:visible">{currency?.name?.en}</span>
-						<span className="text-xs text-gray-500">{code}</span>
+					<div className="flex items-center space-x-2 text-sm font-medium">
+						<span className={`md:visible ${getNameStyle()}`}>{currency?.name?.en}</span>
+						<span className={`text-xs ${getCodeStyle()}`}>{code}</span>
 					</div>
 				</div>
 
 				<div className="flex items-baseline gap-2">
 					<motion.span
-						className="text-sm font-bold text-gray-200"
+						className={`text-sm font-bold ${getPriceStyle()}`}
 						animate={{ scale: [1, 1.02, 1] }}
 						transition={{ duration: 0.3 }}
 					>

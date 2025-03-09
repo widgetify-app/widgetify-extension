@@ -1,10 +1,11 @@
-import { motion } from 'motion/react'
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { TiPlus } from 'react-icons/ti'
 import Modal from '../../../components/modal'
 import { MultiSelectDropdown } from '../../../components/selectBox/multiSelectDropdown.component'
 import { useCurrencyStore } from '../../../context/currency.context'
+import { useTheme } from '../../../context/theme.context'
 
 export type SupportedCurrencies = {
 	key: string
@@ -20,14 +21,47 @@ interface AddCurrencyBoxProps {
 	supportCurrencies: SupportedCurrencies
 	disabled?: boolean
 	loading?: boolean
+	theme: string
 }
 
 export const AddCurrencyBox = ({
 	supportCurrencies,
 	disabled,
 	loading,
+	theme,
 }: AddCurrencyBoxProps) => {
 	const [showModal, setShowModal] = useState(false)
+
+	const getBoxStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/70 hover:bg-gray-200/80'
+			case 'dark':
+				return 'bg-neutral-900/70 hover:bg-neutral-800/80'
+			default: // glass
+				return 'bg-black/20 hover:bg-black/30'
+		}
+	}
+
+	const getCircleStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200'
+			case 'dark':
+				return 'bg-neutral-800'
+			default: // glass
+				return 'bg-black/40'
+		}
+	}
+
+	const getTextStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+			default:
+				return 'text-gray-400'
+		}
+	}
 
 	return (
 		<>
@@ -37,12 +71,15 @@ export const AddCurrencyBox = ({
 						? {}
 						: {
 								scale: 1.05,
-								backgroundColor: 'rgba(63, 63, 70, 0.5)',
+								backgroundColor:
+									theme === 'light'
+										? 'rgba(229, 231, 235, 0.8)'
+										: 'rgba(63, 63, 70, 0.5)',
 							}
 				}
 				whileTap={disabled ? {} : { scale: 0.95 }}
-				className={`flex items-center gap-2 p-2 duration-200 rounded-lg bg-neutral-900/70 backdrop-blur-sm shadow-lg transition-all cursor-pointer
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl hover:bg-opacity-90'}`}
+				className={`flex items-center gap-2 p-2 duration-200 rounded-lg backdrop-blur-sm shadow-lg transition-all cursor-pointer ${getBoxStyle()}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}`}
 				onClick={() => !disabled && setShowModal(true)}
 				initial={false}
 				animate={{
@@ -50,17 +87,17 @@ export const AddCurrencyBox = ({
 				}}
 			>
 				<motion.div
-					className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800"
+					className={`flex items-center justify-center w-6 h-6 rounded-full ${getCircleStyle()}`}
 					whileHover={{ rotate: 90 }}
 					transition={{ type: 'spring', stiffness: 300 }}
 				>
 					{loading ? (
-						<AiOutlineLoading className="w-6 h-6 animate-spin" />
+						<AiOutlineLoading className={`w-6 h-6 animate-spin ${getTextStyle()}`} />
 					) : (
-						<TiPlus className="w-4 h-4 text-gray-400" />
+						<TiPlus className={`w-4 h-4 ${getTextStyle()}`} />
 					)}
 				</motion.div>
-				<span className="text-sm text-gray-400">افزودن ارز</span>
+				<span className={`text-sm ${getTextStyle()}`}>افزودن ارز</span>
 			</motion.div>
 
 			<SelectCurrencyModal
@@ -84,12 +121,24 @@ export function SelectCurrencyModal({
 	supportCurrencies,
 }: AddCurrencyModalProps) {
 	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
+	const { theme } = useTheme()
 
 	const onClose = () => setShow(false)
 
 	function onCurrencyChange(values: string[]) {
 		setSelectedCurrencies([])
 		setSelectedCurrencies(values)
+	}
+
+	const getButtonStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-white bg-green-600 hover:bg-green-700 active:bg-green-800'
+			case 'dark':
+				return 'text-gray-100 bg-green-700 hover:bg-green-800 active:bg-green-900'
+			default: // glass
+				return 'text-white bg-green-700/80 hover:bg-green-700 active:bg-green-800'
+		}
 	}
 
 	return (
@@ -99,7 +148,7 @@ export function SelectCurrencyModal({
 					<MultiSelectDropdown
 						options={getCurrencyOptions(supportCurrencies) as any}
 						values={getSelectedCurrencies(selectedCurrencies, supportCurrencies)}
-						onChange={(values) => onCurrencyChange(values)}
+						onChange={(values) => onCurrencyChange(values.map((item) => item.value))}
 						placeholder={'جستجو ...'}
 					/>
 				</div>
@@ -108,7 +157,7 @@ export function SelectCurrencyModal({
 					<button
 						onClick={onClose}
 						type="button"
-						className="p-2 text-white transition-colors duration-300 bg-green-600 rounded cursor-pointer hover:bg-green-700 active:bg-green-800 dark:text-gray-100 dark:bg-green-700 dark:hover:bg-green-800 dark:active:bg-green-900 w-100"
+						className={`p-2 transition-colors duration-300 rounded cursor-pointer w-100 ${getButtonStyle()}`}
 					>
 						تایید
 					</button>
@@ -173,7 +222,6 @@ function getSelectedCurrencies(
 ): { value: string; label: string }[] {
 	return selected.map((key) => ({
 		value: key,
-		// biome-ignore lint/suspicious/noDoubleEquals: <explanation>
-		label: list.find((item) => item.key == key)?.label?.fa || '',
+		label: list.find((item) => item.key === key)?.label?.fa || '',
 	}))
 }

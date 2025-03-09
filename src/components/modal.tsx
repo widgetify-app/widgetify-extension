@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
+import { useTheme } from '../context/theme.context'
 
 type ModalProps = {
 	isOpen: boolean
@@ -31,6 +32,30 @@ const Modal = ({
 	direction = 'ltr',
 	showCloseButton = true,
 }: ModalProps) => {
+	const { theme, themeUtils } = useTheme()
+
+	const getModalStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-white border border-gray-300/30 shadow-xl'
+			case 'dark':
+				return 'bg-neutral-900 border border-gray-700/40 shadow-2xl'
+			default: // glass
+				return 'custom-modal-bg border border-gray-700/30 shadow-2xl'
+		}
+	}
+
+	const getHeaderBorderStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'border-gray-300/30'
+			case 'dark':
+				return 'border-gray-700/40'
+			default: // glass
+				return 'border-gray-700/30'
+		}
+	}
+
 	useEffect(() => {
 		if (isOpen) {
 			const scrollY = window.scrollY
@@ -64,17 +89,29 @@ const Modal = ({
 				dir={direction}
 			>
 				<motion.div
-					className={`custom-modal-bg border border-gray-700/30 shadow-2xl rounded-2xl ${sizeClasses[size]}`}
+					className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]}`}
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.95, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
 				>
-					<div className="flex items-center justify-between p-4 border-b border-gray-700/30">
-						{title && <h2 className="text-lg font-semibold text-gray-200">{title}</h2>}
+					<div
+						className={`flex items-center justify-between p-4 border-b ${getHeaderBorderStyle()}`}
+					>
+						{title && (
+							<h2 className={`text-lg font-semibold ${themeUtils.getTextColor()}`}>
+								{title}
+							</h2>
+						)}
 						{showCloseButton ? (
-							<button onClick={onClose} className="p-2 rounded-full hover:bg-gray-700/30">
-								<AiOutlineClose size={20} className="text-gray-200" />
+							<button
+								onClick={onClose}
+								className={`p-2 rounded-full ${theme === 'light' ? 'hover:bg-gray-200/80' : 'hover:bg-gray-700/30'}`}
+							>
+								<AiOutlineClose
+									size={20}
+									className={theme === 'light' ? 'text-gray-700' : 'text-gray-200'}
+								/>
 							</button>
 						) : null}
 					</div>

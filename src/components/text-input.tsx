@@ -1,26 +1,72 @@
-import type React from 'react'
+import { type ForwardedRef, forwardRef } from 'react'
+import { useTheme } from '../context/theme.context'
 
-interface TextInputProp {
-	ref?: React.LegacyRef<HTMLInputElement>
+interface TextInputProps {
 	value: string
 	onChange: (value: string) => void
 	placeholder?: string
 	onFocus?: () => void
+	theme?: string
+	disabled?: boolean
+	name?: string
+	type?: string
 }
 
-export function TextInput({ onChange, ref, value, placeholder, onFocus }: TextInputProp) {
-	return (
-		<input
-			ref={ref}
-			type="text"
-			value={value}
-			onFocus={onFocus}
-			placeholder={placeholder || ''}
-			className="w-full bg-white/5 text-gray-200 text-[14px] rounded-xl p-3
-              outline-none border border-white/10 transition-all duration-200  
-              focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
-              placeholder-gray-400 hover:bg-white/10 placeholder:font-light font-light"
-			onChange={(e) => onChange(e.target.value)}
-		/>
-	)
-}
+export const TextInput = forwardRef(
+	(
+		{
+			onChange,
+			value,
+			placeholder,
+			onFocus,
+			theme: propTheme,
+			disabled = false,
+			name,
+			type = 'text',
+		}: TextInputProps,
+		ref: ForwardedRef<HTMLInputElement>,
+	) => {
+		const { theme: contextTheme } = useTheme()
+		const theme = propTheme || contextTheme || 'glass'
+
+		const getInputStyle = () => {
+			switch (theme) {
+				case 'light':
+					return `
+                        bg-white/90 text-gray-800 border-gray-300/30
+                        placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                        hover:bg-white disabled:bg-gray-100 disabled:text-gray-500
+                    `
+				case 'dark':
+					return `
+                        bg-gray-800/80 text-gray-200 border-gray-700/40
+                        placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                        hover:bg-gray-800/90 disabled:bg-gray-800/50 disabled:text-gray-500
+                    `
+				default: // glass
+					return `
+                        bg-white/5 text-gray-200 border-white/10
+                        placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                        hover:bg-white/10 disabled:bg-white/3 disabled:text-gray-500
+                    `
+			}
+		}
+
+		return (
+			<input
+				ref={ref}
+				type={type}
+				name={name}
+				value={value}
+				disabled={disabled}
+				onFocus={onFocus}
+				placeholder={placeholder || ''}
+				className={`w-full text-[14px] rounded-xl p-3 outline-none border 
+                    transition-all duration-200 font-light ${getInputStyle()}`}
+				onChange={(e) => onChange(e.target.value)}
+			/>
+		)
+	},
+)
+
+TextInput.displayName = 'TextInput'

@@ -1,7 +1,9 @@
-import React, { useCallback, useRef, useState } from 'react'
-import { FiExternalLink, FiPlayCircle } from 'react-icons/fi'
+import { motion } from 'framer-motion'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { FiCheck, FiHeart, FiInfo } from 'react-icons/fi'
 import { wallpaperCategoryTranslations } from '../../../../common/constants/translations'
 import type { Wallpaper } from '../../../../common/wallpaper.interface'
+import { useGeneralSetting } from '../../../../context/general-setting.context'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
 interface WallpaperItemProps {
@@ -16,6 +18,7 @@ export const WallpaperItem = React.memo(
 		selectedBackground,
 		setSelectedBackground,
 	}: WallpaperItemProps) {
+		const { theme } = useGeneralSetting()
 		const [loaded, setLoaded] = useState(false)
 		const [error, setError] = useState(false)
 		const imgRef = useRef<HTMLImageElement>(null)
@@ -35,136 +38,174 @@ export const WallpaperItem = React.memo(
 
 		const handleSourceClick = (e: React.MouseEvent) => {
 			e.stopPropagation()
-			if (wallpaper.source) {
-				window.open(wallpaper.source, '_blank', 'noopener,noreferrer')
+			window.open(wallpaper.source, '_blank')
+		}
+
+		const getItemBorderStyle = () => {
+			if (isSelected) {
+				return 'border-blue-500'
+			}
+
+			switch (theme) {
+				case 'light':
+					return 'border-gray-300/40 group-hover:border-gray-400/70'
+				case 'dark':
+					return 'border-gray-700/60 group-hover:border-gray-600/80'
+				default: // glass
+					return 'border-white/10 group-hover:border-white/30'
 			}
 		}
 
+		const getSelectionBadgeStyle = () => {
+			switch (theme) {
+				case 'light':
+					return 'bg-blue-500 text-white shadow-lg'
+
+				default:
+					return 'bg-blue-500 text-white shadow-lg'
+			}
+		}
+
+		const getInfoLayerStyle = () => {
+			switch (theme) {
+				case 'light':
+					return 'bg-gradient-to-t from-black/70 to-black/0'
+				default:
+					return 'bg-gradient-to-t from-black/70 to-black/0'
+			}
+		}
+
+		const getInfoButtonStyle = () => {
+			switch (theme) {
+				case 'light':
+					return 'bg-gray-100/80 text-gray-700 hover:bg-gray-200/90'
+				case 'dark':
+					return 'bg-gray-800/80 text-gray-200 hover:bg-gray-700/90'
+				default: // glass
+					return 'bg-black/40 backdrop-blur-sm text-white hover:bg-black/50'
+			}
+		}
+
+		const getCategoryStyle = () => {
+			switch (theme) {
+				case 'light':
+					return 'bg-black/40 text-white'
+				default:
+					return 'bg-black/40 text-white'
+			}
+		}
+
+		useEffect(() => {
+			if (loaded && videoRef.current && isSelected) {
+				videoRef.current.play().catch(() => {})
+			}
+		}, [loaded, isSelected])
+
+		const handleLoad = () => {
+			setLoaded(true)
+			setError(false)
+		}
+
+		const handleError = () => {
+			setLoaded(true)
+			setError(true)
+		}
+
+		const handleSelect = () => {
+			if (!loaded || error) return
+			setSelectedBackground(wallpaper.id)
+		}
+
+		const categoryName = wallpaper.category
+			? wallpaperCategoryTranslations[wallpaper.category] || wallpaper.category
+			: null
+
 		return (
-			<div
+			<motion.div
 				ref={elementRef}
-				className={`relative overflow-hidden rounded-lg cursor-pointer transform-gpu ${
-					isSelected ? 'ring-2 ring-blue-500' : 'hover:ring-1 hover:ring-white/20'
-				}`}
-				onClick={() => setSelectedBackground(wallpaper.id)}
-				style={{ aspectRatio: '16/9' }}
+				className={`relative overflow-hidden border-2 rounded-lg cursor-pointer group aspect-video ${getItemBorderStyle()}`}
+				onClick={handleSelect}
+				whileHover={{ scale: 1.02 }}
+				whileTap={{ scale: 0.98 }}
+				transition={{ type: 'spring', stiffness: 400, damping: 17 }}
 			>
-				{!loaded && !error && (
-					<div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-800/80 to-gray-900/80">
-						<div className="w-5 h-5 border-2 rounded-full border-t-blue-500 border-blue-500/20 animate-spin"></div>
+				{!loaded && (
+					<div className="flex items-center justify-center w-full h-full bg-gray-900/60">
+						<div className="w-5 h-5 border-2 rounded-full border-blue-500/30 border-t-blue-500 animate-spin"></div>
 					</div>
 				)}
 
 				{error && (
-					<div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-800/80 to-gray-900/80">
-						<div className="flex flex-col items-center p-2 text-center">
-							<svg
-								className="w-5 h-5 mb-1 text-gray-500"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-								/>
-							</svg>
-							<span className="text-xs text-gray-500">خطا</span>
-						</div>
+					<div className="flex flex-col items-center justify-center w-full h-full bg-red-500/10">
+						<FiHeart className="text-red-400" />
+						<p className="mt-2 text-xs text-gray-400">خطا در بارگذاری</p>
 					</div>
 				)}
 
 				{wallpaper.type === 'IMAGE' ? (
 					<img
 						ref={imgRef}
-						alt={wallpaper.name || 'تصویر زمینه'}
-						className={`w-full h-full object-cover transition-opacity duration-300 ${
-							loaded ? 'opacity-100' : 'opacity-0'
-						}`}
-						onLoad={() => setLoaded(true)}
-						onError={() => {
-							setError(true)
-							setLoaded(true)
-						}}
+						className="object-cover w-full h-full transition-opacity"
+						style={{ opacity: loaded && !error ? 1 : 0 }}
+						alt={wallpaper.name || 'Wallpaper'}
+						onLoad={handleLoad}
+						onError={handleError}
 					/>
 				) : (
-					<div className="relative h-full">
-						<video
-							ref={videoRef}
-							className={`w-full h-full object-cover transition-opacity duration-300 ${
-								loaded ? 'opacity-100' : 'opacity-0'
-							}`}
-							muted
-							loop
-							playsInline
-							preload="metadata"
-							onLoadedData={() => setLoaded(true)}
-							onError={() => {
-								setError(true)
-								setLoaded(true)
-							}}
-						/>
-						{loaded && !error && (
-							<>
-								<div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-								<FiPlayCircle
-									className="absolute transform -translate-x-1/2 -translate-y-1/2 text-white/90 top-1/2 left-1/2"
-									size={24}
-								/>
-							</>
+					<video
+						ref={videoRef}
+						className="object-cover w-full h-full transition-opacity"
+						style={{ opacity: loaded && !error ? 1 : 0 }}
+						loop
+						muted
+						playsInline
+						onLoadedData={handleLoad}
+						onError={handleError}
+					/>
+				)}
+
+				{loaded && !error && (
+					<>
+						{categoryName && (
+							<div
+								className={`absolute top-2 right-2 px-2 py-1 text-[10px] rounded-md opacity-80 ${getCategoryStyle()}`}
+							>
+								{categoryName}
+							</div>
 						)}
-					</div>
-				)}
 
-				{isSelected && loaded && !error && (
-					<div className="absolute flex items-center justify-center w-5 h-5 bg-blue-500 rounded-full top-2 right-2">
-						<svg
-							className="w-3 h-3 text-white"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
+						<div
+							className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={3}
-								d="M5 13l4 4L19 7"
-							/>
-						</svg>
-					</div>
-				)}
+							{wallpaper.name && (
+								<p className="text-xs font-medium text-white">{wallpaper.name}</p>
+							)}
 
-				{wallpaper.category && loaded && !error && (
-					<div className="absolute top-2 left-2 px-2 py-0.5 text-xs bg-black/30 backdrop-blur-sm text-white/90 rounded-full">
-						{wallpaperCategoryTranslations[wallpaper.category] || wallpaper.category}
-					</div>
-				)}
+							{wallpaper.source && (
+								<button
+									onClick={handleSourceClick}
+									className={`mt-1 px-2 py-0.5 text-[10px] rounded-md transition ${getInfoButtonStyle()}`}
+								>
+									منبع
+								</button>
+							)}
+						</div>
 
-				{wallpaper.name && loaded && !error && (
-					<div className="absolute bottom-0 left-0 right-0 p-1 px-2 text-xs font-medium text-gray-200 truncate bg-gradient-to-t from-black/80 to-transparent">
-						{wallpaper.name}
-					</div>
-				)}
+						{isSelected && (
+							<div
+								className={`absolute top-2 left-2 p-1 rounded-full shadow-sm ${getSelectionBadgeStyle()}`}
+							>
+								<FiCheck size={12} />
+							</div>
+						)}
 
-				{/* Source Link */}
-				{wallpaper.source && loaded && !error && (
-					<div
-						onClick={handleSourceClick}
-						className="absolute p-1 transition-colors rounded-full cursor-pointer bottom-2 left-2 bg-black/30 backdrop-blur-sm hover:bg-black/50"
-						title="منبع تصویر"
-					>
-						<FiExternalLink className="w-3 h-3 text-white/80" />
-					</div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10"></div>
+					</>
 				)}
-			</div>
+			</motion.div>
 		)
 	},
-	(prevProps, nextProps) => {
-		return (
-			prevProps.wallpaper.id === nextProps.wallpaper.id &&
-			prevProps.selectedBackground === nextProps.selectedBackground
-		)
-	},
+	(prevProps, nextProps) =>
+		prevProps.wallpaper.id === nextProps.wallpaper.id &&
+		prevProps.selectedBackground === nextProps.selectedBackground,
 )

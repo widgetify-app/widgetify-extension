@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage } from '../../../common/storage'
 import { useBookmarkStore } from '../../../context/bookmark.context'
+import { useTheme } from '../../../context/theme.context'
 import {
 	type FetchedSuggestionsBookmark,
 	useGetBookmarks,
@@ -12,6 +13,7 @@ import { FolderPath } from './components/folder-path'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
+	const { theme, themeUtils } = useTheme()
 	const { bookmarks, setBookmarks, getCurrentFolderItems, addBookmark, deleteBookmark } =
 		useBookmarkStore()
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
@@ -114,13 +116,16 @@ export function BookmarksComponent() {
 
 	return (
 		<>
-			<div className="flex flex-row flex-wrap justify-center w-full gap-1.5 mt-5  p-2">
+			<div
+				className={`flex flex-row flex-wrap justify-center w-full gap-1.5 mt-5 p-2 ${themeUtils.getTextColor()}`}
+			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div key={i} onContextMenu={(e) => handleRightClick(e, bookmark)}>
 							<BookmarkItem
 								bookmark={bookmark}
 								onClick={() => handleBookmarkClick(bookmark)}
+								theme={theme}
 							/>
 						</div>
 					) : (
@@ -128,6 +133,7 @@ export function BookmarksComponent() {
 							key={i}
 							bookmark={null}
 							onClick={() => setShowAddBookmarkModal(true)}
+							theme={theme}
 						/>
 					),
 				)}
@@ -138,17 +144,19 @@ export function BookmarksComponent() {
 							deleteBookmark(selectedBookmark.id)
 							setSelectedBookmark(null)
 						}}
+						theme={theme}
 					/>
 				)}
 			</div>
 
-			<FolderPath folderPath={folderPath} onBackClick={handleBackClick} />
+			<FolderPath folderPath={folderPath} onBackClick={handleBackClick} theme={theme} />
 
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
 				onAdd={(bookmark) => addBookmark(bookmark)}
 				parentId={currentFolderId}
+				theme={theme}
 			/>
 		</>
 	)
