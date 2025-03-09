@@ -15,7 +15,7 @@ export function ExtensionInstalledModal({
 	onGetStarted,
 }: ExtensionInstalledModalProps) {
 	const [currentStep, setCurrentStep] = useState(1)
-
+	const totalSteps = 3
 	const renderStepContent = () => {
 		switch (currentStep) {
 			case 1:
@@ -63,17 +63,12 @@ export function ExtensionInstalledModal({
 							</p>
 						</motion.div>
 
-						<motion.button
+						<button
 							onClick={() => setCurrentStep(2)}
-							className="px-8 py-3 font-light text-white transition-all cursor-pointer duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm"
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ duration: 0.5, delay: 0.8 }}
+							className="px-8 py-3 font-light text-white transition-all cursor-pointer duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
 						>
 							فعال کردم، ادامه بده 👍
-						</motion.button>
+						</button>
 					</>
 				)
 
@@ -103,17 +98,12 @@ export function ExtensionInstalledModal({
 							</p>
 						</motion.div>
 
-						<motion.button
+						<button
 							onClick={() => setCurrentStep(3)}
-							className="px-8 py-3 font-light text-white cursor-pointer transition-all duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm"
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ duration: 0.5, delay: 0.6 }}
+							className="px-8 py-3 font-light text-white cursor-pointer transition-all duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
 						>
 							ادامه
-						</motion.button>
+						</button>
 					</>
 				)
 
@@ -133,7 +123,7 @@ export function ExtensionInstalledModal({
 						</motion.div>
 
 						<motion.div
-							className="p-3 mb-6 border rounded-lg bg-indigo-900/20 backdrop-blur-sm border-indigo-500/10"
+							className="p-3 mb-6 border rounded-lg bg-neutral-900/20 backdrop-blur-sm border-indigo-500/10"
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5, delay: 0.3 }}
@@ -144,29 +134,19 @@ export function ExtensionInstalledModal({
 						</motion.div>
 
 						<div className="flex flex-col w-full gap-4 mt-4 sm:flex-row">
-							<motion.button
+							<button
 								onClick={onGetStarted}
 								className="px-6 py-3 font-light text-white transition-all duration-300 bg-gradient-to-r from-blue-600/80 to-indigo-600/80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] cursor-pointer hover:bg-opacity-90 hover:shadow-[0_12px_20px_rgba(0,0,0,0.25)] backdrop-blur-sm w-full"
-								whileHover={{ scale: 1.03, y: -2 }}
-								whileTap={{ scale: 0.97 }}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.5, delay: 0.4 }}
 							>
 								مشاهده تصویر زمینه ها 🖼️
-							</motion.button>
+							</button>
 
-							<motion.button
+							<button
 								onClick={onClose}
 								className="px-6 py-3 font-light text-white/90 transition-all duration-300 bg-gray-700/30 border border-gray-500/20 rounded-lg cursor-pointer hover:bg-gray-600/40 hover:border-gray-500/30 shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_14px_rgba(0,0,0,0.2)] backdrop-blur-md w-full sm:w-auto"
-								whileHover={{ scale: 1.03 }}
-								whileTap={{ scale: 0.97 }}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.5, delay: 0.5 }}
 							>
 								بستن
-							</motion.button>
+							</button>
 						</div>
 					</>
 				)
@@ -175,6 +155,33 @@ export function ExtensionInstalledModal({
 				return null
 		}
 	}
+
+	const StepIndicator = () => (
+		// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
+		<div
+			className="flex items-center justify-center gap-3 mt-6"
+			role="progressbar"
+			aria-valuenow={currentStep}
+			aria-valuemin={1}
+			aria-valuemax={totalSteps}
+		>
+			{Array.from({ length: totalSteps }).map((_, index) => (
+				<button
+					key={index}
+					onClick={() => setCurrentStep(index + 1)}
+					aria-label={`رفتن به گام ${index + 1}`}
+					aria-current={index + 1 === currentStep ? 'step' : undefined}
+					className={`w-10 h-2 rounded-full transition-all duration-300 ${
+						index + 1 === currentStep
+							? 'bg-blue-500 shadow-lg shadow-blue-500/30'
+							: index + 1 < currentStep
+								? 'bg-blue-600'
+								: 'bg-gray-700 hover:bg-gray-600'
+					}`}
+				/>
+			))}
+		</div>
+	)
 
 	return (
 		<Modal
@@ -193,6 +200,8 @@ export function ExtensionInstalledModal({
 			>
 				{renderStepContent()}
 			</motion.div>
+
+			<StepIndicator />
 		</Modal>
 	)
 }
