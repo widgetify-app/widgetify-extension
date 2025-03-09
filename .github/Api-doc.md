@@ -1,18 +1,20 @@
 داکیومنت های مربوط به API ها در این فایل قرار دارد.
 
 > [!NOTE]
-> در صورت نبود API مورد نیاز، از دیتاهای فیک استفاده کنید و موفعه PULL REQUEST این موضوع را ذکر کنید. تا API مورد نیاز ایجاد شود.
+> در صورت نبود API مورد نیاز، از دیتاهای فیک استفاده کنید و موقعه PULL REQUEST این موضوع را ذکر کنید. تا API مورد نیاز ایجاد شود.
 
 ### رهنمای استفاده از API ها
 فیلد های * در مستندات به معنای اجباری بودن آن فیلد است.
 
-## Wallpaper API
-مستندات مربوط به دریافت تصاویر پس زمینه از این API قابل مشاهده است.
+
+مستندات مربوط API در این [فایل](https://github.com/widgetify-app/widgetify-extension/blob/main/.github/Api-doc.md) قابل مشاهده است.
 
 ## Cache / Rate Limit
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست. 
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
+
+## Wallpaper API
 
 ### GET /wallpaper
 Query Params:
@@ -40,7 +42,6 @@ Response:
 
 
 ## Weather API
-مستندات مربوط به دریافت اطلاعات هواشناسی از این API قابل مشاهده است.
 
 ### GET /weather/current
 Query Params:
@@ -134,7 +135,6 @@ response:
 
 
 ## Date
-مستندات مربوط به دریافت تاریخ و زمان از این API قابل مشاهده است.
 
 ### GET /date/events
 Query Params:
