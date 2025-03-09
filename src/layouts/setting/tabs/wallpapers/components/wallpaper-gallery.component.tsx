@@ -216,7 +216,7 @@ export function WallpaperGallery({
 
 			<div
 				ref={galleryRef}
-				className="h-64 p-2 overflow-x-hidden overflow-y-auto custom-scrollbar"
+				className="p-2 overflow-x-hidden overflow-y-auto h-72 custom-scrollbar"
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
 				<AnimatePresence mode="wait">
