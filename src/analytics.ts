@@ -86,10 +86,11 @@ const Analytics = (() => {
 	}
 
 	function sendMeasurementEvent(payload: any): void {
-		if (import.meta.env.DEV) {
+		if ((import.meta.env.DEV as unknown as string) === "development") {
 			console.log('in dev mode, skipping analytics:', payload)
 			return
 		}
+
 		const url = `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${GA_API_SECRET}`
 
 		fetch(url, {
