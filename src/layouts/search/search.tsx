@@ -48,7 +48,8 @@ export function SearchLayout() {
 							type="text"
 							name="search"
 							className={`w-full py-4 pl-16 pr-6 text-lg font-light text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
-							placeholder="جستجو ..."
+						  placeholder="جستجو ..."
+							autoComplete="off"
 						/>
 						<button
 							type="submit"

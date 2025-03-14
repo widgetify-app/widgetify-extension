@@ -1,17 +1,24 @@
-GNU AFFERO GENERAL PUBLIC LICENSE  
-Version 3, 19 November 2007  
+# Widgetify Extension License
 
-Copyright (C) 2025 Widgetify  
+**Copyright (C) 2025 Widgetify**  
 
-This program is free software: you can redistribute it and/or modify  
-it under the terms of the GNU Affero General Public License as  
-published by the Free Software Foundation, either version 3 of the  
-License, or (at your option) any later version.  
+This software is licensed exclusively under the following terms:  
 
-This program is distributed in the hope that it will be useful,  
-but WITHOUT ANY WARRANTY; without even the implied warranty of  
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the  
-GNU Affero General Public License for more details.  
+## 1. Limited Use  
+- You are allowed to view, modify, and contribute to this project **only within this repository**.  
+- Any use, distribution, or modification **outside this repository** is strictly prohibited.  
 
-You should have received a copy of the GNU Affero General Public License  
-along with this program. If not, see <https://www.gnu.org/licenses/>.  
+## 2. No Redistribution  
+- You are not allowed to copy, share, distribute, or fork this project in any form.  
+- Publishing any part of this code elsewhere without explicit written permission is forbidden.  
+
+## 3. Contributions  
+- By submitting any contribution (e.g., code, documentation, fixes), you grant the project owner full rights to use, modify, and incorporate it into the project without any obligation.  
+
+## 4. No Commercial Use  
+- You may not use any part of this code for commercial purposes, directly or indirectly, without written permission.  
+
+## 5. Termination  
+- Any violation of this license will result in the termination of your rights to use or contribute to this project.  
+
+By accessing this repository, you agree to these terms. If you do not agree, you must not use or contribute to this project.
