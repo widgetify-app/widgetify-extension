@@ -100,13 +100,22 @@ export function BookmarksComponent() {
 		}
 	}
 
-	const handleBackClick = () => {
-		if (folderPath.length === 0) return
+	const handleNavigate = (folderId: string | null, depth: number) => {
+		if (depth === -1) {
+			setFolderPath([])
+			setCurrentFolderId(null)
+			return
+		}
 
-		const newPath = [...folderPath]
-		newPath.pop()
+		const newPath = folderPath.slice(0, depth + 1)
 		setFolderPath(newPath)
-		setCurrentFolderId(newPath[newPath.length - 1]?.id ?? null)
+		setCurrentFolderId(folderId)
+	}
+
+	function onOpenInNewTab(bookmark: Bookmark) {
+		if (bookmark && bookmark.type === 'BOOKMARK') {
+			window.open(bookmark.url, '_blank')
+		}
 	}
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
@@ -144,12 +153,14 @@ export function BookmarksComponent() {
 							deleteBookmark(selectedBookmark.id)
 							setSelectedBookmark(null)
 						}}
+						isFolder={selectedBookmark.type === 'FOLDER'}
+						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
 						theme={theme}
 					/>
 				)}
 			</div>
 
-			<FolderPath folderPath={folderPath} onBackClick={handleBackClick} theme={theme} />
+			<FolderPath folderPath={folderPath} onNavigate={handleNavigate} theme={theme} />
 
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}

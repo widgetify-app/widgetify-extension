@@ -1,12 +1,16 @@
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
 	onDelete: () => void
+	onOpenInNewTab?: () => void
+	isFolder?: boolean
 	theme: string
 }
 
 export function BookmarkContextMenu({
 	position,
 	onDelete,
+	onOpenInNewTab,
+	isFolder = false,
 	theme,
 }: BookmarkContextMenuProps) {
 	const getContextMenuStyle = () => {
@@ -18,15 +22,25 @@ export function BookmarkContextMenu({
 		}
 	}
 
-	// Get theme-specific styles for delete button
-	const getDeleteButtonStyle = () => {
+	const getMenuItemStyle = (isDelete = false) => {
+		if (isDelete) {
+			switch (theme) {
+				case 'light':
+					return 'text-red-600 hover:text-red-700 hover:bg-red-50/80'
+				case 'dark':
+					return 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
+				default: // glass
+					return 'text-red-400 hover:text-red-300 hover:bg-white/10'
+			}
+		}
+
 		switch (theme) {
 			case 'light':
-				return 'text-red-600 hover:text-red-700 hover:bg-red-50/80'
+				return 'text-blue-600 hover:text-blue-700 hover:bg-blue-50/80'
 			case 'dark':
-				return 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
+				return 'text-blue-400 hover:text-blue-300 hover:bg-blue-900/30'
 			default: // glass
-				return 'text-red-400 hover:text-red-300 hover:bg-white/10'
+				return 'text-blue-400 hover:text-blue-300 hover:bg-white/10'
 		}
 	}
 
@@ -36,9 +50,18 @@ export function BookmarkContextMenu({
 			style={{ top: position.y, left: position.x, zIndex: 1000 }}
 			onClick={(e) => e.stopPropagation()}
 		>
+			{!isFolder && onOpenInNewTab && (
+				<button
+					onClick={onOpenInNewTab}
+					className={`w-full px-2 py-1.5 text-center rounded-md transition-colors duration-200 ${getMenuItemStyle()}`}
+				>
+					باز کردن در تب جدید
+				</button>
+			)}
+
 			<button
 				onClick={onDelete}
-				className={`w-full px-2 py-1.5 text-center rounded-md transition-colors duration-200 ${getDeleteButtonStyle()}`}
+				className={`w-full px-2 py-1.5 text-center rounded-md transition-colors duration-200 ${getMenuItemStyle(true)}`}
 			>
 				حذف
 			</button>

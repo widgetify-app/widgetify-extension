@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { Bookmark } from '../layouts/search/bookmarks/types/bookmark.types'
 
-const MAX_BOOKMARK_SIZE = 1024 * 1024
+const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
 
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
@@ -61,50 +61,103 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const getBookmarkDataSize = (bookmark: Bookmark): number => {
 		try {
+			if (bookmark.customImage) {
+				const base64Data = bookmark.customImage.split(',')[1] || bookmark.customImage
+
+				const imageSize = Math.ceil((base64Data.length * 3) / 4)
+
+				const bookmarkWithoutImage = { ...bookmark }
+				bookmarkWithoutImage.customImage = undefined
+				const jsonSize = new Blob([JSON.stringify(bookmarkWithoutImage)]).size
+
+				return imageSize + jsonSize
+			}
+
 			const json = JSON.stringify(bookmark)
 			return new Blob([json]).size
 		} catch (e) {
+			console.error('Error calculating bookmark size:', e)
 			return Number.POSITIVE_INFINITY
 		}
 	}
 
-	const compressImageData = (imageData: string): string => {
+	const compressImageData = async (imageData: string): Promise<string> => {
 		if (!imageData.startsWith('data:image')) {
 			return imageData
 		}
 
-		const base64 = imageData.split(',')[1]
-		const binaryString = window.atob(base64)
-		const length = binaryString.length
-
-		if (length > 2 * 1024 * 1024) {
-			throw new Error('Image is too large to process')
+		if (imageData.startsWith('data:image/gif') && imageData.length < MAX_BOOKMARK_SIZE) {
+			return imageData
 		}
 
-		const img = new Image()
-		const canvas = document.createElement('canvas')
-		const ctx = canvas.getContext('2d')
-		const maxDimension = 48
-
-		canvas.width = maxDimension
-		canvas.height = maxDimension
-		img.src = imageData
-
 		try {
-			ctx?.drawImage(img, 0, 0, maxDimension, maxDimension)
-			return canvas.toDataURL('image/webp', 0.6)
+			const base64 = imageData.split(',')[1]
+			const binaryString = window.atob(base64)
+			const length = binaryString.length
+
+			if (length > 3 * 1024 * 1024) {
+				throw new Error('Image is too large to process')
+			}
+
+			return new Promise((resolve) => {
+				const img = new Image()
+				img.onload = () => {
+					const canvas = document.createElement('canvas')
+					const ctx = canvas.getContext('2d')
+					const maxDimension = 128
+
+					let width = img.width
+					let height = img.height
+
+					if (width > height) {
+						if (width > maxDimension) {
+							height = Math.round(height * (maxDimension / width))
+							width = maxDimension
+						}
+					} else {
+						if (height > maxDimension) {
+							width = Math.round(width * (maxDimension / height))
+							height = maxDimension
+						}
+					}
+
+					canvas.width = width
+					canvas.height = height
+
+					ctx?.drawImage(img, 0, 0, width, height)
+
+					const format = imageData.startsWith('data:image/gif')
+						? 'image/png'
+						: 'image/webp'
+					const quality = 0.7
+
+					const compressed = canvas.toDataURL(format, quality)
+					resolve(compressed)
+				}
+
+				img.onerror = () => {
+					console.warn('Image compression failed, using original')
+					resolve(imageData)
+				}
+
+				img.src = imageData
+			})
 		} catch (e) {
-			return imageData.substring(0, 50000)
+			console.error('Error in image compression:', e)
+			return imageData
 		}
 	}
 
-	const prepareBookmarkForStorage = (bookmark: Bookmark): Bookmark => {
+	const prepareBookmarkForStorage = async (bookmark: Bookmark): Promise<Bookmark> => {
 		const processedBookmark = { ...bookmark, isLocal: true }
 
 		if (processedBookmark.customImage && processedBookmark.customImage.length > 50000) {
 			try {
-				processedBookmark.customImage = compressImageData(processedBookmark.customImage)
+				processedBookmark.customImage = await compressImageData(
+					processedBookmark.customImage,
+				)
 			} catch (err) {
+				console.error('Image processing error:', err)
 				toast.error('خطا در پردازش تصویر. از تصویر پیش‌فرض استفاده می‌شود.')
 
 				if (processedBookmark.type === 'BOOKMARK') {
@@ -119,12 +172,18 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const addBookmark = async (bookmark: Bookmark) => {
 		try {
 			const bookmarkSize = getBookmarkDataSize(bookmark)
-			if (bookmarkSize > MAX_BOOKMARK_SIZE) {
-				toast.error('تصویر انتخاب شده خیلی بزرگ است. لطفاً تصویر کوچکتری انتخاب کنید.')
+
+			const isGif = bookmark.customImage?.startsWith('data:image/gif')
+			const sizeLimit = isGif ? 1.5 * MAX_BOOKMARK_SIZE : MAX_BOOKMARK_SIZE
+
+			if (bookmarkSize > sizeLimit) {
+				toast.error(
+					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`,
+				)
 				return
 			}
 
-			const newBookmark = prepareBookmarkForStorage(bookmark)
+			const newBookmark = await prepareBookmarkForStorage(bookmark)
 			const updatedBookmarks = [...bookmarks, newBookmark]
 
 			try {
@@ -144,6 +203,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
 		} catch (error) {
+			console.error('Error adding bookmark:', error)
 			toast.error('خطا در افزودن بوکمارک')
 		}
 	}
