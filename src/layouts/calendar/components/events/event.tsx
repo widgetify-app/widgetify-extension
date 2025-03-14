@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import type jalaliMoment from 'jalali-moment'
-import { useState } from 'react'
-import { FiCalendar, FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiCalendar } from 'react-icons/fi'
 import { useTheme } from '../../../../context/theme.context'
 import type { FetchedAllEvents } from '../../../../services/getMethodHooks/getEvents.hook'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils'
@@ -9,10 +8,11 @@ import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils
 interface Prop {
 	events: FetchedAllEvents
 	currentDate: jalaliMoment.Moment
+	isPreview?: boolean
+	onDateChange?: (date: jalaliMoment.Moment) => void
 }
 
 export function Events({ events, currentDate }: Prop) {
-	const [isExpanded, setIsExpanded] = useState(false)
 	const { theme } = useTheme()
 	const shamsiEvents = getShamsiEvents(events, currentDate)
 	const gregorianEvents = getGregorianEvents(events, currentDate)
@@ -80,27 +80,6 @@ export function Events({ events, currentDate }: Prop) {
 		}
 	}
 
-	const getToggleButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500 hover:bg-gray-200/70'
-			case 'dark':
-				return 'text-gray-400 hover:bg-gray-800/50'
-			default: // glass
-				return 'text-gray-400 hover:bg-gray-700/30'
-		}
-	}
-
-	const getToggleButtonRingStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'focus:ring-blue-500/30'
-
-			default:
-				return 'focus:ring-blue-500/40'
-		}
-	}
-
 	const getNoEventsIconBackgroundStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -132,11 +111,6 @@ export function Events({ events, currentDate }: Prop) {
 		}
 	}
 
-	const containerVariants = {
-		collapsed: { height: 110 },
-		expanded: { height: 'auto', maxHeight: 320 },
-	}
-
 	const listVariants = {
 		collapsed: { opacity: 1 },
 		expanded: { opacity: 1 },
@@ -157,54 +131,47 @@ export function Events({ events, currentDate }: Prop) {
 				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
 					رویدادها
 				</h4>
-				<button
-					onClick={() => setIsExpanded(!isExpanded)}
-					className={`p-1.5 rounded-lg transition-colors focus:outline-none focus:ring-2 ${getToggleButtonStyle()} ${getToggleButtonRingStyle()}`}
-					aria-label={isExpanded ? 'بستن لیست' : 'نمایش کامل'}
-				>
-					{isExpanded ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
-				</button>
 			</div>
 
 			<motion.div
-				variants={containerVariants}
 				initial="collapsed"
-				animate={isExpanded ? 'expanded' : 'collapsed'}
-				className="overflow-y-auto rounded-lg"
+				className={'overflow-y-auto rounded-lg '}
 				transition={{ type: 'spring', damping: 20, stiffness: 100 }}
 			>
 				<motion.div className="p-2" variants={listVariants}>
 					{selectedEvents.length > 0 ? (
-						selectedEvents.map((event, index) => {
-							const styles = getEventTypeStyles(event.isHoliday)
+						<>
+							{selectedEvents.map((event, index) => {
+								const styles = getEventTypeStyles(event.isHoliday)
 
-							return (
-								<motion.div
-									key={index}
-									custom={index}
-									variants={itemVariants}
-									initial="initial"
-									animate="animate"
-									className={`${styles.container} rounded-lg p-1 mb-2 px-2 last:mb-0 flex items-center`}
-									whileHover={{ x: 3, transition: { duration: 0.2 } }}
-								>
-									{event.icon ? (
-										<img
-											src={event.icon}
-											alt=""
-											className={`object-contain w-4 h-4 p-1 ml-2 rounded-md ${getEventIconBackgroundStyle()}`}
-											onError={(e) => {
-												e.currentTarget.style.display = 'none'
-											}}
-										/>
-									) : null}
+								return (
+									<motion.div
+										key={index}
+										custom={index}
+										variants={itemVariants}
+										initial="initial"
+										animate="animate"
+										className={`${styles.container} rounded-lg p-1 mb-2 px-2 last:mb-0 flex items-center`}
+										whileHover={{ x: 3, transition: { duration: 0.2 } }}
+									>
+										{event.icon ? (
+											<img
+												src={event.icon}
+												alt=""
+												className={`object-contain w-4 h-4 p-1 ml-2 rounded-md ${getEventIconBackgroundStyle()}`}
+												onError={(e) => {
+													e.currentTarget.style.display = 'none'
+												}}
+											/>
+										) : null}
 
-									<div className="flex-1">
-										<div className={`font-medium ${styles.title}`}>{event.title}</div>
-									</div>
-								</motion.div>
-							)
-						})
+										<div className="flex-1">
+											<div className={`font-medium ${styles.title}`}>{event.title}</div>
+										</div>
+									</motion.div>
+								)
+							})}
+						</>
 					) : (
 						<motion.div
 							className="py-2 text-center"

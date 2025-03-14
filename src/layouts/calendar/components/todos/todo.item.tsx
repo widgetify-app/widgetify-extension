@@ -7,9 +7,10 @@ import type { Todo } from '../../interface/todo.interface'
 interface Prop {
 	todo: Todo
 	toggleTodo: (id: string) => void
-	deleteTodo: (id: string) => void
-	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
+	deleteTodo?: (id: string) => void
+	updateTodo?: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	blurMode?: boolean
+	isPreview?: boolean
 }
 
 const translatedPriority = {
@@ -24,6 +25,7 @@ export function TodoItem({
 	toggleTodo,
 	updateTodo,
 	blurMode = false,
+	isPreview = false,
 }: Prop) {
 	const { theme } = useTheme()
 	const [expanded, setExpanded] = useState(false)
@@ -34,11 +36,13 @@ export function TodoItem({
 	const [category, setCategory] = useState(todo.category || '')
 
 	const handleEdit = () => {
+		if (!updateTodo) return
 		setEditing(true)
 		setExpanded(true)
 	}
 
 	const handleSave = () => {
+		if (!updateTodo) return
 		updateTodo(todo.id, {
 			text,
 			notes,
@@ -51,11 +55,11 @@ export function TodoItem({
 	const getItemBackgroundStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-100/90'
+				return isPreview ? 'bg-gray-100/70' : 'bg-gray-100/90'
 			case 'dark':
-				return 'bg-neutral-800/50'
+				return isPreview ? 'bg-neutral-800/30' : 'bg-neutral-800/50'
 			default: // glass
-				return 'bg-neutral-800/30'
+				return isPreview ? 'bg-neutral-800/20' : 'bg-neutral-800/30'
 		}
 	}
 
@@ -193,12 +197,13 @@ export function TodoItem({
 		<div
 			className={`overflow-hidden transition-all duration-200 rounded-lg ${getItemBackgroundStyle()} group ${blurMode ? 'blur-item' : ''}`}
 		>
-			<div className="flex items-center gap-2 p-3">
+			<div className={`flex items-center gap-2 ${isPreview ? 'p-2' : 'p-3'}`}>
 				<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
+
 				{!editing ? (
 					<span
 						onClick={() => toggleTodo(todo.id)}
-						className={`flex-1 overflow-clip w-[180px] ${getTextStyle()}`}
+						className={`flex-1 overflow-clip ${isPreview ? 'text-sm w-[160px]' : 'w-[180px]'} ${getTextStyle()}`}
 					>
 						{todo.text}
 					</span>
@@ -212,7 +217,7 @@ export function TodoItem({
 				)}
 
 				<div className="flex flex-col gap-1">
-					{todo.category && !editing && (
+					{todo.category && !editing && !isPreview && (
 						<span
 							className={`text-xs px-2 py-0.5 rounded-full ${getCategoryBadgeStyle()}`}
 						>
@@ -227,11 +232,13 @@ export function TodoItem({
 					)}
 				</div>
 
-				<button onClick={() => setExpanded(!expanded)} className={getButtonStyle()}>
-					{expanded ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
-				</button>
+				{!isPreview && (
+					<button onClick={() => setExpanded(!expanded)} className={getButtonStyle()}>
+						{expanded ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+					</button>
+				)}
 
-				{!editing ? (
+				{!editing && !isPreview && deleteTodo && updateTodo ? (
 					<>
 						<button
 							onClick={handleEdit}
@@ -247,16 +254,18 @@ export function TodoItem({
 						</button>
 					</>
 				) : (
-					<button
-						onClick={handleSave}
-						className={`px-2 py-1 text-xs rounded ${getSaveButtonStyle()}`}
-					>
-						ذخیره
-					</button>
+					editing && (
+						<button
+							onClick={handleSave}
+							className={`px-2 py-1 text-xs rounded ${getSaveButtonStyle()}`}
+						>
+							ذخیره
+						</button>
+					)
 				)}
 			</div>
 
-			{expanded && (
+			{expanded && !isPreview && (
 				<div
 					className={`p-3 pt-0 border-t ${getExpandedAreaStyle()} ${editing ? 'space-y-2' : ''}`}
 				>
