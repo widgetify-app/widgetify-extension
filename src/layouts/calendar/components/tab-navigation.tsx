@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { FiCalendar, FiClipboard, FiClock } from 'react-icons/fi'
+import { FiCalendar, FiClipboard, FiClock, FiWatch } from 'react-icons/fi'
 import { useTheme } from '../../../context/theme.context'
 import type { TabType } from '../calendar'
 
@@ -38,6 +38,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	const tabs = [
 		{ id: 'events' as TabType, label: 'رویدادها', icon: FiCalendar },
 		{ id: 'todos' as TabType, label: 'یادداشت‌ها', icon: FiClipboard },
+		{ id: 'pomodoro' as TabType, label: 'پومودورو', icon: FiWatch },
 		{ id: 'todo-stats' as TabType, label: 'آمار', icon: FiClock },
 	]
 

@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
 import type jalaliMoment from 'jalali-moment'
 import type React from 'react'
+import { useEffect, useState } from 'react'
 import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
 import type { TabType } from '../calendar'
 import { DaySlider } from './day-slider'
 import { Events } from './events/event'
+import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { TodoStats } from './todos/todo-stats'
 import { Todos } from './todos/todos'
 
@@ -23,12 +25,22 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 	setCurrentDate,
 }) => {
 	const { data: events } = useGetEvents()
+	const [showSlider, setShowSlider] = useState(true)
 
+	useEffect(() => {
+		if (activeTab === 'pomodoro') {
+			setShowSlider(false)
+		} else {
+			setShowSlider(true)
+		}
+	}, [activeTab])
 	return (
 		<>
-			<div className="mb-4">
-				<DaySlider currentDate={selectedDate} onDateChange={setSelectedDate} />
-			</div>
+			{showSlider ? (
+				<div className="mb-4">
+					<DaySlider currentDate={selectedDate} onDateChange={setSelectedDate} />
+				</div>
+			) : null}
 
 			{activeTab === 'events' && (
 				<motion.div
@@ -64,6 +76,17 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 					exit={{ opacity: 0 }}
 				>
 					<TodoStats />
+				</motion.div>
+			)}
+
+			{activeTab === 'pomodoro' && (
+				<motion.div
+					key="pomodoro-view"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<PomodoroTimer />
 				</motion.div>
 			)}
 		</>

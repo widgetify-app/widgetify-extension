@@ -10,10 +10,9 @@ import { TodoItem } from './todo.item'
 
 type TodoProp = {
 	currentDate: jalaliMoment.Moment
-	isPreview?: boolean
 }
 
-export function Todos({ currentDate, isPreview = false }: TodoProp) {
+export function Todos({ currentDate }: TodoProp) {
 	const { theme } = useTheme()
 	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
@@ -56,9 +55,6 @@ export function Todos({ currentDate, isPreview = false }: TodoProp) {
 			(a, b) => priorityValues[b.priority] - priorityValues[a.priority],
 		)
 	}
-
-	// For preview mode, limit to 2 items
-	const displayTodos = isPreview ? selectedDateTodos.slice(0, 2) : selectedDateTodos
 
 	const handleAddTodo = (
 		text: string,
@@ -157,43 +153,23 @@ export function Todos({ currentDate, isPreview = false }: TodoProp) {
 		}
 	}
 
-	const getShowMoreStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600 bg-blue-50/50'
-			default:
-				return 'text-blue-400 bg-blue-500/10'
-		}
-	}
-
 	const stats = getCompletionStats()
 
 	return (
 		<div>
-			{!isPreview ? (
-				<div className="flex items-center justify-between mb-3">
-					<h4 className={`text-lg ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+			<div className="flex items-center justify-between mb-3">
+				<h4 className={`text-lg ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
-					<button
-						onClick={handleBlurModeToggle}
-						className={`p-1.5 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
-						title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
-					>
-						{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
-					</button>
-				</div>
-			) : (
-				<div className="flex items-center justify-between mb-2">
-					<h4 className={`text-sm font-medium ${getHeaderStyle()}`}>یادداشت‌ها</h4>
-					{selectedDateTodos.length > 0 && (
-						<span className={`text-xs ${getStatsTextStyle()}`}>
-							{stats.completed} از {stats.total} انجام شده
-						</span>
-					)}
-				</div>
-			)}
+				<button
+					onClick={handleBlurModeToggle}
+					className={`p-1.5 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
+					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
+				>
+					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
+				</button>
+			</div>
 
-			{selectedDateTodos.length > 0 && !isPreview && (
+			{selectedDateTodos.length > 0 && (
 				<div className="mb-4">
 					<div className={`h-2 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
 						<div
@@ -210,80 +186,60 @@ export function Todos({ currentDate, isPreview = false }: TodoProp) {
 				</div>
 			)}
 
-			{!isPreview && <TodoInput onAdd={handleAddTodo} />}
+			<TodoInput onAdd={handleAddTodo} />
 
-			{!isPreview && (
-				<div className="flex justify-between mb-3">
-					<div className="flex gap-1 text-xs">
-						<button
-							onClick={() => setFilter('all')}
-							className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
-						>
-							همه
-						</button>
-						<button
-							onClick={() => setFilter('active')}
-							className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
-						>
-							فعال
-						</button>
-						<button
-							onClick={() => setFilter('completed')}
-							className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
-						>
-							تکمیل شده
-						</button>
-					</div>
-
-					<select
-						value={sort}
-						onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
-						className={getSelectStyle()}
+			<div className="flex justify-between mb-3">
+				<div className="flex gap-1 text-xs">
+					<button
+						onClick={() => setFilter('all')}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
 					>
-						<option value="default">مرتب‌سازی: پیش‌فرض</option>
-						<option value="priority">مرتب‌سازی: اولویت</option>
-						<option value="time">مرتب‌سازی: زمان</option>
-					</select>
+						همه
+					</button>
+					<button
+						onClick={() => setFilter('active')}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
+					>
+						فعال
+					</button>
+					<button
+						onClick={() => setFilter('completed')}
+						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
+					>
+						تکمیل شده
+					</button>
 				</div>
-			)}
+
+				<select
+					value={sort}
+					onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
+					className={getSelectStyle()}
+				>
+					<option value="default">مرتب‌سازی: پیش‌فرض</option>
+					<option value="priority">مرتب‌سازی: اولویت</option>
+				</select>
+			</div>
 
 			<div
-				className={`pr-1 space-y-2 overflow-y-auto ${isPreview ? 'max-h-24' : 'max-h-48'} ${blurMode ? 'blur-mode' : ''}`}
+				className={`pr-1 space-y-2 overflow-y-auto max-h-48 ${blurMode ? 'blur-mode' : ''}`}
 			>
-				{displayTodos.length > 0 ? (
+				{selectedDateTodos.length > 0 ? (
 					<>
-						{displayTodos.map((todo) => (
+						{selectedDateTodos.map((todo) => (
 							<TodoItem
 								key={todo.id}
 								todo={todo}
-								deleteTodo={!isPreview ? removeTodo : undefined}
+								deleteTodo={removeTodo}
 								toggleTodo={toggleTodo}
-								updateTodo={!isPreview ? updateTodo : undefined}
+								updateTodo={updateTodo}
 								blurMode={blurMode}
-								isPreview={isPreview}
 							/>
 						))}
-
-						{isPreview && selectedDateTodos.length > 2 && (
-							<div
-								className={`text-center text-xs py-1 px-2 rounded-md mt-1 ${getShowMoreStyle()}`}
-							>
-								{selectedDateTodos.length - 2} یادداشت دیگر...
-							</div>
-						)}
 					</>
 				) : (
-					<div
-						className={`py-${isPreview ? '2' : '6'} text-center ${getEmptyStateStyle()}`}
-					>
-						{isPreview ? (
-							<p className="text-xs">یادداشتی برای این روز ندارید</p>
-						) : (
-							<>
-								<p>یادداشتی برای این روز ندارید.</p>
-								<p className="text-sm">یک یادداشت جدید اضافه کنید!</p>
-							</>
-						)}
+					<div className={`py-6 text-center ${getEmptyStateStyle()}`}>
+						<p>یادداشتی برای این روز ندارید.</p>
+						<p className="text-sm">یک یادداشت جدید اضافه کنید!</p>
 					</div>
 				)}
 			</div>

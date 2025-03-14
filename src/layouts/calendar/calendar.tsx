@@ -11,7 +11,7 @@ import { CalendarHeader } from './components/calendar-header'
 import { DaySummary } from './components/day-summary'
 import { TabNavigation } from './components/tab-navigation'
 
-export type TabType = 'events' | 'todos' | 'todo-stats'
+export type TabType = 'events' | 'todos' | 'todo-stats' | 'pomodoro'
 
 const PersianCalendar: React.FC = () => {
 	const { themeUtils } = useTheme()
