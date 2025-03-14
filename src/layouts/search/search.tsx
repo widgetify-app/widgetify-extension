@@ -2,9 +2,9 @@ import { CiSearch } from 'react-icons/ci'
 import { BookmarkProvider } from '../../context/bookmark.context'
 import { useTheme } from '../../context/theme.context'
 import { BookmarksComponent } from './bookmarks/bookmarks'
+import Browser from 'webextension-polyfill'
 
 export function SearchLayout() {
-	const GOOGLE_URL = 'https://www.google.com/search?q='
 	const { theme, themeUtils } = useTheme()
 
 	const getSearchBoxBackground = () => {
@@ -33,7 +33,7 @@ export function SearchLayout() {
 		e.preventDefault()
 		const query = (e.target as HTMLFormElement).search.value
 		if (query.trim()) {
-			window.location.href = GOOGLE_URL + encodeURIComponent(query)
+			Browser.search.query({ text: query })
 		}
 	}
 
