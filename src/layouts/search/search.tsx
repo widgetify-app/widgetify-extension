@@ -1,8 +1,8 @@
 import { CiSearch } from 'react-icons/ci'
+import Browser from 'webextension-polyfill'
 import { BookmarkProvider } from '../../context/bookmark.context'
 import { useTheme } from '../../context/theme.context'
 import { BookmarksComponent } from './bookmarks/bookmarks'
-import Browser from 'webextension-polyfill'
 
 export function SearchLayout() {
 	const { theme, themeUtils } = useTheme()
@@ -48,7 +48,7 @@ export function SearchLayout() {
 							type="text"
 							name="search"
 							className={`w-full py-4 pl-16 pr-6 text-lg font-light text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
-							placeholder="جستجو در گوگل..."
+							placeholder="جستجو ..."
 						/>
 						<button
 							type="submit"
