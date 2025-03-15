@@ -21,15 +21,23 @@
 		"https://api.github.com/*",
 		"https://api.widgetify.ir/*",
 		"https://www.google.com/search*",
-		"https://www.google-analytics.com/collect*"
+		"https://www.google-analytics.com/collect*",
+		"https://storage.c2.liara.space/*"
 	],
 	"options_ui": {
 		"page": "src/index.html",
 		"open_in_tab": true
 	},
-	"background": {
-		"{{chrome}}.service_worker": "src/background.ts",
-		"{{firefox}}.scripts": ["src/background.ts"]
+	"{{chrome}}.background": {
+		"service_worker": "src/background.ts"
+	},
+	"{{firefox}}.background": {
+		"scripts": ["src/background.ts"]
+	},
+	"{{firefox}}.browser_specific_settings": {
+		"gecko": {
+			"id": "widgetify@widgetify-app.github.io"
+		}
 	},
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline';"
