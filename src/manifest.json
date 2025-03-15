@@ -3,7 +3,7 @@
 	"{{firefox}}.manifest_version": 3,
 	"name": "Widgetify",
 	"description": "Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "https://github.com/widgetify-app",
 	"icons": {
 		"16": "icons/icon16.png",
@@ -11,7 +11,7 @@
 		"48": "icons/icon48.png",
 		"128": "icons/icon128.png"
 	},
-	"permissions": ["storage","search"],
+	"permissions": ["storage", "search"],
 	"chrome_url_overrides": {
 		"newtab": "src/index.html"
 	},
