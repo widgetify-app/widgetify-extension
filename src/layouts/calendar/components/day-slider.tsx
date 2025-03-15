@@ -53,7 +53,7 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 			case 'dark':
 				return 'bg-neutral-800/50'
 			default: // glass
-				return 'bg-black/20 backdrop-blur-[2px]'
+				return 'bg-neutral-900/50'
 		}
 	}
 
