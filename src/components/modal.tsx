@@ -106,7 +106,7 @@ const Modal = ({
 						{showCloseButton ? (
 							<button
 								onClick={onClose}
-								className={`p-2 rounded-full ${theme === 'light' ? 'hover:bg-gray-200/80' : 'hover:bg-gray-700/30'}`}
+								className={`p-2 cursor-pointer rounded-full ${theme === 'light' ? 'hover:bg-gray-200/80' : 'hover:bg-gray-700/30'}`}
 							>
 								<AiOutlineClose
 									size={20}

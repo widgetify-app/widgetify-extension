@@ -25,4 +25,5 @@ export interface StorageKV {
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
 	theme: 'light' | 'dark' | 'glass'
+	lastVersion: string
 }

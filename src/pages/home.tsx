@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import Browser from 'webextension-polyfill'
 import Analytics from '../analytics'
 import { getFromStorage, setToStorage } from '../common/storage'
 import type { StoredWallpaper } from '../common/wallpaper.interface'
+import { UpdateReleaseNotesModal } from '../components/UpdateReleaseNotesModal'
 import { ExtensionInstalledModal } from '../components/extension-installed-modal'
 import { CurrencyProvider } from '../context/currency.context'
 import {
@@ -65,17 +67,25 @@ function ContentSection() {
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
-
+	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+	const currentVersion = Browser.runtime.getManifest().version
 	useEffect(() => {
-		async function checkWelcomeModal() {
+		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
 			if (shouldShowWelcome) {
 				setShowWelcomeModal(true)
 				await setToStorage('showWelcomeModal', false)
+				return
+			}
+
+			const lastVersion = await getFromStorage('lastVersion')
+			if (lastVersion !== currentVersion) {
+				setShowReleaseNotes(true)
+				await setToStorage('lastVersion', currentVersion)
 			}
 		}
 
-		checkWelcomeModal()
+		displayModalIfNeeded()
 
 		Analytics.pageView('Home', '/')
 	}, [])
@@ -176,6 +186,12 @@ export function HomePage() {
 				show={showWelcomeModal}
 				onClose={() => setShowWelcomeModal(false)}
 				onGetStarted={handleGetStarted}
+			/>
+
+			<UpdateReleaseNotesModal
+				isOpen={showReleaseNotes}
+				onClose={() => setShowReleaseNotes(false)}
+				currentVersion={currentVersion}
 			/>
 		</div>
 	)
