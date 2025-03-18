@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FiCheck, FiHeart, FiInfo } from 'react-icons/fi'
-import { wallpaperCategoryTranslations } from '../../../../common/constants/translations'
+import { wallpaperCategoryTranslations } from '../../../../common/constant/translations'
 import type { Wallpaper } from '../../../../common/wallpaper.interface'
 import { useGeneralSetting } from '../../../../context/general-setting.context'
 import { useLazyLoad } from './hooks/use-lazy-load'

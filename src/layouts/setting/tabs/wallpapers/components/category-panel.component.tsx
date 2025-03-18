@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiChevronDown, FiChevronUp, FiTag } from 'react-icons/fi'
-import { wallpaperCategoryTranslations } from '../../../../../common/constants/translations'
+import { wallpaperCategoryTranslations } from '../../../../../common/constant/translations'
 import type { Wallpaper } from '../../../../../common/wallpaper.interface'
 import { useGeneralSetting } from '../../../../../context/general-setting.context'
 import { useTheme } from '../../../../../context/theme.context'
