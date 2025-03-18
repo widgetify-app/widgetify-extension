@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { useCallback, useRef, useState } from 'react'
 import { FiImage, FiUploadCloud, FiVideo } from 'react-icons/fi'
-import type { Wallpaper } from '../../../../../common/wallpaper.interface'
-import { useTheme } from '../../../../../context/theme.context'
+import type { Wallpaper } from '@/common/wallpaper.interface'
+import { useTheme } from '@/context/theme.context'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { MediaPreview } from './media-preview.component'
 

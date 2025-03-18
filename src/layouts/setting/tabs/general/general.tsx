@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useGeneralSetting } from '../../../../context/general-setting.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { ContentAlignmentSettings } from './components/content-alignment-settings'
 import { FontSelector } from './components/font-selector'
 import { PetSettings } from './components/pet-settings'

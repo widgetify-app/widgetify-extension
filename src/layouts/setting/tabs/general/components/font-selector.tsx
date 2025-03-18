@@ -1,6 +1,6 @@
-import { SectionPanel } from '../../../../../components/section-panel'
-import type { FontFamily } from '../../../../../context/general-setting.context'
-import { useTheme } from '../../../../../context/theme.context'
+import { SectionPanel } from '@/components/section-panel'
+import type { FontFamily } from '@/context/general-setting.context'
+import { useTheme } from '@/context/theme.context'
 
 interface FontSelectorProps {
 	fontFamily: FontFamily

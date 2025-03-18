@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
-import { useTheme } from '../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface SectionPanelProps {
 	title: string

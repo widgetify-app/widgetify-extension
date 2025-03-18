@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
-import { useTheme } from '../../../../context/theme.context'
-import type { FetchedCity } from '../../../../services/getMethodHooks/weather/weather.interface'
+import { useTheme } from '@/context/theme.context'
+import type { FetchedCity } from '@/services/getMethodHooks/weather/weather.interface'
 
 interface CityResultsListProps {
 	cities: Array<FetchedCity>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getFromStorage } from '../../../common/storage'
-import { useBookmarkStore } from '../../../context/bookmark.context'
-import { useTheme } from '../../../context/theme.context'
+import { getFromStorage } from '@/common/storage'
+import { useBookmarkStore } from '@/context/bookmark.context'
+import { useTheme } from '@/context/theme.context'
 import {
 	type FetchedSuggestionsBookmark,
 	useGetBookmarks,
-} from '../../../services/getMethodHooks/getBookmarks.hook'
+} from '@/services/getMethodHooks/getBookmarks.hook'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
 import { BookmarkItem } from './components/bookmark-item'

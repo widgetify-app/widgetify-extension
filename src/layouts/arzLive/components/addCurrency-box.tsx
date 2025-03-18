@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { TiPlus } from 'react-icons/ti'
-import Modal from '../../../components/modal'
-import { MultiSelectDropdown } from '../../../components/selectBox/multiSelectDropdown.component'
-import { useCurrencyStore } from '../../../context/currency.context'
-import { useTheme } from '../../../context/theme.context'
+import Modal from '@/components/modal'
+import { MultiSelectDropdown } from '@/components/selectBox/multiSelectDropdown.component'
+import { useCurrencyStore } from '@/context/currency.context'
+import { useTheme } from '@/context/theme.context'
 
 export type SupportedCurrencies = {
 	key: string

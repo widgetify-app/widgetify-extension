@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
-import Modal from '../../../components/modal'
-import { useTheme } from '../../../context/theme.context'
+import Modal from '@/components/modal'
+import { useTheme } from '@/context/theme.context'
 import { CurrencyChart } from './currency-chart'
 
 interface CurrencyModalComponentProps {

@@ -1,6 +1,6 @@
 import jalaliMoment from 'jalali-moment'
-import { useTheme } from '../../../context/theme.context'
-import type { FetchedAllEvents } from '../../../services/getMethodHooks/getEvents.hook'
+import { useTheme } from '@/context/theme.context'
+import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import type { Todo } from '../interface/todo.interface'
 import { formatDateStr, getHijriEvents, getShamsiEvents } from '../utils'
 

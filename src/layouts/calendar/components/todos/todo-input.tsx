@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FiFlag, FiTag } from 'react-icons/fi'
 import Analytics from '../../../../analytics'
-import { useTheme } from '../../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface Prop {
 	onAdd: (

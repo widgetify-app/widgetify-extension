@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import Analytics from '../../../../../analytics'
-import type { Wallpaper } from '../../../../../common/wallpaper.interface'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 
 const MAX_FILE_SIZE = 6 * 1024 * 1024 // 6MB
 

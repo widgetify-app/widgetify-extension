@@ -1,11 +1,11 @@
-import type { SelectedCity } from '../../context/weather.context'
-import type { Todo } from '../../layouts/calendar/interface/todo.interface'
-import type { Bookmark } from '../../layouts/search/bookmarks/types/bookmark.types'
-import type { FetchedCurrency } from '../../services/getMethodHooks/getCurrencyByCode.hook'
+import type { SelectedCity } from '@/context/weather.context'
+import type { Todo } from '@/layouts/calendar/interface/todo.interface'
+import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
+import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type {
 	FetchedWeather,
 	WeatherSettings,
-} from '../../services/getMethodHooks/weather/weather.interface'
+} from '@/services/getMethodHooks/weather/weather.interface'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {

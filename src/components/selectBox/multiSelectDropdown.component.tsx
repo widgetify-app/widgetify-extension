@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FiCheck, FiChevronDown, FiSearch, FiX } from 'react-icons/fi'
-import { useTheme } from '../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface Option {
 	value: string

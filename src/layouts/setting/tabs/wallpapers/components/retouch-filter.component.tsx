@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
-import CustomCheckbox from '../../../../../components/checkbox' 
-import { useTheme } from '../../../../../context/theme.context'
+import CustomCheckbox from '@/components/checkbox' 
+import { useTheme } from '@/context/theme.context'
 
 interface RetouchFilterProps {
 	isEnabled: boolean

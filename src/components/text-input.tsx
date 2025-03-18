@@ -1,5 +1,5 @@
 import { type ForwardedRef, forwardRef } from 'react'
-import { useTheme } from '../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface TextInputProps {
 	value: string

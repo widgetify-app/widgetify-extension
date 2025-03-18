@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { useTheme } from '../../../../context/theme.context'
-import { useTodoStore } from '../../../../context/todo.context'
+import { useTheme } from '@/context/theme.context'
+import { useTodoStore } from '@/context/todo.context'
 
 export function TodoStats() {
 	const { todos } = useTodoStore()

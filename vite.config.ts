@@ -59,6 +59,11 @@ export default defineConfig(({ mode }) => {
 				browser,
 			}),
 		],
+		resolve: {
+			alias: {
+				'@': '/src',
+			},
+		},
 		build: {
 			outDir: 'dist',
 			emptyOutDir: true,

@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { LuBone } from 'react-icons/lu'
-import idle from '../../../assets/animals/akita_idle_8fps.gif'
-import lie from '../../../assets/animals/akita_lie_8fps.gif'
-import running from '../../../assets/animals/akita_run_8fps.gif'
-import swipe from '../../../assets/animals/akita_swipe_8fps.gif'
-import walking from '../../../assets/animals/akita_walk_fast_8fps.gif'
-import { useGeneralSetting } from '../../../context/general-setting.context'
+import idle from '@/assets/animals/akita_idle_8fps.gif'
+import lie from '@/assets/animals/akita_lie_8fps.gif'
+import running from '@/assets/animals/akita_run_8fps.gif'
+import swipe from '@/assets/animals/akita_swipe_8fps.gif'
+import walking from '@/assets/animals/akita_walk_fast_8fps.gif'
+import { useGeneralSetting } from '@/context/general-setting.context'
 
 interface Bone {
 	id: number

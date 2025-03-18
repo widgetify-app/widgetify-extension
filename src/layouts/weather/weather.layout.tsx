@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { getFromStorage, setToStorage } from '../../common/storage'
-import { useWeatherStore } from '../../context/weather.context'
-import { useGetForecastWeatherByLatLon } from '../../services/getMethodHooks/weather/getForecastWeatherByLatLon'
-import { useGetWeatherByLatLon } from '../../services/getMethodHooks/weather/getWeatherByLatLon'
-import type { FetchedWeather } from '../../services/getMethodHooks/weather/weather.interface'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useWeatherStore } from '@/context/weather.context'
+import { useGetForecastWeatherByLatLon } from '@/services/getMethodHooks/weather/getForecastWeatherByLatLon'
+import { useGetWeatherByLatLon } from '@/services/getMethodHooks/weather/getWeatherByLatLon'
+import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
 import { CurrentWeatherBox } from './components/current-box.component'
 import { ForecastComponent } from './components/forecast.component'
 //@ts-ignore
@@ -16,7 +16,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 //@ts-ignore
 import 'swiper/css/navigation'
-import { useTheme } from '../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 export function WeatherLayout() {
 	const { selectedCity, weatherSettings } = useWeatherStore()

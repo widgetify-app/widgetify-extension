@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { MdLocationCity } from 'react-icons/md'
-import { useTheme } from '../../../../context/theme.context'
-import type { SelectedCity } from '../../../../context/weather.context'
+import { useTheme } from '@/context/theme.context'
+import type { SelectedCity } from '@/context/weather.context'
 
 interface SelectedCityDisplayProps {
 	city: SelectedCity | null
