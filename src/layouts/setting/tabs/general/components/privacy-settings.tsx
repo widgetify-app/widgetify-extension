@@ -1,6 +1,6 @@
-import CustomCheckbox from '../../../../../components/checkbox'
-import { SectionPanel } from '../../../../../components/section-panel'
-import { useTheme } from '../../../../../context/theme.context'
+import CustomCheckbox from '@/components/checkbox'
+import { SectionPanel } from '@/components/section-panel'
+import { useTheme } from '@/context/theme.context'
 
 interface PrivacySettingsProps {
 	analyticsEnabled: boolean

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import keepItImage from '../assets/keep-it.png'
+import keepItImage from '@/assets/keep-it.png'
 import Modal from './modal'
 
 interface ExtensionInstalledModalProps {

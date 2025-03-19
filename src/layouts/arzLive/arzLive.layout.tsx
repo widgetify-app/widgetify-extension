@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
-import { useCurrencyStore } from '../../context/currency.context'
-import { useTheme } from '../../context/theme.context'
-import { useGetSupportCurrencies } from '../../services/getMethodHooks/getSupportCurrencies.hook'
+import { useCurrencyStore } from '@/context/currency.context'
+import { useTheme } from '@/context/theme.context'
+import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
 import { AddCurrencyBox } from './components/addCurrency-box'
 import { CurrencyBox } from './components/currency-box'
 

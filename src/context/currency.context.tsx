@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { getFromStorage, setToStorage } from '../common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 export interface StoreContext {
 	selectedCurrencies: Array<string>

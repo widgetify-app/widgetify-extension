@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { RiBug2Line, RiCheckboxCircleFill, RiStarLine, RiToolsLine } from 'react-icons/ri'
-import { useTheme } from '../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import Modal from './modal'
 
 type ReleaseNotes = Record<

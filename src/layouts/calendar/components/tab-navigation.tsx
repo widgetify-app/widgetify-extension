@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiClipboard, FiWatch } from 'react-icons/fi'
 import { IoAnalyticsOutline } from 'react-icons/io5'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import type { TabType } from '../calendar'
 
 interface TabNavigationProps {

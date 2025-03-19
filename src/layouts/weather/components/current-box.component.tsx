@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
-import { useTheme } from '../../../context/theme.context'
-import { useWeatherStore } from '../../../context/weather.context'
-import type { FetchedWeather } from '../../../services/getMethodHooks/weather/weather.interface'
+import { useTheme } from '@/context/theme.context'
+import { useWeatherStore } from '@/context/weather.context'
+import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
 import { unitsFlag } from '../unitSymbols'
 
 interface CurrentWeatherBoxProps {

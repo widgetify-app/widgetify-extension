@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
 import browser from 'webextension-polyfill'
-import { SectionPanel } from '../../../../components/section-panel'
-import { useGeneralSetting } from '../../../../context/general-setting.context'
+import { SectionPanel } from '@/components/section-panel'
+import { useGeneralSetting } from '@/context/general-setting.context'
 
 export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()

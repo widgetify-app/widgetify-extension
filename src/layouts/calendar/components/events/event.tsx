@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import type jalaliMoment from 'jalali-moment'
 import { FiCalendar } from 'react-icons/fi'
-import { useTheme } from '../../../../context/theme.context'
-import type { FetchedAllEvents } from '../../../../services/getMethodHooks/getEvents.hook'
+import { useTheme } from '@/context/theme.context'
+import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils'
 
 interface Prop {

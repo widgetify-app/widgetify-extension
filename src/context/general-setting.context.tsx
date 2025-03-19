@@ -1,6 +1,6 @@
 import type React from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { getFromStorage, setToStorage } from '../common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 export type FontFamily = 'Vazir' | 'digiLalezarPlus'
 

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface DaySliderProps {
 	currentDate: jalaliMoment.Moment

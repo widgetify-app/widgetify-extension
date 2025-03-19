@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { v4 as uuidv4 } from 'uuid'
-import Modal from '../../../../components/modal'
+import Modal from '@/components/modal'
 import type { Bookmark, BookmarkType } from '../types/bookmark.types'
 
 interface AddBookmarkModalProps {

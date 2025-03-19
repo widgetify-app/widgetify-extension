@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { IoMdMoon, IoMdSunny } from 'react-icons/io'
 import { MdOutlineBlurOn } from 'react-icons/md'
-import { SectionPanel } from '../../../../../components/section-panel'
-import { useTheme } from '../../../../../context/theme.context'
+import { SectionPanel } from '@/components/section-panel'
+import { useTheme } from '@/context/theme.context'
 
 export function ThemeSelector() {
 	const { setTheme, theme, themeUtils } = useTheme()

@@ -4,7 +4,7 @@ import type React from 'react'
 import { useMemo } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 const PERSIAN_MONTHS = [
 	'فروردین',

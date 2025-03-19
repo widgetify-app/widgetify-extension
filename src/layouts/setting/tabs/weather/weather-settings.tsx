@@ -1,5 +1,5 @@
-import { useTheme } from '../../../../context/theme.context'
-import type { TemperatureUnit } from '../../../../services/getMethodHooks/weather/weather.interface'
+import { useTheme } from '@/context/theme.context'
+import type { TemperatureUnit } from '@/services/getMethodHooks/weather/weather.interface'
 
 interface WeatherSettingsProps {
 	forecastCount: number

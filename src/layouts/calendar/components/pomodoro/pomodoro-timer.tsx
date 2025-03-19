@@ -9,7 +9,7 @@ import {
 	FiRefreshCw,
 	FiSettings,
 } from 'react-icons/fi'
-import { useTheme } from '../../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { PomodoroSettingsPanel } from './components/settings-panel'

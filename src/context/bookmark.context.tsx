@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { getFromStorage, setToStorage } from '../common/storage'
-import type { Bookmark } from '../layouts/search/bookmarks/types/bookmark.types'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import type { Bookmark } from 'W/layouts/search/bookmarks/types/bookmark.types'
 
 const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
 

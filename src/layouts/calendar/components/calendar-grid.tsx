@@ -1,9 +1,9 @@
 import type jalaliMoment from 'jalali-moment'
 import type React from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { useTheme } from '../../../context/theme.context'
-import { useTodoStore } from '../../../context/todo.context'
-import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
+import { useTheme } from '@/context/theme.context'
+import { useTodoStore } from '@/context/todo.context'
+import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { formatDateStr } from '../utils'
 import { DayItem } from './day'
 

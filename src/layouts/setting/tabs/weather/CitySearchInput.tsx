@@ -1,6 +1,6 @@
 import { type ForwardedRef, forwardRef } from 'react'
-import { TextInput } from '../../../../components/text-input'
-import { useTheme } from '../../../../context/theme.context'
+import { TextInput } from '@/components/text-input'
+import { useTheme } from '@/context/theme.context'
 
 interface CitySearchInputProps {
 	value: string

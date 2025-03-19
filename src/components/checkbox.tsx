@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { memo } from 'react'
-import { useTheme } from '../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface CustomCheckboxProps {
 	checked: boolean

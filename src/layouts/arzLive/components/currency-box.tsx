@@ -2,13 +2,13 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 import ms from 'ms'
 import { useEffect, useRef, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
-import { getMainColorFromImage } from '../../../common/color'
-import { getFromStorage, setToStorage } from '../../../common/storage'
-import { useTheme } from '../../../context/theme.context'
+import { getMainColorFromImage } from '@/common/color'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useTheme } from '@/context/theme.context'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
-} from '../../../services/getMethodHooks/getCurrencyByCode.hook'
+} from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import { CurrencyModalComponent } from './currency-modal'
 
 interface CurrencyBoxProps {

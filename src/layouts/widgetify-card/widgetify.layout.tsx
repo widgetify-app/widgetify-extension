@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useGeneralSetting } from '../../context/general-setting.context'
-import { useTheme } from '../../context/theme.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { useTheme } from '@/context/theme.context'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
-import Modal from '../../../../../components/modal'
+import Modal from '@/components/modal'
 import type { PomodoroSettings } from '../types'
 
 interface SettingInputProps {

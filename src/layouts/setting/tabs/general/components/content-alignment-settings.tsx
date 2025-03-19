@@ -1,5 +1,5 @@
-import { SectionPanel } from '../../../../../components/section-panel'
-import { useTheme } from '../../../../../context/theme.context'
+import { SectionPanel } from '@/components/section-panel'
+import { useTheme } from '@/context/theme.context'
 
 interface ContentAlignmentSettingsProps {
 	contentAlignment: 'center' | 'top'

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import jalaliMoment from 'jalali-moment'
 import { useEffect, useState } from 'react'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 const ClockComponent = () => {
 	const [time, setTime] = useState(jalaliMoment().locale('fa').utc().add(3.5, 'hours'))

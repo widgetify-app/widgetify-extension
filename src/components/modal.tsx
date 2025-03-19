@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
-import { useTheme } from '../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 type ModalProps = {
 	isOpen: boolean

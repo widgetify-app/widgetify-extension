@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Analytics from '../../../../../analytics'
-import { getFromStorage, setToStorage } from '../../../../../common/storage'
-import type { Wallpaper } from '../../../../../common/wallpaper.interface'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)

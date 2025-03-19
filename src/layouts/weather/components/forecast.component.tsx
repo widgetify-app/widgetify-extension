@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import { unitsFlag } from '../unitSymbols'
 
 interface ForecastProps {

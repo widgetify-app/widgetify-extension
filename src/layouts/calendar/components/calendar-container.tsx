@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useTheme } from '../../../context/theme.context'
+import { useTheme } from '@/context/theme.context'
 
 interface CalendarContainerProps {
 	children: React.ReactNode
