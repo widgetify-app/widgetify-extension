@@ -55,7 +55,7 @@ export function SearchLayout() {
 
 	return (
 		<>
-			<div className="flex flex-col items-center justify-center max-h-80">
+			<div className="flex flex-col items-center justify-center">
 				<div className="relative w-full" ref={searchRef}>
 					<form className="w-full" onSubmit={handleSubmit}>
 						<div
