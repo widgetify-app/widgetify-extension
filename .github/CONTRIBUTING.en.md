@@ -29,7 +29,8 @@ git checkout -b feature/your-feature-name
 bun dev
 ```
 
-> [!TIP]  After running the last command, open a new tab in your browser (the default tab might show a blank page)
+> [!TIP]
+> After running the last command, open a new tab in your browser (the default tab might show a blank page)
 
 ## How to Contribute
 
