@@ -97,7 +97,7 @@ Please share your comments and suggestions with us through one of the following 
 
 We welcome your contributions to improve Widgetify! To contribute please read the following document:
 
-[Contribution Guide](https://github.com/widgetify-app/widgetify-extension/blob/main/.github/CONTRIBUTING.en.md).
+[Contribution Guide](./.github/CONTRIBUTING.en.md).
 
   
 
@@ -214,7 +214,7 @@ For more information please read [License](LICENSE)
 
 ## مشارکت
 
-از مشارکت شما در بهبود ویجتیفای استقبال می‌کنیم! برای مشارکت، لطفاً [راهنمای مشارکت](https://github.com/widgetify-app/widgetify-extension/blob/main/.github/CONTRIBUTING.md) را مطالعه کنید.
+از مشارکت شما در بهبود ویجتیفای استقبال می‌کنیم! برای مشارکت، لطفاً [راهنمای مشارکت](./.github/CONTRIBUTING.md) را مطالعه کنید.
 
   
 
