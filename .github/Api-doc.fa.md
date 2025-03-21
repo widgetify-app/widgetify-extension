@@ -1,22 +1,23 @@
-### API documentation is provided in this file.
+### داکیومنت های مربوط به API ها در این فایل قرار دارد. 
 
 > [!NOTE]
-> If the required API is not available, use fake data and mention this in your PULL REQUEST. The required API will be created.
+> در صورت نبود API مورد نیاز، از دیتاهای فیک استفاده کنید و موقعه PULL REQUEST این موضوع را ذکر کنید. تا API مورد نیاز ایجاد شود.
 
-### API Usage Guide
-Fields marked with * in the documentation means required fields.
+### رهنمای استفاده از API ها
+فیلد های * در مستندات به معنای اجباری بودن آن فیلد است.
+
 
 ## Cache / Rate Limit
-- Each API has Cache and Rate Limit.
-- The Rate Limit count is currently private.
-- Cache for each API is randomly set between 1 to 10 minutes and 1 hour.
+- هرکدوم از API ها دارای Cache و Rate Limit هستند.
+- تعداد Rate Limit درحال حاضر private هست. 
+- Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
 
 ## Wallpaper API
 
 ### GET /wallpaper
 Query Params:
-- `page` (int): Page number
-- `limit` (int): Number of images per page
+- `page` (int): شماره صفحه
+- `limit` (int): تعداد تصاویر در هر صفحه
 - `type` (str): IMAGE & VIDEO
 - `category` (str): Tehran, Dubai, Desert, Sea, Forest, Mountain, Sky, Space, Abstract, City, Other
 
@@ -26,7 +27,7 @@ Response:
   "wallpapers": [
     {
       "id": "67c20fb09985263793140b49",
-      "name": "Colors",
+      "name": "حاله های رنگی",
       "source": "https://www.google.com",
       "category": "Abstract",
       "type": "IMAGE",
@@ -37,15 +38,16 @@ Response:
 }
 ```
 
+
 ## Weather API
 
 ### GET /weather/current
 Query Params:
-- `lat` (float*): Latitude
-- `lon` (float*): Longitude
-- `useAI` (bool*): Use AI for prediction
+- `lat` (float*): عرض جغرافیایی
+- `lon` (float*): طول جغرافیایی
+- `useAI` (bool*): استفاده از هوش مصنوعی برای پیش‌بینی
 
-Response:
+response:
 ```json
 {
     "city": {
@@ -54,25 +56,25 @@ Response:
     },
     "weather": {
         "description": {
-            "text": "Cloudy",
+            "text": "پوشیده از ابر",
             "emoji": "☁️"
         },
         "icon": {
             "url": "https://storage.c2.liara.space/widgetify-ir/weather/04n.png",
         },
-        "label": "Dense clouds covering the sun!",
+        "label": "ابرهای متراکم، خورشید رو می‌پوشونن!",
         "temperature": {
             "clouds": 93,
             "humidity": 59,
             "pressure": 1014,
             "temp": 18.79,
-            "temp_description": "Dreamy night 🌠",
+            "temp_description": "شب رویایی 🌠",
             "temp_max": 18.79,
             "temp_min": 18.79,
             "wind_speed": 0.94
         },
         "ai": {
-            "description": "Tehran has a cloudy sky and the weather is relatively cool. Wind speed is mild and the temperature is around 19 degrees Celsius; it seems like the clouds are playing hide and seek!",
+            "description": "تهران آسمانی پوشیده از ابر دارد و هوا نسبتا خنک است. سرعت باد ملایم و دمای هوا حدود 19 درجه سانتی‌گراد است؛ انگار ابرها دارند قایم باشک بازی می‌کنند!",
             "playlist": null
         }
     }
@@ -81,11 +83,11 @@ Response:
 
 ### GET /weather/forecast
 Query Params:
-- `lat*` (float*): Latitude
-- `lon*` (float*): Longitude
-- `count` (int): Number of forecast items
+- `lat*` (float*): عرض جغرافیایی
+- `lon*` (float*): طول جغرافیایی
+- `count` (int): تعداد آیتم‌های پیش‌بینی
 
-Response:
+response:
 ```json
 [
     {
@@ -111,70 +113,76 @@ Response:
 ]
 ```
 
+
 ### GET /weather/cities
 Query Params:
-- `city` (str*): City name
+- `city` (str*): نام شهر
 
-Response:
+response:
 ```json
 [
  {
     "name": "Tehran",
     "country": "IR",
-    "state": null,
+    "state" null,
     "lat": 35.6892523,
     "lon": 51.3896004
   },
 ]
 ```
 
+
 ## Date
 
 ### GET /date/events
+Query Params:
 
-Response:
+response:
 ```json
 {
     "shamsiEvents": [
         {
             "id": "67ca1528f0eeeba246d0e6f2",
             "isHoliday": true,
-            "title": "Nowruz Beginning",
+            "title": "آغاز نوروز",
             "day": 1,
             "month": 1,
             "icon": "https://storage.c2.liara.space/widgetify-ir/events/5e30a5de-2ad8-4fe5-88b6-4c402c07e297.png"
-        }
+        },
+     
     ],
     "gregorianEvents": [
         {
             "isHoliday": false,
-            "title": "📱 First iPhone Introduction",
+            "title": "📱 معرفی اولین آیفون",
             "day": 9,
             "month": 1,
             "icon": null
         }
-    ],
-    "hijriEvents": [
+  ],
+   "hijriEvents": [
         {
             "id": "67ca1528f0eeeba246d0e7c7",
             "isHoliday": true,
-            "title": "Holiday for Eid al-Fitr",
+            "title": "تعطیل به مناسبت عید سعید فطر",
             "day": 2,
             "month": 10,
             "icon": null
-        }
-    ]
+        },
+  ]
 }
 ```
 
 ### GET /date/timezones
-Response:
+Query Params:
+
+response:
 ```json
 [
   {
-    "label": "Asia / Tehran",
+    "label": "آسیا / تهران",
     "value": "Asia/Tehran",
     "offset": "+03:30"
   }
 ]
-``` 
+```
