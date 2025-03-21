@@ -1,5 +1,6 @@
 
-# Widgetify
+
+# ![logo](./public/icons/icon32.png) Widgetify
 
  Widgetify is a browser extensions that adds useful widgets to the new page of your browser. Numerous weather, currency, calendar, to-do list, search, and bookmark widgets can improve your exploring experience.
 
@@ -96,7 +97,7 @@ Please share your comments and suggestions with us through one of the following 
 
 We welcome your contributions to improve Widgetify! To contribute please read the following document:
 
-[Contribution Guide](https://github.com/widgetify-app/widgetify-extension/blob/main/.github/CONTRIBUTING.md).
+[Contribution Guide](https://github.com/widgetify-app/widgetify-extension/blob/main/.github/CONTRIBUTING.en.md).
 
   
 
