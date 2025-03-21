@@ -106,14 +106,14 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					},
 				},
 			}}
-			className={`h-full col-span-2 p-5 shadow-lg bg-gradient-to-br ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
+			className={`col-span-2 p-5 shadow-lg bg-gradient-to-br flex-2 ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
 		>
 			<div className="flex flex-row-reverse items-start justify-between gap-4">
 				<motion.div
 					className="relative group"
 					variants={fadeInUp}
-					whileHover={{ scale: 1.1 }}
-					transition={{ type: 'spring', stiffness: 300 }}
+					whileHover={{scale: 1.1}}
+					transition={{type: 'spring', stiffness: 300}}
 				>
 					<img
 						src={weather.icon.url}
@@ -135,25 +135,27 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 						</span>
 					</motion.span>
-
-					<motion.div
-						variants={fadeInUp}
-						className="flex flex-wrap items-center gap-2 mt-3"
-					>
-						<div
-							className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getHumidityPillStyle()}`}
-						>
-							<WiHumidity size={20} className="flex-shrink-0" />
-							<span>{weather.temperature.humidity}%</span>
-						</div>
-						<div
-							className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getWindPillStyle()}`}
-						>
-							<WiStrongWind size={20} className="flex-shrink-0" />
-							<span>{weather.temperature.wind_speed} m/s</span>
-						</div>
-					</motion.div>
 				</div>
+			</div>
+
+			<div className="flex mt-1">
+				<motion.div
+					variants={fadeInUp}
+					className="flex flex-wrap items-center gap-2 mt-3"
+				>
+					<div
+						className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getHumidityPillStyle()}`}
+					>
+						<WiHumidity size={20} className="flex-shrink-0"/>
+						<span>{weather.temperature.humidity}%</span>
+					</div>
+					<div
+						className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getWindPillStyle()}`}
+					>
+						<WiStrongWind size={20} className="flex-shrink-0"/>
+						<span>{weather.temperature.wind_speed} m/s</span>
+					</div>
+				</motion.div>
 			</div>
 
 			<motion.div
@@ -165,11 +167,11 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						{weather.ai?.description && (
 							<motion.div
 								className="absolute flex items-center gap-2 left-4 top-0 p-1.5"
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 0.5 }}
+								initial={{opacity: 0, x: -10}}
+								animate={{opacity: 1, x: 0}}
+								transition={{delay: 0.5}}
 							>
-								<BsRobot className={`text-xl ${getAiIconStyle()}`} />
+								<BsRobot className={`text-xl ${getAiIconStyle()}`}/>
 							</motion.div>
 						)}
 
@@ -182,9 +184,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 							{weather.ai?.playlist && (
 								<motion.a
-									initial={{ opacity: 0, scale: 0.9 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ delay: 0.7 }}
+									initial={{opacity: 0, scale: 0.9}}
+									animate={{opacity: 1, scale: 1}}
+									transition={{delay: 0.7}}
 									href={weather.ai.playlist}
 									target="_blank"
 									rel="noopener noreferrer"

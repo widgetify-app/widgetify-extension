@@ -53,11 +53,11 @@ function ContentSection() {
 				</div>
 			</div>
 
-			<div className="flex flex-col w-full gap-3 md:flex-row md:gap-4">
-				<div className="w-full md:w-2/3">
+			<div className="flex flex-col w-full flex-wrap lg:flex-nowrap gap-3 md:flex-row md:gap-4">
+				<div className="w-full lg:w-8/12">
 					<CalendarLayout />
 				</div>
-				<div className="w-full md:w-1/3">
+				<div className="w-full lg:w-4/12">
 					<WeatherLayout />
 				</div>
 			</div>
@@ -174,7 +174,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
+		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col gap-4">
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<NavbarLayout />

@@ -81,12 +81,12 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="rounded">
-				<div className="flex flex-col gap-2">
+			<section className="rounded h-full">
+				<div className="flex flex-col gap-2 h-full">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
 					<motion.div
-						className="relative p-1 mt-2 overflow-hidden"
+						className="relative p-1 lg:pb-0 mt-2 overflow-hidden flex-1"
 						initial={{ opacity: 0.9 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.3 }}
@@ -101,7 +101,7 @@ export function WeatherLayout() {
 								nextEl: '.swiper-button-next-custom',
 								prevEl: '.swiper-button-prev-custom',
 							}}
-							className="py-2 weather-forecast-slider"
+							className="pt-2 weather-forecast-slider"
 							dir="ltr"
 						>
 							{forecast?.map((item, index) => (
