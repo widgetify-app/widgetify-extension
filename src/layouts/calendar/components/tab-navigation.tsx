@@ -44,14 +44,14 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div className={`inline-flex p-0.5 rounded-lg ${getTabContainerStyle()}`}>
+		<div className={`inline-flex p-0.5 sm:p-0 rounded-lg ${getTabContainerStyle()}`}>
 			{tabs.map((tab) => (
 				<motion.button
 					key={tab.id}
 					whileHover={{ scale: 1.02 }}
 					whileTap={{ scale: 0.98 }}
 					onClick={() => onTabClick(tab.id)}
-					className={`flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-md transition-all ${
+					className={`flex items-center gap-1 px-3 sm:py-0.5 py-1 text-xs font-medium rounded-md transition-all ${
 						activeTab === tab.id
 							? 'bg-blue-500 text-white shadow-sm'
 							: getInactiveTabStyle()

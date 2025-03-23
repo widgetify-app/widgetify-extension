@@ -13,6 +13,7 @@ export interface StorageKV {
 	hasShownPwaModal: boolean
 	selectedCity: SelectedCity | null
 	currentWeather: FetchedWeather
+	forecastWeather: FetchedWeather['forecast']
 	todos: Todo[]
 	wallpaper: StoredWallpaper
 	customWallpaper: Wallpaper

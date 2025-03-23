@@ -18,7 +18,7 @@ const PersianCalendar: React.FC = () => {
 	const today = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
-	const [activeTab, setActiveTab] = useState<TabType>('events')
+	const [activeTab, setActiveTab] = useState<TabType>('todos')
 
 	const handleTabClick = useCallback((tab: TabType) => {
 		setActiveTab(tab)
@@ -32,7 +32,7 @@ const PersianCalendar: React.FC = () => {
 
 	return (
 		<div className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row" dir="rtl">
-			<CalendarContainer className="w-full md:w-7/12 overflow-hidden md:flex-1">
+			<CalendarContainer className="w-full md:w-7/12 sm:h-80 overflow-hidden md:flex-1">
 				<CalendarHeader
 					currentDate={currentDate}
 					setCurrentDate={setCurrentDate}
@@ -46,8 +46,10 @@ const PersianCalendar: React.FC = () => {
 					setSelectedDate={setSelectedDate}
 				/>
 
-				<div className={`px-3 md:px-4 mt-2 border-t ${themeUtils.getBorderColor()}`}>
-					<div className="mt-2">
+				<div
+					className={`px-3 sm:px-0 md:px-4 sm:mt-0 mt-2 border-t ${themeUtils.getBorderColor()}`}
+				>
+					<div className="mt-2 sm:mt-1">
 						<TabNavigation activeTab={activeTab} onTabClick={handleTabClick} />
 					</div>
 
@@ -55,7 +57,7 @@ const PersianCalendar: React.FC = () => {
 				</div>
 			</CalendarContainer>
 
-			<CalendarContainer className="w-full md:w-5/12 p-3 md:p-4">
+			<CalendarContainer className="w-full md:w-5/12 p-3 md:p-4 sm:h-80">
 				<AnimatePresence mode="wait">
 					<CalendarContent
 						activeTab={activeTab}

@@ -213,7 +213,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			</div>
 
 			{/* Timer Display */}
-			<div className="relative mt-6">
+			<div className="relative sm:mt-3 mt-6">
 				<TimerDisplay
 					timeLeft={timeLeft}
 					progress={progress}
@@ -226,7 +226,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				/>
 
 				{/* Control buttons */}
-				<div className="flex justify-center mt-2 space-x-4">
+				<div className="flex justify-center sm:mt-0 mt-2 space-x-4">
 					{isRunning ? (
 						<ControlButton
 							icon={<FiPause />}
@@ -244,11 +244,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					<ControlButton
 						icon={<FiRefreshCw />}
 						onClick={handleReset}
-						color={
-							theme === 'light'
-								? 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-								: 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-						}
+						color={`bg-gray-400 hover:bg-${modeColors[mode].accent.replace('500', '600')}`}
 					/>
 
 					{mode.includes('break') && (

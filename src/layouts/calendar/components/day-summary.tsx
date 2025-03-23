@@ -68,10 +68,10 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 
 	return (
 		<div
-			className={`mt-1 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
+			className={`mt-1 sm:mt-0.5 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
 		>
-			<div className="p-2">
-				<h3 className={`text-sm font-medium mb-2 ${getTextStyle()} truncate`}>
+			<div className="p-2 sm:p-1">
+				<h3 className={`text-sm sm:text-xs font-medium mb-2 ${getTextStyle()} truncate`}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
@@ -80,7 +80,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('events')}
-						className={`p-3 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-3 sm:p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
 					>
 						<FiCalendar
 							className={`mt-0.5 ml-2 flex-shrink-0 ${allEvents.length > 0 ? 'text-blue-500' : getSubTextStyle()}`}
@@ -105,7 +105,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('todos')}
-						className={`p-3 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-3 sm:p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
 					>
 						<FiClipboard
 							className={`mt-0.5 ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}

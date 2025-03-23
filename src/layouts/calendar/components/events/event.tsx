@@ -135,7 +135,7 @@ export function Events({ events, currentDate }: Prop) {
 
 			<motion.div
 				initial="collapsed"
-				className={'overflow-y-auto rounded-lg '}
+				className={'overflow-y-auto rounded-lg h-56'}
 				transition={{ type: 'spring', damping: 20, stiffness: 100 }}
 			>
 				<motion.div className="p-2" variants={listVariants}>

@@ -61,6 +61,11 @@ export function WeatherLayout() {
 			if (data) {
 				setCityWeather(data)
 			}
+
+			const forecastData = await getFromStorage('forecastWeather')
+			if (forecastData) {
+				setForecast([...forecastData])
+			}
 		}
 
 		load()
@@ -69,6 +74,7 @@ export function WeatherLayout() {
 	useEffect(() => {
 		if (forecastData) {
 			setForecast([...forecastData])
+			setToStorage('forecastWeather', forecastData)
 		}
 	}, [forecastUpdatedAt])
 
@@ -81,12 +87,11 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="rounded h-full">
-				<div className="flex flex-col gap-2 h-full">
+				<div className="flex flex-col gap-2 h-full sm:h-80">
 					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
 					<motion.div
-						className="relative p-1 lg:pb-0 mt-2 overflow-hidden flex-1"
+						className="relative p-1 lg:pb-0  overflow-hidden flex-1"
 						initial={{ opacity: 0.9 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.3 }}
@@ -101,8 +106,8 @@ export function WeatherLayout() {
 								nextEl: '.swiper-button-next-custom',
 								prevEl: '.swiper-button-prev-custom',
 							}}
-							className="pt-2 weather-forecast-slider"
-							dir="ltr"
+							className="weather-forecast-slider"
+							dir='ltr'
 						>
 							{forecast?.map((item, index) => (
 								<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
@@ -136,7 +141,6 @@ export function WeatherLayout() {
 						</Swiper>
 					</motion.div>
 				</div>
-			</section>
 
 			<style>{`
   .weather-forecast-slider {

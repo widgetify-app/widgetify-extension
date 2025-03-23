@@ -61,19 +61,19 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
-			className={`flex flex-col items-center justify-between w-24 h-32 p-2 transition-all duration-300 border shadow-md ${getCardStyle()} rounded-xl`}
+			className={`flex flex-col items-center justify-between w-24 h-32 sm:w-16 sm:h-20 p-2 transition-all duration-300 border shadow-md ${getCardStyle()} rounded-xl`}
 		>
 			{/* Time Section */}
 			<div className="flex flex-col items-center gap-0.5 w-full">
 				<div
-					className={`text-xs font-semibold tracking-wide uppercase ${getWeekdayStyle()}`}
+					className={`text-xs sm:text-[0.5rem] font-semibold tracking-wide uppercase ${getWeekdayStyle()}`}
 				>
 					{new Date(forecast.date).toLocaleDateString('fa-IR', {
 						weekday: 'short',
 					})}
 				</div>
 				<div
-					className={`px-2 py-0.5 text-xs font-medium rounded-full ${getTimeStyle()} w-full text-center`}
+					className={`px-2 py-0.5 text- sm:text-[0.5rem] font-medium rounded-full ${getTimeStyle()} w-full text-center`}
 				>
 					{new Date(forecast.date).toLocaleTimeString([], {
 						hour: '2-digit',
@@ -93,7 +93,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 					<motion.img
 						src={forecast.icon}
 						alt="weather status"
-						className="w-10 h-10 drop-shadow-weatherIcon"
+						className="w-10 h-10 sm:w-5 sm:h-5 drop-shadow-weatherIcon"
 						initial={{ scale: 0.8 }}
 						animate={{ scale: 1 }}
 						transition={{ duration: 0.3 }}
@@ -106,7 +106,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 			<motion.div
 				initial={{ scale: 0.9 }}
 				animate={{ scale: 1 }}
-				className={`text-2xl font-extrabold text-transparent bg-gradient-to-r ${getTemperatureStyle()} bg-clip-text drop-shadow-temperature`}
+				className={`text-2xl sm:hidden font-extrabold text-transparent bg-gradient-to-r ${getTemperatureStyle()} bg-clip-text drop-shadow-temperature`}
 			>
 				{Math.round(forecast.temp)}
 				<span className="text-lg font-medium">{unitsFlag[unit]}</span>

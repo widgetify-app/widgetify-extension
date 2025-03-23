@@ -15,7 +15,7 @@ export const WidgetifyLayout = () => {
 	}, [])
 
 	return (
-		<div className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl max-h-80`}>
+		<div className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl max-h-80 sm:h-64`}>
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
 

@@ -7,6 +7,7 @@ import { useTodoStore } from '@/context/todo.context'
 import { formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
 import { TodoItem } from './todo.item'
+import { FaPlus } from 'react-icons/fa6'
 
 type TodoProp = {
 	currentDate: jalaliMoment.Moment
@@ -14,11 +15,12 @@ type TodoProp = {
 
 export function Todos({ currentDate }: TodoProp) {
 	const { theme } = useTheme()
-	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
+	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
 	const [blurMode, setBlurMode] = useState<boolean>(false)
 	const selectedDateStr = formatDateStr(currentDate.clone())
+	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
 		async function loadBlurMode() {
@@ -158,22 +160,34 @@ export function Todos({ currentDate }: TodoProp) {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<h4 className={`text-lg ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+				<h4 className={`text-lg sm:text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
-				<button
-					onClick={handleBlurModeToggle}
-					className={`p-1.5 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
-					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
-				>
-					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
-				</button>
+				<div className="flex gap-2">
+					<button
+						onClick={handleBlurModeToggle}
+						className={`p-1.5 sm:p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
+						title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
+					>
+						{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
+					</button>
+
+					<button
+						onClick={() => setShowModal(true)}
+						className={`p-1.5 sm:p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(false)}`}
+						title="افزودن یادداشت"
+					>
+						<FaPlus size={14} />
+					</button>
+				</div>
 			</div>
 
 			{selectedDateTodos.length > 0 && (
 				<div className="mb-4">
-					<div className={`h-2 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
+					<div
+						className={`h-2 sm:h-1 mb-2 sm:mb-1 rounded-full ${getProgressBarBgStyle()}`}
+					>
 						<div
-							className="h-2 bg-green-500 rounded-full"
+							className="h-2 sm:h-1 bg-green-500 rounded-full"
 							style={{ width: `${stats.percentage}%` }}
 						></div>
 					</div>
@@ -186,25 +200,29 @@ export function Todos({ currentDate }: TodoProp) {
 				</div>
 			)}
 
-			<TodoInput onAdd={handleAddTodo} />
+			<TodoInput
+				onAdd={handleAddTodo}
+				showModal={showModal}
+				setShowModal={setShowModal}
+			/>
 
 			<div className="flex justify-between mb-3">
-				<div className="flex gap-1 text-xs">
+				<div className="flex gap-1 sm:gap-0.5 text-xs">
 					<button
 						onClick={() => setFilter('all')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
+						className={`px-2 sm:px-1 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
 					>
 						همه
 					</button>
 					<button
 						onClick={() => setFilter('active')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
+						className={`px-2 py-1 sm:px-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
 					>
 						فعال
 					</button>
 					<button
 						onClick={() => setFilter('completed')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
+						className={`px-2 py-1 sm:px-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
 					>
 						تکمیل شده
 					</button>
@@ -231,7 +249,6 @@ export function Todos({ currentDate }: TodoProp) {
 								todo={todo}
 								deleteTodo={removeTodo}
 								toggleTodo={toggleTodo}
-								updateTodo={updateTodo}
 								blurMode={blurMode}
 							/>
 						))}

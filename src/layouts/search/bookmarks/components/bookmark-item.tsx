@@ -37,7 +37,7 @@ export function BookmarkItem({ bookmark, onClick, theme = 'glass' }: BookmarkIte
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
+			className={`relative sm:p-2 flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
 		>
 			<BookmarkIcon bookmark={bookmark} />
 			<BookmarkTitle title={bookmark.title} theme={theme} />
@@ -85,7 +85,7 @@ function FolderBookmarkItem({
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] shadow-sm ${getFolderStyle()}`}
+			className={`relative flex flex-col items-center justify-center flex-1 p-4 sm:p-2 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] shadow-sm ${getFolderStyle()}`}
 		>
 			<div className="absolute inset-0 overflow-hidden rounded-xl">
 				<div
@@ -134,7 +134,7 @@ function EmptyBookmarkSlot({
 		<motion.button
 			onClick={onClick}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
+			className={`relative flex flex-col items-center justify-center flex-1 p-4 sm:p-2 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
 		>
 			<div className="relative flex items-center justify-center w-8 h-8 mb-2">+</div>
 			<span className="text-[10px]">افزودن</span>

@@ -106,7 +106,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					},
 				},
 			}}
-			className={`col-span-2 p-5 shadow-lg bg-gradient-to-br flex-2 ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
+			className={`col-span-2 sm:h-20 overflow-clip p-5 shadow-lg bg-gradient-to-br flex-2 ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
 		>
 			<div className="flex flex-row-reverse items-start justify-between gap-4">
 				<motion.div
@@ -118,30 +118,29 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					<img
 						src={weather.icon.url}
 						alt={weather.temperature.temp_description || 'Current weather'}
-						width={weather.icon.width}
-						height={weather.icon.height}
-						className="drop-shadow-lg"
+						className="drop-shadow-lg w-10 h-10"
+						loading="lazy"
 					/>
 				</motion.div>
 
 				<div className="flex-1">
 					<motion.span
 						variants={fadeInUp}
-						className={`text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${getTemperatureGradient()}`}
+						className={`text-5xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${getTemperatureGradient()}`}
 						dir="ltr"
 					>
 						{Math.round(weather.temperature.temp)}
-						<span className="ml-1 text-3xl">
+						<span className="ml-1 text-3xl sm:tx">
 							{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 						</span>
 					</motion.span>
 				</div>
 			</div>
 
-			<div className="flex mt-1">
+			<div className="flex mt-1 sm:mt-0">
 				<motion.div
 					variants={fadeInUp}
-					className="flex flex-wrap items-center gap-2 mt-3"
+					className="flex flex-wrap items-center gap-2"
 				>
 					<div
 						className={`px-3 py-1.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getHumidityPillStyle()}`}
@@ -160,9 +159,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 			<motion.div
 				variants={fadeInUp}
-				className={`relative p-2 mt-5 overflow-hidden transition-colors shadow-inner rounded-xl backdrop-blur-sm ${getDescriptionBoxStyle()}`}
+				className={`relative p-2 mt-5 sm:mt-1 overflow-hidden transition-colors shadow-inner rounded-xl backdrop-blur-sm ${getDescriptionBoxStyle()}`}
 			>
-				<div className="flex gap-3 overflow-y-auto min-h-28 max-h-28">
+				<div className="flex  overflow-y-auto min-h-28 max-h-28">
 					<div className="flex-1">
 						{weather.ai?.description && (
 							<motion.div
@@ -177,7 +176,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 						<div className="relative pl-8 pr-2">
 							<p
-								className={`py-2 text-sm leading-relaxed transition-all duration-300 line-clamp-none ${getDescriptionTextStyle()}`}
+								className={`py-2 text-sm sm:text-xs leading-relaxed transition-all duration-300 line-clamp-none ${getDescriptionTextStyle()}`}
 							>
 								{weather.ai?.description || weather.temperature.temp_description}
 							</p>
