@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@tanstack/react-query": "5.66.0",
+		"add-to-calendar-button-react": "^2.8.5",
 		"axios": "1.7.9",
 		"chart.js": "^4.4.7",
 		"clsx": "^2.1.1",

@@ -5,6 +5,7 @@
       "name": "widgetify-webapp",
       "dependencies": {
         "@tanstack/react-query": "5.66.0",
+        "add-to-calendar-button-react": "^2.8.5",
         "axios": "1.7.9",
         "chart.js": "^4.4.7",
         "clsx": "^2.1.1",
@@ -524,6 +525,10 @@
     "acorn": ["acorn@8.14.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA=="],
 
     "acorn-jsx": ["acorn-jsx@5.3.2", "", { "peerDependencies": { "acorn": "^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ=="],
+
+    "add-to-calendar-button": ["add-to-calendar-button@2.8.6", "", { "dependencies": { "timezones-ical-library": "^1.9.1" } }, "sha512-z/3JLxB5MiV8aSAxEDqg/C3pJ79VNvCncb3PhCCAgA7BSjF7ox6ZEaPz0ZsL2oXMpJIME3qHmba/LO3H2zzQFg=="],
+
+    "add-to-calendar-button-react": ["add-to-calendar-button-react@2.8.5", "", { "dependencies": { "add-to-calendar-button": "^2.8.5" }, "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-twTEo632KHBHEFFWaMp/WhrW/XY56UIqrx3+poSCr9tFhSH72CUVbcHK4sBOKTYuJH2MtQpGrPLUll6szucADg=="],
 
     "addons-linter": ["addons-linter@7.8.0", "", { "dependencies": { "@fluent/syntax": "0.19.0", "@fregante/relaxed-json": "2.0.0", "@mdn/browser-compat-data": "5.6.31", "addons-moz-compare": "1.3.0", "addons-scanner-utils": "9.12.0", "ajv": "8.17.1", "chalk": "4.1.2", "cheerio": "1.0.0-rc.12", "columnify": "1.6.0", "common-tags": "1.8.2", "deepmerge": "4.3.1", "eslint": "8.57.1", "eslint-plugin-no-unsanitized": "4.1.2", "eslint-visitor-keys": "4.2.0", "espree": "10.3.0", "esprima": "4.0.1", "fast-json-patch": "3.1.1", "image-size": "1.2.0", "json-merge-patch": "1.0.2", "pino": "8.20.0", "semver": "7.6.3", "source-map-support": "0.5.21", "upath": "2.0.1", "yargs": "17.7.2", "yauzl": "2.10.0" }, "bin": { "addons-linter": "bin/addons-linter" } }, "sha512-SnDJUAtrHu1RUMIiIZXNN8wF0ze7IbDokwUy5HZYlCkNTn8E4RcI74xhdHtCdtoQprAmyhxePP/hFf+9XPhe8w=="],
 
@@ -1574,6 +1579,8 @@
     "thread-stream": ["thread-stream@3.1.0", "", { "dependencies": { "real-require": "^0.2.0" } }, "sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A=="],
 
     "through": ["through@2.3.8", "", {}, "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="],
+
+    "timezones-ical-library": ["timezones-ical-library@1.9.1", "", {}, "sha512-OBC7oPoQi6JZn6u/2xQcFTMbe1BLjPrv+QUh5jHfYmg0QTR5HnuhwsBqHfvScNTHqTrDxqlXofXzSm2hFDC1Ow=="],
 
     "tinyglobby": ["tinyglobby@0.2.12", "", { "dependencies": { "fdir": "^6.4.3", "picomatch": "^4.0.2" } }, "sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww=="],
 

@@ -4,6 +4,7 @@ import { FiCalendar } from 'react-icons/fi'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils'
+import { AddToCalendarButton } from 'add-to-calendar-button-react'
 
 interface Prop {
 	events: FetchedAllEvents
@@ -131,6 +132,18 @@ export function Events({ events, currentDate }: Prop) {
 				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
 					رویدادها
 				</h4>
+				<AddToCalendarButton
+					name="Event"
+					startDate={currentDate.toISOString()}
+					options="Google"
+					buttonStyle="default"
+					hideIconButton
+					hideBackground
+					hideCheckmark
+					size="1"
+					styleLight='--font: "Vazir"; --btn-hover-background: #ffffff1f; --btn-hover-text: #fff; transition: all 0.7s ease-in-out !important;'
+					language="fa"
+				></AddToCalendarButton>
 			</div>
 
 			<motion.div
