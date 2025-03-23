@@ -1,18 +1,18 @@
-# راهنمای مشارکت
+# Contributing Guide
 
-از علاقه شما به مشارکت در پروژه ویجتی‌فای سپاسگزاریم! این سند راهنمایی‌هایی برای کمک به فرآیند مشارکت ارائه می‌دهد.
+Thank you for your interest in contributing to Widgetify! This document provides guidelines to help you with the contribution process.
 
- 
-## ابزارهای مورد نیاز
-برای مشارکت در پروژه، نیاز به نصب نرم‌افزارهای زیر دارید:
+## Required Tools
+To contribute, you'll need to install the following tools and software:
 - Bun.sh
 - Chrome Browser
 - Biomejs
 
-مستندات مربوط به API در فایل [Api-doc.md](./Api-doc.md) قابل مشاهده است.
+API documentation can be found in the [Api-doc.md](./Api-doc.md) file.
 
-## شروع کار
-برای شروع، ریپازیتوری را فورک کرده و کد را در سیستم خود کلون کنید:
+## Getting Started
+To get started, fork and clone the repository to your local machine:
+
 ```bash
 git clone https://github.com/widgetify-app/widgetify-extension.git
 ```
@@ -30,27 +30,26 @@ bun dev
 ```
 
 > [!TIP]
-> بعد از اجرای دستور آخر، یک تب جدید تو مرورگر باز کنید (تب پیشفرض ممکن هست صفحه سفید باشه)
+> After running the last command, open a new tab in your browser (the default tab might show a blank page)
 
-## نحوه مشارکت
+## How to Contribute
 
-### فرآیند درخواست ادغام (Pull Request)
-1. یک شاخه جدید ایجاد کنید: `git checkout -b feature/your-feature-name`
-2. تغییرات خود را ثبت کنید: `git commit -m 'افزودن قابلیت جدید'`
-3. شاخه خود را به ریپازیتوری فورک شده ارسال کنید: `git push origin feature/your-feature-name`
-4. یک درخواست ادغام ایجاد کنید
+Before submitting a pull request, please make sure the following is done:
 
-## گردش کار توسعه
-- برای هر قابلیت یا اصلاح، یک شاخه جدید ایجاد کنید
-- قبل از ارسال درخواست ادغام، با شاخه اصلی همگام‌سازی کنید
-- شاخه‌های خود را تمیز و با تمرکز بر یک موضوع نگه دارید
+1. Create a new branch for your feature or bug fix.
+2. Make your changes and commit them with descriptive commit messages.
+3. Push your changes to your fork: ```git push origin my-feature```
+4. Create a pull request.
 
-## راهنمای نگارش کد
-- از biomejs برای فرمت‌دهی کد استفاده کنید
-- نام‌گذاری متغیرها و توابع باید واضح و توصیفی باشد
+## Development Workflow
+- Create a new branch for each feature or fix
+- Sync with the main branch before submitting a pull request
+- Keep your branches clean and focused on a single topic
 
+## Code Style Guide
+- Use biomejs for code formatting
+- Variable and function names should be clear and descriptive
 
+## Community Communication
 
-## ارتباط با جامعه
-
-با تشکر از مشارکت شما!
+Thank you for contributing! 

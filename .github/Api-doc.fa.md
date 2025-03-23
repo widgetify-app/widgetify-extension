@@ -1,22 +1,23 @@
-### API documentation is provided in this file.
+### داکیومنت های مربوط به API ها در این فایل قرار دارد. 
 
 > [!NOTE]
-> If the required API is not available, use fake data and mention this in your PULL REQUEST. The required API will be created.
+> در صورت نبود API مورد نیاز، از دیتاهای فیک استفاده کنید و موقعه PULL REQUEST این موضوع را ذکر کنید. تا API مورد نیاز ایجاد شود.
 
-### API Usage Guide
-Fields marked with * in the documentation means required fields.
+### رهنمای استفاده از API ها
+فیلد های * در مستندات به معنای اجباری بودن آن فیلد است.
+
 
 ## Cache / Rate Limit
-- Each API has Cache and Rate Limit.
-- The Rate Limit count is currently private.
-- Cache for each API is randomly set between 1 to 10 minutes and 1 hour.
+- هرکدوم از API ها دارای Cache و Rate Limit هستند.
+- تعداد Rate Limit درحال حاضر private هست. 
+- Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
 
 ## Wallpaper API
 
 ### GET /wallpaper
 Query Params:
-- `page` (int): Page number
-- `limit` (int): Number of images per page
+- `page` (int): شماره صفحه
+- `limit` (int): تعداد تصاویر در هر صفحه
 - `type` (str): IMAGE & VIDEO
 - `category` (str): Tehran, Dubai, Desert, Sea, Forest, Mountain, Sky, Space, Abstract, City, Other
 
@@ -37,15 +38,16 @@ Response:
 }
 ```
 
+
 ## Weather API
 
 ### GET /weather/current
 Query Params:
-- `lat` (float*): Latitude
-- `lon` (float*): Longitude
-- `useAI` (bool*): Use AI for prediction
+- `lat` (float*): عرض جغرافیایی
+- `lon` (float*): طول جغرافیایی
+- `useAI` (bool*): استفاده از هوش مصنوعی برای پیش‌بینی
 
-Response:
+response:
 ```json
 {
     "city": {
@@ -81,11 +83,11 @@ Response:
 
 ### GET /weather/forecast
 Query Params:
-- `lat*` (float*): Latitude
-- `lon*` (float*): Longitude
-- `count` (int): Number of forecast items
+- `lat*` (float*): عرض جغرافیایی
+- `lon*` (float*): طول جغرافیایی
+- `count` (int): تعداد آیتم‌های پیش‌بینی
 
-Response:
+response:
 ```json
 [
     {
@@ -111,28 +113,31 @@ Response:
 ]
 ```
 
+
 ### GET /weather/cities
 Query Params:
-- `city` (str*): City name
+- `city` (str*): نام شهر
 
-Response:
+response:
 ```json
 [
  {
     "name": "Tehran",
     "country": "IR",
-    "state": null,
+    "state" null,
     "lat": 35.6892523,
     "lon": 51.3896004
   },
 ]
 ```
 
+
 ## Date
 
 ### GET /date/events
+Query Params:
 
-Response:
+response:
 ```json
 {
     "shamsiEvents": [
@@ -169,7 +174,9 @@ Response:
 ```
 
 ### GET /date/timezones
-Response:
+Query Params:
+
+response:
 ```json
 [
   {
@@ -178,4 +185,4 @@ Response:
     "offset": "+03:30"
   }
 ]
-``` 
+```
