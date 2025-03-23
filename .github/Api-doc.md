@@ -26,7 +26,7 @@ Response:
   "wallpapers": [
     {
       "id": "67c20fb09985263793140b49",
-      "name": "Colors",
+      "name": "حاله های رنگی",
       "source": "https://www.google.com",
       "category": "Abstract",
       "type": "IMAGE",
@@ -54,25 +54,25 @@ Response:
     },
     "weather": {
         "description": {
-            "text": "Cloudy",
+            "text": "پوشیده از ابر",
             "emoji": "☁️"
         },
         "icon": {
             "url": "https://storage.c2.liara.space/widgetify-ir/weather/04n.png",
         },
-        "label": "Dense clouds covering the sun!",
+        "label": "ابرهای متراکم، خورشید رو می‌پوشونن!",
         "temperature": {
             "clouds": 93,
             "humidity": 59,
             "pressure": 1014,
             "temp": 18.79,
-            "temp_description": "Dreamy night 🌠",
+            "temp_description": "شب رویایی 🌠",
             "temp_max": 18.79,
             "temp_min": 18.79,
             "wind_speed": 0.94
         },
         "ai": {
-            "description": "Tehran has a cloudy sky and the weather is relatively cool. Wind speed is mild and the temperature is around 19 degrees Celsius; it seems like the clouds are playing hide and seek!",
+            "description": "تهران آسمانی پوشیده از ابر دارد و هوا نسبتا خنک است. سرعت باد ملایم و دمای هوا حدود 19 درجه سانتی‌گراد است؛ انگار ابرها دارند قایم باشک بازی می‌کنند!",
             "playlist": null
         }
     }
@@ -139,31 +139,32 @@ Response:
         {
             "id": "67ca1528f0eeeba246d0e6f2",
             "isHoliday": true,
-            "title": "Nowruz Beginning",
+            "title": "آغاز نوروز",
             "day": 1,
             "month": 1,
             "icon": "https://storage.c2.liara.space/widgetify-ir/events/5e30a5de-2ad8-4fe5-88b6-4c402c07e297.png"
-        }
+        },
+     
     ],
     "gregorianEvents": [
         {
             "isHoliday": false,
-            "title": "📱 First iPhone Introduction",
+            "title": "📱 معرفی اولین آیفون",
             "day": 9,
             "month": 1,
             "icon": null
         }
-    ],
-    "hijriEvents": [
+  ],
+   "hijriEvents": [
         {
             "id": "67ca1528f0eeeba246d0e7c7",
             "isHoliday": true,
-            "title": "Holiday for Eid al-Fitr",
+            "title": "تعطیل به مناسبت عید سعید فطر",
             "day": 2,
             "month": 10,
             "icon": null
-        }
-    ]
+        },
+  ]
 }
 ```
 
@@ -172,7 +173,7 @@ Response:
 ```json
 [
   {
-    "label": "Asia / Tehran",
+    "label": "آسیا / تهران",
     "value": "Asia/Tehran",
     "offset": "+03:30"
   }
