@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi'
 import { useCurrencyStore } from '@/context/currency.context'
 import { useTheme } from '@/context/theme.context'
 import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
@@ -79,11 +79,7 @@ export function ArzLiveLayout() {
 						animate={{ rotate: isExpanded ? 180 : 0 }}
 						transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 					>
-						{isExpanded ? (
-							<FiChevronUp className="w-4 h-4" />
-						) : (
-							<FiChevronDown className="w-4 h-4" />
-						)}
+						<FiChevronDown className="w-4 h-4" />
 					</motion.div>
 				</motion.button>
 			)}
