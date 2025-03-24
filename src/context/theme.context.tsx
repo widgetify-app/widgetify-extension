@@ -1,6 +1,6 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { getFromStorage, setToStorage } from '@/common/storage'
 
 interface ThemeContextType {
 	theme: string
@@ -32,8 +32,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		loadTheme().then((theme) => {
 			if (theme) {
 				setTheme(theme)
-				document.body.setAttribute('data-theme', theme)
-				document.body.className = `theme-${theme}`
+				document.documentElement.setAttribute('data-theme', theme)
 			}
 		})
 	}, [])
@@ -42,6 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		(theme: string) => {
 			setTheme(theme)
 			setToStorage('theme', theme as any)
+			document.documentElement.setAttribute('data-theme', theme)
 		},
 		[theme],
 	)
