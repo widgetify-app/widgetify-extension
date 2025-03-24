@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import type jalaliMoment from 'jalali-moment'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
 import type { TabType } from '../calendar'
+import type { WidgetifyDate } from '../utils'
 import { DaySlider } from './day-slider'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
@@ -12,10 +12,10 @@ import { Todos } from './todos/todos'
 
 interface CalendarContentProps {
 	activeTab: TabType
-	selectedDate: jalaliMoment.Moment
-	setSelectedDate: (date: jalaliMoment.Moment) => void
-	currentDate: jalaliMoment.Moment
-	setCurrentDate: (date: jalaliMoment.Moment) => void
+	selectedDate: WidgetifyDate
+	setSelectedDate: (date: WidgetifyDate) => void
+	currentDate: WidgetifyDate
+	setCurrentDate: (date: WidgetifyDate) => void
 }
 
 export const CalendarContent: React.FC<CalendarContentProps> = ({

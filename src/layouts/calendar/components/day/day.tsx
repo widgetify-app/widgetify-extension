@@ -1,8 +1,10 @@
-import jalaliMoment from 'jalali-moment'
+import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
-import type { Todo } from '../interface/todo.interface'
-import { formatDateStr, getHijriEvents, getShamsiEvents } from '../utils'
+import jalaliMoment from 'jalali-moment'
+import type { Todo } from '../../interface/todo.interface'
+import { formatDateStr, getHijriEvents, getShamsiEvents } from '../../utils'
+import { toolTipContent } from './toolTipContent'
 
 interface DayItemProps {
 	day: number
@@ -24,7 +26,6 @@ export function DayItem({
 	const { theme } = useTheme()
 	const cellDate = currentDate.clone().jDate(day)
 	const dateStr = formatDateStr(cellDate)
-
 	const todayShamsiEvent = getShamsiEvents(events, cellDate)
 	const todayHijriEvent = getHijriEvents(events, cellDate)
 
@@ -113,50 +114,51 @@ export function DayItem({
 	}
 
 	return (
-		<button
-			onClick={() => setSelectedDate(cellDate)}
-			className={`
-                relative p-2 rounded-lg text-sm transition-colors cursor-pointer
-                ${getDayTextStyle()}
-                ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
-                ${getFontWeight()}
-                ${isCurrentDay ? getTodayRingStyle() : ''}
-            `}
-			title={[...todayShamsiEvent, ...todayHijriEvent].map((e) => e.title).join(', ')}
-		>
-			{day}
-			<div className="absolute flex flex-wrap items-center justify-center w-full gap-1 -translate-x-1/2 bottom-1 left-1/2">
-				{eventIcons.length > 0 ? (
-					eventIcons.slice(0, 1).map((icon, idx) => (
-						<img
-							key={idx}
-							src={icon}
-							alt="رویداد"
-							className="w-4.5 h-4.5 object-contain rounded-full"
-							onError={(e) => {
-								e.currentTarget.style.display = 'none'
+		<Tooltip content={toolTipContent(cellDate, theme)} position="top" key={`day-${day}`}>
+			<button
+				onClick={() => setSelectedDate(cellDate)}
+				className={`
+                    relative p-2 rounded-lg text-sm transition-colors cursor-pointer w-full
+                    ${getDayTextStyle()}
+                    ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
+                    ${getFontWeight()}
+                    ${isCurrentDay ? getTodayRingStyle() : ''}
+                `}
+			>
+				{day}
+				<div className="absolute flex flex-wrap items-center justify-center w-full gap-1 -translate-x-1/2 bottom-1 left-1/2">
+					{eventIcons.length > 0 ? (
+						eventIcons.slice(0, 1).map((icon, idx) => (
+							<img
+								key={idx}
+								src={icon}
+								alt="رویداد"
+								className="w-4.5 h-4.5 object-contain rounded-full"
+								onError={(e) => {
+									e.currentTarget.style.display = 'none'
 
-								const parent = e.currentTarget.parentElement
-								if (parent) {
-									const span = document.createElement('span')
-									span.className = `w-1 h-1 ${getEventIndicatorStyle()} rounded-full`
-									parent.appendChild(span)
-								}
-							}}
-						/>
-					))
-				) : (
-					<>
-						{hasEvent ? (
-							<span className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`} />
-						) : null}
-						{hasTodo ? (
-							<span className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`} />
-						) : null}
-					</>
-				)}
-			</div>
-		</button>
+									const parent = e.currentTarget.parentElement
+									if (parent) {
+										const span = document.createElement('span')
+										span.className = `w-1 h-1 ${getEventIndicatorStyle()} rounded-full`
+										parent.appendChild(span)
+									}
+								}}
+							/>
+						))
+					) : (
+						<>
+							{hasEvent ? (
+								<span className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`} />
+							) : null}
+							{hasTodo ? (
+								<span className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`} />
+							) : null}
+						</>
+					)}
+				</div>
+			</button>
+		</Tooltip>
 	)
 }
 

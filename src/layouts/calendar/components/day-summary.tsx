@@ -1,16 +1,15 @@
-import { motion } from 'framer-motion'
-import type jalaliMoment from 'jalali-moment'
-import type React from 'react'
-import { FiCalendar, FiChevronRight, FiClipboard } from 'react-icons/fi'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
+import { motion } from 'framer-motion'
+import type React from 'react'
+import { FiCalendar, FiChevronRight, FiClipboard } from 'react-icons/fi'
 import type { TabType } from '../calendar'
-import { formatDateStr } from '../utils'
+import { type WidgetifyDate, formatDateStr } from '../utils'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../utils'
 
 interface DaySummaryProps {
-	selectedDate: jalaliMoment.Moment
+	selectedDate: WidgetifyDate
 	onTabClick: (tab: TabType) => void
 }
 

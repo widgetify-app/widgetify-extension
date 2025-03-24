@@ -1,10 +1,10 @@
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
-import jalaliMoment from 'jalali-moment'
 import type React from 'react'
 import { useMemo } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
-import { useTheme } from '@/context/theme.context'
+import { type WidgetifyDate, getCurrentDate } from '../utils'
 
 const PERSIAN_MONTHS = [
 	'فروردین',
@@ -22,9 +22,9 @@ const PERSIAN_MONTHS = [
 ]
 
 interface CalendarHeaderProps {
-	currentDate: jalaliMoment.Moment
-	selectedDate: jalaliMoment.Moment
-	setCurrentDate: (date: jalaliMoment.Moment) => void
+	currentDate: WidgetifyDate
+	selectedDate: WidgetifyDate
+	setCurrentDate: (date: WidgetifyDate) => void
 	goToToday: () => void
 }
 
@@ -37,7 +37,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	const { theme } = useTheme()
 
 	const isCurrentMonthToday = useMemo(() => {
-		const realToday = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+		const realToday = getCurrentDate()
 		return (
 			currentDate.jMonth() === realToday.jMonth() &&
 			currentDate.jYear() === realToday.jYear()
@@ -45,7 +45,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	}, [currentDate])
 
 	const isTodaySelected = useMemo(() => {
-		const realToday = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+		const realToday = getCurrentDate()
 		return (
 			selectedDate.jDate() === realToday.jDate() &&
 			selectedDate.jMonth() === realToday.jMonth() &&

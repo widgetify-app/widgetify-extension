@@ -1,13 +1,16 @@
-import type jalaliMoment from 'jalali-moment'
+import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 
 import type {
 	FetchedAllEvents,
 	FetchedEvent,
 } from '../../services/getMethodHooks/getEvents.hook'
+
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
+
+export type WidgetifyDate = jalaliMoment.Moment
 
 export function getShamsiEvents(
 	events: FetchedAllEvents,
@@ -21,29 +24,10 @@ export function getShamsiEvents(
 export function convertShamsiToHijri(
 	shamsiDate: jalaliMoment.Moment,
 ): hijriMoment.Moment {
-	const shamsiMonth = shamsiDate.jMonth() + 1
-	const shamsiDay = shamsiDate.jDate()
+	const adjustedDate = shamsiDate.clone().startOf('day').subtract(6, 'hours')
+	const hijri = hijriMoment(adjustedDate.valueOf())
 
-	let hijriDate = hijriMoment(
-		shamsiDate.utc().startOf('day').format('YYYY-MM-DD'),
-		'YYYY-MM-DD',
-	)
-
-	if (shamsiMonth <= 6) {
-		if (shamsiDay <= 20) {
-			hijriDate = hijriDate.subtract(1, 'day')
-		}
-	} else if (shamsiMonth <= 11) {
-		if (shamsiDay <= 21) {
-			hijriDate = hijriDate.subtract(1, 'day')
-		}
-	} else {
-		if (shamsiDay <= 20) {
-			hijriDate = hijriDate.subtract(1, 'day')
-		}
-	}
-
-	return hijriDate
+	return hijri
 }
 
 export function getHijriEvents(
@@ -69,4 +53,8 @@ export function getGregorianEvents(
 	return events.gregorianEvents.filter(
 		(event) => event.month === +gregorianMonth && event.day === +gregorianDay,
 	)
+}
+
+export function getCurrentDate() {
+	return jalaliMoment().locale('fa').utc().add(3.5, 'hours')
 }

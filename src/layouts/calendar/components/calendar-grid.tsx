@@ -1,18 +1,17 @@
-import type jalaliMoment from 'jalali-moment'
-import type React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
-import { formatDateStr } from '../utils'
-import { DayItem } from './day'
+import type React from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { type WidgetifyDate, formatDateStr } from '../utils'
+import { DayItem } from './day/day'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
 interface CalendarGridProps {
-	currentDate: jalaliMoment.Moment
-	selectedDate: jalaliMoment.Moment
-	setSelectedDate: (date: jalaliMoment.Moment) => void
+	currentDate: WidgetifyDate
+	selectedDate: WidgetifyDate
+	setSelectedDate: (date: WidgetifyDate) => void
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({

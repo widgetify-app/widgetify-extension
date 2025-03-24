@@ -1,15 +1,19 @@
-import { motion } from 'framer-motion'
-import type jalaliMoment from 'jalali-moment'
-import { FiCalendar } from 'react-icons/fi'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
-import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../../utils'
+import { motion } from 'framer-motion'
+import { FiCalendar } from 'react-icons/fi'
+import {
+	type WidgetifyDate,
+	getGregorianEvents,
+	getHijriEvents,
+	getShamsiEvents,
+} from '../../utils'
 
 interface Prop {
 	events: FetchedAllEvents
-	currentDate: jalaliMoment.Moment
+	currentDate: WidgetifyDate
 	isPreview?: boolean
-	onDateChange?: (date: jalaliMoment.Moment) => void
+	onDateChange?: (date: WidgetifyDate) => void
 }
 
 export function Events({ events, currentDate }: Prop) {
@@ -17,7 +21,9 @@ export function Events({ events, currentDate }: Prop) {
 	const shamsiEvents = getShamsiEvents(events, currentDate)
 	const gregorianEvents = getGregorianEvents(events, currentDate)
 	const hijriEvents = getHijriEvents(events, currentDate)
-	const selectedEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents]
+	const selectedEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents].sort(
+		(a) => (a.isHoliday ? -1 : 1),
+	)
 
 	const getEventTypeStyles = (isHoliday: boolean) => {
 		if (isHoliday) {

@@ -1,15 +1,14 @@
-import type jalaliMoment from 'jalali-moment'
-import { useEffect, useState } from 'react'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
-import { formatDateStr } from '../../utils'
+import { useEffect, useState } from 'react'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { type WidgetifyDate, formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
 import { TodoItem } from './todo.item'
 
 type TodoProp = {
-	currentDate: jalaliMoment.Moment
+	currentDate: WidgetifyDate
 }
 
 export function Todos({ currentDate }: TodoProp) {

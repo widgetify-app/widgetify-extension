@@ -1,15 +1,15 @@
-import { motion } from 'framer-motion'
-import jalaliMoment from 'jalali-moment'
-import { useEffect, useState } from 'react'
 import { useTheme } from '@/context/theme.context'
+import { getCurrentDate } from '@/layouts/calendar/utils'
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
-	const [time, setTime] = useState(jalaliMoment().locale('fa').utc().add(3.5, 'hours'))
+	const [time, setTime] = useState(getCurrentDate())
 	const { themeUtils } = useTheme()
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(jalaliMoment().locale('fa').utc().add(3.5, 'hours'))
+			setTime(getCurrentDate())
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [])

@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion'
-import jalaliMoment from 'jalali-moment'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { useTheme } from '@/context/theme.context'
+import { motion } from 'framer-motion'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { type WidgetifyDate, getCurrentDate } from '../utils'
 
 interface DaySliderProps {
-	currentDate: jalaliMoment.Moment
-	onDateChange: (date: jalaliMoment.Moment) => void
+	currentDate: WidgetifyDate
+	onDateChange: (date: WidgetifyDate) => void
 	isPreview?: boolean
 }
 
@@ -15,7 +15,7 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 	isPreview = false,
 }) => {
 	const { theme } = useTheme()
-	const today = jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+	const today = getCurrentDate()
 
 	const isToday =
 		currentDate.jDate() === today.jDate() &&
