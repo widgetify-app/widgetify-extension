@@ -1,6 +1,15 @@
-import { useTheme } from '@/context/theme.context'
-import { useState } from 'react'
-import { FiFlag, FiTag } from 'react-icons/fi'
+import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
+import { getButtonStyles, useTheme } from '@/context/theme.context'
+import { useEffect, useState } from 'react'
+import {
+	FiChevronDown,
+	FiChevronUp,
+	FiFlag,
+	FiMessageSquare,
+	FiPlus,
+	FiTag,
+} from 'react-icons/fi'
 import Analytics from '../../../../analytics'
 
 interface Prop {
@@ -10,9 +19,11 @@ interface Prop {
 		category?: string,
 		notes?: string,
 	) => void
+	show: boolean
+	onClose: () => void
 }
 
-export function TodoInput({ onAdd }: Prop) {
+export function TodoInput({ onAdd, show, onClose }: Prop) {
 	const { theme } = useTheme()
 	const [text, setText] = useState('')
 	const [showAdvanced, setShowAdvanced] = useState(false)
@@ -20,147 +31,186 @@ export function TodoInput({ onAdd }: Prop) {
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
 
+	useEffect(() => {
+		if (show) {
+			const timer = setTimeout(() => {
+				const inputElement = document.getElementById('todo-text-input')
+				if (inputElement) inputElement.focus()
+			}, 100)
+			return () => clearTimeout(timer)
+		}
+	}, [show])
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 		if (text.trim()) {
 			onAdd(text.trim(), priority, category, notes)
-
 			Analytics.featureUsed('todo_added')
-
-			setText('')
-			setCategory('')
-			setNotes('')
-			setPriority('medium')
+			resetForm()
 		}
 	}
 
-	// Theme-specific styles
-	const getInputStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 placeholder-gray-500 bg-gray-200/70 focus:ring-2 focus:ring-blue-500'
-			case 'dark':
-				return 'text-gray-300 placeholder-gray-500/80 bg-gray-700/50 focus:ring-2 focus:ring-blue-500'
-			default: // glass
-				return 'text-gray-300 placeholder-gray-500/80 bg-gray-700/30 focus:ring-2 focus:ring-blue-500'
-		}
-	}
-
-	const getToggleButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 bg-gray-300/70 hover:bg-gray-300/90'
-			case 'dark':
-				return 'text-gray-400 bg-gray-700/50 hover:bg-gray-600/50'
-			default: // glass
-				return 'text-gray-400 bg-gray-700/30 hover:bg-gray-600/30'
-		}
-	}
-
-	const getAddButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-white bg-blue-600 hover:bg-blue-700'
-			default:
-				return 'text-white bg-blue-500 hover:bg-blue-600'
-		}
-	}
-
-	const getAdvancedPanelStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300/50 bg-gray-100/90 backdrop-blur-md'
-			case 'dark':
-				return 'border-gray-700/50 bg-gray-800/95 backdrop-blur-md'
-			default: // glass
-				return 'border-gray-700/30 bg-gray-800/80 backdrop-blur-md'
-		}
-	}
-
-	const getFormFieldStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700 bg-white/70 hover:bg-white transition-colors focus:ring-2 focus:ring-blue-500/50 focus:outline-none'
-			case 'dark':
-				return 'text-gray-300 bg-gray-700/70 hover:bg-gray-700/90 transition-colors focus:ring-2 focus:ring-blue-500/50 focus:outline-none'
-			default: // glass
-				return 'text-gray-300 bg-gray-700/50 hover:bg-gray-700/70 transition-colors focus:ring-2 focus:ring-blue-500/50 focus:outline-none'
-		}
-	}
-
-	const getLabelTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-400'
-		}
+	const resetForm = () => {
+		setText('')
+		setCategory('')
+		setNotes('')
+		setPriority('medium')
+		onClose()
 	}
 
 	return (
-		<div className="relative mb-4">
-			<form onSubmit={handleSubmit} className="flex xl:gap-2">
-				<input
-					type="text"
-					value={text}
-					onChange={(e) => setText(e.target.value)}
-					placeholder="یادداشت جدید..."
-					className={`flex-1 px-3 py-2 rounded-lg focus:outline-none ${getInputStyle()}`}
-				/>
-				<button
-					type="button"
-					onClick={() => setShowAdvanced(!showAdvanced)}
-					className={`px-3 py-2 transition-colors rounded-lg cursor-pointer ${getToggleButtonStyle()}`}
-				>
-					{showAdvanced ? '▲' : '▼'}
-				</button>
-				<button
-					type="submit"
-					className={`px-4 py-2 transition-colors rounded-lg cursor-pointer ${getAddButtonStyle()}`}
-				>
-					افزودن
-				</button>
-			</form>
-
-			{showAdvanced && (
-				<div
-					className={`absolute left-0 right-0 z-10 flex flex-col gap-2 p-4 mt-2 border rounded-lg shadow-lg top-full ${getAdvancedPanelStyle()}`}
-				>
-					<div className="flex items-center w-full gap-2">
-						<FiFlag className={getLabelTextStyle()} />
-						<select
-							value={priority}
-							onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
-							className={`flex-1 px-2 py-1.5 text-sm rounded ${getFormFieldStyle()}`}
+		<Modal
+			isOpen={show}
+			onClose={() => onClose()}
+			title="افزودن یادداشت جدید"
+			size="md"
+			direction="rtl"
+		>
+			<div className="space-y-4">
+				<form onSubmit={handleSubmit} className="space-y-3">
+					<div className="mb-1">
+						<label
+							htmlFor="todo-text-input"
+							className="block mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-200"
 						>
-							<option value="low">اولویت کم</option>
-							<option value="medium">اولویت متوسط</option>
-							<option value="high">اولویت زیاد</option>
-						</select>
+							متن یادداشت
+						</label>
+						<div className="relative">
+							<TextInput
+								id="todo-text-input"
+								type="text"
+								value={text}
+								onChange={(value) => setText(value)}
+								placeholder="چیکار میخای انجام بدی؟"
+							/>
+						</div>
 					</div>
 
-					<div className="flex items-center col-span-2 gap-2">
-						<FiTag className={getLabelTextStyle()} />
-						<input
-							type="text"
-							value={category}
-							onChange={(e) => setCategory(e.target.value)}
-							className={`flex-1 px-2 py-1.5 text-sm rounded ${getFormFieldStyle()}`}
-							placeholder="دسته‌بندی (مثال: کار، شخصی)"
-						/>
+					<div className="flex flex-col gap-2 mb-1">
+						<div className="flex items-center justify-between">
+							<span className="text-sm font-normal text-gray-400 dark:text-gray-300">
+								اولویت:
+							</span>
+							<button
+								type="button"
+								onClick={() => setShowAdvanced(!showAdvanced)}
+								className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-500 transition-colors duration-200 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+							>
+								{showAdvanced ? (
+									<FiChevronUp className="w-3.5 h-3.5" />
+								) : (
+									<FiChevronDown className="w-3.5 h-3.5" />
+								)}
+								<span>گزینه‌های بیشتر</span>
+							</button>
+						</div>
+
+						<div className="grid grid-cols-3 gap-2 p-1 rounded-lg">
+							{[
+								{
+									value: 'low',
+									label: 'کم',
+									icon: <FiFlag size={16} />,
+									ariaLabel: 'اولویت کم',
+								},
+								{
+									value: 'medium',
+									label: 'متوسط',
+									icon: <FiFlag size={16} />,
+									ariaLabel: 'اولویت متوسط',
+								},
+								{
+									value: 'high',
+									label: 'زیاد',
+									icon: <FiFlag size={16} />,
+									ariaLabel: 'اولویت زیاد',
+								},
+							].map(({ value, label, icon, ariaLabel }) => (
+								<button
+									key={value}
+									type="button"
+									onClick={() => setPriority(value as 'low' | 'medium' | 'high')}
+									aria-label={ariaLabel}
+									aria-pressed={priority === value}
+									className={`
+										flex flex-col cursor-pointer items-center justify-center gap-1 p-2 rounded-lg
+										transition-all duration-150
+										${
+											priority === value
+												? theme === 'light'
+													? 'bg-indigo-100 border border-indigo-200 shadow-sm'
+													: 'bg-indigo-900/30 border border-indigo-700/50 shadow-sm'
+												: theme === 'light'
+													? 'bg-gray-50 border border-gray-200 hover:bg-indigo-50'
+													: 'bg-gray-800/50 border border-gray-700/30 hover:bg-indigo-900/20'
+										}
+									`}
+								>
+									<span
+										className={`
+											${priority === value ? 'scale-110' : ''} transition-transform duration-150
+											${
+												priority === value
+													? 'text-indigo-600 dark:text-indigo-400'
+													: 'text-gray-500 dark:text-gray-400'
+											}
+										`}
+									>
+										{icon}
+									</span>
+									<span
+										className={`
+											${
+												priority === value
+													? 'font-semibold text-indigo-700 dark:text-indigo-300'
+													: 'font-medium text-gray-600 dark:text-gray-300'
+											}
+										`}
+									>
+										{label}
+									</span>
+								</button>
+							))}
+						</div>
 					</div>
 
-					<div className="col-span-2">
-						<textarea
-							value={notes}
-							onChange={(e) => setNotes(e.target.value)}
-							className={`w-full px-2 py-1.5 text-sm rounded ${getFormFieldStyle()}`}
-							placeholder="یادداشت تکمیلی..."
-							rows={2}
-						/>
+					{showAdvanced && (
+						<div
+							className={`grid gap-3 p-3 rounded-lg border ${theme === 'light' ? ' border-gray-200/70' : ' border-gray-700/30'}`}
+						>
+							<div className="flex items-center gap-2">
+								<FiTag className="text-indigo-400" />
+								<TextInput
+									type="text"
+									value={category}
+									onChange={(value) => setCategory(value)}
+									placeholder="دسته‌بندی (مثلاً: شخصی، کاری)"
+								/>
+							</div>
+
+							<div className="flex items-start gap-2">
+								<FiMessageSquare className="mt-2 text-indigo-400" />
+								<TextInput
+									value={notes}
+									onChange={(value) => setNotes(value)}
+									placeholder="یادداشت یا توضیحات اضافی..."
+								/>
+							</div>
+						</div>
+					)}
+
+					<div className="flex justify-end pt-2">
+						<button
+							type="submit"
+							disabled={!text.trim()}
+							className={`flex gap-2 items-center cursor-pointer px-4 py-2 rounded-lg ${getButtonStyles(theme, true)}`}
+						>
+							<FiPlus />
+							<span>افزودن</span>
+						</button>
 					</div>
-				</div>
-			)}
-		</div>
+				</form>
+			</div>
+		</Modal>
 	)
 }

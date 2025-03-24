@@ -1,7 +1,8 @@
-import { type ForwardedRef, forwardRef } from 'react'
 import { useTheme } from '@/context/theme.context'
+import { type ForwardedRef, forwardRef } from 'react'
 
 interface TextInputProps {
+	id?: string
 	value: string
 	onChange: (value: string) => void
 	placeholder?: string
@@ -22,6 +23,7 @@ export const TextInput = forwardRef(
 			theme: propTheme,
 			disabled = false,
 			name,
+			id,
 			type = 'text',
 		}: TextInputProps,
 		ref: ForwardedRef<HTMLInputElement>,
@@ -55,6 +57,7 @@ export const TextInput = forwardRef(
 		return (
 			<input
 				ref={ref}
+				id={id}
 				type={type}
 				name={name}
 				value={value}

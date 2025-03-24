@@ -3,6 +3,7 @@ import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa6'
 import { type WidgetifyDate, formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
 import { TodoItem } from './todo.item'
@@ -13,10 +14,11 @@ type TodoProp = {
 
 export function Todos({ currentDate }: TodoProp) {
 	const { theme } = useTheme()
-	const { addTodo, todos, removeTodo, toggleTodo, updateTodo } = useTodoStore()
+	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
 	const [blurMode, setBlurMode] = useState<boolean>(false)
+	const [show, setShow] = useState(false)
 	const selectedDateStr = formatDateStr(currentDate.clone())
 
 	useEffect(() => {
@@ -155,21 +157,37 @@ export function Todos({ currentDate }: TodoProp) {
 	const stats = getCompletionStats()
 
 	return (
-		<div>
+		<div className="max-w-64">
 			<div className="flex items-center justify-between mb-3">
-				<h4 className={`xl:text-lg text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+				<h4 className={`text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
-				<button
-					onClick={handleBlurModeToggle}
-					className={`xl:p-1.5 p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
-					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
-				>
-					{blurMode ? (
-						<FaEye className="xl:w-3 xl:h-3" />
-					) : (
-						<FaEyeSlash className="xl:w-3 xl:h-3" />
-					)}
-				</button>
+				<div className="flex space-x-2">
+					<button
+						onClick={handleBlurModeToggle}
+						className={`flex items-center justify-center xl:p-1.5 p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
+						title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
+					>
+						{blurMode ? (
+							<FaEye className="xl:w-3 xl:h-3" />
+						) : (
+							<FaEyeSlash className="xl:w-3 xl:h-3" />
+						)}
+					</button>
+					<button
+						onClick={() => setShow(true)}
+						className={`flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer rounded-lg transition-all duration-200 shadow-sm hover:shadow
+                        ${
+													theme === 'light'
+														? 'bg-blue-500 hover:bg-blue-600 text-white'
+														: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
+												}
+    `}
+						title="افزودن یادداشت جدید"
+					>
+						<FaPlus className="xl:w-3 xl:h-3 w-2.5 h-2.5" />
+						<span className="text-xs font-medium">یادداشت جدید</span>
+					</button>
+				</div>
 			</div>
 
 			{selectedDateTodos.length > 0 && (
@@ -191,7 +209,7 @@ export function Todos({ currentDate }: TodoProp) {
 				</div>
 			)}
 
-			{/* <TodoInput onAdd={handleAddTodo} /> */}
+			<TodoInput onAdd={handleAddTodo} onClose={() => setShow(false)} show={show} />
 
 			<div className="flex justify-between mb-3">
 				<div className="flex gap-1 xl:text-xs text-[.65rem]">
@@ -236,7 +254,6 @@ export function Todos({ currentDate }: TodoProp) {
 								todo={todo}
 								deleteTodo={removeTodo}
 								toggleTodo={toggleTodo}
-								updateTodo={updateTodo}
 								blurMode={blurMode}
 							/>
 						))}
