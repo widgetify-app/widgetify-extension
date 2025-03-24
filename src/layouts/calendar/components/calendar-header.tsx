@@ -87,7 +87,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						initial={{ opacity: 0, scale: 0.9 }}
 						animate={{ opacity: 1, scale: 1 }}
 						onClick={goToToday}
-						className="flex items-center gap-1 px-2 py-1 text-sm font-medium text-blue-400 transition-colors rounded-lg cursor-pointer bg-blue-500/10 hover:bg-blue-500/20"
+						className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-400 transition-colors rounded-lg cursor-pointer xl:text-sm bg-blue-500/10 hover:bg-blue-500/20"
 					>
 						<FiCalendar size={14} />
 						<span>امروز</span>
@@ -96,7 +96,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
 				<button
 					onClick={() => changeMonth(-1)}
-					className={`flex items-center gap-1 px-2 py-1 text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
+					className={`flex items-center gap-1 px-2 py-1 text-xs xl:text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
 					<FaChevronRight size={12} />
 					<span>ماه قبل</span>
@@ -104,7 +104,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
 				<button
 					onClick={() => changeMonth(1)}
-					className={`flex items-center gap-1 px-2 py-1 text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
+					className={`flex items-center gap-1 px-2 py-1  text-xs xl:text-sm rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
 					<span>ماه بعد</span>
 					<FaChevronLeft size={12} />

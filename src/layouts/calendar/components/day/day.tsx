@@ -118,7 +118,7 @@ export function DayItem({
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
-                    relative p-2 rounded-lg text-sm transition-colors cursor-pointer w-full
+                    relative p-1 xl:p-2 rounded-lg text-xs xl:text-sm transition-colors cursor-pointer w-[50%] xl:w-full
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
                     ${getFontWeight()}
@@ -149,10 +149,14 @@ export function DayItem({
 					) : (
 						<>
 							{hasEvent ? (
-								<span className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`} />
+								<span
+									className={`xl:w-1 w-0.5 xl:h-1 h-0.5  rounded-full ${getEventIndicatorStyle()}`}
+								/>
 							) : null}
 							{hasTodo ? (
-								<span className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`} />
+								<span
+									className={`xl:w-1 w-0.5 xl:h-1 h-0.5  rounded-full ${getTodoIndicatorStyle()}`}
+								/>
 							) : null}
 						</>
 					)}

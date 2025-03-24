@@ -1,13 +1,13 @@
+import { SectionPanel } from '@/components/section-panel'
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
 import browser from 'webextension-polyfill'
-import { SectionPanel } from '@/components/section-panel'
-import { useGeneralSetting } from '@/context/general-setting.context'
 
 export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()
-	const { theme, themeUtils } = useGeneralSetting()
+	const { theme } = useTheme()
 
 	const getAppNameGradient = () => {
 		switch (theme) {
@@ -180,7 +180,7 @@ export function AboutUsTab() {
 				<h1
 					className={`mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${getAppNameGradient()}`}
 				>
-					ویجتیفای
+					ویجتی‌فای
 				</h1>
 				<div
 					className={`inline-flex items-center px-3 py-1 mb-6 text-xs font-medium border rounded-full backdrop-blur-sm ${getVersionBadgeStyle()}`}
@@ -190,7 +190,7 @@ export function AboutUsTab() {
 
 				{/* Description */}
 				<p className={`max-w-lg mb-6 text-lg leading-relaxed ${getDescriptionStyle()}`}>
-					ویجتیفای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای کاربردی
+					ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای کاربردی
 					و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
 				</p>
 			</div>
@@ -213,7 +213,7 @@ export function AboutUsTab() {
 						</div>
 						<h3 className={`text-sm font-medium ${getCardTitleStyle()}`}>حمایت مالی</h3>
 						<p className={`mt-1 text-xs text-center ${getCardDescriptionStyle()}`}>
-							کمک به توسعه ویجتیفای
+							کمک به توسعه ویجتی‌فای
 						</p>
 					</motion.a>
 
@@ -286,7 +286,7 @@ export function AboutUsTab() {
 			</div>
 
 			<div className={`mt-2 mb-4 text-xs text-center ${getCopyrightStyle()}`}>
-				© ویجتیفای - تمامی حقوق محفوظ است
+				© ویجتی‌فای - تمامی حقوق محفوظ است
 			</div>
 		</motion.div>
 	)

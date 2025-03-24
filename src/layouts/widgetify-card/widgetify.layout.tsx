@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTheme } from '@/context/theme.context'
+import { useEffect, useState } from 'react'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 
@@ -15,7 +15,9 @@ export const WidgetifyLayout = () => {
 	}, [])
 
 	return (
-		<div className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl max-h-80`}>
+		<div
+			className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl xl:max-h-96 h-80`}
+		>
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
 

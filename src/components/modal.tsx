@@ -1,8 +1,8 @@
+import { useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
-import { useTheme } from '@/context/theme.context'
 
 type ModalProps = {
 	isOpen: boolean
@@ -19,7 +19,7 @@ const sizeClasses = {
 	sm: 'w-full max-w-sm',
 	md: 'w-full max-w-md',
 	lg: 'w-full max-w-lg',
-	xl: 'w-full max-w-4xl overflow-y-auto max-h-[80vh]',
+	xl: 'w-full max-w-4xl max-h-[80vh]',
 }
 
 const Modal = ({
@@ -115,9 +115,7 @@ const Modal = ({
 							</button>
 						) : null}
 					</div>
-					<div className={`p-4 ${size === 'xl' ? 'overflow-y-auto' : ''}`}>
-						{children}
-					</div>
+					<div className={'xl:p-4 p-2'}>{children}</div>
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>,

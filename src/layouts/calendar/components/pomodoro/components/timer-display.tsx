@@ -35,7 +35,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 			initial={{ scale: 0.9 }}
 			animate={{ scale: 1 }}
 			transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-			className="relative w-48 h-48 mx-auto mb-6"
+			className="relative mx-auto mb-6 xl:w-48 xl:h-48 w-36 h-36"
 		>
 			<svg className="w-full h-full" viewBox="0 0 100 100">
 				{/* Background circle */}

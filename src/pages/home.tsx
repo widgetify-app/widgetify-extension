@@ -1,7 +1,3 @@
-import { useEffect, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
-import Browser from 'webextension-polyfill'
-import Analytics from '../analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
@@ -18,6 +14,10 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WeatherLayout } from '@/layouts/weather/weather.layout'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
+import { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
+import Browser from 'webextension-polyfill'
+import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -53,7 +53,7 @@ function ContentSection() {
 				</div>
 			</div>
 
-			<div className="flex flex-col w-full flex-wrap lg:flex-nowrap gap-3 md:flex-row md:gap-4">
+			<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
 				<div className="w-full lg:w-8/12">
 					<CalendarLayout />
 				</div>

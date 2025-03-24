@@ -47,7 +47,7 @@ export const toolTipContent = (cellDate: WidgetifyDate, theme: string) => {
 				<div
 					className={`px-3 py-2.5 text-xs text-center rounded-b-md ${adBackgroundStyle}`}
 				>
-					<span className={`font-semibold ${brandStyle}`}>ویجتیفای</span>
+					<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
 					<span className="font-light"> | این فیچر با گزارش شما ایجاد شده است.</span>
 				</div>
 			</div>

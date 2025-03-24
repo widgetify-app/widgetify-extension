@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion' // Fixed import from motion/react
-import { useEffect, useState } from 'react'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { FreeMode, Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useWeatherStore } from '@/context/weather.context'
 import { useGetForecastWeatherByLatLon } from '@/services/getMethodHooks/weather/getForecastWeatherByLatLon'
 import { useGetWeatherByLatLon } from '@/services/getMethodHooks/weather/getWeatherByLatLon'
 import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
+import { motion } from 'framer-motion' // Fixed import from motion/react
+import { useEffect, useState } from 'react'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FreeMode, Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { CurrentWeatherBox } from './components/current-box.component'
 import { ForecastComponent } from './components/forecast.component'
 //@ts-ignore
@@ -61,6 +61,10 @@ export function WeatherLayout() {
 			if (data) {
 				setCityWeather(data)
 			}
+			const forecast = await getFromStorage('forecastWeather')
+			if (forecast) {
+				setForecast(forecast)
+			}
 		}
 
 		load()
@@ -69,6 +73,7 @@ export function WeatherLayout() {
 	useEffect(() => {
 		if (forecastData) {
 			setForecast([...forecastData])
+			setToStorage('forecastWeather', forecastData)
 		}
 	}, [forecastUpdatedAt])
 
@@ -81,62 +86,60 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<section className="rounded h-full">
-				<div className="flex flex-col gap-2 h-full">
-					{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
+			<div className="flex flex-col xl:gap-2 xl:h-full h-80">
+				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-					<motion.div
-						className="relative p-1 lg:pb-0 mt-2 overflow-hidden flex-1"
-						initial={{ opacity: 0.9 }}
-						animate={{ opacity: 1 }}
-						transition={{ duration: 0.3 }}
+				<motion.div
+					className="relative flex-1 p-1 mt-2 overflow-hidden lg:pb-0"
+					initial={{ opacity: 0.9 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+				>
+					<Swiper
+						modules={[Pagination, Navigation, FreeMode]}
+						spaceBetween={8}
+						slidesPerView="auto"
+						freeMode={true}
+						pagination={false}
+						navigation={{
+							nextEl: '.swiper-button-next-custom',
+							prevEl: '.swiper-button-prev-custom',
+						}}
+						className="pt-2 weather-forecast-slider"
+						dir="ltr"
 					>
-						<Swiper
-							modules={[Pagination, Navigation, FreeMode]}
-							spaceBetween={8}
-							slidesPerView="auto"
-							freeMode={true}
-							pagination={false}
-							navigation={{
-								nextEl: '.swiper-button-next-custom',
-								prevEl: '.swiper-button-prev-custom',
-							}}
-							className="pt-2 weather-forecast-slider"
-							dir="ltr"
+						{forecast?.map((item, index) => (
+							<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
+								<motion.div
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{
+										duration: 0.3,
+										delay: index * 0.05,
+									}}
+								>
+									<ForecastComponent
+										forecast={item}
+										unit={weatherSettings.temperatureUnit}
+									/>
+								</motion.div>
+							</SwiperSlide>
+						))}
+
+						<div
+							className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-prev-custom top-1/2 ${getNavigationButtonStyle()}`}
 						>
-							{forecast?.map((item, index) => (
-								<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
-									<motion.div
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{
-											duration: 0.3,
-											delay: index * 0.05,
-										}}
-									>
-										<ForecastComponent
-											forecast={item}
-											unit={weatherSettings.temperatureUnit}
-										/>
-									</motion.div>
-								</SwiperSlide>
-							))}
+							<FiChevronLeft size={20} />
+						</div>
 
-							<div
-								className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-prev-custom top-1/2 ${getNavigationButtonStyle()}`}
-							>
-								<FiChevronLeft size={20} />
-							</div>
-
-							<div
-								className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-next-custom top-1/2 ${getNavigationButtonStyle()}`}
-							>
-								<FiChevronRight size={20} />
-							</div>
-						</Swiper>
-					</motion.div>
-				</div>
-			</section>
+						<div
+							className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-next-custom top-1/2 ${getNavigationButtonStyle()}`}
+						>
+							<FiChevronRight size={20} />
+						</div>
+					</Swiper>
+				</motion.div>
+			</div>
 
 			<style>{`
   .weather-forecast-slider {

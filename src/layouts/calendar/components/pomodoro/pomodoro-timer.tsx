@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -9,7 +10,6 @@ import {
 	FiRefreshCw,
 	FiSettings,
 } from 'react-icons/fi'
-import { useTheme } from '@/context/theme.context'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { PomodoroSettingsPanel } from './components/settings-panel'
@@ -180,7 +180,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			className="relative p-1 overflow-hidden rounded-xl"
 		>
 			{/* Mode Selection */}
-			<div className="relative flex items-center justify-between mb-4">
+			<div className="relative flex items-center justify-between mb-2 xl:mb-4">
 				<div className="flex items-center space-x-2">
 					<ModeButton
 						mode="work"
@@ -213,7 +213,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			</div>
 
 			{/* Timer Display */}
-			<div className="relative mt-6">
+			<div className="relative mt-4 xl:mt-6">
 				<TimerDisplay
 					timeLeft={timeLeft}
 					progress={progress}
@@ -226,7 +226,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				/>
 
 				{/* Control buttons */}
-				<div className="flex justify-center mt-2 space-x-4">
+				<div className="flex justify-center space-x-4 xl:mt-2 mt-0.5">
 					{isRunning ? (
 						<ControlButton
 							icon={<FiPause />}
@@ -246,7 +246,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						onClick={handleReset}
 						color={
 							theme === 'light'
-								? 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+								? 'bg-gray-800 text-gray-600 hover:bg-gray-600'
 								: 'bg-gray-700 text-gray-300 hover:bg-gray-600'
 						}
 					/>

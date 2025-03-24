@@ -157,26 +157,32 @@ export function Todos({ currentDate }: TodoProp) {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<h4 className={`text-lg ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+				<h4 className={`xl:text-lg text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
 				<button
 					onClick={handleBlurModeToggle}
-					className={`p-1.5 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
+					className={`xl:p-1.5 p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
 					title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
 				>
-					{blurMode ? <FaEye size={14} /> : <FaEyeSlash size={14} />}
+					{blurMode ? (
+						<FaEye className="xl:w-3 xl:h-3" />
+					) : (
+						<FaEyeSlash className="xl:w-3 xl:h-3" />
+					)}
 				</button>
 			</div>
 
 			{selectedDateTodos.length > 0 && (
 				<div className="mb-4">
-					<div className={`h-2 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
+					<div className={`xl:h-2 h-1 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
 						<div
-							className="h-2 bg-green-500 rounded-full"
+							className="h-1 bg-green-500 rounded-full xl:h-2"
 							style={{ width: `${stats.percentage}%` }}
 						></div>
 					</div>
-					<div className={`flex justify-between text-xs ${getStatsTextStyle()}`}>
+					<div
+						className={`flex justify-between text-[.65rem] xl:text-xs ${getStatsTextStyle()}`}
+					>
 						<span>
 							{stats.completed} از {stats.total} انجام شده
 						</span>
@@ -185,25 +191,25 @@ export function Todos({ currentDate }: TodoProp) {
 				</div>
 			)}
 
-			<TodoInput onAdd={handleAddTodo} />
+			{/* <TodoInput onAdd={handleAddTodo} /> */}
 
 			<div className="flex justify-between mb-3">
-				<div className="flex gap-1 text-xs">
+				<div className="flex gap-1 xl:text-xs text-[.65rem]">
 					<button
 						onClick={() => setFilter('all')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
+						className={`px-1 xl:px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
 					>
 						همه
 					</button>
 					<button
 						onClick={() => setFilter('active')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
+						className={`px-1 xl:px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
 					>
 						فعال
 					</button>
 					<button
 						onClick={() => setFilter('completed')}
-						className={`px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
+						className={`px-1 xl:px-2 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
 					>
 						تکمیل شده
 					</button>
@@ -212,7 +218,7 @@ export function Todos({ currentDate }: TodoProp) {
 				<select
 					value={sort}
 					onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
-					className={getSelectStyle()}
+					className={`${getSelectStyle()} xl:text-xs text-[.65rem]`}
 				>
 					<option value="default">مرتب‌سازی: پیش‌فرض</option>
 					<option value="priority">مرتب‌سازی: اولویت</option>
@@ -220,7 +226,7 @@ export function Todos({ currentDate }: TodoProp) {
 			</div>
 
 			<div
-				className={`pr-1 space-y-2 overflow-y-auto max-h-48 ${blurMode ? 'blur-mode' : ''}`}
+				className={`pr-1 space-y-2 overflow-y-auto max-h-32 xl:max-h-52 ${blurMode ? 'blur-mode' : ''}`}
 			>
 				{selectedDateTodos.length > 0 ? (
 					<>

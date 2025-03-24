@@ -1,8 +1,8 @@
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiClipboard, FiWatch } from 'react-icons/fi'
 import { IoAnalyticsOutline } from 'react-icons/io5'
-import { useTheme } from '@/context/theme.context'
 import type { TabType } from '../calendar'
 
 interface TabNavigationProps {
@@ -44,7 +44,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div className={`inline-flex p-0.5 rounded-lg ${getTabContainerStyle()}`}>
+		<div className={`inline-flex xl:p-0.5 rounded-lg ${getTabContainerStyle()}`}>
 			{tabs.map((tab) => (
 				<motion.button
 					key={tab.id}

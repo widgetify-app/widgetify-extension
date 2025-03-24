@@ -3,6 +3,7 @@ import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type {
+	FetchedForecast,
 	FetchedWeather,
 	WeatherSettings,
 } from '@/services/getMethodHooks/weather/weather.interface'
@@ -26,4 +27,5 @@ export interface StorageKV {
 	gaClientId: { ga_client_id: string }
 	theme: 'light' | 'dark' | 'glass'
 	lastVersion: string
+	forecastWeather: FetchedForecast[]
 }

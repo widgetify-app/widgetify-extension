@@ -30,10 +30,6 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 		onDateChange(currentDate.clone().add(1, 'day'))
 	}
 
-	const handleToday = () => {
-		onDateChange(today.clone())
-	}
-
 	// Theme-specific styles
 	const getDayNavigationStyle = () => {
 		switch (theme) {
@@ -65,17 +61,6 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 				: 'text-gray-200'
 	}
 
-	const getTodayButtonStyle = () => {
-		if (isToday) return 'opacity-50 cursor-default'
-
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600 bg-blue-50 hover:bg-blue-100'
-			default:
-				return 'text-blue-400 bg-blue-500/10 hover:bg-blue-500/20'
-		}
-	}
-
 	return (
 		<div
 			className={`flex items-center justify-between rounded-lg overflow-hidden ${getSliderContainerStyle()} ${isPreview ? 'py-1 px-2' : 'py-1.5 px-3'}`}
@@ -93,17 +78,6 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 				<span className={`${getCurrentDayStyle()} ${isPreview ? 'text-xs' : 'text-sm'}`}>
 					{currentDate.format('dddd، jD jMMMM jYYYY')}
 				</span>
-
-				{!isToday && !isPreview && (
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						onClick={handleToday}
-						className={`text-xs px-2 py-0.5 rounded transition-colors ${getTodayButtonStyle()}`}
-					>
-						امروز
-					</motion.button>
-				)}
 			</div>
 
 			<motion.button

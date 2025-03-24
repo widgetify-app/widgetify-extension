@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { useTheme } from '@/context/theme.context'
@@ -6,6 +5,7 @@ import {
 	type FetchedSuggestionsBookmark,
 	useGetBookmarks,
 } from '@/services/getMethodHooks/getBookmarks.hook'
+import { useEffect, useState } from 'react'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
 import { BookmarkItem } from './components/bookmark-item'
@@ -126,7 +126,7 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`flex flex-row flex-wrap justify-center w-full gap-1.5 mt-5 p-2 ${themeUtils.getTextColor()}`}
+				className={`flex flex-row flex-wrap justify-center w-full gap-2 mt-2 p-1 ${themeUtils.getTextColor()}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (

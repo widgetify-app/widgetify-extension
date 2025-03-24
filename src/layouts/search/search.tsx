@@ -1,9 +1,9 @@
+import { BookmarkProvider } from '@/context/bookmark.context'
+import { useTheme } from '@/context/theme.context'
 import { useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Browser from 'webextension-polyfill'
-import { BookmarkProvider } from '@/context/bookmark.context'
-import { useTheme } from '@/context/theme.context'
 import { BookmarksComponent } from './bookmarks/bookmarks'
 
 export function SearchLayout() {

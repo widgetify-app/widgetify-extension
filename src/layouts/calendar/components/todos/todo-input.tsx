@@ -1,7 +1,7 @@
+import { useTheme } from '@/context/theme.context'
 import { useState } from 'react'
 import { FiFlag, FiTag } from 'react-icons/fi'
 import Analytics from '../../../../analytics'
-import { useTheme } from '@/context/theme.context'
 
 interface Prop {
 	onAdd: (
@@ -99,7 +99,7 @@ export function TodoInput({ onAdd }: Prop) {
 
 	return (
 		<div className="relative mb-4">
-			<form onSubmit={handleSubmit} className="flex gap-2">
+			<form onSubmit={handleSubmit} className="flex xl:gap-2">
 				<input
 					type="text"
 					value={text}

@@ -1,6 +1,6 @@
 import { useTheme } from '@/context/theme.context'
 import { TodoProvider } from '@/context/todo.context'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import type React from 'react'
 import { useCallback, useState } from 'react'
 import { CalendarContainer } from './components/calendar-container'
@@ -31,7 +31,10 @@ const PersianCalendar: React.FC = () => {
 	}, [])
 
 	return (
-		<div className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row" dir="rtl">
+		<div
+			className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row xl:h-full h-80"
+			dir="rtl"
+		>
 			<CalendarContainer className="w-full overflow-hidden md:w-7/12 md:flex-1">
 				<CalendarHeader
 					currentDate={currentDate}
@@ -46,8 +49,8 @@ const PersianCalendar: React.FC = () => {
 					setSelectedDate={setSelectedDate}
 				/>
 
-				<div className={`px-3 md:px-4 mt-2 border-t ${themeUtils.getBorderColor()}`}>
-					<div className="mt-2">
+				<div className={`px-4 mt-1 xl:mt-2 border-t ${themeUtils.getBorderColor()}`}>
+					<div className="mt-1 xl:mt-2">
 						<TabNavigation activeTab={activeTab} onTabClick={handleTabClick} />
 					</div>
 
@@ -72,20 +75,9 @@ const PersianCalendar: React.FC = () => {
 
 const CalendarLayout = () => {
 	return (
-		<section dir="rtl">
-			<TodoProvider>
-				<motion.div
-					key="calendar"
-					className="min-h-[16rem] md:min-h-96 md:max-h-[38rem]"
-					initial={{ opacity: 0, x: -20 }}
-					animate={{ opacity: 1, x: 0 }}
-					exit={{ opacity: 0, x: 20 }}
-					transition={{ duration: 0.3 }}
-				>
-					<PersianCalendar />
-				</motion.div>
-			</TodoProvider>
-		</section>
+		<TodoProvider>
+			<PersianCalendar />
+		</TodoProvider>
 	)
 }
 
