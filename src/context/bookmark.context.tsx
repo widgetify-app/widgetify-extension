@@ -49,14 +49,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [bookmarks])
 
 	const getCurrentFolderItems = (parentId: string | null) => {
-		const pinnedBookmarks = bookmarks.filter((bookmark) => bookmark.pinned)
 		const currentFolderBookmarks = bookmarks.filter(
-			(bookmark) => bookmark.parentId === parentId && !bookmark.pinned,
+			(bookmark) => bookmark.parentId === parentId,
 		)
 
-		return parentId === null
-			? [...pinnedBookmarks, ...currentFolderBookmarks]
-			: currentFolderBookmarks
+		return parentId === null ? [...currentFolderBookmarks] : currentFolderBookmarks
 	}
 
 	const getBookmarkDataSize = (bookmark: Bookmark): number => {
