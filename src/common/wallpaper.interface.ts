@@ -5,7 +5,6 @@ export interface Wallpaper {
 	src: string
 	isCustom?: boolean
 	source?: string
-	category?: string
 }
 
 export interface StoredWallpaper {
@@ -17,4 +16,13 @@ export interface StoredWallpaper {
 
 export interface WallpaperResponse {
 	wallpapers: Wallpaper[]
+}
+
+// New Category interface
+export interface Category {
+	id: string
+	name: string
+	slug: string
+	createdAt: string
+	updatedAt: string
 }

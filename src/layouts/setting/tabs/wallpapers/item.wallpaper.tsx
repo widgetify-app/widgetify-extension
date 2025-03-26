@@ -1,9 +1,9 @@
+import type { Wallpaper } from '@/common/wallpaper.interface'
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { FiCheck, FiHeart, FiInfo } from 'react-icons/fi'
-import { wallpaperCategoryTranslations } from '@/common/constant/translations'
-import type { Wallpaper } from '@/common/wallpaper.interface'
-import { useGeneralSetting } from '@/context/general-setting.context'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { FiCheck, FiHeart } from 'react-icons/fi'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
 interface WallpaperItemProps {
@@ -18,7 +18,7 @@ export const WallpaperItem = React.memo(
 		selectedBackground,
 		setSelectedBackground,
 	}: WallpaperItemProps) {
-		const { theme } = useGeneralSetting()
+		const { theme } = useTheme()
 		const [loaded, setLoaded] = useState(false)
 		const [error, setError] = useState(false)
 		const imgRef = useRef<HTMLImageElement>(null)
@@ -41,18 +41,18 @@ export const WallpaperItem = React.memo(
 			window.open(wallpaper.source, '_blank')
 		}
 
-		const getItemBorderStyle = () => {
+		const getItemOutlineStyle = () => {
 			if (isSelected) {
-				return 'border-blue-500'
+				return 'ring-2 ring-blue-500 ring-offset-1 ring-offset-blue-100'
 			}
 
 			switch (theme) {
 				case 'light':
-					return 'border-gray-300/40 group-hover:border-gray-400/70'
+					return 'ring-1 ring-gray-300/50 group-hover:ring-blue-300/70'
 				case 'dark':
-					return 'border-gray-700/60 group-hover:border-gray-600/80'
+					return 'ring-1 ring-gray-700/60 group-hover:ring-blue-700/50'
 				default: // glass
-					return 'border-white/10 group-hover:border-white/30'
+					return 'ring-1 ring-white/10 group-hover:ring-white/30'
 			}
 		}
 
@@ -78,20 +78,11 @@ export const WallpaperItem = React.memo(
 		const getInfoButtonStyle = () => {
 			switch (theme) {
 				case 'light':
-					return 'bg-gray-100/80 text-gray-700 hover:bg-gray-200/90'
+					return 'bg-white/90 text-gray-800 hover:bg-white shadow-sm hover:shadow'
 				case 'dark':
-					return 'bg-gray-800/80 text-gray-200 hover:bg-gray-700/90'
+					return 'bg-gray-800/90 text-blue-300 hover:bg-gray-700 shadow-sm'
 				default: // glass
-					return 'bg-black/40 backdrop-blur-sm text-white hover:bg-black/50'
-			}
-		}
-
-		const getCategoryStyle = () => {
-			switch (theme) {
-				case 'light':
-					return 'bg-black/40 text-white'
-				default:
-					return 'bg-black/40 text-white'
+					return 'bg-black/50 backdrop-blur-sm text-white hover:bg-black/60 shadow-sm'
 			}
 		}
 
@@ -116,14 +107,10 @@ export const WallpaperItem = React.memo(
 			setSelectedBackground(wallpaper.id)
 		}
 
-		const categoryName = wallpaper.category
-			? wallpaperCategoryTranslations[wallpaper.category] || wallpaper.category
-			: null
-
 		return (
 			<motion.div
 				ref={elementRef}
-				className={`relative overflow-hidden border-2 rounded-lg cursor-pointer group aspect-video ${getItemBorderStyle()}`}
+				className={`relative overflow-hidden rounded-lg cursor-pointer group aspect-video ${getItemOutlineStyle()}`}
 				onClick={handleSelect}
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
@@ -166,14 +153,6 @@ export const WallpaperItem = React.memo(
 
 				{loaded && !error && (
 					<>
-						{categoryName && (
-							<div
-								className={`absolute top-2 right-2 px-2 py-1 text-[10px] rounded-md opacity-80 ${getCategoryStyle()}`}
-							>
-								{categoryName}
-							</div>
-						)}
-
 						<div
 							className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
 						>
@@ -184,8 +163,9 @@ export const WallpaperItem = React.memo(
 							{wallpaper.source && (
 								<button
 									onClick={handleSourceClick}
-									className={`mt-1 px-2 py-0.5 text-[10px] rounded-md transition ${getInfoButtonStyle()}`}
+									className={`mt-1.5 cursor-pointer px-2.5 py-1 text-[10px] rounded-md transition flex items-center gap-1 ${getInfoButtonStyle()}`}
 								>
+									<FaExternalLinkAlt size={12} />
 									منبع
 								</button>
 							)}
