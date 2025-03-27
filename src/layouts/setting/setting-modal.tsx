@@ -1,9 +1,9 @@
+import Modal from '@/components/modal'
+import { useTheme } from '@/context/theme.context'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { VscCloud, VscInfo, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
-import Modal from '@/components/modal'
-import { useTheme } from '@/context/theme.context'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { GeneralSettingTab } from './tabs/general/general'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
@@ -71,13 +71,16 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div dir="rtl" className="flex flex-row h-[600px] gap-4">
-				<div className={'flex flex-col w-48 gap-2 p-2 rounded-lg shrink-0 '}>
+			<div
+				dir="rtl"
+				className="flex flex-col md:flex-row    h-[60vh] overflow-hidden gap-4"
+			>
+				<div className="flex w-full gap-2 p-2 overflow-x-auto rounded-lg md:flex-col md:w-48 shrink-0 md:overflow-y-auto">
 					{tabs.map(({ label, value, icon }) => (
 						<motion.button
 							key={value}
 							onClick={() => setActiveTab(value)}
-							className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-colors justify-start cursor-pointer ${getTabButtonStyle(activeTab === value)}`}
+							className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-colors justify-start cursor-pointer whitespace-nowrap ${getTabButtonStyle(activeTab === value)}`}
 							whileHover={{ scale: 1.02 }}
 							whileTap={{ scale: 0.98 }}
 						>
@@ -87,14 +90,14 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 					))}
 				</div>
 
-				<div className={'relative flex-1 overflow-hidden rounded-lg '}>
+				<div className="relative flex-1 overflow-auto rounded-lg">
 					<AnimatePresence mode="wait">
 						{tabs.map(
 							({ value, element }) =>
 								activeTab === value && (
 									<motion.div
 										key={value}
-										className="absolute inset-0 p-4 overflow-auto rounded-lg"
+										className="absolute inset-0 p-4 rounded-lg"
 										initial={{ opacity: 0, x: 20 }}
 										animate={{ opacity: 1, x: 0 }}
 										exit={{ opacity: 0, x: -20 }}
