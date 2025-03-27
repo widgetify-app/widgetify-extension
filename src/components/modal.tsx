@@ -19,7 +19,7 @@ const sizeClasses = {
 	sm: 'w-full max-w-sm',
 	md: 'w-full max-w-md',
 	lg: 'w-full max-w-lg',
-	xl: 'w-full max-w-4xl max-h-[80vh]',
+	xl: 'w-full max-w-4xl max-h-[90vh] overflow-hidden',
 }
 
 const Modal = ({
@@ -89,7 +89,7 @@ const Modal = ({
 				dir={direction}
 			>
 				<motion.div
-					className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]}`}
+					className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5`}
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.95, opacity: 0 }}
