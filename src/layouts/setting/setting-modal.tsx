@@ -87,7 +87,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 					))}
 				</div>
 
-				<div className={'relative flex-1 overflow-hidden rounded-lg'}>
+				<div className={'relative flex-1 overflow-hidden rounded-lg '}>
 					<AnimatePresence mode="wait">
 						{tabs.map(
 							({ value, element }) =>
