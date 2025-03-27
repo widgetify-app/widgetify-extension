@@ -1,8 +1,8 @@
+import { SectionPanel } from '@/components/section-panel'
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { IoMdMoon, IoMdSunny } from 'react-icons/io'
 import { MdOutlineBlurOn } from 'react-icons/md'
-import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
 
 export function ThemeSelector() {
 	const { setTheme, theme, themeUtils } = useTheme()
@@ -52,7 +52,7 @@ export function ThemeSelector() {
 								whileTap={{ scale: 0.98 }}
 								className={`
                   relative w-full overflow-hidden rounded-lg text-right cursor-pointer transition-all duration-300
-                  ${theme === item.id ? 'shadow-2xl shadow-blue-500/20' : 'shadow-lg hover:shadow-xl'}
+                  ${theme === item.id ? 'shadow-sm shadow-blue-500/20' : 'shadow-lg hover:shadow-xl'}
                 `}
 							>
 								{/* Theme preview box */}
