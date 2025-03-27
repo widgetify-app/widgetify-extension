@@ -21,6 +21,16 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			label: 'دیجی لاله‌زار پلاس',
 			sampleText: 'بهار زندگی',
 		},
+		{
+			value: 'Behdad',
+			label: 'بهداد',
+			sampleText: 'نمونه متن با فونت بهداد',
+		},
+		{
+			value: 'Samim',
+			label: 'صمیم',
+			sampleText: 'نمونه متن با فونت صمیم',
+		},
 	]
 
 	const getActiveButtonStyle = () => {
