@@ -71,7 +71,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
-			<div dir="rtl" className="flex flex-row h-[600px] gap-4">
+			<div dir="rtl" className="flex flex-row max-h-[80%] h-auto min-h-[400px] gap-4">
 				<div className={'flex flex-col w-48 gap-2 p-2 rounded-lg shrink-0 '}>
 					{tabs.map(({ label, value, icon }) => (
 						<motion.button
@@ -87,7 +87,7 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 					))}
 				</div>
 
-				<div className={'relative flex-1 overflow-hidden rounded-lg '}>
+				<div className={'relative flex-1 overflow-hidden rounded-lg'}>
 					<AnimatePresence mode="wait">
 						{tabs.map(
 							({ value, element }) =>
