@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTheme } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
@@ -7,12 +8,17 @@ import { DogComponent } from './components/pet-dog.component'
 export const WidgetifyLayout = () => {
 	const { enablePets } = useGeneralSetting()
 	const { themeUtils } = useTheme()
+	const { user, isAuthenticated } = useAuth()
 	const random = ['گوجه', 'هندونه 🍉', 'بلبل جان', 'باهوش 🧠']
 	const [userName, setUserName] = useState<string>('')
 
 	useEffect(() => {
-		setUserName(random[Math.floor(Math.random() * random.length)])
-	}, [])
+		if (isAuthenticated && user && user.name) {
+			setUserName(user.name)
+		} else {
+			setUserName(random[Math.floor(Math.random() * random.length)])
+		}
+	}, [isAuthenticated, user, random])
 
 	return (
 		<div
@@ -25,7 +31,9 @@ export const WidgetifyLayout = () => {
 					<div
 						className={`flex items-center justify-between w-full border-b ${themeUtils.getBorderColor()}`}
 					>
-						<p className="font-semibold truncate text-md">سلام {userName}، چه خبر؟</p>
+						<div className="flex items-center gap-2">
+							<p className="font-semibold truncate text-md">سلام {userName}، چه خبر؟</p>
+						</div>
 						<ClockComponent />
 					</div>
 				</div>
