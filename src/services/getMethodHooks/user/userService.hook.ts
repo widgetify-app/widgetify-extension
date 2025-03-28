@@ -1,5 +1,5 @@
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import { useQuery } from '@tanstack/react-query'
+import { type UseQueryOptions, useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 
 interface FetchedProfile {
@@ -38,12 +38,13 @@ export async function fetchUserProfile(): Promise<UserProfile> {
 	}
 }
 
-export function useGetUserProfile() {
+export function useGetUserProfile(options?: Partial<UseQueryOptions<UserProfile>>) {
 	return useQuery({
 		queryKey: ['userProfile'],
 		queryFn: fetchUserProfile,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 1,
 		refetchOnWindowFocus: false,
+		...options,
 	})
 }
