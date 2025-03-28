@@ -1,5 +1,6 @@
 import CustomCheckbox from '@/components/checkbox'
 import { useTheme } from '@/context/theme.context'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp, FiTrash2 } from 'react-icons/fi'
 import type { Todo } from '../../interface/todo.interface'
@@ -44,7 +45,6 @@ export function TodoItem({
 			switch (theme) {
 				case 'light':
 					return 'line-through text-gray-400'
-
 				default:
 					return 'line-through text-gray-500'
 			}
@@ -53,19 +53,21 @@ export function TodoItem({
 		switch (theme) {
 			case 'light':
 				return 'text-gray-600'
-
 			default:
 				return 'text-gray-300'
 		}
 	}
 
-	const getCategoryBadgeStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-100/50 text-blue-600'
-
+	const getBorderStyle = () => {
+		switch (todo.priority) {
+			case 'high':
+				return theme === 'light' ? 'border-red-300' : 'border-red-900/50'
+			case 'medium':
+				return theme === 'light' ? 'border-yellow-300' : 'border-yellow-900/50'
+			case 'low':
+				return theme === 'light' ? 'border-green-300' : 'border-green-900/50'
 			default:
-				return 'bg-blue-500/20 text-blue-400'
+				return theme === 'light' ? 'border-blue-300' : 'border-blue-900/50'
 		}
 	}
 
@@ -90,95 +92,77 @@ export function TodoItem({
 		}
 	}
 
-	const getButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500 hover:text-gray-700'
-
-			default:
-				return 'text-gray-400 hover:text-gray-300'
-		}
-	}
-
-	const getDeleteButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-red-600 hover:text-red-700'
-			default:
-				return 'text-red-400 hover:text-red-300'
-		}
-	}
-
-	const getExpandedAreaStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300/30'
-			case 'dark':
-				return 'border-gray-700/30'
-			default: // glass
-				return 'border-gray-700/20'
-		}
-	}
-
-	const getNotesStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
 	return (
-		<div
-			className={`overflow-hidden transition-all duration-200 rounded-lg ${getItemBackgroundStyle()} group ${blurMode ? 'blur-item' : ''}`}
+		<motion.div
+			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} ${getItemBackgroundStyle()} group ${blurMode ? 'blur-item' : ''}`}
+			initial={{ opacity: 0, y: 5 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, height: 0 }}
+			transition={{ duration: 0.2 }}
 		>
-			<div className={`flex items-center gap-2 ${isPreview ? 'p-2' : 'p-3'}`}>
-				<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
+			<div className={`flex items-center gap-2 pr-2 ${isPreview ? 'p-1.5' : 'p-2'}`}>
+				<div className="flex-shrink-0">
+					<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
+				</div>
 
 				<span
 					onClick={() => toggleTodo(todo.id)}
-					className={`flex-1 overflow-clip ${isPreview ? 'text-sm w-[160px]' : 'w-[180px]'} ${getTextStyle()}`}
+					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer ${
+						isPreview ? 'text-xs' : 'text-sm'
+					} ${getTextStyle()}`}
 				>
 					{todo.text}
 				</span>
 
-				<div className="flex flex-col gap-1">
-					{todo.category && !isPreview && (
-						<span
-							className={`text-xs px-2 py-0.5 rounded-full ${getCategoryBadgeStyle()}`}
-						>
-							{todo.category}
-						</span>
-					)}
-
-					<span className={`text-xs px-2 py-0.5 rounded-full ${getPriorityColor()}`}>
-						{translatedPriority[todo.priority]}
-					</span>
-				</div>
-
-				{!isPreview && (
-					<button onClick={() => setExpanded(!expanded)} className={getButtonStyle()}>
-						{expanded ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+				{/* Actions */}
+				<div className="flex items-center">
+					<button
+						onClick={() => setExpanded(!expanded)}
+						className={`p-1 rounded-full hover:bg-gray-500/10 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
+					>
+						{expanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
 					</button>
-				)}
 
-				<button
-					onClick={() => deleteTodo(todo.id)}
-					className={`transition-opacity opacity-0 group-hover:opacity-100 ${getDeleteButtonStyle()}`}
-				>
-					<FiTrash2 size={16} />
-				</button>
+					<button
+						onClick={() => deleteTodo(todo.id)}
+						className={`p-1 rounded-full hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 ${
+							theme === 'light' ? 'text-red-500' : 'text-red-400'
+						}`}
+					>
+						<FiTrash2 size={14} />
+					</button>
+				</div>
 			</div>
 
-			{expanded && !isPreview && (
-				<div className={`p-3 pt-0 border-t ${getExpandedAreaStyle()}`}>
-					{todo.notes && (
-						<p className={`mt-1 text-sm ${getNotesStyle()}`}>{todo.notes}</p>
-					)}
-				</div>
-			)}
-		</div>
+			<AnimatePresence>
+				{expanded && !isPreview && (
+					<motion.div
+						className={`px-3 pb-2 text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}
+						initial={{ opacity: 0, height: 0 }}
+						animate={{ opacity: 1, height: 'auto' }}
+						exit={{ opacity: 0, height: 0 }}
+					>
+						{/* Badges in expanded view */}
+						<div className="flex items-center gap-2 mt-1 mb-2">
+							{todo.category && (
+								<span
+									className={`text-xs px-1.5 py-0.5 rounded-full ${getPriorityColor()}`}
+								>
+									{todo.category}
+								</span>
+							)}
+							<span
+								className={`text-xs px-1.5 py-0.5 rounded-full ${getPriorityColor()}`}
+							>
+								{translatedPriority[todo.priority]}
+							</span>
+						</div>
+
+						{/* Notes */}
+						{todo.notes && <p className="mt-1 font-light">{todo.notes}</p>}
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</motion.div>
 	)
 }

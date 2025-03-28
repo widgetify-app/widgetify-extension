@@ -161,7 +161,7 @@ export function Todos({ currentDate }: TodoProp) {
 			<div className="flex items-center justify-between mb-3">
 				<h4 className={`text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
-				<div className="flex space-x-2">
+				<div className="flex gap-2">
 					<button
 						onClick={handleBlurModeToggle}
 						className={`flex items-center justify-center xl:p-1.5 p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
@@ -175,13 +175,11 @@ export function Todos({ currentDate }: TodoProp) {
 					</button>
 					<button
 						onClick={() => setShow(true)}
-						className={`flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer rounded-lg transition-all duration-200 shadow-sm hover:shadow
-                        ${
-													theme === 'light'
-														? 'bg-blue-500 hover:bg-blue-600 text-white'
-														: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
-												}
-    `}
+						className={`flex items-center justify-center gap-1.5 px-2 py-1 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
+							theme === 'light'
+								? 'bg-blue-500 hover:bg-blue-600 text-white'
+								: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
+						}`}
 						title="افزودن یادداشت جدید"
 					>
 						<FaPlus className="xl:w-3 xl:h-3 w-2.5 h-2.5" />

@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
+import { useMemo } from 'react'
 
 export function TodoStats() {
 	const { todos } = useTodoStore()
@@ -103,25 +103,6 @@ export function TodoStats() {
 		}
 	}
 
-	const getCategoryCountStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-100/60 text-blue-600'
-			default:
-				return 'bg-blue-500/20 text-blue-400'
-		}
-	}
-
-	const getCategoryTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-
-			default:
-				return 'text-gray-300'
-		}
-	}
-
 	const getPriorityBarColors = () => {
 		switch (theme) {
 			case 'light':
@@ -146,8 +127,8 @@ export function TodoStats() {
 		<div className={`p-4 mt-4 ${getContainerStyle()} rounded-xl`}>
 			<h4 className={`mb-3 text-lg ${getHeaderStyle()}`}>آمار کلی</h4>
 
-			<div className="grid grid-cols-2 gap-3">
-				<div className={`p-3 rounded-lg ${getCardStyle()}`}>
+			<div className="flex flex-col gap-1">
+				<div className={`p-1 rounded-lg ${getCardStyle()}`}>
 					<span className={`text-xs ${getLabelStyle()}`}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
 						<span className={`text-xl ${getValueStyle()}`}>{stats.completedTodos}</span>
@@ -200,24 +181,6 @@ export function TodoStats() {
 					</div>
 				</div>
 			</div>
-
-			{stats.topCategories.length > 0 && (
-				<div className={`p-3 mt-3 rounded-lg ${getCardStyle()}`}>
-					<span className={`text-xs ${getLabelStyle()}`}>دسته‌بندی‌های پرکاربرد</span>
-					<div className="mt-2 space-y-2">
-						{stats.topCategories.map(([category, count]) => (
-							<div key={category} className="flex items-center justify-between">
-								<span className={`text-sm ${getCategoryTextStyle()}`}>{category}</span>
-								<span
-									className={`text-xs px-2 py-0.5 rounded-full ${getCategoryCountStyle()}`}
-								>
-									{count}
-								</span>
-							</div>
-						))}
-					</div>
-				</div>
-			)}
 		</div>
 	)
 }
