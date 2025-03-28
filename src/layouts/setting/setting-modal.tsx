@@ -3,8 +3,15 @@ import { useTheme } from '@/context/theme.context'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { VscCloud, VscInfo, VscPaintcan, VscSettingsGear } from 'react-icons/vsc'
+import {
+	VscAccount,
+	VscCloud,
+	VscInfo,
+	VscPaintcan,
+	VscSettingsGear,
+} from 'react-icons/vsc'
 import { AboutUsTab } from './tabs/about-us/about-us'
+import { AccountTab } from './tabs/account/account'
 import { GeneralSettingTab } from './tabs/general/general'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
@@ -36,6 +43,12 @@ export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
 			value: 'weather',
 			icon: <VscCloud size={20} />,
 			element: <WeatherOptions />,
+		},
+		{
+			label: 'حساب کاربری',
+			value: 'account',
+			icon: <VscAccount size={20} />,
+			element: <AccountTab />,
 		},
 		{
 			label: 'درباره ما',

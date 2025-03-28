@@ -15,3 +15,7 @@ export async function getFromStorage<K extends keyof StorageKV>(
 	if (!value) return null
 	return value[key] as StorageKV[K]
 }
+
+export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
+	await browser.storage.local.remove(key)
+}

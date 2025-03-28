@@ -11,6 +11,7 @@ interface TextInputProps {
 	disabled?: boolean
 	name?: string
 	type?: string
+	direction?: 'rtl' | 'ltr' | ''
 }
 
 export const TextInput = forwardRef(
@@ -25,6 +26,7 @@ export const TextInput = forwardRef(
 			name,
 			id,
 			type = 'text',
+			direction = '',
 		}: TextInputProps,
 		ref: ForwardedRef<HTMLInputElement>,
 	) => {
@@ -63,6 +65,7 @@ export const TextInput = forwardRef(
 				value={value}
 				disabled={disabled}
 				onFocus={onFocus}
+				dir={direction}
 				placeholder={placeholder || ''}
 				className={`w-full text-[14px] rounded-xl p-3 outline-none border 
                     transition-all duration-200 font-light ${getInputStyle()}`}

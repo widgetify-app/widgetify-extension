@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from './context/theme.context'
+import { AuthProvider } from './context/auth.context'
 import { HomePage } from './pages/home'
 
 const queryClient = new QueryClient({
@@ -13,9 +14,11 @@ const queryClient = new QueryClient({
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ThemeProvider>
-				<HomePage />
-			</ThemeProvider>
+			<AuthProvider>
+				<ThemeProvider>
+					<HomePage />
+				</ThemeProvider>
+			</AuthProvider>
 		</QueryClientProvider>
 	)
 }
