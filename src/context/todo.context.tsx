@@ -1,8 +1,8 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
+import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 
 interface TodoContextType {
 	todos: Todo[]
@@ -30,7 +30,24 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			setTodos(todos)
 		}
 
+		window.addEventListener('todosChanged', (eventData: any) => {
+			const todos = eventData.detail
+			if (todos) {
+				const uniqueTodos = todos.reduce((acc: Todo[], todo: Todo) => {
+					if (!acc.some((t) => t.id === todo.id)) {
+						acc.push(todo)
+					}
+					return acc
+				}, [])
+				setTodos(uniqueTodos)
+			}
+		})
+
 		getTodos()
+
+		return () => {
+			window.removeEventListener('todosChanged', () => {})
+		}
 	}, [])
 
 	useEffect(() => {
@@ -56,6 +73,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				priority,
 				category,
 				notes,
+				onlineId: null,
 			},
 		])
 	}

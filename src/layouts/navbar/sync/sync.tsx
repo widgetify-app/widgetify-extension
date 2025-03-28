@@ -3,6 +3,7 @@ import { getFromStorage } from '@/common/storage'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
+import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -239,9 +240,29 @@ async function SyncTodo(): Promise<boolean> {
 			}
 		}
 
-		await apiClient.post('/todos/sync', {
+		const response = await apiClient.post<FetchedTodo[]>('/todos/sync', {
 			todos: todosInput,
 		})
+
+		const fetchedTodos = response.data
+
+		const mapped: Todo[] = fetchedTodos.map((todo: FetchedTodo) => ({
+			id: todo.offlineId || todo.id,
+			text: todo.text,
+			onlineId: todo.id,
+			completed: todo.completed,
+			date: todo.date,
+			priority: todo.priority,
+			category: todo.category,
+			notes: todo.description,
+		}))
+
+		const event = new CustomEvent('todosChanged', {
+			detail: mapped,
+		})
+
+		window.dispatchEvent(event)
+
 		return true
 	} catch (error) {
 		return false
