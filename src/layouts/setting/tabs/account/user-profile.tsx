@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 export const UserProfile = () => {
 	const { logout } = useAuth()
 	const { theme, themeUtils } = useTheme()
-	const { data: profile, isLoading, isError } = useGetUserProfile()
+	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
 
 	const getButtonStyle = () => {
 		switch (theme) {
@@ -19,6 +19,15 @@ export const UserProfile = () => {
 			default: // glass
 				return 'bg-red-500/70 hover:bg-red-600/70 backdrop-blur-sm text-white'
 		}
+	}
+
+	const getMessageError = () => {
+		// @ts-ignore
+		if (failureReason?.status === 401) {
+			return 'نیاز به ورود مجدد به حساب کاربری دارید.'
+		}
+
+		return 'خطا در بارگذاری پروفایل کاربری. لطفاً دوباره تلاش کنید.'
 	}
 
 	if (isLoading) {
@@ -33,7 +42,7 @@ export const UserProfile = () => {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
 				<p className={`mb-4 text-center ${themeUtils.getTextColor()}`}>
-					خطا در بارگذاری پروفایل کاربری
+					{getMessageError()}
 				</p>
 				<button
 					onClick={logout}

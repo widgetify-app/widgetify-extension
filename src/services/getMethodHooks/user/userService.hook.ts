@@ -1,4 +1,4 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 
@@ -27,6 +27,11 @@ export async function fetchUserProfile(): Promise<UserProfile> {
 			if (cachedProfile) {
 				return cachedProfile
 			}
+		}
+
+		if (error.response?.status === 401) {
+			await removeFromStorage('auth_token')
+			await removeFromStorage('profile')
 		}
 
 		throw error
