@@ -80,9 +80,17 @@ export function BookmarksComponent() {
 		return () => document.removeEventListener('click', handleClickOutside)
 	}, [])
 
+	const isManageable = (bookmark: Bookmark) => {
+		if (typeof bookmark.isManageable === 'boolean') {
+			return bookmark.isManageable
+		}
+
+		return true
+	}
+
 	const handleRightClick = (e: React.MouseEvent, bookmark: Bookmark) => {
 		e.preventDefault()
-		if (bookmark.isManageable) {
+		if (isManageable(bookmark)) {
 			setSelectedBookmark(bookmark)
 			const parent = e.currentTarget
 			if (parent) {
@@ -96,9 +104,8 @@ export function BookmarksComponent() {
 		if (bookmark.type === 'FOLDER') {
 			setCurrentFolderId(bookmark.id)
 			setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
-			if (typeof bookmark.isManageable === 'boolean') {
-				setCurrentFolderIsManageable(bookmark.isManageable)
-			}
+
+			setCurrentFolderIsManageable(isManageable(bookmark))
 		} else {
 			window.location.href = bookmark.url
 		}
@@ -119,7 +126,7 @@ export function BookmarksComponent() {
 		if (folderId) {
 			const folder = bookmarks.find((b) => b.id === folderId)
 			if (folder) {
-				setCurrentFolderIsManageable(folder.isManageable)
+				setCurrentFolderIsManageable(isManageable(folder))
 			}
 		} else {
 			setCurrentFolderIsManageable(true)
