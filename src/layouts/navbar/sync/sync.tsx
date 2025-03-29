@@ -7,7 +7,7 @@ import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interf
 import { getMainClient } from '@/services/api'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
 
@@ -28,13 +28,17 @@ export function SyncButton() {
 	const { isAuthenticated } = useAuth()
 	const [user, setUser] = useState<UserProfile | null>(null)
 	const syncInProgressRef = useRef(false)
+	const lastSyncTimeRef = useRef<number>(0)
+	const initialSyncDoneRef = useRef(false)
 
 	useEffect(() => {
 		if (syncState === SyncState.Success) {
 			const timer = setTimeout(() => setSyncState(null), 3000)
 			return () => clearTimeout(timer)
 		}
+	}, [syncState])
 
+	useEffect(() => {
 		async function loadUser() {
 			const userData = await getFromStorage('profile')
 			if (userData) {
@@ -43,66 +47,94 @@ export function SyncButton() {
 		}
 
 		loadUser()
-	}, [syncState])
+	}, [])
 
 	useEffect(() => {
-		if (isAuthenticated) {
-			const handleSyncRequest = (eventData: any) => {
-				const target = eventData.detail as SyncTarget
-				syncData(target)
+		async function initialSync() {
+			if (!isAuthenticated || initialSyncDoneRef.current) return
+
+			const isSyncEnabled = await getFromStorage('enable_sync')
+			if (isSyncEnabled === false) return
+
+			initialSyncDoneRef.current = true
+
+			setTimeout(() => {
+				syncData(SyncTarget.ALL)
+			}, 1000)
+		}
+
+		initialSync()
+	}, [isAuthenticated])
+
+	const syncData = useCallback(
+		async (syncTarget: SyncTarget) => {
+			const now = Date.now()
+			if (now - lastSyncTimeRef.current < 500) {
+				return
+			}
+			lastSyncTimeRef.current = now
+
+			if (!isAuthenticated) {
+				setFirstAuth(true)
+				return
 			}
 
-			syncData(SyncTarget.ALL)
-			window.addEventListener('startSync', handleSyncRequest)
+			const isSyncEnabled = await getFromStorage('enable_sync')
+			if (isSyncEnabled === false) {
+				return
+			}
 
+			if (syncInProgressRef.current) return
+
+			syncInProgressRef.current = true
+			setSyncState(SyncState.Syncing)
+
+			try {
+				if (syncTarget === SyncTarget.ALL || syncTarget === SyncTarget.TODOS) {
+					const isSyncTodoComplete = await SyncTodo()
+
+					if (isSyncTodoComplete) {
+						setSyncState(SyncState.Success)
+					} else {
+						setSyncState(SyncState.Error)
+					}
+				}
+			} finally {
+				syncInProgressRef.current = false
+			}
+		},
+		[isAuthenticated],
+	)
+
+	useEffect(() => {
+		const handleSyncRequest = (eventData: any) => {
+			const target = eventData.detail as SyncTarget
+			syncData(target)
+		}
+
+		if (isAuthenticated) {
+			window.addEventListener('startSync', handleSyncRequest)
 			return () => {
 				window.removeEventListener('startSync', handleSyncRequest)
 			}
 		}
 
-		window.removeEventListener('startSync', () => {})
-
 		return undefined
-	}, [isAuthenticated])
+	}, [isAuthenticated, syncData])
 
-	async function syncData(syncTarget: SyncTarget) {
-		if (!isAuthenticated) {
-			setFirstAuth(true)
-			return
-		}
+	const tooltipContent = useMemo(() => {
+		if (syncState === SyncState.Syncing) return 'در حال همگام‌سازی...'
 
-		if (syncInProgressRef.current) return
+		if (syncState === SyncState.Success) return 'همگام‌سازی با موفقیت انجام شد'
 
-		syncInProgressRef.current = true
-		setSyncState(SyncState.Syncing)
+		if (syncState === SyncState.Error) return 'خطا در همگام‌سازی'
 
-		if (syncTarget === SyncTarget.ALL || syncTarget === SyncTarget.TODOS) {
-			const isSyncTodoComplete = await SyncTodo()
-
-			if (isSyncTodoComplete) {
-				setSyncState(SyncState.Success)
-			} else {
-				setSyncState(SyncState.Error)
-			}
-		}
-
-		syncInProgressRef.current = false
-	}
+		return 'همگام‌سازی با حساب کاربری'
+	}, [syncState])
 
 	return (
 		<>
-			<Tooltip
-				delay={0}
-				content={
-					syncState === SyncState.Syncing
-						? 'در حال همگام‌سازی...'
-						: syncState === SyncState.Success
-							? 'همگام‌سازی با موفقیت انجام شد'
-							: syncState === SyncState.Error
-								? 'خطا در همگام‌سازی'
-								: 'همگام‌سازی با حساب کاربری'
-				}
-			>
+			<Tooltip delay={0} content={tooltipContent}>
 				<div className="relative group">
 					<motion.button
 						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
@@ -230,30 +262,27 @@ export function SyncButton() {
 
 async function SyncTodo(): Promise<boolean> {
 	try {
-		const mapTodos = (todos: Todo[]) => {
-			const todosInput = []
-			for (const todo of todos) {
-				todosInput.push({
-					text: todo.text,
-					category: todo.category,
-					date: todo.date,
-					description: todo.notes,
-					priority: todo.priority,
-					completed: todo.completed,
-					offlineId: todo.id,
-					id: todo.onlineId,
-				})
-			}
-
-			return todosInput
+		const mapTodos = (todos: Todo[] = []) => {
+			return todos.map((todo) => ({
+				text: todo.text,
+				category: todo.category,
+				date: todo.date,
+				description: todo.notes,
+				priority: todo.priority,
+				completed: todo.completed,
+				offlineId: todo.id,
+				id: todo.onlineId,
+			}))
 		}
 
-		const apiClient = await getMainClient()
-		const todos = (await getFromStorage('todos')) || []
-		const todosInput = mapTodos(todos)
+		const [apiClient, todos, deletedTodos] = await Promise.all([
+			getMainClient(),
+			getFromStorage('todos'),
+			getFromStorage('deletedTodos'),
+		])
 
-		const deletedTodos = (await getFromStorage('deletedTodos')) || []
-		const deletedTodosInput = mapTodos(deletedTodos)
+		const todosInput = mapTodos(todos || [])
+		const deletedTodosInput = mapTodos(deletedTodos || [])
 
 		const response = await apiClient.post<FetchedTodo[]>('/todos/sync', {
 			todos: todosInput,
@@ -283,11 +312,7 @@ async function SyncTodo(): Promise<boolean> {
 
 		return true
 	} catch (error) {
+		console.error('Error during sync:', error)
 		return false
 	}
-}
-
-export function triggerSync() {
-	const syncEvent = new CustomEvent('startSync')
-	window.dispatchEvent(syncEvent)
 }

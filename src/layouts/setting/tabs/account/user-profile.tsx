@@ -1,14 +1,31 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
 import { useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
 	const { theme, themeUtils } = useTheme()
 	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
+	const [enableSync, setEnableSync] = useState<boolean>(true)
+
+	useEffect(() => {
+		const loadSyncSettings = async () => {
+			const syncEnabled = await getFromStorage('enable_sync')
+			setEnableSync(syncEnabled !== null ? syncEnabled : true)
+		}
+
+		loadSyncSettings()
+	}, [])
+
+	const handleSyncToggle = async (newState: boolean) => {
+		setEnableSync(newState)
+		await setToStorage('enable_sync', newState)
+	}
 
 	const getButtonStyle = () => {
 		switch (theme) {
@@ -97,19 +114,30 @@ export const UserProfile = () => {
 				<SectionPanel title="همگام‌سازی" delay={0.2}>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${themeUtils.getTextColor()}`}>همگام‌سازی تنظیمات</p>
+							<p className={`text-sm ${themeUtils.getTextColor()}`}>
+								فعال‌سازی همگام‌سازی (ُSync)
+							</p>
 							<p className={`text-xs ${themeUtils.getTextColor()} font-light`}>
-								تنظیمات شما به صورت خودکار ذخیره و همگام‌سازی می‌شوند
+								با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های
+								مختلف همگام‌سازی می‌شوند.
 							</p>
 						</div>
-						<div className="flex items-center gap-2">
+						<label className="relative inline-flex items-center cursor-pointer">
+							<input
+								type="checkbox"
+								checked={enableSync}
+								onChange={(e) => handleSyncToggle(e.target.checked)}
+								className="sr-only peer"
+							/>
 							<div
-								className={`w-3 h-3 ${profile?.inCache ? 'bg-amber-500' : 'bg-green-500'} rounded-full`}
+								className={`relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer 
+                                    ${enableSync ? 'bg-blue-500' : 'bg-gray-700'} 
+                                    peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                                    after:content-[''] after:absolute after:top-[2px] after:start-[2px] 
+                                    after:bg-white after:rounded-full after:h-5 after:w-5 
+                                    after:transition-all peer-checked:bg-blue-600`}
 							></div>
-							<span className={`text-xs ${themeUtils.getTextColor()}`}>
-								{profile?.inCache ? 'آفلاین' : 'فعال'}
-							</span>
-						</div>
+						</label>
 					</div>
 				</SectionPanel>
 

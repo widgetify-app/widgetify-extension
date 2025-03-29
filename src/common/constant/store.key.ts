@@ -36,4 +36,6 @@ export interface StorageKV {
 	news: NewsResponse & { isCached?: boolean }
 
 	deletedTodos: Todo[]
+
+	enable_sync: boolean
 }
