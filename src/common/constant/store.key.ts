@@ -2,6 +2,7 @@ import type { SelectedCity } from '@/context/weather.context'
 import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
+import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import type {
 	FetchedForecast,
@@ -31,4 +32,6 @@ export interface StorageKV {
 	forecastWeather: FetchedForecast[]
 	auth_token: string | undefined
 	profile: UserProfile
+	widgetVisibility: any
+	news: NewsResponse & { isCached?: boolean }
 }

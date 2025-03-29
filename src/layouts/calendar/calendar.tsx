@@ -35,7 +35,7 @@ const PersianCalendar: React.FC = () => {
 			className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row xl:h-full h-80"
 			dir="rtl"
 		>
-			<CalendarContainer className="w-full overflow-hidden md:w-7/12 md:flex-1">
+			<CalendarContainer className="w-full overflow-hidden max-w-96 md:w-7/12 md:flex-1">
 				<CalendarHeader
 					currentDate={currentDate}
 					setCurrentDate={setCurrentDate}

@@ -1,6 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
+import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { CurrencyProvider } from '@/context/currency.context'
 import {
@@ -8,9 +9,14 @@ import {
 	useGeneralSetting,
 } from '@/context/general-setting.context'
 import { WeatherProvider } from '@/context/weather.context'
+import {
+	WidgetVisibilityProvider,
+	useWidgetVisibility,
+} from '@/context/widget-visibility.context'
 import { ArzLiveLayout } from '@/layouts/arzLive/arzLive.layout'
 import CalendarLayout from '@/layouts/calendar/calendar'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
+import { NewsLayout } from '@/layouts/news/news.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WeatherLayout } from '@/layouts/weather/weather.layout'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
@@ -26,6 +32,7 @@ const layoutPositions: Record<string, string> = {
 
 function ContentSection() {
 	const { contentAlignment, fontFamily } = useGeneralSetting()
+	const { visibility } = useWidgetVisibility()
 
 	useEffect(() => {
 		if (fontFamily) {
@@ -39,26 +46,32 @@ function ContentSection() {
 		>
 			<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
 				<div className="order-3 w-full lg:w-1/4 lg:order-1">
-					<WidgetifyLayout />
+					{visibility.widgetify ? (
+						<WidgetifyLayout />
+					) : visibility.news ? (
+						<NewsLayout />
+					) : null}
 				</div>
 
-				<div className="order-1 w-full lg:w-2/4 lg:order-2">
+				<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
 					<SearchLayout />
 				</div>
 
 				<div className="order-2 w-full lg:w-1/4 lg:order-3">
-					<CurrencyProvider>
-						<ArzLiveLayout />
-					</CurrencyProvider>
+					{visibility.arzLive && (
+						<CurrencyProvider>
+							<ArzLiveLayout />
+						</CurrencyProvider>
+					)}
 				</div>
 			</div>
 
 			<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
-				<div className="w-full lg:w-8/12">
-					<CalendarLayout />
+				<div className={`w-full ${!visibility.weather ? 'lg:w-full' : 'lg:w-8/12'}`}>
+					{visibility.calendar && <CalendarLayout />}
 				</div>
-				<div className="w-full lg:w-4/12">
-					<WeatherLayout />
+				<div className={`w-full ${!visibility.calendar ? 'lg:w-full' : 'lg:w-4/12'}`}>
+					{visibility.weather && <WeatherLayout />}
 				</div>
 			</div>
 		</div>
@@ -68,6 +81,7 @@ function ContentSection() {
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const currentVersion = Browser.runtime.getManifest().version
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -119,6 +133,18 @@ export function HomePage() {
 		}
 	}, [])
 
+	useEffect(() => {
+		const handleOpenWidgetSettings = () => {
+			setShowWidgetSettings(true)
+		}
+
+		window.addEventListener('openWidgetSettings', handleOpenWidgetSettings)
+
+		return () => {
+			window.removeEventListener('openWidgetSettings', handleOpenWidgetSettings)
+		}
+	}, [])
+
 	function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
 		if (existingVideo) {
@@ -127,7 +153,7 @@ export function HomePage() {
 
 		if (wallpaper.type === 'IMAGE') {
 			const gradient = wallpaper.isRetouchEnabled
-				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
+				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%), '
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
@@ -177,8 +203,14 @@ export function HomePage() {
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col gap-4">
 			<GeneralSettingProvider>
 				<WeatherProvider>
-					<NavbarLayout />
-					<ContentSection />
+					<WidgetVisibilityProvider>
+						<NavbarLayout />
+						<ContentSection />
+						<WidgetSettingsModal
+							isOpen={showWidgetSettings}
+							onClose={() => setShowWidgetSettings(false)}
+						/>
+					</WidgetVisibilityProvider>
 				</WeatherProvider>
 			</GeneralSettingProvider>
 			<Toaster />

@@ -39,7 +39,7 @@ export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 				animate={{ opacity: 1, scale: 1 }}
 			>
 				<TbCloudOff className="text-xs" />
-				<span>حالت آفلاین</span>
+				<span className="font-light">{message || 'حالت آفلاین'}</span>
 			</motion.div>
 		)
 	}

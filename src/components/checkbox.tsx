@@ -1,6 +1,6 @@
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { memo } from 'react'
-import { useTheme } from '@/context/theme.context'
 
 interface CustomCheckboxProps {
 	checked: boolean
@@ -83,7 +83,11 @@ const CustomCheckbox = ({
 					</motion.svg>
 				</motion.div>
 			</div>
-			{label && <span className={`ml-2 text-sm ${getLabelStyle()}`}>{label}</span>}
+			{label && (
+				<span className={`ml-2 mr-2 font-medium text-sm ${getLabelStyle()}`}>
+					{label}
+				</span>
+			)}
 		</motion.label>
 	)
 }
