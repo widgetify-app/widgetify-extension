@@ -2,7 +2,7 @@ import Modal from '@/components/modal'
 import { useTheme } from '@/context/theme.context'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	VscAccount,
 	VscCloud,
@@ -19,11 +19,21 @@ import { WeatherOptions } from './tabs/weather/weather'
 interface SettingModalProps {
 	isOpen: boolean
 	onClose: () => void
+	selectedTab: string | null
 }
 
-export const SettingModal = ({ isOpen, onClose }: SettingModalProps) => {
+export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
+	console.log('SettingModal', { isOpen, selectedTab })
 	const [activeTab, setActiveTab] = useState('general')
 	const { theme } = useTheme()
+
+	useEffect(() => {
+		if (selectedTab) {
+			setActiveTab(selectedTab)
+		} else {
+			setActiveTab('general')
+		}
+	}, [selectedTab])
 
 	const tabs = [
 		{

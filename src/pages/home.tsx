@@ -1,4 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
@@ -110,13 +111,15 @@ export function HomePage() {
 	}
 
 	useEffect(() => {
-		window.addEventListener('wallpaperChanged', (eventData: any) => {
-			const wallpaper: StoredWallpaper = eventData.detail
-			if (wallpaper) {
-				changeWallpaper(wallpaper)
-				setToStorage('wallpaper', wallpaper)
-			}
-		})
+		const wallpaperChangedEvent = listenEvent(
+			'wallpaperChanged',
+			(wallpaper: StoredWallpaper) => {
+				if (wallpaper) {
+					changeWallpaper(wallpaper)
+					setToStorage('wallpaper', wallpaper)
+				}
+			},
+		)
 
 		async function loadWallpaper() {
 			const wallpaper = await getFromStorage('wallpaper')
@@ -129,7 +132,7 @@ export function HomePage() {
 
 		loadWallpaper()
 		return () => {
-			window.removeEventListener('wallpaperChanged', () => {})
+			wallpaperChangedEvent()
 		}
 	}, [])
 
@@ -138,10 +141,13 @@ export function HomePage() {
 			setShowWidgetSettings(true)
 		}
 
-		window.addEventListener('openWidgetSettings', handleOpenWidgetSettings)
+		const openWidgetSettingsEvent = listenEvent(
+			'openWidgetSettings',
+			handleOpenWidgetSettings,
+		)
 
 		return () => {
-			window.removeEventListener('openWidgetSettings', handleOpenWidgetSettings)
+			openWidgetSettingsEvent()
 		}
 	}, [])
 

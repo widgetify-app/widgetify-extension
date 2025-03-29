@@ -1,5 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { EventName, callEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type React from 'react'
@@ -33,10 +33,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			setTodos(todos)
 		}
 
-		window.addEventListener('todosChanged', (eventData: any) => {
-			const todos = eventData.detail
-			if (todos) {
-				const uniqueTodos = todos.reduce((acc: Todo[], todo: Todo) => {
+		const todosChangedEvent = listenEvent('todosChanged', (todoList: Todo[]) => {
+			if (todoList) {
+				const uniqueTodos = todoList.reduce((acc: Todo[], todo: Todo) => {
 					if (!acc.some((t) => t.id === todo.id)) {
 						acc.push(todo)
 					}
@@ -49,7 +48,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		getTodos()
 
 		return () => {
-			window.removeEventListener('todosChanged', () => {})
+			todosChangedEvent()
 		}
 	}, [])
 
@@ -79,7 +78,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				onlineId: null,
 			},
 		])
-		callEvent(EventName.startSync, SyncTarget.TODOS)
+		callEvent('startSync', SyncTarget.TODOS)
 	}
 
 	const removeTodo = async (id: string) => {
@@ -97,7 +96,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 			deletedTodos.push(todo)
 			setToStorage('deletedTodos', deletedTodos)
-			callEvent(EventName.startSync, SyncTarget.TODOS)
+			callEvent('startSync', SyncTarget.TODOS)
 		}
 	}
 
@@ -108,7 +107,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
 			)
 		})
-		callEvent(EventName.startSync, SyncTarget.TODOS)
+		callEvent('startSync', SyncTarget.TODOS)
 	}
 
 	const updateTodo = (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
@@ -116,7 +115,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			if (!prev) return null
 			return prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo))
 		})
-		callEvent(EventName.startSync, SyncTarget.TODOS)
+		callEvent('startSync', SyncTarget.TODOS)
 	}
 
 	const clearCompleted = (date?: string) => {

@@ -1,7 +1,8 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Analytics from '../../../../../analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import type { Wallpaper } from '@/common/wallpaper.interface'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
@@ -60,11 +61,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 			setToStorage('customWallpaper', selectedWallpaper)
 		}
 
-		const event = new CustomEvent('wallpaperChanged', {
-			detail: wallpaperData,
-		})
-
-		window.dispatchEvent(event)
+		callEvent('wallpaperChanged', wallpaperData)
 	}, [selectedWallpaper, isRetouchEnabled])
 
 	const handleSelectBackground = useCallback(

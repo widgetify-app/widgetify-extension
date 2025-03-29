@@ -1,8 +1,10 @@
 import { Colors } from '@/common/constant/colors.constant'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
+import { useTheme } from '@/context/theme.context'
 import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
@@ -30,7 +32,7 @@ export function SyncButton() {
 	const syncInProgressRef = useRef(false)
 	const lastSyncTimeRef = useRef<number>(0)
 	const initialSyncDoneRef = useRef(false)
-
+	const { themeUtils } = useTheme()
 	useEffect(() => {
 		if (syncState === SyncState.Success) {
 			const timer = setTimeout(() => setSyncState(null), 3000)
@@ -131,6 +133,11 @@ export function SyncButton() {
 
 		return 'همگام‌سازی با حساب کاربری'
 	}, [syncState])
+
+	function triggerAccountTabDisplay() {
+		setFirstAuth(false)
+		callEvent('openSettings', 'account')
+	}
 
 	return (
 		<>
@@ -240,20 +247,42 @@ export function SyncButton() {
 				isOpen={firstAuth}
 				onClose={() => setFirstAuth(false)}
 				direction="rtl"
-				title="خطا در همگام‌سازی"
+				title="ورود به حساب کاربری"
 			>
-				<div className="flex flex-col items-center justify-center w-full h-full gap-4 p-4 text-center">
-					<p className="text-gray-300">
-						برای همگام‌سازی، ابتدا وارد حساب کاربری خود شوید.
+				<div className="flex flex-col items-center justify-center w-full gap-6 p-5 text-center">
+					<div className="flex items-center justify-center w-16 h-16 mb-2 rounded-full bg-blue-500/10">
+						<motion.div
+							initial={{ scale: 0.8 }}
+							animate={{ scale: 1 }}
+							transition={{ repeatType: 'reverse', duration: 1.5 }}
+						>
+							<AiOutlineCloudSync size={32} className="text-blue-500" />
+						</motion.div>
+					</div>
+
+					<p className={`${themeUtils.getTextColor()} text-base`}>
+						برای همگام‌سازی اطلاعات خود، ابتدا وارد حساب کاربری شوید.
 					</p>
-					<motion.button
-						className={`px-4 cursor-pointer py-2 text-sm font-medium text-white transition-colors bg-blue-500 border rounded-lg hover:bg-blue-600 ${Colors.bgItemGlass}`}
-						onClick={() => setFirstAuth(false)}
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-					>
-						بستن
-					</motion.button>
+
+					<div className="flex flex-row items-center justify-center gap-3 mt-2">
+						<motion.button
+							className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${themeUtils.getTextColor()} border ${themeUtils.getBorderColor()}`}
+							onClick={() => setFirstAuth(false)}
+							whileHover={{ scale: 1.03 }}
+							whileTap={{ scale: 0.97 }}
+						>
+							بعداً
+						</motion.button>
+
+						<motion.button
+							className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600"
+							onClick={() => triggerAccountTabDisplay()}
+							whileHover={{ scale: 1.03 }}
+							whileTap={{ scale: 0.97 }}
+						>
+							ورود به حساب
+						</motion.button>
+					</div>
 				</div>
 			</Modal>
 		</>
@@ -304,11 +333,7 @@ async function SyncTodo(): Promise<boolean> {
 
 		await setToStorage('deletedTodos', [])
 
-		const event = new CustomEvent('todosChanged', {
-			detail: mapped,
-		})
-
-		window.dispatchEvent(event)
+		callEvent('todosChanged', mapped)
 
 		return true
 	} catch (error) {

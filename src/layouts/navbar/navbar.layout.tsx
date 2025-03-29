@@ -1,4 +1,5 @@
 import { Colors } from '@/common/constant/colors.constant'
+import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { useEffect, useState } from 'react'
@@ -15,16 +16,19 @@ export interface PageLink {
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const { openWidgetSettings } = useWidgetVisibility()
-
+	const [tab, setTab] = useState<string | null>(null)
 	useEffect(() => {
-		const handleOpenSettings = () => {
+		const handleOpenSettings = (tab: any) => {
+			if (tab) {
+				setTab(tab)
+			}
 			setShowSettings(true)
 		}
 
-		window.addEventListener('openSettings', handleOpenSettings)
+		const openSettingEvent = listenEvent('openSettings', handleOpenSettings)
 
 		return () => {
-			window.removeEventListener('openSettings', handleOpenSettings)
+			openSettingEvent()
 		}
 	}, [])
 
@@ -56,7 +60,11 @@ export function NavbarLayout(): JSX.Element {
 					</Tooltip>
 				</div>
 			</nav>
-			<SettingModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+			<SettingModal
+				isOpen={showSettings}
+				onClose={() => setShowSettings(false)}
+				selectedTab={tab}
+			/>
 		</>
 	)
 }
