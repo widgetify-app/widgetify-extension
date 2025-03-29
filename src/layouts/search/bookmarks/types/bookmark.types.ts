@@ -6,7 +6,7 @@ export interface BaseBookmark {
 	type: BookmarkType
 	parentId: string | null
 	isLocal: boolean
-	pinned: boolean
+	isManageable: boolean
 	customImage?: string
 }
 

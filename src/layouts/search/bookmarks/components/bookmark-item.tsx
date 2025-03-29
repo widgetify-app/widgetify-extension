@@ -7,6 +7,7 @@ interface BookmarkItemProps {
 	bookmark: Bookmark | null
 	onClick: () => void
 	theme?: string
+	canAdd: boolean
 }
 
 const getBookmarkStyle = (theme: string) => {
@@ -20,11 +21,16 @@ const getBookmarkStyle = (theme: string) => {
 	}
 }
 
-export function BookmarkItem({ bookmark, onClick, theme = 'glass' }: BookmarkItemProps) {
+export function BookmarkItem({
+	bookmark,
+	onClick,
+	theme = 'glass',
+	canAdd,
+}: BookmarkItemProps) {
 	const [isHovered, setIsHovered] = useState(false)
 
 	if (!bookmark) {
-		return <EmptyBookmarkSlot onClick={onClick} theme={theme} />
+		return <EmptyBookmarkSlot onClick={onClick} theme={theme} canAdd={canAdd} />
 	}
 
 	if (bookmark.type === 'FOLDER') {
@@ -129,15 +135,27 @@ function FolderBookmarkItem({
 function EmptyBookmarkSlot({
 	onClick,
 	theme = 'glass',
-}: { onClick: () => void; theme?: string }) {
+	canAdd,
+}: { onClick: () => void; theme?: string; canAdd: boolean }) {
 	return (
 		<motion.button
-			onClick={onClick}
+			onClick={canAdd ? onClick : undefined}
 			whileHover={{ scale: 1.02 }}
 			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
 		>
-			<div className="relative flex items-center justify-center w-8 h-8 mb-2">+</div>
-			<span className="text-[10px]">افزودن</span>
+			{canAdd ? (
+				<>
+					<div className="relative flex items-center justify-center w-8 h-8 mb-2">+</div>
+					<span className="text-[10px]">افزودن</span>
+				</>
+			) : (
+				<>
+					<div className="relative flex items-center justify-center w-8 h-8 mb-2 opacity-40">
+						<div className="w-5 h-5 border-2 border-gray-400 border-dashed rounded-sm"></div>
+					</div>
+					<span className="text-[10px] opacity-50">غیرفعال</span>
+				</>
+			)}
 		</motion.button>
 	)
 }

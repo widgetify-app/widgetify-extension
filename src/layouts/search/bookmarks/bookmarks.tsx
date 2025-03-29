@@ -21,11 +21,13 @@ export function BookmarksComponent() {
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
+	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
+		useState<boolean>(true)
 
 	const { data: fetchedBookmarks } = useGetBookmarks()
 
 	const processFetchedBookmark = async () => {
-		const unpinnedBookmarks = bookmarks.filter((b) => !b.pinned)
+		const unpinnedBookmarks = bookmarks.filter((b) => !b.isManageable)
 		const deletedBookmarks = (await getFromStorage('deletedBookmarkIds')) || []
 
 		const pinnedBookmarks: Bookmark[] = []
@@ -40,7 +42,7 @@ export function BookmarksComponent() {
 					type: 'FOLDER',
 					parentId: bookmark.parentId,
 					isLocal: false,
-					pinned: bookmark.pinned,
+					isManageable: bookmark.isManageable,
 				})
 			} else {
 				pinnedBookmarks.push({
@@ -49,7 +51,7 @@ export function BookmarksComponent() {
 					type: 'BOOKMARK',
 					parentId: bookmark.parentId,
 					isLocal: false,
-					pinned: bookmark.pinned,
+					isManageable: bookmark.isManageable,
 					url: bookmark.url,
 					icon: bookmark.icon,
 				})
@@ -80,9 +82,8 @@ export function BookmarksComponent() {
 
 	const handleRightClick = (e: React.MouseEvent, bookmark: Bookmark) => {
 		e.preventDefault()
-		if (!bookmark.pinned) {
+		if (bookmark.isManageable) {
 			setSelectedBookmark(bookmark)
-			// get parent
 			const parent = e.currentTarget
 			if (parent) {
 				const rect = parent.getBoundingClientRect()
@@ -95,6 +96,9 @@ export function BookmarksComponent() {
 		if (bookmark.type === 'FOLDER') {
 			setCurrentFolderId(bookmark.id)
 			setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
+			if (typeof bookmark.isManageable === 'boolean') {
+				setCurrentFolderIsManageable(bookmark.isManageable)
+			}
 		} else {
 			window.location.href = bookmark.url
 		}
@@ -104,12 +108,22 @@ export function BookmarksComponent() {
 		if (depth === -1) {
 			setFolderPath([])
 			setCurrentFolderId(null)
+			setCurrentFolderIsManageable(true)
 			return
 		}
 
 		const newPath = folderPath.slice(0, depth + 1)
 		setFolderPath(newPath)
 		setCurrentFolderId(folderId)
+
+		if (folderId) {
+			const folder = bookmarks.find((b) => b.id === folderId)
+			if (folder) {
+				setCurrentFolderIsManageable(folder.isManageable)
+			}
+		} else {
+			setCurrentFolderIsManageable(true)
+		}
 	}
 
 	function onOpenInNewTab(bookmark: Bookmark) {
@@ -135,6 +149,7 @@ export function BookmarksComponent() {
 								bookmark={bookmark}
 								onClick={() => handleBookmarkClick(bookmark)}
 								theme={theme}
+								canAdd={true}
 							/>
 						</div>
 					) : (
@@ -143,6 +158,7 @@ export function BookmarksComponent() {
 							bookmark={null}
 							onClick={() => setShowAddBookmarkModal(true)}
 							theme={theme}
+							canAdd={currentFolderIsManageable}
 						/>
 					),
 				)}

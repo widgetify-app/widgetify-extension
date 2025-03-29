@@ -6,7 +6,7 @@ export interface FetchedSuggestionsBookmark {
 	title: string
 	url: string
 	icon: string
-	pinned: boolean
+	isManageable: boolean
 	type: 'BOOKMARK' | 'FOLDER'
 	parentId: string
 	children: FetchedSuggestionsBookmark[]
