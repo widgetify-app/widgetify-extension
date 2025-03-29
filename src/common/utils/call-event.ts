@@ -4,7 +4,7 @@ import type { StoredWallpaper } from '../wallpaper.interface'
 
 export interface EventName {
 	startSync: SyncTarget
-	openSettings: 'account' | null
+	openSettings: 'account' | 'wallpapers' | null
 	todosChanged: Todo[]
 	wallpaperChanged: StoredWallpaper
 	openWidgetSettings: null

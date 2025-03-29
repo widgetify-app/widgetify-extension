@@ -23,7 +23,6 @@ interface SettingModalProps {
 }
 
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
-	console.log('SettingModal', { isOpen, selectedTab })
 	const [activeTab, setActiveTab] = useState('general')
 	const { theme } = useTheme()
 
@@ -44,7 +43,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 		},
 		{
 			label: 'تصویر زمینه',
-			value: 'backgrounds',
+			value: 'wallpapers',
 			icon: <VscPaintcan size={20} />,
 			element: <WallpaperSetting />,
 		},
