@@ -1,5 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { EventName, callEvent } from '@/common/utils/call-event'
 import type { Todo } from '@/layouts/calendar/interface/todo.interface'
+import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -27,6 +29,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		async function getTodos() {
 			const todos = await getFromStorage('todos')
+
 			setTodos(todos)
 		}
 
@@ -76,13 +79,26 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				onlineId: null,
 			},
 		])
+		callEvent(EventName.startSync, SyncTarget.TODOS)
 	}
 
-	const removeTodo = (id: string) => {
+	const removeTodo = async (id: string) => {
+		const todo = todos?.find((todo) => todo.id === id)
+		if (!todo) return
+
 		setTodos((prev) => {
 			if (!prev) return null
 			return prev.filter((todo) => todo.id !== id)
 		})
+
+		if (todo?.onlineId) {
+			const old = await getFromStorage('deletedTodos')
+			const deletedTodos = old || []
+
+			deletedTodos.push(todo)
+			setToStorage('deletedTodos', deletedTodos)
+			callEvent(EventName.startSync, SyncTarget.TODOS)
+		}
 	}
 
 	const toggleTodo = (id: string) => {
@@ -92,6 +108,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
 			)
 		})
+		callEvent(EventName.startSync, SyncTarget.TODOS)
 	}
 
 	const updateTodo = (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
@@ -99,6 +116,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			if (!prev) return null
 			return prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo))
 		})
+		callEvent(EventName.startSync, SyncTarget.TODOS)
 	}
 
 	const clearCompleted = (date?: string) => {

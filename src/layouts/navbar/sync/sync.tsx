@@ -1,5 +1,5 @@
 import { Colors } from '@/common/constant/colors.constant'
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
@@ -7,7 +7,6 @@ import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interf
 import { getMainClient } from '@/services/api'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
-import ms from 'ms'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
@@ -18,7 +17,10 @@ enum SyncState {
 	Error = 2,
 }
 
-const AUTO_SYNC_INTERVAL = ms('5m') // 5 minutes
+export enum SyncTarget {
+	ALL = 0,
+	TODOS = 1,
+}
 
 export function SyncButton() {
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
@@ -43,20 +45,27 @@ export function SyncButton() {
 		loadUser()
 	}, [syncState])
 
-	// Auto sync effect
 	useEffect(() => {
-		if (!isAuthenticated) return
+		if (isAuthenticated) {
+			const handleSyncRequest = (eventData: any) => {
+				const target = eventData.detail as SyncTarget
+				syncData(target)
+			}
 
-		syncData(true)
+			syncData(SyncTarget.ALL)
+			window.addEventListener('startSync', handleSyncRequest)
 
-		const intervalId = setInterval(() => {
-			syncData(true)
-		}, AUTO_SYNC_INTERVAL)
+			return () => {
+				window.removeEventListener('startSync', handleSyncRequest)
+			}
+		}
 
-		return () => clearInterval(intervalId)
+		window.removeEventListener('startSync', () => {})
+
+		return undefined
 	}, [isAuthenticated])
 
-	async function syncData(isAutoSync = false) {
+	async function syncData(syncTarget: SyncTarget) {
 		if (!isAuthenticated) {
 			setFirstAuth(true)
 			return
@@ -65,16 +74,14 @@ export function SyncButton() {
 		if (syncInProgressRef.current) return
 
 		syncInProgressRef.current = true
+		setSyncState(SyncState.Syncing)
 
-		if (!isAutoSync) {
-			setSyncState(SyncState.Syncing)
-		}
+		if (syncTarget === SyncTarget.ALL || syncTarget === SyncTarget.TODOS) {
+			const isSyncTodoComplete = await SyncTodo()
 
-		const isSyncTodoComplete = await SyncTodo()
-
-		if (!isAutoSync) {
-			if (isSyncTodoComplete) setSyncState(SyncState.Success)
-			else {
+			if (isSyncTodoComplete) {
+				setSyncState(SyncState.Success)
+			} else {
 				setSyncState(SyncState.Error)
 			}
 		}
@@ -99,7 +106,7 @@ export function SyncButton() {
 				<div className="relative group">
 					<motion.button
 						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
-						onClick={() => syncData()}
+						onClick={() => syncData(SyncTarget.ALL)}
 						aria-label="Sync"
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
@@ -223,10 +230,8 @@ export function SyncButton() {
 
 async function SyncTodo(): Promise<boolean> {
 	try {
-		const apiClient = await getMainClient()
-		const todos = await getFromStorage('todos')
-		const todosInput = []
-		if (todos) {
+		const mapTodos = (todos: Todo[]) => {
+			const todosInput = []
 			for (const todo of todos) {
 				todosInput.push({
 					text: todo.text,
@@ -236,12 +241,23 @@ async function SyncTodo(): Promise<boolean> {
 					priority: todo.priority,
 					completed: todo.completed,
 					offlineId: todo.id,
+					id: todo.onlineId,
 				})
 			}
+
+			return todosInput
 		}
+
+		const apiClient = await getMainClient()
+		const todos = (await getFromStorage('todos')) || []
+		const todosInput = mapTodos(todos)
+
+		const deletedTodos = (await getFromStorage('deletedTodos')) || []
+		const deletedTodosInput = mapTodos(deletedTodos)
 
 		const response = await apiClient.post<FetchedTodo[]>('/todos/sync', {
 			todos: todosInput,
+			deletedTodos: deletedTodosInput,
 		})
 
 		const fetchedTodos = response.data
@@ -257,6 +273,8 @@ async function SyncTodo(): Promise<boolean> {
 			notes: todo.description,
 		}))
 
+		await setToStorage('deletedTodos', [])
+
 		const event = new CustomEvent('todosChanged', {
 			detail: mapped,
 		})
@@ -267,4 +285,9 @@ async function SyncTodo(): Promise<boolean> {
 	} catch (error) {
 		return false
 	}
+}
+
+export function triggerSync() {
+	const syncEvent = new CustomEvent('startSync')
+	window.dispatchEvent(syncEvent)
 }

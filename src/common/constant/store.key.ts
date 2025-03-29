@@ -34,4 +34,6 @@ export interface StorageKV {
 	profile: UserProfile
 	widgetVisibility: any
 	news: NewsResponse & { isCached?: boolean }
+
+	deletedTodos: Todo[]
 }
