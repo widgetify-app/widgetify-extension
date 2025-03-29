@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
-import { CiLocationOn } from 'react-icons/ci'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedCity } from '@/services/getMethodHooks/weather/weather.interface'
+import { useEffect, useRef } from 'react'
+import { CiLocationOn } from 'react-icons/ci'
 
 interface CityResultsListProps {
 	cities: Array<FetchedCity>
@@ -35,11 +35,11 @@ export function CityResultsList({
 	const getContainerStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-white/90 border-gray-300/30 shadow-lg'
+				return 'bg-white border-gray-300/30 shadow-lg'
 			case 'dark':
-				return 'bg-gray-800/90 border-white/10 shadow-lg'
+				return 'bg-gray-800/90 border-white/10 shadow-lg backdrop-blur-sm'
 			default: // glass
-				return 'bg-gray-800/80 border-white/10 shadow-lg'
+				return 'bg-gray-800/80 border-white/10 shadow-lg backdrop-blur-sm'
 		}
 	}
 
@@ -112,7 +112,7 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden border rounded-lg backdrop-blur-md ${getContainerStyle()}`}
+				className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
 			>
 				<div className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}>
 					<div
@@ -128,7 +128,7 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden border rounded-lg backdrop-blur-md ${getContainerStyle()}`}
+				className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
 			>
 				<div className={`p-4 text-center ${getEmptyResultStyle()}`}>
 					شهری با این نام یافت نشد
@@ -140,13 +140,13 @@ export function CityResultsList({
 	return (
 		<div
 			ref={listRef}
-			className={`overflow-hidden border rounded-lg backdrop-blur-md ${getContainerStyle()}`}
+			className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
 		>
 			<div className="overflow-y-auto max-h-60 custom-scrollbar">
 				{cities.map((city) => (
 					<button
 						key={`${city.name}-${city.lat}-${city.lon}`}
-						className={`flex flex-col w-full p-3 text-right transition-colors border-b last:border-0 ${getCityItemStyle()}`}
+						className={`flex flex-col w-full cursor-pointer p-3 text-right transition-colors border-b last:border-0 ${getCityItemStyle()}`}
 						onClick={() => onSelectCity(city)}
 					>
 						<div className="flex items-center gap-2">
