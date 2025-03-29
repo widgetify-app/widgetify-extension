@@ -137,29 +137,56 @@ function EmptyBookmarkSlot({
 	theme = 'glass',
 	canAdd,
 }: { onClick: () => void; theme?: string; canAdd: boolean }) {
+	const [isHovered, setIsHovered] = useState(false)
+
+	const getEmptySlotStyle = () => {
+		if (!canAdd) {
+			return `opacity-30 ${getBookmarkStyle(theme)} cursor-default`
+		}
+
+		switch (theme) {
+			case 'light':
+				return `${getBookmarkStyle(theme)} border-blue-300/40 hover:border-blue-400/70 hover:bg-blue-50/50`
+			case 'dark':
+				return `${getBookmarkStyle(theme)} border-blue-500/20 hover:border-blue-400/40 hover:bg-blue-900/20`
+			default: // glass
+				return `${getBookmarkStyle(theme)} border-blue-400/20 hover:border-blue-400/40 hover:bg-blue-900/10`
+		}
+	}
+
 	return (
 		<motion.button
 			onClick={canAdd ? onClick : undefined}
-			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+			whileHover={canAdd ? { scale: 1.02 } : { scale: 1 }}
+			transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-h-[5.7rem] min-w-[5.4rem] max-w-[5.4rem] ${getEmptySlotStyle()}`}
 		>
-			{canAdd ? (
-				<>
-					<div className="relative flex items-center justify-center w-8 h-8 mb-2">+</div>
-					<span className="text-[10px]">افزودن</span>
-				</>
-			) : (
-				<>
-					<div className="relative flex items-center justify-center w-8 h-8 mb-2 opacity-40">
-						<div className="w-5 h-5 border-2 border-gray-400 border-dashed rounded-sm"></div>
-					</div>
-					<span className="text-[10px] opacity-50">غیرفعال</span>
-				</>
+			<div className="relative flex items-center justify-center">
+				{canAdd ? (
+					<motion.div
+						className="flex items-center justify-center w-6 h-6 text-xl text-blue-400 transition-colors border-2 rounded-full border-blue-400/50 group-hover:border-blue-500 group-hover:text-blue-500"
+						animate={isHovered ? { scale: 1.1, rotate: 90 } : { scale: 1, rotate: 0 }}
+						transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+					>
+						+
+					</motion.div>
+				) : (
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>
+				)}
+			</div>
+
+			{canAdd && (
+				<div
+					className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
+				/>
 			)}
+
+			{canAdd && isHovered && <BookmarkTooltip title="افزودن بوکمارک" theme={theme} />}
 		</motion.button>
 	)
 }
-
 function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	let displayIcon: string | React.ReactNode
 
