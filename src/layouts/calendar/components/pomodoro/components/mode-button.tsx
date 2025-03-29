@@ -24,7 +24,7 @@ export const ModeButton: React.FC<ModeButtonProps> = ({
 			whileHover={{ scale: 1.05 }}
 			whileTap={{ scale: 0.95 }}
 			onClick={onClick}
-			className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${getStyle(mode)}`}
+			className={`px-3 py-1 cursor-pointer text-xs font-medium rounded-md transition-colors ${getStyle(mode)}`}
 		>
 			{modeLabels[mode]} {isActive && <FiCheck className="inline" />}
 		</motion.button>

@@ -13,7 +13,7 @@ export const ControlButton: React.FC<ControlButtonProps> = ({ icon, onClick, col
 			whileHover={{ scale: 1.1 }}
 			whileTap={{ scale: 0.95 }}
 			onClick={onClick}
-			className={`p-3 text-white rounded-full shadow-md transition-colors ${color}`}
+			className={`p-3 text-white cursor-pointer rounded-full shadow-md transition-colors ${color}`}
 		>
 			{icon}
 		</motion.button>

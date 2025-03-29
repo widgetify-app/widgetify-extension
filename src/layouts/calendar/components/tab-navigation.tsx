@@ -51,7 +51,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 					whileHover={{ scale: 1.02 }}
 					whileTap={{ scale: 0.98 }}
 					onClick={() => onTabClick(tab.id)}
-					className={`flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-md transition-all ${
+					className={`flex items-center gap-1 cursor-pointer px-3 py-1 text-xs font-medium rounded-md transition-all ${
 						activeTab === tab.id
 							? 'bg-blue-500 text-white shadow-sm'
 							: getInactiveTabStyle()

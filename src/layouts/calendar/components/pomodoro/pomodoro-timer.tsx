@@ -206,7 +206,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					whileHover={{ scale: 1.1, rotate: 15 }}
 					whileTap={{ scale: 0.95 }}
 					onClick={() => setShowSettings(!showSettings)}
-					className={`p-2 rounded-full transition-colors ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
+					className={`p-2 rounded-full cursor-pointer transition-colors ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
 				>
 					<FiSettings className={getTextStyle()} />
 				</motion.button>
