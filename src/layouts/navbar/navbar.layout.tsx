@@ -1,4 +1,5 @@
 import { Colors } from '@/common/constant/colors.constant'
+import Tooltip from '@/components/toolTip'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { useEffect, useState } from 'react'
 import { TbApps } from 'react-icons/tb'
@@ -35,20 +36,24 @@ export function NavbarLayout(): JSX.Element {
 				</div>
 				<div className="flex items-center gap-2">
 					<SyncButton />
-					<button
-						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
-						onClick={() => openWidgetSettings()}
-						aria-label="Widgets"
-					>
-						<TbApps size={22} />
-					</button>
-					<button
-						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
-						onClick={() => setShowSettings(true)}
-						aria-label="Settings"
-					>
-						<VscSettings size={22} />
-					</button>
+					<Tooltip content="مدیریت ویجت‌ها">
+						<button
+							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
+							onClick={() => openWidgetSettings()}
+							aria-label="Widgets"
+						>
+							<TbApps size={22} />
+						</button>
+					</Tooltip>
+					<Tooltip content="تنظیمات">
+						<button
+							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-400 ${Colors.bgItemGlass}`}
+							onClick={() => setShowSettings(true)}
+							aria-label="Settings"
+						>
+							<VscSettings size={22} />
+						</button>
+					</Tooltip>
 				</div>
 			</nav>
 			<SettingModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
