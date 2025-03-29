@@ -2,7 +2,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
-export type FontFamily = 'Vazir' | 'digiLalezarPlus' | 'Behdad' | 'Samim'
+export type FontFamily = 'Vazir' | 'Samim'
 
 export interface GeneralData {
 	analyticsEnabled: boolean

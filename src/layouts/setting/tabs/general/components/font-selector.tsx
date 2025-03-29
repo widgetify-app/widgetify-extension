@@ -17,16 +17,6 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			sampleText: 'نمونه متن با فونت وزیر',
 		},
 		{
-			value: 'digiLalezarPlus',
-			label: 'دیجی لاله‌زار پلاس',
-			sampleText: 'بهار زندگی',
-		},
-		{
-			value: 'Behdad',
-			label: 'بهداد',
-			sampleText: 'نمونه متن با فونت بهداد',
-		},
-		{
 			value: 'Samim',
 			label: 'صمیم',
 			sampleText: 'نمونه متن با فونت صمیم',
@@ -79,7 +69,7 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 						<button
 							key={font.value}
 							onClick={() => setFontFamily(font.value)}
-							className={`flex flex-col items-center w-auto p-3 transition border rounded-lg ${
+							className={`flex cursor-pointer flex-col items-center w-auto p-3 transition border rounded-lg ${
 								fontFamily === font.value
 									? getActiveButtonStyle()
 									: getInactiveButtonStyle()
