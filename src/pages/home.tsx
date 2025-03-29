@@ -159,7 +159,7 @@ export function HomePage() {
 
 		if (wallpaper.type === 'IMAGE') {
 			const gradient = wallpaper.isRetouchEnabled
-				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%), '
+				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
