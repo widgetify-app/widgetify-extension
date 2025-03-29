@@ -118,7 +118,7 @@ export function DayItem({
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
-                    relative p-1 xl:p-2 rounded-lg text-xs xl:text-sm transition-colors cursor-pointer w-[50%] xl:w-full
+                    relative p-1 rounded-lg text-xs transition-colors cursor-pointer w-[50%]
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
                     ${getFontWeight()}
@@ -126,14 +126,14 @@ export function DayItem({
                 `}
 			>
 				{day}
-				<div className="absolute flex flex-wrap items-center justify-center w-full gap-1 -translate-x-1/2 bottom-1 left-1/2">
+				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-1 left-1/2">
 					{eventIcons.length > 0 ? (
 						eventIcons.slice(0, 1).map((icon, idx) => (
 							<img
 								key={idx}
 								src={icon}
 								alt="رویداد"
-								className="w-4.5 h-4.5 object-contain rounded-full"
+								className="w-2.5 h-2.5 object-contain rounded-full"
 								onError={(e) => {
 									e.currentTarget.style.display = 'none'
 
@@ -149,14 +149,10 @@ export function DayItem({
 					) : (
 						<>
 							{hasEvent ? (
-								<span
-									className={`xl:w-1 w-0.5 xl:h-1 h-0.5  rounded-full ${getEventIndicatorStyle()}`}
-								/>
+								<span className={`w-1 h-1  rounded-full ${getEventIndicatorStyle()}`} />
 							) : null}
 							{hasTodo ? (
-								<span
-									className={`xl:w-1 w-0.5 xl:h-1 h-0.5  rounded-full ${getTodoIndicatorStyle()}`}
-								/>
+								<span className={`w-1 h-1  rounded-full ${getTodoIndicatorStyle()}`} />
 							) : null}
 						</>
 					)}

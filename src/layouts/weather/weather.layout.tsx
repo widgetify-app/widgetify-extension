@@ -86,7 +86,7 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<div className="flex flex-col xl:gap-2 xl:h-full h-80">
+			<div className="flex flex-col h-80">
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
 				<motion.div

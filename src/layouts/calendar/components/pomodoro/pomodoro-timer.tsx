@@ -180,7 +180,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			className="relative p-1 overflow-hidden rounded-xl"
 		>
 			{/* Mode Selection */}
-			<div className="relative flex items-center justify-between mb-2 xl:mb-4">
+			<div className="relative flex items-center justify-between mb-2">
 				<div className="flex items-center space-x-2">
 					<ModeButton
 						mode="work"
@@ -213,7 +213,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			</div>
 
 			{/* Timer Display */}
-			<div className="relative mt-4 xl:mt-6">
+			<div className="relative mt-4">
 				<TimerDisplay
 					timeLeft={timeLeft}
 					progress={progress}
@@ -226,7 +226,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				/>
 
 				{/* Control buttons */}
-				<div className="flex justify-center space-x-4 xl:mt-2 mt-0.5">
+				<div className="flex justify-center space-x-4 mt-0.5">
 					{isRunning ? (
 						<ControlButton
 							icon={<FiPause />}

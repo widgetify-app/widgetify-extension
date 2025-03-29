@@ -44,7 +44,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div className={`inline-flex xl:p-0.5 rounded-lg ${getTabContainerStyle()}`}>
+		<div className={`inline-flex rounded-lg ${getTabContainerStyle()}`}>
 			{tabs.map((tab) => (
 				<motion.button
 					key={tab.id}

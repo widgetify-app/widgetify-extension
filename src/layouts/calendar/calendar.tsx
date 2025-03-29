@@ -1,6 +1,5 @@
 import { useTheme } from '@/context/theme.context'
 import { TodoProvider } from '@/context/todo.context'
-import { AnimatePresence } from 'framer-motion'
 import type React from 'react'
 import { useCallback, useState } from 'react'
 import { CalendarContainer } from './components/calendar-container'
@@ -32,7 +31,7 @@ const PersianCalendar: React.FC = () => {
 
 	return (
 		<div
-			className="flex flex-col justify-center w-full gap-3 mb-1 md:flex-row xl:h-full h-80"
+			className="flex flex-col justify-center w-full h-full gap-3 mb-1 sm:h-80 md:flex-row sm:"
 			dir="rtl"
 		>
 			<CalendarContainer className="w-full overflow-hidden max-w-96 md:w-7/12 md:flex-1">
@@ -49,8 +48,8 @@ const PersianCalendar: React.FC = () => {
 					setSelectedDate={setSelectedDate}
 				/>
 
-				<div className={`px-4 mt-1 xl:mt-2 border-t ${themeUtils.getBorderColor()}`}>
-					<div className="mt-1 xl:mt-2">
+				<div className={`px-4 mt-1 border-t ${themeUtils.getBorderColor()}`}>
+					<div className="mt-1">
 						<TabNavigation activeTab={activeTab} onTabClick={handleTabClick} />
 					</div>
 
@@ -59,15 +58,13 @@ const PersianCalendar: React.FC = () => {
 			</CalendarContainer>
 
 			<CalendarContainer className="w-full p-3 md:w-5/12 md:p-4">
-				<AnimatePresence mode="wait">
-					<CalendarContent
-						activeTab={activeTab}
-						selectedDate={selectedDate}
-						setSelectedDate={setSelectedDate}
-						currentDate={currentDate}
-						setCurrentDate={setCurrentDate}
-					/>
-				</AnimatePresence>
+				<CalendarContent
+					activeTab={activeTab}
+					selectedDate={selectedDate}
+					setSelectedDate={setSelectedDate}
+					currentDate={currentDate}
+					setCurrentDate={setCurrentDate}
+				/>
 			</CalendarContainer>
 		</div>
 	)

@@ -67,12 +67,10 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 
 	return (
 		<div
-			className={`xl:mt-1 mt-0.5 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
+			className={`mt-0.5 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
 		>
 			<div className="p-2">
-				<h3
-					className={`xl:text-sm text-xs font-medium xl:mb-2 mb-0.5 ${getTextStyle()} truncate`}
-				>
+				<h3 className={`text-xs font-medium mb-0.5 ${getTextStyle()} truncate`}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
@@ -81,19 +79,17 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('events')}
-						className={`xl:p-3 p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
 					>
 						<FiCalendar
 							className={`mt-0.5 ml-2 flex-shrink-0 ${allEvents.length > 0 ? 'text-blue-500' : getSubTextStyle()}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div
-								className={`xl:text-sm text-xs font-medium ${getTextStyle()} truncate`}
-							>
+							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
 								{allEvents.length} رویداد
 							</div>
-							<div className={`xl:text-xs text-[.50rem] ${getHolidayStyle()} truncate`}>
+							<div className={`text-[.50rem] ${getHolidayStyle()} truncate`}>
 								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
 							</div>
 						</div>
@@ -108,19 +104,17 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('todos')}
-						className={`xl:p-3 p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
 					>
 						<FiClipboard
 							className={`mt-0.5 ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div
-								className={`xl:text-sm text-xs font-medium ${getTextStyle()} truncate`}
-							>
+							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
 								{totalTodos} یادداشت
 							</div>
-							<div className={`xl:text-xs text-[.50rem] ${getSubTextStyle()} truncate`}>
+							<div className={`text-[.50rem] ${getSubTextStyle()} truncate`}>
 								{totalTodos > 0
 									? `${completedTodos} از ${totalTodos} انجام شده`
 									: 'بدون یادداشت'}

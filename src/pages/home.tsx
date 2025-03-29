@@ -68,10 +68,10 @@ function ContentSection() {
 			</div>
 
 			<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
-				<div className={`w-full ${!visibility.weather ? 'lg:w-full' : 'lg:w-8/12'}`}>
+				<div className={'w-full lg:w-8/12'}>
 					{visibility.calendar && <CalendarLayout />}
 				</div>
-				<div className={`w-full ${!visibility.calendar ? 'lg:w-full' : 'lg:w-4/12'}`}>
+				<div className={'w-full lg:w-4/12'}>
 					{visibility.weather && <WeatherLayout />}
 				</div>
 			</div>

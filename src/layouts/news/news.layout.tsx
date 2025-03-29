@@ -51,7 +51,7 @@ export const NewsLayout = () => {
 	return (
 		<div className="relative">
 			<div
-				className={`flex xl:max-h-96 h-80 flex-col gap-1 px-2 py-2 ${themeUtils.getCardBackground()} rounded-2xl `}
+				className={`flex h-80 flex-col gap-1 px-2 py-2 ${themeUtils.getCardBackground()} rounded-2xl `}
 				style={{
 					scrollbarWidth: 'none',
 				}}

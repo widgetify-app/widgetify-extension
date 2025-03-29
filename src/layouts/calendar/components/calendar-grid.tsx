@@ -33,15 +33,15 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	}
 
 	return (
-		<div className="grid grid-cols-7 px-1 text-center md:px-4">
+		<div className="grid grid-cols-7 px-1 text-center h-[50%] md:px-4">
 			{WEEKDAYS.map((day) => (
-				<div key={day} className={`xl:py-2  text-sm ${getWeekdayHeaderStyle()}`}>
+				<div key={day} className={`text-sm ${getWeekdayHeaderStyle()}`}>
 					{day}
 				</div>
 			))}
 
 			{Array.from({ length: emptyDays }).map((_, i) => (
-				<div key={`empty-${i}`} className="p-1 xl:p-2" />
+				<div key={`empty-${i}`} className="p-1" />
 			))}
 
 			{Array.from({ length: daysInMonth }, (_, i) => (
