@@ -138,11 +138,11 @@ export function SelectCurrencyModal({
 	const getButtonStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-white bg-green-500 hover:bg-green-600 active:bg-green-700 shadow-sm'
+				return 'text-white bg-green-600 hover:bg-green-700 active:bg-green-800'
 			case 'dark':
-				return 'text-gray-100 bg-green-600 hover:bg-green-700 active:bg-green-800 shadow-md'
+				return 'text-gray-100 bg-green-700 hover:bg-green-800 active:bg-green-900'
 			default: // glass
-				return 'text-white bg-green-600/80 hover:bg-green-600 active:bg-green-700 backdrop-blur-sm shadow-md'
+				return 'text-white bg-green-700/80 hover:bg-green-700 active:bg-green-800'
 		}
 	}
 
