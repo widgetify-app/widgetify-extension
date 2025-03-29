@@ -1,11 +1,12 @@
+import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
+import { useCurrencyStore } from '@/context/currency.context'
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
+import { FiSearch } from 'react-icons/fi'
 import { TiPlus } from 'react-icons/ti'
-import Modal from '@/components/modal'
-import { MultiSelectDropdown } from '@/components/selectBox/multiSelectDropdown.component'
-import { useCurrencyStore } from '@/context/currency.context'
-import { useTheme } from '@/context/theme.context'
 
 export type SupportedCurrencies = {
 	key: string
@@ -122,51 +123,172 @@ export function SelectCurrencyModal({
 }: AddCurrencyModalProps) {
 	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
 	const { theme } = useTheme()
+	const [searchQuery, setSearchQuery] = useState('')
 
 	const onClose = () => setShow(false)
 
-	function onCurrencyChange(values: string[]) {
-		setSelectedCurrencies([])
-		setSelectedCurrencies(values)
+	const toggleCurrency = (currencyKey: string) => {
+		setSelectedCurrencies(
+			selectedCurrencies.includes(currencyKey)
+				? selectedCurrencies.filter((key) => key !== currencyKey)
+				: [...selectedCurrencies, currencyKey],
+		)
 	}
 
 	const getButtonStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-white bg-green-600 hover:bg-green-700 active:bg-green-800'
+				return 'text-white bg-green-500 hover:bg-green-600 active:bg-green-700 shadow-sm'
 			case 'dark':
-				return 'text-gray-100 bg-green-700 hover:bg-green-800 active:bg-green-900'
+				return 'text-gray-100 bg-green-600 hover:bg-green-700 active:bg-green-800 shadow-md'
 			default: // glass
-				return 'text-white bg-green-700/80 hover:bg-green-700 active:bg-green-800'
+				return 'text-white bg-green-600/80 hover:bg-green-600 active:bg-green-700 backdrop-blur-sm shadow-md'
 		}
 	}
 
+	const getBoxStyle = (isSelected: boolean) => {
+		const baseStyle =
+			'p-3 rounded-xl border transition-colors duration-200 cursor-pointer flex flex-col items-center justify-center gap-1'
+
+		if (isSelected) {
+			switch (theme) {
+				case 'light':
+					return `${baseStyle} bg-green-50 border-green-300 text-green-700 shadow-sm`
+				case 'dark':
+					return `${baseStyle} bg-green-900/30 border-green-600/60 text-green-400 shadow-md`
+				default: // glass
+					return `${baseStyle} bg-green-700/20 border-green-500/50 text-white backdrop-blur-sm shadow-md`
+			}
+		}
+
+		switch (theme) {
+			case 'light':
+				return `${baseStyle} bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:shadow-sm`
+			case 'dark':
+				return `${baseStyle} bg-gray-800/50 border-gray-700/60 hover:bg-gray-700/40 text-gray-300 hover:shadow-md`
+			default: // glass
+				return `${baseStyle} bg-black/10 border-gray-500/20 hover:bg-black/20 text-gray-200 backdrop-blur-sm hover:shadow-md`
+		}
+	}
+
+	const currencyGroups = getCurrencyOptions(supportCurrencies)
+	const filteredGroups = currencyGroups
+		.map((group) => ({
+			...group,
+			options: group.options.filter((option) =>
+				option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+			),
+		}))
+		.filter((group) => group.options.length > 0)
+
+	const containerVariants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			transition: {
+				duration: 0.3,
+				when: 'beforeChildren',
+				staggerChildren: 0.1,
+			},
+		},
+	}
+
+	const itemVariants = {
+		hidden: { y: 10, opacity: 0 },
+		visible: { y: 0, opacity: 1, transition: { duration: 0.2 } },
+	}
+
 	return (
-		<Modal isOpen={show} onClose={onClose} size="sm" title="افزودن ارز" direction="rtl">
-			<div className="w-full">
-				<div>
-					<MultiSelectDropdown
-						options={getCurrencyOptions(supportCurrencies) as any}
-						values={getSelectedCurrencies(selectedCurrencies, supportCurrencies)}
-						onChange={(values) => onCurrencyChange(values.map((item) => item.value))}
-						placeholder={'جستجو ...'}
+		<Modal isOpen={show} onClose={onClose} size="md" title="افزودن ارز" direction="rtl">
+			<motion.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.3 }}
+				className="w-full"
+			>
+				{/* Search input */}
+				<div className="relative mb-5">
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.2 }}
+						className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+					>
+						<FiSearch />
+					</motion.div>
+					<TextInput
+						type="text"
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e)}
+						placeholder="جستجو ..."
 					/>
 				</div>
 
-				<div className="flex justify-center w-full mt-3">
-					<button
+				{/* Currency groups */}
+				<motion.div
+					className="pr-1 overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+					variants={containerVariants}
+					initial="hidden"
+					animate="visible"
+				>
+					{filteredGroups.map((group, groupIndex) => (
+						<motion.div key={groupIndex} className="mb-6" variants={itemVariants}>
+							<h3
+								className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}
+							>
+								{group.label}
+							</h3>
+							<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+								{group.options.map((option) => {
+									const isSelected = selectedCurrencies.includes(option.value)
+
+									return (
+										<motion.div
+											key={option.value}
+											className={getBoxStyle(isSelected)}
+											onClick={() => toggleCurrency(option.value)}
+											variants={itemVariants}
+											whileHover={{ scale: 1.03 }}
+											whileTap={{ scale: 0.97 }}
+											layout
+										>
+											<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
+												{option.label}
+											</div>
+											<div
+												className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
+											>
+												{option.value}
+											</div>
+										</motion.div>
+									)
+								})}
+							</div>
+						</motion.div>
+					))}
+				</motion.div>
+
+				{/* Confirmation button */}
+				<motion.div
+					className="flex justify-center w-full mt-5"
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.3 }}
+				>
+					<motion.button
 						onClick={onClose}
 						type="button"
-						className={`p-2 transition-colors duration-300 rounded cursor-pointer w-100 ${getButtonStyle()}`}
+						whileHover={{ scale: 1.03 }}
+						whileTap={{ scale: 0.97 }}
+						className={`px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm ${getButtonStyle()}`}
 					>
 						تایید
-					</button>
-				</div>
-			</div>
+					</motion.button>
+				</motion.div>
+			</motion.div>
 		</Modal>
 	)
 }
-
 interface Option {
 	label: string
 	options: {
@@ -214,14 +336,4 @@ function getCurrencyOptions(supported: SupportedCurrencies): Option[] {
 			})),
 		},
 	]
-}
-
-function getSelectedCurrencies(
-	selected: string[],
-	list: SupportedCurrencies,
-): { value: string; label: string }[] {
-	return selected.map((key) => ({
-		value: key,
-		label: list.find((item) => item.key === key)?.label?.fa || '',
-	}))
 }
