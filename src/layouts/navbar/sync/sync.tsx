@@ -53,23 +53,26 @@ export function SyncButton() {
 
 	useEffect(() => {
 		async function initialSync() {
-			if (!isAuthenticated || initialSyncDoneRef.current) return
+			if (!isAuthenticated || initialSyncDoneRef.current) {
+				return
+			}
 
 			const isSyncEnabled = await getFromStorage('enable_sync')
-			if (isSyncEnabled === false) return
+			if (isSyncEnabled === false) {
+				return
+			}
 
 			initialSyncDoneRef.current = true
 
 			setTimeout(() => {
-				syncData(SyncTarget.ALL)
+				syncData(SyncTarget.ALL, 'GET')
 			}, 1000)
 		}
-
 		initialSync()
 	}, [isAuthenticated])
 
 	const syncData = useCallback(
-		async (syncTarget: SyncTarget) => {
+		async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
 			const now = Date.now()
 			if (now - lastSyncTimeRef.current < 500) {
 				return
@@ -82,6 +85,7 @@ export function SyncButton() {
 			}
 
 			const isSyncEnabled = await getFromStorage('enable_sync')
+
 			if (isSyncEnabled === false) {
 				return
 			}
@@ -93,7 +97,7 @@ export function SyncButton() {
 
 			try {
 				if (syncTarget === SyncTarget.ALL || syncTarget === SyncTarget.TODOS) {
-					const isSyncTodoComplete = await SyncTodo()
+					const isSyncTodoComplete = await SyncTodo(method)
 
 					if (isSyncTodoComplete) {
 						setSyncState(SyncState.Success)
@@ -111,7 +115,7 @@ export function SyncButton() {
 	useEffect(() => {
 		const handleSyncRequest = (eventData: any) => {
 			const target = eventData.detail as SyncTarget
-			syncData(target)
+			syncData(target, 'POST')
 		}
 
 		if (isAuthenticated) {
@@ -145,7 +149,7 @@ export function SyncButton() {
 				<div className="relative group">
 					<motion.button
 						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
-						onClick={() => syncData(SyncTarget.ALL)}
+						onClick={() => syncData(SyncTarget.ALL, 'POST')}
 						aria-label="Sync"
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
@@ -289,7 +293,7 @@ export function SyncButton() {
 	)
 }
 
-async function SyncTodo(): Promise<boolean> {
+async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 	try {
 		const mapTodos = (todos: Todo[] = []) => {
 			return todos.map((todo) => ({
@@ -309,16 +313,21 @@ async function SyncTodo(): Promise<boolean> {
 			getFromStorage('todos'),
 			getFromStorage('deletedTodos'),
 		])
+		let fetchedTodos: FetchedTodo[] = []
+		if (method === 'POST') {
+			const todosInput = mapTodos(todos || [])
+			const deletedTodosInput = mapTodos(deletedTodos || [])
 
-		const todosInput = mapTodos(todos || [])
-		const deletedTodosInput = mapTodos(deletedTodos || [])
+			const response = await apiClient.post<FetchedTodo[]>('/todos/sync', {
+				todos: todosInput,
+				deletedTodos: deletedTodosInput,
+			})
 
-		const response = await apiClient.post<FetchedTodo[]>('/todos/sync', {
-			todos: todosInput,
-			deletedTodos: deletedTodosInput,
-		})
-
-		const fetchedTodos = response.data
+			fetchedTodos = response.data
+		} else {
+			const response = await apiClient.get<FetchedTodo[]>('/todos/@me')
+			fetchedTodos = response.data
+		}
 
 		const mapped: Todo[] = fetchedTodos.map((todo: FetchedTodo) => ({
 			id: todo.offlineId || todo.id,
