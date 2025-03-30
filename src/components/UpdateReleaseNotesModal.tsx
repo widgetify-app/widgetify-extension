@@ -1,6 +1,6 @@
+import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { RiBug2Line, RiCheckboxCircleFill, RiStarLine, RiToolsLine } from 'react-icons/ri'
-import { useTheme } from '@/context/theme.context'
 import Modal from './modal'
 
 type ReleaseNotes = Record<
@@ -11,6 +11,40 @@ type ReleaseNotes = Record<
 	}[]
 >
 const releaseNotes: ReleaseNotes = {
+	'1.0.2': [
+		{
+			type: 'feature',
+			description: 'اضافه شدن ویجت آخرین خبرهای روز',
+		},
+		{
+			type: 'feature',
+			description: 'اضافه شدن قابلیت فعال و غیرفعال کردن ویجت‌ها',
+		},
+		{
+			type: 'feature',
+			description: 'اضافه شدن ایجاد حساب کاربری و ورود به آن',
+		},
+		{
+			type: 'feature',
+			description: 'اضافه شدن امکان همگام‌سازی اطلاعات با حساب کاربری (sync)',
+		},
+		{
+			type: 'feature',
+			description: 'نمایش تاریخ میلادی و قمری روز در ویجت تقویم',
+		},
+		{
+			type: 'improvement',
+			description: 'بهبود نمایش ویجت‌ها در اندازه‌های مختلف صفحه نمایش و دستگاه‌های مختلف',
+		},
+		{
+			type: 'improvement',
+			description: 'بهبود طراحی در قسمت های: ویجت ها و تنظیمات',
+		},
+		{
+			type: 'bugfix',
+			description: 'رفع چندین مشکل جزئی',
+		},
+	],
 	'1.0.1': [
 		{ type: 'improvement', description: 'بهبود قسمت سرچ باکس' },
 		{ type: 'improvement', description: 'بهینه‌سازی تقویم و سیستم مدیریت یادداشت‌ها' },
@@ -116,7 +150,7 @@ export const UpdateReleaseNotesModal = ({
 								>
 									<div className="mt-0.5 ml-2">{getTypeIcon(note.type)}</div>
 									<div>
-										<p className="text-sm">{note.description}</p>
+										<p className="text-sm font-light">{note.description}</p>
 									</div>
 								</motion.li>
 							))}
