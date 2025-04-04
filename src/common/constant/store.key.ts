@@ -3,6 +3,7 @@ import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
+import type { TrendItem } from '@/services/getMethodHooks/trends/getTrends'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import type {
 	FetchedForecast,
@@ -34,7 +35,7 @@ export interface StorageKV {
 	profile: UserProfile
 	widgetVisibility: any
 	news: NewsResponse & { isCached?: boolean }
-
+	search_trends: TrendItem[]
 	deletedTodos: Todo[]
 
 	enable_sync: boolean

@@ -1,14 +1,16 @@
 import { BookmarkProvider } from '@/context/bookmark.context'
 import { useTheme } from '@/context/theme.context'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Browser from 'webextension-polyfill'
 import { BookmarksComponent } from './bookmarks/bookmarks'
+import { TrendingSearches } from './trending-searches'
 
 export function SearchLayout() {
 	const { theme, themeUtils } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')
+	const [isInputFocused, setIsInputFocused] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 
@@ -53,6 +55,29 @@ export function SearchLayout() {
 		}
 	}
 
+	const handleSelectTrend = (trend: string) => {
+		setSearchQuery(trend)
+		setIsInputFocused(false)
+		// Optional: auto-submit the search
+		// Browser.search.query({ text: trend })
+	}
+
+	useEffect(() => {
+		// Close trends dropdown when clicking outside
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				isInputFocused &&
+				searchRef.current &&
+				!searchRef.current.contains(event.target as Node)
+			) {
+				setIsInputFocused(false)
+			}
+		}
+
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => document.removeEventListener('mousedown', handleClickOutside)
+	}, [isInputFocused])
+
 	return (
 		<>
 			<div className="flex flex-col items-center justify-center">
@@ -67,7 +92,8 @@ export function SearchLayout() {
 								name="search"
 								value={searchQuery}
 								onChange={handleSearchInputChange}
-								className={`w-full py-4 pr-12 pl-16 text-lg font-medium text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
+								onFocus={() => setIsInputFocused(true)}
+								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
@@ -93,6 +119,12 @@ export function SearchLayout() {
 							/>
 						</div>
 					</form>
+
+					{/* Trending searches that shows on input focus */}
+					<TrendingSearches
+						visible={isInputFocused && searchQuery === ''}
+						onSelectTrend={handleSelectTrend}
+					/>
 				</div>
 				<BookmarkProvider>
 					<BookmarksComponent />
