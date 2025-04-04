@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ThemeProvider } from './context/theme.context'
+import { createContext, useEffect, useState } from 'react'
+import Browser from 'webextension-polyfill'
 import { AuthProvider } from './context/auth.context'
+import { ThemeProvider } from './context/theme.context'
 import { HomePage } from './pages/home'
 
 const queryClient = new QueryClient({
@@ -11,12 +13,33 @@ const queryClient = new QueryClient({
 	},
 })
 
+export const AnimationContext = createContext({ skipAnimations: false })
+
 function App() {
+	const [skipAnimations, setSkipAnimations] = useState(false)
+
+	useEffect(() => {
+		const checkTabs = async () => {
+			try {
+				const tabs = await Browser.tabs.query({})
+				if (tabs.length > 1) {
+					setSkipAnimations(true)
+				}
+			} catch (error) {
+				console.error('Error checking tabs:', error)
+			}
+		}
+
+		checkTabs()
+	}, [])
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
 				<ThemeProvider>
-					<HomePage />
+					<AnimationContext.Provider value={{ skipAnimations }}>
+						<HomePage />
+					</AnimationContext.Provider>
 				</ThemeProvider>
 			</AuthProvider>
 		</QueryClientProvider>

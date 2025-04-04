@@ -1,14 +1,16 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion'
-import ms from 'ms'
-import { useEffect, useRef, useState } from 'react'
-import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
+
+import { AnimationContext } from '@/App'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/getMethodHooks/getCurrencyByCode.hook'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import ms from 'ms'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { CurrencyModalComponent } from './currency-modal'
 
 interface CurrencyBoxProps {
@@ -33,10 +35,14 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	const defaultDamping = 20
 	const [damping, setDamping] = useState(defaultDamping)
 
-	const animatedPrice = useSpring(priceMotion, {
-		stiffness: 100,
-		damping,
-	})
+	const { skipAnimations } = useContext(AnimationContext)
+
+	const animatedPrice = skipAnimations
+		? priceMotion
+		: useSpring(priceMotion, {
+				stiffness: 100,
+				damping,
+			})
 
 	useEffect(() => {
 		async function load() {
@@ -68,7 +74,13 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	useEffect(() => {
 		if (currency?.price) {
 			if (prevPriceRef.current !== currency.price) {
-				priceMotion.set(currency.rialPrice)
+				// If animations are disabled, directly set the display price
+				if (skipAnimations) {
+					setDisplayPrice(currency.rialPrice)
+				} else {
+					priceMotion.set(currency.rialPrice)
+				}
+
 				prevPriceRef.current = currency.price
 				if (currency.changePercentage) {
 					const changeAmount = (currency.changePercentage / 100) * currency.price
@@ -76,9 +88,14 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				}
 			}
 		}
-	}, [currency?.price, priceMotion])
+	}, [currency?.price, priceMotion, skipAnimations])
 
 	useEffect(() => {
+		// Only subscribe to animation changes if animations are enabled
+		if (skipAnimations) {
+			return
+		}
+
 		const unsubscribe = animatedPrice.on('change', (v) => {
 			setDisplayPrice(Math.round(v))
 
@@ -86,7 +103,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 			setDamping(diff < 5 ? 50 : defaultDamping)
 		})
 		return () => unsubscribe()
-	}, [animatedPrice, currency?.rialPrice])
+	}, [animatedPrice, currency?.rialPrice, skipAnimations])
 
 	function toggleCurrencyModal() {
 		if (!isModalOpen === true) {
@@ -155,25 +172,35 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	return (
 		<>
 			<motion.div
-				whileHover={{ scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
-				whileTap={{ scale: 0.98 }}
+				whileHover={
+					skipAnimations ? {} : { scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }
+				}
+				whileTap={skipAnimations ? {} : { scale: 0.98 }}
 				className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer backdrop-blur-sm ${getBoxStyle()}`}
 				style={{
 					border: '1px solid transparent',
 					borderColor: imgColor ? `${imgColor}20` : 'transparent',
 				}}
-				initial={{ opacity: 0, y: -10 }}
-				animate={{
-					opacity: 1,
-					y: 0,
-					borderColor: imgColor ? `${imgColor}30` : 'transparent',
-				}}
-				transition={{
-					type: 'spring',
-					stiffness: 150,
-					damping: 15,
-					borderColor: { duration: 0.3 },
-				}}
+				initial={skipAnimations ? {} : { opacity: 0, y: -10 }}
+				animate={
+					skipAnimations
+						? { opacity: 1 }
+						: {
+								opacity: 1,
+								y: 0,
+								borderColor: imgColor ? `${imgColor}30` : 'transparent',
+							}
+				}
+				transition={
+					skipAnimations
+						? { duration: 0 }
+						: {
+								type: 'spring',
+								stiffness: 150,
+								damping: 15,
+								borderColor: { duration: 0.3 },
+							}
+				}
 				onClick={() => toggleCurrencyModal()}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
@@ -202,7 +229,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				<div className="flex items-baseline gap-2">
 					<motion.span
 						className={`text-sm font-bold ${getPriceStyle()}`}
-						animate={{ scale: [1, 1.02, 1] }}
+						animate={skipAnimations ? {} : { scale: [1, 1.02, 1] }}
 						transition={{ duration: 0.3 }}
 					>
 						{displayPrice.toLocaleString()}
