@@ -6,6 +6,7 @@ interface FetchedProfile {
 	email: string
 	avatar: string
 	name: string
+	connections: string[]
 }
 
 export interface UserProfile extends FetchedProfile {

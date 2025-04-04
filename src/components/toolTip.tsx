@@ -7,7 +7,7 @@ type Position = 'top' | 'right' | 'bottom' | 'left'
 
 interface TooltipProps {
 	children: ReactNode
-	content: ReactNode
+	content: ReactNode | null
 	position?: Position
 	offset?: number
 	disableAutoPosition?: boolean
@@ -159,6 +159,10 @@ const Tooltip = ({
 			hidden: { opacity: 0, x: -5 },
 			visible: { opacity: 1, x: 0 },
 		},
+	}
+
+	if (!content) {
+		return <>{children}</>
 	}
 
 	return (

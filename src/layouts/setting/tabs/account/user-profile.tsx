@@ -6,6 +6,7 @@ import { useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { Connections } from './connections'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -140,6 +141,8 @@ export const UserProfile = () => {
 						</label>
 					</div>
 				</SectionPanel>
+
+				<Connections />
 
 				<SectionPanel title="حساب کاربری" delay={0.3}>
 					<div className="space-y-4">
