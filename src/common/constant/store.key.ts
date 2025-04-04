@@ -38,4 +38,6 @@ export interface StorageKV {
 	deletedTodos: Todo[]
 
 	enable_sync: boolean
+
+	pmsTrackerData: any
 }

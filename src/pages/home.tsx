@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
 import Analytics from '../analytics'
+import { PMSTrackerLayout } from '@/layouts/pms-tracker/pms'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -61,7 +62,8 @@ function ContentSection() {
 				<div className="order-2 w-full lg:w-1/4 lg:order-3">
 					{visibility.arzLive && (
 						<CurrencyProvider>
-							<ArzLiveLayout />
+							{/* <ArzLiveLayout /> */}
+							<PMSTrackerLayout />
 						</CurrencyProvider>
 					)}
 				</div>
