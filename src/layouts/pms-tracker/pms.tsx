@@ -1,6 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
+import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { AddSymptom } from './components/add-symptom'
 import { CycleSettingsModal } from './components/cycle-settings-modal'
 import { SymptomList } from './components/symptom-list'
@@ -26,8 +27,8 @@ export const PMSTrackerLayout = () => {
 	const [isAddingSymptom, setIsAddingSymptom] = useState(false)
 	const [isEditingCycle, setIsEditingCycle] = useState(false)
 	const [cycleDaysInput, setCycleDaysInput] = useState('28')
+	const [streamingMode, setStreamingMode] = useState(false)
 
-	// Translated symptoms for Persian users
 	const commonSymptoms = [
 		'نوسانات خلق و خو',
 		'گرفتگی و درد',
@@ -93,6 +94,10 @@ export const PMSTrackerLayout = () => {
 		setIsEditingCycle(false)
 	}
 
+	const toggleStreamingMode = () => {
+		setStreamingMode((prev) => !prev)
+	}
+
 	useEffect(() => {
 		const loadData = async () => {
 			setIsLoading(true)
@@ -102,7 +107,6 @@ export const PMSTrackerLayout = () => {
 					setCycleData(storedData)
 					setCycleDaysInput(storedData.totalDays.toString())
 				} else {
-					// Initialize with default data if nothing exists
 					const today = new Date()
 					const nextPeriod = new Date(today)
 					nextPeriod.setDate(today.getDate() + 28)
@@ -132,7 +136,7 @@ export const PMSTrackerLayout = () => {
 	return (
 		<div className="relative">
 			<div
-				className={`flex h-80 flex-col gap-1 px-2 py-2 ${themeUtils.getCardBackground()} rounded-2xl`}
+				className={`flex h-80 flex-col gap-1 px-2 py-2 ${themeUtils.getCardBackground()} rounded-2xl relative overflow-hidden`}
 				style={{
 					scrollbarWidth: 'none',
 				}}
@@ -154,7 +158,7 @@ export const PMSTrackerLayout = () => {
 							>
 								<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
 							</svg>
-							<p className="text-lg font-bold">ردیاب سندرم پیش از قاعدگی</p>
+							<p className="text-sm font-bold">مدیریت سیکل ماهانه</p>
 						</div>
 						<div className="flex items-center mt-1 text-xs opacity-70">
 							<span>
@@ -184,6 +188,20 @@ export const PMSTrackerLayout = () => {
 							</button>
 						</div>
 					</div>
+
+					{/* Add streaming mode toggle button */}
+
+					<button
+						onClick={toggleStreamingMode}
+						className={
+							'flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer '
+						}
+						title={
+							streamingMode ? 'غیرفعال کردن حالت استریمینگ' : 'فعال کردن حالت استریمینگ'
+						}
+					>
+						{streamingMode ? <FaEye /> : <FaEyeSlash />}
+					</button>
 				</div>
 
 				{isLoading ? (
@@ -211,14 +229,31 @@ export const PMSTrackerLayout = () => {
 							</svg>
 							<span className="text-sm">افزودن علامت</span>
 						</button>
-
-						<SymptomList
-							symptoms={cycleData.symptoms}
-							onRemove={removeSymptom}
-							formatDate={formatDate}
-							getSeverityLabel={getSeverityLabel}
-							getSeverityColor={getSeverityColor}
-						/>
+						{streamingMode ? (
+							<div className="flex flex-col items-center justify-center h-full py-8 space-y-4">
+								<div className="text-center">
+									<h3 className="mb-2 text-base font-medium">حالت محرمانه فعال است</h3>
+									<p className="mb-3 text-xs font-light opacity-70">
+										محتوای شما برای حفظ حریم خصوصی پنهان شده است
+									</p>
+									<button
+										onClick={toggleStreamingMode}
+										className={`px-4 py-2 rounded-lg transition-all flex items-center justify-center mx-auto gap-2 ${themeUtils.getButtonStyles()} hover:bg-opacity-90`}
+									>
+										<FaEye className="w-4 h-4" />
+										<span>نمایش محتوا</span>
+									</button>
+								</div>
+							</div>
+						) : (
+							<SymptomList
+								symptoms={cycleData.symptoms}
+								onRemove={removeSymptom}
+								formatDate={formatDate}
+								getSeverityLabel={getSeverityLabel}
+								getSeverityColor={getSeverityColor}
+							/>
+						)}
 					</div>
 				)}
 			</div>

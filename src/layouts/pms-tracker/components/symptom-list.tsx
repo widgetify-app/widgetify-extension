@@ -45,7 +45,7 @@ export const SymptomList = ({
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.3, delay: index * 0.1 }}
 				>
-					<div className="p-2 border border-gray-300 rounded-lg dark:border-gray-700">
+					<div className="p-2 border rounded-lg border-gray-300/20 dark:border-gray-700">
 						<div className="flex items-start justify-between">
 							<h3 className="text-sm font-medium">{symptom.name}</h3>
 							<span
