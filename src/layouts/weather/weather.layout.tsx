@@ -127,13 +127,13 @@ export function WeatherLayout() {
 						))}
 
 						<div
-							className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-prev-custom top-1/2 ${getNavigationButtonStyle()}`}
+							className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] ${getNavigationButtonStyle()}`}
 						>
 							<FiChevronLeft size={20} />
 						</div>
 
 						<div
-							className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all -translate-y-1/2 rounded-full cursor-pointer swiper-button-next-custom top-1/2 ${getNavigationButtonStyle()}`}
+							className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] ${getNavigationButtonStyle()}`}
 						>
 							<FiChevronRight size={20} />
 						</div>
