@@ -1,8 +1,8 @@
+import Modal from '@/components/modal'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { v4 as uuidv4 } from 'uuid'
-import Modal from '@/components/modal'
 import type { Bookmark, BookmarkType } from '../types/bookmark.types'
 
 interface AddBookmarkModalProps {
@@ -74,7 +74,6 @@ export function AddBookmarkModal({
 		}
 	}
 
-	// Existing functions
 	const getFaviconFromUrl = (url: string): string => {
 		try {
 			if (!url.trim()) {
@@ -87,7 +86,7 @@ export function AddBookmarkModal({
 			}
 
 			const urlObj = new URL(processedUrl)
-			return `${urlObj.protocol}//${urlObj.hostname}/favicon.ico`
+			return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`
 		} catch {
 			return ''
 		}
@@ -121,8 +120,14 @@ export function AddBookmarkModal({
 		reader.readAsDataURL(file)
 	}
 
-	const handleAdd = () => {
+	const handleAdd = async () => {
 		if (!title.trim()) return
+
+		let iconUrl: undefined | string = undefined
+
+		if (type === 'BOOKMARK' && iconSource === 'auto' && icon && !customImage) {
+			iconUrl = getFaviconFromUrl(url)
+		}
 
 		const baseBookmark = {
 			id: uuidv4(),
@@ -131,7 +136,7 @@ export function AddBookmarkModal({
 			isLocal: true,
 			pinned: false,
 			parentId,
-			customImage: customImage || undefined,
+			customImage: customImage,
 		}
 
 		if (type === 'FOLDER') {
@@ -146,7 +151,7 @@ export function AddBookmarkModal({
 				...baseBookmark,
 				type: 'BOOKMARK',
 				url: newUrl.trim(),
-				icon: customImage || icon,
+				icon: iconUrl,
 			} as Bookmark)
 		}
 
