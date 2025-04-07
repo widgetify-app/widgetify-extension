@@ -4,7 +4,7 @@ import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useReligiousTime } from '@/services/getMethodHooks/getReligiousTime.hook'
 import { getPersianCityName } from '@/utils/cityNameMap'
 import { motion } from 'framer-motion'
-import { FiSunrise, FiSun, FiMoon, FiClock, FiMapPin, FiCalendar } from 'react-icons/fi'
+import { FiSunrise, FiSun, FiMoon, FiClock, FiSunset, FiCalendar } from 'react-icons/fi'
 import { type WidgetifyDate } from '../../utils'
 
 interface Prop {
@@ -95,18 +95,13 @@ export function ReligiousTime({ currentDate }: Prop) {
 		}
 	}
 
-	const formatTime = (time: string | undefined) => {
-		if (!time) return '--:--'
-		return time
-	}
-
 	const prayerTimeBoxes = [
-		{ title: 'طلوع آفتاب', value: formatTime(religiousTimeData?.result?.tolu_aftab), icon: FiSunrise },
-		{ title: 'ظهر', value: formatTime(religiousTimeData?.result?.azan_zohr), icon: FiSun },
-		{ title: 'غروب آفتاب', value: formatTime(religiousTimeData?.result?.ghorub_aftab), icon: FiSun },
-		{ title: 'مغرب', value: formatTime(religiousTimeData?.result?.azan_maghreb), icon: FiMoon },
-		{ title: 'نیمه شب', value: formatTime(religiousTimeData?.result?.nimeshab), icon: FiClock },
-		{ title: 'اذان صبح', value: formatTime(religiousTimeData?.result?.azan_sobh), icon: FiClock },
+		{ title: 'طلوع آفتاب', value: religiousTimeData?.result?.tolu_aftab, icon: FiSunrise },
+		{ title: 'اذان صبح', value: religiousTimeData?.result?.azan_sobh, icon: FiClock },
+		{ title: 'ظهر', value: religiousTimeData?.result?.azan_zohr, icon: FiSun },
+		{ title: 'غروب آفتاب', value: religiousTimeData?.result?.ghorub_aftab, icon: FiSunset },
+		{ title: 'مغرب', value: religiousTimeData?.result?.azan_maghreb, icon: FiClock },
+		{ title: 'نیمه شب', value: religiousTimeData?.result?.nimeshab, icon: FiMoon },
 	]
 
 	return (
