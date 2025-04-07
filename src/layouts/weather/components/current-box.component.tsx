@@ -3,6 +3,8 @@ import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
 import { motion } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
+import { FaSpotify } from 'react-icons/fa'
+import { IoLocationOutline } from 'react-icons/io5'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
 import { unitsFlag } from '../unitSymbols'
 
@@ -11,7 +13,7 @@ interface CurrentWeatherBoxProps {
 }
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
-	const { weatherSettings } = useWeatherStore()
+	const { weatherSettings, selectedCity } = useWeatherStore()
 	const { theme, themeUtils } = useTheme()
 
 	const fadeInUp = {
@@ -79,18 +81,31 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const getAiIconStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-purple-600'
-			default:
-				return 'text-purple-400'
+				return 'text-indigo-600 bg-indigo-100/80'
+			case 'dark':
+				return 'text-indigo-300 bg-indigo-800/40'
+			default: // glass
+				return 'text-indigo-300 bg-gray-800/30'
 		}
 	}
 
 	const getPlaylistLinkStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-purple-600 hover:text-purple-800 bg-purple-100'
+				return 'text-green-600 hover:text-green-800 bg-green-100/70 hover:bg-green-100'
 			default:
-				return 'text-purple-400 hover:text-purple-300 bg-purple-900/30'
+				return 'text-green-400 hover:text-green-300 bg-green-900/30 hover:bg-green-800/40'
+		}
+	}
+
+	const getCityNameStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'text-gray-600'
+			case 'dark':
+				return 'text-gray-400'
+			default: // glass
+				return 'text-gray-300'
 		}
 	}
 
@@ -108,7 +123,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 			}}
 			className={`col-span-2 py-2.5 px-3 shadow-lg bg-gradient-to-br flex-2 ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
 		>
-			<div className="flex flex-row-reverse items-start justify-between gap-4">
+			<div className="flex flex-row-reverse items-start justify-between gap-3">
 				<motion.div
 					className="relative group"
 					variants={fadeInUp}
@@ -122,7 +137,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					/>
 				</motion.div>
 
-				<div className="flex-1 truncate">
+				<div className="flex-1 mb-2 truncate">
 					<motion.span
 						variants={fadeInUp}
 						className={`text-2xl font-bold truncate text-transparent bg-clip-text bg-gradient-to-r ${getTemperatureGradient()}`}
@@ -133,6 +148,15 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 						</span>
 					</motion.span>
+					{selectedCity?.name && (
+						<motion.p
+							variants={fadeInUp}
+							className={`text-sm flex gap-1 font-medium truncate ${getCityNameStyle()}`}
+						>
+							<IoLocationOutline className="flex-shrink-0 text-xs" />
+							<p className="text-xs font-medium truncate">{selectedCity.name}</p>
+						</motion.p>
+					)}
 				</div>
 			</div>
 
@@ -153,18 +177,19 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 			<motion.div
 				variants={fadeInUp}
-				className={`relative p-2 mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${getDescriptionBoxStyle()}`}
+				className={`relative  mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${getDescriptionBoxStyle()}`}
 			>
 				<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">
 					<div className="flex-1">
 						{weather.ai?.description && (
 							<motion.div
-								className="absolute flex items-center gap-2 left-2 top-0 p-1.5"
+								className={`absolute flex items-center gap-1.5 left-3 top-1 p-1 rounded-md ${getAiIconStyle()}`}
 								initial={{ opacity: 0, x: -10 }}
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.5 }}
+								whileHover={{ scale: 1.05 }}
 							>
-								<BsRobot className={`text-xl ${getAiIconStyle()}`} />
+								<BsRobot className="text-xs" />
 							</motion.div>
 						)}
 
@@ -183,9 +208,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 									href={weather.ai.playlist}
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`inline-flex items-center gap-2 mt-2 text-xs font-medium transition-colors ${getPlaylistLinkStyle()}`}
+									className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-medium rounded-full shadow-sm transition-all duration-300 ${getPlaylistLinkStyle()}`}
 								>
-									<span className="p-1 rounded-full">🎵</span>
+									<FaSpotify className="text-base" />
 									<span>پلی‌لیست پیشنهادی</span>
 								</motion.a>
 							)}
