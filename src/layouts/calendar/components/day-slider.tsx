@@ -30,7 +30,6 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 		onDateChange(currentDate.clone().add(1, 'day'))
 	}
 
-	// Theme-specific styles
 	const getDayNavigationStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -69,7 +68,7 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 				whileHover={{ scale: 1.1 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={handlePrevDay}
-				className={`p-1 rounded-full transition-colors ${getDayNavigationStyle()}`}
+				className={`p-1 rounded-full cursor-pointer transition-colors ${getDayNavigationStyle()}`}
 			>
 				<FaChevronRight size={isPreview ? 10 : 12} />
 			</motion.button>
@@ -84,7 +83,7 @@ export const DaySlider: React.FC<DaySliderProps> = ({
 				whileHover={{ scale: 1.1 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={handleNextDay}
-				className={`p-1 rounded-full transition-colors ${getDayNavigationStyle()}`}
+				className={`p-1 rounded-full cursor-pointer transition-colors ${getDayNavigationStyle()}`}
 			>
 				<FaChevronLeft size={isPreview ? 10 : 12} />
 			</motion.button>

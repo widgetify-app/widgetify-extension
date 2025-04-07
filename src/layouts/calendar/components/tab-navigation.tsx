@@ -1,9 +1,9 @@
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { FiCalendar, FiClipboard, FiWatch, FiSunrise, FiChevronDown } from 'react-icons/fi'
+import { useEffect, useRef } from 'react'
+import { FiCalendar, FiClipboard, FiSunrise, FiWatch } from 'react-icons/fi'
 import { IoAnalyticsOutline } from 'react-icons/io5'
-import { useState } from 'react'
 import type { TabType } from '../calendar'
 
 interface TabNavigationProps {
@@ -16,7 +16,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	onTabClick,
 }) => {
 	const { theme } = useTheme()
-	const [showAllTabs, setShowAllTabs] = useState(false)
+	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
 	const getTabContainerStyle = () => {
 		switch (theme) {
@@ -38,6 +38,34 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 		}
 	}
 
+	const getFadeGradientFrom = () => {
+		switch (theme) {
+			case 'light':
+				return 'from-gray-100/90'
+			case 'dark':
+				return 'from-neutral-800/80'
+			default: // glass
+				return 'from-neutral-900/50'
+		}
+	}
+
+	useEffect(() => {
+		if (scrollContainerRef.current) {
+			const activeTabElement = scrollContainerRef.current.querySelector(
+				`[data-tab-id="${activeTab}"]`,
+			)
+
+			if (activeTabElement) {
+				const containerWidth = scrollContainerRef.current.clientWidth
+				const tabPosition = (activeTabElement as HTMLElement).offsetLeft
+				const tabWidth = (activeTabElement as HTMLElement).offsetWidth
+
+				scrollContainerRef.current.scrollLeft =
+					tabPosition - containerWidth / 2 + tabWidth / 2
+			}
+		}
+	}, [activeTab])
+
 	const tabs = [
 		{ id: 'events' as TabType, label: 'رویدادها', icon: FiCalendar },
 		{ id: 'religious-time' as TabType, label: 'اوقات شرعی', icon: FiSunrise },
@@ -46,32 +74,53 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 		{ id: 'pomodoro' as TabType, label: 'پومودورو', icon: FiWatch },
 	]
 
-	const toggleShowAllTabs = () => {
-        setShowAllTabs(!showAllTabs)
-    }
-
-    const visibleTabs = showAllTabs ? tabs : tabs.slice(0, 4)
-
 	return (
-		<div className={`inline-flex relative w-full rounded-lg flex-wrap ${getTabContainerStyle()}`}>
-			<div className="absolute flex justify-center items-center top-1 -left-1 cursor-pointer h-3 w-3 bg-blue-600 rounded-sm" onClick={toggleShowAllTabs}>
-				<FiChevronDown size={10} className={`${showAllTabs ? 'rotate-180' : ''} duration-300 ease-in text-white`} />
-			</div>
-			{visibleTabs.map((tab) => (
-				<motion.button
-					key={tab.id}
-					whileHover={{ scale: 1.02 }}
-					whileTap={{ scale: 0.98 }}
-					onClick={() => onTabClick(tab.id)}
-					className={`flex items-center gap-1 cursor-pointer px-3 py-1 text-xs font-medium rounded-md transition-all ${activeTab === tab.id
-						? 'bg-blue-500 text-white shadow-sm'
-						: getInactiveTabStyle()
+		<div className={`relative rounded-lg ${getTabContainerStyle()}`}>
+			<div
+				ref={scrollContainerRef}
+				className="flex items-center px-1 py-1 overflow-x-auto scrollbar-hide scroll-smooth"
+				style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+			>
+				<style>{`
+					.scrollbar-hide::-webkit-scrollbar {
+						display: none;
+					}
+					.scrollbar-hide {
+						-ms-overflow-style: none; /* IE and Edge */
+						scrollbar-width: none; /* Firefox */
+					}
+				`}</style>
+
+				{tabs.map((tab) => (
+					<motion.button
+						key={tab.id}
+						data-tab-id={tab.id}
+						whileHover={{ scale: 1.02 }}
+						whileTap={{ scale: 0.98 }}
+						onClick={() => onTabClick(tab.id)}
+						className={`flex items-center gap-1.5 cursor-pointer px-3 py-0.5 text-xs font-medium rounded-md transition-all mx-1 flex-shrink-0 ${
+							activeTab === tab.id
+								? 'bg-blue-500 text-white shadow-sm'
+								: getInactiveTabStyle()
 						}`}
-				>
-					<tab.icon size={12} />
-					<span>{tab.label}</span>
-				</motion.button>
-			))}
+					>
+						<tab.icon size={12} />
+						{tab.label}
+					</motion.button>
+				))}
+			</div>
+
+			{/* Left fade indicator */}
+			<div
+				className={`absolute left-0 top-0 h-full w-4 bg-gradient-to-r ${getFadeGradientFrom()} to-transparent pointer-events-none`}
+				style={{ opacity: 0.8 }}
+			></div>
+
+			{/* Right fade indicator */}
+			<div
+				className={`absolute right-0 top-0 h-full w-4 bg-gradient-to-l ${getFadeGradientFrom()} to-transparent pointer-events-none`}
+				style={{ opacity: 0.8 }}
+			></div>
 		</div>
 	)
 }
