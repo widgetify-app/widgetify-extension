@@ -9,6 +9,8 @@ import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { TodoStats } from './todos/todo-stats'
 import { Todos } from './todos/todos'
+import { ReligiousTime } from './religious/religious-time'
+
 
 interface CalendarContentProps {
 	activeTab: TabType
@@ -50,6 +52,20 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 					exit={{ opacity: 0 }}
 				>
 					<Events
+						events={events || []}
+						currentDate={selectedDate}
+						onDateChange={setCurrentDate}
+					/>
+				</motion.div>
+			)}
+			{activeTab === 'religious-time' && (
+				<motion.div
+					key="religious-time-view"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<ReligiousTime
 						events={events || []}
 						currentDate={selectedDate}
 						onDateChange={setCurrentDate}
