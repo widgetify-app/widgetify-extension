@@ -2,10 +2,9 @@ import { useTheme } from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useReligiousTime } from '@/services/getMethodHooks/getReligiousTime.hook'
-import { getPersianCityName } from '@/utils/cityNameMap'
 import { motion } from 'framer-motion'
-import { FiSunrise, FiSun, FiMoon, FiClock, FiSunset, FiCalendar } from 'react-icons/fi'
-import { type WidgetifyDate } from '../../utils'
+import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
+import type { WidgetifyDate } from '../../utils'
 
 interface Prop {
 	events: FetchedAllEvents
@@ -17,17 +16,20 @@ interface Prop {
 export function ReligiousTime({ currentDate }: Prop) {
 	const { theme } = useTheme()
 	const { selectedCity } = useWeatherStore()
-	
-	// Extract day and month from the currentDate
+
 	const day = currentDate.jDate()
 	const month = currentDate.jMonth() + 1 // jMonth is 0-based, so add 1
-	
-	// Get city name from weather context and convert to Persian if needed
+
 	const englishCityName = selectedCity?.name || 'Tehran'
-	const persianCityName = getPersianCityName(englishCityName)
-	
-	const { data: religiousTimeData, loading, error } = useReligiousTime(day, month, persianCityName)
-	
+	const lat = selectedCity?.lat || 35.6892523
+	const long = selectedCity?.lon || 51.3896004
+
+	const {
+		data: religiousTimeData,
+		loading,
+		error,
+	} = useReligiousTime(day, month, lat, long)
+
 	const getHeaderTextStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -96,12 +98,20 @@ export function ReligiousTime({ currentDate }: Prop) {
 	}
 
 	const prayerTimeBoxes = [
-		{ title: 'طلوع آفتاب', value: religiousTimeData?.result?.tolu_aftab, icon: FiSunrise },
-		{ title: 'اذان صبح', value: religiousTimeData?.result?.azan_sobh, icon: FiClock },
-		{ title: 'ظهر', value: religiousTimeData?.result?.azan_zohr, icon: FiSun },
-		{ title: 'غروب آفتاب', value: religiousTimeData?.result?.ghorub_aftab, icon: FiSunset },
-		{ title: 'مغرب', value: religiousTimeData?.result?.azan_maghreb, icon: FiClock },
-		{ title: 'نیمه شب', value: religiousTimeData?.result?.nimeshab, icon: FiMoon },
+		{
+			title: 'طلوع آفتاب',
+			value: religiousTimeData?.tolu_aftab,
+			icon: FiSunrise,
+		},
+		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
+		{ title: 'ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
+		{
+			title: 'غروب آفتاب',
+			value: religiousTimeData?.ghorub_aftab,
+			icon: FiSunset,
+		},
+		{ title: 'مغرب', value: religiousTimeData?.azan_maghreb, icon: FiClock },
+		{ title: 'نیمه شب', value: religiousTimeData?.nimeshab, icon: FiMoon },
 	]
 
 	return (
@@ -109,13 +119,15 @@ export function ReligiousTime({ currentDate }: Prop) {
 			<div className="flex items-center justify-between mb-3">
 				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
 					اوقات شرعی
-					<span className={'text-sm flex item-end font-thin mr-2 mt-2'}>({persianCityName})</span>
+					<span className={'text-sm flex item-end font-thin mr-2 mt-2'}>
+						({englishCityName})
+					</span>
 				</h4>
 			</div>
 
 			{loading ? (
-				<div className="flex justify-center items-center py-8">
-					<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+				<div className="flex items-center justify-center py-8">
+					<div className="w-8 h-8 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
 				</div>
 			) : error ? (
 				<motion.div
@@ -129,13 +141,11 @@ export function ReligiousTime({ currentDate }: Prop) {
 					>
 						<FiSunrise className={getNoEventsTextStyle()} size={24} />
 					</div>
-					<div className={getNoEventsTextStyle()}>
-						مشکلی در دریافت اطلاعات وجود دارد
-					</div>
+					<div className={getNoEventsTextStyle()}>مشکلی در دریافت اطلاعات وجود دارد</div>
 				</motion.div>
 			) : (
 				<>
-					<div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+					<div className="grid grid-cols-2 gap-3 mb-4 md:grid-cols-3">
 						{prayerTimeBoxes.map((box, index) => (
 							<motion.div
 								key={index}
@@ -147,7 +157,9 @@ export function ReligiousTime({ currentDate }: Prop) {
 								<div className={`${getBoxIconStyle()} mb-2`}>
 									<box.icon size={20} />
 								</div>
-								<div className={`${getBoxTitleStyle()} text-[0.6rem] mb-1`}>{box.title}</div>
+								<div className={`${getBoxTitleStyle()} text-[0.6rem] mb-1`}>
+									{box.title}
+								</div>
 								<div className={`${getBoxValueStyle()} font-medium`}>{box.value}</div>
 							</motion.div>
 						))}
