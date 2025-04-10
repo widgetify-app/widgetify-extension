@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createContext, useEffect, useState } from 'react'
 import Browser from 'webextension-polyfill'
+import { AppearanceProvider } from './context/appearance.context'
 import { AuthProvider } from './context/auth.context'
 import { ThemeProvider } from './context/theme.context'
 import { HomePage } from './pages/home'
@@ -37,9 +38,11 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
 				<ThemeProvider>
-					<AnimationContext.Provider value={{ skipAnimations }}>
-						<HomePage />
-					</AnimationContext.Provider>
+					<AppearanceProvider>
+						<AnimationContext.Provider value={{ skipAnimations }}>
+							<HomePage />
+						</AnimationContext.Provider>
+					</AppearanceProvider>
 				</ThemeProvider>
 			</AuthProvider>
 		</QueryClientProvider>

@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react'
 import {
 	VscAccount,
 	VscCloud,
+	VscColorMode,
 	VscInfo,
 	VscPaintcan,
 	VscSettingsGear,
 } from 'react-icons/vsc'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
+import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
@@ -40,6 +42,12 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			value: 'general',
 			icon: <VscSettingsGear size={20} />,
 			element: <GeneralSettingTab />,
+		},
+		{
+			label: 'ظاهری',
+			value: 'appearance',
+			icon: <VscColorMode size={20} />,
+			element: <AppearanceSettingTab />,
 		},
 		{
 			label: 'تصویر زمینه',

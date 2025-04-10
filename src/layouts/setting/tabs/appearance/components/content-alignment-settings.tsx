@@ -12,17 +12,6 @@ export function ContentAlignmentSettings({
 }: ContentAlignmentSettingsProps) {
 	const { theme, themeUtils } = useTheme()
 
-	const getSubtitleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			case 'dark':
-				return 'text-gray-300'
-			default: // glass
-				return 'text-gray-200'
-		}
-	}
-
 	const getActiveButtonStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -69,8 +58,8 @@ export function ContentAlignmentSettings({
 
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3}>
-			<div>
-				<p className={`mb-3 font-medium ${getSubtitleStyle()}`}>موقعیت عمودی محتوا</p>
+			<div className="space-y-3">
+				<p className={themeUtils.getDescriptionTextStyle()}>موقعیت عمودی محتوا</p>
 				<div className="flex gap-3">
 					<button
 						onClick={() => setContentAlignment('center')}

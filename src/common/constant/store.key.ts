@@ -21,6 +21,7 @@ export interface StorageKV {
 	wallpaper: StoredWallpaper
 	customWallpaper: Wallpaper
 	generalSettings: Record<string, any>
+	appearance: Record<string, any>
 	bookmarks: Bookmark[]
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean

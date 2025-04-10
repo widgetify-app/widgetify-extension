@@ -2,14 +2,10 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
-export type FontFamily = 'Vazir' | 'Samim'
-
 export interface GeneralData {
 	analyticsEnabled: boolean
 	enablePets: boolean
-	contentAlignment: 'center' | 'top'
 	petName: string
-	fontFamily: FontFamily
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -17,16 +13,12 @@ interface GeneralSettingContextType extends GeneralData {
 	setEnablePets: (value: boolean) => void
 	setAnalyticsEnabled: (value: boolean) => void
 	setPetName: (value: string) => void
-	setContentAlignment: (value: 'center' | 'top') => void
-	setFontFamily: (value: FontFamily) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
 	enablePets: true,
-	contentAlignment: 'center',
 	petName: 'آکیتا',
-	fontFamily: 'Vazir',
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -90,26 +82,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		[updateSetting],
 	)
 
-	const setContentAlignment = useCallback(
-		(value: 'center' | 'top') => {
-			updateSetting('contentAlignment', value)
-		},
-		[updateSetting],
-	)
-
-	const setFontFamily = useCallback(
-		(value: FontFamily) => {
-			updateSetting('fontFamily', value)
-		},
-		[updateSetting],
-	)
-
-	useEffect(() => {
-		if (isInitialized && settings.fontFamily) {
-			document.body.style.fontFamily = `"${settings.fontFamily}", sans-serif`
-		}
-	}, [isInitialized, settings.fontFamily])
-
 	if (!isInitialized) {
 		return null
 	}
@@ -120,8 +92,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setEnablePets,
 		setAnalyticsEnabled,
 		setPetName,
-		setContentAlignment,
-		setFontFamily,
 	}
 
 	return (

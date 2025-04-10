@@ -148,12 +148,17 @@ export const getHeadingTextStyle = (theme: ThemeType): string => {
 }
 
 export const getDescriptionTextStyle = (theme: ThemeType): string => {
+	let des = 'font-light '
 	switch (theme) {
 		case 'light':
-			return 'text-gray-600'
+			des += 'text-gray-600'
+			break
 		case 'dark':
-			return 'text-gray-300'
+			des += 'text-gray-300'
+			break
 		default:
-			return 'text-gray-400'
+			des += 'text-gray-400'
 	}
+
+	return des
 }

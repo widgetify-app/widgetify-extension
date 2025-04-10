@@ -4,11 +4,9 @@ import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
+import { useAppearanceSetting } from '@/context/appearance.context'
 import { CurrencyProvider } from '@/context/currency.context'
-import {
-	GeneralSettingProvider,
-	useGeneralSetting,
-} from '@/context/general-setting.context'
+import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { WeatherProvider } from '@/context/weather.context'
 import {
 	WidgetVisibilityProvider,
@@ -32,14 +30,8 @@ const layoutPositions: Record<string, string> = {
 }
 
 function ContentSection() {
-	const { contentAlignment, fontFamily } = useGeneralSetting()
+	const { contentAlignment } = useAppearanceSetting()
 	const { visibility } = useWidgetVisibility()
-
-	useEffect(() => {
-		if (fontFamily) {
-			document.body.style.fontFamily = `"${fontFamily}", sans-serif`
-		}
-	}, [fontFamily])
 
 	return (
 		<div
