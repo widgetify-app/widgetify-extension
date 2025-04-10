@@ -1,3 +1,4 @@
+import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
@@ -74,24 +75,6 @@ export function AddBookmarkModal({
 		}
 	}
 
-	const getFaviconFromUrl = (url: string): string => {
-		try {
-			if (!url.trim()) {
-				return ''
-			}
-
-			let processedUrl = url
-			if (!processedUrl.startsWith('http://') && !processedUrl.startsWith('https://')) {
-				processedUrl = `https://${processedUrl}`
-			}
-
-			const urlObj = new URL(processedUrl)
-			return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`
-		} catch {
-			return ''
-		}
-	}
-
 	const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newUrl = e.target.value
 		setUrl(newUrl)
@@ -124,13 +107,13 @@ export function AddBookmarkModal({
 		if (!title.trim()) return
 
 		let iconUrl: undefined | string = undefined
-
+		const id = uuidv4()
 		if (type === 'BOOKMARK' && iconSource === 'auto' && icon && !customImage) {
 			iconUrl = getFaviconFromUrl(url)
 		}
 
 		const baseBookmark = {
-			id: uuidv4(),
+			id,
 			title: title.trim(),
 			type,
 			isLocal: true,
@@ -140,7 +123,8 @@ export function AddBookmarkModal({
 		}
 
 		if (type === 'FOLDER') {
-			onAdd(baseBookmark as Bookmark)
+			//@ts-ignore
+			onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
 		} else {
 			let newUrl = url
 			if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -152,6 +136,7 @@ export function AddBookmarkModal({
 				type: 'BOOKMARK',
 				url: newUrl.trim(),
 				icon: iconUrl,
+				onlineId: null,
 			} as Bookmark)
 		}
 

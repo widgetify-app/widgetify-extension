@@ -8,6 +8,7 @@ export interface BaseBookmark {
 	isLocal: boolean
 	isManageable?: boolean
 	customImage?: string
+	onlineId: string | null
 }
 
 export interface BookmarkItem extends BaseBookmark {

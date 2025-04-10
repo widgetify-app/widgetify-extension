@@ -1,3 +1,4 @@
+import { getFaviconFromUrl } from '@/common/utils/icon'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
@@ -190,7 +191,11 @@ function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	if (bookmark.customImage) {
 		displayIcon = bookmark.customImage
 	} else if (bookmark.type === 'BOOKMARK') {
-		displayIcon = bookmark.icon
+		if (!bookmark.icon || bookmark.url === bookmark.icon) {
+			displayIcon = getFaviconFromUrl(bookmark.url)
+		} else {
+			displayIcon = bookmark.icon
+		}
 	} else {
 		displayIcon = <FaFolder className="w-6 h-6 text-blue-400" />
 	}

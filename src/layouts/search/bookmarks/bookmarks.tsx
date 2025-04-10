@@ -1,10 +1,6 @@
-import { getFromStorage } from '@/common/storage'
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { useTheme } from '@/context/theme.context'
-import {
-	type FetchedSuggestionsBookmark,
-	useGetBookmarks,
-} from '@/services/getMethodHooks/getBookmarks.hook'
+
 import { useEffect, useState } from 'react'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
@@ -14,64 +10,65 @@ import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
 	const { theme, themeUtils } = useTheme()
-	const { bookmarks, setBookmarks, getCurrentFolderItems, addBookmark, deleteBookmark } =
+
+	const { bookmarks, getCurrentFolderItems, addBookmark, deleteBookmark } =
 		useBookmarkStore()
+
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
+
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
+
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
+
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
+
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
+
 	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
 		useState<boolean>(true)
 
-	const { data: fetchedBookmarks } = useGetBookmarks()
+	// const processFetchedBookmark = async () => {
+	// 	const nonManageableBookmarks = bookmarks.filter((b) => !b.isManageable)
+	// 	const deletedBookmarks = (await getFromStorage('deletedBookmarkIds')) || []
 
-	const processFetchedBookmark = async () => {
-		const unpinnedBookmarks = bookmarks.filter((b) => !b.isManageable)
-		const deletedBookmarks = (await getFromStorage('deletedBookmarkIds')) || []
+	// 	const pinnedBookmarks: Bookmark[] = []
 
-		const pinnedBookmarks: Bookmark[] = []
+	// 	function handleBookmark(bookmark: FetchedBookmark) {
+	// 		if (deletedBookmarks.includes(bookmark.id)) return
 
-		function handleBookmark(bookmark: FetchedSuggestionsBookmark) {
-			if (deletedBookmarks.includes(bookmark.id)) return
+	// 		if (bookmark.type === 'FOLDER') {
+	// 			pinnedBookmarks.push({
+	// 				id: bookmark.id,
+	// 				title: bookmark.title,
+	// 				type: 'FOLDER',
+	// 				parentId: bookmark.parentId,
+	// 				isLocal: false,
+	// 				isManageable: bookmark.isManageable,
+	// 			})
+	// 		} else {
+	// 			pinnedBookmarks.push({
+	// 				id: bookmark.id,
+	// 				title: bookmark.title,
+	// 				type: 'BOOKMARK',
+	// 				parentId: bookmark.parentId,
+	// 				isLocal: false,
+	// 				isManageable: bookmark.isManageable,
+	// 				url: bookmark.url,
+	// 				icon: bookmark.icon,
+	// 			})
+	// 		}
 
-			if (bookmark.type === 'FOLDER') {
-				pinnedBookmarks.push({
-					id: bookmark.id,
-					title: bookmark.title,
-					type: 'FOLDER',
-					parentId: bookmark.parentId,
-					isLocal: false,
-					isManageable: bookmark.isManageable,
-				})
-			} else {
-				pinnedBookmarks.push({
-					id: bookmark.id,
-					title: bookmark.title,
-					type: 'BOOKMARK',
-					parentId: bookmark.parentId,
-					isLocal: false,
-					isManageable: bookmark.isManageable,
-					url: bookmark.url,
-					icon: bookmark.icon,
-				})
-			}
+	// 		for (const child of bookmark.children) {
+	// 			handleBookmark(child)
+	// 		}
+	// 	}
 
-			for (const child of bookmark.children) {
-				handleBookmark(child)
-			}
-		}
+	// 	for (const bookmark of fetchedBookmarks) {
+	// 		handleBookmark(bookmark)
+	// 	}
 
-		for (const bookmark of fetchedBookmarks) {
-			handleBookmark(bookmark)
-		}
-
-		setBookmarks([...pinnedBookmarks, ...unpinnedBookmarks])
-	}
-
-	useEffect(() => {
-		processFetchedBookmark()
-	}, [fetchedBookmarks])
+	// 	setBookmarks([...pinnedBookmarks, ...nonManageableBookmarks])
+	// }
 
 	useEffect(() => {
 		const handleClickOutside = () => setSelectedBookmark(null)

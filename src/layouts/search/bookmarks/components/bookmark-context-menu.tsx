@@ -53,7 +53,7 @@ export function BookmarkContextMenu({
 			{!isFolder && onOpenInNewTab && (
 				<button
 					onClick={onOpenInNewTab}
-					className={`w-full px-2 py-1.5 text-center rounded-md transition-colors duration-200 ${getMenuItemStyle()}`}
+					className={`w-full px-2 py-1.5 cursor-pointer text-center rounded-md transition-colors duration-200 ${getMenuItemStyle()}`}
 				>
 					باز کردن در تب جدید
 				</button>
@@ -61,7 +61,7 @@ export function BookmarkContextMenu({
 
 			<button
 				onClick={onDelete}
-				className={`w-full px-2 py-1.5 text-center rounded-md transition-colors duration-200 ${getMenuItemStyle(true)}`}
+				className={`w-full px-2 cursor-pointer py-1.5 text-center rounded-md transition-colors duration-200 ${getMenuItemStyle(true)}`}
 			>
 				حذف
 			</button>

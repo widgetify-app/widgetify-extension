@@ -6,7 +6,12 @@ import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
+import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import { getMainClient } from '@/services/api'
+import {
+	type FetchedBookmark,
+	getBookmarks,
+} from '@/services/getMethodHooks/getBookmarks.hook'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -22,6 +27,7 @@ enum SyncState {
 export enum SyncTarget {
 	ALL = 0,
 	TODOS = 1,
+	BOOKMARKS = 2,
 }
 
 export function SyncButton() {
@@ -75,6 +81,7 @@ export function SyncButton() {
 		async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
 			const now = Date.now()
 			if (now - lastSyncTimeRef.current < 500) {
+				console.info('Sync request ignored due to rapid succession')
 				return
 			}
 			lastSyncTimeRef.current = now
@@ -96,10 +103,32 @@ export function SyncButton() {
 			setSyncState(SyncState.Syncing)
 
 			try {
-				if (syncTarget === SyncTarget.ALL || syncTarget === SyncTarget.TODOS) {
+				const allSync = [SyncTodo, SyncBookmark]
+
+				if (syncTarget === SyncTarget.ALL) {
+					try {
+						await Promise.all(allSync.map((sync) => sync(method)))
+						setSyncState(SyncState.Success)
+					} catch (error) {
+						console.error('Error during sync:', error)
+						setSyncState(SyncState.Error)
+					}
+				}
+
+				if (syncTarget === SyncTarget.TODOS) {
 					const isSyncTodoComplete = await SyncTodo(method)
 
 					if (isSyncTodoComplete) {
+						setSyncState(SyncState.Success)
+					} else {
+						setSyncState(SyncState.Error)
+					}
+				}
+
+				if (syncTarget === SyncTarget.BOOKMARKS) {
+					const isSyncBookmarkComplete = await SyncBookmark(method)
+
+					if (isSyncBookmarkComplete) {
 						setSyncState(SyncState.Success)
 					} else {
 						setSyncState(SyncState.Error)
@@ -349,4 +378,63 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 		console.error('Error during sync:', error)
 		return false
 	}
+}
+async function SyncBookmark(method: 'GET' | 'POST') {
+	const mapBookmark = (bookmarks: Bookmark[]) => {
+		return (
+			bookmarks
+				.map((bookmark) => ({
+					title: bookmark.title,
+					url: 'url' in bookmark ? bookmark.url : undefined,
+					parentId: bookmark.parentId,
+					offlineId: bookmark.id,
+					id: bookmark.onlineId,
+					type: bookmark.type,
+				}))
+				// sort by without parentId
+				.sort((a, b) => (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1))
+		)
+	}
+
+	const [apiClient, bookmarks, deletedBookmarks] = await Promise.all([
+		getMainClient(),
+		getFromStorage('bookmarks'),
+		getFromStorage('deletedBookmarkIds'),
+	])
+
+	let fetchedBookmarks: FetchedBookmark[] = []
+	if (method === 'GET') {
+		//todo:
+		fetchedBookmarks = await getBookmarks()
+		console.log(fetchedBookmarks)
+	} else {
+		const bookmarksInput = mapBookmark(bookmarks || [])
+		console.log('bookmarksInput', bookmarksInput)
+		console.log('deletedBookmarks', deletedBookmarks)
+
+		const response = await apiClient.post<FetchedBookmark[]>('/bookmarks/sync', {
+			bookmarks: bookmarksInput,
+			deletedBookmarks: deletedBookmarks || [],
+		})
+
+		fetchedBookmarks = response.data
+
+		// fetchedBookmarks = response.data
+	}
+
+	const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
+		id: bookmark.offlineId || bookmark.id,
+		title: bookmark.title,
+		type: bookmark.type,
+		parentId: bookmark.parentId,
+		isLocal: true,
+		isManageable: bookmark.isManageable,
+		url: bookmark.url,
+		icon: bookmark.icon,
+		onlineId: bookmark.id,
+	}))
+
+	callEvent('bookmarksChanged', mappedFetched)
+
+	return true
 }

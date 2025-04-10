@@ -1,5 +1,8 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
+import ms from 'ms'
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 
@@ -24,7 +27,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+	const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
@@ -34,21 +37,37 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 		}
 		loadBookmarks()
+
+		const bookEvent = listenEvent('bookmarksChanged', (data: Bookmark[]) => {
+			if (data) {
+				const uniqueBookmarks = data.reduce((acc: Bookmark[], bookmark: Bookmark) => {
+					if (!acc.some((b) => b.id === bookmark.id)) {
+						acc.push(bookmark)
+					}
+					return acc
+				}, [])
+				console.log('setBookmarks', uniqueBookmarks)
+				setBookmarks(uniqueBookmarks)
+			}
+		})
+
+		return () => {
+			bookEvent()
+		}
 	}, [])
 
 	useEffect(() => {
-		const saveBookmarks = async () => {
-			const localBookmarks = bookmarks.filter((b) => b.isLocal)
-			await setToStorage('bookmarks', localBookmarks)
+		const saveBookmarks = async (data: Bookmark[]) => {
+			await setToStorage('bookmarks', data)
 		}
 
-		const hasLocalBookmarks = bookmarks.some((b) => b.isLocal)
-		if (hasLocalBookmarks) {
-			saveBookmarks()
+		if (bookmarks !== null) {
+			saveBookmarks(bookmarks)
 		}
 	}, [bookmarks])
 
 	const getCurrentFolderItems = (parentId: string | null) => {
+		if (!bookmarks) return []
 		const currentFolderBookmarks = bookmarks.filter(
 			(bookmark) => bookmark.parentId === parentId,
 		)
@@ -181,7 +200,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 
 			const newBookmark = await prepareBookmarkForStorage(bookmark)
-			const updatedBookmarks = [...bookmarks, newBookmark]
+			const updatedBookmarks = [...(bookmarks || []), newBookmark]
 
 			try {
 				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
@@ -199,6 +218,10 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			setBookmarks(updatedBookmarks)
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
+
+			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+
+			callEvent('startSync', SyncTarget.BOOKMARKS)
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
 			toast.error('خطا در افزودن بوکمارک')
@@ -206,6 +229,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	}
 
 	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {
+		if (!bookmarks) return []
+
 		visited.add(parentId)
 		const result: string[] = []
 		const children = bookmarks.filter((b) => b.parentId === parentId)
@@ -225,6 +250,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	}
 
 	const deleteBookmark = async (id: string) => {
+		if (!bookmarks) return
+
 		const bookmarkToDelete = bookmarks.find((b) => b.id === id)
 		if (!bookmarkToDelete) return
 
@@ -244,12 +271,17 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const deletedList = (await getFromStorage('deletedBookmarkIds')) || []
 		deletedList.push(...itemsToDelete)
 		await setToStorage('deletedBookmarkIds', deletedList)
+
+		// sync with delay
+		await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+
+		callEvent('startSync', SyncTarget.BOOKMARKS)
 	}
 
 	return (
 		<bookmarkContext.Provider
 			value={{
-				bookmarks,
+				bookmarks: bookmarks || [],
 				setBookmarks,
 				getCurrentFolderItems,
 				addBookmark,
