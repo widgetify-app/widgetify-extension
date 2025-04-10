@@ -1,3 +1,4 @@
+import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { useTheme } from '@/context/theme.context'
 import type { TemperatureUnit } from '@/services/getMethodHooks/weather/weather.interface'
 
@@ -57,24 +58,6 @@ export function WeatherSettings({
 			default: // glass
 				return 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
 		}
-	}
-
-	const getToggleContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-100/60 border-blue-300/30'
-			case 'dark':
-				return 'bg-blue-900/10 border-white/10'
-			default: // glass
-				return 'bg-blue-900/10 border-white/10'
-		}
-	}
-
-	const getToggleTrackStyle = (enabled: boolean) => {
-		if (enabled) {
-			return theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'
-		}
-		return theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
 	}
 
 	const getHintTextStyle = () => {
@@ -175,36 +158,12 @@ export function WeatherSettings({
 			</div>
 
 			{/* AI Toggle */}
-			<div
-				className={`flex items-center justify-between p-4 border rounded-lg backdrop-blur-sm ${getToggleContainerStyle()}`}
-			>
-				<div className="flex flex-col">
-					<label htmlFor="useAI" className={`text-sm font-medium ${getLabelStyle()}`}>
-						استفاده از هوش مصنوعی
-					</label>
-					<span className={`text-xs font-light ${getHintTextStyle()}`}>
-						توصیف شرایط آب و هوا با زبانی طبیعی با کمک هوش مصنوعی
-					</span>
-				</div>
-				<label className="relative inline-flex items-center cursor-pointer">
-					<input
-						type="checkbox"
-						id="useAI"
-						className="sr-only"
-						checked={useAI}
-						onChange={() => updateSettings('useAI', !useAI)}
-					/>
-					<div
-						className={`relative w-14 h-7 rounded-full transition-colors ${getToggleTrackStyle(useAI)}`}
-					>
-						<div
-							className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-md transition-transform ${
-								useAI ? 'left-8' : 'left-1'
-							}`}
-						></div>
-					</div>
-				</label>
-			</div>
+			<CheckBoxWithDescription
+				isEnabled={useAI}
+				onToggle={() => updateSettings('useAI', !useAI)}
+				title="استفاده از هوش مصنوعی"
+				description="توصیف شرایط آب و هوا با زبانی طبیعی با کمک هوش مصنوعی"
+			/>
 		</div>
 	)
 }

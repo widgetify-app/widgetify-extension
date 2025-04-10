@@ -61,7 +61,7 @@ export function WallpaperSetting() {
 		return (
 			<button
 				onClick={() => changeCategory(category.id)}
-				className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${getButtonStyle()}`}
+				className={`px-4 py-2 rounded-full cursor-pointer whitespace-nowrap transition-all ${getButtonStyle()}`}
 			>
 				{category.name}
 			</button>
