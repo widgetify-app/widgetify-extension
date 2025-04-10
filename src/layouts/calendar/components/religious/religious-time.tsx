@@ -119,7 +119,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 			<div className="flex items-center justify-between mb-3">
 				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
 					اوقات شرعی
-					<span className={'text-sm flex item-end font-thin mr-2 mt-2'}>
+					<span className={'text-sm flex item-end font-light mr-2 mt-2'}>
 						({englishCityName})
 					</span>
 				</h4>
