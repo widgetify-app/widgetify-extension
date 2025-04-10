@@ -147,11 +147,15 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`flex flex-row flex-wrap justify-center w-full gap-2 mt-2 p-1 ${themeUtils.getTextColor()}`}
+				className={`flex flex-row flex-wrap justify-center w-full gap-3 mt-3 p-2 rounded-lg transition-all duration-300 ${themeUtils.getTextColor()}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
-						<div key={i} onContextMenu={(e) => handleRightClick(e, bookmark)}>
+						<div
+							key={i}
+							onContextMenu={(e) => handleRightClick(e, bookmark)}
+							className="transition-transform duration-200 transform hover:scale-105"
+						>
 							<BookmarkItem
 								bookmark={bookmark}
 								onClick={() => handleBookmarkClick(bookmark)}

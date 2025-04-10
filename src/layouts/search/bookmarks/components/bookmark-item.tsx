@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa6'
 import type { Bookmark } from '../types/bookmark.types'
 
 interface BookmarkItemProps {
@@ -163,15 +164,11 @@ function EmptyBookmarkSlot({
 			transition={{ type: 'spring', stiffness: 400, damping: 17 }}
 			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-h-[5.7rem] min-w-[5.4rem] max-w-[5.4rem] ${getEmptySlotStyle()}`}
 		>
-			<div className="relative flex items-center justify-center">
+			<div className="relative flex items-center justify-center opacity-60 w-14 h-14">
 				{canAdd ? (
-					<motion.div
-						className="flex items-center justify-center w-6 h-6 text-xl text-blue-400 transition-colors border-2 rounded-full border-blue-400/50 group-hover:border-blue-500 group-hover:text-blue-500"
-						animate={isHovered ? { scale: 1.1, rotate: 90 } : { scale: 1, rotate: 0 }}
-						transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-					>
-						+
-					</motion.div>
+					<div className="flex items-center justify-center ">
+						<FaPlus />
+					</div>
 				) : (
 					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>
 				)}
