@@ -10,7 +10,7 @@ export function BookmarkContextMenu({
 	position,
 	onDelete,
 	onOpenInNewTab,
-	isFolder = false,
+
 	theme,
 }: BookmarkContextMenuProps) {
 	const getContextMenuStyle = () => {
@@ -50,7 +50,7 @@ export function BookmarkContextMenu({
 			style={{ top: position.y, left: position.x, zIndex: 1000 }}
 			onClick={(e) => e.stopPropagation()}
 		>
-			{!isFolder && onOpenInNewTab && (
+			{onOpenInNewTab && (
 				<button
 					onClick={onOpenInNewTab}
 					className={`w-full px-2 py-1.5 cursor-pointer text-center rounded-md transition-colors duration-200 ${getMenuItemStyle()}`}

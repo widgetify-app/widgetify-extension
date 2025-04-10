@@ -46,7 +46,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					}
 					return acc
 				}, [])
-				console.log('setBookmarks', uniqueBookmarks)
 				setBookmarks(uniqueBookmarks)
 			}
 		})

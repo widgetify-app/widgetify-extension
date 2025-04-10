@@ -130,9 +130,17 @@ export function BookmarksComponent() {
 		}
 	}
 
-	function onOpenInNewTab(bookmark: Bookmark) {
+	async function onOpenInNewTab(bookmark: Bookmark) {
+		if (bookmark?.type === 'FOLDER') {
+			const children = getCurrentFolderItems(bookmark.id)
+			const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
+			for (const b of bookmarks) {
+				window.open(b.url)
+			}
+		}
+
 		if (bookmark && bookmark.type === 'BOOKMARK') {
-			window.open(bookmark.url, '_blank')
+			window.open(bookmark.url)
 		}
 	}
 
@@ -177,7 +185,6 @@ export function BookmarksComponent() {
 							deleteBookmark(selectedBookmark.id)
 							setSelectedBookmark(null)
 						}}
-						isFolder={selectedBookmark.type === 'FOLDER'}
 						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
 						theme={theme}
 					/>
