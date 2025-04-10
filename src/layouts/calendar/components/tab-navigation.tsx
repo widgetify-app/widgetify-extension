@@ -75,7 +75,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div className={`relative rounded-lg ${getTabContainerStyle()}`}>
+		<div className={`relative rounded-lg ${getTabContainerStyle()}  max-w-96 m-auto`}>
 			<div
 				ref={scrollContainerRef}
 				className="flex items-center px-1 py-1 overflow-x-auto scrollbar-hide scroll-smooth"

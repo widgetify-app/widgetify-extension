@@ -1,6 +1,6 @@
+import Modal from '@/components/modal'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import Modal from '@/components/modal'
 import type { PomodoroSettings } from '../types'
 
 interface SettingInputProps {
@@ -145,7 +145,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						<div className="text-center">
 							<button
 								onClick={handleSaveAndClose}
-								className={`px-4 py-1 text-sm font-medium rounded-md transition-colors ${
+								className={`px-4 py-1 text-sm font-medium cursor-pointer rounded-md transition-colors ${
 									theme === 'light'
 										? 'bg-blue-500 text-white hover:bg-blue-600'
 										: 'bg-blue-600 text-gray-200 hover:bg-blue-700'
