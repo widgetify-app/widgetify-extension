@@ -9,6 +9,21 @@ import { useEffect, useState } from 'react'
 import { VscAdd, VscCloudDownload, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
 
+const SUGGESTED_FEEDS = [
+	{
+		name: 'زومیت',
+		url: 'https://www.zoomit.ir/feed/',
+	},
+	{
+		name: 'خبر فارسی',
+		url: 'https://khabarfarsi.com/rss/top',
+	},
+	{
+		name: 'نیویورک تایمز - خاورمیانه',
+		url: 'https://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+	},
+]
+
 interface RssFeedManagerProps {
 	isOpen: boolean
 	onClose: () => void
@@ -90,6 +105,30 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 		setError(null)
 	}
 
+	const addSuggestedFeed = (suggestedFeed: { name: string; url: string }) => {
+		const feedExists = rssState.customFeeds.some(
+			(feed) => feed.url.toLowerCase() === suggestedFeed.url.toLowerCase(),
+		)
+
+		if (feedExists) {
+			setError(`فید "${suggestedFeed.name}" قبلاً اضافه شده است`)
+			return
+		}
+
+		const newState = { ...rssState }
+		const newId = `feed-${Date.now()}`
+
+		newState.customFeeds.push({
+			id: newId,
+			name: suggestedFeed.name,
+			url: suggestedFeed.url,
+			enabled: true,
+		})
+
+		saveRssState(newState)
+		setError(null)
+	}
+
 	const validateUrl = (url: string) => {
 		if (!url.trim()) return
 
@@ -99,6 +138,12 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 		} catch (e) {
 			setError('آدرس فید معتبر نیست')
 		}
+	}
+
+	const isFeedAlreadyAdded = (url: string): boolean => {
+		return rssState.customFeeds.some(
+			(feed) => feed.url.toLowerCase() === url.toLowerCase(),
+		)
 	}
 
 	const getFormSectionStyle = () => {
@@ -133,6 +178,17 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 				return 'bg-blue-600 hover:bg-blue-700 text-white'
 			default: // glass
 				return 'bg-blue-500/80 hover:bg-blue-600/90 text-white backdrop-blur-sm'
+		}
+	}
+
+	const getSuggestedFeedStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+			case 'dark':
+				return 'bg-gray-800/50 hover:bg-gray-700/50 border-gray-700/50'
+			default: // glass
+				return 'bg-white/10 hover:bg-white/15 border-white/10 backdrop-blur-sm'
 		}
 	}
 
@@ -205,6 +261,34 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 							<VscAdd size={16} />
 							<span>افزودن فید جدید</span>
 						</motion.button>
+					</div>
+				</section>
+
+				{/* Suggested Feeds Section */}
+				<section className="mt-2">
+					<div className="flex items-center justify-between mb-3">
+						<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
+							فیدهای پیشنهادی
+						</h3>
+					</div>
+					<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+						{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
+							(feed) => (
+								<motion.div
+									key={feed.url}
+									className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getSuggestedFeedStyle()}`}
+									whileHover={{ scale: isLoading ? 1 : 1.02 }}
+									whileTap={{ scale: isLoading ? 1 : 0.98 }}
+									onClick={() => !isLoading && addSuggestedFeed(feed)}
+								>
+									<span
+										className={`font-medium text-light text-center ${themeUtils.getTextColor()}`}
+									>
+										{feed.name}
+									</span>
+								</motion.div>
+							),
+						)}
 					</div>
 				</section>
 
