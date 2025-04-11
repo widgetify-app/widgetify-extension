@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
@@ -34,6 +34,7 @@ export const NewsLayout = () => {
 
 	const [rssItems, setRssItems] = useState<RssItem[]>([])
 	const [isLoadingRss, setIsLoadingRss] = useState(false)
+	const [isRefreshing, setIsRefreshing] = useState(false)
 
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(rssState.useDefaultNews)
 
@@ -41,12 +42,126 @@ export const NewsLayout = () => {
 		window.open(url, '_blank', 'noopener,noreferrer')
 	}
 
+	const fetchAllRssFeeds = useCallback(
+		async (
+			feeds: typeof rssState.customFeeds,
+			lastFetched: Record<string, RssItem[]> = {},
+		) => {
+			try {
+				setIsLoadingRss(true)
+				const newLastFetched = { ...lastFetched }
+				let allItems: RssItem[] = []
+
+				const feedPromises = feeds
+					.filter((feed) => feed.enabled)
+					.map(async (feed) => {
+						try {
+							const items = await fetchRssFeed(feed.url, feed.name)
+							if (items.length > 0) newLastFetched[feed.id] = items
+							return items
+						} catch (error) {
+							console.error(`Error fetching feed ${feed.name}:`, error)
+							return lastFetched[feed.id] || []
+						}
+					})
+
+				const allResults = await Promise.all(feedPromises)
+
+				if (
+					allResults.every((result) => result.length === 0) &&
+					Object.values(lastFetched).flat().length > 0
+				) {
+					allItems = Object.values(lastFetched).flat() as RssItem[]
+				} else {
+					allItems = allResults.flat()
+				}
+
+				const twentyFourHoursAgo = new Date()
+				twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
+
+				allItems = allItems.filter((item) => {
+					const itemDate = new Date(item.pubDate)
+					return itemDate >= twentyFourHoursAgo
+				})
+
+				allItems.sort((a, b) => {
+					const dateA = new Date(a.pubDate)
+					const dateB = new Date(b.pubDate)
+					return dateB.getTime() - dateA.getTime()
+				})
+
+				setRssItems(allItems)
+
+				const newRssState: RssNewsState = {
+					customFeeds: feeds,
+					useDefaultNews: rssState.useDefaultNews,
+					lastFetchedItems: newLastFetched,
+				}
+				setRssState(newRssState)
+
+				setToStorage('rss_news_state', newRssState)
+			} catch (error) {
+				console.error('Error fetching RSS feeds:', error)
+				const cachedItems = Object.values(lastFetched).flat() as RssItem[]
+				if (cachedItems.length > 0) {
+					setRssItems(cachedItems)
+				}
+			} finally {
+				setIsLoadingRss(false)
+				setIsRefreshing(false)
+			}
+		},
+		[rssState.useDefaultNews],
+	)
+
 	useEffect(() => {
-		const loadRssState = async () => {
+		const loadInitialData = async () => {
 			const savedState = await getFromStorage('rss_news_state')
 			if (savedState) {
 				setRssState(savedState)
 
+				if (savedState.useDefaultNews) {
+					const cachedNews = await getFromStorage('news')
+					if (cachedNews) {
+						setNewsData(cachedNews as ExtendedNewsResponse)
+					}
+				} else {
+					// Handle RSS feeds
+					const enabledFeeds = savedState.customFeeds.filter((feed) => feed.enabled)
+					if (enabledFeeds.length > 0) {
+						const hasCachedItems = Object.values(savedState.lastFetchedItems).some(
+							(items) => items && items.length > 0,
+						)
+
+						if (hasCachedItems) {
+							const cachedItems = Object.values(
+								savedState.lastFetchedItems,
+							).flat() as RssItem[]
+							setRssItems(cachedItems)
+						} else {
+							setIsLoadingRss(true)
+						}
+
+						await fetchAllRssFeeds(enabledFeeds, savedState.lastFetchedItems)
+					}
+				}
+			}
+		}
+
+		loadInitialData()
+	}, [fetchAllRssFeeds])
+
+	const handleRssModalUpdate = async () => {
+		const savedState = await getFromStorage('rss_news_state')
+		if (savedState) {
+			setRssState(savedState)
+			if (savedState.useDefaultNews) {
+				setRssItems([])
+				const cachedNews = await getFromStorage('news')
+				if (cachedNews) {
+					setNewsData(cachedNews as ExtendedNewsResponse)
+				}
+			} else {
 				const enabledFeeds = savedState.customFeeds.filter((feed) => feed.enabled)
 				if (enabledFeeds.length > 0) {
 					const hasCachedItems = Object.values(savedState.lastFetchedItems).some(
@@ -58,108 +173,11 @@ export const NewsLayout = () => {
 							savedState.lastFetchedItems,
 						).flat() as RssItem[]
 						setRssItems(cachedItems)
-					} else {
-						setIsLoadingRss(true)
 					}
-
 					await fetchAllRssFeeds(enabledFeeds, savedState.lastFetchedItems)
-					setIsLoadingRss(false)
+				} else {
+					setRssItems([])
 				}
-			}
-		}
-
-		loadRssState()
-	}, [])
-
-	const fetchAllRssFeeds = async (
-		feeds: typeof rssState.customFeeds,
-		lastFetched: Record<string, RssItem[]> = {},
-	) => {
-		try {
-			const newLastFetched = { ...lastFetched }
-			let allItems: RssItem[] = []
-
-			const feedPromises = feeds
-				.filter((feed) => feed.enabled)
-				.map(async (feed) => {
-					try {
-						const items = await fetchRssFeed(feed.url, feed.name)
-						if (items.length > 0) newLastFetched[feed.id] = items
-						return items
-					} catch (error) {
-						console.error(`Error fetching feed ${feed.name}:`, error)
-						return lastFetched[feed.id] || []
-					}
-				})
-
-			const allResults = await Promise.all(feedPromises)
-
-			if (
-				allResults.every((result) => result.length === 0) &&
-				Object.values(lastFetched).flat().length > 0
-			) {
-				allItems = Object.values(lastFetched).flat() as RssItem[]
-			} else {
-				allItems = allResults.flat()
-			}
-
-			const twentyFourHoursAgo = new Date()
-			twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
-
-			allItems = allItems.filter((item) => {
-				const itemDate = new Date(item.pubDate)
-				return itemDate >= twentyFourHoursAgo
-			})
-
-			allItems.sort((a, b) => {
-				const dateA = new Date(a.pubDate)
-				const dateB = new Date(b.pubDate)
-				return dateB.getTime() - dateA.getTime()
-			})
-
-			if (allItems.length > 0) {
-				setRssItems(allItems)
-
-				const newRssState: RssNewsState = {
-					customFeeds: feeds,
-					useDefaultNews: rssState.useDefaultNews,
-					lastFetchedItems: newLastFetched,
-				}
-				setRssState(newRssState)
-
-				setToStorage('rss_news_state', newRssState)
-			}
-		} catch (error) {
-			console.error('Error fetching RSS feeds:', error)
-			const cachedItems = Object.values(lastFetched).flat() as RssItem[]
-			if (cachedItems.length > 0) {
-				setRssItems(cachedItems)
-			}
-		} finally {
-			setIsLoadingRss(false)
-		}
-	}
-
-	const handleRssModalUpdate = async () => {
-		const savedState = await getFromStorage('rss_news_state')
-		if (savedState) {
-			setRssState(savedState)
-			const enabledFeeds = savedState.customFeeds.filter((feed) => feed.enabled)
-			if (enabledFeeds.length > 0) {
-				const hasCachedItems = Object.values(savedState.lastFetchedItems).some(
-					(items) => items && items.length > 0,
-				)
-
-				if (hasCachedItems) {
-					const cachedItems = Object.values(
-						savedState.lastFetchedItems,
-					).flat() as RssItem[]
-					setRssItems(cachedItems)
-				}
-
-				await fetchAllRssFeeds(enabledFeeds, savedState.lastFetchedItems)
-			} else {
-				setRssItems([])
 			}
 		}
 	}
@@ -181,28 +199,28 @@ export const NewsLayout = () => {
 	}
 
 	useEffect(() => {
-		if (rssState.useDefaultNews && data.news?.length) {
-			setNewsData({
-				...data,
-				isCached: false,
-			})
-			setToStorage('news', {
-				...data,
-				isCached: true,
-			})
+		if (rssState.useDefaultNews) {
+			if (data.news?.length) {
+				setNewsData({
+					...data,
+					isCached: false,
+				})
+				setToStorage('news', {
+					...data,
+					isCached: true,
+				})
+			} else if (isError) {
+				getFromStorage('news').then((storedData) => {
+					if (storedData) {
+						setNewsData(storedData as ExtendedNewsResponse)
+					}
+				})
+			}
 		}
-
-		if (isError && rssState.useDefaultNews) {
-			getFromStorage('news').then((storedData) => {
-				if (storedData) {
-					setNewsData(storedData as ExtendedNewsResponse)
-				}
-			})
-		}
-	}, [dataUpdatedAt, isError, rssState.useDefaultNews, data])
+	}, [dataUpdatedAt, isError])
 
 	const displayItems = getItemsToDisplay()
-	const isAnyLoading = isLoading || isLoadingRss
+	const isAnyLoading = (isLoading || isLoadingRss) && !isRefreshing
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 
 	return (
@@ -231,7 +249,9 @@ export const NewsLayout = () => {
 				<NewsContainer
 					isLoading={isAnyLoading}
 					isEmpty={noItemsToShow}
-					noFeedsConfigured={rssState.customFeeds.length === 0}
+					noFeedsConfigured={
+						!rssState.useDefaultNews && rssState.customFeeds.length === 0
+					}
 					onAddFeed={() => setRssModalOpen(true)}
 				>
 					{displayItems.map((item, index) => (
