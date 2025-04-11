@@ -1,6 +1,7 @@
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 
+import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type {
 	FetchedAllEvents,
 	FetchedEvent,
@@ -144,4 +145,22 @@ export function getGregorianEvents(
 
 export function getCurrentDate() {
 	return jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+}
+
+export function filterGoogleEventsByDate(
+	events: GoogleCalendarEvent[],
+	currentDate: WidgetifyDate,
+): GoogleCalendarEvent[] {
+	const dateStr = currentDate.clone().locale('en').format('YYYY-MM-DD')
+
+	return events.filter((event) => {
+		if (!event || !event.start || !event.start.dateTime) {
+			return false
+		}
+
+		if (event.eventType === 'birthday') return false
+
+		const eventDateStr = event.start.dateTime.split('T')[0]
+		return eventDateStr === dateStr
+	})
 }

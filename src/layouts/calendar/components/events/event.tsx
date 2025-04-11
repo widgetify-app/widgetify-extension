@@ -1,29 +1,38 @@
 import { useTheme } from '@/context/theme.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import { FiCalendar } from 'react-icons/fi'
 import {
 	type WidgetifyDate,
+	filterGoogleEventsByDate,
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
 } from '../../utils'
+import { GoogleEventsList } from '../google/google-events-list'
 
 interface Prop {
 	events: FetchedAllEvents
+	googleEvents?: GoogleCalendarEvent[]
 	currentDate: WidgetifyDate
 	isPreview?: boolean
 	onDateChange?: (date: WidgetifyDate) => void
 }
 
-export function Events({ events, currentDate }: Prop) {
+export function Events({ events, googleEvents = [], currentDate }: Prop) {
 	const { theme } = useTheme()
 	const shamsiEvents = getShamsiEvents(events, currentDate)
 	const gregorianEvents = getGregorianEvents(events, currentDate)
 	const hijriEvents = getHijriEvents(events, currentDate)
-	const selectedEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents].sort(
-		(a) => (a.isHoliday ? -1 : 1),
-	)
+
+	const filteredGoogleEvents = filterGoogleEventsByDate(googleEvents, currentDate)
+
+	const hasAnyEvents =
+		filteredGoogleEvents.length > 0 ||
+		shamsiEvents.length > 0 ||
+		gregorianEvents.length > 0 ||
+		hijriEvents.length > 0
 
 	const getEventTypeStyles = (isHoliday: boolean) => {
 		if (isHoliday) {
@@ -141,42 +150,58 @@ export function Events({ events, currentDate }: Prop) {
 
 			<motion.div
 				initial="collapsed"
-				className={'overflow-y-auto rounded-lg '}
+				className={'overflow-y-auto rounded-lg h-52 max-h-52'}
 				transition={{ type: 'spring', damping: 20, stiffness: 100 }}
 			>
 				<motion.div className="p-2" variants={listVariants}>
-					{selectedEvents.length > 0 ? (
+					{hasAnyEvents ? (
 						<>
-							{selectedEvents.map((event, index) => {
-								const styles = getEventTypeStyles(event.isHoliday)
+							{/* Google Calendar Events */}
+							{filteredGoogleEvents.length > 0 && (
+								<div className="mb-2">
+									<GoogleEventsList events={googleEvents} currentDate={currentDate} />
+								</div>
+							)}
 
-								return (
-									<motion.div
-										key={index}
-										custom={index}
-										variants={itemVariants}
-										initial="initial"
-										animate="animate"
-										className={`${styles.container} rounded-lg p-1 mb-2 px-2 last:mb-0 flex items-center`}
-										whileHover={{ x: 3, transition: { duration: 0.2 } }}
-									>
-										{event.icon ? (
-											<img
-												src={event.icon}
-												alt=""
-												className={`object-contain w-4 h-4 p-1 ml-2 rounded-md ${getEventIconBackgroundStyle()}`}
-												onError={(e) => {
-													e.currentTarget.style.display = 'none'
-												}}
-											/>
-										) : null}
+							{/* Regular calendar events */}
+							{[...shamsiEvents, ...gregorianEvents, ...hijriEvents].length > 0 && (
+								<div>
+									{[...shamsiEvents, ...gregorianEvents, ...hijriEvents]
+										.sort((a) => (a.isHoliday ? -1 : 1))
+										.map((event, index) => {
+											const styles = getEventTypeStyles(event.isHoliday)
 
-										<div className="flex-1">
-											<div className={`font-medium ${styles.title}`}>{event.title}</div>
-										</div>
-									</motion.div>
-								)
-							})}
+											return (
+												<motion.div
+													key={`regular-${index}`}
+													custom={index + filteredGoogleEvents.length}
+													variants={itemVariants}
+													initial="initial"
+													animate="animate"
+													className={`${styles.container} rounded-lg p-1 mb-2 px-2 last:mb-0 flex items-center`}
+													whileHover={{ x: 3, transition: { duration: 0.2 } }}
+												>
+													{event.icon ? (
+														<img
+															src={event.icon}
+															alt=""
+															className={`object-contain w-4 h-4 p-1 ml-2 rounded-md ${getEventIconBackgroundStyle()}`}
+															onError={(e) => {
+																e.currentTarget.style.display = 'none'
+															}}
+														/>
+													) : null}
+
+													<div className="flex-1">
+														<div className={`font-medium ${styles.title}`}>
+															{event.title}
+														</div>
+													</div>
+												</motion.div>
+											)
+										})}
+								</div>
+							)}
 						</>
 					) : (
 						<motion.div

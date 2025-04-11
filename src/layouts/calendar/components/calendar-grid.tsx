@@ -1,6 +1,8 @@
+import { useAuth } from '@/context/auth.context'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { type WidgetifyDate, formatDateStr } from '../utils'
@@ -19,9 +21,20 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	selectedDate,
 	setSelectedDate,
 }) => {
+	const { isAuthenticated } = useAuth()
+
 	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
+
+	const startOfMonth = currentDate.clone().startOf('jMonth').toDate()
+	const endOfMonth = currentDate.clone().endOf('jMonth').toDate()
+
+	const { data: googleEvents } = useGetGoogleCalendarEvents(
+		isAuthenticated,
+		startOfMonth,
+		endOfMonth,
+	)
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
@@ -50,6 +63,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					currentDate={currentDate}
 					day={i + 1}
 					events={events}
+					googleEvents={googleEvents}
 					selectedDateStr={selectedDateStr}
 					setSelectedDate={setSelectedDate}
 					todos={todos}

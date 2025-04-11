@@ -1,16 +1,17 @@
+import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
+import { useGetGoogleCalendarEvents } from '../../../services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type { TabType } from '../calendar'
 import type { WidgetifyDate } from '../utils'
 import { DaySlider } from './day-slider'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
+import { ReligiousTime } from './religious/religious-time'
 import { TodoStats } from './todos/todo-stats'
 import { Todos } from './todos/todos'
-import { ReligiousTime } from './religious/religious-time'
-
 
 interface CalendarContentProps {
 	activeTab: TabType
@@ -27,6 +28,17 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 	setCurrentDate,
 }) => {
 	const { data: events } = useGetEvents()
+	const { isAuthenticated } = useAuth()
+
+	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
+	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
+
+	const { data: googleEvents } = useGetGoogleCalendarEvents(
+		isAuthenticated,
+		startOfMonth,
+		endOfMonth,
+	)
+
 	const [showSlider, setShowSlider] = useState(true)
 
 	useEffect(() => {
@@ -53,6 +65,7 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 				>
 					<Events
 						events={events || []}
+						googleEvents={googleEvents || []}
 						currentDate={selectedDate}
 						onDateChange={setCurrentDate}
 					/>

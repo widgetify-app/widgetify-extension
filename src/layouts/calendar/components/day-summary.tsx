@@ -1,6 +1,8 @@
+import { useAuth } from '@/context/auth.context'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiChevronRight, FiClipboard } from 'react-icons/fi'
@@ -14,10 +16,33 @@ interface DaySummaryProps {
 }
 
 export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick }) => {
+	const { isAuthenticated } = useAuth()
 	const { theme } = useTheme()
 	const { todos } = useTodoStore()
 	const { data: events } = useGetEvents()
+
+	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
+	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
+
+	const { data: googleEvents } = useGetGoogleCalendarEvents(
+		isAuthenticated,
+		startOfMonth,
+		endOfMonth,
+	)
+
 	const selectedDateStr = formatDateStr(selectedDate)
+
+	const googleEventsForSelectedDate = googleEvents.filter((event) => {
+		if (!event || !event.start || !event.start.dateTime) {
+			return false
+		}
+
+		const eventDateStr = event.start.dateTime.split('T')[0]
+		const dateStr = selectedDate.clone().locale('en').format('YYYY-MM-DD')
+		return eventDateStr === dateStr
+	})
+
+	const googleEventCount = googleEventsForSelectedDate.length
 
 	const todosForSelectedDate = todos.filter((todo) => todo.date === selectedDateStr)
 
@@ -28,6 +53,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 	const gregorianEvents = events ? getGregorianEvents(events, selectedDate) : []
 	const hijriEvents = events ? getHijriEvents(events, selectedDate) : []
 	const allEvents = [...shamsiEvents, ...gregorianEvents, ...hijriEvents]
+	const totalEventsCount = allEvents.length + googleEventCount
 
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
@@ -61,10 +87,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 		}
 	}
 
-	const getHolidayStyle = () => {
-		return holidayEvents > 0 ? 'text-red-500' : getSubTextStyle()
-	}
-
 	return (
 		<div
 			className={`mt-0.5 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
@@ -82,14 +104,15 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 						className={`p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
 					>
 						<FiCalendar
-							className={`mt-0.5 ml-2 flex-shrink-0 ${allEvents.length > 0 ? 'text-blue-500' : getSubTextStyle()}`}
+							className={`mt-0.5 ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : getSubTextStyle()}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
 							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
-								{allEvents.length} رویداد
+								{totalEventsCount} رویداد
 							</div>
-							<div className={`text-[.50rem] ${getHolidayStyle()} truncate`}>
+							<div className={`text-[.50rem] ${getSubTextStyle()} truncate`}>
+								{googleEventCount > 0 && `${googleEventCount} رویداد گوگل • `}
 								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
 							</div>
 						</div>

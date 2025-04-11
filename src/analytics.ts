@@ -86,7 +86,7 @@ const Analytics = (() => {
 	}
 
 	function sendMeasurementEvent(payload: any): void {
-		if ((import.meta.env.DEV as unknown as string) === "development") {
+		if (import.meta.env.DEV) {
 			console.log('in dev mode, skipping analytics:', payload)
 			return
 		}

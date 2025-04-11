@@ -1,6 +1,7 @@
 import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import jalaliMoment from 'jalali-moment'
 import type { Todo } from '../../interface/todo.interface'
 import { formatDateStr, getHijriEvents, getShamsiEvents } from '../../utils'
@@ -13,12 +14,14 @@ interface DayItemProps {
 	todos: Todo[]
 	selectedDateStr: string
 	setSelectedDate: (date: jalaliMoment.Moment) => void
+	googleEvents: GoogleCalendarEvent[]
 }
 
 export function DayItem({
 	day,
 	currentDate,
 	events,
+	googleEvents = [],
 	todos,
 	selectedDateStr,
 	setSelectedDate,
@@ -29,7 +32,10 @@ export function DayItem({
 	const todayShamsiEvent = getShamsiEvents(events, cellDate)
 	const todayHijriEvent = getHijriEvents(events, cellDate)
 
-	const hasEvent = todayShamsiEvent.length || todayHijriEvent.length
+	const googleEventsForDay = filterGoogleEventsByDate(googleEvents, cellDate)
+	const hasGoogleEvents = googleEventsForDay.length > 0
+
+	const hasEvent = todayShamsiEvent.length || todayHijriEvent.length || hasGoogleEvents
 	const eventIcons = [
 		...todayShamsiEvent.filter((event) => event.icon).map((event) => event.icon),
 		...todayHijriEvent.filter((event) => event.icon).map((event) => event.icon),
@@ -114,7 +120,11 @@ export function DayItem({
 	}
 
 	return (
-		<Tooltip content={toolTipContent(cellDate, theme)} position="top" key={`day-${day}`}>
+		<Tooltip
+			content={toolTipContent(cellDate, theme, googleEvents)}
+			position="top"
+			key={`day-${day}`}
+		>
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
@@ -169,4 +179,20 @@ const isToday = (date: jalaliMoment.Moment) => {
 		date.jMonth() === today.jMonth() &&
 		date.jYear() === today.jYear()
 	)
+}
+
+const filterGoogleEventsByDate = (
+	googleEvents: GoogleCalendarEvent[],
+	date: jalaliMoment.Moment,
+) => {
+	return googleEvents.filter((event) => {
+		if (event.eventType !== 'birthday') {
+			const eventDate = jalaliMoment(event.start.dateTime)
+			return (
+				eventDate.jDate() === date.jDate() &&
+				eventDate.jMonth() === date.jMonth() &&
+				eventDate.jYear() === date.jYear()
+			)
+		}
+	})
 }
