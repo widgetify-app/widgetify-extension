@@ -17,6 +17,7 @@ export const useGetSupportCurrencies = () => {
 		queryKey: ['supportedCurrencies'],
 		queryFn: async () => getSupportCurrencies(),
 		retry: 0,
+		initialData: [],
 	})
 }
 
