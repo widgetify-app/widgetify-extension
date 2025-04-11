@@ -17,7 +17,7 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 	const [trends, setTrends] = useState<TrendItem[]>([])
 	const [isCached, setIsCached] = useState(false)
 
-	const { data, isError } = useGetTrends({
+	const { data, isError, isLoading } = useGetTrends({
 		enabled: visible,
 	})
 
@@ -41,17 +41,6 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 		}
 	}, [data, isError])
 
-	const getTrendItemBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 hover:bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 hover:bg-neutral-700/90'
-			default:
-				return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80'
-		}
-	}
-
 	const getFooterBackground = () => {
 		switch (theme) {
 			case 'light':
@@ -63,7 +52,7 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 		}
 	}
 
-	if (!visible || !trends.length) return null
+	if (!visible) return null
 
 	const brandStyle = theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'
 
@@ -93,19 +82,20 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 					</div>
 
 					<div className="grid gap-2 md:grid-cols-2">
-						{trends.slice(0, 6).map((trend, index) => (
-							<motion.div
-								key={trend.title}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ delay: index * 0.05 }}
-								className={`flex items-center p-2 cursor-pointer transition-colors rounded-lg ${getTrendItemBackground()}`}
-								onClick={() => onSelectTrend(trend.title)}
-							>
-								<span className={'text-xs mr-2'}>{index + 1}.</span>
-								<p className="text-sm font-light">{trend.title}</p>
-							</motion.div>
-						))}
+						{isLoading
+							? [...Array(6)].map((_, index) => (
+									<TrendItemComponent key={`skeleton-${index}`} index={index} isLoading />
+								))
+							: trends
+									.slice(0, 6)
+									.map((trend, index) => (
+										<TrendItemComponent
+											key={trend.title}
+											index={index}
+											trend={trend}
+											onClick={() => onSelectTrend(trend.title)}
+										/>
+									))}
 					</div>
 				</div>
 
@@ -121,5 +111,74 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 				</div>
 			</motion.div>
 		</AnimatePresence>
+	)
+}
+
+interface TrendItemProps {
+	index: number
+	trend?: TrendItem
+	isLoading?: boolean
+	onClick?: () => void
+}
+
+const TrendItemComponent = ({
+	index,
+	trend,
+	isLoading = false,
+	onClick,
+}: TrendItemProps) => {
+	const { theme } = useTheme()
+
+	const getTrendItemBackground = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100 hover:bg-gray-200'
+			case 'dark':
+				return 'bg-neutral-800 hover:bg-neutral-700/90'
+			default:
+				return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80'
+		}
+	}
+
+	const getSkeletonBackground = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200'
+			case 'dark':
+				return 'bg-neutral-700/70'
+			default:
+				return 'bg-neutral-800/50'
+		}
+	}
+
+	if (isLoading) {
+		return (
+			<motion.div
+				initial={{ opacity: 0.4 }}
+				animate={{ opacity: [0.4, 0.7, 0.4] }}
+				transition={{
+					duration: 1.5,
+					repeat: Number.POSITIVE_INFINITY,
+					delay: index * 0.1,
+				}}
+				className={`flex items-center p-2 rounded-lg ${getSkeletonBackground()}`}
+			>
+				<div className="w-4 h-4 ml-2 bg-current rounded-full opacity-20"></div>
+				<div className="w-full h-4 bg-current rounded opacity-20"></div>
+			</motion.div>
+		)
+	}
+
+	return (
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ delay: index * 0.05 }}
+			className={`flex items-center p-2 cursor-pointer transition-colors rounded-lg ${getTrendItemBackground()}`}
+			onClick={onClick}
+		>
+			<span className={'text-xs mr-2'}>{index + 1}.</span>
+			<p className="text-sm font-light">{trend?.title}</p>
+		</motion.div>
 	)
 }

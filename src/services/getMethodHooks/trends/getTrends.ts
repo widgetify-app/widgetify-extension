@@ -33,7 +33,6 @@ export function useGetTrends(
 		queryKey: ['getTrends', region, limit],
 		queryFn: () => fetchTrends(region, limit),
 		refetchInterval: refetchInterval || false,
-		initialData: [],
 		enabled,
 	})
 }
