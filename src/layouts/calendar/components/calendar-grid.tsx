@@ -21,7 +21,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	selectedDate,
 	setSelectedDate,
 }) => {
-	const { isAuthenticated } = useAuth()
+	const { user } = useAuth()
 
 	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
@@ -31,7 +31,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const endOfMonth = currentDate.clone().endOf('jMonth').toDate()
 
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
-		isAuthenticated,
+		user?.connections?.includes('google') || false,
 		startOfMonth,
 		endOfMonth,
 	)

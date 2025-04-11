@@ -28,13 +28,13 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 	setCurrentDate,
 }) => {
 	const { data: events } = useGetEvents()
-	const { isAuthenticated } = useAuth()
+	const { user } = useAuth()
 
 	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
 	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
 
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
-		isAuthenticated,
+		user?.connections?.includes('google') || false,
 		startOfMonth,
 		endOfMonth,
 	)

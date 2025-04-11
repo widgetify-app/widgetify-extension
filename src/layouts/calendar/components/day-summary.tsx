@@ -16,7 +16,7 @@ interface DaySummaryProps {
 }
 
 export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick }) => {
-	const { isAuthenticated } = useAuth()
+	const { user } = useAuth()
 	const { theme } = useTheme()
 	const { todos } = useTodoStore()
 	const { data: events } = useGetEvents()
@@ -25,7 +25,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
 
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
-		isAuthenticated,
+		user?.connections?.includes('google') || false,
 		startOfMonth,
 		endOfMonth,
 	)
