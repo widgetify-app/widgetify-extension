@@ -38,14 +38,17 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 		loadBookmarks()
 
-		const bookEvent = listenEvent('bookmarksChanged', (data: Bookmark[]) => {
+		const bookEvent = listenEvent('bookmarksChanged', async (data: Bookmark[]) => {
 			if (data) {
-				const uniqueBookmarks = data.reduce((acc: Bookmark[], bookmark: Bookmark) => {
+				const current = (await getFromStorage('bookmarks')) || []
+				const all = [...current, ...data]
+				const uniqueBookmarks = all.reduce((acc: Bookmark[], bookmark: Bookmark) => {
 					if (!acc.some((b) => b.id === bookmark.id)) {
 						acc.push(bookmark)
 					}
 					return acc
 				}, [])
+
 				setBookmarks(uniqueBookmarks)
 			}
 		})

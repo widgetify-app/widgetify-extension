@@ -404,13 +404,9 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 
 	let fetchedBookmarks: FetchedBookmark[] = []
 	if (method === 'GET') {
-		//todo:
 		fetchedBookmarks = await getBookmarks()
-		console.log(fetchedBookmarks)
 	} else {
 		const bookmarksInput = mapBookmark(bookmarks || [])
-		console.log('bookmarksInput', bookmarksInput)
-		console.log('deletedBookmarks', deletedBookmarks)
 
 		const response = await apiClient.post<FetchedBookmark[]>('/bookmarks/sync', {
 			bookmarks: bookmarksInput,
@@ -418,8 +414,6 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		})
 
 		fetchedBookmarks = response.data
-
-		// fetchedBookmarks = response.data
 	}
 
 	const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
