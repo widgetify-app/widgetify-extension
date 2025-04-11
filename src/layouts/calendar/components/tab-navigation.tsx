@@ -38,17 +38,6 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 		}
 	}
 
-	const getFadeGradientFrom = () => {
-		switch (theme) {
-			case 'light':
-				return 'from-gray-100/90'
-			case 'dark':
-				return 'from-neutral-800/80'
-			default: // glass
-				return 'from-neutral-900/50'
-		}
-	}
-
 	useEffect(() => {
 		if (scrollContainerRef.current) {
 			const activeTabElement = scrollContainerRef.current.querySelector(
@@ -78,7 +67,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 		<div className={`relative rounded-lg ${getTabContainerStyle()}  max-w-96 m-auto`}>
 			<div
 				ref={scrollContainerRef}
-				className="flex items-center px-1 py-1 overflow-x-auto scrollbar-hide scroll-smooth"
+				className="flex items-center px-1 py-1 overflow-x-auto rounded-lg scrollbar-hide scroll-smooth"
 				style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
 			>
 				<style>{`
@@ -109,18 +98,6 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 					</motion.button>
 				))}
 			</div>
-
-			{/* Left fade indicator */}
-			<div
-				className={`absolute left-0 top-0 h-full w-4 bg-gradient-to-r ${getFadeGradientFrom()} to-transparent pointer-events-none`}
-				style={{ opacity: 0.8 }}
-			></div>
-
-			{/* Right fade indicator */}
-			<div
-				className={`absolute right-0 top-0 h-full w-4 bg-gradient-to-l ${getFadeGradientFrom()} to-transparent pointer-events-none`}
-				style={{ opacity: 0.8 }}
-			></div>
 		</div>
 	)
 }
