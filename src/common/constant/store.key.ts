@@ -1,5 +1,6 @@
 import type { SelectedCity } from '@/context/weather.context'
 import type { Todo } from '@/layouts/calendar/interface/todo.interface'
+import type { RssNewsState } from '@/layouts/news/news.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
@@ -38,6 +39,7 @@ export interface StorageKV {
 	news: NewsResponse & { isCached?: boolean }
 	search_trends: TrendItem[]
 	deletedTodos: Todo[]
+	rss_news_state: RssNewsState
 
 	enable_sync: boolean
 }

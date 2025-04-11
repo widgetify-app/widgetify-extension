@@ -53,7 +53,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						<CustomCheckbox
 							checked={visibility.news}
 							onChange={handleNewsToggle}
-							label="اخبار روز"
+							label="ویجی نیوز"
 						/>
 						{visibility.widgetify && (
 							<div className="mt-1 mr-6 text-xs font-light text-amber-500">

@@ -16,9 +16,9 @@ type ModalProps = {
 }
 
 const sizeClasses = {
-	sm: 'w-full max-w-sm',
-	md: 'w-full max-w-md',
-	lg: 'w-full max-w-lg',
+	sm: 'w-full max-w-sm max-h-[70vh] overflow-hidden',
+	md: 'w-full max-w-md max-h-[80vh] overflow-hidden',
+	lg: 'w-full max-w-lg max-h-[85vh] overflow-hidden',
 	xl: 'w-full max-w-4xl max-h-[90vh] overflow-hidden',
 }
 

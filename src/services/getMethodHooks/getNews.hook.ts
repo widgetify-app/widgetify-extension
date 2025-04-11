@@ -22,11 +22,12 @@ export interface NewsResponse {
 	updatedAt: string
 }
 
-export const useGetNews = () => {
+export const useGetNews = (enabled: boolean) => {
 	return useQuery<NewsResponse>({
 		queryKey: ['getNews'],
 		queryFn: async () => getNews(),
 		retry: 1,
+		enabled: enabled,
 		initialData: {
 			platform: {
 				name: '',
@@ -38,7 +39,7 @@ export const useGetNews = () => {
 	})
 }
 
-async function getNews(): Promise<NewsResponse> {
+export async function getNews(): Promise<NewsResponse> {
 	const client = await getMainClient()
 	const { data } = await client.get<NewsResponse>('/news')
 	return data
