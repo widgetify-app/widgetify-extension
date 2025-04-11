@@ -64,7 +64,7 @@ export const UserProfile = () => {
 				</p>
 				<button
 					onClick={logout}
-					className={`px-4 py-2 rounded-lg transition-colors ${getButtonStyle()}`}
+					className={`px-4 py-2 cursor-pointer rounded-lg transition-colors ${getButtonStyle()}`}
 				>
 					خروج از حساب کاربری
 				</button>
