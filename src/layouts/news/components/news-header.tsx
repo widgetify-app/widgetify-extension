@@ -62,9 +62,9 @@ export const NewsHeader = ({
 					</a>
 				) : null}
 
-				<div className="flex items-center mt-1 text-xs">
-					<span className="opacity-70">
-						{useDefaultNews ? '' : 'اخبار 24 ساعت گذشته'}
+				<div className="flex items-center mt-1 mr-2 text-xs">
+					<span className="font-light opacity-70">
+						{useDefaultNews ? '' : 'اخباری لحظه‌ای از منابع شما'}
 					</span>
 				</div>
 			</div>
