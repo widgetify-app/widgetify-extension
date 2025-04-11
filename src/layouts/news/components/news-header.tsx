@@ -75,7 +75,7 @@ export const NewsHeader = ({
 				className="p-1 rounded-full cursor-pointer hover:bg-gray-500/10"
 				onClick={onSettingsClick}
 			>
-				<FaGear className="w-5 h-5 opacity-70 hover:opacity-100" />
+				<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
 			</motion.button>
 		</div>
 	)
