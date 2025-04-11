@@ -8,8 +8,8 @@ import { useLazyLoad } from './hooks/use-lazy-load'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
-	selectedBackground: string | null
-	setSelectedBackground: (id: string) => void
+	selectedBackground: Wallpaper | null
+	setSelectedBackground: (wallpaper: Wallpaper) => void
 }
 
 export const WallpaperItem = React.memo(
@@ -23,7 +23,7 @@ export const WallpaperItem = React.memo(
 		const [error, setError] = useState(false)
 		const imgRef = useRef<HTMLImageElement>(null)
 		const videoRef = useRef<HTMLVideoElement>(null)
-		const isSelected = selectedBackground === wallpaper.id
+		const isSelected = selectedBackground?.id === wallpaper.id
 
 		const loadContent = useCallback(() => {
 			if (wallpaper.type === 'IMAGE' && imgRef.current) {
@@ -104,7 +104,7 @@ export const WallpaperItem = React.memo(
 
 		const handleSelect = () => {
 			if (!loaded || error) return
-			setSelectedBackground(wallpaper.id)
+			setSelectedBackground(wallpaper)
 		}
 
 		return (
@@ -187,5 +187,5 @@ export const WallpaperItem = React.memo(
 	},
 	(prevProps, nextProps) =>
 		prevProps.wallpaper.id === nextProps.wallpaper.id &&
-		prevProps.selectedBackground === nextProps.selectedBackground,
+		prevProps.selectedBackground?.id === nextProps.selectedBackground?.id,
 )

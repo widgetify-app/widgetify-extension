@@ -12,6 +12,7 @@ interface TextInputProps {
 	name?: string
 	type?: string
 	direction?: 'rtl' | 'ltr' | ''
+	className?: string
 }
 
 export const TextInput = forwardRef(
@@ -27,6 +28,7 @@ export const TextInput = forwardRef(
 			id,
 			type = 'text',
 			direction = '',
+			className = '',
 		}: TextInputProps,
 		ref: ForwardedRef<HTMLInputElement>,
 	) => {
@@ -68,7 +70,7 @@ export const TextInput = forwardRef(
 				dir={direction}
 				placeholder={placeholder || ''}
 				className={`w-full text-[14px] rounded-xl p-3 outline-none border 
-                    transition-all duration-200 font-light ${getInputStyle()}`}
+                    transition-all duration-200 font-light ${getInputStyle()} ${className}`}
 				onChange={(e) => onChange(e.target.value)}
 			/>
 		)

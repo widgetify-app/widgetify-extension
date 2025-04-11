@@ -8,8 +8,8 @@ interface WallpaperGalleryProps {
 	isLoading: boolean
 	error: unknown
 	wallpapers: Wallpaper[]
-	selectedBackground: string | null
-	onSelectBackground: (id: string) => void
+	selectedBackground: Wallpaper | null
+	onSelectBackground: (wallpaper: Wallpaper) => void
 }
 
 export function WallpaperGallery({

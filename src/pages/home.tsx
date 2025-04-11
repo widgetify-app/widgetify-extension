@@ -118,7 +118,19 @@ export function HomePage() {
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			} else {
-				//todo: get default wallpaper from server
+				const defaultGradient: StoredWallpaper = {
+					id: 'gradient-a1c4fd-c2e9fb',
+					type: 'GRADIENT',
+					src: '',
+					isRetouchEnabled: false,
+					gradient: {
+						from: '#a1c4fd',
+						to: '#c2e9fb',
+						direction: 'to-r',
+					},
+				}
+				changeWallpaper(defaultGradient)
+				setToStorage('wallpaper', defaultGradient)
 			}
 		}
 
@@ -155,12 +167,25 @@ export function HomePage() {
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
-
 			document.body.style.backgroundColor = ''
+		} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
+			const { from, to, direction } = wallpaper.gradient
+			const cssDirection = direction
+				.replace('to-r', 'to right')
+				.replace('to-l', 'to left')
+				.replace('to-t', 'to top')
+				.replace('to-b', 'to bottom')
+				.replace('to-tr', 'to top right')
+				.replace('to-tl', 'to top left')
+				.replace('to-br', 'to bottom right')
+				.replace('to-bl', 'to bottom left')
+
+			document.body.style.backgroundImage = `linear-gradient(${cssDirection}, ${from}, ${to})`
+			document.body.style.backgroundColor = ''
+			document.body.style.backdropFilter = ''
 		} else if (wallpaper.type === 'VIDEO') {
 			document.body.style.backgroundImage = ''
 			document.body.style.backdropFilter = ''
-
 			document.body.style.backgroundColor = '#000'
 
 			const video = document.createElement('video')

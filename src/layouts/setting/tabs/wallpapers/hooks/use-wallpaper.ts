@@ -1,32 +1,54 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type {
+	GradientColors,
+	StoredWallpaper,
+	Wallpaper,
+} from '@/common/wallpaper.interface'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
-	const [selectedBackground, setSelectedBackground] = useState<string | null>(null)
+	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
 
 	useEffect(() => {
 		async function getWallpaper() {
-			const wallpaper = await getFromStorage('wallpaper')
+			const wallpaper: StoredWallpaper | null = await getFromStorage('wallpaper')
 			if (wallpaper) {
-				setSelectedBackground(wallpaper.id)
 				setIsRetouchEnabled(wallpaper.isRetouchEnabled)
 
 				if (wallpaper.id === 'custom-wallpaper') {
 					const customWp = await getFromStorage('customWallpaper')
 					if (customWp) {
 						setCustomWallpaper(customWp)
+						setSelectedBackground(customWp)
+					}
+				} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
+					const gradientWallpaper: Wallpaper = {
+						id: wallpaper.id,
+						name: wallpaper.id.includes('custom') ? 'گرادیان سفارشی' : 'گرادیان',
+						type: 'GRADIENT',
+						src: '',
+						gradient: wallpaper.gradient,
+					}
+					setSelectedBackground(gradientWallpaper)
+				} else {
+					if (fetchedWallpapers) {
+						const foundWallpaper = fetchedWallpapers.find((wp) => wp.id === wallpaper.id)
+						if (foundWallpaper) {
+							setSelectedBackground(foundWallpaper)
+						}
 					}
 				}
 			}
 		}
 
-		getWallpaper()
-	}, [])
+		if (fetchedWallpapers) {
+			getWallpaper()
+		}
+	}, [fetchedWallpapers])
 
 	const allWallpapers = useMemo(() => {
 		if (!fetchedWallpapers) return []
@@ -38,60 +60,52 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		return fetchedWallpapers
 	}, [fetchedWallpapers, customWallpaper])
 
-	const selectedWallpaper = useMemo(() => {
-		if (selectedBackground === 'custom-wallpaper' && customWallpaper) {
-			return customWallpaper
-		}
-		return allWallpapers.find((bg) => bg.id === selectedBackground) || null
-	}, [allWallpapers, selectedBackground, customWallpaper])
-
 	useEffect(() => {
-		if (!selectedWallpaper) return
+		if (!selectedBackground) return
 
-		const wallpaperData = {
-			id: selectedWallpaper.id,
-			type: selectedWallpaper.type,
-			src: selectedWallpaper.src,
+		const wallpaperData: StoredWallpaper = {
+			id: selectedBackground.id,
+			type: selectedBackground.type,
+			src: selectedBackground.src,
 			isRetouchEnabled: isRetouchEnabled,
+		}
+
+		// Add gradient data if this is a gradient wallpaper
+		if (selectedBackground.type === 'GRADIENT' && selectedBackground.gradient) {
+			wallpaperData.gradient = selectedBackground.gradient
 		}
 
 		setToStorage('wallpaper', wallpaperData)
 
-		if (selectedWallpaper.id === 'custom-wallpaper') {
-			setToStorage('customWallpaper', selectedWallpaper)
+		if (selectedBackground.id === 'custom-wallpaper') {
+			setToStorage('customWallpaper', selectedBackground)
 		}
 
 		callEvent('wallpaperChanged', wallpaperData)
-	}, [selectedWallpaper, isRetouchEnabled])
+	}, [selectedBackground, isRetouchEnabled])
 
-	const handleSelectBackground = useCallback(
-		(id: string) => {
-			setSelectedBackground(id)
+	const handleSelectBackground = useCallback((wallpaper: Wallpaper) => {
+		setSelectedBackground(wallpaper)
 
-			const selectedWp = allWallpapers.find((wp) => wp.id === id)
-			if (selectedWp) {
-				Analytics.featureUsed('wallpaper_changed', {
-					wallpaper_id: id,
-					wallpaper_name: selectedWp.name || 'unnamed',
-					wallpaper_type: selectedWp.type,
-				})
-			}
-		},
-		[allWallpapers],
-	)
+		Analytics.featureUsed('wallpaper_changed', {
+			wallpaper_id: wallpaper.id,
+			wallpaper_name: wallpaper.name || 'unnamed',
+			wallpaper_type: wallpaper.type,
+		})
+	}, [])
 
 	const toggleRetouch = useCallback(() => {
 		setIsRetouchEnabled((prev) => !prev)
 
 		Analytics.featureUsed('wallpaper_retouch_toggled', {
 			enabled: !isRetouchEnabled,
-			wallpaper_id: selectedBackground || 'none',
+			wallpaper_id: selectedBackground?.id || 'none',
 		})
 	}, [isRetouchEnabled, selectedBackground])
 
 	const handleCustomWallpaperChange = useCallback((newWallpaper: Wallpaper) => {
 		setCustomWallpaper(newWallpaper)
-		setSelectedBackground('custom-wallpaper')
+		setSelectedBackground(newWallpaper)
 	}, [])
 
 	return {
@@ -99,7 +113,6 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		isRetouchEnabled,
 		customWallpaper,
 		allWallpapers,
-		selectedWallpaper,
 		handleSelectBackground,
 		toggleRetouch,
 		handleCustomWallpaperChange,
