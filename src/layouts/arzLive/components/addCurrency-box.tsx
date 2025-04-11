@@ -2,6 +2,7 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
 import { useTheme } from '@/context/theme.context'
+import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
@@ -19,18 +20,12 @@ export type SupportedCurrencies = {
 }[]
 
 interface AddCurrencyBoxProps {
-	supportCurrencies: SupportedCurrencies
 	disabled?: boolean
 	loading?: boolean
-	theme: string
 }
 
-export const AddCurrencyBox = ({
-	supportCurrencies,
-	disabled,
-	loading,
-	theme,
-}: AddCurrencyBoxProps) => {
+export const AddCurrencyBox = ({ disabled, loading }: AddCurrencyBoxProps) => {
+	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 
 	const getBoxStyle = () => {
@@ -101,11 +96,7 @@ export const AddCurrencyBox = ({
 				<span className={`text-sm ${getTextStyle()}`}>افزودن ارز</span>
 			</motion.div>
 
-			<SelectCurrencyModal
-				show={showModal}
-				setShow={setShowModal}
-				supportCurrencies={supportCurrencies}
-			/>
+			<SelectCurrencyModal show={showModal} setShow={setShowModal} />
 		</>
 	)
 }
@@ -113,14 +104,12 @@ export const AddCurrencyBox = ({
 interface AddCurrencyModalProps {
 	show: boolean
 	setShow: (show: boolean) => void
-	supportCurrencies: SupportedCurrencies
 }
 
-export function SelectCurrencyModal({
-	setShow,
-	show,
-	supportCurrencies,
-}: AddCurrencyModalProps) {
+export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
+	if (!show) return null
+	const { data: supportCurrencies } = useGetSupportCurrencies()
+
 	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
 	const { theme } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')

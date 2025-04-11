@@ -1,15 +1,13 @@
 import { useCurrencyStore } from '@/context/currency.context'
 import { useTheme } from '@/context/theme.context'
-import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
 import { motion } from 'framer-motion'
 import { FiDollarSign } from 'react-icons/fi'
 import { AddCurrencyBox } from './components/addCurrency-box'
 import { CurrencyBox } from './components/currency-box'
 
 export function ArzLiveLayout() {
-	const { data } = useGetSupportCurrencies()
 	const { selectedCurrencies } = useCurrencyStore()
-	const { theme, themeUtils } = useTheme()
+	const { themeUtils } = useTheme()
 
 	return (
 		<div className="relative">
@@ -45,7 +43,7 @@ export function ArzLiveLayout() {
 					transition={{ duration: 0.2 }}
 					className="sticky bottom-0 pt-1 mt-auto shadow-inner"
 				>
-					<AddCurrencyBox supportCurrencies={data || []} theme={theme} />
+					<AddCurrencyBox />
 				</motion.div>
 			</div>
 		</div>
