@@ -1,10 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import type {
-	GradientColors,
-	StoredWallpaper,
-	Wallpaper,
-} from '@/common/wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
