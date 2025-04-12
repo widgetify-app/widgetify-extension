@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface ThemeContextType {
 	theme: string
@@ -37,14 +37,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		})
 	}, [])
 
-	const setThemeCallback = useCallback(
-		(theme: string) => {
-			setTheme(theme)
-			setToStorage('theme', theme as any)
-			document.documentElement.setAttribute('data-theme', theme)
-		},
-		[theme],
-	)
+	const setThemeCallback = (theme: string) => {
+		setTheme(theme)
+		setToStorage('theme', theme as any)
+		document.documentElement.setAttribute('data-theme', theme)
+	}
 
 	const contextValue: ThemeContextType = {
 		theme,

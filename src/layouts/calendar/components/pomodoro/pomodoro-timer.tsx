@@ -1,7 +1,7 @@
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	FiCheckCircle,
 	FiCoffee,
@@ -35,7 +35,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		cyclesBeforeLongBreak: 4,
 	})
 
-	const getMaxTime = useCallback(() => {
+	const getMaxTime = () => {
 		switch (mode) {
 			case 'work':
 				return settings.workTime * 60
@@ -44,7 +44,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			case 'long-break':
 				return settings.longBreakTime * 60
 		}
-	}, [mode, settings])
+	}
 
 	const progress = (timeLeft / getMaxTime()) * 100
 

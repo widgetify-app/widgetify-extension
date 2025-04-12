@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
@@ -42,77 +42,74 @@ export const NewsLayout = () => {
 		window.open(url, '_blank', 'noopener,noreferrer')
 	}
 
-	const fetchAllRssFeeds = useCallback(
-		async (
-			feeds: typeof rssState.customFeeds,
-			lastFetched: Record<string, RssItem[]> = {},
-		) => {
-			try {
-				setIsLoadingRss(true)
-				const newLastFetched = { ...lastFetched }
-				let allItems: RssItem[] = []
+	const fetchAllRssFeeds = async (
+		feeds: typeof rssState.customFeeds,
+		lastFetched: Record<string, RssItem[]> = {},
+	) => {
+		try {
+			setIsLoadingRss(true)
+			const newLastFetched = { ...lastFetched }
+			let allItems: RssItem[] = []
 
-				const feedPromises = feeds
-					.filter((feed) => feed.enabled)
-					.map(async (feed) => {
-						try {
-							const items = await fetchRssFeed(feed.url, feed.name)
-							if (items.length > 0) newLastFetched[feed.id] = items
-							return items
-						} catch (error) {
-							console.error(`Error fetching feed ${feed.name}:`, error)
-							return lastFetched[feed.id] || []
-						}
-					})
-
-				const allResults = await Promise.all(feedPromises)
-
-				if (
-					allResults.every((result) => result.length === 0) &&
-					Object.values(lastFetched).flat().length > 0
-				) {
-					allItems = Object.values(lastFetched).flat() as RssItem[]
-				} else {
-					allItems = allResults.flat()
-				}
-
-				const twentyFourHoursAgo = new Date()
-				twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
-
-				allItems = allItems.filter((item) => {
-					const itemDate = new Date(item.pubDate)
-					return itemDate >= twentyFourHoursAgo
+			const feedPromises = feeds
+				.filter((feed) => feed.enabled)
+				.map(async (feed) => {
+					try {
+						const items = await fetchRssFeed(feed.url, feed.name)
+						if (items.length > 0) newLastFetched[feed.id] = items
+						return items
+					} catch (error) {
+						console.error(`Error fetching feed ${feed.name}:`, error)
+						return lastFetched[feed.id] || []
+					}
 				})
 
-				allItems.sort((a, b) => {
-					const dateA = new Date(a.pubDate)
-					const dateB = new Date(b.pubDate)
-					return dateB.getTime() - dateA.getTime()
-				})
+			const allResults = await Promise.all(feedPromises)
 
-				setRssItems(allItems)
-
-				const newRssState: RssNewsState = {
-					customFeeds: feeds,
-					useDefaultNews: rssState.useDefaultNews,
-					lastFetchedItems: newLastFetched,
-				}
-				setRssState(newRssState)
-
-				setToStorage('rss_news_state', newRssState)
-			} catch (error) {
-				console.error('Error fetching RSS feeds:', error)
-				const cachedItems = Object.values(lastFetched).flat() as RssItem[]
-				if (cachedItems.length > 0) {
-					setRssItems(cachedItems)
-				}
-			} finally {
-				setIsLoadingRss(false)
-				setIsRefreshing(false)
+			if (
+				allResults.every((result) => result.length === 0) &&
+				Object.values(lastFetched).flat().length > 0
+			) {
+				allItems = Object.values(lastFetched).flat() as RssItem[]
+			} else {
+				allItems = allResults.flat()
 			}
-		},
-		[rssState.useDefaultNews],
-	)
+
+			const twentyFourHoursAgo = new Date()
+			twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
+
+			allItems = allItems.filter((item) => {
+				const itemDate = new Date(item.pubDate)
+				return itemDate >= twentyFourHoursAgo
+			})
+
+			allItems.sort((a, b) => {
+				const dateA = new Date(a.pubDate)
+				const dateB = new Date(b.pubDate)
+				return dateB.getTime() - dateA.getTime()
+			})
+
+			setRssItems(allItems)
+
+			const newRssState: RssNewsState = {
+				customFeeds: feeds,
+				useDefaultNews: rssState.useDefaultNews,
+				lastFetchedItems: newLastFetched,
+			}
+			setRssState(newRssState)
+
+			setToStorage('rss_news_state', newRssState)
+		} catch (error) {
+			console.error('Error fetching RSS feeds:', error)
+			const cachedItems = Object.values(lastFetched).flat() as RssItem[]
+			if (cachedItems.length > 0) {
+				setRssItems(cachedItems)
+			}
+		} finally {
+			setIsLoadingRss(false)
+			setIsRefreshing(false)
+		}
+	}
 
 	useEffect(() => {
 		const loadInitialData = async () => {

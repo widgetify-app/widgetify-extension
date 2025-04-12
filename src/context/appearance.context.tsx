@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 export type FontFamily = 'Vazir' | 'Samim'
 
@@ -48,34 +48,28 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		loadSettings()
 	}, [])
 
-	const updateSetting = useCallback(
-		<K extends keyof AppearanceData>(key: K, value: AppearanceData[K]) => {
-			setSettings((prevSettings) => {
-				const newSettings = {
-					...prevSettings,
-					[key]: value,
-				}
+	const updateSetting = <K extends keyof AppearanceData>(
+		key: K,
+		value: AppearanceData[K],
+	) => {
+		setSettings((prevSettings) => {
+			const newSettings = {
+				...prevSettings,
+				[key]: value,
+			}
 
-				setToStorage('appearance', newSettings)
-				return newSettings
-			})
-		},
-		[],
-	)
+			setToStorage('appearance', newSettings)
+			return newSettings
+		})
+	}
 
-	const setContentAlignment = useCallback(
-		(value: 'center' | 'top') => {
-			updateSetting('contentAlignment', value)
-		},
-		[updateSetting],
-	)
+	const setContentAlignment = (value: 'center' | 'top') => {
+		updateSetting('contentAlignment', value)
+	}
 
-	const setFontFamily = useCallback(
-		(value: FontFamily) => {
-			updateSetting('fontFamily', value)
-		},
-		[updateSetting],
-	)
+	const setFontFamily = (value: FontFamily) => {
+		updateSetting('fontFamily', value)
+	}
 
 	useEffect(() => {
 		if (isInitialized && settings.fontFamily) {

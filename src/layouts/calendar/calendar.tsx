@@ -1,7 +1,7 @@
 import { useTheme } from '@/context/theme.context'
 import { TodoProvider } from '@/context/todo.context'
 import type React from 'react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { CalendarContainer } from './components/calendar-container'
 import { CalendarContent } from './components/calendar-content'
 import { CalendarGrid } from './components/calendar-grid'
@@ -19,15 +19,15 @@ const PersianCalendar: React.FC = () => {
 	const [selectedDate, setSelectedDate] = useState(today.clone())
 	const [activeTab, setActiveTab] = useState<TabType>('events')
 
-	const handleTabClick = useCallback((tab: TabType) => {
+	const handleTabClick = (tab: TabType) => {
 		setActiveTab(tab)
-	}, [])
+	}
 
-	const goToToday = useCallback(() => {
+	const goToToday = () => {
 		const realToday = getCurrentDate()
 		setCurrentDate(realToday.clone())
 		setSelectedDate(realToday.clone())
-	}, [])
+	}
 
 	return (
 		<div

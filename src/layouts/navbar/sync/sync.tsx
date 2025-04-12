@@ -14,7 +14,7 @@ import {
 } from '@/services/getMethodHooks/getBookmarks.hook'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
 
@@ -77,69 +77,66 @@ export function SyncButton() {
 		initialSync()
 	}, [isAuthenticated])
 
-	const syncData = useCallback(
-		async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
-			const now = Date.now()
-			if (now - lastSyncTimeRef.current < 500) {
-				console.info('Sync request ignored due to rapid succession')
-				return
-			}
-			lastSyncTimeRef.current = now
+	const syncData = async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
+		const now = Date.now()
+		if (now - lastSyncTimeRef.current < 500) {
+			console.info('Sync request ignored due to rapid succession')
+			return
+		}
+		lastSyncTimeRef.current = now
 
-			if (!isAuthenticated) {
-				setFirstAuth(true)
-				return
-			}
+		if (!isAuthenticated) {
+			setFirstAuth(true)
+			return
+		}
 
-			const isSyncEnabled = await getFromStorage('enable_sync')
+		const isSyncEnabled = await getFromStorage('enable_sync')
 
-			if (isSyncEnabled === false) {
-				return
-			}
+		if (isSyncEnabled === false) {
+			return
+		}
 
-			if (syncInProgressRef.current) return
+		if (syncInProgressRef.current) return
 
-			syncInProgressRef.current = true
-			setSyncState(SyncState.Syncing)
+		syncInProgressRef.current = true
+		setSyncState(SyncState.Syncing)
 
-			try {
-				const allSync = [SyncTodo, SyncBookmark]
+		try {
+			const allSync = [SyncTodo, SyncBookmark]
 
-				if (syncTarget === SyncTarget.ALL) {
-					try {
-						await Promise.all(allSync.map((sync) => sync(method)))
-						setSyncState(SyncState.Success)
-					} catch (error) {
-						console.error('Error during sync:', error)
-						setSyncState(SyncState.Error)
-					}
+			if (syncTarget === SyncTarget.ALL) {
+				try {
+					await Promise.all(allSync.map((sync) => sync(method)))
+					setSyncState(SyncState.Success)
+				} catch (error) {
+					console.error('Error during sync:', error)
+					setSyncState(SyncState.Error)
 				}
-
-				if (syncTarget === SyncTarget.TODOS) {
-					const isSyncTodoComplete = await SyncTodo(method)
-
-					if (isSyncTodoComplete) {
-						setSyncState(SyncState.Success)
-					} else {
-						setSyncState(SyncState.Error)
-					}
-				}
-
-				if (syncTarget === SyncTarget.BOOKMARKS) {
-					const isSyncBookmarkComplete = await SyncBookmark(method)
-
-					if (isSyncBookmarkComplete) {
-						setSyncState(SyncState.Success)
-					} else {
-						setSyncState(SyncState.Error)
-					}
-				}
-			} finally {
-				syncInProgressRef.current = false
 			}
-		},
-		[isAuthenticated],
-	)
+
+			if (syncTarget === SyncTarget.TODOS) {
+				const isSyncTodoComplete = await SyncTodo(method)
+
+				if (isSyncTodoComplete) {
+					setSyncState(SyncState.Success)
+				} else {
+					setSyncState(SyncState.Error)
+				}
+			}
+
+			if (syncTarget === SyncTarget.BOOKMARKS) {
+				const isSyncBookmarkComplete = await SyncBookmark(method)
+
+				if (isSyncBookmarkComplete) {
+					setSyncState(SyncState.Success)
+				} else {
+					setSyncState(SyncState.Error)
+				}
+			}
+		} finally {
+			syncInProgressRef.current = false
+		}
+	}
 
 	useEffect(() => {
 		const handleSyncRequest = (eventData: any) => {

@@ -1,7 +1,7 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiCheck, FiHeart } from 'react-icons/fi'
 import { useLazyLoad } from './hooks/use-lazy-load'
@@ -25,14 +25,14 @@ export const WallpaperItem = React.memo(
 		const videoRef = useRef<HTMLVideoElement>(null)
 		const isSelected = selectedBackground?.id === wallpaper.id
 
-		const loadContent = useCallback(() => {
+		const loadContent = () => {
 			if (wallpaper.type === 'IMAGE' && imgRef.current) {
 				imgRef.current.src = wallpaper.src
 			} else if (wallpaper.type === 'VIDEO' && videoRef.current) {
 				videoRef.current.src = wallpaper.src
 				videoRef.current.load()
 			}
-		}, [wallpaper])
+		}
 
 		const elementRef = useLazyLoad(loadContent)
 

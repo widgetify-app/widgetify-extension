@@ -2,7 +2,7 @@ import type { Category, Wallpaper } from '@/common/wallpaper.interface'
 import { getMainClient } from '@/services/api'
 import { useGetWallpaperCategories } from '@/services/getMethodHooks/getWallpaperCategories.hook'
 import { useQuery } from '@tanstack/react-query'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface CategoryWallpapers {
 	category: Category
@@ -53,15 +53,12 @@ export function useWallpapersByCategory() {
 		}
 	}, [fetchedWallpapers, selectedCategoryId])
 
-	const changeCategory = useCallback((categoryId: string) => {
+	const changeCategory = (categoryId: string) => {
 		setSelectedCategoryId(categoryId)
-	}, [])
-
-	const wallpapers = () => {
-		return (
-			wallpaperCacheRef.current[selectedCategoryId || 'all'] || fetchedWallpapers || []
-		)
 	}
+
+	const wallpapers =
+		wallpaperCacheRef.current[selectedCategoryId || 'all'] || fetchedWallpapers || []
 
 	const wallpapersByCategory = () => {
 		if (!wallpapers || selectedCategoryId === 'all') return []
@@ -72,14 +69,12 @@ export function useWallpapersByCategory() {
 		return [
 			{
 				category: selectedCategory,
-				wallpapers: wallpapers(),
+				wallpapers: wallpapers,
 			},
 		] as CategoryWallpapers[]
 	}
 
-	const allWallpapers = () => {
-		return wallpapers || []
-	}
+	const allWallpapers = wallpapers || []
 
 	const isLoading = categoriesLoading || (wallpapersLoading && shouldFetchWallpapers)
 	const error = categoriesError || wallpapersError

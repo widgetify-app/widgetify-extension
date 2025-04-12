@@ -1,7 +1,7 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
-import { useCallback, useRef } from 'react'
+import { useRef } from 'react'
 import { FiEdit, FiUploadCloud } from 'react-icons/fi'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { MediaPreview } from './media-preview.component'
@@ -49,22 +49,19 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 		}
 	}
 
-	const handleFileSelect = useCallback(() => {
+	const handleFileSelect = () => {
 		if (fileInputRef.current) {
 			fileInputRef.current.click()
 		}
-	}, [])
+	}
 
-	const handleFileChange = useCallback(
-		(e: React.ChangeEvent<HTMLInputElement>) => {
-			const file = e.target.files?.[0]
-			if (file) {
-				processFile(file, 'file_selector')
-				e.target.value = ''
-			}
-		},
-		[processFile],
-	)
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (file) {
+			processFile(file, 'file_selector')
+			e.target.value = ''
+		}
+	}
 
 	if (!customWallpaper) {
 		return (

@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
@@ -46,41 +46,29 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		loadGeneralSettings()
 	}, [])
 
-	const updateSetting = useCallback(
-		<K extends keyof GeneralData>(key: K, value: GeneralData[K]) => {
-			setSettings((prevSettings) => {
-				const newSettings = {
-					...prevSettings,
-					[key]: value,
-				}
+	const updateSetting = <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => {
+		setSettings((prevSettings) => {
+			const newSettings = {
+				...prevSettings,
+				[key]: value,
+			}
 
-				setToStorage('generalSettings', newSettings)
-				return newSettings
-			})
-		},
-		[],
-	)
+			setToStorage('generalSettings', newSettings)
+			return newSettings
+		})
+	}
 
-	const setEnablePets = useCallback(
-		(value: boolean) => {
-			updateSetting('enablePets', value)
-		},
-		[updateSetting],
-	)
+	const setEnablePets = (value: boolean) => {
+		updateSetting('enablePets', value)
+	}
 
-	const setAnalyticsEnabled = useCallback(
-		(value: boolean) => {
-			updateSetting('analyticsEnabled', value)
-		},
-		[updateSetting],
-	)
+	const setAnalyticsEnabled = (value: boolean) => {
+		updateSetting('analyticsEnabled', value)
+	}
 
-	const setPetName = useCallback(
-		(value: string) => {
-			updateSetting('petName', value)
-		},
-		[updateSetting],
-	)
+	const setPetName = (value: string) => {
+		updateSetting('petName', value)
+	}
 
 	if (!isInitialized) {
 		return null

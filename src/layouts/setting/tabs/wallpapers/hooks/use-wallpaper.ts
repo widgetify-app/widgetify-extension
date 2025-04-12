@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
@@ -80,7 +80,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		callEvent('wallpaperChanged', wallpaperData)
 	}, [selectedBackground, isRetouchEnabled])
 
-	const handleSelectBackground = useCallback((wallpaper: Wallpaper) => {
+	const handleSelectBackground = (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
 
 		Analytics.featureUsed('wallpaper_changed', {
@@ -88,21 +88,21 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 			wallpaper_name: wallpaper.name || 'unnamed',
 			wallpaper_type: wallpaper.type,
 		})
-	}, [])
+	}
 
-	const toggleRetouch = useCallback(() => {
+	const toggleRetouch = () => {
 		setIsRetouchEnabled((prev) => !prev)
 
 		Analytics.featureUsed('wallpaper_retouch_toggled', {
 			enabled: !isRetouchEnabled,
 			wallpaper_id: selectedBackground?.id || 'none',
 		})
-	}, [isRetouchEnabled, selectedBackground])
+	}
 
-	const handleCustomWallpaperChange = useCallback((newWallpaper: Wallpaper) => {
+	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
 		setCustomWallpaper(newWallpaper)
 		setSelectedBackground(newWallpaper)
-	}, [])
+	}
 
 	return {
 		selectedBackground,

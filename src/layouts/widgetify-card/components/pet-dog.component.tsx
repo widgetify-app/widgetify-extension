@@ -1,12 +1,12 @@
-import { motion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { LuBone } from 'react-icons/lu'
 import idle from '@/assets/animals/akita_idle_8fps.gif'
 import lie from '@/assets/animals/akita_lie_8fps.gif'
 import running from '@/assets/animals/akita_run_8fps.gif'
 import swipe from '@/assets/animals/akita_swipe_8fps.gif'
 import walking from '@/assets/animals/akita_walk_fast_8fps.gif'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { LuBone } from 'react-icons/lu'
 
 interface Bone {
 	id: number
@@ -49,7 +49,7 @@ export const DogComponent = () => {
 	const REST_DURATION = { min: 5000, max: 10000 }
 	const CLIMB_DURATION = { min: 4000, max: 7000 }
 
-	const getMovementBounds = useCallback(() => {
+	const getMovementBounds = () => {
 		const container = containerRef.current
 		return {
 			minX: 10,
@@ -57,53 +57,50 @@ export const DogComponent = () => {
 			minY: 0,
 			maxY: MAX_HEIGHT,
 		}
-	}, [])
+	}
 
-	const isNearWall = useCallback(() => {
+	const isNearWall = () => {
 		const bounds = getMovementBounds()
 		return position.x <= bounds.minX + 5 || position.x >= bounds.maxX - 5
-	}, [position.x, getMovementBounds])
+	}
 
-	const getCurrentSpeed = useCallback(() => {
+	const getCurrentSpeed = () => {
 		return action === 'run' ? RUN_SPEED : WALK_SPEED
-	}, [action])
+	}
 
-	const handleClick = useCallback(
-		(e: MouseEvent) => {
-			const container = containerRef.current
-			if (container) {
-				const rect = container.getBoundingClientRect()
-				const clickX = e.clientX - rect.left
-				const bounds = getMovementBounds()
-				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
+	const handleClick = (e: MouseEvent) => {
+		const container = containerRef.current
+		if (container) {
+			const rect = container.getBoundingClientRect()
+			const clickX = e.clientX - rect.left
+			const bounds = getMovementBounds()
+			const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
 
-				const newBone: Bone = {
-					id: boneIdCounter,
-					x: clampedX,
-					y: -BONE_SIZE,
-					collected: false,
-					dropping: true,
-				}
+			const newBone: Bone = {
+				id: boneIdCounter,
+				x: clampedX,
+				y: -BONE_SIZE,
+				collected: false,
+				dropping: true,
+			}
 
-				setBones((prev) => [...prev, newBone])
-				setBoneIdCounter((prev) => prev + 1)
+			setBones((prev) => [...prev, newBone])
+			setBoneIdCounter((prev) => prev + 1)
 
-				if (action === 'sit' || action === 'idle') {
-					setAction('stand')
-					setTimeout(() => {
-						setAction('run')
-						setBehaviorState('chasing')
-					}, 300)
-				} else {
+			if (action === 'sit' || action === 'idle') {
+				setAction('stand')
+				setTimeout(() => {
 					setAction('run')
 					setBehaviorState('chasing')
-				}
+				}, 300)
+			} else {
+				setAction('run')
+				setBehaviorState('chasing')
 			}
-		},
-		[action, getMovementBounds, boneIdCounter],
-	)
+		}
+	}
 
-	const findNearestBone = useCallback(() => {
+	const findNearestBone = () => {
 		const availableBones = bones.filter(
 			(bone) => !bone.collected && !bone.dropping && bone.y <= 5,
 		)
@@ -122,9 +119,9 @@ export const DogComponent = () => {
 		}
 
 		return nearest
-	}, [bones, position.x])
+	}
 
-	const updateBehavior = useCallback(() => {
+	const updateBehavior = () => {
 		const nearestBone = findNearestBone()
 
 		if (nearestBone) {
@@ -188,9 +185,9 @@ export const DogComponent = () => {
 		} else if (!isMovingToTarget) {
 			setActionTimer((prev) => prev - 16)
 		}
-	}, [actionTimer, behaviorState, isNearWall, isMovingToTarget, findNearestBone])
+	}
 
-	const physicsUpdate = useCallback(() => {
+	const physicsUpdate = () => {
 		setBones((prevBones) =>
 			prevBones.map((bone) => {
 				if (bone.collected) return bone
@@ -282,19 +279,7 @@ export const DogComponent = () => {
 		} else if (behaviorState !== 'climbing' && position.y > 0) {
 			setPosition((prev) => ({ ...prev, y: Math.max(0, prev.y - 1.5) }))
 		}
-	}, [
-		action,
-		behaviorState,
-		direction,
-		targetX,
-		isMovingToTarget,
-		getMovementBounds,
-		getCurrentSpeed,
-		updateBehavior,
-		bones,
-		position.x,
-		findNearestBone,
-	])
+	}
 
 	useEffect(() => {
 		const animationLoop = setInterval(physicsUpdate, 16)
