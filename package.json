@@ -39,7 +39,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@eslint/js": "9.17.0",
 		"@tailwindcss/vite": "4.0.0",
 		"@types/moment-hijri": "^2.1.4",
 		"@types/ms": "2.1.0",
