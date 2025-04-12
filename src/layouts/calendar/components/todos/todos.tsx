@@ -171,7 +171,7 @@ export function Todos({ currentDate }: TodoProp) {
 					</button>
 					<button
 						onClick={() => setShow(true)}
-						className={`flex items-center justify-center gap-1.5 px-2 py-1 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
+						className={`flex items-center cursor-pointer justify-center gap-1.5 px-2 py-1 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
 							theme === 'light'
 								? 'bg-blue-500 hover:bg-blue-600 text-white'
 								: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
