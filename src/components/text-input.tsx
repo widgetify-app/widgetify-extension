@@ -33,7 +33,7 @@ export const TextInput = forwardRef(
 		ref: ForwardedRef<HTMLInputElement>,
 	) => {
 		const { theme: contextTheme } = useTheme()
-		const theme = propTheme || contextTheme || 'glass'
+		const theme = propTheme || contextTheme
 
 		const getInputStyle = () => {
 			switch (theme) {

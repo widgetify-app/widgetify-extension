@@ -97,14 +97,6 @@ export function GradientWallpaper({
 	}
 
 	const isSelected = (from: string, to: string) => {
-		console.log(
-			'selectedGradient:',
-			selectedGradient,
-			'gradientId:',
-			createGradientId(from, to),
-			'isSelected:',
-			selectedGradient?.id === createGradientId(from, to),
-		)
 		if (!selectedGradient) return false
 
 		const gradientId = createGradientId(from, to)
@@ -124,7 +116,7 @@ export function GradientWallpaper({
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.2, delay: index * 0.05 }}
 						className={`rounded-lg h-24 cursor-pointer overflow-hidden relative
-              ${isSelected(gradient.from, gradient.to) ? 'ring-2 ring-blue-500' : 'ring-1 ring-gray-300 dark:ring-gray-700'}
+              ${isSelected(gradient.from, gradient.to) ? 'ring-2 ring-blue-500' : ''}
             `}
 						onClick={() =>
 							handlePredefinedGradientSelect(gradient.from, gradient.to, gradient.name)
@@ -155,16 +147,18 @@ export function GradientWallpaper({
 						</label>
 						<div className="flex items-center gap-2">
 							<TextInput
+								key={'customFromColor'}
 								type="color"
 								value={customFromColor}
 								onChange={(value) => setCustomFromColor(value)}
-								className="!w-10 !h-10 cursor-pointer border border-gray-300 rounded dark:border-gray-600"
+								className="!w-10 !h-10 cursor-pointer"
 							/>
 							<TextInput
+								key={'customFromColorText'}
 								type="text"
 								value={customFromColor}
 								onChange={(value) => setCustomFromColor(value)}
-								className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
+								className="flex-1 px-3 py-2rounded-md"
 								placeholder="#000000"
 							/>
 						</div>
@@ -176,12 +170,14 @@ export function GradientWallpaper({
 						</label>
 						<div className="flex items-center gap-2">
 							<TextInput
+								key={'customToColor'}
 								type="color"
 								value={customToColor}
 								onChange={(value) => setCustomToColor(value)}
-								className="!w-10 !h-10 cursor-pointer border border-gray-300 rounded dark:border-gray-600"
+								className="!w-10 !h-10 cursor-pointer rounded"
 							/>
 							<TextInput
+								key={'customToColorText'}
 								type="text"
 								value={customToColor}
 								onChange={(value) => setCustomToColor(value)}
@@ -200,7 +196,7 @@ export function GradientWallpaper({
 					<select
 						value={direction}
 						onChange={(e) => setDirection(e.target.value as GradientColors['direction'])}
-						className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
+						className="w-full px-3 py-2 rounded-md"
 					>
 						{directions.map((dir) => (
 							<option key={dir.value} value={dir.value}>

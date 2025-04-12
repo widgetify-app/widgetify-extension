@@ -350,13 +350,13 @@ export function AddBookmarkModal({
 					<div className="flex justify-between mt-4">
 						<button
 							onClick={onClose}
-							className={`px-4 py-2 rounded-lg ${getButtonStyle(false)}`}
+							className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(false)}`}
 						>
 							لغو
 						</button>
 						<button
 							onClick={handleAdd}
-							className={`px-4 py-2 rounded-lg ${getButtonStyle(true)}`}
+							className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(true)}`}
 							disabled={!title.trim() || (type === 'BOOKMARK' && !url.trim())}
 						>
 							افزودن
@@ -404,14 +404,14 @@ function IconSourceSelector({
 			<button
 				type="button"
 				onClick={() => setIconSource('auto')}
-				className={`px-2 py-1 border rounded ${getButtonStyle(iconSource === 'auto')}`}
+				className={`px-2 py-1 cursor-pointer border rounded ${getButtonStyle(iconSource === 'auto')}`}
 			>
 				خودکار
 			</button>
 			<button
 				type="button"
 				onClick={() => setIconSource('upload')}
-				className={`px-2 py-1 border rounded ${getButtonStyle(iconSource === 'upload')}`}
+				className={`px-2 py-1 cursor-pointer border rounded ${getButtonStyle(iconSource === 'upload')}`}
 			>
 				آپلود
 			</button>
@@ -454,7 +454,7 @@ function TypeSelector({
 		<>
 			<button
 				onClick={() => setType('BOOKMARK')}
-				className={`flex-1 py-2 rounded-lg transition-colors ${
+				className={`flex-1 py-2 cursor-pointer rounded-lg transition-colors ${
 					type === 'BOOKMARK' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>
@@ -462,7 +462,7 @@ function TypeSelector({
 			</button>
 			<button
 				onClick={() => setType('FOLDER')}
-				className={`flex-1 py-2 rounded-lg transition-colors ${
+				className={`flex-1 py-2 cursor-pointer rounded-lg transition-colors ${
 					type === 'FOLDER' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>

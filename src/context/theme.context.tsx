@@ -20,7 +20,7 @@ export const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<string>(
-		() => localStorage.getItem('widgetify-theme') || 'glass',
+		() => localStorage.getItem('widgetify-theme') || 'light',
 	)
 
 	async function loadTheme() {

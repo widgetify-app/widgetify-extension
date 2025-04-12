@@ -1,5 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
@@ -99,7 +99,7 @@ export function HomePage() {
 
 	const handleGetStarted = () => {
 		setShowWelcomeModal(false)
-		callEvent('openSettings', 'wallpapers')
+		window.location.reload()
 	}
 
 	useEffect(() => {
