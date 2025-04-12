@@ -158,7 +158,9 @@ export const UpdateReleaseNotesModal = ({
 					</motion.div>
 				))}
 			</div>
-			<div className={`p-4 border-t ${themeUtils.getBorderColor()} flex justify-end`}>
+			<div
+				className={`p-4 cursor-pointer border-t ${themeUtils.getBorderColor()} flex justify-end`}
+			>
 				<button onClick={onClose} className={themeUtils.getButtonStyles()}>
 					متوجه شدم
 				</button>
