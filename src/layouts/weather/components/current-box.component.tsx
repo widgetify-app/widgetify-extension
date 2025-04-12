@@ -149,13 +149,12 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						</span>
 					</motion.span>
 					{selectedCity?.name && (
-						<motion.p
-							variants={fadeInUp}
+						<div
 							className={`text-sm flex gap-1 font-medium truncate ${getCityNameStyle()}`}
 						>
 							<IoLocationOutline className="flex-shrink-0 text-xs" />
 							<p className="text-xs font-medium truncate">{selectedCity.name}</p>
-						</motion.p>
+						</div>
 					)}
 				</div>
 			</div>

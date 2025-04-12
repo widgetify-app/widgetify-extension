@@ -34,7 +34,6 @@ export const NewsLayout = () => {
 
 	const [rssItems, setRssItems] = useState<RssItem[]>([])
 	const [isLoadingRss, setIsLoadingRss] = useState(false)
-	const [isRefreshing, setIsRefreshing] = useState(false)
 
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(rssState.useDefaultNews)
 
@@ -47,7 +46,6 @@ export const NewsLayout = () => {
 		lastFetched: Record<string, RssItem[]> = {},
 	) => {
 		try {
-			setIsLoadingRss(true)
 			const newLastFetched = { ...lastFetched }
 			let allItems: RssItem[] = []
 
@@ -107,10 +105,26 @@ export const NewsLayout = () => {
 			}
 		} finally {
 			setIsLoadingRss(false)
-			setIsRefreshing(false)
 		}
 	}
 
+	const getItemsToDisplay = () => {
+		if (rssState.useDefaultNews) {
+			return newsData.news
+		}
+		if (rssItems.length > 0) {
+			return rssItems.map((item) => ({
+				title: item.title,
+				description: item.description,
+				source: item.source,
+				publishedAt: item.pubDate,
+				link: item.link,
+			}))
+		}
+		return []
+	}
+
+	// initial load
 	useEffect(() => {
 		const loadInitialData = async () => {
 			const savedState = await getFromStorage('rss_news_state')
@@ -146,53 +160,46 @@ export const NewsLayout = () => {
 		}
 
 		loadInitialData()
-	}, [fetchAllRssFeeds])
+	}, [])
 
-	const handleRssModalUpdate = async () => {
-		const savedState = await getFromStorage('rss_news_state')
-		if (savedState) {
-			setRssState(savedState)
-			if (savedState.useDefaultNews) {
-				setRssItems([])
-				const cachedNews = await getFromStorage('news')
-				if (cachedNews) {
-					setNewsData(cachedNews as ExtendedNewsResponse)
-				}
-			} else {
-				const enabledFeeds = savedState.customFeeds.filter((feed) => feed.enabled)
-				if (enabledFeeds.length > 0) {
-					const hasCachedItems = Object.values(savedState.lastFetchedItems).some(
-						(items) => items && items.length > 0,
-					)
+	async function onCloseSettingModal(data: RssNewsState & { changed: boolean }) {
+		setRssModalOpen(false)
 
-					if (hasCachedItems) {
-						const cachedItems = Object.values(
-							savedState.lastFetchedItems,
-						).flat() as RssItem[]
-						setRssItems(cachedItems)
-					}
-					await fetchAllRssFeeds(enabledFeeds, savedState.lastFetchedItems)
-				} else {
-					setRssItems([])
-				}
+		if (!data.changed) {
+			console.log('No changes made to RSS settings.')
+			return
+		}
+
+		await setToStorage('rss_news_state', data)
+
+		if (data.useDefaultNews) {
+			const cachedNews = await getFromStorage('news')
+			if (cachedNews) {
+				setNewsData(cachedNews as ExtendedNewsResponse)
 			}
-		}
-	}
 
-	const getItemsToDisplay = () => {
-		if (rssState.useDefaultNews) {
-			return newsData.news
+			setRssState(structuredClone(data))
+			return
 		}
-		if (rssItems.length > 0) {
-			return rssItems.map((item) => ({
-				title: item.title,
-				description: item.description,
-				source: item.source,
-				publishedAt: item.pubDate,
-				link: item.link,
-			}))
+
+		const enabledFeeds = data.customFeeds.filter((feed) => feed.enabled)
+		if (enabledFeeds.length > 0) {
+			const hasCachedItems = Object.values(data.lastFetchedItems).some(
+				(items) => items && items.length > 0,
+			)
+
+			if (hasCachedItems) {
+				const cachedItems = Object.values(data.lastFetchedItems).flat() as RssItem[]
+				setRssItems(cachedItems)
+			} else {
+				setIsLoadingRss(true)
+			}
+
+			await fetchAllRssFeeds(enabledFeeds, data.lastFetchedItems)
+		} else {
+			setRssItems([])
 		}
-		return []
+		setRssState(structuredClone(data))
 	}
 
 	useEffect(() => {
@@ -217,15 +224,15 @@ export const NewsLayout = () => {
 	}, [dataUpdatedAt, isError])
 
 	const displayItems = getItemsToDisplay()
-	const isAnyLoading = (isLoading || isLoadingRss) && !isRefreshing
+	const isAnyLoading = isLoading || isLoadingRss
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 
 	return (
 		<div className="relative">
 			<RssFeedManager
 				isOpen={rssModalOpen}
-				onClose={() => setRssModalOpen(false)}
-				onUpdate={handleRssModalUpdate}
+				rssNews={rssState}
+				onClose={onCloseSettingModal}
 			/>
 
 			<div

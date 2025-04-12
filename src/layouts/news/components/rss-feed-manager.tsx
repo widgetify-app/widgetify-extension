@@ -1,11 +1,10 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { VscAdd, VscCloudDownload, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
 
@@ -15,65 +14,34 @@ const SUGGESTED_FEEDS = [
 		url: 'https://www.zoomit.ir/feed/',
 	},
 	{
-		name: 'خبر فارسی',
-		url: 'https://khabarfarsi.com/rss/top',
+		name: '⚽ ورزش 3',
+		url: 'https://www.varzesh3.com/rss/all',
 	},
 	{
-		name: 'نیویورک تایمز - خاورمیانه',
-		url: 'https://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+		name: 'خبر فارسی',
+		url: 'https://khabarfarsi.com/rss/top',
 	},
 ]
 
 interface RssFeedManagerProps {
 	isOpen: boolean
-	onClose: () => void
-	onUpdate: () => void
+	onClose: (rssState: RssNewsState & { changed: boolean }) => void
+	rssNews: RssNewsState
 }
 
-export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProps) => {
+export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps) => {
+	if (!isOpen) return null
 	const { theme, themeUtils } = useTheme()
 	const [newFeed, setNewFeed] = useState<{ name: string; url: string }>({
 		name: '',
 		url: '',
 	})
 	const [error, setError] = useState<string | null>(null)
-	const [isLoading, setIsLoading] = useState(false)
-	const [rssState, setRssState] = useState<RssNewsState>({
-		customFeeds: [],
-		useDefaultNews: false,
-		lastFetchedItems: {},
-	})
-
-	useEffect(() => {
-		loadRssState()
-	}, [])
-
-	const loadRssState = async () => {
-		setIsLoading(true)
-		try {
-			const savedState = await getFromStorage('rss_news_state')
-			if (savedState) {
-				setRssState(savedState)
-			}
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
-	const saveRssState = async (newState: RssNewsState) => {
-		setIsLoading(true)
-		try {
-			await setToStorage('rss_news_state', newState)
-			setRssState(newState)
-			onUpdate()
-		} finally {
-			setIsLoading(false)
-		}
-	}
+	const [rssState, setRssState] = useState<RssNewsState>(rssNews)
 
 	const toggleDefaultNews = () => {
 		const newState = { ...rssState, useDefaultNews: !rssState.useDefaultNews }
-		saveRssState(newState)
+		setRssState(newState)
 	}
 
 	const addNewFeed = () => {
@@ -90,17 +58,21 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 			return
 		}
 
-		const newState = { ...rssState }
 		const newId = `feed-${Date.now()}`
 
-		newState.customFeeds.push({
-			id: newId,
-			name: newFeed.name,
-			url: newFeed.url,
-			enabled: true,
+		setRssState({
+			...rssState,
+			customFeeds: [
+				...rssState.customFeeds,
+				{
+					id: newId,
+					name: newFeed.name,
+					url: newFeed.url,
+					enabled: true,
+				},
+			],
 		})
 
-		saveRssState(newState)
 		setNewFeed({ name: '', url: '' })
 		setError(null)
 	}
@@ -115,17 +87,21 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 			return
 		}
 
-		const newState = { ...rssState }
 		const newId = `feed-${Date.now()}`
 
-		newState.customFeeds.push({
+		const newFeed = {
 			id: newId,
 			name: suggestedFeed.name,
 			url: suggestedFeed.url,
 			enabled: true,
-		})
+		}
 
-		saveRssState(newState)
+		setRssState({
+			...rssState,
+			customFeeds: [...rssState.customFeeds, newFeed],
+		})
+		setNewFeed({ name: '', url: '' })
+
 		setError(null)
 	}
 
@@ -169,8 +145,6 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 	}
 
 	const getAddButtonStyle = () => {
-		if (isLoading) return 'opacity-70 cursor-not-allowed'
-
 		switch (theme) {
 			case 'light':
 				return 'bg-blue-500 hover:bg-blue-600 text-white'
@@ -193,16 +167,42 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 	}
 
 	const onRemoveFeed = (id: string) => {
-		rssState.customFeeds = rssState.customFeeds.filter((feed) => feed.id !== id)
-		saveRssState(rssState)
+		setRssState({
+			...rssState,
+			customFeeds: rssState.customFeeds.filter((feed) => feed.id !== id),
+		})
 	}
 
-	if (!isOpen) return null
+	const onToggleFeed = (id: string) => {
+		const feedIndex = rssState.customFeeds.findIndex((feed) => feed.id === id)
+		if (feedIndex !== -1) {
+			const updatedFeeds = [...rssState.customFeeds]
+			updatedFeeds[feedIndex] = {
+				...updatedFeeds[feedIndex],
+				enabled: !updatedFeeds[feedIndex].enabled,
+			}
+
+			setRssState({
+				...rssState,
+				customFeeds: updatedFeeds,
+			})
+		}
+	}
+
+	const onCloseModal = () => {
+		// Check if the state has changed
+		const hasChanged = JSON.stringify(rssState) !== JSON.stringify(rssNews)
+		if (hasChanged) {
+			onClose({ ...rssState, changed: true })
+		} else {
+			onClose({ ...rssState, changed: false })
+		}
+	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={onCloseModal}
 			title="مدیریت فیدهای خبری"
 			size="lg"
 			direction="rtl"
@@ -251,12 +251,9 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 
 						<motion.button
 							onClick={addNewFeed}
-							disabled={isLoading}
 							className={clsx(
 								`flex items-center justify-center gap-2 px-4 py-2 transition-colors rounded-md cursor-pointer ${getAddButtonStyle()}`,
 							)}
-							whileHover={{ scale: isLoading ? 1 : 1.02 }}
-							whileTap={{ scale: isLoading ? 1 : 0.98 }}
 						>
 							<VscAdd size={16} />
 							<span>افزودن فید جدید</span>
@@ -277,9 +274,9 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 								<motion.div
 									key={feed.url}
 									className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getSuggestedFeedStyle()}`}
-									whileHover={{ scale: isLoading ? 1 : 1.02 }}
-									whileTap={{ scale: isLoading ? 1 : 0.98 }}
-									onClick={() => !isLoading && addSuggestedFeed(feed)}
+									whileHover={{ scale: 1.02 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => addSuggestedFeed(feed)}
 								>
 									<span
 										className={`font-medium text-light text-center ${themeUtils.getTextColor()}`}
@@ -305,16 +302,7 @@ export const RssFeedManager = ({ isOpen, onClose, onUpdate }: RssFeedManagerProp
 					</div>
 					<FeedsList
 						feeds={rssState.customFeeds}
-						isLoading={isLoading}
-						onToggleFeed={(id) => {
-							const newState = { ...rssState }
-							const feedIndex = newState.customFeeds.findIndex((feed) => feed.id === id)
-							if (feedIndex >= 0) {
-								newState.customFeeds[feedIndex].enabled =
-									!newState.customFeeds[feedIndex].enabled
-								saveRssState(newState)
-							}
-						}}
+						onToggleFeed={(id) => onToggleFeed(id)}
 						onRemoveFeed={onRemoveFeed}
 					/>
 				</section>
@@ -335,12 +323,7 @@ interface FeedsListProps {
 	onRemoveFeed: (id: string) => void
 }
 
-const FeedsList = ({
-	feeds,
-	isLoading = false,
-	onToggleFeed,
-	onRemoveFeed,
-}: FeedsListProps) => {
+const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 	const { theme, themeUtils } = useTheme()
 
 	const getEmptyStateStyle = () => {
@@ -376,7 +359,6 @@ const FeedsList = ({
 						<FeedItem
 							key={feed.id}
 							feed={feed}
-							disabled={isLoading}
 							onToggle={() => onToggleFeed(feed.id)}
 							onRemove={() => onRemoveFeed(feed.id)}
 						/>

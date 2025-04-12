@@ -48,11 +48,8 @@ export const NewsItem = ({
 				className="p-2 rounded-lg cursor-pointer hover:bg-opacity-50 hover:bg-gray-500/10"
 				onClick={handleClick}
 			>
-				<div className="flex items-start justify-between">
-					<h3 className="text-sm font-medium">{title}</h3>
-					<span className="px-2 py-1 mr-1 text-xs rounded-full whitespace-nowrap bg-primary/10 text-primary">
-						{source.name}
-					</span>
+				<div className="flex items-start gap-2">
+					<h3 className="flex-1 text-sm font-medium">{title}</h3>
 				</div>
 				{description && (
 					<p className="mt-1 text-xs font-light line-clamp-2 opacity-80">
@@ -60,8 +57,12 @@ export const NewsItem = ({
 					</p>
 				)}
 				<div className="flex items-center justify-between mt-1 text-xs opacity-60">
-					<span></span>
-					<span dir="ltr">{formatDate(publishedAt)}</span>
+					<span className="px-2 py-0.5 text-xs rounded-full bg-primary/15 text-primary flex-shrink-0 max-w-[100px] truncate">
+						{source.name}
+					</span>
+					<span dir="ltr" className="flex items-center gap-1">
+						{formatDate(publishedAt)}
+					</span>
 				</div>
 			</div>
 		</motion.div>
