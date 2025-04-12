@@ -1,8 +1,8 @@
+import Modal from '@/components/modal'
+import { useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
-import Modal from '@/components/modal'
-import { useTheme } from '@/context/theme.context'
 import { CurrencyChart } from './currency-chart'
 
 interface CurrencyModalComponentProps {
@@ -86,7 +86,7 @@ export const CurrencyModalComponent = ({
 				animate={{ scale: 1, opacity: 1 }}
 				exit={{ scale: 0.95, opacity: 0 }}
 				transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-				className="flex flex-col items-center justify-center space-y-2 font-[balooTamma] p-1"
+				className="flex flex-col items-center justify-center p-1 space-y-2"
 			>
 				<motion.div
 					className="relative"

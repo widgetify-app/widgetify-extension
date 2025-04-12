@@ -64,7 +64,6 @@ export function CurrencyChart({ priceHistory }: CurrencyChartProp) {
 					color: (theme: { dark: any }) => (theme.dark ? '#ffffff' : '#666666'),
 					font: {
 						size: 8,
-						family: 'balooTamma',
 						weight: 'bold',
 					},
 					align: 'start',
@@ -83,7 +82,6 @@ export function CurrencyChart({ priceHistory }: CurrencyChartProp) {
 					color: (theme: { dark: any }) => (theme.dark ? '#ffffff' : '#666666'),
 					font: {
 						size: 10,
-						family: 'balooTamma',
 						weight: 'bold',
 					},
 					align: 'inner',

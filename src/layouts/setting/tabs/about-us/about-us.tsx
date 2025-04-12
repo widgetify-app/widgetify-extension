@@ -173,7 +173,7 @@ export function AboutUsTab() {
 					transition={{ type: 'spring', stiffness: 300 }}
 				>
 					<div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.5),transparent)]"></div>
-					<span className="text-4xl font-extrabold text-white font-[balooTamma]">W</span>
+					<span className="text-4xl font-extrabold text-white">W</span>
 				</motion.div>
 
 				{/* App Name & Version */}

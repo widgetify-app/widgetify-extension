@@ -1,143 +1,87 @@
-/* Thin */
+/* Vazir Font Family */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Thin.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Thin.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Thin.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Thin.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Thin.woff2") format("woff2");
     font-weight: 100;
-    font-style: thin;
+    font-style: normal;
 }
 
-/* ExtraLight */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraLight.woff2") format("woff2");
     font-weight: 200;
-    font-style: extralight;
+    font-style: normal;
 }
 
-/* Light */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Light.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Light.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Light.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Light.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Light.woff2") format("woff2");
     font-weight: 300;
-    font-style: light;
+    font-style: normal;
 }
 
-/* Medium */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Medium.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Medium.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Medium.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Medium.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Vazir";
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Medium.woff2") format("woff2");
     font-weight: 500;
-    font-style: medium;
+    font-style: normal;
 }
 
-/* SemiBold */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-SemiBold.woff2") format("woff2");
     font-weight: 600;
-    font-style: semibold;
+    font-style: normal;
 }
 
-/* Bold */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Bold.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Bold.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Bold.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Bold.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Bold.woff2") format("woff2");
     font-weight: 700;
-    font-style: bold;
+    font-style: normal;
 }
 
-/* Black */
 @font-face {
     font-family: "Vazir";
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Black.eot");
-    src: url("./assets/fonts/vazir/Vazirmatn-FD-Black.eot?#iefix") format("embedded-opentype"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Black.woff2") format("woff2"),
-        url("./assets/fonts/vazir/Vazirmatn-FD-Black.ttf") format("truetype");
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-ExtraBold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Vazir";
+    src: url("./assets/fonts/vazir/Vazirmatn-FD-Black.woff2") format("woff2");
     font-weight: 900;
-    font-style: black;
-}
-
-@font-face {
-    font-family: balooTamma;
-    src: url("./assets/fonts/BalooTamma/BalooTamma2-Bold.ttf");
-    font-weight: 700;
-    font-style: bold;
-}
-
-@font-face {
-    font-family: balooTamma;
-    src: url("./assets/fonts/BalooTamma/BalooTamma2-Medium.ttf");
-    font-weight: 500;
-    font-style: medium;
-}
-
-@font-face {
-    font-family: balooTamma;
-    src: url("./assets/fonts/BalooTamma/BalooTamma2-Regular.ttf");
-    font-weight: 400;
-    font-style: regular;
-}
-
-@font-face {
-    font-family: balooTamma;
-    src: url("./assets/fonts/BalooTamma/BalooTamma2-SemiBold.ttf");
-    font-weight: 600;
-    font-style: semibold;
+    font-style: normal;
 }
 
 
 
-
-@font-face {
-    font-family: digiLalezarPlus;
-    src: url("./assets/fonts/digiLaleh/DigiLalezarPlus.ttf");
-    font-weight: 500;
-    font-style: medium;
-}
-
-@font-face {
-    font-family: "Behdad";
-    src: url("./assets/fonts/behdad/Behdad-Regular.woff2") format("woff2");
-    font-weight: 400;
-    font-style: regular;
-    unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
-}
-
+/* Samim Font Family */
 @font-face {
     font-family: "Samim";
     src: url("./assets/fonts/samim/Samim-FD.woff") format("woff");
     font-weight: 400;
-    font-style: regular;
+    font-style: normal;
 }
 
 @font-face {
     font-family: "Samim";
     src: url("./assets/fonts/samim/Samim-Medium-FD.woff") format("woff");
     font-weight: 500;
-    font-style: medium;
+    font-style: normal;
 }
 
 @font-face {
     font-family: "Samim";
-    src: url("./assets/fonts/samim/Samim-Bold-FD.woff2") format("woff");
+    src: url("./assets/fonts/samim/Samim-Bold-FD.woff2") format("woff2");
     font-weight: 700;
-    font-style: bold;
+    font-style: normal;
 }
