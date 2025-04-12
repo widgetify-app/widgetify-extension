@@ -1,12 +1,11 @@
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
-import { useMemo } from 'react'
 
 export function TodoStats() {
 	const { todos } = useTodoStore()
 	const { theme } = useTheme()
 
-	const stats = useMemo(() => {
+	const calculateTodoStats = () => {
 		const totalTodos = todos.length
 		const completedTodos = todos.filter((todo) => todo.completed).length
 		const completionRate = totalTodos
@@ -38,7 +37,7 @@ export function TodoStats() {
 			priorityStats,
 			topCategories,
 		}
-	}, [todos])
+	}
 
 	// Theme-specific styles
 	const getContainerStyle = () => {
@@ -122,7 +121,8 @@ export function TodoStats() {
 	}
 
 	const priorityColors = getPriorityBarColors()
-
+	// const stats
+	const stats = calculateTodoStats()
 	return (
 		<div className={`p-4 mt-4 ${getContainerStyle()} rounded-xl`}>
 			<h4 className={`mb-3 text-lg ${getHeaderStyle()}`}>آمار کلی</h4>

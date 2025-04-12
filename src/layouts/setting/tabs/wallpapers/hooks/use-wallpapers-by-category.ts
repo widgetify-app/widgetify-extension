@@ -2,7 +2,7 @@ import type { Category, Wallpaper } from '@/common/wallpaper.interface'
 import { getMainClient } from '@/services/api'
 import { useGetWallpaperCategories } from '@/services/getMethodHooks/getWallpaperCategories.hook'
 import { useQuery } from '@tanstack/react-query'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface CategoryWallpapers {
 	category: Category
@@ -57,13 +57,13 @@ export function useWallpapersByCategory() {
 		setSelectedCategoryId(categoryId)
 	}, [])
 
-	const wallpapers = useMemo(() => {
+	const wallpapers = () => {
 		return (
 			wallpaperCacheRef.current[selectedCategoryId || 'all'] || fetchedWallpapers || []
 		)
-	}, [fetchedWallpapers, selectedCategoryId])
+	}
 
-	const wallpapersByCategory = useMemo(() => {
+	const wallpapersByCategory = () => {
 		if (!wallpapers || selectedCategoryId === 'all') return []
 
 		const selectedCategory = categories.find((cat) => cat.id === selectedCategoryId)
@@ -72,14 +72,14 @@ export function useWallpapersByCategory() {
 		return [
 			{
 				category: selectedCategory,
-				wallpapers: wallpapers,
+				wallpapers: wallpapers(),
 			},
 		] as CategoryWallpapers[]
-	}, [categories, wallpapers, selectedCategoryId])
+	}
 
-	const allWallpapers = useMemo(() => {
+	const allWallpapers = () => {
 		return wallpapers || []
-	}, [wallpapers])
+	}
 
 	const isLoading = categoriesLoading || (wallpapersLoading && shouldFetchWallpapers)
 	const error = categoriesError || wallpapersError

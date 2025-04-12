@@ -14,7 +14,7 @@ import {
 } from '@/services/getMethodHooks/getBookmarks.hook'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
 
@@ -157,7 +157,7 @@ export function SyncButton() {
 		return undefined
 	}, [isAuthenticated, syncData])
 
-	const tooltipContent = useMemo(() => {
+	const tooltipContent = () => {
 		if (syncState === SyncState.Syncing) return 'در حال همگام‌سازی...'
 
 		if (syncState === SyncState.Success) return 'همگام‌سازی با موفقیت انجام شد'
@@ -165,7 +165,7 @@ export function SyncButton() {
 		if (syncState === SyncState.Error) return 'خطا در همگام‌سازی'
 
 		return 'همگام‌سازی با حساب کاربری'
-	}, [syncState])
+	}
 
 	function triggerAccountTabDisplay() {
 		setFirstAuth(false)
@@ -174,7 +174,7 @@ export function SyncButton() {
 
 	return (
 		<>
-			<Tooltip delay={0} content={tooltipContent}>
+			<Tooltip delay={0} content={tooltipContent()}>
 				<div className="relative group">
 					<motion.button
 						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}

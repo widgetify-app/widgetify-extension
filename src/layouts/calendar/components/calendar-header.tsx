@@ -1,7 +1,6 @@
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useMemo } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
 import { type WidgetifyDate, getCurrentDate } from '../utils'
@@ -36,22 +35,22 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 }) => {
 	const { theme } = useTheme()
 
-	const isCurrentMonthToday = useMemo(() => {
+	const isCurrentMonthToday = () => {
 		const realToday = getCurrentDate()
 		return (
 			currentDate.jMonth() === realToday.jMonth() &&
 			currentDate.jYear() === realToday.jYear()
 		)
-	}, [currentDate])
+	}
 
-	const isTodaySelected = useMemo(() => {
+	const isTodaySelected = () => {
 		const realToday = getCurrentDate()
 		return (
 			selectedDate.jDate() === realToday.jDate() &&
 			selectedDate.jMonth() === realToday.jMonth() &&
 			selectedDate.jYear() === realToday.jYear()
 		)
-	}, [selectedDate])
+	}
 
 	const showTodayButton = !isCurrentMonthToday || !isTodaySelected
 

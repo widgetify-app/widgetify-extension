@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { FiCheck, FiChevronDown, FiSearch, FiX } from 'react-icons/fi'
 import { useTheme } from '@/context/theme.context'
+import { useEffect, useRef, useState } from 'react'
+import { FiCheck, FiChevronDown, FiSearch, FiX } from 'react-icons/fi'
 
 interface Option {
 	value: string
@@ -39,7 +39,7 @@ export const MultiSelectDropdown = ({
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const searchInputRef = useRef<HTMLInputElement>(null)
 
-	const filteredOptions = useMemo(() => {
+	const filteredOptions = () => {
 		if (!searchTerm) {
 			if (Array.isArray(options) && options.length > 0 && 'options' in options[0]) {
 				return options as OptionsGroup[]
@@ -67,7 +67,7 @@ export const MultiSelectDropdown = ({
 				option.label.toLowerCase().includes(searchTermLower) ||
 				option.labelEn?.toLowerCase().includes(searchTermLower),
 		)
-	}, [options, searchTerm])
+	}
 
 	const isOptionSelected = (optionValue: string) => {
 		return values.some((v) => v.value === optionValue)

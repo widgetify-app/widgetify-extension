@@ -1,11 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import type {
-	GradientColors,
-	StoredWallpaper,
-	Wallpaper,
-} from '@/common/wallpaper.interface'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import { useCallback, useEffect, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
@@ -50,7 +46,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		}
 	}, [fetchedWallpapers])
 
-	const allWallpapers = useMemo(() => {
+	const allWallpapers = () => {
 		if (!fetchedWallpapers) return []
 
 		if (customWallpaper) {
@@ -58,7 +54,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		}
 
 		return fetchedWallpapers
-	}, [fetchedWallpapers, customWallpaper])
+	}
 
 	useEffect(() => {
 		if (!selectedBackground) return
