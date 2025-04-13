@@ -1,15 +1,14 @@
 import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useEffect, useState } from 'react'
 import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '../../../services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type { TabType } from '../calendar'
 import type { WidgetifyDate } from '../utils'
-import { DaySlider } from './day-slider'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
+import { TabNavigation } from './tab-navigation'
 import { TodoStats } from './todos/todo-stats'
 import { Todos } from './todos/todos'
 
@@ -19,13 +18,14 @@ interface CalendarContentProps {
 	setSelectedDate: (date: WidgetifyDate) => void
 	currentDate: WidgetifyDate
 	setCurrentDate: (date: WidgetifyDate) => void
+	onTabClick?: (tab: TabType) => void
 }
 
 export const CalendarContent: React.FC<CalendarContentProps> = ({
 	activeTab,
 	selectedDate,
-	setSelectedDate,
 	setCurrentDate,
+	onTabClick,
 }) => {
 	const { data: events } = useGetEvents()
 	const { user } = useAuth()
@@ -39,22 +39,11 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 		endOfMonth,
 	)
 
-	const [showSlider, setShowSlider] = useState(true)
-
-	useEffect(() => {
-		if (activeTab === 'pomodoro') {
-			setShowSlider(false)
-		} else {
-			setShowSlider(true)
-		}
-	}, [activeTab])
 	return (
 		<>
-			{showSlider ? (
-				<div className="mb-4">
-					<DaySlider currentDate={selectedDate} onDateChange={setSelectedDate} />
-				</div>
-			) : null}
+			<div className="mb-2">
+				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
+			</div>
 
 			{activeTab === 'events' && (
 				<motion.div
@@ -71,6 +60,7 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 					/>
 				</motion.div>
 			)}
+
 			{activeTab === 'religious-time' && (
 				<motion.div
 					key="religious-time-view"

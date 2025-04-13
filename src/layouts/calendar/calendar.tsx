@@ -6,8 +6,8 @@ import { CalendarContainer } from './components/calendar-container'
 import { CalendarContent } from './components/calendar-content'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
+import { DaySlider } from './components/day-slider'
 import { DaySummary } from './components/day-summary'
-import { TabNavigation } from './components/tab-navigation'
 import { getCurrentDate } from './utils'
 
 export type TabType = 'events' | 'todos' | 'todo-stats' | 'pomodoro' | 'religious-time'
@@ -31,7 +31,7 @@ const PersianCalendar: React.FC = () => {
 
 	return (
 		<div
-			className="flex flex-col justify-center w-full h-full gap-3 mb-1 sm:h-80 md:flex-row sm:"
+			className="flex flex-col justify-center w-full h-full gap-3 mb-1 sm:h-80 md:flex-row"
 			dir="rtl"
 		>
 			<CalendarContainer className="w-full overflow-hidden md:w-7/12 md:flex-1">
@@ -50,7 +50,7 @@ const PersianCalendar: React.FC = () => {
 
 				<div className={`px-4 mt-1 border-t ${themeUtils.getBorderColor()}`}>
 					<div className="mt-1">
-						<TabNavigation activeTab={activeTab} onTabClick={handleTabClick} />
+						<DaySlider currentDate={selectedDate} onDateChange={setSelectedDate} />
 					</div>
 
 					<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
@@ -64,6 +64,7 @@ const PersianCalendar: React.FC = () => {
 					setSelectedDate={setSelectedDate}
 					currentDate={currentDate}
 					setCurrentDate={setCurrentDate}
+					onTabClick={handleTabClick}
 				/>
 			</CalendarContainer>
 		</div>
