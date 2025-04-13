@@ -1,4 +1,5 @@
 import type { GradientColors, Wallpaper } from '@/common/wallpaper.interface'
+import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
@@ -35,7 +36,7 @@ export function GradientWallpaper({
 	onSelectGradient,
 	selectedGradient,
 }: GradientWallpaperProps) {
-	const { themeUtils } = useTheme()
+	const { themeUtils, theme } = useTheme()
 	const [customFromColor, setCustomFromColor] = useState('#7F00FF')
 	const [customToColor, setCustomToColor] = useState('#E100FF')
 	const [direction, setDirection] = useState<GradientColors['direction']>('to-r')
@@ -44,10 +45,6 @@ export function GradientWallpaper({
 		if (selectedGradient?.type === 'GRADIENT' && selectedGradient.gradient?.direction) {
 			setDirection(selectedGradient.gradient.direction)
 		}
-	}, [selectedGradient])
-
-	useEffect(() => {
-		console.log('Selected Gradient:', selectedGradient)
 	}, [selectedGradient])
 
 	const getTailwindDirectionToCss = (direction: string): string => {
@@ -103,43 +100,63 @@ export function GradientWallpaper({
 		return selectedGradient.id === gradientId
 	}
 
+	function getStyle(selected: boolean) {
+		let style =
+			'p-2 border rounded-md flex items-center justify-center  cursor-pointer transition-colors '
+
+		switch (theme) {
+			case 'light':
+				style += 'hover:bg-gray-100 '
+				break
+			case 'dark':
+				style += 'hover:bg-gray-600 text-gray-200 '
+				break
+			default:
+				style += 'hover:bg-gray-800/70 text-gray-300 '
+				break
+		}
+
+		if (selected) {
+			style += `border-blue-500 ${themeUtils.getCardBackground()}`
+		} else {
+			style += themeUtils.getBorderColor()
+		}
+
+		return style
+	}
+
 	return (
 		<div className="space-y-4">
-			<h3 className={`mb-2 text-lg font-medium ${themeUtils.getTextColor()}`}>
-				گرادیان‌های پیش‌فرض
-			</h3>
-			<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-				{predefinedGradients.map((gradient, index) => (
-					<motion.div
-						key={index}
-						initial={{ opacity: 0, y: 10 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.2, delay: index * 0.05 }}
-						className={`rounded-lg h-24 cursor-pointer overflow-hidden relative
+			<SectionPanel title="گرادیان‌های پیش‌فرض">
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+					{predefinedGradients.map((gradient, index) => (
+						<motion.div
+							key={index}
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.2, delay: index * 0.05 }}
+							className={`rounded-lg h-24 cursor-pointer overflow-hidden relative
               ${isSelected(gradient.from, gradient.to) ? 'ring-2 ring-blue-500' : ''}
             `}
-						onClick={() =>
-							handlePredefinedGradientSelect(gradient.from, gradient.to, gradient.name)
-						}
-					>
-						<div
-							className={'absolute inset-0'}
-							style={{
-								backgroundImage: `linear-gradient(${getTailwindDirectionToCss(direction)}, ${gradient.from}, ${gradient.to})`,
-							}}
-						></div>
-						<div className="absolute bottom-0 left-0 right-0 p-1 text-xs text-center text-white bg-black/30">
-							{gradient.name}
-						</div>
-					</motion.div>
-				))}
-			</div>
+							onClick={() =>
+								handlePredefinedGradientSelect(gradient.from, gradient.to, gradient.name)
+							}
+						>
+							<div
+								className={'absolute inset-0'}
+								style={{
+									backgroundImage: `linear-gradient(${getTailwindDirectionToCss(direction)}, ${gradient.from}, ${gradient.to})`,
+								}}
+							></div>
+							<div className="absolute bottom-0 left-0 right-0 p-1 text-xs text-center text-white bg-black/30">
+								{gradient.name}
+							</div>
+						</motion.div>
+					))}
+				</div>
+			</SectionPanel>
 
-			<div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-				<h3 className={`mb-3 text-lg font-medium ${themeUtils.getTextColor()}`}>
-					گرادیان سفارشی
-				</h3>
-
+			<SectionPanel title="گرادیان سفارشی">
 				<div className="flex flex-col gap-4 mb-4 sm:flex-row">
 					<div className="flex-1 space-y-2">
 						<label className={`block text-sm font-medium ${themeUtils.getTextColor()}`}>
@@ -193,17 +210,26 @@ export function GradientWallpaper({
 					>
 						جهت گرادیان
 					</label>
-					<select
-						value={direction}
-						onChange={(e) => setDirection(e.target.value as GradientColors['direction'])}
-						className="w-full px-3 py-2 rounded-md"
-					>
+					<div className="grid grid-cols-4 gap-2">
 						{directions.map((dir) => (
-							<option key={dir.value} value={dir.value}>
-								{dir.label}
-							</option>
+							<button
+								key={dir.value}
+								type="button"
+								onClick={() => setDirection(dir.value as GradientColors['direction'])}
+								className={getStyle(direction === dir.value)}
+								title={dir.label}
+							>
+								{dir.value === 'to-r' && <span className="text-lg">→</span>}
+								{dir.value === 'to-l' && <span className="text-lg">←</span>}
+								{dir.value === 'to-t' && <span className="text-lg">↑</span>}
+								{dir.value === 'to-b' && <span className="text-lg">↓</span>}
+								{dir.value === 'to-tr' && <span className="text-lg">↗</span>}
+								{dir.value === 'to-tl' && <span className="text-lg">↖</span>}
+								{dir.value === 'to-br' && <span className="text-lg">↘</span>}
+								{dir.value === 'to-bl' && <span className="text-lg">↙</span>}
+							</button>
 						))}
-					</select>
+					</div>
 				</div>
 
 				<div
@@ -219,7 +245,7 @@ export function GradientWallpaper({
 				>
 					اعمال گرادیان
 				</button>
-			</div>
+			</SectionPanel>
 		</div>
 	)
 }
