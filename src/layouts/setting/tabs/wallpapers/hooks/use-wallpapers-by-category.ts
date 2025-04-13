@@ -15,18 +15,16 @@ interface WallpaperResponse {
 }
 
 export function useWallpapersByCategory() {
-	const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>('all')
+	const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
 
 	const wallpaperCacheRef = useRef<Record<string, Wallpaper[]>>({})
-
 	const {
 		data: categories = [],
 		isLoading: categoriesLoading,
 		error: categoriesError,
 	} = useGetWallpaperCategories()
 
-	const shouldFetchWallpapers = !wallpaperCacheRef.current[selectedCategoryId || 'all']
-
+	const shouldFetchWallpapers = !wallpaperCacheRef.current[selectedCategoryId || '']
 	const {
 		data: fetchedWallpapers,
 		isLoading: wallpapersLoading,
@@ -34,9 +32,13 @@ export function useWallpapersByCategory() {
 	} = useQuery<Wallpaper[]>({
 		queryKey: ['getWallpapers', selectedCategoryId],
 		queryFn: async () => {
+			if (selectedCategoryId === null) {
+				return wallpaperCacheRef.current[''] || []
+			}
+
 			const client = await getMainClient()
 			const endpoint =
-				selectedCategoryId === 'all'
+				selectedCategoryId === null
 					? '/wallpapers'
 					: `/wallpapers?categoryId=${selectedCategoryId}`
 
@@ -49,7 +51,7 @@ export function useWallpapersByCategory() {
 
 	useEffect(() => {
 		if (fetchedWallpapers && fetchedWallpapers.length > 0) {
-			wallpaperCacheRef.current[selectedCategoryId || 'all'] = fetchedWallpapers
+			wallpaperCacheRef.current[selectedCategoryId || ''] = fetchedWallpapers
 		}
 	}, [fetchedWallpapers, selectedCategoryId])
 
@@ -58,10 +60,19 @@ export function useWallpapersByCategory() {
 	}
 
 	const wallpapers =
-		wallpaperCacheRef.current[selectedCategoryId || 'all'] || fetchedWallpapers || []
+		wallpaperCacheRef.current[selectedCategoryId || ''] || fetchedWallpapers || []
+
+	const getCategoryWallpapers = (categoryId: string) => {
+		if (categoryId === null) {
+			return wallpaperCacheRef.current[''] || fetchedWallpapers || []
+		}
+
+		const allWallpapers = wallpaperCacheRef.current[''] || fetchedWallpapers || []
+		return allWallpapers.filter((wallpaper) => wallpaper.categoryId === categoryId)
+	}
 
 	const wallpapersByCategory = () => {
-		if (!wallpapers || selectedCategoryId === 'all') return []
+		if (!wallpapers || selectedCategoryId === null) return []
 
 		const selectedCategory = categories.find((cat) => cat.id === selectedCategoryId)
 		if (!selectedCategory) return []
@@ -87,5 +98,6 @@ export function useWallpapersByCategory() {
 		error,
 		selectedCategoryId,
 		changeCategory,
+		getCategoryWallpapers,
 	}
 }

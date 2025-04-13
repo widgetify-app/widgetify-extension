@@ -6,6 +6,7 @@ export interface Wallpaper {
 	isCustom?: boolean
 	source?: string
 	gradient?: GradientColors
+	categoryId?: string
 }
 
 export interface GradientColors {
@@ -33,4 +34,5 @@ export interface Category {
 	slug: string
 	createdAt: string
 	updatedAt: string
+	wallpapers?: Wallpaper[] // just last 4 wallpapers for preview (images only)
 }
