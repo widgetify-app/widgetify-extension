@@ -32,7 +32,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title="تنظیمات ویجت"
+			title="⚙️ تنظیمات ویجت"
 			size="md"
 			direction="rtl"
 		>
@@ -46,14 +46,14 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<CustomCheckbox
 						checked={visibility.widgetify}
 						onChange={handleWidgetifyToggle}
-						label="نمایش کارت ویجتیفای"
+						label="🏠 نمایش کارت ویجتیفای"
 					/>
 
 					<div className="relative">
 						<CustomCheckbox
 							checked={visibility.news}
 							onChange={handleNewsToggle}
-							label="ویجی نیوز"
+							label="📰 ویجی نیوز"
 						/>
 						{visibility.widgetify && (
 							<div className="mt-1 mr-6 text-xs font-light text-amber-500">
@@ -72,19 +72,19 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<CustomCheckbox
 						checked={visibility.arzLive}
 						onChange={() => toggleWidget('arzLive')}
-						label="نمایش ارز و مبادله"
+						label="💰 نمایش ارز و مبادله"
 					/>
 
 					<CustomCheckbox
 						checked={visibility.calendar}
 						onChange={() => toggleWidget('calendar')}
-						label="نمایش تقویم"
+						label="📅 نمایش تقویم"
 					/>
 
 					<CustomCheckbox
 						checked={visibility.weather}
 						onChange={() => toggleWidget('weather')}
-						label="نمایش آب و هوا"
+						label="🌤️ نمایش آب و هوا"
 					/>
 				</div>
 			</div>
