@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
@@ -54,6 +55,15 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			...prev,
 			[widgetId]: !prev[widgetId],
 		}))
+
+		Analytics.featureUsed(
+			'widget_visibility',
+			{
+				widget_id: widgetId,
+				new_state: !visibility[widgetId],
+			},
+			'toggle',
+		)
 	}
 
 	const openWidgetSettings = () => {

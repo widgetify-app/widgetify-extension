@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
@@ -101,15 +102,45 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			Notification.requestPermission()
 		}
 		setIsRunning(true)
+
+		Analytics.featureUsed(
+			'pomodoro_timer',
+			{
+				action: 'start',
+				mode,
+				remaining_time: timeLeft,
+			},
+			'click',
+		)
 	}
 
 	const handlePause = () => {
 		setIsRunning(false)
+
+		Analytics.featureUsed(
+			'pomodoro_timer',
+			{
+				action: 'pause',
+				mode,
+				remaining_time: timeLeft,
+			},
+			'click',
+		)
 	}
 
 	const handleReset = () => {
 		setIsRunning(false)
 		setTimeLeft(getMaxTime())
+
+		Analytics.featureUsed(
+			'pomodoro_timer',
+			{
+				action: 'reset',
+				mode,
+				cycles_completed: cycles,
+			},
+			'click',
+		)
 	}
 
 	const handleModeChange = (newMode: TimerMode) => {
@@ -127,6 +158,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				setTimeLeft(settings.longBreakTime * 60)
 				break
 		}
+
+		Analytics.featureUsed(
+			'pomodoro_timer',
+			{
+				action: 'mode_change',
+				previous_mode: mode,
+				new_mode: newMode,
+			},
+			'click',
+		)
 	}
 
 	const handleUpdateSettings = (newSettings: PomodoroSettings) => {

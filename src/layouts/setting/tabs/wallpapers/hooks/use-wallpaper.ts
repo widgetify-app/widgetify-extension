@@ -83,11 +83,15 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const handleSelectBackground = (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
 
-		Analytics.featureUsed('wallpaper_changed', {
-			wallpaper_id: wallpaper.id,
-			wallpaper_name: wallpaper.name || 'unnamed',
-			wallpaper_type: wallpaper.type,
-		})
+		Analytics.featureUsed(
+			'wallpaper_changed',
+			{
+				wallpaper_id: wallpaper.id,
+				wallpaper_name: wallpaper.name || 'unnamed',
+				wallpaper_type: wallpaper.type,
+			},
+			'click',
+		)
 	}
 
 	const toggleRetouch = () => {

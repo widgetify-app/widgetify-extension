@@ -44,6 +44,6 @@ export interface StorageKV {
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
 	rss_news_state: RssNewsState
-
+	analyticsSession: any
 	enable_sync: boolean
 }

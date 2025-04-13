@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
@@ -117,10 +118,21 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 	const onClose = () => setShow(false)
 
 	const toggleCurrency = (currencyKey: string) => {
+		const isRemoving = selectedCurrencies.includes(currencyKey)
+
 		setSelectedCurrencies(
-			selectedCurrencies.includes(currencyKey)
+			isRemoving
 				? selectedCurrencies.filter((key) => key !== currencyKey)
 				: [...selectedCurrencies, currencyKey],
+		)
+
+		Analytics.featureUsed(
+			'currency_selection',
+			{
+				currency_key: currencyKey,
+				action: isRemoving ? 'remove' : 'add',
+			},
+			'toggle',
 		)
 	}
 

@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
@@ -221,6 +222,16 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
 
+			Analytics.featureUsed(
+				'bookmark_management',
+				{
+					action: 'add',
+					bookmark_type: bookmark.type,
+					has_custom_image: !!bookmark.customImage,
+				},
+				'click',
+			)
+
 			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
 
 			callEvent('startSync', SyncTarget.BOOKMARKS)
@@ -273,6 +284,16 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const deletedList = (await getFromStorage('deletedBookmarkIds')) || []
 		deletedList.push(...itemsToDelete)
 		await setToStorage('deletedBookmarkIds', deletedList)
+
+		Analytics.featureUsed(
+			'bookmark_management',
+			{
+				action: 'delete',
+				bookmark_type: bookmarkToDelete.type,
+				items_deleted: itemsToDelete.length,
+			},
+			'click',
+		)
 
 		// sync with delay
 		await new Promise((resolve) => setTimeout(resolve, ms('3s')))

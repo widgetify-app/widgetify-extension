@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
@@ -38,9 +39,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	}, [])
 
 	const setThemeCallback = (theme: string) => {
+		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
 		setTheme(theme)
 		setToStorage('theme', theme as any)
 		document.documentElement.setAttribute('data-theme', theme)
+
+		Analytics.featureUsed(
+			'theme_change',
+			{
+				previous_theme: oldTheme,
+				new_theme: theme,
+			},
+			'click',
+		)
 	}
 
 	const contextValue: ThemeContextType = {

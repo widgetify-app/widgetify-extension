@@ -68,11 +68,41 @@ const Analytics = (() => {
 	async function featureUsed(
 		featureName: string,
 		details: Record<string, any> = {},
+		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' = 'other',
 	): Promise<void> {
-		await event('feature_used', {
-			feature_name: featureName,
+		const enhancedDetails = {
+			action_type: actionType,
+			timestamp: new Date().toISOString(),
+			session_id: await getSessionId(),
 			...details,
+		}
+
+		await event(featureName, enhancedDetails)
+	}
+
+	async function getSessionId(): Promise<string> {
+		const sessionData = await getFromStorage('analyticsSession')
+		const SESSION_EXPIRY = 30 * 60 * 1000 // 30 minutes
+
+		if (sessionData?.session_id && sessionData?.timestamp) {
+			const lastActivity = new Date(sessionData.timestamp).getTime()
+			const now = Date.now()
+
+			if (now - lastActivity < SESSION_EXPIRY) {
+				await setToStorage('analyticsSession', {
+					session_id: sessionData.session_id,
+					timestamp: new Date().toISOString(),
+				})
+				return sessionData.session_id
+			}
+		}
+
+		const newSessionId = uuidv4()
+		await setToStorage('analyticsSession', {
+			session_id: newSessionId,
+			timestamp: new Date().toISOString(),
 		})
+		return newSessionId
 	}
 
 	async function error(errorMessage: string, errorSource: string): Promise<void> {
