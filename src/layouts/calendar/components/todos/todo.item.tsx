@@ -107,7 +107,7 @@ export function TodoItem({
 
 				<span
 					onClick={() => toggleTodo(todo.id)}
-					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer ${
+					className={`flex-1 overflow-hidden text-ellipsis ${isPreview ? 'whitespace-nowrap' : 'whitespace-nowrap'} cursor-pointer ${
 						isPreview ? 'text-xs' : 'text-sm'
 					} ${getTextStyle()}`}
 				>
@@ -118,14 +118,14 @@ export function TodoItem({
 				<div className="flex items-center">
 					<button
 						onClick={() => setExpanded(!expanded)}
-						className={`p-1 rounded-full hover:bg-gray-500/10 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
+						className={`p-1 rounded-full cursor-pointer hover:bg-gray-500/10 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
 					>
 						{expanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
 					</button>
 
 					<button
 						onClick={() => deleteTodo(todo.id)}
-						className={`p-1 rounded-full hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 ${
+						className={`p-1 rounded-full cursor-pointer hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 ${
 							theme === 'light' ? 'text-red-500' : 'text-red-400'
 						}`}
 					>
@@ -142,7 +142,8 @@ export function TodoItem({
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 					>
-						{/* Badges in expanded view */}
+						<p className="mt-1 mb-2 break-words">{todo.text}</p>
+
 						<div className="flex items-center gap-2 mt-1 mb-2">
 							{todo.category && (
 								<span
