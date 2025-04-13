@@ -10,7 +10,7 @@ import { DaySlider } from './components/day-slider'
 import { DaySummary } from './components/day-summary'
 import { getCurrentDate } from './utils'
 
-export type TabType = 'events' | 'todos' | 'todo-stats' | 'pomodoro' | 'religious-time'
+export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
 
 const PersianCalendar: React.FC = () => {
 	const { themeUtils } = useTheme()

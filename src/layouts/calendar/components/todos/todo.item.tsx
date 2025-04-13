@@ -100,15 +100,15 @@ export function TodoItem({
 			exit={{ opacity: 0, height: 0 }}
 			transition={{ duration: 0.2 }}
 		>
-			<div className={`flex items-center gap-2 pr-2 ${isPreview ? 'p-1.5' : 'p-2'}`}>
+			<div className={`flex items-center gap-1.5 pr-1.5 ${isPreview ? 'p-1' : 'p-1.5'}`}>
 				<div className="flex-shrink-0">
 					<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
 				</div>
 
 				<span
 					onClick={() => toggleTodo(todo.id)}
-					className={`flex-1 overflow-hidden text-ellipsis ${isPreview ? 'whitespace-nowrap' : 'whitespace-nowrap'} cursor-pointer ${
-						isPreview ? 'text-xs' : 'text-sm'
+					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer ${
+						isPreview ? 'text-[10px]' : 'text-xs'
 					} ${getTextStyle()}`}
 				>
 					{todo.text}
@@ -118,18 +118,18 @@ export function TodoItem({
 				<div className="flex items-center">
 					<button
 						onClick={() => setExpanded(!expanded)}
-						className={`p-1 rounded-full cursor-pointer hover:bg-gray-500/10 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
+						className={`p-0.5 rounded-full cursor-pointer hover:bg-gray-500/10 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
 					>
-						{expanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
+						{expanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
 					</button>
 
 					<button
 						onClick={() => deleteTodo(todo.id)}
-						className={`p-1 rounded-full cursor-pointer hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 ${
+						className={`p-0.5 rounded-full cursor-pointer hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 ${
 							theme === 'light' ? 'text-red-500' : 'text-red-400'
 						}`}
 					>
-						<FiTrash2 size={14} />
+						<FiTrash2 size={12} />
 					</button>
 				</div>
 			</div>
@@ -137,30 +137,30 @@ export function TodoItem({
 			<AnimatePresence>
 				{expanded && !isPreview && (
 					<motion.div
-						className={`px-3 pb-2 text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}
+						className={`px-2 pb-1.5 text-[10px] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}
 						initial={{ opacity: 0, height: 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 					>
-						<p className="mt-1 mb-2 break-words">{todo.text}</p>
+						<p className="mt-0.5 mb-1 break-words">{todo.text}</p>
 
-						<div className="flex items-center gap-2 mt-1 mb-2">
+						<div className="flex items-center gap-1.5 mt-0.5 mb-1">
 							{todo.category && (
 								<span
-									className={`text-xs px-1.5 py-0.5 rounded-full ${getPriorityColor()}`}
+									className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
 								>
 									{todo.category}
 								</span>
 							)}
 							<span
-								className={`text-xs px-1.5 py-0.5 rounded-full ${getPriorityColor()}`}
+								className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
 							>
 								{translatedPriority[todo.priority]}
 							</span>
 						</div>
 
 						{/* Notes */}
-						{todo.notes && <p className="mt-1 font-light">{todo.notes}</p>}
+						{todo.notes && <p className="mt-0.5 font-light">{todo.notes}</p>}
 					</motion.div>
 				)}
 			</AnimatePresence>

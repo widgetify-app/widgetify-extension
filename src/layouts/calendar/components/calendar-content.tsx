@@ -9,7 +9,6 @@ import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 import { TabNavigation } from './tab-navigation'
-import { TodoStats } from './todos/todo-stats'
 import { Todos } from './todos/todos'
 
 interface CalendarContentProps {
@@ -84,17 +83,6 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 					exit={{ opacity: 0 }}
 				>
 					<Todos currentDate={selectedDate} />
-				</motion.div>
-			)}
-
-			{activeTab === 'todo-stats' && (
-				<motion.div
-					key="todo-stats-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<TodoStats />
 				</motion.div>
 			)}
 

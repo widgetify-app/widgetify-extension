@@ -124,17 +124,17 @@ export function TodoStats() {
 	// const stats
 	const stats = calculateTodoStats()
 	return (
-		<div className={`p-4 mt-4 ${getContainerStyle()} rounded-xl`}>
-			<h4 className={`mb-3 text-lg ${getHeaderStyle()}`}>آمار کلی</h4>
+		<div className={`p-2 mt-2 ${getContainerStyle()} rounded-lg`}>
+			<h4 className={`mb-1 text-sm font-medium ${getHeaderStyle()}`}>آمار کلی</h4>
 
 			<div className="flex flex-col gap-1">
 				<div className={`p-1 rounded-lg ${getCardStyle()}`}>
 					<span className={`text-xs ${getLabelStyle()}`}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
-						<span className={`text-xl ${getValueStyle()}`}>{stats.completedTodos}</span>
-						<span className={`text-sm ${getLabelStyle()}`}>از {stats.totalTodos}</span>
+						<span className={`text-lg ${getValueStyle()}`}>{stats.completedTodos}</span>
+						<span className={`text-xs ${getLabelStyle()}`}>از {stats.totalTodos}</span>
 					</div>
-					<div className={`h-1 mt-2 ${getProgressBarBgStyle()} rounded-full`}>
+					<div className={`h-1 mt-1 ${getProgressBarBgStyle()} rounded-full`}>
 						<div
 							className="h-1 bg-green-500 rounded-full"
 							style={{ width: `${stats.completionRate}%` }}
@@ -142,13 +142,13 @@ export function TodoStats() {
 					</div>
 				</div>
 
-				<div className={`p-3 rounded-lg ${getCardStyle()}`}>
+				<div className={`p-2 rounded-lg ${getCardStyle()}`}>
 					<span className={`text-xs ${getLabelStyle()}`}>اولویت‌ها</span>
-					<div className="flex justify-between mt-2">
+					<div className="flex justify-between mt-1">
 						<div className="text-center">
-							<div className="flex items-end h-10">
+							<div className="flex items-end h-8">
 								<div
-									className={`w-6 rounded-t ${priorityColors.high}`}
+									className={`w-5 rounded-t ${priorityColors.high}`}
 									style={{
 										height: `${(stats.priorityStats.high / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}
@@ -157,9 +157,9 @@ export function TodoStats() {
 							<span className={`text-xs ${getLabelStyle()}`}>زیاد</span>
 						</div>
 						<div className="text-center">
-							<div className="flex items-end h-10">
+							<div className="flex items-end h-8">
 								<div
-									className={`w-6 rounded-t ${priorityColors.medium}`}
+									className={`w-5 rounded-t ${priorityColors.medium}`}
 									style={{
 										height: `${(stats.priorityStats.medium / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}
@@ -168,9 +168,9 @@ export function TodoStats() {
 							<span className={`text-xs ${getLabelStyle()}`}>متوسط</span>
 						</div>
 						<div className="text-center">
-							<div className="flex items-end h-10">
+							<div className="flex items-end h-8">
 								<div
-									className={`w-6 rounded-t ${priorityColors.low}`}
+									className={`w-5 rounded-t ${priorityColors.low}`}
 									style={{
 										height: `${(stats.priorityStats.low / Math.max(1, stats.totalTodos)) * 100}%`,
 									}}

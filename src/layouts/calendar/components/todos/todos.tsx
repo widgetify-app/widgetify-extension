@@ -3,9 +3,10 @@ import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { FaPlus } from 'react-icons/fa6'
+import { FaChartSimple, FaPlus } from 'react-icons/fa6'
 import { type WidgetifyDate, formatDateStr } from '../../utils'
 import { TodoInput } from './todo-input'
+import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
 
 type TodoProp = {
@@ -18,6 +19,7 @@ export function Todos({ currentDate }: TodoProp) {
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
 	const [blurMode, setBlurMode] = useState<boolean>(false)
+	const [showStats, setShowStats] = useState<boolean>(false)
 	const [show, setShow] = useState(false)
 	const selectedDateStr = formatDateStr(currentDate.clone())
 
@@ -83,7 +85,7 @@ export function Todos({ currentDate }: TodoProp) {
 		}
 	}
 
-	const getBlurModeButtonStyle = (isActive: boolean) => {
+	const getButtonStyle = (isActive: boolean) => {
 		if (isActive) {
 			return 'bg-blue-600 text-white'
 		}
@@ -158,105 +160,120 @@ export function Todos({ currentDate }: TodoProp) {
 
 	return (
 		<div className="max-w-64">
-			<div className="flex items-center justify-between mb-3">
-				<h4 className={`text-sm ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+			<div className="flex items-center justify-between mb-2">
+				<h4 className={`text-xs font-medium ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
 
-				<div className="flex gap-2">
+				<div className="flex gap-1">
 					<button
 						onClick={handleBlurModeToggle}
-						className={`flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer ${getBlurModeButtonStyle(blurMode)}`}
+						className={`flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer ${getButtonStyle(blurMode)}`}
 						title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
 					>
-						{blurMode ? <FaEye /> : <FaEyeSlash />}
+						{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
+					</button>
+					<button
+						onClick={() => setShowStats(!showStats)}
+						className={`flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer ${getButtonStyle(showStats)}`}
+						title={showStats ? 'مخفی کردن آمار' : 'نمایش آمار'}
+					>
+						<FaChartSimple size={12} />
 					</button>
 					<button
 						onClick={() => setShow(true)}
-						className={`flex items-center cursor-pointer justify-center gap-1.5 px-2 py-1 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
+						className={`flex items-center cursor-pointer justify-center gap-1 px-1.5 py-0.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
 							theme === 'light'
 								? 'bg-blue-500 hover:bg-blue-600 text-white'
 								: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
 						}`}
 						title="افزودن یادداشت جدید"
 					>
-						<FaPlus className="w-2.5 h-2.5" />
+						<FaPlus className="w-2 h-2" />
 						<span className="text-xs font-medium">یادداشت جدید</span>
 					</button>
 				</div>
 			</div>
 
-			{selectedDateTodos.length > 0 && (
-				<div className="mb-4">
-					<div className={`h-1 mb-2 rounded-full ${getProgressBarBgStyle()}`}>
-						<div
-							className="h-1 bg-green-500 rounded-full"
-							style={{ width: `${stats.percentage}%` }}
-						></div>
+			{showStats ? (
+				<TodoStats />
+			) : (
+				<>
+					{selectedDateTodos.length > 0 && (
+						<div className="mb-2">
+							<div className={`h-1 mb-1 rounded-full ${getProgressBarBgStyle()}`}>
+								<div
+									className="h-1 bg-green-500 rounded-full"
+									style={{ width: `${stats.percentage}%` }}
+								></div>
+							</div>
+							<div
+								className={`flex justify-between text-[.65rem] ${getStatsTextStyle()}`}
+							>
+								<span>
+									{stats.completed} از {stats.total} انجام شده
+								</span>
+								<span>{stats.percentage}%</span>
+							</div>
+						</div>
+					)}
+
+					<TodoInput onAdd={handleAddTodo} onClose={() => setShow(false)} show={show} />
+
+					<div className="flex justify-between mb-2">
+						<div className="flex gap-0.5 text-[.65rem]">
+							<button
+								onClick={() => setFilter('all')}
+								className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
+							>
+								همه
+							</button>
+							<button
+								onClick={() => setFilter('active')}
+								className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
+							>
+								فعال
+							</button>
+							<button
+								onClick={() => setFilter('completed')}
+								className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
+							>
+								تکمیل شده
+							</button>
+						</div>
+
+						<select
+							value={sort}
+							onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
+							className={`${getSelectStyle()} text-[.65rem]`}
+						>
+							<option value="default">مرتب‌سازی: پیش‌فرض</option>
+							<option value="priority">مرتب‌سازی: اولویت</option>
+						</select>
 					</div>
-					<div className={`flex justify-between text-[.65rem] ${getStatsTextStyle()}`}>
-						<span>
-							{stats.completed} از {stats.total} انجام شده
-						</span>
-						<span>{stats.percentage}%</span>
+
+					<div
+						className={`pr-1 space-y-1 overflow-y-auto max-h-36 ${blurMode ? 'blur-mode' : ''}`}
+					>
+						{selectedDateTodos.length > 0 ? (
+							<>
+								{selectedDateTodos.map((todo) => (
+									<TodoItem
+										key={todo.id}
+										todo={todo}
+										deleteTodo={removeTodo}
+										toggleTodo={toggleTodo}
+										blurMode={blurMode}
+									/>
+								))}
+							</>
+						) : (
+							<div className={`py-4 text-center ${getEmptyStateStyle()}`}>
+								<p className="text-xs">یادداشتی برای این روز ندارید.</p>
+								<p className="text-[.65rem]">یک یادداشت جدید اضافه کنید!</p>
+							</div>
+						)}
 					</div>
-				</div>
+				</>
 			)}
-
-			<TodoInput onAdd={handleAddTodo} onClose={() => setShow(false)} show={show} />
-
-			<div className="flex justify-between mb-3">
-				<div className="flex gap-1 text-[.65rem]">
-					<button
-						onClick={() => setFilter('all')}
-						className={`px-1 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
-					>
-						همه
-					</button>
-					<button
-						onClick={() => setFilter('active')}
-						className={`px-1 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
-					>
-						فعال
-					</button>
-					<button
-						onClick={() => setFilter('completed')}
-						className={`px-1 py-1 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
-					>
-						تکمیل شده
-					</button>
-				</div>
-
-				<select
-					value={sort}
-					onChange={(e) => setSort(e.target.value as 'priority' | 'time' | 'default')}
-					className={`${getSelectStyle()} text-[.65rem]`}
-				>
-					<option value="default">مرتب‌سازی: پیش‌فرض</option>
-					<option value="priority">مرتب‌سازی: اولویت</option>
-				</select>
-			</div>
-
-			<div
-				className={`pr-1 space-y-2 overflow-y-auto max-h-32 ${blurMode ? 'blur-mode' : ''}`}
-			>
-				{selectedDateTodos.length > 0 ? (
-					<>
-						{selectedDateTodos.map((todo) => (
-							<TodoItem
-								key={todo.id}
-								todo={todo}
-								deleteTodo={removeTodo}
-								toggleTodo={toggleTodo}
-								blurMode={blurMode}
-							/>
-						))}
-					</>
-				) : (
-					<div className={`py-6 text-center ${getEmptyStateStyle()}`}>
-						<p>یادداشتی برای این روز ندارید.</p>
-						<p className="text-sm">یک یادداشت جدید اضافه کنید!</p>
-					</div>
-				)}
-			</div>
 
 			<style>{`
                 .blur-mode {
