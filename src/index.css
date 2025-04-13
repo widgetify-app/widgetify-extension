@@ -2,7 +2,6 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-
 body {
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -25,8 +24,6 @@ body {
 
 }
 
-
-
 .custom-select-box hr {
 	color: #333333;
 }
@@ -38,12 +35,12 @@ body {
 
 ::-webkit-scrollbar-thumb {
 	background-color: rgba(180, 180, 180, 0.7);
+	border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
 	background-color: rgba(150, 150, 150, 0.9);
 }
-
 
 [data-theme="dark"],
 [data-theme="glass"] {
@@ -61,12 +58,40 @@ body {
 }
 
 
+.small-scrollbar::-webkit-scrollbar {
+	width: 0.2em;
+	height: 0.5em;
+	background-color: rgba(240, 240, 240, 0.5);
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(180, 180, 180, 0.7);
+	border-radius: 3px;
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(150, 150, 150, 0.9);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar {
+	background-color: rgba(29, 29, 29, 0.35);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar-thumb,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(41, 40, 40, 0.75);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar-thumb:hover,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: #1d1d1d;
+}
 
 .modal-backdrop {
 	background-color: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(5px);
 }
-
 
 @layer base {
 	body {
@@ -106,8 +131,18 @@ input[type=number] {
 	-moz-appearance: textfield;
 }
 
+/* Hide scrollbar for webkit browsers */
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
 
-
+/* Hide scrollbar for Firefox and other browsers */
+.hide-scrollbar {
+	-ms-overflow-style: none;
+	/* IE and Edge */
+	scrollbar-width: none;
+	/* Firefox */
+}
 
 /* Add this to your CSS file */
 .weather-forecast-slider {

@@ -4,13 +4,32 @@ import { getMainClient } from '../../api'
 export interface TrendItem {
 	title: string
 	searchCount: string
-	relatedTerms: string[]
 }
 
-async function fetchTrends(region = 'IR', limit = 10): Promise<TrendItem[]> {
+export interface RecommendedSubSite {
+	name: string
+	url: string | null
+	icon: string
+	priority: number
+}
+
+export interface RecommendedSite {
+	name: string
+	url: string | null
+	icon: string
+	priority: number
+	subSites?: RecommendedSubSite[]
+}
+
+export interface SearchBoxResponse {
+	trends: TrendItem[]
+	recommendedSites: RecommendedSite[]
+}
+
+async function fetchTrends(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
 	const client = await getMainClient()
 
-	const response = await client.get<TrendItem[]>('/google/trends', {
+	const response = await client.get<SearchBoxResponse>('/extension/searchbox', {
 		params: {
 			region,
 			limit,

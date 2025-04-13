@@ -5,7 +5,7 @@ import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Browser from 'webextension-polyfill'
 import { BookmarksComponent } from './bookmarks/bookmarks'
-import { TrendingSearches } from './trending-searches'
+import { TrendingSearches } from './trending/trending-searches'
 
 export function SearchLayout() {
 	const { theme, themeUtils } = useTheme()

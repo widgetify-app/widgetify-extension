@@ -4,7 +4,10 @@ import type { RssNewsState } from '@/layouts/news/news.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
-import type { TrendItem } from '@/services/getMethodHooks/trends/getTrends'
+import type {
+	RecommendedSite,
+	TrendItem,
+} from '@/services/getMethodHooks/trends/getTrends'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import type {
 	FetchedForecast,
@@ -38,6 +41,7 @@ export interface StorageKV {
 	widgetVisibility: any
 	news: NewsResponse & { isCached?: boolean }
 	search_trends: TrendItem[]
+	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
 	rss_news_state: RssNewsState
 
