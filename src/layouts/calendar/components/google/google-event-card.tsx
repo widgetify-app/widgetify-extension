@@ -3,7 +3,7 @@ import { useTheme } from '@/context/theme.context'
 import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import { AiOutlineGoogle } from 'react-icons/ai'
-import { FiCalendar, FiMapPin, FiUsers, FiVideo } from 'react-icons/fi'
+import { FiCalendar, FiClock, FiMapPin, FiUsers, FiVideo } from 'react-icons/fi'
 
 interface GoogleEventCardProps {
 	event: GoogleCalendarEvent
@@ -11,25 +11,23 @@ interface GoogleEventCardProps {
 }
 
 export function GoogleEventCard({ event, index }: GoogleEventCardProps) {
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 
 	const googleStyle = {
 		light: {
-			container: 'bg-[#eaf3fd] border-r-2 border-[#1a73e8]',
+			container: 'bg-gray-100/70 border-l-4 border-[#1a73e8]',
 			icon: 'text-[#1a73e8]',
 			title: 'text-[#202124]',
 		},
 		dark: {
-			container:
-				'bg-gradient-to-r from-gray-700/20 to-gray-600/10 border-r-2 border-gray-500',
-			icon: 'text-gray-400/80',
-			title: 'text-gray-200/80',
+			container: 'bg-black/20 border-l-4 border-[#8ab4f8] shadow-md',
+			icon: 'text-[#8ab4f8]',
+			title: 'text-gray-100',
 		},
 		glass: {
-			container:
-				'bg-gradient-to-r from-gray-700/20 to-gray-600/10 border-r-2 border-gray-500',
-			icon: 'text-gray-400/80',
-			title: 'text-gray-200/80',
+			container: 'bg-black/20  border-l-4 border-blue-400/40 shadow-md',
+			icon: 'text-blue-400/40',
+			title: 'text-white',
 		},
 	}
 
@@ -48,51 +46,55 @@ export function GoogleEventCard({ event, index }: GoogleEventCardProps) {
 		})
 	}
 
+	const getEventStatus = () => {
+		const now = new Date()
+		const startTime = new Date(event.start.dateTime)
+		const endTime = new Date(event.end.dateTime)
+
+		if (now < startTime) return { text: 'آینده', class: 'bg-blue-500/20 text-blue-500' }
+		if (now >= startTime && now <= endTime)
+			return { text: 'در حال برگزاری', class: 'bg-green-500/20 text-green-500' }
+		return { isCompleted: true }
+	}
+
 	const getEventTimeStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-[#5f6368]' // Google's gray for light theme
+				return 'text-[#5f6368]'
 			case 'dark':
-				return 'text-[#bdc1c6]' // Light gray for dark theme
-			default: // glass
-				return 'text-gray-400/80' // Light gray for glass theme
+				return 'text-[#bdc1c6]'
+			default:
+				return 'text-gray-300'
 		}
 	}
 
 	const getMetaTextStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-[#5f6368]' // Google's gray
+				return 'text-[#5f6368]'
 			default:
-				return 'text-gray-400/80' // Light gray for glass
-		}
-	}
-
-	const getEventIconBackgroundStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-[#ffffff]/70 text-red-400' // Softer white for light theme
-			default: // glass
-				return 'bg-gray-600/10 text-gray-400' // Slightly opaque white for glass
+				return 'text-gray-400'
 		}
 	}
 
 	const getHoverBackgroundStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'hover:bg-[#1a73e8]/10' // Light blue hover for light theme
+				return 'hover:bg-[#1a73e8]/10'
 			case 'dark':
-				return 'hover:bg-[#8ab4f8]/20' // Light blue hover for dark theme
-			default: // glass
-				return 'hover:bg-[#ffffff]/20' // Subtle white hover for glass
+				return 'hover:bg-[#8ab4f8]/20'
+			default:
+				return 'hover:bg-[#ffffff]/20'
 		}
 	}
+
+	const eventStatus = getEventStatus()
 
 	return (
 		<motion.div
 			custom={index}
 			variants={{
-				initial: { opacity: 0, y: 10 },
+				initial: { opacity: 0, y: 5 },
 				animate: (i) => ({
 					opacity: 1,
 					y: 0,
@@ -101,59 +103,81 @@ export function GoogleEventCard({ event, index }: GoogleEventCardProps) {
 			}}
 			initial="initial"
 			animate="animate"
-			className={`${styles.container} rounded-lg p-1 px-2 mb-2 last:mb-0 flex items-center shadow-sm`}
-			whileHover={{ x: 3, transition: { duration: 0.2 } }}
+			className={`${styles.container} rounded-md mb-1.5 last:mb-0 overflow-hidden`}
+			whileHover={{
+				x: 2,
+				boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+				transition: { duration: 0.2 },
+			}}
 		>
-			<div className={`p-1.5 ml-2 rounded-md ${getEventIconBackgroundStyle()}`}>
-				<AiOutlineGoogle size={14} />
-			</div>
+			<div className="p-1.5">
+				<div className="flex items-center justify-between mb-0.5">
+					<h3
+						className={`font-light ${themeUtils.getTextColor()} text-sm ${eventStatus.isCompleted ? 'line-through ' : ''}`}
+					>
+						{event.summary}
+					</h3>
+					<div className="flex items-center">
+						<AiOutlineGoogle size={14} className={styles.icon} />
+					</div>
+				</div>
 
-			<div className="flex-1 min-w-0">
-				<div className={`font-medium truncate w-24 ${styles.title}`}>{event.summary}</div>
+				<div className="flex flex-wrap items-center mb-0.5 gap-x-2">
+					<div className="flex items-center gap-1">
+						<FiClock size={10} className={`mr-0.5 ${getMetaTextStyle()}`} />
+						<span className={`text-xs ${getEventTimeStyle()}`}>
+							{formatEventTime(event.start.dateTime)} -{' '}
+							{formatEventTime(event.end.dateTime)}
+						</span>
+					</div>
 
-				<div className="flex items-center flex-wrap mt-0.5">
-					<span className={`text-xs mr-1 font-medium ${getEventTimeStyle()}`}>
-						{formatEventTime(event.start.dateTime)} -{' '}
-						{formatEventTime(event.end.dateTime)}
-					</span>
+					{!eventStatus.isCompleted && (
+						<span className={`text-[10px] px-1 py-0.5 rounded-full ${eventStatus.class}`}>
+							{eventStatus.text}
+						</span>
+					)}
+				</div>
 
+				<div className="flex flex-wrap items-center gap-x-2">
 					{event.location && (
-						<div className={`flex items-center text-xs ${getMetaTextStyle()} mr-2`}>
-							<FiMapPin size={10} className="ml-0.5" />
-							<span className="truncate max-w-[100px]">{event.location}</span>
+						<div className={`flex items-center text-[10px] ${getMetaTextStyle()}`}>
+							<FiMapPin size={9} className="mr-0.5" />
+							<span className="truncate max-w-[120px]">{event.location}</span>
 						</div>
 					)}
 
 					{event.attendees && event.attendees.length > 0 && (
-						<div
-							className={`flex items-center text-xs font-light ${getMetaTextStyle()} mr-2`}
-						>
-							<FiUsers size={10} className="ml-0.5" />
+						<div className={`flex items-center text-[10px] ${getMetaTextStyle()}`}>
+							<FiUsers size={9} className="mr-0.5" />
 							<span>{event.attendees.length}</span>
 						</div>
 					)}
-				</div>
-			</div>
 
-			<div className="flex ml-1 space-x-2">
-				{event.conferenceData && (
-					<Tooltip content="پیوستن به جلسه">
-						<div
-							className={`cursor-pointer ${getHoverBackgroundStyle()} p-1 rounded ${styles.icon}`}
-							onClick={() => window.open(event.hangoutLink, '_blank')}
-						>
-							<FiVideo size={14} />
-						</div>
-					</Tooltip>
-				)}
-				<Tooltip content="مشاهده در تقویم گوگل">
-					<div
-						className={`cursor-pointer ${getHoverBackgroundStyle()} p-1 rounded ${styles.icon}`}
-						onClick={() => window.open(event.htmlLink, '_blank')}
-					>
-						<FiCalendar size={14} />
+					<div className="flex gap-0.5 ml-auto">
+						{event.conferenceData && (
+							<Tooltip content="پیوستن به جلسه">
+								<motion.div
+									className={`cursor-pointer ${getHoverBackgroundStyle()} p-1 rounded-full ${styles.icon}`}
+									onClick={() => window.open(event.hangoutLink, '_blank')}
+									whileHover={{ scale: 1.1 }}
+									whileTap={{ scale: 0.95 }}
+								>
+									<FiVideo size={12} />
+								</motion.div>
+							</Tooltip>
+						)}
+						<Tooltip content="مشاهده در تقویم گوگل">
+							<motion.div
+								className={`cursor-pointer ${getHoverBackgroundStyle()} p-1 rounded-full ${styles.icon}`}
+								onClick={() => window.open(event.htmlLink, '_blank')}
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 0.95 }}
+							>
+								<FiCalendar size={12} />
+							</motion.div>
+						</Tooltip>
 					</div>
-				</Tooltip>
+				</div>
 			</div>
 		</motion.div>
 	)
