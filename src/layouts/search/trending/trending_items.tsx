@@ -1,7 +1,7 @@
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { useTheme } from '@/context/theme.context'
 import type { TrendItem } from '@/services/getMethodHooks/trends/getTrends'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 interface TrendingItemsProps {
 	trends: TrendItem[]
@@ -29,22 +29,24 @@ export const TrendingItems = ({
 				/>
 			)}
 
-			<div className="grid grid-cols-1 gap-1 md:grid-cols-2">
-				{isLoading
-					? [...Array(6)].map((_, index) => (
-							<TrendItemComponent key={`skeleton-${index}`} index={index} isLoading />
-						))
-					: trends
-							.slice(0, 6)
-							.map((trend, index) => (
-								<TrendItemComponent
-									key={trend.title}
-									index={index}
-									trend={trend}
-									onClick={() => onTrendClick(trend.title)}
-								/>
-							))}
-			</div>
+			<LazyMotion features={domAnimation}>
+				<div className="grid grid-cols-1 gap-1 md:grid-cols-2">
+					{isLoading
+						? [...Array(6)].map((_, index) => (
+								<TrendItemComponent key={`skeleton-${index}`} index={index} isLoading />
+							))
+						: trends
+								.slice(0, 6)
+								.map((trend, index) => (
+									<TrendItemComponent
+										key={trend.title}
+										index={index}
+										trend={trend}
+										onClick={() => onTrendClick(trend.title)}
+									/>
+								))}
+				</div>
+			</LazyMotion>
 		</div>
 	)
 }
@@ -88,7 +90,7 @@ export const TrendItemComponent = ({
 
 	if (isLoading) {
 		return (
-			<motion.div
+			<m.div
 				initial={{ opacity: 0.4 }}
 				animate={{ opacity: [0.4, 0.7, 0.4] }}
 				transition={{
@@ -100,12 +102,12 @@ export const TrendItemComponent = ({
 			>
 				<div className="w-2 h-2 ml-1 bg-current rounded-full opacity-20"></div>
 				<div className="w-full h-3 bg-current rounded opacity-20"></div>
-			</motion.div>
+			</m.div>
 		)
 	}
 
 	return (
-		<motion.div
+		<m.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: index * 0.05 }}
@@ -114,6 +116,6 @@ export const TrendItemComponent = ({
 		>
 			<span className="ml-1 text-xs opacity-60">{index + 1}</span>
 			<p className="text-xs font-light truncate">{trend?.title}</p>
-		</motion.div>
+		</m.div>
 	)
 }

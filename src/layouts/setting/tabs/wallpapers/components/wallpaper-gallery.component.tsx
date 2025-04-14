@@ -1,6 +1,5 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useRef } from 'react'
 import { WallpaperItem } from '../item.wallpaper'
 
@@ -95,26 +94,19 @@ export function WallpaperGallery({
 				className={`p-2 overflow-x-hidden overflow-y-auto h-96 custom-scrollbar rounded-lg ${getGalleryStyle()}`}
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
-				<AnimatePresence mode="wait">
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-					>
-						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-							{wallpapers.map((wallpaper) => (
-								<div key={wallpaper.id} className="transform-gpu">
-									<WallpaperItem
-										wallpaper={wallpaper}
-										selectedBackground={selectedBackground}
-										setSelectedBackground={onSelectBackground}
-									/>
-								</div>
-							))}
-						</div>
-					</motion.div>
-				</AnimatePresence>
+				<div>
+					<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+						{wallpapers.map((wallpaper) => (
+							<div key={wallpaper.id} className="transform-gpu">
+								<WallpaperItem
+									wallpaper={wallpaper}
+									selectedBackground={selectedBackground}
+									setSelectedBackground={onSelectBackground}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 		</div>
 	)

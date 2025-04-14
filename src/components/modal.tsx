@@ -1,5 +1,5 @@
 import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { AiOutlineClose } from 'react-icons/ai'
@@ -80,44 +80,46 @@ const Modal = ({
 
 	return ReactDOM.createPortal(
 		<AnimatePresence>
-			<motion.div
-				className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/30"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				exit={{ opacity: 0 }}
-				onClick={closeOnBackdropClick ? onClose : undefined}
-				dir={direction}
-			>
-				<motion.div
-					className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5`}
-					initial={{ scale: 0.95, opacity: 0 }}
-					animate={{ scale: 1, opacity: 1 }}
-					exit={{ scale: 0.95, opacity: 0 }}
-					onClick={(e) => e.stopPropagation()}
+			<LazyMotion features={domAnimation}>
+				<m.div
+					className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/30"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					onClick={closeOnBackdropClick ? onClose : undefined}
+					dir={direction}
 				>
-					<div
-						className={`flex items-center justify-between p-4 border-b ${getHeaderBorderStyle()}`}
+					<m.div
+						className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5`}
+						initial={{ scale: 0.95, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						exit={{ scale: 0.95, opacity: 0 }}
+						onClick={(e) => e.stopPropagation()}
 					>
-						{title && (
-							<h2 className={`text-lg font-semibold ${themeUtils.getTextColor()}`}>
-								{title}
-							</h2>
-						)}
-						{showCloseButton ? (
-							<button
-								onClick={onClose}
-								className={`p-2 cursor-pointer rounded-full ${theme === 'light' ? 'hover:bg-gray-200/80' : 'hover:bg-gray-700/30'}`}
-							>
-								<AiOutlineClose
-									size={20}
-									className={theme === 'light' ? 'text-gray-700' : 'text-gray-200'}
-								/>
-							</button>
-						) : null}
-					</div>
-					<div className={'xl:p-4 p-2'}>{children}</div>
-				</motion.div>
-			</motion.div>
+						<div
+							className={`flex items-center justify-between p-4 border-b ${getHeaderBorderStyle()}`}
+						>
+							{title && (
+								<h2 className={`text-lg font-semibold ${themeUtils.getTextColor()}`}>
+									{title}
+								</h2>
+							)}
+							{showCloseButton ? (
+								<button
+									onClick={onClose}
+									className={`p-2 cursor-pointer rounded-full ${theme === 'light' ? 'hover:bg-gray-200/80' : 'hover:bg-gray-700/30'}`}
+								>
+									<AiOutlineClose
+										size={20}
+										className={theme === 'light' ? 'text-gray-700' : 'text-gray-200'}
+									/>
+								</button>
+							) : null}
+						</div>
+						<div className={'xl:p-4 p-2'}>{children}</div>
+					</m.div>
+				</m.div>
+			</LazyMotion>
 		</AnimatePresence>,
 		document.body,
 	)

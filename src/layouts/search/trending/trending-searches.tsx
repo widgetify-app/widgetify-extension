@@ -6,7 +6,7 @@ import {
 	type TrendItem,
 	useGetTrends,
 } from '@/services/getMethodHooks/trends/getTrends'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FaChartLine, FaParachuteBox } from 'react-icons/fa6'
 import { RecommendedSites } from './recommended_sites'
@@ -77,45 +77,50 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 	const brandStyle = theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'
 
 	return (
-		<AnimatePresence>
-			<motion.div
-				initial={{ opacity: 0, y: -10 }}
-				animate={{ opacity: 1, y: 0 }}
-				exit={{ opacity: 0, y: -10 }}
-				className={`absolute left-0 right-0 z-20 w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${themeUtils.getCardBackground()} ${themeUtils.getBorderColor()}`}
-			>
-				<div className="p-2">
-					<SectionPanel
-						title="ترندهای امروز"
-						icon={<FaChartLine className="w-3 h-3 opacity-50" />}
-						size="xs"
-					>
-						<TrendingItems
-							trends={trends}
-							isLoading={isLoading}
-							isCached={isCached}
-							onTrendClick={onSelectTrend}
-						/>
-					</SectionPanel>
-					<SectionPanel
-						title="ویجی‌باکس"
-						size="xs"
-						icon={<FaParachuteBox className="w-3 h-3 opacity-50" />}
-					>
-						<RecommendedSites recommendedSites={recommendedSites} isLoading={isLoading} />
-					</SectionPanel>
-				</div>
-
-				<div
-					className={`py-1 px-2 text-center text-2xs border-t ${getFooterBackground()} ${themeUtils.getBorderColor()}`}
+		<LazyMotion features={domAnimation}>
+			<AnimatePresence>
+				<m.div
+					initial={{ opacity: 0, y: -10 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -10 }}
+					className={`absolute left-0 right-0 z-20 w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${themeUtils.getCardBackground()} ${themeUtils.getBorderColor()}`}
 				>
-					<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
-					<span className={'font-light opacity-60'}>
-						{' '}
-						| این فیچر به پیشنهاد شما ایجاد شده است.
-					</span>
-				</div>
-			</motion.div>
-		</AnimatePresence>
+					<div className="p-2">
+						<SectionPanel
+							title="ترندهای امروز"
+							icon={<FaChartLine className="w-3 h-3 opacity-50" />}
+							size="xs"
+						>
+							<TrendingItems
+								trends={trends}
+								isLoading={isLoading}
+								isCached={isCached}
+								onTrendClick={onSelectTrend}
+							/>
+						</SectionPanel>
+						<SectionPanel
+							title="ویجی‌باکس"
+							size="xs"
+							icon={<FaParachuteBox className="w-3 h-3 opacity-50" />}
+						>
+							<RecommendedSites
+								recommendedSites={recommendedSites}
+								isLoading={isLoading}
+							/>
+						</SectionPanel>
+					</div>
+
+					<div
+						className={`py-1 px-2 text-center text-2xs border-t ${getFooterBackground()} ${themeUtils.getBorderColor()}`}
+					>
+						<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
+						<span className={'font-light opacity-60'}>
+							{' '}
+							| این فیچر به پیشنهاد شما ایجاد شده است.
+						</span>
+					</div>
+				</m.div>
+			</AnimatePresence>
+		</LazyMotion>
 	)
 }

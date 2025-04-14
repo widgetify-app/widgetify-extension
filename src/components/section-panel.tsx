@@ -1,5 +1,5 @@
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import type { ReactNode } from 'react'
 import React from 'react'
 
@@ -67,23 +67,25 @@ export function SectionPanel({
 	const sizeStyles = getSizeStyles()
 
 	return (
-		<motion.div
-			className={`overflow-hidden ${sizeStyles.container}`}
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay }}
-		>
-			<div className={`${sizeStyles.header} border-b ${getBorderStyle()}`}>
-				<div className="flex items-center justify-between gap-2">
-					<h3
-						className={`font-medium ${sizeStyles.title} ${themeUtils.getHeadingTextStyle()}`}
-					>
-						{title}
-					</h3>
-					{icon && React.cloneElement(icon, {})}
+		<LazyMotion features={domAnimation}>
+			<m.div
+				className={`overflow-hidden ${sizeStyles.container}`}
+				initial={{ opacity: 0, y: 10 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay }}
+			>
+				<div className={`${sizeStyles.header} border-b ${getBorderStyle()}`}>
+					<div className="flex items-center justify-between gap-2">
+						<h3
+							className={`font-medium ${sizeStyles.title} ${themeUtils.getHeadingTextStyle()}`}
+						>
+							{title}
+						</h3>
+						{icon && React.cloneElement(icon, {})}
+					</div>
 				</div>
-			</div>
-			<div className={sizeStyles.content}>{children}</div>
-		</motion.div>
+				<div className={sizeStyles.content}>{children}</div>
+			</m.div>
+		</LazyMotion>
 	)
 }

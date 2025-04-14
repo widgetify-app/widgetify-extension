@@ -1,6 +1,6 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiCheck, FiHeart } from 'react-icons/fi'
@@ -108,81 +108,83 @@ export const WallpaperItem = React.memo(
 		}
 
 		return (
-			<motion.div
-				ref={elementRef}
-				className={`relative overflow-hidden rounded-lg cursor-pointer group aspect-video ${getItemOutlineStyle()}`}
-				onClick={handleSelect}
-				whileHover={{ scale: 1.02 }}
-				whileTap={{ scale: 0.98 }}
-				transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-			>
-				{!loaded && (
-					<div className="flex items-center justify-center w-full h-full bg-gray-900/60">
-						<div className="w-5 h-5 border-2 rounded-full border-blue-500/30 border-t-blue-500 animate-spin"></div>
-					</div>
-				)}
-
-				{error && (
-					<div className="flex flex-col items-center justify-center w-full h-full bg-red-500/10">
-						<FiHeart className="text-red-400" />
-						<p className="mt-2 text-xs text-gray-400">خطا در بارگذاری</p>
-					</div>
-				)}
-
-				{wallpaper.type === 'IMAGE' ? (
-					<img
-						ref={imgRef}
-						className="object-cover w-full h-full transition-opacity"
-						style={{ opacity: loaded && !error ? 1 : 0 }}
-						alt={wallpaper.name || 'Wallpaper'}
-						onLoad={handleLoad}
-						onError={handleError}
-					/>
-				) : (
-					<video
-						ref={videoRef}
-						className="object-cover w-full h-full transition-opacity"
-						style={{ opacity: loaded && !error ? 1 : 0 }}
-						loop
-						muted
-						playsInline
-						onLoadedData={handleLoad}
-						onError={handleError}
-					/>
-				)}
-
-				{loaded && !error && (
-					<>
-						<div
-							className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
-						>
-							{wallpaper.name && (
-								<p className="text-xs font-medium text-white">{wallpaper.name}</p>
-							)}
-
-							{wallpaper.source && (
-								<button
-									onClick={handleSourceClick}
-									className={`mt-1.5 cursor-pointer px-2.5 py-1 text-[10px] rounded-md transition flex items-center gap-1 ${getInfoButtonStyle()}`}
-								>
-									<FaExternalLinkAlt size={12} />
-									منبع
-								</button>
-							)}
+			<LazyMotion features={domAnimation}>
+				<m.div
+					ref={elementRef}
+					className={`relative overflow-hidden rounded-lg cursor-pointer group aspect-video ${getItemOutlineStyle()}`}
+					onClick={handleSelect}
+					whileHover={{ scale: 1.02 }}
+					whileTap={{ scale: 0.98 }}
+					transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+				>
+					{!loaded && (
+						<div className="flex items-center justify-center w-full h-full bg-gray-900/60">
+							<div className="w-5 h-5 border-2 rounded-full border-blue-500/30 border-t-blue-500 animate-spin"></div>
 						</div>
+					)}
 
-						{isSelected && (
+					{error && (
+						<div className="flex flex-col items-center justify-center w-full h-full bg-red-500/10">
+							<FiHeart className="text-red-400" />
+							<p className="mt-2 text-xs text-gray-400">خطا در بارگذاری</p>
+						</div>
+					)}
+
+					{wallpaper.type === 'IMAGE' ? (
+						<img
+							ref={imgRef}
+							className="object-cover w-full h-full transition-opacity"
+							style={{ opacity: loaded && !error ? 1 : 0 }}
+							alt={wallpaper.name || 'Wallpaper'}
+							onLoad={handleLoad}
+							onError={handleError}
+						/>
+					) : (
+						<video
+							ref={videoRef}
+							className="object-cover w-full h-full transition-opacity"
+							style={{ opacity: loaded && !error ? 1 : 0 }}
+							loop
+							muted
+							playsInline
+							onLoadedData={handleLoad}
+							onError={handleError}
+						/>
+					)}
+
+					{loaded && !error && (
+						<>
 							<div
-								className={`absolute top-2 left-2 p-1 rounded-full shadow-sm ${getSelectionBadgeStyle()}`}
+								className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
 							>
-								<FiCheck size={12} />
-							</div>
-						)}
+								{wallpaper.name && (
+									<p className="text-xs font-medium text-white">{wallpaper.name}</p>
+								)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10"></div>
-					</>
-				)}
-			</motion.div>
+								{wallpaper.source && (
+									<button
+										onClick={handleSourceClick}
+										className={`mt-1.5 cursor-pointer px-2.5 py-1 text-[10px] rounded-md transition flex items-center gap-1 ${getInfoButtonStyle()}`}
+									>
+										<FaExternalLinkAlt size={12} />
+										منبع
+									</button>
+								)}
+							</div>
+
+							{isSelected && (
+								<div
+									className={`absolute top-2 left-2 p-1 rounded-full shadow-sm ${getSelectionBadgeStyle()}`}
+								>
+									<FiCheck size={12} />
+								</div>
+							)}
+
+							<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10"></div>
+						</>
+					)}
+				</m.div>
+			</LazyMotion>
 		)
 	},
 	(prevProps, nextProps) =>

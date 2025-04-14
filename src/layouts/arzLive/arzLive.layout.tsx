@@ -1,6 +1,5 @@
 import { useCurrencyStore } from '@/context/currency.context'
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
 import { FiDollarSign } from 'react-icons/fi'
 import { AddCurrencyBox } from './components/addCurrency-box'
 import { CurrencyBox } from './components/currency-box'
@@ -25,26 +24,16 @@ export function ArzLiveLayout() {
 				) : (
 					<>
 						{selectedCurrencies.map((currency, index) => (
-							<motion.div
-								key={`${currency}-${index}`}
-								initial={{ opacity: 0, y: -10 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.3 }}
-							>
-								<CurrencyBox code={currency} />
-							</motion.div>
+							<div key={`${currency}-${index}`}>
+								<CurrencyBox code={currency} key={`${currency}-${index}`} />
+							</div>
 						))}
 					</>
 				)}
 
-				<motion.div
-					initial={{ opacity: 0, scale: 0.9 }}
-					animate={{ opacity: 1, scale: 1 }}
-					transition={{ duration: 0.2 }}
-					className="sticky bottom-0 pt-1 mt-auto shadow-inner"
-				>
+				<div className="sticky bottom-0 pt-1 mt-auto shadow-inner">
 					<AddCurrencyBox />
-				</motion.div>
+				</div>
 			</div>
 		</div>
 	)

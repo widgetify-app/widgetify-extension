@@ -2,7 +2,7 @@ import type { GradientColors, Wallpaper } from '@/common/wallpaper.interface'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 interface GradientWallpaperProps {
@@ -128,32 +128,38 @@ export function GradientWallpaper({
 	return (
 		<div className="space-y-4">
 			<SectionPanel title="گرادیان‌های پیش‌فرض">
-				<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-					{predefinedGradients.map((gradient, index) => (
-						<motion.div
-							key={index}
-							initial={{ opacity: 0, y: 10 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.2, delay: index * 0.05 }}
-							className={`rounded-lg h-24 cursor-pointer overflow-hidden relative
+				<LazyMotion features={domAnimation}>
+					<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+						{predefinedGradients.map((gradient, index) => (
+							<m.div
+								key={index}
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.2, delay: index * 0.05 }}
+								className={`rounded-lg h-24 cursor-pointer overflow-hidden relative
               ${isSelected(gradient.from, gradient.to) ? 'ring-2 ring-blue-500' : ''}
             `}
-							onClick={() =>
-								handlePredefinedGradientSelect(gradient.from, gradient.to, gradient.name)
-							}
-						>
-							<div
-								className={'absolute inset-0'}
-								style={{
-									backgroundImage: `linear-gradient(${getTailwindDirectionToCss(direction)}, ${gradient.from}, ${gradient.to})`,
-								}}
-							></div>
-							<div className="absolute bottom-0 left-0 right-0 p-1 text-xs text-center text-white bg-black/30">
-								{gradient.name}
-							</div>
-						</motion.div>
-					))}
-				</div>
+								onClick={() =>
+									handlePredefinedGradientSelect(
+										gradient.from,
+										gradient.to,
+										gradient.name,
+									)
+								}
+							>
+								<div
+									className={'absolute inset-0'}
+									style={{
+										backgroundImage: `linear-gradient(${getTailwindDirectionToCss(direction)}, ${gradient.from}, ${gradient.to})`,
+									}}
+								></div>
+								<div className="absolute bottom-0 left-0 right-0 p-1 text-xs text-center text-white bg-black/30">
+									{gradient.name}
+								</div>
+							</m.div>
+						))}
+					</div>
+				</LazyMotion>
 			</SectionPanel>
 
 			<SectionPanel title="گرادیان سفارشی">

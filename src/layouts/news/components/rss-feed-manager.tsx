@@ -3,7 +3,7 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import clsx from 'clsx'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import { VscAdd, VscCloudDownload, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
@@ -125,9 +125,9 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 	const getFormSectionStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-50/80 border-gray-200 dark:border-gray-800'
+				return 'bg-gray-50/80'
 			case 'dark':
-				return 'bg-gray-800/30 border-gray-700/50'
+				return 'bg-gray-800/30'
 			default: // glass
 				return 'bg-white/5 backdrop-blur-sm border-white/10'
 		}
@@ -207,106 +207,112 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 			size="lg"
 			direction="rtl"
 		>
-			<div className="flex flex-col w-full gap-6 p-4 mx-auto overflow-y-auto h-96">
-				<CheckBoxWithDescription
-					isEnabled={rssState.useDefaultNews}
-					onToggle={toggleDefaultNews}
-					title="استفاده از منابع خبری پیش‌فرض"
-					description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
-				/>
-
-				<section className={`p-4 border rounded-xl ${getFormSectionStyle()}`}>
-					<h3 className={`mb-3 text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
-						افزودن فید RSS جدید
-					</h3>
-					<div className="flex flex-col gap-3">
-						<TextInput
-							type="text"
-							placeholder="نام فید (مثال: دیجیاتو)"
-							value={newFeed.name}
-							onChange={(value) => setNewFeed({ ...newFeed, name: value })}
-						/>
-						<TextInput
-							type="url"
-							placeholder="آدرس RSS (مثال: https://digiato.com/feed)"
-							value={newFeed.url}
-							onChange={(value) => {
-								setNewFeed({ ...newFeed, url: value })
-								validateUrl(value)
-							}}
-						/>
-
-						<AnimatePresence>
-							{error && (
-								<motion.div
-									initial={{ opacity: 0, height: 0 }}
-									animate={{ opacity: 1, height: 'auto' }}
-									exit={{ opacity: 0, height: 0 }}
-									className="overflow-hidden"
-								>
-									<p className={`p-2 text-sm rounded ${getErrorStyle()}`}>{error}</p>
-								</motion.div>
-							)}
-						</AnimatePresence>
-
-						<motion.button
-							onClick={addNewFeed}
-							className={clsx(
-								`flex items-center justify-center gap-2 px-4 py-2 transition-colors rounded-md cursor-pointer ${getAddButtonStyle()}`,
-							)}
-						>
-							<VscAdd size={16} />
-							<span>افزودن فید جدید</span>
-						</motion.button>
-					</div>
-				</section>
-
-				{/* Suggested Feeds Section */}
-				<section className="mt-2">
-					<div className="flex items-center justify-between mb-3">
-						<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
-							فیدهای پیشنهادی
-						</h3>
-					</div>
-					<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-						{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
-							(feed) => (
-								<motion.div
-									key={feed.url}
-									className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getSuggestedFeedStyle()}`}
-									whileHover={{ scale: 1.02 }}
-									whileTap={{ scale: 0.98 }}
-									onClick={() => addSuggestedFeed(feed)}
-								>
-									<span
-										className={`font-medium text-light text-center ${themeUtils.getTextColor()}`}
-									>
-										{feed.name}
-									</span>
-								</motion.div>
-							),
-						)}
-					</div>
-				</section>
-
-				<section className="mt-4">
-					<div className="flex items-center justify-between mb-3">
-						<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
-							فیدهای شما
-						</h3>
-						{rssState.customFeeds.length > 0 && (
-							<div className={`text-xs ${themeUtils.getDescriptionTextStyle()}`}>
-								{rssState.customFeeds.length} فید
-							</div>
-						)}
-					</div>
-					<FeedsList
-						feeds={rssState.customFeeds}
-						onToggleFeed={(id) => onToggleFeed(id)}
-						onRemoveFeed={onRemoveFeed}
+			<LazyMotion features={domAnimation}>
+				<div className="flex flex-col w-full gap-6 p-4 mx-auto overflow-y-auto h-96">
+					<CheckBoxWithDescription
+						isEnabled={rssState.useDefaultNews}
+						onToggle={toggleDefaultNews}
+						title="استفاده از منابع خبری پیش‌فرض"
+						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
 					/>
-				</section>
-			</div>
+
+					<section
+						className={`p-4 rounded-xl border ${getFormSectionStyle()} ${themeUtils.getBorderColor()}`}
+					>
+						<h3
+							className={`mb-3 text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}
+						>
+							افزودن فید RSS جدید
+						</h3>
+						<div className="flex flex-col gap-3">
+							<TextInput
+								type="text"
+								placeholder="نام فید (مثال: دیجیاتو)"
+								value={newFeed.name}
+								onChange={(value) => setNewFeed({ ...newFeed, name: value })}
+							/>
+							<TextInput
+								type="url"
+								placeholder="آدرس RSS (مثال: https://digiato.com/feed)"
+								value={newFeed.url}
+								onChange={(value) => {
+									setNewFeed({ ...newFeed, url: value })
+									validateUrl(value)
+								}}
+							/>
+
+							<AnimatePresence>
+								{error && (
+									<m.div
+										initial={{ opacity: 0, height: 0 }}
+										animate={{ opacity: 1, height: 'auto' }}
+										exit={{ opacity: 0, height: 0 }}
+										className="overflow-hidden"
+									>
+										<p className={`p-2 text-sm rounded ${getErrorStyle()}`}>{error}</p>
+									</m.div>
+								)}
+							</AnimatePresence>
+
+							<m.button
+								onClick={addNewFeed}
+								className={clsx(
+									`flex items-center justify-center gap-2 px-4 py-2 transition-colors rounded-md cursor-pointer ${getAddButtonStyle()}`,
+								)}
+							>
+								<VscAdd size={16} />
+								<span>افزودن فید جدید</span>
+							</m.button>
+						</div>
+					</section>
+
+					{/* Suggested Feeds Section */}
+					<section className="mt-2">
+						<div className="flex items-center justify-between mb-3">
+							<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
+								فیدهای پیشنهادی
+							</h3>
+						</div>
+						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+							{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
+								(feed) => (
+									<m.div
+										key={feed.url}
+										className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getSuggestedFeedStyle()}`}
+										whileHover={{ scale: 1.02 }}
+										whileTap={{ scale: 0.98 }}
+										onClick={() => addSuggestedFeed(feed)}
+									>
+										<span
+											className={`font-medium text-light text-center ${themeUtils.getTextColor()}`}
+										>
+											{feed.name}
+										</span>
+									</m.div>
+								),
+							)}
+						</div>
+					</section>
+
+					<section className="mt-4">
+						<div className="flex items-center justify-between mb-3">
+							<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
+								فیدهای شما
+							</h3>
+							{rssState.customFeeds.length > 0 && (
+								<div className={`text-xs ${themeUtils.getDescriptionTextStyle()}`}>
+									{rssState.customFeeds.length} فید
+								</div>
+							)}
+						</div>
+						<FeedsList
+							feeds={rssState.customFeeds}
+							onToggleFeed={(id) => onToggleFeed(id)}
+							onRemoveFeed={onRemoveFeed}
+						/>
+					</section>
+				</div>
+			</LazyMotion>
 		</Modal>
 	)
 }
@@ -340,7 +346,7 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 	return (
 		<div className="min-h-[150px]">
 			{feeds.length === 0 ? (
-				<motion.div
+				<m.div
 					className={`flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg ${getEmptyStateStyle()}`}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
@@ -352,7 +358,7 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 					<p className={`text-xs opacity-50 ${themeUtils.getDescriptionTextStyle()}`}>
 						از فرم بالا برای افزودن فید استفاده کنید
 					</p>
-				</motion.div>
+				</m.div>
 			) : (
 				<div className="space-y-2">
 					{feeds.map((feed) => (
@@ -419,7 +425,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 	}
 
 	return (
-		<motion.div
+		<m.div
 			className={clsx(
 				`flex items-center justify-between px-4 py-3 transition-colors rounded-lg ${getItemStyle()}`,
 				!feed.enabled && 'opacity-60',
@@ -438,7 +444,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 					<span className={`block text-xs truncate ${getUrlStyle()}`}>{feed.url}</span>
 				</div>
 			</div>
-			<motion.button
+			<m.button
 				onClick={onRemove}
 				disabled={disabled}
 				className={clsx(
@@ -448,8 +454,8 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 				whileTap={{ scale: disabled ? 1 : 0.9 }}
 			>
 				<VscTrash size={18} />
-			</motion.button>
-		</motion.div>
+			</m.button>
+		</m.div>
 	)
 }
 
@@ -478,7 +484,7 @@ const ToggleSwitch = ({ enabled, disabled = false, onToggle }: ToggleSwitchProps
 	}
 
 	return (
-		<motion.div
+		<m.div
 			className={clsx('w-12 h-6 relative rounded-full transition-colors', {
 				[getTrackStyle()]: true,
 				'cursor-pointer': !disabled,
@@ -487,13 +493,13 @@ const ToggleSwitch = ({ enabled, disabled = false, onToggle }: ToggleSwitchProps
 			onClick={disabled ? undefined : onToggle}
 			whileTap={{ scale: disabled ? 1 : 0.95 }}
 		>
-			<motion.span
+			<m.span
 				className="absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1"
 				animate={{
 					x: enabled ? 24 : 0,
 				}}
 				transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			/>
-		</motion.div>
+		</m.div>
 	)
 }

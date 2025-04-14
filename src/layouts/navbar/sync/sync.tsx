@@ -13,7 +13,7 @@ import {
 	getBookmarks,
 } from '@/services/getMethodHooks/getBookmarks.hook'
 import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
@@ -173,103 +173,105 @@ export function SyncButton() {
 		<>
 			<Tooltip delay={0} content={tooltipContent()}>
 				<div className="relative group">
-					<motion.button
-						className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
-						onClick={() => syncData(SyncTarget.ALL, 'POST')}
-						aria-label="Sync"
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-					>
-						<AnimatePresence mode="wait">
-							{user?.avatar && syncState === null && (
-								<motion.div
-									className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1"
-									initial={{ scale: 0, opacity: 0 }}
-									animate={{ scale: 1, opacity: 1 }}
-									exit={{ scale: 0, opacity: 0 }}
-									transition={{ duration: 0.2 }}
-								>
-									<AiOutlineCloudSync size={10} className="text-white" />
-								</motion.div>
-							)}
-
-							{syncState === SyncState.Syncing ? (
-								<motion.div
-									className="flex items-center justify-center"
-									key="syncing"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									exit={{ opacity: 0 }}
-									transition={{ duration: 0.2 }}
-								>
-									<motion.div
-										animate={{ rotate: 360 }}
-										transition={{
-											repeat: Number.POSITIVE_INFINITY,
-											duration: 1,
-											ease: 'linear',
-										}}
+					<LazyMotion features={domAnimation}>
+						<m.button
+							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
+							onClick={() => syncData(SyncTarget.ALL, 'POST')}
+							aria-label="Sync"
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+						>
+							<AnimatePresence mode="wait">
+								{user?.avatar && syncState === null && (
+									<m.div
+										className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1"
+										initial={{ scale: 0, opacity: 0 }}
+										animate={{ scale: 1, opacity: 1 }}
+										exit={{ scale: 0, opacity: 0 }}
+										transition={{ duration: 0.2 }}
 									>
-										<AiOutlineSync size={22} className="text-blue-400" />
-									</motion.div>
-								</motion.div>
-							) : syncState === SyncState.Success ? (
-								<motion.div
-									className="flex items-center justify-center text-green-400"
-									key="success"
-									initial={{ scale: 0.5, opacity: 0 }}
-									animate={{ scale: 1, opacity: 1 }}
-									exit={{ scale: 1.5, opacity: 0 }}
-									transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-								>
-									<BiCheck size={24} />
-								</motion.div>
-							) : syncState === SyncState.Error ? (
-								<motion.div
-									className="flex items-center justify-center text-red-400"
-									key="error"
-									initial={{ scale: 0.5, opacity: 0 }}
-									animate={{
-										scale: [1, 1.1, 1],
-										opacity: 1,
-										rotate: [0, -5, 5, -5, 0],
-									}}
-									exit={{ scale: 0.5, opacity: 0 }}
-									transition={{ duration: 0.5 }}
-								>
-									<AiOutlineCloudSync size={22} />
-								</motion.div>
-							) : (
-								<motion.div
-									className="flex items-center justify-center"
-									key="default"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									exit={{ opacity: 0 }}
-								>
-									{user?.avatar && isAuthenticated ? (
-										<motion.img
-											src={user.avatar}
-											alt="User"
-											className="object-cover rounded-full w-7 h-7"
-											initial={{ scale: 0.8 }}
-											animate={{ scale: 1 }}
-											transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-										/>
-									) : (
-										<motion.div
-											initial={{ scale: 0.8, opacity: 0.5 }}
-											animate={{ scale: 1, opacity: 1 }}
-											transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+										<AiOutlineCloudSync size={10} className="text-white" />
+									</m.div>
+								)}
+
+								{syncState === SyncState.Syncing ? (
+									<m.div
+										className="flex items-center justify-center"
+										key="syncing"
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										transition={{ duration: 0.2 }}
+									>
+										<m.div
+											animate={{ rotate: 360 }}
+											transition={{
+												repeat: Number.POSITIVE_INFINITY,
+												duration: 1,
+												ease: 'linear',
+											}}
 										>
-											<AiOutlineCloudSync size={22} />
-										</motion.div>
-									)}
-								</motion.div>
-							)}
-						</AnimatePresence>
-					</motion.button>
+											<AiOutlineSync size={22} className="text-blue-400" />
+										</m.div>
+									</m.div>
+								) : syncState === SyncState.Success ? (
+									<m.div
+										className="flex items-center justify-center text-green-400"
+										key="success"
+										initial={{ scale: 0.5, opacity: 0 }}
+										animate={{ scale: 1, opacity: 1 }}
+										exit={{ scale: 1.5, opacity: 0 }}
+										transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+									>
+										<BiCheck size={24} />
+									</m.div>
+								) : syncState === SyncState.Error ? (
+									<m.div
+										className="flex items-center justify-center text-red-400"
+										key="error"
+										initial={{ scale: 0.5, opacity: 0 }}
+										animate={{
+											scale: [1, 1.1, 1],
+											opacity: 1,
+											rotate: [0, -5, 5, -5, 0],
+										}}
+										exit={{ scale: 0.5, opacity: 0 }}
+										transition={{ duration: 0.5 }}
+									>
+										<AiOutlineCloudSync size={22} />
+									</m.div>
+								) : (
+									<m.div
+										className="flex items-center justify-center"
+										key="default"
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+									>
+										{user?.avatar && isAuthenticated ? (
+											<m.img
+												src={user.avatar}
+												alt="User"
+												className="object-cover rounded-full w-7 h-7"
+												initial={{ scale: 0.8 }}
+												animate={{ scale: 1 }}
+												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+											/>
+										) : (
+											<m.div
+												initial={{ scale: 0.8, opacity: 0.5 }}
+												animate={{ scale: 1, opacity: 1 }}
+												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+											>
+												<AiOutlineCloudSync size={22} />
+											</m.div>
+										)}
+									</m.div>
+								)}
+							</AnimatePresence>
+						</m.button>
+					</LazyMotion>
 				</div>
 			</Tooltip>
 			<Modal
@@ -281,13 +283,15 @@ export function SyncButton() {
 			>
 				<div className="flex flex-col items-center justify-center w-full gap-6 p-5 text-center">
 					<div className="flex items-center justify-center w-16 h-16 mb-2 rounded-full bg-blue-500/10">
-						<motion.div
-							initial={{ scale: 0.8 }}
-							animate={{ scale: 1 }}
-							transition={{ repeatType: 'reverse', duration: 1.5 }}
-						>
-							<AiOutlineCloudSync size={32} className="text-blue-500" />
-						</motion.div>
+						<LazyMotion features={domAnimation}>
+							<m.div
+								initial={{ scale: 0.8 }}
+								animate={{ scale: 1 }}
+								transition={{ repeatType: 'reverse', duration: 1.5 }}
+							>
+								<AiOutlineCloudSync size={32} className="text-blue-500" />
+							</m.div>
+						</LazyMotion>
 					</div>
 
 					<p className={`${themeUtils.getTextColor()} text-base`}>
@@ -295,23 +299,25 @@ export function SyncButton() {
 					</p>
 
 					<div className="flex flex-row items-center justify-center gap-3 mt-2">
-						<motion.button
-							className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${themeUtils.getTextColor()} border ${themeUtils.getBorderColor()}`}
-							onClick={() => setFirstAuth(false)}
-							whileHover={{ scale: 1.03 }}
-							whileTap={{ scale: 0.97 }}
-						>
-							بعداً
-						</motion.button>
+						<LazyMotion features={domAnimation}>
+							<m.button
+								className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${themeUtils.getTextColor()} border ${themeUtils.getBorderColor()}`}
+								onClick={() => setFirstAuth(false)}
+								whileHover={{ scale: 1.03 }}
+								whileTap={{ scale: 0.97 }}
+							>
+								بعداً
+							</m.button>
 
-						<motion.button
-							className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600"
-							onClick={() => triggerAccountTabDisplay()}
-							whileHover={{ scale: 1.03 }}
-							whileTap={{ scale: 0.97 }}
-						>
-							ورود به حساب
-						</motion.button>
+							<m.button
+								className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600"
+								onClick={() => triggerAccountTabDisplay()}
+								whileHover={{ scale: 1.03 }}
+								whileTap={{ scale: 0.97 }}
+							>
+								ورود به حساب
+							</m.button>
+						</LazyMotion>
 					</div>
 				</div>
 			</Modal>

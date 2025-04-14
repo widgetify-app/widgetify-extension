@@ -7,7 +7,7 @@ import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/getMethodHooks/getCurrencyByCode.hook'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { LazyMotion, domAnimation, m, useMotionValue, useSpring } from 'framer-motion'
 import ms from 'ms'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
@@ -171,82 +171,84 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 
 	return (
 		<>
-			<motion.div
-				whileHover={
-					skipAnimations ? {} : { scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }
-				}
-				whileTap={skipAnimations ? {} : { scale: 0.98 }}
-				className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer  ${getBoxStyle()}`}
-				style={{
-					border: '1px solid transparent',
-					borderColor: imgColor ? `${imgColor}20` : 'transparent',
-				}}
-				initial={skipAnimations ? {} : { opacity: 0, y: -10 }}
-				animate={
-					skipAnimations
-						? { opacity: 1 }
-						: {
-								opacity: 1,
-								y: 0,
-								borderColor: imgColor ? `${imgColor}30` : 'transparent',
-							}
-				}
-				transition={
-					skipAnimations
-						? { duration: 0 }
-						: {
-								type: 'spring',
-								stiffness: 150,
-								damping: 15,
-								borderColor: { duration: 0.3 },
-							}
-				}
-				onClick={() => toggleCurrencyModal()}
-				onMouseDown={handleMouseDown}
-				onMouseUp={handleMouseUp}
-				onTouchStart={handleMouseDown}
-				onTouchEnd={handleMouseUp}
-				dir="ltr"
-			>
-				<div className="flex items-center space-x-2.5">
-					<div className="relative">
-						<img
-							src={currency?.icon}
-							alt={currency?.name?.en}
-							className="object-cover w-6 h-6 rounded-full"
-						/>
-						<div
-							className="absolute inset-0 border rounded-full border-opacity-20"
-							style={{ borderColor: imgColor }}
-						/>
+			<LazyMotion features={domAnimation}>
+				<m.div
+					whileHover={
+						skipAnimations ? {} : { scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }
+					}
+					whileTap={skipAnimations ? {} : { scale: 0.98 }}
+					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer  ${getBoxStyle()}`}
+					style={{
+						border: '1px solid transparent',
+						borderColor: imgColor ? `${imgColor}20` : 'transparent',
+					}}
+					initial={skipAnimations ? {} : { opacity: 0, y: -10 }}
+					animate={
+						skipAnimations
+							? { opacity: 1 }
+							: {
+									opacity: 1,
+									y: 0,
+									borderColor: imgColor ? `${imgColor}30` : 'transparent',
+								}
+					}
+					transition={
+						skipAnimations
+							? { duration: 0 }
+							: {
+									type: 'spring',
+									stiffness: 150,
+									damping: 15,
+									borderColor: { duration: 0.3 },
+								}
+					}
+					onClick={() => toggleCurrencyModal()}
+					onMouseDown={handleMouseDown}
+					onMouseUp={handleMouseUp}
+					onTouchStart={handleMouseDown}
+					onTouchEnd={handleMouseUp}
+					dir="ltr"
+				>
+					<div className="flex items-center space-x-2.5">
+						<div className="relative">
+							<img
+								src={currency?.icon}
+								alt={currency?.name?.en}
+								className="object-cover w-6 h-6 rounded-full"
+							/>
+							<div
+								className="absolute inset-0 border rounded-full border-opacity-20"
+								style={{ borderColor: imgColor }}
+							/>
+						</div>
+						<div className="flex items-center space-x-2 text-sm font-medium">
+							<span className={`md:visible ${getNameStyle()}`}>{currency?.name?.en}</span>
+							<span className={`text-xs ${getCodeStyle()}`}>{code}</span>
+						</div>
 					</div>
-					<div className="flex items-center space-x-2 text-sm font-medium">
-						<span className={`md:visible ${getNameStyle()}`}>{currency?.name?.en}</span>
-						<span className={`text-xs ${getCodeStyle()}`}>{code}</span>
-					</div>
-				</div>
 
-				<div className="flex items-baseline gap-2">
-					<motion.span
-						className={`text-sm font-bold ${getPriceStyle()}`}
-						animate={skipAnimations ? {} : { scale: [1, 1.02, 1] }}
-						transition={{ duration: 0.3 }}
-					>
-						{displayPrice.toLocaleString()}
-					</motion.span>
-					{priceChange !== 0 && (
-						<span
-							className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
+					<div className="flex items-baseline gap-2">
+						<m.span
+							className={`text-sm font-bold ${getPriceStyle()}`}
+							animate={skipAnimations ? {} : { scale: [1, 1.02, 1] }}
+							transition={{ duration: 0.3 }}
 						>
-							{priceChange > 0 ? (
-								<FaArrowUpLong className="inline" />
-							) : (
-								<FaArrowDownLong className="inline" />
-							)}
-						</span>
-					)}
-				</div>
-			</motion.div>
+							{displayPrice.toLocaleString()}
+						</m.span>
+						{priceChange !== 0 && (
+							<span
+								className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
+							>
+								{priceChange > 0 ? (
+									<FaArrowUpLong className="inline" />
+								) : (
+									<FaArrowDownLong className="inline" />
+								)}
+							</span>
+						)}
+					</div>
+				</m.div>
+			</LazyMotion>
 			{currency && (
 				<CurrencyModalComponent
 					code={code}

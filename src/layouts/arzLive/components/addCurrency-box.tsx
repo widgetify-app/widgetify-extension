@@ -4,7 +4,7 @@ import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
 import { useTheme } from '@/context/theme.context'
 import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { FiSearch } from 'react-icons/fi'
@@ -62,40 +62,42 @@ export const AddCurrencyBox = ({ disabled, loading }: AddCurrencyBoxProps) => {
 
 	return (
 		<>
-			<motion.div
-				whileHover={
-					disabled
-						? {}
-						: {
-								scale: 1.05,
-								backgroundColor:
-									theme === 'light'
-										? 'rgba(229, 231, 235, 0.8)'
-										: 'rgba(63, 63, 70, 0.5)',
-							}
-				}
-				whileTap={disabled ? {} : { scale: 0.95 }}
-				className={`flex items-center gap-2 p-2 duration-200 rounded-lg   shadow-lg transition-all cursor-pointer ${getBoxStyle()}
+			<LazyMotion features={domAnimation}>
+				<m.div
+					whileHover={
+						disabled
+							? {}
+							: {
+									scale: 1.05,
+									backgroundColor:
+										theme === 'light'
+											? 'rgba(229, 231, 235, 0.8)'
+											: 'rgba(63, 63, 70, 0.5)',
+								}
+					}
+					whileTap={disabled ? {} : { scale: 0.95 }}
+					className={`flex items-center gap-2 p-2 duration-200 rounded-lg   shadow-lg transition-all cursor-pointer ${getBoxStyle()}
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}`}
-				onClick={() => !disabled && setShowModal(true)}
-				initial={false}
-				animate={{
-					border: disabled ? '' : '1px solid rgba(161, 161, 170, 0.2)',
-				}}
-			>
-				<motion.div
-					className={`flex items-center justify-center w-6 h-6 rounded-full ${getCircleStyle()}`}
-					whileHover={{ rotate: 90 }}
-					transition={{ type: 'spring', stiffness: 300 }}
+					onClick={() => !disabled && setShowModal(true)}
+					initial={false}
+					animate={{
+						border: disabled ? '' : '1px solid rgba(161, 161, 170, 0.2)',
+					}}
 				>
-					{loading ? (
-						<AiOutlineLoading className={`w-6 h-6 animate-spin ${getTextStyle()}`} />
-					) : (
-						<TiPlus className={`w-4 h-4 ${getTextStyle()}`} />
-					)}
-				</motion.div>
-				<span className={`text-sm ${getTextStyle()}`}>افزودن ارز</span>
-			</motion.div>
+					<m.div
+						className={`flex items-center justify-center w-6 h-6 rounded-full ${getCircleStyle()}`}
+						whileHover={{ rotate: 90 }}
+						transition={{ type: 'spring', stiffness: 300 }}
+					>
+						{loading ? (
+							<AiOutlineLoading className={`w-6 h-6 animate-spin ${getTextStyle()}`} />
+						) : (
+							<TiPlus className={`w-4 h-4 ${getTextStyle()}`} />
+						)}
+					</m.div>
+					<span className={`text-sm ${getTextStyle()}`}>افزودن ارز</span>
+				</m.div>
+			</LazyMotion>
 
 			<SelectCurrencyModal show={showModal} setShow={setShowModal} />
 		</>
@@ -201,95 +203,98 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 
 	return (
 		<Modal isOpen={show} onClose={onClose} size="md" title="افزودن ارز" direction="rtl">
-			<motion.div
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
-				className="w-full"
-			>
-				{/* Search input */}
-				<div className="relative mb-5">
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.2 }}
-						className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
-					>
-						<FiSearch />
-					</motion.div>
-					<TextInput
-						type="text"
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e)}
-						placeholder="جستجو ..."
-					/>
-				</div>
-
-				{/* Currency groups */}
-				<motion.div
-					className="px-2 pr-1 overflow-x-hidden overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-					variants={containerVariants}
-					initial="hidden"
-					animate="visible"
-				>
-					{filteredGroups.map((group, groupIndex) => (
-						<motion.div key={groupIndex} className="mb-6" variants={itemVariants}>
-							<h3
-								className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}
-							>
-								{group.label}
-							</h3>
-							<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-								{group.options.map((option) => {
-									const isSelected = selectedCurrencies.includes(option.value)
-
-									return (
-										<motion.div
-											key={option.value}
-											className={getBoxStyle(isSelected)}
-											onClick={() => toggleCurrency(option.value)}
-											variants={itemVariants}
-											whileHover={{ scale: 1.03 }}
-											whileTap={{ scale: 0.97 }}
-											layout
-										>
-											<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
-												{option.label}
-											</div>
-											<div
-												className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
-											>
-												{option.value}
-											</div>
-										</motion.div>
-									)
-								})}
-							</div>
-						</motion.div>
-					))}
-				</motion.div>
-
-				{/* Confirmation button */}
-				<motion.div
-					className="flex justify-center w-full mt-5"
-					initial={{ opacity: 0, y: 10 }}
+			<LazyMotion features={domAnimation}>
+				<m.div
+					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.3 }}
+					transition={{ duration: 0.3 }}
+					className="w-full"
 				>
-					<motion.button
-						onClick={onClose}
-						type="button"
-						whileHover={{ scale: 1.03 }}
-						whileTap={{ scale: 0.97 }}
-						className={`px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm ${getButtonStyle()}`}
+					{/* Search input */}
+					<div className="relative mb-5">
+						<m.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 0.2 }}
+							className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+						>
+							<FiSearch />
+						</m.div>
+						<TextInput
+							type="text"
+							value={searchQuery}
+							onChange={(e) => setSearchQuery(e)}
+							placeholder="جستجو ..."
+						/>
+					</div>
+
+					{/* Currency groups */}
+					<m.div
+						className="px-2 pr-1 overflow-x-hidden overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+						variants={containerVariants}
+						initial="hidden"
+						animate="visible"
 					>
-						تایید
-					</motion.button>
-				</motion.div>
-			</motion.div>
+						{filteredGroups.map((group, groupIndex) => (
+							<m.div key={groupIndex} className="mb-6" variants={itemVariants}>
+								<h3
+									className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}
+								>
+									{group.label}
+								</h3>
+								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+									{group.options.map((option) => {
+										const isSelected = selectedCurrencies.includes(option.value)
+
+										return (
+											<m.div
+												key={option.value}
+												className={getBoxStyle(isSelected)}
+												onClick={() => toggleCurrency(option.value)}
+												variants={itemVariants}
+												whileHover={{ scale: 1.03 }}
+												whileTap={{ scale: 0.97 }}
+												layout
+											>
+												<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
+													{option.label}
+												</div>
+												<div
+													className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
+												>
+													{option.value}
+												</div>
+											</m.div>
+										)
+									})}
+								</div>
+							</m.div>
+						))}
+					</m.div>
+
+					{/* Confirmation button */}
+					<m.div
+						className="flex justify-center w-full mt-5"
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+					>
+						<m.button
+							onClick={onClose}
+							type="button"
+							whileHover={{ scale: 1.03 }}
+							whileTap={{ scale: 0.97 }}
+							className={`px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm ${getButtonStyle()}`}
+						>
+							تایید
+						</m.button>
+					</m.div>
+				</m.div>
+			</LazyMotion>
 		</Modal>
 	)
 }
+
 interface Option {
 	label: string
 	options: {

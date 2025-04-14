@@ -1,7 +1,7 @@
 import { preloadImages } from '@/common/utils/preloadImages'
 import { SectionPanel } from '@/components/section-panel'
 import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FiArrowLeft, FiFolder } from 'react-icons/fi'
 import { RetouchFilter } from '../components/retouch-filter.component'
@@ -93,7 +93,7 @@ export function GalleryTab() {
 		}
 
 		return (
-			<motion.div
+			<m.div
 				whileHover={{ scale: 1.03 }}
 				whileTap={{ scale: 0.97 }}
 				onClick={() => handleCategorySelect(id)}
@@ -128,7 +128,7 @@ export function GalleryTab() {
 						</div>
 					)}
 				</div>
-			</motion.div>
+			</m.div>
 		)
 	}
 
@@ -145,7 +145,7 @@ export function GalleryTab() {
 		}
 
 		return (
-			<motion.button
+			<m.button
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={handleBackToCategories}
@@ -153,7 +153,7 @@ export function GalleryTab() {
 			>
 				<FiArrowLeft size={16} />
 				<span>بازگشت به فولدرها</span>
-			</motion.button>
+			</m.button>
 		)
 	}
 
@@ -161,43 +161,45 @@ export function GalleryTab() {
 		<>
 			<SectionPanel title="گالری تصاویر">
 				<div className={'p-4 rounded-xl'}>
-					<AnimatePresence mode="wait">
-						{isCategoryView ? (
-							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								key="category-view"
-							>
-								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-									{categories.map((category) => (
-										<CategoryFolder
-											key={category.id}
-											id={category.id}
-											name={category.name}
-											previewImages={category.wallpapers || []}
-										/>
-									))}
-								</div>
-							</motion.div>
-						) : (
-							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								key="wallpaper-view"
-							>
-								<BackButton />
-								<WallpaperGallery
-									isLoading={isLoading}
-									error={error}
-									wallpapers={currentCategoryWallpapers}
-									selectedBackground={selectedBackground}
-									onSelectBackground={handleSelectBackground}
-								/>
-							</motion.div>
-						)}
-					</AnimatePresence>
+					<LazyMotion features={domAnimation}>
+						<AnimatePresence mode="wait">
+							{isCategoryView ? (
+								<m.div
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									key="category-view"
+								>
+									<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+										{categories.map((category) => (
+											<CategoryFolder
+												key={category.id}
+												id={category.id}
+												name={category.name}
+												previewImages={category.wallpapers || []}
+											/>
+										))}
+									</div>
+								</m.div>
+							) : (
+								<m.div
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									key="wallpaper-view"
+								>
+									<BackButton />
+									<WallpaperGallery
+										isLoading={isLoading}
+										error={error}
+										wallpapers={currentCategoryWallpapers}
+										selectedBackground={selectedBackground}
+										onSelectBackground={handleSelectBackground}
+									/>
+								</m.div>
+							)}
+						</AnimatePresence>
+					</LazyMotion>
 				</div>
 			</SectionPanel>
 

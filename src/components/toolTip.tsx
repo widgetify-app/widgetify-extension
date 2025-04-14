@@ -1,5 +1,5 @@
 import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, m, domAnimation } from 'framer-motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -180,25 +180,27 @@ const Tooltip = ({
 
 			{isVisible &&
 				ReactDOM.createPortal(
-					<AnimatePresence>
-						<motion.div
-							ref={tooltipRef}
-							className={`fixed z-50 rounded-md py-1 px-1 text-sm max-w-xs ${getTooltipStyle()} ${contentClassName}`}
-							style={{
-								left: tooltipCoords.x,
-								top: tooltipCoords.y,
-							}}
-							initial="hidden"
-							animate="visible"
-							exit="hidden"
-							variants={variants[calculatedPosition]}
-							transition={{ duration: 0.2 }}
-							onMouseEnter={showTooltip}
-							onMouseLeave={hideTooltip}
-						>
-							{content}
-						</motion.div>
-					</AnimatePresence>,
+					<LazyMotion features={domAnimation}>
+						<AnimatePresence>
+							<m.div
+								ref={tooltipRef}
+								className={`fixed z-50 rounded-md py-1 px-1 text-sm max-w-xs ${getTooltipStyle()} ${contentClassName}`}
+								style={{
+									left: tooltipCoords.x,
+									top: tooltipCoords.y,
+								}}
+								initial="hidden"
+								animate="visible"
+								exit="hidden"
+								variants={variants[calculatedPosition]}
+								transition={{ duration: 0.2 }}
+								onMouseEnter={showTooltip}
+								onMouseLeave={hideTooltip}
+							>
+								{content}
+							</m.div>
+						</AnimatePresence>
+					</LazyMotion>,
 					document.body,
 				)}
 		</>

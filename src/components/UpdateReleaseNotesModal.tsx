@@ -1,5 +1,5 @@
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { RiBug2Line, RiCheckboxCircleFill, RiStarLine, RiToolsLine } from 'react-icons/ri'
 import Modal from './modal'
 
@@ -109,62 +109,64 @@ export const UpdateReleaseNotesModal = ({
 			direction="rtl"
 			closeOnBackdropClick={false}
 		>
-			<div className="p-4 max-h-[28rem] sm:max-h-[32rem] overflow-y-auto">
-				{Object.entries(releaseNotes).map(([version, notes], idx) => (
-					<motion.div
-						key={version}
-						initial={{ opacity: 0, y: 10 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: idx * 0.1 }}
-						className={`mb-6 rounded-lg p-3 ${
-							version === currentVersion ? ` border ${themeUtils.getBorderColor()}` : ''
-						}`}
-					>
-						<div className="flex items-center mb-3">
-							<h3
-								className={`text-base sm:text-lg font-bold ${
-									version === currentVersion
-										? themeUtils.getHeadingTextStyle()
-										: themeUtils.getTextColor()
-								}`}
-							>
-								نسخه {version}
-							</h3>
-							{version === currentVersion && (
-								<motion.div
-									initial={{ scale: 0 }}
-									animate={{ scale: 1 }}
-									transition={{ delay: 0.2 }}
-									className="flex items-center mr-2"
+			<LazyMotion features={domAnimation}>
+				<div className="p-2 max-h-[28rem] sm:max-h-80 overflow-y-auto">
+					{Object.entries(releaseNotes).map(([version, notes], idx) => (
+						<m.div
+							key={version}
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: idx * 0.1 }}
+							className={`mb-6 rounded-lg p-3 ${
+								version === currentVersion ? ` border ${themeUtils.getBorderColor()}` : ''
+							}`}
+						>
+							<div className="flex items-center mb-3">
+								<h3
+									className={`text-base sm:text-lg font-bold ${
+										version === currentVersion
+											? themeUtils.getHeadingTextStyle()
+											: themeUtils.getTextColor()
+									}`}
 								>
-									<RiCheckboxCircleFill className="text-blue-500" size={20} />
-									<span className="mr-1 text-xs font-medium text-blue-500">
-										نسخه فعلی
-									</span>
-								</motion.div>
-							)}
-						</div>
+									نسخه {version}
+								</h3>
+								{version === currentVersion && (
+									<m.div
+										initial={{ scale: 0 }}
+										animate={{ scale: 1 }}
+										transition={{ delay: 0.2 }}
+										className="flex items-center mr-2"
+									>
+										<RiCheckboxCircleFill className="text-blue-500" size={20} />
+										<span className="mr-1 text-xs font-medium text-blue-500">
+											نسخه فعلی
+										</span>
+									</m.div>
+								)}
+							</div>
 
-						<ul className={`mr-2 ${themeUtils.getDescriptionTextStyle()}`}>
-							{sortNotesByType(notes).map((note, noteIdx) => (
-								<motion.li
-									key={noteIdx}
-									initial={{ opacity: 0, x: 5 }}
-									animate={{ opacity: 1, x: 0 }}
-									transition={{ delay: idx * 0.1 + noteIdx * 0.05 }}
-									className="flex mb-3"
-								>
-									<div className="mt-0.5 ml-2">{getTypeIcon(note.type)}</div>
-									<div>
-										<p className="text-sm font-light">{note.description}</p>
-									</div>
-								</motion.li>
-							))}
-						</ul>
-					</motion.div>
-				))}
-			</div>
-			<div className={`p-4 border-t ${themeUtils.getBorderColor()} flex justify-end`}>
+							<ul className={`mr-2 ${themeUtils.getDescriptionTextStyle()}`}>
+								{sortNotesByType(notes).map((note, noteIdx) => (
+									<m.li
+										key={noteIdx}
+										initial={{ opacity: 0, x: 5 }}
+										animate={{ opacity: 1, x: 0 }}
+										transition={{ delay: idx * 0.1 + noteIdx * 0.05 }}
+										className="flex mb-3"
+									>
+										<div className="mt-0.5 ml-2">{getTypeIcon(note.type)}</div>
+										<div>
+											<p className="text-sm font-light">{note.description}</p>
+										</div>
+									</m.li>
+								))}
+							</ul>
+						</m.div>
+					))}
+				</div>
+			</LazyMotion>
+			<div className={`p-1 border-t ${themeUtils.getBorderColor()} flex justify-end`}>
 				<button
 					onClick={onClose}
 					className={`${themeUtils.getButtonStyles()} cursor-pointer hover:scale-105 transition-transform px-4 py-2 rounded-md`}

@@ -1,6 +1,5 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { FiEdit, FiUploadCloud } from 'react-icons/fi'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
@@ -65,13 +64,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 
 	if (!customWallpaper) {
 		return (
-			<motion.div
-				layout
-				className={`relative rounded-lg overflow-hidden ${getUploadButtonStyle()}`}
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3, ease: 'easeOut' }}
-			>
+			<div className={`relative rounded-lg overflow-hidden ${getUploadButtonStyle()}`}>
 				<button
 					className="flex items-center justify-center w-full gap-2 p-4 cursor-pointer"
 					onClick={handleFileSelect}
@@ -88,17 +81,13 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 					accept="image/*,video/*"
 					onChange={handleFileChange}
 				/>
-			</motion.div>
+			</div>
 		)
 	}
 
 	return (
-		<motion.div
-			layout
+		<div
 			className={`relative overflow-hidden border rounded-lg backdrop-blur-sm shadow-sm ${getPreviewContainerStyle()}`}
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.3, ease: 'easeOut' }}
 		>
 			<div className="flex items-center p-2.5">
 				<div className="relative flex-shrink-0 w-16 h-12 overflow-hidden rounded-md shadow-sm">
@@ -122,15 +111,13 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				</div>
 
 				<div className="flex gap-2">
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
+					<button
 						onClick={handleFileSelect}
-						className={`px-3 py-1.5 text-sm transition-all duration-200 rounded-lg ${getPrimaryButtonStyle()} flex items-center gap-1.5`}
+						className={`px-3 py-1.5 text-sm transition-all duration-200 rounded-lg ${getPrimaryButtonStyle()} flex items-center gap-1.5 cursor-pointer`}
 					>
 						<FiEdit size={14} />
 						<span>تغییر</span>
-					</motion.button>
+					</button>
 				</div>
 			</div>
 			<input
@@ -140,6 +127,6 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				accept="image/*,video/*"
 				onChange={handleFileChange}
 			/>
-		</motion.div>
+		</div>
 	)
 }

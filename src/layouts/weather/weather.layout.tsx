@@ -3,7 +3,6 @@ import { useWeatherStore } from '@/context/weather.context'
 import { useGetForecastWeatherByLatLon } from '@/services/getMethodHooks/weather/getForecastWeatherByLatLon'
 import { useGetWeatherByLatLon } from '@/services/getMethodHooks/weather/getWeatherByLatLon'
 import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
-import { motion } from 'framer-motion' // Fixed import from motion/react
 import { useEffect, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
@@ -89,12 +88,7 @@ export function WeatherLayout() {
 			<div className="flex flex-col h-80">
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<motion.div
-					className="relative flex-1 p-1 mt-2 overflow-hidden lg:pb-0"
-					initial={{ opacity: 0.9 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
-				>
+				<div className="relative flex-1 p-1 mt-2 overflow-hidden lg:pb-0">
 					<Swiper
 						modules={[Pagination, Navigation, FreeMode]}
 						spaceBetween={8}
@@ -110,19 +104,10 @@ export function WeatherLayout() {
 					>
 						{forecast?.map((item, index) => (
 							<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
-								<motion.div
-									initial={{ opacity: 0, y: 10 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{
-										duration: 0.3,
-										delay: index * 0.05,
-									}}
-								>
-									<ForecastComponent
-										forecast={item}
-										unit={weatherSettings.temperatureUnit}
-									/>
-								</motion.div>
+								<ForecastComponent
+									forecast={item}
+									unit={weatherSettings.temperatureUnit}
+								/>
 							</SwiperSlide>
 						))}
 
@@ -138,7 +123,7 @@ export function WeatherLayout() {
 							<FiChevronRight size={20} />
 						</div>
 					</Swiper>
-				</motion.div>
+				</div>
 			</div>
 
 			<style>{`
