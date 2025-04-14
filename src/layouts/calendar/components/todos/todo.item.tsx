@@ -36,7 +36,7 @@ export function TodoItem({
 			case 'dark':
 				return isPreview ? 'bg-neutral-800/30' : 'bg-neutral-800/50'
 			default: // glass
-				return isPreview ? 'bg-neutral-800/20' : 'bg-neutral-800/30'
+				return isPreview ? 'bg-black/20' : 'bg-black/30'
 		}
 	}
 

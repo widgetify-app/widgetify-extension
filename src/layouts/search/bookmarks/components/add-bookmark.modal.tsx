@@ -281,7 +281,7 @@ export function AddBookmarkModal({
 			direction="rtl"
 			closeOnBackdropClick={false}
 		>
-			<div className="fixed-height-container relative min-h-[280px]">
+			<div className="relative h-full">
 				<motion.div className="flex flex-col gap-4 p-4">
 					<div className="flex gap-2 mb-4">
 						<TypeSelector type={type} setType={setType} theme={theme} />

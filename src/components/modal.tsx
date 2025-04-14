@@ -16,10 +16,10 @@ type ModalProps = {
 }
 
 const sizeClasses = {
-	sm: 'w-full max-w-sm max-h-[70vh] overflow-hidden',
-	md: 'w-full max-w-md max-h-[80vh] overflow-hidden',
-	lg: 'w-full max-w-lg max-h-[85vh] overflow-hidden',
-	xl: 'w-full max-w-4xl max-h-[90vh] overflow-hidden',
+	sm: 'w-full max-w-sm max-h-[70vh] overflow-y-auto',
+	md: 'w-full max-w-md max-h-[80vh] overflow-y-auto',
+	lg: 'w-full max-w-lg max-h-[85vh] overflow-y-auto',
+	xl: 'w-full max-w-4xl max-h-[90vh] overflow-y-auto',
 }
 
 const Modal = ({

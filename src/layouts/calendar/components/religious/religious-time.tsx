@@ -66,7 +66,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 			case 'dark':
 				return 'bg-neutral-800/80 shadow-sm border border-neutral-700'
 			default: // glass
-				return 'bg-neutral-900/50 shadow-sm border border-neutral-800'
+				return 'bg-black/20 shadow-sm border border-[#1a1a1a38]'
 		}
 	}
 
