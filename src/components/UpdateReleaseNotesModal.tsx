@@ -107,6 +107,7 @@ export const UpdateReleaseNotesModal = ({
 			title="نسخه جدید ویجتی‌فای تو مرورگرته 🎉"
 			size="md"
 			direction="rtl"
+			closeOnBackdropClick={false}
 		>
 			<div className="p-4 max-h-[28rem] sm:max-h-[32rem] overflow-y-auto">
 				{Object.entries(releaseNotes).map(([version, notes], idx) => (
@@ -115,9 +116,11 @@ export const UpdateReleaseNotesModal = ({
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: idx * 0.1 }}
-						className="mb-6"
+						className={`mb-6 rounded-lg p-3 ${
+							version === currentVersion ? ` border ${themeUtils.getBorderColor()}` : ''
+						}`}
 					>
-						<div className="flex items-center mb-2">
+						<div className="flex items-center mb-3">
 							<h3
 								className={`text-base sm:text-lg font-bold ${
 									version === currentVersion
@@ -132,9 +135,12 @@ export const UpdateReleaseNotesModal = ({
 									initial={{ scale: 0 }}
 									animate={{ scale: 1 }}
 									transition={{ delay: 0.2 }}
-									className="mr-2"
+									className="flex items-center mr-2"
 								>
 									<RiCheckboxCircleFill className="text-blue-500" size={20} />
+									<span className="mr-1 text-xs font-medium text-blue-500">
+										نسخه فعلی
+									</span>
 								</motion.div>
 							)}
 						</div>
@@ -158,10 +164,11 @@ export const UpdateReleaseNotesModal = ({
 					</motion.div>
 				))}
 			</div>
-			<div
-				className={`p-4 cursor-pointer border-t ${themeUtils.getBorderColor()} flex justify-end`}
-			>
-				<button onClick={onClose} className={themeUtils.getButtonStyles()}>
+			<div className={`p-4 border-t ${themeUtils.getBorderColor()} flex justify-end`}>
+				<button
+					onClick={onClose}
+					className={`${themeUtils.getButtonStyles()} cursor-pointer hover:scale-105 transition-transform px-4 py-2 rounded-md`}
+				>
 					متوجه شدم
 				</button>
 			</div>

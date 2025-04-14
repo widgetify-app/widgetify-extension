@@ -88,7 +88,6 @@ export function HomePage() {
 			const lastVersion = await getFromStorage('lastVersion')
 			if (lastVersion !== currentVersion) {
 				setShowReleaseNotes(true)
-				await setToStorage('lastVersion', currentVersion)
 			}
 		}
 
@@ -100,6 +99,11 @@ export function HomePage() {
 	const handleGetStarted = () => {
 		setShowWelcomeModal(false)
 		window.location.reload()
+	}
+
+	const onCloseReleaseNotes = async () => {
+		await setToStorage('lastVersion', currentVersion)
+		setShowReleaseNotes(false)
 	}
 
 	useEffect(() => {
@@ -245,7 +249,7 @@ export function HomePage() {
 
 			<UpdateReleaseNotesModal
 				isOpen={showReleaseNotes}
-				onClose={() => setShowReleaseNotes(false)}
+				onClose={() => onCloseReleaseNotes()}
 				currentVersion={currentVersion}
 			/>
 		</div>
