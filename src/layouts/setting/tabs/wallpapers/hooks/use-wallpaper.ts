@@ -57,6 +57,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	}
 
 	useEffect(() => {
+		console.log('Selected background changed:', selectedBackground)
 		if (!selectedBackground) return
 
 		const wallpaperData: StoredWallpaper = {
