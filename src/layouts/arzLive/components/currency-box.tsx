@@ -176,7 +176,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 					skipAnimations ? {} : { scale: 1.02, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }
 				}
 				whileTap={skipAnimations ? {} : { scale: 0.98 }}
-				className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer backdrop-blur-sm ${getBoxStyle()}`}
+				className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg cursor-pointer  ${getBoxStyle()}`}
 				style={{
 					border: '1px solid transparent',
 					borderColor: imgColor ? `${imgColor}20` : 'transparent',

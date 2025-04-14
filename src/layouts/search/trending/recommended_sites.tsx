@@ -78,7 +78,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 			case 'dark':
 				return 'bg-neutral-800 hover:bg-neutral-700/90'
 			default:
-				return 'bg-neutral-900/70  hover:bg-neutral-800/80'
+				return 'bg-black/20  hover:bg-neutral-800/80'
 		}
 	}
 
@@ -127,7 +127,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 				<img src={site.icon} alt={site.name} className="w-10 h-10 mb-1.5 rounded-lg" />
 			)}
 			{!site.icon && (
-				<div className="flex items-center justify-center w-10 h-10 mb-1.5 bg-gray-300 rounded-lg shadow-sm dark:bg-gray-700">
+				<div className="flex items-center justify-center w-10 h-10 mb-1.5  rounded-lg shadow-sm dark:bg-gray-700">
 					<span className="text-sm font-medium">{site.name.charAt(0)}</span>
 				</div>
 			)}

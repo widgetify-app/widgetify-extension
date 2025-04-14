@@ -71,7 +71,7 @@ export const TrendItemComponent = ({
 			case 'dark':
 				return 'bg-neutral-800 hover:bg-neutral-700/90'
 			default:
-				return 'bg-neutral-900/70  hover:bg-neutral-800/80'
+				return 'bg-black/20  hover:bg-neutral-800/80 text-opacity-80'
 		}
 	}
 

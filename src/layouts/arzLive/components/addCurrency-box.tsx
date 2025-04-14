@@ -47,7 +47,7 @@ export const AddCurrencyBox = ({ disabled, loading }: AddCurrencyBoxProps) => {
 			case 'dark':
 				return 'bg-neutral-800'
 			default: // glass
-				return 'bg-black/40'
+				return 'bg-black/20'
 		}
 	}
 
@@ -75,7 +75,7 @@ export const AddCurrencyBox = ({ disabled, loading }: AddCurrencyBoxProps) => {
 							}
 				}
 				whileTap={disabled ? {} : { scale: 0.95 }}
-				className={`flex items-center gap-2 p-2 duration-200 rounded-lg backdrop-blur-sm shadow-lg transition-all cursor-pointer ${getBoxStyle()}
+				className={`flex items-center gap-2 p-2 duration-200 rounded-lg   shadow-lg transition-all cursor-pointer ${getBoxStyle()}
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}`}
 				onClick={() => !disabled && setShowModal(true)}
 				initial={false}
@@ -227,7 +227,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 
 				{/* Currency groups */}
 				<motion.div
-					className="pr-1 overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+					className="px-2 pr-1 overflow-x-hidden overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
 					variants={containerVariants}
 					initial="hidden"
 					animate="visible"
