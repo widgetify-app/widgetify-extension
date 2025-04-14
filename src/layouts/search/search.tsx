@@ -19,7 +19,7 @@ export function SearchLayout() {
 			case 'light':
 				return 'bg-white hover:bg-white/95'
 			case 'dark':
-				return 'bg-neutral-800 hover:bg-neutral-700/90'
+				return 'bg-neutral-900 hover:bg-neutral-900/90'
 			default:
 				return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80'
 		}

@@ -22,7 +22,7 @@ export const WidgetifyLayout = () => {
 
 	return (
 		<div
-			className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl xl:max-h-96 h-80`}
+			className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
 		>
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
@@ -32,7 +32,7 @@ export const WidgetifyLayout = () => {
 						className={`flex items-center justify-between w-full border-b ${themeUtils.getBorderColor()}`}
 					>
 						<div className="flex items-center gap-2">
-							<p className="font-semibold truncate text-md">سلام {userName}، چه خبر؟</p>
+							<p className="w-32 font-semibold truncate text-md">سلام {userName}! </p>
 						</div>
 						<ClockComponent />
 					</div>
