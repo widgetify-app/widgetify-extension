@@ -165,7 +165,7 @@ export function AboutUsTab() {
 			transition={{ duration: 0.3 }}
 			dir="rtl"
 		>
-			<div className="flex flex-col items-center p-6 text-center">
+			<div className="flex flex-col items-center p-3 text-center">
 				{/* App Logo */}
 				<motion.div
 					className="relative flex items-center justify-center w-20 h-20 mb-5 overflow-hidden shadow-lg rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800"
@@ -183,20 +183,20 @@ export function AboutUsTab() {
 					ویجتی‌فای
 				</h1>
 				<div
-					className={`inline-flex items-center px-3 py-1 mb-6 text-xs font-medium border rounded-full backdrop-blur-sm ${getVersionBadgeStyle()}`}
+					className={`inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm ${getVersionBadgeStyle()}`}
 				>
 					<span>نسخه {manifest.version}</span>
 				</div>
 
 				{/* Description */}
-				<p className={`max-w-lg mb-6 text-lg leading-relaxed ${getDescriptionStyle()}`}>
+				<p className={`max-w-lg mb-2 text-sm leading-relaxed ${getDescriptionStyle()}`}>
 					ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای کاربردی
 					و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
 				</p>
 			</div>
 
 			{/* Links Section */}
-			<SectionPanel title="لینک‌های ارتباطی" delay={0.1}>
+			<SectionPanel title="لینک‌های ارتباطی" size="sm">
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<motion.a
 						href="https://widgetify.ir/donate"
