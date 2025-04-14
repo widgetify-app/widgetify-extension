@@ -97,14 +97,26 @@ export function BookmarksComponent() {
 		}
 	}
 
-	const handleBookmarkClick = (bookmark: Bookmark) => {
+	const handleBookmarkClick = (e: React.MouseEvent, bookmark: Bookmark) => {
 		if (bookmark.type === 'FOLDER') {
-			setCurrentFolderId(bookmark.id)
-			setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
+			if (e.ctrlKey || e.metaKey) {
+				const children = getCurrentFolderItems(bookmark.id)
+				const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
+				for (const b of bookmarks) {
+					window.open(b.url)
+				}
+			} else {
+				setCurrentFolderId(bookmark.id)
+				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
 
-			setCurrentFolderIsManageable(isManageable(bookmark))
+				setCurrentFolderIsManageable(isManageable(bookmark))
+			}
 		} else {
-			window.location.href = bookmark.url
+			if (e.ctrlKey || e.metaKey) {
+				window.open(bookmark.url)
+			} else {
+				window.location.href = bookmark.url
+			}
 		}
 	}
 
@@ -163,7 +175,7 @@ export function BookmarksComponent() {
 						>
 							<BookmarkItem
 								bookmark={bookmark}
-								onClick={() => handleBookmarkClick(bookmark)}
+								onClick={(e) => handleBookmarkClick(e, bookmark)}
 								theme={theme}
 								canAdd={true}
 							/>
