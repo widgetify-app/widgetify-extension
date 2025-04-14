@@ -64,7 +64,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 			case 'dark':
 				return 'bg-neutral-800/50'
 			default:
-				return 'bg-neutral-900/50'
+				return 'bg-black/20'
 		}
 	}
 
@@ -83,7 +83,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 			case 'dark':
 				return 'bg-neutral-800/80 hover:bg-neutral-800'
 			default:
-				return 'bg-neutral-900/50 hover:bg-neutral-900'
+				return 'bg-black/30 hover:bg-neutral-900'
 		}
 	}
 
