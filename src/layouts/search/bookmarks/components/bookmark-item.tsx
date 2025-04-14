@@ -7,7 +7,7 @@ import type { Bookmark } from '../types/bookmark.types'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark | null
-	onClick: () => void
+	onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	theme?: string
 	canAdd: boolean
 }
