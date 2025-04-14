@@ -72,7 +72,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<CustomCheckbox
 						checked={visibility.arzLive}
 						onChange={() => toggleWidget('arzLive')}
-						label="💰 نمایش ارز و مبادله"
+						label="💰 ویجی‌ ارز"
 					/>
 
 					<CustomCheckbox

@@ -12,7 +12,7 @@ import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
 } from '@/context/widget-visibility.context'
-import { ArzLiveLayout } from '@/layouts/arzLive/arzLive.layout'
+import { WigiArzLayout } from '@/layouts/wigiArz/wigi_arz.layout'
 import CalendarLayout from '@/layouts/calendar/calendar'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { NewsLayout } from '@/layouts/news/news.layout'
@@ -53,7 +53,7 @@ function ContentSection() {
 				<div className="order-2 w-full lg:w-1/4 lg:order-3">
 					{visibility.arzLive && (
 						<CurrencyProvider>
-							<ArzLiveLayout />
+							<WigiArzLayout />
 						</CurrencyProvider>
 					)}
 				</div>
