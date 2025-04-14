@@ -1,3 +1,4 @@
+import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
@@ -34,36 +35,14 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		}
 	}
 
-	const getHumidityPillStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-700 bg-blue-100/80 hover:bg-blue-100'
-			case 'dark':
-				return 'text-blue-200 bg-blue-500/30 hover:bg-blue-500/40'
-			default: // glass
-				return 'text-blue-100 bg-blue-500/20 hover:bg-blue-500/30'
-		}
-	}
-
-	const getWindPillStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-green-700 bg-green-100/80 hover:bg-green-100'
-			case 'dark':
-				return 'text-green-200 bg-green-500/30 hover:bg-green-500/40'
-			default: // glass
-				return 'text-green-100 bg-green-500/20 hover:bg-green-500/30'
-		}
-	}
-
 	const getDescriptionBoxStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-100/70 hover:bg-gray-200/80 backdrop-blur-sm'
+				return 'bg-gray-100/70 backdrop-blur-sm'
 			case 'dark':
-				return 'bg-neutral-800/10 hover:bg-neutral-800/60 backdrop-blur-sm'
+				return 'bg-neutral-800/10 backdrop-blur-sm'
 			default: // glass
-				return 'bg-neutral-900/40 hover:bg-white/10'
+				return 'bg-neutral-900/40'
 		}
 	}
 
@@ -89,12 +68,12 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		}
 	}
 
-	const getPlaylistLinkStyle = () => {
+	const getSpotifyButtonStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'text-green-600 hover:text-green-800 bg-green-100/70 hover:bg-green-100'
+				return 'text-green-600 bg-green-100/80 shadow-green-900/20 hover:shadow-green-900/30'
 			default:
-				return 'text-green-400 hover:text-green-300 bg-green-900/30 hover:bg-green-800/40'
+				return 'text-green-400 bg-green-900/40 shadow-green-900/20 hover:shadow-green-900/30'
 		}
 	}
 
@@ -128,7 +107,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					<m.div
 						className="relative group"
 						variants={fadeInUp}
-						whileHover={{ scale: 1.1 }}
 						transition={{ type: 'spring', stiffness: 300 }}
 					>
 						<img
@@ -162,17 +140,37 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 				<m.div variants={fadeInUp} className="flex flex-wrap items-center gap-2">
 					<div
-						className={`px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getHumidityPillStyle()}`}
+						className={
+							'px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all'
+						}
 					>
 						<WiHumidity size={20} className="flex-shrink-0" />
 						<span>{weather.temperature.humidity}%</span>
 					</div>
 					<div
-						className={`px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all hover:shadow-md ${getWindPillStyle()}`}
+						className={
+							'px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all'
+						}
 					>
 						<WiStrongWind size={20} className="flex-shrink-0" />
 						<span>{weather.temperature.wind_speed} m/s</span>
 					</div>
+
+					{weather.ai?.playlist && (
+						<Tooltip content="پلی‌لیست پیشنهادی اسپاتیفای">
+							<m.a
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ delay: 0.3 }}
+								href={weather.ai.playlist}
+								target="_blank"
+								rel="noopener noreferrer"
+								className={`flex items-center justify-center w-7 h-7 rounded-full transition-all ${getSpotifyButtonStyle()}`}
+							>
+								<FaSpotify className="text-lg" />
+							</m.a>
+						</Tooltip>
+					)}
 				</m.div>
 
 				<m.div
@@ -187,7 +185,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 									initial={{ opacity: 0, x: -10 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 0.5 }}
-									whileHover={{ scale: 1.05 }}
 								>
 									<BsRobot className="text-xs" />
 								</m.div>
@@ -199,21 +196,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 								>
 									{weather.ai?.description || weather.temperature.temp_description}
 								</p>
-
-								{weather.ai?.playlist && (
-									<m.a
-										initial={{ opacity: 0, scale: 0.9 }}
-										animate={{ opacity: 1, scale: 1 }}
-										transition={{ delay: 0.7 }}
-										href={weather.ai.playlist}
-										target="_blank"
-										rel="noopener noreferrer"
-										className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-medium rounded-full shadow-sm transition-all duration-300 ${getPlaylistLinkStyle()}`}
-									>
-										<FaSpotify className="text-base" />
-										<span>پلی‌لیست پیشنهادی</span>
-									</m.a>
-								)}
 							</div>
 						</div>
 					</div>
