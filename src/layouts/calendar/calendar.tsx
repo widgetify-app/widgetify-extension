@@ -72,11 +72,7 @@ const PersianCalendar: React.FC = () => {
 }
 
 const CalendarLayout = () => {
-	return (
-		<TodoProvider>
-			<PersianCalendar />
-		</TodoProvider>
-	)
+	return <PersianCalendar />
 }
 
 export default CalendarLayout

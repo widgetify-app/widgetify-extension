@@ -7,18 +7,19 @@ import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { CurrencyProvider } from '@/context/currency.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
+import { TodoProvider } from '@/context/todo.context'
 import { WeatherProvider } from '@/context/weather.context'
 import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
 } from '@/context/widget-visibility.context'
-import { WigiArzLayout } from '@/layouts/wigiArz/wigi_arz.layout'
 import CalendarLayout from '@/layouts/calendar/calendar'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { NewsLayout } from '@/layouts/news/news.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WeatherLayout } from '@/layouts/weather/weather.layout'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
+import { WigiArzLayout } from '@/layouts/wigiArz/wigi_arz.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
@@ -34,40 +35,42 @@ function ContentSection() {
 	const { visibility } = useWidgetVisibility()
 
 	return (
-		<div
-			className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 p-2 md:p-4`}
-		>
-			<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
-				<div className="order-3 w-full lg:w-1/4 lg:order-1">
-					{visibility.widgetify ? (
-						<WidgetifyLayout />
-					) : visibility.news ? (
-						<NewsLayout />
-					) : null}
+		<TodoProvider>
+			<div
+				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 p-2 md:p-4`}
+			>
+				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+					<div className="order-3 w-full lg:w-1/4 lg:order-1">
+						{visibility.widgetify ? (
+							<WidgetifyLayout />
+						) : visibility.news ? (
+							<NewsLayout />
+						) : null}
+					</div>
+
+					<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
+						<SearchLayout />
+					</div>
+
+					<div className="order-2 w-full lg:w-1/4 lg:order-3">
+						{visibility.arzLive && (
+							<CurrencyProvider>
+								<WigiArzLayout />
+							</CurrencyProvider>
+						)}
+					</div>
 				</div>
 
-				<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
-					<SearchLayout />
-				</div>
-
-				<div className="order-2 w-full lg:w-1/4 lg:order-3">
-					{visibility.arzLive && (
-						<CurrencyProvider>
-							<WigiArzLayout />
-						</CurrencyProvider>
-					)}
+				<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
+					<div className={'w-full lg:w-8/12'}>
+						{visibility.calendar && <CalendarLayout />}
+					</div>
+					<div className={'w-full lg:w-4/12'}>
+						{visibility.weather && <WeatherLayout />}
+					</div>
 				</div>
 			</div>
-
-			<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
-				<div className={'w-full lg:w-8/12'}>
-					{visibility.calendar && <CalendarLayout />}
-				</div>
-				<div className={'w-full lg:w-4/12'}>
-					{visibility.weather && <WeatherLayout />}
-				</div>
-			</div>
-		</div>
+		</TodoProvider>
 	)
 }
 
