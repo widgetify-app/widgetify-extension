@@ -45,7 +45,7 @@ export function BookmarkItem({
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] ${getBookmarkStyle(theme)}`}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${getBookmarkStyle(theme)}`}
 		>
 			<BookmarkIcon bookmark={bookmark} />
 			<BookmarkTitle title={bookmark.title} theme={theme} />
@@ -93,7 +93,7 @@ function FolderBookmarkItem({
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-w-[5.4rem] max-w-[5.4rem] shadow-sm ${getFolderStyle()}`}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${getFolderStyle()}`}
 		>
 			<div className="absolute inset-0 overflow-hidden rounded-xl">
 				<div
@@ -163,7 +163,7 @@ function EmptyBookmarkSlot({
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={canAdd ? { scale: 1.02 } : { scale: 1 }}
 			transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-			className={`relative flex flex-col items-center justify-center flex-1 p-4 transition-all duration-300 border cursor-pointer group rounded-xl min-h-[5.7rem] min-w-[5.4rem] max-w-[5.4rem] ${getEmptySlotStyle()}`}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${getEmptySlotStyle()}`}
 		>
 			<div className="relative flex items-center justify-center opacity-60 w-14 h-14">
 				{canAdd ? (
@@ -185,6 +185,7 @@ function EmptyBookmarkSlot({
 		</motion.button>
 	)
 }
+
 function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	let displayIcon: string | React.ReactNode
 

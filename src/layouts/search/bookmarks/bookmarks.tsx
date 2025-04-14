@@ -27,48 +27,10 @@ export function BookmarksComponent() {
 	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
 		useState<boolean>(true)
 
-	// const processFetchedBookmark = async () => {
-	// 	const nonManageableBookmarks = bookmarks.filter((b) => !b.isManageable)
-	// 	const deletedBookmarks = (await getFromStorage('deletedBookmarkIds')) || []
-
-	// 	const pinnedBookmarks: Bookmark[] = []
-
-	// 	function handleBookmark(bookmark: FetchedBookmark) {
-	// 		if (deletedBookmarks.includes(bookmark.id)) return
-
-	// 		if (bookmark.type === 'FOLDER') {
-	// 			pinnedBookmarks.push({
-	// 				id: bookmark.id,
-	// 				title: bookmark.title,
-	// 				type: 'FOLDER',
-	// 				parentId: bookmark.parentId,
-	// 				isLocal: false,
-	// 				isManageable: bookmark.isManageable,
-	// 			})
-	// 		} else {
-	// 			pinnedBookmarks.push({
-	// 				id: bookmark.id,
-	// 				title: bookmark.title,
-	// 				type: 'BOOKMARK',
-	// 				parentId: bookmark.parentId,
-	// 				isLocal: false,
-	// 				isManageable: bookmark.isManageable,
-	// 				url: bookmark.url,
-	// 				icon: bookmark.icon,
-	// 			})
-	// 		}
-
-	// 		for (const child of bookmark.children) {
-	// 			handleBookmark(child)
-	// 		}
-	// 	}
-
-	// 	for (const bookmark of fetchedBookmarks) {
-	// 		handleBookmark(bookmark)
-	// 	}
-
-	// 	setBookmarks([...pinnedBookmarks, ...nonManageableBookmarks])
-	// }
+	// Number of bookmarks per row
+	const BOOKMARKS_PER_ROW = 5
+	// Total number of bookmarks to display (2 rows)
+	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
 
 	useEffect(() => {
 		const handleClickOutside = () => setSelectedBookmark(null)
@@ -145,14 +107,31 @@ export function BookmarksComponent() {
 	}
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
+
 	const displayedBookmarks = currentFolderItems
-		.slice(0, 10)
-		.concat(new Array(Math.max(0, 10 - currentFolderItems.length)).fill(null))
+		.slice(0, TOTAL_BOOKMARKS - 1)
+		.concat(
+			new Array(
+				Math.max(
+					0,
+					TOTAL_BOOKMARKS -
+						currentFolderItems.length -
+						(currentFolderIsManageable ? 1 : 0),
+				),
+			).fill(null),
+		)
+		.concat(
+			//@ts-ignore
+			currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
+				? [null]
+				: [],
+		)
+		.slice(0, TOTAL_BOOKMARKS)
 
 	return (
 		<>
 			<div
-				className={`flex flex-row flex-wrap justify-center w-full gap-3 mt-3 p-2 rounded-lg transition-all duration-300 ${themeUtils.getTextColor()}`}
+				className={`grid grid-cols-5 gap-3 w-full mt-3 p-2 rounded-lg transition-all duration-300 ${themeUtils.getTextColor()}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
