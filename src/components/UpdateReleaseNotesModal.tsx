@@ -6,56 +6,113 @@ import Modal from './modal'
 type ReleaseNotes = Record<
 	string,
 	{
-		type: 'feature' | 'bugfix' | 'improvement'
-		description: string
-	}[]
+		name: string
+		notes: {
+			type: 'feature' | 'bugfix' | 'improvement'
+			description: string
+		}[]
+	}
 >
 const releaseNotes: ReleaseNotes = {
-	'1.0.2': [
-		{
-			type: 'feature',
-			description: 'اضافه شدن ویجت آخرین خبرهای روز',
-		},
-		{
-			type: 'feature',
-			description: 'اضافه شدن قابلیت فعال و غیرفعال کردن ویجت‌ها',
-		},
-		{
-			type: 'feature',
-			description: 'اضافه شدن ایجاد حساب کاربری و ورود به آن',
-		},
-		{
-			type: 'feature',
-			description: 'اضافه شدن امکان همگام‌سازی اطلاعات با حساب کاربری (sync)',
-		},
-		{
-			type: 'feature',
-			description: 'نمایش تاریخ میلادی و قمری روز در ویجت تقویم',
-		},
-		{
-			type: 'improvement',
-			description: 'بهبود نمایش ویجت‌ها در اندازه‌های مختلف صفحه نمایش و دستگاه‌های مختلف',
-		},
-		{
-			type: 'improvement',
-			description: 'بهبود طراحی در قسمت های: ویجت ها و تنظیمات',
-		},
-		{
-			type: 'bugfix',
-			description: 'رفع چندین مشکل جزئی',
-		},
-	],
-	'1.0.1': [
-		{ type: 'improvement', description: 'بهبود قسمت سرچ باکس' },
-		{ type: 'improvement', description: 'بهینه‌سازی تقویم و سیستم مدیریت یادداشت‌ها' },
-		{ type: 'feature', description: 'افزودن قابلیت Pomodoro Timer برای مدیریت زمان' },
-		{ type: 'bugfix', description: 'رفع باگ نمایش آیکون‌های بوکمارک' },
-		{ type: 'improvement', description: 'بازطراحی رابط کاربری افزودن بوکمارک' },
-		{ type: 'improvement', description: 'بهبود نمایش مسیر پوشه‌ها در بخش بوکمارک‌ها' },
-	],
-	'1.0.0': [
-		{ type: 'feature', description: 'انتشار نسخه اولیه ویجتی‌فای با امکانات پایه' },
-	],
+	'1.0.3': {
+		name: 'طلوع',
+		notes: [
+			{
+				type: 'feature',
+				description: 'اضافه شدن اوقات شرعی به ویجت تقویم',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن امکان اتصال به اکانت گوگل برای دسترسی به گوگل کلندر',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن قابلیت افزودن فیدهای (RSS) منابع خبری',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن گرادیان ها به عنوان تصویر زمینه',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن یادداورهای روزانه به کارت ویجتی‌فای',
+			},
+			{
+				type: 'feature',
+				description: 'همگام سازی بوکمارک ها با اکانت کاربری',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن ترندهای روز و ویجی‌باکس به سرچ باکس',
+			},
+			{
+				type: 'improvement',
+				description: 'بهبود عملکرد و سرعت بارگذاری ویجت‌ها',
+			},
+			{
+				type: 'improvement',
+				description: 'بهبود طراحی و کارایی ویجت‌ها',
+			},
+			{
+				type: 'bugfix',
+				description: 'رفع چندین مشکل جزئی و بهبود تجربه کاربری',
+			},
+		],
+	},
+	'1.0.2': {
+		name: 'آسمان',
+		notes: [
+			{
+				type: 'feature',
+				description: 'اضافه شدن ویجت آخرین خبرهای روز',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن قابلیت فعال و غیرفعال کردن ویجت‌ها',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن ایجاد حساب کاربری و ورود به آن',
+			},
+			{
+				type: 'feature',
+				description: 'اضافه شدن امکان همگام‌سازی اطلاعات با حساب کاربری (sync)',
+			},
+			{
+				type: 'feature',
+				description: 'نمایش تاریخ میلادی و قمری روز در ویجت تقویم',
+			},
+			{
+				type: 'improvement',
+				description: 'بهبود نمایش ویجت‌ها در اندازه‌های مختلف صفحه نمایش و دستگاه‌های مختلف',
+			},
+			{
+				type: 'improvement',
+				description: 'بهبود طراحی در قسمت های: ویجت ها و تنظیمات',
+			},
+			{
+				type: 'bugfix',
+				description: 'رفع چندین مشکل جزئی',
+			},
+		],
+	},
+	'1.0.1': {
+		name: 'نسیم',
+		notes: [
+			{ type: 'improvement', description: 'بهبود قسمت سرچ باکس' },
+			{ type: 'improvement', description: 'بهینه‌سازی تقویم و سیستم مدیریت یادداشت‌ها' },
+			{ type: 'feature', description: 'افزودن قابلیت Pomodoro Timer برای مدیریت زمان' },
+			{ type: 'bugfix', description: 'رفع باگ نمایش آیکون‌های بوکمارک' },
+			{ type: 'improvement', description: 'بازطراحی رابط کاربری افزودن بوکمارک' },
+			{ type: 'improvement', description: 'بهبود نمایش مسیر پوشه‌ها در بخش بوکمارک‌ها' },
+		],
+	},
+	'1.0.0': {
+		name: 'شروع',
+		notes: [
+			{ type: 'feature', description: 'انتشار نسخه اولیه ویجتی‌فای با امکانات پایه' },
+		],
+	},
 }
 
 type UpdateReleaseNotesModalProps = {
@@ -96,7 +153,7 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}
 
-	const sortNotesByType = (notes: (typeof releaseNotes)[string]) => {
+	const sortNotesByType = (notes: (typeof releaseNotes)[string]['notes']) => {
 		return [...notes].sort((a, b) => getTypePriority(a.type) - getTypePriority(b.type))
 	}
 
@@ -111,7 +168,7 @@ export const UpdateReleaseNotesModal = ({
 		>
 			<LazyMotion features={domAnimation}>
 				<div className="p-2 max-h-[28rem] sm:max-h-80 overflow-y-auto">
-					{Object.entries(releaseNotes).map(([version, notes], idx) => (
+					{Object.entries(releaseNotes).map(([version, versionData], idx) => (
 						<m.div
 							key={version}
 							initial={{ opacity: 0, y: 10 }}
@@ -122,15 +179,20 @@ export const UpdateReleaseNotesModal = ({
 							}`}
 						>
 							<div className="flex items-center mb-3">
-								<h3
-									className={`text-base sm:text-lg font-bold ${
-										version === currentVersion
-											? themeUtils.getHeadingTextStyle()
-											: themeUtils.getTextColor()
-									}`}
-								>
-									نسخه {version}
-								</h3>
+								<div className="flex flex-col">
+									<h3
+										className={`text-base sm:text-lg font-bold ${
+											version === currentVersion
+												? themeUtils.getHeadingTextStyle()
+												: themeUtils.getTextColor()
+										}`}
+									>
+										نسخه {version}{' '}
+										<span className="text-sm font-normal opacity-80">
+											(‌{versionData.name})
+										</span>
+									</h3>
+								</div>
 								{version === currentVersion && (
 									<m.div
 										initial={{ scale: 0 }}
@@ -147,7 +209,7 @@ export const UpdateReleaseNotesModal = ({
 							</div>
 
 							<ul className={`mr-2 ${themeUtils.getDescriptionTextStyle()}`}>
-								{sortNotesByType(notes).map((note, noteIdx) => (
+								{sortNotesByType(versionData.notes).map((note, noteIdx) => (
 									<m.li
 										key={noteIdx}
 										initial={{ opacity: 0, x: 5 }}
