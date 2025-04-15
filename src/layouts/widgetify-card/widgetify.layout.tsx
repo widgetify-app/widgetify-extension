@@ -3,10 +3,15 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetDailyMessage } from '@/services/getMethodHooks/getDailyMessage.hook'
+import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { FiClipboard, FiMessageCircle } from 'react-icons/fi'
-import { formatDateStr, getCurrentDate } from '../calendar/utils'
+import { FiCalendar, FiClipboard, FiMessageCircle } from 'react-icons/fi'
+import {
+	filterGoogleEventsByDate,
+	formatDateStr,
+	getCurrentDate,
+} from '../calendar/utils'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 
@@ -20,6 +25,13 @@ export const WidgetifyLayout = () => {
 
 	const { data: dailyMessage } = useGetDailyMessage()
 
+	const today = getCurrentDate()
+
+	const { data: googleEvents } = useGetGoogleCalendarEvents(
+		isAuthenticated && (user?.connections?.includes('google') || false),
+		today.clone().toDate(),
+	)
+
 	useEffect(() => {
 		if (isAuthenticated && user && user.name) {
 			setUserName(user.name)
@@ -28,12 +40,17 @@ export const WidgetifyLayout = () => {
 		}
 	}, [isAuthenticated, user, random])
 
-	// Get today's todos
-	const today = getCurrentDate()
 	const todayStr = formatDateStr(today)
 	const todayTodos = todos.filter((todo) => todo.date === todayStr)
 	const completedTodos = todayTodos.filter((todo) => todo.completed)
 	const pendingTodos = todayTodos.filter((todo) => !todo.completed)
+
+	const todayEvents = filterGoogleEventsByDate(googleEvents, today)
+	const upcomingEvents = todayEvents.filter((event) => {
+		const now = new Date()
+		const endTime = new Date(event.end.dateTime)
+		return now < endTime
+	})
 
 	const getContainerStyle = () => {
 		switch (theme) {
@@ -134,6 +151,51 @@ export const WidgetifyLayout = () => {
 									</div>
 								)}
 							</motion.div>
+
+							{/* Google Calendar Events Summary */}
+							{user?.connections?.includes('google') && (
+								<motion.div
+									className={`p-2 rounded-lg ${getContainerStyle()} shadow-sm`}
+									initial={{ opacity: 0, y: 5 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.5 }}
+								>
+									<div className="flex items-center gap-2">
+										<FiCalendar
+											className={
+												upcomingEvents.length > 0 ? 'text-blue-500' : 'opacity-50'
+											}
+										/>
+										<div className="flex-1">
+											<p className="text-xs font-medium">جلسات امروز</p>
+											<p className="text-xs opacity-75">
+												{upcomingEvents.length > 0
+													? `${upcomingEvents.length} جلسه باقی‌مانده`
+													: todayEvents.length > 0
+														? 'همه جلسات به پایان رسیده‌اند'
+														: 'هیچ جلسه‌ای برای امروز ندارید'}
+											</p>
+										</div>
+									</div>
+
+									{/* Show up to 1 upcoming event */}
+									{upcomingEvents.length > 0 && (
+										<div className="pr-6 mt-2 space-y-1">
+											{upcomingEvents.slice(0, 1).map((event) => (
+												<div key={event.id} className="flex items-center gap-1 text-xs">
+													<span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+													<p className="flex-1 font-light truncate">{event.summary}</p>
+												</div>
+											))}
+											{upcomingEvents.length > 1 && (
+												<p className="text-xs italic opacity-75">
+													و {upcomingEvents.length - 1} جلسه دیگر...
+												</p>
+											)}
+										</div>
+									)}
+								</motion.div>
+							)}
 						</div>
 					</div>
 				</div>
