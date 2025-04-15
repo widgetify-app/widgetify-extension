@@ -232,7 +232,7 @@ function BookmarkTitle({ title, theme = 'glass' }: { title: string; theme?: stri
 
 	return (
 		<span
-			className={`text-[10px] w-full text-center font-medium transition-colors duration-300 truncate ${getTitleStyle()}`}
+			className={`text-[.7rem] w-full text-center font-medium transition-colors duration-300 truncate ${getTitleStyle()}`}
 		>
 			{title}
 		</span>
