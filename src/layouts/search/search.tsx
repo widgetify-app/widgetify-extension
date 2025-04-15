@@ -93,7 +93,7 @@ export function SearchLayout() {
 								value={searchQuery}
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
-								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right bg-transparent focus:outline-none ${themeUtils.getTextColor()}`}
+								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none ${themeUtils.getTextColor()} placeholder:text-gray-400 dark:placeholder:text-gray-500`}
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
