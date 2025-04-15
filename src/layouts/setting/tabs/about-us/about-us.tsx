@@ -238,7 +238,7 @@ export function AboutUsTab() {
 						</m.a>
 
 						<m.a
-							href="https://feedback.onl/fa/b/widgetify"
+							href="https://feedback.widgetify.ir"
 							target="_blank"
 							rel="noopener noreferrer"
 							className={`flex flex-col items-center justify-center p-4 transition-all border rounded-xl backdrop-blur-sm ${getFeedbackCardStyle()}`}
