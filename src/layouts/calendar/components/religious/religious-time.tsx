@@ -104,13 +104,13 @@ export function ReligiousTime({ currentDate }: Prop) {
 			icon: FiSunrise,
 		},
 		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
-		{ title: 'ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
+		{ title: 'اذان ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
 		{
 			title: 'غروب آفتاب',
 			value: religiousTimeData?.ghorub_aftab,
 			icon: FiSunset,
 		},
-		{ title: 'مغرب', value: religiousTimeData?.azan_maghreb, icon: FiClock },
+		{ title: 'اذان مغرب', value: religiousTimeData?.azan_maghreb, icon: FiClock },
 		{ title: 'نیمه شب', value: religiousTimeData?.nimeshab, icon: FiMoon },
 	]
 
