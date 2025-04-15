@@ -9,12 +9,14 @@ import {
 	VscColorMode,
 	VscInfo,
 	VscPaintcan,
+	VscRecordKeys,
 	VscSettingsGear,
 } from 'react-icons/vsc'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
+import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
 
@@ -66,6 +68,12 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			value: 'account',
 			icon: <VscAccount size={20} />,
 			element: <AccountTab />,
+		},
+		{
+			label: 'میانبرها',
+			value: 'shortcuts',
+			icon: <VscRecordKeys size={20} />,
+			element: <ShortcutsTab />,
 		},
 		{
 			label: 'درباره ما',
