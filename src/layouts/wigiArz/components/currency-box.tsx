@@ -6,7 +6,6 @@ import {
 	useGetCurrencyByCode,
 } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
-import ms from 'ms'
 import { useEffect, useRef, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { CurrencyModalComponent } from './currency-modal'
