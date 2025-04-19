@@ -1,6 +1,7 @@
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
 	onDelete: () => void
+	onEdit: () => void
 	onOpenInNewTab?: () => void
 	isFolder?: boolean
 	theme: string
@@ -9,8 +10,8 @@ interface BookmarkContextMenuProps {
 export function BookmarkContextMenu({
 	position,
 	onDelete,
+	onEdit,
 	onOpenInNewTab,
-
 	theme,
 }: BookmarkContextMenuProps) {
 	const getContextMenuStyle = () => {
@@ -58,6 +59,13 @@ export function BookmarkContextMenu({
 					باز کردن در تب جدید
 				</button>
 			)}
+
+			<button
+				onClick={onEdit}
+				className={`w-full px-2 py-1.5 cursor-pointer text-center rounded-md transition-colors duration-200 ${getMenuItemStyle()}`}
+			>
+				ویرایش
+			</button>
 
 			<button
 				onClick={onDelete}

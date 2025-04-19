@@ -5,16 +5,19 @@ import { useEffect, useState } from 'react'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
 import { BookmarkItem } from './components/bookmark-item'
+import { EditBookmarkModal } from './components/edit-bookmark.modal'
 import { FolderPath } from './components/folder-path'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
 	const { theme, themeUtils } = useTheme()
 
-	const { bookmarks, getCurrentFolderItems, addBookmark, deleteBookmark } =
+	const { bookmarks, getCurrentFolderItems, addBookmark, editBookmark, deleteBookmark } =
 		useBookmarkStore()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
+	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
+	const [bookmarkToEdit, setBookmarkToEdit] = useState<Bookmark | null>(null)
 
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
 
@@ -57,6 +60,12 @@ export function BookmarksComponent() {
 				setContextMenuPos({ x: rect.right - 120, y: rect.top + 80 })
 			}
 		}
+	}
+
+	const handleEditBookmark = (bookmark: Bookmark) => {
+		setBookmarkToEdit(bookmark)
+		setShowEditBookmarkModal(true)
+		setSelectedBookmark(null)
 	}
 
 	const handleBookmarkClick = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
@@ -176,6 +185,7 @@ export function BookmarksComponent() {
 							deleteBookmark(selectedBookmark.id)
 							setSelectedBookmark(null)
 						}}
+						onEdit={() => handleEditBookmark(selectedBookmark)}
 						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
 						theme={theme}
 					/>
@@ -191,6 +201,15 @@ export function BookmarksComponent() {
 				parentId={currentFolderId}
 				theme={theme}
 			/>
+			{bookmarkToEdit && (
+				<EditBookmarkModal
+					isOpen={showEditBookmarkModal}
+					onClose={() => setShowEditBookmarkModal(false)}
+					onSave={(bookmark) => editBookmark(bookmark)}
+					bookmark={bookmarkToEdit}
+					theme={theme}
+				/>
+			)}
 		</>
 	)
 }

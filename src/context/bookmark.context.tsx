@@ -14,6 +14,7 @@ export interface BookmarkStoreContext {
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
 	addBookmark: (bookmark: Bookmark) => void
+	editBookmark: (bookmark: Bookmark) => void
 	deleteBookmark: (id: string) => void
 }
 
@@ -22,6 +23,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
 	addBookmark: () => {},
+	editBookmark: () => {},
 	deleteBookmark: () => {},
 })
 
@@ -241,6 +243,61 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
+	const editBookmark = async (bookmark: Bookmark) => {
+		try {
+			const bookmarkSize = getBookmarkDataSize(bookmark)
+
+			const isGif = bookmark.customImage?.startsWith('data:image/gif')
+			const sizeLimit = isGif ? 1.5 * MAX_BOOKMARK_SIZE : MAX_BOOKMARK_SIZE
+
+			if (bookmarkSize > sizeLimit) {
+				toast.error(
+					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`,
+				)
+				return
+			}
+
+			const processedBookmark = await prepareBookmarkForStorage(bookmark)
+			const updatedBookmarks =
+				bookmarks?.map((b) => (b.id === processedBookmark.id ? processedBookmark : b)) ||
+				[]
+
+			try {
+				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
+				if (testData.length > 5 * 1024 * 1024) {
+					toast.error(
+						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.',
+					)
+					return
+				}
+			} catch (e) {
+				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
+				return
+			}
+
+			setBookmarks(updatedBookmarks)
+			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
+			await setToStorage('bookmarks', localBookmarks)
+
+			Analytics.featureUsed(
+				'bookmark_management',
+				{
+					action: 'edit',
+					bookmark_type: bookmark.type,
+					has_custom_image: !!bookmark.customImage,
+				},
+				'click',
+			)
+
+			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+
+			callEvent('startSync', SyncTarget.BOOKMARKS)
+		} catch (error) {
+			console.error('Error editing bookmark:', error)
+			toast.error('خطا در ویرایش بوکمارک')
+		}
+	}
+
 	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {
 		if (!bookmarks) return []
 
@@ -308,6 +365,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				setBookmarks,
 				getCurrentFolderItems,
 				addBookmark,
+				editBookmark,
 				deleteBookmark,
 			}}
 		>
