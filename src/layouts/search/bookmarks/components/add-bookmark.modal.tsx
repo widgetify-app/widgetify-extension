@@ -1,7 +1,7 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState, useTransition } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -41,17 +41,6 @@ export function AddBookmarkModal({
 		emoji: '',
 	})
 
-	const getInputStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white border border-gray-300 text-gray-800'
-			case 'dark':
-				return 'bg-neutral-800 border border-neutral-700 text-white'
-			default: // glass
-				return 'bg-[#1E1E1E] border border-[#333] text-white'
-		}
-	}
-
 	const getIconPreviewStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -67,8 +56,8 @@ export function AddBookmarkModal({
 		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
 
-	const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newUrl = e.target.value
+	const handleUrlChange = (value: string) => {
+		const newUrl = value.trim()
 		updateFormData('url', newUrl)
 
 		if (iconSource === 'auto') {
@@ -322,50 +311,33 @@ export function AddBookmarkModal({
 					onChange={handleImageUpload}
 				/>
 
-				<motion.input
+				<TextInput
 					type="text"
 					name="title"
 					placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 					value={formData.title}
-					onChange={(e) => updateFormData('title', e.target.value)}
-					className={`w-full px-4 py-3 text-right rounded-lg ${getInputStyle()}`}
-					required
+					onChange={(v) => updateFormData('title', v)}
+					className={
+						'w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
+					}
 				/>
 
 				<div className="relative h-[54px]">
-					<AnimatePresence mode="popLayout">
-						{type === 'BOOKMARK' && (
-							<motion.input
-								initial={{ opacity: 0, y: -10 }}
-								animate={{
-									opacity: 1,
-									y: 0,
-									transition: {
-										type: 'spring',
-										stiffness: 500,
-										damping: 30,
-									},
-								}}
-								exit={{
-									opacity: 0,
-									y: 10,
-									transition: {
-										duration: 0.15,
-									},
-								}}
-								type="text"
-								name="url"
-								placeholder="آدرس لینک"
-								value={formData.url}
-								onChange={handleUrlChange}
-								className={`w-full px-4 py-3 text-right absolute rounded-lg ${getInputStyle()}`}
-								required={type === 'BOOKMARK'}
-							/>
-						)}
-					</AnimatePresence>
+					{type === 'BOOKMARK' && (
+						<TextInput
+							type="text"
+							name="url"
+							placeholder="آدرس لینک"
+							value={formData.url}
+							onChange={(v) => handleUrlChange(v)}
+							className={
+								'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+							}
+						/>
+					)}
 				</div>
 
-				<div className="flex items-center justify-end">
+				<div className={'flex items-center justify-end'}>
 					<button
 						type="button"
 						onClick={() => setShowAdvanced(!showAdvanced)}

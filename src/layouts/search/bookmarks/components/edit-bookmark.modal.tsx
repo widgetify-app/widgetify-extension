@@ -1,6 +1,6 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
-import { AnimatePresence, motion } from 'framer-motion'
+import { TextInput } from '@/components/text-input'
 import { useEffect, useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -93,8 +93,7 @@ export function EditBookmarkModal({
 		reader.readAsDataURL(file)
 	}
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target
+	const handleInputChange = (name: string, value: string) => {
 		setFormData((prev) => ({
 			...prev,
 			[name]: value,
@@ -303,45 +302,26 @@ export function EditBookmarkModal({
 						name="imageFile"
 					/>
 
-					<motion.input
+					<input
 						type="text"
 						name="title"
 						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 						value={formData.title}
-						onChange={handleInputChange}
-						className={`w-full px-4 py-3 text-right rounded-lg ${getInputStyle()}`}
+						onChange={(e) => handleInputChange('title', e.target.value)}
+						className={`w-full px-4 py-3 text-right rounded-lg transition-all duration-200 ${getInputStyle()}`}
 					/>
 
 					<div className="relative h-[54px]">
-						<AnimatePresence mode="popLayout">
-							{type === 'BOOKMARK' && (
-								<motion.input
-									initial={{ opacity: 0, y: -10 }}
-									animate={{
-										opacity: 1,
-										y: 0,
-										transition: {
-											type: 'spring',
-											stiffness: 500,
-											damping: 30,
-										},
-									}}
-									exit={{
-										opacity: 0,
-										y: 10,
-										transition: {
-											duration: 0.15,
-										},
-									}}
-									name="url"
-									type="text"
-									placeholder="آدرس لینک"
-									value={formData.url}
-									onChange={handleInputChange}
-									className={`w-full px-4 py-3 text-right absolute rounded-lg ${getInputStyle()}`}
-								/>
-							)}
-						</AnimatePresence>
+						{type === 'BOOKMARK' && (
+							<TextInput
+								name="url"
+								type="text"
+								placeholder="آدرس لینک"
+								value={formData.url}
+								onChange={(value) => handleInputChange('url', value)}
+								className={`w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300 ${getInputStyle()}`}
+							/>
+						)}
 					</div>
 
 					{formData.customImage && (

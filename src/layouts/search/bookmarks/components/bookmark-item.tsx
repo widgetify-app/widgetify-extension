@@ -297,7 +297,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 		width: '21px',
 		height: '20px',
 		transform: 'rotate(325deg)',
-		filter: 'opacity(0.5)',
+		filter: 'opacity(0.6)',
 	}
 
 	if (isImageEmoji) {
