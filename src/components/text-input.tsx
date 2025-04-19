@@ -1,4 +1,5 @@
 import { useTheme } from '@/context/theme.context'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface TextInputProps {
 	id?: string
@@ -13,6 +14,8 @@ interface TextInputProps {
 	direction?: 'rtl' | 'ltr' | ''
 	className?: string
 	ref?: React.RefObject<HTMLInputElement | null>
+	debounce?: boolean
+	debounceTime?: number
 }
 
 export function TextInput({
@@ -28,9 +31,41 @@ export function TextInput({
 	direction = '',
 	className = '',
 	ref,
+	debounce = false,
+	debounceTime = 150,
 }: TextInputProps) {
 	const { theme: contextTheme } = useTheme()
 	const theme = propTheme || contextTheme
+	const [localValue, setLocalValue] = useState(value)
+	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+	useEffect(() => {
+		setLocalValue(value)
+	}, [value])
+
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const newValue = e.target.value
+			setLocalValue(newValue)
+
+			if (!debounce) {
+				onChange(newValue)
+				return
+			}
+
+			if (debounceTimerRef.current) {
+				clearTimeout(debounceTimerRef.current)
+			}
+
+			debounceTimerRef.current = setTimeout(
+				() => {
+					onChange(newValue)
+				},
+				type === 'color' ? 50 : debounceTime,
+			)
+		},
+		[onChange, debounce, type, debounceTime],
+	)
 
 	const getInputStyle = () => {
 		switch (theme) {
@@ -61,14 +96,14 @@ export function TextInput({
 			id={id}
 			type={type}
 			name={name}
-			value={value}
+			value={localValue}
 			disabled={disabled}
 			onFocus={onFocus}
 			dir={direction}
 			placeholder={placeholder || ''}
 			className={`w-full text-[14px] rounded-xl p-3 outline-none border 
                     transition-all duration-200 font-light ${getInputStyle()} ${className}`}
-			onChange={(e) => onChange(e.target.value)}
+			onChange={handleChange}
 		/>
 	)
 }

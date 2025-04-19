@@ -1,27 +1,20 @@
 export type BookmarkType = 'BOOKMARK' | 'FOLDER'
 
-export interface BaseBookmark {
+export interface Bookmark {
 	id: string
 	title: string
 	type: BookmarkType
 	parentId: string | null
 	isLocal: boolean
-	isManageable?: boolean
-	customImage?: string
 	onlineId: string | null
-}
-
-export interface BookmarkItem extends BaseBookmark {
-	type: 'BOOKMARK'
 	url: string
-	icon: string
+	icon?: string
+	pinned?: boolean
+	customImage?: string
+	customBackground?: string
+	customTextColor?: string
+	emoji?: string
 }
-
-export interface FolderItem extends BaseBookmark {
-	type: 'FOLDER'
-}
-
-export type Bookmark = BookmarkItem | FolderItem
 
 export interface FolderPathItem {
 	id: string

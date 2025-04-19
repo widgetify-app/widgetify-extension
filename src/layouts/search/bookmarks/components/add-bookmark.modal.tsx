@@ -1,17 +1,19 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
+import { useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { v4 as uuidv4 } from 'uuid'
 import type { Bookmark, BookmarkType } from '../types/bookmark.types'
+import { AdvancedModal } from './advanced.modal'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
 	onAdd: (bookmark: Bookmark) => void
 	parentId: string | null
-	theme?: string
 }
 
 export function AddBookmarkModal({
@@ -19,17 +21,25 @@ export function AddBookmarkModal({
 	onClose,
 	onAdd,
 	parentId = null,
-	theme = 'glass',
 }: AddBookmarkModalProps) {
+	const { theme } = useTheme()
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
-	const [title, setTitle] = useState('')
-	const [url, setUrl] = useState('')
-	const [icon, setIcon] = useState('')
-	const [customImage, setCustomImage] = useState<string>('')
 	const [iconSource, setIconSource] = useState<'auto' | 'upload' | 'url'>('auto')
+	const [showAdvanced, setShowAdvanced] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [isDragging, setIsDragging] = useState(false)
 	const [iconLoadError, setIconLoadError] = useState(false)
+	const [isPending, startTransition] = useTransition()
+
+	const [formData, setFormData] = useState({
+		title: '',
+		url: '',
+		icon: '',
+		customImage: '',
+		customBackground: '',
+		customTextColor: '',
+		emoji: '',
+	})
 
 	const getInputStyle = () => {
 		switch (theme) {
@@ -39,28 +49,6 @@ export function AddBookmarkModal({
 				return 'bg-neutral-800 border border-neutral-700 text-white'
 			default: // glass
 				return 'bg-[#1E1E1E] border border-[#333] text-white'
-		}
-	}
-
-	const getButtonStyle = (primary = false) => {
-		if (primary) {
-			switch (theme) {
-				case 'light':
-					return 'bg-blue-500 hover:bg-blue-600 text-white'
-				case 'dark':
-					return 'bg-blue-600 hover:bg-blue-700 text-white'
-				default: // glass
-					return 'bg-blue-500/80 hover:bg-blue-500 text-white'
-			}
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'border border-gray-300 text-gray-600 hover:bg-gray-100'
-			case 'dark':
-				return 'border border-gray-700 text-gray-300 hover:bg-gray-700/50'
-			default: // glass
-				return 'border border-white/10 text-gray-400 hover:bg-white/5'
 		}
 	}
 
@@ -75,13 +63,17 @@ export function AddBookmarkModal({
 		}
 	}
 
+	const updateFormData = (key: string, value: string) => {
+		setFormData((prev) => ({ ...prev, [key]: value }))
+	}
+
 	const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newUrl = e.target.value
-		setUrl(newUrl)
+		updateFormData('url', newUrl)
 
 		if (iconSource === 'auto') {
 			setIconLoadError(false)
-			setIcon(getFaviconFromUrl(newUrl))
+			updateFormData('icon', getFaviconFromUrl(newUrl))
 		}
 	}
 
@@ -97,67 +89,85 @@ export function AddBookmarkModal({
 		const reader = new FileReader()
 		reader.onloadend = () => {
 			const base64String = reader.result as string
-			setCustomImage(base64String)
+			updateFormData('customImage', base64String)
 			setIconSource('upload')
 		}
 		reader.readAsDataURL(file)
 	}
 
-	const handleAdd = async () => {
-		if (!title.trim()) return
+	const handleAdd = (e: React.FormEvent) => {
+		e.preventDefault()
 
-		let iconUrl: undefined | string = undefined
-		const id = uuidv4()
-		if (type === 'BOOKMARK' && iconSource === 'auto' && icon && !customImage) {
-			iconUrl = getFaviconFromUrl(url)
-		}
+		startTransition(() => {
+			if (!formData.title.trim()) return
 
-		const baseBookmark = {
-			id,
-			title: title.trim(),
-			type,
-			isLocal: true,
-			pinned: false,
-			parentId,
-			customImage: customImage,
-		}
-
-		if (type === 'FOLDER') {
-			//@ts-ignore
-			onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
-		} else {
-			let newUrl = url
-			if (!url.startsWith('http://') && !url.startsWith('https://')) {
-				newUrl = `https://${url}`
+			let iconUrl: undefined | string = undefined
+			const id = uuidv4()
+			if (
+				type === 'BOOKMARK' &&
+				iconSource === 'auto' &&
+				formData.icon &&
+				!formData.customImage
+			) {
+				iconUrl = getFaviconFromUrl(formData.url)
 			}
 
-			onAdd({
-				...baseBookmark,
-				type: 'BOOKMARK',
-				url: newUrl.trim(),
-				icon: iconUrl,
-				onlineId: null,
-			} as Bookmark)
-		}
+			const baseBookmark = {
+				id,
+				title: formData.title.trim(),
+				type,
+				isLocal: true,
+				pinned: false,
+				parentId,
+				customImage: formData.customImage,
+				customBackground: formData.customBackground || undefined,
+				customTextColor: formData.customTextColor || undefined,
+				emoji: formData.emoji || undefined,
+			}
 
-		resetForm()
-		onClose()
+			if (type === 'FOLDER') {
+				//@ts-ignore
+				onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
+			} else {
+				let newUrl = formData.url
+				if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
+					newUrl = `https://${newUrl}`
+				}
+
+				onAdd({
+					...baseBookmark,
+					type: 'BOOKMARK',
+					url: newUrl.trim(),
+					icon: iconUrl,
+					onlineId: null,
+				} as Bookmark)
+			}
+
+			resetForm()
+			onClose()
+		})
 	}
 
 	const resetForm = () => {
-		setTitle('')
-		setUrl('')
-		setIcon('')
-		setCustomImage('')
+		setFormData({
+			title: '',
+			url: '',
+			icon: '',
+			customImage: '',
+			customBackground: '',
+			customTextColor: '',
+			emoji: '',
+		})
 		setType('BOOKMARK')
 		setIconSource('auto')
+		setShowAdvanced(false)
 	}
 
 	const renderIconPreview = () => {
 		const handlePreviewClick = () => fileInputRef.current?.click()
 		const handleRemoveCustomImage = (e: React.MouseEvent) => {
 			e.stopPropagation()
-			setCustomImage('')
+			updateFormData('customImage', '')
 		}
 
 		const handleDragOver = (e: React.DragEvent) => {
@@ -179,13 +189,13 @@ export function AddBookmarkModal({
 			const reader = new FileReader()
 			reader.onloadend = () => {
 				const base64String = reader.result as string
-				setCustomImage(base64String)
+				updateFormData('customImage', base64String)
 				setIconSource('upload')
 			}
 			reader.readAsDataURL(file)
 		}
 
-		if (customImage) {
+		if (formData.customImage) {
 			return (
 				<div
 					className="relative w-12 h-12 mx-auto cursor-pointer group"
@@ -195,7 +205,7 @@ export function AddBookmarkModal({
 					onDrop={handleDrop}
 				>
 					<img
-						src={customImage}
+						src={formData.customImage}
 						alt="Custom"
 						className="object-cover w-full h-full transition-opacity rounded-lg group-hover:opacity-75"
 					/>
@@ -212,7 +222,7 @@ export function AddBookmarkModal({
 			)
 		}
 
-		if (type === 'BOOKMARK' && icon && iconSource === 'auto') {
+		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
 			return (
 				<div
 					className={`relative w-12 h-12 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
@@ -222,18 +232,22 @@ export function AddBookmarkModal({
 					onDrop={handleDrop}
 				>
 					<img
-						src={icon}
+						src={formData.icon}
 						alt="Favicon"
 						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg ${
 							theme === 'light' ? 'border-gray-300' : 'border-white/10'
 						} group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
 							try {
-								const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`)
+								const urlObj = new URL(
+									formData.url.startsWith('http')
+										? formData.url
+										: `https://${formData.url}`,
+								)
 								tryAlternativeFavicons(urlObj.hostname)
 								setIconLoadError(true)
 							} catch {
-								setIcon('')
+								updateFormData('icon', '')
 								setIconLoadError(true)
 							}
 						}}
@@ -269,103 +283,170 @@ export function AddBookmarkModal({
 
 	const tryAlternativeFavicons = (hostname: string) => {
 		const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=128`
-		setIcon(googleFaviconUrl)
+		updateFormData('icon', googleFaviconUrl)
 	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size="sm"
+			size="md"
 			title={`✨ ${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
 			closeOnBackdropClick={false}
+			className="!overflow-y-hidden"
 		>
-			<div className="relative h-full">
-				<motion.div className="flex flex-col gap-4 p-4">
-					<div className="flex gap-2 mb-4">
-						<TypeSelector type={type} setType={setType} theme={theme} />
-					</div>
+			<form onSubmit={handleAdd} className="flex flex-col gap-2 p-2 overflow-y-auto h-96">
+				<div className="flex gap-2 mb-2">
+					<TypeSelector type={type} setType={setType} theme={theme} />
+				</div>
 
-					<div className="mb-4">
-						{renderIconPreview()}
-						<p className="mt-2 text-xs text-center text-gray-500">
-							برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
-						</p>
+				<div className="mb-2">
+					{renderIconPreview()}
+					<p className="mt-2 text-xs text-center text-gray-500">
+						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
+					</p>
+					{type === 'BOOKMARK' && (
+						<IconSourceSelector
+							iconSource={iconSource}
+							setIconSource={setIconSource}
+							theme={theme}
+						/>
+					)}
+				</div>
+				<input
+					type="file"
+					ref={fileInputRef}
+					className="hidden"
+					accept="image/*"
+					onChange={handleImageUpload}
+				/>
+
+				<motion.input
+					type="text"
+					name="title"
+					placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+					value={formData.title}
+					onChange={(e) => updateFormData('title', e.target.value)}
+					className={`w-full px-4 py-3 text-right rounded-lg ${getInputStyle()}`}
+					required
+				/>
+
+				<div className="relative h-[54px]">
+					<AnimatePresence mode="popLayout">
 						{type === 'BOOKMARK' && (
-							<IconSourceSelector
-								iconSource={iconSource}
-								setIconSource={setIconSource}
-								theme={theme}
+							<motion.input
+								initial={{ opacity: 0, y: -10 }}
+								animate={{
+									opacity: 1,
+									y: 0,
+									transition: {
+										type: 'spring',
+										stiffness: 500,
+										damping: 30,
+									},
+								}}
+								exit={{
+									opacity: 0,
+									y: 10,
+									transition: {
+										duration: 0.15,
+									},
+								}}
+								type="text"
+								name="url"
+								placeholder="آدرس لینک"
+								value={formData.url}
+								onChange={handleUrlChange}
+								className={`w-full px-4 py-3 text-right absolute rounded-lg ${getInputStyle()}`}
+								required={type === 'BOOKMARK'}
 							/>
 						)}
-					</div>
-					<input
-						type="file"
-						ref={fileInputRef}
-						className="hidden"
-						accept="image/*"
-						onChange={handleImageUpload}
-					/>
+					</AnimatePresence>
+				</div>
 
-					<motion.input
-						type="text"
-						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						className={`w-full px-4 py-3 text-right rounded-lg ${getInputStyle()}`}
-					/>
+				<div className="flex items-center justify-end">
+					<button
+						type="button"
+						onClick={() => setShowAdvanced(!showAdvanced)}
+						className={`flex items-center gap-1 px-2 py-1 text-sm font-medium text-gray-500 transition-colors duration-200 cursor-pointer ${theme === 'light' ? 'hover:text-gray-700' : 'hover:text-gray-300'}`}
+					>
+						{showAdvanced ? (
+							<>
+								<span>گزینه‌های کمتر</span>
+								<FiChevronUp className="w-4 h-4" />
+							</>
+						) : (
+							<>
+								<span>گزینه‌های بیشتر</span>
+								<FiChevronDown className="w-4 h-4" />
+							</>
+						)}
+					</button>
+				</div>
 
-					<div className="url-field-container relative h-[54px]">
-						<AnimatePresence mode="popLayout">
-							{type === 'BOOKMARK' && (
-								<motion.input
-									initial={{ opacity: 0, y: -10 }}
-									animate={{
-										opacity: 1,
-										y: 0,
-										transition: {
-											type: 'spring',
-											stiffness: 500,
-											damping: 30,
-										},
-									}}
-									exit={{
-										opacity: 0,
-										y: 10,
-										transition: {
-											duration: 0.15,
-										},
-									}}
-									type="text"
-									placeholder="آدرس لینک"
-									value={url}
-									onChange={handleUrlChange}
-									className={`w-full px-4 py-3 text-right absolute rounded-lg ${getInputStyle()}`}
-								/>
-							)}
-						</AnimatePresence>
-					</div>
+				<AdvancedModal
+					bookmark={{
+						customBackground: formData.customBackground,
+						customTextColor: formData.customTextColor,
+						emoji: formData.emoji,
+						type,
+						title: formData.title,
+						url: formData.url,
+					}}
+					setCustomBackground={(value) => updateFormData('customBackground', value)}
+					setCustomTextColor={(value) => updateFormData('customTextColor', value)}
+					setEmoji={(value) => updateFormData('emoji', value)}
+					isOpen={showAdvanced}
+					onClose={() => setShowAdvanced(false)}
+					title={'تنظیمات پیشرفته'}
+				/>
 
-					<div className="flex justify-between mt-4">
-						<button
-							onClick={onClose}
-							className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(false)}`}
-						>
-							لغو
-						</button>
-						<button
-							onClick={handleAdd}
-							className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(true)}`}
-							disabled={!title.trim() || (type === 'BOOKMARK' && !url.trim())}
-						>
-							افزودن
-						</button>
-					</div>
-				</motion.div>
-			</div>
+				<div className="flex justify-between mt-4">
+					<button
+						type="button"
+						onClick={onClose}
+						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(theme, false)}`}
+					>
+						لغو
+					</button>
+					<button
+						type="submit"
+						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(theme, true)}`}
+						disabled={
+							!formData.title.trim() ||
+							(type === 'BOOKMARK' && !formData.url.trim()) ||
+							isPending
+						}
+					>
+						{isPending ? 'در حال افزودن...' : 'افزودن'}
+					</button>
+				</div>
+			</form>
 		</Modal>
 	)
+}
+
+function getButtonStyle(theme = 'glass', primary = false) {
+	if (primary) {
+		switch (theme) {
+			case 'light':
+				return 'bg-blue-500 hover:bg-blue-600 text-white'
+			case 'dark':
+				return 'bg-blue-600 hover:bg-blue-700 text-white'
+			default: // glass
+				return 'bg-blue-500/80 hover:bg-blue-500 text-white'
+		}
+	}
+
+	switch (theme) {
+		case 'light':
+			return 'border border-gray-300 text-gray-600 hover:bg-gray-100'
+		case 'dark':
+			return 'border border-gray-700 text-gray-300 hover:bg-gray-700/50'
+		default: // glass
+			return 'border border-white/10 text-gray-400 hover:bg-white/5'
+	}
 }
 
 function IconSourceSelector({

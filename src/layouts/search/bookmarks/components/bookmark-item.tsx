@@ -6,10 +6,10 @@ import { FaPlus } from 'react-icons/fa6'
 import type { Bookmark } from '../types/bookmark.types'
 
 interface BookmarkItemProps {
-	bookmark: Bookmark | null
-	onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void
+	bookmark: Bookmark
 	theme?: string
-	canAdd: boolean
+	canAdd?: boolean
+	onClick: () => void
 }
 
 const getBookmarkStyle = (theme: string) => {
@@ -25,9 +25,9 @@ const getBookmarkStyle = (theme: string) => {
 
 export function BookmarkItem({
 	bookmark,
-	onClick,
 	theme = 'glass',
-	canAdd,
+	canAdd = true,
+	onClick,
 }: BookmarkItemProps) {
 	const [isHovered, setIsHovered] = useState(false)
 
@@ -39,16 +39,26 @@ export function BookmarkItem({
 		return <FolderBookmarkItem bookmark={bookmark} onClick={onClick} theme={theme} />
 	}
 
+	const customStyles = bookmark.customBackground
+		? { backgroundColor: bookmark.customBackground }
+		: {}
+
 	return (
 		<motion.button
 			onClick={onClick}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${getBookmarkStyle(theme)}`}
+			style={customStyles}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border-white/20 text-white'}`}
 		>
+			{renderEmojiPattern(bookmark)}
 			<BookmarkIcon bookmark={bookmark} />
-			<BookmarkTitle title={bookmark.title} theme={theme} />
+			<BookmarkTitle
+				title={bookmark.title}
+				theme={theme}
+				customTextColor={bookmark.customTextColor}
+			/>
 			{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
 			<div
 				className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
@@ -87,14 +97,20 @@ function FolderBookmarkItem({
 			<FaFolder className="w-6 h-6 text-blue-400" />
 		))
 
+	const customStyles = bookmark.customBackground
+		? { backgroundColor: bookmark.customBackground }
+		: {}
+
 	return (
 		<motion.button
 			onClick={onClick}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${getFolderStyle()}`}
+			style={customStyles}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border-blue-400/20 hover:border-blue-400/40'}`}
 		>
+			{renderEmojiPattern(bookmark)}
 			<div className="absolute inset-0 overflow-hidden rounded-xl">
 				<div
 					className={`absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b ${theme === 'light' ? 'from-blue-300/10' : 'from-blue-300/10'} to-transparent`}
@@ -120,7 +136,11 @@ function FolderBookmarkItem({
 				)}
 			</div>
 
-			<BookmarkTitle title={bookmark.title} theme={theme} />
+			<BookmarkTitle
+				title={bookmark.title}
+				theme={theme}
+				customTextColor={bookmark.customTextColor}
+			/>
 			<div
 				className={
 					'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-blue-400/10 to-transparent rounded-xl'
@@ -218,7 +238,11 @@ function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	)
 }
 
-function BookmarkTitle({ title, theme = 'glass' }: { title: string; theme?: string }) {
+function BookmarkTitle({
+	title,
+	theme = 'glass',
+	customTextColor,
+}: { title: string; theme?: string; customTextColor?: string }) {
 	const getTitleStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -232,7 +256,8 @@ function BookmarkTitle({ title, theme = 'glass' }: { title: string; theme?: stri
 
 	return (
 		<span
-			className={`text-[.7rem] w-full text-center font-medium transition-colors duration-300 truncate ${getTitleStyle()}`}
+			style={customTextColor ? { color: customTextColor } : undefined}
+			className={`text-[.7rem] w-full text-center font-medium transition-colors duration-300 truncate ${!customTextColor ? getTitleStyle() : ''}`}
 		>
 			{title}
 		</span>
@@ -259,5 +284,140 @@ function BookmarkTooltip({ title, theme = 'glass' }: { title: string; theme?: st
 		>
 			{title}
 		</motion.div>
+	)
+}
+
+const renderEmojiPattern = (bookmark: Bookmark) => {
+	if (!bookmark.emoji) return null
+
+	const isImageEmoji = bookmark.emoji.startsWith('http')
+
+	const commonStyle = {
+		position: 'absolute' as const,
+		width: '21px',
+		height: '20px',
+		transform: 'rotate(325deg)',
+		filter: 'opacity(0.5)',
+	}
+
+	if (isImageEmoji) {
+		return (
+			<>
+				<div
+					className="absolute inset-0 border rounded-xl border-white/5"
+					style={{
+						...commonStyle,
+						left: '0px',
+						right: '55px',
+					}}
+				>
+					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+				</div>
+				<div
+					className="absolute inset-0 border rounded-xl border-white/5"
+					style={{
+						...commonStyle,
+						left: '0px',
+						right: '25px',
+					}}
+				>
+					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+				</div>
+				<div
+					className="absolute inset-0 border rounded-xl border-white/5"
+					style={{
+						...commonStyle,
+						left: '0px',
+						right: '55px',
+						top: '60px',
+						zIndex: 0,
+					}}
+				>
+					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+				</div>
+				<div
+					className="absolute inset-0 border rounded-xl border-white/5"
+					style={{
+						...commonStyle,
+						left: '0px',
+						right: '5px',
+						top: '30px',
+					}}
+				>
+					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+				</div>
+				<div className="absolute inset-0 border rounded-xl border-white/5"></div>
+			</>
+		)
+	}
+
+	// For text emojis, use the original pattern
+	return (
+		<>
+			<div
+				className="absolute inset-0 border rounded-xl border-white/5"
+				style={{
+					left: '0px',
+					right: '55px',
+					width: '21px',
+					fontSize: '16px',
+					height: '20px',
+					transform: 'rotate(325deg)',
+					filter: 'opacity(0.5)',
+					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
+				}}
+			>
+				{bookmark.emoji}
+			</div>
+			<div
+				className="absolute inset-0 border rounded-xl border-white/5"
+				style={{
+					left: '0px',
+					right: '25px',
+					width: '21px',
+					fontSize: '16px',
+					height: '20px',
+					transform: 'rotate(325deg)',
+					filter: 'opacity(0.5)',
+					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
+				}}
+			>
+				{bookmark.emoji}
+			</div>
+			<div
+				className="absolute inset-0 border rounded-xl border-white/5"
+				style={{
+					left: '0px',
+					right: '55px',
+					top: '60px',
+					width: '21px',
+					fontSize: '16px',
+					height: '20px',
+					transform: 'rotate(325deg)',
+					zIndex: 0,
+					filter: 'opacity(0.5)',
+					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
+				}}
+			>
+				{bookmark.emoji}
+			</div>
+			<div
+				className="absolute inset-0 border rounded-xl border-white/5"
+				style={{
+					left: '0px',
+					right: '5px',
+					width: '21px',
+					fontSize: '17px',
+					top: '30px',
+					height: '20px',
+					transform: 'rotate(325deg)',
+					filter: 'opacity(0.5)',
+					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
+				}}
+			>
+				{bookmark.emoji}
+			</div>
+			<div className="absolute inset-0 border rounded-xl border-white/5"></div>
+		</>
 	)
 }

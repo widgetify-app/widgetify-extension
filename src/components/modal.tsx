@@ -13,6 +13,8 @@ type ModalProps = {
 	direction?: 'rtl' | 'ltr'
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
+	className?: string
+	lockBodyScroll?: boolean
 }
 
 const sizeClasses = {
@@ -31,6 +33,8 @@ const Modal = ({
 	closeOnBackdropClick = true,
 	direction = 'ltr',
 	showCloseButton = true,
+	className = '',
+	lockBodyScroll = true,
 }: ModalProps) => {
 	const { theme, themeUtils } = useTheme()
 
@@ -57,7 +61,7 @@ const Modal = ({
 	}
 
 	useEffect(() => {
-		if (isOpen) {
+		if (isOpen && lockBodyScroll) {
 			const scrollY = window.scrollY
 
 			document.body.style.position = 'fixed'
@@ -82,7 +86,9 @@ const Modal = ({
 		<AnimatePresence>
 			<LazyMotion features={domAnimation}>
 				<m.div
-					className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/30"
+					className={
+						'fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm'
+					}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
@@ -90,7 +96,7 @@ const Modal = ({
 					dir={direction}
 				>
 					<m.div
-						className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5`}
+						className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5 ${className}`}
 						initial={{ scale: 0.95, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.95, opacity: 0 }}
