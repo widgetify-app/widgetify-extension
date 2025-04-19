@@ -121,7 +121,7 @@ export function BookmarksComponent() {
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
 
 	const displayedBookmarks = currentFolderItems
-		.slice(0, TOTAL_BOOKMARKS - 1)
+		.slice(0, TOTAL_BOOKMARKS)
 		.concat(
 			new Array(
 				Math.max(
