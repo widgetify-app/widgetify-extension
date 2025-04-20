@@ -40,7 +40,10 @@ export function BookmarkItem({
 	}
 
 	const customStyles = bookmark.customBackground
-		? { backgroundColor: bookmark.customBackground }
+		? {
+				backgroundColor: bookmark.customBackground,
+				borderColor: `${bookmark.customBackground}20`, // 20% opacity
+			}
 		: {}
 
 	return (
@@ -50,7 +53,7 @@ export function BookmarkItem({
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
 			style={customStyles}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border-white/20 text-white'}`}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border'}`}
 		>
 			{renderStickerPattern(bookmark)}
 			<BookmarkIcon bookmark={bookmark} />
@@ -98,7 +101,10 @@ function FolderBookmarkItem({
 		))
 
 	const customStyles = bookmark.customBackground
-		? { backgroundColor: bookmark.customBackground }
+		? {
+				backgroundColor: bookmark.customBackground,
+				borderColor: `${bookmark.customBackground}20`,
+			}
 		: {}
 
 	return (
@@ -108,7 +114,7 @@ function FolderBookmarkItem({
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={{ scale: 1.02 }}
 			style={customStyles}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border-blue-400/20 hover:border-blue-400/40'}`}
+			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'}`}
 		>
 			{renderStickerPattern(bookmark)}
 			<div className="absolute inset-0 overflow-hidden rounded-xl">
