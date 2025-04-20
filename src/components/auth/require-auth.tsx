@@ -28,11 +28,11 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 	const getOverlayStyles = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-100/80 text-gray-700'
+				return 'bg-gray-100/70 text-gray-700'
 			case 'dark':
 				return 'bg-gray-800/80 text-gray-200'
 			default:
-				return 'bg-black/50 text-gray-200 backdrop-blur-sm'
+				return 'bg-black/30 text-gray-200 backdrop-blur-sm'
 		}
 	}
 
@@ -55,7 +55,9 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 		if (mode === 'preview') {
 			return (
 				<div className="relative w-full h-full">
-					<div className="w-full h-full opacity-50 pointer-events-none">{children}</div>
+					<div className="w-full h-full px-2 py-1 pointer-events-none opacity-60">
+						{children}
+					</div>
 					<div
 						className={`absolute inset-0 flex flex-col items-center justify-center p-4 ${getOverlayStyles()}`}
 					>

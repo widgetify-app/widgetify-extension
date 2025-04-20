@@ -4,6 +4,7 @@ import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
 
@@ -203,55 +204,57 @@ export function AdvancedModal({
 					handleSave()
 				}}
 			>
-				<div>
-					<label
-						className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
-					>
-						رنگ پس زمینه (اختیاری)
-					</label>
-					<div className="flex items-center gap-2">
-						<TextInput
-							type="color"
-							value={formData.background}
-							onChange={updateBackground}
-							className="!w-10 !h-10 cursor-pointer"
-							debounce={true}
-						/>
-						<TextInput
-							type="text"
-							value={formData.background}
-							onChange={updateBackground}
-							className="flex-1 px-3 py-2rounded-md"
-							placeholder="#000000"
-							debounce={true}
-						/>
+				<RequireAuth mode="preview">
+					<div>
+						<label
+							className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
+						>
+							رنگ پس زمینه (اختیاری)
+						</label>
+						<div className="flex items-center gap-2">
+							<TextInput
+								type="color"
+								value={formData.background}
+								onChange={updateBackground}
+								className="!w-10 !h-10 cursor-pointer"
+								debounce={true}
+							/>
+							<TextInput
+								type="text"
+								value={formData.background}
+								onChange={updateBackground}
+								className="flex-1 px-3 py-2rounded-md"
+								placeholder="#000000"
+								debounce={true}
+							/>
+						</div>
 					</div>
-				</div>
 
-				<div>
-					<label
-						className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
-					>
-						رنگ متن (اختیاری)
-					</label>
-					<div className="flex items-center gap-2">
-						<TextInput
-							type="color"
-							value={formData.textColor}
-							onChange={updateTextColor}
-							className="!w-10 !h-10 cursor-pointer"
-							debounce={true}
-						/>
-						<TextInput
-							type="text"
-							value={formData.textColor}
-							onChange={updateTextColor}
-							className="flex-1 px-3 py-2rounded-md"
-							placeholder="#000000"
-							debounce={true}
-						/>
+					<div>
+						<label
+							className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
+						>
+							رنگ متن (اختیاری)
+						</label>
+						<div className="flex items-center gap-2">
+							<TextInput
+								type="color"
+								value={formData.textColor}
+								onChange={updateTextColor}
+								className="!w-10 !h-10 cursor-pointer"
+								debounce={true}
+							/>
+							<TextInput
+								type="text"
+								value={formData.textColor}
+								onChange={updateTextColor}
+								className="flex-1 px-3 py-2rounded-md"
+								placeholder="#000000"
+								debounce={true}
+							/>
+						</div>
 					</div>
-				</div>
+				</RequireAuth>
 
 				<div className="relative" ref={emojiPopoverRef}>
 					<label
