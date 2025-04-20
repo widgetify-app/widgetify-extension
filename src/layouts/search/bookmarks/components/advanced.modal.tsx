@@ -137,7 +137,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							alt="emoji"
 							className="object-contain w-4 h-4"
 							onError={(e) => {
-								// If image fails to load, hide it
 								;(e.target as HTMLImageElement).style.display = 'none'
 							}}
 						/>
@@ -148,18 +147,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	function handleClose() {
-		// Check if any changes have been made
 		const hasBackgroundChanged = background !== bookmark.customBackground
 		const hasTextColorChanged = textColor !== bookmark.customTextColor
 		const hasEmojiChanged = emoji !== bookmark.emoji
 
-		// If no changes, pass null to onClose
 		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
 			onClose(null)
 			return
 		}
 
-		// Otherwise, pass the updated values
 		onClose({
 			background: hasBackgroundChanged ? background : undefined,
 			textColor: hasTextColorChanged ? textColor : undefined,
@@ -296,7 +292,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					>
 						پیش‌نمایش:
 					</label>
-					<div className="flex justify-center">
+					<div
+						className="flex justify-center p-4 overflow-hidden rounded-lg"
+						style={{
+							backgroundImage: document.body.style.backgroundImage,
+							backgroundColor: document.body.style.backgroundColor || undefined,
+							backgroundSize: 'cover',
+							backgroundPosition: 'center',
+						}}
+					>
 						<BookmarkItem
 							bookmark={{
 								customBackground: background || undefined,
