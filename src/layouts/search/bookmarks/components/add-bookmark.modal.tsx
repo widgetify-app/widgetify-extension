@@ -286,7 +286,7 @@ export function AddBookmarkModal({
 			className="!overflow-y-hidden"
 		>
 			<form onSubmit={handleAdd} className="flex flex-col gap-2 p-2 overflow-y-auto h-96">
-				<div className="flex gap-2 mb-2">
+				<div className="flex gap-2 mb-1">
 					<TypeSelector type={type} setType={setType} theme={theme} />
 				</div>
 
@@ -322,7 +322,7 @@ export function AddBookmarkModal({
 					}
 				/>
 
-				<div className="relative h-[54px]">
+				<div className="relative h-[50px]">
 					{type === 'BOOKMARK' && (
 						<TextInput
 							type="text"
@@ -507,7 +507,7 @@ function TypeSelector({
 		<>
 			<button
 				onClick={() => setType('BOOKMARK')}
-				className={`flex-1 py-2 cursor-pointer rounded-lg transition-colors ${
+				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
 					type === 'BOOKMARK' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>
@@ -515,7 +515,7 @@ function TypeSelector({
 			</button>
 			<button
 				onClick={() => setType('FOLDER')}
-				className={`flex-1 py-2 cursor-pointer rounded-lg transition-colors ${
+				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
 					type === 'FOLDER' ? getActiveStyle() : getInactiveStyle()
 				}`}
 			>
