@@ -315,13 +315,15 @@ export function EditBookmarkModal({
 						name="imageFile"
 					/>
 
-					<input
+					<TextInput
 						type="text"
 						name="title"
 						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 						value={formData.title}
-						onChange={(e) => handleInputChange('title', e.target.value)}
-						className={`w-full px-4 py-3 text-right rounded-lg transition-all duration-200 ${getInputStyle()}`}
+						onChange={(value) => handleInputChange('title', value)}
+						className={
+							'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
+						}
 					/>
 
 					<div className="relative h-[54px]">
@@ -332,7 +334,9 @@ export function EditBookmarkModal({
 								placeholder="آدرس لینک"
 								value={formData.url}
 								onChange={(value) => handleInputChange('url', value)}
-								className={`w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300 ${getInputStyle()}`}
+								className={
+									'w-full px-4 py-3 text-right absolute rounded-lg transition-all'
+								}
 							/>
 						)}
 					</div>
@@ -414,17 +418,6 @@ export function EditBookmarkModal({
 			/>
 		</Modal>
 	)
-
-	function getInputStyle() {
-		switch (theme) {
-			case 'light':
-				return 'bg-white border border-gray-300 text-gray-800'
-			case 'dark':
-				return 'bg-neutral-800 border border-neutral-700 text-white'
-			default: // glass
-				return 'bg-[#1E1E1E] border border-[#333] text-white'
-		}
-	}
 
 	function getButtonStyle(primary = false) {
 		if (primary) {
