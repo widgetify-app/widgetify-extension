@@ -265,7 +265,7 @@ export function AddBookmarkModal({
 				onDrop={handleDrop}
 			>
 				<FaImage className="w-6 h-6 mb-1 text-gray-500" />
-				<span className="text-xs text-center text-gray-500">آپلود تصویر</span>
+				<span className="text-xs text-center text-gray-500">آپلود تصویر (اختیاری)</span>
 			</div>
 		)
 	}
