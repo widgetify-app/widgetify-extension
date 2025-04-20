@@ -115,9 +115,9 @@ export function DayItem({
 		}
 	}
 
-	const getFontWeight = () => {
-		return hasEvent || hasTodo ? 'font-bold' : ''
-	}
+	// const getFontWeight = () => {
+	// 	return hasEvent || hasTodo ? 'font-bold' : ''
+	// }
 
 	return (
 		<Tooltip
@@ -131,7 +131,6 @@ export function DayItem({
                     relative p-1 rounded-lg text-xs transition-colors cursor-pointer w-[50%]
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
-                    ${getFontWeight()}
                     ${isCurrentDay ? getTodayRingStyle() : ''}
                 `}
 			>
