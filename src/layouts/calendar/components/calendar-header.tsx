@@ -5,21 +5,6 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { FiCalendar } from 'react-icons/fi'
 import { type WidgetifyDate, getCurrentDate } from '../utils'
 
-const PERSIAN_MONTHS = [
-	'فروردین',
-	'اردیبهشت',
-	'خرداد',
-	'تیر',
-	'مرداد',
-	'شهریور',
-	'مهر',
-	'آبان',
-	'آذر',
-	'دی',
-	'بهمن',
-	'اسفند',
-]
-
 interface CalendarHeaderProps {
 	currentDate: WidgetifyDate
 	selectedDate: WidgetifyDate
@@ -52,7 +37,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 		)
 	}
 
-	const showTodayButton = !isCurrentMonthToday || !isTodaySelected
+	const showTodayButton = !isCurrentMonthToday() || !isTodaySelected()
 
 	const changeMonth = (delta: number) => {
 		// @ts-ignore
