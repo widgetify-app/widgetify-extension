@@ -152,7 +152,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 							{prayerTimeBoxes.map((box, index) => (
 								<m.div
 									key={index}
-									className={`${getBoxStyle()} rounded-lg p-3 flex flex-col items-center`}
+									className={`${getBoxStyle()} rounded-lg p-2 flex flex-col items-center`}
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: index * 0.1 }}
