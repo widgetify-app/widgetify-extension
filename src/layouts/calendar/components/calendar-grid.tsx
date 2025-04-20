@@ -46,7 +46,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	}
 
 	return (
-		<div className="grid grid-cols-7 px-1 text-center md:px-4 py-3">
+		<div className="grid grid-cols-7 px-1 py-3 text-center md:px-4">
 			{WEEKDAYS.map((day) => (
 				<div key={day} className={`text-sm ${getWeekdayHeaderStyle()}`}>
 					{day}

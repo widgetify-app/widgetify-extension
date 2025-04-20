@@ -30,7 +30,7 @@ const PersianCalendar: React.FC = () => {
 			className="flex flex-col justify-center w-full h-full gap-3 mb-1 sm:h-80 md:flex-row"
 			dir="rtl"
 		>
-			<CalendarContainer className="w-full overflow-hidden md:w-7/12 md:flex-1 flex flex-col">
+			<CalendarContainer className="flex flex-col w-full overflow-hidden md:w-7/12 md:flex-1">
 				<CalendarHeader
 					currentDate={currentDate}
 					setCurrentDate={setCurrentDate}
@@ -44,7 +44,7 @@ const PersianCalendar: React.FC = () => {
 					setSelectedDate={setSelectedDate}
 				/>
 
-				<div className={"px-4 mt-auto mb-2"}>
+				<div className={'px-4 mt-auto mb-2'}>
 					<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
 				</div>
 			</CalendarContainer>

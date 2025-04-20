@@ -1,7 +1,7 @@
 import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import moment from 'jalali-moment'
 import { AiOutlineGoogle } from 'react-icons/ai'
-import { FaCalendarAlt, FaGlobeAsia } from 'react-icons/fa'
+import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
 import {
 	type WidgetifyDate,
@@ -25,9 +25,10 @@ export const toolTipContent = (
 		: []
 
 	// is holiday style
-	const holidayStyle = isHoliday ? "from-orange-600 to-red-700" : "from-sky-500 to-blue-700"
-	const headerStyle =
-		`max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
+	const holidayStyle = isHoliday
+		? 'from-orange-600 to-red-700'
+		: 'from-sky-500 to-blue-700'
+	const headerStyle = `max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
 
 	const adBackgroundStyle =
 		theme === 'light'

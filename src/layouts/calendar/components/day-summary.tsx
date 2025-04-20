@@ -88,11 +88,11 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 	}
 
 	return (
-		<div
-			className={`overflow-hidden ${getContainerStyle()} rounded-lg`}
-		>
-			<div className="px-2 pb-2 pt-1">
-				<h3 className={`text-xs text-center font-medium mb-1.5 ${getTextStyle()} truncate`}>
+		<div className={`overflow-hidden ${getContainerStyle()} rounded-lg`}>
+			<div className="px-2 pt-1 pb-2">
+				<h3
+					className={`text-xs text-center font-medium mb-1.5 ${getTextStyle()} truncate`}
+				>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
