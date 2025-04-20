@@ -1,7 +1,7 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { useTheme } from '@/context/theme.context'
+import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
@@ -101,28 +101,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				return 'bg-neutral-800 shadow-lg border border-neutral-700'
 			default: // glass
 				return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
-		}
-	}
-
-	const getActionButtonStyle = (isPrimary = false) => {
-		if (isPrimary) {
-			switch (theme) {
-				case 'light':
-					return 'bg-blue-500 hover:bg-blue-600 text-white'
-				case 'dark':
-					return 'bg-blue-600 hover:bg-blue-700 text-white'
-				default: // glass
-					return 'bg-blue-500/80 hover:bg-blue-500 text-white'
-			}
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200 hover:bg-gray-300 text-gray-600'
-			case 'dark':
-				return 'bg-neutral-700 hover:bg-neutral-600 text-neutral-200'
-			default: // glass
-				return 'bg-black/30 hover:bg-black/40 text-gray-300'
 		}
 	}
 
@@ -359,13 +337,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				<div className="flex justify-end gap-2 mt-4">
 					<button
 						onClick={() => onClose(null)}
-						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getActionButtonStyle()}`}
+						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getButtonStyles(theme, false)}`}
 					>
 						انصراف
 					</button>
 					<button
 						onClick={handleClose}
-						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getActionButtonStyle(true)}`}
+						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getButtonStyles(theme, true)}`}
 					>
 						ذخیره
 					</button>
