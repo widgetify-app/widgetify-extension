@@ -43,7 +43,7 @@ export function BookmarksComponent() {
 	}, [])
 
 	const isManageable = (bookmark: Bookmark) => {
-		if (typeof bookmark.isManageable === 'boolean') {
+		if ('isManageable' in bookmark && typeof bookmark.isManageable === 'boolean') {
 			return bookmark.isManageable
 		}
 
@@ -199,7 +199,6 @@ export function BookmarksComponent() {
 				onClose={() => setShowAddBookmarkModal(false)}
 				onAdd={(bookmark) => addBookmark(bookmark)}
 				parentId={currentFolderId}
-				theme={theme}
 			/>
 			{bookmarkToEdit && (
 				<EditBookmarkModal

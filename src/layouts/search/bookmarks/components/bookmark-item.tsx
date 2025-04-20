@@ -6,10 +6,10 @@ import { FaPlus } from 'react-icons/fa6'
 import type { Bookmark } from '../types/bookmark.types'
 
 interface BookmarkItemProps {
-	bookmark: Bookmark
+	bookmark: Bookmark | null
 	theme?: string
 	canAdd?: boolean
-	onClick: () => void
+	onClick: (e?: React.MouseEvent<any>) => void
 }
 
 const getBookmarkStyle = (theme: string) => {
@@ -76,7 +76,7 @@ function FolderBookmarkItem({
 	theme = 'glass',
 }: {
 	bookmark: Bookmark
-	onClick: () => void
+	onClick: (e?: React.MouseEvent<any>) => void
 	theme?: string
 }) {
 	const [isHovered, setIsHovered] = useState(false)
@@ -164,7 +164,7 @@ function EmptyBookmarkSlot({
 	onClick,
 	theme = 'glass',
 	canAdd,
-}: { onClick: () => void; theme?: string; canAdd: boolean }) {
+}: { onClick: (e?: React.MouseEvent<any>) => void; theme?: string; canAdd: boolean }) {
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getEmptySlotStyle = () => {
