@@ -1,6 +1,8 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import { useTheme } from '@/context/theme.context'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import type { BookmarkType } from '../types/bookmark.types'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
@@ -289,4 +291,34 @@ export function useBookmarkIcon(theme: string) {
 		renderIconPreview,
 		handleImageUpload,
 	}
+}
+
+interface ShowAdvancedButtonProps {
+	showAdvanced: boolean
+	setShowAdvanced: (show: boolean) => void
+}
+export function ShowAdvancedButton({
+	setShowAdvanced,
+	showAdvanced,
+}: ShowAdvancedButtonProps) {
+	const { themeUtils } = useTheme()
+	return (
+		<button
+			type="button"
+			onClick={() => setShowAdvanced(!showAdvanced)}
+			className={`flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer ${themeUtils.getTextColor()} opacity-90 border ${themeUtils.getBorderColor()} rounded-md`}
+		>
+			{showAdvanced ? (
+				<>
+					<span>گزینه‌های کمتر</span>
+					<FiChevronUp className="w-4 h-4" />
+				</>
+			) : (
+				<>
+					<span>گزینه‌های بیشتر</span>
+					<FiChevronDown className="w-4 h-4" />
+				</>
+			)}
+		</button>
+	)
 }

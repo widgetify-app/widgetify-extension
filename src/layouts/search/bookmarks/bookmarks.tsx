@@ -206,7 +206,6 @@ export function BookmarksComponent() {
 					onClose={() => setShowEditBookmarkModal(false)}
 					onSave={(bookmark) => editBookmark(bookmark)}
 					bookmark={bookmarkToEdit}
-					theme={theme}
 				/>
 			)}
 		</>

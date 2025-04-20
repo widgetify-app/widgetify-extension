@@ -3,7 +3,6 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { useState, useTransition } from 'react'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { v4 as uuidv4 } from 'uuid'
 import type { Bookmark, BookmarkType } from '../types/bookmark.types'
 import { AdvancedModal } from './advanced.modal'
@@ -11,6 +10,7 @@ import {
 	type BookmarkFormData,
 	IconSourceSelector,
 	type IconSourceType,
+	ShowAdvancedButton,
 	TypeSelector,
 	useBookmarkIcon,
 } from './shared'
@@ -215,23 +215,10 @@ export function AddBookmarkModal({
 				</div>
 
 				<div className={'flex items-center justify-end'}>
-					<button
-						type="button"
-						onClick={() => setShowAdvanced(!showAdvanced)}
-						className={`flex items-center gap-1 px-2 py-1 text-sm font-medium text-gray-500 transition-colors duration-200 cursor-pointer ${theme === 'light' ? 'hover:text-gray-700' : 'hover:text-gray-300'}`}
-					>
-						{showAdvanced ? (
-							<>
-								<span>گزینه‌های کمتر</span>
-								<FiChevronUp className="w-4 h-4" />
-							</>
-						) : (
-							<>
-								<span>گزینه‌های بیشتر</span>
-								<FiChevronDown className="w-4 h-4" />
-							</>
-						)}
-					</button>
+					<ShowAdvancedButton
+						showAdvanced={showAdvanced}
+						setShowAdvanced={setShowAdvanced}
+					/>
 				</div>
 
 				<AdvancedModal

@@ -1,15 +1,15 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles } from '@/context/theme.context'
+import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { useEffect, useState, useTransition } from 'react'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import type { Bookmark, BookmarkType } from '../types/bookmark.types'
 import { AdvancedModal } from './advanced.modal'
 import {
 	type BookmarkFormData,
 	IconSourceSelector,
 	type IconSourceType,
+	ShowAdvancedButton,
 	useBookmarkIcon,
 } from './shared'
 
@@ -18,7 +18,6 @@ interface EditBookmarkModalProps {
 	onClose: () => void
 	onSave: (bookmark: Bookmark) => void
 	bookmark: Bookmark
-	theme?: string
 }
 
 export function EditBookmarkModal({
@@ -26,8 +25,8 @@ export function EditBookmarkModal({
 	onClose,
 	onSave,
 	bookmark,
-	theme = 'glass',
 }: EditBookmarkModalProps) {
+	const { theme } = useTheme()
 	const [formData, setFormData] = useState<BookmarkFormData>({
 		title: '',
 		url: '',
@@ -204,23 +203,10 @@ export function EditBookmarkModal({
 				</div>
 
 				<div className={'flex items-center justify-end'}>
-					<button
-						type="button"
-						onClick={() => setShowAdvanced(!showAdvanced)}
-						className={`flex items-center gap-1 px-2 py-1 text-sm font-medium text-gray-500 transition-colors duration-200 cursor-pointer ${theme === 'light' ? 'hover:text-gray-700' : 'hover:text-gray-300'}`}
-					>
-						{showAdvanced ? (
-							<>
-								<span>گزینه‌های کمتر</span>
-								<FiChevronUp className="w-4 h-4" />
-							</>
-						) : (
-							<>
-								<span>گزینه‌های بیشتر</span>
-								<FiChevronDown className="w-4 h-4" />
-							</>
-						)}
-					</button>
+					<ShowAdvancedButton
+						showAdvanced={showAdvanced}
+						setShowAdvanced={setShowAdvanced}
+					/>
 				</div>
 
 				<div className="flex justify-between mt-4">
