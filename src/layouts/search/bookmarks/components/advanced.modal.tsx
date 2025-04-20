@@ -8,6 +8,7 @@ import { FiRotateCcw } from 'react-icons/fi'
 import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
+import PopoverColorPicker from './PopoverColorPicker'
 
 interface AdvancedModalProps {
 	title: string
@@ -191,14 +192,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								placeholder="#000000"
 								debounce={true}
 							/>
-							<div className="absolute -translate-y-1/2 right-1 top-1/2">
-								<TextInput
-									type="color"
-									value={background}
-									onChange={setBackground}
-									className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
-									debounce={true}
-								/>
+							<div className="absolute -translate-y-1/2 right-1 top-1/2 flex items-center gap-2">
+								<PopoverColorPicker color={background} onChange={setBackground} />
 							</div>
 							<button
 								type="button"
@@ -225,14 +220,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								placeholder="#000000"
 								debounce={true}
 							/>
-							<div className="absolute -translate-y-1/2 right-1 top-1/2">
-								<TextInput
-									type="color"
-									value={textColor}
-									onChange={setTextColor}
-									className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
-									debounce={true}
-								/>
+							<div className="absolute -translate-y-1/2 right-1 top-1/2 flex items-center gap-2">
+								<PopoverColorPicker color={textColor} onChange={setTextColor} />
 							</div>
 							<button
 								type="button"
