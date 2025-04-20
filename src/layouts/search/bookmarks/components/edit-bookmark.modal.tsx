@@ -104,7 +104,6 @@ export function EditBookmarkModal({
 	const handleSave = () => {
 		if (!formData.title?.trim() || !bookmark) return
 
-		console.log('Saving bookmark:', formData.title, formData.url)
 		let iconUrl: string | undefined = undefined
 		if (
 			type === 'BOOKMARK' &&
@@ -261,6 +260,26 @@ export function EditBookmarkModal({
 		updateFormData('icon', googleFaviconUrl)
 	}
 
+	const handleAdvancedModalClose = (
+		data: { background?: string; textColor?: string; emoji?: string } | null,
+	) => {
+		setShowAdvanced(false)
+
+		if (data) {
+			if (data.background !== undefined) {
+				updateFormData('customBackground', data.background)
+			}
+
+			if (data.textColor !== undefined) {
+				updateFormData('customTextColor', data.textColor)
+			}
+
+			if (data.emoji !== undefined) {
+				updateFormData('emoji', data.emoji)
+			}
+		}
+	}
+
 	if (!bookmark) return null
 
 	return (
@@ -273,13 +292,7 @@ export function EditBookmarkModal({
 			closeOnBackdropClick={false}
 		>
 			<div className="relative h-full">
-				<form
-					onSubmit={(e) => {
-						e.preventDefault()
-						handleSave()
-					}}
-					className="flex flex-col gap-4 p-4"
-				>
+				<form className="flex flex-col gap-4 p-4">
 					<div className="mb-2">
 						{renderIconPreview()}
 						<p className="mt-2 text-xs text-center text-gray-500">
@@ -372,7 +385,7 @@ export function EditBookmarkModal({
 							لغو
 						</button>
 						<button
-							type="submit"
+							onClick={() => handleSave()}
 							className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyle(true)}`}
 							disabled={
 								!formData.title?.trim() || (type === 'BOOKMARK' && !formData.url?.trim())
@@ -386,7 +399,7 @@ export function EditBookmarkModal({
 
 			<AdvancedModal
 				isOpen={showAdvanced}
-				onClose={() => setShowAdvanced(false)}
+				onClose={handleAdvancedModalClose}
 				bookmark={{
 					customBackground: formData.customBackground,
 					customTextColor: formData.customTextColor,
@@ -395,9 +408,6 @@ export function EditBookmarkModal({
 					title: formData.title,
 					url: formData.url,
 				}}
-				setCustomBackground={(value) => updateFormData('customBackground', value)}
-				setCustomTextColor={(value) => updateFormData('customTextColor', value)}
-				setEmoji={(value) => updateFormData('emoji', value)}
 				title="گزینه‌های پیشرفته"
 			/>
 		</Modal>

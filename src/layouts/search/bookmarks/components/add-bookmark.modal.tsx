@@ -275,10 +275,33 @@ export function AddBookmarkModal({
 		updateFormData('icon', googleFaviconUrl)
 	}
 
+	const handleAdvancedModalClose = (
+		data: { background?: string; textColor?: string; emoji?: string } | null,
+	) => {
+		setShowAdvanced(false)
+
+		if (data) {
+			if (data.background !== undefined) {
+				updateFormData('customBackground', data.background)
+			}
+
+			if (data.textColor !== undefined) {
+				updateFormData('customTextColor', data.textColor)
+			}
+
+			if (data.emoji !== undefined) {
+				updateFormData('emoji', data.emoji)
+			}
+		}
+	}
+
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={() => {
+				resetForm()
+				onClose()
+			}}
 			size="md"
 			title={`✨ ${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
@@ -366,11 +389,8 @@ export function AddBookmarkModal({
 						title: formData.title,
 						url: formData.url,
 					}}
-					setCustomBackground={(value) => updateFormData('customBackground', value)}
-					setCustomTextColor={(value) => updateFormData('customTextColor', value)}
-					setEmoji={(value) => updateFormData('emoji', value)}
 					isOpen={showAdvanced}
-					onClose={() => setShowAdvanced(false)}
+					onClose={handleAdvancedModalClose}
 					title={'تنظیمات پیشرفته'}
 				/>
 

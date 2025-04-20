@@ -3,14 +3,16 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
 
 interface AdvancedModalProps {
 	title: string
-	onClose: () => void
+	onClose: (
+		data: { background?: string; textColor?: string; emoji?: string } | null,
+	) => void
 	isOpen: boolean
 	bookmark: {
 		type: Bookmark['type']
@@ -20,38 +22,20 @@ interface AdvancedModalProps {
 		url?: string
 		emoji?: string
 	}
-	setCustomBackground: (value: string) => void
-	setCustomTextColor: (value: string) => void
-	setEmoji?: (value: string) => void
 }
 
-export function AdvancedModal({
-	title,
-	onClose,
-	isOpen,
-	bookmark,
-	setCustomBackground,
-	setCustomTextColor,
-	setEmoji = () => {},
-}: AdvancedModalProps) {
+export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
 	if (!isOpen) return null
 	const { theme, themeUtils } = useTheme()
 	const emojiPopoverRef = useRef<HTMLDivElement>(null)
-	const [isPending, startTransition] = useTransition()
 
-	const [formData, setFormData] = useState({
-		background: bookmark.customBackground,
-		textColor: bookmark.customTextColor,
-		emoji: bookmark.emoji || '',
-	})
+	const [background, setBackground] = useState(bookmark.customBackground)
+	const [textColor, setTextColor] = useState(bookmark.customTextColor)
+	const [emoji, setEmoji] = useState(bookmark.emoji || '')
 
 	const [isEmojiPopoverOpen, setIsEmojiPopoverOpen] = useState(false)
 	const [emojiUrls, setEmojiUrls] = useState<string[]>([])
 	const [isLoadingEmojis, setIsLoadingEmojis] = useState(false)
-
-	const updateFormData = useCallback((key: string, value: string) => {
-		setFormData((prev) => ({ ...prev, [key]: value }))
-	}, [])
 
 	useEffect(() => {
 		if (isOpen) {
@@ -70,11 +54,9 @@ export function AdvancedModal({
 	}, [isOpen])
 
 	useEffect(() => {
-		setFormData({
-			background: bookmark.customBackground,
-			textColor: bookmark.customTextColor,
-			emoji: bookmark.emoji || '',
-		})
+		setBackground(bookmark.customBackground)
+		setTextColor(bookmark.customTextColor)
+		setEmoji(bookmark.emoji || '')
 	}, [bookmark.customBackground, bookmark.customTextColor, bookmark.emoji])
 
 	useEffect(() => {
@@ -93,37 +75,14 @@ export function AdvancedModal({
 		}
 	}, [])
 
-	const updateBackground = useCallback(
-		(value: string) => {
-			updateFormData('background', value)
-			setCustomBackground(value)
-		},
-		[setCustomBackground, updateFormData],
-	)
-
-	const updateTextColor = useCallback(
-		(value: string) => {
-			updateFormData('textColor', value)
-			setCustomTextColor(value)
-		},
-		[setCustomTextColor, updateFormData],
-	)
-
 	const handleEmojiSelect = useCallback(
-		(emoji: string) => {
-			const newEmoji = formData.emoji === emoji ? '' : emoji
-			updateFormData('emoji', newEmoji)
+		(selectedEmoji: string) => {
+			const newEmoji = emoji === selectedEmoji ? '' : selectedEmoji
 			setEmoji(newEmoji)
 			setIsEmojiPopoverOpen(false)
 		},
-		[formData.emoji, setEmoji, updateFormData],
+		[emoji],
 	)
-
-	const handleSave = useCallback(() => {
-		startTransition(() => {
-			onClose()
-		})
-	}, [onClose])
 
 	const toggleEmojiPopover = () => {
 		setIsEmojiPopoverOpen((prev) => !prev)
@@ -168,7 +127,7 @@ export function AdvancedModal({
 						onClick={() => handleEmojiSelect(url)}
 						className={`flex items-center justify-center w-8 h-8 cursor-pointer rounded-md 
 							${
-								formData.emoji === url
+								emoji === url
 									? 'bg-blue-500/20 border-2 border-blue-500'
 									: 'border border-gray-500/20 hover:bg-gray-500/10'
 							}`}
@@ -188,21 +147,41 @@ export function AdvancedModal({
 		)
 	}
 
+	function handleClose() {
+		// Check if any changes have been made
+		const hasBackgroundChanged = background !== bookmark.customBackground
+		const hasTextColorChanged = textColor !== bookmark.customTextColor
+		const hasEmojiChanged = emoji !== bookmark.emoji
+
+		// If no changes, pass null to onClose
+		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
+			onClose(null)
+			return
+		}
+
+		// Otherwise, pass the updated values
+		onClose({
+			background: hasBackgroundChanged ? background : undefined,
+			textColor: hasTextColorChanged ? textColor : undefined,
+			emoji: hasEmojiChanged ? emoji : undefined,
+		})
+	}
+
+	function handleCancel() {
+		onClose(null)
+	}
+
 	return (
 		<Modal
 			title={title}
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={handleCancel}
 			direction="rtl"
 			closeOnBackdropClick={false}
 			lockBodyScroll={false}
 		>
-			<form
+			<div
 				className={`flex flex-col p-2 gap-2 rounded-lg border ${themeUtils.getBorderColor()}`}
-				onSubmit={(e) => {
-					e.preventDefault()
-					handleSave()
-				}}
 			>
 				<RequireAuth mode="preview">
 					<div>
@@ -214,15 +193,15 @@ export function AdvancedModal({
 						<div className="flex items-center gap-2">
 							<TextInput
 								type="color"
-								value={formData.background}
-								onChange={updateBackground}
+								value={background}
+								onChange={setBackground}
 								className="!w-10 !h-10 cursor-pointer"
 								debounce={true}
 							/>
 							<TextInput
 								type="text"
-								value={formData.background}
-								onChange={updateBackground}
+								value={background}
+								onChange={setBackground}
 								className="flex-1 px-3 py-2rounded-md"
 								placeholder="#000000"
 								debounce={true}
@@ -239,15 +218,15 @@ export function AdvancedModal({
 						<div className="flex items-center gap-2">
 							<TextInput
 								type="color"
-								value={formData.textColor}
-								onChange={updateTextColor}
+								value={textColor}
+								onChange={setTextColor}
 								className="!w-10 !h-10 cursor-pointer"
 								debounce={true}
 							/>
 							<TextInput
 								type="text"
-								value={formData.textColor}
-								onChange={updateTextColor}
+								value={textColor}
+								onChange={setTextColor}
 								className="flex-1 px-3 py-2rounded-md"
 								placeholder="#000000"
 								debounce={true}
@@ -269,14 +248,10 @@ export function AdvancedModal({
 							onClick={toggleEmojiPopover}
 							className={`flex items-center justify-center h-10 px-3 rounded-md ${getButtonStyle()}`}
 						>
-							{formData.emoji ? (
+							{emoji ? (
 								<>
-									{formData.emoji.startsWith('http') ? (
-										<img
-											src={formData.emoji}
-											alt="selected emoji"
-											className="w-6 h-6 ml-1"
-										/>
+									{emoji.startsWith('http') ? (
+										<img src={emoji} alt="selected emoji" className="w-6 h-6 ml-1" />
 									) : (
 										<span
 											className="ml-1 text-lg"
@@ -284,7 +259,7 @@ export function AdvancedModal({
 												fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 											}}
 										>
-											{formData.emoji}
+											{emoji}
 										</span>
 									)}
 									<span className="text-xs">تغییر ایموجی</span>
@@ -294,10 +269,10 @@ export function AdvancedModal({
 							)}
 						</button>
 
-						{formData.emoji && (
+						{emoji && (
 							<button
 								type="button"
-								onClick={() => handleEmojiSelect(formData.emoji)}
+								onClick={() => handleEmojiSelect(emoji)}
 								className="p-2 text-xs text-red-400 hover:text-red-300"
 							>
 								حذف
@@ -324,9 +299,9 @@ export function AdvancedModal({
 					<div className="flex justify-center">
 						<BookmarkItem
 							bookmark={{
-								customBackground: formData.background || undefined,
-								customTextColor: formData.textColor || undefined,
-								emoji: formData.emoji || undefined,
+								customBackground: background || undefined,
+								customTextColor: textColor || undefined,
+								emoji: emoji || undefined,
 								icon: getFaviconFromUrl(bookmark.url || 'google.com'),
 								title: bookmark.title || 'پیش‌نمایش',
 								url: 'https://www.google.com',
@@ -343,18 +318,21 @@ export function AdvancedModal({
 					</div>
 				</div>
 
-				<div className="flex justify-end mt-4">
+				<div className="flex justify-end gap-2 mt-4">
 					<button
-						type="submit"
-						className={
-							'px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 cursor-pointer'
-						}
-						disabled={isPending}
+						onClick={handleCancel}
+						className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
 					>
-						{isPending ? 'درحال ذخیره...' : 'ذخیره'}
+						انصراف
+					</button>
+					<button
+						onClick={handleClose}
+						className="px-4 py-2 text-white bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600"
+					>
+						ذخیره
 					</button>
 				</div>
-			</form>
+			</div>
 		</Modal>
 	)
 }
