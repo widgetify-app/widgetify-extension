@@ -38,7 +38,7 @@ export function AddBookmarkModal({
 		customImage: '',
 		customBackground: '',
 		customTextColor: '',
-		emoji: '',
+		sticker: '',
 	})
 
 	const getIconPreviewStyle = () => {
@@ -111,7 +111,7 @@ export function AddBookmarkModal({
 				customImage: formData.customImage,
 				customBackground: formData.customBackground || undefined,
 				customTextColor: formData.customTextColor || undefined,
-				emoji: formData.emoji || undefined,
+				sticker: formData.sticker || undefined,
 			}
 
 			if (type === 'FOLDER') {
@@ -145,7 +145,7 @@ export function AddBookmarkModal({
 			customImage: '',
 			customBackground: '',
 			customTextColor: '',
-			emoji: '',
+			sticker: '',
 		})
 		setType('BOOKMARK')
 		setIconSource('auto')
@@ -276,7 +276,7 @@ export function AddBookmarkModal({
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; emoji?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null,
 	) => {
 		setShowAdvanced(false)
 
@@ -289,8 +289,8 @@ export function AddBookmarkModal({
 				updateFormData('customTextColor', data.textColor)
 			}
 
-			if (data.emoji !== undefined) {
-				updateFormData('emoji', data.emoji)
+			if (data.sticker !== undefined) {
+				updateFormData('sticker', data.sticker)
 			}
 		}
 	}
@@ -384,7 +384,7 @@ export function AddBookmarkModal({
 					bookmark={{
 						customBackground: formData.customBackground,
 						customTextColor: formData.customTextColor,
-						emoji: formData.emoji,
+						sticker: formData.sticker,
 						type,
 						title: formData.title,
 						url: formData.url,

@@ -52,7 +52,7 @@ export function BookmarkItem({
 			style={customStyles}
 			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border-white/20 text-white'}`}
 		>
-			{renderEmojiPattern(bookmark)}
+			{renderStickerPattern(bookmark)}
 			<BookmarkIcon bookmark={bookmark} />
 			<BookmarkTitle
 				title={bookmark.title}
@@ -110,7 +110,7 @@ function FolderBookmarkItem({
 			style={customStyles}
 			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border-blue-400/20 hover:border-blue-400/40'}`}
 		>
-			{renderEmojiPattern(bookmark)}
+			{renderStickerPattern(bookmark)}
 			<div className="absolute inset-0 overflow-hidden rounded-xl">
 				<div
 					className={`absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b ${theme === 'light' ? 'from-blue-300/10' : 'from-blue-300/10'} to-transparent`}
@@ -287,10 +287,10 @@ function BookmarkTooltip({ title, theme = 'glass' }: { title: string; theme?: st
 	)
 }
 
-const renderEmojiPattern = (bookmark: Bookmark) => {
-	if (!bookmark.emoji) return null
+const renderStickerPattern = (bookmark: Bookmark) => {
+	if (!bookmark.sticker) return null
 
-	const isImageEmoji = bookmark.emoji.startsWith('http')
+	const isImageSticker = bookmark.sticker.startsWith('http')
 
 	const commonStyle = {
 		position: 'absolute' as const,
@@ -300,7 +300,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 		filter: 'opacity(0.6)',
 	}
 
-	if (isImageEmoji) {
+	if (isImageSticker) {
 		return (
 			<>
 				<div
@@ -311,7 +311,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 						right: '55px',
 					}}
 				>
-					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+					<img src={bookmark.sticker} alt="" className="object-contain w-full h-full" />
 				</div>
 				<div
 					className="absolute inset-0 border rounded-xl border-white/5"
@@ -321,7 +321,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 						right: '25px',
 					}}
 				>
-					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+					<img src={bookmark.sticker} alt="" className="object-contain w-full h-full" />
 				</div>
 				<div
 					className="absolute inset-0 border rounded-xl border-white/5"
@@ -333,7 +333,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 						zIndex: 0,
 					}}
 				>
-					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+					<img src={bookmark.sticker} alt="" className="object-contain w-full h-full" />
 				</div>
 				<div
 					className="absolute inset-0 border rounded-xl border-white/5"
@@ -344,14 +344,13 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 						top: '30px',
 					}}
 				>
-					<img src={bookmark.emoji} alt="" className="object-contain w-full h-full" />
+					<img src={bookmark.sticker} alt="" className="object-contain w-full h-full" />
 				</div>
 				<div className="absolute inset-0 border rounded-xl border-white/5"></div>
 			</>
 		)
 	}
 
-	// For text emojis, use the original pattern
 	return (
 		<>
 			<div
@@ -367,7 +366,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 				}}
 			>
-				{bookmark.emoji}
+				{bookmark.sticker}
 			</div>
 			<div
 				className="absolute inset-0 border rounded-xl border-white/5"
@@ -382,7 +381,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 				}}
 			>
-				{bookmark.emoji}
+				{bookmark.sticker}
 			</div>
 			<div
 				className="absolute inset-0 border rounded-xl border-white/5"
@@ -399,7 +398,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 				}}
 			>
-				{bookmark.emoji}
+				{bookmark.sticker}
 			</div>
 			<div
 				className="absolute inset-0 border rounded-xl border-white/5"
@@ -415,7 +414,7 @@ const renderEmojiPattern = (bookmark: Bookmark) => {
 					fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 				}}
 			>
-				{bookmark.emoji}
+				{bookmark.sticker}
 			</div>
 			<div className="absolute inset-0 border rounded-xl border-white/5"></div>
 		</>

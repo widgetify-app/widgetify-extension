@@ -29,7 +29,7 @@ export function EditBookmarkModal({
 		customImage: '',
 		customBackground: '',
 		customTextColor: '',
-		emoji: '',
+		sticker: '',
 		touched: false,
 	})
 
@@ -57,7 +57,7 @@ export function EditBookmarkModal({
 				customImage: bookmark.customImage || '',
 				customBackground: bookmark.customBackground || '',
 				customTextColor: bookmark.customTextColor || '',
-				emoji: bookmark.emoji || '',
+				sticker: bookmark.sticker || '',
 				touched: false,
 			})
 
@@ -120,7 +120,7 @@ export function EditBookmarkModal({
 			customImage: formData.customImage,
 			customBackground: formData.customBackground || undefined,
 			customTextColor: formData.customTextColor || undefined,
-			emoji: formData.emoji || undefined,
+			sticker: formData.sticker || undefined,
 		}
 
 		if (type === 'BOOKMARK') {
@@ -261,7 +261,7 @@ export function EditBookmarkModal({
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; emoji?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null,
 	) => {
 		setShowAdvanced(false)
 
@@ -274,8 +274,8 @@ export function EditBookmarkModal({
 				updateFormData('customTextColor', data.textColor)
 			}
 
-			if (data.emoji !== undefined) {
-				updateFormData('emoji', data.emoji)
+			if (data.sticker !== undefined) {
+				updateFormData('sticker', data.sticker)
 			}
 		}
 	}
@@ -354,7 +354,9 @@ export function EditBookmarkModal({
 							value={formData.customTextColor}
 						/>
 					)}
-					{formData.emoji && <input type="hidden" name="emoji" value={formData.emoji} />}
+					{formData.sticker && (
+						<input type="hidden" name="sticker" value={formData.sticker} />
+					)}
 
 					<div className="flex items-center justify-end">
 						<button
@@ -403,7 +405,7 @@ export function EditBookmarkModal({
 				bookmark={{
 					customBackground: formData.customBackground,
 					customTextColor: formData.customTextColor,
-					emoji: formData.emoji,
+					sticker: formData.sticker,
 					type,
 					title: formData.title,
 					url: formData.url,

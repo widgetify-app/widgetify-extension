@@ -11,7 +11,7 @@ import { BookmarkItem } from './bookmark-item'
 interface AdvancedModalProps {
 	title: string
 	onClose: (
-		data: { background?: string; textColor?: string; emoji?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null,
 	) => void
 	isOpen: boolean
 	bookmark: {
@@ -20,7 +20,7 @@ interface AdvancedModalProps {
 		customTextColor: string
 		title?: string
 		url?: string
-		emoji?: string
+		sticker?: string
 	}
 }
 
@@ -31,7 +31,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 
 	const [background, setBackground] = useState(bookmark.customBackground)
 	const [textColor, setTextColor] = useState(bookmark.customTextColor)
-	const [emoji, setEmoji] = useState(bookmark.emoji || '')
+	const [sticker, setSticker] = useState(bookmark.sticker || '')
 
 	const [isEmojiPopoverOpen, setIsEmojiPopoverOpen] = useState(false)
 	const [emojiUrls, setEmojiUrls] = useState<string[]>([])
@@ -56,8 +56,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	useEffect(() => {
 		setBackground(bookmark.customBackground)
 		setTextColor(bookmark.customTextColor)
-		setEmoji(bookmark.emoji || '')
-	}, [bookmark.customBackground, bookmark.customTextColor, bookmark.emoji])
+		setSticker(bookmark.sticker || '')
+	}, [bookmark.customBackground, bookmark.customTextColor, bookmark.sticker])
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -77,11 +77,11 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 
 	const handleEmojiSelect = useCallback(
 		(selectedEmoji: string) => {
-			const newEmoji = emoji === selectedEmoji ? '' : selectedEmoji
-			setEmoji(newEmoji)
+			const newEmoji = sticker === selectedEmoji ? '' : selectedEmoji
+			setSticker(newEmoji)
 			setIsEmojiPopoverOpen(false)
 		},
-		[emoji],
+		[sticker],
 	)
 
 	const toggleEmojiPopover = () => {
@@ -127,7 +127,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						onClick={() => handleEmojiSelect(url)}
 						className={`flex items-center justify-center w-8 h-8 cursor-pointer rounded-md 
 							${
-								emoji === url
+								sticker === url
 									? 'bg-blue-500/20 border-2 border-blue-500'
 									: 'border border-gray-500/20 hover:bg-gray-500/10'
 							}`}
@@ -149,7 +149,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	function handleClose() {
 		const hasBackgroundChanged = background !== bookmark.customBackground
 		const hasTextColorChanged = textColor !== bookmark.customTextColor
-		const hasEmojiChanged = emoji !== bookmark.emoji
+		const hasEmojiChanged = sticker !== bookmark.sticker
 
 		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
 			onClose(null)
@@ -159,7 +159,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		onClose({
 			background: hasBackgroundChanged ? background : undefined,
 			textColor: hasTextColorChanged ? textColor : undefined,
-			emoji: hasEmojiChanged ? emoji : undefined,
+			sticker: hasEmojiChanged ? sticker : undefined,
 		})
 	}
 
@@ -244,10 +244,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							onClick={toggleEmojiPopover}
 							className={`flex items-center justify-center h-10 px-3 rounded-md ${getButtonStyle()}`}
 						>
-							{emoji ? (
+							{sticker ? (
 								<>
-									{emoji.startsWith('http') ? (
-										<img src={emoji} alt="selected emoji" className="w-6 h-6 ml-1" />
+									{sticker.startsWith('http') ? (
+										<img src={sticker} alt="selected emoji" className="w-6 h-6 ml-1" />
 									) : (
 										<span
 											className="ml-1 text-lg"
@@ -255,7 +255,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 												fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 											}}
 										>
-											{emoji}
+											{sticker}
 										</span>
 									)}
 									<span className="text-xs">تغییر ایموجی</span>
@@ -265,10 +265,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							)}
 						</button>
 
-						{emoji && (
+						{sticker && (
 							<button
 								type="button"
-								onClick={() => handleEmojiSelect(emoji)}
+								onClick={() => handleEmojiSelect(sticker)}
 								className="p-2 text-xs text-red-400 hover:text-red-300"
 							>
 								حذف
@@ -305,7 +305,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							bookmark={{
 								customBackground: background || undefined,
 								customTextColor: textColor || undefined,
-								emoji: emoji || undefined,
+								sticker: sticker || undefined,
 								icon: getFaviconFromUrl(bookmark.url || 'google.com'),
 								title: bookmark.title || 'پیش‌نمایش',
 								url: 'https://www.google.com',

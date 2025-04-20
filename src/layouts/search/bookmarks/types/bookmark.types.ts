@@ -13,7 +13,7 @@ export interface Bookmark {
 	customImage?: string
 	customBackground?: string
 	customTextColor?: string
-	emoji?: string
+	sticker?: string
 }
 
 export interface FolderPathItem {
