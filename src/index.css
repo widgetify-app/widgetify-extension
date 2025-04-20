@@ -128,6 +128,34 @@ input[type=number] {
 	-moz-appearance: textfield;
 }
 
+/* Custom styling for color inputs */
+input[type=color] {
+	-webkit-appearance: none;
+	border: none;
+	padding: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	cursor: pointer;
+	background: transparent;
+}
+
+input[type=color]::-webkit-color-swatch-wrapper {
+	padding: 0;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+input[type=color]::-webkit-color-swatch {
+	border: none;
+	border-radius: 4px;
+}
+
+input[type=color]::-moz-color-swatch {
+	border: none;
+	border-radius: 4px;
+}
+
 /* Hide scrollbar for webkit browsers */
 .hide-scrollbar::-webkit-scrollbar {
 	display: none;

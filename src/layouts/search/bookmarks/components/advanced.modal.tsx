@@ -4,6 +4,7 @@ import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { FiRotateCcw } from 'react-icons/fi'
 import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
@@ -88,15 +89,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		setIsEmojiPopoverOpen((prev) => !prev)
 	}
 
-	const getButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-300'
-			case 'dark':
-				return 'bg-neutral-700 hover:bg-neutral-600 text-neutral-200 border border-neutral-600'
-			default: // glass
-				return 'bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10'
-		}
+	const getResetButtonStyle = () => {
+		return `${themeUtils.getButtonStyles()} cursor-pointer absolute left-1 top-1/2 -translate-y-1/2 rounded-full`
 	}
 
 	const getPopoverStyle = () => {
@@ -107,6 +101,28 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				return 'bg-neutral-800 shadow-lg border border-neutral-700'
 			default: // glass
 				return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
+		}
+	}
+
+	const getActionButtonStyle = (isPrimary = false) => {
+		if (isPrimary) {
+			switch (theme) {
+				case 'light':
+					return 'bg-blue-500 hover:bg-blue-600 text-white'
+				case 'dark':
+					return 'bg-blue-600 hover:bg-blue-700 text-white'
+				default: // glass
+					return 'bg-blue-500/80 hover:bg-blue-500 text-white'
+			}
+		}
+
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-200 hover:bg-gray-300 text-gray-600'
+			case 'dark':
+				return 'bg-neutral-700 hover:bg-neutral-600 text-neutral-200'
+			default: // glass
+				return 'bg-black/30 hover:bg-black/40 text-gray-300'
 		}
 	}
 
@@ -146,6 +162,14 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		)
 	}
 
+	const resetBackground = () => {
+		setBackground('')
+	}
+
+	const resetTextColor = () => {
+		setTextColor('')
+	}
+
 	function handleClose() {
 		const hasBackgroundChanged = background !== bookmark.customBackground
 		const hasTextColorChanged = textColor !== bookmark.customTextColor
@@ -163,77 +187,89 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		})
 	}
 
-	function handleCancel() {
-		onClose(null)
-	}
-
 	return (
 		<Modal
 			title={title}
 			isOpen={isOpen}
-			onClose={handleCancel}
+			onClose={() => onClose(null)}
 			direction="rtl"
 			closeOnBackdropClick={false}
 			lockBodyScroll={false}
 		>
-			<div
-				className={`flex flex-col p-2 gap-2 rounded-lg border ${themeUtils.getBorderColor()}`}
-			>
+			<div className={'flex flex-col p-2 gap-2 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
 						<label
-							className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
+							className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
 						>
 							رنگ پس زمینه (اختیاری)
 						</label>
-						<div className="flex items-center gap-2">
-							<TextInput
-								type="color"
-								value={background}
-								onChange={setBackground}
-								className="!w-10 !h-10 cursor-pointer"
-								debounce={true}
-							/>
+						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
 								value={background}
 								onChange={setBackground}
-								className="flex-1 px-3 py-2rounded-md"
+								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
 								debounce={true}
 							/>
+							<div className="absolute -translate-y-1/2 right-1 top-1/2">
+								<TextInput
+									type="color"
+									value={background}
+									onChange={setBackground}
+									className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
+									debounce={true}
+								/>
+							</div>
+							<button
+								type="button"
+								onClick={resetBackground}
+								className={getResetButtonStyle()}
+							>
+								<FiRotateCcw className="w-4 h-4" />
+							</button>
 						</div>
 					</div>
 
 					<div>
 						<label
-							className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
+							className={`block text-sm  font-medium mb-1.5 ${themeUtils.getTextColor()}`}
 						>
 							رنگ متن (اختیاری)
 						</label>
-						<div className="flex items-center gap-2">
-							<TextInput
-								type="color"
-								value={textColor}
-								onChange={setTextColor}
-								className="!w-10 !h-10 cursor-pointer"
-								debounce={true}
-							/>
+						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
 								value={textColor}
 								onChange={setTextColor}
-								className="flex-1 px-3 py-2rounded-md"
+								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
 								debounce={true}
 							/>
+							<div className="absolute -translate-y-1/2 right-1 top-1/2">
+								<TextInput
+									type="color"
+									value={textColor}
+									onChange={setTextColor}
+									className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
+									debounce={true}
+								/>
+							</div>
+							<button
+								type="button"
+								onClick={resetTextColor}
+								className={getResetButtonStyle()}
+							>
+								<FiRotateCcw className="w-4 h-4" />
+							</button>
 						</div>
 					</div>
 				</RequireAuth>
 
 				<div className="relative" ref={emojiPopoverRef}>
 					<label
-						className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
+						className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
 					>
 						انتخاب ایموجی (اختیاری)
 					</label>
@@ -242,15 +278,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<button
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={`flex items-center justify-center h-10 px-3 rounded-md ${getButtonStyle()}`}
+							className={`flex items-center justify-center h-10 px-4 rounded-md transition-colors ${themeUtils.getButtonStyles()} cursor-pointer`}
 						>
 							{sticker ? (
 								<>
 									{sticker.startsWith('http') ? (
-										<img src={sticker} alt="selected emoji" className="w-6 h-6 ml-1" />
+										<img src={sticker} alt="selected emoji" className="w-6 h-6 ml-2" />
 									) : (
 										<span
-											className="ml-1 text-lg"
+											className="ml-2 text-lg"
 											style={{
 												fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 											}}
@@ -258,10 +294,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 											{sticker}
 										</span>
 									)}
-									<span className="text-xs">تغییر ایموجی</span>
+									<span className="text-xs font-medium">تغییر ایموجی</span>
 								</>
 							) : (
-								<span className="text-xs">انتخاب ایموجی</span>
+								<span className="text-xs font-medium">انتخاب ایموجی</span>
 							)}
 						</button>
 
@@ -269,7 +305,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							<button
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
-								className="p-2 text-xs text-red-400 hover:text-red-300"
+								className={`px-3 py-1.5 cursor-pointer text-xs rounded-md ${theme === 'light' ? 'text-red-600 hover:bg-red-50' : 'text-red-400 hover:bg-red-900/20'}`}
 							>
 								حذف
 							</button>
@@ -279,7 +315,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{/* Emoji Popover */}
 					{isEmojiPopoverOpen && (
 						<div
-							className={`absolute z-50 mt-1 p-2 rounded-md w-64 ${getPopoverStyle()}`}
+							className={`absolute z-50 mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar ${getPopoverStyle()}`}
 						>
 							{renderEmojiGrid()}
 						</div>
@@ -287,9 +323,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<label
-						className={`block text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}
-					>
+					<label className={`block text-sm font-medium ${themeUtils.getTextColor()}`}>
 						پیش‌نمایش:
 					</label>
 					<div
@@ -324,14 +358,14 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 
 				<div className="flex justify-end gap-2 mt-4">
 					<button
-						onClick={handleCancel}
-						className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
+						onClick={() => onClose(null)}
+						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getActionButtonStyle()}`}
 					>
 						انصراف
 					</button>
 					<button
 						onClick={handleClose}
-						className="px-4 py-2 text-white bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600"
+						className={`px-4 py-2 rounded-md cursor-pointer transition-colors ${getActionButtonStyle(true)}`}
 					>
 						ذخیره
 					</button>

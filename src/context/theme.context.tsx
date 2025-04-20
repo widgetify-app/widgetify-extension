@@ -118,7 +118,7 @@ export const getButtonStyles = (theme: ThemeType, isPrimary = false): string => 
 		case 'dark':
 			return `${baseStyles} bg-gray-700 hover:bg-gray-600 text-gray-200`
 		default:
-			return `${baseStyles} bg-gray-800/50 hover:bg-gray-700/60 text-gray-200 backdrop-blur-sm`
+			return `${baseStyles} bg-neutral-700/50 hover:bg-neutral-700 text-gray-200`
 	}
 }
 
