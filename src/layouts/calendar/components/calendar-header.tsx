@@ -77,7 +77,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	return (
 		<div className="flex items-center justify-between p-3 md:p-4">
 			<h3 className={`font-medium text-md ${getHeaderTextStyle()}`}>
-				{PERSIAN_MONTHS[currentDate.jMonth()]} {currentDate.jYear()}
+				{currentDate.format('dddd، jD jMMMM jYYYY')}
 			</h3>
 
 			<div className="flex gap-1">

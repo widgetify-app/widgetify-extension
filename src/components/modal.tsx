@@ -103,7 +103,7 @@ const Modal = ({
 						onClick={(e) => e.stopPropagation()}
 					>
 						<div
-							className={`flex items-center justify-between p-4 border-b ${getHeaderBorderStyle()}`}
+							className={`flex items-center justify-between p-2 border-b ${getHeaderBorderStyle()}`}
 						>
 							{title && (
 								<h2 className={`text-lg font-semibold ${themeUtils.getTextColor()}`}>

@@ -121,7 +121,7 @@ export function DayItem({
 
 	return (
 		<Tooltip
-			content={toolTipContent(cellDate, theme, googleEvents)}
+			content={toolTipContent(cellDate, theme, googleEvents, isHoliday)}
 			position="top"
 			key={`day-${day}`}
 		>

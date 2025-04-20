@@ -13,17 +13,21 @@ export const toolTipContent = (
 	cellDate: WidgetifyDate,
 	theme: string,
 	googleEvents?: GoogleCalendarEvent[],
+	isHoliday?: boolean,
 ) => {
 	const hijri = convertShamsiToHijri(cellDate)
 	const gregorian = cellDate.clone().doAsGregorian().format('YYYY MMMM DD')
-	const jalali = cellDate.format('jYYYY/jMM/jD ddd')
+	const jalali = cellDate.format('jYYYY/jMM/jD')
+	const jalaliDay = cellDate.format('ddd')
 
 	const dayGoogleEvents = googleEvents
 		? filterGoogleEventsByDate(googleEvents, cellDate)
 		: []
 
+	// is holiday style
+	const holidayStyle = isHoliday ? "from-orange-600 to-red-700" : "from-sky-500 to-blue-700"
 	const headerStyle =
-		'max-w-full p-1 text-center text-white bg-gradient-to-r from-blue-500 to-indigo-600'
+		`max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
 
 	const adBackgroundStyle =
 		theme === 'light'
@@ -37,11 +41,11 @@ export const toolTipContent = (
 	const googleStyle = theme === 'light' ? 'text-[#4285f4]' : 'text-[#8ab4f8]'
 
 	return (
-		<div className="flex flex-col min-w-[200px] rounded-md overflow-hidden">
+		<div className="flex flex-col min-w-[200px] rounded-lg overflow-hidden">
 			<div className={headerStyle}>
-				<div className="flex items-center justify-center gap-2">
-					<FaCalendarAlt className="text-white/80" />
-					<span className="text-sm font-bold truncate">{jalali}</span>
+				<div className="flex items-center justify-between gap-2 ${holidayStyle}">
+					<span className="text-sm truncate">{jalaliDay}</span>
+					<span className="text-sm truncate">{jalali}</span>
 				</div>
 			</div>
 
@@ -80,7 +84,7 @@ export const toolTipContent = (
 
 			<div className="mt-2 border-t border-gray-200 dark:border-gray-700">
 				<div
-					className={`px-3 py-2.5 text-xs text-center rounded-b-md ${adBackgroundStyle}`}
+					className={`px-2 py-1 text-xs text-center rounded-b-md ${adBackgroundStyle}`}
 				>
 					<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
 					<span className={`font-light ${infoStyle}`}>

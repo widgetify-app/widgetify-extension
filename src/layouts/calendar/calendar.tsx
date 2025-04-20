@@ -1,12 +1,10 @@
 import { useTheme } from '@/context/theme.context'
-import { TodoProvider } from '@/context/todo.context'
 import type React from 'react'
 import { useState } from 'react'
 import { CalendarContainer } from './components/calendar-container'
 import { CalendarContent } from './components/calendar-content'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
-import { DaySlider } from './components/day-slider'
 import { DaySummary } from './components/day-summary'
 import { getCurrentDate } from './utils'
 
@@ -49,10 +47,6 @@ const PersianCalendar: React.FC = () => {
 				/>
 
 				<div className={`px-4 mt-1 border-t ${themeUtils.getBorderColor()}`}>
-					<div className="mt-1">
-						<DaySlider currentDate={selectedDate} onDateChange={setSelectedDate} />
-					</div>
-
 					<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
 				</div>
 			</CalendarContainer>
