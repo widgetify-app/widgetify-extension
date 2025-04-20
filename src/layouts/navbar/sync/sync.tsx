@@ -393,6 +393,9 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 					offlineId: bookmark.id,
 					id: bookmark.onlineId,
 					type: bookmark.type,
+					sticker: bookmark.sticker,
+					customTextColor: bookmark.customTextColor,
+					customBackground: bookmark.customBackground,
 				}))
 				// sort by without parentId
 				.sort((a, b) => (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1))
@@ -429,6 +432,9 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		url: bookmark.url,
 		icon: bookmark.icon,
 		onlineId: bookmark.id,
+		sticker: bookmark.sticker,
+		customTextColor: bookmark.customTextColor,
+		customBackground: bookmark.customBackground,
 	}))
 
 	callEvent('bookmarksChanged', mappedFetched)

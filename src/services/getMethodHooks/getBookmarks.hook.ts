@@ -12,6 +12,9 @@ export interface FetchedBookmark {
 	parentId: string
 	widgetify_host: boolean
 	children: FetchedBookmark[]
+	customTextColor?: string
+	customBackground?: string
+	sticker?: string
 }
 
 export const useGetBookmarks = () => {
