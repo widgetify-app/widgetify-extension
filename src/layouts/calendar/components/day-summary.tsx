@@ -5,7 +5,7 @@ import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { FiCalendar, FiChevronRight, FiClipboard } from 'react-icons/fi'
+import { FiCalendar, FiChevronLeft, FiClipboard } from 'react-icons/fi'
 import type { TabType } from '../calendar'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../utils'
@@ -89,22 +89,21 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 
 	return (
 		<div
-			className={`mt-0.5 overflow-hidden ${getContainerStyle()} rounded-tr-lg rounded-tl-lg`}
+			className={`overflow-hidden ${getContainerStyle()} rounded-lg`}
 		>
-			<div className="p-2">
-				<h3 className={`text-xs font-medium mb-0.5 ${getTextStyle()} truncate`}>
+			<div className="px-2 pb-2 pt-1">
+				<h3 className={`text-xs text-center font-medium mb-1.5 ${getTextStyle()} truncate`}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
 				<div className="grid grid-cols-2 gap-2">
 					<motion.div
-						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('events')}
-						className={`p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-1 rounded-lg cursor-pointer ${getCardStyle()} flex items-center`}
 					>
 						<FiCalendar
-							className={`mt-0.5 ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : getSubTextStyle()}`}
+							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : getSubTextStyle()}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
@@ -116,7 +115,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
 							</div>
 						</div>
-						<FiChevronRight
+						<FiChevronLeft
 							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
 							size={14}
 						/>
@@ -124,13 +123,12 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 
 					{/* Todos card */}
 					<motion.div
-						whileHover={{ y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('todos')}
-						className={`p-1 rounded-lg cursor-pointer transition-all ${getCardStyle()} flex items-start`}
+						className={`p-1 rounded-lg cursor-pointer ${getCardStyle()} flex items-center`}
 					>
 						<FiClipboard
-							className={`mt-0.5 ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}
+							className={`text-base ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
@@ -143,7 +141,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 									: 'بدون یادداشت'}
 							</div>
 						</div>
-						<FiChevronRight
+						<FiChevronLeft
 							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
 							size={14}
 						/>
