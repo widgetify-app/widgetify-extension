@@ -20,7 +20,6 @@ export const WidgetifyLayout = () => {
 	const { themeUtils, theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
-	const random = ['گوجه', 'هندونه 🍉', 'بلبل جان', 'باهوش 🧠']
 	const [userName, setUserName] = useState<string>('')
 
 	const { data: dailyMessage } = useGetDailyMessage()
@@ -35,10 +34,8 @@ export const WidgetifyLayout = () => {
 	useEffect(() => {
 		if (isAuthenticated && user && user.name) {
 			setUserName(user.name)
-		} else {
-			setUserName(random[Math.floor(Math.random() * random.length)])
 		}
-	}, [isAuthenticated, user, random])
+	}, [isAuthenticated, user])
 
 	const todayStr = formatDateStr(today)
 	const todayTodos = todos.filter((todo) => todo.date === todayStr)
