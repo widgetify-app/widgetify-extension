@@ -115,10 +115,6 @@ export function DayItem({
 		}
 	}
 
-	// const getFontWeight = () => {
-	// 	return hasEvent || hasTodo ? 'font-bold' : ''
-	// }
-
 	return (
 		<Tooltip
 			content={toolTipContent(cellDate, theme, googleEvents, isHoliday)}
