@@ -2,7 +2,7 @@ import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { FiCalendar } from 'react-icons/fi'
+import { TfiBackRight } from 'react-icons/tfi'
 import { type WidgetifyDate, getCurrentDate } from '../utils'
 
 interface CalendarHeaderProps {
@@ -73,7 +73,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						onClick={goToToday}
 						className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-400 transition-colors rounded-lg cursor-pointer bg-blue-500/10 hover:bg-blue-500/20"
 					>
-						<FiCalendar size={14} />
+						<TfiBackRight size={12} />
 					</motion.button>
 				)}
 
@@ -81,14 +81,14 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 					onClick={() => changeMonth(-1)}
 					className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
-					<FaChevronRight size={10} />
+					<FaChevronRight size={12} />
 				</button>
 
 				<button
 					onClick={() => changeMonth(1)}
 					className={`flex items-center gap-1 px-2 py-1  text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
-					<FaChevronLeft size={10} />
+					<FaChevronLeft size={12} />
 				</button>
 			</div>
 		</div>
