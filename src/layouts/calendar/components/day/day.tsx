@@ -83,7 +83,7 @@ export function DayItem({
 				return 'hover:bg-gray-100'
 			case 'dark':
 				return 'hover:bg-gray-800/50'
-			default: // glass
+			default:
 				return 'hover:bg-white/10'
 		}
 	}
@@ -124,14 +124,15 @@ export function DayItem({
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
-                    relative p-1 rounded-lg text-xs transition-colors cursor-pointer w-[50%]
+                    relative p-1 rounded-full text-xs transition-colors cursor-pointer 
+                    h-7 w-7 flex items-center justify-center
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
                     ${isCurrentDay ? getTodayRingStyle() : ''}
                 `}
 			>
 				{day}
-				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-1 left-1/2">
+				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
 					{eventIcons.length > 0 ? (
 						eventIcons.slice(0, 1).map((icon, idx) => (
 							<img

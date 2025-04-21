@@ -23,7 +23,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 }) => {
 	const { user } = useAuth()
 
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
 
@@ -39,6 +39,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
 	const emptyDays = (firstDayOfMonth + 1) % 7
+
+	const prevMonth = currentDate.clone().subtract(1, 'jMonth')
+	const daysInPrevMonth = prevMonth.clone().endOf('jMonth').jDate()
+	const prevMonthStartDay = daysInPrevMonth - emptyDays + 1
+
+	const totalCells = 42
+	const nextMonthDays = totalCells - daysInMonth - emptyDays
+
 	const selectedDateStr = formatDateStr(selectedDate)
 
 	const getWeekdayHeaderStyle = () => {
@@ -54,7 +62,16 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 			))}
 
 			{Array.from({ length: emptyDays }).map((_, i) => (
-				<div key={`empty-${i}`} className="p-1" />
+				<div
+					key={`prev-month-${i}`}
+					className={`
+						p-1 text-xs 
+						h-7 w-7 flex items-center justify-center rounded-full
+						${themeUtils.getTextColor()} opacity-40 cursor-not-allowed
+					`}
+				>
+					{prevMonthStartDay + i}
+				</div>
 			))}
 
 			{Array.from({ length: daysInMonth }, (_, i) => (
@@ -68,6 +85,19 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					setSelectedDate={setSelectedDate}
 					todos={todos}
 				/>
+			))}
+
+			{Array.from({ length: nextMonthDays }).map((_, i) => (
+				<div
+					key={`next-month-${i}`}
+					className={`
+						p-1 text-xs
+						h-7 w-7 flex items-center justify-center rounded-full cursor-not-allowed
+						${themeUtils.getTextColor()} opacity-40
+					`}
+				>
+					{i + 1}
+				</div>
 			))}
 		</div>
 	)
