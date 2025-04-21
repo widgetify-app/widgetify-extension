@@ -61,17 +61,6 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 		}
 	}, [data, isError])
 
-	const getFooterBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-50'
-			case 'dark':
-				return 'bg-neutral-900'
-			default:
-				return 'bg-neutral-900/50'
-		}
-	}
-
 	if (!visible) return null
 
 	const brandStyle = theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'
@@ -108,16 +97,6 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 								isLoading={isLoading}
 							/>
 						</SectionPanel>
-					</div>
-
-					<div
-						className={`py-1 px-2 text-center text-2xs border-t ${getFooterBackground()} ${themeUtils.getBorderColor()}`}
-					>
-						<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
-						<span className={'font-light opacity-60'}>
-							{' '}
-							| این فیچر به پیشنهاد شما ایجاد شده است.
-						</span>
 					</div>
 				</m.div>
 			</AnimatePresence>

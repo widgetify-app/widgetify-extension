@@ -30,14 +30,6 @@ export const toolTipContent = (
 		: 'from-sky-500 to-blue-700'
 	const headerStyle = `max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
 
-	const adBackgroundStyle =
-		theme === 'light'
-			? 'bg-gradient-to-r from-blue-50 via-indigo-50 to-violet-50'
-			: theme === 'dark'
-				? 'bg-gradient-to-r from-blue-900/20 via-indigo-900/20 to-violet-900/20'
-				: 'bg-black/20 backdrop-blur-sm'
-
-	const brandStyle = theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'
 	const infoStyle = theme === 'light' ? 'text-gray-600' : 'text-gray-400'
 	const googleStyle = theme === 'light' ? 'text-[#4285f4]' : 'text-[#8ab4f8]'
 
@@ -81,18 +73,6 @@ export const toolTipContent = (
 						</div>
 					</div>
 				)}
-			</div>
-
-			<div className="mt-2 border-t border-gray-200 dark:border-gray-700">
-				<div
-					className={`px-2 py-1 text-xs text-center rounded-b-md ${adBackgroundStyle}`}
-				>
-					<span className={`font-semibold ${brandStyle}`}>ویجتی‌فای</span>
-					<span className={`font-light ${infoStyle}`}>
-						{' '}
-						| این فیچر به پیشنهاد شما ایجاد شده است.
-					</span>
-				</div>
 			</div>
 		</div>
 	)
