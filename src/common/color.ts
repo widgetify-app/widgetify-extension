@@ -30,3 +30,27 @@ export async function getMainColorFromImage(src: string): Promise<string> {
 		img.onerror = (err) => reject(err)
 	})
 }
+
+export const addOpacityToColor = (color: string, opacity: number): string => {
+	if (color.startsWith('rgba')) {
+		return color.replace(/rgba\((.+?),\s*[\d.]+\)/, `rgba($1, ${opacity})`)
+	}
+
+	if (color.startsWith('rgb(')) {
+		const rgb = color.match(/rgb\((.+?)\)/)?.[1]
+		return rgb ? `rgba(${rgb}, ${opacity})` : color
+	}
+
+	const tempDiv = document.createElement('div')
+	tempDiv.style.color = color
+	document.body.appendChild(tempDiv)
+	const computedColor = window.getComputedStyle(tempDiv).color
+	document.body.removeChild(tempDiv)
+
+	const rgbMatch = computedColor.match(/rgb\((.+?)\)/)
+	return rgbMatch
+		? `rgba(${rgbMatch[1]}, ${opacity})`
+		: `${color}${Math.round(opacity * 255)
+				.toString(16)
+				.padStart(2, '0')}`
+}

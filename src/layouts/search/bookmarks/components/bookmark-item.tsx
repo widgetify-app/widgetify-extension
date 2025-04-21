@@ -1,3 +1,4 @@
+import { addOpacityToColor } from '@/common/color'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -42,7 +43,7 @@ export function BookmarkItem({
 	const customStyles = bookmark.customBackground
 		? {
 				backgroundColor: bookmark.customBackground,
-				borderColor: `${bookmark.customBackground}20`, // 20% opacity
+				borderColor: addOpacityToColor(bookmark.customBackground, 0.2),
 			}
 		: {}
 
@@ -103,7 +104,7 @@ function FolderBookmarkItem({
 	const customStyles = bookmark.customBackground
 		? {
 				backgroundColor: bookmark.customBackground,
-				borderColor: `${bookmark.customBackground}20`,
+				borderColor: addOpacityToColor(bookmark.customBackground, 0.2),
 			}
 		: {}
 
