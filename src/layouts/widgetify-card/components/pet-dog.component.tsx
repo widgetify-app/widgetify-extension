@@ -347,6 +347,9 @@ export const DogComponent = () => {
 		<div
 			ref={containerRef}
 			className="absolute hidden w-full h-32 overflow-hidden -bottom-3 lg:flex"
+			style={{
+				zIndex: 50,
+			}}
 		>
 			{/* نمایش استخوان‌ها */}
 			{bones.map(

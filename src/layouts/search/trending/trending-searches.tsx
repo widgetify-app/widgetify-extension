@@ -19,7 +19,7 @@ interface TrendingSearchesProps {
 }
 
 export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesProps) => {
-	const { theme, themeUtils } = useTheme()
+	const { themeUtils } = useTheme()
 
 	const [trends, setTrends] = useState<TrendItem[]>([])
 	const [recommendedSites, setRecommendedSites] = useState<RecommendedSite[]>([])
@@ -63,8 +63,6 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 
 	if (!visible) return null
 
-	const brandStyle = theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<AnimatePresence>
@@ -72,7 +70,10 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -10 }}
-					className={`absolute left-0 right-0 z-20 w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${themeUtils.getCardBackground()} ${themeUtils.getBorderColor()}`}
+					className={`absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${themeUtils.getCardBackground()} ${themeUtils.getBorderColor()}`}
+					style={{
+						zIndex: 9999,
+					}}
 				>
 					<div className="p-2">
 						<SectionPanel
