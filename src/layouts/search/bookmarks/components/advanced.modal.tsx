@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
@@ -5,10 +6,10 @@ import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
+import PopoverColorPicker from '../../../../components/PopoverColorPicker'
 import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
-import PopoverColorPicker from '../../../../components/PopoverColorPicker'
 
 interface AdvancedModalProps {
 	title: string
@@ -52,6 +53,14 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				.finally(() => {
 					setIsLoadingEmojis(false)
 				})
+
+			Analytics.featureUsed(
+				'open_advanced_bookmark_customization',
+				{
+					bookmark_type: bookmark.type,
+				},
+				'click',
+			)
 		}
 	}, [isOpen])
 
@@ -238,7 +247,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<label
 						className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
 					>
-						انتخاب ایموجی (اختیاری)
+						انتخاب استکیر (اختیاری)
 					</label>
 
 					<div className="flex items-center gap-2 mt-1">
@@ -261,10 +270,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 											{sticker}
 										</span>
 									)}
-									<span className="text-xs font-medium">تغییر ایموجی</span>
+									<span className="text-xs font-medium">تغییر استکیر</span>
 								</>
 							) : (
-								<span className="text-xs font-medium">انتخاب ایموجی</span>
+								<span className="text-xs font-medium">انتخاب استکیر</span>
 							)}
 						</button>
 

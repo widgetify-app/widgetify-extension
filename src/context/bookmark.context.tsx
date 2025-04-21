@@ -230,6 +230,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					action: 'add',
 					bookmark_type: bookmark.type,
 					has_custom_image: !!bookmark.customImage,
+					has_custom_background: !!bookmark.customBackground,
+					has_custom_text_color: !!bookmark.customTextColor,
+					has_custom_sticker: !!bookmark.sticker,
 				},
 				'click',
 			)
@@ -285,6 +288,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					action: 'edit',
 					bookmark_type: bookmark.type,
 					has_custom_image: !!bookmark.customImage,
+					has_custom_background: !!bookmark.customBackground,
+					has_custom_text_color: !!bookmark.customTextColor,
+					has_custom_sticker: !!bookmark.sticker,
 				},
 				'click',
 			)

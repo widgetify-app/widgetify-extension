@@ -338,7 +338,7 @@ const renderStickerPattern = (bookmark: Bookmark) => {
 			rotate: `${25 + seed * 3.5}deg`,
 			size: 23,
 			opacity: 0.45,
-			zIndex: 1,
+			zIndex: -1,
 			scale: 1.02 + seed * 0.015,
 			shadow: '0 1px 3px rgba(0,0,0,0.18)',
 		},
