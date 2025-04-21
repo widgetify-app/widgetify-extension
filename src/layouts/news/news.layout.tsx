@@ -2,7 +2,6 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
 import { useEffect, useState } from 'react'
-
 import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
 import { NewsItem } from './components/news-item'
@@ -14,7 +13,19 @@ interface ExtendedNewsResponse extends NewsResponse {
 	isCached?: boolean
 }
 
-export const NewsLayout = () => {
+interface NewsLayoutProps {
+	enableHeader?: boolean
+	enableBackground?: boolean
+	showSettingsModal?: boolean
+	onSettingsModalClose?: () => void
+}
+
+export const NewsLayout: React.FC<NewsLayoutProps> = ({
+	enableHeader = true,
+	enableBackground = true,
+	showSettingsModal = false,
+	onSettingsModalClose,
+}) => {
 	const { themeUtils } = useTheme()
 	const [newsData, setNewsData] = useState<ExtendedNewsResponse>({
 		news: [],
@@ -36,6 +47,12 @@ export const NewsLayout = () => {
 	const [isLoadingRss, setIsLoadingRss] = useState(false)
 
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(rssState.useDefaultNews)
+
+	useEffect(() => {
+		if (showSettingsModal) {
+			setRssModalOpen(true)
+		}
+	}, [showSettingsModal])
 
 	const openNewsLink = (url: string) => {
 		window.open(url, '_blank', 'noopener,noreferrer')
@@ -165,6 +182,10 @@ export const NewsLayout = () => {
 	async function onCloseSettingModal(data: RssNewsState & { changed: boolean }) {
 		setRssModalOpen(false)
 
+		if (onSettingsModalClose) {
+			onSettingsModalClose()
+		}
+
 		if (!data.changed) {
 			console.log('No changes made to RSS settings.')
 			return
@@ -236,19 +257,21 @@ export const NewsLayout = () => {
 			/>
 
 			<div
-				className={`flex h-80 flex-col gap-1 px-2 py-2 ${themeUtils.getCardBackground()} rounded-2xl`}
+				className={`flex h-80 flex-col gap-1 px-2 py-2 ${enableBackground ? themeUtils.getCardBackground() : ''} rounded-2xl`}
 				style={{
 					scrollbarWidth: 'none',
 				}}
 			>
-				<NewsHeader
-					title="ویجی نیوز"
-					isCached={newsData.isCached}
-					useDefaultNews={rssState.useDefaultNews}
-					platformName={newsData.platform.name}
-					platformUrl={newsData.platform.url}
-					onSettingsClick={() => setRssModalOpen(true)}
-				/>
+				{enableHeader ? (
+					<NewsHeader
+						title="ویجی نیوز"
+						isCached={newsData.isCached}
+						useDefaultNews={rssState.useDefaultNews}
+						platformName={newsData.platform.name}
+						platformUrl={newsData.platform.url}
+						onSettingsClick={() => setRssModalOpen(true)}
+					/>
+				) : null}
 
 				<NewsContainer
 					isLoading={isAnyLoading}
