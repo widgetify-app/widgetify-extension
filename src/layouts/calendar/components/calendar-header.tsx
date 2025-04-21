@@ -60,7 +60,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-3 md:p-4">
+		<div className="flex items-center justify-between p-3 md:p-2">
 			<h3 className={`font-medium text-md ${getHeaderTextStyle()}`}>
 				{currentDate.format('dddd، jD jMMMM jYYYY')}
 			</h3>
@@ -74,7 +74,6 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-400 transition-colors rounded-lg cursor-pointer bg-blue-500/10 hover:bg-blue-500/20"
 					>
 						<FiCalendar size={14} />
-						<span>امروز</span>
 					</motion.button>
 				)}
 
@@ -82,16 +81,14 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 					onClick={() => changeMonth(-1)}
 					className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
-					<FaChevronRight size={12} />
-					<span>ماه قبل</span>
+					<FaChevronRight size={10} />
 				</button>
 
 				<button
 					onClick={() => changeMonth(1)}
 					className={`flex items-center gap-1 px-2 py-1  text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
 				>
-					<span>ماه بعد</span>
-					<FaChevronLeft size={12} />
+					<FaChevronLeft size={10} />
 				</button>
 			</div>
 		</div>
