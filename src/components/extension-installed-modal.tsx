@@ -35,7 +35,7 @@ export function ExtensionInstalledModal({
 	const StepIndicator = () => (
 		// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
 		<div
-			className="flex items-center justify-center gap-3 mt-6"
+			className="flex items-center justify-center gap-3"
 			role="progressbar"
 			aria-valuenow={currentStep}
 			aria-valuemin={1}
@@ -47,7 +47,7 @@ export function ExtensionInstalledModal({
 					onClick={() => setCurrentStep((index + 1) as Step)}
 					aria-label={`رفتن به گام ${index + 1}`}
 					aria-current={index + 1 === currentStep ? 'step' : undefined}
-					className={`w-10 h-2 rounded-full transition-all duration-300 ${
+					className={`w-10 h-2 cursor-pointer rounded-full transition-all duration-300 ${
 						index + 1 === currentStep
 							? 'bg-blue-500 shadow-lg shadow-blue-500/30'
 							: index + 1 < currentStep
@@ -93,22 +93,18 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 	return (
 		<>
 			<m.div
-				className="mb-6"
+				className="mb-3"
 				initial={{ y: -20 }}
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={`mb-3 text-2xl font-bold ${themeUtils.getHeadingTextStyle()}`}>
+				<h3 className={`mb-0 text-2xl font-bold ${themeUtils.getHeadingTextStyle()}`}>
 					به ویجتی‌فای خوش آمدید! 🎉
 				</h3>
-				<p className={`leading-relaxed ${themeUtils.getDescriptionTextStyle()}`}>
-					برای استفاده از تمام امکانات ویجتی‌فای، لازم است که افزونه در مرورگر شما فعال
-					بماند.
-				</p>
 			</m.div>
 
 			<m.div
-				className={`relative p-3 mt-2 mb-6 border rounded-xl ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
+				className={`relative p-1 mt-1 mb-3 border rounded-xl ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
 				initial={{ scale: 0.9, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
@@ -124,7 +120,7 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 			</m.div>
 
 			<m.div
-				className={`p-3 mb-6 text-gray-200 rounded-lg border ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
+				className={`p-3 mb-3 text-gray-200 rounded-lg border ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
 				initial={{ x: -20, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.6 }}
@@ -171,7 +167,8 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 				transition={{ duration: 0.5, delay: 0.4 }}
 			>
 				<p className="font-medium">
-					🔒 ما به حریم خصوصی شما احترام می‌گذاریم و داده‌های شما را جمع‌آوری نمی‌کنیم.
+					🔒 امنیت و حریم خصوصی کاربران برای ما در اولویت است و ما متعهد به حفاظت از
+					اطلاعات شما هستیم.
 				</p>
 			</m.div>
 
