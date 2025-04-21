@@ -50,6 +50,9 @@ export function DayItem({
 		todayShamsiEvent.some((event) => event.isHoliday) ||
 		todayHijriEvent.some((event) => event.isHoliday)
 
+	const isHolidayEvent =
+		todayShamsiEvent.some((event) => event.isHoliday) ||
+		todayHijriEvent.some((event) => event.isHoliday)
 	// Theme-specific styles
 	const getDayTextStyle = () => {
 		if (isHoliday) {
@@ -67,6 +70,10 @@ export function DayItem({
 	}
 
 	const getSelectedDayStyle = () => {
+		if (isHoliday) {
+			return 'bg-red-400/10'
+		}
+
 		switch (theme) {
 			case 'light':
 				return 'bg-blue-500/20'
@@ -78,6 +85,10 @@ export function DayItem({
 	}
 
 	const getHoverStyle = () => {
+		if (isHoliday) {
+			return 'hover:bg-red-400/10'
+		}
+
 		switch (theme) {
 			case 'light':
 				return 'hover:bg-gray-100'
@@ -98,6 +109,10 @@ export function DayItem({
 	}
 
 	const getEventIndicatorStyle = () => {
+		if (isHolidayEvent) {
+			return 'bg-red-400/80'
+		}
+
 		switch (theme) {
 			case 'light':
 				return 'bg-blue-500'
