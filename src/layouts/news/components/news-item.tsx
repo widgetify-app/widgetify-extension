@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import moment from 'jalali-moment'
 
 interface NewsItemProps {
@@ -20,7 +19,6 @@ export const NewsItem = ({
 	source,
 	publishedAt,
 	link,
-	index,
 	onClick,
 }: NewsItemProps) => {
 	const formatDate = (dateString: string) => {
@@ -38,12 +36,7 @@ export const NewsItem = ({
 	}
 
 	return (
-		<motion.div
-			key={index}
-			initial={{ opacity: 0, y: -10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.3, delay: index * 0.1 }}
-		>
+		<div className="transition-all">
 			<div
 				className="p-2 rounded-lg cursor-pointer hover:bg-opacity-50 hover:bg-gray-500/10"
 				onClick={handleClick}
@@ -65,6 +58,6 @@ export const NewsItem = ({
 					</span>
 				</div>
 			</div>
-		</motion.div>
+		</div>
 	)
 }
