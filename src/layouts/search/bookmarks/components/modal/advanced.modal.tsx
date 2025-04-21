@@ -6,10 +6,10 @@ import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
-import PopoverColorPicker from '../../../../components/PopoverColorPicker'
-import { RequireAuth } from '../../../../components/auth/require-auth'
-import type { Bookmark } from '../types/bookmark.types'
-import { BookmarkItem } from './bookmark-item'
+import PopoverColorPicker from '../../../../../components/PopoverColorPicker'
+import { RequireAuth } from '../../../../../components/auth/require-auth'
+import type { Bookmark } from '../../types/bookmark.types'
+import { BookmarkItem } from '../bookmark-item'
 
 interface AdvancedModalProps {
 	title: string
@@ -291,7 +291,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{/* Emoji Popover */}
 					{isEmojiPopoverOpen && (
 						<div
-							className={`absolute z-50 mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar ${getPopoverStyle()}`}
+							className={`absolute  mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar ${getPopoverStyle()}`}
+							style={{ zIndex: 1000 }}
 						>
 							{renderEmojiGrid()}
 						</div>
