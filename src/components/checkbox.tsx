@@ -1,5 +1,4 @@
 import { useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
 import { memo } from 'react'
 
 interface CustomCheckboxProps {
@@ -7,6 +6,8 @@ interface CustomCheckboxProps {
 	onChange: (checked: boolean) => void
 	label?: string
 	theme?: string
+	disabled?: boolean
+	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
 }
 
 const CustomCheckbox = ({
@@ -14,6 +15,8 @@ const CustomCheckbox = ({
 	onChange,
 	label,
 	theme: propTheme,
+	disabled = false,
+	fontSize = 'font-normal',
 }: CustomCheckboxProps) => {
 	const { theme: contextTheme } = useTheme()
 
@@ -46,49 +49,44 @@ const CustomCheckbox = ({
 	}
 
 	return (
-		<motion.label
-			className="relative flex items-center cursor-pointer group"
-			whileTap={{ scale: 0.95 }}
-		>
+		<label className="relative flex items-center transition-transform cursor-pointer group active:scale-95">
 			<div className="relative">
 				<input
 					type="checkbox"
 					className="sr-only peer"
 					checked={checked}
-					onChange={(e) => onChange(e.target.checked)}
+					onChange={(e) => !disabled && onChange(e.target.checked)}
+					disabled={disabled}
 				/>
-				<motion.div
+				<div
 					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()}`}
-					initial={false}
 				>
-					<motion.svg
+					<svg
+						className={`transition-all duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
 						width="12"
 						height="12"
 						viewBox="0 0 12 12"
 						fill="none"
-						initial={{ scale: 0 }}
-						animate={{ scale: checked ? 1 : 0 }}
-						transition={{ duration: 0.15 }}
 					>
-						<motion.path
+						<path
+							className={`transition-all duration-200 ${checked ? 'stroke-dashoffset-0' : 'stroke-dashoffset-full'}`}
 							d="M2.5 6L5 8.5L9.5 4"
 							stroke="white"
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
-							initial={{ pathLength: 0 }}
-							animate={{ pathLength: checked ? 1 : 0 }}
-							transition={{ duration: 0.2 }}
+							strokeDasharray="1"
+							strokeDashoffset={checked ? '0' : '1'}
 						/>
-					</motion.svg>
-				</motion.div>
+					</svg>
+				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 font-medium text-sm ${getLabelStyle()}`}>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm ${getLabelStyle()}`}>
 					{label}
 				</span>
 			)}
-		</motion.label>
+		</label>
 	)
 }
 

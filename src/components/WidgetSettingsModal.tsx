@@ -28,6 +28,15 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		toggleWidget('widgetify')
 	}
 
+	const handleComboWidgetToggle = () => {
+		// اگر ویجت ترکیبی فعال شد، ویجت ارز غیرفعال شود
+		if (!visibility.comboWidget && visibility.arzLive) {
+			toggleWidget('arzLive')
+		}
+
+		toggleWidget('comboWidget')
+	}
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -38,54 +47,89 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		>
 			<div className="p-4 space-y-4">
 				<p className={`text-sm mb-4 ${themeUtils.getTextColor()}`}>
-					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند. نوار جستجو همیشه نمایش
-					داده می‌شود.
+					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند.
 				</p>
 
-				<div className="space-y-3">
-					<CustomCheckbox
-						checked={visibility.widgetify}
-						onChange={handleWidgetifyToggle}
-						label="🏠 نمایش کارت ویجتیفای"
-					/>
+				<div className="space-y-4">
+					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
+						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+							ویجت‌های ستون راست
+						</h3>
 
-					<div className="relative">
 						<CustomCheckbox
-							checked={visibility.news}
-							onChange={handleNewsToggle}
-							label="📰 ویجی نیوز"
+							checked={visibility.widgetify}
+							onChange={handleWidgetifyToggle}
+							label="🏠 نمایش کارت ویجتیفای"
+							fontSize="font-light"
 						/>
-						{visibility.widgetify && (
-							<div className="mt-1 mr-6 text-xs font-light text-amber-500">
-								برای فعال کردن اخبار، باید کارت ویجتیفای غیرفعال باشد
-							</div>
-						)}
-						{!visibility.widgetify && !visibility.news && (
-							<div className="mt-1 mr-6 text-xs font-light text-blue-500">
-								می‌توانید اخبار را فعال کنید
+
+						<div className="relative">
+							<CustomCheckbox
+								checked={visibility.news}
+								onChange={handleNewsToggle}
+								label="📰 ویجی نیوز"
+								disabled={visibility.widgetify}
+								fontSize="font-light"
+							/>
+							{visibility.widgetify && (
+								<div className="mt-1 mr-6 text-xs font-light text-amber-500">
+									ابتدا کارت ویجتیفای را غیرفعال کنید
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
+						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+							ویجت‌های ستون چپ
+						</h3>
+
+						<div className="relative">
+							<CustomCheckbox
+								checked={visibility.comboWidget}
+								onChange={handleComboWidgetToggle}
+								label="🔄 ویجت ترکیبی (ارز و اخبار در یک ویجت)"
+								fontSize="font-light"
+							/>
+						</div>
+
+						<CustomCheckbox
+							checked={visibility.arzLive && !visibility.comboWidget}
+							onChange={() => {
+								if (!visibility.comboWidget) {
+									toggleWidget('arzLive')
+								}
+							}}
+							label="💰 ویجی‌ ارز"
+							disabled={visibility.comboWidget}
+							fontSize="font-light"
+						/>
+						{visibility.comboWidget && (
+							<div className="pr-6 mt-1 text-xs font-light text-blue-500">
+								با فعال بودن ویجت ترکیبی، ویجی ارز در همان ویجت قابل دسترسی است
 							</div>
 						)}
 					</div>
 
-					<div className="my-3 border-t border-gray-200 dark:border-gray-700"></div>
+					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
+						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+							ویجت‌های پایین صفحه
+						</h3>
 
-					<CustomCheckbox
-						checked={visibility.arzLive}
-						onChange={() => toggleWidget('arzLive')}
-						label="💰 ویجی‌ ارز"
-					/>
+						<CustomCheckbox
+							checked={visibility.calendar}
+							onChange={() => toggleWidget('calendar')}
+							label="📅 نمایش تقویم"
+							fontSize="font-light"
+						/>
 
-					<CustomCheckbox
-						checked={visibility.calendar}
-						onChange={() => toggleWidget('calendar')}
-						label="📅 نمایش تقویم"
-					/>
-
-					<CustomCheckbox
-						checked={visibility.weather}
-						onChange={() => toggleWidget('weather')}
-						label="🌤️ نمایش آب و هوا"
-					/>
+						<CustomCheckbox
+							checked={visibility.weather}
+							onChange={() => toggleWidget('weather')}
+							label="🌤️ نمایش آب و هوا"
+							fontSize="font-light"
+						/>
+					</div>
 				</div>
 			</div>
 		</Modal>

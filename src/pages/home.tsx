@@ -14,6 +14,7 @@ import {
 	useWidgetVisibility,
 } from '@/context/widget-visibility.context'
 import CalendarLayout from '@/layouts/calendar/calendar'
+import { ComboWidget } from '@/layouts/comboWidget/combo-widget.layout'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { NewsLayout } from '@/layouts/news/news.layout'
 import { SearchLayout } from '@/layouts/search/search'
@@ -44,7 +45,7 @@ function ContentSection() {
 						{visibility.widgetify ? (
 							<WidgetifyLayout />
 						) : visibility.news ? (
-							<NewsLayout />
+							<NewsLayout enableBackground={true} enableHeader={true} />
 						) : null}
 					</div>
 
@@ -53,11 +54,18 @@ function ContentSection() {
 					</div>
 
 					<div className="order-2 w-full lg:w-1/4 lg:order-3">
-						{visibility.arzLive && (
+						{visibility.comboWidget ? (
 							<CurrencyProvider>
-								<WigiArzLayout />
+								<ComboWidget />
 							</CurrencyProvider>
+						) : (
+							visibility.arzLive && (
+								<CurrencyProvider>
+									<WigiArzLayout />
+								</CurrencyProvider>
+							)
 						)}
+						{/* {} */}
 					</div>
 				</div>
 

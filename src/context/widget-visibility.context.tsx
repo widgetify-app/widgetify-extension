@@ -8,6 +8,7 @@ interface WidgetVisibilityState {
 	calendar: boolean
 	weather: boolean
 	news: boolean
+	comboWidget: boolean
 }
 
 interface WidgetVisibilityContextType {
@@ -22,6 +23,7 @@ const defaultVisibility: WidgetVisibilityState = {
 	calendar: true,
 	weather: true,
 	news: false,
+	comboWidget: false,
 }
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
