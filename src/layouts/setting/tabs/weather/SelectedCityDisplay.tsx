@@ -1,6 +1,5 @@
 import { useTheme } from '@/context/theme.context'
 import type { SelectedCity } from '@/context/weather.context'
-import { motion } from 'framer-motion'
 import { BiCurrentLocation } from 'react-icons/bi'
 
 interface SelectedCityDisplayProps {
@@ -8,18 +7,11 @@ interface SelectedCityDisplayProps {
 }
 
 export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 	if (!city) return null
 	return (
-		<motion.div
-			className={`w-full rounded-xl overflow-hidden ${
-				theme === 'light'
-					? 'bg-gradient-to-r from-blue-50 to-indigo-50/70 border border-blue-100/80'
-					: 'bg-gradient-to-r from-blue-900/20 to-indigo-900/20 border border-blue-800/30'
-			}`}
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			transition={{ duration: 0.3 }}
+		<div
+			className={`w-full rounded-xl overflow-hidden border ${themeUtils.getBorderColor()}`}
 		>
 			<div className="p-4">
 				<div className="flex items-start">
@@ -70,6 +62,6 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 					</div>
 				</div>
 			</div>
-		</motion.div>
+		</div>
 	)
 }
