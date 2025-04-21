@@ -77,7 +77,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			(bookmark) => bookmark.parentId === parentId,
 		)
 
-		return parentId === null ? [...currentFolderBookmarks] : currentFolderBookmarks
+		const sortedBookmarks = [...currentFolderBookmarks].sort((a, b) => {
+			return (a.order || 0) - (b.order || 0)
+		})
+
+		return parentId === null ? sortedBookmarks : sortedBookmarks
 	}
 
 	const getBookmarkDataSize = (bookmark: Bookmark): number => {
@@ -192,19 +196,31 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const addBookmark = async (bookmark: Bookmark) => {
 		try {
-			const bookmarkSize = getBookmarkDataSize(bookmark)
+			const bookmarkSize =
+				(bookmark.customImage?.length || 0) +
+				(bookmark.icon?.length || 0) +
+				JSON.stringify(bookmark).length
 
-			const isGif = bookmark.customImage?.startsWith('data:image/gif')
-			const sizeLimit = isGif ? 1.5 * MAX_BOOKMARK_SIZE : MAX_BOOKMARK_SIZE
-
-			if (bookmarkSize > sizeLimit) {
+			if (bookmarkSize > MAX_BOOKMARK_SIZE) {
 				toast.error(
 					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`,
 				)
 				return
 			}
 
-			const newBookmark = await prepareBookmarkForStorage(bookmark)
+			// Calculate the order for the new bookmark
+			const currentFolderItems = getCurrentFolderItems(bookmark.parentId)
+			const maxOrder = currentFolderItems.reduce(
+				(max, item) => Math.max(max, item.order || 0),
+				-1,
+			)
+
+			// Assign the next order value
+			const newBookmark = await prepareBookmarkForStorage({
+				...bookmark,
+				order: maxOrder + 1,
+			})
+
 			const updatedBookmarks = [...(bookmarks || []), newBookmark]
 
 			try {

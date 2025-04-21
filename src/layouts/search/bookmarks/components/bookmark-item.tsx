@@ -11,6 +11,12 @@ interface BookmarkItemProps {
 	theme?: string
 	canAdd?: boolean
 	onClick: (e?: React.MouseEvent<any>) => void
+	draggable?: boolean
+	isDragging?: boolean
+	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
 }
 
 const getBookmarkStyle = (theme: string) => {
@@ -29,6 +35,12 @@ export function BookmarkItem({
 	theme = 'glass',
 	canAdd = true,
 	onClick,
+	draggable = false,
+	isDragging = false,
+	onDragStart,
+	onDragOver,
+	onDragEnd,
+	onDrop,
 }: BookmarkItemProps) {
 	const [isHovered, setIsHovered] = useState(false)
 
@@ -37,7 +49,19 @@ export function BookmarkItem({
 	}
 
 	if (bookmark.type === 'FOLDER') {
-		return <FolderBookmarkItem bookmark={bookmark} onClick={onClick} theme={theme} />
+		return (
+			<FolderBookmarkItem
+				bookmark={bookmark}
+				onClick={onClick}
+				theme={theme}
+				draggable={draggable}
+				isDragging={isDragging}
+				onDragStart={onDragStart}
+				onDragOver={onDragOver}
+				onDragEnd={onDragEnd}
+				onDrop={onDrop}
+			/>
+		)
 	}
 
 	const customStyles = bookmark.customBackground
@@ -48,26 +72,35 @@ export function BookmarkItem({
 		: {}
 
 	return (
-		<motion.button
-			onClick={onClick}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
-			whileHover={{ scale: 1.02 }}
-			style={customStyles}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border'}`}
+		<div
+			draggable={draggable}
+			onDragStart={onDragStart}
+			onDragOver={onDragOver}
+			onDragEnd={onDragEnd}
+			onDrop={onDrop}
+			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			{renderStickerPattern(bookmark)}
-			<BookmarkIcon bookmark={bookmark} />
-			<BookmarkTitle
-				title={bookmark.title}
-				theme={theme}
-				customTextColor={bookmark.customTextColor}
-			/>
-			{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
-			<div
-				className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
-			/>
-		</motion.button>
+			<motion.button
+				onClick={onClick}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
+				whileHover={{ scale: 1.02 }}
+				style={customStyles}
+				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border'}`}
+			>
+				{renderStickerPattern(bookmark)}
+				<BookmarkIcon bookmark={bookmark} />
+				<BookmarkTitle
+					title={bookmark.title}
+					theme={theme}
+					customTextColor={bookmark.customTextColor}
+				/>
+				{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
+				<div
+					className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
+				/>
+			</motion.button>
+		</div>
 	)
 }
 
@@ -75,10 +108,22 @@ function FolderBookmarkItem({
 	bookmark,
 	onClick,
 	theme = 'glass',
+	draggable = false,
+	isDragging = false,
+	onDragStart,
+	onDragOver,
+	onDragEnd,
+	onDrop,
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
 	theme?: string
+	draggable?: boolean
+	isDragging?: boolean
+	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
+	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
 }) {
 	const [isHovered, setIsHovered] = useState(false)
 
@@ -109,55 +154,64 @@ function FolderBookmarkItem({
 		: {}
 
 	return (
-		<motion.button
-			onClick={onClick}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
-			whileHover={{ scale: 1.02 }}
-			style={customStyles}
-			className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'}`}
+		<div
+			draggable={draggable}
+			onDragStart={onDragStart}
+			onDragOver={onDragOver}
+			onDragEnd={onDragEnd}
+			onDrop={onDrop}
+			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			{renderStickerPattern(bookmark)}
-			<div className="absolute inset-0 overflow-hidden rounded-xl">
-				<div
-					className={`absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b ${theme === 'light' ? 'from-blue-300/10' : 'from-blue-300/10'} to-transparent`}
-				/>
-				<div
-					className={`absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t ${theme === 'light' ? 'from-blue-200/20' : 'from-blue-900/20'} to-transparent`}
-				/>
-			</div>
-
-			<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
-
-			<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
-				{typeof displayIcon === 'string' ? (
-					<motion.img
-						initial={{ scale: 0.9 }}
-						animate={{ scale: 1 }}
-						src={displayIcon}
-						className="transition-transform duration-300 group-hover:scale-110"
-						alt={bookmark.title}
+			<motion.button
+				onClick={onClick}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => setIsHovered(false)}
+				whileHover={{ scale: 1.02 }}
+				style={customStyles}
+				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'}`}
+			>
+				{renderStickerPattern(bookmark)}
+				<div className="absolute inset-0 overflow-hidden rounded-xl">
+					<div
+						className={`absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b ${theme === 'light' ? 'from-blue-300/10' : 'from-blue-300/10'} to-transparent`}
 					/>
-				) : (
-					displayIcon
-				)}
-			</div>
+					<div
+						className={`absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t ${theme === 'light' ? 'from-blue-200/20' : 'from-blue-900/20'} to-transparent`}
+					/>
+				</div>
 
-			<BookmarkTitle
-				title={bookmark.title}
-				theme={theme}
-				customTextColor={bookmark.customTextColor}
-			/>
-			<div
-				className={
-					'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-blue-400/10 to-transparent rounded-xl'
-				}
-			/>
+				<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
 
-			<div className="absolute inset-0 border rounded-xl border-white/5" />
+				<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
+					{typeof displayIcon === 'string' ? (
+						<motion.img
+							initial={{ scale: 0.9 }}
+							animate={{ scale: 1 }}
+							src={displayIcon}
+							className="transition-transform duration-300 group-hover:scale-110"
+							alt={bookmark.title}
+						/>
+					) : (
+						displayIcon
+					)}
+				</div>
 
-			{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
-		</motion.button>
+				<BookmarkTitle
+					title={bookmark.title}
+					theme={theme}
+					customTextColor={bookmark.customTextColor}
+				/>
+				<div
+					className={
+						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-blue-400/10 to-transparent rounded-xl'
+					}
+				/>
+
+				<div className="absolute inset-0 border rounded-xl border-white/5" />
+
+				{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
+			</motion.button>
+		</div>
 	)
 }
 
@@ -264,7 +318,7 @@ function BookmarkTitle({
 	return (
 		<span
 			style={customTextColor ? { color: customTextColor } : undefined}
-			className={`text-[.7rem] w-full text-center font-medium transition-colors duration-300 truncate ${!customTextColor ? getTitleStyle() : ''}`}
+			className={`text-[.7rem] z-50 w-full text-center font-semibold transition-colors duration-300 truncate ${!customTextColor ? getTitleStyle() : ''}`}
 		>
 			{title}
 		</span>
@@ -338,7 +392,7 @@ const renderStickerPattern = (bookmark: Bookmark) => {
 			rotate: `${25 + seed * 3.5}deg`,
 			size: 23,
 			opacity: 0.45,
-			zIndex: -1,
+			zIndex: 1,
 			scale: 1.02 + seed * 0.015,
 			shadow: '0 1px 3px rgba(0,0,0,0.18)',
 		},

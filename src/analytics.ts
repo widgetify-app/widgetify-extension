@@ -68,7 +68,7 @@ const Analytics = (() => {
 	async function featureUsed(
 		featureName: string,
 		details: Record<string, any> = {},
-		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' = 'other',
+		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' | 'drag' = 'other',
 	): Promise<void> {
 		const enhancedDetails = {
 			action_type: actionType,

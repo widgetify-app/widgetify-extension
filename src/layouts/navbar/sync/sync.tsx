@@ -384,22 +384,25 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 }
 async function SyncBookmark(method: 'GET' | 'POST') {
 	const mapBookmark = (bookmarks: Bookmark[]) => {
-		return (
-			bookmarks
-				.map((bookmark) => ({
-					title: bookmark.title,
-					url: 'url' in bookmark ? bookmark.url : undefined,
-					parentId: bookmark.parentId,
-					offlineId: bookmark.id,
-					id: bookmark.onlineId,
-					type: bookmark.type,
-					sticker: bookmark.sticker,
-					customTextColor: bookmark.customTextColor,
-					customBackground: bookmark.customBackground,
-				}))
-				// sort by without parentId
-				.sort((a, b) => (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1))
-		)
+		return bookmarks
+			.map((bookmark) => ({
+				title: bookmark.title,
+				url: 'url' in bookmark ? bookmark.url : undefined,
+				parentId: bookmark.parentId,
+				offlineId: bookmark.id,
+				id: bookmark.onlineId,
+				type: bookmark.type,
+				sticker: bookmark.sticker,
+				customTextColor: bookmark.customTextColor,
+				customBackground: bookmark.customBackground,
+				order: bookmark.order || 0,
+			}))
+			.sort((a, b) => {
+				const parentCompare = (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1)
+				if (parentCompare !== 0) return parentCompare
+
+				return (a.order || 0) - (b.order || 0)
+			})
 	}
 
 	const [apiClient, bookmarks, deletedBookmarks] = await Promise.all([
@@ -435,6 +438,7 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		sticker: bookmark.sticker,
 		customTextColor: bookmark.customTextColor,
 		customBackground: bookmark.customBackground,
+		order: bookmark.order || 0, // Include order in the mapped fetched bookmarks
 	}))
 
 	callEvent('bookmarksChanged', mappedFetched)

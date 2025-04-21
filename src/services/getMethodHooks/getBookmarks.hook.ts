@@ -15,6 +15,7 @@ export interface FetchedBookmark {
 	customTextColor?: string
 	customBackground?: string
 	sticker?: string
+	order?: number
 }
 
 export const useGetBookmarks = () => {

@@ -1,7 +1,10 @@
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { useTheme } from '@/context/theme.context'
 
-import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
+import { SyncTarget } from '@/layouts/navbar/sync/sync'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AddBookmarkModal } from './components/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/bookmark-context-menu'
 import { BookmarkItem } from './components/bookmark-item'
@@ -12,8 +15,14 @@ import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 export function BookmarksComponent() {
 	const { theme, themeUtils } = useTheme()
 
-	const { bookmarks, getCurrentFolderItems, addBookmark, editBookmark, deleteBookmark } =
-		useBookmarkStore()
+	const {
+		bookmarks,
+		getCurrentFolderItems,
+		addBookmark,
+		editBookmark,
+		deleteBookmark,
+		setBookmarks,
+	} = useBookmarkStore()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
@@ -30,16 +39,36 @@ export function BookmarksComponent() {
 	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
 		useState<boolean>(true)
 
-	// Number of bookmarks per row
+	const [draggedBookmarkId, setDraggedBookmarkId] = useState<string | null>(null)
+	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
+
+	const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
 	const BOOKMARKS_PER_ROW = 5
-	// Total number of bookmarks to display (2 rows)
 	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
+
+	const debouncedSync = useCallback(() => {
+		if (syncTimeoutRef.current) {
+			clearTimeout(syncTimeoutRef.current)
+		}
+
+		syncTimeoutRef.current = setTimeout(() => {
+			callEvent('startSync', SyncTarget.BOOKMARKS)
+			Analytics.featureUsed('drag-and-drop-bookmark', {}, 'drag')
+			syncTimeoutRef.current = null
+		}, 1000) // Wait 1 second before triggering sync
+	}, [])
 
 	useEffect(() => {
 		const handleClickOutside = () => setSelectedBookmark(null)
 		document.addEventListener('click', handleClickOutside)
 
-		return () => document.removeEventListener('click', handleClickOutside)
+		return () => {
+			document.removeEventListener('click', handleClickOutside)
+			if (syncTimeoutRef.current) {
+				clearTimeout(syncTimeoutRef.current)
+			}
+		}
 	}, [])
 
 	const isManageable = (bookmark: Bookmark) => {
@@ -89,6 +118,81 @@ export function BookmarksComponent() {
 				window.location.href = bookmark.url
 			}
 		}
+	}
+
+	const handleDragStart = (e: React.DragEvent<HTMLDivElement>, bookmarkId: string) => {
+		if (bookmarks.find((b) => b.id === bookmarkId && !isManageable(b))) return
+
+		setDraggedBookmarkId(bookmarkId)
+		e.dataTransfer.effectAllowed = 'move'
+
+		const dragImage = document.createElement('div')
+		dragImage.style.width = '80px'
+		dragImage.style.height = '90px'
+		dragImage.style.opacity = '0.5'
+		dragImage.style.position = 'absolute'
+		dragImage.style.top = '-1000px'
+		document.body.appendChild(dragImage)
+
+		e.dataTransfer.setDragImage(dragImage, 40, 45)
+
+		setTimeout(() => {
+			document.body.removeChild(dragImage)
+		}, 0)
+	}
+
+	const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+		e.preventDefault()
+		e.dataTransfer.dropEffect = 'move'
+		setDragOverIndex(index)
+	}
+
+	const handleDragEnd = () => {
+		setDraggedBookmarkId(null)
+		setDragOverIndex(null)
+	}
+
+	const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
+		e.preventDefault()
+
+		if (!draggedBookmarkId) return
+
+		const currentItems = getCurrentFolderItems(currentFolderId)
+		const sourceIndex = currentItems.findIndex((item) => item.id === draggedBookmarkId)
+
+		if (sourceIndex === -1 || sourceIndex === targetIndex) {
+			setDraggedBookmarkId(null)
+			setDragOverIndex(null)
+			return
+		}
+
+		const allBookmarks = [...bookmarks]
+
+		const sourceBookmark = currentItems[sourceIndex]
+		const actualSourceIndex = allBookmarks.findIndex((b) => b.id === sourceBookmark.id)
+		const targetBookmark = currentItems[targetIndex]
+		const actualTargetIndex = allBookmarks.findIndex((b) => b.id === targetBookmark.id)
+
+		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
+			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
+
+			allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
+
+			const updatedBookmarks = allBookmarks.map((bookmark) => {
+				if (bookmark.parentId === currentFolderId) {
+					const newIndex = allBookmarks.findIndex((b) => b.id === bookmark.id)
+					return { ...bookmark, order: newIndex }
+				}
+				return bookmark
+			})
+
+			setBookmarks(updatedBookmarks)
+
+			debouncedSync()
+		}
+
+		setDraggedBookmarkId(null)
+		setDragOverIndex(null)
 	}
 
 	const handleNavigate = (folderId: string | null, depth: number) => {
@@ -159,13 +263,19 @@ export function BookmarksComponent() {
 						<div
 							key={i}
 							onContextMenu={(e) => handleRightClick(e, bookmark)}
-							className="transition-transform duration-200 transform hover:scale-105"
+							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-xl' : ''}`}
 						>
 							<BookmarkItem
 								bookmark={bookmark}
 								onClick={(e) => handleBookmarkClick(bookmark, e)}
 								theme={theme}
 								canAdd={true}
+								draggable={isManageable(bookmark)}
+								isDragging={draggedBookmarkId === bookmark.id}
+								onDragStart={(e) => handleDragStart(e, bookmark.id)}
+								onDragOver={(e) => handleDragOver(e, i)}
+								onDragEnd={handleDragEnd}
+								onDrop={(e) => handleDrop(e, i)}
 							/>
 						</div>
 					) : (
