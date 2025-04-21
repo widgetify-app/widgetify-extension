@@ -8,7 +8,7 @@ import { FiRotateCcw } from 'react-icons/fi'
 import { RequireAuth } from '../../../../components/auth/require-auth'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkItem } from './bookmark-item'
-import PopoverColorPicker from './PopoverColorPicker'
+import PopoverColorPicker from '../../../../components/PopoverColorPicker'
 
 interface AdvancedModalProps {
 	title: string
@@ -192,7 +192,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								placeholder="#000000"
 								debounce={true}
 							/>
-							<div className="absolute -translate-y-1/2 right-1 top-1/2 flex items-center gap-2">
+							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker color={background} onChange={setBackground} />
 							</div>
 							<button
@@ -220,7 +220,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								placeholder="#000000"
 								debounce={true}
 							/>
-							<div className="absolute -translate-y-1/2 right-1 top-1/2 flex items-center gap-2">
+							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker color={textColor} onChange={setTextColor} />
 							</div>
 							<button
