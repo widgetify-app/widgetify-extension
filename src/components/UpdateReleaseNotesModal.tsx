@@ -14,6 +14,31 @@ type ReleaseNotes = Record<
 	}
 >
 const releaseNotes: ReleaseNotes = {
+	'1.0.4': {
+		name: 'کیهان',
+		notes: [
+			{
+				type: 'feature',
+				description: 'امکان شخصی‌سازی کامل بوکمارک‌ها با تغییر رنگ پس زمینه و متن',
+			},
+			{
+				type: 'feature',
+				description: 'قابلیت افزودن استیکر به بوکمارک‌ها برای شناسایی سریع‌تر',
+			},
+			{
+				type: 'feature',
+				description: 'سازماندهی آسان بوکمارک‌ها با قابلیت درگ و دراپ',
+			},
+			{
+				type: 'feature',
+				description: 'استفاده همزمان از ویجی‌ارز و ویجی‌نیوز به طور همزمان',
+			},
+			{
+				type: 'improvement',
+				description: 'بهبود ظاهری برای تقویم و بخش تنظیمات',
+			},
+		],
+	},
 	'1.0.3': {
 		name: 'طلوع',
 		notes: [
