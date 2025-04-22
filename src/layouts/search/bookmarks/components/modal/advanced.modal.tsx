@@ -247,7 +247,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<label
 						className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
 					>
-						انتخاب استکیر (اختیاری)
+						انتخاب استیکر (اختیاری)
 					</label>
 
 					<div className="flex items-center gap-2 mt-1">
@@ -270,10 +270,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 											{sticker}
 										</span>
 									)}
-									<span className="text-xs font-medium">تغییر استکیر</span>
+									<span className="text-xs font-medium">تغییر استیکر</span>
 								</>
 							) : (
-								<span className="text-xs font-medium">انتخاب استکیر</span>
+								<span className="text-xs font-medium">انتخاب استیکر</span>
 							)}
 						</button>
 
