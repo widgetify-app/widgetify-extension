@@ -160,6 +160,16 @@ export const AuthForm = () => {
 						placeholder="••••••••"
 						disabled={signInMutation.isPending || signUpMutation.isPending}
 					/>
+					{isLogin && (
+						<a
+							href="https://widgetify.ir/forgot-password"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={`block text-left text-sm transition-colors cursor-pointer font-light ${getToggleButtonStyle()}`}
+						>
+							رمز عبور خود را فراموش کرده‌اید؟
+						</a>
+					)}
 				</div>
 
 				<motion.button
