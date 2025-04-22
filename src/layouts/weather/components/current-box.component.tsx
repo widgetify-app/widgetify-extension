@@ -15,7 +15,7 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 
 	const fadeInUp = {
 		hidden: { opacity: 0, y: 20 },
@@ -175,7 +175,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 				<m.div
 					variants={fadeInUp}
-					className={`relative mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${getDescriptionBoxStyle()}`}
+					className={`relative mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${themeUtils.getBorderColor()} border ${getDescriptionBoxStyle()}`}
 				>
 					<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">
 						<div className="flex-1">

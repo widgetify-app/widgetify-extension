@@ -62,7 +62,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 			<m.div
 				initial={{ y: 20, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300  ${getDescriptionBoxStyle()}  rounded-xl`}
+				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300 ${themeUtils.getBorderColor()} border ${getDescriptionBoxStyle()}  rounded-xl`}
 			>
 				{/* Time Section */}
 				<div className="flex flex-col items-center gap-0.5 w-full">
