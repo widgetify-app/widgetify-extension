@@ -15,7 +15,7 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const fadeInUp = {
 		hidden: { opacity: 0, y: 20 },
@@ -101,7 +101,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						},
 					},
 				}}
-				className={`col-span-2 py-2.5 px-3 shadow-lg bg-gradient-to-br flex-2 ${themeUtils.getCardBackground()} backdrop-blur-sm rounded-xl`}
+				className={'col-span-2  flex-2 px-3'}
 			>
 				<div className="flex flex-row-reverse items-start justify-between gap-3">
 					<m.div

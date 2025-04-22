@@ -46,12 +46,23 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 		}
 	}
 
+	const getDescriptionBoxStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/70 backdrop-blur-sm'
+			case 'dark':
+				return 'bg-neutral-800/10 backdrop-blur-sm'
+			default: // glass
+				return 'bg-neutral-900/40'
+		}
+	}
+
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
 				initial={{ y: 20, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300  shadow-md ${themeUtils.getCardBackground()} rounded-xl`}
+				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300  ${getDescriptionBoxStyle()}  rounded-xl`}
 			>
 				{/* Time Section */}
 				<div className="flex flex-col items-center gap-0.5 w-full">

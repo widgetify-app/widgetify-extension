@@ -19,7 +19,7 @@ import { useTheme } from '@/context/theme.context'
 
 export function WeatherLayout() {
 	const { selectedCity, weatherSettings } = useWeatherStore()
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
 	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
 
@@ -42,7 +42,6 @@ export function WeatherLayout() {
 			refetchInterval: 0,
 		})
 
-	// Get theme-specific navigation button styles
 	const getNavigationButtonStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -85,10 +84,12 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<div className="flex flex-col h-80">
+			<div
+				className={`flex flex-col h-80 px-2 py-2.5 ${themeUtils.getCardBackground()} rounded-xl`}
+			>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<div className="relative flex-1 p-1 mt-2 overflow-hidden lg:pb-0">
+				<div className="relative flex-1 p-1 px-3 overflow-hidden lg:pb-0">
 					<Swiper
 						modules={[Pagination, Navigation, FreeMode]}
 						spaceBetween={8}
