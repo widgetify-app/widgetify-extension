@@ -1,5 +1,6 @@
 import CustomCheckbox from '@/components/checkbox'
 import { SectionPanel } from '@/components/section-panel'
+import { TextInput } from '@/components/text-input'
 import { useTheme } from '@/context/theme.context'
 
 interface PetSettingsProps {
@@ -16,17 +17,6 @@ export function PetSettings({
 	setPetName,
 }: PetSettingsProps) {
 	const { theme, themeUtils } = useTheme()
-
-	const getPetSettingsContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/80 border-gray-300/30'
-			case 'dark':
-				return 'bg-gray-800/80 border-gray-700/40'
-			default: // glass
-				return 'bg-white/5 border-white/10'
-		}
-	}
 
 	const getHintTextStyle = () => {
 		switch (theme) {
@@ -57,16 +47,15 @@ export function PetSettings({
 				</div>
 
 				{enablePets && (
-					<div className={`p-4 mt-4 border rounded-lg ${getPetSettingsContainerStyle()}`}>
+					<div className={`p-4 mt-4  rounded-lg border ${themeUtils.getBorderColor()}`}>
 						<p className={`mb-3 font-medium ${themeUtils.getHeadingTextStyle()}`}>
 							نام حیوان خانگی
 						</p>
-						<input
+						<TextInput
 							type="text"
 							value={petName}
-							onChange={(e) => setPetName(e.target.value)}
+							onChange={(value) => setPetName(value)}
 							placeholder="آکیتا"
-							className={`w-full px-4 py-2 border rounded-lg ${themeUtils.getInputStyles()}`}
 						/>
 						<p className={`mt-2 text-xs ${getHintTextStyle()}`}>
 							در صورت خالی بودن، نام پیش‌فرض "آکیتا" استفاده می‌شود.

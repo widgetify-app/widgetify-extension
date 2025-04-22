@@ -90,7 +90,7 @@ export const getCardBackground = (theme: ThemeType): string => {
 		case 'dark':
 			return 'bg-neutral-900 text-gray-300'
 		default:
-			return 'bg-neutral-900/70 text-gray-300'
+			return 'bg-neutral-900/70 text-gray-300  backdrop-blur-sm'
 	}
 }
 

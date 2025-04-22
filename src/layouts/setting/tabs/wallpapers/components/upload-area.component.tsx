@@ -15,28 +15,6 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const { processFile } = useWallpaperUpload({ onWallpaperChange })
 
-	const getPreviewContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70 border-gray-300/30'
-			case 'dark':
-				return 'bg-gray-800/70 border-gray-700/30'
-			default: // glass
-				return 'bg-white/10 border-white/20'
-		}
-	}
-
-	const getPrimaryButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-700'
-			case 'dark':
-				return 'bg-blue-500/30 hover:bg-blue-500/50 text-blue-300'
-			default: // glass
-				return 'bg-blue-500/40 hover:bg-blue-500/60 text-blue-200 shadow-sm shadow-blue-500/30'
-		}
-	}
-
 	const getUploadButtonStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -87,7 +65,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 
 	return (
 		<div
-			className={`relative overflow-hidden border rounded-lg backdrop-blur-sm shadow-sm ${getPreviewContainerStyle()}`}
+			className={`relative overflow-hidden  rounded-lg backdrop-blur-sm shadow-sm border ${themeUtils.getBorderColor()} ${themeUtils.getCardBackground()}`}
 		>
 			<div className="flex items-center p-2.5">
 				<div className="relative flex-shrink-0 w-16 h-12 overflow-hidden rounded-md shadow-sm">
@@ -113,7 +91,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				<div className="flex gap-2">
 					<button
 						onClick={handleFileSelect}
-						className={`px-3 py-1.5 text-sm transition-all duration-200 rounded-lg ${getPrimaryButtonStyle()} flex items-center gap-1.5 cursor-pointer`}
+						className={`px-3 py-1.5 text-sm transition-all duration-200 rounded-lg ${themeUtils.getButtonStyles()} flex items-center gap-1.5 cursor-pointer`}
 					>
 						<FiEdit size={14} />
 						<span>تغییر</span>

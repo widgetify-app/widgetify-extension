@@ -11,7 +11,7 @@ import { useWallpaper } from '../hooks/use-wallpaper'
 import { useWallpapersByCategory } from '../hooks/use-wallpapers-by-category'
 
 export function GalleryTab() {
-	const { theme } = useTheme()
+	const { theme, themeUtils } = useTheme()
 	const [isCategoryView, setIsCategoryView] = useState(true)
 
 	const {
@@ -46,6 +46,17 @@ export function GalleryTab() {
 		setIsCategoryView(true)
 	}
 
+	const wallpaperCardStyle = () => {
+		switch (theme) {
+			case 'light':
+				return 'bg-gray-100/70 text-gray-800'
+			case 'dark':
+				return 'bg-neutral-800/80 text-gray-300'
+			default:
+				return 'bg-neutral-900/70 text-gray-300  backdrop-blur-sm'
+		}
+	}
+
 	useEffect(() => {
 		if (allWallpapers?.length) {
 			const imageUrls = allWallpapers
@@ -64,40 +75,13 @@ export function GalleryTab() {
 		isAllCategory?: boolean
 	}
 
-	function CategoryFolder({
-		id,
-		name,
-		previewImages,
-		isAllCategory = false,
-	}: FolderProps) {
-		const getFolderStyle = () => {
-			if (isAllCategory) {
-				switch (theme) {
-					case 'light':
-						return 'bg-blue-500/10 border border-blue-200 hover:bg-blue-500/20'
-					case 'dark':
-						return 'bg-blue-500/20 border border-blue-700/70 hover:bg-blue-500/30'
-					default:
-						return 'bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20'
-				}
-			}
-
-			switch (theme) {
-				case 'light':
-					return 'bg-gray-100/70 border border-gray-200 hover:bg-gray-200/50'
-				case 'dark':
-					return 'bg-gray-800/70 border border-gray-700 hover:bg-gray-700/50'
-				default:
-					return 'bg-white/5 border border-white/10 hover:bg-white/10'
-			}
-		}
-
+	function CategoryFolder({ id, name, previewImages }: FolderProps) {
 		return (
 			<m.div
 				whileHover={{ scale: 1.03 }}
 				whileTap={{ scale: 0.97 }}
 				onClick={() => handleCategorySelect(id)}
-				className={`cursor-pointer rounded-lg p-3 ${getFolderStyle()} transition-all h-32 max-h-32 flex flex-col`}
+				className={`cursor-pointer rounded-lg p-3 border ${themeUtils.getBorderColor()} ${wallpaperCardStyle()} transition-all h-32 max-h-32 flex flex-col`}
 			>
 				<div className="flex items-center gap-2 mb-2">
 					<FiFolder className="text-blue-500" size={18} />

@@ -54,7 +54,7 @@ export const WidgetifyLayout = () => {
 			case 'light':
 				return 'bg-gray-50/80'
 			case 'dark':
-				return 'bg-neutral-800/50'
+				return 'bg-neutral-800/20'
 			default: // glass
 				return 'bg-black/20'
 		}
@@ -79,7 +79,6 @@ export const WidgetifyLayout = () => {
 
 					{/* Daily Summary Content */}
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
-						{/* Daily Message from API */}
 						{dailyMessage?.content && (
 							<motion.div
 								className={`p-2 mb-3 rounded-lg ${getContainerStyle()} shadow-sm border-r-2 border-blue-400/50`}
@@ -98,9 +97,7 @@ export const WidgetifyLayout = () => {
 							</motion.div>
 						)}
 
-						{/* Today's Summary */}
 						<div className="space-y-3">
-							{/* Todo Summary */}
 							<motion.div
 								className={`p-2 rounded-lg ${getContainerStyle()} shadow-sm`}
 								initial={{ opacity: 0, y: 5 }}

@@ -39,7 +39,7 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			case 'light':
 				return 'border-gray-300 bg-gray-100/50 hover:bg-gray-200/60'
 			case 'dark':
-				return 'border-gray-700 bg-gray-700/40 hover:bg-gray-700/60'
+				return 'border-gray-700 bg-neutral-800/80 hover:bg-neutral-700/60'
 			default: // glass
 				return 'border-gray-700 bg-white/5 hover:bg-white/10'
 		}

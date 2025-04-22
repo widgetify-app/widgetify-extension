@@ -21,7 +21,7 @@ export function CheckBoxWithDescription({
 			case 'light':
 				return 'bg-gray-100/70 hover:bg-gray-200/70'
 			case 'dark':
-				return 'bg-gray-800/70 hover:bg-gray-700/70'
+				return 'bg-neutral-800/80 hover:bg-neutral-700/70'
 			default: // glass
 				return 'bg-white/5 hover:bg-white/8'
 		}

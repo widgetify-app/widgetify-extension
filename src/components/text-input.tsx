@@ -77,9 +77,9 @@ export function TextInput({
                 `
 			case 'dark':
 				return `
-                    bg-gray-800/80 text-gray-200 border-gray-700/40
+                    bg-neutral-800/80 text-gray-200 border-gray-700/40
                     placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
-                    hover:bg-gray-800/90 disabled:bg-gray-800/50 disabled:text-gray-500
+                    hover:bg-neutral-800/90 disabled:bg-gray-800/50 disabled:text-gray-500
                 `
 			default: // glass
 				return `

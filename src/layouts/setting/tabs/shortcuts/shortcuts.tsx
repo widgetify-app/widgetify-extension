@@ -51,11 +51,11 @@ export function ShortcutsTab() {
 	const getKeyStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-100 text-gray-700 border-gray-200'
+				return 'bg-gray-100 text-gray-700'
 			case 'dark':
-				return 'bg-gray-800 text-gray-300 border-gray-700'
+				return 'bg-neutral-800/80'
 			default:
-				return 'bg-black/20 text-gray-200 border-white/10'
+				return 'bg-black/20 text-gray-200'
 		}
 	}
 
@@ -85,13 +85,13 @@ export function ShortcutsTab() {
 									{categoryShortcuts.map((shortcut) => (
 										<div
 											key={shortcut.id}
-											className={`flex items-center justify-between p-3 rounded-lg border ${themeUtils.getBorderColor()}`}
+											className={`flex items-center justify-between p-3 rounded-lg border ${themeUtils.getBorderColor()} ${themeUtils.getBorderColor()}`}
 										>
 											<span className={themeUtils.getTextColor()}>
 												{shortcut.description}
 											</span>
 											<kbd
-												className={`px-3 py-1 text-sm font-mono rounded-md border ${getKeyStyle()}`}
+												className={`px-3 py-1 text-sm font-mono rounded-md border ${getKeyStyle()} ${themeUtils.getTextColor()} opacity-75`}
 											>
 												{isMac ? shortcut.macKey : shortcut.windowsKey}
 											</kbd>

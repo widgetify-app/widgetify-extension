@@ -51,7 +51,7 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 			case 'light':
 				return 'bg-gray-100/70'
 			case 'dark':
-				return 'bg-neutral-800/30'
+				return 'bg-neutral-800/20'
 			default: // glass
 				return 'bg-neutral-900/40'
 		}
