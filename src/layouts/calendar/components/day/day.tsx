@@ -4,7 +4,12 @@ import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import jalaliMoment from 'jalali-moment'
 import type { Todo } from '../../interface/todo.interface'
-import { formatDateStr, getHijriEvents, getShamsiEvents } from '../../utils'
+import {
+	formatDateStr,
+	getGregorianEvents,
+	getHijriEvents,
+	getShamsiEvents,
+} from '../../utils'
 import { toolTipContent } from './toolTipContent'
 
 interface DayItemProps {
@@ -29,16 +34,17 @@ export function DayItem({
 	const { theme } = useTheme()
 	const cellDate = currentDate.clone().jDate(day)
 	const dateStr = formatDateStr(cellDate)
-	const todayShamsiEvent = getShamsiEvents(events, cellDate)
-	const todayHijriEvent = getHijriEvents(events, cellDate)
+	const todayShamsiEvents = getShamsiEvents(events, cellDate)
+	const todayHijriEvents = getHijriEvents(events, cellDate)
+	const todayGregorianEvents = getGregorianEvents(events, cellDate)
 
 	const googleEventsForDay = filterGoogleEventsByDate(googleEvents, cellDate)
 	const hasGoogleEvents = googleEventsForDay.length > 0
 
-	const hasEvent = todayShamsiEvent.length || todayHijriEvent.length || hasGoogleEvents
+	const hasEvent = todayShamsiEvents.length || todayHijriEvents.length || hasGoogleEvents
 	const eventIcons = [
-		...todayShamsiEvent.filter((event) => event.icon).map((event) => event.icon),
-		...todayHijriEvent.filter((event) => event.icon).map((event) => event.icon),
+		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
+		...todayHijriEvents.filter((event) => event.icon).map((event) => event.icon),
 	].filter(Boolean) as string[]
 
 	const hasTodo = todos.some((todo) => todo.date === dateStr)
@@ -47,12 +53,13 @@ export function DayItem({
 
 	const isHoliday =
 		cellDate.day() === 5 ||
-		todayShamsiEvent.some((event) => event.isHoliday) ||
-		todayHijriEvent.some((event) => event.isHoliday)
+		todayShamsiEvents.some((event) => event.isHoliday) ||
+		todayHijriEvents.some((event) => event.isHoliday)
 
 	const isHolidayEvent =
-		todayShamsiEvent.some((event) => event.isHoliday) ||
-		todayHijriEvent.some((event) => event.isHoliday)
+		todayShamsiEvents.some((event) => event.isHoliday) ||
+		todayHijriEvents.some((event) => event.isHoliday)
+
 	// Theme-specific styles
 	const getDayTextStyle = () => {
 		if (isHoliday) {
@@ -132,14 +139,19 @@ export function DayItem({
 
 	return (
 		<Tooltip
-			content={toolTipContent(cellDate, theme, googleEvents, isHoliday)}
+			content={toolTipContent(cellDate, theme, {
+				todayShamsiEvents,
+				todayHijriEvents,
+				todayGregorianEvents,
+				googleEvents: googleEventsForDay,
+			})}
 			position="top"
 			key={`day-${day}`}
 		>
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
-                    relative p-0 rounded-full text-xs transition-colors cursor-pointer 
+                    relative p-0 rounded-md text-xs transition-colors cursor-pointer 
                     h-6 w-6 mx-auto flex items-center justify-center
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
