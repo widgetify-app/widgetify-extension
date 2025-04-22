@@ -35,7 +35,7 @@ const releaseNotes: ReleaseNotes = {
 			},
 			{
 				type: 'improvement',
-				description: 'بهبود ظاهری برای تقویم و بخش تنظیمات',
+				description: 'بهبود ظاهری',
 			},
 		],
 	},
