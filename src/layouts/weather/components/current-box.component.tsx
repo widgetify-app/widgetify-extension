@@ -38,9 +38,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const getDescriptionBoxStyle = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-gray-100/70 backdrop-blur-sm'
+				return 'bg-gray-100/70'
 			case 'dark':
-				return 'bg-neutral-800/10 backdrop-blur-sm'
+				return 'bg-neutral-800/30'
 			default: // glass
 				return 'bg-neutral-900/40'
 		}

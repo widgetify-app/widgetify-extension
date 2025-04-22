@@ -89,7 +89,7 @@ export function WeatherLayout() {
 			>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<div className="relative flex-1 p-1 px-3 overflow-hidden lg:pb-0">
+				<div className="relative flex-1 px-3 mt-2 overflow-hidden lg:pb-0">
 					<Swiper
 						modules={[Pagination, Navigation, FreeMode]}
 						spaceBetween={8}
