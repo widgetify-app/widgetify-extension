@@ -103,7 +103,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				}}
 				className={'col-span-2  flex-2 px-3'}
 			>
-				<div className="flex flex-row-reverse items-start justify-between gap-3">
+				<div className="flex flex-row-reverse items-center justify-between gap-3">
 					<m.div
 						className="relative group"
 						variants={fadeInUp}
@@ -112,7 +112,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						<img
 							src={weather.icon.url}
 							alt={weather.temperature.temp_description || 'Current weather'}
-							className="w-10 h-10 rounded-full drop-shadow-lg"
+							className="w-8 h-8 rounded-full drop-shadow-lg"
 						/>
 					</m.div>
 
@@ -141,7 +141,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				<m.div variants={fadeInUp} className="flex flex-wrap items-center gap-2">
 					<div
 						className={
-							'px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all'
+							'py-0.5 flex items-center gap-1 text-sm font-medium rounded-full transition-all'
 						}
 					>
 						<WiHumidity size={20} className="flex-shrink-0" />
@@ -149,7 +149,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					</div>
 					<div
 						className={
-							'px-2 py-0.5 flex items-center gap-2 text-sm font-medium rounded-full transition-all'
+							'px-2 py-0.5 flex items-center gap-1 text-sm font-medium rounded-full transition-all'
 						}
 					>
 						<WiStrongWind size={20} className="flex-shrink-0" />

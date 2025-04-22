@@ -85,7 +85,7 @@ export function WeatherLayout() {
 	return (
 		<>
 			<div
-				className={`flex flex-col h-80 px-2 py-2.5 ${themeUtils.getCardBackground()} rounded-xl`}
+				className={`flex flex-col h-80 px-2 py-3 ${themeUtils.getCardBackground()} rounded-xl`}
 			>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
