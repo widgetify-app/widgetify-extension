@@ -1,0 +1,270 @@
+/* Theme and Color Styles */
+
+/* Modal styles */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal {
+    border-radius: 1rem;
+}
+
+[data-theme="light"] .modal {
+    background-color: white;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] .modal {
+    background-color: #171717;
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+[data-theme="glass"] .modal {
+    background-color: rgba(28, 28, 28, 0.8);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+/* Currency button styles */
+[data-theme="light"] .currency-confirm-button {
+    background-color: rgb(22 163 74);
+    /* bg-green-600 */
+    color: white;
+}
+
+[data-theme="light"] .currency-confirm-button:hover {
+    background-color: rgb(21 128 61);
+    /* bg-green-700 */
+}
+
+[data-theme="light"] .currency-confirm-button:active {
+    background-color: rgb(22 101 52);
+    /* bg-green-800 */
+}
+
+[data-theme="dark"] .currency-confirm-button {
+    background-color: rgb(21 128 61);
+    /* bg-green-700 */
+    color: rgb(243 244 246);
+    /* text-gray-100 */
+}
+
+[data-theme="dark"] .currency-confirm-button:hover {
+    background-color: rgb(22 101 52);
+    /* bg-green-800 */
+}
+
+[data-theme="dark"] .currency-confirm-button:active {
+    background-color: rgb(20 83 45);
+    /* bg-green-900 */
+}
+
+[data-theme="glass"] .currency-confirm-button {
+    background-color: rgba(21, 128, 61, 0.8);
+    /* bg-green-700/80 */
+    color: white;
+}
+
+[data-theme="glass"] .currency-confirm-button:hover {
+    background-color: rgb(21 128 61);
+    /* bg-green-700 */
+}
+
+[data-theme="glass"] .currency-confirm-button:active {
+    background-color: rgb(22 101 52);
+    /* bg-green-800 */
+}
+
+/* Selected currency box styles */
+[data-theme="light"] .currency-box-selected {
+    background-color: rgb(240 253 244);
+    /* bg-green-50 */
+    border-color: rgb(134 239 172);
+    /* border-green-300 */
+    color: rgb(21 128 61);
+    /* text-green-700 */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    /* shadow-sm */
+}
+
+[data-theme="dark"] .currency-box-selected {
+    background-color: rgba(20, 83, 45, 0.3);
+    /* bg-green-900/30 */
+    border-color: rgba(22, 163, 74, 0.6);
+    /* border-green-600/60 */
+    color: rgb(74 222 128);
+    /* text-green-400 */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    /* shadow-md */
+}
+
+[data-theme="glass"] .currency-box-selected {
+    background-color: rgba(21, 128, 61, 0.2);
+    /* bg-green-700/20 */
+    border-color: rgba(34, 197, 94, 0.5);
+    /* border-green-500/50 */
+    color: white;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    /* shadow-md */
+}
+
+/* Unselected currency box styles */
+[data-theme="light"] .currency-box-unselected {
+    background-color: white;
+    border-color: rgb(229 231 235);
+    /* border-gray-200 */
+    color: rgb(55 65 81);
+    /* text-gray-700 */
+}
+
+[data-theme="light"] .currency-box-unselected:hover {
+    background-color: rgb(249 250 251);
+    /* bg-gray-50 */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    /* shadow-sm */
+}
+
+[data-theme="dark"] .currency-box-unselected {
+    background-color: rgba(31, 41, 55, 0.5);
+    /* bg-gray-800/50 */
+    border-color: rgba(55, 65, 81, 0.6);
+    /* border-gray-700/60 */
+    color: rgb(209 213 219);
+    /* text-gray-300 */
+}
+
+[data-theme="dark"] .currency-box-unselected:hover {
+    background-color: rgba(55, 65, 81, 0.4);
+    /* bg-gray-700/40 */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    /* shadow-md */
+}
+
+[data-theme="glass"] .currency-box-unselected {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* bg-black/10 */
+    border-color: rgba(107, 114, 128, 0.2);
+    /* border-gray-500/20 */
+    color: rgb(229 231 235);
+    /* text-gray-200 */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+[data-theme="glass"] .currency-box-unselected:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* bg-black/20 */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    /* shadow-md */
+}
+
+/* Currency group headings */
+[data-theme="light"] .currency-group-heading {
+    color: rgb(107 114 128);
+    /* text-gray-500 */
+}
+
+[data-theme="dark"] .currency-group-heading,
+[data-theme="glass"] .currency-group-heading {
+    color: rgb(209 213 219);
+    /* text-gray-300 */
+}
+
+/* Scrollbar theme styles */
+::-webkit-scrollbar {
+    width: 0.3em;
+    background-color: rgba(240, 240, 240, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(180, 180, 180, 0.7);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(150, 150, 150, 0.9);
+}
+
+[data-theme="dark"],
+[data-theme="glass"] {
+    ::-webkit-scrollbar {
+        background-color: rgba(29, 29, 29, 0.35);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(41, 40, 40, 0.75);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #1d1d1d;
+    }
+}
+
+.small-scrollbar::-webkit-scrollbar {
+    width: 0.2em;
+    height: 0.5em;
+    background-color: rgba(240, 240, 240, 0.5);
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(180, 180, 180, 0.7);
+    border-radius: 3px;
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(150, 150, 150, 0.9);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar {
+    background-color: rgba(29, 29, 29, 0.35);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar-thumb,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(41, 40, 40, 0.75);
+}
+
+[data-theme="dark"] .small-scrollbar::-webkit-scrollbar-thumb:hover,
+[data-theme="glass"] .small-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #1d1d1d;
+}
+
+/* Backdrop blur utilities */
+.backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    /* Fallback for browsers that don't support backdrop-filter */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    /* Fallback for browsers that don't support backdrop-filter */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-bg {
+    background-color: rgba(28, 28, 28, 0.8);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+/* Weather forecast slider theme styles */
+.weather-forecast-slider .swiper-pagination-bullet {
+    background-color: rgba(147, 197, 253, 0.7);
+    /* blue-300 with opacity */
+}
+
+.weather-forecast-slider .swiper-pagination-bullet-active {
+    background-color: rgb(96, 165, 250);
+    /* blue-400 */
+}
