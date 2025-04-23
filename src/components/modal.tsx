@@ -1,4 +1,4 @@
-import { getTextColor, useTheme } from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
@@ -38,28 +38,6 @@ const Modal = ({
 }: ModalProps) => {
 	const { theme } = useTheme()
 
-	const getModalStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white border border-gray-300/30 shadow-xl'
-			case 'dark':
-				return 'bg-neutral-900 border border-gray-700/40 shadow-2xl'
-			default: // glass
-				return 'custom-modal-bg border border-gray-700/30 shadow-2xl'
-		}
-	}
-
-	const getHeaderBorderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300/30'
-			case 'dark':
-				return 'border-gray-700/40'
-			default: // glass
-				return 'border-gray-700/30'
-		}
-	}
-
 	useEffect(() => {
 		if (isOpen && lockBodyScroll) {
 			const scrollY = window.scrollY
@@ -86,9 +64,7 @@ const Modal = ({
 		<AnimatePresence>
 			<LazyMotion features={domAnimation}>
 				<m.div
-					className={
-						'fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm'
-					}
+					className={'fixed inset-0 z-50 flex items-center justify-center modal-backdrop'}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
@@ -96,14 +72,14 @@ const Modal = ({
 					dir={direction}
 				>
 					<m.div
-						className={`${getModalStyle()} rounded-2xl ${sizeClasses[size]} mx-5 ${className}`}
+						className={`modal ${sizeClasses[size]} mx-5 ${className}`}
 						initial={{ scale: 0.95, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.95, opacity: 0 }}
 						onClick={(e) => e.stopPropagation()}
 					>
 						<div
-							className={`flex items-center justify-between p-2 border-b ${getHeaderBorderStyle()}`}
+							className={`flex items-center justify-between p-2 border-b ${getBorderColor(theme)}`}
 						>
 							{title && (
 								<h2 className={`text-lg font-semibold ${getTextColor(theme)}`}>
