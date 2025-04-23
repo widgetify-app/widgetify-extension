@@ -4,7 +4,7 @@ import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
 import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
 import { getMainClient } from '@/services/api'
@@ -34,11 +34,11 @@ export function SyncButton() {
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [syncState, setSyncState] = useState<SyncState | null>(null)
 	const { isAuthenticated } = useAuth()
+	const { theme } = useTheme()
 	const [user, setUser] = useState<UserProfile | null>(null)
 	const syncInProgressRef = useRef(false)
 	const lastSyncTimeRef = useRef<number>(0)
 	const initialSyncDoneRef = useRef(false)
-	const { themeUtils } = useTheme()
 	useEffect(() => {
 		if (syncState === SyncState.Success) {
 			const timer = setTimeout(() => setSyncState(null), 3000)
@@ -294,14 +294,14 @@ export function SyncButton() {
 						</LazyMotion>
 					</div>
 
-					<p className={`${themeUtils.getTextColor()} text-base`}>
+					<p className={`${getTextColor(theme)} text-base`}>
 						برای همگام‌سازی اطلاعات خود، ابتدا وارد حساب کاربری شوید.
 					</p>
 
 					<div className="flex flex-row items-center justify-center gap-3 mt-2">
 						<LazyMotion features={domAnimation}>
 							<m.button
-								className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${themeUtils.getTextColor()} border ${themeUtils.getBorderColor()}`}
+								className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${getTextColor(theme)} border ${getBorderColor(theme)}`}
 								onClick={() => setFirstAuth(false)}
 								whileHover={{ scale: 1.03 }}
 								whileTap={{ scale: 0.97 }}

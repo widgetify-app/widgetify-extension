@@ -1,5 +1,9 @@
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getCardBackground,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
@@ -57,17 +61,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
-	const getContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70'
-			case 'dark':
-				return 'bg-neutral-800/20'
-			default:
-				return 'bg-black/20'
-		}
-	}
-
 	const getTextStyle = () => {
 		return theme === 'light' ? 'text-gray-700' : 'text-gray-300'
 	}
@@ -76,19 +69,8 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
 	}
 
-	const getCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white/80 hover:bg-white'
-			case 'dark':
-				return 'bg-neutral-800/80 hover:bg-neutral-800'
-			default:
-				return 'bg-black/30 hover:bg-neutral-900'
-		}
-	}
-
 	return (
-		<div className={`overflow-hidden ${getContainerStyle()} rounded-lg`}>
+		<div className={`overflow-hidden ${getWidgetItemBackground(theme)} rounded-lg`}>
 			<div className="px-2 pt-1 pb-2">
 				<h3
 					className={`text-xs text-center font-medium mb-1.5 ${getTextStyle()} truncate`}
@@ -100,7 +82,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 					<motion.div
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('events')}
-						className={`p-1 rounded-lg cursor-pointer ${getCardStyle()} flex items-center`}
+						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
 					>
 						<FiCalendar
 							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : getSubTextStyle()}`}
@@ -125,7 +107,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 					<motion.div
 						whileTap={{ scale: 0.98 }}
 						onClick={() => onTabClick('todos')}
-						className={`p-1 rounded-lg cursor-pointer ${getCardStyle()} flex items-center`}
+						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
 					>
 						<FiClipboard
 							className={`text-base ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}

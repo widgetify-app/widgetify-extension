@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import { getDescriptionTextStyle, getTextColor, useTheme } from '@/context/theme.context'
 
 interface ContentAlignmentSettingsProps {
 	contentAlignment: 'center' | 'top'
@@ -10,7 +10,7 @@ export function ContentAlignmentSettings({
 	contentAlignment,
 	setContentAlignment,
 }: ContentAlignmentSettingsProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getActiveButtonStyle = () => {
 		switch (theme) {
@@ -59,7 +59,7 @@ export function ContentAlignmentSettings({
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3}>
 			<div className="space-y-3">
-				<p className={themeUtils.getDescriptionTextStyle()}>موقعیت عمودی محتوا</p>
+				<p className={getDescriptionTextStyle(theme)}>موقعیت عمودی محتوا</p>
 				<div className="flex gap-3">
 					<button
 						onClick={() => setContentAlignment('center')}
@@ -75,9 +75,7 @@ export function ContentAlignmentSettings({
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>
-							<span className={`text-sm font-medium ${themeUtils.getTextColor()}`}>
-								وسط
-							</span>
+							<span className={`text-sm font-medium ${getTextColor(theme)}`}>وسط</span>
 						</div>
 					</button>
 					<button
@@ -94,9 +92,7 @@ export function ContentAlignmentSettings({
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>
-							<span className={`text-sm font-medium ${themeUtils.getTextColor()}`}>
-								بالا
-							</span>
+							<span className={`text-sm font-medium ${getTextColor(theme)}`}>بالا</span>
 						</div>
 					</button>
 				</div>

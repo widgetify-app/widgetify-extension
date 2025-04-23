@@ -1,4 +1,11 @@
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getButtonStyles,
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { RiBug2Line, RiCheckboxCircleFill, RiStarLine, RiToolsLine } from 'react-icons/ri'
 import Modal from './modal'
@@ -152,7 +159,7 @@ export const UpdateReleaseNotesModal = ({
 	onClose,
 	currentVersion,
 }: UpdateReleaseNotesModalProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getTypeIcon = (type: 'feature' | 'bugfix' | 'improvement') => {
 		switch (type) {
@@ -200,7 +207,7 @@ export const UpdateReleaseNotesModal = ({
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: idx * 0.1 }}
 							className={`mb-6 rounded-lg p-3 ${
-								version === currentVersion ? ` border ${themeUtils.getBorderColor()}` : ''
+								version === currentVersion ? ` border ${getBorderColor(theme)}` : ''
 							}`}
 						>
 							<div className="flex items-center mb-3">
@@ -208,8 +215,8 @@ export const UpdateReleaseNotesModal = ({
 									<h3
 										className={`text-base sm:text-lg font-bold ${
 											version === currentVersion
-												? themeUtils.getHeadingTextStyle()
-												: themeUtils.getTextColor()
+												? getHeadingTextStyle(theme)
+												: getTextColor(theme)
 										}`}
 									>
 										نسخه {version}{' '}
@@ -233,7 +240,7 @@ export const UpdateReleaseNotesModal = ({
 								)}
 							</div>
 
-							<ul className={`mr-2 ${themeUtils.getDescriptionTextStyle()}`}>
+							<ul className={`mr-2 ${getDescriptionTextStyle(theme)}`}>
 								{sortNotesByType(versionData.notes).map((note, noteIdx) => (
 									<m.li
 										key={noteIdx}
@@ -253,10 +260,10 @@ export const UpdateReleaseNotesModal = ({
 					))}
 				</div>
 			</LazyMotion>
-			<div className={`p-1 border-t ${themeUtils.getBorderColor()} flex justify-end`}>
+			<div className={`p-1 border-t ${getBorderColor(theme)} flex justify-end`}>
 				<button
 					onClick={onClose}
-					className={`${themeUtils.getButtonStyles()} cursor-pointer hover:scale-105 transition-transform px-4 py-2 rounded-md`}
+					className={`${getButtonStyles(theme)} cursor-pointer hover:scale-105 transition-transform px-4 py-2 rounded-md`}
 				>
 					متوجه شدم
 				</button>

@@ -1,5 +1,5 @@
-import { useTheme } from '@/context/theme.context'
-import { AnimatePresence, LazyMotion, m, domAnimation } from 'framer-motion'
+import { getTooltipStyle, useTheme } from '@/context/theme.context'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -34,17 +34,6 @@ const Tooltip = ({
 	const triggerRef = useRef<HTMLDivElement>(null)
 	const tooltipRef = useRef<HTMLDivElement>(null)
 	const { theme } = useTheme()
-
-	const getTooltipStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white text-gray-800 border border-gray-200 shadow-lg'
-			case 'dark':
-				return 'bg-gray-800 text-gray-100 border border-gray-700 shadow-lg'
-			default:
-				return 'bg-black/70 backdrop-blur-md text-white border border-gray-700/30 shadow-lg'
-		}
-	}
 
 	const calculatePosition = () => {
 		if (!triggerRef.current || !tooltipRef.current) return
@@ -184,7 +173,7 @@ const Tooltip = ({
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs ${getTooltipStyle()} ${contentClassName}`}
+								className={`fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs ${getTooltipStyle(theme)} ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,

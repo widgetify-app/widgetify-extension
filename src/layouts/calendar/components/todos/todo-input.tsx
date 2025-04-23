@@ -1,6 +1,6 @@
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, useTheme } from '@/context/theme.context'
+import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 import {
 	FiChevronDown,
@@ -24,7 +24,7 @@ interface Prop {
 }
 
 export function TodoInput({ onAdd, show, onClose }: Prop) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [text, setText] = useState('')
 	const [showAdvanced, setShowAdvanced] = useState(false)
 	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
@@ -71,7 +71,7 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 					<div className="mb-1">
 						<label
 							htmlFor="todo-text-input"
-							className={`block mb-1.5 text-sm font-normal ${themeUtils.getTextColor()}`}
+							className={`block mb-1.5 text-sm font-normal ${getTextColor(theme)}`}
 						>
 							متن یادداشت
 						</label>
@@ -88,13 +88,13 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 
 					<div className="flex flex-col gap-2 mb-1">
 						<div className="flex items-center justify-between">
-							<span className={`text-sm font-normal ${themeUtils.getTextColor()}`}>
+							<span className={`text-sm font-normal ${getTextColor(theme)}`}>
 								اولویت:
 							</span>
 							<button
 								type="button"
 								onClick={() => setShowAdvanced(!showAdvanced)}
-								className={`flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-500 transition-colors duration-200 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 ${themeUtils.getTextColor()}`}
+								className={`flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-500 transition-colors duration-200 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 ${getTextColor(theme)}`}
 							>
 								{showAdvanced ? (
 									<FiChevronUp className="w-3.5 h-3.5" />
@@ -163,7 +163,7 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 											${
 												priority === value
 													? 'font-semibold text-indigo-600 dark:text-indigo-300'
-													: `font-medium ${themeUtils.getTextColor()} opacity-75`
+													: `font-medium ${getTextColor(theme)} opacity-75`
 											}
 										`}
 									>

@@ -1,6 +1,11 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getContainerBackground,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetDailyMessage } from '@/services/getMethodHooks/getDailyMessage.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
@@ -17,7 +22,7 @@ import { DogComponent } from './components/pet-dog.component'
 
 export const WidgetifyLayout = () => {
 	const { enablePets } = useGeneralSetting()
-	const { themeUtils, theme } = useTheme()
+	const { theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
 	const [userName, setUserName] = useState<string>('')
@@ -49,27 +54,16 @@ export const WidgetifyLayout = () => {
 		return now < endTime
 	})
 
-	const getContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-50/80'
-			case 'dark':
-				return 'bg-neutral-800/20'
-			default: // glass
-				return 'bg-black/20'
-		}
-	}
-
 	return (
 		<div
-			className={`h-full p-3 ${themeUtils.getCardBackground()} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
+			className={`h-full p-3 ${getContainerBackground(theme)} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
 		>
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
 
 				<div className="relative z-10 flex flex-col items-center gap-2">
 					<div
-						className={`flex items-center justify-between w-full border-b ${themeUtils.getBorderColor()}`}
+						className={`flex items-center justify-between w-full border-b ${getBorderColor(theme)}`}
 					>
 						<div className="flex items-center gap-2">
 							<p className="w-32 font-semibold truncate text-md">سلام {userName}! </p>
@@ -81,7 +75,7 @@ export const WidgetifyLayout = () => {
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
 							<motion.div
-								className={`p-2 mb-3 rounded-lg ${getContainerStyle()} shadow-sm border-r-2 border-blue-400/50`}
+								className={`p-2 mb-3 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm border-r-2 border-blue-400/50`}
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.2 }}
@@ -99,7 +93,7 @@ export const WidgetifyLayout = () => {
 
 						<div className="space-y-3">
 							<motion.div
-								className={`p-2 rounded-lg ${getContainerStyle()} shadow-sm`}
+								className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.4 }}
@@ -149,7 +143,7 @@ export const WidgetifyLayout = () => {
 							{/* Google Calendar Events Summary */}
 							{user?.connections?.includes('google') && (
 								<motion.div
-									className={`p-2 rounded-lg ${getContainerStyle()} shadow-sm`}
+									className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
 									initial={{ opacity: 0, y: 5 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.5 }}

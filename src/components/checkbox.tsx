@@ -1,11 +1,10 @@
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { memo } from 'react'
 
 interface CustomCheckboxProps {
 	checked: boolean
 	onChange: (checked: boolean) => void
 	label?: string
-	theme?: string
 	disabled?: boolean
 	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
 }
@@ -14,38 +13,16 @@ const CustomCheckbox = ({
 	checked,
 	onChange,
 	label,
-	theme: propTheme,
 	disabled = false,
 	fontSize = 'font-normal',
 }: CustomCheckboxProps) => {
-	const { theme: contextTheme } = useTheme()
-
-	const theme = propTheme || contextTheme || 'glass'
-
+	const { theme } = useTheme()
 	const getCheckboxStyle = () => {
 		if (checked) {
 			return 'bg-blue-500 border-blue-500'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'bg-white border-gray-300 hover:border-gray-400'
-			case 'dark':
-				return 'bg-gray-700 border-gray-600 hover:border-gray-500'
-			default: // glass
-				return 'bg-white/5 border-white/20 hover:border-white/30'
-		}
-	}
-
-	const getLabelStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			case 'dark':
-				return 'text-gray-200'
-			default: // glass
-				return 'text-gray-300'
-		}
+		return getBorderColor(theme)
 	}
 
 	return (
@@ -82,7 +59,7 @@ const CustomCheckbox = ({
 				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm ${getLabelStyle()}`}>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm ${getTextColor(theme)}`}>
 					{label}
 				</span>
 			)}

@@ -1,4 +1,9 @@
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getCardBackground,
+	getHeadingTextStyle,
+	useTheme,
+} from '@/context/theme.context'
 import type { RecommendedSite } from '@/services/getMethodHooks/trends/getTrends'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
@@ -11,7 +16,7 @@ export const RecommendedSites = ({
 	recommendedSites,
 	isLoading,
 }: RecommendedSitesProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	if (recommendedSites.length === 0 && !isLoading) {
 		return null
@@ -40,7 +45,7 @@ export const RecommendedSites = ({
 							.map((site) => (
 								<div key={site.name} className="mb-2">
 									<h3
-										className={`text-xs font-medium mb-1 ${themeUtils.getHeadingTextStyle()}`}
+										className={`text-xs font-medium mb-1 ${getHeadingTextStyle(theme)}`}
 									>
 										{site.name}
 									</h3>
@@ -77,28 +82,6 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 		}
 	}
 
-	const getSiteItemBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 hover:bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 hover:bg-neutral-700/90'
-			default:
-				return 'bg-black/20  hover:bg-neutral-800/80'
-		}
-	}
-
-	const getSkeletonBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-700/70'
-			default:
-				return 'bg-neutral-800/50'
-		}
-	}
-
 	if (isLoading) {
 		return (
 			<m.div
@@ -109,7 +92,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 					repeat: Number.POSITIVE_INFINITY,
 					delay: index * 0.1,
 				}}
-				className={`flex-shrink-0 flex flex-col items-center rounded-lg ${getSkeletonBackground()} w-[80px]`}
+				className={`flex-shrink-0 flex flex-col items-center rounded-lg ${getCardBackground(theme)} w-[80px]`}
 			>
 				<div className="w-10 h-10 mb-1 bg-current rounded-full opacity-20"></div>
 				<div className="w-full h-3 bg-current rounded opacity-20"></div>
@@ -124,7 +107,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: index * 0.05 }}
-			className={`flex-shrink-0 flex flex-col items-center p-2 cursor-pointer transition-all rounded-lg ${getSiteItemBackground()} hover:scale-105 w-[80px] ${
+			className={`flex-shrink-0 flex flex-col items-center p-2 cursor-pointer transition-all rounded-lg ${getCardBackground(theme)} shadow-xs hover:scale-105 w-[80px] border ${getBorderColor(theme)} ${
 				!site.url ? 'opacity-60 cursor-not-allowed' : ''
 			}`}
 			onClick={site.url ? onSiteClick : undefined}

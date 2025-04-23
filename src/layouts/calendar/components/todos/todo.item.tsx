@@ -1,5 +1,5 @@
 import CustomCheckbox from '@/components/checkbox'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp, FiTrash2 } from 'react-icons/fi'
@@ -29,33 +29,11 @@ export function TodoItem({
 	const { theme } = useTheme()
 	const [expanded, setExpanded] = useState(false)
 
-	const getItemBackgroundStyle = () => {
-		switch (theme) {
-			case 'light':
-				return isPreview ? 'bg-gray-100/70' : 'bg-gray-100/90'
-			case 'dark':
-				return isPreview ? 'bg-neutral-800/30' : 'bg-neutral-800/50'
-			default: // glass
-				return isPreview ? 'bg-black/20' : 'bg-black/30'
-		}
-	}
-
 	const getTextStyle = () => {
 		if (todo.completed) {
-			switch (theme) {
-				case 'light':
-					return 'line-through text-gray-400'
-				default:
-					return 'line-through text-gray-500'
-			}
+			return `line-through ${getTextColor(theme)} opacity-50`
 		}
-
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-300'
-		}
+		return getTextColor(theme)
 	}
 
 	const getBorderStyle = () => {
@@ -94,7 +72,7 @@ export function TodoItem({
 
 	return (
 		<motion.div
-			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} ${getItemBackgroundStyle()} group ${blurMode ? 'blur-item' : ''}`}
+			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} ${getWidgetItemBackground(theme)} group ${blurMode ? 'blur-item' : ''}`}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, height: 0 }}

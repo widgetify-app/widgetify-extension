@@ -1,5 +1,5 @@
 import Tooltip from '@/components/toolTip'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { motion } from 'framer-motion'
 import { AiOutlineGoogle } from 'react-icons/ai'
@@ -11,7 +11,7 @@ interface GoogleEventCardProps {
 }
 
 export function GoogleEventCard({ event, index }: GoogleEventCardProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const googleStyle = {
 		light: {
@@ -113,7 +113,7 @@ export function GoogleEventCard({ event, index }: GoogleEventCardProps) {
 			<div className="p-1.5">
 				<div className="flex items-center justify-between mb-0.5">
 					<h3
-						className={`font-light ${themeUtils.getTextColor()} text-sm ${eventStatus.isCompleted ? 'line-through ' : ''}`}
+						className={`font-light ${getTextColor(theme)} text-sm ${eventStatus.isCompleted ? 'line-through ' : ''}`}
 					>
 						{event.summary}
 					</h3>

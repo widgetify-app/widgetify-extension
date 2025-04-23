@@ -1,8 +1,8 @@
+import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa6'
 import { BookmarkTooltip } from './bookmark/bookmark-title'
-import { getBookmarkStyle } from './shared'
 
 export function EmptyBookmarkSlot({
 	onClick,
@@ -13,16 +13,16 @@ export function EmptyBookmarkSlot({
 
 	const getEmptySlotStyle = () => {
 		if (!canAdd) {
-			return `opacity-30 ${getBookmarkStyle(theme)} cursor-default`
+			return `opacity-30 ${getContainerBackground(theme)} ${getBookmarkStyle(theme)} cursor-default`
 		}
 
 		switch (theme) {
 			case 'light':
-				return `${getBookmarkStyle(theme)} border-blue-300/40 hover:border-blue-400/70 hover:bg-blue-50/50`
+				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)} border-blue-300/40 hover:border-blue-400/70 hover:bg-blue-50/50`
 			case 'dark':
-				return `${getBookmarkStyle(theme)} border-blue-500/20 hover:border-blue-400/40 hover:bg-blue-900/20`
+				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)} border-blue-500/20 hover:border-blue-400/40 hover:bg-blue-900/20`
 			default: // glass
-				return `${getBookmarkStyle(theme)} border-blue-400/20 hover:border-blue-400/40 hover:bg-blue-900/10`
+				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}	 border-blue-400/20 hover:border-blue-400/40 hover:bg-blue-900/10`
 		}
 	}
 

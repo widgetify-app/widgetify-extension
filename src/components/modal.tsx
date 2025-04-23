@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
@@ -36,7 +36,7 @@ const Modal = ({
 	className = '',
 	lockBodyScroll = true,
 }: ModalProps) => {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getModalStyle = () => {
 		switch (theme) {
@@ -106,7 +106,7 @@ const Modal = ({
 							className={`flex items-center justify-between p-2 border-b ${getHeaderBorderStyle()}`}
 						>
 							{title && (
-								<h2 className={`text-lg font-semibold ${themeUtils.getTextColor()}`}>
+								<h2 className={`text-lg font-semibold ${getTextColor(theme)}`}>
 									{title}
 								</h2>
 							)}

@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/theme.context'
 import type React from 'react'
 import { useState } from 'react'
 import { CalendarContainer } from './components/calendar-container'
@@ -10,6 +11,7 @@ import { getCurrentDate } from './utils'
 export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
 
 const PersianCalendar: React.FC = () => {
+	const { theme } = useTheme()
 	const today = getCurrentDate()
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
@@ -30,7 +32,10 @@ const PersianCalendar: React.FC = () => {
 			className="flex flex-col justify-center w-full h-full gap-3 mb-1 sm:h-80 md:flex-row"
 			dir="rtl"
 		>
-			<CalendarContainer className="flex flex-col w-full overflow-hidden md:w-7/12 md:flex-1">
+			<CalendarContainer
+				className="flex flex-col w-full overflow-hidden md:w-7/12 md:flex-1"
+				theme={theme}
+			>
 				<CalendarHeader
 					currentDate={currentDate}
 					setCurrentDate={setCurrentDate}
@@ -49,7 +54,7 @@ const PersianCalendar: React.FC = () => {
 				</div>
 			</CalendarContainer>
 
-			<CalendarContainer className="w-full p-3 md:w-5/12 md:p-4">
+			<CalendarContainer className="w-full p-3 md:w-5/12 md:p-4" theme={theme}>
 				<CalendarContent
 					activeTab={activeTab}
 					selectedDate={selectedDate}

@@ -1,3 +1,5 @@
+import { getBorderColor, getCardBackground } from '@/context/theme.context'
+
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
 	onDelete: () => void
@@ -14,15 +16,6 @@ export function BookmarkContextMenu({
 	onOpenInNewTab,
 	theme,
 }: BookmarkContextMenuProps) {
-	const getContextMenuStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white shadow-xl border border-gray-300/40 shadow-lg'
-			default: // glass
-				return 'bg-black/30 backdrop-blur-md border border-white/20 shadow-lg'
-		}
-	}
-
 	const getMenuItemStyle = (isDelete = false) => {
 		if (isDelete) {
 			switch (theme) {
@@ -47,7 +40,7 @@ export function BookmarkContextMenu({
 
 	return (
 		<div
-			className={`absolute p-2 min-w-[150px] rounded-lg ${getContextMenuStyle()}`}
+			className={`absolute p-2 min-w-[150px] rounded-lg ${getCardBackground(theme)} shadow-md  border-4 ${getBorderColor(theme)}`}
 			style={{ top: position.y, left: position.x, zIndex: 1000 }}
 			onClick={(e) => e.stopPropagation()}
 		>

@@ -1,4 +1,8 @@
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { unitsFlag } from '../unitSymbols'
 
@@ -12,7 +16,7 @@ interface ForecastProps {
 }
 
 export function ForecastComponent({ forecast, unit }: ForecastProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getWeekdayStyle = () => {
 		switch (theme) {
@@ -46,23 +50,12 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 		}
 	}
 
-	const getDescriptionBoxStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70'
-			case 'dark':
-				return 'bg-neutral-800/20'
-			default: // glass
-				return 'bg-neutral-900/40'
-		}
-	}
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
 				initial={{ y: 20, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300 ${themeUtils.getBorderColor()} border ${getDescriptionBoxStyle()}  rounded-xl`}
+				className={`flex flex-col items-center justify-between w-20 h-[5.8rem] p-2 transition-all duration-300 ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}  rounded-xl`}
 			>
 				{/* Time Section */}
 				<div className="flex flex-col items-center gap-0.5 w-full">

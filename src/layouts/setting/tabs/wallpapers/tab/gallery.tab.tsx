@@ -1,6 +1,6 @@
 import { preloadImages } from '@/common/utils/preloadImages'
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getCardBackground, useTheme } from '@/context/theme.context'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FiArrowLeft, FiFolder } from 'react-icons/fi'
@@ -11,7 +11,7 @@ import { useWallpaper } from '../hooks/use-wallpaper'
 import { useWallpapersByCategory } from '../hooks/use-wallpapers-by-category'
 
 export function GalleryTab() {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [isCategoryView, setIsCategoryView] = useState(true)
 
 	const {
@@ -46,17 +46,6 @@ export function GalleryTab() {
 		setIsCategoryView(true)
 	}
 
-	const wallpaperCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70 text-gray-800'
-			case 'dark':
-				return 'bg-neutral-800/80 text-gray-300'
-			default:
-				return 'bg-neutral-900/70 text-gray-300  backdrop-blur-sm'
-		}
-	}
-
 	useEffect(() => {
 		if (allWallpapers?.length) {
 			const imageUrls = allWallpapers
@@ -81,7 +70,7 @@ export function GalleryTab() {
 				whileHover={{ scale: 1.03 }}
 				whileTap={{ scale: 0.97 }}
 				onClick={() => handleCategorySelect(id)}
-				className={`cursor-pointer rounded-lg p-3 border ${themeUtils.getBorderColor()} ${wallpaperCardStyle()} transition-all h-32 max-h-32 flex flex-col`}
+				className={`cursor-pointer rounded-lg p-3 border ${getBorderColor(theme)} ${getCardBackground(theme)} transition-all h-32 max-h-32 flex flex-col`}
 			>
 				<div className="flex items-center gap-2 mb-2">
 					<FiFolder className="text-blue-500" size={18} />

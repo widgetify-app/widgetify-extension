@@ -1,11 +1,11 @@
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { getCurrentDate } from '@/layouts/calendar/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
 	const [time, setTime] = useState(getCurrentDate())
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -25,7 +25,7 @@ const ClockComponent = () => {
 			transition={{ duration: 0.5 }}
 		>
 			<div
-				className={`text-xs font-extrabold tracking-wide ${themeUtils.getTextColor()} drop-shadow-lg`}
+				className={`text-xs font-extrabold tracking-wide ${getTextColor(theme)} drop-shadow-lg`}
 			>
 				{bgGradient} {time.format('HH:mm')}
 			</div>

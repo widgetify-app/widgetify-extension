@@ -1,6 +1,12 @@
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { useTheme } from '@/context/theme.context'
+import {
+	getCardBackground,
+	getContainerBackground,
+	getTextColor,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
@@ -89,51 +95,13 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		}
 	}
 
-	const getBoxStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70 hover:bg-gray-200/80'
-			case 'dark':
-				return 'bg-neutral-900/70 hover:bg-neutral-800/80'
-			default: // glass
-				return 'bg-black/20 hover:bg-black/30'
-		}
-	}
-
-	const getCodeStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-			default:
-				return 'text-gray-500'
-		}
-	}
-
-	const getNameStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getPriceStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-800'
-			default:
-				return 'text-gray-200'
-		}
-	}
-
 	return (
 		<>
 			<LazyMotion features={domAnimation}>
 				<m.div
 					whileHover={{ scale: 1, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
 					whileTap={{ scale: 0.98 }}
-					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer  ${getBoxStyle()}`}
+					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer  ${getWidgetItemBackground(theme)} opacity-60`}
 					style={{
 						border: '1px solid transparent',
 						borderColor: imgColor ? `${imgColor}20` : 'transparent',
@@ -170,13 +138,15 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 							/>
 						</div>
 						<div className="flex items-center space-x-2 text-sm font-medium">
-							<span className={`md:visible ${getNameStyle()}`}>{currency?.name?.en}</span>
-							<span className={`text-xs ${getCodeStyle()}`}>{code}</span>
+							<span className={`md:visible ${getTextColor(theme)} opacity-90`}>
+								{currency?.name?.en}
+							</span>
+							<span className={`text-xs ${getTextColor(theme)} opacity-40`}>{code}</span>
 						</div>
 					</div>
 
 					<div className="flex items-baseline gap-2">
-						<span className={`text-sm font-bold ${getPriceStyle()}`}>
+						<span className={`text-sm font-bold ${getTextColor(theme)}`}>
 							{displayPrice.toLocaleString()}
 						</span>
 						{priceChange !== 0 && (

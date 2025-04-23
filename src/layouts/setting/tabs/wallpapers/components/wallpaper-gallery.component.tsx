@@ -1,5 +1,5 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { useTheme } from '@/context/theme.context'
+import { getDescriptionTextStyle, useTheme } from '@/context/theme.context'
 import { useRef } from 'react'
 import { WallpaperItem } from '../item.wallpaper'
 
@@ -18,7 +18,7 @@ export function WallpaperGallery({
 	selectedBackground,
 	onSelectBackground,
 }: WallpaperGalleryProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const galleryRef = useRef<HTMLDivElement>(null)
 
 	const getGalleryStyle = () => {
@@ -55,7 +55,7 @@ export function WallpaperGallery({
 		return (
 			<div className="flex flex-col items-center justify-center h-full py-6">
 				<div className="w-8 h-8 rounded-full border-3 border-t-blue-500 border-blue-500/30 animate-spin"></div>
-				<p className={`mt-3 text-sm ${themeUtils.getDescriptionTextStyle()}`}>
+				<p className={`mt-3 text-sm ${getDescriptionTextStyle(theme)}`}>
 					در حال بارگذاری...
 				</p>
 			</div>
@@ -80,7 +80,7 @@ export function WallpaperGallery({
 					</svg>
 				</div>
 				<h4 className="text-base font-medium text-red-400">خطا در بارگذاری</h4>
-				<p className={`mt-1 text-xs ${themeUtils.getDescriptionTextStyle()}`}>
+				<p className={`mt-1 text-xs ${getDescriptionTextStyle(theme)}`}>
 					لطفا مجددا تلاش کنید
 				</p>
 			</div>

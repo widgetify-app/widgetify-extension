@@ -1,4 +1,9 @@
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getTextColor,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useReligiousTime } from '@/services/getMethodHooks/getReligiousTime.hook'
@@ -30,64 +35,6 @@ export function ReligiousTime({ currentDate }: Prop) {
 		error,
 	} = useReligiousTime(day, month, lat, long)
 
-	const getHeaderTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			default:
-				return 'text-gray-300'
-		}
-	}
-
-	const getNoReligiousTimeIconBackgroundStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200/70'
-			case 'dark':
-				return 'bg-neutral-800/70'
-			default: // glass
-				return 'bg-neutral-700/30'
-		}
-	}
-
-	const getNoEventsTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getBoxStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white/80 shadow-sm border border-gray-200'
-			case 'dark':
-				return 'bg-neutral-800/80 shadow-sm border border-neutral-700'
-			default: // glass
-				return 'bg-black/20 shadow-sm border border-[#1a1a1a38]'
-		}
-	}
-
-	const getBoxTitleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			default:
-				return 'text-gray-300'
-		}
-	}
-
-	const getBoxValueStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-900'
-			default:
-				return 'text-white'
-		}
-	}
-
 	const getBoxIconStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -117,7 +64,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-3">
-				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
+				<h4 className={`flex items-center text-lg font-medium ${getTextColor(theme)}`}>
 					اوقات شرعی
 					<span className={'text-sm flex item-end font-light mr-2 mt-2'}>
 						({englishCityName})
@@ -138,13 +85,11 @@ export function ReligiousTime({ currentDate }: Prop) {
 						transition={{ delay: 0.2 }}
 					>
 						<div
-							className={`inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full ${getNoReligiousTimeIconBackgroundStyle()}`}
+							className={`inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full ${getWidgetItemBackground(theme)}`}
 						>
-							<FiSunrise className={getNoEventsTextStyle()} size={24} />
+							<FiSunrise className={getTextColor(theme)} size={24} />
 						</div>
-						<div className={getNoEventsTextStyle()}>
-							مشکلی در دریافت اطلاعات وجود دارد
-						</div>
+						<div className={getTextColor(theme)}>مشکلی در دریافت اطلاعات وجود دارد</div>
 					</m.div>
 				) : (
 					<>
@@ -152,7 +97,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 							{prayerTimeBoxes.map((box, index) => (
 								<m.div
 									key={index}
-									className={`${getBoxStyle()} rounded-lg p-2 flex flex-col items-center`}
+									className={`${getWidgetItemBackground(theme)}  ${getBorderColor(theme)} border rounded-lg p-2 flex flex-col items-center`}
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: index * 0.1 }}
@@ -160,10 +105,10 @@ export function ReligiousTime({ currentDate }: Prop) {
 									<div className={`${getBoxIconStyle()} mb-2`}>
 										<box.icon size={20} />
 									</div>
-									<div className={`${getBoxTitleStyle()} text-[0.6rem] mb-1`}>
+									<div className={`${getTextColor(theme)} text-[0.6rem] mb-1`}>
 										{box.title}
 									</div>
-									<div className={`${getBoxValueStyle()} font-medium`}>{box.value}</div>
+									<div className={`${getTextColor(theme)} font-medium`}>{box.value}</div>
 								</m.div>
 							))}
 						</div>

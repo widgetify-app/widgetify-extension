@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
@@ -23,7 +23,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 }) => {
 	const { user } = useAuth()
 
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
 
@@ -67,7 +67,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						${themeUtils.getTextColor()} opacity-40
+						${getTextColor(theme)} opacity-40
 					`}
 				>
 					{prevMonthStartDay + i}
@@ -93,7 +93,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs 
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						${themeUtils.getTextColor()} opacity-40
+						${getTextColor(theme)} opacity-40
 					`}
 				>
 					{i + 1}

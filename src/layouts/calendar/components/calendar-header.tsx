@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
@@ -48,17 +48,6 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 		return theme === 'light' ? 'text-gray-700' : 'text-gray-200'
 	}
 
-	const getMonthNavigationStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 hover:bg-gray-100/80'
-			case 'dark':
-				return 'text-gray-300 hover:bg-neutral-800/50'
-			default:
-				return 'text-gray-300 hover:bg-white/10'
-		}
-	}
-
 	return (
 		<div className="flex items-center justify-between p-3 md:p-2">
 			<h3 className={`font-medium text-md ${getHeaderTextStyle()}`}>
@@ -79,14 +68,14 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
 				<button
 					onClick={() => changeMonth(-1)}
-					className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
+					className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg cursor-pointer transition-colors ${getTextColor(theme)} opacity-70 hover:opacity-100`}
 				>
 					<FaChevronRight size={12} />
 				</button>
 
 				<button
 					onClick={() => changeMonth(1)}
-					className={`flex items-center gap-1 px-2 py-1  text-xs rounded-lg cursor-pointer transition-colors ${getMonthNavigationStyle()}`}
+					className={`flex items-center gap-1 px-2 py-1  text-xs rounded-lg cursor-pointer transition-colors ${getTextColor(theme)} opacity-70 hover:opacity-100`}
 				>
 					<FaChevronLeft size={12} />
 				</button>

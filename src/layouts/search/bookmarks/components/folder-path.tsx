@@ -1,3 +1,4 @@
+import { getCardBackground, getTextColor } from '@/context/theme.context'
 import type { FolderPathItem } from '../types/bookmark.types'
 
 type FolderPathProps = {
@@ -9,49 +10,16 @@ type FolderPathProps = {
 export function FolderPath({ folderPath, onNavigate, theme = 'glass' }: FolderPathProps) {
 	if (folderPath.length === 0) return null
 
-	const getPathStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white/80 text-gray-700'
-			case 'dark':
-				return 'bg-gray-800/90 text-gray-300'
-			default:
-				return 'bg-neutral-900/60 backdrop-blur-sm text-gray-300'
-		}
-	}
-
-	const getPathItemStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600 hover:text-blue-800'
-			case 'dark':
-				return 'text-blue-400 hover:text-blue-300'
-			default:
-				return 'text-blue-400 hover:text-blue-300'
-		}
-	}
-
-	const getRootStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 hover:text-gray-800'
-			case 'dark':
-				return 'text-gray-400 hover:text-gray-200'
-			default:
-				return 'text-gray-400 hover:text-gray-200'
-		}
-	}
-
 	return (
 		<nav
 			aria-label="Folder navigation"
-			className={`flex items-center px-3 py-2 mt-2 text-xs rounded-lg ${getPathStyle()}`}
+			className={`flex items-center px-3 py-2 mt-2 text-xs rounded-lg ${getCardBackground(theme)}`}
 		>
 			<ol className="flex flex-wrap items-center gap-y-1">
 				<li>
 					<button
 						onClick={() => onNavigate(null, -1)}
-						className={`flex items-center cursor-pointer transition-colors ${getRootStyle()}`}
+						className={`flex items-center cursor-pointer transition-colors ${getTextColor(theme)} opacity-70 hover:opacity-100`}
 						aria-label="Go to root folder"
 					>
 						<svg
@@ -89,7 +57,9 @@ export function FolderPath({ folderPath, onNavigate, theme = 'glass' }: FolderPa
 						</svg>
 						<button
 							onClick={() => onNavigate(item.id, index)}
-							className={`cursor-pointer transition-colors ${getPathItemStyle()}`}
+							className={
+								'cursor-pointer transition-colors text-blue-400 hover:text-blue-300'
+							}
 							aria-label={`Go to ${item.title} folder`}
 						>
 							{item.title}

@@ -1,5 +1,5 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -301,12 +301,12 @@ export function ShowAdvancedButton({
 	setShowAdvanced,
 	showAdvanced,
 }: ShowAdvancedButtonProps) {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 	return (
 		<button
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
-			className={`flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer ${themeUtils.getTextColor()} opacity-90 border ${themeUtils.getBorderColor()} rounded-md`}
+			className={`flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer ${getTextColor(theme)} opacity-90 border ${getBorderColor(theme)} rounded-md`}
 		>
 			{showAdvanced ? (
 				<>
@@ -321,15 +321,4 @@ export function ShowAdvancedButton({
 			)}
 		</button>
 	)
-}
-
-export const getBookmarkStyle = (theme: string) => {
-	switch (theme) {
-		case 'light':
-			return 'bg-white hover:bg-gray-100/95 border-gray-300/30 hover:border-gray-400/50 text-gray-800'
-		case 'dark':
-			return 'bg-neutral-900  hover:bg-neutral-700/95 border-gray-700/50 hover:border-gray-600/70 text-gray-200'
-		default: // glass
-			return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80 border-white/10 hover:border-white/20 text-gray-300'
-	}
 }

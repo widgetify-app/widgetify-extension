@@ -1,4 +1,9 @@
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getProgressBarBgStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 
 export function TodoStats() {
@@ -39,69 +44,6 @@ export function TodoStats() {
 		}
 	}
 
-	// Theme-specific styles
-	const getContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/80'
-			case 'dark':
-				return 'bg-neutral-800/50'
-			default: // glass
-				return 'bg-black/30'
-		}
-	}
-
-	const getHeaderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-
-			default:
-				return 'text-gray-300'
-		}
-	}
-
-	const getCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white/70'
-			case 'dark':
-				return 'bg-neutral-700/30'
-			default: // glass
-				return 'bg-white/10'
-		}
-	}
-
-	const getLabelStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getValueStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-800'
-
-			default:
-				return 'text-gray-200'
-		}
-	}
-
-	const getProgressBarBgStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-300'
-
-			default:
-				return 'bg-gray-700'
-		}
-	}
-
 	const getPriorityBarColors = () => {
 		switch (theme) {
 			case 'light':
@@ -124,17 +66,21 @@ export function TodoStats() {
 	// const stats
 	const stats = calculateTodoStats()
 	return (
-		<div className={`p-2 mt-2 ${getContainerStyle()} rounded-lg`}>
-			<h4 className={`mb-1 text-sm font-medium ${getHeaderStyle()}`}>آمار کلی</h4>
+		<div className={'p-2 mt-2  rounded-lg'}>
+			<h4 className={`mb-1 text-sm font-medium ${getTextColor(theme)}`}>آمار کلی</h4>
 
 			<div className="flex flex-col gap-1">
-				<div className={`p-1 rounded-lg ${getCardStyle()}`}>
-					<span className={`text-xs ${getLabelStyle()}`}>تکمیل شده</span>
+				<div className={`p-1 rounded-lg border ${getBorderColor(theme)}`}>
+					<span className={`text-xs ${getTextColor(theme)}`}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
-						<span className={`text-lg ${getValueStyle()}`}>{stats.completedTodos}</span>
-						<span className={`text-xs ${getLabelStyle()}`}>از {stats.totalTodos}</span>
+						<span className={`text-lg ${getTextColor(theme)}`}>
+							{stats.completedTodos}
+						</span>
+						<span className={`text-xs ${getTextColor(theme)}`}>
+							از {stats.totalTodos}
+						</span>
 					</div>
-					<div className={`h-1 mt-1 ${getProgressBarBgStyle()} rounded-full`}>
+					<div className={`h-1 mt-1 ${getProgressBarBgStyle(theme)} rounded-full`}>
 						<div
 							className="h-1 bg-green-500 rounded-full"
 							style={{ width: `${stats.completionRate}%` }}
@@ -142,8 +88,8 @@ export function TodoStats() {
 					</div>
 				</div>
 
-				<div className={`p-2 rounded-lg ${getCardStyle()}`}>
-					<span className={`text-xs ${getLabelStyle()}`}>اولویت‌ها</span>
+				<div className={`p-2 rounded-lg  border ${getBorderColor(theme)}`}>
+					<span className={`text-xs ${getTextColor(theme)}`}>اولویت‌ها</span>
 					<div className="flex justify-between mt-1">
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -154,7 +100,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={`text-xs ${getLabelStyle()}`}>زیاد</span>
+							<span className={`text-xs ${getTextColor(theme)}`}>زیاد</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -165,7 +111,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={`text-xs ${getLabelStyle()}`}>متوسط</span>
+							<span className={`text-xs ${getTextColor(theme)}`}>متوسط</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -176,7 +122,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={`text-xs ${getLabelStyle()}`}>کم</span>
+							<span className={`text-xs ${getTextColor(theme)}`}>کم</span>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { useTheme } from '@/context/theme.context'
+import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
 import { useEffect, useState } from 'react'
 import { NewsContainer } from './components/news-container'
@@ -26,7 +26,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	showSettingsModal = false,
 	onSettingsModalClose,
 }) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [newsData, setNewsData] = useState<ExtendedNewsResponse>({
 		news: [],
 		platform: {
@@ -257,7 +257,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			/>
 
 			<div
-				className={`flex h-80 flex-col gap-1 px-2 py-2 ${enableBackground ? themeUtils.getCardBackground() : ''} rounded-2xl`}
+				className={`flex h-80 flex-col gap-1 px-2 py-2 ${enableBackground ? getContainerBackground(theme) : ''} rounded-2xl`}
 				style={{
 					scrollbarWidth: 'none',
 				}}

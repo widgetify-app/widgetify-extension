@@ -1,7 +1,16 @@
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getButtonStyles,
+	getCardBackground,
+	getContainerBackground,
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import clsx from 'clsx'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
@@ -31,7 +40,7 @@ interface RssFeedManagerProps {
 
 export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps) => {
 	if (!isOpen) return null
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [newFeed, setNewFeed] = useState<{ name: string; url: string }>({
 		name: '',
 		url: '',
@@ -122,17 +131,6 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		)
 	}
 
-	const getFormSectionStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-50/80'
-			case 'dark':
-				return 'bg-gray-800/30'
-			default: // glass
-				return 'bg-white/5 backdrop-blur-sm border-white/10'
-		}
-	}
-
 	const getErrorStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -141,28 +139,6 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 				return 'bg-red-900/30 text-red-300'
 			default: // glass
 				return 'bg-red-900/20 backdrop-blur-sm text-red-300'
-		}
-	}
-
-	const getAddButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-500 hover:bg-blue-600 text-white'
-			case 'dark':
-				return 'bg-blue-600 hover:bg-blue-700 text-white'
-			default: // glass
-				return 'bg-blue-500/80 hover:bg-blue-600/90 text-white backdrop-blur-sm'
-		}
-	}
-
-	const getSuggestedFeedStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-50 hover:bg-gray-100 border-gray-200'
-			case 'dark':
-				return 'bg-gray-800/50 hover:bg-gray-700/50 border-gray-700/50'
-			default: // glass
-				return 'bg-white/10 hover:bg-white/15 border-white/10 backdrop-blur-sm'
 		}
 	}
 
@@ -217,11 +193,9 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 					/>
 
 					<section
-						className={`p-4 rounded-xl border ${getFormSectionStyle()} ${themeUtils.getBorderColor()}`}
+						className={`p-4 rounded-xl border ${getContainerBackground(theme)} ${getBorderColor(theme)}`}
 					>
-						<h3
-							className={`mb-3 text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}
-						>
+						<h3 className={`mb-3 text-sm font-medium ${getHeadingTextStyle(theme)}`}>
 							افزودن فید RSS جدید
 						</h3>
 						<div className="flex flex-col gap-3">
@@ -257,7 +231,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 							<m.button
 								onClick={addNewFeed}
 								className={clsx(
-									`flex items-center justify-center gap-2 px-4 py-2 transition-colors rounded-md cursor-pointer ${getAddButtonStyle()}`,
+									`flex items-center justify-center gap-2 transition-colors rounded-md cursor-pointer ${getButtonStyles(theme, true)} !px-4 !py-2`,
 								)}
 							>
 								<VscAdd size={16} />
@@ -269,7 +243,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 					{/* Suggested Feeds Section */}
 					<section className="mt-2">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
+							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
 								فیدهای پیشنهادی
 							</h3>
 						</div>
@@ -278,13 +252,13 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 								(feed) => (
 									<m.div
 										key={feed.url}
-										className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getSuggestedFeedStyle()}`}
+										className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getCardBackground(theme)} ${getBorderColor(theme)}`}
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
 										onClick={() => addSuggestedFeed(feed)}
 									>
 										<span
-											className={`font-medium text-light text-center ${themeUtils.getTextColor()}`}
+											className={`font-medium text-light text-center ${getTextColor(theme)}`}
 										>
 											{feed.name}
 										</span>
@@ -296,11 +270,11 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 					<section className="mt-4">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={`text-sm font-medium ${themeUtils.getHeadingTextStyle()}`}>
+							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
 								فیدهای شما
 							</h3>
 							{rssState.customFeeds.length > 0 && (
-								<div className={`text-xs ${themeUtils.getDescriptionTextStyle()}`}>
+								<div className={`text-xs ${getDescriptionTextStyle(theme)}`}>
 									{rssState.customFeeds.length} فید
 								</div>
 							)}
@@ -309,6 +283,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 							feeds={rssState.customFeeds}
 							onToggleFeed={(id) => onToggleFeed(id)}
 							onRemoveFeed={onRemoveFeed}
+							theme={theme}
 						/>
 					</section>
 				</div>
@@ -327,27 +302,15 @@ interface FeedsListProps {
 	isLoading?: boolean
 	onToggleFeed: (id: string) => void
 	onRemoveFeed: (id: string) => void
+	theme: string
 }
 
-const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
-	const { theme, themeUtils } = useTheme()
-
-	const getEmptyStateStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-200 text-gray-500'
-			case 'dark':
-				return 'border-gray-700 text-gray-400'
-			default: // glass
-				return 'border-gray-700/30 text-gray-400'
-		}
-	}
-
+const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed, theme }: FeedsListProps) => {
 	return (
 		<div className="min-h-[150px]">
 			{feeds.length === 0 ? (
 				<m.div
-					className={`flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg ${getEmptyStateStyle()}`}
+					className={`flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg ${getBorderColor(theme)}`}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 				>
@@ -355,7 +318,7 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 					<p className="mb-1 text-sm font-medium opacity-70">
 						هیچ فید RSS اضافه نشده است
 					</p>
-					<p className={`text-xs opacity-50 ${themeUtils.getDescriptionTextStyle()}`}>
+					<p className={`text-xs opacity-50 ${getDescriptionTextStyle(theme)}`}>
 						از فرم بالا برای افزودن فید استفاده کنید
 					</p>
 				</m.div>
@@ -388,18 +351,7 @@ interface FeedItemProps {
 }
 
 const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps) => {
-	const { theme, themeUtils } = useTheme()
-
-	const getItemStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white/90 border border-gray-200 hover:bg-gray-50/80'
-			case 'dark':
-				return 'bg-gray-800/30 border border-gray-700/50 hover:bg-gray-700/30'
-			default: // glass
-				return 'bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10'
-		}
-	}
+	const { theme } = useTheme()
 
 	const getDeleteButtonStyle = () => {
 		if (disabled)
@@ -417,7 +369,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 
 	const getTextStyle = () => {
 		const baseStyle = feed.enabled ? 'font-medium' : 'line-through opacity-70'
-		return `${baseStyle} ${themeUtils.getTextColor()}`
+		return `${baseStyle} ${getTextColor(theme)}`
 	}
 
 	const getUrlStyle = () => {
@@ -427,7 +379,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 	return (
 		<m.div
 			className={clsx(
-				`flex items-center justify-between px-4 py-3 transition-colors rounded-lg ${getItemStyle()}`,
+				`flex items-center justify-between px-4 py-3 transition-colors rounded-lg ${getCardBackground(theme)} border ${getBorderColor(theme)}`,
 				!feed.enabled && 'opacity-60',
 				disabled && 'cursor-not-allowed',
 			)}

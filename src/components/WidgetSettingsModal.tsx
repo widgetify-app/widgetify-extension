@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import CustomCheckbox from './checkbox'
 import Modal from './modal'
@@ -10,7 +10,7 @@ interface WidgetSettingsModalProps {
 
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget } = useWidgetVisibility()
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const handleNewsToggle = () => {
 		if (visibility.widgetify) {
@@ -46,13 +46,13 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			direction="rtl"
 		>
 			<div className="p-4 space-y-4">
-				<p className={`text-sm mb-4 ${themeUtils.getTextColor()}`}>
+				<p className={`text-sm mb-4 ${getTextColor(theme)}`}>
 					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند.
 				</p>
 
 				<div className="space-y-4">
 					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
 							ویجت‌های ستون راست
 						</h3>
 
@@ -80,7 +80,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					</div>
 
 					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
 							ویجت‌های ستون چپ
 						</h3>
 
@@ -112,7 +112,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					</div>
 
 					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${themeUtils.getTextColor()}`}>
+						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
 							ویجت‌های پایین صفحه
 						</h3>
 

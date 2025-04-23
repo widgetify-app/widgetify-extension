@@ -6,9 +6,7 @@ import { useTheme } from '@/context/theme.context'
 import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
-import { AiOutlineLoading } from 'react-icons/ai'
 import { FiSearch } from 'react-icons/fi'
-import { TiPlus } from 'react-icons/ti'
 
 export type SupportedCurrencies = {
 	key: string
@@ -19,90 +17,6 @@ export type SupportedCurrencies = {
 		en: string
 	}
 }[]
-
-interface AddCurrencyBoxProps {
-	disabled?: boolean
-	loading?: boolean
-}
-
-export const AddCurrencyBox = ({ disabled, loading }: AddCurrencyBoxProps) => {
-	const { theme } = useTheme()
-	const [showModal, setShowModal] = useState(false)
-
-	const getBoxStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70 hover:bg-gray-200/80'
-			case 'dark':
-				return 'bg-neutral-900/70 hover:bg-neutral-800/80'
-			default: // glass
-				return 'bg-black/20 hover:bg-black/30'
-		}
-	}
-
-	const getCircleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-800'
-			default: // glass
-				return 'bg-black/20'
-		}
-	}
-
-	const getTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	return (
-		<>
-			<LazyMotion features={domAnimation}>
-				<m.div
-					whileHover={
-						disabled
-							? {}
-							: {
-									scale: 1.05,
-									backgroundColor:
-										theme === 'light'
-											? 'rgba(229, 231, 235, 0.8)'
-											: 'rgba(63, 63, 70, 0.5)',
-								}
-					}
-					whileTap={disabled ? {} : { scale: 0.95 }}
-					className={`flex items-center gap-2 p-2 duration-200 rounded-lg   shadow-lg transition-all cursor-pointer ${getBoxStyle()}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'}`}
-					onClick={() => !disabled && setShowModal(true)}
-					initial={false}
-					animate={{
-						border: disabled ? '' : '1px solid rgba(161, 161, 170, 0.2)',
-					}}
-				>
-					<m.div
-						className={`flex items-center justify-center w-6 h-6 rounded-full ${getCircleStyle()}`}
-						whileHover={{ rotate: 90 }}
-						transition={{ type: 'spring', stiffness: 300 }}
-					>
-						{loading ? (
-							<AiOutlineLoading className={`w-6 h-6 animate-spin ${getTextStyle()}`} />
-						) : (
-							<TiPlus className={`w-4 h-4 ${getTextStyle()}`} />
-						)}
-					</m.div>
-					<span className={`text-sm ${getTextStyle()}`}>افزودن ارز</span>
-				</m.div>
-			</LazyMotion>
-
-			<SelectCurrencyModal show={showModal} setShow={setShowModal} />
-		</>
-	)
-}
 
 interface AddCurrencyModalProps {
 	show: boolean

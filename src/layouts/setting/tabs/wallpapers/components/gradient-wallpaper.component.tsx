@@ -1,7 +1,12 @@
 import type { GradientColors, Wallpaper } from '@/common/wallpaper.interface'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getCardBackground,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -36,7 +41,7 @@ export function GradientWallpaper({
 	onSelectGradient,
 	selectedGradient,
 }: GradientWallpaperProps) {
-	const { themeUtils, theme } = useTheme()
+	const { theme } = useTheme()
 	const [customFromColor, setCustomFromColor] = useState('#7F00FF')
 	const [customToColor, setCustomToColor] = useState('#E100FF')
 	const [direction, setDirection] = useState<GradientColors['direction']>('to-r')
@@ -117,9 +122,9 @@ export function GradientWallpaper({
 		}
 
 		if (selected) {
-			style += `border-blue-500 ${themeUtils.getCardBackground()}`
+			style += `border-blue-500 ${getCardBackground(theme)}`
 		} else {
-			style += themeUtils.getBorderColor()
+			style += getBorderColor(theme)
 		}
 
 		return style
@@ -165,7 +170,7 @@ export function GradientWallpaper({
 			<SectionPanel title="گرادیان سفارشی">
 				<div className="flex flex-col gap-4 mb-4 sm:flex-row">
 					<div className="flex-1 space-y-2">
-						<label className={`block text-sm font-medium ${themeUtils.getTextColor()}`}>
+						<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
 							رنگ شروع
 						</label>
 						<div className="flex items-center gap-2">
@@ -188,7 +193,7 @@ export function GradientWallpaper({
 					</div>
 
 					<div className="flex-1 space-y-2">
-						<label className={`block text-sm font-medium ${themeUtils.getTextColor()}`}>
+						<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
 							رنگ پایان
 						</label>
 						<div className="flex items-center gap-2">
@@ -211,9 +216,7 @@ export function GradientWallpaper({
 				</div>
 
 				<div className="mb-4">
-					<label
-						className={`block mb-2 text-sm font-medium ${themeUtils.getTextColor()}`}
-					>
+					<label className={`block mb-2 text-sm font-medium ${getTextColor(theme)}`}>
 						جهت گرادیان
 					</label>
 					<div className="grid grid-cols-4 gap-2">

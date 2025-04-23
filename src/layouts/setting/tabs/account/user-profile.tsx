@@ -2,7 +2,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { Connections } from './connections'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
 	const [enableSync, setEnableSync] = useState<boolean>(true)
 
@@ -59,9 +59,7 @@ export const UserProfile = () => {
 	if (isError) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
-				<p className={`mb-4 text-center ${themeUtils.getTextColor()}`}>
-					{getMessageError()}
-				</p>
+				<p className={`mb-4 text-center ${getTextColor(theme)}`}>{getMessageError()}</p>
 				<button
 					onClick={logout}
 					className={`px-4 py-2 cursor-pointer rounded-lg transition-colors ${getButtonStyle()}`}
@@ -102,7 +100,7 @@ export const UserProfile = () => {
 							{profile?.inCache && <OfflineIndicator mode="badge" />}
 						</div>
 						<div>
-							<h3 className={`text-lg font-medium ${themeUtils.getTextColor()}`}>
+							<h3 className={`text-lg font-medium ${getTextColor(theme)}`}>
 								{profile?.name || 'کاربر'}
 							</h3>
 							<p className="text-sm text-left text-gray-500 dir-ltr">{profile?.email}</p>
@@ -115,10 +113,10 @@ export const UserProfile = () => {
 				<SectionPanel title="همگام‌سازی" delay={0.2}>
 					<div className="flex items-center justify-between">
 						<div>
-							<p className={`text-sm ${themeUtils.getTextColor()}`}>
+							<p className={`text-sm ${getTextColor(theme)}`}>
 								فعال‌سازی همگام‌سازی (ُSync)
 							</p>
-							<p className={`text-xs ${themeUtils.getTextColor()} font-light`}>
+							<p className={`text-xs ${getTextColor(theme)} font-light`}>
 								با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های
 								مختلف همگام‌سازی می‌شوند.
 							</p>
@@ -146,7 +144,7 @@ export const UserProfile = () => {
 
 				<SectionPanel title="حساب کاربری" delay={0.3}>
 					<div className="space-y-4">
-						<p className={`text-sm font-light ${themeUtils.getTextColor()}`}>
+						<p className={`text-sm font-light ${getTextColor(theme)}`}>
 							برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 						</p>
 						<button

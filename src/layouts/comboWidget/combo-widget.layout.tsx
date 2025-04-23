@@ -1,15 +1,14 @@
-import { useTheme } from '@/context/theme.context'
 import { useState } from 'react'
 import { FiBook, FiDollarSign, FiSettings } from 'react-icons/fi'
 
+import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { NewsLayout } from '../news/news.layout'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
 
 export function ComboWidget() {
-	const { themeUtils } = useTheme()
 	const [activeTab, setActiveTab] = useState<'news' | 'currency'>('currency')
 	const [showSettings, setShowSettings] = useState(false)
-
+	const { theme } = useTheme()
 	const handleSettingsClick = () => {
 		setShowSettings(true)
 	}
@@ -17,7 +16,7 @@ export function ComboWidget() {
 	return (
 		<div className="relative">
 			<div
-				className={`flex flex-col gap-1 py-2 rounded-2xl h-80 ${themeUtils.getCardBackground()}`}
+				className={`flex flex-col gap-1 py-2 rounded-2xl h-80 ${getContainerBackground(theme)}`}
 			>
 				<div className="flex justify-between px-4 pb-2 border-b border-gray-200/20">
 					<div className="flex gap-2">

@@ -1,10 +1,10 @@
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
-import { useEffect, useState } from 'react'
+import { type JSX, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 interface Platform {
@@ -19,7 +19,7 @@ interface Platform {
 }
 
 export function Connections() {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const { data: profile } = useGetUserProfile()
 
 	const [platforms, setPlatforms] = useState<Platform[]>([
@@ -161,7 +161,7 @@ export function Connections() {
 		<SectionPanel title="پلتفرم‌های متصل" delay={0.4}>
 			<div className="space-y-4">
 				{profile?.inCache && <OfflineIndicator mode="notification" />}
-				<p className={`text-sm font-light ${themeUtils.getTextColor()}`}>
+				<p className={`text-sm font-light ${getTextColor(theme)}`}>
 					مدیریت اتصالات پلتفرم‌ها و سرویس‌های متصل به حساب کاربری شما.
 				</p>
 
@@ -172,7 +172,7 @@ export function Connections() {
 							key={platform.id}
 						>
 							<div
-								className={`p-3 rounded-lg border ${themeUtils.getBorderColor()}
+								className={`p-3 rounded-lg border ${getBorderColor(theme)}
                                 ${platform.isActive ? '' : 'opacity-50'}
                             `}
 							>
@@ -184,7 +184,7 @@ export function Connections() {
 											{platform.icon}
 										</div>
 										<div>
-											<p className={`font-medium ${themeUtils.getTextColor()}`}>
+											<p className={`font-medium ${getTextColor(theme)}`}>
 												{platform.name}
 											</p>
 											<p className="text-xs font-light text-gray-500">

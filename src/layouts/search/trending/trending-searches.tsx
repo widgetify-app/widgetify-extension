@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getContainerBackground, useTheme } from '@/context/theme.context'
 import {
 	type RecommendedSite,
 	type TrendItem,
@@ -19,7 +19,7 @@ interface TrendingSearchesProps {
 }
 
 export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const [trends, setTrends] = useState<TrendItem[]>([])
 	const [recommendedSites, setRecommendedSites] = useState<RecommendedSite[]>([])
@@ -70,7 +70,7 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -10 }}
-					className={`absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${themeUtils.getCardBackground()} ${themeUtils.getBorderColor()}`}
+					className={`absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${getContainerBackground(theme)} ${getBorderColor(theme)}`}
 					style={{
 						zIndex: 9999,
 					}}

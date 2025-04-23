@@ -1,5 +1,9 @@
 import { useCurrencyStore } from '@/context/currency.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getButtonStyles,
+	getContainerBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 import { FiDollarSign, FiSettings } from 'react-icons/fi'
 import { SelectCurrencyModal } from './components/addCurrency-box'
@@ -20,7 +24,7 @@ export function WigiArzLayout({
 	onSettingsModalClose,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies } = useCurrencyStore()
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
@@ -41,7 +45,7 @@ export function WigiArzLayout({
 			<SelectCurrencyModal show={showModal} setShow={handleModalClose} />
 
 			<div
-				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl h-80 ${enableBackground ? themeUtils.getCardBackground() : ''}`}
+				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl h-80 ${enableBackground ? getContainerBackground(theme) : ''}`}
 			>
 				{enableHeader ? (
 					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
@@ -52,7 +56,7 @@ export function WigiArzLayout({
 						<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
 						<p className="text-sm opacity-50">ارزهای مورد نظر خود را اضافه کنید</p>
 						<button
-							className={`mt-3 px-4 py-1.5 cursor-pointer rounded-lg ${themeUtils.getButtonStyles()}`}
+							className={`mt-3 px-4 py-1.5 cursor-pointer rounded-lg ${getButtonStyles(theme)}`}
 							onClick={() => handleModalClose(true)}
 						>
 							افزودن ارز

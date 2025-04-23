@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, getHeadingTextStyle, useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import type { ReactNode } from 'react'
 import React from 'react'
@@ -18,18 +18,7 @@ export function SectionPanel({
 	size = 'md',
 	icon,
 }: SectionPanelProps) {
-	const { theme, themeUtils } = useTheme()
-
-	const getBorderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300/30'
-			case 'dark':
-				return 'border-gray-700/40'
-			default: // glass
-				return 'border-white/10'
-		}
-	}
+	const { theme } = useTheme()
 
 	const getSizeStyles = () => {
 		switch (size) {
@@ -74,10 +63,10 @@ export function SectionPanel({
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay }}
 			>
-				<div className={`${sizeStyles.header} border-b ${getBorderStyle()}`}>
+				<div className={`${sizeStyles.header} border-b ${getBorderColor(theme)}`}>
 					<div className="flex items-center justify-between gap-2">
 						<h3
-							className={`font-medium ${sizeStyles.title} ${themeUtils.getHeadingTextStyle()}`}
+							className={`font-medium ${sizeStyles.title} ${getHeadingTextStyle(theme)}`}
 						>
 							{title}
 						</h3>

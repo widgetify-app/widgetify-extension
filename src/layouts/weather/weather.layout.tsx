@@ -15,11 +15,11 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 //@ts-ignore
 import 'swiper/css/navigation'
-import { useTheme } from '@/context/theme.context'
+import { getContainerBackground, useTheme } from '@/context/theme.context'
 
 export function WeatherLayout() {
 	const { selectedCity, weatherSettings } = useWeatherStore()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
 	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
 
@@ -85,7 +85,7 @@ export function WeatherLayout() {
 	return (
 		<>
 			<div
-				className={`flex flex-col h-80 p-2 ${themeUtils.getCardBackground()} rounded-xl`}
+				className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}
 			>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 

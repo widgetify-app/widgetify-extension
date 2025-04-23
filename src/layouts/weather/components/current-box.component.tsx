@@ -1,5 +1,9 @@
 import Tooltip from '@/components/toolTip'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
@@ -15,7 +19,7 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const fadeInUp = {
 		hidden: { opacity: 0, y: 20 },
@@ -32,17 +36,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				return 'from-gray-700 to-gray-900'
 			default:
 				return 'from-gray-100 to-gray-300'
-		}
-	}
-
-	const getDescriptionBoxStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70'
-			case 'dark':
-				return 'bg-neutral-800/20'
-			default: // glass
-				return 'bg-neutral-900/40'
 		}
 	}
 
@@ -175,7 +168,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 				<m.div
 					variants={fadeInUp}
-					className={`relative mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${themeUtils.getBorderColor()} border ${getDescriptionBoxStyle()}`}
+					className={`relative mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}`}
 				>
 					<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">
 						<div className="flex-1">

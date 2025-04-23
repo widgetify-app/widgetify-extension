@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getButtonStyles, useTheme } from '@/context/theme.context'
 
 interface NewsContainerProps {
 	isLoading: boolean
@@ -15,7 +15,7 @@ export const NewsContainer = ({
 	onAddFeed,
 	children,
 }: NewsContainerProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	if (isLoading) {
 		return (
@@ -53,7 +53,7 @@ export const NewsContainer = ({
 				</p>
 				{noFeedsConfigured && (
 					<button
-						className={`mt-2 text-sm cursor-pointer font-medium transition-all active:scale-95 ${themeUtils.getButtonStyles()} rounded-lg`}
+						className={`mt-2 text-sm cursor-pointer font-medium transition-all active:scale-95 ${getButtonStyles(theme)} rounded-lg`}
 						onClick={onAddFeed}
 					>
 						<span className="flex items-center gap-2">

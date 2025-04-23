@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getBorderColor, useTheme } from '@/context/theme.context'
 import type { SelectedCity } from '@/context/weather.context'
 import { BiCurrentLocation } from 'react-icons/bi'
 
@@ -7,12 +7,10 @@ interface SelectedCityDisplayProps {
 }
 
 export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	if (!city) return null
 	return (
-		<div
-			className={`w-full rounded-xl overflow-hidden border ${themeUtils.getBorderColor()}`}
-		>
+		<div className={`w-full rounded-xl overflow-hidden border ${getBorderColor(theme)}`}>
 			<div className="p-4">
 				<div className="flex items-start">
 					<div className="flex-1">

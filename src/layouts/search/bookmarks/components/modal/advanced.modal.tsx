@@ -2,7 +2,13 @@ import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getButtonStyles,
+	getCardBackground,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
@@ -29,7 +35,7 @@ interface AdvancedModalProps {
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
 	if (!isOpen) return null
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const emojiPopoverRef = useRef<HTMLDivElement>(null)
 
 	const [background, setBackground] = useState(bookmark.customBackground)
@@ -100,18 +106,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	const getResetButtonStyle = () => {
-		return `${themeUtils.getButtonStyles()} cursor-pointer absolute left-1 top-1/2 -translate-y-1/2 rounded-full`
-	}
-
-	const getPopoverStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white shadow-lg border border-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 shadow-lg border border-neutral-700'
-			default: // glass
-				return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
-		}
+		return `${getButtonStyles(theme)} cursor-pointer absolute left-1 top-1/2 -translate-y-1/2 rounded-full`
 	}
 
 	const renderEmojiGrid = () => {
@@ -187,9 +182,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			<div className={'flex flex-col p-2 gap-2 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
-						<label
-							className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
-						>
+						<label className={`block text-sm font-medium mb-1.5 ${getTextColor(theme)}`}>
 							رنگ پس زمینه (اختیاری)
 						</label>
 						<div className="relative flex flex-1">
@@ -215,9 +208,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</div>
 
 					<div>
-						<label
-							className={`block text-sm  font-medium mb-1.5 ${themeUtils.getTextColor()}`}
-						>
+						<label className={`block text-sm  font-medium mb-1.5 ${getTextColor(theme)}`}>
 							رنگ متن (اختیاری)
 						</label>
 						<div className="relative flex flex-1">
@@ -244,9 +235,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</RequireAuth>
 
 				<div className="relative" ref={emojiPopoverRef}>
-					<label
-						className={`block text-sm font-medium mb-1.5 ${themeUtils.getTextColor()}`}
-					>
+					<label className={`block text-sm font-medium mb-1.5 ${getTextColor(theme)}`}>
 						انتخاب استیکر (اختیاری)
 					</label>
 
@@ -254,7 +243,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<button
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={`flex items-center justify-center h-10 px-4 rounded-md transition-colors ${themeUtils.getButtonStyles()} cursor-pointer`}
+							className={`flex items-center justify-center h-10 px-4 rounded-md transition-colors ${getButtonStyles(theme)} cursor-pointer`}
 						>
 							{sticker ? (
 								<>
@@ -291,7 +280,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{/* Emoji Popover */}
 					{isEmojiPopoverOpen && (
 						<div
-							className={`absolute  mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar ${getPopoverStyle()}`}
+							className={`absolute  mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar ${getCardBackground(theme)} shadow-lg border ${getBorderColor(theme)}`}
 							style={{ zIndex: 1000 }}
 						>
 							{renderEmojiGrid()}
@@ -300,7 +289,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<label className={`block text-sm font-medium ${themeUtils.getTextColor()}`}>
+					<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
 						پیش‌نمایش:
 					</label>
 					<div

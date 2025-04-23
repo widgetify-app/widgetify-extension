@@ -1,4 +1,9 @@
 import { addOpacityToColor } from '@/common/color'
+import {
+	getBookmarkStyle,
+	getCardBackground,
+	getContainerBackground,
+} from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import type { Bookmark } from '../types/bookmark.types'
@@ -7,7 +12,6 @@ import { FolderBookmarkItem } from './bookmark-folder'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle, BookmarkTooltip } from './bookmark/bookmark-title'
-import { getBookmarkStyle } from './shared'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark | null
@@ -78,7 +82,7 @@ export function BookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				whileHover={{ scale: 1.02 }}
 				style={customStyles}
-				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? getBookmarkStyle(theme) : 'border'}`}
+				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}` : 'border'}`}
 			>
 				{RenderStickerPattern(bookmark)}
 				<BookmarkIcon bookmark={bookmark} />

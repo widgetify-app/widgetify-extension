@@ -1,5 +1,5 @@
 import { useBookmarkStore } from '@/context/bookmark.context'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
@@ -13,7 +13,7 @@ import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const {
 		bookmarks,
@@ -256,7 +256,7 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`grid grid-cols-5 gap-3 w-full mt-3 p-2 rounded-lg transition-all duration-300 ${themeUtils.getTextColor()}`}
+				className={`grid grid-cols-5 gap-3 w-full mt-3 p-2 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (

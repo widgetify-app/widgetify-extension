@@ -1,5 +1,10 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { useTheme } from '@/context/theme.context'
+import {
+	getButtonStyles,
+	getProgressBarBgStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -75,51 +80,6 @@ export function Todos({ currentDate }: TodoProp) {
 		return { total, completed, percentage }
 	}
 
-	// Theme-specific styles
-	const getHeaderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			default:
-				return 'text-gray-300'
-		}
-	}
-
-	const getButtonStyle = (isActive: boolean) => {
-		if (isActive) {
-			return 'bg-blue-600 text-white'
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-300/70 text-gray-600 hover:text-gray-800 hover:bg-gray-300'
-			case 'dark':
-				return 'bg-gray-700/50 text-gray-400 hover:text-gray-300 hover:bg-gray-700'
-			default: // glass
-				return 'bg-gray-700/30 text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
-		}
-	}
-
-	const getProgressBarBgStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-300'
-			case 'dark':
-				return 'bg-gray-700'
-			default: // glass
-				return 'bg-gray-700/50'
-		}
-	}
-
-	const getStatsTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-400'
-		}
-	}
-
 	const getFilterButtonStyle = (isActive: boolean) => {
 		if (isActive) {
 			switch (theme) {
@@ -147,44 +107,31 @@ export function Todos({ currentDate }: TodoProp) {
 		}
 	}
 
-	const getEmptyStateStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-			default:
-				return 'text-gray-500'
-		}
-	}
-
 	const stats = getCompletionStats()
 
 	return (
 		<div className="max-w-64">
 			<div className="flex items-center justify-between mb-2">
-				<h4 className={`text-xs font-medium ${getHeaderStyle()}`}>یادداشت‌های روز</h4>
+				<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>یادداشت‌های روز</h4>
 
 				<div className="flex gap-1">
 					<button
 						onClick={handleBlurModeToggle}
-						className={`flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer ${getButtonStyle(blurMode)}`}
+						className={`flex items-center justify-center rounded-full transition-colors cursor-pointer ${getButtonStyles(theme, blurMode)} !px-1  !py-1`}
 						title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
 					>
 						{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
 					</button>
 					<button
 						onClick={() => setShowStats(!showStats)}
-						className={`flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer ${getButtonStyle(showStats)}`}
+						className={`flex items-center justify-center rounded-full transition-colors cursor-pointer ${getButtonStyles(theme, showStats)} !px-1  !py-1`}
 						title={showStats ? 'مخفی کردن آمار' : 'نمایش آمار'}
 					>
 						<FaChartSimple size={12} />
 					</button>
 					<button
 						onClick={() => setShow(true)}
-						className={`flex items-center cursor-pointer justify-center gap-1 px-1.5 py-0.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${
-							theme === 'light'
-								? 'bg-blue-500 hover:bg-blue-600 text-white'
-								: 'bg-blue-600/80 hover:bg-blue-500/90 text-white'
-						}`}
+						className={`flex items-center cursor-pointer justify-center gap-1 px-1.5 py-0.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow ${getButtonStyles(theme, true)} !px-1.5 !py-0.5`}
 						title="افزودن یادداشت جدید"
 					>
 						<FaPlus className="w-2 h-2" />
@@ -199,14 +146,14 @@ export function Todos({ currentDate }: TodoProp) {
 				<>
 					{selectedDateTodos.length > 0 && (
 						<div className="mb-2">
-							<div className={`h-1 mb-1 rounded-full ${getProgressBarBgStyle()}`}>
+							<div className={`h-1 mb-1 rounded-full ${getProgressBarBgStyle(theme)}`}>
 								<div
 									className="h-1 bg-green-500 rounded-full"
 									style={{ width: `${stats.percentage}%` }}
 								></div>
 							</div>
 							<div
-								className={`flex justify-between text-[.65rem] ${getStatsTextStyle()}`}
+								className={`flex justify-between text-[.65rem] ${getTextColor(theme)}`}
 							>
 								<span>
 									{stats.completed} از {stats.total} انجام شده
@@ -266,7 +213,7 @@ export function Todos({ currentDate }: TodoProp) {
 								))}
 							</>
 						) : (
-							<div className={`py-4 text-center ${getEmptyStateStyle()}`}>
+							<div className={'py-4 text-center'}>
 								<p className="text-xs">یادداشتی برای این روز ندارید.</p>
 								<p className="text-[.65rem]">یک یادداشت جدید اضافه کنید!</p>
 							</div>
