@@ -2,7 +2,6 @@ import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
-import { useTheme } from '@/context/theme.context'
 import { useGetSupportCurrencies } from '@/services/getMethodHooks/getSupportCurrencies.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
@@ -28,7 +27,6 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 	const { data: supportCurrencies } = useGetSupportCurrencies()
 
 	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
-	const { theme } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')
 
 	const onClose = () => setShow(false)
@@ -50,42 +48,6 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 			},
 			'toggle',
 		)
-	}
-
-	const getButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-white bg-green-600 hover:bg-green-700 active:bg-green-800'
-			case 'dark':
-				return 'text-gray-100 bg-green-700 hover:bg-green-800 active:bg-green-900'
-			default: // glass
-				return 'text-white bg-green-700/80 hover:bg-green-700 active:bg-green-800'
-		}
-	}
-
-	const getBoxStyle = (isSelected: boolean) => {
-		const baseStyle =
-			'p-3 rounded-xl border transition-colors duration-200 cursor-pointer flex flex-col items-center justify-center gap-1'
-
-		if (isSelected) {
-			switch (theme) {
-				case 'light':
-					return `${baseStyle} bg-green-50 border-green-300 text-green-700 shadow-sm`
-				case 'dark':
-					return `${baseStyle} bg-green-900/30 border-green-600/60 text-green-400 shadow-md`
-				default: // glass
-					return `${baseStyle} bg-green-700/20 border-green-500/50 text-white backdrop-blur-sm shadow-md`
-			}
-		}
-
-		switch (theme) {
-			case 'light':
-				return `${baseStyle} bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:shadow-sm`
-			case 'dark':
-				return `${baseStyle} bg-gray-800/50 border-gray-700/60 hover:bg-gray-700/40 text-gray-300 hover:shadow-md`
-			default: // glass
-				return `${baseStyle} bg-black/10 border-gray-500/20 hover:bg-black/20 text-gray-200 backdrop-blur-sm hover:shadow-md`
-		}
 	}
 
 	const currencyGroups = getCurrencyOptions(supportCurrencies)
@@ -151,9 +113,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 					>
 						{filteredGroups.map((group, groupIndex) => (
 							<m.div key={groupIndex} className="mb-6" variants={itemVariants}>
-								<h3
-									className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}
-								>
+								<h3 className={'text-sm font-medium mb-3 currency-group-heading'}>
 									{group.label}
 								</h3>
 								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -163,7 +123,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 										return (
 											<m.div
 												key={option.value}
-												className={getBoxStyle(isSelected)}
+												className={`flex flex-col items-center justify-center gap-1 p-3 transition-colors duration-200 border cursor-pointer rounded-xl ${isSelected ? 'currency-box-selected' : 'currency-box-unselected'}`}
 												onClick={() => toggleCurrency(option.value)}
 												variants={itemVariants}
 												whileHover={{ scale: 1.03 }}
@@ -198,7 +158,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 							type="button"
 							whileHover={{ scale: 1.03 }}
 							whileTap={{ scale: 0.97 }}
-							className={`px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm ${getButtonStyle()}`}
+							className="px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm currency-confirm-button"
 						>
 							تایید
 						</m.button>
