@@ -1,5 +1,5 @@
 import Modal from '@/components/modal'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
@@ -27,58 +27,6 @@ export const CurrencyModalComponent = ({
 	const [showChart, setShowChart] = useState(true)
 	const { theme } = useTheme()
 
-	const getTitleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-800'
-			case 'dark':
-				return 'text-gray-200'
-			default: // glass
-				return 'text-white'
-		}
-	}
-
-	const getSubtitleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getPriceStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-900'
-
-			default:
-				return 'text-gray-200'
-		}
-	}
-
-	const getButtonHoverStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'hover:bg-gray-100'
-			case 'dark':
-				return 'hover:bg-gray-800'
-			default: // glass
-				return 'hover:bg-white/10'
-		}
-	}
-
-	const getIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
 			<motion.div
@@ -105,8 +53,10 @@ export const CurrencyModalComponent = ({
 				</motion.div>
 
 				<div className="text-center">
-					<p className={`text-xl font-bold ${getTitleStyle()}`}>{currency?.name.en}</p>
-					<p className={`text-sm font-medium ${getSubtitleStyle()}`}>
+					<p className={`text-xl font-bold ${getTextColor(theme)}`}>
+						{currency?.name.en}
+					</p>
+					<p className={`text-sm font-medium ${getTextColor(theme)} opacity-60`}>
 						{code.toUpperCase()}
 					</p>
 				</div>
@@ -117,14 +67,16 @@ export const CurrencyModalComponent = ({
 						whileHover={{ scale: 1.02 }}
 					>
 						<PriceChangeComponent priceChange={priceChange} />
-						<p className={`text-xl font-bold ${getPriceStyle()}`}>
+						<p className={`text-xl font-bold ${getTextColor(theme)} opacity-95`}>
 							{displayPrice.toLocaleString()}
 						</p>
 
 						{currency?.priceHistory?.length ? (
 							<motion.button
 								onClick={() => setShowChart(!showChart)}
-								className={`p-1 rounded-lg ${getButtonHoverStyle()}`}
+								className={`p-1 rounded-lg transition-all ${getTextColor(
+									theme,
+								)} opacity-70 hover:opacity-100 cursor-pointer`}
 								whileHover={{ scale: 1.1 }}
 								whileTap={{ scale: 0.9 }}
 							>
@@ -132,7 +84,7 @@ export const CurrencyModalComponent = ({
 									animate={{ rotate: showChart ? 0 : 180 }}
 									transition={{ type: 'spring' }}
 								>
-									<FaChartLine className={`w-5 h-5 ${getIconStyle()}`} />
+									<FaChartLine className={`w-5 h-5 ${getTextColor(theme)}`} />
 								</motion.div>
 							</motion.button>
 						) : null}
@@ -154,13 +106,6 @@ export const CurrencyModalComponent = ({
 						)}
 					</AnimatePresence>
 				</div>
-
-				{/* Additional currency info */}
-				{currency?.type === 'crypto' && (
-					<p className={`text-sm font-medium text-center ${getSubtitleStyle()}`}>
-						${Number(currency.price.toFixed()).toLocaleString()}
-					</p>
-				)}
 			</motion.div>
 		</Modal>
 	)
