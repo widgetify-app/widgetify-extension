@@ -119,6 +119,42 @@
         background-color: rgb(96, 165, 250);
         /* blue-400 */
     }
+
+    /* Offline Indicator */
+    .offline-indicator-status,
+    .offline-indicator-notification {
+        background-color: rgb(254 243 199);
+        /* bg-amber-100 */
+        color: rgb(146 64 14);
+        /* text-amber-800 */
+        border-color: rgb(253 230 138);
+        /* border-amber-200 */
+    }
+
+    .offline-indicator-badge {
+        background-color: rgb(245 158 11);
+        /* bg-amber-500 */
+        border-color: white;
+        color: white;
+    }
+
+    .offline-indicator-status {
+        background-color: rgb(254 243 199);
+        /* bg-amber-100 */
+        color: rgb(146 64 14);
+        /* text-amber-800 */
+        border-color: rgb(253 230 138);
+        /* border-amber-200 */
+    }
+
+    .offline-indicator-notification {
+        background-color: rgb(254 243 199);
+        /* bg-amber-100 */
+        color: rgb(146 64 14);
+        /* text-amber-800 */
+        border-color: rgb(253 230 138);
+        /* border-amber-200 */
+    }
 }
 
 /* --- Dark Theme --- */
@@ -211,6 +247,43 @@
     .weather-forecast-slider .swiper-pagination-bullet-active {
         background-color: rgb(37, 99, 235);
         /* blue-600 */
+    }
+
+    /* Offline Indicator */
+    .offline-indicator-status,
+    .offline-indicator-notification {
+        background-color: rgba(120, 53, 15, 0.3);
+        /* bg-amber-900/30 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(180, 83, 9, 0.5);
+        /* border-amber-700/50 */
+    }
+
+    .offline-indicator-badge {
+        background-color: rgb(245 158 11);
+        /* bg-amber-500 */
+        border-color: rgb(31 41 55);
+        /* border-gray-800 */
+        color: white;
+    }
+
+    .offline-indicator-status {
+        background-color: rgba(120, 53, 15, 0.3);
+        /* bg-amber-900/30 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(180, 83, 9, 0.5);
+        /* border-amber-700/50 */
+    }
+
+    .offline-indicator-notification {
+        background-color: rgba(120, 53, 15, 0.3);
+        /* bg-amber-900/30 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(180, 83, 9, 0.5);
+        /* border-amber-700/50 */
     }
 }
 
@@ -314,5 +387,55 @@
     .weather-forecast-slider .swiper-pagination-bullet-active {
         background-color: rgb(59, 130, 246);
         /* blue-500 */
+    }
+
+    /* Offline Indicator */
+    .offline-indicator-status,
+    .offline-indicator-notification {
+        background-color: rgba(245, 158, 11, 0.1);
+        /* bg-amber-500/10 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(245, 158, 11, 0.2);
+        /* border-amber-500/20 */
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .offline-indicator-badge {
+        background-color: rgba(245, 158, 11, 0.8);
+        /* bg-amber-500/80 */
+        border-color: rgba(255, 255, 255, 0.6);
+        /* border-white/60 */
+        color: white;
+    }
+
+    .offline-indicator-status {
+        background-color: rgba(245, 158, 11, 0.1);
+        /* bg-amber-500/10 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(245, 158, 11, 0.2);
+        /* border-amber-500/20 */
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .offline-indicator-notification {
+        background-color: rgba(245, 158, 11, 0.1);
+        /* bg-amber-500/10 */
+        color: rgb(252 211 77);
+        /* text-amber-300 */
+        border-color: rgba(245, 158, 11, 0.2);
+        /* border-amber-500/20 */
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* Override backdrop-blur for glass theme status mode if needed */
+    .offline-indicator-status {
+        /* backdrop-filter: none; */
+        /* Uncomment if status shouldn't blur */
+        /* -webkit-backdrop-filter: none; */
     }
 }
