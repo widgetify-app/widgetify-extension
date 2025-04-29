@@ -34,6 +34,7 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { visibility } = useWidgetVisibility()
+	const [calendarDrawerOpen, setCalendarDrawerOpen] = useState(true)
 
 	return (
 		<TodoProvider>
@@ -69,11 +70,17 @@ function ContentSection() {
 					</div>
 				</div>
 
-				<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
-					<div className={'w-full lg:w-8/12'}>
-						{visibility.calendar && <CalendarLayout />}
+				<div
+					className={`flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4 ${calendarDrawerOpen ? '' : 'justify-between'} transition-all duration-300`}
+				>
+					<div className={'w-full lg:w-8/12 transition-all duration-300'}>
+						{visibility.calendar && (
+							<CalendarLayout onDrawerToggle={setCalendarDrawerOpen} />
+						)}
 					</div>
-					<div className={'w-full lg:w-4/12'}>
+					<div
+						className={`w-full ${calendarDrawerOpen ? 'lg:w-4/12' : 'md:max-w-64 lg:w-3/12 self-end'} transition-all duration-300`}
+					>
 						{visibility.weather && <WeatherLayout />}
 					</div>
 				</div>

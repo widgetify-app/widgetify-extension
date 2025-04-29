@@ -8,7 +8,7 @@ export function WeatherOptions() {
 	const { selectedCity, weatherSettings, updateWeatherSettings } = useWeatherStore()
 
 	return (
-		<div className="w-full max-w-xl mx-auto" dir="rtl">
+		<div className="w-full max-w-xl mx-auto transition-all duration-300">
 			<div className="space-y-6">
 				{/* Search City Section */}
 				<SelectedCityDisplay city={selectedCity} />
