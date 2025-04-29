@@ -7,6 +7,7 @@ interface FetchedProfile {
 	avatar: string
 	name: string
 	connections: string[]
+	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
 }
 
 export interface UserProfile extends FetchedProfile {
