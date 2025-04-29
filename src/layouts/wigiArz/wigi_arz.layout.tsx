@@ -4,12 +4,12 @@ import {
 	getContainerBackground,
 	useTheme,
 } from '@/context/theme.context'
+import { useWidgetVisibility } from '@/context/widget-visibility.context.tsx'
 import { useEffect, useState } from 'react'
-import { FiDollarSign, FiSettings } from 'react-icons/fi'
+import { FiDollarSign } from 'react-icons/fi'
 import { SelectCurrencyModal } from './components/addCurrency-box'
 import { ArzHeader } from './components/arz-header'
 import { CurrencyBox } from './components/currency-box'
-import {useWidgetVisibility} from "@/context/widget-visibility.context.tsx";
 
 interface WigiArzLayoutProps {
 	enableHeader?: boolean

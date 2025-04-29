@@ -1,9 +1,5 @@
 import { addOpacityToColor } from '@/common/color'
-import {
-	getBookmarkStyle,
-	getCardBackground,
-	getContainerBackground,
-} from '@/context/theme.context'
+import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import type { Bookmark } from '../types/bookmark.types'
