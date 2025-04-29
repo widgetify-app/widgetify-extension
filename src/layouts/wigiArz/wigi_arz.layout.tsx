@@ -9,6 +9,7 @@ import { FiDollarSign, FiSettings } from 'react-icons/fi'
 import { SelectCurrencyModal } from './components/addCurrency-box'
 import { ArzHeader } from './components/arz-header'
 import { CurrencyBox } from './components/currency-box'
+import {useWidgetVisibility} from "@/context/widget-visibility.context.tsx";
 
 interface WigiArzLayoutProps {
 	enableHeader?: boolean
@@ -24,6 +25,7 @@ export function WigiArzLayout({
 	onSettingsModalClose,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies } = useCurrencyStore()
+	const { visibility } = useWidgetVisibility()
 	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 
@@ -41,11 +43,11 @@ export function WigiArzLayout({
 	}
 
 	return (
-		<div className="relative">
+		<div className="relative h-full">
 			<SelectCurrencyModal show={showModal} setShow={handleModalClose} />
 
 			<div
-				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl h-80 ${enableBackground ? getContainerBackground(theme) : ''}`}
+				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl ${visibility.comboWidget ? 'h-full pb-0' : 'h-80'} ${enableBackground ? getContainerBackground(theme) : ''}`}
 			>
 				{enableHeader ? (
 					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
