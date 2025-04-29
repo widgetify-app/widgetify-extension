@@ -14,7 +14,7 @@ export interface Bookmark {
 	customBackground?: string
 	customTextColor?: string
 	sticker?: string
-	order?: number // Added order field to preserve arrangement
+	order?: number
 }
 
 export interface FolderPathItem {

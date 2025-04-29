@@ -1,5 +1,3 @@
-import { getButtonStyles, useTheme } from '@/context/theme.context'
-
 interface NewsContainerProps {
 	isLoading: boolean
 	isEmpty: boolean
@@ -12,11 +10,8 @@ export const NewsContainer = ({
 	isLoading,
 	isEmpty,
 	noFeedsConfigured,
-	onAddFeed,
 	children,
 }: NewsContainerProps) => {
-	const { theme } = useTheme()
-
 	if (isLoading) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full p-4">

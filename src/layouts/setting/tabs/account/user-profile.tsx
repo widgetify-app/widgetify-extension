@@ -1,5 +1,4 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
@@ -130,15 +129,6 @@ export const UserProfile = () => {
 						/>
 					</div>
 				</SectionPanel>
-
-				{/* <SectionPanel title="همگام‌سازی" size="xs">
-					<CheckBoxWithDescription
-						isEnabled={enableSync}
-						onToggle={() => handleSyncToggle(!enableSync)}
-						title="فعال‌سازی همگام‌سازی (ُSync)"
-						description="با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های مختلف همگام‌سازی می‌شوند."
-					/>
-				</SectionPanel> */}
 
 				<Connections />
 

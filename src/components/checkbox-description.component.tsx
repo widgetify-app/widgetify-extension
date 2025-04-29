@@ -1,6 +1,5 @@
 import CustomCheckbox from '@/components/checkbox'
 import {
-	getCardBackground,
 	getDescriptionTextStyle,
 	getHeadingTextStyle,
 	useTheme,

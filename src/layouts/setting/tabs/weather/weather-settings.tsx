@@ -1,7 +1,5 @@
-import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import {
-	getBorderColor,
 	getButtonStyles,
 	getInputStyle,
 	getTextColor,

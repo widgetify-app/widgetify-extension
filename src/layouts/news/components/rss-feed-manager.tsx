@@ -16,7 +16,7 @@ import clsx from 'clsx'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import { BiRss } from 'react-icons/bi'
-import { VscAdd, VscCloudDownload, VscTrash } from 'react-icons/vsc'
+import { VscAdd, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
 
 const SUGGESTED_FEEDS = [
