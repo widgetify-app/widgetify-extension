@@ -45,12 +45,12 @@ export function ReligiousTime({ currentDate }: Prop) {
 	}
 
 	const prayerTimeBoxes = [
+		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
 		{
 			title: 'طلوع آفتاب',
 			value: religiousTimeData?.tolu_aftab,
 			icon: FiSunrise,
 		},
-		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
 		{ title: 'اذان ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
 		{
 			title: 'غروب آفتاب',
