@@ -1,9 +1,4 @@
-import {
-	getBorderColor,
-	getInputStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { memo } from 'react'
 
 interface CustomCheckboxProps {
