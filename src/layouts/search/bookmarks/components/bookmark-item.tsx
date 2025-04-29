@@ -74,6 +74,7 @@ export function BookmarkItem({
 		>
 			<motion.button
 				onClick={onClick}
+				onMouseDown={onClick}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				whileHover={{ scale: 1.02 }}

@@ -67,6 +67,7 @@ export function FolderBookmarkItem({
 			<motion.button
 				onClick={onClick}
 				onMouseEnter={() => setIsHovered(true)}
+				onMouseDown={onClick}
 				onMouseLeave={() => setIsHovered(false)}
 				whileHover={{ scale: 1.02 }}
 				style={customStyles}
