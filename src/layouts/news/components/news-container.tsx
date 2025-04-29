@@ -51,29 +51,6 @@ export const NewsContainer = ({
 						? 'لطفا یک فید RSS اضافه کنید تا اخبار مورد نظر خود را دریافت کنید'
 						: 'در حال حاضر خبری از منابع شما موجود نیست'}
 				</p>
-				{noFeedsConfigured && (
-					<button
-						className={`mt-2 text-sm cursor-pointer font-medium transition-all active:scale-95 ${getButtonStyles(theme)} rounded-lg`}
-						onClick={onAddFeed}
-					>
-						<span className="flex items-center gap-2">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="w-4 h-4"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="2"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							>
-								<line x1="12" y1="5" x2="12" y2="19"></line>
-								<line x1="5" y1="12" x2="19" y2="12"></line>
-							</svg>
-							افزودن فید RSS
-						</span>
-					</button>
-				)}
 			</div>
 		)
 	}

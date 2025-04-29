@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/theme.context'
+import { getCardBackground, getTextColor, useTheme } from '@/context/theme.context'
 import type { FetchedCity } from '@/services/getMethodHooks/weather/weather.interface'
 import { useEffect, useRef } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
@@ -32,17 +32,6 @@ export function CityResultsList({
 		}
 	}, [onClickOutside])
 
-	const getContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white border-gray-300/30 shadow-lg'
-			case 'dark':
-				return 'bg-gray-800/90 border-white/10 shadow-lg backdrop-blur-sm'
-			default: // glass
-				return 'bg-gray-800/80 border-white/10 shadow-lg backdrop-blur-sm'
-		}
-	}
-
 	const getLoadingTextStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -61,15 +50,6 @@ export function CityResultsList({
 		}
 	}
 
-	const getEmptyResultStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-300'
-		}
-	}
-
 	const getCityItemStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -78,15 +58,6 @@ export function CityResultsList({
 				return 'border-white/10 hover:bg-blue-800/30'
 			default: // glass
 				return 'border-white/10 hover:bg-blue-800/30'
-		}
-	}
-
-	const getCityNameStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-800'
-			default:
-				return 'text-white'
 		}
 	}
 
@@ -112,7 +83,7 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
+				className={`overflow-hidden backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
 			>
 				<div className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}>
 					<div
@@ -128,9 +99,9 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
+				className={`overflow-hidden backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
 			>
-				<div className={`p-4 text-center ${getEmptyResultStyle()}`}>
+				<div className={`p-4 text-center ${getTextColor(theme)} opacity-75`}>
 					شهری با این نام یافت نشد
 				</div>
 			</div>
@@ -140,26 +111,24 @@ export function CityResultsList({
 	return (
 		<div
 			ref={listRef}
-			className={`overflow-hidden border rounded-lg ${getContainerStyle()}`}
+			className={`overflow-y-auto max-h-60 custom-scrollbar backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
 		>
-			<div className="overflow-y-auto max-h-60 custom-scrollbar">
-				{cities.map((city) => (
-					<button
-						key={`${city.name}-${city.lat}-${city.lon}`}
-						className={`flex flex-col w-full cursor-pointer p-3 text-right transition-colors border-b last:border-0 ${getCityItemStyle()}`}
-						onClick={() => onSelectCity(city)}
-					>
-						<div className="flex items-center gap-2">
-							<CiLocationOn className={`${getLocationIconStyle()} size-4`} />
-							<div className={`font-medium ${getCityNameStyle()}`}>{city.name}</div>
-						</div>
-						<div className={`text-sm pr-6 ${getCityStateStyle()}`}>
-							{city.state && `${city.state}, `}
-							{city.country}
-						</div>
-					</button>
-				))}
-			</div>
+			{cities.map((city) => (
+				<button
+					key={`${city.name}-${city.lat}-${city.lon}`}
+					className={`flex flex-col w-full cursor-pointer p-3 text-right transition-colors border-b last:border-0 ${getCityItemStyle()}`}
+					onClick={() => onSelectCity(city)}
+				>
+					<div className="flex items-center gap-2">
+						<CiLocationOn className={`${getLocationIconStyle()} size-4`} />
+						<div className={`font-medium ${getTextColor(theme)}`}>{city.name}</div>
+					</div>
+					<div className={`text-sm pr-6 ${getCityStateStyle()}`}>
+						{city.state && `${city.state}, `}
+						{city.country}
+					</div>
+				</button>
+			))}
 		</div>
 	)
 }

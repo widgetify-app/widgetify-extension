@@ -101,7 +101,7 @@ const getWidgetItemBackground = (theme: ThemeType): string => {
 const getBorderColor = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
-			return 'border-gray-300/30'
+			return 'border-gray-300/50'
 		case 'dark':
 			return 'border-gray-700/50'
 		default:
@@ -109,9 +109,11 @@ const getBorderColor = (theme: ThemeType): string => {
 	}
 }
 
-const getButtonStyles = (theme: ThemeType, isPrimary = false): string => {
-	const baseStyles = 'px-4 py-2 rounded-md transition-all duration-300'
-
+const getButtonStyles = (theme: ThemeType, isPrimary = false, rounded = true): string => {
+	let baseStyles = 'px-4 py-2 transition-all duration-300 '
+	if (rounded) {
+		baseStyles += 'rounded-md '
+	}
 	if (isPrimary) {
 		return `${baseStyles} bg-blue-600 hover:bg-blue-700 text-white`
 	}
@@ -180,7 +182,7 @@ const getTooltipStyle = (theme: ThemeType): string => {
 		case 'light':
 			return 'bg-white text-gray-800 border border-gray-200 shadow-lg'
 		case 'dark':
-			return 'bg-gray-800 text-gray-100 border border-gray-700 shadow-lg'
+			return 'bg-neutral-800 text-gray-100 border border-neutral-700 shadow-lg'
 		default:
 			return 'bg-black/70 backdrop-blur-md text-white border border-gray-700/30 shadow-lg'
 	}
@@ -204,6 +206,29 @@ const getProgressBarBgStyle = (theme: string) => {
 
 		default:
 			return 'bg-gray-700'
+	}
+}
+
+export const getInputStyle = (theme: string) => {
+	switch (theme) {
+		case 'light':
+			return `
+                    bg-gray-100/70 text-gray-800 border-gray-300/30 transition-all duration-300
+                    placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:gray-100 disabled:bg-gray-100 disabled:text-gray-500
+                `
+		case 'dark':
+			return `
+                    bg-neutral-800/80 text-gray-200 border-gray-700/40
+                    placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:bg-neutral-800/90 disabled:bg-gray-800/50 disabled:text-gray-500
+                `
+		default: // glass
+			return `
+                    bg-white/5 text-gray-200 border-white/10
+                    placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:bg-white/10 disabled:bg-white/3 disabled:text-gray-500
+                `
 	}
 }
 

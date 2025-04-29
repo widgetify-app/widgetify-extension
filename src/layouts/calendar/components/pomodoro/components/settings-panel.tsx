@@ -1,4 +1,5 @@
 import Modal from '@/components/modal'
+import { getInputStyle, getTextColor } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import type { PomodoroSettings } from '../types'
@@ -8,7 +9,6 @@ interface SettingInputProps {
 	value: number
 	onChange: (value: number) => void
 	max: number
-	getInputStyle: () => string
 	theme: string
 }
 
@@ -17,7 +17,6 @@ const SettingInput: React.FC<SettingInputProps> = ({
 	value,
 	onChange,
 	max,
-	getInputStyle,
 	theme,
 }) => {
 	return (
@@ -38,7 +37,7 @@ const SettingInput: React.FC<SettingInputProps> = ({
 						onChange(value)
 					}
 				}}
-				className={`w-16 px-2 py-1 text-sm rounded border transition-colors ${getInputStyle()} ${theme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}
+				className={`w-16 px-2 py-1 text-sm rounded border transition-colors ${getInputStyle(theme)} ${theme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}
 			/>
 		</div>
 	)
@@ -50,8 +49,6 @@ interface PomodoroSettingsPanelProps {
 	settings: PomodoroSettings
 	onUpdateSettings: (newSettings: PomodoroSettings) => void
 	onReset: () => void
-	getTextStyle: () => string
-	getInputStyle: () => string
 	theme: string
 }
 
@@ -61,8 +58,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 	settings,
 	onUpdateSettings,
 	onReset,
-	getTextStyle,
-	getInputStyle,
 	theme,
 }) => {
 	const handleSettingChange = (key: keyof PomodoroSettings, value: number) => {
@@ -93,7 +88,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 				className="mt-6 overflow-hidden"
 			>
 				<div className={'p-4 rounded-xl'}>
-					<h4 className={`text-sm font-medium mb-3 ${getTextStyle()}`}>
+					<h4 className={`text-sm font-medium mb-3 ${getTextColor(theme)}`}>
 						تنظیمات زمان (دقیقه)
 					</h4>
 
@@ -105,7 +100,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 								handleSettingChange('workTime', value)
 							}}
 							max={60}
-							getInputStyle={getInputStyle}
 							theme={theme}
 						/>
 
@@ -116,7 +110,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 								handleSettingChange('shortBreakTime', value)
 							}}
 							max={30}
-							getInputStyle={getInputStyle}
 							theme={theme}
 						/>
 
@@ -127,7 +120,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 								handleSettingChange('longBreakTime', value)
 							}}
 							max={60}
-							getInputStyle={getInputStyle}
 							theme={theme}
 						/>
 
@@ -138,7 +130,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 								handleSettingChange('cyclesBeforeLongBreak', value)
 							}}
 							max={10}
-							getInputStyle={getInputStyle}
 							theme={theme}
 						/>
 

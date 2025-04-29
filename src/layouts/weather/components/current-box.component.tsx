@@ -1,6 +1,7 @@
 import Tooltip from '@/components/toolTip'
 import {
 	getBorderColor,
+	getTextColor,
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
@@ -30,26 +31,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		},
 	}
 
-	const getTemperatureGradient = () => {
-		switch (theme) {
-			case 'light':
-				return 'from-gray-700 to-gray-900'
-			default:
-				return 'from-gray-100 to-gray-300'
-		}
-	}
-
-	const getDescriptionTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			case 'dark':
-				return 'text-gray-300'
-			default: // glass
-				return 'text-gray-200'
-		}
-	}
-
 	const getAiIconStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -67,17 +48,6 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				return 'text-green-600 bg-green-100/80 shadow-green-900/20 hover:shadow-green-900/30'
 			default:
 				return 'text-green-400 bg-green-900/40 shadow-green-900/20 hover:shadow-green-900/30'
-		}
-	}
-
-	const getCityNameStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			case 'dark':
-				return 'text-gray-400'
-			default: // glass
-				return 'text-gray-300'
 		}
 	}
 
@@ -112,7 +82,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					<div className="flex-1 mb-2 truncate">
 						<m.span
 							variants={fadeInUp}
-							className={`text-2xl font-bold truncate text-transparent bg-clip-text bg-gradient-to-r ${getTemperatureGradient()}`}
+							className={`text-2xl font-bold truncate ${getTextColor(theme)}`}
 							dir="ltr"
 						>
 							{Math.round(weather.temperature.temp)}
@@ -122,7 +92,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						</m.span>
 						{selectedCity?.name && (
 							<div
-								className={`text-sm flex gap-1 font-medium truncate ${getCityNameStyle()}`}
+								className={`text-sm flex gap-1 font-medium truncate ${getTextColor(theme)} opacity-80`}
 							>
 								<IoLocationOutline className="flex-shrink-0 text-xs" />
 								<p className="text-xs font-medium truncate">{selectedCity.name}</p>
@@ -185,7 +155,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 							<div className="relative pl-8 pr-2">
 								<p
-									className={`py-2 text-xs font-light leading-relaxed transition-all duration-300 line-clamp-none ${getDescriptionTextStyle()}`}
+									className={`py-2 text-xs font-light leading-relaxed transition-all duration-300 line-clamp-none ${getTextColor(theme)}`}
 								>
 									{weather.ai?.description || weather.temperature.temp_description}
 								</p>

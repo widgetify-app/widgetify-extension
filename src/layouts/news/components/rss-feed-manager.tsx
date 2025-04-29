@@ -1,6 +1,7 @@
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
+import { ToggleSwitch } from '@/components/toggle-switch.component'
 import {
 	getBorderColor,
 	getButtonStyles,
@@ -14,6 +15,7 @@ import {
 import clsx from 'clsx'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
+import { BiRss } from 'react-icons/bi'
 import { VscAdd, VscCloudDownload, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
 
@@ -314,8 +316,8 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed, theme }: FeedsListProps)
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 				>
-					<VscCloudDownload className="mb-3 opacity-50" size={32} />
-					<p className="mb-1 text-sm font-medium opacity-70">
+					<BiRss className={`mb-3 opacity-50 ${getTextColor(theme)}`} size={32} />
+					<p className={`mb-1 text-sm font-medium opacity-70 ${getTextColor(theme)}`}>
 						هیچ فید RSS اضافه نشده است
 					</p>
 					<p className={`text-xs opacity-50 ${getDescriptionTextStyle(theme)}`}>
@@ -407,51 +409,6 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			>
 				<VscTrash size={18} />
 			</m.button>
-		</m.div>
-	)
-}
-
-interface ToggleSwitchProps {
-	enabled: boolean
-	disabled?: boolean
-	onToggle: () => void
-}
-
-const ToggleSwitch = ({ enabled, disabled = false, onToggle }: ToggleSwitchProps) => {
-	const { theme } = useTheme()
-
-	const getTrackStyle = () => {
-		if (enabled) {
-			return theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-300'
-			case 'dark':
-				return 'bg-gray-600'
-			default: // glass
-				return 'bg-gray-700/50'
-		}
-	}
-
-	return (
-		<m.div
-			className={clsx('w-12 h-6 relative rounded-full transition-colors', {
-				[getTrackStyle()]: true,
-				'cursor-pointer': !disabled,
-				'cursor-not-allowed opacity-70': disabled,
-			})}
-			onClick={disabled ? undefined : onToggle}
-			whileTap={{ scale: disabled ? 1 : 0.95 }}
-		>
-			<m.span
-				className="absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1"
-				animate={{
-					x: enabled ? 24 : 0,
-				}}
-				transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-			/>
 		</m.div>
 	)
 }

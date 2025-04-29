@@ -132,7 +132,7 @@ export function GalleryTab() {
 
 	return (
 		<>
-			<SectionPanel title="گالری تصاویر">
+			<SectionPanel title="گالری تصاویر" size="xs">
 				<div className={'p-4 rounded-xl'}>
 					<LazyMotion features={domAnimation}>
 						<AnimatePresence mode="wait">
@@ -176,14 +176,14 @@ export function GalleryTab() {
 				</div>
 			</SectionPanel>
 
-			<SectionPanel title="تصویر دلخواه" delay={0.3}>
+			<SectionPanel title="تصویر دلخواه" delay={0.3} size="md">
 				<UploadArea
 					customWallpaper={customWallpaper}
 					onWallpaperChange={handleCustomWallpaperChange}
 				/>
 			</SectionPanel>
 
-			<SectionPanel title="تنظیمات تصویر" delay={0.4}>
+			<SectionPanel title="تنظیمات تصویر" delay={0.4} size="md">
 				<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
 			</SectionPanel>
 		</>

@@ -101,7 +101,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				<m.div
 					whileHover={{ scale: 1, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
 					whileTap={{ scale: 0.98 }}
-					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer  ${getWidgetItemBackground(theme)} opacity-60`}
+					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer  ${getWidgetItemBackground(theme)} opacity-60 hover:bg-gray-500/30`}
 					style={{
 						border: '1px solid transparent',
 						borderColor: imgColor ? `${imgColor}20` : 'transparent',

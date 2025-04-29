@@ -32,25 +32,6 @@ export function WallpaperGallery({
 		}
 	}
 
-	const getErrorContainerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-red-500/10'
-			default:
-				return 'bg-red-500/10'
-		}
-	}
-
-	const getErrorIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-red-500/10 text-red-500'
-
-			default:
-				return 'bg-red-500/20 text-red-400'
-		}
-	}
-
 	if (isLoading) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full py-6">
@@ -65,11 +46,9 @@ export function WallpaperGallery({
 	if (error) {
 		return (
 			<div
-				className={`flex flex-col items-center justify-center p-4 text-center rounded-lg ${getErrorContainerStyle()}`}
+				className={'flex flex-col items-center justify-center p-4 text-center rounded-lg'}
 			>
-				<div
-					className={`flex items-center justify-center w-10 h-10 mb-3 rounded-full ${getErrorIconStyle()}`}
-				>
+				<div className={'flex items-center justify-center w-10 h-10 mb-3 rounded-full'}>
 					<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							strokeLinecap="round"
@@ -80,9 +59,6 @@ export function WallpaperGallery({
 					</svg>
 				</div>
 				<h4 className="text-base font-medium text-red-400">خطا در بارگذاری</h4>
-				<p className={`mt-1 text-xs ${getDescriptionTextStyle(theme)}`}>
-					لطفا مجددا تلاش کنید
-				</p>
 			</div>
 		)
 	}

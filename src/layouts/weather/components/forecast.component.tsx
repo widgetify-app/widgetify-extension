@@ -44,7 +44,6 @@ export function ForecastComponent({ forecast, unit }: ForecastProps) {
 		switch (theme) {
 			case 'light':
 				return 'from-gray-700 to-gray-900'
-
 			default:
 				return 'from-gray-200 to-gray-400'
 		}

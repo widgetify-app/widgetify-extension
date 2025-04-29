@@ -1,6 +1,11 @@
 import { SectionPanel } from '@/components/section-panel'
 import type { FontFamily } from '@/context/appearance.context'
-import { getDescriptionTextStyle, getTextColor, useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 
 interface FontSelectorProps {
 	fontFamily: FontFamily
@@ -50,12 +55,7 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			return 'border-blue-500 bg-blue-500'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'border-gray-400'
-			default:
-				return 'border-gray-600'
-		}
+		return getBorderColor(theme)
 	}
 
 	return (

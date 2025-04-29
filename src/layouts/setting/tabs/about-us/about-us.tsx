@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import { getHeadingTextStyle, getTextColor, useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
@@ -9,17 +9,6 @@ export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()
 	const { theme } = useTheme()
 
-	const getAppNameGradient = () => {
-		switch (theme) {
-			case 'light':
-				return 'from-blue-700 to-indigo-600'
-			case 'dark':
-				return 'from-white to-blue-200'
-			default: // glass
-				return 'from-white to-blue-200'
-		}
-	}
-
 	const getVersionBadgeStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -28,17 +17,6 @@ export function AboutUsTab() {
 				return 'text-blue-200 bg-blue-900/30 border-blue-700/30'
 			default: // glass
 				return 'text-blue-200 bg-blue-900/30 border-blue-700/30'
-		}
-	}
-
-	const getDescriptionStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			case 'dark':
-				return 'text-gray-300'
-			default: // glass
-				return 'text-gray-300'
 		}
 	}
 
@@ -118,45 +96,6 @@ export function AboutUsTab() {
 		}
 	}
 
-	const getCardTitleStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-800'
-			default:
-				return 'text-white'
-		}
-	}
-
-	const getCardDescriptionStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getFooterTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getCopyrightStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-
-			default:
-				return 'text-gray-500'
-		}
-	}
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
@@ -167,19 +106,11 @@ export function AboutUsTab() {
 				dir="rtl"
 			>
 				<div className="flex flex-col items-center p-3 text-center">
-					{/* App Logo */}
-					<m.div
-						className="relative flex items-center justify-center w-20 h-20 mb-5 overflow-hidden shadow-lg rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800"
-						whileHover={{ scale: 1.05, rotate: 5 }}
-						transition={{ type: 'spring', stiffness: 300 }}
-					>
-						<div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.5),transparent)]"></div>
-						<span className="text-4xl font-extrabold text-white">W</span>
-					</m.div>
-
 					{/* App Name & Version */}
 					<h1
-						className={`mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${getAppNameGradient()}`}
+						className={
+							'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600'
+						}
 					>
 						ویجتی‌فای
 					</h1>
@@ -190,7 +121,7 @@ export function AboutUsTab() {
 					</div>
 
 					{/* Description */}
-					<p className={`max-w-lg mb-2 text-sm leading-relaxed ${getDescriptionStyle()}`}>
+					<p className={`max-w-lg mb-2 text-sm leading-relaxed ${getTextColor(theme)}`}>
 						ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای
 						کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
 					</p>
@@ -212,8 +143,10 @@ export function AboutUsTab() {
 							>
 								<FaDonate size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getCardTitleStyle()}`}>حمایت مالی</h3>
-							<p className={`mt-1 text-xs text-center ${getCardDescriptionStyle()}`}>
+							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
+								حمایت مالی
+							</h3>
+							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
 								کمک به توسعه ویجتی‌فای
 							</p>
 						</m.a>
@@ -231,8 +164,8 @@ export function AboutUsTab() {
 							>
 								<FaGithub size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getCardTitleStyle()}`}>گیت‌هاب</h3>
-							<p className={`mt-1 text-xs text-center ${getCardDescriptionStyle()}`}>
+							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>گیت‌هاب</h3>
+							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
 								مشاهده کد منبع
 							</p>
 						</m.a>
@@ -250,8 +183,8 @@ export function AboutUsTab() {
 							>
 								<MdFeedback size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getCardTitleStyle()}`}>بازخورد</h3>
-							<p className={`mt-1 text-xs text-center ${getCardDescriptionStyle()}`}>
+							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>بازخورد</h3>
+							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
 								ارسال پیشنهاد و انتقاد
 							</p>
 						</m.a>
@@ -269,8 +202,8 @@ export function AboutUsTab() {
 							>
 								<FaGlobe size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getCardTitleStyle()}`}>وب‌سایت</h3>
-							<p className={`mt-1 text-xs text-center ${getCardDescriptionStyle()}`}>
+							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>وب‌سایت</h3>
+							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
 								مشاهده سایت رسمی
 							</p>
 						</m.a>
@@ -279,14 +212,16 @@ export function AboutUsTab() {
 
 				{/* Footer */}
 				<div
-					className={`flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm ${getFooterTextStyle()}`}
+					className={`flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm ${getTextColor(theme)} opacity-75`}
 				>
 					<span>ساخته شده با</span>
 					<FaHeart className="mx-1 text-red-500 animate-pulse" size={14} />
 					<span>در ایران</span>
 				</div>
 
-				<div className={`mt-2 mb-4 text-xs text-center ${getCopyrightStyle()}`}>
+				<div
+					className={`mt-2 mb-4 text-xs text-center ${getTextColor(theme)} opacity-55`}
+				>
 					© ویجتی‌فای - تمامی حقوق محفوظ است
 				</div>
 			</m.div>

@@ -1,3 +1,4 @@
+import { getTextColor } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { modeFullLabels } from '../constants'
@@ -9,7 +10,6 @@ interface TimerDisplayProps {
 	mode: TimerMode
 	theme: string
 	getProgressColor: () => string
-	getTextStyle: () => string
 	cycles: number
 	cyclesBeforeLongBreak: number
 }
@@ -20,7 +20,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 	mode,
 	theme,
 	getProgressColor,
-	getTextStyle,
 	cycles,
 	cyclesBeforeLongBreak,
 }) => {
@@ -67,7 +66,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 				<text
 					x="50"
 					y="50"
-					className={getTextStyle()}
+					className={getTextColor(theme)}
 					textAnchor="middle"
 					dominantBaseline="middle"
 					fontSize="16"

@@ -1,5 +1,10 @@
 import { SectionPanel } from '@/components/section-panel'
-import { getDescriptionTextStyle, getTextColor, useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 
 interface ContentAlignmentSettingsProps {
 	contentAlignment: 'center' | 'top'
@@ -34,17 +39,6 @@ export function ContentAlignmentSettings({
 		}
 	}
 
-	const getBorderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-400 border-dashed'
-			case 'dark':
-				return 'border-gray-600 border-dashed'
-			default: // glass
-				return 'border-gray-600 border-dashed'
-		}
-	}
-
 	const getPreviewLineStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -71,7 +65,7 @@ export function ContentAlignmentSettings({
 					>
 						<div className="flex flex-col items-center">
 							<div
-								className={`flex items-center justify-center w-full h-10 mb-2 border rounded ${getBorderStyle()}`}
+								className={`flex items-center justify-center w-full h-10 mb-2 border rounded ${getBorderColor(theme)}`}
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>
@@ -88,7 +82,7 @@ export function ContentAlignmentSettings({
 					>
 						<div className="flex flex-col items-center">
 							<div
-								className={`flex items-start justify-center w-full h-10 pt-1 mb-2 border rounded ${getBorderStyle()}`}
+								className={`flex items-start justify-center w-full h-10 pt-1 mb-2 border rounded ${getBorderColor(theme)}`}
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>

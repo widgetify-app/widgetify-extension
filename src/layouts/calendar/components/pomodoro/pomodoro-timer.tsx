@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -182,10 +182,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 	}
 
-	const getTextStyle = () => {
-		return theme === 'light' ? 'text-gray-700' : 'text-gray-200'
-	}
-
 	const getModeButtonStyle = (buttonMode: TimerMode) => {
 		const isActive = buttonMode === mode
 
@@ -200,17 +196,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 
 	const getProgressColor = () => {
 		return theme === 'light' ? modeColors[mode].light : modeColors[mode].dark
-	}
-
-	const getInputStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-200 bg-white/90 focus:border-blue-400 focus:ring focus:ring-blue-100'
-			case 'dark':
-				return 'border-neutral-600 bg-neutral-800/80 focus:border-blue-500 focus:ring focus:ring-blue-500/20'
-			default:
-				return 'border-gray-700/50 bg-gray-800/30 focus:border-blue-400 focus:ring focus:ring-blue-400/20'
-		}
 	}
 
 	return (
@@ -249,7 +234,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					onClick={() => setShowSettings(!showSettings)}
 					className={`p-2 rounded-full cursor-pointer transition-colors ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
 				>
-					<FiSettings className={getTextStyle()} />
+					<FiSettings className={getTextColor(theme)} />
 				</motion.button>
 			</div>
 
@@ -261,7 +246,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					mode={mode}
 					theme={theme}
 					getProgressColor={getProgressColor}
-					getTextStyle={getTextStyle}
 					cycles={cycles}
 					cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
 				/>
@@ -317,8 +301,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				settings={settings}
 				onUpdateSettings={handleUpdateSettings}
 				onReset={handleReset}
-				getTextStyle={getTextStyle}
-				getInputStyle={getInputStyle}
 				theme={theme}
 			/>
 		</motion.div>

@@ -1,5 +1,12 @@
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
-import { useTheme } from '@/context/theme.context'
+import { ToggleSwitch } from '@/components/toggle-switch.component'
+import {
+	getBorderColor,
+	getButtonStyles,
+	getInputStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import type { TemperatureUnit } from '@/services/getMethodHooks/weather/weather.interface'
 
 interface WeatherSettingsProps {
@@ -16,28 +23,6 @@ export function WeatherSettings({
 	updateSettings,
 }: WeatherSettingsProps) {
 	const { theme } = useTheme()
-
-	const getButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-600/30 hover:bg-blue-600/40 text-blue-800 border-white/20'
-			case 'dark':
-				return 'bg-blue-700/40 hover:bg-blue-700/60 text-white border-white/10'
-			default: // glass
-				return 'bg-blue-700/40 hover:bg-blue-700/60 text-white border-white/10'
-		}
-	}
-
-	const getInputStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/60 text-gray-800 border-gray-300/30 focus:ring-blue-500'
-			case 'dark':
-				return 'bg-gray-800/30 text-white border-white/10 focus:ring-blue-500'
-			default: // glass
-				return 'bg-gray-800/30 text-white border-white/10 focus:ring-blue-500'
-		}
-	}
 
 	const getSelectedUnitStyle = () => {
 		switch (theme) {
@@ -60,24 +45,6 @@ export function WeatherSettings({
 		}
 	}
 
-	const getHintTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-400'
-		}
-	}
-
-	const getLabelStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700'
-			default:
-				return 'text-white'
-		}
-	}
-
 	return (
 		<div className="space-y-6">
 			{/* Forecast Count */}
@@ -85,7 +52,7 @@ export function WeatherSettings({
 				<div className="flex items-center justify-between">
 					<label
 						htmlFor="forecastCount"
-						className={`flex items-center text-sm font-medium ${getLabelStyle()}`}
+						className={`flex items-center text-sm font-medium ${getTextColor(theme)}`}
 					>
 						<span>تعداد پیش‌بینی</span>
 					</label>
@@ -94,7 +61,7 @@ export function WeatherSettings({
 							onClick={() =>
 								updateSettings('forecastCount', Math.max(1, forecastCount - 1))
 							}
-							className={`flex items-center justify-center w-8 h-8 text-lg border-l cursor-pointer ${getButtonStyle()} rounded-r-md`}
+							className={`flex items-center justify-center w-8 h-8 text-lg cursor-pointer ${getButtonStyles(theme, true, false)} rounded`}
 						>
 							−
 						</button>
@@ -107,13 +74,13 @@ export function WeatherSettings({
 							onChange={(e) =>
 								updateSettings('forecastCount', Number.parseInt(e.target.value) || 4)
 							}
-							className={`w-16 h-8 px-2 text-center border-x ${getInputStyle()} focus:outline-none`}
+							className={`w-16 h-8 px-2 text-center border-x ${getInputStyle(theme)} focus:outline-none`}
 						/>
 						<button
 							onClick={() =>
 								updateSettings('forecastCount', Math.min(10, forecastCount + 1))
 							}
-							className={`flex items-center justify-center w-8 h-8 text-lg border-r cursor-pointer ${getButtonStyle()} rounded-l-md`}
+							className={`flex items-center justify-center w-8 h-8 text-lg cursor-pointer ${getButtonStyles(theme, true, false)} rounded`}
 						>
 							+
 						</button>
@@ -124,7 +91,10 @@ export function WeatherSettings({
 			{/* Temperature Unit */}
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
-					<label htmlFor="tempUnit" className={`text-sm font-medium ${getLabelStyle()}`}>
+					<label
+						htmlFor="tempUnit"
+						className={`text-sm font-medium ${getTextColor(theme)}`}
+					>
 						واحد دما
 					</label>
 					<div className="flex overflow-hidden border rounded-md border-white/10">
@@ -148,7 +118,9 @@ export function WeatherSettings({
 						))}
 					</div>
 				</div>
-				<div className={`text-xs font-light text-right ${getHintTextStyle()}`}>
+				<div
+					className={`text-xs font-light text-right ${getTextColor(theme)} opacity-70`}
+				>
 					{temperatureUnit === 'metric' &&
 						'واحد سلسیوس در بیشتر کشورهای جهان استفاده می‌شود'}
 					{temperatureUnit === 'imperial' &&
@@ -158,12 +130,19 @@ export function WeatherSettings({
 			</div>
 
 			{/* AI Toggle */}
-			<CheckBoxWithDescription
-				isEnabled={useAI}
-				onToggle={() => updateSettings('useAI', !useAI)}
-				title="استفاده از هوش مصنوعی"
-				description="توصیف شرایط آب و هوا با زبانی طبیعی با کمک هوش مصنوعی"
-			/>
+			<div className="flex items-center justify-between">
+				<div>
+					<p className={`text-sm ${getTextColor(theme)}`}>استفاده از هوش مصنوعی</p>
+					<p className={`text-xs font-light ${getTextColor(theme)} opacity-70`}>
+						توصیف شرایط آب و هوا و پیشنهاد پلی لیست مناسب با کمک هوش مصنوعی
+					</p>
+				</div>
+				<ToggleSwitch
+					enabled={useAI}
+					onToggle={() => updateSettings('useAI', !useAI)}
+					key={'sync-toggle'}
+				/>
+			</div>
 		</div>
 	)
 }

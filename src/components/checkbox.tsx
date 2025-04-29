@@ -1,4 +1,9 @@
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getInputStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { memo } from 'react'
 
 interface CustomCheckboxProps {
@@ -30,7 +35,7 @@ const CustomCheckbox = ({
 			<div className="relative">
 				<input
 					type="checkbox"
-					className="sr-only peer"
+					className={'sr-only'}
 					checked={checked}
 					onChange={(e) => !disabled && onChange(e.target.checked)}
 					disabled={disabled}

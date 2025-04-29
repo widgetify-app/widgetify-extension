@@ -1,6 +1,8 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
+import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
@@ -121,24 +123,22 @@ export const UserProfile = () => {
 								مختلف همگام‌سازی می‌شوند.
 							</p>
 						</div>
-						<label className="relative inline-flex items-center cursor-pointer">
-							<input
-								type="checkbox"
-								checked={enableSync}
-								onChange={(e) => handleSyncToggle(e.target.checked)}
-								className="sr-only peer"
-							/>
-							<div
-								className={`relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer 
-                                    ${enableSync ? 'bg-blue-500' : 'bg-gray-700'} 
-                                    peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-                                    after:content-[''] after:absolute after:top-[2px] after:start-[2px] 
-                                    after:bg-white after:rounded-full after:h-5 after:w-5 
-                                    after:transition-all peer-checked:bg-blue-600`}
-							></div>
-						</label>
+						<ToggleSwitch
+							enabled={enableSync}
+							onToggle={() => handleSyncToggle(!enableSync)}
+							key={'sync-toggle'}
+						/>
 					</div>
 				</SectionPanel>
+
+				{/* <SectionPanel title="همگام‌سازی" size="xs">
+					<CheckBoxWithDescription
+						isEnabled={enableSync}
+						onToggle={() => handleSyncToggle(!enableSync)}
+						title="فعال‌سازی همگام‌سازی (ُSync)"
+						description="با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های مختلف همگام‌سازی می‌شوند."
+					/>
+				</SectionPanel> */}
 
 				<Connections />
 
@@ -151,7 +151,7 @@ export const UserProfile = () => {
 							onClick={() => logout()}
 							className={`px-4 py-2 cursor-pointer rounded-lg transition-colors ${getButtonStyle()}`}
 						>
-							خروج از حساب کاربری
+							خروج از حساب کاربریر
 						</button>
 					</div>
 				</SectionPanel>

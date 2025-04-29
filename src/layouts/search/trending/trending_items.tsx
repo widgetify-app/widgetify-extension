@@ -93,7 +93,7 @@ export const TrendItemComponent = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: index * 0.05 }}
-			className={`flex items-center px-1.5 py-1 cursor-pointer transition-colors rounded-lg ${getWidgetItemBackground(theme)} h-6`}
+			className={`flex items-center px-1.5 py-1 cursor-pointer transition-colors rounded-lg ${getWidgetItemBackground(theme)} h-6 hover:bg-gray-300/10`}
 			onClick={onClick}
 		>
 			<span className="ml-1 text-xs opacity-60">{index + 1}</span>
