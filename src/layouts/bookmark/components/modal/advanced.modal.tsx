@@ -1,5 +1,7 @@
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import PopoverColorPicker from '@/components/PopoverColorPicker'
+import { RequireAuth } from '@/components/auth/require-auth'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import {
@@ -12,8 +14,6 @@ import {
 import { getEmojiList } from '@/services/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
-import PopoverColorPicker from '../../../../../components/PopoverColorPicker'
-import { RequireAuth } from '../../../../../components/auth/require-auth'
 import type { Bookmark } from '../../types/bookmark.types'
 import { BookmarkItem } from '../bookmark-item'
 

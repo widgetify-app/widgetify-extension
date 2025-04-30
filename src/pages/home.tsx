@@ -5,6 +5,7 @@ import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
+import { BookmarkProvider } from '@/context/bookmark.context'
 import { CurrencyProvider } from '@/context/currency.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
@@ -13,6 +14,7 @@ import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
 } from '@/context/widget-visibility.context'
+import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import CalendarLayout from '@/layouts/calendar/calendar'
 import { ComboWidget } from '@/layouts/comboWidget/combo-widget.layout'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
@@ -52,6 +54,9 @@ function ContentSection() {
 
 					<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
 						<SearchLayout />
+						<BookmarkProvider>
+							<BookmarksComponent />
+						</BookmarkProvider>
 					</div>
 
 					<div className="order-2 w-full lg:w-1/4 lg:order-3">

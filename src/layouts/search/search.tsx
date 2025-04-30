@@ -1,4 +1,3 @@
-import { BookmarkProvider } from '@/context/bookmark.context'
 import {
 	getBorderColor,
 	getContainerBackground,
@@ -9,7 +8,6 @@ import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Browser from 'webextension-polyfill'
-import { BookmarksComponent } from './bookmarks/bookmarks'
 import { TrendingSearches } from './trending/trending-searches'
 
 export function SearchLayout() {
@@ -131,9 +129,6 @@ export function SearchLayout() {
 						onSelectTrend={handleSelectTrend}
 					/>
 				</div>
-				<BookmarkProvider>
-					<BookmarksComponent />
-				</BookmarkProvider>
 			</div>
 		</>
 	)
