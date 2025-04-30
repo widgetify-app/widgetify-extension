@@ -1,4 +1,4 @@
-import { getCardBackground, getTextColor } from '@/context/theme.context'
+import { getContainerBackground, getTextColor } from '@/context/theme.context'
 import type { FolderPathItem } from '../types/bookmark.types'
 
 type FolderPathProps = {
@@ -13,7 +13,7 @@ export function FolderPath({ folderPath, onNavigate, theme = 'glass' }: FolderPa
 	return (
 		<nav
 			aria-label="Folder navigation"
-			className={`flex items-center px-3 py-2 mt-2 text-xs rounded-lg ${getCardBackground(theme)}`}
+			className={`flex w-fit items-center px-3 py-2 mt-0.5 text-xs rounded-lg ${getContainerBackground(theme)}`}
 		>
 			<ol className="flex flex-wrap items-center gap-y-1">
 				<li>

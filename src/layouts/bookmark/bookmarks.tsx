@@ -260,7 +260,7 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`grid grid-cols-5 gap-3 w-full mt-3 p-2 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
+				className={`relative grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
@@ -305,9 +305,9 @@ export function BookmarksComponent() {
 					/>
 				)}
 			</div>
-
-			<FolderPath folderPath={folderPath} onNavigate={handleNavigate} theme={theme} />
-
+			<div className="flex justify-center w-full">
+				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} theme={theme} />
+			</div>
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
