@@ -7,6 +7,7 @@ import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { SettingModal } from '../setting/setting-modal'
 import { SyncButton } from './sync/sync'
+import { FriendsList } from './friends-list/friends-list.component'
 
 export interface PageLink {
 	name: string
@@ -39,6 +40,8 @@ export function NavbarLayout(): JSX.Element {
 					<h1 className="text-2xl text-gray-100">ویجتی‌فای</h1>
 				</div>
 				<div className="flex items-center gap-2">
+					<FriendsList />
+
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<button
