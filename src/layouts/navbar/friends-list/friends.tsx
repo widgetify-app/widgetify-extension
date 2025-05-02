@@ -96,14 +96,6 @@ export function FriendsList() {
 								</SwiperSlide>
 							))
 						: null}
-					{/* <div className="absolute top-0 left-0 z-10 w-4 h-full pointer-events-none swiper-shadow-left"></div>
-          <div className="absolute top-0 right-0 z-10 w-4 h-full pointer-events-none swiper-shadow-right"></div> */}
-					{/* <div className="absolute left-0 z-10 flex items-center justify-center w-4 h-4 transition-opacity -translate-y-1/2 opacity-0 cursor-pointer top-1/2 user-list-prev user-list-slider-hover:opacity-70">
-            <FiChevronLeft size={16} />
-          </div>
-          <div className="absolute right-0 z-10 flex items-center justify-center w-4 h-4 transition-opacity -translate-y-1/2 opacity-0 cursor-pointer top-1/2 user-list-next user-list-slider-hover:opacity-70">
-            <FiChevronRight size={16} />
-          </div> */}
 				</Swiper>
 			</div>
 
@@ -111,7 +103,6 @@ export function FriendsList() {
 				isOpen={showSettingsModal}
 				onClose={() => {
 					setShowSettingsModal(false)
-					// Refresh friends list after closing the settings modal
 					refetchFriends()
 				}}
 			/>
