@@ -1,4 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { AvatarComponent } from '@/components/avatar.component'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
@@ -117,13 +118,11 @@ export const UserProfile = () => {
 						className={`flex items-center gap-5 p-5 mb-8 shadow-sm  rounded-xl  border ${getBorderColor(theme)}`}
 					>
 						<div className="relative">
-							<img
-								src={profile?.avatar || 'https://via.placeholder.com/100'}
-								alt={profile?.name || 'کاربر'}
-								className="object-cover w-20 h-20 border-4 rounded-full shadow-md border-white/20"
-								onError={(e) => {
-									e.currentTarget.src = 'https://via.placeholder.com/100'
-								}}
+							<AvatarComponent
+								url={profile?.avatar || null}
+								placeholder={profile?.name || 'کاربر'}
+								size="lg"
+								className="shadow-md border-white/20"
 							/>
 							<div
 								className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-500' : 'bg-green-500'} border-2 rounded-full border-neutral-800 bottom-1 right-0`}

@@ -109,8 +109,8 @@ export function FriendsList() {
 				)}
 				<Swiper
 					modules={[FreeMode, Navigation]}
-					spaceBetween={8}
-					slidesPerView={3}
+					spaceBetween={friends.length > 3 ? 0 : 8}
+					slidesPerView={friends.length > 1 ? 3 : 1}
 					freeMode={true}
 					className="user-list-slider"
 					dir="ltr"
