@@ -52,10 +52,10 @@ export function FriendsList() {
 				)}
 
 				{!showFriendsList && (
-					<div className="flex w-full gap-2">
+					<div className="flex items-center justify-around w-full">
 						<Tooltip content="نمایش دوستان" position="bottom">
 							<button
-								className="m-auto p-0.5 cursor-pointer"
+								className="p-0.5 cursor-pointer"
 								onClick={() => setShowFriendsList(!showFriendsList)}
 							>
 								<FiUsers className="ml-1" size={18} />
@@ -64,7 +64,7 @@ export function FriendsList() {
 						</Tooltip>
 						<Tooltip content="مدیریت دوستان">
 							<button
-								className="m-auto p-0.5 cursor-pointer relative"
+								className="p-0.5 cursor-pointer relative"
 								onClick={handleOpenSettingsModal}
 							>
 								<LiaUsersCogSolid size={18} />
