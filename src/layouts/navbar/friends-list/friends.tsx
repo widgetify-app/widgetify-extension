@@ -8,63 +8,25 @@ import 'swiper/css'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { getMainClient } from '@/services/api'
+import { useGetFriends } from '@/services/getMethodHooks/friends/friendService.hook'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
 
-interface FriendUser {
-	name: string
-	avatar: string
-	username: string
-	userId: string
-	extras?: {
-		activity?: string
-		selectedWallpaper?: string
-	}
-}
-
-interface Friend {
-	id: string
-	user: FriendUser
-	status: 'PENDING' | 'ACCEPTED'
-}
-
-interface FriendsResponse {
-	data: {
-		friends: Friend[]
-		totalPages: number
-	}
-}
-
 export function FriendsList() {
 	const { data: user } = useGetUserProfile()
-	const [friends, setFriends] = useState<Friend[]>([])
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
-
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const { isAuthenticated } = useAuth()
 
-	useEffect(() => {
-		if (isAuthenticated) {
-			fetchFriends()
-		}
-	}, [isAuthenticated])
+	const { data: friendsData, refetch: refetchFriends } = useGetFriends({
+		status: 'ACCEPTED',
+		enabled: isAuthenticated,
+	})
 
-	const fetchFriends = async () => {
-		if (!isAuthenticated) return
-
-		try {
-			const api = await getMainClient()
-			const response = await api.get<FriendsResponse>('/friends?status=ACCEPTED')
-			setFriends(response.data.data.friends)
-		} catch (err) {
-			console.error('Failed to fetch friends:', err)
-		} finally {
-		}
-	}
+	const friends = friendsData?.data.friends || []
 
 	const handleOpenSettingsModal = () => {
 		if (!isAuthenticated) {
@@ -150,7 +112,7 @@ export function FriendsList() {
 				onClose={() => {
 					setShowSettingsModal(false)
 					// Refresh friends list after closing the settings modal
-					fetchFriends()
+					refetchFriends()
 				}}
 			/>
 			<AuthRequiredModal

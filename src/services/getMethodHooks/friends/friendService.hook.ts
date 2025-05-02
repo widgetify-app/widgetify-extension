@@ -54,6 +54,7 @@ export interface GetFriendsParams {
 	status: 'PENDING' | 'ACCEPTED'
 	page?: number
 	limit?: number
+	enabled?: boolean
 }
 
 export interface FriendActionParams {
@@ -119,6 +120,7 @@ export function useGetFriends(params: GetFriendsParams) {
 		queryKey: ['friends', params.status, params.page, params.limit],
 		queryFn: () => getFriends(params),
 		retry: 1,
+		enabled: params.enabled !== undefined ? params.enabled : true,
 	})
 }
 
