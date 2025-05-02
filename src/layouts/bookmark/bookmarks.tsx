@@ -104,7 +104,7 @@ export function BookmarksComponent() {
 		if (e?.button === 2) return
 
 		if (bookmark.type === 'FOLDER') {
-			if (e?.ctrlKey || e?.metaKey || e?.button === 1) {
+			if (e?.ctrlKey || e?.metaKey) {
 				const children = getCurrentFolderItems(bookmark.id)
 				const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
 				for (const b of bookmarks) {
@@ -117,7 +117,7 @@ export function BookmarksComponent() {
 				setCurrentFolderIsManageable(isManageable(bookmark))
 			}
 		} else {
-			if (e?.ctrlKey || e?.metaKey || e?.button === 1) {
+			if (e?.ctrlKey || e?.metaKey) {
 				window.open(bookmark.url)
 			} else {
 				window.location.href = bookmark.url
@@ -261,7 +261,7 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`relative grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
+				className={`grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
