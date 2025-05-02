@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
@@ -10,7 +11,6 @@ import {
 	FiPlus,
 	FiTag,
 } from 'react-icons/fi'
-import Analytics from '../../../../analytics'
 
 interface Prop {
 	onAdd: (

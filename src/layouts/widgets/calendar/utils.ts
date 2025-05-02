@@ -5,7 +5,7 @@ import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCal
 import type {
 	FetchedAllEvents,
 	FetchedEvent,
-} from '../../services/getMethodHooks/getEvents.hook'
+} from '../../../services/getMethodHooks/getEvents.hook'
 
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`

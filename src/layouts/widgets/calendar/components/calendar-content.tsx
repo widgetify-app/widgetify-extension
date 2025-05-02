@@ -1,8 +1,9 @@
 import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useGetEvents } from '../../../services/getMethodHooks/getEvents.hook'
-import { useGetGoogleCalendarEvents } from '../../../services/getMethodHooks/getGoogleCalendarEvents.hook'
+
+import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type { TabType } from '../calendar'
 import type { WidgetifyDate } from '../utils'
 import { Events } from './events/event'

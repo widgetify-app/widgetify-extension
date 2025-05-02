@@ -12,11 +12,12 @@ import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleC
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FiCalendar, FiClipboard, FiMessageCircle } from 'react-icons/fi'
+
 import {
 	filterGoogleEventsByDate,
 	formatDateStr,
 	getCurrentDate,
-} from '../calendar/utils'
+} from '../widgets/calendar/utils'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 

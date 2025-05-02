@@ -1,3 +1,4 @@
+import type { PriceHistory } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import {
 	CategoryScale,
 	type ChartData,
@@ -12,7 +13,6 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 
-import type { PriceHistory } from '../../../services/getMethodHooks/getCurrencyByCode.hook'
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
