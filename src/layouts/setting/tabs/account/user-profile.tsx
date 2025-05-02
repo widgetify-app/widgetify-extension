@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FiAtSign, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
-import { ActivityInput } from './activity'
+import { ActivityInput } from './activity-input'
 import { Connections } from './connections'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
