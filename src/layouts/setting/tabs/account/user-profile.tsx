@@ -2,25 +2,18 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { AvatarComponent } from '@/components/avatar.component'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
-import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
-import {
-	useGetUserProfile,
-	useUpdateActivity,
-} from '@/services/getMethodHooks/user/userService.hook'
-import { translateError } from '@/utils/translate-error'
+import { getTextColor, useTheme } from '@/context/theme.context'
+import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FiAtSign, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
-import { MdMood } from 'react-icons/md'
+import { ActivityInput } from './activity'
 import { Connections } from './connections'
 
-const ACTIVITY_MAX_LENGTH = 40
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE')
 		return {
@@ -52,8 +45,6 @@ export const UserProfile = () => {
 	const { theme } = useTheme()
 	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
 	const [enableSync, setEnableSync] = useState<boolean>(true)
-	const [activityText, setActivityText] = useState<string>('')
-	const { mutate: updateActivity, isPending: isUpdatingActivity } = useUpdateActivity()
 
 	useEffect(() => {
 		const loadSyncSettings = async () => {
@@ -64,39 +55,9 @@ export const UserProfile = () => {
 		loadSyncSettings()
 	}, [])
 
-	useEffect(() => {
-		if (profile?.activity) {
-			setActivityText(profile.activity)
-		}
-	}, [profile])
-
 	const handleSyncToggle = async (newState: boolean) => {
 		setEnableSync(newState)
 		await setToStorage('enable_sync', newState)
-	}
-
-	const handleActivityUpdate = () => {
-		if (activityText.length > ACTIVITY_MAX_LENGTH) {
-			toast.error(`وضعیت فعالیت نمی‌تواند بیشتر از ${ACTIVITY_MAX_LENGTH} کاراکتر باشد.`)
-			return
-		}
-
-		updateActivity(
-			{ activity: activityText || undefined },
-			{
-				onSuccess: () => {
-					toast.success('وضعیت با موفقیت بروزرسانی شد')
-				},
-				onError: (error) => {
-					const content = translateError(error)
-					if (typeof content === 'string') {
-						toast.error(content)
-					} else {
-						toast.error('خطا در بروزرسانی وضعیت. لطفاً دوباره تلاش کنید.')
-					}
-				},
-			},
-		)
 	}
 
 	const getButtonStyle = () => {
@@ -199,43 +160,7 @@ export const UserProfile = () => {
 				</div>
 			</div>
 
-			<SectionPanel title="وضعیت فعالیت" delay={0.1}>
-				<div className="flex flex-col p-4 space-y-3 transition-colors rounded-lg">
-					<div className="flex items-center gap-1.5">
-						<MdMood size={18} className="text-blue-500" />
-						<p className={`text-sm font-medium ${getTextColor(theme)}`}>
-							تنظیم وضعیت فعالیت
-						</p>
-					</div>
-					<p className={`text-xs ${getTextColor(theme)} font-light opacity-80`}>
-						وضعیت فعالیت شما به دوستانتان نمایش داده می‌شود. (حداکثر {ACTIVITY_MAX_LENGTH}{' '}
-						کاراکتر)
-					</p>
-					<div className="flex flex-col gap-2">
-						<TextInput
-							id="activity"
-							placeholder="مثال: ⚒️ در حال کار"
-							value={activityText}
-							onChange={setActivityText}
-							disabled={isUpdatingActivity}
-							maxLength={ACTIVITY_MAX_LENGTH}
-						/>
-						<div className="flex items-center justify-between">
-							<button
-								onClick={handleActivityUpdate}
-								disabled={
-									isUpdatingActivity ||
-									activityText === profile?.activity ||
-									activityText.length > ACTIVITY_MAX_LENGTH
-								}
-								className={`px-4 py-1.5 text-sm font-medium cursor-pointer rounded-lg transition-colors ${getButtonStyles(theme, true)} disabled:opacity-50 disabled:cursor-not-allowed`}
-							>
-								{isUpdatingActivity ? 'در حال ذخیره...' : 'ذخیره وضعیت'}
-							</button>
-						</div>
-					</div>
-				</div>
-			</SectionPanel>
+			<ActivityInput />
 
 			<SectionPanel title="همگام‌سازی" delay={0.2}>
 				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
