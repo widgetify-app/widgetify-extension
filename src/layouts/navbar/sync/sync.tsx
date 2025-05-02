@@ -5,7 +5,10 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
+import type {
+	FetchedTodo,
+	Todo,
+} from '@/layouts/widgets/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
 import {
 	type FetchedBookmark,

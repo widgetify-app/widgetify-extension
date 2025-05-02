@@ -1,5 +1,5 @@
 import { getTextColor, useTheme } from '@/context/theme.context'
-import { getCurrentDate } from '@/layouts/calendar/utils'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 

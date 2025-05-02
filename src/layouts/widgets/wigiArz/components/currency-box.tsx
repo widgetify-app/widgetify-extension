@@ -1,12 +1,6 @@
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import {
-	getCardBackground,
-	getContainerBackground,
-	getTextColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
+import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
