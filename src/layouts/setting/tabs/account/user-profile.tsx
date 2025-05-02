@@ -4,13 +4,13 @@ import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
-import { FiLogOut, FiMail, FiUser } from 'react-icons/fi'
+import { FiAtSign, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
 import { Connections } from './connections'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
@@ -65,7 +65,7 @@ export const UserProfile = () => {
 				return 'bg-red-600 hover:bg-red-700 text-white'
 			case 'dark':
 				return 'bg-red-500 hover:bg-red-600 text-white'
-			default: // glass
+			default:
 				return 'bg-red-500/70 hover:bg-red-600/70 backdrop-blur-sm text-white'
 		}
 	}
@@ -108,111 +108,100 @@ export const UserProfile = () => {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
 		>
-			<div className="space-y-6">
-				<motion.div
-					className="space-y-2"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-				>
+			<div className={'flex items-center justify-between p-5 mb-8 rounded-xl'}>
+				<div className="flex items-center gap-4">
+					<div className="flex-1">
+						<h3 className={`text-xl font-bold ${getTextColor(theme)}`}>
+							{profile?.name || 'کاربر'}
+						</h3>
+						{
+							<div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
+								<FiAtSign size={14} />
+								<span>{profile?.username || '-'}</span>
+							</div>
+						}
+						<div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
+							<FiMail size={14} />
+							<span className="dir-ltr">{profile?.email}</span>
+						</div>
+						<div className="flex items-center gap-1.5 mt-1">
+							{getGenderInfo(profile?.gender).icon}
+							<p
+								className={`text-sm ${getGenderInfo(profile?.gender).color} font-medium`}
+							>
+								{getGenderInfo(profile?.gender).label}
+							</p>
+						</div>
+						<div className="mt-4">
+							<a
+								href="https://widgetify.ir/login"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 w-fit"
+							>
+								<FiUser size={14} />
+								ویرایش پروفایل
+							</a>
+						</div>
+					</div>
+				</div>
+				<div className="relative flex-shrink-0">
+					<AvatarComponent
+						url={profile?.avatar || null}
+						placeholder={profile?.name || 'کاربر'}
+						size="xl"
+						className="border-2 shadow-md border-neutral-700"
+					/>
 					<div
-						className={`flex items-center gap-5 p-5 mb-8 shadow-sm  rounded-xl  border ${getBorderColor(theme)}`}
-					>
-						<div className="relative">
-							<AvatarComponent
-								url={profile?.avatar || null}
-								placeholder={profile?.name || 'کاربر'}
-								size="lg"
-								className="shadow-md border-white/20"
-							/>
-							<div
-								className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-500' : 'bg-green-500'} border-2 rounded-full border-neutral-800 bottom-1 right-0`}
-							></div>
-
-							{profile?.inCache && <OfflineIndicator mode="badge" />}
-						</div>
-						<div className="flex-1">
-							<div className="flex items-center gap-2">
-								<h3 className={`text-xl font-bold ${getTextColor(theme)}`}>
-									{profile?.name || 'کاربر'}
-								</h3>
-							</div>
-
-							<div className="flex items-center gap-2 mt-1.5">
-								<FiMail className="text-gray-500" />
-								<p className="text-sm text-left text-gray-500 dir-ltr">
-									{profile?.email}
-								</p>
-							</div>
-
-							<div className="flex items-center gap-2 mt-1.5">
-								{getGenderInfo(profile?.gender).icon}
-								<p
-									className={`text-sm ${getGenderInfo(profile?.gender).color} font-medium`}
-								>
-									{getGenderInfo(profile?.gender).label}
-								</p>
-							</div>
-
-							<div className="flex items-center gap-2 mt-3">
-								<a
-									href="https://widgetify.ir/login"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex items-center gap-1 px-3 py-1 text-sm font-medium text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
-								>
-									<FiUser size={12} />
-									ویرایش پروفایل
-								</a>
-								{profile?.inCache && <OfflineIndicator mode="status" />}
-							</div>
-						</div>
-					</div>
-				</motion.div>
-
-				<SectionPanel title="همگام‌سازی" delay={0.2}>
-					<div className="flex items-center justify-between p-3 transition-colors rounded-lg">
-						<div className="pr-2">
-							<p
-								className={`text-sm font-medium ${getTextColor(theme)} flex items-center gap-1`}
-							>
-								<AiOutlineFileSync
-									size={14}
-									className={enableSync ? 'text-blue-500' : 'text-gray-500'}
-								/>
-								فعال‌سازی همگام‌سازی (Sync)
-							</p>
-							<p
-								className={`text-xs ${getTextColor(theme)} font-light opacity-80 mt-1.5 max-w-md`}
-							>
-								با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های
-								مختلف همگام‌سازی می‌شوند.
-							</p>
-						</div>
-						<ToggleSwitch
-							enabled={enableSync}
-							onToggle={() => handleSyncToggle(!enableSync)}
-							key={'sync-toggle'}
-						/>
-					</div>
-				</SectionPanel>
-
-				<Connections />
-
-				<SectionPanel title="حساب کاربری" delay={0.3}>
-					<div className="p-3 space-y-4 transition-colors rounded-lg">
-						<p className={`text-sm font-light ${getTextColor(theme)}`}>
-							برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
-						</p>
-						<button
-							onClick={() => logout()}
-							className={`px-6 py-2.5 cursor-pointer rounded-lg transition-colors font-medium ${getButtonStyle()} shadow-sm flex items-center justify-center gap-2`}
-						>
-							<FiLogOut size={16} />
-							خروج از حساب کاربری
-						</button>
-					</div>
-				</SectionPanel>
+						className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-500' : 'bg-green-500'} border-2 rounded-full border-neutral-800 -bottom-1 -right-1`}
+					></div>
+					{profile?.inCache && <OfflineIndicator mode="badge" />}
+				</div>
 			</div>
+
+			<SectionPanel title="همگام‌سازی" delay={0.2}>
+				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
+					<div className="pr-2">
+						<p
+							className={`text-sm font-medium ${getTextColor(theme)} flex items-center gap-1.5`}
+						>
+							<AiOutlineFileSync
+								size={16}
+								className={enableSync ? 'text-blue-500' : 'text-gray-500'}
+							/>
+							فعال‌سازی همگام‌سازی (Sync)
+						</p>
+						<p
+							className={`text-xs ${getTextColor(theme)} font-light opacity-80 mt-2 max-w-md`}
+						>
+							با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های مختلف
+							همگام‌سازی می‌شوند.
+						</p>
+					</div>
+					<ToggleSwitch
+						enabled={enableSync}
+						onToggle={() => handleSyncToggle(!enableSync)}
+						key={'sync-toggle'}
+					/>
+				</div>
+			</SectionPanel>
+
+			<Connections />
+
+			<SectionPanel title="حساب کاربری" delay={0.3}>
+				<div className="p-4 space-y-3 transition-colors rounded-lg">
+					<p className={`text-sm font-light ${getTextColor(theme)}`}>
+						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
+					</p>
+					<button
+						onClick={() => logout()}
+						className={`px-5 py-2 cursor-pointer rounded-lg transition-colors font-medium ${getButtonStyle()} shadow-sm flex items-center justify-center gap-2 w-fit`}
+					>
+						<FiLogOut size={16} />
+						خروج از حساب کاربری
+					</button>
+				</div>
+			</SectionPanel>
 		</motion.div>
 	)
 }
