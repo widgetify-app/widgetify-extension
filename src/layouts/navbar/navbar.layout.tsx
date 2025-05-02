@@ -6,8 +6,8 @@ import { type JSX, useEffect, useState } from 'react'
 import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { SettingModal } from '../setting/setting-modal'
+import { FriendsList } from './friends-list/friends'
 import { SyncButton } from './sync/sync'
-import { FriendsList } from './friends-list/friends-list.component'
 
 export interface PageLink {
 	name: string
