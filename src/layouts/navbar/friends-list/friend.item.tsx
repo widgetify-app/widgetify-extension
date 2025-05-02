@@ -8,14 +8,12 @@ interface FriendItemProps {
 export function FriendItem({ user }: FriendItemProps) {
 	return (
 		<>
-			<Tooltip content={user.name}>
+			<Tooltip content={user.extras?.activity || undefined}>
 				<div
 					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105"
 					onClick={() => alert('user')}
 				>
-					<div className="w-6 h-6 overflow-hidden border rounded-full border-gray-600/40">
-						<AvatarComponent url={user.avatar} placeholder={user.username} size="sm" />
-					</div>
+					<AvatarComponent url={user.avatar} placeholder={user.username} size="xs" />
 					<p className="w-full text-xs text-center truncate">{user.username}</p>
 				</div>
 			</Tooltip>
