@@ -1,3 +1,4 @@
+import { AvatarComponent } from '@/components/avatar.component'
 import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import {
 	type Friend,
@@ -60,33 +61,32 @@ export const FriendsList = ({
 
 	return (
 		<div className="space-y-2">
-			<div className="space-y-2">
-				{friends.map((friend) => (
-					<div
-						key={friend.id}
-						className={`flex items-center justify-between p-3 border rounded-lg ${getBorderColor(theme)}`}
-					>
-						<div className="flex items-center space-x-3">
-							<div className="w-10 h-10 mr-3 overflow-hidden rounded-full">
-								<img
-									src={friend.user.avatar}
-									alt={friend.user.name}
-									className="object-cover w-full h-full"
-								/>
+			{friends.map((friend) => (
+				<div
+					key={friend.id}
+					className={`flex items-center justify-between p-3 border rounded-lg ${getBorderColor(theme)}`}
+				>
+					<div className="flex items-center space-x-3">
+						<div className="w-10 h-10 mr-3 overflow-hidden rounded-full">
+							<AvatarComponent
+								url={friend.user.avatar}
+								placeholder={friend.user.name}
+								size="md"
+								className="object-cover w-full h-full"
+							/>
+						</div>
+						<div>
+							<div className={`font-medium ${getTextColor(theme)}`}>
+								{friend.user.name}
 							</div>
-							<div>
-								<div className={`font-medium ${getTextColor(theme)}`}>
-									{friend.user.name}
-								</div>
-								<div className={`text-sm ${getTextColor(theme)} opacity-70`} dir="ltr">
-									@{friend.user.username}
-								</div>
+							<div className={`text-sm ${getTextColor(theme)} opacity-70`} dir="ltr">
+								@{friend.user.username}
 							</div>
 						</div>
-						{renderFriendActions(friend)}
 					</div>
-				))}
-			</div>
+					{renderFriendActions(friend)}
+				</div>
+			))}
 
 			{totalPages > 1 && (
 				<div className="flex items-center justify-center mt-4 space-x-2">

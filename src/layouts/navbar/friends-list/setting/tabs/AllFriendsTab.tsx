@@ -5,25 +5,35 @@ import {
 	type Friend,
 	useRemoveFriend,
 } from '@/services/getMethodHooks/friends/friendService.hook'
+import { translateError } from '@/utils/translate-error'
+import toast from 'react-hot-toast'
 import { FiUserX } from 'react-icons/fi'
+import { RemoveFriendButton } from '../components/remove-button'
 
 export const AllFriendsTab = () => {
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
 
 	const handleRemoveFriend = (friendId: string) => {
-		removeFriend(friendId)
+		removeFriend(friendId, {
+			onError: (error) => {
+				const msg = translateError(error)
+				toast.error(msg as string, {
+					style: {
+						backgroundColor: '#f8d7da',
+						color: '#721c24',
+					},
+				})
+			},
+		})
 	}
 
 	const renderFriendActions = (friend: Friend) => (
-		<Tooltip content="حذف دوست">
-			<button
-				onClick={() => handleRemoveFriend(friend.id)}
-				disabled={isRemoving}
-				className="p-2 text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20"
-			>
-				<FiUserX size={18} />
-			</button>
-		</Tooltip>
+		<RemoveFriendButton
+			type="REMOVE"
+			friend={friend}
+			onClick={handleRemoveFriend}
+			disabled={isRemoving}
+		/>
 	)
 
 	return (

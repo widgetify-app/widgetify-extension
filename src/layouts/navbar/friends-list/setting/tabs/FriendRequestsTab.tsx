@@ -1,5 +1,6 @@
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
+import Tooltip from '@/components/toolTip'
 import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
 import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
 import {
@@ -9,12 +10,13 @@ import {
 } from '@/services/getMethodHooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { FiUserCheck, FiUserX } from 'react-icons/fi'
+import { RemoveFriendButton } from '../components/remove-button'
 
 export const FriendRequestsTab = () => {
 	const { theme } = useTheme()
 	const [username, setUsername] = useState('')
-	const [successMessage, setSuccessMessage] = useState<string | null>(null)
 	const [translatedError, setTranslatedError] = useState<string | null>(null)
 	const { mutate: sendFriendRequest, isPending: isSending } = useSendFriendRequest()
 
@@ -23,7 +25,6 @@ export const FriendRequestsTab = () => {
 	const handleSendRequest = () => {
 		if (!username.trim()) return
 
-		setSuccessMessage(null)
 		setTranslatedError(null)
 
 		sendFriendRequest(
@@ -31,12 +32,26 @@ export const FriendRequestsTab = () => {
 			{
 				onSuccess: () => {
 					setUsername('')
-					setSuccessMessage('درخواست دوستی با موفقیت ارسال شد')
+					toast.success('درخواست دوستی با موفقیت ارسال شد', {
+						style: {
+							backgroundColor: '#d4edda',
+							color: '#155724',
+						},
+					})
 					setTranslatedError(null)
 				},
 				onError: (err) => {
 					const message = translateError(err)
-					setTranslatedError(typeof message === 'string' ? message : 'خطای ناشناخته')
+					if (typeof message === 'string') {
+						toast.error(message, {
+							style: {
+								backgroundColor: '#f8d7da',
+								color: '#721c24',
+							},
+						})
+					} else {
+						setTranslatedError(message.username)
+					}
 				},
 			},
 		)
@@ -44,8 +59,7 @@ export const FriendRequestsTab = () => {
 
 	const handleUsernameChange = (value: string) => {
 		setUsername(value)
-		if (translatedError || successMessage) {
-			setSuccessMessage(null)
+		if (translatedError) {
 			setTranslatedError(null)
 		}
 	}
@@ -66,20 +80,27 @@ export const FriendRequestsTab = () => {
 
 	const renderFriendActions = (friend: Friend) => (
 		<div className="flex space-x-2">
-			<button
-				onClick={() => acceptFriend(friend.id)}
-				disabled={isProcessing}
-				className="p-2 text-green-500 rounded-lg cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20"
-			>
-				<FiUserCheck size={18} />
-			</button>
-			<button
-				onClick={() => rejectFriend(friend.id)}
-				disabled={isProcessing}
-				className="p-2 mr-2 text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20"
-			>
-				<FiUserX size={18} />
-			</button>
+			{!friend.sendByMe ? (
+				<>
+					<Tooltip content="پذیرفتن دوستی">
+						<button
+							onClick={() => acceptFriend(friend.id)}
+							disabled={isProcessing}
+							className="p-2 text-green-500 rounded-lg cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20"
+						>
+							<FiUserCheck size={18} />
+						</button>
+					</Tooltip>
+					<RemoveFriendButton
+						friend={friend}
+						onClick={() => rejectFriend(friend.id)}
+						type="REJECT"
+						disabled={isProcessing}
+					/>
+				</>
+			) : (
+				<p className={`text-sm ${getTextColor(theme)} opacity-70`}>ارسال شده</p>
+			)}
 		</div>
 	)
 
@@ -107,7 +128,6 @@ export const FriendRequestsTab = () => {
 						</button>
 					</div>
 					{translatedError && <p className="text-sm text-red-500">{translatedError}</p>}
-					{successMessage && <p className="text-sm text-green-500">{successMessage}</p>}
 				</div>
 			</SectionPanel>
 

@@ -39,6 +39,7 @@ export interface FriendUser {
 export interface Friend {
 	id: string
 	user: FriendUser
+	sendByMe: boolean
 	status: 'PENDING' | 'ACCEPTED'
 }
 
