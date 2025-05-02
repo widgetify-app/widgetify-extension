@@ -47,8 +47,8 @@ export const UserProfile = () => {
 
 	useEffect(() => {
 		const loadSyncSettings = async () => {
-			const syncEnabled = await getFromStorage('enable_sync')
-			setEnableSync(syncEnabled !== null ? syncEnabled : true)
+			const syncEnabled = (await getFromStorage('enable_sync')) as boolean | undefined
+			setEnableSync(syncEnabled !== undefined ? syncEnabled : true)
 		}
 
 		loadSyncSettings()
