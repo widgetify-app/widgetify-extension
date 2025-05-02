@@ -101,6 +101,7 @@ export function BookmarksComponent() {
 		if (e) {
 			e.preventDefault()
 		}
+		if (e?.button === 2) return
 
 		if (bookmark.type === 'FOLDER') {
 			if (e?.ctrlKey || e?.metaKey || e?.button === 1) {
