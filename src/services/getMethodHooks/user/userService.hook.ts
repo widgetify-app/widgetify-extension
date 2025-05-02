@@ -5,6 +5,7 @@ import { getMainClient } from '../../api'
 interface FetchedProfile {
 	email: string
 	avatar: string
+	username?: string
 	name: string
 	connections: string[]
 	gender: 'MALE' | 'FEMALE' | 'OTHER' | null

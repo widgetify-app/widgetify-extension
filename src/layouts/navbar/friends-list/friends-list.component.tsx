@@ -1,35 +1,69 @@
 import { Colors } from '@/common/constant/colors.constant'
 import { FiChevronLeft, FiUsers } from 'react-icons/fi'
 import { LiaUsersCogSolid } from 'react-icons/lia'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 //@ts-ignore
 import 'swiper/css'
-import { FriendItem } from './friend.item'
-import { useState } from 'react'
 import Tooltip from '@/components/toolTip'
+import { useAuth } from '@/context/auth.context'
+import { getMainClient } from '@/services/api'
+import { useEffect, useState } from 'react'
+import { FriendItem } from './friend.item'
+import { FriendSettingModal } from './setting/friend-setting.modal'
 
 interface FriendUser {
-	id: number
 	name: string
 	avatar: string
-	activity?: string
+	username: string
+	userId: string
+	extras?: {
+		activity?: string
+		selectedWallpaper?: string
+	}
+}
+
+interface Friend {
+	id: string
+	user: FriendUser
+	status: 'PENDING' | 'ACCEPTED'
+}
+
+interface FriendsResponse {
+	data: {
+		friends: Friend[]
+		totalPages: number
+	}
 }
 
 export function FriendsList() {
-	const users: FriendUser[] = [
-		{
-			id: 1,
-			name: 'sajjadmrx',
-			avatar: 'https://avatar.iran.liara.run/public/39',
-			activity: '🏫 At Work',
-		},
-		{ id: 2, name: 'aliex', avatar: 'https://avatar.iran.liara.run/public/12' },
-		{ id: 3, name: 'jaawsem', avatar: 'https://avatar.iran.liara.run/public/45' },
-		{ id: 4, name: 'mohmammad213', avatar: 'https://avatar.iran.liara.run/public/23' },
-		{ id: 5, name: 'salaar1231', avatar: 'https://avatar.iran.liara.run/public/56' },
-	]
+	const [friends, setFriends] = useState<Friend[]>([])
 	const [showFriendsList, setShowFriendsList] = useState(false)
+	const [showSettingsModal, setShowSettingsModal] = useState(false)
+	const { isAuthenticated } = useAuth()
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			fetchFriends()
+		}
+	}, [isAuthenticated])
+
+	const fetchFriends = async () => {
+		if (!isAuthenticated) return
+
+		try {
+			const api = await getMainClient()
+			const response = await api.get<FriendsResponse>('/friends?status=ACCEPTED')
+			setFriends(response.data.data.friends)
+		} catch (err) {
+			console.error('Failed to fetch friends:', err)
+		} finally {
+		}
+	}
+
+	const handleOpenSettingsModal = () => {
+		setShowSettingsModal(true)
+	}
 
 	return (
 		<>
@@ -39,7 +73,7 @@ export function FriendsList() {
 			>
 				{showFriendsList && (
 					<button
-						className="left-0 top-0 z-10  flex items-center justify-center opacity-80 transition-opacity cursor-pointer"
+						className="top-0 left-0 z-10 flex items-center justify-center transition-opacity cursor-pointer opacity-80"
 						onClick={() => setShowFriendsList(!showFriendsList)}
 					>
 						<FiChevronLeft size={16} />
@@ -47,7 +81,7 @@ export function FriendsList() {
 				)}
 
 				{!showFriendsList && (
-					<div className="flex gap-2  w-full">
+					<div className="flex w-full gap-2">
 						<Tooltip content="نمایش دوستان" position="bottom">
 							<button
 								className="m-auto p-0.5 cursor-pointer"
@@ -57,7 +91,10 @@ export function FriendsList() {
 							</button>
 						</Tooltip>
 						<Tooltip content="مدیریت دوستان">
-							<button className="m-auto p-0.5 cursor-pointer">
+							<button
+								className="m-auto p-0.5 cursor-pointer"
+								onClick={handleOpenSettingsModal}
+							>
 								<LiaUsersCogSolid size={18} />
 							</button>
 						</Tooltip>
@@ -76,22 +113,31 @@ export function FriendsList() {
 					}}
 				>
 					{showFriendsList
-						? users.map((user) => (
-								<SwiperSlide key={user.id} className="w-14 pt-0.5">
-									<FriendItem user={user} />
+						? friends.map((friend) => (
+								<SwiperSlide key={friend.id} className="w-14 pt-0.5">
+									<FriendItem user={friend.user} />
 								</SwiperSlide>
 							))
 						: null}
-					{/* <div className="absolute left-0 top-0 z-10 h-full w-4 pointer-events-none swiper-shadow-left"></div>
-					<div className="absolute right-0 top-0 z-10 h-full w-4 pointer-events-none swiper-shadow-right"></div> */}
-					{/* <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-4 h-4 flex items-center justify-center opacity-0 transition-opacity user-list-prev user-list-slider-hover:opacity-70 cursor-pointer">
-						<FiChevronLeft size={16} />
-					</div>
-					<div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-4 h-4 flex items-center justify-center opacity-0 transition-opacity user-list-next user-list-slider-hover:opacity-70 cursor-pointer">
-						<FiChevronRight size={16} />
-					</div> */}
+					{/* <div className="absolute top-0 left-0 z-10 w-4 h-full pointer-events-none swiper-shadow-left"></div>
+          <div className="absolute top-0 right-0 z-10 w-4 h-full pointer-events-none swiper-shadow-right"></div> */}
+					{/* <div className="absolute left-0 z-10 flex items-center justify-center w-4 h-4 transition-opacity -translate-y-1/2 opacity-0 cursor-pointer top-1/2 user-list-prev user-list-slider-hover:opacity-70">
+            <FiChevronLeft size={16} />
+          </div>
+          <div className="absolute right-0 z-10 flex items-center justify-center w-4 h-4 transition-opacity -translate-y-1/2 opacity-0 cursor-pointer top-1/2 user-list-next user-list-slider-hover:opacity-70">
+            <FiChevronRight size={16} />
+          </div> */}
 				</Swiper>
 			</div>
+
+			<FriendSettingModal
+				isOpen={showSettingsModal}
+				onClose={() => {
+					setShowSettingsModal(false)
+					// Refresh friends list after closing the settings modal
+					fetchFriends()
+				}}
+			/>
 		</>
 	)
 }
