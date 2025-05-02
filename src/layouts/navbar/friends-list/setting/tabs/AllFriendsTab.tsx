@@ -1,5 +1,4 @@
 import { SectionPanel } from '@/components/section-panel'
-import Tooltip from '@/components/toolTip'
 import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
 import {
 	type Friend,
@@ -7,7 +6,6 @@ import {
 } from '@/services/getMethodHooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import toast from 'react-hot-toast'
-import { FiUserX } from 'react-icons/fi'
 import { RemoveFriendButton } from '../components/remove-button'
 
 export const AllFriendsTab = () => {

@@ -11,7 +11,7 @@ import {
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { FiUserCheck, FiUserX } from 'react-icons/fi'
+import { FiUserCheck } from 'react-icons/fi'
 import { RemoveFriendButton } from '../components/remove-button'
 
 export const FriendRequestsTab = () => {
