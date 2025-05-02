@@ -104,7 +104,8 @@ export function translateError(error: any): string | Record<string, string> {
 		TOO_MANY_REQUESTS: 'تعداد درخواست‌ها بیش از حد مجاز است. لطفاً کمی صبر کنید',
 		BAD_REQUEST: 'درخواست نامعتبر است',
 		NOT_FOUND: 'منبع درخواستی یافت نشد',
-
+		ACTIVITY_UPDATE_RATE_LIMIT_EXCEEDED:
+			'تعداد درخواست‌ها برای بروزرسانی "وضعیت" بیش از حد مجاز است. لطفاً کمی صبر کنید',
 		// Friend-related errors
 		CANT_REQUEST_YOURSELF: 'نمی‌توانید به خودتان درخواست دوستی ارسال کنید',
 		FRIEND_REQUEST_ALREADY_SENT: 'درخواست دوستی قبلاً ارسال شده است',

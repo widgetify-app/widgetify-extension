@@ -16,6 +16,7 @@ interface TextInputProps {
 	ref?: React.RefObject<HTMLInputElement | null>
 	debounce?: boolean
 	debounceTime?: number
+	maxLength?: number
 }
 
 export function TextInput({
@@ -33,6 +34,7 @@ export function TextInput({
 	ref,
 	debounce = false,
 	debounceTime = 150,
+	maxLength = 1000,
 }: TextInputProps) {
 	const { theme: contextTheme } = useTheme()
 	const theme = propTheme || contextTheme
@@ -81,6 +83,7 @@ export function TextInput({
 			className={`w-full text-[14px] rounded-xl p-3 outline-none border 
                     transition-all duration-200 font-light ${getInputStyle(theme)} ${className}`}
 			onChange={handleChange}
+			maxLength={maxLength}
 		/>
 	)
 }

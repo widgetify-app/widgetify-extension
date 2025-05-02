@@ -32,23 +32,13 @@ export const FriendRequestsTab = () => {
 			{
 				onSuccess: () => {
 					setUsername('')
-					toast.success('درخواست دوستی با موفقیت ارسال شد', {
-						style: {
-							backgroundColor: '#d4edda',
-							color: '#155724',
-						},
-					})
+					toast.success('درخواست دوستی با موفقیت ارسال شد')
 					setTranslatedError(null)
 				},
 				onError: (err) => {
 					const message = translateError(err)
 					if (typeof message === 'string') {
-						toast.error(message, {
-							style: {
-								backgroundColor: '#f8d7da',
-								color: '#721c24',
-							},
-						})
+						toast.error(message)
 					} else {
 						setTranslatedError(message.username)
 					}

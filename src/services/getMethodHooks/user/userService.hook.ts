@@ -1,5 +1,10 @@
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import { type UseQueryOptions, useQuery } from '@tanstack/react-query'
+import {
+	type UseQueryOptions,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 
 interface FetchedProfile {
@@ -13,6 +18,7 @@ interface FetchedProfile {
 		accepted: number
 		pending: number
 	}
+	activity?: string
 }
 
 export interface UserProfile extends FetchedProfile {
@@ -53,5 +59,38 @@ export function useGetUserProfile(options?: Partial<UseQueryOptions<UserProfile>
 		retry: 1,
 		refetchOnWindowFocus: false,
 		...options,
+	})
+}
+
+interface UpdateActivityParams {
+	activity: string | undefined
+}
+
+interface UpdateActivityResponse {
+	message: string
+}
+
+async function updateActivity(
+	body: UpdateActivityParams,
+): Promise<UpdateActivityResponse> {
+	const client = await getMainClient()
+	const response = await client.put<UpdateActivityResponse>(
+		'/extension/@me/activity',
+		body,
+	)
+	return response.data
+}
+
+export function useUpdateActivity() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: updateActivity,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		},
+		onError: (error) => {
+			console.error('Error updating activity:', error)
+		},
 	})
 }

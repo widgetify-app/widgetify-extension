@@ -263,7 +263,22 @@ export function HomePage() {
 					</WidgetVisibilityProvider>
 				</WeatherProvider>
 			</GeneralSettingProvider>
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					error: {
+						style: {
+							backgroundColor: '#f8d7da',
+							color: '#721c24',
+						},
+					},
+					success: {
+						style: {
+							backgroundColor: '#d4edda',
+							color: '#155724',
+						},
+					},
+				}}
+			/>
 			<ExtensionInstalledModal
 				show={showWelcomeModal}
 				onClose={() => setShowWelcomeModal(false)}
