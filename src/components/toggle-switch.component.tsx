@@ -43,7 +43,7 @@ export const ToggleSwitch = ({
 			<m.span
 				className="absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1"
 				animate={{
-					x: enabled ? 24 : 0,
+					x: enabled ? 0 : 24,
 				}}
 				transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			/>
