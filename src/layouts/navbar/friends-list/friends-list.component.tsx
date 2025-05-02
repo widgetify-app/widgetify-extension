@@ -5,6 +5,7 @@ import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 //@ts-ignore
 import 'swiper/css'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { getMainClient } from '@/services/api'
@@ -39,6 +40,8 @@ interface FriendsResponse {
 export function FriendsList() {
 	const [friends, setFriends] = useState<Friend[]>([])
 	const [showFriendsList, setShowFriendsList] = useState(false)
+	const [firstAuth, setFirstAuth] = useState<boolean>(false)
+
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const { isAuthenticated } = useAuth()
 
@@ -62,6 +65,10 @@ export function FriendsList() {
 	}
 
 	const handleOpenSettingsModal = () => {
+		if (!isAuthenticated) {
+			setFirstAuth(true)
+			return
+		}
 		setShowSettingsModal(true)
 	}
 
@@ -137,6 +144,14 @@ export function FriendsList() {
 					// Refresh friends list after closing the settings modal
 					fetchFriends()
 				}}
+			/>
+			<AuthRequiredModal
+				isOpen={firstAuth}
+				onClose={() => setFirstAuth(false)}
+				title="ورود به حساب کاربری"
+				message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
+				loginButtonText="ورود به حساب"
+				cancelButtonText="بعداً"
 			/>
 		</>
 	)
