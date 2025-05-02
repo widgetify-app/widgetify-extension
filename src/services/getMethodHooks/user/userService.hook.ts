@@ -9,6 +9,10 @@ interface FetchedProfile {
 	name: string
 	connections: string[]
 	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
+	friendshipStats: {
+		accepted: number
+		pending: number
+	}
 }
 
 export interface UserProfile extends FetchedProfile {
@@ -18,7 +22,7 @@ export interface UserProfile extends FetchedProfile {
 export async function fetchUserProfile(): Promise<UserProfile> {
 	const client = await getMainClient()
 	try {
-		const response = await client.get<UserProfile>('/users/@me')
+		const response = await client.get<UserProfile>('/extension/@me')
 		await setToStorage('profile', { ...response.data, inCache: true })
 		return response.data
 	} catch (error: any) {

@@ -9,6 +9,7 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { getMainClient } from '@/services/api'
+import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
 import { useEffect, useState } from 'react'
 import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
@@ -38,6 +39,7 @@ interface FriendsResponse {
 }
 
 export function FriendsList() {
+	const { data: user } = useGetUserProfile()
 	const [friends, setFriends] = useState<Friend[]>([])
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
@@ -95,14 +97,20 @@ export function FriendsList() {
 								onClick={() => setShowFriendsList(!showFriendsList)}
 							>
 								<FiUsers className="ml-1" size={18} />
+								{}
 							</button>
 						</Tooltip>
 						<Tooltip content="مدیریت دوستان">
 							<button
-								className="m-auto p-0.5 cursor-pointer"
+								className="m-auto p-0.5 cursor-pointer relative"
 								onClick={handleOpenSettingsModal}
 							>
 								<LiaUsersCogSolid size={18} />
+								{user && user?.friendshipStats?.pending > 0 && (
+									<div className="absolute flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
+										{user?.friendshipStats.pending}
+									</div>
+								)}
 							</button>
 						</Tooltip>
 					</div>
