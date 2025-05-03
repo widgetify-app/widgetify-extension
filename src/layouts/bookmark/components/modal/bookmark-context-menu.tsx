@@ -1,4 +1,4 @@
-import { getBorderColor, getCardBackground } from '@/context/theme.context'
+import { ContextMenu } from '@/components/contextMenu.component'
 
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
@@ -39,11 +39,7 @@ export function BookmarkContextMenu({
 	}
 
 	return (
-		<div
-			className={`absolute p-2 min-w-[150px] rounded-lg ${getCardBackground(theme)} shadow-md  border-4 ${getBorderColor(theme)}`}
-			style={{ top: position.y, left: position.x, zIndex: 1000 }}
-			onClick={(e) => e.stopPropagation()}
-		>
+		<ContextMenu position={position}>
 			{onOpenInNewTab && (
 				<button
 					onClick={onOpenInNewTab}
@@ -66,6 +62,6 @@ export function BookmarkContextMenu({
 			>
 				حذف
 			</button>
-		</div>
+		</ContextMenu>
 	)
 }
