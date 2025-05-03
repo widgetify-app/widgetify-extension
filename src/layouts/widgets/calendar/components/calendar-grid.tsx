@@ -1,4 +1,5 @@
 import { useAuth } from '@/context/auth.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
@@ -22,6 +23,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	setSelectedDate,
 }) => {
 	const { user } = useAuth()
+	const { timezone } = useGeneralSetting()
 
 	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
@@ -84,6 +86,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					selectedDateStr={selectedDateStr}
 					setSelectedDate={setSelectedDate}
 					todos={todos}
+					timezone={timezone}
 				/>
 			))}
 

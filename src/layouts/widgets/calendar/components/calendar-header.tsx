@@ -1,3 +1,4 @@
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
@@ -19,9 +20,10 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	goToToday,
 }) => {
 	const { theme } = useTheme()
+	const { timezone } = useGeneralSetting()
 
 	const isCurrentMonthToday = () => {
-		const realToday = getCurrentDate()
+		const realToday = getCurrentDate(timezone)
 		return (
 			currentDate.jMonth() === realToday.jMonth() &&
 			currentDate.jYear() === realToday.jYear()
@@ -29,7 +31,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	}
 
 	const isTodaySelected = () => {
-		const realToday = getCurrentDate()
+		const realToday = getCurrentDate(timezone)
 		return (
 			selectedDate.jDate() === realToday.jDate() &&
 			selectedDate.jMonth() === realToday.jMonth() &&

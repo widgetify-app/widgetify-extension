@@ -1,18 +1,20 @@
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
-	const [time, setTime] = useState(getCurrentDate())
+	const { timezone } = useGeneralSetting()
+	const [time, setTime] = useState(getCurrentDate(timezone))
 	const { theme } = useTheme()
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(getCurrentDate())
+			setTime(getCurrentDate(timezone))
 		}, 1000)
 		return () => clearInterval(timer)
-	}, [])
+	}, [timezone])
 
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
 	const bgGradient = isDayTime ? '☀️' : '🌙'

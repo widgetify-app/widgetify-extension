@@ -6,6 +6,7 @@ export interface GeneralData {
 	analyticsEnabled: boolean
 	enablePets: boolean
 	petName: string
+	timezone: string
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -13,12 +14,14 @@ interface GeneralSettingContextType extends GeneralData {
 	setEnablePets: (value: boolean) => void
 	setAnalyticsEnabled: (value: boolean) => void
 	setPetName: (value: string) => void
+	setTimezone: (value: string) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
 	enablePets: true,
 	petName: 'آکیتا',
+	timezone: 'Asia/Tehran',
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -70,6 +73,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting('petName', value)
 	}
 
+	const setTimezone = (value: string) => {
+		updateSetting('timezone', value)
+	}
+
 	if (!isInitialized) {
 		return null
 	}
@@ -80,6 +87,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setEnablePets,
 		setAnalyticsEnabled,
 		setPetName,
+		setTimezone,
 	}
 
 	return (

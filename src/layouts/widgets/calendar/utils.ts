@@ -143,8 +143,9 @@ export function getGregorianEvents(
 	)
 }
 
-export function getCurrentDate() {
-	return jalaliMoment().locale('fa').utc().add(3.5, 'hours')
+export function getCurrentDate(timeZone: string) {
+	const date = new Date(new Date().toLocaleString('en-US', { timeZone }))
+	return jalaliMoment(date).locale('fa').utc().add(3.5, 'hours')
 }
 
 export function filterGoogleEventsByDate(

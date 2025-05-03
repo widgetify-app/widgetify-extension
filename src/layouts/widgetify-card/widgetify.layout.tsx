@@ -22,7 +22,7 @@ import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 
 export const WidgetifyLayout = () => {
-	const { enablePets } = useGeneralSetting()
+	const { enablePets, timezone } = useGeneralSetting()
 	const { theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
@@ -30,7 +30,7 @@ export const WidgetifyLayout = () => {
 
 	const { data: dailyMessage } = useGetDailyMessage()
 
-	const today = getCurrentDate()
+	const today = getCurrentDate(timezone)
 
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
 		isAuthenticated && (user?.connections?.includes('google') || false),

@@ -6,6 +6,7 @@ import jalaliMoment from 'jalali-moment'
 import type { Todo } from '../../interface/todo.interface'
 import {
 	formatDateStr,
+	getCurrentDate,
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
@@ -20,6 +21,7 @@ interface DayItemProps {
 	selectedDateStr: string
 	setSelectedDate: (date: jalaliMoment.Moment) => void
 	googleEvents: GoogleCalendarEvent[]
+	timezone: string
 }
 
 export function DayItem({
@@ -30,6 +32,7 @@ export function DayItem({
 	todos,
 	selectedDateStr,
 	setSelectedDate,
+	timezone,
 }: DayItemProps) {
 	const { theme } = useTheme()
 	const cellDate = currentDate.clone().jDate(day)
@@ -49,7 +52,7 @@ export function DayItem({
 
 	const hasTodo = todos.some((todo) => todo.date === dateStr)
 	const isSelected = selectedDateStr === dateStr
-	const isCurrentDay = isToday(cellDate)
+	const isCurrentDay = isToday(cellDate, timezone)
 
 	const isHoliday =
 		cellDate.day() === 5 ||
@@ -195,8 +198,8 @@ export function DayItem({
 	)
 }
 
-const isToday = (date: jalaliMoment.Moment) => {
-	const today = jalaliMoment()
+const isToday = (date: jalaliMoment.Moment, timezone: string) => {
+	const today = getCurrentDate(timezone)
 	return (
 		date.jDate() === today.jDate() &&
 		date.jMonth() === today.jMonth() &&

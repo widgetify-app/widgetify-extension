@@ -1,4 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTheme } from '@/context/theme.context'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -17,7 +18,8 @@ interface CalendarLayoutProps {
 }
 const CalendarLayout: React.FC<CalendarLayoutProps> = ({ onDrawerToggle }) => {
 	const { theme } = useTheme()
-	const today = getCurrentDate()
+	const { timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone)
 	const [currentDate, setCurrentDate] = useState(today)
 	const [selectedDate, setSelectedDate] = useState(today.clone())
 	const [activeTab, setActiveTab] = useState<TabType>('events')
@@ -30,7 +32,7 @@ const CalendarLayout: React.FC<CalendarLayoutProps> = ({ onDrawerToggle }) => {
 	}
 
 	const goToToday = () => {
-		const realToday = getCurrentDate()
+		const realToday = getCurrentDate(timezone)
 		setCurrentDate(realToday.clone())
 		setSelectedDate(realToday.clone())
 	}
