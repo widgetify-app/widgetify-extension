@@ -45,8 +45,10 @@ const CalendarLayout: React.FC<CalendarLayoutProps> = ({ onDrawerToggle }) => {
 
 	useEffect(() => {
 		const loadDrawerState = async () => {
-			const storedState = await getFromStorage('calendarDrawerState')
-			if (storedState === null) {
+			const storedState = (await getFromStorage('calendarDrawerState')) as
+				| boolean
+				| undefined
+			if (storedState === undefined) {
 				setIsDrawerOpen(true)
 			} else {
 				setIsDrawerOpen(storedState)
