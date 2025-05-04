@@ -3,7 +3,6 @@ import { TextInput } from '@/components/text-input'
 import { useDate } from '@/context/date.context'
 import {
 	getButtonStyles,
-	getContainerBackground,
 	getProgressBarBgStyle,
 	getTextColor,
 	useTheme,
@@ -59,7 +58,13 @@ export function TodosLayout() {
 		}
 	}
 
-	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
+	let selectedDateTodos = todos
+		.filter((todo) => todo.date === selectedDateStr || todo.pinned)
+		.sort((a, b) => {
+			if (a.pinned && !b.pinned) return -1
+			if (!a.pinned && b.pinned) return 1
+			return 0
+		})
 
 	if (filter === 'active') {
 		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
@@ -79,8 +84,9 @@ export function TodosLayout() {
 		priority: 'low' | 'medium' | 'high',
 		category?: string,
 		notes?: string,
+		pinned?: boolean,
 	) => {
-		addTodo(text, selectedDateStr, priority, category, notes)
+		addTodo(text, selectedDateStr, priority, category, notes, pinned)
 		setTodoText('')
 	}
 

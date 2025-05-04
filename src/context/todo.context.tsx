@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
+import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -14,6 +14,7 @@ interface TodoContextType {
 		priority?: 'low' | 'medium' | 'high',
 		category?: string,
 		notes?: string,
+		pinned?: boolean,
 	) => void
 	removeTodo: (id: string) => void
 	toggleTodo: (id: string) => void
@@ -63,6 +64,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		priority: 'low' | 'medium' | 'high' = 'medium',
 		category?: string,
 		notes?: string,
+		pinned?: boolean,
 	) => {
 		const old = todos || []
 		setTodos([
@@ -75,6 +77,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				priority,
 				category,
 				notes,
+				pinned,
 				onlineId: null,
 			},
 		])
