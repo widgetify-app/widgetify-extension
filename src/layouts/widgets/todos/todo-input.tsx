@@ -1,18 +1,17 @@
 import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
-import { useEffect, useState } from 'react'
 import {
-	FiChevronDown,
-	FiChevronUp,
-	FiFlag,
-	FiMessageSquare,
-	FiPlus,
-	FiTag,
-} from 'react-icons/fi'
+	getBorderColor,
+	getButtonStyles,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
+import { useEffect, useState } from 'react'
+import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
 
 interface Prop {
+	todoText: string
 	onAdd: (
 		text: string,
 		priority: 'low' | 'medium' | 'high',
@@ -23,10 +22,10 @@ interface Prop {
 	onClose: () => void
 }
 
-export function TodoInput({ onAdd, show, onClose }: Prop) {
+export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
+	if (!show) return null
 	const { theme } = useTheme()
-	const [text, setText] = useState('')
-	const [showAdvanced, setShowAdvanced] = useState(false)
+	const [text, setText] = useState(todoText)
 	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
@@ -62,16 +61,16 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 		<Modal
 			isOpen={show}
 			onClose={() => onClose()}
-			title="افزودن یادداشت جدید"
+			title="افزودن یادداشت پیشرفته"
 			size="md"
 			direction="rtl"
 		>
 			<div className="space-y-4">
 				<form onSubmit={handleSubmit} className="space-y-3">
-					<div className="mb-1">
+					<div className="mb-3">
 						<label
 							htmlFor="todo-text-input"
-							className={`block mb-1.5 text-sm font-normal ${getTextColor(theme)}`}
+							className={`block mb-1.5 text-sm font-medium ${getTextColor(theme)}`}
 						>
 							متن یادداشت
 						</label>
@@ -86,26 +85,11 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 						</div>
 					</div>
 
-					<div className="flex flex-col gap-2 mb-1">
-						<div className="flex items-center justify-between">
-							<span className={`text-sm font-normal ${getTextColor(theme)}`}>
-								اولویت:
-							</span>
-							<button
-								type="button"
-								onClick={() => setShowAdvanced(!showAdvanced)}
-								className={`flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-500 transition-colors duration-200 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 ${getTextColor(theme)}`}
-							>
-								{showAdvanced ? (
-									<FiChevronUp className="w-3.5 h-3.5" />
-								) : (
-									<FiChevronDown className="w-3.5 h-3.5" />
-								)}
-								<span>گزینه‌های بیشتر</span>
-							</button>
-						</div>
-
-						<div className="grid grid-cols-3 gap-2 p-1 rounded-lg">
+					<div className="mb-3">
+						<label className={`block mb-1.5 text-sm font-medium ${getTextColor(theme)}`}>
+							اولویت
+						</label>
+						<div className="grid grid-cols-3 gap-2">
 							{[
 								{
 									value: 'low',
@@ -133,8 +117,8 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 									aria-label={ariaLabel}
 									aria-pressed={priority === value}
 									className={`
-										flex flex-col cursor-pointer items-center justify-center gap-1 p-2 rounded-lg
-										transition-all duration-150
+										flex items-center justify-center gap-2 p-2 rounded-lg
+										transition-all duration-150 cursor-pointer
 										${
 											priority === value
 												? theme === 'light'
@@ -148,7 +132,6 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 								>
 									<span
 										className={`
-											${priority === value ? 'scale-110' : ''} transition-transform duration-150
 											${
 												priority === value
 													? 'text-indigo-600 dark:text-indigo-400'
@@ -174,36 +157,34 @@ export function TodoInput({ onAdd, show, onClose }: Prop) {
 						</div>
 					</div>
 
-					{showAdvanced && (
-						<div
-							className={`grid gap-3 p-3 rounded-lg border ${theme === 'light' ? ' border-gray-200/70' : ' border-gray-700/30'}`}
-						>
-							<div className="flex items-center gap-2">
-								<FiTag className="text-indigo-400" />
-								<TextInput
-									type="text"
-									value={category}
-									onChange={(value) => setCategory(value)}
-									placeholder="دسته‌بندی (مثلاً: شخصی، کاری)"
-								/>
-							</div>
-
-							<div className="flex items-start gap-2">
-								<FiMessageSquare className="mt-2 text-indigo-400" />
-								<TextInput
-									value={notes}
-									onChange={(value) => setNotes(value)}
-									placeholder="یادداشت یا توضیحات اضافی..."
-								/>
-							</div>
+					<div
+						className={`grid gap-3 p-3 mb-3 border rounded-lg ${getBorderColor(theme)}`}
+					>
+						<div className="flex items-center gap-2">
+							<FiTag className="text-indigo-400" />
+							<TextInput
+								type="text"
+								value={category}
+								onChange={(value) => setCategory(value)}
+								placeholder="دسته‌بندی (مثلاً: شخصی، کاری)"
+							/>
 						</div>
-					)}
+
+						<div className="flex items-start gap-2">
+							<FiMessageSquare className="mt-2 text-indigo-400" />
+							<TextInput
+								value={notes}
+								onChange={(value) => setNotes(value)}
+								placeholder="یادداشت یا توضیحات اضافی..."
+							/>
+						</div>
+					</div>
 
 					<div className="flex justify-end pt-2">
 						<button
 							type="submit"
 							disabled={!text.trim()}
-							className={`flex gap-2 items-center cursor-pointer px-4 py-2 rounded-lg ${getButtonStyles(theme, true)}`}
+							className={`flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg ${getButtonStyles(theme, true)}`}
 						>
 							<FiPlus />
 							<span>افزودن</span>
