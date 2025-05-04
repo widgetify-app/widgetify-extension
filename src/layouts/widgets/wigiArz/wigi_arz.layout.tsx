@@ -45,9 +45,7 @@ export function WigiArzLayout({
 
 	return (
 		<>
-			<WidgetContainer
-				className={`flex flex-col gap-1 px-2 py-2 rounded-2xl ${visibility.comboWidget ? 'h-full pb-0' : 'h-80'} ${enableBackground ? getContainerBackground(theme) : ''}`}
-			>
+			<WidgetContainer background={enableBackground} className={'flex flex-col gap-1'}>
 				{enableHeader ? (
 					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
 				) : null}

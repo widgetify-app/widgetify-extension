@@ -29,11 +29,6 @@ const CalendarLayout: React.FC<any> = () => {
 		setIsDrawerOpen(true)
 	}, [])
 
-	// useEffect(() => {
-	// 	if (isDrawerOpen === null) return
-	// 	onDrawerToggle(isDrawerOpen)
-	// }, [isDrawerOpen, onDrawerToggle])
-
 	if (isDrawerOpen === null) return <></>
 
 	return (

@@ -250,15 +250,16 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 
 	return (
-		<WidgetContainer className="relative">
+		<>
 			<RssFeedManager
 				isOpen={rssModalOpen}
 				rssNews={rssState}
 				onClose={onCloseSettingModal}
 			/>
 
-			<div
-				className={`flex h-80 flex-col gap-1 px-2 py-2 ${enableBackground ? getContainerBackground(theme) : ''} rounded-2xl`}
+			<WidgetContainer
+				background={enableBackground}
+				className={'flex flex-col gap-1 px-2 py-2'}
 				style={{
 					scrollbarWidth: 'none',
 				}}
@@ -295,7 +296,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						/>
 					))}
 				</NewsContainer>
-			</div>
-		</WidgetContainer>
+			</WidgetContainer>
+		</>
 	)
 }

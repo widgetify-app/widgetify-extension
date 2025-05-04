@@ -57,9 +57,6 @@ export const WidgetifyLayout = () => {
 	})
 
 	return (
-		// <div
-		// 	className={`h-full p-3 ${getContainerBackground(theme)} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
-		// >
 		<WidgetContainer className="overflow-hidden">
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
