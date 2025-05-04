@@ -129,6 +129,20 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							label="🌤️ نمایش آب و هوا"
 							fontSize="font-light"
 						/>
+
+						<CustomCheckbox
+							checked={visibility.todos}
+							onChange={() => toggleWidget('todos')}
+							label="✅ نمایش یادداشت ها"
+							fontSize="font-light"
+						/>
+
+						<CustomCheckbox
+							checked={visibility.tools}
+							onChange={() => toggleWidget('tools')}
+							label="🧰 نمایش ابزارها"
+							fontSize="font-light"
+						/>
 					</div>
 				</div>
 			</div>

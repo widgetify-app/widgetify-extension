@@ -73,7 +73,6 @@ function ContentSection() {
 								</CurrencyProvider>
 							)
 						)}
-						{/* {} */}
 					</div>
 				</div>
 				<div
@@ -86,10 +85,10 @@ function ContentSection() {
 							{visibility.calendar && <CalendarLayout />}
 						</div>
 						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-							<ToolsLayout />
+							{visibility.tools && <ToolsLayout />}
 						</div>
 						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-							<TodosLayout />
+							{visibility.todos && <TodosLayout />}
 						</div>
 					</DateProvider>
 					<div
