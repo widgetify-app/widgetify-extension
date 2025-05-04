@@ -2,7 +2,6 @@ import { useDate } from '@/context/date.context'
 import { useTheme } from '@/context/theme.context'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { MdMenuOpen, MdOutlineMenu } from 'react-icons/md'
 import { CalendarContainer } from './components/calendar-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
@@ -18,11 +17,6 @@ const CalendarLayout: React.FC<any> = () => {
 
 	const handleTabClick = (tab: TabType) => {
 		setIsDrawerOpen(true)
-	}
-
-	const toggleDrawer = () => {
-		const newState = !isDrawerOpen
-		setIsDrawerOpen(newState)
 	}
 
 	useEffect(() => {
@@ -57,22 +51,8 @@ const CalendarLayout: React.FC<any> = () => {
 					setSelectedDate={setSelectedDate}
 				/>
 
-				<div className={'mt-auto flex flex-row justify-between mb-2'}>
-					<div className="flex-1">
-						<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
-					</div>
-					<button
-						onClick={toggleDrawer}
-						className={
-							'flex items-center justify-center px-2 py-1 rounded-lg cursor-pointer transition-colors'
-						}
-					>
-						{isDrawerOpen ? (
-							<MdOutlineMenu className="w-3 h-3" />
-						) : (
-							<MdMenuOpen className="w-3 h-3" />
-						)}
-					</button>
+				<div className="flex-1">
+					<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
 				</div>
 			</CalendarContainer>
 		</div>
