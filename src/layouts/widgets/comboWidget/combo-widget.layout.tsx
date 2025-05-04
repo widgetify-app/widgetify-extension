@@ -3,6 +3,7 @@ import { FiBook, FiDollarSign, FiSettings } from 'react-icons/fi'
 
 import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { NewsLayout } from '../news/news.layout'
+import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
 
 export function ComboWidget() {
@@ -14,7 +15,7 @@ export function ComboWidget() {
 	}
 
 	return (
-		<div className="relative">
+		<WidgetContainer className="relative">
 			<div
 				className={`flex flex-col gap-1 py-2 rounded-2xl h-80 ${getContainerBackground(theme)}`}
 			>
@@ -64,6 +65,6 @@ export function ComboWidget() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</WidgetContainer>
 	)
 }

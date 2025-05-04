@@ -18,6 +18,7 @@ import {
 	formatDateStr,
 	getCurrentDate,
 } from '../widgets/calendar/utils'
+import { WidgetContainer } from '../widgets/widget-container'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
 
@@ -56,9 +57,10 @@ export const WidgetifyLayout = () => {
 	})
 
 	return (
-		<div
-			className={`h-full p-3 ${getContainerBackground(theme)} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
-		>
+		// <div
+		// 	className={`h-full p-3 ${getContainerBackground(theme)} rounded-2xl xl:max-h-96 h-80 w-full overflow-hidden`}
+		// >
+		<WidgetContainer className="overflow-hidden">
 			<div className="relative w-full h-full">
 				{enablePets && <DogComponent />}
 
@@ -189,6 +191,6 @@ export const WidgetifyLayout = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</WidgetContainer>
 	)
 }

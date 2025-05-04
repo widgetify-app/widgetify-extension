@@ -16,6 +16,7 @@ import 'swiper/css/pagination'
 //@ts-ignore
 import 'swiper/css/navigation'
 import { getContainerBackground, useTheme } from '@/context/theme.context'
+import { WidgetContainer } from '../widget-container'
 
 export function WeatherLayout() {
 	const { selectedCity, weatherSettings } = useWeatherStore()
@@ -84,12 +85,10 @@ export function WeatherLayout() {
 
 	return (
 		<>
-			<div
-				className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}
-			>
+			<WidgetContainer>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<div className="relative flex-1 px-3 mt-2 overflow-hidden lg:pb-0">
+				<div className="relative flex-1 px-2 overflow-hidden lg:pb-0">
 					<Swiper
 						modules={[Pagination, Navigation, FreeMode]}
 						spaceBetween={8}
@@ -125,7 +124,7 @@ export function WeatherLayout() {
 						</div>
 					</Swiper>
 				</div>
-			</div>
+			</WidgetContainer>
 
 			<style>{`
   .weather-forecast-slider {

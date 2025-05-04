@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaChartSimple, FaPlus } from 'react-icons/fa6'
 import { formatDateStr } from '../calendar/utils'
+import { WidgetContainer } from '../widget-container'
 import { TodoInput } from './todo-input'
 import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
@@ -109,8 +110,7 @@ export function TodosLayout() {
 	const stats = getCompletionStats()
 
 	return (
-		// <div className="max-w-64">
-		<div className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}>
+		<WidgetContainer>
 			<div className="flex items-center justify-between mb-2">
 				<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>یادداشت‌های روز</h4>
 
@@ -228,6 +228,6 @@ export function TodosLayout() {
                     pointer-events: none;
                 }
             `}</style>
-		</div>
+		</WidgetContainer>
 	)
 }

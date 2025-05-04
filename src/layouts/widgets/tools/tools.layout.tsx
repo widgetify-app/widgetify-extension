@@ -8,6 +8,7 @@ import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { useState } from 'react'
 import type { TabType } from '../calendar/calendar'
+import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from './components/tab-navigation'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
@@ -34,7 +35,7 @@ export const ToolsLayout: React.FC<any> = () => {
 	}
 
 	return (
-		<div className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}>
+		<WidgetContainer>
 			<div className="mb-2">
 				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
 			</div>
@@ -80,6 +81,6 @@ export const ToolsLayout: React.FC<any> = () => {
 					<PomodoroTimer />
 				</motion.div>
 			)}
-		</div>
+		</WidgetContainer>
 	)
 }

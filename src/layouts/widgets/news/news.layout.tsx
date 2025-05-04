@@ -2,6 +2,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
 import { useEffect, useState } from 'react'
+import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
 import { NewsItem } from './components/news-item'
@@ -249,7 +250,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 
 	return (
-		<div className="relative">
+		<WidgetContainer className="relative">
 			<RssFeedManager
 				isOpen={rssModalOpen}
 				rssNews={rssState}
@@ -295,6 +296,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 					))}
 				</NewsContainer>
 			</div>
-		</div>
+		</WidgetContainer>
 	)
 }
