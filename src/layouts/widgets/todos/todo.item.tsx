@@ -3,7 +3,7 @@ import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp, FiTrash2 } from 'react-icons/fi'
-import type { Todo } from '../../interface/todo.interface'
+import type { Todo } from '../calendar/interface/todo.interface'
 
 interface Prop {
 	todo: Todo

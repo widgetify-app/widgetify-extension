@@ -2,31 +2,21 @@ import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 
+import { useDate } from '@/context/date.context'
+import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
-import type { TabType } from '../calendar'
-import type { WidgetifyDate } from '../utils'
+import { useState } from 'react'
+import type { TabType } from '../calendar/calendar'
+import { TabNavigation } from './components/tab-navigation'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
-import { TabNavigation } from './tab-navigation'
-import { Todos } from './todos/todos'
 
-interface CalendarContentProps {
-	activeTab: TabType
-	selectedDate: WidgetifyDate
-	setSelectedDate: (date: WidgetifyDate) => void
-	currentDate: WidgetifyDate
-	setCurrentDate: (date: WidgetifyDate) => void
-	onTabClick?: (tab: TabType) => void
-}
-
-export const CalendarContent: React.FC<CalendarContentProps> = ({
-	activeTab,
-	selectedDate,
-	setCurrentDate,
-	onTabClick,
-}) => {
+export const ToolsLayout: React.FC<any> = () => {
+	const [activeTab, setActiveTab] = useState<TabType>('events')
+	const { selectedDate, setCurrentDate } = useDate()
+	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
 	const { user } = useAuth()
 
@@ -39,8 +29,12 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 		endOfMonth,
 	)
 
+	const onTabClick = (tab: TabType) => {
+		setActiveTab(tab)
+	}
+
 	return (
-		<>
+		<div className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}>
 			<div className="mb-2">
 				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
 			</div>
@@ -76,17 +70,6 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 				</motion.div>
 			)}
 
-			{activeTab === 'todos' && (
-				<motion.div
-					key="todos-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<Todos currentDate={selectedDate} />
-				</motion.div>
-			)}
-
 			{activeTab === 'pomodoro' && (
 				<motion.div
 					key="pomodoro-view"
@@ -97,6 +80,6 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
 					<PomodoroTimer />
 				</motion.div>
 			)}
-		</>
+		</div>
 	)
 }

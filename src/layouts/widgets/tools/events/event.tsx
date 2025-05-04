@@ -9,7 +9,7 @@ import {
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
-} from '../../utils'
+} from '../../calendar/utils'
 import { GoogleEventsList } from '../google/google-events-list'
 
 interface Prop {

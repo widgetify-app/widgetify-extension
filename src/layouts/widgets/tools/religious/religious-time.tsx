@@ -9,7 +9,7 @@ import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useReligiousTime } from '@/services/getMethodHooks/getReligiousTime.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
-import type { WidgetifyDate } from '../../utils'
+import type { WidgetifyDate } from '../../calendar/utils'
 
 interface Prop {
 	events: FetchedAllEvents

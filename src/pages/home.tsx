@@ -7,6 +7,7 @@ import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { BookmarkProvider } from '@/context/bookmark.context'
 import { CurrencyProvider } from '@/context/currency.context'
+import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
 import { WeatherProvider } from '@/context/weather.context'
@@ -21,6 +22,8 @@ import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
+import { TodosLayout } from '@/layouts/widgets/todos/todos'
+import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
 import { useEffect, useState } from 'react'
@@ -36,7 +39,6 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { visibility } = useWidgetVisibility()
-	const [calendarDrawerOpen, setCalendarDrawerOpen] = useState(true)
 
 	return (
 		<TodoProvider>
@@ -74,17 +76,26 @@ function ContentSection() {
 						{/* {} */}
 					</div>
 				</div>
-
 				<div
-					className={`flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4 ${calendarDrawerOpen ? '' : 'justify-between'} transition-all duration-300`}
+					className={
+						'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-3 justify-between transition-all duration-300 items-center'
+					}
 				>
-					<div className={'w-full lg:w-8/12 transition-all duration-300'}>
-						{visibility.calendar && (
-							<CalendarLayout onDrawerToggle={setCalendarDrawerOpen} />
-						)}
-					</div>
+					<DateProvider>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							{visibility.calendar && <CalendarLayout />}
+						</div>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							<ToolsLayout />
+						</div>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							<TodosLayout />
+						</div>
+					</DateProvider>
 					<div
-						className={`w-full ${calendarDrawerOpen ? 'lg:w-4/12' : 'md:max-w-64 lg:w-3/12 self-end'} transition-all duration-300`}
+						className={
+							'w-full md:max-w-64 lg:w-3/12 self-end transition-all duration-300'
+						}
 					>
 						{visibility.weather && <WeatherLayout />}
 					</div>

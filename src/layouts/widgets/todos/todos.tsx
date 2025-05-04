@@ -1,6 +1,8 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { useDate } from '@/context/date.context'
 import {
 	getButtonStyles,
+	getContainerBackground,
 	getProgressBarBgStyle,
 	getTextColor,
 	useTheme,
@@ -9,17 +11,14 @@ import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaChartSimple, FaPlus } from 'react-icons/fa6'
-import { type WidgetifyDate, formatDateStr } from '../../utils'
+import { formatDateStr } from '../calendar/utils'
 import { TodoInput } from './todo-input'
 import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
 
-type TodoProp = {
-	currentDate: WidgetifyDate
-}
-
-export function Todos({ currentDate }: TodoProp) {
+export function TodosLayout() {
 	const { theme } = useTheme()
+	const { currentDate } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
@@ -110,7 +109,8 @@ export function Todos({ currentDate }: TodoProp) {
 	const stats = getCompletionStats()
 
 	return (
-		<div className="max-w-64">
+		// <div className="max-w-64">
+		<div className={`flex flex-col h-80 p-2 ${getContainerBackground(theme)} rounded-xl`}>
 			<div className="flex items-center justify-between mb-2">
 				<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>یادداشت‌های روز</h4>
 

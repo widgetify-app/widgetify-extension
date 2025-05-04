@@ -1,5 +1,5 @@
 import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
-import { type WidgetifyDate, filterGoogleEventsByDate } from '../../utils'
+import { type WidgetifyDate, filterGoogleEventsByDate } from '../../calendar/utils'
 import { GoogleEventCard } from './google-event-card'
 
 interface GoogleEventsListProps {
