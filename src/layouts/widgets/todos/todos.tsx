@@ -21,7 +21,7 @@ import { TodoItem } from './todo.item'
 
 export function TodosLayout() {
 	const { theme } = useTheme()
-	const { currentDate } = useDate()
+	const { selectedDate } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
@@ -29,7 +29,7 @@ export function TodosLayout() {
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [show, setShow] = useState(false)
 	const [todoText, setTodoText] = useState('')
-	const selectedDateStr = formatDateStr(currentDate.clone())
+	const selectedDateStr = formatDateStr(selectedDate.clone())
 
 	useEffect(() => {
 		async function loadBlurMode() {
@@ -258,7 +258,7 @@ export function TodosLayout() {
 								</button>
 								<button
 									onClick={() => setShow(true)}
-									className={`flex items-center cursor-pointer justify-center p-2 rounded-lg transition-colors cursor-pointer ${getButtonStyles(theme, blurMode)}`}
+									className={`flex items-center cursor-pointer justify-center p-2 rounded-lg transition-colors  ${getButtonStyles(theme, blurMode)}`}
 								>
 									<FiSettings size={14} />
 								</button>
