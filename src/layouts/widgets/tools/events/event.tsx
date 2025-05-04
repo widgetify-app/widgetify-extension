@@ -144,7 +144,7 @@ export function Events({ events, googleEvents = [], currentDate }: Prop) {
 		<div>
 			<div className="flex items-center justify-between mb-1">
 				<h4 className={`flex items-center text-lg font-medium ${getHeaderTextStyle()}`}>
-					رویدادها
+					مناسبت‌ها
 				</h4>
 			</div>
 

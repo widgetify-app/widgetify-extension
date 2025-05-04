@@ -28,7 +28,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	}
 
 	const tabs = [
-		{ id: 'events' as TabType, icon: FiCalendar, label: 'رویدادها' },
+		{ id: 'events' as TabType, icon: FiCalendar, label: 'مناسبت‌ها' },
 		{ id: 'religious-time' as TabType, icon: FiSunrise, label: 'اوقات شرعی' },
 		{ id: 'pomodoro' as TabType, icon: FiWatch, label: 'پومودورو' },
 	]
