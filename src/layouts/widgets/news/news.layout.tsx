@@ -1,5 +1,4 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
 import { useEffect, useState } from 'react'
 import { WidgetContainer } from '../widget-container'
@@ -27,7 +26,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	showSettingsModal = false,
 	onSettingsModalClose,
 }) => {
-	const { theme } = useTheme()
 	const [newsData, setNewsData] = useState<ExtendedNewsResponse>({
 		news: [],
 		platform: {

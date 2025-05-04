@@ -3,7 +3,6 @@ import { motion } from 'framer-motion'
 import type React from 'react'
 
 import { useDate } from '@/context/date.context'
-import { getContainerBackground, useTheme } from '@/context/theme.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import { useState } from 'react'
@@ -17,7 +16,6 @@ import { ReligiousTime } from './religious/religious-time'
 export const ToolsLayout: React.FC<any> = () => {
 	const [activeTab, setActiveTab] = useState<TabType>('events')
 	const { selectedDate, setCurrentDate } = useDate()
-	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
 	const { user } = useAuth()
 
