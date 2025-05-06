@@ -1,24 +1,21 @@
-# Widgetify Extension License
+MIT License
 
-**Copyright (C) 2025 Widgetify**  
+Copyright (c) 2025 widgetify
 
-This software is licensed exclusively under the following terms:  
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## 1. Limited Use  
-- You are allowed to view, modify, and contribute to this project **only within this repository**.  
-- Any use, distribution, or modification **outside this repository** is strictly prohibited.  
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-## 2. No Redistribution  
-- You are not allowed to copy, share, distribute, or fork this project in any form.  
-- Publishing any part of this code elsewhere without explicit written permission is forbidden.  
-
-## 3. Contributions  
-- By submitting any contribution (e.g., code, documentation, fixes), you grant the project owner full rights to use, modify, and incorporate it into the project without any obligation.  
-
-## 4. No Commercial Use  
-- You may not use any part of this code for commercial purposes, directly or indirectly, without written permission.  
-
-## 5. Termination  
-- Any violation of this license will result in the termination of your rights to use or contribute to this project.  
-
-By accessing this repository, you agree to these terms. If you do not agree, you must not use or contribute to this project.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
