@@ -10,7 +10,6 @@ import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.i
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
 import { FaSpotify } from 'react-icons/fa'
-import { IoLocationOutline } from 'react-icons/io5'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
 import { unitsFlag } from '../unitSymbols'
 
@@ -21,15 +20,6 @@ interface CurrentWeatherBoxProps {
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
 	const { theme } = useTheme()
-
-	const fadeInUp = {
-		hidden: { opacity: 0, y: 20 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: { duration: 0.5 },
-		},
-	}
 
 	const getAiIconStyle = () => {
 		switch (theme) {
@@ -51,9 +41,12 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		}
 	}
 
+	const baseWeatherInfoClass =
+		'flex items-center gap-1 text-sm font-medium rounded-full transition-all'
+
 	return (
 		<LazyMotion features={domAnimation}>
-			<m.div
+			<m.section
 				initial="hidden"
 				animate="visible"
 				variants={{
@@ -64,81 +57,74 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						},
 					},
 				}}
-				className={'col-span-2  flex-2 px-3'}
+				className="col-span-2 px-3 flex-2 "
 			>
-				<div className="flex flex-row-reverse items-center justify-between gap-3">
-					<m.div
-						className="relative group"
-						variants={fadeInUp}
-						transition={{ type: 'spring', stiffness: 300 }}
-					>
+				<header className="flex flex-row justify-between w-full">
+					<div className="flex flex-wrap items-center">
+						{weather.ai?.playlist && (
+							<Tooltip content="پلی‌لیست پیشنهادی اسپاتیفای">
+								<a
+									href={weather.ai.playlist}
+									target="_blank"
+									rel="noopener noreferrer"
+									className={`flex items-center justify-center w-7 h-7 rounded-full transition-all ${getSpotifyButtonStyle()}`}
+								>
+									<FaSpotify className="text-lg" />
+								</a>
+							</Tooltip>
+						)}
+					</div>
+
+					<div className="flex flex-row gap-5 px-2 mb-2 truncate">
+						<div className="flex flex-col justify-center">
+							<span
+								className={`text-2xl font-bold truncate ${getTextColor(theme)} transition-colors`}
+								aria-label={`Temperature: ${Math.round(weather.temperature.temp)} degrees`}
+							>
+								{Math.round(weather.temperature.temp)}
+								<span className="ml-1 text-xl font-medium">
+									{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
+								</span>
+							</span>
+							{selectedCity?.name && (
+								<div
+									className={`text-sm flex items-center gap-1 truncate ${getTextColor(theme)} transition-colors opacity-90`}
+								>
+									<p className="text-xs font-light truncate" title={selectedCity.name}>
+										{selectedCity.name}
+									</p>
+								</div>
+							)}
+						</div>
+
 						<img
 							src={weather.icon.url}
 							alt={weather.temperature.temp_description || 'Current weather'}
 							className="w-8 h-8 rounded-full drop-shadow-lg"
+							loading="lazy"
 						/>
-					</m.div>
+					</div>
+				</header>
 
-					<div className="flex-1 mb-2 truncate">
-						<m.span
-							variants={fadeInUp}
-							className={`text-2xl font-bold truncate ${getTextColor(theme)}`}
-							dir="ltr"
+				<div className="flex items-center justify-start mt-2">
+					<div className={`${baseWeatherInfoClass} py-0.5`}>
+						<WiHumidity size={20} className="flex-shrink-0" />
+						<span aria-label={`Humidity: ${weather.temperature.humidity}%`}>
+							{weather.temperature.humidity}%
+						</span>
+					</div>
+					<div className={`${baseWeatherInfoClass} px-2 py-0.5`}>
+						<WiStrongWind size={20} className="flex-shrink-0" />
+						<span
+							aria-label={`Wind speed: ${weather.temperature.wind_speed} meters per second`}
 						>
-							{Math.round(weather.temperature.temp)}
-							<span className="ml-1 text-xl">
-								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
-							</span>
-						</m.span>
-						{selectedCity?.name && (
-							<div
-								className={`text-sm flex gap-1 font-medium truncate ${getTextColor(theme)} opacity-80`}
-							>
-								<IoLocationOutline className="flex-shrink-0 text-xs" />
-								<p className="text-xs font-medium truncate">{selectedCity.name}</p>
-							</div>
-						)}
+							{weather.temperature.wind_speed} m/s
+						</span>
 					</div>
 				</div>
 
-				<m.div variants={fadeInUp} className="flex flex-wrap items-center gap-2">
-					<div
-						className={
-							'py-0.5 flex items-center gap-1 text-sm font-medium rounded-full transition-all'
-						}
-					>
-						<WiHumidity size={20} className="flex-shrink-0" />
-						<span>{weather.temperature.humidity}%</span>
-					</div>
-					<div
-						className={
-							'px-2 py-0.5 flex items-center gap-1 text-sm font-medium rounded-full transition-all'
-						}
-					>
-						<WiStrongWind size={20} className="flex-shrink-0" />
-						<span>{weather.temperature.wind_speed} m/s</span>
-					</div>
-
-					{weather.ai?.playlist && (
-						<Tooltip content="پلی‌لیست پیشنهادی اسپاتیفای">
-							<m.a
-								initial={{ opacity: 0, scale: 0.9 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ delay: 0.3 }}
-								href={weather.ai.playlist}
-								target="_blank"
-								rel="noopener noreferrer"
-								className={`flex items-center justify-center w-7 h-7 rounded-full transition-all ${getSpotifyButtonStyle()}`}
-							>
-								<FaSpotify className="text-lg" />
-							</m.a>
-						</Tooltip>
-					)}
-				</m.div>
-
-				<m.div
-					variants={fadeInUp}
-					className={`relative mt-4 overflow-hidden transition-colors shadow-inner rounded-xl ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}`}
+				<div
+					className={`relative overflow-hidden transition-colors shadow-inner rounded-xl mt-2 ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}`}
 				>
 					<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">
 						<div className="flex-1">
@@ -148,6 +134,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 									initial={{ opacity: 0, x: -10 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 0.5 }}
+									aria-label="AI generated content"
 								>
 									<BsRobot className="text-xs" />
 								</m.div>
@@ -155,15 +142,15 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 							<div className="relative pl-8 pr-2">
 								<p
-									className={`py-2 text-xs font-light leading-relaxed transition-all duration-300 line-clamp-none ${getTextColor(theme)}`}
+									className={`py-2 text-xs font-light leading-relaxed transition-all duration-300 ${getTextColor(theme)}`}
 								>
 									{weather.ai?.description || weather.temperature.temp_description}
 								</p>
 							</div>
 						</div>
 					</div>
-				</m.div>
-			</m.div>
+				</div>
+			</m.section>
 		</LazyMotion>
 	)
 }
