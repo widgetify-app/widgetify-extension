@@ -7,19 +7,16 @@ import {
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
-import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiChevronLeft, FiClipboard } from 'react-icons/fi'
-import type { TabType } from '../calendar'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../utils'
 
 interface DaySummaryProps {
 	selectedDate: WidgetifyDate
-	onTabClick: (tab: TabType) => void
 }
 
-export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick }) => {
+export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const { user } = useAuth()
 	const { theme } = useTheme()
 	const { todos } = useTodoStore()
@@ -79,9 +76,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 				</h3>
 
 				<div className="grid grid-cols-2 gap-2">
-					<motion.div
-						whileTap={{ scale: 0.98 }}
-						onClick={() => onTabClick('events')}
+					<div
 						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
 					>
 						<FiCalendar
@@ -101,12 +96,10 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
 							size={14}
 						/>
-					</motion.div>
+					</div>
 
 					{/* Todos card */}
-					<motion.div
-						whileTap={{ scale: 0.98 }}
-						onClick={() => onTabClick('todos')}
+					<div
 						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
 					>
 						<FiClipboard
@@ -127,7 +120,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate, onTabClick
 							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
 							size={14}
 						/>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 		</div>

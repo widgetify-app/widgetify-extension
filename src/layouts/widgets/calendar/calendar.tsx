@@ -13,10 +13,6 @@ const CalendarLayout: React.FC<any> = () => {
 		useDate()
 	const [isDrawerOpen, setIsDrawerOpen] = useState<boolean | null>(null)
 
-	const handleTabClick = (tab: TabType) => {
-		setIsDrawerOpen(true)
-	}
-
 	useEffect(() => {
 		setIsDrawerOpen(true)
 	}, [])
@@ -43,7 +39,7 @@ const CalendarLayout: React.FC<any> = () => {
 			/>
 
 			<div className="flex-1">
-				<DaySummary selectedDate={selectedDate} onTabClick={handleTabClick} />
+				<DaySummary selectedDate={selectedDate} />
 			</div>
 		</WidgetContainer>
 	)
