@@ -104,12 +104,12 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						<div className="flex-1 min-w-0">
 							{' '}
 							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
-								{totalTodos} یادداشت
+								{totalTodos} وظیفه
 							</div>
 							<div className={`text-[.50rem] ${getSubTextStyle()} truncate`}>
 								{totalTodos > 0
-									? `${completedTodos} از ${totalTodos} انجام شده`
-									: 'بدون یادداشت'}
+									? `${completedTodos} از ${totalTodos} تکمیل شده`
+									: 'بدون وظیفه'}
 							</div>
 						</div>
 					</div>

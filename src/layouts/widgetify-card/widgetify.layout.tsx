@@ -103,13 +103,13 @@ export const WidgetifyLayout = () => {
 										className={pendingTodos.length > 0 ? 'text-green-500' : 'opacity-50'}
 									/>
 									<div className="flex-1">
-										<p className="text-xs font-medium">یادداشت‌های امروز</p>
+										<p className="text-xs font-medium">وظایف امروز</p>
 										<p className="text-xs opacity-75">
 											{pendingTodos.length > 0
-												? `${completedTodos.length} از ${todayTodos.length} انجام شده`
+												? `${completedTodos.length} از ${todayTodos.length} وظیفه انجام شده`
 												: todayTodos.length > 0
-													? 'همه یادداشت‌ها انجام شده 👏'
-													: 'هیچ یادداشتی برای امروز ندارید'}
+													? 'تمام وظایف امروز انجام شده 👏'
+													: 'برای امروز وظیفه‌ای ثبت نشده است'}
 										</p>
 									</div>
 								</div>

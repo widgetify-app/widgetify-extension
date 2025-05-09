@@ -132,7 +132,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						<CustomCheckbox
 							checked={visibility.todos}
 							onChange={() => toggleWidget('todos')}
-							label="✅ نمایش یادداشت ها"
+							label="✅ نمایش وظایف"
 							fontSize="font-light"
 						/>
 

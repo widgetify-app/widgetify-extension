@@ -124,15 +124,13 @@ export function TodosLayout() {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>
-							یادداشت‌های روز
-						</h4>
+						<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>وظایف روز</h4>
 
 						<div className="flex gap-1">
 							<button
 								onClick={handleBlurModeToggle}
 								className={`flex items-center justify-center rounded-full transition-colors cursor-pointer ${getButtonStyles(theme, blurMode)} !px-1  !py-1`}
-								title={blurMode ? 'نمایش یادداشت‌ها' : 'مخفی کردن یادداشت‌ها'}
+								title={blurMode ? 'نمایش وظایف' : 'مخفی کردن وظایف'}
 							>
 								{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
 							</button>
@@ -164,7 +162,7 @@ export function TodosLayout() {
 										className={`flex justify-between text-[.65rem] ${getTextColor(theme)}`}
 									>
 										<span>
-											{stats.completed} از {stats.total} انجام شده
+											{stats.completed} از {stats.total} تکمیل شده
 										</span>
 										<span>{stats.percentage}%</span>
 									</div>
@@ -227,8 +225,8 @@ export function TodosLayout() {
 								</>
 							) : (
 								<div className={'py-4 text-center'}>
-									<p className="text-xs">یادداشتی برای این روز ندارید.</p>
-									<p className="text-[.65rem]">یک یادداشت جدید اضافه کنید!</p>
+									<p className="text-xs">وظیفه‌ای برای این روز وجود ندارد.</p>
+									<p className="text-[.65rem]">یک وظیفه جدید اضافه کنید.</p>
 								</div>
 							)}
 						</div>
@@ -238,28 +236,27 @@ export function TodosLayout() {
 				{!showStats && (
 					<div className="flex-none pt-2 mt-auto">
 						<div className="flex items-center gap-1">
-							<div className="relative flex-grow w-32">
+							<div className="flex-grow w-full">
 								<TextInput
 									value={todoText}
 									onChange={setTodoText}
-									placeholder="یادداشت جدید..."
-									className="w-full py-2 text-sm rounded-md"
+									placeholder="عنوان وظیفه جدید..."
+									className="w-full py-1.5 text-sm rounded-md"
 								/>
 							</div>
-							<div className="flex flex-row flex-shrink-0 gap-1">
+							<div className="flex flex-row flex-shrink-0 gap-0.5">
 								<button
 									onClick={handleAddQuickTodo}
 									disabled={!todoText.trim()}
-									className={`flex items-center cursor-pointer justify-center p-2 rounded-lg  ${getButtonStyles(theme, true)} disabled:opacity-50`}
-									title="افزودن یادداشت"
+									className={`flex items-center cursor-pointer w-7 justify-center text-center p-1.5 rounded-lg ${getButtonStyles(theme, true)} !px-0 !py-0 p-2 disabled:opacity-50`}
 								>
-									<FaPlus size={14} />
+									<FaPlus />
 								</button>
 								<button
 									onClick={() => setShow(true)}
-									className={`flex items-center cursor-pointer justify-center p-2 rounded-lg transition-colors  ${getButtonStyles(theme, blurMode)}`}
+									className={`flex items-center cursor-pointer w-7 justify-center p-1.5 rounded-lg transition-colors  ${getButtonStyles(theme, blurMode)} !px-0 !py-2`}
 								>
-									<FiSettings size={14} />
+									<FiSettings size={13} />
 								</button>
 							</div>
 						</div>
