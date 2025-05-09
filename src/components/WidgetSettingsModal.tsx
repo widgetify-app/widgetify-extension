@@ -10,7 +10,6 @@ interface WidgetSettingsModalProps {
 	onClose: () => void
 }
 
-// Define widget data structure
 interface WidgetItem {
 	id: string
 	emoji: string
@@ -23,10 +22,29 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	const { theme } = useTheme()
 
+	const [activeTopWidget, setActiveTopWidget] = useState<string | null>(null)
 	const [bottomWidgets, setBottomWidgets] = useState<{
 		active: WidgetItem[]
 		inactive: WidgetItem[]
 	}>({ active: [], inactive: [] })
+
+	const topWidgets: WidgetItem[] = [
+		{ id: 'comboWidget', emoji: '🔗', label: 'ویجت ترکیبی (ارز و اخبار)' },
+		{ id: 'arzLive', emoji: '💰', label: 'ویجی ارز' },
+		{ id: 'news', emoji: '📰', label: 'ویجی اخبار' },
+	]
+
+	useEffect(() => {
+		if (visibility.comboWidget) {
+			setActiveTopWidget('comboWidget')
+		} else if (visibility.arzLive) {
+			setActiveTopWidget('arzLive')
+		} else if (visibility.news) {
+			setActiveTopWidget('news')
+		} else {
+			setActiveTopWidget(null)
+		}
+	}, [visibility.comboWidget, visibility.arzLive, visibility.news])
 
 	useEffect(() => {
 		const allBottomWidgets: WidgetItem[] = [
@@ -46,17 +64,19 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		})
 	}, [visibility])
 
-	const toggleWidgetWithDependencies = (
-		widgetId: string,
-		dependencies: { widgetId: string; condition: boolean }[] = [],
-	) => {
-		for (const { widgetId: depId, condition } of dependencies) {
-			if (condition) {
-				toggleWidget(depId as keyof typeof visibility)
-			}
+	const handleTopWidgetChange = (widgetId: string) => {
+		if (activeTopWidget === widgetId) {
+			toggleWidget(widgetId as keyof typeof visibility)
+			setActiveTopWidget(null)
+			return
+		}
+
+		if (activeTopWidget) {
+			toggleWidget(activeTopWidget as keyof typeof visibility)
 		}
 
 		toggleWidget(widgetId as keyof typeof visibility)
+		setActiveTopWidget(widgetId)
 	}
 
 	const handleDragEnd = (result: any) => {
@@ -85,7 +105,6 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			newState[sourceKey] = sourceList
 			newState[destKey] = destList
 
-			// Update visibility
 			toggleWidget(movedItem.id as keyof typeof visibility)
 		}
 
@@ -100,7 +119,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			size="md"
 			direction="rtl"
 		>
-			<div className="p-4 space-y-4">
+			<div className="p-2 space-y-2">
 				<p className={`text-sm mb-4 ${getTextColor(theme)}`}>
 					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند.
 				</p>
@@ -108,80 +127,28 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 				<div className="space-y-4">
 					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
 						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
-							ویجت‌های ستون راست
+							ویجت‌های ستون چپ (ستون سوم) - فقط یک مورد را انتخاب کنید
 						</h3>
 
-						<CustomCheckbox
-							checked={visibility.widgetify}
-							onChange={() =>
-								toggleWidgetWithDependencies('widgetify', [
-									{
-										widgetId: 'news',
-										condition: !visibility.widgetify && visibility.news,
-									},
-								])
-							}
-							label="🏠 نمایش کارت ویجتیفای"
-							fontSize="font-light"
-						/>
-
-						<div className="relative">
-							<CustomCheckbox
-								checked={visibility.news}
-								onChange={() =>
-									toggleWidgetWithDependencies('news', [
-										{ widgetId: 'widgetify', condition: visibility.widgetify },
-									])
-								}
-								label="📰 ویجی نیوز"
-								disabled={visibility.widgetify}
-								fontSize="font-light"
-							/>
-							{visibility.widgetify && (
-								<div className="mt-1 mr-6 text-xs font-light text-amber-500">
-									ابتدا کارت ویجتیفای را غیرفعال کنید
-								</div>
-							)}
-						</div>
-					</div>
-
-					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
-							ویجت‌های ستون چپ
-						</h3>
-
-						<div className="relative">
-							<CustomCheckbox
-								checked={visibility.comboWidget}
-								onChange={() =>
-									toggleWidgetWithDependencies('comboWidget', [
-										{
-											widgetId: 'arzLive',
-											condition: !visibility.comboWidget && visibility.arzLive,
-										},
-									])
-								}
-								label="🔄 ویجت ترکیبی (ارز و اخبار در یک ویجت)"
-								fontSize="font-light"
-							/>
-						</div>
-
-						<CustomCheckbox
-							checked={visibility.arzLive && !visibility.comboWidget}
-							onChange={() => {
-								if (!visibility.comboWidget) {
-									toggleWidget('arzLive')
-								}
-							}}
-							label="💰 ویجی‌ ارز"
-							disabled={visibility.comboWidget}
-							fontSize="font-light"
-						/>
-						{visibility.comboWidget && (
-							<div className="pr-6 mt-1 text-xs font-light text-blue-500">
-								با فعال بودن ویجت ترکیبی، ویجی ارز در همان ویجت قابل دسترسی است
+						{topWidgets.map((widget) => (
+							<div key={widget.id} className="relative">
+								<CustomCheckbox
+									checked={activeTopWidget === widget.id}
+									onChange={() => handleTopWidgetChange(widget.id)}
+									label={`${widget.emoji} ${widget.label}`}
+									fontSize="font-light"
+								/>
+								{activeTopWidget &&
+									activeTopWidget !== widget.id &&
+									widget.id !== 'comboWidget' && (
+										<div className="pr-6 mt-1 text-xs font-light text-blue-500">
+											{activeTopWidget === 'comboWidget'
+												? `با فعال بودن ویجت ترکیبی، ${widget.label} در همان ویجت قابل دسترسی است`
+												: 'فقط یک ویجت از این ستون می‌تواند فعال باشد'}
+										</div>
+									)}
 							</div>
-						)}
+						))}
 					</div>
 
 					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
