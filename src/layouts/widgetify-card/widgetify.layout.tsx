@@ -2,7 +2,6 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	getBorderColor,
-	getContainerBackground,
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
