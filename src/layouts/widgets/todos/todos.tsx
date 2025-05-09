@@ -20,7 +20,7 @@ import { TodoItem } from './todo.item'
 
 export function TodosLayout() {
 	const { theme } = useTheme()
-	const { selectedDate } = useDate()
+	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
@@ -124,7 +124,14 @@ export function TodosLayout() {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4 className={`text-xs font-medium ${getTextColor(theme)}`}>وظایف روز</h4>
+						<h4
+							className={`text-xs font-medium flex items-center ${getTextColor(theme)}`}
+						>
+							<span>وظایف</span>
+							<span className="mr-1 font-semibold">
+								{isToday(selectedDate) ? ' امروز' : ` ${selectedDate.format('jD jMMMM')}`}
+							</span>
+						</h4>
 
 						<div className="flex gap-1">
 							<button
