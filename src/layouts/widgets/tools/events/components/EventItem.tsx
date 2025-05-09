@@ -107,7 +107,9 @@ export function EventItem({ event, index }: EventItemProps) {
 					)}
 				</div>
 
-				<h4 className={`text-sm font-medium ${getTextStyle(event.isHoliday)}`}>
+				<h4
+					className={`text-sm font-medium w-44 text-wrap ${getTextStyle(event.isHoliday)}`}
+				>
 					{event.title}
 				</h4>
 
