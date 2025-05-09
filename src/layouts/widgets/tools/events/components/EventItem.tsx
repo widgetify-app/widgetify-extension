@@ -1,12 +1,17 @@
 import Tooltip from '@/components/toolTip'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getTextColor,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import {
 	FiCalendar,
 	FiChevronRight,
 	FiClock,
 	FiGlobe,
-	FiStar,
+	FiMoon,
 	FiVideo,
 } from 'react-icons/fi'
 import type { CombinedEvent } from '../utils'
@@ -20,64 +25,20 @@ interface EventItemProps {
 export function EventItem({ event, index }: EventItemProps) {
 	const { theme } = useTheme()
 
-	const getEventCardStyle = (isHoliday: boolean) => {
-		if (isHoliday) {
-			switch (theme) {
-				case 'light':
-					return 'bg-gradient-to-r from-red-50 to-white border-r-2 border-red-400'
-				case 'dark':
-					return 'bg-gradient-to-r from-red-900/20 to-gray-800/40 border-r-2 border-red-500'
-				default: // glass
-					return 'bg-gradient-to-r from-red-500/10 to-gray-700/10 border-r-2 border-red-400/60 backdrop-blur-sm'
-			}
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'bg-gradient-to-r from-gray-50 to-white hover:from-blue-50 border-r border-gray-200'
-			case 'dark':
-				return 'bg-gradient-to-r from-gray-700/40 to-gray-800/20 hover:from-blue-900/20 border-r border-gray-700'
-			default: // glass
-				return 'bg-gradient-to-r from-gray-600/10 to-gray-700/5 hover:from-blue-500/10 border-r border-gray-500/20 backdrop-blur-sm'
-		}
-	}
-
-	const getTextStyle = (isHoliday: boolean) => {
-		if (isHoliday) {
-			return theme === 'light' ? 'text-red-600' : 'text-red-400'
-		}
-		return theme === 'light' ? 'text-gray-800' : 'text-gray-200'
-	}
-
 	const getSubTextStyle = () => {
-		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+		return `${getTextColor(theme)} opacity-90`
 	}
 
-	const getSourceIcon = (source: string, isHoliday: boolean) => {
+	const getSourceIcon = (source: string) => {
 		switch (source) {
 			case 'google':
 				return <div className="flex-shrink-0 w-3 h-3 bg-blue-500 rounded-full"></div>
 			case 'gregorian':
-				return (
-					<FiGlobe
-						className={`${isHoliday ? 'text-red-400' : 'text-green-400'}`}
-						size={12}
-					/>
-				)
+				return <FiGlobe className={'text-green-400'} size={12} />
 			case 'hijri':
-				return (
-					<FiStar
-						className={`${isHoliday ? 'text-red-400' : 'text-amber-400'}`}
-						size={12}
-					/>
-				)
+				return <FiMoon className={'text-blue-400'} size={12} />
 			default: // shamsi
-				return (
-					<FiCalendar
-						className={`${isHoliday ? 'text-red-400' : 'text-blue-400'}`}
-						size={12}
-					/>
-				)
+				return <FiCalendar className={'text-blue-400'} size={12} />
 		}
 	}
 
@@ -89,27 +50,25 @@ export function EventItem({ event, index }: EventItemProps) {
 	return (
 		<motion.div
 			key={`${event.source}-${index}`}
-			className={`mb-2 rounded-lg overflow-hidden ${getEventCardStyle(event.isHoliday)}`}
+			className={`mb-2 rounded-lg overflow-hidden ${getWidgetItemBackground(theme)} border-r ${getBorderColor(theme)}`}
 			variants={itemVariants}
 		>
 			<div className="relative p-1">
 				<div className="flex items-center mb-1">
-					{getSourceIcon(event.source, event.isHoliday)}
+					{getSourceIcon(event.source)}
 					<span className={`text-xs font-medium mr-1.5 ${getSubTextStyle()}`}>
 						{event.source === 'google' ? 'گوگل کلندر' : 'مناسبت روزانه'}
 					</span>
 					{event.isHoliday && (
 						<span
-							className={`mr-auto text-xs px-2 py-0.5 rounded-full ${theme === 'light' ? 'bg-red-100 text-red-600' : 'bg-red-900/30 text-red-400'}`}
+							className={`mr-auto text-xs px-2 py-0.5 rounded-full ${theme === 'light' ? 'bg-red-100 text-red-600/60' : 'bg-red-900/30 text-red-400/60'}`}
 						>
 							تعطیل
 						</span>
 					)}
 				</div>
 
-				<h4
-					className={`text-sm font-medium w-44 text-wrap ${getTextStyle(event.isHoliday)}`}
-				>
+				<h4 className={`text-sm font-medium w-44 text-wrap ${getTextColor(theme)}`}>
 					{event.title}
 				</h4>
 
