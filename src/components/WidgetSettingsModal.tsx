@@ -137,6 +137,13 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						/>
 
 						<CustomCheckbox
+							checked={visibility.notes}
+							onChange={() => toggleWidget('notes')}
+							label="📝 نمایش ویجت یادداشت"
+							fontSize="font-light"
+						/>
+
+						<CustomCheckbox
 							checked={visibility.tools}
 							onChange={() => toggleWidget('tools')}
 							label="🧰 نمایش ابزارها"
