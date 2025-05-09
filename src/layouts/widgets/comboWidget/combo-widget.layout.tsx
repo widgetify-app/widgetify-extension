@@ -41,9 +41,10 @@ export function ComboWidget() {
 			</div>
 
 			<div className="flex-1 overflow-hidden">
-				<div className="h-full">
+				<div className="h-full overflow-auto">
 					{activeTab === 'currency' ? (
 						<WigiArzLayout
+							inComboWidget={true}
 							enableHeader={false}
 							enableBackground={false}
 							showSettingsModal={activeTab === 'currency' && showSettings}
@@ -51,6 +52,7 @@ export function ComboWidget() {
 						/>
 					) : (
 						<NewsLayout
+							inComboWidget={true}
 							enableHeader={false}
 							enableBackground={false}
 							showSettingsModal={activeTab === 'news' && showSettings}

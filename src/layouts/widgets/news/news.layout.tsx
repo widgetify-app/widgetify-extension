@@ -14,6 +14,7 @@ interface ExtendedNewsResponse extends NewsResponse {
 }
 
 interface NewsLayoutProps {
+	inComboWidget: boolean
 	enableHeader?: boolean
 	enableBackground?: boolean
 	showSettingsModal?: boolean
@@ -25,6 +26,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
 	showSettingsModal = false,
 	onSettingsModalClose,
+	inComboWidget,
 }) => {
 	const [newsData, setNewsData] = useState<ExtendedNewsResponse>({
 		news: [],
@@ -274,6 +276,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 				) : null}
 
 				<NewsContainer
+					inComboWidget={inComboWidget}
 					isLoading={isAnyLoading}
 					isEmpty={noItemsToShow}
 					noFeedsConfigured={

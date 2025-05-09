@@ -1,10 +1,5 @@
 import { useCurrencyStore } from '@/context/currency.context'
-import {
-	getButtonStyles,
-	getContainerBackground,
-	useTheme,
-} from '@/context/theme.context'
-import { useWidgetVisibility } from '@/context/widget-visibility.context.tsx'
+import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 import { FiDollarSign } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
@@ -17,6 +12,7 @@ interface WigiArzLayoutProps {
 	enableBackground?: boolean
 	showSettingsModal?: boolean
 	onSettingsModalClose?: () => void
+	inComboWidget: boolean
 }
 
 export function WigiArzLayout({
@@ -24,9 +20,10 @@ export function WigiArzLayout({
 	enableBackground = true,
 	showSettingsModal = false,
 	onSettingsModalClose,
+	inComboWidget,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies } = useCurrencyStore()
-	const { visibility } = useWidgetVisibility()
+
 	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 
@@ -63,11 +60,9 @@ export function WigiArzLayout({
 					</div>
 				) : (
 					<div
-						className="flex flex-col gap-1 overflow-y-auto"
+						className={`flex flex-col gap-2 ${inComboWidget ? '' : 'overflow-y-auto'}`}
 						style={{
 							scrollbarWidth: 'none',
-							height: enableHeader ? 'calc(100% - 40px)' : '100%',
-							maxHeight: enableHeader ? 'calc(100% - 40px)' : '100%',
 						}}
 					>
 						{selectedCurrencies.map((currency, index) => (

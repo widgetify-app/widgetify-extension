@@ -50,7 +50,11 @@ function ContentSection() {
 						{visibility.widgetify ? (
 							<WidgetifyLayout />
 						) : visibility.news ? (
-							<NewsLayout enableBackground={true} enableHeader={true} />
+							<NewsLayout
+								enableBackground={true}
+								enableHeader={true}
+								inComboWidget={false}
+							/>
 						) : null}
 					</div>
 
@@ -69,7 +73,7 @@ function ContentSection() {
 						) : (
 							visibility.arzLive && (
 								<CurrencyProvider>
-									<WigiArzLayout />
+									<WigiArzLayout inComboWidget={false} />
 								</CurrencyProvider>
 							)
 						)}

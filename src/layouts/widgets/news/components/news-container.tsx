@@ -4,6 +4,7 @@ interface NewsContainerProps {
 	noFeedsConfigured: boolean
 	onAddFeed: () => void
 	children: React.ReactNode
+	inComboWidget: boolean
 }
 
 export const NewsContainer = ({
@@ -11,6 +12,7 @@ export const NewsContainer = ({
 	isEmpty,
 	noFeedsConfigured,
 	children,
+	inComboWidget,
 }: NewsContainerProps) => {
 	if (isLoading) {
 		return (
@@ -51,6 +53,10 @@ export const NewsContainer = ({
 	}
 
 	return (
-		<div className="flex flex-col h-full gap-3 pb-12 overflow-y-auto">{children}</div>
+		<div
+			className={`flex flex-col h-full gap-3 ${inComboWidget ? '' : 'overflow-y-auto'}`}
+		>
+			{children}
+		</div>
 	)
 }
