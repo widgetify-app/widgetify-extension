@@ -206,6 +206,9 @@ export function HomePage() {
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
+			document.body.style.backgroundPosition = 'center'
+			document.body.style.backgroundRepeat = 'no-repeat'
+			document.body.style.backgroundSize = 'cover'
 			document.body.style.backgroundColor = ''
 		} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 			const { from, to, direction } = wallpaper.gradient
