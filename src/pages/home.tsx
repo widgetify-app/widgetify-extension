@@ -33,7 +33,7 @@ import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
-	top: 'justify-start  mt-10',
+	top: 'justify-start mt-2',
 }
 
 function ContentSection() {
@@ -43,7 +43,7 @@ function ContentSection() {
 	return (
 		<TodoProvider>
 			<div
-				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 p-2 md:p-4`}
+				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
 			>
 				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
 					<div className="order-3 w-full lg:w-1/4 lg:order-1">
@@ -260,7 +260,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col gap-4">
+		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>

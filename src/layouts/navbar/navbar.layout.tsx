@@ -35,7 +35,7 @@ export function NavbarLayout(): JSX.Element {
 
 	return (
 		<>
-			<nav className="flex items-center justify-between px-4 pt-2">
+			<nav className="flex items-center justify-between px-4 py-2">
 				<div className="flex items-center">
 					<h1 className="text-2xl text-gray-100">ویجتی‌فای</h1>
 				</div>
