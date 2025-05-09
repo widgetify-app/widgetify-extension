@@ -15,7 +15,7 @@ export function WidgetContainer({
 	const { theme } = useTheme()
 	return (
 		<div
-			className={`flex flex-col h-80 p-2 ${background && getContainerBackground(theme)} rounded-xl ${className}`}
+			className={`flex flex-col h-80 min-h-80 max-h-80 p-2 ${background && getContainerBackground(theme)} rounded-xl ${className}`}
 			style={style}
 		>
 			{children}
