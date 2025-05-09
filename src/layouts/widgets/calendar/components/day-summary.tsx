@@ -8,7 +8,7 @@ import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
 import type React from 'react'
-import { FiCalendar, FiChevronLeft, FiClipboard } from 'react-icons/fi'
+import { FiCalendar, FiClipboard } from 'react-icons/fi'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../utils'
 
@@ -92,10 +92,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
 							</div>
 						</div>
-						<FiChevronLeft
-							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
-							size={14}
-						/>
 					</div>
 
 					{/* Todos card */}
@@ -116,10 +112,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 									: 'بدون یادداشت'}
 							</div>
 						</div>
-						<FiChevronLeft
-							className={`mr-auto flex-shrink-0 ${getSubTextStyle()}`}
-							size={14}
-						/>
 					</div>
 				</div>
 			</div>

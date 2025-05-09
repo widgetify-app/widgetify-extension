@@ -29,7 +29,6 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 	}
 
 	const handleComboWidgetToggle = () => {
-		// اگر ویجت ترکیبی فعال شد، ویجت ارز غیرفعال شود
 		if (!visibility.comboWidget && visibility.arzLive) {
 			toggleWidget('arzLive')
 		}
