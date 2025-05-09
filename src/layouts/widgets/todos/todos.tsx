@@ -58,13 +58,7 @@ export function TodosLayout() {
 		}
 	}
 
-	let selectedDateTodos = todos
-		.filter((todo) => todo.date === selectedDateStr || todo.pinned)
-		.sort((a, b) => {
-			if (a.pinned && !b.pinned) return -1
-			if (!a.pinned && b.pinned) return 1
-			return 0
-		})
+	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
 
 	if (filter === 'active') {
 		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
@@ -84,9 +78,8 @@ export function TodosLayout() {
 		priority: 'low' | 'medium' | 'high',
 		category?: string,
 		notes?: string,
-		pinned?: boolean,
 	) => {
-		addTodo(text, selectedDateStr, priority, category, notes, pinned)
+		addTodo(text, selectedDateStr, priority, category, notes)
 		setTodoText('')
 	}
 

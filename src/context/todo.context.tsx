@@ -14,7 +14,6 @@ interface TodoContextType {
 		priority?: 'low' | 'medium' | 'high',
 		category?: string,
 		notes?: string,
-		pinned?: boolean,
 	) => void
 	removeTodo: (id: string) => void
 	toggleTodo: (id: string) => void
@@ -64,7 +63,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		priority: 'low' | 'medium' | 'high' = 'medium',
 		category?: string,
 		notes?: string,
-		pinned?: boolean,
 	) => {
 		const old = todos || []
 		setTodos([
@@ -77,7 +75,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				priority,
 				category,
 				notes,
-				pinned,
 				onlineId: null,
 			},
 		])

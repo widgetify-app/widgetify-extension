@@ -7,7 +7,6 @@ export interface Todo {
 	priority: 'low' | 'medium' | 'high'
 	category?: string
 	notes?: string
-	pinned?: boolean
 }
 
 export interface FetchedTodo {
@@ -20,5 +19,4 @@ export interface FetchedTodo {
 	description?: string
 	offlineId?: string
 	createdAt?: string
-	pinned?: boolean
 }

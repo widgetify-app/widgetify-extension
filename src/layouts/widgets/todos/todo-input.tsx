@@ -1,5 +1,4 @@
 import Analytics from '@/analytics'
-import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import {
@@ -18,7 +17,6 @@ interface Prop {
 		priority: 'low' | 'medium' | 'high',
 		category?: string,
 		notes?: string,
-		isPinned?: boolean,
 	) => void
 	show: boolean
 	onClose: () => void
@@ -31,7 +29,6 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
-	const [isPinned, setIsPinned] = useState(false)
 
 	useEffect(() => {
 		if (show) {
@@ -46,7 +43,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 		if (text.trim()) {
-			onAdd(text.trim(), priority, category, notes, isPinned)
+			onAdd(text.trim(), priority, category, notes)
 			Analytics.featureUsed('todo_added')
 			resetForm()
 		}
@@ -57,7 +54,6 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 		setCategory('')
 		setNotes('')
 		setPriority('medium')
-		setIsPinned(false)
 		onClose()
 	}
 
@@ -180,15 +176,6 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 								value={notes}
 								onChange={(value) => setNotes(value)}
 								placeholder="یادداشت یا توضیحات اضافی..."
-							/>
-						</div>
-
-						<div className="mt-2">
-							<CheckBoxWithDescription
-								isEnabled={isPinned}
-								onToggle={() => setIsPinned(!isPinned)}
-								title="پین کردن"
-								description="این یادداشت رو برای همه روزها پین کن"
 							/>
 						</div>
 					</div>
