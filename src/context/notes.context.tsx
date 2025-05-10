@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -66,6 +67,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}
 		setNotes((prevNotes) => [...prevNotes, newNote])
 		setActiveNoteId(newNote.id)
+		Analytics.featureUsed('add-notes')
 	}
 
 	const updateNote = (id: string, updates: Partial<Note>) => {
@@ -74,6 +76,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
 			),
 		)
+		Analytics.featureUsed('update-notes')
 	}
 
 	const deleteNote = (id: string) => {
@@ -93,6 +96,8 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			setNotes([newNote])
 			setActiveNoteId(newNote.id)
 		}
+
+		Analytics.featureUsed('delete-notes')
 	}
 
 	return (
