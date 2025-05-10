@@ -61,7 +61,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 		<Modal
 			isOpen={show}
 			onClose={() => onClose()}
-			title="افزودن یادداشت پیشرفته"
+			title="افزودن وظیفه جدید"
 			size="md"
 			direction="rtl"
 		>
@@ -72,7 +72,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 							htmlFor="todo-text-input"
 							className={`block mb-1.5 text-sm font-medium ${getTextColor(theme)}`}
 						>
-							متن یادداشت
+							عنوان وظیفه
 						</label>
 						<div className="relative">
 							<TextInput
@@ -80,7 +80,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 								type="text"
 								value={text}
 								onChange={(value) => setText(value)}
-								placeholder="چیکار میخای انجام بدی؟"
+								placeholder="عنوان وظیفه جدید..."
 							/>
 						</div>
 					</div>
@@ -166,7 +166,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 								type="text"
 								value={category}
 								onChange={(value) => setCategory(value)}
-								placeholder="دسته‌بندی (مثلاً: شخصی، کاری)"
+								placeholder="دسته‌بندی (مثال: شخصی، کاری)"
 							/>
 						</div>
 
@@ -175,7 +175,7 @@ export function TodoInput({ onAdd, show, todoText, onClose }: Prop) {
 							<TextInput
 								value={notes}
 								onChange={(value) => setNotes(value)}
-								placeholder="یادداشت یا توضیحات اضافی..."
+								placeholder="یادداشت یا توضیحات تکمیلی..."
 							/>
 						</div>
 					</div>

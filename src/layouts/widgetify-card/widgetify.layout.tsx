@@ -2,7 +2,6 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	getBorderColor,
-	getContainerBackground,
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
@@ -74,21 +73,22 @@ export const WidgetifyLayout = () => {
 					{/* Daily Summary Content */}
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
-							<motion.div
+							<div
 								className={`p-2 mb-3 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm border-r-2 border-blue-400/50`}
-								initial={{ opacity: 0, y: 5 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.2 }}
 							>
 								<div className="flex items-start gap-2">
-									<FiMessageCircle className="mt-0.5 text-blue-400 flex-shrink-0" />
+									{dailyMessage.isAi && (
+										<FiMessageCircle className="mt-0.5 text-blue-400 flex-shrink-0" />
+									)}
 									<div className="flex-1">
-										<p className="text-xs font-light leading-relaxed">
-											{dailyMessage.content}
-										</p>
+										<div
+											className="text-xs font-light leading-relaxed"
+											// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+											dangerouslySetInnerHTML={{ __html: dailyMessage.content }}
+										/>
 									</div>
 								</div>
-							</motion.div>
+							</div>
 						)}
 
 						<div className="space-y-3">
@@ -103,13 +103,13 @@ export const WidgetifyLayout = () => {
 										className={pendingTodos.length > 0 ? 'text-green-500' : 'opacity-50'}
 									/>
 									<div className="flex-1">
-										<p className="text-xs font-medium">یادداشت‌های امروز</p>
+										<p className="text-xs font-medium">وظایف امروز</p>
 										<p className="text-xs opacity-75">
 											{pendingTodos.length > 0
-												? `${completedTodos.length} از ${todayTodos.length} انجام شده`
+												? `${completedTodos.length} از ${todayTodos.length} وظیفه انجام شده`
 												: todayTodos.length > 0
-													? 'همه یادداشت‌ها انجام شده 👏'
-													: 'هیچ یادداشتی برای امروز ندارید'}
+													? 'تمام وظایف امروز انجام شده 👏'
+													: 'برای امروز وظیفه‌ای ثبت نشده است'}
 										</p>
 									</div>
 								</div>

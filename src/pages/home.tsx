@@ -48,15 +48,7 @@ function ContentSection() {
 			>
 				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
 					<div className="order-3 w-full lg:w-1/4 lg:order-1">
-						{visibility.widgetify ? (
-							<WidgetifyLayout />
-						) : visibility.news ? (
-							<NewsLayout
-								enableBackground={true}
-								enableHeader={true}
-								inComboWidget={false}
-							/>
-						) : null}
+						<WidgetifyLayout />
 					</div>
 
 					<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
@@ -71,11 +63,17 @@ function ContentSection() {
 							<CurrencyProvider>
 								<ComboWidget />
 							</CurrencyProvider>
+						) : visibility.arzLive ? (
+							<CurrencyProvider>
+								<WigiArzLayout inComboWidget={false} />
+							</CurrencyProvider>
 						) : (
-							visibility.arzLive && (
-								<CurrencyProvider>
-									<WigiArzLayout inComboWidget={false} />
-								</CurrencyProvider>
+							visibility.news && (
+								<NewsLayout
+									enableBackground={true}
+									enableHeader={true}
+									inComboWidget={false}
+								/>
 							)
 						)}
 					</div>
@@ -220,6 +218,9 @@ export function HomePage() {
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
+			document.body.style.backgroundPosition = 'center'
+			document.body.style.backgroundRepeat = 'no-repeat'
+			document.body.style.backgroundSize = 'cover'
 			document.body.style.backgroundColor = ''
 		} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 			const { from, to, direction } = wallpaper.gradient

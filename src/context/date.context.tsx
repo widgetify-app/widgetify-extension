@@ -14,7 +14,6 @@ interface DateContextType {
 	setCurrentDate: (date: WidgetifyDate) => void
 	setSelectedDate: (date: WidgetifyDate) => void
 	goToToday: () => void
-	formatDate: (date: WidgetifyDate, format: string) => string
 	isToday: (date: WidgetifyDate) => boolean
 	getHijriDate: (date: WidgetifyDate) => string
 	getGregorianDate: (date: WidgetifyDate) => string
@@ -53,10 +52,6 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		setSelectedDate(newToday.clone())
 	}
 
-	const formatDate = (date: WidgetifyDate, format: string): string => {
-		return date.format(format)
-	}
-
 	const isToday = (date: WidgetifyDate): boolean => {
 		return (
 			date.jDate() === today.jDate() &&
@@ -84,7 +79,6 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 				setCurrentDate,
 				setSelectedDate,
 				goToToday,
-				formatDate,
 				isToday,
 				getHijriDate,
 				getGregorianDate,
