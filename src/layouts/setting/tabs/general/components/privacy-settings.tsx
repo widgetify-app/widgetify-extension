@@ -1,6 +1,10 @@
 import CustomCheckbox from '@/components/checkbox'
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import {
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	useTheme,
+} from '@/context/theme.context'
 
 interface PrivacySettingsProps {
 	analyticsEnabled: boolean
@@ -11,7 +15,7 @@ export function PrivacySettings({
 	analyticsEnabled,
 	setAnalyticsEnabled,
 }: PrivacySettingsProps) {
-	const { themeUtils, theme } = useTheme()
+	const { theme } = useTheme()
 
 	return (
 		<SectionPanel title="حریم خصوصی" delay={0.1}>
@@ -19,16 +23,13 @@ export function PrivacySettings({
 				<CustomCheckbox
 					checked={analyticsEnabled}
 					onChange={() => setAnalyticsEnabled(!analyticsEnabled)}
-					theme={theme}
 				/>
 				<div
 					onClick={() => setAnalyticsEnabled(!analyticsEnabled)}
 					className="cursor-pointer"
 				>
-					<p className={`font-medium ${themeUtils.getHeadingTextStyle()}`}>
-						گوگل آنالیتیکس
-					</p>
-					<p className={`text-sm font-light ${themeUtils.getDescriptionTextStyle()}`}>
+					<p className={`font-medium ${getHeadingTextStyle(theme)}`}>گوگل آنالیتیکس</p>
+					<p className={`text-sm font-light ${getDescriptionTextStyle(theme)}`}>
 						با فعال کردن این گزینه، آمار استفاده از برنامه برای بهبود عملکرد جمع‌آوری
 						می‌شود. هیچ اطلاعات شخصی ارسال نخواهد شد
 					</p>

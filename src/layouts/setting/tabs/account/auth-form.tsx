@@ -1,6 +1,6 @@
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { useSignIn, useSignUp } from '@/services/getMethodHooks/auth/authService.hook'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -13,7 +13,7 @@ export const AuthForm = () => {
 	const [error, setError] = useState<string | null>(null)
 
 	const { login } = useAuth()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const signInMutation = useSignIn()
 	const signUpMutation = useSignUp()
 
@@ -80,7 +80,7 @@ export const AuthForm = () => {
 			transition={{ duration: 0.3 }}
 		>
 			<motion.h2
-				className={`mb-5 text-xl font-medium text-center ${themeUtils.getTextColor()}`}
+				className={`mb-5 text-xl font-medium text-center ${getTextColor(theme)}`}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.1 }}
@@ -113,7 +113,7 @@ export const AuthForm = () => {
 						exit={{ opacity: 0, height: 0 }}
 					>
 						<label
-							className={`block text-sm font-medium ${themeUtils.getTextColor()} opacity-85`}
+							className={`block text-sm font-medium ${getTextColor(theme)} opacity-85`}
 						>
 							نام و نام خانوادگی
 						</label>
@@ -130,7 +130,7 @@ export const AuthForm = () => {
 
 				<div className="space-y-2">
 					<label
-						className={`block text-sm font-medium ${themeUtils.getTextColor()} opacity-85`}
+						className={`block text-sm font-medium ${getTextColor(theme)} opacity-85`}
 					>
 						ایمیل
 					</label>
@@ -147,7 +147,7 @@ export const AuthForm = () => {
 
 				<div className="space-y-2">
 					<label
-						className={`block text-sm font-medium ${themeUtils.getTextColor()} opacity-85`}
+						className={`block text-sm font-medium ${getTextColor(theme)} opacity-85`}
 					>
 						رمز عبور
 					</label>

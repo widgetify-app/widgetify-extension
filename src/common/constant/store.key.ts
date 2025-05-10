@@ -1,7 +1,7 @@
 import type { SelectedCity } from '@/context/weather.context'
-import type { Todo } from '@/layouts/calendar/interface/todo.interface'
-import type { RssNewsState } from '@/layouts/news/news.interface'
-import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
+import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
+import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
 import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
 import type {
@@ -46,4 +46,5 @@ export interface StorageKV {
 	rss_news_state: RssNewsState
 	analyticsSession: any
 	enable_sync: boolean
+	calendarDrawerState: boolean
 }

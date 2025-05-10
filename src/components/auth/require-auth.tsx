@@ -1,6 +1,10 @@
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getButtonStyles,
+	getDescriptionTextStyle,
+	useTheme,
+} from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 
@@ -12,7 +16,7 @@ interface RequireAuthProps {
 
 export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthProps) => {
 	const { isAuthenticated, isLoadingUser } = useAuth()
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getAuthMessageStyles = () => {
 		switch (theme) {
@@ -62,12 +66,12 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						className={`absolute inset-0 flex flex-col items-center justify-center p-4 ${getOverlayStyles()}`}
 					>
 						<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-						<p className={`text-sm mb-4 ${themeUtils.getDescriptionTextStyle()}`}>
+						<p className={`text-sm mb-4 ${getDescriptionTextStyle(theme)}`}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
 						<button
 							onClick={handleAuthClick}
-							className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${themeUtils.getButtonStyles()}`}
+							className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${getButtonStyles(theme)}`}
 						>
 							ورود به حساب
 						</button>
@@ -85,12 +89,12 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				className={`flex h-full flex-col items-center justify-center p-4 text-center rounded-md ${getAuthMessageStyles()}`}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-				<p className={`text-sm mb-4 ${themeUtils.getDescriptionTextStyle()}`}>
+				<p className={`text-sm mb-4 ${getDescriptionTextStyle(theme)}`}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>
 				<button
 					onClick={handleAuthClick}
-					className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${themeUtils.getButtonStyles()}`}
+					className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${getButtonStyles(theme)}`}
 				>
 					ورود به حساب
 				</button>

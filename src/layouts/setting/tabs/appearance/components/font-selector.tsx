@@ -1,6 +1,11 @@
 import { SectionPanel } from '@/components/section-panel'
 import type { FontFamily } from '@/context/appearance.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 
 interface FontSelectorProps {
 	fontFamily: FontFamily
@@ -8,7 +13,7 @@ interface FontSelectorProps {
 }
 
 export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const availableFonts: { value: FontFamily; label: string; sampleText: string }[] = [
 		{
@@ -50,18 +55,13 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			return 'border-blue-500 bg-blue-500'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'border-gray-400'
-			default:
-				return 'border-gray-600'
-		}
+		return getBorderColor(theme)
 	}
 
 	return (
 		<SectionPanel title="فونت برنامه" delay={0.15}>
 			<div className="space-y-3">
-				<p className={`text-sm ${themeUtils.getDescriptionTextStyle()}`}>
+				<p className={`text-sm ${getDescriptionTextStyle(theme)}`}>
 					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های برنامه انتخاب کنید:
 				</p>
 				<div className="flex flex-wrap gap-2">
@@ -97,14 +97,12 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 										</svg>
 									)}
 								</div>
-								<span
-									className={`mr-1.5 text-sm font-medium ${themeUtils.getTextColor()}`}
-								>
+								<span className={`mr-1.5 text-sm font-medium ${getTextColor(theme)}`}>
 									{font.label}
 								</span>
 							</div>
 							<p
-								className={`text-sm ${themeUtils.getDescriptionTextStyle()} max-w-[120px] text-center`}
+								className={`text-sm ${getDescriptionTextStyle(theme)} max-w-[120px] text-center`}
 								style={{ fontFamily: font.value }}
 							>
 								{font.sampleText}

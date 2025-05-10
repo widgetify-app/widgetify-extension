@@ -9,6 +9,10 @@ async function fetchWeatherByLatLon(
 	units: units,
 	useAI: boolean,
 ): Promise<FetchedWeather> {
+	if (lat === 0 && lon === 0) {
+		throw new Error('Invalid coordinates')
+	}
+
 	const client = await getMainClient()
 
 	const response = await client.get<FetchedWeather>('/weather/current', {

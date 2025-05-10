@@ -1,18 +1,20 @@
-import { useTheme } from '@/context/theme.context'
-import { getCurrentDate } from '@/layouts/calendar/utils'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
-	const [time, setTime] = useState(getCurrentDate())
-	const { themeUtils } = useTheme()
+	const { timezone } = useGeneralSetting()
+	const [time, setTime] = useState(getCurrentDate(timezone))
+	const { theme } = useTheme()
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(getCurrentDate())
+			setTime(getCurrentDate(timezone))
 		}, 1000)
 		return () => clearInterval(timer)
-	}, [])
+	}, [timezone])
 
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
 	const bgGradient = isDayTime ? '☀️' : '🌙'
@@ -25,7 +27,7 @@ const ClockComponent = () => {
 			transition={{ duration: 0.5 }}
 		>
 			<div
-				className={`text-xs font-extrabold tracking-wide ${themeUtils.getTextColor()} drop-shadow-lg`}
+				className={`text-xs font-extrabold tracking-wide ${getTextColor(theme)} drop-shadow-lg`}
 			>
 				{bgGradient} {time.format('HH:mm')}
 			</div>

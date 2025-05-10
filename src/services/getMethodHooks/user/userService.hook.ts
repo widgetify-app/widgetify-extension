@@ -1,12 +1,24 @@
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import { type UseQueryOptions, useQuery } from '@tanstack/react-query'
+import {
+	type UseQueryOptions,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 
 interface FetchedProfile {
 	email: string
 	avatar: string
+	username?: string
 	name: string
 	connections: string[]
+	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
+	friendshipStats: {
+		accepted: number
+		pending: number
+	}
+	activity?: string
 }
 
 export interface UserProfile extends FetchedProfile {
@@ -16,7 +28,7 @@ export interface UserProfile extends FetchedProfile {
 export async function fetchUserProfile(): Promise<UserProfile> {
 	const client = await getMainClient()
 	try {
-		const response = await client.get<UserProfile>('/users/@me')
+		const response = await client.get<UserProfile>('/extension/@me')
 		await setToStorage('profile', { ...response.data, inCache: true })
 		return response.data
 	} catch (error: any) {
@@ -47,5 +59,38 @@ export function useGetUserProfile(options?: Partial<UseQueryOptions<UserProfile>
 		retry: 1,
 		refetchOnWindowFocus: false,
 		...options,
+	})
+}
+
+interface UpdateActivityParams {
+	activity: string | undefined
+}
+
+interface UpdateActivityResponse {
+	message: string
+}
+
+async function updateActivity(
+	body: UpdateActivityParams,
+): Promise<UpdateActivityResponse> {
+	const client = await getMainClient()
+	const response = await client.put<UpdateActivityResponse>(
+		'/extension/@me/activity',
+		body,
+	)
+	return response.data
+}
+
+export function useUpdateActivity() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: updateActivity,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		},
+		onError: (error) => {
+			console.error('Error updating activity:', error)
+		},
 	})
 }

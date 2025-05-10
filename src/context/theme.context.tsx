@@ -6,15 +6,6 @@ import { createContext, useContext, useEffect, useState } from 'react'
 interface ThemeContextType {
 	theme: string
 	setTheme: (theme: string) => void
-	themeUtils: {
-		getCardBackground: () => string
-		getBorderColor: () => string
-		getButtonStyles: () => string
-		getTextColor: () => string
-		getInputStyles: () => string
-		getHeadingTextStyle: () => string
-		getDescriptionTextStyle: () => string
-	}
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
@@ -57,15 +48,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const contextValue: ThemeContextType = {
 		theme,
 		setTheme: setThemeCallback,
-		themeUtils: {
-			getCardBackground: () => getCardBackground(theme),
-			getBorderColor: () => getBorderColor(theme),
-			getButtonStyles: () => getButtonStyles(theme),
-			getTextColor: () => getTextColor(theme),
-			getInputStyles: () => getInputStyles(theme),
-			getHeadingTextStyle: () => getHeadingTextStyle(theme),
-			getDescriptionTextStyle: () => getDescriptionTextStyle(theme),
-		},
 	}
 
 	return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>
@@ -83,7 +65,7 @@ export function useTheme() {
 
 type ThemeType = 'light' | 'dark' | 'glass' | string
 
-export const getCardBackground = (theme: ThemeType): string => {
+const getContainerBackground = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
 			return 'bg-white text-gray-800'
@@ -94,10 +76,32 @@ export const getCardBackground = (theme: ThemeType): string => {
 	}
 }
 
-export const getBorderColor = (theme: ThemeType): string => {
+const getCardBackground = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
-			return 'border-gray-300/30'
+			return 'bg-white text-gray-800'
+		case 'dark':
+			return 'bg-neutral-800/80 text-gray-300'
+		default:
+			return 'bg-neutral-900/70 text-gray-300  backdrop-blur-sm'
+	}
+}
+
+const getWidgetItemBackground = (theme: ThemeType): string => {
+	switch (theme) {
+		case 'light':
+			return 'bg-gray-100/70'
+		case 'dark':
+			return 'bg-neutral-800/20'
+		default: // glass
+			return 'bg-neutral-900/40'
+	}
+}
+
+const getBorderColor = (theme: ThemeType): string => {
+	switch (theme) {
+		case 'light':
+			return 'border-gray-300/50'
 		case 'dark':
 			return 'border-gray-700/50'
 		default:
@@ -105,9 +109,11 @@ export const getBorderColor = (theme: ThemeType): string => {
 	}
 }
 
-export const getButtonStyles = (theme: ThemeType, isPrimary = false): string => {
-	const baseStyles = 'px-4 py-2 rounded-md transition-all duration-300'
-
+const getButtonStyles = (theme: ThemeType, isPrimary = false, rounded = true): string => {
+	let baseStyles = 'px-4 py-2 transition-all duration-300 '
+	if (rounded) {
+		baseStyles += 'rounded-md '
+	}
 	if (isPrimary) {
 		return `${baseStyles} bg-blue-600 hover:bg-blue-700 text-white`
 	}
@@ -122,7 +128,7 @@ export const getButtonStyles = (theme: ThemeType, isPrimary = false): string => 
 	}
 }
 
-export const getTextColor = (theme: ThemeType): string => {
+const getTextColor = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
 			return 'text-gray-800'
@@ -131,7 +137,7 @@ export const getTextColor = (theme: ThemeType): string => {
 	}
 }
 
-export const getInputStyles = (theme: ThemeType): string => {
+const getInputStyles = (theme: ThemeType): string => {
 	const baseStyles = 'px-3 py-2 rounded-md border focus:outline-none focus:ring-2'
 
 	switch (theme) {
@@ -144,7 +150,7 @@ export const getInputStyles = (theme: ThemeType): string => {
 	}
 }
 
-export const getHeadingTextStyle = (theme: ThemeType): string => {
+const getHeadingTextStyle = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
 			return 'text-gray-800'
@@ -155,7 +161,7 @@ export const getHeadingTextStyle = (theme: ThemeType): string => {
 	}
 }
 
-export const getDescriptionTextStyle = (theme: ThemeType): string => {
+const getDescriptionTextStyle = (theme: ThemeType): string => {
 	let des = 'font-light '
 	switch (theme) {
 		case 'light':
@@ -169,4 +175,74 @@ export const getDescriptionTextStyle = (theme: ThemeType): string => {
 	}
 
 	return des
+}
+
+const getTooltipStyle = (theme: ThemeType): string => {
+	switch (theme) {
+		case 'light':
+			return 'bg-white text-gray-800 border border-gray-200 shadow-lg'
+		case 'dark':
+			return 'bg-neutral-800 text-gray-100 border border-neutral-700 shadow-lg'
+		default:
+			return 'bg-black/70 backdrop-blur-md text-white border border-gray-700/30 shadow-lg'
+	}
+}
+
+const getBookmarkStyle = (theme: string) => {
+	switch (theme) {
+		case 'light':
+			return 'hover:bg-gray-100/95 border-gray-300/30 hover:border-gray-400/50 text-gray-800'
+		case 'dark':
+			return 'hover:bg-neutral-700/95 border-gray-700/50 hover:border-gray-600/70 text-gray-200'
+		default: // glass
+			return 'backdrop-blur-sm hover:bg-neutral-800/80 border-white/10 hover:border-white/20 text-gray-300'
+	}
+}
+
+const getProgressBarBgStyle = (theme: string) => {
+	switch (theme) {
+		case 'light':
+			return 'bg-gray-300'
+
+		default:
+			return 'bg-gray-700'
+	}
+}
+
+export const getInputStyle = (theme: string) => {
+	switch (theme) {
+		case 'light':
+			return `
+                    bg-gray-100/70 text-gray-800 border-gray-300/30 transition-all duration-300
+                    placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:gray-100 disabled:bg-gray-100 disabled:text-gray-500
+                `
+		case 'dark':
+			return `
+                    bg-neutral-800/80 text-gray-200 border-gray-700/40
+                    placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:bg-neutral-800/90 disabled:bg-gray-800/50 disabled:text-gray-500
+                `
+		default: // glass
+			return `
+                    bg-white/5 text-gray-200 border-white/10
+                    placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                    hover:bg-white/10 disabled:bg-white/3 disabled:text-gray-500
+                `
+	}
+}
+
+export {
+	getContainerBackground,
+	getCardBackground,
+	getWidgetItemBackground,
+	getBorderColor,
+	getButtonStyles,
+	getTextColor,
+	getInputStyles,
+	getHeadingTextStyle,
+	getDescriptionTextStyle,
+	getTooltipStyle,
+	getBookmarkStyle,
+	getProgressBarBgStyle,
 }

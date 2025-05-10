@@ -1,5 +1,11 @@
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -12,7 +18,7 @@ interface Shortcut {
 }
 
 export function ShortcutsTab() {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [isMac, setIsMac] = useState(false)
 
 	useEffect(() => {
@@ -70,14 +76,14 @@ export function ShortcutsTab() {
 			>
 				<SectionPanel title="کلیدهای میانبر" delay={0.1}>
 					<div className="space-y-5">
-						<p className={themeUtils.getDescriptionTextStyle()}>
+						<p className={getDescriptionTextStyle(theme)}>
 							کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
 						</p>
 
 						{Object.entries(categories).map(([category, categoryShortcuts]) => (
 							<div key={category} className="mb-6">
 								<h3
-									className={`text-base font-medium mb-3 ${themeUtils.getHeadingTextStyle()}`}
+									className={`text-base font-medium mb-3 ${getHeadingTextStyle(theme)}`}
 								>
 									{category}
 								</h3>
@@ -85,13 +91,11 @@ export function ShortcutsTab() {
 									{categoryShortcuts.map((shortcut) => (
 										<div
 											key={shortcut.id}
-											className={`flex items-center justify-between p-3 rounded-lg border ${themeUtils.getBorderColor()} ${themeUtils.getBorderColor()}`}
+											className={`flex items-center justify-between p-3 rounded-lg border ${getBorderColor(theme)} ${getBorderColor(theme)}`}
 										>
-											<span className={themeUtils.getTextColor()}>
-												{shortcut.description}
-											</span>
+											<span className={getTextColor(theme)}>{shortcut.description}</span>
 											<kbd
-												className={`px-3 py-1 text-sm font-mono rounded-md border ${getKeyStyle()} ${themeUtils.getTextColor()} opacity-75`}
+												className={`px-3 py-1 text-sm font-mono rounded-md border ${getKeyStyle()} ${getTextColor(theme)} opacity-75`}
 											>
 												{isMac ? shortcut.macKey : shortcut.windowsKey}
 											</kbd>

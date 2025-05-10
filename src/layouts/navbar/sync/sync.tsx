@@ -1,12 +1,14 @@
 import { Colors } from '@/common/constant/colors.constant'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import Modal from '@/components/modal'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { useTheme } from '@/context/theme.context'
-import type { FetchedTodo, Todo } from '@/layouts/calendar/interface/todo.interface'
-import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
+import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type {
+	FetchedTodo,
+	Todo,
+} from '@/layouts/widgets/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
 import {
 	type FetchedBookmark,
@@ -38,7 +40,6 @@ export function SyncButton() {
 	const syncInProgressRef = useRef(false)
 	const lastSyncTimeRef = useRef<number>(0)
 	const initialSyncDoneRef = useRef(false)
-	const { themeUtils } = useTheme()
 	useEffect(() => {
 		if (syncState === SyncState.Success) {
 			const timer = setTimeout(() => setSyncState(null), 3000)
@@ -164,11 +165,6 @@ export function SyncButton() {
 		return 'همگام‌سازی با حساب کاربری'
 	}
 
-	function triggerAccountTabDisplay() {
-		setFirstAuth(false)
-		callEvent('openSettings', 'account')
-	}
-
 	return (
 		<>
 			<Tooltip delay={0} content={tooltipContent()}>
@@ -274,53 +270,14 @@ export function SyncButton() {
 					</LazyMotion>
 				</div>
 			</Tooltip>
-			<Modal
-				size="sm"
+			<AuthRequiredModal
 				isOpen={firstAuth}
 				onClose={() => setFirstAuth(false)}
-				direction="rtl"
 				title="ورود به حساب کاربری"
-			>
-				<div className="flex flex-col items-center justify-center w-full gap-6 p-5 text-center">
-					<div className="flex items-center justify-center w-16 h-16 mb-2 rounded-full bg-blue-500/10">
-						<LazyMotion features={domAnimation}>
-							<m.div
-								initial={{ scale: 0.8 }}
-								animate={{ scale: 1 }}
-								transition={{ repeatType: 'reverse', duration: 1.5 }}
-							>
-								<AiOutlineCloudSync size={32} className="text-blue-500" />
-							</m.div>
-						</LazyMotion>
-					</div>
-
-					<p className={`${themeUtils.getTextColor()} text-base`}>
-						برای همگام‌سازی اطلاعات خود، ابتدا وارد حساب کاربری شوید.
-					</p>
-
-					<div className="flex flex-row items-center justify-center gap-3 mt-2">
-						<LazyMotion features={domAnimation}>
-							<m.button
-								className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${themeUtils.getTextColor()} border ${themeUtils.getBorderColor()}`}
-								onClick={() => setFirstAuth(false)}
-								whileHover={{ scale: 1.03 }}
-								whileTap={{ scale: 0.97 }}
-							>
-								بعداً
-							</m.button>
-
-							<m.button
-								className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600"
-								onClick={() => triggerAccountTabDisplay()}
-								whileHover={{ scale: 1.03 }}
-								whileTap={{ scale: 0.97 }}
-							>
-								ورود به حساب
-							</m.button>
-						</LazyMotion>
-					</div>
-				</div>
-			</Modal>
+				message="برای همگام‌سازی با حساب کاربری، ابتدا وارد حساب کاربری خود شوید."
+				loginButtonText="ورود به حساب"
+				cancelButtonText="بعداً"
+			/>
 		</>
 	)
 }

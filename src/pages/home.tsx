@@ -5,7 +5,9 @@ import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
+import { BookmarkProvider } from '@/context/bookmark.context'
 import { CurrencyProvider } from '@/context/currency.context'
+import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
 import { WeatherProvider } from '@/context/weather.context'
@@ -13,14 +15,17 @@ import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
 } from '@/context/widget-visibility.context'
-import CalendarLayout from '@/layouts/calendar/calendar'
-import { ComboWidget } from '@/layouts/comboWidget/combo-widget.layout'
+import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { NewsLayout } from '@/layouts/news/news.layout'
 import { SearchLayout } from '@/layouts/search/search'
-import { WeatherLayout } from '@/layouts/weather/weather.layout'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { WigiArzLayout } from '@/layouts/wigiArz/wigi_arz.layout'
+import CalendarLayout from '@/layouts/widgets/calendar/calendar'
+import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
+import { NewsLayout } from '@/layouts/widgets/news/news.layout'
+import { TodosLayout } from '@/layouts/widgets/todos/todos'
+import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
+import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
+import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
@@ -28,7 +33,7 @@ import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
-	top: 'justify-start  mt-10',
+	top: 'justify-start mt-2',
 }
 
 function ContentSection() {
@@ -38,19 +43,18 @@ function ContentSection() {
 	return (
 		<TodoProvider>
 			<div
-				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 p-2 md:p-4`}
+				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
 			>
 				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
 					<div className="order-3 w-full lg:w-1/4 lg:order-1">
-						{visibility.widgetify ? (
-							<WidgetifyLayout />
-						) : visibility.news ? (
-							<NewsLayout enableBackground={true} enableHeader={true} />
-						) : null}
+						<WidgetifyLayout />
 					</div>
 
 					<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
 						<SearchLayout />
+						<BookmarkProvider>
+							<BookmarksComponent />
+						</BookmarkProvider>
 					</div>
 
 					<div className="order-2 w-full lg:w-1/4 lg:order-3">
@@ -58,22 +62,42 @@ function ContentSection() {
 							<CurrencyProvider>
 								<ComboWidget />
 							</CurrencyProvider>
+						) : visibility.arzLive ? (
+							<CurrencyProvider>
+								<WigiArzLayout inComboWidget={false} />
+							</CurrencyProvider>
 						) : (
-							visibility.arzLive && (
-								<CurrencyProvider>
-									<WigiArzLayout />
-								</CurrencyProvider>
+							visibility.news && (
+								<NewsLayout
+									enableBackground={true}
+									enableHeader={true}
+									inComboWidget={false}
+								/>
 							)
 						)}
-						{/* {} */}
 					</div>
 				</div>
-
-				<div className="flex flex-col flex-wrap w-full gap-3 lg:flex-nowrap md:flex-row md:gap-4">
-					<div className={'w-full lg:w-8/12'}>
-						{visibility.calendar && <CalendarLayout />}
-					</div>
-					<div className={'w-full lg:w-4/12'}>
+				<div
+					className={
+						'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-3 justify-between transition-all duration-300 items-center'
+					}
+				>
+					<DateProvider>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							{visibility.calendar && <CalendarLayout />}
+						</div>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							{visibility.tools && <ToolsLayout />}
+						</div>
+						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+							{visibility.todos && <TodosLayout />}
+						</div>
+					</DateProvider>
+					<div
+						className={
+							'w-full md:max-w-64 lg:w-3/12 self-end transition-all duration-300'
+						}
+					>
 						{visibility.weather && <WeatherLayout />}
 					</div>
 				</div>
@@ -182,6 +206,9 @@ export function HomePage() {
 				: ''
 
 			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
+			document.body.style.backgroundPosition = 'center'
+			document.body.style.backgroundRepeat = 'no-repeat'
+			document.body.style.backgroundSize = 'cover'
 			document.body.style.backgroundColor = ''
 		} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 			const { from, to, direction } = wallpaper.gradient
@@ -238,7 +265,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col gap-4">
+		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>
@@ -251,7 +278,22 @@ export function HomePage() {
 					</WidgetVisibilityProvider>
 				</WeatherProvider>
 			</GeneralSettingProvider>
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					error: {
+						style: {
+							backgroundColor: '#f8d7da',
+							color: '#721c24',
+						},
+					},
+					success: {
+						style: {
+							backgroundColor: '#d4edda',
+							color: '#155724',
+						},
+					},
+				}}
+			/>
 			<ExtensionInstalledModal
 				show={showWelcomeModal}
 				onClose={() => setShowWelcomeModal(false)}

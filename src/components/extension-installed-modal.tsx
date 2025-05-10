@@ -1,5 +1,12 @@
 import keepItImage from '@/assets/keep-it.png'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getCardBackground,
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import Modal from './modal'
@@ -88,7 +95,7 @@ interface StepOneProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepOne = ({ setCurrentStep }: StepOneProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	return (
 		<>
@@ -98,13 +105,13 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={`mb-0 text-2xl font-bold ${themeUtils.getHeadingTextStyle()}`}>
+				<h3 className={`mb-0 text-2xl font-bold ${getHeadingTextStyle(theme)}`}>
 					به ویجتی‌فای خوش آمدید! 🎉
 				</h3>
 			</m.div>
 
 			<m.div
-				className={`relative p-1 mt-1 mb-3 border rounded-xl ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
+				className={`relative p-1 mt-1 mb-3 border rounded-xl ${getBorderColor(theme)}  ${getCardBackground(theme)}`}
 				initial={{ scale: 0.9, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
@@ -120,7 +127,7 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 			</m.div>
 
 			<m.div
-				className={`p-3 mb-3 text-gray-200 rounded-lg border ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
+				className={`p-3 mb-3 text-gray-200 rounded-lg border ${getBorderColor(theme)}  ${getCardBackground(theme)}`}
 				initial={{ x: -20, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.6 }}
@@ -142,7 +149,7 @@ interface StepTwoProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	return (
 		<>
@@ -152,16 +159,16 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={`mb-3 text-2xl font-bold ${themeUtils.getHeadingTextStyle()}`}>
+				<h3 className={`mb-3 text-2xl font-bold ${getHeadingTextStyle(theme)}`}>
 					درباره ما{' '}
 				</h3>
-				<p className={`leading-relaxed ${themeUtils.getDescriptionTextStyle()}`}>
+				<p className={`leading-relaxed ${getDescriptionTextStyle(theme)}`}>
 					ما متن باز هستیم! ویجتی‌فای یک پروژه متن‌باز است که با عشق توسعه داده می‌شود.
 				</p>
 			</m.div>
 
 			<m.div
-				className={`p-3 mb-6 text-gray-200 rounded-lg border ${themeUtils.getBorderColor()}  ${themeUtils.getCardBackground()}`}
+				className={`p-3 mb-6 text-gray-200 rounded-lg border ${getBorderColor(theme)}  ${getCardBackground(theme)}`}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
@@ -186,7 +193,7 @@ interface StepThreeProps {
 	onGetStarted: () => void
 }
 const StepThree = ({ onGetStarted }: StepThreeProps) => {
-	const { themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	return (
 		<>
@@ -196,18 +203,18 @@ const StepThree = ({ onGetStarted }: StepThreeProps) => {
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={`mb-3 text-2xl font-bold ${themeUtils.getHeadingTextStyle()}`}>
+				<h3 className={`mb-3 text-2xl font-bold ${getHeadingTextStyle(theme)}`}>
 					آماده شروع هستید؟
 				</h3>
 			</m.div>
 
 			<m.div
-				className={`p-3 mb-6 border rounded-lg ${themeUtils.getCardBackground()} backdrop-blur-sm ${themeUtils.getBorderColor()}`}
+				className={`p-3 mb-6 border rounded-lg ${getCardBackground(theme)} backdrop-blur-sm ${getBorderColor(theme)}`}
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, delay: 0.3 }}
 			>
-				<p className={themeUtils.getTextColor()}>
+				<p className={getTextColor(theme)}>
 					بریم که یک تجربه جدید و جذاب را شروع کنیم! 😎
 				</p>
 			</m.div>

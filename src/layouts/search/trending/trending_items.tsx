@@ -1,5 +1,9 @@
 import { OfflineIndicator } from '@/components/offline-indicator'
-import { useTheme } from '@/context/theme.context'
+import {
+	getCardBackground,
+	getWidgetItemBackground,
+	useTheme,
+} from '@/context/theme.context'
 import type { TrendItem } from '@/services/getMethodHooks/trends/getTrends'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
@@ -66,28 +70,6 @@ export const TrendItemComponent = ({
 }: TrendItemProps) => {
 	const { theme } = useTheme()
 
-	const getTrendItemBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 hover:bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 hover:bg-neutral-700/90'
-			default:
-				return 'bg-black/20  hover:bg-neutral-800/80 text-opacity-80'
-		}
-	}
-
-	const getSkeletonBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200'
-			case 'dark':
-				return 'bg-neutral-700/70'
-			default:
-				return 'bg-neutral-800/50'
-		}
-	}
-
 	if (isLoading) {
 		return (
 			<m.div
@@ -98,7 +80,7 @@ export const TrendItemComponent = ({
 					repeat: Number.POSITIVE_INFINITY,
 					delay: index * 0.1,
 				}}
-				className={`flex items-center p-1 rounded-lg ${getSkeletonBackground()} h-6`}
+				className={`flex items-center p-1 rounded-lg ${getCardBackground(theme)} h-6`}
 			>
 				<div className="w-2 h-2 ml-1 bg-current rounded-full opacity-20"></div>
 				<div className="w-full h-3 bg-current rounded opacity-20"></div>
@@ -111,7 +93,7 @@ export const TrendItemComponent = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: index * 0.05 }}
-			className={`flex items-center px-1.5 py-1 cursor-pointer transition-colors rounded-lg ${getTrendItemBackground()} h-6`}
+			className={`flex items-center px-1.5 py-1 cursor-pointer transition-colors rounded-lg ${getWidgetItemBackground(theme)} h-6 hover:bg-gray-300/10`}
 			onClick={onClick}
 		>
 			<span className="ml-1 text-xs opacity-60">{index + 1}</span>

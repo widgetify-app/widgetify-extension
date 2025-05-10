@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Todo } from '@/layouts/calendar/interface/todo.interface'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
+import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'

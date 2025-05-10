@@ -1,5 +1,10 @@
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 
 interface ContentAlignmentSettingsProps {
 	contentAlignment: 'center' | 'top'
@@ -10,7 +15,7 @@ export function ContentAlignmentSettings({
 	contentAlignment,
 	setContentAlignment,
 }: ContentAlignmentSettingsProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getActiveButtonStyle = () => {
 		switch (theme) {
@@ -34,17 +39,6 @@ export function ContentAlignmentSettings({
 		}
 	}
 
-	const getBorderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-400 border-dashed'
-			case 'dark':
-				return 'border-gray-600 border-dashed'
-			default: // glass
-				return 'border-gray-600 border-dashed'
-		}
-	}
-
 	const getPreviewLineStyle = () => {
 		switch (theme) {
 			case 'light':
@@ -59,7 +53,7 @@ export function ContentAlignmentSettings({
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3}>
 			<div className="space-y-3">
-				<p className={themeUtils.getDescriptionTextStyle()}>موقعیت عمودی محتوا</p>
+				<p className={getDescriptionTextStyle(theme)}>موقعیت عمودی محتوا</p>
 				<div className="flex gap-3">
 					<button
 						onClick={() => setContentAlignment('center')}
@@ -71,13 +65,11 @@ export function ContentAlignmentSettings({
 					>
 						<div className="flex flex-col items-center">
 							<div
-								className={`flex items-center justify-center w-full h-10 mb-2 border rounded ${getBorderStyle()}`}
+								className={`flex items-center justify-center w-full h-10 mb-2 border rounded ${getBorderColor(theme)}`}
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>
-							<span className={`text-sm font-medium ${themeUtils.getTextColor()}`}>
-								وسط
-							</span>
+							<span className={`text-sm font-medium ${getTextColor(theme)}`}>وسط</span>
 						</div>
 					</button>
 					<button
@@ -90,13 +82,11 @@ export function ContentAlignmentSettings({
 					>
 						<div className="flex flex-col items-center">
 							<div
-								className={`flex items-start justify-center w-full h-10 pt-1 mb-2 border rounded ${getBorderStyle()}`}
+								className={`flex items-start justify-center w-full h-10 pt-1 mb-2 border rounded ${getBorderColor(theme)}`}
 							>
 								<div className={`w-2/3 h-2 rounded ${getPreviewLineStyle()}`} />
 							</div>
-							<span className={`text-sm font-medium ${themeUtils.getTextColor()}`}>
-								بالا
-							</span>
+							<span className={`text-sm font-medium ${getTextColor(theme)}`}>بالا</span>
 						</div>
 					</button>
 				</div>

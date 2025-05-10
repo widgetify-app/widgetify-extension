@@ -1,14 +1,17 @@
-import { BookmarkProvider } from '@/context/bookmark.context'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getContainerBackground,
+	getTextColor,
+	useTheme,
+} from '@/context/theme.context'
 import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Browser from 'webextension-polyfill'
-import { BookmarksComponent } from './bookmarks/bookmarks'
 import { TrendingSearches } from './trending/trending-searches'
 
 export function SearchLayout() {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
@@ -17,11 +20,11 @@ export function SearchLayout() {
 	const getSearchBoxBackground = () => {
 		switch (theme) {
 			case 'light':
-				return 'bg-white hover:bg-white/95'
+				return 'hover:bg-white/95'
 			case 'dark':
-				return 'bg-neutral-900 hover:bg-neutral-900/90'
+				return 'hover:bg-neutral-900/90'
 			default:
-				return 'bg-neutral-900/70 backdrop-blur-sm hover:bg-neutral-800/80'
+				return 'backdrop-blur-sm hover:bg-neutral-800/80'
 		}
 	}
 
@@ -84,7 +87,7 @@ export function SearchLayout() {
 				<div className="relative w-full" ref={searchRef}>
 					<form className="w-full" onSubmit={handleSubmit}>
 						<div
-							className={`relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group ${getSearchBoxBackground()}`}
+							className={`relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group ${getContainerBackground(theme)} ${getSearchBoxBackground()}`}
 						>
 							<input
 								ref={inputRef}
@@ -93,7 +96,7 @@ export function SearchLayout() {
 								value={searchQuery}
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
-								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none ${themeUtils.getTextColor()} placeholder:text-gray-400 dark:placeholder:text-gray-500`}
+								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none ${getTextColor(theme)} placeholder:text-gray-400 dark:placeholder:text-gray-500`}
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
@@ -115,7 +118,7 @@ export function SearchLayout() {
 								</button>
 							)}
 							<div
-								className={`absolute inset-0 transition-all duration-300 border pointer-events-none rounded-xl ${themeUtils.getBorderColor()}`}
+								className={`absolute inset-0 transition-all duration-300 border pointer-events-none rounded-xl ${getBorderColor(theme)}`}
 							/>
 						</div>
 					</form>
@@ -126,9 +129,6 @@ export function SearchLayout() {
 						onSelectTrend={handleSelectTrend}
 					/>
 				</div>
-				<BookmarkProvider>
-					<BookmarksComponent />
-				</BookmarkProvider>
 			</div>
 		</>
 	)

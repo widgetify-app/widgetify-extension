@@ -1,7 +1,12 @@
 import CustomCheckbox from '@/components/checkbox'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import { useTheme } from '@/context/theme.context'
+import {
+	getBorderColor,
+	getDescriptionTextStyle,
+	getHeadingTextStyle,
+	useTheme,
+} from '@/context/theme.context'
 
 interface PetSettingsProps {
 	enablePets: boolean
@@ -16,7 +21,7 @@ export function PetSettings({
 	petName,
 	setPetName,
 }: PetSettingsProps) {
-	const { theme, themeUtils } = useTheme()
+	const { theme } = useTheme()
 
 	const getHintTextStyle = () => {
 		switch (theme) {
@@ -34,21 +39,20 @@ export function PetSettings({
 					<CustomCheckbox
 						checked={enablePets}
 						onChange={() => setEnablePets(!enablePets)}
-						theme={theme}
 					/>
 					<div onClick={() => setEnablePets(!enablePets)} className="cursor-pointer">
-						<p className={`font-medium ${themeUtils.getHeadingTextStyle()}`}>
+						<p className={`font-medium ${getHeadingTextStyle(theme)}`}>
 							نمایش حیوان خانگی
 						</p>
-						<p className={`text-sm font-light ${themeUtils.getDescriptionTextStyle()}`}>
+						<p className={`text-sm font-light ${getDescriptionTextStyle(theme)}`}>
 							نمایش حیوان خانگی تعاملی روی صفحه اصلی
 						</p>
 					</div>
 				</div>
 
 				{enablePets && (
-					<div className={`p-4 mt-4  rounded-lg border ${themeUtils.getBorderColor()}`}>
-						<p className={`mb-3 font-medium ${themeUtils.getHeadingTextStyle()}`}>
+					<div className={`p-4 mt-4  rounded-lg border ${getBorderColor(theme)}`}>
+						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
 							نام حیوان خانگی
 						</p>
 						<TextInput

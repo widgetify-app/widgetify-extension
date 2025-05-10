@@ -3,6 +3,7 @@ import { getMainClient } from '../api'
 
 export interface DailyMessageResponse {
 	content: string
+	isAi: boolean
 }
 
 async function fetchDailyMessage(): Promise<DailyMessageResponse> {
@@ -21,5 +22,6 @@ export function useGetDailyMessage(
 		queryFn: fetchDailyMessage,
 		enabled: options.enabled !== false,
 		refetchOnWindowFocus: false,
+		retry: 1,
 	})
 }

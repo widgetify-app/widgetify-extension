@@ -1,5 +1,3 @@
-// فایل اصلی برای export کردن همه ویجت‌های موجود در برنامه
-
-export { NewsLayout } from './news/news.layout'
-export { WigiArzLayout } from './wigiArz/wigi_arz.layout'
-export { ComboWidget } from './comboWidget/combo-widget.layout'
+export { NewsLayout } from './widgets/news/news.layout'
+export { WigiArzLayout } from './widgets/wigiArz/wigi_arz.layout'
+export { ComboWidget } from './widgets/comboWidget/combo-widget.layout'
