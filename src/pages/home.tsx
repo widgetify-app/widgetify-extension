@@ -22,6 +22,7 @@ import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
+import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
 import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
@@ -83,15 +84,26 @@ function ContentSection() {
 					}
 				>
 					<DateProvider>
-						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-							{visibility.calendar && <CalendarLayout />}
-						</div>
-						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-							{visibility.tools && <ToolsLayout />}
-						</div>
-						<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-							{visibility.todos && <TodosLayout />}
-						</div>
+						{visibility.calendar && (
+							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+								<CalendarLayout />
+							</div>
+						)}
+						{visibility.tools && (
+							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+								<ToolsLayout />
+							</div>
+						)}
+						{visibility.todos && (
+							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+								<TodosLayout />
+							</div>
+						)}
+						{visibility.notes && (
+							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+								<NotesLayout />
+							</div>
+						)}
 					</DateProvider>
 					<div
 						className={

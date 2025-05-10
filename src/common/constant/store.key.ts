@@ -46,5 +46,12 @@ export interface StorageKV {
 	rss_news_state: RssNewsState
 	analyticsSession: any
 	enable_sync: boolean
+	notes_data: {
+		body: string
+		createdAt: number
+		id: string
+		title: string
+		updatedAt: number
+	}[]
 	calendarDrawerState: boolean
 }

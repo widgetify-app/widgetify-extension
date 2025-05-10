@@ -36,6 +36,11 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		{ id: 'weather', emoji: '🌤️', label: 'آب و هوا' },
 		{ id: 'todos', emoji: '✅', label: 'وظایف' },
 		{ id: 'tools', emoji: '🧰', label: 'ابزارها' },
+		{
+			id: 'notes',
+			emoji: '📝',
+			label: 'یادداشت‌ها',
+		},
 	]
 
 	useEffect(() => {

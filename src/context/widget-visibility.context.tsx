@@ -11,6 +11,7 @@ interface WidgetVisibilityState {
 	comboWidget: boolean
 	todos: boolean
 	tools: boolean
+	notes: boolean
 }
 
 interface WidgetVisibilityContextType {
@@ -28,6 +29,7 @@ const defaultVisibility: WidgetVisibilityState = {
 	comboWidget: false,
 	todos: true,
 	tools: true,
+	notes: false,
 }
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
