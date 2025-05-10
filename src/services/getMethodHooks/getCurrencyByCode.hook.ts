@@ -12,6 +12,8 @@ export interface FetchedCurrency {
 	changePercentage: number
 	priceHistory: PriceHistory[]
 	type: 'coin' | 'crypto' | 'currency'
+	url: string | null
+	isSponsored: boolean
 }
 
 export interface PriceHistory {
