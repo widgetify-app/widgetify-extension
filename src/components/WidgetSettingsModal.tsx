@@ -2,7 +2,6 @@ import { getTextColor, useTheme } from '@/context/theme.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useEffect, useState } from 'react'
-import CustomCheckbox from './checkbox'
 import Modal from './modal'
 
 interface WidgetSettingsModalProps {
@@ -14,101 +13,155 @@ interface WidgetItem {
 	id: string
 	emoji: string
 	label: string
-	disabled?: boolean
-	disabledMessage?: string
 }
 
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	const { theme } = useTheme()
 
-	const [activeTopWidget, setActiveTopWidget] = useState<string | null>(null)
-	const [bottomWidgets, setBottomWidgets] = useState<{
-		active: WidgetItem[]
-		inactive: WidgetItem[]
-	}>({ active: [], inactive: [] })
+	const [activeLeftWidgets, setActiveLeftWidgets] = useState<WidgetItem[]>([])
+	const [inactiveLeftWidgets, setInactiveLeftWidgets] = useState<WidgetItem[]>([])
 
-	const topWidgets: WidgetItem[] = [
+	const [activeBottomWidgets, setActiveBottomWidgets] = useState<WidgetItem[]>([])
+	const [inactiveBottomWidgets, setInactiveBottomWidgets] = useState<WidgetItem[]>([])
+
+	const leftColumnWidgets: WidgetItem[] = [
 		{ id: 'comboWidget', emoji: '🔗', label: 'ویجت ترکیبی (ارز و اخبار)' },
 		{ id: 'arzLive', emoji: '💰', label: 'ویجی ارز' },
 		{ id: 'news', emoji: '📰', label: 'ویجی اخبار' },
 	]
 
-	useEffect(() => {
-		if (visibility.comboWidget) {
-			setActiveTopWidget('comboWidget')
-		} else if (visibility.arzLive) {
-			setActiveTopWidget('arzLive')
-		} else if (visibility.news) {
-			setActiveTopWidget('news')
-		} else {
-			setActiveTopWidget(null)
-		}
-	}, [visibility.comboWidget, visibility.arzLive, visibility.news])
+	const allBottomWidgets: WidgetItem[] = [
+		{ id: 'calendar', emoji: '📅', label: 'تقویم' },
+		{ id: 'weather', emoji: '🌤️', label: 'آب و هوا' },
+		{ id: 'todos', emoji: '✅', label: 'وظایف' },
+		{ id: 'tools', emoji: '🧰', label: 'ابزارها' },
+	]
 
 	useEffect(() => {
-		const allBottomWidgets: WidgetItem[] = [
-			{ id: 'calendar', emoji: '📅', label: 'تقویم' },
-			{ id: 'weather', emoji: '🌤️', label: 'آب و هوا' },
-			{ id: 'todos', emoji: '✅', label: 'وظایف' },
-			{ id: 'tools', emoji: '🧰', label: 'ابزارها' },
-		]
+		const activeLeft = leftColumnWidgets.filter(
+			(widget) => visibility[widget.id as keyof typeof visibility],
+		)
+		const inactiveLeft = leftColumnWidgets.filter(
+			(widget) => !visibility[widget.id as keyof typeof visibility],
+		)
+		setActiveLeftWidgets(activeLeft)
+		setInactiveLeftWidgets(inactiveLeft)
 
-		setBottomWidgets({
-			active: allBottomWidgets.filter(
+		setActiveBottomWidgets(
+			allBottomWidgets.filter(
 				(widget) => visibility[widget.id as keyof typeof visibility],
 			),
-			inactive: allBottomWidgets.filter(
+		)
+
+		setInactiveBottomWidgets(
+			allBottomWidgets.filter(
 				(widget) => !visibility[widget.id as keyof typeof visibility],
 			),
-		})
+		)
 	}, [visibility])
-
-	const handleTopWidgetChange = (widgetId: string) => {
-		if (activeTopWidget === widgetId) {
-			toggleWidget(widgetId as keyof typeof visibility)
-			setActiveTopWidget(null)
-			return
-		}
-
-		if (activeTopWidget) {
-			toggleWidget(activeTopWidget as keyof typeof visibility)
-		}
-
-		toggleWidget(widgetId as keyof typeof visibility)
-		setActiveTopWidget(widgetId)
-	}
 
 	const handleDragEnd = (result: any) => {
 		if (!result.destination) return
 
 		const { source, destination } = result
-		const newState = { ...bottomWidgets }
+		const sourceId = source.droppableId
+		const destId = destination.droppableId
 
-		if (source.droppableId === destination.droppableId) {
-			const listKey = source.droppableId === 'active-widgets' ? 'active' : 'inactive'
-			const list = [...newState[listKey]]
-			const [movedItem] = list.splice(source.index, 1)
-			list.splice(destination.index, 0, movedItem)
-			newState[listKey] = list
-		} else {
-			const sourceKey = source.droppableId === 'active-widgets' ? 'active' : 'inactive'
-			const destKey = destination.droppableId === 'active-widgets' ? 'active' : 'inactive'
-
-			if (destKey === 'active' && newState.active.length >= 4) return
-
-			const sourceList = [...newState[sourceKey]]
-			const destList = [...newState[destKey]]
-			const [movedItem] = sourceList.splice(source.index, 1)
-			destList.splice(destination.index, 0, movedItem)
-
-			newState[sourceKey] = sourceList
-			newState[destKey] = destList
-
-			toggleWidget(movedItem.id as keyof typeof visibility)
+		if (sourceId.startsWith('left-') || destId.startsWith('left-')) {
+			handleLeftColumnDragEnd(result)
+			return
 		}
 
-		setBottomWidgets(newState)
+		if (source.droppableId === destination.droppableId) {
+			if (source.droppableId === 'active-widgets') {
+				const newList = [...activeBottomWidgets]
+				const [movedItem] = newList.splice(source.index, 1)
+				newList.splice(destination.index, 0, movedItem)
+				setActiveBottomWidgets(newList)
+			} else {
+				const newList = [...inactiveBottomWidgets]
+				const [movedItem] = newList.splice(source.index, 1)
+				newList.splice(destination.index, 0, movedItem)
+				setInactiveBottomWidgets(newList)
+			}
+		} else {
+			if (source.droppableId === 'active-widgets') {
+				const newActiveList = [...activeBottomWidgets]
+				const [movedItem] = newActiveList.splice(source.index, 1)
+
+				const newInactiveList = [...inactiveBottomWidgets]
+				newInactiveList.splice(destination.index, 0, movedItem)
+
+				setActiveBottomWidgets(newActiveList)
+				setInactiveBottomWidgets(newInactiveList)
+
+				toggleWidget(movedItem.id as keyof typeof visibility)
+			} else {
+				if (activeBottomWidgets.length >= 4) return
+
+				const newInactiveList = [...inactiveBottomWidgets]
+				const [movedItem] = newInactiveList.splice(source.index, 1)
+
+				const newActiveList = [...activeBottomWidgets]
+				newActiveList.splice(destination.index, 0, movedItem)
+
+				setInactiveBottomWidgets(newInactiveList)
+				setActiveBottomWidgets(newActiveList)
+
+				toggleWidget(movedItem.id as keyof typeof visibility)
+			}
+		}
+	}
+
+	const handleLeftColumnDragEnd = (result: any) => {
+		const { source, destination } = result
+
+		if (source.droppableId === destination.droppableId) {
+			if (source.droppableId === 'left-active-widgets') {
+				const newList = [...activeLeftWidgets]
+				const [movedItem] = newList.splice(source.index, 1)
+				newList.splice(destination.index, 0, movedItem)
+				setActiveLeftWidgets(newList)
+			} else {
+				const newList = [...inactiveLeftWidgets]
+				const [movedItem] = newList.splice(source.index, 1)
+				newList.splice(destination.index, 0, movedItem)
+				setInactiveLeftWidgets(newList)
+			}
+		} else {
+			if (
+				source.droppableId === 'left-active-widgets' &&
+				destination.droppableId === 'left-inactive-widgets'
+			) {
+				const newActiveList = [...activeLeftWidgets]
+				const [movedItem] = newActiveList.splice(source.index, 1)
+
+				const newInactiveList = [...inactiveLeftWidgets]
+				newInactiveList.splice(destination.index, 0, movedItem)
+
+				setActiveLeftWidgets(newActiveList)
+				setInactiveLeftWidgets(newInactiveList)
+
+				toggleWidget(movedItem.id as keyof typeof visibility)
+			} else if (
+				source.droppableId === 'left-inactive-widgets' &&
+				destination.droppableId === 'left-active-widgets'
+			) {
+				if (activeLeftWidgets.length >= 1) return
+
+				const newInactiveList = [...inactiveLeftWidgets]
+				const [movedItem] = newInactiveList.splice(source.index, 1)
+
+				const newActiveList = [...activeLeftWidgets]
+				newActiveList.splice(destination.index, 0, movedItem)
+
+				setInactiveLeftWidgets(newInactiveList)
+				setActiveLeftWidgets(newActiveList)
+
+				toggleWidget(movedItem.id as keyof typeof visibility)
+			}
+		}
 	}
 
 	return (
@@ -124,42 +177,119 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند.
 				</p>
 
-				<div className="space-y-4">
-					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
-							ویجت‌های ستون چپ (ستون سوم) - فقط یک مورد را انتخاب کنید
-						</h3>
+				<DragDropContext onDragEnd={handleDragEnd}>
+					<div className="space-y-4">
+						{/* Left column widgets */}
+						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
+							<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
+								ویجت‌های ستون چپ (حداکثر 1 ویجت)
+							</h3>
 
-						{topWidgets.map((widget) => (
-							<div key={widget.id} className="relative">
-								<CustomCheckbox
-									checked={activeTopWidget === widget.id}
-									onChange={() => handleTopWidgetChange(widget.id)}
-									label={`${widget.emoji} ${widget.label}`}
-									fontSize="font-light"
-								/>
-								{activeTopWidget &&
-									activeTopWidget !== widget.id &&
-									widget.id !== 'comboWidget' && (
-										<div className="pr-6 mt-1 text-xs font-light text-blue-500">
-											{activeTopWidget === 'comboWidget'
-												? `با فعال بودن ویجت ترکیبی، ${widget.label} در همان ویجت قابل دسترسی است`
-												: 'فقط یک ویجت از این ستون می‌تواند فعال باشد'}
-										</div>
-									)}
-							</div>
-						))}
-					</div>
-
-					<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-						<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
-							ویجت‌های پایین صفحه (حداکثر 4 ویجت)
-						</h3>
-
-						<DragDropContext onDragEnd={handleDragEnd}>
 							<div className="mb-4">
 								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
-									ویجت‌های فعال ({bottomWidgets.active.length}/4)
+									ویجت فعال ({activeLeftWidgets.length}/1)
+								</p>
+								<Droppable droppableId="left-active-widgets" direction="horizontal">
+									{(provided) => (
+										<div
+											ref={provided.innerRef}
+											{...provided.droppableProps}
+											className="flex flex-wrap gap-2 p-3 border border-gray-300 border-dashed rounded-lg min-h-16 dark:border-gray-700"
+										>
+											{activeLeftWidgets.map((widget, index) => (
+												<Draggable
+													key={widget.id}
+													draggableId={`left-${widget.id}`}
+													index={index}
+												>
+													{(provided) => (
+														<div
+															ref={provided.innerRef}
+															{...provided.draggableProps}
+															{...provided.dragHandleProps}
+															className={`p-2 rounded-lg cursor-move flex items-center ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+														>
+															<span className="mr-2">{widget.emoji}</span>
+															<span className={`text-sm ${getTextColor(theme)}`}>
+																{widget.label}
+															</span>
+														</div>
+													)}
+												</Draggable>
+											))}
+											{provided.placeholder}
+											{activeLeftWidgets.length === 0 && (
+												<div
+													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+												>
+													برای فعال کردن ویجت از لیست زیر آن را به اینجا بکشید
+												</div>
+											)}
+										</div>
+									)}
+								</Droppable>
+							</div>
+
+							<div>
+								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+									ویجت‌های غیرفعال
+								</p>
+								<Droppable droppableId="left-inactive-widgets" direction="horizontal">
+									{(provided) => (
+										<div
+											ref={provided.innerRef}
+											{...provided.droppableProps}
+											className="flex flex-wrap gap-2 p-3 border border-gray-300 border-dashed rounded-lg min-h-16 dark:border-gray-700"
+										>
+											{inactiveLeftWidgets.map((widget, index) => (
+												<Draggable
+													key={widget.id}
+													draggableId={`left-${widget.id}`}
+													index={index}
+												>
+													{(provided) => (
+														<div
+															ref={provided.innerRef}
+															{...provided.draggableProps}
+															{...provided.dragHandleProps}
+															className={`p-2 rounded-lg cursor-move flex items-center opacity-70 ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+														>
+															<span className="mr-2">{widget.emoji}</span>
+															<span className={`text-sm ${getTextColor(theme)}`}>
+																{widget.label}
+															</span>
+														</div>
+													)}
+												</Draggable>
+											))}
+											{provided.placeholder}
+											{inactiveLeftWidgets.length === 0 && (
+												<div
+													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+												>
+													برای غیرفعال کردن ویجت از بالا به اینجا بکشید
+												</div>
+											)}
+										</div>
+									)}
+								</Droppable>
+							</div>
+
+							<div className="pt-3 mt-2 text-xs text-gray-500 opacity-75 dark:text-gray-400">
+								فقط یک ویجت می‌تواند در ستون چپ فعال باشد
+							</div>
+						</div>
+
+						{/* Bottom widgets */}
+						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
+							<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
+								ویجت‌های پایین صفحه (حداکثر 4 ویجت)
+							</h3>
+
+							{/* Active widgets */}
+							<div className="mb-4">
+								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+									ویجت‌های فعال ({activeBottomWidgets.length}/4)
 								</p>
 								<Droppable droppableId="active-widgets" direction="horizontal">
 									{(provided) => (
@@ -168,7 +298,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{...provided.droppableProps}
 											className="flex flex-wrap gap-2 p-3 border border-gray-300 border-dashed rounded-lg min-h-16 dark:border-gray-700"
 										>
-											{bottomWidgets.active.map((widget, index) => (
+											{activeBottomWidgets.map((widget, index) => (
 												<Draggable key={widget.id} draggableId={widget.id} index={index}>
 													{(provided) => (
 														<div
@@ -186,7 +316,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 												</Draggable>
 											))}
 											{provided.placeholder}
-											{bottomWidgets.active.length === 0 && (
+											{activeBottomWidgets.length === 0 && (
 												<div
 													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
 												>
@@ -198,18 +328,19 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 								</Droppable>
 							</div>
 
+							{/* Inactive widgets */}
 							<div>
 								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
 									ویجت‌های غیرفعال
 								</p>
-								<Droppable droppableId="available-widgets" direction="horizontal">
+								<Droppable droppableId="inactive-widgets" direction="horizontal">
 									{(provided) => (
 										<div
 											ref={provided.innerRef}
 											{...provided.droppableProps}
 											className="flex flex-wrap gap-2 p-3 border border-gray-300 border-dashed rounded-lg min-h-16 dark:border-gray-700"
 										>
-											{bottomWidgets.inactive.map((widget, index) => (
+											{inactiveBottomWidgets.map((widget, index) => (
 												<Draggable key={widget.id} draggableId={widget.id} index={index}>
 													{(provided) => (
 														<div
@@ -227,7 +358,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 												</Draggable>
 											))}
 											{provided.placeholder}
-											{bottomWidgets.inactive.length === 0 && (
+											{inactiveBottomWidgets.length === 0 && (
 												<div
 													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
 												>
@@ -238,16 +369,16 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 									)}
 								</Droppable>
 							</div>
-						</DragDropContext>
 
-						<div className="pt-3 mt-4 border-t border-gray-200 dark:border-gray-700">
-							<p className={`text-xs ${getTextColor(theme)} opacity-75 mb-2`}>
-								ویجت‌های فعال را می‌توانید با کشیدن و رها کردن جابه‌جا کنید. حداکثر 4 ویجت
-								می‌توانید همزمان فعال کنید.
-							</p>
+							<div className="pt-3 mt-4 border-t border-gray-200 dark:border-gray-700">
+								<p className={`text-xs ${getTextColor(theme)} opacity-75 mb-2`}>
+									ویجت‌های فعال را می‌توانید با کشیدن و رها کردن جابه‌جا کنید. حداکثر 4 ویجت
+									می‌توانید همزمان فعال کنید.
+								</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				</DragDropContext>
 			</div>
 		</Modal>
 	)
