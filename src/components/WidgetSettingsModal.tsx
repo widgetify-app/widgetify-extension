@@ -179,7 +179,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		>
 			<div className="p-2 space-y-2">
 				<p className={`text-sm mb-4 ${getTextColor(theme)}`}>
-					انتخاب کنید کدام ویجت‌ها در داشبورد شما نمایش داده شوند.
+					انتخاب کنید کدام ویجت‌ها در نیـو‌تب شما نمایش داده شوند.
 				</p>
 
 				<DragDropContext onDragEnd={handleDragEnd}>
