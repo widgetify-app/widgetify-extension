@@ -5,8 +5,8 @@ import {
 	useTheme,
 } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
-import { useGetEvents } from '@/services/getMethodHooks/getEvents.hook'
-import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
 import { FiCalendar, FiClipboard } from 'react-icons/fi'
 import { type WidgetifyDate, formatDateStr } from '../utils'

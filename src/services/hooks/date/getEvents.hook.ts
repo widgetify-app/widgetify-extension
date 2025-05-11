@@ -1,5 +1,5 @@
+import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../api'
 
 export interface FetchedEvent {
 	isHoliday: boolean

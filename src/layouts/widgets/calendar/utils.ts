@@ -1,11 +1,11 @@
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 
-import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type {
 	FetchedAllEvents,
 	FetchedEvent,
-} from '../../../services/getMethodHooks/getEvents.hook'
+} from '../../../services/hooks/getEvents.hook'
 
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`

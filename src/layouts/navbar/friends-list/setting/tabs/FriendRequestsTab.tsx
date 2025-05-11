@@ -7,7 +7,7 @@ import {
 	type Friend,
 	useHandleFriendRequest,
 	useSendFriendRequest,
-} from '@/services/getMethodHooks/friends/friendService.hook'
+} from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
 import toast from 'react-hot-toast'

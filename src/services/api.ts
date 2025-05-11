@@ -4,7 +4,7 @@ import axios, { type AxiosInstance } from 'axios'
 const rawGithubApi = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
 })
-
+let URL = ''
 export async function getMainClient(): Promise<AxiosInstance> {
 	const token = await getFromStorage('auth_token')
 	if (import.meta.env.VITE_API) {
@@ -16,32 +16,25 @@ export async function getMainClient(): Promise<AxiosInstance> {
 		})
 	}
 
-	const urlResponse = await rawGithubApi.get('/.github/api.txt')
+	if (!URL) {
+		const urlResponse = await rawGithubApi.get('/.github/api.txt')
+		URL = urlResponse.data
+	}
 	return axios.create({
-		baseURL: urlResponse.data,
+		baseURL: URL,
 		headers: {
 			Authorization: token ? `Bearer ${token}` : undefined,
 		},
 	})
 }
 
-interface EmojiResponse {
-	emojis: { key: string }[]
-	storageUrl: string
-}
-
-export async function getEmojiList(): Promise<string[]> {
+export async function safeAwait<E, T>(promise: Promise<any>): Promise<[E, T]> {
 	try {
-		const api = await getMainClient()
-
-		const emojisRes = await api.get<EmojiResponse>('/extension/emojis')
-
-		const storageUrl = emojisRes.data.storageUrl
-		const emojis = emojisRes.data.emojis
-
-		return emojis.map((emoji) => `${storageUrl}/${emoji.key}`)
+		const result = await promise
+		// @ts-ignore
+		return [null, result as T]
 	} catch (error) {
-		console.error('Error fetching emoji list:', error)
-		return []
+		// @ts-ignore
+		return [error, null]
 	}
 }

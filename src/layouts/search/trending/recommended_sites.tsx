@@ -4,7 +4,7 @@ import {
 	getHeadingTextStyle,
 	useTheme,
 } from '@/context/theme.context'
-import type { RecommendedSite } from '@/services/getMethodHooks/trends/getTrends'
+import type { RecommendedSite } from '@/services/hooks/trends/getTrends'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 interface RecommendedSitesProps {

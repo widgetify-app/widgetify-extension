@@ -48,6 +48,14 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				const uniqueBookmarks = all.reduce((acc: Bookmark[], bookmark: Bookmark) => {
 					if (!acc.some((b) => b.id === bookmark.id)) {
 						acc.push(bookmark)
+					} else {
+						// update existing bookmark
+						const index = acc.findIndex(
+							(b) => b.id === bookmark.id || b.onlineId === bookmark.onlineId,
+						)
+						if (index !== -1) {
+							acc[index] = bookmark
+						}
 					}
 					return acc
 				}, [])

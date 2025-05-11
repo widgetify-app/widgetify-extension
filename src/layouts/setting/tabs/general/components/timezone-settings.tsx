@@ -7,7 +7,7 @@ import {
 	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
-import { useTimezones } from '@/services/getMethodHooks/getTimezones.hook'
+import { useTimezones } from '@/services/hooks/timezone/getTimezones.hook'
 import { FiClock } from 'react-icons/fi'
 
 interface TimezoneSettingsProps {

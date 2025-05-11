@@ -1,13 +1,12 @@
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
-import { useSignIn, useSignUp } from '@/services/getMethodHooks/auth/authService.hook'
+import { useSignIn } from '@/services/hooks/auth/authService.hook'
+import { translateError } from '@/utils/translate-error'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
 export const AuthForm = () => {
-	const [isLogin, setIsLogin] = useState(true)
-	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState<string | null>(null)
@@ -15,27 +14,26 @@ export const AuthForm = () => {
 	const { login } = useAuth()
 	const { theme } = useTheme()
 	const signInMutation = useSignIn()
-	const signUpMutation = useSignUp()
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setError(null)
 
 		try {
-			if (isLogin) {
-				const response = await signInMutation.mutateAsync({ email, password })
-				login(response.data)
-			} else {
-				const response = await signUpMutation.mutateAsync({
-					name,
-					password,
-					email,
-				})
-				login(response.data)
-			}
+			const response = await signInMutation.mutateAsync({ email, password })
+			login(response.data)
 		} catch (err) {
-			setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
-			console.error(err)
+			const content = translateError(err)
+			if (typeof content === 'string') {
+				setError(content)
+			} else {
+				if (Object.keys(content).length === 0) {
+					setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
+					return
+				}
+
+				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
+			}
 		}
 	}
 
@@ -72,6 +70,10 @@ export const AuthForm = () => {
 		}
 	}
 
+	const handleRedirectToRegister = () => {
+		window.open('https://widgetify.ir/login', '_blank')
+	}
+
 	return (
 		<motion.div
 			className="flex flex-col justify-center max-w-md mx-auto"
@@ -85,7 +87,7 @@ export const AuthForm = () => {
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.1 }}
 			>
-				{isLogin ? 'ورود به حساب کاربری' : 'ایجاد حساب کاربری جدید'}
+				ورود به حساب کاربری
 			</motion.h2>
 
 			{error && (
@@ -105,29 +107,6 @@ export const AuthForm = () => {
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.3 }}
 			>
-				{!isLogin && (
-					<motion.div
-						className="space-y-2"
-						initial={{ opacity: 0, height: 0 }}
-						animate={{ opacity: 1, height: 'auto' }}
-						exit={{ opacity: 0, height: 0 }}
-					>
-						<label
-							className={`block text-sm font-medium ${getTextColor(theme)} opacity-85`}
-						>
-							نام و نام خانوادگی
-						</label>
-						<TextInput
-							id="name"
-							type="text"
-							value={name}
-							onChange={setName}
-							placeholder="نام و نام خانوادگی شما"
-							disabled={signInMutation.isPending || signUpMutation.isPending}
-						/>
-					</motion.div>
-				)}
-
 				<div className="space-y-2">
 					<label
 						className={`block text-sm font-medium ${getTextColor(theme)} opacity-85`}
@@ -141,7 +120,7 @@ export const AuthForm = () => {
 						value={email}
 						onChange={setEmail}
 						placeholder="example@email.com"
-						disabled={signInMutation.isPending || signUpMutation.isPending}
+						disabled={signInMutation.isPending}
 					/>
 				</div>
 
@@ -158,46 +137,38 @@ export const AuthForm = () => {
 						value={password}
 						onChange={setPassword}
 						placeholder="••••••••"
-						disabled={signInMutation.isPending || signUpMutation.isPending}
+						disabled={signInMutation.isPending}
 					/>
-					{isLogin && (
-						<a
-							href="https://widgetify.ir/forgot-password"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={`block text-left text-sm transition-colors cursor-pointer font-light ${getToggleButtonStyle()}`}
-						>
-							رمز عبور خود را فراموش کرده‌اید؟
-						</a>
-					)}
+					<a
+						href="https://widgetify.ir/forgot-password"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`block text-left text-sm transition-colors cursor-pointer font-light ${getToggleButtonStyle()}`}
+					>
+						رمز عبور خود را فراموش کرده‌اید؟
+					</a>
 				</div>
 
 				<motion.button
 					type="submit"
 					className={`w-full py-3 cursor-pointer rounded-xl transition-all duration-200 mt-6 ${getButtonStyle()}`}
-					disabled={signInMutation.isPending || signUpMutation.isPending}
+					disabled={signInMutation.isPending}
 					whileHover={{ scale: 1.02 }}
 					whileTap={{ scale: 0.98 }}
 				>
-					{signInMutation.isPending || signUpMutation.isPending
-						? 'درحال پردازش...'
-						: isLogin
-							? 'ورود به حساب'
-							: 'ایجاد حساب جدید'}
+					{signInMutation.isPending ? 'درحال پردازش...' : 'ورود به حساب'}
 				</motion.button>
 			</motion.form>
 
 			<motion.button
-				onClick={() => setIsLogin(!isLogin)}
+				onClick={handleRedirectToRegister}
 				className={`mt-3 text-sm transition-colors cursor-pointer font-light ${getToggleButtonStyle()}`}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: 0.4 }}
 				whileHover={{ scale: 1.05 }}
 			>
-				{isLogin
-					? 'حساب کاربری ندارید؟ همین حالا ثبت نام کنید'
-					: 'قبلاً ثبت نام کرده‌اید؟ وارد شوید'}
+				حساب کاربری ندارید؟ ثبت‌نام کنید
 			</motion.button>
 		</motion.div>
 	)

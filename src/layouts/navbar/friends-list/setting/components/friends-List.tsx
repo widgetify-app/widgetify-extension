@@ -1,9 +1,6 @@
 import { AvatarComponent } from '@/components/avatar.component'
 import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
-import {
-	type Friend,
-	useGetFriends,
-} from '@/services/getMethodHooks/friends/friendService.hook'
+import { type Friend, useGetFriends } from '@/services/hooks/friends/friendService.hook'
 import { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 

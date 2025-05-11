@@ -1,7 +1,7 @@
 import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
-import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import jalaliMoment from 'jalali-moment'
 import type { Todo } from '../../interface/todo.interface'
 import {

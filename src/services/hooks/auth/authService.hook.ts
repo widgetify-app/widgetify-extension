@@ -1,13 +1,9 @@
+import { getMainClient } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
-import { getMainClient } from '../../api'
 
 interface LoginCredentials {
 	password: string
 	email: string
-}
-
-interface SignUpCredentials extends LoginCredentials {
-	name: string
 }
 
 interface AuthResponse {
@@ -22,20 +18,8 @@ async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 	return response.data
 }
 
-async function signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
-	const client = await getMainClient()
-	const response = await client.post<AuthResponse>('/auth/signup', credentials)
-	return response.data
-}
-
 export function useSignIn() {
 	return useMutation({
 		mutationFn: (credentials: LoginCredentials) => signIn(credentials),
-	})
-}
-
-export function useSignUp() {
-	return useMutation({
-		mutationFn: (credentials: SignUpCredentials) => signUp(credentials),
 	})
 }

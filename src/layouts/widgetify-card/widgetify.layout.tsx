@@ -6,8 +6,8 @@ import {
 	useTheme,
 } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
-import { useGetDailyMessage } from '@/services/getMethodHooks/getDailyMessage.hook'
-import { useGetGoogleCalendarEvents } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FiCalendar, FiClipboard, FiMessageCircle } from 'react-icons/fi'

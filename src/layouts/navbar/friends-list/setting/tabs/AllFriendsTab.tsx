@@ -1,9 +1,6 @@
 import { SectionPanel } from '@/components/section-panel'
 import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
-import {
-	type Friend,
-	useRemoveFriend,
-} from '@/services/getMethodHooks/friends/friendService.hook'
+import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import toast from 'react-hot-toast'
 import { RemoveFriendButton } from '../components/remove-button'

@@ -1,12 +1,15 @@
+import Analytics from '@/analytics'
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
+
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
-} from '@/services/getMethodHooks/getCurrencyByCode.hook'
+} from '@/services/hooks/currency/getCurrencyByCode.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { CurrencyModalComponent } from './currency-modal'
 
@@ -71,7 +74,20 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	}, [currency?.price])
 
 	function toggleCurrencyModal() {
-		setIsModalOpen(!isModalOpen)
+		if (currency?.url && currency?.isSponsored) {
+			toast.success('🔗 درحال انتقال به سایت اسپانسر...')
+			setTimeout(() => {
+				toast.dismiss()
+				Analytics.featureUsed('currency-sponsor', {
+					currency: currency.name.en,
+					url: currency.url,
+				})
+
+				if (currency.url) window.open(currency.url, '_blank')
+			}, 1000)
+		} else {
+			setIsModalOpen(!isModalOpen)
+		}
 	}
 
 	const longPressTimeout = useRef<NodeJS.Timeout | null>(null)
@@ -157,7 +173,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 					</div>
 				</m.div>
 			</LazyMotion>
-			{currency && (
+			{currency && !currency.url && (
 				<CurrencyModalComponent
 					code={code}
 					priceChange={priceChange}

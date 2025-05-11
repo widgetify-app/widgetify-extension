@@ -11,9 +11,9 @@
 		"preview": "vite preview",
 		"start:chrome": "npm run build:chrome && web-ext run --source-dir=dist --target=chromium",
 		"start:firefox": "npm run build:firefox && web-ext run --source-dir=dist --target=firefox-desktop",
-		"package": "node scripts/package-extension.js",
-		"package:chrome": "node scripts/package-extension.js chrome",
-		"package:firefox": "node scripts/package-extension.js firefox"
+		"package": "bun scripts/package-extension.js",
+		"package:chrome": "bun scripts/package-extension.js chrome",
+		"package:firefox": "bun scripts/package-extension.js firefox"
 	},
 	"dependencies": {
 		"@hello-pangea/dnd": "^18.0.1",

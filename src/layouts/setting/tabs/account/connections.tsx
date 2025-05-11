@@ -3,7 +3,7 @@ import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
 import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
-import { useGetUserProfile } from '@/services/getMethodHooks/user/userService.hook'
+import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { type JSX, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 

@@ -1,4 +1,4 @@
-import type { PriceHistory } from '@/services/getMethodHooks/getCurrencyByCode.hook'
+import type { PriceHistory } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import {
 	CategoryScale,
 	type ChartData,

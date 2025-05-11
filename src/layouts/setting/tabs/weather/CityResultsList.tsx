@@ -1,5 +1,5 @@
 import { getCardBackground, getTextColor, useTheme } from '@/context/theme.context'
-import type { FetchedCity } from '@/services/getMethodHooks/weather/weather.interface'
+import type { FetchedCity } from '@/services/hooks/weather/weather.interface'
 import { useEffect, useRef } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
 

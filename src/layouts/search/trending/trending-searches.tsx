@@ -5,7 +5,7 @@ import {
 	type RecommendedSite,
 	type TrendItem,
 	useGetTrends,
-} from '@/services/getMethodHooks/trends/getTrends'
+} from '@/services/hooks/trends/getTrends'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { FaChartLine, FaParachuteBox } from 'react-icons/fa6'

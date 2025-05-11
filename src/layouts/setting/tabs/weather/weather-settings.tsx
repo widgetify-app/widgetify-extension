@@ -5,7 +5,7 @@ import {
 	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
-import type { TemperatureUnit } from '@/services/getMethodHooks/weather/weather.interface'
+import type { TemperatureUnit } from '@/services/hooks/weather/weather.interface'
 
 interface WeatherSettingsProps {
 	forecastCount: number

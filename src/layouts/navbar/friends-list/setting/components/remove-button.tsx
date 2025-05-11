@@ -1,5 +1,5 @@
 import Tooltip from '@/components/toolTip'
-import type { Friend } from '@/services/getMethodHooks/friends/friendService.hook'
+import type { Friend } from '@/services/hooks/friends/friendService.hook'
 import { FiUserX } from 'react-icons/fi'
 
 type Props = {

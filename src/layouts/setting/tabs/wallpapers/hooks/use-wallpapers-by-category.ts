@@ -1,6 +1,6 @@
 import type { Category, Wallpaper } from '@/common/wallpaper.interface'
 import { getMainClient } from '@/services/api'
-import { useGetWallpaperCategories } from '@/services/getMethodHooks/getWallpaperCategories.hook'
+import { useGetWallpaperCategories } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 

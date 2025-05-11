@@ -2,7 +2,7 @@ import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storag
 import {
 	type UserProfile,
 	useGetUserProfile,
-} from '@/services/getMethodHooks/user/userService.hook'
+} from '@/services/hooks/user/userService.hook'
 import { useQueryClient } from '@tanstack/react-query'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 

@@ -1,5 +1,5 @@
+import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../../api'
 import type { FetchedCity } from './weather.interface'
 
 async function fetchRelatedCities(city: string): Promise<FetchedCity[]> {
@@ -7,7 +7,6 @@ async function fetchRelatedCities(city: string): Promise<FetchedCity[]> {
 		const client = await getMainClient()
 
 		const response = await client.get<any>(`/weather/cities?city=${city}`)
-		// returns city name in Persian if it's located in Iran
 		return response.data
 	}
 
