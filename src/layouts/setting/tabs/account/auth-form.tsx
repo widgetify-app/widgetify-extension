@@ -2,6 +2,7 @@ import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
 import { useSignIn } from '@/services/getMethodHooks/auth/authService.hook'
+import { translateError } from '@/utils/translate-error'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
@@ -22,8 +23,17 @@ export const AuthForm = () => {
 			const response = await signInMutation.mutateAsync({ email, password })
 			login(response.data)
 		} catch (err) {
-			setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
-			console.error(err)
+			const content = translateError(err)
+			if (typeof content === 'string') {
+				setError(content)
+			} else {
+				if (Object.keys(content).length === 0) {
+					setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
+					return
+				}
+
+				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
+			}
 		}
 	}
 
