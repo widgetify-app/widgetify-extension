@@ -61,11 +61,7 @@ export const ToolsLayout: React.FC<any> = () => {
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 				>
-					<ReligiousTime
-						events={events || []}
-						currentDate={selectedDate}
-						onDateChange={setCurrentDate}
-					/>
+					<ReligiousTime currentDate={selectedDate} />
 				</motion.div>
 			)}
 
