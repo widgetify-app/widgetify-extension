@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../api'
+import { getMainClient } from '../../api'
 
 export interface GoogleCalendarEvent {
 	kind: string

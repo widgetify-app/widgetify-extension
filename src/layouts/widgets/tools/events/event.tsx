@@ -1,5 +1,5 @@
-import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import type { FetchedAllEvents } from '@/services/hooks/getEvents.hook'
 import { motion } from 'framer-motion'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { EventItem } from './components/EventItem'

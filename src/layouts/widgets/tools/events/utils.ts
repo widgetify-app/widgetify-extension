@@ -1,5 +1,5 @@
-import type { FetchedAllEvents } from '@/services/getMethodHooks/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/getMethodHooks/getGoogleCalendarEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import type { FetchedAllEvents } from '@/services/hooks/getEvents.hook'
 import {
 	type WidgetifyDate,
 	filterGoogleEventsByDate,

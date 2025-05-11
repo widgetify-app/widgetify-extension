@@ -1,5 +1,5 @@
+import { getMainClient } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
-import { getMainClient } from '../../api'
 
 interface LoginCredentials {
 	password: string

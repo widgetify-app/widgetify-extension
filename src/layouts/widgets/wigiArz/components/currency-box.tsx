@@ -2,10 +2,11 @@ import Analytics from '@/analytics'
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
+
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
-} from '@/services/getMethodHooks/getCurrencyByCode.hook'
+} from '@/services/hooks/currency/getCurrencyByCode.hook'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'

@@ -1,7 +1,7 @@
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { UserCardPortal } from '@/components/user/user-card-portal'
-import type { FriendUser } from '@/services/getMethodHooks/friends/friendService.hook'
+import type { FriendUser } from '@/services/hooks/friends/friendService.hook'
 import { useRef } from 'react'
 
 interface FriendItemProps {

@@ -2,18 +2,15 @@ import type { SelectedCity } from '@/context/weather.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
-import type { FetchedCurrency } from '@/services/getMethodHooks/getCurrencyByCode.hook'
-import type { NewsResponse } from '@/services/getMethodHooks/getNews.hook'
-import type {
-	RecommendedSite,
-	TrendItem,
-} from '@/services/getMethodHooks/trends/getTrends'
-import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
+import type { FetchedCurrency } from '@/services/hooks/getCurrencyByCode.hook'
+import type { NewsResponse } from '@/services/hooks/getNews.hook'
+import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
+import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import type {
 	FetchedForecast,
 	FetchedWeather,
 	WeatherSettings,
-} from '@/services/getMethodHooks/weather/weather.interface'
+} from '@/services/hooks/weather/weather.interface'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {

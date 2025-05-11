@@ -1,5 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { type NewsResponse, useGetNews } from '@/services/getMethodHooks/getNews.hook'
+import { type NewsResponse, useGetNews } from '@/services/hooks/news/getNews.hook'
 import { useEffect, useState } from 'react'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'

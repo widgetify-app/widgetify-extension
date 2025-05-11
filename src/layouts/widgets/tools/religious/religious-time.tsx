@@ -1,6 +1,6 @@
 import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
-import { useReligiousTime } from '@/services/getMethodHooks/getReligiousTime.hook'
+import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { DailyZikrBox } from './components/daily-zikr-box'

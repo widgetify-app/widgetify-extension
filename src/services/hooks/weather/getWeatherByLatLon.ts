@@ -1,5 +1,5 @@
+import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
-import { getMainClient } from '../../api'
 import type { FetchedWeather } from './weather.interface'
 
 type units = 'standard' | 'metric' | 'imperial'

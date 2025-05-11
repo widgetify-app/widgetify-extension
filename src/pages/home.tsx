@@ -105,13 +105,15 @@ function ContentSection() {
 							</div>
 						)}
 					</DateProvider>
-					<div
-						className={
-							'w-full md:max-w-64 lg:w-3/12 self-end transition-all duration-300'
-						}
-					>
-						{visibility.weather && <WeatherLayout />}
-					</div>
+					{visibility.weather && (
+						<div
+							className={
+								'w-full md:max-w-64 lg:w-3/12 self-end transition-all duration-300'
+							}
+						>
+							<WeatherLayout />
+						</div>
+					)}
 				</div>
 			</div>
 		</TodoProvider>

@@ -13,8 +13,8 @@ import { getMainClient } from '@/services/api'
 import {
 	type FetchedBookmark,
 	getBookmarks,
-} from '@/services/getMethodHooks/getBookmarks.hook'
-import type { UserProfile } from '@/services/getMethodHooks/user/userService.hook'
+} from '@/services/hooks/bookmark/getBookmarks.hook'
+import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'

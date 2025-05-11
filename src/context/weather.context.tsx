@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import type { WeatherSettings } from '@/services/getMethodHooks/weather/weather.interface'
+import type { WeatherSettings } from '@/services/hooks/weather/weather.interface'
+import React, { createContext, useEffect, useState } from 'react'
 
 export interface SelectedCity {
 	name: string

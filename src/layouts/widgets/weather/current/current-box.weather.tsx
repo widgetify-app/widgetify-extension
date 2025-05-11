@@ -6,7 +6,7 @@ import {
 	useTheme,
 } from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
-import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
+import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
 import { FaSpotify } from 'react-icons/fa'

@@ -4,7 +4,7 @@ import axios, { type AxiosInstance } from 'axios'
 const rawGithubApi = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
 })
-
+let URL = ''
 export async function getMainClient(): Promise<AxiosInstance> {
 	const token = await getFromStorage('auth_token')
 	if (import.meta.env.VITE_API) {
@@ -16,9 +16,12 @@ export async function getMainClient(): Promise<AxiosInstance> {
 		})
 	}
 
-	const urlResponse = await rawGithubApi.get('/.github/api.txt')
+	if (!URL) {
+		const urlResponse = await rawGithubApi.get('/.github/api.txt')
+		URL = urlResponse.data
+	}
 	return axios.create({
-		baseURL: urlResponse.data,
+		baseURL: URL,
 		headers: {
 			Authorization: token ? `Bearer ${token}` : undefined,
 		},

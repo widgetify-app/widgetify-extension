@@ -1,11 +1,11 @@
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { getMainClient } from '@/services/api'
 import {
 	type UseQueryOptions,
 	useMutation,
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query'
-import { getMainClient } from '../../api'
 
 interface FetchedProfile {
 	email: string

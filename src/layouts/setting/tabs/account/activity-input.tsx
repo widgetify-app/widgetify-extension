@@ -4,7 +4,7 @@ import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context
 import {
 	useGetUserProfile,
 	useUpdateActivity,
-} from '@/services/getMethodHooks/user/userService.hook'
+} from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
 import toast from 'react-hot-toast'

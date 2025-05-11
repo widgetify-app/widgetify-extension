@@ -1,4 +1,4 @@
-import type { FetchedWeather } from '@/services/getMethodHooks/weather/weather.interface'
+import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'

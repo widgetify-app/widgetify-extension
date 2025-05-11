@@ -1,5 +1,5 @@
+import { getMainClient } from '@/services/api'
 import { useEffect, useState } from 'react'
-import { getMainClient } from '../api'
 
 export interface FetchedReligiousTimeData {
 	azan_sobh: string

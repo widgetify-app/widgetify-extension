@@ -4,7 +4,7 @@ import {
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
-import type { TrendItem } from '@/services/getMethodHooks/trends/getTrends'
+import type { TrendItem } from '@/services/hooks/trends/getTrends'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 interface TrendingItemsProps {
