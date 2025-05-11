@@ -34,7 +34,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 			case 'light':
 				return 'bg-gray-100/70 text-gray-700'
 			case 'dark':
-				return 'bg-gray-800/80 text-gray-200'
+				return 'bg-neutral-900/80 text-gray-200'
 			default:
 				return 'bg-black/30 text-gray-200 backdrop-blur-sm'
 		}
