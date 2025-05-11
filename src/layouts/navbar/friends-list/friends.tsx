@@ -36,7 +36,6 @@ export function FriendsList() {
 		}
 		setShowSettingsModal(true)
 	}
-
 	return (
 		<>
 			<div
@@ -51,7 +50,6 @@ export function FriendsList() {
 						<FiChevronLeft size={16} />
 					</button>
 				)}
-
 				{!showFriendsList && (
 					<div className="flex items-center justify-around w-full">
 						<Tooltip content="نمایش دوستان" position="bottom">
@@ -77,23 +75,22 @@ export function FriendsList() {
 							</button>
 						</Tooltip>
 					</div>
-				)}
+				)}{' '}
 				<Swiper
 					modules={[FreeMode, Navigation]}
-					spaceBetween={8}
-					slidesPerView={friends.length ? Math.min(friends.length, 3) : 1}
-					freeMode={true}
-					className="user-list-slider"
+					spaceBetween={4}
+					slidesPerView={3}
+					grabCursor={true}
+					className="w-full user-list-slider"
 					dir="ltr"
 					navigation={{
 						nextEl: '.user-list-next',
 						prevEl: '.user-list-prev',
 					}}
 				>
-					{' '}
 					{showFriendsList
 						? friends.map((friend) => (
-								<SwiperSlide key={friend.id} className="w-14 pt-0.5">
+								<SwiperSlide key={friend.id} className="pt-0.5">
 									<FriendItem
 										user={friend.user}
 										activeProfileId={activeProfileId}
