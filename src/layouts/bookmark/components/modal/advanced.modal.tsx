@@ -11,7 +11,7 @@ import {
 	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
-import { getEmojiList } from '@/services/api'
+import { getEmojiList } from '@/services/emoji/emoji-api'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
 import type { Bookmark } from '../../types/bookmark.types'
