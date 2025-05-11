@@ -19,6 +19,7 @@ export function FriendsList() {
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
+	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 	const { isAuthenticated } = useAuth()
 
 	const { data: friendsData, refetch: refetchFriends } = useGetFriends({
@@ -79,8 +80,8 @@ export function FriendsList() {
 				)}
 				<Swiper
 					modules={[FreeMode, Navigation]}
-					spaceBetween={friends.length > 3 ? 0 : 8}
-					slidesPerView={friends.length > 1 ? 3 : 1}
+					spaceBetween={8}
+					slidesPerView={friends.length ? Math.min(friends.length, 3) : 1}
 					freeMode={true}
 					className="user-list-slider"
 					dir="ltr"
@@ -89,10 +90,15 @@ export function FriendsList() {
 						prevEl: '.user-list-prev',
 					}}
 				>
+					{' '}
 					{showFriendsList
 						? friends.map((friend) => (
 								<SwiperSlide key={friend.id} className="w-14 pt-0.5">
-									<FriendItem user={friend.user} />
+									<FriendItem
+										user={friend.user}
+										activeProfileId={activeProfileId}
+										setActiveProfileId={setActiveProfileId}
+									/>
 								</SwiperSlide>
 							))
 						: null}
