@@ -1,6 +1,7 @@
+import { RequireAuth } from '@/components/auth/require-auth'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { getTextColor, useTheme } from '@/context/theme.context'
-import { FiBook } from 'react-icons/fi'
+import { FiBook, FiLoader } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
@@ -50,19 +51,31 @@ function NotesContent() {
 	)
 }
 
-export function NotesLayout() {
+function NotesHeader() {
 	const { theme } = useTheme()
+	const { isSaving } = useNotes()
+
+	return (
+		<div className="flex items-center justify-between mb-2">
+			<h4 className={`text-sm font-medium ${getTextColor(theme)}`}>دفترچه یادداشت</h4>
+			{isSaving && (
+				<FiLoader className={`block w-4 h-4 animate-spin ${getTextColor(theme)}`} />
+			)}
+		</div>
+	)
+}
+
+export function NotesLayout() {
 	return (
 		<WidgetContainer className="overflow-hidden">
-			<div className="flex flex-col h-full">
-				<div className="flex items-center justify-between mb-2">
-					<h4 className={`text-sm font-medium ${getTextColor(theme)}`}>دفترچه یادداشت</h4>
+			<NotesProvider>
+				<div className="flex flex-col h-full">
+					<NotesHeader />
+					<RequireAuth mode="preview">
+						<NotesContent />
+					</RequireAuth>
 				</div>
-
-				<NotesProvider>
-					<NotesContent />
-				</NotesProvider>
-			</div>
+			</NotesProvider>
 		</WidgetContainer>
 	)
 }

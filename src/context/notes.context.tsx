@@ -1,6 +1,22 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import { sleep } from '@/common/utils/timeout'
+import { safeAwait } from '@/services/api'
+import {
+	type FetchedNote,
+	deleteNote,
+	getNotes,
+	upsertNote,
+} from '@/services/note/note-api'
+import type { AxiosError } from 'axios'
+import {
+	type ReactNode,
+	createContext,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 export interface Note {
@@ -18,6 +34,7 @@ interface NotesContextType {
 	addNote: () => void
 	updateNote: (id: string, updates: Partial<Note>) => void
 	deleteNote: (id: string) => void
+	isSaving: boolean
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined)
@@ -25,7 +42,8 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined)
 export function NotesProvider({ children }: { children: ReactNode }) {
 	const [notes, setNotes] = useState<Note[]>([])
 	const [activeNoteId, setActiveNoteId] = useState<string | null>(null)
-	const [isLoaded, setIsLoaded] = useState(false)
+	const [isSaving, setIsSaving] = useState(false)
+	const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	useEffect(() => {
 		async function loadNotes() {
@@ -33,6 +51,20 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			if (storedNotes && Array.isArray(storedNotes) && storedNotes.length > 0) {
 				setNotes(storedNotes)
 				setActiveNoteId(storedNotes[0].id)
+
+				const isSyncEnabled = await getFromStorage('enable_sync')
+				if (isSyncEnabled === true) {
+					await sleep(2000)
+					setIsSaving(true)
+					const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
+						getNotes(),
+					)
+					setIsSaving(false)
+					if (!error) {
+						setNotes(fetchedNotes)
+						setActiveNoteId(fetchedNotes[0].id)
+					}
+				}
 			} else {
 				const defaultNote: Note = {
 					id: uuidv4(),
@@ -41,21 +73,15 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 					createdAt: Date.now(),
 					updatedAt: Date.now(),
 				}
-				setNotes([defaultNote])
+				const initialNotes = [defaultNote]
+				setNotes(initialNotes)
 				setActiveNoteId(defaultNote.id)
-				setToStorage('notes_data', [defaultNote])
+				await setToStorage('notes_data', initialNotes)
 			}
-			setIsLoaded(true)
 		}
 
 		loadNotes()
 	}, [])
-
-	useEffect(() => {
-		if (isLoaded && notes.length > 0) {
-			setToStorage('notes_data', notes)
-		}
-	}, [notes, isLoaded])
 
 	const addNote = () => {
 		const newNote: Note = {
@@ -65,38 +91,63 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 		}
-		setNotes((prevNotes) => [...prevNotes, newNote])
+		setNotes((prevNotes) => {
+			const updatedNotes = [...prevNotes, newNote]
+			setToStorage('notes_data', updatedNotes)
+			return updatedNotes
+		})
 		setActiveNoteId(newNote.id)
 		Analytics.featureUsed('add-notes')
 	}
 
 	const updateNote = (id: string, updates: Partial<Note>) => {
-		setNotes((prevNotes) =>
-			prevNotes.map((note) =>
+		setIsSaving(true)
+		let notesAfterUpdate: Note[] = []
+
+		setNotes((prevNotes) => {
+			notesAfterUpdate = prevNotes.map((note) =>
 				note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
-			),
-		)
-		Analytics.featureUsed('update-notes')
-	}
+			)
+			return notesAfterUpdate
+		})
 
-	const deleteNote = (id: string) => {
-		setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id))
-
-		if (activeNoteId === id && notes.length > 1) {
-			const remainingNotes = notes.filter((note) => note.id !== id)
-			setActiveNoteId(remainingNotes[0].id)
-		} else if (notes.length === 1) {
-			const newNote: Note = {
-				id: uuidv4(),
-				title: '',
-				body: '',
-				createdAt: Date.now(),
-				updatedAt: Date.now(),
-			}
-			setNotes([newNote])
-			setActiveNoteId(newNote.id)
+		if (saveTimeoutRef.current) {
+			clearTimeout(saveTimeoutRef.current)
 		}
 
+		saveTimeoutRef.current = setTimeout(async () => {
+			Analytics.featureUsed('update-notes')
+			await setToStorage('notes_data', notesAfterUpdate)
+			await upsertNote({
+				title: updates.title || null,
+				body: updates.body || null,
+				offlineId: id,
+				onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
+			})
+			setIsSaving(false)
+		}, 2500)
+	}
+
+	const onDeleteNote = async (id: string) => {
+		const existingNote = notes.findIndex((note) => note.id === id)
+		if (existingNote !== -1) {
+			setIsSaving(true)
+			const updatedNotes = [...notes]
+			updatedNotes.splice(existingNote, 1)
+			setNotes(updatedNotes)
+			if (activeNoteId === id) {
+				setActiveNoteId(updatedNotes[0]?.id || null)
+			} else {
+			}
+
+			const isSyncEnabled = await getFromStorage('enable_sync')
+			if (isSyncEnabled === true) {
+				await safeAwait(deleteNote(id))
+			}
+
+			await setToStorage('notes_data', updatedNotes)
+			setIsSaving(false)
+		}
 		Analytics.featureUsed('delete-notes')
 	}
 
@@ -108,7 +159,8 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				setActiveNoteId,
 				addNote,
 				updateNote,
-				deleteNote,
+				deleteNote: onDeleteNote,
+				isSaving,
 			}}
 		>
 			{children}

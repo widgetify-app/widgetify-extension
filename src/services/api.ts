@@ -25,6 +25,17 @@ export async function getMainClient(): Promise<AxiosInstance> {
 	})
 }
 
+export async function safeAwait<E, T>(promise: Promise<any>): Promise<[E, T]> {
+	try {
+		const result = await promise
+		// @ts-ignore
+		return [null, result as T]
+	} catch (error) {
+		// @ts-ignore
+		return [error, null]
+	}
+}
+
 interface EmojiResponse {
 	emojis: { key: string }[]
 	storageUrl: string
