@@ -2,6 +2,7 @@ import { addOpacityToColor } from '@/common/color'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
+import { SlOptions } from 'react-icons/sl'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle, BookmarkTooltip } from './bookmark/bookmark-title'
@@ -16,6 +17,7 @@ export function FolderBookmarkItem({
 	onDragOver,
 	onDragEnd,
 	onDrop,
+	onMenuClick,
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
@@ -26,6 +28,7 @@ export function FolderBookmarkItem({
 	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
 	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
 	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
+	onMenuClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }) {
 	const [isHovered, setIsHovered] = useState(false)
 
@@ -64,8 +67,10 @@ export function FolderBookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
+			{' '}
 			<motion.button
 				onClick={onClick}
+				onAuxClick={onClick}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				whileHover={{ scale: 1.02 }}
@@ -81,9 +86,7 @@ export function FolderBookmarkItem({
 						className={`absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t ${theme === 'light' ? 'from-blue-200/20' : 'from-blue-900/20'} to-transparent`}
 					/>
 				</div>
-
 				<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
-
 				<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
 					{typeof displayIcon === 'string' ? (
 						<motion.img
@@ -97,7 +100,6 @@ export function FolderBookmarkItem({
 						displayIcon
 					)}
 				</div>
-
 				<BookmarkTitle
 					title={bookmark.title}
 					theme={theme}
@@ -107,11 +109,20 @@ export function FolderBookmarkItem({
 					className={
 						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-blue-400/10 to-transparent rounded-xl'
 					}
-				/>
-
+				/>{' '}
 				<div className="absolute inset-0 border rounded-xl border-white/5" />
-
 				{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
+				{onMenuClick && (
+					<button
+						onClick={(e) => {
+							e.stopPropagation()
+							onMenuClick(e)
+						}}
+						className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
+					>
+						<SlOptions />
+					</button>
+				)}
 			</motion.button>
 		</div>
 	)
