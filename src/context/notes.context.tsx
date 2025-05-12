@@ -1,5 +1,6 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { isSyncActive } from '@/common/sync-checker'
 import { sleep } from '@/common/utils/timeout'
 import { safeAwait } from '@/services/api'
 import {
@@ -52,9 +53,9 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				setNotes(storedNotes)
 				setActiveNoteId(storedNotes[0].id)
 
-				const isSyncEnabled = await getFromStorage('enable_sync')
-				if (isSyncEnabled === true) {
-					await sleep(2000)
+				const isEnable = await isSyncActive()
+				if (isEnable) {
+					await sleep(1000)
 					setIsSaving(true)
 					const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
 						getNotes(),
@@ -118,12 +119,15 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		saveTimeoutRef.current = setTimeout(async () => {
 			Analytics.featureUsed('update-notes')
 			await setToStorage('notes_data', notesAfterUpdate)
-			await upsertNote({
-				title: updates.title || null,
-				body: updates.body || null,
-				offlineId: id,
-				onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
-			})
+			const isSyncEnabled = await isSyncActive()
+			if (isSyncEnabled) {
+				await upsertNote({
+					title: updates.title || null,
+					body: updates.body || null,
+					offlineId: id,
+					onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
+				})
+			}
 			setIsSaving(false)
 		}, 2500)
 	}
@@ -140,8 +144,8 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			} else {
 			}
 
-			const isSyncEnabled = await getFromStorage('enable_sync')
-			if (isSyncEnabled === true) {
+			const isSyncEnabled = await isSyncActive()
+			if (isSyncEnabled) {
 				await safeAwait(deleteNote(id))
 			}
 
