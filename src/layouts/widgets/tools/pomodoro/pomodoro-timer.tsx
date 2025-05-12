@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { getTextColor, useTheme } from '@/context/theme.context'
+import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -182,18 +182,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 	}
 
-	const getModeButtonStyle = (buttonMode: TimerMode) => {
-		const isActive = buttonMode === mode
-
-		if (isActive) {
-			return `bg-${modeColors[buttonMode].accent} text-white shadow-sm`
-		}
-
-		return theme === 'light'
-			? 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 transition-colors'
-			: 'bg-neutral-700/50 text-gray-300 hover:bg-neutral-700 hover:text-white transition-colors'
-	}
-
 	const getProgressColor = () => {
 		return theme === 'light' ? modeColors[mode].light : modeColors[mode].dark
 	}
@@ -209,22 +197,22 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			<div className="relative flex items-center justify-between mb-2">
 				<div className="flex items-center space-x-2">
 					<ModeButton
+						theme={theme}
 						mode="work"
 						currentMode={mode}
 						onClick={() => handleModeChange('work')}
-						getStyle={getModeButtonStyle}
 					/>
 					<ModeButton
+						theme={theme}
 						mode="short-break"
 						currentMode={mode}
 						onClick={() => handleModeChange('short-break')}
-						getStyle={getModeButtonStyle}
 					/>
 					<ModeButton
+						theme={theme}
 						mode="long-break"
 						currentMode={mode}
 						onClick={() => handleModeChange('long-break')}
-						getStyle={getModeButtonStyle}
 					/>
 				</div>
 
@@ -254,41 +242,42 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				<div className="flex justify-center space-x-4 mt-0.5">
 					{isRunning ? (
 						<ControlButton
+							mode={'pause'}
 							icon={<FiPause />}
 							onClick={handlePause}
-							color="bg-red-500 hover:bg-red-600"
+							theme={theme}
 						/>
 					) : (
 						<ControlButton
+							mode={'play'}
 							icon={<FiPlay />}
 							onClick={handleStart}
-							color={`bg-${modeColors[mode].accent} hover:bg-${modeColors[mode].accent.replace('500', '600')}`}
+							theme={theme}
 						/>
 					)}
 
 					<ControlButton
+						mode={'reset'}
+						theme={theme}
 						icon={<FiRefreshCw />}
 						onClick={handleReset}
-						color={
-							theme === 'light'
-								? 'bg-gray-800 text-gray-600 hover:bg-gray-600'
-								: 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-						}
 					/>
 
 					{mode.includes('break') && (
 						<ControlButton
+							mode={'check'}
+							theme={theme}
 							icon={<FiCheckCircle />}
 							onClick={() => handleModeChange('work')}
-							color="bg-blue-500 hover:bg-blue-600"
 						/>
 					)}
 
 					{mode === 'work' && (
 						<ControlButton
+							mode={'coffee'}
+							theme={theme}
 							icon={<FiCoffee />}
 							onClick={() => handleModeChange('short-break')}
-							color="bg-green-500 hover:bg-green-600"
 						/>
 					)}
 				</div>
