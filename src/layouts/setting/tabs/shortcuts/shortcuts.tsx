@@ -25,13 +25,19 @@ export function ShortcutsTab() {
 		const ua = navigator.userAgent
 		setIsMac(/Mac|iPod|iPhone|iPad/.test(ua))
 	}, [])
-
 	const shortcuts: Shortcut[] = [
 		{
 			id: 'open_bookmark_new_tab',
 			windowsKey: 'CTRL + Left-click',
 			macKey: '⌘ + Left-click',
 			description: 'باز کردن بوکمارک در تب جدید',
+			category: 'بوکمارک‌ها',
+		},
+		{
+			id: 'open_bookmark_middle_click',
+			windowsKey: 'Middle-click',
+			macKey: 'Middle-click',
+			description: 'باز کردن بوکمارک در تب جدید با دکمه اسکرول',
 			category: 'بوکمارک‌ها',
 		},
 		{

@@ -78,15 +78,17 @@ export function BookmarksComponent() {
 
 		return true
 	}
-
-	const handleRightClick = (e: React.MouseEvent, bookmark: Bookmark) => {
+	const handleMenuClick = (
+		e: React.MouseEvent<HTMLButtonElement>,
+		bookmark: Bookmark,
+	) => {
 		e.preventDefault()
 		if (isManageable(bookmark)) {
 			setSelectedBookmark(bookmark)
-			const parent = e.currentTarget
-			if (parent) {
-				const rect = parent.getBoundingClientRect()
-				setContextMenuPos({ x: rect.right - 120, y: rect.top + 80 })
+			const button = e.currentTarget
+			if (button) {
+				const rect = button.getBoundingClientRect()
+				setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
 			}
 		}
 	}
@@ -96,20 +98,24 @@ export function BookmarksComponent() {
 		setShowEditBookmarkModal(true)
 		setSelectedBookmark(null)
 	}
-
 	const handleBookmarkClick = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
 		if (e) {
 			e.preventDefault()
 		}
 		if (e?.button === 2) return
 
+		if (e?.button === 1) {
+			if (bookmark.type === 'FOLDER') {
+				openBookmarks(bookmark)
+			} else {
+				window.open(bookmark.url)
+			}
+			return
+		}
+
 		if (bookmark.type === 'FOLDER') {
 			if (e?.ctrlKey || e?.metaKey) {
-				const children = getCurrentFolderItems(bookmark.id)
-				const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
-				for (const b of bookmarks) {
-					window.open(b.url)
-				}
+				openBookmarks(bookmark)
 			} else {
 				setCurrentFolderId(bookmark.id)
 				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
@@ -222,18 +228,24 @@ export function BookmarksComponent() {
 		}
 	}
 
+	function openBookmarks(bookmark: Bookmark) {
+		const children = getCurrentFolderItems(bookmark.id)
+		const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
+		for (const b of bookmarks) {
+			window.open(b.url)
+		}
+	}
+
 	async function onOpenInNewTab(bookmark: Bookmark) {
 		if (bookmark?.type === 'FOLDER') {
-			const children = getCurrentFolderItems(bookmark.id)
-			const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
-			for (const b of bookmarks) {
-				window.open(b.url)
-			}
+			openBookmarks(bookmark)
 		}
 
 		if (bookmark && bookmark.type === 'BOOKMARK') {
 			window.open(bookmark.url)
 		}
+
+		setSelectedBookmark(null)
 	}
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
@@ -263,11 +275,11 @@ export function BookmarksComponent() {
 			<div
 				className={`grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
 			>
+				{' '}
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div
 							key={i}
-							onContextMenu={(e) => handleRightClick(e, bookmark)}
 							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-xl' : ''}`}
 						>
 							<BookmarkItem
@@ -279,6 +291,9 @@ export function BookmarksComponent() {
 								isDragging={draggedBookmarkId === bookmark.id}
 								onDragStart={(e) => handleDragStart(e, bookmark.id)}
 								onDragOver={(e) => handleDragOver(e, i)}
+								onMenuClick={
+									isManageable(bookmark) ? (e) => handleMenuClick(e, bookmark) : undefined
+								}
 								onDragEnd={handleDragEnd}
 								onDrop={(e) => handleDrop(e, i)}
 							/>

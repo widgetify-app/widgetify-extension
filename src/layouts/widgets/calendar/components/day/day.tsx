@@ -110,6 +110,10 @@ export function DayItem({
 	}
 
 	const getTodayRingStyle = () => {
+		if (isHoliday) {
+			return 'ring-1 ring-red-400/40'
+		}
+
 		switch (theme) {
 			case 'light':
 				return 'ring-2 ring-blue-500'
@@ -154,7 +158,7 @@ export function DayItem({
 			<button
 				onClick={() => setSelectedDate(cellDate)}
 				className={`
-                    relative p-0 rounded-md text-xs transition-colors cursor-pointer 
+                    relative p-0 rounded-2xl text-xs transition-colors cursor-pointer 
                     h-6 w-6 mx-auto flex items-center justify-center
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
