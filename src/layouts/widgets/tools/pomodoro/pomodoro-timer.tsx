@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
+import { getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
