@@ -69,13 +69,11 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	return (
 		<div className={`overflow-hidden ${getWidgetItemBackground(theme)} rounded-lg`}>
 			<div className="px-2 pt-1 pb-2">
-				<h3
-					className={`text-xs text-center font-medium mb-1.5 ${getTextStyle()} truncate`}
-				>
+				<h3 className={`text-xs text-center font-medium mb-1 ${getTextStyle()} truncate`}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
-				<div className="grid grid-cols-2 gap-2">
+				<div className="grid grid-cols-2 gap-1">
 					<div
 						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
 					>
