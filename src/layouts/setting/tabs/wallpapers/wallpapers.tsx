@@ -1,5 +1,4 @@
 import { useTheme } from '@/context/theme.context'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 
 import { GalleryTab } from './tab/gallery.tab'
@@ -31,39 +30,31 @@ export function WallpaperSetting() {
 	}
 
 	return (
-		<LazyMotion features={domAnimation}>
-			<m.div
-				className="w-full max-w-xl mx-auto"
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
-			>
-				{/* Main tabs navigation */}
-				<div className="mb-4 border-gray-200 dark:border-gray-700">
-					<ul className="flex flex-wrap text-sm font-medium text-center">
-						<li className="mr-2">
-							<button
-								onClick={() => setActiveTab('gallery')}
-								className={`inline-block cursor-pointer p-4 border-b-2 rounded-t-lg ${getTabStyle(activeTab === 'gallery')}`}
-							>
-								تصاویر
-							</button>
-						</li>
-						<li className="mr-2">
-							<button
-								onClick={() => setActiveTab('gradient')}
-								className={`inline-block cursor-pointer p-4 border-b-2 rounded-t-lg ${getTabStyle(activeTab === 'gradient')}`}
-							>
-								گرادیان
-							</button>
-						</li>
-					</ul>
-				</div>
+		<div className="w-full max-w-xl mx-auto">
+			<div className="mb-4 border-gray-200 dark:border-gray-700">
+				<ul className="flex flex-wrap text-sm font-medium text-center">
+					<li className="mr-2">
+						<button
+							onClick={() => setActiveTab('gallery')}
+							className={`inline-block cursor-pointer p-4 border-b-2 rounded-t-lg ${getTabStyle(activeTab === 'gallery')}`}
+						>
+							تصاویر
+						</button>
+					</li>
+					<li className="mr-2">
+						<button
+							onClick={() => setActiveTab('gradient')}
+							className={`inline-block cursor-pointer p-4 border-b-2 rounded-t-lg ${getTabStyle(activeTab === 'gradient')}`}
+						>
+							گرادیان
+						</button>
+					</li>
+				</ul>
+			</div>
 
-				<div className="flex flex-col gap-4">
-					{activeTab === 'gallery' ? <GalleryTab /> : <GradientTab />}
-				</div>
-			</m.div>
-		</LazyMotion>
+			<div className="flex flex-col gap-4">
+				{activeTab === 'gallery' ? <GalleryTab /> : <GradientTab />}
+			</div>
+		</div>
 	)
 }
