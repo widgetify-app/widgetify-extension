@@ -1,19 +1,18 @@
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
-import {
-	useGetUserProfile,
-	useUpdateActivity,
-} from '@/services/hooks/user/userService.hook'
+import { useUpdateActivity } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 const ACTIVITY_MAX_LENGTH = 40
-export function ActivityInput() {
-	const { data: user } = useGetUserProfile()
+interface Prop {
+	activity: string
+}
+export function ActivityInput({ activity }: Prop) {
 	const { theme } = useTheme()
-	const [activityText, setActivityText] = useState<string>('')
+	const [activityText, setActivityText] = useState<string>(activity)
 	const { mutate: updateActivity, isPending: isUpdatingActivity } = useUpdateActivity()
 
 	const handleActivityUpdate = () => {
@@ -61,7 +60,7 @@ export function ActivityInput() {
 							onClick={handleActivityUpdate}
 							disabled={
 								isUpdatingActivity ||
-								activityText === user?.activity ||
+								activityText === activity ||
 								activityText.length > ACTIVITY_MAX_LENGTH
 							}
 							className={`px-4 py-1.5 text-sm font-medium cursor-pointer rounded-lg transition-colors ${getButtonStyles(theme, true)} disabled:opacity-50 disabled:cursor-not-allowed`}

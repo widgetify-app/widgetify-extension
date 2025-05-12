@@ -160,7 +160,7 @@ export const UserProfile = () => {
 				</div>
 			</div>
 
-			<ActivityInput />
+			<ActivityInput activity={profile?.activity || ''} />
 
 			<SectionPanel title="همگام‌سازی" delay={0.2}>
 				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
