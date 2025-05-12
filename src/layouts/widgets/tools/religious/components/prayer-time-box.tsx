@@ -26,11 +26,11 @@ export const PrayerTimeBox = ({
 	const { theme } = useTheme()
 	return (
 		<div
-			className={`${getWidgetItemBackground(theme)} ${getBorderColor(theme)} border rounded-lg p-2 flex flex-col items-center transition-all duration-300`}
+			className={`${getWidgetItemBackground(theme)} ${getBorderColor(theme)} border rounded-lg p-[.3rem] flex flex-col items-center transition-all duration-300`}
 			style={{ animationDelay: `${index * 0.1}s` }}
 		>
 			<div className={`${iconColorStyle} mb-2`}>
-				<Icon size={20} />
+				<Icon size={18} />
 			</div>
 			<div className={`${getTextColor(theme)} text-[0.6rem] mb-1`}>{title}</div>
 			{isLoading ? (

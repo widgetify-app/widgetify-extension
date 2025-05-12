@@ -111,7 +111,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 				</div>
 			) : (
 				<>
-					<div className="grid grid-cols-2 gap-1.5 mb-1 md:grid-cols-3">
+					<div className="grid grid-cols-2 gap-[.4rem] mb-1 md:grid-cols-3">
 						{prayerTimeBoxes.map((box, index) => (
 							<PrayerTimeBox
 								key={index}

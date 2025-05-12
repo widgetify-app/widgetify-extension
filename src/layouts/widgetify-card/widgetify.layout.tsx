@@ -65,7 +65,7 @@ export const WidgetifyLayout = () => {
 						className={`flex items-center justify-between w-full border-b ${getBorderColor(theme)}`}
 					>
 						<div className="flex items-center gap-2">
-							<p className="w-32 font-semibold truncate text-md">سلام {userName}! </p>
+							<p className="w-32 text-xs font-semibold truncate">سلام {userName}! </p>
 						</div>
 						<ClockComponent />
 					</div>

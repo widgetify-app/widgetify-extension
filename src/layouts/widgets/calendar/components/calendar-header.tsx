@@ -52,7 +52,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 
 	return (
 		<div className="flex items-center justify-between p-2 md:p-2">
-			<h3 className={`font-medium text-md ${getHeaderTextStyle()}`}>
+			<h3 className={`font-medium text-xs ${getHeaderTextStyle()}`}>
 				{currentDate.format('dddd، jD jMMMM jYYYY')}
 			</h3>
 
