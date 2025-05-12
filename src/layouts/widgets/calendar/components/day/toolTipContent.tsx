@@ -1,5 +1,5 @@
+import type { FetchedEvent } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import type { FetchedEvent } from '@/services/hooks/getEvents.hook'
 import moment from 'jalali-moment'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaGlobeAsia } from 'react-icons/fa'
