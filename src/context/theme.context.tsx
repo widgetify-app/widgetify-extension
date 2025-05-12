@@ -122,7 +122,7 @@ const getButtonStyles = (theme: ThemeType, isPrimary = false, rounded = true): s
 		case 'light':
 			return `${baseStyles} bg-gray-200 hover:bg-gray-300 text-gray-800`
 		case 'dark':
-			return `${baseStyles} bg-gray-700 hover:bg-gray-600 text-gray-200`
+			return `${baseStyles} bg-neutral-800/50 hover:bg-neutral-600 text-gray-200`
 		default:
 			return `${baseStyles} bg-neutral-700/50 hover:bg-neutral-700 text-gray-200`
 	}

@@ -28,17 +28,6 @@ export function SearchLayout() {
 		}
 	}
 
-	const getSearchButtonStyles = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600 bg-blue-100/80 hover:bg-blue-200/90 hover:text-blue-700'
-			case 'dark':
-				return 'text-blue-300 bg-blue-500/20 hover:bg-blue-500/30 hover:text-blue-200'
-			default:
-				return 'text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 hover:text-blue-300'
-		}
-	}
-
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const query = searchQuery.trim()
