@@ -166,7 +166,7 @@ export function TodosLayout() {
 							)}
 
 							<div className="flex justify-between mb-2">
-								<div className="flex gap-0.5 text-[.65rem]">
+								<div className="flex gap-0.5 text-[.55rem]">
 									<button
 										onClick={() => setFilter('all')}
 										className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
@@ -194,8 +194,8 @@ export function TodosLayout() {
 									}
 									className={`${getSelectStyle()} text-[.65rem]`}
 								>
-									<option value="default">مرتب‌سازی: پیش‌فرض</option>
-									<option value="priority">مرتب‌سازی: اولویت</option>
+									<option value="default">پیش‌فرض</option>
+									<option value="priority">اولویت</option>
 								</select>
 							</div>
 						</>
