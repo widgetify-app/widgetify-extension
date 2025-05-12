@@ -60,7 +60,7 @@ export function WigiArzLayout({
 					</div>
 				) : (
 					<div
-						className={`flex flex-col gap-2 ${inComboWidget ? '' : 'overflow-y-auto'}`}
+						className={`flex flex-col gap-1 ${inComboWidget ? '' : 'overflow-y-auto'}`}
 						style={{
 							scrollbarWidth: 'none',
 						}}

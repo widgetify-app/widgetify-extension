@@ -1,7 +1,7 @@
 import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { FaPlus } from 'react-icons/fa6'
+import { CiBookmarkPlus } from 'react-icons/ci'
 import { BookmarkTooltip } from './bookmark/bookmark-title'
 
 export function EmptyBookmarkSlot({
@@ -38,7 +38,7 @@ export function EmptyBookmarkSlot({
 			<div className="relative flex items-center justify-center opacity-60 w-14 h-14">
 				{canAdd ? (
 					<div className="flex items-center justify-center ">
-						<FaPlus />
+						<CiBookmarkPlus size={24} />
 					</div>
 				) : (
 					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>
