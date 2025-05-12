@@ -102,7 +102,9 @@ export function SearchLayout() {
 							/>
 							<button
 								type="submit"
-								className={`absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-2 top-1/2 ${getSearchButtonStyles()}`}
+								className={
+									'absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-2 top-1/2'
+								}
 							>
 								<CiSearch size={22} />
 							</button>
