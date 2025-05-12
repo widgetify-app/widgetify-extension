@@ -54,13 +54,14 @@ export function FriendsList() {
 					<div className="flex items-center justify-around w-full">
 						<Tooltip content="نمایش دوستان" position="bottom">
 							<button
-								className="p-0.5 cursor-pointer"
+								className="p-0.5 cursor-pointer border-l border-gray-300/50"
 								onClick={() => setShowFriendsList(!showFriendsList)}
 							>
 								<FiUsers className="ml-1" size={18} />
 								{}
 							</button>
 						</Tooltip>
+						<span className="h-full w-0.5 px-0.5"></span>
 						<Tooltip content="مدیریت دوستان">
 							<button
 								className="p-0.5 cursor-pointer relative"
@@ -78,8 +79,8 @@ export function FriendsList() {
 				)}{' '}
 				<Swiper
 					modules={[FreeMode, Navigation]}
-					spaceBetween={4}
-					slidesPerView={3}
+					spaceBetween={2}
+					slidesPerView={4}
 					grabCursor={true}
 					className="w-full user-list-slider"
 					dir="ltr"
@@ -90,7 +91,7 @@ export function FriendsList() {
 				>
 					{showFriendsList
 						? friends.map((friend) => (
-								<SwiperSlide key={friend.id} className="pt-0.5">
+								<SwiperSlide key={friend.id}>
 									<FriendItem
 										user={friend.user}
 										activeProfileId={activeProfileId}
