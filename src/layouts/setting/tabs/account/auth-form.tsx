@@ -71,7 +71,7 @@ export const AuthForm = () => {
 	}
 
 	const handleRedirectToRegister = () => {
-		window.open('https://widgetify.ir/login', '_blank')
+		window.open('https://widgetify.ir/register', '_blank')
 	}
 
 	return (
