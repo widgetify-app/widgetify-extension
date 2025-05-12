@@ -116,7 +116,7 @@ export function translateError(error: any): string | Record<string, string> {
 		FAILED_TO_REMOVE_FRIEND: 'خطا در حذف دوست',
 		FRIEND_REQUEST_SENT: 'درخواست دوستی ارسال شد',
 		FRIEND_REQUEST_NOT_FOUND: 'درخواست دوستی یافت نشد',
-
+		SET_USERNAME_FIRST: 'لطفاً ابتدا نام کاربری خود را تنظیم کنید',
 		// Success messages
 		SUCCESS: 'عملیات با موفقیت انجام شد',
 
