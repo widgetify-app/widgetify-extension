@@ -7,6 +7,7 @@ interface TextInputProps {
 	onChange: (value: string) => void
 	placeholder?: string
 	onFocus?: () => void
+	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 	theme?: string
 	disabled?: boolean
 	name?: string
@@ -24,6 +25,7 @@ export function TextInput({
 	value,
 	placeholder,
 	onFocus,
+	onKeyDown,
 	theme: propTheme,
 	disabled = false,
 	name,
@@ -68,7 +70,6 @@ export function TextInput({
 		},
 		[onChange, debounce, type, debounceTime],
 	)
-
 	return (
 		<input
 			ref={ref}
@@ -78,6 +79,7 @@ export function TextInput({
 			value={localValue}
 			disabled={disabled}
 			onFocus={onFocus}
+			onKeyDown={onKeyDown}
 			dir={direction}
 			placeholder={placeholder || ''}
 			className={`w-full text-[14px] rounded-xl p-3 outline-none border 

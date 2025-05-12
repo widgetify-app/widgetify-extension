@@ -1,5 +1,4 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { TextInput } from '@/components/text-input'
 import { useDate } from '@/context/date.context'
 import {
 	getButtonStyles,
@@ -10,11 +9,10 @@ import {
 import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { FaChartSimple, FaPlus } from 'react-icons/fa6'
-import { FiSettings } from 'react-icons/fi'
+import { FaChartSimple } from 'react-icons/fa6'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
-import { TodoInput } from './todo-input'
+import { ExpandableTodoInput } from './expandable-todo-input'
 import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
 
@@ -26,7 +24,6 @@ export function TodosLayout() {
 	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
 	const [blurMode, setBlurMode] = useState<boolean>(false)
 	const [showStats, setShowStats] = useState<boolean>(false)
-	const [show, setShow] = useState(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
 
@@ -44,18 +41,10 @@ export function TodosLayout() {
 
 		loadBlurMode()
 	}, [])
-
 	const handleBlurModeToggle = () => {
 		const newBlurMode = !blurMode
 		setBlurMode(newBlurMode)
 		setToStorage('todoBlurMode', newBlurMode)
-	}
-
-	const handleAddQuickTodo = () => {
-		if (todoText.trim()) {
-			addTodo(todoText.trim(), selectedDateStr, 'medium')
-			setTodoText('')
-		}
 	}
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
@@ -212,7 +201,6 @@ export function TodosLayout() {
 						</>
 					)}
 				</div>
-
 				<div className="flex-grow overflow-hidden">
 					{!showStats && (
 						<div
@@ -238,45 +226,15 @@ export function TodosLayout() {
 							)}
 						</div>
 					)}
-				</div>
-
+				</div>{' '}
 				{!showStats && (
-					<div className="flex-none pt-2 mt-auto">
-						<div className="flex items-center gap-1">
-							<div className="flex-grow w-full">
-								<TextInput
-									value={todoText}
-									onChange={setTodoText}
-									placeholder="عنوان وظیفه جدید..."
-									className="w-full py-1.5 text-sm rounded-md"
-								/>
-							</div>
-							<div className="flex flex-row flex-shrink-0 gap-0.5">
-								<button
-									onClick={handleAddQuickTodo}
-									disabled={!todoText.trim()}
-									className={`flex items-center cursor-pointer w-7 justify-center text-center p-1.5 rounded-lg ${getButtonStyles(theme, true)} !px-0 !py-0 p-2 disabled:opacity-50`}
-								>
-									<FaPlus />
-								</button>
-								<button
-									onClick={() => setShow(true)}
-									className={`flex items-center cursor-pointer w-7 justify-center p-1.5 rounded-lg transition-colors  ${getButtonStyles(theme, blurMode)} !px-0 !py-2`}
-								>
-									<FiSettings size={13} />
-								</button>
-							</div>
-						</div>
-					</div>
+					<ExpandableTodoInput
+						todoText={todoText}
+						onChangeTodoText={setTodoText}
+						onAddTodo={handleAddTodo}
+					/>
 				)}
 			</div>
-
-			<TodoInput
-				onAdd={handleAddTodo}
-				onClose={() => setShow(false)}
-				show={show}
-				todoText={todoText}
-			/>
 
 			<style>{`
                 .blur-mode {
