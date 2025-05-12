@@ -105,7 +105,6 @@ export const FriendRequestsTab = () => {
 	return (
 		<div className="space-y-6">
 			<SectionPanel title="درخواست دوستی جدید" size="sm">
-				(
 				<div className="space-y-2">
 					<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
 						نام کاربری
