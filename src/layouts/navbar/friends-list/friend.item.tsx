@@ -27,15 +27,28 @@ export function FriendItem({
 	}
 
 	return (
-		<div className="relative">
-			<Tooltip content={user.extras?.activity || undefined}>
+		<div className="relative flex justify-center">
+			<Tooltip
+				content={
+					<div className="max-w-28 h-auto flex justify-center items-center flex-col gap-2">
+						<div className="w-full flex justify-center items-center gap-2 pb-1 border-b border-gray-300/50">
+							<p className="text-xs text-center truncate">{user.username}</p>
+							<AvatarComponent url={user.avatar} placeholder={user.username} size="xs" />
+						</div>
+						<div className="w-full flex justify-center items-center">
+							<p className="w-full text-xs wrap-break-word">
+								{user.extras?.activity || undefined}
+							</p>
+						</div>
+					</div>
+				}
+			>
 				<div
 					ref={containerRef}
 					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105"
 					onClick={handleClick}
 				>
 					<AvatarComponent url={user.avatar} placeholder={user.username} size="xs" />
-					<p className="w-full text-xs text-center truncate">{user.username}</p>
 				</div>
 			</Tooltip>
 
