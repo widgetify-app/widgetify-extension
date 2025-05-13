@@ -112,7 +112,6 @@ export const FriendRequestsTab = () => {
 					<div className="flex">
 						<TextInput
 							type="text"
-							disabled={!!user?.username}
 							value={username}
 							onChange={handleUsernameChange}
 							placeholder="نام کاربری دوست خود را وارد کنید"
@@ -120,7 +119,7 @@ export const FriendRequestsTab = () => {
 						/>
 						<button
 							onClick={handleSendRequest}
-							disabled={isSending || !username.trim() || !user?.username}
+							disabled={isSending || !username.trim()}
 							className={`${getButtonStyles(theme, true)} cursor-pointer mr-2 px-4 py-2 rounded-lg whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed`}
 						>
 							{isSending ? 'در حال ارسال...' : 'ارسال درخواست'}
