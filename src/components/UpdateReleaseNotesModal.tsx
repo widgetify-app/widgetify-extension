@@ -23,7 +23,6 @@ type ReleaseNote = {
 	description: string
 }
 
-const CURRENT_VERSION = '1.0.5'
 const VERSION_NAME = 'خلیــج فارس'
 const SUMMARY = `در این نسخه از ویجتی‌فای، ویجت یادداشت، مدیریت دوستان و تنظیمات منطقه زمانی
 							اضافه شده است. همچنین بسیاری از بخش‌های برنامه با هدف بهبود تجربه کاربری
@@ -151,7 +150,7 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={`ویجتی‌فای به نسخه ${CURRENT_VERSION} بروزرسانی شد 🎉`}
+			title={'ویجتی‌فای به نسخه جدید بروزرسانی شد 🎉'}
 			size="md"
 			direction="rtl"
 			closeOnBackdropClick={false}
@@ -162,7 +161,7 @@ export const UpdateReleaseNotesModal = ({
 						className={`text-xl font-bold mb-1 ${getHeadingTextStyle(theme)} animate-fade-in`}
 						style={{ animationDelay: '0.1s' }}
 					>
-						{VERSION_NAME} - نسخه {CURRENT_VERSION}
+						{VERSION_NAME}
 					</h2>
 				</div>
 
