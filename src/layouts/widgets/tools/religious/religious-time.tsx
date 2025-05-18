@@ -1,4 +1,3 @@
-import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
@@ -30,7 +29,6 @@ const DAILY_ZIKRS = [
 ]
 
 export function ReligiousTime({ currentDate }: Prop) {
-	const { theme } = useTheme()
 	const { selectedCity } = useWeatherStore()
 
 	const day = currentDate.jDate()
@@ -50,12 +48,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 
 	const dailyZikr = DAILY_ZIKRS.find((item) => item.day === weekDay)
 	const getBoxIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600'
-			default:
-				return 'text-blue-400'
-		}
+		return 'text-primary'
 	}
 
 	const prayerTimeBoxes = [
@@ -78,7 +71,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-1">
-				<h4 className={`flex items-center text-lg font-medium ${getTextColor(theme)}`}>
+				<h4 className={'flex items-center text-lg font-medium widget-item-text'}>
 					اوقات شرعی
 					<span className={'text-sm flex item-end font-light mr-2 mt-2'}>
 						({englishCityName})
@@ -103,11 +96,13 @@ export function ReligiousTime({ currentDate }: Prop) {
 			) : error ? (
 				<div className="py-2 text-center transition-opacity duration-300">
 					<div
-						className={`inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full ${getWidgetItemBackground(theme)}`}
+						className={
+							'inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full widget-item-background'
+						}
 					>
-						<FiSunrise className={getTextColor(theme)} size={24} />
+						<FiSunrise className="widget-item-text" size={24} />
 					</div>
-					<div className={getTextColor(theme)}>مشکلی در دریافت اطلاعات وجود دارد</div>
+					<div className={'widget-item-text'}>مشکلی در دریافت اطلاعات وجود دارد</div>
 				</div>
 			) : (
 				<>

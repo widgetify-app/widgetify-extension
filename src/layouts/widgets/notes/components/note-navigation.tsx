@@ -1,3 +1,4 @@
+import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import type { Note } from '@/context/notes.context'
 import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
@@ -20,8 +21,6 @@ export function NoteNavigation({
 	onAddNote,
 	onDeleteNote,
 }: NoteNavigationProps) {
-	const { theme } = useTheme()
-
 	const activeNoteIndex = useMemo(() => {
 		return notes.findIndex((note) => note.id === activeNoteId)
 	}, [notes, activeNoteId])
@@ -47,7 +46,7 @@ export function NoteNavigation({
 						onClick={handlePrevNote}
 						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
 					>
-						<FiChevronRight size={18} className={getTextColor(theme)} />
+						<FiChevronRight size={18} className="text-base-content" />
 					</button>
 				</Tooltip>
 
@@ -57,29 +56,36 @@ export function NoteNavigation({
 						onClick={handleNextNote}
 						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
 					>
-						<FiChevronLeft size={18} className={getTextColor(theme)} />
+						<FiChevronLeft size={18} className="text-base-content" />
 					</button>
 				</Tooltip>
 			</div>
 
 			<div className="flex items-center gap-2">
 				<Tooltip content="حذف یادداشت" position="top" offset={5}>
-					<button
+					<Button
+						size="xs"
 						disabled={notes.length <= 1}
 						onClick={() => notes.length > 1 && onDeleteNote(activeNoteId as string)}
-						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${notes.length <= 1 ? 'opacity-30 cursor-not-allowed' : ''}`}
+						className={
+							'flex btn-circle items-center btn-ghost justify-center disabled:opacity-30'
+						}
 					>
-						<FiTrash2 size={16} className={getTextColor(theme)} />
-					</button>
+						<FiTrash2 size={14} />
+					</Button>
 				</Tooltip>
 
 				<Tooltip content="یادداشت جدید" position="top" offset={5}>
-					<button
+					<Button
 						onClick={onAddNote}
-						className={`flex items-center cursor-pointer justify-center p-2 rounded-lg  ${getButtonStyles(theme, true)} disabled:opacity-50`}
+						size="sm"
+						rounded="md"
+						className={
+							'flex  items-center btn-primary p-0.5 w-10 justify-center disabled:opacity-30'
+						}
 					>
 						<FaPlus size={14} />
-					</button>
+					</Button>
 				</Tooltip>
 			</div>
 		</div>

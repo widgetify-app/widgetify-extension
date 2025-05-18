@@ -1,10 +1,4 @@
 import Tooltip from '@/components/toolTip'
-import {
-	getBorderColor,
-	getTextColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import {
 	FiCalendar,
@@ -23,10 +17,8 @@ interface EventItemProps {
 }
 
 export function EventItem({ event, index }: EventItemProps) {
-	const { theme } = useTheme()
-
 	const getSubTextStyle = () => {
-		return `${getTextColor(theme)} opacity-90`
+		return 'widget-item-text opacity-90'
 	}
 
 	const getSourceIcon = (source: string) => {
@@ -50,7 +42,9 @@ export function EventItem({ event, index }: EventItemProps) {
 	return (
 		<motion.div
 			key={`${event.source}-${index}`}
-			className={`mb-2 rounded-lg overflow-hidden ${getWidgetItemBackground(theme)} border-r ${getBorderColor(theme)}`}
+			className={
+				'mb-2 rounded-lg overflow-hidden widget-item-background border-r-2 border-primary-content'
+			}
 			variants={itemVariants}
 		>
 			<div className="relative p-1">
@@ -61,14 +55,16 @@ export function EventItem({ event, index }: EventItemProps) {
 					</span>
 					{event.isHoliday && (
 						<span
-							className={`mr-auto text-xs px-2 py-0.5 rounded-full ${theme === 'light' ? 'bg-red-100 text-red-600/60' : 'bg-red-900/30 text-red-400/60'}`}
+							className={
+								'mr-auto text-xs px-2 py-0.5 rounded-full bg-error/50 text-error'
+							}
 						>
 							تعطیل
 						</span>
 					)}
 				</div>
 
-				<h4 className={`text-sm font-medium w-44 text-wrap ${getTextColor(theme)}`}>
+				<h4 className={'text-sm font-medium w-44 text-wrap widget-item-text'}>
 					{event.title}
 				</h4>
 
@@ -93,7 +89,7 @@ export function EventItem({ event, index }: EventItemProps) {
 							<Tooltip content="پیوستن به جلسه">
 								<button
 									onClick={() => window.open(event.googleItem?.hangoutLink, '_blank')}
-									className={`cursor-pointer p-1 rounded-full ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'}`}
+									className={'cursor-pointer p-1 rounded-full hover:bg-gray-700'}
 								>
 									<FiVideo size={16} className={getSubTextStyle()} />
 								</button>
@@ -102,7 +98,7 @@ export function EventItem({ event, index }: EventItemProps) {
 						<Tooltip content="مشاهده در تقویم گوگل">
 							<button
 								onClick={() => window.open(event.googleItem?.htmlLink, '_blank')}
-								className={`cursor-pointer p-1 rounded-full ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'}`}
+								className={'cursor-pointer p-1 rounded-full hover:bg-gray-700'}
 							>
 								<FiChevronRight size={16} className={getSubTextStyle()} />
 							</button>

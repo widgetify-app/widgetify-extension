@@ -1,5 +1,4 @@
 import Modal from '@/components/modal'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
@@ -25,7 +24,6 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
-	const { theme } = useTheme()
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
@@ -53,10 +51,8 @@ export const CurrencyModalComponent = ({
 				</motion.div>
 
 				<div className="text-center">
-					<p className={`text-xl font-bold ${getTextColor(theme)}`}>
-						{currency?.name.en}
-					</p>
-					<p className={`text-sm font-medium ${getTextColor(theme)} opacity-60`}>
+					<p className={'text-xl font-bold text-base-content'}>{currency?.name.en}</p>
+					<p className={'text-sm font-medium text-base-content opacity-60'}>
 						{code.toUpperCase()}
 					</p>
 				</div>
@@ -67,16 +63,16 @@ export const CurrencyModalComponent = ({
 						whileHover={{ scale: 1.02 }}
 					>
 						<PriceChangeComponent priceChange={priceChange} />
-						<p className={`text-xl font-bold ${getTextColor(theme)} opacity-95`}>
+						<p className={'text-xl font-bold text-base-content opacity-95'}>
 							{displayPrice.toLocaleString()}
 						</p>
 
 						{currency?.priceHistory?.length ? (
 							<motion.button
 								onClick={() => setShowChart(!showChart)}
-								className={`p-1 rounded-lg transition-all ${getTextColor(
-									theme,
-								)} opacity-70 hover:opacity-100 cursor-pointer`}
+								className={
+									'p-1 rounded-lg transition-all text-base-content opacity-70 hover:opacity-100 cursor-pointer'
+								}
 								whileHover={{ scale: 1.1 }}
 								whileTap={{ scale: 0.9 }}
 							>
@@ -84,7 +80,7 @@ export const CurrencyModalComponent = ({
 									animate={{ rotate: showChart ? 0 : 180 }}
 									transition={{ type: 'spring' }}
 								>
-									<FaChartLine className={`w-5 h-5 ${getTextColor(theme)}`} />
+									<FaChartLine className={'w-5 h-5 text-base-content'} />
 								</motion.div>
 							</motion.button>
 						) : null}

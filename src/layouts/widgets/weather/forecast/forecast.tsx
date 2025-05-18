@@ -8,7 +8,6 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 //@ts-ignore
 import 'swiper/css/navigation'
-import { useTheme } from '@/context/theme.context'
 import type { unitsFlag } from '../unitSymbols'
 import { ForecastItem } from './forecast.item'
 
@@ -17,18 +16,6 @@ interface WeatherLayoutProps {
 	temperatureUnit: keyof typeof unitsFlag
 }
 export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
-	const { theme } = useTheme()
-	const getNavigationButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200/80 text-gray-700 hover:bg-gray-300/90 shadow-md'
-			case 'dark':
-				return 'bg-gray-800/80 text-gray-200 hover:bg-gray-700/90 shadow-md'
-			default: // glass
-				return 'bg-black/30 text-white hover:bg-black/40 shadow-lg backdrop-blur-sm'
-		}
-	}
-
 	return (
 		<>
 			<Swiper
@@ -51,13 +38,17 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
 				))}
 
 				<div
-					className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] ${getNavigationButtonStyle()}`}
+					className={
+						'absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] bg-base-300/20 hover:bg-base-300/80'
+					}
 				>
 					<FiChevronLeft size={20} />
 				</div>
 
 				<div
-					className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] ${getNavigationButtonStyle()}`}
+					className={
+						'absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] bg-base-300/20 hover:bg-base-300/80'
+					}
 				>
 					<FiChevronRight size={20} />
 				</div>

@@ -1,10 +1,10 @@
 /* Theme and Color Styles */
 
 /* Base styles (apply to all themes unless overridden) */
-.modal-backdrop {
+/* .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
-}
+} */
 
 .modal {
     border-radius: 1rem;
@@ -57,11 +57,6 @@
 
 /* --- Light Theme --- */
 [data-theme="light"] {
-    .modal {
-        background-color: white;
-        border: 1px solid rgba(209, 213, 219, 0.3);
-        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    }
 
     .currency-confirm-button {
         background-color: rgb(22 163 74);
@@ -159,11 +154,7 @@
 
 /* --- Dark Theme --- */
 [data-theme="dark"] {
-    .modal {
-        background-color: #171717;
-        border: 1px solid rgba(75, 85, 99, 0.4);
-        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    }
+
 
     .currency-confirm-button {
         background-color: rgb(21 128 61);
@@ -288,13 +279,13 @@
 
 /* --- Glass Theme --- */
 [data-theme="glass"] {
-    .modal {
+    /* .modal {
         background-color: rgba(28, 28, 28, 0.8);
         border: 1px solid rgba(75, 85, 99, 0.3);
         box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
         -webkit-backdrop-filter: blur(16px);
         backdrop-filter: blur(16px);
-    }
+    } */
 
     .currency-confirm-button {
         background-color: rgba(21, 128, 61, 0.8);

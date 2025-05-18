@@ -17,38 +17,20 @@ interface ForecastProps {
 }
 
 export function ForecastItem({ forecast, unit }: ForecastProps) {
-	const { theme } = useTheme()
-
-	const getWeekdayStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			case 'dark':
-				return 'text-neutral-400'
-			default: // glass
-				return 'text-neutral-400'
-		}
-	}
-
-	const getTemperatureStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'from-gray-700 to-gray-900'
-			default:
-				return 'from-gray-200 to-gray-400'
-		}
-	}
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<div
-				className={`flex flex-col items-center justify-between w-12 h-[5.8rem] p-2 transition-all duration-300 ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}  rounded-2xl`}
+				className={
+					'flex flex-col items-center justify-between w-12 h-[5.8rem] p-2 transition-all duration-300   border border-accent-content/20 widget-item-background rounded-2xl'
+				}
 			>
 				{/* Time Section */}
 				<div className="flex items-center justify-center w-full">
 					{forecast.isDaily ? (
 						<div
-							className={`text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md ${getWeekdayStyle()} text-center w-full transition-colors duration-300`}
+							className={
+								'text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md widget-item-text  text-center w-full transition-colors duration-300'
+							}
 						>
 							{new Date(forecast.date).toLocaleDateString('fa-IR', {
 								weekday: 'short',
@@ -56,7 +38,9 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 						</div>
 					) : (
 						<div
-							className={`px-1.5 py-0.5 text-[.6rem] font-medium rounded-md ${getWeekdayStyle()} w-full text-center transition-colors duration-300`}
+							className={
+								'px-1.5 py-0.5 text-[.6rem] font-medium rounded-md widget-item-text  w-full text-center transition-colors duration-300'
+							}
 						>
 							{new Date(forecast.date).toLocaleTimeString([], {
 								hour: '2-digit',
@@ -77,7 +61,9 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 				<m.div
 					initial={{ scale: 0.9 }}
 					animate={{ scale: 1 }}
-					className={`text-sm font-extrabold text-transparent bg-gradient-to-r ${getTemperatureStyle()} bg-clip-text drop-shadow-temperature`}
+					className={
+						'text-sm font-extrabold text-transparent bg-gradient-to-r widget-item-text opacity-90 bg-clip-text drop-shadow-temperature'
+					}
 				>
 					{Math.round(forecast.temp)}
 					<span className="text-sm font-medium">{unitsFlag[unit]}</span>

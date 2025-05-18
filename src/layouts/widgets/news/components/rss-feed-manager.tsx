@@ -1,3 +1,4 @@
+import { Button } from '@/components/button/button'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
@@ -42,7 +43,6 @@ interface RssFeedManagerProps {
 
 export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps) => {
 	if (!isOpen) return null
-	const { theme } = useTheme()
 	const [newFeed, setNewFeed] = useState<{ name: string; url: string }>({
 		name: '',
 		url: '',
@@ -133,17 +133,6 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		)
 	}
 
-	const getErrorStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-red-50 text-red-600'
-			case 'dark':
-				return 'bg-red-900/30 text-red-300'
-			default: // glass
-				return 'bg-red-900/20 backdrop-blur-sm text-red-300'
-		}
-	}
-
 	const onRemoveFeed = (id: string) => {
 		setRssState({
 			...rssState,
@@ -194,12 +183,8 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
 					/>
 
-					<section
-						className={`p-4 rounded-xl border ${getContainerBackground(theme)} ${getBorderColor(theme)}`}
-					>
-						<h3 className={`mb-3 text-sm font-medium ${getHeadingTextStyle(theme)}`}>
-							افزودن فید RSS جدید
-						</h3>
+					<section className={'p-4 rounded-xl border widget-item-bg widget-item-border'}>
+						<h3 className={'mb-3 text-sm font-medium'}>افزودن فید RSS جدید</h3>
 						<div className="flex flex-col gap-3">
 							<TextInput
 								type="text"
@@ -217,51 +202,31 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 								}}
 							/>
 
-							<AnimatePresence>
-								{error && (
-									<m.div
-										initial={{ opacity: 0, height: 0 }}
-										animate={{ opacity: 1, height: 'auto' }}
-										exit={{ opacity: 0, height: 0 }}
-										className="overflow-hidden"
-									>
-										<p className={`p-2 text-sm rounded ${getErrorStyle()}`}>{error}</p>
-									</m.div>
-								)}
-							</AnimatePresence>
-
-							<m.button
-								onClick={addNewFeed}
-								className={clsx(
-									`flex items-center justify-center gap-2 transition-colors rounded-md cursor-pointer ${getButtonStyles(theme, true)} !px-4 !py-2`,
-								)}
-							>
+							<Button size="md" className="btn-primary" onClick={addNewFeed}>
 								<VscAdd size={16} />
 								<span>افزودن فید جدید</span>
-							</m.button>
+							</Button>
 						</div>
 					</section>
 
 					{/* Suggested Feeds Section */}
 					<section className="mt-2">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
-								فیدهای پیشنهادی
-							</h3>
+							<h3 className={'text-sm font-medium widget-item-text'}>فیدهای پیشنهادی</h3>
 						</div>
 						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 							{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
 								(feed) => (
 									<m.div
 										key={feed.url}
-										className={`flex items-center justify-center p-2 border rounded-lg cursor-pointer ${getCardBackground(theme)} ${getBorderColor(theme)}`}
+										className={
+											'flex items-center justify-center p-2 border rounded-lg cursor-pointer widget-item-background widget-item-border'
+										}
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
 										onClick={() => addSuggestedFeed(feed)}
 									>
-										<span
-											className={`font-medium text-light text-center ${getTextColor(theme)}`}
-										>
+										<span className={'font-medium text-light text-center'}>
 											{feed.name}
 										</span>
 									</m.div>
@@ -272,11 +237,9 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 					<section className="mt-4">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
-								فیدهای شما
-							</h3>
+							<h3 className={'text-sm font-medium text-base-200'}>فیدهای شما</h3>
 							{rssState.customFeeds.length > 0 && (
-								<div className={`text-xs ${getDescriptionTextStyle(theme)}`}>
+								<div className={'text-xs text-base-300'}>
 									{rssState.customFeeds.length} فید
 								</div>
 							)}
@@ -285,7 +248,6 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 							feeds={rssState.customFeeds}
 							onToggleFeed={(id) => onToggleFeed(id)}
 							onRemoveFeed={onRemoveFeed}
-							theme={theme}
 						/>
 					</section>
 				</div>
@@ -304,25 +266,24 @@ interface FeedsListProps {
 	isLoading?: boolean
 	onToggleFeed: (id: string) => void
 	onRemoveFeed: (id: string) => void
-	theme: string
 }
 
-const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed, theme }: FeedsListProps) => {
+const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 	return (
 		<div className="min-h-[150px]">
 			{feeds.length === 0 ? (
 				<m.div
-					className={`flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg ${getBorderColor(theme)}`}
+					className={
+						'flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg widget-item-border'
+					}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 				>
-					<BiRss className={`mb-3 opacity-50 ${getTextColor(theme)}`} size={32} />
-					<p className={`mb-1 text-sm font-medium opacity-70 ${getTextColor(theme)}`}>
+					<BiRss className={'mb-3 opacity-50 widget-item-text'} size={32} />
+					<p className={'mb-1 text-sm font-medium opacity-70 widget-item-text'}>
 						هیچ فید RSS اضافه نشده است
 					</p>
-					<p className={`text-xs opacity-50 ${getDescriptionTextStyle(theme)}`}>
-						از فرم بالا برای افزودن فید استفاده کنید
-					</p>
+					<p className={'text-xs opacity-50'}>از فرم بالا برای افزودن فید استفاده کنید</p>
 				</m.div>
 			) : (
 				<div className="space-y-2">
@@ -355,20 +316,6 @@ interface FeedItemProps {
 const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps) => {
 	const { theme } = useTheme()
 
-	const getDeleteButtonStyle = () => {
-		if (disabled)
-			return 'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-red-500'
-
-		switch (theme) {
-			case 'light':
-				return 'text-red-500 hover:text-red-700 hover:bg-red-50'
-			case 'dark':
-				return 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
-			default: // glass
-				return 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
-		}
-	}
-
 	const getTextStyle = () => {
 		const baseStyle = feed.enabled ? 'font-medium' : 'line-through opacity-70'
 		return `${baseStyle} ${getTextColor(theme)}`
@@ -398,17 +345,9 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 					<span className={`block text-xs truncate ${getUrlStyle()}`}>{feed.url}</span>
 				</div>
 			</div>
-			<m.button
-				onClick={onRemove}
-				disabled={disabled}
-				className={clsx(
-					`p-2 ml-2 transition-colors cursor-pointer rounded-full ${getDeleteButtonStyle()}`,
-				)}
-				whileHover={{ scale: disabled ? 1 : 1.1 }}
-				whileTap={{ scale: disabled ? 1 : 0.9 }}
-			>
+			<Button size="md" className="btn-error" onClick={onRemove} disabled={disabled}>
 				<VscTrash size={18} />
-			</m.button>
+			</Button>
 		</m.div>
 	)
 }

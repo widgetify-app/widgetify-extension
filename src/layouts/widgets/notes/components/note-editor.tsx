@@ -10,8 +10,6 @@ interface NoteEditorProps {
 const EDITOR_DEBOUNCE_TIME = 500 //0.5s
 
 export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
-	const { theme } = useTheme()
-
 	const titleRef = useRef<HTMLTextAreaElement>(null)
 	const bodyRef = useRef<HTMLTextAreaElement>(null)
 
@@ -76,7 +74,9 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 		<div className="flex flex-col h-full">
 			<textarea
 				ref={titleRef}
-				className={`w-full p-2 text-sm font-bold text-center resize-none bg-transparent outline-none ${getTextColor(theme)} opacity-90`}
+				className={
+					'w-full p-2 text-sm font-bold text-center resize-none bg-transparent outline-none widget-item-text opacity-90'
+				}
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
 				onChange={(e) => handleInputChange('title', e.target.value, e.target)}
@@ -86,7 +86,9 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 
 			<textarea
 				ref={bodyRef}
-				className={`w-full px-2 pt-2 text-base flex-grow resize-none bg-transparent outline-none ${getTextColor(theme)} opacity-80`}
+				className={
+					'w-full px-2 pt-2 text-base flex-grow resize-none bg-transparent outline-none widget-item-text opacity-80'
+				}
 				placeholder="متن یادداشت..."
 				value={currentBody}
 				onChange={(e) => handleInputChange('body', e.target.value, e.target)}

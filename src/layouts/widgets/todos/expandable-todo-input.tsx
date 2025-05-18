@@ -1,12 +1,7 @@
 import Analytics from '@/analytics'
+import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
-import {
-	getBorderColor,
-	getButtonStyles,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { FiFlag, FiMessageSquare, FiPlus, FiTag, FiX } from 'react-icons/fi'
@@ -48,7 +43,6 @@ export function ExpandableTodoInput({
 	onChangeTodoText,
 	onAddTodo,
 }: ExpandableTodoInputProps) {
-	const { theme } = useTheme()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
 	const [category, setCategory] = useState('')
@@ -105,7 +99,7 @@ export function ExpandableTodoInput({
 		<div ref={containerRef} className="flex-none pt-2 mt-auto">
 			<div
 				className={`rounded-lg overflow-hidden  ${
-					isExpanded ? `border ${getBorderColor(theme)}` : ''
+					isExpanded ? 'border widget-item-border' : ''
 				}`}
 			>
 				<div className="flex items-center gap-1 p-2">
@@ -121,24 +115,17 @@ export function ExpandableTodoInput({
 							id="expandable-todo-input"
 						/>
 					</div>{' '}
-					<div className="flex flex-row items-center flex-shrink-0 gap-0.5">
-						<button
+					<div className="flex flex-col items-center flex-shrink-0  gap-0.5">
+						<Button
 							onClick={handleAddTodo}
 							disabled={!todoText.trim()}
-							className={`flex items-center cursor-pointer w-8 h-8 justify-center text-center rounded-lg ${getButtonStyles(theme, true)} !px-0 !py-0 p-2 disabled:opacity-50`}
-							title="افزودن وظیفه"
+							size="sm"
+							isPrimary={true}
+							rounded="md"
+							className="p-2"
 						>
 							<FiPlus size={16} />
-						</button>{' '}
-						{isExpanded && (
-							<button
-								onClick={resetForm}
-								className={`flex items-center cursor-pointer w-8 h-8 justify-center text-center rounded-lg ${theme === 'light' ? 'hover:bg-gray-100 text-gray-500' : 'hover:bg-gray-700/50 text-gray-400'}`}
-								title="انصراف"
-							>
-								<FiX size={16} />
-							</button>
-						)}
+						</Button>
 					</div>
 				</div>
 
@@ -153,9 +140,7 @@ export function ExpandableTodoInput({
 							<div className="px-3 pb-3 space-y-3">
 								{' '}
 								<div>
-									<label
-										className={`block mb-1 text-xs font-medium ${getTextColor(theme)}`}
-									>
+									<label className={'block mb-1 text-xs font-medium widget-item-text'}>
 										اولویت
 									</label>
 									<div className="flex items-center gap-3">

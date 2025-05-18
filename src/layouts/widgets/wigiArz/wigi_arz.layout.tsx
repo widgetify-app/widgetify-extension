@@ -1,5 +1,6 @@
+import { Button } from '@/components/button/button'
 import { useCurrencyStore } from '@/context/currency.context'
-import { getButtonStyles, useTheme } from '@/context/theme.context'
+import { getButtonStyles } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 import { FiDollarSign } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
@@ -24,7 +25,6 @@ export function WigiArzLayout({
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies } = useCurrencyStore()
 
-	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
@@ -51,12 +51,13 @@ export function WigiArzLayout({
 					<div className="flex flex-col items-center justify-center h-full text-center">
 						<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
 						<p className="text-sm opacity-50">ارزهای مورد نظر خود را اضافه کنید</p>
-						<button
-							className={`mt-3 px-4 py-1.5 cursor-pointer rounded-lg ${getButtonStyles(theme)}`}
+						<Button
+							className={'mt-3'}
+							rounded="lg"
 							onClick={() => handleModalClose(true)}
 						>
 							افزودن ارز
-						</button>
+						</Button>
 					</div>
 				) : (
 					<div

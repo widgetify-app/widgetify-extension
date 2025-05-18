@@ -1,5 +1,3 @@
-import { getContainerBackground, useTheme } from '@/context/theme.context'
-
 interface WidgetContainerProps {
 	children: React.ReactNode
 	className?: string
@@ -12,10 +10,9 @@ export function WidgetContainer({
 	background = true,
 	style,
 }: WidgetContainerProps) {
-	const { theme } = useTheme()
 	return (
 		<div
-			className={`flex flex-col h-80 min-h-80 max-h-80 p-2 ${background && getContainerBackground(theme)} rounded-xl ${className}`}
+			className={`flex flex-col h-80 min-h-80 max-h-80 p-2 ${background && 'bg-base-100 dark:bg-base-300'} rounded-xl ${className}`}
 			style={style}
 		>
 			{children}

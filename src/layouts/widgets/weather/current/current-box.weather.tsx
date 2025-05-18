@@ -1,10 +1,4 @@
 import Tooltip from '@/components/toolTip'
-import {
-	getBorderColor,
-	getTextColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
@@ -19,26 +13,13 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
-	const { theme } = useTheme()
 
 	const getAiIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-indigo-600 bg-indigo-100/80'
-			case 'dark':
-				return 'text-indigo-300 bg-indigo-800/40'
-			default: // glass
-				return 'text-indigo-300 bg-gray-800/30'
-		}
+		return 'text-indigo-600 bg-indigo-100/80'
 	}
 
 	const getSpotifyButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-green-600 bg-green-100/80 shadow-green-900/20 hover:shadow-green-900/30'
-			default:
-				return 'text-green-400 bg-green-900/40 shadow-green-900/20 hover:shadow-green-900/30'
-		}
+		return 'text-green-600 bg-green-100/80 shadow-green-900/20 hover:shadow-green-900/30'
 	}
 
 	const baseWeatherInfoClass =
@@ -78,7 +59,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					<div className="flex flex-row gap-5 px-2 mb-2 truncate">
 						<div className="flex flex-col justify-center">
 							<span
-								className={`text-2xl font-bold truncate ${getTextColor(theme)} transition-colors`}
+								className={
+									'text-2xl font-bold truncate text-base-content transition-colors'
+								}
 								aria-label={`Temperature: ${Math.round(weather.temperature.temp)} degrees`}
 							>
 								{Math.round(weather.temperature.temp)}
@@ -88,7 +71,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							</span>
 							{selectedCity?.name && (
 								<div
-									className={`text-sm flex items-center gap-1 truncate ${getTextColor(theme)} transition-colors opacity-90`}
+									className={
+										'text-sm flex items-center gap-1 truncate text-base-content transition-colors opacity-90'
+									}
 								>
 									<p className="text-xs font-light truncate" title={selectedCity.name}>
 										{selectedCity.name}
@@ -124,7 +109,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 				</div>
 
 				<div
-					className={`relative overflow-hidden transition-colors shadow-inner rounded-xl mt-2 ${getBorderColor(theme)} border ${getWidgetItemBackground(theme)}`}
+					className={
+						'relative overflow-hidden transition-colors shadow-inner rounded-xl mt-2 border-base-200 border widget-item-background'
+					}
 				>
 					<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">
 						<div className="flex-1">
@@ -142,7 +129,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 							<div className="relative pl-8 pr-2">
 								<p
-									className={`py-2 text-xs font-light leading-relaxed transition-all duration-300 ${getTextColor(theme)}`}
+									className={
+										'py-2 text-xs font-light leading-relaxed transition-all duration-300 widget-item-text'
+									}
 								>
 									{weather.ai?.description || weather.temperature.temp_description}
 								</p>

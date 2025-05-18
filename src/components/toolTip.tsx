@@ -33,7 +33,6 @@ const Tooltip = ({
 
 	const triggerRef = useRef<HTMLDivElement>(null)
 	const tooltipRef = useRef<HTMLDivElement>(null)
-	const { theme } = useTheme()
 
 	const calculatePosition = () => {
 		if (!triggerRef.current || !tooltipRef.current) return
@@ -173,7 +172,7 @@ const Tooltip = ({
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs ${getTooltipStyle(theme)} ${contentClassName}`}
+								className={`fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs bg-base-100 shadow ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,

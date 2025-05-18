@@ -1,11 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { Button } from '@/components/button/button'
 import { useDate } from '@/context/date.context'
-import {
-	getButtonStyles,
-	getProgressBarBgStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
+
 import { useTodoStore } from '@/context/todo.context'
 import { useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -17,7 +13,6 @@ import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
 
 export function TodosLayout() {
-	const { theme } = useTheme()
 	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
@@ -79,33 +74,6 @@ export function TodosLayout() {
 		return { total, completed, percentage }
 	}
 
-	const getFilterButtonStyle = (isActive: boolean) => {
-		if (isActive) {
-			switch (theme) {
-				case 'light':
-					return 'bg-blue-100 text-blue-700'
-				default:
-					return 'bg-blue-500/20 text-blue-400'
-			}
-		}
-
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600 hover:text-gray-800'
-			default:
-				return 'text-gray-400 hover:text-gray-300'
-		}
-	}
-
-	const getSelectStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-700 bg-transparent border-none focus:ring-0'
-			default:
-				return 'text-gray-400 bg-transparent border-none focus:ring-0'
-		}
-	}
-
 	const stats = getCompletionStats()
 
 	return (
@@ -113,9 +81,7 @@ export function TodosLayout() {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4
-							className={`text-xs font-medium flex items-center ${getTextColor(theme)}`}
-						>
+						<h4 className={'text-xs font-medium flex items-center widget-item-text'}>
 							<span>وظایف</span>
 							<span className="mr-1 font-semibold">
 								{isToday(selectedDate) ? ' امروز' : ` ${selectedDate.format('jD jMMMM')}`}
@@ -123,20 +89,16 @@ export function TodosLayout() {
 						</h4>
 
 						<div className="flex gap-1">
-							<button
-								onClick={handleBlurModeToggle}
-								className={`flex items-center justify-center rounded-full transition-colors cursor-pointer ${getButtonStyles(theme, blurMode)} !px-1  !py-1`}
-								title={blurMode ? 'نمایش وظایف' : 'مخفی کردن وظایف'}
-							>
+							<Button size="xs" onClick={handleBlurModeToggle} isPrimary={blurMode}>
 								{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
-							</button>
-							<button
+							</Button>
+							<Button
+								size="xs"
 								onClick={() => setShowStats(!showStats)}
-								className={`flex items-center justify-center rounded-full transition-colors cursor-pointer ${getButtonStyles(theme, showStats)} !px-1  !py-1`}
-								title={showStats ? 'مخفی کردن آمار' : 'نمایش آمار'}
+								isPrimary={showStats}
 							>
 								<FaChartSimple size={12} />
-							</button>
+							</Button>
 						</div>
 					</div>
 
@@ -146,17 +108,13 @@ export function TodosLayout() {
 						<>
 							{selectedDateTodos.length > 0 && (
 								<div className="mb-2">
-									<div
-										className={`h-1 mb-1 rounded-full ${getProgressBarBgStyle(theme)}`}
-									>
+									<div className={'h-1 mb-1 rounded-full bg-base-200'}>
 										<div
 											className="h-1 bg-green-500 rounded-full"
 											style={{ width: `${stats.percentage}%` }}
 										></div>
 									</div>
-									<div
-										className={`flex justify-between text-[.65rem] ${getTextColor(theme)}`}
-									>
+									<div className={'flex justify-between text-[.65rem] widget-item-text'}>
 										<span>
 											{stats.completed} از {stats.total} تکمیل شده
 										</span>
@@ -167,24 +125,30 @@ export function TodosLayout() {
 
 							<div className="flex justify-between mb-2">
 								<div className="flex gap-0.5 text-[.55rem]">
-									<button
+									<Button
 										onClick={() => setFilter('all')}
-										className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'all')}`}
+										className={`px-1 py-0.5 text-[.55rem]  ${filter === 'all' ? 'btn-soft' : 'btn-ghost'}`}
+										rounded="sm"
+										size="xs"
 									>
 										همه
-									</button>
-									<button
+									</Button>
+									<Button
 										onClick={() => setFilter('active')}
-										className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'active')}`}
+										className={`px-1 py-0.5 text-[.55rem] ${filter === 'active' ? 'btn-soft' : 'btn-ghost'}`}
+										rounded="sm"
+										size="xs"
 									>
 										فعال
-									</button>
-									<button
+									</Button>
+									<Button
 										onClick={() => setFilter('completed')}
-										className={`px-1 py-0.5 cursor-pointer rounded ${getFilterButtonStyle(filter === 'completed')}`}
+										className={`px-1 py-0.5 text-[.55rem] ${filter === 'completed' ? 'btn-soft' : 'btn-ghost'}`}
+										rounded="sm"
+										size="xs"
 									>
 										تکمیل شده
-									</button>
+									</Button>
 								</div>
 
 								<select
@@ -192,7 +156,7 @@ export function TodosLayout() {
 									onChange={(e) =>
 										setSort(e.target.value as 'priority' | 'time' | 'default')
 									}
-									className={`${getSelectStyle()} text-[.65rem]`}
+									className={'text-primary text-[.65rem]'}
 								>
 									<option value="default">پیش‌فرض</option>
 									<option value="priority">اولویت</option>

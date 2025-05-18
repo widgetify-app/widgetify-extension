@@ -1,5 +1,19 @@
 @import "tailwindcss";
 @import "./styles/theme-colors.css";
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+	name: "light";
+	default: true;
+	--color-primary: #536DFE;
+	--color-secondary: #7C8DF0;
+}
+
+@plugin "daisyui/theme" {
+	name: "dark";
+	--color-primary: #536DFE;
+	--color-secondary: #7C8DF0;
+}
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -34,6 +48,18 @@ body {
 		direction: rtl;
 		font-family: Vazirmatn, sans-serif;
 	}
+}
+
+.widget-item-background {
+	@apply bg-base-200;
+}
+
+.widget-item-text {
+	@apply text-base-content;
+}
+
+.widget-item-border {
+	@apply border-base-300;
 }
 
 input[type=number]::-webkit-inner-spin-button,

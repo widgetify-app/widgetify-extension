@@ -1,9 +1,3 @@
-import {
-	getBorderColor,
-	getTextColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 interface DailyZikrBoxProps {
@@ -19,17 +13,15 @@ export const DailyZikrBox = ({
 	isLoading = false,
 	delay = 0.3,
 }: DailyZikrBoxProps) => {
-	const { theme } = useTheme()
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
-				className={`${getWidgetItemBackground(theme)} ${getBorderColor(theme)} border rounded-lg p-0.5`}
+				className={'widget-item-background border widget-item-border rounded-lg p-0.5'}
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay }}
 			>
-				<div className={`${getTextColor(theme)} text-center mt-2`}>
+				<div className={'widget-item-text text-center mt-2'}>
 					{isLoading ? (
 						<>
 							<div className="w-40 h-5 mx-auto mb-1 bg-current rounded opacity-30 animate-pulse" />

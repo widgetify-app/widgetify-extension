@@ -18,7 +18,6 @@ interface CurrencyBoxProps {
 }
 
 export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
-	const { theme } = useTheme()
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: null,
 	})
@@ -111,7 +110,9 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				<m.div
 					whileHover={{ scale: 1, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
 					whileTap={{ scale: 0.98 }}
-					className={`flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer  ${getWidgetItemBackground(theme)} opacity-60 hover:bg-gray-500/30`}
+					className={
+						'flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer widget-item-background opacity-60 hover:bg-gray-500/30'
+					}
 					style={{
 						border: '1px solid transparent',
 						borderColor: imgColor ? `${imgColor}20` : 'transparent',
@@ -148,15 +149,15 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 							/>
 						</div>
 						<div className="flex items-center space-x-2 text-sm font-medium">
-							<span className={`md:visible ${getTextColor(theme)} opacity-90`}>
+							<span className={'md:visible widget-item-text opacity-90'}>
 								{currency?.name?.en}
 							</span>
-							<span className={`text-xs ${getTextColor(theme)} opacity-40`}>{code}</span>
+							<span className={'text-xs widget-item-text opacity-40'}>{code}</span>
 						</div>
 					</div>
 
 					<div className="flex items-baseline gap-2">
-						<span className={`text-sm font-bold ${getTextColor(theme)}`}>
+						<span className={'text-sm font-bold widget-item-text'}>
 							{displayPrice.toLocaleString()}
 						</span>
 						{priceChange !== 0 && (

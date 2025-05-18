@@ -1,5 +1,4 @@
-import { getBorderColor } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { Button } from '@/components/button/button'
 import type React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { modeLabels } from '../constants'
@@ -7,27 +6,20 @@ import type { TimerMode } from '../types'
 
 interface ModeButtonProps {
 	mode: TimerMode
-	theme: string
 	currentMode: TimerMode
 	onClick: () => void
 }
 
-export const ModeButton: React.FC<ModeButtonProps> = ({
-	mode,
-	theme,
-	currentMode,
-	onClick,
-}) => {
+export const ModeButton: React.FC<ModeButtonProps> = ({ mode, currentMode, onClick }) => {
 	const isActive = mode === currentMode
 
 	return (
-		<motion.button
-			whileHover={{ scale: 1.05 }}
-			whileTap={{ scale: 0.95 }}
+		<Button
 			onClick={onClick}
-			className={`px-3 py-1 cursor-pointer text-xs font-medium rounded-md transition-colors border ${getBorderColor(theme)}`}
+			size="xs"
+			className={`px-3 py-1 btn-ghost text-xs font-medium rounded-md transition-colors border border-base-100 ${isActive && 'bg-primary/10 text-primary'}`}
 		>
 			{modeLabels[mode]} {isActive && <FiCheck className="inline" />}
-		</motion.button>
+		</Button>
 	)
 }

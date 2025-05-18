@@ -14,17 +14,16 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	activeTab,
 	onTabClick,
 }) => {
-	const { theme } = useTheme()
-
 	const getTabStyle = (isActive: boolean) => {
 		if (isActive) {
-			return 'text-blue-500'
+			return 'text-primary/80'
 		}
-		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+
+		return 'text-base-content/70 hover:text-primary/80'
 	}
 
 	const getIndicatorColor = () => {
-		return theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'
+		return 'bg-blue-500'
 	}
 
 	const tabs = [
@@ -34,12 +33,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div
-			className="flex items-center justify-between pb-1 mb-1 border-b"
-			style={{
-				borderColor: theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
-			}}
-		>
+		<div className="flex items-center justify-between pb-1 mb-1 border-b widget-item-border">
 			{tabs.map((tab) => (
 				<div key={tab.id} className="relative">
 					<Tooltip content={tab.label} position="top" delay={300}>

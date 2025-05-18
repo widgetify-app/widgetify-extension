@@ -1,5 +1,4 @@
 import Analytics from '@/analytics'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -23,7 +22,6 @@ interface PomodoroTimerProps {
 }
 
 export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
-	const { theme } = useTheme()
 	const [isRunning, setIsRunning] = useState(false)
 	const [mode, setMode] = useState<TimerMode>('work')
 	const [timeLeft, setTimeLeft] = useState(25 * 60)
@@ -183,7 +181,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	const getProgressColor = () => {
-		return theme === 'light' ? modeColors[mode].light : modeColors[mode].dark
+		return modeColors[mode]
 	}
 
 	return (
@@ -197,19 +195,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			<div className="relative flex items-center justify-between mb-2">
 				<div className="flex items-center space-x-2">
 					<ModeButton
-						theme={theme}
 						mode="work"
 						currentMode={mode}
 						onClick={() => handleModeChange('work')}
 					/>
 					<ModeButton
-						theme={theme}
 						mode="short-break"
 						currentMode={mode}
 						onClick={() => handleModeChange('short-break')}
 					/>
 					<ModeButton
-						theme={theme}
 						mode="long-break"
 						currentMode={mode}
 						onClick={() => handleModeChange('long-break')}
@@ -220,9 +215,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					whileHover={{ scale: 1.1, rotate: 15 }}
 					whileTap={{ scale: 0.95 }}
 					onClick={() => setShowSettings(!showSettings)}
-					className={`p-2 rounded-full cursor-pointer transition-colors ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
+					className={
+						'p-2 rounded-full cursor-pointer transition-colors hover:bg-gray-100'
+					}
 				>
-					<FiSettings className={getTextColor(theme)} />
+					<FiSettings />
 				</motion.button>
 			</div>
 
@@ -232,7 +229,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					timeLeft={timeLeft}
 					progress={progress}
 					mode={mode}
-					theme={theme}
 					getProgressColor={getProgressColor}
 					cycles={cycles}
 					cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
@@ -241,32 +237,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				{/* Control buttons */}
 				<div className="flex justify-center space-x-4 mt-0.5">
 					{isRunning ? (
-						<ControlButton
-							mode={'pause'}
-							icon={<FiPause />}
-							onClick={handlePause}
-							theme={theme}
-						/>
+						<ControlButton mode={'pause'} icon={<FiPause />} onClick={handlePause} />
 					) : (
-						<ControlButton
-							mode={'play'}
-							icon={<FiPlay />}
-							onClick={handleStart}
-							theme={theme}
-						/>
+						<ControlButton mode={'play'} icon={<FiPlay />} onClick={handleStart} />
 					)}
 
-					<ControlButton
-						mode={'reset'}
-						theme={theme}
-						icon={<FiRefreshCw />}
-						onClick={handleReset}
-					/>
+					<ControlButton mode={'reset'} icon={<FiRefreshCw />} onClick={handleReset} />
 
 					{mode.includes('break') && (
 						<ControlButton
 							mode={'check'}
-							theme={theme}
 							icon={<FiCheckCircle />}
 							onClick={() => handleModeChange('work')}
 						/>
@@ -275,7 +255,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					{mode === 'work' && (
 						<ControlButton
 							mode={'coffee'}
-							theme={theme}
 							icon={<FiCoffee />}
 							onClick={() => handleModeChange('short-break')}
 						/>
@@ -290,7 +269,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				settings={settings}
 				onUpdateSettings={handleUpdateSettings}
 				onReset={handleReset}
-				theme={theme}
 			/>
 		</motion.div>
 	)
