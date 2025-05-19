@@ -81,9 +81,9 @@ const getCardBackground = (theme: ThemeType): string => {
 		case 'light':
 			return 'bg-white text-gray-800'
 		case 'dark':
-			return 'bg-neutral-800/80 text-gray-300'
+			return 'bg-neutral-800 text-gray-300'
 		default:
-			return 'bg-neutral-900/70 text-gray-300  backdrop-blur-sm'
+			return 'bg-neutral-900/70 text-gray-300 backdrop-blur-sm'
 	}
 }
 

@@ -317,7 +317,6 @@ export function HomePage() {
 			<UpdateReleaseNotesModal
 				isOpen={showReleaseNotes}
 				onClose={() => onCloseReleaseNotes()}
-				currentVersion={currentVersion}
 			/>
 		</div>
 	)

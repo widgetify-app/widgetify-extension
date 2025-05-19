@@ -113,31 +113,32 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-5 h-5 border-2 rounded-full border-t-blue-500 border-blue-500/30 animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-blue-500 border-blue-500/30 animate-spin"></div>
 				</div>
 			)
 		}
 
 		return (
-			<div className="grid grid-cols-6 gap-2">
+			<div className="grid grid-cols-8 gap-1.5">
 				{emojiUrls.map((url) => (
 					<button
 						key={url}
 						onClick={() => handleEmojiSelect(url)}
-						className={`flex items-center justify-center w-8 h-8 cursor-pointer rounded-md 
+						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-blue-500/20 border-2 border-blue-500'
-									: 'border border-gray-500/20 hover:bg-gray-500/10'
+									? 'bg-blue-500/25 border-2 border-blue-500 transform scale-110'
+									: 'border border-transparent hover:bg-gray-500/10 active:bg-gray-500/20'
 							}`}
 					>
 						<img
 							src={url}
 							alt="emoji"
-							className="object-contain w-4 h-4"
+							className="object-contain w-5 h-5"
 							onError={(e) => {
 								;(e.target as HTMLImageElement).style.display = 'none'
 							}}
+							loading="lazy"
 						/>
 					</button>
 				))}
