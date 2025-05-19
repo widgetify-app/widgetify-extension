@@ -19,7 +19,7 @@ import {
 } from '../widgets/calendar/utils'
 import { WidgetContainer } from '../widgets/widget-container'
 import ClockComponent from './components/clock.component'
-import { DogComponent } from './components/pet-dog.component'
+import { DogComponent } from './pets/pet-dog.component'
 
 export const WidgetifyLayout = () => {
 	const { enablePets, timezone } = useGeneralSetting()
