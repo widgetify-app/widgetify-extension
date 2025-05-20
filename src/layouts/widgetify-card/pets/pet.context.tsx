@@ -2,41 +2,39 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { createContext, useContext, useEffect, useState } from 'react'
 
-// export enum PetKeys {
-// 	akita = 'akita',
-// 	chicken = 'chicken',
-// }
-
-// export const Pets: Record<PetKeys, any> = {
-// 	[PetKeys.akita]: {
-// 		name: 'آکیتا',
-// 		petType: 'dog',
-// 		animates: {},
-// 		speeds: {},
-// 		instance: null, // a reference to the pet instance
-// 	},
-// 	[PetKeys.chicken]: {
-// 		name: 'مرغ',
-// 		petType: 'chicken',
-// 		animates: {},
-// 		speeds: {},
-// 		instance: null, // a reference to the pet instance
-// 	},
-// }
-
-interface PetSettings {
+export enum PetTypes {
+	DOG_AKITA = 'dog-akita',
+	CHICKEN = 'chicken',
+}
+export interface PetSettings {
 	enablePets: boolean
-	petName: string
+	petType: PetTypes | null
+	petOptions: Record<
+		PetTypes,
+		{
+			name: string
+		}
+	>
 }
 
 interface PetSettingsContextType extends PetSettings {
 	setEnablePets: (value: boolean) => void
 	setPetName: (value: string) => void
+	setPetType: (value: PetTypes) => void
+	getCurrentPetName: () => string
 }
 
 const DEFAULT_SETTINGS: PetSettings = {
 	enablePets: true,
-	petName: 'آکیتا',
+	petType: null,
+	petOptions: {
+		[PetTypes.DOG_AKITA]: {
+			name: 'آکیتا',
+		},
+		[PetTypes.CHICKEN]: {
+			name: 'قدقدپور',
+		},
+	},
 }
 
 const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
@@ -63,8 +61,15 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 					...prevSettings,
 					...data,
 				}))
-				updateSetting('enablePets', data.enablePets)
-				updateSetting('petName', data.petName)
+				if (data.enablePets !== undefined) {
+					updateSetting('enablePets', data.enablePets)
+				}
+				if (data.petName !== undefined) {
+					setPetName(data.petName)
+				}
+				if (data.petType !== undefined) {
+					updateSetting('petType', data.petType)
+				}
 			}
 		})
 
@@ -74,6 +79,11 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 				setSettings({
 					...DEFAULT_SETTINGS,
 					...storedPets,
+				})
+			} else {
+				setSettings({
+					...DEFAULT_SETTINGS,
+					petType: PetTypes.DOG_AKITA,
 				})
 			}
 		}
@@ -90,13 +100,40 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const setPetName = (value: string) => {
-		updateSetting('petName', value)
+		if (!settings.petType) {
+			return
+		}
+
+		const CurrentPet = settings.petOptions[settings.petType]
+		if (CurrentPet) {
+			CurrentPet.name = value
+		}
+
+		updateSetting('petOptions', settings.petOptions)
+	}
+
+	const setPetType = (value: PetTypes) => {
+		updateSetting('petType', value)
+	}
+
+	const getCurrentPetName = () => {
+		if (!settings.petType) {
+			return ''
+		}
+
+		const CurrentPet = settings.petOptions[settings.petType]
+		if (CurrentPet) {
+			return CurrentPet.name
+		}
+		return ''
 	}
 
 	const contextValue: PetSettingsContextType = {
 		...settings,
 		setEnablePets,
+		setPetType,
 		setPetName,
+		getCurrentPetName,
 	}
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>

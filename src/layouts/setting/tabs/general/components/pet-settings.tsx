@@ -9,27 +9,22 @@ import {
 	getHeadingTextStyle,
 	useTheme,
 } from '@/context/theme.context'
+import { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import { useEffect, useState } from 'react'
 
 export function PetSettings() {
 	const { theme } = useTheme()
 	const [enablePets, setEnablePets] = useState(true)
+	const [petType, setPetType] = useState<PetTypes>(PetTypes.DOG_AKITA)
 	const [petName, setPetName] = useState<string>('')
-	const getHintTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-			default:
-				return 'text-gray-400'
-		}
-	}
 
 	useEffect(() => {
 		async function load() {
 			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
 				setEnablePets(storedPets.enablePets)
-				setPetName(storedPets.petName)
+				setPetType(storedPets.petType || PetTypes.DOG_AKITA)
+				setPetName(storedPets.petOptions[petType].name)
 			}
 		}
 
@@ -40,6 +35,7 @@ export function PetSettings() {
 		callEvent('updatedPetSettings', {
 			enablePets: value,
 			petName,
+			petType,
 		})
 		setEnablePets(value)
 	}
@@ -48,8 +44,22 @@ export function PetSettings() {
 		callEvent('updatedPetSettings', {
 			enablePets,
 			petName: value,
+			petType,
 		})
 		setPetName(value)
+	}
+
+	async function onChangePetType(value: PetTypes) {
+		callEvent('updatedPetSettings', {
+			enablePets,
+			petName,
+			petType: value,
+		})
+		setPetType(value)
+		const storedPets = await getFromStorage('pets')
+		if (storedPets?.petOptions[value]) {
+			setPetName(storedPets.petOptions[value].name)
+		}
 	}
 
 	return (
@@ -73,17 +83,52 @@ export function PetSettings() {
 				{enablePets && (
 					<div className={`p-4 mt-4  rounded-lg border ${getBorderColor(theme)}`}>
 						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
+							نوع حیوان خانگی
+						</p>
+						<div className="flex flex-col gap-2 mb-4">
+							<div className="flex items-center gap-2">
+								<input
+									type="radio"
+									id="dog-akita"
+									name="pet-type"
+									checked={petType === PetTypes.DOG_AKITA}
+									onChange={() => onChangePetType(PetTypes.DOG_AKITA)}
+									className="cursor-pointer"
+								/>
+								<label
+									htmlFor="dog-akita"
+									className={`cursor-pointer ${getHeadingTextStyle(theme)}`}
+								>
+									سگ آکیتا
+								</label>
+							</div>
+							<div className="flex items-center gap-2">
+								<input
+									type="radio"
+									id="chicken"
+									name="pet-type"
+									checked={petType === PetTypes.CHICKEN}
+									onChange={() => onChangePetType(PetTypes.CHICKEN)}
+									className="cursor-pointer"
+								/>
+								<label
+									htmlFor="chicken"
+									className={`cursor-pointer ${getHeadingTextStyle(theme)}`}
+								>
+									مرغ
+								</label>
+							</div>
+						</div>
+
+						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
 							نام حیوان خانگی
 						</p>
 						<TextInput
 							type="text"
 							value={petName}
 							onChange={(value) => onChangePetName(value)}
-							placeholder="آکیتا"
+							placeholder={petType === PetTypes.DOG_AKITA ? 'آکیتا' : 'قدقدپور'}
 						/>
-						<p className={`mt-2 text-xs ${getHintTextStyle()}`}>
-							در صورت خالی بودن، نام پیش‌فرض "آکیتا" استفاده می‌شود.
-						</p>
 					</div>
 				)}
 			</div>

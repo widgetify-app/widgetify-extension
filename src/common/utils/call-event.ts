@@ -1,5 +1,6 @@
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
+import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { StoredWallpaper } from '../wallpaper.interface'
 
@@ -13,6 +14,7 @@ export interface EventName {
 	updatedPetSettings: {
 		enablePets: boolean
 		petName: string
+		petType: PetTypes
 	}
 }
 

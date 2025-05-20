@@ -1,10 +1,18 @@
+import { ChickenComponent } from './pet-item/pet-chicken'
 import { DogComponent } from './pet-item/pet-dog'
-import { usePetContext } from './pet.context'
+import { PetTypes, usePetContext } from './pet.context'
 
 export function Pet() {
-	const { enablePets } = usePetContext()
+	const { enablePets, petType } = usePetContext()
 
 	if (!enablePets) return null
 
-	return <DogComponent />
+	if (petType === PetTypes.CHICKEN) {
+		return <ChickenComponent />
+	}
+	if (petType === PetTypes.DOG_AKITA) {
+		return <DogComponent />
+	}
+
+	return null
 }

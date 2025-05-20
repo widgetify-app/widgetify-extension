@@ -1,11 +1,10 @@
-import idle from '@/assets/animals/dog/akita_idle_8fps.gif'
-import lie from '@/assets/animals/dog/akita_lie_8fps.gif'
-import running from '@/assets/animals/dog/akita_run_8fps.gif'
-import swipe from '@/assets/animals/dog/akita_swipe_8fps.gif'
-import walking from '@/assets/animals/dog/akita_walk_fast_8fps.gif'
+import idle from '@/assets/animals/chicken/white_idle_8fps.gif'
+import running from '@/assets/animals/chicken/white_run_8fps.gif'
+import swipe from '@/assets/animals/chicken/white_swipe_8fps.gif'
+import walking from '@/assets/animals/chicken/white_walk_fast_8fps.gif'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { LuBone } from 'react-icons/lu'
+import { GiCorn } from 'react-icons/gi'
 import { usePetContext } from '../pet.context'
 
 interface Bone {
@@ -16,7 +15,7 @@ interface Bone {
 	dropping: boolean
 }
 
-export const DogComponent = () => {
+export const ChickenComponent = () => {
 	const { getCurrentPetName } = usePetContext()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const dogRef = useRef<HTMLDivElement>(null)
@@ -330,8 +329,8 @@ export const DogComponent = () => {
 				return walking
 			case 'run':
 				return running
-			case 'sit':
-				return lie
+			// case 'sit':
+			// 	return null
 			case 'stand':
 				return swipe
 			case 'climb':
@@ -367,9 +366,9 @@ export const DogComponent = () => {
 							animate={bone.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
 							transition={{ duration: 0.5 }}
 						>
-							<LuBone
+							<GiCorn
 								size={BONE_SIZE}
-								className={`text-amber-200 drop-shadow-md ${bone.dropping ? 'animate-bounce' : ''}`}
+								className={`text-yellow-500 drop-shadow-md ${bone.dropping ? 'animate-bounce' : ''}`}
 							/>
 						</motion.div>
 					),
@@ -397,7 +396,7 @@ export const DogComponent = () => {
 				)}
 				<img
 					src={getGif()}
-					alt="Interactive Dog"
+					alt="Interactive Chicken"
 					className="object-cover w-full h-full pointer-events-none"
 				/>
 			</div>
