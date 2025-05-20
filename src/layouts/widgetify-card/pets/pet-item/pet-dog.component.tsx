@@ -3,10 +3,10 @@ import lie from '@/assets/animals/dog/akita_lie_8fps.gif'
 import running from '@/assets/animals/dog/akita_run_8fps.gif'
 import swipe from '@/assets/animals/dog/akita_swipe_8fps.gif'
 import walking from '@/assets/animals/dog/akita_walk_fast_8fps.gif'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { LuBone } from 'react-icons/lu'
+import { usePetContext } from '../pet.context'
 
 interface Bone {
 	id: number
@@ -17,7 +17,7 @@ interface Bone {
 }
 
 export const DogComponent = () => {
-	const { petName } = useGeneralSetting()
+	const { petName } = usePetContext()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const dogRef = useRef<HTMLDivElement>(null)
 	const [position, setPosition] = useState({ x: 30, y: 0 })
@@ -387,12 +387,12 @@ export const DogComponent = () => {
 					zIndex: 10,
 				}}
 			>
-				{showName && (
+				{showName && petName && (
 					<div
 						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
 						style={{ transform: `scaleX(${direction})` }}
 					>
-						{petName || 'آکیتا'}
+						{petName}
 					</div>
 				)}
 				<img

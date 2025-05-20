@@ -51,4 +51,8 @@ export interface StorageKV {
 		updatedAt: number
 	}[]
 	calendarDrawerState: boolean
+	pets: {
+		enablePets: boolean
+		petName: string
+	}
 }

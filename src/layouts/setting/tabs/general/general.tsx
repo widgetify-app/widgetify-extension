@@ -5,16 +5,8 @@ import { SelectCity } from './components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 
 export function GeneralSettingTab() {
-	const {
-		analyticsEnabled,
-		setAnalyticsEnabled,
-		enablePets,
-		setEnablePets,
-		petName,
-		setPetName,
-		timezone,
-		setTimezone,
-	} = useGeneralSetting()
+	const { analyticsEnabled, setAnalyticsEnabled, timezone, setTimezone } =
+		useGeneralSetting()
 
 	return (
 		<div className="w-full max-w-xl mx-auto">
@@ -25,13 +17,7 @@ export function GeneralSettingTab() {
 				analyticsEnabled={analyticsEnabled}
 				setAnalyticsEnabled={setAnalyticsEnabled}
 			/>
-			<PetSettings
-				key="pets"
-				enablePets={enablePets}
-				setEnablePets={setEnablePets}
-				petName={petName}
-				setPetName={setPetName}
-			/>
+			<PetSettings key="pets" />
 		</div>
 	)
 }

@@ -4,23 +4,17 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
-	enablePets: boolean
-	petName: string
 	timezone: string
 }
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
-	setEnablePets: (value: boolean) => void
 	setAnalyticsEnabled: (value: boolean) => void
-	setPetName: (value: string) => void
 	setTimezone: (value: string) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
-	enablePets: true,
-	petName: 'آکیتا',
 	timezone: 'Asia/Tehran',
 }
 
@@ -61,16 +55,8 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		})
 	}
 
-	const setEnablePets = (value: boolean) => {
-		updateSetting('enablePets', value)
-	}
-
 	const setAnalyticsEnabled = (value: boolean) => {
 		updateSetting('analyticsEnabled', value)
-	}
-
-	const setPetName = (value: string) => {
-		updateSetting('petName', value)
 	}
 
 	const setTimezone = (value: string) => {
@@ -84,9 +70,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	const contextValue: GeneralSettingContextType = {
 		...settings,
 		updateSetting,
-		setEnablePets,
 		setAnalyticsEnabled,
-		setPetName,
 		setTimezone,
 	}
 
