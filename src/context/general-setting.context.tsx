@@ -2,10 +2,12 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 
+export type PetType = 'dog' | 'cat';
 export interface GeneralData {
 	analyticsEnabled: boolean
 	enablePets: boolean
-	petName: string
+	selectedPets: PetType[]; // e.g. ['dog', 'cat']
+	petNames: Record<PetType, string>; // { dog: '...', cat: '...' }
 	timezone: string
 }
 
@@ -13,21 +15,23 @@ interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
 	setEnablePets: (value: boolean) => void
 	setAnalyticsEnabled: (value: boolean) => void
-	setPetName: (value: string) => void
+	setPetName: (pet: PetType, value: string) => void
+	setSelectedPets: (pets: PetType[]) => void
 	setTimezone: (value: string) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
 	enablePets: true,
-	petName: 'آکیتا',
+	selectedPets: ['dog'],
+	petNames: { dog: 'آکیتا', cat: 'گربه' },
 	timezone: 'Asia/Tehran',
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
 
 export function GeneralSettingProvider({ children }: { children: React.ReactNode }) {
-	const [settings, setSettings] = useState<GeneralData>(DEFAULT_SETTINGS)
+const [settings, setSettings] = useState<GeneralData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
 
 	useEffect(() => {
@@ -69,9 +73,18 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting('analyticsEnabled', value)
 	}
 
-	const setPetName = (value: string) => {
-		updateSetting('petName', value)
-	}
+const setPetName = (pet: PetType, value: string) => {
+	setSettings((prevSettings) => {
+		const newPetNames = { ...prevSettings.petNames, [pet]: value }
+		const newSettings = { ...prevSettings, petNames: newPetNames }
+		setToStorage('generalSettings', newSettings)
+		return newSettings
+	})
+}
+
+const setSelectedPets = (pets: PetType[]) => {
+	updateSetting('selectedPets', pets)
+}
 
 	const setTimezone = (value: string) => {
 		updateSetting('timezone', value)
@@ -81,14 +94,15 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		return null
 	}
 
-	const contextValue: GeneralSettingContextType = {
-		...settings,
-		updateSetting,
-		setEnablePets,
-		setAnalyticsEnabled,
-		setPetName,
-		setTimezone,
-	}
+const contextValue: GeneralSettingContextType = {
+	...settings,
+	updateSetting,
+	setEnablePets,
+	setAnalyticsEnabled,
+	setPetName,
+	setSelectedPets,
+	setTimezone,
+}
 
 	return (
 		<GeneralSettingContext.Provider value={contextValue}>

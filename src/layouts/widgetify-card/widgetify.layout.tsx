@@ -20,9 +20,10 @@ import {
 import { WidgetContainer } from '../widgets/widget-container'
 import ClockComponent from './components/clock.component'
 import { DogComponent } from './components/pet-dog.component'
+import { CatComponent } from './components/pet-cat.component'
 
 export const WidgetifyLayout = () => {
-	const { enablePets, timezone } = useGeneralSetting()
+const { enablePets, selectedPets, petNames, timezone } = useGeneralSetting()
 	const { theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
@@ -58,7 +59,8 @@ export const WidgetifyLayout = () => {
 	return (
 		<WidgetContainer className="overflow-hidden">
 			<div className="relative w-full h-full">
-				{enablePets && <DogComponent />}
+   {enablePets && selectedPets.includes('dog') && <DogComponent petName={petNames.dog} />}
+   {enablePets && selectedPets.includes('cat') && <CatComponent petName={petNames.cat} />}
 
 				<div className="relative z-10 flex flex-col items-center gap-2">
 					<div
