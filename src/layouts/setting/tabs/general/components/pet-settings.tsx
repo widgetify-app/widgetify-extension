@@ -63,11 +63,12 @@ export function PetSettings() {
 	const persianType: Record<string, string> = {
 		dog: 'سگ',
 		chicken: 'مرغ',
+		crab: 'خرچنگ',
 	}
 	const availablePets = Object.entries(BASE_PET_OPTIONS.petOptions).map(
 		([key, value]) => ({
 			value: key as PetTypes,
-			label: `${value.emoji} ${persianType[value.type]} - ${value.name}`,
+			label: `${value.emoji} ${persianType[value.type] || ''} - ${value.name}`,
 		}),
 	)
 

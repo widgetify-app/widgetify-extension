@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 export enum PetTypes {
 	DOG_AKITA = 'dog-akita',
 	CHICKEN = 'chicken',
+	CRAB = 'crab',
 }
 export interface PetSettings {
 	enablePets: boolean
@@ -14,7 +15,7 @@ export interface PetSettings {
 		{
 			name: string
 			emoji: string
-			type: 'dog' | 'chicken'
+			type: 'dog' | 'chicken' | 'crab'
 		}
 	>
 }
@@ -35,6 +36,11 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			name: 'قدقدپور',
 			emoji: '🐔',
 			type: 'chicken',
+		},
+		[PetTypes.CRAB]: {
+			name: 'چنگولی',
+			emoji: '🦀',
+			type: 'crab',
 		},
 	},
 }
