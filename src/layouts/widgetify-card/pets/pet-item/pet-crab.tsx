@@ -1,8 +1,8 @@
-import idle from '@/assets/animals/chicken/white_idle_8fps.gif'
-import running from '@/assets/animals/chicken/white_run_8fps.gif'
-import swipe from '@/assets/animals/chicken/white_swipe_8fps.gif'
-import walking from '@/assets/animals/chicken/white_walk_fast_8fps.gif'
-import { GiCorn } from 'react-icons/gi'
+import idle from '@/assets/animals/crab/red_idle_8fps.gif'
+import running from '@/assets/animals/crab/red_run_8fps.gif'
+import swipe from '@/assets/animals/crab/red_swipe_8fps.gif'
+import walking from '@/assets/animals/crab/red_walk_fast_8fps.gif'
+import { IoFish } from 'react-icons/io5'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
 	type PetAnimations,
@@ -13,10 +13,10 @@ import {
 } from '../core/pet-types'
 import { usePetContext } from '../pet.context'
 
-export const ChickenComponent = () => {
+export const CrabComponent = () => {
 	const { getCurrentPetName } = usePetContext()
 
-	const chickenAnimations: PetAnimations = {
+	const crabAnimations: PetAnimations = {
 		idle,
 		walk: walking,
 		run: running,
@@ -25,25 +25,25 @@ export const ChickenComponent = () => {
 		climb: walking,
 	}
 
-	const chickenDimensions: PetDimensions = {
+	const crabDimensions: PetDimensions = {
 		size: 32,
 		walkSpeed: PetSpeed.SLOW,
-		runSpeed: PetSpeed.FAST,
-		climbSpeed: 1.2,
-		maxHeight: 100,
+		runSpeed: PetSpeed.NORMAL,
+		climbSpeed: 0.8,
+		maxHeight: 80,
 	}
 
-	const chickenDurations: PetDurations = {
-		walk: { min: 3000, max: 8000 },
-		run: { min: 1500, max: 4000 },
-		rest: { min: 5000, max: 10000 },
-		climb: { min: 4000, max: 7000 },
+	const crabDurations: PetDurations = {
+		walk: { min: 4000, max: 9000 },
+		run: { min: 2000, max: 5000 },
+		rest: { min: 6000, max: 12000 },
+		climb: { min: 3000, max: 6000 },
 	}
-	const chickenAssets: PetAssets = {
-		collectibleIcon: GiCorn,
+	const crabAssets: PetAssets = {
+		collectibleIcon: IoFish,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'yellow-500',
+		collectibleColor: 'blue-400',
 	}
 
 	const {
@@ -58,10 +58,10 @@ export const ChickenComponent = () => {
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(),
-		animations: chickenAnimations,
-		dimensions: chickenDimensions,
-		durations: chickenDurations,
-		assets: chickenAssets,
+		animations: crabAnimations,
+		dimensions: crabDimensions,
+		durations: crabDurations,
+		assets: crabAssets,
 	})
 
 	return (
@@ -76,7 +76,7 @@ export const ChickenComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Chicken"
+			altText="Interactive Crab"
 		/>
 	)
 }
