@@ -2,7 +2,7 @@ import idle from '@/assets/animals/chicken/white_idle_8fps.gif'
 import running from '@/assets/animals/chicken/white_run_8fps.gif'
 import swipe from '@/assets/animals/chicken/white_swipe_8fps.gif'
 import walking from '@/assets/animals/chicken/white_walk_fast_8fps.gif'
-import { GiCorn, GiGrain } from 'react-icons/gi'
+import { GiCorn } from 'react-icons/gi'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
 	type PetAnimations,
@@ -27,8 +27,8 @@ export const ChickenComponent = () => {
 
 	const chickenDimensions: PetDimensions = {
 		size: 32,
-		walkSpeed: PetSpeed.NORMAL,
-		runSpeed: PetSpeed.VERY_FAST,
+		walkSpeed: PetSpeed.SLOW,
+		runSpeed: PetSpeed.FAST,
 		climbSpeed: 1.2,
 		maxHeight: 100,
 	}
@@ -40,7 +40,7 @@ export const ChickenComponent = () => {
 		climb: { min: 4000, max: 7000 },
 	}
 	const chickenAssets: PetAssets = {
-		collectibleIcon: GiGrain,
+		collectibleIcon: GiCorn,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 		collectibleColor: 'yellow-500',
