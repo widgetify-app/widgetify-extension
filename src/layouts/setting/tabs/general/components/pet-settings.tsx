@@ -22,9 +22,10 @@ export function PetSettings() {
 		async function load() {
 			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
+				const type = storedPets.petType || PetTypes.DOG_AKITA
 				setEnablePets(storedPets.enablePets)
-				setPetType(storedPets.petType || PetTypes.DOG_AKITA)
-				setPetName(storedPets.petOptions[petType].name)
+				setPetType(type)
+				setPetName(storedPets.petOptions[type].name)
 			}
 		}
 
@@ -34,7 +35,6 @@ export function PetSettings() {
 	async function onChangeEnablePets(value: boolean) {
 		callEvent('updatedPetSettings', {
 			enablePets: value,
-			petName,
 			petType,
 		})
 		setEnablePets(value)
@@ -42,7 +42,6 @@ export function PetSettings() {
 
 	async function onChangePetName(value: string) {
 		callEvent('updatedPetSettings', {
-			enablePets,
 			petName: value,
 			petType,
 		})
@@ -50,16 +49,15 @@ export function PetSettings() {
 	}
 
 	async function onChangePetType(value: PetTypes) {
-		callEvent('updatedPetSettings', {
-			enablePets,
-			petName,
-			petType: value,
-		})
-		setPetType(value)
 		const storedPets = await getFromStorage('pets')
 		if (storedPets?.petOptions[value]) {
 			setPetName(storedPets.petOptions[value].name)
 		}
+		setPetType(value)
+
+		callEvent('updatedPetSettings', {
+			petType: value,
+		})
 	}
 
 	return (
@@ -127,7 +125,7 @@ export function PetSettings() {
 							type="text"
 							value={petName}
 							onChange={(value) => onChangePetName(value)}
-							placeholder={petType === PetTypes.DOG_AKITA ? 'آکیتا' : 'قدقدپور'}
+							placeholder={'اسم دلخواه...'}
 						/>
 					</div>
 				)}

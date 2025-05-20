@@ -18,9 +18,6 @@ export interface PetSettings {
 }
 
 interface PetSettingsContextType extends PetSettings {
-	setEnablePets: (value: boolean) => void
-	setPetName: (value: string) => void
-	setPetType: (value: PetTypes) => void
 	getCurrentPetName: () => string
 }
 
@@ -42,79 +39,64 @@ const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
 export function PetProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<PetSettings>(DEFAULT_SETTINGS)
 
-	const updateSetting = <K extends keyof PetSettings>(key: K, value: PetSettings[K]) => {
-		setSettings((prevSettings) => {
-			const newSettings = {
-				...prevSettings,
-				[key]: value,
-			}
-
-			setToStorage('pets', newSettings)
-			return newSettings
-		})
-	}
-
 	useEffect(() => {
-		const event = listenEvent('updatedPetSettings', (data) => {
-			if (data) {
-				setSettings((prevSettings) => ({
-					...prevSettings,
-					...data,
-				}))
-				if (data.enablePets !== undefined) {
-					updateSetting('enablePets', data.enablePets)
-				}
-				if (data.petName !== undefined) {
-					setPetName(data.petName)
-				}
-				if (data.petType !== undefined) {
-					updateSetting('petType', data.petType)
-				}
-			}
-		})
-
 		async function load() {
 			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
 				setSettings({
 					...DEFAULT_SETTINGS,
 					...storedPets,
+					petOptions: {
+						...DEFAULT_SETTINGS.petOptions,
+						...(storedPets.petOptions || {}),
+					},
 				})
 			} else {
-				setSettings({
+				const initialSettings = {
 					...DEFAULT_SETTINGS,
 					petType: PetTypes.DOG_AKITA,
-				})
+				}
+				setSettings(initialSettings)
+				await setToStorage('pets', initialSettings)
 			}
 		}
 
 		load()
+	}, [])
+
+	useEffect(() => {
+		const event = listenEvent('updatedPetSettings', (data) => {
+			if (data) {
+				setSettings((prevSettings) => {
+					const newSettings = { ...prevSettings }
+
+					if (data.petName && data.petType) {
+						newSettings.petOptions = {
+							...newSettings.petOptions,
+							[data.petType]: {
+								...newSettings.petOptions[data.petType],
+								name: data.petName,
+							},
+						}
+					}
+
+					const updatedSettings: PetSettings = {
+						...newSettings,
+						enablePets: data.enablePets ?? newSettings.enablePets,
+						petType: data.petType !== undefined ? data.petType : newSettings.petType,
+					}
+
+					setToStorage('pets', updatedSettings)
+
+					return updatedSettings
+				})
+			}
+		})
 
 		return () => {
 			event()
 		}
 	}, [])
-
-	const setEnablePets = (value: boolean) => {
-		updateSetting('enablePets', value)
-	}
-
-	const setPetName = (value: string) => {
-		if (!settings.petType) {
-			return
-		}
-
-		const CurrentPet = settings.petOptions[settings.petType]
-		if (CurrentPet) {
-			CurrentPet.name = value
-		}
-
-		updateSetting('petOptions', settings.petOptions)
-	}
-
-	const setPetType = (value: PetTypes) => {
-		updateSetting('petType', value)
-	}
 
 	const getCurrentPetName = () => {
 		if (!settings.petType) {
@@ -130,9 +112,6 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 	const contextValue: PetSettingsContextType = {
 		...settings,
-		setEnablePets,
-		setPetType,
-		setPetName,
 		getCurrentPetName,
 	}
 

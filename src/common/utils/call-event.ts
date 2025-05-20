@@ -12,8 +12,8 @@ export interface EventName {
 	openWidgetSettings: null
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
-		enablePets: boolean
-		petName: string
+		enablePets?: boolean
+		petName?: string
 		petType: PetTypes
 	}
 }
