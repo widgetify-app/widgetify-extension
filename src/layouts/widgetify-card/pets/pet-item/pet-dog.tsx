@@ -39,7 +39,7 @@ export const DogComponent = () => {
 		walk: { min: 3000, max: 8000 },
 		run: { min: 1500, max: 4000 },
 		rest: { min: 5000, max: 10000 },
-		climb: { min: 4000, max: 7000 },
+		climb: { min: 2000, max: 5000 },
 	}
 	const dogAssets: PetAssets = {
 		collectibleIcon: LuBone,
