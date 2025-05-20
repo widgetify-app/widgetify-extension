@@ -7,9 +7,10 @@ import {
 	getBorderColor,
 	getDescriptionTextStyle,
 	getHeadingTextStyle,
+	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
-import { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import { useEffect, useState } from 'react'
 
 export function PetSettings() {
@@ -59,6 +60,16 @@ export function PetSettings() {
 			petType: value,
 		})
 	}
+	const persianType: Record<string, string> = {
+		dog: 'سگ',
+		chicken: 'مرغ',
+	}
+	const availablePets = Object.entries(BASE_PET_OPTIONS.petOptions).map(
+		([key, value]) => ({
+			value: key as PetTypes,
+			label: `${value.emoji} ${persianType[value.type]} - ${value.name}`,
+		}),
+	)
 
 	return (
 		<SectionPanel title="قابلیت‌های ظاهری" delay={0.2}>
@@ -79,43 +90,31 @@ export function PetSettings() {
 				</div>
 
 				{enablePets && (
-					<div className={`p-4 mt-4  rounded-lg border ${getBorderColor(theme)}`}>
+					<div className={`p-4 mt-4 rounded-lg border ${getBorderColor(theme)}`}>
 						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
 							نوع حیوان خانگی
 						</p>
-						<div className="flex flex-col gap-2 mb-4">
-							<div className="flex items-center gap-2">
-								<input
-									type="radio"
-									id="dog-akita"
-									name="pet-type"
-									checked={petType === PetTypes.DOG_AKITA}
-									onChange={() => onChangePetType(PetTypes.DOG_AKITA)}
-									className="cursor-pointer"
-								/>
-								<label
-									htmlFor="dog-akita"
-									className={`cursor-pointer ${getHeadingTextStyle(theme)}`}
+						<div className="grid grid-cols-3 gap-1.5 mb-2">
+							{availablePets.map((pet) => (
+								<button
+									key={pet.value}
+									onClick={() => onChangePetType(pet.value)}
+									className={`flex cursor-pointer items-center justify-center py-3 px-4 rounded-lg transition-all duration-200 ${
+										petType === pet.value
+											? 'border-2 border-blue-500 bg-blue-500/10 shadow-sm'
+											: `border ${getBorderColor(theme)} hover:border-blue-400 hover:bg-blue-500/10`
+									}`}
+									aria-pressed={petType === pet.value}
 								>
-									سگ آکیتا
-								</label>
-							</div>
-							<div className="flex items-center gap-2">
-								<input
-									type="radio"
-									id="chicken"
-									name="pet-type"
-									checked={petType === PetTypes.CHICKEN}
-									onChange={() => onChangePetType(PetTypes.CHICKEN)}
-									className="cursor-pointer"
-								/>
-								<label
-									htmlFor="chicken"
-									className={`cursor-pointer ${getHeadingTextStyle(theme)}`}
-								>
-									مرغ
-								</label>
-							</div>
+									<span
+										className={`text-sm font-medium text-right ${getTextColor(theme)} ${
+											petType === pet.value ? 'font-bold' : ''
+										}`}
+									>
+										{pet.label}
+									</span>
+								</button>
+							))}
 						</div>
 
 						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>

@@ -13,6 +13,8 @@ export interface PetSettings {
 		PetTypes,
 		{
 			name: string
+			emoji: string
+			type: 'dog' | 'chicken'
 		}
 	>
 }
@@ -20,16 +22,19 @@ export interface PetSettings {
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: () => string
 }
-
-const DEFAULT_SETTINGS: PetSettings = {
+export const BASE_PET_OPTIONS: PetSettings = {
 	enablePets: true,
 	petType: null,
 	petOptions: {
 		[PetTypes.DOG_AKITA]: {
 			name: 'آکیتا',
+			emoji: '🐶',
+			type: 'dog',
 		},
 		[PetTypes.CHICKEN]: {
 			name: 'قدقدپور',
+			emoji: '🐔',
+			type: 'chicken',
 		},
 	},
 }
@@ -37,23 +42,23 @@ const DEFAULT_SETTINGS: PetSettings = {
 const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
 
 export function PetProvider({ children }: { children: React.ReactNode }) {
-	const [settings, setSettings] = useState<PetSettings>(DEFAULT_SETTINGS)
+	const [settings, setSettings] = useState<PetSettings>(BASE_PET_OPTIONS)
 
 	useEffect(() => {
 		async function load() {
 			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
 				setSettings({
-					...DEFAULT_SETTINGS,
+					...BASE_PET_OPTIONS,
 					...storedPets,
 					petOptions: {
-						...DEFAULT_SETTINGS.petOptions,
+						...BASE_PET_OPTIONS.petOptions,
 						...(storedPets.petOptions || {}),
 					},
 				})
 			} else {
 				const initialSettings = {
-					...DEFAULT_SETTINGS,
+					...BASE_PET_OPTIONS,
 					petType: PetTypes.DOG_AKITA,
 				}
 				setSettings(initialSettings)
