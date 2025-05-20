@@ -1,14 +1,15 @@
-import idle from '@/assets/animals/akita_idle_8fps.gif'
-import lie from '@/assets/animals/akita_lie_8fps.gif'
-import running from '@/assets/animals/akita_run_8fps.gif'
-import swipe from '@/assets/animals/akita_swipe_8fps.gif'
-import walking from '@/assets/animals/akita_walk_fast_8fps.gif'
+import idle from '@/assets/animals/cat_idle_8fps.gif'
+import lie from '@/assets/animals/cat_lie_8fps.gif'
+import running from '@/assets/animals/cat_run_8fps.gif'
+import swipe from '@/assets/animals/cat_swipe_8fps.gif'
+import walking from '@/assets/animals/cat_walk_fast_8fps.gif'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { LuBone } from 'react-icons/lu'
 
-interface Bone {
+// Copy of DogComponent logic, adapted for Cat
+interface Fish {
 	id: number
 	x: number
 	y: number
@@ -16,32 +17,28 @@ interface Bone {
 	dropping: boolean
 }
 
-export const DogComponent = ({ petName }: { petName: string }) => {
+export const CatComponent = ({ petName }: { petName: string }) => {
 	const containerRef = useRef<HTMLDivElement>(null)
-	const dogRef = useRef<HTMLDivElement>(null)
+	const catRef = useRef<HTMLDivElement>(null)
 	const [position, setPosition] = useState({ x: 30, y: 0 })
 	const [direction, setDirection] = useState(1)
-	const [action, setAction] = useState<
-		'idle' | 'walk' | 'run' | 'sit' | 'stand' | 'climb'
-	>('idle')
+	const [action, setAction] = useState<'idle' | 'walk' | 'run' | 'sit' | 'stand' | 'climb'>('idle')
 	const [actionTimer, setActionTimer] = useState(0)
-	const [behaviorState, setBehaviorState] = useState<
-		'roaming' | 'resting' | 'climbing' | 'chasing'
-	>('resting')
+	const [behaviorState, setBehaviorState] = useState<'roaming' | 'resting' | 'climbing' | 'chasing'>('resting')
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
 	const [showName, setShowName] = useState(false)
 
-	const [bones, setBones] = useState<Bone[]>([])
-	const [boneIdCounter, setBoneIdCounter] = useState(0)
+	const [fishes, setFishes] = useState<Fish[]>([])
+	const [fishIdCounter, setFishIdCounter] = useState(0)
 
-	const DOG_SIZE = 32
-	const WALK_SPEED = 1.8
-	const RUN_SPEED = 3.5
-	const CLIMB_SPEED = 1.2
+	const CAT_SIZE = 32
+	const WALK_SPEED = 2.0
+	const RUN_SPEED = 3.8
+	const CLIMB_SPEED = 1.3
 	const MAX_HEIGHT = 100
-	const BONE_FALL_SPEED = 2
-	const BONE_SIZE = 24
+	const FISH_FALL_SPEED = 2
+	const FISH_SIZE = 24
 
 	const WALK_DURATION = { min: 3000, max: 8000 }
 	const RUN_DURATION = { min: 1500, max: 4000 }
@@ -52,7 +49,7 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 		const container = containerRef.current
 		return {
 			minX: 10,
-			maxX: (container?.offsetWidth || 300) - DOG_SIZE - 10,
+			maxX: (container?.offsetWidth || 300) - CAT_SIZE - 10,
 			minY: 0,
 			maxY: MAX_HEIGHT,
 		}
@@ -75,16 +72,16 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 			const bounds = getMovementBounds()
 			const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
 
-			const newBone: Bone = {
-				id: boneIdCounter,
+			const newFish: Fish = {
+				id: fishIdCounter,
 				x: clampedX,
-				y: -BONE_SIZE,
+				y: -FISH_SIZE,
 				collected: false,
 				dropping: true,
 			}
 
-			setBones((prev) => [...prev, newBone])
-			setBoneIdCounter((prev) => prev + 1)
+			setFishes((prev) => [...prev, newFish])
+			setFishIdCounter((prev) => prev + 1)
 
 			if (action === 'sit' || action === 'idle') {
 				setAction('stand')
@@ -99,21 +96,21 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 		}
 	}
 
-	const findNearestBone = () => {
-		const availableBones = bones.filter(
-			(bone) => !bone.collected && !bone.dropping && bone.y <= 5,
+	const findNearestFish = () => {
+		const availableFishes = fishes.filter(
+			(fish) => !fish.collected && !fish.dropping && fish.y <= 5,
 		)
 
-		if (availableBones.length === 0) return null
+		if (availableFishes.length === 0) return null
 
-		let nearest = availableBones[0]
+		let nearest = availableFishes[0]
 		let minDistance = Math.abs(position.x - nearest.x)
 
-		for (let i = 1; i < availableBones.length; i++) {
-			const distance = Math.abs(position.x - availableBones[i].x)
+		for (let i = 1; i < availableFishes.length; i++) {
+			const distance = Math.abs(position.x - availableFishes[i].x)
 			if (distance < minDistance) {
 				minDistance = distance
-				nearest = availableBones[i]
+				nearest = availableFishes[i]
 			}
 		}
 
@@ -121,15 +118,15 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 	}
 
 	const updateBehavior = () => {
-		const nearestBone = findNearestBone()
+		const nearestFish = findNearestFish()
 
-		if (nearestBone) {
+		if (nearestFish) {
 			if (behaviorState !== 'chasing') {
 				setBehaviorState('chasing')
 				setAction('run')
 			}
 
-			setTargetX(nearestBone.x)
+			setTargetX(nearestFish.x)
 			setIsMovingToTarget(true)
 			return
 		}
@@ -143,7 +140,7 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 					setActionTimer(
 						Math.floor(
 							Math.random() * (CLIMB_DURATION.max - CLIMB_DURATION.min) +
-								CLIMB_DURATION.min,
+							CLIMB_DURATION.min,
 						),
 					)
 				} else {
@@ -164,7 +161,7 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 						Math.random() * (REST_DURATION.max - REST_DURATION.min) + REST_DURATION.min,
 					),
 				)
-			} else if (behaviorState === 'chasing' && !nearestBone) {
+			} else if (behaviorState === 'chasing' && !nearestFish) {
 				setBehaviorState('resting')
 				setAction('idle')
 				setActionTimer(2000)
@@ -187,34 +184,33 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 	}
 
 	const physicsUpdate = () => {
-		setBones((prevBones) =>
-			prevBones.map((bone) => {
-				if (bone.collected) return bone
+		setFishes((prevFishes) =>
+			prevFishes.map((fish) => {
+				if (fish.collected) return fish
 
-				if (bone.dropping) {
-					const newY = bone.y + BONE_FALL_SPEED
-
+				if (fish.dropping) {
+					const newY = fish.y + FISH_FALL_SPEED
 					if (newY >= 0) {
-						return { ...bone, y: 0, dropping: false }
+						return { ...fish, y: 0, dropping: false }
 					}
-					return { ...bone, y: newY }
+					return { ...fish, y: newY }
 				}
 
-				const distance = Math.abs(bone.x - position.x)
-				if (!bone.collected && !bone.dropping && distance < DOG_SIZE / 1.5) {
+				const distance = Math.abs(fish.x - position.x)
+				if (!fish.collected && !fish.dropping && distance < CAT_SIZE / 1.5) {
 					setAction('stand')
 					setTimeout(() => setAction(behaviorState === 'chasing' ? 'run' : 'walk'), 500)
 
-					return { ...bone, collected: true }
+					return { ...fish, collected: true }
 				}
 
-				return bone
+				return fish
 			}),
 		)
 
-		if (bones.some((b) => b.collected)) {
+		if (fishes.some((f) => f.collected)) {
 			setTimeout(() => {
-				setBones((prev) => prev.filter((b) => !b.collected))
+				setFishes((prev) => prev.filter((f) => !f.collected))
 			}, 2000)
 		}
 
@@ -231,8 +227,8 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 					setIsMovingToTarget(false)
 					setTargetX(null)
 					if (behaviorState === 'chasing') {
-						const nextBone = findNearestBone()
-						if (!nextBone) {
+						const nextFish = findNearestFish()
+						if (!nextFish) {
 							setAction('idle')
 						}
 					} else {
@@ -300,7 +296,7 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 	}, [handleClick])
 
 	useEffect(() => {
-		const dogElement = dogRef.current
+		const catElement = catRef.current
 
 		const handleMouseEnter = () => {
 			setShowName(true)
@@ -310,15 +306,15 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 			setShowName(false)
 		}
 
-		if (dogElement) {
-			dogElement.addEventListener('mouseenter', handleMouseEnter)
-			dogElement.addEventListener('mouseleave', handleMouseLeave)
+		if (catElement) {
+			catElement.addEventListener('mouseenter', handleMouseEnter)
+			catElement.addEventListener('mouseleave', handleMouseLeave)
 		}
 
 		return () => {
-			if (dogElement) {
-				dogElement.removeEventListener('mouseenter', handleMouseEnter)
-				dogElement.removeEventListener('mouseleave', handleMouseLeave)
+			if (catElement) {
+				catElement.removeEventListener('mouseenter', handleMouseEnter)
+				catElement.removeEventListener('mouseleave', handleMouseLeave)
 			}
 		}
 	}, [])
@@ -350,39 +346,40 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 				zIndex: 50,
 			}}
 		>
-			{/* نمایش استخوان‌ها */}
-			{bones.map(
-				(bone) =>
-					!bone.collected && (
+			{/* نمایش ماهی‌ها */}
+			{fishes.map(
+				(fish) =>
+					!fish.collected && (
 						<motion.div
-							key={bone.id}
+							key={fish.id}
 							className="absolute"
 							style={{
-								left: `${bone.x}px`,
-								bottom: `${bone.y}px`,
-								width: `${BONE_SIZE}px`,
-								height: `${BONE_SIZE}px`,
+								left: `${fish.x}px`,
+								bottom: `${fish.y}px`,
+								width: `${FISH_SIZE}px`,
+								height: `${FISH_SIZE}px`,
 							}}
-							animate={bone.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
+							animate={fish.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
 							transition={{ duration: 0.5 }}
 						>
+							{/* Replace with a fish icon if available */}
 							<LuBone
-								size={BONE_SIZE}
-								className={`text-amber-200 drop-shadow-md ${bone.dropping ? 'animate-bounce' : ''}`}
+								size={FISH_SIZE}
+								className={`text-blue-300 drop-shadow-md ${fish.dropping ? 'animate-bounce' : ''}`}
 							/>
 						</motion.div>
 					),
 			)}
 
 			<div
-				ref={dogRef}
+				ref={catRef}
 				className="absolute transition-transform duration-300 cursor-pointer"
 				style={{
 					left: `${position.x}px`,
 					bottom: `${position.y}px`,
 					transform: `scaleX(${direction})`,
-					width: `${DOG_SIZE}px`,
-					height: `${DOG_SIZE}px`,
+					width: `${CAT_SIZE}px`,
+					height: `${CAT_SIZE}px`,
 					zIndex: 10,
 				}}
 			>
@@ -391,12 +388,12 @@ export const DogComponent = ({ petName }: { petName: string }) => {
 						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
 						style={{ transform: `scaleX(${direction})` }}
 					>
-						{petName || 'آکیتا'}
+						{petName || 'گربه'}
 					</div>
 				)}
 				<img
 					src={getGif()}
-					alt="Interactive Dog"
+					alt="Interactive Cat"
 					className="object-cover w-full h-full pointer-events-none"
 				/>
 			</div>

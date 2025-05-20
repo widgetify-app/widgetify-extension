@@ -10,7 +10,9 @@ export function GeneralSettingTab() {
 		setAnalyticsEnabled,
 		enablePets,
 		setEnablePets,
-		petName,
+		selectedPets,
+		setSelectedPets,
+		petNames,
 		setPetName,
 		timezone,
 		setTimezone,
@@ -25,13 +27,15 @@ export function GeneralSettingTab() {
 				analyticsEnabled={analyticsEnabled}
 				setAnalyticsEnabled={setAnalyticsEnabled}
 			/>
-			<PetSettings
-				key="pets"
-				enablePets={enablePets}
-				setEnablePets={setEnablePets}
-				petName={petName}
-				setPetName={setPetName}
-			/>
+		<PetSettings
+			key="pets"
+			enablePets={enablePets}
+			setEnablePets={setEnablePets}
+			selectedPets={selectedPets}
+			setSelectedPets={setSelectedPets}
+			petNames={petNames}
+			setPetName={setPetName}
+		/>
 		</div>
 	)
 }

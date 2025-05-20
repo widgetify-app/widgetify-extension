@@ -8,17 +8,22 @@ import {
 	useTheme,
 } from '@/context/theme.context'
 
+import type { PetType } from '@/context/general-setting.context';
 interface PetSettingsProps {
-	enablePets: boolean
-	setEnablePets: (enabled: boolean) => void
-	petName: string
-	setPetName: (name: string) => void
+	enablePets: boolean;
+	setEnablePets: (enabled: boolean) => void;
+	selectedPets: PetType[];
+	setSelectedPets: (pets: PetType[]) => void;
+	petNames: Record<PetType, string>;
+	setPetName: (pet: PetType, name: string) => void;
 }
 
 export function PetSettings({
 	enablePets,
 	setEnablePets,
-	petName,
+	selectedPets,
+	setSelectedPets,
+	petNames,
 	setPetName,
 }: PetSettingsProps) {
 	const { theme } = useTheme()
@@ -51,22 +56,62 @@ export function PetSettings({
 				</div>
 
 				{enablePets && (
-					<div className={`p-4 mt-4  rounded-lg border ${getBorderColor(theme)}`}>
+					<div className={`p-4 mt-4 rounded-lg border ${getBorderColor(theme)}`}>
 						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
-							نام حیوان خانگی
+							انتخاب حیوان خانگی
 						</p>
-						<TextInput
-							type="text"
-							value={petName}
-							onChange={(value) => setPetName(value)}
-							placeholder="آکیتا"
-						/>
-						<p className={`mt-2 text-xs ${getHintTextStyle()}`}>
-							در صورت خالی بودن، نام پیش‌فرض "آکیتا" استفاده می‌شود.
-						</p>
+						<div className="flex gap-4 mb-4">
+							<label className="flex items-center gap-2">
+								<input
+									type="checkbox"
+									checked={selectedPets.includes('dog')}
+									onChange={() => {
+										const newPets = selectedPets.includes('dog')
+											? selectedPets.filter((p) => p !== 'dog')
+											: [...selectedPets, 'dog'];
+										setSelectedPets(newPets);
+									}}
+								/>
+								<span>سگ</span>
+							</label>
+							<label className="flex items-center gap-2">
+								<input
+									type="checkbox"
+									checked={selectedPets.includes('cat')}
+									onChange={() => {
+										const newPets = selectedPets.includes('cat')
+											? selectedPets.filter((p) => p !== 'cat')
+											: [...selectedPets, 'cat'];
+										setSelectedPets(newPets);
+									}}
+								/>
+								<span>گربه</span>
+							</label>
+						</div>
+						<p className={`mb-2 font-medium ${getHeadingTextStyle(theme)}`}>نام حیوانات</p>
+						<div className="flex gap-4">
+							<div>
+								<p className="text-xs mb-1">سگ</p>
+								<TextInput
+									type="text"
+									value={petNames.dog}
+									onChange={(value) => setPetName('dog', value)}
+									placeholder="آکیتا"
+								/>
+							</div>
+							<div>
+								<p className="text-xs mb-1">گربه</p>
+								<TextInput
+									type="text"
+									value={petNames.cat}
+									onChange={(value) => setPetName('cat', value)}
+									placeholder="گربه"
+								/>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>
 		</SectionPanel>
-	)
+	);
 }
