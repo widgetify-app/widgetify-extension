@@ -20,7 +20,7 @@ import {
 import { WidgetContainer } from '../widgets/widget-container'
 import ClockComponent from './components/clock.component'
 import { Pet } from './pets/pet'
-import { DogComponent } from './pets/pet-item/pet-dog.component'
+import { DogComponent } from './pets/pet-item/pet-dog'
 import { PetProvider } from './pets/pet.context'
 
 export const WidgetifyLayout = () => {

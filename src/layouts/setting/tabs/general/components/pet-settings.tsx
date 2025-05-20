@@ -1,4 +1,4 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import CustomCheckbox from '@/components/checkbox'
 import { SectionPanel } from '@/components/section-panel'
@@ -27,7 +27,6 @@ export function PetSettings() {
 	useEffect(() => {
 		async function load() {
 			const storedPets = await getFromStorage('pets')
-			console.log('storedPets', storedPets)
 			if (storedPets) {
 				setEnablePets(storedPets.enablePets)
 				setPetName(storedPets.petName)
@@ -38,7 +37,6 @@ export function PetSettings() {
 	}, [])
 
 	async function onChangeEnablePets(value: boolean) {
-		// await setToStorage('pets', { enablePets: value, petName })
 		callEvent('updatedPetSettings', {
 			enablePets: value,
 			petName,
@@ -47,7 +45,6 @@ export function PetSettings() {
 	}
 
 	async function onChangePetName(value: string) {
-		// await setToStorage('pets', { enablePets, petName: value })
 		callEvent('updatedPetSettings', {
 			enablePets,
 			petName: value,

@@ -1,4 +1,4 @@
-import { DogComponent } from './pet-item/pet-dog.component'
+import { DogComponent } from './pet-item/pet-dog'
 import { usePetContext } from './pet.context'
 
 export function Pet() {
