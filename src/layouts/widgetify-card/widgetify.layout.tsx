@@ -19,10 +19,11 @@ import {
 } from '../widgets/calendar/utils'
 import { WidgetContainer } from '../widgets/widget-container'
 import ClockComponent from './components/clock.component'
-import { DogComponent } from './components/pet-dog.component'
+import { Pet } from './pets/pet'
+import { PetProvider } from './pets/pet.context'
 
 export const WidgetifyLayout = () => {
-	const { enablePets, timezone } = useGeneralSetting()
+	const { timezone } = useGeneralSetting()
 	const { theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
@@ -58,7 +59,11 @@ export const WidgetifyLayout = () => {
 	return (
 		<WidgetContainer className="overflow-hidden">
 			<div className="relative w-full h-full">
-				{enablePets && <DogComponent />}
+				{
+					<PetProvider>
+						<Pet />
+					</PetProvider>
+				}
 
 				<div className="relative z-10 flex flex-col items-center gap-2">
 					<div

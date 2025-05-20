@@ -1,6 +1,7 @@
-import type { Todo } from '@/layouts/calendar/interface/todo.interface'
+import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
-import type { Bookmark } from '@/layouts/search/bookmarks/types/bookmark.types'
+import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { StoredWallpaper } from '../wallpaper.interface'
 
 export interface EventName {
@@ -10,6 +11,11 @@ export interface EventName {
 	wallpaperChanged: StoredWallpaper
 	openWidgetSettings: null
 	bookmarksChanged: Bookmark[]
+	updatedPetSettings: {
+		enablePets?: boolean
+		petName?: string
+		petType: PetTypes
+	}
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

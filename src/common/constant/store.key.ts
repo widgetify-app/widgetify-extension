@@ -1,5 +1,6 @@
 import type { SelectedCity } from '@/context/weather.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
@@ -51,4 +52,5 @@ export interface StorageKV {
 		updatedAt: number
 	}[]
 	calendarDrawerState: boolean
+	pets: PetSettings
 }
