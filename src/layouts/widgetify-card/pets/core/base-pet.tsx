@@ -40,7 +40,7 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 							style={{
 								left: `${item.x}px`,
 								bottom: `${item.y}px`,
-								width: `${assets.collectibleSize}px`,
+								width: "auto",
 								height: `${assets.collectibleSize}px`,
 							}}
 							animate={item.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
@@ -327,7 +327,7 @@ export function useBasePetLogic({
 				setActionTimer(
 					Math.floor(
 						Math.random() * (durations.climb.max - durations.climb.min) +
-							durations.climb.min,
+						durations.climb.min,
 					),
 				)
 			} else {
@@ -337,7 +337,7 @@ export function useBasePetLogic({
 				setActionTimer(
 					Math.floor(
 						Math.random() * (durations.rest.max - durations.rest.min) +
-							durations.rest.min,
+						durations.rest.min,
 					),
 				)
 			}
@@ -357,9 +357,9 @@ export function useBasePetLogic({
 			setActionTimer(
 				Math.floor(
 					Math.random() *
-						(shouldRun
-							? durations.run.max - durations.run.min + durations.run.min
-							: durations.walk.max - durations.walk.min + durations.walk.min),
+					(shouldRun
+						? durations.run.max - durations.run.min + durations.run.min
+						: durations.walk.max - durations.walk.min + durations.walk.min),
 				),
 			)
 		}
