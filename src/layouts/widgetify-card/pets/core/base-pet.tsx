@@ -101,7 +101,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 					left: `${position.x}px`,
 					bottom: `${position.y}px`,
 					transform: `scaleX(${direction})`,
-					width: `${dimensions.size}px`,
+					width: '50px',
 					height: `${dimensions.size}px`,
 					zIndex: 10,
 				}}
@@ -117,7 +117,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 				<img
 					src={getAnimationForCurrentAction()}
 					alt={altText}
-					className="object-cover w-full h-full pointer-events-none"
+					className="object-contain w-full h-full pointer-events-none"
 				/>
 			</div>
 		</div>
