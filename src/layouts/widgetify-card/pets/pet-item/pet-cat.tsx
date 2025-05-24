@@ -21,25 +21,25 @@ export const CatComponent = () => {
 		idle,
 		walk: walking,
 		run: running,
-		swipe,
-		stand: swipe,
+		swipe: swipe,
+		stand: lie,
 		sit: lie,
 		climb: walking,
 	}
 
 	const catDimensions: PetDimensions = {
-		size: 32,
-		walkSpeed: PetSpeed.NORMAL,
-		runSpeed: PetSpeed.VERY_FAST,
-		climbSpeed: 1.2,
-		maxHeight: 100,
+        size: 25,
+        walkSpeed: PetSpeed.SLOW,
+        runSpeed: PetSpeed.NORMAL,
+        climbSpeed: PetSpeed.NORMAL,
+        maxHeight: 100,
 	}
 
 	const catDurations: PetDurations = {
-		walk: { min: 3000, max: 8000 },
-		run: { min: 1500, max: 4000 },
-		rest: { min: 5000, max: 10000 },
-		climb: { min: 2000, max: 5000 },
+        walk: { min: 4000, max: 9000 },
+        run: { min: 2000, max: 5000 },
+        rest: { min: 6000, max: 12000 },
+        climb: { min: 3000, max: 6000 },
 	}
 	const catAssets: PetAssets = {
 		collectibleIcon: LuMouse,
