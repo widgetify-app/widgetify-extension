@@ -39,24 +39,38 @@ const Modal = ({
 	const { theme } = useTheme()
 
 	useEffect(() => {
-		if (isOpen && lockBodyScroll) {
-			const scrollY = window.scrollY
-
-			document.body.style.position = 'fixed'
-			document.body.style.top = `-${scrollY}px`
-			document.body.style.width = '100%'
-			document.body.style.overflowY = 'scroll'
-
-			return () => {
-				document.body.style.position = ''
-				document.body.style.top = ''
-				document.body.style.width = ''
-				document.body.style.overflowY = ''
-
-				window.scrollTo(0, scrollY)
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				onClose()
 			}
 		}
-	}, [isOpen])
+
+		if (isOpen) {
+			document.addEventListener('keydown', handleKeyDown)
+			if (lockBodyScroll) {
+				const scrollY = window.scrollY
+
+				document.body.style.position = 'fixed'
+				document.body.style.top = `-${scrollY}px`
+				document.body.style.width = '100%'
+				document.body.style.overflowY = 'scroll'
+
+				return () => {
+					document.removeEventListener('keydown', handleKeyDown)
+					document.body.style.position = ''
+					document.body.style.top = ''
+					document.body.style.width = ''
+					document.body.style.overflowY = ''
+
+					window.scrollTo(0, scrollY)
+				}
+			}
+		}
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [isOpen, lockBodyScroll, onClose])
 
 	if (!isOpen) return null
 
