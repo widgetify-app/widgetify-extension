@@ -3,7 +3,9 @@ import lie from '@/assets/animals/dog/akita_lie_8fps.gif'
 import running from '@/assets/animals/dog/akita_run_8fps.gif'
 import swipe from '@/assets/animals/dog/akita_swipe_8fps.gif'
 import walking from '@/assets/animals/dog/akita_walk_fast_8fps.gif'
-import { LuBone } from 'react-icons/lu'
+import dogFood from '@/assets/animals/dog/dog-food.png'
+import { PetFood } from '../core/pet-food'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
 	type PetAnimations,
@@ -42,7 +44,7 @@ export const DogComponent = () => {
 		climb: { min: 2000, max: 5000 },
 	}
 	const dogAssets: PetAssets = {
-		collectibleIcon: <LuBone size={24} className="text-gray-500" />,
+		collectibleIcon: <PetFood src={dogFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}

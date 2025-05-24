@@ -1,9 +1,11 @@
+import crabFood from '@/assets/animals/crab/crab-food.png'
 import idle from '@/assets/animals/crab/red_idle_8fps.gif'
 import running from '@/assets/animals/crab/red_run_8fps.gif'
 import swipe from '@/assets/animals/crab/red_swipe_8fps.gif'
 import walking from '@/assets/animals/crab/red_walk_fast_8fps.gif'
-import { IoFish } from 'react-icons/io5'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -40,7 +42,7 @@ export const CrabComponent = () => {
 		climb: { min: 3000, max: 6000 },
 	}
 	const crabAssets: PetAssets = {
-		collectibleIcon: <IoFish className="text-blue-500" size={24} />,
+		collectibleIcon: <PetFood src={crabFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}

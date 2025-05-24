@@ -1,10 +1,12 @@
+import catFood from '@/assets/animals/cat/cat-food.png'
 import idle from '@/assets/animals/cat/zardaloo_idle_8fps.gif'
 import lie from '@/assets/animals/cat/zardaloo_lie_8fps.gif'
 import running from '@/assets/animals/cat/zardaloo_run_8fps.gif'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.gif'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.gif'
-import { FaFish } from 'react-icons/fa'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -42,7 +44,7 @@ export const CatComponent = () => {
 	}
 
 	const catAssets: PetAssets = {
-		collectibleIcon: <FaFish size={24} className="text-gray-500" />,
+		collectibleIcon: <PetFood src={catFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}
