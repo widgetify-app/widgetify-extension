@@ -54,7 +54,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 							(b) => b.id === bookmark.id || b.onlineId === bookmark.onlineId,
 						)
 						if (index !== -1) {
-							acc[index] = bookmark
+							acc[index] = {
+								...bookmark,
+								icon: bookmark.icon,
+								customImage: acc[index].customImage || bookmark.customImage,
+							}
 						}
 					}
 					return acc

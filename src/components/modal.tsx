@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 
 type ModalProps = {
@@ -31,6 +31,24 @@ const Modal = ({
 	showCloseButton = true,
 	className = '',
 }: ModalProps) => {
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				onClose()
+			}
+		}
+
+		if (isOpen) {
+			document.addEventListener('keydown', handleKeyDown)
+	 
+		}
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [isOpen, onClose])
+
 	if (!isOpen) return null
 
 	return ReactDOM.createPortal(

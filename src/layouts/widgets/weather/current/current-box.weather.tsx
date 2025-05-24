@@ -57,10 +57,10 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					</div>
 
 					<div className="flex flex-row gap-5 px-2 mb-2 truncate">
-						<div className="flex flex-col justify-center">
+						<div className="flex flex-col">
 							<span
 								className={
-									'text-2xl font-bold truncate text-base-content transition-colors'
+									'text-2xl font-bold truncate text-left text-base-content transition-colors'
 								}
 								aria-label={`Temperature: ${Math.round(weather.temperature.temp)} degrees`}
 							>
