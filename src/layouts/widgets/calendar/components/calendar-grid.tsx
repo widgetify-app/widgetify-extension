@@ -1,6 +1,5 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
@@ -25,7 +24,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const { user } = useAuth()
 	const { timezone } = useGeneralSetting()
 
-	const { theme } = useTheme()
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
 
@@ -51,14 +49,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
 	const selectedDateStr = formatDateStr(selectedDate)
 
-	const getWeekdayHeaderStyle = () => {
-		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-	}
-
 	return (
 		<div className="grid grid-cols-7 gap-1 p-2 text-center">
 			{WEEKDAYS.map((day) => (
-				<div key={day} className={`text-sm mb-1 ${getWeekdayHeaderStyle()}`}>
+				<div key={day} className={'text-sm mb-1 widget-item-text opacity-80'}>
 					{day}
 				</div>
 			))}
@@ -69,7 +63,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						${getTextColor(theme)} opacity-40
+						widget-item-text opacity-40
 					`}
 				>
 					{prevMonthStartDay + i}
@@ -96,7 +90,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs 
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						${getTextColor(theme)} opacity-40
+						widget-item-text opacity-40
 					`}
 				>
 					{i + 1}

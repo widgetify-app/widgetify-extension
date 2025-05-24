@@ -12,7 +12,6 @@ import {
 
 export const toolTipContent = (
 	cellDate: WidgetifyDate,
-	theme: string,
 	events: {
 		todayShamsiEvents: FetchedEvent[]
 		todayHijriEvents: FetchedEvent[]
@@ -46,13 +45,13 @@ export const toolTipContent = (
 		: 'from-sky-500 to-blue-700'
 	const headerStyle = `max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
 
-	const infoStyle = theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-	const googleStyle = theme === 'light' ? 'text-[#4285f4]' : 'text-[#8ab4f8]'
+	const infoStyle = 'text-base/80'
+	const googleStyle = 'text-[#4285f4]'
 
 	return (
 		<div className="flex flex-col min-w-[250px] max-w-[250px] rounded-lg overflow-hidden">
 			<div className={headerStyle}>
-				<div className="flex items-center justify-between gap-2 ${holidayStyle}">
+				<div className={`${holidayStyle} flex items-center justify-between gap-2`}>
 					<span className="text-sm truncate">{jalaliDay}</span>
 					<span className="text-sm truncate">{jalali}</span>
 				</div>

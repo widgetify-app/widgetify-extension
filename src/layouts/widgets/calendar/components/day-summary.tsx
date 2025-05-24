@@ -1,9 +1,4 @@
 import { useAuth } from '@/context/auth.context'
-import {
-	getCardBackground,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
@@ -18,7 +13,6 @@ interface DaySummaryProps {
 
 export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const { user } = useAuth()
-	const { theme } = useTheme()
 	const { todos } = useTodoStore()
 	const { data: events } = useGetEvents()
 
@@ -58,34 +52,28 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
-	const getTextStyle = () => {
-		return theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-	}
-
-	const getSubTextStyle = () => {
-		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-	}
-
 	return (
-		<div className={`overflow-hidden ${getWidgetItemBackground(theme)} rounded-lg`}>
+		<div className={'overflow-hidden bg-base-200/80 rounded-lg'}>
 			<div className="px-2 pt-1 pb-2">
-				<h3 className={`text-xs text-center font-medium mb-1 ${getTextStyle()} truncate`}>
+				<h3 className={'text-xs text-center font-medium mb-1 widget-tem-text truncate'}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
 				<div className="grid grid-cols-2 gap-1">
 					<div
-						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
+						className={
+							'p-1 rounded-lg cursor-pointer bg-base-100 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
+						}
 					>
 						<FiCalendar
-							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : getSubTextStyle()}`}
+							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : 'text-gray-400'}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
+							<div className={'text-xs font-medium widget-item-text truncate'}>
 								{totalEventsCount} رویداد
 							</div>
-							<div className={`text-[.50rem] ${getSubTextStyle()} truncate`}>
+							<div className={'text-[.50rem] widget-item-sub-text truncate'}>
 								{googleEventCount > 0 && `${googleEventCount} رویداد گوگل • `}
 								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
 							</div>
@@ -94,17 +82,19 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 
 					{/* Todos card */}
 					<div
-						className={`p-1 rounded-lg cursor-pointer ${getCardBackground(theme)} flex items-center opacity-80 hover:opacity-100 transition-all duration-200`}
+						className={
+							'p-1 rounded-lg cursor-pointer bg-base-100 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
+						}
 					>
 						<FiClipboard
-							className={`text-base ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : getSubTextStyle()}`}
+							className={`text-base ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : 'text-gray-400'}`}
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div className={`text-xs font-medium ${getTextStyle()} truncate`}>
+							<div className={'text-xs font-medium widget-item-text truncate'}>
 								{totalTodos} وظیفه
 							</div>
-							<div className={`text-[.50rem] ${getSubTextStyle()} truncate`}>
+							<div className={'text-[.50rem] widget-item-sub-text truncate'}>
 								{totalTodos > 0
 									? `${completedTodos} از ${totalTodos} تکمیل شده`
 									: 'بدون وظیفه'}

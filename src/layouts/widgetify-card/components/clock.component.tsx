@@ -1,5 +1,4 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -7,7 +6,6 @@ import { useEffect, useState } from 'react'
 const ClockComponent = () => {
 	const { timezone } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone))
-	const { theme } = useTheme()
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -27,7 +25,7 @@ const ClockComponent = () => {
 			transition={{ duration: 0.5 }}
 		>
 			<div
-				className={`text-xs font-extrabold tracking-wide ${getTextColor(theme)} drop-shadow-lg`}
+				className={'text-xs font-extrabold tracking-wide widget-item-text drop-shadow-lg'}
 			>
 				{bgGradient} {time.format('HH:mm')}
 			</div>

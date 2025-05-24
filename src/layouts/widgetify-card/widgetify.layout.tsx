@@ -1,10 +1,5 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import {
-	getBorderColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
@@ -24,7 +19,7 @@ import { PetProvider } from './pets/pet.context'
 
 export const WidgetifyLayout = () => {
 	const { timezone } = useGeneralSetting()
-	const { theme } = useTheme()
+
 	const { user, isAuthenticated } = useAuth()
 	const { todos } = useTodoStore()
 	const [userName, setUserName] = useState<string>('')
@@ -67,7 +62,9 @@ export const WidgetifyLayout = () => {
 
 				<div className="relative z-10 flex flex-col items-center gap-2">
 					<div
-						className={`flex items-center justify-between w-full border-b ${getBorderColor(theme)}`}
+						className={
+							'flex items-center justify-between w-full border-b widget-item-border'
+						}
 					>
 						<div className="flex items-center gap-2">
 							<p className="w-32 text-xs font-semibold truncate">سلام {userName}! </p>
@@ -79,7 +76,9 @@ export const WidgetifyLayout = () => {
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
 							<div
-								className={`p-2 mb-3 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm border-r-2 border-blue-400/50`}
+								className={
+									'p-2 mb-3 rounded-lg widget-item-bg shadow-sm border-r-2 border-blue-400/50'
+								}
 							>
 								<div className="flex items-start gap-2">
 									{dailyMessage.isAi && (
@@ -98,7 +97,7 @@ export const WidgetifyLayout = () => {
 
 						<div className="space-y-3">
 							<motion.div
-								className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+								className={'p-2 rounded-lg widget-item-bg shadow-sm'}
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.4 }}
@@ -148,7 +147,7 @@ export const WidgetifyLayout = () => {
 							{/* Google Calendar Events Summary */}
 							{user?.connections?.includes('google') && (
 								<motion.div
-									className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+									className={'p-2 rounded-lg widget-item-bg shadow-sm'}
 									initial={{ opacity: 0, y: 5 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.5 }}

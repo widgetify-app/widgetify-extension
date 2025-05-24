@@ -34,7 +34,6 @@ export function DayItem({
 	setSelectedDate,
 	timezone,
 }: DayItemProps) {
-	const { theme } = useTheme()
 	const cellDate = currentDate.clone().jDate(day)
 	const dateStr = formatDateStr(cellDate)
 	const todayShamsiEvents = getShamsiEvents(events, cellDate)
@@ -69,14 +68,7 @@ export function DayItem({
 			return 'text-red-400'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			case 'dark':
-				return 'text-gray-300'
-			default: // glass
-				return 'text-gray-300'
-		}
+		return 'widget-item-text'
 	}
 
 	const getSelectedDayStyle = () => {
@@ -84,14 +76,7 @@ export function DayItem({
 			return 'bg-red-400/10'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-500/20'
-			case 'dark':
-				return 'bg-blue-500/30'
-			default: // glass
-				return 'bg-blue-500/20'
-		}
+		return 'bg-primary/20'
 	}
 
 	const getHoverStyle = () => {
@@ -99,14 +84,7 @@ export function DayItem({
 			return 'hover:bg-red-400/10'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'hover:bg-gray-100'
-			case 'dark':
-				return 'hover:bg-gray-800/50'
-			default:
-				return 'hover:bg-white/10'
-		}
+		return 'hover:bg-primary/10'
 	}
 
 	const getTodayRingStyle = () => {
@@ -114,12 +92,7 @@ export function DayItem({
 			return 'ring-1 ring-red-400/40'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'ring-2 ring-blue-500'
-			default:
-				return 'ring-2 ring-blue-400'
-		}
+		return 'ring-1 ring-primary/80'
 	}
 
 	const getEventIndicatorStyle = () => {
@@ -127,26 +100,16 @@ export function DayItem({
 			return 'bg-red-400/80'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-500'
-			default:
-				return 'bg-blue-400'
-		}
+		return 'bg-info'
 	}
 
 	const getTodoIndicatorStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-green-500'
-			default:
-				return 'bg-green-400'
-		}
+		return 'bg-success'
 	}
 
 	return (
 		<Tooltip
-			content={toolTipContent(cellDate, theme, {
+			content={toolTipContent(cellDate, {
 				todayShamsiEvents,
 				todayHijriEvents,
 				todayGregorianEvents,
