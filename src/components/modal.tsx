@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 
 type ModalProps = {
@@ -31,7 +31,6 @@ const Modal = ({
 	showCloseButton = true,
 	className = '',
 }: ModalProps) => {
-
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
@@ -41,7 +40,6 @@ const Modal = ({
 
 		if (isOpen) {
 			document.addEventListener('keydown', handleKeyDown)
-	 
 		}
 
 		return () => {
@@ -62,6 +60,8 @@ const Modal = ({
 			}}
 			onClose={onClose}
 			dir={direction}
+			// reset border radius
+			style={{ borderRadius: 'var(--daisy-border-radius)' }}
 		>
 			<div
 				className={`modal-box ${daisyUISizeClasses[size]} ${className}`}
