@@ -7,7 +7,7 @@ export enum PetTypes {
 	CHICKEN = 'chicken',
 	CRAB = 'crab',
 	FROG = 'frog',
-	CAT = "cat"
+	CAT = 'cat',
 }
 export interface PetSettings {
 	enablePets: boolean

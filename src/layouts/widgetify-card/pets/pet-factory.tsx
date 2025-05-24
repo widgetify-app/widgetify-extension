@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
-import { PetTypes } from './pet.context'
-import { frogComponent } from './pet-item/pet-frog'
 import { CatComponent } from './pet-item/pet-cat'
+import { frogComponent } from './pet-item/pet-frog'
+import { PetTypes } from './pet.context'
 
 // Lazy load pet components
 const DogComponent = React.lazy(() =>
