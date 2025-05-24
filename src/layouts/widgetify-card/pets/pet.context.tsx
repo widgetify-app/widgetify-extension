@@ -6,7 +6,8 @@ export enum PetTypes {
 	DOG_AKITA = 'dog-akita',
 	CHICKEN = 'chicken',
 	CRAB = 'crab',
-	FROG = 'frog'
+	FROG = 'frog',
+	CAT = 'cat',
 }
 export interface PetSettings {
 	enablePets: boolean
@@ -16,7 +17,7 @@ export interface PetSettings {
 		{
 			name: string
 			emoji: string
-			type: 'dog' | 'chicken' | 'crab' | 'frog'
+			type: 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
 		}
 	>
 }
@@ -42,6 +43,11 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			name: 'چنگولی',
 			emoji: '🦀',
 			type: 'crab',
+		},
+		[PetTypes.CAT]: {
+			name: 'زردآلو',
+			emoji: '🐈',
+			type: 'cat',
 		},
 		[PetTypes.FROG]: {
 			name: 'قوری',
