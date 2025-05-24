@@ -1,3 +1,5 @@
+import type React from 'react'
+
 export enum PetType {
 	DOG = 'dog',
 	CHICKEN = 'chicken',
@@ -84,8 +86,7 @@ export interface PetDurations {
 }
 
 export interface PetAssets {
-	collectibleIcon: React.ElementType
+	collectibleIcon: React.ReactNode
 	collectibleSize: number
 	collectibleFallSpeed: number
-	collectibleColor?: string
 }

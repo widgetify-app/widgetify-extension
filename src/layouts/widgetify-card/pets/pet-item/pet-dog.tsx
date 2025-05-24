@@ -42,10 +42,9 @@ export const DogComponent = () => {
 		climb: { min: 2000, max: 5000 },
 	}
 	const dogAssets: PetAssets = {
-		collectibleIcon: LuBone,
+		collectibleIcon: <LuBone size={24} className="text-gray-500" />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'gray-200',
 	}
 
 	const {

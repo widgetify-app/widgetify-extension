@@ -57,11 +57,14 @@ export const frogComponent = () => {
 	]
 
 	const frogAssets: PetAssets = {
-		collectibleIcon: LuBug,
+		collectibleIcon: (
+			<LuBug
+				className={`text-${collectibleColors[Math.floor(Math.random() * collectibleColors.length)]}`}
+				size={24}
+			/>
+		),
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor:
-			collectibleColors[Math.floor(Math.random() * collectibleColors.length)],
 	}
 
 	const {

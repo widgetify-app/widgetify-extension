@@ -40,10 +40,9 @@ export const ChickenComponent = () => {
 		climb: { min: 4000, max: 7000 },
 	}
 	const chickenAssets: PetAssets = {
-		collectibleIcon: GiCorn,
+		collectibleIcon: <GiCorn className="text-yellow-500" size={24} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'yellow-500',
 	}
 
 	const {

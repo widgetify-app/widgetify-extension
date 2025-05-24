@@ -40,10 +40,9 @@ export const CrabComponent = () => {
 		climb: { min: 3000, max: 6000 },
 	}
 	const crabAssets: PetAssets = {
-		collectibleIcon: IoFish,
+		collectibleIcon: <IoFish className="text-blue-500" size={24} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'blue-400',
 	}
 
 	const {

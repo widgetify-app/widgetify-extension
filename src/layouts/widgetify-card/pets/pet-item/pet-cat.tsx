@@ -3,7 +3,7 @@ import lie from '@/assets/animals/cat/zardaloo_lie_8fps.gif'
 import running from '@/assets/animals/cat/zardaloo_run_8fps.gif'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.gif'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.gif'
-import { LuMouse } from 'react-icons/lu'
+import { FaFish } from 'react-icons/fa'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
 	type PetAnimations,
@@ -34,18 +34,17 @@ export const CatComponent = () => {
 		climbSpeed: PetSpeed.NORMAL,
 		maxHeight: 100,
 	}
-
 	const catDurations: PetDurations = {
 		walk: { min: 4000, max: 9000 },
 		run: { min: 2000, max: 5000 },
 		rest: { min: 6000, max: 12000 },
 		climb: { min: 3000, max: 6000 },
 	}
+
 	const catAssets: PetAssets = {
-		collectibleIcon: LuMouse,
+		collectibleIcon: <FaFish size={24} className="text-gray-500" />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'gray-200',
 	}
 
 	const {

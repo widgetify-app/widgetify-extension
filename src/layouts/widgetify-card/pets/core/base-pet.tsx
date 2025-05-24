@@ -40,16 +40,11 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 							style={{
 								left: `${item.x}px`,
 								bottom: `${item.y}px`,
-								width: `${assets.collectibleSize}px`,
-								height: `${assets.collectibleSize}px`,
 							}}
 							animate={item.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
 							transition={{ duration: 0.5 }}
 						>
-							<CollectibleIcon
-								size={assets.collectibleSize}
-								className={`text-${assets.collectibleColor || 'yellow-500'} drop-shadow-md ${item.dropping ? 'animate-bounce' : ''}`}
-							/>
+							{CollectibleIcon}
 						</motion.div>
 					),
 			)}
