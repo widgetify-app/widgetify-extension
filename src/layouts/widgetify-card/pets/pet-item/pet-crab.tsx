@@ -1,10 +1,11 @@
+import crabFood from '@/assets/animals/crab/crab-food.png'
 import idle from '@/assets/animals/crab/red_idle_8fps.gif'
 import running from '@/assets/animals/crab/red_run_8fps.gif'
 import swipe from '@/assets/animals/crab/red_swipe_8fps.gif'
 import walking from '@/assets/animals/crab/red_walk_fast_8fps.gif'
-import crabFood from '@/assets/animals/crab/crab-food.png'
 
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -13,7 +14,6 @@ import {
 	PetSpeed,
 } from '../core/pet-types'
 import { usePetContext } from '../pet.context'
-import { PetFood } from '../core/pet-food'
 
 export const CrabComponent = () => {
 	const { getCurrentPetName } = usePetContext()

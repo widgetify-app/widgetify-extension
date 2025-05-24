@@ -1,11 +1,12 @@
+import catFood from '@/assets/animals/cat/cat-food.png'
 import idle from '@/assets/animals/cat/zardaloo_idle_8fps.gif'
 import lie from '@/assets/animals/cat/zardaloo_lie_8fps.gif'
 import running from '@/assets/animals/cat/zardaloo_run_8fps.gif'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.gif'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.gif'
-import catFood from '@/assets/animals/cat/cat-food.png'
 
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -14,7 +15,6 @@ import {
 	PetSpeed,
 } from '../core/pet-types'
 import { usePetContext } from '../pet.context'
-import { PetFood } from '../core/pet-food'
 
 export const CatComponent = () => {
 	const { getCurrentPetName } = usePetContext()
