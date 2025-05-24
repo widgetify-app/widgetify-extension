@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { PetTypes } from './pet.context'
 import { frogComponent } from './pet-item/pet-frog'
+import { CatComponent } from './pet-item/pet-cat'
 
 // Lazy load pet components
 const DogComponent = React.lazy(() =>
@@ -37,6 +38,9 @@ export const PetFactory: React.FC<PetFactoryProps> = ({ petType }) => {
 			break
 		case PetTypes.FROG:
 			PetComponent = frogComponent
+			break
+		case PetTypes.CAT:
+			PetComponent = CatComponent
 			break
 		default:
 			return null
