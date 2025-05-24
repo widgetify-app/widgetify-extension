@@ -1,7 +1,6 @@
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import type { Note } from '@/context/notes.context'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
 import { useMemo } from 'react'
 import { FaPlus } from 'react-icons/fa6'
 import { FiChevronLeft, FiChevronRight, FiTrash2 } from 'react-icons/fi'

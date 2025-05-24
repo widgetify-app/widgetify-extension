@@ -1,5 +1,4 @@
 import type { Note } from '@/context/notes.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { useEffect, useRef, useState } from 'react'
 
 interface NoteEditorProps {

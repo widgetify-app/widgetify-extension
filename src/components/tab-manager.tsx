@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { type ReactNode, useEffect, useState } from 'react'
 
@@ -14,7 +13,6 @@ interface TabManagerProps {
 	defaultTab?: string
 	selectedTab?: string | null
 	onTabChange?: (tabValue: string) => void
-	theme: string
 	direction?: 'rtl' | 'ltr'
 }
 
@@ -23,7 +21,6 @@ export const TabManager = ({
 	defaultTab,
 	selectedTab,
 	onTabChange,
-	theme,
 	direction = 'rtl',
 }: TabManagerProps) => {
 	const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.value || '')
@@ -42,27 +39,11 @@ export const TabManager = ({
 	}
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		return clsx({
-			'text-blue-600 bg-blue-50': isActive && theme === 'light', // light mode
-			'text-white bg-neutral-700/20': isActive && theme !== 'light', // dark/glass mode
-			'text-gray-600 hover:text-gray-800 hover:bg-gray-100/80':
-				!isActive && theme === 'light', // not active light mode
-			'text-gray-400 hover:text-gray-200 hover:bg-gray-700/50':
-				!isActive && theme === 'dark', // not active dark mode
-			'text-gray-400 hover:text-gray-200 hover:bg-white/5':
-				!isActive && theme !== 'light' && theme !== 'dark', // not active glass mode
-		})
+		return isActive ? 'text-primary/80 bg-primary/10' : 'widget-item-text opacity-70'
 	}
 
 	const getTabIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-500'
-			case 'dark':
-				return 'text-gray-500'
-			default:
-				return 'text-gray-400'
-		}
+		return 'widget-item-text'
 	}
 
 	return (

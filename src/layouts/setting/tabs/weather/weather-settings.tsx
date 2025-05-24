@@ -1,10 +1,4 @@
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import {
-	getButtonStyles,
-	getInputStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import type { TemperatureUnit } from '@/services/hooks/weather/weather.interface'
 
 interface WeatherSettingsProps {
@@ -20,27 +14,12 @@ export function WeatherSettings({
 	useAI,
 	updateSettings,
 }: WeatherSettingsProps) {
-	const { theme } = useTheme()
-
 	const getSelectedUnitStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-600 text-white'
-
-			default:
-				return 'bg-blue-700 text-white'
-		}
+		return 'bg-blue-600 text-white'
 	}
 
 	const getUnselectedUnitStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200/70 text-gray-700 hover:bg-gray-300/70'
-			case 'dark':
-				return 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
-			default: // glass
-				return 'bg-gray-800/30 text-gray-200 hover:bg-gray-700/50'
-		}
+		return 'bg-base-200'
 	}
 
 	return (
@@ -50,38 +29,25 @@ export function WeatherSettings({
 				<div className="flex items-center justify-between">
 					<label
 						htmlFor="forecastCount"
-						className={`flex items-center text-sm font-medium ${getTextColor(theme)}`}
+						className={'flex items-center text-sm font-medium widget-item-text'}
 					>
 						<span>تعداد پیش‌بینی</span>
 					</label>
 					<div className="flex items-center">
-						<button
-							onClick={() =>
-								updateSettings('forecastCount', Math.max(1, forecastCount - 1))
-							}
-							className={`flex items-center justify-center w-8 h-8 text-lg cursor-pointer ${getButtonStyles(theme, true, false)} rounded`}
-						>
-							−
-						</button>
-						<input
+						<select
 							id="forecastCount"
-							type="number"
-							min={1}
-							max={10}
 							value={forecastCount}
 							onChange={(e) =>
 								updateSettings('forecastCount', Number.parseInt(e.target.value) || 4)
 							}
-							className={`w-16 h-8 px-2 text-center border-x ${getInputStyle(theme)} focus:outline-none`}
-						/>
-						<button
-							onClick={() =>
-								updateSettings('forecastCount', Math.min(10, forecastCount + 1))
-							}
-							className={`flex items-center justify-center w-8 h-8 text-lg cursor-pointer ${getButtonStyles(theme, true, false)} rounded`}
+							className="select bg-base-content/10 focus:outline-none focus:border-none"
 						>
-							+
-						</button>
+							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+								<option key={num} value={num}>
+									{num}
+								</option>
+							))}
+						</select>
 					</div>
 				</div>
 			</div>
@@ -89,10 +55,7 @@ export function WeatherSettings({
 			{/* Temperature Unit */}
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
-					<label
-						htmlFor="tempUnit"
-						className={`text-sm font-medium ${getTextColor(theme)}`}
-					>
+					<label htmlFor="tempUnit" className={'text-sm font-medium widget-item-text'}>
 						واحد دما
 					</label>
 					<div className="flex overflow-hidden border rounded-md border-white/10">
@@ -116,9 +79,7 @@ export function WeatherSettings({
 						))}
 					</div>
 				</div>
-				<div
-					className={`text-xs font-light text-right ${getTextColor(theme)} opacity-70`}
-				>
+				<div className={'text-xs font-light text-right widget-item-text opacity-70'}>
 					{temperatureUnit === 'metric' &&
 						'واحد سلسیوس در بیشتر کشورهای جهان استفاده می‌شود'}
 					{temperatureUnit === 'imperial' &&
@@ -130,8 +91,8 @@ export function WeatherSettings({
 			{/* AI Toggle */}
 			<div className="flex items-center justify-between">
 				<div>
-					<p className={`text-sm ${getTextColor(theme)}`}>استفاده از هوش مصنوعی</p>
-					<p className={`text-xs font-light ${getTextColor(theme)} opacity-70`}>
+					<p className={'text-sm widget-item-text'}>استفاده از هوش مصنوعی</p>
+					<p className={'text-xs font-light widget-item-text opacity-70'}>
 						توصیف شرایط آب و هوا و پیشنهاد پلی لیست مناسب با کمک هوش مصنوعی
 					</p>
 				</div>

@@ -1,4 +1,3 @@
-import { getCardBackground, getTextColor, useTheme } from '@/context/theme.context'
 import type { FetchedCity } from '@/services/hooks/weather/weather.interface'
 import { useEffect, useRef } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
@@ -16,7 +15,6 @@ export function CityResultsList({
 	onClickOutside,
 	isLoading,
 }: CityResultsListProps) {
-	const { theme } = useTheme()
 	const listRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -33,57 +31,41 @@ export function CityResultsList({
 	}, [onClickOutside])
 
 	const getLoadingTextStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-700'
-			default:
-				return 'text-blue-200'
-		}
+		return 'text-primary/80'
 	}
 
 	const getLoadingSpinnerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-blue-100 border-t-blue-600'
-			default:
-				return 'border-blue-800 border-t-blue-400'
-		}
+		return 'widget-item-border border-t-primary/80'
 	}
 
 	const getCityItemStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-200/30 hover:bg-blue-100/50'
-			case 'dark':
-				return 'border-white/10 hover:bg-blue-800/30'
-			default: // glass
-				return 'border-white/10 hover:bg-blue-800/30'
-		}
+		// switch (theme) {
+		// 	case 'light':
+		// 		return 'border-gray-200/30 hover:bg-blue-100/50'
+		// 	case 'dark':
+		// 		return 'border-white/10 hover:bg-blue-800/30'
+		// 	default: // glass
+		// 		return 'border-white/10 hover:bg-blue-800/30'
+		// }
+
+		return 'border-transparent hover:bg-blue-100/50 dark:hover:bg-blue-800/30'
 	}
 
 	const getLocationIconStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-700'
-			default:
-				return 'text-blue-300'
-		}
+		return 'mr-1 text-primary/80'
 	}
 
 	const getCityStateStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-gray-600'
-			default:
-				return 'text-gray-300'
-		}
+		return 'widget-item-text'
 	}
 
 	if (isLoading) {
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
+				className={
+					'overflow-hidden backdrop-blur-sm shadow rounded-lg widget-item-background'
+				}
 			>
 				<div className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}>
 					<div
@@ -99,9 +81,9 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={`overflow-hidden backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
+				className={'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-base-100/80'}
 			>
-				<div className={`p-4 text-center ${getTextColor(theme)} opacity-75`}>
+				<div className={'p-4 text-center widget-item-text opacity-75'}>
 					شهری با این نام یافت نشد
 				</div>
 			</div>
@@ -111,7 +93,9 @@ export function CityResultsList({
 	return (
 		<div
 			ref={listRef}
-			className={`overflow-y-auto max-h-60 custom-scrollbar backdrop-blur-sm shadow rounded-lg ${getCardBackground(theme)}`}
+			className={
+				'overflow-y-auto max-h-60 custom-scrollbar backdrop-blur-sm shadow rounded-lg bg-base-100/80'
+			}
 		>
 			{cities.map((city) => (
 				<button
@@ -121,7 +105,7 @@ export function CityResultsList({
 				>
 					<div className="flex items-center gap-2">
 						<CiLocationOn className={`${getLocationIconStyle()} size-4`} />
-						<div className={`font-medium ${getTextColor(theme)}`}>{city.name}</div>
+						<div className={'font-medium widget-item-text'}>{city.name}</div>
 					</div>
 					<div className={`text-sm pr-6 ${getCityStateStyle()}`}>
 						{city.state && `${city.state}, `}

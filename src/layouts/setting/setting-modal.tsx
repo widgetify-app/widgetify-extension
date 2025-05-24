@@ -1,6 +1,5 @@
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
-import { useTheme } from '@/context/theme.context'
 import {
 	VscAccount,
 	VscCloud,
@@ -25,8 +24,6 @@ interface SettingModalProps {
 }
 
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
-	const { theme } = useTheme()
-
 	const tabs: TabItem[] = [
 		{
 			label: 'عمومی',
@@ -78,7 +75,6 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				tabs={tabs}
 				defaultTab="general"
 				selectedTab={selectedTab}
-				theme={theme}
 				direction="rtl"
 			/>
 		</Modal>

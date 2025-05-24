@@ -1,5 +1,4 @@
 import { TextInput } from '@/components/text-input'
-import { useTheme } from '@/context/theme.context'
 
 interface CitySearchInputProps {
 	value: string
@@ -16,17 +15,8 @@ export function CitySearchInput({
 	isLoading,
 	ref,
 }: CitySearchInputProps) {
-	const { theme } = useTheme()
-
 	const getSpinnerStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300 border-t-blue-600'
-			case 'dark':
-				return 'border-gray-600 border-t-blue-400'
-			default: // glass
-				return 'border-gray-600 border-t-blue-400'
-		}
+		return 'widget-item-border border-t-primary/80'
 	}
 
 	return (
@@ -36,7 +26,6 @@ export function CitySearchInput({
 				value={value}
 				onChange={onChange}
 				onFocus={onFocus}
-				theme={theme}
 				placeholder="نام شهر را جستجو کنید..."
 			/>
 			{isLoading && (
