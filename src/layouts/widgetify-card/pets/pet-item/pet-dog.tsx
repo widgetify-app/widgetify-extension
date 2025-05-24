@@ -59,7 +59,7 @@ export const DogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName() || 'Akita',
+		name: getCurrentPetName(),
 		animations: dogAnimations,
 		dimensions: dogDimensions,
 		durations: dogDurations,
@@ -68,7 +68,7 @@ export const DogComponent = () => {
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName() || 'Akita'}
+			name={getCurrentPetName()}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}

@@ -59,7 +59,7 @@ export const CatComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName() || 'Zardaloo',
+		name: getCurrentPetName(),
 		animations: catAnimations,
 		dimensions: catDimensions,
 		durations: catDurations,
@@ -68,7 +68,7 @@ export const CatComponent = () => {
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName() || 'Zardaloo'}
+			name={getCurrentPetName()}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}

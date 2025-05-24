@@ -75,7 +75,7 @@ export const frogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName() || 'Ghoori',
+		name: getCurrentPetName(),
 		animations: frogAnimations,
 		dimensions: frogDimensions,
 		durations: frogDurations,
@@ -84,7 +84,7 @@ export const frogComponent = () => {
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName() || 'Ghoori'}
+			name={getCurrentPetName()}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
