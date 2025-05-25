@@ -8,11 +8,12 @@ import { UploadArea } from '../components/upload-area.component'
 import { WallpaperGallery } from '../components/wallpaper-gallery.component'
 import { useWallpaper } from '../hooks/use-wallpaper'
 import { useWallpapersByCategory } from '../hooks/use-wallpapers-by-category'
+import { useAuth } from '@/context/auth.context'
 
 export function GalleryTab() {
 	const { theme } = useTheme()
 	const [isCategoryView, setIsCategoryView] = useState(true)
-
+	const { isAuthenticated } = useAuth()
 	const {
 		categories,
 		allWallpapers,
@@ -30,7 +31,7 @@ export function GalleryTab() {
 		handleSelectBackground,
 		toggleRetouch,
 		handleCustomWallpaperChange,
-	} = useWallpaper(allWallpapers)
+	} = useWallpaper(allWallpapers, isAuthenticated)
 
 	const currentCategoryWallpapers = selectedCategoryId
 		? getCategoryWallpapers(selectedCategoryId)
