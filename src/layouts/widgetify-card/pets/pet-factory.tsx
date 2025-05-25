@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react'
+import { PetHud } from './components/pet-hud'
 import { CatComponent } from './pet-item/pet-cat'
 import { frogComponent } from './pet-item/pet-frog'
-import { PetTypes } from './pet.context'
+import { PetTypes, usePetContext } from './pet.context'
 
 // Lazy load pet components
 const DogComponent = React.lazy(() =>
@@ -18,14 +19,12 @@ const CrabComponent = React.lazy(() =>
 	})),
 )
 
-interface PetFactoryProps {
-	petType: PetTypes | null
-}
-
-export const PetFactory: React.FC<PetFactoryProps> = ({ petType }) => {
+export const PetFactory: React.FC = () => {
+	const { petType } = usePetContext()
 	if (!petType) return null
 
 	let PetComponent = null
+
 	switch (petType) {
 		case PetTypes.DOG_AKITA:
 			PetComponent = DogComponent

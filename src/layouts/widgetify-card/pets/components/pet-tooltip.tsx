@@ -2,7 +2,7 @@ import { getCardBackground, getTextColor, useTheme } from '@/context/theme.conte
 
 interface PetTooltipProps {
 	direction: number
-	content: string
+	content: string | React.ReactNode
 	emoji?: string
 	isAnimation?: boolean
 }

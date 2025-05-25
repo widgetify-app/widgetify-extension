@@ -31,6 +31,10 @@ interface PetSettingsContextType extends PetSettings {
 	levelUpHungryState: (petType: PetTypes) => void
 	levelDownHungryState: (petType: PetTypes) => void
 	isPetHungry: (petType: PetTypes) => boolean
+	getPetHungryState: (petType: PetTypes) => {
+		level: number
+		lastHungerTick: number | null
+	} | null
 }
 export const BASE_PET_OPTIONS: PetSettings = {
 	enablePets: true,
@@ -201,6 +205,14 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		})
 	}
 
+	const getPetHungryState = (petType: PetTypes) => {
+		const pet = settings.petOptions[petType]
+		if (pet) {
+			return pet.hungryState
+		}
+		return null
+	}
+
 	const isPetHungry = (petType: PetTypes): boolean => {
 		const pet = settings.petOptions[petType]
 		if (pet.hungryState.level > 0) {
@@ -216,6 +228,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		levelUpHungryState,
 		isPetHungry,
 		levelDownHungryState,
+		getPetHungryState,
 	}
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>
