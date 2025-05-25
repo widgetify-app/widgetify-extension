@@ -71,7 +71,7 @@ export const DogComponent = () => {
 		dimensions: dogDimensions,
 		durations: dogDurations,
 		assets: dogAssets,
-		isHungry: true,
+		isHungry: isPetHungry(PetTypes.DOG_AKITA),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG_AKITA),
 		onLevelDownHungryState: () => levelDownHungryState(PetTypes.DOG_AKITA),
 	})
