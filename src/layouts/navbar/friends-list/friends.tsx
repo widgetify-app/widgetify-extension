@@ -1,6 +1,5 @@
 import { Colors } from '@/common/constant/colors.constant'
 import { FiChevronLeft, FiUsers } from 'react-icons/fi'
-import { LiaUsersCogSolid } from 'react-icons/lia'
 import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 //@ts-ignore
@@ -9,13 +8,12 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
-import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { useState } from 'react'
+import { ProfileButton } from '../sync/sync'
 import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
 
 export function FriendsList() {
-	const { data: user } = useGetUserProfile()
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
@@ -50,33 +48,22 @@ export function FriendsList() {
 						<FiChevronLeft size={16} />
 					</button>
 				)}
-				{!showFriendsList && (
-					<div className="flex items-center justify-around w-full">
-						<Tooltip content="نمایش دوستان" position="bottom">
-							<button
-								className="p-0.5 cursor-pointer border-l border-gray-300/50"
-								onClick={() => setShowFriendsList(!showFriendsList)}
-							>
-								<FiUsers className="ml-1" size={18} />
-								{}
-							</button>
-						</Tooltip>
-						<span className="h-full w-0.5 px-0.5"></span>
-						<Tooltip content="مدیریت دوستان">
-							<button
-								className="p-0.5 cursor-pointer relative"
-								onClick={handleOpenSettingsModal}
-							>
-								<LiaUsersCogSolid size={18} />
-								{user && user?.friendshipStats?.pending > 0 && (
-									<div className="absolute flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
-										{user?.friendshipStats.pending}
-									</div>
-								)}
-							</button>
-						</Tooltip>
-					</div>
-				)}{' '}
+
+				<div
+					className={`flex items-center justify-around w-full ${showFriendsList && 'hidden'}`}
+				>
+					<Tooltip content="نمایش دوستان" position="bottom">
+						<button
+							className="p-0.5 cursor-pointer border-l border-gray-300/50"
+							onClick={() => setShowFriendsList(!showFriendsList)}
+						>
+							<FiUsers className="ml-1 transition-all hover:scale-80" size={14} />
+						</button>
+					</Tooltip>
+					<span className="h-full w-0.5 px-0.5"></span>
+					<ProfileButton onClick={handleOpenSettingsModal} />
+				</div>
+
 				<Swiper
 					modules={[FreeMode, Navigation]}
 					spaceBetween={2}
@@ -105,6 +92,7 @@ export function FriendsList() {
 
 			<FriendSettingModal
 				isOpen={showSettingsModal}
+				selectedTab={'profile'}
 				onClose={() => {
 					setShowSettingsModal(false)
 					refetchFriends()
@@ -114,7 +102,7 @@ export function FriendsList() {
 				isOpen={firstAuth}
 				onClose={() => setFirstAuth(false)}
 				title="ورود به حساب کاربری"
-				message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
+				message="برای دسترسی به بخش حساب کاربری و مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
 				loginButtonText="ورود به حساب"
 				cancelButtonText="بعداً"
 			/>

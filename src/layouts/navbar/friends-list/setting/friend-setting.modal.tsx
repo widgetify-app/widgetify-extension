@@ -22,19 +22,6 @@ export const FriendSettingModal = ({
 
 	const tabs: TabItem[] = [
 		{
-			label: 'همه دوستان',
-			value: 'all',
-			icon: <FiUsers size={20} />,
-			element: <AllFriendsTab />,
-		},
-		{
-			label: 'درخواست‌ها',
-			value: 'requests',
-			icon: <FiUserCheck size={20} />,
-			element: <FriendRequestsTab />,
-		},
-
-		{
 			label: 'پروفایل من',
 			value: 'profile',
 			icon: <BiUserCircle size={20} />,
@@ -45,6 +32,18 @@ export const FriendSettingModal = ({
 					برای مشاهده پروفایل خود ابتدا وارد حساب کاربری شوید
 				</div>
 			),
+		},
+		{
+			label: 'همه دوستان',
+			value: 'all',
+			icon: <FiUsers size={20} />,
+			element: <AllFriendsTab />,
+		},
+		{
+			label: 'درخواست‌ها',
+			value: 'requests',
+			icon: <FiUserCheck size={20} />,
+			element: <FriendRequestsTab />,
 		},
 	]
 

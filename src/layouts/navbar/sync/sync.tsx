@@ -1,4 +1,3 @@
-import { Colors } from '@/common/constant/colors.constant'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
@@ -19,6 +18,7 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
+import { LiaUsersCogSolid } from 'react-icons/lia'
 
 enum SyncState {
 	Syncing = 0,
@@ -31,8 +31,10 @@ export enum SyncTarget {
 	TODOS = 1,
 	BOOKMARKS = 2,
 }
-
-export function SyncButton() {
+interface Props {
+	onClick: () => void
+}
+export function ProfileButton(props: Props) {
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [syncState, setSyncState] = useState<SyncState | null>(null)
 	const { isAuthenticated } = useAuth()
@@ -162,7 +164,7 @@ export function SyncButton() {
 
 		if (syncState === SyncState.Error) return 'خطا در همگام‌سازی'
 
-		return 'همگام‌سازی با حساب کاربری'
+		return 'حساب کاربری و مدیریت دوستان'
 	}
 
 	return (
@@ -171,26 +173,16 @@ export function SyncButton() {
 				<div className="relative group">
 					<LazyMotion features={domAnimation}>
 						<m.button
-							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
-							onClick={() => syncData(SyncTarget.ALL, 'POST')}
+							className={
+								'flex items-center hover:scale-80 justify-center cursor-pointer w-8 h-8 transition-all  hover:text-gray-200 hover:border hover:border-blue-400  rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'
+							}
+							onClick={props.onClick}
 							aria-label="Sync"
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 17 }}
 						>
 							<AnimatePresence mode="wait">
-								{user?.avatar && syncState === null && (
-									<m.div
-										className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1"
-										initial={{ scale: 0, opacity: 0 }}
-										animate={{ scale: 1, opacity: 1 }}
-										exit={{ scale: 0, opacity: 0 }}
-										transition={{ duration: 0.2 }}
-									>
-										<AiOutlineCloudSync size={10} className="text-white" />
-									</m.div>
-								)}
-
 								{syncState === SyncState.Syncing ? (
 									<m.div
 										className="flex items-center justify-center"
@@ -255,13 +247,7 @@ export function SyncButton() {
 												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
 											/>
 										) : (
-											<m.div
-												initial={{ scale: 0.8, opacity: 0.5 }}
-												animate={{ scale: 1, opacity: 1 }}
-												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-											>
-												<AiOutlineCloudSync size={22} />
-											</m.div>
+											<LiaUsersCogSolid size={16} />
 										)}
 									</m.div>
 								)}

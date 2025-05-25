@@ -7,7 +7,6 @@ import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { SettingModal } from '../setting/setting-modal'
 import { FriendsList } from './friends-list/friends'
-import { SyncButton } from './sync/sync'
 
 export interface PageLink {
 	name: string
@@ -42,7 +41,6 @@ export function NavbarLayout(): JSX.Element {
 				<div className="flex items-center gap-2">
 					<FriendsList />
 
-					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<button
 							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
