@@ -18,12 +18,18 @@ export interface PetSettings {
 			name: string
 			emoji: string
 			type: 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
+			hungryState: {
+				level: number // e.g., 0-100
+				lastFeedTime: number | null // timestamp
+			}
 		}
 	>
 }
 
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: () => string
+	levelUpHungryState: () => void
+	isPetHungry: () => boolean
 }
 export const BASE_PET_OPTIONS: PetSettings = {
 	enablePets: true,
@@ -33,26 +39,46 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			name: 'آکیتا',
 			emoji: '🐶',
 			type: 'dog',
+			hungryState: {
+				level: 100,
+				lastFeedTime: null,
+			},
 		},
 		[PetTypes.CHICKEN]: {
 			name: 'قدقدپور',
 			emoji: '🐔',
 			type: 'chicken',
+			hungryState: {
+				level: 100,
+				lastFeedTime: null,
+			},
 		},
 		[PetTypes.CRAB]: {
 			name: 'چنگولی',
 			emoji: '🦀',
 			type: 'crab',
+			hungryState: {
+				level: 100,
+				lastFeedTime: null,
+			},
 		},
 		[PetTypes.CAT]: {
 			name: 'زردآلو',
 			emoji: '🐈',
 			type: 'cat',
+			hungryState: {
+				level: 100,
+				lastFeedTime: null,
+			},
 		},
 		[PetTypes.FROG]: {
 			name: 'قوری',
 			emoji: '🐸',
 			type: 'frog',
+			hungryState: {
+				level: 100,
+				lastFeedTime: null,
+			},
 		},
 	},
 }
@@ -133,9 +159,51 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		return ''
 	}
 
+	const levelUpHungryState = () => {
+		setSettings((prevSettings) => {
+			const newSettings = { ...prevSettings }
+			if (!newSettings.petType) {
+				return prevSettings
+			}
+
+			const pet = newSettings.petOptions[newSettings.petType]
+
+			if (pet) {
+				pet.hungryState.lastFeedTime = Date.now()
+
+				if (pet.hungryState.level < 100) {
+					pet.hungryState.level += 2
+				}
+			}
+
+			setToStorage('pets', newSettings)
+
+			return newSettings
+		})
+	}
+
+	const isPetHungry = (): boolean => {
+		if (!settings.enablePets || !settings.petType) {
+			return false
+		}
+
+		if (!settings.petOptions[settings.petType]) {
+			return false
+		}
+
+		const pet = settings.petOptions[settings.petType]
+		if (pet.hungryState.level <= 0) {
+			return false
+		}
+
+		return true
+	}
+
 	const contextValue: PetSettingsContextType = {
 		...settings,
 		getCurrentPetName,
+		levelUpHungryState,
+		isPetHungry,
 	}
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>

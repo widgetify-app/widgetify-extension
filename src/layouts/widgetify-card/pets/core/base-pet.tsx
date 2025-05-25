@@ -16,6 +16,8 @@ export interface BasePetProps {
 	dimensions: PetDimensions
 	durations: PetDurations
 	assets: PetAssets
+	onCollectibleCollection?: (collectedItemId: number) => void
+	isHungry?: boolean
 }
 
 interface CollectiblesRendererProps {
@@ -124,6 +126,8 @@ export function useBasePetLogic({
 	dimensions,
 	durations,
 	assets,
+	onCollectibleCollection,
+	isHungry,
 }: BasePetProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const petRef = useRef<HTMLDivElement>(null)
@@ -252,6 +256,10 @@ export function useBasePetLogic({
 				),
 			)
 			updateAction('stand')
+			console.log(`nice you collected item ${collectedItemId}`)
+			if (onCollectibleCollection) {
+				onCollectibleCollection(collectedItemId)
+			}
 			setTimeout(
 				() => updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
 				500,

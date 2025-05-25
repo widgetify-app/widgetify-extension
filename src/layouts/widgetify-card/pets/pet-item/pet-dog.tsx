@@ -17,7 +17,7 @@ import {
 import { usePetContext } from '../pet.context'
 
 export const DogComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const { getCurrentPetName, levelUpHungryState } = usePetContext()
 
 	const dogAnimations: PetAnimations = {
 		idle,
@@ -65,6 +65,7 @@ export const DogComponent = () => {
 		dimensions: dogDimensions,
 		durations: dogDurations,
 		assets: dogAssets,
+		onCollectibleCollection: () => levelUpHungryState(),
 	})
 
 	return (
