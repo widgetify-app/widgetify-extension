@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { PetTooltip } from '../components/pet-tooltip'
 import {
 	type CollectibleItem,
 	type PetAnimations,
@@ -16,6 +16,9 @@ export interface BasePetProps {
 	dimensions: PetDimensions
 	durations: PetDurations
 	assets: PetAssets
+	onCollectibleCollection: (collectedItemId: number) => void
+	onLevelDownHungryState: () => void
+	isHungry: boolean
 }
 
 interface CollectiblesRendererProps {
@@ -34,18 +37,16 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 			{collectibles.map(
 				(item) =>
 					!item.collected && (
-						<motion.div
+						<div
 							key={item.id}
 							className="absolute"
 							style={{
 								left: `${item.x}px`,
 								bottom: `${item.y}px`,
 							}}
-							animate={item.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
-							transition={{ duration: 0.5 }}
 						>
 							{CollectibleIcon}
-						</motion.div>
+						</div>
 					),
 			)}
 		</>
@@ -58,12 +59,13 @@ interface BasePetContainerProps {
 	petRef: React.RefObject<HTMLDivElement | null>
 	position: Position
 	direction: number
-	showName: boolean
+	showName?: boolean
 	collectibles: CollectibleItem[]
 	getAnimationForCurrentAction: () => string
 	dimensions: PetDimensions
 	assets: PetAssets
-	altText?: string
+	isHungry: boolean
+	hungryLevel: number | undefined
 }
 
 export const BasePetContainer: React.FC<BasePetContainerProps> = ({
@@ -77,8 +79,10 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	getAnimationForCurrentAction,
 	dimensions,
 	assets,
-	altText = 'Interactive Pet',
+	isHungry,
 }) => {
+	const showToolTip = showName || isHungry
+
 	return (
 		<div
 			ref={containerRef}
@@ -101,17 +105,16 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 					zIndex: 10,
 				}}
 			>
-				{showName && name && (
-					<div
-						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
-						style={{ transform: `scaleX(${direction})` }}
-					>
-						{name}
-					</div>
+				{showToolTip && (
+					<PetTooltip
+						direction={direction}
+						content={isHungry ? 'غذاااا بدهه' : name}
+						emoji={isHungry ? '🍽️' : undefined}
+						isAnimation={isHungry}
+					/>
 				)}
 				<img
 					src={getAnimationForCurrentAction()}
-					alt={altText}
 					className="object-contain w-full h-full pointer-events-none"
 				/>
 			</div>
@@ -124,6 +127,9 @@ export function useBasePetLogic({
 	dimensions,
 	durations,
 	assets,
+	onCollectibleCollection,
+	isHungry = false,
+	onLevelDownHungryState,
 }: BasePetProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const petRef = useRef<HTMLDivElement>(null)
@@ -252,6 +258,10 @@ export function useBasePetLogic({
 				),
 			)
 			updateAction('stand')
+			console.log(`nice you collected item ${collectedItemId}`)
+			if (onCollectibleCollection) {
+				onCollectibleCollection(collectedItemId)
+			}
 			setTimeout(
 				() => updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
 				500,
@@ -314,6 +324,17 @@ export function useBasePetLogic({
 	}, [collectibles])
 
 	const roamOrRest = useCallback(() => {
+		if (isHungry) {
+			updateBehaviorState(PetBehavior.RESTING)
+			updateAction('sit')
+			setActionTimer(
+				Math.floor(
+					Math.random() * (durations.rest.max - durations.rest.min) + durations.rest.min,
+				),
+			)
+
+			return
+		}
 		const random = Math.random()
 		if (behaviorState === PetBehavior.ROAMING) {
 			if (isNearWall() && random > 0.7 && animations.climb) {
@@ -357,6 +378,10 @@ export function useBasePetLogic({
 							: durations.walk.max - durations.walk.min + durations.walk.min),
 				),
 			)
+		}
+
+		if (onLevelDownHungryState) {
+			onLevelDownHungryState()
 		}
 	}, [
 		behaviorState,

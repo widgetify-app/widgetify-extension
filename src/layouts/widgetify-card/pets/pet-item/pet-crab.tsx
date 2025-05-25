@@ -13,10 +13,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CrabComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const crabAnimations: PetAnimations = {
 		idle,
@@ -58,16 +64,19 @@ export const CrabComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CRAB),
 		animations: crabAnimations,
 		dimensions: crabDimensions,
 		durations: crabDurations,
 		assets: crabAssets,
+		isHungry: isPetHungry(PetTypes.CRAB),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CRAB),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CRAB),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CRAB)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -77,7 +86,8 @@ export const CrabComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Crab"
+			isHungry={isPetHungry(PetTypes.CRAB)}
+			hungryLevel={getPetHungryState(PetTypes.CRAB)?.level}
 		/>
 	)
 }

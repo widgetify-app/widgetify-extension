@@ -14,11 +14,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CatComponent = () => {
-	const { getCurrentPetName } = usePetContext()
-
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 	const catAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -48,7 +53,6 @@ export const CatComponent = () => {
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}
-
 	const {
 		containerRef,
 		petRef,
@@ -60,16 +64,19 @@ export const CatComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CAT),
 		animations: catAnimations,
 		dimensions: catDimensions,
 		durations: catDurations,
 		assets: catAssets,
+		isHungry: isPetHungry(PetTypes.CAT),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CAT),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CAT),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CAT)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -79,7 +86,8 @@ export const CatComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="a Dummy Cat"
+			isHungry={isPetHungry(PetTypes.CAT)}
+			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 		/>
 	)
 }

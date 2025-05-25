@@ -65,7 +65,7 @@ export const WidgetifyLayout = () => {
 					</PetProvider>
 				}
 
-				<div className="relative z-10 flex flex-col items-center gap-2">
+				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
 					<div
 						className={`flex items-center justify-between w-full border-b ${getBorderColor(theme)}`}
 					>
@@ -79,7 +79,7 @@ export const WidgetifyLayout = () => {
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
 							<div
-								className={`p-2 mb-3 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm border-r-2 border-blue-400/50`}
+								className={`p-2 mb-1 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm border-r-2 border-blue-400/50`}
 							>
 								<div className="flex items-start gap-2">
 									{dailyMessage.isAi && (
@@ -96,9 +96,54 @@ export const WidgetifyLayout = () => {
 							</div>
 						)}
 
-						<div className="space-y-3">
+						<div className="space-y-1">
+							{/* Google Calendar Events Summary */}
+							{user?.connections?.includes('google') && (
+								<motion.div
+									className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+									initial={{ opacity: 0, y: 5 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.5 }}
+								>
+									<div className="flex items-center gap-2">
+										<FiCalendar
+											className={
+												upcomingEvents.length > 0 ? 'text-blue-500' : 'opacity-50'
+											}
+										/>
+										<div className="flex-1">
+											<p className="text-xs font-medium">جلسات امروز</p>
+											<p className="text-xs opacity-75">
+												{upcomingEvents.length > 0
+													? `${upcomingEvents.length} جلسه باقی‌مانده`
+													: todayEvents.length > 0
+														? 'همه جلسات به پایان رسیده‌اند'
+														: 'هیچ جلسه‌ای برای امروز ندارید'}
+											</p>
+										</div>
+									</div>
+
+									{/* Show up to 1 upcoming event */}
+									{upcomingEvents.length > 0 && (
+										<div className="pr-6 mt-2 space-y-1">
+											{upcomingEvents.slice(0, 1).map((event) => (
+												<div key={event.id} className="flex items-center gap-1 text-xs">
+													<span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+													<p className="flex-1 font-light truncate">{event.summary}</p>
+												</div>
+											))}
+											{upcomingEvents.length > 1 && (
+												<p className="text-xs italic opacity-75">
+													و {upcomingEvents.length - 1} جلسه دیگر...
+												</p>
+											)}
+										</div>
+									)}
+								</motion.div>
+							)}
+
 							<motion.div
-								className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+								className={`p-1 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.4 }}
@@ -144,51 +189,6 @@ export const WidgetifyLayout = () => {
 									</div>
 								)}
 							</motion.div>
-
-							{/* Google Calendar Events Summary */}
-							{user?.connections?.includes('google') && (
-								<motion.div
-									className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
-									initial={{ opacity: 0, y: 5 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.5 }}
-								>
-									<div className="flex items-center gap-2">
-										<FiCalendar
-											className={
-												upcomingEvents.length > 0 ? 'text-blue-500' : 'opacity-50'
-											}
-										/>
-										<div className="flex-1">
-											<p className="text-xs font-medium">جلسات امروز</p>
-											<p className="text-xs opacity-75">
-												{upcomingEvents.length > 0
-													? `${upcomingEvents.length} جلسه باقی‌مانده`
-													: todayEvents.length > 0
-														? 'همه جلسات به پایان رسیده‌اند'
-														: 'هیچ جلسه‌ای برای امروز ندارید'}
-											</p>
-										</div>
-									</div>
-
-									{/* Show up to 1 upcoming event */}
-									{upcomingEvents.length > 0 && (
-										<div className="pr-6 mt-2 space-y-1">
-											{upcomingEvents.slice(0, 1).map((event) => (
-												<div key={event.id} className="flex items-center gap-1 text-xs">
-													<span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-													<p className="flex-1 font-light truncate">{event.summary}</p>
-												</div>
-											))}
-											{upcomingEvents.length > 1 && (
-												<p className="text-xs italic opacity-75">
-													و {upcomingEvents.length - 1} جلسه دیگر...
-												</p>
-											)}
-										</div>
-									)}
-								</motion.div>
-							)}
 						</div>
 					</div>
 				</div>

@@ -14,10 +14,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const DogComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const dogAnimations: PetAnimations = {
 		idle,
@@ -60,16 +66,19 @@ export const DogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.DOG_AKITA),
 		animations: dogAnimations,
 		dimensions: dogDimensions,
 		durations: dogDurations,
 		assets: dogAssets,
+		isHungry: true,
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG_AKITA),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.DOG_AKITA),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.DOG_AKITA)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -79,7 +88,8 @@ export const DogComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Dog"
+			isHungry={isPetHungry(PetTypes.DOG_AKITA)}
+			hungryLevel={getPetHungryState(PetTypes.DOG_AKITA)?.level}
 		/>
 	)
 }
