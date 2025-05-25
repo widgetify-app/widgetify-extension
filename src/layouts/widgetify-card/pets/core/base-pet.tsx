@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PetTooltip } from './pet-tooltip'
+import { PetTooltip } from '../components/pet-tooltip'
 import {
 	type CollectibleItem,
 	type PetAnimations,
