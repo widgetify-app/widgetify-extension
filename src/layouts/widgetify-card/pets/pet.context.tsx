@@ -181,10 +181,20 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 			const pet = newSettings.petOptions[petType]
 
-			if (pet && pet.hungryState.level > 0) {
-				console.log('levelDownHungryState', petType, pet)
-				pet.hungryState.level -= 2
+			const PER_SEC = 10 * 1000 // 10 sec
+
+			if (pet?.hungryState?.lastHungerTick) {
+				const timeDiff = Date.now() - pet.hungryState.lastHungerTick
+				if (timeDiff < PER_SEC) {
+					return prevSettings
+				}
 			}
+
+			if (pet && pet.hungryState.level > 0) {
+				pet.hungryState.level -= 2
+				pet.hungryState.lastHungerTick = Date.now()
+			}
+
 			setToStorage('pets', newSettings)
 
 			return newSettings
