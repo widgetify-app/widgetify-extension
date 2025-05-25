@@ -16,9 +16,9 @@ export interface BasePetProps {
 	dimensions: PetDimensions
 	durations: PetDurations
 	assets: PetAssets
-	onCollectibleCollection?: (collectedItemId: number) => void
-	onLevelDownHungryState?: () => void
-	isHungry?: boolean
+	onCollectibleCollection: (collectedItemId: number) => void
+	onLevelDownHungryState: () => void
+	isHungry: boolean
 }
 
 interface CollectiblesRendererProps {
@@ -64,8 +64,8 @@ interface BasePetContainerProps {
 	getAnimationForCurrentAction: () => string
 	dimensions: PetDimensions
 	assets: PetAssets
-	isHungry?: boolean
-	hungryLevel?: number
+	isHungry: boolean
+	hungryLevel: number | undefined
 }
 
 export const BasePetContainer: React.FC<BasePetContainerProps> = ({

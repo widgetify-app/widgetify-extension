@@ -16,8 +16,13 @@ import {
 import { PetTypes, usePetContext } from '../pet.context'
 
 export const frogComponent = () => {
-	const { getCurrentPetName } = usePetContext()
-
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 	const frogAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -83,6 +88,9 @@ export const frogComponent = () => {
 		dimensions: frogDimensions,
 		durations: frogDurations,
 		assets: frogAssets,
+		isHungry: isPetHungry(PetTypes.FROG),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.FROG),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.FROG),
 	})
 
 	return (
@@ -97,7 +105,8 @@ export const frogComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Ghoori(frog)"
+			hungryLevel={getPetHungryState(PetTypes.FROG)?.level}
+			isHungry={isPetHungry(PetTypes.FROG)}
 		/>
 	)
 }

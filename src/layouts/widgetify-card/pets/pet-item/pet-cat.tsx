@@ -82,12 +82,12 @@ export const CatComponent = () => {
 			position={position}
 			direction={direction}
 			showName={showName}
-			isHungry={isPetHungry(PetTypes.CAT)}
-			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 			collectibles={collectibles}
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
+			isHungry={isPetHungry(PetTypes.CAT)}
+			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 		/>
 	)
 }

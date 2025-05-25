@@ -16,7 +16,13 @@ import {
 import { PetTypes, usePetContext } from '../pet.context'
 
 export const CrabComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const crabAnimations: PetAnimations = {
 		idle,
@@ -63,6 +69,9 @@ export const CrabComponent = () => {
 		dimensions: crabDimensions,
 		durations: crabDurations,
 		assets: crabAssets,
+		isHungry: isPetHungry(PetTypes.CRAB),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CRAB),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CRAB),
 	})
 
 	return (
@@ -77,7 +86,8 @@ export const CrabComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Crab"
+			isHungry={isPetHungry(PetTypes.CRAB)}
+			hungryLevel={getPetHungryState(PetTypes.CRAB)?.level}
 		/>
 	)
 }
