@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { PetTooltip } from './pet-tooltip'
 import {
 	type CollectibleItem,
 	type PetAnimations,
@@ -37,18 +37,16 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 			{collectibles.map(
 				(item) =>
 					!item.collected && (
-						<motion.div
+						<div
 							key={item.id}
 							className="absolute"
 							style={{
 								left: `${item.x}px`,
 								bottom: `${item.y}px`,
 							}}
-							animate={item.collected ? { scale: [1, 1.3, 0], opacity: [1, 0.8, 0] } : {}}
-							transition={{ duration: 0.5 }}
 						>
 							{CollectibleIcon}
-						</motion.div>
+						</div>
 					),
 			)}
 		</>
@@ -84,6 +82,11 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	altText = 'Interactive Pet',
 	isHungry,
 }) => {
+	const hungryActions: { content: string; emoji: string } = {
+		content: 'گشنمههههه',
+		emoji: '😣',
+	}
+
 	return (
 		<div
 			ref={containerRef}
@@ -107,22 +110,15 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 				}}
 			>
 				{isHungry ? (
-					<div
-						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
-						style={{ transform: `scaleX(${direction})` }}
-					>
-						گشنمههههه
-					</div>
+					<PetTooltip
+						direction={direction}
+						content={hungryActions.content}
+						emoji={hungryActions.emoji}
+						isAnimation={true}
+					/>
 				) : (
 					showName &&
-					name && (
-						<div
-							className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
-							style={{ transform: `scaleX(${direction})` }}
-						>
-							{name}
-						</div>
-					)
+					name && <PetTooltip direction={direction} content={name} isAnimation={false} />
 				)}
 				<img
 					src={getAnimationForCurrentAction()}
