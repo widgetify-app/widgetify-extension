@@ -12,14 +12,8 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 
 	if (mode === 'small') {
 		return (
-			<div className="absolute bottom-0 z-10 left-2">
+			<div className="absolute bottom-0 z-10 left-2 opacity-60">
 				<div className="relative w-9 h-9">
-					<div
-						className={
-							'absolute w-full h-full rounded-full border-2 border-gray-200 dark:border-gray-700'
-						}
-					></div>
-
 					<svg className="absolute w-full h-full -rotate-90">
 						<circle
 							className={`${
@@ -43,7 +37,9 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 
 					<div className="absolute inset-0 flex flex-col items-center justify-center">
 						<FaBowlFood size={10} className={getTextColor(theme)} />
-						<span className={`text-xs font-medium ${getTextColor(theme)}`}>{level}%</span>
+						<span className={`text-[0.6rem] font-medium ${getTextColor(theme)}`}>
+							{level}%
+						</span>
 					</div>
 				</div>
 			</div>
