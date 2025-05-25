@@ -6,6 +6,7 @@
 
 Official Website: [widgetify.ir](https://widgetify.ir)
 
+Discord: https://discord.gg/7sxfFjFJzd
 ## Current Widgets
 
 ### 🌤️ Weather widget
