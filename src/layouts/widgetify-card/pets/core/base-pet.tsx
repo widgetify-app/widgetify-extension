@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PetHud } from '../components/pet-hud'
 import { PetTooltip } from '../components/pet-tooltip'
 import {
 	type CollectibleItem,
@@ -65,7 +64,6 @@ interface BasePetContainerProps {
 	getAnimationForCurrentAction: () => string
 	dimensions: PetDimensions
 	assets: PetAssets
-	altText?: string
 	isHungry?: boolean
 	hungryLevel?: number
 }
@@ -81,14 +79,9 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	getAnimationForCurrentAction,
 	dimensions,
 	assets,
-	altText = 'Interactive Pet',
 	isHungry,
-	hungryLevel,
 }) => {
-	const hungryActions: { content: string; emoji: string } = {
-		content: 'گشنمههههه',
-		emoji: '😣',
-	}
+	const showToolTip = showName || isHungry
 
 	return (
 		<div
@@ -112,23 +105,16 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 					zIndex: 10,
 				}}
 			>
-				{showName ||
-					(isHungry && (
-						<PetTooltip
-							direction={direction}
-							content={
-								<PetHud
-									isHungry={isHungry || false}
-									level={hungryLevel || 0}
-									petName={name}
-								/>
-							}
-							isAnimation={false}
-						/>
-					))}
+				{showToolTip && (
+					<PetTooltip
+						direction={direction}
+						content={isHungry ? 'غذاااا بدهه' : name}
+						emoji={isHungry ? '🍽️' : undefined}
+						isAnimation={isHungry}
+					/>
+				)}
 				<img
 					src={getAnimationForCurrentAction()}
-					alt={altText}
 					className="object-contain w-full h-full pointer-events-none"
 				/>
 			</div>

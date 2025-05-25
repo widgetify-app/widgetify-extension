@@ -17,8 +17,13 @@ import {
 import { PetTypes, usePetContext } from '../pet.context'
 
 export const CatComponent = () => {
-	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
-		usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 	const catAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -78,11 +83,11 @@ export const CatComponent = () => {
 			direction={direction}
 			showName={showName}
 			isHungry={isPetHungry(PetTypes.CAT)}
+			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 			collectibles={collectibles}
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="a Dummy Cat"
 		/>
 	)
 }

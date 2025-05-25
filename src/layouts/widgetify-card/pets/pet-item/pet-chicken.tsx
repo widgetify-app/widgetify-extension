@@ -75,7 +75,6 @@ export const ChickenComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Chicken"
 		/>
 	)
 }
