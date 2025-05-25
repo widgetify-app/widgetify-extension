@@ -17,6 +17,7 @@ export interface BasePetProps {
 	durations: PetDurations
 	assets: PetAssets
 	onCollectibleCollection?: (collectedItemId: number) => void
+	onLevelDownHungryState?: () => void
 	isHungry?: boolean
 }
 
@@ -60,12 +61,13 @@ interface BasePetContainerProps {
 	petRef: React.RefObject<HTMLDivElement | null>
 	position: Position
 	direction: number
-	showName: boolean
+	showName?: boolean
 	collectibles: CollectibleItem[]
 	getAnimationForCurrentAction: () => string
 	dimensions: PetDimensions
 	assets: PetAssets
 	altText?: string
+	isHungry?: boolean
 }
 
 export const BasePetContainer: React.FC<BasePetContainerProps> = ({
@@ -80,6 +82,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	dimensions,
 	assets,
 	altText = 'Interactive Pet',
+	isHungry,
 }) => {
 	return (
 		<div
@@ -103,13 +106,23 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 					zIndex: 10,
 				}}
 			>
-				{showName && name && (
+				{isHungry ? (
 					<div
 						className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
 						style={{ transform: `scaleX(${direction})` }}
 					>
-						{name}
+						گشنمههههه
 					</div>
+				) : (
+					showName &&
+					name && (
+						<div
+							className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/60 px-2 py-0.5 rounded text-xs text-white whitespace-nowrap backdrop-blur-sm"
+							style={{ transform: `scaleX(${direction})` }}
+						>
+							{name}
+						</div>
+					)
 				)}
 				<img
 					src={getAnimationForCurrentAction()}
@@ -127,7 +140,8 @@ export function useBasePetLogic({
 	durations,
 	assets,
 	onCollectibleCollection,
-	isHungry,
+	isHungry = false,
+	onLevelDownHungryState,
 }: BasePetProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const petRef = useRef<HTMLDivElement>(null)
@@ -322,6 +336,17 @@ export function useBasePetLogic({
 	}, [collectibles])
 
 	const roamOrRest = useCallback(() => {
+		if (isHungry) {
+			updateBehaviorState(PetBehavior.RESTING)
+			updateAction('sit')
+			setActionTimer(
+				Math.floor(
+					Math.random() * (durations.rest.max - durations.rest.min) + durations.rest.min,
+				),
+			)
+
+			return
+		}
 		const random = Math.random()
 		if (behaviorState === PetBehavior.ROAMING) {
 			if (isNearWall() && random > 0.7 && animations.climb) {
@@ -365,6 +390,10 @@ export function useBasePetLogic({
 							: durations.walk.max - durations.walk.min + durations.walk.min),
 				),
 			)
+		}
+
+		if (onLevelDownHungryState) {
+			onLevelDownHungryState()
 		}
 	}, [
 		behaviorState,

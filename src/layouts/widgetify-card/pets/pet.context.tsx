@@ -182,9 +182,9 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			const pet = newSettings.petOptions[petType]
 
 			if (pet && pet.hungryState.level > 0) {
+				console.log('levelDownHungryState', petType, pet)
 				pet.hungryState.level -= 2
 			}
-
 			setToStorage('pets', newSettings)
 
 			return newSettings
@@ -192,12 +192,8 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const isPetHungry = (petType: PetTypes): boolean => {
-		if (!settings.petOptions[petType]) {
-			return false
-		}
-
 		const pet = settings.petOptions[petType]
-		if (pet.hungryState.level <= 0) {
+		if (pet.hungryState.level > 0) {
 			return false
 		}
 
