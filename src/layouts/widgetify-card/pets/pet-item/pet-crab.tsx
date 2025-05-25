@@ -13,7 +13,7 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CrabComponent = () => {
 	const { getCurrentPetName } = usePetContext()
@@ -58,7 +58,7 @@ export const CrabComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CRAB),
 		animations: crabAnimations,
 		dimensions: crabDimensions,
 		durations: crabDurations,
@@ -67,7 +67,7 @@ export const CrabComponent = () => {
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CRAB)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}

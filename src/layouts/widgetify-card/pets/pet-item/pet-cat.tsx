@@ -14,11 +14,10 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CatComponent = () => {
 	const { getCurrentPetName } = usePetContext()
-
 	const catAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -60,7 +59,7 @@ export const CatComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CAT),
 		animations: catAnimations,
 		dimensions: catDimensions,
 		durations: catDurations,
@@ -69,7 +68,7 @@ export const CatComponent = () => {
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CAT)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}

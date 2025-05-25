@@ -20,16 +20,17 @@ export interface PetSettings {
 			type: 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
 			hungryState: {
 				level: number // e.g., 0-100
-				lastFeedTime: number | null // timestamp
+				lastHungerTick: number | null //timestamp
 			}
 		}
 	>
 }
 
 interface PetSettingsContextType extends PetSettings {
-	getCurrentPetName: () => string
-	levelUpHungryState: () => void
-	isPetHungry: () => boolean
+	getCurrentPetName: (petType: PetTypes) => string
+	levelUpHungryState: (petType: PetTypes) => void
+	levelDownHungryState: (petType: PetTypes) => void
+	isPetHungry: (petType: PetTypes) => boolean
 }
 export const BASE_PET_OPTIONS: PetSettings = {
 	enablePets: true,
@@ -41,7 +42,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			type: 'dog',
 			hungryState: {
 				level: 100,
-				lastFeedTime: null,
+				lastHungerTick: null,
 			},
 		},
 		[PetTypes.CHICKEN]: {
@@ -50,7 +51,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			type: 'chicken',
 			hungryState: {
 				level: 100,
-				lastFeedTime: null,
+				lastHungerTick: null,
 			},
 		},
 		[PetTypes.CRAB]: {
@@ -59,7 +60,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			type: 'crab',
 			hungryState: {
 				level: 100,
-				lastFeedTime: null,
+				lastHungerTick: null,
 			},
 		},
 		[PetTypes.CAT]: {
@@ -68,7 +69,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			type: 'cat',
 			hungryState: {
 				level: 100,
-				lastFeedTime: null,
+				lastHungerTick: null,
 			},
 		},
 		[PetTypes.FROG]: {
@@ -77,7 +78,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 			type: 'frog',
 			hungryState: {
 				level: 100,
-				lastFeedTime: null,
+				lastHungerTick: null,
 			},
 		},
 	},
@@ -147,33 +148,22 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		}
 	}, [])
 
-	const getCurrentPetName = () => {
-		if (!settings.petType) {
-			return ''
-		}
-
-		const CurrentPet = settings.petOptions[settings.petType]
+	const getCurrentPetName = (petType: PetTypes) => {
+		const CurrentPet = settings.petOptions[petType]
 		if (CurrentPet) {
 			return CurrentPet.name
 		}
 		return ''
 	}
 
-	const levelUpHungryState = () => {
+	const levelUpHungryState = (petType: PetTypes) => {
 		setSettings((prevSettings) => {
 			const newSettings = { ...prevSettings }
-			if (!newSettings.petType) {
-				return prevSettings
-			}
 
-			const pet = newSettings.petOptions[newSettings.petType]
+			const pet = newSettings.petOptions[petType]
 
-			if (pet) {
-				pet.hungryState.lastFeedTime = Date.now()
-
-				if (pet.hungryState.level < 100) {
-					pet.hungryState.level += 2
-				}
+			if (pet && pet.hungryState.level < 100) {
+				pet.hungryState.level += 2
 			}
 
 			setToStorage('pets', newSettings)
@@ -182,16 +172,31 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		})
 	}
 
-	const isPetHungry = (): boolean => {
-		if (!settings.enablePets || !settings.petType) {
+	const levelDownHungryState = (petType: PetTypes) => {
+		setSettings((prevSettings) => {
+			const newSettings = { ...prevSettings }
+			if (!newSettings.petType) {
+				return prevSettings
+			}
+
+			const pet = newSettings.petOptions[petType]
+
+			if (pet && pet.hungryState.level > 0) {
+				pet.hungryState.level -= 2
+			}
+
+			setToStorage('pets', newSettings)
+
+			return newSettings
+		})
+	}
+
+	const isPetHungry = (petType: PetTypes): boolean => {
+		if (!settings.petOptions[petType]) {
 			return false
 		}
 
-		if (!settings.petOptions[settings.petType]) {
-			return false
-		}
-
-		const pet = settings.petOptions[settings.petType]
+		const pet = settings.petOptions[petType]
 		if (pet.hungryState.level <= 0) {
 			return false
 		}
@@ -204,6 +209,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		getCurrentPetName,
 		levelUpHungryState,
 		isPetHungry,
+		levelDownHungryState,
 	}
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>

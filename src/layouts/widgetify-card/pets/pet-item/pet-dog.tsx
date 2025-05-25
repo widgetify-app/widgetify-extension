@@ -14,7 +14,7 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const DogComponent = () => {
 	const { getCurrentPetName, levelUpHungryState } = usePetContext()
@@ -60,17 +60,17 @@ export const DogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.DOG_AKITA),
 		animations: dogAnimations,
 		dimensions: dogDimensions,
 		durations: dogDurations,
 		assets: dogAssets,
-		onCollectibleCollection: () => levelUpHungryState(),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG_AKITA),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.DOG_AKITA)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
