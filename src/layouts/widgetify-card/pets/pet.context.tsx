@@ -195,7 +195,9 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			}
 
 			if (pet && pet.hungryState.level > 0) {
-				pet.hungryState.level -= 2
+				const hungerDecrease =
+					Math.random() < 0.5 ? 1 : pet.hungryState.level > 10 ? 2 : 1
+				pet.hungryState.level -= hungerDecrease
 				pet.hungryState.lastHungerTick = Date.now()
 			}
 
