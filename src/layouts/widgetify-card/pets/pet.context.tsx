@@ -189,7 +189,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 			const pet = newSettings.petOptions[petType]
 
-			const PER_SEC = 10 * 1000 // 10 sec
+			const PER_SEC = 40 * 1000
 
 			if (pet?.hungryState?.lastHungerTick) {
 				const timeDiff = Date.now() - pet.hungryState.lastHungerTick
