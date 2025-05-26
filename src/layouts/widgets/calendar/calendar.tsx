@@ -22,7 +22,7 @@ const CalendarLayout: React.FC<any> = () => {
 	return (
 		<WidgetContainer
 			className={
-				'flex flex-col overflow-hidden md:flex-1 min-w-64 max-w-64 md:w-7/12 transition-all duration-300'
+				'flex flex-col overflow-hidden md:flex-1 w-full transition-all duration-300'
 			}
 		>
 			<CalendarHeader
