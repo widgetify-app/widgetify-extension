@@ -115,7 +115,7 @@ export function ExpandableTodoInput({
 							value={todoText}
 							onChange={onChangeTodoText}
 							placeholder="عنوان وظیفه جدید..."
-							className="w-full py-1.5 text-sm rounded-md"
+							className="w-full py-1.5 text-sm !rounded-lg"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
