@@ -1,4 +1,6 @@
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import type { Wallpaper } from '@/common/wallpaper.interface'
+
 import { getMainClient } from '@/services/api'
 import {
 	type UseQueryOptions,
@@ -18,6 +20,7 @@ interface FetchedProfile {
 		accepted: number
 		pending: number
 	}
+	wallpaper: Wallpaper | null
 	activity?: string
 }
 
@@ -92,5 +95,13 @@ export function useUpdateActivity() {
 		onError: (error) => {
 			console.error('Error updating activity:', error)
 		},
+	})
+}
+
+export async function setUserWallpaperApi(wallpaperId: string) {
+	const client = await getMainClient()
+
+	await client.put('/extension/@me/wallpaper', {
+		wallpaperId,
 	})
 }

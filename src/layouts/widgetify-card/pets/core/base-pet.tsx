@@ -258,7 +258,6 @@ export function useBasePetLogic({
 				),
 			)
 			updateAction('stand')
-			console.log(`nice you collected item ${collectedItemId}`)
 			if (onCollectibleCollection) {
 				onCollectibleCollection(collectedItemId)
 			}
