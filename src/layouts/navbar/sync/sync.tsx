@@ -1,6 +1,7 @@
 import { Colors } from '@/common/constant/colors.constant'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
@@ -103,11 +104,9 @@ export function SyncButton() {
 		setSyncState(SyncState.Syncing)
 
 		try {
-			const allSync = [SyncTodo, SyncBookmark]
-
 			if (syncTarget === SyncTarget.ALL) {
 				try {
-					await Promise.all(allSync.map((sync) => sync(method)))
+					await getAll()
 					setSyncState(SyncState.Success)
 				} catch (error) {
 					console.error('Error during sync:', error)
@@ -318,16 +317,7 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 			fetchedTodos = response.data
 		}
 
-		const mapped: Todo[] = fetchedTodos.map((todo: FetchedTodo) => ({
-			id: todo.offlineId || todo.id,
-			text: todo.text,
-			onlineId: todo.id,
-			completed: todo.completed,
-			date: todo.date,
-			priority: todo.priority,
-			category: todo.category,
-			notes: todo.description,
-		}))
+		const mapped: Todo[] = mapFetchedTodos(fetchedTodos)
 
 		await setToStorage('deletedTodos', [])
 
@@ -339,6 +329,20 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 		return false
 	}
 }
+
+function mapFetchedTodos(fetchedTodos: FetchedTodo[]) {
+	return fetchedTodos.map((todo: FetchedTodo) => ({
+		id: todo.offlineId || todo.id,
+		text: todo.text,
+		onlineId: todo.id,
+		completed: todo.completed,
+		date: todo.date,
+		priority: todo.priority,
+		category: todo.category,
+		notes: todo.description,
+	}))
+}
+
 async function SyncBookmark(method: 'GET' | 'POST') {
 	const mapBookmark = (bookmarks: Bookmark[]) => {
 		return bookmarks
@@ -382,6 +386,43 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		fetchedBookmarks = response.data
 	}
 
+	const mappedFetched: Bookmark[] = mapBookmarks(fetchedBookmarks)
+
+	callEvent('bookmarksChanged', mappedFetched)
+
+	return true
+}
+
+async function getAll() {
+	const client = await getMainClient()
+	const response = await client.get<{
+		bookmarks: FetchedBookmark[]
+		todos: FetchedTodo[]
+		wallpaper: Wallpaper
+	}>('/extension/@me/sync')
+
+	const { bookmarks, todos, wallpaper } = response.data
+
+	const mappedFetched: Bookmark[] = mapBookmarks(bookmarks)
+	callEvent('bookmarksChanged', mappedFetched)
+
+	const mappedTodos: Todo[] = mapFetchedTodos(todos)
+	callEvent('todosChanged', mappedTodos)
+
+	const wallpaperStore = await getFromStorage('wallpaper')
+	if (wallpaper && wallpaperStore?.id !== wallpaper?.id) {
+		await setToStorage('wallpaper', {
+			...wallpaper,
+			isRetouchEnabled: false,
+		})
+		callEvent('wallpaperChanged', {
+			...wallpaper,
+			isRetouchEnabled: false,
+		})
+	}
+}
+
+function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 	const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
 		id: bookmark.offlineId || bookmark.id,
 		title: bookmark.title,
@@ -398,7 +439,5 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		order: bookmark.order || 0, // Include order in the mapped fetched bookmarks
 	}))
 
-	callEvent('bookmarksChanged', mappedFetched)
-
-	return true
+	return mappedFetched
 }
