@@ -30,7 +30,6 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 		{ id: 'arzLive', emoji: '💰', label: 'ویجی ارز' },
 		{ id: 'news', emoji: '📰', label: 'ویجی اخبار' },
 	]
-
 	const allBottomWidgets: WidgetItem[] = [
 		{ id: 'calendar', emoji: '📅', label: 'تقویم' },
 		{ id: 'weather', emoji: '🌤️', label: 'آب و هوا' },
@@ -40,6 +39,11 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			id: 'notes',
 			emoji: '📝',
 			label: 'یادداشت‌ها',
+		},
+		{
+			id: 'youtube',
+			emoji: '📺',
+			label: 'آمار یوتیوب',
 		},
 	]
 
