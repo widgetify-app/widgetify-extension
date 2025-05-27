@@ -1,4 +1,4 @@
-import type { TodoOptions, TodoViewType } from '@/context/todo.context'
+import type { TodoOptions } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -54,4 +54,8 @@ export interface StorageKV {
 	calendarDrawerState: boolean
 	pets: PetSettings
 	todoOptions: TodoOptions
+	youtubeSettings: {
+		username: string | null
+		subscriptionStyle: 'short' | 'long'
+	}
 }
