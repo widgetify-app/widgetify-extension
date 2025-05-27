@@ -69,7 +69,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 
 				{/* Weather Icon */}
 				<div className="relative my-1 group">
-					<img src={forecast.icon} alt="weather status" className="w-7 h-7" />
+					<img src={forecast.icon} alt="weather status" className="w-7 h-7 drop-shadow-md" />
 					<div className="absolute inset-0 w-2 h-2 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10" />
 				</div>
 
