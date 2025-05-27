@@ -101,6 +101,8 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 								label={option.label}
 								description={option.description}
 								onClick={() => handleSubscriptionStyleChange(option.value)}
+								defaultActive="short"
+								className="!w-full"
 							/>
 						))}
 					</div>
