@@ -25,10 +25,14 @@ export function TodoOverviewCard() {
 
 	const getTodoLabel = (mode: 'full' | 'short') => {
 		if (mode === 'full') {
-			return todoOptions.viewMode === TodoViewType.Day ? 'وظایف امروز' : 'وظایف این ماه'
+			return todoOptions.viewMode === TodoViewType.Day
+				? 'وظایف امروز'
+				: `وظایف ${today.format('jMMMM')} ماه`
 		}
 
-		return todoOptions.viewMode === TodoViewType.Day ? 'امروز' : 'این ماه'
+		return todoOptions.viewMode === TodoViewType.Day
+			? 'امروز'
+			: `${today.format('jMMMM')} ماه`
 	}
 
 	return (
