@@ -141,7 +141,7 @@ For more information please read [License](LICENSE)
 
 - نمودار تغییرات
 
--  [مسیر کد](./src/layouts/arzLive)
+-  [مسیر کد](./src/layouts/widgets/wigiArz)
 
   
 
@@ -151,7 +151,7 @@ For more information please read [License](LICENSE)
 
 - مدیریت کارهای روزانه
 
--  [مسیر کد](./src/layouts/calendar)
+-  [مسیر کد](./src/layouts/widgets/calendar)
 
   
 
@@ -161,7 +161,7 @@ For more information please read [License](LICENSE)
 
 -  [مسیر کد جستجو](./src/layouts/search)
 
--  [مسیر کد بوکمارک](./src/layouts/search/bookmarks)
+-  [مسیر کد بوکمارک](./src/layouts/layouts/bookmark)
 
   
 
