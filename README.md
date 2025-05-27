@@ -15,7 +15,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Multi-day forecast
 
--  [Source path](./src/layouts/weather)
+-  [Source path](./src/layouts/widgets/weather)
 
   
 
@@ -25,7 +25,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Changes chart
 
-- [Source path](./src/layouts/arzLive)
+- [Source path](./src/layouts/widgets/wigiArz)
 
   
 
@@ -35,7 +35,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Manage daily tasks
 
-- [Source path](./src/layouts/calendar)
+- [Source path](./src/layouts/widgets/calendar)
 
   
 
@@ -45,7 +45,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - [Search source path](./src/layouts/search)
 
-- [Bookmarks source path](./src/layouts/search/bookmarks)
+- [Bookmarks source path](./src/layouts/bookmark)
 
   
 
