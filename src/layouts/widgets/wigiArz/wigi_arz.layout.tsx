@@ -23,7 +23,6 @@ export function WigiArzLayout({
 	inComboWidget,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies } = useCurrencyStore()
-
 	const { theme } = useTheme()
 	const [showModal, setShowModal] = useState(false)
 

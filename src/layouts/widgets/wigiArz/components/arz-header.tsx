@@ -1,5 +1,4 @@
 import { getBorderColor, useTheme } from '@/context/theme.context'
-import { motion } from 'framer-motion'
 import { BsCurrencyExchange } from 'react-icons/bs'
 import { FaGear } from 'react-icons/fa6'
 
@@ -26,14 +25,12 @@ export const ArzHeader = ({ title, onSettingsClick }: ArzHeaderProps) => {
 				</div>
 			</div>
 
-			<motion.button
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.9 }}
-				className="p-1 rounded-full cursor-pointer hover:bg-gray-500/10"
+			<button
+				className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
 				onClick={onSettingsClick}
 			>
 				<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-			</motion.button>
+			</button>
 		</div>
 	)
 }

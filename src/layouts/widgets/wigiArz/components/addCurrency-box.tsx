@@ -3,8 +3,7 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 
 export type SupportedCurrencies = {
@@ -28,6 +27,24 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 
 	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
 	const [searchQuery, setSearchQuery] = useState('')
+	const [isContentVisible, setIsContentVisible] = useState(false)
+
+	useEffect(() => {
+		let timerId: NodeJS.Timeout
+		if (show) {
+			timerId = setTimeout(() => {
+				setIsContentVisible(true)
+			}, 50)
+		} else {
+			setIsContentVisible(false)
+		}
+		return () => {
+			clearTimeout(timerId)
+			if (!show) {
+				setIsContentVisible(false)
+			}
+		}
+	}, [show])
 
 	const onClose = () => setShow(false)
 
@@ -60,111 +77,85 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		}))
 		.filter((group) => group.options.length > 0)
 
-	const containerVariants = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				duration: 0.3,
-				when: 'beforeChildren',
-				staggerChildren: 0.1,
-			},
-		},
-	}
-
-	const itemVariants = {
-		hidden: { y: 10, opacity: 0 },
-		visible: { y: 0, opacity: 1, transition: { duration: 0.2 } },
-	}
-
 	return (
 		<Modal isOpen={show} onClose={onClose} size="md" title="افزودن ارز" direction="rtl">
-			<LazyMotion features={domAnimation}>
-				<m.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.3 }}
-					className="w-full"
-				>
-					{/* Search input */}
-					<div className="relative mb-5">
-						<m.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ delay: 0.2 }}
-							className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
-						>
-							<FiSearch />
-						</m.div>
-						<TextInput
-							type="text"
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e)}
-							placeholder="جستجو ..."
-						/>
+			<div
+				className={`w-full h-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'}`}
+			>
+				<div className="relative mb-5">
+					<div
+						className={`absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2 transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-200' : 'opacity-0'}`}
+					>
+						<FiSearch />
 					</div>
+					<TextInput
+						type="text"
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e)}
+						placeholder="جستجو ..."
+					/>
+				</div>
 
-					{/* Currency groups */}
-					<m.div
-						className="px-2 pr-1 overflow-x-hidden overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-						variants={containerVariants}
-						initial="hidden"
-						animate="visible"
-					>
-						{filteredGroups.map((group, groupIndex) => (
-							<m.div key={groupIndex} className="mb-6" variants={itemVariants}>
-								<h3 className={'text-sm font-medium mb-3 currency-group-heading'}>
-									{group.label}
-								</h3>
-								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-									{group.options.map((option) => {
-										const isSelected = selectedCurrencies.includes(option.value)
-
-										return (
-											<m.div
-												key={option.value}
-												className={`flex flex-col items-center justify-center gap-1 p-3 transition-colors duration-200 border cursor-pointer rounded-xl ${isSelected ? 'currency-box-selected' : 'currency-box-unselected'}`}
-												onClick={() => toggleCurrency(option.value)}
-												variants={itemVariants}
-												whileHover={{ scale: 1.03 }}
-												whileTap={{ scale: 0.97 }}
-												layout
-											>
-												<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
-													{option.label}
-												</div>
-												<div
-													className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
-												>
-													{option.value}
-												</div>
-											</m.div>
-										)
-									})}
-								</div>
-							</m.div>
-						))}
-					</m.div>
-
-					{/* Confirmation button */}
-					<m.div
-						className="flex justify-center w-full mt-5"
-						initial={{ opacity: 0, y: 10 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.3 }}
-					>
-						<m.button
-							onClick={onClose}
-							type="button"
-							whileHover={{ scale: 1.03 }}
-							whileTap={{ scale: 0.97 }}
-							className="px-6 w-64 py-2.5 transition-colors duration-200 rounded-xl cursor-pointer font-medium text-sm currency-confirm-button"
+				<div
+					className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-60 max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-[100ms]' : 'opacity-0'}`}
+				>
+					{filteredGroups.map((group, groupIndex) => (
+						<div
+							key={groupIndex}
+							className={`mb-6 transition-all duration-200 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
+							style={{
+								transitionDelay: isContentVisible ? `${200 + groupIndex * 100}ms` : '0ms',
+							}}
 						>
-							تایید
-						</m.button>
-					</m.div>
-				</m.div>
-			</LazyMotion>
+							<h3 className={'text-sm font-medium mb-3 currency-group-heading'}>
+								{group.label}
+							</h3>
+							<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+								{group.options.map((option) => {
+									const isSelected = selectedCurrencies.includes(option.value)
+
+									return (
+										<div
+											key={option.value}
+											className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
+                                                        transition-all duration-200 ease-out hover:scale-103 active:scale-97 
+                                                        ${isSelected ? 'currency-box-selected' : 'currency-box-unselected'}
+                                                        ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
+											style={{
+												transitionDelay: isContentVisible
+													? `${50 + groupIndex * 100 + 50}ms`
+													: '0ms',
+											}}
+											onClick={() => toggleCurrency(option.value)}
+										>
+											<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
+												{option.label}
+											</div>
+											<div
+												className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
+											>
+												{option.value}
+											</div>
+										</div>
+									)
+								})}
+							</div>
+						</div>
+					))}
+				</div>
+
+				<div
+					className={`flex justify-center w-full mt-5 transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
+				>
+					<button
+						onClick={onClose}
+						type="button"
+						className="px-6 w-64 py-2.5 rounded-xl cursor-pointer font-medium text-sm currency-confirm-button transition-transform duration-200 ease-in-out hover:scale-103 active:scale-97"
+					>
+						تایید
+					</button>
+				</div>
+			</div>
 		</Modal>
 	)
 }

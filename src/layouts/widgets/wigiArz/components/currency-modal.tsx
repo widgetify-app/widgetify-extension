@@ -1,7 +1,6 @@
 import Modal from '@/components/modal'
 import { getTextColor, useTheme } from '@/context/theme.context'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
 import { CurrencyChart } from './currency-chart'
 
@@ -26,21 +25,28 @@ export const CurrencyModalComponent = ({
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
 	const { theme } = useTheme()
+	const [isVisible, setIsVisible] = useState(false)
+
+	useEffect(() => {
+		let timerId: NodeJS.Timeout
+		if (isModalOpen) {
+			timerId = setTimeout(() => {
+				setIsVisible(true)
+			}, 50)
+		} else {
+			setIsVisible(false)
+		}
+		return () => clearTimeout(timerId)
+	}, [isModalOpen])
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
-			<motion.div
-				initial={{ scale: 0.95, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
-				exit={{ scale: 0.95, opacity: 0 }}
-				transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-				className="flex flex-col items-center justify-center p-1 space-y-2"
+			<div
+				className={`flex flex-col items-center justify-center p-1 space-y-2 transition-all duration-300 ease-out ${
+					isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+				}`}
 			>
-				<motion.div
-					className="relative"
-					whileHover={{ scale: 1.05 }}
-					transition={{ type: 'spring', stiffness: 300 }}
-				>
+				<div className="relative transition-transform duration-200 ease-out hover:scale-105">
 					<img
 						src={currency?.icon}
 						alt={currency?.name?.en}
@@ -50,7 +56,7 @@ export const CurrencyModalComponent = ({
 						className="absolute top-0 z-10 w-16 h-16 blur-xl opacity-30"
 						style={{ backgroundColor: imgColor }}
 					/>
-				</motion.div>
+				</div>
 
 				<div className="text-center">
 					<p className={`text-xl font-bold ${getTextColor(theme)}`}>
@@ -62,51 +68,43 @@ export const CurrencyModalComponent = ({
 				</div>
 
 				<div className="w-full space-y-0">
-					<motion.div
-						className="relative flex items-center justify-center gap-2"
-						whileHover={{ scale: 1.02 }}
-					>
+					<div className="relative flex items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
 						<PriceChangeComponent priceChange={priceChange} />
 						<p className={`text-xl font-bold ${getTextColor(theme)} opacity-95`}>
 							{displayPrice.toLocaleString()}
 						</p>
 
 						{currency?.priceHistory?.length ? (
-							<motion.button
+							<button
 								onClick={() => setShowChart(!showChart)}
-								className={`p-1 rounded-lg transition-all ${getTextColor(
+								className={`p-1 rounded-lg ${getTextColor(
 									theme,
-								)} opacity-70 hover:opacity-100 cursor-pointer`}
-								whileHover={{ scale: 1.1 }}
-								whileTap={{ scale: 0.9 }}
+								)} opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out hover:scale-110 active:scale-90`}
 							>
-								<motion.div
-									animate={{ rotate: showChart ? 0 : 180 }}
-									transition={{ type: 'spring' }}
+								<div
+									className={`transition-transform duration-300 ease-in-out ${
+										showChart ? 'rotate-0' : 'rotate-180'
+									}`}
 								>
 									<FaChartLine className={`w-5 h-5 ${getTextColor(theme)}`} />
-								</motion.div>
-							</motion.button>
-						) : null}
-					</motion.div>
-
-					<AnimatePresence initial={false}>
-						{showChart && currency?.priceHistory?.length && (
-							<motion.div
-								initial={{ height: 0, opacity: 0 }}
-								animate={{ height: 256, opacity: 1 }}
-								exit={{ height: 0, opacity: 0 }}
-								transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-								className="w-full overflow-hidden"
-							>
-								<div className="w-full h-64 mt-4">
-									<CurrencyChart priceHistory={currency?.priceHistory} />
 								</div>
-							</motion.div>
-						)}
-					</AnimatePresence>
+							</button>
+						) : null}
+					</div>
+
+					{currency?.priceHistory?.length ? (
+						<div
+							className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${
+								showChart ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+							}`}
+						>
+							<div className="w-full h-64">
+								<CurrencyChart priceHistory={currency?.priceHistory} />
+							</div>
+						</div>
+					) : null}
 				</div>
-			</motion.div>
+			</div>
 		</Modal>
 	)
 }
@@ -117,15 +115,19 @@ interface Prop {
 
 export function PriceChangeComponent({ priceChange }: Prop) {
 	if (priceChange === null) return null
+	const [hasAnimatedIn, setHasAnimatedIn] = useState(false)
+
+	useEffect(() => {
+		// Animate in shortly after mount
+		const timer = setTimeout(() => setHasAnimatedIn(true), 50)
+		return () => clearTimeout(timer)
+	}, [])
 
 	return (
-		<motion.div
-			className={`flex items-center text-sm ${
+		<div
+			className={`flex items-center text-sm transition-all duration-300 ease-out ${
 				priceChange > 0 ? 'text-red-500' : 'text-green-500'
-			}`}
-			initial={{ y: -10, opacity: 0 }}
-			animate={{ y: 0, opacity: 1 }}
-			transition={{ type: 'spring', stiffness: 300 }}
+			} ${hasAnimatedIn ? 'translate-y-0 opacity-100' : '-translate-y-2.5 opacity-0'}`}
 		>
 			{priceChange > 0 ? (
 				<FaArrowUpLong className="mr-1" />
@@ -134,6 +136,6 @@ export function PriceChangeComponent({ priceChange }: Prop) {
 			)}
 
 			<span>{Math.abs(Number(priceChange.toFixed()))}</span>
-		</motion.div>
+		</div>
 	)
 }
