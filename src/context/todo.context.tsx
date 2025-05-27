@@ -10,20 +10,26 @@ export enum TodoViewType {
 	Day = 'day',
 	Monthly = 'monthly',
 }
+export enum TodoPriority {
+	Low = 'low',
+	Medium = 'medium',
+	High = 'high',
+}
 export interface TodoOptions {
 	blurMode: boolean
 	viewMode: TodoViewType
 }
+export interface AddTodoInput {
+	text: string
+	date: string
+	priority?: TodoPriority
+	category?: string
+	notes?: string
+}
 
 interface TodoContextType {
 	todos: Todo[]
-	addTodo: (
-		text: string,
-		date: string,
-		priority?: 'low' | 'medium' | 'high',
-		category?: string,
-		notes?: string,
-	) => void
+	addTodo: (input: AddTodoInput) => void
 	todoOptions: TodoOptions
 	removeTodo: (id: string) => void
 	toggleTodo: (id: string) => void
@@ -97,24 +103,18 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		}))
 	}
 
-	const addTodo = (
-		text: string,
-		date: string,
-		priority: 'low' | 'medium' | 'high' = 'medium',
-		category?: string,
-		notes?: string,
-	) => {
+	const addTodo = (input: AddTodoInput) => {
 		const old = todos || []
 		setTodos([
 			...old,
 			{
 				id: uuidv4(),
-				text,
+				text: input.text,
 				completed: false,
-				date,
-				priority,
-				category,
-				notes,
+				date: input.date,
+				priority: input.priority || 'low',
+				category: input.category || '',
+				notes: input.notes || '',
 				onlineId: null,
 			},
 		])

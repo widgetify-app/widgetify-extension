@@ -5,7 +5,7 @@ import {
 	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
-import { TodoViewType, useTodoStore } from '@/context/todo.context'
+import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
 import { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaChartSimple } from 'react-icons/fa6'
@@ -49,13 +49,11 @@ export function TodosLayout() {
 		})
 	}
 
-	const handleAddTodo = (
-		text: string,
-		priority: 'low' | 'medium' | 'high',
-		category?: string,
-		notes?: string,
-	) => {
-		addTodo(text, selectedDateStr, priority, category, notes)
+	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'>) => {
+		addTodo({
+			...todoInput,
+			date: selectedDateStr,
+		})
 		setTodoText('')
 	}
 
