@@ -15,7 +15,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Multi-day forecast
 
--  [Source path](./src/layouts/weather)
+-  [Source path](./src/layouts/widgets/weather)
 
   
 
@@ -25,7 +25,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Changes chart
 
-- [Source path](./src/layouts/arzLive)
+- [Source path](./src/layouts/widgets/wigiArz)
 
   
 
@@ -35,7 +35,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Manage daily tasks
 
-- [Source path](./src/layouts/calendar)
+- [Source path](./src/layouts/widgets/calendar)
 
   
 
@@ -45,7 +45,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - [Search source path](./src/layouts/search)
 
-- [Bookmarks source path](./src/layouts/search/bookmarks)
+- [Bookmarks source path](./src/layouts/bookmark)
 
   
 
@@ -131,7 +131,7 @@ For more information please read [License](LICENSE)
 
 - پیش‌بینی چند روزه
 
--  [مسیر کد](./src/layouts/weather)
+-  [مسیر کد](./src/layouts/widgets/weather)
 
   
 
@@ -141,7 +141,7 @@ For more information please read [License](LICENSE)
 
 - نمودار تغییرات
 
--  [مسیر کد](./src/layouts/arzLive)
+-  [مسیر کد](./src/layouts/widgets/wigiArz)
 
   
 
@@ -151,7 +151,7 @@ For more information please read [License](LICENSE)
 
 - مدیریت کارهای روزانه
 
--  [مسیر کد](./src/layouts/calendar)
+-  [مسیر کد](./src/layouts/widgets/calendar)
 
   
 
@@ -161,7 +161,7 @@ For more information please read [License](LICENSE)
 
 -  [مسیر کد جستجو](./src/layouts/search)
 
--  [مسیر کد بوکمارک](./src/layouts/search/bookmarks)
+-  [مسیر کد بوکمارک](./src/layouts/layouts/bookmark)
 
   
 
