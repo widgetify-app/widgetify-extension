@@ -131,7 +131,7 @@ For more information please read [License](LICENSE)
 
 - پیش‌بینی چند روزه
 
--  [مسیر کد](./src/layouts/weather)
+-  [مسیر کد](./src/layouts/widgets/weather)
 
   
 
