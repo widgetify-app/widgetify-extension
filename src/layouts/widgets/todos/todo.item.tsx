@@ -10,7 +10,6 @@ interface Prop {
 	toggleTodo: (id: string) => void
 	deleteTodo: (id: string) => void
 	blurMode?: boolean
-	isPreview?: boolean
 }
 
 const translatedPriority = {
@@ -19,13 +18,7 @@ const translatedPriority = {
 	high: 'زیاد',
 }
 
-export function TodoItem({
-	todo,
-	deleteTodo,
-	toggleTodo,
-	blurMode = false,
-	isPreview = false,
-}: Prop) {
+export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Prop) {
 	const { theme } = useTheme()
 	const [expanded, setExpanded] = useState(false)
 
@@ -78,16 +71,14 @@ export function TodoItem({
 			exit={{ opacity: 0, height: 0 }}
 			transition={{ duration: 0.2 }}
 		>
-			<div className={`flex items-center gap-1.5 pr-1.5 ${isPreview ? 'p-1' : 'p-1.5'}`}>
+			<div className={'flex items-center gap-1.5 pr-1.5 p-1.5'}>
 				<div className="flex-shrink-0">
 					<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
 				</div>
 
 				<span
 					onClick={() => toggleTodo(todo.id)}
-					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer ${
-						isPreview ? 'text-[10px]' : 'text-xs'
-					} ${getTextStyle()}`}
+					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${getTextStyle()}`}
 				>
 					{todo.text}
 				</span>
@@ -113,7 +104,7 @@ export function TodoItem({
 			</div>
 
 			<AnimatePresence>
-				{expanded && !isPreview && (
+				{expanded && (
 					<motion.div
 						className={`px-2 pb-1.5 text-[10px] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}
 						initial={{ opacity: 0, height: 0 }}
@@ -135,6 +126,7 @@ export function TodoItem({
 							>
 								{translatedPriority[todo.priority]}
 							</span>
+							<span>{todo.date}</span>
 						</div>
 
 						{/* Notes */}

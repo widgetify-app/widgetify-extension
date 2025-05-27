@@ -1,3 +1,4 @@
+import type { TodoOptions, TodoViewType } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -28,7 +29,6 @@ export interface StorageKV {
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
 	weatherSettings: WeatherSettings
-	todoBlurMode: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
 	theme: 'light' | 'dark' | 'glass'
@@ -53,4 +53,5 @@ export interface StorageKV {
 	}[]
 	calendarDrawerState: boolean
 	pets: PetSettings
+	todoOptions: TodoOptions
 }

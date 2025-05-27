@@ -5,7 +5,7 @@ import {
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
-import { useTodoStore } from '@/context/todo.context'
+import { TodoViewType, useTodoStore } from '@/context/todo.context'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { motion } from 'framer-motion'
@@ -26,7 +26,7 @@ export const WidgetifyLayout = () => {
 	const { timezone } = useGeneralSetting()
 	const { theme } = useTheme()
 	const { user, isAuthenticated } = useAuth()
-	const { todos } = useTodoStore()
+	const { todos, todoOptions } = useTodoStore()
 	const [userName, setUserName] = useState<string>('')
 
 	const { data: dailyMessage } = useGetDailyMessage()
@@ -45,9 +45,17 @@ export const WidgetifyLayout = () => {
 	}, [isAuthenticated, user])
 
 	const todayStr = formatDateStr(today)
-	const todayTodos = todos.filter((todo) => todo.date === todayStr)
+	const todayTodos = todos.filter((todo) => {
+		if (todoOptions.viewMode === TodoViewType.Day) {
+			return todo.date === todayStr
+		}
+		const month = today.format('jMM')
+		return todo.date.startsWith(`${today.year()}-${month}`)
+	})
 	const completedTodos = todayTodos.filter((todo) => todo.completed)
 	const pendingTodos = todayTodos.filter((todo) => !todo.completed)
+	const todoLabel =
+		todoOptions.viewMode === TodoViewType.Day ? 'وظایف امروز' : 'وظایف این ماه'
 
 	const todayEvents = filterGoogleEventsByDate(googleEvents, today)
 	const upcomingEvents = todayEvents.filter((event) => {
@@ -153,19 +161,23 @@ export const WidgetifyLayout = () => {
 										className={pendingTodos.length > 0 ? 'text-green-500' : 'opacity-50'}
 									/>
 									<div className="flex-1">
-										<p className="text-xs font-medium">وظایف امروز</p>
-										<p className="text-xs opacity-75">
-											{pendingTodos.length > 0
-												? `${completedTodos.length} از ${todayTodos.length} وظیفه انجام شده`
-												: todayTodos.length > 0
-													? 'تمام وظایف امروز انجام شده 👏'
-													: 'برای امروز وظیفه‌ای ثبت نشده است'}
-										</p>
+										<p className="text-xs font-medium">{todoLabel}</p>
+										{todoOptions.blurMode ? (
+											<p className="text-xs opacity-75">حالت مخفی فعال است.</p>
+										) : (
+											<p className="text-xs opacity-75">
+												{pendingTodos.length > 0
+													? `${completedTodos.length} از ${todayTodos.length} وظیفه انجام شده`
+													: todayTodos.length > 0
+														? 'تمام وظایف امروز انجام شده 👏'
+														: 'برای امروز وظیفه‌ای ثبت نشده است'}
+											</p>
+										)}
 									</div>
 								</div>
 
 								{/* Show up to 1 pending todos */}
-								{pendingTodos.length > 0 && (
+								{pendingTodos.length > 0 && !todoOptions.blurMode && (
 									<div className="pr-6 mt-2 space-y-1">
 										{pendingTodos.slice(0, 1).map((todo) => (
 											<div key={todo.id} className="flex items-center gap-1 text-xs">
