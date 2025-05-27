@@ -96,7 +96,7 @@ export function YouTubeLayout() {
 						<div className="flex items-center gap-2">
 							<FiYoutube className="w-5 h-5 text-red-500" />
 							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>
-								آمار یوتیوب
+								آمار یوتیوب ( آزمایشی )
 							</h3>
 						</div>
 
