@@ -1,7 +1,12 @@
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { sleep } from '@/common/utils/timeout.ts'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { getTextColor, useTheme } from '@/context/theme.context'
-import { useGetYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
+import {
+	type FetchedYouTubeProfile,
+	useGetYouTubeProfile,
+} from '@/services/hooks/youtube/getYouTubeProfile.hook'
+import ms from 'ms'
 import { useEffect, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
 import { FiYoutube } from 'react-icons/fi'
@@ -17,14 +22,18 @@ export function YouTubeLayout() {
 	const [showSettings, setShowSettings] = useState(false)
 	const [username, setUsername] = useState('')
 	const [subscriptionStyle, setSubscriptionStyle] = useState<'short' | 'long'>('short')
+	const [youtubeProfile, setYoutubeProfile] = useState<
+		FetchedYouTubeProfile & { isCached?: boolean }
+	>()
+	const [canRequest, setCanRequest] = useState(false)
 
 	const {
 		data: youtubeData,
 		isLoading,
 		error,
 	} = useGetYouTubeProfile(username, {
-		enabled: username.length > 0,
-		refetchInterval: 5 * 60 * 1000, // 5 minutes
+		enabled: username.length > 0 && canRequest,
+		refetchInterval: 2 * 60 * 1000, // 2 minutes
 	})
 	useEffect(() => {
 		const loadSettings = async () => {
@@ -35,9 +44,34 @@ export function YouTubeLayout() {
 			if (storedSettings?.subscriptionStyle) {
 				setSubscriptionStyle(storedSettings.subscriptionStyle)
 			}
+
+			const profile = await getFromStorage('youtubeProfile')
+			if (profile) {
+				setYoutubeProfile(profile)
+			}
+
+			await sleep(ms('5s'))
+			setCanRequest(true)
 		}
 		loadSettings()
 	}, [])
+
+	useEffect(() => {
+		if (youtubeData) {
+			setYoutubeProfile({
+				id: youtubeData.id,
+				name: youtubeData.name,
+				profile: youtubeData.profile,
+				subscribers: youtubeData.subscribers,
+				totalViews: youtubeData.totalViews,
+				totalVideos: youtubeData.totalVideos,
+				createdAt: youtubeData.createdAt,
+			})
+
+			setToStorage('youtubeProfile', { ...youtubeData, isCached: true })
+		}
+	}, [youtubeData])
+
 	const handleSettingsClose = async (data: YouTubeSettings | null) => {
 		setShowSettings(false)
 
@@ -76,12 +110,12 @@ export function YouTubeLayout() {
 
 					{/* Content */}
 					<div className="flex-1 overflow-auto">
-						{isLoading && (
+						{!youtubeProfile && isLoading && (
 							<div className="flex items-center justify-center h-32">
 								<div className="w-6 h-6 border-2 border-t-2 border-red-500 rounded-full animate-spin border-t-transparent"></div>
 							</div>
 						)}
-						{error && !isLoading && (
+						{!youtubeProfile && error && !isLoading && (
 							<div className="py-8 text-center">
 								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-50" />
 								<p className={`text-sm ${getTextColor(theme)} opacity-70`}>
@@ -107,9 +141,10 @@ export function YouTubeLayout() {
 								</button>
 							</div>
 						)}
-						{youtubeData && !isLoading && !error && (
+
+						{youtubeProfile && username && (
 							<YouTubeStatsCard
-								data={youtubeData}
+								data={youtubeProfile}
 								username={username}
 								subscriptionStyle={subscriptionStyle}
 							/>

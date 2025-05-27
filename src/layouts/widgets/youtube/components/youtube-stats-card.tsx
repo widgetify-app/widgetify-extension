@@ -4,21 +4,14 @@ import {
 	getWidgetItemBackground,
 	useTheme,
 } from '@/context/theme.context'
+import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import { motion } from 'framer-motion'
 import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
 
 interface YouTubeStatsCardProps {
 	username: string
 	subscriptionStyle?: 'short' | 'long'
-	data: {
-		id: string
-		name: string
-		profile: string
-		subscribers: string
-		totalViews: string
-		totalVideos: string
-		createdAt: string
-	}
+	data: FetchedYouTubeProfile & { isCached?: boolean }
 }
 
 export function YouTubeStatsCard({
@@ -27,6 +20,7 @@ export function YouTubeStatsCard({
 	subscriptionStyle = 'short',
 }: YouTubeStatsCardProps) {
 	const { theme } = useTheme()
+
 	const formatNumber = (num: string, style: 'short' | 'long' = 'short') => {
 		const number = Number.parseInt(num)
 
@@ -34,17 +28,18 @@ export function YouTubeStatsCard({
 			return number.toLocaleString('fa-IR')
 		}
 
-		// Short format
-		if (number >= 1000000000) {
-			return `${(number / 1000000000).toFixed(1)}B`
+		const subs = Number(num)
+
+		switch (true) {
+			case subs >= 1e9:
+				return `${(subs / 1e9).toFixed(1)}B`
+			case subs >= 1e6:
+				return `${(subs / 1e6).toFixed(1)}M`
+			case subs >= 1e3:
+				return `${(subs / 1e3).toFixed(1)}K`
+			default:
+				return subs.toLocaleString()
 		}
-		if (number >= 1000000) {
-			return `${(number / 1000000).toFixed(1)}M`
-		}
-		if (number >= 1000) {
-			return `${(number / 1000).toFixed(1)}K`
-		}
-		return number.toLocaleString()
 	}
 
 	const formatDate = (dateString: string) => {

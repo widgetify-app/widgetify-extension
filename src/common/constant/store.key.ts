@@ -13,6 +13,7 @@ import type {
 	FetchedWeather,
 	WeatherSettings,
 } from '@/services/hooks/weather/weather.interface'
+import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {
@@ -58,4 +59,5 @@ export interface StorageKV {
 		username: string | null
 		subscriptionStyle: 'short' | 'long'
 	}
+	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
 }
