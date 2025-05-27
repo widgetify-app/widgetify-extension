@@ -10,6 +10,7 @@ import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { BsRobot } from 'react-icons/bs'
 import { FaSpotify } from 'react-icons/fa'
+import { IoLocationSharp } from 'react-icons/io5'
 import { WiHumidity, WiStrongWind } from 'react-icons/wi'
 import { unitsFlag } from '../unitSymbols'
 
@@ -88,38 +89,48 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							</span>
 							{selectedCity?.name && (
 								<div
-									className={`text-sm flex items-center gap-1 truncate ${getTextColor(theme)} transition-colors opacity-90`}
+									className={`text-sm flex items-center gap-1 transition-colors opacity-90 ${getTextColor(theme)} ltr:justify-center flex-row-reverse rtl:justify-end`}
+									dir="auto"
 								>
 									<p className="text-xs font-light truncate" title={selectedCity.name}>
 										{selectedCity.name}
 									</p>
+									<span className="h-[16px] opacity-60">
+										<IoLocationSharp />
+									</span>
 								</div>
 							)}
 						</div>
-
-						<img
-							src={weather.icon.url}
-							alt={weather.temperature.temp_description || 'Current weather'}
-							className="w-8 h-8 rounded-full drop-shadow-lg"
-							loading="lazy"
-						/>
+						<div className="flex items-center">
+							<img
+								src={weather.icon.url}
+								alt={weather.temperature.temp_description || 'Current weather'}
+								className="w-8 h-8 rounded-full drop-shadow-lg "
+								loading="lazy"
+							/>
+						</div>
 					</div>
 				</header>
 
-				<div className="flex items-center justify-start mt-2">
+				<div className="flex items-center justify-between mt-2">
 					<div className={`${baseWeatherInfoClass} py-0.5`}>
 						<WiHumidity size={20} className="flex-shrink-0" />
-						<span aria-label={`Humidity: ${weather.temperature.humidity}%`}>
+						<span
+							aria-label={`Humidity: ${weather.temperature.humidity}%`}
+							className="h-[18px]"
+						>
 							{weather.temperature.humidity}%
 						</span>
 					</div>
 					<div className={`${baseWeatherInfoClass} px-2 py-0.5`}>
 						<WiStrongWind size={20} className="flex-shrink-0" />
-						<span
+						<div
+							className="flex flex-row-reverse items-center gap-1"
 							aria-label={`Wind speed: ${weather.temperature.wind_speed} meters per second`}
 						>
-							{weather.temperature.wind_speed} m/s
-						</span>
+							{weather.temperature.wind_speed}
+							<span className="text-[12px] leading-normal"> m/s </span>
+						</div>
 					</div>
 				</div>
 
