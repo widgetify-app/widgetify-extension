@@ -157,7 +157,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 					<div className={`${baseWeatherInfoClass} px-2 py-0.5`}>
 						<WiStrongWind size={20} className="flex-shrink-0" />
 						<div
-							className="flex items-center gap-1"
+							className="flex items-center gap-1 flex-row-reverse"
 							aria-label={`Wind speed: ${weather.temperature.wind_speed} meters per second`}
 						>
 							{weather.temperature.wind_speed}
