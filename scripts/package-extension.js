@@ -14,7 +14,7 @@ if (!fs.existsSync('./packages')) {
     fs.mkdirSync('./packages', { recursive: true });
 }
 
-if (Bun.env.VITE_API?.startsWith('http://localhost')) {
+if (process.env.VITE_API?.startsWith('http://localhost')) {
     // throw error
     console.error('Please set VITE_API to a production URL before building the extension.');
     process.exit(1);
@@ -25,7 +25,7 @@ execSync(`npm run build:${browser}`, { stdio: 'inherit' });
 
 console.log(`Packaging ${browser} extension as ${zipFilename}...`);
 execSync(
-    `web-ext build --source-dir=dist --artifacts-dir=packages --filename=${zipFilename} --overwrite-dest`,
+    `npx web-ext build --source-dir=dist --artifacts-dir=packages --filename=${zipFilename} --overwrite-dest`,
     { stdio: 'inherit' }
 );
 
