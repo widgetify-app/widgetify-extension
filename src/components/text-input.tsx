@@ -86,6 +86,7 @@ export function TextInput({
                     transition-all duration-200 font-light ${getInputStyle(theme)} ${className}`}
 			onChange={handleChange}
 			maxLength={maxLength}
+			autoComplete="off"
 		/>
 	)
 }
