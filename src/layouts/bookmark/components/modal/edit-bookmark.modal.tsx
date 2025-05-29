@@ -1,7 +1,7 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { useEffect, useState, useTransition } from 'react'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
 import {
@@ -26,7 +26,6 @@ export function EditBookmarkModal({
 	onSave,
 	bookmark,
 }: EditBookmarkModalProps) {
-	const { theme } = useTheme()
 	const [formData, setFormData] = useState<BookmarkFormData>({
 		title: '',
 		url: '',
@@ -45,7 +44,7 @@ export function EditBookmarkModal({
 	const type = bookmark?.type
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
-		useBookmarkIcon(theme)
+		useBookmarkIcon()
 
 	const updateFormData = (key: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [key]: value, touched: true }))
@@ -163,11 +162,7 @@ export function EditBookmarkModal({
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (
-						<IconSourceSelector
-							iconSource={iconSource}
-							setIconSource={setIconSource}
-							theme={theme}
-						/>
+						<IconSourceSelector iconSource={iconSource} setIconSource={setIconSource} />
 					)}
 				</div>
 				<input
@@ -210,25 +205,21 @@ export function EditBookmarkModal({
 				</div>
 
 				<div className="flex justify-between mt-4">
-					<button
-						type="button"
-						onClick={onClose}
-						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyles(theme, false)}`}
-					>
+					<Button type="button" onClick={onClose} size="md">
 						لغو
-					</button>
-					<button
-						type="button"
+					</Button>
+					<Button
 						onClick={handleSave}
-						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyles(theme, true)}`}
 						disabled={
 							!formData.title?.trim() ||
 							(type === 'BOOKMARK' && !formData.url?.trim()) ||
 							isPending
 						}
+						size="md"
+						isPrimary={true}
 					>
 						{isPending ? 'در حال ذخیره...' : 'ذخیره'}
-					</button>
+					</Button>
 				</div>
 			</div>
 

@@ -1,5 +1,3 @@
-import { useTheme } from '@/context/theme.context'
-import clsx from 'clsx'
 import { m } from 'framer-motion'
 
 interface ToggleSwitchProps {
@@ -13,30 +11,20 @@ export const ToggleSwitch = ({
 	disabled = false,
 	onToggle,
 }: ToggleSwitchProps) => {
-	const { theme } = useTheme()
-
 	const getTrackStyle = () => {
 		if (enabled) {
-			return theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'
+			return 'bg-primary'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-300'
-			case 'dark':
-				return 'bg-gray-600'
-			default: // glass
-				return 'bg-gray-700/50'
-		}
+		return 'bg-base-300'
 	}
 
 	return (
 		<m.div
-			className={clsx('w-12 h-6 relative rounded-full transition-colors', {
-				[getTrackStyle()]: true,
-				'cursor-pointer': !disabled,
-				'cursor-not-allowed opacity-70': disabled,
-			})}
+			className={`
+				w-12 h-6 relative rounded-full transition-colors
+				${getTrackStyle()} cursor-pointer
+				${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
 			onClick={disabled ? undefined : onToggle}
 			whileTap={{ scale: disabled ? 1 : 0.95 }}
 		>

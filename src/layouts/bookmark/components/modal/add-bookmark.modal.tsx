@@ -1,7 +1,7 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, useTheme } from '@/context/theme.context'
 import { useState, useTransition } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
@@ -28,7 +28,6 @@ export function AddBookmarkModal({
 	onAdd,
 	parentId = null,
 }: AddBookmarkModalProps) {
-	const { theme } = useTheme()
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
@@ -45,7 +44,7 @@ export function AddBookmarkModal({
 	})
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
-		useBookmarkIcon(theme)
+		useBookmarkIcon()
 
 	const updateFormData = (key: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [key]: value }))
@@ -164,7 +163,7 @@ export function AddBookmarkModal({
 		>
 			<form onSubmit={handleAdd} className="flex flex-col gap-2 p-2 overflow-y-auto h-96">
 				<div className="flex gap-2 mb-1">
-					<TypeSelector type={type} setType={setType} theme={theme} />
+					<TypeSelector type={type} setType={setType} />
 				</div>
 
 				<div className="mb-2">
@@ -173,11 +172,7 @@ export function AddBookmarkModal({
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (
-						<IconSourceSelector
-							iconSource={iconSource}
-							setIconSource={setIconSource}
-							theme={theme}
-						/>
+						<IconSourceSelector iconSource={iconSource} setIconSource={setIconSource} />
 					)}
 				</div>
 				<input
@@ -236,24 +231,21 @@ export function AddBookmarkModal({
 				/>
 
 				<div className="flex justify-between mt-4">
-					<button
-						type="button"
-						onClick={onClose}
-						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyles(theme, false)}`}
-					>
+					<Button onClick={onClose} size="md">
 						لغو
-					</button>
-					<button
+					</Button>
+					<Button
 						type="submit"
-						className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonStyles(theme, true)}`}
 						disabled={
-							!formData.title.trim() ||
-							(type === 'BOOKMARK' && !formData.url.trim()) ||
+							!formData.title?.trim() ||
+							(type === 'BOOKMARK' && !formData.url?.trim()) ||
 							isPending
 						}
+						size="md"
+						isPrimary={true}
 					>
-						{isPending ? 'در حال افزودن...' : 'افزودن'}
-					</button>
+						{isPending ? 'در حال ذخیره...' : 'ذخیره'}
+					</Button>
 				</div>
 			</form>
 		</Modal>

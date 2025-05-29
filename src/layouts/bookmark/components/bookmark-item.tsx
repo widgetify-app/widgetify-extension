@@ -1,6 +1,5 @@
 import { addOpacityToColor } from '@/common/color'
 import Tooltip from '@/components/toolTip'
-import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
 import { SlOptions } from 'react-icons/sl'
 import type { Bookmark } from '../types/bookmark.types'
 import { EmptyBookmarkSlot } from './bookmark-emptySlot'
@@ -25,7 +24,6 @@ interface BookmarkItemProps {
 
 export function BookmarkItem({
 	bookmark,
-	theme = 'glass',
 	canAdd = true,
 	onClick,
 	draggable = false,
@@ -37,7 +35,11 @@ export function BookmarkItem({
 	onMenuClick,
 }: BookmarkItemProps) {
 	if (!bookmark) {
-		return <EmptyBookmarkSlot onClick={onClick} theme={theme} canAdd={canAdd} />
+		return <EmptyBookmarkSlot onClick={onClick} canAdd={canAdd} />
+	}
+
+	const getBookmarkStyle = () => {
+		return 'bg-content hover:bg-base-300 text-content backdrop-blur-sm'
 	}
 
 	if (bookmark.type === 'FOLDER') {
@@ -45,7 +47,6 @@ export function BookmarkItem({
 			<FolderBookmarkItem
 				bookmark={bookmark}
 				onClick={onClick}
-				theme={theme}
 				draggable={draggable}
 				isDragging={isDragging}
 				onDragStart={onDragStart}
@@ -78,7 +79,7 @@ export function BookmarkItem({
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle()} bg-content` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{onMenuClick && bookmark && (
 						<div
@@ -86,7 +87,9 @@ export function BookmarkItem({
 								e.stopPropagation()
 								onMenuClick(e)
 							}}
-							className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
+							className={
+								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-neutral z-10'
+							}
 						>
 							<SlOptions />
 						</div>
@@ -95,12 +98,13 @@ export function BookmarkItem({
 					<BookmarkIcon bookmark={bookmark} />
 					<BookmarkTitle
 						title={bookmark.title}
-						theme={theme}
 						customTextColor={bookmark.customTextColor}
 					/>
 
 					<div
-						className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
+						className={
+							'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
+						}
 					/>
 				</button>
 			</Tooltip>

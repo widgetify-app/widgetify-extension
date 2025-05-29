@@ -1,25 +1,25 @@
-import { getContainerBackground, getTextColor } from '@/context/theme.context'
 import type { FolderPathItem } from '../types/bookmark.types'
 
 type FolderPathProps = {
 	folderPath: FolderPathItem[]
 	onNavigate: (folderId: string | null, depth: number) => void
-	theme?: string
 }
 
-export function FolderPath({ folderPath, onNavigate, theme = 'glass' }: FolderPathProps) {
+export function FolderPath({ folderPath, onNavigate }: FolderPathProps) {
 	if (folderPath.length === 0) return null
 
 	return (
 		<nav
 			aria-label="Folder navigation"
-			className={`flex w-fit items-center px-3 py-2 mt-0.5 text-xs rounded-lg ${getContainerBackground(theme)}`}
+			className={'flex w-fit items-center px-3 py-2 mt-0.5 text-xs rounded-lg bg-content'}
 		>
 			<ol className="flex flex-wrap items-center gap-y-1">
 				<li>
 					<button
 						onClick={() => onNavigate(null, -1)}
-						className={`cursor-pointer transition-colors ${getTextColor(theme)} opacity-70 hover:opacity-100`}
+						className={
+							'cursor-pointer transition-colors text-content opacity-70 hover:opacity-100'
+						}
 						aria-label="Go to root folder"
 					>
 						بازگشت

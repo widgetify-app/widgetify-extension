@@ -1,5 +1,4 @@
 import { useBookmarkStore } from '@/context/bookmark.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
@@ -13,8 +12,6 @@ import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
-	const { theme } = useTheme()
-
 	const {
 		bookmarks,
 		getCurrentFolderItems,
@@ -270,7 +267,9 @@ export function BookmarksComponent() {
 	return (
 		<>
 			<div
-				className={`grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
+				className={
+					'grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300'
+				}
 			>
 				{' '}
 				{displayedBookmarks.map((bookmark, i) =>
@@ -282,7 +281,6 @@ export function BookmarksComponent() {
 							<BookmarkItem
 								bookmark={bookmark}
 								onClick={(e) => handleBookmarkClick(bookmark, e)}
-								theme={theme}
 								canAdd={true}
 								draggable={isManageable(bookmark)}
 								isDragging={draggedBookmarkId === bookmark.id}
@@ -300,7 +298,6 @@ export function BookmarksComponent() {
 							key={i}
 							bookmark={null}
 							onClick={() => setShowAddBookmarkModal(true)}
-							theme={theme}
 							canAdd={currentFolderIsManageable}
 						/>
 					),
@@ -314,12 +311,11 @@ export function BookmarksComponent() {
 						}}
 						onEdit={() => handleEditBookmark(selectedBookmark)}
 						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
-						theme={theme}
 					/>
 				)}
 			</div>
 			<div className="flex justify-center w-full">
-				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} theme={theme} />
+				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}

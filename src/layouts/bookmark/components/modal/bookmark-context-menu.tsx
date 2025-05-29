@@ -6,7 +6,6 @@ interface BookmarkContextMenuProps {
 	onEdit: () => void
 	onOpenInNewTab?: () => void
 	isFolder?: boolean
-	theme: string
 }
 
 export function BookmarkContextMenu({
@@ -14,28 +13,13 @@ export function BookmarkContextMenu({
 	onDelete,
 	onEdit,
 	onOpenInNewTab,
-	theme,
 }: BookmarkContextMenuProps) {
 	const getMenuItemStyle = (isDelete = false) => {
 		if (isDelete) {
-			switch (theme) {
-				case 'light':
-					return 'text-red-600 hover:text-red-700 hover:bg-red-50/80'
-				case 'dark':
-					return 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
-				default: // glass
-					return 'text-red-400 hover:text-red-300 hover:bg-white/10'
-			}
+			return 'text-error hover:text-error/70 hover:bg-error/10'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'text-blue-600 hover:text-blue-700 hover:bg-blue-50/80'
-			case 'dark':
-				return 'text-blue-400 hover:text-blue-300 hover:bg-blue-900/30'
-			default: // glass
-				return 'text-blue-400 hover:text-blue-300 hover:bg-white/10'
-		}
+		return 'bg-content text-primary/50'
 	}
 
 	return (

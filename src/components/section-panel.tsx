@@ -1,4 +1,3 @@
-import { getBorderColor, getHeadingTextStyle, useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import type { ReactNode } from 'react'
 import React from 'react'
@@ -18,8 +17,6 @@ export function SectionPanel({
 	size = 'md',
 	icon,
 }: SectionPanelProps) {
-	const { theme } = useTheme()
-
 	const getSizeStyles = () => {
 		switch (size) {
 			case 'xs':
@@ -63,13 +60,9 @@ export function SectionPanel({
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay }}
 			>
-				<div className={`${sizeStyles.header} border-b ${getBorderColor(theme)}`}>
+				<div className={`${sizeStyles.header} border-b border-content`}>
 					<div className="flex items-center justify-between gap-2">
-						<h3
-							className={`font-medium ${sizeStyles.title} ${getHeadingTextStyle(theme)}`}
-						>
-							{title}
-						</h3>
+						<h3 className={`font-medium ${sizeStyles.title} text-content`}>{title}</h3>
 						{icon && React.cloneElement(icon, {})}
 					</div>
 				</div>

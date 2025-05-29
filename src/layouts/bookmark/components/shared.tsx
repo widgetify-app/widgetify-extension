@@ -1,5 +1,4 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -18,21 +17,9 @@ export interface BookmarkFormData {
 	touched?: boolean
 }
 
-export function getIconPreviewStyle(theme: string) {
-	switch (theme) {
-		case 'light':
-			return 'border-gray-300 hover:bg-gray-100'
-		case 'dark':
-			return 'border-gray-700 hover:bg-gray-700/50'
-		default: // glass
-			return 'border-white/10 hover:bg-neutral-800/50'
-	}
-}
-
 export function IconSourceSelector({
 	iconSource,
 	setIconSource,
-	theme = 'glass',
 }: {
 	iconSource: IconSourceType
 	setIconSource: (source: IconSourceType) => void
@@ -40,42 +27,26 @@ export function IconSourceSelector({
 }) {
 	const getButtonStyle = (isActive: boolean) => {
 		if (isActive) {
-			switch (theme) {
-				case 'light':
-					return 'bg-blue-100 text-blue-700 border-blue-300'
-				case 'dark':
-					return 'bg-blue-900/30 text-blue-300 border-blue-800'
-				default:
-					return 'bg-blue-800/20 text-blue-400 border-blue-800/50'
-			}
+			return 'bg-primary text-white border-primary'
 		}
 
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 text-gray-700 border-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 text-gray-400 border-neutral-700'
-			default:
-				return 'bg-neutral-800/50 text-gray-500 border-neutral-700/50'
-		}
+		return 'bg-content text-content'
 	}
 
 	return (
 		<div className="flex justify-center gap-1 mt-1 text-[10px]">
-			<button
-				type="button"
+			<div
 				onClick={() => setIconSource('auto')}
-				className={`px-2 py-1 cursor-pointer border rounded ${getButtonStyle(iconSource === 'auto')}`}
+				className={`px-2 py-1 cursor-pointer border border-content rounded ${getButtonStyle(iconSource === 'auto')}`}
 			>
 				خودکار
-			</button>
-			<button
-				type="button"
+			</div>
+			<div
 				onClick={() => setIconSource('upload')}
-				className={`px-2 py-1 cursor-pointer border rounded ${getButtonStyle(iconSource === 'upload')}`}
+				className={`px-2 py-1 cursor-pointer border border-content rounded ${getButtonStyle(iconSource === 'upload')}`}
 			>
 				آپلود
-			</button>
+			</div>
 		</div>
 	)
 }
@@ -83,41 +54,18 @@ export function IconSourceSelector({
 export function TypeSelector({
 	type,
 	setType,
-	theme = 'glass',
 }: {
 	type: BookmarkType
 	setType: (type: BookmarkType) => void
 	theme?: string
 }) {
-	const getActiveStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-500 text-white'
-			case 'dark':
-				return 'bg-blue-600 text-white'
-			default:
-				return 'bg-blue-500/80 text-white'
-		}
-	}
-
-	const getInactiveStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200 text-gray-700'
-			case 'dark':
-				return 'bg-neutral-700 text-gray-300'
-			default:
-				return 'bg-neutral-800 text-gray-400'
-		}
-	}
-
 	return (
 		<>
 			<button
 				type="button"
 				onClick={() => setType('BOOKMARK')}
 				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
-					type === 'BOOKMARK' ? getActiveStyle() : getInactiveStyle()
+					type === 'BOOKMARK' ? 'bg-primary text-white/85' : 'bg-content text-content'
 				}`}
 			>
 				بوکمارک
@@ -126,7 +74,7 @@ export function TypeSelector({
 				type="button"
 				onClick={() => setType('FOLDER')}
 				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
-					type === 'FOLDER' ? getActiveStyle() : getInactiveStyle()
+					type === 'FOLDER' ? 'bg-primary text-white/85' : 'bg-content text-content'
 				}`}
 			>
 				پوشه
@@ -135,7 +83,7 @@ export function TypeSelector({
 	)
 }
 
-export function useBookmarkIcon(theme: string) {
+export function useBookmarkIcon() {
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [isDragging, setIsDragging] = useState(false)
 	const [iconLoadError, setIconLoadError] = useState(false)
@@ -219,9 +167,7 @@ export function useBookmarkIcon(theme: string) {
 					<img
 						src={formData.icon}
 						alt="Favicon"
-						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg ${
-							theme === 'light' ? 'border-gray-300' : 'border-white/10'
-						} group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
+						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg border-content group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
 							try {
 								updateFormData('icon', getFaviconFromUrl(formData.url))
@@ -248,7 +194,9 @@ export function useBookmarkIcon(theme: string) {
 		return (
 			<div
 				className={`flex flex-col items-center justify-center w-16 h-16 mx-auto transition-colors border-2 border-dashed rounded-lg cursor-pointer ${
-					isDragging ? 'border-blue-400 bg-blue-50/10' : getIconPreviewStyle(theme)
+					isDragging
+						? 'border-blue-400 bg-blue-50/10'
+						: 'border-content hover:bg-neutral-800/50'
 				}`}
 				onClick={handlePreviewClick}
 				onDragOver={handleDragOver}
@@ -301,12 +249,13 @@ export function ShowAdvancedButton({
 	setShowAdvanced,
 	showAdvanced,
 }: ShowAdvancedButtonProps) {
-	const { theme } = useTheme()
 	return (
 		<button
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
-			className={`flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer ${getTextColor(theme)} opacity-90 border ${getBorderColor(theme)} rounded-md`}
+			className={
+				'flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer text-content opacity-90 border border-content rounded-md'
+			}
 		>
 			{showAdvanced ? (
 				<>

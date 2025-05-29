@@ -10,7 +10,6 @@ import { BookmarkTitle } from './bookmark/bookmark-title'
 export function FolderBookmarkItem({
 	bookmark,
 	onClick,
-	theme = 'glass',
 	draggable = false,
 	isDragging = false,
 	onDragStart,
@@ -21,7 +20,6 @@ export function FolderBookmarkItem({
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
-	theme?: string
 	draggable?: boolean
 	isDragging?: boolean
 	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
@@ -33,14 +31,7 @@ export function FolderBookmarkItem({
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getFolderStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-blue-400/20 hover:border-blue-400/40 bg-white hover:bg-gray-100/95'
-			case 'dark':
-				return 'border-blue-400/20 bg-neutral-900 hover:bg-neutral-700/95'
-			default: // glass
-				return 'border-blue-400/20 hover:border-blue-400/40 backdrop-blur-md bg-blue-900/10 hover:bg-blue-800/20'
-		}
+		return 'border-primary hover:border-primary/40 bg-primary/10 hover:bg-primary/20'
 	}
 
 	const displayIcon =
@@ -79,10 +70,14 @@ export function FolderBookmarkItem({
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-xl">
 						<div
-							className={`absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b ${theme === 'light' ? 'from-blue-300/10' : 'from-blue-300/10'} to-transparent`}
+							className={
+								'absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-blue-300/10 to-transparent'
+							}
 						/>
 						<div
-							className={`absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t ${theme === 'light' ? 'from-blue-200/20' : 'from-blue-900/20'} to-transparent`}
+							className={
+								'absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-blue-200/20 to-transparent'
+							}
 						/>
 					</div>
 					<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
@@ -99,7 +94,6 @@ export function FolderBookmarkItem({
 					</div>
 					<BookmarkTitle
 						title={bookmark.title}
-						theme={theme}
 						customTextColor={bookmark.customTextColor}
 					/>
 					<div
@@ -115,7 +109,9 @@ export function FolderBookmarkItem({
 								e.stopPropagation()
 								onMenuClick(e)
 							}}
-							className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
+							className={
+								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-neutral z-10'
+							}
 						>
 							<SlOptions />
 						</div>

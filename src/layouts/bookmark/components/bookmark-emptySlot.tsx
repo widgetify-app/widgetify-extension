@@ -1,25 +1,20 @@
 import Tooltip from '@/components/toolTip'
-import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
 import { CiBookmarkPlus } from 'react-icons/ci'
 
 export function EmptyBookmarkSlot({
 	onClick,
-	theme = 'glass',
 	canAdd,
 }: { onClick: (e?: React.MouseEvent<any>) => void; theme?: string; canAdd: boolean }) {
+	const getBookmarkStyle = () => {
+		return 'bg-content hover:!bg-base-300 text-content backdrop-blur-sm border-content'
+	}
+
 	const getEmptySlotStyle = () => {
 		if (!canAdd) {
-			return `opacity-30 ${getContainerBackground(theme)} ${getBookmarkStyle(theme)} cursor-default`
+			return `opacity-30 bg-content ${getBookmarkStyle()} cursor-default`
 		}
 
-		switch (theme) {
-			case 'light':
-				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)} border-blue-300/40 hover:border-blue-400/70 hover:bg-blue-50/50`
-			case 'dark':
-				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)} border-blue-500/20 hover:border-blue-400/40 hover:bg-blue-900/20`
-			default: // glass
-				return `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}	 border-blue-400/20 hover:border-blue-400/40 hover:bg-blue-900/10`
-		}
+		return getBookmarkStyle()
 	}
 
 	return (
@@ -40,7 +35,9 @@ export function EmptyBookmarkSlot({
 
 				{canAdd && (
 					<div
-						className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
+						className={
+							'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
+						}
 					/>
 				)}
 			</button>

@@ -1,10 +1,3 @@
-import {
-	getBorderColor,
-	getDescriptionTextStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
-
 interface Props {
 	isActive: boolean
 	onClick: () => void
@@ -23,44 +16,23 @@ export function ItemSelector({
 	defaultActive,
 	className,
 }: Props) {
-	const { theme } = useTheme()
-
-	const getActiveButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-blue-500 bg-blue-500/10'
-			case 'dark':
-				return 'border-blue-500 bg-blue-500/20'
-			default: // glass
-				return 'border-blue-500 bg-blue-500/10'
-		}
-	}
-
-	const getInactiveButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'border-gray-300 bg-gray-100/50 hover:bg-gray-200/60'
-			case 'dark':
-				return 'border-gray-700 bg-neutral-800/80 hover:bg-neutral-700/60'
-			default: // glass
-				return 'border-gray-700 bg-white/5 hover:bg-white/10'
-		}
-	}
-
 	const getRadioBorderStyle = (isSelected: boolean) => {
 		if (isSelected) {
 			return 'border-blue-500 bg-blue-500'
 		}
 
-		return getBorderColor(theme)
+		return 'border-content'
 	}
+
 	const isDefaultActive = defaultActive === key
 	return (
-		<button
+		<div
 			key={key}
 			onClick={onClick}
-			className={`flex cursor-pointer flex-col items-start  p-3 transition border rounded-lg ${className} ${
-				isActive || isDefaultActive ? getActiveButtonStyle() : getInactiveButtonStyle()
+			className={`flex cursor-pointer flex-col items-start  p-3 transition-all border rounded-lg ${className} ${
+				isActive || isDefaultActive
+					? 'border-primary/50 bg-primary/10'
+					: 'bg-content border-content hover:!border-primary/50'
 			}`}
 		>
 			<div className="flex items-center justify-center mb-2">
@@ -83,15 +55,9 @@ export function ItemSelector({
 							</svg>
 						))}
 				</div>
-				<span className={`mr-1.5 text-sm font-medium ${getTextColor(theme)}`}>
-					{label}
-				</span>
+				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
 			</div>
-			{description && (
-				<p className={`text-sm ${getDescriptionTextStyle(theme)} text-right`}>
-					{description}
-				</p>
-			)}
-		</button>
+			{description && <p className={'text-sm text-muted text-right'}>{description}</p>}
+		</div>
 	)
 }
