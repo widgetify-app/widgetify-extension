@@ -3,7 +3,9 @@ import lie from '@/assets/animals/dog/akita_lie_8fps.gif'
 import running from '@/assets/animals/dog/akita_run_8fps.gif'
 import swipe from '@/assets/animals/dog/akita_swipe_8fps.gif'
 import walking from '@/assets/animals/dog/akita_walk_fast_8fps.gif'
-import { LuBone } from 'react-icons/lu'
+import dogFood from '@/assets/animals/dog/dog-food.png'
+import { PetFood } from '../core/pet-food'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
 	type PetAnimations,
@@ -12,10 +14,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const DogComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const dogAnimations: PetAnimations = {
 		idle,
@@ -42,10 +50,9 @@ export const DogComponent = () => {
 		climb: { min: 2000, max: 5000 },
 	}
 	const dogAssets: PetAssets = {
-		collectibleIcon: LuBone,
+		collectibleIcon: <PetFood src={dogFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'gray-200',
 	}
 
 	const {
@@ -59,16 +66,19 @@ export const DogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.DOG_AKITA),
 		animations: dogAnimations,
 		dimensions: dogDimensions,
 		durations: dogDurations,
 		assets: dogAssets,
+		isHungry: isPetHungry(PetTypes.DOG_AKITA),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG_AKITA),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.DOG_AKITA),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.DOG_AKITA)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -78,7 +88,8 @@ export const DogComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Dog"
+			isHungry={isPetHungry(PetTypes.DOG_AKITA)}
+			hungryLevel={getPetHungryState(PetTypes.DOG_AKITA)?.level}
 		/>
 	)
 }

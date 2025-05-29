@@ -3,34 +3,67 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type React from 'react'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+
+export enum TodoViewType {
+	Day = 'day',
+	Monthly = 'monthly',
+}
+export enum TodoPriority {
+	Low = 'low',
+	Medium = 'medium',
+	High = 'high',
+}
+export interface TodoOptions {
+	blurMode: boolean
+	viewMode: TodoViewType
+}
+export interface AddTodoInput {
+	text: string
+	date: string
+	priority?: TodoPriority
+	category?: string
+	notes?: string
+}
 
 interface TodoContextType {
 	todos: Todo[]
-	addTodo: (
-		text: string,
-		date: string,
-		priority?: 'low' | 'medium' | 'high',
-		category?: string,
-		notes?: string,
-	) => void
+	addTodo: (input: AddTodoInput) => void
+	todoOptions: TodoOptions
 	removeTodo: (id: string) => void
 	toggleTodo: (id: string) => void
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
+	updateOptions: (options: Partial<TodoOptions>) => void
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todos, setTodos] = useState<Todo[] | null>(null)
+	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
+		blurMode: false,
+		viewMode: TodoViewType.Day,
+	})
+
+	const didLoadInitialOptions = useRef(false)
 
 	useEffect(() => {
-		async function getTodos() {
+		async function load() {
 			const todos = await getFromStorage('todos')
+			const todoOptions = await getFromStorage('todoOptions')
+			setTodos(todos || [])
+			if (todoOptions) {
+				setTodoOptions(todoOptions)
+			} else {
+				setToStorage('todoOptions', {
+					blurMode: false,
+					viewMode: TodoViewType.Day,
+				})
+			}
 
-			setTodos(todos)
+			didLoadInitialOptions.current = true
 		}
 
 		const todosChangedEvent = listenEvent('todosChanged', (todoList: Todo[]) => {
@@ -45,7 +78,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 
-		getTodos()
+		load()
 
 		return () => {
 			todosChangedEvent()
@@ -57,24 +90,31 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		setToStorage('todos', todos)
 	}, [todos])
 
-	const addTodo = (
-		text: string,
-		date: string,
-		priority: 'low' | 'medium' | 'high' = 'medium',
-		category?: string,
-		notes?: string,
-	) => {
+	useEffect(() => {
+		if (!didLoadInitialOptions.current) return
+
+		setToStorage('todoOptions', todoOptions)
+	}, [todoOptions])
+
+	function updateOptions(options: Partial<TodoOptions>) {
+		setTodoOptions((prev) => ({
+			...prev,
+			...options,
+		}))
+	}
+
+	const addTodo = (input: AddTodoInput) => {
 		const old = todos || []
 		setTodos([
 			...old,
 			{
 				id: uuidv4(),
-				text,
+				text: input.text,
 				completed: false,
-				date,
-				priority,
-				category,
-				notes,
+				date: input.date,
+				priority: input.priority || 'low',
+				category: input.category || '',
+				notes: input.notes || '',
 				onlineId: null,
 			},
 		])
@@ -134,6 +174,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				toggleTodo,
 				updateTodo,
 				clearCompleted,
+				updateOptions,
+				todoOptions,
 			}}
 		>
 			{children}

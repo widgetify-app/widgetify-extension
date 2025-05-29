@@ -1,13 +1,13 @@
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import CustomCheckbox from '@/components/checkbox'
+import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import {
 	getBorderColor,
 	getDescriptionTextStyle,
 	getHeadingTextStyle,
-	getTextColor,
 	useTheme,
 } from '@/context/theme.context'
 import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
@@ -97,24 +97,14 @@ export function PetSettings() {
 						</p>
 						<div className="grid grid-cols-3 gap-1.5 mb-2">
 							{availablePets.map((pet) => (
-								<button
-									key={pet.value}
+								<ItemSelector
+									isActive={petType === pet.value}
 									onClick={() => onChangePetType(pet.value)}
-									className={`flex cursor-pointer items-center justify-center py-3 px-4 rounded-lg transition-all duration-200 ${
-										petType === pet.value
-											? 'border-2 border-blue-500 bg-blue-500/10 shadow-sm'
-											: `border ${getBorderColor(theme)} hover:border-blue-400 hover:bg-blue-500/10`
-									}`}
-									aria-pressed={petType === pet.value}
-								>
-									<span
-										className={`text-sm font-medium text-right ${getTextColor(theme)} ${
-											petType === pet.value ? 'font-bold' : ''
-										}`}
-									>
-										{pet.label}
-									</span>
-								</button>
+									key={pet.value}
+									label={pet.label}
+									defaultActive={PetTypes.DOG_AKITA}
+									className="!w-full !h-12 !p-2.5 !text-sm text-center"
+								/>
 							))}
 						</div>
 

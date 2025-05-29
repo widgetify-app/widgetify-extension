@@ -1,9 +1,11 @@
+import crabFood from '@/assets/animals/crab/crab-food.png'
 import idle from '@/assets/animals/crab/red_idle_8fps.gif'
 import running from '@/assets/animals/crab/red_run_8fps.gif'
 import swipe from '@/assets/animals/crab/red_swipe_8fps.gif'
 import walking from '@/assets/animals/crab/red_walk_fast_8fps.gif'
-import { IoFish } from 'react-icons/io5'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -11,10 +13,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CrabComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const crabAnimations: PetAnimations = {
 		idle,
@@ -40,10 +48,9 @@ export const CrabComponent = () => {
 		climb: { min: 3000, max: 6000 },
 	}
 	const crabAssets: PetAssets = {
-		collectibleIcon: IoFish,
+		collectibleIcon: <PetFood src={crabFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'blue-400',
 	}
 
 	const {
@@ -57,16 +64,19 @@ export const CrabComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CRAB),
 		animations: crabAnimations,
 		dimensions: crabDimensions,
 		durations: crabDurations,
 		assets: crabAssets,
+		isHungry: isPetHungry(PetTypes.CRAB),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CRAB),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CRAB),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CRAB)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -76,7 +86,8 @@ export const CrabComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Crab"
+			isHungry={isPetHungry(PetTypes.CRAB)}
+			hungryLevel={getPetHungryState(PetTypes.CRAB)?.level}
 		/>
 	)
 }

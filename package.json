@@ -13,7 +13,10 @@
 		"start:firefox": "npm run build:firefox && web-ext run --source-dir=dist --target=firefox-desktop",
 		"package": "bun scripts/package-extension.js",
 		"package:chrome": "bun scripts/package-extension.js chrome",
-		"package:firefox": "bun scripts/package-extension.js firefox"
+		"package:firefox": "bun scripts/package-extension.js firefox",
+		"-------------node-------------": "echo 'Node.js packaging commands'",
+		"package:node:firefox": "node --env-file .env scripts/package-extension.js firefox",
+		"package:node:chrome": "node --env-file .env scripts/package-extension.js chrome"
 	},
 	"dependencies": {
 		"@hello-pangea/dnd": "^18.0.1",

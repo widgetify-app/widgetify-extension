@@ -12,6 +12,7 @@ interface WidgetVisibilityState {
 	todos: boolean
 	tools: boolean
 	notes: boolean
+	youtube: boolean
 }
 
 interface WidgetVisibilityContextType {
@@ -30,6 +31,7 @@ const defaultVisibility: WidgetVisibilityState = {
 	todos: true,
 	tools: true,
 	notes: false,
+	youtube: false,
 }
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(

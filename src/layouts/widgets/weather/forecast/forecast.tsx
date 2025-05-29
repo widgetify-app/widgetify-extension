@@ -73,8 +73,8 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
     opacity: 1;
     transform: translateY(-50%) scale(1);
   }
-  .swiper-button-disabled {
-    opacity: 0.3 !important;
+  .swiper-button-disabled {    
+    display: none !important;
     cursor: not-allowed;
   }
 `}</style>

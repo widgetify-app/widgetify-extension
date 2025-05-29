@@ -1,45 +1,31 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { Button } from '@/components/button/button'
 import { useDate } from '@/context/date.context'
-
-import { useTodoStore } from '@/context/todo.context'
-import { useEffect, useState } from 'react'
+import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
+import { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaChartSimple } from 'react-icons/fa6'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
-import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
-
+import { Button } from '@/components/button/button'
+import { TodoStats } from './todo-stats'
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
-	const { addTodo, todos, removeTodo, toggleTodo } = useTodoStore()
+	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
+		useTodoStore()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
-	const [sort, setSort] = useState<'priority' | 'time' | 'default'>('default')
-	const [blurMode, setBlurMode] = useState<boolean>(false)
+
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
 
-	useEffect(() => {
-		async function loadBlurMode() {
-			try {
-				const savedBlurMode = await getFromStorage('todoBlurMode')
-				if (savedBlurMode !== null) {
-					setBlurMode(savedBlurMode)
-				}
-			} catch (error) {
-				console.error('Error loading blur mode:', error)
-			}
-		}
-
-		loadBlurMode()
-	}, [])
 	const handleBlurModeToggle = () => {
-		const newBlurMode = !blurMode
-		setBlurMode(newBlurMode)
-		setToStorage('todoBlurMode', newBlurMode)
+		const newBlurMode = !todoOptions.blurMode
+		updateOptions({ blurMode: newBlurMode })
+	}
+
+	const handleChangeViewMode = (viewMode: TodoViewType) => {
+		updateOptions({ viewMode })
 	}
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
@@ -50,20 +36,18 @@ export function TodosLayout() {
 		selectedDateTodos = selectedDateTodos.filter((todo) => todo.completed)
 	}
 
-	if (sort === 'priority') {
-		const priorityValues = { high: 3, medium: 2, low: 1 }
-		selectedDateTodos = [...selectedDateTodos].sort(
-			(a, b) => priorityValues[b.priority] - priorityValues[a.priority],
-		)
+	if (todoOptions.viewMode === 'monthly') {
+		const currentMonth = selectedDate.format('jMM')
+		selectedDateTodos = todos.filter((todo) => {
+			return todo.date.startsWith(`${selectedDate.year()}-${currentMonth}`)
+		})
 	}
 
-	const handleAddTodo = (
-		text: string,
-		priority: 'low' | 'medium' | 'high',
-		category?: string,
-		notes?: string,
-	) => {
-		addTodo(text, selectedDateStr, priority, category, notes)
+	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'>) => {
+		addTodo({
+			...todoInput,
+			date: selectedDateStr,
+		})
 		setTodoText('')
 	}
 
@@ -84,18 +68,25 @@ export function TodosLayout() {
 						<h4 className={'text-xs font-medium flex items-center widget-item-text'}>
 							<span>وظایف</span>
 							<span className="mr-1 font-semibold">
-								{isToday(selectedDate) ? ' امروز' : ` ${selectedDate.format('jD jMMMM')}`}
+								{todoOptions.viewMode === TodoViewType.Monthly
+									? `${selectedDate.format('jMMMM')} ماه`
+									: isToday(selectedDate)
+										? ' امروز'
+										: ` ${selectedDate.format('jD jMMMM')}`}
 							</span>
 						</h4>
 
 						<div className="flex gap-1">
-							<Button size="xs" onClick={handleBlurModeToggle} isPrimary={blurMode}>
-								{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
+							<Button
+								onClick={handleBlurModeToggle}
+								size='xs'
+							>
+								{todoOptions.blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
 							</Button>
 							<Button
-								size="xs"
 								onClick={() => setShowStats(!showStats)}
 								isPrimary={showStats}
+								size='xs'
 							>
 								<FaChartSimple size={12} />
 							</Button>
@@ -152,14 +143,12 @@ export function TodosLayout() {
 								</div>
 
 								<select
-									value={sort}
-									onChange={(e) =>
-										setSort(e.target.value as 'priority' | 'time' | 'default')
-									}
-									className={'text-primary text-[.65rem]'}
+									value={todoOptions.viewMode}
+									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
+									className={`select text-[.65rem]`}
 								>
-									<option value="default">پیش‌فرض</option>
-									<option value="priority">اولویت</option>
+									<option value={TodoViewType.Day}>لیست امروز</option>
+									<option value={TodoViewType.Monthly}>لیست ماهانه</option>
 								</select>
 							</div>
 						</>
@@ -168,7 +157,7 @@ export function TodosLayout() {
 				<div className="flex-grow overflow-hidden">
 					{!showStats && (
 						<div
-							className={`pr-1 space-y-1 overflow-y-auto h-full  ${blurMode ? 'blur-mode' : ''}`}
+							className={`pr-1 space-y-1 overflow-y-auto h-full  ${todoOptions.blurMode ? 'blur-mode' : ''}`}
 						>
 							{selectedDateTodos.length > 0 ? (
 								<>
@@ -178,7 +167,7 @@ export function TodosLayout() {
 											todo={todo}
 											deleteTodo={removeTodo}
 											toggleTodo={toggleTodo}
-											blurMode={blurMode}
+											blurMode={todoOptions.blurMode}
 										/>
 									))}
 								</>

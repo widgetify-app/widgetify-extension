@@ -1,5 +1,5 @@
-import { getCardBackground, getTextColor } from '@/context/theme.context'
-import { motion } from 'framer-motion'
+import { getTextColor } from '@/context/theme.context'
+
 export function BookmarkTitle({
 	title,
 	theme = 'glass',
@@ -12,20 +12,5 @@ export function BookmarkTitle({
 		>
 			{title}
 		</span>
-	)
-}
-
-export function BookmarkTooltip({
-	title,
-	theme = 'glass',
-}: { title: string; theme?: string }) {
-	return (
-		<motion.div
-			initial={{ opacity: 0, y: -10 }}
-			animate={{ opacity: 0.9, y: 0 }}
-			className={`absolute z-50 px-2 py-1 text-sm transition-all duration-200 -translate-y-full rounded-lg -top-2 ${getCardBackground(theme)} shadow-md`}
-		>
-			{title}
-		</motion.div>
 	)
 }

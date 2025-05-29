@@ -1,10 +1,12 @@
+import catFood from '@/assets/animals/cat/cat-food.png'
 import idle from '@/assets/animals/cat/zardaloo_idle_8fps.gif'
 import lie from '@/assets/animals/cat/zardaloo_lie_8fps.gif'
 import running from '@/assets/animals/cat/zardaloo_run_8fps.gif'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.gif'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.gif'
-import { LuMouse } from 'react-icons/lu'
+
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -12,11 +14,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const CatComponent = () => {
-	const { getCurrentPetName } = usePetContext()
-
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 	const catAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -34,20 +41,18 @@ export const CatComponent = () => {
 		climbSpeed: PetSpeed.NORMAL,
 		maxHeight: 100,
 	}
-
 	const catDurations: PetDurations = {
 		walk: { min: 4000, max: 9000 },
 		run: { min: 2000, max: 5000 },
 		rest: { min: 6000, max: 12000 },
 		climb: { min: 3000, max: 6000 },
 	}
+
 	const catAssets: PetAssets = {
-		collectibleIcon: LuMouse,
+		collectibleIcon: <PetFood src={catFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'gray-200',
 	}
-
 	const {
 		containerRef,
 		petRef,
@@ -59,16 +64,19 @@ export const CatComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CAT),
 		animations: catAnimations,
 		dimensions: catDimensions,
 		durations: catDurations,
 		assets: catAssets,
+		isHungry: isPetHungry(PetTypes.CAT),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CAT),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CAT),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CAT)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -78,7 +86,8 @@ export const CatComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="a Dummy Cat"
+			isHungry={isPetHungry(PetTypes.CAT)}
+			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 		/>
 	)
 }

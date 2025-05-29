@@ -13,11 +13,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const frogComponent = () => {
-	const { getCurrentPetName } = usePetContext()
-
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 	const frogAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -57,11 +62,14 @@ export const frogComponent = () => {
 	]
 
 	const frogAssets: PetAssets = {
-		collectibleIcon: LuBug,
+		collectibleIcon: (
+			<LuBug
+				className={`text-${collectibleColors[Math.floor(Math.random() * collectibleColors.length)]}`}
+				size={24}
+			/>
+		),
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor:
-			collectibleColors[Math.floor(Math.random() * collectibleColors.length)],
 	}
 
 	const {
@@ -75,16 +83,19 @@ export const frogComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.FROG),
 		animations: frogAnimations,
 		dimensions: frogDimensions,
 		durations: frogDurations,
 		assets: frogAssets,
+		isHungry: isPetHungry(PetTypes.FROG),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.FROG),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.FROG),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.FROG)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -94,7 +105,8 @@ export const frogComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Ghoori(frog)"
+			hungryLevel={getPetHungryState(PetTypes.FROG)?.level}
+			isHungry={isPetHungry(PetTypes.FROG)}
 		/>
 	)
 }

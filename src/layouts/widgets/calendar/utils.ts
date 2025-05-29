@@ -3,9 +3,8 @@ import hijriMoment from 'moment-hijri'
 
 import type { FetchedAllEvents, FetchedEvent } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-
 export const formatDateStr = (date: jalaliMoment.Moment) => {
-	return `${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
+	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
 
 export type WidgetifyDate = jalaliMoment.Moment

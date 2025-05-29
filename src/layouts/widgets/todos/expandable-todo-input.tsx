@@ -2,19 +2,15 @@ import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
+import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { FiFlag, FiMessageSquare, FiPlus, FiTag, FiX } from 'react-icons/fi'
+import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
 
 interface ExpandableTodoInputProps {
 	todoText: string
 	onChangeTodoText: (value: string) => void
-	onAddTodo: (
-		text: string,
-		priority: 'low' | 'medium' | 'high',
-		category?: string,
-		notes?: string,
-	) => void
+	onAddTodo: (input: Omit<AddTodoInput, 'date'>) => void
 }
 
 const PrIORITY_OPTIONS = [
@@ -44,7 +40,7 @@ export function ExpandableTodoInput({
 	onAddTodo,
 }: ExpandableTodoInputProps) {
 	const [isExpanded, setIsExpanded] = useState(false)
-	const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
+	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
 	const inputRef = useRef<HTMLInputElement | null>(null)
@@ -75,7 +71,12 @@ export function ExpandableTodoInput({
 
 	const handleAddTodo = () => {
 		if (todoText.trim()) {
-			onAddTodo(todoText.trim(), priority, category, notes)
+			onAddTodo({
+				text: todoText.trim(),
+				category: category.trim() || undefined,
+				notes: notes.trim() || undefined,
+				priority: priority,
+			})
 			Analytics.featureUsed('todo_added')
 			resetForm()
 		}
@@ -91,7 +92,7 @@ export function ExpandableTodoInput({
 		onChangeTodoText('')
 		setCategory('')
 		setNotes('')
-		setPriority('medium')
+		setPriority(TodoPriority.Medium)
 		setIsExpanded(false)
 	}
 
@@ -109,7 +110,7 @@ export function ExpandableTodoInput({
 							value={todoText}
 							onChange={onChangeTodoText}
 							placeholder="عنوان وظیفه جدید..."
-							className="w-full py-1.5 text-sm rounded-md"
+							className="w-full py-1.5 text-sm !rounded-lg"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
@@ -150,9 +151,7 @@ export function ExpandableTodoInput({
 													<button
 														key={value}
 														type="button"
-														onClick={() =>
-															setPriority(value as 'low' | 'medium' | 'high')
-														}
+														onClick={() => setPriority(value as TodoPriority)}
 														className={`
 													flex items-center justify-center w-4 h-4 rounded-full
 													transition-all duration-150 cursor-pointer 

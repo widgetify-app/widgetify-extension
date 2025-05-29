@@ -1,3 +1,4 @@
+import type { TodoOptions } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -12,6 +13,7 @@ import type {
 	FetchedWeather,
 	WeatherSettings,
 } from '@/services/hooks/weather/weather.interface'
+import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {
@@ -28,7 +30,6 @@ export interface StorageKV {
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
 	weatherSettings: WeatherSettings
-	todoBlurMode: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
 	theme: 'light' | 'dark' | 'glass'
@@ -53,4 +54,10 @@ export interface StorageKV {
 	}[]
 	calendarDrawerState: boolean
 	pets: PetSettings
+	todoOptions: TodoOptions
+	youtubeSettings: {
+		username: string | null
+		subscriptionStyle: 'short' | 'long'
+	}
+	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
 }

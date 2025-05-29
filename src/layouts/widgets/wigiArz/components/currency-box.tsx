@@ -1,13 +1,12 @@
 import Analytics from '@/analytics'
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { getTextColor, getWidgetItemBackground, useTheme } from '@/context/theme.context'
+import { getTextColor, getWidgetItemBackground } from '@/context/theme.context'
 
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
@@ -94,7 +93,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	const handleMouseDown = () => {
 		longPressTimeout.current = setTimeout(() => {
 			toggleCurrencyModal()
-		}, 500) // 500ms for long press
+		}, 500)
 	}
 
 	const handleMouseUp = () => {
@@ -106,74 +105,59 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 
 	return (
 		<>
-			<LazyMotion features={domAnimation}>
-				<m.div
-					whileHover={{ scale: 1, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
-					whileTap={{ scale: 0.98 }}
-					className={
-						'flex items-center justify-between gap-2 p-2 transition-all duration-200 rounded-lg  cursor-pointer widget-item-background opacity-60 hover:bg-gray-500/30'
-					}
-					style={{
-						border: '1px solid transparent',
-						borderColor: imgColor ? `${imgColor}20` : 'transparent',
-					}}
-					initial={{ opacity: 0, y: -10 }}
-					animate={{
-						opacity: 1,
-						y: 0,
-						borderColor: imgColor ? `${imgColor}30` : 'transparent',
-					}}
-					transition={{
-						type: 'spring',
-						stiffness: 150,
-						damping: 15,
-						borderColor: { duration: 0.3 },
-					}}
-					onClick={() => toggleCurrencyModal()}
-					onMouseDown={handleMouseDown}
-					onMouseUp={handleMouseUp}
-					onTouchStart={handleMouseDown}
-					onTouchEnd={handleMouseUp}
-					dir="ltr"
-				>
-					<div className="flex items-center space-x-2.5">
-						<div className="relative">
-							<img
-								src={currency?.icon}
-								alt={currency?.name?.en}
-								className="object-cover w-6 h-6 rounded-full"
-							/>
-							<div
-								className="absolute inset-0 border rounded-full border-opacity-20"
-								style={{ borderColor: imgColor }}
-							/>
-						</div>
-						<div className="flex items-center space-x-2 text-sm font-medium">
-							<span className={'md:visible widget-item-text opacity-90'}>
-								{currency?.name?.en}
-							</span>
-							<span className={'text-xs widget-item-text opacity-40'}>{code}</span>
-						</div>
+			<div
+				className={`flex items-center justify-between gap-2 p-2 rounded-lg cursor-pointer 
+				${getWidgetItemBackground('light')} opacity-100 hover:bg-gray-500/30
+				transition-all duration-300 ease-in-out hover:shadow-lg
+				transform hover:scale-100 active:scale-95 translate-y-0`}
+				style={{
+					border: '1px solid transparent',
+					borderColor: imgColor ? `${imgColor}30` : 'transparent',
+				}}
+				onClick={() => toggleCurrencyModal()}
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				onTouchStart={handleMouseDown}
+				onTouchEnd={handleMouseUp}
+				dir="ltr"
+			>
+				<div className="flex items-center space-x-2.5">
+					<div className="relative">
+						<img
+							src={currency?.icon}
+							alt={currency?.name?.en}
+							className="object-cover w-6 h-6 rounded-full min-h-6 min-w-6"
+						/>
+						<div
+							className="absolute inset-0 border rounded-full border-opacity-20"
+							style={{ borderColor: imgColor }}
+						/>
 					</div>
-
-					<div className="flex items-baseline gap-2">
-						<span className={'text-sm font-bold widget-item-text'}>
-							{displayPrice.toLocaleString()}
+					<div className="flex items-center space-x-2 text-sm font-medium">
+						<span className={`md:visible ${getTextColor('light')} opacity-90`}>
+							{currency?.name?.en}
 						</span>
-						{priceChange !== 0 && (
-							<span
-								className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
-							>
-								{priceChange > 0 ? (
-									<FaArrowUpLong className="inline" />
-								) : (
-									<FaArrowDownLong className="inline" />
-								)}
-							</span>
-						)}
+						<span className={`text-xs ${getTextColor('light')} opacity-40`}>{code}</span>
 					</div>
-				</m.div>
-			</LazyMotion>
+				</div>
+
+				<div className="flex items-baseline gap-2">
+					<span className={`text-sm font-bold ${getTextColor('light')}`}>
+						{displayPrice.toLocaleString()}
+					</span>
+					{priceChange !== 0 && (
+						<span
+							className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
+						>
+							{priceChange > 0 ? (
+								<FaArrowUpLong className="inline" />
+							) : (
+								<FaArrowDownLong className="inline" />
+							)}
+						</span>
+					)}
+				</div>
+			</div>
 			{currency && !currency.url && (
 				<CurrencyModalComponent
 					code={code}

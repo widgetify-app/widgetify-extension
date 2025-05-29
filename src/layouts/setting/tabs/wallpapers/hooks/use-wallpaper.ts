@@ -1,10 +1,14 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import { setUserWallpaperApi } from '@/services/hooks/user/userService.hook'
 import { useEffect, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
-export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
+export function useWallpaper(
+	fetchedWallpapers: Wallpaper[] | undefined,
+	isAuthenticated: boolean,
+) {
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
@@ -57,7 +61,6 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	}
 
 	useEffect(() => {
-		console.log('Selected background changed:', selectedBackground)
 		if (!selectedBackground) return
 
 		const wallpaperData: StoredWallpaper = {
@@ -81,9 +84,8 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		callEvent('wallpaperChanged', wallpaperData)
 	}, [selectedBackground, isRetouchEnabled])
 
-	const handleSelectBackground = (wallpaper: Wallpaper) => {
+	const handleSelectBackground = async (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
-
 		Analytics.featureUsed(
 			'wallpaper_changed',
 			{
@@ -93,6 +95,13 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 			},
 			'click',
 		)
+
+		if (isAuthenticated) {
+			const wallpaperId =
+				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
+
+			await setUserWallpaperApi(wallpaperId).catch()
+		}
 	}
 
 	const toggleRetouch = () => {

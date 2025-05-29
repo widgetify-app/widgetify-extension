@@ -1,9 +1,10 @@
+import chickenFood from '@/assets/animals/chicken/chicken-food.png'
 import idle from '@/assets/animals/chicken/white_idle_8fps.gif'
 import running from '@/assets/animals/chicken/white_run_8fps.gif'
 import swipe from '@/assets/animals/chicken/white_swipe_8fps.gif'
 import walking from '@/assets/animals/chicken/white_walk_fast_8fps.gif'
-import { GiCorn } from 'react-icons/gi'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { PetFood } from '../core/pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
@@ -11,10 +12,16 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../core/pet-types'
-import { usePetContext } from '../pet.context'
+import { PetTypes, usePetContext } from '../pet.context'
 
 export const ChickenComponent = () => {
-	const { getCurrentPetName } = usePetContext()
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
 
 	const chickenAnimations: PetAnimations = {
 		idle,
@@ -40,10 +47,9 @@ export const ChickenComponent = () => {
 		climb: { min: 4000, max: 7000 },
 	}
 	const chickenAssets: PetAssets = {
-		collectibleIcon: GiCorn,
+		collectibleIcon: <PetFood src={chickenFood} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
-		collectibleColor: 'yellow-500',
 	}
 
 	const {
@@ -57,16 +63,19 @@ export const ChickenComponent = () => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(),
+		name: getCurrentPetName(PetTypes.CHICKEN),
 		animations: chickenAnimations,
 		dimensions: chickenDimensions,
 		durations: chickenDurations,
 		assets: chickenAssets,
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.CHICKEN),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CHICKEN),
+		isHungry: isPetHungry(PetTypes.CHICKEN),
 	})
 
 	return (
 		<BasePetContainer
-			name={getCurrentPetName()}
+			name={getCurrentPetName(PetTypes.CHICKEN)}
 			containerRef={containerRef}
 			petRef={petRef}
 			position={position}
@@ -76,7 +85,8 @@ export const ChickenComponent = () => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			altText="Interactive Chicken"
+			isHungry={isPetHungry(PetTypes.CHICKEN)}
+			hungryLevel={getPetHungryState(PetTypes.CHICKEN)?.level}
 		/>
 	)
 }

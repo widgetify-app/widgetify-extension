@@ -27,6 +27,7 @@ import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
+import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
@@ -98,10 +99,15 @@ function ContentSection() {
 							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
 								<TodosLayout />
 							</div>
-						)}
+						)}{' '}
 						{visibility.notes && (
 							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
 								<NotesLayout />
+							</div>
+						)}
+						{visibility.youtube && (
+							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
+								<YouTubeLayout />
 							</div>
 						)}
 					</DateProvider>
