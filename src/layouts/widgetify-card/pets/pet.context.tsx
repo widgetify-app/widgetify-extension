@@ -38,7 +38,7 @@ interface PetSettingsContextType extends PetSettings {
 }
 export const BASE_PET_OPTIONS: PetSettings = {
 	enablePets: true,
-	petType: null,
+	petType: PetTypes.DOG_AKITA,
 	petOptions: {
 		[PetTypes.DOG_AKITA]: {
 			name: 'آکیتا',
@@ -97,14 +97,19 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		async function load() {
 			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
-				setSettings({
-					...BASE_PET_OPTIONS,
-					...storedPets,
-					petOptions: {
-						...BASE_PET_OPTIONS.petOptions,
-						...(storedPets.petOptions || {}),
-					},
-				})
+				if (!storedPets.petOptions['dog-akita'].hungryState) {
+					setToStorage('pets', BASE_PET_OPTIONS)
+					setSettings(BASE_PET_OPTIONS)
+				} else {
+					setSettings({
+						...BASE_PET_OPTIONS,
+						...storedPets,
+						petOptions: {
+							...BASE_PET_OPTIONS.petOptions,
+							...(storedPets.petOptions || {}),
+						},
+					})
+				}
 			} else {
 				const initialSettings = {
 					...BASE_PET_OPTIONS,
@@ -166,7 +171,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 			const pet = newSettings.petOptions[petType]
 
-			if (pet && pet.hungryState.level < 100) {
+			if (pet && pet.hungryState?.level < 100) {
 				pet.hungryState.level += [5, 10][Math.floor(Math.random() * 2)]
 			}
 
@@ -198,7 +203,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 				}
 			}
 
-			if (pet && pet.hungryState.level > 0) {
+			if (pet && pet.hungryState?.level > 0) {
 				const hungerDecrease =
 					Math.random() < 0.5 ? 1 : pet.hungryState.level > 10 ? 2 : 1
 				pet.hungryState.level -= hungerDecrease
@@ -221,7 +226,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 	const isPetHungry = (petType: PetTypes): boolean => {
 		const pet = settings.petOptions[petType]
-		if (pet.hungryState.level > 0) {
+		if (pet.hungryState?.level > 0) {
 			return false
 		}
 
