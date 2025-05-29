@@ -9,8 +9,6 @@ interface FontSelectorProps {
 }
 
 export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
-	const { theme } = useTheme()
-
 	const availableFonts: { value: FontFamily; label: string; sampleText: string }[] = [
 		{
 			value: 'Vazir',
@@ -27,7 +25,7 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 	return (
 		<SectionPanel title="فونت برنامه" delay={0.15}>
 			<div className="space-y-3">
-				<p className={`text-sm ${getDescriptionTextStyle(theme)}`}>
+				<p className={'text-sm text-muted'}>
 					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های برنامه انتخاب کنید:
 				</p>
 				<div className="flex flex-wrap gap-2">

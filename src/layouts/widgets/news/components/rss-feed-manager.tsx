@@ -3,18 +3,8 @@ import { CheckBoxWithDescription } from '@/components/checkbox-description.compo
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import {
-	getBorderColor,
-	getButtonStyles,
-	getCardBackground,
-	getContainerBackground,
-	getDescriptionTextStyle,
-	getHeadingTextStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import clsx from 'clsx'
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import { BiRss } from 'react-icons/bi'
 import { VscAdd, VscTrash } from 'react-icons/vsc'
@@ -183,7 +173,9 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
 					/>
 
-					<section className={'p-4 rounded-xl border widget-item-bg widget-item-border'}>
+					<section
+						className={'p-4 rounded-xl border widget-item-background widget-item-border'}
+					>
 						<h3 className={'mb-3 text-sm font-medium'}>افزودن فید RSS جدید</h3>
 						<div className="flex flex-col gap-3">
 							<TextInput
@@ -314,24 +306,14 @@ interface FeedItemProps {
 }
 
 const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps) => {
-	const { theme } = useTheme()
-
 	const getTextStyle = () => {
 		const baseStyle = feed.enabled ? 'font-medium' : 'line-through opacity-70'
-		return `${baseStyle} ${getTextColor(theme)}`
-	}
-
-	const getUrlStyle = () => {
-		return theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+		return `${baseStyle} widget-item-text`
 	}
 
 	return (
 		<m.div
-			className={clsx(
-				`flex items-center justify-between px-4 py-3 transition-colors rounded-lg ${getCardBackground(theme)} border ${getBorderColor(theme)}`,
-				!feed.enabled && 'opacity-60',
-				disabled && 'cursor-not-allowed',
-			)}
+			className={`flex items-center justify-between px-4 py-3 transition-colors rounded-lg widget-item-background border widget-item-border ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
 			initial={{ opacity: 0, y: 15 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -15, transition: { duration: 0.2 } }}
@@ -342,7 +324,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 				<ToggleSwitch enabled={feed.enabled} disabled={disabled} onToggle={onToggle} />
 				<div className="overflow-hidden">
 					<span className={clsx('block truncate', getTextStyle())}>{feed.name}</span>
-					<span className={`block text-xs truncate ${getUrlStyle()}`}>{feed.url}</span>
+					<span className={'block text-xs truncate text-muted'}>{feed.url}</span>
 				</div>
 			</div>
 			<Button size="md" className="btn-error" onClick={onRemove} disabled={disabled}>

@@ -1,13 +1,4 @@
 import {
-	getBorderColor,
-	getButtonStyles,
-	getCardBackground,
-	getDescriptionTextStyle,
-	getHeadingTextStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
-import {
 	RiBug2Line,
 	RiCheckboxCircleFill,
 	RiGiftLine,
@@ -16,6 +7,7 @@ import {
 	RiThumbUpLine,
 	RiToolsLine,
 } from 'react-icons/ri'
+import { Button } from './button/button'
 import Modal from './modal'
 
 type ReleaseNote = {
@@ -74,8 +66,6 @@ export const UpdateReleaseNotesModal = ({
 	isOpen,
 	onClose,
 }: UpdateReleaseNotesModalProps) => {
-	const { theme } = useTheme()
-
 	const getTypeIcon = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
 		switch (type) {
 			case 'feature':
@@ -149,7 +139,7 @@ export const UpdateReleaseNotesModal = ({
 			<div className="p-2 max-h-[32rem] sm:max-h-85 overflow-y-auto">
 				<div className="flex flex-col items-center mb-2 text-center">
 					<h2
-						className={`text-xl font-bold mb-1 ${getHeadingTextStyle(theme)} animate-fade-in`}
+						className={'text-xl font-bold mb-1 widget-item-text animate-fade-in'}
 						style={{ animationDelay: '0.1s' }}
 					>
 						{VERSION_NAME}
@@ -157,16 +147,16 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				<div
-					className={`mb-5 p-4 rounded-lg ${getCardBackground(theme)} border ${getBorderColor(theme)} animate-fade-in animate-slide-up`}
+					className={
+						'mb-5 p-4 rounded-lg widget-item-background border widget-item-border animate-fade-in animate-slide-up'
+					}
 					style={{ animationDelay: '0.2s' }}
 				>
 					<div className="flex items-center mb-3">
 						<RiGiftLine className="ml-2 text-amber-500" size={20} />
-						<h3 className={`font-semibold ${getHeadingTextStyle(theme)}`}>
-							به روزرسانی ویجتی‌فای
-						</h3>
+						<h3 className={'font-semibold widget-item-text'}>به روزرسانی ویجتی‌فای</h3>
 					</div>
-					<p className={`text-sm ${getDescriptionTextStyle(theme)}`}>{SUMMARY}</p>
+					<p className={'text-sm text-muted'}>{SUMMARY}</p>
 				</div>
 
 				<div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -179,11 +169,11 @@ export const UpdateReleaseNotesModal = ({
 							<div className="flex items-center mb-3">
 								<div className="inline-flex items-center">
 									{getTypeIcon(type as any)}
-									<h3 className={`mr-2 font-medium ${getTextColor(theme)}`}>
+									<h3 className={'mr-2 font-medium widget-item-text'}>
 										{getCategoryTitle(type as any)}
 									</h3>
 								</div>
-								<div className={`flex-1 h-px ${getBorderColor(theme)} mr-2`}></div>
+								<div className={'flex-1 h-px border widget-item-border mr-2'}></div>
 							</div>
 
 							<ul className="mr-2 space-y-3">
@@ -201,9 +191,7 @@ export const UpdateReleaseNotesModal = ({
 											)}
 										</div>
 										<div>
-											<p className={`text-sm ${getDescriptionTextStyle(theme)}`}>
-												{note.description}
-											</p>
+											<p className={'text-sm text-muted'}>{note.description}</p>
 										</div>
 									</li>
 								))}
@@ -218,30 +206,36 @@ export const UpdateReleaseNotesModal = ({
 				>
 					<div className="flex items-center">
 						<RiThumbUpLine className="ml-1 text-blue-500" size={18} />
-						<p className={`text-sm ${getDescriptionTextStyle(theme)}`}>
+						<p className={'text-sm text-muted'}>
 							از اینکه ویجتی‌فای را انتخاب کرده‌اید سپاسگزاریم 💙
 						</p>
 					</div>
 				</div>
 			</div>
 			<div
-				className={`p-3 border-t ${getBorderColor(theme)} flex justify-between items-center`}
+				className={'p-3 border-t widget-item-border flex justify-between items-center'}
 			>
 				{' '}
 				<a
 					href="https://github.com/widgetify-app"
 					target="_blank"
 					rel="noreferrer"
-					className={`text-xs underline ${getDescriptionTextStyle(theme)} hover:text-blue-500 transition-colors duration-300`}
+					className={
+						'text-xs underline text-muted hover:text-blue-500 transition-colors duration-300'
+					}
 				>
 					گزارش مشکل / پیشنهاد
 				</a>
-				<button
+				<Button
 					onClick={onClose}
-					className={`${getButtonStyles(theme, true)} cursor-pointer transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md`}
+					className={
+						'transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md'
+					}
+					size="md"
+					isPrimary={true}
 				>
 					شروع استفاده
-				</button>
+				</Button>
 			</div>
 		</Modal>
 	)

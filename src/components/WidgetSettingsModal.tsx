@@ -1,4 +1,3 @@
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useEffect, useState } from 'react'
@@ -17,7 +16,6 @@ interface WidgetItem {
 
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget } = useWidgetVisibility()
-	const { theme } = useTheme()
 
 	const [activeLeftWidgets, setActiveLeftWidgets] = useState<WidgetItem[]>([])
 	const [inactiveLeftWidgets, setInactiveLeftWidgets] = useState<WidgetItem[]>([])
@@ -182,7 +180,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			direction="rtl"
 		>
 			<div className="p-2 space-y-2">
-				<p className={`text-sm mb-4 ${getTextColor(theme)}`}>
+				<p className={'text-sm mb-4 widget-item-text'}>
 					انتخاب کنید کدام ویجت‌ها در نیـو‌تب شما نمایش داده شوند.
 				</p>
 
@@ -190,12 +188,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<div className="space-y-4">
 						{/* Left column widgets */}
 						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-							<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
+							<h3 className={'text-sm font-bold mb-2 widget-item-text'}>
 								ویجت‌های ستون چپ (حداکثر 1 ویجت)
 							</h3>
 
 							<div className="mb-4">
-								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
 									ویجت فعال ({activeLeftWidgets.length}/1)
 								</p>
 								<Droppable droppableId="left-active-widgets" direction="horizontal">
@@ -216,10 +214,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															ref={provided.innerRef}
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
-															className={`p-2 rounded-lg cursor-move flex items-center ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+															className={
+																'p-2 rounded-lg cursor-move flex items-center widget-item-background'
+															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={`text-sm ${getTextColor(theme)}`}>
+															<span className={'text-sm widget-item-text'}>
 																{widget.label}
 															</span>
 														</div>
@@ -229,7 +229,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{provided.placeholder}
 											{activeLeftWidgets.length === 0 && (
 												<div
-													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+													className={
+														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+													}
 												>
 													برای فعال کردن ویجت از لیست زیر آن را به اینجا بکشید
 												</div>
@@ -240,7 +242,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							</div>
 
 							<div>
-								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
 									ویجت‌های غیرفعال
 								</p>
 								<Droppable droppableId="left-inactive-widgets" direction="horizontal">
@@ -261,10 +263,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															ref={provided.innerRef}
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
-															className={`p-2 rounded-lg cursor-move flex items-center opacity-70 ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+															className={
+																'p-2 rounded-lg cursor-move flex items-center opacity-70 widget-item-background'
+															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={`text-sm ${getTextColor(theme)}`}>
+															<span className={'text-sm widget-item-text'}>
 																{widget.label}
 															</span>
 														</div>
@@ -274,7 +278,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{provided.placeholder}
 											{inactiveLeftWidgets.length === 0 && (
 												<div
-													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+													className={
+														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+													}
 												>
 													برای غیرفعال کردن ویجت از بالا به اینجا بکشید
 												</div>
@@ -291,13 +297,13 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 
 						{/* Bottom widgets */}
 						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-							<h3 className={`text-sm font-bold mb-2 ${getTextColor(theme)}`}>
+							<h3 className={'text-sm font-bold mb-2 widget-item-text'}>
 								ویجت‌های پایین صفحه (حداکثر 4 ویجت)
 							</h3>
 
 							{/* Active widgets */}
 							<div className="mb-4">
-								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
 									ویجت‌های فعال ({activeBottomWidgets.length}/4)
 								</p>
 								<Droppable droppableId="active-widgets" direction="horizontal">
@@ -314,10 +320,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															ref={provided.innerRef}
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
-															className={`p-2 rounded-lg cursor-move flex items-center ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+															className={
+																'p-2 rounded-lg cursor-move flex items-center widget-item-background'
+															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={`text-sm ${getTextColor(theme)}`}>
+															<span className={'text-sm widget-item-text'}>
 																{widget.label}
 															</span>
 														</div>
@@ -327,7 +335,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{provided.placeholder}
 											{activeBottomWidgets.length === 0 && (
 												<div
-													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+													className={
+														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+													}
 												>
 													برای فعال کردن ویجت‌ها از لیست زیر آنها را به اینجا بکشید
 												</div>
@@ -339,7 +349,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 
 							{/* Inactive widgets */}
 							<div>
-								<p className={`text-xs mb-2 ${getTextColor(theme)} opacity-75`}>
+								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
 									ویجت‌های غیرفعال
 								</p>
 								<Droppable droppableId="inactive-widgets" direction="horizontal">
@@ -356,10 +366,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															ref={provided.innerRef}
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
-															className={`p-2 rounded-lg cursor-move flex items-center opacity-70 ${theme === 'light' ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-800 hover:bg-gray-700'}`}
+															className={
+																'p-2 rounded-lg cursor-move flex items-center opacity-70 widget-item-background'
+															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={`text-sm ${getTextColor(theme)}`}>
+															<span className={'text-sm widget-item-text'}>
 																{widget.label}
 															</span>
 														</div>
@@ -369,7 +381,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{provided.placeholder}
 											{inactiveBottomWidgets.length === 0 && (
 												<div
-													className={`w-full text-center p-2 ${getTextColor(theme)} opacity-50 text-sm`}
+													className={
+														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+													}
 												>
 													برای غیرفعال کردن ویجت‌ها از بالا به اینجا بکشید
 												</div>
@@ -380,7 +394,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							</div>
 
 							<div className="pt-3 mt-4 border-t border-gray-200 dark:border-gray-700">
-								<p className={`text-xs ${getTextColor(theme)} opacity-75 mb-2`}>
+								<p className={'text-xs widget-item-text opacity-75 mb-2'}>
 									ویجت‌های فعال را می‌توانید با کشیدن و رها کردن جابه‌جا کنید. حداکثر 4 ویجت
 									می‌توانید همزمان فعال کنید.
 								</p>

@@ -1,4 +1,3 @@
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { memo } from 'react'
 
 interface CustomCheckboxProps {
@@ -16,13 +15,12 @@ const CustomCheckbox = ({
 	disabled = false,
 	fontSize = 'font-normal',
 }: CustomCheckboxProps) => {
-	const { theme } = useTheme()
 	const getCheckboxStyle = () => {
 		if (checked) {
 			return 'bg-blue-500 border-blue-500'
 		}
 
-		return getBorderColor(theme)
+		return 'widget-item-border'
 	}
 
 	return (
@@ -59,9 +57,7 @@ const CustomCheckbox = ({
 				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm ${getTextColor(theme)}`}>
-					{label}
-				</span>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm widget-item-text`}>{label}</span>
 			)}
 		</label>
 	)
