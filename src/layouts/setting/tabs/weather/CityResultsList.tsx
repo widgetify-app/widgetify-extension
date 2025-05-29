@@ -63,9 +63,7 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={
-					'overflow-hidden backdrop-blur-sm shadow rounded-lg widget-item-background'
-				}
+				className={'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-content'}
 			>
 				<div className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}>
 					<div

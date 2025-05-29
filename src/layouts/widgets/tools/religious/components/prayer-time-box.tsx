@@ -20,7 +20,7 @@ export const PrayerTimeBox = ({
 	return (
 		<div
 			className={
-				'widget-item-background border widget-item-border rounded-lg p-[.3rem] flex flex-col items-center transition-all duration-300'
+				'bg-content border widget-item-border rounded-lg p-[.3rem] flex flex-col items-center transition-all duration-300'
 			}
 			style={{ animationDelay: `${index * 0.1}s` }}
 		>

@@ -215,7 +215,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
 															className={
-																'p-2 rounded-lg cursor-move flex items-center widget-item-background'
+																'p-2 rounded-lg cursor-move flex items-center bg-content'
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
@@ -262,7 +262,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
 															className={
-																'p-2 rounded-lg cursor-move flex items-center opacity-70 widget-item-background'
+																'p-2 rounded-lg cursor-move flex items-center opacity-70 bg-content'
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
@@ -319,7 +319,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
 															className={
-																'p-2 rounded-lg cursor-move flex items-center widget-item-background'
+																'p-2 rounded-lg cursor-move flex items-center bg-content'
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
@@ -363,7 +363,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															{...provided.draggableProps}
 															{...provided.dragHandleProps}
 															className={
-																'p-2 rounded-lg cursor-move flex items-center opacity-70 widget-item-background'
+																'p-2 rounded-lg cursor-move flex items-center opacity-70 bg-content'
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>

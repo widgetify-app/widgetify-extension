@@ -97,7 +97,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 				<div className="py-2 text-center transition-opacity duration-300">
 					<div
 						className={
-							'inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full widget-item-background'
+							'inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-content'
 						}
 					>
 						<FiSunrise className="text-content" size={24} />

@@ -16,7 +16,7 @@ export const DailyZikrBox = ({
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
-				className={'widget-item-background border widget-item-border rounded-lg p-0.5'}
+				className={'bg-content border widget-item-border rounded-lg p-0.5'}
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay }}

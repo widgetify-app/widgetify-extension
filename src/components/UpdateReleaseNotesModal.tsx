@@ -148,7 +148,7 @@ export const UpdateReleaseNotesModal = ({
 
 				<div
 					className={
-						'mb-5 p-4 rounded-lg widget-item-background border widget-item-border animate-fade-in animate-slide-up'
+						'mb-5 p-4 rounded-lg bg-content border widget-item-border animate-fade-in animate-slide-up'
 					}
 					style={{ animationDelay: '0.2s' }}
 				>

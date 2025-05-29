@@ -55,7 +55,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 
 	return (
 		<motion.div
-			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} widget-item-background group ${blurMode ? 'blur-item' : ''}`}
+			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} bg-content group ${blurMode ? 'blur-item' : ''}`}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, height: 0 }}

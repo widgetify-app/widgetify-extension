@@ -173,9 +173,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
 					/>
 
-					<section
-						className={'p-4 rounded-xl border widget-item-background widget-item-border'}
-					>
+					<section className={'p-4 rounded-xl border bg-content widget-item-border'}>
 						<h3 className={'mb-3 text-sm font-medium'}>افزودن فید RSS جدید</h3>
 						<div className="flex flex-col gap-3">
 							<TextInput
@@ -212,7 +210,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 									<m.div
 										key={feed.url}
 										className={
-											'flex items-center justify-center p-2 border rounded-lg cursor-pointer widget-item-background widget-item-border'
+											'flex items-center justify-center p-2 border rounded-lg cursor-pointer bg-content widget-item-border'
 										}
 										whileHover={{ scale: 1.02 }}
 										whileTap={{ scale: 0.98 }}
@@ -313,7 +311,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 
 	return (
 		<m.div
-			className={`flex items-center justify-between px-4 py-3 transition-colors rounded-lg widget-item-background border widget-item-border ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
+			className={`flex items-center justify-between px-4 py-3 transition-colors rounded-lg bg-content border widget-item-border ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
 			initial={{ opacity: 0, y: 15 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -15, transition: { duration: 0.2 } }}

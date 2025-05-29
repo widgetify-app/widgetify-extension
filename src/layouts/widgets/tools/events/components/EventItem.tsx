@@ -43,7 +43,7 @@ export function EventItem({ event, index }: EventItemProps) {
 		<motion.div
 			key={`${event.source}-${index}`}
 			className={
-				'mb-2 rounded-lg overflow-hidden widget-item-background border-r-2 border-primary-content'
+				'mb-2 rounded-lg overflow-hidden bg-content border-r-2 border-primary-content'
 			}
 			variants={itemVariants}
 		>
