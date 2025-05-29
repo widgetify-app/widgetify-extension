@@ -1,11 +1,10 @@
 import { SectionPanel } from '@/components/section-panel'
-import { getDescriptionTextStyle, useTheme } from '@/context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import { IoMdMoon, IoMdSunny } from 'react-icons/io'
 import { MdOutlineBlurOn } from 'react-icons/md'
 
 export function ThemeSelector() {
 	const { setTheme, theme } = useTheme()
-
 	const themes = [
 		{
 			id: 'glass',
@@ -33,9 +32,7 @@ export function ThemeSelector() {
 	return (
 		<SectionPanel title="انتخاب تم" delay={0.2}>
 			<div className="flex flex-col gap-4">
-				<p className={getDescriptionTextStyle(theme)}>
-					تم ظاهری ویجتی‌فای را انتخاب کنید.
-				</p>
+				<p className="text-muted">تم ظاهری ویجتی‌فای را انتخاب کنید.</p>
 
 				<div className="flex justify-start gap-4">
 					{themes.map((item) => (

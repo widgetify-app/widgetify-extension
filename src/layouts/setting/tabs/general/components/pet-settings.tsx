@@ -4,17 +4,10 @@ import CustomCheckbox from '@/components/checkbox'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import {
-	getBorderColor,
-	getDescriptionTextStyle,
-	getHeadingTextStyle,
-	useTheme,
-} from '@/context/theme.context'
 import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import { useEffect, useState } from 'react'
 
 export function PetSettings() {
-	const { theme } = useTheme()
 	const [enablePets, setEnablePets] = useState(true)
 	const [petType, setPetType] = useState<PetTypes>(PetTypes.DOG_AKITA)
 	const [petName, setPetName] = useState<string>('')
@@ -81,20 +74,16 @@ export function PetSettings() {
 						onChange={() => onChangeEnablePets(!enablePets)}
 					/>
 					<div onClick={() => onChangeEnablePets(!enablePets)} className="cursor-pointer">
-						<p className={`font-medium ${getHeadingTextStyle(theme)}`}>
-							نمایش حیوان خانگی
-						</p>
-						<p className={`text-sm font-light ${getDescriptionTextStyle(theme)}`}>
+						<p className={'font-medium text-content'}>نمایش حیوان خانگی</p>
+						<p className={'text-sm font-light text-muted'}>
 							نمایش حیوان خانگی تعاملی روی صفحه اصلی
 						</p>
 					</div>
 				</div>
 
 				{enablePets && (
-					<div className={`p-4 mt-4 rounded-lg border ${getBorderColor(theme)}`}>
-						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
-							نوع حیوان خانگی
-						</p>
+					<div className={'p-4 mt-4 rounded-lg border border-content'}>
+						<p className={'mb-3 font-medium text-content'}>نوع حیوان خانگی</p>
 						<div className="grid grid-cols-3 gap-1.5 mb-2">
 							{availablePets.map((pet) => (
 								<ItemSelector
@@ -108,9 +97,7 @@ export function PetSettings() {
 							))}
 						</div>
 
-						<p className={`mb-3 font-medium ${getHeadingTextStyle(theme)}`}>
-							نام حیوان خانگی
-						</p>
+						<p className={'mb-3 font-medium text-content'}>نام حیوان خانگی</p>
 						<TextInput
 							type="text"
 							value={petName}

@@ -1,8 +1,3 @@
-import {
-	getBorderColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { unitsFlag } from '../unitSymbols'
 

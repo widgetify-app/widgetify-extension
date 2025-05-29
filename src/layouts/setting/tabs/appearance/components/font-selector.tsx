@@ -1,7 +1,6 @@
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import type { FontFamily } from '@/context/appearance.context'
-import { getDescriptionTextStyle, useTheme } from '@/context/theme.context'
 
 interface FontSelectorProps {
 	fontFamily: FontFamily

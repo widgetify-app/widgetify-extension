@@ -1,11 +1,4 @@
 import { SectionPanel } from '@/components/section-panel'
-import {
-	getBorderColor,
-	getDescriptionTextStyle,
-	getHeadingTextStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -18,7 +11,6 @@ interface Shortcut {
 }
 
 export function ShortcutsTab() {
-	const { theme } = useTheme()
 	const [isMac, setIsMac] = useState(false)
 
 	useEffect(() => {
@@ -60,17 +52,6 @@ export function ShortcutsTab() {
 		{} as Record<string, Shortcut[]>,
 	)
 
-	const getKeyStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 text-gray-700'
-			case 'dark':
-				return 'bg-neutral-800/80'
-			default:
-				return 'bg-black/20 text-gray-200'
-		}
-	}
-
 	return (
 		<LazyMotion features={domAnimation}>
 			<m.div
@@ -82,26 +63,26 @@ export function ShortcutsTab() {
 			>
 				<SectionPanel title="کلیدهای میانبر" delay={0.1}>
 					<div className="space-y-5">
-						<p className={getDescriptionTextStyle(theme)}>
+						<p className="text-muted">
 							کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
 						</p>
 
 						{Object.entries(categories).map(([category, categoryShortcuts]) => (
 							<div key={category} className="mb-6">
-								<h3
-									className={`text-base font-medium mb-3 ${getHeadingTextStyle(theme)}`}
-								>
-									{category}
-								</h3>
+								<h3 className={'text-base font-medium mb-3 text-content'}>{category}</h3>
 								<div className="space-y-2">
 									{categoryShortcuts.map((shortcut) => (
 										<div
 											key={shortcut.id}
-											className={`flex items-center justify-between p-3 rounded-lg border ${getBorderColor(theme)} ${getBorderColor(theme)}`}
+											className={
+												'flex items-center justify-between p-3 rounded-lg border border-content'
+											}
 										>
-											<span className={getTextColor(theme)}>{shortcut.description}</span>
+											<span className={'text-content'}>{shortcut.description}</span>
 											<kbd
-												className={`px-3 py-1 text-sm font-mono rounded-md border ${getKeyStyle()} ${getTextColor(theme)} opacity-75`}
+												className={
+													'px-3 py-1 text-sm font-mono rounded-md border border-primary-content text-content opacity-75'
+												}
 											>
 												{isMac ? shortcut.macKey : shortcut.windowsKey}
 											</kbd>

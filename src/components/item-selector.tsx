@@ -1,9 +1,11 @@
+import type React from 'react'
+
 interface Props {
 	isActive: boolean
 	onClick: () => void
 	key: string
 	label: string
-	description?: string
+	description?: string | React.ReactNode
 	defaultActive?: string
 	className?: string
 }
