@@ -1,5 +1,4 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import { TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr, getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { motion } from 'framer-motion'
@@ -7,7 +6,6 @@ import { FiClipboard } from 'react-icons/fi'
 
 export function TodoOverviewCard() {
 	const { timezone } = useGeneralSetting()
-	const { theme } = useTheme()
 
 	const { todos, todoOptions } = useTodoStore()
 	const today = getCurrentDate(timezone)
@@ -37,7 +35,7 @@ export function TodoOverviewCard() {
 
 	return (
 		<motion.div
-			className={`p-1 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+			className={'p-1 rounded-lg bg-content shadow-sm'}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.4 }}

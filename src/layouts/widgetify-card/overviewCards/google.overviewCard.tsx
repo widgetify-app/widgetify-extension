@@ -1,6 +1,5 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getWidgetItemBackground, useTheme } from '@/context/theme.context'
 import {
 	filterGoogleEventsByDate,
 	getCurrentDate,
@@ -14,7 +13,6 @@ export function GoogleOverviewCard() {
 	if (!isAuthenticated || !user) {
 		return null
 	}
-	const { theme } = useTheme()
 
 	const { timezone } = useGeneralSetting()
 	const today = getCurrentDate(timezone)
@@ -32,7 +30,7 @@ export function GoogleOverviewCard() {
 
 	return (
 		<motion.div
-			className={`p-2 rounded-lg ${getWidgetItemBackground(theme)} shadow-sm`}
+			className={'p-2 rounded-lg bg-content shadow-sm'}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.5 }}

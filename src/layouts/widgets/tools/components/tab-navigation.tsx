@@ -1,5 +1,4 @@
 import Tooltip from '@/components/toolTip'
-import { useTheme } from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiSunrise, FiWatch } from 'react-icons/fi'

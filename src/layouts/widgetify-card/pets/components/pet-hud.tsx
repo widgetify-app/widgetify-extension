@@ -1,4 +1,3 @@
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { FaBowlFood } from 'react-icons/fa6'
 
 interface Prop {
@@ -8,7 +7,6 @@ interface Prop {
 }
 export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 	const isHungry = level === 0
-	const { theme } = useTheme()
 
 	if (mode === 'small') {
 		return (
@@ -36,10 +34,8 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 					</svg>
 
 					<div className="absolute inset-0 flex flex-col items-center justify-center">
-						<FaBowlFood size={10} className={getTextColor(theme)} />
-						<span className={`text-[0.6rem] font-medium ${getTextColor(theme)}`}>
-							{level}%
-						</span>
+						<FaBowlFood size={10} className={'text-content'} />
+						<span className={'text-[0.6rem] font-medium text-content'}>{level}%</span>
 					</div>
 				</div>
 			</div>
@@ -48,7 +44,9 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 
 	return (
 		<div
-			className={`flex items-center w-32 h-8 gap-2 p-2 shadow-md max-h-8 border ${getBorderColor(theme)} rounded-md`}
+			className={
+				'flex items-center w-32 h-8 gap-2 p-2 shadow-md max-h-8 border border-content rounded-md'
+			}
 		>
 			{isHungry ? (
 				<div className="flex items-center">
@@ -61,12 +59,10 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 			)}
 			<div className="flex-1 min-w-0">
 				<div className="flex items-center justify-between mb-0.5">
-					<span className={`text-[9px] font-medium truncate ${getTextColor(theme)}`}>
+					<span className={'text-[9px] font-medium truncate text-content'}>
 						{isHungry ? 'گرسنه' : petName}
 					</span>
-					<span
-						className={`text-[8px] font-bold  tracking-wide ml-1 ${getTextColor(theme)}`}
-					>
+					<span className={'text-[8px] font-bold  tracking-wide ml-1 text-content'}>
 						{level}%
 					</span>
 				</div>

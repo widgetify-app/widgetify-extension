@@ -1,6 +1,5 @@
 import { RequireAuth } from '@/components/auth/require-auth'
 import { NotesProvider, useNotes } from '@/context/notes.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { FiBook, FiLoader } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
@@ -49,15 +48,12 @@ function NotesContent() {
 }
 
 function NotesHeader() {
-	const { theme } = useTheme()
 	const { isSaving } = useNotes()
 
 	return (
 		<div className="flex items-center justify-between mb-2">
-			<h4 className={`text-sm font-medium ${getTextColor(theme)}`}>دفترچه یادداشت</h4>
-			{isSaving && (
-				<FiLoader className={`block w-4 h-4 animate-spin ${getTextColor(theme)}`} />
-			)}
+			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
+			{isSaving && <FiLoader className={'block w-4 h-4 animate-spin text-content'} />}
 		</div>
 	)
 }
