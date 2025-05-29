@@ -9,6 +9,7 @@ import { WallpaperGallery } from '../components/wallpaper-gallery.component'
 import { useWallpaper } from '../hooks/use-wallpaper'
 import { useWallpapersByCategory } from '../hooks/use-wallpapers-by-category'
 import { useAuth } from '@/context/auth.context'
+import { assetCache } from '@/common/utils/assetCache'
 
 export function GalleryTab() {
 	const { theme } = useTheme()
@@ -54,8 +55,28 @@ export function GalleryTab() {
 				.map((wp) => wp.src)
 
 			preloadImages(imageUrls)
+			
+			// Also preload with asset cache for offline support
+			assetCache.preloadAssets(imageUrls).catch(error => {
+				console.warn('Failed to preload wallpaper assets:', error)
+			})
 		}
-	}, [allWallpapers])
+		
+		// Preload category preview images
+		if (categories?.length) {
+			const categoryPreviewUrls = categories
+				.flatMap(category => category.wallpapers || [])
+				.filter(wallpaper => wallpaper.type === 'IMAGE')
+				.slice(0, 20) // Limit to avoid overwhelming the cache
+				.map(wallpaper => wallpaper.src)
+				
+			if (categoryPreviewUrls.length > 0) {
+				assetCache.preloadAssets(categoryPreviewUrls).catch(error => {
+					console.warn('Failed to preload category preview assets:', error)
+				})
+			}
+		}
+	}, [allWallpapers, categories])
 
 	interface FolderProps {
 		id: string
@@ -65,6 +86,28 @@ export function GalleryTab() {
 	}
 
 	function CategoryFolder({ id, name, previewImages }: FolderProps) {
+		const [cachedImageUrls, setCachedImageUrls] = useState<string[]>([])
+
+		useEffect(() => {
+			async function loadCachedImages() {
+				if (previewImages && previewImages.length > 0) {
+					const urls = await Promise.all(
+						previewImages.map(async (image) => {
+							try {
+								return await assetCache.loadAssetWithCache(image.src, {
+									fallbackUrl: image.src
+								})
+							} catch {
+								return image.src
+							}
+						})
+					)
+					setCachedImageUrls(urls)
+				}
+			}
+			loadCachedImages()
+		}, [previewImages])
+
 		return (
 			<div
 				onClick={() => handleCategorySelect(id)}
@@ -82,10 +125,10 @@ export function GalleryTab() {
 				<div className="flex-grow">
 					{previewImages?.length > 0 ? (
 						<div className="grid grid-cols-2 gap-1">
-							{previewImages.map((image) => (
+							{previewImages.map((image, index) => (
 								<div key={image.id} className="overflow-hidden rounded aspect-video">
 									<img
-										src={image.src}
+										src={cachedImageUrls[index] || image.src}
 										alt={image.name}
 										className="object-cover w-full h-full"
 									/>

@@ -1,6 +1,7 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import { loadAssetWithCache } from '@/common/utils/assetCache'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
@@ -214,18 +215,23 @@ export function HomePage() {
 		}
 	}, [])
 
-	function changeWallpaper(wallpaper: StoredWallpaper) {
+	async function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
 		if (existingVideo) {
 			existingVideo.remove()
 		}
 
 		if (wallpaper.type === 'IMAGE') {
+			// Use asset cache for loading wallpaper images
+			const cachedImageUrl = await loadAssetWithCache(wallpaper.src, {
+				fallbackUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+			})
+			
 			const gradient = wallpaper.isRetouchEnabled
 				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
 				: ''
 
-			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
+			document.body.style.backgroundImage = `${gradient}url(${cachedImageUrl})`
 			document.body.style.backgroundPosition = 'center'
 			document.body.style.backgroundRepeat = 'no-repeat'
 			document.body.style.backgroundSize = 'cover'
@@ -250,9 +256,14 @@ export function HomePage() {
 			document.body.style.backdropFilter = ''
 			document.body.style.backgroundColor = '#000'
 
+			// Use asset cache for loading video wallpapers
+			const cachedVideoUrl = await loadAssetWithCache(wallpaper.src, {
+				fallbackUrl: wallpaper.src // Fallback to original URL for videos
+			})
+
 			const video = document.createElement('video')
 			video.id = 'background-video'
-			video.src = wallpaper.src
+			video.src = cachedVideoUrl
 			video.autoplay = true
 			video.loop = true
 			video.muted = true

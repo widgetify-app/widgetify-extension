@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiCheck, FiHeart } from 'react-icons/fi'
 import { useLazyLoad } from './hooks/use-lazy-load'
+import { assetCache } from '@/common/utils/assetCache'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -26,10 +27,34 @@ export const WallpaperItem = React.memo(
 
 		const loadContent = () => {
 			if (wallpaper.type === 'IMAGE' && imgRef.current) {
-				imgRef.current.src = wallpaper.src
+				// Use cached asset for loading wallpaper images
+				assetCache.loadAssetWithCache(wallpaper.src, {
+					fallbackUrl: wallpaper.src
+				}).then(cachedUrl => {
+					if (imgRef.current) {
+						imgRef.current.src = cachedUrl
+					}
+				}).catch(() => {
+					// Fallback to original URL if caching fails
+					if (imgRef.current) {
+						imgRef.current.src = wallpaper.src
+					}
+				})
 			} else if (wallpaper.type === 'VIDEO' && videoRef.current) {
-				videoRef.current.src = wallpaper.src
-				videoRef.current.load()
+				// For videos, try to use cached version but fallback to original
+				assetCache.loadAssetWithCache(wallpaper.src, {
+					fallbackUrl: wallpaper.src
+				}).then(cachedUrl => {
+					if (videoRef.current) {
+						videoRef.current.src = cachedUrl
+						videoRef.current.load()
+					}
+				}).catch(() => {
+					if (videoRef.current) {
+						videoRef.current.src = wallpaper.src
+						videoRef.current.load()
+					}
+				})
 			}
 		}
 

@@ -1,7 +1,8 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { getDescriptionTextStyle, useTheme } from '@/context/theme.context'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { WallpaperItem } from '../item.wallpaper'
+import { assetCache } from '@/common/utils/assetCache'
 
 interface WallpaperGalleryProps {
 	isLoading: boolean
@@ -20,6 +21,27 @@ export function WallpaperGallery({
 }: WallpaperGalleryProps) {
 	const { theme } = useTheme()
 	const galleryRef = useRef<HTMLDivElement>(null)
+
+	// Preload wallpaper images when component mounts or wallpapers change
+	useEffect(() => {
+		async function preloadWallpapers() {
+			if (wallpapers && wallpapers.length > 0) {
+				const imageUrls = wallpapers
+					.filter(wallpaper => wallpaper.type === 'IMAGE')
+					.map(wallpaper => wallpaper.src)
+					.filter(Boolean)
+					.slice(0, 10) // Preload first 10 images for performance
+
+				try {
+					await assetCache.preloadAssets(imageUrls)
+				} catch (error) {
+					console.warn('Failed to preload some wallpaper images:', error)
+				}
+			}
+		}
+
+		preloadWallpapers()
+	}, [wallpapers])
 
 	const getGalleryStyle = () => {
 		switch (theme) {

@@ -1,4 +1,4 @@
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { getCachedFaviconFromUrl, getDefaultFavicon } from '@/common/utils/icon'
 import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
@@ -223,13 +223,17 @@ export function useBookmarkIcon(theme: string) {
 							theme === 'light' ? 'border-gray-300' : 'border-white/10'
 						} group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
-							try {
-								updateFormData('icon', getFaviconFromUrl(formData.url))
-								setIconLoadError(true)
-							} catch {
-								updateFormData('icon', '')
-								setIconLoadError(true)
+							async function handleIconError() {
+								try {
+									const cachedIcon = await getCachedFaviconFromUrl(formData.url)
+									updateFormData('icon', cachedIcon)
+									setIconLoadError(false)
+								} catch {
+									updateFormData('icon', getDefaultFavicon())
+									setIconLoadError(true)
+								}
 							}
+							handleIconError()
 						}}
 					/>
 					<div className="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
