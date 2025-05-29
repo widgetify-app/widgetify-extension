@@ -21,7 +21,7 @@ interface BookmarkItemProps {
 	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
 	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
 	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
-	onMenuClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 export function BookmarkItem({
@@ -87,7 +87,7 @@ export function BookmarkItem({
 				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}` : 'border'}`}
 			>
 				{onMenuClick && bookmark && (
-					<button
+					<div
 						onClick={(e) => {
 							e.stopPropagation()
 							onMenuClick(e)
@@ -95,7 +95,7 @@ export function BookmarkItem({
 						className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
 					>
 						<SlOptions />
-					</button>
+					</div>
 				)}
 				{RenderStickerPattern(bookmark)}
 				<BookmarkIcon bookmark={bookmark} />

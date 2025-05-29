@@ -78,10 +78,7 @@ export function BookmarksComponent() {
 
 		return true
 	}
-	const handleMenuClick = (
-		e: React.MouseEvent<HTMLButtonElement>,
-		bookmark: Bookmark,
-	) => {
+	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
 		if (isManageable(bookmark)) {
 			setSelectedBookmark(bookmark)
