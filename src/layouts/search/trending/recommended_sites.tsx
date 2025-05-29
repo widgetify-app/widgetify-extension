@@ -1,9 +1,3 @@
-import {
-	getBorderColor,
-	getCardBackground,
-	getHeadingTextStyle,
-	useTheme,
-} from '@/context/theme.context'
 import type { RecommendedSite } from '@/services/hooks/trends/getTrends'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 
@@ -16,8 +10,6 @@ export const RecommendedSites = ({
 	recommendedSites,
 	isLoading,
 }: RecommendedSitesProps) => {
-	const { theme } = useTheme()
-
 	if (recommendedSites.length === 0 && !isLoading) {
 		return null
 	}
@@ -44,11 +36,7 @@ export const RecommendedSites = ({
 							.filter((site) => site.subSites && site.subSites.length > 0)
 							.map((site) => (
 								<div key={site.name} className="mb-2">
-									<h3
-										className={`text-xs font-medium mb-1 ${getHeadingTextStyle(theme)}`}
-									>
-										{site.name}
-									</h3>
+									<h3 className={'text-xs font-medium mb-1 text-content'}>{site.name}</h3>
 									<div className="flex gap-2 pb-2 overflow-x-auto small-scrollbar">
 										{site.subSites?.slice(0, 6).map((subSite, index) => (
 											<SiteItemComponent
@@ -74,8 +62,6 @@ interface SiteItemProps {
 }
 
 export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemProps) => {
-	const { theme } = useTheme()
-
 	function onSiteClick() {
 		if (site?.url) {
 			window.open(site.url, '_blank', 'noopener,noreferrer')
@@ -92,7 +78,9 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 					repeat: Number.POSITIVE_INFINITY,
 					delay: index * 0.1,
 				}}
-				className={`flex-shrink-0 flex flex-col items-center rounded-lg ${getCardBackground(theme)} w-[80px]`}
+				className={
+					'flex-shrink-0 flex flex-col items-center rounded-lg bg-content w-[80px]'
+				}
 			>
 				<div className="w-10 h-10 mb-1 bg-current rounded-full opacity-20"></div>
 				<div className="w-full h-3 bg-current rounded opacity-20"></div>
@@ -107,7 +95,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: index * 0.05 }}
-			className={`flex-shrink-0 flex flex-col items-center p-2 cursor-pointer transition-all rounded-lg ${getCardBackground(theme)} shadow-xs hover:scale-105 w-[80px] border ${getBorderColor(theme)} ${
+			className={`flex-shrink-0 flex flex-col items-center p-2 cursor-pointer transition-all rounded-lg bg-content shadow-xs hover:scale-105 w-[80px] border border-content ${
 				!site.url ? 'opacity-60 cursor-not-allowed' : ''
 			}`}
 			onClick={site.url ? onSiteClick : undefined}

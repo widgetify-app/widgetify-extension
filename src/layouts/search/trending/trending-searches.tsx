@@ -1,6 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { SectionPanel } from '@/components/section-panel'
-import { getBorderColor, getContainerBackground, useTheme } from '@/context/theme.context'
 import {
 	type RecommendedSite,
 	type TrendItem,
@@ -19,8 +18,6 @@ interface TrendingSearchesProps {
 }
 
 export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesProps) => {
-	const { theme } = useTheme()
-
 	const [trends, setTrends] = useState<TrendItem[]>([])
 	const [recommendedSites, setRecommendedSites] = useState<RecommendedSite[]>([])
 	const [isCached, setIsCached] = useState(false)
@@ -70,7 +67,9 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -10 }}
-					className={`absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden ${getContainerBackground(theme)} ${getBorderColor(theme)}`}
+					className={
+						'absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden bg-content border-content'
+					}
 					style={{
 						zIndex: 9999,
 					}}

@@ -1,9 +1,3 @@
-import {
-	getBorderColor,
-	getContainerBackground,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
@@ -11,22 +5,10 @@ import Browser from 'webextension-polyfill'
 import { TrendingSearches } from './trending/trending-searches'
 
 export function SearchLayout() {
-	const { theme } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
-
-	const getSearchBoxBackground = () => {
-		switch (theme) {
-			case 'light':
-				return 'hover:bg-white/95'
-			case 'dark':
-				return 'hover:bg-neutral-900/90'
-			default:
-				return 'backdrop-blur-sm hover:bg-neutral-800/80'
-		}
-	}
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -76,7 +58,9 @@ export function SearchLayout() {
 				<div className="relative w-full" ref={searchRef}>
 					<form className="w-full" onSubmit={handleSubmit}>
 						<div
-							className={`relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group ${getContainerBackground(theme)} ${getSearchBoxBackground()}`}
+							className={
+								'relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group bg-content'
+							}
 						>
 							<input
 								ref={inputRef}
@@ -85,7 +69,9 @@ export function SearchLayout() {
 								value={searchQuery}
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
-								className={`w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none ${getTextColor(theme)} placeholder:text-gray-400 dark:placeholder:text-gray-500`}
+								className={
+									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-gray-400 dark:placeholder:text-gray-500'
+								}
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
@@ -109,7 +95,9 @@ export function SearchLayout() {
 								</button>
 							)}
 							<div
-								className={`absolute inset-0 transition-all duration-300 border pointer-events-none rounded-xl ${getBorderColor(theme)}`}
+								className={
+									'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-xl border-content'
+								}
 							/>
 						</div>
 					</form>
