@@ -29,7 +29,7 @@ export function WeatherSettings({
 				<div className="flex items-center justify-between">
 					<label
 						htmlFor="forecastCount"
-						className={'flex items-center text-sm font-medium widget-item-text'}
+						className={'flex items-center text-sm font-medium text-content'}
 					>
 						<span>تعداد پیش‌بینی</span>
 					</label>
@@ -55,7 +55,7 @@ export function WeatherSettings({
 			{/* Temperature Unit */}
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
-					<label htmlFor="tempUnit" className={'text-sm font-medium widget-item-text'}>
+					<label htmlFor="tempUnit" className={'text-sm font-medium text-content'}>
 						واحد دما
 					</label>
 					<div className="flex overflow-hidden border rounded-md border-white/10">
@@ -91,7 +91,7 @@ export function WeatherSettings({
 			{/* AI Toggle */}
 			<div className="flex items-center justify-between">
 				<div>
-					<p className={'text-sm widget-item-text'}>استفاده از هوش مصنوعی</p>
+					<p className={'text-sm text-content'}>استفاده از هوش مصنوعی</p>
 					<p className={'text-xs font-light text-muted'}>
 						توصیف شرایط آب و هوا و پیشنهاد پلی لیست مناسب با کمک هوش مصنوعی
 					</p>

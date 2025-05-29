@@ -22,9 +22,9 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 
 	const getTextStyle = () => {
 		if (todo.completed) {
-			return 'line-through widget-item-text opacity-50'
+			return 'line-through text-content opacity-50'
 		}
-		return 'widget-item-text'
+		return 'text-content'
 	}
 
 	const getBorderStyle = () => {
@@ -98,7 +98,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 			<AnimatePresence>
 				{expanded && (
 					<motion.div
-						className={'px-2 pb-1.5 text-[10px] widget-item-text'}
+						className={'px-2 pb-1.5 text-[10px] text-content'}
 						initial={{ opacity: 0, height: 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}

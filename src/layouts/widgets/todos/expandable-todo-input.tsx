@@ -141,7 +141,7 @@ export function ExpandableTodoInput({
 							<div className="px-3 pb-3 space-y-3">
 								{' '}
 								<div>
-									<label className={'block mb-1 text-xs font-medium widget-item-text'}>
+									<label className={'block mb-1 text-xs font-medium text-content'}>
 										اولویت
 									</label>
 									<div className="flex items-center gap-3">

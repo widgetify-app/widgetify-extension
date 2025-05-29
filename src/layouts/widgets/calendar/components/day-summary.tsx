@@ -70,7 +70,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div className={'text-xs font-medium widget-item-text truncate'}>
+							<div className={'text-xs font-medium text-content truncate'}>
 								{totalEventsCount} رویداد
 							</div>
 							<div className={'text-[.50rem] widget-item-sub-text truncate'}>
@@ -91,7 +91,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						/>
 						<div className="flex-1 min-w-0">
 							{' '}
-							<div className={'text-xs font-medium widget-item-text truncate'}>
+							<div className={'text-xs font-medium text-content truncate'}>
 								{totalTodos} وظیفه
 							</div>
 							<div className={'text-[.50rem] widget-item-sub-text truncate'}>

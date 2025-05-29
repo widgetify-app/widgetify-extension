@@ -15,7 +15,7 @@ function NotesContent() {
 	if (!activeNote) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
-				<FiBook className={'w-8 h-8 mb-2 widget-item-text opacity-50'} />
+				<FiBook className={'w-8 h-8 mb-2 text-content opacity-50'} />
 				<p className={'text-sm text-muted'}>هیچ یادداشتی پیدا نشد</p>
 				<button
 					onClick={addNote}

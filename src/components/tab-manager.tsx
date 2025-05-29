@@ -43,7 +43,7 @@ export const TabManager = ({
 	}
 
 	const getTabIconStyle = () => {
-		return 'widget-item-text'
+		return 'text-content'
 	}
 
 	return (

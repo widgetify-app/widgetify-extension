@@ -52,7 +52,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	return (
 		<div className="grid grid-cols-7 gap-1 p-2 text-center">
 			{WEEKDAYS.map((day) => (
-				<div key={day} className={'text-sm mb-1 widget-item-text opacity-80'}>
+				<div key={day} className={'text-sm mb-1 text-content opacity-80'}>
 					{day}
 				</div>
 			))}
@@ -63,7 +63,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						widget-item-text opacity-40
+						text-content opacity-40
 					`}
 				>
 					{prevMonthStartDay + i}
@@ -90,7 +90,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					className={`
 						p-0 text-xs 
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
-						widget-item-text opacity-40
+						text-content opacity-40
 					`}
 				>
 					{i + 1}

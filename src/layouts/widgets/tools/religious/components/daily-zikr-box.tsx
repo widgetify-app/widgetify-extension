@@ -21,7 +21,7 @@ export const DailyZikrBox = ({
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay }}
 			>
-				<div className={'widget-item-text text-center mt-2'}>
+				<div className={'text-content text-center mt-2'}>
 					{isLoading ? (
 						<>
 							<div className="w-40 h-5 mx-auto mb-1 bg-current rounded opacity-30 animate-pulse" />

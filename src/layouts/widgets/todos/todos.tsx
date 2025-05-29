@@ -1,3 +1,4 @@
+import { Button } from '@/components/button/button'
 import { useDate } from '@/context/date.context'
 import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
 import { useState } from 'react'
@@ -6,9 +7,8 @@ import { FaChartSimple } from 'react-icons/fa6'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
-import { TodoItem } from './todo.item'
-import { Button } from '@/components/button/button'
 import { TodoStats } from './todo-stats'
+import { TodoItem } from './todo.item'
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
@@ -65,7 +65,7 @@ export function TodosLayout() {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4 className={'text-xs font-medium flex items-center widget-item-text'}>
+						<h4 className={'text-xs font-medium flex items-center text-content'}>
 							<span>وظایف</span>
 							<span className="mr-1 font-semibold">
 								{todoOptions.viewMode === TodoViewType.Monthly
@@ -77,16 +77,13 @@ export function TodosLayout() {
 						</h4>
 
 						<div className="flex gap-1">
-							<Button
-								onClick={handleBlurModeToggle}
-								size='xs'
-							>
+							<Button onClick={handleBlurModeToggle} size="xs">
 								{todoOptions.blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
 							</Button>
 							<Button
 								onClick={() => setShowStats(!showStats)}
 								isPrimary={showStats}
-								size='xs'
+								size="xs"
 							>
 								<FaChartSimple size={12} />
 							</Button>
@@ -105,7 +102,7 @@ export function TodosLayout() {
 											style={{ width: `${stats.percentage}%` }}
 										></div>
 									</div>
-									<div className={'flex justify-between text-[.65rem] widget-item-text'}>
+									<div className={'flex justify-between text-[.65rem] text-content'}>
 										<span>
 											{stats.completed} از {stats.total} تکمیل شده
 										</span>
@@ -145,7 +142,7 @@ export function TodosLayout() {
 								<select
 									value={todoOptions.viewMode}
 									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
-									className={`select text-[.65rem]`}
+									className={'select text-[.65rem]'}
 								>
 									<option value={TodoViewType.Day}>لیست امروز</option>
 									<option value={TodoViewType.Monthly}>لیست ماهانه</option>

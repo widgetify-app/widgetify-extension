@@ -57,7 +57,7 @@ const CustomCheckbox = ({
 				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm widget-item-text`}>{label}</span>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm text-content`}>{label}</span>
 			)}
 		</label>
 	)

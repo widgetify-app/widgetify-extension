@@ -56,7 +56,7 @@ export function CityResultsList({
 	}
 
 	const getCityStateStyle = () => {
-		return 'widget-item-text'
+		return 'text-content'
 	}
 
 	if (isLoading) {
@@ -83,7 +83,7 @@ export function CityResultsList({
 				ref={listRef}
 				className={'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-base-100/80'}
 			>
-				<div className={'p-4 text-center widget-item-text opacity-75'}>
+				<div className={'p-4 text-center text-content opacity-75'}>
 					شهری با این نام یافت نشد
 				</div>
 			</div>
@@ -105,7 +105,7 @@ export function CityResultsList({
 				>
 					<div className="flex items-center gap-2">
 						<CiLocationOn className={`${getLocationIconStyle()} size-4`} />
-						<div className={'font-medium widget-item-text'}>{city.name}</div>
+						<div className={'font-medium text-content'}>{city.name}</div>
 					</div>
 					<div className={`text-sm pr-6 ${getCityStateStyle()}`}>
 						{city.state && `${city.state}, `}

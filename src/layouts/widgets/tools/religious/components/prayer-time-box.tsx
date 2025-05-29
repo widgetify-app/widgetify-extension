@@ -27,15 +27,15 @@ export const PrayerTimeBox = ({
 			<div className={`${iconColorStyle} mb-2`}>
 				<Icon size={18} />
 			</div>
-			<div className={'widget-item-text text-[0.6rem] mb-1'}>{title}</div>
+			<div className={'text-content text-[0.6rem] mb-1'}>{title}</div>
 			{isLoading ? (
 				<div
 					className={
-						'widget-item-text font-medium h-5 w-12 bg-current rounded opacity-30 animate-pulse'
+						'text-content font-medium h-5 w-12 bg-current rounded opacity-30 animate-pulse'
 					}
 				/>
 			) : (
-				<div className={'widget-item-text font-medium'}>{value}</div>
+				<div className={'text-content font-medium'}>{value}</div>
 			)}
 		</div>
 	)

@@ -72,7 +72,9 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							</span>
 							{selectedCity?.name && (
 								<div
-									className={`text-sm flex items-center gap-1 transition-colors opacity-90 ltr:justify-center flex-row-reverse rtl:justify-end`}
+									className={
+										'text-sm flex items-center gap-1 transition-colors opacity-90 ltr:justify-center flex-row-reverse rtl:justify-end'
+									}
 									dir="auto"
 								>
 									<p className="text-xs font-light truncate" title={selectedCity.name}>
@@ -139,7 +141,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							<div className="relative pl-8 pr-2">
 								<p
 									className={
-										'py-2 text-xs font-light leading-relaxed transition-all duration-300 widget-item-text'
+										'py-2 text-xs font-light leading-relaxed transition-all duration-300 text-content'
 									}
 								>
 									{weather.ai?.description || weather.temperature.temp_description}

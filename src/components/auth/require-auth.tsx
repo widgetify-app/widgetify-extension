@@ -41,7 +41,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						}
 					>
 						<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-						<p className={'text-sm mb-4 widget-item-text'}>
+						<p className={'text-sm mb-4 text-content'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
 						<Button onClick={handleAuthClick} size="md">
@@ -59,11 +59,11 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				className={
-					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md widget-item-text'
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-content'
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-				<p className={'text-sm mb-4 widget-item-text'}>
+				<p className={'text-sm mb-4 text-content'}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>
 				<Button onClick={handleAuthClick} size="md">

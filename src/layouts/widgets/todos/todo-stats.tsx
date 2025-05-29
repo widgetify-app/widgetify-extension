@@ -49,14 +49,14 @@ export function TodoStats() {
 	const stats = calculateTodoStats()
 	return (
 		<div className={'p-2 mt-2  rounded-lg'}>
-			<h4 className={'mb-1 text-sm font-medium widget-item-text'}>آمار کلی</h4>
+			<h4 className={'mb-1 text-sm font-medium text-content'}>آمار کلی</h4>
 
 			<div className="flex flex-col gap-1">
 				<div className={'p-1 rounded-lg border widget-item-border'}>
-					<span className={'text-xs widget-item-text'}>تکمیل شده</span>
+					<span className={'text-xs text-content'}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
-						<span className={'text-lg widget-item-text'}>{stats.completedTodos}</span>
-						<span className={'text-xs widget-item-text'}>از {stats.totalTodos}</span>
+						<span className={'text-lg text-content'}>{stats.completedTodos}</span>
+						<span className={'text-xs text-content'}>از {stats.totalTodos}</span>
 					</div>
 					<div className={'h-1 mt-1 bg-base-300 rounded-full'}>
 						<div
@@ -67,7 +67,7 @@ export function TodoStats() {
 				</div>
 
 				<div className={'p-2 rounded-lg  border widget-item-border'}>
-					<span className={'text-xs widget-item-text'}>اولویت‌ها</span>
+					<span className={'text-xs text-content'}>اولویت‌ها</span>
 					<div className="flex justify-between mt-1">
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -78,7 +78,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={'text-xs widget-item-text'}>زیاد</span>
+							<span className={'text-xs text-content'}>زیاد</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -89,7 +89,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={'text-xs widget-item-text'}>متوسط</span>
+							<span className={'text-xs text-content'}>متوسط</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-8">
@@ -100,7 +100,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={'text-xs widget-item-text'}>کم</span>
+							<span className={'text-xs text-content'}>کم</span>
 						</div>
 					</div>
 				</div>

@@ -74,7 +74,7 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 			<textarea
 				ref={titleRef}
 				className={
-					'w-full p-2 text-sm font-bold text-center resize-none bg-transparent outline-none widget-item-text opacity-90'
+					'w-full p-2 text-sm font-bold text-center resize-none bg-transparent outline-none text-content opacity-90'
 				}
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
@@ -86,7 +86,7 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 			<textarea
 				ref={bodyRef}
 				className={
-					'w-full px-2 pt-2 text-base flex-grow resize-none bg-transparent outline-none widget-item-text opacity-80'
+					'w-full px-2 pt-2 text-base flex-grow resize-none bg-transparent outline-none text-content opacity-80'
 				}
 				placeholder="متن یادداشت..."
 				value={currentBody}

@@ -204,7 +204,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 					{/* Suggested Feeds Section */}
 					<section className="mt-2">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium widget-item-text'}>فیدهای پیشنهادی</h3>
+							<h3 className={'text-sm font-medium text-content'}>فیدهای پیشنهادی</h3>
 						</div>
 						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 							{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
@@ -271,8 +271,8 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 				>
-					<BiRss className={'mb-3 opacity-50 widget-item-text'} size={32} />
-					<p className={'mb-1 text-sm font-medium opacity-70 widget-item-text'}>
+					<BiRss className={'mb-3 opacity-50 text-content'} size={32} />
+					<p className={'mb-1 text-sm font-medium opacity-70 text-content'}>
 						هیچ فید RSS اضافه نشده است
 					</p>
 					<p className={'text-xs opacity-50'}>از فرم بالا برای افزودن فید استفاده کنید</p>
@@ -308,7 +308,7 @@ interface FeedItemProps {
 const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps) => {
 	const getTextStyle = () => {
 		const baseStyle = feed.enabled ? 'font-medium' : 'line-through opacity-70'
-		return `${baseStyle} widget-item-text`
+		return `${baseStyle} text-content`
 	}
 
 	return (

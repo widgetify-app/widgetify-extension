@@ -25,12 +25,12 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 						<div className="flex items-center gap-4 mt-2 mb-3">
 							<div className="flex items-center gap-1 text-xs">
 								<BiCurrentLocation className="mr-1 text-primary/80" size={14} />
-								<span className="widget-item-text">عرض: {city.lat}</span>
+								<span className="text-content">عرض: {city.lat}</span>
 							</div>
 
 							<div className="flex items-center gap-1 text-xs">
-								<BiCurrentLocation className="widget-item-text" size={14} />
-								<span className="widget-item-text">طول: {city.lon}</span>
+								<BiCurrentLocation className="text-content" size={14} />
+								<span className="text-content">طول: {city.lon}</span>
 							</div>
 						</div>
 					</div>

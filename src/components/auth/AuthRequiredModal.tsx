@@ -32,13 +32,13 @@ export function AuthRequiredModal({
 					<IoIosLogIn size={32} className="text-blue-500" />
 				</div>
 
-				<p className={'widget-item-text text-base'}>{message}</p>
+				<p className={'text-content text-base'}>{message}</p>
 
 				<div className="flex flex-row items-center justify-center gap-3 mt-2">
 					<LazyMotion features={domAnimation}>
 						<m.button
 							className={
-								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors widget-item-text border widget-item-border'
+								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors text-content border widget-item-border'
 							}
 							onClick={onClose}
 							whileHover={{ scale: 1.03 }}

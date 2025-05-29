@@ -139,7 +139,7 @@ export const UpdateReleaseNotesModal = ({
 			<div className="p-2 max-h-[32rem] sm:max-h-85 overflow-y-auto">
 				<div className="flex flex-col items-center mb-2 text-center">
 					<h2
-						className={'text-xl font-bold mb-1 widget-item-text animate-fade-in'}
+						className={'text-xl font-bold mb-1 text-content animate-fade-in'}
 						style={{ animationDelay: '0.1s' }}
 					>
 						{VERSION_NAME}
@@ -154,7 +154,7 @@ export const UpdateReleaseNotesModal = ({
 				>
 					<div className="flex items-center mb-3">
 						<RiGiftLine className="ml-2 text-amber-500" size={20} />
-						<h3 className={'font-semibold widget-item-text'}>به روزرسانی ویجتی‌فای</h3>
+						<h3 className={'font-semibold text-content'}>به روزرسانی ویجتی‌فای</h3>
 					</div>
 					<p className={'text-sm text-muted'}>{SUMMARY}</p>
 				</div>
@@ -169,7 +169,7 @@ export const UpdateReleaseNotesModal = ({
 							<div className="flex items-center mb-3">
 								<div className="inline-flex items-center">
 									{getTypeIcon(type as any)}
-									<h3 className={'mr-2 font-medium widget-item-text'}>
+									<h3 className={'mr-2 font-medium text-content'}>
 										{getCategoryTitle(type as any)}
 									</h3>
 								</div>

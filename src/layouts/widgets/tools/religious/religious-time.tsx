@@ -71,7 +71,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-1">
-				<h4 className={'flex items-center text-lg font-medium widget-item-text'}>
+				<h4 className={'flex items-center text-lg font-medium text-content'}>
 					اوقات شرعی
 					<span className={'text-sm flex item-end font-light mr-2 mt-2'}>
 						({englishCityName})
@@ -100,9 +100,9 @@ export function ReligiousTime({ currentDate }: Prop) {
 							'inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full widget-item-background'
 						}
 					>
-						<FiSunrise className="widget-item-text" size={24} />
+						<FiSunrise className="text-content" size={24} />
 					</div>
-					<div className={'widget-item-text'}>مشکلی در دریافت اطلاعات وجود دارد</div>
+					<div className={'text-content'}>مشکلی در دریافت اطلاعات وجود دارد</div>
 				</div>
 			) : (
 				<>

@@ -68,7 +68,7 @@ export function DayItem({
 			return 'text-red-400'
 		}
 
-		return 'widget-item-text'
+		return 'text-content'
 	}
 
 	const getSelectedDayStyle = () => {

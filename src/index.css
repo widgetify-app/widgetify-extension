@@ -54,7 +54,7 @@ body {
 	@apply bg-base-200;
 }
 
-.widget-item-text {
+.text-content {
 	@apply text-base-content;
 }
 

@@ -29,7 +29,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 					{forecast.isDaily ? (
 						<div
 							className={
-								'text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md widget-item-text  text-center w-full transition-colors duration-300'
+								'text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md text-content  text-center w-full transition-colors duration-300'
 							}
 						>
 							{new Date(forecast.date).toLocaleDateString('fa-IR', {
@@ -39,7 +39,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 					) : (
 						<div
 							className={
-								'px-1.5 py-0.5 text-[.6rem] font-medium rounded-md widget-item-text  w-full text-center transition-colors duration-300'
+								'px-1.5 py-0.5 text-[.6rem] font-medium rounded-md text-content  w-full text-center transition-colors duration-300'
 							}
 						>
 							{new Date(forecast.date).toLocaleTimeString([], {
@@ -53,7 +53,11 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 
 				{/* Weather Icon */}
 				<div className="relative my-1 group">
-					<img src={forecast.icon} alt="weather status" className="w-7 h-7 drop-shadow-md" />
+					<img
+						src={forecast.icon}
+						alt="weather status"
+						className="w-7 h-7 drop-shadow-md"
+					/>
 					<div className="absolute inset-0 w-2 h-2 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10" />
 				</div>
 
@@ -62,7 +66,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 					initial={{ scale: 0.9 }}
 					animate={{ scale: 1 }}
 					className={
-						'text-sm font-extrabold text-transparent bg-gradient-to-r widget-item-text opacity-90 bg-clip-text drop-shadow-temperature'
+						'text-sm font-extrabold text-transparent bg-gradient-to-r text-content opacity-90 bg-clip-text drop-shadow-temperature'
 					}
 				>
 					{Math.round(forecast.temp)}

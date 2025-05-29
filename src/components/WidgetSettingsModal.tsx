@@ -180,7 +180,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			direction="rtl"
 		>
 			<div className="p-2 space-y-2">
-				<p className={'text-sm mb-4 widget-item-text'}>
+				<p className={'text-sm mb-4 text-content'}>
 					انتخاب کنید کدام ویجت‌ها در نیـو‌تب شما نمایش داده شوند.
 				</p>
 
@@ -188,12 +188,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<div className="space-y-4">
 						{/* Left column widgets */}
 						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-							<h3 className={'text-sm font-bold mb-2 widget-item-text'}>
+							<h3 className={'text-sm font-bold mb-2 text-content'}>
 								ویجت‌های ستون چپ (حداکثر 1 ویجت)
 							</h3>
 
 							<div className="mb-4">
-								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
+								<p className={'text-xs mb-2 text-content opacity-75'}>
 									ویجت فعال ({activeLeftWidgets.length}/1)
 								</p>
 								<Droppable droppableId="left-active-widgets" direction="horizontal">
@@ -219,7 +219,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={'text-sm widget-item-text'}>
+															<span className={'text-sm text-content'}>
 																{widget.label}
 															</span>
 														</div>
@@ -230,7 +230,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{activeLeftWidgets.length === 0 && (
 												<div
 													className={
-														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+														'w-full text-center p-2 text-content opacity-50 text-sm'
 													}
 												>
 													برای فعال کردن ویجت از لیست زیر آن را به اینجا بکشید
@@ -242,9 +242,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							</div>
 
 							<div>
-								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
-									ویجت‌های غیرفعال
-								</p>
+								<p className={'text-xs mb-2 text-content opacity-75'}>ویجت‌های غیرفعال</p>
 								<Droppable droppableId="left-inactive-widgets" direction="horizontal">
 									{(provided) => (
 										<div
@@ -268,7 +266,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={'text-sm widget-item-text'}>
+															<span className={'text-sm text-content'}>
 																{widget.label}
 															</span>
 														</div>
@@ -279,7 +277,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{inactiveLeftWidgets.length === 0 && (
 												<div
 													className={
-														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+														'w-full text-center p-2 text-content opacity-50 text-sm'
 													}
 												>
 													برای غیرفعال کردن ویجت از بالا به اینجا بکشید
@@ -297,13 +295,13 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 
 						{/* Bottom widgets */}
 						<div className="p-3 space-y-3 rounded-lg bg-black/5 dark:bg-white/5">
-							<h3 className={'text-sm font-bold mb-2 widget-item-text'}>
+							<h3 className={'text-sm font-bold mb-2 text-content'}>
 								ویجت‌های پایین صفحه (حداکثر 4 ویجت)
 							</h3>
 
 							{/* Active widgets */}
 							<div className="mb-4">
-								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
+								<p className={'text-xs mb-2 text-content opacity-75'}>
 									ویجت‌های فعال ({activeBottomWidgets.length}/4)
 								</p>
 								<Droppable droppableId="active-widgets" direction="horizontal">
@@ -325,7 +323,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={'text-sm widget-item-text'}>
+															<span className={'text-sm text-content'}>
 																{widget.label}
 															</span>
 														</div>
@@ -336,7 +334,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{activeBottomWidgets.length === 0 && (
 												<div
 													className={
-														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+														'w-full text-center p-2 text-content opacity-50 text-sm'
 													}
 												>
 													برای فعال کردن ویجت‌ها از لیست زیر آنها را به اینجا بکشید
@@ -349,9 +347,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 
 							{/* Inactive widgets */}
 							<div>
-								<p className={'text-xs mb-2 widget-item-text opacity-75'}>
-									ویجت‌های غیرفعال
-								</p>
+								<p className={'text-xs mb-2 text-content opacity-75'}>ویجت‌های غیرفعال</p>
 								<Droppable droppableId="inactive-widgets" direction="horizontal">
 									{(provided) => (
 										<div
@@ -371,7 +367,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															}
 														>
 															<span className="mr-2">{widget.emoji}</span>
-															<span className={'text-sm widget-item-text'}>
+															<span className={'text-sm text-content'}>
 																{widget.label}
 															</span>
 														</div>
@@ -382,7 +378,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											{inactiveBottomWidgets.length === 0 && (
 												<div
 													className={
-														'w-full text-center p-2 widget-item-text opacity-50 text-sm'
+														'w-full text-center p-2 text-content opacity-50 text-sm'
 													}
 												>
 													برای غیرفعال کردن ویجت‌ها از بالا به اینجا بکشید
@@ -394,7 +390,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							</div>
 
 							<div className="pt-3 mt-4 border-t border-gray-200 dark:border-gray-700">
-								<p className={'text-xs widget-item-text opacity-75 mb-2'}>
+								<p className={'text-xs text-content opacity-75 mb-2'}>
 									ویجت‌های فعال را می‌توانید با کشیدن و رها کردن جابه‌جا کنید. حداکثر 4 ویجت
 									می‌توانید همزمان فعال کنید.
 								</p>

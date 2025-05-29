@@ -18,7 +18,7 @@ interface EventItemProps {
 
 export function EventItem({ event, index }: EventItemProps) {
 	const getSubTextStyle = () => {
-		return 'widget-item-text opacity-90'
+		return 'text-content opacity-90'
 	}
 
 	const getSourceIcon = (source: string) => {
@@ -64,7 +64,7 @@ export function EventItem({ event, index }: EventItemProps) {
 					)}
 				</div>
 
-				<h4 className={'text-sm font-medium w-44 text-wrap widget-item-text'}>
+				<h4 className={'text-sm font-medium w-44 text-wrap text-content'}>
 					{event.title}
 				</h4>
 
