@@ -1,9 +1,4 @@
-import {
-	getBorderColor,
-	getTextColor,
-	getWidgetItemBackground,
-	useTheme,
-} from '@/context/theme.context'
+import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import { motion } from 'framer-motion'
 import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
@@ -80,9 +75,7 @@ export function YouTubeStatsCard({
 			</div>
 			{/* Stats Grid */}
 			<div className="grid grid-cols-2 gap-1">
-				<div
-					className={`p-3 rounded-lg border ${getBorderColor(theme)} ${getWidgetItemBackground(theme)}`}
-				>
+				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiUsers className="w-4 h-4 text-red-500" />
 						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>مشترک</span>
@@ -92,9 +85,7 @@ export function YouTubeStatsCard({
 					</p>
 				</div>
 
-				<div
-					className={`p-3 rounded-lg border ${getBorderColor(theme)} ${getWidgetItemBackground(theme)}`}
-				>
+				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiEye className="w-4 h-4 text-blue-500" />
 						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>بازدید</span>
@@ -104,9 +95,7 @@ export function YouTubeStatsCard({
 					</p>
 				</div>
 
-				<div
-					className={`p-3 rounded-lg border ${getBorderColor(theme)} ${getWidgetItemBackground(theme)}`}
-				>
+				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiVideo className="w-4 h-4 text-green-500" />
 						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>ویدیو</span>
@@ -116,9 +105,7 @@ export function YouTubeStatsCard({
 					</p>
 				</div>
 
-				<div
-					className={`p-3 rounded-lg border ${getBorderColor(theme)} ${getWidgetItemBackground(theme)}`}
-				>
+				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiCalendar className="w-4 h-4 text-purple-500" />
 						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>عضویت</span>

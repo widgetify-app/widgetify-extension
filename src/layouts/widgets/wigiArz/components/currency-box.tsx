@@ -1,8 +1,6 @@
 import Analytics from '@/analytics'
 import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { getTextColor, getWidgetItemBackground } from '@/context/theme.context'
-
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
@@ -107,7 +105,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		<>
 			<div
 				className={`flex items-center justify-between gap-2 p-2 rounded-lg cursor-pointer 
-				${getWidgetItemBackground('light')} opacity-100 hover:bg-gray-500/30
+				bg-content opacity-100 hover:bg-gray-500/30
 				transition-all duration-300 ease-in-out hover:shadow-lg
 				transform hover:scale-100 active:scale-95 translate-y-0`}
 				style={{
@@ -134,15 +132,15 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 						/>
 					</div>
 					<div className="flex items-center space-x-2 text-sm font-medium">
-						<span className={`md:visible ${getTextColor('light')} opacity-90`}>
+						<span className={'md:visible text-content opacity-90'}>
 							{currency?.name?.en}
 						</span>
-						<span className={`text-xs ${getTextColor('light')} opacity-40`}>{code}</span>
+						<span className={'text-xs text-content opacity-40'}>{code}</span>
 					</div>
 				</div>
 
 				<div className="flex items-baseline gap-2">
-					<span className={`text-sm font-bold ${getTextColor('light')}`}>
+					<span className={'text-sm font-bold text-content'}>
 						{displayPrice.toLocaleString()}
 					</span>
 					{priceChange !== 0 && (

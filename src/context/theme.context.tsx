@@ -87,17 +87,6 @@ const getCardBackground = (theme: ThemeType): string => {
 	}
 }
 
-const getWidgetItemBackground = (theme: ThemeType): string => {
-	switch (theme) {
-		case 'light':
-			return 'bg-gray-100/70'
-		case 'dark':
-			return 'bg-neutral-800/20'
-		default: // glass
-			return 'bg-neutral-900/40'
-	}
-}
-
 const getBorderColor = (theme: ThemeType): string => {
 	switch (theme) {
 		case 'light':
@@ -134,19 +123,6 @@ const getTextColor = (theme: ThemeType): string => {
 			return 'text-gray-800'
 		default:
 			return 'text-gray-300'
-	}
-}
-
-const getInputStyles = (theme: ThemeType): string => {
-	const baseStyles = 'px-3 py-2 rounded-md border focus:outline-none focus:ring-2'
-
-	switch (theme) {
-		case 'light':
-			return `${baseStyles} bg-white border-gray-300 focus:ring-blue-500`
-		case 'dark':
-			return `${baseStyles} bg-gray-800 border-gray-700 text-white focus:ring-blue-600`
-		default:
-			return `${baseStyles} bg-black/30 border-gray-600 text-white backdrop-blur-sm focus:ring-blue-500`
 	}
 }
 
@@ -224,11 +200,9 @@ export const getInputStyle = (theme: string) => {
 export {
 	getContainerBackground,
 	getCardBackground,
-	getWidgetItemBackground,
 	getBorderColor,
 	getButtonStyles,
 	getTextColor,
-	getInputStyles,
 	getHeadingTextStyle,
 	getDescriptionTextStyle,
 	getTooltipStyle,

@@ -1,5 +1,4 @@
 import { useAuth } from '@/context/auth.context'
-import { getWidgetItemBackground } from '@/context/theme.context'
 import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { useEffect, useState } from 'react'
 import { FiMessageCircle } from 'react-icons/fi'
@@ -46,7 +45,9 @@ export const WidgetifyLayout = () => {
 					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
 							<div
-								className={`p-2 mb-1 rounded-lg ${getWidgetItemBackground('light')} shadow-sm border-r-2 border-blue-400/50`}
+								className={
+									'p-2 mb-1 rounded-lg bg-content shadow-sm border-r-2 border-blue-400/50'
+								}
 							>
 								<div className="flex items-start gap-2">
 									{dailyMessage.isAi && (

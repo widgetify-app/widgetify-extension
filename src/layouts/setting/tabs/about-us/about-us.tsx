@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/section-panel'
-import { getHeadingTextStyle, getTextColor, useTheme } from '@/context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
@@ -8,17 +8,6 @@ import browser from 'webextension-polyfill'
 export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()
 	const { theme } = useTheme()
-
-	const getVersionBadgeStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'text-blue-800 bg-blue-100/50 border-blue-200/50'
-			case 'dark':
-				return 'text-blue-200 bg-blue-900/30 border-blue-700/30'
-			default: // glass
-				return 'text-blue-200 bg-blue-900/30 border-blue-700/30'
-		}
-	}
 
 	const getDonateCardStyle = () => {
 		switch (theme) {
@@ -115,13 +104,15 @@ export function AboutUsTab() {
 						ویجتی‌فای
 					</h1>
 					<div
-						className={`inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm ${getVersionBadgeStyle()}`}
+						className={
+							'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-primary/80'
+						}
 					>
 						<span>نسخه {manifest.version}</span>
 					</div>
 
 					{/* Description */}
-					<p className={`max-w-lg mb-2 text-sm leading-relaxed ${getTextColor(theme)}`}>
+					<p className={'max-w-lg mb-2 text-sm leading-relaxed text-content'}>
 						ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای
 						کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
 					</p>
@@ -143,10 +134,8 @@ export function AboutUsTab() {
 							>
 								<FaDonate size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getHeadingTextStyle(theme)}`}>
-								حمایت مالی
-							</h3>
-							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
+							<h3 className={'text-sm font-medium text-content'}>حمایت مالی</h3>
+							<p className={'mt-1 text-xs text-center text-content'}>
 								کمک به توسعه ویجتی‌فای
 							</p>
 						</m.a>
@@ -164,10 +153,8 @@ export function AboutUsTab() {
 							>
 								<FaGithub size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>گیت‌هاب</h3>
-							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
-								مشاهده کد منبع
-							</p>
+							<h3 className={'text-sm font-medium text-content'}>گیت‌هاب</h3>
+							<p className={'mt-1 text-xs text-center text-content'}>مشاهده کد منبع</p>
 						</m.a>
 
 						<m.a
@@ -183,8 +170,8 @@ export function AboutUsTab() {
 							>
 								<MdFeedback size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>بازخورد</h3>
-							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
+							<h3 className={'text-sm font-medium text-content'}>بازخورد</h3>
+							<p className={'mt-1 text-xs text-center text-content'}>
 								ارسال پیشنهاد و انتقاد
 							</p>
 						</m.a>
@@ -202,26 +189,24 @@ export function AboutUsTab() {
 							>
 								<FaGlobe size={24} />
 							</div>
-							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>وب‌سایت</h3>
-							<p className={`mt-1 text-xs text-center ${getHeadingTextStyle(theme)}`}>
-								مشاهده سایت رسمی
-							</p>
+							<h3 className={'text-sm font-medium text-content'}>وب‌سایت</h3>
+							<p className={'mt-1 text-xs text-center text-content'}>مشاهده سایت رسمی</p>
 						</m.a>
 					</div>
 				</SectionPanel>
 
 				{/* Footer */}
 				<div
-					className={`flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm ${getTextColor(theme)} opacity-75`}
+					className={
+						'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-content opacity-75'
+					}
 				>
 					<span>ساخته شده با</span>
 					<FaHeart className="mx-1 text-red-500 animate-pulse" size={14} />
 					<span>در ایران</span>
 				</div>
 
-				<div
-					className={`mt-2 mb-4 text-xs text-center ${getTextColor(theme)} opacity-55`}
-				>
+				<div className={'mt-2 mb-4 text-xs text-center text-content opacity-55'}>
 					© ویجتی‌فای - تمامی حقوق محفوظ است
 				</div>
 			</m.div>
