@@ -16,7 +16,7 @@ function NotesContent() {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
 				<FiBook className={'w-8 h-8 mb-2 widget-item-text opacity-50'} />
-				<p className={'text-sm widget-item-text opacity-70'}>هیچ یادداشتی پیدا نشد</p>
+				<p className={'text-sm text-muted'}>هیچ یادداشتی پیدا نشد</p>
 				<button
 					onClick={addNote}
 					className="px-3 py-1 mt-2 text-sm text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"

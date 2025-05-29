@@ -1,12 +1,8 @@
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import {
-	getButtonStyles,
-	getDescriptionTextStyle,
-	useTheme,
-} from '@/context/theme.context'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { Button } from '../button/button'
 
 interface RequireAuthProps {
 	children: ReactNode
@@ -16,29 +12,6 @@ interface RequireAuthProps {
 
 export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthProps) => {
 	const { isAuthenticated, isLoadingUser } = useAuth()
-	const { theme } = useTheme()
-
-	const getAuthMessageStyles = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100 text-gray-700'
-			case 'dark':
-				return 'bg-gray-800 text-gray-200'
-			default:
-				return 'bg-white/5 text-gray-200 backdrop-blur-sm'
-		}
-	}
-
-	const getOverlayStyles = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/70 text-gray-700'
-			case 'dark':
-				return 'bg-neutral-900/80 text-gray-200'
-			default:
-				return 'bg-black/30 text-gray-200 backdrop-blur-sm'
-		}
-	}
 
 	const handleAuthClick = () => {
 		callEvent('openSettings', 'account')
@@ -63,18 +36,17 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						{children}
 					</div>
 					<div
-						className={`absolute inset-0 flex flex-col items-center justify-center p-4 ${getOverlayStyles()}`}
+						className={
+							'absolute inset-0 flex flex-col items-center justify-center p-4 bg-base-300/5 backdrop-blur-xs'
+						}
 					>
 						<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-						<p className={`text-sm mb-4 ${getDescriptionTextStyle(theme)}`}>
+						<p className={'text-sm mb-4 widget-item-text'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
-						<button
-							onClick={handleAuthClick}
-							className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${getButtonStyles(theme)}`}
-						>
+						<Button onClick={handleAuthClick} size="md">
 							ورود به حساب
-						</button>
+						</Button>
 					</div>
 				</div>
 			)
@@ -86,18 +58,17 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 			<motion.div
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
-				className={`flex h-full flex-col items-center justify-center p-4 text-center rounded-md ${getAuthMessageStyles()}`}
+				className={
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md widget-item-text'
+				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-				<p className={`text-sm mb-4 ${getDescriptionTextStyle(theme)}`}>
+				<p className={'text-sm mb-4 widget-item-text'}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>
-				<button
-					onClick={handleAuthClick}
-					className={`px-4 py-2 cursor-pointer rounded-md transition-colors ${getButtonStyles(theme)}`}
-				>
+				<Button onClick={handleAuthClick} size="md">
 					ورود به حساب
-				</button>
+				</Button>
 			</motion.div>
 		)
 	}

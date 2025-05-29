@@ -57,7 +57,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						animate={{ opacity: 1, scale: 1 }}
 						onClick={goToToday}
 						className={
-							'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors widget-item-text opacity-70 hover:opacity-100'
+							'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors text-muted hover:opacity-100'
 						}
 					>
 						<TfiBackRight size={12} />
@@ -67,7 +67,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 				<button
 					onClick={() => changeMonth(-1)}
 					className={
-						'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors widget-item-text opacity-70 hover:opacity-100'
+						'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors text-muted hover:opacity-100'
 					}
 				>
 					<FaChevronRight size={12} />
@@ -76,7 +76,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 				<button
 					onClick={() => changeMonth(1)}
 					className={
-						'flex items-center gap-1 p-1  text-xs rounded-lg cursor-pointer transition-colors widget-item-text opacity-70 hover:opacity-100'
+						'flex items-center gap-1 p-1  text-xs rounded-lg cursor-pointer transition-colors text-muted opacity-70 hover:opacity-100'
 					}
 				>
 					<FaChevronLeft size={12} />

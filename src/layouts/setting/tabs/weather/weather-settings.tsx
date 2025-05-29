@@ -79,7 +79,7 @@ export function WeatherSettings({
 						))}
 					</div>
 				</div>
-				<div className={'text-xs font-light text-right widget-item-text opacity-70'}>
+				<div className={'text-xs font-light text-right text-muted'}>
 					{temperatureUnit === 'metric' &&
 						'واحد سلسیوس در بیشتر کشورهای جهان استفاده می‌شود'}
 					{temperatureUnit === 'imperial' &&
@@ -92,7 +92,7 @@ export function WeatherSettings({
 			<div className="flex items-center justify-between">
 				<div>
 					<p className={'text-sm widget-item-text'}>استفاده از هوش مصنوعی</p>
-					<p className={'text-xs font-light widget-item-text opacity-70'}>
+					<p className={'text-xs font-light text-muted'}>
 						توصیف شرایط آب و هوا و پیشنهاد پلی لیست مناسب با کمک هوش مصنوعی
 					</p>
 				</div>

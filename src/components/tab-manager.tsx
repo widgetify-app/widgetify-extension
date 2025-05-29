@@ -39,7 +39,7 @@ export const TabManager = ({
 	}
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary/80 bg-primary/10' : 'widget-item-text opacity-70'
+		return isActive ? 'text-primary/80 bg-primary/10' : 'text-muted'
 	}
 
 	const getTabIconStyle = () => {

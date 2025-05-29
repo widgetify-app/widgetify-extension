@@ -1,6 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { IoIosLogIn } from 'react-icons/io'
 
@@ -21,7 +20,6 @@ export function AuthRequiredModal({
 	loginButtonText = 'ورود به حساب',
 	cancelButtonText = 'بعداً',
 }: AuthRequiredModalProps) {
-	const { theme } = useTheme()
 	function triggerAccountTabDisplay() {
 		onClose()
 		callEvent('openSettings', 'account')
@@ -34,12 +32,14 @@ export function AuthRequiredModal({
 					<IoIosLogIn size={32} className="text-blue-500" />
 				</div>
 
-				<p className={`${getTextColor(theme)} text-base`}>{message}</p>
+				<p className={'widget-item-text text-base'}>{message}</p>
 
 				<div className="flex flex-row items-center justify-center gap-3 mt-2">
 					<LazyMotion features={domAnimation}>
 						<m.button
-							className={`px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors ${getTextColor(theme)} border ${getBorderColor(theme)}`}
+							className={
+								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors widget-item-text border widget-item-border'
+							}
 							onClick={onClose}
 							whileHover={{ scale: 1.03 }}
 							whileTap={{ scale: 0.97 }}

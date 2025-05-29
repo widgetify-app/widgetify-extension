@@ -58,6 +58,10 @@ body {
 	@apply text-base-content;
 }
 
+.text-muted {
+	@apply text-base-content opacity-70;
+}
+
 .widget-item-border {
 	@apply border-base-300;
 }

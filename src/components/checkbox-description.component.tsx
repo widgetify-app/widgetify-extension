@@ -1,9 +1,4 @@
 import CustomCheckbox from '@/components/checkbox'
-import {
-	getDescriptionTextStyle,
-	getHeadingTextStyle,
-	useTheme,
-} from '@/context/theme.context'
 
 interface Props {
 	isEnabled: boolean
@@ -18,8 +13,6 @@ export function CheckBoxWithDescription({
 	title,
 	description,
 }: Props) {
-	const { theme } = useTheme()
-
 	return (
 		<div
 			className={
@@ -29,11 +22,9 @@ export function CheckBoxWithDescription({
 		>
 			<CustomCheckbox checked={isEnabled} onChange={onToggle} />
 			<div className="flex-1">
-				<p className={`font-bold ${getHeadingTextStyle(theme)}`}>{title}</p>
+				<p className={'font-bold widget-item-text'}>{title}</p>
 				{description ? (
-					<p className={`text-sm mt-1 font-light ${getDescriptionTextStyle(theme)}`}>
-						{description}
-					</p>
+					<p className={'text-sm mt-1 font-light text-muted'}>{description}</p>
 				) : null}
 			</div>
 		</div>
