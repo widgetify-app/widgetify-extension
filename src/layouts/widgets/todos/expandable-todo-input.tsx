@@ -100,7 +100,7 @@ export function ExpandableTodoInput({
 		<div ref={containerRef} className="flex-none pt-2 mt-auto">
 			<div
 				className={`rounded-lg overflow-hidden  ${
-					isExpanded ? 'border widget-item-border' : ''
+					isExpanded ? 'border border-content' : ''
 				}`}
 			>
 				<div className="flex items-center gap-1 p-2">

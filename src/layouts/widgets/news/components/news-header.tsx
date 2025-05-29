@@ -22,7 +22,7 @@ export const NewsHeader = ({
 	return (
 		<div
 			className={
-				'top-0 z-20 flex items-center justify-between w-full pb-2 mb-2 border-b widget-item-border'
+				'top-0 z-20 flex items-center justify-between w-full pb-2 mb-2 border-b border-content'
 			}
 		>
 			<div className="flex flex-col">

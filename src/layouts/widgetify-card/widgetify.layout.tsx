@@ -1,7 +1,5 @@
 import { useAuth } from '@/context/auth.context'
-import {
-	getWidgetItemBackground,
-} from '@/context/theme.context'
+import { getWidgetItemBackground } from '@/context/theme.context'
 import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { useEffect, useState } from 'react'
 import { FiMessageCircle } from 'react-icons/fi'
@@ -13,7 +11,6 @@ import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 
 export const WidgetifyLayout = () => {
-
 	const { user, isAuthenticated } = useAuth()
 
 	const [userName, setUserName] = useState<string>('')
@@ -37,9 +34,7 @@ export const WidgetifyLayout = () => {
 
 				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
 					<div
-						className={
-							'flex items-center justify-between w-full border-b widget-item-border'
-						}
+						className={'flex items-center justify-between w-full border-b border-content'}
 					>
 						<div className="flex items-center gap-2">
 							<p className="w-32 text-xs font-semibold truncate">سلام {userName}! </p>

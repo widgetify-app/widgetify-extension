@@ -20,7 +20,7 @@ const CustomCheckbox = ({
 			return 'bg-blue-500 border-blue-500'
 		}
 
-		return 'widget-item-border'
+		return 'border-content'
 	}
 
 	return (

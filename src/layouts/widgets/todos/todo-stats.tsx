@@ -52,7 +52,7 @@ export function TodoStats() {
 			<h4 className={'mb-1 text-sm font-medium text-content'}>آمار کلی</h4>
 
 			<div className="flex flex-col gap-1">
-				<div className={'p-1 rounded-lg border widget-item-border'}>
+				<div className={'p-1 rounded-lg border border-content'}>
 					<span className={'text-xs text-content'}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
 						<span className={'text-lg text-content'}>{stats.completedTodos}</span>
@@ -66,7 +66,7 @@ export function TodoStats() {
 					</div>
 				</div>
 
-				<div className={'p-2 rounded-lg  border widget-item-border'}>
+				<div className={'p-2 rounded-lg  border border-content'}>
 					<span className={'text-xs text-content'}>اولویت‌ها</span>
 					<div className="flex justify-between mt-1">
 						<div className="text-center">

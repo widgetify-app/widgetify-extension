@@ -33,7 +33,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	]
 
 	return (
-		<div className="flex items-center justify-between pb-1 mb-1 border-b widget-item-border">
+		<div className="flex items-center justify-between pb-1 mb-1 border-b border-content">
 			{tabs.map((tab) => (
 				<div key={tab.id} className="relative">
 					<Tooltip content={tab.label} position="top" delay={300}>

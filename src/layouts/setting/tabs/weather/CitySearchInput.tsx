@@ -16,7 +16,7 @@ export function CitySearchInput({
 	ref,
 }: CitySearchInputProps) {
 	const getSpinnerStyle = () => {
-		return 'widget-item-border border-t-primary/80'
+		return 'border-content border-t-primary/80'
 	}
 
 	return (

@@ -38,7 +38,7 @@ export function AuthRequiredModal({
 					<LazyMotion features={domAnimation}>
 						<m.button
 							className={
-								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors text-content border widget-item-border'
+								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors text-content border border-content'
 							}
 							onClick={onClose}
 							whileHover={{ scale: 1.03 }}

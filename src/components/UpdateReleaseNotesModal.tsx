@@ -148,7 +148,7 @@ export const UpdateReleaseNotesModal = ({
 
 				<div
 					className={
-						'mb-5 p-4 rounded-lg bg-content border widget-item-border animate-fade-in animate-slide-up'
+						'mb-5 p-4 rounded-lg bg-content border border-content animate-fade-in animate-slide-up'
 					}
 					style={{ animationDelay: '0.2s' }}
 				>
@@ -173,7 +173,7 @@ export const UpdateReleaseNotesModal = ({
 										{getCategoryTitle(type as any)}
 									</h3>
 								</div>
-								<div className={'flex-1 h-px border widget-item-border mr-2'}></div>
+								<div className={'flex-1 h-px border border-content mr-2'}></div>
 							</div>
 
 							<ul className="mr-2 space-y-3">
@@ -212,9 +212,7 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 				</div>
 			</div>
-			<div
-				className={'p-3 border-t widget-item-border flex justify-between items-center'}
-			>
+			<div className={'p-3 border-t border-content flex justify-between items-center'}>
 				{' '}
 				<a
 					href="https://github.com/widgetify-app"

@@ -8,7 +8,7 @@ interface SelectedCityDisplayProps {
 export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 	if (!city) return null
 	return (
-		<div className={'w-full rounded-xl overflow-hidden border widget-item-border'}>
+		<div className={'w-full rounded-xl overflow-hidden border border-content'}>
 			<div className="p-4">
 				<div className="flex items-start">
 					<div className="flex-1">

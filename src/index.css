@@ -62,7 +62,7 @@ body {
 	@apply text-base-content opacity-70;
 }
 
-.widget-item-border {
+.border-content {
 	@apply border-base-300;
 }
 

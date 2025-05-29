@@ -35,7 +35,7 @@ export function CityResultsList({
 	}
 
 	const getLoadingSpinnerStyle = () => {
-		return 'widget-item-border border-t-primary/80'
+		return 'border-content border-t-primary/80'
 	}
 
 	const getCityItemStyle = () => {
