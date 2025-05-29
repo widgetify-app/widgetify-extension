@@ -1,4 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { CacheManagement } from './components/cache-management'
 import { PetSettings } from './components/pet-settings'
 import { PrivacySettings } from './components/privacy-settings'
 import { SelectCity } from './components/select-city'
@@ -18,6 +19,7 @@ export function GeneralSettingTab() {
 				setAnalyticsEnabled={setAnalyticsEnabled}
 			/>
 			<PetSettings key="pets" />
+			<CacheManagement key="cache" />
 		</div>
 	)
 }
