@@ -1,14 +1,13 @@
 import { addOpacityToColor } from '@/common/color'
+import Tooltip from '@/components/toolTip'
 import { getBookmarkStyle, getContainerBackground } from '@/context/theme.context'
-import { motion } from 'framer-motion'
-import { useState } from 'react'
 import { SlOptions } from 'react-icons/sl'
 import type { Bookmark } from '../types/bookmark.types'
 import { EmptyBookmarkSlot } from './bookmark-emptySlot'
 import { FolderBookmarkItem } from './bookmark-folder'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
-import { BookmarkTitle, BookmarkTooltip } from './bookmark/bookmark-title'
+import { BookmarkTitle } from './bookmark/bookmark-title'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark | null
@@ -37,8 +36,6 @@ export function BookmarkItem({
 	onDrop,
 	onMenuClick,
 }: BookmarkItemProps) {
-	const [isHovered, setIsHovered] = useState(false)
-
 	if (!bookmark) {
 		return <EmptyBookmarkSlot onClick={onClick} theme={theme} canAdd={canAdd} />
 	}
@@ -76,39 +73,37 @@ export function BookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			{' '}
-			<motion.button
-				onClick={onClick}
-				onAuxClick={onClick}
-				onMouseEnter={() => setIsHovered(true)}
-				onMouseLeave={() => setIsHovered(false)}
-				whileHover={{ scale: 1.02 }}
-				style={customStyles}
-				className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}` : 'border'}`}
-			>
-				{onMenuClick && bookmark && (
+			<Tooltip content={bookmark.title}>
+				<button
+					onClick={onClick}
+					onAuxClick={onClick}
+					style={customStyles}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle(theme)} ${getContainerBackground(theme)}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+				>
+					{onMenuClick && bookmark && (
+						<div
+							onClick={(e) => {
+								e.stopPropagation()
+								onMenuClick(e)
+							}}
+							className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
+						>
+							<SlOptions />
+						</div>
+					)}
+					{RenderStickerPattern(bookmark)}
+					<BookmarkIcon bookmark={bookmark} />
+					<BookmarkTitle
+						title={bookmark.title}
+						theme={theme}
+						customTextColor={bookmark.customTextColor}
+					/>
+
 					<div
-						onClick={(e) => {
-							e.stopPropagation()
-							onMenuClick(e)
-						}}
-						className={`absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-${theme === 'light' ? 'black/40' : 'white/10'} z-10`}
-					>
-						<SlOptions />
-					</div>
-				)}
-				{RenderStickerPattern(bookmark)}
-				<BookmarkIcon bookmark={bookmark} />
-				<BookmarkTitle
-					title={bookmark.title}
-					theme={theme}
-					customTextColor={bookmark.customTextColor}
-				/>
-				{isHovered && <BookmarkTooltip title={bookmark.title} theme={theme} />}
-				<div
-					className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
-				/>
-			</motion.button>
+						className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t ${theme === 'light' ? 'from-black/5' : 'from-white/5'} to-transparent rounded-xl`}
+					/>
+				</button>
+			</Tooltip>
 		</div>
 	)
 }
