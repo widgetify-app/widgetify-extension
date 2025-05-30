@@ -120,7 +120,7 @@ export function ExpandableTodoInput({
 						<Button
 							onClick={handleAddTodo}
 							disabled={!todoText.trim()}
-							size="sm"
+							size="md"
 							isPrimary={true}
 							rounded="md"
 							className="p-2"
@@ -139,7 +139,6 @@ export function ExpandableTodoInput({
 							transition={{ duration: 0.2 }}
 						>
 							<div className="px-3 pb-3 space-y-3">
-								{' '}
 								<div>
 									<label className={'block mb-1 text-xs font-medium text-content'}>
 										اولویت
@@ -156,7 +155,7 @@ export function ExpandableTodoInput({
 													flex items-center justify-center w-4 h-4 rounded-full
 													transition-all duration-150 cursor-pointer 
 													${bgColor} ${hoverBgColor}
-													${priority === value ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 ring-gray-400' : ''}
+													${priority === value ? 'ring-2 ring-offset-2 ring-offset-0  ring-primary' : ''}
 												`}
 													>
 														{priority === value && (

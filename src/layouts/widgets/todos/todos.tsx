@@ -77,7 +77,11 @@ export function TodosLayout() {
 						</h4>
 
 						<div className="flex gap-1">
-							<Button onClick={handleBlurModeToggle} size="xs">
+							<Button
+								onClick={handleBlurModeToggle}
+								size="xs"
+								isPrimary={todoOptions.blurMode}
+							>
 								{todoOptions.blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
 							</Button>
 							<Button
@@ -142,7 +146,9 @@ export function TodosLayout() {
 								<select
 									value={todoOptions.viewMode}
 									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
-									className={'select text-[.65rem]'}
+									className={
+										'select select-xs text-[.65rem] w-24 !px-2 focus:outline-none focus:border focus:border-primary'
+									}
 								>
 									<option value={TodoViewType.Day}>لیست امروز</option>
 									<option value={TodoViewType.Monthly}>لیست ماهانه</option>

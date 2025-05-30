@@ -20,36 +20,29 @@ const translatedPriority = {
 export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Prop) {
 	const [expanded, setExpanded] = useState(false)
 
-	const getTextStyle = () => {
-		if (todo.completed) {
-			return 'line-through text-content opacity-50'
-		}
-		return 'text-content'
-	}
-
 	const getBorderStyle = () => {
 		switch (todo.priority) {
 			case 'high':
-				return 'border-red-300'
+				return 'border-error'
 			case 'medium':
-				return 'border-yellow-300'
+				return 'border-warning'
 			case 'low':
-				return 'border-green-300'
+				return 'border-success'
 			default:
-				return 'border-blue-300'
+				return 'border-primary'
 		}
 	}
 
 	const getPriorityColor = () => {
 		switch (todo.priority) {
 			case 'high':
-				return 'bg-red-100/50 text-red-600'
+				return 'bg-error text-error-content'
 			case 'medium':
-				return 'bg-yellow-100/50 text-yellow-600'
+				return 'bg-warning text-warning-content'
 			case 'low':
-				return 'bg-green-100/50 text-green-600'
+				return 'bg-success text-success-content'
 			default:
-				return 'bg-blue-100/50 text-blue-600'
+				return 'bg-primary text-primary-content'
 		}
 	}
 
@@ -68,7 +61,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 
 				<span
 					onClick={() => toggleTodo(todo.id)}
-					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${getTextStyle()}`}
+					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${todo.completed ? 'line-through text-content opacity-50' : 'text-content'}`}
 				>
 					{todo.text}
 				</span>
