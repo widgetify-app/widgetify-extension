@@ -1,12 +1,5 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import {
-	getBorderColor,
-	getButtonStyles,
-	getCardBackground,
-	getDescriptionTextStyle,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
+import { Button } from '@/components/button/button'
 import { useRef } from 'react'
 import { FiEdit, FiUploadCloud } from 'react-icons/fi'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
@@ -18,7 +11,6 @@ interface UploadAreaProps {
 }
 
 export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaProps) {
-	const { theme } = useTheme()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const { processFile } = useWallpaperUpload({ onWallpaperChange })
 
@@ -39,14 +31,16 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	if (!customWallpaper) {
 		return (
 			<div
-				className={`relative rounded-lg overflow-hidden ${getCardBackground(theme)} opacity-70 hover:opacity-100 transition-all duration-300`}
+				className={
+					'relative rounded-lg overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
+				}
 			>
 				<button
 					className="flex items-center justify-center w-full gap-2 p-4 cursor-pointer"
 					onClick={handleFileSelect}
 				>
-					<FiUploadCloud size={18} className={getTextColor(theme)} />
-					<p className={`text-sm font-medium ${getTextColor(theme)}`}>
+					<FiUploadCloud size={18} className={'text-content'} />
+					<p className={'text-sm font-medium text-content'}>
 						برای آپلود از سیستم کلیک کنید
 					</p>
 				</button>
@@ -63,7 +57,9 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 
 	return (
 		<div
-			className={`relative overflow-hidden  rounded-lg backdrop-blur-sm shadow-sm border ${getBorderColor(theme)} ${getCardBackground(theme)}`}
+			className={
+				'relative overflow-hidden  rounded-lg backdrop-blur-sm shadow-sm border border-content bg-content'
+			}
 		>
 			<div className="flex items-center p-2.5">
 				<div className="relative flex-shrink-0 w-16 h-12 overflow-hidden rounded-md shadow-sm">
@@ -76,22 +72,17 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				</div>
 
 				<div className="flex-1 mx-3">
-					<p className={`text-sm font-medium ${getTextColor(theme)}`}>پس‌زمینه فعال</p>
-					<p
-						className={`text-xs ${getDescriptionTextStyle(theme)} truncate max-w-[200px]`}
-					>
+					<p className={'text-sm font-medium text-content'}>پس‌زمینه فعال</p>
+					<p className={'text-xs text-muted truncate max-w-[200px]'}>
 						{customWallpaper.name || 'بدون نام'}
 					</p>
 				</div>
 
 				<div className="flex gap-2">
-					<button
-						onClick={handleFileSelect}
-						className={`px-3 py-1.5 text-sm transition-all duration-200 rounded-lg ${getButtonStyles(theme)} flex items-center gap-1.5 cursor-pointer`}
-					>
+					<Button onClick={() => handleFileSelect()} size="sm">
 						<FiEdit size={14} />
 						<span>تغییر</span>
-					</button>
+					</Button>
 				</div>
 			</div>
 			<input

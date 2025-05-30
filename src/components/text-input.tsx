@@ -1,6 +1,12 @@
-import { getInputStyle, useTheme } from '@/context/theme.context'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+enum TextInputSize {
+	XS = 'xs',
+	SM = 'sm',
+	MD = 'md',
+	LG = 'lg',
+	XL = 'xl',
+}
 interface TextInputProps {
 	id?: string
 	value: string
@@ -8,7 +14,6 @@ interface TextInputProps {
 	placeholder?: string
 	onFocus?: () => void
 	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
-	theme?: string
 	disabled?: boolean
 	name?: string
 	type?: string
@@ -18,6 +23,7 @@ interface TextInputProps {
 	debounce?: boolean
 	debounceTime?: number
 	maxLength?: number
+	size?: TextInputSize
 }
 
 export function TextInput({
@@ -26,7 +32,6 @@ export function TextInput({
 	placeholder,
 	onFocus,
 	onKeyDown,
-	theme: propTheme,
 	disabled = false,
 	name,
 	id,
@@ -37,9 +42,15 @@ export function TextInput({
 	debounce = false,
 	debounceTime = 150,
 	maxLength = 1000,
+	size = TextInputSize.MD,
 }: TextInputProps) {
-	const { theme: contextTheme } = useTheme()
-	const theme = propTheme || contextTheme
+	const sizes: Record<TextInputSize, string> = {
+		[TextInputSize.XS]: 'input-xs',
+		[TextInputSize.SM]: 'input-sm',
+		[TextInputSize.MD]: 'input-md',
+		[TextInputSize.LG]: 'input-lg',
+		[TextInputSize.XL]: 'input-xl',
+	}
 	const [localValue, setLocalValue] = useState(value)
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -82,8 +93,9 @@ export function TextInput({
 			onKeyDown={onKeyDown}
 			dir={direction}
 			placeholder={placeholder || ''}
-			className={`w-full text-[14px] rounded-xl p-3 outline-none border 
-                    transition-all duration-200 font-light ${getInputStyle(theme)} ${className}`}
+			className={`input w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20
+			   focus:border-primary
+               font-light ${className}`}
 			onChange={handleChange}
 			maxLength={maxLength}
 			autoComplete="off"

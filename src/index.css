@@ -7,12 +7,14 @@
 	default: true;
 	--color-primary: #536DFE;
 	--color-secondary: #7C8DF0;
+	--color-error: #e7000b;
 }
 
 @plugin "daisyui/theme" {
 	name: "dark";
 	--color-primary: #536DFE;
 	--color-secondary: #7C8DF0;
+	--color-error: #e7000b;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

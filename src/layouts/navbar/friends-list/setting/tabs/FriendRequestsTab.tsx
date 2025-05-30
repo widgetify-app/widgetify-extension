@@ -2,7 +2,7 @@ import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
+import { getButtonStyles } from '@/context/theme.context'
 import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
 import {
 	type Friend,
@@ -16,7 +16,6 @@ import { FiUserCheck } from 'react-icons/fi'
 import { RemoveFriendButton } from '../components/remove-button'
 
 export const FriendRequestsTab = () => {
-	const { theme } = useTheme()
 	const { user } = useAuth()
 	const [username, setUsername] = useState('')
 	const [translatedError, setTranslatedError] = useState<string | null>(null)
@@ -97,7 +96,7 @@ export const FriendRequestsTab = () => {
 					/>
 				</>
 			) : (
-				<p className={`text-sm ${getTextColor(theme)} opacity-70`}>ارسال شده</p>
+				<p className={'text-sm text-content opacity-70'}>ارسال شده</p>
 			)}
 		</div>
 	)
@@ -106,9 +105,7 @@ export const FriendRequestsTab = () => {
 		<div className="space-y-6">
 			<SectionPanel title="درخواست دوستی جدید" size="sm">
 				<div className="space-y-2">
-					<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
-						نام کاربری
-					</label>
+					<label className={'block text-sm font-medium text-content'}>نام کاربری</label>
 					<div className="flex">
 						<TextInput
 							type="text"
@@ -120,7 +117,7 @@ export const FriendRequestsTab = () => {
 						<button
 							onClick={handleSendRequest}
 							disabled={isSending || !username.trim()}
-							className={`${getButtonStyles(theme, true)} cursor-pointer mr-2 px-4 py-2 rounded-lg whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed`}
+							className={`${getButtonStyles('light', true)} cursor-pointer mr-2 px-4 py-2 rounded-lg whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed`}
 						>
 							{isSending ? 'در حال ارسال...' : 'ارسال درخواست'}
 						</button>
@@ -132,7 +129,7 @@ export const FriendRequestsTab = () => {
 								'p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-700'
 							}
 						>
-							<p className={`text-sm ${getTextColor(theme)}`}>
+							<p className={'text-sm text-content'}>
 								برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش پروفایل
 								تنظیم کنید.
 							</p>

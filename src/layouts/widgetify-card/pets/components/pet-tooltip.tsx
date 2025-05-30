@@ -1,5 +1,3 @@
-import { getCardBackground, getTextColor, useTheme } from '@/context/theme.context'
-
 interface PetTooltipProps {
 	direction: number
 	content: string | React.ReactNode
@@ -13,8 +11,6 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 	emoji,
 	isAnimation = false,
 }) => {
-	const { theme } = useTheme()
-
 	return (
 		<div
 			className="absolute -translate-x-1/2 -top-8 left-1/2"
@@ -24,7 +20,9 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 			}}
 		>
 			<div
-				className={`relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg ${getCardBackground(theme)}`}
+				className={
+					'relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg bg-content'
+				}
 				style={{
 					animation: isAnimation ? 'gentlePulse 2s ease-in-out infinite' : undefined,
 				}}
@@ -42,7 +40,7 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 							{emoji}
 						</span>
 					)}
-					<span className={`font-medium ${getTextColor(theme)}`}>{content}</span>
+					<span className={'font-medium text-content'}>{content}</span>
 				</div>
 			</div>
 

@@ -1,7 +1,7 @@
+import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { type JSX, useEffect, useState } from 'react'
@@ -19,7 +19,6 @@ interface Platform {
 }
 
 export function Connections() {
-	const { theme } = useTheme()
 	const { data: profile } = useGetUserProfile()
 
 	const [platforms, setPlatforms] = useState<Platform[]>([
@@ -117,23 +116,6 @@ export function Connections() {
 		}
 	}
 
-	const getButtonStyle = (isConnected: boolean) => {
-		switch (theme) {
-			case 'light':
-				return isConnected
-					? 'bg-red-600 hover:bg-red-700 text-gray-100'
-					: 'bg-blue-600 hover:bg-blue-700 text-gray-100'
-			case 'dark':
-				return isConnected
-					? 'bg-red-500/70 hover:bg-red-600/70 text-gray-200'
-					: 'bg-blue-500 hover:bg-blue-600 text-gray-200'
-			default: // glass
-				return isConnected
-					? 'bg-red-500/70 hover:bg-red-600/70 text-gray-200'
-					: 'bg-blue-500/70 hover:bg-blue-600/70 text-gray-200'
-		}
-	}
-
 	const LoadingSpinner = () => (
 		<svg
 			className="w-4 h-4 animate-spin"
@@ -161,7 +143,7 @@ export function Connections() {
 		<SectionPanel title="پلتفرم‌های متصل" delay={0.4}>
 			<div className="space-y-4">
 				{profile?.inCache && <OfflineIndicator mode="notification" />}
-				<p className={`text-sm font-light ${getTextColor(theme)}`}>
+				<p className={'text-sm font-light text-content'}>
 					مدیریت اتصالات پلتفرم‌ها و سرویس‌های متصل به حساب کاربری شما.
 				</p>
 
@@ -172,7 +154,7 @@ export function Connections() {
 							key={platform.id}
 						>
 							<div
-								className={`p-3 rounded-lg border ${getBorderColor(theme)}
+								className={`p-3 rounded-lg border border-content
                                 ${platform.isActive ? '' : 'opacity-50'}
                             `}
 							>
@@ -184,24 +166,19 @@ export function Connections() {
 											{platform.icon}
 										</div>
 										<div>
-											<p className={`font-medium ${getTextColor(theme)}`}>
-												{platform.name}
-											</p>
+											<p className={'font-medium text-content'}>{platform.name}</p>
 											<p className="text-xs font-light text-gray-500">
 												{platform.connected ? 'متصل شده' : 'متصل نشده'}
 											</p>
 										</div>
 									</div>
-									<button
+									<Button
 										onClick={() => handleConnectionToggle(platform.id)}
 										disabled={
 											platform.isLoading || (!platform.isActive && !platform.connected)
 										}
-										className={`text-sm px-3 py-1 rounded flex items-center font-light  justify-center min-w-[80px] ${
-											platform.isActive || platform.connected
-												? 'cursor-pointer'
-												: 'pointer-events-none'
-										} ${getButtonStyle(platform.connected)} ${!platform.connected ? 'text-white' : ''}`}
+										size="xs"
+										className={`${platform.connected ? 'btn-error' : 'btn-primary'} text-white/90`}
 									>
 										{platform.isLoading ? (
 											<LoadingSpinner />
@@ -212,7 +189,7 @@ export function Connections() {
 										) : (
 											'اتصال'
 										)}
-									</button>
+									</Button>
 								</div>
 							</div>
 						</Tooltip>

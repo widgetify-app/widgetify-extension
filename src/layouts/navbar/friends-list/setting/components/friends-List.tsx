@@ -1,5 +1,5 @@
 import { AvatarComponent } from '@/components/avatar.component'
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
+import { Button } from '@/components/button/button'
 import { type Friend, useGetFriends } from '@/services/hooks/friends/friendService.hook'
 import { useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
@@ -20,7 +20,6 @@ export const FriendsList = ({
 	emptyMessage,
 	loading = false,
 }: PaginatedFriendsListProps) => {
-	const { theme } = useTheme()
 	const [currentPage, setCurrentPage] = useState(1)
 
 	const {
@@ -61,7 +60,9 @@ export const FriendsList = ({
 			{friends.map((friend) => (
 				<div
 					key={friend.id}
-					className={`flex items-center justify-between p-3 border rounded-lg ${getBorderColor(theme)}`}
+					className={
+						'flex items-center justify-between p-3 border rounded-lg border-content'
+					}
 				>
 					<div className="flex items-center space-x-3">
 						<div className="w-10 h-10 mr-3 overflow-hidden rounded-full">
@@ -73,10 +74,8 @@ export const FriendsList = ({
 							/>
 						</div>
 						<div>
-							<div className={`font-medium ${getTextColor(theme)}`}>
-								{friend.user.name}
-							</div>
-							<div className={`text-sm ${getTextColor(theme)} opacity-70`} dir="ltr">
+							<div className={'font-medium text-content'}>{friend.user.name}</div>
+							<div className={'text-sm text-content opacity-70'} dir="ltr">
 								@{friend.user.username}
 							</div>
 						</div>
@@ -87,31 +86,30 @@ export const FriendsList = ({
 
 			{totalPages > 1 && (
 				<div className="flex items-center justify-center mt-4 space-x-2">
-					<button
-						onClick={goToPrevPage}
+					<Button
+						onClick={() => goToPrevPage()}
 						disabled={currentPage === 1 || isFetching}
-						className={`p-2 rounded-lg ${
-							currentPage === 1
-								? 'text-gray-400'
-								: 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-						}`}
+						size="xs"
+						className="btn-soft"
+						isPrimary={currentPage !== 1}
 					>
-						<FiChevronRight size={18} />
-					</button>
+						<FiChevronRight
+							size={18}
+							className={`${currentPage === 1 ? 'text-muted' : 'text-primary'}`}
+						/>
+					</Button>
 					<span className="mx-2">
 						صفحه {currentPage} از {totalPages}
 					</span>
-					<button
-						onClick={goToNextPage}
+					<Button
+						onClick={() => goToNextPage()}
 						disabled={currentPage === totalPages || isFetching}
-						className={`p-2 rounded-lg ${
-							currentPage === totalPages
-								? 'text-gray-400'
-								: 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-						}`}
+						className="btn-soft"
+						isPrimary={true}
+						size="xs"
 					>
-						<FiChevronLeft size={18} />
-					</button>
+						<FiChevronLeft size={18} className="text-primary" />
+					</Button>
 				</div>
 			)}
 		</div>

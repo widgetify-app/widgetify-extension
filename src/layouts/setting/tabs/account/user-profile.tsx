@@ -1,10 +1,10 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { AvatarComponent } from '@/components/avatar.component'
+import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -42,7 +42,6 @@ const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) =
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
-	const { theme } = useTheme()
 	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
 	const [enableSync, setEnableSync] = useState<boolean>(true)
 
@@ -58,17 +57,6 @@ export const UserProfile = () => {
 	const handleSyncToggle = async (newState: boolean) => {
 		setEnableSync(newState)
 		await setToStorage('enable_sync', newState)
-	}
-
-	const getButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-red-600 hover:bg-red-700 text-white'
-			case 'dark':
-				return 'bg-red-500 hover:bg-red-600 text-white'
-			default:
-				return 'bg-red-500/70 hover:bg-red-600/70 backdrop-blur-sm text-white'
-		}
 	}
 
 	const getMessageError = () => {
@@ -91,13 +79,11 @@ export const UserProfile = () => {
 	if (isError) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
-				<p className={`mb-4 text-center ${getTextColor(theme)}`}>{getMessageError()}</p>
-				<button
-					onClick={logout}
-					className={`px-4 py-2 font-medium cursor-pointer rounded-lg transition-colors ${getButtonStyle()}`}
-				>
+				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
+				<Button onClick={() => logout()} className="text-white/90 btn-error" size="md">
+					<FiLogOut size={16} />
 					خروج از حساب کاربری
-				</button>
+				</Button>
 			</div>
 		)
 	}
@@ -112,7 +98,7 @@ export const UserProfile = () => {
 			<div className={'flex items-center justify-between p-5 mb-8 rounded-xl'}>
 				<div className="flex items-center gap-4">
 					<div className="flex-1">
-						<h3 className={`text-xl font-bold ${getTextColor(theme)}`}>
+						<h3 className={'text-xl font-bold text-content'}>
 							{profile?.name || 'کاربر'}
 						</h3>
 						{
@@ -165,18 +151,14 @@ export const UserProfile = () => {
 			<SectionPanel title="همگام‌سازی" delay={0.2}>
 				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
 					<div className="pr-2">
-						<p
-							className={`text-sm font-medium ${getTextColor(theme)} flex items-center gap-1.5`}
-						>
+						<p className={'text-sm font-medium text-content flex items-center gap-1.5'}>
 							<AiOutlineFileSync
 								size={16}
 								className={enableSync ? 'text-blue-500' : 'text-gray-500'}
 							/>
 							فعال‌سازی همگام‌سازی (Sync)
 						</p>
-						<p
-							className={`text-xs ${getTextColor(theme)} font-light opacity-80 mt-2 max-w-md`}
-						>
+						<p className={'text-xs text-content font-light opacity-80 mt-2 max-w-md'}>
 							با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های مختلف
 							همگام‌سازی می‌شوند.
 						</p>
@@ -193,16 +175,13 @@ export const UserProfile = () => {
 
 			<SectionPanel title="حساب کاربری" delay={0.3}>
 				<div className="p-4 space-y-3 transition-colors rounded-lg">
-					<p className={`text-sm font-light ${getTextColor(theme)}`}>
+					<p className={'text-sm font-light text-content'}>
 						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 					</p>
-					<button
-						onClick={() => logout()}
-						className={`px-5 py-2 cursor-pointer rounded-lg transition-colors font-medium ${getButtonStyle()} shadow-sm flex items-center justify-center gap-2 w-fit`}
-					>
+					<Button onClick={() => logout()} className="text-white/90 btn-error" size="md">
 						<FiLogOut size={16} />
 						خروج از حساب کاربری
-					</button>
+					</Button>
 				</div>
 			</SectionPanel>
 		</motion.div>

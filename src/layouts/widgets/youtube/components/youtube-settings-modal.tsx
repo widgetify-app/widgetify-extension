@@ -1,10 +1,10 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { Button } from '@/components/button/button'
 import { ItemSelector } from '@/components/item-selector'
 import Modal from '@/components/modal'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import { getDescriptionTextStyle, getTextColor, useTheme } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 
 interface YouTubeSettingsModalProps {
@@ -19,7 +19,6 @@ export interface YouTubeSettings {
 
 export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalProps) {
 	if (!isOpen) return null
-	const { theme } = useTheme()
 	const [settings, setSettings] = useState<YouTubeSettings>({
 		username: '',
 		subscriptionStyle: 'short',
@@ -85,12 +84,12 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 						placeholder="@username یا username"
 						className={'w-full px-3 py-2 border rounded-md'}
 					/>
-					<p className={`text-xs mt-1 ${getTextColor(theme)} opacity-70`}>
+					<p className={'text-xs mt-1 text-content opacity-70'}>
 						نام کاربری کانال یوتیوب خود را وارد کنید (با یا بدون @)
 					</p>
 				</SectionPanel>
 				<SectionPanel title="تعداد مشترکین" size="xs">
-					<p className={`text-sm mb-3 ${getDescriptionTextStyle(theme)}`}>
+					<p className={'text-sm mb-3 text-muted'}>
 						نحوه نمایش تعداد مشترکین را انتخاب کنید:
 					</p>
 					<div className="flex flex-wrap gap-2">
@@ -108,25 +107,18 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 					</div>
 				</SectionPanel>
 				<div className="flex justify-end gap-2 pt-4 space-x-2 space-x-reverse">
-					<button
-						onClick={() => onClose(null)}
-						className={`px-4 py-2 cursor-pointer rounded-md ${
-							theme === 'dark'
-								? 'bg-gray-700 text-white hover:bg-gray-600'
-								: 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-						} transition-colors`}
-					>
+					<Button onClick={() => onClose(null)} size="md">
 						لغو
-					</button>
-					<button
-						onClick={handleSave}
+					</Button>
+					<Button
+						type="submit"
 						disabled={loading}
-						className={
-							'px-4 py-2 cursor-pointer rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
-						}
+						size="md"
+						isPrimary={true}
+						onClick={() => handleSave()}
 					>
 						{loading ? 'در حال ذخیره...' : 'ذخیره'}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</Modal>

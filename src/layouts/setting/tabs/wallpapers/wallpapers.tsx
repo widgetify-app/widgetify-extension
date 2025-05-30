@@ -1,32 +1,17 @@
-import { useTheme } from '@/context/theme.context'
 import { useState } from 'react'
 
 import { GalleryTab } from './tab/gallery.tab'
 import { GradientTab } from './tab/gradient.tab'
 
 export function WallpaperSetting() {
-	const { theme } = useTheme()
 	const [activeTab, setActiveTab] = useState<'gallery' | 'gradient'>('gallery')
 
 	const getTabStyle = (isActive: boolean) => {
 		if (isActive) {
-			switch (theme) {
-				case 'light':
-					return 'border-blue-500 text-blue-600 font-medium'
-				case 'dark':
-					return 'border-blue-400 text-blue-400 font-medium'
-				default: // glass
-					return 'border-blue-400 text-blue-400 font-medium'
-			}
+			return 'border-primary/80 text-primary font-semibold border-b-2'
 		}
-		switch (theme) {
-			case 'light':
-				return 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-			case 'dark':
-				return 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-700'
-			default: // glass
-				return 'border-transparent text-gray-400 hover:text-gray-300 hover:border-white/20'
-		}
+
+		return 'border-transparent text-content hover:!text-primary'
 	}
 
 	return (

@@ -1,7 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { sleep } from '@/common/utils/timeout.ts'
 import { RequireAuth } from '@/components/auth/require-auth'
-import { getTextColor, useTheme } from '@/context/theme.context'
 import {
 	type FetchedYouTubeProfile,
 	useGetYouTubeProfile,
@@ -18,7 +17,6 @@ import {
 import { YouTubeStatsCard } from './components/youtube-stats-card.tsx'
 
 export function YouTubeLayout() {
-	const { theme } = useTheme()
 	const [showSettings, setShowSettings] = useState(false)
 	const [username, setUsername] = useState('')
 	const [subscriptionStyle, setSubscriptionStyle] = useState<'short' | 'long'>('short')
@@ -89,13 +87,12 @@ export function YouTubeLayout() {
 					<div
 						className="flex items-center justify-between pb-2 mb-3 border-b"
 						style={{
-							borderColor:
-								theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
+							borderColor: 'rgba(0,0,0,0.1)',
 						}}
 					>
 						<div className="flex items-center gap-2">
 							<FiYoutube className="w-5 h-5 text-red-500" />
-							<h3 className={`text-sm font-medium ${getTextColor(theme)}`}>
+							<h3 className={'text-sm font-medium text-content'}>
 								آمار یوتیوب ( آزمایشی )
 							</h3>
 						</div>
@@ -118,19 +115,15 @@ export function YouTubeLayout() {
 						{!youtubeProfile && error && !isLoading && (
 							<div className="py-8 text-center">
 								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-50" />
-								<p className={`text-sm ${getTextColor(theme)} opacity-70`}>
-									خطا در دریافت اطلاعات
-								</p>
-								<p className={`text-xs ${getTextColor(theme)} opacity-50 mt-1`}>
-									نام کاربری را بررسی کنید
-								</p>
+								<p className={'text-sm text-content opacity-70'}>خطا در دریافت اطلاعات</p>
+								<p className={'text-xs text-muted mt-1'}>نام کاربری را بررسی کنید</p>
 							</div>
 						)}
 
 						{!username && !isLoading && (
 							<div className="py-8 text-center">
 								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-30" />
-								<p className={`text-sm ${getTextColor(theme)} opacity-70`}>
+								<p className={'text-sm text-muted'}>
 									لطفاً از تنظیمات نام کاربری یوتیوب را وارد کنید
 								</p>
 								<button

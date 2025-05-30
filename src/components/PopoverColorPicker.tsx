@@ -1,4 +1,3 @@
-import { useTheme } from '@/context/theme.context'
 import { useEffect, useRef, useState } from 'react'
 import { RgbaStringColorPicker } from 'react-colorful'
 import { createPortal } from 'react-dom'
@@ -57,17 +56,8 @@ const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 		}
 	}, [isOpen])
 
-	const { theme } = useTheme()
-
 	const getPopoverStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white shadow-lg border border-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 shadow-lg border border-neutral-700'
-			default: // glass
-				return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
-		}
+		return 'bg-content shadow-lg border border-content'
 	}
 
 	const displayColor = color || '#000000'

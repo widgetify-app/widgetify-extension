@@ -1,5 +1,4 @@
 import { SectionPanel } from '@/components/section-panel'
-import { useTheme } from '@/context/theme.context'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
@@ -7,81 +6,35 @@ import browser from 'webextension-polyfill'
 
 export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()
-	const { theme } = useTheme()
 
 	const getDonateCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-green-100/50 border-green-200/30 hover:border-green-400/40 hover:bg-green-100/80 hover:shadow-[0_0_15px_rgba(74,222,128,0.15)]'
-			case 'dark':
-				return 'bg-green-900/30 border-white/5 hover:border-green-400/20 hover:bg-green-900/40 hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]'
-			default: // glass
-				return 'bg-green-900/20 border-white/5 hover:border-green-400/20 hover:bg-green-900/30 hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]'
-		}
+		return 'bg-green-900/20 border-white/5 hover:border-green-400/20 hover:bg-green-900/30 hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]'
 	}
 
 	const getGithubCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/50 border-gray-200/30 hover:border-gray-400/40 hover:bg-gray-100/80 hover:shadow-[0_0_15px_rgba(156,163,175,0.2)]'
-			case 'dark':
-				return 'bg-gray-800/30 border-white/5 hover:border-white/20 hover:bg-gray-800/50 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
-			default: // glass
-				return 'bg-gray-800/20 border-white/5 hover:border-white/20 hover:bg-gray-800/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
-		}
+		return 'bg-gray-800/20 border-white/5 hover:border-white/20 hover:bg-gray-800/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
 	}
 
 	const getFeedbackCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-blue-100/50 border-blue-200/30 hover:border-blue-400/40 hover:bg-blue-100/80 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]'
-			case 'dark':
-				return 'bg-blue-900/30 border-white/5 hover:border-blue-400/20 hover:bg-blue-900/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]'
-			default: // glass
-				return 'bg-blue-900/20 border-white/5 hover:border-blue-400/20 hover:bg-blue-900/30 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]'
-		}
+		return 'bg-blue-900/20 border-white/5 hover:border-blue-400/20 hover:bg-blue-900/30 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]'
 	}
 
 	const getWebsiteCardStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-indigo-100/50 border-indigo-200/30 hover:border-indigo-400/40 hover:bg-indigo-100/80 hover:shadow-[0_0_15px_rgba(129,140,248,0.15)]'
-			case 'dark':
-				return 'bg-indigo-900/30 border-white/5 hover:border-indigo-400/20 hover:bg-indigo-900/40 hover:shadow-[0_0_15px_rgba(129,140,248,0.2)]'
-			default: // glass
-				return 'bg-indigo-900/20 border-white/5 hover:border-indigo-400/20 hover:bg-indigo-900/30 hover:shadow-[0_0_15px_rgba(129,140,248,0.2)]'
-		}
+		return 'bg-indigo-900/20 border-white/5 hover:border-indigo-400/20 hover:bg-indigo-900/30 hover:shadow-[0_0_15px_rgba(129,140,248,0.2)]'
 	}
 
 	const getIconContainerStyle = (color: string) => {
-		switch (theme) {
-			case 'light':
-				switch (color) {
-					case 'green':
-						return 'bg-green-100/80 text-green-700'
-					case 'gray':
-						return 'bg-gray-100/80 text-gray-700'
-					case 'blue':
-						return 'bg-blue-100/80 text-blue-700'
-					case 'indigo':
-						return 'bg-indigo-100/80 text-indigo-700'
-					default:
-						return 'bg-gray-100/80 text-gray-700'
-				}
-
+		switch (color) {
+			case 'green':
+				return 'bg-green-800/50 text-green-200'
+			case 'gray':
+				return 'bg-gray-700/50 text-gray-200'
+			case 'blue':
+				return 'bg-blue-800/50 text-blue-200'
+			case 'indigo':
+				return 'bg-indigo-800/50 text-indigo-200'
 			default:
-				switch (color) {
-					case 'green':
-						return 'bg-green-800/50 text-green-200'
-					case 'gray':
-						return 'bg-gray-700/50 text-gray-200'
-					case 'blue':
-						return 'bg-blue-800/50 text-blue-200'
-					case 'indigo':
-						return 'bg-indigo-800/50 text-indigo-200'
-					default:
-						return 'bg-gray-700/50 text-gray-200'
-				}
+				return 'bg-gray-700/50 text-gray-200'
 		}
 	}
 

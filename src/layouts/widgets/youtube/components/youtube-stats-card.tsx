@@ -1,4 +1,3 @@
-import { getBorderColor, getTextColor, useTheme } from '@/context/theme.context'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import { motion } from 'framer-motion'
 import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
@@ -14,8 +13,6 @@ export function YouTubeStatsCard({
 	username,
 	subscriptionStyle = 'short',
 }: YouTubeStatsCardProps) {
-	const { theme } = useTheme()
-
 	const formatNumber = (num: string, style: 'short' | 'long' = 'short') => {
 		const number = Number.parseInt(num)
 
@@ -67,50 +64,48 @@ export function YouTubeStatsCard({
 					}}
 				/>
 				<div className="flex-1 min-w-0">
-					<h4 className={`font-medium text-sm truncate ${getTextColor(theme)}`}>
-						{data.name}
-					</h4>
-					<p className={`text-xs opacity-70 ${getTextColor(theme)}`}>{username}</p>
+					<h4 className={'font-medium text-sm truncate text-content'}>{data.name}</h4>
+					<p className={'text-xs opacity-70 text-content'}>{username}</p>
 				</div>
 			</div>
 			{/* Stats Grid */}
 			<div className="grid grid-cols-2 gap-1">
-				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
+				<div className={'p-3 rounded-lg border border-content bg-content'}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiUsers className="w-4 h-4 text-red-500" />
-						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>مشترک</span>
+						<span className={'text-xs text-content opacity-70'}>مشترک</span>
 					</div>{' '}
-					<p className={`text-sm font-bold ${getTextColor(theme)}`}>
+					<p className={'text-sm font-bold text-content'}>
 						{formatNumber(data.subscribers, subscriptionStyle)}
 					</p>
 				</div>
 
-				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
+				<div className={'p-3 rounded-lg border border-content bg-content'}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiEye className="w-4 h-4 text-blue-500" />
-						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>بازدید</span>
+						<span className={'text-xs text-content opacity-70'}>بازدید</span>
 					</div>
-					<p className={`text-sm font-bold ${getTextColor(theme)}`}>
+					<p className={'text-sm font-bold text-content'}>
 						{formatNumber(data.totalViews)}
 					</p>
 				</div>
 
-				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
+				<div className={'p-3 rounded-lg border border-content bg-content'}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiVideo className="w-4 h-4 text-green-500" />
-						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>ویدیو</span>
+						<span className={'text-xs text-content opacity-70'}>ویدیو</span>
 					</div>
-					<p className={`text-sm font-bold ${getTextColor(theme)}`}>
+					<p className={'text-sm font-bold text-content'}>
 						{Number.parseInt(data.totalVideos).toLocaleString()}
 					</p>
 				</div>
 
-				<div className={`p-3 rounded-lg border ${getBorderColor(theme)} bg-content`}>
+				<div className={'p-3 rounded-lg border border-content bg-content'}>
 					<div className="flex items-center gap-2 mb-1">
 						<FiCalendar className="w-4 h-4 text-purple-500" />
-						<span className={`text-xs ${getTextColor(theme)} opacity-70`}>عضویت</span>
+						<span className={'text-xs text-content opacity-70'}>عضویت</span>
 					</div>
-					<p className={`text-xs font-medium ${getTextColor(theme)}`}>
+					<p className={'text-xs font-medium text-content'}>
 						{formatDate(data.createdAt)}
 					</p>
 				</div>
@@ -120,7 +115,9 @@ export function YouTubeStatsCard({
 				href={`https://youtube.com/channel/${data.id}`}
 				target="_blank"
 				rel="noopener noreferrer"
-				className={`block w-full p-2 text-center text-xs rounded-lg border border-red-500/30 hover:bg-red-500/10 transition-colors ${getTextColor(theme)} hover:text-red-500`}
+				className={
+					'block w-full p-2 text-center text-xs rounded-lg border border-red-500/30 hover:bg-red-500/10 transition-colors text-content hover:text-red-500'
+				}
 			>
 				مشاهده کانال در یوتیوب
 			</a>{' '}

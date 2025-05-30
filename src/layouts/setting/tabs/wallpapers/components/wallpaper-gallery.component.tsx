@@ -1,5 +1,4 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { getDescriptionTextStyle, useTheme } from '@/context/theme.context'
 import { useRef } from 'react'
 import { WallpaperItem } from '../item.wallpaper'
 
@@ -18,27 +17,13 @@ export function WallpaperGallery({
 	selectedBackground,
 	onSelectBackground,
 }: WallpaperGalleryProps) {
-	const { theme } = useTheme()
 	const galleryRef = useRef<HTMLDivElement>(null)
-
-	const getGalleryStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-100/30'
-			case 'dark':
-				return 'bg-gray-900/30'
-			default: // glass
-				return ''
-		}
-	}
 
 	if (isLoading) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full py-6">
 				<div className="w-8 h-8 rounded-full border-3 border-t-blue-500 border-blue-500/30 animate-spin"></div>
-				<p className={`mt-3 text-sm ${getDescriptionTextStyle(theme)}`}>
-					در حال بارگذاری...
-				</p>
+				<p className={'mt-3 text-sm text-muted'}>در حال بارگذاری...</p>
 			</div>
 		)
 	}
@@ -67,7 +52,9 @@ export function WallpaperGallery({
 		<div className="space-y-3">
 			<div
 				ref={galleryRef}
-				className={`p-2 overflow-x-hidden overflow-y-auto h-96 custom-scrollbar rounded-lg ${getGalleryStyle()}`}
+				className={
+					'p-2 overflow-x-hidden overflow-y-auto h-96 custom-scrollbar rounded-lg bg-content'
+				}
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
 				<div>

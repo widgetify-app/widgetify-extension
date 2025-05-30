@@ -1,6 +1,7 @@
 import { preloadImages } from '@/common/utils/preloadImages'
+import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
-import { getBorderColor, getCardBackground, useTheme } from '@/context/theme.context'
+import { useAuth } from '@/context/auth.context'
 import { useEffect, useState } from 'react'
 import { FiArrowLeft, FiFolder } from 'react-icons/fi'
 import { RetouchFilter } from '../components/retouch-filter.component'
@@ -8,10 +9,8 @@ import { UploadArea } from '../components/upload-area.component'
 import { WallpaperGallery } from '../components/wallpaper-gallery.component'
 import { useWallpaper } from '../hooks/use-wallpaper'
 import { useWallpapersByCategory } from '../hooks/use-wallpapers-by-category'
-import { useAuth } from '@/context/auth.context'
 
 export function GalleryTab() {
-	const { theme } = useTheme()
 	const [isCategoryView, setIsCategoryView] = useState(true)
 	const { isAuthenticated } = useAuth()
 	const {
@@ -68,15 +67,13 @@ export function GalleryTab() {
 		return (
 			<div
 				onClick={() => handleCategorySelect(id)}
-				className={`cursor-pointer rounded-lg p-3 border ${getBorderColor(theme)} ${getCardBackground(theme)} transition-all h-32 max-h-32 flex flex-col`}
+				className={
+					'cursor-pointer rounded-lg p-3 border bg-content border-content transition-all h-32 max-h-32 flex flex-col'
+				}
 			>
 				<div className="flex items-center gap-2 mb-2">
 					<FiFolder className="text-blue-500" size={18} />
-					<p
-						className={`font-medium ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}
-					>
-						{name}
-					</p>
+					<p className={'font-medium text-muted'}>{name}</p>
 				</div>
 
 				<div className="flex-grow">
@@ -104,25 +101,11 @@ export function GalleryTab() {
 	}
 
 	function BackButton() {
-		const getButtonStyle = () => {
-			switch (theme) {
-				case 'light':
-					return 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-				case 'dark':
-					return 'bg-gray-800 text-gray-200 hover:bg-gray-700'
-				default:
-					return 'bg-white/5 text-gray-200 hover:bg-white/10'
-			}
-		}
-
 		return (
-			<button
-				onClick={handleBackToCategories}
-				className={`px-4 py-2 cursor-pointer rounded-full flex items-center gap-2 ${getButtonStyle()} mb-3`}
-			>
+			<Button onClick={() => handleBackToCategories()} size="sm">
 				<FiArrowLeft size={16} />
 				<span>بازگشت به فولدرها</span>
-			</button>
+			</Button>
 		)
 	}
 

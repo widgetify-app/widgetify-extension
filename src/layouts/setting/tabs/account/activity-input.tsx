@@ -1,6 +1,6 @@
+import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import { getButtonStyles, getTextColor, useTheme } from '@/context/theme.context'
 import { useUpdateActivity } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useState } from 'react'
@@ -11,7 +11,6 @@ interface Prop {
 	activity: string
 }
 export function ActivityInput({ activity }: Prop) {
-	const { theme } = useTheme()
 	const [activityText, setActivityText] = useState<string>(activity)
 	const { mutate: updateActivity, isPending: isUpdatingActivity } = useUpdateActivity()
 
@@ -42,7 +41,7 @@ export function ActivityInput({ activity }: Prop) {
 	return (
 		<SectionPanel title="وضعیت فعالیت" size="xs">
 			<div className="flex flex-col p-4 space-y-3 transition-colors rounded-lg">
-				<p className={`text-xs ${getTextColor(theme)} font-light opacity-80`}>
+				<p className={'text-xs text-content font-light opacity-80'}>
 					وضعیت فعالیت شما به دوستانتان نمایش داده می‌شود. (حداکثر {ACTIVITY_MAX_LENGTH}{' '}
 					کاراکتر)
 				</p>
@@ -56,17 +55,18 @@ export function ActivityInput({ activity }: Prop) {
 						maxLength={ACTIVITY_MAX_LENGTH}
 					/>
 					<div className="flex items-center justify-between">
-						<button
+						<Button
 							onClick={handleActivityUpdate}
 							disabled={
 								isUpdatingActivity ||
 								activityText === activity ||
 								activityText.length > ACTIVITY_MAX_LENGTH
 							}
-							className={`px-4 py-1.5 text-sm font-medium cursor-pointer rounded-lg transition-colors ${getButtonStyles(theme, true)} disabled:opacity-50 disabled:cursor-not-allowed`}
+							size="md"
+							isPrimary={true}
 						>
 							{isUpdatingActivity ? 'در حال ذخیره...' : 'ذخیره وضعیت'}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>

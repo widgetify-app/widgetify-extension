@@ -1,7 +1,5 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { useTheme } from '@/context/theme.context'
 import React, { useEffect, useRef, useState } from 'react'
-import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiCheck, FiHeart } from 'react-icons/fi'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
@@ -17,7 +15,6 @@ export const WallpaperItem = React.memo(
 		selectedBackground,
 		setSelectedBackground,
 	}: WallpaperItemProps) {
-		const { theme } = useTheme()
 		const [loaded, setLoaded] = useState(false)
 		const [error, setError] = useState(false)
 		const imgRef = useRef<HTMLImageElement>(null)
@@ -35,54 +32,20 @@ export const WallpaperItem = React.memo(
 
 		const elementRef = useLazyLoad(loadContent)
 
-		const handleSourceClick = (e: React.MouseEvent) => {
-			e.stopPropagation()
-			window.open(wallpaper.source, '_blank')
-		}
-
 		const getItemOutlineStyle = () => {
 			if (isSelected) {
 				return 'ring-2 ring-blue-500 ring-offset-1 ring-offset-blue-100'
 			}
 
-			switch (theme) {
-				case 'light':
-					return 'ring-1 ring-gray-300/50 group-hover:ring-blue-300/70'
-				case 'dark':
-					return 'ring-1 ring-gray-700/60 group-hover:ring-blue-700/50'
-				default: // glass
-					return 'ring-1 ring-white/10 group-hover:ring-white/30'
-			}
+			return 'ring-1 ring-gray-300/50 group-hover:ring-blue-300/70'
 		}
 
 		const getSelectionBadgeStyle = () => {
-			switch (theme) {
-				case 'light':
-					return 'bg-blue-500 text-white shadow-lg'
-
-				default:
-					return 'bg-blue-500 text-white shadow-lg'
-			}
+			return 'bg-primary text-white shadow-lg'
 		}
 
 		const getInfoLayerStyle = () => {
-			switch (theme) {
-				case 'light':
-					return 'bg-gradient-to-t from-black/70 to-black/0'
-				default:
-					return 'bg-gradient-to-t from-black/70 to-black/0'
-			}
-		}
-
-		const getInfoButtonStyle = () => {
-			switch (theme) {
-				case 'light':
-					return 'bg-white/90 text-gray-800 hover:bg-white shadow-sm hover:shadow'
-				case 'dark':
-					return 'bg-gray-800/90 text-blue-300 hover:bg-gray-700 shadow-sm'
-				default: // glass
-					return 'bg-black/50 backdrop-blur-sm text-white hover:bg-black/60 shadow-sm'
-			}
+			return 'bg-gradient-to-t from-black/70 to-black/0'
 		}
 
 		useEffect(() => {
@@ -154,16 +117,6 @@ export const WallpaperItem = React.memo(
 						>
 							{wallpaper.name && (
 								<p className="text-xs font-medium text-white">{wallpaper.name}</p>
-							)}
-
-							{wallpaper.source && (
-								<button
-									onClick={handleSourceClick}
-									className={`mt-1.5 cursor-pointer px-2.5 py-1 text-[10px] rounded-md transition flex items-center gap-1 ${getInfoButtonStyle()}`}
-								>
-									<FaExternalLinkAlt size={12} />
-									منبع
-								</button>
 							)}
 						</div>
 

@@ -1,12 +1,6 @@
 import type { GradientColors, Wallpaper } from '@/common/wallpaper.interface'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import {
-	getBorderColor,
-	getCardBackground,
-	getTextColor,
-	useTheme,
-} from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 
 interface GradientWallpaperProps {
@@ -40,7 +34,6 @@ export function GradientWallpaper({
 	onSelectGradient,
 	selectedGradient,
 }: GradientWallpaperProps) {
-	const { theme } = useTheme()
 	const [customFromColor, setCustomFromColor] = useState('#7F00FF')
 	const [customToColor, setCustomToColor] = useState('#E100FF')
 	const [direction, setDirection] = useState<GradientColors['direction']>('to-r')
@@ -106,24 +99,12 @@ export function GradientWallpaper({
 
 	function getStyle(selected: boolean) {
 		let style =
-			'p-2 border rounded-md flex items-center justify-center  cursor-pointer transition-colors '
-
-		switch (theme) {
-			case 'light':
-				style += 'hover:bg-gray-100 '
-				break
-			case 'dark':
-				style += 'hover:bg-gray-600 text-gray-200 '
-				break
-			default:
-				style += 'hover:bg-gray-800/70 text-gray-300 '
-				break
-		}
+			'p-2 border rounded-md flex items-center justify-center  cursor-pointer transition-colors hover:bg-content'
 
 		if (selected) {
-			style += `border-blue-500 ${getCardBackground(theme)}`
+			style += ' border-primary bg-content'
 		} else {
-			style += getBorderColor(theme)
+			style += 'border-content'
 		}
 
 		return style
@@ -160,9 +141,7 @@ export function GradientWallpaper({
 			<SectionPanel title="گرادیان سفارشی">
 				<div className="flex flex-col gap-4 mb-4 sm:flex-row">
 					<div className="flex-1 space-y-2">
-						<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
-							رنگ شروع
-						</label>
+						<label className={'block text-sm font-medium text-content'}>رنگ شروع</label>
 						<div className="flex items-center gap-2">
 							<TextInput
 								key={'customFromColor'}
@@ -183,9 +162,7 @@ export function GradientWallpaper({
 					</div>
 
 					<div className="flex-1 space-y-2">
-						<label className={`block text-sm font-medium ${getTextColor(theme)}`}>
-							رنگ پایان
-						</label>
+						<label className={'block text-sm font-medium text-content'}>رنگ پایان</label>
 						<div className="flex items-center gap-2">
 							<TextInput
 								key={'customToColor'}
@@ -206,7 +183,7 @@ export function GradientWallpaper({
 				</div>
 
 				<div className="mb-4">
-					<label className={`block mb-2 text-sm font-medium ${getTextColor(theme)}`}>
+					<label className={'block mb-2 text-sm font-medium text-content'}>
 						جهت گرادیان
 					</label>
 					<div className="grid grid-cols-4 gap-2">

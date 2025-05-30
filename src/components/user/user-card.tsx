@@ -1,4 +1,3 @@
-import { getContainerBackground, getTextColor, useTheme } from '@/context/theme.context'
 import { AvatarComponent } from '../avatar.component'
 
 export interface UserCardUser {
@@ -18,12 +17,12 @@ interface UserCardProps {
 }
 
 export function UserCard({ user, className = '' }: UserCardProps) {
-	const { theme } = useTheme()
-
 	return (
 		<div className={`${className}`}>
 			<div
-				className={`flex flex-col overflow-hidden border border-gray-700 rounded-lg shadow-xl ${getContainerBackground(theme)}`}
+				className={
+					'flex flex-col overflow-hidden border border-gray-700 rounded-lg shadow-xl bg-content'
+				}
 			>
 				<div className="w-full h-16 bg-gray-900"></div>
 
@@ -35,16 +34,12 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 					</div>
 
 					<div className="mb-4">
-						<p className={`text-xl font-bold ${getTextColor(theme)}`}>{user.name}</p>
-						<div className={`text-sm font-bold ${getTextColor(theme)} opacity-70`}>
-							@{user.username}
-						</div>
+						<p className={'text-xl font-bold text-content'}>{user.name}</p>
+						<div className={'text-sm font-bold text-muted'}>@{user.username}</div>
 
 						{user.extras?.activity && (
 							<div className="flex items-center mt-2 text-sm text-gray-300">
-								<span className={`${getTextColor(theme)} opacity-85`}>
-									{user.extras.activity}
-								</span>
+								<span className={'text-content opacity-85'}>{user.extras.activity}</span>
 							</div>
 						)}
 					</div>
