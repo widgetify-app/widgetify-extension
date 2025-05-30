@@ -29,6 +29,7 @@ export function ContentAlignmentSettings({
 						label="بالا"
 						key="top"
 						className="w-1/2"
+						defaultActive="center"
 						description="چیدمان محتوا در بالا صفحه قرار می‌گیرد."
 					/>
 				</div>

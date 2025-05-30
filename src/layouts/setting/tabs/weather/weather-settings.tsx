@@ -40,10 +40,10 @@ export function WeatherSettings({
 							onChange={(e) =>
 								updateSettings('forecastCount', Number.parseInt(e.target.value) || 4)
 							}
-							className="select bg-base-content/10 focus:outline-none focus:border-none"
+							className="shadow select bg-base-content/10 focus:outline-none focus:border-none"
 						>
 							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-								<option key={num} value={num}>
+								<option key={num} value={num} className="text-content bg-base-200">
 									{num}
 								</option>
 							))}
