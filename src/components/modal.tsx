@@ -60,27 +60,24 @@ const Modal = ({
 			}}
 			onClose={onClose}
 			dir={direction}
-			// reset border radius
 			style={{ borderRadius: 'var(--daisy-border-radius)' }}
 		>
 			<div
-				className={`modal-box ${daisyUISizeClasses[size]} ${className}`}
+				className={`modal-box ${daisyUISizeClasses[size]} ${className} !p-2`}
 				onClick={(e) => e.stopPropagation()}
 			>
-				{showCloseButton && (
-					<button
-						onClick={onClose}
-						className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-						aria-label="Close"
-					>
-						✕
-					</button>
-				)}
-				{title && (
-					<h3 className={`font-bold text-lg ${showCloseButton ? 'mr-8' : ''}`}>
-						{title}
-					</h3>
-				)}
+				<div className="flex items-center justify-between w-full pb-2 mb-2 border-b border-content">
+					{title && <h3 className={'font-bold text-lg'}>{title}</h3>}
+					{showCloseButton && (
+						<button
+							onClick={onClose}
+							className="btn btn-sm btn-circle btn-ghost"
+							aria-label="Close"
+						>
+							✕
+						</button>
+					)}
+				</div>
 				<div className="py-4">{children}</div>
 			</div>
 		</dialog>,

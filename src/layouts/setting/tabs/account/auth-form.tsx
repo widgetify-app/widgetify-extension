@@ -89,7 +89,7 @@ export const AuthForm = () => {
 						disabled={signInMutation.isPending}
 						isPrimary={true}
 						size="md"
-						className="self-center w-3/4 text-white"
+						className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600 w-3/4"
 					>
 						{signInMutation.isPending ? 'درحال پردازش...' : 'ورود به حساب'}
 					</Button>
