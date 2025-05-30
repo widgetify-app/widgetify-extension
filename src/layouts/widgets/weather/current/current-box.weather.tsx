@@ -121,7 +121,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 				<div
 					className={
-						'relative overflow-hidden transition-colors shadow-inner rounded-xl mt-2 border-base-200 border bg-content'
+						'relative overflow-hidden transition-colors shadow-inner rounded-xl mt-2  border-content border bg-content'
 					}
 				>
 					<div className="flex gap-3 overflow-y-auto min-h-24 max-h-24">

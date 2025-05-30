@@ -16,7 +16,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 		<LazyMotion features={domAnimation}>
 			<div
 				className={
-					'flex flex-col items-center justify-between w-12 h-[5.8rem] p-2 transition-all duration-300   border border-accent-content/20 bg-content rounded-2xl'
+					'flex flex-col items-center justify-between w-12 h-[5.8rem] p-2 transition-all duration-300 border border-content bg-content rounded-2xl'
 				}
 			>
 				{/* Time Section */}
