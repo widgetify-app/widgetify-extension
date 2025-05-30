@@ -71,12 +71,12 @@ export function FolderBookmarkItem({
 					<div className="absolute inset-0 overflow-hidden rounded-xl">
 						<div
 							className={
-								'absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-blue-300/10 to-transparent'
+								'absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-info/5 to-transparent'
 							}
 						/>
 						<div
 							className={
-								'absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-blue-200/20 to-transparent'
+								'absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-primary/10 to-transparent'
 							}
 						/>
 					</div>
