@@ -171,7 +171,7 @@ const Tooltip = ({
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
+								className={`tooltip fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,
