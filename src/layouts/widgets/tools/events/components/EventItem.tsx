@@ -1,5 +1,4 @@
 import Tooltip from '@/components/toolTip'
-import { motion } from 'framer-motion'
 import {
 	FiCalendar,
 	FiChevronRight,
@@ -34,18 +33,10 @@ export function EventItem({ event, index }: EventItemProps) {
 		}
 	}
 
-	const itemVariants = {
-		hidden: { y: 20, opacity: 0 },
-		visible: { y: 0, opacity: 1 },
-	}
-
 	return (
-		<motion.div
+		<div
 			key={`${event.source}-${index}`}
-			className={
-				'mb-2 rounded-lg overflow-hidden bg-content border-r-2 border-primary-content'
-			}
-			variants={itemVariants}
+			className={'mb-2 rounded-lg overflow-hidden bg-content border-r-2 border-content'}
 		>
 			<div className="relative p-1">
 				<div className="flex items-center mb-1">
@@ -106,6 +97,6 @@ export function EventItem({ event, index }: EventItemProps) {
 					</div>
 				)}
 			</div>
-		</motion.div>
+		</div>
 	)
 }

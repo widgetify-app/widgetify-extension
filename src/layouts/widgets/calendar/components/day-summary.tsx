@@ -53,7 +53,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
 	return (
-		<div className={'overflow-hidden bg-base-200/80 rounded-lg'}>
+		<div className={'overflow-hidden bg-content rounded-lg'}>
 			<div className="px-2 pt-1 pb-2">
 				<h3 className={'text-xs text-center font-medium mb-1 widget-tem-text truncate'}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
@@ -62,14 +62,13 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 				<div className="grid grid-cols-2 gap-1">
 					<div
 						className={
-							'p-1 rounded-lg cursor-pointer bg-base-100 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
+							'p-1 rounded-lg cursor-pointer bg-base-300 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
 						}
 					>
 						<FiCalendar
 							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : 'text-gray-400'}`}
 						/>
 						<div className="flex-1 min-w-0">
-							{' '}
 							<div className={'text-xs font-medium text-content truncate'}>
 								{totalEventsCount} رویداد
 							</div>
@@ -83,7 +82,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 					{/* Todos card */}
 					<div
 						className={
-							'p-1 rounded-lg cursor-pointer bg-base-100 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
+							'p-1 rounded-lg cursor-pointer bg-base-300 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
 						}
 					>
 						<FiClipboard
