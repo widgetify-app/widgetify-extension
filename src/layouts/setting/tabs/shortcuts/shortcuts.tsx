@@ -1,5 +1,6 @@
 import { SectionPanel } from '@/components/section-panel'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
+import React from 'react'
 import { useEffect, useState } from 'react'
 
 interface Shortcut {
@@ -8,6 +9,16 @@ interface Shortcut {
 	macKey: string
 	description: string
 	category: string
+}
+
+// Helper function to format keyboard shortcuts
+const formatShortcut = (shortcutText: string) => {
+	return shortcutText.split('+').map((key, index, array) => (
+		<React.Fragment key={index}>
+			<kbd className="kbd">{key.trim()}</kbd>
+			{index < array.length - 1 && ' + '}
+		</React.Fragment>
+	))
 }
 
 export function ShortcutsTab() {
@@ -79,13 +90,9 @@ export function ShortcutsTab() {
 											}
 										>
 											<span className={'text-content'}>{shortcut.description}</span>
-											<kbd
-												className={
-													'px-3 py-1 text-sm font-mono rounded-md border border-primary-content text-content opacity-75'
-												}
-											>
-												{isMac ? shortcut.macKey : shortcut.windowsKey}
-											</kbd>
+											<div className={'px-3 py-1 text-sm font-mono'}>
+												{formatShortcut(isMac ? shortcut.macKey : shortcut.windowsKey)}
+											</div>
 										</div>
 									))}
 								</div>
