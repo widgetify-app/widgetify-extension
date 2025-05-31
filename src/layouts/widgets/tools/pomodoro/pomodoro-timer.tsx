@@ -2,6 +2,7 @@ import Analytics from '@/analytics'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import { FaGear } from 'react-icons/fa6'
 import {
 	FiCheckCircle,
 	FiCoffee,
@@ -189,7 +190,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
-			className="relative p-1 overflow-hidden rounded-xl"
+			className="relative overflow-hidden rounded-xl"
 		>
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-2">
@@ -211,16 +212,12 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					/>
 				</div>
 
-				<motion.button
-					whileHover={{ scale: 1.1, rotate: 15 }}
-					whileTap={{ scale: 0.95 }}
+				<button
+					className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
 					onClick={() => setShowSettings(!showSettings)}
-					className={
-						'p-2 rounded-full cursor-pointer transition-colors hover:bg-gray-100'
-					}
 				>
-					<FiSettings />
-				</motion.button>
+					<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
+				</button>
 			</div>
 
 			{/* Timer Display */}
