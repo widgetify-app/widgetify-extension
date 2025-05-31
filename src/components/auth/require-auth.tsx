@@ -44,7 +44,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						<p className={'text-sm mb-4 text-content'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
-						<Button onClick={handleAuthClick} size="md">
+						<Button onClick={handleAuthClick} size="md" isPrimary={true}>
 							ورود به حساب
 						</Button>
 					</div>

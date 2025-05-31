@@ -77,7 +77,7 @@ export const AuthForm = () => {
 						target="_blank"
 						rel="noopener noreferrer"
 						className={
-							'block text-left text-sm transition-colors cursor-pointer font-light text-primary hover:'
+							'block text-left text-sm transition-colors cursor-pointer font-light text-primary hover:text-primary/80 hover:underline'
 						}
 					>
 						رمز عبور خود را فراموش کرده‌اید؟
@@ -98,7 +98,9 @@ export const AuthForm = () => {
 
 			<Button
 				onClick={() => handleRedirectToRegister()}
-				className={'btn-link hover:opacity-60'}
+				className={
+					'btn-link mt-4 hover:opacity-60 transition-opacity duration-200 text-primary hover:text-primary/80'
+				}
 				size="md"
 			>
 				حساب کاربری ندارید؟ ثبت‌نام کنید
