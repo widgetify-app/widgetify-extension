@@ -64,7 +64,7 @@ export function DayItem({
 	// Theme-specific styles
 	const getDayTextStyle = () => {
 		if (isHoliday) {
-			return 'text-red-400'
+			return 'text-red-400 bg-red-400/10'
 		}
 
 		return 'text-content'

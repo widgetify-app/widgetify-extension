@@ -167,7 +167,7 @@ export function Connections() {
 										</div>
 										<div>
 											<p className={'font-medium text-content'}>{platform.name}</p>
-											<p className="text-xs font-light text-gray-500">
+											<p className="text-xs font-light text-content">
 												{platform.connected ? 'متصل شده' : 'متصل نشده'}
 											</p>
 										</div>

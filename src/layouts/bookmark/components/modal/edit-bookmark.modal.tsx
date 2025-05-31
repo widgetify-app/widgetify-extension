@@ -158,7 +158,7 @@ export function EditBookmarkModal({
 						updateFormData,
 						type as BookmarkType,
 					)}
-					<p className="mt-2 text-xs text-center text-gray-500">
+					<p className="mt-2 text-xs text-center text-content">
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (

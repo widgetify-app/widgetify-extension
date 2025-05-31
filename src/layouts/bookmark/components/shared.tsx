@@ -203,8 +203,8 @@ export function useBookmarkIcon() {
 				onDragLeave={handleDragLeave}
 				onDrop={handleDrop}
 			>
-				<FaImage className="w-6 h-6 mb-1 text-gray-500" />
-				<span className="text-xs text-center text-gray-500">آپلود تصویر (اختیاری)</span>
+				<FaImage className="w-6 h-6 mb-1 text-content" />
+				<span className="text-xs text-center text-content">آپلود تصویر (اختیاری)</span>
 			</div>
 		)
 	}

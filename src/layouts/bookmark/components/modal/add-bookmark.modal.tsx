@@ -168,7 +168,7 @@ export function AddBookmarkModal({
 
 				<div className="mb-2">
 					{renderIconPreview(formData, iconSource, setIconSource, updateFormData, type)}
-					<p className="mt-2 text-xs text-center text-gray-500">
+					<p className="mt-2 text-xs text-center text-content">
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (

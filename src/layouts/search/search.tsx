@@ -70,7 +70,7 @@ export function SearchLayout() {
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
 								className={
-									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-gray-400 dark:placeholder:text-gray-500'
+									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-gray-400 dark:placeholder:text-content'
 								}
 								placeholder="جستجو ..."
 								autoComplete="off"
@@ -88,7 +88,7 @@ export function SearchLayout() {
 									type="button"
 									onClick={handleClearSearch}
 									className={
-										'absolute p-2 transition-all duration-200 -translate-y-1/2 rounded-full cursor-pointer right-3 top-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+										'absolute p-2 transition-all duration-200 -translate-y-1/2 rounded-full cursor-pointer right-3 top-1/2 text-gray-400 hover:text-gray-600 dark:text-content dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
 									}
 								>
 									<MdOutlineClear size={16} />

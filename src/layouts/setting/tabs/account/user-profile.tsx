@@ -35,8 +35,8 @@ const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) =
 		}
 	return {
 		label: 'نامشخص',
-		icon: <BsGenderAmbiguous className="text-gray-500" />,
-		color: 'text-gray-500',
+		icon: <BsGenderAmbiguous className="text-content" />,
+		color: 'text-content',
 	}
 }
 
@@ -154,7 +154,7 @@ export const UserProfile = () => {
 						<p className={'text-sm font-medium text-content flex items-center gap-1.5'}>
 							<AiOutlineFileSync
 								size={16}
-								className={enableSync ? 'text-blue-500' : 'text-gray-500'}
+								className={enableSync ? 'text-blue-500' : 'text-content'}
 							/>
 							فعال‌سازی همگام‌سازی (Sync)
 						</p>

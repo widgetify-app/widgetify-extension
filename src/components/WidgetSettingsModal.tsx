@@ -288,7 +288,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 								</Droppable>
 							</div>
 
-							<div className="pt-3 mt-2 text-xs text-gray-500 opacity-75 dark:text-gray-400">
+							<div className="pt-3 mt-2 text-xs opacity-75 text-content dark:text-gray-400">
 								فقط یک ویجت می‌تواند در ستون چپ فعال باشد
 							</div>
 						</div>

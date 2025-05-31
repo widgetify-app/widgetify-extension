@@ -165,7 +165,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 			direction="rtl"
 		>
 			<LazyMotion features={domAnimation}>
-				<div className="flex flex-col w-full gap-6 p-4 mx-auto overflow-y-auto h-96">
+				<div className="flex flex-col w-full gap-6 px-2 mx-auto overflow-y-auto h-96">
 					<CheckBoxWithDescription
 						isEnabled={rssState.useDefaultNews}
 						onToggle={toggleDefaultNews}
@@ -227,7 +227,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 					<section className="mt-4">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium text-base-200'}>فیدهای شما</h3>
+							<h3 className={'text-sm font-medium text-content'}>فیدهای شما</h3>
 							{rssState.customFeeds.length > 0 && (
 								<div className={'text-xs text-base-300'}>
 									{rssState.customFeeds.length} فید

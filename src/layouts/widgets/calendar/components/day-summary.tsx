@@ -53,7 +53,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
 	return (
-		<div className={'overflow-hidden bg-content rounded-lg'}>
+		<div className={'overflow-hidden border border-content rounded-lg'}>
 			<div className="px-2 pt-1 pb-2">
 				<h3 className={'text-xs text-center font-medium mb-1 widget-tem-text truncate'}>
 					خلاصه روز {selectedDate.format('jD jMMMM')}

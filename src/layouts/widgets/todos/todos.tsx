@@ -150,8 +150,15 @@ export function TodosLayout() {
 										'select select-xs text-[.65rem] w-24 !px-2 focus:outline-none focus:border focus:border-primary'
 									}
 								>
-									<option value={TodoViewType.Day}>لیست امروز</option>
-									<option value={TodoViewType.Monthly}>لیست ماهانه</option>
+									<option value={TodoViewType.Day} className="bg-content text-content">
+										لیست امروز
+									</option>
+									<option
+										value={TodoViewType.Monthly}
+										className="bg-content text-content"
+									>
+										لیست ماهانه
+									</option>
 								</select>
 							</div>
 						</>

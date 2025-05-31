@@ -52,7 +52,7 @@ export const FriendsList = ({
 	}
 
 	if (friends.length === 0) {
-		return <div className="p-4 text-center text-gray-500">{emptyMessage}</div>
+		return <div className="p-4 text-center text-content">{emptyMessage}</div>
 	}
 
 	return (

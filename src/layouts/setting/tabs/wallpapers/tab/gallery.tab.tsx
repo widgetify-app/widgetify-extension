@@ -91,7 +91,7 @@ export function GalleryTab() {
 						</div>
 					) : (
 						<div className="flex flex-col items-center justify-center h-full rounded">
-							<FiFolder className="mb-2 text-gray-500/40" size={32} />
+							<FiFolder className="mb-2 text-content/40" size={32} />
 							<p className="text-xs text-gray-400">بدون تصویر</p>
 						</div>
 					)}

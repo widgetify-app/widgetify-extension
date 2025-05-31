@@ -93,7 +93,7 @@ export function TextInput({
 			onKeyDown={onKeyDown}
 			dir={direction}
 			placeholder={placeholder || ''}
-			className={`input w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20
+			className={`input bg-content w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20
 			   focus:border-primary
                font-light ${className}`}
 			onChange={handleChange}

@@ -39,7 +39,7 @@ export const FriendSettingModal = ({
 			element: user ? (
 				<ProfileTab />
 			) : (
-				<div className="p-4 text-center text-gray-500">
+				<div className="p-4 text-center text-content">
 					برای مشاهده پروفایل خود ابتدا وارد حساب کاربری شوید
 				</div>
 			),
