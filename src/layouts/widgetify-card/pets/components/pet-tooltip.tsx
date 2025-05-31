@@ -21,7 +21,7 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 		>
 			<div
 				className={
-					'relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg bg-content'
+					'relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg bg-content after:content-[""] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-l-[6px] after:border-r-[6px] after:border-t-[6px] after:border-l-transparent after:border-r-transparent after:border-t-base-300'
 				}
 				style={{
 					animation: isAnimation ? 'gentlePulse 2s ease-in-out infinite' : undefined,
