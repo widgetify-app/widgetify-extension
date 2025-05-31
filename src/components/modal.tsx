@@ -78,7 +78,7 @@ const Modal = ({
 						</button>
 					)}
 				</div>
-				<div className="py-4">{children}</div>
+				<div className="py-1">{children}</div>
 			</div>
 		</dialog>,
 		document.body,

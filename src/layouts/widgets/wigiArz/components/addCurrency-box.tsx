@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useCurrencyStore } from '@/context/currency.context'
@@ -119,11 +120,11 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 											key={option.value}
 											className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
                                                         transition-all duration-200 ease-out hover:scale-103 active:scale-97 
-                                                        ${isSelected ? 'currency-box-selected' : 'currency-box-unselected'}
+                                                        ${isSelected ? 'currency-box-selected border-success bg-success/30 text-success-content' : 'border-content hover:!border-success'}
                                                         ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
 											style={{
 												transitionDelay: isContentVisible
-													? `${50 + groupIndex * 100 + 50}ms`
+													? `${10 + groupIndex * 100 + 50}ms`
 													: '0ms',
 											}}
 											onClick={() => toggleCurrency(option.value)}
@@ -147,13 +148,15 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				<div
 					className={`flex justify-center w-full mt-5 transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
 				>
-					<button
+					<Button
 						onClick={onClose}
 						type="button"
-						className="px-6 w-64 py-2.5 rounded-xl cursor-pointer font-medium text-sm currency-confirm-button transition-transform duration-200 ease-in-out hover:scale-103 active:scale-97"
+						isPrimary={true}
+						size="md"
+						className="w-full text-white"
 					>
 						تایید
-					</button>
+					</Button>
 				</div>
 			</div>
 		</Modal>
