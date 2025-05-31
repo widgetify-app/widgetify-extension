@@ -1,23 +1,23 @@
 export type BookmarkType = 'BOOKMARK' | 'FOLDER'
 
 export interface Bookmark {
-	id: string
-	title: string
-	type: BookmarkType
-	parentId: string | null
-	isLocal: boolean
-	onlineId: string | null
-	url: string
-	icon?: string
-	pinned?: boolean
-	customImage?: string
-	customBackground?: string
-	customTextColor?: string
-	sticker?: string
-	order?: number
+  id: string
+  title: string
+  type: BookmarkType
+  parentId: string | null
+  isLocal: boolean
+  onlineId: string | null
+  url: string
+  icon?: string
+  pinned?: boolean
+  customImage?: string
+  customBackground?: string
+  customTextColor?: string
+  sticker?: string
+  order?: number
 }
 
 export interface FolderPathItem {
-	id: string
-	title: string
+  id: string
+  title: string
 }

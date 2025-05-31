@@ -2,9 +2,9 @@ import { PetFactory } from './pet-factory'
 import { usePetContext } from './pet.context'
 
 export function Pet() {
-	const { enablePets } = usePetContext()
+  const { enablePets } = usePetContext()
 
-	if (!enablePets) return null
+  if (!enablePets) return null
 
-	return <PetFactory />
+  return <PetFactory />
 }

@@ -14,67 +14,70 @@ import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
 export const ToolsLayout: React.FC<any> = () => {
-	const [activeTab, setActiveTab] = useState<TabType>('events')
-	const { selectedDate, setCurrentDate } = useDate()
-	const { data: events } = useGetEvents()
-	const { user } = useAuth()
+  const [activeTab, setActiveTab] = useState<TabType>('events')
+  const { selectedDate, setCurrentDate } = useDate()
+  const { data: events } = useGetEvents()
+  const { user } = useAuth()
 
-	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
-	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
+  const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
+  const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
 
-	const { data: googleEvents } = useGetGoogleCalendarEvents(
-		user?.connections?.includes('google') || false,
-		startOfMonth,
-		endOfMonth,
-	)
+  const { data: googleEvents } = useGetGoogleCalendarEvents(
+    user?.connections?.includes('google') || false,
+    startOfMonth,
+    endOfMonth,
+  )
 
-	const onTabClick = (tab: TabType) => {
-		setActiveTab(tab)
-	}
+  const onTabClick = (tab: TabType) => {
+    setActiveTab(tab)
+  }
 
-	return (
-		<WidgetContainer>
-			<div className="mb-2">
-				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
-			</div>
+  return (
+    <WidgetContainer>
+      <div className="mb-2">
+        <TabNavigation
+          activeTab={activeTab}
+          onTabClick={onTabClick || (() => {})}
+        />
+      </div>
 
-			{activeTab === 'events' && (
-				<motion.div
-					key="events-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<Events
-						events={events || []}
-						googleEvents={googleEvents || []}
-						currentDate={selectedDate}
-						onDateChange={setCurrentDate}
-					/>
-				</motion.div>
-			)}
+      {activeTab === 'events' && (
+        <motion.div
+          key="events-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <Events
+            events={events || []}
+            googleEvents={googleEvents || []}
+            currentDate={selectedDate}
+            onDateChange={setCurrentDate}
+          />
+        </motion.div>
+      )}
 
-			{activeTab === 'religious-time' && (
-				<motion.div
-					key="religious-time-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<ReligiousTime currentDate={selectedDate} />
-				</motion.div>
-			)}
+      {activeTab === 'religious-time' && (
+        <motion.div
+          key="religious-time-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <ReligiousTime currentDate={selectedDate} />
+        </motion.div>
+      )}
 
-			{activeTab === 'pomodoro' && (
-				<motion.div
-					key="pomodoro-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<PomodoroTimer />
-				</motion.div>
-			)}
-		</WidgetContainer>
-	)
+      {activeTab === 'pomodoro' && (
+        <motion.div
+          key="pomodoro-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <PomodoroTimer />
+        </motion.div>
+      )}
+    </WidgetContainer>
+  )
 }

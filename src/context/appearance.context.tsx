@@ -5,102 +5,109 @@ import { createContext, useContext, useEffect, useState } from 'react'
 export type FontFamily = 'Vazir' | 'Samim'
 
 export interface AppearanceData {
-	contentAlignment: 'center' | 'top'
-	fontFamily: FontFamily
+  contentAlignment: 'center' | 'top'
+  fontFamily: FontFamily
 }
 
 interface AppearanceContextContextType extends AppearanceData {
-	updateSetting: <K extends keyof AppearanceData>(
-		key: K,
-		value: AppearanceData[K],
-	) => void
-	setContentAlignment: (value: 'center' | 'top') => void
-	setFontFamily: (value: FontFamily) => void
+  updateSetting: <K extends keyof AppearanceData>(
+    key: K,
+    value: AppearanceData[K],
+  ) => void
+  setContentAlignment: (value: 'center' | 'top') => void
+  setFontFamily: (value: FontFamily) => void
 }
 
 const DEFAULT_SETTINGS: AppearanceData = {
-	contentAlignment: 'top',
-	fontFamily: 'Vazir',
+  contentAlignment: 'top',
+  fontFamily: 'Vazir',
 }
 
-export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
+export const AppearanceContext =
+  createContext<AppearanceContextContextType | null>(null)
 
-export function AppearanceProvider({ children }: { children: React.ReactNode }) {
-	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
-	const [isInitialized, setIsInitialized] = useState(false)
+export function AppearanceProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
+  const [isInitialized, setIsInitialized] = useState(false)
 
-	useEffect(() => {
-		async function loadSettings() {
-			try {
-				const storedSettings = await getFromStorage('appearance')
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const storedSettings = await getFromStorage('appearance')
 
-				if (storedSettings) {
-					setSettings({
-						...DEFAULT_SETTINGS,
-						...storedSettings,
-					})
-				}
-			} finally {
-				setIsInitialized(true)
-			}
-		}
+        if (storedSettings) {
+          setSettings({
+            ...DEFAULT_SETTINGS,
+            ...storedSettings,
+          })
+        }
+      } finally {
+        setIsInitialized(true)
+      }
+    }
 
-		loadSettings()
-	}, [])
+    loadSettings()
+  }, [])
 
-	const updateSetting = <K extends keyof AppearanceData>(
-		key: K,
-		value: AppearanceData[K],
-	) => {
-		setSettings((prevSettings) => {
-			const newSettings = {
-				...prevSettings,
-				[key]: value,
-			}
+  const updateSetting = <K extends keyof AppearanceData>(
+    key: K,
+    value: AppearanceData[K],
+  ) => {
+    setSettings((prevSettings) => {
+      const newSettings = {
+        ...prevSettings,
+        [key]: value,
+      }
 
-			setToStorage('appearance', newSettings)
-			return newSettings
-		})
-	}
+      setToStorage('appearance', newSettings)
+      return newSettings
+    })
+  }
 
-	const setContentAlignment = (value: 'center' | 'top') => {
-		updateSetting('contentAlignment', value)
-	}
+  const setContentAlignment = (value: 'center' | 'top') => {
+    updateSetting('contentAlignment', value)
+  }
 
-	const setFontFamily = (value: FontFamily) => {
-		updateSetting('fontFamily', value)
-	}
+  const setFontFamily = (value: FontFamily) => {
+    updateSetting('fontFamily', value)
+  }
 
-	useEffect(() => {
-		if (isInitialized && settings.fontFamily) {
-			document.body.style.fontFamily = `"${settings.fontFamily}", sans-serif`
-		}
-	}, [isInitialized, settings.fontFamily])
+  useEffect(() => {
+    if (isInitialized && settings.fontFamily) {
+      document.body.style.fontFamily = `"${settings.fontFamily}", sans-serif`
+    }
+  }, [isInitialized, settings.fontFamily])
 
-	if (!isInitialized) {
-		return null
-	}
+  if (!isInitialized) {
+    return null
+  }
 
-	const contextValue: AppearanceContextContextType = {
-		...settings,
-		updateSetting,
-		setContentAlignment,
-		setFontFamily,
-	}
+  const contextValue: AppearanceContextContextType = {
+    ...settings,
+    updateSetting,
+    setContentAlignment,
+    setFontFamily,
+  }
 
-	return (
-		<AppearanceContext.Provider value={contextValue}>
-			{children}
-		</AppearanceContext.Provider>
-	)
+  return (
+    <AppearanceContext.Provider value={contextValue}>
+      {children}
+    </AppearanceContext.Provider>
+  )
 }
 
 export function useAppearanceSetting() {
-	const context = useContext(AppearanceContext)
+  const context = useContext(AppearanceContext)
 
-	if (!context) {
-		throw new Error('useAppearanceSetting must be used within a AppearanceProvider')
-	}
+  if (!context) {
+    throw new Error(
+      'useAppearanceSetting must be used within a AppearanceProvider',
+    )
+  }
 
-	return context
+  return context
 }

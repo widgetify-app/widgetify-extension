@@ -49,7 +49,8 @@ const DEFAULT_SETTINGS: PetSettings = {
     [PetTypes.CHICKEN]: {
       name: 'قدقدپور',
     },
-    [PetTypes.YOUR_NEW_PET]: { // Add your new pet here
+    [PetTypes.YOUR_NEW_PET]: {
+      // Add your new pet here
       name: 'Your Pet Name',
     },
   },
@@ -73,7 +74,7 @@ import { usePetContext } from '../pet.context'
 
 export const YourPetComponent = () => {
   const { getCurrentPetName } = usePetContext()
-  
+
   // Define animations, dimensions, durations and assets for your pet
   const petAnimations = {
     idle,
@@ -81,24 +82,24 @@ export const YourPetComponent = () => {
     run: running,
     swipe,
     stand: swipe,
-    climb: walking
+    climb: walking,
   }
-  
+
   const petDimensions = {
     size: 32,
     walkSpeed: PetSpeed.NORMAL,
     runSpeed: PetSpeed.VERY_FAST,
     climbSpeed: 1.2,
-    maxHeight: 100
+    maxHeight: 100,
   }
-  
+
   const petDurations = {
     walk: { min: 3000, max: 8000 },
     run: { min: 1500, max: 4000 },
     rest: { min: 5000, max: 10000 },
-    climb: { min: 4000, max: 7000 }
+    climb: { min: 4000, max: 7000 },
   }
-  
+
   const petAssets = {
     collectibleIcon: YourCollectibleIcon,
     collectibleSize: 24,
@@ -116,18 +117,18 @@ export const YourPetComponent = () => {
     collectibles,
     getAnimationForCurrentAction,
     dimensions,
-    assets
+    assets,
   } = useBasePetLogic({
     name: getCurrentPetName() || 'Your Pet Default Name',
     animations: petAnimations,
     dimensions: petDimensions,
     durations: petDurations,
-    assets: petAssets
+    assets: petAssets,
   })
 
   // Use the BasePetContainer component for consistent rendering
   return (
-    <BasePetContainer 
+    <BasePetContainer
       name={getCurrentPetName() || 'Your Pet Default Name'}
       containerRef={containerRef}
       petRef={petRef}
@@ -148,21 +149,25 @@ export const YourPetComponent = () => {
 
 ```tsx
 // Add the import for your new pet component
-const YourPetComponent = React.lazy(() => import('./pet-item/pet-your-new-pet').then(module => ({ default: module.YourPetComponent })));
+const YourPetComponent = React.lazy(() =>
+  import('./pet-item/pet-your-new-pet').then((module) => ({
+    default: module.YourPetComponent,
+  })),
+)
 
 // Add the case for your new pet in the switch statement
 switch (petType) {
   case PetTypes.DOG_AKITA:
-    PetComponent = DogComponent;
-    break;
+    PetComponent = DogComponent
+    break
   case PetTypes.CHICKEN:
-    PetComponent = ChickenComponent;
-    break;
+    PetComponent = ChickenComponent
+    break
   case PetTypes.YOUR_NEW_PET:
-    PetComponent = YourPetComponent;
-    break;
+    PetComponent = YourPetComponent
+    break
   default:
-    return null;
+    return null
 }
 ```
 
@@ -173,6 +178,7 @@ switch (petType) {
 ## Pet Behaviors and Animations
 
 Pets share these common behaviors:
+
 - Walking/running
 - Resting (idle or sitting)
 - Climbing walls
@@ -180,6 +186,7 @@ Pets share these common behaviors:
 - Interaction with users when clicked
 
 Each pet needs at least these animations:
+
 - Idle
 - Walk
 - Run
@@ -201,6 +208,7 @@ All pets use a common container that positions them at the bottom of the screen.
 ## Creating Pet Assets
 
 For a cohesive look, pet animations should:
+
 - Be pixel art style
 - Have a transparent background
 - Run at 8 frames per second

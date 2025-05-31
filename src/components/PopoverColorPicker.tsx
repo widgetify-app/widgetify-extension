@@ -4,101 +4,104 @@ import { RgbaStringColorPicker } from 'react-colorful'
 import { createPortal } from 'react-dom'
 
 interface PopoverColorPickerProps {
-	color: string
-	onChange: (color: string) => void
+  color: string
+  onChange: (color: string) => void
 }
 
-const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange }) => {
-	const triggerRef = useRef<HTMLDivElement>(null)
-	const popoverRef = useRef<HTMLDivElement>(null)
-	const [isOpen, setIsOpen] = useState<boolean>(false)
-	const [position, setPosition] = useState({ top: 0, left: 0 })
+const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({
+  color,
+  onChange,
+}) => {
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const popoverRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
 
-	useEffect(() => {
-		if (isOpen && triggerRef.current) {
-			const rect = triggerRef.current.getBoundingClientRect()
-			setPosition({
-				top: rect.bottom + window.scrollY,
-				left: rect.right - 20 + window.scrollX,
-			})
-		}
-	}, [isOpen])
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.right - 20 + window.scrollX,
+      })
+    }
+  }, [isOpen])
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				popoverRef.current &&
-				!popoverRef.current.contains(event.target as Node) &&
-				triggerRef.current &&
-				!triggerRef.current.contains(event.target as Node)
-			) {
-				setIsOpen(false)
-			}
-		}
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
 
-		const handleScroll = () => {
-			if (triggerRef.current && isOpen) {
-				const rect = triggerRef.current.getBoundingClientRect()
-				setPosition({
-					top: rect.bottom + window.scrollY,
-					left: rect.right - 200 + window.scrollX,
-				})
-			}
-		}
+    const handleScroll = () => {
+      if (triggerRef.current && isOpen) {
+        const rect = triggerRef.current.getBoundingClientRect()
+        setPosition({
+          top: rect.bottom + window.scrollY,
+          left: rect.right - 200 + window.scrollX,
+        })
+      }
+    }
 
-		document.addEventListener('mousedown', handleClickOutside)
-		window.addEventListener('scroll', handleScroll)
-		window.addEventListener('resize', handleScroll)
+    document.addEventListener('mousedown', handleClickOutside)
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleScroll)
 
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside)
-			window.removeEventListener('scroll', handleScroll)
-			window.removeEventListener('resize', handleScroll)
-		}
-	}, [isOpen])
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [isOpen])
 
-	const { theme } = useTheme()
+  const { theme } = useTheme()
 
-	const getPopoverStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-white shadow-lg border border-gray-200'
-			case 'dark':
-				return 'bg-neutral-800 shadow-lg border border-neutral-700'
-			default: // glass
-				return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
-		}
-	}
+  const getPopoverStyle = () => {
+    switch (theme) {
+      case 'light':
+        return 'bg-white shadow-lg border border-gray-200'
+      case 'dark':
+        return 'bg-neutral-800 shadow-lg border border-neutral-700'
+      default: // glass
+        return 'bg-[#1E1E1E]/90 backdrop-blur-sm shadow-lg border border-white/10'
+    }
+  }
 
-	const displayColor = color || '#000000'
+  const displayColor = color || '#000000'
 
-	return (
-		<>
-			<div
-				ref={triggerRef}
-				className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
-				style={{ backgroundColor: displayColor }}
-				onClick={() => setIsOpen(!isOpen)}
-			/>
+  return (
+    <>
+      <div
+        ref={triggerRef}
+        className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
+        style={{ backgroundColor: displayColor }}
+        onClick={() => setIsOpen(!isOpen)}
+      />
 
-			{isOpen &&
-				createPortal(
-					<div
-						ref={popoverRef}
-						className={`fixed flex p-2 rounded-md ${getPopoverStyle()}`}
-						style={{
-							top: `${position.top}px`,
-							left: `${position.left}px`,
-							width: '200px',
-							zIndex: 50,
-						}}
-					>
-						<RgbaStringColorPicker color={displayColor} onChange={onChange} />
-					</div>,
-					document.body,
-				)}
-		</>
-	)
+      {isOpen &&
+        createPortal(
+          <div
+            ref={popoverRef}
+            className={`fixed flex p-2 rounded-md ${getPopoverStyle()}`}
+            style={{
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+              width: '200px',
+              zIndex: 50,
+            }}
+          >
+            <RgbaStringColorPicker color={displayColor} onChange={onChange} />
+          </div>,
+          document.body,
+        )}
+    </>
+  )
 }
 
 export default PopoverColorPicker

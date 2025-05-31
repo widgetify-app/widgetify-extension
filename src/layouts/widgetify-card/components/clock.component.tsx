@@ -5,34 +5,34 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
-	const { timezone } = useGeneralSetting()
-	const [time, setTime] = useState(getCurrentDate(timezone))
-	const { theme } = useTheme()
+  const { timezone } = useGeneralSetting()
+  const [time, setTime] = useState(getCurrentDate(timezone))
+  const { theme } = useTheme()
 
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setTime(getCurrentDate(timezone))
-		}, 1000)
-		return () => clearInterval(timer)
-	}, [timezone])
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(getCurrentDate(timezone))
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [timezone])
 
-	const isDayTime = time.hour() >= 6 && time.hour() < 18
-	const bgGradient = isDayTime ? '☀️' : '🌙'
+  const isDayTime = time.hour() >= 6 && time.hour() < 18
+  const bgGradient = isDayTime ? '☀️' : '🌙'
 
-	return (
-		<motion.div
-			className="p-2"
-			initial={{ opacity: 0, scale: 0.9 }}
-			animate={{ opacity: 1, scale: 1 }}
-			transition={{ duration: 0.5 }}
-		>
-			<div
-				className={`text-xs font-extrabold tracking-wide ${getTextColor(theme)} drop-shadow-lg`}
-			>
-				{bgGradient} {time.format('HH:mm')}
-			</div>
-		</motion.div>
-	)
+  return (
+    <motion.div
+      className="p-2"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div
+        className={`text-xs font-extrabold tracking-wide ${getTextColor(theme)} drop-shadow-lg`}
+      >
+        {bgGradient} {time.format('HH:mm')}
+      </div>
+    </motion.div>
+  )
 }
 
 export default ClockComponent

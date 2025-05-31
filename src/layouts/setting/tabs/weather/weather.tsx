@@ -5,24 +5,27 @@ import { SelectedCityDisplay } from './SelectedCityDisplay'
 import { WeatherSettings } from './weather-settings'
 
 export function WeatherOptions() {
-	const { selectedCity, weatherSettings, updateWeatherSettings } = useWeatherStore()
+  const { selectedCity, weatherSettings, updateWeatherSettings } =
+    useWeatherStore()
 
-	return (
-		<div className="w-full max-w-xl mx-auto transition-all duration-300">
-			<div className="space-y-6">
-				{/* Search City Section */}
-				<SelectedCityDisplay city={selectedCity} />
+  return (
+    <div className="w-full max-w-xl mx-auto transition-all duration-300">
+      <div className="space-y-6">
+        {/* Search City Section */}
+        <SelectedCityDisplay city={selectedCity} />
 
-				{/* Display Options */}
-				<SectionPanel title="تنظیمات نمایش">
-					<WeatherSettings
-						forecastCount={weatherSettings.forecastCount}
-						temperatureUnit={weatherSettings.temperatureUnit}
-						useAI={weatherSettings.useAI}
-						updateSettings={(key, value) => updateWeatherSettings(key as any, value)}
-					/>
-				</SectionPanel>
-			</div>
-		</div>
-	)
+        {/* Display Options */}
+        <SectionPanel title="تنظیمات نمایش">
+          <WeatherSettings
+            forecastCount={weatherSettings.forecastCount}
+            temperatureUnit={weatherSettings.temperatureUnit}
+            useAI={weatherSettings.useAI}
+            updateSettings={(key, value) =>
+              updateWeatherSettings(key as any, value)
+            }
+          />
+        </SectionPanel>
+      </div>
+    </div>
+  )
 }

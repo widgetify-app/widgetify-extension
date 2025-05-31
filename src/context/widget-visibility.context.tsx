@@ -1,98 +1,111 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import {
+  type ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
 interface WidgetVisibilityState {
-	widgetify: boolean
-	arzLive: boolean
-	calendar: boolean
-	weather: boolean
-	news: boolean
-	comboWidget: boolean
-	todos: boolean
-	tools: boolean
-	notes: boolean
-	youtube: boolean
+  widgetify: boolean
+  arzLive: boolean
+  calendar: boolean
+  weather: boolean
+  news: boolean
+  comboWidget: boolean
+  todos: boolean
+  tools: boolean
+  notes: boolean
+  youtube: boolean
 }
 
 interface WidgetVisibilityContextType {
-	visibility: WidgetVisibilityState
-	toggleWidget: (widgetId: keyof WidgetVisibilityState) => void
-	openWidgetSettings: () => void
+  visibility: WidgetVisibilityState
+  toggleWidget: (widgetId: keyof WidgetVisibilityState) => void
+  openWidgetSettings: () => void
 }
 
 const defaultVisibility: WidgetVisibilityState = {
-	widgetify: true,
-	arzLive: true,
-	calendar: true,
-	weather: true,
-	news: false,
-	comboWidget: false,
-	todos: true,
-	tools: true,
-	notes: false,
-	youtube: false,
+  widgetify: true,
+  arzLive: true,
+  calendar: true,
+  weather: true,
+  news: false,
+  comboWidget: false,
+  todos: true,
+  tools: true,
+  notes: false,
+  youtube: false,
 }
 
-const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
-	undefined,
-)
+const WidgetVisibilityContext = createContext<
+  WidgetVisibilityContextType | undefined
+>(undefined)
 
-export function WidgetVisibilityProvider({ children }: { children: ReactNode }) {
-	const [visibility, setVisibility] = useState<WidgetVisibilityState>(defaultVisibility)
-	const [isLoaded, setIsLoaded] = useState(false)
+export function WidgetVisibilityProvider({
+  children,
+}: {
+  children: ReactNode
+}) {
+  const [visibility, setVisibility] =
+    useState<WidgetVisibilityState>(defaultVisibility)
+  const [isLoaded, setIsLoaded] = useState(false)
 
-	useEffect(() => {
-		async function loadSettings() {
-			const storedVisibility = await getFromStorage('widgetVisibility')
-			if (storedVisibility) {
-				setVisibility(storedVisibility)
-			}
-			setIsLoaded(true)
-		}
+  useEffect(() => {
+    async function loadSettings() {
+      const storedVisibility = await getFromStorage('widgetVisibility')
+      if (storedVisibility) {
+        setVisibility(storedVisibility)
+      }
+      setIsLoaded(true)
+    }
 
-		loadSettings()
-	}, [])
+    loadSettings()
+  }, [])
 
-	useEffect(() => {
-		if (isLoaded) {
-			setToStorage('widgetVisibility', visibility)
-		}
-	}, [visibility, isLoaded])
+  useEffect(() => {
+    if (isLoaded) {
+      setToStorage('widgetVisibility', visibility)
+    }
+  }, [visibility, isLoaded])
 
-	const toggleWidget = (widgetId: keyof WidgetVisibilityState) => {
-		setVisibility((prev) => ({
-			...prev,
-			[widgetId]: !prev[widgetId],
-		}))
+  const toggleWidget = (widgetId: keyof WidgetVisibilityState) => {
+    setVisibility((prev) => ({
+      ...prev,
+      [widgetId]: !prev[widgetId],
+    }))
 
-		Analytics.featureUsed(
-			'widget_visibility',
-			{
-				widget_id: widgetId,
-				new_state: !visibility[widgetId],
-			},
-			'toggle',
-		)
-	}
+    Analytics.featureUsed(
+      'widget_visibility',
+      {
+        widget_id: widgetId,
+        new_state: !visibility[widgetId],
+      },
+      'toggle',
+    )
+  }
 
-	const openWidgetSettings = () => {
-		window.dispatchEvent(new Event('openWidgetSettings'))
-	}
+  const openWidgetSettings = () => {
+    window.dispatchEvent(new Event('openWidgetSettings'))
+  }
 
-	return (
-		<WidgetVisibilityContext.Provider
-			value={{ visibility, toggleWidget, openWidgetSettings }}
-		>
-			{children}
-		</WidgetVisibilityContext.Provider>
-	)
+  return (
+    <WidgetVisibilityContext.Provider
+      value={{ visibility, toggleWidget, openWidgetSettings }}
+    >
+      {children}
+    </WidgetVisibilityContext.Provider>
+  )
 }
 
 export const useWidgetVisibility = () => {
-	const context = useContext(WidgetVisibilityContext)
-	if (context === undefined) {
-		throw new Error('useWidgetVisibility must be used within a WidgetVisibilityProvider')
-	}
-	return context
+  const context = useContext(WidgetVisibilityContext)
+  if (context === undefined) {
+    throw new Error(
+      'useWidgetVisibility must be used within a WidgetVisibilityProvider',
+    )
+  }
+  return context
 }

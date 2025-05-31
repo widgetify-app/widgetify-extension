@@ -1,10 +1,9 @@
 name: Push Workflow
 
 on:
-  push: 
+  push:
     paths-ignore:
-      - "*.md"
-
+      - '*.md'
 
 jobs:
   build:
@@ -16,11 +15,10 @@ jobs:
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: "latest"
+          bun-version: 'latest'
 
       - name: Install dependencies
         run: bun install
 
       - name: Build files
         run: bun run build
-        

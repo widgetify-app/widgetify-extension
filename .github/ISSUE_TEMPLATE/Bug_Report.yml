@@ -1,21 +1,21 @@
 name: "\U0001F41B Bug Report"
 description: "If something isn't working as expected \U0001F914"
-title: "[Bug]:"
-labels: ["type: potential issue :broken_heart:"]
+title: '[Bug]:'
+labels: ['type: potential issue :broken_heart:']
 body:
   - type: checkboxes
     attributes:
-      label: "🤔 Is there an existing issue for this?"
-      description: "Please search [here](./?q=is%3Aissue) to see if an issue already exists for the bug you encountered"
+      label: '🤔 Is there an existing issue for this?'
+      description: 'Please search [here](./?q=is%3Aissue) to see if an issue already exists for the bug you encountered'
       options:
-        - label: "I have searched the existing issues"
+        - label: 'I have searched the existing issues'
           required: true
 
   - type: textarea
     validations:
       required: true
     attributes:
-      label: "📝 Discription"
+      label: '📝 Discription'
       description: |
         **Tip:** You can attach images, recordings or log files by clicking this area to highlight it and then dragging files in
 
@@ -30,7 +30,7 @@ body:
         ---
   - type: textarea
     attributes:
-      label: "Other"
+      label: 'Other'
       description: |
         Anything else relevant? eg: Logs, Browser, package manager, etc.
         **Tip:** You can attach images, recordings or log files by clicking this area to highlight it and then dragging files in

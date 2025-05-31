@@ -1,53 +1,61 @@
-import { getCardBackground, getTextColor, useTheme } from '@/context/theme.context'
+import {
+  getCardBackground,
+  getTextColor,
+  useTheme,
+} from '@/context/theme.context'
 
 interface PetTooltipProps {
-	direction: number
-	content: string | React.ReactNode
-	emoji?: string
-	isAnimation?: boolean
+  direction: number
+  content: string | React.ReactNode
+  emoji?: string
+  isAnimation?: boolean
 }
 
 export const PetTooltip: React.FC<PetTooltipProps> = ({
-	direction,
-	content,
-	emoji,
-	isAnimation = false,
+  direction,
+  content,
+  emoji,
+  isAnimation = false,
 }) => {
-	const { theme } = useTheme()
+  const { theme } = useTheme()
 
-	return (
-		<div
-			className="absolute -translate-x-1/2 -top-8 left-1/2"
-			style={{
-				transform: `scaleX(${direction})`,
-				animation: isAnimation ? 'fadeInUp 0.3s ease-out' : undefined,
-			}}
-		>
-			<div
-				className={`relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg ${getCardBackground(theme)}`}
-				style={{
-					animation: isAnimation ? 'gentlePulse 2s ease-in-out infinite' : undefined,
-				}}
-			>
-				<div className="flex items-center gap-1">
-					{emoji && (
-						<span
-							className="inline-block"
-							style={{
-								animation: isAnimation
-									? 'gentleRotate 1.5s ease-in-out infinite'
-									: undefined,
-							}}
-						>
-							{emoji}
-						</span>
-					)}
-					<span className={`font-medium ${getTextColor(theme)}`}>{content}</span>
-				</div>
-			</div>
+  return (
+    <div
+      className="absolute -translate-x-1/2 -top-8 left-1/2"
+      style={{
+        transform: `scaleX(${direction})`,
+        animation: isAnimation ? 'fadeInUp 0.3s ease-out' : undefined,
+      }}
+    >
+      <div
+        className={`relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg ${getCardBackground(theme)}`}
+        style={{
+          animation: isAnimation
+            ? 'gentlePulse 2s ease-in-out infinite'
+            : undefined,
+        }}
+      >
+        <div className="flex items-center gap-1">
+          {emoji && (
+            <span
+              className="inline-block"
+              style={{
+                animation: isAnimation
+                  ? 'gentleRotate 1.5s ease-in-out infinite'
+                  : undefined,
+              }}
+            >
+              {emoji}
+            </span>
+          )}
+          <span className={`font-medium ${getTextColor(theme)}`}>
+            {content}
+          </span>
+        </div>
+      </div>
 
-			{isAnimation && (
-				<style>{`
+      {isAnimation && (
+        <style>{`
                     @keyframes fadeInUp {
                         from {
                             opacity: 0;
@@ -80,7 +88,7 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
                         }
                     }
                 `}</style>
-			)}
-		</div>
-	)
+      )}
+    </div>
+  )
 }

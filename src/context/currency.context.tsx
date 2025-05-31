@@ -2,54 +2,56 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import React, { createContext, useEffect, useState } from 'react'
 
 export interface StoreContext {
-	selectedCurrencies: Array<string>
-	setSelectedCurrencies: (currencies: Array<string>) => void
+  selectedCurrencies: Array<string>
+  setSelectedCurrencies: (currencies: Array<string>) => void
 }
 
 export const currencyContext = createContext<StoreContext>({
-	selectedCurrencies: [],
-	setSelectedCurrencies: () => {},
+  selectedCurrencies: [],
+  setSelectedCurrencies: () => {},
 })
 
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
-	children,
+  children,
 }) => {
-	const [selectedCurrencies, setSelectedCurrencies] = useState<string[] | null>(null)
+  const [selectedCurrencies, setSelectedCurrencies] = useState<string[] | null>(
+    null,
+  )
 
-	useEffect(() => {
-		async function load() {
-			const storedCurrencies = await getFromStorage('currencies')
+  useEffect(() => {
+    async function load() {
+      const storedCurrencies = await getFromStorage('currencies')
 
-			setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
-		}
+      setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
+    }
 
-		load()
-	}, [])
+    load()
+  }, [])
 
-	useEffect(() => {
-		async function save() {
-			await setToStorage('currencies', selectedCurrencies || [])
-		}
-		if (Array.isArray(selectedCurrencies)) save()
-	}, [selectedCurrencies])
+  useEffect(() => {
+    async function save() {
+      await setToStorage('currencies', selectedCurrencies || [])
+    }
+    if (Array.isArray(selectedCurrencies)) save()
+  }, [selectedCurrencies])
 
-	return (
-		<currencyContext.Provider
-			value={{
-				selectedCurrencies: selectedCurrencies ?? [],
-				setSelectedCurrencies,
-			}}
-		>
-			{children}
-		</currencyContext.Provider>
-	)
+  return (
+    <currencyContext.Provider
+      value={{
+        selectedCurrencies: selectedCurrencies ?? [],
+        setSelectedCurrencies,
+      }}
+    >
+      {children}
+    </currencyContext.Provider>
+  )
 }
 
 export function useCurrencyStore(): StoreContext {
-	const context = React.useContext(currencyContext)
-	if (!context) {
-		throw new Error('useStore must be used within a StoreProvider')
-	}
+  const context = React.useContext(currencyContext)
+  if (!context) {
+    throw new Error('useStore must be used within a StoreProvider')
+  }
 
-	return context
+  return context
 }

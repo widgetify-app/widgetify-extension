@@ -1,12 +1,11 @@
-
-
 # ![logo](./public/icons/icon32.png) Widgetify
 
- Widgetify is a browser extensions that adds useful widgets to the new page of your browser. Numerous weather, currency, calendar, to-do list, search, and bookmark widgets can improve your exploring experience.
+Widgetify is a browser extensions that adds useful widgets to the new page of your browser. Numerous weather, currency, calendar, to-do list, search, and bookmark widgets can improve your exploring experience.
 
 Official Website: [widgetify.ir](https://widgetify.ir)
 
 Discord: https://discord.gg/7sxfFjFJzd
+
 ## Current Widgets
 
 ### 🌤️ Weather widget
@@ -15,9 +14,7 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - Multi-day forecast
 
--  [Source path](./src/layouts/widgets/weather)
-
-  
+- [Source path](./src/layouts/widgets/weather)
 
 ### 💰 Exchange rate widget
 
@@ -27,8 +24,6 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - [Source path](./src/layouts/widgets/wigiArz)
 
-  
-
 ### 🗓️ Calendar and to-do list widget
 
 - Solar and Gregorian calendars
@@ -36,8 +31,6 @@ Discord: https://discord.gg/7sxfFjFJzd
 - Manage daily tasks
 
 - [Source path](./src/layouts/widgets/calendar)
-
-  
 
 ### 🔍 Search & Bookmarks
 
@@ -47,18 +40,15 @@ Discord: https://discord.gg/7sxfFjFJzd
 
 - [Bookmarks source path](./src/layouts/bookmark)
 
-  
-
 ## Analytics and privacy
 
 The Widgetify extension uses Google Analytics 4 to collect statistical data and improve the user experience. The following Data is collected anonymously:
-  
 
 ### Collected Data
 
--  **Page Views**: Visit duration of extension pages
+- **Page Views**: Visit duration of extension pages
 
--  **Features**: The type of user interaction with widgets, including:
+- **Features**: The type of user interaction with widgets, including:
 
 - Changing the background image
 
@@ -68,31 +58,23 @@ The Widgetify extension uses Google Analytics 4 to collect statistical data and 
 
 - Interact with different widgets
 
--  **Errors**: Reporting possible errors to improve extension performance
-
-  
+- **Errors**: Reporting possible errors to improve extension performance
 
 ### Disable Analytics
 
 Users can select the "Disable Analytics" option in the extension's general settings section to prevent data collection.
 
-  
-
 ### Privacy Policy
 
 The collected data never includes personal information or the content of the notes and it's only used to improve the widgetify functionality.
-  
 
 ## Feedback and Report
 
 Please share your comments and suggestions with us through one of the following methods:
 
+- [Github issues](https://github.com/widgetify-app/widgetify-extension/issues)
 
--  [Github issues](https://github.com/widgetify-app/widgetify-extension/issues)
-
--  [Send feedback](https://feedback.onl/fa/b/widgetify)
-
-  
+- [Send feedback](https://feedback.onl/fa/b/widgetify)
 
 ## Contributing
 
@@ -100,30 +82,23 @@ We welcome your contributions to improve Widgetify! To contribute please read th
 
 [Contribution Guide](./.github/CONTRIBUTING.md).
 
-  
-
 ## LICENSE
-For more information please read [License](LICENSE) 
+
+For more information please read [License](LICENSE)
 
 <br />
 <br />
 <br />
-
 
 # ویجتی‌فای
 
 وب سایت رسمی: [widgetify.ir](https://widgetify.ir)
 
-
 ## معرفی
 
 ویجتی‌فای یک افزونه مرورگر است که با ویجت‌های کاربردی، صفحه جدید مرورگر شما را شخصی‌سازی می‌کند. با ویجت‌های متنوع آب و هوا، ارز، تقویم، لیست کارها، جستجو و بوکمارک‌ها، تجربه وب گردی خود را بهبود دهید.
 
-  
-
 ## ویجت‌های موجود
-
-  
 
 ### 🌤️ ویجت آب و هوا
 
@@ -131,9 +106,7 @@ For more information please read [License](LICENSE)
 
 - پیش‌بینی چند روزه
 
--  [مسیر کد](./src/layouts/widgets/weather)
-
-  
+- [مسیر کد](./src/layouts/widgets/weather)
 
 ### 💰 ویجت نرخ ارز
 
@@ -141,9 +114,7 @@ For more information please read [License](LICENSE)
 
 - نمودار تغییرات
 
--  [مسیر کد](./src/layouts/widgets/wigiArz)
-
-  
+- [مسیر کد](./src/layouts/widgets/wigiArz)
 
 ### 📅 ویجت تقویم و لیست کارها
 
@@ -151,73 +122,56 @@ For more information please read [License](LICENSE)
 
 - مدیریت کارهای روزانه
 
--  [مسیر کد](./src/layouts/widgets/calendar)
-
-  
+- [مسیر کد](./src/layouts/widgets/calendar)
 
 ### 🔍 جستجو و بوکمارک‌ها
 
 - جستجوی سریع
 
--  [مسیر کد جستجو](./src/layouts/search)
+- [مسیر کد جستجو](./src/layouts/search)
 
--  [مسیر کد بوکمارک](./src/layouts/layouts/bookmark)
-
-  
+- [مسیر کد بوکمارک](./src/layouts/layouts/bookmark)
 
 ## آنالیتیکس و حریم خصوصی
 
 افزونه ویجتی‌فای از Google Analytics 4 برای جمع‌آوری داده‌های آماری و بهبود تجربه کاربری استفاده می‌کند. اطلاعات زیر به صورت ناشناس جمع‌آوری می‌شوند:
 
-  
-
 ### داده‌های جمع‌آوری شده
 
--  **بازدید صفحات**: زمان بازدید از صفحات مختلف افزونه
+- **بازدید صفحات**: زمان بازدید از صفحات مختلف افزونه
 
--  **ویژگی‌های استفاده شده**: نوع تعامل کاربر با ویجت‌ها از جمله:
+- **ویژگی‌های استفاده شده**: نوع تعامل کاربر با ویجت‌ها از جمله:
 
 - تغییر تصویر پس‌زمینه
 
 - استفاده از ویجت آب و هوا و انتخاب شهر
 
--⚠️ هنگام ساخت یادداشت (موضوع یادداشت ارسال نمیشه)⚠️ 
+-⚠️ هنگام ساخت یادداشت (موضوع یادداشت ارسال نمیشه)⚠️
 
 - تعامل با ویجت‌های مختلف
 
--  **خطاها**: گزارش خطاهای احتمالی برای بهبود عملکرد افزونه
-
-  
+- **خطاها**: گزارش خطاهای احتمالی برای بهبود عملکرد افزونه
 
 ### غیرفعال‌سازی آنالیتیکس
 
 کاربران می‌توانند در بخش تنظیمات عمومی افزونه، گزینه "غیرفعال‌سازی آنالیتیکس" را انتخاب کنند تا از جمع‌آوری داده جلوگیری شود.
 
-  
-
 ### سیاست حفظ حریم خصوصی
 
 داده‌های جمع‌آوری شده هرگز شامل اطلاعات شخصی یا محتوای یادداشت‌ها نمی‌شوند و تنها برای بهبود عملکرد افزونه استفاده می‌شوند.
-
-  
 
 ## بازخورد و گزارش مشکلات
 
 لطفاً نظرات و پیشنهادات خود را از طریق یکی از روش‌های زیر با ما در میان بگذارید:
 
-  
+- [گزارش مشکلات در گیت‌هاب](https://github.com/widgetify-app/widgetify-extension/issues)
 
--  [گزارش مشکلات در گیت‌هاب](https://github.com/widgetify-app/widgetify-extension/issues)
-
--  [ارسال بازخورد](https://feedback.onl/fa/b/widgetify)
-
-  
+- [ارسال بازخورد](https://feedback.onl/fa/b/widgetify)
 
 ## مشارکت
 
 از مشارکت شما در بهبود ویجتی‌فای استقبال می‌کنیم! برای مشارکت، لطفاً [راهنمای مشارکت](./.github/CONTRIBUTING.fa.md) را مطالعه کنید.
 
-  
-
 ## مجوز
- برای اطلاعات بیشتر [فایل مجوز](LICENSE) را مطالعه کنید.
+
+برای اطلاعات بیشتر [فایل مجوز](LICENSE) را مطالعه کنید.

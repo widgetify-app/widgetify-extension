@@ -1,5 +1,5 @@
 export const unitsFlag = {
-	standard: 'K',
-	metric: '°C',
-	imperial: '°F',
+  standard: 'K',
+  metric: '°C',
+  imperial: '°F',
 }

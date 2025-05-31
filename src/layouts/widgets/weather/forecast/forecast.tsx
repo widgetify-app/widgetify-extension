@@ -13,57 +13,57 @@ import type { unitsFlag } from '../unitSymbols'
 import { ForecastItem } from './forecast.item'
 
 interface WeatherLayoutProps {
-	forecast: FetchedWeather['forecast'] | null
-	temperatureUnit: keyof typeof unitsFlag
+  forecast: FetchedWeather['forecast'] | null
+  temperatureUnit: keyof typeof unitsFlag
 }
 export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
-	const { theme } = useTheme()
-	const getNavigationButtonStyle = () => {
-		switch (theme) {
-			case 'light':
-				return 'bg-gray-200/80 text-gray-700 hover:bg-gray-300/90 shadow-md'
-			case 'dark':
-				return 'bg-gray-800/80 text-gray-200 hover:bg-gray-700/90 shadow-md'
-			default: // glass
-				return 'bg-black/30 text-white hover:bg-black/40 shadow-lg backdrop-blur-sm'
-		}
-	}
+  const { theme } = useTheme()
+  const getNavigationButtonStyle = () => {
+    switch (theme) {
+      case 'light':
+        return 'bg-gray-200/80 text-gray-700 hover:bg-gray-300/90 shadow-md'
+      case 'dark':
+        return 'bg-gray-800/80 text-gray-200 hover:bg-gray-700/90 shadow-md'
+      default: // glass
+        return 'bg-black/30 text-white hover:bg-black/40 shadow-lg backdrop-blur-sm'
+    }
+  }
 
-	return (
-		<>
-			<Swiper
-				modules={[Pagination, Navigation, FreeMode]}
-				spaceBetween={8}
-				slidesPerView="auto"
-				freeMode={true}
-				pagination={false}
-				navigation={{
-					nextEl: '.swiper-button-next-custom',
-					prevEl: '.swiper-button-prev-custom',
-				}}
-				className="pt-2 weather-forecast-slider"
-				dir="ltr"
-			>
-				{forecast?.map((item, index) => (
-					<SwiperSlide key={`${item.date}-${index}`} className="w-auto">
-						<ForecastItem forecast={item} unit={temperatureUnit} />
-					</SwiperSlide>
-				))}
+  return (
+    <>
+      <Swiper
+        modules={[Pagination, Navigation, FreeMode]}
+        spaceBetween={8}
+        slidesPerView="auto"
+        freeMode={true}
+        pagination={false}
+        navigation={{
+          nextEl: '.swiper-button-next-custom',
+          prevEl: '.swiper-button-prev-custom',
+        }}
+        className="pt-2 weather-forecast-slider"
+        dir="ltr"
+      >
+        {forecast?.map((item, index) => (
+          <SwiperSlide key={`${item.date}-${index}`} className="w-auto">
+            <ForecastItem forecast={item} unit={temperatureUnit} />
+          </SwiperSlide>
+        ))}
 
-				<div
-					className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] ${getNavigationButtonStyle()}`}
-				>
-					<FiChevronLeft size={20} />
-				</div>
+        <div
+          className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] ${getNavigationButtonStyle()}`}
+        >
+          <FiChevronLeft size={20} />
+        </div>
 
-				<div
-					className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] ${getNavigationButtonStyle()}`}
-				>
-					<FiChevronRight size={20} />
-				</div>
-			</Swiper>
+        <div
+          className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] ${getNavigationButtonStyle()}`}
+        >
+          <FiChevronRight size={20} />
+        </div>
+      </Swiper>
 
-			<style>{`
+      <style>{`
   .weather-forecast-slider {
     padding-right: 12px !important;
     padding-bottom: 5px !important; 
@@ -87,6 +87,6 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
     cursor: not-allowed;
   }
 `}</style>
-		</>
-	)
+    </>
+  )
 }

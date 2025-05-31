@@ -9,40 +9,45 @@ import { DaySummary } from './components/day-summary'
 export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
 
 const CalendarLayout: React.FC<any> = () => {
-	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
-		useDate()
-	const [isDrawerOpen, setIsDrawerOpen] = useState<boolean | null>(null)
+  const {
+    currentDate,
+    selectedDate,
+    setCurrentDate,
+    setSelectedDate,
+    goToToday,
+  } = useDate()
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean | null>(null)
 
-	useEffect(() => {
-		setIsDrawerOpen(true)
-	}, [])
+  useEffect(() => {
+    setIsDrawerOpen(true)
+  }, [])
 
-	if (isDrawerOpen === null) return <></>
+  if (isDrawerOpen === null) return <></>
 
-	return (
-		<WidgetContainer
-			className={
-				'flex flex-col overflow-hidden md:flex-1 w-full transition-all duration-300'
-			}
-		>
-			<CalendarHeader
-				currentDate={currentDate}
-				setCurrentDate={setCurrentDate}
-				selectedDate={selectedDate}
-				goToToday={goToToday}
-			/>
+  return (
+    <WidgetContainer
+      className={
+        'flex flex-col overflow-hidden md:flex-1 w-full transition-all duration-300'
+      }
+    >
+      <CalendarHeader
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+        selectedDate={selectedDate}
+        goToToday={goToToday}
+      />
 
-			<CalendarGrid
-				currentDate={currentDate}
-				selectedDate={selectedDate}
-				setSelectedDate={setSelectedDate}
-			/>
+      <CalendarGrid
+        currentDate={currentDate}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
 
-			<div className="flex-1">
-				<DaySummary selectedDate={selectedDate} />
-			</div>
-		</WidgetContainer>
-	)
+      <div className="flex-1">
+        <DaySummary selectedDate={selectedDate} />
+      </div>
+    </WidgetContainer>
+  )
 }
 
 export default CalendarLayout

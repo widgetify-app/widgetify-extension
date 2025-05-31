@@ -5,25 +5,25 @@ import { ThemeProvider } from './context/theme.context'
 import { HomePage } from './pages/home'
 
 const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			refetchOnWindowFocus: false,
-		},
-	},
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
 })
 
 function App() {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<ThemeProvider>
-					<AppearanceProvider>
-						<HomePage />
-					</AppearanceProvider>
-				</ThemeProvider>
-			</AuthProvider>
-		</QueryClientProvider>
-	)
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ThemeProvider>
+          <AppearanceProvider>
+            <HomePage />
+          </AppearanceProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  )
 }
 
 export default App

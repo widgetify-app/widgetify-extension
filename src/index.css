@@ -1,104 +1,104 @@
-@import "tailwindcss";
-@import "./styles/theme-colors.css";
+@import 'tailwindcss';
+@import './styles/theme-colors.css';
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 html {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 body {
-	overflow-x: hidden;
-	overflow-y: auto;
-	font-family: "Vazir", sans-serif;
-	/* hex: */
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: 'Vazir', sans-serif;
+  /* hex: */
 
-	height: 100vh;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  height: 100vh;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .custom-select-box hr {
-	color: #333333;
+  color: #333333;
 }
 
 @layer base {
-	body {
-		direction: rtl;
-		font-family: Vazirmatn, sans-serif;
-	}
+  body {
+    direction: rtl;
+    font-family: Vazirmatn, sans-serif;
+  }
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Hide the spinner in Firefox */
-input[type=number] {
-	-moz-appearance: textfield;
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 /* Custom styling for color inputs */
-input[type=color] {
-	-webkit-appearance: none;
-	border: none;
-	padding: 0;
-	width: 32px;
-	height: 32px;
-	border-radius: 4px;
-	cursor: pointer;
-	background: transparent;
+input[type='color'] {
+  -webkit-appearance: none;
+  border: none;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
 }
 
-input[type=color]::-webkit-color-swatch-wrapper {
-	padding: 0;
-	border-radius: 4px;
-	overflow: hidden;
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-input[type=color]::-webkit-color-swatch {
-	border: none;
-	border-radius: 4px;
+input[type='color']::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
 }
 
-input[type=color]::-moz-color-swatch {
-	border: none;
-	border-radius: 4px;
+input[type='color']::-moz-color-swatch {
+  border: none;
+  border-radius: 4px;
 }
 
 /* Hide scrollbar for webkit browsers */
 .hide-scrollbar::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 /* Hide scrollbar for Firefox and other browsers */
 .hide-scrollbar {
-	-ms-overflow-style: none;
-	/* IE and Edge */
-	scrollbar-width: none;
-	/* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Add this to your CSS file */
 .weather-forecast-slider {
-	padding-bottom: 25px !important;
-	/* Space for pagination bullets */
+  padding-bottom: 25px !important;
+  /* Space for pagination bullets */
 }
 
 .weather-forecast-slider .swiper-slide {
-	width: auto;
-	max-width: 150px;
+  width: auto;
+  max-width: 150px;
 }
 
 .weather-forecast-slider .swiper-pagination {
-	bottom: 0;
+  bottom: 0;
 }
