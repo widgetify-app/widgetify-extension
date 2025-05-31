@@ -14,10 +14,30 @@ type ModalProps = {
 }
 
 const daisyUISizeClasses = {
-	sm: 'max-w-sm max-h-[70vh]',
-	md: 'max-w-md max-h-[80vh]',
-	lg: 'max-w-lg max-h-[85vh]',
-	xl: 'max-w-4xl max-h-[90vh]',
+	// sm: 'max-w-sm max-h-[70vh] overflow-y-auto',
+	// md: 'max-w-md max-h-[80vh] overflow-y-auto',
+	// lg: 'max-w-lg max-h-[85vh] overflow-y-auto',
+	// xl: 'max-w-4xl max-h-[90vh] overflow-y-auto',
+	sm: {
+		w: 'max-w-sm',
+		h: 'max-h-[70vh]',
+		overflow: 'overflow-y-auto',
+	},
+	md: {
+		w: 'max-w-md',
+		h: 'max-h-[80vh]',
+		overflow: 'overflow-y-auto',
+	},
+	lg: {
+		w: 'max-w-lg',
+		h: 'max-h-[85vh]',
+		overflow: 'overflow-y-auto',
+	},
+	xl: {
+		w: 'max-w-4xl',
+		h: 'max-h-[90vh]',
+		overflow: 'overflow-y-auto',
+	},
 }
 
 const Modal = ({
@@ -31,6 +51,7 @@ const Modal = ({
 	showCloseButton = true,
 	className = '',
 }: ModalProps) => {
+	const sizValue = daisyUISizeClasses[size] || daisyUISizeClasses.md
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
@@ -63,7 +84,7 @@ const Modal = ({
 			style={{ borderRadius: 'var(--daisy-border-radius)' }}
 		>
 			<div
-				className={`modal-box ${daisyUISizeClasses[size]} ${className} !p-2`}
+				className={`modal-box overflow-hidden ${sizValue.w} ${className} !p-2`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="flex items-center justify-between w-full pb-2 mb-2 border-b border-content">
@@ -78,7 +99,7 @@ const Modal = ({
 						</button>
 					)}
 				</div>
-				<div className="py-1">{children}</div>
+				<div className={`${sizValue.h} ${sizValue.overflow} py-4`}>{children}</div>
 			</div>
 		</dialog>,
 		document.body,

@@ -179,7 +179,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 			size="md"
 			direction="rtl"
 		>
-			<div className="p-2 space-y-2">
+			<div className="p-2 space-y-2 overflow-y-auto">
 				<p className={'text-sm mb-4 text-content'}>
 					انتخاب کنید کدام ویجت‌ها در نیـو‌تب شما نمایش داده شوند.
 				</p>

@@ -146,7 +146,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				</div>
 
 				<div
-					className={`flex justify-center w-full mt-5 transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
+					className={`flex justify-center w-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
 				>
 					<Button
 						onClick={onClose}

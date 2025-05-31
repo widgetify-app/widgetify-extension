@@ -65,63 +65,55 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 			title="تنظیمات تایمر پومودورو"
 			direction="rtl"
 		>
-			<motion.div
-				initial={{ opacity: 0, height: 0 }}
-				animate={{ opacity: 1, height: 'auto' }}
-				exit={{ opacity: 0, height: 0 }}
-				transition={{ duration: 0.3 }}
-				className="mt-6 overflow-hidden"
-			>
-				<div className={'p-4 rounded-xl'}>
-					<h4 className={'text-sm font-medium mb-3 text-base-content'}>
-						تنظیمات زمان (دقیقه)
-					</h4>
+			<div className={'rounded-xl'}>
+				<h4 className={'text-sm font-medium mb-3 text-base-content'}>
+					تنظیمات زمان (دقیقه)
+				</h4>
 
-					<div className="space-y-3">
-						<SettingInput
-							label="زمان کار:"
-							value={settings.workTime}
-							onChange={(value) => {
-								handleSettingChange('workTime', value)
-							}}
-							max={60}
-						/>
+				<div className="space-y-3">
+					<SettingInput
+						label="زمان کار:"
+						value={settings.workTime}
+						onChange={(value) => {
+							handleSettingChange('workTime', value)
+						}}
+						max={60}
+					/>
 
-						<SettingInput
-							label="استراحت کوتاه:"
-							value={settings.shortBreakTime}
-							onChange={(value) => {
-								handleSettingChange('shortBreakTime', value)
-							}}
-							max={30}
-						/>
+					<SettingInput
+						label="استراحت کوتاه:"
+						value={settings.shortBreakTime}
+						onChange={(value) => {
+							handleSettingChange('shortBreakTime', value)
+						}}
+						max={30}
+					/>
 
-						<SettingInput
-							label="استراحت بلند:"
-							value={settings.longBreakTime}
-							onChange={(value) => {
-								handleSettingChange('longBreakTime', value)
-							}}
-							max={60}
-						/>
+					<SettingInput
+						label="استراحت بلند:"
+						value={settings.longBreakTime}
+						onChange={(value) => {
+							handleSettingChange('longBreakTime', value)
+						}}
+						max={60}
+					/>
 
-						<SettingInput
-							label="تعداد دوره قبل از استراحت بلند:"
-							value={settings.cyclesBeforeLongBreak}
-							onChange={(value) => {
-								handleSettingChange('cyclesBeforeLongBreak', value)
-							}}
-							max={10}
-						/>
+					<SettingInput
+						label="تعداد دوره قبل از استراحت بلند:"
+						value={settings.cyclesBeforeLongBreak}
+						onChange={(value) => {
+							handleSettingChange('cyclesBeforeLongBreak', value)
+						}}
+						max={10}
+					/>
 
-						<div className="text-center">
-							<Button size="md" onClick={handleSaveAndClose}>
-								ذخیره و بستن
-							</Button>
-						</div>
+					<div className="text-center">
+						<Button size="md" onClick={handleSaveAndClose}>
+							ذخیره و بستن
+						</Button>
 					</div>
 				</div>
-			</motion.div>
+			</div>
 		</Modal>
 	)
 }
