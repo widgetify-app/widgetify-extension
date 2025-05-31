@@ -193,6 +193,34 @@ input[type=color]::-moz-color-swatch {
 	/* Firefox */
 }
 
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(156, 163, 175, 0.5);
+	border-radius: 4px;
+	transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(156, 163, 175, 0.8);
+}
+
+
+/* Firefox scrollbar styles */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
 /* Add this to your CSS file */
 .weather-forecast-slider {
 	padding-bottom: 25px !important;
