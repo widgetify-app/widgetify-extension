@@ -6,7 +6,6 @@
 	default: true;
 	--color-primary: #536DFE;
 	--color-secondary: #7C8DF0;
-	--color-error: #e7000b;
 }
 
 @plugin "daisyui/theme" {
@@ -130,11 +129,11 @@ body {
 }
 
 .text-content {
-	@apply text-base-content;
+	@apply text-base-content/90;
 }
 
 .text-muted {
-	@apply text-base-content opacity-70;
+	@apply text-base-content/70;
 }
 
 .border-content {
