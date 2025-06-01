@@ -1,5 +1,5 @@
+import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
-import { getTextColor } from '@/context/theme.context'
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
 import { CurrencyChart } from './currency-chart'
@@ -72,20 +72,21 @@ export const CurrencyModalComponent = ({
 						</p>
 
 						{currency?.priceHistory?.length ? (
-							<button
+							<Button
 								onClick={() => setShowChart(!showChart)}
-								className={`p-1 rounded-lg ${getTextColor(
-									'light',
-								)} opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out hover:scale-110 active:scale-90`}
+								className={
+									'btn-ghost p-1 rounded-lg  opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out hover:scale-110 active:scale-90'
+								}
+								size="xs"
 							>
 								<div
 									className={`transition-transform duration-300 ease-in-out ${
 										showChart ? 'rotate-0' : 'rotate-180'
 									}`}
 								>
-									<FaChartLine className={`w-5 h-5 ${getTextColor('light')}`} />
+									<FaChartLine className={'w-5 h-5 text-content'} />
 								</div>
-							</button>
+							</Button>
 						) : null}
 					</div>
 

@@ -39,15 +39,6 @@ export function CityResultsList({
 	}
 
 	const getCityItemStyle = () => {
-		// switch (theme) {
-		// 	case 'light':
-		// 		return 'border-gray-200/30 hover:bg-blue-100/50'
-		// 	case 'dark':
-		// 		return 'border-white/10 hover:bg-blue-800/30'
-		// 	default: // glass
-		// 		return 'border-white/10 hover:bg-blue-800/30'
-		// }
-
 		return 'border-transparent hover:bg-blue-100/50 dark:hover:bg-blue-800/30'
 	}
 

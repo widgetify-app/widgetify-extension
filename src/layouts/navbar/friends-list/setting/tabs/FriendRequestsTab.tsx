@@ -1,8 +1,8 @@
+import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { getButtonStyles } from '@/context/theme.context'
 import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
 import {
 	type Friend,
@@ -106,21 +106,25 @@ export const FriendRequestsTab = () => {
 			<SectionPanel title="درخواست دوستی جدید" size="sm">
 				<div className="space-y-2">
 					<label className={'block text-sm font-medium text-content'}>نام کاربری</label>
-					<div className="flex">
+					<div className="flex gap-2">
 						<TextInput
 							type="text"
 							value={username}
 							onChange={handleUsernameChange}
 							placeholder="نام کاربری دوست خود را وارد کنید"
-							className="w-full"
+							className="flex-grow min-w-0"
+							aria-label="نام کاربری دوست"
 						/>
-						<button
-							onClick={handleSendRequest}
+						<Button
+							type="submit"
 							disabled={isSending || !username.trim()}
-							className={`${getButtonStyles('light', true)} cursor-pointer mr-2 px-4 py-2 rounded-lg whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed`}
+							isPrimary={true}
+							size="md"
+							className="rounded-md whitespace-nowrap"
+							onClick={handleSendRequest}
 						>
 							{isSending ? 'در حال ارسال...' : 'ارسال درخواست'}
-						</button>
+						</Button>
 					</div>
 					{translatedError && <p className="text-sm text-red-500">{translatedError}</p>}
 					{!user?.username && (
