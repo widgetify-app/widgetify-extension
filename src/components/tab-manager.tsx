@@ -40,7 +40,7 @@ export const TabManager = ({
 
 	const getTabButtonStyle = (isActive: boolean) => {
 		return isActive
-			? 'text-primary/80 bg-primary/10'
+			? 'text-primary-content bg-primary/10'
 			: 'text-muted hover:bg-primary/5 hover:text-primary/80'
 	}
 
