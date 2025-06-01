@@ -79,7 +79,7 @@ export function BookmarkItem({
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle()} bg-content` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-xl shadow-sm w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle()} bg-content` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{onMenuClick && bookmark && (
 						<div

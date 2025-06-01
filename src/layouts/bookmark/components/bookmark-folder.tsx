@@ -31,7 +31,7 @@ export function FolderBookmarkItem({
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getFolderStyle = () => {
-		return 'border-primary hover:border-primary/40 bg-content backdrop-blur-md hover:bg-primary/20'
+		return 'hover:border hover:border-primary/40 bg-content backdrop-blur-md hover:bg-primary/20'
 	}
 
 	const displayIcon =
@@ -65,7 +65,7 @@ export function FolderBookmarkItem({
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-xl">
