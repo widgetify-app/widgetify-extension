@@ -45,7 +45,7 @@ export function NavbarLayout(): JSX.Element {
 					<Tooltip content="مدیریت ویجت‌ها">
 						<button
 							className={
-								'flex items-center justify-center cursor-pointer w-10 h-10 text-content transition-all border border-content shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
+								'flex items-center justify-center cursor-pointer w-10 h-10 text-muted transition-all border border-content shadow-lg rounded-xl hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
 							}
 							onClick={() => openWidgetSettings()}
 							aria-label="Widgets"
@@ -56,7 +56,7 @@ export function NavbarLayout(): JSX.Element {
 					<Tooltip content="تنظیمات">
 						<button
 							className={
-								'flex items-center justify-center cursor-pointer w-10 h-10 text-content transition-all border border-content shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
+								'flex items-center justify-center cursor-pointer w-10 h-10 text-muted transition-all border border-content shadow-lg rounded-xl hover:!text-muted hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
 							}
 							onClick={() => setShowSettings(true)}
 							aria-label="Settings"

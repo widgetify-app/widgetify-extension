@@ -39,13 +39,13 @@ export function FriendsList() {
 		<>
 			<div
 				className={
-					'relative flex items-center overflow-hidden px-2 gap-2 h-10 text-content border-content transition-all border rounded-xl bg-content'
+					'relative flex items-center overflow-hidden px-2 gap-2 h-10  border-content transition-all border rounded-xl bg-content'
 				}
 				style={{ width: showFriendsList ? '190px' : '70px' }}
 			>
 				{showFriendsList && (
 					<button
-						className="top-0 left-0 z-10 flex items-center justify-center transition-opacity cursor-pointer opacity-80"
+						className="top-0 left-0 z-10 flex items-center justify-center transition-opacity cursor-pointer text-muted opacity-80"
 						onClick={() => setShowFriendsList(!showFriendsList)}
 					>
 						<FiChevronLeft size={16} />
@@ -55,7 +55,7 @@ export function FriendsList() {
 					<div className="flex items-center justify-around w-full">
 						<Tooltip content="نمایش دوستان" position="bottom">
 							<button
-								className="p-0.5 cursor-pointer border-l border-gray-300/50"
+								className="p-0.5 cursor-pointer text-muted border-l border-gray-300/50"
 								onClick={() => setShowFriendsList(!showFriendsList)}
 							>
 								<FiUsers className="ml-1" size={18} />
@@ -65,7 +65,7 @@ export function FriendsList() {
 						<span className="h-full w-0.5 px-0.5"></span>
 						<Tooltip content="مدیریت دوستان">
 							<button
-								className="p-0.5 cursor-pointer relative"
+								className="p-0.5 cursor-pointer relative text-muted"
 								onClick={handleOpenSettingsModal}
 							>
 								<LiaUsersCogSolid size={18} />
