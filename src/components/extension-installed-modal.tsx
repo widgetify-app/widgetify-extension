@@ -117,12 +117,14 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 			</m.div>
 
 			<m.div
-				className={'p-3 mb-3 text-gray-200 rounded-lg border border-content  bg-content'}
+				className={'p-3 mb-3 text-content rounded-lg border border-content  bg-content'}
 				initial={{ x: -20, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.6 }}
 			>
-				<p className="font-bold">⚠️ برای فعالسازی افزونه، روی دکمه "Keep It" کلیک کنید.</p>
+				<p className="font-bold text-muted">
+					⚠️ برای فعالسازی افزونه، روی دکمه "Keep It" کلیک کنید.
+				</p>
 			</m.div>
 
 			<button
@@ -159,7 +161,7 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
 			>
-				<p className="font-medium">
+				<p className="font-medium text-muted">
 					🔒 امنیت و حریم خصوصی کاربران برای ما در اولویت است و ما متعهد به حفاظت از
 					اطلاعات شما هستیم.
 				</p>
