@@ -3,14 +3,7 @@ import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
-import {
-	FiCheckCircle,
-	FiCoffee,
-	FiPause,
-	FiPlay,
-	FiRefreshCw,
-	FiSettings,
-} from 'react-icons/fi'
+import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { PomodoroSettingsPanel } from './components/settings-panel'
