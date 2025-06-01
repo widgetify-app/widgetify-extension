@@ -39,7 +39,9 @@ export function FriendsList() {
 	return (
 		<>
 			<div
-				className={`relative flex items-center overflow-hidden px-2 gap-2 h-10 text-gray-100 transition-all border rounded-xl ${Colors.bgItemGlass}`}
+				className={
+					'relative flex items-center overflow-hidden px-2 gap-2 h-10 text-content border-content transition-all border rounded-xl bg-content'
+				}
 				style={{ width: showFriendsList ? '190px' : '70px' }}
 			>
 				{showFriendsList && (

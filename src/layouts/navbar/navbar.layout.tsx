@@ -45,7 +45,9 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<button
-							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-100 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
+							className={
+								'flex items-center justify-center cursor-pointer w-10 h-10 text-content transition-all border border-content shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
+							}
 							onClick={() => openWidgetSettings()}
 							aria-label="Widgets"
 						>
@@ -54,7 +56,9 @@ export function NavbarLayout(): JSX.Element {
 					</Tooltip>
 					<Tooltip content="تنظیمات">
 						<button
-							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-100 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
+							className={
+								'flex items-center justify-center cursor-pointer w-10 h-10 text-content transition-all border border-content shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content'
+							}
 							onClick={() => setShowSettings(true)}
 							aria-label="Settings"
 						>
