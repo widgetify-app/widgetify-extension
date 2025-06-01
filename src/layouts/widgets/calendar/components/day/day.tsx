@@ -64,7 +64,7 @@ export function DayItem({
 	// Theme-specific styles
 	const getDayTextStyle = () => {
 		if (isHoliday) {
-			return 'text-red-400 bg-red-400/10'
+			return 'text-error bg-error/10'
 		}
 
 		return 'text-content'
@@ -72,7 +72,7 @@ export function DayItem({
 
 	const getSelectedDayStyle = () => {
 		if (isHoliday) {
-			return 'bg-red-400/10'
+			return 'bg-error/10'
 		}
 
 		return 'bg-primary/20'
@@ -88,7 +88,7 @@ export function DayItem({
 
 	const getTodayRingStyle = () => {
 		if (isHoliday) {
-			return 'ring-1 ring-red-400/40'
+			return 'ring-1 ring-error/60'
 		}
 
 		return 'ring-1 ring-primary/80'

@@ -229,7 +229,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 						<div className="flex items-center justify-between mb-3">
 							<h3 className={'text-sm font-medium text-content'}>فیدهای شما</h3>
 							{rssState.customFeeds.length > 0 && (
-								<div className={'text-xs text-base-300'}>
+								<div className={'text-xs text-muted'}>
 									{rssState.customFeeds.length} فید
 								</div>
 							)}
@@ -325,7 +325,12 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 					<span className={'block text-xs truncate text-muted'}>{feed.url}</span>
 				</div>
 			</div>
-			<Button size="md" className="btn-error" onClick={onRemove} disabled={disabled}>
+			<Button
+				size="sm"
+				className="btn-error btn-circle"
+				onClick={onRemove}
+				disabled={disabled}
+			>
 				<VscTrash size={18} />
 			</Button>
 		</m.div>

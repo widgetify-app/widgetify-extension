@@ -8,7 +8,7 @@ interface ButtonProps {
 	loadingText?: string
 	type?: 'button' | 'submit' | 'reset'
 	fullWidth?: boolean
-	rounded?: 'sm' | 'md' | 'lg' | 'xl'
+	rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
 	children?: React.ReactNode
 	isPrimary?: boolean
 	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -21,6 +21,7 @@ export function Button(prop: ButtonProps) {
 		lg: 'btn-lg',
 		xl: 'btn-xl',
 	}
+
 	return (
 		<button
 			type={prop.type || 'button'}
