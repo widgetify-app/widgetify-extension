@@ -22,7 +22,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			{typeof displayIcon === 'string' ? (
 				<img
 					src={displayIcon}
-					className="transition-transform duration-300 group-hover:scale-110"
+					className="transition-transform duration-300 rounded-md group-hover:scale-110"
 					alt={bookmark.title}
 				/>
 			) : (
