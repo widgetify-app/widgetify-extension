@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+html {
+	font-size: 16px !important;
+}
+
 :root {
 	--brand-primary: #536DFE;
 	--brand-primary-rgb: 83, 109, 254;
@@ -75,24 +79,24 @@
 [data-theme="glass"] .bg-content,
 [data-theme="glass"] .collapse {
 	background-color: rgba(255, 255, 255, 0.12) !important;
-	backdrop-filter: blur(16px) saturate(180%);
 	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	backdrop-filter: blur(16px) saturate(180%);
 	/* border: 1px solid rgba(255, 255, 255, 0.2); */
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	/* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
 }
 
 [data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .tooltip {
 	/* parent all items */
 	background-color: rgba(255, 255, 255, 0.08) !important;
-	backdrop-filter: blur(12px) saturate(150%);
 	-webkit-backdrop-filter: blur(12px) saturate(150%);
+	backdrop-filter: blur(12px) saturate(150%);
 	border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 [data-theme="glass"] .modal-box {
-	backdrop-filter: blur(40px) saturate(200%);
 	-webkit-backdrop-filter: blur(40px) saturate(200%);
+	backdrop-filter: blur(40px) saturate(200%);
 	background-color: rgba(255, 255, 255, 0.15) !important;
 	border: 1px solid rgba(255, 255, 255, 0.25);
 }

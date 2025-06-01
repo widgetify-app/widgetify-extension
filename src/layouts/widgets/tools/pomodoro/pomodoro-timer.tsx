@@ -190,7 +190,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.3 }}
-			className="relative overflow-hidden rounded-xl"
+			className="relative p-1 overflow-hidden rounded-xl"
 		>
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-2">

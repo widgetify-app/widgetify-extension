@@ -116,10 +116,10 @@ export function TodosLayout() {
 							)}
 
 							<div className="flex justify-between mb-2">
-								<div className="flex gap-0.5 text-[.55rem]">
+								<div className="flex gap-0.5 text-xs">
 									<Button
 										onClick={() => setFilter('all')}
-										className={`px-1 py-0.5 text-[.55rem]  ${filter === 'all' ? 'btn-soft' : 'btn-ghost'}`}
+										className={`px-1 py-0.5 ${filter === 'all' ? 'btn-soft' : 'btn-ghost text-muted'}`}
 										rounded="sm"
 										size="xs"
 									>
@@ -127,7 +127,7 @@ export function TodosLayout() {
 									</Button>
 									<Button
 										onClick={() => setFilter('active')}
-										className={`px-1 py-0.5 text-[.55rem] ${filter === 'active' ? 'btn-soft' : 'btn-ghost'}`}
+										className={`px-1 py-0.5 ${filter === 'active' ? 'btn-soft' : 'btn-ghost text-muted'}`}
 										rounded="sm"
 										size="xs"
 									>
@@ -135,7 +135,7 @@ export function TodosLayout() {
 									</Button>
 									<Button
 										onClick={() => setFilter('completed')}
-										className={`px-1 py-0.5 text-[.55rem] ${filter === 'completed' ? 'btn-soft' : 'btn-ghost'}`}
+										className={`px-1 py-0.5 ${filter === 'completed' ? 'btn-soft' : 'btn-ghost text-muted'}`}
 										rounded="sm"
 										size="xs"
 									>
