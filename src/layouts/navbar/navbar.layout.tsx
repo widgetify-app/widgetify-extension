@@ -1,4 +1,3 @@
-import { Colors } from '@/common/constant/colors.constant'
 import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'

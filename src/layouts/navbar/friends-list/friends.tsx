@@ -1,4 +1,3 @@
-import { Colors } from '@/common/constant/colors.constant'
 import { FiChevronLeft, FiUsers } from 'react-icons/fi'
 import { LiaUsersCogSolid } from 'react-icons/lia'
 import { FreeMode, Navigation } from 'swiper/modules'

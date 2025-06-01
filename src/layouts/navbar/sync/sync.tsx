@@ -1,4 +1,3 @@
-import { Colors } from '@/common/constant/colors.constant'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
