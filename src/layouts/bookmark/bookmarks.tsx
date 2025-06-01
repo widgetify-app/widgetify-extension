@@ -268,7 +268,7 @@ export function BookmarksComponent() {
 		.slice(0, TOTAL_BOOKMARKS)
 
 	return (
-		<>
+		<div className="bookmarks-component widget-container">
 			<div
 				className={`grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300 ${getTextColor(theme)}`}
 			>
@@ -335,6 +335,6 @@ export function BookmarksComponent() {
 					bookmark={bookmarkToEdit}
 				/>
 			)}
-		</>
+		</div>
 	)
 }

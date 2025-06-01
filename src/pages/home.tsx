@@ -32,6 +32,7 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
 import Analytics from '../analytics'
+import { GuideButton } from '@/components/GuideButton'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -298,6 +299,9 @@ export function HomePage() {
 					</WidgetVisibilityProvider>
 				</WeatherProvider>
 			</GeneralSettingProvider>
+			<WidgetVisibilityProvider>
+			 	<GuideButton />
+			</WidgetVisibilityProvider>
 			<Toaster
 				toastOptions={{
 					error: {

@@ -2,7 +2,7 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
-interface WidgetVisibilityState {
+export interface WidgetVisibilityState {
 	widgetify: boolean
 	arzLive: boolean
 	calendar: boolean
@@ -13,6 +13,7 @@ interface WidgetVisibilityState {
 	tools: boolean
 	notes: boolean
 	youtube: boolean
+	enable_sync?: boolean;
 }
 
 interface WidgetVisibilityContextType {

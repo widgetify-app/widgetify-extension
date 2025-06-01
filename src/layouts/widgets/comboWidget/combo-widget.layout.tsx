@@ -13,7 +13,7 @@ export function ComboWidget() {
 	}
 
 	return (
-		<WidgetContainer className={'flex flex-col gap-1 py-2'}>
+		<WidgetContainer className="combo-widget flex flex-col gap-1 py-2">
 			<div className="flex justify-between px-4 pb-2 border-b border-gray-200/20">
 				<div className="flex gap-2">
 					<button

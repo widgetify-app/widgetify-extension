@@ -35,14 +35,14 @@ export function NavbarLayout(): JSX.Element {
 
 	return (
 		<>
-			<nav className="flex items-center justify-between px-4 py-2">
+			<nav className="navbar-layout flex items-center justify-between px-4 py-2">
 				<div className="flex items-center">
 					<h1 className="text-2xl text-gray-100">ویجتی‌فای</h1>
 				</div>
 				<div className="flex items-center gap-2">
 					<FriendsList />
 
-					<SyncButton />
+					<SyncButton/>
 					<Tooltip content="مدیریت ویجت‌ها">
 						<button
 							className={`flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}

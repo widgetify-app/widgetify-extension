@@ -33,7 +33,7 @@ export const ToolsLayout: React.FC<any> = () => {
 	}
 
 	return (
-		<WidgetContainer>
+		<WidgetContainer className="tools-layout">
 			<div className="mb-2">
 				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
 			</div>

@@ -29,7 +29,7 @@ export const WidgetifyLayout = () => {
 	}, [isAuthenticated, user])
 
 	return (
-		<WidgetContainer className="overflow-hidden">
+		<WidgetContainer className="widgetify-layout overflow-hidden">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>

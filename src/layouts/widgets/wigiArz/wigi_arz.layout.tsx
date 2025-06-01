@@ -41,7 +41,7 @@ export function WigiArzLayout({
 
 	return (
 		<>
-			<WidgetContainer background={enableBackground} className={'flex flex-col gap-1'}>
+			<WidgetContainer background={enableBackground} className={'arz-layout flex flex-col gap-1'}>
 				{enableHeader ? (
 					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
 				) : null}

@@ -67,7 +67,7 @@ function NotesHeader() {
 
 export function NotesLayout() {
 	return (
-		<WidgetContainer className="overflow-hidden">
+		<WidgetContainer className="notes-layout overflow-hidden">
 			<NotesProvider>
 				<div className="flex flex-col h-full">
 					<NotesHeader />

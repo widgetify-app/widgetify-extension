@@ -19,6 +19,7 @@ import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 export interface StorageKV {
 	currencies: string[]
 	hasShownPwaModal: boolean
+	hasCompletedGuide: boolean
 	selectedCity: SelectedCity | null
 	currentWeather: FetchedWeather
 	todos: Todo[]
