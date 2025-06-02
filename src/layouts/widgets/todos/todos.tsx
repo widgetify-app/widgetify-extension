@@ -30,17 +30,17 @@ export function TodosLayout() {
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
 
-	if (filter === 'active') {
-		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
-	} else if (filter === 'completed') {
-		selectedDateTodos = selectedDateTodos.filter((todo) => todo.completed)
-	}
-
 	if (todoOptions.viewMode === 'monthly') {
 		const currentMonth = selectedDate.format('jMM')
 		selectedDateTodos = todos.filter((todo) => {
 			return todo.date.startsWith(`${selectedDate.year()}-${currentMonth}`)
 		})
+	}
+
+	if (filter === 'active') {
+		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
+	} else if (filter === 'completed') {
+		selectedDateTodos = selectedDateTodos.filter((todo) => todo.completed)
 	}
 
 	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'>) => {
