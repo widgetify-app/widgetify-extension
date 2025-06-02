@@ -120,7 +120,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 											key={option.value}
 											className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
                                                         transition-all duration-200 ease-out hover:scale-103 active:scale-97 
-                                                        ${isSelected ? 'currency-box-selected border-success bg-success/30 text-success-content' : 'border-content hover:!border-success'}
+                                                        ${isSelected ? 'currency-box-selected border-success bg-success/30 text-content' : 'border-content hover:!border-success'}
                                                         ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
 											style={{
 												transitionDelay: isContentVisible
