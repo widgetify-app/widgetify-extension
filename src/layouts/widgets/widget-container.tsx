@@ -12,7 +12,7 @@ export function WidgetContainer({
 }: WidgetContainerProps) {
 	return (
 		<div
-			className={`widget-wrapper flex flex-col h-80 min-h-80 max-h-80 p-2 ${background && 'bg-base-100'} rounded-xl ${className}`}
+			className={`widget-wrapper flex flex-col h-80 min-h-80 max-h-80 p-2 ${background && 'bg-widget'} rounded-xl ${className}`}
 			style={style}
 		>
 			{children}

@@ -17,7 +17,7 @@ export const ModeButton: React.FC<ModeButtonProps> = ({ mode, currentMode, onCli
 		<Button
 			onClick={onClick}
 			size="xs"
-			className={`px-3 py-1 btn-ghost text-xs font-medium rounded-md transition-colors border border-base-100 ${isActive && 'bg-primary/10 text-primary'}`}
+			className={`px-3 py-1 btn-ghost text-xs font-medium rounded-md transition-colors border border-content ${isActive && 'bg-primary/10 text-primary'}`}
 		>
 			{modeLabels[mode]} {isActive && <FiCheck className="inline" />}
 		</Button>

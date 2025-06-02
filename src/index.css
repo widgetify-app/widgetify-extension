@@ -1,111 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
+@import "./styles/theme-colors.css";
 
 html {
 	font-size: 16px !important;
 }
 
-:root {
-	--brand-primary: #536DFE;
-	--brand-primary-rgb: 83, 109, 254;
-	--brand-secondary: #7C8DF0;
-	--brand-secondary-rgb: 124, 141, 240;
-}
-
-@plugin "daisyui/theme" {
-	name: "light";
-	default: true;
-	--color-primary: var(--brand-primary);
-	--color-secondary: var(--brand-secondary);
-	--color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
-}
-
-@plugin "daisyui/theme" {
-	name: "dark";
-	--color-base-100: #171717;
-	--color-base-200: #1a1a1a;
-	--color-base-300: #232323;
-	--color-base-content: #f9fafb;
-	--color-primary: var(--brand-primary);
-	--color-primary-focus: #4f46e5;
-	--color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
-	--color-secondary: var(--brand-secondary);
-	--color-secondary-focus: #7c3aed;
-	--color-secondary-content: #ffffff;
-	--color-accent: #f59e0b;
-	--color-accent-focus: #d97706;
-	--color-accent-content: #ffffff;
-	--color-error: #F7374F;
-	--color-success: #34d399;
-	--color-warning: #fbbf24;
-	--color-info: #60a5fa;
-}
-
-@plugin "daisyui/theme" {
-	name: "glass";
-	--color-base-100: rgba(255, 255, 255, 0.15);
-	--color-base-200: rgba(255, 255, 255, 0.10);
-	--color-base-300: rgba(255, 255, 255, 0.05);
-	--color-base-content: rgba(255, 255, 255, 0.95);
-	--color-primary: rgba(var(--brand-primary-rgb), 0.9);
-	--color-primary-focus: rgba(var(--brand-primary-rgb), 1);
-	--color-primary-content: rgba(255, 255, 255, 1);
-	--color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
-	--color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
-	--color-secondary-content: rgba(255, 255, 255, 1);
-	--color-accent: rgba(34, 197, 94, 0.8);
-	--color-accent-focus: rgba(22, 163, 74, 0.9);
-	--color-accent-content: rgba(255, 255, 255, 1);
-	--color-error: rgba(239, 68, 68, 0.8);
-	--color-success: rgba(34, 197, 94, 0.8);
-	--color-warning: rgba(245, 158, 11, 0.8);
-	--color-info: rgba(59, 130, 246, 0.8);
-	--glass: true;
-	--glass-opacity: 25%;
-	--glass-border-opacity: 15%;
-	--glass-reflex-degree: 120%;
-	--glass-reflex-opacity: 8%;
-	--glass-blur: 32px;
-}
-
-/* Glass theme backdrop filters */
-[data-theme="glass"] .card,
-[data-theme="glass"] .dropdown,
-[data-theme="glass"] .menu,
-[data-theme="glass"] .navbar,
-[data-theme="glass"] .footer,
-[data-theme="glass"] .modal-box,
-[data-theme="glass"] .drawer-side,
-[data-theme="glass"] .bg-content,
-[data-theme="glass"] .collapse {
-	/* background-color: rgba(255, 255, 255, 0.12) !important; */
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	backdrop-filter: blur(16px) saturate(180%);
-	/* border: 1px solid rgba(255, 255, 255, 0.2); */
-	/* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
-}
-
-[data-theme="glass"] .widget-wrapper,
-[data-theme="glass"] .tooltip {
-	/* parent all items */
-	background-color: rgba(255, 255, 255, 0.08) !important;
-	-webkit-backdrop-filter: blur(12px) saturate(150%);
-	backdrop-filter: blur(12px) saturate(150%);
-	border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-[data-theme="glass"] .modal-box {
-	-webkit-backdrop-filter: blur(40px) saturate(200%);
-	backdrop-filter: blur(40px) saturate(200%);
-	background-color: rgba(255, 255, 255, 0.15) !important;
-	border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-[data-theme="glass"] .select option {
-	background-color: rgba(20, 20, 20, 0.9) !important;
-	color: rgba(255, 255, 255, 0.9) !important;
-	backdrop-filter: blur(8px);
-}
 
 html {
 	font-size: 16px;
@@ -144,8 +44,16 @@ body {
 	@apply bg-base-200;
 }
 
+.bg-widget {
+	@apply bg-base-100;
+}
+
 .text-content {
 	@apply text-base-content/90;
+}
+
+.trending-section {
+	@apply bg-base-200;
 }
 
 .text-muted {

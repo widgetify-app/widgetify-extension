@@ -59,7 +59,7 @@ export function SearchLayout() {
 					<form className="w-full" onSubmit={handleSubmit}>
 						<div
 							className={
-								'relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group bg-content'
+								'relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group bg-widget'
 							}
 						>
 							<input

@@ -31,7 +31,7 @@ export function FolderBookmarkItem({
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getFolderStyle = () => {
-		return 'hover:border hover:border-primary/40 bg-content backdrop-blur-md hover:bg-primary/20'
+		return 'hover:border hover:border-primary/40 bg-widget backdrop-blur-md hover:bg-primary/20'
 	}
 
 	const displayIcon =

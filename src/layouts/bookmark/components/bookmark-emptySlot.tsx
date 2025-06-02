@@ -6,7 +6,7 @@ export function EmptyBookmarkSlot({
 	canAdd,
 }: { onClick: (e?: React.MouseEvent<any>) => void; theme?: string; canAdd: boolean }) {
 	const getBookmarkStyle = () => {
-		return 'bg-content hover:!bg-base-300 text-content backdrop-blur-sm border-content'
+		return 'bg-widget hover:!bg-base-300 text-content backdrop-blur-sm border-content'
 	}
 
 	const getEmptySlotStyle = () => {
