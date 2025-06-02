@@ -61,11 +61,8 @@
     --glass-blur: 32px;
 }
 
-/* Glass theme backdrop filters */
-[data-theme="glass"] .dropdown,
 [data-theme="glass"] .menu,
 [data-theme="glass"] .navbar,
-[data-theme="glass"] .footer,
 [data-theme="glass"] .modal-box,
 [data-theme="glass"] .drawer-side,
 [data-theme="glass"] .trending-section,
@@ -74,7 +71,7 @@
     backdrop-filter: blur(16px) saturate(180%);
 }
 
-[data-theme="glass"] input[type="text"] {
+[data-theme="glass"] .search-box {
     -webkit-backdrop-filter: blur(10px) saturate(180%);
     backdrop-filter: blur(10px) saturate(180%);
 }
@@ -84,13 +81,11 @@
     background-color: #171717b3;
     -webkit-backdrop-filter: blur(16px) saturate(150%);
     backdrop-filter: blur(16px) saturate(150%);
-    /* border: 1px solid rgba(255, 255, 255, 0.15); */
 }
 
 [data-theme="glass"] .modal-box {
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     backdrop-filter: blur(40px) saturate(200%);
-    /* background-color: rgba(255, 255, 255, 0.15) !important; */
     background-color: #171717b3 !important;
 }
 

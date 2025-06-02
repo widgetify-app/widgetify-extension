@@ -70,7 +70,7 @@ export function SearchLayout() {
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
 								className={
-									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-content'
+									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-content search-box'
 								}
 								placeholder="جستجو ..."
 								autoComplete="off"

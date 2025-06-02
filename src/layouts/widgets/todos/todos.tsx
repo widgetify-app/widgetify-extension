@@ -147,16 +147,13 @@ export function TodosLayout() {
 									value={todoOptions.viewMode}
 									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
 									className={
-										'select select-xs text-[.65rem] w-24 !px-2 focus:outline-none focus:border focus:border-primary'
+										'select select-xs text-[.65rem] w-24 bg-content !px-2 focus:outline-none focus:border focus:border-primary'
 									}
 								>
-									<option value={TodoViewType.Day} className="bg-content text-content">
+									<option value={TodoViewType.Day} className="text-content">
 										لیست امروز
 									</option>
-									<option
-										value={TodoViewType.Monthly}
-										className="bg-content text-content"
-									>
+									<option value={TodoViewType.Monthly} className="text-content">
 										لیست ماهانه
 									</option>
 								</select>
