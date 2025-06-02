@@ -3,7 +3,6 @@ import { CheckBoxWithDescription } from '@/components/checkbox-description.compo
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import clsx from 'clsx'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useState } from 'react'
 import { BiRss } from 'react-icons/bi'
@@ -321,7 +320,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			<div className="flex items-center flex-1 gap-3">
 				<ToggleSwitch enabled={feed.enabled} disabled={disabled} onToggle={onToggle} />
 				<div className="overflow-hidden">
-					<span className={clsx('block truncate', getTextStyle())}>{feed.name}</span>
+					<span className={`block truncate ${getTextStyle()}`}>{feed.name}</span>
 					<span className={'block text-xs truncate text-muted'}>{feed.url}</span>
 				</div>
 			</div>

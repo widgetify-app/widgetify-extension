@@ -23,7 +23,6 @@
 		"@tanstack/react-query": "^5.73.3",
 		"axios": "1.8.4",
 		"chart.js": "4.4.8",
-		"clsx": "2.1.1",
 		"jalali-moment": "3.3.11",
 		"moment": "2.30.1",
 		"moment-hijri": "3.0.0",
