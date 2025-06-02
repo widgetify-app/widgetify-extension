@@ -35,7 +35,7 @@ import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
-	top: 'justify-start mt-2',
+	top: 'justify-start mt-1',
 }
 
 function ContentSection() {
@@ -285,7 +285,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col">
+		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>

@@ -39,7 +39,7 @@ export function FriendsList() {
 		<>
 			<div
 				className={
-					'relative flex items-center overflow-hidden px-2 gap-2 h-10 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
+					'relative flex items-center  overflow-hidden px-2 gap-2 h-8 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
 				}
 				style={{ width: showFriendsList ? '190px' : '70px' }}
 			>

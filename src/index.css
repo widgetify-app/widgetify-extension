@@ -13,10 +13,8 @@ html {
 
 body {
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 	font-family: "Vazir", sans-serif;
-	/* hex: */
-
 	height: 100vh;
 	-webkit-user-select: none;
 	-moz-user-select: none;

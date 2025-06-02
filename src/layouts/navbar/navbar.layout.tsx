@@ -34,9 +34,9 @@ export function NavbarLayout(): JSX.Element {
 
 	return (
 		<>
-			<nav className="flex items-center justify-between px-4 py-2">
+			<nav className="flex items-center justify-between px-4 py-0.5">
 				<div className="flex items-center">
-					<h1 className="text-2xl text-gray-100">ویجتی‌فای</h1>
+					<h1 className="text-xl text-gray-100">ویجتی‌فای</h1>
 				</div>
 				<div className="flex items-center gap-2">
 					<FriendsList />
@@ -44,18 +44,18 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
-							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
+							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
 							onClick={() => openWidgetSettings()}
 						>
-							<TbApps size={22} className="text-muted" />
+							<TbApps size={18} className="text-muted" />
 						</div>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
 						<div
-							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
+							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
 							onClick={() => setShowSettings(true)}
 						>
-							<VscSettings size={22} className="text-muted" />
+							<VscSettings size={18} className="text-muted" />
 						</div>
 					</Tooltip>
 				</div>
