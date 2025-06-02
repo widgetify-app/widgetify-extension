@@ -169,7 +169,7 @@ export function SyncButton() {
 				<div className="relative group">
 					<LazyMotion features={domAnimation}>
 						<m.button
-							className="flex items-center justify-center w-10 h-10 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content"
+							className="flex items-center justify-center w-10 h-10 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content backdrop-blur-sm"
 							onClick={() => syncData(SyncTarget.ALL, 'POST')}
 							aria-label="Sync"
 							whileHover={{ scale: 1.05 }}

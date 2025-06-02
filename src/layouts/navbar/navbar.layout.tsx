@@ -44,7 +44,7 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
-							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content"
+							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
 							onClick={() => openWidgetSettings()}
 						>
 							<TbApps size={22} className="text-muted" />
@@ -52,7 +52,7 @@ export function NavbarLayout(): JSX.Element {
 					</Tooltip>
 					<Tooltip content="تنظیمات">
 						<div
-							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content"
+							className="flex items-center h-10 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm"
 							onClick={() => setShowSettings(true)}
 						>
 							<VscSettings size={22} className="text-muted" />
