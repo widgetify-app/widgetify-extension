@@ -155,7 +155,7 @@ export function ExpandableTodoInput({
 													flex items-center justify-center w-4 h-4 rounded-full
 													transition-all duration-150 cursor-pointer 
 													${bgColor} ${hoverBgColor}
-													${priority === value ? 'ring-2 ring-offset-2 ring-offset-0  ring-primary' : ''}
+													${priority === value ? 'ring-2  ring-offset-0  ring-primary' : ''}
 												`}
 													>
 														{priority === value && (

@@ -45,7 +45,7 @@ export const AuthForm = () => {
 				ورود به حساب کاربری
 			</h2>
 			{error && (
-				<div className="p-3 mb-4 text-sm bg-red-100 rounded-lg text-error">{error}</div>
+				<div className="p-3 mb-4 text-sm text-white rounded-lg bg-error">{error}</div>
 			)}
 			<form onSubmit={handleSubmit} className="w-full space-y-5">
 				<div className="space-y-1">
