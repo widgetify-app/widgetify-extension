@@ -115,7 +115,7 @@ export function useWallpaper(
 
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
 		setCustomWallpaper(newWallpaper)
-		setSelectedBackground(newWallpaper)
+		handleSelectBackground(newWallpaper)
 	}
 
 	return {
