@@ -19,7 +19,7 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
 import Analytics from '../analytics'
@@ -60,9 +60,9 @@ function ContentSection() {
 						</div>
 					</div>
 					<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
-						{layoutItems.map((widget) => {
-							return widget.node
-						})}
+						{layoutItems.map((widget) => (
+							<React.Fragment key={widget.id}>{widget.node}</React.Fragment>
+						))}
 					</div>
 				</div>
 			</TodoProvider>

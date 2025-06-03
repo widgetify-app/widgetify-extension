@@ -10,7 +10,7 @@ import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { CurrencyProvider } from './currency.context'
 
-enum WidgetKeys {
+export enum WidgetKeys {
 	comboWidget = 'comboWidget',
 	arzLive = 'arzLive',
 	news = 'news',
@@ -21,11 +21,12 @@ enum WidgetKeys {
 	notes = 'notes',
 	youtube = 'youtube',
 }
-interface WidgetItem {
+export interface WidgetItem {
 	id: WidgetKeys
 	emoji: string
 	label: string
 	node: any
+	order?: number
 }
 
 export const widgetItems: WidgetItem[] = [
@@ -97,13 +98,15 @@ interface WidgetVisibilityContextType {
 	visibility: WidgetKeys[]
 	toggleWidget: (widgetId: WidgetKeys) => void
 	openWidgetSettings: () => void
+	reorderWidgets: (sourceIndex: number, destinationIndex: number) => void
 }
 
 const defaultVisibility: WidgetKeys[] = [
+	WidgetKeys.comboWidget,
 	WidgetKeys.calendar,
-	WidgetKeys.weather,
 	WidgetKeys.tools,
 	WidgetKeys.todos,
+	WidgetKeys.weather,
 ]
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
@@ -116,12 +119,11 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 	useEffect(() => {
 		async function loadSettings() {
-			const storedVisibility = await getFromStorage('widgetVisibility')
+			const storedVisibility = await getFromStorage('activeWidgets')
 			if (storedVisibility) {
-				setVisibility(storedVisibility)
+				setVisibility(storedVisibility.map((item: any) => item.id as WidgetKeys))
 			} else {
 				setVisibility(defaultVisibility)
-				setToStorage('widgetVisibility', defaultVisibility)
 			}
 			setIsLoaded(true)
 		}
@@ -131,7 +133,8 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 	useEffect(() => {
 		if (isLoaded) {
-			setToStorage('widgetVisibility', visibility)
+			const activeWidgets = widgetItems.filter((item) => visibility.includes(item.id))
+			setToStorage('activeWidgets', activeWidgets)
 		}
 	}, [visibility, isLoaded])
 
@@ -153,14 +156,33 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			'toggle',
 		)
 	}
-
 	const openWidgetSettings = () => {
 		window.dispatchEvent(new Event('openWidgetSettings'))
 	}
 
+	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
+		setVisibility((prev) => {
+			// const newVisibility = [...prev]
+			// const [removed] = newVisibility.splice(sourceIndex, 1)
+			// newVisibility.splice(destinationIndex, 0, removed)
+			// change order
+
+			Analytics.featureUsed(
+				'widget_visibility',
+				{
+					source_index: sourceIndex,
+					destination_index: destinationIndex,
+				},
+				'drag',
+			)
+
+			return newVisibility
+		})
+	}
+
 	return (
 		<WidgetVisibilityContext.Provider
-			value={{ visibility, toggleWidget, openWidgetSettings }}
+			value={{ visibility, toggleWidget, openWidgetSettings, reorderWidgets }}
 		>
 			{children}
 		</WidgetVisibilityContext.Provider>

@@ -1,5 +1,6 @@
 import type { TodoOptions } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
+import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
@@ -37,7 +38,7 @@ export interface StorageKV {
 	forecastWeather: FetchedForecast[]
 	auth_token: string | undefined
 	profile: UserProfile
-	widgetVisibility: any
+	activeWidgets: WidgetItem[]
 	news: NewsResponse & { isCached?: boolean }
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
