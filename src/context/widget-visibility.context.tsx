@@ -33,7 +33,11 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.comboWidget,
 		emoji: '🔗',
 		label: 'ویجت ترکیبی (ارز و اخبار)',
-		node: ComboWidget,
+		node: (
+			<CurrencyProvider>
+				<ComboWidget />,
+			</CurrencyProvider>
+		),
 	},
 	{
 		id: WidgetKeys.arzLive,

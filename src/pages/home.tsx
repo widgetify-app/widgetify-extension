@@ -6,7 +6,6 @@ import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { BookmarkProvider } from '@/context/bookmark.context'
-import { CurrencyProvider } from '@/context/currency.context'
 import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
@@ -20,7 +19,6 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
@@ -34,42 +32,41 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { visibility } = useWidgetVisibility()
+	const firstWidget = widgetItems.find((item) => item.id === visibility[0])
 
+	const filteredWidgets = widgetItems.filter((item) => item.id !== visibility[0])
+	const layoutItems = filteredWidgets.filter((item) => visibility.includes(item.id))
+	console.log(firstWidget)
 	return (
-		<TodoProvider>
-			<div
-				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
-			>
-				<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
-					<div className="order-3 w-full lg:w-1/4 lg:order-1">
-						<WidgetifyLayout />
-					</div>
+		<DateProvider>
+			<TodoProvider>
+				<div
+					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
+				>
+					<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+						<div className="order-3 w-full lg:w-1/4 lg:order-1">
+							<WidgetifyLayout />
+						</div>
 
-					<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
-						<SearchLayout />
-						<BookmarkProvider>
-							<BookmarksComponent />
-						</BookmarkProvider>
-					</div>
+						<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
+							<SearchLayout />
+							<BookmarkProvider>
+								<BookmarksComponent />
+							</BookmarkProvider>
+						</div>
 
-					<div className="order-2 w-full lg:w-1/4 lg:order-3">
-						<CurrencyProvider>
-							<ComboWidget />
-						</CurrencyProvider>
+						<div className="order-2 w-full lg:w-1/4 lg:order-3">
+							{firstWidget ? firstWidget.node : null}
+						</div>
 					</div>
-				</div>
-				<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
-					<DateProvider>
-						{visibility.map((widget) => {
-							const SelectedWidget = widgetItems.find((item) => item.id === widget)
-							if (!SelectedWidget) return null
-
-							return SelectedWidget.node
+					<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
+						{layoutItems.map((widget) => {
+							return widget.node
 						})}
-					</DateProvider>
+					</div>
 				</div>
-			</div>
-		</TodoProvider>
+			</TodoProvider>
+		</DateProvider>
 	)
 }
 
