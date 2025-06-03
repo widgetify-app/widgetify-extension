@@ -1,45 +1,113 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { ComboWidget, NewsLayout, WigiArzLayout } from '@/layouts'
+import CalendarLayout from '@/layouts/widgets/calendar/calendar'
+import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
+import { TodosLayout } from '@/layouts/widgets/todos/todos'
+import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
+import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
+import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import { CurrencyProvider } from './currency.context'
 
-interface WidgetVisibilityState {
-	widgetify: boolean
-	arzLive: boolean
-	calendar: boolean
-	weather: boolean
-	news: boolean
-	comboWidget: boolean
-	todos: boolean
-	tools: boolean
-	notes: boolean
-	youtube: boolean
+enum WidgetKeys {
+	comboWidget = 'comboWidget',
+	arzLive = 'arzLive',
+	news = 'news',
+	calendar = 'calendar',
+	weather = 'weather',
+	todos = 'todos',
+	tools = 'tools',
+	notes = 'notes',
+	youtube = 'youtube',
+}
+interface WidgetItem {
+	id: WidgetKeys
+	emoji: string
+	label: string
+	node: any
 }
 
+export const widgetItems: WidgetItem[] = [
+	{
+		id: WidgetKeys.comboWidget,
+		emoji: '🔗',
+		label: 'ویجت ترکیبی (ارز و اخبار)',
+		node: ComboWidget,
+	},
+	{
+		id: WidgetKeys.arzLive,
+		emoji: '💰',
+		label: 'ویجی ارز',
+		node: (
+			<CurrencyProvider>
+				<WigiArzLayout inComboWidget={false} />
+			</CurrencyProvider>
+		),
+	},
+	{
+		id: WidgetKeys.news,
+		emoji: '📰',
+		label: 'ویجی اخبار',
+		node: <NewsLayout inComboWidget={false} />,
+	},
+	{
+		id: WidgetKeys.calendar,
+		emoji: '📅',
+		label: 'تقویم',
+		node: <CalendarLayout />,
+	},
+	{
+		id: WidgetKeys.weather,
+		emoji: '🌤️',
+		label: 'آب و هوا',
+		node: <WeatherLayout />,
+	},
+	{
+		id: WidgetKeys.todos,
+		emoji: '✅',
+		label: 'وظایف',
+		node: <TodosLayout />,
+	},
+	{
+		id: WidgetKeys.tools,
+		emoji: '🧰',
+		label: 'ابزارها',
+		node: <ToolsLayout />,
+	},
+	{
+		id: WidgetKeys.notes,
+		emoji: '📝',
+		label: 'یادداشت‌ها',
+		node: <NotesLayout />,
+	},
+	{
+		id: WidgetKeys.youtube,
+		emoji: '📺',
+		label: 'آمار یوتیوب',
+		node: <YouTubeLayout />,
+	},
+]
+
 interface WidgetVisibilityContextType {
-	visibility: WidgetVisibilityState
-	toggleWidget: (widgetId: keyof WidgetVisibilityState) => void
+	visibility: WidgetKeys[]
+	toggleWidget: (widgetId: WidgetKeys) => void
 	openWidgetSettings: () => void
 }
 
-const defaultVisibility: WidgetVisibilityState = {
-	widgetify: true,
-	arzLive: true,
-	calendar: true,
-	weather: true,
-	news: false,
-	comboWidget: false,
-	todos: true,
-	tools: true,
-	notes: false,
-	youtube: false,
-}
+const defaultVisibility: WidgetKeys[] = [
+	WidgetKeys.calendar,
+	WidgetKeys.weather,
+	WidgetKeys.tools,
+	WidgetKeys.todos,
+]
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
 	undefined,
 )
 
 export function WidgetVisibilityProvider({ children }: { children: ReactNode }) {
-	const [visibility, setVisibility] = useState<WidgetVisibilityState>(defaultVisibility)
+	const [visibility, setVisibility] = useState<WidgetKeys[]>([])
 	const [isLoaded, setIsLoaded] = useState(false)
 
 	useEffect(() => {
@@ -47,6 +115,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			const storedVisibility = await getFromStorage('widgetVisibility')
 			if (storedVisibility) {
 				setVisibility(storedVisibility)
+			} else {
+				setVisibility(defaultVisibility)
+				setToStorage('widgetVisibility', defaultVisibility)
 			}
 			setIsLoaded(true)
 		}
@@ -60,17 +131,20 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		}
 	}, [visibility, isLoaded])
 
-	const toggleWidget = (widgetId: keyof WidgetVisibilityState) => {
-		setVisibility((prev) => ({
-			...prev,
-			[widgetId]: !prev[widgetId],
-		}))
+	const toggleWidget = (widgetId: WidgetKeys) => {
+		setVisibility((prev) => {
+			const newVisibility = prev.includes(widgetId)
+				? prev.filter((id) => id !== widgetId)
+				: [...prev, widgetId]
+
+			return newVisibility
+		})
 
 		Analytics.featureUsed(
 			'widget_visibility',
 			{
 				widget_id: widgetId,
-				new_state: !visibility[widgetId],
+				new_state: !visibility.includes(widgetId),
 			},
 			'toggle',
 		)

@@ -14,20 +14,13 @@ import { WeatherProvider } from '@/context/weather.context'
 import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
+	widgetItems,
 } from '@/context/widget-visibility.context'
 import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
-import { NewsLayout } from '@/layouts/widgets/news/news.layout'
-import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
-import { TodosLayout } from '@/layouts/widgets/todos/todos'
-import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
-import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
-import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
-import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
@@ -60,66 +53,20 @@ function ContentSection() {
 					</div>
 
 					<div className="order-2 w-full lg:w-1/4 lg:order-3">
-						{visibility.comboWidget ? (
-							<CurrencyProvider>
-								<ComboWidget />
-							</CurrencyProvider>
-						) : visibility.arzLive ? (
-							<CurrencyProvider>
-								<WigiArzLayout inComboWidget={false} />
-							</CurrencyProvider>
-						) : (
-							visibility.news && (
-								<NewsLayout
-									enableBackground={true}
-									enableHeader={true}
-									inComboWidget={false}
-								/>
-							)
-						)}
+						<CurrencyProvider>
+							<ComboWidget />
+						</CurrencyProvider>
 					</div>
 				</div>
-				<div
-					className={
-						'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-3 justify-between transition-all duration-300 items-center'
-					}
-				>
+				<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
 					<DateProvider>
-						{visibility.calendar && (
-							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-								<CalendarLayout />
-							</div>
-						)}
-						{visibility.tools && (
-							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-								<ToolsLayout />
-							</div>
-						)}
-						{visibility.todos && (
-							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-								<TodosLayout />
-							</div>
-						)}{' '}
-						{visibility.notes && (
-							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-								<NotesLayout />
-							</div>
-						)}
-						{visibility.youtube && (
-							<div className={'w-full lg:w-3/12 transition-all duration-300'}>
-								<YouTubeLayout />
-							</div>
-						)}
+						{visibility.map((widget) => {
+							const SelectedWidget = widgetItems.find((item) => item.id === widget)
+							if (!SelectedWidget) return null
+
+							return SelectedWidget.node
+						})}
 					</DateProvider>
-					{visibility.weather && (
-						<div
-							className={
-								'w-full md:max-w-64 lg:w-3/12 self-end transition-all duration-300'
-							}
-						>
-							<WeatherLayout />
-						</div>
-					)}
 				</div>
 			</div>
 		</TodoProvider>
