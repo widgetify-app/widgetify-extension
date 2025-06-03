@@ -1,11 +1,13 @@
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { ComboWidget, NewsLayout, WigiArzLayout } from '@/layouts'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
+import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
+import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
 import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
+import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import {
 	type ReactNode,
@@ -44,7 +46,7 @@ export const widgetItems: WidgetItem[] = [
 		order: 0,
 		node: (
 			<CurrencyProvider>
-				<ComboWidget />,
+				<ComboWidget />
 			</CurrencyProvider>
 		),
 	},
@@ -207,12 +209,10 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		setWidgetOrders((prev) => {
 			const newOrders = { ...prev }
 
-			// Create a new array from visible widgets to reorder
 			const reorderedWidgets = [...visibleWidgets]
 			const [draggedWidget] = reorderedWidgets.splice(sourceIndex, 1)
 			reorderedWidgets.splice(destinationIndex, 0, draggedWidget)
 
-			// Update the order for all visible widgets based on their new positions
 			reorderedWidgets.forEach((widget, index) => {
 				newOrders[widget.id] = index
 			})

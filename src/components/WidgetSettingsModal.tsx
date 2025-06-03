@@ -18,7 +18,6 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 	const sortedVisibleWidgets = getSortedWidgets()
 
 	const handleDragEnd = (result: any) => {
-		// dropped outside the list
 		if (!result.destination) {
 			return
 		}
