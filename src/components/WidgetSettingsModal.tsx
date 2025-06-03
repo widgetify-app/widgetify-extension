@@ -11,10 +11,11 @@ interface WidgetSettingsModalProps {
 }
 
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
-	const { visibility, toggleWidget, reorderWidgets } = useWidgetVisibility()
+	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
+		useWidgetVisibility()
 	const [activeTab, setActiveTab] = useState<'selection' | 'order'>('selection')
 
-	const visibleWidgets = widgetItems.filter((widget) => visibility.includes(widget.id))
+	const sortedVisibleWidgets = getSortedWidgets()
 
 	const handleDragEnd = (result: any) => {
 		// dropped outside the list
@@ -65,7 +66,6 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						</button>
 					</fieldset>
 				</div>
-
 				{activeTab === 'selection' && (
 					<div className="grid grid-cols-2 gap-2">
 						{widgetItems.map((widget) => (
@@ -78,12 +78,11 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							/>
 						))}
 					</div>
-				)}
-
+				)}{' '}
 				{activeTab === 'order' && (
 					<div className="space-y-2">
-						{visibleWidgets.length === 0 ? (
-							<p className="text-sm text-center py-4 text-muted">
+						{sortedVisibleWidgets.length === 0 ? (
+							<p className="py-4 text-sm text-center text-muted">
 								هیچ ویجتی برای نمایش انتخاب نشده است.
 							</p>
 						) : (
@@ -95,42 +94,33 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											ref={provided.innerRef}
 											className="space-y-2"
 										>
-											{visibility.map((widgetId, index) => {
-												const widget = widgetItems.find((item) => item.id === widgetId)
-												if (!widget) return null
-
-												return (
-													<Draggable
-														key={widget.id}
-														draggableId={widget.id}
-														index={index}
-													>
-														{(provided, snapshot) => (
-															<div
-																ref={provided.innerRef}
-																{...provided.draggableProps}
-																className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
-																	snapshot.isDragging
-																		? 'bg-primary/20 border-primary/50'
-																		: 'bg-content border-content'
-																}`}
-															>
-																<div className="flex items-center gap-2">
-																	<span className="text-lg">{widget.emoji}</span>
-																	<span>{widget.label}</span>
-																</div>
-																<div
-																	{...provided.dragHandleProps}
-																	className="p-1 cursor-move hover:bg-content rounded-lg"
-																	title="جابجا کردن"
-																>
-																	<FiMove className="text-muted" />
-																</div>
+											{sortedVisibleWidgets.map((widget, index) => (
+												<Draggable key={widget.id} draggableId={widget.id} index={index}>
+													{(provided, snapshot) => (
+														<div
+															ref={provided.innerRef}
+															{...provided.draggableProps}
+															className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+																snapshot.isDragging
+																	? 'bg-primary/20 border-primary/50'
+																	: 'bg-content border-content'
+															}`}
+														>
+															<div className="flex items-center gap-2">
+																<span className="text-lg">{widget.emoji}</span>
+																<span>{widget.label}</span>
 															</div>
-														)}
-													</Draggable>
-												)
-											})}
+															<div
+																{...provided.dragHandleProps}
+																className="p-1 rounded-lg cursor-move hover:bg-content"
+																title="جابجا کردن"
+															>
+																<FiMove className="text-muted" />
+															</div>
+														</div>
+													)}
+												</Draggable>
+											))}
 											{provided.placeholder}
 										</div>
 									)}

@@ -13,7 +13,6 @@ import { WeatherProvider } from '@/context/weather.context'
 import {
 	WidgetVisibilityProvider,
 	useWidgetVisibility,
-	widgetItems,
 } from '@/context/widget-visibility.context'
 import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
@@ -22,7 +21,6 @@ import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import React, { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
-import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -31,12 +29,11 @@ const layoutPositions: Record<string, string> = {
 
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
-	const { visibility } = useWidgetVisibility()
-	const firstWidget = widgetItems.find((item) => item.id === visibility[0])
+	const { getSortedWidgets } = useWidgetVisibility()
+	const sortedWidgets = getSortedWidgets()
+	const firstWidget = sortedWidgets[0]
 
-	const filteredWidgets = widgetItems.filter((item) => item.id !== visibility[0])
-	const layoutItems = filteredWidgets.filter((item) => visibility.includes(item.id))
-	console.log(firstWidget)
+	const layoutItems = sortedWidgets.slice(1)
 	return (
 		<DateProvider>
 			<TodoProvider>
@@ -60,9 +57,10 @@ function ContentSection() {
 						</div>
 					</div>
 					<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
-						{layoutItems.map((widget) => (
-							<React.Fragment key={widget.id}>{widget.node}</React.Fragment>
-						))}
+						{[...layoutItems].map((widget) => {
+							console.log('widget', widget)
+							return <React.Fragment key={widget.id}>{widget.node}</React.Fragment>
+						})}
 					</div>
 				</div>
 			</TodoProvider>
@@ -92,7 +90,7 @@ export function HomePage() {
 
 		displayModalIfNeeded()
 
-		Analytics.pageView('Home', '/')
+		// Analytics.pageView('Home', '/')
 	}, [])
 
 	const handleGetStarted = () => {

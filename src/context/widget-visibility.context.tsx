@@ -7,7 +7,14 @@ import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import {
+	type ReactNode,
+	createContext,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { CurrencyProvider } from './currency.context'
 
 export enum WidgetKeys {
@@ -26,7 +33,7 @@ export interface WidgetItem {
 	emoji: string
 	label: string
 	node: any
-	order?: number
+	order: number
 }
 
 export const widgetItems: WidgetItem[] = [
@@ -34,6 +41,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.comboWidget,
 		emoji: '🔗',
 		label: 'ویجت ترکیبی (ارز و اخبار)',
+		order: 0,
 		node: (
 			<CurrencyProvider>
 				<ComboWidget />,
@@ -44,6 +52,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.arzLive,
 		emoji: '💰',
 		label: 'ویجی ارز',
+		order: 1,
 		node: (
 			<CurrencyProvider>
 				<WigiArzLayout inComboWidget={false} />
@@ -54,42 +63,49 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.news,
 		emoji: '📰',
 		label: 'ویجی اخبار',
+		order: 2,
 		node: <NewsLayout inComboWidget={false} />,
 	},
 	{
 		id: WidgetKeys.calendar,
 		emoji: '📅',
 		label: 'تقویم',
+		order: 3,
 		node: <CalendarLayout />,
 	},
 	{
 		id: WidgetKeys.weather,
 		emoji: '🌤️',
 		label: 'آب و هوا',
+		order: 4,
 		node: <WeatherLayout />,
 	},
 	{
 		id: WidgetKeys.todos,
 		emoji: '✅',
 		label: 'وظایف',
+		order: 5,
 		node: <TodosLayout />,
 	},
 	{
 		id: WidgetKeys.tools,
 		emoji: '🧰',
 		label: 'ابزارها',
+		order: 6,
 		node: <ToolsLayout />,
 	},
 	{
 		id: WidgetKeys.notes,
 		emoji: '📝',
 		label: 'یادداشت‌ها',
+		order: 7,
 		node: <NotesLayout />,
 	},
 	{
 		id: WidgetKeys.youtube,
 		emoji: '📺',
 		label: 'آمار یوتیوب',
+		order: 8,
 		node: <YouTubeLayout />,
 	},
 ]
@@ -99,6 +115,7 @@ interface WidgetVisibilityContextType {
 	toggleWidget: (widgetId: WidgetKeys) => void
 	openWidgetSettings: () => void
 	reorderWidgets: (sourceIndex: number, destinationIndex: number) => void
+	getSortedWidgets: () => WidgetItem[]
 }
 
 const defaultVisibility: WidgetKeys[] = [
@@ -113,30 +130,52 @@ const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | unde
 	undefined,
 )
 
+const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
+	const orders: Record<WidgetKeys, number> = {} as Record<WidgetKeys, number>
+	for (const item of widgetItems) {
+		orders[item.id] = item.order
+	}
+	return orders
+}
+
 export function WidgetVisibilityProvider({ children }: { children: ReactNode }) {
 	const [visibility, setVisibility] = useState<WidgetKeys[]>([])
-	const [isLoaded, setIsLoaded] = useState(false)
-
+	const [widgetOrders, setWidgetOrders] =
+		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
+	const firstRender = useRef(true)
 	useEffect(() => {
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
 			if (storedVisibility) {
-				setVisibility(storedVisibility.map((item: any) => item.id as WidgetKeys))
+				const visibilityIds = storedVisibility.map((item: any) => item.id as WidgetKeys)
+				setVisibility(visibilityIds)
+
+				const orders: Record<WidgetKeys, number> = {} as Record<WidgetKeys, number>
+				for (const item of storedVisibility) {
+					orders[item.id as WidgetKeys] =
+						item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
+				}
+				setWidgetOrders(orders)
 			} else {
 				setVisibility(defaultVisibility)
+				setWidgetOrders(getDefaultWidgetOrders())
 			}
-			setIsLoaded(true)
+			firstRender.current = false
 		}
 
 		loadSettings()
 	}, [])
-
 	useEffect(() => {
-		if (isLoaded) {
-			const activeWidgets = widgetItems.filter((item) => visibility.includes(item.id))
+		if (!firstRender.current) {
+			const activeWidgets = widgetItems
+				.filter((item) => visibility.includes(item.id))
+				.map((item) => ({
+					...item,
+					order: widgetOrders[item.id] ?? item.order,
+				}))
 			setToStorage('activeWidgets', activeWidgets)
 		}
-	}, [visibility, isLoaded])
+	}, [visibility, widgetOrders])
 
 	const toggleWidget = (widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
@@ -146,7 +185,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 			return newVisibility
 		})
-
 		Analytics.featureUsed(
 			'widget_visibility',
 			{
@@ -156,33 +194,51 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			'toggle',
 		)
 	}
+
 	const openWidgetSettings = () => {
 		window.dispatchEvent(new Event('openWidgetSettings'))
 	}
 
 	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
-		setVisibility((prev) => {
-			// const newVisibility = [...prev]
-			// const [removed] = newVisibility.splice(sourceIndex, 1)
-			// newVisibility.splice(destinationIndex, 0, removed)
-			// change order
+		const visibleWidgets = getSortedWidgets()
 
-			Analytics.featureUsed(
-				'widget_visibility',
-				{
-					source_index: sourceIndex,
-					destination_index: destinationIndex,
-				},
-				'drag',
-			)
+		if (sourceIndex === destinationIndex) return
 
-			return newVisibility
+		setWidgetOrders((prev) => {
+			const newOrders = { ...prev }
+
+			// Create a new array from visible widgets to reorder
+			const reorderedWidgets = [...visibleWidgets]
+			const [draggedWidget] = reorderedWidgets.splice(sourceIndex, 1)
+			reorderedWidgets.splice(destinationIndex, 0, draggedWidget)
+
+			// Update the order for all visible widgets based on their new positions
+			reorderedWidgets.forEach((widget, index) => {
+				newOrders[widget.id] = index
+			})
+
+			return newOrders
 		})
 	}
 
+	const getSortedWidgets = (): WidgetItem[] => {
+		return widgetItems
+			.filter((item) => visibility.includes(item.id))
+			.map((item) => ({
+				...item,
+				order: widgetOrders[item.id] ?? item.order,
+			}))
+			.sort((a, b) => a.order - b.order)
+	}
 	return (
 		<WidgetVisibilityContext.Provider
-			value={{ visibility, toggleWidget, openWidgetSettings, reorderWidgets }}
+			value={{
+				visibility,
+				toggleWidget,
+				openWidgetSettings,
+				reorderWidgets,
+				getSortedWidgets,
+			}}
 		>
 			{children}
 		</WidgetVisibilityContext.Provider>
