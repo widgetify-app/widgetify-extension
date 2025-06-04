@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill'
 import Analytics from '../src/analytics'
 import { setToStorage } from '../src/common/storage'
 
@@ -12,7 +11,6 @@ export default defineBackground(() => {
 
 			Analytics.featureUsed('Installed', {
 				version: manifest.version,
-				installType: details.temporary ? 'Temporary' : 'Permanent',
 			})
 		} else if (details.reason === 'update') {
 			// Track update event
