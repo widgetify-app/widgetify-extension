@@ -21,19 +21,50 @@ export function ClockDisplay() {
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])
-
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
-
 	return (
-		<div className="relative flex flex-col items-center justify-center p-3 overflow-hidden border border-b-0 rounded bg-content border-content">
-			{/* Settings Icon */}
-			<Button
-				onClick={() => setIsSettingsOpen(true)}
-				size="xs"
-				className="absolute p-1 transition-colors rounded btn-ghost top-2 left-2 hover:bg-gray-500/20"
-			>
-				<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
-			</Button>
+		<div className="relative flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded bg-content border-content">
+			<div className="flex items-center justify-between w-full mb-2">
+				<Button
+					onClick={() => setIsSettingsOpen(true)}
+					size="xs"
+					className="p-1 transition-colors rounded btn-ghost hover:bg-gray-500/20"
+				>
+					<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
+				</Button>
+
+				<div
+					className="w-4 h-4 transition-all duration-500 ease-out transform scale-100 opacity-40"
+					style={{
+						animation: 'fadeInScale 0.5s ease-out',
+					}}
+					key={isDayTime ? 'day' : 'night'}
+				>
+					<img
+						src={isDayTime ? dayIcon : nightIcon}
+						alt={isDayTime ? 'Day' : 'Night'}
+						className="object-contain w-full h-full"
+					/>
+				</div>
+			</div>
+
+			{/* Main clock content container */}
+			<div className="flex flex-col items-center justify-center flex-grow">
+				{/* Clock Display */}
+				{clockType === 'analog' ? (
+					<AnalogClock
+						time={time}
+						isDayTime={isDayTime}
+						timezone={getTimeZoneLabel(timezone)}
+					/>
+				) : (
+					<DigitalClock
+						time={time}
+						isDayTime={isDayTime}
+						timezone={getTimeZoneLabel(timezone)}
+					/>
+				)}
+			</div>
 
 			<div className="absolute inset-0 pointer-events-none">
 				{[...Array(3)].map((_, i) => (
@@ -41,51 +72,15 @@ export function ClockDisplay() {
 						key={i}
 						className={`absolute w-1 h-1 rounded-full ${isDayTime ? 'bg-yellow-300' : 'bg-blue-300'} opacity-30 transition-colors duration-500`}
 						style={{
-							left: `${20 + i * 30}%`,
-							top: `${20 + i * 20}%`,
+							left: `${10 + i * 30}%`,
+							top: `${40 + i * 20}%`,
 							animation: `floatParticle${i + 1} ${2 + i * 0.5}s ease-in-out infinite`,
 							animationDelay: `${i * 0.5}s`,
 						}}
 					/>
 				))}
 			</div>
-			<div
-				className="absolute w-4 h-4 transition-all duration-500 ease-out transform scale-100 top-1 right-2 opacity-40"
-				style={{
-					animation: 'fadeInScale 0.5s ease-out',
-				}}
-				key={isDayTime ? 'day' : 'night'}
-			>
-				<img
-					src={isDayTime ? dayIcon : nightIcon}
-					alt={isDayTime ? 'Day' : 'Night'}
-					className="object-contain w-full h-full"
-				/>
-			</div>
 
-			{/* Clock Display */}
-			{clockType === 'analog' ? (
-				<AnalogClock time={time} isDayTime={isDayTime} />
-			) : (
-				<DigitalClock time={time} isDayTime={isDayTime} />
-			)}
-
-			<div
-				className="relative z-10 mt-1 text-xs transition-opacity duration-300 text-content opacity-70 animate-pulse"
-				style={{
-					letterSpacing: '0.05em',
-				}}
-			>
-				{getTimeZoneLabel(timezone)}
-			</div>
-			<div
-				className="absolute inset-0 transition-all duration-500 rounded pointer-events-none"
-				style={{
-					boxShadow: isDayTime
-						? 'inset 0 0 20px rgba(255, 165, 0, 0.05)'
-						: 'inset 0 0 20px rgba(0, 123, 255, 0.05)',
-				}}
-			/>
 			<style>
 				{`
 					@keyframes fadeInScale {

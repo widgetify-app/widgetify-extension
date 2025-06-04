@@ -3,17 +3,17 @@ import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
 interface AnalogClockProps {
 	time: WidgetifyDate
 	isDayTime: boolean
+	timezone: string
 }
 
-export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
+export function AnalogClock({ time, isDayTime, timezone }: AnalogClockProps) {
 	const hours = time.hour() % 12
 	const minutes = time.minute()
 	const seconds = time.second()
 
-	// Calculate angles for clock hands
-	const hourAngle = hours * 30 + minutes * 0.5 // 30 degrees per hour + minute adjustment
-	const minuteAngle = minutes * 6 // 6 degrees per minute
-	const secondAngle = seconds * 6 // 6 degrees per second
+	const hourAngle = hours * 30 + minutes * 0.5
+	const minuteAngle = minutes * 6
+	const secondAngle = seconds * 6
 
 	const textColor = isDayTime ? 'text-warning-content' : 'text-primary'
 	const handColor = isDayTime ? '#f59e0b' : '#3b82f6'
@@ -34,7 +34,6 @@ export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
 						className={textColor}
 						opacity="0.3"
 					/>
-
 					{/* Hour markers */}
 					{[...Array(12)].map((_, i) => {
 						const angle = i * 30
@@ -59,7 +58,6 @@ export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
 							/>
 						)
 					})}
-
 					{/* Hour hand */}
 					<line
 						x1="48"
@@ -70,7 +68,6 @@ export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
 						strokeWidth="3"
 						strokeLinecap="round"
 					/>
-
 					{/* Minute hand */}
 					<line
 						x1="48"
@@ -81,7 +78,6 @@ export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
 						strokeWidth="2"
 						strokeLinecap="round"
 					/>
-
 					{/* Second hand */}
 					<line
 						x1="48"
@@ -92,11 +88,24 @@ export function AnalogClock({ time, isDayTime }: AnalogClockProps) {
 						strokeWidth="1"
 						strokeLinecap="round"
 						className="transition-transform duration-75 ease-linear"
-					/>
-
+					/>{' '}
 					{/* Center dot */}
 					<circle cx="48" cy="48" r="3" fill={handColor} />
 				</svg>
+
+				{/* Timezone display in the center */}
+				<div className="absolute inset-0 flex items-center justify-center">
+					<span
+						className={`text-xs font-medium ${textColor} opacity-70`}
+						style={{
+							marginTop: '1.5rem',
+							textAlign: 'center',
+							fontSize: '10px',
+						}}
+					>
+						{timezone}
+					</span>
+				</div>
 			</div>
 		</div>
 	)
