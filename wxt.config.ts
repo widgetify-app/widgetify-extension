@@ -23,7 +23,7 @@ export default defineConfig({
 	},
 	modules: ['@wxt-dev/webextension-polyfill', '@wxt-dev/auto-icons'],
 	manifest: {
-		version: '1.0.10',
+		version: '1.0.11',
 		name: 'Widgetify',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
@@ -34,10 +34,10 @@ export default defineConfig({
 			},
 		},
 		icons: {
-			16: './icons/icon16.png',
-			32: './icons/icon32.png',
-			48: './icons/icon48.png',
-			128: './icons/icon128.png',
+			16: 'icons/icon16.png',
+			32: 'icons/icon32.png',
+			48: 'icons/icon48.png',
+			128: 'icons/icon128.png',
 		},
 	},
 })
