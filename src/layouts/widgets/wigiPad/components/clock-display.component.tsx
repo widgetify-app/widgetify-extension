@@ -2,6 +2,9 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { useEffect, useState } from 'react'
 
+const dayIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01d.png'
+const nightIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01n.png'
+
 export function ClockDisplay() {
 	const { timezone } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone))
@@ -13,14 +16,121 @@ export function ClockDisplay() {
 		return () => clearInterval(timer)
 	}, [timezone])
 
-	const timeZone = timezone.replace('_', ' ').split('/')
+	const isDayTime = time.hour() >= 6 && time.hour() < 18
+	const textColor = isDayTime ? 'text-warning-content' : 'text-primary'
 
 	return (
-		<div className="flex flex-col items-center justify-center p-3 border border-b-0 rounded bg-content border-content">
-			<div className="text-3xl font-bold text-content">{time.format('HH:mm')}</div>
-			<div className="text-xs text-content opacity-70">
-				{timeZone[timeZone.length - 1]}
+		<div className="relative flex flex-col items-center justify-center p-3 overflow-hidden border border-b-0 rounded bg-content border-content">
+			<div className="absolute inset-0 pointer-events-none">
+				{[...Array(3)].map((_, i) => (
+					<div
+						key={i}
+						className={`absolute w-1 h-1 rounded-full ${isDayTime ? 'bg-yellow-300' : 'bg-blue-300'} opacity-30 transition-colors duration-500`}
+						style={{
+							left: `${20 + i * 30}%`,
+							top: `${20 + i * 20}%`,
+							animation: `floatParticle${i + 1} ${2 + i * 0.5}s ease-in-out infinite`,
+							animationDelay: `${i * 0.5}s`,
+						}}
+					/>
+				))}
 			</div>
+			<div
+				className="absolute w-4 h-4 transition-all duration-500 ease-out transform scale-100 top-1 right-2 opacity-40"
+				style={{
+					animation: 'fadeInScale 0.5s ease-out',
+				}}
+				key={isDayTime ? 'day' : 'night'}
+			>
+				<img
+					src={isDayTime ? dayIcon : nightIcon}
+					alt={isDayTime ? 'Day' : 'Night'}
+					className="object-contain w-full h-full"
+				/>
+			</div>
+			<div
+				className={`${textColor} text-3xl font-extrabold relative z-10 transition-all duration-300`}
+				style={{
+					letterSpacing: '0.02em',
+				}}
+			>
+				{time.format('HH:mm')}
+			</div>
+			<div
+				className="relative z-10 mt-1 text-xs transition-opacity duration-300 text-content opacity-70 animate-pulse"
+				style={{
+					letterSpacing: '0.05em',
+				}}
+			>
+				{getTimeZoneLabel(timezone)}
+			</div>
+			<div
+				className="absolute inset-0 transition-all duration-500 rounded pointer-events-none"
+				style={{
+					boxShadow: isDayTime
+						? 'inset 0 0 20px rgba(255, 165, 0, 0.05)'
+						: 'inset 0 0 20px rgba(0, 123, 255, 0.05)',
+				}}
+			/>
+			<style>
+				{`
+					@keyframes fadeInScale {
+						0% {
+							opacity: 0;
+							transform: scale(0) rotate(-180deg);
+						}
+						100% {
+							opacity: 0.4;
+							transform: scale(1) rotate(0deg);
+						}
+					}
+
+					@keyframes floatParticle1 {
+						0%, 100% {
+							transform: translateY(0px);
+							opacity: 0.3;
+						}
+						50% {
+							transform: translateY(-10px);
+							opacity: 0.6;
+						}
+					}
+
+					@keyframes floatParticle2 {
+						0%, 100% {
+							transform: translateY(0px);
+							opacity: 0.3;
+						}
+						50% {
+							transform: translateY(-8px);
+							opacity: 0.7;
+						}
+					}
+
+					@keyframes floatParticle3 {
+						0%, 100% {
+							transform: translateY(0px);
+							opacity: 0.3;
+						}
+						50% {
+							transform: translateY(-12px);
+							opacity: 0.5;
+						}
+					}
+				`}
+			</style>
 		</div>
 	)
+}
+
+function getTimeZoneLabel(timezone: string): string {
+	if (timezone.length === 3) {
+		return timezone
+	}
+
+	if (timezone.split('/')[1]) {
+		return timezone.split('/')[1].replace('_', ' ').toUpperCase().slice(0, 3)
+	}
+
+	return timezone
 }
