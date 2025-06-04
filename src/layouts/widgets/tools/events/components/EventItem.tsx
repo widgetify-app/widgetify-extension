@@ -36,18 +36,18 @@ export function EventItem({ event, index }: EventItemProps) {
 	return (
 		<div
 			key={`${event.source}-${index}`}
-			className={'mb-2 rounded-lg overflow-hidden bg-content border-r-2 border-content'}
+			className={`mb-2 rounded-lg overflow-hidden bg-content border-r-2  ${event.isHoliday ? 'border-error' : 'border-content'}`}
 		>
 			<div className="relative p-1">
 				<div className="flex items-center mb-1">
 					{getSourceIcon(event.source)}
 					<span className={`text-xs font-medium mr-1.5 ${getSubTextStyle()}`}>
-						{event.source === 'google' ? 'گوگل کلندر' : 'مناسبت روزانه'}
+						{event.source === 'google' ? 'گوگل کلندر' : 'مناسبت روزانه'}{' '}
 					</span>
 					{event.isHoliday && (
 						<span
 							className={
-								'mr-auto text-xs px-2 py-0.5 rounded-full bg-error/50 text-error'
+								'mr-auto text-xs px-2 py-0.5 rounded-full bg-error text-error-content'
 							}
 						>
 							تعطیل
@@ -55,7 +55,9 @@ export function EventItem({ event, index }: EventItemProps) {
 					)}
 				</div>
 
-				<h4 className={'text-sm font-medium w-44 text-wrap text-content'}>
+				<h4
+					className={`text-sm font-medium w-44 text-wrap ${event.isHoliday ? 'text-error' : 'text-content'}`}
+				>
 					{event.title}
 				</h4>
 
