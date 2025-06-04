@@ -57,14 +57,6 @@ export function ClockDisplay() {
 	return (
 		<div className="relative flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded bg-content border-content">
 			<div className="flex items-center justify-between w-full mb-2">
-				<Button
-					onClick={() => setIsSettingsOpen(true)}
-					size="xs"
-					className="p-1 transition-colors rounded btn-ghost hover:bg-gray-500/20"
-				>
-					<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
-				</Button>
-
 				<div
 					className="w-4 h-4 transition-all duration-500 ease-out transform scale-100 opacity-40"
 					style={{
@@ -78,6 +70,14 @@ export function ClockDisplay() {
 						className="object-contain w-full h-full"
 					/>
 				</div>
+
+				<Button
+					onClick={() => setIsSettingsOpen(true)}
+					size="xs"
+					className="p-1 transition-colors rounded opacity-50 btn-ghost hover:bg-gray-500/20"
+				>
+					<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
+				</Button>
 			</div>
 
 			{/* Main clock content container */}
