@@ -1,13 +1,19 @@
+import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { useEffect, useState } from 'react'
+import { FaCog } from 'react-icons/fa'
+import { AnalogClock } from './clocks/analog.clock'
+import { DigitalClock } from './clocks/digital.clock'
+import { ClockSettingsModal } from './components/clock-settings-modal'
 
 const dayIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01d.png'
 const nightIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01n.png'
 
 export function ClockDisplay() {
-	const { timezone } = useGeneralSetting()
+	const { timezone, clockType } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone))
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -17,10 +23,18 @@ export function ClockDisplay() {
 	}, [timezone])
 
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
-	const textColor = isDayTime ? 'text-warning-content' : 'text-primary'
 
 	return (
 		<div className="relative flex flex-col items-center justify-center p-3 overflow-hidden border border-b-0 rounded bg-content border-content">
+			{/* Settings Icon */}
+			<Button
+				onClick={() => setIsSettingsOpen(true)}
+				size="xs"
+				className="absolute p-1 transition-colors rounded btn-ghost top-2 left-2 hover:bg-gray-500/20"
+			>
+				<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
+			</Button>
+
 			<div className="absolute inset-0 pointer-events-none">
 				{[...Array(3)].map((_, i) => (
 					<div
@@ -48,14 +62,14 @@ export function ClockDisplay() {
 					className="object-contain w-full h-full"
 				/>
 			</div>
-			<div
-				className={`${textColor} text-3xl font-extrabold relative z-10 transition-all duration-300`}
-				style={{
-					letterSpacing: '0.02em',
-				}}
-			>
-				{time.format('HH:mm')}
-			</div>
+
+			{/* Clock Display */}
+			{clockType === 'analog' ? (
+				<AnalogClock time={time} isDayTime={isDayTime} />
+			) : (
+				<DigitalClock time={time} isDayTime={isDayTime} />
+			)}
+
 			<div
 				className="relative z-10 mt-1 text-xs transition-opacity duration-300 text-content opacity-70 animate-pulse"
 				style={{
@@ -119,6 +133,12 @@ export function ClockDisplay() {
 					}
 				`}
 			</style>
+
+			{/* Settings Modal */}
+			<ClockSettingsModal
+				isOpen={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+			/>
 		</div>
 	)
 }

@@ -1,5 +1,6 @@
 import { WidgetContainer } from '../widget-container'
-import { ClockDisplay, DateDisplay } from './components'
+import { ClockDisplay } from './clock-display/clock-display'
+import { DateDisplay } from './date-display/date.display'
 
 export function WigiPadWidget() {
 	return (
