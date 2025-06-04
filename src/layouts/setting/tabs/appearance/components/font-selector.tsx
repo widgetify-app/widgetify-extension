@@ -35,7 +35,6 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 							key={font.value}
 							label={font.label}
 							description={font.sampleText}
-							defaultActive={'Vazir'}
 						/>
 					))}
 				</div>

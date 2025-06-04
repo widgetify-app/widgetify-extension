@@ -20,7 +20,6 @@ export function ContentAlignmentSettings({
 						label="وسط"
 						key="center"
 						className="w-1/2"
-						defaultActive="center"
 						description="چیدمان محتوا در وسط صفحه قرار می‌گیرد."
 					/>
 					<ItemSelector
@@ -29,7 +28,6 @@ export function ContentAlignmentSettings({
 						label="بالا"
 						key="top"
 						className="w-1/2"
-						defaultActive="center"
 						description="چیدمان محتوا در بالا صفحه قرار می‌گیرد."
 					/>
 				</div>
