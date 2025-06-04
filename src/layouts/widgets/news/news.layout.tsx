@@ -15,14 +15,12 @@ interface ExtendedNewsResponse extends NewsResponse {
 
 interface NewsLayoutProps {
 	inComboWidget: boolean
-	enableHeader?: boolean
 	enableBackground?: boolean
 	showSettingsModal?: boolean
 	onSettingsModalClose?: () => void
 }
 
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
-	enableHeader = true,
 	enableBackground = true,
 	showSettingsModal = false,
 	onSettingsModalClose,
@@ -257,24 +255,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 				onClose={onCloseSettingModal}
 			/>
 
-			<WidgetContainer
-				background={enableBackground}
-				className={'flex flex-col gap-1 px-2 py-2'}
-				style={{
-					scrollbarWidth: 'none',
-				}}
-			>
-				{enableHeader ? (
-					<NewsHeader
-						title="ویجی نیوز"
-						isCached={newsData.isCached}
-						useDefaultNews={rssState.useDefaultNews}
-						platformName={newsData.platform.name}
-						platformUrl={newsData.platform.url}
-						onSettingsClick={() => setRssModalOpen(true)}
-					/>
-				) : null}
-
+			{inComboWidget ? (
 				<NewsContainer
 					inComboWidget={inComboWidget}
 					isLoading={isAnyLoading}
@@ -297,7 +278,47 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						/>
 					))}
 				</NewsContainer>
-			</WidgetContainer>
+			) : (
+				<WidgetContainer
+					background={enableBackground}
+					className={'flex flex-col gap-1 px-2 py-2'}
+					style={{
+						scrollbarWidth: 'none',
+					}}
+				>
+					<NewsHeader
+						title="ویجی نیوز"
+						isCached={newsData.isCached}
+						useDefaultNews={rssState.useDefaultNews}
+						platformName={newsData.platform.name}
+						platformUrl={newsData.platform.url}
+						onSettingsClick={() => setRssModalOpen(true)}
+					/>
+
+					<NewsContainer
+						inComboWidget={inComboWidget}
+						isLoading={isAnyLoading}
+						isEmpty={noItemsToShow}
+						noFeedsConfigured={
+							!rssState.useDefaultNews && rssState.customFeeds.length === 0
+						}
+						onAddFeed={() => setRssModalOpen(true)}
+					>
+						{displayItems.map((item, index) => (
+							<NewsItem
+								key={index}
+								title={item.title}
+								description={item.description}
+								source={item.source}
+								publishedAt={item.publishedAt}
+								link={'link' in item ? (item.link as string) : undefined}
+								index={index}
+								onClick={openNewsLink}
+							/>
+						))}
+					</NewsContainer>
+				</WidgetContainer>
+			)}
 		</>
 	)
 }

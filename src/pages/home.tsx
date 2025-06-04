@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
@@ -20,7 +21,6 @@ import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -51,18 +51,20 @@ function ContentSection() {
 					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
 				>
 					<div className="flex flex-col w-full gap-2 lg:flex-row lg:gap-0">
-						<div className="order-3 w-full lg:w-1/4 lg:order-1">
+						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
 							<WidgetifyLayout />
 						</div>
 
 						<div className={'order-1 w-full lg:w-2/4 lg:order-2 px-2'}>
 							<SearchLayout />
 							<BookmarkProvider>
-								<BookmarksComponent />
+								<div className="h-widget">
+									<BookmarksComponent />
+								</div>
 							</BookmarkProvider>
 						</div>
 
-						<div className="order-2 w-full lg:w-1/4 lg:order-3">
+						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
 							{firstWidget ? firstWidget.node : null}
 						</div>
 					</div>
@@ -72,14 +74,17 @@ function ContentSection() {
 								return (
 									<div
 										key={widget.id}
-										className="w-full transition-all duration-300 lg:w-3/12"
+										className="flex-shrink-0 w-full lg:w-3/12 h-widget"
 									>
 										{widget.node}
 									</div>
 								)
 							}
-
-							return widget.node
+							return (
+								<div key={widget.id} className="h-widget">
+									{widget.node}
+								</div>
+							)
 						})}
 					</div>
 				</div>
@@ -110,7 +115,7 @@ export function HomePage() {
 
 		displayModalIfNeeded()
 
-		// Analytics.pageView('Home', '/')
+		Analytics.pageView('Home', '/')
 	}, [])
 
 	const handleGetStarted = () => {
