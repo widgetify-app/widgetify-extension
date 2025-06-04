@@ -3,12 +3,10 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'wxt'
 
 export default defineConfig({
-	//@ts-ignore
-	vite(env) {
-		return {
-			plugins: [tailwindcss(), react()],
-		}
-	},
+	vite: () =>
+		({
+			plugins: [tailwindcss()],
+		}) as any,
 	alias: {
 		'@/common': './src/common',
 		'@/analytics': './src/analytics',
@@ -21,7 +19,11 @@ export default defineConfig({
 		'@/pages': './src/pages',
 		'@/assets': './src/assets',
 	},
-	modules: ['@wxt-dev/webextension-polyfill', '@wxt-dev/auto-icons'],
+	modules: [
+		'@wxt-dev/webextension-polyfill',
+		'@wxt-dev/auto-icons',
+		'@wxt-dev/module-react',
+	],
 	manifest: {
 		version: '1.0.10',
 		name: 'Widgetify',
