@@ -9,7 +9,7 @@ export function DateDisplay() {
 
 	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
 	return (
-		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden text-center border border-b-0 border-l-0 rounded bg-content border-content">
+		<div className="relative flex flex-col items-center justify-center gap-2 p-1 overflow-hidden text-center border border-b-0 border-l-0 rounded bg-content border-content">
 			{isHoliday && (
 				<div className="absolute w-20 px-2 py-1 text-xs text-white transform -rotate-45 shadow-md right-16 top-2 bg-error">
 					تعطیل
