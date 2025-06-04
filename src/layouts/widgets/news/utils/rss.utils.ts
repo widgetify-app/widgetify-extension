@@ -1,3 +1,4 @@
+import { GetRss } from '@/services/rss/rss.api'
 import axios from 'axios'
 import type { RssItem } from '../news.interface'
 
@@ -12,8 +13,7 @@ export const fetchRssFeed = async (
 	sourceName: string,
 ): Promise<RssItem[]> => {
 	try {
-		const corsProxy = 'https://api.allorigins.win/raw?url='
-		const response = await axios.get(`${corsProxy}${url}`)
+		const response = await GetRss(url)
 
 		const text = response.data
 		const parser = new DOMParser()
