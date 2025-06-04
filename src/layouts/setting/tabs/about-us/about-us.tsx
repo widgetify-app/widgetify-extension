@@ -2,7 +2,6 @@ import { SectionPanel } from '@/components/section-panel'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
-import browser from 'webextension-polyfill'
 
 export function AboutUsTab() {
 	const manifest = browser.runtime.getManifest()

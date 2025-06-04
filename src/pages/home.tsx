@@ -20,7 +20,7 @@ import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import Browser from 'webextension-polyfill'
+import Analytics from '../analytics'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -92,7 +92,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
-	const currentVersion = Browser.runtime.getManifest().version
+	const currentVersion = browser.runtime.getManifest().version
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
-import Browser from 'webextension-polyfill'
 import { TrendingSearches } from './trending/trending-searches'
 
 export function SearchLayout() {
@@ -14,7 +13,7 @@ export function SearchLayout() {
 		e.preventDefault()
 		const query = searchQuery.trim()
 		if (query) {
-			Browser.search.query({ text: query })
+			browser.search.query({ text: query })
 		}
 	}
 

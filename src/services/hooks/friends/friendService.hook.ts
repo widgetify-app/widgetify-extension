@@ -109,9 +109,6 @@ async function removeFriend(friendId: string): Promise<FriendActionResponse> {
 export function useSendFriendRequest() {
 	return useMutation({
 		mutationFn: (params: FriendRequestParams) => sendFriendRequest(params),
-		onError: (error) => {
-			return translateError(error)
-		},
 	})
 }
 
@@ -136,10 +133,6 @@ export function useHandleFriendRequest(
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['friends'] })
 		},
-		onError: (error) => {
-			console.error('Error handling friend request:', error)
-			return translateError(error)
-		},
 		...options,
 	})
 }
@@ -153,10 +146,6 @@ export function useRemoveFriend(
 		mutationFn: removeFriend,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['friends'] })
-		},
-		onError: (error) => {
-			console.error('Error removing friend:', error)
-			return translateError(error)
 		},
 		...options,
 	})
