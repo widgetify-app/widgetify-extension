@@ -18,7 +18,7 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Browser from 'webextension-polyfill'
 
@@ -34,18 +34,28 @@ function ContentSection() {
 	const firstWidget = sortedWidgets[0]
 
 	const layoutItems = sortedWidgets.slice(1)
+
+	const bottomCount = layoutItems.length
+
+	let bottomLayoutClasses =
+		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3'
+	if (bottomCount === 2) {
+		bottomLayoutClasses =
+			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-3 justify-between transition-all duration-300 items-center'
+	}
+
 	return (
 		<DateProvider>
 			<TodoProvider>
 				<div
 					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
 				>
-					<div className="flex flex-col w-full gap-3 lg:flex-row lg:gap-4">
+					<div className="flex flex-col w-full gap-2 lg:flex-row lg:gap-0">
 						<div className="order-3 w-full lg:w-1/4 lg:order-1">
 							<WidgetifyLayout />
 						</div>
 
-						<div className={'order-1 w-full lg:w-2/4 lg:order-2'}>
+						<div className={'order-1 w-full lg:w-2/4 lg:order-2 px-2'}>
 							<SearchLayout />
 							<BookmarkProvider>
 								<BookmarksComponent />
@@ -56,10 +66,20 @@ function ContentSection() {
 							{firstWidget ? firstWidget.node : null}
 						</div>
 					</div>
-					<div className="grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3">
-						{[...layoutItems].map((widget) => {
-							console.log('widget', widget)
-							return <React.Fragment key={widget.id}>{widget.node}</React.Fragment>
+					<div className={bottomLayoutClasses}>
+						{layoutItems.map((widget) => {
+							if (bottomCount === 2) {
+								return (
+									<div
+										key={widget.id}
+										className="w-full transition-all duration-300 lg:w-3/12"
+									>
+										{widget.node}
+									</div>
+								)
+							}
+
+							return widget.node
 						})}
 					</div>
 				</div>
