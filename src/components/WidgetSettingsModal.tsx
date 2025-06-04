@@ -43,7 +43,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<fieldset className="inline-flex rounded-md shadow-sm">
 						<button
 							type="button"
-							className={`px-4 py-2 text-xs font-medium border ${
+							className={`px-4 cursor-pointer py-2 text-xs font-medium border ${
 								activeTab === 'selection'
 									? 'bg-primary/10 border-primary/50 text-primary'
 									: 'bg-content border-content text-content'
@@ -54,7 +54,7 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						</button>
 						<button
 							type="button"
-							className={`px-4 py-2 text-xs font-medium border ${
+							className={`px-4 cursor-pointer py-2 text-xs font-medium border ${
 								activeTab === 'order'
 									? 'bg-primary/10 border-primary/50 text-primary'
 									: 'bg-content border-content text-content'
