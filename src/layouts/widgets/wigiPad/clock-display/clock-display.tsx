@@ -1,3 +1,4 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
@@ -10,8 +11,14 @@ import { ClockSettingsModal } from './components/clock-settings-modal'
 const dayIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01d.png'
 const nightIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01n.png'
 
+export enum ClockType {
+	Analog = 'analog',
+	Digital = 'digital',
+}
+
 export function ClockDisplay() {
-	const { timezone, clockType } = useGeneralSetting()
+	const [clockType, setClockType] = useState<ClockType | null>(null)
+	const { timezone } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone))
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
@@ -21,7 +28,32 @@ export function ClockDisplay() {
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])
+
+	useEffect(() => {
+		async function load() {
+			const clockTypeFromStore = await getFromStorage('clockType')
+			if (clockTypeFromStore) {
+				setClockType(clockTypeFromStore as ClockType)
+			} else {
+				setClockType(ClockType.Digital)
+			}
+		}
+
+		load()
+	}, [])
+
+	if (!clockType) {
+		return null
+	}
+
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
+
+	async function updateClockType(newClockType: ClockType) {
+		setClockType(newClockType)
+		await setToStorage('clockType', newClockType)
+		setIsSettingsOpen(false)
+	}
+
 	return (
 		<div className="relative flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded bg-content border-content">
 			<div className="flex items-center justify-between w-full mb-2">
@@ -132,7 +164,8 @@ export function ClockDisplay() {
 			{/* Settings Modal */}
 			<ClockSettingsModal
 				isOpen={isSettingsOpen}
-				onClose={() => setIsSettingsOpen(false)}
+				onClose={(val) => updateClockType(val)}
+				clockType={clockType}
 			/>
 		</div>
 	)

@@ -1,25 +1,28 @@
+import { Button } from '@/components/button/button'
 import { ItemSelector } from '@/components/item-selector'
 import Modal from '@/components/modal'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { useState } from 'react'
+import { ClockType } from '../clock-display'
 
 interface ClockSettingsModalProps {
 	isOpen: boolean
-	onClose: () => void
+	clockType: ClockType
+	onClose: (clockType: ClockType) => void
 }
 
-export function ClockSettingsModal({ isOpen, onClose }: ClockSettingsModalProps) {
-	const { clockType, setClockType } = useGeneralSetting()
-	const [selectedType, setSelectedType] = useState<'analog' | 'digital'>(clockType)
+export function ClockSettingsModal({
+	isOpen,
+	onClose,
+	clockType,
+}: ClockSettingsModalProps) {
+	const [selectedType, setSelectedType] = useState<ClockType>(clockType)
 
 	const handleSave = () => {
-		setClockType(selectedType)
-		onClose()
+		onClose(selectedType)
 	}
 
 	const handleCancel = () => {
-		setSelectedType(clockType) // Reset to original value
-		onClose()
+		onClose(selectedType)
 	}
 
 	const clockOptions = [
@@ -27,13 +30,13 @@ export function ClockSettingsModal({ isOpen, onClose }: ClockSettingsModalProps)
 			key: 'digital',
 			label: 'ساعت دیجیتال',
 			description: 'نمایش ساعت به صورت عددی',
-			value: 'digital' as const,
+			value: ClockType.Digital as const,
 		},
 		{
 			key: 'analog',
 			label: 'ساعت آنالوگ',
 			description: 'نمایش ساعت به صورت عقربه‌ای',
-			value: 'analog' as const,
+			value: ClockType.Analog as const,
 		},
 	]
 
@@ -62,18 +65,21 @@ export function ClockSettingsModal({ isOpen, onClose }: ClockSettingsModalProps)
 				</div>
 
 				<div className="flex gap-3 pt-4 border-t border-content">
-					<button
+					<Button
 						onClick={handleCancel}
-						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content hover:bg-content/10"
+						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"
+						size="md"
 					>
 						انصراف
-					</button>
-					<button
+					</Button>
+					<Button
+						isPrimary={true}
+						size="md"
 						onClick={handleSave}
-						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary hover:bg-primary/90"
+						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg"
 					>
 						ذخیره
-					</button>
+					</Button>
 				</div>
 			</div>
 		</Modal>

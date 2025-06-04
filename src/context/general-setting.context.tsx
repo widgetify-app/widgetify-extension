@@ -5,20 +5,17 @@ import { createContext, useContext, useEffect, useState } from 'react'
 export interface GeneralData {
 	analyticsEnabled: boolean
 	timezone: string
-	clockType: 'analog' | 'digital'
 }
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
 	setAnalyticsEnabled: (value: boolean) => void
 	setTimezone: (value: string) => void
-	setClockType: (value: 'analog' | 'digital') => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
 	timezone: 'Asia/Tehran',
-	clockType: 'digital',
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -65,10 +62,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting('timezone', value)
 	}
 
-	const setClockType = (value: 'analog' | 'digital') => {
-		updateSetting('clockType', value)
-	}
-
 	if (!isInitialized) {
 		return null
 	}
@@ -77,7 +70,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting,
 		setAnalyticsEnabled,
 		setTimezone,
-		setClockType,
 	}
 
 	return (

@@ -5,6 +5,7 @@ import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
+import type { ClockType } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
@@ -61,4 +62,5 @@ export interface StorageKV {
 		subscriptionStyle: 'short' | 'long'
 	}
 	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
+	clockType: ClockType
 }
