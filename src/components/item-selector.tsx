@@ -6,7 +6,6 @@ interface Props {
 	key: string
 	label: string
 	description?: string | React.ReactNode
-	defaultActive?: string
 	className?: string
 }
 export function ItemSelector({
@@ -15,7 +14,6 @@ export function ItemSelector({
 	key,
 	label,
 	description,
-	defaultActive,
 	className,
 }: Props) {
 	const getRadioBorderStyle = (isSelected: boolean) => {
@@ -26,36 +24,34 @@ export function ItemSelector({
 		return 'border-content'
 	}
 
-	const isDefaultActive = defaultActive === key
 	return (
 		<div
 			key={key}
 			onClick={onClick}
 			className={`flex cursor-pointer flex-col items-start  p-3 transition-all border rounded-lg ${className} ${
-				isActive || isDefaultActive
+				isActive
 					? 'border-primary/50 bg-primary/10'
 					: 'bg-content border-content hover:!border-primary/50'
 			}`}
 		>
 			<div className="flex items-center justify-center mb-2">
 				<div className={`w-4 h-4 rounded-full border ${getRadioBorderStyle(isActive)}`}>
-					{isActive ||
-						(isDefaultActive && (
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="w-full h-full p-0.5"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={3}
-									d="M5 13l4 4L19 7"
-								/>
-							</svg>
-						))}
+					{isActive && (
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="w-full h-full p-0.5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={3}
+								d="M5 13l4 4L19 7"
+							/>
+						</svg>
+					)}
 				</div>
 				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
 			</div>

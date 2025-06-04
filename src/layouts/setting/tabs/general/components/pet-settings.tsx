@@ -91,7 +91,6 @@ export function PetSettings() {
 									onClick={() => onChangePetType(pet.value)}
 									key={pet.value}
 									label={pet.label}
-									defaultActive={PetTypes.DOG_AKITA}
 									className="!w-full !h-12 !p-2.5 !text-sm text-center"
 								/>
 							))}

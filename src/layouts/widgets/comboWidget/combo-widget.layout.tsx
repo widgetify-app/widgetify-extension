@@ -47,7 +47,6 @@ export function ComboWidget() {
 					{activeTab === 'currency' ? (
 						<WigiArzLayout
 							inComboWidget={true}
-							enableHeader={false}
 							enableBackground={false}
 							showSettingsModal={activeTab === 'currency' && showSettings}
 							onSettingsModalClose={() => setShowSettings(false)}
@@ -55,7 +54,6 @@ export function ComboWidget() {
 					) : (
 						<NewsLayout
 							inComboWidget={true}
-							enableHeader={false}
 							enableBackground={false}
 							showSettingsModal={activeTab === 'news' && showSettings}
 							onSettingsModalClose={() => setShowSettings(false)}
