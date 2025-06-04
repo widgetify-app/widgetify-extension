@@ -25,3 +25,6 @@ dist-ssr
 .env
 dev-dist
 packages
+.wxt
+.output
+dev

@@ -1,5 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { sleep } from '@/common/utils/timeout.ts'
+import { sleep } from '@/common/utils/timeout'
 import { RequireAuth } from '@/components/auth/require-auth'
 import {
 	type FetchedYouTubeProfile,
@@ -13,8 +13,8 @@ import { WidgetContainer } from '../widget-container'
 import {
 	type YouTubeSettings,
 	YouTubeSettingsModal,
-} from './components/youtube-settings-modal.tsx'
-import { YouTubeStatsCard } from './components/youtube-stats-card.tsx'
+} from './components/youtube-settings-modal'
+import { YouTubeStatsCard } from './components/youtube-stats-card'
 
 export function YouTubeLayout() {
 	const [showSettings, setShowSettings] = useState(false)

@@ -4,23 +4,19 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"build:chrome": "vite build --mode chrome",
-		"build:firefox": "vite build --mode firefox",
-		"preview": "vite preview",
-		"start:chrome": "npm run build:chrome && web-ext run --source-dir=dist --target=chromium",
-		"start:firefox": "npm run build:firefox && web-ext run --source-dir=dist --target=firefox-desktop",
-		"package": "bun scripts/package-extension.js",
-		"package:chrome": "bun scripts/package-extension.js chrome",
-		"package:firefox": "bun scripts/package-extension.js firefox",
-		"-------------node-------------": "echo 'Node.js packaging commands'",
-		"package:node:firefox": "node --env-file .env scripts/package-extension.js firefox",
-		"package:node:chrome": "node --env-file .env scripts/package-extension.js chrome"
+		"dev": "wxt",
+		"dev:firefox": "wxt -b firefox",
+		"build": "wxt build",
+		"build:firefox": "wxt build -b firefox",
+		"zip": "wxt zip",
+		"zip:firefox": "wxt zip -b firefox",
+		"compile": "tsc --noEmit",
+		"postinstall": "wxt prepare"
 	},
 	"dependencies": {
 		"@hello-pangea/dnd": "^18.0.1",
 		"@tanstack/react-query": "^5.73.3",
+		"@wxt-dev/webextension-polyfill": "^1.0.0",
 		"axios": "1.8.4",
 		"chart.js": "4.4.8",
 		"jalali-moment": "3.3.11",
@@ -38,7 +34,8 @@
 		"swiper": "11.2.6",
 		"uuid": "11.1.0",
 		"vite-plugin-web-extension": "4.4.3",
-		"webextension-polyfill": "0.12.0"
+		"webextension-polyfill": "^0.12.0",
+		"wxt": "^0.20.7"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
@@ -51,6 +48,7 @@
 		"@types/styled-jsx": "3.4.4",
 		"@types/webextension-polyfill": "0.12.3",
 		"@vitejs/plugin-react": "4.3.4",
+		"@wxt-dev/auto-icons": "^1.0.2",
 		"autoprefixer": "10.4.21",
 		"daisyui": "^5.0.35",
 		"globals": "^16.0.0",
