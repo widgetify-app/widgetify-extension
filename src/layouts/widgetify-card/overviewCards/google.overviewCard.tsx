@@ -17,7 +17,7 @@ export function GoogleOverviewCard() {
 	const { timezone } = useGeneralSetting()
 	const today = getCurrentDate(timezone.value)
 
-	const { data: googleEvents } = useGetGoogleCalendarEvents(
+	const { data: googleEvents = [] } = useGetGoogleCalendarEvents(
 		isAuthenticated && (user?.connections?.includes('google') || false),
 		today.clone().toDate(),
 	)

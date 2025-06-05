@@ -9,7 +9,7 @@ import { GoogleMeetingItem } from './google-meeting-item'
 export function GoogleTab() {
 	const { today } = useDate()
 	const { isAuthenticated } = useAuth()
-	const { data: googleEvents = [], isLoading } = useGetGoogleCalendarEvents(
+	const { data: googleEvents, isLoading } = useGetGoogleCalendarEvents(
 		isAuthenticated,
 		today.clone().toDate(),
 		today.clone().add(1, 'day').toDate(),
@@ -42,7 +42,7 @@ export function GoogleTab() {
 				</div>
 			) : isLoading ? (
 				<LoadingSkeleton />
-			) : googleEvents.length > 0 ? (
+			) : googleEvents && googleEvents.length > 0 ? (
 				googleEvents.map((event) => <GoogleMeetingItem key={event.id} meeting={event} />)
 			) : (
 				<div className="py-8 text-center text-muted">

@@ -19,7 +19,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
 	const endOfMonth = selectedDate.clone().endOf('jMonth').toDate()
 
-	const { data: googleEvents } = useGetGoogleCalendarEvents(
+	const { data: googleEvents = [] } = useGetGoogleCalendarEvents(
 		user?.connections?.includes('google') || false,
 		startOfMonth,
 		endOfMonth,

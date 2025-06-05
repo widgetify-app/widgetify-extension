@@ -92,7 +92,7 @@ export const useGetGoogleCalendarEvents = (
 			return events
 		},
 		retry: 1,
-		initialData: cache.get(cacheKey) || [],
+		// initialData: cache.get(cacheKey) || [],
 		enabled: enabled,
 	})
 }
