@@ -106,7 +106,7 @@ export const NewsFilterSort = ({
 							</div>
 						</div>
 					)}
-					{(currentState.filterBySource !== 'all' || currentState.searchTerm) && (
+					{currentState.filterBySource !== 'all' && (
 						<div className="pt-2 border-t border-base-300">
 							<Button
 								size="xs"
@@ -114,7 +114,6 @@ export const NewsFilterSort = ({
 									onStateChange({
 										...currentState,
 										filterBySource: 'all',
-										searchTerm: '',
 									})
 								}
 								className="px-2 py-1 text-xs underline btn-ghost text-error hover:text-error/80"
