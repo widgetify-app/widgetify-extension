@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/auth.context'
 import { useWidgetVisibility, widgetItems } from '@/context/widget-visibility.context'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useState } from 'react'
@@ -13,6 +14,7 @@ interface WidgetSettingsModalProps {
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
 		useWidgetVisibility()
+	const { isAuthenticated } = useAuth()
 	const [activeTab, setActiveTab] = useState<'selection' | 'order'>('selection')
 
 	const sortedVisibleWidgets = getSortedWidgets()
@@ -62,20 +64,33 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 							onClick={() => setActiveTab('order')}
 						>
 							ترتیب
-						</button>
+						</button>{' '}
 					</fieldset>
-				</div>
+				</div>{' '}
+				{!isAuthenticated && activeTab === 'selection' && (
+					<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
+						<p className="text-sm text-warning-content">
+							⚠️ کاربران مهمان تنها می‌توانند حداکثر 4 ویجت فعال کنند. برای فعال کردن
+							ویجت‌های بیشتر، وارد حساب کاربری خود شوید.
+						</p>
+					</div>
+				)}{' '}
 				{activeTab === 'selection' && (
 					<div className="grid grid-cols-2 gap-2">
-						{widgetItems.map((widget) => (
-							<ItemSelector
-								isActive={visibility.includes(widget.id)}
-								key={widget.id}
-								className="w-full"
-								onClick={() => toggleWidget(widget.id)}
-								label={`${widget.emoji} ${widget.label}`}
-							/>
-						))}
+						{widgetItems.map((widget) => {
+							const isActive = visibility.includes(widget.id)
+							const canToggle = isAuthenticated || isActive || visibility.length < 4
+
+							return (
+								<ItemSelector
+									isActive={isActive}
+									key={widget.id}
+									className={`w-full ${!canToggle ? 'opacity-50 cursor-not-allowed' : ''}`}
+									onClick={() => canToggle && toggleWidget(widget.id)}
+									label={`${widget.emoji} ${widget.label}`}
+								/>
+							)
+						})}
 					</div>
 				)}{' '}
 				{activeTab === 'order' && (

@@ -18,6 +18,8 @@ import {
 	useRef,
 	useState,
 } from 'react'
+import toast from 'react-hot-toast'
+import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 
 export enum WidgetKeys {
@@ -38,44 +40,33 @@ export interface WidgetItem {
 	label: string
 	node: any
 	order: number
+	canToggle?: boolean
 }
 
 export const widgetItems: WidgetItem[] = [
 	{
-		id: WidgetKeys.comboWidget,
-		emoji: '🔗',
-		label: 'ویجت ترکیبی (ارز و اخبار)',
-		order: 0,
-		node: (
-			<CurrencyProvider>
-				<ComboWidget />
-			</CurrencyProvider>
-		),
-	},
-	{
-		id: WidgetKeys.arzLive,
-		emoji: '💰',
-		label: 'ویجی ارز',
-		order: 1,
-		node: (
-			<CurrencyProvider>
-				<WigiArzLayout inComboWidget={false} />
-			</CurrencyProvider>
-		),
-	},
-	{
-		id: WidgetKeys.news,
-		emoji: '📰',
-		label: 'ویجی اخبار',
-		order: 2,
-		node: <NewsLayout inComboWidget={false} />,
-	},
-	{
 		id: WidgetKeys.calendar,
 		emoji: '📅',
 		label: 'تقویم',
-		order: 3,
+		order: 1,
 		node: <CalendarLayout />,
+		canToggle: true,
+	},
+	{
+		id: WidgetKeys.tools,
+		emoji: '🧰',
+		label: 'ابزارها',
+		order: 2,
+		node: <ToolsLayout />,
+		canToggle: true,
+	},
+	{
+		id: WidgetKeys.todos,
+		emoji: '✅',
+		label: 'وظایف',
+		order: 3,
+		node: <TodosLayout />,
+		canToggle: true,
 	},
 	{
 		id: WidgetKeys.weather,
@@ -83,41 +74,56 @@ export const widgetItems: WidgetItem[] = [
 		label: 'آب و هوا',
 		order: 4,
 		node: <WeatherLayout />,
+		canToggle: true,
 	},
 	{
-		id: WidgetKeys.todos,
-		emoji: '✅',
-		label: 'وظایف',
+		id: WidgetKeys.comboWidget,
+		emoji: '🔗',
+		label: 'ویجت ترکیبی (ارز و اخبار)',
 		order: 5,
-		node: <TodosLayout />,
+		node: (
+			<CurrencyProvider>
+				<ComboWidget />
+			</CurrencyProvider>
+		),
+		canToggle: true,
 	},
 	{
-		id: WidgetKeys.tools,
-		emoji: '🧰',
-		label: 'ابزارها',
+		id: WidgetKeys.arzLive,
+		emoji: '💰',
+		label: 'ویجی ارز',
 		order: 6,
-		node: <ToolsLayout />,
+		node: (
+			<CurrencyProvider>
+				<WigiArzLayout inComboWidget={false} />
+			</CurrencyProvider>
+		),
+		canToggle: true,
 	},
+	{
+		id: WidgetKeys.news,
+		emoji: '📰',
+		label: 'ویجی اخبار',
+		order: 7,
+		node: <NewsLayout inComboWidget={false} />,
+		canToggle: true,
+	},
+
 	{
 		id: WidgetKeys.notes,
 		emoji: '📝',
 		label: 'یادداشت‌ها',
-		order: 7,
+		order: 8,
 		node: <NotesLayout />,
+		canToggle: true,
 	},
 	{
 		id: WidgetKeys.youtube,
 		emoji: '📺',
 		label: 'آمار یوتیوب',
-		order: 8,
-		node: <YouTubeLayout />,
-	},
-	{
-		id: WidgetKeys.wigiPad,
-		emoji: '🏠',
-		label: 'ویجی پد',
 		order: 9,
-		node: <WigiPadWidget />,
+		node: <YouTubeLayout />,
+		canToggle: true,
 	},
 ]
 
@@ -154,6 +160,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 	const [widgetOrders, setWidgetOrders] =
 		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
 	const firstRender = useRef(true)
+	const { isAuthenticated } = useAuth()
 	useEffect(() => {
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
@@ -187,10 +194,20 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			setToStorage('activeWidgets', activeWidgets)
 		}
 	}, [visibility, widgetOrders])
-
 	const toggleWidget = (widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
-			const newVisibility = prev.includes(widgetId)
+			const isCurrentlyVisible = prev.includes(widgetId)
+
+			if (!isCurrentlyVisible) {
+				if (!isAuthenticated && prev.length >= 4) {
+					toast.error(
+						'کاربران مهمان تنها می‌توانند حداکثر 4 ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.',
+					)
+					return prev
+				}
+			}
+
+			const newVisibility = isCurrentlyVisible
 				? prev.filter((id) => id !== widgetId)
 				: [...prev, widgetId]
 
