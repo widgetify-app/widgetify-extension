@@ -80,9 +80,7 @@ export function ClockDisplay() {
 				</Button>
 			</div>
 
-			{/* Main clock content container */}
 			<div className="flex flex-col items-center justify-center flex-grow">
-				{/* Clock Display */}
 				{clockType === 'analog' ? (
 					<AnalogClock
 						time={time}

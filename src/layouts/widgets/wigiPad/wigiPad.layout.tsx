@@ -9,6 +9,7 @@ export function WigiPadWidget() {
 				<DateDisplay />
 				<ClockDisplay />
 			</div>
+			<div className="grid grid-cols-1"></div>
 		</WidgetContainer>
 	)
 }
