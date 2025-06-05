@@ -1,21 +1,26 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
-	timezone: string
+	timezone: FetchedTimezone
 }
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
 	setAnalyticsEnabled: (value: boolean) => void
-	setTimezone: (value: string) => void
+	setTimezone: (value: FetchedTimezone) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
-	timezone: 'Asia/Tehran',
+	timezone: {
+		label: 'آسیا / تهران',
+		value: 'Asia/Tehran',
+		offset: '+03:30',
+	},
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -29,7 +34,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 			try {
 				const storedSettings = await getFromStorage('generalSettings')
 
-				if (storedSettings) {
+				if (storedSettings && typeof storedSettings === 'object') {
 					setSettings({
 						...DEFAULT_SETTINGS,
 						...storedSettings,
@@ -58,15 +63,13 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	const setAnalyticsEnabled = (value: boolean) => {
 		updateSetting('analyticsEnabled', value)
 	}
-
-	const setTimezone = (value: string) => {
+	const setTimezone = (value: FetchedTimezone) => {
 		updateSetting('timezone', value)
 	}
 
 	if (!isInitialized) {
 		return null
 	}
-
 	const contextValue: GeneralSettingContextType = {
 		...settings,
 		updateSetting,

@@ -32,13 +32,10 @@ export const WidgetifyLayout = () => {
 				}
 
 				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
-					<div
-						className={'flex items-center justify-between w-full border-b border-content'}
-					>
+					<div className={'flex items-center w-full border-b border-content'}>
 						<div className="flex items-center gap-2">
 							<p className="w-32 text-xs font-semibold truncate">سلام {userName}! </p>
 						</div>
-						<ClockComponent />
 					</div>
 
 					{/* Daily Summary Content */}

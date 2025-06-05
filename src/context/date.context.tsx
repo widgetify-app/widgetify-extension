@@ -11,6 +11,7 @@ interface DateContextType {
 	currentDate: WidgetifyDate
 	selectedDate: WidgetifyDate
 	today: WidgetifyDate
+	todayIsHoliday: boolean
 	setCurrentDate: (date: WidgetifyDate) => void
 	setSelectedDate: (date: WidgetifyDate) => void
 	goToToday: () => void
@@ -23,31 +24,30 @@ const DateContext = createContext<DateContextType | undefined>(undefined)
 
 export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const { timezone } = useGeneralSetting()
-	const realToday = getCurrentDate(timezone)
+	const activeDate = getCurrentDate(timezone.value)
 
-	const [currentDate, setCurrentDate] = useState<WidgetifyDate>(realToday)
-	const [selectedDate, setSelectedDate] = useState<WidgetifyDate>(realToday)
-	const [today, setToday] = useState<WidgetifyDate>(realToday)
+	const [currentDate, setCurrentDate] = useState<WidgetifyDate>(activeDate)
+	const [selectedDate, setSelectedDate] = useState<WidgetifyDate>(activeDate)
+	const [today, setToday] = useState<WidgetifyDate>(activeDate)
 
 	// Update today date every minute to ensure it stays current
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setToday(getCurrentDate(timezone))
+			setToday(getCurrentDate(timezone.value))
 		}, 60000)
 
 		return () => clearInterval(interval)
 	}, [timezone])
 
-	// Sync with timezone changes
 	useEffect(() => {
-		const newToday = getCurrentDate(timezone)
+		const newToday = getCurrentDate(timezone.value)
 		setToday(newToday)
 		setCurrentDate(newToday.clone())
 		setSelectedDate(newToday.clone())
 	}, [timezone])
 
 	const goToToday = () => {
-		const newToday = getCurrentDate(timezone)
+		const newToday = getCurrentDate(timezone.value)
 		setCurrentDate(newToday.clone())
 		setSelectedDate(newToday.clone())
 	}
@@ -70,11 +70,14 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		return gregorianDate.format('YYYY/MM/DD')
 	}
 
+	const todayIsHoliday = activeDate.day() === 5
+
 	return (
 		<DateContext.Provider
 			value={{
 				currentDate,
 				selectedDate,
+				todayIsHoliday,
 				today,
 				setCurrentDate,
 				setSelectedDate,

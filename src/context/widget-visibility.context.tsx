@@ -8,6 +8,7 @@ import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
+import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import {
 	type ReactNode,
@@ -29,6 +30,7 @@ export enum WidgetKeys {
 	tools = 'tools',
 	notes = 'notes',
 	youtube = 'youtube',
+	wigiPad = 'wigiPad',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -109,6 +111,13 @@ export const widgetItems: WidgetItem[] = [
 		label: 'آمار یوتیوب',
 		order: 8,
 		node: <YouTubeLayout />,
+	},
+	{
+		id: WidgetKeys.wigiPad,
+		emoji: '🏠',
+		label: 'ویجی پد',
+		order: 9,
+		node: <WigiPadWidget />,
 	},
 ]
 

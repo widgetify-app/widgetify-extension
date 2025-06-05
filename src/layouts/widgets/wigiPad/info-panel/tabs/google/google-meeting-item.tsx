@@ -1,0 +1,84 @@
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import {
+	MdAccessTime,
+	MdDateRange,
+	MdEvent,
+	MdLocationOn,
+	MdVideoCall,
+} from 'react-icons/md'
+
+interface GoogleEventItemProps {
+	meeting: GoogleCalendarEvent
+}
+
+function formatEventTime(dateTimeStr: string) {
+	if (!dateTimeStr) return null
+	const date = new Date(dateTimeStr)
+	return date.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
+}
+
+function formatEventDate(dateTimeStr: string) {
+	if (!dateTimeStr) return null
+	const date = new Date(dateTimeStr)
+	return date.toLocaleDateString('fa-IR', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	})
+}
+
+export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
+	const handleJoinMeeting = () => {
+		const meetLink =
+			meeting.hangoutLink ||
+			meeting.conferenceData?.entryPoints?.find(
+				(ep: any) => ep.entryPointType === 'video',
+			)?.uri ||
+			meeting.htmlLink
+
+		if (meetLink) {
+			window.open(meetLink, '_blank')
+		}
+	}
+
+	const meetLink =
+		meeting.hangoutLink ||
+		meeting.conferenceData?.entryPoints?.find((ep: any) => ep.entryPointType === 'video')
+			?.uri
+	const getEventIcon = () => {
+		if (meetLink) return <MdVideoCall className="text-blue-500" />
+		if (meeting.location) return <MdLocationOn className="text-red-500" />
+		return <MdEvent className="text-gray-500" />
+	}
+
+	return (
+		<div
+			className="p-2 transition-colors rounded-lg cursor-pointer bg-content hover:!bg-base-300"
+			onClick={handleJoinMeeting}
+		>
+			<div className="flex items-center gap-3">
+				<div className="text-lg">{getEventIcon()}</div>{' '}
+				<div className="flex-1 min-w-0">
+					<h4 className="text-sm font-medium truncate text-base-content">
+						{meeting.summary}
+					</h4>
+					<p className="flex items-center gap-1 text-xs text-muted">
+						<MdDateRange className="text-blue-500" />
+						{formatEventDate(meeting.start.dateTime) || 'نامشخص'}
+					</p>
+					<p className="flex items-center gap-1 text-xs text-muted">
+						<MdAccessTime className="text-green-500" />
+						{formatEventTime(meeting.start.dateTime) || 'نامشخص'} -{' '}
+						{formatEventTime(meeting.end.dateTime) || 'نامشخص'}
+					</p>
+					{meeting.location && (
+						<p className="flex items-center gap-1 mt-1 text-xs truncate text-muted">
+							<MdLocationOn className="text-red-500" />
+							{meeting.location}
+						</p>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}
