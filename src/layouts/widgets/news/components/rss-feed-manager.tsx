@@ -191,7 +191,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 								}}
 							/>
 
-							<Button size="md" className="btn-primary" onClick={addNewFeed}>
+							<Button size="md" className="text-white btn-primary" onClick={addNewFeed}>
 								<VscAdd size={16} />
 								<span>افزودن فید جدید</span>
 							</Button>
