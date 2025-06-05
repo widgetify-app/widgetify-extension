@@ -103,7 +103,7 @@ export const widgetItems: WidgetItem[] = [
 	{
 		id: WidgetKeys.news,
 		emoji: '📰',
-		label: 'ویجی اخبار',
+		label: 'ویجی نیوز',
 		order: 7,
 		node: <NewsLayout inComboWidget={false} />,
 		canToggle: true,
