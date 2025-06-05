@@ -1,4 +1,4 @@
-import type { InfoPanelData } from '../hooks/useInfoPanelData'
+import type { InfoPanelData } from '../../hooks/useInfoPanelData'
 
 interface BirthdayItemProps {
 	birthday: InfoPanelData['birthdays'][number]

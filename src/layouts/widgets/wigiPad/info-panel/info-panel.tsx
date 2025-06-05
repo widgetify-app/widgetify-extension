@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
-import { BirthdayItem, NotificationItem } from './components'
+import { NotificationItem } from './components/notification-item'
 import { useInfoPanelData } from './hooks/useInfoPanelData'
+import { BirthdayItem } from './tabs/birthday/birthday-item'
+import { BirthdayTab } from './tabs/birthday/birthday-tab'
 
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
@@ -8,8 +10,13 @@ export function InfoPanel() {
 	const tabContainerRef = useRef<HTMLDivElement>(null)
 
 	const sections = [
-		{ id: 'all', label: 'همه', icon: '📋' },
+		{ id: 'all', label: 'ویجی تب', icon: '📋' },
 		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
+		{
+			id: 'google-meetings',
+			label: 'جلسات گوگل',
+			icon: '📅',
+		},
 	]
 
 	const handleSectionClick = (
@@ -38,20 +45,7 @@ export function InfoPanel() {
 	const renderContent = () => {
 		switch (activeSection) {
 			case 'birthdays':
-				return (
-					<div className="space-y-2">
-						{data.birthdays.length > 0 ? (
-							data.birthdays.map((birthday) => (
-								<BirthdayItem key={birthday.id} birthday={birthday} />
-							))
-						) : (
-							<div className="py-8 text-center opacity-50 text-base-content">
-								<div className="mb-2 text-2xl">🎂</div>
-								<p className="text-sm">هیچ تولدی امروز نیست</p>
-							</div>
-						)}
-					</div>
-				)
+				return <BirthdayTab birthdays={data.birthdays} />
 			case 'notifications':
 				return (
 					<div className="space-y-2">
@@ -67,15 +61,6 @@ export function InfoPanel() {
 						{data.notifications.map((notification, index) => (
 							<NotificationItem key={index} notification={notification} />
 						))}
-
-						{data.birthdays.slice(0, 2).map((birthday) => (
-							<BirthdayItem key={birthday.id} birthday={birthday} />
-						))}
-
-						{/* Upcoming meetings */}
-						{/* {data.googleMeetings.slice(0, 1).map((meeting) => (
-							<GoogleMeetingItem key={meeting.id} meeting={meeting} />
-						))} */}
 					</div>
 				)
 		}
