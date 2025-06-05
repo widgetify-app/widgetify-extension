@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { NotificationItem } from './components/notification-item'
 import { useInfoPanelData } from './hooks/useInfoPanelData'
-import { BirthdayItem } from './tabs/birthday/birthday-item'
 import { BirthdayTab } from './tabs/birthday/birthday-tab'
+import { GoogleTab } from './tabs/google/google.tab'
 
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
@@ -14,7 +14,7 @@ export function InfoPanel() {
 		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
 		{
 			id: 'google-meetings',
-			label: 'جلسات گوگل',
+			label: 'گوگل کلندر',
 			icon: '📅',
 		},
 	]
@@ -41,11 +41,12 @@ export function InfoPanel() {
 			})
 		}
 	}
-
 	const renderContent = () => {
 		switch (activeSection) {
 			case 'birthdays':
 				return <BirthdayTab birthdays={data.birthdays} />
+			case 'google-meetings':
+				return <GoogleTab />
 			case 'notifications':
 				return (
 					<div className="space-y-2">
