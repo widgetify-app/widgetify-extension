@@ -156,3 +156,34 @@ input[type=color]::-moz-color-swatch {
 .weather-forecast-slider .swiper-pagination {
 	bottom: 0;
 }
+
+/* Custom scrollbar styles for info panel */
+.scrollbar-thin {
+	scrollbar-width: thin;
+}
+
+.scrollbar-thumb-base-300::-webkit-scrollbar {
+	width: 4px;
+}
+
+.scrollbar-thumb-base-300::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbar-thumb-base-300::-webkit-scrollbar-thumb {
+	background: hsl(var(--bc) / 0.2);
+	border-radius: 2px;
+}
+
+.scrollbar-thumb-base-300::-webkit-scrollbar-thumb:hover {
+	background: hsl(var(--bc) / 0.3);
+}
+
+.scrollbar-none {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+	display: none;
+}
