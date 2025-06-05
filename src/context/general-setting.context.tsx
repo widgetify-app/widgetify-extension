@@ -34,10 +34,14 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 			try {
 				const storedSettings = await getFromStorage('generalSettings')
 
-				if (storedSettings && typeof storedSettings === 'object') {
+				if (storedSettings) {
 					setSettings({
 						...DEFAULT_SETTINGS,
 						...storedSettings,
+						timezone:
+							typeof storedSettings.timezone === 'string'
+								? DEFAULT_SETTINGS.timezone
+								: storedSettings.timezone,
 					})
 				}
 			} finally {
