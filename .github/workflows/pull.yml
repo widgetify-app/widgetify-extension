@@ -25,5 +25,5 @@ jobs:
         run: bun install
 
       - name: Build files
-        run: bun run build
+        run: bun compile
         
