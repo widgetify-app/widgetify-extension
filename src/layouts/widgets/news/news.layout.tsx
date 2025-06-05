@@ -3,6 +3,7 @@ import { type NewsResponse, useGetNews } from '@/services/hooks/news/getNews.hoo
 import { useEffect, useState } from 'react'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
+import { type FilterSortState, NewsFilterSort } from './components/news-filter-sort'
 import { NewsHeader } from './components/news-header'
 import { NewsItem } from './components/news-item'
 import { RssFeedManager } from './components/rss-feed-manager'
@@ -41,9 +42,27 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		useDefaultNews: false,
 		lastFetchedItems: {},
 	})
-
 	const [rssItems, setRssItems] = useState<RssItem[]>([])
 	const [isLoadingRss, setIsLoadingRss] = useState(false)
+	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
+		sortBy: 'random',
+		filterBySource: 'all',
+		searchTerm: '',
+	})
+
+	useEffect(() => {
+		const loadFilterPreferences = async () => {
+			const savedFilter = await getFromStorage('news_filter_sort_state')
+			if (savedFilter) {
+				setFilterSortState(savedFilter)
+			}
+		}
+		loadFilterPreferences()
+	}, [])
+
+	useEffect(() => {
+		setToStorage('news_filter_sort_state', filterSortState)
+	}, [filterSortState])
 
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(rssState.useDefaultNews)
 
@@ -123,7 +142,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			setIsLoadingRss(false)
 		}
 	}
-
 	const getItemsToDisplay = () => {
 		if (rssState.useDefaultNews) {
 			return newsData.news
@@ -140,7 +158,66 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		return []
 	}
 
-	// initial load
+	const getFilteredAndSortedItems = () => {
+		let items = getItemsToDisplay()
+
+		if (filterSortState.searchTerm) {
+			const searchTerm = filterSortState.searchTerm.toLowerCase()
+			items = items.filter((item) => {
+				const title = item.title?.toLowerCase() || ''
+				const description = item.description?.toLowerCase() || ''
+				const sourceName = (
+					typeof item.source === 'string' ? item.source : item.source?.name || ''
+				).toLowerCase()
+
+				return (
+					title.includes(searchTerm) ||
+					description.includes(searchTerm) ||
+					sourceName.includes(searchTerm)
+				)
+			})
+		}
+
+		if (filterSortState.filterBySource !== 'all') {
+			items = items.filter((item) => {
+				const sourceName =
+					typeof item.source === 'string' ? item.source : item.source?.name || ''
+				return sourceName === filterSortState.filterBySource
+			})
+		}
+
+		items.sort((a, b) => {
+			switch (filterSortState.sortBy) {
+				case 'source': {
+					const sourceA = typeof a.source === 'string' ? a.source : a.source?.name || ''
+					const sourceB = typeof b.source === 'string' ? b.source : b.source?.name || ''
+					return sourceA.localeCompare(sourceB, 'fa')
+				}
+				case 'title':
+					return (a.title || '').localeCompare(b.title || '', 'fa')
+				default:
+					return 0
+			}
+		})
+
+		return items
+	}
+
+	const getAvailableSources = () => {
+		const items = getItemsToDisplay()
+		const sources = new Set<string>()
+
+		for (const item of items) {
+			const sourceName =
+				typeof item.source === 'string' ? item.source : item.source?.name || ''
+			if (sourceName) {
+				sources.add(sourceName)
+			}
+		}
+
+		return Array.from(sources).sort((a, b) => a.localeCompare(b, 'fa'))
+	}
+
 	useEffect(() => {
 		const loadInitialData = async () => {
 			const savedState = await getFromStorage('rss_news_state')
@@ -242,11 +319,10 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			}
 		}
 	}, [dataUpdatedAt, isError])
-
-	const displayItems = getItemsToDisplay()
+	const displayItems = getFilteredAndSortedItems()
+	const availableSources = getAvailableSources()
 	const isAnyLoading = isLoading || isLoadingRss
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
-
 	return (
 		<>
 			<RssFeedManager
@@ -256,28 +332,36 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			/>
 
 			{inComboWidget ? (
-				<NewsContainer
-					inComboWidget={inComboWidget}
-					isLoading={isAnyLoading}
-					isEmpty={noItemsToShow}
-					noFeedsConfigured={
-						!rssState.useDefaultNews && rssState.customFeeds.length === 0
-					}
-					onAddFeed={() => setRssModalOpen(true)}
-				>
-					{displayItems.map((item, index) => (
-						<NewsItem
-							key={index}
-							title={item.title}
-							description={item.description}
-							source={item.source}
-							publishedAt={item.publishedAt}
-							link={'link' in item ? (item.link as string) : undefined}
-							index={index}
-							onClick={openNewsLink}
-						/>
-					))}
-				</NewsContainer>
+				<div className="flex flex-col gap-2">
+					<NewsFilterSort
+						availableSources={availableSources}
+						currentState={filterSortState}
+						onStateChange={setFilterSortState}
+					/>
+					<NewsContainer
+						inComboWidget={inComboWidget}
+						isLoading={isAnyLoading}
+						isEmpty={noItemsToShow}
+						noFeedsConfigured={
+							!rssState.useDefaultNews && rssState.customFeeds.length === 0
+						}
+						onAddFeed={() => setRssModalOpen(true)}
+					>
+						{' '}
+						{displayItems.map((item, index) => (
+							<NewsItem
+								key={index}
+								title={item.title}
+								description={item.description}
+								source={item.source}
+								publishedAt={item.publishedAt}
+								link={'link' in item ? (item.link as string) : undefined}
+								index={index}
+								onClick={openNewsLink}
+							/>
+						))}
+					</NewsContainer>
+				</div>
 			) : (
 				<WidgetContainer
 					background={enableBackground}
@@ -293,6 +377,12 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						platformName={newsData.platform.name}
 						platformUrl={newsData.platform.url}
 						onSettingsClick={() => setRssModalOpen(true)}
+					/>
+
+					<NewsFilterSort
+						availableSources={availableSources}
+						currentState={filterSortState}
+						onStateChange={setFilterSortState}
 					/>
 
 					<NewsContainer

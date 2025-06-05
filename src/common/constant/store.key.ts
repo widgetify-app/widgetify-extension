@@ -4,6 +4,7 @@ import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
+import type { FilterSortState } from '@/layouts/widgets/news/components/news-filter-sort'
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
 import type {
 	ClockSettings,
@@ -48,6 +49,7 @@ export interface StorageKV {
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
 	rss_news_state: RssNewsState
+	news_filter_sort_state: FilterSortState
 	analyticsSession: any
 	enable_sync: boolean
 	notes_data: {

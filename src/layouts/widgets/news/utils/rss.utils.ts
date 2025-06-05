@@ -9,7 +9,6 @@ export const fetchRssFeed = async (
 		const response = await GetRss(url, sourceName)
 		return response
 	} catch (error) {
-		console.error('Error fetching RSS feed:', error)
 		return []
 	}
 }
