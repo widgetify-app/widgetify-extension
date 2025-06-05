@@ -1,14 +1,10 @@
-interface Notification {
-	content: string // can be HTML
-	timestamp: Date | null
-}
+import type { InfoPanelData } from '../hooks/useInfoPanelData'
 
 interface NotificationItemProps {
-	notification: Notification
+	notification: InfoPanelData['notifications'][number]
 }
 
 export function NotificationItem({ notification }: NotificationItemProps) {
-	// Simple check if content contains HTML tags
 	const isHtmlContent = /<[^>]*>/g.test(notification.content)
 
 	return (

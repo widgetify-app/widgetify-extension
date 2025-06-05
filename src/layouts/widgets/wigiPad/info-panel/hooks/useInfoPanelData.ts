@@ -1,7 +1,4 @@
-import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils'
-import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetWigiPadData } from '@/services/hooks/extension/getWigiPadData.hook'
 import { useEffect, useState } from 'react'
 
@@ -13,7 +10,7 @@ export interface InfoPanelData {
 		avatar?: string
 	}>
 	notifications: Array<{
-		content: string // can be HTML
+		content: string
 		timestamp: Date | null
 	}>
 }

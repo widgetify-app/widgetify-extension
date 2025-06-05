@@ -64,14 +64,12 @@ export function InfoPanel() {
 			default:
 				return (
 					<div className="space-y-3">
-						{/* Today's birthdays */}
-						{data.birthdays.slice(0, 1).map((birthday) => (
-							<BirthdayItem key={birthday.id} birthday={birthday} />
+						{data.notifications.map((notification, index) => (
+							<NotificationItem key={index} notification={notification} />
 						))}
 
-						{/* Latest notifications */}
-						{data.notifications.slice(0, 1).map((notification, index) => (
-							<NotificationItem key={index} notification={notification} />
+						{data.birthdays.slice(0, 2).map((birthday) => (
+							<BirthdayItem key={birthday.id} birthday={birthday} />
 						))}
 
 						{/* Upcoming meetings */}

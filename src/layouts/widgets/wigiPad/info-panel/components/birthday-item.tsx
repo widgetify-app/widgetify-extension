@@ -1,12 +1,7 @@
-interface Birthday {
-	id: string
-	name: string
-	date: string
-	avatar?: string
-}
+import type { InfoPanelData } from '../hooks/useInfoPanelData'
 
 interface BirthdayItemProps {
-	birthday: Birthday
+	birthday: InfoPanelData['birthdays'][number]
 }
 
 export function BirthdayItem({ birthday }: BirthdayItemProps) {
