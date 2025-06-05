@@ -15,9 +15,14 @@ export enum ClockType {
 	Analog = 'analog',
 	Digital = 'digital',
 }
+export interface ClockSettings {
+	clockType: ClockType
+	showSeconds: boolean
+	showTimeZone: boolean
+}
 
 export function ClockDisplay() {
-	const [clockType, setClockType] = useState<ClockType | null>(null)
+	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
 	const { timezone } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone.value))
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -31,26 +36,30 @@ export function ClockDisplay() {
 
 	useEffect(() => {
 		async function load() {
-			const clockTypeFromStore = await getFromStorage('clockType')
-			if (clockTypeFromStore) {
-				setClockType(clockTypeFromStore as ClockType)
+			const clockFromStore = await getFromStorage('clock')
+			if (clockFromStore) {
+				setClockSettings(clockFromStore)
 			} else {
-				setClockType(ClockType.Digital)
+				setClockSettings({
+					clockType: ClockType.Digital,
+					showSeconds: false,
+					showTimeZone: true,
+				})
 			}
 		}
 
 		load()
 	}, [])
 
-	if (!clockType) {
+	if (!clockSettings) {
 		return null
 	}
 
 	const isDayTime = time.hour() >= 6 && time.hour() < 18
 
-	async function updateClockType(newClockType: ClockType) {
-		setClockType(newClockType)
-		await setToStorage('clockType', newClockType)
+	async function updateClockSetting(newSetting: ClockSettings) {
+		setClockSettings(newSetting)
+		await setToStorage('clock', newSetting)
 		setIsSettingsOpen(false)
 	}
 
@@ -81,17 +90,19 @@ export function ClockDisplay() {
 			</div>
 
 			<div className="flex flex-col items-center justify-center flex-grow">
-				{clockType === 'analog' ? (
+				{clockSettings.clockType === 'analog' ? (
 					<AnalogClock
 						time={time}
 						isDayTime={isDayTime}
 						timezone={getTimeZoneLabel(timezone.value)}
+						setting={clockSettings}
 					/>
 				) : (
 					<DigitalClock
 						time={time}
 						isDayTime={isDayTime}
 						timezone={getTimeZoneLabel(timezone.label)}
+						setting={clockSettings}
 					/>
 				)}
 			</div>
@@ -162,8 +173,8 @@ export function ClockDisplay() {
 			{/* Settings Modal */}
 			<ClockSettingsModal
 				isOpen={isSettingsOpen}
-				onClose={(val) => updateClockType(val)}
-				clockType={clockType}
+				onClose={(val) => updateClockSetting(val)}
+				clockSetting={clockSettings}
 			/>
 		</div>
 	)

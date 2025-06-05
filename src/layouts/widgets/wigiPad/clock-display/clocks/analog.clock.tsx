@@ -1,12 +1,14 @@
 import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
+import type { ClockSettings } from '../clock-display'
 
 interface AnalogClockProps {
 	time: WidgetifyDate
 	isDayTime: boolean
 	timezone: string
+	setting: ClockSettings
 }
 
-export function AnalogClock({ time, isDayTime, timezone }: AnalogClockProps) {
+export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockProps) {
 	const hours = time.hour() % 12
 	const minutes = time.minute()
 	const seconds = time.second()
@@ -15,7 +17,7 @@ export function AnalogClock({ time, isDayTime, timezone }: AnalogClockProps) {
 	const minuteAngle = minutes * 6
 	const secondAngle = seconds * 6
 
-	const textColor = isDayTime ? 'text-warning-content' : 'text-primary'
+	const textColor = isDayTime ? 'text-warning' : 'text-primary'
 	const handColor = isDayTime ? '#f59e0b' : '#3b82f6'
 
 	return (
@@ -79,33 +81,37 @@ export function AnalogClock({ time, isDayTime, timezone }: AnalogClockProps) {
 						strokeLinecap="round"
 					/>
 					{/* Second hand */}
-					<line
-						x1="48"
-						y1="48"
-						x2={48 + 32 * Math.cos(((secondAngle - 90) * Math.PI) / 180)}
-						y2={48 + 32 * Math.sin(((secondAngle - 90) * Math.PI) / 180)}
-						stroke="#ef4444"
-						strokeWidth="1"
-						strokeLinecap="round"
-						className="transition-transform duration-75 ease-linear"
-					/>{' '}
+					{setting.showSeconds && (
+						<line
+							x1="48"
+							y1="48"
+							x2={48 + 32 * Math.cos(((secondAngle - 90) * Math.PI) / 180)}
+							y2={48 + 32 * Math.sin(((secondAngle - 90) * Math.PI) / 180)}
+							stroke="#ef4444"
+							strokeWidth="1"
+							strokeLinecap="round"
+							className="transition-transform duration-75 ease-linear"
+						/>
+					)}
 					{/* Center dot */}
 					<circle cx="48" cy="48" r="3" fill={handColor} />
 				</svg>
 
 				{/* Timezone display in the center */}
-				<div className="absolute inset-0 flex items-center justify-center">
-					<span
-						className={`text-xs font-medium ${textColor} opacity-70`}
-						style={{
-							marginTop: '1.5rem',
-							textAlign: 'center',
-							fontSize: '10px',
-						}}
-					>
-						{timezone}
-					</span>
-				</div>
+				{setting.showTimeZone && (
+					<div className="absolute inset-0 flex items-center justify-center">
+						<span
+							className={`text-xs font-medium ${textColor}`}
+							style={{
+								marginTop: '1.5rem',
+								textAlign: 'center',
+								fontSize: '10px',
+							}}
+						>
+							{timezone.slice(0, 3).toUpperCase()}
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	)

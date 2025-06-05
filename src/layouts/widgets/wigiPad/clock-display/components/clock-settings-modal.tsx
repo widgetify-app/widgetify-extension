@@ -1,28 +1,36 @@
+import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
+import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { ItemSelector } from '@/components/item-selector'
 import Modal from '@/components/modal'
 import { useState } from 'react'
-import { ClockType } from '../clock-display'
+import { type ClockSettings, ClockType } from '../clock-display'
 
 interface ClockSettingsModalProps {
 	isOpen: boolean
-	clockType: ClockType
-	onClose: (clockType: ClockType) => void
+	clockSetting: ClockSettings
+	onClose: (newSetting: ClockSettings) => void
 }
 
 export function ClockSettingsModal({
 	isOpen,
 	onClose,
-	clockType,
+	clockSetting,
 }: ClockSettingsModalProps) {
-	const [selectedType, setSelectedType] = useState<ClockType>(clockType)
+	const [selectedType, setSelectedType] = useState<ClockType>(clockSetting.clockType)
+	const [showSeconds, setShowSeconds] = useState<boolean>(clockSetting.showSeconds)
+	const [showTimeZone, setShowTimeZone] = useState<boolean>(clockSetting.showTimeZone)
 
 	const handleSave = () => {
-		onClose(selectedType)
+		onClose({
+			clockType: selectedType,
+			showSeconds,
+			showTimeZone,
+		})
 	}
 
 	const handleCancel = () => {
-		onClose(selectedType)
+		onClose(clockSetting)
 	}
 
 	const clockOptions = [
@@ -48,21 +56,41 @@ export function ClockSettingsModal({
 			size="md"
 			direction="rtl"
 		>
-			<div className="space-y-4">
-				<p className="text-sm text-muted">نوع نمایش ساعت را انتخاب کنید:</p>
+			<div className="space-y-6">
+				<div>
+					<p className="mb-3 text-sm text-muted">نوع نمایش ساعت را انتخاب کنید:</p>
 
-				<div className="space-y-3">
-					{clockOptions.map((option) => (
-						<ItemSelector
-							key={option.key}
-							isActive={selectedType === option.value}
-							onClick={() => setSelectedType(option.value)}
-							label={option.label}
-							description={option.description}
-							className="w-full"
-						/>
-					))}
+					<div className="flex gap-2">
+						{clockOptions.map((option) => (
+							<ItemSelector
+								key={option.key}
+								isActive={selectedType === option.value}
+								onClick={() => setSelectedType(option.value)}
+								label={option.label}
+								description={option.description}
+								className="flex-1 text-center"
+							/>
+						))}
+					</div>
 				</div>
+
+				<RequireAuth mode="preview">
+					<div className="px-1 space-y-2">
+						<CheckBoxWithDescription
+							isEnabled={showSeconds}
+							onToggle={() => setShowSeconds(!showSeconds)}
+							title="نمایش ثانیه"
+							description="نمایش ثانیه در ساعت دیجیتال"
+						/>
+
+						<CheckBoxWithDescription
+							isEnabled={showTimeZone}
+							onToggle={() => setShowTimeZone(!showTimeZone)}
+							title="نمایش منطقه زمانی"
+							description="نمایش نام منطقه زمانی زیر ساعت"
+						/>
+					</div>
+				</RequireAuth>
 
 				<div className="flex gap-3 pt-4 border-t border-content">
 					<Button
