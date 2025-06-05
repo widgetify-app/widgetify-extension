@@ -19,12 +19,12 @@ export enum ClockType {
 export function ClockDisplay() {
 	const [clockType, setClockType] = useState<ClockType | null>(null)
 	const { timezone } = useGeneralSetting()
-	const [time, setTime] = useState(getCurrentDate(timezone))
+	const [time, setTime] = useState(getCurrentDate(timezone.value))
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(getCurrentDate(timezone))
+			setTime(getCurrentDate(timezone.value))
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])
@@ -85,13 +85,13 @@ export function ClockDisplay() {
 					<AnalogClock
 						time={time}
 						isDayTime={isDayTime}
-						timezone={getTimeZoneLabel(timezone)}
+						timezone={getTimeZoneLabel(timezone.value)}
 					/>
 				) : (
 					<DigitalClock
 						time={time}
 						isDayTime={isDayTime}
-						timezone={getTimeZoneLabel(timezone)}
+						timezone={getTimeZoneLabel(timezone.label)}
 					/>
 				)}
 			</div>
@@ -175,7 +175,7 @@ function getTimeZoneLabel(timezone: string): string {
 	}
 
 	if (timezone.split('/')[1]) {
-		return timezone.split('/')[1].replace('_', ' ').toUpperCase().slice(0, 3)
+		return timezone.split('/')[1].replace('_', ' ').toUpperCase()
 	}
 
 	return timezone

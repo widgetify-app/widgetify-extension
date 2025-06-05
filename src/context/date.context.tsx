@@ -24,7 +24,7 @@ const DateContext = createContext<DateContextType | undefined>(undefined)
 
 export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const { timezone } = useGeneralSetting()
-	const activeDate = getCurrentDate(timezone)
+	const activeDate = getCurrentDate(timezone.value)
 
 	const [currentDate, setCurrentDate] = useState<WidgetifyDate>(activeDate)
 	const [selectedDate, setSelectedDate] = useState<WidgetifyDate>(activeDate)
@@ -33,21 +33,21 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	// Update today date every minute to ensure it stays current
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setToday(getCurrentDate(timezone))
+			setToday(getCurrentDate(timezone.value))
 		}, 60000)
 
 		return () => clearInterval(interval)
 	}, [timezone])
 
 	useEffect(() => {
-		const newToday = getCurrentDate(timezone)
+		const newToday = getCurrentDate(timezone.value)
 		setToday(newToday)
 		setCurrentDate(newToday.clone())
 		setSelectedDate(newToday.clone())
 	}, [timezone])
 
 	const goToToday = () => {
-		const newToday = getCurrentDate(timezone)
+		const newToday = getCurrentDate(timezone.value)
 		setCurrentDate(newToday.clone())
 		setSelectedDate(newToday.clone())
 	}

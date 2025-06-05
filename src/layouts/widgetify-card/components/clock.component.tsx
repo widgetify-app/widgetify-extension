@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
 	const { timezone } = useGeneralSetting()
-	const [time, setTime] = useState(getCurrentDate(timezone))
+	const [time, setTime] = useState(getCurrentDate(timezone.value))
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(getCurrentDate(timezone))
+			setTime(getCurrentDate(timezone.value))
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])

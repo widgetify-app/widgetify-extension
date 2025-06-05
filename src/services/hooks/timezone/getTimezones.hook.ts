@@ -1,10 +1,10 @@
 import { getMainClient } from '@/services/api'
 import { useEffect, useState } from 'react'
 
-const cachedTimezones: Map<string, Timezone[]> = new Map()
+const cachedTimezones: Map<string, FetchedTimezone[]> = new Map()
 
 export const useTimezones = () => {
-	const [data, setData] = useState<Timezone[] | null>(null)
+	const [data, setData] = useState<FetchedTimezone[] | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
 	const [error, setError] = useState<Error | null>(null)
 
@@ -13,7 +13,7 @@ export const useTimezones = () => {
 			try {
 				const cacheKey = 'all-timezones'
 				if (cachedTimezones.has(cacheKey)) {
-					setData(cachedTimezones.get(cacheKey) as Timezone[])
+					setData(cachedTimezones.get(cacheKey) as FetchedTimezone[])
 					setLoading(false)
 					return
 				}
@@ -36,16 +36,16 @@ export const useTimezones = () => {
 	return { data, loading, error }
 }
 
-export interface Timezone {
+export interface FetchedTimezone {
 	label: string
 	value: string
 	offset: string
 }
 
-export async function getTimezones(): Promise<Timezone[]> {
+export async function getTimezones(): Promise<FetchedTimezone[]> {
 	try {
 		const api = await getMainClient()
-		const response = await api.get<Timezone[]>('/date/timezones')
+		const response = await api.get<FetchedTimezone[]>('/date/timezones')
 		return response.data
 	} catch (error) {
 		console.error('Error fetching timezones:', error)

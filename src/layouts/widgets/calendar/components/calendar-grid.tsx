@@ -80,7 +80,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					selectedDateStr={selectedDateStr}
 					setSelectedDate={setSelectedDate}
 					todos={todos}
-					timezone={timezone}
+					timezone={timezone.value}
 				/>
 			))}
 

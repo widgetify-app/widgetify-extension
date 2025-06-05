@@ -17,7 +17,10 @@ export interface InfoPanelData {
 
 export const useInfoPanelData = (): InfoPanelData => {
 	const { timezone } = useGeneralSetting()
-	const { data: wigiPadData } = useGetWigiPadData({ enabled: true, timezone })
+	const { data: wigiPadData } = useGetWigiPadData({
+		enabled: true,
+		timezone: timezone.value,
+	})
 
 	const [data, setData] = useState<InfoPanelData>({
 		birthdays: [],

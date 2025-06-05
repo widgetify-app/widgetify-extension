@@ -1,16 +1,16 @@
 import { SectionPanel } from '@/components/section-panel'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/hooks/timezone/getTimezones.hook'
 
-interface TimezoneSettingsProps {
-	timezone: string
-	setTimezone: (timezone: string) => void
-}
+export function TimezoneSettings() {
+	const { timezone, setTimezone } = useGeneralSetting()
 
-export function TimezoneSettings({ timezone, setTimezone }: TimezoneSettingsProps) {
 	const { data: timezones, loading, error } = useTimezones()
 
 	const handleSelectTimezone = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setTimezone(e.target.value)
+		const selectedTimezone = timezones?.find((tz) => tz.value === e.target.value)
+		if (!selectedTimezone) return
+		setTimezone(selectedTimezone)
 	}
 
 	return (
@@ -30,7 +30,7 @@ export function TimezoneSettings({ timezone, setTimezone }: TimezoneSettingsProp
 							</div>
 						) : (
 							<select
-								value={timezone}
+								value={timezone.value}
 								onChange={handleSelectTimezone}
 								className={
 									'w-full rounded-lg appearance-none border-content border select focus:outline-none focus:ring-2 focus:ring-blue-500'

@@ -21,7 +21,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	const { timezone } = useGeneralSetting()
 
 	const isCurrentMonthToday = () => {
-		const realToday = getCurrentDate(timezone)
+		const realToday = getCurrentDate(timezone.value)
 		return (
 			currentDate.jMonth() === realToday.jMonth() &&
 			currentDate.jYear() === realToday.jYear()
@@ -29,7 +29,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	}
 
 	const isTodaySelected = () => {
-		const realToday = getCurrentDate(timezone)
+		const realToday = getCurrentDate(timezone.value)
 		return (
 			selectedDate.jDate() === realToday.jDate() &&
 			selectedDate.jMonth() === realToday.jMonth() &&

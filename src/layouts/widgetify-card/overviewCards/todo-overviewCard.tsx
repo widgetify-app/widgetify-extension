@@ -8,7 +8,7 @@ export function TodoOverviewCard() {
 	const { timezone } = useGeneralSetting()
 
 	const { todos, todoOptions } = useTodoStore()
-	const today = getCurrentDate(timezone)
+	const today = getCurrentDate(timezone.value)
 
 	const todayStr = formatDateStr(today)
 	const todayTodos = todos.filter((todo) => {
