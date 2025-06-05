@@ -19,6 +19,7 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
+import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 
@@ -30,10 +31,7 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets()
-	const firstWidget = sortedWidgets[0]
-
-	const layoutItems = sortedWidgets.slice(1)
+	const layoutItems = getSortedWidgets()
 
 	const bottomCount = layoutItems.length
 
@@ -65,7 +63,7 @@ function ContentSection() {
 						</div>
 
 						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
-							{firstWidget ? firstWidget.node : null}
+							<WigiPadWidget />
 						</div>
 					</div>
 					<div className={bottomLayoutClasses}>
