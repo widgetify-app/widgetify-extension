@@ -7,47 +7,12 @@
 Official Website: [widgetify.ir](https://widgetify.ir)
 
 Discord: https://discord.gg/7sxfFjFJzd
-## Current Widgets
 
-### 🌤️ Weather widget
+## Contributing | Development
 
-- Display the weather of the selected city
+We welcome your contributions to improve Widgetify! To contribute please read the following document:
 
-- Multi-day forecast
-
--  [Source path](./src/layouts/widgets/weather)
-
-  
-
-### 💰 Exchange rate widget
-
-- Display real-time currency prices.
-
-- Changes chart
-
-- [Source path](./src/layouts/widgets/wigiArz)
-
-  
-
-### 🗓️ Calendar and to-do list widget
-
-- Solar and Gregorian calendars
-
-- Manage daily tasks
-
-- [Source path](./src/layouts/widgets/calendar)
-
-  
-
-### 🔍 Search & Bookmarks
-
-- Quick Search
-
-- [Search source path](./src/layouts/search)
-
-- [Bookmarks source path](./src/layouts/bookmark)
-
-  
+[Contribution Guide](./.github/CONTRIBUTING.md).
 
 ## Analytics and privacy
 
@@ -94,11 +59,7 @@ Please share your comments and suggestions with us through one of the following 
 
   
 
-## Contributing
 
-We welcome your contributions to improve Widgetify! To contribute please read the following document:
-
-[Contribution Guide](./.github/CONTRIBUTING.md).
 
   
 

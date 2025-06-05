@@ -47,7 +47,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
 		sortBy: 'random',
 		filterBySource: 'all',
-		searchTerm: '',
 	})
 
 	useEffect(() => {
@@ -160,23 +159,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 
 	const getFilteredAndSortedItems = () => {
 		let items = getItemsToDisplay()
-
-		if (filterSortState.searchTerm) {
-			const searchTerm = filterSortState.searchTerm.toLowerCase()
-			items = items.filter((item) => {
-				const title = item.title?.toLowerCase() || ''
-				const description = item.description?.toLowerCase() || ''
-				const sourceName = (
-					typeof item.source === 'string' ? item.source : item.source?.name || ''
-				).toLowerCase()
-
-				return (
-					title.includes(searchTerm) ||
-					description.includes(searchTerm) ||
-					sourceName.includes(searchTerm)
-				)
-			})
-		}
 
 		if (filterSortState.filterBySource !== 'all') {
 			items = items.filter((item) => {

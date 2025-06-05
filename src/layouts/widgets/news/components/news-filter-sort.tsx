@@ -9,7 +9,6 @@ export type FilterBySource = string | 'all'
 export interface FilterSortState {
 	sortBy: SortOption
 	filterBySource: FilterBySource
-	searchTerm: string
 }
 
 interface NewsFilterSortProps {
@@ -39,12 +38,8 @@ export const NewsFilterSort = ({
 		onStateChange({ ...currentState, filterBySource: source })
 	}
 
-	const handleSearchChange = (searchTerm: string) => {
-		onStateChange({ ...currentState, searchTerm })
-	}
-
 	return (
-		<div className="mb-1 space-y-1">
+		<div className="mb-1 space-y-1 ">
 			<div className="flex items-center gap-2">
 				<Button
 					size="xs"
@@ -60,14 +55,7 @@ export const NewsFilterSort = ({
 			</div>
 			{showFilters && (
 				<div className="p-3 space-y-3 transition-all duration-200 border rounded-lg bg-base-200/80 border-base-300">
-					<TextInput
-						type="text"
-						placeholder="جستجو در اخبار..."
-						value={currentState.searchTerm}
-						onChange={(value) => handleSearchChange(value)}
-					/>
 					<div>
-						{' '}
 						<label className="block mb-2 text-xs font-medium text-base-content">
 							<VscSortPrecedence className="inline w-3 h-3 ml-1" />
 							مرتب‌سازی بر اساس:
