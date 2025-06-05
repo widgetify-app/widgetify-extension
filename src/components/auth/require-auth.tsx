@@ -31,7 +31,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 	if (!isAuthenticated) {
 		if (mode === 'preview') {
 			return (
-				<div className="relative w-full h-full">
+				<div className="relative w-full h-full overflow-hidden">
 					<div className="w-full h-full px-2 py-1 pointer-events-none opacity-60">
 						{children}
 					</div>

@@ -1,11 +1,5 @@
 import { useRef, useState } from 'react'
-import {
-	BirthdayItem,
-	CurrencyItem,
-	EventItem,
-	GoogleMeetingItem,
-	NotificationItem,
-} from './components'
+import { BirthdayItem, NotificationItem } from './components'
 import { useInfoPanelData } from './hooks/useInfoPanelData'
 
 export function InfoPanel() {
@@ -15,10 +9,7 @@ export function InfoPanel() {
 
 	const sections = [
 		{ id: 'all', label: 'همه', icon: '📋' },
-		{ id: 'meetings', label: 'جلسات', icon: '📹' },
-		{ id: 'currency', label: 'نرخ ارز', icon: '💰' },
 		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
-		{ id: 'holidays', label: 'مناسبت‌ها', icon: '🎉' },
 	]
 
 	const handleSectionClick = (
@@ -64,35 +55,12 @@ export function InfoPanel() {
 			case 'notifications':
 				return (
 					<div className="space-y-2">
-						{data.notifications.map((notification) => (
-							<NotificationItem key={notification.id} notification={notification} />
+						{data.notifications.map((notification, i) => (
+							<NotificationItem key={i} notification={notification} />
 						))}
 					</div>
 				)
-			case 'holidays':
-				return (
-					<div className="space-y-2">
-						{data.holidays.map((holiday) => (
-							<EventItem key={holiday.id} event={holiday} />
-						))}
-					</div>
-				)
-			case 'currency':
-				return (
-					<div className="space-y-2">
-						{data.currencyRates.map((rate) => (
-							<CurrencyItem key={rate.id} currency={rate} />
-						))}
-					</div>
-				)
-			case 'meetings':
-				return (
-					<div className="space-y-2">
-						{data.googleMeetings.map((meeting) => (
-							<GoogleMeetingItem key={meeting.id} meeting={meeting} />
-						))}
-					</div>
-				)
+
 			default:
 				return (
 					<div className="space-y-3">
@@ -102,26 +70,14 @@ export function InfoPanel() {
 						))}
 
 						{/* Latest notifications */}
-						{data.notifications.slice(0, 1).map((notification) => (
-							<NotificationItem key={notification.id} notification={notification} />
-						))}
-
-						{/* Today's holidays */}
-						{data.holidays
-							.filter((h) => h.isToday)
-							.map((holiday) => (
-								<EventItem key={holiday.id} event={holiday} />
-							))}
-
-						{/* Currency rates */}
-						{data.currencyRates.slice(0, 2).map((rate) => (
-							<CurrencyItem key={rate.id} currency={rate} />
+						{data.notifications.slice(0, 1).map((notification, index) => (
+							<NotificationItem key={index} notification={notification} />
 						))}
 
 						{/* Upcoming meetings */}
-						{data.googleMeetings.slice(0, 1).map((meeting) => (
+						{/* {data.googleMeetings.slice(0, 1).map((meeting) => (
 							<GoogleMeetingItem key={meeting.id} meeting={meeting} />
-						))}
+						))} */}
 					</div>
 				)
 		}
@@ -129,7 +85,6 @@ export function InfoPanel() {
 
 	return (
 		<div className="flex flex-col h-full overflow-hidden border border-t rounded bg-content border-content">
-			{/* Header with tabs */}
 			<div
 				ref={tabContainerRef}
 				className="flex overflow-x-auto border-b scrollbar-none border-base-300 bg-base-200"
@@ -150,7 +105,6 @@ export function InfoPanel() {
 				))}
 			</div>
 
-			{/* Scrollable content */}
 			<div className="flex-1 p-3 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-base-300">
 				{renderContent()}
 			</div>
