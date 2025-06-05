@@ -7,17 +7,19 @@ interface DigitalClockProps {
 }
 
 export function DigitalClock({ time, isDayTime, timezone }: DigitalClockProps) {
-	const textColor = isDayTime ? 'text-warning-content' : 'text-primary'
+	const textColor = isDayTime ? 'text-warning/90' : 'text-primary'
 
 	return (
 		<div className="flex flex-col items-center">
+			{' '}
 			<div
-				className={`${textColor} text-3xl font-extrabold relative z-10 transition-all duration-300`}
+				className={`${textColor} text-2xl font-extrabold relative z-10 transition-all duration-300`}
 				style={{
 					letterSpacing: '0.02em',
+					textAlign: 'center',
 				}}
 			>
-				{time.format('HH:mm')}
+				{time.format('HH:mm:ss')}
 			</div>
 			<div
 				className={`${textColor} text-sm font-medium opacity-75 mt-1 transition-all duration-300`}
