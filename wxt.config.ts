@@ -34,6 +34,14 @@ export default defineConfig({
 				id: 'widgetify@widgetify-app.github.io',
 			},
 		},
+		host_permissions: [
+			'https://github.com/*',
+			'https://raw.githubusercontent.com/*',
+			'https://api.github.com/*',
+			'https://api.widgetify.ir/*',
+			'https://www.google-analytics.com/collect*',
+			'https://storage.c2.liara.space/*',
+		],
 		icons: {
 			16: 'icons/icon16.png',
 			32: 'icons/icon32.png',
