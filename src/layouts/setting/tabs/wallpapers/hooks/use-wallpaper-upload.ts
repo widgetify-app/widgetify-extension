@@ -19,7 +19,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 		if (file.size > MAX_FILE_SIZE) {
 			alert(
-				`حجم فایل نباید بیشتر از 6 مگابایت باشد. حجم فعلی: ${(file.size / (1024 * 1024)).toFixed(1)} مگابایت`,
+				`حجم فایل نباید بیشتر از 6 مگابایت باشد. حجم فعلی: ${(file.size / (1024 * 1024)).toFixed(1)} مگابایت`
 			)
 			return
 		}

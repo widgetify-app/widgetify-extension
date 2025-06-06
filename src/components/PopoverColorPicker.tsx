@@ -85,7 +85,7 @@ const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 					>
 						<RgbaStringColorPicker color={displayColor} onChange={onChange} />
 					</div>,
-					document.body,
+					document.body
 				)}
 		</>
 	)

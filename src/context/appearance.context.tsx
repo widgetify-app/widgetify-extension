@@ -12,7 +12,7 @@ export interface AppearanceData {
 interface AppearanceContextContextType extends AppearanceData {
 	updateSetting: <K extends keyof AppearanceData>(
 		key: K,
-		value: AppearanceData[K],
+		value: AppearanceData[K]
 	) => void
 	setContentAlignment: (value: 'center' | 'top') => void
 	setFontFamily: (value: FontFamily) => void
@@ -50,7 +50,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 	const updateSetting = <K extends keyof AppearanceData>(
 		key: K,
-		value: AppearanceData[K],
+		value: AppearanceData[K]
 	) => {
 		setSettings((prevSettings) => {
 			const newSettings = {

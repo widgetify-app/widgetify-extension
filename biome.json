@@ -12,7 +12,11 @@
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"lineWidth": 90
+		"indentWidth": 4,
+		"lineWidth": 90,
+		"lineEnding": "lf",
+		"attributePosition": "auto",
+		"formatWithErrors": false
 	},
 	"organizeImports": {
 		"enabled": true
@@ -30,21 +34,59 @@
 			},
 			"style": {
 				"useSelfClosingElements": "off",
-				"noParameterAssign": "off"
+				"noParameterAssign": "off",
+				"useConst": "off",
+				"useTemplate": "off",
+				"noVar": "error"
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
 				"noArrayIndexKey": "off"
 			},
 			"correctness": {
-				"useExhaustiveDependencies": "off"
+				"useExhaustiveDependencies": "off",
+				"noUnusedVariables": "warn",
+				"noUnusedImports": "warn"
 			}
 		}
 	},
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single",
-			"semicolons": "asNeeded"
+			"semicolons": "asNeeded",
+			"trailingCommas": "es5",
+			"quoteProperties": "asNeeded",
+			"bracketSpacing": true,
+			"bracketSameLine": false,
+			"arrowParentheses": "always",
+			"jsxQuoteStyle": "double"
 		}
-	}
+	},
+	"json": {
+		"formatter": {
+			"trailingCommas": "none",
+			"indentStyle": "tab",
+			"indentWidth": 4
+		}
+	},
+	"overrides": [
+		{
+			"include": ["*.tsx", "*.jsx"],
+			"javascript": {
+				"formatter": {
+					"jsxQuoteStyle": "double",
+					"bracketSameLine": false
+				}
+			}
+		},
+		{
+			"include": ["package.json", "tsconfig.json"],
+			"json": {
+				"formatter": {
+					"indentStyle": "space",
+					"indentWidth": 2
+				}
+			}
+		}
+	]
 }

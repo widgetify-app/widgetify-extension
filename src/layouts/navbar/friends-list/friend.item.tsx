@@ -35,7 +35,11 @@ export function FriendItem({
 							<p className="text-xs text-center truncate" dir="ltr">
 								{user.username}
 							</p>
-							<AvatarComponent url={user.avatar} placeholder={user.username} size="xs" />
+							<AvatarComponent
+								url={user.avatar}
+								placeholder={user.username}
+								size="xs"
+							/>
 						</div>
 						<div className="flex items-center justify-center w-full">
 							<p className="w-full text-xs wrap-break-word">
@@ -50,7 +54,11 @@ export function FriendItem({
 					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105"
 					onClick={handleClick}
 				>
-					<AvatarComponent url={user.avatar} placeholder={user.username} size="xs" />
+					<AvatarComponent
+						url={user.avatar}
+						placeholder={user.username}
+						size="xs"
+					/>
 				</div>
 			</Tooltip>
 

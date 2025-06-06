@@ -21,7 +21,7 @@ export function useLazyLoad(onVisible: () => void) {
 				root: null,
 				rootMargin: '100px',
 				threshold: 0.1,
-			},
+			}
 		)
 
 		observer.current.observe(elementRef.current)

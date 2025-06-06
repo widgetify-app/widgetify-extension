@@ -62,7 +62,9 @@ export function SectionPanel({
 			>
 				<div className={`${sizeStyles.header} border-b border-content`}>
 					<div className="flex items-center justify-between gap-2">
-						<h3 className={`font-medium ${sizeStyles.title} text-content`}>{title}</h3>
+						<h3 className={`font-medium ${sizeStyles.title} text-content`}>
+							{title}
+						</h3>
 						{icon && React.cloneElement(icon, {})}
 					</div>
 				</div>

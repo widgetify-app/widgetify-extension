@@ -54,9 +54,13 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-content'}
+				className={
+					'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-content'
+				}
 			>
-				<div className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}>
+				<div
+					className={`flex items-center justify-center p-4 ${getLoadingTextStyle()}`}
+				>
 					<div
 						className={`w-5 h-5 ml-2 border-2 rounded-full animate-spin ${getLoadingSpinnerStyle()}`}
 					></div>
@@ -70,7 +74,9 @@ export function CityResultsList({
 		return (
 			<div
 				ref={listRef}
-				className={'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-base-100/80'}
+				className={
+					'overflow-hidden backdrop-blur-sm shadow rounded-lg bg-base-100/80'
+				}
 			>
 				<div className={'p-4 text-center text-content opacity-75'}>
 					شهری با این نام یافت نشد

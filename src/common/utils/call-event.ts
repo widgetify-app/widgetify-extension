@@ -29,7 +29,7 @@ export function callEvent<K extends keyof EventName>(eventName: K, data?: EventN
  */
 export function listenEvent<K extends keyof EventName>(
 	eventName: K,
-	callback: (data: EventName[K]) => void,
+	callback: (data: EventName[K]) => void
 ): () => void {
 	const handler = (event: CustomEvent<EventName[K]>) => {
 		callback(event.detail)

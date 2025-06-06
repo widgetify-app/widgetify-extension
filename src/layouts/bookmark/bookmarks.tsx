@@ -163,7 +163,9 @@ export function BookmarksComponent() {
 		if (!draggedBookmarkId) return
 
 		const currentItems = getCurrentFolderItems(currentFolderId)
-		const sourceIndex = currentItems.findIndex((item) => item.id === draggedBookmarkId)
+		const sourceIndex = currentItems.findIndex(
+			(item) => item.id === draggedBookmarkId
+		)
 
 		if (sourceIndex === -1 || sourceIndex === targetIndex) {
 			setDraggedBookmarkId(null)
@@ -174,9 +176,13 @@ export function BookmarksComponent() {
 		const allBookmarks = [...bookmarks]
 
 		const sourceBookmark = currentItems[sourceIndex]
-		const actualSourceIndex = allBookmarks.findIndex((b) => b.id === sourceBookmark.id)
+		const actualSourceIndex = allBookmarks.findIndex(
+			(b) => b.id === sourceBookmark.id
+		)
 		const targetBookmark = currentItems[targetIndex]
-		const actualTargetIndex = allBookmarks.findIndex((b) => b.id === targetBookmark.id)
+		const actualTargetIndex = allBookmarks.findIndex(
+			(b) => b.id === targetBookmark.id
+		)
 
 		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
 			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
@@ -252,15 +258,15 @@ export function BookmarksComponent() {
 					0,
 					TOTAL_BOOKMARKS -
 						currentFolderItems.length -
-						(currentFolderIsManageable ? 1 : 0),
-				),
-			).fill(null),
+						(currentFolderIsManageable ? 1 : 0)
+				)
+			).fill(null)
 		)
 		.concat(
 			//@ts-ignore
 			currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
 				? [null]
-				: [],
+				: []
 		)
 		.slice(0, TOTAL_BOOKMARKS)
 
@@ -287,7 +293,9 @@ export function BookmarksComponent() {
 								onDragStart={(e) => handleDragStart(e, bookmark.id)}
 								onDragOver={(e) => handleDragOver(e, i)}
 								onMenuClick={
-									isManageable(bookmark) ? (e) => handleMenuClick(e, bookmark) : undefined
+									isManageable(bookmark)
+										? (e) => handleMenuClick(e, bookmark)
+										: undefined
 								}
 								onDragEnd={handleDragEnd}
 								onDrop={(e) => handleDrop(e, i)}
@@ -300,7 +308,7 @@ export function BookmarksComponent() {
 							onClick={() => setShowAddBookmarkModal(true)}
 							canAdd={currentFolderIsManageable}
 						/>
-					),
+					)
 				)}
 				{selectedBookmark && (
 					<BookmarkContextMenu

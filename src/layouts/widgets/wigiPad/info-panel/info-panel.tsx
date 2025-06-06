@@ -21,7 +21,7 @@ export function InfoPanel() {
 
 	const handleSectionClick = (
 		sectionId: string,
-		event: React.MouseEvent<HTMLButtonElement>,
+		event: React.MouseEvent<HTMLButtonElement>
 	) => {
 		setActiveSection(sectionId)
 

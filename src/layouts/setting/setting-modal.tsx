@@ -70,7 +70,13 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 	]
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="xl" title="تنظیمات" direction="rtl">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="xl"
+			title="تنظیمات"
+			direction="rtl"
+		>
 			<TabManager
 				tabs={tabs}
 				defaultTab="general"

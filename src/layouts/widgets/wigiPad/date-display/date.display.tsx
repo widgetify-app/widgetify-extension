@@ -18,7 +18,9 @@ export function DateDisplay() {
 				<>
 					<div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-error/5 via-transparent to-error/10" />
 					<div className="absolute w-20 px-2 py-1 text-xs text-white transform -rotate-45 shadow-xl right-16 top-2 bg-error animate-pulse">
-						<div className="relative z-10 font-semibold tracking-wide">تعطیل</div>
+						<div className="relative z-10 font-semibold tracking-wide">
+							تعطیل
+						</div>
 						<div className="absolute inset-0 opacity-50 bg-error/80 blur-sm" />
 					</div>
 					<div className="absolute w-2 h-2 rounded-full top-1 left-1 bg-error/30 animate-pulse" />

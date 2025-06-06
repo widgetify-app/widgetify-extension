@@ -44,7 +44,7 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 	const handleInputChange = (
 		field: 'title' | 'body',
 		value: string,
-		targetElement: HTMLTextAreaElement,
+		targetElement: HTMLTextAreaElement
 	) => {
 		if (field === 'title') {
 			setCurrentTitle(value)

@@ -14,7 +14,7 @@ export const useReligiousTime = (
 	day: number,
 	month: number,
 	lat: number,
-	long: number,
+	long: number
 ) => {
 	const [data, setData] = useState<FetchedReligiousTimeData | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
@@ -41,14 +41,16 @@ export const useReligiousTime = (
 							lat,
 							long,
 						},
-					},
+					}
 				)
 
 				setData(result)
 
 				cachedData.set(cacheKey, result)
 			} catch (err) {
-				setError(err instanceof Error ? err : new Error('An unknown error occurred'))
+				setError(
+					err instanceof Error ? err : new Error('An unknown error occurred')
+				)
 			} finally {
 				setLoading(false)
 			}

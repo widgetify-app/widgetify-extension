@@ -32,7 +32,7 @@ export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
 		const meetLink =
 			meeting.hangoutLink ||
 			meeting.conferenceData?.entryPoints?.find(
-				(ep: any) => ep.entryPointType === 'video',
+				(ep: any) => ep.entryPointType === 'video'
 			)?.uri ||
 			meeting.htmlLink
 
@@ -43,8 +43,9 @@ export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
 
 	const meetLink =
 		meeting.hangoutLink ||
-		meeting.conferenceData?.entryPoints?.find((ep: any) => ep.entryPointType === 'video')
-			?.uri
+		meeting.conferenceData?.entryPoints?.find(
+			(ep: any) => ep.entryPointType === 'video'
+		)?.uri
 	const getEventIcon = () => {
 		if (meetLink) return <MdVideoCall className="text-blue-500" />
 		if (meeting.location) return <MdLocationOn className="text-red-500" />

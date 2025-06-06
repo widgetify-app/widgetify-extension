@@ -30,7 +30,9 @@ export const DailyZikrBox = ({
 					) : (
 						<>
 							<div className="mb-1 text-sm font-medium w-52">{zikr}</div>
-							<div className="text-xs truncate opacity-75 w-52">{meaning}</div>
+							<div className="text-xs truncate opacity-75 w-52">
+								{meaning}
+							</div>
 						</>
 					)}
 				</div>

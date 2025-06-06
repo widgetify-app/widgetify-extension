@@ -47,7 +47,7 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 						>
 							{CollectibleIcon}
 						</div>
-					),
+					)
 			)}
 		</>
 	)
@@ -222,13 +222,13 @@ export function useBasePetLogic({
 			getMovementBounds,
 			updateAction,
 			updateBehaviorState,
-		],
+		]
 	)
 
 	const findNearestCollectible = useCallback(
 		(currentCollectibles: CollectibleItem[]) => {
 			const availableCollectibles = currentCollectibles.filter(
-				(item) => !item.collected && !item.dropping && item.y <= 5,
+				(item) => !item.collected && !item.dropping && item.y <= 5
 			)
 
 			if (availableCollectibles.length === 0) return null
@@ -245,7 +245,7 @@ export function useBasePetLogic({
 			}
 			return nearest
 		},
-		[position.x],
+		[position.x]
 	)
 
 	const handleCollectibleCollection = useCallback(
@@ -254,19 +254,20 @@ export function useBasePetLogic({
 				prevCollectibles.map((collectible) =>
 					collectible.id === collectedItemId
 						? { ...collectible, collected: true }
-						: collectible,
-				),
+						: collectible
+				)
 			)
 			updateAction('stand')
 			if (onCollectibleCollection) {
 				onCollectibleCollection(collectedItemId)
 			}
 			setTimeout(
-				() => updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
-				500,
+				() =>
+					updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
+				500
 			)
 		},
-		[updateAction, behaviorState],
+		[updateAction, behaviorState]
 	)
 
 	const updateCollectibles = useCallback(() => {
@@ -328,8 +329,9 @@ export function useBasePetLogic({
 			updateAction('sit')
 			setActionTimer(
 				Math.floor(
-					Math.random() * (durations.rest.max - durations.rest.min) + durations.rest.min,
-				),
+					Math.random() * (durations.rest.max - durations.rest.min) +
+						durations.rest.min
+				)
 			)
 
 			return
@@ -342,8 +344,8 @@ export function useBasePetLogic({
 				setActionTimer(
 					Math.floor(
 						Math.random() * (durations.climb.max - durations.climb.min) +
-							durations.climb.min,
-					),
+							durations.climb.min
+					)
 				)
 			} else {
 				updateBehaviorState(PetBehavior.RESTING)
@@ -352,8 +354,8 @@ export function useBasePetLogic({
 				setActionTimer(
 					Math.floor(
 						Math.random() * (durations.rest.max - durations.rest.min) +
-							durations.rest.min,
-					),
+							durations.rest.min
+					)
 				)
 			}
 		} else if (behaviorState === PetBehavior.CLIMBING) {
@@ -361,8 +363,9 @@ export function useBasePetLogic({
 			updateAction(animations.stand ? 'stand' : 'idle')
 			setActionTimer(
 				Math.floor(
-					Math.random() * (durations.rest.max - durations.rest.min) + durations.rest.min,
-				),
+					Math.random() * (durations.rest.max - durations.rest.min) +
+						durations.rest.min
+				)
 			)
 		} else {
 			// Includes PetBehavior.RESTING or initial state
@@ -374,8 +377,10 @@ export function useBasePetLogic({
 					Math.random() *
 						(shouldRun
 							? durations.run.max - durations.run.min + durations.run.min
-							: durations.walk.max - durations.walk.min + durations.walk.min),
-				),
+							: durations.walk.max -
+								durations.walk.min +
+								durations.walk.min)
+				)
 			)
 		}
 
@@ -451,7 +456,7 @@ export function useBasePetLogic({
 			const newY = currentPosition.y > 0 ? Math.max(0, currentPosition.y - 0.5) : 0
 			return { x: newX, y: newY }
 		},
-		[getMovementBounds, getCurrentSpeed],
+		[getMovementBounds, getCurrentSpeed]
 	)
 
 	const moveToTarget = useCallback(
@@ -504,7 +509,7 @@ export function useBasePetLogic({
 			findNearestCollectible,
 			updateAction,
 			updateBehaviorState,
-		],
+		]
 	)
 
 	const climbWall = useCallback(
@@ -520,7 +525,7 @@ export function useBasePetLogic({
 			const wallX = currentDirection === 1 ? bounds.maxX : bounds.minX
 			return { x: wallX, y: newY }
 		},
-		[dimensions.climbSpeed, dimensions.maxHeight, getMovementBounds],
+		[dimensions.climbSpeed, dimensions.maxHeight, getMovementBounds]
 	)
 
 	const applyGravity = useCallback((currentPosition: Position) => {

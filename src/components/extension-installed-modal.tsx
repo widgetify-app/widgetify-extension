@@ -101,7 +101,9 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 			</m.div>
 
 			<m.div
-				className={'relative p-1 mt-1 mb-3 border rounded-xl border-content bg-content'}
+				className={
+					'relative p-1 mt-1 mb-3 border rounded-xl border-content bg-content'
+				}
 				initial={{ scale: 0.9, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
@@ -117,7 +119,9 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 			</m.div>
 
 			<m.div
-				className={'p-3 mb-3 text-content rounded-lg border border-content  bg-content'}
+				className={
+					'p-3 mb-3 text-content rounded-lg border border-content  bg-content'
+				}
 				initial={{ x: -20, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.6 }}
@@ -151,19 +155,22 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 			>
 				<h3 className={'mb-3 text-2xl font-bold text-content'}>درباره ما </h3>
 				<p className={'leading-relaxed text-muted'}>
-					ما متن باز هستیم! ویجتی‌فای یک پروژه متن‌باز است که با عشق توسعه داده می‌شود.
+					ما متن باز هستیم! ویجتی‌فای یک پروژه متن‌باز است که با عشق توسعه داده
+					می‌شود.
 				</p>
 			</m.div>
 
 			<m.div
-				className={'p-3 mb-6 text-gray-200 rounded-lg border border-content bg-content'}
+				className={
+					'p-3 mb-6 text-gray-200 rounded-lg border border-content bg-content'
+				}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.5, delay: 0.4 }}
 			>
 				<p className="font-medium text-muted">
-					🔒 امنیت و حریم خصوصی کاربران برای ما در اولویت است و ما متعهد به حفاظت از
-					اطلاعات شما هستیم.
+					🔒 امنیت و حریم خصوصی کاربران برای ما در اولویت است و ما متعهد به
+					حفاظت از اطلاعات شما هستیم.
 				</p>
 			</m.div>
 
@@ -189,7 +196,9 @@ const StepThree = ({ onGetStarted }: StepThreeProps) => {
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={'mb-3 text-2xl font-bold text-content'}>آماده شروع هستید؟</h3>
+				<h3 className={'mb-3 text-2xl font-bold text-content'}>
+					آماده شروع هستید؟
+				</h3>
 			</m.div>
 
 			<m.div
@@ -200,7 +209,9 @@ const StepThree = ({ onGetStarted }: StepThreeProps) => {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, delay: 0.3 }}
 			>
-				<p className="text-muted">بریم که یک تجربه جدید و جذاب را شروع کنیم! 😎</p>
+				<p className="text-muted">
+					بریم که یک تجربه جدید و جذاب را شروع کنیم! 😎
+				</p>
 			</m.div>
 
 			<div className="flex flex-col w-full gap-4 mt-4 sm:flex-row">

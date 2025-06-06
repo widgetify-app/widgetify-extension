@@ -65,8 +65,9 @@ export function AboutUsTab() {
 
 					{/* Description */}
 					<p className={'max-w-lg mb-2 text-sm leading-relaxed text-content'}>
-						ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با ابزارهای
-						کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
+						ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با
+						ابزارهای کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل
+						می‌کند.
 					</p>
 				</div>
 
@@ -86,7 +87,9 @@ export function AboutUsTab() {
 							>
 								<FaDonate size={24} />
 							</div>
-							<h3 className={'text-sm font-medium text-content'}>حمایت مالی</h3>
+							<h3 className={'text-sm font-medium text-content'}>
+								حمایت مالی
+							</h3>
 							<p className={'mt-1 text-xs text-center text-content'}>
 								کمک به توسعه ویجتی‌فای
 							</p>
@@ -106,7 +109,9 @@ export function AboutUsTab() {
 								<FaGithub size={24} />
 							</div>
 							<h3 className={'text-sm font-medium text-content'}>گیت‌هاب</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>مشاهده کد منبع</p>
+							<p className={'mt-1 text-xs text-center text-content'}>
+								مشاهده کد منبع
+							</p>
 						</m.a>
 
 						<m.a
@@ -122,7 +127,9 @@ export function AboutUsTab() {
 							>
 								<MdFeedback size={24} />
 							</div>
-							<h3 className={'text-sm font-medium text-content'}>بازخورد</h3>
+							<h3 className={'text-sm font-medium text-content'}>
+								بازخورد
+							</h3>
 							<p className={'mt-1 text-xs text-center text-content'}>
 								ارسال پیشنهاد و انتقاد
 							</p>
@@ -142,7 +149,9 @@ export function AboutUsTab() {
 								<FaGlobe size={24} />
 							</div>
 							<h3 className={'text-sm font-medium text-content'}>وب‌سایت</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>مشاهده سایت رسمی</p>
+							<p className={'mt-1 text-xs text-center text-content'}>
+								مشاهده سایت رسمی
+							</p>
 						</m.a>
 					</div>
 				</SectionPanel>

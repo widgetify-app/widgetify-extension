@@ -142,7 +142,7 @@ export function HomePage() {
 					changeWallpaper(wallpaper)
 					setToStorage('wallpaper', wallpaper)
 				}
-			},
+			}
 		)
 
 		async function loadWallpaper() {
@@ -192,7 +192,7 @@ export function HomePage() {
 
 		const openWidgetSettingsEvent = listenEvent(
 			'openWidgetSettings',
-			handleOpenWidgetSettings,
+			handleOpenWidgetSettings
 		)
 
 		return () => {

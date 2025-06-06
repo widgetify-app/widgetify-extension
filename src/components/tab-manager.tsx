@@ -84,7 +84,7 @@ export const TabManager = ({
 									>
 										{element}
 									</m.div>
-								),
+								)
 						)}
 					</AnimatePresence>
 				</div>

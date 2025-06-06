@@ -53,7 +53,9 @@ function NotesHeader() {
 	return (
 		<div className="flex items-center justify-between mb-2">
 			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
-			{isSaving && <FiLoader className={'block w-4 h-4 animate-spin text-content'} />}
+			{isSaving && (
+				<FiLoader className={'block w-4 h-4 animate-spin text-content'} />
+			)}
 		</div>
 	)
 }

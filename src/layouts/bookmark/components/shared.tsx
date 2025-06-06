@@ -65,7 +65,9 @@ export function TypeSelector({
 				type="button"
 				onClick={() => setType('BOOKMARK')}
 				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
-					type === 'BOOKMARK' ? 'bg-primary text-white/85' : 'bg-content text-content'
+					type === 'BOOKMARK'
+						? 'bg-primary text-white/85'
+						: 'bg-content text-content'
 				}`}
 			>
 				بوکمارک
@@ -74,7 +76,9 @@ export function TypeSelector({
 				type="button"
 				onClick={() => setType('FOLDER')}
 				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
-					type === 'FOLDER' ? 'bg-primary text-white/85' : 'bg-content text-content'
+					type === 'FOLDER'
+						? 'bg-primary text-white/85'
+						: 'bg-content text-content'
 				}`}
 			>
 				پوشه
@@ -93,7 +97,7 @@ export function useBookmarkIcon() {
 		iconSource: IconSourceType,
 		setIconSource: (source: IconSourceType) => void,
 		updateFormData: (key: string, value: string) => void,
-		type: BookmarkType,
+		type: BookmarkType
 	) => {
 		const handlePreviewClick = () => fileInputRef.current?.click()
 
@@ -184,7 +188,9 @@ export function useBookmarkIcon() {
 
 					{iconLoadError && (
 						<div className="absolute bottom-[-20px] left-0 right-0 text-center">
-							<span className="text-xs text-yellow-500">آیکون بارگذاری نشد</span>
+							<span className="text-xs text-yellow-500">
+								آیکون بارگذاری نشد
+							</span>
 						</div>
 					)}
 				</div>
@@ -204,7 +210,9 @@ export function useBookmarkIcon() {
 				onDrop={handleDrop}
 			>
 				<FaImage className="w-6 h-6 mb-1 text-content" />
-				<span className="text-xs text-center text-content">آپلود تصویر (اختیاری)</span>
+				<span className="text-xs text-center text-content">
+					آپلود تصویر (اختیاری)
+				</span>
 			</div>
 		)
 	}
@@ -212,7 +220,7 @@ export function useBookmarkIcon() {
 	const handleImageUpload = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		updateFormData: (key: string, value: string) => void,
-		setIconSource: (source: IconSourceType) => void,
+		setIconSource: (source: IconSourceType) => void
 	) => {
 		const file = e.target.files?.[0]
 		if (!file) return

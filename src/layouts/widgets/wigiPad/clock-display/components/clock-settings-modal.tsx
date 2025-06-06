@@ -58,7 +58,9 @@ export function ClockSettingsModal({
 		>
 			<div className="space-y-6">
 				<div>
-					<p className="mb-3 text-sm text-muted">نوع نمایش ساعت را انتخاب کنید:</p>
+					<p className="mb-3 text-sm text-muted">
+						نوع نمایش ساعت را انتخاب کنید:
+					</p>
 
 					<div className="flex gap-2">
 						{clockOptions.map((option) => (

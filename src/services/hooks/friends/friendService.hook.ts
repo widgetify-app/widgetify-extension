@@ -67,7 +67,7 @@ interface FriendActionResponse {
 }
 
 async function sendFriendRequest(
-	params: FriendRequestParams,
+	params: FriendRequestParams
 ): Promise<FriendRequestResponse> {
 	const client = await getMainClient()
 	const response = await client.post<FriendRequestResponse>('/friends/requests', params)
@@ -83,19 +83,21 @@ async function getFriends(params: GetFriendsParams): Promise<FriendsResponse> {
 	if (page !== undefined) queryParams.append('page', page.toString())
 	if (limit !== undefined) queryParams.append('limit', limit.toString())
 
-	const response = await client.get<FriendsResponse>(`/friends?${queryParams.toString()}`)
+	const response = await client.get<FriendsResponse>(
+		`/friends?${queryParams.toString()}`
+	)
 	return response.data
 }
 
 async function handleFriendRequest(
-	params: FriendActionParams,
+	params: FriendActionParams
 ): Promise<FriendActionResponse> {
 	const client = await getMainClient()
 	const response = await client.put<FriendActionResponse>(
 		`/friends/requests/${params.friendId}`,
 		{
 			state: params.state,
-		},
+		}
 	)
 	return response.data
 }
@@ -124,7 +126,7 @@ export function useGetFriends(params: GetFriendsParams) {
 export function useHandleFriendRequest(
 	options?: Partial<
 		UseMutationOptions<FriendActionResponse, unknown, FriendActionParams>
-	>,
+	>
 ) {
 	const queryClient = useQueryClient()
 
@@ -138,7 +140,7 @@ export function useHandleFriendRequest(
 }
 
 export function useRemoveFriend(
-	options?: Partial<UseMutationOptions<FriendActionResponse, unknown, string>>,
+	options?: Partial<UseMutationOptions<FriendActionResponse, unknown, string>>
 ) {
 	const queryClient = useQueryClient()
 

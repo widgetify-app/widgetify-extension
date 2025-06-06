@@ -22,7 +22,7 @@ export interface CombinedEvent {
 export function combineAndSortEvents(
 	events: FetchedAllEvents,
 	currentDate: WidgetifyDate,
-	googleEvents: GoogleCalendarEvent[] = [],
+	googleEvents: GoogleCalendarEvent[] = []
 ): CombinedEvent[] {
 	const shamsiEvents = getShamsiEvents(events, currentDate)
 	const gregorianEvents = getGregorianEvents(events, currentDate)

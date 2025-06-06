@@ -99,10 +99,12 @@ const Modal = ({
 						</button>
 					)}
 				</div>
-				<div className={`${sizValue.h} ${sizValue.overflow} py-4`}>{children}</div>
+				<div className={`${sizValue.h} ${sizValue.overflow} py-4`}>
+					{children}
+				</div>
 			</div>
 		</dialog>,
-		document.body,
+		document.body
 	)
 }
 

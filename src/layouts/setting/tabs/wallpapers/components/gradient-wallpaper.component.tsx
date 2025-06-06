@@ -39,7 +39,10 @@ export function GradientWallpaper({
 	const [direction, setDirection] = useState<GradientColors['direction']>('to-r')
 
 	useEffect(() => {
-		if (selectedGradient?.type === 'GRADIENT' && selectedGradient.gradient?.direction) {
+		if (
+			selectedGradient?.type === 'GRADIENT' &&
+			selectedGradient.gradient?.direction
+		) {
 			setDirection(selectedGradient.gradient.direction)
 		}
 	}, [selectedGradient])
@@ -62,7 +65,11 @@ export function GradientWallpaper({
 		return `gradient-${from.replace('#', '')}-${to.replace('#', '')}`
 	}
 
-	const createGradientWallpaper = (from: string, to: string, name: string): Wallpaper => {
+	const createGradientWallpaper = (
+		from: string,
+		to: string,
+		name: string
+	): Wallpaper => {
 		return {
 			id: createGradientId(from, to),
 			name: name,
@@ -80,7 +87,7 @@ export function GradientWallpaper({
 		const gradient = createGradientWallpaper(
 			customFromColor,
 			customToColor,
-			'گرادیان سفارشی',
+			'گرادیان سفارشی'
 		)
 		onSelectGradient(gradient)
 	}
@@ -121,7 +128,11 @@ export function GradientWallpaper({
               ${isSelected(gradient.from, gradient.to) ? 'ring-2 ring-blue-500' : ''}
             `}
 							onClick={() =>
-								handlePredefinedGradientSelect(gradient.from, gradient.to, gradient.name)
+								handlePredefinedGradientSelect(
+									gradient.from,
+									gradient.to,
+									gradient.name
+								)
 							}
 						>
 							<div
@@ -141,7 +152,9 @@ export function GradientWallpaper({
 			<SectionPanel title="گرادیان سفارشی">
 				<div className="flex flex-col gap-4 mb-4 sm:flex-row">
 					<div className="flex-1 space-y-2">
-						<label className={'block text-sm font-medium text-content'}>رنگ شروع</label>
+						<label className={'block text-sm font-medium text-content'}>
+							رنگ شروع
+						</label>
 						<div className="flex items-center gap-2">
 							<TextInput
 								key={'customFromColor'}
@@ -162,7 +175,9 @@ export function GradientWallpaper({
 					</div>
 
 					<div className="flex-1 space-y-2">
-						<label className={'block text-sm font-medium text-content'}>رنگ پایان</label>
+						<label className={'block text-sm font-medium text-content'}>
+							رنگ پایان
+						</label>
 						<div className="flex items-center gap-2">
 							<TextInput
 								key={'customToColor'}
@@ -191,18 +206,36 @@ export function GradientWallpaper({
 							<button
 								key={dir.value}
 								type="button"
-								onClick={() => setDirection(dir.value as GradientColors['direction'])}
+								onClick={() =>
+									setDirection(dir.value as GradientColors['direction'])
+								}
 								className={getStyle(direction === dir.value)}
 								title={dir.label}
 							>
-								{dir.value === 'to-r' && <span className="text-lg">→</span>}
-								{dir.value === 'to-l' && <span className="text-lg">←</span>}
-								{dir.value === 'to-t' && <span className="text-lg">↑</span>}
-								{dir.value === 'to-b' && <span className="text-lg">↓</span>}
-								{dir.value === 'to-tr' && <span className="text-lg">↗</span>}
-								{dir.value === 'to-tl' && <span className="text-lg">↖</span>}
-								{dir.value === 'to-br' && <span className="text-lg">↘</span>}
-								{dir.value === 'to-bl' && <span className="text-lg">↙</span>}
+								{dir.value === 'to-r' && (
+									<span className="text-lg">→</span>
+								)}
+								{dir.value === 'to-l' && (
+									<span className="text-lg">←</span>
+								)}
+								{dir.value === 'to-t' && (
+									<span className="text-lg">↑</span>
+								)}
+								{dir.value === 'to-b' && (
+									<span className="text-lg">↓</span>
+								)}
+								{dir.value === 'to-tr' && (
+									<span className="text-lg">↗</span>
+								)}
+								{dir.value === 'to-tl' && (
+									<span className="text-lg">↖</span>
+								)}
+								{dir.value === 'to-br' && (
+									<span className="text-lg">↘</span>
+								)}
+								{dir.value === 'to-bl' && (
+									<span className="text-lg">↙</span>
+								)}
 							</button>
 						))}
 					</div>

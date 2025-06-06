@@ -65,7 +65,11 @@ export function TodosLayout() {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4 className={'text-xs font-medium flex items-center text-content'}>
+						<h4
+							className={
+								'text-xs font-medium flex items-center text-content'
+							}
+						>
 							<span>وظایف</span>
 							<span className="mr-1 font-semibold">
 								{todoOptions.viewMode === TodoViewType.Monthly
@@ -82,7 +86,11 @@ export function TodosLayout() {
 								size="xs"
 								isPrimary={todoOptions.blurMode}
 							>
-								{todoOptions.blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
+								{todoOptions.blurMode ? (
+									<FaEye size={12} />
+								) : (
+									<FaEyeSlash size={12} />
+								)}
 							</Button>
 							<Button
 								onClick={() => setShowStats(!showStats)}
@@ -106,7 +114,11 @@ export function TodosLayout() {
 											style={{ width: `${stats.percentage}%` }}
 										></div>
 									</div>
-									<div className={'flex justify-between text-[.65rem] text-content'}>
+									<div
+										className={
+											'flex justify-between text-[.65rem] text-content'
+										}
+									>
 										<span>
 											{stats.completed} از {stats.total} تکمیل شده
 										</span>
@@ -144,7 +156,11 @@ export function TodosLayout() {
 								</div>
 								<select
 									value={todoOptions.viewMode}
-									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
+									onChange={(e) =>
+										handleChangeViewMode(
+											e.target.value as TodoViewType
+										)
+									}
 									className={
 										'select select-xs text-[.65rem] w-24 bg-content !px-2 focus:outline-none focus:border focus:border-primary'
 									}
@@ -156,10 +172,16 @@ export function TodosLayout() {
 										paddingLeft: '2.5rem',
 									}}
 								>
-									<option value={TodoViewType.Day} className="text-content">
+									<option
+										value={TodoViewType.Day}
+										className="text-content"
+									>
 										لیست امروز
 									</option>
-									<option value={TodoViewType.Monthly} className="text-content">
+									<option
+										value={TodoViewType.Monthly}
+										className="text-content"
+									>
 										لیست ماهانه
 									</option>
 								</select>
@@ -186,8 +208,12 @@ export function TodosLayout() {
 								</>
 							) : (
 								<div className={'py-4 text-center'}>
-									<p className="text-xs">وظیفه‌ای برای این روز وجود ندارد.</p>
-									<p className="text-[.65rem]">یک وظیفه جدید اضافه کنید.</p>
+									<p className="text-xs">
+										وظیفه‌ای برای این روز وجود ندارد.
+									</p>
+									<p className="text-[.65rem]">
+										یک وظیفه جدید اضافه کنید.
+									</p>
 								</div>
 							)}
 						</div>

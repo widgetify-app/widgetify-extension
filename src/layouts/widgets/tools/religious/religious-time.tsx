@@ -102,7 +102,9 @@ export function ReligiousTime({ currentDate }: Prop) {
 					>
 						<FiSunrise className="text-content" size={24} />
 					</div>
-					<div className={'text-content'}>مشکلی در دریافت اطلاعات وجود دارد</div>
+					<div className={'text-content'}>
+						مشکلی در دریافت اطلاعات وجود دارد
+					</div>
 				</div>
 			) : (
 				<>
@@ -122,7 +124,10 @@ export function ReligiousTime({ currentDate }: Prop) {
 						<DailyZikrBox isLoading={true} />
 					) : (
 						dailyZikr && (
-							<DailyZikrBox zikr={dailyZikr.zikr} meaning={dailyZikr.meaning} />
+							<DailyZikrBox
+								zikr={dailyZikr.zikr}
+								meaning={dailyZikr.meaning}
+							/>
 						)
 					)}
 				</>

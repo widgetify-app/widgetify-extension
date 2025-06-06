@@ -87,7 +87,9 @@ export function RenderStickerPattern(bookmark: Bookmark) {
 							className="object-contain w-full h-full rounded-sm"
 							style={{
 								opacity: pos.opacity,
-								filter: pos.glow ? `drop-shadow(0 0 1px ${pos.glow})` : undefined,
+								filter: pos.glow
+									? `drop-shadow(0 0 1px ${pos.glow})`
+									: undefined,
 							}}
 							onError={(e) => {
 								e.currentTarget.style.display = 'none'

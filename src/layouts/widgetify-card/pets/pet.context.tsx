@@ -142,7 +142,10 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 					const updatedSettings: PetSettings = {
 						...newSettings,
 						enablePets: data.enablePets ?? newSettings.enablePets,
-						petType: data.petType !== undefined ? data.petType : newSettings.petType,
+						petType:
+							data.petType !== undefined
+								? data.petType
+								: newSettings.petType,
 					}
 
 					setToStorage('pets', updatedSettings)

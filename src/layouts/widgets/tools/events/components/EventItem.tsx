@@ -23,7 +23,9 @@ export function EventItem({ event, index }: EventItemProps) {
 	const getSourceIcon = (source: string) => {
 		switch (source) {
 			case 'google':
-				return <div className="flex-shrink-0 w-3 h-3 bg-blue-500 rounded-full"></div>
+				return (
+					<div className="flex-shrink-0 w-3 h-3 bg-blue-500 rounded-full"></div>
+				)
 			case 'gregorian':
 				return <FiGlobe className={'text-green-400'} size={12} />
 			case 'hijri':
@@ -81,8 +83,15 @@ export function EventItem({ event, index }: EventItemProps) {
 						{event.googleItem?.conferenceData && (
 							<Tooltip content="پیوستن به جلسه">
 								<button
-									onClick={() => window.open(event.googleItem?.hangoutLink, '_blank')}
-									className={'cursor-pointer p-1 rounded-full hover:bg-gray-700'}
+									onClick={() =>
+										window.open(
+											event.googleItem?.hangoutLink,
+											'_blank'
+										)
+									}
+									className={
+										'cursor-pointer p-1 rounded-full hover:bg-gray-700'
+									}
 								>
 									<FiVideo size={16} className={getSubTextStyle()} />
 								</button>
@@ -90,8 +99,12 @@ export function EventItem({ event, index }: EventItemProps) {
 						)}
 						<Tooltip content="مشاهده در تقویم گوگل">
 							<button
-								onClick={() => window.open(event.googleItem?.htmlLink, '_blank')}
-								className={'cursor-pointer p-1 rounded-full hover:bg-gray-700'}
+								onClick={() =>
+									window.open(event.googleItem?.htmlLink, '_blank')
+								}
+								className={
+									'cursor-pointer p-1 rounded-full hover:bg-gray-700'
+								}
 							>
 								<FiChevronRight size={16} className={getSubTextStyle()} />
 							</button>

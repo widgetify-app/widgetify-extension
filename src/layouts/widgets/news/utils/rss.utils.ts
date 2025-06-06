@@ -3,7 +3,7 @@ import type { RssItem } from '../news.interface'
 
 export const fetchRssFeed = async (
 	url: string,
-	sourceName: string,
+	sourceName: string
 ): Promise<RssItem[]> => {
 	try {
 		const response = await GetRss(url, sourceName)

@@ -19,7 +19,9 @@ export function BirthdayItem({ birthday }: BirthdayItemProps) {
 				)}
 			</div>
 			<div className="flex-1 min-w-0">
-				<p className="text-sm font-medium truncate text-base-content">{birthday.name}</p>
+				<p className="text-sm font-medium truncate text-base-content">
+					{birthday.name}
+				</p>
 			</div>
 			<div className="text-lg">🎂</div>
 		</div>

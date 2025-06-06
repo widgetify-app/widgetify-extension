@@ -14,7 +14,7 @@ export interface FetchedYouTubeProfile {
 async function fetchYouTubeProfile(username: string): Promise<FetchedYouTubeProfile> {
 	const client = await getMainClient()
 	const { data } = await client.get<FetchedYouTubeProfile>(
-		`/google/youtube/profile/${username}`,
+		`/google/youtube/profile/${username}`
 	)
 	return data
 }
@@ -24,7 +24,7 @@ export function useGetYouTubeProfile(
 	options: {
 		enabled?: boolean
 		refetchInterval?: number | null
-	} = {},
+	} = {}
 ) {
 	return useQuery<FetchedYouTubeProfile>({
 		queryKey: ['getYouTubeProfile', username],

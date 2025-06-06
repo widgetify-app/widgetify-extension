@@ -14,7 +14,10 @@ export function SelectCity() {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const debouncedValue = useDebouncedValue(inputValue.length >= 2 ? inputValue : '', 500)
+	const debouncedValue = useDebouncedValue(
+		inputValue.length >= 2 ? inputValue : '',
+		500
+	)
 	const { setSelectedCity, selectedCity } = useWeatherStore()
 
 	const { data: relatedCities, isLoading, error } = useGetRelatedCities(debouncedValue)
@@ -87,7 +90,9 @@ export function SelectCity() {
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						className={'p-3 text-sm text-right border rounded-lg backdrop-blur-sm '}
+						className={
+							'p-3 text-sm text-right border rounded-lg backdrop-blur-sm '
+						}
 					>
 						<div className="font-medium">خطا در دریافت اطلاعات</div>
 						<div className="mt-1 opacity-80">

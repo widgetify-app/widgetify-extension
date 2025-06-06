@@ -115,8 +115,12 @@ export function YouTubeLayout() {
 						{!youtubeProfile && error && !isLoading && (
 							<div className="py-8 text-center">
 								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-50" />
-								<p className={'text-sm text-content opacity-70'}>خطا در دریافت اطلاعات</p>
-								<p className={'text-xs text-muted mt-1'}>نام کاربری را بررسی کنید</p>
+								<p className={'text-sm text-content opacity-70'}>
+									خطا در دریافت اطلاعات
+								</p>
+								<p className={'text-xs text-muted mt-1'}>
+									نام کاربری را بررسی کنید
+								</p>
 							</div>
 						)}
 

@@ -19,7 +19,7 @@ export function GoogleOverviewCard() {
 
 	const { data: googleEvents = [] } = useGetGoogleCalendarEvents(
 		isAuthenticated && (user?.connections?.includes('google') || false),
-		today.clone().toDate(),
+		today.clone().toDate()
 	)
 	const todayEvents = filterGoogleEventsByDate(googleEvents, today)
 	const upcomingEvents = todayEvents.filter((event) => {

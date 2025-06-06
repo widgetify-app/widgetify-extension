@@ -6,17 +6,17 @@ import { PetTypes, usePetContext } from './pet.context'
 
 // Lazy load pet components
 const DogComponent = React.lazy(() =>
-	import('./pet-item/pet-dog').then((module) => ({ default: module.DogComponent })),
+	import('./pet-item/pet-dog').then((module) => ({ default: module.DogComponent }))
 )
 const ChickenComponent = React.lazy(() =>
 	import('./pet-item/pet-chicken').then((module) => ({
 		default: module.ChickenComponent,
-	})),
+	}))
 )
 const CrabComponent = React.lazy(() =>
 	import('./pet-item/pet-crab').then((module) => ({
 		default: module.CrabComponent,
-	})),
+	}))
 )
 
 export const PetFactory: React.FC = () => {

@@ -35,7 +35,9 @@ export function ItemSelector({
 			}`}
 		>
 			<div className="flex items-center justify-center mb-2">
-				<div className={`w-4 h-4 rounded-full border ${getRadioBorderStyle(isActive)}`}>
+				<div
+					className={`w-4 h-4 rounded-full border ${getRadioBorderStyle(isActive)}`}
+				>
 					{isActive && (
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +57,9 @@ export function ItemSelector({
 				</div>
 				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
 			</div>
-			{description && <p className={'text-sm text-muted text-right'}>{description}</p>}
+			{description && (
+				<p className={'text-sm text-muted text-right'}>{description}</p>
+			)}
 		</div>
 	)
 }

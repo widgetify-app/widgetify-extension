@@ -41,7 +41,11 @@ export function Events({ events, googleEvents = [], currentDate }: EventsProps) 
 					variants={containerVariants}
 				>
 					{sortedEvents.map((event, index) => (
-						<EventItem key={`${event.source}-${index}`} event={event} index={index} />
+						<EventItem
+							key={`${event.source}-${index}`}
+							event={event}
+							index={index}
+						/>
 					))}
 				</motion.div>
 			) : (

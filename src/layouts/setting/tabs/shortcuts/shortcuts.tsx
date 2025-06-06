@@ -60,7 +60,7 @@ export function ShortcutsTab() {
 			acc[shortcut.category].push(shortcut)
 			return acc
 		},
-		{} as Record<string, Shortcut[]>,
+		{} as Record<string, Shortcut[]>
 	)
 
 	return (
@@ -78,26 +78,44 @@ export function ShortcutsTab() {
 							کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
 						</p>
 
-						{Object.entries(categories).map(([category, categoryShortcuts]) => (
-							<div key={category} className="mb-6">
-								<h3 className={'text-base font-medium mb-3 text-content'}>{category}</h3>
-								<div className="space-y-2">
-									{categoryShortcuts.map((shortcut) => (
-										<div
-											key={shortcut.id}
-											className={
-												'flex items-center justify-between p-3 rounded-lg border border-content'
-											}
-										>
-											<span className={'text-content'}>{shortcut.description}</span>
-											<div className={'px-3 py-1 text-sm font-mono'}>
-												{formatShortcut(isMac ? shortcut.macKey : shortcut.windowsKey)}
+						{Object.entries(categories).map(
+							([category, categoryShortcuts]) => (
+								<div key={category} className="mb-6">
+									<h3
+										className={
+											'text-base font-medium mb-3 text-content'
+										}
+									>
+										{category}
+									</h3>
+									<div className="space-y-2">
+										{categoryShortcuts.map((shortcut) => (
+											<div
+												key={shortcut.id}
+												className={
+													'flex items-center justify-between p-3 rounded-lg border border-content'
+												}
+											>
+												<span className={'text-content'}>
+													{shortcut.description}
+												</span>
+												<div
+													className={
+														'px-3 py-1 text-sm font-mono'
+													}
+												>
+													{formatShortcut(
+														isMac
+															? shortcut.macKey
+															: shortcut.windowsKey
+													)}
+												</div>
 											</div>
-										</div>
-									))}
+										))}
+									</div>
 								</div>
-							</div>
-						))}
+							)
+						)}
 					</div>
 				</SectionPanel>
 			</m.div>

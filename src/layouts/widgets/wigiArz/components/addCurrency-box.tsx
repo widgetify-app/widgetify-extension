@@ -55,7 +55,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		setSelectedCurrencies(
 			isRemoving
 				? selectedCurrencies.filter((key) => key !== currencyKey)
-				: [...selectedCurrencies, currencyKey],
+				: [...selectedCurrencies, currencyKey]
 		)
 
 		Analytics.featureUsed(
@@ -64,7 +64,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				currency_key: currencyKey,
 				action: isRemoving ? 'remove' : 'add',
 			},
-			'toggle',
+			'toggle'
 		)
 	}
 
@@ -73,13 +73,19 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		.map((group) => ({
 			...group,
 			options: group.options.filter((option) =>
-				option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+				option.label.toLowerCase().includes(searchQuery.toLowerCase())
 			),
 		}))
 		.filter((group) => group.options.length > 0)
 
 	return (
-		<Modal isOpen={show} onClose={onClose} size="md" title="افزودن ارز" direction="rtl">
+		<Modal
+			isOpen={show}
+			onClose={onClose}
+			size="md"
+			title="افزودن ارز"
+			direction="rtl"
+		>
 			<div
 				className={`w-full h-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'}`}
 			>
@@ -105,15 +111,23 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 							key={groupIndex}
 							className={`mb-6 transition-all duration-200 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
 							style={{
-								transitionDelay: isContentVisible ? `${200 + groupIndex * 100}ms` : '0ms',
+								transitionDelay: isContentVisible
+									? `${200 + groupIndex * 100}ms`
+									: '0ms',
 							}}
 						>
-							<h3 className={'text-sm font-medium mb-3 currency-group-heading'}>
+							<h3
+								className={
+									'text-sm font-medium mb-3 currency-group-heading'
+								}
+							>
 								{group.label}
 							</h3>
 							<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
 								{group.options.map((option) => {
-									const isSelected = selectedCurrencies.includes(option.value)
+									const isSelected = selectedCurrencies.includes(
+										option.value
+									)
 
 									return (
 										<div
@@ -129,7 +143,9 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 											}}
 											onClick={() => toggleCurrency(option.value)}
 										>
-											<div className={`font-normal ${isSelected ? 'font-medium' : ''}`}>
+											<div
+												className={`font-normal ${isSelected ? 'font-medium' : ''}`}
+											>
 												{option.label}
 											</div>
 											<div

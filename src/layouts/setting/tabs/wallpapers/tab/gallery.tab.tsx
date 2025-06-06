@@ -80,7 +80,10 @@ export function GalleryTab() {
 					{previewImages?.length > 0 ? (
 						<div className="grid grid-cols-2 gap-1">
 							{previewImages.map((image) => (
-								<div key={image.id} className="overflow-hidden rounded aspect-video">
+								<div
+									key={image.id}
+									className="overflow-hidden rounded aspect-video"
+								>
 									<img
 										src={image.src}
 										alt={image.name}

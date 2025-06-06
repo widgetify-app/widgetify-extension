@@ -17,7 +17,7 @@ export const toolTipContent = (
 		todayHijriEvents: FetchedEvent[]
 		todayGregorianEvents: FetchedEvent[]
 		googleEvents: GoogleCalendarEvent[]
-	},
+	}
 ) => {
 	const isHoliday =
 		cellDate.day() === 5 ||
@@ -51,7 +51,9 @@ export const toolTipContent = (
 	return (
 		<div className="flex flex-col min-w-[250px] max-w-[250px] rounded-lg overflow-hidden">
 			<div className={headerStyle}>
-				<div className={`${holidayStyle} flex items-center justify-between gap-2`}>
+				<div
+					className={`${holidayStyle} flex items-center justify-between gap-2`}
+				>
 					<span className="text-sm truncate">{jalaliDay}</span>
 					<span className="text-sm truncate">{jalali}</span>
 				</div>
@@ -72,7 +74,9 @@ export const toolTipContent = (
 
 				{dayGoogleEvents.length > 0 && (
 					<div className="flex items-start gap-2 pt-2 mt-2 border-t border-gray-200 dark:border-gray-700">
-						<AiOutlineGoogle className={`mt-1 flex-shrink-0 ${googleStyle}`} />
+						<AiOutlineGoogle
+							className={`mt-1 flex-shrink-0 ${googleStyle}`}
+						/>
 						<div className="flex-1">
 							<div className={`text-sm font-medium ${googleStyle}`}>
 								{dayGoogleEvents.length} تقویم گوگل
@@ -82,7 +86,8 @@ export const toolTipContent = (
 									key={index}
 									className={`text-xs mt-1 whitespace-normal break-words ${infoStyle}`}
 								>
-									• {event.summary} - ({moment(event.start.dateTime).format('HH:mm')})
+									• {event.summary} - (
+									{moment(event.start.dateTime).format('HH:mm')})
 								</div>
 							))}
 						</div>

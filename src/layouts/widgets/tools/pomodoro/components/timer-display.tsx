@@ -35,7 +35,14 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 		>
 			<svg className="w-full h-full" viewBox="0 0 100 100">
 				{/* Background circle */}
-				<circle cx="50" cy="50" r="45" fill="none" stroke="#f3f4f6" strokeWidth="5" />
+				<circle
+					cx="50"
+					cy="50"
+					r="45"
+					fill="none"
+					stroke="#f3f4f6"
+					strokeWidth="5"
+				/>
 
 				{/* Progress circle with animation */}
 				<motion.circle
@@ -80,7 +87,9 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 						initial={{ scale: 0.8 }}
 						animate={{ scale: i < cycles % cyclesBeforeLongBreak ? 1 : 0.8 }}
 						className={`w-2 h-2 rounded-full ${
-							i < (cycles % cyclesBeforeLongBreak) ? 'bg-blue-500' : 'bg-gray-700'
+							i < (cycles % cyclesBeforeLongBreak)
+								? 'bg-blue-500'
+								: 'bg-gray-700'
 						}`}
 					/>
 				))}

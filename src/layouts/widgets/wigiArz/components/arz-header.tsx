@@ -20,7 +20,9 @@ export const ArzHeader = ({ title, onSettingsClick }: ArzHeaderProps) => {
 				</div>
 
 				<div className="flex items-center mt-1 mr-2 text-xs">
-					<span className="font-light opacity-70">نرخ‌ها رو چک کن و به‌روز بمون</span>
+					<span className="font-light opacity-70">
+						نرخ‌ها رو چک کن و به‌روز بمون
+					</span>
 				</div>
 			</div>
 

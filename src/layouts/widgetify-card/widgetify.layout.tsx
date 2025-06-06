@@ -3,7 +3,6 @@ import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { useEffect, useState } from 'react'
 import { FiMessageCircle } from 'react-icons/fi'
 import { WidgetContainer } from '../widgets/widget-container'
-import ClockComponent from './components/clock.component'
 import { GoogleOverviewCard } from './overviewCards/google.overviewCard'
 import { TodoOverviewCard } from './overviewCards/todo-overviewCard'
 import { Pet } from './pets/pet'
@@ -34,7 +33,9 @@ export const WidgetifyLayout = () => {
 				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
 					<div className={'flex items-center w-full border-b border-content'}>
 						<div className="flex items-center gap-2">
-							<p className="w-32 text-xs font-semibold truncate">سلام {userName}! </p>
+							<p className="w-32 text-xs font-semibold truncate">
+								سلام {userName}!{' '}
+							</p>
 						</div>
 					</div>
 
@@ -54,7 +55,9 @@ export const WidgetifyLayout = () => {
 										<div
 											className="text-xs font-light leading-relaxed"
 											// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-											dangerouslySetInnerHTML={{ __html: dailyMessage.content }}
+											dangerouslySetInnerHTML={{
+												__html: dailyMessage.content,
+											}}
 										/>
 									</div>
 								</div>

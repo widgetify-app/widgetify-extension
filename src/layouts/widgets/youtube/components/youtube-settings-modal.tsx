@@ -99,7 +99,9 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 								key={option.value}
 								label={option.label}
 								description={option.description}
-								onClick={() => handleSubscriptionStyleChange(option.value)}
+								onClick={() =>
+									handleSubscriptionStyleChange(option.value)
+								}
 								className="!w-full"
 							/>
 						))}

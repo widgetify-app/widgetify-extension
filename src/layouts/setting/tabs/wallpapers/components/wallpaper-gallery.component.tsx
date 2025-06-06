@@ -31,10 +31,21 @@ export function WallpaperGallery({
 	if (error) {
 		return (
 			<div
-				className={'flex flex-col items-center justify-center p-4 text-center rounded-lg'}
+				className={
+					'flex flex-col items-center justify-center p-4 text-center rounded-lg'
+				}
 			>
-				<div className={'flex items-center justify-center w-10 h-10 mb-3 rounded-full'}>
-					<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<div
+					className={
+						'flex items-center justify-center w-10 h-10 mb-3 rounded-full'
+					}
+				>
+					<svg
+						className="w-5 h-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
 						<path
 							strokeLinecap="round"
 							strokeLinejoin="round"

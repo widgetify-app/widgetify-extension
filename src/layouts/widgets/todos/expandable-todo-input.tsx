@@ -140,17 +140,30 @@ export function ExpandableTodoInput({
 						>
 							<div className="px-3 pb-3 space-y-3">
 								<div>
-									<label className={'block mb-1 text-xs font-medium text-content'}>
+									<label
+										className={
+											'block mb-1 text-xs font-medium text-content'
+										}
+									>
 										اولویت
 									</label>
 									<div className="flex items-center gap-3">
 										{PrIORITY_OPTIONS.map(
-											({ value, ariaLabel, bgColor, hoverBgColor }) => (
+											({
+												value,
+												ariaLabel,
+												bgColor,
+												hoverBgColor,
+											}) => (
 												<Tooltip content={ariaLabel} key={value}>
 													<button
 														key={value}
 														type="button"
-														onClick={() => setPriority(value as TodoPriority)}
+														onClick={() =>
+															setPriority(
+																value as TodoPriority
+															)
+														}
 														className={`
 													flex items-center justify-center w-4 h-4 rounded-full
 													transition-all duration-150 cursor-pointer 
@@ -159,11 +172,14 @@ export function ExpandableTodoInput({
 												`}
 													>
 														{priority === value && (
-															<FiFlag size={8} className="text-white" />
+															<FiFlag
+																size={8}
+																className="text-white"
+															/>
 														)}
 													</button>
 												</Tooltip>
-											),
+											)
 										)}
 									</div>
 								</div>{' '}

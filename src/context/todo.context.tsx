@@ -144,7 +144,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		setTodos((prev) => {
 			if (!prev) return null
 			return prev.map((todo) =>
-				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+				todo.id === id ? { ...todo, completed: !todo.completed } : todo
 			)
 		})
 		callEvent('startSync', SyncTarget.TODOS)

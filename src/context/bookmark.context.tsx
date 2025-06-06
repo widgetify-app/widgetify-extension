@@ -45,24 +45,30 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			if (data) {
 				const current = (await getFromStorage('bookmarks')) || []
 				const all = [...current, ...data]
-				const uniqueBookmarks = all.reduce((acc: Bookmark[], bookmark: Bookmark) => {
-					if (!acc.some((b) => b.id === bookmark.id)) {
-						acc.push(bookmark)
-					} else {
-						// update existing bookmark
-						const index = acc.findIndex(
-							(b) => b.id === bookmark.id || b.onlineId === bookmark.onlineId,
-						)
-						if (index !== -1) {
-							acc[index] = {
-								...bookmark,
-								icon: bookmark.icon,
-								customImage: acc[index].customImage || bookmark.customImage,
+				const uniqueBookmarks = all.reduce(
+					(acc: Bookmark[], bookmark: Bookmark) => {
+						if (!acc.some((b) => b.id === bookmark.id)) {
+							acc.push(bookmark)
+						} else {
+							// update existing bookmark
+							const index = acc.findIndex(
+								(b) =>
+									b.id === bookmark.id ||
+									b.onlineId === bookmark.onlineId
+							)
+							if (index !== -1) {
+								acc[index] = {
+									...bookmark,
+									icon: bookmark.icon,
+									customImage:
+										acc[index].customImage || bookmark.customImage,
+								}
 							}
 						}
-					}
-					return acc
-				}, [])
+						return acc
+					},
+					[]
+				)
 
 				setBookmarks(uniqueBookmarks)
 			}
@@ -86,7 +92,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const getCurrentFolderItems = (parentId: string | null) => {
 		if (!bookmarks) return []
 		const currentFolderBookmarks = bookmarks.filter(
-			(bookmark) => bookmark.parentId === parentId,
+			(bookmark) => bookmark.parentId === parentId
 		)
 
 		const sortedBookmarks = [...currentFolderBookmarks].sort((a, b) => {
@@ -99,7 +105,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const getBookmarkDataSize = (bookmark: Bookmark): number => {
 		try {
 			if (bookmark.customImage) {
-				const base64Data = bookmark.customImage.split(',')[1] || bookmark.customImage
+				const base64Data =
+					bookmark.customImage.split(',')[1] || bookmark.customImage
 
 				const imageSize = Math.ceil((base64Data.length * 3) / 4)
 
@@ -123,7 +130,10 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			return imageData
 		}
 
-		if (imageData.startsWith('data:image/gif') && imageData.length < MAX_BOOKMARK_SIZE) {
+		if (
+			imageData.startsWith('data:image/gif') &&
+			imageData.length < MAX_BOOKMARK_SIZE
+		) {
 			return imageData
 		}
 
@@ -188,10 +198,13 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const prepareBookmarkForStorage = async (bookmark: Bookmark): Promise<Bookmark> => {
 		const processedBookmark = { ...bookmark, isLocal: true }
 
-		if (processedBookmark.customImage && processedBookmark.customImage.length > 50000) {
+		if (
+			processedBookmark.customImage &&
+			processedBookmark.customImage.length > 50000
+		) {
 			try {
 				processedBookmark.customImage = await compressImageData(
-					processedBookmark.customImage,
+					processedBookmark.customImage
 				)
 			} catch (err) {
 				console.error('Image processing error:', err)
@@ -215,7 +228,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			if (bookmarkSize > MAX_BOOKMARK_SIZE) {
 				toast.error(
-					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`,
+					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
 				)
 				return
 			}
@@ -224,7 +237,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const currentFolderItems = getCurrentFolderItems(bookmark.parentId)
 			const maxOrder = currentFolderItems.reduce(
 				(max, item) => Math.max(max, item.order || 0),
-				-1,
+				-1
 			)
 
 			// Assign the next order value
@@ -239,7 +252,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
 				if (testData.length > 5 * 1024 * 1024) {
 					toast.error(
-						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.',
+						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
 					)
 					return
 				}
@@ -262,7 +275,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					has_custom_text_color: !!bookmark.customTextColor,
 					has_custom_sticker: !!bookmark.sticker,
 				},
-				'click',
+				'click'
 			)
 
 			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
@@ -283,21 +296,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			if (bookmarkSize > sizeLimit) {
 				toast.error(
-					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`,
+					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
 				)
 				return
 			}
 
 			const processedBookmark = await prepareBookmarkForStorage(bookmark)
 			const updatedBookmarks =
-				bookmarks?.map((b) => (b.id === processedBookmark.id ? processedBookmark : b)) ||
-				[]
+				bookmarks?.map((b) =>
+					b.id === processedBookmark.id ? processedBookmark : b
+				) || []
 
 			try {
 				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
 				if (testData.length > 5 * 1024 * 1024) {
 					toast.error(
-						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.',
+						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
 					)
 					return
 				}
@@ -320,7 +334,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					has_custom_text_color: !!bookmark.customTextColor,
 					has_custom_sticker: !!bookmark.sticker,
 				},
-				'click',
+				'click'
 			)
 
 			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
@@ -383,7 +397,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				bookmark_type: bookmarkToDelete.type,
 				items_deleted: itemsToDelete.length,
 			},
-			'click',
+			'click'
 		)
 
 		// sync with delay

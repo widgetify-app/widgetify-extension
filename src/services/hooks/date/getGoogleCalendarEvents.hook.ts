@@ -66,11 +66,13 @@ const cache: Map<string, GoogleCalendarEvent[]> = new Map()
 export const useGetGoogleCalendarEvents = (
 	enabled: boolean,
 	startDate?: Date,
-	endDate?: Date,
+	endDate?: Date
 ) => {
 	const today = new Date()
-	const defaultStartDate = startDate || new Date(today.getFullYear(), today.getMonth(), 1)
-	const defaultEndDate = endDate || new Date(today.getFullYear(), today.getMonth() + 1, 0)
+	const defaultStartDate =
+		startDate || new Date(today.getFullYear(), today.getMonth(), 1)
+	const defaultEndDate =
+		endDate || new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
 	const formatDateParam = (date: Date) => {
 		return date.toISOString().split('T')[0]
@@ -99,12 +101,12 @@ export const useGetGoogleCalendarEvents = (
 
 async function getGoogleCalendarEvents(
 	startDate: string,
-	endDate: string,
+	endDate: string
 ): Promise<GoogleCalendarEvent[]> {
 	try {
 		const client = await getMainClient()
 		const { data } = await client.get<GoogleCalendarResponse>(
-			`/google/events?start=${startDate}&end=${endDate}`,
+			`/google/events?start=${startDate}&end=${endDate}`
 		)
 
 		// Track feature usage

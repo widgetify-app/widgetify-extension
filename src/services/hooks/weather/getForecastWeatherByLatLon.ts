@@ -6,7 +6,7 @@ async function fetchForecastWeatherByLatLon(
 	lat: number,
 	lon: number,
 	count: number,
-	units: TemperatureUnit,
+	units: TemperatureUnit
 ): Promise<FetchedForecast[]> {
 	const client = await getMainClient()
 
@@ -25,11 +25,12 @@ export function useGetForecastWeatherByLatLon(
 	lat: number,
 	lon: number,
 
-	options: { refetchInterval: number | null; count: number; units: TemperatureUnit },
+	options: { refetchInterval: number | null; count: number; units: TemperatureUnit }
 ) {
 	return useQuery({
 		queryKey: ['ForecastGetWeatherByLatLon', lat, lon],
-		queryFn: () => fetchForecastWeatherByLatLon(lat, lon, options.count, options.units),
+		queryFn: () =>
+			fetchForecastWeatherByLatLon(lat, lon, options.count, options.units),
 		refetchInterval: options.refetchInterval || false,
 	})
 }
