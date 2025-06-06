@@ -14,12 +14,14 @@ import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
 
 export function FriendsList() {
-	const { data: user } = useGetUserProfile()
+	const { isAuthenticated } = useAuth()
+	const { data: user } = useGetUserProfile({
+		enabled: isAuthenticated,
+	})
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
-	const { isAuthenticated } = useAuth()
 
 	const { data: friendsData, refetch: refetchFriends } = useGetFriends({
 		status: 'ACCEPTED',
