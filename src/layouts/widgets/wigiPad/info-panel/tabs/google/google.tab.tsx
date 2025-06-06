@@ -11,7 +11,7 @@ export function GoogleTab() {
 	const { data: googleEvents, isLoading } = useGetGoogleCalendarEvents(
 		isAuthenticated,
 		today.clone().toDate(),
-		today.clone().add(1, 'day').toDate()
+		today.clone().add(30, 'day').toDate()
 	)
 	const LoadingSkeleton = () => (
 		<div className="space-y-2">

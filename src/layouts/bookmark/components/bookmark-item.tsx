@@ -88,7 +88,7 @@ export function BookmarkItem({
 								onMenuClick(e)
 							}}
 							className={
-								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-neutral z-10'
+								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-primary/50 z-10'
 							}
 						>
 							<SlOptions />

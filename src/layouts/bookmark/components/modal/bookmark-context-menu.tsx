@@ -16,10 +16,10 @@ export function BookmarkContextMenu({
 }: BookmarkContextMenuProps) {
 	const getMenuItemStyle = (isDelete = false) => {
 		if (isDelete) {
-			return 'text-error hover:text-error/70 hover:bg-error/10'
+			return 'text-error hover:text-error/70 hover:!bg-error/10'
 		}
 
-		return 'bg-content text-primary/50'
+		return 'bg-content text-primary hover:!bg-primary/10 hover:text-primary/70'
 	}
 
 	return (
