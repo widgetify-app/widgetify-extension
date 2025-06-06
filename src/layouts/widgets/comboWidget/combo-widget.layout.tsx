@@ -15,7 +15,7 @@ export function ComboWidget() {
 
 	return (
 		<WidgetContainer className={'flex flex-col gap-1 py-2'}>
-			<div className="flex items-center justify-between px-2 pb-2 border-b border-gray-200/20">
+			<div className="flex items-center justify-between px-2 pb-2 border-b border-content">
 				<div className="flex gap-6 w-44">
 					<button
 						onClick={() => setActiveTab('currency')}
