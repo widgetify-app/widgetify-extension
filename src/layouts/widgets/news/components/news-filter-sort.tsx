@@ -24,9 +24,9 @@ export const NewsFilterSort = ({
 	const [showFilters, setShowFilters] = useState(false)
 
 	const sortOptions = [
-		{ value: 'random' as SortOption, label: 'بر اساس تصادفی' },
-		{ value: 'source' as SortOption, label: 'بر اساس منبع' },
-		{ value: 'title' as SortOption, label: 'بر اساس عنوان' },
+		{ value: 'random' as SortOption, label: 'تصادفی' },
+		{ value: 'source' as SortOption, label: 'منبع' },
+		{ value: 'title' as SortOption, label: 'عنوان' },
 	]
 
 	const handleSortChange = (sortBy: SortOption) => {

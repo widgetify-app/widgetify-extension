@@ -19,11 +19,7 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
-import {
-	getRandomWallpaper,
-	useGetWallpaperCategories,
-} from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 
