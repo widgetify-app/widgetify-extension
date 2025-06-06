@@ -20,6 +20,10 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
+import {
+	getRandomWallpaper,
+	useGetWallpaperCategories,
+} from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 
@@ -142,19 +146,32 @@ export function HomePage() {
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			} else {
-				const defaultGradient: StoredWallpaper = {
-					id: 'gradient-a1c4fd-c2e9fb',
-					type: 'GRADIENT',
-					src: '',
-					isRetouchEnabled: false,
-					gradient: {
-						from: '#a1c4fd',
-						to: '#c2e9fb',
-						direction: 'to-r',
-					},
+				const randomWallpaper = await getRandomWallpaper()
+				if (randomWallpaper) {
+					const defWallpaper: StoredWallpaper = {
+						id: randomWallpaper.id,
+						type: randomWallpaper.type,
+						src: randomWallpaper.src,
+						isRetouchEnabled: false,
+						gradient: randomWallpaper.gradient,
+					}
+					changeWallpaper(defWallpaper)
+					setToStorage('wallpaper', defWallpaper)
+				} else {
+					const defaultGradient: StoredWallpaper = {
+						id: 'gradient-a1c4fd-c2e9fb',
+						type: 'GRADIENT',
+						src: '',
+						isRetouchEnabled: false,
+						gradient: {
+							from: '#a1c4fd',
+							to: '#c2e9fb',
+							direction: 'to-r',
+						},
+					}
+					changeWallpaper(defaultGradient)
+					setToStorage('wallpaper', defaultGradient)
 				}
-				changeWallpaper(defaultGradient)
-				setToStorage('wallpaper', defaultGradient)
 			}
 		}
 
