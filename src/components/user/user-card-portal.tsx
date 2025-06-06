@@ -75,6 +75,6 @@ export function UserCardPortal({
 		>
 			<UserCard user={user} />
 		</div>,
-		document.body,
+		document.body
 	)
 }

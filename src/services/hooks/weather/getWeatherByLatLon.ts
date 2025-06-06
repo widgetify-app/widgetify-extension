@@ -7,7 +7,7 @@ async function fetchWeatherByLatLon(
 	lat: number,
 	lon: number,
 	units: units,
-	useAI: boolean,
+	useAI: boolean
 ): Promise<FetchedWeather> {
 	if (lat === 0 && lon === 0) {
 		throw new Error('Invalid coordinates')
@@ -33,7 +33,7 @@ export function useGetWeatherByLatLon(
 		units: units
 		useAI: boolean
 		refetchInterval: number | null
-	},
+	}
 ) {
 	return useQuery({
 		queryKey: ['getWeatherByLatLon', lat, lon],

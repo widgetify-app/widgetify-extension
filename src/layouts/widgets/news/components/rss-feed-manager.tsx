@@ -79,7 +79,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 	const addSuggestedFeed = (suggestedFeed: { name: string; url: string }) => {
 		const feedExists = rssState.customFeeds.some(
-			(feed) => feed.url.toLowerCase() === suggestedFeed.url.toLowerCase(),
+			(feed) => feed.url.toLowerCase() === suggestedFeed.url.toLowerCase()
 		)
 
 		if (feedExists) {
@@ -118,7 +118,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 	const isFeedAlreadyAdded = (url: string): boolean => {
 		return rssState.customFeeds.some(
-			(feed) => feed.url.toLowerCase() === url.toLowerCase(),
+			(feed) => feed.url.toLowerCase() === url.toLowerCase()
 		)
 	}
 
@@ -172,14 +172,20 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
 					/>
 
-					<section className={'p-4 rounded-xl border bg-content border-content'}>
-						<h3 className={'mb-3 text-sm font-medium'}>افزودن فید RSS جدید</h3>
+					<section
+						className={'p-4 rounded-xl border bg-content border-content'}
+					>
+						<h3 className={'mb-3 text-sm font-medium'}>
+							افزودن فید RSS جدید
+						</h3>
 						<div className="flex flex-col gap-3">
 							<TextInput
 								type="text"
 								placeholder="نام فید (مثال: دیجیاتو)"
 								value={newFeed.name}
-								onChange={(value) => setNewFeed({ ...newFeed, name: value })}
+								onChange={(value) =>
+									setNewFeed({ ...newFeed, name: value })
+								}
 							/>
 							<TextInput
 								type="url"
@@ -191,7 +197,11 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 								}}
 							/>
 
-							<Button size="md" className="text-white btn-primary" onClick={addNewFeed}>
+							<Button
+								size="md"
+								className="text-white btn-primary"
+								onClick={addNewFeed}
+							>
 								<VscAdd size={16} />
 								<span>افزودن فید جدید</span>
 							</Button>
@@ -201,32 +211,38 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 					{/* Suggested Feeds Section */}
 					<section className="mt-2">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium text-content'}>فیدهای پیشنهادی</h3>
+							<h3 className={'text-sm font-medium text-content'}>
+								فیدهای پیشنهادی
+							</h3>
 						</div>
 						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-							{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
-								(feed) => (
-									<m.div
-										key={feed.url}
-										className={
-											'flex items-center justify-center p-2 border rounded-lg cursor-pointer bg-content border-content'
-										}
-										whileHover={{ scale: 1.02 }}
-										whileTap={{ scale: 0.98 }}
-										onClick={() => addSuggestedFeed(feed)}
+							{SUGGESTED_FEEDS.filter(
+								(feed) => !isFeedAlreadyAdded(feed.url)
+							).map((feed) => (
+								<m.div
+									key={feed.url}
+									className={
+										'flex items-center justify-center p-2 border rounded-lg cursor-pointer bg-content border-content'
+									}
+									whileHover={{ scale: 1.02 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => addSuggestedFeed(feed)}
+								>
+									<span
+										className={'font-medium text-light text-center'}
 									>
-										<span className={'font-medium text-light text-center'}>
-											{feed.name}
-										</span>
-									</m.div>
-								),
-							)}
+										{feed.name}
+									</span>
+								</m.div>
+							))}
 						</div>
 					</section>
 
 					<section className="mt-4">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium text-content'}>فیدهای شما</h3>
+							<h3 className={'text-sm font-medium text-content'}>
+								فیدهای شما
+							</h3>
 							{rssState.customFeeds.length > 0 && (
 								<div className={'text-xs text-muted'}>
 									{rssState.customFeeds.length} فید
@@ -272,7 +288,9 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 					<p className={'mb-1 text-sm font-medium opacity-70 text-content'}>
 						هیچ فید RSS اضافه نشده است
 					</p>
-					<p className={'text-xs opacity-50'}>از فرم بالا برای افزودن فید استفاده کنید</p>
+					<p className={'text-xs opacity-50'}>
+						از فرم بالا برای افزودن فید استفاده کنید
+					</p>
 				</m.div>
 			) : (
 				<div className="space-y-2">
@@ -318,10 +336,18 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			whileHover={{ scale: disabled ? 1 : 1.01 }}
 		>
 			<div className="flex items-center flex-1 gap-3">
-				<ToggleSwitch enabled={feed.enabled} disabled={disabled} onToggle={onToggle} />
+				<ToggleSwitch
+					enabled={feed.enabled}
+					disabled={disabled}
+					onToggle={onToggle}
+				/>
 				<div className="overflow-hidden">
-					<span className={`block truncate ${getTextStyle()}`}>{feed.name}</span>
-					<span className={'block text-xs truncate text-muted'}>{feed.url}</span>
+					<span className={`block truncate ${getTextStyle()}`}>
+						{feed.name}
+					</span>
+					<span className={'block text-xs truncate text-muted'}>
+						{feed.url}
+					</span>
 				</div>
 			</div>
 			<Button

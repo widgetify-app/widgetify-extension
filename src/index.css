@@ -6,7 +6,6 @@ html {
 	font-size: 16px !important;
 }
 
-
 html {
 	font-size: 16px;
 }
@@ -62,19 +61,19 @@ body {
 	@apply border-base-300;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
 /* Hide the spinner in Firefox */
-input[type=number] {
+input[type="number"] {
 	-moz-appearance: textfield;
 }
 
 /* Custom styling for color inputs */
-input[type=color] {
+input[type="color"] {
 	-webkit-appearance: none;
 	border: none;
 	padding: 0;
@@ -85,18 +84,18 @@ input[type=color] {
 	background: transparent;
 }
 
-input[type=color]::-webkit-color-swatch-wrapper {
+input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 	border-radius: 4px;
 	overflow: hidden;
 }
 
-input[type=color]::-webkit-color-swatch {
+input[type="color"]::-webkit-color-swatch {
 	border: none;
 	border-radius: 4px;
 }
 
-input[type=color]::-moz-color-swatch {
+input[type="color"]::-moz-color-swatch {
 	border: none;
 	border-radius: 4px;
 }
@@ -134,7 +133,6 @@ input[type=color]::-moz-color-swatch {
 ::-webkit-scrollbar-thumb:hover {
 	background: rgba(156, 163, 175, 0.8);
 }
-
 
 /* Firefox scrollbar styles */
 * {

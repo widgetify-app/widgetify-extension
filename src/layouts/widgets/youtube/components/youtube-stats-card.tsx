@@ -64,7 +64,9 @@ export function YouTubeStatsCard({
 					}}
 				/>
 				<div className="flex-1 min-w-0">
-					<h4 className={'font-medium text-sm truncate text-content'}>{data.name}</h4>
+					<h4 className={'font-medium text-sm truncate text-content'}>
+						{data.name}
+					</h4>
 					<p className={'text-xs opacity-70 text-content'}>{username}</p>
 				</div>
 			</div>

@@ -188,7 +188,7 @@ const Tooltip = ({
 							</m.div>
 						</AnimatePresence>
 					</LazyMotion>,
-					document.body,
+					document.body
 				)}
 		</>
 	)

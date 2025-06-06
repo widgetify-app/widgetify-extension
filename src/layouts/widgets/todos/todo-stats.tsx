@@ -55,8 +55,12 @@ export function TodoStats() {
 				<div className={'p-1 rounded-lg border border-content'}>
 					<span className={'text-xs text-content'}>تکمیل شده</span>
 					<div className="flex items-end justify-between">
-						<span className={'text-lg text-content'}>{stats.completedTodos}</span>
-						<span className={'text-xs text-content'}>از {stats.totalTodos}</span>
+						<span className={'text-lg text-content'}>
+							{stats.completedTodos}
+						</span>
+						<span className={'text-xs text-content'}>
+							از {stats.totalTodos}
+						</span>
 					</div>
 					<div className={'h-1 mt-1 bg-base-300 rounded-full'}>
 						<div

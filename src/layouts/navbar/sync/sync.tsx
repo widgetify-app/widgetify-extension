@@ -201,7 +201,10 @@ export function SyncButton() {
 									/>
 								) : (
 									<div>
-										<AiOutlineCloudSync size={22} className="text-muted" />
+										<AiOutlineCloudSync
+											size={22}
+											className="text-muted"
+										/>
 									</div>
 								)}
 							</div>

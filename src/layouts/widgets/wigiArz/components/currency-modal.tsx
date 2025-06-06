@@ -58,7 +58,9 @@ export const CurrencyModalComponent = ({
 				</div>
 
 				<div className="text-center">
-					<p className={'text-xl font-bold text-base-content'}>{currency?.name.en}</p>
+					<p className={'text-xl font-bold text-base-content'}>
+						{currency?.name.en}
+					</p>
 					<p className={'text-sm font-medium text-base-content opacity-60'}>
 						{code.toUpperCase()}
 					</p>
@@ -93,7 +95,9 @@ export const CurrencyModalComponent = ({
 					{currency?.priceHistory?.length ? (
 						<div
 							className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${
-								showChart ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+								showChart
+									? 'max-h-64 opacity-100 mt-4'
+									: 'max-h-0 opacity-0 mt-0'
 							}`}
 						>
 							<div className="w-full h-64">

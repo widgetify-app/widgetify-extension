@@ -32,7 +32,11 @@ export const TrendingItems = ({
 				<div className="grid grid-cols-1 gap-1 md:grid-cols-2">
 					{isLoading
 						? [...Array(6)].map((_, index) => (
-								<TrendItemComponent key={`skeleton-${index}`} index={index} isLoading />
+								<TrendItemComponent
+									key={`skeleton-${index}`}
+									index={index}
+									isLoading
+								/>
 							))
 						: trends
 								.slice(0, 6)

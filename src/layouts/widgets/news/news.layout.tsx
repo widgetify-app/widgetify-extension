@@ -63,7 +63,9 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		setToStorage('news_filter_sort_state', filterSortState)
 	}, [filterSortState])
 
-	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(rssState.useDefaultNews)
+	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(
+		rssState.useDefaultNews
+	)
 
 	useEffect(() => {
 		if (showSettingsModal) {
@@ -77,7 +79,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 
 	const fetchAllRssFeeds = async (
 		feeds: typeof rssState.customFeeds,
-		lastFetched: Record<string, RssItem[]> = {},
+		lastFetched: Record<string, RssItem[]> = {}
 	) => {
 		try {
 			const newLastFetched = { ...lastFetched }
@@ -163,7 +165,9 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		if (filterSortState.filterBySource !== 'all') {
 			items = items.filter((item) => {
 				const sourceName =
-					typeof item.source === 'string' ? item.source : item.source?.name || ''
+					typeof item.source === 'string'
+						? item.source
+						: item.source?.name || ''
 				return sourceName === filterSortState.filterBySource
 			})
 		}
@@ -171,8 +175,10 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		items.sort((a, b) => {
 			switch (filterSortState.sortBy) {
 				case 'source': {
-					const sourceA = typeof a.source === 'string' ? a.source : a.source?.name || ''
-					const sourceB = typeof b.source === 'string' ? b.source : b.source?.name || ''
+					const sourceA =
+						typeof a.source === 'string' ? a.source : a.source?.name || ''
+					const sourceB =
+						typeof b.source === 'string' ? b.source : b.source?.name || ''
 					return sourceA.localeCompare(sourceB, 'fa')
 				}
 				case 'title':
@@ -213,15 +219,17 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 					}
 				} else {
 					// Handle RSS feeds
-					const enabledFeeds = savedState.customFeeds.filter((feed) => feed.enabled)
+					const enabledFeeds = savedState.customFeeds.filter(
+						(feed) => feed.enabled
+					)
 					if (enabledFeeds.length > 0) {
-						const hasCachedItems = Object.values(savedState.lastFetchedItems).some(
-							(items) => items && items.length > 0,
-						)
+						const hasCachedItems = Object.values(
+							savedState.lastFetchedItems
+						).some((items) => items && items.length > 0)
 
 						if (hasCachedItems) {
 							const cachedItems = Object.values(
-								savedState.lastFetchedItems,
+								savedState.lastFetchedItems
 							).flat() as RssItem[]
 							setRssItems(cachedItems)
 						} else {
@@ -264,11 +272,13 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		const enabledFeeds = data.customFeeds.filter((feed) => feed.enabled)
 		if (enabledFeeds.length > 0) {
 			const hasCachedItems = Object.values(data.lastFetchedItems).some(
-				(items) => items && items.length > 0,
+				(items) => items && items.length > 0
 			)
 
 			if (hasCachedItems) {
-				const cachedItems = Object.values(data.lastFetchedItems).flat() as RssItem[]
+				const cachedItems = Object.values(
+					data.lastFetchedItems
+				).flat() as RssItem[]
 				setRssItems(cachedItems)
 			} else {
 				setIsLoadingRss(true)

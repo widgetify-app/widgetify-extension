@@ -25,7 +25,7 @@ export const ToolsLayout: React.FC<any> = () => {
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
 		user?.connections?.includes('google') || false,
 		startOfMonth,
-		endOfMonth,
+		endOfMonth
 	)
 
 	const onTabClick = (tab: TabType) => {
@@ -35,7 +35,10 @@ export const ToolsLayout: React.FC<any> = () => {
 	return (
 		<WidgetContainer>
 			<div className="mb-2">
-				<TabNavigation activeTab={activeTab} onTabClick={onTabClick || (() => {})} />
+				<TabNavigation
+					activeTab={activeTab}
+					onTabClick={onTabClick || (() => {})}
+				/>
 			</div>
 
 			{activeTab === 'events' && (

@@ -19,7 +19,9 @@ export function WeatherOptions() {
 						forecastCount={weatherSettings.forecastCount}
 						temperatureUnit={weatherSettings.temperatureUnit}
 						useAI={weatherSettings.useAI}
-						updateSettings={(key, value) => updateWeatherSettings(key as any, value)}
+						updateSettings={(key, value) =>
+							updateWeatherSettings(key as any, value)
+						}
 					/>
 				</SectionPanel>
 			</div>

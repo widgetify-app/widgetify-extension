@@ -23,7 +23,7 @@ export interface PriceHistory {
 
 export const useGetCurrencyByCode = (
 	currency: string,
-	options: { refetchInterval: number | null },
+	options: { refetchInterval: number | null }
 ) => {
 	return useQuery<FetchedCurrency>({
 		queryKey: [`currency-${currency}`],

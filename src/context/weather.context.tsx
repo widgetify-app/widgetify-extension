@@ -15,7 +15,7 @@ export interface WeatherContext {
 	weatherSettings: WeatherSettings
 	updateWeatherSettings: <K extends keyof WeatherSettings>(
 		key: K,
-		value: WeatherSettings[K],
+		value: WeatherSettings[K]
 	) => void
 }
 const defSetting: WeatherSettings = {
@@ -55,7 +55,9 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 				getFromStorage('weatherSettings'),
 			])
 
-			setSelectedCity(storedCity || { name: 'Tehran', lat: 35.6892523, lon: 51.3896004 })
+			setSelectedCity(
+				storedCity || { name: 'Tehran', lat: 35.6892523, lon: 51.3896004 }
+			)
 			if (storedSettings) setWeatherSettings(storedSettings)
 			setIsLoading(false)
 		}
@@ -74,9 +76,12 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const updateWeatherSettings = <K extends keyof WeatherSettings>(
 		key: K,
-		value: WeatherSettings[K],
+		value: WeatherSettings[K]
 	) => {
-		if (key === 'forecastCount' && ((value as number) < 1 || (value as number) > 10)) {
+		if (
+			key === 'forecastCount' &&
+			((value as number) < 1 || (value as number) > 10)
+		) {
 			value = 4 as WeatherSettings[K]
 		}
 		setWeatherSettings((prev) => ({ ...prev, [key]: value }))
@@ -84,7 +89,12 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	return (
 		<weatherContext.Provider
-			value={{ selectedCity, setSelectedCity, weatherSettings, updateWeatherSettings }}
+			value={{
+				selectedCity,
+				setSelectedCity,
+				weatherSettings,
+				updateWeatherSettings,
+			}}
 		>
 			{children}
 		</weatherContext.Provider>

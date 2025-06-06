@@ -16,7 +16,9 @@ export function ActivityInput({ activity }: Prop) {
 
 	const handleActivityUpdate = () => {
 		if (activityText.length > ACTIVITY_MAX_LENGTH) {
-			toast.error(`وضعیت فعالیت نمی‌تواند بیشتر از ${ACTIVITY_MAX_LENGTH} کاراکتر باشد.`)
+			toast.error(
+				`وضعیت فعالیت نمی‌تواند بیشتر از ${ACTIVITY_MAX_LENGTH} کاراکتر باشد.`
+			)
 			return
 		}
 
@@ -34,7 +36,7 @@ export function ActivityInput({ activity }: Prop) {
 						toast.error('خطا در بروزرسانی وضعیت. لطفاً دوباره تلاش کنید.')
 					}
 				},
-			},
+			}
 		)
 	}
 
@@ -42,8 +44,8 @@ export function ActivityInput({ activity }: Prop) {
 		<SectionPanel title="وضعیت فعالیت" size="xs">
 			<div className="flex flex-col p-4 space-y-3 transition-colors rounded-lg">
 				<p className={'text-xs text-content font-light opacity-80'}>
-					وضعیت فعالیت شما به دوستانتان نمایش داده می‌شود. (حداکثر {ACTIVITY_MAX_LENGTH}{' '}
-					کاراکتر)
+					وضعیت فعالیت شما به دوستانتان نمایش داده می‌شود. (حداکثر{' '}
+					{ACTIVITY_MAX_LENGTH} کاراکتر)
 				</p>
 				<div className="flex flex-col gap-2">
 					<TextInput

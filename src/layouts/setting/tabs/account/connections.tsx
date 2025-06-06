@@ -70,7 +70,7 @@ export function Connections() {
 				prevPlatforms.map((platform) => ({
 					...platform,
 					connected: profile.connections.includes(platform.id),
-				})),
+				}))
 			)
 		}
 	}, [profile?.connections])
@@ -85,7 +85,7 @@ export function Connections() {
 
 		// Set loading state
 		setPlatforms(
-			platforms.map((p) => (p.id === platformId ? { ...p, isLoading: true } : p)),
+			platforms.map((p) => (p.id === platformId ? { ...p, isLoading: true } : p))
 		)
 
 		try {
@@ -95,8 +95,10 @@ export function Connections() {
 
 				setPlatforms(
 					platforms.map((p) =>
-						p.id === platformId ? { ...p, connected: false, isLoading: false } : p,
-					),
+						p.id === platformId
+							? { ...p, connected: false, isLoading: false }
+							: p
+					)
 				)
 
 				toast.success(`اتصال به ${platform.name} قطع شد.`)
@@ -108,7 +110,9 @@ export function Connections() {
 			}
 		} catch (error) {
 			setPlatforms(
-				platforms.map((p) => (p.id === platformId ? { ...p, isLoading: false } : p)),
+				platforms.map((p) =>
+					p.id === platformId ? { ...p, isLoading: false } : p
+				)
 			)
 
 			toast.error(`خطا در ارتباط با ${platform.name}. لطفا دوباره تلاش کنید.`)
@@ -166,16 +170,23 @@ export function Connections() {
 											{platform.icon}
 										</div>
 										<div>
-											<p className={'font-medium text-content'}>{platform.name}</p>
+											<p className={'font-medium text-content'}>
+												{platform.name}
+											</p>
 											<p className="text-xs font-light text-content">
-												{platform.connected ? 'متصل شده' : 'متصل نشده'}
+												{platform.connected
+													? 'متصل شده'
+													: 'متصل نشده'}
 											</p>
 										</div>
 									</div>
 									<Button
-										onClick={() => handleConnectionToggle(platform.id)}
+										onClick={() =>
+											handleConnectionToggle(platform.id)
+										}
 										disabled={
-											platform.isLoading || (!platform.isActive && !platform.connected)
+											platform.isLoading ||
+											(!platform.isActive && !platform.connected)
 										}
 										size="xs"
 										className={`${platform.connected ? 'btn-error' : 'btn-primary'} text-white/90`}

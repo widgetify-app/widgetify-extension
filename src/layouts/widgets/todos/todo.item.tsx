@@ -56,7 +56,10 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 		>
 			<div className={'flex items-center gap-1.5 pr-1.5 p-1.5'}>
 				<div className="flex-shrink-0">
-					<CustomCheckbox checked={todo.completed} onChange={() => toggleTodo(todo.id)} />
+					<CustomCheckbox
+						checked={todo.completed}
+						onChange={() => toggleTodo(todo.id)}
+					/>
 				</div>
 
 				<span
@@ -74,7 +77,11 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 							'p-0.5 rounded-full cursor-pointer hover:bg-gray-500/10 text-gray-400'
 						}
 					>
-						{expanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
+						{expanded ? (
+							<FiChevronUp size={12} />
+						) : (
+							<FiChevronDown size={12} />
+						)}
 					</button>
 
 					<button

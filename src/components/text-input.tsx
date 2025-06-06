@@ -76,10 +76,10 @@ export function TextInput({
 				() => {
 					onChange(newValue)
 				},
-				type === 'color' ? 50 : debounceTime,
+				type === 'color' ? 50 : debounceTime
 			)
 		},
-		[onChange, debounce, type, debounceTime],
+		[onChange, debounce, type, debounceTime]
 	)
 	return (
 		<input

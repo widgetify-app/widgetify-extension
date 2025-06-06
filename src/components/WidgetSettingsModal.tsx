@@ -73,8 +73,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 				{!isAuthenticated && activeTab === 'selection' && (
 					<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
 						<p className="text-sm text-warning-content">
-							⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS} ویجت فعال کنند.
-							برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.
+							⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS}{' '}
+							ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری
+							خود شوید.
 						</p>
 					</div>
 				)}{' '}
@@ -83,7 +84,9 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 						{widgetItems.map((widget) => {
 							const isActive = visibility.includes(widget.id)
 							const canToggle =
-								isAuthenticated || isActive || visibility.length < MAX_VISIBLE_WIDGETS
+								isAuthenticated ||
+								isActive ||
+								visibility.length < MAX_VISIBLE_WIDGETS
 
 							return (
 								<ItemSelector
@@ -113,7 +116,11 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 											className="space-y-2"
 										>
 											{sortedVisibleWidgets.map((widget, index) => (
-												<Draggable key={widget.id} draggableId={widget.id} index={index}>
+												<Draggable
+													key={widget.id}
+													draggableId={widget.id}
+													index={index}
+												>
 													{(provided, snapshot) => (
 														<div
 															ref={provided.innerRef}
@@ -125,8 +132,12 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 															}`}
 														>
 															<div className="flex items-center gap-2">
-																<span className="text-lg">{widget.emoji}</span>
-																<span>{widget.label}</span>
+																<span className="text-lg">
+																	{widget.emoji}
+																</span>
+																<span>
+																	{widget.label}
+																</span>
 															</div>
 															<div
 																{...provided.dragHandleProps}

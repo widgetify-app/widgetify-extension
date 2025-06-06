@@ -21,12 +21,13 @@ export const FriendRequestsTab = () => {
 	const [translatedError, setTranslatedError] = useState<string | null>(null)
 	const { mutate: sendFriendRequest, isPending: isSending } = useSendFriendRequest()
 
-	const { mutate: handleFriendAction, isPending: isProcessing } = useHandleFriendRequest()
+	const { mutate: handleFriendAction, isPending: isProcessing } =
+		useHandleFriendRequest()
 
 	const handleSendRequest = () => {
 		if (!user?.username) {
 			toast.error(
-				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در پروفایل تنظیم کنید.',
+				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در پروفایل تنظیم کنید.'
 			)
 			return
 		}
@@ -50,7 +51,7 @@ export const FriendRequestsTab = () => {
 						setTranslatedError(message.username)
 					}
 				},
-			},
+			}
 		)
 	}
 
@@ -105,7 +106,9 @@ export const FriendRequestsTab = () => {
 		<div className="space-y-6">
 			<SectionPanel title="درخواست دوستی جدید" size="sm">
 				<div className="space-y-2">
-					<label className={'block text-sm font-medium text-content'}>نام کاربری</label>
+					<label className={'block text-sm font-medium text-content'}>
+						نام کاربری
+					</label>
 					<div className="flex gap-2">
 						<TextInput
 							type="text"
@@ -126,7 +129,9 @@ export const FriendRequestsTab = () => {
 							{isSending ? 'در حال ارسال...' : 'ارسال درخواست'}
 						</Button>
 					</div>
-					{translatedError && <p className="text-sm text-red-500">{translatedError}</p>}
+					{translatedError && (
+						<p className="text-sm text-red-500">{translatedError}</p>
+					)}
 					{!user?.username && (
 						<div
 							className={
@@ -134,8 +139,8 @@ export const FriendRequestsTab = () => {
 							}
 						>
 							<p className={'text-sm text-content'}>
-								برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش پروفایل
-								تنظیم کنید.
+								برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در
+								بخش پروفایل تنظیم کنید.
 							</p>
 						</div>
 					)}

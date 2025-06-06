@@ -42,7 +42,8 @@ export function DayItem({
 	const googleEventsForDay = filterGoogleEventsByDate(googleEvents, cellDate)
 	const hasGoogleEvents = googleEventsForDay.length > 0
 
-	const hasEvent = todayShamsiEvents.length || todayHijriEvents.length || hasGoogleEvents
+	const hasEvent =
+		todayShamsiEvents.length || todayHijriEvents.length || hasGoogleEvents
 	const eventIcons = [
 		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
 		...todayHijriEvents.filter((event) => event.icon).map((event) => event.icon),
@@ -151,10 +152,14 @@ export function DayItem({
 					) : (
 						<>
 							{hasEvent ? (
-								<span className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`} />
+								<span
+									className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`}
+								/>
 							) : null}
 							{hasTodo ? (
-								<span className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`} />
+								<span
+									className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`}
+								/>
 							) : null}
 						</>
 					)}
@@ -175,7 +180,7 @@ const isToday = (date: jalaliMoment.Moment, timezone: string) => {
 
 const filterGoogleEventsByDate = (
 	googleEvents: GoogleCalendarEvent[],
-	date: jalaliMoment.Moment,
+	date: jalaliMoment.Moment
 ) => {
 	return googleEvents.filter((event) => {
 		if (event.eventType !== 'birthday') {

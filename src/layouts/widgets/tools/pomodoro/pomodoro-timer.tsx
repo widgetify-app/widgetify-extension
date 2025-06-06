@@ -90,7 +90,10 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	const handleStart = () => {
-		if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+		if (
+			Notification.permission !== 'granted' &&
+			Notification.permission !== 'denied'
+		) {
 			Notification.requestPermission()
 		}
 		setIsRunning(true)
@@ -102,7 +105,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				mode,
 				remaining_time: timeLeft,
 			},
-			'click',
+			'click'
 		)
 	}
 
@@ -116,7 +119,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				mode,
 				remaining_time: timeLeft,
 			},
-			'click',
+			'click'
 		)
 	}
 
@@ -131,7 +134,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				mode,
 				cycles_completed: cycles,
 			},
-			'click',
+			'click'
 		)
 	}
 
@@ -158,7 +161,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				previous_mode: mode,
 				new_mode: newMode,
 			},
-			'click',
+			'click'
 		)
 	}
 
@@ -227,12 +230,24 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				{/* Control buttons */}
 				<div className="flex justify-center space-x-4 mt-0.5">
 					{isRunning ? (
-						<ControlButton mode={'pause'} icon={<FiPause />} onClick={handlePause} />
+						<ControlButton
+							mode={'pause'}
+							icon={<FiPause />}
+							onClick={handlePause}
+						/>
 					) : (
-						<ControlButton mode={'play'} icon={<FiPlay />} onClick={handleStart} />
+						<ControlButton
+							mode={'play'}
+							icon={<FiPlay />}
+							onClick={handleStart}
+						/>
 					)}
 
-					<ControlButton mode={'reset'} icon={<FiRefreshCw />} onClick={handleReset} />
+					<ControlButton
+						mode={'reset'}
+						icon={<FiRefreshCw />}
+						onClick={handleReset}
+					/>
 
 					{mode.includes('break') && (
 						<ControlButton

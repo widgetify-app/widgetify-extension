@@ -35,7 +35,9 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 
 					<div className="absolute inset-0 flex flex-col items-center justify-center">
 						<FaBowlFood size={10} className={'text-content'} />
-						<span className={'text-[0.6rem] font-medium text-content'}>{level}%</span>
+						<span className={'text-[0.6rem] font-medium text-content'}>
+							{level}%
+						</span>
 					</div>
 				</div>
 			</div>
@@ -50,7 +52,9 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 		>
 			{isHungry ? (
 				<div className="flex items-center">
-					<span className="text-sm font-bold text-red-500 animate-pulse">🍽️</span>
+					<span className="text-sm font-bold text-red-500 animate-pulse">
+						🍽️
+					</span>
 				</div>
 			) : (
 				<div className="flex items-center">
@@ -62,7 +66,11 @@ export const PetHud: React.FC<Prop> = ({ level, petName, mode }) => {
 					<span className={'text-[9px] font-medium truncate text-content'}>
 						{isHungry ? 'گرسنه' : petName}
 					</span>
-					<span className={'text-[8px] font-bold  tracking-wide ml-1 text-content'}>
+					<span
+						className={
+							'text-[8px] font-bold  tracking-wide ml-1 text-content'
+						}
+					>
 						{level}%
 					</span>
 				</div>

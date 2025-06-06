@@ -74,12 +74,12 @@ interface UpdateActivityResponse {
 }
 
 async function updateActivity(
-	body: UpdateActivityParams,
+	body: UpdateActivityParams
 ): Promise<UpdateActivityResponse> {
 	const client = await getMainClient()
 	const response = await client.put<UpdateActivityResponse>(
 		'/extension/@me/activity',
-		body,
+		body
 	)
 	return response.data
 }

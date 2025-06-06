@@ -47,7 +47,9 @@ export const UserProfile = () => {
 
 	useEffect(() => {
 		const loadSyncSettings = async () => {
-			const syncEnabled = (await getFromStorage('enable_sync')) as boolean | undefined
+			const syncEnabled = (await getFromStorage('enable_sync')) as
+				| boolean
+				| undefined
 			setEnableSync(syncEnabled !== undefined ? syncEnabled : true)
 		}
 
@@ -80,7 +82,11 @@ export const UserProfile = () => {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
 				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
-				<Button onClick={() => logout()} className="text-white/90 btn-error" size="md">
+				<Button
+					onClick={() => logout()}
+					className="text-white/90 btn-error"
+					size="md"
+				>
 					<FiLogOut size={16} />
 					خروج از حساب کاربری
 				</Button>
@@ -151,16 +157,24 @@ export const UserProfile = () => {
 			<SectionPanel title="همگام‌سازی" delay={0.2}>
 				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
 					<div className="pr-2">
-						<p className={'text-sm font-medium text-content flex items-center gap-1.5'}>
+						<p
+							className={
+								'text-sm font-medium text-content flex items-center gap-1.5'
+							}
+						>
 							<AiOutlineFileSync
 								size={16}
 								className={enableSync ? 'text-blue-500' : 'text-content'}
 							/>
 							فعال‌سازی همگام‌سازی (Sync)
 						</p>
-						<p className={'text-xs text-content font-light opacity-80 mt-2 max-w-md'}>
-							با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در نسخه‌های مختلف
-							همگام‌سازی می‌شوند.
+						<p
+							className={
+								'text-xs text-content font-light opacity-80 mt-2 max-w-md'
+							}
+						>
+							با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در
+							نسخه‌های مختلف همگام‌سازی می‌شوند.
 						</p>
 					</div>
 					<ToggleSwitch
@@ -178,7 +192,11 @@ export const UserProfile = () => {
 					<p className={'text-sm font-light text-content'}>
 						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 					</p>
-					<Button onClick={() => logout()} className="text-white/90 btn-error" size="md">
+					<Button
+						onClick={() => logout()}
+						className="text-white/90 btn-error"
+						size="md"
+					>
 						<FiLogOut size={16} />
 						خروج از حساب کاربری
 					</Button>

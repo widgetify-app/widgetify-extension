@@ -74,7 +74,9 @@ export const FriendsList = ({
 							/>
 						</div>
 						<div>
-							<div className={'font-medium text-content'}>{friend.user.name}</div>
+							<div className={'font-medium text-content'}>
+								{friend.user.name}
+							</div>
 							<div className={'text-sm text-content opacity-70'} dir="ltr">
 								@{friend.user.username}
 							</div>

@@ -45,11 +45,15 @@ export const AuthForm = () => {
 				ورود به حساب کاربری
 			</h2>
 			{error && (
-				<div className="p-3 mb-4 text-sm text-white rounded-lg bg-error">{error}</div>
+				<div className="p-3 mb-4 text-sm text-white rounded-lg bg-error">
+					{error}
+				</div>
 			)}
 			<form onSubmit={handleSubmit} className="w-full space-y-5">
 				<div className="space-y-1">
-					<label className={'block text-sm font-medium text-muted'}>ایمیل</label>
+					<label className={'block text-sm font-medium text-muted'}>
+						ایمیل
+					</label>
 					<TextInput
 						direction="ltr"
 						id="email"
@@ -62,7 +66,9 @@ export const AuthForm = () => {
 				</div>
 
 				<div className="space-y-1">
-					<label className={'block text-sm font-medium text-muted'}>رمز عبور</label>
+					<label className={'block text-sm font-medium text-muted'}>
+						رمز عبور
+					</label>
 					<TextInput
 						direction="ltr"
 						id="password"

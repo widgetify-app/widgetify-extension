@@ -52,7 +52,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		loadGeneralSettings()
 	}, [])
 
-	const updateSetting = <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => {
+	const updateSetting = <K extends keyof GeneralData>(
+		key: K,
+		value: GeneralData[K]
+	) => {
 		setSettings((prevSettings) => {
 			const newSettings = {
 				...prevSettings,

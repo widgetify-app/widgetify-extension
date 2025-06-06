@@ -16,7 +16,9 @@ export function TimezoneSettings() {
 	return (
 		<SectionPanel title="منطقه‌ی زمانی" delay={0.1}>
 			<div className="space-y-3">
-				<p className={'text-sm text-muted'}>منطقه‌ی زمانی مورد نظر خود را انتخاب کنید.</p>
+				<p className={'text-sm text-muted'}>
+					منطقه‌ی زمانی مورد نظر خود را انتخاب کنید.
+				</p>
 
 				<div className="relative">
 					<div className="flex items-center gap-2">
@@ -36,7 +38,9 @@ export function TimezoneSettings() {
 									'w-full rounded-lg appearance-none border-content border select focus:outline-none focus:ring-2 focus:ring-blue-500'
 								}
 							>
-								{!timezone && <option value="">انتخاب منطقه زمانی...</option>}
+								{!timezone && (
+									<option value="">انتخاب منطقه زمانی...</option>
+								)}
 								{timezones?.map((tz) => (
 									<option
 										key={tz.value}

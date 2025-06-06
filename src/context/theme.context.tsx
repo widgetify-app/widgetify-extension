@@ -12,7 +12,7 @@ export const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<string>(
-		() => localStorage.getItem('widgetify-theme') || 'light',
+		() => localStorage.getItem('widgetify-theme') || 'light'
 	)
 
 	async function loadTheme() {
@@ -41,7 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 				previous_theme: oldTheme,
 				new_theme: theme,
 			},
-			'click',
+			'click'
 		)
 	}
 

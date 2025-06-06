@@ -24,7 +24,9 @@ export const useTimezones = () => {
 
 				cachedTimezones.set(cacheKey, timezones)
 			} catch (err) {
-				setError(err instanceof Error ? err : new Error('An unknown error occurred'))
+				setError(
+					err instanceof Error ? err : new Error('An unknown error occurred')
+				)
 			} finally {
 				setLoading(false)
 			}

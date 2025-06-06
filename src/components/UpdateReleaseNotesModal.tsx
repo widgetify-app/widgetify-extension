@@ -53,7 +53,8 @@ const releaseNotes: ReleaseNote[] = [
 	},
 	{
 		type: 'info',
-		description: 'برای دیدن تمامی تغییرات و ارسال بازخورد، به صفحه گیت‌هاب ما مراجعه کنید',
+		description:
+			'برای دیدن تمامی تغییرات و ارسال بازخورد، به صفحه گیت‌هاب ما مراجعه کنید',
 	},
 ]
 
@@ -80,7 +81,7 @@ export const UpdateReleaseNotesModal = ({
 	}
 
 	const getTypePriority = (
-		type: 'feature' | 'bugfix' | 'improvement' | 'info',
+		type: 'feature' | 'bugfix' | 'improvement' | 'info'
 	): number => {
 		switch (type) {
 			case 'feature':
@@ -97,7 +98,9 @@ export const UpdateReleaseNotesModal = ({
 	}
 
 	const sortNotesByType = (notes: ReleaseNote[]) => {
-		return [...notes].sort((a, b) => getTypePriority(a.type) - getTypePriority(b.type))
+		return [...notes].sort(
+			(a, b) => getTypePriority(a.type) - getTypePriority(b.type)
+		)
 	}
 
 	const getCategoryTitle = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
@@ -124,7 +127,7 @@ export const UpdateReleaseNotesModal = ({
 			acc[note.type].push(note)
 			return acc
 		},
-		{} as Record<string, ReleaseNote[]>,
+		{} as Record<string, ReleaseNote[]>
 	)
 
 	return (
@@ -154,7 +157,9 @@ export const UpdateReleaseNotesModal = ({
 				>
 					<div className="flex items-center mb-3">
 						<RiGiftLine className="ml-2 text-amber-500" size={20} />
-						<h3 className={'font-semibold text-content'}>به روزرسانی ویجتی‌فای</h3>
+						<h3 className={'font-semibold text-content'}>
+							به روزرسانی ویجتی‌فای
+						</h3>
 					</div>
 					<p className={'text-sm text-muted'}>{SUMMARY}</p>
 				</div>
@@ -173,7 +178,9 @@ export const UpdateReleaseNotesModal = ({
 										{getCategoryTitle(type as any)}
 									</h3>
 								</div>
-								<div className={'flex-1 h-px border border-content mr-2'}></div>
+								<div
+									className={'flex-1 h-px border border-content mr-2'}
+								></div>
 							</div>
 
 							<ul className="mr-2 space-y-3">
@@ -185,13 +192,18 @@ export const UpdateReleaseNotesModal = ({
 									>
 										<div className="mt-0.5 ml-2">
 											{type !== 'info' ? (
-												<RiCheckboxCircleFill className="text-blue-500" size={16} />
+												<RiCheckboxCircleFill
+													className="text-blue-500"
+													size={16}
+												/>
 											) : (
 												getTypeIcon(note.type)
 											)}
 										</div>
 										<div>
-											<p className={'text-sm text-muted'}>{note.description}</p>
+											<p className={'text-sm text-muted'}>
+												{note.description}
+											</p>
 										</div>
 									</li>
 								))}
@@ -212,7 +224,11 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 				</div>
 			</div>
-			<div className={'p-3 border-t border-content flex justify-between items-center'}>
+			<div
+				className={
+					'p-3 border-t border-content flex justify-between items-center'
+				}
+			>
 				{' '}
 				<a
 					href="https://github.com/widgetify-app"

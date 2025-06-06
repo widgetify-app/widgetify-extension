@@ -118,7 +118,7 @@ export function EditBookmarkModal({
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null
 	) => {
 		setShowAdvanced(false)
 
@@ -156,13 +156,16 @@ export function EditBookmarkModal({
 						iconSource,
 						setIconSource,
 						updateFormData,
-						type as BookmarkType,
+						type as BookmarkType
 					)}
 					<p className="mt-2 text-xs text-center text-content">
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (
-						<IconSourceSelector iconSource={iconSource} setIconSource={setIconSource} />
+						<IconSourceSelector
+							iconSource={iconSource}
+							setIconSource={setIconSource}
+						/>
 					)}
 				</div>
 				<input
@@ -179,7 +182,9 @@ export function EditBookmarkModal({
 					placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 					value={formData.title}
 					onChange={(value) => updateFormData('title', value)}
-					className={'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'}
+					className={
+						'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
+					}
 				/>
 
 				<div className="relative h-[50px]">

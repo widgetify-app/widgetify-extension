@@ -44,7 +44,7 @@ export function useGetTrends(
 		limit?: number
 		refetchInterval?: number | null
 		enabled?: boolean
-	} = {},
+	} = {}
 ) {
 	const { region = 'IR', limit = 10, refetchInterval = null, enabled = true } = options
 

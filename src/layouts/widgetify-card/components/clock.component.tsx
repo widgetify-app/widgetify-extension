@@ -24,7 +24,11 @@ const ClockComponent = () => {
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ duration: 0.5 }}
 		>
-			<div className={'text-xs font-extrabold tracking-wide text-content drop-shadow-lg'}>
+			<div
+				className={
+					'text-xs font-extrabold tracking-wide text-content drop-shadow-lg'
+				}
+			>
 				{bgGradient} {time.format('HH:mm')}
 			</div>
 		</motion.div>

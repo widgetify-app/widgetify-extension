@@ -56,16 +56,18 @@ export const iranianHijriMonthDays: { [key: number]: { [key: number]: number } }
 
 export function getShamsiEvents(
 	events: FetchedAllEvents,
-	selectedDate: jalaliMoment.Moment,
+	selectedDate: jalaliMoment.Moment
 ): FetchedEvent[] {
 	const month = selectedDate.jMonth() + 1
 	const day = selectedDate.jDate()
-	return events.shamsiEvents.filter((event) => event.month === month && event.day === day)
+	return events.shamsiEvents.filter(
+		(event) => event.month === month && event.day === day
+	)
 }
 
 // rewritten by Grok
 export function convertShamsiToHijri(
-	shamsiDate: jalaliMoment.Moment,
+	shamsiDate: jalaliMoment.Moment
 ): hijriMoment.Moment {
 	const referenceShamsi = jalaliMoment
 		.from('1402/04/28', 'fa', 'YYYY/MM/DD')
@@ -116,18 +118,20 @@ export function convertShamsiToHijri(
 
 export function getHijriEvents(
 	events: FetchedAllEvents,
-	selectedDate: jalaliMoment.Moment,
+	selectedDate: jalaliMoment.Moment
 ): FetchedEvent[] {
 	const hijriDate = convertShamsiToHijri(selectedDate)
 	const month = hijriDate.iMonth() + 1
 	const day = hijriDate.iDate()
 
-	return events.hijriEvents.filter((event) => event.month === month && event.day === day)
+	return events.hijriEvents.filter(
+		(event) => event.month === month && event.day === day
+	)
 }
 
 export function getGregorianEvents(
 	events: FetchedAllEvents,
-	date: jalaliMoment.Moment, //  Hijri date
+	date: jalaliMoment.Moment //  Hijri date
 ): FetchedEvent[] {
 	const gregorianDate = date.clone().locale('en').utc().add(3.5, 'hours')
 
@@ -135,7 +139,7 @@ export function getGregorianEvents(
 	const gregorianMonth = gregorianDate.format('M')
 
 	return events.gregorianEvents.filter(
-		(event) => event.month === +gregorianMonth && event.day === +gregorianDay,
+		(event) => event.month === +gregorianMonth && event.day === +gregorianDay
 	)
 }
 
@@ -146,7 +150,7 @@ export function getCurrentDate(timeZone: string) {
 
 export function filterGoogleEventsByDate(
 	events: GoogleCalendarEvent[],
-	currentDate: WidgetifyDate,
+	currentDate: WidgetifyDate
 ): GoogleCalendarEvent[] {
 	const dateStr = currentDate.clone().locale('en').format('YYYY-MM-DD')
 

@@ -57,9 +57,10 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				if (isEnable) {
 					await sleep(1000)
 					setIsSaving(true)
-					const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
-						getNotes(),
-					)
+					const [error, fetchedNotes] = await safeAwait<
+						AxiosError,
+						FetchedNote[]
+					>(getNotes())
 					setIsSaving(false)
 					if (!error) {
 						setNotes(fetchedNotes)
@@ -107,7 +108,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
 		setNotes((prevNotes) => {
 			notesAfterUpdate = prevNotes.map((note) =>
-				note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note,
+				note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note
 			)
 			return notesAfterUpdate
 		})

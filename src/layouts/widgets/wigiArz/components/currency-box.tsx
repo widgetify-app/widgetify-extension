@@ -62,7 +62,8 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				prevPriceRef.current = currency.price
 
 				if (currency.changePercentage) {
-					const changeAmount = (currency.changePercentage / 100) * currency.price
+					const changeAmount =
+						(currency.changePercentage / 100) * currency.price
 					setPriceChange(changeAmount)
 				}
 			}

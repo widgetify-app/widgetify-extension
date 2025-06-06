@@ -15,7 +15,7 @@ async function fetchDailyMessage(): Promise<DailyMessageResponse> {
 export function useGetDailyMessage(
 	options: {
 		enabled?: boolean
-	} = {},
+	} = {}
 ) {
 	return useQuery<DailyMessageResponse>({
 		queryKey: ['daily-message'],

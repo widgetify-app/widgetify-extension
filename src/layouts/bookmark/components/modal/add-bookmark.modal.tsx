@@ -129,7 +129,7 @@ export function AddBookmarkModal({
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null
 	) => {
 		setShowAdvanced(false)
 
@@ -161,18 +161,30 @@ export function AddBookmarkModal({
 			closeOnBackdropClick={false}
 			className="!overflow-y-hidden"
 		>
-			<form onSubmit={handleAdd} className="flex flex-col gap-2 p-2 overflow-y-auto h-96">
+			<form
+				onSubmit={handleAdd}
+				className="flex flex-col gap-2 p-2 overflow-y-auto h-96"
+			>
 				<div className="flex gap-2 mb-1">
 					<TypeSelector type={type} setType={setType} />
 				</div>
 
 				<div className="mb-2">
-					{renderIconPreview(formData, iconSource, setIconSource, updateFormData, type)}
+					{renderIconPreview(
+						formData,
+						iconSource,
+						setIconSource,
+						updateFormData,
+						type
+					)}
 					<p className="mt-2 text-xs text-center text-content">
 						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 					</p>
 					{type === 'BOOKMARK' && (
-						<IconSourceSelector iconSource={iconSource} setIconSource={setIconSource} />
+						<IconSourceSelector
+							iconSource={iconSource}
+							setIconSource={setIconSource}
+						/>
 					)}
 				</div>
 				<input

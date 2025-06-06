@@ -1,4 +1,3 @@
-import { RequireAuth } from '@/components/auth/require-auth'
 import { WidgetContainer } from '../widget-container'
 import { ClockDisplay } from './clock-display/clock-display'
 import { DateDisplay } from './date-display/date.display'

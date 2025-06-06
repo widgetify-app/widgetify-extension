@@ -18,7 +18,9 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 							dangerouslySetInnerHTML={{ __html: notification.content }}
 						/>
 					) : (
-						<p className="text-sm text-base-content">{notification.content}</p>
+						<p className="text-sm text-base-content">
+							{notification.content}
+						</p>
 					)}
 					{notification.timestamp && (
 						<p className="mt-2 text-xs opacity-50 text-base-content">

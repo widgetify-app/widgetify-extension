@@ -7,7 +7,7 @@ import Analytics from '../../../../../analytics'
 
 export function useWallpaper(
 	fetchedWallpapers: Wallpaper[] | undefined,
-	isAuthenticated: boolean,
+	isAuthenticated: boolean
 ) {
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
@@ -28,7 +28,9 @@ export function useWallpaper(
 				} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 					const gradientWallpaper: Wallpaper = {
 						id: wallpaper.id,
-						name: wallpaper.id.includes('custom') ? 'گرادیان سفارشی' : 'گرادیان',
+						name: wallpaper.id.includes('custom')
+							? 'گرادیان سفارشی'
+							: 'گرادیان',
 						type: 'GRADIENT',
 						src: '',
 						gradient: wallpaper.gradient,
@@ -36,7 +38,9 @@ export function useWallpaper(
 					setSelectedBackground(gradientWallpaper)
 				} else {
 					if (fetchedWallpapers) {
-						const foundWallpaper = fetchedWallpapers.find((wp) => wp.id === wallpaper.id)
+						const foundWallpaper = fetchedWallpapers.find(
+							(wp) => wp.id === wallpaper.id
+						)
 						if (foundWallpaper) {
 							setSelectedBackground(foundWallpaper)
 						}
@@ -93,7 +97,7 @@ export function useWallpaper(
 				wallpaper_name: wallpaper.name || 'unnamed',
 				wallpaper_type: wallpaper.type,
 			},
-			'click',
+			'click'
 		)
 
 		if (isAuthenticated) {

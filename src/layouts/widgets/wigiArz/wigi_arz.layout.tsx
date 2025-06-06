@@ -8,7 +8,6 @@ import { ArzHeader } from './components/arz-header'
 import { CurrencyBox } from './components/currency-box'
 
 interface WigiArzLayoutProps {
-	enableHeader?: boolean
 	enableBackground?: boolean
 	showSettingsModal?: boolean
 	onSettingsModalClose?: () => void
@@ -16,7 +15,6 @@ interface WigiArzLayoutProps {
 }
 
 export function WigiArzLayout({
-	enableHeader = true,
 	enableBackground = true,
 	showSettingsModal = false,
 	onSettingsModalClose,
@@ -45,7 +43,9 @@ export function WigiArzLayout({
 					{selectedCurrencies.length === 0 ? (
 						<div className="flex flex-col items-center justify-center h-full text-center">
 							<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
-							<p className="text-sm opacity-50">ارزهای مورد نظر خود را اضافه کنید</p>
+							<p className="text-sm opacity-50">
+								ارزهای مورد نظر خود را اضافه کنید
+							</p>
 							<Button
 								className={'mt-3'}
 								rounded="lg"
@@ -64,20 +64,31 @@ export function WigiArzLayout({
 						>
 							{selectedCurrencies.map((currency, index) => (
 								<div key={`${currency}-${index}`}>
-									<CurrencyBox code={currency} key={`${currency}-${index}`} />
+									<CurrencyBox
+										code={currency}
+										key={`${currency}-${index}`}
+									/>
 								</div>
 							))}
 						</div>
 					)}
 				</div>
 			) : (
-				<WidgetContainer background={enableBackground} className={'flex flex-col gap-1'}>
-					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
+				<WidgetContainer
+					background={enableBackground}
+					className={'flex flex-col gap-1'}
+				>
+					<ArzHeader
+						title="ویجی‌ ارز"
+						onSettingsClick={() => handleModalClose(true)}
+					/>
 
 					{selectedCurrencies.length === 0 ? (
 						<div className="flex flex-col items-center justify-center h-full text-center">
 							<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
-							<p className="text-sm opacity-50">ارزهای مورد نظر خود را اضافه کنید</p>
+							<p className="text-sm opacity-50">
+								ارزهای مورد نظر خود را اضافه کنید
+							</p>
 							<Button
 								className={'mt-3'}
 								rounded="lg"
@@ -96,7 +107,10 @@ export function WigiArzLayout({
 						>
 							{selectedCurrencies.map((currency, index) => (
 								<div key={`${currency}-${index}`}>
-									<CurrencyBox code={currency} key={`${currency}-${index}`} />
+									<CurrencyBox
+										code={currency}
+										key={`${currency}-${index}`}
+									/>
 								</div>
 							))}
 						</div>

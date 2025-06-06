@@ -153,7 +153,7 @@ const defaultVisibility: WidgetKeys[] = [
 export const MAX_VISIBLE_WIDGETS = 5
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
-	undefined,
+	undefined
 )
 
 const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
@@ -174,10 +174,15 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
 			if (storedVisibility) {
-				const visibilityIds = storedVisibility.map((item: any) => item.id as WidgetKeys)
+				const visibilityIds = storedVisibility.map(
+					(item: any) => item.id as WidgetKeys
+				)
 				setVisibility(visibilityIds)
 
-				const orders: Record<WidgetKeys, number> = {} as Record<WidgetKeys, number>
+				const orders: Record<WidgetKeys, number> = {} as Record<
+					WidgetKeys,
+					number
+				>
 				for (const item of storedVisibility) {
 					orders[item.id as WidgetKeys] =
 						item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
@@ -210,7 +215,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			if (!isCurrentlyVisible) {
 				if (!isAuthenticated && prev.length >= MAX_VISIBLE_WIDGETS) {
 					toast.error(
-						`کاربران مهمان تنها می‌توانند حداکثر ${MAX_VISIBLE_WIDGETS} ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.`,
+						`کاربران مهمان تنها می‌توانند حداکثر ${MAX_VISIBLE_WIDGETS} ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.`
 					)
 					return prev
 				}
@@ -228,7 +233,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				widget_id: widgetId,
 				new_state: !visibility.includes(widgetId),
 			},
-			'toggle',
+			'toggle'
 		)
 	}
 
@@ -283,7 +288,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 export const useWidgetVisibility = () => {
 	const context = useContext(WidgetVisibilityContext)
 	if (context === undefined) {
-		throw new Error('useWidgetVisibility must be used within a WidgetVisibilityProvider')
+		throw new Error(
+			'useWidgetVisibility must be used within a WidgetVisibilityProvider'
+		)
 	}
 	return context
 }

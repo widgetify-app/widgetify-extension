@@ -65,7 +65,9 @@ export function NoteNavigation({
 					<Button
 						size="xs"
 						disabled={notes.length <= 1}
-						onClick={() => notes.length > 1 && onDeleteNote(activeNoteId as string)}
+						onClick={() =>
+							notes.length > 1 && onDeleteNote(activeNoteId as string)
+						}
 						className={
 							'flex btn-circle items-center btn-ghost justify-center disabled:opacity-30'
 						}

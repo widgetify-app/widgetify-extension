@@ -22,7 +22,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const { data: googleEvents = [] } = useGetGoogleCalendarEvents(
 		user?.connections?.includes('google') || false,
 		startOfMonth,
-		endOfMonth,
+		endOfMonth
 	)
 
 	const selectedDateStr = formatDateStr(selectedDate)
@@ -55,7 +55,11 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	return (
 		<div className={'overflow-hidden border border-content rounded-lg'}>
 			<div className="px-2 pt-1 pb-2">
-				<h3 className={'text-xs text-center font-medium mb-1 widget-tem-text truncate'}>
+				<h3
+					className={
+						'text-xs text-center font-medium mb-1 widget-tem-text truncate'
+					}
+				>
 					خلاصه روز {selectedDate.format('jD jMMMM')}
 				</h3>
 
@@ -72,9 +76,14 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 							<div className={'text-xs font-medium text-content truncate'}>
 								{totalEventsCount} رویداد
 							</div>
-							<div className={'text-[.50rem] widget-item-sub-text truncate'}>
-								{googleEventCount > 0 && `${googleEventCount} رویداد گوگل • `}
-								{holidayEvents > 0 ? `${holidayEvents} رویداد تعطیل` : 'بدون تعطیلی'}
+							<div
+								className={'text-[.50rem] widget-item-sub-text truncate'}
+							>
+								{googleEventCount > 0 &&
+									`${googleEventCount} رویداد گوگل • `}
+								{holidayEvents > 0
+									? `${holidayEvents} رویداد تعطیل`
+									: 'بدون تعطیلی'}
 							</div>
 						</div>
 					</div>
@@ -93,7 +102,9 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 							<div className={'text-xs font-medium text-content truncate'}>
 								{totalTodos} وظیفه
 							</div>
-							<div className={'text-[.50rem] widget-item-sub-text truncate'}>
+							<div
+								className={'text-[.50rem] widget-item-sub-text truncate'}
+							>
 								{totalTodos > 0
 									? `${completedTodos} از ${totalTodos} تکمیل شده`
 									: 'بدون وظیفه'}

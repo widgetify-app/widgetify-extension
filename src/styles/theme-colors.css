@@ -1,66 +1,66 @@
 :root {
-    --brand-primary: #536DFE;
-    --brand-primary-rgb: 83, 109, 254;
-    --brand-secondary: #7C8DF0;
-    --brand-secondary-rgb: 124, 141, 240;
+	--brand-primary: #536dfe;
+	--brand-primary-rgb: 83, 109, 254;
+	--brand-secondary: #7c8df0;
+	--brand-secondary-rgb: 124, 141, 240;
 }
 
 @plugin "daisyui/theme" {
-    name: "light";
-    default: true;
-    --color-primary: var(--brand-primary);
-    --color-secondary: var(--brand-secondary);
-    --color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
+	name: "light";
+	default: true;
+	--color-primary: var(--brand-primary);
+	--color-secondary: var(--brand-secondary);
+	--color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
 }
 
 @plugin "daisyui/theme" {
-    name: "dark";
-    --color-base-100: #171717;
-    --color-base-200: #1a1a1a;
-    --color-base-300: #232323;
-    --color-base-content: #f9fafb;
-    --color-primary: var(--brand-primary);
-    --color-primary-focus: #4f46e5;
-    --color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
-    --color-secondary: var(--brand-secondary);
-    --color-secondary-focus: #7c3aed;
-    --color-secondary-content: #ffffff;
-    --color-accent: #f59e0b;
-    --color-accent-focus: #d97706;
-    --color-accent-content: #ffffff;
-    --color-error: #F7374F;
-    --color-success: #34d399;
-    --color-warning: #fbbf24;
-    --color-warning-content: #FFB22C;
-    --color-info: #60a5fa;
+	name: "dark";
+	--color-base-100: #171717;
+	--color-base-200: #1a1a1a;
+	--color-base-300: #232323;
+	--color-base-content: #f9fafb;
+	--color-primary: var(--brand-primary);
+	--color-primary-focus: #4f46e5;
+	--color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
+	--color-secondary: var(--brand-secondary);
+	--color-secondary-focus: #7c3aed;
+	--color-secondary-content: #ffffff;
+	--color-accent: #f59e0b;
+	--color-accent-focus: #d97706;
+	--color-accent-content: #ffffff;
+	--color-error: #f7374f;
+	--color-success: #34d399;
+	--color-warning: #fbbf24;
+	--color-warning-content: #ffb22c;
+	--color-info: #60a5fa;
 }
 
 @plugin "daisyui/theme" {
-    name: "glass";
-    --color-base-100: #171717b3;
-    --color-base-200: rgba(23, 23, 23, 0.1);
-    --color-base-300: rgba(255, 255, 255, 0.05);
-    --color-base-content: rgba(255, 255, 255, 0.95);
-    --color-primary: rgba(var(--brand-primary-rgb), 0.9);
-    --color-primary-focus: rgba(var(--brand-primary-rgb), 1);
-    --color-primary-content: rgba(255, 255, 255, 1);
-    --color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
-    --color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
-    --color-secondary-content: rgba(255, 255, 255, 1);
-    --color-accent: rgba(34, 197, 94, 0.8);
-    --color-accent-focus: rgba(22, 163, 74, 0.9);
-    --color-accent-content: rgba(255, 255, 255, 1);
-    --color-error: rgba(239, 68, 68, 0.8);
-    --color-success: rgba(34, 197, 94, 0.8);
-    --color-warning: rgba(245, 158, 11, 0.8);
-    --color-warning-content: #FFB22C;
-    --color-info: rgba(59, 130, 246, 0.8);
-    --glass: true;
-    --glass-opacity: 25%;
-    --glass-border-opacity: 15%;
-    --glass-reflex-degree: 120%;
-    --glass-reflex-opacity: 8%;
-    --glass-blur: 32px;
+	name: "glass";
+	--color-base-100: #171717b3;
+	--color-base-200: rgba(23, 23, 23, 0.1);
+	--color-base-300: rgba(255, 255, 255, 0.05);
+	--color-base-content: rgba(255, 255, 255, 0.95);
+	--color-primary: rgba(var(--brand-primary-rgb), 0.9);
+	--color-primary-focus: rgba(var(--brand-primary-rgb), 1);
+	--color-primary-content: rgba(255, 255, 255, 1);
+	--color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
+	--color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
+	--color-secondary-content: rgba(255, 255, 255, 1);
+	--color-accent: rgba(34, 197, 94, 0.8);
+	--color-accent-focus: rgba(22, 163, 74, 0.9);
+	--color-accent-content: rgba(255, 255, 255, 1);
+	--color-error: rgba(239, 68, 68, 0.8);
+	--color-success: rgba(34, 197, 94, 0.8);
+	--color-warning: rgba(245, 158, 11, 0.8);
+	--color-warning-content: #ffb22c;
+	--color-info: rgba(59, 130, 246, 0.8);
+	--glass: true;
+	--glass-opacity: 25%;
+	--glass-border-opacity: 15%;
+	--glass-reflex-degree: 120%;
+	--glass-reflex-opacity: 8%;
+	--glass-blur: 32px;
 }
 
 [data-theme="glass"] .menu,
@@ -69,30 +69,30 @@
 [data-theme="glass"] .drawer-side,
 [data-theme="glass"] .trending-section,
 [data-theme="glass"] .collapse {
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    backdrop-filter: blur(16px) saturate(180%);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	backdrop-filter: blur(16px) saturate(180%);
 }
 
 [data-theme="glass"] .search-box {
-    -webkit-backdrop-filter: blur(10px) saturate(180%);
-    backdrop-filter: blur(10px) saturate(180%);
+	-webkit-backdrop-filter: blur(10px) saturate(180%);
+	backdrop-filter: blur(10px) saturate(180%);
 }
 
 [data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .tooltip {
-    background-color: #171717b3;
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    backdrop-filter: blur(16px) saturate(150%);
+	background-color: #171717b3;
+	-webkit-backdrop-filter: blur(16px) saturate(150%);
+	backdrop-filter: blur(16px) saturate(150%);
 }
 
 [data-theme="glass"] .modal-box {
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    backdrop-filter: blur(40px) saturate(200%);
-    background-color: #171717b3 !important;
+	-webkit-backdrop-filter: blur(40px) saturate(200%);
+	backdrop-filter: blur(40px) saturate(200%);
+	background-color: #171717b3 !important;
 }
 
 [data-theme="glass"] .select option {
-    background-color: rgba(20, 20, 20, 0.9) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(8px);
+	background-color: rgba(20, 20, 20, 0.9) !important;
+	color: rgba(255, 255, 255, 0.9) !important;
+	backdrop-filter: blur(8px);
 }

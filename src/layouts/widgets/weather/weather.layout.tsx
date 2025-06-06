@@ -22,7 +22,7 @@ export function WeatherLayout() {
 			refetchInterval: 0,
 			units: weatherSettings.temperatureUnit,
 			useAI: weatherSettings.useAI,
-		},
+		}
 	)
 
 	const { data: forecastData, dataUpdatedAt: forecastUpdatedAt } =

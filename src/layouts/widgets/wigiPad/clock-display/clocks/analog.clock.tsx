@@ -24,7 +24,12 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 		<div className="relative flex flex-col items-center justify-center">
 			{/* Analog Clock */}
 			<div className="relative w-24 h-24 mb-2">
-				<svg width="96" height="96" viewBox="0 0 96 96" className="transform -rotate-90">
+				<svg
+					width="96"
+					height="96"
+					viewBox="0 0 96 96"
+					className="transform -rotate-90"
+				>
 					{/* Clock face */}
 					<circle
 						cx="48"
@@ -41,9 +46,13 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 						const angle = i * 30
 						const isMainHour = i % 3 === 0
 						const x1 =
-							48 + (isMainHour ? 35 : 38) * Math.cos(((angle - 90) * Math.PI) / 180)
+							48 +
+							(isMainHour ? 35 : 38) *
+								Math.cos(((angle - 90) * Math.PI) / 180)
 						const y1 =
-							48 + (isMainHour ? 35 : 38) * Math.sin(((angle - 90) * Math.PI) / 180)
+							48 +
+							(isMainHour ? 35 : 38) *
+								Math.sin(((angle - 90) * Math.PI) / 180)
 						const x2 = 48 + 42 * Math.cos(((angle - 90) * Math.PI) / 180)
 						const y2 = 48 + 42 * Math.sin(((angle - 90) * Math.PI) / 180)
 

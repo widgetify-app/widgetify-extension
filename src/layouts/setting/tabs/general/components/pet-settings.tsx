@@ -62,7 +62,7 @@ export function PetSettings() {
 		([key, value]) => ({
 			value: key as PetTypes,
 			label: `${value.emoji} ${persianType[value.type] || ''} - ${value.name}`,
-		}),
+		})
 	)
 
 	return (
@@ -73,7 +73,10 @@ export function PetSettings() {
 						checked={enablePets}
 						onChange={() => onChangeEnablePets(!enablePets)}
 					/>
-					<div onClick={() => onChangeEnablePets(!enablePets)} className="cursor-pointer">
+					<div
+						onClick={() => onChangeEnablePets(!enablePets)}
+						className="cursor-pointer"
+					>
 						<p className={'font-medium text-content'}>نمایش حیوان خانگی</p>
 						<p className={'text-sm font-light text-muted'}>
 							نمایش حیوان خانگی تعاملی روی صفحه اصلی

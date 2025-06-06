@@ -38,12 +38,19 @@ export function WeatherSettings({
 							id="forecastCount"
 							value={forecastCount}
 							onChange={(e) =>
-								updateSettings('forecastCount', Number.parseInt(e.target.value) || 4)
+								updateSettings(
+									'forecastCount',
+									Number.parseInt(e.target.value) || 4
+								)
 							}
 							className="shadow select bg-base-content/10 focus:outline-none focus:border-none"
 						>
 							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-								<option key={num} value={num} className="text-content bg-base-200">
+								<option
+									key={num}
+									value={num}
+									className="text-content bg-base-200"
+								>
 									{num}
 								</option>
 							))}
@@ -55,7 +62,10 @@ export function WeatherSettings({
 			{/* Temperature Unit */}
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
-					<label htmlFor="tempUnit" className={'text-sm font-medium text-content'}>
+					<label
+						htmlFor="tempUnit"
+						className={'text-sm font-medium text-content'}
+					>
 						واحد دما
 					</label>
 					<div className="flex overflow-hidden border rounded-md border-white/10">
@@ -71,7 +81,9 @@ export function WeatherSettings({
 										? getSelectedUnitStyle()
 										: getUnselectedUnitStyle()
 								}`}
-								onClick={() => updateSettings('temperatureUnit', option.value)}
+								onClick={() =>
+									updateSettings('temperatureUnit', option.value)
+								}
 							>
 								<span className="ml-1">{option.persianName}</span>
 								<span>({option.label})</span>
@@ -84,7 +96,8 @@ export function WeatherSettings({
 						'واحد سلسیوس در بیشتر کشورهای جهان استفاده می‌شود'}
 					{temperatureUnit === 'imperial' &&
 						'واحد فارنهایت بیشتر در آمریکا استفاده می‌شود'}
-					{temperatureUnit === 'standard' && 'واحد کلوین در محاسبات علمی استفاده می‌شود'}
+					{temperatureUnit === 'standard' &&
+						'واحد کلوین در محاسبات علمی استفاده می‌شود'}
 				</div>
 			</div>
 

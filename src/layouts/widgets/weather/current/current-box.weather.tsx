@@ -67,7 +67,11 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							>
 								{Math.round(weather.temperature.temp)}
 								<span className="ml-1 text-xl font-medium">
-									{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
+									{
+										unitsFlag[
+											weatherSettings.temperatureUnit || 'metric'
+										]
+									}
 								</span>
 							</span>
 							{selectedCity?.name && (
@@ -77,7 +81,10 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 									}
 									dir="auto"
 								>
-									<p className="text-xs font-light truncate" title={selectedCity.name}>
+									<p
+										className="text-xs font-light truncate"
+										title={selectedCity.name}
+									>
 										{selectedCity.name}
 									</p>
 									<span className="h-[16px] opacity-60">
@@ -89,7 +96,10 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						<div className="flex items-center">
 							<img
 								src={weather.icon.url}
-								alt={weather.temperature.temp_description || 'Current weather'}
+								alt={
+									weather.temperature.temp_description ||
+									'Current weather'
+								}
 								className="w-8 h-8 rounded-full drop-shadow-lg "
 								loading="lazy"
 							/>
@@ -144,7 +154,8 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 										'py-2 text-xs font-light leading-relaxed transition-all duration-300 text-content'
 									}
 								>
-									{weather.ai?.description || weather.temperature.temp_description}
+									{weather.ai?.description ||
+										weather.temperature.temp_description}
 								</p>
 							</div>
 						</div>

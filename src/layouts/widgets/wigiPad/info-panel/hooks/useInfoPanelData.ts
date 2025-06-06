@@ -39,7 +39,9 @@ export const useInfoPanelData = (): InfoPanelData => {
 			}))
 			const transformedNotifications = notifications.map((notification) => ({
 				content: notification.content,
-				timestamp: notification.timestamp ? new Date(notification.timestamp) : null,
+				timestamp: notification.timestamp
+					? new Date(notification.timestamp)
+					: null,
 			}))
 
 			setData((prev) => ({

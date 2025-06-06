@@ -116,7 +116,9 @@ export const WallpaperItem = React.memo(
 							className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
 						>
 							{wallpaper.name && (
-								<p className="text-xs font-medium text-white">{wallpaper.name}</p>
+								<p className="text-xs font-medium text-white">
+									{wallpaper.name}
+								</p>
 							)}
 						</div>
 
@@ -136,5 +138,5 @@ export const WallpaperItem = React.memo(
 	},
 	(prevProps, nextProps) =>
 		prevProps.wallpaper.id === nextProps.wallpaper.id &&
-		prevProps.selectedBackground?.id === nextProps.selectedBackground?.id,
+		prevProps.selectedBackground?.id === nextProps.selectedBackground?.id
 )

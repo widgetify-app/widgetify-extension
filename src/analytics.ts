@@ -42,7 +42,7 @@ const Analytics = (() => {
 
 	async function event(
 		eventName: string,
-		eventParams: Record<string, any> = {},
+		eventParams: Record<string, any> = {}
 	): Promise<void> {
 		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) {
@@ -68,7 +68,7 @@ const Analytics = (() => {
 	async function featureUsed(
 		featureName: string,
 		details: Record<string, any> = {},
-		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' | 'drag' = 'other',
+		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' | 'drag' = 'other'
 	): Promise<void> {
 		const enhancedDetails = {
 			action_type: actionType,

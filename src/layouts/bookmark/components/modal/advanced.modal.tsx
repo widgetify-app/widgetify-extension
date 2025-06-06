@@ -14,7 +14,7 @@ import { BookmarkItem } from '../bookmark-item'
 interface AdvancedModalProps {
 	title: string
 	onClose: (
-		data: { background?: string; textColor?: string; sticker?: string } | null,
+		data: { background?: string; textColor?: string; sticker?: string } | null
 	) => void
 	isOpen: boolean
 	bookmark: {
@@ -58,7 +58,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				{
 					bookmark_type: bookmark.type,
 				},
-				'click',
+				'click'
 			)
 		}
 	}, [isOpen])
@@ -91,7 +91,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			setSticker(newEmoji)
 			setIsEmojiPopoverOpen(false)
 		},
-		[sticker],
+		[sticker]
 	)
 
 	const toggleEmojiPopover = () => {
@@ -171,7 +171,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			<div className={'flex flex-col p-2 gap-2 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
-						<label className={'block text-sm font-medium mb-1.5 text-content'}>
+						<label
+							className={'block text-sm font-medium mb-1.5 text-content'}
+						>
 							رنگ پس زمینه (اختیاری)
 						</label>
 						<div className="relative flex flex-1">
@@ -184,7 +186,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								debounce={true}
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-								<PopoverColorPicker color={background} onChange={setBackground} />
+								<PopoverColorPicker
+									color={background}
+									onChange={setBackground}
+								/>
 							</div>
 							<Button type="button" onClick={resetBackground} size="md">
 								<FiRotateCcw className="w-4 h-4" />
@@ -193,7 +198,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</div>
 
 					<div>
-						<label className={'block text-sm  font-medium mb-1.5 text-content'}>
+						<label
+							className={'block text-sm  font-medium mb-1.5 text-content'}
+						>
 							رنگ متن (اختیاری)
 						</label>
 						<div className="relative flex flex-1">
@@ -206,7 +213,10 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								debounce={true}
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-								<PopoverColorPicker color={textColor} onChange={setTextColor} />
+								<PopoverColorPicker
+									color={textColor}
+									onChange={setTextColor}
+								/>
 							</div>
 							<Button type="button" onClick={resetTextColor} size="md">
 								<FiRotateCcw className="w-4 h-4" />
@@ -225,18 +235,25 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							{sticker ? (
 								<>
 									{sticker.startsWith('http') ? (
-										<img src={sticker} alt="selected emoji" className="w-6 h-6 ml-2" />
+										<img
+											src={sticker}
+											alt="selected emoji"
+											className="w-6 h-6 ml-2"
+										/>
 									) : (
 										<span
 											className="ml-2 text-lg"
 											style={{
-												fontFamily: "'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
+												fontFamily:
+													"'Segoe UI Emoji', 'Noto Color Emoji', sans-serif",
 											}}
 										>
 											{sticker}
 										</span>
 									)}
-									<span className="text-xs font-medium">تغییر استیکر</span>
+									<span className="text-xs font-medium">
+										تغییر استیکر
+									</span>
 								</>
 							) : (
 								<span className="text-xs font-medium">انتخاب استیکر</span>
@@ -270,12 +287,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<label className={'block text-sm font-medium text-content'}>پیش‌نمایش:</label>
+					<label className={'block text-sm font-medium text-content'}>
+						پیش‌نمایش:
+					</label>
 					<div
 						className="flex justify-center p-4 overflow-hidden rounded-lg"
 						style={{
 							backgroundImage: document.body.style.backgroundImage,
-							backgroundColor: document.body.style.backgroundColor || undefined,
+							backgroundColor:
+								document.body.style.backgroundColor || undefined,
 							backgroundSize: 'cover',
 							backgroundPosition: 'center',
 						}}
@@ -304,7 +324,12 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<Button onClick={() => onClose(null)} size="md">
 						لغو
 					</Button>
-					<Button type="submit" onClick={() => handleClose()} size="md" isPrimary={true}>
+					<Button
+						type="submit"
+						onClick={() => handleClose()}
+						size="md"
+						isPrimary={true}
+					>
 						ذخیره
 					</Button>
 				</div>

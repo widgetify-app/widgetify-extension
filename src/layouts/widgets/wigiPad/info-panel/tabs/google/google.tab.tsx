@@ -1,7 +1,6 @@
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { LuLockKeyhole } from 'react-icons/lu'
 import { MdEvent } from 'react-icons/md'
 import { GoogleMeetingItem } from './google-meeting-item'
@@ -12,7 +11,7 @@ export function GoogleTab() {
 	const { data: googleEvents, isLoading } = useGetGoogleCalendarEvents(
 		isAuthenticated,
 		today.clone().toDate(),
-		today.clone().add(1, 'day').toDate(),
+		today.clone().add(1, 'day').toDate()
 	)
 	const LoadingSkeleton = () => (
 		<div className="space-y-2">
@@ -43,7 +42,9 @@ export function GoogleTab() {
 			) : isLoading ? (
 				<LoadingSkeleton />
 			) : googleEvents && googleEvents.length > 0 ? (
-				googleEvents.map((event) => <GoogleMeetingItem key={event.id} meeting={event} />)
+				googleEvents.map((event) => (
+					<GoogleMeetingItem key={event.id} meeting={event} />
+				))
 			) : (
 				<div className="py-8 text-center text-muted">
 					<MdEvent className="mx-auto mb-2 text-2xl text-gray-500" />

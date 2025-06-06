@@ -33,7 +33,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const { data: googleEvents } = useGetGoogleCalendarEvents(
 		user?.connections?.includes('google') || false,
 		startOfMonth,
-		endOfMonth,
+		endOfMonth
 	)
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
