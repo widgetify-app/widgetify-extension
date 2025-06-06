@@ -35,8 +35,10 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets } = useWidgetVisibility()
-	const layoutItems = getSortedWidgets()
+	const sortedWidgets = getSortedWidgets()
+	const firstWidget = sortedWidgets[0]
 
+	const layoutItems = sortedWidgets.slice(1)
 	const bottomCount = layoutItems.length
 
 	let bottomLayoutClasses =
@@ -66,9 +68,11 @@ function ContentSection() {
 							</BookmarkProvider>
 						</div>
 
-						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
-							<WigiPadWidget />
-						</div>
+						{firstWidget && (
+							<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
+								{firstWidget.node}
+							</div>
+						)}
 					</div>
 					<div className={bottomLayoutClasses}>
 						{layoutItems.map((widget) => {

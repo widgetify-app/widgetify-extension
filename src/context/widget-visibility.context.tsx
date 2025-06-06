@@ -45,6 +45,14 @@ export interface WidgetItem {
 
 export const widgetItems: WidgetItem[] = [
 	{
+		id: WidgetKeys.wigiPad,
+		emoji: '📱',
+		label: 'ویجی پد',
+		order: 0,
+		node: <WigiPadWidget />,
+		canToggle: true,
+	},
+	{
 		id: WidgetKeys.calendar,
 		emoji: '📅',
 		label: 'تقویم',
@@ -136,11 +144,13 @@ interface WidgetVisibilityContextType {
 }
 
 const defaultVisibility: WidgetKeys[] = [
+	WidgetKeys.wigiPad,
 	WidgetKeys.calendar,
 	WidgetKeys.tools,
 	WidgetKeys.todos,
-	WidgetKeys.weather,
+	WidgetKeys.comboWidget,
 ]
+export const MAX_VISIBLE_WIDGETS = 5
 
 const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
 	undefined,
@@ -198,9 +208,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			const isCurrentlyVisible = prev.includes(widgetId)
 
 			if (!isCurrentlyVisible) {
-				if (!isAuthenticated && prev.length >= 4) {
+				if (!isAuthenticated && prev.length >= MAX_VISIBLE_WIDGETS) {
 					toast.error(
-						'کاربران مهمان تنها می‌توانند حداکثر 4 ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.',
+						`کاربران مهمان تنها می‌توانند حداکثر ${MAX_VISIBLE_WIDGETS} ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.`,
 					)
 					return prev
 				}
