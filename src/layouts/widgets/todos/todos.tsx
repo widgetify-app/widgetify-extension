@@ -142,13 +142,19 @@ export function TodosLayout() {
 										تکمیل شده
 									</Button>
 								</div>
-
 								<select
 									value={todoOptions.viewMode}
 									onChange={(e) => handleChangeViewMode(e.target.value as TodoViewType)}
 									className={
 										'select select-xs text-[.65rem] w-24 bg-content !px-2 focus:outline-none focus:border focus:border-primary'
 									}
+									style={{
+										backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+										backgroundPosition: 'left 0.5rem center',
+										backgroundRepeat: 'no-repeat',
+										backgroundSize: '1.5em 1.5em',
+										paddingLeft: '2.5rem',
+									}}
 								>
 									<option value={TodoViewType.Day} className="text-content">
 										لیست امروز
