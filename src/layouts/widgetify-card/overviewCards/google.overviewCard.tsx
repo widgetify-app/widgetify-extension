@@ -10,17 +10,17 @@ import { FiCalendar } from 'react-icons/fi'
 
 export function GoogleOverviewCard() {
 	const { user, isAuthenticated } = useAuth()
-	if (!isAuthenticated || !user) {
-		return null
-	}
-
 	const { timezone } = useGeneralSetting()
-	const today = getCurrentDate(timezone.value)
 
+	const today = getCurrentDate(timezone.value)
 	const { data: googleEvents = [] } = useGetGoogleCalendarEvents(
 		isAuthenticated && (user?.connections?.includes('google') || false),
 		today.clone().toDate()
 	)
+
+	if (!isAuthenticated || !user) {
+		return null
+	}
 	const todayEvents = filterGoogleEventsByDate(googleEvents, today)
 	const upcomingEvents = todayEvents.filter((event) => {
 		const now = new Date()
