@@ -136,7 +136,6 @@ interface WidgetVisibilityContextType {
 }
 
 const defaultVisibility: WidgetKeys[] = [
-	WidgetKeys.comboWidget,
 	WidgetKeys.calendar,
 	WidgetKeys.tools,
 	WidgetKeys.todos,
