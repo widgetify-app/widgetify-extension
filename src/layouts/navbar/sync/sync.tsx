@@ -15,7 +15,6 @@ import {
 	getBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
 import { BiCheck } from 'react-icons/bi'
@@ -167,105 +166,47 @@ export function SyncButton() {
 		<>
 			<Tooltip delay={0} content={tooltipContent()}>
 				<div className="relative group">
-					<LazyMotion features={domAnimation}>
-						<m.button
-							className="flex items-center justify-center w-8 h-8 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"
-							onClick={() => syncData(SyncTarget.ALL, 'POST')}
-							aria-label="Sync"
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-						>
-							<AnimatePresence mode="wait">
-								{user?.avatar && syncState === null && (
-									<m.div
-										className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1"
-										initial={{ scale: 0, opacity: 0 }}
-										animate={{ scale: 1, opacity: 1 }}
-										exit={{ scale: 0, opacity: 0 }}
-										transition={{ duration: 0.2 }}
-									>
-										<AiOutlineCloudSync size={10} className="text-muted" />
-									</m.div>
-								)}
+					<button
+						className="flex items-center justify-center w-8 h-8 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"
+						onClick={() => syncData(SyncTarget.ALL, 'POST')}
+						aria-label="Sync"
+					>
+						{user?.avatar && syncState === null && (
+							<div className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1">
+								<AiOutlineCloudSync size={10} className="text-muted" />
+							</div>
+						)}
 
-								{syncState === SyncState.Syncing ? (
-									<m.div
-										className="flex items-center justify-center"
-										key="syncing"
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										exit={{ opacity: 0 }}
-										transition={{ duration: 0.2 }}
-									>
-										<m.div
-											animate={{ rotate: 360 }}
-											transition={{
-												repeat: Number.POSITIVE_INFINITY,
-												duration: 1,
-												ease: 'linear',
-											}}
-										>
-											<AiOutlineSync size={22} className="text-blue-400" />
-										</m.div>
-									</m.div>
-								) : syncState === SyncState.Success ? (
-									<m.div
-										className="flex items-center justify-center text-green-400"
-										key="success"
-										initial={{ scale: 0.5, opacity: 0 }}
-										animate={{ scale: 1, opacity: 1 }}
-										exit={{ scale: 1.5, opacity: 0 }}
-										transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-									>
-										<BiCheck size={24} />
-									</m.div>
-								) : syncState === SyncState.Error ? (
-									<m.div
-										className="flex items-center justify-center text-red-400"
-										key="error"
-										initial={{ scale: 0.5, opacity: 0 }}
-										animate={{
-											scale: [1, 1.1, 1],
-											opacity: 1,
-											rotate: [0, -5, 5, -5, 0],
-										}}
-										exit={{ scale: 0.5, opacity: 0 }}
-										transition={{ duration: 0.5 }}
-									>
-										<AiOutlineCloudSync size={22} />
-									</m.div>
+						{syncState === SyncState.Syncing ? (
+							<div className="flex items-center justify-center">
+								<div className="animate-spin">
+									<AiOutlineSync size={22} className="text-blue-400" />
+								</div>
+							</div>
+						) : syncState === SyncState.Success ? (
+							<div className="flex items-center justify-center text-green-400">
+								<BiCheck size={24} />
+							</div>
+						) : syncState === SyncState.Error ? (
+							<div className="flex items-center justify-center text-red-400">
+								<AiOutlineCloudSync size={22} />
+							</div>
+						) : (
+							<div className="flex items-center justify-center">
+								{user?.avatar && isAuthenticated ? (
+									<img
+										src={user.avatar}
+										alt="User"
+										className="object-cover w-6 h-6 rounded-full"
+									/>
 								) : (
-									<m.div
-										className="flex items-center justify-center"
-										key="default"
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										exit={{ opacity: 0 }}
-									>
-										{user?.avatar && isAuthenticated ? (
-											<m.img
-												src={user.avatar}
-												alt="User"
-												className="object-cover w-6 h-6 rounded-full"
-												initial={{ scale: 0.8 }}
-												animate={{ scale: 1 }}
-												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-											/>
-										) : (
-											<m.div
-												initial={{ scale: 0.8, opacity: 0.5 }}
-												animate={{ scale: 1, opacity: 1 }}
-												transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-											>
-												<AiOutlineCloudSync size={22} />
-											</m.div>
-										)}
-									</m.div>
+									<div>
+										<AiOutlineCloudSync size={22} className="text-muted" />
+									</div>
 								)}
-							</AnimatePresence>
-						</m.button>
-					</LazyMotion>
+							</div>
+						)}
+					</button>
 				</div>
 			</Tooltip>
 			<AuthRequiredModal
