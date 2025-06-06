@@ -1,5 +1,9 @@
 import { useAuth } from '@/context/auth.context'
-import { useWidgetVisibility, widgetItems } from '@/context/widget-visibility.context'
+import {
+	MAX_VISIBLE_WIDGETS,
+	useWidgetVisibility,
+	widgetItems,
+} from '@/context/widget-visibility.context'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useState } from 'react'
 import { FiMove } from 'react-icons/fi'
@@ -10,7 +14,6 @@ interface WidgetSettingsModalProps {
 	isOpen: boolean
 	onClose: () => void
 }
-
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
 		useWidgetVisibility()
@@ -70,8 +73,8 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 				{!isAuthenticated && activeTab === 'selection' && (
 					<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
 						<p className="text-sm text-warning-content">
-							⚠️ کاربران مهمان تنها می‌توانند حداکثر 4 ویجت فعال کنند. برای فعال کردن
-							ویجت‌های بیشتر، وارد حساب کاربری خود شوید.
+							⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS} ویجت فعال کنند.
+							برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.
 						</p>
 					</div>
 				)}{' '}
@@ -79,7 +82,8 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 					<div className="grid grid-cols-2 gap-2">
 						{widgetItems.map((widget) => {
 							const isActive = visibility.includes(widget.id)
-							const canToggle = isAuthenticated || isActive || visibility.length < 4
+							const canToggle =
+								isAuthenticated || isActive || visibility.length < MAX_VISIBLE_WIDGETS
 
 							return (
 								<ItemSelector
