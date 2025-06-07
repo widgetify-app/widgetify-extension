@@ -22,7 +22,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	setSelectedDate,
 }) => {
 	const { user } = useAuth()
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()

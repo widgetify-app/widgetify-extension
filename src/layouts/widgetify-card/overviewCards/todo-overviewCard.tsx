@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { FiClipboard } from 'react-icons/fi'
 
 export function TodoOverviewCard() {
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 
 	const { todos, todoOptions } = useTodoStore()
 	const today = getCurrentDate(timezone.value)
