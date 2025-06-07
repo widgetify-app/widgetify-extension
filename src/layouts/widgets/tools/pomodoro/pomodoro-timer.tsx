@@ -1,5 +1,4 @@
 import Analytics from '@/analytics'
-import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
@@ -180,14 +179,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const getProgressColor = () => {
 		return modeColors[mode]
 	}
-
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.3 }}
-			className="relative p-1 overflow-hidden rounded-xl"
-		>
+		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-2">
 				<div className="flex items-center space-x-2">
@@ -215,7 +208,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
 				</button>
 			</div>
-
 			{/* Timer Display */}
 			<div className="relative mt-4">
 				<TimerDisplay
@@ -265,8 +257,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						/>
 					)}
 				</div>
-			</div>
-
+			</div>{' '}
 			{/* Settings panel */}
 			<PomodoroSettingsPanel
 				isOpen={showSettings}
@@ -275,6 +266,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				onUpdateSettings={handleUpdateSettings}
 				onReset={handleReset}
 			/>
-		</motion.div>
+		</div>
 	)
 }

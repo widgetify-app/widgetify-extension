@@ -1,5 +1,4 @@
 import { SectionPanel } from '@/components/section-panel'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 import React from 'react'
 import { useEffect, useState } from 'react'
 
@@ -62,63 +61,44 @@ export function ShortcutsTab() {
 		},
 		{} as Record<string, Shortcut[]>
 	)
-
 	return (
-		<LazyMotion features={domAnimation}>
-			<m.div
-				className="w-full max-w-xl mx-auto"
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
-				dir="rtl"
-			>
-				<SectionPanel title="کلیدهای میانبر" delay={0.1}>
-					<div className="space-y-5">
-						<p className="text-muted">
-							کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
-						</p>
+		<div className="w-full max-w-xl mx-auto" dir="rtl">
+			<SectionPanel title="کلیدهای میانبر" delay={0.1}>
+				<div className="space-y-5">
+					<p className="text-muted">
+						کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
+					</p>
 
-						{Object.entries(categories).map(
-							([category, categoryShortcuts]) => (
-								<div key={category} className="mb-6">
-									<h3
+					{Object.entries(categories).map(([category, categoryShortcuts]) => (
+						<div key={category} className="mb-6">
+							<h3 className={'text-base font-medium mb-3 text-content'}>
+								{category}
+							</h3>
+							<div className="space-y-2">
+								{categoryShortcuts.map((shortcut) => (
+									<div
+										key={shortcut.id}
 										className={
-											'text-base font-medium mb-3 text-content'
+											'flex items-center justify-between p-3 rounded-lg border border-content'
 										}
 									>
-										{category}
-									</h3>
-									<div className="space-y-2">
-										{categoryShortcuts.map((shortcut) => (
-											<div
-												key={shortcut.id}
-												className={
-													'flex items-center justify-between p-3 rounded-lg border border-content'
-												}
-											>
-												<span className={'text-content'}>
-													{shortcut.description}
-												</span>
-												<div
-													className={
-														'px-3 py-1 text-sm font-mono'
-													}
-												>
-													{formatShortcut(
-														isMac
-															? shortcut.macKey
-															: shortcut.windowsKey
-													)}
-												</div>
-											</div>
-										))}
+										<span className={'text-content'}>
+											{shortcut.description}
+										</span>
+										<div className={'px-3 py-1 text-sm font-mono'}>
+											{formatShortcut(
+												isMac
+													? shortcut.macKey
+													: shortcut.windowsKey
+											)}
+										</div>
 									</div>
-								</div>
-							)
-						)}
-					</div>
-				</SectionPanel>
-			</m.div>
-		</LazyMotion>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+			</SectionPanel>
+		</div>
 	)
 }

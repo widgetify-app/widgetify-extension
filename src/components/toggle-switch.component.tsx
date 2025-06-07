@@ -1,5 +1,3 @@
-import { m } from 'framer-motion'
-
 interface ToggleSwitchProps {
 	enabled: boolean
 	disabled?: boolean
@@ -20,21 +18,19 @@ export const ToggleSwitch = ({
 	}
 
 	return (
-		<m.div
+		<div
 			className={`
-				w-12 h-6 relative rounded-full transition-colors
+				w-12 h-6 relative rounded-full transition-colors duration-200
 				${getTrackStyle()} cursor-pointer
-				${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
+				${disabled ? 'cursor-not-allowed opacity-70' : ''}
+				${!disabled ? 'active:scale-95' : ''}`}
 			onClick={disabled ? undefined : onToggle}
-			whileTap={{ scale: disabled ? 1 : 0.95 }}
 		>
-			<m.span
-				className="absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1"
-				animate={{
-					x: enabled ? 0 : 24,
-				}}
-				transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+			<span
+				className={`absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1 transition-transform duration-300 ease-out ${
+					enabled ? 'translate-x-6' : 'translate-x-0'
+				}`}
 			/>
-		</m.div>
+		</div>
 	)
 }

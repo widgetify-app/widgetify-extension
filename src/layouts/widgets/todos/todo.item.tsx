@@ -1,5 +1,4 @@
 import CustomCheckbox from '@/components/checkbox'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiChevronDown, FiChevronUp, FiTrash2 } from 'react-icons/fi'
 import type { Todo } from '../calendar/interface/todo.interface'
@@ -45,14 +44,9 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 				return 'bg-primary text-primary-content'
 		}
 	}
-
 	return (
-		<motion.div
-			className={`overflow-hidden transition-all duration-200 rounded-lg border-r-2 ${getBorderStyle()} bg-content group ${blurMode ? 'blur-item' : ''}`}
-			initial={{ opacity: 0, y: 5 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, height: 0 }}
-			transition={{ duration: 0.2 }}
+		<div
+			className={`overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out border-r-2 ${getBorderStyle()} bg-content group ${blurMode ? 'blur-item' : ''}`}
 		>
 			<div className={'flex items-center gap-1.5 pr-1.5 p-1.5'}>
 				<div className="flex-shrink-0">
@@ -93,39 +87,31 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 						<FiTrash2 size={12} />
 					</button>
 				</div>
-			</div>
+			</div>{' '}
+			{expanded && (
+				<div className={'px-2 pb-1.5 text-[10px] text-content transition-all'}>
+					<p className="mt-0.5 mb-1 break-words">{todo.text}</p>
 
-			<AnimatePresence>
-				{expanded && (
-					<motion.div
-						className={'px-2 pb-1.5 text-[10px] text-content'}
-						initial={{ opacity: 0, height: 0 }}
-						animate={{ opacity: 1, height: 'auto' }}
-						exit={{ opacity: 0, height: 0 }}
-					>
-						<p className="mt-0.5 mb-1 break-words">{todo.text}</p>
-
-						<div className="flex items-center gap-1.5 mt-0.5 mb-1">
-							{todo.category && (
-								<span
-									className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
-								>
-									{todo.category}
-								</span>
-							)}
+					<div className="flex items-center gap-1.5 mt-0.5 mb-1">
+						{todo.category && (
 							<span
 								className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
 							>
-								{translatedPriority[todo.priority]}
+								{todo.category}
 							</span>
-							<span>{todo.date}</span>
-						</div>
+						)}
+						<span
+							className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
+						>
+							{translatedPriority[todo.priority]}
+						</span>
+						<span>{todo.date}</span>
+					</div>
 
-						{/* Notes */}
-						{todo.notes && <p className="mt-0.5 font-light">{todo.notes}</p>}
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</motion.div>
+					{/* Notes */}
+					{todo.notes && <p className="mt-0.5 font-light">{todo.notes}</p>}
+				</div>
+			)}
+		</div>
 	)
 }

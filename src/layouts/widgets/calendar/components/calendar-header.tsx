@@ -1,5 +1,4 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { motion } from 'framer-motion'
 import type React from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { TfiBackRight } from 'react-icons/tfi'
@@ -48,20 +47,18 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 		<div className="flex items-center justify-between p-2 md:p-2">
 			<h3 className={'font-medium text-xs text-content'}>
 				{currentDate.format('dddd، jD jMMMM jYYYY')}
-			</h3>
-
+			</h3>{' '}
 			<div className="flex gap-0.5">
 				{showTodayButton && (
-					<motion.button
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
+					<button
 						onClick={goToToday}
 						className={
-							'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors text-muted hover:opacity-100'
+							'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-all duration-200 text-muted hover:opacity-100 animate-in fade-in-0 zoom-in-95'
 						}
 					>
+						{' '}
 						<TfiBackRight size={12} />
-					</motion.button>
+					</button>
 				)}
 
 				<button
