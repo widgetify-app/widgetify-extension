@@ -36,11 +36,11 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	const getPriorityColor = () => {
 		switch (todo.priority) {
 			case 'high':
-				return 'bg-error text-error-content'
+				return 'bg-error/10 text-error'
 			case 'medium':
-				return 'bg-warning text-warning-content'
+				return 'bg-warning/10 text-warning'
 			case 'low':
-				return 'bg-success text-success-content'
+				return 'bg-success/10 text-success'
 			default:
 				return 'bg-primary text-primary-content'
 		}

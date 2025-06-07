@@ -45,7 +45,7 @@ export function NoteNavigation({
 						onClick={handlePrevNote}
 						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
 					>
-						<FiChevronRight size={18} className="text-base-content" />
+						<FiChevronRight size={18} className="text-base" />
 					</button>
 				</Tooltip>
 
@@ -55,7 +55,7 @@ export function NoteNavigation({
 						onClick={handleNextNote}
 						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
 					>
-						<FiChevronLeft size={18} className="text-base-content" />
+						<FiChevronLeft size={18} className="text-base" />
 					</button>
 				</Tooltip>
 			</div>
@@ -69,7 +69,7 @@ export function NoteNavigation({
 							notes.length > 1 && onDeleteNote(activeNoteId as string)
 						}
 						className={
-							'flex btn-circle items-center btn-ghost justify-center disabled:opacity-30'
+							'flex btn-circle items-center btn-ghost justify-center  disabled:text-muted'
 						}
 					>
 						<FiTrash2 size={14} />
@@ -82,7 +82,7 @@ export function NoteNavigation({
 						size="sm"
 						rounded="md"
 						className={
-							'flex  items-center btn-primary p-0.5 w-10 justify-center disabled:opacity-30'
+							'flex  items-center btn-primary p-0.5 w-10 justify-center text-white'
 						}
 					>
 						<FaPlus size={14} />
