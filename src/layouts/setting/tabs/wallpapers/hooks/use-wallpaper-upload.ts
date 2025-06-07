@@ -29,6 +29,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 			const newCustomWallpaper: Wallpaper = {
 				id: 'custom-wallpaper',
 				type: isImage ? 'IMAGE' : 'VIDEO',
+				previewSrc: '',
 				src: reader.result as string,
 				name: isImage ? 'تصویر سیستم' : 'ویدیو سیستم',
 				isCustom: true,
