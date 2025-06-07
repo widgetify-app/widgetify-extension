@@ -1,17 +1,17 @@
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
+import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type { ClockSettings } from '../clock-display'
 
 interface AnalogClockProps {
-	time: WidgetifyDate
+	time: Date
 	isDayTime: boolean
-	timezone: string
+	timezone: FetchedTimezone
 	setting: ClockSettings
 }
 
 export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockProps) {
-	const hours = time.hour() % 12
-	const minutes = time.minute()
-	const seconds = time.second()
+	const hours = time.getHours() % 12
+	const minutes = time.getMinutes()
+	const seconds = time.getSeconds()
 
 	const hourAngle = hours * 30 + minutes * 0.5
 	const minuteAngle = minutes * 6
@@ -24,12 +24,7 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 		<div className="relative flex flex-col items-center justify-center">
 			{/* Analog Clock */}
 			<div className="relative w-24 h-24 mb-2">
-				<svg
-					width="96"
-					height="96"
-					viewBox="0 0 96 96"
-					className="transform -rotate-90"
-				>
+				<svg width="96" height="96" viewBox="0 0 96 96">
 					{/* Clock face */}
 					<circle
 						cx="48"
@@ -117,7 +112,7 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 								fontSize: '10px',
 							}}
 						>
-							{timezone.slice(0, 3).toUpperCase()}
+							{timezone.value.slice(0, 3).toUpperCase()}
 						</span>
 					</div>
 				)}
