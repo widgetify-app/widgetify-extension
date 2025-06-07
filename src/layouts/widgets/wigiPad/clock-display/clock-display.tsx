@@ -1,7 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { useEffect, useState } from 'react'
 import { FaCog } from 'react-icons/fa'
 import { AnalogClock } from './clocks/analog.clock'
@@ -24,12 +23,16 @@ export interface ClockSettings {
 export function ClockDisplay() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
 	const { timezone } = useGeneralSetting()
-	const [time, setTime] = useState(getCurrentDate(timezone.value))
+	const [time, setTime] = useState(
+		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+	)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(getCurrentDate(timezone.value))
+			setTime(
+				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+			)
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])
@@ -55,7 +58,7 @@ export function ClockDisplay() {
 		return null
 	}
 
-	const isDayTime = time.hour() >= 6 && time.hour() < 18
+	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
 
 	async function updateClockSetting(newSetting: ClockSettings) {
 		setClockSettings(newSetting)
@@ -94,14 +97,14 @@ export function ClockDisplay() {
 					<AnalogClock
 						time={time}
 						isDayTime={isDayTime}
-						timezone={getTimeZoneLabel(timezone.value)}
+						timezone={timezone}
 						setting={clockSettings}
 					/>
 				) : (
 					<DigitalClock
 						time={time}
 						isDayTime={isDayTime}
-						timezone={getTimeZoneLabel(timezone.label)}
+						timezone={timezone}
 						setting={clockSettings}
 					/>
 				)}
@@ -178,16 +181,4 @@ export function ClockDisplay() {
 			/>
 		</div>
 	)
-}
-
-function getTimeZoneLabel(timezone: string): string {
-	if (timezone.length === 3) {
-		return timezone
-	}
-
-	if (timezone.split('/')[1]) {
-		return timezone.split('/')[1].replace('_', ' ').toUpperCase()
-	}
-
-	return timezone
 }
