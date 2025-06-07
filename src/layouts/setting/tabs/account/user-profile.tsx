@@ -6,7 +6,6 @@ import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
-import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
@@ -93,14 +92,8 @@ export const UserProfile = () => {
 			</div>
 		)
 	}
-
 	return (
-		<motion.div
-			className="w-full max-w-xl px-4 mx-auto"
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.3 }}
-		>
+		<div className="w-full max-w-xl px-4 mx-auto duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
 			<div className={'flex items-center justify-between p-5 mb-8 rounded-xl'}>
 				<div className="flex items-center gap-4">
 					<div className="flex-1">
@@ -199,9 +192,9 @@ export const UserProfile = () => {
 					>
 						<FiLogOut size={16} />
 						خروج از حساب کاربری
-					</Button>
+					</Button>{' '}
 				</div>
 			</SectionPanel>
-		</motion.div>
+		</div>
 	)
 }

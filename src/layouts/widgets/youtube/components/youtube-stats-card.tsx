@@ -1,5 +1,4 @@
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
-import { motion } from 'framer-motion'
 import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
 
 interface YouTubeStatsCardProps {
@@ -42,13 +41,8 @@ export function YouTubeStatsCard({
 			day: 'numeric',
 		})
 	}
-
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			className="px-1.5 space-y-1"
-		>
+		<div className="px-1.5 space-y-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
 			{/* Channel Info */}
 			<div
 				className="flex items-center gap-3 px-2 py-3 border rounded-lg bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/20"
@@ -121,8 +115,9 @@ export function YouTubeStatsCard({
 					'block w-full p-2 text-center text-xs rounded-lg border border-red-500/30 hover:bg-red-500/10 transition-colors text-content hover:text-red-500'
 				}
 			>
+				{' '}
 				مشاهده کانال در یوتیوب
 			</a>{' '}
-		</motion.div>
+		</div>
 	)
 }

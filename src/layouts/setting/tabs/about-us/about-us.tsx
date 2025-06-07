@@ -1,5 +1,4 @@
 import { SectionPanel } from '@/components/section-panel'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
 
@@ -38,139 +37,119 @@ export function AboutUsTab() {
 	}
 
 	return (
-		<LazyMotion features={domAnimation}>
-			<m.div
-				className="w-full max-w-2xl mx-auto"
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
-				dir="rtl"
-			>
-				<div className="flex flex-col items-center p-3 text-center">
-					{/* App Name & Version */}
-					<h1
-						className={
-							'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600'
-						}
-					>
-						ویجتی‌فای
-					</h1>
-					<div
-						className={
-							'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-primary/80'
-						}
-					>
-						<span>نسخه {manifest.version}</span>
-					</div>
-
-					{/* Description */}
-					<p className={'max-w-lg mb-2 text-sm leading-relaxed text-content'}>
-						ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با
-						ابزارهای کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل
-						می‌کند.
-					</p>
-				</div>
-
-				{/* Links Section */}
-				<SectionPanel title="لینک‌های ارتباطی" size="sm">
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-						<m.a
-							href="https://widgetify.ir/donate"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={`flex flex-col items-center justify-center p-4 transition-all border rounded-xl backdrop-blur-sm ${getDonateCardStyle()}`}
-							whileHover={{ y: -5 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-						>
-							<div
-								className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('green')}`}
-							>
-								<FaDonate size={24} />
-							</div>
-							<h3 className={'text-sm font-medium text-content'}>
-								حمایت مالی
-							</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>
-								کمک به توسعه ویجتی‌فای
-							</p>
-						</m.a>
-
-						<m.a
-							href="https://github.com/widgetify-app"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={`flex flex-col items-center justify-center p-4 transition-all border rounded-xl backdrop-blur-sm ${getGithubCardStyle()}`}
-							whileHover={{ y: -5 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-						>
-							<div
-								className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('gray')}`}
-							>
-								<FaGithub size={24} />
-							</div>
-							<h3 className={'text-sm font-medium text-content'}>گیت‌هاب</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>
-								مشاهده کد منبع
-							</p>
-						</m.a>
-
-						<m.a
-							href="https://feedback.widgetify.ir"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={`flex flex-col items-center justify-center p-4 transition-all border rounded-xl backdrop-blur-sm ${getFeedbackCardStyle()}`}
-							whileHover={{ y: -5 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-						>
-							<div
-								className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('blue')}`}
-							>
-								<MdFeedback size={24} />
-							</div>
-							<h3 className={'text-sm font-medium text-content'}>
-								بازخورد
-							</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>
-								ارسال پیشنهاد و انتقاد
-							</p>
-						</m.a>
-
-						<m.a
-							href="https://widgetify.ir"
-							target="_blank"
-							rel="noopener noreferrer"
-							className={`flex flex-col items-center justify-center p-4 transition-all border rounded-xl backdrop-blur-sm ${getWebsiteCardStyle()}`}
-							whileHover={{ y: -5 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-						>
-							<div
-								className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('indigo')}`}
-							>
-								<FaGlobe size={24} />
-							</div>
-							<h3 className={'text-sm font-medium text-content'}>وب‌سایت</h3>
-							<p className={'mt-1 text-xs text-center text-content'}>
-								مشاهده سایت رسمی
-							</p>
-						</m.a>
-					</div>
-				</SectionPanel>
-
-				{/* Footer */}
-				<div
+		<div className="w-full max-w-2xl mx-auto" dir="rtl">
+			<div className="flex flex-col items-center p-3 text-center">
+				{/* App Name & Version */}
+				<h1
 					className={
-						'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-content opacity-75'
+						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600'
 					}
 				>
-					<span>ساخته شده با</span>
-					<FaHeart className="mx-1 text-red-500 animate-pulse" size={14} />
-					<span>در ایران</span>
+					ویجتی‌فای
+				</h1>
+				<div
+					className={
+						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-primary/80'
+					}
+				>
+					<span>نسخه {manifest.version}</span>
 				</div>
 
-				<div className={'mt-2 mb-4 text-xs text-center text-content opacity-55'}>
-					© ویجتی‌فای - تمامی حقوق محفوظ است
+				{/* Description */}
+				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-content'}>
+					ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با
+					ابزارهای کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل
+					می‌کند.
+				</p>
+			</div>
+
+			{/* Links Section */}
+			<SectionPanel title="لینک‌های ارتباطی" size="sm">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+					<a
+						href="https://widgetify.ir/donate"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`flex flex-col items-center justify-center p-4 transition-all duration-200 border rounded-xl backdrop-blur-sm hover:-translate-y-1 ${getDonateCardStyle()}`}
+					>
+						<div
+							className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('green')}`}
+						>
+							<FaDonate size={24} />
+						</div>
+						<h3 className={'text-sm font-medium text-content'}>حمایت مالی</h3>
+						<p className={'mt-1 text-xs text-center text-content'}>
+							کمک به توسعه ویجتی‌فای
+						</p>
+					</a>
+
+					<a
+						href="https://github.com/widgetify-app"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`flex flex-col items-center justify-center p-4 transition-all duration-200 border rounded-xl backdrop-blur-sm hover:-translate-y-1 ${getGithubCardStyle()}`}
+					>
+						<div
+							className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('gray')}`}
+						>
+							<FaGithub size={24} />
+						</div>
+						<h3 className={'text-sm font-medium text-content'}>گیت‌هاب</h3>
+						<p className={'mt-1 text-xs text-center text-content'}>
+							مشاهده کد منبع
+						</p>
+					</a>
+
+					<a
+						href="https://feedback.widgetify.ir"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`flex flex-col items-center justify-center p-4 transition-all duration-200 border rounded-xl backdrop-blur-sm hover:-translate-y-1 ${getFeedbackCardStyle()}`}
+					>
+						<div
+							className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('blue')}`}
+						>
+							<MdFeedback size={24} />
+						</div>
+						<h3 className={'text-sm font-medium text-content'}>بازخورد</h3>
+						<p className={'mt-1 text-xs text-center text-content'}>
+							ارسال پیشنهاد و انتقاد
+						</p>
+					</a>
+
+					<a
+						href="https://widgetify.ir"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={`flex flex-col items-center justify-center p-4 transition-all duration-200 border rounded-xl backdrop-blur-sm hover:-translate-y-1 ${getWebsiteCardStyle()}`}
+					>
+						<div
+							className={`flex items-center justify-center w-12 h-12 mb-3 rounded-full ${getIconContainerStyle('indigo')}`}
+						>
+							<FaGlobe size={24} />
+						</div>
+						<h3 className={'text-sm font-medium text-content'}>وب‌سایت</h3>
+						<p className={'mt-1 text-xs text-center text-content'}>
+							مشاهده سایت رسمی
+						</p>
+					</a>
 				</div>
-			</m.div>
-		</LazyMotion>
+			</SectionPanel>
+
+			{/* Footer */}
+			<div
+				className={
+					'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-content opacity-75'
+				}
+			>
+				<span>ساخته شده با</span>
+				<FaHeart className="mx-1 text-red-500 animate-pulse" size={14} />
+				<span>در ایران</span>
+			</div>
+
+			<div className={'mt-2 mb-4 text-xs text-center text-content opacity-55'}>
+				© ویجتی‌فای - تمامی حقوق محفوظ است
+			</div>
+		</div>
 	)
 }

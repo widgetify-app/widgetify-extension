@@ -1,6 +1,5 @@
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import { motion } from 'framer-motion'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { EventItem } from './components/EventItem'
 import { EventsEmptyState } from './components/EventsEmptyState'
@@ -17,16 +16,6 @@ interface EventsProps {
 export function Events({ events, googleEvents = [], currentDate }: EventsProps) {
 	const sortedEvents = combineAndSortEvents(events, currentDate, googleEvents)
 
-	const containerVariants = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				staggerChildren: 0.08,
-			},
-		},
-	}
-
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-1">
@@ -34,11 +23,10 @@ export function Events({ events, googleEvents = [], currentDate }: EventsProps) 
 			</div>
 
 			{sortedEvents.length > 0 ? (
-				<motion.div
-					className={'flex-1 overflow-y-auto h-56 rounded-lg p-2'}
-					initial="hidden"
-					animate="visible"
-					variants={containerVariants}
+				<div
+					className={
+						'flex-1 overflow-y-auto h-56 rounded-lg p-2 animate-in fade-in-0 duration-300'
+					}
 				>
 					{sortedEvents.map((event, index) => (
 						<EventItem
@@ -47,7 +35,7 @@ export function Events({ events, googleEvents = [], currentDate }: EventsProps) 
 							index={index}
 						/>
 					))}
-				</motion.div>
+				</div>
 			) : (
 				<EventsEmptyState />
 			)}

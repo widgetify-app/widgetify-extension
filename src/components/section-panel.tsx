@@ -1,4 +1,3 @@
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 import type { ReactNode } from 'react'
 import React from 'react'
 
@@ -10,13 +9,7 @@ interface SectionPanelProps {
 	icon?: React.ReactElement
 }
 
-export function SectionPanel({
-	title,
-	children,
-	delay = 0,
-	size = 'md',
-	icon,
-}: SectionPanelProps) {
+export function SectionPanel({ title, children, size = 'md', icon }: SectionPanelProps) {
 	const getSizeStyles = () => {
 		switch (size) {
 			case 'xs':
@@ -49,27 +42,19 @@ export function SectionPanel({
 				}
 		}
 	}
-
 	const sizeStyles = getSizeStyles()
 
 	return (
-		<LazyMotion features={domAnimation}>
-			<m.div
-				className={`overflow-hidden ${sizeStyles.container}`}
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay }}
-			>
-				<div className={`${sizeStyles.header} border-b border-content`}>
-					<div className="flex items-center justify-between gap-2">
-						<h3 className={`font-medium ${sizeStyles.title} text-content`}>
-							{title}
-						</h3>
-						{icon && React.cloneElement(icon, {})}
-					</div>
+		<div className={`overflow-hidden ${sizeStyles.container} duration-300`}>
+			<div className={`${sizeStyles.header} border-b border-content`}>
+				<div className="flex items-center justify-between gap-2">
+					<h3 className={`font-medium ${sizeStyles.title} text-content`}>
+						{title}
+					</h3>
+					{icon && React.cloneElement(icon, {})}
 				</div>
-				<div className={sizeStyles.content}>{children}</div>
-			</m.div>
-		</LazyMotion>
+			</div>
+			<div className={sizeStyles.content}>{children}</div>
+		</div>
 	)
 }

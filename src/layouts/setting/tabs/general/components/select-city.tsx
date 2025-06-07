@@ -3,7 +3,6 @@ import { SectionPanel } from '@/components/section-panel'
 import { type SelectedCity, useWeatherStore } from '@/context/weather.context'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import { useGetRelatedCities } from '@/services/hooks/weather/getRelatedCities'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { CityResultsList } from '../../weather/CityResultsList'
 import { CitySearchInput } from '../../weather/CitySearchInput'
@@ -60,45 +59,34 @@ export function SelectCity() {
 						onChange={handleInputChange}
 						onFocus={handleInputFocus}
 						isLoading={isLoading}
-					/>
-
+					/>{' '}
 					{/* Search Results Dropdown */}
-					<AnimatePresence>
-						{isDropdownOpen && inputValue.length >= 2 && (
-							<motion.div
-								initial={{ opacity: 0, y: 10 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: 10 }}
-								className="absolute z-50 w-full mt-1"
-							>
-								<CityResultsList
-									cities={relatedCities || []}
-									onSelectCity={handleSelectCity}
-									onClickOutside={handleCloseDropdown}
-									isLoading={isLoading}
-								/>
-							</motion.div>
-						)}
-					</AnimatePresence>
+					{isDropdownOpen && inputValue.length >= 2 && (
+						<div className="absolute z-50 w-full mt-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-200">
+							{' '}
+							<CityResultsList
+								cities={relatedCities || []}
+								onSelectCity={handleSelectCity}
+								onClickOutside={handleCloseDropdown}
+								isLoading={isLoading}
+							/>
+						</div>
+					)}
 				</div>
-
 				{/* Selected City Display */}
-				<SelectedCityDisplay city={selectedCity} />
-
-				{/* Error Message */}
+				<SelectedCityDisplay city={selectedCity} /> {/* Error Message */}
 				{error && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
+					<div
 						className={
-							'p-3 text-sm text-right border rounded-lg backdrop-blur-sm '
+							'p-3 text-sm text-right border rounded-lg backdrop-blur-sm animate-in fade-in-0 duration-300'
 						}
 					>
+						{' '}
 						<div className="font-medium">خطا در دریافت اطلاعات</div>
 						<div className="mt-1 opacity-80">
 							لطفا اتصال اینترنت خود را بررسی کرده و مجدداً تلاش کنید.
 						</div>
-					</motion.div>
+					</div>
 				)}
 			</div>
 		</SectionPanel>

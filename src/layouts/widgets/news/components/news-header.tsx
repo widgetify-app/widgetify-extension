@@ -1,5 +1,4 @@
 import { OfflineIndicator } from '@/components/offline-indicator'
-import { motion } from 'framer-motion'
 import { FaGear, FaRss } from 'react-icons/fa6'
 
 interface NewsHeaderProps {
@@ -68,14 +67,12 @@ export const NewsHeader = ({
 				</div>
 			</div>
 
-			<motion.button
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.9 }}
-				className="p-1 rounded-full cursor-pointer hover:bg-gray-500/10"
+			<button
+				className="p-1 rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90 transition-all duration-150"
 				onClick={onSettingsClick}
 			>
 				<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-			</motion.button>
+			</button>
 		</div>
 	)
 }
