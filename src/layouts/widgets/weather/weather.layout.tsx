@@ -62,17 +62,15 @@ export function WeatherLayout() {
 	}, [dataUpdatedAt])
 
 	return (
-		<>
-			<WidgetContainer>
-				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
+		<WidgetContainer className="weather-layout">
+			{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<div className="relative flex-1 px-3 overflow-hidden lg:pb-0">
-					<Forecast
-						forecast={forecast}
-						temperatureUnit={weatherSettings.temperatureUnit}
-					/>
-				</div>
-			</WidgetContainer>
-		</>
+			<div className="relative flex-1 px-3 overflow-hidden lg:pb-0">
+				<Forecast
+					forecast={forecast}
+					temperatureUnit={weatherSettings.temperatureUnit}
+				/>
+			</div>
+		</WidgetContainer>
 	)
 }
