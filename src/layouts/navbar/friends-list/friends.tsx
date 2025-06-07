@@ -40,9 +40,13 @@ export function FriendsList() {
 	return (
 		<>
 			<div
+<<<<<<< HEAD
 				className={
 					'relative flex items-center  overflow-hidden px-2 gap-2 h-8 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
 				}
+=======
+				className={`friends-list-container relative flex items-center overflow-hidden px-2 gap-2 h-10 text-gray-300 transition-all border rounded-xl ${Colors.bgItemGlass}`}
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 				style={{ width: showFriendsList ? '190px' : '70px' }}
 			>
 				{showFriendsList && (

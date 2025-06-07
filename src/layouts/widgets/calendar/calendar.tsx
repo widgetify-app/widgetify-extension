@@ -20,11 +20,7 @@ const CalendarLayout: React.FC<any> = () => {
 	if (isDrawerOpen === null) return <></>
 
 	return (
-		<WidgetContainer
-			className={
-				'flex flex-col overflow-hidden md:flex-1 w-full transition-all duration-300'
-			}
-		>
+		<WidgetContainer className="calendar-layout flex flex-col overflow-hidden md:flex-1 w-full transition-all duration-300">
 			<CalendarHeader
 				currentDate={currentDate}
 				setCurrentDate={setCurrentDate}

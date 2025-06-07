@@ -38,6 +38,7 @@ export function WigiArzLayout({
 
 	return (
 		<>
+<<<<<<< HEAD
 			{inComboWidget ? (
 				<div className="flex items-center justify-between px-2 pb-2">
 					{selectedCurrencies.length === 0 ? (
@@ -61,6 +62,20 @@ export function WigiArzLayout({
 							style={{
 								scrollbarWidth: 'none',
 							}}
+=======
+			<WidgetContainer background={enableBackground} className={'arz-layout flex flex-col gap-1'}>
+				{enableHeader ? (
+					<ArzHeader title="ویجی‌ ارز" onSettingsClick={() => handleModalClose(true)} />
+				) : null}
+
+				{selectedCurrencies.length === 0 ? (
+					<div className="flex flex-col items-center justify-center h-full text-center">
+						<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
+						<p className="text-sm opacity-50">ارزهای مورد نظر خود را اضافه کنید</p>
+						<button
+							className={`mt-3 px-4 py-1.5 cursor-pointer rounded-lg ${getButtonStyles(theme)}`}
+							onClick={() => handleModalClose(true)}
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 						>
 							{selectedCurrencies.map((currency, index) => (
 								<div key={`${currency}-${index}`}>

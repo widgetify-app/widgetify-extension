@@ -34,14 +34,18 @@ export function NavbarLayout(): JSX.Element {
 
 	return (
 		<>
+<<<<<<< HEAD
 			<nav className="flex items-center justify-between px-4 py-0.5 mt-4">
+=======
+			<nav className="navbar-layout flex items-center justify-between px-4 py-2">
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 				<div className="flex items-center">
 					<h1 className="text-xl text-gray-100">ویجتی‌فای</h1>
 				</div>
 				<div className="flex items-center gap-2">
 					<FriendsList />
 
-					<SyncButton />
+					<SyncButton/>
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
 							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"

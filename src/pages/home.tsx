@@ -22,6 +22,12 @@ import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+<<<<<<< HEAD
+=======
+import Browser from 'webextension-polyfill'
+import Analytics from '../analytics'
+import { GuideButton } from '@/components/GuideButton'
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -280,6 +286,9 @@ export function HomePage() {
 					</WidgetVisibilityProvider>
 				</WeatherProvider>
 			</GeneralSettingProvider>
+			<WidgetVisibilityProvider>
+			 	<GuideButton />
+			</WidgetVisibilityProvider>
 			<Toaster
 				toastOptions={{
 					error: {

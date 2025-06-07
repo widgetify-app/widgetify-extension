@@ -166,6 +166,7 @@ export function SyncButton() {
 		<>
 			<Tooltip delay={0} content={tooltipContent()}>
 				<div className="relative group">
+<<<<<<< HEAD
 					<button
 						className="flex items-center justify-center w-8 h-8 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"
 						onClick={() => syncData(SyncTarget.ALL, 'POST')}
@@ -176,6 +177,29 @@ export function SyncButton() {
 								<AiOutlineCloudSync size={10} className="text-muted" />
 							</div>
 						)}
+=======
+					<LazyMotion features={domAnimation}>
+						<m.button
+							className={`sync-button-tour flex items-center justify-center cursor-pointer w-10 h-10 text-gray-300 transition-all border shadow-lg rounded-xl hover:text-gray-200 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${Colors.bgItemGlass}`}
+							onClick={() => syncData(SyncTarget.ALL, 'POST')}
+							aria-label="Sync"
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+						>
+							<AnimatePresence mode="wait">
+								{user?.avatar && syncState === null && (
+									<m.div
+										className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1"
+										initial={{ scale: 0, opacity: 0 }}
+										animate={{ scale: 1, opacity: 1 }}
+										exit={{ scale: 0, opacity: 0 }}
+										transition={{ duration: 0.2 }}
+									>
+										<AiOutlineCloudSync size={10} className="text-white" />
+									</m.div>
+								)}
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 
 						{syncState === SyncState.Syncing ? (
 							<div className="flex items-center justify-center">
