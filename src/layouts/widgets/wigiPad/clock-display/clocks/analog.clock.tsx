@@ -112,11 +112,24 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 								fontSize: '10px',
 							}}
 						>
-							{timezone.value.slice(0, 3).toUpperCase()}
+							{getTimeZoneLabel(timezone)}
 						</span>
 					</div>
 				)}
 			</div>
 		</div>
 	)
+}
+
+function getTimeZoneLabel(timezone: FetchedTimezone): string {
+	if (!timezone.value) {
+		return 'UTC'
+	}
+
+	const parts = timezone.value.split('/')
+	if (parts.length > 1) {
+		const city = parts[1].replace(/_/g, ' ')
+		return city.slice(0, 3).toUpperCase()
+	}
+	return timezone.value.slice(0, 3).toUpperCase()
 }
