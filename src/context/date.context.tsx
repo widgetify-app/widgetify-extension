@@ -23,7 +23,7 @@ interface DateContextType {
 const DateContext = createContext<DateContextType | undefined>(undefined)
 
 export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const activeDate = getCurrentDate(timezone.value)
 
 	const [currentDate, setCurrentDate] = useState<WidgetifyDate>(activeDate)

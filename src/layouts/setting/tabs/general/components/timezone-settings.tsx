@@ -3,7 +3,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/hooks/timezone/getTimezones.hook'
 
 export function TimezoneSettings() {
-	const { timezone, setTimezone } = useGeneralSetting()
+	const { selected_timezone: timezone, setTimezone } = useGeneralSetting()
 
 	const { data: timezones, loading, error } = useTimezones()
 

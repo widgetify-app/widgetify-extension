@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
-	timezone: FetchedTimezone
+	selected_timezone: FetchedTimezone
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -16,7 +16,7 @@ interface GeneralSettingContextType extends GeneralData {
 
 const DEFAULT_SETTINGS: GeneralData = {
 	analyticsEnabled: true,
-	timezone: {
+	selected_timezone: {
 		label: 'آسیا / تهران',
 		value: 'Asia/Tehran',
 		offset: '+03:30',
@@ -38,10 +38,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 					setSettings({
 						...DEFAULT_SETTINGS,
 						...storedSettings,
-						timezone:
-							typeof storedSettings.timezone === 'string'
-								? DEFAULT_SETTINGS.timezone
-								: storedSettings.timezone,
+						selected_timezone:
+							typeof storedSettings.selected_timezone === 'string'
+								? DEFAULT_SETTINGS.selected_timezone
+								: storedSettings.selected_timezone,
 					})
 				}
 			} finally {
@@ -71,14 +71,16 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting('analyticsEnabled', value)
 	}
 	const setTimezone = (value: FetchedTimezone) => {
-		updateSetting('timezone', value)
+		updateSetting('selected_timezone', value)
 	}
 
 	if (!isInitialized) {
 		return null
 	}
 	const contextValue: GeneralSettingContextType = {
-		...settings,
+		analyticsEnabled: settings.analyticsEnabled,
+		selected_timezone:
+			settings?.selected_timezone || DEFAULT_SETTINGS.selected_timezone,
 		updateSetting,
 		setAnalyticsEnabled,
 		setTimezone,

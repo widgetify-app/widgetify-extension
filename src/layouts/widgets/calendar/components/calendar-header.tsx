@@ -18,7 +18,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	setCurrentDate,
 	goToToday,
 }) => {
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 
 	const isCurrentMonthToday = () => {
 		const realToday = getCurrentDate(timezone.value)

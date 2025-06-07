@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const ClockComponent = () => {
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const [time, setTime] = useState(getCurrentDate(timezone.value))
 
 	useEffect(() => {

@@ -22,7 +22,7 @@ export interface ClockSettings {
 
 export function ClockDisplay() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
-	const { timezone } = useGeneralSetting()
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const [time, setTime] = useState(
 		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
 	)
