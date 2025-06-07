@@ -33,6 +33,7 @@ export function useWallpaper(
 							: 'گرادیان',
 						type: 'GRADIENT',
 						src: '',
+						previewSrc: '',
 						gradient: wallpaper.gradient,
 					}
 					setSelectedBackground(gradientWallpaper)

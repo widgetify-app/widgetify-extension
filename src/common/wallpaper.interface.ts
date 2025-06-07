@@ -3,6 +3,7 @@ export interface Wallpaper {
 	name: string
 	type: 'IMAGE' | 'VIDEO' | 'GRADIENT'
 	src: string
+	previewSrc: string
 	isCustom?: boolean
 	source?: string
 	gradient?: GradientColors

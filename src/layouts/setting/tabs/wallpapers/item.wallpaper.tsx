@@ -23,7 +23,7 @@ export const WallpaperItem = React.memo(
 
 		const loadContent = () => {
 			if (wallpaper.type === 'IMAGE' && imgRef.current) {
-				imgRef.current.src = wallpaper.src
+				imgRef.current.src = wallpaper.previewSrc
 			} else if (wallpaper.type === 'VIDEO' && videoRef.current) {
 				videoRef.current.src = wallpaper.src
 				videoRef.current.load()

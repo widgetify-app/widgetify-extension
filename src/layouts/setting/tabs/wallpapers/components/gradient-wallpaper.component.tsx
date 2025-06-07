@@ -75,6 +75,7 @@ export function GradientWallpaper({
 			name: name,
 			type: 'GRADIENT',
 			src: '',
+			previewSrc: '',
 			gradient: {
 				from,
 				to,

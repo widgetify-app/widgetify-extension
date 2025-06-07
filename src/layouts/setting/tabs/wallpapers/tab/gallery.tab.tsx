@@ -85,9 +85,10 @@ export function GalleryTab() {
 									className="overflow-hidden rounded aspect-video"
 								>
 									<img
-										src={image.src}
+										src={image.previewSrc}
 										alt={image.name}
 										className="object-cover w-full h-full"
+										loading="lazy"
 									/>
 								</div>
 							))}
