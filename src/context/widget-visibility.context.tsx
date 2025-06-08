@@ -22,6 +22,7 @@ import toast from 'react-hot-toast'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 
+<<<<<<< HEAD
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
 	arzLive = 'arzLive',
@@ -33,6 +34,20 @@ export enum WidgetKeys {
 	notes = 'notes',
 	youtube = 'youtube',
 	wigiPad = 'wigiPad',
+=======
+export interface WidgetVisibilityState {
+	widgetify: boolean
+	arzLive: boolean
+	calendar: boolean
+	weather: boolean
+	news: boolean
+	comboWidget: boolean
+	todos: boolean
+	tools: boolean
+	notes: boolean
+	youtube: boolean
+	enable_sync?: boolean;
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 }
 export interface WidgetItem {
 	id: WidgetKeys

@@ -16,11 +16,22 @@
 	},
 	"dependencies": {
 		"@hello-pangea/dnd": "^18.0.1",
+<<<<<<< HEAD
 		"@tanstack/react-query": "^5.80.3",
 		"@wxt-dev/webextension-polyfill": "^1.0.0",
 		"axios": "1.9.0",
 		"chart.js": "4.4.9",
+=======
+		"@radix-ui/react-icons": "^1.3.2",
+		"@reactour/tour": "^3.8.0",
+		"@tanstack/react-query": "^5.73.3",
+		"@types/react-joyride": "^2.0.2",
+		"axios": "1.8.4",
+		"chart.js": "4.4.8",
+		"clsx": "^2.1.1",
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 		"jalali-moment": "3.3.11",
+		"lucide-react": "^0.511.0",
 		"moment": "2.30.1",
 		"moment-hijri": "3.0.0",
 		"motion": "12.16.0",
@@ -32,7 +43,13 @@
 		"react-ga4": "2.1.0",
 		"react-hot-toast": "2.5.2",
 		"react-icons": "5.5.0",
+<<<<<<< HEAD
 		"swiper": "11.2.8",
+=======
+		"react-joyride": "^2.9.3",
+		"swiper": "11.2.6",
+		"tailwind-merge": "^3.3.0",
+>>>>>>> c6d9a541c508f834068ac3fc29dd3277a17f91b2
 		"uuid": "11.1.0",
 		"wxt": "^0.20.7"
 	},

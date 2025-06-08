@@ -52,7 +52,7 @@ export function SearchLayout() {
 	}, [isInputFocused])
 
 	return (
-		<>
+		<div className="search-layout widget-container">
 			<div className="flex flex-col items-center justify-center">
 				<div className="relative w-full" ref={searchRef}>
 					<form className="w-full" onSubmit={handleSubmit}>
@@ -108,6 +108,6 @@ export function SearchLayout() {
 					/>
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }

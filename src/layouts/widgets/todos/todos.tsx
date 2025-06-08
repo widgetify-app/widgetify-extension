@@ -61,7 +61,7 @@ export function TodosLayout() {
 	const stats = getCompletionStats()
 
 	return (
-		<WidgetContainer>
+		<WidgetContainer className="todos-layout">
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
