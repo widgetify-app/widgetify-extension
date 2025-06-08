@@ -64,6 +64,16 @@ export function BookmarkItem({
 				borderColor: addOpacityToColor(bookmark.customBackground, 0.2),
 			}
 		: {}
+		
+	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		// Only handle left clicks with onClick
+		if (e.button === 0) {
+			e.preventDefault()
+			onClick(e)
+		}
+		// Middle click will be handled natively by the browser
+		// Right click (button 2) is not modified
+	}
 
 	return (
 		<div
@@ -75,9 +85,11 @@ export function BookmarkItem({
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
 			<Tooltip content={bookmark.title}>
-				<button
-					onClick={onClick}
-					onAuxClick={onClick}
+				<a
+					href={bookmark.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					onClick={handleClick}
 					style={customStyles}
 					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-xl shadow-sm w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
@@ -106,7 +118,7 @@ export function BookmarkItem({
 							'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
 						}
 					/>
-				</button>
+				</a>
 			</Tooltip>
 		</div>
 	)
