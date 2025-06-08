@@ -43,7 +43,7 @@
 	--color-base-content: rgba(255, 255, 255, 0.95);
 	--color-primary: rgba(var(--brand-primary-rgb), 0.9);
 	--color-primary-focus: rgba(var(--brand-primary-rgb), 1);
-	--color-primary-content: rgba(255, 255, 255, 1);
+	--color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
 	--color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
 	--color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
 	--color-secondary-content: rgba(255, 255, 255, 1);

@@ -1,5 +1,4 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { PetSettings } from './components/pet-settings'
 import { PrivacySettings } from './components/privacy-settings'
 import { SelectCity } from './components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
@@ -16,7 +15,6 @@ export function GeneralSettingTab() {
 				analyticsEnabled={analyticsEnabled}
 				setAnalyticsEnabled={setAnalyticsEnabled}
 			/>
-			<PetSettings key="pets" />
 		</div>
 	)
 }
