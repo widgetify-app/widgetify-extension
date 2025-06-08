@@ -1,5 +1,6 @@
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
+import { MdPets } from 'react-icons/md'
 import {
 	VscAccount,
 	VscCloud,
@@ -13,6 +14,7 @@ import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
+import { PetsTab } from './tabs/pets/pets'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
@@ -30,6 +32,12 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			value: 'general',
 			icon: <VscSettingsGear size={20} />,
 			element: <GeneralSettingTab />,
+		},
+		{
+			label: 'حساب کاربری',
+			value: 'account',
+			icon: <VscAccount size={20} />,
+			element: <AccountTab />,
 		},
 		{
 			label: 'ظاهری',
@@ -50,10 +58,10 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			element: <WeatherOptions />,
 		},
 		{
-			label: 'حساب کاربری',
-			value: 'account',
-			icon: <VscAccount size={20} />,
-			element: <AccountTab />,
+			label: 'حیوان خانگی',
+			value: 'pets',
+			icon: <MdPets size={20} />,
+			element: <PetsTab />,
 		},
 		{
 			label: 'میانبرها',
