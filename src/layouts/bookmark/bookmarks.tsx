@@ -115,7 +115,7 @@ export function BookmarksComponent() {
       if (bookmark.type === "FOLDER") {
         openBookmarks(bookmark);
       } else {
-        e.preventDefault(); //fix: enable middle-click to open bookmarks when widget is scrollable
+        e.preventDefault(); //fix: enable middle-click to open bookmarks when widget is scrollable by preventing the default behaviour
         window.open(bookmark.url);
       }
       return;
