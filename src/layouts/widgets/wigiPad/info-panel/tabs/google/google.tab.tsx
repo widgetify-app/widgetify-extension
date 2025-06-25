@@ -33,9 +33,9 @@ export function GoogleTab() {
 	const GoogleEventsContent = () => (
 		<div className="space-y-2">
 			{!isAuthenticated ? (
-				<div className="flex flex-col items-center py-1 text-center text-muted">
-					<LuLockKeyhole className="mb-2 text-2xl" />
-					<p className="text-sm">
+				<div className="flex flex-col items-center py-1.5 text-center text-muted">
+					<LuLockKeyhole className="mb-2 text-3xl" />
+					<p className="max-w-44 text-xs leading-normal">
 						برای مشاهده رویدادهای گوگل، لطفاً وارد حساب کاربری خود شوید.
 					</p>
 				</div>
