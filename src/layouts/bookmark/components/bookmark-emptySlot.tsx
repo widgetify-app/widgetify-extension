@@ -18,10 +18,10 @@ export function EmptyBookmarkSlot({
 	}
 
 	return (
-		<Tooltip content="افزودن بوکمارک">
+		<Tooltip content="افزودن بوکمارک" className='w-full lg:min-w-[5.4rem]'>
 			<button
 				onClick={canAdd ? onClick : undefined}
-				className={`relative flex flex-col items-center shadow-sm justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] ${getEmptySlotStyle()} ${canAdd ? 'transition-transform ease-in-out group-hover:scale-102' : ''}`}
+				className={`relative flex flex-col items-center shadow-sm justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-2xl w-full h-16 md:h-[5.5rem] ${getEmptySlotStyle()} ${canAdd ? 'transition-transform ease-in-out group-hover:scale-102' : ''}`}
 			>
 				<div className="relative flex items-center justify-center opacity-60 w-14 h-14">
 					{canAdd ? (

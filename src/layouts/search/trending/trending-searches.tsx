@@ -64,11 +64,11 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 		<LazyMotion features={domAnimation}>
 			<AnimatePresence>
 				<m.div
-					initial={{ opacity: 0, y: -10 }}
+					initial={{ opacity: 0, y: -30 }}
 					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -10 }}
+					exit={{ opacity: 0, y: -30 }}
 					className={
-						'absolute left-0 right-0  w-full mt-1 border shadow-lg rounded-xl overflow-hidden trending-section border-content'
+						'absolute left-0 right-0  w-full mt-1.5 border shadow-lg rounded-2xl overflow-hidden trending-section border-content'
 					}
 					style={{
 						zIndex: 9999,

@@ -58,9 +58,22 @@ export function SearchLayout() {
 					<form className="w-full" onSubmit={handleSubmit}>
 						<div
 							className={
-								'relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl group bg-widget'
+								'relative flex items-center gap-x-2 py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl rounded-4xl group bg-widget search-box'
 							}
 						>
+							<button
+								type="submit"
+								className={
+									'h-9 w-9 shrink-0 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 hover:bg-base-300 cursor-pointer transition-all duration-300'
+								}
+								onClick={() => {
+									if(!searchQuery){
+										inputRef.current?.focus()
+									}
+								}}
+							>
+								<CiSearch size={22} strokeWidth={1} opacity={0.5} />
+							</button>
 							<input
 								ref={inputRef}
 								type="text"
@@ -69,33 +82,23 @@ export function SearchLayout() {
 								onChange={handleSearchInputChange}
 								onFocus={() => setIsInputFocused(true)}
 								className={
-									'w-full py-4 pr-12 pl-16 text-lg font-light text-right focus:outline-none text-content placeholder:text-content search-box'
+									'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-content'
 								}
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
-							<button
-								type="submit"
-								className={
-									'absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-lg cursor-pointer left-2 top-1/2'
-								}
-							>
-								<CiSearch size={22} />
-							</button>
-							{searchQuery && (
 								<button
 									type="button"
 									onClick={handleClearSearch}
 									className={
-										'absolute p-2 transition-all duration-200 -translate-y-1/2 rounded-full cursor-pointer right-3 top-1/2 text-gray-400 hover:text-gray-600 dark:text-content dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+										`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? "opacity-70 hover:opacity-100 hover:bg-base-300" : "opacity-0 pointer-events-none"}`
 									}
 								>
-									<MdOutlineClear size={16} />
+									<MdOutlineClear size={20} className='opacity-50' />
 								</button>
-							)}
 							<div
 								className={
-									'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-xl border-content'
+									'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-4xl border-content'
 								}
 							/>
 						</div>
