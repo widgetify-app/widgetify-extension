@@ -68,7 +68,7 @@ export function InfoPanel() {
 	}
 
 	return (
-		<div className="flex flex-col h-full overflow-hidden border border-t rounded-2xl bg-widget widget-wrapper border-content">
+		<div className="flex flex-col h-full overflow-hidden border border-t rounded-2xl border-content">
 			<div
 				ref={tabContainerRef}
 				className="p-[5px] flex lg:justify-between overflow-x-auto scrollbar-none gap-x-1"

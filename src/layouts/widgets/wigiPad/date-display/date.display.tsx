@@ -11,18 +11,20 @@ export function DateDisplay() {
 	return (
 		<div
 			className={
-				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center border border-b-0 border-l-0 rounded-2xl border-content bg-widget widget-wrapper transition-all duration-500'
+				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center border border-b-0 border-l-0 rounded-r-2xl border-content  transition-all duration-500'
 			}
 		>
-			<span className={`text-base !leading-none ${
-				isHoliday
-					? 'text-error drop-shadow-md'
+			<span
+				className={`text-base !leading-none ${
+					isHoliday
+						? 'text-error drop-shadow-md'
 						: 'text-content drop-shadow-md'
-				}`}>
-					{today.locale('fa').format('dddd')}
+				}`}
+			>
+				{today.locale('fa').format('dddd')}
 			</span>
 			<div
-				className={`text-7xl !leading-none font-sans font-bold transition-all duration-300 transform ${
+				className={`text-7xl text-center !leading-none font-sans font-bold transition-all duration-300 transform ${
 					isHoliday
 						? 'text-error drop-shadow-md'
 						: isDayTime
