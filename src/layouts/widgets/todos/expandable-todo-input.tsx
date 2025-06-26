@@ -97,37 +97,31 @@ export function ExpandableTodoInput({
 	}
 
 	return (
-		<div ref={containerRef} className="flex-none pt-2 mt-auto">
-			<div
-				className={`rounded-lg overflow-hidden  ${
-					isExpanded ? 'border border-content' : ''
-				}`}
-			>
-				<div className="flex items-center gap-1 p-2">
+		<div ref={containerRef} className="flex-none pt-3 mt-auto">
+			<div className={`rounded-xl overflow-hidden`}>
+				<div className="p-2 flex items-center gap-1 rounded-xl bg-base-300">
 					<div className="flex-grow w-full">
 						<TextInput
 							ref={inputRef}
 							value={todoText}
 							onChange={onChangeTodoText}
 							placeholder="عنوان وظیفه جدید..."
-							className="w-full py-1.5 text-sm !rounded-lg"
+							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 text-sm !rounded-lg !bg-transparent"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
 						/>
-					</div>{' '}
-					<div className="flex flex-col items-center flex-shrink-0  gap-0.5">
-						<Button
-							onClick={handleAddTodo}
-							disabled={!todoText.trim()}
-							size="md"
-							isPrimary={true}
-							rounded="md"
-							className="p-2"
-						>
-							<FiPlus size={16} />
-						</Button>
 					</div>
+					<Button
+						onClick={handleAddTodo}
+						disabled={!todoText.trim()}
+						size="sm"
+						isPrimary={true}
+						rounded="lg"
+						className="p-1.5 h-7 !bg-none"
+					>
+						<FiPlus size={16} />
+					</Button>
 				</div>
 
 				<AnimatePresence>
@@ -138,7 +132,7 @@ export function ExpandableTodoInput({
 							exit={{ opacity: 0, height: 0 }}
 							transition={{ duration: 0.2 }}
 						>
-							<div className="px-3 pb-3 space-y-3">
+							<div className="px-2 py-3 space-y-3">
 								<div>
 									<label
 										className={
@@ -184,28 +178,34 @@ export function ExpandableTodoInput({
 									</div>
 								</div>{' '}
 								<div className="mt-2 space-y-2">
-									<div className="flex items-center gap-2">
-										<div className="flex-shrink-0 w-5 text-center">
-											<FiTag className="text-indigo-400" />
+									<div className="flex items-center gap-3">
+										<div className="flex-shrink-0 text-center">
+											<FiTag
+												className="text-indigo-400"
+												size={16}
+											/>
 										</div>
 										<TextInput
 											type="text"
 											value={category}
 											onChange={(value) => setCategory(value)}
 											placeholder="دسته‌بندی (مثال: شخصی، کاری)"
-											className="text-xs py-1.5"
+											className="text-xs placeholder:text-xs py-1.5"
 										/>
 									</div>
 
-									<div className="flex items-start gap-2">
-										<div className="flex-shrink-0 w-5 mt-2 text-center">
-											<FiMessageSquare className="text-indigo-400" />
+									<div className="flex items-center gap-3">
+										<div className="flex-shrink-0 text-center">
+											<FiMessageSquare
+												className="text-indigo-400"
+												size={16}
+											/>
 										</div>
 										<TextInput
 											value={notes}
 											onChange={(value) => setNotes(value)}
 											placeholder="یادداشت یا توضیحات تکمیلی..."
-											className="text-xs py-1.5"
+											className="text-xs placeholder:text-xs py-1.5"
 										/>
 									</div>
 								</div>
