@@ -38,7 +38,7 @@ const CalendarLayout: React.FC<any> = () => {
 				setSelectedDate={setSelectedDate}
 			/>
 
-			<div className="flex-1">
+			<div className="mt-2 flex-1">
 				<DaySummary selectedDate={selectedDate} />
 			</div>
 		</WidgetContainer>

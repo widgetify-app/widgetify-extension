@@ -44,7 +44,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 md:p-2">
+		<div className="flex items-center justify-between">
 			<h3 className={'font-medium text-xs text-content'}>
 				{currentDate.format('dddd، jD jMMMM jYYYY')}
 			</h3>{' '}
@@ -53,30 +53,29 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 					<button
 						onClick={goToToday}
 						className={
-							'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-all duration-200 text-muted hover:opacity-100 animate-in fade-in-0 zoom-in-95'
+							'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 text-muted hover:bg-base-300 duration-300 hover:opacity-100 animate-in fade-in-0 zoom-in-95'
 						}
 					>
-						{' '}
-						<TfiBackRight size={12} />
+						<TfiBackRight size={12} strokeWidth={1} />
 					</button>
 				)}
 
 				<button
 					onClick={() => changeMonth(-1)}
 					className={
-						'flex items-center gap-1 p-1 text-xs rounded-lg cursor-pointer transition-colors text-muted hover:opacity-100'
+						'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 duration-300'
 					}
 				>
-					<FaChevronRight size={12} />
+					<FaChevronRight size={12} strokeWidth={1} />
 				</button>
 
 				<button
 					onClick={() => changeMonth(1)}
 					className={
-						'flex items-center gap-1 p-1  text-xs rounded-lg cursor-pointer transition-colors text-muted opacity-70 hover:opacity-100'
+						'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 duration-300'
 					}
 				>
-					<FaChevronLeft size={12} />
+					<FaChevronLeft size={12} strokeWidth={1} />
 				</button>
 			</div>
 		</div>
