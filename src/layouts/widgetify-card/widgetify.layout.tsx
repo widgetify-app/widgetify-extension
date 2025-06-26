@@ -31,22 +31,20 @@ export const WidgetifyLayout = () => {
 				}
 
 				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
-					<div className={'flex items-center w-full border-b border-content'}>
+					<div
+						className={
+							'flex items-center w-full pb-1 border-b border-content'
+						}
+					>
 						<div className="flex items-center gap-2">
-							<p className="w-32 text-xs font-semibold truncate">
-								سلام {userName}!{' '}
-							</p>
+							<p className="w-32 text-sm font-semibold truncate">سلام 👋</p>
 						</div>
 					</div>
 
 					{/* Daily Summary Content */}
-					<div className="flex-1 w-full py-2 overflow-y-auto small-scrollbar">
+					<div className="flex-1 w-full pt-1.5 overflow-y-auto small-scrollbar">
 						{dailyMessage?.content && (
-							<div
-								className={
-									'p-2 mb-1 rounded-lg bg-content shadow-sm border-r-2 border-blue-400/50'
-								}
-							>
+							<div className={'p-2 mb-1 rounded-lg bg-content'}>
 								<div className="flex items-start gap-2">
 									{dailyMessage.isAi && (
 										<FiMessageCircle className="mt-0.5 text-blue-400 flex-shrink-0" />
