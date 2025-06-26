@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import type { BookmarkType } from '../types/bookmark.types'
+import { LuX } from 'react-icons/lu'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
 
@@ -27,23 +28,23 @@ export function IconSourceSelector({
 }) {
 	const getButtonStyle = (isActive: boolean) => {
 		if (isActive) {
-			return 'bg-primary text-white border-primary'
+			return 'bg-primary text-white'
 		}
 
-		return 'bg-content text-content'
+		return 'text-content'
 	}
 
 	return (
-		<div className="flex justify-center gap-1 mt-1 text-[10px]">
+		<div className="w-fit p-1 flex justify-center gap-1 rounded-2xl text-[10px] bg-base-300">
 			<div
 				onClick={() => setIconSource('auto')}
-				className={`px-2 py-1 cursor-pointer border border-content rounded ${getButtonStyle(iconSource === 'auto')}`}
+				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'auto')}`}
 			>
 				خودکار
 			</div>
 			<div
 				onClick={() => setIconSource('upload')}
-				className={`px-2 py-1 cursor-pointer border border-content rounded ${getButtonStyle(iconSource === 'upload')}`}
+				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'upload')}`}
 			>
 				آپلود
 			</div>
@@ -64,10 +65,10 @@ export function TypeSelector({
 			<button
 				type="button"
 				onClick={() => setType('BOOKMARK')}
-				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
+				className={`flex-1 py-1.5 cursor-pointer rounded-xl transition-colors duration-300 active:scale-95 ${
 					type === 'BOOKMARK'
 						? 'bg-primary text-white/85'
-						: 'bg-content text-content'
+						: 'bg-base-300 text-content'
 				}`}
 			>
 				بوکمارک
@@ -75,10 +76,10 @@ export function TypeSelector({
 			<button
 				type="button"
 				onClick={() => setType('FOLDER')}
-				className={`flex-1 py-1.5 cursor-pointer rounded-lg transition-colors ${
+				className={`flex-1 py-1.5 cursor-pointer rounded-xl transition-colors duration-300 active:scale-95 ${
 					type === 'FOLDER'
 						? 'bg-primary text-white/85'
-						: 'bg-content text-content'
+						: 'bg-base-300 text-content'
 				}`}
 			>
 				پوشه
@@ -135,7 +136,7 @@ export function useBookmarkIcon() {
 		if (formData.customImage) {
 			return (
 				<div
-					className="relative w-12 h-12 mx-auto cursor-pointer group"
+					className={`relative w-20 h-20 p-2 mx-auto cursor-pointer group`}
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -151,9 +152,9 @@ export function useBookmarkIcon() {
 					</div>
 					<button
 						onClick={handleRemoveCustomImage}
-						className="absolute z-10 p-1 text-red-400 bg-black rounded-full -top-2 -right-2 hover:text-red-300"
+						className="absolute top-0 right-0 z-10 w-5 h-5 flex items-center justify-center bg-base-300 hover:bg-red-400/20 cursor-pointer rounded-full"
 					>
-						×
+						<LuX size={12} className='text-red-400' />
 					</button>
 				</div>
 			)
@@ -162,7 +163,7 @@ export function useBookmarkIcon() {
 		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
 			return (
 				<div
-					className={`relative w-12 h-12 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
+					className={`relative w-20 h-20 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -199,7 +200,7 @@ export function useBookmarkIcon() {
 
 		return (
 			<div
-				className={`flex flex-col items-center justify-center w-16 h-16 mx-auto transition-colors border-2 border-dashed rounded-lg cursor-pointer ${
+				className={`relative flex flex-col items-center justify-center w-full h-20 p-2 mx-auto transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
 					isDragging
 						? 'border-blue-400 bg-blue-50/10'
 						: 'border-content hover:bg-neutral-800/50'
@@ -262,20 +263,13 @@ export function ShowAdvancedButton({
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
 			className={
-				'flex items-center gap-1 px-2 py-1 text-sm font-medium transition-colors duration-200 cursor-pointer text-content opacity-90 border border-content rounded-md'
+				'bg-base-300 hover:bg-base-300/80 flex items-center gap-1 px-3 py-1 text-sm font-medium transition-all duration-200 cursor-pointer text-content rounded-xl active:scale-95'
 			}
 		>
-			{showAdvanced ? (
-				<>
-					<span>گزینه‌های کمتر</span>
-					<FiChevronUp className="w-4 h-4" />
-				</>
-			) : (
-				<>
-					<span>گزینه‌های بیشتر</span>
-					<FiChevronDown className="w-4 h-4" />
-				</>
-			)}
+			<span>
+				{showAdvanced ? "گزینه‌های کمتر" : "گزینه‌های بیشتر"}
+			</span>
+			<FiChevronUp size={16} className={`transition-all duration-300 ${showAdvanced ? "rotate-0" : "rotate-180"}`} />
 		</button>
 	)
 }

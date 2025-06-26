@@ -1,14 +1,13 @@
 interface ContextMenuProps {
+	className?: string
 	position: { x: number; y: number }
 	children: React.ReactNode
 }
 
-export function ContextMenu({ position, children }: ContextMenuProps) {
+export function ContextMenu({ className, position, children }: ContextMenuProps) {
 	return (
 		<div
-			className={
-				'absolute p-2 min-w-[150px] rounded-lg bg-content shadow-md  border-1 border-content'
-			}
+			className={`absolute flex flex-col p-2 min-w-5 rounded-xl bg-content backdrop-blur-lg border border-content ${className}`}
 			style={{ top: position.y, left: position.x, zIndex: 1000 }}
 			onClick={(e) => e.stopPropagation()}
 		>

@@ -74,12 +74,12 @@ export function BookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			<Tooltip content={bookmark.title}>
+			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-xl shadow-sm w-[5.4rem] h-[5.7rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-16 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{onMenuClick && bookmark && (
 						<div
@@ -88,10 +88,10 @@ export function BookmarkItem({
 								onMenuClick(e)
 							}}
 							className={
-								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-primary/50 z-10'
+								'absolute cursor-pointer top-1.5 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 							}
 						>
-							<SlOptions />
+							<SlOptions size={12} />
 						</div>
 					)}
 					{RenderStickerPattern(bookmark)}
