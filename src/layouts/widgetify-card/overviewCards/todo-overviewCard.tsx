@@ -35,7 +35,7 @@ export function TodoOverviewCard() {
 
 	return (
 		<motion.div
-			className={'p-1 rounded-lg bg-content shadow-sm'}
+			className={'p-1 rounded-lg bg-content'}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.4 }}
@@ -47,9 +47,9 @@ export function TodoOverviewCard() {
 				<div className="flex-1">
 					<p className="text-xs font-medium">{getTodoLabel('full')}</p>
 					{todoOptions.blurMode ? (
-						<p className="text-xs opacity-75">حالت مخفی فعال است.</p>
+						<p className="text-[10px] opacity-75">حالت مخفی فعال است.</p>
 					) : (
-						<p className="text-xs opacity-75">
+						<p className="text-[10px] opacity-75">
 							{pendingTodos.length > 0
 								? `${completedTodos.length} از ${todayTodos.length} وظیفه تکمیل شده`
 								: todayTodos.length > 0
