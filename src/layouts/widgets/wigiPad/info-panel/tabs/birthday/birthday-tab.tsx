@@ -7,7 +7,7 @@ interface Props {
 }
 export function BirthdayTab({ birthdays }: Props) {
 	return (
-		<div className="space-y-2">
+		<div className="space-y-0.5">
 			{birthdays.length > 0 ? (
 				birthdays.map((birthday) => (
 					<BirthdayItem key={birthday.id} birthday={birthday} />

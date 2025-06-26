@@ -23,6 +23,8 @@ export function InfoPanel() {
 		sectionId: string,
 		event: React.MouseEvent<HTMLButtonElement>
 	) => {
+		if (!sectionId) return
+		if (activeSection === sectionId) return
 		setActiveSection(sectionId)
 
 		const button = event.currentTarget
@@ -47,18 +49,9 @@ export function InfoPanel() {
 				return <BirthdayTab birthdays={data.birthdays} />
 			case 'google-meetings':
 				return <GoogleTab />
-			case 'notifications':
-				return (
-					<div className="space-y-2">
-						{data.notifications.map((notification, i) => (
-							<NotificationItem key={i} notification={notification} />
-						))}
-					</div>
-				)
-
 			default:
 				return (
-					<div className="space-y-3">
+					<div className="space-y-0.5">
 						{data.notifications.map((notification, index) => (
 							<NotificationItem key={index} notification={notification} />
 						))}
