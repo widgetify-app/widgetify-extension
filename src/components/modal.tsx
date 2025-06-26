@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
+import { LuX } from 'react-icons/lu'
 
 type ModalProps = {
 	isOpen: boolean
@@ -81,25 +82,24 @@ const Modal = ({
 			}}
 			onClose={onClose}
 			dir={direction}
-			style={{ borderRadius: 'var(--daisy-border-radius)' }}
 		>
 			<div
-				className={`modal-box overflow-hidden ${sizValue.w} ${className} !p-2`}
+				className={`modal-box overflow-hidden rounded-2xl ${sizValue.w} ${className} !p-2.5`}
 				onClick={(e) => e.stopPropagation()}
 			>
-				<div className="flex items-center justify-between w-full pb-2 mb-2 border-b border-content">
-					{title && <h3 className={'font-bold text-lg'}>{title}</h3>}
+				<div className="pr-2 flex items-center justify-between w-full mb-2">
+					{title && <h3 className={'font-medium text-lg'}>{title}</h3>}
 					{showCloseButton && (
 						<button
 							onClick={onClose}
-							className="btn btn-sm btn-circle btn-ghost"
+							className={`h-7 w-7 flex items-center justify-center bg-base-300 text-xs font-medium rounded-full transition-all border-none shadow-none text-muted cursor-pointer active:scale-95`}
 							aria-label="Close"
 						>
-							✕
+							<LuX size={16} />
 						</button>
 					)}
 				</div>
-				<div className={`${sizValue.h} ${sizValue.overflow} py-4`}>
+				<div className={`${sizValue.h} ${sizValue.overflow}`}>
 					{children}
 				</div>
 			</div>

@@ -162,14 +162,14 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				</div>
 
 				<div
-					className={`flex justify-center w-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
+					className={`mt-4 flex justify-center w-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
 				>
 					<Button
 						onClick={onClose}
 						type="button"
 						isPrimary={true}
 						size="md"
-						className="w-full text-white"
+						className="w-full rounded-xl text-white"
 					>
 						تایید
 					</Button>

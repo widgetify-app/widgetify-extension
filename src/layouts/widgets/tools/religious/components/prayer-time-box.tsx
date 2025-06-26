@@ -20,7 +20,7 @@ export const PrayerTimeBox = ({
 	return (
 		<div
 			className={
-				'bg-content border border-content rounded-lg p-[.3rem] flex flex-col items-center transition-all duration-300'
+				'bg-content rounded-lg p-[.3rem] flex flex-col items-center transition-all duration-300'
 			}
 			style={{ animationDelay: `${index * 0.1}s` }}
 		>
@@ -31,7 +31,7 @@ export const PrayerTimeBox = ({
 			{isLoading ? (
 				<div
 					className={
-						'text-content font-medium h-5 w-12 bg-current rounded opacity-30 animate-pulse'
+						'text-content font-medium h-4 w-12 bg-current rounded-xl opacity-30 animate-pulse'
 					}
 				/>
 			) : (
