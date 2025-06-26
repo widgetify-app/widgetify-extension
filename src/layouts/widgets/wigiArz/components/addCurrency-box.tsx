@@ -169,7 +169,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 						type="button"
 						isPrimary={true}
 						size="md"
-						className="w-full rounded-xl text-white"
+						className="w-full text-white rounded-xl"
 					>
 						تایید
 					</Button>

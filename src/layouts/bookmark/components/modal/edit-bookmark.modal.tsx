@@ -149,8 +149,8 @@ export function EditBookmarkModal({
 			className="!overflow-y-hidden"
 		>
 			<div className="flex flex-col justify-between gap-2 p-2 overflow-y-auto h-[23rem]">
-				<div className='flex flex-col gap-2'>
-					<div className='flex flex-col items-center gap-4'>
+				<div className="flex flex-col gap-2">
+					<div className="flex flex-col items-center gap-4">
 						{type === 'BOOKMARK' && (
 							<IconSourceSelector
 								iconSource={iconSource}
@@ -168,13 +168,15 @@ export function EditBookmarkModal({
 							برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
 						</p>
 					</div>
-					
+
 					<input
 						type="file"
 						ref={fileInputRef}
 						className="hidden"
 						accept="image/*"
-						onChange={(e) => handleImageUpload(e, updateFormData, setIconSource)}
+						onChange={(e) =>
+							handleImageUpload(e, updateFormData, setIconSource)
+						}
 					/>
 
 					<TextInput
@@ -210,8 +212,14 @@ export function EditBookmarkModal({
 						setShowAdvanced={setShowAdvanced}
 					/>
 
-					<div className='flex items-center gap-x-2'>
-						<Button onClick={onClose} size="md" className={`btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out`}>
+					<div className="flex items-center gap-x-2">
+						<Button
+							onClick={onClose}
+							size="md"
+							className={
+								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
+							}
+						>
 							لغو
 						</Button>
 						<Button
@@ -223,7 +231,9 @@ export function EditBookmarkModal({
 							}
 							size="md"
 							isPrimary={true}
-							className={`btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out`}
+							className={
+								'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+							}
 						>
 							{isPending ? 'در حال ذخیره' : 'ذخیره'}
 						</Button>

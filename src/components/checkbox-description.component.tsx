@@ -20,7 +20,11 @@ export function CheckBoxWithDescription({
 			}
 			onClick={onToggle}
 		>
-			<CustomCheckbox checked={isEnabled} onChange={onToggle} className='active:scale-95' />
+			<CustomCheckbox
+				checked={isEnabled}
+				onChange={onToggle}
+				className="active:scale-95"
+			/>
 			<div className="flex-1">
 				<p className={'font-bold text-content'}>{title}</p>
 				{description ? (

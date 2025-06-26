@@ -230,11 +230,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</label>
 
 					<div className="flex items-center gap-2 mt-1">
-						<Button 
-							size="md" 
-							type="button" 
-							onClick={toggleEmojiPopover} 
-							className={`btn !w-fit px-8 border-none shadow-none bg-base-300 text-muted rounded-xl transition-colors duration-300 ease-in-out`}
+						<Button
+							size="md"
+							type="button"
+							onClick={toggleEmojiPopover}
+							className={
+								'btn !w-fit px-8 border-none shadow-none bg-base-300 text-muted rounded-xl transition-colors duration-300 ease-in-out'
+							}
 						>
 							{sticker ? (
 								<>
@@ -325,23 +327,27 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="flex justify-end gap-2 mt-4">
-						<Button 
-							size="md"
-							onClick={() => onClose(null)}
-							className={`btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out`}
-						>
-							لغو
-						</Button>
-						<Button
-							type="submit"
-							onClick={() => handleClose()}
-							size="md"
-							isPrimary={true}
-							className={`btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out`}
-						>
-							ذخیره
-						</Button>
-					</div>
+					<Button
+						size="md"
+						onClick={() => onClose(null)}
+						className={
+							'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
+						}
+					>
+						لغو
+					</Button>
+					<Button
+						type="submit"
+						onClick={() => handleClose()}
+						size="md"
+						isPrimary={true}
+						className={
+							'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+						}
+					>
+						ذخیره
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	)

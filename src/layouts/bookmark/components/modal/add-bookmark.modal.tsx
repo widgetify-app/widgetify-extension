@@ -189,7 +189,9 @@ export function AddBookmarkModal({
 						ref={fileInputRef}
 						className="hidden"
 						accept="image/*"
-						onChange={(e) => handleImageUpload(e, updateFormData, setIconSource)}
+						onChange={(e) =>
+							handleImageUpload(e, updateFormData, setIconSource)
+						}
 					/>
 
 					<TextInput
@@ -223,24 +225,30 @@ export function AddBookmarkModal({
 							customBackground: formData.customBackground,
 							customTextColor: formData.customTextColor,
 							sticker: formData.sticker,
-								type,
-								title: formData.title,
-								url: formData.url,
-							}}
+							type,
+							title: formData.title,
+							url: formData.url,
+						}}
 						isOpen={showAdvanced}
 						onClose={handleAdvancedModalClose}
 						title={'تنظیمات پیشرفته'}
 					/>
 				</div>
-			
+
 				<div className="flex justify-between gap-x-4">
 					<ShowAdvancedButton
 						showAdvanced={showAdvanced}
 						setShowAdvanced={setShowAdvanced}
 					/>
 
-					<div className='flex items-center gap-x-2'>
-						<Button onClick={onClose} size="md" className={`btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out`}>
+					<div className="flex items-center gap-x-2">
+						<Button
+							onClick={onClose}
+							size="md"
+							className={
+								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
+							}
+						>
 							لغو
 						</Button>
 						<Button
@@ -252,7 +260,9 @@ export function AddBookmarkModal({
 							}
 							size="md"
 							isPrimary={true}
-							className={`btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out`}
+							className={
+								'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+							}
 						>
 							{isPending ? 'در حال ذخیره' : 'ذخیره'}
 						</Button>
