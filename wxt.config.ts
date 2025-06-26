@@ -5,6 +5,30 @@ export default defineConfig({
 	vite: () =>
 		({
 			plugins: [tailwindcss()],
+			build: {
+				minify: 'terser',
+				terserOptions: {
+					compress: {
+						drop_console: true,
+						drop_debugger: true,
+						pure_funcs: ['console.log', 'console.info', 'console.debug'],
+					},
+					format: {
+						comments: false,
+					},
+				},
+				rollupOptions: {
+					treeshake: {
+						moduleSideEffects: false,
+						propertyReadSideEffects: false,
+						tryCatchDeoptimization: false,
+					},
+				},
+				chunkSizeWarningLimit: 1000,
+				sourcemap: false,
+				cssCodeSplit: true,
+				assetsInlineLimit: 4096,
+			},
 		}) as any,
 	alias: {
 		'@/common': './src/common',
