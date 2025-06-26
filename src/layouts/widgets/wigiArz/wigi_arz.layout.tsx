@@ -39,7 +39,7 @@ export function WigiArzLayout({
 	return (
 		<>
 			{inComboWidget ? (
-				<div className="flex items-center justify-between px-2 pb-2">
+				<div className="mt-2 flex items-center justify-between pb-2">
 					{selectedCurrencies.length === 0 ? (
 						<div className="flex flex-col items-center justify-center h-full text-center">
 							<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />

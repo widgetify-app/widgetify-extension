@@ -105,7 +105,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	return (
 		<>
 			<div
-				className={`flex items-center justify-between gap-2 p-2 rounded-lg cursor-pointer 
+				className={`flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg cursor-pointer 
 				bg-content opacity-100 hover:!bg-gray-500/30
 				transition-all duration-300 ease-in-out hover:shadow-lg
 				transform hover:scale-100 active:scale-95 translate-y-0`}
