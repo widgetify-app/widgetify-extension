@@ -156,108 +156,107 @@ export function AddBookmarkModal({
 				onClose()
 			}}
 			size="md"
-			title={`✨ ${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
+			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'} ✨`}
 			direction="rtl"
-			closeOnBackdropClick={false}
 			className="!overflow-y-hidden"
 		>
 			<form
 				onSubmit={handleAdd}
-				className="flex flex-col gap-2 p-2 overflow-y-auto h-96"
+				className="flex flex-col justify-between gap-2 p-2 overflow-y-auto h-[23rem]"
 			>
-				<div className="flex gap-2 mb-1">
-					<TypeSelector type={type} setType={setType} />
+				<div>
+					<div className="flex gap-2 mb-4">
+						<TypeSelector type={type} setType={setType} />
+					</div>
+
+					<div className="mb-2 flex flex-col items-center gap-y-2.5">
+						{type === 'BOOKMARK' && (
+							<IconSourceSelector
+								iconSource={iconSource}
+								setIconSource={setIconSource}
+							/>
+						)}
+						{renderIconPreview(
+							formData,
+							iconSource,
+							setIconSource,
+							updateFormData,
+							type
+						)}
+					</div>
+					<input
+						type="file"
+						ref={fileInputRef}
+						className="hidden"
+						accept="image/*"
+						onChange={(e) => handleImageUpload(e, updateFormData, setIconSource)}
+					/>
+
+					<TextInput
+						type="text"
+						name="title"
+						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+						value={formData.title}
+						onChange={(v) => updateFormData('title', v)}
+						className={
+							'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
+						}
+					/>
+
+					<div className="relative h-[50px]">
+						{type === 'BOOKMARK' && (
+							<TextInput
+								type="text"
+								name="url"
+								placeholder="آدرس لینک"
+								value={formData.url}
+								onChange={(v) => handleUrlChange(v)}
+								className={
+									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+								}
+							/>
+						)}
+					</div>
+
+					<AdvancedModal
+						bookmark={{
+							customBackground: formData.customBackground,
+							customTextColor: formData.customTextColor,
+							sticker: formData.sticker,
+								type,
+								title: formData.title,
+								url: formData.url,
+							}}
+						isOpen={showAdvanced}
+						onClose={handleAdvancedModalClose}
+						title={'تنظیمات پیشرفته'}
+					/>
 				</div>
-
-				<div className="mb-2">
-					{renderIconPreview(
-						formData,
-						iconSource,
-						setIconSource,
-						updateFormData,
-						type
-					)}
-					<p className="mt-2 text-xs text-center text-content">
-						برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
-					</p>
-					{type === 'BOOKMARK' && (
-						<IconSourceSelector
-							iconSource={iconSource}
-							setIconSource={setIconSource}
-						/>
-					)}
-				</div>
-				<input
-					type="file"
-					ref={fileInputRef}
-					className="hidden"
-					accept="image/*"
-					onChange={(e) => handleImageUpload(e, updateFormData, setIconSource)}
-				/>
-
-				<TextInput
-					type="text"
-					name="title"
-					placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-					value={formData.title}
-					onChange={(v) => updateFormData('title', v)}
-					className={
-						'w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
-					}
-				/>
-
-				<div className="relative h-[50px]">
-					{type === 'BOOKMARK' && (
-						<TextInput
-							type="text"
-							name="url"
-							placeholder="آدرس لینک"
-							value={formData.url}
-							onChange={(v) => handleUrlChange(v)}
-							className={
-								'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-							}
-						/>
-					)}
-				</div>
-
-				<div className={'flex items-center justify-end'}>
+			
+				<div className="flex justify-between gap-x-4">
 					<ShowAdvancedButton
 						showAdvanced={showAdvanced}
 						setShowAdvanced={setShowAdvanced}
 					/>
-				</div>
 
-				<AdvancedModal
-					bookmark={{
-						customBackground: formData.customBackground,
-						customTextColor: formData.customTextColor,
-						sticker: formData.sticker,
-						type,
-						title: formData.title,
-						url: formData.url,
-					}}
-					isOpen={showAdvanced}
-					onClose={handleAdvancedModalClose}
-					title={'تنظیمات پیشرفته'}
-				/>
-
-				<div className="flex justify-between mt-4">
-					<Button onClick={onClose} size="md">
-						لغو
-					</Button>
-					<Button
-						type="submit"
-						disabled={
-							!formData.title?.trim() ||
-							(type === 'BOOKMARK' && !formData.url?.trim()) ||
-							isPending
-						}
-						size="md"
-						isPrimary={true}
-					>
-						{isPending ? 'در حال ذخیره...' : 'ذخیره'}
-					</Button>
+					<div className='flex items-center gap-x-2'>
+						<Button onClick={onClose} size="md" className={`btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out`}>
+							لغو
+						</Button>
+						<Button
+							type="submit"
+							disabled={
+								!formData.title?.trim() ||
+								(type === 'BOOKMARK' && !formData.url?.trim()) ||
+								isPending
+							}
+							size="md"
+							isPrimary={true}
+							className={`btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out`}
+						>
+							{isPending ? 'در حال ذخیره' : 'ذخیره'}
+						</Button>
+					</div>
 				</div>
 			</form>
 		</Modal>
