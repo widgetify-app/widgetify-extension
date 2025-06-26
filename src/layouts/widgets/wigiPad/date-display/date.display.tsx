@@ -11,7 +11,7 @@ export function DateDisplay() {
 	return (
 		<div
 			className={
-				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center border border-b-0 border-l-0 rounded-r-2xl border-content  transition-all duration-500'
+				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500'
 			}
 		>
 			<span
