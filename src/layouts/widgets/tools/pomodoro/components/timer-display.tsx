@@ -53,7 +53,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 				<text
 					x="50"
 					y="50"
-					className={'text-base-content'}
+					className={'text-base-content font-sans'}
 					textAnchor="middle"
 					dominantBaseline="middle"
 					fontSize="16"
@@ -63,12 +63,12 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					{formatTime(timeLeft)}
 				</text>
 				{/* Current mode text */}
-				<text x="50" y="65" textAnchor="middle" fontSize="6" fill="#6b7280">
+				<text x="50" y="65" textAnchor="middle" fontSize="7" fill="#6b7280">
 					{modeFullLabels[mode]}
 				</text>
 			</svg>{' '}
 			{/* Cycle indicator */}
-			<div className="absolute flex space-x-1 -translate-x-1/2 left-1/2">
+			<div className="mt-2 flex justify-center gap-x-1">
 				{Array.from({ length: cyclesBeforeLongBreak }).map((_, i) => (
 					<div
 						key={i}

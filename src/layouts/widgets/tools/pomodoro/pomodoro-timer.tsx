@@ -182,8 +182,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	return (
 		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
-			<div className="relative flex items-center justify-between mb-2">
-				<div className="flex items-center space-x-2">
+			<div className="relative flex items-center justify-between mb-4">
+				<div className="flex items-center gap-x-1.5">
 					<ModeButton
 						mode="work"
 						currentMode={mode}
@@ -209,7 +209,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				</button>
 			</div>
 			{/* Timer Display */}
-			<div className="relative mt-4">
+			<div className="relative mt-3">
 				<TimerDisplay
 					timeLeft={timeLeft}
 					progress={progress}
@@ -220,31 +220,31 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				/>
 
 				{/* Control buttons */}
-				<div className="flex justify-center space-x-4 mt-0.5">
+				<div className="flex justify-center gap-x-4 mt-7">
+					<ControlButton
+						mode={'reset'}
+						icon={<FiRefreshCw size={16} strokeWidth={2.25} />}
+						onClick={handleReset}
+					/>
+
 					{isRunning ? (
 						<ControlButton
 							mode={'pause'}
-							icon={<FiPause />}
+							icon={<FiPause size={16} strokeWidth={2.25} />}
 							onClick={handlePause}
 						/>
 					) : (
 						<ControlButton
 							mode={'play'}
-							icon={<FiPlay />}
+							icon={<FiPlay size={16} strokeWidth={2.25} />}
 							onClick={handleStart}
 						/>
 					)}
 
-					<ControlButton
-						mode={'reset'}
-						icon={<FiRefreshCw />}
-						onClick={handleReset}
-					/>
-
 					{mode.includes('break') && (
 						<ControlButton
 							mode={'check'}
-							icon={<FiCheckCircle />}
+							icon={<FiCheckCircle size={16} strokeWidth={2.25} />}
 							onClick={() => handleModeChange('work')}
 						/>
 					)}
@@ -252,7 +252,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					{mode === 'work' && (
 						<ControlButton
 							mode={'coffee'}
-							icon={<FiCoffee />}
+							icon={<FiCoffee size={16} strokeWidth={2.25} />}
 							onClick={() => handleModeChange('short-break')}
 						/>
 					)}
