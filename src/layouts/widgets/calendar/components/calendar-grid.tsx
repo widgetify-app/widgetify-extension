@@ -50,7 +50,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const selectedDateStr = formatDateStr(selectedDate)
 
 	return (
-		<div className="grid grid-cols-7 gap-1 p-2 text-center">
+		<div className="grid grid-cols-7 gap-1 py-2 text-center">
 			{WEEKDAYS.map((day) => (
 				<div key={day} className={'text-sm mb-1 text-content opacity-80'}>
 					{day}
