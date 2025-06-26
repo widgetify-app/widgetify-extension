@@ -1,18 +1,15 @@
-import { WidgetContainer } from '../widget-container'
 import { ClockDisplay } from './clock-display/clock-display'
 import { DateDisplay } from './date-display/date.display'
 import { InfoPanel } from './info-panel/info-panel'
 
 export function WigiPadWidget() {
 	return (
-		<WidgetContainer className="grid grid-rows-2 gap-0">
-			<div className="grid grid-cols-2">
+		<div className="h-80 min-h-80 max-h-80 grid grid-cols-2 grid-rows-2 gap-3 !p-0">
 				<DateDisplay />
 				<ClockDisplay />
-			</div>
-			<div className="grid grid-cols-1">
+			<div className="col-span-2">
 				<InfoPanel />
 			</div>
-		</WidgetContainer>
+		</div>
 	)
 }

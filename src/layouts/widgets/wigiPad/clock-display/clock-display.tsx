@@ -1,14 +1,11 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useEffect, useState } from 'react'
-import { FaCog } from 'react-icons/fa'
 import { AnalogClock } from './clocks/analog.clock'
 import { DigitalClock } from './clocks/digital.clock'
 import { ClockSettingsModal } from './components/clock-settings-modal'
-
-const dayIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01d.png'
-const nightIcon = 'https://widgetify-ir.storage.c2.liara.space/weather/01n.png'
+import { Button } from '@/components/button/button'
+import { FaCog } from 'react-icons/fa'
 
 export enum ClockType {
 	Analog = 'analog',
@@ -67,28 +64,14 @@ export function ClockDisplay() {
 	}
 
 	return (
-		<div className="relative flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded bg-content border-content">
-			<div className="flex items-center justify-between w-full mb-2">
-				<div
-					className="w-4 h-4 transition-all duration-500 ease-out transform scale-100 opacity-40"
-					style={{
-						animation: 'fadeInScale 0.5s ease-out',
-					}}
-					key={isDayTime ? 'day' : 'night'}
-				>
-					<img
-						src={isDayTime ? dayIcon : nightIcon}
-						alt={isDayTime ? 'Day' : 'Night'}
-						className="object-contain w-full h-full"
-					/>
-				</div>
-
+		<div className="relative bg-widget flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded-2xl bg-widget widget-wrapper border-content">
+			<div className="absolute inset-0 z-20 group">
 				<Button
 					onClick={() => setIsSettingsOpen(true)}
 					size="xs"
-					className="p-1 transition-colors rounded opacity-50 btn-ghost hover:bg-gray-500/20"
+					className="m-1.5 h-5 w-5 p-0 bg-widget flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
 				>
-					<FaCog className="w-3 h-3 text-content opacity-60 hover:opacity-100" />
+					<FaCog size={12} className="text-content" />
 				</Button>
 			</div>
 
@@ -109,69 +92,6 @@ export function ClockDisplay() {
 					/>
 				)}
 			</div>
-
-			<div className="absolute inset-0 pointer-events-none">
-				{[...Array(3)].map((_, i) => (
-					<div
-						key={i}
-						className={`absolute w-1 h-1 rounded-full ${isDayTime ? 'bg-yellow-300' : 'bg-blue-300'} opacity-30 transition-colors duration-500`}
-						style={{
-							left: `${10 + i * 30}%`,
-							top: `${40 + i * 20}%`,
-							animation: `floatParticle${i + 1} ${2 + i * 0.5}s ease-in-out infinite`,
-							animationDelay: `${i * 0.5}s`,
-						}}
-					/>
-				))}
-			</div>
-
-			<style>
-				{`
-					@keyframes fadeInScale {
-						0% {
-							opacity: 0;
-							transform: scale(0) rotate(-180deg);
-						}
-						100% {
-							opacity: 0.4;
-							transform: scale(1) rotate(0deg);
-						}
-					}
-
-					@keyframes floatParticle1 {
-						0%, 100% {
-							transform: translateY(0px);
-							opacity: 0.3;
-						}
-						50% {
-							transform: translateY(-10px);
-							opacity: 0.6;
-						}
-					}
-
-					@keyframes floatParticle2 {
-						0%, 100% {
-							transform: translateY(0px);
-							opacity: 0.3;
-						}
-						50% {
-							transform: translateY(-8px);
-							opacity: 0.7;
-						}
-					}
-
-					@keyframes floatParticle3 {
-						0%, 100% {
-							transform: translateY(0px);
-							opacity: 0.3;
-						}
-						50% {
-							transform: translateY(-12px);
-							opacity: 0.5;
-						}
-					}
-				`}
-			</style>
 
 			{/* Settings Modal */}
 			<ClockSettingsModal
