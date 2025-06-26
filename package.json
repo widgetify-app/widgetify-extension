@@ -35,6 +35,7 @@
 		"swiper": "11.2.8",
 		"uuid": "11.1.0",
 		"workbox-background-sync": "^7.3.0",
+		"workbox-cacheable-response": "^7.3.0",
 		"workbox-expiration": "^7.3.0",
 		"workbox-precaching": "^7.3.0",
 		"workbox-routing": "^7.3.0",
