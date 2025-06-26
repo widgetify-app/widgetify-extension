@@ -7,9 +7,7 @@ interface ContextMenuProps {
 export function ContextMenu({ className, position, children }: ContextMenuProps) {
 	return (
 		<div
-			className={
-				`absolute flex flex-col p-2 min-w-5 rounded-xl backdrop-blur-lg border border-content ${className}`
-			}
+			className={`absolute flex flex-col p-2 min-w-5 rounded-xl bg-content backdrop-blur-lg border border-content ${className}`}
 			style={{ top: position.y, left: position.x, zIndex: 1000 }}
 			onClick={(e) => e.stopPropagation()}
 		>
