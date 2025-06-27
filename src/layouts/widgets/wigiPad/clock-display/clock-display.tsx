@@ -64,7 +64,7 @@ export function ClockDisplay() {
 	}
 
 	return (
-		<div className="relative flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 border-r-0 border-content rounded-l-2xl">
+		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden">
 			<div className="absolute inset-0 z-20 group">
 				<Button
 					onClick={() => setIsSettingsOpen(true)}
