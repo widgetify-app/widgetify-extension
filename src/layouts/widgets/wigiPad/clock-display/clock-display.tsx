@@ -42,7 +42,7 @@ export function ClockDisplay() {
 			} else {
 				setClockSettings({
 					clockType: ClockType.Digital,
-					showSeconds: false,
+					showSeconds: true,
 					showTimeZone: true,
 				})
 			}
