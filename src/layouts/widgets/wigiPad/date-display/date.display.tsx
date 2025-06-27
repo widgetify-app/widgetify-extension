@@ -17,7 +17,7 @@ export function DateDisplay() {
 	return (
 		<div
 			className={
-				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center  rounded-2xl border-content bg-widget widget-wrapper transition-all duration-500'
+				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500'
 			}
 		>
 			{isHoliday && (

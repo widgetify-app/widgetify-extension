@@ -1,11 +1,11 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useEffect, useState } from 'react'
+import { FaCog } from 'react-icons/fa'
 import { AnalogClock } from './clocks/analog.clock'
 import { DigitalClock } from './clocks/digital.clock'
 import { ClockSettingsModal } from './components/clock-settings-modal'
-import { Button } from '@/components/button/button'
-import { FaCog } from 'react-icons/fa'
 
 export enum ClockType {
 	Analog = 'analog',
@@ -64,12 +64,12 @@ export function ClockDisplay() {
 	}
 
 	return (
-		<div className="relative bg-widget flex flex-col items-center px-2 py-1 overflow-hidden border border-b-0 rounded-2xl bg-widget widget-wrapper border-content">
+		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden">
 			<div className="absolute inset-0 z-20 group">
 				<Button
 					onClick={() => setIsSettingsOpen(true)}
 					size="xs"
-					className="m-1.5 h-5 w-5 p-0 bg-widget flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
+					className="m-1.5 h-5 w-5 p-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
 				>
 					<FaCog size={12} className="text-content" />
 				</Button>
