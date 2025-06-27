@@ -111,7 +111,7 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
-							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"
+							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
 							onClick={() => openWidgetSettings()}
 						>
 							<TbApps size={18} className="text-muted" />
@@ -119,7 +119,7 @@ export function NavbarLayout(): JSX.Element {
 					</Tooltip>
 					<Tooltip content="تنظیمات">
 						<div
-							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 hover:scale-105"
+							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
 							onClick={() => setShowSettings(true)}
 						>
 							<VscSettings size={18} className="text-muted" />
