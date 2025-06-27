@@ -68,16 +68,16 @@ export function InfoPanel() {
 	}
 
 	return (
-		<div className="flex flex-col h-full overflow-hidden border border-t rounded bg-content border-content">
+		<div className="flex flex-col h-full overflow-hidden border border-t rounded-2xl bg-widget widget-wrapper border-content">
 			<div
 				ref={tabContainerRef}
-				className="flex overflow-x-auto border-b scrollbar-none border-base-300 bg-base-200"
+				className="p-[5px] flex lg:justify-between overflow-x-auto scrollbar-none gap-x-1"
 			>
 				{sections.map((section) => (
 					<button
 						key={section.id}
 						onClick={(event) => handleSectionClick(section.id, event)}
-						className={`flex items-center gap-1 px-3 py-0.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
+						className={`flex items-center gap-1 px-2.5 py-[3px] text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-full ${
 							activeSection === section.id
 								? 'bg-primary text-white'
 								: 'text-muted hover:bg-base-300'

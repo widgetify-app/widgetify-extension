@@ -53,17 +53,9 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const holidayEvents = allEvents.filter((event) => event.isHoliday).length
 
 	return (
-		<div className={'overflow-hidden border border-content rounded-lg'}>
-			<div className="px-2 pt-1 pb-2">
-				<h3
-					className={
-						'text-xs text-center font-medium mb-1 widget-tem-text truncate'
-					}
-				>
-					خلاصه روز {selectedDate.format('jD jMMMM')}
-				</h3>
-
-				<div className="grid grid-cols-2 gap-1">
+		<div className={'overflow-hidden border border-content rounded-xl'}>
+			<div className="p-1.5">
+				<div className="grid grid-cols-2 gap-1.5">
 					<div
 						className={
 							'p-1 rounded-lg cursor-pointer bg-base-300 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
@@ -74,7 +66,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						/>
 						<div className="flex-1 min-w-0">
 							<div className={'text-xs font-medium text-content truncate'}>
-								{totalEventsCount} رویداد
+								<span>{totalEventsCount}</span> رویداد
 							</div>
 							<div
 								className={'text-[.50rem] widget-item-sub-text truncate'}
@@ -100,7 +92,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						<div className="flex-1 min-w-0">
 							{' '}
 							<div className={'text-xs font-medium text-content truncate'}>
-								{totalTodos} وظیفه
+								<span>{totalTodos}</span> وظیفه
 							</div>
 							<div
 								className={'text-[.50rem] widget-item-sub-text truncate'}

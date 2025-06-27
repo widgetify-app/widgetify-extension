@@ -48,7 +48,7 @@ export function AuthRequiredModal({
 						</m.button>
 
 						<m.button
-							className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-lg font-medium hover:bg-blue-600"
+							className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-xl font-medium hover:bg-blue-600"
 							onClick={triggerAccountTabDisplay}
 							whileHover={{ scale: 1.03 }}
 							whileTap={{ scale: 0.97 }}

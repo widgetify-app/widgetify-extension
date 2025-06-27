@@ -1,6 +1,8 @@
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
+import { getConfigData } from '@/services/config-data/config_data-api'
 import { type JSX, useEffect, useState } from 'react'
 import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
@@ -17,6 +19,15 @@ export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const { openWidgetSettings } = useWidgetVisibility()
 	const [tab, setTab] = useState<string | null>(null)
+
+	const [logoData, setLogoData] = useState<{
+		logoUrl: string | null
+		content: string | null
+	}>({
+		logoUrl: null,
+		content: '<h1 class="text-xl text-gray-100">ویجتی‌فای</h1>',
+	})
+
 	useEffect(() => {
 		const handleOpenSettings = (tab: any) => {
 			if (tab) {
@@ -25,8 +36,42 @@ export function NavbarLayout(): JSX.Element {
 			setShowSettings(true)
 		}
 
-		const openSettingEvent = listenEvent('openSettings', handleOpenSettings)
+		const loadConfig = async () => {
+			try {
+				const storeData = await getFromStorage('configData')
+				if (storeData) {
+					setLogoData({
+						content: storeData.logo?.content,
+						logoUrl: storeData.logo?.url,
+					})
+				}
 
+				const data = await getConfigData()
+				if (data.logo) {
+					if (
+						(storeData?.logo && storeData.logo.id !== data.logo.id) ||
+						!storeData?.logo
+					) {
+						setLogoData({
+							content: data.logo.content,
+							logoUrl: data.logo.url,
+						})
+
+						await setToStorage('configData', {
+							...storeData,
+							logo: {
+								id: data.logo.id,
+								content: data.logo.content,
+								url: data.logo.url,
+							},
+						})
+					}
+				}
+			} catch {}
+		}
+
+		const openSettingEvent = listenEvent('openSettings', handleOpenSettings)
+		loadConfig()
 		return () => {
 			openSettingEvent()
 		}
@@ -34,9 +79,31 @@ export function NavbarLayout(): JSX.Element {
 
 	return (
 		<>
-			<nav className="flex items-center justify-between px-4 my-0.5 md:my-1.5">
-				<div className="flex items-center">
-					<h1 className="text-xl text-gray-100">ویجتی‌فای</h1>
+			<nav className="flex items-center justify-between px-4 mt-0.5 md:mt-1.5">
+				<div className="flex items-center gap-0.5">
+					<a
+						href="https://widgetify.ir"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex items-center gap-2"
+					>
+						{logoData.logoUrl && (
+							<img
+								src={logoData.logoUrl}
+								alt={logoData.content || 'ویجتی‌فای'}
+								className="w-8 h-8 rounded-full"
+							/>
+						)}
+						{logoData.content && (
+							<div
+								className="leading-relaxed"
+								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+								dangerouslySetInnerHTML={{
+									__html: logoData.content,
+								}}
+							/>
+						)}
+					</a>
 				</div>
 				<div className="flex items-center gap-2">
 					<FriendsList />

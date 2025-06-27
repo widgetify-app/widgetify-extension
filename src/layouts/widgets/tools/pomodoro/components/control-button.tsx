@@ -14,7 +14,7 @@ export const ControlButton: React.FC<ControlButtonProps> = ({ icon, onClick, mod
 			onClick={onClick}
 			size="md"
 			isPrimary={isPrimary}
-			className={`btn btn-circle border border-primary/30 ${isPrimary ? '' : 'btn-ghost hover:bg-primary/10 hover:text-primary'} transition-colors duration-300 ease-in-out`}
+			className={`btn btn-circle border-none shadow-none ${isPrimary ? 'w-14' : 'text-muted hover:bg-base-300'} transition-colors duration-300 ease-in-out`}
 		>
 			{icon}
 		</Button>
