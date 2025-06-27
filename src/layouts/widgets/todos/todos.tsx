@@ -107,22 +107,22 @@ export function TodosLayout() {
 					) : (
 						<>
 							<div className="flex justify-between mb-2">
-								<div className="flex gap-0.5 text-xs">
+								<div className="flex gap-0.5">
 									<button
 										onClick={() => setFilter('all')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										همه
 									</button>
 									<button
 										onClick={() => setFilter('active')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										فعال
 									</button>
 									<button
 										onClick={() => setFilter('completed')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										تکمیل شده
 									</button>
