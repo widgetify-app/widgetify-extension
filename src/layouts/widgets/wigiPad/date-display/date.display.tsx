@@ -22,7 +22,7 @@ export function DateDisplay() {
 		>
 			{isHoliday && (
 				<>
-					<div className="absolute w-20 px-2 py-1 text-xs text-white transform -rotate-45 shadow-xl right-16 top-2 bg-error">
+					<div className="absolute px-2 py-1 text-xs text-white transform rotate-45 shadow-xl -right-10 w-28 top-1 bg-error">
 						<div className="relative z-10 font-semibold tracking-wide">
 							تعطیل
 						</div>
