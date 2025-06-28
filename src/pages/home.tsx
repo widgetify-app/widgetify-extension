@@ -48,7 +48,7 @@ function ContentSection() {
 		<DateProvider>
 			<TodoProvider>
 				<div
-					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 pb-2`}
+					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
 				>
 					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
 						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
@@ -271,7 +271,7 @@ export function HomePage() {
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>
-						<NavbarLayout />
+						<NavbarLayout />	
 						<ContentSection />
 						<WidgetSettingsModal
 							isOpen={showWidgetSettings}
