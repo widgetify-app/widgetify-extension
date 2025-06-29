@@ -91,7 +91,7 @@ export function NavbarLayout(): JSX.Element {
 							<img
 								src={logoData.logoUrl}
 								alt={logoData.content || 'ویجتی‌فای'}
-								className="w-8 h-8 rounded-full"
+								className="w-6 h-6 rounded-full"
 							/>
 						)}
 						{logoData.content && (
