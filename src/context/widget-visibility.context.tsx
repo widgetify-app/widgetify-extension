@@ -8,7 +8,6 @@ import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
-import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import {
 	type ReactNode,
@@ -45,18 +44,10 @@ export interface WidgetItem {
 
 export const widgetItems: WidgetItem[] = [
 	{
-		id: WidgetKeys.wigiPad,
-		emoji: '📱',
-		label: 'ویجی پد',
-		order: 0,
-		node: <WigiPadWidget />,
-		canToggle: true,
-	},
-	{
 		id: WidgetKeys.calendar,
 		emoji: '📅',
 		label: 'تقویم',
-		order: 1,
+		order: 0,
 		node: <CalendarLayout />,
 		canToggle: true,
 	},
@@ -64,7 +55,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.tools,
 		emoji: '🧰',
 		label: 'ابزارها',
-		order: 2,
+		order: 1,
 		node: <ToolsLayout />,
 		canToggle: true,
 	},
@@ -72,7 +63,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.todos,
 		emoji: '✅',
 		label: 'وظایف',
-		order: 3,
+		order: 2,
 		node: <TodosLayout />,
 		canToggle: true,
 	},
@@ -80,7 +71,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.weather,
 		emoji: '🌤️',
 		label: 'آب و هوا',
-		order: 4,
+		order: 3,
 		node: <WeatherLayout />,
 		canToggle: true,
 	},
@@ -88,7 +79,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.comboWidget,
 		emoji: '🔗',
 		label: 'ویجت ترکیبی (ارز و اخبار)',
-		order: 5,
+		order: 4,
 		node: (
 			<CurrencyProvider>
 				<ComboWidget />
@@ -100,7 +91,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.arzLive,
 		emoji: '💰',
 		label: 'ویجی ارز',
-		order: 6,
+		order: 5,
 		node: (
 			<CurrencyProvider>
 				<WigiArzLayout inComboWidget={false} />
@@ -112,7 +103,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.news,
 		emoji: '📰',
 		label: 'ویجی نیوز',
-		order: 7,
+		order: 6,
 		node: <NewsLayout inComboWidget={false} />,
 		canToggle: true,
 	},
@@ -121,7 +112,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.notes,
 		emoji: '📝',
 		label: 'یادداشت‌ها',
-		order: 8,
+		order: 7,
 		node: <NotesLayout />,
 		canToggle: true,
 	},
@@ -129,7 +120,7 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.youtube,
 		emoji: '📺',
 		label: 'آمار یوتیوب',
-		order: 9,
+		order: 8,
 		node: <YouTubeLayout />,
 		canToggle: true,
 	},
@@ -144,7 +135,6 @@ interface WidgetVisibilityContextType {
 }
 
 const defaultVisibility: WidgetKeys[] = [
-	WidgetKeys.wigiPad,
 	WidgetKeys.calendar,
 	WidgetKeys.tools,
 	WidgetKeys.todos,
@@ -174,9 +164,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
 			if (storedVisibility) {
-				const visibilityIds = storedVisibility.map(
-					(item: any) => item.id as WidgetKeys
-				)
+				const visibilityIds = storedVisibility
+					.filter((item) => widgetItems.some((w) => w.id === item.id))
+					.map((item: any) => item.id as WidgetKeys)
 				setVisibility(visibilityIds)
 
 				const orders: Record<WidgetKeys, number> = {} as Record<
