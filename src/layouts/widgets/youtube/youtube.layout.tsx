@@ -1,23 +1,21 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { sleep } from '@/common/utils/timeout'
 import { RequireAuth } from '@/components/auth/require-auth'
+import { Button } from '@/components/button/button'
 import {
 	type FetchedYouTubeProfile,
 	useGetYouTubeProfile,
 } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import ms from 'ms'
 import { useEffect, useState } from 'react'
-import { FaGear } from 'react-icons/fa6'
-import { FiSettings, FiYoutube } from 'react-icons/fi'
+import { FaYoutube } from 'react-icons/fa'
+import { FiSettings } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import {
 	type YouTubeSettings,
 	YouTubeSettingsModal,
 } from './components/youtube-settings-modal'
 import { YouTubeStatsCard } from './components/youtube-stats-card'
-import { FaYoutube } from 'react-icons/fa'
-import { Button } from '@/components/button/button'
-import { LuGift } from 'react-icons/lu'
 
 export function YouTubeLayout() {
 	const [showSettings, setShowSettings] = useState(false)
@@ -141,7 +139,6 @@ export function YouTubeLayout() {
 						{youtubeProfile && username && (
 							<YouTubeStatsCard
 								data={youtubeProfile}
-								username={username}
 								subscriptionStyle={subscriptionStyle}
 							/>
 						)}

@@ -1,21 +1,19 @@
-import { useEffect, useState, useRef } from 'react'
+import { useRef } from 'react'
 
-import { getMainColorFromImage } from '@/common/color'
+import { useGetImageMainColor } from '@/hooks/useGetImageMainColor'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
 
 interface YouTubeStatsCardProps {
-	username: string
 	subscriptionStyle?: 'short' | 'long'
 	data: FetchedYouTubeProfile & { isCached?: boolean }
 }
 
 export function YouTubeStatsCard({
 	data,
-	username,
 	subscriptionStyle = 'short',
 }: YouTubeStatsCardProps) {
-	const [imgColor, setImgColor] = useState<string>()
+	const profileMainColor = useGetImageMainColor(data?.profile)
 	const spanRef = useRef<HTMLSpanElement>(null)
 
 	const formatNumber = (num: string, style: 'short' | 'long' = 'short') => {
@@ -48,30 +46,13 @@ export function YouTubeStatsCard({
 		})
 	}
 
-	useEffect(() => {
-		console.log('first')
-		console.log('Profile changed:', data?.profile)
-		if (data?.profile) {
-			getMainColorFromImage(data.profile).then((color) => {
-				setImgColor(color)
-			})
-		}
-	}, [data])
-
-	useEffect(() => {
-		if (spanRef.current) {
-			console.log('Width of selected span:', spanRef.current.offsetWidth)
-		}
-	}, [data.name])
-
-	console.log('YouTubeStatsCard rendered')
 	return (
 		<div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
 			{/* Channel Info */}
 			<div
 				className="relative p-2 flex items-center gap-3 rounded-xl overflow-hidden"
 				style={{
-					backgroundColor: `${imgColor}44`,
+					backgroundColor: `${profileMainColor}44`,
 					backgroundImage: `url(${data.profile})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
@@ -81,7 +62,7 @@ export function YouTubeStatsCard({
 				{/* Blurred background overlay */}
 				<div
 					className="absolute inset-0 backdrop-blur-lg"
-					style={{ backgroundColor: `${imgColor}20` }}
+					style={{ backgroundColor: `${profileMainColor}20` }}
 				/>
 				{/* Content */}
 				<div className="relative z-10 flex items-center w-full">
