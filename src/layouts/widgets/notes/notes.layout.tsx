@@ -1,4 +1,3 @@
-import { RequireAuth } from '@/components/auth/require-auth'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { FiBook, FiLoader } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
@@ -51,7 +50,7 @@ function NotesHeader() {
 	const { isSaving } = useNotes()
 
 	return (
-		<div className="flex items-center justify-between mb-2">
+		<div className="flex items-center justify-between">
 			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
 			{isSaving && (
 				<FiLoader className={'block w-4 h-4 animate-spin text-content'} />
@@ -66,9 +65,9 @@ export function NotesLayout() {
 			<NotesProvider>
 				<div className="flex flex-col h-full">
 					<NotesHeader />
-					<RequireAuth mode="preview">
-						<NotesContent />
-					</RequireAuth>
+					{/* <RequireAuth mode="preview"> */}
+					<NotesContent />
+					{/* </RequireAuth> */}
 				</div>
 			</NotesProvider>
 		</WidgetContainer>

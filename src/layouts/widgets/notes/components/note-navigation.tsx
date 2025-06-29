@@ -37,13 +37,13 @@ export function NoteNavigation({
 	}
 
 	return (
-		<div className="flex items-center justify-between px-1 mb-2">
+		<div className="flex items-center justify-between mt-1 mb-2">
 			<div className="flex items-center space-x-1">
 				<Tooltip content="یادداشت قبلی" position="top" offset={5}>
 					<button
 						disabled={activeNoteIndex === 0}
 						onClick={handlePrevNote}
-						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
+						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronRight size={18} className="text-base" />
 					</button>
@@ -53,14 +53,14 @@ export function NoteNavigation({
 					<button
 						disabled={activeNoteIndex === notes.length - 1}
 						onClick={handleNextNote}
-						className={`flex items-center cursor-pointer justify-center w-6 h-6 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'}`}
+						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronLeft size={18} className="text-base" />
 					</button>
 				</Tooltip>
 			</div>
 
-			<div className="flex items-center gap-2">
+			<div className="w-fit p-1 flex items-center gap-1">
 				<Tooltip content="حذف یادداشت" position="top" offset={5}>
 					<Button
 						size="xs"
@@ -68,24 +68,19 @@ export function NoteNavigation({
 						onClick={() =>
 							notes.length > 1 && onDeleteNote(activeNoteId as string)
 						}
-						className={
-							'flex btn-circle items-center btn-ghost justify-center  disabled:text-muted'
-						}
+						className="h-6 w-6 p-0 text-error bg-transparent hover:bg-error/20 border-none rounded-xl transition-all duration-300"
 					>
-						<FiTrash2 size={14} />
+						<FiTrash2 size={13} />
 					</Button>
 				</Tooltip>
 
 				<Tooltip content="یادداشت جدید" position="top" offset={5}>
 					<Button
 						onClick={onAddNote}
-						size="sm"
-						rounded="md"
-						className={
-							'flex  items-center btn-primary p-0.5 w-10 justify-center text-white'
-						}
+						size="xs"
+						className="h-6 w-9 p-0 bg-primary !text-secondary-content border-none rounded-xl transition-all duration-300"
 					>
-						<FaPlus size={14} />
+						<FaPlus size={12} />
 					</Button>
 				</Tooltip>
 			</div>
