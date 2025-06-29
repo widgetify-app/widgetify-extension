@@ -1,7 +1,5 @@
 import { useAuth } from '@/context/auth.context'
-import { useGetDailyMessage } from '@/services/hooks/getDailyMessage.hook'
 import { useEffect, useState } from 'react'
-import { FiMessageCircle } from 'react-icons/fi'
 import { WidgetContainer } from '../widgets/widget-container'
 import { GoogleOverviewCard } from './overviewCards/google.overviewCard'
 import { TodoOverviewCard } from './overviewCards/todo-overviewCard'
@@ -12,8 +10,6 @@ export const WidgetifyLayout = () => {
 	const { user, isAuthenticated } = useAuth()
 
 	const [userName, setUserName] = useState<string>('')
-
-	const { data: dailyMessage } = useGetDailyMessage()
 
 	useEffect(() => {
 		if (isAuthenticated && user && user.name) {
@@ -37,31 +33,14 @@ export const WidgetifyLayout = () => {
 						}
 					>
 						<div className="flex items-center gap-2">
-							<p className="w-32 text-sm font-semibold truncate">سلام 👋</p>
+							<p className="w-32 text-sm font-semibold truncate">
+								سلام {userName || '👋'}
+							</p>
 						</div>
 					</div>
 
 					{/* Daily Summary Content */}
 					<div className="flex-1 w-full pt-1.5 overflow-y-auto small-scrollbar">
-						{dailyMessage?.content && (
-							<div className={'p-2 mb-1 rounded-lg bg-content'}>
-								<div className="flex items-start gap-2">
-									{dailyMessage.isAi && (
-										<FiMessageCircle className="mt-0.5 text-blue-400 flex-shrink-0" />
-									)}
-									<div className="flex-1">
-										<div
-											className="text-xs font-light leading-relaxed"
-											// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-											dangerouslySetInnerHTML={{
-												__html: dailyMessage.content,
-											}}
-										/>
-									</div>
-								</div>
-							</div>
-						)}
-
 						<div className="space-y-1">
 							<GoogleOverviewCard />
 							<TodoOverviewCard />
