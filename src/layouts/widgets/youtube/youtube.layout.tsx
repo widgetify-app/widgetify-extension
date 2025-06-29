@@ -8,13 +8,16 @@ import {
 import ms from 'ms'
 import { useEffect, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
-import { FiYoutube } from 'react-icons/fi'
+import { FiSettings, FiYoutube } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import {
 	type YouTubeSettings,
 	YouTubeSettingsModal,
 } from './components/youtube-settings-modal'
 import { YouTubeStatsCard } from './components/youtube-stats-card'
+import { FaYoutube } from 'react-icons/fa'
+import { Button } from '@/components/button/button'
+import { LuGift } from 'react-icons/lu'
 
 export function YouTubeLayout() {
 	const [showSettings, setShowSettings] = useState(false)
@@ -85,57 +88,53 @@ export function YouTubeLayout() {
 				<RequireAuth mode="preview">
 					{/* Header */}
 					<div
-						className="flex items-center justify-between pb-2 mb-3 border-b"
+						className="flex items-center justify-between"
 						style={{
 							borderColor: 'rgba(0,0,0,0.1)',
 						}}
 					>
 						<div className="flex items-center gap-2">
-							<FiYoutube className="w-5 h-5 text-red-500" />
+							<FaYoutube className="w-5 h-5 text-red-500" />
 							<h3 className={'text-sm font-medium text-content'}>
-								آمار یوتیوب ( آزمایشی )
+								آمار یوتیوب
 							</h3>
+							<span className="bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary rounded-2xl">
+								آزمایشی
+							</span>
 						</div>
 
-						<button
-							className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
+						<Button
+							size="xs"
 							onClick={() => setShowSettings(true)}
+							className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 						>
-							<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-						</button>
+							<FiSettings size={12} className="text-content" />
+						</Button>
 					</div>
 
 					{/* Content */}
-					<div className="flex-1 overflow-auto">
+					<div className="mt-2 flex-1 overflow-auto">
 						{!youtubeProfile && isLoading && (
-							<div className="flex items-center justify-center h-32">
+							<div className="py-28 flex items-center justify-center">
 								<div className="w-6 h-6 border-2 border-t-2 border-red-500 rounded-full animate-spin border-t-transparent"></div>
 							</div>
 						)}
+
 						{!youtubeProfile && error && !isLoading && (
-							<div className="py-8 text-center">
-								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-50" />
-								<p className={'text-sm text-content opacity-70'}>
-									خطا در دریافت اطلاعات
-								</p>
-								<p className={'text-xs text-muted mt-1'}>
-									نام کاربری را بررسی کنید
+							<div className="py-20 px-8 flex flex-col items-center gap-y-2 text-center text-muted">
+								<FaYoutube className="text-3xl" />
+								<p className={'text-xs leading-normal'}>
+									خطا در دریافت اطلاعات نام کاربری را بررسی کنید
 								</p>
 							</div>
 						)}
 
 						{!username && !isLoading && (
-							<div className="py-8 text-center">
-								<FiYoutube className="w-12 h-12 mx-auto mb-3 text-red-500 opacity-30" />
-								<p className={'text-sm text-muted'}>
+							<div className="py-20 px-8 flex flex-col items-center gap-y-2 text-center text-muted">
+								<FaYoutube className="text-3xl" />
+								<p className="text-xs leading-normal">
 									لطفاً از تنظیمات نام کاربری یوتیوب را وارد کنید
 								</p>
-								<button
-									onClick={() => setShowSettings(true)}
-									className="px-3 py-1 mt-2 text-xs text-red-500 transition-colors border rounded-lg cursor-pointer bg-red-500/10 hover:bg-red-500/20 border-red-500/30"
-								>
-									تنظیمات
-								</button>
 							</div>
 						)}
 
@@ -153,3 +152,4 @@ export function YouTubeLayout() {
 		</>
 	)
 }
+ 

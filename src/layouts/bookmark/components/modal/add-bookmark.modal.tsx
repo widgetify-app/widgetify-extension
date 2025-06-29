@@ -156,15 +156,15 @@ export function AddBookmarkModal({
 				onClose()
 			}}
 			size="md"
-			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'} ✨`}
+			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
 			className="!overflow-y-hidden"
 		>
 			<form
 				onSubmit={handleAdd}
-				className="flex flex-col justify-between gap-2 p-2 overflow-y-auto h-[23rem]"
+				className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]"
 			>
-				<div>
+				<div className='mt-2'>
 					<div className="flex gap-2 mb-4">
 						<TypeSelector type={type} setType={setType} />
 					</div>
@@ -261,7 +261,7 @@ export function AddBookmarkModal({
 							size="md"
 							isPrimary={true}
 							className={
-								'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 							}
 						>
 							{isPending ? 'در حال ذخیره' : 'ذخیره'}

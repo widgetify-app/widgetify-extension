@@ -46,7 +46,7 @@ export function ComboWidget() {
 				<Button
 					onClick={handleSettingsClick}
 					size="xs"
-					className="ml-3 h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 				>
 					<FiSettings size={12} className="text-content" />
 				</Button>

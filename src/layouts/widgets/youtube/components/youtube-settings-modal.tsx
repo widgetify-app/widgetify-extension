@@ -71,28 +71,28 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 		<Modal
 			isOpen={isOpen}
 			onClose={() => onClose(null)}
-			title="⚙️ تنظیمات یوتیوب"
+			title="تنظیمات یوتیوب"
 			size="sm"
 			direction="rtl"
 		>
-			<div className="p-0.5 space-y-1">
-				<SectionPanel title="	نام کاربری یوتیوب" size="xs">
+			<div className="space-y-1">
+				<SectionPanel title="نام کاربری یوتیوب" size="xs">
 					<TextInput
 						type="text"
 						value={settings.username || ''}
 						onChange={(value) => handleUsernameChange(value)}
 						placeholder="@username یا username"
-						className={'w-full px-3 py-2 border rounded-md'}
+						className={'mt-2 w-full px-3 py-2 '}
 					/>
-					<p className={'text-xs mt-1 text-content opacity-70'}>
+					<p className={'text-xs mt-1 px-1 text-content opacity-70'}>
 						نام کاربری کانال یوتیوب خود را وارد کنید (با یا بدون @)
 					</p>
 				</SectionPanel>
 				<SectionPanel title="تعداد مشترکین" size="xs">
-					<p className={'text-sm mb-3 text-muted'}>
+					<p className={'text-sm text-muted'}>
 						نحوه نمایش تعداد مشترکین را انتخاب کنید:
 					</p>
-					<div className="flex flex-wrap gap-2">
+					<div className="mt-2 flex flex-wrap gap-2">
 						{subscriptionStyleOptions.map((option) => (
 							<ItemSelector
 								isActive={settings.subscriptionStyle === option.value}
@@ -107,9 +107,13 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 						))}
 					</div>
 				</SectionPanel>
-				<div className="flex justify-end gap-2 pt-4 space-x-2 space-x-reverse">
-					<Button onClick={() => onClose(null)} size="md">
-						لغو
+				<div className="mt-2 flex gap-3">
+					<Button
+						onClick={() => onClose(null)}
+						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"
+						size="md"
+					>
+						انصراف
 					</Button>
 					<Button
 						type="submit"
@@ -117,8 +121,9 @@ export function YouTubeSettingsModal({ isOpen, onClose }: YouTubeSettingsModalPr
 						size="md"
 						isPrimary={true}
 						onClick={() => handleSave()}
+						className="flex-1 px-4 py-2 text-sm font-medium text-secondary transition-colors rounded-lg"
 					>
-						{loading ? 'در حال ذخیره...' : 'ذخیره'}
+						ذخیره
 					</Button>
 				</div>
 			</div>

@@ -144,11 +144,11 @@ export function EditBookmarkModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			size="md"
-			title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'} ✏️`}
+			title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
 			direction="rtl"
 			className="!overflow-y-hidden"
 		>
-			<div className="flex flex-col justify-between gap-2 p-2 overflow-y-auto h-[23rem]">
+			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]">
 				<div className="flex flex-col gap-2">
 					<div className="flex flex-col items-center gap-4">
 						{type === 'BOOKMARK' && (
@@ -232,7 +232,7 @@ export function EditBookmarkModal({
 							size="md"
 							isPrimary={true}
 							className={
-								'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 							}
 						>
 							{isPending ? 'در حال ذخیره' : 'ذخیره'}

@@ -84,7 +84,7 @@ const Modal = ({
 			dir={direction}
 		>
 			<div
-				className={`modal-box overflow-hidden rounded-2xl ${sizValue.w} ${className} !p-2.5`}
+				className={`modal-box overflow-hidden rounded-2xl ${sizValue.w} ${className} !p-4`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="flex items-center justify-between w-full pr-2 mb-2">
