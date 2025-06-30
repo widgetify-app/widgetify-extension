@@ -28,7 +28,7 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
 					nextEl: '.swiper-button-next-custom',
 					prevEl: '.swiper-button-prev-custom',
 				}}
-				className="pt-2 weather-forecast-slider"
+				className="weather-forecast-slider"
 				dir="ltr"
 			>
 				{forecast?.map((item, index) => (
@@ -37,19 +37,11 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
 					</SwiperSlide>
 				))}
 
-				<div
-					className={
-						'absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] bg-base-300/20 hover:bg-base-300/80'
-					}
-				>
+				<div className="absolute left-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-prev-custom top-[45%] bg-base-300/20 hover:bg-base-300/80">
 					<FiChevronLeft size={20} />
 				</div>
 
-				<div
-					className={
-						'absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] bg-base-300/20 hover:bg-base-300/80'
-					}
-				>
+				<div className="absolute right-0 z-10 flex items-center justify-center w-8 h-8 transition-all rounded-full cursor-pointer swiper-button-next-custom top-[45%] bg-base-300/20 hover:bg-base-300/80">
 					<FiChevronRight size={20} />
 				</div>
 			</Swiper>
