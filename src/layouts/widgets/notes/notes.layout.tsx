@@ -51,7 +51,7 @@ function NotesHeader() {
 	const { isSaving } = useNotes()
 
 	return (
-		<div className="flex items-center justify-between mb-2">
+		<div className="flex items-center justify-between">
 			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
 			{isSaving && (
 				<FiLoader className={'block w-4 h-4 animate-spin text-content'} />

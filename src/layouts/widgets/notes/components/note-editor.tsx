@@ -9,7 +9,7 @@ interface NoteEditorProps {
 const EDITOR_DEBOUNCE_TIME = 500 //0.5s
 
 export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
-	const titleRef = useRef<HTMLTextAreaElement>(null)
+	const titleRef = useRef<HTMLInputElement>(null)
 	const bodyRef = useRef<HTMLTextAreaElement>(null)
 
 	const [currentTitle, setCurrentTitle] = useState(note.title)
@@ -44,7 +44,7 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 	const handleInputChange = (
 		field: 'title' | 'body',
 		value: string,
-		targetElement: HTMLTextAreaElement
+		targetElement: HTMLTextAreaElement | HTMLInputElement
 	) => {
 		if (field === 'title') {
 			setCurrentTitle(value)
@@ -70,23 +70,23 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 	}
 
 	return (
-		<div className="flex flex-col h-full">
-			<textarea
+		<div className="h-full flex flex-col gap-y-2">
+			<input
 				ref={titleRef}
+				type="text"
 				className={
-					'w-full p-2 text-sm font-bold text-center resize-none bg-transparent outline-none text-content opacity-90'
+					'w-full py-2.5 px-2 text-xs font-medium outline-none text-content bg-base-200 rounded-xl'
 				}
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
 				onChange={(e) => handleInputChange('title', e.target.value, e.target)}
-				rows={1}
 				dir="rtl"
 			/>
 
 			<textarea
 				ref={bodyRef}
 				className={
-					'w-full px-2 pt-2 text-base flex-grow resize-none bg-transparent outline-none text-content opacity-80'
+					'w-full px-2 pt-2 text-sm flex-grow resize-none bg-base-200 outline-none text-content text-opacity-80 rounded-xl'
 				}
 				placeholder="متن یادداشت..."
 				value={currentBody}
