@@ -1,3 +1,4 @@
+import { RequireAuth } from '@/components/auth/require-auth'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { FiBook, FiLoader } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
@@ -65,9 +66,9 @@ export function NotesLayout() {
 			<NotesProvider>
 				<div className="flex flex-col h-full">
 					<NotesHeader />
-					{/* <RequireAuth mode="preview"> */}
-					<NotesContent />
-					{/* </RequireAuth> */}
+					<RequireAuth mode="preview">
+						<NotesContent />
+					</RequireAuth>
 				</div>
 			</NotesProvider>
 		</WidgetContainer>
