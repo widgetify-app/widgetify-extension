@@ -1,20 +1,55 @@
-import { useRef } from 'react'
-
+import { useContrastTextColor } from '@/hooks/useContrastTextColor'
 import { useGetImageMainColor } from '@/hooks/useGetImageMainColor'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
-import { FiCalendar, FiEye, FiUsers, FiVideo } from 'react-icons/fi'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { FiEye, FiUsers } from 'react-icons/fi'
 
 interface YouTubeStatsCardProps {
 	subscriptionStyle?: 'short' | 'long'
+	username: string
 	data: FetchedYouTubeProfile & { isCached?: boolean }
 }
 
 export function YouTubeStatsCard({
 	data,
+	username,
 	subscriptionStyle = 'short',
 }: YouTubeStatsCardProps) {
 	const profileMainColor = useGetImageMainColor(data?.profile)
-	const spanRef = useRef<HTMLSpanElement>(null)
+	const nameSpanRef = useRef<HTMLSpanElement>(null)
+	const usernameSpanRef = useRef<HTMLSpanElement>(null)
+	const textColor = useContrastTextColor(profileMainColor)
+	const [nameWidth, setNameWidth] = useState(0)
+	const [usernameWidth, setUsernameWidth] = useState(0)
+
+	useEffect(() => {
+		if (nameSpanRef.current) {
+			setNameWidth(nameSpanRef.current.offsetWidth)
+		}
+		if (usernameSpanRef.current) {
+			setUsernameWidth(usernameSpanRef.current.offsetWidth)
+		}
+	}, [data.name, username])
+
+	const nameStyle = useMemo(
+		() => ({
+			marginLeft: nameWidth
+				? `-${nameWidth * 2 - 62}px`
+				: `-${data.name.length * 1.75 * 4}px`,
+			color: textColor,
+		}),
+		[nameWidth, textColor, data.name]
+	)
+
+	const usernameStyle = useMemo(
+		() => ({
+			marginLeft: usernameWidth
+				? `-${usernameWidth * 2 - 63}px`
+				: `-${username.length * 1.75 * 4}px`,
+			color: textColor,
+		}),
+		[usernameWidth, textColor, username]
+	)
 
 	const formatNumber = (num: string, style: 'short' | 'long' = 'short') => {
 		const number = Number.parseInt(num)
@@ -37,20 +72,11 @@ export function YouTubeStatsCard({
 		}
 	}
 
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString)
-		return date.toLocaleDateString('fa-IR', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		})
-	}
-
 	return (
-		<div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
+		<div className="space-y-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 overflow-hidden">
 			{/* Channel Info */}
 			<div
-				className="relative p-2 flex items-center gap-3 rounded-xl overflow-hidden"
+				className="relative p-2 flex items-center gap-3 rounded-xl overflow-hidden shadow-inner"
 				style={{
 					backgroundColor: `${profileMainColor}44`,
 					backgroundImage: `url(${data.profile})`,
@@ -77,103 +103,129 @@ export function YouTubeStatsCard({
 					/>
 				</div>
 
-				<div className="absolute py-2 flex flex-col justify-between gap-y-[1.5px] inset-0">
+				<div className="absolute py-2 flex flex-col justify-center top-1/2 -translate-y-1/2 inset-x-0">
 					<p
-						className={
-							'-ml-5 pl-2 flex gap-x-0.5 font-medium text-xs uppercase'
-						}
+						className="flex gap-x-0.5 font-medium text-xs uppercase"
+						style={{
+							marginLeft: '-2.5rem',
+							paddingLeft: '0.5rem',
+							color: textColor,
+						}}
 					>
-						{[...new Array(10)].map((_, index) => (
-							<span key={index} className="opacity-20 text-nowrap">
+						{[...new Array(20)].map((_, index) => (
+							<span key={index} className="opacity-10 text-nowrap">
 								{data.name}
 							</span>
 						))}
 					</p>
 					<p
-						className={'flex gap-x-0.5 font-medium text-xs uppercase'}
+						className="flex gap-x-0.5 font-medium text-xs uppercase"
 						style={{
-							marginLeft: spanRef?.current?.offsetWidth
-								? `-${spanRef?.current?.offsetWidth * 2 - 62}px`
-								: `-${data.name.length * 1.75 * 4}px`,
+							marginLeft: '-0.5rem',
+							paddingLeft: '0.5rem',
+							color: textColor,
 						}}
 					>
-						{[...new Array(10)].map((_, index) => (
+						{[...new Array(20)].map((_, index) => (
+							<span key={index} className="opacity-10 text-nowrap">
+								{data.name}
+							</span>
+						))}
+					</p>
+					<p
+						className="flex gap-x-0.5 font-medium text-sm uppercase"
+						style={nameStyle}
+					>
+						{[...new Array(20)].map((_, index) => (
 							<span
 								key={index}
-								className={`block w-fit text-nowrap ${index === 2 ? 'opacity-80' : 'opacity-20'}`}
-								ref={index === 1 ? spanRef : undefined}
+								className={`block w-fit text-nowrap ${
+									index === 2 ? 'opacity-90' : 'opacity-10'
+								}`}
+								ref={index === 1 ? nameSpanRef : undefined}
 							>
 								{data.name}
 							</span>
 						))}
 					</p>
 					<p
-						className={
-							'-ml-5 pl-3 flex gap-x-0.5 font-medium text-xs uppercase'
-						}
+						className="flex gap-x-0.5 font-medium text-xs uppercase"
+						style={usernameStyle}
 					>
-						{[...new Array(10)].map((_, index) => (
-							<span key={index} className="opacity-20 text-nowrap">
+						{[...new Array(20)].map((_, index) => (
+							<span
+								key={index}
+								className={`flex items-center gap-x-[0.5px] w-fit text-nowrap ${
+									index === 2 ? 'opacity-75' : 'opacity-10'
+								}`}
+								ref={index === 1 ? usernameSpanRef : undefined}
+							>
+								<span>{username}</span>
+							</span>
+						))}
+					</p>
+					<p
+						className="flex gap-x-0.5 font-medium text-xs uppercase"
+						style={{
+							marginLeft: '-2rem',
+							paddingLeft: '0.75rem',
+							color: textColor,
+						}}
+					>
+						{[...new Array(20)].map((_, index) => (
+							<span key={index} className="opacity-10 text-nowrap">
+								{data.name}
+							</span>
+						))}
+					</p>
+					<p
+						className="flex gap-x-0.5 font-medium text-xs uppercase"
+						style={{
+							marginLeft: '-2rem',
+							paddingLeft: '0.75rem',
+							color: textColor,
+						}}
+					>
+						{[...new Array(20)].map((_, index) => (
+							<span key={index} className="opacity-10 text-nowrap">
 								{data.name}
 							</span>
 						))}
 					</p>
 				</div>
+
+				<div className="absolute inset-0 shadow-inner" />
 			</div>
-			{/* Stats Grid */}
-			<div className="grid grid-cols-2 gap-2">
-				<div className={'p-3 rounded-xl border border-content bg-content'}>
-					<div className="flex items-center gap-2 mb-1">
-						<FiUsers className="w-4 h-4 text-red-500" />
-						<span className={'text-xs text-content opacity-70'}>مشترک</span>
-					</div>{' '}
-					<p className={'text-sm font-bold text-content'}>
+
+			<div className="p-1 flex items-center justify-between gap-x-2 border border-content rounded-xl">
+				<div className="w-full px-2 py-1 bg-base-300/75 flex items-center justify-between gap-x-2 rounded-lg">
+					<div className="flex items-center gap-1.5">
+						<FiUsers className="w-3.5 h-3.5 text-red-500" />
+						<span className="text-[10px] text-content opacity-70">مشترک</span>
+					</div>
+
+					<p className="text-xs font-medium text-content">
 						{formatNumber(data.subscribers, subscriptionStyle)}
 					</p>
 				</div>
-
-				<div className={'p-3 rounded-xl border border-content bg-content'}>
-					<div className="flex items-center gap-2 mb-1">
-						<FiEye className="w-4 h-4 text-blue-500" />
-						<span className={'text-xs text-content opacity-70'}>بازدید</span>
+				<div className="w-full px-2 py-1 bg-base-300/75 flex items-center justify-between gap-x-2 rounded-lg">
+					<div className="flex items-center gap-1.5">
+						<FiEye className="w-3.5 h-3.5 text-blue-500" />
+						<span className="text-[10px] text-content opacity-70">
+							بازدید
+						</span>
 					</div>
-					<p className={'text-sm font-bold text-content'}>
+
+					<p className="text-xs font-medium text-content">
 						{formatNumber(data.totalViews)}
 					</p>
 				</div>
-
-				<div className={'p-3 rounded-xl border border-content bg-content'}>
-					<div className="flex items-center gap-2 mb-1">
-						<FiVideo className="w-4 h-4 text-green-500" />
-						<span className={'text-xs text-content opacity-70'}>ویدیو</span>
-					</div>
-					<p className={'text-sm font-bold text-content'}>
-						{Number.parseInt(data.totalVideos).toLocaleString()}
-					</p>
-				</div>
-
-				<div className={'p-3 rounded-xl border border-content bg-content'}>
-					<div className="flex items-center gap-2 mb-1">
-						<FiCalendar className="w-4 h-4 text-purple-500" />
-						<span className={'text-xs text-content opacity-70'}>عضویت</span>
-					</div>
-					<p className={'text-xs font-medium text-content'}>
-						{formatDate(data.createdAt)}
-					</p>
-				</div>
 			</div>
-			{/* Channel Link */}
-			<a
-				href={`https://youtube.com/channel/${data.id}`}
-				target="_blank"
-				rel="noopener noreferrer"
-				className={
-					'block w-full p-2 text-center text-xs rounded-xl border border-red-500/30 hover:bg-red-500/10 transition-colors text-content hover:text-red-500'
-				}
-			>
-				{' '}
-				مشاهده کانال در یوتیوب
-			</a>
+
+			<div className="w-full h-36 overflow-y-auto space-y-2">
+				<div className="w-full h-32 bg-base-300 rounded-xl" />
+				<div className="w-full h-32 bg-base-300 rounded-xl" />
+			</div>
 		</div>
 	)
 }

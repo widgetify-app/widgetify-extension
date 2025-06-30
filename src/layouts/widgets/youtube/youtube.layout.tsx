@@ -139,6 +139,7 @@ export function YouTubeLayout() {
 						{youtubeProfile && username && (
 							<YouTubeStatsCard
 								data={youtubeProfile}
+								username={username}
 								subscriptionStyle={subscriptionStyle}
 							/>
 						)}
@@ -149,4 +150,3 @@ export function YouTubeLayout() {
 		</>
 	)
 }
- 
