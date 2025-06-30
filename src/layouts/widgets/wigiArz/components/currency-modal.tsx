@@ -8,7 +8,7 @@ interface CurrencyModalComponentProps {
 	code: string
 	currency: any
 	displayPrice: number
-	imgColor: string | undefined
+	imgMainColor: string | undefined
 	isModalOpen: boolean
 	priceChange: number | null
 	toggleCurrencyModal: () => void
@@ -18,7 +18,7 @@ export const CurrencyModalComponent = ({
 	code,
 	currency,
 	displayPrice,
-	imgColor,
+	imgMainColor,
 	isModalOpen,
 	priceChange,
 	toggleCurrencyModal,
@@ -53,7 +53,7 @@ export const CurrencyModalComponent = ({
 					/>
 					<div
 						className="absolute top-0 z-10 w-16 h-16 blur-xl opacity-30"
-						style={{ backgroundColor: imgColor }}
+						style={{ backgroundColor: imgMainColor }}
 					/>
 				</div>
 

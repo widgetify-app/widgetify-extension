@@ -167,7 +167,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			onClose={() => onClose(null)}
 			direction="rtl"
 		>
-			<div className={'flex flex-col p-2 gap-4 rounded-lg'}>
+			<div className={'flex flex-colgap-4 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
 						<label
@@ -342,7 +342,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						size="md"
 						isPrimary={true}
 						className={
-							'btn btn-circle !w-fit px-8 border-none shadow-none text-muted rounded-xl transition-colors duration-300 ease-in-out'
+							'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 						}
 					>
 						ذخیره

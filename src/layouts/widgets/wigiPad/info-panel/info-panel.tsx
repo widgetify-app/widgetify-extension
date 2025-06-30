@@ -79,7 +79,7 @@ export function InfoPanel() {
 						onClick={(event) => handleSectionClick(section.id, event)}
 						className={`flex items-center gap-1 px-2.5 py-[5px] text-[10.5px] leading-none font-medium whitespace-nowrap transition-colors cursor-pointer rounded-full ${
 							activeSection === section.id
-								? 'bg-primary text-white'
+								? 'bg-primary text-secondary-content'
 								: 'text-muted hover:bg-base-300'
 						}`}
 					>
