@@ -37,14 +37,14 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					</div>
 					<div
 						className={
-							'absolute inset-0 flex flex-col items-center justify-center p-4 bg-base-300/5 backdrop-blur-xs'
+							'absolute inset-0 p-4 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
 						}
 					>
-						<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-						<p className={'text-sm mb-4 text-content'}>
+						<h3 className="text-lg font-semibold">نیاز به احراز هویت</h3>
+						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
-						<Button onClick={handleAuthClick} size="md" isPrimary={true} className='btn !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out'>
+						<Button onClick={handleAuthClick} size="sm" isPrimary={true} className='btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out'>
 							ورود به حساب
 						</Button>
 					</div>
@@ -63,10 +63,10 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
-				<p className={'text-sm mb-4 text-content'}>
+				<p className={'text-xs mb-4 text-content text-center'}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>
-				<Button onClick={handleAuthClick} size="md">
+				<Button onClick={handleAuthClick} size="sm">
 					ورود به حساب
 				</Button>
 			</motion.div>
