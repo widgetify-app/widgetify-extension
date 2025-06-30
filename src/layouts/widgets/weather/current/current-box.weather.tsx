@@ -1,4 +1,3 @@
-import { useDate } from '@/context/date.context'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { BsRobot } from 'react-icons/bs'
@@ -15,7 +14,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		<section className="col-span-2 duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
 			<header className="p-2.5 bg-base-300/80 space-y-2 rounded-xl">
 				<div className="flex gap-5 px-2">
-					<div className="flex items-center">
+					<div className="flex items-center flex-shrink-0">
 						<img
 							src={weather.icon.url}
 							alt={
@@ -26,8 +25,8 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						/>
 					</div>
 
-					<div>
-						<div className="text-[10px] text-muted">
+					<div className="flex-1 min-w-0">
+						<div className="text-[10px] text-muted truncate">
 							{weather.label}
 						</div>
 						<div
