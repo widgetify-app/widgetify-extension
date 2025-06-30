@@ -10,10 +10,9 @@ interface CurrentWeatherBoxProps {
 
 export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 	const { weatherSettings, selectedCity } = useWeatherStore()
-	const { currentDate } = useDate()
 
 	return (
-		<section className="col-span-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
+		<section className="col-span-2 duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
 			<header className="p-2.5 bg-base-300/80 space-y-2 rounded-xl">
 				<div className="flex gap-5 px-2">
 					<div className="flex items-center">
@@ -29,7 +28,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 
 					<div>
 						<div className="text-[10px] text-muted">
-							{currentDate.format('dddd، jD jMMMM jYYYY')}
+							{weather.label}
 						</div>
 						<div
 							className={
@@ -53,16 +52,16 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						)}
 					</div>
 				</div>
-				<div className="w-full h-8 px-3 bg-base-100/30 border border-content flex items-center justify-between gap-6 rounded-xl">
-					<div className="flex-auto flex items-center justify-between">
-						<span className="text-content-base font-medium">رطوبت</span>
+				<div className="flex items-center justify-between w-full h-8 gap-6 px-3 border bg-base-100/30 border-content rounded-xl">
+					<div className="flex items-center justify-between flex-auto">
+						<span className="font-medium text-content-base">رطوبت</span>
 						<span className="text-muted font-semibold flex items-baseline gap-x-0.5">
 							<span>%</span>
 							<span>{weather.temperature.humidity}</span>
 						</span>
 					</div>
-					<div className="flex-auto flex items-center justify-between">
-						<span className="text-content-base font-medium">باد</span>
+					<div className="flex items-center justify-between flex-auto">
+						<span className="font-medium text-content-base">باد</span>
 						<span className="text-muted font-semibold flex items-baseline gap-x-0.5">
 							<span>km/h</span>
 							<span>{weather.temperature.wind_speed}</span>
@@ -77,7 +76,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						<div>
 							{weather.ai?.description && (
 								<div
-									className="float-end pr-1 text-primary animate-in fade-in-0 slide-in-from-left-2 duration-500 delay-500"
+									className="pr-1 duration-500 delay-500 float-end text-primary animate-in fade-in-0 slide-in-from-left-2"
 									aria-label="AI generated content"
 								>
 									<BsRobot className="text-sm" />
