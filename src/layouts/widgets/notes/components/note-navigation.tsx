@@ -68,7 +68,7 @@ export function NoteNavigation({
 						onClick={() =>
 							notes.length > 1 && onDeleteNote(activeNoteId as string)
 						}
-						className="h-6 w-6 p-0 text-error bg-transparent hover:bg-error/20 border-none rounded-xl transition-all duration-300"
+						className="h-6 w-6 p-0 text-error !bg-transparent hover:!bg-error/20 border-none rounded-xl disabled:opacity-75 transition-all duration-300"
 					>
 						<FiTrash2 size={13} />
 					</Button>
