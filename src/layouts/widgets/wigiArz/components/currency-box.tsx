@@ -102,10 +102,6 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				bg-content opacity-100 hover:!bg-gray-500/30
 				transition-all duration-300 ease-in-out hover:shadow-lg
 				transform hover:scale-100 active:scale-95 translate-y-0`}
-				style={{
-					border: '1px solid transparent',
-					borderColor: imgMainColor ? `${imgMainColor}30` : 'transparent',
-				}}
 				onClick={() => toggleCurrencyModal()}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
