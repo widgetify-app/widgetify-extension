@@ -175,7 +175,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			const pet = newSettings.petOptions[petType]
 
 			if (pet && pet.hungryState?.level < 100) {
-				pet.hungryState.level += [5, 10][Math.floor(Math.random() * 2)]
+				pet.hungryState.level += [10, 15, 25][Math.floor(Math.random() * 2)]
 			}
 
 			if (pet.hungryState?.level > 100) {
