@@ -30,7 +30,7 @@ export function GoogleOverviewCard() {
 
 	return (
 		<motion.div
-			className={'p-2 rounded-lg bg-content shadow-sm'}
+			className={'p-2 rounded-lg bg-content'}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.5 }}

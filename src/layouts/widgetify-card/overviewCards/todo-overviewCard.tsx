@@ -35,7 +35,7 @@ export function TodoOverviewCard() {
 
 	return (
 		<motion.div
-			className={'p-1 rounded-lg bg-content shadow-sm'}
+			className={'p-1 rounded-lg bg-content'}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.4 }}
@@ -47,9 +47,9 @@ export function TodoOverviewCard() {
 				<div className="flex-1">
 					<p className="text-xs font-medium">{getTodoLabel('full')}</p>
 					{todoOptions.blurMode ? (
-						<p className="text-xs opacity-75">حالت مخفی فعال است.</p>
+						<p className="text-[10px] opacity-75">حالت مخفی فعال است.</p>
 					) : (
-						<p className="text-xs opacity-75">
+						<p className="text-[10px] opacity-75">
 							{pendingTodos.length > 0
 								? `${completedTodos.length} از ${todayTodos.length} وظیفه تکمیل شده`
 								: todayTodos.length > 0
@@ -59,31 +59,6 @@ export function TodoOverviewCard() {
 					)}
 				</div>
 			</div>
-
-			{/* Show up to 1 pending todos */}
-			{pendingTodos.length > 0 && !todoOptions.blurMode && (
-				<div className="pr-6 mt-2 space-y-1">
-					{pendingTodos.slice(0, 1).map((todo) => (
-						<div key={todo.id} className="flex items-center gap-1 text-xs">
-							<span
-								className={`w-2 h-2 rounded-full inline-block ${
-									todo.priority === 'high'
-										? 'bg-red-500'
-										: todo.priority === 'medium'
-											? 'bg-yellow-500'
-											: 'bg-green-500'
-								}`}
-							></span>
-							<p className="flex-1 font-light truncate">{todo.text}</p>
-						</div>
-					))}
-					{pendingTodos.length > 1 && (
-						<p className="text-xs italic opacity-75">
-							و {pendingTodos.length - 1} مورد دیگر...
-						</p>
-					)}
-				</div>
-			)}
 		</motion.div>
 	)
 }

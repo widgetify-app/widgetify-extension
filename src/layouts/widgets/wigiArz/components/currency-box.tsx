@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
-import { getMainColorFromImage } from '@/common/color'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { useGetImageMainColor } from '@/hooks/useGetImageMainColor'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
@@ -18,14 +18,15 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: null,
 	})
-
+	
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
-	const [imgColor, setImgColor] = useState<string>()
 	const [displayPrice, setDisplayPrice] = useState(0)
 	const [priceChange, setPriceChange] = useState(0)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-
+	
 	const prevPriceRef = useRef<number | null>(null)
+	
+	const imgMainColor = useGetImageMainColor(currency?.icon)
 
 	useEffect(() => {
 		async function load() {
@@ -45,14 +46,6 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		const event = new Event('fetched-data')
 		window.dispatchEvent(event)
 	}, [dataUpdatedAt])
-
-	useEffect(() => {
-		if (currency?.icon) {
-			getMainColorFromImage(currency.icon).then((color) => {
-				setImgColor(color)
-			})
-		}
-	}, [currency?.icon])
 
 	useEffect(() => {
 		if (currency?.price) {
@@ -125,7 +118,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 						/>
 						<div
 							className="absolute inset-0 border rounded-full border-opacity-20"
-							style={{ borderColor: imgColor }}
+							style={{ borderColor: imgMainColor }}
 						/>
 					</div>
 					<div className="flex items-center space-x-2 text-sm font-medium">
@@ -159,7 +152,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 					priceChange={priceChange}
 					currency={currency}
 					displayPrice={displayPrice}
-					imgColor={imgColor}
+					imgMainColor={imgMainColor}
 					isModalOpen={isModalOpen}
 					toggleCurrencyModal={toggleCurrencyModal}
 					key={code}

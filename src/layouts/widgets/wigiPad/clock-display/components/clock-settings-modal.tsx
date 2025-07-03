@@ -94,7 +94,7 @@ export function ClockSettingsModal({
 					</div>
 				</RequireAuth>
 
-				<div className="flex gap-3 pt-4 border-t border-content">
+				<div className="mt-2 flex gap-3">
 					<Button
 						onClick={handleCancel}
 						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"

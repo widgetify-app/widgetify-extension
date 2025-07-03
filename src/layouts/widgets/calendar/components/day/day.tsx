@@ -129,7 +129,7 @@ export function DayItem({
                 `}
 			>
 				{day}
-				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-1 left-1/2">
+				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
 					{eventIcons.length > 0 ? (
 						eventIcons.slice(0, 1).map((icon, idx) => (
 							<img
@@ -153,12 +153,12 @@ export function DayItem({
 						<>
 							{hasEvent ? (
 								<span
-									className={`w-1 h-1 rounded-full ${getEventIndicatorStyle()}`}
+									className={`w-[3px] h-[3px] rounded-full ${getEventIndicatorStyle()}`}
 								/>
 							) : null}
 							{hasTodo ? (
 								<span
-									className={`w-1 h-1 rounded-full ${getTodoIndicatorStyle()}`}
+									className={`w-[3px] h-[3px] rounded-full ${getTodoIndicatorStyle()}`}
 								/>
 							) : null}
 						</>

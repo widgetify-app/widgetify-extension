@@ -5,12 +5,10 @@ import { InfoPanel } from './info-panel/info-panel'
 
 export function WigiPadWidget() {
 	return (
-		<WidgetContainer className="grid grid-rows-2 gap-0">
-			<div className="grid grid-cols-2">
-				<DateDisplay />
-				<ClockDisplay />
-			</div>
-			<div className="grid grid-cols-1">
+		<WidgetContainer className="grid grid-cols-2 grid-rows-2 gap-1">
+			<DateDisplay />
+			<ClockDisplay />
+			<div className="col-span-2">
 				<InfoPanel />
 			</div>
 		</WidgetContainer>

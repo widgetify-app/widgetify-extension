@@ -66,7 +66,7 @@ export function WeatherLayout() {
 			<WidgetContainer>
 				{cityWeather ? <CurrentWeatherBox weather={cityWeather.weather} /> : null}
 
-				<div className="relative flex-1 px-3 overflow-hidden lg:pb-0">
+				<div className="mt-2 overflow-hidden">
 					<Forecast
 						forecast={forecast}
 						temperatureUnit={weatherSettings.temperatureUnit}

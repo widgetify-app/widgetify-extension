@@ -80,24 +80,24 @@ export function TodosLayout() {
 							</span>
 						</h4>
 
-						<div className="flex gap-1">
+						<div className="flex gap-1.5">
+							<Button
+								onClick={() => setShowStats(!showStats)}
+								size="xs"
+								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
+							>
+								<FaChartSimple size={12} />
+							</Button>
 							<Button
 								onClick={handleBlurModeToggle}
 								size="xs"
-								isPrimary={todoOptions.blurMode}
+								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${todoOptions.blurMode ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
 							>
 								{todoOptions.blurMode ? (
 									<FaEye size={12} />
 								) : (
 									<FaEyeSlash size={12} />
 								)}
-							</Button>
-							<Button
-								onClick={() => setShowStats(!showStats)}
-								isPrimary={showStats}
-								size="xs"
-							>
-								<FaChartSimple size={12} />
 							</Button>
 						</div>
 					</div>
@@ -106,53 +106,26 @@ export function TodosLayout() {
 						<TodoStats />
 					) : (
 						<>
-							{selectedDateTodos.length > 0 && (
-								<div className="mb-2">
-									<div className={'h-1 mb-1 rounded-full bg-base-200'}>
-										<div
-											className="h-1 bg-green-500 rounded-full"
-											style={{ width: `${stats.percentage}%` }}
-										></div>
-									</div>
-									<div
-										className={
-											'flex justify-between text-[.65rem] text-content'
-										}
-									>
-										<span>
-											{stats.completed} از {stats.total} تکمیل شده
-										</span>
-										<span>{stats.percentage}%</span>
-									</div>
-								</div>
-							)}
-
 							<div className="flex justify-between mb-2">
-								<div className="flex gap-0.5 text-xs">
-									<Button
+								<div className="flex gap-0.5">
+									<button
 										onClick={() => setFilter('all')}
-										className={`px-1 py-0.5 ${filter === 'all' ? 'btn-soft' : 'btn-ghost text-muted'}`}
-										rounded="sm"
-										size="xs"
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										همه
-									</Button>
-									<Button
+									</button>
+									<button
 										onClick={() => setFilter('active')}
-										className={`px-1 py-0.5 ${filter === 'active' ? 'btn-soft' : 'btn-ghost text-muted'}`}
-										rounded="sm"
-										size="xs"
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										فعال
-									</Button>
-									<Button
+									</button>
+									<button
 										onClick={() => setFilter('completed')}
-										className={`px-1 py-0.5 ${filter === 'completed' ? 'btn-soft' : 'btn-ghost text-muted'}`}
-										rounded="sm"
-										size="xs"
+										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 									>
 										تکمیل شده
-									</Button>
+									</button>
 								</div>
 								<select
 									value={todoOptions.viewMode}
@@ -162,14 +135,14 @@ export function TodosLayout() {
 										)
 									}
 									className={
-										'select select-xs text-[.65rem] w-24 bg-content !px-2 focus:outline-none focus:border focus:border-primary'
+										'select select-xs text-[10px] w-[5.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer'
 									}
 									style={{
 										backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
 										backgroundPosition: 'left 0.5rem center',
 										backgroundRepeat: 'no-repeat',
-										backgroundSize: '1.5em 1.5em',
-										paddingLeft: '2.5rem',
+										backgroundSize: '1.3em 1.3em',
+										paddingLeft: '3rem',
 									}}
 								>
 									<option

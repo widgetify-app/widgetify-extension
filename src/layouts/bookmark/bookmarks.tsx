@@ -274,7 +274,7 @@ export function BookmarksComponent() {
 		<>
 			<div
 				className={
-					'grid grid-cols-5 gap-3 w-full mt-2 p-1 rounded-lg transition-all duration-300'
+					'grid grid-cols-5 gap-4 lg:gap-3 lg:px-1 w-full rounded-lg transition-all duration-300'
 				}
 			>
 				{' '}
@@ -282,7 +282,7 @@ export function BookmarksComponent() {
 					bookmark ? (
 						<div
 							key={i}
-							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-xl' : ''}`}
+							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-full' : 'rounded-full'}`}
 						>
 							<BookmarkItem
 								bookmark={bookmark}

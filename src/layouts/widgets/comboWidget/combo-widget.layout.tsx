@@ -5,6 +5,7 @@ import { Button } from '@/components/button/button'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
+import { LuNewspaper } from 'react-icons/lu'
 
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<'news' | 'currency'>('currency')
@@ -14,31 +15,40 @@ export function ComboWidget() {
 	}
 
 	return (
-		<WidgetContainer className={'flex flex-col gap-1 py-2'}>
-			<div className="flex items-center justify-between px-2 pb-2 border-b border-content">
-				<div className="flex gap-6 w-44">
+		<WidgetContainer className={'flex flex-col gap-1'}>
+			<div className="flex items-center justify-between">
+				<div className="flex gap-2 w-full">
 					<button
 						onClick={() => setActiveTab('currency')}
-						className={`py-1.5 hover:opacity-70 cursor-pointer text-sm flex items-center gap-1.5 font-medium transition-all opacity-75 active:scale-95 ${activeTab === 'currency' && 'opacity-100'}`}
+						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-[0.55rem] active:scale-95 ${
+							activeTab === 'currency'
+								? 'bg-primary text-white'
+								: 'text-muted hover:bg-base-300'
+						}
+								`}
 					>
-						<FiDollarSign className="w-3.5 h-3.5" />
+						<FiDollarSign className="w-3 h-3" />
 						<span>ارزها</span>
 					</button>
 					<button
 						onClick={() => setActiveTab('news')}
-						className={`py-1.5 hover:opacity-70 cursor-pointer text-sm flex items-center gap-1.5 font-medium transition-all opacity-75 active:scale-95 ${activeTab === 'news' && 'opacity-100'}`}
+						className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-[0.55rem] active:scale-95 ${
+							activeTab === 'news'
+								? 'bg-primary text-white'
+								: 'text-muted hover:bg-base-300'
+						}
+								`}
 					>
-						<FiBook className="w-3.5 h-3.5" />
+						<LuNewspaper className="w-3 h-3" />
 						<span>اخبار</span>
 					</button>
 				</div>
 				<Button
 					onClick={handleSettingsClick}
 					size="xs"
-					className="btn-ghost"
-					rounded="xl"
+					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 				>
-					<FiSettings />
+					<FiSettings size={12} className="text-content" />
 				</Button>
 			</div>
 

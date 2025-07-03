@@ -3,7 +3,6 @@ import type React from 'react'
 interface Props {
 	isActive: boolean
 	onClick: () => void
-	key: string
 	label: string
 	description?: string | React.ReactNode
 	className?: string
@@ -11,7 +10,6 @@ interface Props {
 export function ItemSelector({
 	isActive,
 	onClick,
-	key,
 	label,
 	description,
 	className,
@@ -26,7 +24,6 @@ export function ItemSelector({
 
 	return (
 		<div
-			key={key}
 			onClick={onClick}
 			className={`flex cursor-pointer flex-col items-start  p-3 transition-all border rounded-lg ${className} ${
 				isActive

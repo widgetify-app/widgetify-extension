@@ -173,7 +173,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 					/>
 
 					<section
-						className={'p-4 rounded-xl border bg-content border-content'}
+						className={'p-4 rounded-2xl border bg-content border-content'}
 					>
 						<h3 className={'mb-3 text-sm font-medium'}>
 							افزودن فید RSS جدید
@@ -199,7 +199,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 
 							<Button
 								size="md"
-								className="text-white btn-primary"
+								className="text-white rounded-xl btn-primary"
 								onClick={addNewFeed}
 							>
 								<VscAdd size={16} />
@@ -222,7 +222,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 								<m.div
 									key={feed.url}
 									className={
-										'flex items-center justify-center p-2 border rounded-lg cursor-pointer bg-content border-content'
+										'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-content border-content'
 									}
 									whileHover={{ scale: 1.02 }}
 									whileTap={{ scale: 0.98 }}
@@ -328,12 +328,11 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 
 	return (
 		<m.div
-			className={`flex items-center justify-between px-4 py-3 transition-colors rounded-lg bg-content border border-content ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
+			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-3xl bg-content border border-content ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
 			initial={{ opacity: 0, y: 15 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -15, transition: { duration: 0.2 } }}
 			layout
-			whileHover={{ scale: disabled ? 1 : 1.01 }}
 		>
 			<div className="flex items-center flex-1 gap-3">
 				<ToggleSwitch
@@ -352,7 +351,9 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			</div>
 			<Button
 				size="sm"
-				className="btn-error btn-circle"
+				className={
+					'btn btn-circle h-9 w-9 bg-error/10 hover:!bg-error/20 text-error border-none shadow-none rounded-full transition-colors duration-300 ease-in-out'
+				}
 				onClick={onRemove}
 				disabled={disabled}
 			>

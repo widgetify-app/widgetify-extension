@@ -19,6 +19,7 @@ import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
+import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
@@ -32,30 +33,33 @@ function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets } = useWidgetVisibility()
 	const sortedWidgets = getSortedWidgets()
-	const firstWidget = sortedWidgets[0]
 
-	const layoutItems = sortedWidgets.slice(1)
+	const layoutItems = sortedWidgets
 	const bottomCount = layoutItems.length
 
 	let bottomLayoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-3'
+		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
 	if (bottomCount === 2) {
 		bottomLayoutClasses =
-			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-3 justify-between transition-all duration-300 items-center'
+			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-4 justify-between transition-all duration-300 items-center'
 	}
 
 	return (
 		<DateProvider>
 			<TodoProvider>
 				<div
-					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-3 px-2 md:px-4 pb-2`}
+					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
 				>
-					<div className="flex flex-col w-full gap-2 lg:flex-row lg:gap-0">
+					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
 						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
 							<WidgetifyLayout />
 						</div>
 
-						<div className={'order-1 w-full lg:w-2/4 lg:order-2 px-2'}>
+						<div
+							className={
+								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-4'
+							}
+						>
 							<SearchLayout />
 							<BookmarkProvider>
 								<div className="h-widget">
@@ -64,11 +68,9 @@ function ContentSection() {
 							</BookmarkProvider>
 						</div>
 
-						{firstWidget && (
-							<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
-								{firstWidget.node}
-							</div>
-						)}
+						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
+							<WigiPadWidget />
+						</div>
 					</div>
 					<div className={bottomLayoutClasses}>
 						{layoutItems.map((widget) => {
@@ -271,7 +273,7 @@ export function HomePage() {
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>
-						<NavbarLayout />
+						<NavbarLayout />	
 						<ContentSection />
 						<WidgetSettingsModal
 							isOpen={showWidgetSettings}

@@ -21,7 +21,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 		<div className={`${className}`}>
 			<div
 				className={
-					'flex flex-col overflow-hidden border border-gray-700 rounded-lg shadow-xl bg-content'
+					'flex flex-col overflow-hidden border border-gray-700 rounded-lg shadow-xl bg-widget widget-wrapper'
 				}
 			>
 				<div className="w-full h-16 bg-gray-900"></div>

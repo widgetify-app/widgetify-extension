@@ -22,13 +22,13 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	const getBorderStyle = () => {
 		switch (todo.priority) {
 			case 'high':
-				return 'border-error'
+				return '!border-error'
 			case 'medium':
-				return 'border-warning'
+				return '!border-warning'
 			case 'low':
-				return 'border-success'
+				return '!border-success'
 			default:
-				return 'border-primary'
+				return '!border-primary'
 		}
 	}
 
@@ -46,13 +46,14 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	}
 	return (
 		<div
-			className={`overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out border-r-2 ${getBorderStyle()} bg-content group ${blurMode ? 'blur-item' : ''}`}
+			className={`overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out bg-content group ${blurMode ? 'blur-item' : ''}`}
 		>
 			<div className={'flex items-center gap-1.5 pr-1.5 p-1.5'}>
 				<div className="flex-shrink-0">
 					<CustomCheckbox
 						checked={todo.completed}
 						onChange={() => toggleTodo(todo.id)}
+						className={`!border ${getBorderStyle()}`}
 					/>
 				</div>
 
@@ -64,27 +65,26 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 				</span>
 
 				{/* Actions */}
-				<div className="flex items-center">
-					<button
-						onClick={() => setExpanded(!expanded)}
-						className={
-							'p-0.5 rounded-full cursor-pointer hover:bg-gray-500/10 text-gray-400'
-						}
-					>
-						{expanded ? (
-							<FiChevronUp size={12} />
-						) : (
-							<FiChevronDown size={12} />
-						)}
-					</button>
-
+				<div className="flex items-center gap-x-1">
 					<button
 						onClick={() => deleteTodo(todo.id)}
 						className={
-							'p-0.5 rounded-full cursor-pointer hover:bg-red-500/10 transition-opacity opacity-0 group-hover:opacity-100 text-red-400'
+							'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none text-red-400'
 						}
 					>
-						<FiTrash2 size={12} />
+						<FiTrash2 size={13} />
+					</button>
+
+					<button
+						onClick={() => setExpanded(!expanded)}
+						className={
+							'p-1 rounded-full cursor-pointer hover:bg-gray-500/10 text-gray-400'
+						}
+					>
+						<FiChevronDown
+							size={14}
+							className={`${expanded ? 'rotate-0' : 'rotate-180'} transition-transform duration-300`}
+						/>
 					</button>
 				</div>
 			</div>{' '}

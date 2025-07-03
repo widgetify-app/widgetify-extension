@@ -31,7 +31,7 @@ export function FolderBookmarkItem({
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getFolderStyle = () => {
-		return 'hover:border hover:border-primary/40 bg-widget backdrop-blur-md hover:bg-primary/20'
+		return 'border border-primary/0 hover:border-primary/40 bg-widget backdrop-blur-md hover:bg-primary/20'
 	}
 
 	const displayIcon =
@@ -58,14 +58,14 @@ export function FolderBookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			<Tooltip content={bookmark.title}>
+			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-xl w-[5.4rem] h-[5.7rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-16 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300`}
 				>
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-xl">
@@ -80,7 +80,7 @@ export function FolderBookmarkItem({
 							}
 						/>
 					</div>
-					<div className="absolute top-0 w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
+					<div className="absolute -top-[1px] w-8 h-1 transform -translate-x-1/2 rounded-b-sm left-1/2 bg-blue-400/80" />
 					<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
 						{typeof displayIcon === 'string' ? (
 							<img
@@ -110,10 +110,10 @@ export function FolderBookmarkItem({
 								onMenuClick(e)
 							}}
 							className={
-								'absolute cursor-pointer top-1 right-1 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-primary/50 z-10'
+								'absolute cursor-pointer top-1.5 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 							}
 						>
-							<SlOptions />
+							<SlOptions size={12} />
 						</div>
 					)}
 				</button>

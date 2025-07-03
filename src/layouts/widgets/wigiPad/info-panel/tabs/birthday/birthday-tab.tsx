@@ -1,5 +1,6 @@
 import type { InfoPanelData } from '../../hooks/useInfoPanelData'
 import { BirthdayItem } from './birthday-item'
+import { LuGift } from 'react-icons/lu'
 
 interface Props {
 	birthdays: InfoPanelData['birthdays']
@@ -12,9 +13,9 @@ export function BirthdayTab({ birthdays }: Props) {
 					<BirthdayItem key={birthday.id} birthday={birthday} />
 				))
 			) : (
-				<div className="py-8 text-center opacity-50 text-base-content">
-					<div className="mb-2 text-2xl">🎂</div>
-					<p className="text-sm">هیچ تولدی امروز نیست</p>
+				<div className="py-1.5 flex flex-col items-center gap-y-2 text-center text-muted">
+					<LuGift className="text-3xl" />
+					<p className="text-xs leading-normal">هیچ تولدی امروز نیست.</p>
 				</div>
 			)}
 		</div>

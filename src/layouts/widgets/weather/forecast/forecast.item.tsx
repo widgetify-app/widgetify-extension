@@ -12,17 +12,13 @@ interface ForecastProps {
 
 export function ForecastItem({ forecast, unit }: ForecastProps) {
 	return (
-		<div
-			className={
-				'flex flex-col items-center justify-between w-12 h-[5.8rem] p-2 transition-all duration-300 border border-content bg-content rounded-2xl hover:scale-105 hover:shadow-lg animate-in fade-in-0 zoom-in-95'
-			}
-		>
+		<div className="px-3 py-2 flex flex-col items-center justify-between transition-all duration-300 bg-base-300/80 rounded-xl animate-in fade-in-0">
 			{/* Time Section */}
 			<div className="flex items-center justify-center w-full">
 				{forecast.isDaily ? (
 					<div
 						className={
-							'text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md text-content  text-center w-full transition-colors duration-300'
+							'text-[.6rem] font-semibold tracking-wide uppercase px-1.5 py-0.5 rounded-md text-content text-center w-full transition-colors duration-300'
 						}
 					>
 						{new Date(forecast.date).toLocaleDateString('fa-IR', {
@@ -32,7 +28,7 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 				) : (
 					<div
 						className={
-							'px-1.5 py-0.5 text-[.6rem] font-medium rounded-md text-content  w-full text-center transition-colors duration-300'
+							'text-xs font-semibold rounded-md text-muted opacity-80 w-full text-center transition-colors duration-300'
 						}
 					>
 						{new Date(forecast.date).toLocaleTimeString([], {
@@ -45,11 +41,11 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 			</div>
 
 			{/* Weather Icon */}
-			<div className="relative my-1 group">
+			<div className="mt-0.5 relative group">
 				<img
 					src={forecast.icon}
 					alt="weather status"
-					className="w-7 h-7 drop-shadow-md"
+					className="w-8 h-8 drop-shadow-md"
 				/>
 				<div className="absolute inset-0 w-2 h-2 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10" />
 			</div>
@@ -57,11 +53,11 @@ export function ForecastItem({ forecast, unit }: ForecastProps) {
 			{/* Temperature */}
 			<div
 				className={
-					'text-sm font-extrabold text-transparent bg-gradient-to-r text-content opacity-90 bg-clip-text drop-shadow-temperature animate-in zoom-in-95 duration-300'
+					'mt-0.5 text-sm font-semibold text-muted animate-in zoom-in-95 duration-300'
 				}
 			>
 				{Math.round(forecast.temp)}
-				<span className="text-sm font-medium">{unitsFlag[unit]}</span>
+				<span className="text-xs font-medium">{unitsFlag[unit]}</span>
 			</div>
 		</div>
 	)

@@ -166,9 +166,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			isOpen={isOpen}
 			onClose={() => onClose(null)}
 			direction="rtl"
-			closeOnBackdropClick={false}
 		>
-			<div className={'flex flex-col p-2 gap-2 rounded-lg'}>
+			<div className={'flex flex-colgap-4 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
 						<label
@@ -231,7 +230,14 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</label>
 
 					<div className="flex items-center gap-2 mt-1">
-						<Button type="button" onClick={toggleEmojiPopover} size="md">
+						<Button
+							size="md"
+							type="button"
+							onClick={toggleEmojiPopover}
+							className={
+								'btn !w-fit px-8 border-none shadow-none bg-base-300 text-muted rounded-xl transition-colors duration-300 ease-in-out'
+							}
+						>
 							{sticker ? (
 								<>
 									{sticker.startsWith('http') ? (
@@ -277,7 +283,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{isEmojiPopoverOpen && (
 						<div
 							className={
-								'absolute  mt-1 p-2 rounded-md w-64 max-h-32 overflow-y-auto small-scrollbar bg-content shadow-lg border border-content'
+								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-content'
 							}
 							style={{ zIndex: 1000 }}
 						>
@@ -321,7 +327,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="flex justify-end gap-2 mt-4">
-					<Button onClick={() => onClose(null)} size="md">
+					<Button
+						size="md"
+						onClick={() => onClose(null)}
+						className={
+							'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
+						}
+					>
 						لغو
 					</Button>
 					<Button
@@ -329,6 +341,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						onClick={() => handleClose()}
 						size="md"
 						isPrimary={true}
+						className={
+							'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
+						}
 					>
 						ذخیره
 					</Button>
