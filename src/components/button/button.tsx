@@ -27,7 +27,7 @@ export function Button(prop: ButtonProps) {
 			type={prop.type || 'button'}
 			onClick={prop.onClick}
 			disabled={prop.disabled}
-			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'}`}
+			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
 			style={prop.style}
 		>
 			{prop.loading ? prop.loadingText : prop.children}

@@ -185,3 +185,11 @@ input[type="color"]::-moz-color-swatch {
 .scrollbar-none::-webkit-scrollbar {
 	display: none;
 }
+
+html.modal-isActive {
+	scrollbar-width: none !important;
+}
+
+html.modal-isActive::-webkit-scrollbar {
+	display: none !important;
+}
