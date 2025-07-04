@@ -167,7 +167,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			onClose={() => onClose(null)}
 			direction="rtl"
 		>
-			<div className={'flex flex-colgap-4 rounded-lg'}>
+			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<RequireAuth mode="preview">
 					<div>
 						<label

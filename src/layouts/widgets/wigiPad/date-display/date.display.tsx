@@ -17,7 +17,7 @@ export function DateDisplay() {
 	return (
 		<div
 			className={
-				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500'
+				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500 rounded-xl'
 			}
 		>
 			{isHoliday && (
@@ -29,8 +29,8 @@ export function DateDisplay() {
 						<div className="absolute inset-0 opacity-50 bg-error/80 blur-sm" />
 					</div>
 					<div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-error/5 via-transparent to-error/10" />
-					<div className="absolute w-2 h-2 rounded-full top-1 left-1 bg-error/30 animate-pulse" />
-					<div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-error/20 rounded-full animate-pulse delay-300" />{' '}
+					<div className="absolute w-2 h-2 rounded-full top-2 left-2 bg-error/30 animate-pulse" />
+					<div className="absolute bottom-2 right-2 w-1.5 h-1.5 bg-error/20 rounded-full animate-pulse delay-300" />{' '}
 				</>
 			)}
 

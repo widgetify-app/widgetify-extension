@@ -26,7 +26,7 @@ const CustomCheckbox = ({
 	}
 
 	return (
-		<label className="relative flex items-center transition-transform cursor-pointer group active:scale-95">
+		<label className="relative flex items-center transition-transform cursor-pointer group active:scale95">
 			<div className="relative">
 				<input
 					type="checkbox"

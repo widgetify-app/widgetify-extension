@@ -53,6 +53,19 @@ const Modal = ({
 	className = '',
 }: ModalProps) => {
 	const sizValue = daisyUISizeClasses[size] || daisyUISizeClasses.md
+
+	useEffect(() => {
+		const html = document.documentElement
+		if (isOpen) {
+			html.classList.add('modal-isActive')
+		} else {
+			html.classList.remove('modal-isActive')
+		}
+		return () => {
+			html.classList.remove('modal-isActive')
+		}
+	}, [isOpen])
+
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {

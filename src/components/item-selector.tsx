@@ -19,19 +19,19 @@ export function ItemSelector({
 			return 'border-blue-500 bg-blue-500'
 		}
 
-		return 'border-content'
+		return 'border-content bg-base-300/60'
 	}
 
 	return (
 		<div
 			onClick={onClick}
-			className={`flex cursor-pointer flex-col items-start  p-3 transition-all border rounded-lg ${className} ${
+			className={`flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl ${className} ${
 				isActive
-					? 'border-primary/50 bg-primary/10'
-					: 'bg-content border-content hover:!border-primary/50'
+					? 'border-primary/25 bg-primary/10'
+					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
 			}`}
 		>
-			<div className="flex items-center justify-center mb-2">
+			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
 					className={`w-4 h-4 rounded-full border ${getRadioBorderStyle(isActive)}`}
 				>
@@ -55,7 +55,7 @@ export function ItemSelector({
 				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
 			</div>
 			{description && (
-				<p className={'text-sm text-muted text-right'}>{description}</p>
+				<p className={'text-xs text-muted text-right'}>{description}</p>
 			)}
 		</div>
 	)
