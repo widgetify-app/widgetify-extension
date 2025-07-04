@@ -20,7 +20,7 @@ const CrabComponent = React.lazy(() =>
 )
 
 export const PetFactory: React.FC = () => {
-	const { petType, getCurrentPetName, getPetHungryState } = usePetContext()
+	const { petType, getPetHungryState } = usePetContext()
 	if (!petType) return null
 
 	let PetComponent = null
@@ -50,11 +50,7 @@ export const PetFactory: React.FC = () => {
 			<PetComponent />
 
 			<div className="absolute bottom-0 flex justify-center left-2">
-				<PetHud
-					level={getPetHungryState(petType)?.level ?? 0}
-					petName={getCurrentPetName(petType)}
-					mode="small"
-				/>
+				<PetHud level={getPetHungryState(petType)?.level ?? 0} />
 			</div>
 		</Suspense>
 	)

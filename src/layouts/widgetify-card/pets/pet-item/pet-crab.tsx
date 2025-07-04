@@ -63,6 +63,7 @@ export const CrabComponent = () => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
+		clickEffect,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CRAB),
 		animations: crabAnimations,
@@ -79,6 +80,7 @@ export const CrabComponent = () => {
 			name={getCurrentPetName(PetTypes.CRAB)}
 			containerRef={containerRef}
 			petRef={petRef}
+			clickEffect={clickEffect}
 			position={position}
 			direction={direction}
 			showName={showName}
