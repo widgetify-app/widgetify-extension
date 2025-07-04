@@ -49,7 +49,7 @@ export function EventItem({ event, index }: EventItemProps) {
 					{event.isHoliday && (
 						<span
 							className={
-								'absolute mr-auto -left-12 top-2 text-center w-32 text-xs px-2 py-0.5 rounded bg-error text-content transform -rotate-45 shadow'
+								'absolute mr-auto -left-12 top-2 text-center w-32 text-xs px-2 py-0.5 rounded bg-error text-error-content transform -rotate-45 shadow'
 							}
 						>
 							تعطیل
