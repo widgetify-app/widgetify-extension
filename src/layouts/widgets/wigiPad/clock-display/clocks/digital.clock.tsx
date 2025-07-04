@@ -39,10 +39,10 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 
 						const side = Math.floor((i + 7) / 15) // values: 0 ( top right side ), 1 ( right ), 2 ( bottom ), 3 ( left ), 4 ( top left side )
 
-						let x1: number
-						let x2: number
-						let y1: number
-						let y2: number
+						let x1: number = 0
+						let x2: number = 0
+						let y1: number = 0
+						let y2: number = 0
 						let differential: number
 
 						switch (side) {
