@@ -12,10 +12,19 @@ export interface WigiPadNotification {
 	timestamp: string | null
 }
 
+export interface WigiPadEmailMessage {
+	id: string
+	threadId: string
+	subject: string
+	sender: string
+	snippet: string
+}
+
 export interface WigiPadDataResponse {
 	data: {
 		birthdays: WigiPadBirthday[]
 		notifications: WigiPadNotification[]
+		emailMessages: WigiPadEmailMessage[]
 	}
 }
 
