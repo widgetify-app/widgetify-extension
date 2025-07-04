@@ -102,6 +102,7 @@ export function BookmarksComponent() {
 			if (bookmark.type === 'FOLDER') {
 				openBookmarks(bookmark)
 			} else {
+				e.preventDefault()
 				window.open(bookmark.url)
 			}
 			return
@@ -286,7 +287,10 @@ export function BookmarksComponent() {
 						>
 							<BookmarkItem
 								bookmark={bookmark}
-								onClick={(e) => handleBookmarkClick(bookmark, e)}
+								onMouseDown={(e) => handleBookmarkClick(bookmark, e)}
+								onClick={(e) => {
+									if (e?.button === 0) handleBookmarkClick(bookmark, e)
+								}}
 								canAdd={true}
 								draggable={isManageable(bookmark)}
 								isDragging={draggedBookmarkId === bookmark.id}

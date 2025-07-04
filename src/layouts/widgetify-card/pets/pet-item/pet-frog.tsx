@@ -82,6 +82,7 @@ export const frogComponent = () => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
+		clickEffect,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.FROG),
 		animations: frogAnimations,
@@ -98,6 +99,7 @@ export const frogComponent = () => {
 			name={getCurrentPetName(PetTypes.FROG)}
 			containerRef={containerRef}
 			petRef={petRef}
+			clickEffect={clickEffect}
 			position={position}
 			direction={direction}
 			showName={showName}

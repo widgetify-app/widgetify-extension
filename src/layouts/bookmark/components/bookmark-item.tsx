@@ -13,6 +13,7 @@ interface BookmarkItemProps {
 	theme?: string
 	canAdd?: boolean
 	onClick: (e?: React.MouseEvent<any>) => void
+	onMouseDown?: (e?: React.MouseEvent<any>) => void
 	draggable?: boolean
 	isDragging?: boolean
 	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
@@ -25,6 +26,7 @@ interface BookmarkItemProps {
 export function BookmarkItem({
 	bookmark,
 	canAdd = true,
+	onMouseDown,
 	onClick,
 	draggable = false,
 	isDragging = false,
@@ -76,6 +78,7 @@ export function BookmarkItem({
 		>
 			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
 				<button
+					onMouseDown={onMouseDown}
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}
@@ -83,6 +86,10 @@ export function BookmarkItem({
 				>
 					{onMenuClick && bookmark && (
 						<div
+							onMouseDown={(e) => {
+								e.stopPropagation()
+								onMenuClick(e)
+							}}
 							onClick={(e) => {
 								e.stopPropagation()
 								onMenuClick(e)

@@ -60,6 +60,7 @@ export const CatComponent = () => {
 		direction,
 		showName,
 		collectibles,
+		clickEffect,
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
@@ -83,6 +84,7 @@ export const CatComponent = () => {
 			direction={direction}
 			showName={showName}
 			collectibles={collectibles}
+			clickEffect={clickEffect}
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
