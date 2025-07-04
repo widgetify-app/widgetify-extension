@@ -1,26 +1,48 @@
-import { useState } from 'react'
-import { FiBook, FiDollarSign, FiSettings } from 'react-icons/fi'
+import { useState, useEffect } from 'react'
+import { FiDollarSign, FiSettings } from 'react-icons/fi'
 
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
+import { LuNewspaper } from 'react-icons/lu'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
-import { LuNewspaper } from 'react-icons/lu'
+
+export type ComboTabType = 'news' | 'currency'
 
 export function ComboWidget() {
-	const [activeTab, setActiveTab] = useState<'news' | 'currency'>('currency')
+	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
 	const [showSettings, setShowSettings] = useState(false)
 	const handleSettingsClick = () => {
 		setShowSettings(true)
 	}
+
+	const onTabClick = (tab: ComboTabType) => {
+		if (tab === activeTab) return
+		setActiveTab(tab)
+		setToStorage('comboTabs', tab)
+	}
+
+	useEffect(() => {
+		async function load() {
+			const tabFromStorage = await getFromStorage('comboTabs')
+			if (!tabFromStorage) {
+				setActiveTab('currency')
+			} else {
+				setActiveTab(tabFromStorage)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
 			<div className="flex items-center justify-between">
 				<div className="flex gap-2 w-full">
 					<button
-						onClick={() => setActiveTab('currency')}
-						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-[0.55rem] active:scale-95 ${
+						onClick={() => onTabClick('currency')}
+						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
 							activeTab === 'currency'
 								? 'bg-primary text-white'
 								: 'text-muted hover:bg-base-300'
@@ -31,8 +53,8 @@ export function ComboWidget() {
 						<span>ارزها</span>
 					</button>
 					<button
-						onClick={() => setActiveTab('news')}
-						className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-[0.55rem] active:scale-95 ${
+						onClick={() => onTabClick('news')}
+						className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
 							activeTab === 'news'
 								? 'bg-primary text-white'
 								: 'text-muted hover:bg-base-300'

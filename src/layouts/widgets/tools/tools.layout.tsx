@@ -13,10 +13,10 @@ import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
-export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
+export type ToolsTabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
 
 export const ToolsLayout: React.FC<any> = () => {
-	const [activeTab, setActiveTab] = useState<TabType | null>(null)
+	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
 	const { selectedDate, setCurrentDate } = useDate()
 	const { data: events } = useGetEvents()
 	const { user } = useAuth()
@@ -30,7 +30,7 @@ export const ToolsLayout: React.FC<any> = () => {
 		endOfMonth
 	)
 
-	const onTabClick = (tab: TabType) => {
+	const onTabClick = (tab: ToolsTabType) => {
 		if (tab === activeTab) return
 		setActiveTab(tab)
 		setToStorage('toolsTab', tab)
