@@ -77,7 +77,7 @@ export const CurrencyModalComponent = ({
 							<Button
 								onClick={() => setShowChart(!showChart)}
 								className={
-									'btn-ghost p-1 rounded-lg  opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out hover:scale-110 active:scale-90'
+									'btn-ghost p-1 rounded-lg opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out'
 								}
 								size="xs"
 							>

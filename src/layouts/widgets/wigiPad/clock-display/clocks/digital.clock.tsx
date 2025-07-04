@@ -39,14 +39,18 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 
 						const side = Math.floor((i + 7) / 15) // values: 0 ( top right side ), 1 ( right ), 2 ( bottom ), 3 ( left ), 4 ( top left side )
 
-						let x1, x2, y1, y2, differential
+						let x1: number
+						let x2: number
+						let y1: number
+						let y2: number
+						let differential: number
 
 						switch (side) {
 							case 0:
 								differential = Math.tan(((i - 30) * 6 * Math.PI) / 180)
 
 								y1 = 10
-								if (i == 7) y1 = 11
+								if (i === 7) y1 = 11
 								x1 = 60 + differential * 50
 
 								y2 = 0
@@ -72,7 +76,7 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 
 								x1 = 60 - differential * 50
 								y1 = 150
-								if (i == 23 || i == 37) y1 = 149
+								if (i === 23 || i === 37) y1 = 149
 
 								x2 = x1 - differential * 10
 								y2 = 160
@@ -93,7 +97,7 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 
 								x2 = 60 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 50
 								y2 = 10
-								if (i == 53) y2 = 11
+								if (i === 53) y2 = 11
 
 								y1 = 0
 								x1 = x2 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 10
@@ -115,7 +119,7 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 								stroke="currentColor"
 								strokeLinecap="round"
 								strokeWidth="2"
-								// strokeWidth={i % 5 == 0 ? "3" : "2"}
+								// strokeWidth={i % 5 === 0 ? "3" : "2"}
 								opacity={
 									intSeconds - i >= 0
 										? (60 - Math.abs(intSeconds - 1 - i)) / 60
@@ -128,14 +132,14 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 				</svg>
 			)}
 			<div
-				className={`${textColor} absolute top-1/2 ${setting.showSeconds ? 'inset-x-5 -translate-y-[calc(50%+0.65rem)]' : '-translate-y-[calc(50%+0.30rem)]'} w-[calc(100%-2.5rem)] flex flex-col items-center text-center text-[2.75rem] leading-none drop-shadow-md font-sans font-black z-10 transition-all duration-300`}
+				className={`${textColor} absolute top-1/2 ${setting.showSeconds ? 'inset-x-5 -translate-y-[calc(50%+0.65rem)] text-[3rem]' : '-translate-y-[calc(50%+0.9rem)] text-[3.4rem]'} w-[calc(100%-2.5rem)] flex flex-col items-center text-center leading-none drop-shadow-md font-sans font-black z-10 transition-all duration-300`}
 			>
 				<span>{hours}</span>
 				<span>{minutes}</span>
 			</div>
 			{setting.showTimeZone && (
 				<div
-					className={`${textColor} absolute bottom-[1.4rem] ${setting.showSeconds ? 'inset-x-5 w-[calc(100%-2.5rem)]' : 'translate-y-20'} text-xs leading-none font-medium tracking-[0.05em] text-center truncate opacity-90 transition-all duration-300`}
+					className={`${textColor} absolute bottom-[1.3rem] ${setting.showSeconds ? 'inset-x-5 w-[calc(100%-2.5rem)] text-xs' : 'translate-y-20 text-sm'} leading-none font-medium tracking-[0.05em] text-center truncate opacity-90 transition-all duration-300`}
 				>
 					{getTimeZoneLabel(timezone.label)}
 				</div>
