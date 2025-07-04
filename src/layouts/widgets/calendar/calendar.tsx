@@ -6,8 +6,6 @@ import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { DaySummary } from './components/day-summary'
 
-export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
-
 const CalendarLayout: React.FC<any> = () => {
 	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
 		useDate()
@@ -38,7 +36,7 @@ const CalendarLayout: React.FC<any> = () => {
 				setSelectedDate={setSelectedDate}
 			/>
 
-			<div className="mt-2 flex-1">
+			<div className="flex-1 mt-2">
 				<DaySummary selectedDate={selectedDate} />
 			</div>
 		</WidgetContainer>

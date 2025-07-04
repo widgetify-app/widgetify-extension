@@ -2,19 +2,21 @@ import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
 
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import { useState } from 'react'
-import type { TabType } from '../calendar/calendar'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from './components/tab-navigation'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
+export type TabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
+
 export const ToolsLayout: React.FC<any> = () => {
-	const [activeTab, setActiveTab] = useState<TabType>('events')
+	const [activeTab, setActiveTab] = useState<TabType | null>(null)
 	const { selectedDate, setCurrentDate } = useDate()
 	const { data: events } = useGetEvents()
 	const { user } = useAuth()
@@ -29,8 +31,23 @@ export const ToolsLayout: React.FC<any> = () => {
 	)
 
 	const onTabClick = (tab: TabType) => {
+		if (tab === activeTab) return
 		setActiveTab(tab)
+		setToStorage('toolsTab', tab)
 	}
+
+	useEffect(() => {
+		async function load() {
+			const tabFromStorage = await getFromStorage('toolsTab')
+			if (!tabFromStorage) {
+				setActiveTab('events')
+			} else {
+				setActiveTab(tabFromStorage)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
 		<WidgetContainer>
