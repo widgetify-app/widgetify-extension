@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PetTooltip } from '../components/pet-tooltip'
+import { playCollectSound, playFoodDropSound } from '../utils/sound-effects'
 import {
 	type CollectibleItem,
 	type PetAnimations,
@@ -39,16 +40,82 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 					!item.collected && (
 						<div
 							key={item.id}
-							className="absolute"
+							className={`absolute transition-all duration-300 ${
+								item.dropping
+									? 'food-drop-animation'
+									: 'food-bounce-animation'
+							}`}
 							style={{
 								left: `${item.x}px`,
 								bottom: `${item.y}px`,
+								transform: item.dropping ? 'scale(1.1)' : 'scale(1)',
+								filter: item.dropping
+									? 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+									: 'none',
+								zIndex: item.dropping ? 15 : 5,
 							}}
 						>
 							{CollectibleIcon}
 						</div>
 					)
 			)}
+
+			<style>
+				{`
+@keyframes food-drop {
+	0% {
+		transform: translateY(-30px) scale(0.8) rotate(-5deg);
+		opacity: 0.8;
+		filter: blur(0.5px);
+	}
+
+	25% {
+		transform: translateY(-10px) scale(0.9) rotate(0deg);
+		opacity: 0.9;
+	}
+
+	50% {
+		transform: translateY(0) scale(1.1) rotate(2deg);
+		opacity: 1;
+	}
+
+	75% {
+		transform: translateY(0) scale(1.05) rotate(-1deg);
+		opacity: 1;
+	}
+
+	100% {
+		transform: translateY(0) scale(1) rotate(0deg);
+		opacity: 1;
+		filter: blur(0);
+	}
+}
+
+@keyframes food-bounce {
+
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0) scale(1);
+	}
+
+	40% {
+		transform: translateY(-10px) scale(1.05);
+	}
+
+	60% {
+		transform: translateY(-5px) scale(1.02);
+	}
+}
+
+
+.food-bounce-animation {
+	animation: food-bounce 0.8s ease-in-out;
+}
+				`}
+			</style>
 		</>
 	)
 }
@@ -61,6 +128,7 @@ interface BasePetContainerProps {
 	direction: number
 	showName?: boolean
 	collectibles: CollectibleItem[]
+	clickEffect?: { x: number; y: number } | null
 	getAnimationForCurrentAction: () => string
 	dimensions: PetDimensions
 	assets: PetAssets
@@ -76,6 +144,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	direction,
 	showName,
 	collectibles,
+	clickEffect,
 	getAnimationForCurrentAction,
 	dimensions,
 	assets,
@@ -86,12 +155,29 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className="absolute hidden w-full h-32 overflow-hidden -bottom-3 lg:flex"
+			className="absolute hidden w-full h-32 overflow-hidden cursor-pointer -bottom-3 lg:flex"
 			style={{
 				zIndex: 50,
 			}}
+			title="کلیک کنید تا غذا بدهید! 🍽️"
 		>
 			<CollectiblesRenderer collectibles={collectibles} assets={assets} />
+
+			{/* Click effect indicator */}
+			{clickEffect && (
+				<div
+					className="absolute pointer-events-none animate-ping"
+					style={{
+						left: `${clickEffect.x - 8}px`,
+						top: `${clickEffect.y - 8}px`,
+						width: '16px',
+						height: '16px',
+						backgroundColor: 'rgba(59, 130, 246, 0.5)',
+						borderRadius: '50%',
+						zIndex: 20,
+					}}
+				/>
+			)}
 
 			<div
 				ref={petRef}
@@ -142,6 +228,7 @@ export function useBasePetLogic({
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
 	const [showName, setShowName] = useState(false)
+	const [clickEffect, setClickEffect] = useState<{ x: number; y: number } | null>(null)
 
 	const [collectibles, setCollectibles] = useState<CollectibleItem[]>([])
 	const [collectibleIdCounter, setCollectibleIdCounter] = useState(0)
@@ -189,19 +276,26 @@ export function useBasePetLogic({
 			if (container) {
 				const rect = container.getBoundingClientRect()
 				const clickX = e.clientX - rect.left
+				const clickY = e.clientY - rect.top
 				const bounds = getMovementBounds()
 				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
 
+				setClickEffect({ x: clampedX, y: clickY })
+				setTimeout(() => setClickEffect(null), 500)
+
+				const containerHeight = container.offsetHeight || 128
 				const newCollectible: CollectibleItem = {
 					id: collectibleIdCounter,
 					x: clampedX,
-					y: -assets.collectibleSize,
+					y: containerHeight - assets.collectibleSize, // Start from top
 					collected: false,
 					dropping: true,
 				}
 
 				setCollectibles((prev) => [...prev, newCollectible])
 				setCollectibleIdCounter((prev) => prev + 1)
+
+				playFoodDropSound()
 
 				if (action === 'sit' || action === 'idle') {
 					updateAction('stand')
@@ -261,6 +355,9 @@ export function useBasePetLogic({
 			if (onCollectibleCollection) {
 				onCollectibleCollection(collectedItemId)
 			}
+
+			playCollectSound()
+
 			setTimeout(
 				() =>
 					updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
@@ -277,9 +374,14 @@ export function useBasePetLogic({
 				if (collectible.collected) return collectible
 
 				if (collectible.dropping) {
-					const newY = collectible.y + assets.collectibleFallSpeed
-					if (newY >= 0) {
+					// Enhanced drop animation with acceleration
+					const dropSpeed =
+						assets.collectibleFallSpeed + (collectible.y > 50 ? 1 : 0.5)
+					const newY = collectible.y - dropSpeed
+
+					if (newY <= 0) {
 						collectiblesChanged = true
+						// Add bounce effect when hitting ground
 						return { ...collectible, y: 0, dropping: false }
 					}
 					collectiblesChanged = true
@@ -623,6 +725,7 @@ export function useBasePetLogic({
 		action,
 		showName,
 		collectibles,
+		clickEffect,
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
