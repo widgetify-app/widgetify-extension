@@ -13,6 +13,13 @@ export interface InfoPanelData {
 		content: string
 		timestamp: Date | null
 	}>
+	emailMessages: Array<{
+		id: string
+		threadId: string
+		subject: string
+		sender: string
+		snippet: string
+	}>
 }
 
 export const useInfoPanelData = (): InfoPanelData => {
@@ -25,11 +32,12 @@ export const useInfoPanelData = (): InfoPanelData => {
 	const [data, setData] = useState<InfoPanelData>({
 		birthdays: [],
 		notifications: [],
+		emailMessages: [],
 	})
 
 	useEffect(() => {
 		if (wigiPadData?.data) {
-			const { birthdays, notifications } = wigiPadData.data
+			const { birthdays, notifications, emailMessages } = wigiPadData.data
 
 			const transformedBirthdays = birthdays.map((birthday, index) => ({
 				id: `birthday-${index}`,
@@ -44,10 +52,20 @@ export const useInfoPanelData = (): InfoPanelData => {
 					: null,
 			}))
 
+			const transformedEmailMessages =
+				emailMessages?.map((email) => ({
+					id: email.id,
+					threadId: email.threadId,
+					subject: email.subject,
+					sender: email.sender,
+					snippet: email.snippet,
+				})) || []
+
 			setData((prev) => ({
 				...prev,
 				birthdays: transformedBirthdays,
 				notifications: transformedNotifications,
+				emailMessages: transformedEmailMessages,
 			}))
 		}
 	}, [wigiPadData])
