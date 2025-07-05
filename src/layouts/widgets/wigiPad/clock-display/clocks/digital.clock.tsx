@@ -38,7 +38,6 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 						let intSeconds = Number.parseInt(seconds)
 
 						const side = Math.floor((i + 7) / 15) // values: 0 ( top right side ), 1 ( right ), 2 ( bottom ), 3 ( left ), 4 ( top left side )
-
 						let x1 = 0
 						let x2 = 0
 						let y1 = 0
