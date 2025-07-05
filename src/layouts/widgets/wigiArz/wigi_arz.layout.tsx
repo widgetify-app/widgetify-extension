@@ -43,12 +43,12 @@ export function WigiArzLayout({
 					{selectedCurrencies.length === 0 ? (
 						<div
 							className={
-								'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-12'
+								'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-12'
 							}
 						>
 							<div
 								className={
-									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
 								}
 							>
 								<FiDollarSign className="text-content" size={24} />
@@ -96,12 +96,12 @@ export function WigiArzLayout({
 					{selectedCurrencies.length === 0 ? (
 						<div
 							className={
-								'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-12'
+								'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-12'
 							}
 						>
 							<div
 								className={
-									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
 								}
 							>
 								<FiDollarSign className="text-content" size={24} />
