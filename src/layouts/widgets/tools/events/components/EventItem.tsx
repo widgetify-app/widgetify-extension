@@ -38,9 +38,9 @@ export function EventItem({ event, index }: EventItemProps) {
 	return (
 		<div
 			key={`${event.source}-${index}`}
-			className={`mb-2 rounded-lg overflow-hidden bg-content border-r-2  ${event.isHoliday ? 'border-error' : 'border-content'}`}
+			className="mb-2 rounded-lg overflow-hidden bg-content border border-base-300/40"
 		>
-			<div className="relative p-1">
+			<div className="relative p-1.5">
 				<div className="flex items-center mb-1">
 					{getSourceIcon(event.source)}
 					<span className={`text-xs font-medium mr-1.5 ${getSubTextStyle()}`}>
@@ -58,7 +58,7 @@ export function EventItem({ event, index }: EventItemProps) {
 				</div>
 
 				<h4
-					className={`text-sm font-medium w-44 text-wrap ${event.isHoliday ? 'text-error' : 'text-content'}`}
+					className={`pr-5 text-xs font-medium w-44 text-wrap ${event.isHoliday ? 'text-error' : 'text-content'}`}
 				>
 					{event.title}
 				</h4>

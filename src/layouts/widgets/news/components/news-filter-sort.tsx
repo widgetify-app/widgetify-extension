@@ -38,12 +38,13 @@ export const NewsFilterSort = ({
 	}
 
 	return (
-		<div className="mb-1 space-y-1 ">
-			<div className="flex items-center gap-2">
+		<div className="mb-1 space-y-1">
+			<div className="flex items-center justify-end gap-2">
 				<Button
 					size="xs"
 					onClick={() => setShowFilters(!showFilters)}
 					isPrimary={showFilters}
+					className='rounded-xl text-content bg-content border-base-300/40 shadow-none'
 				>
 					<VscFilter size={12} />
 					<VscChevronDown
@@ -53,7 +54,7 @@ export const NewsFilterSort = ({
 				</Button>
 			</div>
 			{showFilters && (
-				<div className="p-3 space-y-3 transition-all duration-200 border rounded-lg bg-base-200/80 border-base-300">
+				<div className="p-3 space-y-3 transition-all duration-200 border border-base-300/50 rounded-xl bg-base-200/80">
 					<div>
 						<label className="block mb-2 text-xs font-medium text-base-content">
 							<VscSortPrecedence className="inline w-3 h-3 ml-1" />
@@ -66,6 +67,7 @@ export const NewsFilterSort = ({
 									onClick={() => handleSortChange(option.value)}
 									size="xs"
 									isPrimary={currentState.sortBy === option.value}
+									className={`shadow-none rounded-xl ${currentState.sortBy === option.value ? "bg-primary text-white border-primary" : "bg-base-300 border-base-300 text-muted"}`}
 								>
 									{option.label}
 								</Button>

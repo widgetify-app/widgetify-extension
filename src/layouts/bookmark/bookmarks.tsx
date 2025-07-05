@@ -326,7 +326,7 @@ export function BookmarksComponent() {
 					/>
 				)}
 			</div>
-			<div className="flex justify-center w-full">
+			<div className="mt-2 flex justify-center w-full">
 				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
 			<AddBookmarkModal

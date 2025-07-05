@@ -30,7 +30,8 @@ const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max
 					}}
 				/>
 				<span className="absolute text-xs -translate-y-1/2 right-2 top-1/2 text-base-content/50">
-					/{max}
+					<span>{max}</span>
+					<span>/</span>
 				</span>
 			</div>
 		</div>
@@ -68,16 +69,19 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			closeOnBackdropClick={false}
 			title="تنظیمات تایمر پومودورو"
 			direction="rtl"
 		>
 			<div className={'rounded-xl'}>
-				<h4 className={'text-sm font-medium mb-3 text-base-content'}>
+				<h4
+					className={
+						'pb-2 text-sm font-medium text-base-content border-b border-b-base-300'
+					}
+				>
 					تنظیمات زمان (دقیقه)
 				</h4>
 
-				<div className="space-y-3">
+				<div className="my-2">
 					<SettingInput
 						label="زمان کار:"
 						value={settings.workTime}
@@ -113,17 +117,16 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						}}
 						max={10}
 					/>
-
-					<div className="text-center">
-						<Button
-							size="md"
-							onClick={handleSaveAndClose}
-							isPrimary={true}
-							className="w-full"
-						>
-							ذخیره و بستن
-						</Button>
-					</div>
+				</div>
+				<div className="text-center">
+					<Button
+						size="md"
+						onClick={handleSaveAndClose}
+						isPrimary={true}
+						className="w-full rounded-xl"
+					>
+						ذخیره و بستن
+					</Button>
 				</div>
 			</div>
 		</Modal>

@@ -16,7 +16,7 @@ export function ItemSelector({
 }: Props) {
 	const getRadioBorderStyle = (isSelected: boolean) => {
 		if (isSelected) {
-			return 'border-blue-500 bg-blue-500'
+			return 'border-primary bg-primary'
 		}
 
 		return 'border-content bg-base-300/60'
@@ -27,13 +27,13 @@ export function ItemSelector({
 			onClick={onClick}
 			className={`flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl ${className} ${
 				isActive
-					? 'border-primary/25 bg-primary/10'
+					? 'border-primary/25 bg-primary/20'
 					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
 			}`}
 		>
 			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
-					className={`w-4 h-4 rounded-full border ${getRadioBorderStyle(isActive)}`}
+					className={`w-4 h-4 rounded-full text-white border ${getRadioBorderStyle(isActive)}`}
 				>
 					{isActive && (
 						<svg

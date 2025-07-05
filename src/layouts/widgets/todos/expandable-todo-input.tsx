@@ -98,7 +98,7 @@ export function ExpandableTodoInput({
 
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
-			<div className={`rounded-xl overflow-hidden`}>
+			<div className="rounded-xl overflow-hidden">
 				<div className="p-2 flex items-center gap-1 rounded-xl bg-base-300">
 					<div className="flex-grow w-full">
 						<TextInput

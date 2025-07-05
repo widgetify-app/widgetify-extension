@@ -38,11 +38,10 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 						let intSeconds = Number.parseInt(seconds)
 
 						const side = Math.floor((i + 7) / 15) // values: 0 ( top right side ), 1 ( right ), 2 ( bottom ), 3 ( left ), 4 ( top left side )
-
-						let x1: number = 0
-						let x2: number = 0
-						let y1: number = 0
-						let y2: number = 0
+						let x1 = 0
+						let x2 = 0
+						let y1 = 0
+						let y2 = 0
 						let differential: number
 
 						switch (side) {
@@ -95,12 +94,12 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 							case 4:
 								differential = Math.tan(((i - 30) * 6 * Math.PI) / 180)
 
-								x2 = 60 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 50
-								y2 = 10
-								if (i === 53) y2 = 11
+								x1 = 60 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 50
+								y1 = 10
+								if (i === 53) y1 = 11
 
-								y1 = 0
-								x1 = x2 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 10
+								y2 = 0
+								x2 = x1 + Math.tan(((i - 30) * 6 * Math.PI) / 180) * 10
 
 								break
 						}
@@ -132,7 +131,11 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 				</svg>
 			)}
 			<div
-				className={`${textColor} absolute top-1/2 ${setting.showSeconds ? 'inset-x-5 -translate-y-[calc(50%+0.65rem)] text-[3rem]' : '-translate-y-[calc(50%+0.9rem)] text-[3.4rem]'} w-[calc(100%-2.5rem)] flex flex-col items-center text-center leading-none drop-shadow-md font-sans font-black z-10 transition-all duration-300`}
+				className={`${textColor} absolute top-1/2 ${
+					setting.showSeconds
+						? `inset-x-5 ${setting.showTimeZone ? '-translate-y-[calc(50%+0.625rem)]' : '-translate-y-[calc(50%+0.1rem)]'} text-[3rem]`
+						: `${setting.showTimeZone ? '-translate-y-[calc(50%+0.9rem)]' : '-translate-y-[calc(50%)]'} text-[3.4rem]`
+				} w-[calc(100%-2.5rem)] flex flex-col items-center text-center leading-none drop-shadow-md font-sans font-black z-10 transition-all duration-300`}
 			>
 				<span>{hours}</span>
 				<span>{minutes}</span>

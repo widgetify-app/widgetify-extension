@@ -9,6 +9,7 @@ import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
+import { FiList } from 'react-icons/fi'
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
@@ -180,11 +181,22 @@ export function TodosLayout() {
 									))}
 								</>
 							) : (
-								<div className={'py-4 text-center'}>
-									<p className="text-xs">
+								<div
+									className={
+										'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-8'
+									}
+								>
+									<div
+										className={
+											'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+										}
+									>
+										<FiList className="text-content" size={24} />
+									</div>
+									<p className="text-center text-content">
 										وظیفه‌ای برای این روز وجود ندارد.
 									</p>
-									<p className="text-[.65rem]">
+									<p className="text-center text-[.65rem] text-content">
 										یک وظیفه جدید اضافه کنید.
 									</p>
 								</div>
