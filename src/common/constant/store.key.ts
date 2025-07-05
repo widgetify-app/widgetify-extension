@@ -1,3 +1,4 @@
+import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
@@ -38,7 +39,7 @@ export interface StorageKV {
 	weatherSettings: WeatherSettings
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
-	theme: 'light' | 'dark' | 'glass'
+	theme: Theme
 	lastVersion: string
 	forecastWeather: FetchedForecast[]
 	auth_token: string | undefined

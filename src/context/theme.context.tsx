@@ -8,6 +8,12 @@ interface ThemeContextType {
 	setTheme: (theme: string) => void
 }
 
+export enum Theme {
+	Light = 'light',
+	Dark = 'dark',
+	Glass = 'glass',
+}
+
 export const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -28,6 +34,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 	}, [])
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (
+				event.altKey &&
+				event.key.toLowerCase() === 't' &&
+				(event.ctrlKey || event.metaKey)
+			) {
+				event.preventDefault()
+				const themes = Object.values(Theme)
+				const currentIndex = themes.indexOf(theme as Theme)
+				const nextIndex = (currentIndex + 1) % themes.length
+				const nextTheme = themes[nextIndex]
+				setThemeCallback(nextTheme)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => window.removeEventListener('keydown', handleKeyDown)
+	}, [theme])
 
 	const setThemeCallback = (theme: string) => {
 		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
