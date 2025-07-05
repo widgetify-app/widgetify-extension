@@ -27,7 +27,7 @@ function NotesContent() {
 
 	return (
 		<>
-			<div className="flex-grow overflow-auto h-[calc(100%-40px)]">
+			<div className="mt-2 flex-grow overflow-auto h-[calc(100%-40px)]">
 				<div key={activeNoteId} className="h-full">
 					<NoteEditor note={activeNote} onUpdateNote={updateNote} />
 				</div>

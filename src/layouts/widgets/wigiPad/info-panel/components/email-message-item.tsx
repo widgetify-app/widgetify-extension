@@ -1,3 +1,4 @@
+import gmailIcon from '@/assets/gmail.svg'
 interface EmailMessageItemProps {
 	email: {
 		id: string
@@ -17,16 +18,22 @@ export function EmailMessageItem({ email }: EmailMessageItemProps) {
 	return (
 		<div
 			onClick={handleClick}
-			className="flex gap-2 p-2 transition-colors rounded-lg cursor-pointer bg-base-200 hover:bg-base-300"
+			className="flex gap-2 p-2 transition-all rounded-lg bg-base-300/90 border border-base-300/70 cursor-pointer"
 		>
+			<div className="">
+				<img src={gmailIcon} alt="Gmail" className="w-4 h-4" />
+			</div>
+
 			<div className="flex-1 min-w-0">
 				<div className="flex items-center justify-between mb-1">
 					<h4 className="text-xs font-medium truncate text-content">
 						{email.subject}
 					</h4>
 				</div>
-				<p className="text-[10px] text-muted font-bold mb-1">{email.sender}</p>
-				<p className="text-[10px] text-muted line-clamp-2">{email.snippet}</p>
+				<p className="text-[11px] text-muted font-bold mb-1">{email.sender}</p>
+				<p className="text-[10px] text-muted opacity-80 truncate">
+					{email.snippet}
+				</p>
 			</div>
 		</div>
 	)

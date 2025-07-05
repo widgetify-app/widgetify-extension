@@ -41,16 +41,26 @@ export function WigiArzLayout({
 			{inComboWidget ? (
 				<div className="mt-2 flex items-center justify-between pb-2">
 					{selectedCurrencies.length === 0 ? (
-						<div className="flex flex-col items-center justify-center h-full text-center">
-							<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
-							<p className="text-sm opacity-50">
+						<div
+							className={
+								'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-12'
+							}
+						>
+							<div
+								className={
+									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+								}
+							>
+								<FiDollarSign className="text-content" size={24} />
+							</div>
+							<p className="text-center text-content">
 								ارزهای مورد نظر خود را اضافه کنید
 							</p>
 							<Button
-								className={'mt-3'}
-								rounded="lg"
+								rounded="full"
 								onClick={() => handleModalClose(true)}
-								size="md"
+								size="sm"
+								className="border border-base-300/60 px-5 bg-content hover:!bg-primary hover:text-white hover:border-primary"
 							>
 								افزودن ارز
 							</Button>
@@ -84,16 +94,26 @@ export function WigiArzLayout({
 					/>
 
 					{selectedCurrencies.length === 0 ? (
-						<div className="flex flex-col items-center justify-center h-full text-center">
-							<FiDollarSign className="w-12 h-12 mb-3 opacity-30" />
-							<p className="text-sm opacity-50">
+						<div
+							className={
+								'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-12'
+							}
+						>
+							<div
+								className={
+									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+								}
+							>
+								<FiDollarSign className="text-content" size={24} />
+							</div>
+							<p className="text-center text-content">
 								ارزهای مورد نظر خود را اضافه کنید
 							</p>
 							<Button
-								className={'mt-3'}
-								rounded="lg"
+								rounded="full"
 								onClick={() => handleModalClose(true)}
-								size="md"
+								size="sm"
+								className="border border-base-300/60 px-5 bg-content hover:!bg-primary hover:text-white hover:border-primary"
 							>
 								افزودن ارز
 							</Button>

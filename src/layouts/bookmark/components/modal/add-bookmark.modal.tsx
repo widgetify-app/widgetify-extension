@@ -181,65 +181,65 @@ export function AddBookmarkModal({
 				onSubmit={handleAdd}
 				className="flex flex-col justify-between gap-2 overflow-y-auto h-[24rem]"
 			>
-				<div className="mt-1">
-					<div className="flex gap-2 mb-2">
+				<div className="mt-1 overflow-hidden">
+					<div className="h-8 flex gap-2 mb-2">
 						<TypeSelector type={type} setType={setType} />
 					</div>
 
-					<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
+					<div className='py-2 h-[calc(100%-4rem)] overflow-auto'>
+						{' '}
+						<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
+							{type === 'BOOKMARK' && (
+								<IconSourceSelector
+									iconSource={iconSource}
+									setIconSource={setIconSource}
+								/>
+							)}
+							{renderIconPreview(
+								formData,
+								iconSource,
+								setIconSource,
+								updateFormData,
+								type
+							)}
+						</div>
+						<input
+							type="file"
+							ref={fileInputRef}
+							className="hidden"
+							accept="image/*"
+							onChange={(e) =>
+								handleImageUpload(e, updateFormData, setIconSource)
+							}
+						/>
+						<TextInput
+							type="text"
+							name="title"
+							placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+							value={formData.title}
+							onChange={(v) => updateFormData('title', v)}
+							className={
+								'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
+							}
+						/>
+						<div className="relative h-[50px]">
+							{type === 'BOOKMARK' && (
+								<TextInput
+									type="text"
+									name="url"
+									placeholder="آدرس لینک"
+									value={formData.url}
+									onChange={(v) => handleUrlChange(v)}
+									className={
+										'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+									}
+								/>
+							)}
+						</div>
 						{type === 'BOOKMARK' && (
-							<IconSourceSelector
-								iconSource={iconSource}
-								setIconSource={setIconSource}
-							/>
-						)}
-						{renderIconPreview(
-							formData,
-							iconSource,
-							setIconSource,
-							updateFormData,
-							type
+							<BookmarkSuggestions onSelect={handleSuggestionSelect} />
 						)}
 					</div>
-					<input
-						type="file"
-						ref={fileInputRef}
-						className="hidden"
-						accept="image/*"
-						onChange={(e) =>
-							handleImageUpload(e, updateFormData, setIconSource)
-						}
-					/>
-
-					<TextInput
-						type="text"
-						name="title"
-						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-						value={formData.title}
-						onChange={(v) => updateFormData('title', v)}
-						className={
-							'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
-						}
-					/>
-
-					<div className="relative h-[50px]">
-						{type === 'BOOKMARK' && (
-							<TextInput
-								type="text"
-								name="url"
-								placeholder="آدرس لینک"
-								value={formData.url}
-								onChange={(v) => handleUrlChange(v)}
-								className={
-									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-								}
-							/>
-						)}
-					</div>
-
-					{type === 'BOOKMARK' && (
-						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
-					)}
 
 					<AdvancedModal
 						bookmark={{
@@ -256,7 +256,7 @@ export function AddBookmarkModal({
 					/>
 				</div>
 
-				<div className="flex justify-between gap-x-4">
+				<div className="h-10 flex justify-between gap-x-4">
 					<ShowAdvancedButton
 						showAdvanced={showAdvanced}
 						setShowAdvanced={setShowAdvanced}
