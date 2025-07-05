@@ -39,13 +39,13 @@ export const CurrencyModalComponent = ({
 	}, [isModalOpen])
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
+		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="md">
 			<div
-				className={`flex flex-col items-center justify-center p-1 space-y-2 transition-all duration-300 ease-out ${
+				className={`py-10 px-4 flex flex-col items-center justify-center p-1 space-y-2 transition-all duration-300 ease-out ${
 					isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
 				}`}
 			>
-				<div className="relative transition-transform duration-200 ease-out hover:scale-105">
+				<div className="relative transition-transform duration-200 ease-out">
 					<img
 						src={currency?.icon}
 						alt={currency?.name?.en}
@@ -57,7 +57,7 @@ export const CurrencyModalComponent = ({
 					/>
 				</div>
 
-				<div className="text-center">
+				<div className="mt-2 text-center space-y-1">
 					<p className={'text-xl font-bold text-base-content'}>
 						{currency?.name.en}
 					</p>

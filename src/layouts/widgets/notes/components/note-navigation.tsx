@@ -78,7 +78,7 @@ export function NoteNavigation({
 					<Button
 						onClick={onAddNote}
 						size="xs"
-						className="h-6 w-9 p-0 bg-primary !text-secondary-content border-none rounded-xl transition-all duration-300"
+						className="h-6 w-9 p-0 bg-primary !text-white border-none rounded-xl transition-all duration-300"
 					>
 						<FaPlus size={12} />
 					</Button>

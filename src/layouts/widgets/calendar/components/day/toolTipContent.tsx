@@ -43,13 +43,13 @@ export const toolTipContent = (
 	const holidayStyle = isHoliday
 		? 'from-orange-600 to-red-700'
 		: 'from-sky-500 to-blue-700'
-	const headerStyle = `max-w-full py-1 px-3 rounded-lg text-center text-white bg-gradient-to-r ${holidayStyle}`
+	const headerStyle = `max-w-full py-1 px-3 rounded-full text-center text-white bg-gradient-to-r ${holidayStyle}`
 
 	const infoStyle = 'text-base/80'
 	const googleStyle = 'text-[#4285f4]'
 
 	return (
-		<div className="flex flex-col min-w-[250px] max-w-[250px] rounded-lg overflow-hidden">
+		<div className="my-1 flex flex-col min-w-[250px] max-w-[250px] rounded-xl overflow-hidden">
 			<div className={headerStyle}>
 				<div
 					className={`${holidayStyle} flex items-center justify-between gap-2`}

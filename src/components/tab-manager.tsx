@@ -45,14 +45,13 @@ export const TabManager = ({
 	}
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive
-			? 'text-primary-content bg-primary/10'
-			: 'text-muted hover:bg-primary/5 hover:text-primary/80'
+		return isActive ? 'text-primary bg-primary/15' : 'text-muted hover:bg-base-300'
 	}
 
-	const getTabIconStyle = () => {
-		return 'text-content'
+	const getTabIconStyle = (isActive: boolean) => {
+		return isActive ? 'text-primary' : 'text-muted'
 	}
+
 	return (
 		<div
 			dir={direction}
@@ -63,9 +62,9 @@ export const TabManager = ({
 					<button
 						key={value}
 						onClick={() => handleTabChange(value)}
-						className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap hover:scale-[1.02] active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
+						className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
 					>
-						<span className={getTabIconStyle()}>{icon}</span>
+						<span className={getTabIconStyle(activeTab === value)}>{icon}</span>
 						<span className="text-sm">{label}</span>
 					</button>
 				))}

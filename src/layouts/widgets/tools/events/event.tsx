@@ -18,14 +18,10 @@ export function Events({ events, googleEvents = [], currentDate }: EventsProps) 
 
 	return (
 		<div>
-			<div className="flex items-center justify-between mb-1">
-				<h4 className={'flex items-center text-lg font-medium'}>مناسبت‌ها</h4>
-			</div>
-
 			{sortedEvents.length > 0 ? (
 				<div
 					className={
-						'flex-1 overflow-y-auto h-56 rounded-lg p-2 animate-in fade-in-0 duration-300'
+						'flex-1 overflow-y-auto h-56 rounded-lg py-2 animate-in fade-in-0 duration-300'
 					}
 				>
 					{sortedEvents.map((event, index) => (

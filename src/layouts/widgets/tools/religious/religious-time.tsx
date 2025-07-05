@@ -70,14 +70,6 @@ export function ReligiousTime({ currentDate }: Prop) {
 
 	return (
 		<div>
-			<div className="flex items-center justify-between mb-1">
-				<h4 className={'flex items-center text-lg font-medium text-content'}>
-					اوقات شرعی
-					<span className={'text-sm flex item-end font-light mr-2 mt-2'}>
-						({englishCityName})
-					</span>
-				</h4>{' '}
-			</div>{' '}
 			{loading ? (
 				<>
 					<div className="grid grid-cols-2 gap-1.5 mb-1 md:grid-cols-3">
@@ -94,7 +86,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 					</div>
 				</>
 			) : error ? (
-				<div className="py-2 text-center transition-opacity duration-300">
+				<div className="py-20 text-center transition-opacity duration-300">
 					<div
 						className={
 							'inline-flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-content'

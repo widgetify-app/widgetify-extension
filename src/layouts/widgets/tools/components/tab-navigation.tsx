@@ -2,11 +2,11 @@ import Tooltip from '@/components/toolTip'
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiCalendar, FiSunrise, FiWatch } from 'react-icons/fi'
-import type { TabType } from '../tools.layout'
+import type { ToolsTabType } from '../tools.layout'
 
 interface TabNavigationProps {
-	activeTab: TabType | null
-	onTabClick: (tab: TabType) => void
+	activeTab: ToolsTabType | null
+	onTabClick: (tab: ToolsTabType) => void
 }
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({
@@ -26,9 +26,9 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	}
 
 	const tabs = [
-		{ id: 'events' as TabType, icon: FiCalendar, label: 'مناسبت‌ها' },
-		{ id: 'religious-time' as TabType, icon: FiSunrise, label: 'اوقات شرعی' },
-		{ id: 'pomodoro' as TabType, icon: FiWatch, label: 'پومودورو' },
+		{ id: 'events' as ToolsTabType, icon: FiCalendar, label: 'مناسبت‌ها' },
+		{ id: 'religious-time' as ToolsTabType, icon: FiSunrise, label: 'اوقات شرعی' },
+		{ id: 'pomodoro' as ToolsTabType, icon: FiWatch, label: 'پومودورو' },
 	]
 
 	return (
@@ -38,7 +38,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 					<Tooltip content={tab.label} position="top" delay={300}>
 						<motion.button
 							onClick={() => onTabClick(tab.id)}
-							className={`relative w-7 h-7 flex items-center justify-center transition-colors rounded-[0.55rem] cursor-pointer z-10 ${getTabStyle(activeTab === tab.id)}`}
+							className={`relative w-8 h-8 flex items-center justify-center transition-colors rounded-full cursor-pointer z-10 ${getTabStyle(activeTab === tab.id)}`}
 							whileTap={{ scale: 0.9 }}
 						>
 							<tab.icon size={16} className="w-4 h-4" />
@@ -48,7 +48,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 					{activeTab === tab.id && (
 						<motion.div
 							layoutId="tab-indicator"
-							className={`absolute top-1/2 left-1/2 -translate-1/2 w-full h-full rounded-[0.55rem] ${getIndicatorColor()}`}
+							className={`absolute top-1/2 left-1/2 -translate-1/2 w-full h-full rounded-full ${getIndicatorColor()}`}
 							initial={false}
 							transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
 						/>
