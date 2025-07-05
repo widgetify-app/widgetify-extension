@@ -196,7 +196,7 @@ export function TodosLayout() {
 									<p className="text-center text-content">
 										وظیفه‌ای برای این روز وجود ندارد.
 									</p>
-									<p className="text-center text-[.65rem] text-content">
+									<p className="text-center text-[.65rem] text-content opacity-75">
 										یک وظیفه جدید اضافه کنید.
 									</p>
 								</div>
