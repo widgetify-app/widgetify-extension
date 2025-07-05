@@ -6,8 +6,7 @@ import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
 
 function NotesContent() {
-	const { notes, activeNoteId, setActiveNoteId, addNote, updateNote, deleteNote } =
-		useNotes()
+	const { notes, activeNoteId, addNote, updateNote } = useNotes()
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
 
@@ -28,16 +27,6 @@ function NotesContent() {
 
 	return (
 		<>
-			<div className="sticky top-0 z-10 bg-inherit">
-				<NoteNavigation
-					notes={notes}
-					activeNoteId={activeNoteId}
-					onSelectNote={setActiveNoteId}
-					onAddNote={addNote}
-					onDeleteNote={deleteNote}
-				/>
-			</div>
-
 			<div className="flex-grow overflow-auto h-[calc(100%-40px)]">
 				<div key={activeNoteId} className="h-full">
 					<NoteEditor note={activeNote} onUpdateNote={updateNote} />
@@ -48,14 +37,21 @@ function NotesContent() {
 }
 
 function NotesHeader() {
-	const { isSaving } = useNotes()
-
+	const { notes, activeNoteId, setActiveNoteId, addNote, deleteNote, isSaving } =
+		useNotes()
 	return (
 		<div className="flex items-center justify-between">
 			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
 			{isSaving && (
-				<FiLoader className={'block w-4 h-4 animate-spin text-content'} />
+				<FiLoader className={'block w-3 h-3 animate-spin text-content'} />
 			)}
+			<NoteNavigation
+				notes={notes}
+				activeNoteId={activeNoteId}
+				onSelectNote={setActiveNoteId}
+				onAddNote={addNote}
+				onDeleteNote={deleteNote}
+			/>
 		</div>
 	)
 }
@@ -65,8 +61,8 @@ export function NotesLayout() {
 		<WidgetContainer className="overflow-hidden">
 			<NotesProvider>
 				<div className="flex flex-col h-full">
-					<NotesHeader />
 					<RequireAuth mode="preview">
+						<NotesHeader />
 						<NotesContent />
 					</RequireAuth>
 				</div>

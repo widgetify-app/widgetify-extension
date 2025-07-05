@@ -43,7 +43,7 @@ export function NoteNavigation({
 					<button
 						disabled={activeNoteIndex === 0}
 						onClick={handlePrevNote}
-						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+						className={`h-4 w-4 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronRight size={18} className="text-base" />
 					</button>
@@ -53,14 +53,14 @@ export function NoteNavigation({
 					<button
 						disabled={activeNoteIndex === notes.length - 1}
 						onClick={handleNextNote}
-						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+						className={`h-4 w-4 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronLeft size={18} className="text-base" />
 					</button>
 				</Tooltip>
 			</div>
 
-			<div className="w-fit p-1 flex items-center gap-1">
+			<div className="flex items-center gap-1 p-1 w-fit">
 				<Tooltip content="حذف یادداشت" position="top" offset={5}>
 					<Button
 						size="xs"
@@ -78,7 +78,8 @@ export function NoteNavigation({
 					<Button
 						onClick={onAddNote}
 						size="xs"
-						className="h-6 w-9 p-0 bg-primary !text-white border-none rounded-xl transition-all duration-300"
+						rounded="full"
+						className="h-6 w-6 p-0 bg-primary !text-white border-none transition-all duration-300"
 					>
 						<FaPlus size={12} />
 					</Button>
