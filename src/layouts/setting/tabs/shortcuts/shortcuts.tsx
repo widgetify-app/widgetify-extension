@@ -49,6 +49,13 @@ export function ShortcutsTab() {
 			description: 'باز کردن همه بوکمارک‌های یک پوشه',
 			category: 'بوکمارک‌ها',
 		},
+		{
+			id: 'toggle_theme',
+			windowsKey: 'CTRL + ALT + T',
+			macKey: '⌘ + ALT + T',
+			description: 'تغییر تم',
+			category: 'تم',
+		},
 	]
 
 	const categories = shortcuts.reduce(
