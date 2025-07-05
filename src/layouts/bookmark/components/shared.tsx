@@ -1,9 +1,9 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
-import type { BookmarkType } from '../types/bookmark.types'
+import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
+import type { BookmarkType } from '../types/bookmark.types'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
 
@@ -136,7 +136,7 @@ export function useBookmarkIcon() {
 		if (formData.customImage) {
 			return (
 				<div
-					className={`relative w-20 h-20 p-2 mx-auto cursor-pointer group`}
+					className={`relative w-16 h-16 p-2 mx-auto cursor-pointer group`}
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -152,9 +152,9 @@ export function useBookmarkIcon() {
 					</div>
 					<button
 						onClick={handleRemoveCustomImage}
-						className="absolute top-0 right-0 z-10 w-5 h-5 flex items-center justify-center bg-base-300 hover:bg-red-400/20 cursor-pointer rounded-full"
+						className="absolute top-0 right-0 z-10 flex items-center justify-center w-5 h-5 rounded-full cursor-pointer bg-base-300 hover:bg-red-400/20"
 					>
-						<LuX size={12} className='text-red-400' />
+						<LuX size={12} className="text-red-400" />
 					</button>
 				</div>
 			)
@@ -163,7 +163,7 @@ export function useBookmarkIcon() {
 		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
 			return (
 				<div
-					className={`relative w-20 h-20 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
+					className={`relative w-14 h-14 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -200,7 +200,7 @@ export function useBookmarkIcon() {
 
 		return (
 			<div
-				className={`relative flex flex-col items-center justify-center w-full h-20 p-2 mx-auto transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
+				className={`relative flex flex-col items-center justify-center w-full h-16 p-2 mx-auto transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
 					isDragging
 						? 'border-blue-400 bg-blue-50/10'
 						: 'border-content hover:bg-neutral-800/50'
@@ -266,10 +266,11 @@ export function ShowAdvancedButton({
 				'bg-base-300 hover:bg-base-300/80 flex items-center gap-1 px-3 py-1 text-sm font-medium transition-all duration-200 cursor-pointer text-content rounded-xl active:scale-95'
 			}
 		>
-			<span>
-				{showAdvanced ? "گزینه‌های کمتر" : "گزینه‌های بیشتر"}
-			</span>
-			<FiChevronUp size={16} className={`transition-all duration-300 ${showAdvanced ? "rotate-0" : "rotate-180"}`} />
+			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
+			<FiChevronUp
+				size={16}
+				className={`transition-all duration-300 ${showAdvanced ? 'rotate-0' : 'rotate-180'}`}
+			/>
 		</button>
 	)
 }

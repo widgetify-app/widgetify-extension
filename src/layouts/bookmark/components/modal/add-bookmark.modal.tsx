@@ -5,6 +5,7 @@ import { TextInput } from '@/components/text-input'
 import { useState, useTransition } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
+import { BookmarkSuggestions } from '../bookmark-suggestions'
 import {
 	type BookmarkFormData,
 	IconSourceSelector,
@@ -108,8 +109,7 @@ export function AddBookmarkModal({
 				} as Bookmark)
 			}
 
-			resetForm()
-			onClose()
+			onCloseHandler()
 		})
 	}
 
@@ -126,6 +126,26 @@ export function AddBookmarkModal({
 		setType('BOOKMARK')
 		setIconSource('auto')
 		setShowAdvanced(false)
+	}
+
+	const onCloseHandler = () => {
+		resetForm()
+		onClose()
+	}
+
+	const handleSuggestionSelect = (suggestion: {
+		title: string
+		url: string
+		icon: string | null
+	}) => {
+		updateFormData('title', suggestion.title)
+		updateFormData('url', suggestion.url)
+
+		if (iconSource === 'auto') {
+			setIconLoadError(false)
+			const iconUrl = suggestion.icon || getFaviconFromUrl(suggestion.url)
+			updateFormData('icon', iconUrl)
+		}
 	}
 
 	const handleAdvancedModalClose = (
@@ -151,10 +171,7 @@ export function AddBookmarkModal({
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={() => {
-				resetForm()
-				onClose()
-			}}
+			onClose={() => onCloseHandler()}
 			size="md"
 			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
@@ -162,14 +179,14 @@ export function AddBookmarkModal({
 		>
 			<form
 				onSubmit={handleAdd}
-				className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]"
+				className="flex flex-col justify-between gap-2 overflow-y-auto h-[24rem]"
 			>
-				<div className='mt-2'>
-					<div className="flex gap-2 mb-4">
+				<div className="mt-1">
+					<div className="flex gap-2 mb-2">
 						<TypeSelector type={type} setType={setType} />
 					</div>
 
-					<div className="mb-2 flex flex-col items-center gap-y-2.5">
+					<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
 						{type === 'BOOKMARK' && (
 							<IconSourceSelector
 								iconSource={iconSource}
@@ -220,6 +237,10 @@ export function AddBookmarkModal({
 						)}
 					</div>
 
+					{type === 'BOOKMARK' && (
+						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+					)}
+
 					<AdvancedModal
 						bookmark={{
 							customBackground: formData.customBackground,
@@ -243,7 +264,7 @@ export function AddBookmarkModal({
 
 					<div className="flex items-center gap-x-2">
 						<Button
-							onClick={onClose}
+							onClick={onCloseHandler}
 							size="md"
 							className={
 								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
