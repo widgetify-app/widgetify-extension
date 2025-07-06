@@ -6,8 +6,8 @@ interface CustomCheckboxProps {
 	label?: string
 	className?: string
 	disabled?: boolean
-	unCheckedCheckBoxClassName: string
-	checkedCheckBoxClassName: string
+	unCheckedCheckBoxClassName?: string
+	checkedCheckBoxClassName?: string
 	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
 }
 
