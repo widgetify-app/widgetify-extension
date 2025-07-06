@@ -24,8 +24,9 @@ export function NotificationCenter() {
 		)
 	}
 	const hasNotifications =
-		notification?.upcomingCalendarEvents && notification?.emailMessages
-	if (!notification || !hasNotifications)
+		!notification?.upcomingCalendarEvents?.length && !notification?.emailMessages?.length
+	
+	if (hasNotifications)
 		return (
 			<div
 				className={
