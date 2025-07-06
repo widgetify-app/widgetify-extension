@@ -8,7 +8,6 @@ export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
 	const data = useInfoPanelData()
 	const tabContainerRef = useRef<HTMLDivElement>(null)
-	console.log('-------', data)
 	const sections = [
 		{ id: 'all', label: 'ویجی تب', icon: '📋' },
 		{
