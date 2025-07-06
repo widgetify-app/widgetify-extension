@@ -37,13 +37,13 @@ export function NoteNavigation({
 	}
 
 	return (
-		<div className="flex items-center justify-between gap-x-1">
-			<div className="flex items-center">
+		<div className="flex items-center justify-between">
+			<div className="flex items-center space-x-1">
 				<Tooltip content="یادداشت قبلی" position="top" offset={5}>
 					<button
 						disabled={activeNoteIndex === 0}
 						onClick={handlePrevNote}
-						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+						className={`h-4 w-4 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronRight size={18} className="text-base" />
 					</button>
@@ -53,14 +53,14 @@ export function NoteNavigation({
 					<button
 						disabled={activeNoteIndex === notes.length - 1}
 						onClick={handleNextNote}
-						className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+						className={`h-4 w-4 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex < notes.length - 1 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 					>
 						<FiChevronLeft size={18} className="text-base" />
 					</button>
 				</Tooltip>
 			</div>
 
-			<div className="flex items-center gap-1 w-fit">
+			<div className="flex items-center gap-1 p-1 w-fit">
 				<Tooltip content="حذف یادداشت" position="top" offset={5}>
 					<Button
 						size="xs"
@@ -68,9 +68,9 @@ export function NoteNavigation({
 						onClick={() =>
 							notes.length > 1 && onDeleteNote(activeNoteId as string)
 						}
-						className="h-7 w-7 p-0 text-error !bg-transparent hover:!bg-error/20 border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
+						className="h-6 w-6 p-0 text-error !bg-transparent hover:!bg-error/20 border-none rounded-xl disabled:opacity-75 transition-all duration-300"
 					>
-						<FiTrash2 size={14} />
+						<FiTrash2 size={13} />
 					</Button>
 				</Tooltip>
 
@@ -79,7 +79,7 @@ export function NoteNavigation({
 						onClick={onAddNote}
 						size="xs"
 						rounded="full"
-						className="h-6 w-8 p-0 bg-primary !text-white border-none transition-all duration-300"
+						className="h-6 w-6 p-0 bg-primary !text-white border-none transition-all duration-300"
 					>
 						<FaPlus size={12} />
 					</Button>
