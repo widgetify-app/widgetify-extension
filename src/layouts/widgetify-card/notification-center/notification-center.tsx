@@ -22,7 +22,7 @@ export function NotificationCenter() {
 		)
 	}
 
-	if (!notification) return null
+	if (!notification || !notification?.upcomingCalendarEvents) return null
 
 	return (
 		<>
