@@ -14,7 +14,7 @@ export function EventsEmptyState() {
 			>
 				<FiCalendar className="text-content" size={24} />
 			</div>
-			<p className={'text-center text-content'}>مناسبتی برای نمایش وجود ندارد.</p>
+			<p className={'text-center text-content opacity-75'}>مناسبتی برای نمایش وجود ندارد.</p>
 		</div>
 	)
 }
