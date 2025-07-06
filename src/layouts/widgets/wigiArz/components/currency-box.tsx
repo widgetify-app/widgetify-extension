@@ -18,14 +18,14 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: null,
 	})
-	
+
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
 	const [displayPrice, setDisplayPrice] = useState(0)
 	const [priceChange, setPriceChange] = useState(0)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	
+
 	const prevPriceRef = useRef<number | null>(null)
-	
+
 	const imgMainColor = useGetImageMainColor(currency?.icon)
 
 	useEffect(() => {
@@ -98,8 +98,8 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 	return (
 		<>
 			<div
-				className={`flex items-center justify-between gap-2 px-2.5 py-2 rounded-full cursor-pointer 
-				bg-content opacity-100 hover:!bg-gray-500/10
+				className={`flex items-center justify-between gap-2 p-2 pr-3 rounded-full cursor-pointer 
+				bg-base-300 opacity-100 hover:!bg-gray-500/10
 				transition-all duration-200 ease-in-out
 				transform`}
 				onClick={() => toggleCurrencyModal()}
@@ -109,7 +109,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 				onTouchEnd={handleMouseUp}
 				dir="ltr"
 			>
-				<div className="flex items-center space-x-2.5">
+				<div className="flex items-center gap-x-2.5 max-w-full">
 					<div className="relative">
 						<img
 							src={currency?.icon}
@@ -121,15 +121,20 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 							style={{ borderColor: imgMainColor }}
 						/>
 					</div>
-					<div className="flex items-center space-x-2 text-sm font-medium">
-						<span className={'md:visible text-content opacity-90'}>
+					<div className="flex items-center space-x-2 text-sm font-medium min-w-0">
+						<span
+							className="block text-content opacity-90 truncate"
+							title={currency?.name?.en}
+						>
 							{currency?.name?.en}
 						</span>
-						<span className={'text-xs text-content opacity-40'}>{code}</span>
+						<span className="block text-xs text-content truncate opacity-40">
+							{code}
+						</span>
 					</div>
 				</div>
 
-				<div className="flex items-baseline gap-2">
+				<div className="pr-2 flex items-baseline gap-2">
 					<span className={'text-sm font-bold text-content'}>
 						{displayPrice.toLocaleString()}
 					</span>

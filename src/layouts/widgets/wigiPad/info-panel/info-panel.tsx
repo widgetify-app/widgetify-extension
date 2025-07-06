@@ -71,7 +71,7 @@ export function InfoPanel() {
 						className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] leading-none font-medium whitespace-nowrap transition-colors cursor-pointer rounded-full ${
 							activeSection === section.id
 								? 'bg-primary text-white'
-								: 'text-muted bg-base-300'
+								: 'text-muted bg-base-300/70 border border-base-300/70'
 						}`}
 					>
 						<span>{section.icon}</span>

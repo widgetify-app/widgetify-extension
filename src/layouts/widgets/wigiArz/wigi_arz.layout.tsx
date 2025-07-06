@@ -60,7 +60,7 @@ export function WigiArzLayout({
 								rounded="full"
 								onClick={() => handleModalClose(true)}
 								size="sm"
-								className="border border-base-300/60 px-5 bg-content hover:!bg-primary hover:text-white hover:border-primary"
+								className="border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
 							>
 								افزودن ارز
 							</Button>
@@ -113,7 +113,7 @@ export function WigiArzLayout({
 								rounded="full"
 								onClick={() => handleModalClose(true)}
 								size="sm"
-								className="border border-base-300/60 px-5 bg-content hover:!bg-primary hover:text-white hover:border-primary"
+								className="border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
 							>
 								افزودن ارز
 							</Button>

@@ -134,7 +134,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 											key={option.value}
 											className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
                                                         transition-all duration-200 ease-out active:scale-98 
-                                                        ${isSelected ? 'currency-box-selected border-success/30 bg-success/15 text-content' : 'border-base-300/40 bg-content hover:!bg-base-300/80'}
+                                                        ${isSelected ? 'currency-box-selected border-success/30 bg-success/15 text-content' : 'border-base-300/40 bg-content hover:!bg-base-300/70'}
                                                         ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
 											style={{
 												transitionDelay: isContentVisible

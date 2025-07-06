@@ -38,7 +38,7 @@ export function EventItem({ event, index }: EventItemProps) {
 	return (
 		<div
 			key={`${event.source}-${index}`}
-			className="mb-2 rounded-lg overflow-hidden bg-content border border-base-300/40"
+			className="mb-2 rounded-lg bg-base-300/70 hover:bg-base-300 border border-base-300/70 active:scale-98 cursor-pointer overflow-hidden"
 		>
 			<div className="relative p-1.5">
 				<div className="flex items-center mb-1">

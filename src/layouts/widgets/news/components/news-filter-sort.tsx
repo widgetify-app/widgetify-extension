@@ -54,7 +54,7 @@ export const NewsFilterSort = ({
 				</Button>
 			</div>
 			{showFilters && (
-				<div className="p-3 space-y-3 transition-all duration-200 border border-base-300/50 rounded-xl bg-base-200/80">
+				<div className="p-3 space-y-3 transition-all duration-200 border border-base-300/70 rounded-xl bg-base-300/70">
 					<div>
 						<label className="block mb-2 text-xs font-medium text-base-content">
 							<VscSortPrecedence className="inline w-3 h-3 ml-1" />
