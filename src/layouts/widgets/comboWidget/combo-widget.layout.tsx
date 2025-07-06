@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FiDollarSign, FiSettings } from 'react-icons/fi'
 
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -38,8 +38,8 @@ export function ComboWidget() {
 
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
-			<div className="flex items-center justify-between">
-				<div className="flex gap-2 w-full">
+			<div className="flex items-center justify-between pb-2">
+				<div className="flex w-full gap-2">
 					<button
 						onClick={() => onTabClick('currency')}
 						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
@@ -65,13 +65,15 @@ export function ComboWidget() {
 						<span>اخبار</span>
 					</button>
 				</div>
-				<Button
-					onClick={handleSettingsClick}
-					size="xs"
-					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
-				>
-					<FiSettings size={12} className="text-content" />
-				</Button>
+				<div className="flex items-center gap-x-1">
+					<Button
+						onClick={handleSettingsClick}
+						size="xs"
+						className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+					>
+						<FiSettings size={12} className="text-content" />
+					</Button>
+				</div>
 			</div>
 
 			<div className="flex-1 overflow-hidden">
@@ -84,12 +86,14 @@ export function ComboWidget() {
 							onSettingsModalClose={() => setShowSettings(false)}
 						/>
 					) : (
-						<NewsLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'news' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
-						/>
+						<>
+							<NewsLayout
+								inComboWidget={true}
+								enableBackground={false}
+								showSettingsModal={activeTab === 'news' && showSettings}
+								onSettingsModalClose={() => setShowSettings(false)}
+							/>
+						</>
 					)}
 				</div>
 			</div>

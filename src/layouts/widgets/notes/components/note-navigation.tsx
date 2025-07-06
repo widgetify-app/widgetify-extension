@@ -37,7 +37,7 @@ export function NoteNavigation({
 	}
 
 	return (
-		<div className="flex items-center justify-between mt-1 mb-2">
+		<div className="flex items-center justify-between">
 			<div className="flex items-center space-x-1">
 				<Tooltip content="یادداشت قبلی" position="top" offset={5}>
 					<button

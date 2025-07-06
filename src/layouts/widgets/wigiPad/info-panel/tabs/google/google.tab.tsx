@@ -46,9 +46,19 @@ export function GoogleTab() {
 					<GoogleMeetingItem key={event.id} meeting={event} />
 				))
 			) : (
-				<div className="py-8 text-center text-muted">
-					<MdEvent className="mx-auto mb-2 text-2xl text-gray-500" />
-					<p className="text-sm">هیچ رویداد گوگل امروز نیست</p>
+				<div
+					className={
+						'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-1'
+					}
+				>
+					<div
+						className={
+							'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+						}
+					>
+						<MdEvent className="text-content" size={24} />
+					</div>
+					<p className="text-center text-content">هیچ رویداد گوگل امروز نیست</p>
 				</div>
 			)}
 		</div>

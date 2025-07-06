@@ -13,9 +13,19 @@ export function BirthdayTab({ birthdays }: Props) {
 					<BirthdayItem key={birthday.id} birthday={birthday} />
 				))
 			) : (
-				<div className="py-1.5 flex flex-col items-center gap-y-2 text-center text-muted">
-					<LuGift className="text-3xl" />
-					<p className="text-xs leading-normal">هیچ تولدی امروز نیست.</p>
+				<div
+					className={
+						'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-1'
+					}
+				>
+					<div
+						className={
+							'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+						}
+					>
+						<LuGift className="text-content" size={24} />
+					</div>
+					<p className="text-center text-content">هیچ تولدی امروز نیست.</p>
 				</div>
 			)}
 		</div>

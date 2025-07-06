@@ -2,22 +2,16 @@ import { useRef, useState } from 'react'
 import { NotificationItem } from './components/notification-item'
 import { useInfoPanelData } from './hooks/useInfoPanelData'
 import { BirthdayTab } from './tabs/birthday/birthday-tab'
-import { EmailTab } from './tabs/email/email-tab'
 import { GoogleTab } from './tabs/google/google.tab'
 
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
 	const data = useInfoPanelData()
 	const tabContainerRef = useRef<HTMLDivElement>(null)
-
+	console.log('-------', data)
 	const sections = [
 		{ id: 'all', label: 'ویجی تب', icon: '📋' },
 		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
-		{
-			id: 'emails',
-			label: 'ایمیل‌ها',
-			icon: '📧',
-		},
 		{
 			id: 'google-meetings',
 			label: 'گوگل کلندر',
@@ -53,8 +47,6 @@ export function InfoPanel() {
 				return <BirthdayTab birthdays={data.birthdays} />
 			case 'google-meetings':
 				return <GoogleTab />
-			case 'emails':
-				return <EmailTab emailMessages={data.emailMessages} />
 			case 'notifications':
 				return (
 					<div className="space-y-2">
