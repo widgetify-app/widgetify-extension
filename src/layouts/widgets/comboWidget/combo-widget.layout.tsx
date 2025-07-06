@@ -3,10 +3,7 @@ import { FiDollarSign, FiSettings } from 'react-icons/fi'
 
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
-import { useRssManager } from '@/hooks/useRssManager'
 import { LuNewspaper } from 'react-icons/lu'
-import { type FilterSortState, NewsFilterSort } from '../news/components/news-filter-sort'
-import { RssFeedManager } from '../news/components/rss-feed-manager'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
@@ -16,24 +13,8 @@ export type ComboTabType = 'news' | 'currency'
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
 	const [showSettings, setShowSettings] = useState(false)
-	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
-		sortBy: 'random',
-		filterBySource: 'all',
-	})
-
-	// Use the RSS manager hook
-	const { openRssModal, rssState, rssModalOpen, onCloseSettingModal } = useRssManager()
-
-	// For now, we'll use an empty array for availableSources
-	// This should be populated from the news data when the news tab is active
-	const availableSources: string[] = []
-
 	const handleSettingsClick = () => {
-		if (activeTab === 'news') {
-			openRssModal()
-		} else {
-			setShowSettings(true)
-		}
+		setShowSettings(true)
 	}
 
 	const onTabClick = (tab: ComboTabType) => {
@@ -85,11 +66,6 @@ export function ComboWidget() {
 					</button>
 				</div>
 				<div className="flex items-center gap-x-1">
-					<NewsFilterSort
-						availableSources={availableSources}
-						currentState={filterSortState}
-						onStateChange={setFilterSortState}
-					/>
 					<Button
 						onClick={handleSettingsClick}
 						size="xs"
@@ -111,12 +87,11 @@ export function ComboWidget() {
 						/>
 					) : (
 						<>
-							<NewsLayout inComboWidget={true} enableBackground={false} />
-
-							<RssFeedManager
-								isOpen={activeTab === 'news' && rssModalOpen}
-								rssNews={rssState}
-								onClose={onCloseSettingModal}
+							<NewsLayout
+								inComboWidget={true}
+								enableBackground={false}
+								showSettingsModal={activeTab === 'news' && showSettings}
+								onSettingsModalClose={() => setShowSettings(false)}
 							/>
 						</>
 					)}
