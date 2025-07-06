@@ -36,8 +36,8 @@ export const useInfoPanelData = (): InfoPanelData => {
 	})
 
 	useEffect(() => {
-		if (wigiPadData?.data) {
-			const { birthdays, notifications, emailMessages } = wigiPadData.data
+		if (wigiPadData) {
+			const { birthdays, notifications, emailMessages } = wigiPadData
 
 			const transformedBirthdays = birthdays.map((birthday, index) => ({
 				id: `birthday-${index}`,

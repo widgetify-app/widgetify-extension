@@ -20,22 +20,35 @@ export interface WigiPadEmailMessage {
 	snippet: string
 }
 
+export interface UpcomingCalendarEvent {
+	id: string
+	title: string
+	start: string
+	end: string
+	description: string | null
+	htmlLink: string
+	location: string | null
+	platformLink: string | null
+}
+
 export interface WigiPadDataResponse {
-	data: {
-		birthdays: WigiPadBirthday[]
-		notifications: WigiPadNotification[]
-		emailMessages: WigiPadEmailMessage[]
-	}
+	birthdays: WigiPadBirthday[]
+	notifications: WigiPadNotification[]
+	emailMessages: WigiPadEmailMessage[]
+	upcomingCalendarEvents: UpcomingCalendarEvent[]
 }
 
 async function fetchWigiPadData(timezone: string): Promise<WigiPadDataResponse> {
 	const client = await getMainClient()
-	const { data } = await client.get<WigiPadDataResponse>('/extension/wigi-pad-data', {
+	const { data } = await client.get<{
+		data: WigiPadDataResponse
+	}>('/extension/wigi-pad-data', {
 		params: {
 			timezone,
 		},
 	})
-	return data
+
+	return data.data
 }
 
 export function useGetWigiPadData(options: {

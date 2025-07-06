@@ -155,7 +155,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className="absolute hidden w-full overflow-hidden cursor-pointer h-14 -bottom-3 lg:flex"
+			className="absolute hidden w-full h-16 overflow-hidden cursor-pointer -bottom-3 lg:flex"
 			style={{
 				zIndex: 50,
 			}}

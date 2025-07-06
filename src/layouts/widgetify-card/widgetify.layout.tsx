@@ -1,14 +1,12 @@
 import { useAuth } from '@/context/auth.context'
 import { useEffect, useState } from 'react'
 import { WidgetContainer } from '../widgets/widget-container'
-import { EmailTab } from '../widgets/wigiPad/info-panel/tabs/email/email-tab'
+import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
-import { useNotificationCenter } from './hooks/useNotificationCenter'
 
 export const WidgetifyLayout = () => {
 	const { user, isAuthenticated } = useAuth()
-	const { emailMessages } = useNotificationCenter()
 
 	const [userName, setUserName] = useState<string>('')
 
@@ -27,7 +25,7 @@ export const WidgetifyLayout = () => {
 					</PetProvider>
 				}
 
-				<div className="relative z-10 flex flex-col items-center h-64 gap-1 overflow-y-auto small-scrollbar">
+				<div className="relative z-10 flex flex-col items-center gap-1 overflow-y-auto h-60 small-scrollbar">
 					<div
 						className={
 							'flex items-center w-full pb-1 border-b border-content'
@@ -42,11 +40,7 @@ export const WidgetifyLayout = () => {
 
 					{/* Daily Summary Content */}
 					<div className="flex-1 w-full pt-1.5 overflow-y-auto small-scrollbar">
-						<div className="space-y-1">
-							{/* <GoogleOverviewCard /> */}
-							{/* <TodoOverviewCard /> */}
-							<EmailTab emailMessages={emailMessages} />
-						</div>
+						<NotificationCenter />
 					</div>
 				</div>
 			</div>
