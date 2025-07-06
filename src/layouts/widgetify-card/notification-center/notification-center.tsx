@@ -27,7 +27,7 @@ export function NotificationCenter() {
 	return (
 		<>
 			<div className="flex flex-col gap-2">
-				{notification?.upcomingCalendarEvents.map((event) => (
+				{notification?.upcomingCalendarEvents?.map((event) => (
 					<div key={event.id} className="relative">
 						<NotificationItem
 							title={event.title}
@@ -56,7 +56,7 @@ ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
 						)}
 					</div>
 				))}
-				{notification?.emailMessages.map((email) => (
+				{notification?.emailMessages?.map((email) => (
 					<NotificationItem
 						title={email.sender}
 						subTitle={email.subject}
