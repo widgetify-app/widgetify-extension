@@ -1,9 +1,7 @@
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
-import { useState } from 'react'
 import { FaRss } from 'react-icons/fa6'
 import { FiSettings } from 'react-icons/fi'
-import { type FilterSortState, NewsFilterSort } from './news-filter-sort'
 
 interface NewsHeaderProps {
 	title: string
@@ -22,16 +20,10 @@ export const NewsHeader = ({
 	platformUrl,
 	onSettingsClick,
 }: NewsHeaderProps) => {
-	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
-		sortBy: 'random',
-		filterBySource: 'all',
-	})
-
 	// Use the RSS manager hook
 
 	// For now, we'll use an empty array for availableSources
 	// This should be populated from the news data when the news tab is active
-	const availableSources: string[] = []
 
 	return (
 		<div className={'top-0 z-20 flex items-center justify-between w-full pb-2'}>
@@ -73,11 +65,6 @@ export const NewsHeader = ({
 			</div>
 
 			<div className="flex items-center gap-x-0.5">
-				<NewsFilterSort
-					availableSources={availableSources}
-					currentState={filterSortState}
-					onStateChange={setFilterSortState}
-				/>
 				<Button
 					onClick={onSettingsClick}
 					size="xs"

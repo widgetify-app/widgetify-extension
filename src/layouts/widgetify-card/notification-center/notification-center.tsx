@@ -1,12 +1,14 @@
 import gmailIcon from '@/assets/gmail.svg'
-import GoogleCalendar from '@/assets/googleCalendar.png'
+import GoogleCalendar from '@/assets/google-calendar.png'
+import GoogleMeet from '@/assets/google-meet.png'
 import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useGetWigiPadData } from '@/services/hooks/extension/getWigiPadData.hook'
 import moment from 'jalali-moment'
-import { SiGooglemeet } from 'react-icons/si'
 
+import { FiBell } from 'react-icons/fi'
 import { NotificationItem } from './components/notification-item'
+
 export function NotificationCenter() {
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const { data: notification } = useGetWigiPadData({
@@ -22,7 +24,28 @@ export function NotificationCenter() {
 		)
 	}
 
-	if (!notification || !notification?.upcomingCalendarEvents) return null
+	if (!notification || !notification?.upcomingCalendarEvents)
+		return (
+			<div
+				className={
+					'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-12'
+				}
+			>
+				<div
+					className={
+						'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
+					}
+				>
+					<FiBell className="text-content" size={24} />
+				</div>
+				<p className="mt-1 text-center text-content">
+					اعلانی برای نمایش وجود ندارد.
+				</p>
+				<p className="text-center text-[.65rem] text-content opacity-75">
+					اعلان های ایمیل و تقویم گوگل را میتونی ببینی.
+				</p>
+			</div>
+		)
 
 	return (
 		<>
@@ -40,7 +63,7 @@ ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
 						/>
 						{hasGoogleMeet(event) && (
 							<Button
-								className="absolute top-2 left-2 !p-0 w-6 h-6 text-center"
+								className="absolute top-1 left-1 !p-0 w-7 h-7 text-center bg-transparent border-transparent hover:bg-base-content/5 hover:border-base-content/5 shadow-none active:scale-95"
 								size="xs"
 								isPrimary={false}
 								rounded="full"
@@ -51,7 +74,11 @@ ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
 									)
 								}}
 							>
-								<SiGooglemeet size={14} />
+								<img
+									src={GoogleMeet}
+									alt="Gmail"
+									className="w-[1.2rem] h-[1.2rem]"
+								/>
 							</Button>
 						)}
 					</div>

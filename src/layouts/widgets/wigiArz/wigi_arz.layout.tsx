@@ -43,24 +43,24 @@ export function WigiArzLayout({
 					{selectedCurrencies.length === 0 ? (
 						<div
 							className={
-								'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-12'
+								'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-16'
 							}
 						>
 							<div
 								className={
-									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+									'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 								}
 							>
 								<FiDollarSign className="text-content" size={24} />
 							</div>
-							<p className="text-center text-content">
+							<p className="mt-1 text-center text-content">
 								ارزهای مورد نظر خود را اضافه کنید
 							</p>
 							<Button
 								rounded="full"
 								onClick={() => handleModalClose(true)}
 								size="sm"
-								className="border border-base-300/60 px-5 bg-content hover:!bg-primary hover:text-white hover:border-primary"
+								className="mt-1 border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
 							>
 								افزودن ارز
 							</Button>
@@ -107,7 +107,7 @@ export function WigiArzLayout({
 								<FiDollarSign className="text-content" size={24} />
 							</div>
 							<p className="text-center text-content">
-								ارزهای مورد نظر خود را اضافه کنید
+								ارزهای مورد نظر خود را اضافه کنید.
 							</p>
 							<Button
 								rounded="full"
