@@ -22,6 +22,8 @@ export function NotificationCenter() {
 		)
 	}
 
+	if (!notification) return null
+
 	return (
 		<>
 			<div className="flex flex-col gap-2">
