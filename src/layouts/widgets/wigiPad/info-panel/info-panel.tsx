@@ -11,12 +11,12 @@ export function InfoPanel() {
 	console.log('-------', data)
 	const sections = [
 		{ id: 'all', label: 'ویجی تب', icon: '📋' },
-		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
 		{
 			id: 'google-meetings',
 			label: 'گوگل کلندر',
 			icon: '📅',
 		},
+		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
 	]
 
 	const handleSectionClick = (

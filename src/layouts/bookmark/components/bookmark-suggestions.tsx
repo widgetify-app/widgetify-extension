@@ -36,19 +36,19 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 	return (
 		<div className="mt-4">
 			<SectionPanel title="پیشنهاد ویجتی‌فای" size="xs">
-				<div className="grid grid-cols-5 gap-0.5">
+				<div className="grid grid-cols-5 gap-2 mt-2">
 					{suggestions.map((suggestion, index) => (
 						<div
 							key={index}
 							onClick={() => onSelect(suggestion)}
 							className="p-2 flex flex-col items-center gap-y-0.5 text-center transition-colors duration-200 bg-content hover:!bg-base-300/75 border border-base-300/40 rounded-xl cursor-pointer"
 						>
-							<div className="flex items-center justify-center flex-shrink-0 w-5 h-5 mb-1">
+							<div className="flex items-center justify-center flex-shrink-0 w-6 h-6 mb-1">
 								{suggestion.icon ? (
 									<img
 										src={suggestion.icon}
 										alt={suggestion.title}
-										className="object-contain w-5 h-5"
+										className="object-contain w-6 h-6"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'
@@ -61,7 +61,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									<img
 										src={getFaviconFromUrl(suggestion.url)}
 										alt={suggestion.title}
-										className="object-contain w-5 h-5"
+										className="object-contain w-6 h-6"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'
