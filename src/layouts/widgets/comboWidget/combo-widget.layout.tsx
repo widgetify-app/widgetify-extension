@@ -5,10 +5,11 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
 import { useRssManager } from '@/hooks/useRssManager'
 import { LuNewspaper } from 'react-icons/lu'
+import { type FilterSortState, NewsFilterSort } from '../news/components/news-filter-sort'
+import { RssFeedManager } from '../news/components/rss-feed-manager'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
-import { NewsFilterSort, type FilterSortState } from '../news/components/news-filter-sort'
 
 export type ComboTabType = 'news' | 'currency'
 
@@ -21,7 +22,7 @@ export function ComboWidget() {
 	})
 
 	// Use the RSS manager hook
-	const { openRssModal } = useRssManager()
+	const { openRssModal, rssState, rssModalOpen, onCloseSettingModal } = useRssManager()
 
 	// For now, we'll use an empty array for availableSources
 	// This should be populated from the news data when the news tab is active
@@ -56,8 +57,8 @@ export function ComboWidget() {
 
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
-			<div className="pb-2 flex items-center justify-between">
-				<div className="flex gap-2 w-full">
+			<div className="flex items-center justify-between pb-2">
+				<div className="flex w-full gap-2">
 					<button
 						onClick={() => onTabClick('currency')}
 						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
@@ -109,12 +110,15 @@ export function ComboWidget() {
 							onSettingsModalClose={() => setShowSettings(false)}
 						/>
 					) : (
-						<NewsLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'news' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
-						/>
+						<>
+							<NewsLayout inComboWidget={true} enableBackground={false} />
+
+							<RssFeedManager
+								isOpen={activeTab === 'news' && rssModalOpen}
+								rssNews={rssState}
+								onClose={onCloseSettingModal}
+							/>
+						</>
 					)}
 				</div>
 			</div>
