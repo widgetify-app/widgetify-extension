@@ -1,5 +1,9 @@
+import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
-import { FaGear, FaRss } from 'react-icons/fa6'
+import { useState } from 'react'
+import { FaRss } from 'react-icons/fa6'
+import { FiSettings } from 'react-icons/fi'
+import { type FilterSortState, NewsFilterSort } from './news-filter-sort'
 
 interface NewsHeaderProps {
 	title: string
@@ -18,16 +22,23 @@ export const NewsHeader = ({
 	platformUrl,
 	onSettingsClick,
 }: NewsHeaderProps) => {
+	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
+		sortBy: 'random',
+		filterBySource: 'all',
+	})
+
+	// Use the RSS manager hook
+
+	// For now, we'll use an empty array for availableSources
+	// This should be populated from the news data when the news tab is active
+	const availableSources: string[] = []
+
 	return (
-		<div
-			className={
-				'top-0 z-20 flex items-center justify-between w-full pb-2 mb-2 border-b border-content'
-			}
-		>
+		<div className={'top-0 z-20 flex items-center justify-between w-full pb-2'}>
 			<div className="flex flex-col">
-				<div className="flex items-center gap-2">
-					<FaRss className="w-4 h-4 opacity-70" />
-					<p className="text-lg font-bold">{title}</p>
+				<div className="flex items-center gap-1.5">
+					<FaRss className="w-3.5 h-3.5 opacity-70" />
+					<p className="text-base font-medium">{title}</p>
 				</div>
 
 				{isCached && useDefaultNews ? (
@@ -59,20 +70,22 @@ export const NewsHeader = ({
 						</svg>
 					</a>
 				) : null}
-
-				<div className="flex items-center mt-1 mr-2 text-xs">
-					<span className="font-light opacity-70">
-						{useDefaultNews ? '' : 'اخباری لحظه‌ای از منابع شما'}
-					</span>
-				</div>
 			</div>
 
-			<button
-				className="p-1 rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90 transition-all duration-150"
-				onClick={onSettingsClick}
-			>
-				<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-			</button>
+			<div className="flex items-center gap-x-0.5">
+				<NewsFilterSort
+					availableSources={availableSources}
+					currentState={filterSortState}
+					onStateChange={setFilterSortState}
+				/>
+				<Button
+					onClick={onSettingsClick}
+					size="xs"
+					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+				>
+					<FiSettings size={12} className="text-content" />
+				</Button>
+			</div>
 		</div>
 	)
 }

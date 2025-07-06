@@ -17,7 +17,7 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 	const minuteAngle = minutes * 6
 	const secondAngle = seconds * 6
 
-	const handColor = isDayTime ? '#f59e0b' : '#3b82f6'
+	const handColor = isDayTime ? 'currentColor' : '#3b82f6'
 
 	return (
 		<div className="relative flex flex-col items-center justify-center">

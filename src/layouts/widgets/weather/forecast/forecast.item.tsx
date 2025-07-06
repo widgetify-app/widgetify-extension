@@ -12,7 +12,7 @@ interface ForecastProps {
 
 export function ForecastItem({ forecast, unit }: ForecastProps) {
 	return (
-		<div className="px-3 py-2 flex flex-col items-center justify-between transition-all duration-300 bg-base-300/80 rounded-xl animate-in fade-in-0">
+		<div className="px-3 py-2 flex flex-col items-center justify-between transition-all duration-300 bg-base-300/50 rounded-xl animate-in fade-in-0">
 			{/* Time Section */}
 			<div className="flex items-center justify-center w-full">
 				{forecast.isDaily ? (

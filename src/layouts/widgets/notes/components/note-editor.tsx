@@ -70,12 +70,12 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 	}
 
 	return (
-		<div className="h-full flex flex-col gap-y-2">
+		<div className="flex flex-col h-full gap-y-2">
 			<input
 				ref={titleRef}
 				type="text"
 				className={
-					'w-full py-2.5 px-2 text-xs font-medium outline-none text-content bg-base-200 rounded-xl'
+					'w-full py-3 px-2 text-xs font-medium text-content rounded-xl bg-base-300/70 outline-none'
 				}
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
@@ -86,7 +86,7 @@ export function NoteEditor({ note, onUpdateNote }: NoteEditorProps) {
 			<textarea
 				ref={bodyRef}
 				className={
-					'w-full px-2 pt-2 text-sm flex-grow resize-none bg-base-200 outline-none text-content text-opacity-80 rounded-xl'
+					'w-full px-2 pt-2 text-sm flex-grow resize-none text-content rounded-xl bg-base-300/70 outline-none'
 				}
 				placeholder="متن یادداشت..."
 				value={currentBody}

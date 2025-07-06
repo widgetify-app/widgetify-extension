@@ -16,9 +16,19 @@ export const NewsContainer = ({
 }: NewsContainerProps) => {
 	if (isLoading) {
 		return (
-			<div className="flex flex-col items-center justify-center h-full p-4">
-				<div className="w-6 h-6 border-2 border-t-2 rounded-full animate-spin border-primary border-t-transparent"></div>
-				<p className="mt-2 text-sm opacity-70">در حال دریافت اخبار...</p>
+			<div
+				className={
+					'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-24'
+				}
+			>
+				<div
+					className={
+						'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+					}
+				>
+					<div className="border-2 border-t-2 rounded-full w-7 h-7 animate-spin border-primary border-t-transparent"></div>
+				</div>
+				<p className="text-center text-content">در حال دریافت اخبار...</p>
 			</div>
 		)
 	}
@@ -27,12 +37,12 @@ export const NewsContainer = ({
 		return (
 			<div
 				className={
-					'flex-1 flex flex-col items-center justify-center gap-y-2 px-5 py-8'
+					'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-8'
 				}
 			>
 				<div
 					className={
-						'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-content'
+						'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
 					}
 				>
 					<svg
@@ -62,7 +72,7 @@ export const NewsContainer = ({
 
 	return (
 		<div
-			className={`flex flex-col h-full gap-3 ${inComboWidget ? '' : 'overflow-y-auto'}`}
+			className={`flex flex-col h-full gap-1 ${inComboWidget ? '' : 'overflow-y-auto'}`}
 		>
 			{children}
 		</div>

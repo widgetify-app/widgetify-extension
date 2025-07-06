@@ -11,14 +11,7 @@ interface EmailTabProps {
 }
 
 export function EmailTab({ emailMessages }: EmailTabProps) {
-	if (emailMessages.length === 0) {
-		return (
-			<div className="flex flex-col items-center justify-center py-2 text-center">
-				<div className="mb-1 text-3xl">📧</div>
-				<p className="text-sm text-muted">پیام ایمیلی موجود نیست</p>
-			</div>
-		)
-	}
+	if (emailMessages.length === 0) return
 
 	return (
 		<div className="space-y-2">
