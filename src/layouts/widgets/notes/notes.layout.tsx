@@ -41,9 +41,9 @@ function NotesHeader() {
 		useNotes()
 	return (
 		<div className="flex items-center justify-between">
-			<h4 className={'text-sm font-medium text-content'}>دفترچه یادداشت</h4>
+			<h4 className={'text-sm font-medium text-content truncate'}>دفترچه یادداشت</h4>
 			{isSaving && (
-				<FiLoader className={'block w-3 h-3 animate-spin text-content'} />
+				<FiLoader className={'mx-2 block w-4 h-4 animate-spin text-content'} />
 			)}
 			<NoteNavigation
 				notes={notes}
