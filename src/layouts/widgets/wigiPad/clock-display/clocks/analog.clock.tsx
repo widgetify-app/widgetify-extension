@@ -17,27 +17,27 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 	const minuteAngle = minutes * 6
 	const secondAngle = seconds * 6
 
-	const handColor = isDayTime ? '#f59e0b' : '#3b82f6'
+	const handColor = isDayTime ? 'currentColor' : '#3b82f6'
 
 	return (
 		<div className="relative flex flex-col items-center justify-center">
 			{/* Analog Clock */}
-			<div className="relative w-[7.5rem] h-[7.5rem]">
-				<svg width="120" height="120" viewBox="0 0 120 120">
+			<div className="relative p-2 w-[7.5rem] h-[9.5rem]">
+				<svg width="120" height="144" viewBox="0 0 120 144" className='w-full h-full'>
 					{/* Hour markers */}
 					{[...Array(12)].map((_, i) => {
 						const angle = i * 30
 						const isMainHour = i % 3 === 0
 						const x1 =
-							60 +
+							60 + 
 							(isMainHour ? 35 : 38) *
 								Math.cos(((angle - 90) * Math.PI) / 180)
 						const y1 =
-							60 +
+							72 +
 							(isMainHour ? 35 : 38) *
 								Math.sin(((angle - 90) * Math.PI) / 180)
-						const x2 = 60 + 85 * Math.cos(((angle - 90) * Math.PI) / 180)
-						const y2 = 60 + 85 * Math.sin(((angle - 90) * Math.PI) / 180)
+						const x2 = 60 + 90 * Math.cos(((angle - 90) * Math.PI) / 180) 
+						const y2 = 72 + 90 * Math.sin(((angle - 90) * Math.PI) / 180)
 
 						return (
 							<line
@@ -47,17 +47,18 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 								x2={x2}
 								y2={y2}
 								stroke={handColor}
-								strokeWidth={isMainHour ? '2' : '1'}
-								opacity={isMainHour ? '0.8' : '0.4'}
+								strokeLinecap="round"
+								strokeWidth={isMainHour ? '3' : '2'}
+								opacity={isMainHour ? '0.75' : '0.25'}
 							/>
 						)
 					})}
 					{/* Hour hand */}
 					<line
 						x1="60"
-						y1="60"
+						y1="72"
 						x2={60 + 30 * Math.cos(((hourAngle - 90) * Math.PI) / 180)}
-						y2={60 + 30 * Math.sin(((hourAngle - 90) * Math.PI) / 180)}
+						y2={72 + 30 * Math.sin(((hourAngle - 90) * Math.PI) / 180)}
 						stroke={'currentColor'}
 						strokeWidth="8"
 						strokeLinecap="round"
@@ -65,10 +66,10 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 					{/* Minute hand */}
 					<line
 						x1="60"
-						y1="60"
+						y1="72"
 						x2={60 + 50 * Math.cos(((minuteAngle - 90) * Math.PI) / 180)}
-						y2={60 + 50 * Math.sin(((minuteAngle - 90) * Math.PI) / 180)}
-						strokeWidth="4"
+						y2={72 + 50 * Math.sin(((minuteAngle - 90) * Math.PI) / 180)}
+						strokeWidth="4.5"
 						className="stroke-gray-400"
 						strokeLinecap="round"
 					/>
@@ -77,13 +78,13 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 							{/* Second hand */}
 							<line
 								x1="60"
-								y1="60"
+								y1="72"
 								x2={
 									60 +
 									30 * Math.cos(((secondAngle - 90) * Math.PI) / 180)
 								}
 								y2={
-									60 +
+									72 +
 									30 * Math.sin(((secondAngle - 90) * Math.PI) / 180)
 								}
 								stroke={handColor}
@@ -92,7 +93,7 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 								className="transition-transform duration-75 ease-linear"
 							/>
 							{/* Center dot */}
-							<circle cx="60" cy="60" r="2" fill={handColor} />
+							<circle cx="60" cy="72" r="2" fill={handColor} />
 						</>
 					)}
 				</svg>

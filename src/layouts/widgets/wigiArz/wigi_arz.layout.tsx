@@ -39,7 +39,7 @@ export function WigiArzLayout({
 	return (
 		<>
 			{inComboWidget ? (
-				<div className="mt-2 flex items-center justify-between pb-2">
+				<div className="flex items-center justify-between pb-2">
 					{selectedCurrencies.length === 0 ? (
 						<div
 							className={
@@ -67,7 +67,7 @@ export function WigiArzLayout({
 						</div>
 					) : (
 						<div
-							className={`flex flex-col w-full gap-1 ${inComboWidget ? '' : 'overflow-y-auto'}`}
+							className={`mt-2 flex flex-col w-full gap-1 ${inComboWidget ? '' : 'overflow-y-auto'}`}
 							style={{
 								scrollbarWidth: 'none',
 							}}
