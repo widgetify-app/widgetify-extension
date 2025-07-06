@@ -119,10 +119,20 @@ export function YouTubeLayout() {
 						)}
 
 						{!youtubeProfile && error && !isLoading && (
-							<div className="py-20 px-8 flex flex-col items-center gap-y-2 text-center text-muted">
-								<FaYoutube className="text-3xl" />
-								<p className={'text-xs leading-normal'}>
-									خطا در دریافت اطلاعات نام کاربری را بررسی کنید
+							<div
+								className={
+									'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-20'
+								}
+							>
+								<div
+									className={
+										'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
+									}
+								>
+									<FaYoutube className="text-content" size={24} />
+								</div>
+								<p className="mt-1 text-center text-content">
+									خطا در دریافت اطلاعات نام کاربری را بررسی کنید کنید.
 								</p>
 							</div>
 						)}
@@ -130,18 +140,18 @@ export function YouTubeLayout() {
 						{!username && !isLoading && (
 							<div
 								className={
-									'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-20'
+									'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-20'
 								}
 							>
 								<div
 									className={
-										'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+										'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 									}
 								>
 									<FaYoutube className="text-content" size={24} />
 								</div>
-								<p className="text-center text-content">
-									لطفاً از تنظیمات نام کاربری یوتیوب را وارد کنید
+								<p className="mt-1 text-center text-content">
+									لطفاً از تنظیمات نام کاربری یوتیوب را وارد کنید.
 								</p>
 							</div>
 						)}

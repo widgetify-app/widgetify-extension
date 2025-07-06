@@ -86,14 +86,12 @@ export function ComboWidget() {
 							onSettingsModalClose={() => setShowSettings(false)}
 						/>
 					) : (
-						<>
-							<NewsLayout
-								inComboWidget={true}
-								enableBackground={false}
-								showSettingsModal={activeTab === 'news' && showSettings}
-								onSettingsModalClose={() => setShowSettings(false)}
-							/>
-						</>
+						<NewsLayout
+							inComboWidget={true}
+							enableBackground={false}
+							showSettingsModal={activeTab === 'news' && showSettings}
+							onSettingsModalClose={() => setShowSettings(false)}
+						/>
 					)}
 				</div>
 			</div>

@@ -15,17 +15,17 @@ export function BirthdayTab({ birthdays }: Props) {
 			) : (
 				<div
 					className={
-						'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-1'
+						'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-1'
 					}
 				>
 					<div
 						className={
-							'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
+							'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 						}
 					>
 						<LuGift className="text-content" size={24} />
 					</div>
-					<p className="text-center text-content">هیچ تولدی امروز نیست.</p>
+					<p className="mt-1 text-center text-content">هیچ تولدی امروز نیست.</p>
 				</div>
 			)}
 		</div>
