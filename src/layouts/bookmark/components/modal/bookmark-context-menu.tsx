@@ -20,7 +20,7 @@ export function BookmarkContextMenu({
 			return 'text-error hover:text-error/90 hover:!bg-error/10'
 		}
 
-		return 'text-content hover:text-content/90 hover:!bg-base-300/80'
+		return 'text-content hover:text-content/90 hover:!bg-base-300/70'
 	}
 
 	return (

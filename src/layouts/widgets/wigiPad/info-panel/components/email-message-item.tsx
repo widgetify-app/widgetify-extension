@@ -18,7 +18,7 @@ export function EmailMessageItem({ email }: EmailMessageItemProps) {
 	return (
 		<div
 			onClick={handleClick}
-			className="flex gap-2.5 p-2 rounded-lg bg-base-300/90 hover:bg-base-300 border border-base-300/70 active:scale-98 cursor-pointer transition-all duration-300"
+			className="flex gap-2.5 p-2 rounded-lg bg-base-300/70 hover:bg-base-300 border border-base-300/70 active:scale-98 cursor-pointer transition-all duration-300"
 		>
 			<div className="pt-0.5">
 				<img src={gmailIcon} alt="Gmail" className="w-4 h-4" />

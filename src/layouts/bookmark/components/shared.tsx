@@ -136,7 +136,7 @@ export function useBookmarkIcon() {
 		if (formData.customImage) {
 			return (
 				<div
-					className={`relative w-16 h-16 p-2 mx-auto cursor-pointer group`}
+					className="relative w-16 h-16 p-2 mx-auto cursor-pointer group"
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -263,7 +263,7 @@ export function ShowAdvancedButton({
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
 			className={
-				'bg-base-300 hover:bg-base-300/80 flex items-center gap-1 px-3 py-1 text-sm font-medium transition-all duration-200 cursor-pointer text-content rounded-xl active:scale-95'
+				'bg-base-300 hover:bg-base-300/70 border border-base-300/70 flex items-center gap-1 px-3 py-1 text-sm font-medium transition-all duration-200 cursor-pointer text-content rounded-xl active:scale-95'
 			}
 		>
 			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
