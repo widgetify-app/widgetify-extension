@@ -29,7 +29,7 @@ export function NotificationCenter() {
 		return (
 			<div
 				className={
-					'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-12'
+					'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-10'
 				}
 			>
 				<div
@@ -43,7 +43,7 @@ export function NotificationCenter() {
 					اعلانی برای نمایش وجود ندارد.
 				</p>
 				<p className="text-center text-[.65rem] text-content opacity-75">
-					اعلان های ایمیل و تقویم گوگل را میتونی ببینی.
+					اعلان های ایمیل و تقویم گوگل و ... را میتونی ببینی.
 				</p>
 			</div>
 		)
