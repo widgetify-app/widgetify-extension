@@ -38,7 +38,7 @@ export const NewsItem = ({
 	return (
 		<div className="transition-all">
 			<div
-				className="p-2 transition-all duration-300 border rounded-lg cursor-pointer bg-base-300/90 hover:bg-base-300 border-base-300/70 active:scale-98"
+				className="p-2 transition-all duration-300 border rounded-lg cursor-pointer bg-base-300/90 hover:bg-base-200 border-base-300/70 active:scale-98"
 				onClick={handleClick}
 			>
 				<div className="flex items-start gap-2">
