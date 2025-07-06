@@ -163,10 +163,10 @@ export function TodosLayout() {
 						</>
 					)}
 				</div>
-				<div className="flex-grow overflow-hidden">
+				<div className="mt-0.5 flex-grow overflow-hidden">
 					{!showStats && (
 						<div
-							className={`pr-1 space-y-1 overflow-y-auto h-full  ${todoOptions.blurMode ? 'blur-mode' : ''}`}
+							className={`space-y-1.5 overflow-y-auto h-full ${todoOptions.blurMode ? 'blur-mode' : ''}`}
 						>
 							{selectedDateTodos.length > 0 ? (
 								<>

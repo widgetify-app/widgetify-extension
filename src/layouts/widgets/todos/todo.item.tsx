@@ -36,9 +36,15 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 		return () => clearTimeout(timer)
 	}, [isDeleting, countdown, deleteTodo, todo.id])
 
-	const handleDelete = () => {
+	const handleDelete = (e: React.MouseEvent) => {
+		e.stopPropagation()
 		setIsDeleting(true)
 		setCountdown(5)
+	}
+
+	const handleExpand = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		setExpanded(!expanded)
 	}
 
 	const handleUndo = () => {
@@ -47,6 +53,32 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	}
 
 	const getBorderStyle = () => {
+		switch (todo.priority) {
+			case 'high':
+				return '!border-error'
+			case 'medium':
+				return '!border-warning'
+			case 'low':
+				return '!border-success'
+			default:
+				return '!border-primary'
+		}
+	}
+
+	const getCheckedCheckboxStyle = () => {
+		switch (todo.priority) {
+			case 'high':
+				return '!border-error !bg-error'
+			case 'medium':
+				return '!border-warning !bg-warning'
+			case 'low':
+				return '!border-success !bg-success'
+			default:
+				return '!border-primary !bg-primary'
+		}
+	}
+
+	const getUnCheckedCheckboxStyle = () => {
 		switch (todo.priority) {
 			case 'high':
 				return '!border-error'
@@ -73,7 +105,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	}
 	return (
 		<div
-			className={`overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out bg-content group ${blurMode ? 'blur-item' : ''}`}
+			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98 cursor-pointer group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''}`}
 		>
 			{isDeleting ? (
 				<div className="flex items-center justify-between p-1.5">
@@ -95,18 +127,22 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 				</div>
 			) : (
 				<>
-					<div className={'flex items-center gap-1.5 pr-1.5 p-1.5'}>
+					<div
+						onClick={() => toggleTodo(todo.id)}
+						className={'flex items-center gap-2 pr-1.5 p-1.5'}
+					>
 						<div className="flex-shrink-0">
 							<CustomCheckbox
 								checked={todo.completed}
 								onChange={() => toggleTodo(todo.id)}
-								className={`!border ${getBorderStyle()}`}
+								className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle()}`}
+								unCheckedCheckBoxClassName={`${getUnCheckedCheckboxStyle()}`}
+								checkedCheckBoxClassName={`${getCheckedCheckboxStyle()}`}
 							/>
 						</div>
 
 						<span
-							onClick={() => toggleTodo(todo.id)}
-							className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${todo.completed ? 'line-through text-content opacity-50' : 'text-content'}`}
+							className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${todo.completed ? 'line-through text-content opacity-60' : 'text-content'}`}
 						>
 							{todo.text}
 						</span>
@@ -116,14 +152,14 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 							<button
 								onClick={handleDelete}
 								className={
-									'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none text-red-400'
+									'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
 								}
 							>
 								<FiTrash2 size={13} />
 							</button>
 
 							<button
-								onClick={() => setExpanded(!expanded)}
+								onClick={handleExpand}
 								className={
 									'p-1 rounded-full cursor-pointer hover:bg-gray-500/10 text-gray-400'
 								}
