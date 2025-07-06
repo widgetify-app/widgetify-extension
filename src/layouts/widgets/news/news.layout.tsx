@@ -44,24 +44,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	})
 	const [rssItems, setRssItems] = useState<RssItem[]>([])
 	const [isLoadingRss, setIsLoadingRss] = useState(false)
-	const [filterSortState, setFilterSortState] = useState<FilterSortState>({
-		sortBy: 'random',
-		filterBySource: 'all',
-	})
-
-	useEffect(() => {
-		const loadFilterPreferences = async () => {
-			const savedFilter = await getFromStorage('news_filter_sort_state')
-			if (savedFilter) {
-				setFilterSortState(savedFilter)
-			}
-		}
-		loadFilterPreferences()
-	}, [])
-
-	useEffect(() => {
-		setToStorage('news_filter_sort_state', filterSortState)
-	}, [filterSortState])
 
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(
 		rssState.useDefaultNews
@@ -157,53 +139,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			}))
 		}
 		return []
-	}
-
-	const getFilteredAndSortedItems = () => {
-		let items = getItemsToDisplay()
-
-		if (filterSortState.filterBySource !== 'all') {
-			items = items.filter((item) => {
-				const sourceName =
-					typeof item.source === 'string'
-						? item.source
-						: item.source?.name || ''
-				return sourceName === filterSortState.filterBySource
-			})
-		}
-
-		items.sort((a, b) => {
-			switch (filterSortState.sortBy) {
-				case 'source': {
-					const sourceA =
-						typeof a.source === 'string' ? a.source : a.source?.name || ''
-					const sourceB =
-						typeof b.source === 'string' ? b.source : b.source?.name || ''
-					return sourceA.localeCompare(sourceB, 'fa')
-				}
-				case 'title':
-					return (a.title || '').localeCompare(b.title || '', 'fa')
-				default:
-					return 0
-			}
-		})
-
-		return items
-	}
-
-	const getAvailableSources = () => {
-		const items = getItemsToDisplay()
-		const sources = new Set<string>()
-
-		for (const item of items) {
-			const sourceName =
-				typeof item.source === 'string' ? item.source : item.source?.name || ''
-			if (sourceName) {
-				sources.add(sourceName)
-			}
-		}
-
-		return Array.from(sources).sort((a, b) => a.localeCompare(b, 'fa'))
 	}
 
 	useEffect(() => {
@@ -311,25 +246,13 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			}
 		}
 	}, [dataUpdatedAt, isError])
-	const displayItems = getFilteredAndSortedItems()
-	const availableSources = getAvailableSources()
+	const displayItems = getItemsToDisplay()
 	const isAnyLoading = isLoading || isLoadingRss
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 	return (
 		<>
-			<RssFeedManager
-				isOpen={rssModalOpen}
-				rssNews={rssState}
-				onClose={onCloseSettingModal}
-			/>
-
 			{inComboWidget ? (
 				<div className="flex flex-col gap-2">
-					<NewsFilterSort
-						availableSources={availableSources}
-						currentState={filterSortState}
-						onStateChange={setFilterSortState}
-					/>
 					<NewsContainer
 						inComboWidget={inComboWidget}
 						isLoading={isAnyLoading}
@@ -340,7 +263,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						onAddFeed={() => setRssModalOpen(true)}
 					>
 						{' '}
-						{displayItems.map((item, index) => (
+						{displayItems.map((item: any, index: number) => (
 							<NewsItem
 								key={index}
 								title={item.title}
@@ -355,51 +278,55 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 					</NewsContainer>
 				</div>
 			) : (
-				<WidgetContainer
-					background={enableBackground}
-					className={'flex flex-col gap-1 px-2 py-2 overflow-y-auto'}
-					style={{
-						scrollbarWidth: 'none',
-					}}
-				>
-					<NewsHeader
-						title="ویجی نیوز"
-						isCached={newsData.isCached}
-						useDefaultNews={rssState.useDefaultNews}
-						platformName={newsData.platform.name}
-						platformUrl={newsData.platform.url}
-						onSettingsClick={() => setRssModalOpen(true)}
-					/>
-
-					<NewsFilterSort
-						availableSources={availableSources}
-						currentState={filterSortState}
-						onStateChange={setFilterSortState}
-					/>
-
-					<NewsContainer
-						inComboWidget={inComboWidget}
-						isLoading={isAnyLoading}
-						isEmpty={noItemsToShow}
-						noFeedsConfigured={
-							!rssState.useDefaultNews && rssState.customFeeds.length === 0
-						}
-						onAddFeed={() => setRssModalOpen(true)}
+				<>
+					<WidgetContainer
+						background={enableBackground}
+						className={'flex flex-col gap-1 overflow-y-auto'}
+						style={{
+							scrollbarWidth: 'none',
+						}}
 					>
-						{displayItems.map((item, index) => (
-							<NewsItem
-								key={index}
-								title={item.title}
-								description={item.description}
-								source={item.source}
-								publishedAt={item.publishedAt}
-								link={'link' in item ? (item.link as string) : undefined}
-								index={index}
-								onClick={openNewsLink}
-							/>
-						))}
-					</NewsContainer>
-				</WidgetContainer>
+						<RssFeedManager
+							isOpen={rssModalOpen}
+							rssNews={rssState}
+							onClose={onCloseSettingModal}
+						/>
+						<NewsHeader
+							title="ویجی نیوز"
+							isCached={newsData.isCached}
+							useDefaultNews={rssState.useDefaultNews}
+							platformName={newsData.platform.name}
+							platformUrl={newsData.platform.url}
+							onSettingsClick={() => setRssModalOpen(true)}
+						/>
+
+						<NewsContainer
+							inComboWidget={inComboWidget}
+							isLoading={isAnyLoading}
+							isEmpty={noItemsToShow}
+							noFeedsConfigured={
+								!rssState.useDefaultNews &&
+								rssState.customFeeds.length === 0
+							}
+							onAddFeed={() => setRssModalOpen(true)}
+						>
+							{displayItems.map((item: any, index: number) => (
+								<NewsItem
+									key={index}
+									title={item.title}
+									description={item.description}
+									source={item.source}
+									publishedAt={item.publishedAt}
+									link={
+										'link' in item ? (item.link as string) : undefined
+									}
+									index={index}
+									onClick={openNewsLink}
+								/>
+							))}
+						</NewsContainer>
+					</WidgetContainer>
+				</>
 			)}
 		</>
 	)

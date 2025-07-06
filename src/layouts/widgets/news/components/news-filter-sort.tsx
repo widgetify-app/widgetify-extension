@@ -38,7 +38,7 @@ export const NewsFilterSort = ({
 	}
 
 	return (
-		<div className="mb-1 space-y-1">
+		<div className="space-y-1">
 			<div className="flex items-center justify-end gap-2">
 				<Button
 					size="xs"

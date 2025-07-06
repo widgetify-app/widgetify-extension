@@ -18,20 +18,20 @@ export function EmailMessageItem({ email }: EmailMessageItemProps) {
 	return (
 		<div
 			onClick={handleClick}
-			className="flex gap-2 p-2 transition-all rounded-lg bg-base-300/90 border border-base-300/70 cursor-pointer"
+			className="flex gap-2.5 p-2 rounded-lg bg-base-300/90 hover:bg-base-300 border border-base-300/70 active:scale-98 cursor-pointer transition-all duration-300"
 		>
-			<div className="">
+			<div className="pt-0.5">
 				<img src={gmailIcon} alt="Gmail" className="w-4 h-4" />
 			</div>
 
 			<div className="flex-1 min-w-0">
-				<div className="flex items-center justify-between mb-1">
-					<h4 className="text-xs font-medium truncate text-content">
+				<div className="flex items-center justify-between">
+					<h4 className="text-[13px] font-medium truncate text-content">
 						{email.subject}
 					</h4>
 				</div>
-				<p className="text-[11px] text-muted font-bold mb-1">{email.sender}</p>
-				<p className="text-[10px] text-muted opacity-80 truncate">
+				<p className="mt-0.5 text-xs text-muted font-bold">{email.sender}</p>
+				<p className="mt-1 text-[10px] text-muted opacity-80 truncate">
 					{email.snippet}
 				</p>
 			</div>
