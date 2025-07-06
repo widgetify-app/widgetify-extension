@@ -26,7 +26,7 @@ export const NewsContainer = ({
 						'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
 					}
 				>
-					<div className="w-7 h-7 border-2 border-t-2 rounded-full animate-spin border-primary border-t-transparent"></div>
+					<div className="border-2 border-t-2 rounded-full w-7 h-7 animate-spin border-primary border-t-transparent"></div>
 				</div>
 				<p className="text-center text-content">در حال دریافت اخبار...</p>
 			</div>
@@ -72,7 +72,7 @@ export const NewsContainer = ({
 
 	return (
 		<div
-			className={`flex flex-col h-full gap-3 ${inComboWidget ? '' : 'overflow-y-auto'}`}
+			className={`flex flex-col h-full gap-1 ${inComboWidget ? '' : 'overflow-y-auto'}`}
 		>
 			{children}
 		</div>
