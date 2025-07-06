@@ -65,7 +65,6 @@ export const DogComponent = () => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
-		clickEffect,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.DOG_AKITA),
 		animations: dogAnimations,
@@ -84,7 +83,6 @@ export const DogComponent = () => {
 			petRef={petRef}
 			position={position}
 			direction={direction}
-			clickEffect={clickEffect}
 			showName={showName}
 			collectibles={collectibles}
 			getAnimationForCurrentAction={getAnimationForCurrentAction}

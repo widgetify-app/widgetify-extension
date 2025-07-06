@@ -62,7 +62,6 @@ export const ChickenComponent = () => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
-		clickEffect,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CHICKEN),
 		animations: chickenAnimations,
@@ -79,7 +78,6 @@ export const ChickenComponent = () => {
 			name={getCurrentPetName(PetTypes.CHICKEN)}
 			containerRef={containerRef}
 			petRef={petRef}
-			clickEffect={clickEffect}
 			position={position}
 			direction={direction}
 			showName={showName}
