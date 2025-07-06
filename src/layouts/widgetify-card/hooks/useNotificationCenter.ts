@@ -1,5 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useGetNotificationCenterData } from '@/services/hooks/extension/getNotificationCenterData.hook'
+import { useGetWigiPadData } from '@/services/hooks/extension/getWigiPadData.hook'
 import { useEffect, useState } from 'react'
 
 export interface NotificationCenterData {
@@ -24,7 +24,7 @@ export interface NotificationCenterData {
 
 export const useNotificationCenter = (): NotificationCenterData => {
 	const { selected_timezone: timezone } = useGeneralSetting()
-	const { data: notificationCenterData } = useGetNotificationCenterData({
+	const { data: notificationCenterData } = useGetWigiPadData({
 		enabled: true,
 		timezone: timezone.value,
 	})
