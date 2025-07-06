@@ -6,6 +6,8 @@ interface CustomCheckboxProps {
 	label?: string
 	className?: string
 	disabled?: boolean
+	unCheckedCheckBoxClassName?: string
+	checkedCheckBoxClassName?: string
 	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
 }
 
@@ -15,13 +17,17 @@ const CustomCheckbox = ({
 	label,
 	disabled = false,
 	fontSize = 'font-normal',
-	className = "",
+	className = '',
+	unCheckedCheckBoxClassName = '',
+	checkedCheckBoxClassName = '',
 }: CustomCheckboxProps) => {
 	const getCheckboxStyle = () => {
 		if (checked) {
+			if (checkedCheckBoxClassName) return checkedCheckBoxClassName
 			return 'bg-blue-500 border-blue-500'
 		}
 
+		if (unCheckedCheckBoxClassName) return unCheckedCheckBoxClassName
 		return 'border-content'
 	}
 
