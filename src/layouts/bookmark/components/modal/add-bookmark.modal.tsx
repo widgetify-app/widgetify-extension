@@ -42,6 +42,7 @@ export function AddBookmarkModal({
 		customBackground: '',
 		customTextColor: '',
 		sticker: '',
+		password: '',
 	})
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
@@ -93,7 +94,11 @@ export function AddBookmarkModal({
 
 			if (type === 'FOLDER') {
 				//@ts-ignore
-				onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
+				onAdd({
+					...baseBookmark,
+					onlineId: null,
+					password: formData.password,
+				} as Bookmark)
 			} else {
 				let newUrl = formData.url
 				if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
@@ -186,7 +191,7 @@ export function AddBookmarkModal({
 						<TypeSelector type={type} setType={setType} />
 					</div>
 
-					<div className='py-2 h-[calc(100%-4rem)] overflow-auto'>
+					<div className="py-2 h-[calc(100%-2rem)] overflow-auto">
 						{' '}
 						<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
 							{type === 'BOOKMARK' && (
@@ -222,6 +227,20 @@ export function AddBookmarkModal({
 								'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
 							}
 						/>
+						{type === 'FOLDER' && (
+							<div className="relative h-[50px]">
+								<TextInput
+									type="password"
+									name="password"
+									placeholder="رمز عبور (اختیاری)"
+									value={formData.password ?? ''}
+									onChange={(v) => updateFormData('password', v)}
+									className={
+										'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+									}
+								/>
+							</div>
+						)}
 						<div className="relative h-[50px]">
 							{type === 'BOOKMARK' && (
 								<TextInput
