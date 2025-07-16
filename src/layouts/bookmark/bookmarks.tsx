@@ -10,6 +10,7 @@ import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
 import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
+import { FolderPasswordModal } from './components/modal/folder-password.modal'
 
 export function BookmarksComponent() {
 	const {
@@ -23,19 +24,17 @@ export function BookmarksComponent() {
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
+	const [showFolderPasswordModal, setShowFolderPasswordModal] = useState(false)
 	const [bookmarkToEdit, setBookmarkToEdit] = useState<Bookmark | null>(null)
+	const [folderPassword, setFolderPassword] = useState('')
+	const [folderToOpen, setFolderToOpen] = useState<Bookmark | null>(null)
 
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
-
 	const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
-
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
-
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
-
 	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
 		useState<boolean>(true)
-
 	const [draggedBookmarkId, setDraggedBookmarkId] = useState<string | null>(null)
 	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
@@ -92,6 +91,21 @@ export function BookmarksComponent() {
 		setShowEditBookmarkModal(true)
 		setSelectedBookmark(null)
 	}
+
+	const handleOpenFolder = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
+		if (e?.ctrlKey || e?.metaKey) {
+			openBookmarks(bookmark)
+		} else {
+			setCurrentFolderId(bookmark.id)
+			setFolderPath([
+				...folderPath,
+				{ id: bookmark.id, title: bookmark.title, password: bookmark.password },
+			])
+
+			setCurrentFolderIsManageable(isManageable(bookmark))
+		}
+	}
+
 	const handleBookmarkClick = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
 		if (e) {
 			e.preventDefault()
@@ -109,13 +123,12 @@ export function BookmarksComponent() {
 		}
 
 		if (bookmark.type === 'FOLDER') {
-			if (e?.ctrlKey || e?.metaKey) {
-				openBookmarks(bookmark)
+			setFolderPassword(bookmark.password ?? '')
+			if (bookmark.password) {
+				setFolderToOpen(bookmark)
+				setShowFolderPasswordModal(true)
 			} else {
-				setCurrentFolderId(bookmark.id)
-				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
-
-				setCurrentFolderIsManageable(isManageable(bookmark))
+				handleOpenFolder(bookmark, e)
 			}
 		} else {
 			if (e?.ctrlKey || e?.metaKey) {
@@ -283,7 +296,11 @@ export function BookmarksComponent() {
 					bookmark ? (
 						<div
 							key={i}
-							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-full' : 'rounded-full'}`}
+							className={`transition-transform duration-200 ${
+								dragOverIndex === i
+									? 'scale-110 border-2 border-blue-400 rounded-full'
+									: 'rounded-full'
+							}`}
 						>
 							<BookmarkItem
 								bookmark={bookmark}
@@ -329,6 +346,14 @@ export function BookmarksComponent() {
 			<div className="mt-2 flex justify-center w-full">
 				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
+			<FolderPasswordModal
+				onConfirm={() => {
+					if (folderToOpen) handleOpenFolder(folderToOpen)
+				}}
+				folderPassword={folderPassword}
+				isOpen={showFolderPasswordModal}
+				onClose={() => setShowFolderPasswordModal(false)}
+			/>
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
