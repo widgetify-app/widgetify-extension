@@ -17,7 +17,7 @@ export const RecommendedSites = ({
 	return (
 		<div>
 			<LazyMotion features={domAnimation}>
-				<div className="flex gap-2 p-3 overflow-x-auto small-scrollbar">
+				<div className="flex gap-2 py-1 overflow-x-auto small-scrollbar">
 					{isLoading
 						? [...Array(6)].map((_, index) => (
 								<SiteItemComponent
@@ -41,7 +41,7 @@ export const RecommendedSites = ({
 				{recommendedSites.some(
 					(site) => site.subSites && site.subSites.length > 0
 				) && (
-					<div className="mt-2">
+					<div className="">
 						{recommendedSites
 							.filter((site) => site.subSites && site.subSites.length > 0)
 							.map((site) => (
@@ -97,11 +97,10 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 					delay: index * 0.1,
 				}}
 				className={
-					'flex-shrink-0 flex flex-col items-center rounded-lg bg-content w-[80px]'
+					'flex-shrink-0 flex flex-row items-center rounded-lg bg-content'
 				}
 			>
-				<div className="w-10 h-10 mb-1 bg-current rounded-full opacity-20"></div>
-				<div className="w-full h-3 bg-current rounded opacity-20"></div>
+				<div className="w-5 h-5 mb-1 bg-current rounded-full opacity-20"></div>
 			</m.div>
 		)
 	}
@@ -109,11 +108,8 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 	if (!site) return null
 
 	return (
-		<m.div
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			transition={{ delay: index * 0.05 }}
-			className={`flex-shrink-0 flex flex-col items-center p-2 cursor-pointer transition-all rounded-lg bg-content shadow-xs hover:scale-105 w-[80px] border border-content ${
+		<div
+			className={`flex-shrink-0 flex flex-row items-center cursor-pointer transition-all hover:scale-105 ${
 				!site.url ? 'opacity-60 cursor-not-allowed' : ''
 			}`}
 			onClick={site.url ? onSiteClick : undefined}
@@ -122,7 +118,7 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 				<img
 					src={site.icon}
 					alt={site.name}
-					className="w-10 h-10 mb-1.5 rounded-lg"
+					className="w-5 h-5 mb-1.5 rounded-lg"
 				/>
 			)}
 			{!site.icon && (
@@ -130,12 +126,6 @@ export const SiteItemComponent = ({ index, site, isLoading = false }: SiteItemPr
 					<span className="text-sm font-medium">{site.name.charAt(0)}</span>
 				</div>
 			)}
-			<span
-				className="w-full text-xs font-medium text-center truncate"
-				title={site.name}
-			>
-				{site.name}
-			</span>
-		</m.div>
+		</div>
 	)
 }
