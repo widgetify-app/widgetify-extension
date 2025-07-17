@@ -1,13 +1,12 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": false,
-		"ignore": []
+		"ignoreUnknown": false
 	},
 	"formatter": {
 		"enabled": true,
@@ -18,9 +17,6 @@
 		"attributePosition": "auto",
 		"formatWithErrors": false
 	},
-	"organizeImports": {
-		"enabled": true
-	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -30,14 +26,14 @@
 				"useButtonType": "off",
 				"useKeyWithClickEvents": "off",
 				"noSvgWithoutTitle": "off",
-				"noLabelWithoutControl": "off"
+				"noLabelWithoutControl": "off",
+				"noStaticElementInteractions": "off"
 			},
 			"style": {
 				"useSelfClosingElements": "off",
 				"noParameterAssign": "off",
 				"useConst": "off",
-				"useTemplate": "off",
-				"noVar": "error"
+				"useTemplate": "off"
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
@@ -71,7 +67,7 @@
 	},
 	"overrides": [
 		{
-			"include": ["*.tsx", "*.jsx"],
+			"includes": ["*.tsx", "*.jsx"],
 			"javascript": {
 				"formatter": {
 					"jsxQuoteStyle": "double",
@@ -80,7 +76,7 @@
 			}
 		},
 		{
-			"include": ["package.json", "tsconfig.json"],
+			"includes": ["package.json", "tsconfig.json"],
 			"json": {
 				"formatter": {
 					"indentStyle": "space",
