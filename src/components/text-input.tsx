@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, forwardRef } from 'react'
 
 enum TextInputSize {
 	XS = 'xs',
@@ -19,31 +19,32 @@ interface TextInputProps {
 	type?: string
 	direction?: 'rtl' | 'ltr' | ''
 	className?: string
-	ref?: React.RefObject<HTMLInputElement | null>
 	debounce?: boolean
 	debounceTime?: number
 	maxLength?: number
 	size?: TextInputSize
 }
 
-export function TextInput({
-	onChange,
-	value,
-	placeholder,
-	onFocus,
-	onKeyDown,
-	disabled = false,
-	name,
-	id,
-	type = 'text',
-	direction = '',
-	className = '',
-	ref,
-	debounce = false,
-	debounceTime = 150,
-	maxLength = 1000,
-	size = TextInputSize.MD,
-}: TextInputProps) {
+export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInput(
+	{
+		onChange,
+		value,
+		placeholder,
+		onFocus,
+		onKeyDown,
+		disabled = false,
+		name,
+		id,
+		type = 'text',
+		direction = '',
+		className = '',
+		debounce = false,
+		debounceTime = 150,
+		maxLength = 1000,
+		size = TextInputSize.MD,
+	},
+	ref
+) {
 	const sizes: Record<TextInputSize, string> = {
 		[TextInputSize.XS]: 'input-xs',
 		[TextInputSize.SM]: 'input-sm',
@@ -101,4 +102,4 @@ export function TextInput({
 			autoComplete="off"
 		/>
 	)
-}
+})

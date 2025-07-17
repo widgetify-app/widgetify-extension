@@ -2,6 +2,7 @@ import { addOpacityToColor } from '@/common/color'
 import Tooltip from '@/components/toolTip'
 import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
+import { LuFolderLock } from 'react-icons/lu'
 import { SlOptions } from 'react-icons/sl'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
@@ -37,7 +38,11 @@ export function FolderBookmarkItem({
 	const displayIcon =
 		bookmark.customImage ||
 		(isHovered ? (
-			<FaFolderOpen className="w-6 h-6 text-blue-400" />
+			bookmark.password ? (
+				<LuFolderLock className="w-6 h-6 text-blue-400" />
+			) : (
+				<FaFolderOpen className="w-6 h-6 text-blue-400" />
+			)
 		) : (
 			<FaFolder className="w-6 h-6 text-blue-400" />
 		))
@@ -58,14 +63,18 @@ export function FolderBookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
+			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-16 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-16 md:h-[5.5rem] shadow-sm ${
+						!bookmark.customBackground
+							? getFolderStyle()
+							: 'border hover:border-blue-400/40'
+					} transition-all ease-in-out duration-300`}
 				>
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-xl">
