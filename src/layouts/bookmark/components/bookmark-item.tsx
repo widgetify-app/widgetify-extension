@@ -1,19 +1,17 @@
+import { SlOptions } from 'react-icons/sl'
 import { addOpacityToColor } from '@/common/color'
 import Tooltip from '@/components/toolTip'
-import { SlOptions } from 'react-icons/sl'
 import type { Bookmark } from '../types/bookmark.types'
-import { EmptyBookmarkSlot } from './bookmark-emptySlot'
-import { FolderBookmarkItem } from './bookmark-folder'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
+import { EmptyBookmarkSlot } from './bookmark-emptySlot'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark | null
 	theme?: string
 	canAdd?: boolean
 	onClick: (e?: React.MouseEvent<any>) => void
-	onMouseDown?: (e?: React.MouseEvent<any>) => void
 	draggable?: boolean
 	isDragging?: boolean
 	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
@@ -26,7 +24,6 @@ interface BookmarkItemProps {
 export function BookmarkItem({
 	bookmark,
 	canAdd = true,
-	onMouseDown,
 	onClick,
 	draggable = false,
 	isDragging = false,
@@ -42,22 +39,6 @@ export function BookmarkItem({
 
 	const getBookmarkStyle = () => {
 		return 'bg-widget hover:bg-base-300 text-content backdrop-blur-sm'
-	}
-
-	if (bookmark.type === 'FOLDER') {
-		return (
-			<FolderBookmarkItem
-				bookmark={bookmark}
-				onClick={onClick}
-				draggable={draggable}
-				isDragging={isDragging}
-				onDragStart={onDragStart}
-				onDragOver={onDragOver}
-				onDragEnd={onDragEnd}
-				onDrop={onDrop}
-				onMenuClick={onMenuClick}
-			/>
-		)
 	}
 
 	const customStyles = bookmark.customBackground
@@ -76,9 +57,8 @@ export function BookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
+			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
-					onMouseDown={onMouseDown}
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}

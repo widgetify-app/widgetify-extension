@@ -1,8 +1,8 @@
-import { addOpacityToColor } from '@/common/color'
-import Tooltip from '@/components/toolTip'
 import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
 import { SlOptions } from 'react-icons/sl'
+import { addOpacityToColor } from '@/common/color'
+import Tooltip from '@/components/toolTip'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
@@ -58,7 +58,7 @@ export function FolderBookmarkItem({
 			onDrop={onDrop}
 			className={`relative ${isDragging ? 'opacity-50' : ''}`}
 		>
-			<Tooltip content={bookmark.title} className='w-full lg:min-w-[5.4rem]'>
+			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
