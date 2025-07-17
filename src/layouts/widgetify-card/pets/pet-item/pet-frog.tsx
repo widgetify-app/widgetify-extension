@@ -15,7 +15,7 @@ import {
 } from '../core/pet-types'
 import { PetTypes, usePetContext } from '../pet.context'
 
-export const frogComponent = () => {
+export const FrogComponent = () => {
 	const {
 		getCurrentPetName,
 		isPetHungry,
