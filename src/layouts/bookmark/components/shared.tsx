@@ -16,6 +16,7 @@ export interface BookmarkFormData {
 	customTextColor: string
 	sticker: string
 	touched?: boolean
+	password?: string
 }
 
 export function IconSourceSelector({

@@ -35,6 +35,7 @@ export function EditBookmarkModal({
 		customTextColor: '',
 		sticker: '',
 		touched: false,
+		password: '',
 	})
 
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
@@ -64,6 +65,7 @@ export function EditBookmarkModal({
 				customTextColor: bookmark.customTextColor || '',
 				sticker: bookmark.sticker || '',
 				touched: false,
+				password: bookmark.password,
 			})
 
 			setIconSource(bookmark.customImage ? 'upload' : 'auto')
@@ -101,6 +103,7 @@ export function EditBookmarkModal({
 				customBackground: formData.customBackground || undefined,
 				customTextColor: formData.customTextColor || undefined,
 				sticker: formData.sticker || undefined,
+				password: formData.password || undefined,
 			}
 
 			if (type === 'BOOKMARK') {
@@ -189,6 +192,21 @@ export function EditBookmarkModal({
 							'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
 						}
 					/>
+
+					{type === 'FOLDER' && (
+						<div className="relative h-[50px]">
+							<TextInput
+								type="password"
+								name="password"
+								placeholder="رمز عبور (اختیاری)"
+								value={formData.password ?? ''}
+								onChange={(v) => updateFormData('password', v)}
+								className={
+									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+								}
+							/>
+						</div>
+					)}
 
 					<div className="relative h-[50px]">
 						{type === 'BOOKMARK' && (
