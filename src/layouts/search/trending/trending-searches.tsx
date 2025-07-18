@@ -90,7 +90,9 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 						<SectionPanel
 							title="ویجی‌باکس"
 							size="xs"
-							icon={<FaParachuteBox className="w-3 h-3 opacity-50" />}
+							icon={
+								<FaParachuteBox className="w-3 h-3 opacity-50 !p-0 !m-0" />
+							}
 						>
 							<RecommendedSites
 								recommendedSites={recommendedSites}

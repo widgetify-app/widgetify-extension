@@ -1,9 +1,10 @@
-import { useBookmarkStore } from '@/context/bookmark.context'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
+import { useBookmarkStore } from '@/context/bookmark.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { FolderBookmarkItem } from './components/bookmark-folder'
 import { BookmarkItem } from './components/bookmark-item'
 import { FolderPath } from './components/folder-path'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
@@ -316,24 +317,40 @@ export function BookmarksComponent() {
 							key={i}
 							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-full' : 'rounded-full'}`}
 						>
-							<BookmarkItem
-								bookmark={bookmark}
-								onClick={(e) => {
-									if (e?.button === 0) handleBookmarkClick(bookmark, e)
-								}}
-								canAdd={true}
-								draggable={isManageable(bookmark)}
-								isDragging={draggedBookmarkId === bookmark.id}
-								onDragStart={(e) => handleDragStart(e, bookmark.id)}
-								onDragOver={(e) => handleDragOver(e, i)}
-								onMenuClick={
-									isManageable(bookmark)
-										? (e) => handleMenuClick(e, bookmark)
-										: undefined
-								}
-								onDragEnd={handleDragEnd}
-								onDrop={(e) => handleDrop(e, i)}
-							/>
+							{bookmark.type === 'FOLDER' ? (
+								<FolderBookmarkItem
+									bookmark={bookmark}
+									onClick={(e) => handleBookmarkClick(bookmark, e)}
+									draggable={isManageable(bookmark)}
+									isDragging={draggedBookmarkId === bookmark.id}
+									onDragStart={(e) => handleDragStart(e, bookmark.id)}
+									onDragOver={(e) => handleDragOver(e, i)}
+									onMenuClick={
+										isManageable(bookmark)
+											? (e) => handleMenuClick(e, bookmark)
+											: undefined
+									}
+									onDragEnd={handleDragEnd}
+									onDrop={(e) => handleDrop(e, i)}
+								/>
+							) : (
+								<BookmarkItem
+									bookmark={bookmark}
+									onClick={(e) => handleBookmarkClick(bookmark, e)}
+									canAdd={true}
+									draggable={isManageable(bookmark)}
+									isDragging={draggedBookmarkId === bookmark.id}
+									onDragStart={(e) => handleDragStart(e, bookmark.id)}
+									onDragOver={(e) => handleDragOver(e, i)}
+									onMenuClick={
+										isManageable(bookmark)
+											? (e) => handleMenuClick(e, bookmark)
+											: undefined
+									}
+									onDragEnd={handleDragEnd}
+									onDrop={(e) => handleDrop(e, i)}
+								/>
+							)}
 						</div>
 					) : (
 						<BookmarkItem
@@ -356,7 +373,7 @@ export function BookmarksComponent() {
 					/>
 				)}
 			</div>
-			<div className="mt-2 flex justify-center w-full">
+			<div className="flex justify-center w-full mt-2">
 				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
 			<AddBookmarkModal
