@@ -164,44 +164,75 @@ export function BookmarksComponent() {
 
 		if (!draggedBookmarkId) return
 
+		const allBookmarks = [...bookmarks]
 		const currentItems = getCurrentFolderItems(currentFolderId)
-		const sourceIndex = currentItems.findIndex(
-			(item) => item.id === draggedBookmarkId
-		)
+		const sourceBookmark = allBookmarks.find((b) => b.id === draggedBookmarkId)
+		const targetBookmark = currentItems[targetIndex]
 
-		if (sourceIndex === -1 || sourceIndex === targetIndex) {
+		if (!sourceBookmark) {
 			setDraggedBookmarkId(null)
 			setDragOverIndex(null)
 			return
 		}
 
-		const allBookmarks = [...bookmarks]
+		if (targetBookmark && targetBookmark.type === 'FOLDER') {
+			if (sourceBookmark.parentId !== targetBookmark.id) {
+				const updatedSourceIndex = allBookmarks.findIndex(
+					(b) => b.id === draggedBookmarkId
+				)
 
-		const sourceBookmark = currentItems[sourceIndex]
-		const actualSourceIndex = allBookmarks.findIndex(
-			(b) => b.id === sourceBookmark.id
-		)
-		const targetBookmark = currentItems[targetIndex]
-		const actualTargetIndex = allBookmarks.findIndex(
-			(b) => b.id === targetBookmark.id
-		)
+				if (updatedSourceIndex !== -1) {
+					const updatedBookmark = {
+						...allBookmarks[updatedSourceIndex],
+						parentId: targetBookmark.id,
+						order: 0,
+					}
 
-		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
-			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
-
-			allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
-
-			const updatedBookmarks = allBookmarks.map((bookmark) => {
-				if (bookmark.parentId === currentFolderId) {
-					const newIndex = allBookmarks.findIndex((b) => b.id === bookmark.id)
-					return { ...bookmark, order: newIndex }
+					allBookmarks[updatedSourceIndex] = updatedBookmark
+					setBookmarks(allBookmarks)
+					debouncedSync()
 				}
-				return bookmark
-			})
+			}
+		} else {
+			const sourceIndex = currentItems.findIndex(
+				(item) => item.id === draggedBookmarkId
+			)
 
-			setBookmarks(updatedBookmarks)
+			if (sourceIndex === -1 || sourceIndex === targetIndex) {
+				setDraggedBookmarkId(null)
+				setDragOverIndex(null)
+				return
+			}
 
-			debouncedSync()
+			const sourceBookmarkForReorder = currentItems[sourceIndex]
+			const actualSourceIndex = allBookmarks.findIndex(
+				(b) => b.id === sourceBookmarkForReorder.id
+			)
+			const targetBookmarkForReorder =
+				targetIndex < currentItems.length ? currentItems[targetIndex] : null
+			if (actualSourceIndex !== -1 && targetBookmarkForReorder) {
+				const actualTargetIndex = allBookmarks.findIndex(
+					(b) => b.id === targetBookmarkForReorder.id
+				)
+
+				if (actualTargetIndex !== -1) {
+					const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
+					allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
+
+					const updatedBookmarks = allBookmarks.map((bookmark) => {
+						if (bookmark.parentId === currentFolderId) {
+							const newIndex = allBookmarks.findIndex(
+								(b) => b.id === bookmark.id
+							)
+							return { ...bookmark, order: newIndex }
+						}
+						return bookmark
+					})
+
+					setBookmarks(updatedBookmarks)
+					debouncedSync()
+				}
+			}
 		}
 
 		setDraggedBookmarkId(null)
