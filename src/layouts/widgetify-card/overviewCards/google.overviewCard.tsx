@@ -1,12 +1,15 @@
+import { motion } from 'framer-motion'
+import { FiCalendar } from 'react-icons/fi'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	filterGoogleEventsByDate,
 	getCurrentDate,
 } from '@/layouts/widgets/calendar/utils'
-import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import { motion } from 'framer-motion'
-import { FiCalendar } from 'react-icons/fi'
+import {
+	type GoogleCalendarEvent,
+	useGetGoogleCalendarEvents,
+} from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 
 export function GoogleOverviewCard() {
 	const { user, isAuthenticated } = useAuth()
@@ -30,7 +33,9 @@ export function GoogleOverviewCard() {
 
 	return (
 		<motion.div
-			className={'p-2 rounded-lg bg-content'}
+			className={
+				'p-2 rounded-lg bg-base-300/70 hover:bg-base-300 border-base-300/70 '
+			}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.5 }}

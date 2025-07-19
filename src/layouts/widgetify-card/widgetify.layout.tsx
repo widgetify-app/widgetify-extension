@@ -1,7 +1,9 @@
-import { useAuth } from '@/context/auth.context'
 import { useEffect, useState } from 'react'
+import { useAuth } from '@/context/auth.context'
 import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
+import { GoogleOverviewCard } from './overviewCards/google.overviewCard'
+import { TodoOverviewCard } from './overviewCards/todo-overviewCard'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 
@@ -39,7 +41,9 @@ export const WidgetifyLayout = () => {
 					</div>
 
 					{/* Daily Summary Content */}
-					<div className="flex-1 w-full pt-1.5 overflow-y-auto small-scrollbar">
+					<div className="flex flex-col flex-1 w-full gap-1 overflow-y-auto small-scrollbar">
+						<TodoOverviewCard />
+						<GoogleOverviewCard />
 						<NotificationCenter />
 					</div>
 				</div>

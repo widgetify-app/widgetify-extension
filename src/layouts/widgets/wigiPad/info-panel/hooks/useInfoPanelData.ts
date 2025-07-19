@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useGetWigiPadData } from '@/services/hooks/extension/getWigiPadData.hook'
-import { useEffect, useState } from 'react'
 
 export interface InfoPanelData {
 	birthdays: Array<{
@@ -37,7 +37,7 @@ export const useInfoPanelData = (): InfoPanelData => {
 
 	useEffect(() => {
 		if (wigiPadData) {
-			const { birthdays, notifications, emailMessages } = wigiPadData
+			const { birthdays, notifications } = wigiPadData
 
 			const transformedBirthdays = birthdays.map((birthday, index) => ({
 				id: `birthday-${index}`,
@@ -52,20 +52,10 @@ export const useInfoPanelData = (): InfoPanelData => {
 					: null,
 			}))
 
-			const transformedEmailMessages =
-				emailMessages?.map((email) => ({
-					id: email.id,
-					threadId: email.threadId,
-					subject: email.subject,
-					sender: email.sender,
-					snippet: email.snippet,
-				})) || []
-
 			setData((prev) => ({
 				...prev,
 				birthdays: transformedBirthdays,
 				notifications: transformedNotifications,
-				emailMessages: transformedEmailMessages,
 			}))
 		}
 	}, [wigiPadData])

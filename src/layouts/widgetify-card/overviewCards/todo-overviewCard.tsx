@@ -1,8 +1,8 @@
+import { motion } from 'framer-motion'
+import { FiClipboard } from 'react-icons/fi'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr, getCurrentDate } from '@/layouts/widgets/calendar/utils'
-import { motion } from 'framer-motion'
-import { FiClipboard } from 'react-icons/fi'
 
 export function TodoOverviewCard() {
 	const { selected_timezone: timezone } = useGeneralSetting()
@@ -35,7 +35,9 @@ export function TodoOverviewCard() {
 
 	return (
 		<motion.div
-			className={'p-1 rounded-lg bg-content'}
+			className={
+				'p-1 rounded-lg bg-base-300/70 hover:bg-base-300 border border-base-300/70 active:scale-98'
+			}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.4 }}
