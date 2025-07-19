@@ -1,18 +1,14 @@
-interface EmailMessageItemProps {
-	title: string
-	subTitle: string
-	description?: string
-	link?: string
-	icon?: string
-}
+import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData.hook'
 
-export function NotificationItem({
+interface NotificationItemProps extends NotificationItem {}
+
+export function NotificationCardItem({
 	title,
 	subTitle,
 	description,
 	link,
 	icon,
-}: EmailMessageItemProps) {
+}: NotificationItemProps) {
 	const handleClick = () => {
 		if (link) {
 			window.open(link, '_blank')
@@ -22,7 +18,7 @@ export function NotificationItem({
 	return (
 		<div
 			onClick={handleClick}
-			className="flex gap-2 p-2 transition-all duration-300 border rounded-lg cursor-pointer bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98"
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-lg ${link && 'cursor-pointer'} bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98`}
 		>
 			{icon && (
 				<div className="pt-0.5">
