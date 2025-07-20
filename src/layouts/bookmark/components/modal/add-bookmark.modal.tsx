@@ -182,11 +182,11 @@ export function AddBookmarkModal({
 				className="flex flex-col justify-between gap-2 overflow-y-auto h-[24rem]"
 			>
 				<div className="mt-1 overflow-hidden">
-					<div className="h-8 flex gap-2 mb-2">
+					<div className="flex h-8 gap-2 mb-2">
 						<TypeSelector type={type} setType={setType} />
 					</div>
 
-					<div className='py-2 h-[calc(100%-4rem)] overflow-auto'>
+					<div className="py-2 h-[calc(100%-4rem)] overflow-auto">
 						{' '}
 						<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
 							{type === 'BOOKMARK' && (
@@ -256,7 +256,7 @@ export function AddBookmarkModal({
 					/>
 				</div>
 
-				<div className="h-10 flex justify-between gap-x-4">
+				<div className="flex justify-between h-10 gap-x-4">
 					<ShowAdvancedButton
 						showAdvanced={showAdvanced}
 						setShowAdvanced={setShowAdvanced}
