@@ -1,23 +1,12 @@
-import React, { Suspense } from 'react'
+import type React from 'react'
+import { Suspense } from 'react'
 import { PetHud } from './components/pet-hud'
 import { CatComponent } from './pet-item/pet-cat'
-import { frogComponent } from './pet-item/pet-frog'
+import { ChickenComponent } from './pet-item/pet-chicken'
+import { CrabComponent } from './pet-item/pet-crab'
+import { DogComponent } from './pet-item/pet-dog'
+import { FrogComponent } from './pet-item/pet-frog'
 import { PetTypes, usePetContext } from './pet.context'
-
-// Lazy load pet components
-const DogComponent = React.lazy(() =>
-	import('./pet-item/pet-dog').then((module) => ({ default: module.DogComponent }))
-)
-const ChickenComponent = React.lazy(() =>
-	import('./pet-item/pet-chicken').then((module) => ({
-		default: module.ChickenComponent,
-	}))
-)
-const CrabComponent = React.lazy(() =>
-	import('./pet-item/pet-crab').then((module) => ({
-		default: module.CrabComponent,
-	}))
-)
 
 export const PetFactory: React.FC = () => {
 	const { petType, getPetHungryState } = usePetContext()
@@ -36,7 +25,7 @@ export const PetFactory: React.FC = () => {
 			PetComponent = CrabComponent
 			break
 		case PetTypes.FROG:
-			PetComponent = frogComponent
+			PetComponent = FrogComponent
 			break
 		case PetTypes.CAT:
 			PetComponent = CatComponent

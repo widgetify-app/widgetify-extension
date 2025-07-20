@@ -1,9 +1,10 @@
-import { useBookmarkStore } from '@/context/bookmark.context'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
+import { useBookmarkStore } from '@/context/bookmark.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { FolderBookmarkItem } from './components/bookmark-folder'
 import { BookmarkItem } from './components/bookmark-item'
 import { FolderPath } from './components/folder-path'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
@@ -176,44 +177,75 @@ export function BookmarksComponent() {
 
 		if (!draggedBookmarkId) return
 
+		const allBookmarks = [...bookmarks]
 		const currentItems = getCurrentFolderItems(currentFolderId)
-		const sourceIndex = currentItems.findIndex(
-			(item) => item.id === draggedBookmarkId
-		)
+		const sourceBookmark = allBookmarks.find((b) => b.id === draggedBookmarkId)
+		const targetBookmark = currentItems[targetIndex]
 
-		if (sourceIndex === -1 || sourceIndex === targetIndex) {
+		if (!sourceBookmark) {
 			setDraggedBookmarkId(null)
 			setDragOverIndex(null)
 			return
 		}
 
-		const allBookmarks = [...bookmarks]
+		if (targetBookmark && targetBookmark.type === 'FOLDER') {
+			if (sourceBookmark.parentId !== targetBookmark.id) {
+				const updatedSourceIndex = allBookmarks.findIndex(
+					(b) => b.id === draggedBookmarkId
+				)
 
-		const sourceBookmark = currentItems[sourceIndex]
-		const actualSourceIndex = allBookmarks.findIndex(
-			(b) => b.id === sourceBookmark.id
-		)
-		const targetBookmark = currentItems[targetIndex]
-		const actualTargetIndex = allBookmarks.findIndex(
-			(b) => b.id === targetBookmark.id
-		)
+				if (updatedSourceIndex !== -1) {
+					const updatedBookmark = {
+						...allBookmarks[updatedSourceIndex],
+						parentId: targetBookmark.id,
+						order: 0,
+					}
 
-		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
-			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
-
-			allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
-
-			const updatedBookmarks = allBookmarks.map((bookmark) => {
-				if (bookmark.parentId === currentFolderId) {
-					const newIndex = allBookmarks.findIndex((b) => b.id === bookmark.id)
-					return { ...bookmark, order: newIndex }
+					allBookmarks[updatedSourceIndex] = updatedBookmark
+					setBookmarks(allBookmarks)
+					debouncedSync()
 				}
-				return bookmark
-			})
+			}
+		} else {
+			const sourceIndex = currentItems.findIndex(
+				(item) => item.id === draggedBookmarkId
+			)
 
-			setBookmarks(updatedBookmarks)
+			if (sourceIndex === -1 || sourceIndex === targetIndex) {
+				setDraggedBookmarkId(null)
+				setDragOverIndex(null)
+				return
+			}
 
-			debouncedSync()
+			const sourceBookmarkForReorder = currentItems[sourceIndex]
+			const actualSourceIndex = allBookmarks.findIndex(
+				(b) => b.id === sourceBookmarkForReorder.id
+			)
+			const targetBookmarkForReorder =
+				targetIndex < currentItems.length ? currentItems[targetIndex] : null
+			if (actualSourceIndex !== -1 && targetBookmarkForReorder) {
+				const actualTargetIndex = allBookmarks.findIndex(
+					(b) => b.id === targetBookmarkForReorder.id
+				)
+
+				if (actualTargetIndex !== -1) {
+					const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
+					allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
+
+					const updatedBookmarks = allBookmarks.map((bookmark) => {
+						if (bookmark.parentId === currentFolderId) {
+							const newIndex = allBookmarks.findIndex(
+								(b) => b.id === bookmark.id
+							)
+							return { ...bookmark, order: newIndex }
+						}
+						return bookmark
+					})
+
+					setBookmarks(updatedBookmarks)
+					debouncedSync()
+				}
+			}
 		}
 
 		setDraggedBookmarkId(null)
@@ -302,25 +334,40 @@ export function BookmarksComponent() {
 									: 'rounded-full'
 							}`}
 						>
-							<BookmarkItem
-								bookmark={bookmark}
-								onMouseDown={(e) => handleBookmarkClick(bookmark, e)}
-								onClick={(e) => {
-									if (e?.button === 0) handleBookmarkClick(bookmark, e)
-								}}
-								canAdd={true}
-								draggable={isManageable(bookmark)}
-								isDragging={draggedBookmarkId === bookmark.id}
-								onDragStart={(e) => handleDragStart(e, bookmark.id)}
-								onDragOver={(e) => handleDragOver(e, i)}
-								onMenuClick={
-									isManageable(bookmark)
-										? (e) => handleMenuClick(e, bookmark)
-										: undefined
-								}
-								onDragEnd={handleDragEnd}
-								onDrop={(e) => handleDrop(e, i)}
-							/>
+							{bookmark.type === 'FOLDER' ? (
+								<FolderBookmarkItem
+									bookmark={bookmark}
+									onClick={(e) => handleBookmarkClick(bookmark, e)}
+									draggable={isManageable(bookmark)}
+									isDragging={draggedBookmarkId === bookmark.id}
+									onDragStart={(e) => handleDragStart(e, bookmark.id)}
+									onDragOver={(e) => handleDragOver(e, i)}
+									onMenuClick={
+										isManageable(bookmark)
+											? (e) => handleMenuClick(e, bookmark)
+											: undefined
+									}
+									onDragEnd={handleDragEnd}
+									onDrop={(e) => handleDrop(e, i)}
+								/>
+							) : (
+								<BookmarkItem
+									bookmark={bookmark}
+									onClick={(e) => handleBookmarkClick(bookmark, e)}
+									canAdd={true}
+									draggable={isManageable(bookmark)}
+									isDragging={draggedBookmarkId === bookmark.id}
+									onDragStart={(e) => handleDragStart(e, bookmark.id)}
+									onDragOver={(e) => handleDragOver(e, i)}
+									onMenuClick={
+										isManageable(bookmark)
+											? (e) => handleMenuClick(e, bookmark)
+											: undefined
+									}
+									onDragEnd={handleDragEnd}
+									onDrop={(e) => handleDrop(e, i)}
+								/>
+							)}
 						</div>
 					) : (
 						<BookmarkItem
@@ -343,7 +390,7 @@ export function BookmarksComponent() {
 					/>
 				)}
 			</div>
-			<div className="mt-2 flex justify-center w-full">
+			<div className="flex justify-center w-full mt-2">
 				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
 			<FolderPasswordModal

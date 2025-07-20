@@ -29,10 +29,9 @@ export function SearchLayout() {
 	}
 
 	const handleSelectTrend = (trend: string) => {
-		setSearchQuery(trend)
 		setIsInputFocused(false)
 		// Optional: auto-submit the search
-		// Browser.search.query({ text: trend })
+		browser.search.query({ text: trend })
 	}
 
 	useEffect(() => {
@@ -67,7 +66,7 @@ export function SearchLayout() {
 									'h-9 w-9 shrink-0 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 hover:bg-base-300 cursor-pointer transition-all duration-300'
 								}
 								onClick={() => {
-									if(!searchQuery){
+									if (!searchQuery) {
 										inputRef.current?.focus()
 									}
 								}}
@@ -87,15 +86,13 @@ export function SearchLayout() {
 								placeholder="جستجو ..."
 								autoComplete="off"
 							/>
-								<button
-									type="button"
-									onClick={handleClearSearch}
-									className={
-										`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? "opacity-70 hover:opacity-100 hover:bg-base-300" : "opacity-0 pointer-events-none"}`
-									}
-								>
-									<MdOutlineClear size={20} className='opacity-50' />
-								</button>
+							<button
+								type="button"
+								onClick={handleClearSearch}
+								className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-base-300' : 'opacity-0 pointer-events-none'}`}
+							>
+								<MdOutlineClear size={20} className="opacity-50" />
+							</button>
 							<div
 								className={
 									'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-4xl border-content'

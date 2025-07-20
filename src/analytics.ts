@@ -45,7 +45,7 @@ const Analytics = (() => {
 		eventParams: Record<string, any> = {}
 	): Promise<void> {
 		const setting = await getFromStorage('generalSettings')
-		if (setting?.disable_analytics) {
+		if (setting?.disable_analytics && eventName !== 'Installed') {
 			console.log('Analytics disabled, skipping event:', eventName)
 			return
 		}

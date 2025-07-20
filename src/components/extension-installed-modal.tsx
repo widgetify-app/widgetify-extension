@@ -1,6 +1,8 @@
-import keepItImage from '@/assets/keep-it.png'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
+import keepItImage from '@/assets/keep-it.png'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { ItemSelector } from './item-selector'
 import Modal from './modal'
 
 interface ExtensionInstalledModalProps {
@@ -32,7 +34,6 @@ export function ExtensionInstalledModal({
 	}
 
 	const StepIndicator = () => (
-		// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
 		<div
 			className="flex items-center justify-center gap-3"
 			role="progressbar"
@@ -145,6 +146,28 @@ interface StepTwoProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
+	const [consentChoice, setConsentChoice] = useState<boolean | null>(null)
+
+	const saveConsent = async (consent: boolean) => {
+		try {
+			const currentSettings = (await getFromStorage('generalSettings')) || {}
+			const updatedSettings = {
+				...currentSettings,
+				analyticsEnabled: consent,
+			}
+			await setToStorage('generalSettings', updatedSettings)
+			setCurrentStep(3)
+		} catch (error) {
+			console.error('Error saving consent:', error)
+			setCurrentStep(3)
+		}
+	}
+
+	const handleConsentSelection = (consent: boolean) => {
+		setConsentChoice(consent)
+		setTimeout(() => saveConsent(consent), 300)
+	}
+
 	return (
 		<>
 			<m.div
@@ -153,33 +176,36 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 				animate={{ y: 0 }}
 				transition={{ duration: 0.5, delay: 0.2 }}
 			>
-				<h3 className={'mb-3 text-2xl font-bold text-content'}>درباره ما </h3>
+				<h3 className={'mb-3 text-2xl font-bold text-content'}>
+					حریم خصوصی و امنیت
+				</h3>
 				<p className={'leading-relaxed text-muted'}>
-					ما متن باز هستیم! ویجتی‌فای یک پروژه متن‌باز است که با عشق توسعه داده
-					می‌شود.
+					🔒آمار استفاده از افزونه برای بهبود عملکرد جمع‌آوری می‌شود. هیچ اطلاعات
+					شخصی ارسال نخواهد شد. این گزینه در تنظیمات قابل تغییر است.
 				</p>
 			</m.div>
 
 			<m.div
-				className={
-					'p-3 mb-6 text-gray-200 rounded-lg border border-content bg-content'
-				}
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 0.5, delay: 0.4 }}
+				className="w-full"
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.4 }}
 			>
-				<p className="font-medium text-muted">
-					🔒 امنیت و حریم خصوصی کاربران برای ما در اولویت است و ما متعهد به
-					حفاظت از اطلاعات شما هستیم.
-				</p>
+				<div className="flex flex-row gap-2">
+					<ItemSelector
+						isActive={consentChoice === true}
+						onClick={() => handleConsentSelection(true)}
+						label="🤝 فعال می‌کنم"
+						className="text-right"
+					/>
+					<ItemSelector
+						isActive={consentChoice === false}
+						onClick={() => handleConsentSelection(false)}
+						label="نه، موافق نیستم"
+						className="text-right"
+					/>
+				</div>
 			</m.div>
-
-			<button
-				onClick={() => setCurrentStep(3)}
-				className="px-8 py-3 font-light text-white cursor-pointer transition-all duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
-			>
-				ادامه
-			</button>
 		</>
 	)
 }

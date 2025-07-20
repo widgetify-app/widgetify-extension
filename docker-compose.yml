@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  build-extension:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - VITE_API=https://api.widgetify.ir
+    volumes:
+      - ./local_output:/app/.output
+    command: /bin/bash -c "NODE_ENV=production npm run build:firefox && NODE_ENV=production npm run zip:firefox:clean"

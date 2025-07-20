@@ -1,5 +1,5 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { getMainClient } from '@/services/api'
 
 export interface WigiPadBirthday {
 	name: string
@@ -31,11 +31,18 @@ export interface UpcomingCalendarEvent {
 	platformLink: string | null
 }
 
+export interface NotificationItem {
+	title: string
+	subTitle: string
+	description?: string
+	link?: string
+	icon?: string
+}
 export interface WigiPadDataResponse {
 	birthdays: WigiPadBirthday[]
 	notifications: WigiPadNotification[]
-	emailMessages: WigiPadEmailMessage[]
 	upcomingCalendarEvents: UpcomingCalendarEvent[]
+	widgetifyCardNotifications: NotificationItem[]
 }
 
 async function fetchWigiPadData(timezone: string): Promise<WigiPadDataResponse> {

@@ -1,3 +1,19 @@
+/**
+ * Retrieves a favicon URL for a given website URL using Google's favicon service.
+ *
+ * This function takes a URL string, normalizes it by adding the HTTPS protocol if missing,
+ * and returns a Google favicon service URL that provides a 64x64 pixel favicon for the domain.
+ *
+ * @param url - The website URL to get the favicon for. Can be with or without protocol.
+ * @returns A Google favicon service URL string, or an empty string if the input is invalid or processing fails.
+ *
+ * @example
+ * ```typescript
+ * getFaviconFromUrl('github.com') // Returns: 'https://www.google.com/s2/favicons?domain=github.com&sz=64'
+ * getFaviconFromUrl('https://example.com') // Returns: 'https://www.google.com/s2/favicons?domain=example.com&sz=64'
+ * getFaviconFromUrl('') // Returns: ''
+ * ```
+ */
 export const getFaviconFromUrl = (url: string): string => {
 	try {
 		if (!url.trim()) {
