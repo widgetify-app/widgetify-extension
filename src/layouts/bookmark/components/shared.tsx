@@ -1,8 +1,8 @@
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
+import { getFaviconFromUrl } from '@/common/utils/icon'
 import type { BookmarkType } from '../types/bookmark.types'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
@@ -40,13 +40,13 @@ export function IconSourceSelector({
 				onClick={() => setIconSource('auto')}
 				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'auto')}`}
 			>
-				خودکار
+				آیکون خودکار
 			</div>
 			<div
 				onClick={() => setIconSource('upload')}
 				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'upload')}`}
 			>
-				آپلود
+				آپلود آیکون
 			</div>
 		</div>
 	)
@@ -197,7 +197,7 @@ export function useBookmarkIcon() {
 				</div>
 			)
 		}
-
+		if (iconSource === 'auto') return null
 		return (
 			<div
 				className={`relative flex flex-col items-center justify-center w-full h-16 p-2 mx-auto transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
