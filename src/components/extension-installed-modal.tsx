@@ -1,7 +1,7 @@
+import { domAnimation, LazyMotion, m } from 'framer-motion'
+import { useState } from 'react'
 import keepItImage from '@/assets/keep-it.png'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
-import { useState } from 'react'
 import { ItemSelector } from './item-selector'
 import Modal from './modal'
 
@@ -34,7 +34,6 @@ export function ExtensionInstalledModal({
 	}
 
 	const StepIndicator = () => (
-		// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
 		<div
 			className="flex items-center justify-center gap-3"
 			role="progressbar"
@@ -192,11 +191,11 @@ const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.4 }}
 			>
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-row gap-2">
 					<ItemSelector
 						isActive={consentChoice === true}
 						onClick={() => handleConsentSelection(true)}
-						label="بله، فعال می‌کنم"
+						label="🤝 فعال می‌کنم"
 						className="text-right"
 					/>
 					<ItemSelector
