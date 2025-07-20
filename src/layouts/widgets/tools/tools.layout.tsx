@@ -1,19 +1,19 @@
-import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type React from 'react'
+import { useState } from 'react'
 
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import { useState } from 'react'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from './components/tab-navigation'
 import { Events } from './events/event'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
-export type ToolsTabType = 'events' | 'todos' | 'pomodoro' | 'religious-time'
+export type ToolsTabType = 'events' | 'pomodoro' | 'religious-time'
 
 export const ToolsLayout: React.FC<any> = () => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
@@ -40,7 +40,7 @@ export const ToolsLayout: React.FC<any> = () => {
 		async function load() {
 			const tabFromStorage = await getFromStorage('toolsTab')
 			if (!tabFromStorage) {
-				setActiveTab('events')
+				setActiveTab('pomodoro')
 			} else {
 				setActiveTab(tabFromStorage)
 			}
