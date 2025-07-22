@@ -22,8 +22,19 @@ export interface FetchedWeather {
 		}
 		ai: {
 			description: string
-			playlist: string
-			img: string
+			playlist: {
+				description: string
+				external_urls: {
+					spotify: string
+				}
+				images: [
+					{
+						url: string
+					},
+				]
+				name: string
+				primary_color: null
+			}
 		}
 	}
 

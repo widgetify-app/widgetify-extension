@@ -27,7 +27,8 @@
 				"useKeyWithClickEvents": "off",
 				"noSvgWithoutTitle": "off",
 				"noLabelWithoutControl": "off",
-				"noStaticElementInteractions": "off"
+				"noStaticElementInteractions": "off",
+				"useAriaPropsSupportedByRole": "off"
 			},
 			"style": {
 				"useSelfClosingElements": "off",

@@ -1,6 +1,8 @@
+import { BsRobot } from 'react-icons/bs'
+import { FaMusic } from 'react-icons/fa'
+import Tooltip from '@/components/toolTip'
 import { useWeatherStore } from '@/context/weather.context'
 import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
-import { BsRobot } from 'react-icons/bs'
 import { unitsFlag } from '../unitSymbols'
 
 interface CurrentWeatherBoxProps {
@@ -14,7 +16,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 		<section className="col-span-2 duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
 			<header className="p-2.5 bg-base-300/50 space-y-2 rounded-xl">
 				<div className="flex gap-5 px-2">
-					<div className="flex items-center flex-shrink-0">
+					<div className="relative flex items-center flex-shrink-0">
 						<img
 							src={weather.icon.url}
 							alt={
@@ -23,6 +25,21 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							className="w-10 h-10 rounded-full drop-shadow-lg"
 							loading="lazy"
 						/>
+						{weather.ai?.playlist && (
+							<Tooltip
+								content="پلی‌لیست پیشنهادی"
+								className="!p-0 bottom-1 absolute"
+							>
+								<a
+									href={weather.ai?.playlist?.external_urls?.spotify}
+									target="_blank"
+								>
+									<div className="p-1 rounded-full shadow-md cursor-pointer bg-primary/80 animate-pulse hover:animate-none">
+										<FaMusic className="!p-0 text-xs text-content" />
+									</div>
+								</a>
+							</Tooltip>
+						)}
 					</div>
 
 					<div className="flex-1 min-w-0">
@@ -35,17 +52,13 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 							}
 							aria-label={`Temperature: ${Math.round(weather.temperature.temp)} degrees`}
 						>
-							{/* <span>ابری</span> */}
 							{Math.round(weather.temperature.temp)}
 							<span className="mr-1 text-lg font-medium">
 								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 							</span>
 						</div>
 						{selectedCity?.name && (
-							<p
-								className="mt-0.5 text-xs text-muted"
-								title={selectedCity.name}
-							>
+							<p className="mt-0.5 text-xs text-muted">
 								{selectedCity.name}
 							</p>
 						)}
