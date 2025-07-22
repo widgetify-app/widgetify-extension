@@ -56,10 +56,6 @@ const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 		}
 	}, [isOpen])
 
-	const getPopoverStyle = () => {
-		return 'bg-content shadow-lg border border-content'
-	}
-
 	const displayColor = color || '#000000'
 
 	return (
@@ -75,12 +71,12 @@ const PopoverColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 				createPortal(
 					<div
 						ref={popoverRef}
-						className={`fixed flex p-2 rounded-md ${getPopoverStyle()}`}
+						className="fixed flex p-2 border rounded-md shadow-lg bg-content border-content"
 						style={{
 							top: `${position.top}px`,
 							left: `${position.left}px`,
 							width: '200px',
-							zIndex: 50,
+							zIndex: 1000,
 						}}
 					>
 						<RgbaStringColorPicker color={displayColor} onChange={onChange} />
