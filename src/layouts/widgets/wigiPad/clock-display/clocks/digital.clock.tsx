@@ -10,20 +10,9 @@ interface DigitalClockProps {
 
 export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalClockProps) {
 	const textColor = isDayTime ? 'text-content' : 'text-primary'
-
-	const options: Intl.DateTimeFormatOptions = {
-		timeZone: timezone.value,
-		hour12: false,
-		hour: 'numeric',
-		minute: '2-digit',
-		second: '2-digit',
-	}
-
-	let timeString = new Intl.DateTimeFormat('en-US', options).format(time)
-
-	let [notReadyHours, ...rest] = timeString.split(':')
-	const formattedHours = notReadyHours === '24' ? '00' : notReadyHours.padStart(2, '0')
-	let [hours, minutes, seconds] = [formattedHours, ...rest]
+	const hours = (time.getHours()).toString().padStart(2, '0')
+	const minutes = time.getMinutes().toString().padStart(2, '0')
+	const seconds = time.getSeconds().toString().padStart(2, '0')
 
 	return (
 		<div className="relative flex flex-col items-center">
