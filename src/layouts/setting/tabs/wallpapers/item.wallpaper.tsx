@@ -1,6 +1,7 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
 import React, { useEffect, useRef, useState } from 'react'
+import { FaUsers } from 'react-icons/fa'
 import { FiCheck, FiHeart } from 'react-icons/fi'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
 interface WallpaperItemProps {
@@ -42,10 +43,6 @@ export const WallpaperItem = React.memo(
 
 		const getSelectionBadgeStyle = () => {
 			return 'bg-primary text-white shadow-lg'
-		}
-
-		const getInfoLayerStyle = () => {
-			return 'bg-gradient-to-t from-black/70 to-black/0'
 		}
 
 		useEffect(() => {
@@ -113,13 +110,19 @@ export const WallpaperItem = React.memo(
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute inset-x-0 bottom-0 p-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${getInfoLayerStyle()}`}
+							className={`absolute flex justify-between inset-x-0 bottom-0 p-2 transition-opacity duration-300 bg-gradient-to-t from-black/80 to-black/0 items-center`}
 						>
 							{wallpaper.name && (
 								<p className="text-xs font-medium text-white">
 									{wallpaper.name}
 								</p>
 							)}
+							{
+								<div className="text-xs text-center text-content">
+									<FaUsers />
+									<span>{wallpaper.usageCount}</span>
+								</div>
+							}
 						</div>
 
 						{isSelected && (

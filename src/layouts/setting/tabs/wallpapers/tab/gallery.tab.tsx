@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react'
+import { FiFolder } from 'react-icons/fi'
 import { preloadImages } from '@/common/utils/preloadImages'
-import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
-import { useEffect, useState } from 'react'
-import { FiArrowLeft, FiFolder } from 'react-icons/fi'
+import { FolderPath } from '@/layouts/bookmark/components/folder-path'
 import { RetouchFilter } from '../components/retouch-filter.component'
 import { UploadArea } from '../components/upload-area.component'
 import { WallpaperGallery } from '../components/wallpaper-gallery.component'
@@ -21,6 +21,7 @@ export function GalleryTab() {
 		selectedCategoryId,
 		changeCategory,
 		getCategoryWallpapers,
+		getSelectedCategory,
 	} = useWallpapersByCategory()
 
 	const {
@@ -55,6 +56,8 @@ export function GalleryTab() {
 			preloadImages(imageUrls)
 		}
 	}, [allWallpapers])
+
+	const selectedCategory = getSelectedCategory()
 
 	interface FolderProps {
 		id: string
@@ -106,10 +109,17 @@ export function GalleryTab() {
 
 	function BackButton() {
 		return (
-			<Button onClick={() => handleBackToCategories()} size="sm">
-				<FiArrowLeft size={16} />
-				<span>بازگشت به فولدرها</span>
-			</Button>
+			<div className="flex justify-center mt-1">
+				<FolderPath
+					folderPath={[
+						{
+							id: 'subfolder',
+							title: selectedCategory?.name || 'پوشه',
+						},
+					]}
+					onNavigate={() => handleBackToCategories()}
+				/>
+			</div>
 		)
 	}
 
@@ -132,7 +142,6 @@ export function GalleryTab() {
 						</div>
 					) : (
 						<div key="wallpaper-view">
-							<BackButton />
 							<WallpaperGallery
 								isLoading={isLoading}
 								error={error}
@@ -140,6 +149,7 @@ export function GalleryTab() {
 								selectedBackground={selectedBackground}
 								onSelectBackground={handleSelectBackground}
 							/>
+							<BackButton />
 						</div>
 					)}
 				</div>
