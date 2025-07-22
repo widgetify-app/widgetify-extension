@@ -8,7 +8,11 @@ import { TabNavigation } from './components/tab-navigation'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
-export type ToolsTabType = 'pomodoro' | 'religious-time'
+export enum ToolsTab {
+	pomodoro = 'pomodoro',
+	'religious-time' = 'religious-time',
+}
+export type ToolsTabType = keyof typeof ToolsTab
 
 export const ToolsLayout: React.FC<any> = () => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
@@ -26,7 +30,9 @@ export const ToolsLayout: React.FC<any> = () => {
 			if (!tabFromStorage) {
 				setActiveTab('pomodoro')
 			} else {
-				setActiveTab(tabFromStorage)
+				ToolsTab[tabFromStorage]
+					? setActiveTab(tabFromStorage)
+					: setActiveTab('pomodoro')
 			}
 		}
 
