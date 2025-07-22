@@ -10,7 +10,7 @@ interface DigitalClockProps {
 
 export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalClockProps) {
 	const textColor = isDayTime ? 'text-content' : 'text-primary'
-	const hours = (time.getHours() % 12).toString().padStart(2, '0')
+	const hours = (time.getHours()).toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
 	const seconds = time.getSeconds().toString().padStart(2, '0')
 
