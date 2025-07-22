@@ -8,6 +8,7 @@ export interface Wallpaper {
 	source?: string
 	gradient?: GradientColors
 	categoryId?: string
+	usageCount?: number
 }
 
 export interface GradientColors {

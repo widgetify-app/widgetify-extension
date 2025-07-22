@@ -1,13 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useRef, useState } from 'react'
 import type { Category, Wallpaper } from '@/common/wallpaper.interface'
 import { getMainClient } from '@/services/api'
 import { useGetWallpaperCategories } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-import { useQuery } from '@tanstack/react-query'
-import { useEffect, useRef, useState } from 'react'
-
-interface CategoryWallpapers {
-	category: Category
-	wallpapers: Wallpaper[]
-}
 
 interface WallpaperResponse {
 	wallpapers: Wallpaper[]
@@ -71,18 +66,12 @@ export function useWallpapersByCategory() {
 		return allWallpapers.filter((wallpaper) => wallpaper.categoryId === categoryId)
 	}
 
-	const wallpapersByCategory = () => {
-		if (!wallpapers || selectedCategoryId === null) return []
+	const getSelectedCategory = (): Category | null => {
+		if (!wallpapers || selectedCategoryId === null) return null
 
 		const selectedCategory = categories.find((cat) => cat.id === selectedCategoryId)
-		if (!selectedCategory) return []
-
-		return [
-			{
-				category: selectedCategory,
-				wallpapers: wallpapers,
-			},
-		] as CategoryWallpapers[]
+		if (!selectedCategory) return null
+		return selectedCategory
 	}
 
 	const allWallpapers = wallpapers || []
@@ -92,7 +81,7 @@ export function useWallpapersByCategory() {
 
 	return {
 		categories,
-		wallpapersByCategory,
+		getSelectedCategory,
 		allWallpapers,
 		isLoading,
 		error,
