@@ -1,7 +1,7 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
-import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
@@ -15,7 +15,7 @@ interface GeneralSettingContextType extends GeneralData {
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
-	analyticsEnabled: false,
+	analyticsEnabled: true,
 	selected_timezone: {
 		label: 'آسیا / تهران',
 		value: 'Asia/Tehran',

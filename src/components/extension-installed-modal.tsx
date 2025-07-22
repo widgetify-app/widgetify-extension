@@ -1,8 +1,6 @@
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
 import keepItImage from '@/assets/keep-it.png'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { ItemSelector } from './item-selector'
 import Modal from './modal'
 
 interface ExtensionInstalledModalProps {
@@ -11,23 +9,21 @@ interface ExtensionInstalledModalProps {
 	onGetStarted: () => void
 }
 
-type Step = 1 | 2 | 3
+type Step = number
 
 export function ExtensionInstalledModal({
 	show,
 	onGetStarted,
 }: ExtensionInstalledModalProps) {
 	const [currentStep, setCurrentStep] = useState<Step>(1)
-	const totalSteps = 3
+	const totalSteps = 2
 
 	const renderStepContent = () => {
 		switch (currentStep) {
 			case 1:
 				return <StepOne setCurrentStep={setCurrentStep} />
 			case 2:
-				return <StepTwo setCurrentStep={setCurrentStep} />
-			case 3:
-				return <StepThree onGetStarted={onGetStarted} />
+				return <StepTwo onGetStarted={onGetStarted} />
 			default:
 				return null
 		}
@@ -142,78 +138,10 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 	)
 }
 
-interface StepTwoProps {
-	setCurrentStep: (step: Step) => void
-}
-const StepTwo = ({ setCurrentStep }: StepTwoProps) => {
-	const [consentChoice, setConsentChoice] = useState<boolean | null>(null)
-
-	const saveConsent = async (consent: boolean) => {
-		try {
-			const currentSettings = (await getFromStorage('generalSettings')) || {}
-			const updatedSettings = {
-				...currentSettings,
-				analyticsEnabled: consent,
-			}
-			await setToStorage('generalSettings', updatedSettings)
-			setCurrentStep(3)
-		} catch (error) {
-			console.error('Error saving consent:', error)
-			setCurrentStep(3)
-		}
-	}
-
-	const handleConsentSelection = (consent: boolean) => {
-		setConsentChoice(consent)
-		setTimeout(() => saveConsent(consent), 300)
-	}
-
-	return (
-		<>
-			<m.div
-				className="mb-6"
-				initial={{ y: -20 }}
-				animate={{ y: 0 }}
-				transition={{ duration: 0.5, delay: 0.2 }}
-			>
-				<h3 className={'mb-3 text-2xl font-bold text-content'}>
-					حریم خصوصی و امنیت
-				</h3>
-				<p className={'leading-relaxed text-muted'}>
-					🔒آمار استفاده از افزونه برای بهبود عملکرد جمع‌آوری می‌شود. هیچ اطلاعات
-					شخصی ارسال نخواهد شد. این گزینه در تنظیمات قابل تغییر است.
-				</p>
-			</m.div>
-
-			<m.div
-				className="w-full"
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.4 }}
-			>
-				<div className="flex flex-row gap-2">
-					<ItemSelector
-						isActive={consentChoice === true}
-						onClick={() => handleConsentSelection(true)}
-						label="🤝 فعال می‌کنم"
-						className="text-right"
-					/>
-					<ItemSelector
-						isActive={consentChoice === false}
-						onClick={() => handleConsentSelection(false)}
-						label="نه، موافق نیستم"
-						className="text-right"
-					/>
-				</div>
-			</m.div>
-		</>
-	)
-}
-
 interface StepThreeProps {
 	onGetStarted: () => void
 }
-const StepThree = ({ onGetStarted }: StepThreeProps) => {
+const StepTwo = ({ onGetStarted }: StepThreeProps) => {
 	return (
 		<>
 			<m.div
