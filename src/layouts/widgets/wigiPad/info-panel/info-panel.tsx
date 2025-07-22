@@ -80,7 +80,7 @@ export function InfoPanel() {
 				))}
 			</div>
 
-			<div className="flex-1 p-3 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-base-300">
+			<div className="flex-1 p-2 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-base-300">
 				{renderContent()}
 			</div>
 		</div>
