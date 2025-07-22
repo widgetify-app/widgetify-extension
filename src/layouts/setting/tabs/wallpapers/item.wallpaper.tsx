@@ -117,12 +117,12 @@ export const WallpaperItem = React.memo(
 									{wallpaper.name}
 								</p>
 							)}
-							{
+							{wallpaper.usageCount && (
 								<div className="text-xs text-center text-content">
 									<FaUsers />
 									<span>{wallpaper.usageCount}</span>
 								</div>
-							}
+							)}
 						</div>
 
 						{isSelected && (
