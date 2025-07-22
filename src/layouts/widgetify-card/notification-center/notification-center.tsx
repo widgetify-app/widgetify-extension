@@ -23,16 +23,6 @@ export function NotificationCenter() {
 
 	return (
 		<div className="flex flex-col gap-1">
-			{notification?.widgetifyCardNotifications?.map((item, index) => (
-				<NotificationCardItem
-					key={index}
-					title={item.title}
-					subTitle={item.subTitle}
-					description={item.description}
-					link={item.link}
-					icon={item.icon}
-				/>
-			))}
 			{notification?.upcomingCalendarEvents?.map((event) => (
 				<div key={event.id} className="relative">
 					<NotificationCardItem
@@ -65,6 +55,16 @@ ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
 						</Button>
 					)}
 				</div>
+			))}
+			{notification?.widgetifyCardNotifications?.map((item, index) => (
+				<NotificationCardItem
+					key={index}
+					title={item.title}
+					subTitle={item.subTitle}
+					description={item.description}
+					link={item.link}
+					icon={item.icon}
+				/>
 			))}
 		</div>
 	)
