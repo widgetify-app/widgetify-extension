@@ -1,7 +1,7 @@
-import Tooltip from '@/components/toolTip'
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { FiCalendar, FiSunrise, FiWatch } from 'react-icons/fi'
+import { FiSunrise, FiWatch } from 'react-icons/fi'
+import Tooltip from '@/components/toolTip'
 import type { ToolsTabType } from '../tools.layout'
 
 interface TabNavigationProps {
@@ -26,13 +26,12 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	}
 
 	const tabs = [
-		{ id: 'events' as ToolsTabType, icon: FiCalendar, label: 'مناسبت‌ها' },
-		{ id: 'religious-time' as ToolsTabType, icon: FiSunrise, label: 'اوقات شرعی' },
 		{ id: 'pomodoro' as ToolsTabType, icon: FiWatch, label: 'پومودورو' },
+		{ id: 'religious-time' as ToolsTabType, icon: FiSunrise, label: 'اوقات شرعی' },
 	]
 
 	return (
-		<div className="flex items-center justify-between pb-1 mb-1">
+		<div className="flex items-center justify-start gap-3 pb-1 mb-1">
 			{tabs.map((tab) => (
 				<div key={tab.id} className="relative">
 					<Tooltip content={tab.label} position="top" delay={300}>
