@@ -1,11 +1,6 @@
+import moment from 'jalali-moment'
+import { MdDateRange, MdEvent, MdLocationOn, MdVideoCall } from 'react-icons/md'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import {
-	MdAccessTime,
-	MdDateRange,
-	MdEvent,
-	MdLocationOn,
-	MdVideoCall,
-} from 'react-icons/md'
 
 interface GoogleEventItemProps {
 	meeting: GoogleCalendarEvent
@@ -15,16 +10,6 @@ function formatEventTime(dateTimeStr: string) {
 	if (!dateTimeStr) return null
 	const date = new Date(dateTimeStr)
 	return date.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
-}
-
-function formatEventDate(dateTimeStr: string) {
-	if (!dateTimeStr) return null
-	const date = new Date(dateTimeStr)
-	return date.toLocaleDateString('fa-IR', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	})
 }
 
 export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
@@ -64,11 +49,12 @@ export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
 						{meeting.summary}
 					</h4>
 					<p className="flex items-center gap-1 text-xs text-muted">
-						<MdDateRange className="text-blue-500" />
-						{formatEventDate(meeting.start.dateTime) || 'نامشخص'}
+						<MdDateRange className="text-content" />
+						{moment(meeting.start.dateTime)
+							.locale('fa')
+							.format('dddd، jD jMMMM jYYYY') || 'نامشخص'}
 					</p>
 					<p className="flex items-center gap-1 text-xs text-muted">
-						<MdAccessTime className="text-green-500" />
 						{formatEventTime(meeting.start.dateTime) || 'نامشخص'} -{' '}
 						{formatEventTime(meeting.end.dateTime) || 'نامشخص'}
 					</p>
