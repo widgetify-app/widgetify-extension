@@ -118,7 +118,7 @@ export const WallpaperItem = React.memo(
 								</p>
 							)}
 							{wallpaper.usageCount && (
-								<div className="text-xs text-center text-content">
+								<div className="text-xs text-center text-white/85">
 									<FaUsers />
 									<span>{wallpaper.usageCount}</span>
 								</div>
