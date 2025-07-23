@@ -10,6 +10,11 @@ import type { FilterSortState } from '@/layouts/widgets/news/components/news-fil
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
 import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
 import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
+import type {
+	PomodoroSession,
+	PomodoroSettings,
+	TimerMode,
+} from '@/layouts/widgets/tools/pomodoro/types'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
@@ -72,4 +77,6 @@ export interface StorageKV {
 	configData: ExtensionConfigResponse
 	toolsTab: ToolsTabType
 	comboTabs: ComboTabType
+	pomodoro_session: PomodoroSession | null
+	pomodoro_settings: PomodoroSettings | null
 }
