@@ -12,3 +12,13 @@ export interface ThemeStyles {
 	getInputStyle: () => string
 	getSettingsPanelStyle: () => string
 }
+
+export interface PomodoroSession {
+	startTime: number
+	mode: TimerMode
+	initialTimeLeft: number
+	maxTime: number
+	cycles: number
+	isRunning: boolean
+}
+
