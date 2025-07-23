@@ -133,7 +133,7 @@ export function getGregorianEvents(
 	events: FetchedAllEvents,
 	date: jalaliMoment.Moment //  Hijri date
 ): FetchedEvent[] {
-	const gregorianDate = date.clone().locale('en').utc().add(3.5, 'hours')
+	const gregorianDate = date.clone().locale('en')
 
 	const gregorianDay = gregorianDate.format('D')
 	const gregorianMonth = gregorianDate.format('M')
@@ -145,7 +145,7 @@ export function getGregorianEvents(
 
 export function getCurrentDate(timeZone: string) {
 	const date = new Date(new Date().toLocaleString('en-US', { timeZone }))
-	return jalaliMoment(date).locale('fa').utc().add(3.5, 'hours')
+	return jalaliMoment(date).locale('fa')
 }
 
 export function filterGoogleEventsByDate(

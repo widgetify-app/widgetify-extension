@@ -1,10 +1,10 @@
-import {
-	type WidgetifyDate,
-	convertShamsiToHijri,
-	getCurrentDate,
-} from '@/layouts/widgets/calendar/utils'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import {
+	convertShamsiToHijri,
+	getCurrentDate,
+	type WidgetifyDate,
+} from '@/layouts/widgets/calendar/utils'
 import { useGeneralSetting } from './general-setting.context'
 
 interface DateContextType {
@@ -17,7 +17,6 @@ interface DateContextType {
 	goToToday: () => void
 	isToday: (date: WidgetifyDate) => boolean
 	getHijriDate: (date: WidgetifyDate) => string
-	getGregorianDate: (date: WidgetifyDate) => string
 }
 
 const DateContext = createContext<DateContextType | undefined>(undefined)
@@ -65,11 +64,6 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		return `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
 	}
 
-	const getGregorianDate = (date: WidgetifyDate): string => {
-		const gregorianDate = date.clone().locale('en').utc().add(3.5, 'hours')
-		return gregorianDate.format('YYYY/MM/DD')
-	}
-
 	const todayIsHoliday = activeDate.day() === 5
 
 	return (
@@ -84,7 +78,6 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 				goToToday,
 				isToday,
 				getHijriDate,
-				getGregorianDate,
 			}}
 		>
 			{children}
