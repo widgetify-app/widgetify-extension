@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
 import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
 import { ControlButton } from './components/control-button'
@@ -9,6 +9,7 @@ import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { modeColors } from './constants'
 import type { PomodoroSettings, TimerMode } from './types'
+import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -38,7 +39,43 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 	}
 
-	const progress = (timeLeft / getMaxTime()) * 100
+	useEffect(() => {
+		const loadSetting = async () => {
+			const storedSettings = await getFromStorage('pomodoro_settings')
+			if (storedSettings) {
+				setSettings(storedSettings)
+				setTimeLeft(storedSettings.workTime * 60)
+			} else {
+				setTimeLeft(settings.workTime * 60)
+			}
+
+			const storedSession = await getFromStorage('pomodoro_session')
+			if (storedSession?.isRunning) {
+				const {
+					startTime,
+					mode: sessionMode,
+					initialTimeLeft,
+					cycles: sessionCycles,
+				} = storedSession
+				const elapsed = Math.floor((Date.now() - startTime) / 1000)
+				const remainingTime = Math.max(0, initialTimeLeft - elapsed)
+
+				setMode(sessionMode)
+				setTimeLeft(remainingTime)
+				setCycles(sessionCycles)
+
+				if (remainingTime > 0) {
+					setIsRunning(true)
+				}
+			}
+		}
+		loadSetting()
+	}, [])
+
+	const progress = useMemo(() => {
+		const maxTime = getMaxTime()
+		return maxTime > 0 ? (timeLeft / maxTime) * 100 : 0
+	}, [timeLeft, mode, settings])
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null
@@ -78,13 +115,37 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			if (newCycles % settings.cyclesBeforeLongBreak === 0) {
 				setMode('long-break')
 				setTimeLeft(settings.longBreakTime * 60)
+				setToStorage('pomodoro_session', {
+					startTime: Date.now(),
+					mode: 'long-break',
+					initialTimeLeft: settings.longBreakTime * 60,
+					maxTime: settings.longBreakTime * 60,
+					cycles: newCycles,
+					isRunning: true,
+				})
 			} else {
 				setMode('short-break')
 				setTimeLeft(settings.shortBreakTime * 60)
+				setToStorage('pomodoro_session', {
+					startTime: Date.now(),
+					mode: 'short-break',
+					initialTimeLeft: settings.shortBreakTime * 60,
+					maxTime: settings.shortBreakTime * 60,
+					cycles: newCycles,
+					isRunning: true,
+				})
 			}
 		} else {
 			setMode('work')
 			setTimeLeft(settings.workTime * 60)
+			setToStorage('pomodoro_session', {
+				startTime: Date.now(),
+				mode: 'work',
+				initialTimeLeft: settings.workTime * 60,
+				maxTime: settings.workTime * 60,
+				cycles,
+				isRunning: true,
+			})
 		}
 	}
 
@@ -96,6 +157,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			Notification.requestPermission()
 		}
 		setIsRunning(true)
+
+		const sessionData = {
+			startTime: Date.now(),
+			mode,
+			initialTimeLeft: timeLeft,
+			maxTime: getMaxTime(),
+			cycles,
+			isRunning: true,
+		}
+		setToStorage('pomodoro_session', sessionData)
 
 		Analytics.featureUsed(
 			'pomodoro_timer',
@@ -111,6 +182,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const handlePause = () => {
 		setIsRunning(false)
 
+		const sessionData = {
+			startTime: Date.now(),
+			mode,
+			initialTimeLeft: timeLeft,
+			maxTime: getMaxTime(),
+			cycles,
+			isRunning: false,
+		}
+		setToStorage('pomodoro_session', sessionData)
+
 		Analytics.featureUsed(
 			'pomodoro_timer',
 			{
@@ -125,6 +206,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const handleReset = () => {
 		setIsRunning(false)
 		setTimeLeft(getMaxTime())
+		removeFromStorage('pomodoro_session')
 
 		Analytics.featureUsed(
 			'pomodoro_timer',
@@ -152,6 +234,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				setTimeLeft(settings.longBreakTime * 60)
 				break
 		}
+		removeFromStorage('pomodoro_session')
 
 		Analytics.featureUsed(
 			'pomodoro_timer',
@@ -167,13 +250,28 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const handleUpdateSettings = (newSettings: PomodoroSettings) => {
 		setSettings(newSettings)
 
+		let newTimeLeft = timeLeft
 		if (mode === 'work') {
-			setTimeLeft(newSettings.workTime * 60)
+			newTimeLeft = newSettings.workTime * 60
+			setTimeLeft(newTimeLeft)
 		} else if (mode === 'short-break') {
-			setTimeLeft(newSettings.shortBreakTime * 60)
+			newTimeLeft = newSettings.shortBreakTime * 60
+			setTimeLeft(newTimeLeft)
 		} else if (mode === 'long-break') {
-			setTimeLeft(newSettings.longBreakTime * 60)
+			newTimeLeft = newSettings.longBreakTime * 60
+			setTimeLeft(newTimeLeft)
 		}
+
+		const sessionData = {
+			startTime: Date.now(),
+			mode,
+			initialTimeLeft: newTimeLeft,
+			maxTime: newTimeLeft,
+			cycles,
+			isRunning: false,
+		}
+		setToStorage('pomodoro_session', sessionData)
+		setToStorage('pomodoro_settings', newSettings)
 	}
 
 	const getProgressColor = () => {
