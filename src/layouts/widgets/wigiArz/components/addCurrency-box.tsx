@@ -1,8 +1,10 @@
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
+import { ItemSelector } from '@/components/item-selector'
 import Modal from '@/components/modal'
+import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
-import { useCurrencyStore } from '@/context/currency.context'
+import { CurrencyColorMode, useCurrencyStore } from '@/context/currency.context'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
@@ -23,10 +25,14 @@ interface AddCurrencyModalProps {
 }
 
 export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
-	if (!show) return null
 	const { data: supportCurrencies } = useGetSupportCurrencies()
 
-	const { selectedCurrencies, setSelectedCurrencies } = useCurrencyStore()
+	const {
+		selectedCurrencies,
+		setSelectedCurrencies,
+		currencyColorMode,
+		setCurrencyColorMode,
+	} = useCurrencyStore()
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isContentVisible, setIsContentVisible] = useState(false)
 
@@ -68,6 +74,10 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		)
 	}
 
+	const toggleCurrencyColorMode = (mode: CurrencyColorMode) => {
+		setCurrencyColorMode(mode)
+	}
+
 	const currencyGroups = getCurrencyOptions(supportCurrencies)
 	const filteredGroups = currencyGroups
 		.map((group) => ({
@@ -78,88 +88,113 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		}))
 		.filter((group) => group.options.length > 0)
 
+	if (!show) return null
+
 	return (
 		<Modal
 			isOpen={show}
 			onClose={onClose}
 			size="md"
-			title="افزودن ارز"
+			title="مدیریت ویجی‌ارز"
 			direction="rtl"
 		>
 			<div
 				className={`w-full h-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'}`}
 			>
-				<div className="relative mb-5">
-					<div
-						className={`absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2 transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-200' : 'opacity-0'}`}
-					>
-						<FiSearch />
+				<SectionPanel title="رنگ تغییر قیمت" size="xs">
+					<div className="flex flex-row  gap-2">
+						<ItemSelector
+							label="عادی"
+							isActive={currencyColorMode === CurrencyColorMode.NORMAL}
+							className="w-full"
+							onClick={() =>
+								toggleCurrencyColorMode(CurrencyColorMode.NORMAL)
+							}
+						/>
+						<ItemSelector
+							label="معکوس"
+							isActive={currencyColorMode === CurrencyColorMode.X}
+							className="w-full"
+							onClick={() => toggleCurrencyColorMode(CurrencyColorMode.X)}
+						/>
 					</div>
-					<TextInput
-						type="text"
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e)}
-						placeholder="جستجو ..."
-					/>
-				</div>
+				</SectionPanel>
 
-				<div
-					className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-60 max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-[100ms]' : 'opacity-0'}`}
-				>
-					{filteredGroups.map((group, groupIndex) => (
+				<SectionPanel title="ارزها" size="xs">
+					<div className="relative mb-5">
 						<div
-							key={groupIndex}
-							className={`mb-6 transition-all duration-200 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
-							style={{
-								transitionDelay: isContentVisible
-									? `${200 + groupIndex * 100}ms`
-									: '0ms',
-							}}
+							className={`absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2 transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-200' : 'opacity-0'}`}
 						>
-							<h3
-								className={
-									'text-sm font-medium mb-3 currency-group-heading'
-								}
-							>
-								{group.label}
-							</h3>
-							<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-								{group.options.map((option) => {
-									const isSelected = selectedCurrencies.includes(
-										option.value
-									)
+							<FiSearch />
+						</div>
+						<TextInput
+							type="text"
+							value={searchQuery}
+							onChange={(e) => setSearchQuery(e)}
+							placeholder="جستجو ..."
+						/>
+					</div>
 
-									return (
-										<div
-											key={option.value}
-											className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
+					<div
+						className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-60 max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-[100ms]' : 'opacity-0'}`}
+					>
+						{filteredGroups.map((group, groupIndex) => (
+							<div
+								key={groupIndex}
+								className={`mb-6 transition-all duration-200 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
+								style={{
+									transitionDelay: isContentVisible
+										? `${200 + groupIndex * 100}ms`
+										: '0ms',
+								}}
+							>
+								<h3
+									className={
+										'text-sm font-medium mb-3 currency-group-heading'
+									}
+								>
+									{group.label}
+								</h3>
+								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+									{group.options.map((option) => {
+										const isSelected = selectedCurrencies.includes(
+											option.value
+										)
+
+										return (
+											<div
+												key={option.value}
+												className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
                                                         transition-all duration-200 ease-out active:scale-98 
                                                         ${isSelected ? 'currency-box-selected border-success/30 bg-success/15 text-content' : 'border-base-300/40 bg-content hover:!bg-base-300/70'}
                                                         ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
-											style={{
-												transitionDelay: isContentVisible
-													? `${10 + groupIndex * 100 + 50}ms`
-													: '0ms',
-											}}
-											onClick={() => toggleCurrency(option.value)}
-										>
-											<div
-												className={`font-normal ${isSelected ? 'font-medium' : ''}`}
+												style={{
+													transitionDelay: isContentVisible
+														? `${10 + groupIndex * 100 + 50}ms`
+														: '0ms',
+												}}
+												onClick={() =>
+													toggleCurrency(option.value)
+												}
 											>
-												{option.label}
+												<div
+													className={`font-normal ${isSelected ? 'font-medium' : ''}`}
+												>
+													{option.label}
+												</div>
+												<div
+													className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
+												>
+													{option.value}
+												</div>
 											</div>
-											<div
-												className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
-											>
-												{option.value}
-											</div>
-										</div>
-									)
-								})}
+										)
+									})}
+								</div>
 							</div>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				</SectionPanel>
 
 				<div
 					className={`mt-4 flex justify-center w-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}

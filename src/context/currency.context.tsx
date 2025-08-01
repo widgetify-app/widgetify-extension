@@ -4,23 +4,38 @@ import React, { createContext, useEffect, useState } from 'react'
 export interface StoreContext {
 	selectedCurrencies: Array<string>
 	setSelectedCurrencies: (currencies: Array<string>) => void
+	currencyColorMode: CurrencyColorMode | null
+	setCurrencyColorMode: (mode: CurrencyColorMode) => void
+}
+
+export enum CurrencyColorMode {
+	NORMAL = 'NORMAL',
+	X = 'X',
 }
 
 export const currencyContext = createContext<StoreContext>({
 	selectedCurrencies: [],
 	setSelectedCurrencies: () => {},
+	currencyColorMode: null,
+	setCurrencyColorMode: () => {},
 })
 
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [selectedCurrencies, setSelectedCurrencies] = useState<string[] | null>(null)
+	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode | null>(
+		null
+	)
 
 	useEffect(() => {
 		async function load() {
-			const storedCurrencies = await getFromStorage('currencies')
-
+			const [storedCurrencies, currencyColorMode] = await Promise.all([
+				getFromStorage('currencies'),
+				getFromStorage('currencyColorMode'),
+			])
 			setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
+			setCurrencyColorMode(currencyColorMode || CurrencyColorMode.NORMAL)
 		}
 
 		load()
@@ -33,11 +48,22 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (Array.isArray(selectedCurrencies)) save()
 	}, [selectedCurrencies])
 
+	useEffect(() => {
+		if (currencyColorMode) {
+			async function save() {
+				await setToStorage('currencyColorMode', currencyColorMode)
+			}
+			save()
+		}
+	}, [currencyColorMode])
+
 	return (
 		<currencyContext.Provider
 			value={{
 				selectedCurrencies: selectedCurrencies ?? [],
 				setSelectedCurrencies,
+				setCurrencyColorMode,
+				currencyColorMode,
 			}}
 		>
 			{children}

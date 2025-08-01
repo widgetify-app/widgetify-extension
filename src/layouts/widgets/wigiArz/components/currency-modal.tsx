@@ -3,6 +3,7 @@ import Modal from '@/components/modal'
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
 import { CurrencyChart } from './currency-chart'
+import { CurrencyColorMode } from '@/context/currency.context'
 
 interface CurrencyModalComponentProps {
 	code: string
@@ -10,7 +11,8 @@ interface CurrencyModalComponentProps {
 	displayPrice: number
 	imgMainColor: string | undefined
 	isModalOpen: boolean
-	priceChange: number | null
+	priceChange: number
+	currencyColorMode: CurrencyColorMode | null
 	toggleCurrencyModal: () => void
 }
 
@@ -22,6 +24,7 @@ export const CurrencyModalComponent = ({
 	isModalOpen,
 	priceChange,
 	toggleCurrencyModal,
+	currencyColorMode,
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
 	const [isVisible, setIsVisible] = useState(false)
@@ -37,6 +40,11 @@ export const CurrencyModalComponent = ({
 		}
 		return () => clearTimeout(timerId)
 	}, [isModalOpen])
+
+	const priceChangeColor =
+		currencyColorMode === CurrencyColorMode.NORMAL
+			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
+			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="md">
@@ -68,7 +76,18 @@ export const CurrencyModalComponent = ({
 
 				<div className="w-full space-y-0">
 					<div className="relative flex items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-						<PriceChangeComponent priceChange={priceChange} />
+						<div
+							className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
+						>
+							{priceChange > 0 ? (
+								<FaArrowUpLong className="mr-1" />
+							) : (
+								<FaArrowDownLong className="mr-1" />
+							)}
+
+							<span>{Math.abs(Number(priceChange.toFixed()))}</span>
+						</div>
+
 						<p className={'text-xl font-bold text-base-content opacity-95'}>
 							{displayPrice.toLocaleString()}
 						</p>
@@ -108,36 +127,5 @@ export const CurrencyModalComponent = ({
 				</div>
 			</div>
 		</Modal>
-	)
-}
-
-interface Prop {
-	priceChange: number | null
-}
-
-export function PriceChangeComponent({ priceChange }: Prop) {
-	if (priceChange === null) return null
-	const [hasAnimatedIn, setHasAnimatedIn] = useState(false)
-
-	useEffect(() => {
-		// Animate in shortly after mount
-		const timer = setTimeout(() => setHasAnimatedIn(true), 50)
-		return () => clearTimeout(timer)
-	}, [])
-
-	return (
-		<div
-			className={`flex items-center text-sm transition-all duration-300 ease-out ${
-				priceChange > 0 ? 'text-red-500' : 'text-green-500'
-			} ${hasAnimatedIn ? 'translate-y-0 opacity-100' : '-translate-y-2.5 opacity-0'}`}
-		>
-			{priceChange > 0 ? (
-				<FaArrowUpLong className="mr-1" />
-			) : (
-				<FaArrowDownLong className="mr-1" />
-			)}
-
-			<span>{Math.abs(Number(priceChange.toFixed()))}</span>
-		</div>
 	)
 }
