@@ -49,12 +49,13 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [selectedCurrencies])
 
 	useEffect(() => {
-		if (currencyColorMode) {
-			async function save() {
+		async function save() {
+			if (currencyColorMode) {
 				await setToStorage('currencyColorMode', currencyColorMode)
 			}
-			save()
 		}
+
+		save()
 	}, [currencyColorMode])
 
 	return (
