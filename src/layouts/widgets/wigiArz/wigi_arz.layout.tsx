@@ -20,7 +20,7 @@ export function WigiArzLayout({
 	onSettingsModalClose,
 	inComboWidget,
 }: WigiArzLayoutProps) {
-	const { selectedCurrencies } = useCurrencyStore()
+	const { selectedCurrencies, currencyColorMode } = useCurrencyStore()
 	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
@@ -77,6 +77,7 @@ export function WigiArzLayout({
 									<CurrencyBox
 										code={currency}
 										key={`${currency}-${index}`}
+										currencyColorMode={currencyColorMode}
 									/>
 								</div>
 							))}
@@ -130,6 +131,7 @@ export function WigiArzLayout({
 									<CurrencyBox
 										code={currency}
 										key={`${currency}-${index}`}
+										currencyColorMode={currencyColorMode}
 									/>
 								</div>
 							))}

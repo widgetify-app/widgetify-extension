@@ -9,12 +9,14 @@ import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { CurrencyModalComponent } from './currency-modal'
+import { CurrencyColorMode } from '@/context/currency.context'
 
 interface CurrencyBoxProps {
 	code: string
+	currencyColorMode: CurrencyColorMode | null
 }
 
-export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
+export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: null,
 	})
@@ -95,6 +97,11 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 		}
 	}
 
+	const priceChangeColor =
+		currencyColorMode === CurrencyColorMode.NORMAL
+			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
+			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
+
 	return (
 		<>
 			<div
@@ -122,13 +129,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 						/>
 					</div>
 					<div className="flex items-center space-x-2 text-sm font-medium min-w-0">
-						<span
-							className="block text-content opacity-90 truncate"
-							title={currency?.name?.en}
-						>
-							{currency?.name?.en}
-						</span>
-						<span className="block text-xs text-content truncate opacity-40">
+						<span className="block text-sm text-content truncate">
 							{code}
 						</span>
 					</div>
@@ -136,12 +137,10 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 
 				<div className="pr-2 flex items-baseline gap-2">
 					<span className={'text-sm font-bold text-content'}>
-						{displayPrice.toLocaleString()}
+						{displayPrice ? displayPrice.toLocaleString() : '-'}
 					</span>
 					{priceChange !== 0 && (
-						<span
-							className={`text-xs ${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`}
-						>
+						<span className={`text-xs ${priceChangeColor}`}>
 							{priceChange > 0 ? (
 								<FaArrowUpLong className="inline" />
 							) : (
@@ -154,6 +153,7 @@ export const CurrencyBox = ({ code }: CurrencyBoxProps) => {
 			{currency && !currency.url && (
 				<CurrencyModalComponent
 					code={code}
+					currencyColorMode={currencyColorMode}
 					priceChange={priceChange}
 					currency={currency}
 					displayPrice={displayPrice}

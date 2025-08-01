@@ -26,9 +26,11 @@ import type {
 } from '@/services/hooks/weather/weather.interface'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
+import { CurrencyColorMode } from '@/context/currency.context'
 
 export interface StorageKV {
 	currencies: string[]
+	currencyColorMode: CurrencyColorMode
 	hasShownPwaModal: boolean
 	selectedCity: SelectedCity | null
 	currentWeather: FetchedWeather
