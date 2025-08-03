@@ -15,9 +15,11 @@ export interface Bookmark {
 	customTextColor?: string
 	sticker?: string
 	order?: number
+	password?: string
 }
 
 export interface FolderPathItem {
 	id: string
 	title: string
+	password?: string;
 }
