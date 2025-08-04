@@ -1,7 +1,7 @@
-import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import Analytics from '@/analytics'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 interface ThemeContextType {
 	theme: string
@@ -12,6 +12,7 @@ export enum Theme {
 	Light = 'light',
 	Dark = 'dark',
 	Glass = 'glass',
+	Zarna = 'Zarna',
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
