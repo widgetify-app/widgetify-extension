@@ -31,7 +31,7 @@ export function ProfileNav() {
 					{user?.avatar ? (
 						<AvatarComponent
 							url={user.avatar}
-							size="sm"
+							size="xs"
 							className="!rounded-xl"
 						/>
 					) : (
