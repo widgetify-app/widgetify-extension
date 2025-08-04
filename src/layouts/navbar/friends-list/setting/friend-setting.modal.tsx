@@ -1,8 +1,8 @@
+import { BiUserCircle } from 'react-icons/bi'
+import { FiUserCheck, FiUsers } from 'react-icons/fi'
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { useAuth } from '@/context/auth.context'
-import { BiUserCircle } from 'react-icons/bi'
-import { FiUserCheck, FiUsers } from 'react-icons/fi'
 import { AllFriendsTab, FriendRequestsTab, ProfileTab } from './tabs'
 
 interface FriendSettingModalProps {
@@ -20,19 +20,6 @@ export const FriendSettingModal = ({
 
 	const tabs: TabItem[] = [
 		{
-			label: 'همه دوستان',
-			value: 'all',
-			icon: <FiUsers size={20} />,
-			element: <AllFriendsTab />,
-		},
-		{
-			label: 'درخواست‌ها',
-			value: 'requests',
-			icon: <FiUserCheck size={20} />,
-			element: <FriendRequestsTab />,
-		},
-
-		{
 			label: 'پروفایل من',
 			value: 'profile',
 			icon: <BiUserCircle size={20} />,
@@ -43,6 +30,18 @@ export const FriendSettingModal = ({
 					برای مشاهده پروفایل خود ابتدا وارد حساب کاربری شوید
 				</div>
 			),
+		},
+		{
+			label: 'همه دوستان',
+			value: 'all',
+			icon: <FiUsers size={20} />,
+			element: <AllFriendsTab />,
+		},
+		{
+			label: 'درخواست‌ها',
+			value: 'requests',
+			icon: <FiUserCheck size={20} />,
+			element: <FriendRequestsTab />,
 		},
 	]
 

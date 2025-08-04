@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
-import { BiCheck } from 'react-icons/bi'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
-import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
@@ -18,7 +14,6 @@ import {
 	type FetchedBookmark,
 	getBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
-import type { UserProfile } from '@/services/hooks/user/userService.hook'
 
 enum SyncState {
 	Syncing = 0,
@@ -33,10 +28,8 @@ export enum SyncTarget {
 }
 
 export function SyncButton() {
-	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [syncState, setSyncState] = useState<SyncState | null>(null)
 	const { isAuthenticated } = useAuth()
-	const [user, setUser] = useState<UserProfile | null>(null)
 	const syncInProgressRef = useRef(false)
 	const lastSyncTimeRef = useRef<number>(0)
 	const initialSyncDoneRef = useRef(false)
@@ -46,17 +39,6 @@ export function SyncButton() {
 			return () => clearTimeout(timer)
 		}
 	}, [syncState])
-
-	useEffect(() => {
-		async function loadUser() {
-			const userData = await getFromStorage('profile')
-			if (userData) {
-				setUser(userData)
-			}
-		}
-
-		loadUser()
-	}, [])
 
 	useEffect(() => {
 		async function initialSync() {
@@ -87,7 +69,6 @@ export function SyncButton() {
 		lastSyncTimeRef.current = now
 
 		if (!isAuthenticated) {
-			setFirstAuth(true)
 			return
 		}
 
@@ -153,76 +134,7 @@ export function SyncButton() {
 		return undefined
 	}, [isAuthenticated, syncData])
 
-	const tooltipContent = () => {
-		if (syncState === SyncState.Syncing) return 'در حال همگام‌سازی...'
-
-		if (syncState === SyncState.Success) return 'همگام‌سازی با موفقیت انجام شد'
-
-		if (syncState === SyncState.Error) return 'خطا در همگام‌سازی'
-
-		return 'همگام‌سازی با حساب کاربری'
-	}
-
-	return (
-		<>
-			<Tooltip delay={0} content={tooltipContent()}>
-				<div className="relative group">
-					<button
-						className="flex items-center justify-center w-8 h-8 transition-all border shadow-lg cursor-pointer border-content rounded-xl hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-content backdrop-blur-sm hover:opacity-80"
-						onClick={() => syncData(SyncTarget.ALL, 'POST')}
-						aria-label="Sync"
-					>
-						{user?.avatar && syncState === null && (
-							<div className="absolute flex items-center justify-center w-4 h-4 bg-blue-500 border border-gray-800 rounded-full -bottom-1 -right-1">
-								<AiOutlineCloudSync size={10} className="text-muted" />
-							</div>
-						)}
-
-						{syncState === SyncState.Syncing ? (
-							<div className="flex items-center justify-center">
-								<div className="animate-spin">
-									<AiOutlineSync size={22} className="text-blue-400" />
-								</div>
-							</div>
-						) : syncState === SyncState.Success ? (
-							<div className="flex items-center justify-center text-green-400">
-								<BiCheck size={24} />
-							</div>
-						) : syncState === SyncState.Error ? (
-							<div className="flex items-center justify-center text-red-400">
-								<AiOutlineCloudSync size={22} />
-							</div>
-						) : (
-							<div className="flex items-center justify-center">
-								{user?.avatar && isAuthenticated ? (
-									<img
-										src={user.avatar}
-										alt="User"
-										className="object-cover w-6 h-6 rounded-full"
-									/>
-								) : (
-									<div>
-										<AiOutlineCloudSync
-											size={22}
-											className="text-muted"
-										/>
-									</div>
-								)}
-							</div>
-						)}
-					</button>
-				</div>
-			</Tooltip>
-			<AuthRequiredModal
-				isOpen={firstAuth}
-				onClose={() => setFirstAuth(false)}
-				title="ورود به حساب کاربری"
-				message="برای همگام‌سازی با حساب کاربری، ابتدا وارد حساب کاربری خود شوید."
-				loginButtonText="ورود به حساب"
-				cancelButtonText="بعداً"
-			/>
-		</>
-	)
+	return <></>
 }
 
 async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {

@@ -1,23 +1,19 @@
 import { FiChevronLeft, FiUsers } from 'react-icons/fi'
-import { LiaUsersCogSolid } from 'react-icons/lia'
 import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 //@ts-ignore
 import 'swiper/css'
+import { useState } from 'react'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
-import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
-import { useState } from 'react'
 import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
 
 export function FriendsList() {
 	const { isAuthenticated } = useAuth()
-	const { data: user } = useGetUserProfile({
-		enabled: isAuthenticated,
-	})
+
 	const [showFriendsList, setShowFriendsList] = useState(false)
 	const [firstAuth, setFirstAuth] = useState<boolean>(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
@@ -30,20 +26,13 @@ export function FriendsList() {
 
 	const friends = friendsData?.data.friends || []
 
-	const handleOpenSettingsModal = () => {
-		if (!isAuthenticated) {
-			setFirstAuth(true)
-			return
-		}
-		setShowSettingsModal(true)
-	}
 	return (
 		<>
 			<div
 				className={
-					'relative flex items-center  overflow-hidden px-2 gap-2 h-8 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
+					'relative flex items-center justify-center overflow-hidden h-8 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
 				}
-				style={{ width: showFriendsList ? '190px' : '70px' }}
+				style={{ width: showFriendsList ? '190px' : '35px' }}
 			>
 				{showFriendsList && (
 					<button
@@ -54,56 +43,44 @@ export function FriendsList() {
 					</button>
 				)}
 				{!showFriendsList && (
-					<div className="flex items-center justify-around w-full">
-						<Tooltip content="نمایش دوستان" position="bottom">
+					<Tooltip content="نمایش دوستان" position="bottom">
+						<div className="flex items-center justify-around w-full h-full">
 							<button
-								className="p-0.5 cursor-pointer text-muted border-l border-gray-300/50 hover:opacity-80 hover:scale-105"
+								className="cursor-pointer text-muted hover:opacity-80 hover:scale-105"
 								onClick={() => setShowFriendsList(!showFriendsList)}
 							>
-								<FiUsers className="ml-1" size={16} />
+								<FiUsers size={18} />
 								{}
 							</button>
-						</Tooltip>
-						<span className="h-full w-0.5 px-0.5"></span>
-						<Tooltip content="مدیریت دوستان">
-							<button
-								className="p-0.5 cursor-pointer relative text-muted hover:opacity-80 hover:scale-105"
-								onClick={handleOpenSettingsModal}
-							>
-								<LiaUsersCogSolid size={18} />
-								{user && user?.friendshipStats?.pending > 0 && (
-									<div className="absolute flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
-										{user?.friendshipStats.pending}
-									</div>
-								)}
-							</button>
-						</Tooltip>
-					</div>
-				)}{' '}
-				<Swiper
-					modules={[FreeMode, Navigation]}
-					spaceBetween={2}
-					slidesPerView={4}
-					grabCursor={true}
-					className="w-full user-list-slider"
-					dir="ltr"
-					navigation={{
-						nextEl: '.user-list-next',
-						prevEl: '.user-list-prev',
-					}}
-				>
-					{showFriendsList
-						? friends.map((friend) => (
-								<SwiperSlide key={friend.id}>
-									<FriendItem
-										user={friend.user}
-										activeProfileId={activeProfileId}
-										setActiveProfileId={setActiveProfileId}
-									/>
-								</SwiperSlide>
-							))
-						: null}
-				</Swiper>
+						</div>
+					</Tooltip>
+				)}
+				{showFriendsList && (
+					<Swiper
+						modules={[FreeMode, Navigation]}
+						spaceBetween={2}
+						slidesPerView={4}
+						grabCursor={true}
+						className="w-full user-list-slider"
+						dir="ltr"
+						navigation={{
+							nextEl: '.user-list-next',
+							prevEl: '.user-list-prev',
+						}}
+					>
+						{showFriendsList
+							? friends.map((friend) => (
+									<SwiperSlide key={friend.id}>
+										<FriendItem
+											user={friend.user}
+											activeProfileId={activeProfileId}
+											setActiveProfileId={setActiveProfileId}
+										/>
+									</SwiperSlide>
+								))
+							: null}
+					</Swiper>
+				)}
 			</div>
 
 			<FriendSettingModal
