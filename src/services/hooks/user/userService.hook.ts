@@ -1,13 +1,13 @@
-import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import type { Wallpaper } from '@/common/wallpaper.interface'
-
-import { getMainClient } from '@/services/api'
 import {
 	type UseQueryOptions,
 	useMutation,
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query'
+import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Theme } from '@/context/theme.context'
+import { getMainClient } from '@/services/api'
 
 interface FetchedProfile {
 	email: string
@@ -21,6 +21,7 @@ interface FetchedProfile {
 		pending: number
 	}
 	wallpaper: Wallpaper | null
+	theme?: Theme
 	activity?: string
 }
 
@@ -103,5 +104,13 @@ export async function setUserWallpaperApi(wallpaperId: string) {
 
 	await client.put('/extension/@me/wallpaper', {
 		wallpaperId,
+	})
+}
+
+export async function setUserThemeApi(theme: Theme) {
+	const client = await getMainClient()
+
+	await client.put('/extension/@me/theme', {
+		theme,
 	})
 }

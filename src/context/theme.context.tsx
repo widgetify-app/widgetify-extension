@@ -2,6 +2,9 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
+import { setUserThemeApi } from '@/services/hooks/user/userService.hook'
+import { useAuth } from './auth.context'
 
 interface ThemeContextType {
 	theme: string
@@ -12,16 +15,14 @@ export enum Theme {
 	Light = 'light',
 	Dark = 'dark',
 	Glass = 'glass',
-	Zarna = 'Zarna',
+	Zarna = 'zarna',
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-	const [theme, setTheme] = useState<string>(
-		() => localStorage.getItem('widgetify-theme') || 'light'
-	)
-
+	const [theme, setTheme] = useState<string>('')
+	const { isAuthenticated } = useAuth()
 	async function loadTheme() {
 		const theme = await getFromStorage('theme')
 		return theme
@@ -32,8 +33,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			if (theme) {
 				setTheme(theme)
 				document.documentElement.setAttribute('data-theme', theme)
+			} else {
+				setTheme(Theme.Light)
+				document.documentElement.setAttribute('data-theme', Theme.Light)
 			}
 		})
+
+		const event = listenEvent('themeChanged', (newTheme: Theme) => {
+			applyThemeChange(newTheme)
+		})
+
+		return () => {
+			event()
+		}
 	}, [])
 
 	useEffect(() => {
@@ -56,12 +68,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		return () => window.removeEventListener('keydown', handleKeyDown)
 	}, [theme])
 
-	const setThemeCallback = (theme: string) => {
-		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
+	const setThemeCallback = async (theme: string) => {
+		applyThemeChange(theme)
+		if (!isAuthenticated) return
+		await setUserThemeApi(theme as any)
+	}
+
+	const applyThemeChange = (theme: string) => {
 		setTheme(theme)
 		setToStorage('theme', theme as any)
 		document.documentElement.setAttribute('data-theme', theme)
-
+		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
 		Analytics.featureUsed(
 			'theme_change',
 			{

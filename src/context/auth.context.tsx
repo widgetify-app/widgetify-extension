@@ -1,10 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query'
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { sleep } from '@/common/utils/timeout'
 import {
 	type UserProfile,
 	useGetUserProfile,
 } from '@/services/hooks/user/userService.hook'
-import { useQueryClient } from '@tanstack/react-query'
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
 interface AuthContextType {
 	isAuthenticated: boolean
@@ -49,11 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 	}
 
-	const logout = () => {
-		removeFromStorage('auth_token')
-		removeFromStorage('profile')
+	const logout = async () => {
+		await Promise.all([
+			removeFromStorage('auth_token'),
+			removeFromStorage('profile'),
+			removeFromStorage('theme'),
+			removeFromStorage('wallpaper'),
+		])
+
 		setToken(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		await sleep(1000)
+		window.location.reload()
 	}
 
 	const refetchUser = async (): Promise<UserProfile | null> => {
