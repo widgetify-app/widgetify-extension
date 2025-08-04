@@ -25,15 +25,11 @@ export function ProfileNav() {
 				}
 			>
 				<div
-					className={`flex items-center justify-center w-8 h-8 overflow-hidden transition-all cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 ${user.inCache && 'ring-2 ring-error'} relative overflow-visible`}
+					className={`flex items-center justify-center w-8 h-8 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 ${user.inCache && 'ring-2 ring-error'} relative overflow-visible`}
 					onClick={handleProfileClick}
 				>
 					{user?.avatar ? (
-						<AvatarComponent
-							url={user.avatar}
-							size="xs"
-							className="!rounded-xl"
-						/>
+						<AvatarComponent url={user.avatar} size="xs" />
 					) : (
 						<span className="text-2xl font-bold text-content">
 							{user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'}
