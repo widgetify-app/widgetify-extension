@@ -14,6 +14,7 @@ interface FetchedProfile {
 	avatar: string
 	username?: string
 	name: string
+	verified: boolean
 	connections: string[]
 	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
 	friendshipStats: {

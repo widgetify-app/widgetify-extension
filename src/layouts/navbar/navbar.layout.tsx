@@ -1,13 +1,14 @@
+import { type JSX, useEffect, useState } from 'react'
+import { TbApps } from 'react-icons/tb'
+import { VscSettings } from 'react-icons/vsc'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { getConfigData } from '@/services/config-data/config_data-api'
-import { type JSX, useEffect, useState } from 'react'
-import { TbApps } from 'react-icons/tb'
-import { VscSettings } from 'react-icons/vsc'
 import { SettingModal } from '../setting/setting-modal'
 import { FriendsList } from './friends-list/friends'
+import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
 
 export interface PageLink {
@@ -107,7 +108,7 @@ export function NavbarLayout(): JSX.Element {
 				</div>
 				<div className="flex items-center gap-2">
 					<FriendsList />
-
+					<ProfileNav />
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
