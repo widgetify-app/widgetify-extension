@@ -1,3 +1,4 @@
+import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
@@ -16,6 +17,7 @@ export interface EventName {
 		petName?: string
 		petType: PetTypes
 	}
+	themeChanged: Theme
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

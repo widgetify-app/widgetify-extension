@@ -1,9 +1,13 @@
+import { useEffect, useRef, useState } from 'react'
+import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
+import { BiCheck } from 'react-icons/bi'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
+import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type {
 	FetchedTodo,
@@ -15,9 +19,6 @@ import {
 	getBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import { useEffect, useRef, useState } from 'react'
-import { AiOutlineCloudSync, AiOutlineSync } from 'react-icons/ai'
-import { BiCheck } from 'react-icons/bi'
 
 enum SyncState {
 	Syncing = 0,
@@ -342,9 +343,10 @@ async function getAll() {
 		bookmarks: FetchedBookmark[]
 		todos: FetchedTodo[]
 		wallpaper: Wallpaper
+		theme: Theme | null
 	}>('/extension/@me/sync')
 
-	const { bookmarks, todos, wallpaper } = response.data
+	const { bookmarks, todos, wallpaper, theme } = response.data
 
 	const mappedFetched: Bookmark[] = mapBookmarks(bookmarks)
 	callEvent('bookmarksChanged', mappedFetched)
@@ -362,6 +364,11 @@ async function getAll() {
 			...wallpaper,
 			isRetouchEnabled: false,
 		})
+	}
+
+	const themeStore = await getFromStorage('theme')
+	if (theme && theme !== themeStore) {
+		callEvent('themeChanged', theme)
 	}
 }
 
