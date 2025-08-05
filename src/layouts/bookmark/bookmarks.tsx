@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
+import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { FolderBookmarkItem } from './components/bookmark-folder'
@@ -24,7 +25,9 @@ export function BookmarksComponent() {
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
+	const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false)
 	const [bookmarkToEdit, setBookmarkToEdit] = useState<Bookmark | null>(null)
+	const [bookmarkToDelete, setBookmarkToDelete] = useState<Bookmark | null>(null)
 
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
 
@@ -92,6 +95,25 @@ export function BookmarksComponent() {
 		setBookmarkToEdit(bookmark)
 		setShowEditBookmarkModal(true)
 		setSelectedBookmark(null)
+	}
+
+	const handleDeleteBookmark = (bookmark: Bookmark) => {
+		setBookmarkToDelete(bookmark)
+		setShowDeleteConfirmationModal(true)
+		setSelectedBookmark(null)
+	}
+
+	const handleConfirmDelete = () => {
+		if (bookmarkToDelete) {
+			deleteBookmark(bookmarkToDelete.id)
+			setBookmarkToDelete(null)
+		}
+		setShowDeleteConfirmationModal(false)
+	}
+
+	const handleCancelDelete = () => {
+		setBookmarkToDelete(null)
+		setShowDeleteConfirmationModal(false)
 	}
 	const handleBookmarkClick = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
 		if (e) {
@@ -364,10 +386,7 @@ export function BookmarksComponent() {
 				{selectedBookmark && (
 					<BookmarkContextMenu
 						position={contextMenuPos}
-						onDelete={() => {
-							deleteBookmark(selectedBookmark.id)
-							setSelectedBookmark(null)
-						}}
+						onDelete={() => handleDeleteBookmark(selectedBookmark)}
 						onEdit={() => handleEditBookmark(selectedBookmark)}
 						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
 					/>
@@ -390,6 +409,32 @@ export function BookmarksComponent() {
 					bookmark={bookmarkToEdit}
 				/>
 			)}
+			<ConfirmationModal
+				isOpen={showDeleteConfirmationModal}
+				onClose={handleCancelDelete}
+				onConfirm={handleConfirmDelete}
+				title="حذف بوکمارک"
+				message={
+					bookmarkToDelete?.type === 'FOLDER' ? (
+						<div>
+							<p>
+								آیا از حذف پوشه "{bookmarkToDelete.title}" اطمینان دارید؟
+							</p>
+							<p className="mt-2 text-xs text-error">
+								تمام بوکمارک‌های داخل این پوشه نیز حذف خواهند شد.
+							</p>
+						</div>
+					) : (
+						<p>
+							آیا از حذف بوکمارک "{bookmarkToDelete?.title}" اطمینان دارید؟
+						</p>
+					)
+				}
+				confirmText="حذف"
+				cancelText="انصراف"
+				variant="danger"
+				direction="rtl"
+			/>
 		</>
 	)
 }
