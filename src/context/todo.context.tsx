@@ -16,7 +16,6 @@ export enum TodoPriority {
 	High = 'high',
 }
 export interface TodoOptions {
-	blurMode: boolean
 	viewMode: TodoViewType
 }
 export interface AddTodoInput {
@@ -43,7 +42,6 @@ const TodoContext = createContext<TodoContextType | null>(null)
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
-		blurMode: false,
 		viewMode: TodoViewType.Day,
 	})
 
@@ -58,7 +56,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				setTodoOptions(todoOptions)
 			} else {
 				setToStorage('todoOptions', {
-					blurMode: false,
 					viewMode: TodoViewType.Day,
 				})
 			}
