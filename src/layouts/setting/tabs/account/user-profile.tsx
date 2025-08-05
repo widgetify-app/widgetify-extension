@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react'
+import { AiOutlineFileSync } from 'react-icons/ai'
+import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
+import { FiAtSign, FiCalendar, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
@@ -6,10 +10,6 @@ import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
-import { useEffect, useState } from 'react'
-import { AiOutlineFileSync } from 'react-icons/ai'
-import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
-import { FiAtSign, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
 import { ActivityInput } from './activity-input'
 import { Connections } from './connections'
 
@@ -93,61 +93,79 @@ export const UserProfile = () => {
 		)
 	}
 	return (
-		<div className="w-full max-w-xl px-4 mx-auto duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
-			<div className={'flex items-center justify-between p-5 mb-8 rounded-xl'}>
-				<div className="flex items-center gap-4">
-					<div className="flex-1">
-						<h3 className={'text-xl font-bold text-content'}>
-							{profile?.name || 'کاربر'}
-						</h3>
-						{
-							<div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
-								<FiAtSign size={14} />
-								<span>{profile?.username || '-'}</span>
+		<div className="w-full max-w-xl px-4 mx-auto">
+			<div className="relative mb-2 overflow-hidden border bg-gradient-to-br from-blue-50/5 to-purple-50/5 backdrop-blur-sm border-content rounded-2xl">
+				<div className="relative p-4">
+					<div className="flex flex-col items-center gap-3 md:flex-row md:items-start">
+						{/* Avatar Section */}
+						<div className="relative flex-shrink-0 group">
+							<div className="absolute transition-opacity duration-300 rounded-full -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-20 group-hover:opacity-40"></div>
+							<AvatarComponent
+								url={profile?.avatar || null}
+								placeholder={profile?.name || 'کاربر'}
+								size="xl"
+								className="relative border-4 shadow-2xl border-white/20 backdrop-blur-sm"
+							/>
+							<div
+								className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-400' : 'bg-emerald-400'} border-4 border-white/30 rounded-full shadow-lg bottom-1 right-1`}
+							></div>
+							{profile?.inCache && <OfflineIndicator mode="badge" />}
+						</div>
+
+						{/* Profile Info */}
+						<div className="flex-1 space-y-4 text-center md:text-right">
+							<div>
+								<h1 className="mb-2 text-3xl font-bold text-content">
+									{profile?.name || 'کاربر'}
+								</h1>
+								<div className="grid items-center justify-center grid-cols-2 gap-1 text-sm text-content/70">
+									<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+										<FiAtSign size={12} />
+										<span>{profile?.username || '-'}</span>
+									</div>
+									<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+										<FiMail size={12} />
+										<span className="truncate dir-ltr">
+											{profile?.email}
+										</span>
+									</div>
+									<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+										{getGenderInfo(profile?.gender).icon}
+										<span
+											className={`font-medium ${getGenderInfo(profile?.gender).color}`}
+										>
+											جنسیت:{' '}
+											{getGenderInfo(profile?.gender).label ||
+												'نامشخص'}
+										</span>
+									</div>
+									{/* birthday */}
+									<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+										<FiCalendar size={12} />
+										<span>{profile?.birthDate || '-'}</span>
+									</div>
+								</div>
 							</div>
-						}
-						<div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
-							<FiMail size={14} />
-							<span className="dir-ltr">{profile?.email}</span>
-						</div>
-						<div className="flex items-center gap-1.5 mt-1">
-							{getGenderInfo(profile?.gender).icon}
-							<p
-								className={`text-sm ${getGenderInfo(profile?.gender).color} font-medium`}
-							>
-								{getGenderInfo(profile?.gender).label}
-							</p>
-						</div>
-						<div className="mt-4">
-							<a
-								href="https://widgetify.ir/login"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 w-fit"
-							>
-								<FiUser size={14} />
-								ویرایش پروفایل
-							</a>
+
+							<div className="flex justify-center md:justify-start">
+								<a
+									href="https://widgetify.ir/login"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-white transition-all duration-300 transform shadow-lg hover:scale-105 bg-primary rounded-2xl"
+								>
+									<FiUser size={16} />
+									ویرایش پروفایل
+								</a>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="relative flex-shrink-0">
-					<AvatarComponent
-						url={profile?.avatar || null}
-						placeholder={profile?.name || 'کاربر'}
-						size="xl"
-						className="border-2 shadow-md border-neutral-700"
-					/>
-					<div
-						className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-500' : 'bg-green-500'} border-2 rounded-full border-neutral-800 -bottom-1 -right-1`}
-					></div>
-					{profile?.inCache && <OfflineIndicator mode="badge" />}
 				</div>
 			</div>
 
 			<ActivityInput activity={profile?.activity || ''} />
 
-			<SectionPanel title="همگام‌سازی" delay={0.2}>
+			<SectionPanel title="همگام‌سازی" size="xs">
 				<div className="flex items-center justify-between p-4 transition-colors rounded-lg">
 					<div className="pr-2">
 						<p
@@ -180,14 +198,14 @@ export const UserProfile = () => {
 
 			<Connections />
 
-			<SectionPanel title="حساب کاربری" delay={0.3}>
+			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
 				<div className="p-4 space-y-3 transition-colors rounded-lg">
 					<p className={'text-sm font-light text-content'}>
 						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 					</p>
 					<Button
 						onClick={() => logout()}
-						className="text-white/90 btn-error"
+						className="text-white/90 btn-error rounded-2xl"
 						size="md"
 					>
 						<FiLogOut size={16} />

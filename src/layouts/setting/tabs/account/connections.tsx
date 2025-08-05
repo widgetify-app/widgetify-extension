@@ -1,11 +1,11 @@
+import { type JSX, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
 import { getMainClient } from '@/services/api'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
-import { type JSX, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 
 interface Platform {
 	id: string
@@ -144,7 +144,7 @@ export function Connections() {
 	)
 
 	return (
-		<SectionPanel title="پلتفرم‌های متصل" delay={0.4}>
+		<SectionPanel title="پلتفرم‌های متصل" delay={0.4} size="xs">
 			<div className="space-y-4">
 				{profile?.inCache && <OfflineIndicator mode="notification" />}
 				<p className={'text-sm font-light text-content'}>
@@ -189,7 +189,7 @@ export function Connections() {
 											(!platform.isActive && !platform.connected)
 										}
 										size="xs"
-										className={`${platform.connected ? 'btn-error' : 'btn-primary'} text-white/90`}
+										className={`rounded-2xl ${platform.connected ? 'btn-error' : 'btn-primary'} text-white/90`}
 									>
 										{platform.isLoading ? (
 											<LoadingSpinner />
