@@ -100,7 +100,11 @@ export function useBookmarkIcon() {
 		updateFormData: (key: string, value: string) => void,
 		type: BookmarkType
 	) => {
-		const handlePreviewClick = () => fileInputRef.current?.click()
+		const handlePreviewClick = () => {
+			if (iconSource === 'upload') {
+				fileInputRef.current?.click()
+			}
+		}
 
 		const handleRemoveCustomImage = (e: React.MouseEvent) => {
 			e.stopPropagation()
@@ -136,7 +140,7 @@ export function useBookmarkIcon() {
 		if (formData.customImage) {
 			return (
 				<div
-					className="relative w-16 h-16 p-2 mx-auto cursor-pointer group"
+					className="relative flex flex-col items-center justify-center w-12 h-12 p-2 cursor-pointer group"
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -163,7 +167,7 @@ export function useBookmarkIcon() {
 		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
 			return (
 				<div
-					className={`relative w-14 h-14 mx-auto cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
+					className={`relative w-12 h-12 cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
 					onClick={handlePreviewClick}
 					onDragOver={handleDragOver}
 					onDragLeave={handleDragLeave}
@@ -197,23 +201,24 @@ export function useBookmarkIcon() {
 				</div>
 			)
 		}
-		if (iconSource === 'auto') return null
+
 		return (
 			<div
-				className={`relative flex flex-col items-center justify-center w-full h-16 p-2 mx-auto transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
-					isDragging
-						? 'border-blue-400 bg-blue-50/10'
-						: 'border-content hover:bg-neutral-800/50'
+				className={`relative flex flex-col items-center justify-center w-12 h-12 p-2 transition-colors border-2 border-dashed rounded-xl cursor-pointer ${
+					iconSource === 'auto'
+						? '!cursor-not-allowed border-base-300/60'
+						: isDragging
+							? 'border-blue-400 bg-blue-50/10'
+							: 'border-content hover:bg-neutral-800/50'
 				}`}
 				onClick={handlePreviewClick}
 				onDragOver={handleDragOver}
 				onDragLeave={handleDragLeave}
 				onDrop={handleDrop}
 			>
-				<FaImage className="w-6 h-6 mb-1 text-content" />
-				<span className="text-xs text-center text-content">
-					آپلود تصویر (اختیاری)
-				</span>
+				<FaImage
+					className={`w-4 h-4 mb-1  ${iconSource === 'auto' ? 'text-muted' : 'text-content'}`}
+				/>
 			</div>
 		)
 	}
