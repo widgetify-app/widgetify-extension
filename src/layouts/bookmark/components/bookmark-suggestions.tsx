@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react'
+import { FaGlobe } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { SectionPanel } from '@/components/section-panel'
 import { getMainClient } from '@/services/api'
-import { useEffect, useState } from 'react'
-import { FaGlobe } from 'react-icons/fa'
 
 interface BookmarkSuggestion {
 	title: string
@@ -36,7 +36,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 	return (
 		<div className="mt-4">
 			<SectionPanel title="پیشنهاد ویجتی‌فای" size="xs">
-				<div className="grid grid-cols-5 gap-2 mt-2">
+				<div className="grid h-16 grid-cols-5 gap-2 mt-2 overflow-y-auto">
 					{suggestions.map((suggestion, index) => (
 						<div
 							key={index}
