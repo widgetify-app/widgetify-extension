@@ -1,29 +1,27 @@
 import { Button } from '@/components/button/button'
 import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
 import { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaChartSimple } from 'react-icons/fa6'
+import { FiList } from 'react-icons/fi'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
-import { FiList } from 'react-icons/fi'
+
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
 		useTodoStore()
+	const { blurMode,updateSetting } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
-
-	const handleBlurModeToggle = () => {
-		const newBlurMode = !todoOptions.blurMode
-		updateOptions({ blurMode: newBlurMode })
-	}
 
 	const handleChangeViewMode = (viewMode: TodoViewType) => {
 		updateOptions({ viewMode })
@@ -59,8 +57,6 @@ export function TodosLayout() {
 		return { total, completed, percentage }
 	}
 
-	const stats = getCompletionStats()
-
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
@@ -88,17 +84,6 @@ export function TodosLayout() {
 								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
 							>
 								<FaChartSimple size={12} />
-							</Button>
-							<Button
-								onClick={handleBlurModeToggle}
-								size="xs"
-								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${todoOptions.blurMode ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
-							>
-								{todoOptions.blurMode ? (
-									<FaEye size={12} />
-								) : (
-									<FaEyeSlash size={12} />
-								)}
 							</Button>
 						</div>
 					</div>
@@ -166,7 +151,7 @@ export function TodosLayout() {
 				<div className="mt-0.5 flex-grow overflow-hidden">
 					{!showStats && (
 						<div
-							className={`space-y-1.5 overflow-y-auto h-full ${todoOptions.blurMode ? 'blur-mode' : ''}`}
+							className={`space-y-1.5 overflow-y-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
 							{selectedDateTodos.length > 0 ? (
 								<>
@@ -176,7 +161,7 @@ export function TodosLayout() {
 											todo={todo}
 											deleteTodo={removeTodo}
 											toggleTodo={toggleTodo}
-											blurMode={todoOptions.blurMode}
+											blurMode={blurMode}
 										/>
 									))}
 								</>
@@ -212,13 +197,6 @@ export function TodosLayout() {
 					/>
 				)}
 			</div>
-
-			<style>{`
-                .blur-mode {
-                    filter: blur(5px);
-                    pointer-events: none;
-                }
-            `}</style>
 		</WidgetContainer>
 	)
 }

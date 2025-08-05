@@ -4,6 +4,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 
 export interface GeneralData {
+	blurMode: boolean
 	analyticsEnabled: boolean
 	selected_timezone: FetchedTimezone
 }
@@ -15,6 +16,7 @@ interface GeneralSettingContextType extends GeneralData {
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
+	blurMode: false,
 	analyticsEnabled: true,
 	selected_timezone: {
 		label: 'آسیا / تهران',
@@ -78,6 +80,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		return null
 	}
 	const contextValue: GeneralSettingContextType = {
+		blurMode: settings.blurMode,
 		analyticsEnabled: settings.analyticsEnabled,
 		selected_timezone:
 			settings?.selected_timezone || DEFAULT_SETTINGS.selected_timezone,
