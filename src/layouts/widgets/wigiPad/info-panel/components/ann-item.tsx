@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify'
 import type { InfoPanelData } from '../hooks/useInfoPanelData'
 
 interface NotificationItemProps {
@@ -5,29 +6,24 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification }: NotificationItemProps) {
-	const isHtmlContent = /<[^>]*>/g.test(notification.content)
+	const safeHTML = DOMPurify.sanitize(notification.content, {
+		ALLOWED_TAGS: [
+			'div',
+			'b',
+			'i',
+			'em',
+			'strong',
+			'a',
+			'p',
+			'br',
+			'span',
+			'ul',
+			'li',
+			'img',
+		],
+		ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt'],
+	})
 
-	return (
-		<div className="flex items-start gap-2">
-			<div className="flex-1 min-w-0">
-				{isHtmlContent ? (
-					<div
-						className="text-sm text-base-content"
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: Content from server can contain HTML
-						dangerouslySetInnerHTML={{ __html: notification.content }}
-					/>
-				) : (
-					<p className="text-sm text-base-content">{notification.content}</p>
-				)}
-				{notification.timestamp && (
-					<p className="mt-2 text-xs opacity-50 text-base-content">
-						{notification.timestamp.toLocaleTimeString('fa-IR', {
-							hour: '2-digit',
-							minute: '2-digit',
-						})}
-					</p>
-				)}
-			</div>
-		</div>
-	)
+	// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+	return <div dangerouslySetInnerHTML={{ __html: safeHTML }} />
 }
