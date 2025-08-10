@@ -18,6 +18,7 @@ export interface EventName {
 		petType: PetTypes
 	}
 	themeChanged: Theme
+	auth_logout: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {
