@@ -1,4 +1,4 @@
-import { FaUserCircle } from 'react-icons/fa'
+import { LuCircleUser } from 'react-icons/lu'
 import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
@@ -20,7 +20,7 @@ export function ProfileNav() {
 						callEvent('openSettings', 'account')
 					}}
 				>
-					<FaUserCircle className="text-2xl text-content" />
+					<LuCircleUser className="text-2xl text-content" />
 				</div>
 			</Tooltip>
 		)
