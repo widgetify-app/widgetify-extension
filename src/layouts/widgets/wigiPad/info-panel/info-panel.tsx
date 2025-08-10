@@ -49,7 +49,7 @@ export function InfoPanel() {
 
 			default:
 				return (
-					<div className="space-y-3">
+					<div className="space-y-1">
 						{data.notifications.map((notification, index) => (
 							<NotificationItem key={index} notification={notification} />
 						))}

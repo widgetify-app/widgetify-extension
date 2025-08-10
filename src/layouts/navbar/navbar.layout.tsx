@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify'
 import { type JSX, useEffect, useState } from 'react'
 import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
@@ -53,8 +54,32 @@ export function NavbarLayout(): JSX.Element {
 						(storeData?.logo && storeData.logo.id !== data.logo.id) ||
 						!storeData?.logo
 					) {
+						const safeHTML = DOMPurify.sanitize(data.logo?.content || '', {
+							ALLOWED_TAGS: [
+								'div',
+								'b',
+								'i',
+								'em',
+								'strong',
+								'a',
+								'p',
+								'br',
+								'span',
+								'ul',
+								'li',
+								'img',
+							],
+							ALLOWED_ATTR: [
+								'href',
+								'target',
+								'rel',
+								'class',
+								'src',
+								'alt',
+							],
+						})
 						setLogoData({
-							content: data.logo.content,
+							content: safeHTML,
 							logoUrl: data.logo.url,
 						})
 
@@ -62,7 +87,7 @@ export function NavbarLayout(): JSX.Element {
 							...storeData,
 							logo: {
 								id: data.logo.id,
-								content: data.logo.content,
+								content: safeHTML,
 								url: data.logo.url,
 							},
 						})
