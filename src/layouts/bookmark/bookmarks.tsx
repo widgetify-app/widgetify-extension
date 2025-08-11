@@ -433,7 +433,7 @@ export function BookmarksComponent() {
 				confirmText="حذف"
 				cancelText="انصراف"
 				variant="danger"
-				direction="rtl"
+				direction="ltr"
 			/>
 		</>
 	)
