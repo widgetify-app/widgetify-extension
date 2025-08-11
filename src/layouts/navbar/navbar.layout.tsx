@@ -40,7 +40,7 @@ export function NavbarLayout(): JSX.Element {
 
 		const loadConfig = async () => {
 			try {
-				const storeData = await getFromStorage('configData')
+				const storeData: any = await getFromStorage('configData')
 				if (storeData) {
 					setLogoData({
 						content: storeData.logo?.content,
@@ -68,6 +68,7 @@ export function NavbarLayout(): JSX.Element {
 								'ul',
 								'li',
 								'img',
+								'h1',
 							],
 							ALLOWED_ATTR: [
 								'href',
