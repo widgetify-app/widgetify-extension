@@ -20,7 +20,7 @@ export function ProfileNav() {
 						callEvent('openSettings', 'account')
 					}}
 				>
-					<LuCircleUser className="text-2xl text-content" />
+					<LuCircleUser size={18} className="text-muted" />
 				</div>
 			</Tooltip>
 		)
