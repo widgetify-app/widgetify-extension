@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { type RecommendedSite, useGetTrends } from '@/services/hooks/trends/getTrends'
 //@ts-ignore
 import 'swiper/css'
@@ -11,6 +12,63 @@ import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
 } from '@/layouts/bookmark/utils/browser-bookmarks.util'
+
+interface BookmarkItem {
+	id?: string
+	name?: string
+	title?: string
+	url?: string | null
+	icon?: string
+}
+
+interface BookmarkSwiperProps {
+	items: BookmarkItem[]
+	spaceBetween?: number
+	grabCursor?: boolean
+	navigation?: boolean
+}
+
+function BookmarkSwiper({
+	items,
+	spaceBetween = 1,
+	grabCursor = true,
+	navigation = false,
+}: BookmarkSwiperProps) {
+	const swiperProps = {
+		modules: [FreeMode, Navigation],
+		spaceBetween,
+		slidesPerView: 8,
+		grabCursor,
+		className: 'w-full user-list-slider bg-content rounded-2xl !px-1',
+		dir: 'rtl' as const,
+		...(navigation && {
+			navigation: {
+				nextEl: '.user-list-next',
+				prevEl: '.user-list-prev',
+			},
+		}),
+	}
+
+	return (
+		<Swiper {...swiperProps}>
+			{items.map((item, index) => (
+				<SwiperSlide key={item.id || item.name || index}>
+					<Tooltip content={item.name || item.title || item.url || ''}>
+						<div
+							className="flex items-center mt-1 cursor-pointer group"
+							onClick={() => item.url && window.open(item.url, '_blank')}
+						>
+							<img
+								src={item.icon || getFaviconFromUrl(item.url || '')}
+								className="object-cover w-6 h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
+							/>
+						</div>
+					</Tooltip>
+				</SwiperSlide>
+			))}
+		</Swiper>
+	)
+}
 
 export function BrowserBookmark() {
 	const { data, isError } = useGetTrends({
@@ -50,62 +108,18 @@ export function BrowserBookmark() {
 
 	return (
 		<div className="flex flex-row justify-between w-full gap-2 p-2">
-			<Swiper
-				modules={[FreeMode, Navigation]}
+			<BookmarkSwiper
+				items={recommendedSites}
 				spaceBetween={1}
-				slidesPerView={8}
 				grabCursor={true}
-				className="w-full user-list-slider bg-content rounded-2xl !px-1"
-				dir="rtl"
-				navigation={{
-					nextEl: '.user-list-next',
-					prevEl: '.user-list-prev',
-				}}
-			>
-				{recommendedSites.map((site) => (
-					<SwiperSlide key={site.name}>
-						<Tooltip content={site.name}>
-							<div
-								className="flex items-center mt-1 cursor-pointer group"
-								onClick={() =>
-									site.url && window.open(site.url, '_blank')
-								}
-							>
-								<img
-									src={site.icon || getFaviconFromUrl(site.url || '')}
-									className="object-cover w-6 h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
-								/>
-							</div>
-						</Tooltip>
-					</SwiperSlide>
-				))}
-			</Swiper>
-			<Swiper
-				modules={[FreeMode, Navigation]}
+				navigation={true}
+			/>
+			<BookmarkSwiper
+				items={browserBookmarks}
 				spaceBetween={2}
-				slidesPerView={8}
 				grabCursor={false}
-				className="w-full user-list-slider bg-content rounded-2xl !px-1"
-				dir="rtl"
-			>
-				{browserBookmarks.map((bookmark, index) => (
-					<SwiperSlide key={bookmark.id}>
-						<Tooltip content={bookmark.title || bookmark.url} key={index}>
-							<div
-								className="flex items-center mt-1 cursor-pointer group"
-								onClick={() =>
-									bookmark.url && window.open(bookmark.url, '_blank')
-								}
-							>
-								<img
-									src={getFaviconFromUrl(bookmark.url || '')}
-									className="object-cover w-6 h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
-								/>
-							</div>
-						</Tooltip>
-					</SwiperSlide>
-				))}
-			</Swiper>
+				navigation={false}
+			/>
 		</div>
 	)
 }
