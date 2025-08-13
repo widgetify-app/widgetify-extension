@@ -3,6 +3,7 @@ import { FaGlobe } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { SectionPanel } from '@/components/section-panel'
 import { getMainClient } from '@/services/api'
+import { getBrowserBookmarks } from '../utils/browser-bookmarks.util'
 
 interface BookmarkSuggestion {
 	title: string
@@ -24,6 +25,16 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 				'/bookmarks/suggestions'
 			)
 			setSuggestions(response.data)
+			const browserBookmarks = await getBrowserBookmarks()
+			const mappedBrowserBookmark: BookmarkSuggestion[] = browserBookmarks.map(
+				(bookmark) => ({
+					title: bookmark.title || '',
+					url: bookmark.url || '',
+					icon: getFaviconFromUrl(bookmark.url || ''),
+				})
+			)
+
+			setSuggestions((prev) => [...prev, ...mappedBrowserBookmark])
 		}
 
 		fetchSuggestions()
@@ -48,7 +59,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									<img
 										src={suggestion.icon}
 										alt={suggestion.title}
-										className="object-contain w-6 h-6"
+										className="object-contain w-6 h-6 rounded-md"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'
@@ -61,7 +72,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									<img
 										src={getFaviconFromUrl(suggestion.url)}
 										alt={suggestion.title}
-										className="object-contain w-6 h-6"
+										className="object-contain w-6 h-6 rounded-md"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'
