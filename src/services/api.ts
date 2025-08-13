@@ -10,20 +10,20 @@ import { callEvent } from '@/common/utils/call-event'
 const rawGithubApi = axios.create({
 	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
 })
-let URL = ''
+export let API_URL = ''
 export async function getMainClient(): Promise<AxiosInstance> {
 	let instance: AxiosInstance | undefined
 
 	const token = await getFromStorage('auth_token')
-	URL = import.meta.env.VITE_API
+	API_URL = import.meta.env.VITE_API
 
-	if (!URL) {
+	if (!API_URL) {
 		const urlResponse = await rawGithubApi.get('/.github/api.txt')
-		URL = urlResponse.data
+		API_URL = urlResponse.data
 	}
 
 	instance = axios.create({
-		baseURL: URL,
+		baseURL: API_URL,
 		headers: {
 			Authorization: token ? `Bearer ${token}` : undefined,
 		},
@@ -58,7 +58,7 @@ export async function getMainClient(): Promise<AxiosInstance> {
 					const refresh_token: string | null =
 						await getFromStorage('refresh_token')
 
-					const response = await axios.post(`${URL}/auth/refresh`, {
+					const response = await axios.post(`${API_URL}/auth/refresh`, {
 						refresh_token,
 					})
 

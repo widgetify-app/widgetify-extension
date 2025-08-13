@@ -1,3 +1,5 @@
+import { API_URL } from '@/services/api'
+
 /**
  * Retrieves a favicon URL for a given website URL using Google's favicon service.
  *
@@ -9,8 +11,6 @@
  *
  * @example
  * ```typescript
- * getFaviconFromUrl('github.com') // Returns: 'https://www.google.com/s2/favicons?domain=github.com&sz=64'
- * getFaviconFromUrl('https://example.com') // Returns: 'https://www.google.com/s2/favicons?domain=example.com&sz=64'
  * getFaviconFromUrl('') // Returns: ''
  * ```
  */
@@ -26,7 +26,7 @@ export const getFaviconFromUrl = (url: string): string => {
 		}
 
 		const urlObj = new URL(processedUrl)
-		return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`
+		return `${API_URL}/favicon/${urlObj.hostname}`
 	} catch {
 		return ''
 	}
