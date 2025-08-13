@@ -10,22 +10,12 @@ import { BookmarkTitle } from './bookmark/bookmark-title'
 export function FolderBookmarkItem({
 	bookmark,
 	onClick,
-	draggable = false,
 	isDragging = false,
-	onDragStart,
-	onDragOver,
-	onDragEnd,
-	onDrop,
 	onMenuClick,
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
-	draggable?: boolean
 	isDragging?: boolean
-	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }) {
 	const [isHovered, setIsHovered] = useState(false)
@@ -50,14 +40,7 @@ export function FolderBookmarkItem({
 		: {}
 
 	return (
-		<div
-			draggable={draggable}
-			onDragStart={onDragStart}
-			onDragOver={onDragOver}
-			onDragEnd={onDragEnd}
-			onDrop={onDrop}
-			className={`relative ${isDragging ? 'opacity-50' : ''}`}
-		>
+		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
 			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
@@ -65,7 +48,7 @@ export function FolderBookmarkItem({
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300 folder-bookmark-item`}
 				>
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-2xl">
