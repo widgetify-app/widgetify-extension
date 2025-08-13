@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
-import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { BookmarkProvider } from '@/context/bookmark.context'
 import { DateProvider } from '@/context/date.context'
@@ -12,8 +14,8 @@ import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
 import { WeatherProvider } from '@/context/weather.context'
 import {
-	WidgetVisibilityProvider,
 	useWidgetVisibility,
+	WidgetVisibilityProvider,
 } from '@/context/widget-visibility.context'
 import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
@@ -21,8 +23,6 @@ import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-import { useEffect, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
@@ -57,7 +57,7 @@ function ContentSection() {
 
 						<div
 							className={
-								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-4'
+								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-3'
 							}
 						>
 							<SearchLayout />
@@ -273,7 +273,7 @@ export function HomePage() {
 			<GeneralSettingProvider>
 				<WeatherProvider>
 					<WidgetVisibilityProvider>
-						<NavbarLayout />	
+						<NavbarLayout />
 						<ContentSection />
 						<WidgetSettingsModal
 							isOpen={showWidgetSettings}

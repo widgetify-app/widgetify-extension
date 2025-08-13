@@ -1,5 +1,5 @@
+import { domAnimation, LazyMotion, m } from 'framer-motion'
 import type { RecommendedSite } from '@/services/hooks/trends/getTrends'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 interface RecommendedSitesProps {
 	recommendedSites: RecommendedSite[]

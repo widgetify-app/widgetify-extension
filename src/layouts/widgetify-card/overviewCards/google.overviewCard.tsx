@@ -6,10 +6,7 @@ import {
 	filterGoogleEventsByDate,
 	getCurrentDate,
 } from '@/layouts/widgets/calendar/utils'
-import {
-	type GoogleCalendarEvent,
-	useGetGoogleCalendarEvents,
-} from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 
 export function GoogleOverviewCard() {
 	const { user, isAuthenticated } = useAuth()
@@ -34,7 +31,7 @@ export function GoogleOverviewCard() {
 	return (
 		<motion.div
 			className={
-				'p-2 rounded-lg bg-base-300/70 hover:bg-base-300 border-base-300/70 '
+				'p-1 rounded-lg bg-base-300/70 hover:bg-base-300 border border-base-300/70 active:scale-98'
 			}
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
