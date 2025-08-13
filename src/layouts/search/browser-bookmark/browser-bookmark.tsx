@@ -107,7 +107,7 @@ export function BrowserBookmark() {
 	}, [data, isError])
 
 	return (
-		<div className="flex flex-row justify-between w-full gap-2 p-2">
+		<div className="flex flex-row justify-between w-full gap-2 px-2 py-1">
 			<BookmarkSwiper
 				items={recommendedSites}
 				spaceBetween={1}
