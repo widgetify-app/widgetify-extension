@@ -1,16 +1,25 @@
+import {
+	closestCenter,
+	DndContext,
+	type DragEndEvent,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core'
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { useCallback, useEffect, useRef, useState } from 'react'
-
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
-import { FolderBookmarkItem } from './components/bookmark-folder'
 import { BookmarkItem } from './components/bookmark-item'
 import { FolderPath } from './components/folder-path'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
 import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
+import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 
 export function BookmarksComponent() {
@@ -40,10 +49,16 @@ export function BookmarksComponent() {
 	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
 		useState<boolean>(true)
 
-	const [draggedBookmarkId, setDraggedBookmarkId] = useState<string | null>(null)
-	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
-
 	const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 5, // 5px movement required before drag starts
+			},
+		}),
+		useSensor(KeyboardSensor)
+	)
 
 	const BOOKMARKS_PER_ROW = 5
 	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
@@ -79,6 +94,7 @@ export function BookmarksComponent() {
 
 		return true
 	}
+
 	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
 		if (isManageable(bookmark)) {
@@ -115,6 +131,7 @@ export function BookmarksComponent() {
 		setBookmarkToDelete(null)
 		setShowDeleteConfirmationModal(false)
 	}
+
 	const handleBookmarkClick = (bookmark: Bookmark, e?: React.MouseEvent<any>) => {
 		if (e) {
 			e.preventDefault()
@@ -149,116 +166,52 @@ export function BookmarksComponent() {
 		}
 	}
 
-	const handleDragStart = (e: React.DragEvent<HTMLDivElement>, bookmarkId: string) => {
-		if (bookmarks.find((b) => b.id === bookmarkId && !isManageable(b))) return
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event
 
-		setDraggedBookmarkId(bookmarkId)
-		e.dataTransfer.effectAllowed = 'move'
-
-		const dragImage = document.createElement('div')
-		dragImage.style.width = '80px'
-		dragImage.style.height = '90px'
-		dragImage.style.opacity = '0.5'
-		dragImage.style.position = 'absolute'
-		dragImage.style.top = '-1000px'
-		document.body.appendChild(dragImage)
-
-		e.dataTransfer.setDragImage(dragImage, 40, 45)
-
-		setTimeout(() => {
-			document.body.removeChild(dragImage)
-		}, 0)
-	}
-
-	const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-		e.preventDefault()
-		e.dataTransfer.dropEffect = 'move'
-		setDragOverIndex(index)
-	}
-
-	const handleDragEnd = () => {
-		setDraggedBookmarkId(null)
-		setDragOverIndex(null)
-	}
-
-	const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
-		e.preventDefault()
-
-		if (!draggedBookmarkId) return
-
-		const allBookmarks = [...bookmarks]
-		const currentItems = getCurrentFolderItems(currentFolderId)
-		const sourceBookmark = allBookmarks.find((b) => b.id === draggedBookmarkId)
-		const targetBookmark = currentItems[targetIndex]
-
-		if (!sourceBookmark) {
-			setDraggedBookmarkId(null)
-			setDragOverIndex(null)
+		if (!over || active.id === over.id) {
 			return
 		}
 
-		if (targetBookmark && targetBookmark.type === 'FOLDER') {
-			if (sourceBookmark.parentId !== targetBookmark.id) {
-				const updatedSourceIndex = allBookmarks.findIndex(
-					(b) => b.id === draggedBookmarkId
-				)
+		const allBookmarks = [...bookmarks]
+		const currentItems = getCurrentFolderItems(currentFolderId)
 
-				if (updatedSourceIndex !== -1) {
-					const updatedBookmark = {
-						...allBookmarks[updatedSourceIndex],
-						parentId: targetBookmark.id,
-						order: 0,
-					}
+		const sourceBookmark = allBookmarks.find((b) => b.id === active.id)
 
-					allBookmarks[updatedSourceIndex] = updatedBookmark
-					setBookmarks(allBookmarks)
-					debouncedSync()
-				}
-			}
-		} else {
-			const sourceIndex = currentItems.findIndex(
-				(item) => item.id === draggedBookmarkId
-			)
-
-			if (sourceIndex === -1 || sourceIndex === targetIndex) {
-				setDraggedBookmarkId(null)
-				setDragOverIndex(null)
-				return
-			}
-
-			const sourceBookmarkForReorder = currentItems[sourceIndex]
-			const actualSourceIndex = allBookmarks.findIndex(
-				(b) => b.id === sourceBookmarkForReorder.id
-			)
-			const targetBookmarkForReorder =
-				targetIndex < currentItems.length ? currentItems[targetIndex] : null
-			if (actualSourceIndex !== -1 && targetBookmarkForReorder) {
-				const actualTargetIndex = allBookmarks.findIndex(
-					(b) => b.id === targetBookmarkForReorder.id
-				)
-
-				if (actualTargetIndex !== -1) {
-					const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
-					allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
-
-					const updatedBookmarks = allBookmarks.map((bookmark) => {
-						if (bookmark.parentId === currentFolderId) {
-							const newIndex = allBookmarks.findIndex(
-								(b) => b.id === bookmark.id
-							)
-							return { ...bookmark, order: newIndex }
-						}
-						return bookmark
-					})
-
-					setBookmarks(updatedBookmarks)
-					debouncedSync()
-				}
-			}
+		if (!sourceBookmark) {
+			return
 		}
 
-		setDraggedBookmarkId(null)
-		setDragOverIndex(null)
+		const sourceIndex = currentItems.findIndex((item) => item.id === active.id)
+		const targetIndex = currentItems.findIndex((item) => item.id === over.id)
+
+		if (sourceIndex === -1 || sourceIndex === targetIndex) {
+			return
+		}
+
+		const actualSourceIndex = allBookmarks.findIndex(
+			(b) => b.id === currentItems[sourceIndex].id
+		)
+
+		const actualTargetIndex = allBookmarks.findIndex(
+			(b) => b.id === currentItems[targetIndex].id
+		)
+
+		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
+			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
+			allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
+
+			const updatedBookmarks = allBookmarks.map((bookmark) => {
+				if (bookmark.parentId === currentFolderId) {
+					const newIndex = allBookmarks.findIndex((b) => b.id === bookmark.id)
+					return { ...bookmark, order: newIndex }
+				}
+				return bookmark
+			})
+
+			setBookmarks(updatedBookmarks)
+			debouncedSync()
+		}
 	}
 
 	const handleNavigate = (folderId: string | null, depth: number) => {
@@ -327,71 +280,44 @@ export function BookmarksComponent() {
 
 	return (
 		<>
-			<div
-				className={
-					'grid grid-cols-5 gap-4 lg:gap-3 lg:px-1 w-full rounded-lg transition-all duration-300'
-				}
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
 			>
-				{' '}
-				{displayedBookmarks.map((bookmark, i) =>
-					bookmark ? (
-						<div
-							key={i}
-							className={`transition-transform duration-200 ${dragOverIndex === i ? 'scale-110 border-2 border-blue-400 rounded-full' : 'rounded-full'}`}
-						>
-							{bookmark.type === 'FOLDER' ? (
-								<FolderBookmarkItem
-									bookmark={bookmark}
-									onClick={(e) => handleBookmarkClick(bookmark, e)}
-									draggable={isManageable(bookmark)}
-									isDragging={draggedBookmarkId === bookmark.id}
-									onDragStart={(e) => handleDragStart(e, bookmark.id)}
-									onDragOver={(e) => handleDragOver(e, i)}
-									onMenuClick={
-										isManageable(bookmark)
-											? (e) => handleMenuClick(e, bookmark)
-											: undefined
-									}
-									onDragEnd={handleDragEnd}
-									onDrop={(e) => handleDrop(e, i)}
-								/>
+				<div className="grid w-full grid-cols-5 gap-4 transition-all duration-300 rounded-lg lg:gap-3 lg:px-1">
+					<SortableContext
+						items={displayedBookmarks
+							.filter(Boolean)
+							.map((bookmark) => bookmark?.id || '')}
+						strategy={rectSortingStrategy}
+					>
+						{displayedBookmarks.map((bookmark, i) =>
+							bookmark ? (
+								<div
+									key={bookmark.id}
+									className="transition-transform duration-200"
+								>
+									<SortableBookmarkItem
+										bookmark={bookmark}
+										onClick={(e) => handleBookmarkClick(bookmark, e)}
+										onMenuClick={(e) => handleMenuClick(e, bookmark)}
+										isManageable={isManageable(bookmark)}
+										id={bookmark.id}
+									/>
+								</div>
 							) : (
 								<BookmarkItem
-									bookmark={bookmark}
-									onClick={(e) => handleBookmarkClick(bookmark, e)}
-									canAdd={true}
-									draggable={isManageable(bookmark)}
-									isDragging={draggedBookmarkId === bookmark.id}
-									onDragStart={(e) => handleDragStart(e, bookmark.id)}
-									onDragOver={(e) => handleDragOver(e, i)}
-									onMenuClick={
-										isManageable(bookmark)
-											? (e) => handleMenuClick(e, bookmark)
-											: undefined
-									}
-									onDragEnd={handleDragEnd}
-									onDrop={(e) => handleDrop(e, i)}
+									key={i}
+									bookmark={null}
+									onClick={() => setShowAddBookmarkModal(true)}
+									canAdd={currentFolderIsManageable}
 								/>
-							)}
-						</div>
-					) : (
-						<BookmarkItem
-							key={i}
-							bookmark={null}
-							onClick={() => setShowAddBookmarkModal(true)}
-							canAdd={currentFolderIsManageable}
-						/>
-					)
-				)}
-				{selectedBookmark && (
-					<BookmarkContextMenu
-						position={contextMenuPos}
-						onDelete={() => handleDeleteBookmark(selectedBookmark)}
-						onEdit={() => handleEditBookmark(selectedBookmark)}
-						onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
-					/>
-				)}
-			</div>
+							)
+						)}
+					</SortableContext>
+				</div>
+			</DndContext>
 			<div className="flex justify-center w-full mt-0.5">
 				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 			</div>
@@ -435,6 +361,14 @@ export function BookmarksComponent() {
 				variant="danger"
 				direction="ltr"
 			/>
+			{selectedBookmark && (
+				<BookmarkContextMenu
+					position={contextMenuPos}
+					onDelete={() => handleDeleteBookmark(selectedBookmark)}
+					onEdit={() => handleEditBookmark(selectedBookmark)}
+					onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
+				/>
+			)}
 		</>
 	)
 }

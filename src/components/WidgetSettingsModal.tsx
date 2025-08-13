@@ -1,12 +1,26 @@
+import {
+	closestCenter,
+	DndContext,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core'
+import {
+	SortableContext,
+	sortableKeyboardCoordinates,
+	useSortable,
+	verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { useState } from 'react'
+import { FiMove } from 'react-icons/fi'
 import { useAuth } from '@/context/auth.context'
 import {
 	MAX_VISIBLE_WIDGETS,
 	useWidgetVisibility,
 	widgetItems,
 } from '@/context/widget-visibility.context'
-import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
-import { useState } from 'react'
-import { FiMove } from 'react-icons/fi'
 import { ItemSelector } from './item-selector'
 import Modal from './modal'
 
@@ -14,6 +28,42 @@ interface WidgetSettingsModalProps {
 	isOpen: boolean
 	onClose: () => void
 }
+// Sortable widget component that uses dnd-kit
+function SortableWidget({ widget }: { widget: any }) {
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+		useSortable({ id: widget.id })
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	}
+
+	return (
+		<div
+			ref={setNodeRef}
+			style={style}
+			className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+				isDragging
+					? 'bg-primary/20 border-primary/50'
+					: 'bg-content border-content'
+			}`}
+		>
+			<div className="flex items-center gap-2">
+				<span className="text-lg">{widget.emoji}</span>
+				<span>{widget.label}</span>
+			</div>
+			<div
+				{...attributes}
+				{...listeners}
+				className="p-1 rounded-lg cursor-move hover:bg-content"
+				title="جابجا کردن"
+			>
+				<FiMove className="text-muted" />
+			</div>
+		</div>
+	)
+}
+
 export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProps) {
 	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
 		useWidgetVisibility()
@@ -22,12 +72,29 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 
 	const sortedVisibleWidgets = getSortedWidgets()
 
-	const handleDragEnd = (result: any) => {
-		if (!result.destination) {
+	// Set up sensors for keyboard and pointer interactions
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 5, // 5px movement required before drag starts
+			},
+		}),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	)
+
+	const handleDragEnd = (event: any) => {
+		const { active, over } = event
+
+		if (!over || active.id === over.id) {
 			return
 		}
 
-		reorderWidgets(result.source.index, result.destination.index)
+		const oldIndex = sortedVisibleWidgets.findIndex((item) => item.id === active.id)
+		const newIndex = sortedVisibleWidgets.findIndex((item) => item.id === over.id)
+
+		reorderWidgets(oldIndex, newIndex)
 	}
 
 	return (
@@ -107,54 +174,27 @@ export function WidgetSettingsModal({ isOpen, onClose }: WidgetSettingsModalProp
 								هیچ ویجتی برای نمایش انتخاب نشده است.
 							</p>
 						) : (
-							<DragDropContext onDragEnd={handleDragEnd}>
-								<Droppable droppableId="widget-list">
-									{(provided) => (
-										<div
-											{...provided.droppableProps}
-											ref={provided.innerRef}
-											className="space-y-2"
-										>
-											{sortedVisibleWidgets.map((widget, index) => (
-												<Draggable
-													key={widget.id}
-													draggableId={widget.id}
-													index={index}
-												>
-													{(provided, snapshot) => (
-														<div
-															ref={provided.innerRef}
-															{...provided.draggableProps}
-															className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
-																snapshot.isDragging
-																	? 'bg-primary/20 border-primary/50'
-																	: 'bg-content border-content'
-															}`}
-														>
-															<div className="flex items-center gap-2">
-																<span className="text-lg">
-																	{widget.emoji}
-																</span>
-																<span>
-																	{widget.label}
-																</span>
-															</div>
-															<div
-																{...provided.dragHandleProps}
-																className="p-1 rounded-lg cursor-move hover:bg-content"
-																title="جابجا کردن"
-															>
-																<FiMove className="text-muted" />
-															</div>
-														</div>
-													)}
-												</Draggable>
-											))}
-											{provided.placeholder}
-										</div>
+							<DndContext
+								sensors={sensors}
+								collisionDetection={closestCenter}
+								onDragEnd={handleDragEnd}
+							>
+								<SortableContext
+									items={sortedVisibleWidgets.map(
+										(widget) => widget.id
 									)}
-								</Droppable>
-							</DragDropContext>
+									strategy={verticalListSortingStrategy}
+								>
+									<div className="space-y-2">
+										{sortedVisibleWidgets.map((widget) => (
+											<SortableWidget
+												key={widget.id}
+												widget={widget}
+											/>
+										))}
+									</div>
+								</SortableContext>
+							</DndContext>
 						)}
 					</div>
 				)}

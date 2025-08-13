@@ -18,7 +18,9 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "18.0.1",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@tanstack/react-query": "5.83.0",
     "@wxt-dev/webextension-polyfill": "1.0.0",
     "axios": "1.10.0",
