@@ -68,6 +68,12 @@ const releaseNotes: ReleaseNote[] = [
 		media: [],
 	},
 	{
+		type: 'improvement',
+		title: 'بهبود در جابه‌جایی',
+		description: 'بهبود در عملکرد جابه‌جایی بوکمارک ها و ویجت ها',
+		media: [],
+	},
+	{
 		type: 'bugfix',
 		title: 'رفع مشکل آیکون بوکمارک ها',
 		description: 'مشکل نمایش آیکون بوکمارک در برخی از بوکمارک ها رفع شد.',
