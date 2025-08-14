@@ -2,7 +2,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { sleep } from '@/common/utils/timeout'
 import {
 	type UserProfile,
 	useGetUserProfile,
@@ -43,8 +42,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 		setToken(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
-		await sleep(1000)
-		window.location.reload()
 	}
 
 	useEffect(() => {
