@@ -15,7 +15,7 @@ interface GeneralSettingContextType extends GeneralData {
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
-	analyticsEnabled: true,
+	analyticsEnabled: import.meta.env.FIREFOX ? false : true,
 	selected_timezone: {
 		label: 'آسیا / تهران',
 		value: 'Asia/Tehran',

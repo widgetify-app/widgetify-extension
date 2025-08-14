@@ -44,6 +44,9 @@
 				"useExhaustiveDependencies": "off",
 				"noUnusedVariables": "warn",
 				"noUnusedImports": "warn"
+			},
+			"complexity": {
+				"noUselessTernary": "off"
 			}
 		}
 	},
