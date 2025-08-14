@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import {
 	RiBug2Line,
 	RiInformationLine,
@@ -96,6 +97,27 @@ export const UpdateReleaseNotesModal = ({
 	isOpen,
 	onClose,
 }: UpdateReleaseNotesModalProps) => {
+	const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+	const [countdown, setCountdown] = useState(10)
+
+	useEffect(() => {
+		if (isOpen) {
+			setIsButtonEnabled(false)
+
+			const timer = setInterval(() => {
+				setCountdown((prev) => {
+					if (prev <= 1) {
+						setIsButtonEnabled(true)
+						clearInterval(timer)
+						return 0
+					}
+					return prev - 1
+				})
+			}, 1000)
+
+			return () => clearInterval(timer)
+		}
+	}, [isOpen])
 	const getTypeIcon = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
 		switch (type) {
 			case 'feature':
@@ -269,7 +291,7 @@ export const UpdateReleaseNotesModal = ({
 
 			<div className="flex items-center justify-between p-4 border-t border-content">
 				<a
-					href="https://github.com/widgetify-app"
+					href="https://feedback.widgetify.ir"
 					target="_blank"
 					rel="noreferrer"
 					className="text-xs underline transition-colors duration-300 text-muted hover:text-blue-500"
@@ -278,11 +300,12 @@ export const UpdateReleaseNotesModal = ({
 				</a>
 				<Button
 					onClick={onClose}
+					disabled={!isButtonEnabled}
 					className="transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md"
 					size="md"
 					isPrimary={true}
 				>
-					شروع استفاده
+					{isButtonEnabled ? 'شروع استفاده' : `شروع استفاده (${countdown})`}
 				</Button>
 			</div>
 		</Modal>
