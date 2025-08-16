@@ -48,7 +48,7 @@ export default defineConfig({
 		'@wxt-dev/module-react',
 	],
 	manifest: {
-		version: '1.0.18',
+		version: '1.0.19',
 		name: 'Widgetify',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
@@ -56,6 +56,15 @@ export default defineConfig({
 		browser_specific_settings: {
 			gecko: {
 				id: 'widgetify@widgetify-app.github.io',
+			},
+		},
+		action: {
+			default_title: 'Open Widgetify Dashboard',
+			default_icon: {
+				16: 'icons/icon16.png',
+				32: 'icons/icon32.png',
+				48: 'icons/icon48.png',
+				128: 'icons/icon128.png',
 			},
 		},
 		host_permissions: [

@@ -12,6 +12,11 @@ export default defineBackground(() => {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
 
+	browser.action.onClicked.addListener(() => {
+		browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+		Analytics.featureUsed('IconClicked')
+	})
+
 	if (!isDev) {
 		registerRoute(
 			({ request }) => request.url.includes('api.widgetify.ir'),
