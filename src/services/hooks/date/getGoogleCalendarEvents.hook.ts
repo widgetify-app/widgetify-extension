@@ -1,5 +1,5 @@
-import Analytics from '@/analytics'
 import { useQuery } from '@tanstack/react-query'
+import Analytics from '@/analytics'
 import { getMainClient } from '../../api'
 
 export interface GoogleCalendarEvent {
@@ -110,7 +110,7 @@ async function getGoogleCalendarEvents(
 		)
 
 		// Track feature usage
-		Analytics.featureUsed('google_calendar', {
+		Analytics.event('google_calendar', {
 			event_count: data.events?.length || 0,
 			date_range: `${startDate} to ${endDate}`,
 		})

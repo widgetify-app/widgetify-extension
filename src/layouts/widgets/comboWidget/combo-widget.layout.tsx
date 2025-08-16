@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { FiDollarSign, FiSettings } from 'react-icons/fi'
-
+import { LuNewspaper } from 'react-icons/lu'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { Button } from '@/components/button/button'
-import { LuNewspaper } from 'react-icons/lu'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
@@ -15,12 +15,14 @@ export function ComboWidget() {
 	const [showSettings, setShowSettings] = useState(false)
 	const handleSettingsClick = () => {
 		setShowSettings(true)
+		Analytics.event(`combo_${activeTab}_settings_opened`)
 	}
 
 	const onTabClick = (tab: ComboTabType) => {
 		if (tab === activeTab) return
 		setActiveTab(tab)
 		setToStorage('comboTabs', tab)
+		Analytics.event('combo_tab_changed', { tab })
 	}
 
 	useEffect(() => {

@@ -1,13 +1,13 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FiRotateCcw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
+import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FiRotateCcw } from 'react-icons/fi'
 import type { Bookmark } from '../../types/bookmark.types'
 import { BookmarkItem } from '../bookmark-item'
 
@@ -28,7 +28,6 @@ interface AdvancedModalProps {
 }
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
-	if (!isOpen) return null
 	const emojiPopoverRef = useRef<HTMLDivElement>(null)
 
 	const [background, setBackground] = useState(bookmark.customBackground)
@@ -53,13 +52,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					setIsLoadingEmojis(false)
 				})
 
-			Analytics.featureUsed(
-				'open_advanced_bookmark_customization',
-				{
-					bookmark_type: bookmark.type,
-				},
-				'click'
-			)
+			Analytics.event('open_advanced_bookmark_customization', {
+				bookmark_type: bookmark.type,
+			})
 		}
 	}, [isOpen])
 
@@ -159,6 +154,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			sticker: hasEmojiChanged ? sticker : undefined,
 		})
 	}
+
+	if (!isOpen) return null
 
 	return (
 		<Modal

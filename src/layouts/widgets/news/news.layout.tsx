@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { type NewsResponse, useGetNews } from '@/services/hooks/news/getNews.hook'
-import { useEffect, useState } from 'react'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
 import { type FilterSortState, NewsFilterSort } from './components/news-filter-sort'

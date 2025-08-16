@@ -5,6 +5,7 @@ import 'swiper/css'
 
 import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
@@ -26,6 +27,7 @@ interface BookmarkSwiperProps {
 	spaceBetween?: number
 	grabCursor?: boolean
 	navigation?: boolean
+	type: 'browser' | 'recommended'
 }
 
 function BookmarkSwiper({
@@ -33,6 +35,7 @@ function BookmarkSwiper({
 	spaceBetween = 1,
 	grabCursor = true,
 	navigation = false,
+	type,
 }: BookmarkSwiperProps) {
 	const swiperProps = {
 		modules: [FreeMode, Navigation],
@@ -49,6 +52,13 @@ function BookmarkSwiper({
 		}),
 	}
 
+	function onClick(item: BookmarkItem) {
+		if (item.url) {
+			window.open(item.url, '_blank')
+			Analytics.event(`${type}_bookmark_clicked`)
+		}
+	}
+
 	return (
 		<Swiper {...swiperProps}>
 			{items.map((item, index) => (
@@ -56,7 +66,7 @@ function BookmarkSwiper({
 					<Tooltip content={item.name || item.title || item.url || ''}>
 						<div
 							className="flex items-center mt-1 cursor-pointer group"
-							onClick={() => item.url && window.open(item.url, '_blank')}
+							onClick={() => onClick(item)}
 						>
 							<img
 								src={item.icon || getFaviconFromUrl(item.url || '')}
@@ -113,11 +123,13 @@ export function BrowserBookmark() {
 				spaceBetween={1}
 				grabCursor={true}
 				navigation={true}
+				type="recommended"
 			/>
 			<BookmarkSwiper
 				items={browserBookmarks}
 				spaceBetween={2}
 				grabCursor={false}
+				type="browser"
 				navigation={false}
 			/>
 		</div>

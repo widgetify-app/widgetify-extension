@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
+import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { TrendingSearches } from './trending/trending-searches'
 
@@ -15,6 +16,7 @@ export function SearchLayout() {
 		const query = searchQuery.trim()
 		if (query) {
 			browser.search.query({ text: query })
+			Analytics.event('search_query_submitted')
 		}
 	}
 
@@ -33,6 +35,7 @@ export function SearchLayout() {
 		setIsInputFocused(false)
 		// Optional: auto-submit the search
 		browser.search.query({ text: trend })
+		Analytics.event('search_trend_selected')
 	}
 
 	useEffect(() => {
@@ -50,6 +53,11 @@ export function SearchLayout() {
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
 	}, [isInputFocused])
+
+	function onFocusInput() {
+		setIsInputFocused(true)
+		Analytics.event('search_input_focused')
+	}
 
 	return (
 		<div className="flex flex-col items-center justify-start h-24 bg-widget rounded-2xl">
@@ -79,7 +87,7 @@ export function SearchLayout() {
 							name="search"
 							value={searchQuery}
 							onChange={handleSearchInputChange}
-							onFocus={() => setIsInputFocused(true)}
+							onFocus={() => onFocusInput()}
 							className={
 								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-content'
 							}

@@ -14,7 +14,7 @@ export default defineBackground(() => {
 
 	browser.action.onClicked.addListener(() => {
 		browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
-		Analytics.featureUsed('IconClicked')
+		Analytics.event('IconClicked')
 	})
 
 	if (!isDev) {
@@ -152,7 +152,7 @@ export default defineBackground(() => {
 
 			const manifest = browser.runtime.getManifest()
 
-			Analytics.featureUsed('Installed', {
+			Analytics.event('Installed', {
 				version: manifest.version,
 				offlineSupport: true,
 			})
@@ -162,7 +162,7 @@ export default defineBackground(() => {
 			const manifest = browser.runtime.getManifest()
 			const previousVersion = details.previousVersion || 'unknown'
 
-			Analytics.featureUsed('Updated', {
+			Analytics.event('Updated', {
 				version: manifest.version,
 				previousVersion,
 				offlineSupport: true,
@@ -174,7 +174,7 @@ export default defineBackground(() => {
 	})
 
 	browser.runtime.onStartup.addListener(async () => {
-		Analytics.featureUsed('Startup')
+		Analytics.event('Startup')
 	})
 
 	cleanupOutdatedCaches()

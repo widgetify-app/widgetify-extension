@@ -45,39 +45,25 @@ const Analytics = (() => {
 		eventParams: Record<string, any> = {}
 	): Promise<void> {
 		const setting = await getFromStorage('generalSettings')
-		if (setting?.disable_analytics && eventName !== 'Installed') {
+		if (setting?.disable_analytics) {
 			console.log('Analytics disabled, skipping event:', eventName)
 			return
 		}
 
 		const clientId = await getClientId()
+		const sessionId = await getSessionId()
 
 		const payload = {
 			client_id: clientId,
 			events: [
 				{
 					name: eventName,
-					params: eventParams,
+					params: { ...eventParams, session_id: sessionId },
 				},
 			],
 		}
 
 		sendMeasurementEvent(payload)
-	}
-
-	async function featureUsed(
-		featureName: string,
-		details: Record<string, any> = {},
-		actionType: 'view' | 'click' | 'toggle' | 'input' | 'other' | 'drag' = 'other'
-	): Promise<void> {
-		const enhancedDetails = {
-			action_type: actionType,
-			timestamp: new Date().toISOString(),
-			session_id: await getSessionId(),
-			...details,
-		}
-
-		await event(featureName, enhancedDetails)
 	}
 
 	async function getSessionId(): Promise<string> {
@@ -126,13 +112,12 @@ const Analytics = (() => {
 		fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(payload),
-		}).catch((err) => console.error('Analytics error:', err))
+		}).catch()
 	}
 
 	return {
 		pageView,
 		event,
-		featureUsed,
 		error,
 	}
 })()

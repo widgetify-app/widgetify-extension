@@ -1,9 +1,10 @@
+import { useState } from 'react'
+import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { ItemSelector } from '@/components/item-selector'
 import Modal from '@/components/modal'
-import { useState } from 'react'
 import { type ClockSettings, ClockType } from '../clock-display'
 
 interface ClockSettingsModalProps {
@@ -23,6 +24,12 @@ export function ClockSettingsModal({
 
 	const handleSave = () => {
 		onClose({
+			clockType: selectedType,
+			showSeconds,
+			showTimeZone,
+		})
+
+		Analytics.event('wigipad_clock_settings_save', {
 			clockType: selectedType,
 			showSeconds,
 			showTimeZone,
@@ -47,6 +54,12 @@ export function ClockSettingsModal({
 			value: ClockType.Analog as const,
 		},
 	]
+
+	useEffect(() => {
+		if (isOpen) {
+			Analytics.event('wigipad_clock_settings_open')
+		}
+	}, [isOpen])
 
 	return (
 		<Modal
@@ -94,7 +107,7 @@ export function ClockSettingsModal({
 					</div>
 				</RequireAuth>
 
-				<div className="mt-2 flex gap-3">
+				<div className="flex gap-3 mt-2">
 					<Button
 						onClick={handleCancel}
 						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"

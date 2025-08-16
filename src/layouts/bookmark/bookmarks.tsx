@@ -70,7 +70,7 @@ export function BookmarksComponent() {
 
 		syncTimeoutRef.current = setTimeout(() => {
 			callEvent('startSync', SyncTarget.BOOKMARKS)
-			Analytics.featureUsed('drag-and-drop-bookmark', {}, 'drag')
+			Analytics.event('drag-and-drop-bookmark', {})
 			syncTimeoutRef.current = null
 		}, 1000) // Wait 1 second before triggering sync
 	}, [])
@@ -143,6 +143,7 @@ export function BookmarksComponent() {
 				openBookmarks(bookmark)
 			} else {
 				e.preventDefault()
+				Analytics.event('open-bookmark-middle-mouse')
 				window.open(bookmark.url)
 			}
 			return
@@ -160,8 +161,10 @@ export function BookmarksComponent() {
 		} else {
 			if (e?.ctrlKey || e?.metaKey) {
 				window.open(bookmark.url)
+				Analytics.event('open-bookmark-in-new-tab')
 			} else {
 				window.location.href = bookmark.url
+				Analytics.event('open-bookmark-in-current-tab')
 			}
 		}
 	}
@@ -242,6 +245,8 @@ export function BookmarksComponent() {
 		for (const b of bookmarks) {
 			window.open(b.url)
 		}
+
+		Analytics.event('open-folder-bookmarks')
 	}
 
 	async function onOpenInNewTab(bookmark: Bookmark) {
@@ -251,9 +256,15 @@ export function BookmarksComponent() {
 
 		if (bookmark && bookmark.type === 'BOOKMARK') {
 			window.open(bookmark.url)
+			Analytics.event('open-bookmark-in-new-tab')
 		}
 
 		setSelectedBookmark(null)
+	}
+
+	function openAddBookmarkModal() {
+		setShowAddBookmarkModal(true)
+		Analytics.event('open_add_bookmark_modal')
 	}
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
@@ -310,7 +321,7 @@ export function BookmarksComponent() {
 								<BookmarkItem
 									key={i}
 									bookmark={null}
-									onClick={() => setShowAddBookmarkModal(true)}
+									onClick={openAddBookmarkModal}
 									canAdd={currentFolderIsManageable}
 								/>
 							)
