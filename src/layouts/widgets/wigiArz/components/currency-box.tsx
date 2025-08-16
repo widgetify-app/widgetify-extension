@@ -1,15 +1,15 @@
+import { useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { CurrencyColorMode } from '@/context/currency.context'
 import { useGetImageMainColor } from '@/hooks/useGetImageMainColor'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import { useEffect, useRef, useState } from 'react'
-import toast from 'react-hot-toast'
-import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { CurrencyModalComponent } from './currency-modal'
-import { CurrencyColorMode } from '@/context/currency.context'
 
 interface CurrencyBoxProps {
 	code: string
@@ -70,7 +70,7 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 			toast.success('🔗 درحال انتقال به سایت اسپانسر...')
 			setTimeout(() => {
 				toast.dismiss()
-				Analytics.featureUsed('currency-sponsor', {
+				Analytics.event('currency-sponsor', {
 					currency: currency.name.en,
 					url: currency.url,
 				})
@@ -128,14 +128,14 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 							style={{ borderColor: imgMainColor }}
 						/>
 					</div>
-					<div className="flex items-center space-x-2 text-sm font-medium min-w-0">
-						<span className="block text-sm text-content truncate">
+					<div className="flex items-center min-w-0 space-x-2 text-sm font-medium">
+						<span className="block text-sm truncate text-content">
 							{code}
 						</span>
 					</div>
 				</div>
 
-				<div className="pr-2 flex items-baseline gap-2">
+				<div className="flex items-baseline gap-2 pr-2">
 					<span className={'text-sm font-bold text-content'}>
 						{displayPrice ? displayPrice.toLocaleString() : '-'}
 					</span>

@@ -1,11 +1,11 @@
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -77,7 +77,7 @@ export function ExpandableTodoInput({
 				notes: notes.trim() || undefined,
 				priority: priority,
 			})
-			Analytics.featureUsed('todo_added')
+			Analytics.event('todo_added')
 			resetForm()
 		}
 	}
@@ -98,8 +98,8 @@ export function ExpandableTodoInput({
 
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
-			<div className="rounded-xl overflow-hidden">
-				<div className="p-2 flex items-center gap-1 rounded-xl bg-base-300">
+			<div className="overflow-hidden rounded-xl">
+				<div className="flex items-center gap-1 p-2 rounded-xl bg-base-300">
 					<div className="flex-grow w-full">
 						<TextInput
 							ref={inputRef}
@@ -133,7 +133,7 @@ export function ExpandableTodoInput({
 							transition={{ duration: 0.2 }}
 						>
 							<div className="px-2 py-3 space-y-3">
-								<div className="py-1 flex items-center justify-between">
+								<div className="flex items-center justify-between py-1">
 									<label
 										className={
 											'block text-sm font-medium text-content'
@@ -141,7 +141,7 @@ export function ExpandableTodoInput({
 									>
 										اولویت:
 									</label>
-									<div className="pl-1 flex items-center gap-3">
+									<div className="flex items-center gap-3 pl-1">
 										{PrIORITY_OPTIONS.map(
 											({
 												value,

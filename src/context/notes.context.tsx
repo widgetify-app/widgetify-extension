@@ -1,24 +1,24 @@
-import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { isSyncActive } from '@/common/sync-checker'
-import { sleep } from '@/common/utils/timeout'
-import { safeAwait } from '@/services/api'
-import {
-	type FetchedNote,
-	deleteNote,
-	getNotes,
-	upsertNote,
-} from '@/services/note/note-api'
 import type { AxiosError } from 'axios'
 import {
-	type ReactNode,
 	createContext,
+	type ReactNode,
 	useContext,
 	useEffect,
 	useRef,
 	useState,
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import Analytics from '@/analytics'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { isSyncActive } from '@/common/sync-checker'
+import { sleep } from '@/common/utils/timeout'
+import { safeAwait } from '@/services/api'
+import {
+	deleteNote,
+	type FetchedNote,
+	getNotes,
+	upsertNote,
+} from '@/services/note/note-api'
 
 export interface Note {
 	id: string
@@ -99,7 +99,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return updatedNotes
 		})
 		setActiveNoteId(newNote.id)
-		Analytics.featureUsed('add-notes')
+		Analytics.event('add-notes')
 	}
 
 	const updateNote = (id: string, updates: Partial<Note>) => {
@@ -118,7 +118,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}
 
 		saveTimeoutRef.current = setTimeout(async () => {
-			Analytics.featureUsed('update-notes')
+			Analytics.event('update-notes')
 			await setToStorage('notes_data', notesAfterUpdate)
 			const isSyncEnabled = await isSyncActive()
 			if (isSyncEnabled) {
@@ -153,7 +153,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			await setToStorage('notes_data', updatedNotes)
 			setIsSaving(false)
 		}
-		Analytics.featureUsed('delete-notes')
+		Analytics.event('delete-notes')
 	}
 
 	return (

@@ -54,6 +54,7 @@ export const FriendSettingModal = ({
 			direction="rtl"
 		>
 			<TabManager
+				tabOwner="user"
 				tabs={tabs}
 				defaultTab="all"
 				selectedTab={selectedTab}

@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { setUserWallpaperApi } from '@/services/hooks/user/userService.hook'
-import { useEffect, useState } from 'react'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(
@@ -91,15 +91,12 @@ export function useWallpaper(
 
 	const handleSelectBackground = async (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
-		Analytics.featureUsed(
-			'wallpaper_changed',
-			{
-				wallpaper_id: wallpaper.id,
-				wallpaper_name: wallpaper.name || 'unnamed',
-				wallpaper_type: wallpaper.type,
-			},
-			'click'
-		)
+
+		Analytics.event('wallpaper_changed', {
+			wallpaper_id: wallpaper.id,
+			wallpaper_name: wallpaper.name || 'unnamed',
+			wallpaper_type: wallpaper.type,
+		})
 
 		if (isAuthenticated) {
 			const wallpaperId =
@@ -112,7 +109,7 @@ export function useWallpaper(
 	const toggleRetouch = () => {
 		setIsRetouchEnabled((prev) => !prev)
 
-		Analytics.featureUsed('wallpaper_retouch_toggled', {
+		Analytics.event('wallpaper_retouch_toggled', {
 			enabled: !isRetouchEnabled,
 			wallpaper_id: selectedBackground?.id || 'none',
 		})

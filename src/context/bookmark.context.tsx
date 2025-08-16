@@ -1,11 +1,11 @@
+import ms from 'ms'
+import React, { createContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
-import ms from 'ms'
-import React, { createContext, useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 
 const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
 
@@ -265,18 +265,13 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
 
-			Analytics.featureUsed(
-				'bookmark_management',
-				{
-					action: 'add',
-					bookmark_type: bookmark.type,
-					has_custom_image: !!bookmark.customImage,
-					has_custom_background: !!bookmark.customBackground,
-					has_custom_text_color: !!bookmark.customTextColor,
-					has_custom_sticker: !!bookmark.sticker,
-				},
-				'click'
-			)
+			Analytics.event('add_bookmark', {
+				bookmark_type: bookmark.type,
+				has_custom_image: !!bookmark.customImage,
+				has_custom_background: !!bookmark.customBackground,
+				has_custom_text_color: !!bookmark.customTextColor,
+				has_custom_sticker: !!bookmark.sticker,
+			})
 
 			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
 
@@ -324,18 +319,13 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
 
-			Analytics.featureUsed(
-				'bookmark_management',
-				{
-					action: 'edit',
-					bookmark_type: bookmark.type,
-					has_custom_image: !!bookmark.customImage,
-					has_custom_background: !!bookmark.customBackground,
-					has_custom_text_color: !!bookmark.customTextColor,
-					has_custom_sticker: !!bookmark.sticker,
-				},
-				'click'
-			)
+			Analytics.event('edit_bookmark', {
+				bookmark_type: bookmark.type,
+				has_custom_image: !!bookmark.customImage,
+				has_custom_background: !!bookmark.customBackground,
+				has_custom_text_color: !!bookmark.customTextColor,
+				has_custom_sticker: !!bookmark.sticker,
+			})
 
 			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
 
@@ -390,15 +380,10 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		deletedList.push(...itemsToDelete)
 		await setToStorage('deletedBookmarkIds', deletedList)
 
-		Analytics.featureUsed(
-			'bookmark_management',
-			{
-				action: 'delete',
-				bookmark_type: bookmarkToDelete.type,
-				items_deleted: itemsToDelete.length,
-			},
-			'click'
-		)
+		Analytics.event('delete_bookmark', {
+			bookmark_type: bookmarkToDelete.type,
+			items_deleted: itemsToDelete.length,
+		})
 
 		// sync with delay
 		await new Promise((resolve) => setTimeout(resolve, ms('3s')))

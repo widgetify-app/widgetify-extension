@@ -1,15 +1,15 @@
-import Analytics from '@/analytics'
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
 import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
+import Analytics from '@/analytics'
+import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { modeColors } from './constants'
 import type { PomodoroSettings, TimerMode } from './types'
-import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -168,15 +168,10 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 		setToStorage('pomodoro_session', sessionData)
 
-		Analytics.featureUsed(
-			'pomodoro_timer',
-			{
-				action: 'start',
-				mode,
-				remaining_time: timeLeft,
-			},
-			'click'
-		)
+		Analytics.event('pomodoro_start_timer', {
+			mode,
+			remaining_time: timeLeft,
+		})
 	}
 
 	const handlePause = () => {
@@ -192,15 +187,10 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 		setToStorage('pomodoro_session', sessionData)
 
-		Analytics.featureUsed(
-			'pomodoro_timer',
-			{
-				action: 'pause',
-				mode,
-				remaining_time: timeLeft,
-			},
-			'click'
-		)
+		Analytics.event('pomodoro_pause_timer', {
+			mode,
+			remaining_time: timeLeft,
+		})
 	}
 
 	const handleReset = () => {
@@ -208,15 +198,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		setTimeLeft(getMaxTime())
 		removeFromStorage('pomodoro_session')
 
-		Analytics.featureUsed(
-			'pomodoro_timer',
-			{
-				action: 'reset',
-				mode,
-				cycles_completed: cycles,
-			},
-			'click'
-		)
+		Analytics.event('pomodoro_reset_timer', {
+			action: 'reset',
+			mode,
+			cycles_completed: cycles,
+		})
 	}
 
 	const handleModeChange = (newMode: TimerMode) => {
@@ -236,15 +222,10 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		}
 		removeFromStorage('pomodoro_session')
 
-		Analytics.featureUsed(
-			'pomodoro_timer',
-			{
-				action: 'mode_change',
-				previous_mode: mode,
-				new_mode: newMode,
-			},
-			'click'
-		)
+		Analytics.event('pomodoro_mode_change', {
+			previous_mode: mode,
+			new_mode: newMode,
+		})
 	}
 
 	const handleUpdateSettings = (newSettings: PomodoroSettings) => {

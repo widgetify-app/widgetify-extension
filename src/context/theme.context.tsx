@@ -79,14 +79,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		setToStorage('theme', theme as any)
 		document.documentElement.setAttribute('data-theme', theme)
 		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
-		Analytics.featureUsed(
-			'theme_change',
-			{
-				previous_theme: oldTheme,
-				new_theme: theme,
-			},
-			'click'
-		)
+		Analytics.event('theme_change', {
+			previous_theme: oldTheme,
+			new_theme: theme,
+		})
 	}
 
 	const contextValue: ThemeContextType = {

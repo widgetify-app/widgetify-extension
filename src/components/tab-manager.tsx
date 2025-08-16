@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
+import Analytics from '@/analytics'
 
 export interface TabItem {
 	label: string
@@ -8,6 +9,7 @@ export interface TabItem {
 }
 
 interface TabManagerProps {
+	tabOwner: 'setting' | 'user'
 	tabs: TabItem[]
 	defaultTab?: string
 	selectedTab?: string | null
@@ -21,6 +23,7 @@ export const TabManager = ({
 	selectedTab,
 	onTabChange,
 	direction = 'rtl',
+	tabOwner,
 }: TabManagerProps) => {
 	const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.value || '')
 	const contentRef = useRef<HTMLDivElement>(null)
@@ -28,12 +31,18 @@ export const TabManager = ({
 	useEffect(() => {
 		if (selectedTab) {
 			setActiveTab(selectedTab)
+			Analytics.event(`${tabOwner}_select_tab`, {
+				selected_tab: selectedTab,
+			})
 		}
 	}, [selectedTab])
 
 	useEffect(() => {
 		if (contentRef.current) {
 			contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+			Analytics.event(`${tabOwner}_tab_change`, {
+				selected_tab: activeTab,
+			})
 		}
 	}, [activeTab])
 
@@ -64,7 +73,9 @@ export const TabManager = ({
 						onClick={() => handleTabChange(value)}
 						className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
 					>
-						<span className={getTabIconStyle(activeTab === value)}>{icon}</span>
+						<span className={getTabIconStyle(activeTab === value)}>
+							{icon}
+						</span>
 						<span className="text-sm">{label}</span>
 					</button>
 				))}

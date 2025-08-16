@@ -1,3 +1,12 @@
+import {
+	createContext,
+	type ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
+import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
@@ -9,15 +18,6 @@ import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
-import {
-	type ReactNode,
-	createContext,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react'
-import toast from 'react-hot-toast'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 
@@ -217,14 +217,10 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 			return newVisibility
 		})
-		Analytics.featureUsed(
-			'widget_visibility',
-			{
-				widget_id: widgetId,
-				new_state: !visibility.includes(widgetId),
-			},
-			'toggle'
-		)
+		Analytics.event('widget_visibility', {
+			widget_id: widgetId,
+			new_state: !visibility.includes(widgetId),
+		})
 	}
 
 	const openWidgetSettings = () => {

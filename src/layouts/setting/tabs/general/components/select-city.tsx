@@ -1,9 +1,9 @@
+import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { SectionPanel } from '@/components/section-panel'
 import { type SelectedCity, useWeatherStore } from '@/context/weather.context'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import { useGetRelatedCities } from '@/services/hooks/weather/getRelatedCities'
-import { useRef, useState } from 'react'
 import { CityResultsList } from '../../weather/CityResultsList'
 import { CitySearchInput } from '../../weather/CitySearchInput'
 import { SelectedCityDisplay } from '../../weather/SelectedCityDisplay'
@@ -25,7 +25,7 @@ export function SelectCity() {
 		setSelectedCity(city)
 		setIsDropdownOpen(false)
 
-		Analytics.featureUsed('city_selected', {
+		Analytics.event('city_selected', {
 			city_name: city.name,
 			state: city.state,
 			latitude: city.lat,
@@ -62,7 +62,7 @@ export function SelectCity() {
 					/>{' '}
 					{/* Search Results Dropdown */}
 					{isDropdownOpen && inputValue.length >= 2 && (
-						<div className="absolute z-50 w-full mt-1 animate-in fade-in-0 slide-in-from-bottom-2 duration-200">
+						<div className="absolute z-50 w-full mt-1 duration-200 animate-in fade-in-0 slide-in-from-bottom-2">
 							{' '}
 							<CityResultsList
 								cities={relatedCities || []}
