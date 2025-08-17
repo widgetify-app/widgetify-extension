@@ -1,12 +1,10 @@
 import DOMPurify from 'dompurify'
 import { type JSX, useEffect, useState } from 'react'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
@@ -22,7 +20,6 @@ export interface PageLink {
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const { openWidgetSettings } = useWidgetVisibility()
-	const { blurMode, updateSetting } = useGeneralSetting()
 	const [tab, setTab] = useState<string | null>(null)
 
 	const [logoData, setLogoData] = useState<{
@@ -107,11 +104,6 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [])
 
-	const handleBlurModeToggle = () => {
-		const newBlurMode = !blurMode
-		updateSetting('blurMode', newBlurMode)
-	}
-
 	return (
 		<>
 			<nav className="flex items-center justify-between px-4 mt-0.5 md:mt-1.5">
@@ -141,14 +133,6 @@ export function NavbarLayout(): JSX.Element {
 					</a>
 				</div>
 				<div className="flex items-center gap-1">
-					<Tooltip content={blurMode ? 'نمایش' : 'مخفی'}>
-						<div
-							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-							onClick={handleBlurModeToggle}
-						>
-							{blurMode ? <FaEye size={12} /> : <FaEyeSlash size={12} />}
-						</div>
-					</Tooltip>
 					<FriendsList />
 					<ProfileNav />
 					<SyncButton />
