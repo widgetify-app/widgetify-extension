@@ -30,15 +30,13 @@ function NotesContent() {
 	}
 
 	return (
-		<>
-			<div
-				className={`mt-2 flex-grow overflow-auto h-[calc(100%-40px)] ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-			>
-				<div key={activeNoteId} className="h-full">
-					<NoteEditor note={activeNote} onUpdateNote={updateNote} />
-				</div>
+		<div
+			className={`mt-2 flex-grow overflow-auto h-[calc(100%-40px)] ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+		>
+			<div key={activeNoteId} className="h-full">
+				<NoteEditor note={activeNote} onUpdateNote={updateNote} />
 			</div>
-		</>
+		</div>
 	)
 }
 
