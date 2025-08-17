@@ -9,6 +9,7 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
@@ -37,6 +38,8 @@ function BookmarkSwiper({
 	navigation = false,
 	type,
 }: BookmarkSwiperProps) {
+	const { browserBookmarksEnabled } = useGeneralSetting()
+
 	const swiperProps = {
 		modules: [FreeMode, Navigation],
 		spaceBetween,
@@ -58,7 +61,7 @@ function BookmarkSwiper({
 			Analytics.event(`${type}_bookmark_clicked`)
 		}
 	}
-
+	if (!browserBookmarksEnabled && type === 'browser') return null
 	return (
 		<Swiper {...swiperProps}>
 			{items.map((item, index) => (
