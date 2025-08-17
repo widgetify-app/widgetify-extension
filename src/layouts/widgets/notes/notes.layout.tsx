@@ -1,6 +1,6 @@
+import { FiBook, FiLoader } from 'react-icons/fi'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { NotesProvider, useNotes } from '@/context/notes.context'
-import { FiBook, FiLoader } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
@@ -17,7 +17,7 @@ function NotesContent() {
 				<p className={'text-sm text-muted'}>هیچ یادداشتی پیدا نشد</p>
 				<button
 					onClick={addNote}
-					className="px-3 py-1 mt-2 text-sm text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
+					className="px-3 py-1 mt-2 text-sm text-white transition-colors bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-600"
 				>
 					ساخت یادداشت جدید
 				</button>
@@ -26,13 +26,11 @@ function NotesContent() {
 	}
 
 	return (
-		<>
-			<div className="mt-2 flex-grow overflow-auto h-[calc(100%-40px)]">
-				<div key={activeNoteId} className="h-full">
-					<NoteEditor note={activeNote} onUpdateNote={updateNote} />
-				</div>
+		<div className="mt-2 flex-grow overflow-auto h-[calc(100%-40px)]">
+			<div key={activeNoteId} className="h-full">
+				<NoteEditor note={activeNote} onUpdateNote={updateNote} />
 			</div>
-		</>
+		</div>
 	)
 }
 

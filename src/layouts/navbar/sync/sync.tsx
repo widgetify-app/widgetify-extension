@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { isSyncActive } from '@/common/sync-checker'
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
@@ -46,8 +47,8 @@ export function SyncButton() {
 				return
 			}
 
-			const isSyncEnabled = await getFromStorage('enable_sync')
-			if (isSyncEnabled === false) {
+			const isSyncEnabled = await isSyncActive()
+			if (!isSyncEnabled) {
 				return
 			}
 
@@ -72,9 +73,8 @@ export function SyncButton() {
 			return
 		}
 
-		const isSyncEnabled = await getFromStorage('enable_sync')
-
-		if (isSyncEnabled === false) {
+		const isSyncEnabled = await isSyncActive()
+		if (!isSyncEnabled) {
 			return
 		}
 

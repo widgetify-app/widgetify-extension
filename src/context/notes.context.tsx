@@ -10,7 +10,6 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { isSyncActive } from '@/common/sync-checker'
 import { sleep } from '@/common/utils/timeout'
 import { safeAwait } from '@/services/api'
 import {
@@ -53,32 +52,16 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				setNotes(storedNotes)
 				setActiveNoteId(storedNotes[0].id)
 
-				const isEnable = await isSyncActive()
-				if (isEnable) {
-					await sleep(1000)
-					setIsSaving(true)
-					const [error, fetchedNotes] = await safeAwait<
-						AxiosError,
-						FetchedNote[]
-					>(getNotes())
-					setIsSaving(false)
-					if (!error) {
-						setNotes(fetchedNotes)
-						setActiveNoteId(fetchedNotes[0].id)
-					}
+				await sleep(1000)
+				setIsSaving(true)
+				const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
+					getNotes()
+				)
+				setIsSaving(false)
+				if (!error) {
+					setNotes(fetchedNotes)
+					setActiveNoteId(fetchedNotes[0].id)
 				}
-			} else {
-				const defaultNote: Note = {
-					id: uuidv4(),
-					title: '',
-					body: '',
-					createdAt: Date.now(),
-					updatedAt: Date.now(),
-				}
-				const initialNotes = [defaultNote]
-				setNotes(initialNotes)
-				setActiveNoteId(defaultNote.id)
-				await setToStorage('notes_data', initialNotes)
 			}
 		}
 
@@ -120,15 +103,13 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		saveTimeoutRef.current = setTimeout(async () => {
 			Analytics.event('update-notes')
 			await setToStorage('notes_data', notesAfterUpdate)
-			const isSyncEnabled = await isSyncActive()
-			if (isSyncEnabled) {
-				await upsertNote({
-					title: updates.title || null,
-					body: updates.body || null,
-					offlineId: id,
-					onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
-				})
-			}
+
+			await upsertNote({
+				title: updates.title || null,
+				body: updates.body || null,
+				offlineId: id,
+				onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
+			})
 			setIsSaving(false)
 		}, 2500)
 	}
@@ -145,10 +126,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			} else {
 			}
 
-			const isSyncEnabled = await isSyncActive()
-			if (isSyncEnabled) {
-				await safeAwait(deleteNote(id))
-			}
+			await safeAwait(deleteNote(id))
 
 			await setToStorage('notes_data', updatedNotes)
 			setIsSaving(false)
