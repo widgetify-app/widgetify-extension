@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
+import useSocket from '@/hooks/socket/useSocket'
 import {
 	type UserProfile,
 	useGetUserProfile,
@@ -23,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const [token, setToken] = useState<string | null>(null)
 	const queryClient = useQueryClient()
 	const [initialLoading, setInitialLoading] = useState(true)
-
+	const { connect, disconnect } = useSocket()
 	const {
 		data: userProfile,
 		refetch: userRefetch,
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 		setToken(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		disconnect()
 	}
 
 	useEffect(() => {
@@ -68,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setToStorage('auth_token', newToken)
 		setToken(newToken)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		connect()
 	}
 
 	const refetchUser = async (): Promise<UserProfile | null> => {

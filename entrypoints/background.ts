@@ -1,16 +1,100 @@
+import { io, type Socket } from 'socket.io-client'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import Analytics from '../src/analytics'
-import { setToStorage } from '../src/common/storage'
+import { getFromStorage, setToStorage } from '../src/common/storage'
+
+let socket: Socket | null = null
+
+async function initializeSocket() {
+	const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://api.widgetify.ir'
+
+	if (socket) {
+		socket.disconnect()
+	}
+	const token = await getFromStorage('auth_token')
+	if (!token) return
+
+	socket = io(socketUrl, {
+		transports: ['websocket'],
+		autoConnect: true,
+		reconnection: true,
+		reconnectionAttempts: 5,
+		reconnectionDelay: 5000,
+		query: {
+			token,
+		},
+	})
+
+	socket.on('connect', () => {
+		console.log('Socket.IO connected with ID:', socket?.id)
+
+		getFromStorage('auth_token').then((token) => {
+			if (token) {
+				socket?.emit('authenticate', { token })
+			}
+		})
+
+		browser.runtime.sendMessage({ type: 'SOCKET_CONNECTED', socketId: socket?.id })
+	})
+
+	socket.on('disconnect', () => {
+		console.log('Socket.IO disconnected')
+		browser.runtime.sendMessage({ type: 'SOCKET_DISCONNECTED' })
+	})
+
+	socket.on('error', (error) => {
+		console.error('Socket.IO error:', error)
+		browser.runtime.sendMessage({ type: 'SOCKET_ERROR', error })
+	})
+
+	socket.on('message', (data) => {
+		console.log('Socket.IO message received:', data)
+		browser.runtime.sendMessage({ type: 'SOCKET_MESSAGE', data })
+	})
+
+	socket.on('notification', (data) => {
+		browser.runtime.sendMessage({ type: 'SOCKET_NOTIFICATION', data })
+	})
+}
+
+browser.runtime.onMessage.addListener(async (message, _sender, sendResponse) => {
+	if (message.type === 'SOCKET_EMIT') {
+		socket?.emit(message.event, message.data)
+		return true
+	}
+
+	if (message.type === 'SOCKET_CONNECT') {
+		await initializeSocket()
+		return true
+	}
+
+	if (message.type === 'SOCKET_DISCONNECT') {
+		socket?.disconnect()
+		return true
+	}
+
+	if (message.type === 'SOCKET_STATUS_REQUEST') {
+		sendResponse({
+			isConnected: socket?.connected || false,
+			socketId: socket?.id || null,
+		})
+		return true
+	}
+
+	return false
+})
 
 export default defineBackground(() => {
 	const isDev = import.meta.env.DEV
 	if (typeof self !== 'undefined' && '__WB_MANIFEST' in self) {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
+
+	initializeSocket()
 
 	browser.action.onClicked.addListener(() => {
 		browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
