@@ -200,7 +200,7 @@ html.modal-isActive::-webkit-scrollbar {
 }
 
 .blur-mode {
-	filter: blur(20px);
+	filter: blur(8px);
 	pointer-events: none;
 	transition: filter 300ms ease-in;
 }
