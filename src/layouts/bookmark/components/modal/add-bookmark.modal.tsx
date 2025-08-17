@@ -1,9 +1,9 @@
+import { useState, useTransition } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { useState, useTransition } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import {
@@ -67,7 +67,7 @@ export function AddBookmarkModal({
 		startTransition(() => {
 			if (!formData.title.trim()) return
 
-			let iconUrl: undefined | string = undefined
+			let iconUrl: undefined | string
 			const id = uuidv4()
 			if (
 				type === 'BOOKMARK' &&
@@ -186,9 +186,13 @@ export function AddBookmarkModal({
 						<TypeSelector type={type} setType={setType} />
 					</div>
 
-					<div className="py-2 h-[calc(100%-4rem)] overflow-auto">
+					<div className="py-2 overflow-auto">
 						{' '}
-						<div className="mb-0.5 flex flex-col items-center gap-y-2.5">
+						<div
+							className={`mb-0.5 flex flex-row  w-full items-center gap-y-2.5
+								${type === 'FOLDER' ? 'items-start justify-center' : 'items-center justify-between'}
+							`}
+						>
 							{type === 'BOOKMARK' && (
 								<IconSourceSelector
 									iconSource={iconSource}
@@ -197,7 +201,7 @@ export function AddBookmarkModal({
 							)}
 							{renderIconPreview(
 								formData,
-								iconSource,
+								type === 'FOLDER' ? 'upload' : iconSource,
 								setIconSource,
 								updateFormData,
 								type

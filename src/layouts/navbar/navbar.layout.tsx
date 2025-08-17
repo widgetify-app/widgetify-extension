@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify'
 import { type JSX, useEffect, useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { TbApps } from 'react-icons/tb'
@@ -42,7 +43,7 @@ export function NavbarLayout(): JSX.Element {
 
 		const loadConfig = async () => {
 			try {
-				const storeData = await getFromStorage('configData')
+				const storeData: any = await getFromStorage('configData')
 				if (storeData) {
 					setLogoData({
 						content: storeData.logo?.content,
@@ -56,8 +57,33 @@ export function NavbarLayout(): JSX.Element {
 						(storeData?.logo && storeData.logo.id !== data.logo.id) ||
 						!storeData?.logo
 					) {
+						const safeHTML = DOMPurify.sanitize(data.logo?.content || '', {
+							ALLOWED_TAGS: [
+								'div',
+								'b',
+								'i',
+								'em',
+								'strong',
+								'a',
+								'p',
+								'br',
+								'span',
+								'ul',
+								'li',
+								'img',
+								'h1',
+							],
+							ALLOWED_ATTR: [
+								'href',
+								'target',
+								'rel',
+								'class',
+								'src',
+								'alt',
+							],
+						})
 						setLogoData({
-							content: data.logo.content,
+							content: safeHTML,
 							logoUrl: data.logo.url,
 						})
 
@@ -65,7 +91,7 @@ export function NavbarLayout(): JSX.Element {
 							...storeData,
 							logo: {
 								id: data.logo.id,
-								content: data.logo.content,
+								content: safeHTML,
 								url: data.logo.url,
 							},
 						})

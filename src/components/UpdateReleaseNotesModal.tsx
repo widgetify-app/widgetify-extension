@@ -1,7 +1,5 @@
 import {
 	RiBug2Line,
-	RiCheckboxCircleFill,
-	RiGiftLine,
 	RiInformationLine,
 	RiStarLine,
 	RiThumbUpLine,
@@ -10,22 +8,82 @@ import {
 import { Button } from './button/button'
 import Modal from './modal'
 
-type ReleaseNote = {
-	type: 'feature' | 'bugfix' | 'improvement' | 'info'
-	description: string
+type MediaContent = {
+	type: 'image' | 'video'
+	url: string
+	caption?: string
 }
 
-const VERSION_NAME = 'کاکائو'
-const SUMMARY =
-	'در این نسخه از ویجتی‌فای، تمرکز اصلی روی بهبود عملکرد و رفع مشکلات گزارش شده توسط کاربران عزیز بوده است. بهبودهای مختلفی در قسمت‌های مختلف اپلیکیشن انجام شده تا تجربه بهتری برای شما فراهم شود.'
+type ReleaseNote = {
+	type: 'feature' | 'bugfix' | 'improvement' | 'info'
+	title: string
+	description: string
+	media?: MediaContent[]
+}
+
+const VERSION_NAME = 'رشت'
 const releaseNotes: ReleaseNote[] = [
 	{
+		type: 'feature',
+		title: 'اضافه شدن بوکمارک های مرورگر',
+		description:
+			'در قسمت سرچ باکس، اکنون می‌توانید بوکمارک‌های مرورگر خود و ویجی باکس (سایت های پیشنهادی ما) رو مشاهده کنید. دو قسمت قابل اسلاید هستند.',
+		media: [
+			{
+				url: 'https://widgetify-ir.storage.c2.liara.space/system/browser-bookmarks.png',
+				type: 'image',
+				caption: 'تصویر بوکمارک های مرورگر و پیشنهاد ویجتی فای',
+			},
+		],
+	},
+	{
+		type: 'feature',
+		title: 'اضافه شدن مدیریت رنگ ارزها',
+		description:
+			'میتونید رنگ تغییر قیمت ارزها (مثلا سبز برای افزایش و قرمز برای کاهش) رو مدیریت کنید.',
+		media: [
+			{
+				url: 'https://widgetify-ir.storage.c2.liara.space/system/arz-colors.png',
+				type: 'image',
+				caption: 'تصویر مدیریت رنگ تغییر قیمت ارزها',
+			},
+		],
+	},
+	{
+		type: 'feature',
+		title: 'اضافه شدن تم جدید با نام زرنا',
+		description: 'تم زرنا به صورت رایگان و آزمایشی اضافه شد.',
+		media: [],
+	},
+	{
 		type: 'improvement',
-		description: 'بهبود جزئی',
+		title: 'تغییر در پودرمو',
+		description: 'محدودیت تایم کار از 60 دقیقه به 90 دقیقه تغییر کرد',
+		media: [],
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود در اضافه کردن بوکمارک',
+		description: 'بهبود ظاهری در پنل اضافه کردن بوکمارک',
+		media: [],
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود در جابه‌جایی',
+		description: 'بهبود در عملکرد جابه‌جایی بوکمارک ها و ویجت ها',
+		media: [],
 	},
 	{
 		type: 'bugfix',
-		description: 'رفع مشکلات گزارش شده',
+		title: 'رفع مشکل آیکون بوکمارک ها',
+		description: 'مشکل نمایش آیکون بوکمارک در برخی از بوکمارک ها رفع شد.',
+	},
+	{
+		type: 'bugfix',
+		title: 'رفع مشکلات گزارش شده',
+		description:
+			'چندین مشکل گزارش شده توسط کاربران رفع شده است. از جمله مشکل همگام‌سازی داده‌ها بین دستگاه‌های مختلف و مشکل نمایش تقویم در بعضی زبان‌ها.',
+		media: [],
 	},
 ]
 
@@ -68,20 +126,14 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}
 
-	const sortNotesByType = (notes: ReleaseNote[]) => {
-		return [...notes].sort(
-			(a, b) => getTypePriority(a.type) - getTypePriority(b.type)
-		)
-	}
-
-	const getCategoryTitle = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
+	const getTypeLabel = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
 		switch (type) {
 			case 'feature':
-				return 'ویژگی‌های جدید'
+				return 'ویژگی جدید'
 			case 'bugfix':
-				return 'رفع اشکالات'
+				return 'رفع اشکال'
 			case 'improvement':
-				return 'بهبودها'
+				return 'بهبود'
 			case 'info':
 				return 'اطلاعات'
 			default:
@@ -89,133 +141,144 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}
 
-	const sortedNotes = sortNotesByType(releaseNotes)
-	const groupedNotes = sortedNotes.reduce(
-		(acc, note) => {
-			if (!acc[note.type]) {
-				acc[note.type] = []
-			}
-			acc[note.type].push(note)
-			return acc
-		},
-		{} as Record<string, ReleaseNote[]>
-	)
+	const renderMedia = (media: MediaContent) => {
+		if (media.type === 'image') {
+			return (
+				<div className="my-2 overflow-hidden rounded-lg shadow-md">
+					<img
+						src={media.url}
+						alt={media.caption || 'تصویر بروزرسانی'}
+						className="object-cover w-full h-auto"
+					/>
+					{media.caption && (
+						<p className="p-2 text-xs text-center text-muted bg-content/30">
+							{media.caption}
+						</p>
+					)}
+				</div>
+			)
+		} else if (media.type === 'video') {
+			return (
+				<div className="my-2 overflow-hidden rounded-lg shadow-md">
+					<div className="relative">
+						<video
+							controls
+							className="w-full h-auto"
+							poster="/assets/video-poster.png"
+							aria-label={media.caption || 'ویدیو بروزرسانی'}
+						>
+							<source src={media.url} type="video/mp4" />
+							<track
+								kind="captions"
+								src="/assets/captions.vtt"
+								label="فارسی"
+								srcLang="fa"
+								default
+							/>
+							مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+						</video>
+					</div>
+					{media.caption && (
+						<p className="p-2 text-xs text-center text-muted bg-content/30">
+							{media.caption}
+						</p>
+					)}
+				</div>
+			)
+		}
+		return null
+	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'ویجتی‌فای به نسخه جدید بروزرسانی شد 🎉'}
-			size="md"
+			title={'بروزرسانی‌های ویجتی‌فای 🎉'}
+			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
+			showCloseButton={false}
 		>
-			<div className="p-2 max-h-[32rem] sm:max-h-85 overflow-y-auto">
-				<div className="flex flex-col items-center mb-2 text-center">
+			<div className="p-4 max-h-[80vh] overflow-y-auto">
+				{/* Header with version name */}
+				<div className="flex flex-col items-center text-center">
 					<h2
-						className={'text-xl font-bold mb-1 text-content animate-fade-in'}
+						className={'text-2xl font-bold mb-2 text-content animate-fade-in'}
 						style={{ animationDelay: '0.1s' }}
 					>
 						{VERSION_NAME}
 					</h2>
+					<div className="w-16 h-1 mb-4 bg-blue-500 rounded-full"></div>
 				</div>
 
-				<div
-					className={
-						'mb-5 p-4 rounded-lg bg-content border border-content animate-fade-in animate-slide-up'
-					}
-					style={{ animationDelay: '0.2s' }}
-				>
-					<div className="flex items-center mb-3">
-						<RiGiftLine className="ml-2 text-amber-500" size={20} />
-						<h3 className={'font-semibold text-content'}>
-							به روزرسانی ویجتی‌فای
-						</h3>
-					</div>
-					<p className={'text-sm text-muted'}>{SUMMARY}</p>
-				</div>
-
-				<div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
-					{Object.entries(groupedNotes).map(([type, notes], idx) => (
-						<div
-							key={type}
-							className="mb-5 animate-fade-in animate-slide-up"
-							style={{ animationDelay: `${0.3 + idx * 0.1}s` }}
+				{/* Blog-style article */}
+				<div className="flex flex-col h-64 gap-2">
+					{releaseNotes.map((note, index) => (
+						<article
+							key={index}
+							className="pb-4 border-b blog-post border-content animate-fade-in animate-slide-up"
+							style={{ animationDelay: `${0.2 + index * 0.1}s` }}
 						>
-							<div className="flex items-center mb-3">
-								<div className="inline-flex items-center">
-									{getTypeIcon(type as any)}
-									<h3 className={'mr-2 font-medium text-content'}>
-										{getCategoryTitle(type as any)}
-									</h3>
-								</div>
-								<div
-									className={'flex-1 h-px border border-content mr-2'}
-								></div>
+							{/* Type badge and title */}
+							<div className="flex items-start justify-between mb-3">
+								<h3 className="text-xl font-bold text-content">
+									{note.title}
+								</h3>
+								<span
+									className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${getTypePriority(note.type)}`}
+								>
+									{getTypeIcon(note.type)}
+									<span className="mr-1">
+										{getTypeLabel(note.type)}
+									</span>
+								</span>
 							</div>
 
-							<ul className="mr-2 space-y-3">
-								{notes.map((note, noteIdx) => (
-									<li
-										key={noteIdx}
-										className="flex animate-fade-in animate-slide-right"
-										style={{ animationDelay: `${noteIdx * 0.05}s` }}
-									>
-										<div className="mt-0.5 ml-2">
-											{type !== 'info' ? (
-												<RiCheckboxCircleFill
-													className="text-blue-500"
-													size={16}
-												/>
-											) : (
-												getTypeIcon(note.type)
-											)}
+							{/* Media section (if available) */}
+							{note.media && note.media.length > 0 && (
+								<div className="media-container">
+									{note.media.map((mediaItem, mediaIndex) => (
+										<div key={mediaIndex}>
+											{renderMedia(mediaItem)}
 										</div>
-										<div>
-											<p className={'text-sm text-muted'}>
-												{note.description}
-											</p>
-										</div>
-									</li>
-								))}
-							</ul>
-						</div>
-					))}
-				</div>
+									))}
+								</div>
+							)}
 
-				<div
-					className="flex items-center justify-center mt-6 animate-fade-in"
-					style={{ animationDelay: '0.6s' }}
-				>
-					<div className="flex items-center">
-						<RiThumbUpLine className="ml-1 text-blue-500" size={18} />
-						<p className={'text-sm text-muted'}>
-							از اینکه ویجتی‌فای را انتخاب کرده‌اید سپاسگزاریم 💙
-						</p>
+							{/* Content */}
+							<div className="mt-2">
+								<p className="leading-relaxed text-justify text-muted">
+									{note.description}
+								</p>
+							</div>
+						</article>
+					))}
+					<div
+						className="flex items-center justify-center p-4 mt-2 rounded-lg animate-fade-in bg-content/10"
+						style={{ animationDelay: '0.6s' }}
+					>
+						<div className="flex items-center">
+							<RiThumbUpLine className="ml-2 text-blue-500" size={20} />
+							<p className="text-sm text-muted">
+								از اینکه ویجتی‌فای را انتخاب کرده‌اید سپاسگزاریم 💙
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div
-				className={
-					'p-3 border-t border-content flex justify-between items-center'
-				}
-			>
-				{' '}
+
+			<div className="flex items-center justify-between p-4 border-t border-content">
 				<a
-					href="https://github.com/widgetify-app"
+					href="https://feedback.widgetify.ir"
 					target="_blank"
 					rel="noreferrer"
-					className={
-						'text-xs underline text-muted hover:text-blue-500 transition-colors duration-300'
-					}
+					className="text-xs underline transition-colors duration-300 text-muted hover:text-blue-500"
 				>
 					گزارش مشکل / پیشنهاد
 				</a>
 				<Button
 					onClick={onClose}
-					className={
-						'transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md'
-					}
+					className="transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md"
 					size="md"
 					isPrimary={true}
 				>

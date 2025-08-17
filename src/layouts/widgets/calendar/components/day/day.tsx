@@ -1,7 +1,8 @@
+import jalaliMoment from 'jalali-moment'
+import Analytics from '@/analytics'
 import Tooltip from '@/components/toolTip'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import jalaliMoment from 'jalali-moment'
 import type { Todo } from '../../interface/todo.interface'
 import {
 	formatDateStr,
@@ -107,6 +108,13 @@ export function DayItem({
 		return 'bg-success'
 	}
 
+	function onClick() {
+		console.log('Day clicked:', cellDate.format('YYYY-MM-DD'))
+		Analytics.event('calendar_day_click', {
+			selected_date: cellDate.format('YYYY-MM-DD'),
+		})
+	}
+
 	return (
 		<Tooltip
 			content={toolTipContent(cellDate, {
@@ -119,7 +127,7 @@ export function DayItem({
 			key={`day-${day}`}
 		>
 			<button
-				onClick={() => setSelectedDate(cellDate)}
+				onClick={onClick}
 				className={`
                     relative p-0 rounded-2xl text-xs transition-colors cursor-pointer 
                     h-6 w-6 mx-auto flex items-center justify-center

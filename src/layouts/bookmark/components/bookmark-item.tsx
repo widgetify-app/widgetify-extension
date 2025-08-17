@@ -12,12 +12,7 @@ interface BookmarkItemProps {
 	theme?: string
 	canAdd?: boolean
 	onClick: (e?: React.MouseEvent<any>) => void
-	draggable?: boolean
 	isDragging?: boolean
-	onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void
-	onDrop?: (e: React.DragEvent<HTMLDivElement>) => void
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
@@ -25,12 +20,7 @@ export function BookmarkItem({
 	bookmark,
 	canAdd = true,
 	onClick,
-	draggable = false,
 	isDragging = false,
-	onDragStart,
-	onDragOver,
-	onDragEnd,
-	onDrop,
 	onMenuClick,
 }: BookmarkItemProps) {
 	if (!bookmark) {
@@ -49,20 +39,13 @@ export function BookmarkItem({
 		: {}
 
 	return (
-		<div
-			draggable={draggable}
-			onDragStart={onDragStart}
-			onDragOver={onDragOver}
-			onDragEnd={onDragEnd}
-			onDrop={onDrop}
-			className={`relative ${isDragging ? 'opacity-50' : ''}`}
-		>
+		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
 			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-16 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{onMenuClick && bookmark && (
 						<div

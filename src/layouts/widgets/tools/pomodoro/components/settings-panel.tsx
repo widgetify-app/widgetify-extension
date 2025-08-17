@@ -1,7 +1,7 @@
+import type React from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import type React from 'react'
 import type { PomodoroSettings } from '../types'
 
 interface SettingInputProps {
@@ -88,7 +88,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						onChange={(value) => {
 							handleSettingChange('workTime', value)
 						}}
-						max={60}
+						max={90}
 					/>
 
 					<SettingInput

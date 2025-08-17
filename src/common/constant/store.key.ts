@@ -1,3 +1,4 @@
+import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
 import type { SelectedCity } from '@/context/weather.context'
@@ -8,12 +9,12 @@ import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import type { FilterSortState } from '@/layouts/widgets/news/components/news-filter-sort'
 import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
-import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
-import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
 } from '@/layouts/widgets/tools/pomodoro/types'
+import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
+import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
@@ -26,7 +27,6 @@ import type {
 } from '@/services/hooks/weather/weather.interface'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
-import { CurrencyColorMode } from '@/context/currency.context'
 
 export interface StorageKV {
 	currencies: string[]
@@ -49,6 +49,7 @@ export interface StorageKV {
 	lastVersion: string
 	forecastWeather: FetchedForecast[]
 	auth_token: string | undefined
+	refresh_token: string | null
 	profile: UserProfile
 	activeWidgets: WidgetItem[]
 	news: NewsResponse & { isCached?: boolean }

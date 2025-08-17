@@ -1,12 +1,14 @@
+import { domAnimation, LazyMotion, m } from 'framer-motion'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { BiRss } from 'react-icons/bi'
+import { VscAdd, VscTrash } from 'react-icons/vsc'
+import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
-import { useState } from 'react'
-import { BiRss } from 'react-icons/bi'
-import { VscAdd, VscTrash } from 'react-icons/vsc'
 import type { RssNewsState } from '../news.interface'
 
 const SUGGESTED_FEEDS = [
@@ -31,7 +33,6 @@ interface RssFeedManagerProps {
 }
 
 export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps) => {
-	if (!isOpen) return null
 	const [newFeed, setNewFeed] = useState<{ name: string; url: string }>({
 		name: '',
 		url: '',
@@ -53,7 +54,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		// Validate URL
 		try {
 			new URL(newFeed.url)
-		} catch (e) {
+		} catch {
 			setError('آدرس فید معتبر نیست')
 			return
 		}
@@ -72,6 +73,8 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 				},
 			],
 		})
+
+		Analytics.event('rss_feed_added')
 
 		setNewFeed({ name: '', url: '' })
 		setError(null)
@@ -102,6 +105,11 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		})
 		setNewFeed({ name: '', url: '' })
 
+		Analytics.event('rss_feed_suggested_added', {
+			name: suggestedFeed.name,
+			url: suggestedFeed.url,
+		})
+
 		setError(null)
 	}
 
@@ -127,6 +135,8 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 			...rssState,
 			customFeeds: rssState.customFeeds.filter((feed) => feed.id !== id),
 		})
+
+		Analytics.event('rss_feed_removed')
 	}
 
 	const onToggleFeed = (id: string) => {
@@ -154,6 +164,15 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 			onClose({ ...rssState, changed: false })
 		}
 	}
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error)
+			setError(null)
+		}
+	}, [error])
+
+	if (!isOpen) return null
 
 	return (
 		<Modal

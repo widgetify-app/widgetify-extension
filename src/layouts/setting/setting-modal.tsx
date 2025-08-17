@@ -1,5 +1,3 @@
-import Modal from '@/components/modal'
-import { type TabItem, TabManager } from '@/components/tab-manager'
 import { MdPets } from 'react-icons/md'
 import {
 	VscAccount,
@@ -10,6 +8,9 @@ import {
 	VscRecordKeys,
 	VscSettingsGear,
 } from 'react-icons/vsc'
+import Analytics from '@/analytics'
+import Modal from '@/components/modal'
+import { type TabItem, TabManager } from '@/components/tab-manager'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
@@ -77,6 +78,14 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 		},
 	]
 
+	useEffect(() => {
+		if (isOpen) {
+			Analytics.event('open_settings_modal', {
+				selected_tab: selectedTab,
+			})
+		}
+	}, [isOpen])
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -86,6 +95,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			direction="rtl"
 		>
 			<TabManager
+				tabOwner="setting"
 				tabs={tabs}
 				defaultTab="general"
 				selectedTab={selectedTab}

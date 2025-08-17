@@ -37,7 +37,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 			onWallpaperChange(newCustomWallpaper)
 
-			Analytics.featureUsed('custom_wallpaper_selected', {
+			Analytics.event('custom_wallpaper_selected', {
 				file_type: file.type,
 				file_size: file.size,
 				media_type: isImage ? 'image' : 'video',

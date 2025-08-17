@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { FiSearch } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemSelector } from '@/components/item-selector'
@@ -6,8 +8,6 @@ import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode, useCurrencyStore } from '@/context/currency.context'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
-import { useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
 
 export type SupportedCurrencies = {
 	key: string
@@ -64,18 +64,17 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				: [...selectedCurrencies, currencyKey]
 		)
 
-		Analytics.featureUsed(
-			'currency_selection',
-			{
-				currency_key: currencyKey,
-				action: isRemoving ? 'remove' : 'add',
-			},
-			'toggle'
-		)
+		Analytics.event('currency_selection', {
+			currency_key: currencyKey,
+			action: isRemoving ? 'remove' : 'add',
+		})
 	}
 
 	const toggleCurrencyColorMode = (mode: CurrencyColorMode) => {
 		setCurrencyColorMode(mode)
+		Analytics.event('currency_color_mode_changed', {
+			mode,
+		})
 	}
 
 	const currencyGroups = getCurrencyOptions(supportCurrencies)
@@ -102,7 +101,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 				className={`w-full h-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'}`}
 			>
 				<SectionPanel title="رنگ تغییر قیمت" size="xs">
-					<div className="flex flex-row  gap-2">
+					<div className="flex flex-row gap-2">
 						<ItemSelector
 							label="عادی"
 							isActive={currencyColorMode === CurrencyColorMode.NORMAL}

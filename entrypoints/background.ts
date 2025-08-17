@@ -12,6 +12,11 @@ export default defineBackground(() => {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
 
+	browser.action.onClicked.addListener(() => {
+		browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+		Analytics.event('IconClicked')
+	})
+
 	if (!isDev) {
 		registerRoute(
 			({ request }) => request.url.includes('api.widgetify.ir'),
@@ -147,7 +152,7 @@ export default defineBackground(() => {
 
 			const manifest = browser.runtime.getManifest()
 
-			Analytics.featureUsed('Installed', {
+			Analytics.event('Installed', {
 				version: manifest.version,
 				offlineSupport: true,
 			})
@@ -157,7 +162,7 @@ export default defineBackground(() => {
 			const manifest = browser.runtime.getManifest()
 			const previousVersion = details.previousVersion || 'unknown'
 
-			Analytics.featureUsed('Updated', {
+			Analytics.event('Updated', {
 				version: manifest.version,
 				previousVersion,
 				offlineSupport: true,
@@ -169,7 +174,7 @@ export default defineBackground(() => {
 	})
 
 	browser.runtime.onStartup.addListener(async () => {
-		Analytics.featureUsed('Startup')
+		Analytics.event('Startup')
 	})
 
 	cleanupOutdatedCaches()

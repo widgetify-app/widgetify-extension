@@ -24,6 +24,7 @@ interface FetchedProfile {
 	wallpaper: Wallpaper | null
 	theme?: Theme
 	activity?: string
+	birthDate: string | null
 }
 
 export interface UserProfile extends FetchedProfile {

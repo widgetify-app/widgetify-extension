@@ -1,3 +1,5 @@
+import { LuCircleUser } from 'react-icons/lu'
+import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
@@ -10,7 +12,18 @@ export function ProfileNav() {
 	}
 
 	if (!user) {
-		return null
+		return (
+			<Tooltip content="ورود به حساب کاربری">
+				<div
+					className="flex items-center justify-center w-8 h-8 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
+					onClick={() => {
+						callEvent('openSettings', 'account')
+					}}
+				>
+					<LuCircleUser size={18} className="text-muted" />
+				</div>
+			</Tooltip>
+		)
 	}
 
 	return (

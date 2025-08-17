@@ -84,7 +84,7 @@ export function RenderStickerPattern(bookmark: Bookmark) {
 						<img
 							src={bookmark.sticker}
 							alt=""
-							className="object-contain w-full h-full rounded-sm"
+							className="hidden object-contain w-full h-full rounded-sm sm:block"
 							style={{
 								opacity: pos.opacity,
 								filter: pos.glow

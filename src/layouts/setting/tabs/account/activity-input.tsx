@@ -1,10 +1,10 @@
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { useUpdateActivity } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
 
 const ACTIVITY_MAX_LENGTH = 40
 interface Prop {
@@ -66,6 +66,7 @@ export function ActivityInput({ activity }: Prop) {
 							}
 							size="md"
 							isPrimary={true}
+							className="rounded-2xl"
 						>
 							{isUpdatingActivity ? 'در حال ذخیره...' : 'ذخیره وضعیت'}
 						</Button>

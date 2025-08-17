@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import { sleep } from '@/common/utils/timeout'
+import { listenEvent } from '@/common/utils/call-event'
 import {
 	type UserProfile,
 	useGetUserProfile,
@@ -32,24 +32,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		enabled: !!token,
 	})
 
-	useEffect(() => {
-		async function loadToken() {
-			const savedToken = await getFromStorage('auth_token')
-			if (savedToken) {
-				setToken(savedToken)
-			}
-			setInitialLoading(false)
-		}
-
-		loadToken()
-	}, [])
-
-	const login = (newToken: string) => {
-		setToStorage('auth_token', newToken)
-		setToken(newToken)
-		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
-	}
-
 	const logout = async () => {
 		await Promise.all([
 			removeFromStorage('auth_token'),
@@ -60,8 +42,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 		setToken(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
-		await sleep(1000)
-		window.location.reload()
+	}
+
+	useEffect(() => {
+		async function loadToken() {
+			const savedToken = await getFromStorage('auth_token')
+			if (savedToken) {
+				setToken(savedToken)
+			}
+			setInitialLoading(false)
+		}
+
+		loadToken()
+
+		const logoutEvent = listenEvent('auth_logout', async () => {
+			logout()
+		})
+
+		return () => {
+			logoutEvent()
+		}
+	}, [])
+
+	const login = (newToken: string) => {
+		setToStorage('auth_token', newToken)
+		setToken(newToken)
+		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 	}
 
 	const refetchUser = async (): Promise<UserProfile | null> => {
