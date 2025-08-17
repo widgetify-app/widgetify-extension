@@ -1,21 +1,21 @@
+import { useState } from 'react'
+import { FaChartSimple } from 'react-icons/fa6'
+import { FiList } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
-import { useState } from 'react'
-import { FaChartSimple } from 'react-icons/fa6'
-import { FiList } from 'react-icons/fi'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
-import { TodoStats } from './todo-stats'
 import { TodoItem } from './todo.item'
+import { TodoStats } from './todo-stats'
 
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
 		useTodoStore()
-	const { blurMode,updateSetting } = useGeneralSetting()
+	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 
 	const [showStats, setShowStats] = useState<boolean>(false)
@@ -47,13 +47,6 @@ export function TodosLayout() {
 			date: selectedDateStr,
 		})
 		setTodoText('')
-	}
-
-	const getCompletionStats = () => {
-		const total = selectedDateTodos.length
-		const completed = selectedDateTodos.filter((todo) => todo.completed).length
-		const percentage = total ? Math.round((completed / total) * 100) : 0
-		return { total, completed, percentage }
 	}
 
 	return (
@@ -90,61 +83,54 @@ export function TodosLayout() {
 					{showStats ? (
 						<TodoStats />
 					) : (
-						<>
-							<div className="flex justify-between mb-2">
-								<div className="flex gap-0.5">
-									<button
-										onClick={() => setFilter('all')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-									>
-										همه
-									</button>
-									<button
-										onClick={() => setFilter('active')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-									>
-										فعال
-									</button>
-									<button
-										onClick={() => setFilter('completed')}
-										className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-									>
-										تکمیل شده
-									</button>
-								</div>
-								<select
-									value={todoOptions.viewMode}
-									onChange={(e) =>
-										handleChangeViewMode(
-											e.target.value as TodoViewType
-										)
-									}
-									className={
-										'select select-xs text-[10px] w-[5.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer'
-									}
-									style={{
-										backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-										backgroundPosition: 'left 0.5rem center',
-										backgroundRepeat: 'no-repeat',
-										backgroundSize: '1.3em 1.3em',
-										paddingLeft: '3rem',
-									}}
+						<div className="flex justify-between mb-2">
+							<div className="flex gap-0.5">
+								<button
+									onClick={() => setFilter('all')}
+									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
-									<option
-										value={TodoViewType.Day}
-										className="text-content"
-									>
-										لیست امروز
-									</option>
-									<option
-										value={TodoViewType.Monthly}
-										className="text-content"
-									>
-										لیست ماهانه
-									</option>
-								</select>
+									همه
+								</button>
+								<button
+									onClick={() => setFilter('active')}
+									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+								>
+									فعال
+								</button>
+								<button
+									onClick={() => setFilter('completed')}
+									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+								>
+									تکمیل شده
+								</button>
 							</div>
-						</>
+							<select
+								value={todoOptions.viewMode}
+								onChange={(e) =>
+									handleChangeViewMode(e.target.value as TodoViewType)
+								}
+								className={
+									'select select-xs text-[10px] w-[5.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer'
+								}
+								style={{
+									backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+									backgroundPosition: 'left 0.5rem center',
+									backgroundRepeat: 'no-repeat',
+									backgroundSize: '1.3em 1.3em',
+									paddingLeft: '3rem',
+								}}
+							>
+								<option value={TodoViewType.Day} className="text-content">
+									لیست امروز
+								</option>
+								<option
+									value={TodoViewType.Monthly}
+									className="text-content"
+								>
+									لیست ماهانه
+								</option>
+							</select>
+						</div>
 					)}
 				</div>
 				<div className="mt-0.5 flex-grow overflow-hidden">
@@ -153,7 +139,7 @@ export function TodosLayout() {
 							className={`space-y-1.5 overflow-y-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
 							{selectedDateTodos.length > 0 ? (
-								<>
+								<div>
 									{selectedDateTodos.map((todo) => (
 										<TodoItem
 											key={todo.id}
@@ -163,7 +149,7 @@ export function TodosLayout() {
 											blurMode={blurMode}
 										/>
 									))}
-								</>
+								</div>
 							) : (
 								<div
 									className={

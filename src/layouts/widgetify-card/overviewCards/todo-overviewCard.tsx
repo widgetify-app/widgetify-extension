@@ -5,7 +5,7 @@ import { TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr, getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 export function TodoOverviewCard() {
-	const { selected_timezone: timezone, blurMode} = useGeneralSetting()
+	const { selected_timezone: timezone, blurMode } = useGeneralSetting()
 
 	const { todos, todoOptions } = useTodoStore()
 	const today = getCurrentDate(timezone.value)

@@ -1,10 +1,10 @@
-import { useAuth } from "@/context/auth.context";
-import { useDate } from "@/context/date.context";
-import { useGeneralSetting } from "@/context/general-setting.context";
-import { useGetGoogleCalendarEvents } from "@/services/hooks/date/getGoogleCalendarEvents.hook";
-import { LuLockKeyhole } from "react-icons/lu";
-import { MdEvent } from "react-icons/md";
-import { GoogleMeetingItem } from "./google-meeting-item";
+import { LuLockKeyhole } from 'react-icons/lu'
+import { MdEvent } from 'react-icons/md'
+import { useAuth } from '@/context/auth.context'
+import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import { GoogleMeetingItem } from './google-meeting-item'
 
 const LoadingSkeleton = () => (
 	<div className="space-y-2">
@@ -21,26 +21,24 @@ const LoadingSkeleton = () => (
 			</div>
 		))}
 	</div>
-);
+)
 
 export function GoogleTab() {
-	const { today } = useDate();
-	const { isAuthenticated } = useAuth();
-	const { blurMode } = useGeneralSetting();
+	const { today } = useDate()
+	const { isAuthenticated } = useAuth()
+	const { blurMode } = useGeneralSetting()
 	const { data: googleEvents, isLoading } = useGetGoogleCalendarEvents(
 		isAuthenticated,
 		today.clone().toDate(),
-		today.clone().add(30, "day").toDate(),
-	);
+		today.clone().add(30, 'day').toDate()
+	)
 
 	const GoogleEventsContent = () => (
-		<div
-			className={`space-y-2 ${blurMode ? "blur-mode" : "disabled-blur-mode"}`}
-		>
+		<div className={`space-y-2 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}>
 			{!isAuthenticated ? (
 				<div className="flex flex-col items-center py-1.5 text-center text-muted">
 					<LuLockKeyhole className="mb-2 text-3xl" />
-					<p className="max-w-44 text-xs leading-normal">
+					<p className="text-xs leading-normal max-w-44">
 						برای مشاهده رویدادهای گوگل، لطفاً وارد حساب کاربری خود شوید.
 					</p>
 				</div>
@@ -53,12 +51,12 @@ export function GoogleTab() {
 			) : (
 				<div
 					className={
-						"flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-1"
+						'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-1'
 					}
 				>
 					<div
 						className={
-							"flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70"
+							'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 						}
 					>
 						<MdEvent className="text-content" size={24} />
@@ -69,7 +67,7 @@ export function GoogleTab() {
 				</div>
 			)}
 		</div>
-	);
+	)
 
-	return <GoogleEventsContent />;
+	return <GoogleEventsContent />
 }
