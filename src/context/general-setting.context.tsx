@@ -1,17 +1,20 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 
 export interface GeneralData {
 	analyticsEnabled: boolean
 	selected_timezone: FetchedTimezone
+	browserBookmarksEnabled: boolean
 }
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
 	setAnalyticsEnabled: (value: boolean) => void
 	setTimezone: (value: FetchedTimezone) => void
+	setBrowserBookmarksEnabled: (value: boolean) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
@@ -21,6 +24,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 		value: 'Asia/Tehran',
 		offset: '+03:30',
 	},
+	browserBookmarksEnabled: true,
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -74,6 +78,11 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting('selected_timezone', value)
 	}
 
+	const setBrowserBookmarksEnabled = async (value: boolean) => {
+		updateSetting('browserBookmarksEnabled', value)
+		Analytics.event(`browser_bookmarks_${value ? 'enabled' : 'disabled'}`)
+	}
+
 	if (!isInitialized) {
 		return null
 	}
@@ -84,6 +93,8 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		updateSetting,
 		setAnalyticsEnabled,
 		setTimezone,
+		browserBookmarksEnabled: settings.browserBookmarksEnabled,
+		setBrowserBookmarksEnabled,
 	}
 
 	return (

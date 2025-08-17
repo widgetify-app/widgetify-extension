@@ -28,7 +28,7 @@ export const ToggleSwitch = ({
 		>
 			<span
 				className={`absolute w-4 h-4 bg-white rounded-full shadow-sm top-1 left-1 transition-transform duration-300 ease-out ${
-					enabled ? 'translate-x-4' : 'translate-x-0'
+					enabled ? 'translate-x-0' : 'translate-x-4'
 				}`}
 			/>
 		</div>
