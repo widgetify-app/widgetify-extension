@@ -1,10 +1,10 @@
+import type React from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
-import type React from 'react'
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -16,7 +16,6 @@ export enum TodoPriority {
 	High = 'high',
 }
 export interface TodoOptions {
-	blurMode: boolean
 	viewMode: TodoViewType
 }
 export interface AddTodoInput {
@@ -43,7 +42,6 @@ const TodoContext = createContext<TodoContextType | null>(null)
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
-		blurMode: false,
 		viewMode: TodoViewType.Day,
 	})
 
@@ -58,7 +56,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				setTodoOptions(todoOptions)
 			} else {
 				setToStorage('todoOptions', {
-					blurMode: false,
 					viewMode: TodoViewType.Day,
 				})
 			}

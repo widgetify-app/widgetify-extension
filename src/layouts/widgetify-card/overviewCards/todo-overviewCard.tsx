@@ -5,7 +5,7 @@ import { TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr, getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 export function TodoOverviewCard() {
-	const { selected_timezone: timezone } = useGeneralSetting()
+	const { selected_timezone: timezone, blurMode } = useGeneralSetting()
 
 	const { todos, todoOptions } = useTodoStore()
 	const today = getCurrentDate(timezone.value)
@@ -48,7 +48,7 @@ export function TodoOverviewCard() {
 				/>
 				<div className="flex-1">
 					<p className="text-xs font-medium">{getTodoLabel('full')}</p>
-					{todoOptions.blurMode ? (
+					{blurMode ? (
 						<p className="text-[10px] opacity-75">حالت مخفی فعال است.</p>
 					) : (
 						<p className="text-[10px] opacity-75">

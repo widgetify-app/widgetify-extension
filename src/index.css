@@ -193,3 +193,14 @@ html.modal-isActive {
 html.modal-isActive::-webkit-scrollbar {
 	display: none !important;
 }
+
+.disabled-blur-mode {
+	filter: blur(0px);
+	transition: filter 300ms ease-in-out;
+}
+
+.blur-mode {
+	filter: blur(8px);
+	pointer-events: none;
+	transition: filter 300ms ease-in;
+}

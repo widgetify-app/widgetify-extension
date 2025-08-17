@@ -1,5 +1,6 @@
 import { FiBook, FiLoader } from 'react-icons/fi'
 import { RequireAuth } from '@/components/auth/require-auth'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
@@ -7,12 +8,15 @@ import { NoteNavigation } from './components/note-navigation'
 
 function NotesContent() {
 	const { notes, activeNoteId, addNote, updateNote } = useNotes()
+	const { blurMode } = useGeneralSetting()
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
 
 	if (!activeNote) {
 		return (
-			<div className="flex flex-col items-center justify-center h-full">
+			<div
+				className={`flex flex-col items-center justify-center h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			>
 				<FiBook className={'w-8 h-8 mb-2 text-content opacity-50'} />
 				<p className={'text-sm text-muted'}>هیچ یادداشتی پیدا نشد</p>
 				<button
@@ -26,7 +30,9 @@ function NotesContent() {
 	}
 
 	return (
-		<div className="mt-2 flex-grow overflow-auto h-[calc(100%-40px)]">
+		<div
+			className={`mt-2 flex-grow overflow-auto h-[calc(100%-40px)] ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+		>
 			<div key={activeNoteId} className="h-full">
 				<NoteEditor note={activeNote} onUpdateNote={updateNote} />
 			</div>

@@ -1,13 +1,16 @@
+import { LuGift } from 'react-icons/lu'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import type { InfoPanelData } from '../../hooks/useInfoPanelData'
 import { BirthdayItem } from './birthday-item'
-import { LuGift } from 'react-icons/lu'
 
 interface Props {
 	birthdays: InfoPanelData['birthdays']
 }
 export function BirthdayTab({ birthdays }: Props) {
+	const { blurMode } = useGeneralSetting()
+
 	return (
-		<div className="space-y-2">
+		<div className={`space-y-2 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}>
 			{birthdays.length > 0 ? (
 				birthdays.map((birthday) => (
 					<BirthdayItem key={birthday.id} birthday={birthday} />
