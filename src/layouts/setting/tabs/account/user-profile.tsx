@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FiAtSign, FiCalendar, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { setToStorage } from '@/common/storage'
+import { isSyncActive } from '@/common/sync-checker'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
@@ -46,10 +47,8 @@ export const UserProfile = () => {
 
 	useEffect(() => {
 		const loadSyncSettings = async () => {
-			const syncEnabled = (await getFromStorage('enable_sync')) as
-				| boolean
-				| undefined
-			setEnableSync(syncEnabled !== undefined ? syncEnabled : true)
+			const syncEnabled = await isSyncActive()
+			setEnableSync(syncEnabled)
 		}
 
 		loadSyncSettings()
