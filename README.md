@@ -6,7 +6,9 @@
 
 Official Website: [widgetify.ir](https://widgetify.ir)
 
-Discord: https://discord.gg/7sxfFjFJzd
+<a href="https://discord.gg/p9TZzEV39e" target="_blank">
+         <img src="https://discordapp.com/api/guilds/1375251820326162578/widget.png?style=banner2" alt="total" >
+</a>
 
 ![Alt](https://repobeats.axiom.co/api/embed/50a64e3cf86c61211e3c0ee3daf94215e9fb0ec4.svg "Repobeats analytics image")
 
