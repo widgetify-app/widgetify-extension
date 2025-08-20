@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import CustomCheckbox from '@/components/checkbox'
 import { ItemSelector } from '@/components/item-selector'
 import { TextInput } from '@/components/text-input'
 import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
-import { useEffect, useState } from 'react'
 
 export function PetsTab() {
 	const [enablePets, setEnablePets] = useState(true)
@@ -105,12 +105,12 @@ export function PetsTab() {
 				/>
 
 				<div className="p-3 mt-2 border rounded-lg border-primary/30 bg-primary/20">
-					<p className="mb-1 text-xs font-medium text-primary-content">
+					<p className="mb-1 text-xs font-medium text-primary">
 						💡 نکات مراقبت:
 					</p>
 					<ul className="text-xs text-primary-content space-y-0.5">
-						<li>• روی حیوان کلیک کنید تا با آن بازی کنید</li>
-						<li>• برای غذا دادن، روی محیط کلیک کنید</li>
+						<li>• برای بازی با حیوان خانگی، روی آن کلیک کنید</li>
+						<li>• برای غذا دادن به حیوان، در محیط اطراف کلیک کنید</li>
 					</ul>
 				</div>
 			</div>
