@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { FaGlobe } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { SectionPanel } from '@/components/section-panel'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient } from '@/services/api'
 import { getBrowserBookmarks } from '../utils/browser-bookmarks.util'
 
@@ -17,7 +18,7 @@ interface BookmarkSuggestionsProps {
 
 export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 	const [suggestions, setSuggestions] = useState<BookmarkSuggestion[]>([])
-
+	const { browserBookmarksEnabled } = useGeneralSetting()
 	useEffect(() => {
 		const fetchSuggestions = async () => {
 			const client = await getMainClient()
@@ -25,16 +26,19 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 				'/bookmarks/suggestions'
 			)
 			setSuggestions(response.data)
-			const browserBookmarks = await getBrowserBookmarks()
-			const mappedBrowserBookmark: BookmarkSuggestion[] = browserBookmarks.map(
-				(bookmark) => ({
-					title: bookmark.title || '',
-					url: bookmark.url || '',
-					icon: getFaviconFromUrl(bookmark.url || ''),
-				})
-			)
 
-			setSuggestions((prev) => [...prev, ...mappedBrowserBookmark])
+			if (browserBookmarksEnabled) {
+				const browserBookmarks = await getBrowserBookmarks()
+				const mappedBrowserBookmark: BookmarkSuggestion[] = browserBookmarks.map(
+					(bookmark) => ({
+						title: bookmark.title || '',
+						url: bookmark.url || '',
+						icon: getFaviconFromUrl(bookmark.url || ''),
+					})
+				)
+
+				setSuggestions((prev) => [...prev, ...mappedBrowserBookmark])
+			}
 		}
 
 		fetchSuggestions()
@@ -45,9 +49,9 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 	}
 
 	return (
-		<div className="mt-4">
+		<div className="mt-2">
 			<SectionPanel title="پیشنهاد ویجتی‌فای" size="xs">
-				<div className="grid h-16 grid-cols-5 gap-2 mt-2 overflow-y-auto">
+				<div className="grid h-16 grid-cols-5 gap-2 mt-1 overflow-y-auto">
 					{suggestions.map((suggestion, index) => (
 						<div
 							key={index}
