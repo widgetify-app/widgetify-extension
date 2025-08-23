@@ -16,6 +16,8 @@ export interface BookmarkFormData {
 	customTextColor: string
 	sticker: string
 	touched?: boolean
+	friendIds?: string[]
+	shouldCallApiDirectly?: boolean
 }
 
 export function IconSourceSelector({

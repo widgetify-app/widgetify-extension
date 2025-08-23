@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
 import { SlOptions } from 'react-icons/sl'
 import { addOpacityToColor } from '@/common/color'
+import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
@@ -24,12 +25,14 @@ export function FolderBookmarkItem({
 		return 'border border-primary/0 hover:border-primary/40 bg-widget backdrop-blur-md hover:bg-primary/20'
 	}
 
+	const hasSharedFriends = bookmark.hasSharedFriends
+
 	const displayIcon =
 		bookmark.customImage ||
 		(isHovered ? (
-			<FaFolderOpen className="w-6 h-6 text-blue-400" />
+			<FaFolderOpen className="w-16 h-16 text-blue-400" />
 		) : (
-			<FaFolder className="w-6 h-6 text-blue-400" />
+			<FaFolder className="w-16 h-16 text-blue-400" />
 		))
 
 	const customStyles = bookmark.customBackground
@@ -74,7 +77,20 @@ export function FolderBookmarkItem({
 						) : (
 							displayIcon
 						)}
+
+						{hasSharedFriends && (
+							<div className="absolute top-2 right-3.5">
+								{bookmark.friends.map((friend) => (
+									<AvatarComponent
+										key={friend.id}
+										url={friend.user.avatar}
+										className="!w-4 !h-4 border-1 border-white dark:border-gray-800 rounded-full"
+									/>
+								))}
+							</div>
+						)}
 					</div>
+
 					<BookmarkTitle
 						title={bookmark.title}
 						customTextColor={bookmark.customTextColor}

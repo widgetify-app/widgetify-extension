@@ -97,13 +97,11 @@ export function BookmarksComponent() {
 
 	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
-		if (isManageable(bookmark)) {
-			setSelectedBookmark(bookmark)
-			const button = e.currentTarget
-			if (button) {
-				const rect = button.getBoundingClientRect()
-				setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
-			}
+		setSelectedBookmark(bookmark)
+		const button = e.currentTarget
+		if (button) {
+			const rect = button.getBoundingClientRect()
+			setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
 		}
 	}
 
@@ -337,6 +335,7 @@ export function BookmarksComponent() {
 				onClose={() => setShowAddBookmarkModal(false)}
 				onAdd={(bookmark) => addBookmark(bookmark)}
 				parentId={currentFolderId}
+				order={displayedBookmarks.length + 1}
 			/>
 			{bookmarkToEdit && (
 				<EditBookmarkModal
@@ -378,6 +377,7 @@ export function BookmarksComponent() {
 					onDelete={() => handleDeleteBookmark(selectedBookmark)}
 					onEdit={() => handleEditBookmark(selectedBookmark)}
 					onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
+					isManageable={selectedBookmark.isManageable}
 				/>
 			)}
 		</>

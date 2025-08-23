@@ -1,5 +1,5 @@
-import { ContextMenu } from '@/components/contextMenu.component'
 import { LuPen, LuPlus, LuTrash } from 'react-icons/lu'
+import { ContextMenu } from '@/components/contextMenu.component'
 
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
@@ -7,6 +7,7 @@ interface BookmarkContextMenuProps {
 	onEdit: () => void
 	onOpenInNewTab?: () => void
 	isFolder?: boolean
+	isManageable: boolean
 }
 
 export function BookmarkContextMenu({
@@ -14,6 +15,7 @@ export function BookmarkContextMenu({
 	onDelete,
 	onEdit,
 	onOpenInNewTab,
+	isManageable,
 }: BookmarkContextMenuProps) {
 	const getMenuItemStyle = (isDelete = false) => {
 		if (isDelete) {
@@ -35,13 +37,15 @@ export function BookmarkContextMenu({
 				</button>
 			)}
 
-			<button
-				onClick={onEdit}
-				className={`w-full px-3 py-1 flex items-center gap-x-[9px] cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
-			>
-				<LuPen size={13} />
-				<span className="font-medium">ویرایش</span>
-			</button>
+			{isManageable && (
+				<button
+					onClick={onEdit}
+					className={`w-full px-3 py-1 flex items-center gap-x-[9px] cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
+				>
+					<LuPen size={13} />
+					<span className="font-medium">ویرایش</span>
+				</button>
+			)}
 
 			<button
 				onClick={onDelete}

@@ -44,7 +44,7 @@ export function SortableBookmarkItem({
 					bookmark={bookmark}
 					onClick={onClick}
 					isDragging={isDragging}
-					onMenuClick={isManageable ? onMenuClick : undefined}
+					onMenuClick={onMenuClick}
 				/>
 			) : (
 				<BookmarkItem
@@ -52,7 +52,7 @@ export function SortableBookmarkItem({
 					onClick={onClick}
 					canAdd={true}
 					isDragging={isDragging}
-					onMenuClick={isManageable ? onMenuClick : undefined}
+					onMenuClick={onMenuClick}
 				/>
 			)}
 		</div>

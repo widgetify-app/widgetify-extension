@@ -1,5 +1,6 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { getMainClient } from '@/services/api'
+import type { Friend } from '../friends/friendService.hook'
 
 export interface FetchedBookmark {
 	id: string
@@ -16,6 +17,8 @@ export interface FetchedBookmark {
 	customBackground?: string
 	sticker?: string
 	order?: number
+	hasSharedFriends: boolean
+	friends: Friend[]
 }
 
 export const useGetBookmarks = () => {

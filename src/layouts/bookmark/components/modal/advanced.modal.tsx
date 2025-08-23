@@ -3,36 +3,62 @@ import { FiRotateCcw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { RequireAuth } from '@/components/auth/require-auth'
+import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
+import { Dropdown } from '@/components/dropdown/dropdown'
 import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
+import { useAuth } from '@/context/auth.context'
 import { getEmojiList } from '@/services/emoji/emoji-api'
+import { type Friend, useGetFriends } from '@/services/hooks/friends/friendService.hook'
 import type { Bookmark } from '../../types/bookmark.types'
 import { BookmarkItem } from '../bookmark-item'
 
+export interface AdvancedModalResult {
+	background?: string
+	textColor?: string
+	sticker?: string
+	shouldCallApiDirectly: boolean // when there are selected friends
+	friendIds: string[]
+}
 interface AdvancedModalProps {
 	title: string
-	onClose: (
-		data: { background?: string; textColor?: string; sticker?: string } | null
-	) => void
+	onClose: (data: AdvancedModalResult | null) => void
 	isOpen: boolean
 	bookmark: {
 		type: Bookmark['type']
 		customBackground: string
 		customTextColor: string
+		parentId: string | null
 		title?: string
 		url?: string
 		sticker?: string
+		currentFriends: Friend[]
 	}
 }
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
 	const emojiPopoverRef = useRef<HTMLDivElement>(null)
+	const { isAuthenticated } = useAuth()
+	const isCanAddFriends =
+		isAuthenticated &&
+		bookmark.type === 'FOLDER' &&
+		bookmark.parentId === null &&
+		isOpen
+
+	const { data: friends } = useGetFriends({
+		enabled: isCanAddFriends,
+		status: 'ACCEPTED',
+		limit: 100,
+	})
 
 	const [background, setBackground] = useState(bookmark.customBackground)
 	const [textColor, setTextColor] = useState(bookmark.customTextColor)
 	const [sticker, setSticker] = useState(bookmark.sticker || '')
+	const [selectedFriends, setSelectedFriends] = useState<string[]>(
+		bookmark.currentFriends?.map((friend) => friend.user?.userId) || []
+	)
 
 	const [isEmojiPopoverOpen, setIsEmojiPopoverOpen] = useState(false)
 	const [emojiUrls, setEmojiUrls] = useState<string[]>([])
@@ -142,17 +168,41 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		const hasBackgroundChanged = background !== bookmark.customBackground
 		const hasTextColorChanged = textColor !== bookmark.customTextColor
 		const hasEmojiChanged = sticker !== bookmark.sticker
+		const hasFriendsSelected = selectedFriends.length > 0
 
-		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
+		// Log selected friends for debugging
+		if (selectedFriends.length > 0) {
+			console.log('Selected friends:', selectedFriends)
+		}
+
+		// If nothing has changed and no friends are selected, return null
+		if (
+			!hasBackgroundChanged &&
+			!hasTextColorChanged &&
+			!hasEmojiChanged &&
+			!hasFriendsSelected
+		) {
 			onClose(null)
 			return
 		}
 
+		// Return data if anything has changed or friends are selected
 		onClose({
 			background: hasBackgroundChanged ? background : undefined,
 			textColor: hasTextColorChanged ? textColor : undefined,
 			sticker: hasEmojiChanged ? sticker : undefined,
+			shouldCallApiDirectly: hasFriendsSelected,
+			friendIds: selectedFriends as string[], // Cast to string[] since friend IDs are strings
 		})
+	}
+
+	function onSelectFriend(friendId: string | string[]) {
+		if (!Array.isArray(friendId)) {
+			setSelectedFriends([friendId])
+		} else {
+			setSelectedFriends(friendId)
+		}
+		console.log(selectedFriends)
 	}
 
 	if (!isOpen) return null
@@ -163,6 +213,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			isOpen={isOpen}
 			onClose={() => onClose(null)}
 			direction="rtl"
+			closeOnBackdropClick={false}
 		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<RequireAuth mode="preview">
@@ -219,6 +270,42 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							</Button>
 						</div>
 					</div>
+
+					{isCanAddFriends && (
+						<div>
+							<label
+								className={
+									'block text-sm  font-medium mb-1.5 text-content'
+								}
+							>
+								اشتراک با دوستان
+							</label>
+							<div className="flex flex-1 px-1">
+								<Dropdown
+									value={selectedFriends[0]}
+									onChange={(
+										value: string | number | (string | number)[]
+									) => onSelectFriend(value as any)}
+									options={
+										friends?.data?.friends.map((friend) => ({
+											label: (
+												<FriendSelectItem
+													key={friend.user?.userId}
+													friend={friend}
+												/>
+											),
+											value: friend.user?.userId,
+										})) || []
+									}
+									placeholder="انتخاب دوست"
+									multiple={false}
+									searchable={false}
+									clearable={true}
+									className="!w-2/3 !rounded-md"
+								/>
+							</div>
+						</div>
+					)}
 				</RequireAuth>
 
 				<div className="relative" ref={emojiPopoverRef}>
@@ -316,6 +403,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								onlineId: null,
 								parentId: null,
 								type: bookmark.type,
+								friends: [],
+								hasSharedFriends: false,
+								isManageable: true,
 							}}
 							canAdd={false}
 							onClick={() => {}}
@@ -347,5 +437,18 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 			</div>
 		</Modal>
+	)
+}
+
+interface FriendSelectItemProps {
+	friend: Friend
+}
+
+function FriendSelectItem({ friend }: FriendSelectItemProps) {
+	return (
+		<div className="flex items-center p-0.5 rounded-md cursor-pointer gap-1">
+			<AvatarComponent url={friend.user?.avatar} size="xs" />
+			<span className="ml-2 text-sm font-medium">{friend.user?.name}</span>
+		</div>
 	)
 }

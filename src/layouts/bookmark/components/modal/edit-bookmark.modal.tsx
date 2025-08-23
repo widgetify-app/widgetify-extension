@@ -1,8 +1,8 @@
+import { useEffect, useState, useTransition } from 'react'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { useEffect, useState, useTransition } from 'react'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
 import {
 	type BookmarkFormData,
@@ -84,7 +84,7 @@ export function EditBookmarkModal({
 		startTransition(() => {
 			if (!formData.title?.trim() || !bookmark) return
 
-			let iconUrl: string | undefined = undefined
+			let iconUrl: string | undefined
 			if (
 				type === 'BOOKMARK' &&
 				iconSource === 'auto' &&
@@ -251,6 +251,8 @@ export function EditBookmarkModal({
 					type,
 					title: formData.title,
 					url: formData.url,
+					currentFriends: bookmark.friends,
+					parentId: bookmark.parentId,
 				}}
 				title="گزینه‌های پیشرفته"
 			/>

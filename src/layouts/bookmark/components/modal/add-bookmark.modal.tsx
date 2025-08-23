@@ -1,9 +1,15 @@
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { v4 as uuidv4 } from 'uuid'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
+import { translateError } from '@/utils/translate-error'
+import {
+	type AddBookmarkParams,
+	useAddBookmark,
+} from '../../../../services/hooks/bookmark/addBookmark.hook'
 import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import {
@@ -14,13 +20,14 @@ import {
 	TypeSelector,
 	useBookmarkIcon,
 } from '../shared'
-import { AdvancedModal } from './advanced.modal'
+import { AdvancedModal, type AdvancedModalResult } from './advanced.modal'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
 	onAdd: (bookmark: Bookmark) => void
 	parentId: string | null
+	order: number
 }
 
 export function AddBookmarkModal({
@@ -28,11 +35,32 @@ export function AddBookmarkModal({
 	onClose,
 	onAdd,
 	parentId = null,
+	order,
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
-	const [isPending, startTransition] = useTransition()
+
+	const { mutate, isPending } = useAddBookmark({
+		onSuccess: (response) => {
+			const bookmark: Bookmark = {
+				...response,
+				isLocal: false,
+				onlineId: response.id, // Use the API-returned ID as onlineId
+			}
+			onAdd(bookmark)
+			onCloseHandler()
+		},
+		onError: (error) => {
+			console.log(error)
+			const content = translateError(error)
+			if (typeof content === 'string') {
+				toast.error(content)
+			} else {
+				toast.error('خطا در ایجاد بوکمارک. لطفاً دوباره تلاش کنید.')
+			}
+		},
+	})
 
 	const [formData, setFormData] = useState<BookmarkFormData>({
 		title: '',
@@ -42,12 +70,14 @@ export function AddBookmarkModal({
 		customBackground: '',
 		customTextColor: '',
 		sticker: '',
+		friendIds: [],
+		shouldCallApiDirectly: false,
 	})
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
 		useBookmarkIcon()
 
-	const updateFormData = (key: string, value: string) => {
+	const updateFormData = (key: string, value: any) => {
 		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
 
@@ -64,9 +94,33 @@ export function AddBookmarkModal({
 	const handleAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		startTransition(() => {
-			if (!formData.title.trim()) return
+		if (!formData.title.trim()) return
+		if (type === 'BOOKMARK' && !formData.url.trim()) return
 
+		if (formData.shouldCallApiDirectly) {
+			// Use the API when friends are selected or when explicitly requested
+			let url = formData.url
+			if (type === 'BOOKMARK') {
+				if (!url.startsWith('http://') && !url.startsWith('https://')) {
+					url = `https://${url}`
+				}
+			}
+
+			const bookmarkData: AddBookmarkParams = {
+				title: formData.title.trim(),
+				url: type === 'BOOKMARK' ? url.trim() : '',
+				parentId: parentId || undefined,
+				type,
+				customBackground: formData.customBackground || undefined,
+				customTextColor: formData.customTextColor || undefined,
+				sticker: formData.sticker || undefined,
+				order: order,
+				friendIds: formData.friendIds || undefined,
+			}
+
+			mutate(bookmarkData)
+		} else {
+			// Local bookmark creation (existing logic)
 			let iconUrl: undefined | string
 			const id = uuidv4()
 			if (
@@ -110,7 +164,7 @@ export function AddBookmarkModal({
 			}
 
 			onCloseHandler()
-		})
+		}
 	}
 
 	const resetForm = () => {
@@ -148,9 +202,7 @@ export function AddBookmarkModal({
 		}
 	}
 
-	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null
-	) => {
+	const handleAdvancedModalClose = (data: AdvancedModalResult | null) => {
 		setShowAdvanced(false)
 
 		if (data) {
@@ -164,6 +216,11 @@ export function AddBookmarkModal({
 
 			if (data.sticker !== undefined) {
 				updateFormData('sticker', data.sticker)
+			}
+
+			if (data.friendIds.length) {
+				updateFormData('friendIds', data.friendIds)
+				updateFormData('shouldCallApiDirectly', true)
 			}
 		}
 	}
@@ -253,6 +310,8 @@ export function AddBookmarkModal({
 							type,
 							title: formData.title,
 							url: formData.url,
+							parentId: parentId,
+							currentFriends: [],
 						}}
 						isOpen={showAdvanced}
 						onClose={handleAdvancedModalClose}

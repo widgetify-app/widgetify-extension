@@ -1,3 +1,5 @@
+import type { Friend } from '@/services/hooks/friends/friendService.hook'
+
 export type BookmarkType = 'BOOKMARK' | 'FOLDER'
 
 export interface Bookmark {
@@ -15,6 +17,9 @@ export interface Bookmark {
 	customTextColor?: string
 	sticker?: string
 	order?: number
+	hasSharedFriends: boolean
+	friends: Friend[]
+	isManageable: boolean
 }
 
 export interface FolderPathItem {

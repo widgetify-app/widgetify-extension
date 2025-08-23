@@ -298,6 +298,8 @@ function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 		sticker: bookmark.sticker,
 		customTextColor: bookmark.customTextColor,
 		customBackground: bookmark.customBackground,
+		hasSharedFriends: bookmark.hasSharedFriends,
+		friends: bookmark.friends,
 		order: bookmark.order || 0, // Include order in the mapped fetched bookmarks
 	}))
 
