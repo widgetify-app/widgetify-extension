@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 		value: 'Asia/Tehran',
 		offset: '+03:30',
 	},
-	browserBookmarksEnabled: true,
+	browserBookmarksEnabled: false,
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
