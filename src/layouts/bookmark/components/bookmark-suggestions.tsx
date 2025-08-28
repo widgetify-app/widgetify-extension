@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 import { FaGlobe } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { SectionPanel } from '@/components/section-panel'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient } from '@/services/api'
-import { getBrowserBookmarks } from '../utils/browser-bookmarks.util'
 
 interface BookmarkSuggestion {
 	title: string
@@ -18,7 +16,6 @@ interface BookmarkSuggestionsProps {
 
 export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 	const [suggestions, setSuggestions] = useState<BookmarkSuggestion[]>([])
-	const { browserBookmarksEnabled } = useGeneralSetting()
 	useEffect(() => {
 		const fetchSuggestions = async () => {
 			const client = await getMainClient()
@@ -26,19 +23,6 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 				'/bookmarks/suggestions'
 			)
 			setSuggestions(response.data)
-
-			if (browserBookmarksEnabled) {
-				const browserBookmarks = await getBrowserBookmarks()
-				const mappedBrowserBookmark: BookmarkSuggestion[] = browserBookmarks.map(
-					(bookmark) => ({
-						title: bookmark.title || '',
-						url: bookmark.url || '',
-						icon: getFaviconFromUrl(bookmark.url || ''),
-					})
-				)
-
-				setSuggestions((prev) => [...prev, ...mappedBrowserBookmark])
-			}
 		}
 
 		fetchSuggestions()

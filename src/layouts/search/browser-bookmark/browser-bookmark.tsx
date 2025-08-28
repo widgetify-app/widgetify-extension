@@ -3,6 +3,7 @@ import { type RecommendedSite, useGetTrends } from '@/services/hooks/trends/getT
 //@ts-ignore
 import 'swiper/css'
 
+import { FiChevronLeft, FiFolder } from 'react-icons/fi'
 import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Analytics from '@/analytics'
@@ -20,7 +21,8 @@ interface BookmarkItem {
 	name?: string
 	title?: string
 	url?: string | null
-	icon?: string
+	icon?: string | React.ReactNode
+	isFolder?: boolean
 }
 
 interface BookmarkSwiperProps {
@@ -36,7 +38,8 @@ function BookmarkSwiper({
 	spaceBetween = 1,
 	grabCursor = true,
 	type,
-}: BookmarkSwiperProps) {
+	onItemClick,
+}: BookmarkSwiperProps & { onItemClick?: (item: BookmarkItem) => void }) {
 	const { browserBookmarksEnabled } = useGeneralSetting()
 
 	const swiperProps = {
@@ -44,11 +47,17 @@ function BookmarkSwiper({
 		spaceBetween,
 		slidesPerView: 8,
 		grabCursor,
-		className: 'w-full bg-content rounded-2xl !pl-3.5 !pr-1',
+		className: 'w-96 bg-content rounded-2xl !pl-3.5 !pr-1',
 		dir: 'rtl' as const,
 	}
 
 	function onClick(item: BookmarkItem) {
+		if (onItemClick) {
+			onItemClick(item)
+			Analytics.event('browser_bookmark_folder_clicked')
+			return
+		}
+
 		if (item.url) {
 			window.open(item.url, '_blank')
 			Analytics.event(`${type}_bookmark_clicked`)
@@ -64,10 +73,21 @@ function BookmarkSwiper({
 							className="flex items-center mt-1 cursor-pointer group"
 							onClick={() => onClick(item)}
 						>
-							<img
-								src={item.icon || getFaviconFromUrl(item.url || '')}
-								className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
-							/>
+							{typeof item.icon === 'string' ? (
+								<img
+									src={item.icon || getFaviconFromUrl(item.url || '')}
+									className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
+								/>
+							) : item.icon ? (
+								<div className="flex items-center justify-center w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 rounded-full group-hover:scale-110 bg-primary/20">
+									{item.icon}
+								</div>
+							) : (
+								<img
+									src={getFaviconFromUrl(item.url || '')}
+									className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
+								/>
+							)}
 						</div>
 					</Tooltip>
 				</SwiperSlide>
@@ -82,15 +102,63 @@ export function BrowserBookmark() {
 	})
 
 	const [recommendedSites, setRecommendedSites] = useState<RecommendedSite[]>([])
-	const [browserBookmarks, setBrowserBookmarks] = useState<FetchedBrowserBookmark[]>([])
+	const [fetchedBookmarks, setFetchedBookmarks] = useState<FetchedBrowserBookmark[]>([])
+	const [browserBookmarks, setBrowserBookmarks] = useState<BookmarkItem[]>([])
+	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
 	useEffect(() => {
 		async function fetchBrowserBookmarks() {
-			const bookmarks = await getBrowserBookmarks()
-			setBrowserBookmarks(bookmarks)
+			const bookmarks = await getBrowserBookmarks({ includeFolders: true })
+
+			setFetchedBookmarks(bookmarks)
 		}
+
 		fetchBrowserBookmarks()
 	}, [])
+
+	useEffect(() => {
+		const isOtherFolderTitle = (title?: string) => {
+			if (!title) return false
+			const t = title.toLowerCase()
+			return t.includes('other') && t.includes('bookmark')
+		}
+
+		let candidates: FetchedBrowserBookmark[] = []
+		if (currentFolderId) {
+			candidates = fetchedBookmarks.filter(
+				(b) => (b.parentId ?? null) === currentFolderId
+			)
+		} else {
+			const otherFolder = fetchedBookmarks.find(
+				(b) => b.type === 'FOLDER' && isOtherFolderTitle(b.title)
+			)
+
+			const rootEntries = fetchedBookmarks.filter(
+				(b) => (b.parentId ?? null) === null && b.id !== otherFolder?.id
+			)
+
+			const otherChildren = otherFolder
+				? fetchedBookmarks.filter((b) => b.parentId === otherFolder.id)
+				: []
+
+			candidates = [...rootEntries, ...otherChildren]
+		}
+
+		const visible = candidates.map((b) => ({
+			id: b.id,
+			title: b.title,
+			url: b.url,
+			icon:
+				b.type === 'FOLDER' ? (
+					<FiFolder size={16} />
+				) : (
+					getFaviconFromUrl(b.url || '')
+				),
+			isFolder: b.type === 'FOLDER',
+		}))
+
+		setBrowserBookmarks(visible)
+	}, [fetchedBookmarks, currentFolderId])
 
 	useEffect(() => {
 		if (data) {
@@ -121,10 +189,37 @@ export function BrowserBookmark() {
 				type="recommended"
 			/>
 			<BookmarkSwiper
-				items={browserBookmarks}
+				items={
+					currentFolderId
+						? [
+								{
+									id: '__up__',
+									title: 'بازگشت',
+									icon: <FiChevronLeft />,
+									isFolder: false,
+								} as BookmarkItem,
+								...browserBookmarks,
+							]
+						: browserBookmarks
+				}
 				spaceBetween={2}
 				grabCursor={false}
 				type="browser"
+				onItemClick={(item) => {
+					if (item.id === '__up__') {
+						const current = fetchedBookmarks.find(
+							(b) => b.id === currentFolderId
+						)
+						setCurrentFolderId(current?.parentId ?? null)
+						return
+					}
+
+					if (item.isFolder) {
+						setCurrentFolderId(item.id || null)
+					} else if (item.url) {
+						window.open(item.url, '_blank')
+					}
+				}}
 			/>
 		</div>
 	)
