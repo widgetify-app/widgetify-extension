@@ -36,7 +36,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const createSessionMutation = useCreatePomodoroSession()
 
 	const getMaxTime = () => {
-		console.log(mode)
 		switch (mode) {
 			case 'work':
 				return settings.workTime * 60
