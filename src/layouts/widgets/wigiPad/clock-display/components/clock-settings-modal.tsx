@@ -59,6 +59,12 @@ export function ClockSettingsModal({
 		if (isOpen) {
 			Analytics.event('wigipad_clock_settings_open')
 		}
+
+		return () => {
+			setSelectedType(clockSetting.clockType)
+			setShowSeconds(clockSetting.showSeconds)
+			setShowTimeZone(clockSetting.showTimeZone)
+		}
 	}, [isOpen])
 
 	return (

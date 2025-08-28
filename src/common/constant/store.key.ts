@@ -15,6 +15,7 @@ import type {
 } from '@/layouts/widgets/tools/pomodoro/types'
 import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
 import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
+import type { WigiPadDateOptions } from '@/layouts/widgets/wigiPad/date-display/types'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
@@ -76,6 +77,7 @@ export interface StorageKV {
 	}
 	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
 	clock: ClockSettings
+	wigiPadDate: WigiPadDateOptions
 	configData: ExtensionConfigResponse
 	toolsTab: ToolsTabType
 	comboTabs: ComboTabType
