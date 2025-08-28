@@ -1,14 +1,17 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { FaGear } from 'react-icons/fa6'
+import { FaChartSimple, FaGear } from 'react-icons/fa6'
 import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { useAuth } from '@/context/auth.context'
+import { useCreatePomodoroSession } from '@/services/hooks/pomodoro/createSession.hook'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { modeColors } from './constants'
+import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 
 interface PomodoroTimerProps {
@@ -27,8 +30,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		longBreakTime: 15,
 		cyclesBeforeLongBreak: 4,
 	})
+	const { isAuthenticated } = useAuth()
+	const [currentTab, setCurrentTab] = useState<'timer' | 'top-users'>('timer')
+
+	const createSessionMutation = useCreatePomodoroSession()
 
 	const getMaxTime = () => {
+		console.log(mode)
 		switch (mode) {
 			case 'work':
 				return settings.workTime * 60
@@ -106,6 +114,32 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 							: 'استراحت بلند'
 				} به پایان رسید!`,
 			})
+
+			if (isAuthenticated) {
+				const now = new Date()
+				const modeType =
+					mode === 'work'
+						? 'WORK'
+						: mode === 'short-break'
+							? 'SHORT_BREAK'
+							: 'LONG_BREAK'
+
+				const sessionData = {
+					duration:
+						modeType === 'WORK'
+							? settings.workTime
+							: modeType === 'SHORT_BREAK'
+								? settings.shortBreakTime
+								: settings.longBreakTime,
+					mode: modeType as 'WORK' | 'SHORT_BREAK' | 'LONG_BREAK',
+					startTime: new Date(
+						now.getTime() - getMaxTime() * 1000
+					).toISOString(),
+					endTime: now.toISOString(),
+					status: 'COMPLETED' as const,
+				}
+				createSessionMutation.mutate(sessionData)
+			}
 		}
 
 		if (mode === 'work') {
@@ -262,7 +296,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-2">
-				<div className="flex items-center gap-x-1.5">
+				<div className="flex items-center gap-x-0.5">
 					<ModeButton
 						mode="work"
 						currentMode={mode}
@@ -280,63 +314,77 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					/>
 				</div>
 
-				<button
-					className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
-					onClick={() => setShowSettings(!showSettings)}
-				>
-					<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-				</button>
+				<div className="flex flex-row items-center gap-x-1">
+					<button
+						className={`p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer  hover:scale-110 active:scale-90 ${currentTab === 'top-users' && 'bg-primary text-white'}`}
+						onClick={() =>
+							setCurrentTab(currentTab === 'timer' ? 'top-users' : 'timer')
+						}
+					>
+						<FaChartSimple className="w-3 h-3 opacity-70 hover:opacity-100" />
+					</button>
+					<button
+						className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
+						onClick={() => setShowSettings(!showSettings)}
+					>
+						<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
+					</button>
+				</div>
 			</div>
 			{/* Timer Display */}
-			<div className="relative mt-3">
-				<TimerDisplay
-					timeLeft={timeLeft}
-					progress={progress}
-					mode={mode}
-					getProgressColor={getProgressColor}
-					cycles={cycles}
-					cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
-				/>
-
-				{/* Control buttons */}
-				<div className="flex justify-center gap-x-4 mt-7">
-					<ControlButton
-						mode={'reset'}
-						icon={<FiRefreshCw size={16} strokeWidth={2.25} />}
-						onClick={handleReset}
+			{currentTab === 'timer' ? (
+				<div className="relative mt-2">
+					<TimerDisplay
+						timeLeft={timeLeft}
+						progress={progress}
+						mode={mode}
+						getProgressColor={getProgressColor}
+						cycles={cycles}
+						cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
 					/>
 
-					{isRunning ? (
+					{/* Control buttons */}
+					<div className="flex justify-center gap-x-4 mt-7">
 						<ControlButton
-							mode={'pause'}
-							icon={<FiPause size={16} strokeWidth={2.25} />}
-							onClick={handlePause}
+							mode={'reset'}
+							icon={<FiRefreshCw size={16} strokeWidth={2.25} />}
+							onClick={handleReset}
 						/>
-					) : (
-						<ControlButton
-							mode={'play'}
-							icon={<FiPlay size={16} strokeWidth={2.25} />}
-							onClick={handleStart}
-						/>
-					)}
 
-					{mode.includes('break') && (
-						<ControlButton
-							mode={'check'}
-							icon={<FiCheckCircle size={16} strokeWidth={2.25} />}
-							onClick={() => handleModeChange('work')}
-						/>
-					)}
+						{isRunning ? (
+							<ControlButton
+								mode={'pause'}
+								icon={<FiPause size={16} strokeWidth={2.25} />}
+								onClick={handlePause}
+							/>
+						) : (
+							<ControlButton
+								mode={'play'}
+								icon={<FiPlay size={16} strokeWidth={2.25} />}
+								onClick={handleStart}
+							/>
+						)}
 
-					{mode === 'work' && (
-						<ControlButton
-							mode={'coffee'}
-							icon={<FiCoffee size={16} strokeWidth={2.25} />}
-							onClick={() => handleModeChange('short-break')}
-						/>
-					)}
+						{mode.includes('break') && (
+							<ControlButton
+								mode={'check'}
+								icon={<FiCheckCircle size={16} strokeWidth={2.25} />}
+								onClick={() => handleModeChange('work')}
+							/>
+						)}
+
+						{mode === 'work' && (
+							<ControlButton
+								mode={'coffee'}
+								icon={<FiCoffee size={16} strokeWidth={2.25} />}
+								onClick={() => handleModeChange('short-break')}
+							/>
+						)}
+					</div>
 				</div>
-			</div>{' '}
+			) : (
+				<TopUsersTab />
+			)}
 			{/* Settings panel */}
 			<PomodoroSettingsPanel
 				isOpen={showSettings}

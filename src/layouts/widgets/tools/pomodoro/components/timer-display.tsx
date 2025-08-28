@@ -25,7 +25,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 	}
 	return (
-		<div className="relative mx-auto mb-6 w-36 h-36 animate-in zoom-in-95 duration-300">
+		<div className="relative mx-auto mb-6 duration-300 w-36 h-36 animate-in zoom-in-95">
 			<svg className="w-full h-full" viewBox="0 0 100 100">
 				{/* Background circle */}
 				<circle
@@ -68,7 +68,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 				</text>
 			</svg>{' '}
 			{/* Cycle indicator */}
-			<div className="mt-2 flex justify-center gap-x-1">
+			<div className="flex justify-center mt-2 gap-x-1">
 				{Array.from({ length: cyclesBeforeLongBreak }).map((_, i) => (
 					<div
 						key={i}

@@ -5,12 +5,14 @@ import { UserCard } from './user-card'
 export interface UserCardUser {
 	name: string
 	avatar: string
-	username: string
+	username: string | null
 	userId?: string
 	extras?: {
 		activity?: string
 		selectedWallpaper?: string
 	}
+	isSelf?: boolean
+	friendshipStatus: 'PENDING' | 'ACCEPTED' | null
 }
 
 interface UserCardPortalProps {
