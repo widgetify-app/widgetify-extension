@@ -35,7 +35,6 @@ function BookmarkSwiper({
 	items,
 	spaceBetween = 1,
 	grabCursor = true,
-	navigation = false,
 	type,
 }: BookmarkSwiperProps) {
 	const { browserBookmarksEnabled } = useGeneralSetting()
@@ -45,14 +44,8 @@ function BookmarkSwiper({
 		spaceBetween,
 		slidesPerView: 8,
 		grabCursor,
-		className: 'w-full user-list-slider bg-content rounded-2xl !px-1',
+		className: 'w-full bg-content rounded-2xl !pl-3.5 !pr-1',
 		dir: 'rtl' as const,
-		...(navigation && {
-			navigation: {
-				nextEl: '.user-list-next',
-				prevEl: '.user-list-prev',
-			},
-		}),
 	}
 
 	function onClick(item: BookmarkItem) {
@@ -73,7 +66,7 @@ function BookmarkSwiper({
 						>
 							<img
 								src={item.icon || getFaviconFromUrl(item.url || '')}
-								className="object-cover w-6 h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
+								className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
 							/>
 						</div>
 					</Tooltip>
@@ -125,7 +118,6 @@ export function BrowserBookmark() {
 				items={recommendedSites}
 				spaceBetween={1}
 				grabCursor={true}
-				navigation={true}
 				type="recommended"
 			/>
 			<BookmarkSwiper
@@ -133,7 +125,6 @@ export function BrowserBookmark() {
 				spaceBetween={2}
 				grabCursor={false}
 				type="browser"
-				navigation={false}
 			/>
 		</div>
 	)
