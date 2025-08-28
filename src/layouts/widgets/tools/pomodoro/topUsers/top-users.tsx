@@ -4,6 +4,7 @@ import { TopUserItem } from './top-user-item'
 
 export const TopUsersTab: React.FC = () => {
 	const { data, isLoading, error } = useGetTopUsers()
+	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 
 	if (isLoading) {
 		return (
@@ -32,7 +33,13 @@ export const TopUsersTab: React.FC = () => {
 	return (
 		<div className="h-56 space-y-1 overflow-y-auto">
 			{data.tops.map((user, index) => (
-				<TopUserItem user={user} index={index} key={user.avatar} />
+				<TopUserItem
+					user={user}
+					index={index}
+					key={user.avatar}
+					activeProfileId={activeProfileId}
+					setActiveProfileId={setActiveProfileId}
+				/>
 			))}
 		</div>
 	)

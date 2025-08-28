@@ -1,8 +1,8 @@
+import { useRef } from 'react'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { UserCardPortal } from '@/components/user/user-card-portal'
 import type { FriendUser } from '@/services/hooks/friends/friendService.hook'
-import { useRef } from 'react'
 
 interface FriendItemProps {
 	user: FriendUser
@@ -63,7 +63,14 @@ export function FriendItem({
 			</Tooltip>
 
 			<UserCardPortal
-				user={user}
+				user={{
+					avatar: user.avatar,
+					name: user.name,
+					username: user.username,
+					friendshipStatus: 'ACCEPTED',
+					isSelf: false,
+					extras: user.extras,
+				}}
 				isOpen={isActive}
 				onClose={() => setActiveProfileId(null)}
 				triggerRef={containerRef as React.RefObject<HTMLElement>}

@@ -3,9 +3,12 @@ import { getMainClient } from '@/services/api'
 
 export interface TopUser {
 	duration: number
-	user: string
+	name: string
 	avatar: string
-	usernameExists: boolean
+	username: string | null
+	id: string
+	friendshipStatus: 'PENDING' | 'ACCEPTED' | null
+	isSelf?: boolean
 }
 
 export interface TopUsersResponse {
