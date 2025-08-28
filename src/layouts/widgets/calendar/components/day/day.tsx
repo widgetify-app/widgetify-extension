@@ -109,10 +109,10 @@ export function DayItem({
 	}
 
 	function onClick() {
-		console.log('Day clicked:', cellDate.format('YYYY-MM-DD'))
 		Analytics.event('calendar_day_click', {
 			selected_date: cellDate.format('YYYY-MM-DD'),
 		})
+		setSelectedDate(cellDate)
 	}
 
 	return (
