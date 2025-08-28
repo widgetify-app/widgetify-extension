@@ -1,3 +1,4 @@
+import { FaCrown } from 'react-icons/fa'
 import { AvatarComponent } from '@/components/avatar.component'
 import { UserCardPortal } from '@/components/user/user-card-portal'
 import type { TopUser } from '@/services/hooks/pomodoro/getTopUsers.hook'
@@ -16,16 +17,26 @@ export function TopUserItem({
 }: TopUserItemProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const isActive = activeProfileId === user.id
+	const crownColors: Record<number, string> = {
+		1: 'text-yellow-400',
+		2: 'text-gray-400',
+		3: 'text-amber-600',
+	}
 
 	const rank = index + 1
 	const style = rank <= 3 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'
 	return (
 		<>
 			<div
-				className="flex items-center gap-3 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95"
+				className="relative flex items-center gap-3 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95"
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
+				{rank <= 3 && (
+					<FaCrown
+						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} shadow-md`}
+					/>
+				)}
 				<AvatarComponent url={user.avatar} size="sm" />
 				<div className="flex-1 min-w-0">
 					<p className="text-sm font-medium truncate text-content">
