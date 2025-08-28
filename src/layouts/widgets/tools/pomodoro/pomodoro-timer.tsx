@@ -8,6 +8,7 @@ import { useAuth } from '@/context/auth.context'
 import { useCreatePomodoroSession } from '@/services/hooks/pomodoro/createSession.hook'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
+import { RequestNotificationModal } from './components/requestNotification-modal'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { modeColors } from './constants'
@@ -32,6 +33,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	})
 	const { isAuthenticated } = useAuth()
 	const [currentTab, setCurrentTab] = useState<'timer' | 'top-users'>('timer')
+	const [showRequireNotificationModal, setShowRequireNotificationModal] =
+		useState(false)
 
 	const createSessionMutation = useCreatePomodoroSession()
 
@@ -104,41 +107,40 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		if (onComplete) onComplete()
 
 		if (Notification.permission === 'granted') {
-			new Notification('تایمر پومودورو', {
-				body: `تایمر ${
-					mode === 'work'
-						? 'کار'
-						: mode === 'short-break'
-							? 'استراحت کوتاه'
-							: 'استراحت بلند'
-				} به پایان رسید!`,
-			})
-
-			if (isAuthenticated) {
-				const now = new Date()
-				const modeType =
-					mode === 'work'
-						? 'WORK'
-						: mode === 'short-break'
-							? 'SHORT_BREAK'
-							: 'LONG_BREAK'
-
-				const sessionData = {
-					duration:
-						modeType === 'WORK'
-							? settings.workTime
-							: modeType === 'SHORT_BREAK'
-								? settings.shortBreakTime
-								: settings.longBreakTime,
-					mode: modeType as 'WORK' | 'SHORT_BREAK' | 'LONG_BREAK',
-					startTime: new Date(
-						now.getTime() - getMaxTime() * 1000
-					).toISOString(),
-					endTime: now.toISOString(),
-					status: 'COMPLETED' as const,
-				}
-				createSessionMutation.mutate(sessionData)
+			const textList: Record<TimerMode, string> = {
+				work: 'تایمر کار تمام شد! حالا وقت یه استراحت کوتاهه.',
+				'short-break': 'استراحت کوتاه تموم شد! آماده‌اید به کار ادامه بدید؟',
+				'long-break': 'استراحت طولانی تموم شد! برگردید و با انرژی ادامه بدید!',
 			}
+
+			new Notification('تایمر پومودورو', {
+				body: textList[mode],
+				dir: 'rtl',
+			})
+		}
+
+		if (isAuthenticated) {
+			const now = new Date()
+			const modeType =
+				mode === 'work'
+					? 'WORK'
+					: mode === 'short-break'
+						? 'SHORT_BREAK'
+						: 'LONG_BREAK'
+
+			const sessionData = {
+				duration:
+					modeType === 'WORK'
+						? settings.workTime
+						: modeType === 'SHORT_BREAK'
+							? settings.shortBreakTime
+							: settings.longBreakTime,
+				mode: modeType as 'WORK' | 'SHORT_BREAK' | 'LONG_BREAK',
+				startTime: new Date(now.getTime() - getMaxTime() * 1000).toISOString(),
+				endTime: now.toISOString(),
+				status: 'COMPLETED' as const,
+			}
+			createSessionMutation.mutate(sessionData)
 		}
 
 		if (mode === 'work') {
@@ -187,7 +189,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			Notification.permission !== 'granted' &&
 			Notification.permission !== 'denied'
 		) {
-			Notification.requestPermission()
+			setShowRequireNotificationModal(true)
+			return
 		}
 		setIsRunning(true)
 
@@ -393,6 +396,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				settings={settings}
 				onUpdateSettings={handleUpdateSettings}
 				onReset={handleReset}
+			/>
+			<RequestNotificationModal
+				setShowRequireNotificationModal={setShowRequireNotificationModal}
+				showRequireNotificationModal={showRequireNotificationModal}
+				startPomodoro={handleStart}
 			/>
 		</div>
 	)
