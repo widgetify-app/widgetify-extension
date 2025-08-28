@@ -1,13 +1,23 @@
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
+import { useDate } from '@/context/date.context'
+import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils'
+import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
+import { HolidayBadge } from '../components/holiday.badge'
 
-interface JalaliDateProps {
-	today: WidgetifyDate
-	textColor: string
-}
+export function JalaliDate() {
+	const { today, todayIsHoliday } = useDate()
+	const { data: events } = useGetEvents()
+	const sortedEvents = combineAndSortEvents(events, today.clone(), [])
+	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
+	const isDayTime = today.hour() >= 6 && today.hour() < 18
 
-export function JalaliDate({ today, textColor }: JalaliDateProps) {
+	const textColor = isHoliday
+		? 'text-error drop-shadow-md'
+		: isDayTime
+			? 'text-content drop-shadow-md'
+			: 'text-primary drop-shadow-sm'
 	return (
 		<>
+			{isHoliday && <HolidayBadge />}
 			<span className={`text-base !leading-none ${textColor}`}>
 				{today.locale('fa').format('dddd')}
 			</span>

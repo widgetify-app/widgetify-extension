@@ -1,11 +1,13 @@
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
+import { useDate } from '@/context/date.context'
 
-interface JalaliDateProps {
-	today: WidgetifyDate
-	textColor: string
-}
+export function GregorianDate() {
+	const { today } = useDate()
+	const isDayTime = today.hour() >= 6 && today.hour() < 18
 
-export function GregorianDate({ today, textColor }: JalaliDateProps) {
+	const textColor = isDayTime
+		? 'text-content drop-shadow-md'
+		: 'text-primary drop-shadow-sm'
+
 	return (
 		<div className="relative">
 			<span className={`text-base !leading-none ${textColor}`}>
