@@ -296,7 +296,9 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-2">
-				<div className="flex items-center gap-x-0.5">
+				<div
+					className={`flex items-center gap-x-0.5 transition-opacity opacity-0 ${currentTab === 'timer' && 'opacity-100'}`}
+				>
 					<ModeButton
 						mode="work"
 						currentMode={mode}
