@@ -2,11 +2,16 @@ import type React from 'react'
 import { modeFullLabels } from '../constants'
 import type { TimerMode } from '../types'
 
+export const modeColors = {
+	work: 'stroke-primary',
+	'short-break': 'stroke-success',
+	'long-break': 'stroke-warning',
+}
+
 interface TimerDisplayProps {
 	timeLeft: number
 	progress: number
 	mode: TimerMode
-	getProgressColor: () => string
 	cycles: number
 	cyclesBeforeLongBreak: number
 }
@@ -15,7 +20,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 	timeLeft,
 	progress,
 	mode,
-	getProgressColor,
 	cycles,
 	cyclesBeforeLongBreak,
 }) => {
@@ -42,12 +46,12 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					cy="50"
 					r="45"
 					fill="none"
-					stroke={getProgressColor()}
+					// stroke={getProgressColor()}
 					strokeWidth="5"
 					strokeDasharray="283"
 					strokeDashoffset={283 - (283 * progress) / 100}
 					transform="rotate(-90 50 50)"
-					className="transition-all duration-500 ease-out"
+					className={`transition-all duration-500 ease-out ${modeColors[mode]}`}
 				/>
 				{/* Timer text */}
 				<text
