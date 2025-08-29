@@ -40,6 +40,7 @@ export function RequestNotificationModal({
 			onClose={() => setShowRequireNotificationModal(false)}
 			size="sm"
 			title="فعال کردن اعلان‌ها"
+			direction="rtl"
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
 				<article className="pb-4 border-b blog-post border-content animate-fade-in animate-slide-up">
