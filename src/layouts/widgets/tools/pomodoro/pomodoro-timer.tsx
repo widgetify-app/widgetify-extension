@@ -11,7 +11,7 @@ import { ModeButton } from './components/mode-button'
 import { RequestNotificationModal } from './components/requestNotification-modal'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
-import { modeColors } from './constants'
+
 import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 
@@ -291,9 +291,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		setToStorage('pomodoro_settings', newSettings)
 	}
 
-	const getProgressColor = () => {
-		return modeColors[mode]
-	}
 	return (
 		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
@@ -342,7 +339,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						timeLeft={timeLeft}
 						progress={progress}
 						mode={mode}
-						getProgressColor={getProgressColor}
 						cycles={cycles}
 						cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
 					/>
