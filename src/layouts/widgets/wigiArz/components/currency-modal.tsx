@@ -1,14 +1,14 @@
-import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
-import { CurrencyChart } from './currency-chart'
+import { Button } from '@/components/button/button'
+import Modal from '@/components/modal'
 import { CurrencyColorMode } from '@/context/currency.context'
+import { GetPrice } from '../utils/getPrice'
 
 interface CurrencyModalComponentProps {
 	code: string
 	currency: any
-	displayPrice: number
+
 	imgMainColor: string | undefined
 	isModalOpen: boolean
 	priceChange: number
@@ -19,10 +19,9 @@ interface CurrencyModalComponentProps {
 export const CurrencyModalComponent = ({
 	code,
 	currency,
-	displayPrice,
+	priceChange,
 	imgMainColor,
 	isModalOpen,
-	priceChange,
 	toggleCurrencyModal,
 	currencyColorMode,
 }: CurrencyModalComponentProps) => {
@@ -47,9 +46,9 @@ export const CurrencyModalComponent = ({
 			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="md">
+		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
 			<div
-				className={`py-10 px-4 flex flex-col items-center justify-center p-1 space-y-2 transition-all duration-300 ease-out ${
+				className={`relative p-8 flex flex-col items-center justify-center space-y-2 transition-all duration-300 ease-out ${
 					isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
 				}`}
 			>
@@ -57,15 +56,15 @@ export const CurrencyModalComponent = ({
 					<img
 						src={currency?.icon}
 						alt={currency?.name?.en}
-						className="z-50 object-cover w-16 h-16 rounded-full shadow"
+						className="z-50 object-cover rounded-full shadow w-14 h-14"
 					/>
 					<div
-						className="absolute top-0 z-10 w-16 h-16 blur-xl opacity-30"
+						className="absolute top-0 z-10 w-14 h-14 blur-xl opacity-30"
 						style={{ backgroundColor: imgMainColor }}
 					/>
 				</div>
 
-				<div className="mt-2 text-center space-y-1">
+				<div className="mt-2 space-y-1 text-center">
 					<p className={'text-xl font-bold text-base-content'}>
 						{currency?.name.en}
 					</p>
@@ -75,22 +74,28 @@ export const CurrencyModalComponent = ({
 				</div>
 
 				<div className="w-full space-y-0">
-					<div className="relative flex items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-						<div
-							className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
-						>
-							{priceChange > 0 ? (
-								<FaArrowUpLong className="mr-1" />
-							) : (
-								<FaArrowDownLong className="mr-1" />
-							)}
-
-							<span>{Math.abs(Number(priceChange.toFixed()))}</span>
-						</div>
-
+					<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
 						<p className={'text-xl font-bold text-base-content opacity-95'}>
-							{displayPrice.toLocaleString()}
+							{GetPrice(code, currency).label}
 						</p>
+
+						{priceChange > 0 && (
+							<div
+								className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
+							>
+								{priceChange > 0 ? (
+									<FaArrowUpLong className="mr-1" />
+								) : (
+									<FaArrowDownLong className="mr-1" />
+								)}
+
+								<span>
+									{Math.abs(
+										Number(priceChange.toFixed())
+									).toLocaleString()}
+								</span>
+							</div>
+						)}
 
 						{currency?.priceHistory?.length ? (
 							<Button
@@ -110,20 +115,6 @@ export const CurrencyModalComponent = ({
 							</Button>
 						) : null}
 					</div>
-
-					{currency?.priceHistory?.length ? (
-						<div
-							className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${
-								showChart
-									? 'max-h-64 opacity-100 mt-4'
-									: 'max-h-0 opacity-0 mt-0'
-							}`}
-						>
-							<div className="w-full h-64">
-								<CurrencyChart priceHistory={currency?.priceHistory} />
-							</div>
-						</div>
-					) : null}
 				</div>
 			</div>
 		</Modal>
