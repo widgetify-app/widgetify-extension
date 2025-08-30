@@ -9,6 +9,7 @@ import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/hooks/currency/getCurrencyByCode.hook'
+import { GetPrice } from '../utils/getPrice'
 import { CurrencyModalComponent } from './currency-modal'
 
 interface CurrencyBoxProps {
@@ -22,7 +23,6 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 	})
 
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
-	const [displayPrice, setDisplayPrice] = useState(0)
 	const [priceChange, setPriceChange] = useState(0)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -52,13 +52,10 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 	useEffect(() => {
 		if (currency?.price) {
 			if (prevPriceRef.current !== currency.price) {
-				// Directly set the display price without animation
-				setDisplayPrice(currency.rialPrice)
 				prevPriceRef.current = currency.price
-
 				if (currency.changePercentage) {
 					const changeAmount =
-						(currency.changePercentage / 100) * currency.price
+						(currency.changePercentage / 100) * currency.rialPrice
 					setPriceChange(changeAmount)
 				}
 			}
@@ -138,7 +135,7 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 
 				<div className="flex items-baseline gap-2 pr-2">
 					<span className={'text-sm font-bold text-content'}>
-						{displayPrice ? displayPrice.toLocaleString() : '-'}
+						{currency ? GetPrice(code, currency).label : '-'}
 					</span>
 					{priceChange !== 0 && (
 						<span className={`text-xs ${priceChangeColor}`}>
@@ -155,9 +152,8 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 				<CurrencyModalComponent
 					code={code}
 					currencyColorMode={currencyColorMode}
-					priceChange={priceChange}
 					currency={currency}
-					displayPrice={displayPrice}
+					priceChange={priceChange}
 					imgMainColor={imgMainColor}
 					isModalOpen={isModalOpen}
 					toggleCurrencyModal={toggleCurrencyModal}
