@@ -59,6 +59,20 @@ export function AddBookmarkModal({
 			setIconLoadError(false)
 			updateFormData('icon', getFaviconFromUrl(newUrl))
 		}
+
+		if (formData.title.trim() === '' && newUrl !== '') {
+			let hostName = ''
+			try {
+				hostName = new URL(newUrl).hostname
+				if (hostName && hostName.split('.').length > 2) {
+					hostName = hostName.split('.')[1]
+				}
+			} catch {
+				hostName = newUrl
+			}
+
+			updateFormData('title', hostName)
+		}
 	}
 
 	const handleAdd = (e: React.FormEvent) => {
@@ -92,7 +106,6 @@ export function AddBookmarkModal({
 			}
 
 			if (type === 'FOLDER') {
-				//@ts-ignore
 				onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
 			} else {
 				let newUrl = formData.url
@@ -176,6 +189,7 @@ export function AddBookmarkModal({
 			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
 			className="!overflow-y-hidden"
+			closeOnBackdropClick={false}
 		>
 			<form
 				onSubmit={handleAdd}

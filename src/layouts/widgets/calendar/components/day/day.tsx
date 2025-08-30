@@ -117,12 +117,16 @@ export function DayItem({
 
 	return (
 		<Tooltip
-			content={toolTipContent(cellDate, {
-				todayShamsiEvents,
-				todayHijriEvents,
-				todayGregorianEvents,
-				googleEvents: googleEventsForDay,
-			})}
+			content={toolTipContent(
+				cellDate,
+				{
+					todayShamsiEvents,
+					todayHijriEvents,
+					todayGregorianEvents,
+					googleEvents: googleEventsForDay,
+				},
+				eventIcons[0]
+			)}
 			position="top"
 			key={`day-${day}`}
 		>
@@ -130,7 +134,7 @@ export function DayItem({
 				onClick={onClick}
 				className={`
                     relative p-0 rounded-2xl text-xs transition-colors cursor-pointer 
-                    h-6 w-6 mx-auto flex items-center justify-center
+                    h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
                     ${isCurrentDay ? getTodayRingStyle() : ''}
@@ -143,8 +147,8 @@ export function DayItem({
 							<img
 								key={idx}
 								src={icon}
-								alt="رویداد"
-								className="object-contain w-2 h-2 rounded-full"
+								alt="مناسبت"
+								className="object-contain w-2 h-2 transition-all rounded-full "
 								onError={(e) => {
 									e.currentTarget.style.display = 'none'
 

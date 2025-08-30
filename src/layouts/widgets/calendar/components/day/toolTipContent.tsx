@@ -1,13 +1,13 @@
-import type { FetchedEvent } from '@/services/hooks/date/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import moment from 'jalali-moment'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
+import type { FetchedEvent } from '@/services/hooks/date/getEvents.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import {
-	type WidgetifyDate,
 	convertShamsiToHijri,
 	filterGoogleEventsByDate,
+	type WidgetifyDate,
 } from '../../utils'
 
 export const toolTipContent = (
@@ -17,7 +17,8 @@ export const toolTipContent = (
 		todayHijriEvents: FetchedEvent[]
 		todayGregorianEvents: FetchedEvent[]
 		googleEvents: GoogleCalendarEvent[]
-	}
+	},
+	eventIcon?: string
 ) => {
 	const isHoliday =
 		cellDate.day() === 5 ||
@@ -43,7 +44,7 @@ export const toolTipContent = (
 	const holidayStyle = isHoliday
 		? 'from-orange-600 to-red-700'
 		: 'from-sky-500 to-blue-700'
-	const headerStyle = `max-w-full py-1 px-3 rounded-full text-center text-white bg-gradient-to-r ${holidayStyle}`
+	const headerStyle = `max-w-full py-1 px-3 rounded text-center text-white bg-gradient-to-r ${holidayStyle}`
 
 	const infoStyle = 'text-base/80'
 	const googleStyle = 'text-[#4285f4]'
@@ -54,7 +55,20 @@ export const toolTipContent = (
 				<div
 					className={`${holidayStyle} flex items-center justify-between gap-2`}
 				>
-					<span className="text-sm truncate">{jalaliDay}</span>
+					<div className="flex items-center gap-1">
+						{eventIcon && (
+							<img
+								src={eventIcon}
+								alt="مناسبت"
+								className="object-cover w-6 h-6 transition-all rounded-full "
+								onError={(e) => {
+									e.currentTarget.style.display = 'none'
+								}}
+							/>
+						)}
+						<span className="text-sm truncate">{jalaliDay}</span>
+					</div>
+
 					<span className="text-sm truncate">{jalali}</span>
 				</div>
 			</div>
@@ -101,7 +115,7 @@ export const toolTipContent = (
 						</div>
 						<div className="flex-1">
 							<div className={`text-sm font-medium ${infoStyle}`}>
-								{dayEvent.length} رویداد
+								{dayEvent.length} مناسبت
 							</div>
 							{dayEvent.map((event, index) => (
 								<div
