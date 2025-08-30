@@ -33,7 +33,7 @@ export function GoogleTab() {
 		today.clone().add(30, 'day').toDate()
 	)
 
-	const GoogleEventsContent = () => (
+	return (
 		<div className={`space-y-2 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}>
 			{!isAuthenticated ? (
 				<div className="flex flex-col items-center py-1.5 text-center text-muted">
@@ -62,12 +62,10 @@ export function GoogleTab() {
 						<MdEvent className="text-content" size={24} />
 					</div>
 					<p className="mt-1 text-center text-content">
-						هیچ رویداد گوگل امروز نیست
+						هیچ مناسبت/جلسه گوگل امروز نیست
 					</p>
 				</div>
 			)}
 		</div>
 	)
-
-	return <GoogleEventsContent />
 }

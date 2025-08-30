@@ -1,11 +1,16 @@
+import type React from 'react'
+import { FiCalendar, FiClipboard } from 'react-icons/fi'
 import { useAuth } from '@/context/auth.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import type React from 'react'
-import { FiCalendar, FiClipboard } from 'react-icons/fi'
-import { type WidgetifyDate, formatDateStr } from '../utils'
-import { getGregorianEvents, getHijriEvents, getShamsiEvents } from '../utils'
+import {
+	formatDateStr,
+	getGregorianEvents,
+	getHijriEvents,
+	getShamsiEvents,
+	type WidgetifyDate,
+} from '../utils'
 
 interface DaySummaryProps {
 	selectedDate: WidgetifyDate
@@ -66,7 +71,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						/>
 						<div className="flex-1 min-w-0">
 							<div className={'text-xs font-medium text-content truncate'}>
-								<span>{totalEventsCount}</span> رویداد
+								<span>{totalEventsCount}</span> مناسبت
 							</div>
 							<div
 								className={'text-[.50rem] widget-item-sub-text truncate'}
@@ -74,7 +79,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 								{googleEventCount > 0 &&
 									`${googleEventCount} رویداد گوگل • `}
 								{holidayEvents > 0
-									? `${holidayEvents} رویداد تعطیل`
+									? `${holidayEvents} مناسبت تعطیل`
 									: 'بدون تعطیلی'}
 							</div>
 						</div>
