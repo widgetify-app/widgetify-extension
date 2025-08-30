@@ -4,6 +4,7 @@ import { FaChartSimple, FaGear } from 'react-icons/fa6'
 import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useCreatePomodoroSession } from '@/services/hooks/pomodoro/createSession.hook'
 import { ControlButton } from './components/control-button'
@@ -11,7 +12,6 @@ import { ModeButton } from './components/mode-button'
 import { RequestNotificationModal } from './components/requestNotification-modal'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
-
 import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 
@@ -316,20 +316,32 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				</div>
 
 				<div className="flex flex-row items-center gap-x-1">
-					<button
-						className={`p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer  hover:scale-110 active:scale-90 ${currentTab === 'top-users' && 'bg-primary text-white'}`}
-						onClick={() =>
-							setCurrentTab(currentTab === 'timer' ? 'top-users' : 'timer')
+					<Tooltip
+						content={
+							currentTab === 'timer'
+								? 'جدول برترین کاربران'
+								: 'بازگشت به تایمر'
 						}
 					>
-						<FaChartSimple className="w-3 h-3 opacity-70 hover:opacity-100" />
-					</button>
-					<button
-						className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
-						onClick={() => setShowSettings(!showSettings)}
-					>
-						<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-					</button>
+						<button
+							className={`p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer  hover:scale-110 active:scale-90 ${currentTab === 'top-users' && 'bg-primary text-white'}`}
+							onClick={() =>
+								setCurrentTab(
+									currentTab === 'timer' ? 'top-users' : 'timer'
+								)
+							}
+						>
+							<FaChartSimple className="w-3 h-3 opacity-70 hover:opacity-100" />
+						</button>
+					</Tooltip>
+					<Tooltip content="تنظیمات">
+						<button
+							className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
+							onClick={() => setShowSettings(!showSettings)}
+						>
+							<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
+						</button>
+					</Tooltip>
 				</div>
 			</div>
 			{/* Timer Display */}

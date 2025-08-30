@@ -88,7 +88,7 @@ export function WigiPadDateSettingsModal({
 				<div className="flex gap-3 mt-2">
 					<Button
 						onClick={handleCancel}
-						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"
+						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-2xl border-content text-content"
 						size="md"
 					>
 						انصراف
@@ -97,7 +97,7 @@ export function WigiPadDateSettingsModal({
 						isPrimary={true}
 						size="md"
 						onClick={handleSave}
-						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg"
+						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-2xl"
 					>
 						ذخیره
 					</Button>

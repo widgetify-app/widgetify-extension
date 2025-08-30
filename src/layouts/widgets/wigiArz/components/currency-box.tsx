@@ -105,8 +105,9 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 	return (
 		<>
 			<div
-				className={`flex items-center justify-between gap-2 p-2 pr-3 rounded-full cursor-pointer 
+				className={`flex items-center justify-between gap-2 p-2 pr-3 rounded-2xl cursor-pointer 
 				bg-base-300 opacity-100 hover:!bg-gray-500/10
+				hover:scale-95
 				transition-all duration-200 ease-in-out
 				transform`}
 				onClick={() => toggleCurrencyModal()}

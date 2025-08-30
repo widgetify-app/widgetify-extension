@@ -30,6 +30,7 @@ interface BookmarkSwiperProps {
 	spaceBetween?: number
 	grabCursor?: boolean
 	navigation?: boolean
+	slidesPerView: number
 	type: 'browser' | 'recommended'
 }
 
@@ -39,15 +40,14 @@ function BookmarkSwiper({
 	grabCursor = true,
 	type,
 	onItemClick,
+	slidesPerView,
 }: BookmarkSwiperProps & { onItemClick?: (item: BookmarkItem) => void }) {
-	const { browserBookmarksEnabled } = useGeneralSetting()
-
 	const swiperProps = {
 		modules: [FreeMode, Navigation],
 		spaceBetween,
-		slidesPerView: 8,
+		slidesPerView,
 		grabCursor,
-		className: 'w-96 bg-content rounded-2xl !pl-3.5 !pr-1',
+		className: 'w-full bg-content rounded-2xl !pl-3.5 !pr-1',
 		dir: 'rtl' as const,
 	}
 
@@ -63,7 +63,7 @@ function BookmarkSwiper({
 			Analytics.event(`${type}_bookmark_clicked`)
 		}
 	}
-	if (!browserBookmarksEnabled && type === 'browser') return null
+
 	return (
 		<Swiper {...swiperProps}>
 			{items.map((item, index) => (
@@ -97,6 +97,8 @@ function BookmarkSwiper({
 }
 
 export function BrowserBookmark() {
+	const { browserBookmarksEnabled } = useGeneralSetting()
+
 	const { data, isError } = useGetTrends({
 		enabled: true,
 	})
@@ -112,9 +114,10 @@ export function BrowserBookmark() {
 
 			setFetchedBookmarks(bookmarks)
 		}
-
-		fetchBrowserBookmarks()
-	}, [])
+		if (browserBookmarksEnabled) {
+			fetchBrowserBookmarks()
+		}
+	}, [browserBookmarksEnabled])
 
 	useEffect(() => {
 		const isOtherFolderTitle = (title?: string) => {
@@ -181,46 +184,52 @@ export function BrowserBookmark() {
 	}, [data, isError])
 
 	return (
-		<div className="flex flex-row justify-between w-full gap-2 px-2 py-1">
+		<div
+			className={`flex flex-row w-full gap-2 px-2  py-1 ${browserBookmarksEnabled ? 'justify-between' : 'justify-end'}`}
+		>
 			<BookmarkSwiper
 				items={recommendedSites}
 				spaceBetween={1}
 				grabCursor={true}
 				type="recommended"
+				slidesPerView={browserBookmarksEnabled ? 8 : 16}
 			/>
-			<BookmarkSwiper
-				items={
-					currentFolderId
-						? [
-								{
-									id: '__up__',
-									title: 'بازگشت',
-									icon: <FiChevronLeft />,
-									isFolder: false,
-								} as BookmarkItem,
-								...browserBookmarks,
-							]
-						: browserBookmarks
-				}
-				spaceBetween={2}
-				grabCursor={false}
-				type="browser"
-				onItemClick={(item) => {
-					if (item.id === '__up__') {
-						const current = fetchedBookmarks.find(
-							(b) => b.id === currentFolderId
-						)
-						setCurrentFolderId(current?.parentId ?? null)
-						return
+			{browserBookmarksEnabled && (
+				<BookmarkSwiper
+					slidesPerView={8}
+					items={
+						currentFolderId
+							? [
+									{
+										id: '__up__',
+										title: 'بازگشت',
+										icon: <FiChevronLeft />,
+										isFolder: false,
+									} as BookmarkItem,
+									...browserBookmarks,
+								]
+							: browserBookmarks
 					}
+					spaceBetween={2}
+					grabCursor={false}
+					type="browser"
+					onItemClick={(item) => {
+						if (item.id === '__up__') {
+							const current = fetchedBookmarks.find(
+								(b) => b.id === currentFolderId
+							)
+							setCurrentFolderId(current?.parentId ?? null)
+							return
+						}
 
-					if (item.isFolder) {
-						setCurrentFolderId(item.id || null)
-					} else if (item.url) {
-						window.open(item.url, '_blank')
-					}
-				}}
-			/>
+						if (item.isFolder) {
+							setCurrentFolderId(item.id || null)
+						} else if (item.url) {
+							window.open(item.url, '_blank')
+						}
+					}}
+				/>
+			)}
 		</div>
 	)
 }
