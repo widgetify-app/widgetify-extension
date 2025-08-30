@@ -8,6 +8,8 @@ export function PrivacySettings() {
 		setAnalyticsEnabled,
 		browserBookmarksEnabled,
 		setBrowserBookmarksEnabled,
+		browserTabsEnabled,
+		setBrowserTabsEnabled,
 	} = useGeneralSetting()
 
 	return (
@@ -47,6 +49,22 @@ export function PrivacySettings() {
 							onToggle={() =>
 								setBrowserBookmarksEnabled(!browserBookmarksEnabled)
 							}
+						/>
+					</div>
+				</div>
+				<div className="flex items-center justify-between">
+					<div className="flex-1 space-y-2">
+						<h3 className="font-medium text-content">دسترسی به تب‌ها</h3>
+						<p className="text-sm font-light leading-relaxed text-muted">
+							با فعال کردن این گزینه، برنامه می‌تواند بوکمارک‌های داخل پوشه‌ها
+							را به صورت گروهی باز و مدیریت کند. هیچ اطلاعات شخصی ذخیره یا
+							ارسال نمی‌شود.
+						</p>
+					</div>
+					<div className="flex-shrink-0 ml-4">
+						<ToggleSwitch
+							enabled={browserTabsEnabled}
+							onToggle={() => setBrowserTabsEnabled(!browserTabsEnabled)}
 						/>
 					</div>
 				</div>
