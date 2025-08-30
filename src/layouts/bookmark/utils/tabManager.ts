@@ -20,7 +20,9 @@ export async function openBookmarksOptimized(bookmark: Bookmark, children: Bookm
 	const tabIds = tabs.map((tab) => tab.id).filter((id): id is number => id !== null)
 
 	if (tabIds.length > 0) {
-		const groupId = await browser.tabs.group({ tabIds })
+		const groupId = await browser.tabs.group({
+			tabIds: tabIds as [number, ...number[]],
+		})
 
 		await browser.tabGroups.update(groupId, {
 			title: bookmark.title || 'Bookmarks',

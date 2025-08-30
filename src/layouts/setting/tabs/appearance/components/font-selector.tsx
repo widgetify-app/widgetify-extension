@@ -22,10 +22,10 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 	]
 
 	return (
-		<SectionPanel title="فونت برنامه" delay={0.15}>
+		<SectionPanel title="فونت افزونه" delay={0.15}>
 			<div className="space-y-3">
 				<p className={'text-sm text-muted'}>
-					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های برنامه انتخاب کنید:
+					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های افزونه انتخاب کنید:
 				</p>
 				<div className="flex flex-wrap gap-2">
 					{availableFonts.map((font) => (
