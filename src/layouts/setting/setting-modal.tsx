@@ -14,9 +14,9 @@ import { type TabItem, TabManager } from '@/components/tab-manager'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
-import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { GeneralSettingTab } from './tabs/general/general'
 import { PetsTab } from './tabs/pets/pets'
+import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { WeatherOptions } from './tabs/weather/weather'
@@ -42,7 +42,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			element: <AccountTab />,
 		},
 		{
-			label: 'مدیریت دسترسی ها',
+			label: 'مدیریت دسترسی‌ها',
 			value: 'access',
 			icon: <MdFingerprint size={20} />,
 			element: <PrivacySettings key="privacy" />,
