@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
 import { ItemSelector } from '@/components/item-selector'
@@ -95,28 +94,26 @@ export function ClockSettingsModal({
 					</div>
 				</div>
 
-				<RequireAuth mode="preview">
-					<div className="px-1 space-y-2">
-						<CheckBoxWithDescription
-							isEnabled={showSeconds}
-							onToggle={() => setShowSeconds(!showSeconds)}
-							title="نمایش ثانیه"
-							description="نمایش ثانیه در ساعت دیجیتال"
-						/>
+				<div className="px-1 space-y-2">
+					<CheckBoxWithDescription
+						isEnabled={showSeconds}
+						onToggle={() => setShowSeconds(!showSeconds)}
+						title="نمایش ثانیه"
+						description="نمایش ثانیه در ساعت دیجیتال"
+					/>
 
-						<CheckBoxWithDescription
-							isEnabled={showTimeZone}
-							onToggle={() => setShowTimeZone(!showTimeZone)}
-							title="نمایش منطقه زمانی"
-							description="نمایش نام منطقه زمانی زیر ساعت"
-						/>
-					</div>
-				</RequireAuth>
+					<CheckBoxWithDescription
+						isEnabled={showTimeZone}
+						onToggle={() => setShowTimeZone(!showTimeZone)}
+						title="نمایش منطقه زمانی"
+						description="نمایش نام منطقه زمانی زیر ساعت"
+					/>
+				</div>
 
 				<div className="flex gap-3 mt-2">
 					<Button
 						onClick={handleCancel}
-						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-content text-content"
+						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border border-content text-content rounded-2xl"
 						size="md"
 					>
 						انصراف
@@ -125,7 +122,7 @@ export function ClockSettingsModal({
 						isPrimary={true}
 						size="md"
 						onClick={handleSave}
-						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg"
+						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-2xl"
 					>
 						ذخیره
 					</Button>

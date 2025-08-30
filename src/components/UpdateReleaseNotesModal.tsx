@@ -236,7 +236,7 @@ export const UpdateReleaseNotesModal = ({
 				</a>
 				<Button
 					onClick={onClose}
-					className="transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-md"
+					className="transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-2xl"
 					size="md"
 					isPrimary={true}
 				>
