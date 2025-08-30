@@ -1,4 +1,4 @@
-import { MdPets } from 'react-icons/md'
+import { MdFingerprint, MdPets } from 'react-icons/md'
 import {
 	VscAccount,
 	VscCloud,
@@ -14,6 +14,7 @@ import { type TabItem, TabManager } from '@/components/tab-manager'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
+import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { GeneralSettingTab } from './tabs/general/general'
 import { PetsTab } from './tabs/pets/pets'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
@@ -41,6 +42,12 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			element: <AccountTab />,
 		},
 		{
+			label: 'مدیریت دسترسی ها',
+			value: 'access',
+			icon: <MdFingerprint size={20} />,
+			element: <PrivacySettings key="privacy" />,
+		},
+		{
 			label: 'ظاهری',
 			value: 'appearance',
 			icon: <VscColorMode size={20} />,
@@ -64,6 +71,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			icon: <MdPets size={20} />,
 			element: <PetsTab />,
 		},
+
 		{
 			label: 'میانبرها',
 			value: 'shortcuts',
