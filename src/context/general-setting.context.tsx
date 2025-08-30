@@ -9,6 +9,7 @@ export interface GeneralData {
 	analyticsEnabled: boolean
 	selected_timezone: FetchedTimezone
 	browserBookmarksEnabled: boolean
+	browserTabsEnabled: boolean
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -16,6 +17,7 @@ interface GeneralSettingContextType extends GeneralData {
 	setAnalyticsEnabled: (value: boolean) => void
 	setTimezone: (value: FetchedTimezone) => void
 	setBrowserBookmarksEnabled: (value: boolean) => void
+	setBrowserTabsEnabled: (value: boolean, event?: React.MouseEvent) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
@@ -27,6 +29,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 		offset: '+03:30',
 	},
 	browserBookmarksEnabled: false,
+	browserTabsEnabled: false,
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -54,7 +57,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 				setIsInitialized(true)
 			}
 		}
-
 		loadGeneralSettings()
 	}, [])
 
@@ -85,6 +87,70 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		Analytics.event(`browser_bookmarks_${value ? 'enabled' : 'disabled'}`)
 	}
 
+	//#region [⚠️ Important note:]
+	// In Firefox, browser.permissions.request can only be called directly
+	// from a user input handler (like a click event).
+	// Using async/await breaks this direct connection and Firefox throws an error.
+	// Therefore, this function is written entirely without async/await
+	// and uses Promise chaining instead.
+	//#endregion
+	const setBrowserTabsEnabled = (value: boolean) => {
+		const permissions: Browser.runtime.ManifestPermissions[] = ['tabs', 'tabGroups']
+		if (import.meta.env.FIREFOX) {
+			if (value) {
+				browser.permissions
+					.request({ permissions })
+					.then((granted) => {
+						if (granted) {
+							updateSetting('browserTabsEnabled', true)
+							Analytics.event('browser_tabs_enabled')
+						}
+					})
+					.catch(console.error)
+			} else {
+				browser.permissions
+					.remove({ permissions })
+					.then(() => {
+						updateSetting('browserTabsEnabled', false)
+						Analytics.event('browser_tabs_disabled')
+					})
+					.catch(console.error)
+			}
+		} else {
+			browser.permissions.contains({ permissions }).then((hasPermission) => {
+				if (value) {
+					browser.permissions
+						.request({ permissions })
+						.then((granted) => {
+							if (granted) {
+								updateSetting('browserTabsEnabled', true)
+								Analytics.event('browser_tabs_enabled')
+							} else {
+								console.log('Permission denied')
+							}
+						})
+						.catch(console.error)
+				} else {
+					if (!hasPermission) {
+						updateSetting('browserTabsEnabled', false)
+						return
+					}
+
+					Analytics.event('browser_tabs_disabled')
+
+					browser.permissions
+						.remove({ permissions })
+						.then(() => {
+							updateSetting('browserTabsEnabled', false)
+						})
+						.catch(() => {
+							updateSetting('browserTabsEnabled', false)
+						})
+				}
+			})
+		}
+	}
+
 	if (!isInitialized) {
 		return null
 	}
@@ -98,6 +164,8 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setTimezone,
 		browserBookmarksEnabled: settings.browserBookmarksEnabled,
 		setBrowserBookmarksEnabled,
+		browserTabsEnabled: settings.browserTabsEnabled,
+		setBrowserTabsEnabled,
 	}
 
 	return (

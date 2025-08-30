@@ -13,6 +13,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { useBookmarkStore } from '@/context/bookmark.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { BookmarkItem } from './components/bookmark-item'
 import { FolderPath } from './components/folder-path'
@@ -21,6 +22,7 @@ import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
 import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
+import { openBookmarksOptimized } from './utils/tabManager'
 
 export function BookmarksComponent() {
 	const {
@@ -31,6 +33,7 @@ export function BookmarksComponent() {
 		deleteBookmark,
 		setBookmarks,
 	} = useBookmarkStore()
+	const { browserTabsEnabled } = useGeneralSetting()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
@@ -242,11 +245,18 @@ export function BookmarksComponent() {
 	function openBookmarks(bookmark: Bookmark) {
 		const children = getCurrentFolderItems(bookmark.id)
 		const bookmarks = children.filter((b) => b.type === 'BOOKMARK')
-		for (const b of bookmarks) {
-			window.open(b.url)
-		}
+		if (bookmarks.length === 0) return
 
-		Analytics.event('open-folder-bookmarks')
+		if (!browserTabsEnabled || !browser.tabGroups || !browser.tabs) {
+			for (const b of bookmarks) {
+				window.open(b.url)
+			}
+
+			Analytics.event('open-folder-bookmarks')
+		} else {
+			openBookmarksOptimized(bookmark, children)
+			Analytics.event('open-folder-bookmarks-grouped')
+		}
 	}
 
 	async function onOpenInNewTab(bookmark: Bookmark) {
