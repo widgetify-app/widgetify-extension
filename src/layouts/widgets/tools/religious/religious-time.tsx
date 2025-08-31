@@ -1,6 +1,6 @@
+import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
 import { useWeatherStore } from '@/context/weather.context'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
-import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { DailyZikrBox } from './components/daily-zikr-box'
 import { PrayerTimeBox } from './components/prayer-time-box'
@@ -36,7 +36,6 @@ export function ReligiousTime({ currentDate }: Prop) {
 
 	const weekDay = currentDate.format('dddd')
 
-	const englishCityName = selectedCity?.name || 'Tehran'
 	const lat = selectedCity?.lat || 35.6892523
 	const long = selectedCity?.lon || 51.3896004
 
@@ -104,7 +103,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 				</div>
 			) : (
 				<>
-					<div className="grid grid-cols-2 gap-[.4rem] mb-1 md:grid-cols-3">
+					<div className="grid grid-cols-3 gap-[.4rem] mb-1">
 						{prayerTimeBoxes.map((box, index) => (
 							<PrayerTimeBox
 								key={index}
