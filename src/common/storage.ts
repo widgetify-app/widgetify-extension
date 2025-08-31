@@ -6,7 +6,11 @@ export async function setToStorage<K extends keyof StorageKV>(
 	value: StorageKV[K]
 ) {
 	if (import.meta.env.FIREFOX) {
-		await storage.setItem(`local:${key}`, JSON.stringify(value))
+		try {
+			await storage.setItem(`local:${key}`, JSON.stringify(value))
+		} catch {
+			await storage.setItem(`local:${key}`, value)
+		}
 	} else await storage.setItem(`local:${key}`, value)
 }
 
@@ -16,8 +20,13 @@ export async function getFromStorage<K extends keyof StorageKV>(
 	const value = await storage.getItem(`local:${key}`)
 	if (typeof value === 'boolean') return value as StorageKV[K]
 	if (!value) return null
+
 	if (import.meta.env.FIREFOX) {
-		return JSON.parse(value as StorageKV[K])
+		try {
+			return JSON.parse(value as StorageKV[K])
+		} catch {
+			return value as StorageKV[K]
+		}
 	}
 
 	return value as StorageKV[K]
