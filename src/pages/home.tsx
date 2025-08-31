@@ -105,7 +105,7 @@ export function HomePage() {
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
-			if (shouldShowWelcome) {
+			if (shouldShowWelcome || shouldShowWelcome === null) {
 				setShowWelcomeModal(true)
 				await setToStorage('showWelcomeModal', false)
 				return

@@ -1,6 +1,8 @@
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
+import { FaExternalLinkAlt, FaTrash } from 'react-icons/fa'
 import keepItImage from '@/assets/keep-it.png'
+import { Button } from './button/button'
 import Modal from './modal'
 
 interface ExtensionInstalledModalProps {
@@ -16,18 +18,16 @@ export function ExtensionInstalledModal({
 	onGetStarted,
 }: ExtensionInstalledModalProps) {
 	const [currentStep, setCurrentStep] = useState<Step>(1)
-	const totalSteps = import.meta.env.FIREFOX ? 3 : 2
+	const totalSteps = 2
 
 	const renderStepContent = () => {
 		switch (currentStep) {
 			case 1:
-				return <StepOne setCurrentStep={setCurrentStep} />
-			case 2:
 				if (import.meta.env.FIREFOX) {
 					return <StepFirefoxConsent setCurrentStep={setCurrentStep} />
 				}
-				return <StepTwo onGetStarted={onGetStarted} />
-			case 3:
+				return <StepOne setCurrentStep={setCurrentStep} />
+			case 2:
 				return <StepTwo onGetStarted={onGetStarted} />
 			default:
 				return null
@@ -45,10 +45,14 @@ export function ExtensionInstalledModal({
 			{Array.from({ length: totalSteps }).map((_, index) => (
 				<button
 					key={index}
-					onClick={() => setCurrentStep((index + 1) as Step)}
+					onClick={() =>
+						import.meta.env.FIREFOX
+							? undefined
+							: setCurrentStep((index + 1) as Step)
+					}
 					aria-label={`رفتن به گام ${index + 1}`}
 					aria-current={index + 1 === currentStep ? 'step' : undefined}
-					className={`w-10 h-2 cursor-pointer rounded-full transition-all duration-300 ${
+					className={`w-10 h-2 ${import.meta.env.FIREFOX ? 'cursor-default' : 'cursor-pointer'} rounded-full transition-all duration-300 ${
 						index + 1 === currentStep
 							? 'bg-blue-500 shadow-lg shadow-blue-500/30'
 							: index + 1 < currentStep
@@ -71,7 +75,7 @@ export function ExtensionInstalledModal({
 		>
 			<LazyMotion features={domAnimation}>
 				<m.div
-					className={'flex flex-col items-center p-6 text-center'}
+					className={'flex flex-col items-center p-2 text-center w-full'}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.4 }}
@@ -91,24 +95,16 @@ interface StepOneProps {
 const StepOne = ({ setCurrentStep }: StepOneProps) => {
 	return (
 		<>
-			<m.div
-				className="mb-3"
-				initial={{ y: -20 }}
-				animate={{ y: 0 }}
-				transition={{ duration: 0.5, delay: 0.2 }}
-			>
+			<div className="mb-3">
 				<h3 className={'mb-0 text-2xl font-bold text-content'}>
 					به ویجتی‌فای خوش آمدید! 🎉
 				</h3>
-			</m.div>
+			</div>
 
-			<m.div
+			<div
 				className={
 					'relative p-1 mt-1 mb-3 border rounded-xl border-content bg-content'
 				}
-				initial={{ scale: 0.9, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
-				transition={{ duration: 0.5, delay: 0.4 }}
 			>
 				<div className="flex items-center justify-center">
 					<img
@@ -118,20 +114,17 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 						style={{ maxHeight: '220px' }}
 					/>
 				</div>
-			</m.div>
+			</div>
 
-			<m.div
+			<div
 				className={
 					'p-3 mb-3 text-content rounded-lg border border-content  bg-content'
 				}
-				initial={{ x: -20, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ duration: 0.5, delay: 0.6 }}
 			>
 				<p className="font-bold text-muted">
 					⚠️ برای فعالسازی افزونه، روی دکمه "Keep It" کلیک کنید.
 				</p>
-			</m.div>
+			</div>
 
 			<button
 				onClick={() => setCurrentStep(2)}
@@ -189,48 +182,78 @@ interface StepFirefoxConsentProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
+	const handleDecline = () => {
+		if (browser.management?.uninstallSelf) {
+			// @ts-expect-error
+			browser.management.uninstallSelf({
+				showConfirmDialog: true,
+				dialogMessage:
+					'بدون اجازه ارسال داده، افزونه نمی‌تواند کار کند. آیا می‌خواهید آن را حذف کنید؟',
+			})
+		}
+	}
+
 	return (
-		<>
-			<m.div
-				className="mb-6"
-				initial={{ y: -20 }}
-				animate={{ y: 0 }}
-				transition={{ duration: 0.5, delay: 0.2 }}
-			>
-				<h3 className={'mb-3 text-2xl font-bold text-content'}>
-					Privacy Notice for Firefox Users
-				</h3>
-				<div className="flex flex-col items-center justify-center gap-2">
-					<p className="text-sm text-muted">
-						برای اطلاعات کامل در مورد نحوه جمع‌آوری، استفاده و محافظت از
-						اطلاعات شما، لطفاً سیاست حریم خصوصی ما را مطالعه کنید:
-					</p>
-					<div className="p-2 border border-orange-300 rounded-lg bg-white/50">
+		<div className="w-full overflow-clip">
+			<h3 className="mb-3 text-2xl font-bold text-content">Privacy Notice</h3>
+			<p className="mb-2 font-semibold">خلاصه سیاست حریم خصوصی ویجتی‌فای:</p>
+			<div className="w-full px-2">
+				<ul className="w-full h-56 space-y-1 overflow-y-auto text-xs list-disc list-inside border border-content rounded-2xl">
+					<li>هیچ داده شخصی به‌طور پیش‌فرض جمع‌آوری نمی‌شود.</li>
+					<li>تنظیمات فقط در دستگاه شما (Local Storage) ذخیره می‌شوند.</li>
+					<li>
+						اطلاعات اختیاری مثل نام و ایمیل فقط برای همگام‌سازی بین دستگاه‌ها
+						استفاده می‌شوند (در صورت تمایل شما).
+					</li>
+					<li>
+						اتصال به گوگل کاملاً اختیاری است و فقط برای نمایش رویدادهای تقویم
+						(دسترسی خواندنی) استفاده می‌شود.
+					</li>
+					<li>هیچ داده‌ای با اشخاص ثالث به اشتراک گذاشته نمی‌شود.</li>
+					<li>ویجتی‌فای متن‌باز است و کد آن روی GitHub قابل بررسی است.</li>
+					<li>
+						درخواست حذف کامل داده‌ها در هر زمان از طریق{' '}
 						<a
-							href="https://widgetify.ir/privacy"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="font-medium underline break-all text-primary hover:text-blue-900"
+							href="mailto:privacy@widgetify.ir"
+							className="text-blue-600 underline"
 						>
-							https://widgetify.ir/privacy
-						</a>
-					</div>
+							privacy@widgetify.ir
+						</a>{' '}
+						ممکن است.
+					</li>
+				</ul>
 
-					<p className="text-sm leading-relaxed text-muted">
-						با ادامه دادن، شما تأیید می‌کنید که سیاست حریم خصوصی را خوانده و با
-						آن موافقت می‌کنید.
-					</p>
-				</div>
-			</m.div>
-
-			<div className="flex flex-col w-full gap-4 mt-4 sm:flex-row">
-				<button
-					onClick={() => setCurrentStep(3)}
-					className="px-6 py-3 font-medium text-white transition-all duration-300 bg-gradient-to-r from-blue-600/80 to-indigo-600/80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] cursor-pointer hover:bg-opacity-90 hover:shadow-[0_12px_20px_rgba(0,0,0,0.25)] backdrop-blur-sm w-full sm:flex-1"
+				<p className="mt-2 text-sm text-content">
+					اگر رد کنید، افزونه قادر به انجام وظایف اصلی خود نخواهد بود. در صورت
+					تمایل می‌توانید افزونه را همین حالا حذف کنید.
+				</p>
+				<a
+					href="https://widgetify.ir/privacy"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="flex items-center justify-center font-medium underline text-primary gap-0.5"
 				>
-					✅ موافقم و ادامه می‌دهم
-				</button>
+					<FaExternalLinkAlt />
+					مشاهده سیاست کامل حریم خصوصی
+				</a>
 			</div>
-		</>
+
+			<div className="flex gap-3 mt-4">
+				<Button
+					onClick={handleDecline}
+					size="md"
+					className="flex items-center justify-center w-40 btn btn-error rounded-xl"
+				>
+					<FaTrash /> حذف افزونه
+				</Button>
+				<Button
+					onClick={() => setCurrentStep(2)}
+					size="md"
+					className="w-40 btn btn-success rounded-xl"
+				>
+					✅ قبول می‌کنم
+				</Button>
+			</div>
+		</div>
 	)
 }
