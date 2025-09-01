@@ -139,17 +139,15 @@ export function TodosLayout() {
 							className={`space-y-1.5 overflow-y-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
 							{selectedDateTodos.length > 0 ? (
-								<div>
-									{selectedDateTodos.map((todo) => (
-										<TodoItem
-											key={todo.id}
-											todo={todo}
-											deleteTodo={removeTodo}
-											toggleTodo={toggleTodo}
-											blurMode={blurMode}
-										/>
-									))}
-								</div>
+								selectedDateTodos.map((todo) => (
+									<TodoItem
+										key={todo.id}
+										todo={todo}
+										deleteTodo={removeTodo}
+										toggleTodo={toggleTodo}
+										blurMode={blurMode}
+									/>
+								))
 							) : (
 								<div
 									className={
