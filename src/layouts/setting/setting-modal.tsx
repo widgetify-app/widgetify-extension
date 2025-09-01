@@ -4,6 +4,7 @@ import {
 	VscCloud,
 	VscColorMode,
 	VscInfo,
+	VscMegaphone,
 	VscPaintcan,
 	VscRecordKeys,
 	VscSettingsGear,
@@ -11,6 +12,7 @@ import {
 import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
+import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
@@ -28,6 +30,7 @@ interface SettingModalProps {
 }
 
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
+	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
 	const tabs: TabItem[] = [
 		{
 			label: 'عمومی',
@@ -108,6 +111,18 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				defaultTab="general"
 				selectedTab={selectedTab}
 				direction="rtl"
+			/>
+			<button
+				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+				onClick={() => setUpdateModalOpen(true)}
+			>
+				<VscMegaphone size={20} />
+				<span className="text-sm font-bold">تغییرات اخیر</span>
+			</button>
+			<UpdateReleaseNotesModal
+				isOpen={isUpdateModalOpen}
+				onClose={() => setUpdateModalOpen(false)}
+				counterValue={null}
 			/>
 		</Modal>
 	)

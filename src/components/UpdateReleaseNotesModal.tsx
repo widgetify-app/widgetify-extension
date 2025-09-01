@@ -96,17 +96,19 @@ const releaseNotes: ReleaseNote[] = [
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
 	onClose: () => void
+	counterValue: number | null
 }
 
 export const UpdateReleaseNotesModal = ({
 	isOpen,
 	onClose,
+	counterValue,
 }: UpdateReleaseNotesModalProps) => {
-	const [counter, setCounter] = useState(0)
+	const [counter, setCounter] = useState<number>(0)
 
 	useEffect(() => {
-		if (isOpen) {
-			setCounter(10)
+		if (isOpen && counterValue !== null) {
+			setCounter(counterValue === null ? 10 : counterValue)
 			const interval = setInterval(() => {
 				setCounter((prev) => {
 					if (prev <= 1) {
