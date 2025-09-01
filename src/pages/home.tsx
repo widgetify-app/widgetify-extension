@@ -307,6 +307,7 @@ export function HomePage() {
 			<UpdateReleaseNotesModal
 				isOpen={showReleaseNotes}
 				onClose={() => onCloseReleaseNotes()}
+				counterValue={10}
 			/>
 		</div>
 	)
