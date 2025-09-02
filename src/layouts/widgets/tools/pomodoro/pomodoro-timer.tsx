@@ -44,8 +44,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				return settings.workTime * 60
 			case 'short-break':
 				return settings.shortBreakTime * 60
-			case 'long-break':
-				return settings.longBreakTime * 60
 		}
 	}
 
@@ -110,7 +108,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			const textList: Record<TimerMode, string> = {
 				work: 'تایمر کار تمام شد! حالا وقت یه استراحت کوتاهه.',
 				'short-break': 'استراحت کوتاه تموم شد! آماده‌اید به کار ادامه بدید؟',
-				'long-break': 'استراحت طولانی تموم شد! برگردید و با انرژی ادامه بدید!',
 			}
 
 			new Notification('تایمر پومودورو', {
@@ -121,21 +118,12 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 
 		if (isAuthenticated) {
 			const now = new Date()
-			const modeType =
-				mode === 'work'
-					? 'WORK'
-					: mode === 'short-break'
-						? 'SHORT_BREAK'
-						: 'LONG_BREAK'
+			const modeType = mode === 'work' ? 'WORK' : 'SHORT_BREAK'
 
 			const sessionData = {
 				duration:
-					modeType === 'WORK'
-						? settings.workTime
-						: modeType === 'SHORT_BREAK'
-							? settings.shortBreakTime
-							: settings.longBreakTime,
-				mode: modeType as 'WORK' | 'SHORT_BREAK' | 'LONG_BREAK',
+					modeType === 'WORK' ? settings.workTime : settings.shortBreakTime,
+				mode: modeType as 'WORK' | 'SHORT_BREAK',
 				startTime: new Date(now.getTime() - getMaxTime() * 1000).toISOString(),
 				endTime: now.toISOString(),
 				status: 'COMPLETED' as const,
@@ -147,39 +135,28 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			const newCycles = cycles + 1
 			setCycles(newCycles)
 
-			if (newCycles % settings.cyclesBeforeLongBreak === 0) {
-				setMode('long-break')
-				setTimeLeft(settings.longBreakTime * 60)
-				setToStorage('pomodoro_session', {
-					startTime: Date.now(),
-					mode: 'long-break',
-					initialTimeLeft: settings.longBreakTime * 60,
-					maxTime: settings.longBreakTime * 60,
-					cycles: newCycles,
-					isRunning: true,
-				})
-			} else {
-				setMode('short-break')
-				setTimeLeft(settings.shortBreakTime * 60)
-				setToStorage('pomodoro_session', {
-					startTime: Date.now(),
-					mode: 'short-break',
-					initialTimeLeft: settings.shortBreakTime * 60,
-					maxTime: settings.shortBreakTime * 60,
-					cycles: newCycles,
-					isRunning: true,
-				})
-			}
+			setMode('short-break')
+			setTimeLeft(settings.shortBreakTime * 60)
+			setIsRunning(true)
+			setToStorage('pomodoro_session', {
+				startTime: Date.now(),
+				mode: 'short-break',
+				initialTimeLeft: settings.shortBreakTime * 60,
+				maxTime: settings.shortBreakTime * 60,
+				cycles: newCycles,
+				isRunning: true,
+			})
 		} else {
 			setMode('work')
 			setTimeLeft(settings.workTime * 60)
+			setIsRunning(false)
 			setToStorage('pomodoro_session', {
 				startTime: Date.now(),
 				mode: 'work',
 				initialTimeLeft: settings.workTime * 60,
 				maxTime: settings.workTime * 60,
 				cycles,
-				isRunning: true,
+				isRunning: false,
 			})
 		}
 	}
@@ -252,9 +229,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			case 'short-break':
 				setTimeLeft(settings.shortBreakTime * 60)
 				break
-			case 'long-break':
-				setTimeLeft(settings.longBreakTime * 60)
-				break
 		}
 		removeFromStorage('pomodoro_session')
 
@@ -271,11 +245,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		if (mode === 'work') {
 			newTimeLeft = newSettings.workTime * 60
 			setTimeLeft(newTimeLeft)
-		} else if (mode === 'short-break') {
+		} else {
 			newTimeLeft = newSettings.shortBreakTime * 60
-			setTimeLeft(newTimeLeft)
-		} else if (mode === 'long-break') {
-			newTimeLeft = newSettings.longBreakTime * 60
 			setTimeLeft(newTimeLeft)
 		}
 
@@ -307,11 +278,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						mode="short-break"
 						currentMode={mode}
 						onClick={() => handleModeChange('short-break')}
-					/>
-					<ModeButton
-						mode="long-break"
-						currentMode={mode}
-						onClick={() => handleModeChange('long-break')}
 					/>
 				</div>
 
@@ -346,17 +312,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			</div>
 			{/* Timer Display */}
 			{currentTab === 'timer' ? (
-				<div className="relative mt-2">
-					<TimerDisplay
-						timeLeft={timeLeft}
-						progress={progress}
-						mode={mode}
-						cycles={cycles}
-						cyclesBeforeLongBreak={settings.cyclesBeforeLongBreak}
-					/>
+				<div className="relative flex flex-col justify-around mt-2 gap-y-4">
+					<TimerDisplay timeLeft={timeLeft} progress={progress} mode={mode} />
 
 					{/* Control buttons */}
-					<div className="flex justify-center gap-x-4 mt-7">
+					<div className="flex justify-center gap-x-4">
 						<ControlButton
 							mode={'reset'}
 							icon={<FiRefreshCw size={16} strokeWidth={2.25} />}

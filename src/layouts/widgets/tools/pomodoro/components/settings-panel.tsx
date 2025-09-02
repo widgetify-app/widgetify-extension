@@ -23,7 +23,7 @@ const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max
 					value={String(value)}
 					className="text-center"
 					onChange={(newValue) => {
-						const value = Number.parseInt(newValue)
+						const value = Number.parseInt(newValue, 10)
 						if (value > 0 && value <= max) {
 							onChange(value)
 						}
@@ -98,24 +98,6 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 							handleSettingChange('shortBreakTime', value)
 						}}
 						max={30}
-					/>
-
-					<SettingInput
-						label="استراحت بلند:"
-						value={settings.longBreakTime}
-						onChange={(value) => {
-							handleSettingChange('longBreakTime', value)
-						}}
-						max={60}
-					/>
-
-					<SettingInput
-						label="تعداد دوره قبل از استراحت بلند:"
-						value={settings.cyclesBeforeLongBreak}
-						onChange={(value) => {
-							handleSettingChange('cyclesBeforeLongBreak', value)
-						}}
-						max={10}
 					/>
 				</div>
 				<div className="text-center">

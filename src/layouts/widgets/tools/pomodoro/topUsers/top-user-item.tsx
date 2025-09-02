@@ -25,6 +25,16 @@ export function TopUserItem({
 
 	const rank = index + 1
 	const style = rank <= 3 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'
+
+	const convertToHours = (duration: number) => {
+		const hours = Math.floor(duration / 60)
+		const minutes = duration % 60
+		return `${hours} ساعت و ${minutes} دقیقه`
+	}
+
+	const duration: string =
+		user.duration > 500 ? convertToHours(user.duration) : `${user.duration} دقیقه`
+
 	return (
 		<>
 			<div
@@ -42,7 +52,7 @@ export function TopUserItem({
 					<p className="text-sm font-medium truncate text-content">
 						{user.name}
 					</p>
-					<p className="text-xs text-muted">{user.duration} دقیقه تمرکز</p>
+					<p className="text-xs text-muted">{duration}</p>
 				</div>
 
 				<div
