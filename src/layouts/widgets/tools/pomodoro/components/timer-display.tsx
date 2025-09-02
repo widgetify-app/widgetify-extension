@@ -12,16 +12,12 @@ interface TimerDisplayProps {
 	timeLeft: number
 	progress: number
 	mode: TimerMode
-	cycles: number
-	cyclesBeforeLongBreak: number
 }
 
 export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 	timeLeft,
 	progress,
 	mode,
-	cycles,
-	cyclesBeforeLongBreak,
 }) => {
 	const formatTime = (seconds: number) => {
 		const mins = Math.floor(seconds / 60)
@@ -29,9 +25,8 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 	}
 	return (
-		<div className="relative mx-auto mb-6 duration-300 w-36 h-36 animate-in zoom-in-95">
+		<div className="relative mx-auto mt-4 duration-300 w-36 h-36 animate-in zoom-in-95">
 			<svg className="w-full h-full" viewBox="0 0 100 100">
-				{/* Background circle */}
 				<circle
 					cx="50"
 					cy="50"
@@ -39,21 +34,30 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					fill="none"
 					stroke="#f3f4f6"
 					strokeWidth="5"
-				/>{' '}
-				{/* Progress circle with animation */}
+					filter="url(#shadow)"
+				/>
+				{/* Progress circle with gradient and smooth animation */}
 				<circle
 					cx="50"
 					cy="50"
 					r="45"
 					fill="none"
-					// stroke={getProgressColor()}
+					stroke="url(#progressGradient)"
 					strokeWidth="5"
 					strokeDasharray="283"
 					strokeDashoffset={283 - (283 * progress) / 100}
 					transform="rotate(-90 50 50)"
-					className={`transition-all duration-500 ease-out ${modeColors[mode]}`}
+					className={`transition-all duration-1000 ease-out ${modeColors[mode]}`}
+					strokeLinecap="round"
 				/>
-				{/* Timer text */}
+				<circle
+					cx="50"
+					cy="50"
+					r="40"
+					fill="none"
+					stroke="#ffffff10"
+					strokeWidth="1"
+				/>
 				<text
 					x="50"
 					y="50"
@@ -71,19 +75,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					{modeFullLabels[mode]}
 				</text>
 			</svg>{' '}
-			{/* Cycle indicator */}
-			<div className="flex justify-center mt-2 gap-x-1">
-				{Array.from({ length: cyclesBeforeLongBreak }).map((_, i) => (
-					<div
-						key={i}
-						className={`w-2 h-2 rounded-full transition-all duration-300 ${
-							i < cycles % cyclesBeforeLongBreak
-								? 'bg-blue-500 scale-100'
-								: 'bg-gray-700 scale-75'
-						}`}
-					/>
-				))}
-			</div>
 		</div>
 	)
 }

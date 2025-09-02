@@ -1,4 +1,4 @@
-export type TimerMode = 'work' | 'short-break' | 'long-break'
+export type TimerMode = 'work' | 'short-break'
 
 export interface PomodoroSettings {
 	workTime: number
@@ -21,4 +21,3 @@ export interface PomodoroSession {
 	cycles: number
 	isRunning: boolean
 }
-
