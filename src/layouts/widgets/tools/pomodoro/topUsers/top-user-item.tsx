@@ -38,7 +38,7 @@ export function TopUserItem({
 	return (
 		<>
 			<div
-				className="relative flex items-center gap-3 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95"
+				className="relative flex items-center gap-2 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95"
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
