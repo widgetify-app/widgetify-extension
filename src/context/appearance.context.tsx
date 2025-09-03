@@ -1,5 +1,6 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 
 export type FontFamily = 'Vazir' | 'Samim' | 'Pofak'
@@ -65,10 +66,12 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 	const setContentAlignment = (value: 'center' | 'top') => {
 		updateSetting('contentAlignment', value)
+		Analytics.event(`set_content_alignment_${value}`)
 	}
 
 	const setFontFamily = (value: FontFamily) => {
 		updateSetting('fontFamily', value)
+		Analytics.event(`set_font_${value}`)
 	}
 
 	useEffect(() => {
