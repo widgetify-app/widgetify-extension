@@ -8,16 +8,18 @@ interface FontSelectorProps {
 }
 
 export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
-	const availableFonts: { value: FontFamily; label: string; sampleText: string }[] = [
+	const availableFonts: { value: FontFamily; label: string }[] = [
 		{
 			value: 'Vazir',
 			label: 'وزیر',
-			sampleText: 'نمونه متن با فونت وزیر',
 		},
 		{
 			value: 'Samim',
 			label: 'صمیم',
-			sampleText: 'نمونه متن با فونت صمیم',
+		},
+		{
+			value: 'Pofak',
+			label: 'پفـک',
 		},
 	]
 
@@ -34,7 +36,8 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 							onClick={() => setFontFamily(font.value)}
 							key={font.value}
 							label={font.label}
-							description={font.sampleText}
+							description={'فرض کن این فونت‌ها ستارن!'}
+							style={{ fontFamily: font.value }}
 						/>
 					))}
 				</div>

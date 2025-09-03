@@ -15,21 +15,33 @@ export function JalaliDate() {
 		: isDayTime
 			? 'text-content drop-shadow-md'
 			: 'text-primary drop-shadow-sm'
+
+	const gregorianDate = today.locale('en')
+
+	const gFormatted = `${gregorianDate.format('YY')}/${gregorianDate.format('MMMM').slice(0, 3)}/${gregorianDate.format('DD')}`
+
 	return (
 		<>
 			{isHoliday && <HolidayBadge />}
-			<span className={`text-base !leading-none ${textColor}`}>
-				{today.locale('fa').format('dddd')}
-			</span>
-			<div
-				className={`text-7xl !leading-none font-sans font-bold transition-all duration-300 transform ${textColor}`}
-			>
-				{today.jDate()}
-			</div>
-			<div
-				className={`text-lg font-medium transition-all duration-200 ${textColor}`}
-			>
-				{today.locale('fa').format('MMMM YYYY')}
+			<div className="flex flex-col items-center justify-center gap-4">
+				<span className={`text-base !leading-none ${textColor} mb-4`}>
+					{today.locale('fa').format('dddd')}
+				</span>
+				<div
+					className={`text-7xl font-bold leading-[1] h-[0.3em] flex items-center ${textColor}`}
+				>
+					{today.jDate()}
+				</div>
+				<div className="flex flex-col">
+					<span
+						className={`text-lg font-medium transition-all duration-200 ${textColor}`}
+					>
+						{today.locale('fa').format('MMMM YYYY')}
+					</span>
+					<span className={`text-xs !leading-none ${textColor}`} dir="ltr">
+						{gFormatted}
+					</span>
+				</div>
 			</div>
 		</>
 	)

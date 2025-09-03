@@ -6,6 +6,7 @@ interface Props {
 	label: string
 	description?: string | React.ReactNode
 	className?: string
+	style?: React.CSSProperties
 }
 export function ItemSelector({
 	isActive,
@@ -13,6 +14,7 @@ export function ItemSelector({
 	label,
 	description,
 	className,
+	style,
 }: Props) {
 	const getRadioBorderStyle = (isSelected: boolean) => {
 		if (isSelected) {
@@ -30,6 +32,7 @@ export function ItemSelector({
 					? 'border-primary/25 bg-primary/20'
 					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
 			}`}
+			style={style}
 		>
 			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
