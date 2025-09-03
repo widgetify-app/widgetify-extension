@@ -1,5 +1,6 @@
 import type React from 'react'
 import { Button } from '@/components/button/button'
+import CustomCheckbox from '@/components/checkbox'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import type { PomodoroSettings } from '../types'
@@ -53,7 +54,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 	onUpdateSettings,
 	onReset,
 }) => {
-	const handleSettingChange = (key: keyof PomodoroSettings, value: number) => {
+	const handleSettingChange = (key: keyof PomodoroSettings, value: any) => {
 		onUpdateSettings({
 			...settings,
 			[key]: value,
@@ -99,6 +100,34 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						}}
 						max={30}
 					/>
+					<div className="flex items-start gap-3">
+						<CustomCheckbox
+							checked={settings.alarmEnabled}
+							onChange={() =>
+								handleSettingChange(
+									'alarmEnabled',
+									!settings.alarmEnabled
+								)
+							}
+						/>
+						<div
+							onClick={() =>
+								handleSettingChange(
+									'alarmEnabled',
+									!settings.alarmEnabled
+								)
+							}
+							className="cursor-pointer"
+						>
+							<p className={'font-medium text-content'}>
+								فعال‌سازی هشدار صوتی
+							</p>
+							<p className={'text-sm font-light text-muted'}>
+								با فعال‌سازی این گزینه، در پایان هر دوره کاری، یک هشدار
+								صوتی پخش خواهد شد.
+							</p>
+						</div>
+					</div>
 				</div>
 				<div className="text-center">
 					<Button
