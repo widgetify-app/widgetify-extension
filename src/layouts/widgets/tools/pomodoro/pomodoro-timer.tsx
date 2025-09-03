@@ -30,6 +30,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		shortBreakTime: 5,
 		longBreakTime: 15,
 		cyclesBeforeLongBreak: 4,
+		alarmEnabled: true,
 	})
 	const { isAuthenticated } = useAuth()
 	const [currentTab, setCurrentTab] = useState<'timer' | 'top-users'>('timer')
@@ -105,6 +106,17 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		if (onComplete) onComplete()
 
 		if (Notification.permission === 'granted') {
+			if (settings.alarmEnabled && mode === 'work') {
+				if (import.meta.env.FIREFOX) {
+					//todo: implement Firefox specific audio playback
+				} else {
+					const audio = new Audio(
+						'https://widgetify-ir.storage.c2.liara.space/effects/alarm_1.mp3'
+					)
+					audio.autoplay = true
+					audio.play()
+				}
+			}
 			const textList: Record<TimerMode, string> = {
 				work: 'تایمر کار تمام شد! حالا وقت یه استراحت کوتاهه.',
 				'short-break': 'استراحت کوتاه تموم شد! آماده‌اید به کار ادامه بدید؟',

@@ -5,6 +5,7 @@ export interface PomodoroSettings {
 	shortBreakTime: number
 	longBreakTime: number
 	cyclesBeforeLongBreak: number
+	alarmEnabled: boolean
 }
 
 export interface ThemeStyles {
