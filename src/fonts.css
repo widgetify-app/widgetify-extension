@@ -83,3 +83,24 @@
 	font-weight: 700;
 	font-style: normal;
 }
+
+/* Pofak Font Family */
+@font-face {
+	font-family: "Pofak";
+	src: url("https://widgetify-ir.storage.c2.liara.space/fonts/Pofak-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Pofak";
+	src: url("https://widgetify-ir.storage.c2.liara.space/fonts/Pofak-Bold.woff2") format("woff2");
+	font-weight: 600;
+	font-style: normal;
+}
+
+body {
+	-moz-font-feature-settings: "ss01";
+	-webkit-font-feature-settings: "ss01";
+	font-feature-settings: "ss01";
+}

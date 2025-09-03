@@ -1,8 +1,8 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
-export type FontFamily = 'Vazir' | 'Samim'
+export type FontFamily = 'Vazir' | 'Samim' | 'Pofak'
 
 export interface AppearanceData {
 	contentAlignment: 'center' | 'top'
