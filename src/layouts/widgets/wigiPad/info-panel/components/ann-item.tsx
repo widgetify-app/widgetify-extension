@@ -21,7 +21,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 			'li',
 			'img',
 		],
-		ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt'],
+		ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'style'],
 	})
 
 	// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
