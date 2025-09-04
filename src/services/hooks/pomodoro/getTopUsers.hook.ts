@@ -9,6 +9,7 @@ export interface TopUser {
 	id: string
 	friendshipStatus: 'PENDING' | 'ACCEPTED' | null
 	isSelf?: boolean
+	rank: number | null
 }
 
 export interface TopUsersResponse {
