@@ -1,6 +1,6 @@
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
-import { FaExternalLinkAlt, FaTrash } from 'react-icons/fa'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import keepItImage from '@/assets/keep-it.png'
 import { Button } from './button/button'
 import Modal from './modal'
@@ -209,6 +209,15 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 						اتصال به گوگل کاملاً اختیاری است و فقط برای نمایش رویدادهای تقویم
 						(دسترسی خواندنی) استفاده می‌شود.
 					</li>
+					<li>
+						برای نمایش آیکون بوکمارک‌ها، «دامنه‌ وب‌سایت» شما خوانده می‌شود؛ این
+						داده شخصی محسوب شده و فقط در همان لحظه برای نمایش آیکون استفاده
+						می‌شود و جایی ذخیره یا ارسال نمی‌گردد.
+					</li>
+					<li>
+						اطلاعات آماری استفاده (Analytics) برای بهبود تجربه کاربری جمع‌آوری
+						می‌شود. این مورد کاملاً اختیاری است و می‌توانید آن را رد کنید.
+					</li>
 					<li>هیچ داده‌ای با اشخاص ثالث به اشتراک گذاشته نمی‌شود.</li>
 					<li>ویجتی‌فای متن‌باز است و کد آن روی GitHub قابل بررسی است.</li>
 					<li>
@@ -244,7 +253,7 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 					size="md"
 					className="flex items-center justify-center w-40 btn btn-error rounded-xl"
 				>
-					<FaTrash /> حذف افزونه
+					🚫 رد می‌کنم
 				</Button>
 				<Button
 					onClick={() => setCurrentStep(2)}

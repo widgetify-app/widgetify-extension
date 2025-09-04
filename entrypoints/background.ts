@@ -4,7 +4,7 @@ import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import Analytics from '../src/analytics'
-import { setToStorage } from '../src/common/storage'
+import { removeFromStorage, setToStorage } from '../src/common/storage'
 
 export default defineBackground(() => {
 	const isDev = import.meta.env.DEV
@@ -148,6 +148,8 @@ export default defineBackground(() => {
 
 	browser.runtime.onInstalled.addListener(async (details) => {
 		if (details.reason === 'install') {
+			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+			await removeFromStorage('showWelcomeModal')
 			await setToStorage('showWelcomeModal', true)
 
 			const manifest = browser.runtime.getManifest()
