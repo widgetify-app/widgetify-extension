@@ -52,8 +52,8 @@ export default defineConfig({
 		name: 'Widgetify',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
-		permissions: ['storage', 'search', 'bookmarks'],
-		optional_permissions: ['tabs', 'tabGroups'],
+		permissions: ['storage', 'search'],
+		optional_permissions: ['tabs', 'tabGroups', 'bookmarks'],
 		browser_specific_settings: {
 			gecko: {
 				id: 'widgetify@widgetify-app.github.io',

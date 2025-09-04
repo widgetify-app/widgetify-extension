@@ -51,6 +51,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 							typeof storedSettings.selected_timezone === 'string'
 								? DEFAULT_SETTINGS.selected_timezone
 								: storedSettings.selected_timezone,
+						browserBookmarksEnabled: await browserHasPermission([
+							'bookmarks',
+						]),
+						browserTabsEnabled: await browserHasPermission(['tabs']),
 					})
 				}
 			} finally {
@@ -59,6 +63,12 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		}
 		loadGeneralSettings()
 	}, [])
+
+	async function browserHasPermission(
+		permissions: Browser.runtime.ManifestPermissions[]
+	) {
+		return browser.permissions.contains({ permissions })
+	}
 
 	const updateSetting = <K extends keyof GeneralData>(
 		key: K,
@@ -83,8 +93,60 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	}
 
 	const setBrowserBookmarksEnabled = async (value: boolean) => {
-		updateSetting('browserBookmarksEnabled', value)
-		Analytics.event(`browser_bookmarks_${value ? 'enabled' : 'disabled'}`)
+		const permissions: Browser.runtime.ManifestPermissions[] = ['bookmarks']
+		if (import.meta.env.FIREFOX) {
+			if (value) {
+				browser.permissions
+					.request({ permissions })
+					.then((granted) => {
+						if (granted) {
+							updateSetting('browserBookmarksEnabled', true)
+							Analytics.event('browser_bookmarks_enabled')
+						}
+					})
+					.catch(console.error)
+			} else {
+				browser.permissions
+					.remove({ permissions })
+					.then(() => {
+						updateSetting('browserBookmarksEnabled', false)
+						Analytics.event('browser_bookmarks_disabled')
+					})
+					.catch(console.error)
+			}
+		} else {
+			browser.permissions.contains({ permissions }).then((hasPermission) => {
+				if (value) {
+					browser.permissions
+						.request({ permissions })
+						.then((granted) => {
+							if (granted) {
+								updateSetting('browserBookmarksEnabled', true)
+								Analytics.event('browser_bookmarks_enabled')
+							} else {
+								console.log('Permission denied')
+							}
+						})
+						.catch(console.error)
+				} else {
+					if (!hasPermission) {
+						updateSetting('browserBookmarksEnabled', false)
+						return
+					}
+
+					Analytics.event('browser_bookmarks_disabled')
+
+					browser.permissions
+						.remove({ permissions })
+						.then(() => {
+							updateSetting('browserBookmarksEnabled', false)
+						})
+						.catch(() => {
+							updateSetting('browserBookmarksEnabled', false)
+						})
+				}
+			})
+		}
 	}
 
 	//#region [⚠️ Important note:]
