@@ -35,7 +35,7 @@ export const TopUsersTab: React.FC = () => {
 			{data.tops.map((user, index) => (
 				<TopUserItem
 					user={user}
-					index={index}
+					rank={user.rank || index + 1}
 					key={user.avatar}
 					activeProfileId={activeProfileId}
 					setActiveProfileId={setActiveProfileId}

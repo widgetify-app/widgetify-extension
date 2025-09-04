@@ -5,13 +5,13 @@ import type { TopUser } from '@/services/hooks/pomodoro/getTopUsers.hook'
 
 interface TopUserItemProps {
 	user: TopUser
-	index: number
+	rank: number
 	setActiveProfileId: (id: string | null) => void
 	activeProfileId: string | null
 }
 export function TopUserItem({
 	user,
-	index,
+	rank,
 	activeProfileId,
 	setActiveProfileId,
 }: TopUserItemProps) {
@@ -23,7 +23,6 @@ export function TopUserItem({
 		3: 'text-amber-600',
 	}
 
-	const rank = index + 1
 	const style = rank <= 3 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'
 
 	const convertToHours = (duration: number) => {
