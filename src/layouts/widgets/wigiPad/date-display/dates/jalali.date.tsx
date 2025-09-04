@@ -16,9 +16,10 @@ export function JalaliDate() {
 			? 'text-content drop-shadow-md'
 			: 'text-primary drop-shadow-sm'
 
-	const gregorianDate = today.locale('en')
+	const gregorianDate = today.clone().locale('en')
 
-	const gFormatted = `${gregorianDate.format('YY')}/${gregorianDate.format('MMMM').slice(0, 3)}/${gregorianDate.format('DD')}`
+	const gFormatted = `${gregorianDate.format('YY')}/${gregorianDate.format('MM').slice(0, 3)}/${gregorianDate.format('DD')}`
+	const jFormatted = `${today.format('YY')}/${today.format('MM').slice(0, 3)}/${today.format('DD')}`
 
 	return (
 		<>
@@ -38,8 +39,8 @@ export function JalaliDate() {
 					>
 						{today.locale('fa').format('MMMM YYYY')}
 					</span>
-					<span className={`text-xs !leading-none ${textColor}`} dir="ltr">
-						{gFormatted}
+					<span className={`text-xs  !leading-none ${textColor}`} dir="ltr">
+						{gFormatted} | {jFormatted}
 					</span>
 				</div>
 			</div>
