@@ -14,8 +14,9 @@ export function RequestNotificationModal({
 	startPomodoro,
 }: Prop) {
 	useEffect(() => {
-		Analytics.event('view_request_notification_modal')
-	}, [])
+		if (showRequireNotificationModal)
+			Analytics.event('view_request_notification_modal')
+	}, [showRequireNotificationModal])
 
 	async function onRequestPermission() {
 		try {
