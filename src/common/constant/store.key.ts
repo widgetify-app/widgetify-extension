@@ -14,7 +14,7 @@ import type {
 	PomodoroSettings,
 } from '@/layouts/widgets/tools/pomodoro/types'
 import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
-import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
+import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'

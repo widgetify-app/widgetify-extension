@@ -1,5 +1,5 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
-import type { ClockSettings } from '../clock-display'
+import type { ClockSettings } from '../clock-setting.interface'
 
 interface AnalogClockProps {
 	time: Date
