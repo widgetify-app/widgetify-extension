@@ -3,6 +3,8 @@ import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
+import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
+import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { StoredWallpaper } from '../wallpaper.interface'
 
 export interface EventName {
@@ -19,6 +21,10 @@ export interface EventName {
 	}
 	themeChanged: Theme
 	auth_logout: null
+
+	// setting keys
+	wigiPadDateSettingsChanged: WigiPadDateSetting
+	wigiPadClockSettingsChanged: ClockSettings
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

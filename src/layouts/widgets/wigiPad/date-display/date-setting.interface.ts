@@ -3,6 +3,6 @@ export enum WigiPadDateType {
 	Gregorian = 'gregorian',
 }
 
-export interface WigiPadDateOptions {
+export interface WigiPadDateSetting {
 	dateType: WigiPadDateType
 }

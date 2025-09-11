@@ -1,16 +1,14 @@
 import { FaCog } from 'react-icons/fa'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
-import { WigiPadDateSettingsModal } from './components/date-settings-modal'
+import { type WigiPadDateSetting, WigiPadDateType } from './date-setting.interface'
 import { GregorianDate } from './dates/gregorian.date'
 import { JalaliDate } from './dates/jalali.date'
-import { type WigiPadDateOptions, WigiPadDateType } from './types'
 
 export function DateDisplay() {
 	const [wigiPadDateSettings, setWigiPadDateSettings] =
-		useState<WigiPadDateOptions | null>(null)
-	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
+		useState<WigiPadDateSetting | null>(null)
 	useEffect(() => {
 		async function load() {
 			const wigiPadDateFromStore = await getFromStorage('wigiPadDate')
@@ -23,18 +21,27 @@ export function DateDisplay() {
 			}
 		}
 
+		const event = listenEvent('wigiPadDateSettingsChanged', (data) => {
+			setWigiPadDateSettings({ dateType: data.dateType })
+		})
+
 		load()
+
+		return () => {
+			event()
+		}
 	}, [])
 
 	if (!wigiPadDateSettings) {
 		return null
 	}
 
-	async function updateDateSetting(newSetting: WigiPadDateOptions) {
+	async function _updateDateSetting(newSetting: WigiPadDateSetting) {
 		setWigiPadDateSettings(newSetting)
 		await setToStorage('wigiPadDate', newSetting)
-		setIsSettingsOpen(false)
 	}
+
+	const onClickSettings = () => {}
 
 	return (
 		<div
@@ -44,7 +51,7 @@ export function DateDisplay() {
 		>
 			<div className="absolute inset-0 z-20 group">
 				<Button
-					onClick={() => setIsSettingsOpen(true)}
+					onClick={onClickSettings}
 					size="xs"
 					className="m-1.5 h-5 w-5 p-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
 				>
@@ -57,13 +64,6 @@ export function DateDisplay() {
 			) : (
 				<GregorianDate />
 			)}
-
-			<WigiPadDateSettingsModal
-				dateSetting={wigiPadDateSettings}
-				isOpen={isSettingsOpen}
-				onClose={updateDateSetting}
-				key={'wigipad-date-modal'}
-			/>
 		</div>
 	)
 }
