@@ -277,7 +277,10 @@ export function HomePage() {
 						<ContentSection />
 						<WidgetSettingsModal
 							isOpen={showWidgetSettings}
-							onClose={() => setShowWidgetSettings(false)}
+							onClose={() => {
+								setShowWidgetSettings(false)
+								setTab(null)
+							}}
 							selectedTab={tab}
 						/>
 					</WidgetVisibilityProvider>
