@@ -26,7 +26,7 @@ import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCate
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
-	top: 'justify-start mt-1',
+	top: 'justify-start',
 }
 
 function ContentSection() {
@@ -34,13 +34,12 @@ function ContentSection() {
 	const { getSortedWidgets } = useWidgetVisibility()
 	const sortedWidgets = getSortedWidgets()
 
-	const layoutItems = sortedWidgets
-	const bottomCount = layoutItems.length
+	const totalWidgetCount = sortedWidgets.length
 
-	let bottomLayoutClasses =
+	let layoutClasses =
 		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
-	if (bottomCount === 2) {
-		bottomLayoutClasses =
+	if (totalWidgetCount === 2) {
+		layoutClasses =
 			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-4 justify-between transition-all duration-300 items-center'
 	}
 
@@ -72,9 +71,9 @@ function ContentSection() {
 							<WigiPadWidget />
 						</div>
 					</div>
-					<div className={bottomLayoutClasses}>
-						{layoutItems.map((widget) => {
-							if (bottomCount === 2) {
+					<div className={layoutClasses}>
+						{sortedWidgets.map((widget) => {
+							if (totalWidgetCount === 2) {
 								return (
 									<div
 										key={widget.id}

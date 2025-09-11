@@ -18,7 +18,9 @@ export function GregorianDate() {
 			<span className={`text-base !leading-none ${textColor}`}>
 				{date.format('dddd')}
 			</span>
-			<div className="flex items-center font-sans text-6xl font-bold leading-none">
+			<div
+				className={`flex items-center font-sans text-6xl font-bold leading-none ${textColor}`}
+			>
 				{date.format('DD')}
 			</div>
 			<div className="flex flex-col items-center justify-center gap-0.5" dir="ltr">
