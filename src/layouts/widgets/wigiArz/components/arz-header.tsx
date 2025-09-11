@@ -1,6 +1,6 @@
-import { Button } from '@/components/button/button'
 import { BsCurrencyExchange } from 'react-icons/bs'
 import { FiSettings } from 'react-icons/fi'
+import { Button } from '@/components/button/button'
 
 interface ArzHeaderProps {
 	title: string

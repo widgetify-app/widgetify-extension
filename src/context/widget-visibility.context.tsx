@@ -129,7 +129,6 @@ export const widgetItems: WidgetItem[] = [
 interface WidgetVisibilityContextType {
 	visibility: WidgetKeys[]
 	toggleWidget: (widgetId: WidgetKeys) => void
-	openWidgetSettings: () => void
 	reorderWidgets: (sourceIndex: number, destinationIndex: number) => void
 	getSortedWidgets: () => WidgetItem[]
 }
@@ -223,10 +222,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		})
 	}
 
-	const openWidgetSettings = () => {
-		window.dispatchEvent(new Event('openWidgetSettings'))
-	}
-
 	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
 		const visibleWidgets = getSortedWidgets()
 
@@ -261,7 +256,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			value={{
 				visibility,
 				toggleWidget,
-				openWidgetSettings,
+
 				reorderWidgets,
 				getSortedWidgets,
 			}}

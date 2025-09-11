@@ -1,5 +1,6 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import ms from 'ms'
+import { getMainClient } from '@/services/api'
 
 export interface FetchedCurrency {
 	name: {
@@ -30,6 +31,7 @@ export const useGetCurrencyByCode = (
 		queryFn: async () => getSupportCurrencies(currency),
 		retry: 0,
 		refetchInterval: options.refetchInterval || false,
+		staleTime: ms('1m'),
 	})
 }
 

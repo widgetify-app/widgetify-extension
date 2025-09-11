@@ -1,7 +1,8 @@
 import { FaCog } from 'react-icons/fa'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type WigiPadDateSetting, WigiPadDateType } from './date-setting.interface'
 import { GregorianDate } from './dates/gregorian.date'
 import { JalaliDate } from './dates/jalali.date'
@@ -41,7 +42,9 @@ export function DateDisplay() {
 		await setToStorage('wigiPadDate', newSetting)
 	}
 
-	const onClickSettings = () => {}
+	const onClickSettings = () => {
+		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiPad })
+	}
 
 	return (
 		<div

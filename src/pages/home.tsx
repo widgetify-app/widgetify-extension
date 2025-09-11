@@ -21,7 +21,8 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
-import { WidgetSettingsModal } from '@/layouts/widgets-setting/widget-settings.modal'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 
 const layoutPositions: Record<string, string> = {
@@ -100,6 +101,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
+	const [tab, setTab] = useState<string | null>(null)
 	const currentVersion = browser.runtime.getManifest().version
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -183,17 +185,16 @@ export function HomePage() {
 	}, [])
 
 	useEffect(() => {
-		const handleOpenWidgetSettings = () => {
-			setShowWidgetSettings(true)
-		}
-
-		const openWidgetSettingsEvent = listenEvent(
-			'openWidgetSettings',
-			handleOpenWidgetSettings
+		const openWidgetsSettingsEvent = listenEvent(
+			'openWidgetsSettings',
+			(data: { tab: WidgetTabKeys | null }) => {
+				setShowWidgetSettings(true)
+				if (data.tab) setTab(data.tab)
+			}
 		)
 
 		return () => {
-			openWidgetSettingsEvent()
+			openWidgetsSettingsEvent()
 		}
 	}, [])
 
@@ -277,6 +278,7 @@ export function HomePage() {
 						<WidgetSettingsModal
 							isOpen={showWidgetSettings}
 							onClose={() => setShowWidgetSettings(false)}
+							selectedTab={tab}
 						/>
 					</WidgetVisibilityProvider>
 				</WeatherProvider>

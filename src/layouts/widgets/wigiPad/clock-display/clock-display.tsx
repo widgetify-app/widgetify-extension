@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { FaCog } from 'react-icons/fa'
 import { getFromStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type ClockSettings, ClockType } from './clock-setting.interface'
 import { AnalogClock } from './clocks/analog.clock'
 import { DigitalClock } from './clocks/digital.clock'
@@ -39,7 +40,6 @@ export function ClockDisplay() {
 		}
 
 		const event = listenEvent('wigiPadClockSettingsChanged', (data) => {
-			console.log(data, 'data')
 			setClockSettings({
 				clockType: data.clockType,
 				showSeconds: data.showSeconds,
@@ -57,6 +57,9 @@ export function ClockDisplay() {
 	if (!clockSettings) {
 		return null
 	}
+	function onClickSettings() {
+		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiPad })
+	}
 
 	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
 
@@ -66,6 +69,7 @@ export function ClockDisplay() {
 				<Button
 					size="xs"
 					className="m-1.5 h-5 w-5 p-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
+					onClick={onClickSettings}
 				>
 					<FaCog size={12} className="text-content" />
 				</Button>

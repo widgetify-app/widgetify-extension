@@ -3,7 +3,9 @@ import { FiDollarSign, FiSettings } from 'react-icons/fi'
 import { LuNewspaper } from 'react-icons/lu'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
@@ -15,6 +17,9 @@ export function ComboWidget() {
 	const [showSettings, setShowSettings] = useState(false)
 	const handleSettingsClick = () => {
 		setShowSettings(true)
+		if (activeTab === 'currency') {
+			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
+		}
 		Analytics.event(`combo_${activeTab}_settings_opened`)
 	}
 
@@ -85,7 +90,6 @@ export function ComboWidget() {
 							inComboWidget={true}
 							enableBackground={false}
 							showSettingsModal={activeTab === 'currency' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
 						/>
 					) : (
 						<NewsLayout

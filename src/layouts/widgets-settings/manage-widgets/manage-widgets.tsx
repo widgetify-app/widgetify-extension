@@ -23,6 +23,7 @@ import {
 	widgetItems,
 } from '@/context/widget-visibility.context'
 import { ItemSelector } from '../../../components/item-selector'
+import { WidgetSettingWrapper } from '../widget-settings-wrapper'
 
 // Sortable widget component that uses dnd-kit
 function SortableWidget({ widget }: { widget: any }) {
@@ -94,7 +95,7 @@ export function ManageWidgets() {
 	}
 
 	return (
-		<div className="w-full max-w-xl mx-auto">
+		<WidgetSettingWrapper>
 			{!isAuthenticated && activeTab === 'selection' && (
 				<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
 					<p className="text-sm text-warning-content">
@@ -149,6 +150,6 @@ export function ManageWidgets() {
 					</DndContext>
 				)}
 			</SectionPanel>
-		</div>
+		</WidgetSettingWrapper>
 	)
 }

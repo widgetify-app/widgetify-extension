@@ -1,3 +1,4 @@
+import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
@@ -5,6 +6,7 @@ import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
 
 export interface EventName {
@@ -12,7 +14,7 @@ export interface EventName {
 	openSettings: 'account' | 'wallpapers' | null
 	todosChanged: Todo[]
 	wallpaperChanged: StoredWallpaper
-	openWidgetSettings: null
+	openWidgetsSettings: { tab: WidgetTabKeys | null }
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
 		enablePets?: boolean
@@ -25,6 +27,10 @@ export interface EventName {
 	// setting keys
 	wigiPadDateSettingsChanged: WigiPadDateSetting
 	wigiPadClockSettingsChanged: ClockSettings
+	currencies_updated: {
+		currencies: string[]
+		colorMode: CurrencyColorMode
+	}
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {
