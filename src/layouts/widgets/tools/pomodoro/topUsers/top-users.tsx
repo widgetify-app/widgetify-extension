@@ -1,9 +1,15 @@
 import type React from 'react'
-import { useGetTopUsers } from '@/services/hooks/pomodoro/getTopUsers.hook'
+import {
+	type TopUsersType,
+	useGetTopUsers,
+} from '@/services/hooks/pomodoro/getTopUsers.hook'
 import { TopUserItem } from './top-user-item'
 
-export const TopUsersTab: React.FC = () => {
-	const { data, isLoading, error } = useGetTopUsers()
+interface TopUsersTabProps {
+	type: TopUsersType
+}
+export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
+	const { data, isLoading, error } = useGetTopUsers(type)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 
 	if (isLoading) {
@@ -31,7 +37,7 @@ export const TopUsersTab: React.FC = () => {
 	}
 
 	return (
-		<div className="h-56 space-y-1 overflow-y-auto">
+		<div className="h-56 px-1 pb-1 space-y-1 overflow-y-auto">
 			{data.tops.map((user, index) => (
 				<TopUserItem
 					user={user}

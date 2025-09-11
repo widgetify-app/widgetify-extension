@@ -16,12 +16,20 @@ export interface TopUsersResponse {
 	tops: TopUser[]
 }
 
-export function useGetTopUsers() {
+export enum TopUsersType {
+	DAILY = 'DAILY',
+	WEEKLY = 'WEEKLY',
+	MONTHLY = 'MONTHLY',
+	ALL_TIME = 'ALL_TIME',
+}
+export function useGetTopUsers(type: TopUsersType) {
 	return useQuery({
-		queryKey: ['pomodoro', 'top-users'],
+		queryKey: ['pomodoro', 'top-users', type],
 		queryFn: async (): Promise<TopUsersResponse> => {
 			const client = await getMainClient()
-			const res = await client.get<TopUsersResponse>('/pomodoro/tops')
+			const res = await client.get<TopUsersResponse>('/pomodoro/tops', {
+				params: { type },
+			})
 			return res.data
 		},
 		staleTime: 5 * 60 * 1000, // 5 minutes
