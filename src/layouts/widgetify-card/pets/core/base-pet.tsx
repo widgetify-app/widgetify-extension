@@ -187,6 +187,11 @@ export function useBasePetLogic({
 		(e: MouseEvent) => {
 			const container = containerRef.current
 			if (container) {
+				if (collectibles.length > 2) {
+					setCollectibles([])
+					return
+				}
+
 				const rect = container.getBoundingClientRect()
 				const clickX = e.clientX - rect.left
 				const bounds = getMovementBounds()
