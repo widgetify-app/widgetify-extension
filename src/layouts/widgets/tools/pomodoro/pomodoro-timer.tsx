@@ -4,14 +4,17 @@ import { FaChartSimple, FaGear } from 'react-icons/fa6'
 import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { SelectBox } from '@/components/selectbox/selectbox'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useCreatePomodoroSession } from '@/services/hooks/pomodoro/createSession.hook'
+import { TopUsersType } from '@/services/hooks/pomodoro/getTopUsers.hook'
 import { ControlButton } from './components/control-button'
 import { ModeButton } from './components/mode-button'
 import { RequestNotificationModal } from './components/requestNotification-modal'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
+import { modeLabels } from './constants'
 import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 
@@ -36,6 +39,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const [currentTab, setCurrentTab] = useState<'timer' | 'top-users'>('timer')
 	const [showRequireNotificationModal, setShowRequireNotificationModal] =
 		useState(false)
+	const [topUsersType, setTopUsersType] = useState<TopUsersType>(TopUsersType.ALL_TIME)
 
 	const createSessionMutation = useCreatePomodoroSession()
 
@@ -274,23 +278,42 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 		setToStorage('pomodoro_settings', newSettings)
 	}
 
+	const onChangeTopUsersType = (val: string) => {
+		setTopUsersType(val as TopUsersType)
+		Analytics.event(`${val}_top_users_view`)
+	}
+
 	return (
-		<div className="relative p-1 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
+		<div className="relative overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
-			<div className="relative flex items-center justify-between mb-2">
-				<div
-					className={`flex items-center gap-x-0.5 transition-opacity opacity-0 ${currentTab === 'timer' && 'opacity-100'}`}
-				>
-					<ModeButton
-						mode="work"
-						currentMode={mode}
-						onClick={() => handleModeChange('work')}
-					/>
-					<ModeButton
-						mode="short-break"
-						currentMode={mode}
-						onClick={() => handleModeChange('short-break')}
-					/>
+			<div className="relative flex items-center justify-between mb-1  py-0.5">
+				<div className={`flex items-center gap-x-0.5`}>
+					{currentTab === 'timer' ? (
+						<>
+							<ModeButton
+								mode="work"
+								label={modeLabels.work}
+								currentMode={mode}
+								onClick={() => handleModeChange('work')}
+							/>
+							<ModeButton
+								label={modeLabels['short-break']}
+								mode="short-break"
+								currentMode={mode}
+								onClick={() => handleModeChange('short-break')}
+							/>
+						</>
+					) : (
+						<SelectBox
+							value={topUsersType}
+							options={[
+								{ label: 'جدول کلی', value: TopUsersType.ALL_TIME },
+								{ label: 'جدول هفتگی', value: TopUsersType.WEEKLY },
+								{ label: 'جدول روزانه', value: TopUsersType.DAILY },
+							]}
+							onChange={(val) => onChangeTopUsersType(val)}
+						/>
+					)}
 				</div>
 
 				<div className="flex flex-row items-center gap-x-1">
@@ -367,7 +390,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					</div>
 				</div>
 			) : (
-				<TopUsersTab />
+				<TopUsersTab type={topUsersType} />
 			)}
 			{/* Settings panel */}
 			<PomodoroSettingsPanel

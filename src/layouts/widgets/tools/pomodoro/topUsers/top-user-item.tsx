@@ -37,7 +37,7 @@ export function TopUserItem({
 	return (
 		<>
 			<div
-				className="relative flex items-center gap-2 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95"
+				className={`relative flex items-center gap-2 p-2 transition-all cursor-pointer rounded-2xl bg-content hover:scale-95  shadow-md hover:shadow-none`}
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
@@ -46,8 +46,12 @@ export function TopUserItem({
 						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} shadow-md`}
 					/>
 				)}
-				<AvatarComponent url={user.avatar} size="sm" />
-				<div className="flex-1 min-w-0">
+				<AvatarComponent
+					url={user.avatar}
+					size="sm"
+					className="outline-2 outline-offset-0 outline-primary/30"
+				/>
+				<div className="relative flex-1 min-w-0">
 					<p className="text-sm font-medium truncate text-content">
 						{user.name}
 					</p>
@@ -55,7 +59,7 @@ export function TopUserItem({
 				</div>
 
 				<div
-					className={`flex items-center justify-center flex-shrink-0 rounded-full w-7 h-7 ${style}`}
+					className={`flex items-center justify-center flex-shrink-0 rounded-full w-7 h-7 ${style} ${user.isSelf && 'outline-2 outline-dashed'}`}
 				>
 					<span className="text-xs font-bold">{rank}</span>
 				</div>
