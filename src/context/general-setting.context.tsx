@@ -55,7 +55,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 				const [browserBookmarksEnabled, browserTabsEnabled, selectedCity] =
 					await Promise.all([
 						browserHasPermission(['bookmarks']),
-						browserHasPermission(['tabs']),
+						browserHasPermission(['tabs', 'tabGroups']),
 						getFromStorage('selectedCity'),
 					])
 
