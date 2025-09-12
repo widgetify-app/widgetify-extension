@@ -71,7 +71,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 						browserTabsEnabled: browserTabsEnabled,
 						selectedCity: {
 							lat: selectedCity?.lat || DEFAULT_SETTINGS.selectedCity.lat,
-							lon: selectedCity?.lat || DEFAULT_SETTINGS.selectedCity.lon,
+							lon: selectedCity?.lon || DEFAULT_SETTINGS.selectedCity.lon,
 							name:
 								selectedCity?.name || DEFAULT_SETTINGS.selectedCity.name,
 							state:

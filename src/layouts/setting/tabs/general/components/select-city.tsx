@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { setToStorage } from '@/common/storage'
 import { SectionPanel } from '@/components/section-panel'
 import { type SelectedCity, useGeneralSetting } from '@/context/general-setting.context'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
@@ -30,6 +31,13 @@ export function SelectCity() {
 			state: city.state,
 			latitude: city.lat,
 			longitude: city.lon,
+		})
+
+		setToStorage('selectedCity', {
+			lat: city.lat,
+			lon: city.lon,
+			name: city.name,
+			state: city.state,
 		})
 
 		setInputValue('')
