@@ -1,7 +1,6 @@
+import { FaGear, FaRss } from 'react-icons/fa6'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
-import { FaRss } from 'react-icons/fa6'
-import { FiSettings } from 'react-icons/fi'
 
 interface NewsHeaderProps {
 	title: string
@@ -70,7 +69,10 @@ export const NewsHeader = ({
 					size="xs"
 					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 				>
-					<FiSettings size={12} className="text-content" />
+					<FaGear
+						size={12}
+						className="text-content opacity-70 hover:opacity-100"
+					/>
 				</Button>
 			</div>
 		</div>

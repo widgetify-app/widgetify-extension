@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { FiDollarSign, FiSettings } from 'react-icons/fi'
+import { FaGear } from 'react-icons/fa6'
+import { FiDollarSign } from 'react-icons/fi'
 import { LuNewspaper } from 'react-icons/lu'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -79,7 +80,10 @@ export function ComboWidget() {
 						size="xs"
 						className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 					>
-						<FiSettings size={12} className="text-content" />
+						<FaGear
+							size={12}
+							className="text-content opacity-70 hover:opacity-100"
+						/>
 					</Button>
 				</div>
 			</div>
