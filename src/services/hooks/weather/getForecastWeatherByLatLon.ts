@@ -1,12 +1,15 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
-import type { FetchedForecast, TemperatureUnit } from './weather.interface'
+import { getMainClient } from '@/services/api'
+import type {
+	FetchedForecast,
+	TemperatureUnit,
+} from '../../../layouts/widgets/weather/weather.interface'
 
 async function fetchForecastWeatherByLatLon(
 	lat: number,
 	lon: number,
-	count: number,
-	units: TemperatureUnit
+	count?: number,
+	units?: TemperatureUnit
 ): Promise<FetchedForecast[]> {
 	const client = await getMainClient()
 
@@ -24,13 +27,18 @@ async function fetchForecastWeatherByLatLon(
 export function useGetForecastWeatherByLatLon(
 	lat: number,
 	lon: number,
-
-	options: { refetchInterval: number | null; count: number; units: TemperatureUnit }
+	options: {
+		refetchInterval: number | null
+		count?: number
+		units?: TemperatureUnit
+		enabled: boolean
+	}
 ) {
 	return useQuery({
 		queryKey: ['ForecastGetWeatherByLatLon', lat, lon],
 		queryFn: () =>
 			fetchForecastWeatherByLatLon(lat, lon, options.count, options.units),
 		refetchInterval: options.refetchInterval || false,
+		enabled: options.enabled,
 	})
 }

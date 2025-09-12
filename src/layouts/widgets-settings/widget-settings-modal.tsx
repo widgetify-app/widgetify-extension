@@ -1,11 +1,12 @@
 import type { JSX } from 'react'
 import Modal from '@/components/modal'
 import { TabManager } from '@/components/tab-manager'
+import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
+import { WeatherSetting } from '../widgets/weather/weather-setting'
 import { WigiArzSetting } from '../widgets/wigiArz/wigiArz-setting'
 import { WigiPadSetting } from '../widgets/wigiPad/wigiPad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
 import { ManageWidgets } from './manage-widgets/manage-widgets'
-import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 
 interface WidgetSettingsModalProps {
 	isOpen: boolean
@@ -44,7 +45,7 @@ const tabs: {
 	},
 	{
 		label: 'ویجت آب و هوا',
-		element: <div>Weather Settings Coming Soon!</div>,
+		element: <WeatherSetting />,
 		value: WidgetTabKeys.weather_settings,
 		icon: <></>,
 	},

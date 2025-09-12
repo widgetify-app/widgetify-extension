@@ -1,5 +1,5 @@
-import type { SelectedCity } from '@/context/weather.context'
 import { BiCurrentLocation } from 'react-icons/bi'
+import type { SelectedCity } from '@/context/general-setting.context'
 
 interface SelectedCityDisplayProps {
 	city: SelectedCity | null

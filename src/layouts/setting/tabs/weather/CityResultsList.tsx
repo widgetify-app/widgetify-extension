@@ -1,6 +1,6 @@
-import type { FetchedCity } from '@/services/hooks/weather/weather.interface'
 import { useEffect, useRef } from 'react'
 import { CiLocationOn } from 'react-icons/ci'
+import type { FetchedCity } from '@/layouts/widgets/weather/weather.interface'
 
 interface CityResultsListProps {
 	cities: Array<FetchedCity>

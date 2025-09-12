@@ -1,7 +1,7 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
+import type { SelectedCity } from '@/context/general-setting.context'
 import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
-import type { SelectedCity } from '@/context/weather.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -14,6 +14,11 @@ import type {
 	PomodoroSettings,
 } from '@/layouts/widgets/tools/pomodoro/types'
 import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
+import type {
+	FetchedForecast,
+	FetchedWeather,
+	WeatherSettings,
+} from '@/layouts/widgets/weather/weather.interface'
 import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
@@ -21,11 +26,6 @@ import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCod
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import type {
-	FetchedForecast,
-	FetchedWeather,
-	WeatherSettings,
-} from '@/services/hooks/weather/weather.interface'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 

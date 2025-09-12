@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { SectionPanel } from '@/components/section-panel'
-import { type SelectedCity, useWeatherStore } from '@/context/weather.context'
+import { type SelectedCity, useGeneralSetting } from '@/context/general-setting.context'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import { useGetRelatedCities } from '@/services/hooks/weather/getRelatedCities'
 import { CityResultsList } from '../../weather/CityResultsList'
@@ -17,7 +17,7 @@ export function SelectCity() {
 		inputValue.length >= 2 ? inputValue : '',
 		500
 	)
-	const { setSelectedCity, selectedCity } = useWeatherStore()
+	const { setSelectedCity, selectedCity } = useGeneralSetting()
 
 	const { data: relatedCities, isLoading, error } = useGetRelatedCities(debouncedValue)
 

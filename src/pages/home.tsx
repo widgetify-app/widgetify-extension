@@ -11,7 +11,6 @@ import { BookmarkProvider } from '@/context/bookmark.context'
 import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
-import { WeatherProvider } from '@/context/weather.context'
 import {
 	useWidgetVisibility,
 	WidgetVisibilityProvider,
@@ -271,20 +270,18 @@ export function HomePage() {
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
-				<WeatherProvider>
-					<WidgetVisibilityProvider>
-						<NavbarLayout />
-						<ContentSection />
-						<WidgetSettingsModal
-							isOpen={showWidgetSettings}
-							onClose={() => {
-								setShowWidgetSettings(false)
-								setTab(null)
-							}}
-							selectedTab={tab}
-						/>
-					</WidgetVisibilityProvider>
-				</WeatherProvider>
+				<WidgetVisibilityProvider>
+					<NavbarLayout />
+					<ContentSection />
+					<WidgetSettingsModal
+						isOpen={showWidgetSettings}
+						onClose={() => {
+							setShowWidgetSettings(false)
+							setTab(null)
+						}}
+						selectedTab={tab}
+					/>
+				</WidgetVisibilityProvider>
 			</GeneralSettingProvider>
 			<Toaster
 				toastOptions={{

@@ -1,12 +1,12 @@
-import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-//@ts-ignore
+import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
+//@ts-expect-error
 import 'swiper/css'
-//@ts-ignore
+//@ts-expect-error
 import 'swiper/css/pagination'
-//@ts-ignore
+//@ts-expect-error
 import 'swiper/css/navigation'
 import type { unitsFlag } from '../unitSymbols'
 import { ForecastItem } from './forecast.item'
