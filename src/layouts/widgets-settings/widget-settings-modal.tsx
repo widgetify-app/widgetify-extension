@@ -1,4 +1,6 @@
 import type { JSX } from 'react'
+import { TbApps, TbCalendarUser, TbCurrencyDollar, TbNews } from 'react-icons/tb'
+import { TiWeatherCloudy } from 'react-icons/ti'
 import Modal from '@/components/modal'
 import { TabManager } from '@/components/tab-manager'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
@@ -23,31 +25,31 @@ const tabs: {
 		label: 'مدیریت ویجت ها',
 		element: <ManageWidgets />,
 		value: WidgetTabKeys.widget_management,
-		icon: <></>,
+		icon: <TbApps size={20} />,
 	},
 	{
 		label: 'ویجی پد',
 		element: <WigiPadSetting />,
 		value: WidgetTabKeys.wigiPad,
-		icon: <></>,
+		icon: <TbCalendarUser size={20} />,
 	},
 	{
 		label: 'ویجی ارز',
 		element: <WigiArzSetting />,
 		value: WidgetTabKeys.wigiArz,
-		icon: <></>,
+		icon: <TbCurrencyDollar size={20} />,
 	},
 	{
 		label: 'ویجی نیوز',
 		element: <RssFeedSetting />,
 		value: WidgetTabKeys.news_settings,
-		icon: <></>,
+		icon: <TbNews size={20} />,
 	},
 	{
 		label: 'ویجت آب و هوا',
 		element: <WeatherSetting />,
 		value: WidgetTabKeys.weather_settings,
-		icon: <></>,
+		icon: <TiWeatherCloudy size={20} />,
 	},
 ]
 

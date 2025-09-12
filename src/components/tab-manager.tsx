@@ -80,7 +80,10 @@ export const TabManager = ({
 					</button>
 				))}
 			</div>{' '}
-			<div className="relative flex-1 overflow-auto rounded-lg" ref={contentRef}>
+			<div
+				className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
+				ref={contentRef}
+			>
 				{tabs.map(({ value, element }) => (
 					<div
 						key={value}
