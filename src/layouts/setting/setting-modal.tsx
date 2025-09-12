@@ -1,4 +1,4 @@
-import { MdFingerprint, MdPets } from 'react-icons/md'
+import { MdOutlinePrivacyTip, MdPets } from 'react-icons/md'
 import {
 	VscAccount,
 	VscColorMode,
@@ -43,9 +43,9 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			element: <AccountTab />,
 		},
 		{
-			label: 'مدیریت دسترسی ها',
+			label: 'حریم خصوصی',
 			value: 'access',
-			icon: <MdFingerprint size={20} />,
+			icon: <MdOutlinePrivacyTip size={20} />,
 			element: <PrivacySettings key="privacy" />,
 		},
 		{
