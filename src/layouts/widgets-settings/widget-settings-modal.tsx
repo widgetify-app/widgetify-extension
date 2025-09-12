@@ -68,7 +68,7 @@ export function WidgetSettingsModal({
 		>
 			<TabManager
 				tabs={tabs}
-				tabOwner="setting"
+				tabOwner="widgets-settings"
 				defaultTab={selectedTab || WidgetTabKeys.widget_management}
 				direction="rtl"
 			/>

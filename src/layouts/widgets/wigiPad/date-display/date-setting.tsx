@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
@@ -39,6 +40,7 @@ export function WigiPadDateSettingsModal() {
 		await setToStorage('wigiPadDate', { dateType: type })
 		setSelectedType(type)
 		callEvent('wigiPadDateSettingsChanged', { dateType: type })
+		Analytics.event(`wigipad_date_settings_${selectedType}_save`)
 	}
 
 	return (

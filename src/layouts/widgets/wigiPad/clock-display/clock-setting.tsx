@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
@@ -46,6 +47,7 @@ export function ClockSetting() {
 	const handleSave = async (settings: ClockSettings) => {
 		callEvent('wigiPadClockSettingsChanged', settings)
 		await setToStorage('clock', settings)
+		Analytics.event(`wigipad_clock_settings_${settings.clockType}_save`)
 	}
 
 	const onSelectType = (type: ClockType) => {
