@@ -2,7 +2,6 @@ interface NewsContainerProps {
 	isLoading: boolean
 	isEmpty: boolean
 	noFeedsConfigured: boolean
-	onAddFeed: () => void
 	children: React.ReactNode
 	inComboWidget: boolean
 }

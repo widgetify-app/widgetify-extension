@@ -1,39 +1,25 @@
-import { useEffect, useState } from 'react'
 import { FiDollarSign } from 'react-icons/fi'
+import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { useCurrencyStore } from '@/context/currency.context'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
-import { SelectCurrencyModal } from './components/addCurrency-box'
 import { ArzHeader } from './components/arz-header'
 import { CurrencyBox } from './components/currency-box'
 
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
-	showSettingsModal?: boolean
-	onSettingsModalClose?: () => void
 	inComboWidget: boolean
 }
 
 export function WigiArzLayout({
 	enableBackground = true,
-	showSettingsModal = false,
-	onSettingsModalClose,
 	inComboWidget,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode } = useCurrencyStore()
-	const [showModal, setShowModal] = useState(false)
 
-	useEffect(() => {
-		if (showSettingsModal) {
-			setShowModal(true)
-		}
-	}, [showSettingsModal])
-
-	const handleModalClose = (show: boolean) => {
-		setShowModal(show)
-		if (!show && onSettingsModalClose) {
-			onSettingsModalClose()
-		}
+	function onSettingClick() {
+		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
 	}
 
 	return (
@@ -58,9 +44,9 @@ export function WigiArzLayout({
 							</p>
 							<Button
 								rounded="full"
-								onClick={() => handleModalClose(true)}
 								size="sm"
 								className="mt-1 border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
+								onClick={onSettingClick}
 							>
 								افزودن ارز
 							</Button>
@@ -91,7 +77,7 @@ export function WigiArzLayout({
 				>
 					<ArzHeader
 						title="ویجی‌ ارز"
-						onSettingsClick={() => handleModalClose(true)}
+						onSettingsClick={() => onSettingClick()}
 					/>
 
 					{selectedCurrencies.length === 0 ? (
@@ -112,7 +98,7 @@ export function WigiArzLayout({
 							</p>
 							<Button
 								rounded="full"
-								onClick={() => handleModalClose(true)}
+								onClick={() => onSettingClick()}
 								size="sm"
 								className="border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
 							>
@@ -139,8 +125,6 @@ export function WigiArzLayout({
 					)}
 				</WidgetContainer>
 			)}
-
-			<SelectCurrencyModal show={showModal} setShow={handleModalClose} />
 		</>
 	)
 }

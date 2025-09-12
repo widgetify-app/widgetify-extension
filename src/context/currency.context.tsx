@@ -1,5 +1,6 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
 import React, { createContext, useEffect, useState } from 'react'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
 
 export interface StoreContext {
 	selectedCurrencies: Array<string>
@@ -38,7 +39,18 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 			setCurrencyColorMode(currencyColorMode || CurrencyColorMode.NORMAL)
 		}
 
+		const listen = listenEvent(
+			'currencies_updated',
+			(data: { currencies: string[]; colorMode: CurrencyColorMode }) => {
+				setSelectedCurrencies(data.currencies)
+				setCurrencyColorMode(data.colorMode)
+			}
+		)
+
 		load()
+		return () => {
+			listen()
+		}
 	}, [])
 
 	useEffect(() => {

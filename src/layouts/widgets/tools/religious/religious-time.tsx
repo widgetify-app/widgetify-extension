@@ -1,5 +1,5 @@
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
-import { useWeatherStore } from '@/context/weather.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { DailyZikrBox } from './components/daily-zikr-box'
@@ -29,7 +29,7 @@ const DAILY_ZIKRS = [
 ]
 
 export function ReligiousTime({ currentDate }: Prop) {
-	const { selectedCity } = useWeatherStore()
+	const { selectedCity } = useGeneralSetting()
 
 	const day = currentDate.jDate()
 	const month = currentDate.jMonth() + 1
@@ -70,20 +70,18 @@ export function ReligiousTime({ currentDate }: Prop) {
 	return (
 		<div>
 			{loading ? (
-				<>
-					<div className="grid grid-cols-2 gap-1.5 mb-1 md:grid-cols-3">
-						{prayerTimeBoxes.map((box, index) => (
-							<PrayerTimeBox
-								key={index}
-								title={box.title}
-								icon={box.icon}
-								index={index}
-								iconColorStyle={getBoxIconStyle()}
-								isLoading={true}
-							/>
-						))}
-					</div>
-				</>
+				<div className="grid grid-cols-2 gap-1.5 mb-1 md:grid-cols-3">
+					{prayerTimeBoxes.map((box, index) => (
+						<PrayerTimeBox
+							key={index}
+							title={box.title}
+							icon={box.icon}
+							index={index}
+							iconColorStyle={getBoxIconStyle()}
+							isLoading={true}
+						/>
+					))}
+				</div>
 			) : error ? (
 				<div
 					className={

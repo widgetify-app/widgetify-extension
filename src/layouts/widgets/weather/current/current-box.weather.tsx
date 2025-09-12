@@ -1,16 +1,20 @@
 import { BsRobot } from 'react-icons/bs'
 import { FaMusic } from 'react-icons/fa'
 import Tooltip from '@/components/toolTip'
-import { useWeatherStore } from '@/context/weather.context'
-import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import type {
+	FetchedWeather,
+	TemperatureUnit,
+} from '@/layouts/widgets/weather/weather.interface'
 import { unitsFlag } from '../unitSymbols'
 
 interface CurrentWeatherBoxProps {
 	weather: FetchedWeather['weather']
+	temperatureUnit: TemperatureUnit
 }
 
-export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
-	const { weatherSettings, selectedCity } = useWeatherStore()
+export function CurrentWeatherBox({ weather, temperatureUnit }: CurrentWeatherBoxProps) {
+	const { selectedCity } = useGeneralSetting()
 
 	return (
 		<section className="col-span-2 duration-300 animate-in fade-in-0 slide-in-from-bottom-2">
@@ -54,7 +58,7 @@ export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
 						>
 							{Math.round(weather.temperature.temp)}
 							<span className="mr-1 text-lg font-medium">
-								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
+								{unitsFlag[temperatureUnit || 'metric']}
 							</span>
 						</div>
 						{selectedCity?.name && (

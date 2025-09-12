@@ -1,83 +1,62 @@
-import { useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
+import { useState } from 'react'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
+import { getFromStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
-import Modal from '@/components/modal'
 import { SectionPanel } from '@/components/section-panel'
+import { SelectBox } from '@/components/selectbox/selectbox'
 import { TextInput } from '@/components/text-input'
-import { CurrencyColorMode, useCurrencyStore } from '@/context/currency.context'
+import { CurrencyColorMode } from '@/context/currency.context'
+import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
+import { CurrencyBox } from './components/currency-box'
+import { CurrenciesType, type SupportedCurrencies } from './wigiArz-setting.interface'
 
-export type SupportedCurrencies = {
-	key: string
-	type: 'coin' | 'crypto' | 'currency'
-	country?: string
-	label: {
-		fa: string
-		en: string
-	}
-}[]
-
-interface AddCurrencyModalProps {
-	show: boolean
-	setShow: (show: boolean) => void
-}
-
-export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
+export function WigiArzSetting() {
 	const { data: supportCurrencies } = useGetSupportCurrencies()
-
-	const {
-		selectedCurrencies,
-		setSelectedCurrencies,
-		currencyColorMode,
-		setCurrencyColorMode,
-	} = useCurrencyStore()
+	const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([])
+	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode>(
+		CurrencyColorMode.NORMAL
+	)
+	const [currencyType, setCurrencyType] = useState<string>('all')
 	const [searchQuery, setSearchQuery] = useState('')
-	const [isContentVisible, setIsContentVisible] = useState(false)
-
-	useEffect(() => {
-		let timerId: NodeJS.Timeout
-		if (show) {
-			timerId = setTimeout(() => {
-				setIsContentVisible(true)
-			}, 50)
-		} else {
-			setIsContentVisible(false)
-		}
-		return () => {
-			clearTimeout(timerId)
-			if (!show) {
-				setIsContentVisible(false)
-			}
-		}
-	}, [show])
-
-	const onClose = () => setShow(false)
 
 	const toggleCurrency = (currencyKey: string) => {
 		const isRemoving = selectedCurrencies.includes(currencyKey)
-
-		setSelectedCurrencies(
-			isRemoving
-				? selectedCurrencies.filter((key) => key !== currencyKey)
-				: [...selectedCurrencies, currencyKey]
-		)
+		const modifiedCurrencySelection = isRemoving
+			? selectedCurrencies.filter((key) => key !== currencyKey)
+			: [...selectedCurrencies, currencyKey]
 
 		Analytics.event('currency_selection', {
 			currency_key: currencyKey,
 			action: isRemoving ? 'remove' : 'add',
 		})
+
+		callEvent('currencies_updated', {
+			currencies: modifiedCurrencySelection,
+			colorMode: currencyColorMode,
+		})
+		setSelectedCurrencies(modifiedCurrencySelection)
 	}
 
 	const toggleCurrencyColorMode = (mode: CurrencyColorMode) => {
-		setCurrencyColorMode(mode)
 		Analytics.event('currency_color_mode_changed', {
 			mode,
 		})
+
+		callEvent('currencies_updated', {
+			currencies: selectedCurrencies,
+			colorMode: mode,
+		})
+
+		setCurrencyColorMode(mode)
 	}
 
-	const currencyGroups = getCurrencyOptions(supportCurrencies)
+	const currencyGroups = getCurrencyOptions(
+		supportCurrencies.filter((currency) =>
+			currencyType !== 'all' ? currency.type === currencyType : true
+		)
+	)
 	const filteredGroups = currencyGroups
 		.map((group) => ({
 			...group,
@@ -87,19 +66,27 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 		}))
 		.filter((group) => group.options.length > 0)
 
-	if (!show) return null
+	useEffect(() => {
+		async function load() {
+			const [color, currencies] = await Promise.all([
+				getFromStorage('currencyColorMode'),
+				getFromStorage('currencies'),
+			])
+
+			if (color) {
+				setCurrencyColorMode(color)
+			}
+			if (currencies) {
+				setSelectedCurrencies(currencies)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
-		<Modal
-			isOpen={show}
-			onClose={onClose}
-			size="md"
-			title="مدیریت ویجی‌ارز"
-			direction="rtl"
-		>
-			<div
-				className={`w-full h-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[20px]'}`}
-			>
+		<WidgetSettingWrapper>
+			<div className={`transition-all duration-300 ease-out`}>
 				<SectionPanel title="رنگ تغییر قیمت" size="xs">
 					<div className="flex flex-row gap-2">
 						<ItemSelector
@@ -117,35 +104,38 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 							onClick={() => toggleCurrencyColorMode(CurrencyColorMode.X)}
 						/>
 					</div>
+					<div className="w-40 mt-1">
+						<CurrencyBox code="USD" currencyColorMode={currencyColorMode} />
+					</div>
 				</SectionPanel>
 
 				<SectionPanel title="ارزها" size="xs">
-					<div className="relative mb-5">
-						<div
-							className={`absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2 transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-200' : 'opacity-0'}`}
-						>
-							<FiSearch />
-						</div>
+					<div className="flex flex-col gap-1 mb-2">
 						<TextInput
 							type="text"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e)}
 							placeholder="جستجو ..."
 						/>
+						<SelectBox
+							options={[
+								{ value: 'all', label: 'همه ارزها' },
+								{ value: CurrenciesType.CRYPTO, label: 'ارزهای دیجیتال' },
+								{ value: CurrenciesType.CURRENCY, label: 'ارزها' },
+								{ value: CurrenciesType.COIN, label: 'طلا و سکه' },
+							]}
+							value={currencyType as any}
+							onChange={(value) => setCurrencyType(value)}
+						/>
 					</div>
 
 					<div
-						className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-60 max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out ${isContentVisible ? 'opacity-100 delay-[100ms]' : 'opacity-0'}`}
+						className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out`}
 					>
 						{filteredGroups.map((group, groupIndex) => (
 							<div
 								key={groupIndex}
-								className={`mb-6 transition-all duration-200 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
-								style={{
-									transitionDelay: isContentVisible
-										? `${200 + groupIndex * 100}ms`
-										: '0ms',
-								}}
+								className={`mb-6 transition-all duration-200 ease-out`}
 							>
 								<h3
 									className={
@@ -154,7 +144,7 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 								>
 									{group.label}
 								</h3>
-								<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+								<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
 									{group.options.map((option) => {
 										const isSelected = selectedCurrencies.includes(
 											option.value
@@ -163,15 +153,10 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 										return (
 											<div
 												key={option.value}
-												className={`flex flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-xl 
-                                                        transition-all duration-200 ease-out active:scale-98 
-                                                        ${isSelected ? 'currency-box-selected border-success/30 bg-success/15 text-content' : 'border-base-300/40 bg-content hover:!bg-base-300/70'}
-                                                        ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[10px]'}`}
-												style={{
-													transitionDelay: isContentVisible
-														? `${10 + groupIndex * 100 + 50}ms`
-														: '0ms',
-												}}
+												className={`flex shadow flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-2xl 
+                                                        transition-all duration-200 ease-out active:scale-98 hover:scale-95
+                                                        ${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
+                                                      `}
 												onClick={() =>
 													toggleCurrency(option.value)
 												}
@@ -194,22 +179,8 @@ export function SelectCurrencyModal({ setShow, show }: AddCurrencyModalProps) {
 						))}
 					</div>
 				</SectionPanel>
-
-				<div
-					className={`mt-4 flex justify-center w-full transition-all duration-300 ease-out ${isContentVisible ? 'opacity-100 translate-y-0 delay-[600ms]' : 'opacity-0 translate-y-[10px]'}`}
-				>
-					<Button
-						onClick={onClose}
-						type="button"
-						isPrimary={true}
-						size="md"
-						className="w-full text-white rounded-xl"
-					>
-						تایید
-					</Button>
-				</div>
 			</div>
-		</Modal>
+		</WidgetSettingWrapper>
 	)
 }
 

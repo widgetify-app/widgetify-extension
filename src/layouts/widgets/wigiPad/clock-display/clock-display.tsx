@@ -1,21 +1,13 @@
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { Button } from '@/components/button/button'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { useEffect, useState } from 'react'
 import { FaCog } from 'react-icons/fa'
+import { getFromStorage } from '@/common/storage'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { Button } from '@/components/button/button'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { type ClockSettings, ClockType } from './clock-setting.interface'
 import { AnalogClock } from './clocks/analog.clock'
 import { DigitalClock } from './clocks/digital.clock'
-import { ClockSettingsModal } from './components/clock-settings-modal'
-
-export enum ClockType {
-	Analog = 'analog',
-	Digital = 'digital',
-}
-export interface ClockSettings {
-	clockType: ClockType
-	showSeconds: boolean
-	showTimeZone: boolean
-}
 
 export function ClockDisplay() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
@@ -23,7 +15,6 @@ export function ClockDisplay() {
 	const [time, setTime] = useState(
 		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
 	)
-	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -48,28 +39,37 @@ export function ClockDisplay() {
 			}
 		}
 
+		const event = listenEvent('wigiPadClockSettingsChanged', (data) => {
+			setClockSettings({
+				clockType: data.clockType,
+				showSeconds: data.showSeconds,
+				showTimeZone: data.showTimeZone,
+			})
+		})
+
 		load()
+
+		return () => {
+			event()
+		}
 	}, [])
 
 	if (!clockSettings) {
 		return null
 	}
+	function onClickSettings() {
+		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiPad })
+	}
 
 	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
-
-	async function updateClockSetting(newSetting: ClockSettings) {
-		setClockSettings(newSetting)
-		await setToStorage('clock', newSetting)
-		setIsSettingsOpen(false)
-	}
 
 	return (
 		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden">
 			<div className="absolute inset-0 z-20 group">
 				<Button
-					onClick={() => setIsSettingsOpen(true)}
 					size="xs"
 					className="m-1.5 h-5 w-5 p-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
+					onClick={onClickSettings}
 				>
 					<FaCog size={12} className="text-content" />
 				</Button>
@@ -92,13 +92,6 @@ export function ClockDisplay() {
 					/>
 				)}
 			</div>
-
-			{/* Settings Modal */}
-			<ClockSettingsModal
-				isOpen={isSettingsOpen}
-				onClose={(val) => updateClockSetting(val)}
-				clockSetting={clockSettings}
-			/>
 		</div>
 	)
 }

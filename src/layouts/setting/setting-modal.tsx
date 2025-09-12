@@ -1,7 +1,6 @@
-import { MdFingerprint, MdPets } from 'react-icons/md'
+import { MdOutlinePrivacyTip, MdPets } from 'react-icons/md'
 import {
 	VscAccount,
-	VscCloud,
 	VscColorMode,
 	VscInfo,
 	VscMegaphone,
@@ -21,7 +20,6 @@ import { PetsTab } from './tabs/pets/pets'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
-import { WeatherOptions } from './tabs/weather/weather'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -45,9 +43,9 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			element: <AccountTab />,
 		},
 		{
-			label: 'مدیریت دسترسی ها',
+			label: 'حریم خصوصی',
 			value: 'access',
-			icon: <MdFingerprint size={20} />,
+			icon: <MdOutlinePrivacyTip size={20} />,
 			element: <PrivacySettings key="privacy" />,
 		},
 		{
@@ -61,12 +59,6 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			value: 'wallpapers',
 			icon: <VscPaintcan size={20} />,
 			element: <WallpaperSetting />,
-		},
-		{
-			label: 'آب هوا',
-			value: 'weather',
-			icon: <VscCloud size={20} />,
-			element: <WeatherOptions />,
 		},
 		{
 			label: 'حیوان خانگی',

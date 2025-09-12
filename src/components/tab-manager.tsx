@@ -9,7 +9,7 @@ export interface TabItem {
 }
 
 interface TabManagerProps {
-	tabOwner: 'setting' | 'user'
+	tabOwner: 'setting' | 'user' | 'widgets-settings'
 	tabs: TabItem[]
 	defaultTab?: string
 	selectedTab?: string | null
@@ -40,9 +40,7 @@ export const TabManager = ({
 	useEffect(() => {
 		if (contentRef.current) {
 			contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
-			Analytics.event(`${tabOwner}_tab_change`, {
-				selected_tab: activeTab,
-			})
+			Analytics.event(`${tabOwner}_tab_change_${activeTab}`)
 		}
 	}, [activeTab])
 
@@ -80,7 +78,10 @@ export const TabManager = ({
 					</button>
 				))}
 			</div>{' '}
-			<div className="relative flex-1 overflow-auto rounded-lg" ref={contentRef}>
+			<div
+				className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
+				ref={contentRef}
+			>
 				{tabs.map(({ value, element }) => (
 					<div
 						key={value}

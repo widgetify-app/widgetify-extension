@@ -6,13 +6,11 @@ import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
-import { WidgetSettingsModal } from '@/components/WidgetSettingsModal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { BookmarkProvider } from '@/context/bookmark.context'
 import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { TodoProvider } from '@/context/todo.context'
-import { WeatherProvider } from '@/context/weather.context'
 import {
 	useWidgetVisibility,
 	WidgetVisibilityProvider,
@@ -22,6 +20,8 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 
 const layoutPositions: Record<string, string> = {
@@ -100,6 +100,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
+	const [tab, setTab] = useState<string | null>(null)
 	const currentVersion = browser.runtime.getManifest().version
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -183,17 +184,16 @@ export function HomePage() {
 	}, [])
 
 	useEffect(() => {
-		const handleOpenWidgetSettings = () => {
-			setShowWidgetSettings(true)
-		}
-
-		const openWidgetSettingsEvent = listenEvent(
-			'openWidgetSettings',
-			handleOpenWidgetSettings
+		const openWidgetsSettingsEvent = listenEvent(
+			'openWidgetsSettings',
+			(data: { tab: WidgetTabKeys | null }) => {
+				setShowWidgetSettings(true)
+				if (data.tab) setTab(data.tab)
+			}
 		)
 
 		return () => {
-			openWidgetSettingsEvent()
+			openWidgetsSettingsEvent()
 		}
 	}, [])
 
@@ -270,16 +270,18 @@ export function HomePage() {
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
-				<WeatherProvider>
-					<WidgetVisibilityProvider>
-						<NavbarLayout />
-						<ContentSection />
-						<WidgetSettingsModal
-							isOpen={showWidgetSettings}
-							onClose={() => setShowWidgetSettings(false)}
-						/>
-					</WidgetVisibilityProvider>
-				</WeatherProvider>
+				<WidgetVisibilityProvider>
+					<NavbarLayout />
+					<ContentSection />
+					<WidgetSettingsModal
+						isOpen={showWidgetSettings}
+						onClose={() => {
+							setShowWidgetSettings(false)
+							setTab(null)
+						}}
+						selectedTab={tab}
+					/>
+				</WidgetVisibilityProvider>
 			</GeneralSettingProvider>
 			<Toaster
 				toastOptions={{

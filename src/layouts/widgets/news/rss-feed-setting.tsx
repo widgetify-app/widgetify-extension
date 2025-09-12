@@ -1,15 +1,16 @@
-import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { BiRss } from 'react-icons/bi'
 import { VscAdd, VscTrash } from 'react-icons/vsc'
 import Analytics from '@/analytics'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
-import Modal from '@/components/modal'
+import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import type { RssNewsState } from '../news.interface'
+import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
+import type { WigiNewsSetting } from './news.interface'
 
 const SUGGESTED_FEEDS = [
 	{
@@ -26,19 +27,18 @@ const SUGGESTED_FEEDS = [
 	},
 ]
 
-interface RssFeedManagerProps {
-	isOpen: boolean
-	onClose: (rssState: RssNewsState & { changed: boolean }) => void
-	rssNews: RssNewsState
-}
-
-export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps) => {
+export const RssFeedSetting = () => {
 	const [newFeed, setNewFeed] = useState<{ name: string; url: string }>({
 		name: '',
 		url: '',
 	})
 	const [error, setError] = useState<string | null>(null)
-	const [rssState, setRssState] = useState<RssNewsState>(rssNews)
+	const [rssState, setRssState] = useState<WigiNewsSetting>({
+		customFeeds: [],
+		useDefaultNews: false,
+		lastFetchedItems: {},
+	})
+	const isInitialLoad = useRef(true)
 
 	const toggleDefaultNews = () => {
 		const newState = { ...rssState, useDefaultNews: !rssState.useDefaultNews }
@@ -104,11 +104,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 			customFeeds: [...rssState.customFeeds, newFeed],
 		})
 		setNewFeed({ name: '', url: '' })
-
-		Analytics.event('rss_feed_suggested_added', {
-			name: suggestedFeed.name,
-			url: suggestedFeed.url,
-		})
+		Analytics.event('rss_feed_suggested_added')
 
 		setError(null)
 	}
@@ -119,7 +115,7 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		try {
 			new URL(url)
 			setError(null)
-		} catch (e) {
+		} catch (_e) {
 			setError('آدرس فید معتبر نیست')
 		}
 	}
@@ -155,128 +151,108 @@ export const RssFeedManager = ({ isOpen, onClose, rssNews }: RssFeedManagerProps
 		}
 	}
 
-	const onCloseModal = () => {
-		// Check if the state has changed
-		const hasChanged = JSON.stringify(rssState) !== JSON.stringify(rssNews)
-		if (hasChanged) {
-			onClose({ ...rssState, changed: true })
-		} else {
-			onClose({ ...rssState, changed: false })
-		}
+	const save = async () => {
+		callEvent('wigiNewsSettingsChanged', rssState)
+		await setToStorage('rss_news_state', rssState)
 	}
 
 	useEffect(() => {
-		if (error) {
-			toast.error(error)
-			setError(null)
+		async function load() {
+			const settingFromStorage = await getFromStorage('rss_news_state')
+			if (settingFromStorage) {
+				setRssState({
+					customFeeds: settingFromStorage.customFeeds || [],
+					useDefaultNews: settingFromStorage.useDefaultNews || false,
+					lastFetchedItems: settingFromStorage.lastFetchedItems || {},
+				})
+			}
+			isInitialLoad.current = false
 		}
-	}, [error])
 
-	if (!isOpen) return null
+		load()
+	}, [])
+
+	useEffect(() => {
+		if (isInitialLoad.current) return
+
+		save()
+	}, [rssState])
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onCloseModal}
-			title="مدیریت فیدهای خبری"
-			size="lg"
-			direction="rtl"
-		>
-			<LazyMotion features={domAnimation}>
-				<div className="flex flex-col w-full gap-6 px-2 mx-auto overflow-y-auto h-96">
-					<CheckBoxWithDescription
-						isEnabled={rssState.useDefaultNews}
-						onToggle={toggleDefaultNews}
-						title="استفاده از منابع خبری پیش‌فرض"
-						description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
+		<WidgetSettingWrapper>
+			{/* error section */}
+			{error && (
+				<div className="p-3 mb-3 text-sm rounded-lg bg-error/20 text-error">
+					{error}
+				</div>
+			)}
+			<SectionPanel title="تنظیمات کلی" size="sm">
+				<CheckBoxWithDescription
+					isEnabled={rssState.useDefaultNews}
+					onToggle={toggleDefaultNews}
+					title="استفاده از منابع خبری پیش‌فرض"
+					description="با فعال کردن این گزینه، اخبار از منابع پیش‌فرض نمایش داده می‌شوند"
+				/>
+			</SectionPanel>
+
+			<SectionPanel title="افزودن فید RSS جدید" size="sm">
+				<div className="flex flex-col gap-3">
+					<TextInput
+						type="text"
+						placeholder="نام فید (مثال: دیجیاتو)"
+						value={newFeed.name}
+						onChange={(value) => setNewFeed({ ...newFeed, name: value })}
+					/>
+					<TextInput
+						type="url"
+						placeholder="آدرس RSS (مثال: https://digiato.com/feed)"
+						value={newFeed.url}
+						onChange={(value) => {
+							setNewFeed({ ...newFeed, url: value })
+							validateUrl(value)
+						}}
 					/>
 
-					<section
-						className={'p-4 rounded-2xl border bg-content border-content'}
+					<Button
+						size="md"
+						className="text-white rounded-xl btn-primary"
+						onClick={addNewFeed}
 					>
-						<h3 className={'mb-3 text-sm font-medium'}>
-							افزودن فید RSS جدید
-						</h3>
-						<div className="flex flex-col gap-3">
-							<TextInput
-								type="text"
-								placeholder="نام فید (مثال: دیجیاتو)"
-								value={newFeed.name}
-								onChange={(value) =>
-									setNewFeed({ ...newFeed, name: value })
-								}
-							/>
-							<TextInput
-								type="url"
-								placeholder="آدرس RSS (مثال: https://digiato.com/feed)"
-								value={newFeed.url}
-								onChange={(value) => {
-									setNewFeed({ ...newFeed, url: value })
-									validateUrl(value)
-								}}
-							/>
-
-							<Button
-								size="md"
-								className="text-white rounded-xl btn-primary"
-								onClick={addNewFeed}
-							>
-								<VscAdd size={16} />
-								<span>افزودن فید جدید</span>
-							</Button>
-						</div>
-					</section>
-
-					{/* Suggested Feeds Section */}
-					<section className="mt-2">
-						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium text-content'}>
-								فیدهای پیشنهادی
-							</h3>
-						</div>
-						<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-							{SUGGESTED_FEEDS.filter(
-								(feed) => !isFeedAlreadyAdded(feed.url)
-							).map((feed) => (
-								<m.div
-									key={feed.url}
-									className={
-										'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-content border-content'
-									}
-									whileHover={{ scale: 1.02 }}
-									whileTap={{ scale: 0.98 }}
-									onClick={() => addSuggestedFeed(feed)}
-								>
-									<span
-										className={'font-medium text-light text-center'}
-									>
-										{feed.name}
-									</span>
-								</m.div>
-							))}
-						</div>
-					</section>
-
-					<section className="mt-4">
-						<div className="flex items-center justify-between mb-3">
-							<h3 className={'text-sm font-medium text-content'}>
-								فیدهای شما
-							</h3>
-							{rssState.customFeeds.length > 0 && (
-								<div className={'text-xs text-muted'}>
-									{rssState.customFeeds.length} فید
-								</div>
-							)}
-						</div>
-						<FeedsList
-							feeds={rssState.customFeeds}
-							onToggleFeed={(id) => onToggleFeed(id)}
-							onRemoveFeed={onRemoveFeed}
-						/>
-					</section>
+						<VscAdd size={16} />
+						<span>افزودن فید جدید</span>
+					</Button>
 				</div>
-			</LazyMotion>
-		</Modal>
+			</SectionPanel>
+
+			{/* Suggested Feeds Section */}
+			<SectionPanel title="فیدهای پیشنهادی" size="sm">
+				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+					{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
+						(feed) => (
+							<div
+								key={feed.url}
+								className={
+									'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-content border-content'
+								}
+								onClick={() => addSuggestedFeed(feed)}
+							>
+								<span className={'font-medium text-light text-center'}>
+									{feed.name}
+								</span>
+							</div>
+						)
+					)}
+				</div>
+			</SectionPanel>
+
+			<SectionPanel title={`فیدهای شما (${rssState.customFeeds.length})`} size="sm">
+				<FeedsList
+					feeds={rssState.customFeeds}
+					onToggleFeed={(id) => onToggleFeed(id)}
+					onRemoveFeed={onRemoveFeed}
+				/>
+			</SectionPanel>
+		</WidgetSettingWrapper>
 	)
 }
 
@@ -294,14 +270,12 @@ interface FeedsListProps {
 
 const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 	return (
-		<div className="min-h-[150px]">
+		<div className="h-full">
 			{feeds.length === 0 ? (
-				<m.div
+				<div
 					className={
-						'flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg border-content'
+						'flex flex-col items-center justify-center p-2 text-center border border-dashed rounded-lg border-content'
 					}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
 				>
 					<BiRss className={'mb-3 opacity-50 text-content'} size={32} />
 					<p className={'mb-1 text-sm font-medium opacity-70 text-content'}>
@@ -310,7 +284,7 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 					<p className={'text-xs opacity-50'}>
 						از فرم بالا برای افزودن فید استفاده کنید
 					</p>
-				</m.div>
+				</div>
 			) : (
 				<div className="space-y-2">
 					{feeds.map((feed) => (
@@ -346,12 +320,8 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 	}
 
 	return (
-		<m.div
+		<div
 			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-3xl bg-content border border-content ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
-			initial={{ opacity: 0, y: 15 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, y: -15, transition: { duration: 0.2 } }}
-			layout
 		>
 			<div className="flex items-center flex-1 gap-3">
 				<ToggleSwitch
@@ -378,6 +348,6 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			>
 				<VscTrash size={18} />
 			</Button>
-		</m.div>
+		</div>
 	)
 }

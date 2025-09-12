@@ -10,12 +10,21 @@ export interface GeneralData {
 	selected_timezone: FetchedTimezone
 	browserBookmarksEnabled: boolean
 	browserTabsEnabled: boolean
+	selectedCity: SelectedCity
+}
+
+export interface SelectedCity {
+	name: string
+	lat: number
+	lon: number
+	state?: string | null
 }
 
 interface GeneralSettingContextType extends GeneralData {
 	updateSetting: <K extends keyof GeneralData>(key: K, value: GeneralData[K]) => void
 	setAnalyticsEnabled: (value: boolean) => void
 	setTimezone: (value: FetchedTimezone) => void
+	setSelectedCity: (value: any) => void
 	setBrowserBookmarksEnabled: (value: boolean) => void
 	setBrowserTabsEnabled: (value: boolean, event?: React.MouseEvent) => void
 }
@@ -30,6 +39,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	},
 	browserBookmarksEnabled: false,
 	browserTabsEnabled: false,
+	selectedCity: { name: 'Tehran', lat: 35.6892523, lon: 51.3896004, state: null },
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -42,6 +52,12 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		async function loadGeneralSettings() {
 			try {
 				const storedSettings = await getFromStorage('generalSettings')
+				const [browserBookmarksEnabled, browserTabsEnabled, selectedCity] =
+					await Promise.all([
+						browserHasPermission(['bookmarks']),
+						browserHasPermission(['tabs', 'tabGroups']),
+						getFromStorage('selectedCity'),
+					])
 
 				if (storedSettings) {
 					setSettings({
@@ -51,10 +67,17 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 							typeof storedSettings.selected_timezone === 'string'
 								? DEFAULT_SETTINGS.selected_timezone
 								: storedSettings.selected_timezone,
-						browserBookmarksEnabled: await browserHasPermission([
-							'bookmarks',
-						]),
-						browserTabsEnabled: await browserHasPermission(['tabs']),
+						browserBookmarksEnabled: browserBookmarksEnabled,
+						browserTabsEnabled: browserTabsEnabled,
+						selectedCity: {
+							lat: selectedCity?.lat || DEFAULT_SETTINGS.selectedCity.lat,
+							lon: selectedCity?.lat || DEFAULT_SETTINGS.selectedCity.lon,
+							name:
+								selectedCity?.name || DEFAULT_SETTINGS.selectedCity.name,
+							state:
+								selectedCity?.state ||
+								DEFAULT_SETTINGS.selectedCity.state,
+						},
 					})
 				}
 			} finally {
@@ -213,6 +236,10 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		}
 	}
 
+	const setSelectedCity = (val: SelectedCity) => {
+		updateSetting('selectedCity', val)
+	}
+
 	if (!isInitialized) {
 		return null
 	}
@@ -228,6 +255,8 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setBrowserBookmarksEnabled,
 		browserTabsEnabled: settings.browserTabsEnabled,
 		setBrowserTabsEnabled,
+		selectedCity: settings.selectedCity,
+		setSelectedCity,
 	}
 
 	return (

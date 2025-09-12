@@ -1,31 +1,31 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
+import type { SelectedCity } from '@/context/general-setting.context'
 import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
-import type { SelectedCity } from '@/context/weather.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import type { FilterSortState } from '@/layouts/widgets/news/components/news-filter-sort'
-import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
+import type { WigiNewsSetting } from '@/layouts/widgets/news/news.interface'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
 } from '@/layouts/widgets/tools/pomodoro/types'
 import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
-import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-display'
-import type { WigiPadDateOptions } from '@/layouts/widgets/wigiPad/date-display/types'
+import type {
+	FetchedForecast,
+	FetchedWeather,
+	WeatherSettings,
+} from '@/layouts/widgets/weather/weather.interface'
+import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
+import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import type {
-	FetchedForecast,
-	FetchedWeather,
-	WeatherSettings,
-} from '@/services/hooks/weather/weather.interface'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
@@ -57,7 +57,7 @@ export interface StorageKV {
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
-	rss_news_state: RssNewsState
+	rss_news_state: WigiNewsSetting
 	news_filter_sort_state: FilterSortState
 	analyticsSession: any
 	enable_sync: boolean
@@ -77,7 +77,7 @@ export interface StorageKV {
 	}
 	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
 	clock: ClockSettings
-	wigiPadDate: WigiPadDateOptions
+	wigiPadDate: WigiPadDateSetting
 	configData: ExtensionConfigResponse
 	toolsTab: ToolsTabType
 	comboTabs: ComboTabType

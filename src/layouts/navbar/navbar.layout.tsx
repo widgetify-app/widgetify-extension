@@ -3,9 +3,8 @@ import { type JSX, useEffect, useState } from 'react'
 import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
-import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
 import { FriendsList } from './friends-list/friends'
@@ -19,7 +18,7 @@ export interface PageLink {
 
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
-	const { openWidgetSettings } = useWidgetVisibility()
+
 	const [tab, setTab] = useState<string | null>(null)
 
 	const [logoData, setLogoData] = useState<{
@@ -138,18 +137,20 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
-							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-							onClick={() => openWidgetSettings()}
+							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
+							onClick={() => {
+								callEvent('openWidgetsSettings', { tab: null })
+							}}
 						>
-							<TbApps size={18} className="text-muted" />
+							<TbApps size={20} className="text-muted" />
 						</div>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
 						<div
-							className="flex items-center w-8 h-8 gap-2 px-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
+							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
 							onClick={() => setShowSettings(true)}
 						>
-							<VscSettings size={18} className="text-muted" />
+							<VscSettings size={20} className="text-muted" />
 						</div>
 					</Tooltip>
 				</div>

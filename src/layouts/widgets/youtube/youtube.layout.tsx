@@ -1,3 +1,7 @@
+import ms from 'ms'
+import { useEffect, useState } from 'react'
+import { FaYoutube } from 'react-icons/fa'
+import { FaGear } from 'react-icons/fa6'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { sleep } from '@/common/utils/timeout'
 import { RequireAuth } from '@/components/auth/require-auth'
@@ -6,10 +10,6 @@ import {
 	type FetchedYouTubeProfile,
 	useGetYouTubeProfile,
 } from '@/services/hooks/youtube/getYouTubeProfile.hook'
-import ms from 'ms'
-import { useEffect, useState } from 'react'
-import { FaYoutube } from 'react-icons/fa'
-import { FiSettings } from 'react-icons/fi'
 import { WidgetContainer } from '../widget-container'
 import {
 	type YouTubeSettings,
@@ -106,14 +106,17 @@ export function YouTubeLayout() {
 							onClick={() => setShowSettings(true)}
 							className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 						>
-							<FiSettings size={12} className="text-content" />
+							<FaGear
+								size={12}
+								className="text-content opacity-70 hover:opacity-100"
+							/>
 						</Button>
 					</div>
 
 					{/* Content */}
-					<div className="mt-2 flex-1 overflow-auto">
+					<div className="flex-1 mt-2 overflow-auto">
 						{!youtubeProfile && isLoading && (
-							<div className="py-28 flex items-center justify-center">
+							<div className="flex items-center justify-center py-28">
 								<div className="w-6 h-6 border-2 border-t-2 border-red-500 rounded-full animate-spin border-t-transparent"></div>
 							</div>
 						)}

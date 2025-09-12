@@ -1,5 +1,5 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
-import type { ClockSettings } from '../clock-display'
+import type { ClockSettings } from '../clock-setting.interface'
 
 interface DigitalClockProps {
 	time: Date
@@ -10,7 +10,7 @@ interface DigitalClockProps {
 
 export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalClockProps) {
 	const textColor = isDayTime ? 'text-content' : 'text-primary'
-	const hours = (time.getHours()).toString().padStart(2, '0')
+	const hours = time.getHours().toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
 	const seconds = time.getSeconds().toString().padStart(2, '0')
 
@@ -24,7 +24,7 @@ export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalCloc
 					className="w-full h-[9rem]"
 				>
 					{[...Array(60)].map((_, i) => {
-						let intSeconds = Number.parseInt(seconds)
+						let intSeconds = Number.parseInt(seconds, 10)
 
 						const side = Math.floor((i + 7) / 15) // values: 0 ( top right side ), 1 ( right ), 2 ( bottom ), 3 ( left ), 4 ( top left side )
 						let x1 = 0

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
-import { FiDollarSign, FiSettings } from 'react-icons/fi'
+import { FaGear } from 'react-icons/fa6'
+import { FiDollarSign } from 'react-icons/fi'
 import { LuNewspaper } from 'react-icons/lu'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
@@ -12,9 +15,13 @@ export type ComboTabType = 'news' | 'currency'
 
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
-	const [showSettings, setShowSettings] = useState(false)
 	const handleSettingsClick = () => {
-		setShowSettings(true)
+		if (activeTab === 'currency') {
+			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
+		} else {
+			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.news_settings })
+		}
+
 		Analytics.event(`combo_${activeTab}_settings_opened`)
 	}
 
@@ -73,7 +80,10 @@ export function ComboWidget() {
 						size="xs"
 						className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 					>
-						<FiSettings size={12} className="text-content" />
+						<FaGear
+							size={12}
+							className="text-content opacity-70 hover:opacity-100"
+						/>
 					</Button>
 				</div>
 			</div>
@@ -81,19 +91,9 @@ export function ComboWidget() {
 			<div className="flex-1 overflow-hidden">
 				<div className="h-full overflow-auto  [&::-webkit-scrollbar]:w-0.5">
 					{activeTab === 'currency' ? (
-						<WigiArzLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'currency' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
-						/>
+						<WigiArzLayout inComboWidget={true} enableBackground={false} />
 					) : (
-						<NewsLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'news' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
-						/>
+						<NewsLayout inComboWidget={true} enableBackground={false} />
 					)}
 				</div>
 			</div>

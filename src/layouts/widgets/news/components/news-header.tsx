@@ -1,11 +1,8 @@
+import { FaGear, FaRss } from 'react-icons/fa6'
 import { Button } from '@/components/button/button'
-import { OfflineIndicator } from '@/components/offline-indicator'
-import { FaRss } from 'react-icons/fa6'
-import { FiSettings } from 'react-icons/fi'
 
 interface NewsHeaderProps {
 	title: string
-	isCached?: boolean
 	useDefaultNews: boolean
 	platformName?: string
 	platformUrl?: string
@@ -14,7 +11,6 @@ interface NewsHeaderProps {
 
 export const NewsHeader = ({
 	title,
-	isCached,
 	useDefaultNews,
 	platformName,
 	platformUrl,
@@ -33,12 +29,7 @@ export const NewsHeader = ({
 					<p className="text-base font-medium">{title}</p>
 				</div>
 
-				{isCached && useDefaultNews ? (
-					<OfflineIndicator
-						mode="status"
-						message="به دلیل مشکل در اتصال، اطلاعات ذخیره شده قبلی نمایش داده می‌شود"
-					/>
-				) : platformName && useDefaultNews ? (
+				{platformName && useDefaultNews ? (
 					<a
 						href={platformUrl}
 						target="_blank"
@@ -70,7 +61,10 @@ export const NewsHeader = ({
 					size="xs"
 					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 				>
-					<FiSettings size={12} className="text-content" />
+					<FaGear
+						size={12}
+						className="text-content opacity-70 hover:opacity-100"
+					/>
 				</Button>
 			</div>
 		</div>
