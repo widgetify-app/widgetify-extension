@@ -16,7 +16,7 @@ export interface RssItem {
 	}
 }
 
-export interface RssNewsState {
+export interface WigiNewsSetting {
 	customFeeds: RssFeed[]
 	useDefaultNews: boolean
 	lastFetchedItems: Record<string, RssItem[]>

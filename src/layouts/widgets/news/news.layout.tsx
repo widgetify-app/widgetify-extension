@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
 import { type NewsResponse, useGetNews } from '@/services/hooks/news/getNews.hook'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
 import { type FilterSortState, NewsFilterSort } from './components/news-filter-sort'
 import { NewsHeader } from './components/news-header'
 import { NewsItem } from './components/news-item'
-import { RssFeedManager } from './components/rss-feed-manager'
-import type { RssItem, RssNewsState } from './news.interface'
+import type { RssItem, WigiNewsSetting } from './news.interface'
 import { fetchRssFeed } from './utils/rss.utils'
 
 interface ExtendedNewsResponse extends NewsResponse {
@@ -17,14 +17,10 @@ interface ExtendedNewsResponse extends NewsResponse {
 interface NewsLayoutProps {
 	inComboWidget: boolean
 	enableBackground?: boolean
-	showSettingsModal?: boolean
-	onSettingsModalClose?: () => void
 }
 
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
-	showSettingsModal = false,
-	onSettingsModalClose,
 	inComboWidget,
 }) => {
 	const [newsData, setNewsData] = useState<ExtendedNewsResponse>({
@@ -35,9 +31,9 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		},
 		updatedAt: '',
 	})
-	const [rssModalOpen, setRssModalOpen] = useState(false)
-
-	const [rssState, setRssState] = useState<RssNewsState>({
+	const [_rssModalOpen, setRssModalOpen] = useState(false)
+	_rssModalOpen
+	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
 		useDefaultNews: false,
 		lastFetchedItems: {},
@@ -66,12 +62,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const { data, isLoading, isError, dataUpdatedAt } = useGetNews(
 		rssState.useDefaultNews
 	)
-
-	useEffect(() => {
-		if (showSettingsModal) {
-			setRssModalOpen(true)
-		}
-	}, [showSettingsModal])
 
 	const openNewsLink = (url: string) => {
 		window.open(url, '_blank', 'noopener,noreferrer')
@@ -125,7 +115,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 
 			setRssItems(allItems)
 
-			const newRssState: RssNewsState = {
+			const newRssState: WigiNewsSetting = {
 				customFeeds: feeds,
 				useDefaultNews: rssState.useDefaultNews,
 				lastFetchedItems: newLastFetched,
@@ -242,54 +232,48 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			}
 		}
 
+		const event = listenEvent(
+			'wigiNewsSettingsChanged',
+			async (data: WigiNewsSetting) => {
+				console.log('Wigi News settings changed:', data)
+				if (data.useDefaultNews) {
+					const cachedNews = await getFromStorage('news')
+					if (cachedNews) {
+						setNewsData(cachedNews as ExtendedNewsResponse)
+					}
+
+					setRssState(structuredClone(data))
+					return
+				}
+
+				const enabledFeeds = data.customFeeds.filter((feed) => feed.enabled)
+				if (enabledFeeds.length > 0) {
+					const hasCachedItems = Object.values(data.lastFetchedItems).some(
+						(items) => items && items.length > 0
+					)
+
+					if (hasCachedItems) {
+						const cachedItems = Object.values(
+							data.lastFetchedItems
+						).flat() as RssItem[]
+						setRssItems(cachedItems)
+					} else {
+						setIsLoadingRss(true)
+					}
+
+					await fetchAllRssFeeds(enabledFeeds, data.lastFetchedItems)
+				} else {
+					setRssItems([])
+				}
+				setRssState(structuredClone(data))
+			}
+		)
+
 		loadInitialData()
+		return () => {
+			event()
+		}
 	}, [])
-
-	async function onCloseSettingModal(data: RssNewsState & { changed: boolean }) {
-		setRssModalOpen(false)
-
-		if (onSettingsModalClose) {
-			onSettingsModalClose()
-		}
-
-		if (!data.changed) {
-			console.log('No changes made to RSS settings.')
-			return
-		}
-
-		await setToStorage('rss_news_state', data)
-
-		if (data.useDefaultNews) {
-			const cachedNews = await getFromStorage('news')
-			if (cachedNews) {
-				setNewsData(cachedNews as ExtendedNewsResponse)
-			}
-
-			setRssState(structuredClone(data))
-			return
-		}
-
-		const enabledFeeds = data.customFeeds.filter((feed) => feed.enabled)
-		if (enabledFeeds.length > 0) {
-			const hasCachedItems = Object.values(data.lastFetchedItems).some(
-				(items) => items && items.length > 0
-			)
-
-			if (hasCachedItems) {
-				const cachedItems = Object.values(
-					data.lastFetchedItems
-				).flat() as RssItem[]
-				setRssItems(cachedItems)
-			} else {
-				setIsLoadingRss(true)
-			}
-
-			await fetchAllRssFeeds(enabledFeeds, data.lastFetchedItems)
-		} else {
-			setRssItems([])
-		}
-		setRssState(structuredClone(data))
-	}
 
 	useEffect(() => {
 		if (rssState.useDefaultNews) {
@@ -317,12 +301,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const noItemsToShow = !isAnyLoading && displayItems.length === 0
 	return (
 		<>
-			<RssFeedManager
-				isOpen={rssModalOpen}
-				rssNews={rssState}
-				onClose={onCloseSettingModal}
-			/>
-
 			{inComboWidget ? (
 				<div className="flex flex-col gap-2">
 					<NewsFilterSort

@@ -8,7 +8,7 @@ import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import type { FilterSortState } from '@/layouts/widgets/news/components/news-filter-sort'
-import type { RssNewsState } from '@/layouts/widgets/news/news.interface'
+import type { WigiNewsSetting } from '@/layouts/widgets/news/news.interface'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
@@ -57,7 +57,7 @@ export interface StorageKV {
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
-	rss_news_state: RssNewsState
+	rss_news_state: WigiNewsSetting
 	news_filter_sort_state: FilterSortState
 	analyticsSession: any
 	enable_sync: boolean

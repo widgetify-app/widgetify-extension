@@ -5,6 +5,7 @@ import { WigiArzSetting } from '../widgets/wigiArz/wigiArz-setting'
 import { WigiPadSetting } from '../widgets/wigiPad/wigiPad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
 import { ManageWidgets } from './manage-widgets/manage-widgets'
+import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 
 interface WidgetSettingsModalProps {
 	isOpen: boolean
@@ -37,7 +38,7 @@ const tabs: {
 	},
 	{
 		label: 'ویجی نیوز',
-		element: <div>News Settings Coming Soon!</div>,
+		element: <RssFeedSetting />,
 		value: WidgetTabKeys.news_settings,
 		icon: <></>,
 	},

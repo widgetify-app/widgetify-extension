@@ -9,7 +9,6 @@ import { CurrencyBox } from './components/currency-box'
 
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
-	showSettingsModal?: boolean
 	inComboWidget: boolean
 }
 

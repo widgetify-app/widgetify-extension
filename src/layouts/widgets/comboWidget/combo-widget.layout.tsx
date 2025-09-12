@@ -14,12 +14,13 @@ export type ComboTabType = 'news' | 'currency'
 
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
-	const [showSettings, setShowSettings] = useState(false)
 	const handleSettingsClick = () => {
-		setShowSettings(true)
 		if (activeTab === 'currency') {
 			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
+		} else {
+			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.news_settings })
 		}
+
 		Analytics.event(`combo_${activeTab}_settings_opened`)
 	}
 
@@ -86,18 +87,9 @@ export function ComboWidget() {
 			<div className="flex-1 overflow-hidden">
 				<div className="h-full overflow-auto  [&::-webkit-scrollbar]:w-0.5">
 					{activeTab === 'currency' ? (
-						<WigiArzLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'currency' && showSettings}
-						/>
+						<WigiArzLayout inComboWidget={true} enableBackground={false} />
 					) : (
-						<NewsLayout
-							inComboWidget={true}
-							enableBackground={false}
-							showSettingsModal={activeTab === 'news' && showSettings}
-							onSettingsModalClose={() => setShowSettings(false)}
-						/>
+						<NewsLayout inComboWidget={true} enableBackground={false} />
 					)}
 				</div>
 			</div>
