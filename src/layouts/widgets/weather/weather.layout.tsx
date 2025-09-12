@@ -1,41 +1,35 @@
 import { useEffect, useState } from 'react'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import type {
-	FetchedWeather,
-	WeatherSettings,
-} from '@/layouts/widgets/weather/weather.interface'
+import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
 import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { WidgetContainer } from '../widget-container'
 import { CurrentWeatherBox } from './current/current-box.weather'
 import { Forecast } from './forecast/forecast'
-
+import { unitsFlag } from './unitSymbols'
 export function WeatherLayout() {
 	const { selectedCity } = useGeneralSetting()
-	const [cityWeather, setCityWeather] = useState<FetchedWeather | null>(null)
-	const [forecast, setForecast] = useState<FetchedWeather['forecast'] | null>([])
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
+	const [selectedTab, setSelectedTab] = useState<'overview' | 'forecast'>('overview')
+	const { data } = useGetWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
+		refetchInterval: 0,
+		units: weatherSettings?.temperatureUnit,
+		useAI: weatherSettings?.useAI,
+		enabled: !!weatherSettings,
+	})
 
-	const { data, dataUpdatedAt } = useGetWeatherByLatLon(
+	const { data: forecastData } = useGetForecastWeatherByLatLon(
 		selectedCity.lat,
 		selectedCity.lon,
 		{
-			refetchInterval: 0,
-			units: weatherSettings?.temperatureUnit,
-			useAI: weatherSettings?.useAI,
-			enabled: !!weatherSettings,
-		}
-	)
-
-	const { data: forecastData, dataUpdatedAt: forecastUpdatedAt } =
-		useGetForecastWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
 			count: weatherSettings?.forecastCount,
 			units: weatherSettings?.temperatureUnit,
 			enabled: !!weatherSettings,
 			refetchInterval: 0,
-		})
+		}
+	)
 
 	useEffect(() => {
 		async function load() {
@@ -62,39 +56,74 @@ export function WeatherLayout() {
 		}
 	}, [])
 
-	useEffect(() => {
-		if (forecastData) {
-			setForecast([...forecastData])
-			setToStorage('forecastWeather', forecastData)
-		}
-	}, [forecastUpdatedAt])
-
-	useEffect(() => {
-		if (data) {
-			setCityWeather(data)
-			setToStorage('currentWeather', data)
-		}
-	}, [dataUpdatedAt])
-
 	if (selectedCity === null || !weatherSettings) return null
 
 	return (
 		<WidgetContainer>
-			{cityWeather ? (
-				<CurrentWeatherBox
-					weather={cityWeather.weather}
-					temperatureUnit={weatherSettings.temperatureUnit}
-				/>
-			) : null}
-
-			{weatherSettings && (
-				<div className="mt-2 overflow-hidden">
-					<Forecast
-						forecast={forecast}
-						temperatureUnit={weatherSettings.temperatureUnit}
+			<div className="flex flex-col w-full h-full gap-1">
+				<div className="flex flex-row-reverse items-center w-full gap-3 px-4 py-2 border border-content rounded-2xl min-h-20">
+					<img
+						src={data?.weather?.icon?.url}
+						alt={data?.weather?.description?.text}
+						className="flex-shrink-0 w-12 h-12"
 					/>
+
+					<div className="flex flex-col justify-center  text-content min-w-[3.4rem] text-center truncate">
+						<span className="text-xs font-medium text-wrap">
+							{selectedCity.name}
+						</span>
+					</div>
+
+					<div className="flex flex-col justify-center truncate w-full max-w-[7rem]">
+						<div className="flex items-baseline justify-center gap-0.5 text-xl font-bold truncate text-base-content">
+							<span className="text-lg font-medium">
+								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
+							</span>
+							{Math.round(data?.weather?.temperature?.temp || 0)}
+						</div>
+						<p className="text-xs text-center truncate text-muted">
+							{data?.weather?.temperature?.temp_description}
+						</p>
+					</div>
 				</div>
-			)}
+				<div className="flex flex-row items-center justify-around w-full p-0.5 gap-0.5 h-8 text-center border border-content rounded-2xl">
+					{[
+						{ label: 'نما', value: 'overview' },
+						{ label: 'پیش‌بینی', value: 'forecast' },
+					].map((tab) => (
+						<div
+							key={tab.value}
+							className={`w-full p-1 text-sm font-medium text-center rounded-2xl transition-all ${
+								selectedTab === tab.value
+									? 'bg-content text-content'
+									: 'cursor-pointer hover:bg-base-200 text-muted'
+							}`}
+							onClick={() => setSelectedTab(tab.value as any)}
+						>
+							{tab.label}
+						</div>
+					))}
+				</div>
+				<div
+					className={`w-full h-full transition-border ${selectedTab === 'forecast' && 'border rounded-2xl border-content'}`}
+				>
+					{selectedTab === 'overview' ? (
+						<CurrentWeatherBox weather={data?.weather} />
+					) : (
+						<div
+							className="flex flex-col py-1 overflow-y-auto max-h-40"
+							style={{
+								scrollbarWidth: 'none',
+							}}
+						>
+							<Forecast
+								forecast={forecastData || []}
+								temperatureUnit={weatherSettings.temperatureUnit}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
 		</WidgetContainer>
 	)
 }

@@ -10,6 +10,10 @@ export interface FetchedWeather {
 			width: number
 			height: number
 		}
+		description: {
+			text: string
+			emoji: string
+		}
 		temperature: {
 			clouds: number
 			humidity: number
@@ -19,22 +23,12 @@ export interface FetchedWeather {
 			temp_max: number
 			temp_min: number
 			wind_speed: number
+			wind_deg: number
+			wind_gus: number
 		}
-		ai: {
-			description: string
-			playlist: {
-				description: string
-				external_urls: {
-					spotify: string
-				}
-				images: [
-					{
-						url: string
-					},
-				]
-				name: string
-				primary_color: null
-			}
+		airPollution: {
+			aqi: number
+			components: any
 		}
 	}
 
@@ -45,6 +39,7 @@ export interface FetchedForecast {
 	temp: number
 	icon: string
 	date: string
+	description: string | null
 }
 
 export interface FetchedCity {
