@@ -13,7 +13,6 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useState } from 'react'
 import { FiMove } from 'react-icons/fi'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
@@ -65,7 +64,6 @@ export function ManageWidgets() {
 	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
 		useWidgetVisibility()
 	const { isAuthenticated } = useAuth()
-	const [activeTab, _setActiveTab] = useState<'selection' | 'order'>('selection')
 
 	const sortedVisibleWidgets = getSortedWidgets()
 
@@ -96,7 +94,7 @@ export function ManageWidgets() {
 
 	return (
 		<WidgetSettingWrapper>
-			{!isAuthenticated && activeTab === 'selection' && (
+			{!isAuthenticated && (
 				<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
 					<p className="text-sm text-warning-content">
 						⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS} ویجت

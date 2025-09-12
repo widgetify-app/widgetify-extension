@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type NewsResponse, useGetNews } from '@/services/hooks/news/getNews.hook'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
@@ -31,8 +32,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		},
 		updatedAt: '',
 	})
-	const [_rssModalOpen, setRssModalOpen] = useState(false)
-	_rssModalOpen
+
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
 		useDefaultNews: false,
@@ -314,7 +314,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						noFeedsConfigured={
 							!rssState.useDefaultNews && rssState.customFeeds.length === 0
 						}
-						onAddFeed={() => setRssModalOpen(true)}
 					>
 						{' '}
 						{displayItems.map((item, index) => (
@@ -341,11 +340,14 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 				>
 					<NewsHeader
 						title="ویجی نیوز"
-						isCached={newsData.isCached}
 						useDefaultNews={rssState.useDefaultNews}
 						platformName={newsData.platform.name}
 						platformUrl={newsData.platform.url}
-						onSettingsClick={() => setRssModalOpen(true)}
+						onSettingsClick={() =>
+							callEvent('openWidgetsSettings', {
+								tab: WidgetTabKeys.news_settings,
+							})
+						}
 					/>
 
 					<NewsFilterSort
@@ -361,7 +363,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 						noFeedsConfigured={
 							!rssState.useDefaultNews && rssState.customFeeds.length === 0
 						}
-						onAddFeed={() => setRssModalOpen(true)}
 					>
 						{displayItems.map((item, index) => (
 							<NewsItem
