@@ -25,9 +25,7 @@ export function WeatherSetting() {
 	useEffect(() => {
 		async function load() {
 			const settingFromStorage = await getFromStorage('weatherSettings')
-			console.log('settingFromStorage,', settingFromStorage)
 			if (settingFromStorage) {
-				console.log('apply,', settingFromStorage === setting)
 				setSetting({ ...settingFromStorage })
 			}
 

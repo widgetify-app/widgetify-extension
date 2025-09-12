@@ -235,7 +235,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		const event = listenEvent(
 			'wigiNewsSettingsChanged',
 			async (data: WigiNewsSetting) => {
-				console.log('Wigi News settings changed:', data)
 				if (data.useDefaultNews) {
 					const cachedNews = await getFromStorage('news')
 					if (cachedNews) {
