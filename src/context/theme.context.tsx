@@ -15,6 +15,7 @@ export enum Theme {
 	Light = 'light',
 	Dark = 'dark',
 	Glass = 'glass',
+	GlassWhite = 'glass-white',
 	Zarna = 'zarna',
 }
 
