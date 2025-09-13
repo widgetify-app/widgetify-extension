@@ -8,8 +8,8 @@ import { WigiPadDateType } from './date-setting.interface'
 const DateOptions = [
 	{
 		key: 'jalali',
-		label: 'تقویم جلالی',
-		description: 'نمایش تاریخ به صورت جلالی',
+		label: 'هجری شمسی',
+		description: 'نمایش تاریخ به صورت هجری شمسی',
 		value: WigiPadDateType.Jalali as const,
 	},
 	{
