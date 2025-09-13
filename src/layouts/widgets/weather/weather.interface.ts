@@ -56,4 +56,5 @@ export interface WeatherSettings {
 	forecastCount: number
 	temperatureUnit: TemperatureUnit
 	useAI: boolean
+	enableShowName: boolean
 }

@@ -41,6 +41,7 @@ export function WeatherLayout() {
 					useAI: true,
 					forecastCount: 4,
 					temperatureUnit: 'metric',
+					enableShowName: true,
 				})
 			}
 		}
@@ -69,9 +70,11 @@ export function WeatherLayout() {
 					/>
 
 					<div className="flex flex-col justify-center  text-content min-w-[3.4rem] text-center truncate">
-						<span className="text-xs font-medium text-wrap">
-							{selectedCity.name}
-						</span>
+						{weatherSettings.enableShowName && (
+							<span className="text-xs font-medium text-wrap">
+								{selectedCity.name}
+							</span>
+						)}
 					</div>
 
 					<div className="flex flex-col justify-center truncate w-full max-w-[7rem]">

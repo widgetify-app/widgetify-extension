@@ -12,6 +12,7 @@ export function WeatherSetting() {
 		useAI: true,
 		forecastCount: 4,
 		temperatureUnit: 'metric',
+		enableShowName: true,
 	})
 	const isInitialLoad = useRef(true)
 
@@ -142,7 +143,24 @@ export function WeatherSetting() {
 							onToggle={() =>
 								updateWeatherSettings('useAI', !setting.useAI)
 							}
-							key={'sync-toggle'}
+						/>
+					</div>
+
+					<div className="flex items-center justify-between">
+						<div>
+							<p className={'text-sm text-content'}>نمایش نام شهر</p>
+							<div className={'text-xs font-light text-muted'}>
+								نمایش یا عدم نمایش نام شهر در بالای ویجت
+							</div>
+						</div>
+						<ToggleSwitch
+							enabled={setting.enableShowName}
+							onToggle={() =>
+								updateWeatherSettings(
+									'enableShowName',
+									!setting.enableShowName
+								)
+							}
 						/>
 					</div>
 				</div>
