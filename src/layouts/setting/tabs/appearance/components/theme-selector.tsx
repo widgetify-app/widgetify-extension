@@ -14,6 +14,14 @@ export function ThemeSelector() {
 			activeClass: 'ring-2 ring-blue-500',
 		},
 		{
+			id: 'glass-white',
+			name: 'یخی (بتا)',
+			icon: <MdOutlineBlurOn size={18} />,
+			buttonClass:
+				'backdrop-blur-md text-gray-800 bg-white/50 border border-white/20',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
 			id: 'light',
 			name: 'روشن',
 			icon: <IoMdSunny size={18} />,
@@ -29,7 +37,7 @@ export function ThemeSelector() {
 		},
 		{
 			id: 'zarna',
-			name: 'زرنا (آزمایشی)',
+			name: 'زرنا',
 			icon: <IoMdStar size={18} />,
 			buttonClass: 'text-content',
 			activeClass: 'ring-2 ring-blue-500',
