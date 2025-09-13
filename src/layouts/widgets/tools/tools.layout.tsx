@@ -1,17 +1,19 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from './components/tab-navigation'
+import { CurrencyConverter } from './currency/currency-converter'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
 
 export enum ToolsTab {
 	pomodoro = 'pomodoro',
 	'religious-time' = 'religious-time',
+	'currency-converter' = 'currency-converter',
 }
 export type ToolsTabType = keyof typeof ToolsTab
 
@@ -71,6 +73,17 @@ export const ToolsLayout: React.FC<any> = () => {
 					exit={{ opacity: 0 }}
 				>
 					<PomodoroTimer />
+				</motion.div>
+			)}
+
+			{activeTab === 'currency-converter' && (
+				<motion.div
+					key="currency-converter-view"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<CurrencyConverter />
 				</motion.div>
 			)}
 		</WidgetContainer>
