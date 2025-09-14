@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
@@ -25,9 +25,7 @@ export const ToolsLayout: React.FC<any> = () => {
 		if (tab === activeTab) return
 		setActiveTab(tab)
 		setToStorage('toolsTab', tab)
-		Analytics.event('tools_tab_change', {
-			selected_tab: tab,
-		})
+		Analytics.event(`tools_tab_change_to_${tab}`)
 	}
 
 	useEffect(() => {

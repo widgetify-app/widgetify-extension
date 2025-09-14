@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { BsCurrencyExchange } from 'react-icons/bs'
 import { TbArrowsUpDown } from 'react-icons/tb'
+import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { SelectBox } from '@/components/selectbox/selectbox'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/getCurrencyByCode.hook'
@@ -37,6 +38,9 @@ export const CurrencyConverter: React.FC = () => {
 			if (fromRialPrice && toRialPrice) {
 				const converted = (amount * fromRialPrice) / toRialPrice
 				setConvertedAmount(Number(converted.toFixed(2)))
+				Analytics.event(
+					`currency_converter_convert_${fromCurrency}_to_${toCurrency}`
+				)
 			}
 		}
 	}, [fromCurrencyData, toCurrencyData, amount])
@@ -48,6 +52,7 @@ export const CurrencyConverter: React.FC = () => {
 		setToCurrency(temp)
 
 		setTimeout(() => setIsSwapping(false), 300)
+		Analytics.event(`currency_converter_swap`)
 	}
 
 	const formatNumber = (num: number, currency?: string) => {
