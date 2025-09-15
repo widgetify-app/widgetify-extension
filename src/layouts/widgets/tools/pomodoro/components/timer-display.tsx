@@ -71,7 +71,14 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					{formatTime(timeLeft)}
 				</text>
 				{/* Current mode text */}
-				<text x="50" y="65" textAnchor="middle" fontSize="7" fill="#6b7280">
+				<text
+					x="50"
+					y="65"
+					textAnchor="middle"
+					fontSize="7"
+					fill="currentColor"
+					className={'text-muted'}
+				>
 					{modeFullLabels[mode]}
 				</text>
 			</svg>{' '}

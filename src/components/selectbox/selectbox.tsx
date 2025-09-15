@@ -32,7 +32,7 @@ export function SelectBox({
 					key={opt.value}
 					value={opt.value}
 					disabled={opt.disabled}
-					className={`text-muted ${optionClassName}`}
+					className={`text-muted ${optionClassName || ''}`}
 				>
 					{opt.label}
 				</option>

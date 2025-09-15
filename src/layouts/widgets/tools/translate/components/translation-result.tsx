@@ -30,7 +30,7 @@ export function TranslationResult({
 }: TranslationResultProps) {
 	return (
 		<div className="relative">
-			<div className="h-20 p-1 overflow-y-auto border rounded-xl bg-content border-base-300 text-content">
+			<div className="h-20 p-2 overflow-y-auto border rounded-xl bg-content border-base-300 text-content">
 				{validationError || translateMutation.error ? (
 					<div className="pb-4 text-xs leading-tight text-error">
 						{errorMessage}
