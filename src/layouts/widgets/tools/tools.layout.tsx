@@ -9,11 +9,13 @@ import { TabNavigation } from './components/tab-navigation'
 import { CurrencyConverter } from './currency/currency-converter'
 import { PomodoroTimer } from './pomodoro/pomodoro-timer'
 import { ReligiousTime } from './religious/religious-time'
+import { TranslateComponent } from './translate/translate'
 
 export enum ToolsTab {
 	pomodoro = 'pomodoro',
 	'religious-time' = 'religious-time',
 	'currency-converter' = 'currency-converter',
+	translate = 'translate',
 }
 export type ToolsTabType = keyof typeof ToolsTab
 
@@ -82,6 +84,17 @@ export const ToolsLayout: React.FC<any> = () => {
 					exit={{ opacity: 0 }}
 				>
 					<CurrencyConverter />
+				</motion.div>
+			)}
+
+			{activeTab === 'translate' && (
+				<motion.div
+					key="translate-view"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<TranslateComponent />
 				</motion.div>
 			)}
 		</WidgetContainer>

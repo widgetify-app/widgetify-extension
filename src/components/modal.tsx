@@ -103,15 +103,17 @@ const Modal = ({
 				<div className="flex items-center justify-between w-full pr-2 mb-2">
 					{title && <h3 className={'font-medium text-lg'}>{title}</h3>}
 					{showCloseButton && (
-						<button
-							onClick={onClose}
-							className={
-								'h-7 w-7 flex items-center justify-center bg-base-300 text-xs font-medium rounded-full transition-all border-none shadow-none text-muted cursor-pointer active:scale-95'
-							}
-							aria-label="Close"
-						>
-							<LuX size={16} />
-						</button>
+						<div className={`${!title && 'mr-auto'} `}>
+							<button
+								onClick={onClose}
+								className={
+									'h-7 w-7 flex items-center justify-center bg-base-300 text-xs font-medium rounded-full transition-all border-none shadow-none text-muted cursor-pointer active:scale-95'
+								}
+								aria-label="Close"
+							>
+								<LuX size={16} />
+							</button>
+						</div>
 					)}
 				</div>
 				<div className={`${sizValue.h} ${sizValue.overflow}`}>{children}</div>
