@@ -1,19 +1,37 @@
 import { motion } from 'framer-motion'
-import type React from 'react'
-import { useState, useEffect } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from './components/tab-navigation'
-import { CurrencyConverter } from './currency/currency-converter'
-import { PomodoroTimer } from './pomodoro/pomodoro-timer'
-import { ReligiousTime } from './religious/religious-time'
+
+const ReligiousTime = React.lazy(() =>
+	import('./religious/religious-time').then((module) => ({
+		default: module.ReligiousTime,
+	}))
+)
+const PomodoroTimer = React.lazy(() =>
+	import('./pomodoro/pomodoro-timer').then((module) => ({
+		default: module.PomodoroTimer,
+	}))
+)
+const CurrencyConverter = React.lazy(() =>
+	import('./currency/currency-converter').then((module) => ({
+		default: module.CurrencyConverter,
+	}))
+)
+const TranslateComponent = React.lazy(() =>
+	import('./translate/translate').then((module) => ({
+		default: module.TranslateComponent,
+	}))
+)
 
 export enum ToolsTab {
 	pomodoro = 'pomodoro',
 	'religious-time' = 'religious-time',
 	'currency-converter' = 'currency-converter',
+	translate = 'translate',
 }
 export type ToolsTabType = keyof typeof ToolsTab
 
@@ -25,9 +43,7 @@ export const ToolsLayout: React.FC<any> = () => {
 		if (tab === activeTab) return
 		setActiveTab(tab)
 		setToStorage('toolsTab', tab)
-		Analytics.event('tools_tab_change', {
-			selected_tab: tab,
-		})
+		Analytics.event(`tools_tab_change_to_${tab}`)
 	}
 
 	useEffect(() => {
@@ -54,38 +70,51 @@ export const ToolsLayout: React.FC<any> = () => {
 				/>
 			</div>
 
-			{activeTab === 'religious-time' && (
-				<motion.div
-					key="religious-time-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<ReligiousTime currentDate={selectedDate} />
-				</motion.div>
-			)}
+			<Suspense>
+				{activeTab === 'religious-time' && (
+					<motion.div
+						key="religious-time-view"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<ReligiousTime currentDate={selectedDate} />
+					</motion.div>
+				)}
 
-			{activeTab === 'pomodoro' && (
-				<motion.div
-					key="pomodoro-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<PomodoroTimer />
-				</motion.div>
-			)}
+				{activeTab === 'pomodoro' && (
+					<motion.div
+						key="pomodoro-view"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<PomodoroTimer />
+					</motion.div>
+				)}
 
-			{activeTab === 'currency-converter' && (
-				<motion.div
-					key="currency-converter-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CurrencyConverter />
-				</motion.div>
-			)}
+				{activeTab === 'currency-converter' && (
+					<motion.div
+						key="currency-converter-view"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<CurrencyConverter />
+					</motion.div>
+				)}
+
+				{activeTab === 'translate' && (
+					<motion.div
+						key="translate-view"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<TranslateComponent />
+					</motion.div>
+				)}
+			</Suspense>
 		</WidgetContainer>
 	)
 }

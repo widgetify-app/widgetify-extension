@@ -117,6 +117,17 @@ export function translateError(error: any): string | Record<string, string> {
 		FRIEND_REQUEST_SENT: 'درخواست دوستی ارسال شد',
 		FRIEND_REQUEST_NOT_FOUND: 'درخواست دوستی یافت نشد',
 		SET_USERNAME_FIRST: 'لطفاً ابتدا نام کاربری خود را تنظیم کنید',
+
+		// Translate-related errors
+		SOURCE_AND_TARGET_LANG_MUST_BE_DIFFERENT:
+			'زبان مبدأ و مقصد نمی‌توانند یکسان باشند',
+		TARGET_LANG_CANNOT_BE_AUTO: 'زبان مقصد نمی‌تواند تشخیص خودکار باشد',
+		TRANSLATION_FAILED: 'خطا در ترجمه متن',
+		FAILED_TO_FETCH_LANGUAGES: 'خطا در دریافت لیست زبان‌ها',
+		INVALID_LANGUAGE_CODE: 'کد زبان نامعتبر است',
+		TEXT_TOO_LONG: 'متن برای ترجمه خیلی طولانی است',
+		EMPTY_TEXT: 'متن برای ترجمه نمی‌تواند خالی باشد',
+		TRANSLATION_QUOTA_EXCEEDED: 'سهمیه ترجمه شما به پایان رسیده است',
 		// Success messages
 		SUCCESS: 'عملیات با موفقیت انجام شد',
 
@@ -130,6 +141,8 @@ export function translateError(error: any): string | Record<string, string> {
 		NETWORK_ERROR: 'خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید',
 		CONNECTION_TIMEOUT: 'زمان اتصال به پایان رسید. لطفا مجدداً تلاش کنید',
 		CONNECTION_REFUSED: 'اتصال رد شد. لطفا بعداً تلاش کنید',
+
+		FIRST_VERIFY_YOUR_ACCOUNT: 'ابتدا حساب کاربری خود را تایید کنید',
 	}
 	return errorTranslations[errorMessage] || errorMessage || defaultMessage
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AiOutlineFileSync } from 'react-icons/ai'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FiAtSign, FiCalendar, FiLogOut, FiMail, FiUser } from 'react-icons/fi'
+import { MdOutlineVerifiedUser } from 'react-icons/md'
 import { setToStorage } from '@/common/storage'
 import { isSyncActive } from '@/common/sync-checker'
 import { AvatarComponent } from '@/components/avatar.component'
@@ -9,6 +10,7 @@ import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
+import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { ActivityInput } from './activity-input'
@@ -60,7 +62,7 @@ export const UserProfile = () => {
 	}
 
 	const getMessageError = () => {
-		// @ts-ignore
+		// @ts-expect-error
 		if (failureReason?.status === 401) {
 			return 'نیاز به ورود مجدد به حساب کاربری دارید.'
 		}
@@ -105,18 +107,26 @@ export const UserProfile = () => {
 								size="xl"
 								className="relative border-4 shadow-2xl border-white/20 backdrop-blur-sm"
 							/>
-							<div
-								className={`absolute w-4 h-4 ${profile?.inCache ? 'bg-amber-400' : 'bg-emerald-400'} border-4 border-white/30 rounded-full shadow-lg bottom-1 right-1`}
-							></div>
+							{profile?.verified && (
+								<div
+									className={`absolute w-6 h-6 bg-success rounded-full text-content shadow-lg -bottom-1 right-1 flex items-center justify-center bg-glass`}
+								>
+									<Tooltip content="حساب کاربری تایید شده">
+										<MdOutlineVerifiedUser size={18} />
+									</Tooltip>
+								</div>
+							)}
 							{profile?.inCache && <OfflineIndicator mode="badge" />}
 						</div>
 
 						{/* Profile Info */}
 						<div className="flex-1 space-y-4 text-center md:text-right">
 							<div>
-								<h1 className="mb-2 text-3xl font-bold text-content">
-									{profile?.name || 'کاربر'}
-								</h1>
+								<div className="flex flex-row items-center justify-start mb-2">
+									<h1 className="text-3xl font-bold text-content">
+										{profile?.name || 'کاربر'}{' '}
+									</h1>
+								</div>
 								<div className="grid items-center justify-center grid-cols-2 gap-1 text-sm text-content/70">
 									<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
 										<FiAtSign size={12} />
@@ -146,7 +156,7 @@ export const UserProfile = () => {
 								</div>
 							</div>
 
-							<div className="flex justify-center md:justify-start">
+							<div className="flex justify-center gap-1 md:justify-start">
 								<a
 									href="https://widgetify.ir/login"
 									target="_blank"
@@ -154,7 +164,9 @@ export const UserProfile = () => {
 									className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-white transition-all duration-300 transform shadow-lg hover:scale-105 bg-primary rounded-2xl"
 								>
 									<FiUser size={16} />
-									ویرایش پروفایل
+									{profile?.verified
+										? 'ویرایش پروفایل'
+										: 'تایید حساب کاربری'}
 								</a>
 							</div>
 						</div>
