@@ -14,8 +14,8 @@ export function ThemeSelector() {
 			activeClass: 'ring-2 ring-blue-500',
 		},
 		{
-			id: 'glass-white',
-			name: 'یخی (بتا)',
+			id: 'icy',
+			name: 'یخی (آزمایشی)',
 			icon: <MdOutlineBlurOn size={18} />,
 			buttonClass:
 				'backdrop-blur-md text-gray-800 bg-white/50 border border-white/20',
