@@ -3,6 +3,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { SectionPanel } from '@/components/section-panel'
 import { SelectBox } from '@/components/selectbox/selectbox'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
+import { SelectCity } from '@/layouts/setting/tabs/general/components/select-city'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import type { WeatherSettings } from './weather.interface'
 
@@ -43,6 +44,7 @@ export function WeatherSetting() {
 
 	return (
 		<WidgetSettingWrapper>
+			<SelectCity key={'selectCity'} />
 			<SectionPanel title="تنظیمات نمایش">
 				<div className="flex flex-col space-y-4">
 					<div className="flex flex-col space-y-2">
