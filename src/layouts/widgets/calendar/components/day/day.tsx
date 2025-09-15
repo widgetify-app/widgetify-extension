@@ -130,10 +130,10 @@ export function DayItem({
 			position="top"
 			key={`day-${day}`}
 		>
-			<button
+			<div
 				onClick={onClick}
 				className={`
-                    relative p-0 rounded-2xl text-xs transition-colors cursor-pointer 
+                    relative p-0 rounded-2xl text-xs transition-colors cursor-pointer
                     h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
@@ -176,7 +176,7 @@ export function DayItem({
 						</>
 					)}
 				</div>
-			</button>
+			</div>
 		</Tooltip>
 	)
 }

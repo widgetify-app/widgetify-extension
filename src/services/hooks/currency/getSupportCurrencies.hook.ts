@@ -17,7 +17,6 @@ export const useGetSupportCurrencies = () => {
 		queryKey: ['supportedCurrencies'],
 		queryFn: async () => getSupportCurrencies(),
 		retry: 0,
-		staleTime: 1000 * 60 * 60, // 1 hour
 		initialData: [],
 	})
 }

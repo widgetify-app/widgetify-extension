@@ -14,7 +14,7 @@ export const DailyZikrBox = ({
 	return (
 		<div
 			className={
-				'bg-content border border-base-300/40 rounded-xl p-0.5 animate-in fade-in-0 slide-in-from-bottom-2 duration-300'
+				'rounded-lg bg-base-300/70 hover:bg-base-300 border  border-base-300/70 px-0.5 py-0.5 md:px-[.3rem] md:py-3  flex flex-col items-center transition-all duration-300'
 			}
 			style={{ animationDelay: `${delay}s` }}
 		>
