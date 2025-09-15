@@ -1,4 +1,3 @@
-import { BiCurrentLocation } from 'react-icons/bi'
 import type { SelectedCity } from '@/context/general-setting.context'
 
 interface SelectedCityDisplayProps {
@@ -13,13 +12,9 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 				<div className="flex items-start">
 					<div className="flex-1">
 						<div className="flex items-center justify-between">
-							<h3 className={'font-bold 2 text-primary/80 text-lg'}>
-								{city.name}
-							</h3>
-
 							<div
 								className={
-									'text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700'
+									'text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-bold'
 								}
 							>
 								{city.state}
@@ -27,18 +22,8 @@ export function SelectedCityDisplay({ city }: SelectedCityDisplayProps) {
 						</div>
 
 						<div className="flex items-center gap-4 mt-2 mb-3">
-							<div className="flex items-center gap-1 text-xs">
-								<BiCurrentLocation
-									className="mr-1 text-primary/80"
-									size={14}
-								/>
-								<span className="text-content">عرض: {city.lat}</span>
-							</div>
-
-							<div className="flex items-center gap-1 text-xs">
-								<BiCurrentLocation className="text-content" size={14} />
-								<span className="text-content">طول: {city.lon}</span>
-							</div>
+							<span className="font-semibold">{city.name}</span> با موفقیت
+							انتخاب شد و به صورت خودکار در ویجت‌های مربوطه اعمال می‌شود.
 						</div>
 					</div>
 				</div>

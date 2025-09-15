@@ -1,4 +1,5 @@
 import { MdOutlinePrivacyTip, MdPets } from 'react-icons/md'
+import { TbApps } from 'react-icons/tb'
 import {
 	VscAccount,
 	VscColorMode,
@@ -9,6 +10,7 @@ import {
 	VscSettingsGear,
 } from 'react-icons/vsc'
 import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
@@ -26,60 +28,65 @@ interface SettingModalProps {
 	onClose: () => void
 	selectedTab: string | null
 }
+const tabs: TabItem[] = [
+	{
+		label: 'عمومی',
+		value: 'general',
+		icon: <VscSettingsGear size={20} />,
+		element: <GeneralSettingTab />,
+	},
+	{
+		label: 'حساب کاربری',
+		value: 'account',
+		icon: <VscAccount size={20} />,
+		element: <AccountTab />,
+	},
+	{
+		label: 'حریم خصوصی',
+		value: 'access',
+		icon: <MdOutlinePrivacyTip size={20} />,
+		element: <PrivacySettings key="privacy" />,
+	},
+	{
+		label: 'ظاهری',
+		value: 'appearance',
+		icon: <VscColorMode size={20} />,
+		element: <AppearanceSettingTab />,
+	},
+	{
+		label: 'تصویر زمینه',
+		value: 'wallpapers',
+		icon: <VscPaintcan size={20} />,
+		element: <WallpaperSetting />,
+	},
+	{
+		label: 'حیوان خانگی',
+		value: 'pets',
+		icon: <MdPets size={20} />,
+		element: <PetsTab />,
+	},
 
+	{
+		label: 'میانبرها',
+		value: 'shortcuts',
+		icon: <VscRecordKeys size={20} />,
+		element: <ShortcutsTab />,
+	},
+	{
+		label: 'درباره ما',
+		value: 'about',
+		icon: <VscInfo size={20} />,
+		element: <AboutUsTab />,
+	},
+]
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
-	const tabs: TabItem[] = [
-		{
-			label: 'عمومی',
-			value: 'general',
-			icon: <VscSettingsGear size={20} />,
-			element: <GeneralSettingTab />,
-		},
-		{
-			label: 'حساب کاربری',
-			value: 'account',
-			icon: <VscAccount size={20} />,
-			element: <AccountTab />,
-		},
-		{
-			label: 'حریم خصوصی',
-			value: 'access',
-			icon: <MdOutlinePrivacyTip size={20} />,
-			element: <PrivacySettings key="privacy" />,
-		},
-		{
-			label: 'ظاهری',
-			value: 'appearance',
-			icon: <VscColorMode size={20} />,
-			element: <AppearanceSettingTab />,
-		},
-		{
-			label: 'تصویر زمینه',
-			value: 'wallpapers',
-			icon: <VscPaintcan size={20} />,
-			element: <WallpaperSetting />,
-		},
-		{
-			label: 'حیوان خانگی',
-			value: 'pets',
-			icon: <MdPets size={20} />,
-			element: <PetsTab />,
-		},
 
-		{
-			label: 'میانبرها',
-			value: 'shortcuts',
-			icon: <VscRecordKeys size={20} />,
-			element: <ShortcutsTab />,
-		},
-		{
-			label: 'درباره ما',
-			value: 'about',
-			icon: <VscInfo size={20} />,
-			element: <AboutUsTab />,
-		},
-	]
+	function openWidgetSettings() {
+		onClose()
+		Analytics.event('open_widgets_settings_from_settings_modal')
+		callEvent('openWidgetsSettings')
+	}
 
 	useEffect(() => {
 		if (isOpen) {
@@ -106,10 +113,17 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			/>
 			<button
 				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+				onClick={() => openWidgetSettings()}
+			>
+				<TbApps size={20} className="text-muted" />
+				<span className="text-sm font-light">مدیریت ویجت ها</span>
+			</button>
+			<button
+				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
 				onClick={() => setUpdateModalOpen(true)}
 			>
 				<VscMegaphone size={20} />
-				<span className="text-sm font-bold">تغییرات اخیر</span>
+				<span className="text-sm font-light">تغییرات اخیر</span>
 			</button>
 			<UpdateReleaseNotesModal
 				isOpen={isUpdateModalOpen}

@@ -60,7 +60,6 @@ export function SelectCity() {
 		<SectionPanel title="انتخاب شهر" delay={0.1}>
 			<div className="space-y-4">
 				<div className="relative">
-					{/* Search Input */}
 					<CitySearchInput
 						ref={inputRef}
 						value={inputValue}
@@ -68,7 +67,6 @@ export function SelectCity() {
 						onFocus={handleInputFocus}
 						isLoading={isLoading}
 					/>{' '}
-					{/* Search Results Dropdown */}
 					{isDropdownOpen && inputValue.length >= 2 && (
 						<div className="absolute z-50 w-full mt-1 duration-200 animate-in fade-in-0 slide-in-from-bottom-2">
 							{' '}
@@ -81,8 +79,7 @@ export function SelectCity() {
 						</div>
 					)}
 				</div>
-				{/* Selected City Display */}
-				<SelectedCityDisplay city={selectedCity} /> {/* Error Message */}
+				<SelectedCityDisplay city={selectedCity} />
 				{error && (
 					<div
 						className={
