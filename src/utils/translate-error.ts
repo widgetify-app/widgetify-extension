@@ -141,6 +141,8 @@ export function translateError(error: any): string | Record<string, string> {
 		NETWORK_ERROR: 'خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید',
 		CONNECTION_TIMEOUT: 'زمان اتصال به پایان رسید. لطفا مجدداً تلاش کنید',
 		CONNECTION_REFUSED: 'اتصال رد شد. لطفا بعداً تلاش کنید',
+
+		FIRST_VERIFY_YOUR_ACCOUNT: 'ابتدا حساب کاربری خود را تایید کنید',
 	}
 	return errorTranslations[errorMessage] || errorMessage || defaultMessage
 }
