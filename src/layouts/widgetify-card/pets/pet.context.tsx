@@ -1,6 +1,6 @@
+import { createContext, useContext, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { createContext, useContext, useEffect, useState } from 'react'
 
 export enum PetTypes {
 	DOG_AKITA = 'dog-akita',
@@ -207,8 +207,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			}
 
 			if (pet && pet.hungryState?.level > 0) {
-				const hungerDecrease =
-					Math.random() < 0.5 ? 1 : pet.hungryState.level > 10 ? 2 : 1
+				const hungerDecrease = 1
 				pet.hungryState.level -= hungerDecrease
 				pet.hungryState.lastHungerTick = Date.now()
 			}

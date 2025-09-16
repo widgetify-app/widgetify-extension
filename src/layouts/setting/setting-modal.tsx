@@ -1,4 +1,4 @@
-import { MdOutlinePrivacyTip, MdPets } from 'react-icons/md'
+import { MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbApps } from 'react-icons/tb'
 import {
 	VscAccount,
@@ -18,7 +18,6 @@ import { AboutUsTab } from './tabs/about-us/about-us'
 import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
-import { PetsTab } from './tabs/pets/pets'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
@@ -59,13 +58,6 @@ const tabs: TabItem[] = [
 		icon: <VscPaintcan size={20} />,
 		element: <WallpaperSetting />,
 	},
-	{
-		label: 'حیوان خانگی',
-		value: 'pets',
-		icon: <MdPets size={20} />,
-		element: <PetsTab />,
-	},
-
 	{
 		label: 'میانبرها',
 		value: 'shortcuts',
@@ -117,6 +109,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 			>
 				<TbApps size={20} className="text-muted" />
 				<span className="text-sm font-light">مدیریت ویجت ها</span>
+				<span className="absolute w-2 h-2 rounded-full right-4 top-2 bg-error animate-pulse"></span>
 			</button>
 			<button
 				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
