@@ -1,0 +1,7 @@
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    --color-primary: var(--brand-primary);
+    --color-secondary: var(--brand-secondary);
+    --color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
+}
