@@ -1,4 +1,5 @@
 import type { JSX } from 'react'
+import { MdPets } from 'react-icons/md'
 import { TbApps, TbCalendarUser, TbCurrencyDollar, TbNews } from 'react-icons/tb'
 import { TiWeatherCloudy } from 'react-icons/ti'
 import { VscSettings } from 'react-icons/vsc'
@@ -6,6 +7,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { TabManager } from '@/components/tab-manager'
+import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
 import { WigiArzSetting } from '../widgets/wigiArz/wigiArz-setting'
@@ -54,6 +56,12 @@ const tabs: {
 		value: WidgetTabKeys.weather_settings,
 		icon: <TiWeatherCloudy size={20} />,
 	},
+	{
+		label: 'حیوان خانگی',
+		value: WidgetTabKeys.Pet,
+		icon: <MdPets size={20} />,
+		element: <PetSettings />,
+	},
 ]
 
 export function WidgetSettingsModal({
@@ -74,6 +82,7 @@ export function WidgetSettingsModal({
 			title="تنظیمات ویجت ها"
 			size="xl"
 			direction="rtl"
+			closeOnBackdropClick={false}
 		>
 			<TabManager
 				tabs={tabs}
