@@ -19,23 +19,6 @@ export default defineBackground(() => {
 
 	if (!isDev) {
 		registerRoute(
-			({ request }) => request.url.includes('api.widgetify.ir'),
-			new NetworkFirst({
-				cacheName: 'widgetify-api-cache-v1',
-				plugins: [
-					new ExpirationPlugin({
-						maxEntries: 100,
-						maxAgeSeconds: 1 * 60 * 60, // 1 hours
-						purgeOnQuotaError: true,
-					}),
-					new CacheableResponsePlugin({
-						statuses: [0, 200],
-					}),
-				],
-			})
-		)
-
-		registerRoute(
 			({ request }) =>
 				request.destination === 'script' ||
 				request.destination === 'style' ||
