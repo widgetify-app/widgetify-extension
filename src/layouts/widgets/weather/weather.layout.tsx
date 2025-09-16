@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
+import type {
+	FetchedForecast,
+	FetchedWeather,
+	WeatherSettings,
+} from '@/layouts/widgets/weather/weather.interface'
 import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { WidgetContainer } from '../widget-container'
@@ -13,27 +17,46 @@ export function WeatherLayout() {
 	const { selectedCity } = useGeneralSetting()
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
 	const [selectedTab, setSelectedTab] = useState<'overview' | 'forecast'>('overview')
-	const { data } = useGetWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
-		refetchInterval: 0,
-		units: weatherSettings?.temperatureUnit,
-		useAI: weatherSettings?.useAI,
-		enabled: !!weatherSettings,
-	})
-
-	const { data: forecastData } = useGetForecastWeatherByLatLon(
+	const [weatherState, setWeather] = useState<FetchedWeather | null>(null)
+	const [forecastWeather, setForecastWeather] = useState<FetchedForecast[] | null>(null)
+	const { data, dataUpdatedAt } = useGetWeatherByLatLon(
 		selectedCity.lat,
 		selectedCity.lon,
 		{
+			refetchInterval: 0,
+			units: weatherSettings?.temperatureUnit,
+			useAI: weatherSettings?.useAI,
+			enabled: !!weatherSettings,
+		}
+	)
+
+	const { data: forecastData, dataUpdatedAt: forecastDataUpdatedAt } =
+		useGetForecastWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
 			count: weatherSettings?.forecastCount,
 			units: weatherSettings?.temperatureUnit,
 			enabled: !!weatherSettings,
 			refetchInterval: 0,
-		}
-	)
+		})
 
 	useEffect(() => {
 		async function load() {
-			const weatherSettingFromStorage = await getFromStorage('weatherSettings')
+			const [
+				weatherSettingFromStorage,
+				currentWeatherFromStorage,
+				forecastWeatherFromStorage,
+			] = await Promise.all([
+				getFromStorage('weatherSettings'),
+				getFromStorage('currentWeather'),
+				getFromStorage('forecastWeather'),
+			])
+
+			if (currentWeatherFromStorage) {
+				setWeather(currentWeatherFromStorage)
+			}
+			if (forecastWeatherFromStorage) {
+				setForecastWeather(forecastWeatherFromStorage)
+			}
+
 			if (weatherSettingFromStorage) {
 				setWeatherSettings(weatherSettingFromStorage)
 			} else {
@@ -57,6 +80,20 @@ export function WeatherLayout() {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (data) {
+			setToStorage('currentWeather', data)
+			setWeather(data)
+		}
+	}, [data, dataUpdatedAt])
+
+	useEffect(() => {
+		if (forecastData) {
+			setToStorage('forecastWeather', forecastData)
+			setForecastWeather(forecastData)
+		}
+	}, [forecastDataUpdatedAt])
+
 	if (selectedCity === null || !weatherSettings) return null
 
 	return (
@@ -64,8 +101,8 @@ export function WeatherLayout() {
 			<div className="flex flex-col w-full h-full gap-1">
 				<div className="flex flex-row-reverse items-center w-full gap-3 px-4 py-2 border border-content rounded-2xl min-h-20">
 					<img
-						src={data?.weather?.icon?.url}
-						alt={data?.weather?.description?.text}
+						src={weatherState?.weather?.icon?.url}
+						alt={weatherState?.weather?.description?.text}
 						className="flex-shrink-0 w-12 h-12"
 					/>
 
@@ -82,10 +119,10 @@ export function WeatherLayout() {
 							<span className="text-lg font-medium">
 								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
 							</span>
-							{Math.round(data?.weather?.temperature?.temp || 0)}
+							{Math.round(weatherState?.weather?.temperature?.temp || 0)}
 						</div>
 						<p className="text-xs text-center truncate text-muted">
-							{data?.weather?.temperature?.temp_description}
+							{weatherState?.weather?.temperature?.temp_description}
 						</p>
 					</div>
 				</div>
@@ -111,7 +148,7 @@ export function WeatherLayout() {
 					className={`w-full h-full transition-border ${selectedTab === 'forecast' && 'border rounded-2xl border-content'}`}
 				>
 					{selectedTab === 'overview' ? (
-						<CurrentWeatherBox weather={data?.weather} />
+						<CurrentWeatherBox weather={weatherState?.weather} />
 					) : (
 						<div
 							className="flex flex-col py-1 overflow-y-auto max-h-40"
@@ -120,7 +157,7 @@ export function WeatherLayout() {
 							}}
 						>
 							<Forecast
-								forecast={forecastData || []}
+								forecast={forecastWeather || []}
 								temperatureUnit={weatherSettings.temperatureUnit}
 							/>
 						</div>
