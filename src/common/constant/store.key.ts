@@ -83,4 +83,5 @@ export interface StorageKV {
 	comboTabs: ComboTabType
 	pomodoro_session: PomodoroSession | null
 	pomodoro_settings: PomodoroSettings | null
+	seenWidgetSettings_1: boolean
 }

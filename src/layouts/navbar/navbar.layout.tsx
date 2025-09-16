@@ -18,7 +18,7 @@ export interface PageLink {
 
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
-
+	const [showNewBadge, setShowNewBadge] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 
 	const [logoData, setLogoData] = useState<{
@@ -39,7 +39,14 @@ export function NavbarLayout(): JSX.Element {
 
 		const loadConfig = async () => {
 			try {
-				const storeData: any = await getFromStorage('configData')
+				const [storeData, seenWidgetSettings] = await Promise.all([
+					getFromStorage('configData'),
+					getFromStorage('seenWidgetSettings_1'),
+				])
+				if (!seenWidgetSettings) {
+					setShowNewBadge(true)
+				}
+
 				if (storeData) {
 					setLogoData({
 						content: storeData.logo?.content,
@@ -103,6 +110,11 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [])
 
+	function onClickOpenWidgetSettings() {
+		setToStorage('seenWidgetSettings_1', true)
+		callEvent('openWidgetsSettings', { tab: null })
+	}
+
 	return (
 		<>
 			<nav className="flex items-center justify-between px-4 mt-0.5 md:mt-1.5">
@@ -137,12 +149,13 @@ export function NavbarLayout(): JSX.Element {
 					<SyncButton />
 					<Tooltip content="مدیریت ویجت‌ها">
 						<div
-							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-							onClick={() => {
-								callEvent('openWidgetsSettings', { tab: null })
-							}}
+							className="relative flex items-center justify-center w-8 h-8 gap-2 transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
+							onClick={() => onClickOpenWidgetSettings()}
 						>
 							<TbApps size={20} className="text-muted" />
+							{showNewBadge && (
+								<span className="absolute w-2 h-2 rounded-full left-4 -bottom-0.5 bg-error animate-pulse"></span>
+							)}
 						</div>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
