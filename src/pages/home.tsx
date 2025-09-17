@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
+import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
@@ -101,7 +102,6 @@ export function HomePage() {
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
-	const currentVersion = browser.runtime.getManifest().version
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
@@ -112,7 +112,7 @@ export function HomePage() {
 			}
 
 			const lastVersion = await getFromStorage('lastVersion')
-			if (lastVersion !== currentVersion) {
+			if (lastVersion !== ConfigKey.VERSION_NAME) {
 				setShowReleaseNotes(true)
 			}
 		}
@@ -128,7 +128,7 @@ export function HomePage() {
 	}
 
 	const onCloseReleaseNotes = async () => {
-		await setToStorage('lastVersion', currentVersion)
+		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
 		setShowReleaseNotes(false)
 	}
 
