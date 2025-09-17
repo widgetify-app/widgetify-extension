@@ -7,6 +7,7 @@ import { TbArrowsUpDown } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { SelectBox } from '@/components/selectbox/selectbox'
+import { TextInput } from '@/components/text-input'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
 
@@ -96,16 +97,15 @@ export const CurrencyConverter: React.FC = () => {
 					}))}
 					value={fromCurrency}
 					onChange={(val) => setFromCurrency(val)}
-					className="h-8 !bg-transparent hover:!bg-base-300 !scrollbar-thin"
+					className="h-10 !bg-transparent hover:!bg-base-300 !scrollbar-thin !rounded-2xl"
 					optionClassName="!bg-base-100"
 				/>
-				<input
+				<TextInput
 					type="number"
-					value={amount}
-					onChange={(e) => setAmount(Number(e.target.value))}
-					className="w-full h-auto px-2 min-h-0 p-0 text-lg font-medium text-right input input-ghost !outline-primary !bg-transparent"
-					min="0"
-					step="any"
+					value={amount.toString()}
+					onChange={(e) => setAmount(Number(e))}
+					className=" !rounded-2xl !px-4 border-content"
+					min={0}
 					placeholder="مبلغ"
 				/>
 			</div>
