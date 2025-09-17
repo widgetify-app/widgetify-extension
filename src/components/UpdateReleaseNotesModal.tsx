@@ -6,6 +6,7 @@ import {
 	RiThumbUpLine,
 	RiToolsLine,
 } from 'react-icons/ri'
+import { ConfigKey } from '@/common/constant/config.key'
 import { Button } from './button/button'
 import Modal from './modal'
 
@@ -22,7 +23,7 @@ type ReleaseNote = {
 	media?: MediaContent[]
 }
 
-const VERSION_NAME = 'یخـبندان'
+const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
 		title: 'اضافه شدن ابزار مترجم',
@@ -189,14 +190,13 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'بروزرسانی‌های ویجتی‌فای 🎉'}
+			title={'آپدیت جدید نصب شد 🎉'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 			showCloseButton={false}
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				{/* Header with version name */}
 				<div className="flex flex-col items-center text-center">
 					<h2
 						className={'text-2xl font-bold mb-2 text-content animate-fade-in'}
@@ -207,7 +207,6 @@ export const UpdateReleaseNotesModal = ({
 					<div className="w-16 h-1 mb-4 bg-blue-500 rounded-full"></div>
 				</div>
 
-				{/* Blog-style article */}
 				<div className="flex flex-col h-64 gap-2">
 					{releaseNotes.map((note, index) => (
 						<article
@@ -215,7 +214,6 @@ export const UpdateReleaseNotesModal = ({
 							className="pb-4 border-b blog-post border-content animate-fade-in animate-slide-up"
 							style={{ animationDelay: `${0.2 + index * 0.1}s` }}
 						>
-							{/* Type badge and title */}
 							<div className="flex items-start justify-between mb-3">
 								<h3 className="text-xl font-bold text-content">
 									{note.title}
@@ -230,14 +228,12 @@ export const UpdateReleaseNotesModal = ({
 								</span>
 							</div>
 
-							{/* Content */}
 							<div className="mt-2">
 								<p className="leading-relaxed text-justify text-muted">
 									{note.description}
 								</p>
 							</div>
 
-							{/* Media section (if available) */}
 							{note.media && note.media.length > 0 && (
 								<div className="media-container">
 									{note.media.map((mediaItem, mediaIndex) => (
