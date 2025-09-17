@@ -24,6 +24,8 @@ interface TextInputProps {
 	debounceTime?: number
 	maxLength?: number
 	size?: TextInputSize
+	min?: number
+	max?: number
 }
 
 export function TextInput({
@@ -43,6 +45,8 @@ export function TextInput({
 	debounceTime = 150,
 	maxLength = 1000,
 	size = TextInputSize.MD,
+	min,
+	max,
 }: TextInputProps) {
 	const sizes: Record<TextInputSize, string> = {
 		[TextInputSize.XS]: 'input-xs',
@@ -99,6 +103,8 @@ export function TextInput({
 			onChange={handleChange}
 			maxLength={maxLength}
 			autoComplete="off"
+			min={min}
+			max={max}
 		/>
 	)
 }
