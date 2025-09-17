@@ -185,9 +185,6 @@ export const CurrencyConverter: React.FC = () => {
 					</div>
 
 					<div className="grid grid-cols-1 gap-2">
-						<div className="text-xs font-bold text-center text-content">
-							نرخ‌های پایه (ریال)
-						</div>
 						<div className="flex justify-between text-xs">
 							<div className="flex-1 text-center rounded bg-base-200/20">
 								<div className="font-bold text-content">
@@ -197,7 +194,7 @@ export const CurrencyConverter: React.FC = () => {
 									{fromCurrencyData
 										? formatNumber(fromCurrencyData.rialPrice, 'IRT')
 										: '0'}{' '}
-									ریال
+									تومان
 								</div>
 							</div>
 							<div className="flex-1 text-center rounded bg-base-200/20">
@@ -208,7 +205,7 @@ export const CurrencyConverter: React.FC = () => {
 									{toCurrencyData
 										? formatNumber(toCurrencyData.rialPrice, 'IRT')
 										: '0'}{' '}
-									ریال
+									تومان
 								</div>
 							</div>
 						</div>
