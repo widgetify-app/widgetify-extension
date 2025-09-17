@@ -17,7 +17,6 @@ export const RequireVerification = ({
 	mode = 'block',
 }: RequireVerificationProps) => {
 	const { user, isLoadingUser } = useAuth()
-	console.log('user: ', user?.verified)
 	const handleVerificationClick = () => {
 		callEvent('openSettings', 'account')
 	}
