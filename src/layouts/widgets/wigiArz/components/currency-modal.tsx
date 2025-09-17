@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
+import { TbArrowsRightLeft } from 'react-icons/tb'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/getPrice'
 
@@ -42,7 +44,6 @@ export const CurrencyModalComponent = ({
 		return () => clearTimeout(timerId)
 	}, [isModalOpen])
 
-	// Initialize amounts when modal opens
 	useEffect(() => {
 		if (isModalOpen && currency?.rialPrice) {
 			setCurrencyAmount(1)
@@ -50,7 +51,6 @@ export const CurrencyModalComponent = ({
 		}
 	}, [isModalOpen, currency?.rialPrice])
 
-	// Handle currency amount changes
 	const handleCurrencyAmountChange = (value: number) => {
 		setCurrencyAmount(value)
 		if (currency?.rialPrice) {
@@ -58,7 +58,6 @@ export const CurrencyModalComponent = ({
 		}
 	}
 
-	// Handle toman amount changes
 	const handleTomanAmountChange = (value: number) => {
 		setTomanAmount(value)
 		if (currency?.rialPrice) {
@@ -66,13 +65,10 @@ export const CurrencyModalComponent = ({
 		}
 	}
 
-
-	// Format number with thousands separator for input display
 	const formatNumberWithCommas = (num: number) => {
 		return num.toLocaleString('en-US')
 	}
 
-	// Parse number from formatted string (remove commas)
 	const parseFormattedNumber = (str: string) => {
 		return parseFloat(str.replace(/,/g, '')) || 0
 	}
@@ -155,39 +151,39 @@ export const CurrencyModalComponent = ({
 				</div>
 
 				{/* Calculator Section */}
-				<div className="w-full mt-6 space-y-3">
-					<div className="text-center">
-						<p className="text-sm font-medium text-base-content opacity-70">
-							مبدل قیمت
-						</p>
+				<div className="w-full mt-2 space-y-1">
+					<div className="flex items-center justify-center gap-2 text-center text-muted">
+						<p className="text-sm font-medium">مبدل قیمت</p>
+						<TbArrowsRightLeft />
 					</div>
-					
-					{/* Currency to Toman */}
 					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
-						<input
-							type="text"
-							value={formatNumberWithCommas(currencyAmount)}
-							onChange={(e) => handleCurrencyAmountChange(parseFormattedNumber(e.target.value))}
-							className="w-full h-auto px-2 min-h-0 p-0 text-lg font-medium text-right input input-ghost !outline-primary !bg-transparent"
-							placeholder="مبلغ"
-						/>
 						<span className="text-sm font-medium text-base-content min-w-fit">
 							{code.toUpperCase()}
 						</span>
-					</div>
-
-					{/* Toman to Currency */}
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
-						<input
+						<TextInput
 							type="text"
-							value={formatNumberWithCommas(tomanAmount)}
-							onChange={(e) => handleTomanAmountChange(parseFormattedNumber(e.target.value))}
-							className="w-full h-auto px-2 min-h-0 p-0 text-lg font-medium text-right input input-ghost !outline-primary !bg-transparent"
+							value={String(currencyAmount)}
+							onChange={(e) =>
+								handleCurrencyAmountChange(parseFormattedNumber(e))
+							}
+							className=" !rounded-2xl !px-4 border-content"
 							placeholder="مبلغ"
 						/>
+					</div>
+
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
 						<span className="text-sm font-medium text-base-content min-w-fit">
 							تومان
 						</span>
+						<TextInput
+							type="text"
+							value={formatNumberWithCommas(tomanAmount)}
+							onChange={(value) =>
+								handleTomanAmountChange(parseFormattedNumber(value))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
 					</div>
 				</div>
 			</div>
