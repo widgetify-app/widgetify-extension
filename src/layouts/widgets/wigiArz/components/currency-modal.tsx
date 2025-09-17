@@ -27,6 +27,8 @@ export const CurrencyModalComponent = ({
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
 	const [isVisible, setIsVisible] = useState(false)
+	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
+	const [tomanAmount, setTomanAmount] = useState<number>(0)
 
 	useEffect(() => {
 		let timerId: NodeJS.Timeout
@@ -39,6 +41,41 @@ export const CurrencyModalComponent = ({
 		}
 		return () => clearTimeout(timerId)
 	}, [isModalOpen])
+
+	// Initialize amounts when modal opens
+	useEffect(() => {
+		if (isModalOpen && currency?.rialPrice) {
+			setCurrencyAmount(1)
+			setTomanAmount(currency.rialPrice)
+		}
+	}, [isModalOpen, currency?.rialPrice])
+
+	// Handle currency amount changes
+	const handleCurrencyAmountChange = (value: number) => {
+		setCurrencyAmount(value)
+		if (currency?.rialPrice) {
+			setTomanAmount(value * currency.rialPrice)
+		}
+	}
+
+	// Handle toman amount changes
+	const handleTomanAmountChange = (value: number) => {
+		setTomanAmount(value)
+		if (currency?.rialPrice) {
+			setCurrencyAmount(value / currency.rialPrice)
+		}
+	}
+
+
+	// Format number with thousands separator for input display
+	const formatNumberWithCommas = (num: number) => {
+		return num.toLocaleString('en-US')
+	}
+
+	// Parse number from formatted string (remove commas)
+	const parseFormattedNumber = (str: string) => {
+		return parseFloat(str.replace(/,/g, '')) || 0
+	}
 
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
@@ -114,6 +151,43 @@ export const CurrencyModalComponent = ({
 								</div>
 							</Button>
 						) : null}
+					</div>
+				</div>
+
+				{/* Calculator Section */}
+				<div className="w-full mt-6 space-y-3">
+					<div className="text-center">
+						<p className="text-sm font-medium text-base-content opacity-70">
+							مبدل قیمت
+						</p>
+					</div>
+					
+					{/* Currency to Toman */}
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<input
+							type="text"
+							value={formatNumberWithCommas(currencyAmount)}
+							onChange={(e) => handleCurrencyAmountChange(parseFormattedNumber(e.target.value))}
+							className="w-full h-auto px-2 min-h-0 p-0 text-lg font-medium text-right input input-ghost !outline-primary !bg-transparent"
+							placeholder="مبلغ"
+						/>
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							{code.toUpperCase()}
+						</span>
+					</div>
+
+					{/* Toman to Currency */}
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<input
+							type="text"
+							value={formatNumberWithCommas(tomanAmount)}
+							onChange={(e) => handleTomanAmountChange(parseFormattedNumber(e.target.value))}
+							className="w-full h-auto px-2 min-h-0 p-0 text-lg font-medium text-right input input-ghost !outline-primary !bg-transparent"
+							placeholder="مبلغ"
+						/>
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							تومان
+						</span>
 					</div>
 				</div>
 			</div>
