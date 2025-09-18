@@ -1,26 +1,60 @@
+import {
+	closestCenter,
+	DndContext,
+	type DragEndEvent,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core'
+import {
+	arrayMove,
+	SortableContext,
+	verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
+import { IoMdHelp } from 'react-icons/io'
 import { Button } from '@/components/button/button'
+import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
-import { TodoItem } from './todo.item'
+import { TodoHelpModal } from './help-modal'
+import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
 
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
-	const { addTodo, todos, removeTodo, toggleTodo, updateOptions, todoOptions } =
-		useTodoStore()
+	const {
+		addTodo,
+		todos,
+		removeTodo,
+		toggleTodo,
+		updateOptions,
+		todoOptions,
+		reorderTodos,
+	} = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
+	const [showHelpModal, setShowHelpModal] = useState<boolean>(false)
 
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
+
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 5, // 5px movement required before drag starts
+			},
+		}),
+		useSensor(KeyboardSensor)
+	)
 
 	const handleChangeViewMode = (viewMode: TodoViewType) => {
 		updateOptions({ viewMode })
@@ -35,6 +69,8 @@ export function TodosLayout() {
 		})
 	}
 
+	selectedDateTodos = selectedDateTodos.sort((a, b) => (a.order || 0) - (b.order || 0))
+
 	if (filter === 'active') {
 		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
 	} else if (filter === 'completed') {
@@ -47,6 +83,58 @@ export function TodosLayout() {
 			date: selectedDateStr,
 		})
 		setTodoText('')
+	}
+
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event
+
+		if (!over || active.id === over.id) {
+			return
+		}
+
+		const activeIndex = selectedDateTodos.findIndex((todo) => todo.id === active.id)
+		const overIndex = selectedDateTodos.findIndex((todo) => todo.id === over.id)
+
+		if (activeIndex !== -1 && overIndex !== -1) {
+			let allSelectedDateTodos = todos
+				.filter((todo) => {
+					if (todoOptions.viewMode === 'monthly') {
+						const currentMonth = selectedDate.format('jMM')
+						return todo.date.startsWith(
+							`${selectedDate.year()}-${currentMonth}`
+						)
+					}
+					return todo.date === selectedDateStr
+				})
+				.sort((a, b) => (a.order || 0) - (b.order || 0))
+
+			const fullActiveIndex = allSelectedDateTodos.findIndex(
+				(todo) => todo.id === active.id
+			)
+			const fullOverIndex = allSelectedDateTodos.findIndex(
+				(todo) => todo.id === over.id
+			)
+
+			if (fullActiveIndex !== -1 && fullOverIndex !== -1) {
+				const reorderedDateTodos = arrayMove(
+					allSelectedDateTodos,
+					fullActiveIndex,
+					fullOverIndex
+				)
+
+				const todosFromOtherDates = todos.filter((todo) => {
+					if (todoOptions.viewMode === 'monthly') {
+						const currentMonth = selectedDate.format('jMM')
+						return !todo.date.startsWith(
+							`${selectedDate.year()}-${currentMonth}`
+						)
+					}
+					return todo.date !== selectedDateStr
+				})
+
+				reorderTodos([...todosFromOtherDates, ...reorderedDateTodos])
+			}
+		}
 	}
 
 	return (
@@ -70,13 +158,24 @@ export function TodosLayout() {
 						</h4>
 
 						<div className="flex gap-1.5">
-							<Button
-								onClick={() => setShowStats(!showStats)}
-								size="xs"
-								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
-							>
-								<FaChartSimple size={12} />
-							</Button>
+							<Tooltip content={'آموزش'}>
+								<Button
+									onClick={() => setShowHelpModal(true)}
+									size="xs"
+									className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
+								>
+									<IoMdHelp size={12} />
+								</Button>
+							</Tooltip>
+							<Tooltip content={showStats ? 'بازگشت به لیست' : 'آمار'}>
+								<Button
+									onClick={() => setShowStats(!showStats)}
+									size="xs"
+									className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
+								>
+									<FaChartSimple size={12} />
+								</Button>
+							</Tooltip>
 						</div>
 					</div>
 
@@ -135,41 +234,53 @@ export function TodosLayout() {
 				</div>
 				<div className="mt-0.5 flex-grow overflow-hidden">
 					{!showStats && (
-						<div
-							className={`space-y-1.5 overflow-y-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+						<DndContext
+							sensors={sensors}
+							collisionDetection={closestCenter}
+							onDragEnd={handleDragEnd}
 						>
-							{selectedDateTodos.length > 0 ? (
-								selectedDateTodos.map((todo) => (
-									<TodoItem
-										key={todo.id}
-										todo={todo}
-										deleteTodo={removeTodo}
-										toggleTodo={toggleTodo}
-										blurMode={blurMode}
-									/>
-								))
-							) : (
-								<div
-									className={
-										'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
-									}
-								>
+							<div
+								className={`space-y-1.5 overflow-y-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+							>
+								{selectedDateTodos.length > 0 ? (
+									<SortableContext
+										items={selectedDateTodos.map((todo) => todo.id)}
+										strategy={verticalListSortingStrategy}
+									>
+										{selectedDateTodos.map((todo) => (
+											<SortableTodoItem
+												key={todo.id}
+												id={todo.id}
+												todo={todo}
+												deleteTodo={removeTodo}
+												toggleTodo={toggleTodo}
+												blurMode={blurMode}
+											/>
+										))}
+									</SortableContext>
+								) : (
 									<div
 										className={
-											'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
+											'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
 										}
 									>
-										<FiList className="text-content" size={24} />
+										<div
+											className={
+												'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
+											}
+										>
+											<FiList className="text-content" size={24} />
+										</div>
+										<p className="mt-1 text-center text-content">
+											وظیفه‌ای برای این روز وجود ندارد.
+										</p>
+										<p className="text-center text-[.65rem] text-content opacity-75">
+											یک وظیفه جدید اضافه کنید.
+										</p>
 									</div>
-									<p className="mt-1 text-center text-content">
-										وظیفه‌ای برای این روز وجود ندارد.
-									</p>
-									<p className="text-center text-[.65rem] text-content opacity-75">
-										یک وظیفه جدید اضافه کنید.
-									</p>
-								</div>
-							)}
-						</div>
+								)}
+							</div>
+						</DndContext>
 					)}
 				</div>{' '}
 				{!showStats && (
@@ -180,6 +291,8 @@ export function TodosLayout() {
 					/>
 				)}
 			</div>
+
+			<TodoHelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
 		</WidgetContainer>
 	)
 }

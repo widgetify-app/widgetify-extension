@@ -149,6 +149,7 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 				completed: todo.completed,
 				offlineId: todo.id,
 				id: todo.onlineId,
+				order: todo.order || 0,
 			}))
 		}
 
@@ -196,6 +197,7 @@ function mapFetchedTodos(fetchedTodos: FetchedTodo[]) {
 		priority: todo.priority,
 		category: todo.category,
 		notes: todo.description,
+		order: todo.order || 0,
 	}))
 }
 
@@ -298,7 +300,7 @@ function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 		sticker: bookmark.sticker,
 		customTextColor: bookmark.customTextColor,
 		customBackground: bookmark.customBackground,
-		order: bookmark.order || 0, // Include order in the mapped fetched bookmarks
+		order: bookmark.order || 0,
 	}))
 
 	return mappedFetched
