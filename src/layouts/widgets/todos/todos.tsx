@@ -16,6 +16,7 @@ import { useState } from 'react'
 import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
 import { IoMdHelp } from 'react-icons/io'
+import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
@@ -50,7 +51,7 @@ export function TodosLayout() {
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: {
-				distance: 5, // 5px movement required before drag starts
+				distance: 5,
 			},
 		}),
 		useSensor(KeyboardSensor)
@@ -133,6 +134,8 @@ export function TodosLayout() {
 				})
 
 				reorderTodos([...todosFromOtherDates, ...reorderedDateTodos])
+
+				Analytics.event('todo_reorder')
 			}
 		}
 	}
