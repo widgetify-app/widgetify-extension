@@ -12,10 +12,12 @@ export default defineBackground(() => {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
 
-	browser.action.onClicked.addListener(() => {
-		browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
-		Analytics.event('IconClicked')
-	})
+	if (!import.meta.env.FIREFOX) {
+		browser.action.onClicked?.addListener(() => {
+			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+			Analytics.event('IconClicked')
+		})
+	}
 
 	if (!isDev) {
 		registerRoute(
@@ -136,12 +138,12 @@ export default defineBackground(() => {
 			await setToStorage('showWelcomeModal', true)
 
 			const manifest = browser.runtime.getManifest()
-
-			Analytics.event('Installed', {
-				version: manifest.version,
-				offlineSupport: true,
-			})
-
+			if (import.meta.env.FIREFOX) {
+				Analytics.event('Installed', {
+					version: manifest.version,
+					offlineSupport: true,
+				})
+			}
 			isDev && (await preloadCriticalResources())
 		} else if (details.reason === 'update') {
 			const manifest = browser.runtime.getManifest()

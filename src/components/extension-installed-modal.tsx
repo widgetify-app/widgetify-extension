@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import keepItImage from '@/assets/keep-it.png'
 import { Button } from './button/button'
+import Checkbox from './checkbox'
 import Modal from './modal'
 
 interface ExtensionInstalledModalProps {
@@ -34,36 +35,6 @@ export function ExtensionInstalledModal({
 		}
 	}
 
-	const StepIndicator = () => (
-		<div
-			className="flex items-center justify-center gap-3"
-			role="progressbar"
-			aria-valuenow={currentStep}
-			aria-valuemin={1}
-			aria-valuemax={totalSteps}
-		>
-			{Array.from({ length: totalSteps }).map((_, index) => (
-				<button
-					key={index}
-					onClick={() =>
-						import.meta.env.FIREFOX
-							? undefined
-							: setCurrentStep((index + 1) as Step)
-					}
-					aria-label={`رفتن به گام ${index + 1}`}
-					aria-current={index + 1 === currentStep ? 'step' : undefined}
-					className={`w-10 h-2 ${import.meta.env.FIREFOX ? 'cursor-default' : 'cursor-pointer'} rounded-full transition-all duration-300 ${
-						index + 1 === currentStep
-							? 'bg-blue-500 shadow-lg shadow-blue-500/30'
-							: index + 1 < currentStep
-								? 'bg-blue-600'
-								: 'bg-gray-700 hover:bg-gray-600'
-					}`}
-				/>
-			))}
-		</div>
-	)
-
 	return (
 		<Modal
 			isOpen={show}
@@ -84,10 +55,52 @@ export function ExtensionInstalledModal({
 				</m.div>
 			</LazyMotion>
 
-			<StepIndicator />
+			<StepIndicator
+				totalSteps={totalSteps}
+				currentStep={currentStep}
+				setCurrentStep={setCurrentStep}
+			/>
 		</Modal>
 	)
 }
+interface StepIndicatorProps {
+	totalSteps: number
+	currentStep: Step
+	setCurrentStep: (step: Step) => void
+}
+const StepIndicator = ({
+	totalSteps,
+	currentStep,
+	setCurrentStep,
+}: StepIndicatorProps) => (
+	<div
+		className="flex items-center justify-center gap-3"
+		role="progressbar"
+		aria-valuenow={currentStep}
+		aria-valuemin={1}
+		aria-valuemax={totalSteps}
+	>
+		{Array.from({ length: totalSteps }).map((_, index) => (
+			<button
+				key={index}
+				onClick={() =>
+					import.meta.env.FIREFOX
+						? undefined
+						: setCurrentStep((index + 1) as Step)
+				}
+				aria-label={`رفتن به گام ${index + 1}`}
+				aria-current={index + 1 === currentStep ? 'step' : undefined}
+				className={`w-10 h-2 ${import.meta.env.FIREFOX ? 'cursor-default' : 'cursor-pointer'} rounded-full transition-all duration-300 ${
+					index + 1 === currentStep
+						? 'bg-blue-500 shadow-lg shadow-blue-500/30'
+						: index + 1 < currentStep
+							? 'bg-blue-600'
+							: 'bg-gray-700 hover:bg-gray-600'
+				}`}
+			/>
+		))}
+	</div>
+)
 
 interface StepOneProps {
 	setCurrentStep: (step: Step) => void
@@ -182,13 +195,14 @@ interface StepFirefoxConsentProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
+	const [isAccepted, setIsAccepted] = useState(false)
 	const handleDecline = () => {
 		if (browser.management?.uninstallSelf) {
 			// @ts-expect-error
 			browser.management.uninstallSelf({
 				showConfirmDialog: true,
 				dialogMessage:
-					'بدون اجازه ارسال داده، افزونه نمی‌تواند کار کند. آیا می‌خواهید آن را حذف کنید؟',
+					'⚠️ Without data permission, the extension cannot function. Do you want to uninstall it? ⚠️',
 			})
 		}
 	}
@@ -232,10 +246,6 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 					</li>
 				</ul>
 
-				<p className="mt-2 text-sm text-content">
-					اگر رد کنید، افزونه قادر به انجام وظایف اصلی خود نخواهد بود. در صورت
-					تمایل می‌توانید افزونه را همین حالا حذف کنید.
-				</p>
 				<a
 					href="https://widgetify.ir/privacy"
 					target="_blank"
@@ -245,6 +255,23 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 					<FaExternalLinkAlt />
 					مشاهده سیاست کامل حریم خصوصی
 				</a>
+				<p className="mt-2 text-sm text-content">
+					اگر رد کنید، افزونه قادر به انجام وظایف اصلی خود نخواهد بود. در صورت
+					تمایل می‌توانید افزونه را همین حالا حذف کنید.
+				</p>
+
+				<div
+					className="flex items-center p-1 mt-2 text-white bg-gray-400 rounded cursor-pointer"
+					onClick={() => setIsAccepted(!isAccepted)}
+				>
+					<Checkbox
+						checked={isAccepted}
+						onChange={() => setIsAccepted(!isAccepted)}
+					/>
+					<span className="mr-2 text-sm">
+						با سیاست حریم خصوصی ویجتی‌فای موافقم.
+					</span>
+				</div>
 			</div>
 
 			<div className="flex gap-3 mt-4">
@@ -253,12 +280,13 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 					size="md"
 					className="flex items-center justify-center w-40 btn btn-error rounded-xl"
 				>
-					🚫 رد می‌کنم
+					🚫 حذف افزونه
 				</Button>
 				<Button
 					onClick={() => setCurrentStep(2)}
 					size="md"
 					className="w-40 btn btn-success rounded-xl"
+					disabled={!isAccepted}
 				>
 					✅ قبول می‌کنم
 				</Button>

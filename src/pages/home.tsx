@@ -105,9 +105,9 @@ export function HomePage() {
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
+
 			if (shouldShowWelcome || shouldShowWelcome === null) {
 				setShowWelcomeModal(true)
-				await setToStorage('showWelcomeModal', false)
 				return
 			}
 
@@ -122,9 +122,9 @@ export function HomePage() {
 		Analytics.pageView('Home', '/')
 	}, [])
 
-	const handleGetStarted = () => {
+	const handleGetStarted = async () => {
+		await setToStorage('showWelcomeModal', false)
 		setShowWelcomeModal(false)
-		window.location.reload()
 	}
 
 	const onCloseReleaseNotes = async () => {
@@ -301,7 +301,7 @@ export function HomePage() {
 			/>
 			<ExtensionInstalledModal
 				show={showWelcomeModal}
-				onClose={() => setShowWelcomeModal(false)}
+				onClose={() => handleGetStarted}
 				onGetStarted={handleGetStarted}
 			/>
 
