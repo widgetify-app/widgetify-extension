@@ -7,6 +7,7 @@ export interface Todo {
 	priority: 'low' | 'medium' | 'high'
 	category?: string
 	notes?: string
+	order?: number
 }
 
 export interface FetchedTodo {
@@ -19,4 +20,5 @@ export interface FetchedTodo {
 	description?: string
 	offlineId?: string
 	createdAt?: string
+	order?: number
 }

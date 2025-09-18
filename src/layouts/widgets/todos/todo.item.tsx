@@ -1,7 +1,8 @@
-import { Button } from '@/components/button/button'
-import CustomCheckbox from '@/components/checkbox'
 import { useEffect, useState } from 'react'
 import { FiChevronDown, FiRotateCcw, FiTrash2 } from 'react-icons/fi'
+import { MdDragIndicator } from 'react-icons/md'
+import { Button } from '@/components/button/button'
+import CustomCheckbox from '@/components/checkbox'
 import type { Todo } from '../calendar/interface/todo.interface'
 
 interface Prop {
@@ -9,6 +10,8 @@ interface Prop {
 	toggleTodo: (id: string) => void
 	deleteTodo: (id: string) => void
 	blurMode?: boolean
+	isDragging?: boolean
+	dragHandle?: any
 }
 
 const translatedPriority = {
@@ -17,7 +20,14 @@ const translatedPriority = {
 	high: 'زیاد',
 }
 
-export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Prop) {
+export function TodoItem({
+	todo,
+	deleteTodo,
+	toggleTodo,
+	blurMode = false,
+	isDragging = false,
+	dragHandle,
+}: Prop) {
 	const [expanded, setExpanded] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [countdown, setCountdown] = useState(5)
@@ -105,7 +115,7 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 	}
 	return (
 		<div
-			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98 cursor-pointer group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''}`}
+			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98 cursor-pointer group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''} ${isDragging ? 'opacity-50' : ''}`}
 		>
 			{isDeleting ? (
 				<div className="flex items-center justify-between p-1.5">
@@ -129,16 +139,26 @@ export function TodoItem({ todo, deleteTodo, toggleTodo, blurMode = false }: Pro
 				<>
 					<div
 						onClick={() => toggleTodo(todo.id)}
-						className={'flex items-center gap-2 pr-1.5 p-1.5'}
+						className={'flex items-center gap-2 pr-0.5 py-1'}
 					>
-						<div className="flex-shrink-0">
-							<CustomCheckbox
-								checked={todo.completed}
-								onChange={() => toggleTodo(todo.id)}
-								className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle()}`}
-								unCheckedCheckBoxClassName={`${getUnCheckedCheckboxStyle()}`}
-								checkedCheckBoxClassName={`${getCheckedCheckboxStyle()}`}
-							/>
+						<div className="flex flex-row items-center gap-1">
+							<div
+								{...dragHandle}
+								className="flex-shrink-0 cursor-grab active:cursor-grabbing p-0.5 rounded opacity-100 transition-opacity duration-200"
+								onClick={(e) => e.stopPropagation()}
+							>
+								<MdDragIndicator size={12} className="text-muted" />
+							</div>
+
+							<div className="flex-shrink-0">
+								<CustomCheckbox
+									checked={todo.completed}
+									onChange={() => toggleTodo(todo.id)}
+									className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle()}`}
+									unCheckedCheckBoxClassName={`${getUnCheckedCheckboxStyle()}`}
+									checkedCheckBoxClassName={`${getCheckedCheckboxStyle()}`}
+								/>
+							</div>
 						</div>
 
 						<span

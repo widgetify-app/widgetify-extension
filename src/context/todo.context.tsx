@@ -35,6 +35,7 @@ interface TodoContextType {
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
+	reorderTodos: (todos: Todo[]) => void
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -51,7 +52,13 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		async function load() {
 			const todos = await getFromStorage('todos')
 			const todoOptions = await getFromStorage('todoOptions')
-			setTodos(todos || [])
+
+			const migratedTodos = (todos || []).map((todo: Todo, index: number) => ({
+				...todo,
+				order: todo.order !== undefined ? todo.order : index,
+			}))
+
+			setTodos(migratedTodos)
 			if (todoOptions) {
 				setTodoOptions(todoOptions)
 			} else {
@@ -102,6 +109,12 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	const addTodo = (input: AddTodoInput) => {
 		const old = todos || []
+		const sameDateTodos = old.filter((t) => t.date === input.date)
+		const maxOrder =
+			sameDateTodos.length > 0
+				? Math.max(...sameDateTodos.map((t) => t.order || 0))
+				: 0
+
 		setTodos([
 			...old,
 			{
@@ -113,6 +126,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				category: input.category || '',
 				notes: input.notes || '',
 				onlineId: null,
+				order: maxOrder + 1,
 			},
 		])
 		callEvent('startSync', SyncTarget.TODOS)
@@ -162,6 +176,15 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		})
 	}
 
+	const reorderTodos = (newTodos: Todo[]) => {
+		const todosWithOrder = newTodos.map((todo, index) => ({
+			...todo,
+			order: index,
+		}))
+		setTodos(todosWithOrder)
+		callEvent('startSync', SyncTarget.TODOS)
+	}
+
 	return (
 		<TodoContext.Provider
 			value={{
@@ -173,6 +196,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				clearCompleted,
 				updateOptions,
 				todoOptions,
+				reorderTodos,
 			}}
 		>
 			{children}
