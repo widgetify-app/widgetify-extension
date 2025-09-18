@@ -26,6 +26,12 @@ type ReleaseNote = {
 const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
+		title: 'امکان جابجایی وظایف',
+		type: 'feature',
+		description:
+			'اکنون می‌توانید با کشیدن و رها کردن، وظایف خود را در ویجت وظایف جابجا کنید.',
+	},
+	{
 		title: 'اضافه شدن ابزار مترجم',
 		type: 'feature',
 		description:
