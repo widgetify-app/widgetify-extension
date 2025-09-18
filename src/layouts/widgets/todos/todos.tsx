@@ -15,13 +15,16 @@ import {
 import { useState } from 'react'
 import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
+import { IoMdHelp } from 'react-icons/io'
 import { Button } from '@/components/button/button'
+import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
 import { formatDateStr } from '../calendar/utils'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
+import { TodoHelpModal } from './help-modal'
 import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
 
@@ -38,6 +41,7 @@ export function TodosLayout() {
 	} = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
+	const [showHelpModal, setShowHelpModal] = useState<boolean>(false)
 
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
@@ -154,13 +158,24 @@ export function TodosLayout() {
 						</h4>
 
 						<div className="flex gap-1.5">
-							<Button
-								onClick={() => setShowStats(!showStats)}
-								size="xs"
-								className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
-							>
-								<FaChartSimple size={12} />
-							</Button>
+							<Tooltip content={'آموزش'}>
+								<Button
+									onClick={() => setShowHelpModal(true)}
+									size="xs"
+									className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
+								>
+									<IoMdHelp size={12} />
+								</Button>
+							</Tooltip>
+							<Tooltip content={showStats ? 'بازگشت به لیست' : 'آمار'}>
+								<Button
+									onClick={() => setShowStats(!showStats)}
+									size="xs"
+									className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
+								>
+									<FaChartSimple size={12} />
+								</Button>
+							</Tooltip>
 						</div>
 					</div>
 
@@ -276,6 +291,8 @@ export function TodosLayout() {
 					/>
 				)}
 			</div>
+
+			<TodoHelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
 		</WidgetContainer>
 	)
 }
