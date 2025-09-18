@@ -1,3 +1,4 @@
+import type React from 'react'
 import { useEffect, useState } from 'react'
 import { FiChevronDown, FiRotateCcw, FiTrash2 } from 'react-icons/fi'
 import { MdDragIndicator } from 'react-icons/md'
@@ -217,13 +218,32 @@ export function TodoItem({
 							</div>
 
 							{/* Notes */}
-							{todo.notes && (
-								<p className="mt-0.5 font-light">{todo.notes}</p>
-							)}
+							{todo.notes && <NoteLinkRenderer note={todo.notes} />}
 						</div>
 					)}
 				</>
 			)}
 		</div>
 	)
+}
+interface NoteIsLinkProps {
+	note: string
+}
+function NoteLinkRenderer({ note }: NoteIsLinkProps): React.JSX.Element | null {
+	const urlRegex = /(https?:\/\/[^\s]+)/gi
+	const urls = note.match(urlRegex)
+	if (urls) {
+		return (
+			<a
+				href={urls[0]}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="text-blue-500 underline break-all"
+			>
+				{urls[0]}
+			</a>
+		)
+	}
+
+	return <p className="mt-0.5 font-light">{note}</p>
 }

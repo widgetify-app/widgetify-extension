@@ -204,7 +204,7 @@ export function ExpandableTodoInput({
 										<TextInput
 											value={notes}
 											onChange={(value) => setNotes(value)}
-											placeholder="یادداشت یا توضیحات تکمیلی..."
+											placeholder="یادداشت یا لینک (اختیاری)"
 											className="text-xs placeholder:text-xs py-1.5"
 										/>
 									</div>
