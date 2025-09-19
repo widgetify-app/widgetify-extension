@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
+import { TbArrowsRightLeft } from 'react-icons/tb'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/getPrice'
 
@@ -27,6 +29,8 @@ export const CurrencyModalComponent = ({
 }: CurrencyModalComponentProps) => {
 	const [showChart, setShowChart] = useState(true)
 	const [isVisible, setIsVisible] = useState(false)
+	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
+	const [tomanAmount, setTomanAmount] = useState<number>(0)
 
 	useEffect(() => {
 		let timerId: NodeJS.Timeout
@@ -39,6 +43,35 @@ export const CurrencyModalComponent = ({
 		}
 		return () => clearTimeout(timerId)
 	}, [isModalOpen])
+
+	useEffect(() => {
+		if (isModalOpen && currency?.rialPrice) {
+			setCurrencyAmount(1)
+			setTomanAmount(currency.rialPrice)
+		}
+	}, [isModalOpen, currency?.rialPrice])
+
+	const handleCurrencyAmountChange = (value: number) => {
+		setCurrencyAmount(value)
+		if (currency?.rialPrice) {
+			setTomanAmount(value * currency.rialPrice)
+		}
+	}
+
+	const handleTomanAmountChange = (value: number) => {
+		setTomanAmount(value)
+		if (currency?.rialPrice) {
+			setCurrencyAmount(value / currency.rialPrice)
+		}
+	}
+
+	const formatNumberWithCommas = (num: number) => {
+		return num.toLocaleString('en-US')
+	}
+
+	const parseFormattedNumber = (str: string) => {
+		return parseFloat(str.replace(/,/g, '')) || 0
+	}
 
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
@@ -114,6 +147,43 @@ export const CurrencyModalComponent = ({
 								</div>
 							</Button>
 						) : null}
+					</div>
+				</div>
+
+				{/* Calculator Section */}
+				<div className="w-full mt-2 space-y-1">
+					<div className="flex items-center justify-center gap-2 text-center text-muted">
+						<p className="text-sm font-medium">مبدل قیمت</p>
+						<TbArrowsRightLeft />
+					</div>
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							{code.toUpperCase()}
+						</span>
+						<TextInput
+							type="text"
+							value={String(currencyAmount)}
+							onChange={(e) =>
+								handleCurrencyAmountChange(parseFormattedNumber(e))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
+					</div>
+
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							تومان
+						</span>
+						<TextInput
+							type="text"
+							value={formatNumberWithCommas(tomanAmount)}
+							onChange={(value) =>
+								handleTomanAmountChange(parseFormattedNumber(value))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
 					</div>
 				</div>
 			</div>
