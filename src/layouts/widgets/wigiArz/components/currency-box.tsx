@@ -67,7 +67,7 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 			toast.success('🔗 درحال انتقال به سایت اسپانسر...')
 			setTimeout(() => {
 				toast.dismiss()
-				Analytics.event('currency-sponsor', {
+				Analytics.event('currency_sponsor', {
 					currency: currency.name.en,
 					url: currency.url,
 				})

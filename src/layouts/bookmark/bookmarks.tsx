@@ -73,7 +73,7 @@ export function BookmarksComponent() {
 
 		syncTimeoutRef.current = setTimeout(() => {
 			callEvent('startSync', SyncTarget.BOOKMARKS)
-			Analytics.event('drag-and-drop-bookmark', {})
+			Analytics.event('drag_and_drop_bookmark', {})
 			syncTimeoutRef.current = null
 		}, 1000) // Wait 1 second before triggering sync
 	}, [])
@@ -146,7 +146,7 @@ export function BookmarksComponent() {
 				openBookmarks(bookmark)
 			} else {
 				e.preventDefault()
-				Analytics.event('open-bookmark-middle-mouse')
+				Analytics.event('open_bookmark_middle_mouse')
 				window.open(bookmark.url)
 			}
 			return
@@ -164,10 +164,10 @@ export function BookmarksComponent() {
 		} else {
 			if (e?.ctrlKey || e?.metaKey) {
 				window.open(bookmark.url)
-				Analytics.event('open-bookmark-in-new-tab')
+				Analytics.event('open_bookmark_in_new_tab')
 			} else {
 				window.location.href = bookmark.url
-				Analytics.event('open-bookmark-in-current-tab')
+				Analytics.event('open_bookmark_in_current_tab')
 			}
 		}
 	}
@@ -252,10 +252,10 @@ export function BookmarksComponent() {
 				window.open(b.url)
 			}
 
-			Analytics.event('open-folder-bookmarks')
+			Analytics.event('open_folder_bookmarks')
 		} else {
 			openBookmarksOptimized(bookmark, children)
-			Analytics.event('open-folder-bookmarks-grouped')
+			Analytics.event('open_folder_bookmarks_grouped')
 		}
 	}
 
@@ -266,7 +266,7 @@ export function BookmarksComponent() {
 
 		if (bookmark && bookmark.type === 'BOOKMARK') {
 			window.open(bookmark.url)
-			Analytics.event('open-bookmark-in-new-tab')
+			Analytics.event('open_bookmark_in_new_tab')
 		}
 
 		setSelectedBookmark(null)
@@ -292,7 +292,7 @@ export function BookmarksComponent() {
 			).fill(null)
 		)
 		.concat(
-			//@ts-ignore
+			//@ts-expect-error
 			currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
 				? [null]
 				: []

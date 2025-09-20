@@ -82,7 +82,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return updatedNotes
 		})
 		setActiveNoteId(newNote.id)
-		Analytics.event('add-notes')
+		Analytics.event('add_notes')
 	}
 
 	const updateNote = (id: string, updates: Partial<Note>) => {
@@ -101,7 +101,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}
 
 		saveTimeoutRef.current = setTimeout(async () => {
-			Analytics.event('update-notes')
+			Analytics.event('update_notes')
 			await setToStorage('notes_data', notesAfterUpdate)
 
 			await upsertNote({
@@ -131,7 +131,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			await setToStorage('notes_data', updatedNotes)
 			setIsSaving(false)
 		}
-		Analytics.event('delete-notes')
+		Analytics.event('delete_notes')
 	}
 
 	return (
