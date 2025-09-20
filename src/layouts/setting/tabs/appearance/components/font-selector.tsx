@@ -21,6 +21,10 @@ export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
 			value: 'Pofak',
 			label: 'پفـک',
 		},
+		{
+			value: 'rooyin',
+			label: 'رویین',
+		},
 	]
 
 	return (
