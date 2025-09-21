@@ -337,11 +337,15 @@ export function BookmarksComponent() {
 							)
 						)}
 					</SortableContext>
+					<div className="flex justify-center col-span-5 w-full mt-0.5 min-h-8">
+						<FolderPath
+							folderPath={folderPath}
+							onNavigate={handleNavigate}
+							currentFolderId={currentFolderId}
+						/>
+					</div>
 				</div>
 			</DndContext>
-			<div className="flex justify-center w-full mt-0.5">
-				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
-			</div>
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
