@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import { TbBrandPagekit } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
+import Tooltip from '@/components/toolTip'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { BookmarkProvider } from '@/context/bookmark.context'
@@ -33,7 +35,7 @@ const layoutPositions: Record<string, string> = {
 function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets()
+	const sortedWidgets = getSortedWidgets().slice(0, 4)
 
 	const totalWidgetCount = sortedWidgets.length
 
@@ -96,10 +98,39 @@ function ContentSection() {
 		</DateProvider>
 	)
 }
+function WigiPage() {
+	const { contentAlignment } = useAppearanceSetting()
+	const { getSortedWidgets } = useWidgetVisibility()
+	const sortedWidgets = getSortedWidgets()
+
+	let layoutClasses =
+		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
+
+	return (
+		<DateProvider>
+			<TodoProvider>
+				<div
+					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
+				>
+					<div className={layoutClasses}>
+						{sortedWidgets.map((widget) => {
+							return (
+								<div key={widget.id} className="h-widget">
+									{widget.node}
+								</div>
+							)
+						})}
+					</div>
+				</div>
+			</TodoProvider>
+		</DateProvider>
+	)
+}
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+	const [page, _setPage] = useState<'home' | 'wigi-page'>('home')
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	useEffect(() => {
@@ -272,7 +303,8 @@ export function HomePage() {
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
 					<NavbarLayout />
-					<ContentSection />
+					{page === 'home' && <ContentSection />}
+					{page === 'wigi-page' && <WigiPage />}
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
@@ -310,6 +342,16 @@ export function HomePage() {
 				onClose={() => onCloseReleaseNotes()}
 				counterValue={10}
 			/>
+			<div
+				className="fixed z-50 hidden p-1 transition-all transform rounded-full opacity-50 cursor-pointer bottom-1 right-1 bg-widget widget-wrapper text-muted md:flex hover:opacity-80"
+				onClick={() => {
+					_setPage(page === 'home' ? 'wigi-page' : 'home')
+				}}
+			>
+				<Tooltip content="ویجی پیج">
+					<TbBrandPagekit size={20} />
+				</Tooltip>
+			</div>
 		</div>
 	)
 }
