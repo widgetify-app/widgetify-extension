@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { TbArrowsRightLeft } from 'react-icons/tb'
+import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
@@ -26,6 +27,7 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 	currencyColorMode,
 }: CurrencyModalComponentProps) => {
+	const [showConverter, setShowConverter] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
@@ -71,6 +73,11 @@ export const CurrencyModalComponent = ({
 		return parseFloat(str.replace(/,/g, '')) || 0
 	}
 
+	const onClickConverter = () => {
+		setShowConverter(!showConverter)
+		Analytics.event('toggle_currency_converter_on_modal')
+	}
+
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
 			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
@@ -99,9 +106,19 @@ export const CurrencyModalComponent = ({
 					<p className={'text-xl font-bold text-base-content'}>
 						{currency?.name.en}
 					</p>
-					<p className={'text-sm font-medium text-base-content opacity-60'}>
-						{code.toUpperCase()}
-					</p>
+					<div
+						className={
+							'text-sm font-medium text-base-content opacity-60 flex items-center justify-center gap-1'
+						}
+					>
+						<p>{code.toUpperCase()}</p>
+						<div
+							className="cursor-pointer hover:text-primary"
+							onClick={() => onClickConverter()}
+						>
+							<TbArrowsRightLeft />
+						</div>
+					</div>
 				</div>
 
 				<div className="w-full space-y-0">
@@ -131,11 +148,9 @@ export const CurrencyModalComponent = ({
 				</div>
 
 				{/* Calculator Section */}
-				<div className="w-full mt-2 space-y-1">
-					<div className="flex items-center justify-center gap-2 text-center text-muted">
-						<p className="text-sm font-medium">مبدل قیمت</p>
-						<TbArrowsRightLeft />
-					</div>
+				<div
+					className={`flex flex-col gap-0.5 transition-all duration-300 ease-out ${showConverter ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}
+				>
 					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
 						<span className="text-sm font-medium text-base-content min-w-fit">
 							{code.toUpperCase()}
