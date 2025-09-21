@@ -39,9 +39,11 @@ export function JalaliDate() {
 					>
 						{today.locale('fa').format('MMMM YYYY')}
 					</span>
-					<span className={`text-xs  !leading-none ${textColor}`} dir="ltr">
-						{gFormatted} | {jFormatted}
-					</span>
+					<div className={`text-xs opacity-90 ${textColor} px-0.5`} dir="ltr">
+						<span>{gFormatted}</span>
+						<span className="mx-1"></span>
+						<span>{jFormatted}</span>
+					</div>
 				</div>
 			</div>
 		</>
