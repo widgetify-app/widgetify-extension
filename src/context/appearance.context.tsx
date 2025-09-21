@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 
-export type FontFamily = 'Vazir' | 'Samim' | 'Pofak'
+export type FontFamily = 'Vazir' | 'Samim' | 'Pofak' | 'rooyin'
 
 export interface AppearanceData {
 	contentAlignment: 'center' | 'top'
