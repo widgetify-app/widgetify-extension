@@ -35,6 +35,7 @@ export function ClockDisplay() {
 					clockType: ClockType.Digital,
 					showSeconds: true,
 					showTimeZone: true,
+					useSelectedFont: false,
 				})
 			}
 		}
@@ -44,6 +45,7 @@ export function ClockDisplay() {
 				clockType: data.clockType,
 				showSeconds: data.showSeconds,
 				showTimeZone: data.showTimeZone,
+				useSelectedFont: data.useSelectedFont,
 			})
 		})
 

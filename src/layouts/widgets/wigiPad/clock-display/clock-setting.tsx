@@ -26,6 +26,7 @@ export function ClockSetting() {
 		clockType: ClockType.Digital,
 		showSeconds: true,
 		showTimeZone: true,
+		useSelectedFont: false,
 	})
 
 	useEffect(() => {
@@ -62,6 +63,13 @@ export function ClockSetting() {
 		updateClockSettings((prev) => ({ ...prev, showTimeZone: !prev.showTimeZone }))
 	}
 
+	const onToggleUseSelectedFont = () => {
+		updateClockSettings((prev) => ({
+			...prev,
+			useSelectedFont: !prev.useSelectedFont,
+		}))
+	}
+
 	return (
 		<div className="space-y-3">
 			<div>
@@ -93,6 +101,13 @@ export function ClockSetting() {
 					onToggle={onToggleTimeZone}
 					title="نمایش منطقه زمانی"
 					description="نمایش نام منطقه زمانی زیر ساعت"
+				/>
+
+				<CheckBoxWithDescription
+					isEnabled={clockSettings.useSelectedFont ?? false}
+					onToggle={onToggleUseSelectedFont}
+					title="استفاده از فونت انتخابی"
+					description="استفاده از فونت انتخابی در تنظیمات برای نمایش ساعت"
 				/>
 			</div>
 		</div>
