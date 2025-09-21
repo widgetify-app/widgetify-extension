@@ -56,14 +56,23 @@ export function ClockSetting() {
 	}
 
 	const onToggleSeconds = () => {
+		Analytics.event(
+			`wigipad_clock_settings_${!clockSettings.showSeconds ? 'enable' : 'disable'}_show_seconds`
+		)
 		updateClockSettings((prev) => ({ ...prev, showSeconds: !prev.showSeconds }))
 	}
 
 	const onToggleTimeZone = () => {
+		Analytics.event(
+			`wigipad_clock_settings_${!clockSettings.showTimeZone ? 'enable' : 'disable'}_show_time_zone`
+		)
 		updateClockSettings((prev) => ({ ...prev, showTimeZone: !prev.showTimeZone }))
 	}
 
 	const onToggleUseSelectedFont = () => {
+		Analytics.event(
+			`wigipad_clock_settings_${!clockSettings.useSelectedFont ? 'enable' : 'disable'}_use_selected_font`
+		)
 		updateClockSettings((prev) => ({
 			...prev,
 			useSelectedFont: !prev.useSelectedFont,
