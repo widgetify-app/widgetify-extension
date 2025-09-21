@@ -12,18 +12,6 @@ import { DigitalClock } from './clocks/digital.clock'
 export function ClockDisplay() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
 	const { selected_timezone: timezone } = useGeneralSetting()
-	const [time, setTime] = useState(
-		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
-	)
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setTime(
-				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
-			)
-		}, 1000)
-		return () => clearInterval(timer)
-	}, [timezone])
 
 	useEffect(() => {
 		async function load() {
@@ -59,11 +47,10 @@ export function ClockDisplay() {
 	if (!clockSettings) {
 		return null
 	}
+
 	function onClickSettings() {
 		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiPad })
 	}
-
-	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
 
 	return (
 		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden">
@@ -79,19 +66,9 @@ export function ClockDisplay() {
 
 			<div className="flex flex-col items-center justify-center flex-grow">
 				{clockSettings.clockType === 'analog' ? (
-					<AnalogClock
-						time={time}
-						isDayTime={isDayTime}
-						timezone={timezone}
-						setting={clockSettings}
-					/>
+					<AnalogClock timezone={timezone} setting={clockSettings} />
 				) : (
-					<DigitalClock
-						time={time}
-						isDayTime={isDayTime}
-						timezone={timezone}
-						setting={clockSettings}
-					/>
+					<DigitalClock timezone={timezone} setting={clockSettings} />
 				)}
 			</div>
 		</div>

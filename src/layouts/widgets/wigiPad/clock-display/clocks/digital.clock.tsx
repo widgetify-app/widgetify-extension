@@ -2,16 +2,32 @@ import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hoo
 import type { ClockSettings } from '../clock-setting.interface'
 
 interface DigitalClockProps {
-	time: Date
-	isDayTime: boolean
 	timezone: FetchedTimezone
 	setting: ClockSettings
 }
-export function DigitalClock({ time, isDayTime, timezone, setting }: DigitalClockProps) {
-	const textColor = isDayTime ? 'text-content' : 'text-primary'
+export function DigitalClock({ timezone, setting }: DigitalClockProps) {
+	const [time, setTime] = useState(
+		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+	)
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setTime(
+				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+			)
+		}, 1000)
+		return () => clearInterval(timer)
+	}, [timezone])
+
 	const hours = time.getHours().toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
 	const seconds = time.getSeconds().toString().padStart(2, '0')
+
+	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
+
+	const textColor = useMemo(
+		() => (isDayTime ? 'text-content' : 'text-primary'),
+		[isDayTime]
+	)
 
 	const getFontTranslateClass = () => {
 		return setting.useSelectedFont
