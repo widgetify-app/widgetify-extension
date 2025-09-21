@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
+import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
 import { TbArrowsRightLeft } from 'react-icons/tb'
-import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
@@ -27,7 +26,6 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 	currencyColorMode,
 }: CurrencyModalComponentProps) => {
-	const [showChart, setShowChart] = useState(true)
 	const [isVisible, setIsVisible] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
@@ -129,24 +127,6 @@ export const CurrencyModalComponent = ({
 								</span>
 							</div>
 						)}
-
-						{currency?.priceHistory?.length ? (
-							<Button
-								onClick={() => setShowChart(!showChart)}
-								className={
-									'btn-ghost p-1 rounded-lg opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out'
-								}
-								size="xs"
-							>
-								<div
-									className={`transition-transform duration-300 ease-in-out ${
-										showChart ? 'rotate-0' : 'rotate-180'
-									}`}
-								>
-									<FaChartLine className={'w-5 h-5 text-content'} />
-								</div>
-							</Button>
-						) : null}
 					</div>
 				</div>
 
