@@ -2,13 +2,24 @@ import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hoo
 import type { ClockSettings } from '../clock-setting.interface'
 
 interface AnalogClockProps {
-	time: Date
-	isDayTime: boolean
 	timezone: FetchedTimezone
 	setting: ClockSettings
 }
 
-export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockProps) {
+export function AnalogClock({ timezone, setting }: AnalogClockProps) {
+	const [time, setTime] = useState(
+		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+	)
+
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setTime(
+				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+			)
+		}, 1000)
+		return () => clearInterval(timer)
+	}, [timezone])
+
 	const hours = time.getHours() % 12
 	const minutes = time.getMinutes()
 	const seconds = time.getSeconds()
@@ -17,7 +28,11 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 	const minuteAngle = minutes * 6
 	const secondAngle = seconds * 6
 
-	const handColor = isDayTime ? 'currentColor' : '#3b82f6'
+	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
+
+	const handColor = useMemo(() => (isDayTime ? 'currentColor' : '#3b82f6'), [isDayTime])
+
+	const timezoneLabel = useMemo(() => getTimeZoneLabel(timezone), [timezone])
 
 	return (
 		<div className="relative flex flex-col items-center justify-center">
@@ -108,7 +123,7 @@ export function AnalogClock({ time, isDayTime, timezone, setting }: AnalogClockP
 								fontSize: '10px',
 							}}
 						>
-							{getTimeZoneLabel(timezone)}
+							{timezoneLabel}
 						</span>
 					</div>
 				)}
