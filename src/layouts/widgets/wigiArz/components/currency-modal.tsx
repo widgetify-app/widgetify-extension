@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { FaArrowDownLong, FaArrowUpLong, FaChartLine } from 'react-icons/fa6'
-import { Button } from '@/components/button/button'
+import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
+import { TbArrowsRightLeft } from 'react-icons/tb'
+import Analytics from '@/analytics'
 import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/getPrice'
 
@@ -25,8 +27,10 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 	currencyColorMode,
 }: CurrencyModalComponentProps) => {
-	const [showChart, setShowChart] = useState(true)
+	const [showConverter, setShowConverter] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
+	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
+	const [tomanAmount, setTomanAmount] = useState<number>(0)
 
 	useEffect(() => {
 		let timerId: NodeJS.Timeout
@@ -39,6 +43,40 @@ export const CurrencyModalComponent = ({
 		}
 		return () => clearTimeout(timerId)
 	}, [isModalOpen])
+
+	useEffect(() => {
+		if (isModalOpen && currency?.rialPrice) {
+			setCurrencyAmount(1)
+			setTomanAmount(currency.rialPrice)
+		}
+	}, [isModalOpen, currency?.rialPrice])
+
+	const handleCurrencyAmountChange = (value: number) => {
+		setCurrencyAmount(value)
+		if (currency?.rialPrice) {
+			setTomanAmount(value * currency.rialPrice)
+		}
+	}
+
+	const handleTomanAmountChange = (value: number) => {
+		setTomanAmount(value)
+		if (currency?.rialPrice) {
+			setCurrencyAmount(value / currency.rialPrice)
+		}
+	}
+
+	const formatNumberWithCommas = (num: number) => {
+		return num.toLocaleString('en-US')
+	}
+
+	const parseFormattedNumber = (str: string) => {
+		return parseFloat(str.replace(/,/g, '')) || 0
+	}
+
+	const onClickConverter = () => {
+		setShowConverter(!showConverter)
+		Analytics.event('toggle_currency_converter_on_modal')
+	}
 
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
@@ -68,9 +106,19 @@ export const CurrencyModalComponent = ({
 					<p className={'text-xl font-bold text-base-content'}>
 						{currency?.name.en}
 					</p>
-					<p className={'text-sm font-medium text-base-content opacity-60'}>
-						{code.toUpperCase()}
-					</p>
+					<div
+						className={
+							'text-sm font-medium text-base-content opacity-60 flex items-center justify-center gap-1'
+						}
+					>
+						<p>{code.toUpperCase()}</p>
+						<div
+							className="cursor-pointer hover:text-primary"
+							onClick={() => onClickConverter()}
+						>
+							<TbArrowsRightLeft />
+						</div>
+					</div>
 				</div>
 
 				<div className="w-full space-y-0">
@@ -96,24 +144,41 @@ export const CurrencyModalComponent = ({
 								</span>
 							</div>
 						)}
+					</div>
+				</div>
 
-						{currency?.priceHistory?.length ? (
-							<Button
-								onClick={() => setShowChart(!showChart)}
-								className={
-									'btn-ghost p-1 rounded-lg opacity-70 hover:opacity-100 cursor-pointer transition-all duration-150 ease-in-out'
-								}
-								size="xs"
-							>
-								<div
-									className={`transition-transform duration-300 ease-in-out ${
-										showChart ? 'rotate-0' : 'rotate-180'
-									}`}
-								>
-									<FaChartLine className={'w-5 h-5 text-content'} />
-								</div>
-							</Button>
-						) : null}
+				{/* Calculator Section */}
+				<div
+					className={`flex flex-col gap-0.5 transition-all duration-300 ease-out ${showConverter ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}
+				>
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							{code.toUpperCase()}
+						</span>
+						<TextInput
+							type="text"
+							value={String(currencyAmount)}
+							onChange={(e) =>
+								handleCurrencyAmountChange(parseFormattedNumber(e))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
+					</div>
+
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							تومان
+						</span>
+						<TextInput
+							type="text"
+							value={formatNumberWithCommas(tomanAmount)}
+							onChange={(value) =>
+								handleTomanAmountChange(parseFormattedNumber(value))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
 					</div>
 				</div>
 			</div>
