@@ -26,6 +26,18 @@ type ReleaseNote = {
 const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
+		title: 'فونت جدید: رویین',
+		type: 'feature',
+		description:
+			'فونت رویین به عنوان فونت جدید ویجتی‌فای اضافه شد. برای تجربه این فونت زیبا، به تنظیمات افزونه مراجعه کنید.',
+	},
+	{
+		title: 'شخصی سازی پیشرفته ساعت',
+		type: 'feature',
+		description:
+			'با این قابلیت جدید، ساعت می‌تواند از فونت انتخابی شما در تنظیمات عمومی پیروی کند. این امکان باعث می‌شود ظاهر ساعت با سایر عناصر صفحه شما هماهنگی بیشتری داشته باشد.',
+	},
+	{
 		title: 'امکان جابجایی وظایف',
 		type: 'feature',
 		description:
