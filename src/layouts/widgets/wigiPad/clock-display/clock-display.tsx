@@ -23,7 +23,7 @@ export function ClockDisplay() {
 					clockType: ClockType.Digital,
 					showSeconds: true,
 					showTimeZone: true,
-					useSelectedFont: false,
+					useSelectedFont: true,
 				})
 			}
 		}
