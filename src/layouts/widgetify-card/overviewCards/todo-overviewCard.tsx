@@ -15,22 +15,29 @@ export function TodoOverviewCard() {
 		if (todoOptions.viewMode === TodoViewType.Day) {
 			return todo.date === todayStr
 		}
-		const month = today.format('jMM')
-		return todo.date.startsWith(`${today.year()}-${month}`)
+		if (todoOptions.viewMode === TodoViewType.Monthly) {
+			const month = today.format('jMM')
+			return todo.date.startsWith(`${today.year()}-${month}`)
+		}
+		return true
 	})
 	const completedTodos = todayTodos.filter((todo) => todo.completed)
 	const pendingTodos = todayTodos.filter((todo) => !todo.completed)
 
 	const getTodoLabel = (mode: 'full' | 'short') => {
 		if (mode === 'full') {
-			return todoOptions.viewMode === TodoViewType.Day
-				? 'وظایف امروز'
-				: `وظایف ${today.format('jMMMM')} ماه`
+			return todoOptions.viewMode === TodoViewType.All
+				? 'همه وظایف'
+				: todoOptions.viewMode === TodoViewType.Day
+					? 'وظایف امروز'
+					: `وظایف ${today.format('jMMMM')} ماه`
 		}
 
-		return todoOptions.viewMode === TodoViewType.Day
-			? 'امروز'
-			: `${today.format('jMMMM')} ماه`
+		return todoOptions.viewMode === TodoViewType.All
+			? ''
+			: todoOptions.viewMode === TodoViewType.Day
+				? 'برای امروز'
+				: `برای ${today.format('jMMMM')} ماه`
 	}
 
 	return (
@@ -56,7 +63,7 @@ export function TodoOverviewCard() {
 								? `${completedTodos.length} از ${todayTodos.length} وظیفه تکمیل شده`
 								: todayTodos.length > 0
 									? `تمام وظایف ${getTodoLabel('short')} تکمیل شده‌اند 👏`
-									: `هیچ وظیفه‌ای برای ${getTodoLabel('short')} تعریف نشده است`}
+									: `هیچ وظیفه‌ای ${getTodoLabel('short')} تعریف نشده است`}
 						</p>
 					)}
 				</div>
