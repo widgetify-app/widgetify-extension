@@ -1,8 +1,10 @@
 import {
 	createContext,
 	type ReactNode,
+	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useRef,
 	useState,
 } from 'react'
@@ -197,7 +199,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			setToStorage('activeWidgets', activeWidgets)
 		}
 	}, [visibility, widgetOrders])
-	const toggleWidget = (widgetId: WidgetKeys) => {
+	const toggleWidget = useCallback((widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
 			const isCurrentlyVisible = prev.includes(widgetId)
 
@@ -220,9 +222,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			widget_id: widgetId,
 			new_state: !visibility.includes(widgetId),
 		})
-	}
+	}, [isAuthenticated, visibility])
 
-	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
+	const reorderWidgets = useCallback((sourceIndex: number, destinationIndex: number) => {
 		const visibleWidgets = getSortedWidgets()
 
 		if (sourceIndex === destinationIndex) return
@@ -240,9 +242,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 			return newOrders
 		})
-	}
+	}, [])
 
-	const getSortedWidgets = (): WidgetItem[] => {
+	const getSortedWidgets = useCallback((): WidgetItem[] => {
 		return widgetItems
 			.filter((item) => visibility.includes(item.id))
 			.map((item) => ({
@@ -250,17 +252,16 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				order: widgetOrders[item.id] ?? item.order,
 			}))
 			.sort((a, b) => a.order - b.order)
-	}
-	return (
-		<WidgetVisibilityContext.Provider
-			value={{
-				visibility,
-				toggleWidget,
+	}, [visibility, widgetOrders])
+	const contextValue = useMemo(() => ({
+		visibility,
+		toggleWidget,
+		reorderWidgets,
+		getSortedWidgets,
+	}), [visibility, toggleWidget, reorderWidgets, getSortedWidgets])
 
-				reorderWidgets,
-				getSortedWidgets,
-			}}
-		>
+	return (
+		<WidgetVisibilityContext.Provider value={contextValue}>
 			{children}
 		</WidgetVisibilityContext.Provider>
 	)
