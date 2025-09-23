@@ -1,3 +1,3 @@
 export enum ConfigKey {
-	VERSION_NAME = 'یخـبندان',
+	VERSION_NAME = '❄️ یخـبندان 🧊',
 }

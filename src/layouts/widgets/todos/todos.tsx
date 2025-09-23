@@ -39,11 +39,11 @@ export function TodosLayout() {
 		updateOptions,
 		todoOptions,
 		reorderTodos,
+		showNewBadge,
 	} = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [showHelpModal, setShowHelpModal] = useState<boolean>(false)
-
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
@@ -63,11 +63,13 @@ export function TodosLayout() {
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
 
-	if (todoOptions.viewMode === 'monthly') {
+	if (todoOptions.viewMode === TodoViewType.Monthly) {
 		const currentMonth = selectedDate.format('jMM')
 		selectedDateTodos = todos.filter((todo) => {
 			return todo.date.startsWith(`${selectedDate.year()}-${currentMonth}`)
 		})
+	} else if (todoOptions.viewMode === TodoViewType.All) {
+		selectedDateTodos = todos
 	}
 
 	selectedDateTodos = selectedDateTodos.sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -99,11 +101,13 @@ export function TodosLayout() {
 		if (activeIndex !== -1 && overIndex !== -1) {
 			let allSelectedDateTodos = todos
 				.filter((todo) => {
-					if (todoOptions.viewMode === 'monthly') {
+					if (todoOptions.viewMode === TodoViewType.Monthly) {
 						const currentMonth = selectedDate.format('jMM')
 						return todo.date.startsWith(
 							`${selectedDate.year()}-${currentMonth}`
 						)
+					} else if (todoOptions.viewMode === TodoViewType.All) {
+						return true
 					}
 					return todo.date === selectedDateStr
 				})
@@ -129,6 +133,8 @@ export function TodosLayout() {
 						return !todo.date.startsWith(
 							`${selectedDate.year()}-${currentMonth}`
 						)
+					} else if (todoOptions.viewMode === 'all') {
+						return false
 					}
 					return todo.date !== selectedDateStr
 				})
@@ -154,9 +160,11 @@ export function TodosLayout() {
 							<span className="mr-1 font-semibold">
 								{todoOptions.viewMode === TodoViewType.Monthly
 									? `${selectedDate.format('jMMMM')} ماه`
-									: isToday(selectedDate)
-										? ' امروز'
-										: ` ${selectedDate.format('jD jMMMM')}`}
+									: todoOptions.viewMode === TodoViewType.All
+										? ''
+										: isToday(selectedDate)
+											? ' امروز'
+											: ` ${selectedDate.format('jD jMMMM')}`}
 							</span>
 						</h4>
 
@@ -189,49 +197,65 @@ export function TodosLayout() {
 							<div className="flex gap-0.5">
 								<button
 									onClick={() => setFilter('all')}
-									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									همه
 								</button>
 								<button
 									onClick={() => setFilter('active')}
-									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									فعال
 								</button>
 								<button
 									onClick={() => setFilter('completed')}
-									className={`px-2 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									تکمیل شده
 								</button>
 							</div>
-							<select
-								value={todoOptions.viewMode}
-								onChange={(e) =>
-									handleChangeViewMode(e.target.value as TodoViewType)
-								}
-								className={
-									'select select-xs text-[10px] w-[5.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer'
-								}
-								style={{
-									backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-									backgroundPosition: 'left 0.5rem center',
-									backgroundRepeat: 'no-repeat',
-									backgroundSize: '1.3em 1.3em',
-									paddingLeft: '3rem',
-								}}
-							>
-								<option value={TodoViewType.Day} className="text-content">
-									لیست امروز
-								</option>
-								<option
-									value={TodoViewType.Monthly}
-									className="text-content"
+							<div className="relative">
+								{showNewBadge && (
+									<span className="absolute w-2 h-2 rounded-full left-4 -bottom-0.5 bg-error animate-pulse z-30"></span>
+								)}
+								<select
+									value={todoOptions.viewMode}
+									onChange={(e) =>
+										handleChangeViewMode(
+											e.target.value as TodoViewType
+										)
+									}
+									className={
+										'select select-xs text-[10px] w-[5.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer'
+									}
+									style={{
+										backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+										backgroundPosition: 'left 0.5rem center',
+										backgroundRepeat: 'no-repeat',
+										backgroundSize: '1.3em 1.3em',
+										paddingLeft: '3rem',
+									}}
 								>
-									لیست ماهانه
-								</option>
-							</select>
+									<option
+										value={TodoViewType.Day}
+										className="text-content"
+									>
+										لیست امروز
+									</option>
+									<option
+										value={TodoViewType.Monthly}
+										className="text-content"
+									>
+										لیست ماهانه
+									</option>
+									<option
+										value={TodoViewType.All}
+										className="text-content"
+									>
+										همه وظایف
+									</option>
+								</select>
+							</div>
 						</div>
 					)}
 				</div>

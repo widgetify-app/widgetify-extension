@@ -9,6 +9,7 @@ import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 export enum TodoViewType {
 	Day = 'day',
 	Monthly = 'monthly',
+	All = 'all',
 }
 export enum TodoPriority {
 	Low = 'low',
@@ -36,6 +37,7 @@ interface TodoContextType {
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
 	reorderTodos: (todos: Todo[]) => void
+	showNewBadge: boolean
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -43,15 +45,23 @@ const TodoContext = createContext<TodoContextType | null>(null)
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
-		viewMode: TodoViewType.Day,
+		viewMode: TodoViewType.All,
 	})
+	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
 
 	const didLoadInitialOptions = useRef(false)
 
 	useEffect(() => {
 		async function load() {
-			const todos = await getFromStorage('todos')
-			const todoOptions = await getFromStorage('todoOptions')
+			const [todos, todoOptions, seenTodoNewViewMode] = await Promise.all([
+				getFromStorage('todos'),
+				getFromStorage('todoOptions'),
+				getFromStorage('seenTodoNewViewMode'),
+			])
+
+			if (!seenTodoNewViewMode) {
+				setShowNewBadge(true)
+			}
 
 			const migratedTodos = (todos || []).map((todo: Todo, index: number) => ({
 				...todo,
@@ -63,7 +73,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				setTodoOptions(todoOptions)
 			} else {
 				setToStorage('todoOptions', {
-					viewMode: TodoViewType.Day,
+					viewMode: TodoViewType.All,
 				})
 			}
 
@@ -101,6 +111,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}, [todoOptions])
 
 	function updateOptions(options: Partial<TodoOptions>) {
+		if (options.viewMode && showNewBadge) {
+			setToStorage('seenTodoNewViewMode', true)
+		}
 		setTodoOptions((prev) => ({
 			...prev,
 			...options,
@@ -197,6 +210,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				updateOptions,
 				todoOptions,
 				reorderTodos,
+				showNewBadge,
 			}}
 		>
 			{children}

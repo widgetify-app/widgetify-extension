@@ -26,7 +26,7 @@ export function ClockSetting() {
 		clockType: ClockType.Digital,
 		showSeconds: true,
 		showTimeZone: true,
-		useSelectedFont: false,
+		useSelectedFont: true,
 	})
 
 	useEffect(() => {
