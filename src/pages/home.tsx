@@ -99,19 +99,21 @@ function ContentSection() {
 	)
 }
 function WigiPage() {
-	const { contentAlignment } = useAppearanceSetting()
+	const [activeTab, setActiveTab] = useState('')
+	const contentRef = useRef<HTMLDivElement>(null)
 	const { getSortedWidgets } = useWidgetVisibility()
+
 	const sortedWidgets = getSortedWidgets()
 
 	let layoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
-
-	return (
-		<DateProvider>
-			<TodoProvider>
-				<div
-					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
-				>
+		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3 md:gap-4'
+	const tabs: any[] = [
+		{
+			label: 'ویجت ها',
+			value: 'widgets',
+			icon: null,
+			element: (
+				<>
 					<div className={layoutClasses}>
 						{sortedWidgets.map((widget) => {
 							return (
@@ -120,6 +122,80 @@ function WigiPage() {
 								</div>
 							)
 						})}
+					</div>
+				</>
+			),
+		},
+		{
+			label: 'سایت های پیشنهادی',
+			value: 'test',
+		},
+		{
+			label: 'آمار من',
+			value: 'test',
+		},
+		{
+			label: 'رقابت',
+			value: 'test',
+		},
+		{
+			label: 'خبرنامه',
+			value: 'test',
+		},
+	]
+
+	useEffect(() => {
+		if (contentRef.current) {
+			contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+		}
+	}, [activeTab])
+
+	const getTabButtonStyle = (isActive: boolean) => {
+		return isActive ? 'text-primary bg-primary/10' : 'text-muted hover:bg-base-300'
+	}
+
+	const getTabIconStyle = (isActive: boolean) => {
+		return isActive ? 'text-primary' : 'text-muted'
+	}
+
+	const handleTabChange = (tabValue: string) => {
+		setActiveTab(tabValue)
+	}
+
+	return (
+		<DateProvider>
+			<TodoProvider>
+				<div className="flex flex-col md:flex-row h-full gap-0.5 p-2 overflow-hidden">
+					<div className="flex w-full h-12 gap-2 p-1 overflow-x-auto rounded-2xl bg-widget widget-wrapper md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container md:h-72 md:p-2">
+						{tabs.map(({ label, value, icon }) => (
+							<button
+								key={value}
+								onClick={() => handleTabChange(value)}
+								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
+							>
+								<span className={getTabIconStyle(activeTab === value)}>
+									{icon}
+								</span>
+								<span className="text-sm">{label}</span>
+							</button>
+						))}
+					</div>{' '}
+					<div
+						className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
+						ref={contentRef}
+					>
+						{tabs.map(({ value, element }) => (
+							<div
+								key={value}
+								className={`absolute inset-0 px-2 rounded-lg transition-all duration-200 ease-in-out  ${
+									activeTab === value
+										? 'opacity-100 translate-x-0 z-10'
+										: 'opacity-0 translate-x-5 z-0 pointer-events-none'
+								}`}
+							>
+								{activeTab === value && element}
+							</div>
+						))}
 					</div>
 				</div>
 			</TodoProvider>
