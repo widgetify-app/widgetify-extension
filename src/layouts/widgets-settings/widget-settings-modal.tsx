@@ -82,7 +82,7 @@ export function WidgetSettingsModal({
 			title="تنظیمات ویجت ها"
 			size="xl"
 			direction="rtl"
-			closeOnBackdropClick={false}
+			closeOnBackdropClick={true}
 		>
 			<TabManager
 				tabs={tabs}
