@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { TbBrandPagekit } from 'react-icons/tb'
+import { TbApps, TbBrandPagekit } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -106,12 +106,12 @@ function WigiPage() {
 	const sortedWidgets = getSortedWidgets()
 
 	let layoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3 md:gap-4'
+		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-1'
 	const tabs: any[] = [
 		{
 			label: 'ویجت ها',
 			value: 'widgets',
-			icon: null,
+			icon: <TbApps />,
 			element: (
 				<>
 					<div className={layoutClasses}>
@@ -128,19 +128,23 @@ function WigiPage() {
 		},
 		{
 			label: 'سایت های پیشنهادی',
+			icon: <TbBrandPagekit />,
 			value: 'test',
 		},
 		{
 			label: 'آمار من',
+			icon: <TbBrandPagekit />,
 			value: 'test',
 		},
 		{
-			label: 'رقابت',
-			value: 'test',
+			label: 'ویجت ها',
+			icon: <TbBrandPagekit />,
+			value: 'test3',
 		},
 		{
-			label: 'خبرنامه',
-			value: 'test',
+			label: 'ویجت ها',
+			icon: <TbBrandPagekit />,
+			value: 'test4',
 		},
 	]
 
@@ -166,18 +170,21 @@ function WigiPage() {
 		<DateProvider>
 			<TodoProvider>
 				<div className="flex flex-col md:flex-row h-full gap-0.5 p-2 overflow-hidden">
-					<div className="flex w-full h-12 gap-2 p-1 overflow-x-auto rounded-2xl bg-widget widget-wrapper md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container md:h-72 md:p-2">
+					<div className="flex self-center gap-2 p-1 overflow-x-hidden rounded-2xl md:flex-col shrink-0 md:overflow-y-auto tab-content-container md:h-72 ">
 						{tabs.map(({ label, value, icon }) => (
-							<button
-								key={value}
-								onClick={() => handleTabChange(value)}
-								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
-							>
-								<span className={getTabIconStyle(activeTab === value)}>
-									{icon}
-								</span>
-								<span className="text-sm">{label}</span>
-							</button>
+							<Tooltip content={label} key={value}>
+								<button
+									key={value}
+									onClick={() => handleTabChange(value)}
+									className={`relative flex items-center bg-widget widget-wrapper  w-8 h-8 gap-3 p-2 rounded-full transition-all duration-200 ease-in-out justify-center cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
+								>
+									<span
+										className={getTabIconStyle(activeTab === value)}
+									>
+										{icon}
+									</span>
+								</button>
+							</Tooltip>
 						))}
 					</div>{' '}
 					<div
@@ -375,7 +382,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
+		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
 					<NavbarLayout />
