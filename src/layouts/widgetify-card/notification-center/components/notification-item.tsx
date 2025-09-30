@@ -2,6 +2,28 @@ import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData
 
 interface NotificationItemProps extends NotificationItem {}
 
+interface Prop {
+	link: string | undefined
+	className: string
+	children: React.ReactNode
+}
+function Wrapper({ link, children, className }: Prop) {
+	if (link) {
+		return (
+			<a
+				href={link}
+				target="_blank"
+				rel="noopener noreferrer"
+				className={className}
+			>
+				{children}
+			</a>
+		)
+	}
+
+	return <div className={className}>{children}</div>
+}
+
 export function NotificationCardItem({
 	title,
 	subTitle,
@@ -9,15 +31,9 @@ export function NotificationCardItem({
 	link,
 	icon,
 }: NotificationItemProps) {
-	const handleClick = () => {
-		if (link) {
-			window.open(link, '_blank')
-		}
-	}
-
 	return (
-		<div
-			onClick={handleClick}
+		<Wrapper
+			link={link}
 			className={`flex gap-2 p-2 transition-all duration-300 border rounded-lg ${link && 'cursor-pointer'} bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98`}
 		>
 			{icon && (
@@ -37,6 +53,6 @@ export function NotificationCardItem({
 					{description}
 				</p>
 			</div>
-		</div>
+		</Wrapper>
 	)
 }

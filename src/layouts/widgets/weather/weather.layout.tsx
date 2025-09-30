@@ -99,7 +99,7 @@ export function WeatherLayout() {
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col w-full h-full gap-1">
-				<div className="flex flex-row-reverse items-center w-full gap-3 px-4 py-2 border border-content rounded-2xl min-h-20">
+				<div className="flex flex-row-reverse items-center w-full gap-2 p-2 border border-content rounded-2xl min-h-20">
 					<img
 						src={weatherState?.weather?.icon?.url}
 						alt={weatherState?.weather?.description?.text}
@@ -114,7 +114,7 @@ export function WeatherLayout() {
 						)}
 					</div>
 
-					<div className="flex flex-col justify-center truncate w-full max-w-[7rem]">
+					<div className="flex flex-col justify-center w-full truncate">
 						<div className="flex items-baseline justify-center gap-0.5 text-xl font-bold truncate text-base-content">
 							<span className="text-lg font-medium">
 								{unitsFlag[weatherSettings.temperatureUnit || 'metric']}
