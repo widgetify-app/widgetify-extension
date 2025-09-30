@@ -1,19 +1,17 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type { ClockSettings } from '../clock-setting.interface'
+import { GetTimeInZone } from '../shared'
 
 interface DigitalClockProps {
 	timezone: FetchedTimezone
 	setting: ClockSettings
 }
+
 export function DigitalClock({ timezone, setting }: DigitalClockProps) {
-	const [time, setTime] = useState(
-		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
-	)
+	const [time, setTime] = useState(GetTimeInZone(timezone.value))
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(
-				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
-			)
+			setTime(GetTimeInZone(timezone.value))
 		}, 1000)
 		return () => clearInterval(timer)
 	}, [timezone])
