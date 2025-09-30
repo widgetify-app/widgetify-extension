@@ -60,7 +60,7 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-start h-24 bg-widget rounded-2xl">
+		<div className="flex flex-col items-center justify-start h-24 bg-widget widget-wrapper rounded-2xl">
 			<div className="relative w-full" ref={searchRef}>
 				<form className="w-full" onSubmit={handleSubmit}>
 					<div
