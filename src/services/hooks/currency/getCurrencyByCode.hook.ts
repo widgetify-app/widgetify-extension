@@ -14,6 +14,7 @@ export interface FetchedCurrency {
 	priceHistory: PriceHistory[]
 	type: 'coin' | 'crypto' | 'currency'
 	url: string | null
+	useDollar: boolean
 	isSponsored: boolean
 }
 

@@ -6,7 +6,7 @@ export interface GetPriceResult {
 	label: string | React.ReactNode
 }
 export function GetPrice(code: string, currency: FetchedCurrency): GetPriceResult {
-	if (code.toLowerCase() === 'btc') {
+	if (code.toLowerCase() === 'btc' || currency.useDollar) {
 		return {
 			price: currency.price,
 			label: (
