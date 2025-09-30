@@ -5,97 +5,15 @@ import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import { ContentSection } from '@/components/content-section'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
-import { useAppearanceSetting } from '@/context/appearance.context'
-import { BookmarkProvider } from '@/context/bookmark.context'
-import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
-import { TodoProvider } from '@/context/todo.context'
-import {
-	useWidgetVisibility,
-	WidgetVisibilityProvider,
-} from '@/context/widget-visibility.context'
-import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
+import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { SearchLayout } from '@/layouts/search/search'
-import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-
-const layoutPositions: Record<string, string> = {
-	center: 'justify-center',
-	top: 'justify-start',
-}
-
-function ContentSection() {
-	const { contentAlignment } = useAppearanceSetting()
-	const { getSortedWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets()
-
-	const totalWidgetCount = sortedWidgets.length
-
-	let layoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
-	if (totalWidgetCount === 2) {
-		layoutClasses =
-			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-4 justify-between transition-all duration-300 items-center'
-	}
-
-	return (
-		<DateProvider>
-			<TodoProvider>
-				<div
-					className={`flex flex-col  items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
-				>
-					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
-							<WidgetifyLayout />
-						</div>
-
-						<div
-							className={
-								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-3'
-							}
-						>
-							<SearchLayout />
-							<BookmarkProvider>
-								<div className="h-widget">
-									<BookmarksComponent />
-								</div>
-							</BookmarkProvider>
-						</div>
-
-						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
-							<WigiPadWidget />
-						</div>
-					</div>
-					<div className={layoutClasses}>
-						{sortedWidgets.map((widget) => {
-							if (totalWidgetCount === 2) {
-								return (
-									<div
-										key={widget.id}
-										className="flex-shrink-0 w-full lg:w-3/12 h-widget"
-									>
-										{widget.node}
-									</div>
-								)
-							}
-							return (
-								<div key={widget.id} className="h-widget">
-									{widget.node}
-								</div>
-							)
-						})}
-					</div>
-				</div>
-			</TodoProvider>
-		</DateProvider>
-	)
-}
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
