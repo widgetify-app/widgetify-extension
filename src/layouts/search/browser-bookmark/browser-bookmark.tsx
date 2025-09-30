@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { type RecommendedSite, useGetTrends } from '@/services/hooks/trends/getTrends'
-//@ts-ignore
+//@ts-expect-error
 import 'swiper/css'
 
 import { FiChevronLeft, FiFolder } from 'react-icons/fi'
