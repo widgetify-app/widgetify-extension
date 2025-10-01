@@ -26,6 +26,8 @@ export async function getMainClient(): Promise<AxiosInstance> {
 		baseURL: API_URL,
 		headers: {
 			Authorization: token ? `Bearer ${token}` : undefined,
+			client: 'widgetify-extension',
+			version: browser.runtime.getManifest().version,
 		},
 	})
 
@@ -65,7 +67,7 @@ export async function getMainClient(): Promise<AxiosInstance> {
 					const newToken = response.data.data
 					if (newToken) {
 						await setToStorage('auth_token', newToken)
-						originalRequest.headers['Authorization'] = `Bearer ${newToken}`
+						originalRequest.headers.Authorization = `Bearer ${newToken}`
 					} else {
 						callEvent('auth_logout', null)
 					}
@@ -86,10 +88,10 @@ export async function getMainClient(): Promise<AxiosInstance> {
 export async function safeAwait<E, T>(promise: Promise<any>): Promise<[E, T]> {
 	try {
 		const result = await promise
-		// @ts-ignore
+		// @ts-expect-error
 		return [null, result as T]
 	} catch (error) {
-		// @ts-ignore
+		// @ts-expect-error
 		return [error, null]
 	}
 }
