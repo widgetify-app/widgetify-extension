@@ -226,12 +226,14 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				? prev.filter((id) => id !== widgetId)
 				: [...prev, widgetId]
 
+			if (isCurrentlyVisible) {
+				Analytics.event(`widget_remove_${widgetId}`)
+			} else {
+				Analytics.event(`widget_add_${widgetId}`)
+			}
 			return newVisibility
 		})
-		Analytics.event('widget_visibility', {
-			widget_id: widgetId,
-			new_state: !visibility.includes(widgetId),
-		})
+		// Analytics.event('widget_visibility')
 	}
 
 	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
