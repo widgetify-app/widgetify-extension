@@ -38,7 +38,7 @@ export function ManageWidgets() {
 								key={widget.id}
 								className={`w-full ${!canToggle ? 'opacity-50 cursor-not-allowed' : ''}`}
 								onClick={() => canToggle && toggleWidget(widget.id)}
-								label={`${widget.emoji} ${widget.label}`}
+								label={`${widget.emoji} ${widget.label} ${widget.isNew ? ' ( جدید )' : ''}`}
 							/>
 						)
 					})}
