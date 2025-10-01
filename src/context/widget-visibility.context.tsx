@@ -233,7 +233,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			}
 			return newVisibility
 		})
-		// Analytics.event('widget_visibility')
 	}
 
 	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
