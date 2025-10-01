@@ -1,6 +1,7 @@
 import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { MdRefresh } from 'react-icons/md'
+import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
@@ -42,8 +43,7 @@ export function NetworkLayout() {
 			const client = await getMainClient()
 			const response = await client.get('/extension/@me/ip')
 			setNetworkInfo((prev) => ({ ...prev, ip: response.data.ip }))
-		} catch (err) {
-			console.log(err)
+		} catch {
 			setNetworkInfo((prev) => ({ ...prev, ip: 'N/A' }))
 		}
 
@@ -82,6 +82,11 @@ export function NetworkLayout() {
 		}
 	}, [isAuthenticated])
 
+	function handleRefresh() {
+		Analytics.event('refresh_network_data')
+		fetchNetworkData()
+	}
+
 	return (
 		<WidgetContainer>
 			<RequireAuth mode="preview">
@@ -96,7 +101,7 @@ export function NetworkLayout() {
 
 						<Tooltip content="بارگذاری مجدد">
 							<Button
-								onClick={fetchNetworkData}
+								onClick={handleRefresh}
 								size="xs"
 								className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 							>
