@@ -10,11 +10,9 @@ export function JalaliDate() {
 	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
 	const isDayTime = today.hour() >= 6 && today.hour() < 18
 
-	const textColor = isHoliday
-		? 'text-error drop-shadow-md'
-		: isDayTime
-			? 'text-content drop-shadow-md'
-			: 'text-primary drop-shadow-sm'
+	const textColor = isDayTime
+		? 'text-content drop-shadow-md'
+		: 'text-primary drop-shadow-sm'
 
 	const gregorianDate = today.clone().locale('en')
 
@@ -24,7 +22,7 @@ export function JalaliDate() {
 	return (
 		<>
 			{isHoliday && <HolidayBadge />}
-			<div className="flex flex-col items-center justify-center gap-4">
+			<div className="flex flex-col items-center justify-center gap-4 mt-0.5">
 				<span className={`text-base !leading-none ${textColor} mb-4`}>
 					{today.locale('fa').format('dddd')}
 				</span>

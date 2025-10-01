@@ -1,5 +1,5 @@
 import { FaCog } from 'react-icons/fa'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
@@ -35,11 +35,6 @@ export function DateDisplay() {
 
 	if (!wigiPadDateSettings) {
 		return null
-	}
-
-	async function _updateDateSetting(newSetting: WigiPadDateSetting) {
-		setWigiPadDateSettings(newSetting)
-		await setToStorage('wigiPadDate', newSetting)
 	}
 
 	const onClickSettings = () => {
