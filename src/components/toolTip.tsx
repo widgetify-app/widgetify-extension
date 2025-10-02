@@ -1,4 +1,4 @@
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -171,10 +171,11 @@ const Tooltip = ({
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`tooltip fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
+								className={`tooltip fixed  rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,
+									zIndex: 9999,
 								}}
 								initial="hidden"
 								animate="visible"

@@ -24,6 +24,7 @@ interface FetchedProfile {
 	wallpaper: Wallpaper | null
 	theme?: Theme
 	activity?: string
+	isBirthDateEditable: boolean
 	birthDate: string | null
 }
 
@@ -114,5 +115,18 @@ export async function setUserThemeApi(theme: Theme) {
 
 	await client.put('/extension/@me/theme', {
 		theme,
+	})
+}
+
+export async function sendVerificationEmail(): Promise<void> {
+	const api = await getMainClient()
+	const response = await api.post('/auth/email/resend-verify')
+	return response.data
+}
+
+export function useSendVerificationEmail() {
+	return useMutation({
+		mutationFn: sendVerificationEmail,
+		mutationKey: ['sendVerificationEmail'],
 	})
 }

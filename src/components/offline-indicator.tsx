@@ -26,7 +26,7 @@ export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 	}
 
 	return (
-		<div className="flex items-center gap-2 p-3 text-sm border rounded-lg offline-indicator-notification">
+		<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-lg bg-error/20 text-error border-error/20">
 			<TbCloudOff className="flex-shrink-0 text-lg" />
 			<p>
 				{message ||
