@@ -3,6 +3,7 @@ import hijriMoment from 'moment-hijri'
 
 import type { FetchedAllEvents, FetchedEvent } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import { GetTimeInZone } from '../wigiPad/clock-display/shared'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
@@ -144,7 +145,7 @@ export function getGregorianEvents(
 }
 
 export function getCurrentDate(timeZone: string) {
-	const date = new Date(new Date().toLocaleString('en-US', { timeZone }))
+	const date = GetTimeInZone(timeZone)
 	return jalaliMoment(date).locale('fa')
 }
 
