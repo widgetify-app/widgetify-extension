@@ -77,8 +77,7 @@ export function NoteNavigation() {
 							onClick={addNote}
 							size="xs"
 							disabled={isCreatingNote}
-							rounded="full"
-							className="h-6 w-8 p-0 bg-primary !text-white border-none transition-all duration-300"
+							className={`h-6 w-6 text-xs !p-0 font-medium rounded-[0.55rem] transition-colors border-none shadow-none bg-primary text-white`}
 						>
 							{isCreatingNote ? (
 								<FiLoader className="block w-4 h-4 mx-2 animate-spin text-content" />
