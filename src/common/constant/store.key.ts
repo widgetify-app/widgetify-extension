@@ -44,6 +44,7 @@ export interface StorageKV {
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
 	weatherSettings: WeatherSettings
+	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
 	theme: Theme

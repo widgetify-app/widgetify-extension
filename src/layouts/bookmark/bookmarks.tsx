@@ -326,6 +326,7 @@ export function BookmarksComponent() {
 							? 'bg-widget widget-wrapper max-h-56 overflow-y-auto py-0.5 rounded-2xl'
 							: ''
 					}`}
+					id="bookmarks"
 				>
 					{currentFolderId && (
 						<FolderHeader

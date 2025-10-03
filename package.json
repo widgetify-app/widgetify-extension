@@ -38,6 +38,7 @@
     "react-ga4": "2.1.0",
     "react-hot-toast": "2.6.0",
     "react-icons": "5.5.0",
+    "react-joyride": "2.9.3",
     "swiper": "11.2.10",
     "uuid": "11.1.0",
     "workbox-background-sync": "7.3.0",

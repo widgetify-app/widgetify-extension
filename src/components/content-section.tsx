@@ -129,7 +129,7 @@ export function ContentSection() {
 					</div>
 
 					{sortedWidgets.length > 0 && (
-						<div className="w-full">
+						<div className="w-full" id="widgets">
 							<DndContext
 								sensors={sensors}
 								collisionDetection={closestCenter}
