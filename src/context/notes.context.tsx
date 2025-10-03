@@ -7,7 +7,7 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { sleep } from '@/common/utils/timeout'
@@ -18,6 +18,7 @@ import {
 	getNotes,
 	upsertNote,
 } from '@/services/note/note-api'
+import { translateError } from '@/utils/translate-error'
 
 export interface Note {
 	id: string
@@ -30,11 +31,12 @@ export interface Note {
 interface NotesContextType {
 	notes: Note[]
 	activeNoteId: string | null
-	setActiveNoteId: (id: string) => void
+	setActiveNoteId: (id: string | null) => void
 	addNote: () => void
 	updateNote: (id: string, updates: Partial<Note>) => void
 	deleteNote: (id: string) => void
 	isSaving: boolean
+	isCreatingNote: boolean
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined)
@@ -43,6 +45,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	const [notes, setNotes] = useState<Note[]>([])
 	const [activeNoteId, setActiveNoteId] = useState<string | null>(null)
 	const [isSaving, setIsSaving] = useState(false)
+	const [isCreatingNote, setIsCreatingNote] = useState(false)
 	const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	useEffect(() => {
@@ -50,7 +53,6 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			const storedNotes = await getFromStorage('notes_data')
 			if (storedNotes && Array.isArray(storedNotes) && storedNotes.length > 0) {
 				setNotes(storedNotes)
-				setActiveNoteId(storedNotes[0].id)
 
 				await sleep(1000)
 				setIsSaving(true)
@@ -60,7 +62,6 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				setIsSaving(false)
 				if (!error) {
 					setNotes(fetchedNotes)
-					setActiveNoteId(fetchedNotes[0].id)
 				}
 			}
 		}
@@ -68,33 +69,40 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		loadNotes()
 	}, [])
 
-	const addNote = () => {
+	const addNote = async () => {
+		if (isCreatingNote) return
+
+		setIsCreatingNote(true)
+
 		const newNote: Note = {
-			id: uuidv4(),
+			id: '',
 			title: '',
 			body: '',
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 		}
+
+		const [er, createdNote] = await safeAwait<AxiosError, FetchedNote>(
+			upsertNote(newNote)
+		)
+
+		setIsCreatingNote(false)
+
+		if (er) {
+			return
+		}
+
 		setNotes((prevNotes) => {
-			const updatedNotes = [...prevNotes, newNote]
+			const updatedNotes = [createdNote, ...prevNotes]
 			setToStorage('notes_data', updatedNotes)
 			return updatedNotes
 		})
-		setActiveNoteId(newNote.id)
+		setActiveNoteId(createdNote.id)
 		Analytics.event('add_notes')
 	}
 
 	const updateNote = (id: string, updates: Partial<Note>) => {
 		setIsSaving(true)
-		let notesAfterUpdate: Note[] = []
-
-		setNotes((prevNotes) => {
-			notesAfterUpdate = prevNotes.map((note) =>
-				note.id === id ? { ...note, ...updates, updatedAt: Date.now() } : note
-			)
-			return notesAfterUpdate
-		})
 
 		if (saveTimeoutRef.current) {
 			clearTimeout(saveTimeoutRef.current)
@@ -102,15 +110,29 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
 		saveTimeoutRef.current = setTimeout(async () => {
 			Analytics.event('update_notes')
-			await setToStorage('notes_data', notesAfterUpdate)
-
-			await upsertNote({
-				title: updates.title || null,
-				body: updates.body || null,
-				offlineId: id,
-				onlineId: notesAfterUpdate.find((note) => note.id === id)?.id,
-			})
+			const [error, updatedNote] = await safeAwait<AxiosError, FetchedNote>(
+				upsertNote({
+					title: updates.title || null,
+					body: updates.body || null,
+					id,
+				})
+			)
 			setIsSaving(false)
+			if (error) {
+				const translatedError = translateError(error)
+				if (typeof translatedError === 'string') {
+					return toast.error(translatedError)
+				}
+				const key = Object.keys(translatedError)[0]
+				return toast.error(`${key}: ${translatedError[key]}`)
+			}
+
+			// update notes
+			const updatedNotes = notes.map((note) =>
+				note.id === id ? updatedNote : note
+			)
+
+			await setToStorage('notes_data', updatedNotes)
 		}, 2500)
 	}
 
@@ -121,10 +143,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			const updatedNotes = [...notes]
 			updatedNotes.splice(existingNote, 1)
 			setNotes(updatedNotes)
-			if (activeNoteId === id) {
-				setActiveNoteId(updatedNotes[0]?.id || null)
-			} else {
-			}
+			setActiveNoteId(null)
 
 			await safeAwait(deleteNote(id))
 
@@ -144,6 +163,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				updateNote,
 				deleteNote: onDeleteNote,
 				isSaving,
+				isCreatingNote,
 			}}
 		>
 			{children}

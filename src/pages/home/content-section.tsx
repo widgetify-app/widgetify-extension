@@ -2,17 +2,11 @@ import {
 	closestCenter,
 	DndContext,
 	type DragEndEvent,
-	KeyboardSensor,
 	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core'
-import {
-	rectSortingStrategy,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	useSortable,
-} from '@dnd-kit/sortable'
+import { rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import Analytics from '@/analytics'
 import { useAppearanceSetting } from '@/context/appearance.context'
@@ -69,9 +63,6 @@ export function ContentSection() {
 			activationConstraint: {
 				distance: 8,
 			},
-		}),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
 		})
 	)
 
