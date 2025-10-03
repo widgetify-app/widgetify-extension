@@ -26,7 +26,10 @@ const layoutPositions: Record<string, string> = {
 
 function SortableWidget({ widget }: { widget: WidgetItem }) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-		useSortable({ id: widget.id })
+		useSortable({
+			id: widget.id,
+			disabled: false,
+		})
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -34,12 +37,33 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 		zIndex: isDragging ? 999 : 'auto',
 	}
 
+	const dragListeners = {
+		...listeners,
+		onPointerDown: (event: React.PointerEvent) => {
+			const target = event.target as HTMLElement
+			const isInput =
+				target.tagName === 'INPUT' ||
+				target.tagName === 'TEXTAREA' ||
+				target.contentEditable === 'true' ||
+				target.closest('input, textarea, [contenteditable="true"]') ||
+				target.closest('button, select, a')
+
+			if (isInput) {
+				return
+			}
+
+			if (listeners?.onPointerDown) {
+				listeners.onPointerDown(event)
+			}
+		},
+	}
+
 	return (
 		<div
 			ref={setNodeRef}
 			style={style}
 			{...attributes}
-			{...listeners}
+			{...dragListeners}
 			className={`h-widget transition-all duration-200 ${
 				isDragging
 					? 'opacity-50 scale-105 shadow-2xl cursor-grabbing'
