@@ -53,16 +53,16 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			const storedNotes = await getFromStorage('notes_data')
 			if (storedNotes && Array.isArray(storedNotes) && storedNotes.length > 0) {
 				setNotes(storedNotes)
+			}
 
-				await sleep(1000)
-				setIsSaving(true)
-				const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
-					getNotes()
-				)
-				setIsSaving(false)
-				if (!error) {
-					setNotes(fetchedNotes)
-				}
+			await sleep(1000)
+			setIsSaving(true)
+			const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
+				getNotes()
+			)
+			setIsSaving(false)
+			if (!error) {
+				setNotes(fetchedNotes)
 			}
 		}
 
