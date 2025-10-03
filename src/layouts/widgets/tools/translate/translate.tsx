@@ -1,14 +1,14 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { GoArrowSwitch } from 'react-icons/go'
 import { MdOutlinePrivacyTip } from 'react-icons/md'
-import { TbArrowsUpDown, TbLanguage } from 'react-icons/tb'
+import { TbLanguage } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { RequireVerification } from '@/components/auth/require-verification'
 import { Button } from '@/components/button/button'
 import { SelectBox } from '@/components/selectbox/selectbox'
-import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import {
 	getLanguageDisplayName,
@@ -24,11 +24,9 @@ import { validateTranslateRequest } from './shared'
 
 export const TranslateComponent: React.FC = () => {
 	const { isAuthenticated, user } = useAuth()
-	const [fromLanguage, setFromLanguage] = useState<string>('auto')
 	const [toLanguage, setToLanguage] = useState<string>('fa')
 	const [inputText, setInputText] = useState<string>('')
 	const [translatedText, setTranslatedText] = useState<string>('')
-	const [isSwapping, setIsSwapping] = useState<boolean>(false)
 	const [validationError, setValidationError] = useState<string>('')
 	const [rateLimitTimer, setRateLimitTimer] = useState<number>(0)
 	const [showPlatformModal, setShowPlatformModal] = useState<boolean>(false)
@@ -61,7 +59,7 @@ export const TranslateComponent: React.FC = () => {
 		}
 
 		const request: TranslateRequestInput = {
-			from: fromLanguage,
+			from: 'auto',
 			to: toLanguage,
 			text: inputText,
 		}
@@ -77,7 +75,7 @@ export const TranslateComponent: React.FC = () => {
 		translateMutation.mutate(request, {
 			onSuccess: (data) => {
 				setTranslatedText(data.translated)
-				Analytics.event(`translate_success_${fromLanguage}_to_${toLanguage}`)
+				Analytics.event(`translate_success_auto_to_${toLanguage}`)
 			},
 			onError: (error: any) => {
 				const errorData = error.response?.data
@@ -87,25 +85,9 @@ export const TranslateComponent: React.FC = () => {
 				}
 
 				setValidationError(errorData.message || 'TRANSLATE_ERROR')
-				Analytics.event(`translate_error_${fromLanguage}_to_${toLanguage}`)
+				Analytics.event(`translate_error_auto_to_${toLanguage}`)
 			},
 		})
-	}
-
-	const handleSwap = () => {
-		if (fromLanguage === 'auto' || toLanguage === 'auto') return
-
-		setIsSwapping(true)
-		const temp = fromLanguage
-		setFromLanguage(toLanguage)
-		setToLanguage(temp)
-
-		const tempText = inputText
-		setInputText(translatedText)
-		setTranslatedText(tempText)
-
-		setTimeout(() => setIsSwapping(false), 300)
-		Analytics.event('translate_swap_languages')
 	}
 
 	const onChangeInputText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -120,7 +102,7 @@ export const TranslateComponent: React.FC = () => {
 		if (validationError && rateLimitTimer === 0) {
 			setValidationError('')
 		}
-	}, [fromLanguage, toLanguage, inputText, validationError, rateLimitTimer])
+	}, [toLanguage, inputText, validationError, rateLimitTimer])
 
 	const decrementTimer = useCallback(() => {
 		setRateLimitTimer((prev) => {
@@ -168,8 +150,9 @@ export const TranslateComponent: React.FC = () => {
 						<div className="flex-1">
 							<SelectBox
 								options={languageOptions}
-								value={fromLanguage}
-								onChange={setFromLanguage}
+								disabled={true}
+								value={'auto'}
+								onChange={() => {}}
 								className="!w-full !h-6 !text-xs !bg-content hover:!bg-base-200"
 								optionClassName="!bg-base-100"
 							/>
@@ -177,17 +160,12 @@ export const TranslateComponent: React.FC = () => {
 
 						<Button
 							size="xs"
-							onClick={handleSwap}
 							className="btn btn-ghost !btn-xs !w-6 !h-6 !min-h-6 !p-0"
-							disabled={isSwapping || fromLanguage === 'auto'}
+							disabled={true}
 						>
-							<Tooltip content="تعویض زبان‌ها" position="top">
-								<div
-									className={`transition-transform duration-300 ${isSwapping ? 'rotate-180' : ''}`}
-								>
-									<TbArrowsUpDown className="w-3 h-3" />
-								</div>
-							</Tooltip>
+							<div className={`transition-transform duration-300`}>
+								<GoArrowSwitch className="w-3 h-3" />
+							</div>
 						</Button>
 
 						<div className="flex-1">
@@ -205,7 +183,7 @@ export const TranslateComponent: React.FC = () => {
 
 					<TranslationInput
 						inputText={inputText}
-						fromLanguage={fromLanguage}
+						fromLanguage={'auto'}
 						onChangeInputText={onChangeInputText}
 					/>
 
