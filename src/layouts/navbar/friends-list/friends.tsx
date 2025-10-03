@@ -1,7 +1,7 @@
 import { FiChevronLeft, FiUsers } from 'react-icons/fi'
 import { FreeMode, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-//@ts-ignore
+//@ts-expect-error
 import 'swiper/css'
 import { useState } from 'react'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import Joyride, { type Step } from 'react-joyride'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -15,11 +16,46 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 
+const steps: Step[] = [
+	{
+		target: 'body',
+		content:
+			'به ویجتی‌فای خوش آمدید! بیایید با هم قسمت‌های مختلف برنامه را بررسی کنیم تا با امکانات آن آشنا شوید.',
+		disableBeacon: true,
+	},
+	{
+		target: '#settings-button',
+		content:
+			'از این دکمه می‌توانید به تنظیمات عمومی برنامه دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
+	},
+	{
+		target: '#widget-settings-button',
+		content:
+			'این دکمه به شما اجازه می‌دهد ویجت‌ها را مدیریت کنید: ویجت جدید اضافه کنید، ویجت‌های موجود را ویرایش یا حذف کنید و تنظیمات هر ویجت را تغییر دهید.',
+	},
+	{
+		target: '#profile-and-friends-list',
+		content:
+			'از این بخش می‌توانید به پروفایل شخصی خود و لیست دوستان دسترسی پیدا کنید و آن‌ها را مدیریت کنید.',
+	},
+	{
+		target: '#bookmarks',
+		content:
+			'این بخش به شما امکان می‌دهد بوکمارک‌ها را مدیریت کنید: بوکمارک جدید اضافه کنید، بوکمارک‌های موجود را ویرایش یا حذف کنید و تنظیمات هر بوکمارک را تغییر دهید.',
+	},
+	{
+		target: '#widgets',
+		content:
+			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
+	},
+]
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
+	const [showTour, setShowTour] = useState(false)
+
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
@@ -34,32 +70,6 @@ export function HomePage() {
 				setShowReleaseNotes(true)
 			}
 		}
-
-		displayModalIfNeeded()
-
-		Analytics.pageView('Home', '/')
-	}, [])
-
-	const handleGetStarted = async () => {
-		await setToStorage('showWelcomeModal', false)
-		setShowWelcomeModal(false)
-	}
-
-	const onCloseReleaseNotes = async () => {
-		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
-		setShowReleaseNotes(false)
-	}
-
-	useEffect(() => {
-		const wallpaperChangedEvent = listenEvent(
-			'wallpaperChanged',
-			(wallpaper: StoredWallpaper) => {
-				if (wallpaper) {
-					changeWallpaper(wallpaper)
-					setToStorage('wallpaper', wallpaper)
-				}
-			}
-		)
 
 		async function loadWallpaper() {
 			const wallpaper = await getFromStorage('wallpaper')
@@ -95,13 +105,19 @@ export function HomePage() {
 			}
 		}
 
+		displayModalIfNeeded()
 		loadWallpaper()
-		return () => {
-			wallpaperChangedEvent()
-		}
-	}, [])
 
-	useEffect(() => {
+		const wallpaperChangedEvent = listenEvent(
+			'wallpaperChanged',
+			(wallpaper: StoredWallpaper) => {
+				if (wallpaper) {
+					changeWallpaper(wallpaper)
+					setToStorage('wallpaper', wallpaper)
+				}
+			}
+		)
+
 		const openWidgetsSettingsEvent = listenEvent(
 			'openWidgetsSettings',
 			(data: { tab: WidgetTabKeys | null }) => {
@@ -110,10 +126,29 @@ export function HomePage() {
 			}
 		)
 
+		Analytics.pageView('Home', '/')
+
 		return () => {
+			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
 		}
 	}, [])
+
+	const handleGetStarted = async () => {
+		const [hasSeenTour] = await Promise.all([
+			getFromStorage('hasSeenTour'),
+			setToStorage('showWelcomeModal', false),
+		])
+		setShowWelcomeModal(false)
+		if (!hasSeenTour) {
+			setShowTour(true)
+		}
+	}
+
+	const onCloseReleaseNotes = async () => {
+		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
+		setShowReleaseNotes(false)
+	}
 
 	function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
@@ -185,12 +220,24 @@ export function HomePage() {
 		}
 	}
 
+	function onDoneTour(data: any) {
+		if (data.status === 'finished' || data.status === 'skipped') {
+			setToStorage('hasSeenTour', true)
+			setShowTour(false)
+			Analytics.event(`tour_${data.status}`)
+		}
+	}
+
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
-					<NavbarLayout />
-					<ContentSection />
+					<div data-tour="navbar">
+						<NavbarLayout />
+					</div>
+					<div data-tour="content">
+						<ContentSection />
+					</div>
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
@@ -201,6 +248,27 @@ export function HomePage() {
 					/>
 				</WidgetVisibilityProvider>
 			</GeneralSettingProvider>
+			<Joyride
+				steps={steps}
+				run={showTour}
+				continuous
+				showProgress
+				showSkipButton
+				locale={{
+					next: 'بعدی',
+					back: 'قبلی',
+					skip: 'رد کردن',
+					last: 'پایان',
+					close: 'بستن',
+					nextLabelWithProgress: 'بعدی {step}/{steps}',
+				}}
+				callback={onDoneTour}
+				styles={{
+					options: {
+						primaryColor: '#3b82f6',
+					},
+				}}
+			/>
 			<Toaster
 				toastOptions={{
 					error: {

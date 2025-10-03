@@ -151,6 +151,7 @@ export function NavbarLayout(): JSX.Element {
 						<div
 							className="relative flex items-center justify-center w-8 h-8 gap-2 transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
 							onClick={() => onClickOpenWidgetSettings()}
+							id="widget-settings-button"
 						>
 							<TbApps size={20} className="text-muted" />
 							{showNewBadge && (
@@ -162,6 +163,7 @@ export function NavbarLayout(): JSX.Element {
 						<div
 							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
 							onClick={() => setShowSettings(true)}
+							id="settings-button"
 						>
 							<VscSettings size={20} className="text-muted" />
 						</div>
