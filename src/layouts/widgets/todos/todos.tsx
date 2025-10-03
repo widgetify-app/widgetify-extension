@@ -2,7 +2,6 @@ import {
 	closestCenter,
 	DndContext,
 	type DragEndEvent,
-	KeyboardSensor,
 	PointerSensor,
 	useSensor,
 	useSensors,
@@ -53,8 +52,7 @@ export function TodosLayout() {
 			activationConstraint: {
 				distance: 5,
 			},
-		}),
-		useSensor(KeyboardSensor)
+		})
 	)
 
 	const handleChangeViewMode = (viewMode: TodoViewType) => {

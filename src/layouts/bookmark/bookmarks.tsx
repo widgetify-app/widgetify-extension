@@ -2,7 +2,6 @@ import {
 	closestCenter,
 	DndContext,
 	type DragEndEvent,
-	KeyboardSensor,
 	PointerSensor,
 	useSensor,
 	useSensors,
@@ -59,8 +58,7 @@ export function BookmarksComponent() {
 			activationConstraint: {
 				distance: 5, // 5px movement required before drag starts
 			},
-		}),
-		useSensor(KeyboardSensor)
+		})
 	)
 
 	const BOOKMARKS_PER_ROW = 5
