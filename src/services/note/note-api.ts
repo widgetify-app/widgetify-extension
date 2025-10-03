@@ -3,16 +3,13 @@ import { getMainClient } from '../api'
 interface Input {
 	title?: string | null
 	body?: string | null
-	offlineId?: string
-	onlineId?: string
+	id?: string
 }
 export interface FetchedNote {
 	id: string
 
 	title: string
 	body: string
-
-	offlineId: string
 
 	createdAt: number
 	updatedAt: number
@@ -24,10 +21,12 @@ export interface GetNotesResponse {
 	totalPages: number
 }
 
-export async function upsertNote(input: Input) {
+export async function upsertNote(input: Input): Promise<FetchedNote> {
 	const api = await getMainClient()
 
-	await api.post('/notes', input)
+	const response = await api.post('/notes', input)
+
+	return response.data
 }
 
 export async function getNotes(): Promise<FetchedNote[]> {

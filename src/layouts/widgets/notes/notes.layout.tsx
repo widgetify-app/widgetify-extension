@@ -1,4 +1,6 @@
-import { FiBook, FiLoader } from 'react-icons/fi'
+import moment from 'jalali-moment'
+import { PiNotepad } from 'react-icons/pi'
+import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
@@ -12,13 +14,13 @@ function NotesContent() {
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
 
-	if (!activeNote) {
+	if (!activeNote && !notes.length) {
 		return (
 			<div
 				className={`flex flex-col items-center justify-center h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 			>
-				<FiBook className={'w-8 h-8 mb-2 text-content opacity-50'} />
-				<p className={'text-sm text-muted'}>هیچ یادداشتی پیدا نشد</p>
+				<PiNotepad size={42} className={'mb-2 text-content opacity-50'} />
+				<p className={'text-sm text-muted'}>یادداشتی پیدا نشد</p>
 				<button
 					onClick={addNote}
 					className="px-3 py-1 mt-2 text-sm text-white transition-colors bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-600"
@@ -27,6 +29,10 @@ function NotesContent() {
 				</button>
 			</div>
 		)
+	}
+
+	if (!activeNote) {
+		return <NoteList />
 	}
 
 	return (
@@ -40,24 +46,44 @@ function NotesContent() {
 	)
 }
 
+function NoteList() {
+	const { notes, setActiveNoteId } = useNotes()
+	const { blurMode } = useGeneralSetting()
+	function handleNoteClick(noteId: string) {
+		setActiveNoteId(noteId)
+		Analytics.event('note_selected')
+	}
+
+	return (
+		<div
+			className={`w-full overflow-y-auto hide-scrollbar h-96 flex flex-col gap-0.5 mt-4 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+		>
+			{notes.map((note) => (
+				<div
+					key={note.id}
+					className={`p-2   bg-base-300/70 hover:bg-base-300 border border-base-300/70 rounded-md flex group justify-between items-center cursor-pointer hover:bg-opacity-80 transition-colors`}
+					onClick={() => handleNoteClick(note.id)}
+				>
+					<span className="flex-1 text-xs truncate text-content">
+						{note.title || 'بدون عنوان'}
+					</span>
+					<span className="text-[10px] text-muted">
+						{moment(note.createdAt).locale('fa').format('jD jMMM YY')}
+					</span>
+				</div>
+			))}
+		</div>
+	)
+}
+
 function NotesHeader() {
-	const { notes, activeNoteId, setActiveNoteId, addNote, deleteNote, isSaving } =
-		useNotes()
 	return (
 		<div className="flex items-center justify-between">
 			<h4 className={'text-sm font-medium text-content truncate'}>
 				دفترچه یادداشت
 			</h4>
-			{isSaving && (
-				<FiLoader className={'mx-2 block w-4 h-4 animate-spin text-content'} />
-			)}
-			<NoteNavigation
-				notes={notes}
-				activeNoteId={activeNoteId}
-				onSelectNote={setActiveNoteId}
-				onAddNote={addNote}
-				onDeleteNote={deleteNote}
-			/>
+
+			<NoteNavigation />
 		</div>
 	)
 }

@@ -6,7 +6,6 @@ import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
-import { ContentSection } from '@/components/content-section'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
@@ -15,6 +14,7 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { ContentSection } from './home/content-section'
 
 const steps: Step[] = [
 	{
@@ -283,6 +283,7 @@ export function HomePage() {
 							color: '#155724',
 						},
 					},
+					duration: 5000,
 				}}
 			/>
 			<ExtensionInstalledModal
