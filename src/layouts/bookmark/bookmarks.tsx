@@ -56,7 +56,7 @@ export function BookmarksComponent() {
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: {
-				distance: 5, // 5px movement required before drag starts
+				distance: 5,
 			},
 		})
 	)
@@ -302,7 +302,7 @@ export function BookmarksComponent() {
 		}
 
 		const bookmarkCount = currentFolderItems.length
-		const minBookmarks = 9
+		const minBookmarks = 10
 		const needsFillers = bookmarkCount < minBookmarks
 		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
 
@@ -319,9 +319,9 @@ export function BookmarksComponent() {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex flex-col ${
+					className={`flex flex-col transition-all duration-300 ${
 						currentFolderId
-							? 'bg-widget widget-wrapper max-h-56 overflow-y-auto py-0.5 rounded-2xl'
+							? 'bg-widget widget-wrapper max-h-60 overflow-y-auto py-1 rounded-2xl'
 							: ''
 					}`}
 					id="bookmarks"
