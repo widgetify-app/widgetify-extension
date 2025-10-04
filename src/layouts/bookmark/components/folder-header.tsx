@@ -21,11 +21,11 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 	}, [isOpen])
 	return (
 		<>
-			<div className="flex flex-row justify-between px-1">
+			<div className="flex flex-row justify-between px-1 border-b border-content mb-0.5">
 				<FolderPath
 					folderPath={folderPath}
 					onNavigate={onNavigate}
-					className="w-full border-b border-content mb-0.5"
+					className="w-full "
 				/>
 				<Tooltip content={'آموزش'}>
 					<Button
