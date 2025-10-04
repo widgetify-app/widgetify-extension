@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { setUserThemeApi } from '@/services/hooks/user/userService.hook'
+import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
 import { useAuth } from './auth.context'
 
 interface ThemeContextType {
@@ -24,6 +24,7 @@ export const ThemeContext = createContext<ThemeContextType | null>(null)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<string>('')
 	const { isAuthenticated } = useAuth()
+	const { mutateAsync } = useUpdateExtensionSettings()
 	async function loadTheme() {
 		const theme = await getFromStorage('theme')
 		return theme
@@ -71,8 +72,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 	const setThemeCallback = async (theme: string) => {
 		applyThemeChange(theme)
-		if (!isAuthenticated) return
-		await setUserThemeApi(theme as any)
+		if (isAuthenticated) {
+			await mutateAsync({ theme: theme })
+		}
 	}
 
 	const applyThemeChange = (theme: string) => {

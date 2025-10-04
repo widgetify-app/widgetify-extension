@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { setUserWallpaperApi } from '@/services/hooks/user/userService.hook'
+import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(
@@ -11,6 +11,7 @@ export function useWallpaper(
 ) {
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
+	const { mutateAsync } = useUpdateExtensionSettings()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
 
 	useEffect(() => {
@@ -102,7 +103,7 @@ export function useWallpaper(
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
 
-			await setUserWallpaperApi(wallpaperId).catch()
+			await mutateAsync({ wallpaperId })
 		}
 	}
 
