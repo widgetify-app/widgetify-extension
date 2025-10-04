@@ -1,5 +1,4 @@
 import type React from 'react'
-import { useEffect, useState } from 'react'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
@@ -9,13 +8,6 @@ import { DaySummary } from './components/day-summary'
 const CalendarLayout: React.FC<any> = () => {
 	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
 		useDate()
-	const [isDrawerOpen, setIsDrawerOpen] = useState<boolean | null>(null)
-
-	useEffect(() => {
-		setIsDrawerOpen(true)
-	}, [])
-
-	if (isDrawerOpen === null) return <></>
 
 	return (
 		<WidgetContainer
