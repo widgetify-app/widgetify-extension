@@ -48,7 +48,7 @@ export function FolderBookmarkItem({
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-4 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300 folder-bookmark-item`}
+					className={`relative flex flex-col items-center justify-center p-2 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300 folder-bookmark-item`}
 				>
 					{RenderStickerPattern(bookmark)}
 					<div className="absolute inset-0 overflow-hidden rounded-2xl">
