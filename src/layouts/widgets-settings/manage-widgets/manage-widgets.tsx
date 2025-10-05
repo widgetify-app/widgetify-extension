@@ -1,19 +1,3 @@
-import {
-	closestCenter,
-	DndContext,
-	KeyboardSensor,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core'
-import {
-	SortableContext,
-	sortableKeyboardCoordinates,
-	useSortable,
-	verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-import { FiMove } from 'react-icons/fi'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
 import {
@@ -24,79 +8,15 @@ import {
 import { ItemSelector } from '../../../components/item-selector'
 import { WidgetSettingWrapper } from '../widget-settings-wrapper'
 
-// Sortable widget component that uses dnd-kit
-function SortableWidget({ widget }: { widget: any }) {
-	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-		useSortable({ id: widget.id })
-
-	const style = {
-		transform: CSS.Transform.toString(transform),
-		transition,
-	}
-
-	return (
-		<div
-			ref={setNodeRef}
-			style={style}
-			className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
-				isDragging
-					? 'bg-primary/20 border-primary/50'
-					: 'bg-content border-content'
-			}`}
-		>
-			<div className="flex items-center gap-2">
-				<span className="text-lg">{widget.emoji}</span>
-				<span>{widget.label}</span>
-			</div>
-			<div
-				{...attributes}
-				{...listeners}
-				className="p-1 rounded-lg cursor-move hover:bg-content"
-				title="جابجا کردن"
-			>
-				<FiMove className="text-muted" />
-			</div>
-		</div>
-	)
-}
-
 export function ManageWidgets() {
-	const { visibility, toggleWidget, reorderWidgets, getSortedWidgets } =
-		useWidgetVisibility()
+	const { visibility, toggleWidget } = useWidgetVisibility()
 	const { isAuthenticated } = useAuth()
-
-	const sortedVisibleWidgets = getSortedWidgets()
-
-	// Set up sensors for keyboard and pointer interactions
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5, // 5px movement required before drag starts
-			},
-		}),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		})
-	)
-
-	const handleDragEnd = (event: any) => {
-		const { active, over } = event
-
-		if (!over || active.id === over.id) {
-			return
-		}
-
-		const oldIndex = sortedVisibleWidgets.findIndex((item) => item.id === active.id)
-		const newIndex = sortedVisibleWidgets.findIndex((item) => item.id === over.id)
-
-		reorderWidgets(oldIndex, newIndex)
-	}
 
 	return (
 		<WidgetSettingWrapper>
 			{!isAuthenticated && (
-				<div className="p-3 mb-4 border rounded-lg border-warning bg-warning/10">
-					<p className="text-sm text-warning-content">
+				<div className="p-3 mb-4 border rounded-lg border-warning/20 bg-warning/10">
+					<p className="text-sm text-warning">
 						⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS} ویجت
 						فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود
 						شوید.
@@ -118,35 +38,25 @@ export function ManageWidgets() {
 								key={widget.id}
 								className={`w-full ${!canToggle ? 'opacity-50 cursor-not-allowed' : ''}`}
 								onClick={() => canToggle && toggleWidget(widget.id)}
-								label={`${widget.emoji} ${widget.label}`}
+								label={`${widget.emoji} ${widget.label} ${widget.isNew ? ' ( جدید )' : ''}`}
 							/>
 						)
 					})}
 				</div>
 			</SectionPanel>
 			<SectionPanel title="ترتیب ویجت‌های فعال" size="sm">
-				{sortedVisibleWidgets.length === 0 ? (
-					<p className="py-4 text-sm text-center text-muted">
-						هیچ ویجتی برای نمایش انتخاب نشده است.
-					</p>
-				) : (
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
-					>
-						<SortableContext
-							items={sortedVisibleWidgets.map((widget) => widget.id)}
-							strategy={verticalListSortingStrategy}
-						>
-							<div className="space-y-1">
-								{sortedVisibleWidgets.map((widget) => (
-									<SortableWidget key={widget.id} widget={widget} />
-								))}
-							</div>
-						</SortableContext>
-					</DndContext>
-				)}
+				<div className="flex items-start gap-3 p-3 border rounded-lg bg-primary/10 border-primary/20">
+					<span className="text-lg">💡</span>
+					<div className="text-sm">
+						<p className="mb-1 font-medium text-primary">
+							چگونه ترتیب ویجت‌ها را تغییر دهم؟
+						</p>
+						<p className="leading-relaxed text-muted">
+							در صفحه، روی بالای هر ویجت کلیک کرده و آن را بکشید تا ترتیب
+							آن‌ها را تغییر دهید. تغییرات به‌صورت خودکار ذخیره می‌شوند.
+						</p>
+					</div>
+				</div>
 			</SectionPanel>
 		</WidgetSettingWrapper>
 	)

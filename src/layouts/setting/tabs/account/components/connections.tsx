@@ -1,7 +1,6 @@
 import { type JSX, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/button/button'
-import { OfflineIndicator } from '@/components/offline-indicator'
 import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
 import { getMainClient } from '@/services/api'
@@ -17,6 +16,29 @@ interface Platform {
 	isActive: boolean
 	isLoading?: boolean
 }
+
+const LoadingSpinner = () => (
+	<svg
+		className="w-4 h-4 animate-spin"
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+	>
+		<circle
+			className="opacity-25"
+			cx="12"
+			cy="12"
+			r="10"
+			stroke="currentColor"
+			strokeWidth="4"
+		></circle>
+		<path
+			className="opacity-75"
+			fill="currentColor"
+			d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+		></path>
+	</svg>
+)
 
 export function Connections() {
 	const { data: profile } = useGetUserProfile()
@@ -76,6 +98,11 @@ export function Connections() {
 	}, [profile?.connections])
 
 	const handleConnectionToggle = async (platformId: string) => {
+		if (!profile?.verified) {
+			return toast.error('لطفا اول حساب کاربری خود را تأیید کنید.', {
+				duration: 4000,
+			})
+		}
 		const platformIndex = platforms.findIndex((p) => p.id === platformId)
 		const platform = platforms[platformIndex]
 
@@ -108,7 +135,7 @@ export function Connections() {
 
 				window.location.href = response.data.url
 			}
-		} catch (error) {
+		} catch {
 			setPlatforms(
 				platforms.map((p) =>
 					p.id === platformId ? { ...p, isLoading: false } : p
@@ -116,37 +143,12 @@ export function Connections() {
 			)
 
 			toast.error(`خطا در ارتباط با ${platform.name}. لطفا دوباره تلاش کنید.`)
-			console.error('Connection error:', error)
 		}
 	}
-
-	const LoadingSpinner = () => (
-		<svg
-			className="w-4 h-4 animate-spin"
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-		>
-			<circle
-				className="opacity-25"
-				cx="12"
-				cy="12"
-				r="10"
-				stroke="currentColor"
-				strokeWidth="4"
-			></circle>
-			<path
-				className="opacity-75"
-				fill="currentColor"
-				d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-			></path>
-		</svg>
-	)
 
 	return (
 		<SectionPanel title="پلتفرم‌های متصل" delay={0.4} size="xs">
 			<div className="space-y-4">
-				{profile?.inCache && <OfflineIndicator mode="notification" />}
 				<p className={'text-sm font-light text-content'}>
 					مدیریت اتصالات پلتفرم‌ها و سرویس‌های متصل به حساب کاربری شما.
 				</p>

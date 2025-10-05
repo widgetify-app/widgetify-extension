@@ -2,7 +2,12 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
+import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import {
+	type FetchedTimezone,
+	getTimezones,
+} from '@/services/hooks/timezone/getTimezones.hook'
+import { useAuth } from './auth.context'
 
 export interface GeneralData {
 	blurMode: boolean
@@ -47,6 +52,8 @@ export const GeneralSettingContext = createContext<GeneralSettingContextType | n
 export function GeneralSettingProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<GeneralData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
+	const { isAuthenticated, user } = useAuth()
+	const { mutateAsync } = useUpdateExtensionSettings()
 
 	useEffect(() => {
 		async function loadGeneralSettings() {
@@ -84,8 +91,28 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 				setIsInitialized(true)
 			}
 		}
+
 		loadGeneralSettings()
 	}, [])
+
+	useEffect(() => {
+		async function getTimeZone() {
+			if (user?.timeZone && user.timeZone !== settings?.selected_timezone?.value) {
+				const timezones = await getTimezones()
+				if (timezones?.length) {
+					const matchingTimezone = timezones.find(
+						(tz) => tz.value === user.timeZone
+					)
+					if (matchingTimezone) {
+						updateSetting('selected_timezone', matchingTimezone)
+					}
+				}
+			}
+		}
+		if (user) {
+			getTimeZone()
+		}
+	}, [user])
 
 	async function browserHasPermission(
 		permissions: Browser.runtime.ManifestPermissions[]
@@ -111,8 +138,11 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	const setAnalyticsEnabled = (value: boolean) => {
 		updateSetting('analyticsEnabled', value)
 	}
-	const setTimezone = (value: FetchedTimezone) => {
+	const setTimezone = async (value: FetchedTimezone) => {
 		updateSetting('selected_timezone', value)
+		if (isAuthenticated) {
+			await mutateAsync({ timeZone: value.value })
+		}
 	}
 
 	const setBrowserBookmarksEnabled = async (value: boolean) => {

@@ -1,8 +1,16 @@
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
-type Position = 'top' | 'right' | 'bottom' | 'left'
+type Position =
+	| 'top'
+	| 'right'
+	| 'bottom'
+	| 'left'
+	| 'bottom-right'
+	| 'bottom-left'
+	| 'top-right'
+	| 'top-left'
 
 interface TooltipProps {
 	children: ReactNode
@@ -13,6 +21,7 @@ interface TooltipProps {
 	className?: string
 	contentClassName?: string
 	delay?: number
+	alwaysShow?: boolean
 }
 
 const Tooltip = ({
@@ -24,6 +33,7 @@ const Tooltip = ({
 	className = '',
 	contentClassName = '',
 	delay = 0,
+	alwaysShow = false,
 }: TooltipProps) => {
 	const [isVisible, setIsVisible] = useState(false)
 	const [calculatedPosition, setCalculatedPosition] = useState<Position>(position)
@@ -61,6 +71,22 @@ const Tooltip = ({
 			case 'left':
 				x = triggerRect.left - tooltipRect.width - offset
 				y = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2
+				break
+			case 'bottom-right':
+				x = triggerRect.right
+				y = triggerRect.bottom + offset
+				break
+			case 'bottom-left':
+				x = triggerRect.left - tooltipRect.width
+				y = triggerRect.bottom + offset
+				break
+			case 'top-right':
+				x = triggerRect.right
+				y = triggerRect.top - tooltipRect.height - offset
+				break
+			case 'top-left':
+				x = triggerRect.left - tooltipRect.width
+				y = triggerRect.top - tooltipRect.height - offset
 				break
 		}
 
@@ -107,7 +133,7 @@ const Tooltip = ({
 	}
 
 	useEffect(() => {
-		if (isVisible) {
+		if (alwaysShow || isVisible) {
 			calculatePosition()
 
 			const handleResize = () => calculatePosition()
@@ -119,7 +145,7 @@ const Tooltip = ({
 				window.removeEventListener('scroll', handleResize, true)
 			}
 		}
-	}, [isVisible])
+	}, [alwaysShow, isVisible])
 
 	useEffect(() => {
 		return () => {
@@ -146,6 +172,22 @@ const Tooltip = ({
 			hidden: { opacity: 0, x: -5 },
 			visible: { opacity: 1, x: 0 },
 		},
+		'bottom-right': {
+			hidden: { opacity: 0, y: 5 },
+			visible: { opacity: 1, y: 0 },
+		},
+		'bottom-left': {
+			hidden: { opacity: 0, y: 2 },
+			visible: { opacity: 1, y: 0 },
+		},
+		'top-right': {
+			hidden: { opacity: 0, y: -5 },
+			visible: { opacity: 1, y: 0 },
+		},
+		'top-left': {
+			hidden: { opacity: 0, y: -5 },
+			visible: { opacity: 1, y: 0 },
+		},
 	}
 
 	if (!content) {
@@ -165,16 +207,17 @@ const Tooltip = ({
 				{children}
 			</div>
 
-			{isVisible &&
+			{(alwaysShow || isVisible) &&
 				ReactDOM.createPortal(
 					<LazyMotion features={domAnimation}>
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`tooltip fixed z-50 rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
+								className={`tooltip fixed  rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,
+									zIndex: 9999,
 								}}
 								initial="hidden"
 								animate="visible"

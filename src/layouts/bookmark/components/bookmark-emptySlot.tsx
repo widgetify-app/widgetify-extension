@@ -1,4 +1,4 @@
-import { CiBookmarkPlus } from 'react-icons/ci'
+import { TbBookmarkPlus } from 'react-icons/tb'
 import Tooltip from '@/components/toolTip'
 
 export function EmptyBookmarkSlot({
@@ -30,7 +30,7 @@ export function EmptyBookmarkSlot({
 				<div className="relative flex items-center justify-center opacity-60 w-14 h-14">
 					{canAdd ? (
 						<div className="flex items-center justify-center ">
-							<CiBookmarkPlus size={24} />
+							<TbBookmarkPlus size={28} />
 						</div>
 					) : (
 						<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>

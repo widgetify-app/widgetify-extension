@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { TbApps, TbBrandPagekit } from 'react-icons/tb'
+import { TbBrandPagekit } from 'react-icons/tb'
+import Joyride, { type Step } from 'react-joyride'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -9,210 +10,55 @@ import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import Tooltip from '@/components/toolTip'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
-import { useAppearanceSetting } from '@/context/appearance.context'
-import { BookmarkProvider } from '@/context/bookmark.context'
-import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
-import { TodoProvider } from '@/context/todo.context'
-import {
-	useWidgetVisibility,
-	WidgetVisibilityProvider,
-} from '@/context/widget-visibility.context'
-import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
+import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { SearchLayout } from '@/layouts/search/search'
-import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { ContentSection } from './home/content-section'
 
-const layoutPositions: Record<string, string> = {
-	center: 'justify-center',
-	top: 'justify-start',
-}
-
-function ContentSection() {
-	const { contentAlignment } = useAppearanceSetting()
-	const { getSortedWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets().slice(0, 4)
-
-	const totalWidgetCount = sortedWidgets.length
-
-	let layoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-4 md:gap-4'
-	if (totalWidgetCount === 2) {
-		layoutClasses =
-			'flex flex-col flex-wrap w-full gap-2 lg:flex-nowrap md:flex-row md:gap-4 justify-between transition-all duration-300 items-center'
-	}
-
-	return (
-		<DateProvider>
-			<TodoProvider>
-				<div
-					className={`flex flex-col  items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
-				>
-					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
-							<WidgetifyLayout />
-						</div>
-
-						<div
-							className={
-								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-3'
-							}
-						>
-							<SearchLayout />
-							<BookmarkProvider>
-								<div className="h-widget">
-									<BookmarksComponent />
-								</div>
-							</BookmarkProvider>
-						</div>
-
-						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
-							<WigiPadWidget />
-						</div>
-					</div>
-					<div className={layoutClasses}>
-						{sortedWidgets.map((widget) => {
-							if (totalWidgetCount === 2) {
-								return (
-									<div
-										key={widget.id}
-										className="flex-shrink-0 w-full lg:w-3/12 h-widget"
-									>
-										{widget.node}
-									</div>
-								)
-							}
-							return (
-								<div key={widget.id} className="h-widget">
-									{widget.node}
-								</div>
-							)
-						})}
-					</div>
-				</div>
-			</TodoProvider>
-		</DateProvider>
-	)
-}
-function WigiPage() {
-	const [activeTab, setActiveTab] = useState('')
-	const contentRef = useRef<HTMLDivElement>(null)
-	const { getSortedWidgets } = useWidgetVisibility()
-
-	const sortedWidgets = getSortedWidgets()
-
-	let layoutClasses =
-		'grid w-full grid-cols-1 gap-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3 md:gap-1'
-	const tabs: any[] = [
-		{
-			label: 'ویجت ها',
-			value: 'widgets',
-			icon: <TbApps />,
-			element: (
-				<>
-					<div className={layoutClasses}>
-						{sortedWidgets.map((widget) => {
-							return (
-								<div key={widget.id} className="h-widget">
-									{widget.node}
-								</div>
-							)
-						})}
-					</div>
-				</>
-			),
-		},
-		{
-			label: 'سایت های پیشنهادی',
-			icon: <TbBrandPagekit />,
-			value: 'test',
-		},
-		{
-			label: 'آمار من',
-			icon: <TbBrandPagekit />,
-			value: 'test',
-		},
-		{
-			label: 'ویجت ها',
-			icon: <TbBrandPagekit />,
-			value: 'test3',
-		},
-		{
-			label: 'ویجت ها',
-			icon: <TbBrandPagekit />,
-			value: 'test4',
-		},
-	]
-
-	useEffect(() => {
-		if (contentRef.current) {
-			contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
-		}
-	}, [activeTab])
-
-	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary bg-primary/10' : 'text-muted hover:bg-base-300'
-	}
-
-	const getTabIconStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary' : 'text-muted'
-	}
-
-	const handleTabChange = (tabValue: string) => {
-		setActiveTab(tabValue)
-	}
-
-	return (
-		<DateProvider>
-			<TodoProvider>
-				<div className="flex flex-col md:flex-row h-full gap-0.5 p-2 overflow-hidden">
-					<div className="flex w-full h-12 gap-2 p-1 overflow-x-auto rounded-2xl bg-widget widget-wrapper md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container md:h-72 md:p-2">
-						{tabs.map(({ label, value, icon }) => (
-							<button
-								key={value}
-								onClick={() => handleTabChange(value)}
-								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
-							>
-								<span className={getTabIconStyle(activeTab === value)}>
-									{icon}
-								</span>
-								<span className="text-sm">{label}</span>
-							</button>
-						))}
-					</div>
-					<div
-						className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
-						ref={contentRef}
-					>
-						{tabs.map(({ value, element }) => (
-							<div
-								key={value}
-								className={`absolute inset-0 px-2 rounded-lg transition-all duration-200 ease-in-out  ${
-									activeTab === value
-										? 'opacity-100 translate-x-0 z-10'
-										: 'opacity-0 translate-x-5 z-0 pointer-events-none'
-								}`}
-							>
-								{activeTab === value && element}
-							</div>
-						))}
-					</div>
-				</div>
-			</TodoProvider>
-		</DateProvider>
-	)
-}
-
+const steps: Step[] = [
+	{
+		target: 'body',
+		content:
+			'به ویجتی‌فای خوش آمدید! بیایید با هم قسمت‌های مختلف برنامه را بررسی کنیم تا با امکانات آن آشنا شوید.',
+		disableBeacon: true,
+	},
+	{
+		target: '#settings-button',
+		content:
+			'از این دکمه می‌توانید به تنظیمات عمومی برنامه دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
+	},
+	{
+		target: '#widget-settings-button',
+		content:
+			'این دکمه به شما اجازه می‌دهد ویجت‌ها را مدیریت کنید: ویجت جدید اضافه کنید، ویجت‌های موجود را ویرایش یا حذف کنید و تنظیمات هر ویجت را تغییر دهید.',
+	},
+	{
+		target: '#profile-and-friends-list',
+		content:
+			'از این بخش می‌توانید به پروفایل شخصی خود و لیست دوستان دسترسی پیدا کنید و آن‌ها را مدیریت کنید.',
+	},
+	{
+		target: '#bookmarks',
+		content:
+			'این بخش به شما امکان می‌دهد بوکمارک‌ها را مدیریت کنید: بوکمارک جدید اضافه کنید، بوکمارک‌های موجود را ویرایش یا حذف کنید و تنظیمات هر بوکمارک را تغییر دهید.',
+	},
+	{
+		target: '#widgets',
+		content:
+			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
+	},
+]
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [page, _setPage] = useState<'home' | 'wigi-page'>('home')
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
+	const [showTour, setShowTour] = useState(false)
+
 	useEffect(() => {
 		async function displayModalIfNeeded() {
 			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
@@ -227,32 +73,6 @@ export function HomePage() {
 				setShowReleaseNotes(true)
 			}
 		}
-
-		displayModalIfNeeded()
-
-		Analytics.pageView('Home', '/')
-	}, [])
-
-	const handleGetStarted = async () => {
-		await setToStorage('showWelcomeModal', false)
-		setShowWelcomeModal(false)
-	}
-
-	const onCloseReleaseNotes = async () => {
-		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
-		setShowReleaseNotes(false)
-	}
-
-	useEffect(() => {
-		const wallpaperChangedEvent = listenEvent(
-			'wallpaperChanged',
-			(wallpaper: StoredWallpaper) => {
-				if (wallpaper) {
-					changeWallpaper(wallpaper)
-					setToStorage('wallpaper', wallpaper)
-				}
-			}
-		)
 
 		async function loadWallpaper() {
 			const wallpaper = await getFromStorage('wallpaper')
@@ -288,13 +108,19 @@ export function HomePage() {
 			}
 		}
 
+		displayModalIfNeeded()
 		loadWallpaper()
-		return () => {
-			wallpaperChangedEvent()
-		}
-	}, [])
 
-	useEffect(() => {
+		const wallpaperChangedEvent = listenEvent(
+			'wallpaperChanged',
+			(wallpaper: StoredWallpaper) => {
+				if (wallpaper) {
+					changeWallpaper(wallpaper)
+					setToStorage('wallpaper', wallpaper)
+				}
+			}
+		)
+
 		const openWidgetsSettingsEvent = listenEvent(
 			'openWidgetsSettings',
 			(data: { tab: WidgetTabKeys | null }) => {
@@ -303,10 +129,29 @@ export function HomePage() {
 			}
 		)
 
+		Analytics.pageView('Home', '/')
+
 		return () => {
+			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
 		}
 	}, [])
+
+	const handleGetStarted = async () => {
+		const [hasSeenTour] = await Promise.all([
+			getFromStorage('hasSeenTour'),
+			setToStorage('showWelcomeModal', false),
+		])
+		setShowWelcomeModal(false)
+		if (!hasSeenTour) {
+			setShowTour(true)
+		}
+	}
+
+	const onCloseReleaseNotes = async () => {
+		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
+		setShowReleaseNotes(false)
+	}
 
 	function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
@@ -378,13 +223,24 @@ export function HomePage() {
 		}
 	}
 
+	function onDoneTour(data: any) {
+		if (data.status === 'finished' || data.status === 'skipped') {
+			setToStorage('hasSeenTour', true)
+			setShowTour(false)
+			Analytics.event(`tour_${data.status}`)
+		}
+	}
+
 	return (
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
-					<NavbarLayout />
-					{page === 'home' && <ContentSection />}
-					{page === 'wigi-page' && <WigiPage />}
+					<div data-tour="navbar">
+						<NavbarLayout />
+					</div>
+					<div data-tour="content">
+						<ContentSection />
+					</div>
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
@@ -395,6 +251,27 @@ export function HomePage() {
 					/>
 				</WidgetVisibilityProvider>
 			</GeneralSettingProvider>
+			<Joyride
+				steps={steps}
+				run={showTour}
+				continuous
+				showProgress
+				showSkipButton
+				locale={{
+					next: 'بعدی',
+					back: 'قبلی',
+					skip: 'رد کردن',
+					last: 'پایان',
+					close: 'بستن',
+					nextLabelWithProgress: 'بعدی {step}/{steps}',
+				}}
+				callback={onDoneTour}
+				styles={{
+					options: {
+						primaryColor: '#3b82f6',
+					},
+				}}
+			/>
 			<Toaster
 				toastOptions={{
 					error: {
@@ -409,6 +286,7 @@ export function HomePage() {
 							color: '#155724',
 						},
 					},
+					duration: 5000,
 				}}
 			/>
 			<ExtensionInstalledModal

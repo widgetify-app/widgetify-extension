@@ -2,7 +2,6 @@ import {
 	closestCenter,
 	DndContext,
 	type DragEndEvent,
-	KeyboardSensor,
 	PointerSensor,
 	useSensor,
 	useSensors,
@@ -16,7 +15,7 @@ import { useBookmarkStore } from '@/context/bookmark.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { BookmarkItem } from './components/bookmark-item'
-import { FolderPath } from './components/folder-path'
+import { FolderHeader } from './components/folder-header'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
 import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
@@ -57,10 +56,9 @@ export function BookmarksComponent() {
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: {
-				distance: 5, // 5px movement required before drag starts
+				distance: 5,
 			},
-		}),
-		useSensor(KeyboardSensor)
+		})
 	)
 
 	const BOOKMARKS_PER_ROW = 5
@@ -279,25 +277,39 @@ export function BookmarksComponent() {
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
 
-	const displayedBookmarks = currentFolderItems
-		.slice(0, TOTAL_BOOKMARKS)
-		.concat(
-			new Array(
-				Math.max(
-					0,
-					TOTAL_BOOKMARKS -
-						currentFolderItems.length -
-						(currentFolderIsManageable ? 1 : 0)
-				)
-			).fill(null)
-		)
-		.concat(
-			//@ts-expect-error
-			currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
-				? [null]
-				: []
-		)
-		.slice(0, TOTAL_BOOKMARKS)
+	const getDisplayedBookmarks = (): (Bookmark | null)[] => {
+		if (!currentFolderId) {
+			const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
+			const fillersCount = Math.max(
+				0,
+				TOTAL_BOOKMARKS -
+					currentFolderItems.length -
+					(currentFolderIsManageable ? 1 : 0)
+			)
+			const fillers = new Array(fillersCount).fill(null)
+			const addButton =
+				currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
+					? [null]
+					: []
+
+			return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
+		}
+
+		if (!currentFolderIsManageable) {
+			const minItems = Math.max(currentFolderItems.length, 10)
+			const fillersCount = minItems - currentFolderItems.length
+			return [...currentFolderItems, ...new Array(fillersCount).fill(null)]
+		}
+
+		const bookmarkCount = currentFolderItems.length
+		const minBookmarks = 10
+		const needsFillers = bookmarkCount < minBookmarks
+		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
+
+		return [...currentFolderItems, ...new Array(fillersCount).fill(null), null]
+	}
+
+	const displayedBookmarks = getDisplayedBookmarks()
 
 	return (
 		<>
@@ -306,42 +318,61 @@ export function BookmarksComponent() {
 				collisionDetection={closestCenter}
 				onDragEnd={handleDragEnd}
 			>
-				<div className="grid w-full grid-cols-5 gap-4 transition-all duration-300 rounded-lg lg:gap-3 lg:px-1">
-					<SortableContext
-						items={displayedBookmarks
-							.filter(Boolean)
-							.map((bookmark) => bookmark?.id || '')}
-						strategy={rectSortingStrategy}
+				<div
+					className={`flex flex-col transition-all duration-300 ${
+						currentFolderId
+							? 'bg-widget widget-wrapper max-h-60 overflow-y-auto py-1 rounded-2xl'
+							: ''
+					}`}
+					id="bookmarks"
+				>
+					{currentFolderId && (
+						<FolderHeader
+							folderPath={folderPath}
+							onNavigate={handleNavigate}
+						/>
+					)}
+
+					<div
+						className={`grid w-full grid-cols-5 gap-4 transition-all duration-300 rounded-2xl lg:gap-2 lg:px-1`}
 					>
-						{displayedBookmarks.map((bookmark, i) =>
-							bookmark ? (
-								<div
-									key={bookmark.id}
-									className="transition-transform duration-200"
-								>
-									<SortableBookmarkItem
-										bookmark={bookmark}
-										onClick={(e) => handleBookmarkClick(bookmark, e)}
-										onMenuClick={(e) => handleMenuClick(e, bookmark)}
-										isManageable={isManageable(bookmark)}
-										id={bookmark.id}
+						<SortableContext
+							items={displayedBookmarks
+								.filter(Boolean)
+								.map((bookmark) => bookmark?.id || '')}
+							strategy={rectSortingStrategy}
+						>
+							{displayedBookmarks.map((bookmark, i) =>
+								bookmark ? (
+									<div
+										key={bookmark.id}
+										className="transition-transform duration-200"
+									>
+										<SortableBookmarkItem
+											bookmark={bookmark}
+											onClick={(e) =>
+												handleBookmarkClick(bookmark, e)
+											}
+											onMenuClick={(e) =>
+												handleMenuClick(e, bookmark)
+											}
+											isManageable={isManageable(bookmark)}
+											id={bookmark.id}
+										/>
+									</div>
+								) : (
+									<BookmarkItem
+										key={i}
+										bookmark={null}
+										onClick={openAddBookmarkModal}
+										canAdd={currentFolderIsManageable}
 									/>
-								</div>
-							) : (
-								<BookmarkItem
-									key={i}
-									bookmark={null}
-									onClick={openAddBookmarkModal}
-									canAdd={currentFolderIsManageable}
-								/>
-							)
-						)}
-					</SortableContext>
+								)
+							)}
+						</SortableContext>
+					</div>
 				</div>
 			</DndContext>
-			<div className="flex justify-center w-full mt-0.5">
-				<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
-			</div>
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}

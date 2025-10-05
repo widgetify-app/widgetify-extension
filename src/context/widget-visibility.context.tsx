@@ -11,6 +11,7 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
+import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
 import { TodosLayout } from '@/layouts/widgets/todos/todos'
@@ -32,6 +33,7 @@ export enum WidgetKeys {
 	notes = 'notes',
 	youtube = 'youtube',
 	wigiPad = 'wigiPad',
+	network = 'network',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -40,6 +42,7 @@ export interface WidgetItem {
 	node: any
 	order: number
 	canToggle?: boolean
+	isNew?: boolean
 }
 
 export const widgetItems: WidgetItem[] = [
@@ -123,6 +126,15 @@ export const widgetItems: WidgetItem[] = [
 		order: 8,
 		node: <YouTubeLayout />,
 		canToggle: true,
+	},
+	{
+		id: WidgetKeys.network,
+		emoji: '🌐',
+		label: 'شبکه',
+		order: 9,
+		node: <NetworkLayout />,
+		canToggle: true,
+		isNew: true,
 	},
 ]
 
@@ -214,11 +226,12 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				? prev.filter((id) => id !== widgetId)
 				: [...prev, widgetId]
 
+			if (isCurrentlyVisible) {
+				Analytics.event(`widget_remove_${widgetId}`)
+			} else {
+				Analytics.event(`widget_add_${widgetId}`)
+			}
 			return newVisibility
-		})
-		Analytics.event('widget_visibility', {
-			widget_id: widgetId,
-			new_state: !visibility.includes(widgetId),
 		})
 	}
 

@@ -1,6 +1,6 @@
-import { useAuth } from '@/context/auth.context'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AuthForm } from './auth-form'
+import { useAuth } from '@/context/auth.context'
+import { AuthForm } from './components/auth-form'
 import { UserProfile } from './user-profile'
 
 export const AccountTab = () => {

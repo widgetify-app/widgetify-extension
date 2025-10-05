@@ -4,9 +4,7 @@ import { useTimezones } from '@/services/hooks/timezone/getTimezones.hook'
 
 export function TimezoneSettings() {
 	const { selected_timezone: timezone, setTimezone } = useGeneralSetting()
-
-	const { data: timezones, loading, error } = useTimezones()
-
+	const { data: timezones, isLoading, error } = useTimezones()
 	const handleSelectTimezone = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedTimezone = timezones?.find((tz) => tz.value === e.target.value)
 		if (!selectedTimezone) return
@@ -22,7 +20,7 @@ export function TimezoneSettings() {
 
 				<div className="relative">
 					<div className="flex items-center gap-2">
-						{loading ? (
+						{isLoading ? (
 							<div className="flex justify-center w-full p-3">
 								<div className="w-6 h-6 border-2 border-blue-200 rounded-full border-t-blue-500 animate-spin"></div>
 							</div>

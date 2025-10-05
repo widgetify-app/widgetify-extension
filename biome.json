@@ -43,7 +43,8 @@
 			"correctness": {
 				"useExhaustiveDependencies": "off",
 				"noUnusedVariables": "warn",
-				"noUnusedImports": "warn"
+				"noUnusedImports": "warn",
+				"useUniqueElementIds": "off"
 			},
 			"complexity": {
 				"noUselessTernary": "off"

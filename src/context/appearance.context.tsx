@@ -2,6 +2,8 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import { useAuth } from './auth.context'
 
 export type FontFamily = 'Vazir' | 'Samim' | 'Pofak' | 'rooyin'
 
@@ -29,7 +31,8 @@ export const AppearanceContext = createContext<AppearanceContextContextType | nu
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
-
+	const { mutateAsync: updateSettings } = useUpdateExtensionSettings()
+	const { isAuthenticated, user } = useAuth()
 	useEffect(() => {
 		async function loadSettings() {
 			try {
@@ -48,6 +51,17 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 		loadSettings()
 	}, [])
+
+	useEffect(() => {
+		if (user) {
+			if (user && user.font !== settings.fontFamily) {
+				setSettings({
+					...settings,
+					fontFamily: user.font || DEFAULT_SETTINGS.fontFamily,
+				})
+			}
+		}
+	}, [user])
 
 	const updateSetting = <K extends keyof AppearanceData>(
 		key: K,
@@ -69,8 +83,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		Analytics.event(`set_content_alignment_${value}`)
 	}
 
-	const setFontFamily = (value: FontFamily) => {
+	const setFontFamily = async (value: FontFamily) => {
 		updateSetting('fontFamily', value)
+		if (isAuthenticated) {
+			await updateSettings({ font: value })
+		}
 		Analytics.event(`set_font_${value}`)
 	}
 

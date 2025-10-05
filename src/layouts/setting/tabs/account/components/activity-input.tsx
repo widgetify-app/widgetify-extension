@@ -42,7 +42,7 @@ export function ActivityInput({ activity }: Prop) {
 
 	return (
 		<SectionPanel title="وضعیت فعالیت" size="xs">
-			<div className="flex flex-col p-4 space-y-3 transition-colors rounded-lg">
+			<div className="flex flex-col p-2 space-y-3 transition-colors rounded-lg">
 				<p className={'text-xs text-content font-light opacity-80'}>
 					وضعیت فعالیت شما به دوستانتان نمایش داده می‌شود. (حداکثر{' '}
 					{ACTIVITY_MAX_LENGTH} کاراکتر)

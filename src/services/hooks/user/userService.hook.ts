@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { FontFamily } from '@/context/appearance.context'
 import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 
@@ -24,7 +25,10 @@ interface FetchedProfile {
 	wallpaper: Wallpaper | null
 	theme?: Theme
 	activity?: string
+	isBirthDateEditable: boolean
 	birthDate: string | null
+	font: FontFamily
+	timeZone: string
 }
 
 export interface UserProfile extends FetchedProfile {
@@ -95,24 +99,18 @@ export function useUpdateActivity() {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 		},
-		onError: (error) => {
-			console.error('Error updating activity:', error)
-		},
 	})
 }
 
-export async function setUserWallpaperApi(wallpaperId: string) {
-	const client = await getMainClient()
-
-	await client.put('/extension/@me/wallpaper', {
-		wallpaperId,
-	})
+export async function sendVerificationEmail(): Promise<void> {
+	const api = await getMainClient()
+	const response = await api.post('/auth/email/resend-verify')
+	return response.data
 }
 
-export async function setUserThemeApi(theme: Theme) {
-	const client = await getMainClient()
-
-	await client.put('/extension/@me/theme', {
-		theme,
+export function useSendVerificationEmail() {
+	return useMutation({
+		mutationFn: sendVerificationEmail,
+		mutationKey: ['sendVerificationEmail'],
 	})
 }
