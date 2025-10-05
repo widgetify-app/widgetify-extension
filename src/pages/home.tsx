@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { TbBrandPagekit } from 'react-icons/tb'
+import { TbApps, TbBrandPagekit } from 'react-icons/tb'
 import Joyride, { type Step } from 'react-joyride'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
@@ -10,13 +10,20 @@ import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import Tooltip from '@/components/toolTip'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
+import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
-import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
+import { TodoProvider } from '@/context/todo.context'
+import {
+	WidgetKeys,
+	WidgetVisibilityProvider,
+	widgetItems,
+} from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { ContentSection } from './home/content-section'
+import { WidgetsSection } from './home/widgets-section'
 
 const steps: Step[] = [
 	{
@@ -51,6 +58,7 @@ const steps: Step[] = [
 			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
 	},
 ]
+
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
@@ -238,9 +246,15 @@ export function HomePage() {
 					<div data-tour="navbar">
 						<NavbarLayout />
 					</div>
-					<div data-tour="content">
+					{/* <div data-tour="content">
 						<ContentSection />
-					</div>
+					</div> */}
+					{page === 'home' && (
+						<div data-tour="content">
+							<ContentSection />
+						</div>
+					)}
+					{page === 'wigi-page' && <WidgetsSection />}
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
