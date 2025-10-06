@@ -7,10 +7,13 @@ interface LoginCredentials {
 	email: string
 }
 
+export type ReferralSource = 'social' | 'youtube' | 'friends' | 'search_other'
+
 interface SignUpCredentials {
 	name: string
 	email: string
 	password: string
+	referralSource?: ReferralSource | null
 }
 
 interface AuthResponse {
