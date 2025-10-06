@@ -11,7 +11,7 @@ export function ProfileNav() {
 		if (isAuthenticated) setShowSettingsModal(true)
 	}
 
-	if (!user) {
+	if (!user || !isAuthenticated) {
 		return (
 			<Tooltip content="ورود به حساب کاربری">
 				<div

@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const logout = async () => {
 		await Promise.all([
 			removeFromStorage('auth_token'),
+			removeFromStorage('refresh_token'),
 			removeFromStorage('profile'),
 			removeFromStorage('theme'),
 			removeFromStorage('wallpaper'),
