@@ -54,7 +54,7 @@ export function HomePage() {
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
-	const [showTour, setShowTour] = useState(true)
+	const [showTour, setShowTour] = useState(false)
 
 	useEffect(() => {
 		async function displayModalIfNeeded() {
