@@ -33,7 +33,6 @@
 [data-theme="glass"] .navbar,
 [data-theme="glass"] .modal-box,
 [data-theme="glass"] .drawer-side,
-[data-theme="glass"] .trending-section,
 [data-theme="glass"] .collapse {
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);

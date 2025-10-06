@@ -49,9 +49,6 @@ body {
 	@apply text-base-content/90;
 }
 
-.trending-section {
-	@apply bg-base-200;
-}
 
 .text-muted {
 	@apply text-base-content/70;
