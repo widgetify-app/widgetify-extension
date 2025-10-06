@@ -3,7 +3,7 @@ import type React from 'react'
 interface Props {
 	isActive: boolean
 	onClick: () => void
-	label: string
+	label: string | React.ReactNode
 	description?: string | React.ReactNode
 	className?: string
 	style?: React.CSSProperties
