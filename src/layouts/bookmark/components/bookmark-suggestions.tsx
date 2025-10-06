@@ -1,34 +1,19 @@
-import { useEffect, useState } from 'react'
 import { FaGlobe } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { SectionPanel } from '@/components/section-panel'
-import { getMainClient } from '@/services/api'
-
-interface BookmarkSuggestion {
-	title: string
-	url: string
-	icon: string | null
-}
+import {
+	type BookmarkSuggestion,
+	useGetSuggestedBookmarks,
+} from '@/services/hooks/bookmark/getBookmarks.hook'
 
 interface BookmarkSuggestionsProps {
 	onSelect: (suggestion: BookmarkSuggestion) => void
 }
 
 export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
-	const [suggestions, setSuggestions] = useState<BookmarkSuggestion[]>([])
-	useEffect(() => {
-		const fetchSuggestions = async () => {
-			const client = await getMainClient()
-			const response = await client.get<BookmarkSuggestion[]>(
-				'/bookmarks/suggestions'
-			)
-			setSuggestions(response.data)
-		}
+	const { data: suggestions } = useGetSuggestedBookmarks()
 
-		fetchSuggestions()
-	}, [])
-
-	if (suggestions.length === 0) {
+	if (!suggestions || suggestions?.length === 0) {
 		return null
 	}
 
