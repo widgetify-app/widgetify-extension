@@ -1,3 +1,4 @@
+import moment from 'jalali-moment'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FiAtSign, FiCalendar, FiEdit, FiMail } from 'react-icons/fi'
 import { AvatarComponent } from '@/components/avatar.component'
@@ -13,26 +14,38 @@ interface ProfileDisplayProps {
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE')
 		return {
-			label: 'مرد',
-			icon: <BsGenderMale className="text-blue-500" />,
-			color: 'text-blue-500',
+			label: 'مذکر',
+			icon: <BsGenderMale />,
 		}
 	if (gender === 'FEMALE')
 		return {
-			label: 'زن',
-			icon: <BsGenderFemale className="text-pink-500" />,
-			color: 'text-pink-500',
+			label: 'مؤنث',
+			icon: <BsGenderFemale />,
 		}
 	if (gender === 'OTHER')
 		return {
-			label: 'دیگر',
-			icon: <BsGenderAmbiguous className="text-purple-500" />,
-			color: 'text-purple-500',
+			label: 'نامشخص',
+			icon: <BsGenderAmbiguous />,
 		}
+
 	return {
 		label: 'نامشخص',
-		icon: <BsGenderAmbiguous className="text-content" />,
-		color: 'text-content',
+		icon: <BsGenderAmbiguous />,
+	}
+}
+
+const formatJalaliDate = (dateString: string | null | undefined): string => {
+	if (!dateString) return '-'
+	try {
+		const jalaliDate = moment(dateString, 'jYYYY-jMM-jDD')
+
+		if (!jalaliDate.isValid()) {
+			return dateString
+		}
+
+		return jalaliDate.locale('fa').format('jD jMMMM jYYYY')
+	} catch {
+		return dateString
 	}
 }
 
@@ -61,29 +74,30 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 								</h1>
 							</div>
 							<div className="grid items-center justify-center grid-cols-2 gap-1 text-sm text-content/70">
-								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-2xl">
 									<FiAtSign size={12} />
 									<span>{profile?.username || '-'}</span>
 								</div>
-								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
+								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-2xl">
 									<FiMail size={12} />
 									<span className="truncate dir-ltr">
 										{profile?.email}
 									</span>
 								</div>
-								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
-									{getGenderInfo(profile?.gender).icon}
-									<span
-										className={`font-medium ${getGenderInfo(profile?.gender).color}`}
-									>
-										جنسیت:{' '}
-										{getGenderInfo(profile?.gender).label || 'نامشخص'}
+								<div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-content">
+									<div className="flex-shrink-0">
+										{getGenderInfo(profile?.gender).icon}
+									</div>
+									<span className="font-medium">
+										{getGenderInfo(profile?.gender).label}
 									</span>
 								</div>
 								{/* birthday */}
-								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-full">
-									<FiCalendar size={12} />
-									<span>{profile?.birthDate || '-'}</span>
+								<div className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-content">
+									<FiCalendar size={14} className="flex-shrink-0" />
+									<span className="font-medium dir-rtl">
+										{formatJalaliDate(profile?.birthDate)}
+									</span>
 								</div>
 							</div>
 						</div>
