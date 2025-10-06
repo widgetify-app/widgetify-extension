@@ -38,12 +38,19 @@ export function BookmarkItem({
 			}
 		: {}
 
+	const handleMouseDown = (e: React.MouseEvent) => {
+		if (e.button === 1) {
+			e.preventDefault()
+		}
+	}
+
 	return (
 		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
 			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
+					onMouseDown={handleMouseDown}
 					style={customStyles}
 					className={`relative flex flex-col items-center justify-center p-2 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>

@@ -39,12 +39,19 @@ export function FolderBookmarkItem({
 			}
 		: {}
 
+	const handleMouseDown = (e: React.MouseEvent) => {
+		if (e.button === 1) {
+			e.preventDefault()
+		}
+	}
+
 	return (
 		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
 			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
 					onAuxClick={onClick}
+					onMouseDown={handleMouseDown}
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
