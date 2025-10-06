@@ -54,7 +54,7 @@ export function HomePage() {
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
-	const [showTour, setShowTour] = useState(false)
+	const [showTour, setShowTour] = useState(true)
 
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -235,9 +235,7 @@ export function HomePage() {
 					<div data-tour="navbar">
 						<NavbarLayout />
 					</div>
-					<div data-tour="content">
-						<ContentSection />
-					</div>
+					<ContentSection />
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
