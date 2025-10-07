@@ -1,10 +1,9 @@
-import { SectionPanel } from '@/components/section-panel'
 import { FaDonate, FaGithub, FaGlobe, FaHeart } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
+import { SectionPanel } from '@/components/section-panel'
+import { ConfigKey } from '../../../../common/constant/config.key'
 
 export function AboutUsTab() {
-	const manifest = browser.runtime.getManifest()
-
 	const getDonateCardStyle = () => {
 		return 'bg-green-900/20 border-white/5 hover:border-green-400/20 hover:bg-green-900/30 hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]'
 	}
@@ -52,7 +51,7 @@ export function AboutUsTab() {
 						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-primary/80'
 					}
 				>
-					<span>نسخه {manifest.version}</span>
+					<span>نسخه "{ConfigKey.VERSION_NAME}"</span>
 				</div>
 
 				{/* Description */}
