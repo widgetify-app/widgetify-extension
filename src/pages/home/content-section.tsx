@@ -78,7 +78,11 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 export function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets, reorderWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets()
+	const allSortedWidgets = getSortedWidgets()
+
+	// محدودیت 4 ویجت برای صفحه اصلی
+	const MAX_CONTENT_SECTION_WIDGETS = 4
+	const sortedWidgets = allSortedWidgets.slice(0, MAX_CONTENT_SECTION_WIDGETS)
 
 	const totalWidgetCount = sortedWidgets.length
 

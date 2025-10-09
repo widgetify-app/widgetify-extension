@@ -87,4 +87,5 @@ export interface StorageKV {
 	seenWidgetSettings_1: boolean
 	seenTodoNewViewMode: boolean
 	widgetsSectionOrder: { id: string; order: number }[]
+	explorerPageOrder: { id: string; order: number }[]
 }

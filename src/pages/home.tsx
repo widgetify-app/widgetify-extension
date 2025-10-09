@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { TbApps, TbBrandPagekit } from 'react-icons/tb'
 import Joyride, { type Step } from 'react-joyride'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constant/config.key'
@@ -8,22 +7,15 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
-import Tooltip from '@/components/toolTip'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
-import { DateProvider } from '@/context/date.context'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
-import { TodoProvider } from '@/context/todo.context'
-import {
-	WidgetKeys,
-	WidgetVisibilityProvider,
-	widgetItems,
-} from '@/context/widget-visibility.context'
+import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { ContentSection } from './home/content-section'
-import { WidgetsSection } from './home/widgets-section'
+import { ExplorerPage } from './home/explorer-page'
 
 const steps: Step[] = [
 	{
@@ -38,9 +30,8 @@ const steps: Step[] = [
 			'از این دکمه می‌توانید به تنظیمات عمومی برنامه دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
 	},
 	{
-		target: '#widget-settings-button',
-		content:
-			'این دکمه به شما اجازه می‌دهد ویجت‌ها را مدیریت کنید: ویجت جدید اضافه کنید، ویجت‌های موجود را ویرایش یا حذف کنید و تنظیمات هر ویجت را تغییر دهید.',
+		target: '#widget-menu-button',
+		content: 'از این منو می‌توانید به مدیریت ویجت‌ها و ویجی پیج دسترسی پیدا کنید.',
 	},
 	{
 		target: '#profile-and-friends-list',
@@ -55,14 +46,14 @@ const steps: Step[] = [
 	{
 		target: '#widgets',
 		content:
-			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
+			'این محیط اصلی ویجت‌ها است. در صفحه اصلی حداکثر 4 ویجت اول نمایش داده می‌شود. برای مشاهده همه ویجت‌های فعال، از دکمه "ویجی پیج" در نوار بالا استفاده کنید.',
 	},
 ]
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
-	const [page, _setPage] = useState<'home' | 'wigi-page'>('home')
+	const [page, setPage] = useState<'home' | 'wigi-page'>('home')
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
@@ -116,6 +107,21 @@ export function HomePage() {
 			}
 		}
 
+		// Handle keyboard shortcuts
+		function handleKeydown(event: KeyboardEvent) {
+			// Alt + W برای رفتن به ویجی پیج
+			if (event.altKey && event.key.toLowerCase() === 'w') {
+				event.preventDefault()
+				if (page === 'home') {
+					setPage('wigi-page')
+					Analytics.event('navigate_to_explorer_page_keyboard')
+				} else {
+					setPage('home')
+					Analytics.event('navigate_to_home_keyboard')
+				}
+			}
+		}
+
 		displayModalIfNeeded()
 		loadWallpaper()
 
@@ -137,13 +143,29 @@ export function HomePage() {
 			}
 		)
 
+		const switchToWigiPageEvent = listenEvent('switchToWigiPage', () => {
+			console.log('Event دریافت شد - تغییر به ویجی پیج')
+			setPage('wigi-page')
+		})
+
+		const switchToHomePageEvent = listenEvent('switchToHomePage', () => {
+			console.log('Event دریافت شد - تغییر به صفحه اصلی')
+			setPage('home')
+		})
+
+		// Add keyboard event listener
+		window.addEventListener('keydown', handleKeydown)
+
 		Analytics.pageView('Home', '/')
 
 		return () => {
 			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
+			switchToWigiPageEvent()
+			switchToHomePageEvent()
+			window.removeEventListener('keydown', handleKeydown)
 		}
-	}, [])
+	}, [page])
 
 	const handleGetStarted = async () => {
 		const [hasSeenTour] = await Promise.all([
@@ -254,7 +276,8 @@ export function HomePage() {
 							<ContentSection />
 						</div>
 					)}
-					{page === 'wigi-page' && <WidgetsSection />}
+					{page === 'wigi-page' && <ExplorerPage />}
+
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
@@ -314,16 +337,6 @@ export function HomePage() {
 				onClose={() => onCloseReleaseNotes()}
 				counterValue={10}
 			/>
-			<div
-				className="fixed z-50 hidden p-1 transition-all transform rounded-full opacity-50 cursor-pointer bottom-1 right-1 bg-widget widget-wrapper text-muted md:flex hover:opacity-80"
-				onClick={() => {
-					_setPage(page === 'home' ? 'wigi-page' : 'home')
-				}}
-			>
-				<Tooltip content="ویجی پیج">
-					<TbBrandPagekit size={20} />
-				</Tooltip>
-			</div>
 		</div>
 	)
 }

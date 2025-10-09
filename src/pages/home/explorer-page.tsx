@@ -9,16 +9,14 @@ import {
 import { rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useRef, useState } from 'react'
-import { TbApps } from 'react-icons/tb'
+import { TbLayoutGrid, TbWorldWww, TbArrowLeft } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { DateProvider } from '@/context/date.context'
 import { TodoProvider } from '@/context/todo.context'
-import {
-	type WidgetItem,
-	WidgetKeys,
-	widgetItems,
-} from '@/context/widget-visibility.context'
+import { type WidgetItem, widgetItems } from '@/context/widget-visibility.context'
+import { SuggestedSites } from './suggested-sites'
 
 function SortableWidget({ widget }: { widget: WidgetItem }) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -71,27 +69,21 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 	)
 }
 
-export function WidgetsSection() {
+export function ExplorerPage() {
 	const [activeTab, setActiveTab] = useState('widgets')
 	const contentRef = useRef<HTMLDivElement>(null)
 	const [sortedWidgets, setSortedWidgets] = useState<WidgetItem[]>([])
 
-	const BLACK_LIST: WidgetKeys[] = [WidgetKeys.comboWidget]
-	const displayWidgets = widgetItems.filter(
-		(widget) => !BLACK_LIST.includes(widget.id as WidgetKeys)
-	)
+	const displayWidgets = widgetItems
 
-	// Load widget order from storage on component mount
 	useEffect(() => {
 		const loadWidgetOrder = async () => {
-			const storedOrder = await getFromStorage('widgetsSectionOrder')
+			const storedOrder = await getFromStorage('explorerPageOrder')
 			if (storedOrder && Array.isArray(storedOrder)) {
-				// Create a map of stored orders
 				const orderMap = new Map(
 					storedOrder.map((item: any, index: number) => [item.id, index])
 				)
 
-				// Sort widgets based on stored order, fallback to original order
 				const sorted = [...displayWidgets].sort((a, b) => {
 					const aOrder = orderMap.has(a.id)
 						? (orderMap.get(a.id) ?? a.order)
@@ -103,7 +95,6 @@ export function WidgetsSection() {
 				})
 				setSortedWidgets(sorted)
 			} else {
-				// Use original order if no stored order exists
 				setSortedWidgets([...displayWidgets].sort((a, b) => a.order - b.order))
 			}
 		}
@@ -111,13 +102,12 @@ export function WidgetsSection() {
 		loadWidgetOrder()
 	}, [])
 
-	// Save widget order to storage whenever it changes
 	const saveWidgetOrder = async (widgets: WidgetItem[]) => {
 		const orderData = widgets.map((widget, index) => ({
 			id: widget.id,
 			order: index,
 		}))
-		await setToStorage('widgetsSectionOrder', orderData)
+		await setToStorage('explorerPageOrder', orderData)
 	}
 
 	const sensors = useSensors(
@@ -147,34 +137,44 @@ export function WidgetsSection() {
 			saveWidgetOrder(newSortedWidgets)
 		}
 
-		Analytics.event('widgets_section_reorder')
+		Analytics.event('explorer_page_reorder')
 	}
 
-	const tabs: any[] = [
+	const handleBackToHome = () => {
+		callEvent('switchToHomePage', null)
+		Analytics.event('navigate_to_home_from_explorer')
+	}
+
+	const tabs = [
 		{
-			label: 'ویجت ها',
-			value: 'widgets',
-			icon: <TbApps />,
-			element: (
-				<>
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
+			id: 'widgets',
+			label: 'ویجت‌ها',
+			icon: <TbLayoutGrid size={20} />,
+			content: (
+				<DndContext
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
+				>
+					<SortableContext
+						items={sortedWidgets.map((widget) => widget.id)}
+						strategy={rectSortingStrategy}
 					>
-						<SortableContext
-							items={sortedWidgets.map((widget) => widget.id)}
-							strategy={rectSortingStrategy}
-						>
-							<div className="grid w-full grid-cols-1 gap-2 py-1 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3 md:gap-2">
-								{sortedWidgets.map((widget) => (
-									<SortableWidget key={widget.id} widget={widget} />
-								))}
-							</div>
-						</SortableContext>
-					</DndContext>
-				</>
+						<div className="grid w-full grid-cols-1 gap-3 py-2 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3">
+							{sortedWidgets.map((widget) => (
+								<SortableWidget key={widget.id} widget={widget} />
+							))}
+						</div>
+					</SortableContext>
+				</DndContext>
 			),
+		},
+		{
+			id: 'back',
+			label: 'بازگشت',
+			icon: <TbArrowLeft size={20} />,
+			content: null,
+			action: handleBackToHome,
 		},
 	]
 
@@ -184,52 +184,43 @@ export function WidgetsSection() {
 		}
 	}, [activeTab])
 
-	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary bg-primary/10' : 'text-muted hover:bg-base-300'
-	}
-
-	const getTabIconStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary' : 'text-muted'
-	}
-
-	const handleTabChange = (tabValue: string) => {
-		setActiveTab(tabValue)
-	}
-
 	return (
 		<DateProvider>
 			<TodoProvider>
-				<div className="flex flex-col md:flex-row h-full gap-0.5 p-2 overflow-hidden">
-					<div className="flex w-full h-12 gap-2 p-1 overflow-x-auto rounded-2xl bg-widget widget-wrapper md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container md:h-72 md:p-2">
-						{tabs.map(({ label, value, icon }) => (
-							<button
-								key={value}
-								onClick={() => handleTabChange(value)}
-								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
-							>
-								<span className={getTabIconStyle(activeTab === value)}>
-									{icon}
-								</span>
-								<span className="text-sm">{label}</span>
-							</button>
-						))}
+				<div className="flex flex-col h-full gap-1 py-5 overflow-hidden lg:flex-row">
+					<div className="flex w-full gap-2 py-1 overflow-x-hidden lg:w-44 lg:flex-col">
+                        <div className="flex gap-2 lg:flex-col min-w-max lg:min-w-0">
+                            {tabs.map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => {
+                                        if (tab.action) {
+                                            tab.action()
+                                        } else {
+                                            setActiveTab(tab.id)
+                                        }
+                                        Analytics.event('explorer_tab_switch', { tab: tab.id })
+                                    }}
+                                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl transition-all duration-200 whitespace-nowrap ${
+                                        activeTab === tab.id
+                                            ? 'bg-primary text-white shadow-lg'
+                                            : 'bg-content hover:!bg-primary/80 text-muted hover:!text-white'
+                                    }`}
+                                >
+                                    {tab.icon}
+                                    <span className="font-medium">{tab.label}</span>
+                                </button>
+                            ))}
+                        </div>
+             
 					</div>
-					<div
-						className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
-						ref={contentRef}
-					>
-						{tabs.map(({ value, element }) => (
-							<div
-								key={value}
-								className={`absolute inset-0 px-2 rounded-lg transition-all duration-200 ease-in-out  ${
-									activeTab === value
-										? 'opacity-100 translate-x-0 z-10'
-										: 'opacity-0 translate-x-5 z-0 pointer-events-none'
-								}`}
-							>
-								{activeTab === value && element}
-							</div>
-						))}
+					<div className="flex-1 px-5 overflow-hidden">
+						<div
+							className="h-full overflow-x-hidden overflow-y-auto hide-scrollbar rounded-xl bg-widget/30"
+							ref={contentRef}
+						>
+							{tabs.find(tab => tab.id === activeTab)?.content}
+						</div>
 					</div>
 				</div>
 			</TodoProvider>

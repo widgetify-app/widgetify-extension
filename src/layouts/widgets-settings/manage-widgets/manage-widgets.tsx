@@ -12,8 +12,12 @@ export function ManageWidgets() {
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	const { isAuthenticated } = useAuth()
 
+	const MAX_CONTENT_SECTION_WIDGETS = 4
+	const activeWidgetsCount = visibility.length
+
 	return (
 		<WidgetSettingWrapper>
+			{/* نمایش محدودیت برای کاربران مهمان */}
 			{!isAuthenticated && (
 				<div className="p-3 mb-4 border rounded-lg border-warning/20 bg-warning/10">
 					<p className="text-sm text-warning">
@@ -22,7 +26,19 @@ export function ManageWidgets() {
 						شوید.
 					</p>
 				</div>
-			)}{' '}
+			)}
+
+			{/* اطلاعیه در مورد محدودیت صفحه اصلی */}
+			{activeWidgetsCount > MAX_CONTENT_SECTION_WIDGETS && (
+				<div className="p-3 mb-4 border rounded-lg border-info/20 bg-info/10">
+					<p className="text-sm text-info">
+						ℹ️ در صفحه اصلی تنها {MAX_CONTENT_SECTION_WIDGETS} ویجت اول نمایش
+						داده می‌شود. برای مشاهده همه ویجت‌های فعال ({activeWidgetsCount}{' '}
+						ویجت)، از دکمه "ویجی پیج" استفاده کنید.
+					</p>
+				</div>
+			)}
+
 			<SectionPanel title="انتخاب ویجت‌ها برای نمایش" size="sm">
 				<div className="grid grid-cols-2 gap-2">
 					{widgetItems.map((widget) => {

@@ -1,15 +1,15 @@
 import DOMPurify from 'dompurify'
 import { type JSX, useEffect, useState } from 'react'
-import { TbApps } from 'react-icons/tb'
 import { VscSettings } from 'react-icons/vsc'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import Tooltip from '@/components/toolTip'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
 import { FriendsList } from './friends-list/friends'
 import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
+import { WidgetMenu } from './widget-menu/widget-menu'
 
 export interface PageLink {
 	name: string
@@ -110,11 +110,6 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [])
 
-	function onClickOpenWidgetSettings() {
-		setToStorage('seenWidgetSettings_1', true)
-		callEvent('openWidgetsSettings', { tab: null })
-	}
-
 	return (
 		<>
 			<nav className="flex items-center justify-between px-4 mt-0.5 md:mt-1.5">
@@ -135,7 +130,7 @@ export function NavbarLayout(): JSX.Element {
 						{logoData.content && (
 							<div
 								className="leading-relaxed"
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+								// biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized with DOMPurify
 								dangerouslySetInnerHTML={{
 									__html: logoData.content,
 								}}
@@ -147,18 +142,7 @@ export function NavbarLayout(): JSX.Element {
 					<FriendsList />
 					<ProfileNav />
 					<SyncButton />
-					<Tooltip content="مدیریت ویجت‌ها">
-						<div
-							className="relative flex items-center justify-center w-8 h-8 gap-2 transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-							onClick={() => onClickOpenWidgetSettings()}
-							id="widget-settings-button"
-						>
-							<TbApps size={20} className="text-muted" />
-							{showNewBadge && (
-								<span className="absolute w-2 h-2 rounded-full left-4 -bottom-0.5 bg-error animate-pulse"></span>
-							)}
-						</div>
-					</Tooltip>
+					<WidgetMenu showNewBadge={showNewBadge} />
 					<Tooltip content="تنظیمات">
 						<div
 							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"

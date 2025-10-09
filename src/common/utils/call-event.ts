@@ -25,6 +25,8 @@ export interface EventName {
 	}
 	themeChanged: Theme
 	auth_logout: null
+	switchToWigiPage: null
+	switchToHomePage: null
 
 	// setting keys
 	wigiPadDateSettingsChanged: WigiPadDateSetting
