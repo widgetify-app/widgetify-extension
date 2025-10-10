@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import { createPortal } from 'react-dom'
 import { LuX } from 'react-icons/lu'
 
 type ModalProps = {
@@ -14,34 +14,14 @@ type ModalProps = {
 	className?: string
 }
 
-const daisyUISizeClasses = {
-	// sm: 'max-w-sm max-h-[70vh] overflow-y-auto',
-	// md: 'max-w-md max-h-[80vh] overflow-y-auto',
-	// lg: 'max-w-lg max-h-[85vh] overflow-y-auto',
-	// xl: 'max-w-4xl max-h-[90vh] overflow-y-auto',
-	sm: {
-		w: 'max-w-sm',
-		h: 'max-h-[70vh]',
-		overflow: 'overflow-y-auto',
-	},
-	md: {
-		w: 'max-w-md',
-		h: 'max-h-[80vh]',
-		overflow: 'overflow-y-auto',
-	},
-	lg: {
-		w: 'max-w-lg',
-		h: 'max-h-[85vh]',
-		overflow: 'overflow-y-auto',
-	},
-	xl: {
-		w: 'max-w-4xl',
-		h: 'max-h-[90vh]',
-		overflow: 'overflow-y-auto',
-	},
-}
+const sizeClasses = {
+	sm: 'max-w-sm max-h-[70vh]',
+	md: 'max-w-md max-h-[80vh]',
+	lg: 'max-w-lg max-h-[85vh]',
+	xl: 'max-w-4xl max-h-[90vh]',
+} as const
 
-const Modal = ({
+export default function Modal({
 	isOpen,
 	onClose,
 	title,
@@ -51,76 +31,61 @@ const Modal = ({
 	direction = 'ltr',
 	showCloseButton = true,
 	className = '',
-}: ModalProps) => {
-	const sizValue = daisyUISizeClasses[size] || daisyUISizeClasses.md
-
+}: ModalProps) {
 	useEffect(() => {
-		const html = document.documentElement
-		if (isOpen) {
-			html.classList.add('modal-isActive')
-		} else {
-			html.classList.remove('modal-isActive')
-		}
-		return () => {
-			html.classList.remove('modal-isActive')
-		}
+		document.documentElement.classList.toggle('modal-isActive', isOpen)
+		return () => document.documentElement.classList.remove('modal-isActive')
 	}, [isOpen])
 
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onClose()
-			}
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && isOpen) onClose()
 		}
-
-		if (isOpen) {
-			document.addEventListener('keydown', handleKeyDown)
-		}
-
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown)
-		}
+		document.addEventListener('keydown', handleKeyDown)
+		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [isOpen, onClose])
+
+	const modalBoxClasses = `
+		modal-box overflow-hidden rounded-2xl p-4 bg-base-100 shadow-xl transition-all duration-200
+		${sizeClasses[size]} ${className}
+	`
 
 	if (!isOpen) return null
 
-	return ReactDOM.createPortal(
+	return createPortal(
 		<dialog
-			open
-			className="modal modal-middle"
-			onClick={() => {
-				if (closeOnBackdropClick) {
-					onClose()
-				}
-			}}
-			onClose={onClose}
+			open={isOpen}
 			dir={direction}
+			aria-labelledby={title}
+			aria-modal="true"
+			onClick={() => closeOnBackdropClick && onClose()}
+			className={`modal modal-middle flex items-center justify-center backdrop-blur-sm transition-opacity duration-200 ${
+				isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+			}`}
 		>
 			<div
-				className={`modal-box overflow-hidden rounded-2xl ${sizValue.w} ${className} !p-4`}
 				onClick={(e) => e.stopPropagation()}
+				className={`${modalBoxClasses} transform ${
+					isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+				}`}
 			>
-				<div className="flex items-center justify-between w-full pr-2 mb-2">
-					{title && <h3 className={'font-medium text-lg'}>{title}</h3>}
-					{showCloseButton && (
-						<div className={`${!title && 'mr-auto'} `}>
+				{(title || showCloseButton) && (
+					<div className="flex items-center justify-between mb-2">
+						{title && <h3 className="text-lg font-medium">{title}</h3>}
+						{showCloseButton && (
 							<button
 								onClick={onClose}
-								className={
-									'h-7 w-7 flex items-center justify-center bg-base-300 text-xs font-medium rounded-full transition-all border-none shadow-none text-muted cursor-pointer active:scale-95'
-								}
+								className="flex items-center justify-center w-7 h-7 rounded-full bg-base-300 text-muted hover:scale-105 active:scale-95 transition-transform cursor-pointer"
 								aria-label="Close"
 							>
 								<LuX size={16} />
 							</button>
-						</div>
-					)}
-				</div>
-				<div className={`${sizValue.h} ${sizValue.overflow}`}>{children}</div>
+						)}
+					</div>
+				)}
+				<div className="overflow-y-auto">{children}</div>
 			</div>
 		</dialog>,
 		document.body
 	)
 }
-
-export default Modal
