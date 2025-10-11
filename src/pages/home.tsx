@@ -7,6 +7,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
+import { FooterDisableHintModal } from '@/components/footer-disable-hint-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
@@ -52,6 +53,7 @@ const steps: Step[] = [
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+	const [showFooterDisableHint, setShowFooterDisableHint] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
@@ -68,6 +70,12 @@ export function HomePage() {
 			const lastVersion = await getFromStorage('lastVersion')
 			if (lastVersion !== ConfigKey.VERSION_NAME) {
 				setShowReleaseNotes(true)
+				return
+			}
+
+			const hasSeenFooterHint = await getFromStorage('hasSeenFooterDisableHint')
+			if (!hasSeenFooterHint) {
+				setShowFooterDisableHint(true)
 			}
 		}
 
@@ -148,6 +156,12 @@ export function HomePage() {
 	const onCloseReleaseNotes = async () => {
 		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
 		setShowReleaseNotes(false)
+	}
+
+	const onCloseFooterDisableHint = async () => {
+		setShowFooterDisableHint(false)
+		await setToStorage('hasSeenFooterDisableHint', true)
+		Analytics.event('footer_hint_dismissed')
 	}
 
 	function changeWallpaper(wallpaper: StoredWallpaper) {
@@ -294,6 +308,11 @@ export function HomePage() {
 				isOpen={showReleaseNotes}
 				onClose={() => onCloseReleaseNotes()}
 				counterValue={10}
+			/>
+
+			<FooterDisableHintModal
+				show={showFooterDisableHint}
+				onClose={onCloseFooterDisableHint}
 			/>
 		</div>
 	)

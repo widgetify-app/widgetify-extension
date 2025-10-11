@@ -86,4 +86,5 @@ export interface StorageKV {
 	pomodoro_settings: PomodoroSettings | null
 	seenWidgetSettings_1: boolean
 	seenTodoNewViewMode: boolean
+	hasSeenFooterDisableHint: boolean
 }
