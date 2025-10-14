@@ -1,9 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../api'
 
 export interface ExtensionConfigResponse {
 	logo: {
 		id: string
-		url: string | null
+		logoUrl: string | null
 		content: string | null
 	}
 }
@@ -14,4 +15,13 @@ export async function getConfigData(): Promise<ExtensionConfigResponse> {
 	const result = await api.get<ExtensionConfigResponse>('/extension')
 
 	return result.data
+}
+
+export async function useGetConfigData() {
+	return useQuery<ExtensionConfigResponse>({
+		queryKey: ['extension-config'],
+		queryFn: getConfigData,
+		gcTime: 1000 * 60 * 5, // 5 minutes
+		staleTime: 1000 * 60 * 5, // 5 minutes
+	})
 }

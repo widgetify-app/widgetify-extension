@@ -72,6 +72,7 @@ export function UserCardPortal({
 				top: `${position.top}px`,
 				left: `${position.left}px`,
 				transform: 'translateX(-50%)',
+				zIndex: 99999,
 			}}
 			dir="ltr"
 		>

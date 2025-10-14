@@ -27,12 +27,7 @@ const steps: Step[] = [
 	{
 		target: '#settings-button',
 		content:
-			'از این دکمه می‌توانید به تنظیمات عمومی برنامه دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
-	},
-	{
-		target: '#widget-settings-button',
-		content:
-			'این دکمه به شما اجازه می‌دهد ویجت‌ها را مدیریت کنید: ویجت جدید اضافه کنید، ویجت‌های موجود را ویرایش یا حذف کنید و تنظیمات هر ویجت را تغییر دهید.',
+			'از این دکمه می‌توانید به تنظیمات عمومی برنامه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
 	},
 	{
 		target: '#profile-and-friends-list',
@@ -246,9 +241,8 @@ export function HomePage() {
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
-					<div data-tour="navbar">
-						<NavbarLayout />
-					</div>
+					<NavbarLayout />
+
 					<ContentSection />
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
