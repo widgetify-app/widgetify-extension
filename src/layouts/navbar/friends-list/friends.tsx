@@ -1,20 +1,85 @@
-import { FiChevronLeft, FiUsers } from 'react-icons/fi'
-import { FreeMode, Navigation } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
 import { useState } from 'react'
+import { FiSettings, FiUserPlus } from 'react-icons/fi'
+import { HiUserGroup } from 'react-icons/hi'
+import { callEvent } from '@/common/utils/call-event'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { Dropdown } from '@/components/dropdown'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
 import { FriendItem } from './friend.item'
 import { FriendSettingModal } from './setting/friend-setting.modal'
 
+const renderFriendsTrigger = () => (
+	<Tooltip content="دوستان" position="bottom">
+		<div className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 rounded-full cursor-pointer hover:opacity-80 group hover:bg-primary/10">
+			<HiUserGroup size={18} className="text-muted group-hover:!text-primary" />
+		</div>
+	</Tooltip>
+)
+
+const renderFriendsDropdownContent = (
+	friends: any[],
+	activeProfileId: string | null,
+	setActiveProfileId: (id: string | null) => void,
+	onOpenSettings: () => void
+) => (
+	<div className="py-2 bg-content bg-glass">
+		<div className="px-3 pb-2 mb-2 border-b border-content">
+			<div className="flex items-center justify-between">
+				<h3 className="text-sm font-medium">دوستان</h3>
+				<button
+					onClick={(e) => {
+						e.stopPropagation()
+						onOpenSettings()
+					}}
+					className="p-1 transition-colors rounded-md cursor-pointer hover:bg-primary/10 group"
+					title="تنظیمات دوستان"
+				>
+					<FiSettings
+						size={14}
+						className="text-muted group-hover:!text-primary"
+					/>
+				</button>
+			</div>
+		</div>
+
+		{friends.length === 0 ? (
+			<div className="px-3 py-4 text-sm text-center text-muted">
+				<FiUserPlus size={24} className="mx-auto mb-2 opacity-50" />
+				<p>هنوز دوستی اضافه نکرده‌اید</p>
+				<button
+					onClick={(e) => {
+						e.stopPropagation()
+						onOpenSettings()
+					}}
+					className="mt-2 text-xs text-primary hover:underline"
+				>
+					اضافه کردن دوست
+				</button>
+			</div>
+		) : (
+			<div className="overflow-y-auto max-h-64">
+				<div className="grid grid-cols-2 gap-2 px-1 pb-1 md:grid-cols-3">
+					{friends.map((friend) => (
+						<div key={friend.id} className="flex justify-center">
+							<FriendItem
+								user={friend.user}
+								activeProfileId={activeProfileId}
+								setActiveProfileId={setActiveProfileId}
+							/>
+						</div>
+					))}
+				</div>
+			</div>
+		)}
+	</div>
+)
+
 export function FriendsList() {
 	const { isAuthenticated } = useAuth()
 
-	const [showFriendsList, setShowFriendsList] = useState(false)
-	const [firstAuth, setFirstAuth] = useState<boolean>(false)
+	const [firstAuth, setFirstAuth] = useState(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 
@@ -25,73 +90,48 @@ export function FriendsList() {
 
 	const friends = friendsData?.data.friends || []
 
+	const handleOpenSettings = () => {
+		callEvent('closeAllDropdowns')
+		if (!isAuthenticated) {
+			setFirstAuth(true)
+			return
+		}
+		setShowSettingsModal(true)
+	}
+
+	const handleSettingsModalClose = () => {
+		setShowSettingsModal(false)
+		refetchFriends()
+	}
+	const handleAuthModalClose = () => setFirstAuth(false)
+
+	if (!isAuthenticated) {
+		return null
+	}
+
 	return (
 		<>
-			<div
-				className={
-					'relative flex items-center justify-center overflow-hidden h-8 border-content transition-all border rounded-xl bg-content backdrop-blur-sm'
-				}
-				style={{ width: showFriendsList ? '190px' : '35px' }}
+			<Dropdown
+				trigger={renderFriendsTrigger()}
+				position="bottom-right"
+				width="280px"
 			>
-				{showFriendsList && (
-					<button
-						className="top-0 left-0 z-10 flex items-center justify-center transition-opacity cursor-pointer text-muted opacity-80"
-						onClick={() => setShowFriendsList(!showFriendsList)}
-					>
-						<FiChevronLeft size={16} />
-					</button>
+				{renderFriendsDropdownContent(
+					friends,
+					activeProfileId,
+					setActiveProfileId,
+					handleOpenSettings
 				)}
-				{!showFriendsList && (
-					<Tooltip content="نمایش دوستان" position="bottom">
-						<div className="flex items-center justify-around w-full h-full">
-							<button
-								className="cursor-pointer text-muted hover:opacity-80 hover:scale-105"
-								onClick={() => setShowFriendsList(!showFriendsList)}
-							>
-								<FiUsers size={18} />
-								{}
-							</button>
-						</div>
-					</Tooltip>
-				)}
-				{showFriendsList && (
-					<Swiper
-						modules={[FreeMode, Navigation]}
-						spaceBetween={2}
-						slidesPerView={4}
-						grabCursor={true}
-						className="w-full user-list-slider"
-						dir="ltr"
-						navigation={{
-							nextEl: '.user-list-next',
-							prevEl: '.user-list-prev',
-						}}
-					>
-						{showFriendsList
-							? friends.map((friend) => (
-									<SwiperSlide key={friend.id}>
-										<FriendItem
-											user={friend.user}
-											activeProfileId={activeProfileId}
-											setActiveProfileId={setActiveProfileId}
-										/>
-									</SwiperSlide>
-								))
-							: null}
-					</Swiper>
-				)}
-			</div>
+			</Dropdown>
 
 			<FriendSettingModal
 				isOpen={showSettingsModal}
-				onClose={() => {
-					setShowSettingsModal(false)
-					refetchFriends()
-				}}
+				onClose={handleSettingsModalClose}
 			/>
+
 			<AuthRequiredModal
 				isOpen={firstAuth}
-				onClose={() => setFirstAuth(false)}
+				onClose={handleAuthModalClose}
 				title="ورود به حساب کاربری"
 				message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
 				loginButtonText="ورود به حساب"
