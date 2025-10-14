@@ -270,6 +270,10 @@ async function getAll() {
 
 	const wallpaperStore = await getFromStorage('wallpaper')
 	if (wallpaper && wallpaperStore?.id !== wallpaper?.id) {
+		if (wallpaperStore?.id === 'custom-wallpaper') {
+			return
+		}
+
 		await setToStorage('wallpaper', {
 			...wallpaper,
 			isRetouchEnabled: false,

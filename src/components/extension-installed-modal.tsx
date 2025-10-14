@@ -19,7 +19,7 @@ export function ExtensionInstalledModal({
 	onGetStarted,
 }: ExtensionInstalledModalProps) {
 	const [currentStep, setCurrentStep] = useState<Step>(1)
-	const totalSteps = 2
+	const totalSteps = 3
 
 	const renderStepContent = () => {
 		switch (currentStep) {
@@ -29,7 +29,9 @@ export function ExtensionInstalledModal({
 				}
 				return <StepOne setCurrentStep={setCurrentStep} />
 			case 2:
-				return <StepTwo onGetStarted={onGetStarted} />
+				return <StepFooterDisable setCurrentStep={setCurrentStep} />
+			case 3:
+				return <StepThree onGetStarted={onGetStarted} />
 			default:
 				return null
 		}
@@ -149,10 +151,58 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 	)
 }
 
+interface StepFooterDisableProps {
+	setCurrentStep: (step: Step) => void
+}
+const StepFooterDisable = ({ setCurrentStep }: StepFooterDisableProps) => {
+	return (
+		<>
+			<div className="mb-3">
+				<h3 className={'mb-0 text-2xl font-bold text-content'}>
+					مخفی کردن نوار پایین مرورگر
+				</h3>
+			</div>
+
+			<div
+				className={
+					'relative p-1 mt-1 mb-3 border rounded-xl border-content bg-content'
+				}
+			>
+				<div className="flex items-center justify-center">
+					<img
+						src="https://widgetify-ir.storage.c2.liara.space/extension/how-to-disable-footer.png"
+						alt="نحوه مخفی کردن نوار پایین مرورگر"
+						className="h-auto max-w-full rounded-lg shadow-xl"
+						style={{ maxHeight: '220px' }}
+					/>
+				</div>
+			</div>
+
+			<div
+				className={
+					'p-3 mb-3 text-content rounded-lg border border-content  bg-content'
+				}
+			>
+				<p className="font-bold text-muted">
+					💡 برای زیبایی بیشتر، میتونید نوار خاکستری پایین مرورگر رو مانند این
+					تصویر مخفی کنید
+				</p>
+			</div>
+
+			<button
+				onClick={() => setCurrentStep(3)}
+				className="px-8 py-3 font-light text-white transition-all cursor-pointer duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
+			>
+				باشه
+			</button>
+		</>
+	)
+}
+
 interface StepThreeProps {
 	onGetStarted: () => void
 }
-const StepTwo = ({ onGetStarted }: StepThreeProps) => {
+const StepThree = ({ onGetStarted }: StepThreeProps) => {
 	return (
 		<>
 			<m.div

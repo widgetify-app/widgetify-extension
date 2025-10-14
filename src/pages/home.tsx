@@ -7,6 +7,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
+import { FooterDisableHintModal } from '@/components/footer-disable-hint-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
@@ -27,11 +28,7 @@ const steps: Step[] = [
 	{
 		target: '#settings-button',
 		content:
-			'از این دکمه می‌توانید به تنظیمات عمومی برنامه دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
-	},
-	{
-		target: '#widget-menu-button',
-		content: 'از این منو می‌توانید به مدیریت ویجت‌ها و ویجی پیج دسترسی پیدا کنید.',
+			'از این دکمه می‌توانید به تنظیمات عمومی برنامه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
 	},
 	{
 		target: '#profile-and-friends-list',
@@ -54,6 +51,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [page, setPage] = useState<'home' | 'wigi-page'>('home')
+	const [showFooterDisableHint, setShowFooterDisableHint] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
@@ -70,6 +68,12 @@ export function HomePage() {
 			const lastVersion = await getFromStorage('lastVersion')
 			if (lastVersion !== ConfigKey.VERSION_NAME) {
 				setShowReleaseNotes(true)
+				return
+			}
+
+			const hasSeenFooterHint = await getFromStorage('hasSeenFooterDisableHint')
+			if (!hasSeenFooterHint) {
+				setShowFooterDisableHint(true)
 			}
 		}
 
@@ -183,6 +187,12 @@ export function HomePage() {
 		setShowReleaseNotes(false)
 	}
 
+	const onCloseFooterDisableHint = async () => {
+		setShowFooterDisableHint(false)
+		await setToStorage('hasSeenFooterDisableHint', true)
+		Analytics.event('footer_hint_dismissed')
+	}
+
 	function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
 		if (existingVideo) {
@@ -265,9 +275,7 @@ export function HomePage() {
 		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
-					<div data-tour="navbar">
-						<NavbarLayout />
-					</div>
+					<NavbarLayout />
 					{/* <div data-tour="content">
 						<ContentSection />
 					</div> */}
@@ -336,6 +344,11 @@ export function HomePage() {
 				isOpen={showReleaseNotes}
 				onClose={() => onCloseReleaseNotes()}
 				counterValue={10}
+			/>
+
+			<FooterDisableHintModal
+				show={showFooterDisableHint}
+				onClose={onCloseFooterDisableHint}
 			/>
 		</div>
 	)

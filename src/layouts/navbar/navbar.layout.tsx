@@ -1,162 +1,140 @@
-import DOMPurify from 'dompurify'
-import { type JSX, useEffect, useState } from 'react'
-import { VscSettings } from 'react-icons/vsc'
+import { type JSX, useCallback, useEffect, useState } from 'react'
+import { HiHome } from 'react-icons/hi'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import Tooltip from '@/components/toolTip'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
+import { NavButton } from './components/navButton'
+import { SettingsDropdown } from './components/settingsDropdown'
 import { FriendsList } from './friends-list/friends'
 import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
-import { WidgetMenu } from './widget-menu/widget-menu'
 
 export interface PageLink {
 	name: string
 	to: string
 }
 
+interface LogoData {
+	logoUrl: string | null
+	content: string | null
+}
+
+const DEFAULT_LOGO_DATA: LogoData = {
+	logoUrl: null,
+	content: '<h1 class="text-xl text-gray-100">ویجتی‌فای</h1>',
+}
+
+const WIDGETIFY_URLS = {
+	website: 'https://widgetify.ir',
+} as const
+
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
-	const [showNewBadge, setShowNewBadge] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
+	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
 
-	const [logoData, setLogoData] = useState<{
-		logoUrl: string | null
-		content: string | null
-	}>({
-		logoUrl: null,
-		content: '<h1 class="text-xl text-gray-100">ویجتی‌فای</h1>',
-	})
+	const handleOpenSettings = useCallback((tabName: 'account' | 'wallpapers' | null) => {
+		if (tabName) setTab(tabName)
+		setShowSettings(true)
+	}, [])
+
+	const settingsModalCloseHandler = () => setShowSettings(false)
+
+	const sanitizeAndUpdateLogo = useCallback(
+		(logoUrl: string | null, logoId: string, storeData: any) => {
+			const newLogoData = { content: '', logoUrl }
+
+			setLogoData(newLogoData)
+
+			return setToStorage('configData', {
+				...storeData,
+				logo: { id: logoId, content: '', logoUrl: logoUrl },
+			})
+		},
+		[]
+	)
+
+	const loadConfig = useCallback(async () => {
+		try {
+			const storeData = await getFromStorage('configData')
+
+			if (storeData?.logo) {
+				setLogoData({
+					content: storeData.logo.content,
+					logoUrl: storeData.logo.logoUrl,
+				})
+			}
+
+			const data = await getConfigData()
+			if (data.logo) {
+				const shouldUpdateLogo =
+					(storeData?.logo && storeData.logo.id !== data.logo.id) ||
+					!storeData?.logo
+
+				if (shouldUpdateLogo) {
+					await sanitizeAndUpdateLogo(
+						data.logo.logoUrl,
+						data.logo.id,
+						storeData
+					)
+				}
+			}
+		} catch {}
+	}, [])
 
 	useEffect(() => {
-		const handleOpenSettings = (tab: any) => {
-			if (tab) {
-				setTab(tab)
-			}
-			setShowSettings(true)
-		}
-
-		const loadConfig = async () => {
-			try {
-				const [storeData, seenWidgetSettings] = await Promise.all([
-					getFromStorage('configData'),
-					getFromStorage('seenWidgetSettings_1'),
-				])
-				if (!seenWidgetSettings) {
-					setShowNewBadge(true)
-				}
-
-				if (storeData) {
-					setLogoData({
-						content: storeData.logo?.content,
-						logoUrl: storeData.logo?.url,
-					})
-				}
-
-				const data = await getConfigData()
-				if (data.logo) {
-					if (
-						(storeData?.logo && storeData.logo.id !== data.logo.id) ||
-						!storeData?.logo
-					) {
-						const safeHTML = DOMPurify.sanitize(data.logo?.content || '', {
-							ALLOWED_TAGS: [
-								'div',
-								'b',
-								'i',
-								'em',
-								'strong',
-								'a',
-								'p',
-								'br',
-								'span',
-								'ul',
-								'li',
-								'img',
-								'h1',
-							],
-							ALLOWED_ATTR: [
-								'href',
-								'target',
-								'rel',
-								'class',
-								'src',
-								'alt',
-							],
-						})
-						setLogoData({
-							content: safeHTML,
-							logoUrl: data.logo.url,
-						})
-
-						await setToStorage('configData', {
-							...storeData,
-							logo: {
-								id: data.logo.id,
-								content: safeHTML,
-								url: data.logo.url,
-							},
-						})
-					}
-				}
-			} catch {}
-		}
-
 		const openSettingEvent = listenEvent('openSettings', handleOpenSettings)
 		loadConfig()
 		return () => {
 			openSettingEvent()
 		}
-	}, [])
+	}, [handleOpenSettings, loadConfig])
 
 	return (
 		<>
-			<nav className="flex items-center justify-between px-4 mt-0.5 md:mt-1.5">
-				<div className="flex items-center gap-0.5">
-					<a
-						href="https://widgetify.ir"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="flex items-center gap-2"
-					>
-						{logoData.logoUrl && (
-							<img
-								src={logoData.logoUrl}
-								alt={logoData.content || 'ویجتی‌فای'}
-								className="w-6 h-6 rounded-full"
-							/>
-						)}
-						{logoData.content && (
-							<div
-								className="leading-relaxed"
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized with DOMPurify
-								dangerouslySetInnerHTML={{
-									__html: logoData.content,
-								}}
-							/>
-						)}
-					</a>
-				</div>
-				<div className="flex items-center gap-1">
-					<FriendsList />
-					<ProfileNav />
-					<SyncButton />
-					<WidgetMenu showNewBadge={showNewBadge} />
-					<Tooltip content="تنظیمات">
-						<div
-							className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-							onClick={() => setShowSettings(true)}
-							id="settings-button"
-						>
-							<VscSettings size={20} className="text-muted" />
+			<nav
+				className={`mt-0.5 px-2 md:px-4 md:mt-1 mr-auto h-8 transition-all duration-100 w-48 md:w-[13.5rem]`}
+				data-tour="navbar"
+			>
+				<div className="relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl">
+					{logoData.logoUrl && (
+						<div className="flex items-center justify-center border-r border-content min-w-10 max-w-10">
+							<a
+								href={WIDGETIFY_URLS.website}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<img
+									src={logoData.logoUrl || ''}
+									alt={logoData.content || 'ویجتی‌فای'}
+									className="w-6 h-6 rounded"
+								/>
+							</a>
 						</div>
-					</Tooltip>
+					)}
+					<div className="flex items-center justify-end gap-1 transition-all rounded-xl">
+						<ProfileNav />
+						<FriendsList />
+						<SyncButton />
+						<SettingsDropdown setShowSettings={setShowSettings} />
+						<NavButton
+							onClick={() => {}}
+							icon={
+								<HiHome
+									size={20}
+									className="text-muted group-hover:text-primary !text-primary/80"
+								/>
+							}
+							id="home-button"
+						/>
+					</div>
 				</div>
 			</nav>
+
 			<SettingModal
 				isOpen={showSettings}
-				onClose={() => setShowSettings(false)}
+				onClose={settingsModalCloseHandler}
 				selectedTab={tab}
 			/>
 		</>

@@ -1,67 +1,84 @@
+import { useState } from 'react'
 import { LuCircleUser } from 'react-icons/lu'
 import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { FriendSettingModal } from '../friends-list/setting/friend-setting.modal'
+
+const renderUserAvatar = (user: any) => {
+	if (user?.avatar) {
+		return <AvatarComponent url={user.avatar} size="xs" className="!w-5 !h-5" />
+	}
+
+	const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'
+	return <span className="text-2xl font-bold text-content">{initial}</span>
+}
+
+const renderPendingNotification = (pendingCount: number) => (
+	<div className="absolute z-50 flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
+		{pendingCount}
+	</div>
+)
+
+const getTooltipContent = (user: any) => {
+	return user?.inCache ? (
+		<span className="text-error">خطا در بارگیری پروفایل</span>
+	) : (
+		'پروفایل کاربری'
+	)
+}
+
 export function ProfileNav() {
 	const { user, isAuthenticated } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
+
 	const handleProfileClick = () => {
 		if (isAuthenticated) setShowSettingsModal(true)
 	}
 
-	if (!user) {
+	const handleOpenAccountSettings = () => {
+		callEvent('openSettings', 'account')
+	}
+
+	const modalCloseHandler = () => setShowSettingsModal(false)
+
+	if (!user || !isAuthenticated) {
 		return (
 			<Tooltip content="ورود به حساب کاربری">
 				<div
-					className="flex items-center justify-center w-8 h-8 gap-2 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
+					className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 rounded-full cursor-pointer hover:opacity-80 group hover:bg-primary/10"
 					id="profile-and-friends-list"
-					onClick={() => {
-						callEvent('openSettings', 'account')
-					}}
+					onClick={handleOpenAccountSettings}
 				>
-					<LuCircleUser size={20} className="text-muted" />
+					<LuCircleUser
+						size={20}
+						className="text-muted group-hover:text-primary"
+					/>
 				</div>
 			</Tooltip>
 		)
 	}
 
+	const containerClasses = `relative flex justify-center items-center h-8 px-1 transition-all duration-300 cursor-pointer w-8 rounded-full hover:opacity-80 group hover:bg-primary/10 ${
+		user.inCache ? `ring-1 ring-error relative overflow-visible` : ''
+	}`
+
+	const hasPendingRequests = user?.friendshipStats?.pending > 0
+
 	return (
 		<>
-			<Tooltip
-				content={
-					user.inCache ? (
-						<span className="text-error">خطا در بارگیری پروفایل</span>
-					) : (
-						'پروفایل کاربری'
-					)
-				}
-			>
-				<div
-					className={`flex items-center justify-center w-8 h-8 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80 ${user.inCache && 'ring-2 ring-error'} relative overflow-visible`}
-					onClick={handleProfileClick}
-				>
-					{user?.avatar ? (
-						<AvatarComponent url={user.avatar} size="xs" />
-					) : (
-						<span className="text-2xl font-bold text-content">
-							{user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'}
-						</span>
-					)}
-					{user?.friendshipStats?.pending > 0 && (
-						<div className="absolute z-50 flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
-							{user?.friendshipStats.pending}
-						</div>
-					)}
+			<Tooltip content={getTooltipContent(user)}>
+				<div className={containerClasses} onClick={handleProfileClick}>
+					{renderUserAvatar(user)}
+					{hasPendingRequests &&
+						renderPendingNotification(user.friendshipStats.pending)}
 				</div>
 			</Tooltip>
 			<FriendSettingModal
 				isOpen={showSettingsModal}
-				selectedTab={'profile'}
-				onClose={() => {
-					setShowSettingsModal(false)
-				}}
+				selectedTab="profile"
+				onClose={modalCloseHandler}
 			/>
 		</>
 	)

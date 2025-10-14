@@ -51,7 +51,7 @@ export function FriendItem({
 			>
 				<div
 					ref={containerRef}
-					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105"
+					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105 group"
 					onClick={handleClick}
 				>
 					<AvatarComponent
@@ -59,6 +59,16 @@ export function FriendItem({
 						placeholder={user.username}
 						size="xs"
 					/>
+					<span
+						className={`mt-1 text-xs text-center truncate w-14 ${
+							isActive
+								? 'text-primary font-medium'
+								: 'text-muted group-hover:!text-primary/50'
+						}`}
+						dir="ltr"
+					>
+						{user.name}
+					</span>
 				</div>
 			</Tooltip>
 

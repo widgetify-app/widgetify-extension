@@ -60,9 +60,9 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-start h-24 bg-widget widget-wrapper rounded-2xl">
-			<div className="relative w-full" ref={searchRef}>
-				<form className="w-full" onSubmit={handleSubmit}>
+		<div className="relative z-50 flex flex-col items-center justify-start h-24">
+			<div ref={searchRef} className="w-full bg-widget widget-wrapper rounded-2xl">
+				<form onSubmit={handleSubmit}>
 					<div
 						className={
 							'relative flex items-center gap-x-2 py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-widget group  rounded-2xl search-box'
@@ -109,12 +109,11 @@ export function SearchLayout() {
 					</div>
 				</form>
 				<BrowserBookmark />
-
-				<TrendingSearches
-					visible={isInputFocused && searchQuery === ''}
-					onSelectTrend={handleSelectTrend}
-				/>
 			</div>
+			<TrendingSearches
+				visible={isInputFocused && searchQuery === ''}
+				onSelectTrend={handleSelectTrend}
+			/>
 		</div>
 	)
 }

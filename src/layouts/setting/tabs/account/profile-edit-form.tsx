@@ -197,19 +197,19 @@ export const ProfileEditForm = ({
 						<div className="flex w-full gap-2">
 							<ItemSelector
 								isActive={formData.gender === 'MALE'}
-								label="مرد"
+								label="مذکر"
 								className="w-full"
 								onClick={() => onChangeGender('MALE')}
 							/>
 							<ItemSelector
 								isActive={formData.gender === 'FEMALE'}
-								label="زن"
+								label="مؤنث"
 								className="w-full"
 								onClick={() => onChangeGender('FEMALE')}
 							/>
 							<ItemSelector
 								isActive={formData.gender === 'OTHER'}
-								label="دیگر"
+								label="غیره"
 								className="w-full"
 								onClick={() => onChangeGender('OTHER')}
 							/>

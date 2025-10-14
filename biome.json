@@ -47,7 +47,8 @@
 				"useUniqueElementIds": "off"
 			},
 			"complexity": {
-				"noUselessTernary": "off"
+				"noUselessTernary": "off",
+				"noImportantStyles": "off"
 			}
 		}
 	},

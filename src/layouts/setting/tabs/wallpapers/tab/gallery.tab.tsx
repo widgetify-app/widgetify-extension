@@ -59,70 +59,6 @@ export function GalleryTab() {
 
 	const selectedCategory = getSelectedCategory()
 
-	interface FolderProps {
-		id: string
-		name: string
-		previewImages: any[]
-		isAllCategory?: boolean
-	}
-
-	function CategoryFolder({ id, name, previewImages }: FolderProps) {
-		return (
-			<div
-				onClick={() => handleCategorySelect(id)}
-				className={
-					'cursor-pointer rounded-lg p-3 border bg-content border-content transition-all h-32 max-h-32 flex flex-col'
-				}
-			>
-				<div className="flex items-center gap-2 mb-2">
-					<FiFolder className="text-blue-500" size={18} />
-					<p className={'font-medium text-muted'}>{name}</p>
-				</div>
-
-				<div className="flex-grow">
-					{previewImages?.length > 0 ? (
-						<div className="grid grid-cols-2 gap-1">
-							{previewImages.map((image) => (
-								<div
-									key={image.id}
-									className="overflow-hidden rounded aspect-video"
-								>
-									<img
-										src={image.previewSrc}
-										alt={image.name}
-										className="object-cover w-full h-full"
-										loading="lazy"
-									/>
-								</div>
-							))}
-						</div>
-					) : (
-						<div className="flex flex-col items-center justify-center h-full rounded">
-							<FiFolder className="mb-2 text-content/40" size={32} />
-							<p className="text-xs text-gray-400">بدون تصویر</p>
-						</div>
-					)}
-				</div>
-			</div>
-		)
-	}
-
-	function BackButton() {
-		return (
-			<div className="flex justify-center mt-1">
-				<FolderPath
-					folderPath={[
-						{
-							id: 'subfolder',
-							title: selectedCategory?.name || 'پوشه',
-						},
-					]}
-					onNavigate={() => handleBackToCategories()}
-				/>
-			</div>
-		)
-	}
-
 	return (
 		<>
 			<SectionPanel title="گالری تصاویر" size="xs">
@@ -134,6 +70,7 @@ export function GalleryTab() {
 									<CategoryFolder
 										key={category.id}
 										id={category.id}
+										handleCategorySelect={handleCategorySelect}
 										name={category.name}
 										previewImages={category.wallpapers || []}
 									/>
@@ -149,7 +86,17 @@ export function GalleryTab() {
 								selectedBackground={selectedBackground}
 								onSelectBackground={handleSelectBackground}
 							/>
-							<BackButton />
+							<div className="flex justify-center mt-1">
+								<FolderPath
+									folderPath={[
+										{
+											id: 'subfolder',
+											title: selectedCategory?.name || 'پوشه',
+										},
+									]}
+									onNavigate={() => handleBackToCategories()}
+								/>
+							</div>
 						</div>
 					)}
 				</div>
@@ -166,5 +113,53 @@ export function GalleryTab() {
 				<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
 			</SectionPanel>
 		</>
+	)
+}
+
+interface FolderProps {
+	id: string
+	name: string
+	previewImages: any[]
+	isAllCategory?: boolean
+	handleCategorySelect: any
+}
+function CategoryFolder({ id, name, previewImages, handleCategorySelect }: FolderProps) {
+	return (
+		<div
+			onClick={() => handleCategorySelect(id)}
+			className={
+				'cursor-pointer rounded-lg p-3 border bg-content border-content transition-all h-32 max-h-32 flex flex-col'
+			}
+		>
+			<div className="flex items-center gap-2 mb-2">
+				<FiFolder className="text-blue-500" size={18} />
+				<p className={'font-medium text-muted'}>{name}</p>
+			</div>
+
+			<div className="flex-grow">
+				{previewImages?.length > 0 ? (
+					<div className="grid grid-cols-2 gap-1">
+						{previewImages.map((image) => (
+							<div
+								key={image.id}
+								className="overflow-hidden rounded aspect-video"
+							>
+								<img
+									src={image.previewSrc}
+									alt={image.name}
+									className="object-cover w-full h-full"
+									loading="lazy"
+								/>
+							</div>
+						))}
+					</div>
+				) : (
+					<div className="flex flex-col items-center justify-center h-full rounded">
+						<FiFolder className="mb-2 text-content/40" size={32} />
+						<p className="text-xs text-gray-400">بدون تصویر</p>
+					</div>
+				)}
+			</div>
+		</div>
 	)
 }

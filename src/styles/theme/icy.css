@@ -33,7 +33,6 @@
 [data-theme="icy"] .navbar,
 [data-theme="icy"] .modal-box,
 [data-theme="icy"] .drawer-side,
-[data-theme="icy"] .trending-section,
 [data-theme="icy"] .collapse {
     -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
     backdrop-filter: blur(20px) saturate(180%) brightness(110%);
