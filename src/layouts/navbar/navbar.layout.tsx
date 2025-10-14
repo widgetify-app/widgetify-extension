@@ -108,12 +108,12 @@ export function NavbarLayout(): JSX.Element {
 								<img
 									src={logoData.logoUrl || ''}
 									alt={logoData.content || 'ویجتی‌فای'}
-									className="w-5 h-5 rounded-full"
+									className="w-6 h-6 rounded"
 								/>
 							</a>
 						</div>
 					)}
-					<div className="flex items-center justify-end gap-1 transition-all rounded-xl bg-content">
+					<div className="flex items-center justify-end gap-1 transition-all rounded-xl">
 						<ProfileNav />
 						<FriendsList />
 						<SyncButton />
