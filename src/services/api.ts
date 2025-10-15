@@ -60,6 +60,10 @@ export async function getMainClient(): Promise<AxiosInstance> {
 					const refresh_token: string | null =
 						await getFromStorage('refresh_token')
 
+					if (!refresh_token) {
+						return
+					}
+
 					const response = await axios.post(`${API_URL}/auth/refresh`, {
 						refresh_token,
 					})
