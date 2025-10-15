@@ -53,7 +53,7 @@ export function ProfileNav() {
 				>
 					<LuCircleUser
 						size={20}
-						className="text-muted group-hover:text-primary"
+						className="text-muted group-hover:!text-primary"
 					/>
 				</div>
 			</Tooltip>
