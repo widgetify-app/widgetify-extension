@@ -64,7 +64,7 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 			style={style}
 			{...attributes}
 			{...dragListeners}
-			className={`h-widget transition-all duration-200 ${
+			className={`transition-all duration-200 ${
 				isDragging
 					? 'opacity-50 scale-105 shadow-2xl cursor-grabbing'
 					: 'cursor-grab hover:scale-[1.02]'
@@ -122,7 +122,7 @@ export function ContentSection() {
 					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-4 px-2 md:px-4 py-2`}
 				>
 					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-						<div className="order-3 w-full lg:w-1/4 lg:order-1 h-widget">
+						<div className="order-3 w-full lg:w-1/4 lg:order-1">
 							<WidgetifyLayout />
 						</div>
 
@@ -133,13 +133,11 @@ export function ContentSection() {
 						>
 							<SearchLayout />
 							<BookmarkProvider>
-								<div className="h-widget">
-									<BookmarksComponent />
-								</div>
+								<BookmarksComponent />
 							</BookmarkProvider>
 						</div>
 
-						<div className="order-2 w-full lg:w-1/4 lg:order-3 h-widget">
+						<div className="order-2 w-full lg:w-1/4 lg:order-3">
 							<WigiPadWidget />
 						</div>
 					</div>
