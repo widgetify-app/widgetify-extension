@@ -2,6 +2,7 @@ import { type JSX, useCallback, useEffect, useState } from 'react'
 import { HiHome } from 'react-icons/hi'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
+import { useAuth } from '@/context/auth.context'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
 import { NavButton } from './components/navButton'
@@ -33,6 +34,7 @@ export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
+	const { isAuthenticated } = useAuth()
 
 	const handleOpenSettings = useCallback((tabName: 'account' | 'wallpapers' | null) => {
 		if (tabName) setTab(tabName)
@@ -91,10 +93,11 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [handleOpenSettings, loadConfig])
 
+	const w = isAuthenticated ? 'w-48 md:w-[13.5rem]' : 'w-42 md:w-[11.5rem]'
 	return (
 		<>
 			<nav
-				className={`mt-0.5 px-2 md:px-4 md:mt-1 mr-auto h-8 transition-all duration-100 w-48 md:w-[13.5rem]`}
+				className={`mt-0.5 px-2 md:px-4 md:mt-1 mr-auto h-8 transition-all duration-100 ${w}`}
 				data-tour="navbar"
 			>
 				<div className="relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl">
