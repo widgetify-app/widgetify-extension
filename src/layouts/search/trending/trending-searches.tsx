@@ -52,7 +52,7 @@ export const TrendingSearches = ({ visible, onSelectTrend }: TrendingSearchesPro
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -30 }}
 					className={
-						'left-0 right-0 overflow-hidden absolute z-50 w-full h-40 shadow-2xl bg-widget widget-wrapper rounded-2xl top-14'
+						'left-0 right-0 overflow-hidden absolute w-full h-40 shadow-2xl bg-widget widget-wrapper rounded-2xl top-14'
 					}
 					style={{
 						zIndex: 9999,
