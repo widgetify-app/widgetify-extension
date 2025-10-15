@@ -102,7 +102,7 @@ export function NavbarLayout(): JSX.Element {
 			>
 				<div className="relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl">
 					{logoData.logoUrl && (
-						<div className="flex items-center justify-center border-r border-content min-w-10 max-w-10">
+						<div className="flex items-center justify-center border-r border-content min-w-8 max-w-8">
 							<a
 								href={WIDGETIFY_URLS.website}
 								target="_blank"
@@ -111,7 +111,7 @@ export function NavbarLayout(): JSX.Element {
 								<img
 									src={logoData.logoUrl || ''}
 									alt={logoData.content || 'ویجتی‌فای'}
-									className="w-6 h-6 rounded"
+									className="w-5 h-5 rounded"
 								/>
 							</a>
 						</div>
