@@ -9,14 +9,13 @@ import {
 import { rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useRef, useState } from 'react'
-import { TbLayoutGrid, TbWorldWww, TbArrowLeft } from 'react-icons/tb'
+import { TbArrowLeft, TbLayoutGrid } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { DateProvider } from '@/context/date.context'
 import { TodoProvider } from '@/context/todo.context'
 import { type WidgetItem, widgetItems } from '@/context/widget-visibility.context'
-import { SuggestedSites } from './suggested-sites'
 
 function SortableWidget({ widget }: { widget: WidgetItem }) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -187,39 +186,38 @@ export function ExplorerPage() {
 	return (
 		<DateProvider>
 			<TodoProvider>
-				<div className="flex flex-col h-full gap-1 py-5 overflow-hidden lg:flex-row">
+				<div className="flex flex-col h-full gap-3 px-2 overflow-hidden lg:flex-row">
 					<div className="flex w-full gap-2 py-1 overflow-x-hidden lg:w-44 lg:flex-col">
-                        <div className="flex gap-2 lg:flex-col min-w-max lg:min-w-0">
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => {
-                                        if (tab.action) {
-                                            tab.action()
-                                        } else {
-                                            setActiveTab(tab.id)
-                                        }
-                                        Analytics.event('explorer_tab_switch', { tab: tab.id })
-                                    }}
-                                    className={`flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl transition-all duration-200 whitespace-nowrap ${
-                                        activeTab === tab.id
-                                            ? 'bg-primary text-white shadow-lg'
-                                            : 'bg-content hover:!bg-primary/80 text-muted hover:!text-white'
-                                    }`}
-                                >
-                                    {tab.icon}
-                                    <span className="font-medium">{tab.label}</span>
-                                </button>
-                            ))}
-                        </div>
-             
+						{tabs.map((tab) => (
+							<button
+								key={tab.id}
+								onClick={() => {
+									if (tab.action) {
+										tab.action()
+									} else {
+										setActiveTab(tab.id)
+									}
+									Analytics.event('explorer_tab_switch', {
+										tab: tab.id,
+									})
+								}}
+								className={`flex items-center cursor-pointer gap-3 px-4 py-3 rounded-xl transition-all duration-200 whitespace-nowrap ${
+									activeTab === tab.id
+										? 'bg-primary text-white shadow-lg'
+										: 'bg-content hover:!bg-primary/80 text-muted hover:!text-white'
+								}`}
+							>
+								{tab.icon}
+								<span className="text-sm font-bold">{tab.label}</span>
+							</button>
+						))}
 					</div>
-					<div className="flex-1 px-5 overflow-hidden">
+					<div className="flex-1 overflow-hidden">
 						<div
 							className="h-full overflow-x-hidden overflow-y-auto hide-scrollbar rounded-xl bg-widget/30"
 							ref={contentRef}
 						>
-							{tabs.find(tab => tab.id === activeTab)?.content}
+							{tabs.find((tab) => tab.id === activeTab)?.content}
 						</div>
 					</div>
 				</div>

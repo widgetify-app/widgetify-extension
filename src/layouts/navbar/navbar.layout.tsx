@@ -1,7 +1,8 @@
 import { type JSX, useCallback, useEffect, useState } from 'react'
-import { HiHome } from 'react-icons/hi'
+import { HiHome, HiViewGrid } from 'react-icons/hi'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
+import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
@@ -32,6 +33,7 @@ const WIDGETIFY_URLS = {
 
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
+	const [page, setPage] = useState<any>('home')
 	const [tab, setTab] = useState<string | null>(null)
 	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
 	const { isAuthenticated } = useAuth()
@@ -56,6 +58,12 @@ export function NavbarLayout(): JSX.Element {
 		},
 		[]
 	)
+
+	const onClickNavButton = (page: string) => {
+		setPage(page)
+		if (page === 'wigi') callEvent('switchToWigiPage')
+		else callEvent('switchToHomePage')
+	}
 
 	const loadConfig = useCallback(async () => {
 		try {
@@ -83,6 +91,13 @@ export function NavbarLayout(): JSX.Element {
 				}
 			}
 		} catch {}
+
+		const listenHomeEvent = listenEvent('switchToHomePage', () => setPage('home'))
+		const listenWigiEvent = listenEvent('switchToWigiPage', () => setPage('wigi'))
+		return () => {
+			listenHomeEvent()
+			listenWigiEvent()
+		}
 	}, [])
 
 	useEffect(() => {
@@ -93,7 +108,7 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [handleOpenSettings, loadConfig])
 
-	const w = isAuthenticated ? 'w-48 md:w-[13.5rem]' : 'w-42 md:w-[11.5rem]'
+	const w = isAuthenticated ? 'w-48 md:w-[13.5rem]' : 'w-42 md:w-[13.5rem]'
 	return (
 		<>
 			<nav
@@ -121,16 +136,22 @@ export function NavbarLayout(): JSX.Element {
 						<FriendsList />
 						<SyncButton />
 						<SettingsDropdown setShowSettings={setShowSettings} />
-						<NavButton
-							onClick={() => {}}
-							icon={
-								<HiHome
-									size={20}
-									className="text-muted group-hover:text-primary !text-primary/80"
-								/>
-							}
-							id="home-button"
-						/>
+						<Tooltip content="صفحه ویجت‌ها">
+							<NavButton
+								onClick={() => onClickNavButton('wigi')}
+								icon={<HiViewGrid size={20} />}
+								id="wigiPage-button"
+								isActive={page === 'wigi'}
+							/>
+						</Tooltip>
+						<Tooltip content="صفحه اصلی">
+							<NavButton
+								onClick={() => onClickNavButton('home')}
+								icon={<HiHome size={20} />}
+								id="home-button"
+								isActive={page === 'home'}
+							/>
+						</Tooltip>
 					</div>
 				</div>
 			</nav>

@@ -111,21 +111,6 @@ export function HomePage() {
 			}
 		}
 
-		// Handle keyboard shortcuts
-		function handleKeydown(event: KeyboardEvent) {
-			// Alt + W برای رفتن به ویجی پیج
-			if (event.altKey && event.key.toLowerCase() === 'w') {
-				event.preventDefault()
-				if (page === 'home') {
-					setPage('wigi-page')
-					Analytics.event('navigate_to_explorer_page_keyboard')
-				} else {
-					setPage('home')
-					Analytics.event('navigate_to_home_keyboard')
-				}
-			}
-		}
-
 		displayModalIfNeeded()
 		loadWallpaper()
 
@@ -148,17 +133,12 @@ export function HomePage() {
 		)
 
 		const switchToWigiPageEvent = listenEvent('switchToWigiPage', () => {
-			console.log('Event دریافت شد - تغییر به ویجی پیج')
 			setPage('wigi-page')
 		})
 
 		const switchToHomePageEvent = listenEvent('switchToHomePage', () => {
-			console.log('Event دریافت شد - تغییر به صفحه اصلی')
 			setPage('home')
 		})
-
-		// Add keyboard event listener
-		window.addEventListener('keydown', handleKeydown)
 
 		Analytics.pageView('Home', '/')
 
@@ -167,7 +147,6 @@ export function HomePage() {
 			openWidgetsSettingsEvent()
 			switchToWigiPageEvent()
 			switchToHomePageEvent()
-			window.removeEventListener('keydown', handleKeydown)
 		}
 	}, [page])
 
