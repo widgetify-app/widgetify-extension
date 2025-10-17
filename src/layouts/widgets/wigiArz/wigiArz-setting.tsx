@@ -9,7 +9,6 @@ import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
-import { CurrencyBox } from './components/currency-box'
 import { CurrenciesType, type SupportedCurrencies } from './wigiArz-setting.interface'
 
 export function WigiArzSetting() {
@@ -103,9 +102,6 @@ export function WigiArzSetting() {
 							className="w-full"
 							onClick={() => toggleCurrencyColorMode(CurrencyColorMode.X)}
 						/>
-					</div>
-					<div className="w-40 mt-1">
-						<CurrencyBox code="USD" currencyColorMode={currencyColorMode} />
 					</div>
 				</SectionPanel>
 
