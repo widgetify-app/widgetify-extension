@@ -2,6 +2,7 @@ import moment from 'jalali-moment'
 import GoogleCalendar from '@/assets/google-calendar.png'
 import GoogleMeet from '@/assets/google-meet.png'
 import { Button } from '@/components/button/button'
+import Tooltip from '@/components/toolTip'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useGetWigiPadData } from '@/services/hooks/extension/getWigiPadData.hook'
 import { NotificationCardItem } from './components/notification-item'
@@ -28,7 +29,7 @@ export function NotificationCenter() {
 					<NotificationCardItem
 						title={event.title}
 						subTitle={`
-${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
+امروز، ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
                             `}
 						description={event.location || ''}
 						icon={GoogleCalendar}
@@ -47,11 +48,13 @@ ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
 								)
 							}}
 						>
-							<img
-								src={GoogleMeet}
-								alt="Gmail"
-								className="w-[1.2rem] h-[1.2rem]"
-							/>
+							<Tooltip content="ورود به جلسه گوگل میت">
+								<img
+									src={GoogleMeet}
+									alt="Gmail"
+									className="w-[1.2rem] h-[1.2rem]"
+								/>
+							</Tooltip>
 						</Button>
 					)}
 				</div>

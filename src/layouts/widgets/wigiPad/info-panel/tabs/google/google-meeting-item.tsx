@@ -1,9 +1,14 @@
 import moment from 'jalali-moment'
-import { MdDateRange, MdEvent, MdLocationOn, MdVideoCall } from 'react-icons/md'
+import { CgMediaLive } from 'react-icons/cg'
+import { MdDateRange, MdLocationOn } from 'react-icons/md'
+import GoogleCalendar from '@/assets/google-calendar.png'
+import Tooltip from '@/components/toolTip'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 
 interface GoogleEventItemProps {
 	meeting: GoogleCalendarEvent
+	timezone: string
 }
 
 function formatEventTime(dateTimeStr: string) {
@@ -12,7 +17,7 @@ function formatEventTime(dateTimeStr: string) {
 	return date.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
 }
 
-export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
+export function GoogleMeetingItem({ meeting, timezone }: GoogleEventItemProps) {
 	const handleJoinMeeting = () => {
 		const meetLink =
 			meeting.hangoutLink ||
@@ -26,24 +31,56 @@ export function GoogleMeetingItem({ meeting }: GoogleEventItemProps) {
 		}
 	}
 
-	const meetLink =
-		meeting.hangoutLink ||
-		meeting.conferenceData?.entryPoints?.find(
-			(ep: any) => ep.entryPointType === 'video'
-		)?.uri
-	const getEventIcon = () => {
-		if (meetLink) return <MdVideoCall className="text-blue-500" />
-		if (meeting.location) return <MdLocationOn className="text-red-500" />
-		return <MdEvent className="text-gray-500" />
+	const isPastEvent = () => {
+		if (!meeting.end || !meeting.end.dateTime) return false
+		const endDate = new Date(meeting.end.dateTime)
+		const now = getCurrentDate(timezone).toDate()
+		return endDate < now
+	}
+
+	const isCurrentEvent = () => {
+		if (
+			!meeting.start ||
+			!meeting.start.dateTime ||
+			!meeting.end ||
+			!meeting.end.dateTime
+		)
+			return false
+		const startDate = new Date(meeting.start.dateTime)
+		const endDate = new Date(meeting.end.dateTime)
+		const now = getCurrentDate(timezone).toDate()
+		return startDate <= now && endDate >= now
 	}
 
 	return (
 		<div
-			className="p-2 transition-colors rounded-lg cursor-pointer bg-content hover:!bg-base-300"
+			className={`p-2 bg-content cursor-pointer relative hover:bg-base-300 transition-all overflow-hidden rounded-2xl ${
+				isPastEvent() ? 'opacity-70 pointer-events-none' : 'hover:scale-95'
+			}`}
 			onClick={handleJoinMeeting}
 		>
+			{isPastEvent() && (
+				<div className="absolute px-2 py-0.5 text-xs transform -rotate-45 shadow-xl text-warning-content -left-10 w-32 top-4 bg-warning/80">
+					<div className="relative z-10 font-normal tracking-wide text-center">
+						اتمام یافته
+					</div>
+				</div>
+			)}
+			{isCurrentEvent() && (
+				<div className="absolute grid w-4 h-4 transition-all rounded-full left-2 place-items-center animate-ping">
+					<Tooltip content="در حال برگزاری...">
+						<CgMediaLive className="text-content" size={14} />
+					</Tooltip>
+				</div>
+			)}
 			<div className="flex items-center gap-3">
-				<div className="text-lg">{getEventIcon()}</div>{' '}
+				<div className="text-lg">
+					<img
+						src={GoogleCalendar}
+						alt="Gmail"
+						className="w-[1.2rem] h-[1.2rem]"
+					/>
+				</div>{' '}
 				<div className="flex-1 min-w-0">
 					<h4 className="text-sm font-medium truncate text-base-content">
 						{meeting.summary}

@@ -25,6 +25,7 @@ const LoadingSkeleton = () => (
 
 export function GoogleTab() {
 	const { today } = useDate()
+	const { selected_timezone } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const { data: googleEvents, isLoading } = useGetGoogleCalendarEvents(
@@ -46,7 +47,11 @@ export function GoogleTab() {
 				<LoadingSkeleton />
 			) : googleEvents && googleEvents.length > 0 ? (
 				googleEvents.map((event) => (
-					<GoogleMeetingItem key={event.id} meeting={event} />
+					<GoogleMeetingItem
+						key={event.id}
+						timezone={selected_timezone.value}
+						meeting={event}
+					/>
 				))
 			) : (
 				<div
