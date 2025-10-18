@@ -3,23 +3,22 @@ import { useEffect, useState } from 'react'
 import { MdRefresh } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
+import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient, safeAwait } from '@/services/api'
 import { WidgetContainer } from '../widget-container'
-import {
-	NetworkIPCard,
-	NetworkLoadingSkeleton,
-	NetworkPingCard,
-	NetworkSpeedCard,
-	NetworkStatusCard,
-} from './components'
+import { NetworkIPCard, NetworkLoadingSkeleton, NetworkPingCard } from './components'
 
 interface NetworkInfo {
 	status: 'online' | 'offline'
 	ip: string | null
+	country: string | null
+	countryIcon: string | null
+	city: string | null
+	isp: string | null
 	ping: number | null
 	speed: string
 }
@@ -31,6 +30,10 @@ export function NetworkLayout() {
 	const [networkInfo, setNetworkInfo] = useState<NetworkInfo>({
 		status: 'online',
 		ip: null,
+		country: null,
+		countryIcon: null,
+		city: null,
+		isp: null,
 		ping: null,
 		speed: 'به زودی..',
 	})
@@ -42,9 +45,24 @@ export function NetworkLayout() {
 		try {
 			const client = await getMainClient()
 			const response = await client.get('/extension/@me/ip')
-			setNetworkInfo((prev) => ({ ...prev, ip: response.data.ip }))
+			const data = response.data
+			setNetworkInfo((prev) => ({
+				...prev,
+				ip: data.ip,
+				country: data.country,
+				countryIcon: data.countryIcon,
+				city: data.city,
+				isp: data.isp,
+			}))
 		} catch {
-			setNetworkInfo((prev) => ({ ...prev, ip: 'N/A' }))
+			setNetworkInfo((prev) => ({
+				...prev,
+				ip: 'N/A',
+				country: null,
+				countryIcon: null,
+				city: null,
+				isp: null,
+			}))
 		}
 
 		try {
@@ -94,9 +112,6 @@ export function NetworkLayout() {
 					<div className="flex items-center justify-between mb-2">
 						<h4 className="flex items-center gap-2 text-sm font-semibold text-content">
 							شبکه
-							<span className="bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary rounded-2xl">
-								آزمایشی
-							</span>
 						</h4>
 
 						<Tooltip content="بارگذاری مجدد">
@@ -113,15 +128,66 @@ export function NetworkLayout() {
 						</Tooltip>
 					</div>
 
-					<div className="flex-1 space-y-3">
+					<div className="flex-1 space-y-2">
 						{isLoading ? (
 							<NetworkLoadingSkeleton />
 						) : (
 							<>
-								<NetworkStatusCard status={networkInfo.status} />
-								<NetworkIPCard ip={networkInfo.ip} blurMode={blurMode} />
+								<div className="relative overflow-hidden border border-content rounded-2xl ">
+									<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+									<div className="relative p-4 space-y-3">
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<div
+													className={`w-2 h-2 rounded-full animate-pulse ${networkInfo.status === 'online' ? 'bg-success' : 'bg-red-500'}`}
+												></div>
+												<span className="text-xs font-medium text-muted">
+													{networkInfo.status === 'online'
+														? 'متصل'
+														: 'قطع شده'}
+												</span>
+											</div>
+											{networkInfo.countryIcon && (
+												<Tooltip
+													content={
+														networkInfo.isp ||
+														'ارائه‌دهنده خدمات اینترنتی نامشخص'
+													}
+												>
+													<AvatarComponent
+														url={networkInfo.countryIcon}
+														placeholder="flag"
+														className="rounded-sm shadow-sm"
+														size="xs"
+													/>
+												</Tooltip>
+											)}
+										</div>
+
+										<NetworkIPCard
+											blurMode={blurMode}
+											ip={networkInfo.ip}
+										/>
+
+										{/* Location Info */}
+										{(networkInfo.city || networkInfo.country) && (
+											<div className="flex items-center justify-center gap-2 text-xs flex-warp">
+												{networkInfo.city && (
+													<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10 dark:text-blue-400">
+														{networkInfo.city}
+													</span>
+												)}
+												{networkInfo.country && (
+													<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10 dark:text-purple-400">
+														{networkInfo.country}
+													</span>
+												)}
+											</div>
+										)}
+									</div>
+								</div>
+
 								<NetworkPingCard ping={networkInfo.ping} />
-								<NetworkSpeedCard speed={networkInfo.speed} />
 							</>
 						)}
 					</div>

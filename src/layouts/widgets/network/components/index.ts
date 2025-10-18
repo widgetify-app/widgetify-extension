@@ -1,5 +1,3 @@
 export { NetworkIPCard } from './network-ip-card'
 export { NetworkLoadingSkeleton } from './network-loading-skeleton'
 export { NetworkPingCard } from './network-ping-card'
-export { NetworkSpeedCard } from './network-speed-card'
-export { NetworkStatusCard } from './network-status-card'

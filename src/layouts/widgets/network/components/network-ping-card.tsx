@@ -1,36 +1,54 @@
-import { MdTimer } from 'react-icons/md'
+import type { JSX } from 'react'
+import {
+	MdOutlineSignalCellularAlt,
+	MdOutlineSignalCellularAlt1Bar,
+	MdOutlineSignalCellularAlt2Bar,
+	MdRouter,
+} from 'react-icons/md'
+import Tooltip from '@/components/toolTip'
 
 interface NetworkPingCardProps {
 	ping: number | null
 }
 
 export function NetworkPingCard({ ping }: NetworkPingCardProps) {
+	const feedbackText =
+		ping !== null
+			? ping < 150
+				? 'پینگ شما عالی هست.'
+				: ping < 300
+					? 'پینگ شما متوسط است.'
+					: 'پینگ شما ضعیف است.'
+			: 'N/A'
 	return (
-		<div className="p-3 transition-all duration-200 border border-content rounded-xl bg-gradient-to-r from-base-100 to-base-200/50 hover:shadow-md">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<div className="p-1.5 rounded-full bg-purple-500/20">
-						<MdTimer className="text-sm text-purple-500" />
-					</div>
-					<span className="text-xs font-medium text-muted">تاخیر (Ping)</span>
-				</div>
-				<div className="flex items-center gap-2">
-					{ping !== null && (
-						<div
-							className={`w-2 h-2 rounded-full ${
-								ping < 50
-									? 'bg-green-500'
-									: ping < 100
-										? 'bg-yellow-500'
-										: 'bg-red-500'
-							} animate-pulse`}
-						/>
-					)}
-					<span className="text-xs font-semibold text-content">
-						{ping !== null ? `${ping}ms` : 'در حال اندازه‌گیری...'}
+		<div className="grid grid-cols-1 gap-2">
+			<div className="p-3 border rounded-2xl border-content">
+				<div className="flex items-center gap-2 mb-1">
+					<MdRouter className={`w-4 h-4 text-muted`} />
+					<span className="text-xs font-medium text-muted">
+						پینگ - زمان پاسخگویی
 					</span>
 				</div>
+				<Tooltip content={feedbackText}>
+					<div className="flex items-center text-sm font-bold gap-0.5">
+						{getPingIcon(ping !== null ? ping : -1)}
+						{ping ? `${ping}ms` : 'N/A'}
+					</div>
+				</Tooltip>
 			</div>
 		</div>
 	)
+}
+
+function getPingIcon(ping: number): JSX.Element {
+	switch (true) {
+		case ping === -1:
+			return <MdOutlineSignalCellularAlt1Bar className={' text-[#A63F3F]'} />
+		case ping <= 100:
+			return <MdOutlineSignalCellularAlt className={' text-[#40CF4E]'} />
+		case ping <= 180:
+			return <MdOutlineSignalCellularAlt2Bar className={' text-[#A6893F]'} />
+		default:
+			return <MdOutlineSignalCellularAlt1Bar className={' text-[#A63F3F]'} />
+	}
 }

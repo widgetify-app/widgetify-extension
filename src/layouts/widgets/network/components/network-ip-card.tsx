@@ -1,4 +1,4 @@
-import { MdRouter } from 'react-icons/md'
+import toast from 'react-hot-toast'
 
 interface NetworkIPCardProps {
 	ip: string | null
@@ -6,20 +6,22 @@ interface NetworkIPCardProps {
 }
 
 export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
+	function copyToClipboard() {
+		if (ip) {
+			navigator.clipboard.writeText(ip)
+			toast.success('آدرس IP کپی شد', {
+				position: 'bottom-center',
+			})
+		}
+	}
 	return (
-		<div className="p-3 transition-all duration-200 border border-content rounded-xl bg-gradient-to-r from-base-100 to-base-200/50 hover:shadow-md">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<div className="p-1.5 rounded-full bg-blue-500/20">
-						<MdRouter className="text-sm text-blue-500" />
-					</div>
-					<span className="text-xs font-medium text-muted">آدرس (IP)</span>
-				</div>
-				<span
-					className={`px-2 py-1 font-mono text-xs font-semibold rounded-md text-content bg-base-200 ${blurMode && 'blur-mode'}`}
-				>
-					{ip || 'در حال بارگذاری...'}
-				</span>
+		<div className="py-2 text-center">
+			<div className="mb-1 text-xs text-muted">آدرس IP</div>
+			<div
+				className={`text-lg font-mono font-bold text-content bg-base-200/50 px-3 py-1.5 rounded-xl backdrop-blur-sm ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+				onClick={copyToClipboard}
+			>
+				{ip || 'در حال بارگذاری...'}
 			</div>
 		</div>
 	)
