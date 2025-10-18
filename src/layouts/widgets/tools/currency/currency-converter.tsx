@@ -97,14 +97,13 @@ export const CurrencyConverter: React.FC = () => {
 					}))}
 					value={fromCurrency}
 					onChange={(val) => setFromCurrency(val)}
-					className="h-10 !bg-transparent hover:!bg-base-300 !scrollbar-thin !rounded-2xl"
-					optionClassName="!bg-base-100"
+					className="h-10 !rounded-2xl"
 				/>
 				<TextInput
 					type="number"
 					value={amount.toString()}
 					onChange={(e) => setAmount(Number(e))}
-					className=" !rounded-2xl !px-4 border-content"
+					className="!rounded-2xl !px-4 border-content"
 					min={0}
 					placeholder="مبلغ"
 				/>
@@ -134,8 +133,7 @@ export const CurrencyConverter: React.FC = () => {
 					}))}
 					value={toCurrency}
 					onChange={(val) => setToCurrency(val)}
-					className="h-8 !bg-transparent hover:!bg-base-300"
-					optionClassName="!bg-base-100"
+					className="h-10 !w-24 !rounded-2xl"
 				/>
 				<div className="w-32 text-lg font-medium text-right">
 					{isLoadingFrom || isLoadingTo ? (

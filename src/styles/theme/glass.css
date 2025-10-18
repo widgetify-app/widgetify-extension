@@ -57,8 +57,7 @@
     background-color: #171717b3;
 }
 
-[data-theme="glass"] .select option {
-    background-color: rgba(20, 20, 20, 0.9);
-    color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
+
+[data-theme="glass"] select:open {
+    background-color: #171717b3;
 }
