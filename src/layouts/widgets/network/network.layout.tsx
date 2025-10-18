@@ -133,9 +133,9 @@ export function NetworkLayout() {
 							<NetworkLoadingSkeleton />
 						) : (
 							<>
-								<div className="relative overflow-hidden border border-content rounded-2xl ">
+								<div className="relative overflow-hidden border border-content rounded-2xl">
 									<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-									<div className="relative p-4 space-y-3">
+									<div className="relative p-4 space-y-3 max-h-44 min-h-44">
 										<div className="flex items-center justify-between">
 											<div className="flex items-center gap-2">
 												<div
@@ -173,12 +173,12 @@ export function NetworkLayout() {
 										{(networkInfo.city || networkInfo.country) && (
 											<div className="flex items-center justify-center gap-2 text-xs flex-warp">
 												{networkInfo.city && (
-													<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10 dark:text-blue-400">
+													<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10">
 														{networkInfo.city}
 													</span>
 												)}
 												{networkInfo.country && (
-													<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10 dark:text-purple-400">
+													<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10">
 														{networkInfo.country}
 													</span>
 												)}
