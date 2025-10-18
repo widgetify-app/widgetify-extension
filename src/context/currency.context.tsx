@@ -7,6 +7,7 @@ export interface StoreContext {
 	setSelectedCurrencies: (currencies: Array<string>) => void
 	currencyColorMode: CurrencyColorMode | null
 	setCurrencyColorMode: (mode: CurrencyColorMode) => void
+	reorderCurrencies: (currencies: Array<string>) => void
 }
 
 export enum CurrencyColorMode {
@@ -19,6 +20,7 @@ export const currencyContext = createContext<StoreContext>({
 	setSelectedCurrencies: () => {},
 	currencyColorMode: null,
 	setCurrencyColorMode: () => {},
+	reorderCurrencies: () => {},
 })
 
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -70,6 +72,10 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 		save()
 	}, [currencyColorMode])
 
+	const reorderCurrencies = (currencies: Array<string>) => {
+		setSelectedCurrencies(currencies)
+	}
+
 	return (
 		<currencyContext.Provider
 			value={{
@@ -77,6 +83,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 				setSelectedCurrencies,
 				setCurrencyColorMode,
 				currencyColorMode,
+				reorderCurrencies,
 			}}
 		>
 			{children}

@@ -2,10 +2,12 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import { SelectBox } from '@/components/selectbox/selectbox'
 import { TextInput } from '@/components/text-input'
+import { useAuth } from '@/context/auth.context'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
@@ -19,6 +21,8 @@ export function WigiArzSetting() {
 	)
 	const [currencyType, setCurrencyType] = useState<string>('all')
 	const [searchQuery, setSearchQuery] = useState('')
+	const { isAuthenticated } = useAuth()
+	const [showAuthRequired, setShowAuthRequired] = useState(false)
 
 	const toggleCurrency = (currencyKey: string) => {
 		const isRemoving = selectedCurrencies.includes(currencyKey)
@@ -30,6 +34,12 @@ export function WigiArzSetting() {
 			currency_key: currencyKey,
 			action: isRemoving ? 'remove' : 'add',
 		})
+
+		if (modifiedCurrencySelection.length > 4 && !isAuthenticated) {
+			setShowAuthRequired(true)
+			Analytics.event('currency_selection_blocked')
+			return
+		}
 
 		callEvent('currencies_updated', {
 			currencies: modifiedCurrencySelection,
@@ -150,9 +160,9 @@ export function WigiArzSetting() {
 											<div
 												key={option.value}
 												className={`flex shadow flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-2xl 
-                                                        transition-all duration-200 ease-out active:scale-98 hover:scale-95
-                                                        ${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
-                                                      `}
+														transition-all duration-200 ease-out active:scale-98 hover:scale-95
+														${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
+													  `}
 												onClick={() =>
 													toggleCurrency(option.value)
 												}
@@ -176,6 +186,12 @@ export function WigiArzSetting() {
 					</div>
 				</SectionPanel>
 			</div>
+			<AuthRequiredModal
+				message="برای بهبود تجربه کاربری و جلوگیری از بارگذاری بیش از حد، امکان انتخاب حداکثر ارز بدون ورود به حساب کاربری وجود دارد. برای دسترسی به ارزهای بیشتر و بهره‌مندی از خدمات کامل، لطفاً وارد حساب کاربری خود شوید."
+				title="🔐 ورود به حساب کاربری"
+				isOpen={showAuthRequired}
+				onClose={() => setShowAuthRequired(false)}
+			/>
 		</WidgetSettingWrapper>
 	)
 }

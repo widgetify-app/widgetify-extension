@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
+import { MdDragIndicator } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { CurrencyColorMode } from '@/context/currency.context'
@@ -15,9 +16,14 @@ import { CurrencyModalComponent } from './currency-modal'
 interface CurrencyBoxProps {
 	code: string
 	currencyColorMode: CurrencyColorMode | null
+	dragHandle?: React.HTMLAttributes<HTMLDivElement>
 }
 
-export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
+export const CurrencyBox = ({
+	code,
+	currencyColorMode,
+	dragHandle,
+}: CurrencyBoxProps) => {
 	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
 		refetchInterval: null,
 	})
@@ -79,21 +85,6 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 		}
 	}
 
-	const longPressTimeout = useRef<NodeJS.Timeout | null>(null)
-
-	const handleMouseDown = () => {
-		longPressTimeout.current = setTimeout(() => {
-			toggleCurrencyModal()
-		}, 500)
-	}
-
-	const handleMouseUp = () => {
-		if (longPressTimeout.current) {
-			clearTimeout(longPressTimeout.current)
-			longPressTimeout.current = null
-		}
-	}
-
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
 			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
@@ -102,50 +93,58 @@ export const CurrencyBox = ({ code, currencyColorMode }: CurrencyBoxProps) => {
 	return (
 		<>
 			<div
-				className={`flex items-center justify-between gap-2 p-2 pr-3 rounded-2xl cursor-pointer 
+				className={`flex items-center justify-between gap-2 py-2 rounded-xl cursor-pointer 
 				bg-base-300 opacity-100 hover:!bg-gray-500/10
 				hover:scale-95
 				transition-all duration-200 ease-in-out
 				transform`}
 				onClick={() => toggleCurrencyModal()}
-				onMouseDown={handleMouseDown}
-				onMouseUp={handleMouseUp}
-				onTouchStart={handleMouseDown}
-				onTouchEnd={handleMouseUp}
 				dir="ltr"
 			>
-				<div className="flex items-center gap-x-2.5 max-w-full">
-					<div className="relative">
-						<img
-							src={currency?.icon}
-							alt={currency?.name?.en}
-							className="object-cover w-6 h-6 rounded-full min-h-6 min-w-6"
-						/>
-						<div
-							className="absolute inset-0 border rounded-full border-opacity-20"
-							style={{ borderColor: imgMainColor }}
-						/>
+				<div className="flex  gap-x-2.5 max-w-full items-center">
+					<div className="flex items-center">
+						{dragHandle && (
+							<div
+								{...dragHandle}
+								className="flex items-center justify-center w-4 h-4 transition-colors cursor-grab active:cursor-grabbing text-muted hover:bg-primary/10"
+							>
+								<MdDragIndicator size={14} />
+							</div>
+						)}
+						<div className="relative">
+							<img
+								src={currency?.icon}
+								alt={currency?.name?.en}
+								className="object-cover w-6 h-6 rounded-full min-h-6 min-w-6"
+							/>
+							<div
+								className="absolute inset-0 border rounded-full border-opacity-20"
+								style={{ borderColor: imgMainColor }}
+							/>
+						</div>
 					</div>
 					<div className="flex items-center min-w-0 space-x-2 text-sm font-medium">
-						<span className="block text-sm truncate text-content">
+						<span className="block text-sm font-bold truncate text-content">
 							{code}
 						</span>
 					</div>
 				</div>
 
-				<div className="flex items-baseline gap-2 pr-2">
-					<span className={'text-sm font-bold text-content'}>
-						{currency ? GetPrice(code, currency).label : '-'}
-					</span>
-					{priceChange !== 0 && (
-						<span className={`text-xs ${priceChangeColor}`}>
-							{priceChange > 0 ? (
-								<FaArrowUpLong className="inline" />
-							) : (
-								<FaArrowDownLong className="inline" />
-							)}
+				<div className="flex items-center gap-2">
+					<div className="flex items-baseline gap-2 pr-2">
+						<span className={'text-sm font-bold text-content'}>
+							{currency ? GetPrice(code, currency).label : '-'}
 						</span>
-					)}
+						{priceChange !== 0 && (
+							<span className={`text-xs ${priceChangeColor}`}>
+								{priceChange > 0 ? (
+									<FaArrowUpLong className="inline" />
+								) : (
+									<FaArrowDownLong className="inline" />
+								)}
+							</span>
+						)}
+					</div>
 				</div>
 			</div>
 			{currency && !currency.url && (
