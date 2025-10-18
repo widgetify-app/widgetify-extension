@@ -203,5 +203,6 @@ const filterGoogleEventsByDate = (
 				eventDate.jYear() === date.jYear()
 			)
 		}
+		return undefined
 	})
 }
