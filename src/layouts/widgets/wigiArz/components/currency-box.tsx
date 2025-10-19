@@ -95,7 +95,6 @@ export const CurrencyBox = ({
 			<div
 				className={`flex items-center justify-between gap-2 py-2 rounded-xl cursor-pointer 
 				bg-base-300 opacity-100 hover:!bg-gray-500/10
-				hover:scale-95
 				transition-all duration-200 ease-in-out
 				transform`}
 				onClick={() => toggleCurrencyModal()}
