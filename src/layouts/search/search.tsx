@@ -10,6 +10,7 @@ export function SearchLayout() {
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
+	const trendingRef = useRef<HTMLDivElement>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -39,12 +40,13 @@ export function SearchLayout() {
 	}
 
 	useEffect(() => {
-		// Close trends dropdown when clicking outside
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
 				isInputFocused &&
 				searchRef.current &&
-				!searchRef.current.contains(event.target as Node)
+				trendingRef.current &&
+				!searchRef.current.contains(event.target as Node) &&
+				!trendingRef.current.contains(event.target as Node)
 			) {
 				setIsInputFocused(false)
 			}
@@ -110,10 +112,12 @@ export function SearchLayout() {
 				</form>
 				<BrowserBookmark />
 			</div>
-			<TrendingSearches
-				visible={isInputFocused && searchQuery === ''}
-				onSelectTrend={handleSelectTrend}
-			/>
+			<div ref={trendingRef}>
+				<TrendingSearches
+					visible={isInputFocused && searchQuery === ''}
+					onSelectTrend={handleSelectTrend}
+				/>
+			</div>
 		</div>
 	)
 }
