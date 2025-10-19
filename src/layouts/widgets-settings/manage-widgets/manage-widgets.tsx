@@ -3,15 +3,16 @@ import { useAuth } from '@/context/auth.context'
 import {
 	MAX_VISIBLE_WIDGETS,
 	useWidgetVisibility,
+	type WidgetItem,
+	type WidgetKeys,
 	widgetItems,
 } from '@/context/widget-visibility.context'
 import { ItemSelector } from '../../../components/item-selector'
 import { WidgetSettingWrapper } from '../widget-settings-wrapper'
 
 export function ManageWidgets() {
-	const { visibility, toggleWidget } = useWidgetVisibility()
 	const { isAuthenticated } = useAuth()
-
+	const { visibility, toggleWidget } = useWidgetVisibility()
 	return (
 		<WidgetSettingWrapper>
 			{!isAuthenticated && (
@@ -25,23 +26,15 @@ export function ManageWidgets() {
 			)}{' '}
 			<SectionPanel title="انتخاب ویجت‌ها برای نمایش" size="sm">
 				<div className="grid grid-cols-2 gap-2">
-					{widgetItems.map((widget) => {
-						const isActive = visibility.includes(widget.id)
-						const canToggle =
-							isAuthenticated ||
-							isActive ||
-							visibility.length < MAX_VISIBLE_WIDGETS
-
-						return (
-							<ItemSelector
-								isActive={isActive}
-								key={widget.id}
-								className={`w-full ${!canToggle ? 'opacity-50 cursor-not-allowed' : ''}`}
-								onClick={() => canToggle && toggleWidget(widget.id)}
-								label={`${widget.emoji} ${widget.label} ${widget.isNew ? ' ( جدید )' : ''}`}
-							/>
-						)
-					})}
+					{widgetItems.map((widget) => (
+						<WidgetItemComponent
+							widget={widget}
+							key={widget.id + 'selector'}
+							visibility={visibility}
+							toggleWidget={toggleWidget}
+							isAuthenticated={isAuthenticated}
+						/>
+					))}
 				</div>
 			</SectionPanel>
 			<SectionPanel title="ترتیب ویجت‌های فعال" size="sm">
@@ -59,5 +52,72 @@ export function ManageWidgets() {
 				</div>
 			</SectionPanel>
 		</WidgetSettingWrapper>
+	)
+}
+
+interface WidgetItemComponentProps {
+	widget: WidgetItem
+	visibility: string[]
+	toggleWidget: (widgetId: WidgetKeys) => void
+	isAuthenticated: boolean
+}
+
+function WidgetItemComponent({
+	widget,
+	visibility,
+	toggleWidget,
+	isAuthenticated,
+}: WidgetItemComponentProps) {
+	const isActive = visibility.includes(widget.id)
+	const canToggle =
+		isAuthenticated || isActive || visibility.length < MAX_VISIBLE_WIDGETS
+
+	const isDisabled = widget.disabled || false
+	const isSoon = widget.soon || false
+
+	const finalCanToggle = canToggle && !isDisabled
+
+	let extraClasses = ''
+	if (isDisabled) {
+		extraClasses += ' border-red-500/50 bg-red-500/10'
+	}
+	if (isSoon) {
+		extraClasses += ' border-warning/50 bg-warning/10'
+	}
+
+	return (
+		<ItemSelector
+			isActive={isActive && finalCanToggle}
+			key={widget.id}
+			className={`w-full ${!finalCanToggle ? '!pointer-events-none' : ''}${extraClasses} !h-12 !max-h-12 overflow-hidden`}
+			onClick={() => finalCanToggle && toggleWidget(widget.id)}
+			label={
+				<div className="flex items-center gap-2">
+					<span
+						className={`text-xs ${!finalCanToggle ? 'text-muted' : ''} truncate`}
+					>
+						{widget.emoji} {widget.label}
+					</span>
+					<div className="flex gap-0.5">
+						{widget.isNew && (
+							<span className="text-white badge badge-primary badge-xs">
+								جدید
+							</span>
+						)}
+						{widget.popular && (
+							<span className="badge badge-success badge-soft badge-sm">
+								محبوب
+							</span>
+						)}
+						{isDisabled && (
+							<span className="badge badge-error badge-xs">غیرفعال</span>
+						)}
+						{isSoon && (
+							<span className="badge badge-warning badge-xs">به زودی</span>
+						)}
+					</div>
+				</div>
+			}
+		/>
 	)
 }
