@@ -43,6 +43,9 @@ export interface WidgetItem {
 	order: number
 	canToggle?: boolean
 	isNew?: boolean
+	disabled?: boolean
+	soon?: boolean
+	popular?: boolean
 }
 
 export const widgetItems: WidgetItem[] = [
@@ -53,6 +56,7 @@ export const widgetItems: WidgetItem[] = [
 		order: 0,
 		node: <CalendarLayout />,
 		canToggle: true,
+		popular: true,
 	},
 	{
 		id: WidgetKeys.tools,
@@ -89,6 +93,7 @@ export const widgetItems: WidgetItem[] = [
 			</CurrencyProvider>
 		),
 		canToggle: true,
+		popular: true,
 	},
 	{
 		id: WidgetKeys.arzLive,
@@ -125,7 +130,9 @@ export const widgetItems: WidgetItem[] = [
 		label: 'آمار یوتیوب',
 		order: 8,
 		node: <YouTubeLayout />,
-		canToggle: true,
+		canToggle: false,
+		disabled: true,
+		soon: true,
 	},
 	{
 		id: WidgetKeys.network,

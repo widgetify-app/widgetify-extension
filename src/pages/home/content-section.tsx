@@ -78,7 +78,7 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 export function ContentSection() {
 	const { contentAlignment } = useAppearanceSetting()
 	const { getSortedWidgets, reorderWidgets } = useWidgetVisibility()
-	const sortedWidgets = getSortedWidgets()
+	const sortedWidgets = getSortedWidgets().filter((widget) => !widget.disabled)
 
 	const totalWidgetCount = sortedWidgets.length
 
