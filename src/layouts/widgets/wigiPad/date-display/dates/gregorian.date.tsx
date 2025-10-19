@@ -2,11 +2,8 @@ import { useDate } from '@/context/date.context'
 
 export function GregorianDate() {
 	const { today } = useDate()
-	const isDayTime = today.hour() >= 6 && today.hour() < 18
 
-	const textColor = isDayTime
-		? 'text-content drop-shadow-md'
-		: 'text-primary drop-shadow-sm'
+	const textColor = 'text-content drop-shadow-md'
 	const date = today.locale('en')
 	return (
 		<div

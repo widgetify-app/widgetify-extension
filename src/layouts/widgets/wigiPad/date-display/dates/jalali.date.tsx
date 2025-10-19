@@ -8,12 +8,8 @@ export function JalaliDate() {
 	const { data: events } = useGetEvents()
 	const sortedEvents = combineAndSortEvents(events, today.clone(), [])
 	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
-	const isDayTime = today.hour() >= 6 && today.hour() < 18
 
-	const textColor = isDayTime
-		? 'text-content drop-shadow-md'
-		: 'text-primary drop-shadow-sm'
-
+	const textColor = 'text-content drop-shadow-md'
 	const gregorianDate = today.clone().locale('en')
 
 	const gFormatted = `${gregorianDate.format('YY')}/${gregorianDate.format('MM').slice(0, 3)}/${gregorianDate.format('DD')}`

@@ -23,8 +23,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 	const minutes = time.getMinutes().toString().padStart(2, '0')
 	const seconds = time.getSeconds().toString().padStart(2, '0')
 
-	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
-	const textColor = isDayTime ? 'text-content' : 'text-primary'
+	const textColor = 'text-content'
 
 	const getFontTranslateClass = () => {
 		return setting.useSelectedFont
