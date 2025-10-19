@@ -15,7 +15,7 @@ import {
 	useSendVerificationEmail,
 } from '@/services/hooks/user/userService.hook'
 import { ActivityInput } from './components/activity-input'
-import { Connections } from './components/connections'
+import { Connections } from './connections/connections'
 import { ProfileDisplay } from './profile-display'
 import { ProfileEditForm } from './profile-edit-form'
 
