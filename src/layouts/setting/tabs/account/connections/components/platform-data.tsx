@@ -5,7 +5,7 @@ export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 	{
 		id: 'google',
 		name: 'گوگل',
-		description: 'اتصال به خدمات گوگل برای دسترسی به تقویم، ایمیل و سایر امکانات',
+		description: 'اتصال به خدمات گوگل برای دسترسی به تقویم و جلسات گوگل میت',
 		bgColor: 'bg-red-500',
 		isActive: true,
 		icon: <FaGoogle size={20} className="text-white" />,
