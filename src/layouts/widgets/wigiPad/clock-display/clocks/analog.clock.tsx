@@ -23,9 +23,8 @@ export function AnalogClock({ timezone, setting }: AnalogClockProps) {
 	const hours = time.getHours() % 12
 	const minutes = time.getMinutes()
 	const seconds = time.getSeconds()
-	const isDayTime = time.getHours() >= 6 && time.getHours() < 18
 
-	const handColor = useMemo(() => (isDayTime ? 'currentColor' : '#3b82f6'), [isDayTime])
+	const handColor = 'currentColor'
 	const timezoneLabel = useMemo(() => getTimeZoneLabel(timezone), [timezone])
 
 	const hourAngle = useMemo(() => hours * 30 + minutes * 0.5, [hours, minutes])
