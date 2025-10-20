@@ -4,43 +4,33 @@ import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import Analytics from '../src/analytics'
-import { removeFromStorage, setToStorage } from '../src/common/storage'
+import { getFromStorage, removeFromStorage, setToStorage } from '../src/common/storage'
 
-function generateSidePanel() {
-	if (browser.sidePanel && !import.meta.env.FIREFOX) {
-		browser.permissions
-			.contains({ permissions: ['sidePanel'] })
-			.then((granted) => {
-				if (granted && browser.sidePanel) {
-					browser.sidePanel
-						.setPanelBehavior({ openPanelOnActionClick: false })
-						.catch((error: Error) =>
-							console.error('Error setting panel behavior:', error)
-						)
-				}
+async function setupSidePanel() {
+	try {
+		const verticalTabsSettings = await getFromStorage('verticalTabsSettings')
+		if (!verticalTabsSettings?.enabled) return
+
+		if (browser.sidePanel && !import.meta.env.FIREFOX) {
+			const granted = await browser.permissions.contains({
+				permissions: ['sidePanel'],
 			})
-			.catch((error) =>
-				console.error('Error checking sidePanel permission:', error)
-			)
-	}
+
+			if (granted && browser.sidePanel) {
+				browser.sidePanel
+					.setPanelBehavior({ openPanelOnActionClick: true })
+					.catch((error: Error) =>
+						console.error('Error setting panel behavior:', error)
+					)
+			}
+		}
+	} catch {}
 }
 export default defineBackground(() => {
 	const isDev = import.meta.env.DEV
 	if (typeof self !== 'undefined' && '__WB_MANIFEST' in self) {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
-
-	if (!import.meta.env.FIREFOX) {
-		browser.action.onClicked?.addListener(() => {
-			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
-			generateSidePanel()
-			Analytics.event('IconClicked')
-		})
-	}
-
-	// Initialize side panel for vertical tabs (only if permission is granted)
-
-	generateSidePanel()
 
 	if (!isDev) {
 		registerRoute(
@@ -187,7 +177,24 @@ export default defineBackground(() => {
 		Analytics.event('Startup')
 	})
 
+	browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+		if (message.type === 'VERTICAL_TABS_SETTINGS_UPDATED') {
+			setupSidePanel()
+				.then(() => {
+					sendResponse({ success: true })
+				})
+				.catch((error) => {
+					console.error('Error in setupSidePanel:', error)
+					sendResponse({ success: false, error: error.message })
+				})
+			return true
+		}
+
+		return false
+	})
+
 	cleanupOutdatedCaches()
+	setupSidePanel()
 })
 
 async function preloadCriticalResources() {

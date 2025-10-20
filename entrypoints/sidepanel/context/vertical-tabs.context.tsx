@@ -41,6 +41,10 @@ export function VerticalTabsProvider({ children }: { children: React.ReactNode }
 		const updatedSettings = { ...settings, ...newSettings }
 		setSettings(updatedSettings)
 		await setToStorage('verticalTabsSettings', updatedSettings)
+		browser.runtime.sendMessage({
+			type: 'VERTICAL_TABS_SETTINGS_UPDATED',
+			payload: updatedSettings,
+		})
 	}
 
 	return (

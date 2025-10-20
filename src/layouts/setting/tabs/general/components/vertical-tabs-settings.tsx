@@ -24,11 +24,9 @@ export function VerticalTabsSettings() {
 
 	const handleToggle = async (enabled: boolean) => {
 		if (enabled) {
-			// Check if permissions are already granted
 			const granted = await checkPermissions()
 
 			if (!granted) {
-				// Request permissions
 				try {
 					const result = await browser.permissions.request({
 						permissions: NEEDS_PERMISSION,
@@ -36,28 +34,28 @@ export function VerticalTabsSettings() {
 
 					if (result) {
 						await updateSettings({ enabled: true })
-						// Open side panel
 						try {
 							if (browser.sidePanel) {
-								await browser.sidePanel.open({
-									windowId: browser.windows.WINDOW_ID_CURRENT,
-								})
+								const currentWindow = await browser.windows.getCurrent()
+								if (currentWindow.id) {
+									await browser.sidePanel.open({
+										windowId: currentWindow.id,
+									})
+								}
 							}
-						} catch (error) {
-							console.error('Error opening side panel:', error)
-						}
+						} catch {}
 					}
-				} catch (error) {
-					console.error('Error requesting permissions:', error)
-				}
+				} catch {}
 			} else {
 				await updateSettings({ enabled: true })
-				// Open side panel
 				try {
 					if (browser.sidePanel) {
-						await browser.sidePanel.open({
-							windowId: browser.windows.WINDOW_ID_CURRENT,
-						})
+						const currentWindow = await browser.windows.getCurrent()
+						if (currentWindow.id) {
+							await browser.sidePanel.open({
+								windowId: currentWindow.id,
+							})
+						}
 					}
 				} catch (error) {
 					console.error('Error opening side panel:', error)
@@ -65,6 +63,9 @@ export function VerticalTabsSettings() {
 			}
 		} else {
 			await updateSettings({ enabled: false })
+			await browser.permissions.remove({
+				permissions: NEEDS_PERMISSION,
+			})
 		}
 	}
 
