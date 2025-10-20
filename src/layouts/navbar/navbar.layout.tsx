@@ -70,14 +70,10 @@ export function NavbarLayout(): JSX.Element {
 
 			const data = await getConfigData()
 			if (data.logo) {
-				const shouldUpdateLogo =
-					(storeData?.logo && storeData.logo.id !== data.logo.id) ||
-					!storeData?.logo
-
-				if (shouldUpdateLogo) {
+				if (data.logo?.logoUrl) {
 					await sanitizeAndUpdateLogo(
-						data.logo.logoUrl,
-						data.logo.id,
+						data.logo?.logoUrl,
+						data.logo?.id,
 						storeData
 					)
 				}
