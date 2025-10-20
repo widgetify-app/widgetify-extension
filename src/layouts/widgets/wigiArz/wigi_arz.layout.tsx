@@ -16,7 +16,6 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { useCurrencyStore } from '@/context/currency.context'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
 import { ArzHeader } from './components/arz-header'
@@ -33,7 +32,6 @@ export function WigiArzLayout({
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()
-	const { blurMode } = useGeneralSetting()
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -104,7 +102,7 @@ export function WigiArzLayout({
 							onDragEnd={handleDragEnd}
 						>
 							<div
-								className={`mt-2 flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+								className={`mt-2 flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
 								style={{
 									scrollbarWidth: 'none',
 								}}
@@ -168,7 +166,7 @@ export function WigiArzLayout({
 							onDragEnd={handleDragEnd}
 						>
 							<div
-								className={`flex flex-col gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+								className={`flex flex-col gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
 								style={{
 									scrollbarWidth: 'none',
 								}}
