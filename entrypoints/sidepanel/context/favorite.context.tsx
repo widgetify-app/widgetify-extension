@@ -22,27 +22,31 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 	const [favorites, setFavorites] = useState<FavoriteSite[]>([])
 	const initRef = React.useRef(false)
+
 	useEffect(() => {
 		const loadFavorites = async () => {
 			const storedFavorites = await getFromStorage('favoriteSites')
-			console.log('Loaded favorites from storage:', storedFavorites)
-			if (Array.isArray(storedFavorites)) {
+			if (Array.isArray(storedFavorites) && storedFavorites.length > 0) {
 				setFavorites(storedFavorites)
 			}
+
+			initRef.current = true
 		}
 
 		loadFavorites()
-		initRef.current = true
 	}, [])
 
 	useEffect(() => {
 		const saveFavorites = async (data: FavoriteSite[]) => {
-			await setToStorage('favoriteSites', data)
-			console.log('Saved favorites to storage:', data)
+			if (initRef.current) {
+				await setToStorage('favoriteSites', data)
+				console.log('Saved favorites to storage:', data)
+			}
 		}
 
-		if (!initRef.current) return
-		saveFavorites(favorites)
+		if (initRef.current) {
+			saveFavorites(favorites)
+		}
 	}, [favorites])
 
 	const addFavorite = (site: FavoriteSite) => {
