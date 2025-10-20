@@ -8,7 +8,7 @@ export default function VerticalTabsApp() {
 			<div className="min-h-screen text-white" dir="rtl">
 				<FavoriteSites />
 
-				<div className="mt-2 border-t border-gray-700">
+				<div className="mt-2 border-t border-content">
 					<TabsList />
 				</div>
 			</div>
