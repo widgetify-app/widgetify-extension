@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { VerticalTabsProvider } from '../entrypoints/sidepanel/context/vertical-tabs.context'
 import { AppearanceProvider } from './context/appearance.context'
 import { AuthProvider } from './context/auth.context'
 import { ThemeProvider } from './context/theme.context'
@@ -18,7 +19,9 @@ function App() {
 			<AuthProvider>
 				<ThemeProvider>
 					<AppearanceProvider>
-						<HomePage />
+						<VerticalTabsProvider>
+							<HomePage />
+						</VerticalTabsProvider>
 					</AppearanceProvider>
 				</ThemeProvider>
 			</AuthProvider>

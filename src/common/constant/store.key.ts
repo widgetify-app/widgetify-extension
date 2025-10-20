@@ -3,6 +3,8 @@ import type { SelectedCity } from '@/context/general-setting.context'
 import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
+import type { VerticalTabsSettings } from '@/entrypoints/sidepanel/context/vertical-tabs.context'
+import type { FavoriteSite } from '@/entrypoints/sidepanel/layouts/favorite/favorite.types'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
@@ -87,4 +89,6 @@ export interface StorageKV {
 	seenWidgetSettings_1: boolean
 	seenTodoNewViewMode: boolean
 	hasSeenFooterDisableHint: boolean
+	verticalTabsSettings: VerticalTabsSettings
+	favoriteSites: FavoriteSite[]
 }

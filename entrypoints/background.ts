@@ -6,6 +6,24 @@ import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategi
 import Analytics from '../src/analytics'
 import { removeFromStorage, setToStorage } from '../src/common/storage'
 
+function generateSidePanel() {
+	if (browser.sidePanel && !import.meta.env.FIREFOX) {
+		browser.permissions
+			.contains({ permissions: ['sidePanel'] })
+			.then((granted) => {
+				if (granted && browser.sidePanel) {
+					browser.sidePanel
+						.setPanelBehavior({ openPanelOnActionClick: false })
+						.catch((error: Error) =>
+							console.error('Error setting panel behavior:', error)
+						)
+				}
+			})
+			.catch((error) =>
+				console.error('Error checking sidePanel permission:', error)
+			)
+	}
+}
 export default defineBackground(() => {
 	const isDev = import.meta.env.DEV
 	if (typeof self !== 'undefined' && '__WB_MANIFEST' in self) {
@@ -15,9 +33,14 @@ export default defineBackground(() => {
 	if (!import.meta.env.FIREFOX) {
 		browser.action.onClicked?.addListener(() => {
 			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+			generateSidePanel()
 			Analytics.event('IconClicked')
 		})
 	}
+
+	// Initialize side panel for vertical tabs (only if permission is granted)
+
+	generateSidePanel()
 
 	if (!isDev) {
 		registerRoute(
