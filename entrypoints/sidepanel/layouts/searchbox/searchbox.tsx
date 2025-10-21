@@ -8,7 +8,7 @@ export function SearchBoxSidePanel() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const handleSearch = async (query: string) => {
 		if (query.trim()) {
-			await browser.search.query({ text: query })
+			await browser.search.query({ text: query, disposition: 'NEW_TAB' })
 			setSearchQuery('')
 			setIsSearchOpen(false)
 		}
@@ -43,7 +43,7 @@ export function SearchBoxSidePanel() {
 						onChange={setSearchQuery}
 						value={searchQuery}
 						placeholder="جستجو در وب..."
-						className="!text-gray-500"
+						className="!text-gray-600 dark:!text-gray-300"
 						onKeyDown={handleKeyDown}
 					/>
 				)}
