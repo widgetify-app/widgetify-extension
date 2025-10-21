@@ -1,8 +1,8 @@
 import { HiOutlinePlusCircle } from 'react-icons/hi'
-import { TextInput } from '@/components/text-input'
 import { safeAwait } from '@/services/api'
 import { FavoriteProvider } from './context/favorite.context'
 import { FavoriteSites } from './layouts/favorite/favorite-sites'
+import { SearchBoxSidePanel } from './layouts/searchbox/searchbox'
 import { TabsList } from './layouts/tabs/tabs-list'
 
 export default function VerticalTabsApp() {
@@ -13,6 +13,16 @@ export default function VerticalTabsApp() {
 	return (
 		<FavoriteProvider>
 			<div className="flex flex-col min-h-screen text-white" dir="rtl">
+				<header className="flex items-center justify-between p-3 border-b border-content bg-base-200">
+					<div className="flex items-center gap-2">
+						<h1 className="text-lg font-semibold text-content">ویجتیفای</h1>
+						<span className="text-white badge badge-primary badge-sm">
+							نسخه آزمایشی
+						</span>
+					</div>
+
+					<SearchBoxSidePanel />
+				</header>
 				<div className="flex-1">
 					<FavoriteSites />
 
@@ -21,13 +31,6 @@ export default function VerticalTabsApp() {
 					</div>
 				</div>
 
-				<div className="w-56 p-2">
-					<TextInput
-						onChange={() => {}}
-						value=""
-						placeholder="جستجو در وب..."
-					/>
-				</div>
 				<footer className="sticky bottom-0 border-t border-content">
 					<button
 						onClick={handleNewTab}
