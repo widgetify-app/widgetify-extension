@@ -43,6 +43,7 @@ export function SearchBoxSidePanel() {
 						onChange={setSearchQuery}
 						value={searchQuery}
 						placeholder="جستجو در وب..."
+						className="!text-gray-500"
 						onKeyDown={handleKeyDown}
 					/>
 				)}

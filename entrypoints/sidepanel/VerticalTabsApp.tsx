@@ -1,5 +1,7 @@
 import { HiOutlinePlusCircle } from 'react-icons/hi'
 import Analytics from '@/analytics'
+import { getFromStorage } from '@/common/storage'
+import { Theme } from '@/context/theme.context'
 import { safeAwait } from '@/services/api'
 import { FavoriteProvider } from './context/favorite.context'
 import { FavoriteSites } from './layouts/favorite/favorite-sites'
@@ -12,6 +14,18 @@ export default function VerticalTabsApp() {
 	}
 
 	useEffect(() => {
+		function changeTheme(theme: 'light' | 'dark') {
+			console.log('Changing theme to:', theme)
+			document.documentElement.setAttribute('data-theme', theme)
+		}
+		async function loadTheme() {
+			const theme = await getFromStorage('theme')
+			if (theme === Theme.Light) {
+				changeTheme('light')
+			} else changeTheme('dark')
+		}
+
+		loadTheme()
 		Analytics.event('sidepanel_view')
 	}, [])
 

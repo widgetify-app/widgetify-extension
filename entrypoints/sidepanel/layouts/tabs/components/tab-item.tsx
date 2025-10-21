@@ -28,7 +28,7 @@ export function TabItem({
 			className={`group flex items-center gap-3 p-2 mb-1 cursor-pointer transition-all rounded-2xl border ${
 				tab.active
 					? 'bg-primary/50 border-base-300 shadow-sm'
-					: 'bg-base-200/50 hover:bg-base-200 border-base-300/50 hover:border-base-300'
+					: 'bg-content hover:bg-base-200 border-content shadow-xs hover:border-base-300'
 			}`}
 		>
 			<div className="flex-shrink-0">
@@ -51,7 +51,7 @@ export function TabItem({
 			<div className="flex-1 min-w-0">
 				<div
 					className={`text-sm font-medium truncate ${
-						tab.active ? 'text-base-content' : 'text-base-content/80'
+						tab.active ? 'text-content' : 'text-base-content/80'
 					}`}
 				>
 					{tab.title}
@@ -81,7 +81,7 @@ export function TabItem({
 					content={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
 				>
 					<button
-						className="p-1 transition-colors rounded cursor-pointer hover:bg-base-300"
+						className="p-1 transition-colors rounded cursor-pointer hover:bg-error/20 hover:!text-error text-content"
 						onClick={
 							onToggleFavorite
 								? (e) => onToggleFavorite(tab.id, e)
@@ -98,7 +98,7 @@ export function TabItem({
 				<Tooltip content="بارگذاری مجدد">
 					<button
 						onClick={(e) => onReload(tab.id, e)}
-						className="p-1 transition-colors rounded cursor-pointer hover:bg-base-300"
+						className="p-1 transition-colors rounded cursor-pointer hover:bg-base-300 text-content"
 					>
 						<FiRefreshCw className="text-xs" />
 					</button>
@@ -106,7 +106,7 @@ export function TabItem({
 				<Tooltip content="بستن تب">
 					<button
 						onClick={(e) => onClose(tab.id, e)}
-						className="p-1 transition-colors rounded cursor-pointer hover:bg-error/20 hover:text-error"
+						className="p-1 transition-colors rounded cursor-pointer hover:bg-error/20 hover:!text-error text-content"
 						title="بستن تب"
 					>
 						<FiX className="text-xs" />
