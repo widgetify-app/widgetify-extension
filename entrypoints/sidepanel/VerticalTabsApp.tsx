@@ -36,7 +36,7 @@ export default function VerticalTabsApp() {
 					</div>
 				</div>
 
-				<footer className="sticky bottom-0 border-t border-content">
+				<footer className="sticky bottom-0 border-t border-content bg-base-200">
 					<button
 						onClick={handleNewTab}
 						className="w-full flex items-center gap-1 justify-center p-4 text-sm font-medium transition-colors hover:bg-base-300 text-content hover:text-primary cursor-pointer text-muted hover:!text-content"

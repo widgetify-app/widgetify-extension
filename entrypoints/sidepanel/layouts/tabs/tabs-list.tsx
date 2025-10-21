@@ -48,7 +48,7 @@ export function TabsList() {
 	}
 
 	return (
-		<div className="p-2">
+		<div className="py-2 px-2 space-y-2 overflow-y-auto h-[33.8rem]">
 			{/* Grouped Tabs */}
 			{groups.map((group) => (
 				<TabGroupComponent
