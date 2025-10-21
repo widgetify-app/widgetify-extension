@@ -36,7 +36,7 @@ export function TabsList() {
 		const tab = tabs.find((t) => t.id === tabId)
 		if (!tab) return
 		if (isFavorite(tab.url)) {
-			removeFavorite(tab.id.toString())
+			removeFavorite(tab.url)
 		} else {
 			addFavorite({
 				id: tab.id.toString(),

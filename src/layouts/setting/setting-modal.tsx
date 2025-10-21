@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { GoTable } from 'react-icons/go'
 import { MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbApps } from 'react-icons/tb'
 import {
@@ -20,6 +22,7 @@ import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
+import { VerticalTabsTab } from './tabs/vertical-tabs/vertical-tabs-settings'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 
 interface SettingModalProps {
@@ -51,6 +54,19 @@ const tabs: TabItem[] = [
 		value: 'appearance',
 		icon: <VscColorMode size={20} />,
 		element: <AppearanceSettingTab />,
+	},
+	{
+		label: (
+			<div className="flex items-center gap-0.5">
+				<span>منوی کناری </span>
+				<span className="hidden text-white badge badge-primary badge-xs md:inline">
+					جدید
+				</span>
+			</div>
+		),
+		value: 'tab-management',
+		icon: <GoTable size={20} />,
+		element: <VerticalTabsTab />,
 	},
 	{
 		label: 'تصویر زمینه',

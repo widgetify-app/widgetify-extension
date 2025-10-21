@@ -1,4 +1,5 @@
 import { HiOutlinePlusCircle } from 'react-icons/hi'
+import Analytics from '@/analytics'
 import { safeAwait } from '@/services/api'
 import { FavoriteProvider } from './context/favorite.context'
 import { FavoriteSites } from './layouts/favorite/favorite-sites'
@@ -9,6 +10,10 @@ export default function VerticalTabsApp() {
 	const handleNewTab = async () => {
 		await safeAwait(browser.tabs.create({}))
 	}
+
+	useEffect(() => {
+		Analytics.event('sidepanel_view')
+	}, [])
 
 	return (
 		<FavoriteProvider>

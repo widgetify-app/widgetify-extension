@@ -6,7 +6,7 @@ import type { FavoriteSite } from '../layouts/favorite/favorite.types'
 export interface FavoriteStoreContext {
 	favorites: FavoriteSite[]
 	addFavorite: (site: FavoriteSite) => void
-	removeFavorite: (id: string) => void
+	removeFavorite: (url: string) => void
 	isFavorite: (url: string) => boolean
 }
 
@@ -65,8 +65,8 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
 		toast.success('سایت به علاقه‌مندی‌ها اضافه شد')
 	}
 
-	const removeFavorite = (id: string) => {
-		const newFavorites = favorites.filter((fav) => fav.id !== id)
+	const removeFavorite = (url: string) => {
+		const newFavorites = favorites.filter((fav) => fav.url !== url)
 		setFavorites(newFavorites)
 		toast.success('سایت از علاقه‌مندی‌ها حذف شد')
 	}

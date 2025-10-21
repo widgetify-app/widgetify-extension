@@ -2,7 +2,7 @@ import { type ReactNode, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 
 export interface TabItem {
-	label: string
+	label: ReactNode
 	value: string
 	icon: ReactNode
 	element: ReactNode
