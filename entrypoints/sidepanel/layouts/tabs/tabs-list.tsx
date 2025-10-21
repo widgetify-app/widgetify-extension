@@ -39,17 +39,16 @@ export function TabsList() {
 			removeFavorite(tab.url)
 		} else {
 			addFavorite({
-				id: tab.id.toString(),
 				title: tab.title,
 				url: tab.url,
 				favicon: tab.favIconUrl,
+				order: 0,
 			})
 		}
 	}
 
 	return (
 		<div className="py-2 px-2 space-y-2 overflow-y-auto h-[33.8rem]">
-			{/* Grouped Tabs */}
 			{groups.map((group) => (
 				<TabGroupComponent
 					key={group.id}
@@ -62,7 +61,6 @@ export function TabsList() {
 				/>
 			))}
 
-			{/* Ungrouped Tabs */}
 			{ungroupedTabs.map((tab) => (
 				<TabItem
 					key={tab.id}

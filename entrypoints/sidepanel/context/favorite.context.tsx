@@ -8,6 +8,7 @@ export interface FavoriteStoreContext {
 	addFavorite: (site: FavoriteSite) => void
 	removeFavorite: (url: string) => void
 	isFavorite: (url: string) => boolean
+	reorderFavorites: (favorites: FavoriteSite[]) => void
 }
 
 const favoriteContext = createContext<FavoriteStoreContext>({
@@ -15,6 +16,7 @@ const favoriteContext = createContext<FavoriteStoreContext>({
 	addFavorite: () => {},
 	removeFavorite: () => {},
 	isFavorite: () => false,
+	reorderFavorites: () => {},
 })
 
 export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -27,7 +29,11 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
 		const loadFavorites = async () => {
 			const storedFavorites = await getFromStorage('favoriteSites')
 			if (Array.isArray(storedFavorites) && storedFavorites.length > 0) {
-				setFavorites(storedFavorites)
+				const favoritesWithOrder = storedFavorites.map((fav, index) => ({
+					...fav,
+					order: fav.order !== undefined ? fav.order : index,
+				}))
+				setFavorites(favoritesWithOrder)
 			}
 
 			initRef.current = true
@@ -60,19 +66,36 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
 			return
 		}
 
-		const newFavorites = [...favorites, site]
+		const newSite = {
+			...site,
+			order: favorites.length,
+		}
+		const newFavorites = [...favorites, newSite]
 		setFavorites(newFavorites)
 		toast.success('سایت به علاقه‌مندی‌ها اضافه شد')
 	}
 
 	const removeFavorite = (url: string) => {
 		const newFavorites = favorites.filter((fav) => fav.url !== url)
-		setFavorites(newFavorites)
+		// Reorder after removal
+		const reorderedFavorites = newFavorites.map((fav, index) => ({
+			...fav,
+			order: index,
+		}))
+		setFavorites(reorderedFavorites)
 		toast.success('سایت از علاقه‌مندی‌ها حذف شد')
 	}
 
 	const isFavorite = (url: string) => {
 		return favorites.some((fav) => fav.url === url)
+	}
+
+	const reorderFavorites = (newFavorites: FavoriteSite[]) => {
+		const reorderedFavorites = newFavorites.map((fav, index) => ({
+			...fav,
+			order: index,
+		}))
+		setFavorites(reorderedFavorites)
 	}
 
 	return (
@@ -82,6 +105,7 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({
 				addFavorite,
 				removeFavorite,
 				isFavorite,
+				reorderFavorites,
 			}}
 		>
 			{children}
