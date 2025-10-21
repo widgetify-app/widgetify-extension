@@ -48,7 +48,7 @@ function SortableItem({ item, onClick }: SortableItemProps) {
 				<img
 					src={item.favicon}
 					alt={item.title}
-					className="object-cover w-full h-full rounded-md pointer-events-none"
+					className="object-cover rounded-md pointer-events-none max-w-8 max-h-8"
 				/>
 			</Tooltip>
 		</div>

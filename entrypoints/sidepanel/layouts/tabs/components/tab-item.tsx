@@ -36,7 +36,7 @@ export function TabItem({
 					<img
 						src={tab.favIconUrl}
 						alt=""
-						className="w-4 h-4"
+						className="w-4 h-4 max-w-4 max-h-4"
 						onError={(e) => {
 							;(e.target as HTMLImageElement).style.display = 'none'
 						}}
