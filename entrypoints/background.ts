@@ -32,6 +32,13 @@ export default defineBackground(() => {
 		precacheAndRoute((self as any).__WB_MANIFEST)
 	}
 
+	if (!import.meta.env.FIREFOX) {
+		browser.action.onClicked?.addListener(() => {
+			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })
+			Analytics.event('IconClicked')
+		})
+	}
+
 	if (!isDev) {
 		registerRoute(
 			({ request }) =>

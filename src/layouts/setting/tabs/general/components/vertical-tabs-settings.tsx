@@ -92,9 +92,6 @@ export function VerticalTabsSettings() {
 			}
 		} else {
 			await updateSettings({ enabled: false })
-			await browser.permissions.remove({
-				permissions: NEEDS_PERMISSION,
-			})
 			await browser.sidePanel.setPanelBehavior({ openPanelOnActionClick: false })
 		}
 	}
