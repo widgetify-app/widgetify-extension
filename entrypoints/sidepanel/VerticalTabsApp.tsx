@@ -45,7 +45,7 @@ export default function VerticalTabsApp() {
 				<div className="flex-1">
 					<FavoriteSites />
 
-					<div className="mt-2 ">
+					<div className="mt-2 overflow-y-auto h-[calc(60vh-4rem)] pb-2">
 						<TabsList />
 					</div>
 				</div>

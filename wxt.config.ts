@@ -48,19 +48,16 @@ export default defineConfig({
 		'@wxt-dev/module-react',
 	],
 	manifest: {
-		version: '1.0.36',
-		name: 'Widgetify',
+		version: '1.0.38',
+		name: 'Widgetify-beta',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
 		permissions: ['storage', 'search'],
-		optional_permissions: ['tabs', 'tabGroups', 'bookmarks', 'sidePanel'],
+		optional_permissions: ['tabs', 'tabGroups', 'bookmarks'],
 		browser_specific_settings: {
 			gecko: {
-				id: 'widgetify@widgetify-app.github.io',
+				id: 'widgetify-beta@widgetify-app.github.io',
 			},
-		},
-		side_panel: {
-			default_path: 'sidepanel.html',
 		},
 		action: {
 			default_title: 'Open Widgetify Dashboard',
