@@ -1,25 +1,54 @@
 import { FiMonitor } from 'react-icons/fi'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
-import { useVerticalTabs } from '@/entrypoints/sidepanel/context/vertical-tabs.context'
 
 const NEEDS_PERMISSION: globalThis.Browser.runtime.ManifestPermissions[] = [
 	'tabs',
 	'sidePanel',
 	'tabGroups',
 ]
-export function VerticalTabsSettings() {
-	const { settings, updateSettings } = useVerticalTabs()
 
-	const checkPermissions = async () => {
+export interface VerticalTabsSettings {
+	enabled: boolean
+}
+const checkPermissions = async () => {
+	try {
+		const granted = await browser.permissions.contains({
+			permissions: NEEDS_PERMISSION,
+		})
+		return granted
+	} catch (error) {
+		console.error('Error checking permission:', error)
+		return false
+	}
+}
+
+export function VerticalTabsSettings() {
+	const [settings, setSettings] = useState<VerticalTabsSettings>({
+		enabled: false,
+	})
+
+	useEffect(() => {
+		loadSettings()
+	}, [])
+
+	const loadSettings = async () => {
 		try {
-			const granted = await browser.permissions.contains({
-				permissions: NEEDS_PERMISSION,
-			})
-			return granted
-		} catch (error) {
-			console.error('Error checking permission:', error)
-			return false
-		}
+			const savedSettings = await getFromStorage('verticalTabsSettings')
+			if (savedSettings) {
+				setSettings(savedSettings as VerticalTabsSettings)
+			}
+		} catch {}
+	}
+
+	const updateSettings = async (newSettings: Partial<VerticalTabsSettings>) => {
+		const updatedSettings = { ...settings, ...newSettings }
+		setSettings(updatedSettings)
+		await setToStorage('verticalTabsSettings', updatedSettings)
+		browser.runtime.sendMessage({
+			type: 'VERTICAL_TABS_SETTINGS_UPDATED',
+			payload: updatedSettings,
+		})
 	}
 
 	const handleToggle = async (enabled: boolean) => {
@@ -66,6 +95,7 @@ export function VerticalTabsSettings() {
 			await browser.permissions.remove({
 				permissions: NEEDS_PERMISSION,
 			})
+			await browser.sidePanel.setPanelBehavior({ openPanelOnActionClick: false })
 		}
 	}
 
