@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { FiSunrise, FiWatch } from 'react-icons/fi'
-import { TbArrowsRightLeft, TbLanguage } from 'react-icons/tb'
+import { TbArrowsRightLeft } from 'react-icons/tb'
 import Tooltip from '@/components/toolTip'
 import type { ToolsTabType } from '../tools.layout'
 
@@ -34,7 +34,6 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 			icon: TbArrowsRightLeft,
 			label: 'مبدل قیمت (بتا)',
 		},
-		{ id: 'translate' as ToolsTabType, icon: TbLanguage, label: 'مترجم' },
 	]
 
 	return (

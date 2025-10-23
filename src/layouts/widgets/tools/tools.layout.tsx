@@ -21,17 +21,11 @@ const CurrencyConverter = React.lazy(() =>
 		default: module.CurrencyConverter,
 	}))
 )
-const TranslateComponent = React.lazy(() =>
-	import('./translate/translate').then((module) => ({
-		default: module.TranslateComponent,
-	}))
-)
 
 export enum ToolsTab {
 	pomodoro = 'pomodoro',
 	'religious-time' = 'religious-time',
 	'currency-converter' = 'currency-converter',
-	translate = 'translate',
 }
 export type ToolsTabType = keyof typeof ToolsTab
 
@@ -101,17 +95,6 @@ export const ToolsLayout: React.FC<any> = () => {
 						exit={{ opacity: 0 }}
 					>
 						<CurrencyConverter />
-					</motion.div>
-				)}
-
-				{activeTab === 'translate' && (
-					<motion.div
-						key="translate-view"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						<TranslateComponent />
 					</motion.div>
 				)}
 			</Suspense>
