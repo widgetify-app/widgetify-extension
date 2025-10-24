@@ -22,7 +22,7 @@ export function NetworkPingCard({ ping }: NetworkPingCardProps) {
 			: 'N/A'
 	return (
 		<div className="grid grid-cols-1 gap-2">
-			<div className="p-3 border rounded-2xl border-content">
+			<div className="relative p-3 border rounded-2xl border-content">
 				<div className="flex items-center gap-2 mb-1">
 					<MdRouter className={`w-4 h-4 text-muted`} />
 					<span className="text-xs font-medium text-muted">
@@ -35,6 +35,7 @@ export function NetworkPingCard({ ping }: NetworkPingCardProps) {
 						{ping ? `${ping}ms` : 'N/A'}
 					</div>
 				</Tooltip>
+				<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
 			</div>
 		</div>
 	)
