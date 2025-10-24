@@ -1,5 +1,5 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { getMainClient } from '@/services/api'
 
 export interface NewsSource {
 	name: string
@@ -10,6 +10,7 @@ export interface NewsItem {
 	title: string
 	description: string
 	source: NewsSource
+	image_url?: string
 	publishedAt: string
 }
 

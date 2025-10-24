@@ -7,6 +7,7 @@ interface NewsItemProps {
 		name: string
 		url: string
 	}
+	image_url?: string
 	publishedAt: string
 	link?: string
 	index: number
@@ -19,6 +20,7 @@ export const NewsItem = ({
 	source,
 	publishedAt,
 	link,
+	image_url,
 	onClick,
 }: NewsItemProps) => {
 	const formatDate = (dateString: string) => {
@@ -38,9 +40,17 @@ export const NewsItem = ({
 	return (
 		<div className="transition-all">
 			<div
-				className="p-2 transition-all duration-300 border rounded-lg cursor-pointer bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98"
+				className={`p-2 transition-all duration-300 border rounded-lg cursor-pointer bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98`}
 				onClick={handleClick}
 			>
+				{image_url && (
+					<img
+						src={image_url}
+						alt={title}
+						className="object-cover w-full h-28 mb-2 border rounded-2xl border-content p-0.5"
+						loading="lazy"
+					/>
+				)}
 				<div className="flex items-start gap-2">
 					<h3 className="flex-1 text-sm font-medium">{title}</h3>
 				</div>

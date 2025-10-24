@@ -14,6 +14,7 @@ export interface RssItem {
 		name: string
 		url: string
 	}
+	image_url?: string
 }
 
 export interface WigiNewsSetting {
