@@ -25,6 +25,12 @@ export function TabItem({
 	return (
 		<div
 			onClick={() => onSwitch(tab.id)}
+			onMouseDown={(e) => {
+				if (e.button === 1) {
+					e.preventDefault()
+					onClose(tab.id, e)
+				}
+			}}
 			className={`group flex items-center gap-3 p-2 mb-1 cursor-pointer transition-all rounded-2xl border ${
 				tab.active
 					? 'bg-primary/50 border-base-300 shadow-sm'
