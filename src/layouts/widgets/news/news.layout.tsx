@@ -143,6 +143,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 				description: item.description,
 				source: item.source,
 				publishedAt: item.pubDate,
+				image_url: item.image_url,
 				link: item.link,
 			}))
 		}
@@ -321,6 +322,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 								key={index}
 								title={item.title}
 								description={item.description}
+								image_url={item.image_url}
 								source={item.source}
 								publishedAt={item.publishedAt}
 								link={'link' in item ? (item.link as string) : undefined}
