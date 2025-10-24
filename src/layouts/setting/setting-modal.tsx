@@ -56,19 +56,6 @@ const tabs: TabItem[] = [
 		element: <AppearanceSettingTab />,
 	},
 	{
-		label: (
-			<div className="flex items-center gap-0.5">
-				<span>منوی کناری </span>
-				<span className="hidden text-white badge badge-primary badge-xs md:inline">
-					جدید
-				</span>
-			</div>
-		),
-		value: 'tab-management',
-		icon: <GoTable size={20} />,
-		element: <VerticalTabsTab />,
-	},
-	{
 		label: 'تصویر زمینه',
 		value: 'wallpapers',
 		icon: <VscPaintcan size={20} />,
@@ -87,6 +74,22 @@ const tabs: TabItem[] = [
 		element: <AboutUsTab />,
 	},
 ]
+
+if (!import.meta.env.FIREFOX) {
+	tabs.splice(4, 0, {
+		label: (
+			<div className="flex items-center gap-0.5">
+				<span>منوی کناری </span>
+				<span className="hidden text-white badge badge-primary badge-xs md:inline">
+					جدید
+				</span>
+			</div>
+		),
+		value: 'tab-management',
+		icon: <GoTable size={20} />,
+		element: <VerticalTabsTab />,
+	})
+}
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
 
