@@ -24,7 +24,7 @@ export function useChangeWallpaper() {
 	return useMutation<any, unknown, { wallpaperId: string | null }>({
 		mutationFn: async ({ wallpaperId }) => {
 			const client = await getMainClient()
-			await client.patch('/extension/@me/wallpaper', { wallpaperId })
+			await client.put('/extension/@me/wallpaper', { wallpaperId })
 		},
 	})
 }
@@ -33,7 +33,7 @@ export function useChangeTheme() {
 	return useMutation<any, unknown, { theme: string }>({
 		mutationFn: async ({ theme }) => {
 			const client = await getMainClient()
-			await client.patch('/extension/@me/theme', { theme })
+			await client.put('/extension/@me/theme', { theme })
 		},
 	})
 }
