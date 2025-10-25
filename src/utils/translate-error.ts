@@ -69,6 +69,7 @@ const errorTranslations: Record<string, string> = {
 	FIRST_VERIFY_YOUR_ACCOUNT: 'ابتدا حساب کاربری خود را تایید کنید',
 	USERNAME_ALREADY_EXISTS: 'این نام کاربری قبلا وجود داشته است',
 	INVALID_FILE_TYPE: 'نوع فایل نامعتبر است',
+	NOT_ENOUGH_COINS: 'سکه‌هات کافی نیست 😕',
 }
 
 const validationTranslations: Record<string, string> = {

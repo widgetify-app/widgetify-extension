@@ -24,7 +24,7 @@ export function useChangeWallpaper() {
 	return useMutation<any, unknown, { wallpaperId: string | null }>({
 		mutationFn: async ({ wallpaperId }) => {
 			const client = await getMainClient()
-			await client.put('/extension/@me/wallpaper', { wallpaperId })
+			await client.put('/wallpapers/@me', { wallpaperId })
 		},
 	})
 }

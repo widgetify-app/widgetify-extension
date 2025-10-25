@@ -22,7 +22,13 @@ import { ProfileEditForm } from './profile-edit-form'
 export const UserProfile = () => {
 	const { logout } = useAuth()
 	const queryClient = useQueryClient()
-	const { data: profile, isLoading, isError, failureReason } = useGetUserProfile()
+	const {
+		data: profile,
+		isLoading,
+		isError,
+		failureReason,
+		refetch,
+	} = useGetUserProfile()
 	const sendVerificationMutation = useSendVerificationEmail()
 	const [enableSync, setEnableSync] = useState<boolean>(true)
 	const [isEditing, setIsEditing] = useState(false)
@@ -32,7 +38,7 @@ export const UserProfile = () => {
 			const syncEnabled = await isSyncActive()
 			setEnableSync(syncEnabled)
 		}
-
+		refetch()
 		loadSyncSettings()
 	}, [])
 

@@ -74,7 +74,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 									{profile?.name || 'کاربر'}{' '}
 								</h1>
 								{profile?.coins !== undefined && (
-									<UserCoin coins={profile?.coins || 100} />
+									<UserCoin coins={profile?.coins || 0} />
 								)}
 							</div>
 							<div className="grid items-center justify-center grid-cols-2 gap-1 text-sm text-content/70">
