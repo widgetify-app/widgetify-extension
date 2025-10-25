@@ -5,6 +5,7 @@ import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
+import { UserCoin } from './components/user-coin'
 
 interface ProfileDisplayProps {
 	profile?: UserProfile
@@ -68,10 +69,13 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 					{/* Profile Info */}
 					<div className="flex-1 space-y-4 text-center md:text-right">
 						<div>
-							<div className="flex flex-row items-center justify-start mb-2">
+							<div className="flex flex-row items-center justify-between gap-3 mb-2">
 								<h1 className="text-3xl font-bold text-content">
 									{profile?.name || 'کاربر'}{' '}
 								</h1>
+								{profile?.coins !== undefined && (
+									<UserCoin coins={profile?.coins || 100} />
+								)}
 							</div>
 							<div className="grid items-center justify-center grid-cols-2 gap-1 text-sm text-content/70">
 								<div className="flex items-center gap-1 px-2 py-1.5 bg-content rounded-2xl">

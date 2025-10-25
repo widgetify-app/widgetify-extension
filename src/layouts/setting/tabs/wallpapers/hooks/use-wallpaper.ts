@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import { useChangeWallpaper } from '@/services/hooks/extension/updateSetting.hook'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(
@@ -11,7 +11,7 @@ export function useWallpaper(
 ) {
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
-	const { mutateAsync } = useUpdateExtensionSettings()
+	const { mutateAsync } = useChangeWallpaper()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
 
 	useEffect(() => {
