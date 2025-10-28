@@ -128,7 +128,7 @@ export function ContentSection() {
 
 						<div
 							className={
-								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-3'
+								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-2'
 							}
 						>
 							<SearchLayout />
