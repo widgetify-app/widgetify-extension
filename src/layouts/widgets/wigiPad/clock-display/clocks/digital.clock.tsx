@@ -119,7 +119,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 					width="120"
 					height="160"
 					viewBox="-1 -1 123 164"
-					className="w-full h-[9rem]"
+					className="w-full h-[8.5rem]"
 				>
 					{lines.map(({ x1, y1, x2, y2, index }, i) => (
 						<line
@@ -151,7 +151,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 
 			{setting.showTimeZone && (
 				<div
-					className={`${textColor} absolute bottom-[1.3rem] ${timeZoneStyles}
+					className={`${textColor} absolute bottom-[1rem] ${timeZoneStyles}
 					leading-none font-medium tracking-[0.05em] text-center truncate opacity-90 transition-all duration-300`}
 				>
 					{timezoneLabel}

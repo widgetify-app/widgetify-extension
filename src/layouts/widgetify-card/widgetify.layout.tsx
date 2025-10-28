@@ -28,7 +28,7 @@ export const WidgetifyLayout = () => {
 	}
 
 	return (
-		<WidgetContainer className="overflow-hidden">
+		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>

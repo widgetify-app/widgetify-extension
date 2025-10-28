@@ -4,6 +4,7 @@ import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { TrendingSearches } from './trending/trending-searches'
+import { VoiceSearchButton } from './voice/VoiceSearchButton'
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
@@ -29,6 +30,13 @@ export function SearchLayout() {
 		setSearchQuery('')
 		if (inputRef.current) {
 			inputRef.current.focus()
+		}
+	}
+
+	const handleVoiceSearch = (query: string) => {
+		if (query.trim()) {
+			browser.search.query({ text: query.trim() })
+			Analytics.event('voice_search_submitted')
 		}
 	}
 
@@ -103,6 +111,7 @@ export function SearchLayout() {
 						>
 							<MdOutlineClear size={20} className="opacity-50" />
 						</button>
+						<VoiceSearchButton onSearch={handleVoiceSearch} />
 						<div
 							className={
 								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-content'
