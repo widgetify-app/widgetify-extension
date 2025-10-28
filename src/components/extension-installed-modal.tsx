@@ -57,24 +57,15 @@ export function ExtensionInstalledModal({
 				</m.div>
 			</LazyMotion>
 
-			<StepIndicator
-				totalSteps={totalSteps}
-				currentStep={currentStep}
-				setCurrentStep={setCurrentStep}
-			/>
+			<StepIndicator totalSteps={totalSteps} currentStep={currentStep} />
 		</Modal>
 	)
 }
 interface StepIndicatorProps {
 	totalSteps: number
 	currentStep: Step
-	setCurrentStep: (step: Step) => void
 }
-const StepIndicator = ({
-	totalSteps,
-	currentStep,
-	setCurrentStep,
-}: StepIndicatorProps) => (
+const StepIndicator = ({ totalSteps, currentStep }: StepIndicatorProps) => (
 	<div
 		className="flex items-center justify-center gap-3"
 		role="progressbar"
@@ -85,14 +76,9 @@ const StepIndicator = ({
 		{Array.from({ length: totalSteps }).map((_, index) => (
 			<button
 				key={index}
-				onClick={() =>
-					import.meta.env.FIREFOX
-						? undefined
-						: setCurrentStep((index + 1) as Step)
-				}
 				aria-label={`رفتن به گام ${index + 1}`}
 				aria-current={index + 1 === currentStep ? 'step' : undefined}
-				className={`w-10 h-2 ${import.meta.env.FIREFOX ? 'cursor-default' : 'cursor-pointer'} rounded-full transition-all duration-300 ${
+				className={`w-10 h-2 cursor-default rounded-full transition-all duration-300 ${
 					index + 1 === currentStep
 						? 'bg-blue-500 shadow-lg shadow-blue-500/30'
 						: index + 1 < currentStep
@@ -141,12 +127,14 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 				</p>
 			</div>
 
-			<button
+			<Button
+				size="md"
 				onClick={() => setCurrentStep(2)}
-				className="px-8 py-3 font-light text-white transition-all cursor-pointer duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
+				className="!px-4 !py-2 mx-auto font-light shadow w-52 rounded-2xl shadow-primary"
+				isPrimary={true}
 			>
 				Keep It رو زدم!
-			</button>
+			</Button>
 		</>
 	)
 }
@@ -155,6 +143,21 @@ interface StepFooterDisableProps {
 	setCurrentStep: (step: Step) => void
 }
 const StepFooterDisable = ({ setCurrentStep }: StepFooterDisableProps) => {
+	const [counter, setCounter] = useState<number>(5)
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setCounter((prev) => {
+				if (prev <= 1) {
+					clearInterval(interval)
+					return 0
+				}
+				return prev - 1
+			})
+		}, 1000)
+		return () => clearInterval(interval)
+	}, [])
+
 	return (
 		<>
 			<div className="mb-3">
@@ -189,12 +192,20 @@ const StepFooterDisable = ({ setCurrentStep }: StepFooterDisableProps) => {
 				</p>
 			</div>
 
-			<button
-				onClick={() => setCurrentStep(3)}
-				className="px-8 py-3 font-light text-white transition-all cursor-pointer duration-300 transform bg-blue-600 bg-opacity-80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:bg-opacity-90 hover:shadow-xl backdrop-blur-sm"
-			>
-				باشه
-			</button>
+			{counter === 0 ? (
+				<Button
+					size="sm"
+					onClick={() => setCurrentStep(3)}
+					className="!px-4 !py-2 mx-auto font-light shadow w-52 rounded-2xl shadow-primary"
+					isPrimary={true}
+				>
+					گام بعدی
+				</Button>
+			) : (
+				<div className="px-4 py-2 mx-auto text-sm text-center border w-52 text-muted rounded-2xl border-content">
+					لطفاً صبر کنید... {counter} ثانیه
+				</div>
+			)}
 		</>
 	)
 }
@@ -230,12 +241,14 @@ const StepThree = ({ onGetStarted }: StepThreeProps) => {
 			</m.div>
 
 			<div className="flex flex-col w-full gap-4 mt-4 sm:flex-row">
-				<button
+				<Button
 					onClick={onGetStarted}
-					className="px-6 py-3 font-medium text-white transition-all duration-300 bg-gradient-to-r from-blue-600/80 to-indigo-600/80 border border-blue-400/30 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.2)] cursor-pointer hover:bg-opacity-90 hover:shadow-[0_12px_20px_rgba(0,0,0,0.25)] backdrop-blur-sm w-full sm:flex-1"
+					className="w-full font-light sm:flex-1 rounded-2xl"
+					size="md"
+					isPrimary={true}
 				>
 					شروع کنید
-				</button>
+				</Button>
 			</div>
 		</>
 	)
