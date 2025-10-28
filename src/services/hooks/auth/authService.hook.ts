@@ -14,6 +14,7 @@ interface SignUpCredentials {
 	email: string
 	password: string
 	referralSource?: ReferralSource | null
+	referralCode?: string
 }
 
 interface AuthResponse {

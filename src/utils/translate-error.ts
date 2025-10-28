@@ -70,6 +70,7 @@ const errorTranslations: Record<string, string> = {
 	USERNAME_ALREADY_EXISTS: 'این نام کاربری قبلا وجود داشته است',
 	INVALID_FILE_TYPE: 'نوع فایل نامعتبر است',
 	NOT_ENOUGH_COINS: 'سکه‌هات کافی نیست 😕',
+	INVALID_REFERRAL_CODE: 'کد دعوت نامعتبر است',
 }
 
 const validationTranslations: Record<string, string> = {

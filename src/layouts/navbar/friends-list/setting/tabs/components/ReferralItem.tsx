@@ -7,14 +7,7 @@ interface ReferralItemProps {
 }
 
 export const ReferralItem = ({ referral, status = 'دعوت شده' }: ReferralItemProps) => {
-	const { name, avatar, joinedAt } = referral
-
-	// Format joined date
-	const joinedDate = new Date(joinedAt).toLocaleDateString('fa-IR', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	})
+	const { name, avatar } = referral
 
 	return (
 		<div className="flex items-center gap-3 p-3 bg-content rounded-2xl">
@@ -25,7 +18,6 @@ export const ReferralItem = ({ referral, status = 'دعوت شده' }: ReferralI
 			/>
 			<div className="flex-1">
 				<p className="font-medium text-content">{name}</p>
-				<p className="text-xs text-muted">پیوست: {joinedDate}</p>
 			</div>
 			<div className="flex items-center gap-1 text-primary">
 				<FiGift size={16} />

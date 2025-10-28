@@ -5,8 +5,6 @@ export interface ReferralUser {
 	name: string
 	avatar: string
 	username: string
-	userId: string
-	joinedAt: string // ISO date string
 }
 
 export interface UserReferrals {

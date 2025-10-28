@@ -19,10 +19,7 @@ export const ReferralsList = ({
 			{referrals.length > 0 ? (
 				<div className="space-y-2">
 					{referrals.map((referral, index) => (
-						<ReferralItem
-							key={referral.userId || index}
-							referral={referral}
-						/>
+						<ReferralItem key={`referral-${index}`} referral={referral} />
 					))}
 				</div>
 			) : (

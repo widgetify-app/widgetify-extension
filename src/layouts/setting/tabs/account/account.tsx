@@ -7,7 +7,7 @@ export const AccountTab = () => {
 	const { isAuthenticated } = useAuth()
 
 	return (
-		<div className="h-full">
+		<div className="w-full h-full max-w-xl mx-auto">
 			<AnimatePresence mode="wait">
 				{isAuthenticated ? (
 					<motion.div
