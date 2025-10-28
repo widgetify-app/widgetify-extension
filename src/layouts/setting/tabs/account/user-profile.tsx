@@ -2,18 +2,20 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineFileSync } from 'react-icons/ai'
-import { FiLogOut, FiMail } from 'react-icons/fi'
-import { MdMarkEmailRead } from 'react-icons/md'
+import { FiLogOut } from 'react-icons/fi'
 import { setToStorage } from '@/common/storage'
 import { isSyncActive } from '@/common/sync-checker'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
+import { ReferralCodeSection } from '@/layouts/navbar/friends-list/setting/tabs/components/ReferralCodeSection'
+import { useGetOrCreateReferralCode } from '@/services/hooks/user/referralsService.hook'
 import {
 	useGetUserProfile,
 	useSendVerificationEmail,
 } from '@/services/hooks/user/userService.hook'
+import { AccountVerificationStatus } from './components/account-verification-status'
 import { ActivityInput } from './components/activity-input'
 import { Connections } from './connections/connections'
 import { ProfileDisplay } from './profile-display'
@@ -32,6 +34,7 @@ export const UserProfile = () => {
 	const sendVerificationMutation = useSendVerificationEmail()
 	const [enableSync, setEnableSync] = useState<boolean>(true)
 	const [isEditing, setIsEditing] = useState(false)
+	const { data: referralCode } = useGetOrCreateReferralCode(profile?.verified || false)
 
 	useEffect(() => {
 		const loadSyncSettings = async () => {
@@ -112,58 +115,19 @@ export const UserProfile = () => {
 				<ProfileDisplay profile={profile} onEditToggle={handleEditToggle} />
 			)}
 
-			{profile && (
-				<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
-					<div className="p-1 space-y-3 transition-colors rounded-lg">
-						{profile.verified ? (
-							<div className="flex items-center gap-3 p-3 border rounded-lg bg-success/10 border-success/20">
-								<MdMarkEmailRead className="text-success" size={24} />
-								<div>
-									<p className="text-sm font-medium text-success">
-										حساب شما تایید شده است
-									</p>
-									<p className="text-xs text-success/80">
-										ایمیل شما با موفقیت تایید شده و می‌توانید از تمام
-										امکانات استفاده کنید.
-									</p>
-								</div>
-							</div>
-						) : (
-							<div className="flex items-center justify-between p-3 border rounded-lg bg-warning/10 border-warning/20">
-								<div className="flex items-center gap-3">
-									<FiMail className="text-warning" size={24} />
-									<div>
-										<p className="text-sm font-medium text-warning">
-											⚠️ حساب شما تایید نشده است
-										</p>
-										<p className="text-xs text-warning/90">
-											لطفاً ایمیل خود را بررسی کنید یا ایمیل جدید
-											درخواست کنید.
-										</p>
-									</div>
-								</div>
-								<Button
-									onClick={handleSendVerificationEmail}
-									disabled={sendVerificationMutation.isPending}
-									className="px-3 py-2 text-sm transition-colors rounded-2xl text-content bg-warning/80 hover:bg-warning/50"
-									size="sm"
-								>
-									{sendVerificationMutation.isPending ? (
-										<>
-											<div className="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin" />
-											در حال ارسال...
-										</>
-									) : (
-										<>
-											<FiMail size={16} />
-											ارسال ایمیل تایید
-										</>
-									)}
-								</Button>
-							</div>
-						)}
-					</div>
-				</SectionPanel>
+			{!profile?.verified ? (
+				<AccountVerificationStatus
+					sendVerificationMutation={sendVerificationMutation}
+					onSendVerificationEmail={handleSendVerificationEmail}
+				/>
+			) : (
+				referralCode?.referralCode && (
+					<ReferralCodeSection
+						code={referralCode.referralCode}
+						enableNewBadge={true}
+						className="!p-2 !px-4"
+					/>
+				)
 			)}
 			<ActivityInput activity={profile?.activity || ''} />
 

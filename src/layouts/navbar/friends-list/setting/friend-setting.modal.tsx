@@ -1,9 +1,9 @@
 import { BiUserCircle } from 'react-icons/bi'
-import { FiUserCheck, FiUsers } from 'react-icons/fi'
+import { FiGift, FiUserCheck, FiUsers } from 'react-icons/fi'
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { useAuth } from '@/context/auth.context'
-import { AllFriendsTab, FriendRequestsTab, ProfileTab } from './tabs'
+import { AllFriendsTab, FriendRequestsTab, ProfileTab, ReferralsTab } from './tabs'
 
 interface FriendSettingModalProps {
 	isOpen: boolean
@@ -42,6 +42,12 @@ export const FriendSettingModal = ({
 			value: 'requests',
 			icon: <FiUserCheck size={20} />,
 			element: <FriendRequestsTab />,
+		},
+		{
+			label: 'دعوت‌نامه‌ها',
+			value: 'referrals',
+			icon: <FiGift size={20} />,
+			element: <ReferralsTab />,
 		},
 	]
 
