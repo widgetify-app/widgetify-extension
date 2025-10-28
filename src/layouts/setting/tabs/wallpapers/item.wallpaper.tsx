@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { BiSolidCoin } from 'react-icons/bi'
-import { FiCheck, FiHeart } from 'react-icons/fi'
+import { FiCheck, FiHeart, FiShoppingBag } from 'react-icons/fi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
+import Tooltip from '@/components/toolTip'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
@@ -135,12 +136,22 @@ function wallpaperItem({
 									{wallpaper.name}
 								</p>
 							)}
-							{wallpaper.coin && (
-								<div className="px-2 text-xs text-center rounded-lg text-warning bg-black/40">
-									<BiSolidCoin />
-									<span>{wallpaper.coin}</span>
-								</div>
-							)}
+							<div className="flex items-center gap-1">
+								{wallpaper.coin && (
+									<Tooltip
+										content={
+											wallpaper.isOwned
+												? '✔️ خریداری شده'
+												: 'استفاده با سکه'
+										}
+									>
+										<div className="flex flex-col items-center px-1 text-xs text-center rounded-lg text-warning bg-black/40">
+											<BiSolidCoin />
+											<span>{wallpaper.coin}</span>
+										</div>
+									</Tooltip>
+								)}
+							</div>
 						</div>
 
 						{isSelected && (
@@ -148,6 +159,13 @@ function wallpaperItem({
 								className={`absolute top-2 left-2 p-1 rounded-full shadow-sm ${getSelectionBadgeStyle()}`}
 							>
 								<FiCheck size={12} />
+							</div>
+						)}
+
+						{wallpaper.isOwned && (
+							<div className="absolute flex gap-0.5 px-1 rounded-full shadow-sm text-success bg-black/80 items-center top-2 right-2">
+								<FiShoppingBag size={10} />
+								<span className="!text-[10px] font-normal">باز شده</span>
 							</div>
 						)}
 

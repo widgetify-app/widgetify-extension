@@ -1,4 +1,3 @@
-import { BiSolidCoin } from 'react-icons/bi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
@@ -33,7 +32,6 @@ export function CoinPurchaseModal({
 			title=" "
 		>
 			<div className="space-y-4">
-				{/* Wallpaper Preview */}
 				<div className="relative overflow-hidden rounded-lg aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
 						<img
@@ -53,23 +51,16 @@ export function CoinPurchaseModal({
 					)}
 				</div>
 
-				{/* Description */}
 				<div className="space-y-2">
 					<h3 className="text-lg font-semibold text-content">
 						{wallpaper.name || 'تصویر پس‌زمینه'}
 					</h3>
 					<p className="text-sm text-muted">
-						با خرج چند تا سکه، این پس‌زمینه برات فعال می‌شه ✨
+						این پس‌زمینه را با پرداخت {wallpaper.coin} سکه برای همیشه فعال
+						کنید! ✨
 					</p>
-					{wallpaper.coin && (
-						<div className="flex items-center gap-2 text-warning">
-							<BiSolidCoin />
-							<span className="font-medium">{wallpaper.coin} سکه</span>
-						</div>
-					)}
 				</div>
 
-				{/* Action Buttons */}
 				<div className="flex gap-3 pt-2">
 					<Button
 						onClick={onPreview}
@@ -85,9 +76,9 @@ export function CoinPurchaseModal({
 						disabled={isBuying}
 						loading={isBuying}
 						loadingText="در حال خرید..."
-						className="flex-1 text-white border-none bg-primary hover:bg-primary/90 rounded-2xl"
+						className="flex-1 text-gray-100 border-none bg-primary hover:bg-primary/90 rounded-2xl"
 					>
-						خرید ({wallpaper.coin} سکه)
+						پرداخت سکه
 					</Button>
 				</div>
 			</div>
