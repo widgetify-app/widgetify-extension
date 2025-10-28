@@ -1,12 +1,12 @@
 import type React from 'react'
 import { Suspense } from 'react'
 import { PetHud } from './components/pet-hud'
+import { PetTypes, usePetContext } from './pet.context'
 import { CatComponent } from './pet-item/pet-cat'
 import { ChickenComponent } from './pet-item/pet-chicken'
 import { CrabComponent } from './pet-item/pet-crab'
 import { DogComponent } from './pet-item/pet-dog'
 import { FrogComponent } from './pet-item/pet-frog'
-import { PetTypes, usePetContext } from './pet.context'
 
 export const PetFactory: React.FC = () => {
 	const { petType, getPetHungryState } = usePetContext()
@@ -38,7 +38,7 @@ export const PetFactory: React.FC = () => {
 		<Suspense fallback={<div></div>}>
 			<PetComponent />
 
-			<div className="absolute bottom-0 flex justify-center left-2">
+			<div className="absolute bottom-0 justify-center hidden left-2 md:flex">
 				<PetHud level={getPetHungryState(petType)?.level ?? 0} />
 			</div>
 		</Suspense>
