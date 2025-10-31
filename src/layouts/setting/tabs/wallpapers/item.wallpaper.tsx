@@ -17,7 +17,6 @@ function wallpaperItem({
 	wallpaper,
 	selectedBackground,
 	setSelectedBackground,
-	onPreviewBackground,
 }: WallpaperItemProps) {
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
@@ -72,11 +71,6 @@ function wallpaperItem({
 
 	const handleBuy = () => {
 		setSelectedBackground(wallpaper)
-		setIsModalOpen(false)
-	}
-
-	const handlePreview = () => {
-		onPreviewBackground(wallpaper)
 		setIsModalOpen(false)
 	}
 
@@ -179,7 +173,6 @@ function wallpaperItem({
 				onClose={handleCloseModal}
 				wallpaper={wallpaper}
 				onBuy={handleBuy}
-				onPreview={handlePreview}
 			/>
 		</>
 	)
