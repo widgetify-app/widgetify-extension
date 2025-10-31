@@ -4,7 +4,7 @@ import { getMainClient } from '@/services/api'
 export interface ReferralUser {
 	name: string
 	avatar: string
-	username: string
+	username: string | null
 }
 
 export interface UserReferrals {
@@ -13,9 +13,8 @@ export interface UserReferrals {
 	totalCount: number
 }
 
-export interface ReferralsResponse {
+export interface ReferralsResponse extends UserReferrals {
 	code: string
-	userReferrals: UserReferrals
 }
 
 export interface GetReferralsParams {

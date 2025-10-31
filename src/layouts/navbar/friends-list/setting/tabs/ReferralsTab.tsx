@@ -26,7 +26,7 @@ export const ReferralsTab = () => {
 	}
 
 	const code = referralsData?.code || ''
-	const referrals = referralsData?.userReferrals?.referrals || []
+	const referrals = referralsData?.referrals || []
 
 	return (
 		<div className="space-y-6">
