@@ -18,7 +18,6 @@ export const ReferralItem = ({ referral, status = 'دعوت شده' }: ReferralI
 			/>
 			<div className="flex-1">
 				<p className="font-semibold text-content">{name}</p>
-				<p className="font-medium text-muted">@{referral.username || '-'}</p>
 			</div>
 			<div className="flex items-center gap-1 text-primary">
 				<FiGift size={16} />
