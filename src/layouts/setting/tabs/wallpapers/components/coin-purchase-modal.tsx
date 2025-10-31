@@ -1,13 +1,14 @@
+import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
+import { useAuth } from '@/context/auth.context'
 
 interface CoinPurchaseModalProps {
 	isOpen: boolean
 	onClose: () => void
 	wallpaper: Wallpaper | null
 	onBuy: () => void
-	onPreview: () => void
 	isBuying?: boolean
 }
 
@@ -16,10 +17,15 @@ export function CoinPurchaseModal({
 	onClose,
 	wallpaper,
 	onBuy,
-	onPreview,
 	isBuying = false,
 }: CoinPurchaseModalProps) {
+	const { isAuthenticated } = useAuth()
 	if (!wallpaper) return null
+
+	const onLogin = () => {
+		onClose()
+		callEvent('openSettings', 'account')
+	}
 
 	return (
 		<Modal
@@ -61,25 +67,36 @@ export function CoinPurchaseModal({
 					</p>
 				</div>
 
-				<div className="flex gap-3 pt-2">
-					<Button
-						onClick={onPreview}
-						size="md"
-						disabled={isBuying}
-						className="flex-1 border border-content/20 text-content hover:bg-base-300/50 rounded-2xl"
-					>
-						پیش‌نمایش
-					</Button>
-					<Button
-						onClick={onBuy}
-						size="md"
-						disabled={isBuying}
-						loading={isBuying}
-						loadingText="در حال خرید..."
-						className="flex-1 text-gray-100 border-none bg-primary hover:bg-primary/90 rounded-2xl"
-					>
-						پرداخت سکه
-					</Button>
+				<div className="flex gap-3 pt-4">
+					{isAuthenticated ? (
+						<>
+							<Button
+								onClick={onClose}
+								size="md"
+								className="flex-1 text-content border-muted hover:bg-muted/50 rounded-2xl"
+							>
+								لغو
+							</Button>
+							<Button
+								onClick={onBuy}
+								size="md"
+								disabled={isBuying}
+								loading={isBuying}
+								loadingText="در حال خرید..."
+								className="flex-1 text-white transition-all duration-200 border-none shadow-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 rounded-2xl"
+							>
+								پرداخت {wallpaper.coin} سکه
+							</Button>
+						</>
+					) : (
+						<Button
+							size="md"
+							onClick={onLogin}
+							className="flex-1 text-white transition-all duration-200 border-none shadow-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 rounded-2xl"
+						>
+							ورود به حساب کاربری
+						</Button>
+					)}
 				</div>
 			</div>
 		</Modal>
