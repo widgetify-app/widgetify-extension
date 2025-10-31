@@ -16,7 +16,7 @@ const renderUserAvatar = (user: any) => {
 }
 
 const renderPendingNotification = (pendingCount: number) => (
-	<div className="absolute z-50 flex items-center justify-center w-4 h-4 text-[.6rem] font-bold text-white bg-red-500 rounded-full -bottom-1 -right-1 p-0.5 text-center">
+	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] font-bold text-white bg-red-500 rounded-full bottom-1 right-2 p-0.5 text-center">
 		{pendingCount}
 	</div>
 )
