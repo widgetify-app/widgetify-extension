@@ -11,7 +11,7 @@ interface ReferralCodeSectionProps {
 
 export const ReferralCodeSection = ({
 	code,
-	description = 'با این کد دوستات رو به ویجتیفای دعوت کن و دوتایی سکه بگیرین! 💰',
+	description = 'با این کد دوستات رو به ویجتیفای دعوت کن و دوتایی ویج‌کوین بگیرین! 💰',
 	enableNewBadge = false,
 	className,
 }: ReferralCodeSectionProps) => {

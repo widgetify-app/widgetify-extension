@@ -7,7 +7,7 @@ interface Prop {
 }
 export function UserCoin({ coins, title }: Prop) {
 	return (
-		<Tooltip content={title || 'سکه'}>
+		<Tooltip content={title || 'ویج‌کوین'}>
 			<div className="flex items-center gap-1.5 px-3 py-1 border border-warning/20 bg-warning/10 rounded-2xl">
 				<BiSolidCoin size={18} className="text-warning" />
 				<span className="text-sm font-normal text-warning">

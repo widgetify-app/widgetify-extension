@@ -135,8 +135,8 @@ function wallpaperItem({
 									<Tooltip
 										content={
 											wallpaper.isOwned
-												? '✔️ خریداری شده'
-												: 'استفاده با سکه'
+												? '✔️ باز شده'
+												: 'قابل باز کردن با ویج‌کوین'
 										}
 									>
 										<div className="flex flex-col items-center px-1 text-xs text-center rounded-lg text-warning bg-black/40">

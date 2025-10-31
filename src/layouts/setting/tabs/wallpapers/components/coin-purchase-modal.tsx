@@ -62,9 +62,15 @@ export function CoinPurchaseModal({
 						{wallpaper.name || 'تصویر پس‌زمینه'}
 					</h3>
 					<p className="text-sm text-muted">
-						این پس‌زمینه را با پرداخت {wallpaper.coin} سکه برای همیشه فعال
-						کنید! ✨
+						این پس‌زمینه زیبا را با {wallpaper.coin} ویج‌کوین باز کنید و برای
+						همیشه استفاده کنید! 🎨
 					</p>
+					<div className="flex items-center gap-2 p-2 rounded-lg bg-primary/10 border border-primary/20">
+						<span className="text-xs text-primary">💡</span>
+						<p className="text-xs text-primary">
+							ویج‌کوین با انجام فعالیت‌ها و دعوت دوستان کسب می‌شود
+						</p>
+					</div>
 				</div>
 
 				<div className="flex gap-3 pt-4">
@@ -82,10 +88,10 @@ export function CoinPurchaseModal({
 								size="md"
 								disabled={isBuying}
 								loading={isBuying}
-								loadingText="در حال خرید..."
+								loadingText="در حال باز کردن..."
 								className="flex-1 text-white transition-all duration-200 border-none shadow-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 rounded-2xl"
 							>
-								پرداخت {wallpaper.coin} سکه
+								🔓 باز کردن با {wallpaper.coin} ویج‌کوین
 							</Button>
 						</>
 					) : (
