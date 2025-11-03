@@ -1,7 +1,6 @@
 import { MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbApps } from 'react-icons/tb'
 import {
-	VscAccount,
 	VscColorMode,
 	VscInfo,
 	VscMegaphone,
@@ -15,7 +14,6 @@ import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { AboutUsTab } from './tabs/about-us/about-us'
-import { AccountTab } from './tabs/account/account'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
 import { GeneralSettingTab } from './tabs/general/general'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
@@ -34,12 +32,7 @@ const tabs: TabItem[] = [
 		icon: <VscSettingsGear size={20} />,
 		element: <GeneralSettingTab />,
 	},
-	{
-		label: 'حساب کاربری',
-		value: 'account',
-		icon: <VscAccount size={20} />,
-		element: <AccountTab />,
-	},
+
 	{
 		label: 'حریم خصوصی',
 		value: 'access',

@@ -24,7 +24,7 @@ export function CoinPurchaseModal({
 
 	const onLogin = () => {
 		onClose()
-		callEvent('openSettings', 'account')
+		callEvent('openProfile')
 	}
 
 	return (

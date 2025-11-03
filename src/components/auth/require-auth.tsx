@@ -1,7 +1,7 @@
-import { callEvent } from '@/common/utils/call-event'
-import { useAuth } from '@/context/auth.context'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { callEvent } from '@/common/utils/call-event'
+import { useAuth } from '@/context/auth.context'
 import { Button } from '../button/button'
 
 interface RequireAuthProps {
@@ -14,7 +14,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 	const { isAuthenticated, isLoadingUser } = useAuth()
 
 	const handleAuthClick = () => {
-		callEvent('openSettings', 'account')
+		callEvent('openProfile')
 	}
 
 	if (isLoadingUser) {
@@ -44,7 +44,12 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
-						<Button onClick={handleAuthClick} size="sm" isPrimary={true} className='btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out'>
+						<Button
+							onClick={handleAuthClick}
+							size="sm"
+							isPrimary={true}
+							className="btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out"
+						>
 							ورود به حساب
 						</Button>
 					</div>
@@ -53,7 +58,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 		}
 
 		return fallback ? (
-			<>{fallback}</>
+			fallback
 		) : (
 			<motion.div
 				initial={{ opacity: 0, y: 10 }}

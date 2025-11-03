@@ -1,7 +1,7 @@
+import { domAnimation, LazyMotion, m } from 'framer-motion'
+import { IoIosLogIn } from 'react-icons/io'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
-import { IoIosLogIn } from 'react-icons/io'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean
@@ -22,7 +22,7 @@ export function AuthRequiredModal({
 }: AuthRequiredModalProps) {
 	function triggerAccountTabDisplay() {
 		onClose()
-		callEvent('openSettings', 'account')
+		callEvent('openProfile')
 	}
 
 	return (
