@@ -9,7 +9,7 @@ import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
-import { ReferralCodeSection } from '@/layouts/navbar/friends-list/setting/tabs/components/ReferralCodeSection'
+import { ReferralCodeSection } from '@/layouts/navbar/friends-list/setting/tabs/tasks/components/ReferralCodeSection'
 import { useGetOrCreateReferralCode } from '@/services/hooks/user/referralsService.hook'
 import {
 	useGetUserProfile,

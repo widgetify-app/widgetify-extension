@@ -13,8 +13,16 @@ export interface UserReferrals {
 	totalCount: number
 }
 
+export interface Task {
+	task: string
+	reward_coin: string
+	isDone: boolean
+	icon: string
+}
+
 export interface ReferralsResponse extends UserReferrals {
 	code: string
+	tasks: Task[]
 }
 
 export interface GetReferralsParams {
@@ -32,7 +40,7 @@ async function getReferrals(params: GetReferralsParams = {}): Promise<ReferralsR
 	if (limit !== undefined) queryParams.append('limit', limit.toString())
 
 	const response = await client.get<ReferralsResponse>(
-		`/users/@me/referrals?${queryParams.toString()}`
+		`/users/@me/rewards?${queryParams.toString()}`
 	)
 	return response.data
 }
@@ -43,15 +51,12 @@ export function useGetReferrals(params: GetReferralsParams = {}) {
 		queryFn: () => getReferrals(params),
 		retry: 1,
 		enabled: params.enabled !== undefined ? params.enabled : true,
-		staleTime: 2 * 60 * 1000, // 2 minutes
 	})
 }
 
 async function getOrCreateReferralCode(): Promise<{ referralCode: string }> {
 	const client = await getMainClient()
-	const response = await client.get<{ referralCode: string }>(
-		'/users/@me/referrals/code'
-	)
+	const response = await client.get<{ referralCode: string }>('/users/@me/rewards/code')
 	return response.data
 }
 

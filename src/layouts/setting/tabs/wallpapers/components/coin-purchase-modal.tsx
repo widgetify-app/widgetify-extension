@@ -65,7 +65,7 @@ export function CoinPurchaseModal({
 						این پس‌زمینه زیبا را با {wallpaper.coin} ویج‌کوین باز کنید و برای
 						همیشه استفاده کنید! 🎨
 					</p>
-					<div className="flex items-center gap-2 p-2 rounded-lg bg-primary/10 border border-primary/20">
+					<div className="flex items-center gap-2 p-2 border rounded-lg bg-primary/10 border-primary/20">
 						<span className="text-xs text-primary">💡</span>
 						<p className="text-xs text-primary">
 							ویج‌کوین با انجام فعالیت‌ها و دعوت دوستان کسب می‌شود
@@ -91,7 +91,7 @@ export function CoinPurchaseModal({
 								loadingText="در حال باز کردن..."
 								className="flex-1 text-white transition-all duration-200 border-none shadow-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 rounded-2xl"
 							>
-								🔓 باز کردن با {wallpaper.coin} ویج‌کوین
+								🔓 باز کردن
 							</Button>
 						</>
 					) : (
