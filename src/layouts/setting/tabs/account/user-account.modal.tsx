@@ -4,7 +4,7 @@ import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { useAuth } from '@/context/auth.context'
 import { AccountTab } from '@/layouts/setting/tabs/account/account'
-import { AllFriendsTab, FriendRequestsTab, TasksTab } from './tabs'
+import { AllFriendsTab, FriendRequestsTab, RewardsTab } from './tabs'
 
 interface FriendSettingModalProps {
 	isOpen: boolean
@@ -22,7 +22,7 @@ const tabs: TabItem[] = [
 		label: 'ماموریت‌ها و پاداش',
 		value: 'tasks',
 		icon: <FiGift size={20} />,
-		element: <TasksTab />,
+		element: <RewardsTab />,
 	},
 	{
 		label: 'همه دوستان',

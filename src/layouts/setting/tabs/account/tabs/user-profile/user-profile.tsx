@@ -18,7 +18,7 @@ import { AccountVerificationStatus } from '../../components/account-verification
 import { ActivityInput } from '../../components/activity-input'
 import { ProfileDisplay } from '../../components/profile-display'
 import { ProfileEditForm } from '../../components/profile-edit-form'
-import { ReferralCodeSection } from '../tasks/components/ReferralCodeSection'
+import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { Connections } from './connections/connections'
 
 export const UserProfile = () => {
