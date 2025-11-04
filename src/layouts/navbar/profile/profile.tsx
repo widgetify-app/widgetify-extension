@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { LuCircleUser } from 'react-icons/lu'
+import { listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { FriendSettingModal } from '../friends-list/setting/friend-setting.modal'
-import { listenEvent } from '@/common/utils/call-event'
+import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {
@@ -83,7 +83,7 @@ export function ProfileNav() {
 				</Tooltip>
 			)}
 
-			<FriendSettingModal
+			<UserAccountModal
 				isOpen={showSettingsModal}
 				selectedTab="profile"
 				onClose={modalCloseHandler}

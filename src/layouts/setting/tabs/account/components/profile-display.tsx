@@ -5,7 +5,7 @@ import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import { UserCoin } from './components/user-coin'
+import { UserCoin } from './user-coin'
 
 interface ProfileDisplayProps {
 	profile?: UserProfile

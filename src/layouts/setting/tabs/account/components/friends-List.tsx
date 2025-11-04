@@ -1,13 +1,13 @@
+import { useState } from 'react'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { type Friend, useGetFriends } from '@/services/hooks/friends/friendService.hook'
-import { useState } from 'react'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 interface PaginatedFriendsListProps {
 	status: 'PENDING' | 'ACCEPTED'
 	itemsPerPage?: number
-	// @ts-ignore
+	// @ts-expect-error
 	renderFriendActions: (friend: Friend) => JSX.Element
 	emptyMessage: string
 	loading?: boolean

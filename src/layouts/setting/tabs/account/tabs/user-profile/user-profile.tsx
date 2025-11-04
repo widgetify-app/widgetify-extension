@@ -9,17 +9,17 @@ import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
-import { ReferralCodeSection } from '@/layouts/navbar/friends-list/setting/tabs/tasks/components/ReferralCodeSection'
 import { useGetOrCreateReferralCode } from '@/services/hooks/user/referralsService.hook'
 import {
 	useGetUserProfile,
 	useSendVerificationEmail,
 } from '@/services/hooks/user/userService.hook'
-import { AccountVerificationStatus } from './components/account-verification-status'
-import { ActivityInput } from './components/activity-input'
+import { AccountVerificationStatus } from '../../components/account-verification-status'
+import { ActivityInput } from '../../components/activity-input'
+import { ProfileDisplay } from '../../components/profile-display'
+import { ProfileEditForm } from '../../components/profile-edit-form'
+import { ReferralCodeSection } from '../tasks/components/ReferralCodeSection'
 import { Connections } from './connections/connections'
-import { ProfileDisplay } from './profile-display'
-import { ProfileEditForm } from './profile-edit-form'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()

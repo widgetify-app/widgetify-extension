@@ -2,6 +2,7 @@ import { BiUserCircle } from 'react-icons/bi'
 import { FiGift, FiUserCheck, FiUsers } from 'react-icons/fi'
 import Modal from '@/components/modal'
 import { type TabItem, TabManager } from '@/components/tab-manager'
+import { useAuth } from '@/context/auth.context'
 import { AccountTab } from '@/layouts/setting/tabs/account/account'
 import { AllFriendsTab, FriendRequestsTab, TasksTab } from './tabs'
 
@@ -36,22 +37,26 @@ const tabs: TabItem[] = [
 		element: <FriendRequestsTab />,
 	},
 ]
-export const FriendSettingModal = ({
+export const UserAccountModal = ({
 	isOpen,
 	onClose,
 	selectedTab,
 }: FriendSettingModalProps) => {
+	const { isAuthenticated } = useAuth()
+	const filteredTabs = isAuthenticated
+		? tabs
+		: [tabs.find((tab) => tab.value === 'profile') as any]
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
 			size="xl"
-			title="مدیریت دوستان"
+			title="حساب کاربری"
 			direction="rtl"
 		>
 			<TabManager
 				tabOwner="user"
-				tabs={tabs}
+				tabs={filteredTabs}
 				defaultTab="all"
 				selectedTab={selectedTab}
 				direction="rtl"
