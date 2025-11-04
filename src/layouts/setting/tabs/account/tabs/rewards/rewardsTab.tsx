@@ -1,4 +1,12 @@
-import { FiBookmark, FiCheck, FiStar, FiTarget, FiUser, FiUserPlus } from 'react-icons/fi'
+import {
+	FiBookmark,
+	FiCheck,
+	FiInfo,
+	FiStar,
+	FiTarget,
+	FiUser,
+	FiUserPlus,
+} from 'react-icons/fi'
 import { SectionPanel } from '@/components/section-panel'
 import { useGetReferrals } from '@/services/hooks/user/referralsService.hook'
 import { ReferralCodeSection } from './components/ReferralCodeSection'
@@ -22,7 +30,32 @@ export const RewardsTab = () => {
 	const tasks = data?.tasks || []
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-2">
+			<SectionPanel
+				title={
+					<div className="flex items-center gap-2">
+						<span>💰 ویج‌کوین چیست؟</span>
+					</div>
+				}
+				size="xs"
+			>
+				<div className="p-2 border rounded-2xl bg-gradient-to-br from-primary/5 to-purple-500/5 border-primary/20">
+					<div className="flex items-start gap-3">
+						<FiInfo className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+						<div className="flex-1">
+							<p className="mb-2 text-sm font-medium text-content">
+								ویج‌کوین، سکه ویژه ویجتیفای است که می‌توانید آن را جمع‌آوری و
+								خرج کنید! 🎉
+							</p>
+							<p className="text-xs text-muted">
+								با جمع‌آوری ویج‌کوین می‌توانید آن‌ها را خرج کنید و محصولات و
+								امکانات ویژه داخل ویجتیفای را بخرید.
+							</p>
+						</div>
+					</div>
+				</div>
+			</SectionPanel>
+
 			<ReferralCodeSection code={code} />
 			<SectionPanel title={'ماموریت‌ها'} size="xs">
 				<div className="flex flex-col gap-2 py-2">
