@@ -8,9 +8,16 @@ export function ThemeSelector() {
 	const themes = [
 		{
 			id: 'glass',
-			name: 'شیشه‌ای',
+			name: 'شیشه‌ای تیره',
 			icon: <MdOutlineBlurOn size={18} />,
 			buttonClass: 'backdrop-blur-md text-white bg-black/40',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'lightglass',
+			name: 'شیشه‌ای روشن',
+			icon: <MdOutlineBlurOn size={18} />,
+			buttonClass: 'backdrop-blur-md text-gray-800 bg-white/55',
 			activeClass: 'ring-2 ring-blue-500',
 		},
 		{
@@ -56,10 +63,10 @@ export function ThemeSelector() {
 							key={item.id}
 							onClick={() => setTheme(item.id)}
 							className={`
-                relative flex flex-col p-2 rounded-lg transition-all cursor-pointer duration-300 shadow-md hover:shadow-lg bg-base-100  justify-center
-                ${item.buttonClass}
-                ${theme === item.id ? item.activeClass : 'hover:ring-2 hover:ring-blue-300'}
-              `}
+                			relative flex flex-col p-2 rounded-lg transition-all cursor-pointer duration-300 shadow-md hover:shadow-lg bg-base-100  justify-center
+                			${item.buttonClass}
+                			${theme === item.id ? item.activeClass : 'hover:ring-2 hover:ring-blue-300'}
+              									`}
 						>
 							<div className="flex items-center gap-2">
 								<span className="flex items-center justify-center w-8 h-8 rounded-full bg-black/10">
