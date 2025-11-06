@@ -85,7 +85,7 @@ export const TabManager = ({
 				{tabs.map(({ value, element }) => (
 					<div
 						key={value}
-						className={`absolute inset-0 p-4 rounded-lg transition-all duration-200 ease-in-out ${
+						className={`absolute inset-0 p-1 rounded-lg transition-all duration-200 ease-in-out ${
 							activeTab === value
 								? 'opacity-100 translate-x-0 z-10'
 								: 'opacity-0 translate-x-5 z-0 pointer-events-none'

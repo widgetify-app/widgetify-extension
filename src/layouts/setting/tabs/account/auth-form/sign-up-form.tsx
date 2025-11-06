@@ -85,28 +85,32 @@ export const SignUpForm = () => {
 	return (
 		<div className="flex flex-col w-full h-full">
 			<form onSubmit={handleSubmit} className="flex flex-col w-full gap-3">
-				<div className="flex flex-col gap-1">
-					<label className="flex text-sm font-medium text-muted">نام</label>
-					<TextInput
-						id="name"
-						type="text"
-						value={name}
-						onChange={setName}
-						placeholder="نام خود را وارد کنید"
-						disabled={signUpMutation.isPending}
-					/>
-				</div>
+				<div className="flex flex-row flex-wrap justify-between gap-1">
+					<div className="flex flex-col flex-1 gap-1">
+						<label className="flex text-sm font-medium text-muted">نام</label>
+						<TextInput
+							id="name"
+							type="text"
+							value={name}
+							onChange={setName}
+							placeholder="نام کامل خود را وارد کنید"
+							disabled={signUpMutation.isPending}
+						/>
+					</div>
 
-				<div className="flex flex-col gap-1">
-					<label className="flex text-sm font-medium text-muted">ایمیل</label>
-					<TextInput
-						id="email"
-						type="email"
-						value={email}
-						onChange={setEmail}
-						placeholder="example@email.com"
-						disabled={signUpMutation.isPending}
-					/>
+					<div className="flex flex-col flex-1 gap-1">
+						<label className="flex text-sm font-medium text-muted">
+							ایمیل
+						</label>
+						<TextInput
+							id="email"
+							type="email"
+							value={email}
+							onChange={setEmail}
+							placeholder="example@email.com"
+							disabled={signUpMutation.isPending}
+						/>
+					</div>
 				</div>
 
 				<div className="flex flex-col gap-1">
@@ -124,10 +128,15 @@ export const SignUpForm = () => {
 				</div>
 
 				<div className="flex flex-col gap-1">
-					<label className="flex items-center gap-2 text-sm font-medium text-muted">
-						<FiGift size={16} />
-						کد دعوت ( اختیاری )
-					</label>
+					<div className="flex gap-0.5 items-center text-sm font-medium text-muted">
+						<div className="flex items-center justify-center w-5 h-5 ml-0.5 rounded-lg bg-gradient-to-br from-accent/20 to-accent/10">
+							<FiGift size={12} className="text-accent" />
+						</div>
+						کد دعوت
+						<span className="text-xs font-medium text-muted">
+							( اختیاری )
+						</span>
+					</div>
 					<TextInput
 						id="referralCode"
 						type="text"
@@ -140,18 +149,23 @@ export const SignUpForm = () => {
 
 				<div className="flex flex-col gap-2">
 					<label className="flex text-sm font-medium text-muted">
-						چطور ما رو پیدا کردید؟ ( اختیاری )
+						چطور ما رو پیدا کردید؟{' '}
+						<span className="text-xs font-medium text-muted mr-0.5">
+							( اختیاری )
+						</span>
 					</label>
-					<div className="flex flex-wrap gap-1 sm:grid sm:grid-cols-2">
+					<div className="flex flex-col flex-wrap gap-1 sm:grid sm:grid-cols-2">
 						{referralOptions.map((option) => (
 							<ItemSelector
 								key={option.id}
 								isActive={referralSource === option.id}
 								onClick={() => setReferralSource(option.id)}
 								label={
-									<div className="flex items-center justify-start w-full gap-2 text-muted">
-										<option.icon className="flex-shrink-0 w-4 h-4" />
-										<span className="flex-1 text-right">
+									<div className="flex items-center justify-start w-full gap-2.5 text-base-content/80">
+										<div className="flex items-center justify-center flex-shrink-0 w-6 h-6 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5">
+											<option.icon className="w-3 h-3 text-primary" />
+										</div>
+										<span className="flex-1 text-sm font-medium text-right">
 											{option.label}
 										</span>
 									</div>
@@ -168,7 +182,7 @@ export const SignUpForm = () => {
 						disabled={signUpMutation.isPending}
 						isPrimary={true}
 						size="md"
-						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-2xl font-medium shadow-none min-w-[200px]"
+						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-2xl font-medium shadow-none w-60"
 					>
 						{signUpMutation.isPending ? 'درحال پردازش...' : 'ثبت‌نام'}
 					</Button>
