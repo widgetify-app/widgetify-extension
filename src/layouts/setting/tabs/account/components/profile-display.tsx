@@ -52,7 +52,7 @@ const formatJalaliDate = (dateString: string | null | undefined): string => {
 
 export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) => {
 	return (
-		<div className="relative mb-4 overflow-hidden border border-base-300/50 rounded-2xl bg-gradient-to-br from-base-100/80 to-base-200/60 backdrop-blur-xl">
+		<div className="relative mb-4 overflow-hidden border border-base-300/50 rounded-2xl bg-gradient-to-br from-base-100/80 to-base-200/60">
 			<div className="absolute inset-0 opacity-5">
 				<div className="absolute top-0 left-0 w-24 h-24 -translate-x-12 -translate-y-12 rounded-full bg-gradient-to-br from-primary/30 to-transparent"></div>
 				<div className="absolute bottom-0 right-0 w-20 h-20 translate-x-10 translate-y-10 rounded-full bg-gradient-to-tl from-secondary/30 to-transparent"></div>
@@ -92,7 +92,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 						</div>
 
 						<div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl backdrop-blur-sm hover:bg-base-100/70 sm:col-span-2">
+							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl  hover:bg-base-100/70 sm:col-span-2">
 								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-primary/20 to-primary/10">
 									<FiMail size={12} className="text-primary" />
 								</div>
@@ -106,7 +106,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 								</div>
 							</div>
 
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl backdrop-blur-sm hover:bg-base-100/70">
+							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl hover:bg-base-100/70">
 								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-secondary/20 to-secondary/10">
 									{getGenderInfo(profile?.gender).icon && (
 										<div className="text-sm text-secondary">
@@ -124,7 +124,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 								</div>
 							</div>
 
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl backdrop-blur-sm hover:bg-base-100/70 sm:col-span-3">
+							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl hover:bg-base-100/70 sm:col-span-3">
 								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-accent/20 to-accent/10">
 									<FiCalendar size={12} className="text-accent" />
 								</div>
@@ -142,7 +142,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 						<div className="flex justify-center md:justify-start">
 							<Button
 								onClick={onEditToggle}
-								className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-300 transform border shadow-md bg-gradient-to-r from-primary to-primary/90 rounded-2xl hover:shadow-lg hover:scale-105 hover:from-primary/90 hover:to-primary backdrop-blur-sm border-primary/20"
+								className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-300 transform border shadow-md bg-gradient-to-r from-primary to-primary/90 rounded-2xl hover:shadow-lg hover:scale-105 hover:from-primary/90 hover:to-primary border-primary/20"
 								size="sm"
 							>
 								<FiEdit size={14} />
