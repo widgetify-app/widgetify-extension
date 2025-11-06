@@ -4,14 +4,12 @@ import { SectionPanel } from '@/components/section-panel'
 
 interface ReferralCodeSectionProps {
 	code: string
-	description?: string
 	enableNewBadge?: boolean
 	className?: string
 }
 
 export const ReferralCodeSection = ({
 	code,
-	description = 'با این کد دوستات رو به ویجتیفای دعوت کن و دوتایی ویج‌کوین بگیرین! 💰',
 	enableNewBadge = false,
 	className,
 }: ReferralCodeSectionProps) => {
@@ -61,7 +59,10 @@ export const ReferralCodeSection = ({
 						کپی کد
 					</Button>
 				</div>
-				<p className="text-sm text-muted">{description}</p>
+				<p className="flex text-sm text-muted gap-0.5 items-center">
+					از این کد برای دعوت دوستان خود استفاده کنید و هر دو ویج‌کوین دریافت
+					کنید!{' '}
+				</p>
 			</div>
 		</SectionPanel>
 	)
