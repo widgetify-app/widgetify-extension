@@ -46,7 +46,7 @@ const tabs: TabItem[] = [
 		element: <AppearanceSettingTab />,
 	},
 	{
-		label: 'تصویر زمینه',
+		label: 'تصویر زمینه ها',
 		value: 'wallpapers',
 		icon: <VscPaintcan size={20} />,
 		element: <WallpaperSetting />,

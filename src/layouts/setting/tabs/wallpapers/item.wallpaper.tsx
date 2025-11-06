@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BiSolidCoin } from 'react-icons/bi'
 import { FiCheck, FiHeart, FiShoppingBag } from 'react-icons/fi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import Tooltip from '@/components/toolTip'
+import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from './hooks/use-lazy-load'
 
@@ -132,18 +131,16 @@ function wallpaperItem({
 							)}
 							<div className="flex items-center gap-1">
 								{wallpaper.coin && (
-									<Tooltip
-										content={
-											wallpaper.isOwned
-												? '✔️ باز شده'
-												: 'قابل باز کردن با ویج‌کوین'
-										}
-									>
-										<div className="flex flex-col items-center px-1 text-xs text-center rounded-lg text-warning bg-black/40">
-											<BiSolidCoin />
-											<span>{wallpaper.coin}</span>
-										</div>
-									</Tooltip>
+									<div className="origin-bottom-left scale-75">
+										<UserCoin
+											coins={wallpaper.coin}
+											title={
+												wallpaper.isOwned
+													? 'باز شده'
+													: 'قیمت باز کردن'
+											}
+										/>
+									</div>
 								)}
 							</div>
 						</div>

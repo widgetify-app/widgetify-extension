@@ -3,6 +3,7 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { useAuth } from '@/context/auth.context'
+import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 
 interface CoinPurchaseModalProps {
 	isOpen: boolean
@@ -57,17 +58,23 @@ export function CoinPurchaseModal({
 					)}
 				</div>
 
-				<div className="space-y-2">
-					<h3 className="text-lg font-semibold text-content">
-						{wallpaper.name || 'تصویر پس‌زمینه'}
-					</h3>
+				<div className="space-y-3">
+					<div className="flex items-center justify-between">
+						<h3 className="text-lg font-semibold text-content">
+							{wallpaper.name || 'تصویر تصویر زمینه'}
+						</h3>
+						<UserCoin
+							coins={wallpaper.coin || 0}
+							title="قیمت این تصویر زمینه"
+						/>
+					</div>
 					<p className="text-sm text-muted">
-						این پس‌زمینه زیبا را با {wallpaper.coin} ویج‌کوین باز کنید و برای
-						همیشه استفاده کنید! 🎨
+						این تصویر زمینه زیبا را با ویج‌کوین باز کنید و برای همیشه استفاده
+						کنید! 🎨
 					</p>
-					<div className="flex items-center gap-2 p-2 border rounded-lg bg-primary/10 border-primary/20">
-						<span className="text-xs text-primary">💡</span>
-						<p className="text-xs text-primary">
+					<div className="flex items-center gap-2 p-3 border rounded-xl bg-primary/5 border-primary/20 backdrop-blur-sm">
+						<span className="text-sm">💡</span>
+						<p className="text-xs text-primary/80">
 							ویج‌کوین با انجام فعالیت‌ها و دعوت دوستان کسب می‌شود
 						</p>
 					</div>

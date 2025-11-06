@@ -96,7 +96,9 @@ export function useWallpaper(
 
 	const handleSelectBackground = async (wallpaper: Wallpaper) => {
 		if (wallpaper.coin && !isAuthenticated) {
-			return toast.error('برای انتخاب این تصویر پس‌زمینه باید وارد حساب کاربری شوی.')
+			return toast.error(
+				'برای انتخاب این تصویر تصویر زمینه باید وارد حساب کاربری شوی.'
+			)
 		}
 
 		if (!wallpaper.coin || wallpaper.isOwned) setSelectedBackground(wallpaper)
@@ -118,7 +120,7 @@ export function useWallpaper(
 			setSelectedBackground(wallpaper)
 
 			if (wallpaper.coin && !wallpaper.isOwned) {
-				toast.success('هووورا! پس‌زمینه فعال شد 🎉', {
+				toast.success('هووورا! تصویر زمینه فعال شد 🎉', {
 					duration: 5000,
 					style: { maxWidth: '400px', fontFamily: 'inherit' },
 					className: '!bg-success !text-success-content !font-bold',
