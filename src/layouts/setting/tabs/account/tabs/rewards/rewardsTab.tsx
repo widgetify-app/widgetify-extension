@@ -1,4 +1,5 @@
 import { FiInfo } from 'react-icons/fi'
+import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
 import { useGetReferrals } from '@/services/hooks/user/referralsService.hook'
 import { ReferralCodeSection } from './components/ReferralCodeSection'
@@ -15,7 +16,14 @@ export const RewardsTab = () => {
 			<SectionPanel
 				title={
 					<div className="flex items-center gap-2">
-						<span>💰 ویج‌کوین چیست؟</span>
+						<div className="flex items-center justify-center">
+							<img
+								src={ConfigKey.WIG_COIN_ICON}
+								alt="ویج‌کوین"
+								className="object-center w-8 h-8"
+							/>
+						</div>
+						<span>ویج‌کوین چیست؟</span>
 					</div>
 				}
 				size="xs"

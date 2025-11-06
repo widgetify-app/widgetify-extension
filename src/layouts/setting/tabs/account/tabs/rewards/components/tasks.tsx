@@ -1,4 +1,5 @@
 import { FiBookmark, FiCheck, FiStar, FiTarget, FiUser, FiUserPlus } from 'react-icons/fi'
+import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
 import type { Task } from '@/services/hooks/user/referralsService.hook'
 
@@ -83,9 +84,11 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										>
 											+{taskItem.reward_coin}
 										</span>
-										<span className="text-xs font-medium text-muted">
-											ویج‌کوین
-										</span>
+										<img
+											src={ConfigKey.WIG_COIN_ICON}
+											alt="ویج‌کوین"
+											className="w-6 h-6"
+										/>
 									</div>
 								</div>
 							</div>
