@@ -6,6 +6,7 @@ export interface TabItem {
 	value: string
 	icon: ReactNode
 	element: ReactNode
+	isNew?: boolean
 }
 
 interface TabManagerProps {
@@ -65,14 +66,19 @@ export const TabManager = ({
 			className="flex flex-col md:flex-row h-[60vh] overflow-hidden gap-4"
 		>
 			<div className="flex w-full gap-2 p-2 overflow-x-auto rounded-lg md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container">
-				{tabs.map(({ label, value, icon }) => (
+				{tabs.map(({ label, value, icon, isNew }) => (
 					<button
 						key={value}
 						onClick={() => handleTabChange(value)}
 						className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
 					>
-						<span className={getTabIconStyle(activeTab === value)}>
+						<span
+							className={`relative ${getTabIconStyle(activeTab === value)}`}
+						>
 							{icon}
+							{isNew && (
+								<span className="absolute left-0 z-30 w-2 h-2 duration-200 rounded-full -bottom-1 bg-error animate-ping"></span>
+							)}
 						</span>
 						<span className="text-sm">{label}</span>
 					</button>
