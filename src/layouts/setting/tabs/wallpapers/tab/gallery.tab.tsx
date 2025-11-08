@@ -29,6 +29,7 @@ export function GalleryTab() {
 		isRetouchEnabled,
 		customWallpaper,
 		handleSelectBackground,
+		handlePreviewBackground,
 		toggleRetouch,
 		handleCustomWallpaperChange,
 	} = useWallpaper(allWallpapers, isAuthenticated)
@@ -85,6 +86,7 @@ export function GalleryTab() {
 								wallpapers={currentCategoryWallpapers}
 								selectedBackground={selectedBackground}
 								onSelectBackground={handleSelectBackground}
+								onPreviewBackground={handlePreviewBackground}
 							/>
 							<div className="flex justify-center mt-1">
 								<FolderPath

@@ -36,6 +36,7 @@ export interface EventName {
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings
 	closeAllDropdowns: null
+	openProfile: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

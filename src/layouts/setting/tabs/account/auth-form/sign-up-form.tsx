@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaSearch, FaShareAlt, FaUsers, FaYoutube } from 'react-icons/fa'
+import { FiGift } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemSelector } from '@/components/item-selector'
@@ -14,9 +16,6 @@ interface ReferralOption {
 	icon: React.ComponentType<{ className?: string }>
 }
 
-interface SignUpFormProps {
-	onSwitchToSignIn: () => void
-}
 const referralOptions: ReferralOption[] = [
 	{
 		id: 'social',
@@ -39,11 +38,12 @@ const referralOptions: ReferralOption[] = [
 		icon: FaSearch,
 	},
 ]
-export const SignUpForm = ({ onSwitchToSignIn }: SignUpFormProps) => {
+export const SignUpForm = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [name, setName] = useState('')
 	const [referralSource, setReferralSource] = useState<ReferralSource | null>(null)
+	const [referralCode, setReferralCode] = useState('')
 	const [error, setError] = useState<string | null>(null)
 
 	const { login } = useAuth()
@@ -59,55 +59,58 @@ export const SignUpForm = ({ onSwitchToSignIn }: SignUpFormProps) => {
 				email,
 				password,
 				referralSource,
+				referralCode: referralCode || undefined,
 			})
 			login(response.data)
 
 			Analytics.event('sign_up')
 		} catch (err) {
 			const content = translateError(err)
+			let errorContent = ''
 			if (typeof content === 'string') {
-				setError(content)
+				errorContent = content
 			} else {
 				if (Object.keys(content).length === 0) {
-					setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
+					errorContent = 'خطا در احراز هویت. لطفاً دوباره تلاش کنید.'
 					return
 				}
-				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
+				errorContent = `${Object.keys(content)[0]}: ${Object.values(content)[0]}`
 			}
+
+			setError(errorContent)
+			toast.error(errorContent)
 		}
 	}
 
 	return (
 		<div className="flex flex-col w-full h-full">
-			{error && (
-				<div className="flex items-center justify-center p-3 mb-4 text-sm text-white rounded-lg bg-error">
-					<span className="text-center">{error}</span>
-				</div>
-			)}
-
 			<form onSubmit={handleSubmit} className="flex flex-col w-full gap-3">
-				<div className="flex flex-col gap-1">
-					<label className="flex text-sm font-medium text-muted">نام</label>
-					<TextInput
-						id="name"
-						type="text"
-						value={name}
-						onChange={setName}
-						placeholder="نام خود را وارد کنید"
-						disabled={signUpMutation.isPending}
-					/>
-				</div>
+				<div className="flex flex-row flex-wrap justify-between gap-1">
+					<div className="flex flex-col flex-1 gap-1">
+						<label className="flex text-sm font-medium text-muted">نام</label>
+						<TextInput
+							id="name"
+							type="text"
+							value={name}
+							onChange={setName}
+							placeholder="نام کامل خود را وارد کنید"
+							disabled={signUpMutation.isPending}
+						/>
+					</div>
 
-				<div className="flex flex-col gap-1">
-					<label className="flex text-sm font-medium text-muted">ایمیل</label>
-					<TextInput
-						id="email"
-						type="email"
-						value={email}
-						onChange={setEmail}
-						placeholder="example@email.com"
-						disabled={signUpMutation.isPending}
-					/>
+					<div className="flex flex-col flex-1 gap-1">
+						<label className="flex text-sm font-medium text-muted">
+							ایمیل
+						</label>
+						<TextInput
+							id="email"
+							type="email"
+							value={email}
+							onChange={setEmail}
+							placeholder="example@email.com"
+							disabled={signUpMutation.isPending}
+						/>
+					</div>
 				</div>
 
 				<div className="flex flex-col gap-1">
@@ -124,20 +127,45 @@ export const SignUpForm = ({ onSwitchToSignIn }: SignUpFormProps) => {
 					/>
 				</div>
 
+				<div className="flex flex-col gap-1">
+					<div className="flex gap-0.5 items-center text-sm font-medium text-muted">
+						<div className="flex items-center justify-center w-5 h-5 ml-0.5 rounded-lg bg-gradient-to-br from-accent/20 to-accent/10">
+							<FiGift size={12} className="text-accent" />
+						</div>
+						کد دعوت
+						<span className="text-xs font-medium text-muted">
+							( اختیاری )
+						</span>
+					</div>
+					<TextInput
+						id="referralCode"
+						type="text"
+						value={referralCode}
+						onChange={setReferralCode}
+						placeholder="کد دعوت را وارد کنید"
+						disabled={signUpMutation.isPending}
+					/>
+				</div>
+
 				<div className="flex flex-col gap-2">
 					<label className="flex text-sm font-medium text-muted">
-						چطور ما رو پیدا کردید؟ ( اختیاری )
+						چطور ما رو پیدا کردید؟{' '}
+						<span className="text-xs font-medium text-muted mr-0.5">
+							( اختیاری )
+						</span>
 					</label>
-					<div className="flex flex-wrap gap-1 sm:grid sm:grid-cols-2">
+					<div className="flex flex-col flex-wrap gap-1 sm:grid sm:grid-cols-2">
 						{referralOptions.map((option) => (
 							<ItemSelector
 								key={option.id}
 								isActive={referralSource === option.id}
 								onClick={() => setReferralSource(option.id)}
 								label={
-									<div className="flex items-center justify-start w-full gap-2">
-										<option.icon className="flex-shrink-0 w-4 h-4" />
-										<span className="flex-1 text-right">
+									<div className="flex items-center justify-start w-full gap-2.5 text-base-content/80">
+										<div className="flex items-center justify-center flex-shrink-0 w-6 h-6 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5">
+											<option.icon className="w-3 h-3 text-primary" />
+										</div>
+										<span className="flex-1 text-sm font-medium text-right">
 											{option.label}
 										</span>
 									</div>
@@ -154,24 +182,18 @@ export const SignUpForm = ({ onSwitchToSignIn }: SignUpFormProps) => {
 						disabled={signUpMutation.isPending}
 						isPrimary={true}
 						size="md"
-						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-xl font-medium shadow-none min-w-[200px]"
+						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-2xl font-medium shadow-none w-60"
 					>
 						{signUpMutation.isPending ? 'درحال پردازش...' : 'ثبت‌نام'}
 					</Button>
 				</div>
 			</form>
 
-			<div className="flex items-center justify-center w-full mt-4">
-				<p className="flex items-center gap-1 text-sm text-muted">
-					<span>حساب کاربری دارید؟</span>
-					<button
-						onClick={onSwitchToSignIn}
-						className="flex font-medium transition-colors text-primary hover:text-primary/80 hover:underline"
-					>
-						وارد شوید
-					</button>
-				</p>
-			</div>
+			{error && (
+				<div className="p-3 mt-4 border rounded-lg bg-error/20 text-error border-error/30">
+					<span className="text-center">{error}</span>
+				</div>
+			)}
 		</div>
 	)
 }

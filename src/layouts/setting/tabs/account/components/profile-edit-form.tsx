@@ -13,7 +13,7 @@ import {
 } from '@/services/hooks/auth/authService.hook'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
-import JalaliDatePicker from './components/ProfileDatePicker'
+import JalaliDatePicker from './ProfileDatePicker'
 
 interface ProfileEditFormProps {
 	profile?: UserProfile

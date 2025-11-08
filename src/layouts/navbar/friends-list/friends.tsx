@@ -7,8 +7,8 @@ import { Dropdown } from '@/components/dropdown'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
+import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 import { FriendItem } from './friend.item'
-import { FriendSettingModal } from './setting/friend-setting.modal'
 
 const renderFriendsTrigger = () => (
 	<Tooltip content="دوستان" position="bottom">
@@ -124,7 +124,7 @@ export function FriendsList() {
 				)}
 			</Dropdown>
 
-			<FriendSettingModal
+			<UserAccountModal
 				isOpen={showSettingsModal}
 				onClose={handleSettingsModalClose}
 			/>

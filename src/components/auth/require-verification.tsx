@@ -18,7 +18,7 @@ export const RequireVerification = ({
 }: RequireVerificationProps) => {
 	const { user, isLoadingUser } = useAuth()
 	const handleVerificationClick = () => {
-		callEvent('openSettings', 'account')
+		callEvent('openProfile')
 	}
 
 	if (isLoadingUser) {

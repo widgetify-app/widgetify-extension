@@ -1,19 +1,19 @@
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { FiUserCheck } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { FriendsList } from '@/layouts/navbar/friends-list/setting/components/friends-List'
 import {
 	type Friend,
 	useHandleFriendRequest,
 	useSendFriendRequest,
 } from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { FiUserCheck } from 'react-icons/fi'
-import { RemoveFriendButton } from '../components/remove-button'
+import { FriendsList } from '../../components/friends-List'
+import { RemoveFriendButton } from '../../components/remove-button'
 
 export const FriendRequestsTab = () => {
 	const { user } = useAuth()

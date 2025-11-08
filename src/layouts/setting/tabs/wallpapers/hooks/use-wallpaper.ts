@@ -1,8 +1,12 @@
+import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import { safeAwait } from '@/services/api'
+import { useChangeWallpaper } from '@/services/hooks/extension/updateSetting.hook'
+import { translateError } from '@/utils/translate-error'
 import Analytics from '../../../../../analytics'
 
 export function useWallpaper(
@@ -11,7 +15,7 @@ export function useWallpaper(
 ) {
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const [isRetouchEnabled, setIsRetouchEnabled] = useState<boolean>(false)
-	const { mutateAsync } = useUpdateExtensionSettings()
+	const { mutateAsync } = useChangeWallpaper()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
 
 	useEffect(() => {
@@ -91,29 +95,52 @@ export function useWallpaper(
 	}, [selectedBackground, isRetouchEnabled])
 
 	const handleSelectBackground = async (wallpaper: Wallpaper) => {
-		setSelectedBackground(wallpaper)
+		if (wallpaper.coin && !isAuthenticated) {
+			return toast.error(
+				'برای انتخاب این تصویر تصویر زمینه باید وارد حساب کاربری شوی.'
+			)
+		}
 
-		Analytics.event('wallpaper_changed', {
-			wallpaper_id: wallpaper.id,
-			wallpaper_name: wallpaper.name || 'unnamed',
-			wallpaper_type: wallpaper.type,
-		})
+		if (!wallpaper.coin || wallpaper.isOwned) setSelectedBackground(wallpaper)
 
 		if (isAuthenticated) {
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
 
-			await mutateAsync({ wallpaperId })
+			const [error] = await safeAwait<AxiosError, any>(mutateAsync({ wallpaperId }))
+			if (error) {
+				toast.error(translateError(error) as string, {
+					duration: 8000,
+					style: { maxWidth: '400px', fontFamily: 'inherit' },
+					className: '!bg-error !text-error-content !font-bold',
+				})
+				return
+			}
+
+			setSelectedBackground(wallpaper)
+
+			if (wallpaper.coin && !wallpaper.isOwned) {
+				toast.success('هووورا! تصویر زمینه فعال شد 🎉', {
+					duration: 5000,
+					style: { maxWidth: '400px', fontFamily: 'inherit' },
+					className: '!bg-success !text-success-content !font-bold',
+				})
+			}
 		}
+
+		Analytics.event('wallpaper_changed')
+	}
+
+	const handlePreviewBackground = (wallpaper: Wallpaper) => {
+		setSelectedBackground(wallpaper)
+
+		Analytics.event('wallpaper_previewed')
 	}
 
 	const toggleRetouch = () => {
 		setIsRetouchEnabled((prev) => !prev)
 
-		Analytics.event('wallpaper_retouch_toggled', {
-			enabled: !isRetouchEnabled,
-			wallpaper_id: selectedBackground?.id || 'none',
-		})
+		Analytics.event('wallpaper_retouch_toggled')
 	}
 
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
@@ -127,6 +154,7 @@ export function useWallpaper(
 		customWallpaper,
 		allWallpapers,
 		handleSelectBackground,
+		handlePreviewBackground,
 		toggleRetouch,
 		handleCustomWallpaperChange,
 	}
