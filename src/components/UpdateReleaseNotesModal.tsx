@@ -26,33 +26,40 @@ type ReleaseNote = {
 const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
-		title: 'بهبود ظاهری ویجت شبکه',
-		type: 'improvement',
-		media: [
-			{
-				type: 'image',
-				url: 'https://widgetify-ir.storage.c2.liara.space/extension/network-widget.png',
-			},
-		],
-		description:
-			'ویجت شبکه با طراحی جدید و بهبود رابط کاربری، تجربه بهتری برای مشاهده اطلاعات شبکه فراهم می‌کند.',
-	},
-	{
-		title: 'جابجایی ارزها',
+		title: 'معرفی ویج‌کوین - ارز داخلی ویجتیفای',
 		type: 'feature',
 		description:
-			'امکان جابجایی و مرتب‌سازی ارزها در ویجت ارز اضافه شد. اکنون می‌توانید ارزهای مورد علاقه‌تان را به راحتی مرتب کنید.',
+			'ویج‌کوین، ارز اختصاصی ویجتیفای معرفی شد! حالا می‌توانید با انجام فعالیت‌های مختلف ویج‌کوین جمع‌آوری کنید و آن‌ها را برای خرید محتوای پریمیوم استفاده کنید.',
 	},
 	{
-		title: 'بهبود عملکرد',
+		title: 'سیستم پاداش‌دهی و ماموریت‌ها',
+		type: 'feature',
+		description:
+			'سیستم پاداش‌دهی جدید با ماموریت‌های مختلف اضافه شد. با تکمیل ماموریت‌ها ویج‌کوین دریافت کنید و از امکانات ویژه استفاده کنید.',
+	},
+	{
+		title: 'کد دعوت برای دعوت دوستان',
+		type: 'feature',
+		description:
+			'حالا می‌توانید با کد دعوت اختصاصی خود، دوستان‌تان را به ویجتیفای دعوت کنید و برای هر دعوت موفق ویج‌کوین دریافت کنید.',
+	},
+	{
+		title: 'فروشگاه والپیپر در گالری',
+		type: 'feature',
+		description:
+			'فروشگاه جدید در قسمت گالری اضافه شد! حالا می‌توانید با ویج‌کوین‌های جمع‌آوری شده، والپیپرهای پریمیوم و اختصاصی خریداری کنید.',
+	},
+	{
+		title: 'بهبود رابط کاربری',
 		type: 'improvement',
 		description:
-			'بهبود عملکرد کلی افزونه برای سرعت بیشتر، مصرف کمتر منابع و تجربه کاربری روان‌تر.',
+			'بهبود‌های گسترده در طراحی و رابط کاربری قسمت‌های مختلف ویجتیفای، شامل پروفایل کاربری، تنظیمات حساب کاربری و صفحات مختلف.',
 	},
 	{
-		title: 'رفع مشکلات گزارش شده',
-		type: 'bugfix',
-		description: 'مشکلات گزارش شده توسط کاربران رفع شد و پایداری افزونه افزایش یافت.',
+		title: 'بهبود عملکرد و پایداری',
+		type: 'improvement',
+		description:
+			'بهبود عملکرد کلی افزونه، رفع مشکلات گزارش شده و افزایش پایداری سیستم برای تجربه کاربری بهتر.',
 	},
 ]
 
@@ -192,14 +199,22 @@ export const UpdateReleaseNotesModal = ({
 			showCloseButton={false}
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				<div className="flex flex-col items-center text-center">
+				<div className="flex flex-col items-center mb-2 text-center">
 					<h2
 						className={'text-2xl font-bold mb-2 text-content animate-fade-in'}
 						style={{ animationDelay: '0.1s' }}
 					>
 						{VERSION_NAME}
 					</h2>
-					<div className="w-16 h-1 mb-4 bg-blue-500 rounded-full"></div>
+					<div className="w-16 h-1 mb-2 bg-blue-500 rounded-full"></div>
+					<img
+						src={
+							'https://widgetify-ir.storage.c2.liara.space/extension/wig-banner.png'
+						}
+						alt={'تصویر بروزرسانی'}
+						className="object-contain w-full h-auto"
+						loading="lazy"
+					/>
 				</div>
 
 				<div className="flex flex-col h-64 gap-2">
