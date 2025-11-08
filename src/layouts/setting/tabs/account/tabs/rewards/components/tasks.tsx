@@ -51,7 +51,10 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 											}`}
 										>
 											{taskItem.isDone ? (
-												<FiCheck className="w-5 h-5 text-white" />
+												<div className="relative">
+													<FiCheck className="w-5 h-5 text-white drop-shadow-lg" />
+													<div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
+												</div>
 											) : (
 												<IconComponent className="w-5 h-5 text-white" />
 											)}
