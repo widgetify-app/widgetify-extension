@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
 import type { Category, Wallpaper, WallpaperResponse } from '@/common/wallpaper.interface'
 import { getMainClient } from '@/services/api'
-import { useQuery } from '@tanstack/react-query'
 
 export const useGetWallpaperCategories = () => {
 	return useQuery<Category[]>({

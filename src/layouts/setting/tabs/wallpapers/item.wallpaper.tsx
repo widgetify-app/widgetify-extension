@@ -125,9 +125,9 @@ function wallpaperItem({
 							className={`absolute flex justify-between inset-x-0 bottom-0 p-2 transition-opacity duration-300 bg-gradient-to-t from-black/80 to-black/0 items-center`}
 						>
 							{wallpaper.name && (
-								<p className="text-xs font-medium text-white">
+								<div className="flex-1 text-xs font-medium text-white">
 									{wallpaper.name}
-								</p>
+								</div>
 							)}
 							<div className="flex items-center gap-1">
 								{wallpaper.coin && (
