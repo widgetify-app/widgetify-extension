@@ -3,24 +3,10 @@ import { Button } from '@/components/button/button'
 
 interface NewsHeaderProps {
 	title: string
-	useDefaultNews: boolean
-	platformName?: string
-	platformUrl?: string
 	onSettingsClick: () => void
 }
 
-export const NewsHeader = ({
-	title,
-	useDefaultNews,
-	platformName,
-	platformUrl,
-	onSettingsClick,
-}: NewsHeaderProps) => {
-	// Use the RSS manager hook
-
-	// For now, we'll use an empty array for availableSources
-	// This should be populated from the news data when the news tab is active
-
+export const NewsHeader = ({ title, onSettingsClick }: NewsHeaderProps) => {
 	return (
 		<div className={'top-0 z-20 flex items-center justify-between w-full pb-2'}>
 			<div className="flex flex-col">
@@ -28,31 +14,6 @@ export const NewsHeader = ({
 					<FaRss className="w-3.5 h-3.5 opacity-70" />
 					<p className="text-base font-medium">{title}</p>
 				</div>
-
-				{platformName && useDefaultNews ? (
-					<a
-						href={platformUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="flex items-center mt-1 text-xs transition-colors opacity-70 hover:opacity-100 hover:text-primary"
-					>
-						<span>قدرت گرفته از</span>
-						<span className="mr-1 font-semibold">{platformName}</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="w-3 h-3 mr-1"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						>
-							<path d="M7 7h10v10" />
-							<path d="M7 17 17 7" />
-						</svg>
-					</a>
-				) : null}
 			</div>
 
 			<div className="flex items-center gap-x-0.5">
