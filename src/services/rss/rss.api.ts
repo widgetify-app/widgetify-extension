@@ -1,4 +1,4 @@
-import type { RssItem } from '@/layouts/widgets/news/news.interface'
+import type { RssItem } from '@/layouts/widgets/news/rss.interface'
 import { getMainClient } from '../api'
 
 export async function GetRss(url: string, sourceName: string): Promise<RssItem[]> {

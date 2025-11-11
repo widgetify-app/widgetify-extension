@@ -10,7 +10,7 @@ import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
-import type { WigiNewsSetting } from './news.interface'
+import type { WigiNewsSetting } from './rss.interface'
 
 const SUGGESTED_FEEDS = [
 	{
@@ -153,17 +153,23 @@ export const RssFeedSetting = () => {
 
 	const save = async () => {
 		callEvent('wigiNewsSettingsChanged', rssState)
-		await setToStorage('rss_news_state', rssState)
+		await setToStorage('rssOptions', rssState)
 	}
 
 	useEffect(() => {
 		async function load() {
-			const settingFromStorage = await getFromStorage('rss_news_state')
+			const settingFromStorage = await getFromStorage('rssOptions')
 			if (settingFromStorage) {
 				setRssState({
 					customFeeds: settingFromStorage.customFeeds || [],
-					useDefaultNews: settingFromStorage.useDefaultNews || false,
-					lastFetchedItems: settingFromStorage.lastFetchedItems || {},
+					useDefaultNews: settingFromStorage.useDefaultNews ?? true,
+					lastFetchedItems: {},
+				})
+			} else {
+				setRssState({
+					customFeeds: [],
+					useDefaultNews: true,
+					lastFetchedItems: {},
 				})
 			}
 			isInitialLoad.current = false

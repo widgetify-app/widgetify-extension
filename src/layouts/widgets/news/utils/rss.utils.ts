@@ -1,5 +1,5 @@
 import { GetRss } from '@/services/rss/rss.api'
-import type { RssItem } from '../news.interface'
+import type { RssItem } from '../rss.interface'
 
 export const fetchRssFeed = async (
 	url: string,
@@ -8,7 +8,7 @@ export const fetchRssFeed = async (
 	try {
 		const response = await GetRss(url, sourceName)
 		return response
-	} catch (error) {
+	} catch (_error) {
 		return []
 	}
 }

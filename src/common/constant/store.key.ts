@@ -7,8 +7,7 @@ import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
-import type { FilterSortState } from '@/layouts/widgets/news/components/news-filter-sort'
-import type { WigiNewsSetting } from '@/layouts/widgets/news/news.interface'
+import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
@@ -23,7 +22,6 @@ import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/cloc
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import type { NewsResponse } from '@/services/hooks/news/getNews.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
@@ -54,12 +52,9 @@ export interface StorageKV {
 	refresh_token: string | null
 	profile: UserProfile
 	activeWidgets: WidgetItem[]
-	news: NewsResponse & { isCached?: boolean }
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
-	rss_news_state: WigiNewsSetting
-	news_filter_sort_state: FilterSortState
 	analyticsSession: any
 	enable_sync: boolean
 	notes_data: {
@@ -87,4 +82,5 @@ export interface StorageKV {
 	seenWidgetSettings_1: boolean
 	seenTodoNewViewMode: boolean
 	hasSeenFooterDisableHint: boolean
+	rssOptions: WigiNewsSetting
 }
