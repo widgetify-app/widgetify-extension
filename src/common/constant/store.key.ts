@@ -83,4 +83,5 @@ export interface StorageKV {
 	seenTodoNewViewMode: boolean
 	hasSeenFooterDisableHint: boolean
 	rssOptions: WigiNewsSetting
+	browserTitle: string
 }

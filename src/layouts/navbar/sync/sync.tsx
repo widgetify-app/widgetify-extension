@@ -258,9 +258,10 @@ async function getAll() {
 		todos: FetchedTodo[]
 		wallpaper: Wallpaper
 		theme: Theme | null
+		browserTitle: string
 	}>('/extension/@me/sync')
 
-	const { bookmarks, todos, wallpaper, theme } = response.data
+	const { bookmarks, todos, wallpaper, theme, browserTitle } = response.data
 
 	const mappedFetched: Bookmark[] = mapBookmarks(bookmarks)
 	callEvent('bookmarksChanged', mappedFetched)
@@ -287,9 +288,16 @@ async function getAll() {
 		})
 	}
 
-	const themeStore = await getFromStorage('theme')
+	const [themeStore, browserTitleStore] = await Promise.all([
+		getFromStorage('theme'),
+		getFromStorage('browserTitle'),
+	])
 	if (theme && theme !== themeStore) {
 		callEvent('themeChanged', theme)
+	}
+	if (browserTitle && browserTitle !== browserTitleStore) {
+		document.title = browserTitle
+		setToStorage('browserTitle', browserTitle)
 	}
 }
 

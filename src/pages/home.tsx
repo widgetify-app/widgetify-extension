@@ -68,7 +68,10 @@ export function HomePage() {
 		}
 
 		async function loadWallpaper() {
-			const wallpaper = await getFromStorage('wallpaper')
+			const [wallpaper, browserTitle] = await Promise.all([
+				getFromStorage('wallpaper'),
+				getFromStorage('browserTitle'),
+			])
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			} else {
@@ -98,6 +101,10 @@ export function HomePage() {
 					changeWallpaper(defaultGradient)
 					setToStorage('wallpaper', defaultGradient)
 				}
+			}
+
+			if (browserTitle) {
+				document.title = browserTitle
 			}
 		}
 
