@@ -1,0 +1,143 @@
+import toast from 'react-hot-toast'
+import { FiCheck, FiX } from 'react-icons/fi'
+import Analytics from '@/analytics'
+import { Button } from '@/components/button/button'
+import { ItemPrice } from '@/components/item-price/item-price'
+import Modal from '@/components/modal'
+import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import type { MarketItem } from '@/services/hooks/market/getMarketItems.hook'
+import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
+
+interface MarketItemPurchaseModalProps {
+	isOpen: boolean
+	onClose: () => void
+	item: MarketItem | null
+	onPurchaseSuccess: () => void
+	userCoins: number
+}
+
+export function MarketItemPurchaseModal({
+	isOpen,
+	onClose,
+	item,
+	onPurchaseSuccess,
+	userCoins,
+}: MarketItemPurchaseModalProps) {
+	const { mutate: purchaseItem, isPending } = usePurchaseMarketItem()
+
+	if (!item) return null
+
+	const canAfford = userCoins >= item.price
+	const remainingCoins = userCoins - item.price
+
+	const handlePurchase = () => {
+		if (!canAfford) return
+
+		purchaseItem(
+			{ itemId: item.id },
+			{
+				onSuccess: (_response) => {
+					toast.success(`${item.name} با موفقیت خریداری شد! 🎉`)
+					Analytics.event('market_item_purchased')
+					onPurchaseSuccess()
+				},
+				onError: (error) => {
+					toast.error(error.message || 'خطا در خرید آیتم')
+					Analytics.event('market_item_purchase_failed')
+				},
+			}
+		)
+	}
+
+	return (
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			title="تایید خرید"
+			size="md"
+			direction="rtl"
+			closeOnBackdropClick={!isPending}
+			showCloseButton={!isPending}
+		>
+			<div className="space-y-4">
+				<div className="p-4 border rounded-xl border-base-300 bg-content/50">
+					<h3 className="text-lg font-semibold text-content">{item.name}</h3>
+					<p className="mt-2 text-sm text-muted">{item.description}</p>
+
+					{/* Item preview */}
+					{item.previewUrl && (
+						<div className="p-2 mt-3 border bg-base-100 rounded-xl border-base-200">
+							<img
+								src={item.previewUrl}
+								alt={'پیش‌نمایش آیتم'}
+								className="object-contain w-full rounded-lg max-h-40"
+								loading="lazy"
+							/>
+						</div>
+					)}
+				</div>
+
+				<div className="p-3 space-y-2 border rounded-xl border-primary/20 bg-primary/5">
+					<div className="flex items-center justify-between">
+						<span className="text-sm text-content">موجودی فعلی:</span>
+						<UserCoin coins={userCoins} />
+					</div>
+					<div className="flex items-center justify-between">
+						<span className="text-sm text-content">قیمت آیتم:</span>
+						<ItemPrice price={item.price} />
+					</div>
+					<hr className="border-primary/20" />
+					<div className="flex items-center justify-between">
+						<span className="text-sm font-medium text-content">
+							موجودی باقی‌مانده:
+						</span>
+						<UserCoin coins={Math.max(0, remainingCoins)} />
+					</div>
+				</div>
+
+				{!canAfford && (
+					<div className="p-3 border rounded-xl border-warning/20 bg-warning/5">
+						<div className="flex items-start gap-2">
+							<FiX className="w-5 h-5 mt-0.5 text-warning flex-shrink-0" />
+							<div>
+								<p className="text-sm font-medium text-warning">
+									موجودی ناکافی
+								</p>
+								<p className="text-xs text-warning/80">
+									برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
+									بیشتر نیاز دارید
+								</p>
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
+
+			<div className="flex gap-3 pt-4">
+				<Button
+					onClick={onClose}
+					size="md"
+					disabled={isPending}
+					className="flex-1 rounded-2xl border-muted hover:bg-muted/50 text-content"
+				>
+					لغو
+				</Button>
+				<Button
+					onClick={handlePurchase}
+					size="md"
+					disabled={!canAfford || isPending}
+					loading={isPending}
+					loadingText="در حال خرید..."
+					className={`flex-1 rounded-2xl ${
+						canAfford
+							? 'bg-primary hover:bg-primary/90 text-white'
+							: 'bg-base-300 text-muted cursor-not-allowed'
+					}`}
+				>
+					<FiCheck size={16} className="ml-1" />
+					تایید خرید
+				</Button>
+			</div>
+		</Modal>
+	)
+}
