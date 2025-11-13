@@ -17,6 +17,7 @@ export enum Theme {
 	Glass = 'glass',
 	Icy = 'icy',
 	Zarna = 'zarna',
+	esteghlal = 'esteghlal',
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
@@ -78,14 +79,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const applyThemeChange = (theme: string) => {
+		document.documentElement.setAttribute('data-theme', theme)
 		setTheme(theme)
 		setToStorage('theme', theme as any)
-		document.documentElement.setAttribute('data-theme', theme)
-		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
-		Analytics.event('theme_change', {
-			previous_theme: oldTheme,
-			new_theme: theme,
-		})
+		Analytics.event('theme_change')
 	}
 
 	const contextValue: ThemeContextType = {

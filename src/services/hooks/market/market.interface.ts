@@ -8,6 +8,7 @@ export interface MarketItem {
 	price: number
 	meta: Record<string, any>
 	previewUrl: string | null
+	itemValue?: string
 }
 
 export interface MarketResponse {
@@ -24,6 +25,7 @@ export interface MarketQueryParams {
 export interface UserInventoryResponse {
 	fonts: MarketItem[]
 	browser_titles: MarketItem[]
+	themes: MarketItem[]
 	pagination: {
 		totalPages: number
 		total: number

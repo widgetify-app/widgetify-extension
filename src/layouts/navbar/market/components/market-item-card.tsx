@@ -1,7 +1,9 @@
+import toast from 'react-hot-toast'
 import { FiEye, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import Tooltip from '@/components/toolTip'
+import { Theme } from '@/context/theme.context'
 import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 
 interface MarketItemCardProps {
@@ -9,7 +11,7 @@ interface MarketItemCardProps {
 	onPurchase: () => void
 	userCoins: number
 }
-const SUPPORTED_TYPES: MarketItemType[] = ['BROWSER_TITLE', 'FONT', 'THEME']
+const SUPPORTED_TYPES: MarketItemType[] = ['BROWSER_TITLE', 'THEME']
 const getItemTypeLabel = (type: string) => {
 	switch (type) {
 		case 'BROWSER_TITLE':
@@ -45,16 +47,28 @@ export function MarketItemCard({ item, onPurchase, userCoins }: MarketItemCardPr
 		}
 	}
 
+	let needUpgrade = !SUPPORTED_TYPES.includes(item.type)
+	if (!needUpgrade && item.type === 'THEME') {
+		if (item.itemValue) {
+			if (!(item.itemValue in Theme)) needUpgrade = true
+		}
+	}
+
+	function onPurchaseButtonClick() {
+		if (needUpgrade) {
+			return toast.error(
+				'این مورد نیاز به به‌روزرسانی افزونه دارد! لطفا افزونه خود را به‌روزرسانی کنید.',
+				{
+					className: 'font-bold',
+				}
+			)
+		}
+
+		onPurchase()
+	}
+
 	return (
 		<div className="relative p-2 transition-all duration-200 border rounded-xl border-base-300 bg-content hover:border-primary/30 hover:shadow-md group">
-			{!SUPPORTED_TYPES.includes(item.type) && (
-				<div className="absolute backdrop-blur-lg z-50 h-full w-full top-0 right-0 text-xs px-2 py-0.5 rounded-2xl text-warning flex justify-center items-center text-center font-bold">
-					<span className="badge badge-warning badge-dash">
-						لطفا افزونه خود رو به‌روزرسانی کنید.
-					</span>
-				</div>
-			)}
-
 			<div className="flex items-center justify-between">
 				<div className="flex flex-row gap-0.5 items-center">
 					<span className="text-lg">{getItemTypeEmoji(item.type)}</span>
@@ -108,7 +122,7 @@ export function MarketItemCard({ item, onPurchase, userCoins }: MarketItemCardPr
 				<ItemPrice price={item.price} />
 				<Button
 					size="sm"
-					onClick={onPurchase}
+					onClick={onPurchaseButtonClick}
 					disabled={!canAfford}
 					className={`${
 						canAfford
