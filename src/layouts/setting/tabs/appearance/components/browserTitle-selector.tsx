@@ -6,8 +6,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import { SectionPanel } from '@/components/section-panel'
-import { useAuth } from '@/context/auth.context'
-import { useGetUserInventory } from '@/services/hooks/market/getUserInventory.hook'
+import type { UserInventoryResponse } from '@/services/hooks/market/market.interface'
 
 interface BrowserTitle {
 	name: string
@@ -19,9 +18,11 @@ const defaultBrowserTitles: BrowserTitle[] = [
 		template: '💫 New Tab',
 	},
 ]
-export function BrowserTitleSelector() {
-	const { isAuthenticated } = useAuth()
-	const { data, dataUpdatedAt } = useGetUserInventory(isAuthenticated)
+
+interface Prop {
+	fetched_browserTitles: UserInventoryResponse['browser_titles']
+}
+export function BrowserTitleSelector({ fetched_browserTitles }: Prop) {
 	const [browserTitles, setBrowserTitles] =
 		useState<BrowserTitle[]>(defaultBrowserTitles)
 	const [selected, setSelected] = useState<BrowserTitle | null>(null)
@@ -45,14 +46,14 @@ export function BrowserTitleSelector() {
 	}, [])
 
 	useEffect(() => {
-		if (data?.browser_titles) {
-			const mapped = data.browser_titles.map((item) => ({
+		if (fetched_browserTitles.length) {
+			const mapped = fetched_browserTitles.map((item) => ({
 				name: item.name,
 				template: item.meta.template,
 			}))
 			setBrowserTitles([...defaultBrowserTitles, ...mapped])
 		}
-	}, [dataUpdatedAt])
+	}, [fetched_browserTitles])
 
 	const handleMoreClick = () => {
 		Analytics.event('browser_title_market_opened')
