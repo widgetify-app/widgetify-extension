@@ -2,10 +2,7 @@ import { FiEye, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import Tooltip from '@/components/toolTip'
-import type {
-	MarketItem,
-	MarketItemType,
-} from '@/services/hooks/market/getMarketItems.hook'
+import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 
 interface MarketItemCardProps {
 	item: MarketItem

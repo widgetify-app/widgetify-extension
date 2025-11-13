@@ -5,7 +5,7 @@ import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import Modal from '@/components/modal'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
-import type { MarketItem } from '@/services/hooks/market/getMarketItems.hook'
+import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
 
 interface MarketItemPurchaseModalProps {

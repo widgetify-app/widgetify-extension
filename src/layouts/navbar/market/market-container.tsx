@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { FiShoppingBag } from 'react-icons/fi'
 import { useAuth } from '@/context/auth.context'
-import type { MarketItem } from '@/services/hooks/market/getMarketItems.hook'
-import {
-	type MarketItemType,
-	useGetMarketItems,
-} from '@/services/hooks/market/getMarketItems.hook'
+import { useGetMarketItems } from '@/services/hooks/market/getMarketItems.hook'
+import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 
