@@ -2,11 +2,14 @@ import { IoMdClose } from 'react-icons/io'
 
 interface Prop {
 	template: string
+	className?: string
 }
 export function renderBrowserTitlePreview(item: Prop) {
 	const isPersian = /[\u0600-\u06FF]/.test(item.template)
 	return (
-		<div className="flex items-center justify-between w-40 p-1.5 text-xs font-medium border shadow-sm text-content bg-content border-content rounded-t-md max-w-40">
+		<div
+			className={`flex items-center justify-between w-40 p-1.5 text-xs font-medium border shadow-sm text-content bg-content border-content rounded-t-md max-w-40 ${item.className || ''}`}
+		>
 			<div className="flex items-center gap-1">
 				<IoMdClose />
 				{isPersian && (

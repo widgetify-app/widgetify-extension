@@ -2,6 +2,7 @@ import toast from 'react-hot-toast'
 import { FiEye, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
+import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import Tooltip from '@/components/toolTip'
 import { Theme } from '@/context/theme.context'
 import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
@@ -82,7 +83,14 @@ export function MarketItemCard({ item, onPurchase, userCoins }: MarketItemCardPr
 			</div>
 
 			<section className="mb-4 min-h-[7rem] flex flex-col gap-3">
-				{item.previewUrl ? (
+				{item.type === 'BROWSER_TITLE' ? (
+					<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
+						{renderBrowserTitlePreview({
+							template: item.meta?.template || item.name,
+							className: '!w-96 !max-w-96',
+						})}
+					</div>
+				) : item.previewUrl ? (
 					<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
 						<img
 							src={item.previewUrl}
