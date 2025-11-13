@@ -33,6 +33,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	const [isInitialized, setIsInitialized] = useState(false)
 	const { mutateAsync: updateSettings } = useUpdateExtensionSettings()
 	const { isAuthenticated, user } = useAuth()
+
 	useEffect(() => {
 		async function loadSettings() {
 			try {

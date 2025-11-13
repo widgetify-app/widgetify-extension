@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
+import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import { MarketContainer } from './market-container'
@@ -12,6 +13,13 @@ export function MarketButton() {
 		setShowMarket(true)
 		Analytics.event('market_opened')
 	}
+
+	useEffect(() => {
+		const event = listenEvent('openMarketModal', () => handleClick())
+		return () => {
+			event()
+		}
+	}, [])
 
 	return (
 		<>

@@ -1,20 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { MarketQueryParams, MarketResponse } from './market.interface'
+import type { MarketQueryParams, UserInventoryResponse } from './market.interface'
 
-export const useGetMarketItems = (params?: MarketQueryParams) => {
-	return useQuery<MarketResponse>({
-		queryKey: ['getMarketItems', params],
-		queryFn: async () => getMarketItems(params),
+export const useGetUserInventory = (enabled: boolean, params?: MarketQueryParams) => {
+	return useQuery<UserInventoryResponse>({
+		queryKey: ['getUserInventory', params],
+		queryFn: async () => getUserInventory(params),
+		enabled,
 		retry: 2,
 		staleTime: 1000 * 60 * 5, // 5 minutes
 		gcTime: 1000 * 60 * 10, // 10 minutes
 	})
 }
 
-export async function getMarketItems(
+export async function getUserInventory(
 	params?: MarketQueryParams
-): Promise<MarketResponse> {
+): Promise<UserInventoryResponse> {
 	const client = await getMainClient()
 	const searchParams = new URLSearchParams()
 
@@ -22,8 +23,6 @@ export async function getMarketItems(
 	if (params?.limit) searchParams.append('limit', params.limit.toString())
 	if (params?.type) searchParams.append('type', params.type)
 
-	const { data } = await client.get<MarketResponse>(
-		`/market?${searchParams.toString()}`
-	)
+	const { data } = await client.get(`/market/@me/inventory?${searchParams.toString()}`)
 	return data
 }

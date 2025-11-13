@@ -45,7 +45,7 @@ export function ThemeSelector() {
 	]
 
 	return (
-		<SectionPanel title="انتخاب تم" delay={0.2}>
+		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
 			<div className="flex flex-col gap-4">
 				<p className="text-muted">تم ظاهری ویجتی‌فای را انتخاب کنید.</p>
 

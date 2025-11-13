@@ -37,6 +37,7 @@ export interface EventName {
 	weatherSettingsChanged: WeatherSettings
 	closeAllDropdowns: null
 	openProfile: null
+	openMarketModal: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {
