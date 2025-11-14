@@ -67,11 +67,11 @@ export function ThemeSelector({ fetched_themes }: Props) {
 	}
 
 	useEffect(() => {
-		const currentTheme = defaultThemes.find((t) => t.id === theme)
+		const currentTheme = themes.find((t) => t.id === theme)
 		if (currentTheme) {
 			setSelected(currentTheme)
 		}
-	}, [theme])
+	}, [themes])
 
 	useEffect(() => {
 		if (fetched_themes.length) {
