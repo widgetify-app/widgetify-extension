@@ -27,12 +27,13 @@ export function MarketButton() {
 				<button
 					onClick={handleClick}
 					className="flex flex-row-reverse items-center justify-center w-8 h-full px-1 overflow-hidden transition-all duration-200 cursor-pointer bg-content bg-glass rounded-xl hover:bg-primary/10 hover:scale-105 group"
-				>
-					<FiShoppingBag
-						size={18}
-						className="transition-colors duration-200 text-muted group-hover:text-primary"
-					/>
-				</button>
+					style={{
+						backgroundImage:
+							'url(https://widgetify-ir.storage.c2.liara.space/extension/market-button.gif)',
+						backgroundPosition: 'center',
+						backgroundSize: 'cover',
+					}}
+				></button>
 			</Tooltip>
 
 			<Modal
