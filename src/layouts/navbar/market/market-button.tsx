@@ -4,7 +4,7 @@ import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
-import { MarketContainer } from './market-container'
+import { MarketContainer } from '@/layouts/market/market-container'
 
 export function MarketButton() {
 	const [showMarket, setShowMarket] = useState(false)
