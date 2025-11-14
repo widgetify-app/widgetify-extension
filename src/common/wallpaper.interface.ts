@@ -28,6 +28,7 @@ export interface StoredWallpaper {
 
 export interface WallpaperResponse {
 	wallpapers: Wallpaper[]
+	totalPages: number
 }
 
 // New Category interface

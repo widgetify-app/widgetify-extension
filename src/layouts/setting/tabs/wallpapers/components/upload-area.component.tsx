@@ -23,7 +23,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			processFile(file, 'file_selector')
+			processFile(file)
 			e.target.value = ''
 		}
 	}

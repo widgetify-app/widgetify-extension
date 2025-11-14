@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { WallpaperItem } from '../item.wallpaper'
+import { WallpaperItem } from '../tab/gallery/components/wallpaper-item/wallpaper-item'
 
 interface WallpaperGalleryProps {
 	isLoading: boolean

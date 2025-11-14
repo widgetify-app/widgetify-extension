@@ -138,7 +138,7 @@ export function useWallpaper(
 	}
 
 	const toggleRetouch = () => {
-		setIsRetouchEnabled((prev) => !prev)
+		setIsRetouchEnabled(!isRetouchEnabled)
 
 		Analytics.event('wallpaper_retouch_toggled')
 	}

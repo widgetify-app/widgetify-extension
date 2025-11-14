@@ -10,12 +10,13 @@ export interface TabItem {
 }
 
 interface TabManagerProps {
-	tabOwner: 'setting' | 'user' | 'widgets-settings'
+	tabOwner: 'setting' | 'user' | 'widgets-settings' | 'market'
 	tabs: TabItem[]
 	defaultTab?: string
 	selectedTab?: string | null
 	onTabChange?: (tabValue: string) => void
 	direction?: 'rtl' | 'ltr'
+	tabPosition?: 'top' | 'side'
 }
 
 export const TabManager = ({
@@ -25,6 +26,7 @@ export const TabManager = ({
 	onTabChange,
 	direction = 'rtl',
 	tabOwner,
+	tabPosition,
 }: TabManagerProps) => {
 	const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.value || '')
 	const contentRef = useRef<HTMLDivElement>(null)
@@ -32,9 +34,7 @@ export const TabManager = ({
 	useEffect(() => {
 		if (selectedTab) {
 			setActiveTab(selectedTab)
-			Analytics.event(`${tabOwner}_select_tab`, {
-				selected_tab: selectedTab,
-			})
+			Analytics.event(`${tabOwner}_select_tab_${selectedTab}`)
 		}
 	}, [selectedTab])
 
@@ -60,12 +60,19 @@ export const TabManager = ({
 		return isActive ? 'text-primary' : 'text-muted'
 	}
 
+	const headClass =
+		tabPosition === 'top'
+			? 'flex-col gap-1 h-[80vh]'
+			: 'flex-col md:flex-row gap-4 h-[60vh]'
+	const contentClass =
+		tabPosition === 'top'
+			? 'shrink-0 md:overflow-y-auto w-full'
+			: 'md:flex-col md:w-48 shrink-0 md:overflow-y-auto'
 	return (
-		<div
-			dir={direction}
-			className="flex flex-col md:flex-row h-[60vh] overflow-hidden gap-4"
-		>
-			<div className="flex w-full gap-2 p-2 overflow-x-auto rounded-lg md:flex-col md:w-48 shrink-0 md:overflow-y-auto tab-content-container">
+		<div dir={direction} className={`flex ${headClass}  overflow-hidden`}>
+			<div
+				className={`flex w-full gap-2 p-2 overflow-x-auto rounded-lg ${contentClass}`}
+			>
 				{tabs.map(({ label, value, icon, isNew }) => (
 					<button
 						key={value}

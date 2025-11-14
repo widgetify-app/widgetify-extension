@@ -3,7 +3,7 @@ import { FiCheck, FiHeart, FiShoppingBag } from 'react-icons/fi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
-import { useLazyLoad } from './hooks/use-lazy-load'
+import { useLazyLoad } from '../../../../hooks/use-lazy-load'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -38,10 +38,6 @@ function wallpaperItem({
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-blue-100'
 		: 'ring-1 ring-gray-300/50 group-hover:ring-blue-300/70'
-
-	const getSelectionBadgeStyle = () => {
-		return 'bg-primary text-white shadow-lg'
-	}
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -146,14 +142,12 @@ function wallpaperItem({
 						</div>
 
 						{isSelected && (
-							<div
-								className={`absolute top-2 left-2 p-1 rounded-full shadow-sm ${getSelectionBadgeStyle()}`}
-							>
+							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary">
 								<FiCheck size={12} />
 							</div>
 						)}
 
-						{wallpaper.isOwned && (
+						{!isSelected && wallpaper.isOwned && (
 							<div className="absolute flex gap-0.5 px-1 rounded-full shadow-sm text-success bg-black/80 items-center top-2 right-2">
 								<FiShoppingBag size={10} />
 								<span className="!text-[10px] font-normal">باز شده</span>

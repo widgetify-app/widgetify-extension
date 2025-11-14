@@ -8,6 +8,7 @@ import { SettingModal } from '../setting/setting-modal'
 import { NavButton } from './components/navButton'
 import { SettingsDropdown } from './components/settingsDropdown'
 import { FriendsList } from './friends-list/friends'
+import { MarketButton } from './market/market-button'
 import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
 
@@ -89,14 +90,17 @@ export function NavbarLayout(): JSX.Element {
 		}
 	}, [handleOpenSettings, loadConfig])
 
-	const w = isAuthenticated ? 'w-48 md:w-[13.5rem]' : 'w-42 md:w-[11.5rem]'
+	const w = isAuthenticated ? 'w-48 md:w-[11.2rem]' : 'w-42 md:w-[9.2rem]'
 	return (
 		<>
 			<nav
-				className={`mt-0.5 px-2 md:px-4 md:mt-1 mr-auto h-8 transition-all duration-100 ${w}`}
+				className={`mt-0.5 px-2 gap-x-1 md:px-4 md:mt-1 w-full  transition-all duration-100  flex justify-end`}
 				data-tour="navbar"
 			>
-				<div className="relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl">
+				<MarketButton />
+				<div
+					className={`relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl ${w}`}
+				>
 					{logoData.logoUrl && (
 						<div className="flex items-center justify-center border-r border-content min-w-8 max-w-8">
 							<a
