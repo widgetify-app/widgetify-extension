@@ -15,7 +15,7 @@ interface BrowserTitle {
 const defaultBrowserTitles: BrowserTitle[] = [
 	{
 		name: 'پیشفرض',
-		template: '💫 New Tab',
+		template: '✨ New Tab',
 	},
 ]
 
