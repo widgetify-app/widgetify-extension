@@ -16,8 +16,12 @@ export function ItemPrice({
 				alt="ویج‌کوین"
 				className="w-4 h-4"
 			/>
-			<span className="text-content">{price.toLocaleString('fa-IR')}</span>
-			{currency && <span className="text-[10px] text-muted">{currency}</span>}
+			<span className="text-content">
+				{price === 0 ? 'رایگان' : price.toLocaleString('fa-IR')}
+			</span>
+			{currency && price !== 0 && (
+				<span className="text-[10px] text-muted">{currency}</span>
+			)}
 		</div>
 	)
 }

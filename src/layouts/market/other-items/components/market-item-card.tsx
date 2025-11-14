@@ -68,7 +68,9 @@ export function MarketItemCard({
 			<div className="flex items-center justify-between">
 				<div className="flex flex-row gap-0.5 items-center">
 					<span className="text-lg">{getItemTypeEmoji(item.type)}</span>
-					<h3 className="font-medium text-content">{item.name}</h3>
+					<h3 className="font-medium text-content truncate max-w-[5rem]">
+						{item.name}
+					</h3>
 				</div>
 				<div>
 					<span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
