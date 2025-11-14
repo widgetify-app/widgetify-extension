@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import { FiEye, FiShoppingCart } from 'react-icons/fi'
+import { FiCheck, FiEye, FiShoppingBag, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
@@ -12,6 +12,7 @@ interface MarketItemCardProps {
 	item: MarketItem
 	onPurchase: () => void
 	isAuthenticated: boolean
+	isOwned?: boolean
 }
 const SUPPORTED_TYPES: MarketItemType[] = ['BROWSER_TITLE', 'THEME']
 const getItemTypeLabel = (type: string) => {
@@ -79,6 +80,7 @@ export function MarketItemCard({
 			<section className="mb-4 min-h-[7rem] flex flex-col gap-3 flex-1">
 				{item.type === 'BROWSER_TITLE' ? (
 					<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
+						{item.isOwned ? <IsOwnedBadge /> : null}
 						{renderBrowserTitlePreview({
 							template: item.meta?.template || item.name,
 							className: '!w-96 !max-w-96',
@@ -104,9 +106,11 @@ export function MarketItemCard({
 								<FiEye size={14} />
 							</button>
 						</Tooltip>
+						{item.isOwned ? <IsOwnedBadge /> : null}
 					</div>
 				) : (
-					<div className="flex items-center justify-center flex-1 border border-dashed bg-base-100 rounded-xl border-base-300">
+					<div className="relative flex items-center justify-center flex-1 border border-dashed bg-base-100 rounded-xl border-base-300">
+						{item.isOwned ? <IsOwnedBadge /> : null}
 						<span className="text-2xl opacity-50">
 							{getItemTypeEmoji(item.type)}
 						</span>
@@ -125,17 +129,22 @@ export function MarketItemCard({
 				<Button
 					size="sm"
 					onClick={onPurchaseButtonClick}
-					// disabled={!canAfford}
-					className={`${
-						canAfford
-							? 'bg-primary hover:bg-primary/90 text-white'
-							: 'bg-base-300 text-muted cursor-not-allowed'
-					} rounded-xl`}
+					disabled={item.isOwned}
+					className={`disabled:bg-base-300 disabled:text-muted disabled:opacity-80 disabled:cursor-not-allowed bg-primary hover:bg-primary/90 text-white rounded-xl`}
 				>
 					<FiShoppingCart size={16} className="ml-1" />
 					{canAfford ? 'خرید' : 'ناکافی'}
 				</Button>
 			</div>
+		</div>
+	)
+}
+
+function IsOwnedBadge() {
+	return (
+		<div className="absolute z-10 flex gap-0.5 px-1 rounded-full shadow-sm text-success bg-black/80 items-center top-2 right-2">
+			<FiShoppingBag size={10} />
+			<span className="!text-[10px] font-normal">باز شده</span>
 		</div>
 	)
 }

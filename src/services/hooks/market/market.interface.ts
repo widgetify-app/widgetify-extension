@@ -9,6 +9,7 @@ export interface MarketItem {
 	meta: Record<string, any>
 	previewUrl: string | null
 	itemValue?: string
+	isOwned: boolean
 }
 
 export interface MarketResponse {
