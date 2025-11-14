@@ -15,7 +15,7 @@ export function MarketContainer() {
 	}
 
 	return (
-		<div className="space-y-4 h-[70vh] px-2">
+		<div className="space-y-4 h-[70vh] max-h-[70vh] min-h-[70vh] px-2">
 			<div className="border-gray-200 dark:border-gray-700">
 				<ul className="flex flex-wrap text-sm font-medium text-center">
 					<li className="mr-2">

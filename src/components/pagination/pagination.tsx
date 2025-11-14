@@ -28,7 +28,7 @@ export function Pagination({
 				onClick={onPrevPage}
 				disabled={currentPage === 1 || isLoading}
 				size="xs"
-				className="btn-soft"
+				className="btn-soft rounded-2xl"
 				isPrimary={currentPage !== 1}
 			>
 				<FiChevronRight
@@ -44,7 +44,7 @@ export function Pagination({
 			<Button
 				onClick={onNextPage}
 				disabled={currentPage === totalPages || isLoading}
-				className="btn-soft"
+				className="btn-soft rounded-2xl"
 				isPrimary={true}
 				size="xs"
 			>

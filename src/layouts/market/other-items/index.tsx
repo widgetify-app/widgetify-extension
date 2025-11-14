@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { FiShoppingBag } from 'react-icons/fi'
+import Analytics from '@/analytics'
+import { Pagination } from '@/components/pagination'
 import { useAuth } from '@/context/auth.context'
 import { useGetMarketItems } from '@/services/hooks/market/getMarketItems.hook'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
@@ -8,6 +10,7 @@ import { MarketItemPurchaseModal } from './components/market-item-purchase-modal
 
 export function MarketOtherItems() {
 	const { user, isAuthenticated } = useAuth()
+	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
 
@@ -16,7 +19,8 @@ export function MarketOtherItems() {
 		isLoading,
 		error,
 	} = useGetMarketItems(true, {
-		limit: 20,
+		limit: 12,
+		page: currentPage,
 	})
 
 	const filteredItems = marketData?.items || []
@@ -31,6 +35,16 @@ export function MarketOtherItems() {
 		setSelectedItem(null)
 	}
 
+	const onNextPage = () => {
+		setCurrentPage(currentPage + 1)
+		Analytics.event('market_other_items_next_page')
+	}
+
+	const onPrevPage = () => {
+		setCurrentPage(currentPage - 1)
+		Analytics.event('market_other_items_prev_page')
+	}
+
 	if (error) {
 		return (
 			<div className="flex flex-col items-center justify-center h-64 text-center">
@@ -43,26 +57,22 @@ export function MarketOtherItems() {
 		)
 	}
 
-	if (isLoading) {
-		return (
-			<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{Array.from({ length: 6 }).map((_, index) => (
-					<div
-						key={index}
-						className="p-4 border rounded-xl border-base-300 animate-pulse"
-					>
-						<div className="h-4 mb-3 rounded bg-base-300"></div>
-						<div className="h-3 mb-2 rounded bg-base-300"></div>
-						<div className="h-8 rounded bg-base-300"></div>
-					</div>
-				))}
-			</div>
-		)
-	}
-
 	return (
 		<>
-			{filteredItems.length > 0 ? (
+			{isLoading ? (
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{Array.from({ length: 6 }).map((_, index) => (
+						<div
+							key={index}
+							className="p-4 border rounded-xl border-base-300 animate-pulse"
+						>
+							<div className="h-4 mb-3 rounded bg-base-300"></div>
+							<div className="h-3 mb-2 rounded bg-base-300"></div>
+							<div className="h-8 rounded bg-base-300"></div>
+						</div>
+					))}
+				</div>
+			) : filteredItems.length > 0 ? (
 				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 					{filteredItems.map((item) => (
 						<MarketItemCard
@@ -83,7 +93,13 @@ export function MarketOtherItems() {
 				</div>
 			)}
 
-			{/* Purchase Modal */}
+			<Pagination
+				currentPage={currentPage}
+				totalPages={marketData?.totalPages || 1}
+				onNextPage={onNextPage}
+				onPrevPage={onPrevPage}
+				isLoading={isLoading}
+			/>
 			<MarketItemPurchaseModal
 				isOpen={showPurchaseModal}
 				onClose={() => setShowPurchaseModal(false)}
