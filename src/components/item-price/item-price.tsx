@@ -17,7 +17,7 @@ export function ItemPrice({
 				className="w-4 h-4"
 			/>
 			<span className="text-content">{price.toLocaleString('fa-IR')}</span>
-			{currency && <span className="text-xs text-muted">{currency}</span>}
+			{currency && <span className="text-[10px] text-muted">{currency}</span>}
 		</div>
 	)
 }
