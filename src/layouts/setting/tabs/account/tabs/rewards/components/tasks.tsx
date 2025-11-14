@@ -1,3 +1,5 @@
+import { BiLinkExternal } from 'react-icons/bi'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiBookmark, FiCheck, FiStar, FiTarget, FiUser, FiUserPlus } from 'react-icons/fi'
 import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
@@ -69,6 +71,21 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 											>
 												{taskItem.task}
 											</p>
+											{taskItem.button && !taskItem.isDone && (
+												<div className="mt-2">
+													{taskItem.button.type === 'link' && (
+														<a
+															href={taskItem.button.url}
+															target="_blank"
+															rel="noopener noreferrer"
+															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-primary/10 text-primary hover:bg-primary/20"
+														>
+															<BiLinkExternal className="w-3.5 h-3.5 ml-2" />
+															{taskItem.button.label}
+														</a>
+													)}
+												</div>
+											)}
 										</div>
 									</div>
 									<div
