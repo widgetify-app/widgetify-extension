@@ -1,4 +1,4 @@
-export type MarketItemType = 'BROWSER_TITLE' | 'FONT' | 'THEME' | string
+export type MarketItemType = 'BROWSER_TITLE' | 'FONT' | 'THEME' | 'wallpapers' | string
 
 export interface MarketItem {
 	id: string

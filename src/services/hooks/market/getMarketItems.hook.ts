@@ -2,13 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { MarketQueryParams, MarketResponse } from './market.interface'
 
-export const useGetMarketItems = (params?: MarketQueryParams) => {
+export const useGetMarketItems = (enabled: boolean, params?: MarketQueryParams) => {
 	return useQuery<MarketResponse>({
 		queryKey: ['getMarketItems', params],
 		queryFn: async () => getMarketItems(params),
 		retry: 2,
 		staleTime: 1000 * 60 * 5, // 5 minutes
 		gcTime: 1000 * 60 * 10, // 10 minutes
+		enabled,
 	})
 }
 
