@@ -39,6 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			removeFromStorage('profile'),
 			removeFromStorage('theme'),
 			removeFromStorage('wallpaper'),
+			removeFromStorage('browserTitle'),
 		])
 
 		setToken(null)
