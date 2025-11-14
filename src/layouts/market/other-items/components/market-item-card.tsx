@@ -61,7 +61,7 @@ export function MarketItemCard({
 	}
 
 	return (
-		<div className="relative p-2 transition-all duration-200 border rounded-xl border-base-300 bg-content hover:border-primary/30 hover:shadow-md group">
+		<div className="relative p-2 transition-all duration-200 border rounded-xl border-base-300 bg-content hover:border-primary/30 hover:shadow-md group min-h-[14rem] flex flex-col">
 			<div className="flex items-center justify-between">
 				<div className="flex flex-row gap-0.5 items-center">
 					<span className="text-lg">{getItemTypeEmoji(item.type)}</span>
@@ -74,7 +74,7 @@ export function MarketItemCard({
 				</div>
 			</div>
 
-			<section className="mb-4 min-h-[7rem] flex flex-col gap-3">
+			<section className="mb-4 min-h-[7rem] flex flex-col gap-3 flex-1">
 				{item.type === 'BROWSER_TITLE' ? (
 					<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
 						{renderBrowserTitlePreview({
@@ -118,7 +118,7 @@ export function MarketItemCard({
 				)}
 			</section>
 
-			<div className="flex items-center justify-between">
+			<div className="flex items-center justify-between mt-auto">
 				<ItemPrice price={item.price} />
 				<Button
 					size="sm"
