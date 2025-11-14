@@ -44,6 +44,7 @@ const tabs: TabItem[] = [
 		value: 'appearance',
 		icon: <VscColorMode size={20} />,
 		element: <AppearanceSettingTab />,
+		isNew: true,
 	},
 	{
 		label: 'تصویر زمینه ها',

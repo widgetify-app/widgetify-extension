@@ -18,6 +18,7 @@ export function MarketOtherItems() {
 		data: marketData,
 		isLoading,
 		error,
+		refetch,
 	} = useGetMarketItems(true, {
 		limit: 12,
 		page: currentPage,
@@ -34,6 +35,7 @@ export function MarketOtherItems() {
 		setShowPurchaseModal(false)
 		setSelectedItem(null)
 		refetchUser()
+		refetch()
 	}
 
 	const onNextPage = () => {

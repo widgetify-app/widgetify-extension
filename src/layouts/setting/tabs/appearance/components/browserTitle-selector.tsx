@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
@@ -31,6 +31,7 @@ export function BrowserTitleSelector({ fetched_browserTitles }: Prop) {
 		document.title = item.template
 		setSelected(item)
 		Analytics.event('browser_title_selected')
+		setToStorage('browserTitle', item.template)
 	}
 
 	useEffect(() => {
@@ -46,12 +47,23 @@ export function BrowserTitleSelector({ fetched_browserTitles }: Prop) {
 	}, [])
 
 	useEffect(() => {
-		if (fetched_browserTitles.length) {
+		const updateAndCheck = async () => {
 			const mapped = fetched_browserTitles.map((item) => ({
 				name: item.name,
 				template: item.meta.template,
 			}))
-			setBrowserTitles([...defaultBrowserTitles, ...mapped])
+			const updated = [...defaultBrowserTitles, ...mapped]
+			setBrowserTitles(updated)
+
+			const value = await getFromStorage('browserTitle')
+
+			const selectedBrowserTitle = updated.find((item) => item.template === value)
+			if (selectedBrowserTitle) {
+				setSelected(selectedBrowserTitle)
+			}
+		}
+		if (fetched_browserTitles?.length) {
+			updateAndCheck()
 		}
 	}, [fetched_browserTitles])
 
