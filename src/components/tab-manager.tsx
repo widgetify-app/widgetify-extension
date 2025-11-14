@@ -10,7 +10,7 @@ export interface TabItem {
 }
 
 interface TabManagerProps {
-	tabOwner: 'setting' | 'user' | 'widgets-settings'
+	tabOwner: 'setting' | 'user' | 'widgets-settings' | 'market'
 	tabs: TabItem[]
 	defaultTab?: string
 	selectedTab?: string | null
@@ -34,9 +34,7 @@ export const TabManager = ({
 	useEffect(() => {
 		if (selectedTab) {
 			setActiveTab(selectedTab)
-			Analytics.event(`${tabOwner}_select_tab`, {
-				selected_tab: selectedTab,
-			})
+			Analytics.event(`${tabOwner}_select_tab_${selectedTab}`)
 		}
 	}, [selectedTab])
 

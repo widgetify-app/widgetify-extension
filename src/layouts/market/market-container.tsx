@@ -22,7 +22,7 @@ export function MarketContainer() {
 
 	return (
 		<TabManager
-			tabOwner="user"
+			tabOwner="market"
 			tabs={tabs}
 			defaultTab="other"
 			direction="rtl"
