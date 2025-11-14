@@ -7,9 +7,6 @@ export const useGetUserInventory = (enabled: boolean, params?: MarketQueryParams
 		queryKey: ['getUserInventory', params],
 		queryFn: async () => getUserInventory(params),
 		enabled,
-		retry: 2,
-		staleTime: 1000 * 60 * 5, // 5 minutes
-		gcTime: 1000 * 60 * 10, // 10 minutes
 	})
 }
 
