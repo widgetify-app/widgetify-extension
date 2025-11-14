@@ -31,7 +31,7 @@ export function MarketContainer() {
 							onClick={() => setActiveTab('wallpapers')}
 							className={`inline-block cursor-pointer transition-all duration-200 p-2 border-b-2 rounded-t-lg ${getTabStyle(activeTab === 'wallpapers')}`}
 						>
-							والپیپرها
+							تصویر زمینه‌ها
 						</button>
 					</li>
 				</ul>
