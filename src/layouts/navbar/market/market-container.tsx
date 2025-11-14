@@ -7,7 +7,7 @@ import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 
 export function MarketContainer() {
-	const { user } = useAuth()
+	const { user, isAuthenticated } = useAuth()
 	const [selectedType, _setSelectedType] = useState<MarketItemType | ''>('')
 	const [searchQuery, _setSearchQuery] = useState('')
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
@@ -92,7 +92,7 @@ export function MarketContainer() {
 							key={item.id}
 							item={item}
 							onPurchase={() => handlePurchaseClick(item)}
-							userCoins={user?.coins || 0}
+							isAuthenticated={isAuthenticated}
 						/>
 					))}
 				</div>

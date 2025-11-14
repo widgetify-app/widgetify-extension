@@ -71,6 +71,7 @@ const errorTranslations: Record<string, string> = {
 	INVALID_FILE_TYPE: 'نوع فایل نامعتبر است',
 	NOT_ENOUGH_COINS: 'ویج‌کوین‌هات کافی نیست 😕',
 	INVALID_REFERRAL_CODE: 'کد دعوت نامعتبر است',
+	ITEM_ALREADY_EXISTS: 'این رو قبلاً با ویج‌کوین گرفتی — نیازی به خرید دوباره نیست.',
 }
 
 const validationTranslations: Record<string, string> = {

@@ -10,7 +10,7 @@ import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.
 interface MarketItemCardProps {
 	item: MarketItem
 	onPurchase: () => void
-	userCoins: number
+	isAuthenticated: boolean
 }
 const SUPPORTED_TYPES: MarketItemType[] = ['BROWSER_TITLE', 'THEME']
 const getItemTypeLabel = (type: string) => {
@@ -39,8 +39,12 @@ const getItemTypeEmoji = (type: string) => {
 	}
 }
 
-export function MarketItemCard({ item, onPurchase, userCoins }: MarketItemCardProps) {
-	const canAfford = userCoins >= item.price
+export function MarketItemCard({
+	item,
+	onPurchase,
+	isAuthenticated,
+}: MarketItemCardProps) {
+	const canAfford = isAuthenticated
 
 	const handlePreviewClick = () => {
 		if (item.previewUrl) {
@@ -131,7 +135,7 @@ export function MarketItemCard({ item, onPurchase, userCoins }: MarketItemCardPr
 				<Button
 					size="sm"
 					onClick={onPurchaseButtonClick}
-					disabled={!canAfford}
+					// disabled={!canAfford}
 					className={`${
 						canAfford
 							? 'bg-primary hover:bg-primary/90 text-white'
