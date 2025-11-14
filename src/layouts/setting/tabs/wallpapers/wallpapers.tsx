@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { GalleryTab } from './tab/gallery.tab'
+import { GalleryTab } from './tab/gallery/gallery.tab'
 import { GradientTab } from './tab/gradient.tab'
 
 export function WallpaperSetting() {

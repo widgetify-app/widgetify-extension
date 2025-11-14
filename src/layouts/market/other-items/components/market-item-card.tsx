@@ -2,6 +2,7 @@ import toast from 'react-hot-toast'
 import { FiEye, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
+import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
 import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import Tooltip from '@/components/toolTip'
 import { Theme } from '@/context/theme.context'
@@ -23,19 +24,6 @@ const getItemTypeLabel = (type: string) => {
 			return 'تم'
 		default:
 			return type
-	}
-}
-
-const getItemTypeEmoji = (type: string) => {
-	switch (type) {
-		case 'BROWSER_TITLE':
-			return '🌐'
-		case 'FONT':
-			return '🔤'
-		case 'THEME':
-			return '🎨'
-		default:
-			return '📦'
 	}
 }
 

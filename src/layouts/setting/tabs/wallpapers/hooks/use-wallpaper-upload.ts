@@ -8,7 +8,7 @@ interface UseWallpaperUploadProps {
 }
 
 export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProps) {
-	const processFile = (file: File, uploadMethod: string) => {
+	const processFile = (file: File) => {
 		const isImage = file.type.startsWith('image/')
 		const isVideo = file.type.startsWith('video/')
 
@@ -37,12 +37,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 			onWallpaperChange(newCustomWallpaper)
 
-			Analytics.event('custom_wallpaper_selected', {
-				file_type: file.type,
-				file_size: file.size,
-				media_type: isImage ? 'image' : 'video',
-				method: uploadMethod,
-			})
+			Analytics.event('custom_wallpaper_selected')
 		}
 
 		reader.readAsDataURL(file)

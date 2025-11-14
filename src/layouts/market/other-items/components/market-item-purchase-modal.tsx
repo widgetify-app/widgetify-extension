@@ -3,6 +3,8 @@ import { FiCheck, FiX } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
+import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
+import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import Modal from '@/components/modal'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
@@ -60,19 +62,32 @@ export function MarketItemPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="p-4 border rounded-xl border-base-300 bg-content/50">
+				<div className="px-2 py-1 border rounded-xl border-base-300 bg-content/50">
 					<h3 className="text-lg font-semibold text-content">{item.name}</h3>
-					<p className="mt-2 text-sm text-muted">{item.description}</p>
+					<p className="mt-1 mb-1 text-xs text-muted">{item.description}</p>
 
 					{/* Item preview */}
-					{item.previewUrl && (
-						<div className="p-2 mt-3 border bg-base-100 rounded-xl border-base-200">
+					{item.type === 'BROWSER_TITLE' ? (
+						<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
+							{renderBrowserTitlePreview({
+								template: item.meta?.template || item.name,
+								className: '!w-96 !max-w-96',
+							})}
+						</div>
+					) : item.previewUrl ? (
+						<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
 							<img
 								src={item.previewUrl}
-								alt={'پیش‌نمایش آیتم'}
-								className="object-contain w-full rounded-lg max-h-40"
+								alt={'تصویر پیش‌نمایش'}
+								className="object-contain max-w-full rounded-lg max-h-20 min-h-20"
 								loading="lazy"
 							/>
+						</div>
+					) : (
+						<div className="flex items-center justify-center flex-1 border border-dashed bg-base-100 rounded-xl border-base-300">
+							<span className="text-2xl opacity-50">
+								{getItemTypeEmoji(item.type)}
+							</span>
 						</div>
 					)}
 				</div>
