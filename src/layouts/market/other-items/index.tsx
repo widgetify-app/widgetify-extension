@@ -9,7 +9,7 @@ import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 
 export function MarketOtherItems() {
-	const { user, isAuthenticated } = useAuth()
+	const { user, isAuthenticated, refetchUser } = useAuth()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
@@ -33,6 +33,7 @@ export function MarketOtherItems() {
 	const handlePurchaseSuccess = () => {
 		setShowPurchaseModal(false)
 		setSelectedItem(null)
+		refetchUser()
 	}
 
 	const onNextPage = () => {

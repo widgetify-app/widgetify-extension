@@ -9,6 +9,7 @@ import Modal from '@/components/modal'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
+import { translateError } from '@/utils/translate-error'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
@@ -44,7 +45,7 @@ export function MarketItemPurchaseModal({
 					onPurchaseSuccess()
 				},
 				onError: (error) => {
-					toast.error(error.message || 'خطا در خرید آیتم')
+					toast.error((translateError(error) as string) || 'خطا در خرید آیتم')
 					Analytics.event('market_item_purchase_failed')
 				},
 			}
