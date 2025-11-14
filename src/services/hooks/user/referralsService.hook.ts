@@ -18,6 +18,11 @@ export interface Task {
 	reward_coin: string
 	isDone: boolean
 	icon: string
+	button?: {
+		label: string
+		type: 'link'
+		url: string
+	}
 }
 
 export interface ReferralsResponse extends UserReferrals {
