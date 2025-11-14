@@ -40,12 +40,20 @@ export function MarketItemPurchaseModal({
 			{ itemId: item.id },
 			{
 				onSuccess: (_response) => {
-					toast.success(`${item.name} با موفقیت خریداری شد! 🎉`)
+					toast.success(`${item.name} با موفقیت خریداری شد! 🎉`, {
+						duration: 5000,
+						style: { maxWidth: '400px', fontFamily: 'inherit' },
+						className: '!bg-success !text-success-content !font-bold',
+					})
 					Analytics.event('market_item_purchased')
 					onPurchaseSuccess()
 				},
 				onError: (error) => {
-					toast.error((translateError(error) as string) || 'خطا در خرید آیتم')
+					toast.error((translateError(error) as string) || 'خطا در خرید آیتم', {
+						duration: 8000,
+						style: { maxWidth: '400px', fontFamily: 'inherit' },
+						className: '!bg-error !text-error-content !font-bold',
+					})
 					Analytics.event('market_item_purchase_failed')
 				},
 			}

@@ -52,7 +52,9 @@ export function MarketItemCard({
 			return toast.error(
 				'این مورد نیاز به به‌روزرسانی افزونه دارد! لطفا افزونه خود را به‌روزرسانی کنید.',
 				{
-					className: 'font-bold',
+					duration: 8000,
+					style: { maxWidth: '400px', fontFamily: 'inherit' },
+					className: '!bg-error !text-error-content !font-bold',
 				}
 			)
 		}
