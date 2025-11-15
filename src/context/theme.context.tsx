@@ -42,12 +42,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 
-		const event = listenEvent('themeChanged', (newTheme: Theme) => {
+		const event = listenEvent('theme_change', (newTheme: Theme) => {
 			applyThemeChange(newTheme)
+		})
+
+		const eventForTitle = listenEvent('browser_title_change', (newTitle) => {
+			document.title = newTitle.template
+			setToStorage('browserTitle', newTitle)
 		})
 
 		return () => {
 			event()
+			eventForTitle()
 		}
 	}, [])
 

@@ -294,7 +294,7 @@ async function getAll() {
 		getFromStorage('browserTitle'),
 	])
 	if (theme && theme !== themeStore) {
-		callEvent('themeChanged', theme)
+		callEvent('theme_change', theme)
 	}
 
 	if (browserTitleStore) {
