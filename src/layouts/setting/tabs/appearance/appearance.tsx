@@ -14,7 +14,10 @@ export function AppearanceSettingTab() {
 
 	return (
 		<div className="w-full max-w-xl mx-auto" dir="rtl">
-			<BrowserTitleSelector fetched_browserTitles={data?.browser_titles || []} />
+			<BrowserTitleSelector
+				fetched_browserTitles={data?.browser_titles || []}
+				isAuthenticated={isAuthenticated}
+			/>
 			<ThemeSelector fetched_themes={data?.themes || []} />
 			<ContentAlignmentSettings
 				contentAlignment={contentAlignment}

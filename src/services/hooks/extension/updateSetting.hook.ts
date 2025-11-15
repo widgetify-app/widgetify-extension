@@ -37,3 +37,12 @@ export function useChangeTheme() {
 		},
 	})
 }
+
+export function useChangeBrowserTitle() {
+	return useMutation<any, unknown, { browserTitleId: string }>({
+		mutationFn: async ({ browserTitleId }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/browser-title', { browserTitleId })
+		},
+	})
+}
