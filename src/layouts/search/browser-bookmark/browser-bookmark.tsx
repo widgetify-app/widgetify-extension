@@ -98,11 +98,9 @@ function BookmarkSwiper({
 export function BrowserBookmark() {
 	const { browserBookmarksEnabled } = useGeneralSetting()
 
-	const { data, isError } = useGetTrends({
+	const { data } = useGetTrends({
 		enabled: true,
 	})
-
-	const [recommendedSites, setRecommendedSites] = useState<RecommendedSite[]>([])
 	const [fetchedBookmarks, setFetchedBookmarks] = useState<FetchedBrowserBookmark[]>([])
 	const [browserBookmarks, setBrowserBookmarks] = useState<BookmarkItem[]>([])
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
@@ -163,31 +161,17 @@ export function BrowserBookmark() {
 	}, [fetchedBookmarks, currentFolderId])
 
 	useEffect(() => {
-		if (data) {
-			if (data.recommendedSites?.length) {
-				setRecommendedSites(data.recommendedSites)
-				setToStorage('recommended_sites', data.recommendedSites)
-			}
+		if (data?.recommendedSites?.length) {
+			setToStorage('recommended_sites', data.recommendedSites)
 		}
-
-		if (isError) {
-			const fetchDataFromStorage = async () => {
-				const storedSites = await getFromStorage('recommended_sites')
-				if (storedSites?.length) {
-					setRecommendedSites(storedSites)
-				}
-			}
-
-			fetchDataFromStorage()
-		}
-	}, [data, isError])
+	}, [data])
 
 	return (
 		<div
 			className={`flex flex-row w-full gap-2 px-2  py-1 ${browserBookmarksEnabled ? 'justify-between' : 'justify-end'}`}
 		>
 			<BookmarkSwiper
-				items={recommendedSites}
+				items={data?.recommendedSites || []}
 				spaceBetween={1}
 				grabCursor={true}
 				type="recommended"
