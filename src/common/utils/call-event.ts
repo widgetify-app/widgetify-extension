@@ -23,8 +23,13 @@ export interface EventName {
 		petName?: string
 		petType: PetTypes
 	}
-	themeChanged: Theme
+	theme_change: Theme
 	auth_logout: null
+	browser_title_change: {
+		id: string
+		name: string
+		template: string
+	}
 
 	// setting keys
 	wigiPadDateSettingsChanged: WigiPadDateSetting

@@ -15,7 +15,7 @@ interface MarketItemPurchaseModalProps {
 	isOpen: boolean
 	onClose: () => void
 	item: MarketItem | null
-	onPurchaseSuccess: () => void
+	onPurchaseSuccess: (item: MarketItem) => void
 	userCoins: number
 }
 
@@ -46,7 +46,7 @@ export function MarketItemPurchaseModal({
 						className: '!bg-success !text-success-content !font-bold',
 					})
 					Analytics.event('market_item_purchased')
-					onPurchaseSuccess()
+					onPurchaseSuccess(item)
 				},
 				onError: (error) => {
 					toast.error((translateError(error) as string) || 'خطا در خرید آیتم', {

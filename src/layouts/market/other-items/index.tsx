@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
 import { Pagination } from '@/components/pagination'
 import { useAuth } from '@/context/auth.context'
+import type { Theme } from '@/context/theme.context'
 import { useGetMarketItems } from '@/services/hooks/market/getMarketItems.hook'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
@@ -31,11 +33,22 @@ export function MarketOtherItems() {
 		setShowPurchaseModal(true)
 	}
 
-	const handlePurchaseSuccess = () => {
+	const handlePurchaseSuccess = (item: MarketItem) => {
 		setShowPurchaseModal(false)
 		setSelectedItem(null)
 		refetchUser()
 		refetch()
+
+		if (item.type === 'BROWSER_TITLE') {
+			callEvent('browser_title_change', {
+				id: item.id,
+				name: item.name,
+				template: item.itemValue as string,
+			})
+		}
+		if (item.type === 'THEME') {
+			callEvent('theme_change', item.itemValue as Theme)
+		}
 	}
 
 	const onNextPage = () => {
