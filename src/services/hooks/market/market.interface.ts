@@ -23,10 +23,19 @@ export interface MarketQueryParams {
 	type?: MarketItemType
 }
 
+export interface UserInventoryItem {
+	id: string
+	type: MarketItemType
+	name?: string
+	description?: string
+	value: string
+	previewUrl?: string
+}
+
 export interface UserInventoryResponse {
-	fonts: MarketItem[]
-	browser_titles: MarketItem[]
-	themes: MarketItem[]
+	fonts: UserInventoryItem[]
+	browser_titles: UserInventoryItem[]
+	themes: UserInventoryItem[]
 	pagination: {
 		totalPages: number
 		total: number

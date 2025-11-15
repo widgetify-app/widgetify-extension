@@ -15,6 +15,7 @@ import {
 	type FetchedBookmark,
 	getBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
+import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 
 enum SyncState {
 	Syncing = 0,
@@ -258,7 +259,7 @@ async function getAll() {
 		todos: FetchedTodo[]
 		wallpaper: Wallpaper
 		theme: Theme | null
-		browserTitle: string
+		browserTitle: UserInventoryItem
 	}>('/extension/@me/sync')
 
 	const { bookmarks, todos, wallpaper, theme, browserTitle } = response.data
@@ -295,9 +296,27 @@ async function getAll() {
 	if (theme && theme !== themeStore) {
 		callEvent('themeChanged', theme)
 	}
-	if (browserTitle && browserTitle !== browserTitleStore) {
-		document.title = browserTitle
-		setToStorage('browserTitle', browserTitle)
+
+	if (browserTitleStore) {
+		if (
+			browserTitleStore.id !== browserTitle.id ||
+			browserTitleStore.template !== browserTitle.value ||
+			browserTitleStore.name !== browserTitle.name
+		) {
+			document.title = browserTitle.value
+			setToStorage('browserTitle', {
+				id: browserTitle.id,
+				name: browserTitle.name || 'بدون نام',
+				template: browserTitle.value,
+			})
+		}
+	} else {
+		document.title = browserTitle.value
+		setToStorage('browserTitle', {
+			id: browserTitle.id,
+			name: browserTitle.name || 'بدون نام',
+			template: browserTitle.value,
+		})
 	}
 }
 

@@ -72,6 +72,10 @@ export function HomePage() {
 				getFromStorage('wallpaper'),
 				getFromStorage('browserTitle'),
 			])
+			if (browserTitle) {
+				document.title = browserTitle.template
+			}
+
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			} else {
@@ -101,10 +105,6 @@ export function HomePage() {
 					changeWallpaper(defaultGradient)
 					setToStorage('wallpaper', defaultGradient)
 				}
-			}
-
-			if (browserTitle) {
-				document.title = browserTitle
 			}
 		}
 

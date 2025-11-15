@@ -1,4 +1,6 @@
+import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -6,41 +8,68 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import { SectionPanel } from '@/components/section-panel'
-import type { UserInventoryResponse } from '@/services/hooks/market/market.interface'
+import { useAuth } from '@/context/auth.context'
+import { safeAwait } from '@/services/api'
+import { useChangeBrowserTitle } from '@/services/hooks/extension/updateSetting.hook'
+import type {
+	UserInventoryItem,
+	UserInventoryResponse,
+} from '@/services/hooks/market/market.interface'
+import { translateError } from '@/utils/translate-error'
 
 interface BrowserTitle {
+	id: string
 	name: string
 	template: string
 }
 const defaultBrowserTitles: BrowserTitle[] = [
 	{
+		id: 'default',
 		name: 'پیشفرض',
 		template: '✨ New Tab',
 	},
 ]
 
 interface Prop {
-	fetched_browserTitles: UserInventoryResponse['browser_titles']
+	fetched_browserTitles: UserInventoryItem[]
+	isAuthenticated: boolean
 }
-export function BrowserTitleSelector({ fetched_browserTitles }: Prop) {
+export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }: Prop) {
 	const [browserTitles, setBrowserTitles] =
 		useState<BrowserTitle[]>(defaultBrowserTitles)
 	const [selected, setSelected] = useState<BrowserTitle | null>(null)
 
-	function onClick(item: BrowserTitle) {
-		document.title = item.template
+	const { mutateAsync } = useChangeBrowserTitle()
+
+	async function onClick(item: BrowserTitle) {
 		setSelected(item)
 		Analytics.event('browser_title_selected')
-		setToStorage('browserTitle', item.template)
+
+		if (isAuthenticated) {
+			const [error] = await safeAwait<AxiosError, any>(
+				mutateAsync({ browserTitleId: item.id })
+			)
+			if (error) {
+				toast.error(translateError(error) as string, {
+					duration: 8000,
+					style: { maxWidth: '400px', fontFamily: 'inherit' },
+					className: '!bg-error !text-error-content !font-bold',
+				})
+				return
+			}
+			setToStorage('browserTitle', item)
+		} else {
+			await setToStorage('browserTitle', item)
+		}
+
+		document.title = item.template
 	}
 
 	useEffect(() => {
 		async function init() {
 			const title = await getFromStorage('browserTitle')
-			setSelected({
-				name: '',
-				template: title || defaultBrowserTitles[0].template,
-			})
+			if (!title) return setSelected(defaultBrowserTitles[0])
+			setSelected(title)
 		}
 
 		init()
@@ -48,16 +77,17 @@ export function BrowserTitleSelector({ fetched_browserTitles }: Prop) {
 
 	useEffect(() => {
 		const updateAndCheck = async () => {
-			const mapped = fetched_browserTitles.map((item) => ({
-				name: item.name,
-				template: item.meta.template,
+			const mapped: BrowserTitle[] = fetched_browserTitles.map((item) => ({
+				name: item.name || 'بدون نام',
+				id: item.id,
+				template: item.value,
 			}))
 			const updated = [...defaultBrowserTitles, ...mapped]
 			setBrowserTitles(updated)
 
 			const value = await getFromStorage('browserTitle')
 
-			const selectedBrowserTitle = updated.find((item) => item.template === value)
+			const selectedBrowserTitle = updated.find((item) => item.id === value?.id)
 			if (selectedBrowserTitle) {
 				setSelected(selectedBrowserTitle)
 			}

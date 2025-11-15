@@ -9,7 +9,10 @@ import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
-import type { UserInventoryResponse } from '@/services/hooks/market/market.interface'
+import type {
+	UserInventoryItem,
+	UserInventoryResponse,
+} from '@/services/hooks/market/market.interface'
 
 interface ThemeItem {
 	id: string
@@ -52,7 +55,7 @@ const defaultThemes: ThemeItem[] = [
 ]
 
 interface Props {
-	fetched_themes: UserInventoryResponse['browser_titles']
+	fetched_themes: UserInventoryItem[]
 }
 
 export function ThemeSelector({ fetched_themes }: Props) {
@@ -76,8 +79,8 @@ export function ThemeSelector({ fetched_themes }: Props) {
 	useEffect(() => {
 		if (fetched_themes.length) {
 			const mapped: ThemeItem[] = fetched_themes.map((item) => ({
-				id: item.itemValue || item.name.toLowerCase(),
-				name: item.name,
+				id: item.value,
+				name: item.name ?? 'بدون نام',
 				icon: <IoMdStar size={14} />,
 				description: item?.description || 'تم خریداری شده',
 			}))
