@@ -1,5 +1,6 @@
-import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
+import { getFromStorage } from '@/common/storage'
+import { getMainClient } from '@/services/api'
 
 export interface TrendItem {
 	title: string
@@ -46,12 +47,26 @@ export function useGetTrends(
 		enabled?: boolean
 	} = {}
 ) {
-	const { region = 'IR', limit = 10, refetchInterval = null, enabled = true } = options
+	const [initialData, setInitialData] = useState<any>(undefined)
 
-	return useQuery({
+	useEffect(() => {
+		;(async () => {
+			const stored = await getFromStorage('recommended_sites')
+			if (stored?.length) {
+				setInitialData({
+					recommendedSites: stored,
+					trends: [],
+				})
+			}
+		})()
+	}, [])
+
+	const { region = 'IR', limit = 10, refetchInterval = null, enabled = true } = options
+	return useQuery<SearchBoxResponse>({
 		queryKey: ['getTrends', region, limit],
 		queryFn: () => fetchTrends(region, limit),
 		refetchInterval: refetchInterval || false,
 		enabled,
+		initialData,
 	})
 }
