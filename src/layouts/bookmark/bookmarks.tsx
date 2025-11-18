@@ -16,7 +16,7 @@ import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 
-export function BookmarksComponent() {
+export function BookmarksList() {
 	const { bookmarks, getCurrentFolderItems, addBookmark, setBookmarks } =
 		useBookmarkStore()
 
@@ -35,7 +35,6 @@ export function BookmarksComponent() {
 			},
 		})
 	)
-
 	const BOOKMARKS_PER_ROW = 5
 	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
 

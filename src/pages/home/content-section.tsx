@@ -14,7 +14,7 @@ import { BookmarkProvider } from '@/context/bookmark.context'
 import { DateProvider } from '@/context/date.context'
 import { TodoProvider } from '@/context/todo.context'
 import { useWidgetVisibility, type WidgetItem } from '@/context/widget-visibility.context'
-import { BookmarksComponent } from '@/layouts/bookmark/bookmarks'
+import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
@@ -133,7 +133,7 @@ export function ContentSection() {
 						>
 							<SearchLayout />
 							<BookmarkProvider>
-								<BookmarksComponent />
+								<BookmarksList />
 							</BookmarkProvider>
 						</div>
 
