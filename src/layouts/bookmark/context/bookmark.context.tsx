@@ -1,23 +1,27 @@
 import ms from 'ms'
+import { v4 as uuidv4 } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { Bookmark, LocalBookmark } from '@/layouts/bookmark/types/bookmark.types'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
+import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
+import type { AxiosError } from 'axios'
+import type { BookmarkFormFields } from '../components/modal/add-bookmark.modal'
 
-const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
+const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
-	addBookmark: (bookmark: Bookmark) => void
+	addBookmark: (bookmark: BookmarkFormFields, cb: () => void) => Promise<void>
 	editBookmark: (bookmark: Bookmark) => void
 	deleteBookmark: (id: string) => void
 }
@@ -26,7 +30,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	bookmarks: [],
 	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
-	addBookmark: () => {},
+	addBookmark: async () => {},
 	editBookmark: () => {},
 	deleteBookmark: () => {},
 })
@@ -36,7 +40,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 	const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 	const { isAuthenticated } = useAuth()
-	const { mutateAsync } = useRemoveBookmark()
+	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
+	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
@@ -66,8 +71,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 								acc[index] = {
 									...bookmark,
 									icon: bookmark.icon,
-									customImage:
-										acc[index].customImage || bookmark.customImage,
 								}
 							}
 						}
@@ -108,238 +111,136 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		return parentId === null ? sortedBookmarks : sortedBookmarks
 	}
 
-	const getBookmarkDataSize = (bookmark: Bookmark): number => {
+	const addBookmark = async (inputBookmark: BookmarkFormFields, cb: () => void) => {
 		try {
-			if (bookmark.customImage) {
-				const base64Data =
-					bookmark.customImage.split(',')[1] || bookmark.customImage
-
-				const imageSize = Math.ceil((base64Data.length * 3) / 4)
-
-				const bookmarkWithoutImage = { ...bookmark }
-				bookmarkWithoutImage.customImage = undefined
-				const jsonSize = new Blob([JSON.stringify(bookmarkWithoutImage)]).size
-
-				return imageSize + jsonSize
-			}
-
-			const json = JSON.stringify(bookmark)
-			return new Blob([json]).size
-		} catch (e) {
-			console.error('Error calculating bookmark size:', e)
-			return Number.POSITIVE_INFINITY
-		}
-	}
-
-	const compressImageData = async (imageData: string): Promise<string> => {
-		if (!imageData.startsWith('data:image')) {
-			return imageData
-		}
-
-		if (
-			imageData.startsWith('data:image/gif') &&
-			imageData.length < MAX_BOOKMARK_SIZE
-		) {
-			return imageData
-		}
-
-		try {
-			const base64 = imageData.split(',')[1]
-			const binaryString = window.atob(base64)
-			const length = binaryString.length
-
-			if (length > 3 * 1024 * 1024) {
-				throw new Error('Image is too large to process')
-			}
-
-			return new Promise((resolve) => {
-				const img = new Image()
-				img.onload = () => {
-					const canvas = document.createElement('canvas')
-					const ctx = canvas.getContext('2d')
-					const maxDimension = 128
-
-					let width = img.width
-					let height = img.height
-
-					if (width > height) {
-						if (width > maxDimension) {
-							height = Math.round(height * (maxDimension / width))
-							width = maxDimension
-						}
-					} else {
-						if (height > maxDimension) {
-							width = Math.round(width * (maxDimension / height))
-							height = maxDimension
-						}
-					}
-
-					canvas.width = width
-					canvas.height = height
-
-					ctx?.drawImage(img, 0, 0, width, height)
-
-					const format = imageData.startsWith('data:image/gif')
-						? 'image/png'
-						: 'image/webp'
-					const quality = 0.7
-
-					const compressed = canvas.toDataURL(format, quality)
-					resolve(compressed)
-				}
-
-				img.onerror = () => {
-					console.warn('Image compression failed, using original')
-					resolve(imageData)
-				}
-
-				img.src = imageData
-			})
-		} catch (e) {
-			console.error('Error in image compression:', e)
-			return imageData
-		}
-	}
-
-	const prepareBookmarkForStorage = async (bookmark: Bookmark): Promise<Bookmark> => {
-		const processedBookmark = { ...bookmark, isLocal: true }
-
-		if (
-			processedBookmark.customImage &&
-			processedBookmark.customImage.length > 50000
-		) {
-			try {
-				processedBookmark.customImage = await compressImageData(
-					processedBookmark.customImage
-				)
-			} catch (err) {
-				console.error('Image processing error:', err)
-				toast.error('خطا در پردازش تصویر. از تصویر پیش‌فرض استفاده می‌شود.')
-
-				if (processedBookmark.type === 'BOOKMARK') {
-					processedBookmark.customImage = undefined
-				}
-			}
-		}
-
-		return processedBookmark
-	}
-
-	const addBookmark = async (bookmark: Bookmark) => {
-		try {
-			const bookmarkSize =
-				(bookmark.customImage?.length || 0) +
-				(bookmark.icon?.length || 0) +
-				JSON.stringify(bookmark).length
-
-			if (bookmarkSize > MAX_BOOKMARK_SIZE) {
+			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
 				toast.error(
-					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
+					`تصویر انتخاب شده (${(inputBookmark.icon.size / (1024 * 1024)).toFixed(1)} مگابایت) بزرگتر از حداکثر مجاز است.`
 				)
+				cb()
 				return
 			}
 
 			// Calculate the order for the new bookmark
-			const currentFolderItems = getCurrentFolderItems(bookmark.parentId)
+			const currentFolderItems = getCurrentFolderItems(inputBookmark.parentId)
 			const maxOrder = currentFolderItems.reduce(
 				(max, item) => Math.max(max, item.order || 0),
 				-1
 			)
-
-			// Assign the next order value
-			const newBookmark = await prepareBookmarkForStorage({
-				...bookmark,
-				order: maxOrder + 1,
-			})
-
-			const updatedBookmarks = [...(bookmarks || []), newBookmark]
-
-			try {
-				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
-				if (testData.length > 5 * 1024 * 1024) {
-					toast.error(
-						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
-					)
-					return
-				}
-			} catch {
-				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
+			if (!inputBookmark.icon) {
+				toast.error('آیکون انتخاب نشده است.')
 				return
 			}
+			let createdBookmark: Bookmark | null = null
 
+			if (isAuthenticated) {
+				const [err, response] = await safeAwait<AxiosError, Bookmark>(
+					addBookmarkAsync({
+						order: maxOrder + 1,
+						parentId: inputBookmark.parentId,
+						title: inputBookmark.title,
+						customBackground: inputBookmark.customBackground,
+						customTextColor: inputBookmark.customTextColor,
+						sticker: inputBookmark.sticker,
+						type: inputBookmark.type,
+						url: inputBookmark.url,
+						icon: inputBookmark.icon || null,
+					})
+				)
+				if (err) {
+					const translated: string | Record<string, string> =
+						translateError(err)
+					const msg =
+						typeof translated === 'string'
+							? translated
+							: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
+
+					toast.error(msg, {
+						duration: 5000,
+					})
+				} else {
+					createdBookmark = response
+				}
+			}
+
+			const newBookmark: LocalBookmark = {
+				order: createdBookmark?.order || maxOrder + 1,
+				id: createdBookmark?.id || uuidv4(),
+				isLocal: createdBookmark ? false : true,
+				onlineId: createdBookmark?.id || null,
+				parentId: inputBookmark.parentId,
+				title: inputBookmark.title,
+				customBackground: inputBookmark.customBackground,
+				customTextColor: inputBookmark.customTextColor,
+				sticker: inputBookmark.sticker,
+				type: inputBookmark.type,
+				url: inputBookmark.url,
+				icon:
+					createdBookmark?.icon ||
+					(inputBookmark.icon ? await fileToBase64(inputBookmark.icon) : null),
+			}
+			const updatedBookmarks = [...(bookmarks || []), newBookmark]
 			setBookmarks(updatedBookmarks)
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
 
-			Analytics.event('add_bookmark', {
-				bookmark_type: bookmark.type,
-				has_custom_image: !!bookmark.customImage,
-				has_custom_background: !!bookmark.customBackground,
-				has_custom_text_color: !!bookmark.customTextColor,
-				has_custom_sticker: !!bookmark.sticker,
-			})
-
-			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
-
-			callEvent('startSync', SyncTarget.BOOKMARKS)
+			Analytics.event('add_bookmark')
+			if (!createdBookmark) {
+				await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+				callEvent('startSync', SyncTarget.BOOKMARKS)
+			}
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
 			toast.error('خطا در افزودن بوکمارک')
+		} finally {
+			cb()
 		}
 	}
 
 	const editBookmark = async (bookmark: Bookmark) => {
-		try {
-			const bookmarkSize = getBookmarkDataSize(bookmark)
-
-			const isGif = bookmark.customImage?.startsWith('data:image/gif')
-			const sizeLimit = isGif ? 1.5 * MAX_BOOKMARK_SIZE : MAX_BOOKMARK_SIZE
-
-			if (bookmarkSize > sizeLimit) {
-				toast.error(
-					`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
-				)
-				return
-			}
-
-			const processedBookmark = await prepareBookmarkForStorage(bookmark)
-			const updatedBookmarks =
-				bookmarks?.map((b) =>
-					b.id === processedBookmark.id ? processedBookmark : b
-				) || []
-
-			try {
-				const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
-				if (testData.length > 5 * 1024 * 1024) {
-					toast.error(
-						'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
-					)
-					return
-				}
-			} catch {
-				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
-				return
-			}
-
-			setBookmarks(updatedBookmarks)
-			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-			await setToStorage('bookmarks', localBookmarks)
-
-			Analytics.event('edit_bookmark', {
-				bookmark_type: bookmark.type,
-				has_custom_image: !!bookmark.customImage,
-				has_custom_background: !!bookmark.customBackground,
-				has_custom_text_color: !!bookmark.customTextColor,
-				has_custom_sticker: !!bookmark.sticker,
-			})
-
-			await new Promise((resolve) => setTimeout(resolve, ms('3s')))
-
-			callEvent('startSync', SyncTarget.BOOKMARKS)
-		} catch (error) {
-			console.error('Error editing bookmark:', error)
-			toast.error('خطا در ویرایش بوکمارک')
-		}
+		// try {
+		// 	const bookmarkSize = getBookmarkDataSize(bookmark)
+		// 	const isGif = bookmark.customImage?.startsWith('data:image/gif')
+		// 	const sizeLimit = isGif ? 1.5 * MAX_ICON_SIZE : MAX_ICON_SIZE
+		// 	if (bookmarkSize > sizeLimit) {
+		// 		toast.error(
+		// 			`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
+		// 		)
+		// 		return
+		// 	}
+		// 	const processedBookmark = await prepareBookmarkForStorage(bookmark)
+		// 	const updatedBookmarks =
+		// 		bookmarks?.map((b) =>
+		// 			b.id === processedBookmark.id ? processedBookmark : b
+		// 		) || []
+		// 	try {
+		// 		const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
+		// 		if (testData.length > 5 * 1024 * 1024) {
+		// 			toast.error(
+		// 				'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
+		// 			)
+		// 			return
+		// 		}
+		// 	} catch {
+		// 		toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
+		// 		return
+		// 	}
+		// 	setBookmarks(updatedBookmarks)
+		// 	const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
+		// 	await setToStorage('bookmarks', localBookmarks)
+		// 	Analytics.event('edit_bookmark', {
+		// 		bookmark_type: bookmark.type,
+		// 		has_custom_image: !!bookmark.customImage,
+		// 		has_custom_background: !!bookmark.customBackground,
+		// 		has_custom_text_color: !!bookmark.customTextColor,
+		// 		has_custom_sticker: !!bookmark.sticker,
+		// 	})
+		// 	await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+		// 	callEvent('startSync', SyncTarget.BOOKMARKS)
+		// } catch (error) {
+		// 	console.error('Error editing bookmark:', error)
+		// 	toast.error('خطا در ویرایش بوکمارک')
+		// }
 	}
 
 	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {
@@ -377,7 +278,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 
 		if (isAuthenticated) {
-			const [error, _] = await safeAwait(mutateAsync(id))
+			const [error, _] = await safeAwait(removeBookmarkAsync(id))
 			if (error) {
 				return toast.error(translateError(error) as string)
 			}
@@ -416,4 +317,21 @@ export function useBookmarkStore(): BookmarkStoreContext {
 		throw new Error('useBookmarkStore must be used within a BookmarkProvider')
 	}
 	return context
+}
+
+function fileToBase64(file: File): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader()
+		reader.onload = () => {
+			if (typeof reader.result === 'string') {
+				resolve(reader.result)
+			} else {
+				reject(new Error('Failed to convert file to base64'))
+			}
+		}
+		reader.onerror = () => {
+			reject(new Error('Failed to read file'))
+		}
+		reader.readAsDataURL(file)
+	})
 }

@@ -8,8 +8,8 @@ import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
-import type { Bookmark } from '../../types/bookmark.types'
 import { BookmarkItem } from '../bookmark-item'
+import type { BookmarkFormFields } from './add-bookmark.modal'
 
 interface AdvancedModalProps {
 	title: string
@@ -17,14 +17,7 @@ interface AdvancedModalProps {
 		data: { background?: string; textColor?: string; sticker?: string } | null
 	) => void
 	isOpen: boolean
-	bookmark: {
-		type: Bookmark['type']
-		customBackground: string
-		customTextColor: string
-		title?: string
-		url?: string
-		sticker?: string
-	}
+	bookmark: BookmarkFormFields
 }
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
@@ -149,9 +142,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		}
 
 		onClose({
-			background: hasBackgroundChanged ? background : undefined,
-			textColor: hasTextColorChanged ? textColor : undefined,
-			sticker: hasEmojiChanged ? sticker : undefined,
+			background: hasBackgroundChanged ? (background ?? undefined) : undefined,
+			textColor: hasTextColorChanged ? (textColor ?? undefined) : undefined,
+			sticker: hasEmojiChanged ? (sticker ?? undefined) : undefined,
 		})
 	}
 
@@ -175,7 +168,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
-								value={background}
+								value={background || ''}
 								onChange={setBackground}
 								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
@@ -183,7 +176,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker
-									color={background}
+									color={background || ''}
 									onChange={setBackground}
 								/>
 							</div>
@@ -202,7 +195,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
-								value={textColor}
+								value={textColor || ''}
 								onChange={setTextColor}
 								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
@@ -210,7 +203,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker
-									color={textColor}
+									color={textColor || ''}
 									onChange={setTextColor}
 								/>
 							</div>
@@ -297,17 +290,17 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className="flex justify-center p-4 overflow-hidden rounded-lg"
 						style={{
 							backgroundImage: document.body.style.backgroundImage,
-							backgroundColor:
-								document.body.style.backgroundColor || undefined,
+							backgroundColor: document.body.style.backgroundColor,
 							backgroundSize: 'cover',
 							backgroundPosition: 'center',
 						}}
 					>
 						<BookmarkItem
 							bookmark={{
-								customBackground: background || undefined,
-								customTextColor: textColor || undefined,
-								sticker: sticker || undefined,
+								customBackground: background,
+								customTextColor: textColor,
+								sticker: sticker,
+								order: null,
 								icon: getFaviconFromUrl(bookmark.url || 'google.com'),
 								title: bookmark.title || 'پیش‌نمایش',
 								url: 'https://www.google.com',
@@ -317,7 +310,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								parentId: null,
 								type: bookmark.type,
 							}}
-							canAdd={false}
 							onClick={() => {}}
 						/>
 					</div>

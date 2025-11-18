@@ -166,7 +166,9 @@ export function BookmarksList() {
 			<AddBookmarkModal
 				isOpen={showAddBookmarkModal}
 				onClose={() => setShowAddBookmarkModal(false)}
-				onAdd={(bookmark) => addBookmark(bookmark)}
+				onAdd={(bookmark) =>
+					addBookmark(bookmark, () => setShowAddBookmarkModal(false))
+				}
 				parentId={currentFolderId}
 			/>
 		</>

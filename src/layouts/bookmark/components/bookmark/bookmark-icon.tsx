@@ -4,11 +4,11 @@ import type { Bookmark } from '../../types/bookmark.types'
 
 export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	let displayIcon: string | React.ReactNode
-
-	if (bookmark.customImage) {
-		displayIcon = bookmark.customImage
+	if (bookmark.title === 'چابکان') console.log(bookmark)
+	if (bookmark.icon) {
+		displayIcon = bookmark.icon
 	} else if (bookmark.type === 'BOOKMARK') {
-		if (!bookmark.icon || bookmark.url === bookmark.icon) {
+		if (!bookmark.icon && bookmark.url) {
 			displayIcon = getFaviconFromUrl(bookmark.url)
 		} else {
 			displayIcon = bookmark.icon

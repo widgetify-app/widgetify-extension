@@ -48,7 +48,7 @@ export function BookmarkGrid({
 			} else {
 				e.preventDefault()
 				Analytics.event('open_bookmark_middle_mouse')
-				window.open(bookmark.url)
+				if (bookmark.url) window.open(bookmark.url)
 			}
 			return
 		}
@@ -62,11 +62,15 @@ export function BookmarkGrid({
 			}
 		} else {
 			if (e?.ctrlKey || e?.metaKey) {
-				window.open(bookmark.url)
-				Analytics.event('open_bookmark_in_new_tab')
+				if (bookmark.url) {
+					window.open(bookmark.url)
+					Analytics.event('open_bookmark_in_new_tab')
+				}
 			} else {
-				window.location.href = bookmark.url
-				Analytics.event('open_bookmark_in_current_tab')
+				if (bookmark.url) {
+					window.location.href = bookmark.url
+					Analytics.event('open_bookmark_in_current_tab')
+				}
 			}
 		}
 	}
@@ -88,7 +92,9 @@ export function BookmarkGrid({
 
 		if (!browserTabsEnabled || !browser.tabGroups || !browser.tabs) {
 			for (const b of bookmarks) {
-				window.open(b.url)
+				if (b.url) {
+					window.open(b.url)
+				}
 			}
 
 			Analytics.event('open_folder_bookmarks')
@@ -126,7 +132,7 @@ export function BookmarkGrid({
 			openBookmarks(bookmark)
 		}
 
-		if (bookmark && bookmark.type === 'BOOKMARK') {
+		if (bookmark && bookmark.type === 'BOOKMARK' && bookmark.url) {
 			window.open(bookmark.url)
 			Analytics.event('open_bookmark_in_new_tab')
 		}

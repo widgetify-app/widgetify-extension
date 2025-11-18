@@ -68,7 +68,7 @@ export function BookmarkItem({
 					<BookmarkIcon bookmark={bookmark} />
 					<BookmarkTitle
 						title={bookmark.title}
-						customTextColor={bookmark.customTextColor}
+						customTextColor={bookmark.customTextColor || ''}
 					/>
 
 					<div
