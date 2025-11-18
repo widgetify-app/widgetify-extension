@@ -7,6 +7,7 @@ import {
 	useSensors,
 } from '@dnd-kit/core'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import { useIsMutating } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
@@ -48,10 +49,8 @@ export function BookmarksComponent() {
 
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
-	const [currentFolderIsManageable, setCurrentFolderIsManageable] =
-		useState<boolean>(true)
-
 	const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+	const isRemoving = useIsMutating({ mutationKey: ['removeBookmark'] }) > 0
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -88,23 +87,13 @@ export function BookmarksComponent() {
 		}
 	}, [])
 
-	const isManageable = (bookmark: Bookmark) => {
-		if ('isManageable' in bookmark && typeof bookmark.isManageable === 'boolean') {
-			return bookmark.isManageable
-		}
-
-		return true
-	}
-
 	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
-		if (isManageable(bookmark)) {
-			setSelectedBookmark(bookmark)
-			const button = e.currentTarget
-			if (button) {
-				const rect = button.getBoundingClientRect()
-				setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
-			}
+		setSelectedBookmark(bookmark)
+		const button = e.currentTarget
+		if (button) {
+			const rect = button.getBoundingClientRect()
+			setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
 		}
 	}
 
@@ -122,10 +111,8 @@ export function BookmarksComponent() {
 
 	const handleConfirmDelete = () => {
 		if (bookmarkToDelete) {
-			deleteBookmark(bookmarkToDelete.id)
-			setBookmarkToDelete(null)
+			deleteBookmark(bookmarkToDelete.onlineId || bookmarkToDelete.id)
 		}
-		setShowDeleteConfirmationModal(false)
 	}
 
 	const handleCancelDelete = () => {
@@ -156,8 +143,6 @@ export function BookmarksComponent() {
 			} else {
 				setCurrentFolderId(bookmark.id)
 				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
-
-				setCurrentFolderIsManageable(isManageable(bookmark))
 			}
 		} else {
 			if (e?.ctrlKey || e?.metaKey) {
@@ -222,22 +207,12 @@ export function BookmarksComponent() {
 		if (depth === -1) {
 			setFolderPath([])
 			setCurrentFolderId(null)
-			setCurrentFolderIsManageable(true)
 			return
 		}
 
 		const newPath = folderPath.slice(0, depth + 1)
 		setFolderPath(newPath)
 		setCurrentFolderId(folderId)
-
-		if (folderId) {
-			const folder = bookmarks.find((b) => b.id === folderId)
-			if (folder) {
-				setCurrentFolderIsManageable(isManageable(folder))
-			}
-		} else {
-			setCurrentFolderIsManageable(true)
-		}
 	}
 
 	function openBookmarks(bookmark: Bookmark) {
@@ -280,25 +255,11 @@ export function BookmarksComponent() {
 	const getDisplayedBookmarks = (): (Bookmark | null)[] => {
 		if (!currentFolderId) {
 			const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
-			const fillersCount = Math.max(
-				0,
-				TOTAL_BOOKMARKS -
-					currentFolderItems.length -
-					(currentFolderIsManageable ? 1 : 0)
-			)
+			const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
 			const fillers = new Array(fillersCount).fill(null)
-			const addButton =
-				currentFolderIsManageable && currentFolderItems.length < TOTAL_BOOKMARKS
-					? [null]
-					: []
+			const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
 
 			return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
-		}
-
-		if (!currentFolderIsManageable) {
-			const minItems = Math.max(currentFolderItems.length, 10)
-			const fillersCount = minItems - currentFolderItems.length
-			return [...currentFolderItems, ...new Array(fillersCount).fill(null)]
 		}
 
 		const bookmarkCount = currentFolderItems.length
@@ -310,6 +271,13 @@ export function BookmarksComponent() {
 	}
 
 	const displayedBookmarks = getDisplayedBookmarks()
+
+	useEffect(() => {
+		if (!isRemoving) {
+			setBookmarkToDelete(null)
+			setShowDeleteConfirmationModal(false)
+		}
+	}, [isRemoving])
 
 	return (
 		<>
@@ -356,7 +324,6 @@ export function BookmarksComponent() {
 											onMenuClick={(e) =>
 												handleMenuClick(e, bookmark)
 											}
-											isManageable={isManageable(bookmark)}
 											id={bookmark.id}
 										/>
 									</div>
@@ -365,7 +332,6 @@ export function BookmarksComponent() {
 										key={i}
 										bookmark={null}
 										onClick={openAddBookmarkModal}
-										canAdd={currentFolderIsManageable}
 									/>
 								)
 							)}
@@ -408,10 +374,11 @@ export function BookmarksComponent() {
 						</p>
 					)
 				}
-				confirmText="حذف"
+				confirmText={isRemoving ? 'در حال حذف...' : 'حذف'}
 				cancelText="انصراف"
 				variant="danger"
-				direction="ltr"
+				isLoading={isRemoving}
+				direction="rtl"
 			/>
 			{selectedBookmark && (
 				<BookmarkContextMenu

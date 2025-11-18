@@ -1,3 +1,5 @@
+import type React from 'react'
+
 interface ButtonProps {
 	onClick?: () => void
 	disabled?: boolean
@@ -5,7 +7,7 @@ interface ButtonProps {
 	style?: React.CSSProperties
 	icon?: React.ReactNode
 	loading?: boolean
-	loadingText?: string
+	loadingText?: React.ReactNode
 	type?: 'button' | 'submit' | 'reset'
 	fullWidth?: boolean
 	rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full'

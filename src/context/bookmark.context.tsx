@@ -6,6 +6,10 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
+import { safeAwait } from '@/services/api'
+import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
+import { translateError } from '@/utils/translate-error'
+import { useAuth } from './auth.context'
 
 const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
 
@@ -31,6 +35,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
+	const { isAuthenticated } = useAuth()
+	const { mutateAsync } = useRemoveBookmark()
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
@@ -360,7 +366,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const deleteBookmark = async (id: string) => {
 		if (!bookmarks) return
 
-		const bookmarkToDelete = bookmarks.find((b) => b.id === id)
+		const bookmarkToDelete = bookmarks.find((b) => b.id === id || b.onlineId === id)
 		if (!bookmarkToDelete) return
 
 		let itemsToDelete = [id]
@@ -370,25 +376,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			itemsToDelete = [...itemsToDelete, ...nestedItems]
 		}
 
-		const updatedBookmarks = bookmarks.filter((b) => !itemsToDelete.includes(b.id))
-		setBookmarks(updatedBookmarks)
+		if (isAuthenticated) {
+			const [error, _] = await safeAwait(mutateAsync(id))
+			if (error) {
+				return toast.error(translateError(error) as string)
+			}
+		}
 
+		const updatedBookmarks = bookmarks.filter(
+			(b) =>
+				!itemsToDelete.includes(b.id) && !itemsToDelete.includes(b.onlineId || '')
+		)
+		setBookmarks(updatedBookmarks)
 		const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 		await setToStorage('bookmarks', localBookmarks)
 
-		const deletedList = (await getFromStorage('deletedBookmarkIds')) || []
-		deletedList.push(...itemsToDelete)
-		await setToStorage('deletedBookmarkIds', deletedList)
-
-		Analytics.event('delete_bookmark', {
-			bookmark_type: bookmarkToDelete.type,
-			items_deleted: itemsToDelete.length,
-		})
-
-		// sync with delay
-		await new Promise((resolve) => setTimeout(resolve, ms('3s')))
-
-		callEvent('startSync', SyncTarget.BOOKMARKS)
+		Analytics.event('delete_bookmark')
 	}
 
 	return (
