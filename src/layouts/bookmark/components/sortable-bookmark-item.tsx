@@ -47,7 +47,6 @@ export function SortableBookmarkItem({
 				<BookmarkItem
 					bookmark={bookmark}
 					onClick={onClick}
-					canAdd={true}
 					isDragging={isDragging}
 					onMenuClick={onMenuClick}
 				/>

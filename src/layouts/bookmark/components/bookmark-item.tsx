@@ -8,9 +8,8 @@ import { BookmarkTitle } from './bookmark/bookmark-title'
 import { EmptyBookmarkSlot } from './bookmark-emptySlot'
 
 interface BookmarkItemProps {
-	bookmark: Bookmark | null
+	bookmark: Bookmark
 	theme?: string
-	canAdd?: boolean
 	onClick: (e?: React.MouseEvent<any>) => void
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
@@ -18,15 +17,10 @@ interface BookmarkItemProps {
 
 export function BookmarkItem({
 	bookmark,
-	canAdd = true,
 	onClick,
 	isDragging = false,
 	onMenuClick,
 }: BookmarkItemProps) {
-	if (!bookmark) {
-		return <EmptyBookmarkSlot onClick={onClick} canAdd={canAdd} />
-	}
-
 	const getBookmarkStyle = () => {
 		return 'bg-widget hover:bg-base-300 text-content backdrop-blur-sm bg-glass'
 	}

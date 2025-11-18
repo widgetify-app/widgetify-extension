@@ -42,8 +42,8 @@
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "off",
-				"noUnusedVariables": "off",
-				"noUnusedImports": "off",
+				"noUnusedVariables": "warn",
+				"noUnusedImports": "warn",
 				"useUniqueElementIds": "off"
 			},
 			"complexity": {
@@ -69,6 +69,13 @@
 			"trailingCommas": "none",
 			"indentStyle": "tab",
 			"indentWidth": 4
+		}
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "off"
+			}
 		}
 	},
 	"overrides": [
