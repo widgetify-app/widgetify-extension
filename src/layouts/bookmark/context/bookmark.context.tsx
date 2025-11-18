@@ -262,7 +262,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					)
 					return
 				}
-			} catch (e) {
+			} catch {
 				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
 				return
 			}
