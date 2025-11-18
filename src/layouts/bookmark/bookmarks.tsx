@@ -9,12 +9,12 @@ import {
 import { useCallback, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
-import { useBookmarkStore } from '@/context/bookmark.context'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { FolderHeader } from './components/folder-header'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
+import { useBookmarkStore } from './context/bookmark.context'
 
 export function BookmarksList() {
 	const { bookmarks, getCurrentFolderItems, addBookmark, setBookmarks } =

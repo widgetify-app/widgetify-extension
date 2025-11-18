@@ -9,7 +9,7 @@ import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
 import { translateError } from '@/utils/translate-error'
-import { useAuth } from './auth.context'
+import { useAuth } from '@/context/auth.context'
 
 const MAX_BOOKMARK_SIZE = 1.5 * 1024 * 1024
 
@@ -316,7 +316,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					)
 					return
 				}
-			} catch (e) {
+			} catch {
 				toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
 				return
 			}
