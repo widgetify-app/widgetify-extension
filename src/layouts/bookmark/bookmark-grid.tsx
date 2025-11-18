@@ -4,12 +4,12 @@ import Analytics from '@/analytics'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { useBookmarkStore } from '@/context/bookmark.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import type { Bookmark, FolderPathItem } from '../types/bookmark.types'
-import { openBookmarksOptimized } from '../utils/tabManager'
-import { EmptyBookmarkSlot } from './bookmark-emptySlot'
-import { BookmarkContextMenu } from './modal/bookmark-context-menu'
-import { EditBookmarkModal } from './modal/edit-bookmark.modal'
-import { SortableBookmarkItem } from './sortable-bookmark-item'
+import type { Bookmark, FolderPathItem } from './types/bookmark.types'
+import { openBookmarksOptimized } from './utils/tabManager'
+import { EmptyBookmarkSlot } from './components/bookmark-emptySlot'
+import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
+import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
+import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]

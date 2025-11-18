@@ -5,7 +5,6 @@ import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
-import { EmptyBookmarkSlot } from './bookmark-emptySlot'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark
