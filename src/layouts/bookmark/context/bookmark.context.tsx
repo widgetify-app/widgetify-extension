@@ -127,10 +127,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				(max, item) => Math.max(max, item.order || 0),
 				-1
 			)
-			if (!inputBookmark.icon) {
-				toast.error('آیکون انتخاب نشده است.')
-				return
-			}
+
 			let createdBookmark: Bookmark | null = null
 
 			if (isAuthenticated) {

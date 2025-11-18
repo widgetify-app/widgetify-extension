@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
@@ -12,6 +12,7 @@ import {
 	useBookmarkIcon,
 } from '../shared'
 import { AdvancedModal } from './advanced.modal'
+import { useIsMutating } from '@tanstack/react-query'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -58,7 +59,8 @@ export function AddBookmarkModal({
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
-	const [isPending, startTransition] = useTransition()
+
+	const isAdding = useIsMutating({ mutationKey: ['addBookmark'] }) > 0
 
 	const [formData, setFormData] = useState<BookmarkFormFields>(structuredClone(empty))
 
@@ -101,31 +103,25 @@ export function AddBookmarkModal({
 	const handleAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		startTransition(() => {
-			if (!formData.title.trim()) return
+		if (!formData.title.trim()) return
 
-			let newUrl = formData.url
-			if (
-				newUrl &&
-				!newUrl.startsWith('http://') &&
-				!newUrl.startsWith('https://')
-			) {
-				newUrl = `https://${newUrl}`
-			}
-			const baseBookmark: BookmarkFormFields = {
-				title: formData.title.trim(),
-				url: newUrl?.trim() || null,
-				type,
-				parentId,
-				customImage: formData.customImage,
-				customBackground: formData.customBackground || null,
-				customTextColor: formData.customTextColor || null,
-				sticker: formData.sticker || null,
-				icon: formData.icon,
-			}
+		let newUrl = formData.url
+		if (newUrl && !newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
+			newUrl = `https://${newUrl}`
+		}
+		const baseBookmark: BookmarkFormFields = {
+			title: formData.title.trim(),
+			url: newUrl?.trim() || null,
+			type,
+			parentId,
+			customImage: formData.customImage,
+			customBackground: formData.customBackground || null,
+			customTextColor: formData.customTextColor || null,
+			sticker: formData.sticker || null,
+			icon: formData.icon,
+		}
 
-			onAdd(baseBookmark)
-		})
+		onAdd(baseBookmark)
 	}
 
 	const resetForm = () => {
@@ -287,15 +283,16 @@ export function AddBookmarkModal({
 							disabled={
 								!formData.title?.trim() ||
 								(type === 'BOOKMARK' && !formData.url?.trim()) ||
-								isPending
+								isAdding
 							}
 							size="md"
 							isPrimary={true}
+							loading={isAdding}
 							className={
 								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 							}
 						>
-							{isPending ? 'در حال ذخیره' : 'ذخیره'}
+							ذخیره
 						</Button>
 					</div>
 				</div>

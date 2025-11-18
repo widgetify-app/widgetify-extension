@@ -1,4 +1,5 @@
 import type React from 'react'
+import { FaSpinner } from 'react-icons/fa'
 
 interface ButtonProps {
 	onClick?: () => void
@@ -32,7 +33,14 @@ export function Button(prop: ButtonProps) {
 			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
 			style={prop.style}
 		>
-			{prop.loading ? prop.loadingText : prop.children}
+			{prop.loading
+				? prop.loadingText || (
+						<div className="flex items-center gap-1">
+							<FaSpinner className="animate-spin" />
+							<span className="text-xs">صبر کنید...</span>
+						</div>
+					)
+				: prop.children}
 		</button>
 	)
 }
