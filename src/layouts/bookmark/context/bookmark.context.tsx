@@ -13,7 +13,7 @@ import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
 import type { AxiosError } from 'axios'
-import type { BookmarkFormFields } from '../components/modal/add-bookmark.modal'
+import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 
@@ -21,7 +21,7 @@ export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
-	addBookmark: (bookmark: BookmarkFormFields, cb: () => void) => Promise<void>
+	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	editBookmark: (bookmark: Bookmark) => void
 	deleteBookmark: (id: string) => void
 }
@@ -111,7 +111,10 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		return parentId === null ? sortedBookmarks : sortedBookmarks
 	}
 
-	const addBookmark = async (inputBookmark: BookmarkFormFields, cb: () => void) => {
+	const addBookmark = async (
+		inputBookmark: BookmarkCreateFormFields,
+		cb: () => void
+	) => {
 		try {
 			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
 				toast.error(

@@ -17,11 +17,11 @@ import { useIsMutating } from '@tanstack/react-query'
 interface AddBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
-	onAdd: (bookmark: BookmarkFormFields) => void
+	onAdd: (bookmark: BookmarkCreateFormFields) => void
 	parentId: string | null
 }
 
-export interface BookmarkFormFields {
+export interface BookmarkCreateFormFields {
 	title: string
 	type: BookmarkType
 	parentId: string | null
@@ -33,7 +33,7 @@ export interface BookmarkFormFields {
 	icon: File | null
 }
 
-const empty: BookmarkFormFields = {
+const empty: BookmarkCreateFormFields = {
 	title: '',
 	url: '',
 	customImage: null,
@@ -45,9 +45,9 @@ const empty: BookmarkFormFields = {
 	icon: null,
 }
 
-export type AddBookmarkUpdateFormData = <K extends keyof BookmarkFormFields>(
+export type AddBookmarkUpdateFormData = <K extends keyof BookmarkCreateFormFields>(
 	key: K,
-	value: BookmarkFormFields[K]
+	value: BookmarkCreateFormFields[K]
 ) => void
 
 export function AddBookmarkModal({
@@ -62,16 +62,18 @@ export function AddBookmarkModal({
 
 	const isAdding = useIsMutating({ mutationKey: ['addBookmark'] }) > 0
 
-	const [formData, setFormData] = useState<BookmarkFormFields>(structuredClone(empty))
+	const [formData, setFormData] = useState<BookmarkCreateFormFields>(
+		structuredClone(empty)
+	)
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
 		useBookmarkIcon()
 
 	const updateFormData: AddBookmarkUpdateFormData = <
-		K extends keyof BookmarkFormFields,
+		K extends keyof BookmarkCreateFormFields,
 	>(
 		key: K,
-		value: BookmarkFormFields[K]
+		value: BookmarkCreateFormFields[K]
 	) => {
 		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
@@ -109,7 +111,7 @@ export function AddBookmarkModal({
 		if (newUrl && !newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
 			newUrl = `https://${newUrl}`
 		}
-		const baseBookmark: BookmarkFormFields = {
+		const baseBookmark: BookmarkCreateFormFields = {
 			title: formData.title.trim(),
 			url: newUrl?.trim() || null,
 			type,

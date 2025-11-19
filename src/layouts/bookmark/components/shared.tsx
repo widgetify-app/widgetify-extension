@@ -5,7 +5,7 @@ import { LuX } from 'react-icons/lu'
 import type { BookmarkType } from '../types/bookmark.types'
 import type {
 	AddBookmarkUpdateFormData,
-	BookmarkFormFields,
+	BookmarkCreateFormFields,
 } from './modal/add-bookmark.modal'
 import toast from 'react-hot-toast'
 
@@ -87,12 +87,12 @@ export function useBookmarkIcon() {
 	const [iconLoadError, setIconLoadError] = useState(false)
 
 	const renderIconPreview = (
-		formData: BookmarkFormFields,
+		formData: BookmarkCreateFormFields,
 		iconSource: IconSourceType,
 		setIconSource: (source: IconSourceType) => void,
-		updateFormData: <K extends keyof BookmarkFormFields>(
+		updateFormData: <K extends keyof BookmarkCreateFormFields>(
 			key: K,
-			value: BookmarkFormFields[K]
+			value: BookmarkCreateFormFields[K]
 		) => void,
 		type: BookmarkType
 	) => {

@@ -9,7 +9,7 @@ import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
-import type { BookmarkFormFields } from './add-bookmark.modal'
+import type { BookmarkCreateFormFields } from './add-bookmark.modal'
 
 interface AdvancedModalProps {
 	title: string
@@ -17,7 +17,7 @@ interface AdvancedModalProps {
 		data: { background?: string; textColor?: string; sticker?: string } | null
 	) => void
 	isOpen: boolean
-	bookmark: BookmarkFormFields
+	bookmark: BookmarkCreateFormFields
 }
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
