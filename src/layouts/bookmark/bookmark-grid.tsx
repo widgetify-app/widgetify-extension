@@ -10,6 +10,7 @@ import { BookmarkContextMenu } from './components/modal/bookmark-context-menu'
 import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 import { useBookmarkStore } from './context/bookmark.context'
+import { validate } from 'uuid'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
@@ -57,7 +58,13 @@ export function BookmarkGrid({
 			if (e?.ctrlKey || e?.metaKey) {
 				openBookmarks(bookmark)
 			} else {
-				setCurrentFolderId(bookmark.id)
+				const isValidUUid = validate(bookmark.id)
+				console.log(
+					'isValidUUid for folder navigation:',
+					isValidUUid,
+					bookmark?.id
+				)
+				setCurrentFolderId(isValidUUid ? bookmark.id : bookmark.onlineId)
 				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
 			}
 		} else {

@@ -88,4 +88,5 @@ export interface StorageKV {
 		template: string
 		name: string
 	}
+	pendingOrders: any
 }

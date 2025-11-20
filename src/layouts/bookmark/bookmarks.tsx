@@ -6,27 +6,26 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core'
-import { useCallback, useRef, useState } from 'react'
+import { useState } from 'react'
 import Analytics from '@/analytics'
-import { callEvent } from '@/common/utils/call-event'
-import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import { FolderHeader } from './components/folder-header'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
+import { useAuth } from '@/context/auth.context'
+import { validate } from 'uuid'
 
 export function BookmarksList() {
 	const { bookmarks, getCurrentFolderItems, addBookmark, setBookmarks } =
 		useBookmarkStore()
+	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
-
-	const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -38,19 +37,7 @@ export function BookmarksList() {
 	const BOOKMARKS_PER_ROW = 5
 	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
 
-	const debouncedSync = useCallback(() => {
-		if (syncTimeoutRef.current) {
-			clearTimeout(syncTimeoutRef.current)
-		}
-
-		syncTimeoutRef.current = setTimeout(() => {
-			callEvent('startSync', SyncTarget.BOOKMARKS)
-			Analytics.event('drag_and_drop_bookmark', {})
-			syncTimeoutRef.current = null
-		}, 1000) // Wait 1 second before triggering sync
-	}, [])
-
-	const handleDragEnd = (event: DragEndEvent) => {
+	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event
 
 		if (!over || active.id === over.id) {
@@ -60,25 +47,35 @@ export function BookmarksList() {
 		const allBookmarks = [...bookmarks]
 		const currentItems = getCurrentFolderItems(currentFolderId)
 
-		const sourceBookmark = allBookmarks.find((b) => b.id === active.id)
+		const sourceBookmark = allBookmarks.find(
+			(b) => b.id === active.id || b.onlineId === active.id
+		)
 
 		if (!sourceBookmark) {
 			return
 		}
 
-		const sourceIndex = currentItems.findIndex((item) => item.id === active.id)
-		const targetIndex = currentItems.findIndex((item) => item.id === over.id)
+		const sourceIndex = currentItems.findIndex(
+			(item) => item.id === active.id || item.onlineId === active.id
+		)
+		const targetIndex = currentItems.findIndex(
+			(item) => item.id === over.id || item.onlineId === over.id
+		)
 
 		if (sourceIndex === -1 || sourceIndex === targetIndex) {
 			return
 		}
 
 		const actualSourceIndex = allBookmarks.findIndex(
-			(b) => b.id === currentItems[sourceIndex].id
+			(b) =>
+				b.id === currentItems[sourceIndex].id ||
+				b.onlineId === currentItems[sourceIndex].id
 		)
 
 		const actualTargetIndex = allBookmarks.findIndex(
-			(b) => b.id === currentItems[targetIndex].id
+			(b) =>
+				b.id === currentItems[targetIndex].id ||
+				b.onlineId === currentItems[targetIndex].id
 		)
 
 		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
@@ -87,14 +84,44 @@ export function BookmarksList() {
 
 			const updatedBookmarks = allBookmarks.map((bookmark) => {
 				if (bookmark.parentId === currentFolderId) {
-					const newIndex = allBookmarks.findIndex((b) => b.id === bookmark.id)
+					const newIndex = allBookmarks.findIndex(
+						(b) =>
+							b.id === bookmark.id ||
+							b.onlineId === bookmark.id ||
+							b.onlineId === bookmark.onlineId
+					)
 					return { ...bookmark, order: newIndex }
 				}
 				return bookmark
 			})
 
 			setBookmarks(updatedBookmarks)
-			debouncedSync()
+			if (isAuthenticated) {
+				let folderIdToSend = currentFolderId
+
+				const isFolderIdValidUuid = validate(currentFolderId)
+				if (isFolderIdValidUuid) {
+					const foundedFolder = bookmarks.find((b) => b.id === currentFolderId)
+					if (foundedFolder) {
+						folderIdToSend = foundedFolder.onlineId || currentFolderId
+					}
+				}
+
+				browser.runtime.sendMessage({
+					type: 'REORDER',
+					folderId: folderIdToSend,
+					bookmarks: updatedBookmarks
+						.filter((b) => b.parentId === currentFolderId)
+						.map((b) => ({
+							id: b.onlineId || b.id,
+							order: b.order,
+						})),
+				})
+			}
+
+			Analytics.event('bookmark_reorder')
+		} else {
+			console.log('Actual source or target index not found')
 		}
 	}
 

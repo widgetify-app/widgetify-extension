@@ -111,15 +111,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const getCurrentFolderItems = (parentId: string | null) => {
 		if (!bookmarks) return []
+		const parentBookmark = bookmarks.find(
+			(b) => b.id === parentId || b.onlineId === parentId
+		)
+
 		const currentFolderBookmarks = bookmarks.filter(
-			(bookmark) => bookmark.parentId === parentId
+			(bookmark) =>
+				bookmark.parentId === parentBookmark?.id ||
+				bookmark.parentId === parentBookmark?.onlineId ||
+				bookmark.parentId === parentId
 		)
 
 		const sortedBookmarks = [...currentFolderBookmarks].sort((a, b) => {
 			return (a.order || 0) - (b.order || 0)
 		})
 
-		return parentId === null ? sortedBookmarks : sortedBookmarks
+		return sortedBookmarks
 	}
 
 	const addBookmark = async (
