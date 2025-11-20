@@ -4,7 +4,6 @@ import type { Bookmark } from '../../types/bookmark.types'
 
 export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	let displayIcon: string | React.ReactNode
-	if (bookmark.title === 'چابکان') console.log(bookmark)
 	if (bookmark.icon) {
 		displayIcon = bookmark.icon
 	} else if (bookmark.type === 'BOOKMARK') {

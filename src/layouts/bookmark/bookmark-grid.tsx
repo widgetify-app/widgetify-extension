@@ -201,7 +201,7 @@ export function BookmarkGrid({
 				)}
 			</SortableContext>
 
-			{bookmarkToEdit && (
+			{showEditBookmarkModal && bookmarkToEdit && (
 				<EditBookmarkModal
 					isOpen={showEditBookmarkModal}
 					onClose={() => setShowEditBookmarkModal(false)}

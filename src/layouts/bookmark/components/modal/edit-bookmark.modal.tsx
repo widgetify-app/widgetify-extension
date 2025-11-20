@@ -66,8 +66,7 @@ export function EditBookmarkModal({
 
 	const type = bookmark?.type
 
-	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
-		useBookmarkIcon()
+	const { fileInputRef, renderIconPreview, handleImageUpload } = useBookmarkIcon()
 
 	const updateFormData: UpdateBookmarkUpdateFormData = (key, value) => {
 		if (key === 'icon') {
@@ -138,16 +137,6 @@ export function EditBookmarkModal({
 			}
 		}
 	}, [bookmark])
-
-	useEffect(() => {
-		if (iconSource === 'auto' && formData.url) {
-			setIconLoadError(false)
-
-			requestAnimationFrame(() => {
-				updateFormData('icon', null)
-			})
-		}
-	}, [formData.url, iconSource])
 
 	if (!bookmark) return null
 
