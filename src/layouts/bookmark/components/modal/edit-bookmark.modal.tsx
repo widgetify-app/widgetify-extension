@@ -159,8 +159,11 @@ export function EditBookmarkModal({
 								setIconSource={setIconSource}
 							/>
 						)}
-						{renderIconPreview(icon, iconSource, setIconSource, (value) =>
-							updateFormData('icon', value)
+						{renderIconPreview(
+							icon,
+							type === 'FOLDER' ? 'upload' : iconSource,
+							setIconSource,
+							(value) => updateFormData('icon', value)
 						)}
 						<p className="mb-2 text-xs text-center text-content">
 							برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
