@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { isSyncActive } from '@/common/sync-checker'
-import { callEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
 import type { Theme } from '@/context/theme.context'
@@ -16,6 +16,11 @@ import {
 	getBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
+import { validate } from 'uuid'
+import { MdSyncProblem } from 'react-icons/md'
+import Tooltip from '@/components/toolTip'
+import toast from 'react-hot-toast'
+import { SyncAlertModal } from './sync-alert.modal'
 
 enum SyncState {
 	Syncing = 0,
@@ -28,19 +33,23 @@ export enum SyncTarget {
 	TODOS = 1,
 	BOOKMARKS = 2,
 }
-
+interface AlertType {
+	show: boolean
+	type: 'BOOKMARKS' | 'TODOS' | null
+}
 export function SyncButton() {
+	const [showAlert, setShowAlert] = useState<AlertType>({
+		show: false,
+		type: null,
+	})
+
+	const [showModal, setShowModal] = useState(false)
 	const [syncState, setSyncState] = useState<SyncState | null>(null)
+
 	const { isAuthenticated } = useAuth()
 	const syncInProgressRef = useRef(false)
 	const lastSyncTimeRef = useRef<number>(0)
 	const initialSyncDoneRef = useRef(false)
-	useEffect(() => {
-		if (syncState === SyncState.Success) {
-			const timer = setTimeout(() => setSyncState(null), 3000)
-			return () => clearTimeout(timer)
-		}
-	}, [syncState])
 
 	useEffect(() => {
 		async function initialSync() {
@@ -55,11 +64,27 @@ export function SyncButton() {
 
 			initialSyncDoneRef.current = true
 
-			setTimeout(() => {
-				syncData(SyncTarget.ALL, 'GET')
+			setTimeout(async () => {
+				await syncData(SyncTarget.ALL, 'GET')
+				// await syncData(SyncTarget.BOOKMARKS, "POST")
 			}, 1000)
 		}
 		initialSync()
+	}, [isAuthenticated])
+
+	useEffect(() => {
+		const handleSyncRequest = (eventData: any) => {
+			const target = eventData.detail as SyncTarget
+			syncData(target, 'POST')
+		}
+
+		const event = listenEvent('startSync', handleSyncRequest)
+
+		checkSyncData().then((alert) => {
+			setShowAlert(alert)
+		})
+
+		return event()
 	}, [isAuthenticated])
 
 	const syncData = async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
@@ -119,23 +144,72 @@ export function SyncButton() {
 		}
 	}
 
-	useEffect(() => {
-		const handleSyncRequest = (eventData: any) => {
-			const target = eventData.detail as SyncTarget
-			syncData(target, 'POST')
-		}
+	const checkSyncData = async (): Promise<AlertType> => {
+		const bookmarksFromStorage = (await getFromStorage('bookmarks')) || []
 
-		if (isAuthenticated) {
-			window.addEventListener('startSync', handleSyncRequest)
-			return () => {
-				window.removeEventListener('startSync', handleSyncRequest)
+		const bookmarkNotSynced = bookmarksFromStorage.some(
+			(b: Bookmark) =>
+				validate(b.id) && (b.onlineId === null || b.onlineId === undefined)
+		)
+		if (bookmarkNotSynced) {
+			return {
+				show: true,
+				type: 'BOOKMARKS',
 			}
 		}
 
-		return undefined
-	}, [isAuthenticated, syncData])
+		return {
+			show: false,
+			type: null,
+		}
+	}
 
-	return <></>
+	const onTryAgainClick = async () => {
+		setSyncState(SyncState.Syncing)
+		if (showAlert.type === 'BOOKMARKS') {
+			const result = await SyncBookmark('POST')
+			if (result) {
+				toast.success('بوکمارک‌ها با موفقیت همگام‌سازی شدند.')
+			} else {
+				toast.error('خطا در همگام‌سازی بوکمارک‌ها.')
+			}
+
+			setSyncState(result ? SyncState.Success : SyncState.Error)
+			setShowModal(false)
+			setShowAlert({ show: false, type: null })
+		}
+
+		setSyncState(SyncState.Success)
+	}
+
+	if (!showAlert.show) {
+		return <></>
+	}
+
+	return (
+		<>
+			<Tooltip content="خطا در همگام‌سازی داده‌ها">
+				<div
+					className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 cursor-pointer hover:opacity-80 group hover:bg-primary/10 bg-content bg-glass rounded-xl hover:scale-105"
+					id="profile-and-friends-list"
+					onClick={() => setShowModal(true)}
+				>
+					<span className="absolute z-0 w-4 h-4 duration-200 rounded-full z- left-2 bottom-2 bg-error animate-ping"></span>
+					<MdSyncProblem size={24} className="z-10 text-error" />
+				</div>
+			</Tooltip>
+
+			{showAlert.type && (
+				<SyncAlertModal
+					isOpen={showModal}
+					onClose={() => setShowModal(false)}
+					type={showAlert.type}
+					isSyncing={syncState === SyncState.Syncing}
+					onTryAgainClick={onTryAgainClick}
+				/>
+			)}
+		</>
+	)
 }
 
 async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
@@ -203,53 +277,62 @@ function mapFetchedTodos(fetchedTodos: FetchedTodo[]) {
 }
 
 async function SyncBookmark(method: 'GET' | 'POST') {
-	const mapBookmark = (bookmarks: Bookmark[]) => {
-		return bookmarks
-			.map((bookmark) => ({
-				title: bookmark.title,
-				url: 'url' in bookmark ? bookmark.url : undefined,
-				parentId: bookmark.parentId,
-				offlineId: bookmark.id,
-				id: bookmark.onlineId,
-				type: bookmark.type,
-				sticker: bookmark.sticker,
-				customTextColor: bookmark.customTextColor,
-				customBackground: bookmark.customBackground,
-				order: bookmark.order || 0,
-			}))
-			.sort((a, b) => {
-				const parentCompare = (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1)
-				if (parentCompare !== 0) return parentCompare
+	try {
+		const mapBookmark = (bookmarks: Bookmark[]) => {
+			return bookmarks
+				.map((bookmark) => ({
+					title: bookmark.title,
+					url: 'url' in bookmark ? bookmark.url : undefined,
+					parentId: bookmark.parentId,
+					offlineId: bookmark.id,
+					id: bookmark.onlineId,
+					type: bookmark.type,
+					sticker: bookmark.sticker,
+					customTextColor: bookmark.customTextColor,
+					customBackground: bookmark.customBackground,
+					icon: bookmark.icon,
+					order: bookmark.order || 0,
+				}))
+				.sort((a, b) => {
+					const parentCompare = (a.parentId ? 1 : -1) - (b.parentId ? 1 : -1)
+					if (parentCompare !== 0) return parentCompare
 
-				return (a.order || 0) - (b.order || 0)
+					return (a.order || 0) - (b.order || 0)
+				})
+		}
+
+		const [apiClient, bookmarks] = await Promise.all([
+			getMainClient(),
+			getFromStorage('bookmarks'),
+			getFromStorage('deletedBookmarkIds'),
+		])
+
+		let fetchedBookmarks: FetchedBookmark[] = []
+		if (method === 'GET') {
+			fetchedBookmarks = await getBookmarks()
+		} else {
+			const offlineBookmarks = bookmarks?.filter(
+				(b) => validate(b.id) && (b.onlineId === null || b.onlineId === undefined)
+			)
+
+			const bookmarksInput = mapBookmark(offlineBookmarks || [])
+
+			const response = await apiClient.post<FetchedBookmark[]>('/bookmarks/sync', {
+				bookmarks: bookmarksInput,
+				deletedBookmarks: [],
 			})
+
+			fetchedBookmarks = response.data
+		}
+
+		const mappedFetched: Bookmark[] = mapBookmarks(fetchedBookmarks)
+
+		callEvent('bookmarksChanged', mappedFetched)
+
+		return true
+	} catch {
+		return false
 	}
-
-	const [apiClient, bookmarks, deletedBookmarks] = await Promise.all([
-		getMainClient(),
-		getFromStorage('bookmarks'),
-		getFromStorage('deletedBookmarkIds'),
-	])
-
-	let fetchedBookmarks: FetchedBookmark[] = []
-	if (method === 'GET') {
-		fetchedBookmarks = await getBookmarks()
-	} else {
-		const bookmarksInput = mapBookmark(bookmarks || [])
-
-		const response = await apiClient.post<FetchedBookmark[]>('/bookmarks/sync', {
-			bookmarks: bookmarksInput,
-			deletedBookmarks: deletedBookmarks || [],
-		})
-
-		fetchedBookmarks = response.data
-	}
-
-	const mappedFetched: Bookmark[] = mapBookmarks(fetchedBookmarks)
-
-	callEvent('bookmarksChanged', mappedFetched)
-
-	return true
 }
 
 async function getAll() {

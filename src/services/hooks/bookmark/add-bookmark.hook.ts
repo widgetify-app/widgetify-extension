@@ -18,23 +18,27 @@ export const useAddBookmark = () => {
 	return useMutation({
 		mutationKey: ['addBookmark'],
 		mutationFn: async (input: BookmarkCreationPayload) => {
-			const client = await getMainClient()
-
-			const formData = new FormData()
-
-			Object.entries(input).forEach(([key, value]) => {
-				if (value !== undefined && value !== null) {
-					formData.append(key, value as any)
-				}
-			})
-
-			const response = await client.post<Bookmark>(`/bookmarks`, formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			})
-
-			return response.data
+			return await AddBookmarkApi(input)
 		},
 	})
+}
+
+export async function AddBookmarkApi(input: BookmarkCreationPayload) {
+	const client = await getMainClient()
+
+	const formData = new FormData()
+
+	Object.entries(input).forEach(([key, value]) => {
+		if (value !== undefined && value !== null) {
+			formData.append(key, value as any)
+		}
+	})
+
+	const response = await client.post<Bookmark>(`/bookmarks`, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+
+	return response.data
 }
