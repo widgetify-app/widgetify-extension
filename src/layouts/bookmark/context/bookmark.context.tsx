@@ -14,6 +14,8 @@ import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
 import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
+import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
+import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 
@@ -22,7 +24,7 @@ export interface BookmarkStoreContext {
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
-	editBookmark: (bookmark: Bookmark) => void
+	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string) => void
 }
 
@@ -42,6 +44,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
 	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
+	const { mutateAsync: updateBookmarkAsync } = useUpdateBookmark()
 
 	useEffect(() => {
 		const loadBookmarks = async () => {
@@ -58,14 +61,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				const all = [...current, ...data]
 				const uniqueBookmarks = all.reduce(
 					(acc: Bookmark[], bookmark: Bookmark) => {
-						if (!acc.some((b) => b.id === bookmark.id)) {
+						if (
+							!acc.some(
+								(b) =>
+									b.id === bookmark.id ||
+									b.onlineId === bookmark.onlineId ||
+									b.onlineId === bookmark.id
+							)
+						) {
 							acc.push(bookmark)
 						} else {
 							// update existing bookmark
 							const index = acc.findIndex(
 								(b) =>
 									b.id === bookmark.id ||
-									b.onlineId === bookmark.onlineId
+									b.onlineId === bookmark.onlineId ||
+									b.onlineId === bookmark.id
 							)
 							if (index !== -1) {
 								acc[index] = {
@@ -197,50 +208,70 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
-	const editBookmark = async (bookmark: Bookmark) => {
-		// try {
-		// 	const bookmarkSize = getBookmarkDataSize(bookmark)
-		// 	const isGif = bookmark.customImage?.startsWith('data:image/gif')
-		// 	const sizeLimit = isGif ? 1.5 * MAX_ICON_SIZE : MAX_ICON_SIZE
-		// 	if (bookmarkSize > sizeLimit) {
-		// 		toast.error(
-		// 			`تصویر انتخاب شده (${(bookmarkSize / 1024).toFixed(1)} کیلوبایت) بزرگتر از حداکثر مجاز است.`
-		// 		)
-		// 		return
-		// 	}
-		// 	const processedBookmark = await prepareBookmarkForStorage(bookmark)
-		// 	const updatedBookmarks =
-		// 		bookmarks?.map((b) =>
-		// 			b.id === processedBookmark.id ? processedBookmark : b
-		// 		) || []
-		// 	try {
-		// 		const testData = JSON.stringify(updatedBookmarks.filter((b) => b.isLocal))
-		// 		if (testData.length > 5 * 1024 * 1024) {
-		// 			toast.error(
-		// 				'حجم بوکمارک‌ها بیش از حد مجاز است. لطفاً برخی بوکمارک‌ها را حذف کنید.'
-		// 			)
-		// 			return
-		// 		}
-		// 	} catch {
-		// 		toast.error('خطا در ذخیره‌سازی بوکمارک. داده‌ها بیش از حد بزرگ هستند.')
-		// 		return
-		// 	}
-		// 	setBookmarks(updatedBookmarks)
-		// 	const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-		// 	await setToStorage('bookmarks', localBookmarks)
-		// 	Analytics.event('edit_bookmark', {
-		// 		bookmark_type: bookmark.type,
-		// 		has_custom_image: !!bookmark.customImage,
-		// 		has_custom_background: !!bookmark.customBackground,
-		// 		has_custom_text_color: !!bookmark.customTextColor,
-		// 		has_custom_sticker: !!bookmark.sticker,
-		// 	})
-		// 	await new Promise((resolve) => setTimeout(resolve, ms('3s')))
-		// 	callEvent('startSync', SyncTarget.BOOKMARKS)
-		// } catch (error) {
-		// 	console.error('Error editing bookmark:', error)
-		// 	toast.error('خطا در ویرایش بوکمارک')
-		// }
+	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {
+		if (!input.title?.trim() || !bookmarks) return
+		console.log('editBookmark called with input:', input)
+		const foundedBookmark = bookmarks.find(
+			(b) => b.id === input.id || b.onlineId === input.onlineId
+		)
+		if (!foundedBookmark) return toast.error('بوکمارک یافت نشد!')
+
+		let updatedBookmark: Bookmark | undefined = undefined
+		if (isAuthenticated) {
+			const [error, fetchedUpdate] = await safeAwait<AxiosError, Bookmark>(
+				updateBookmarkAsync({
+					id: foundedBookmark.onlineId || foundedBookmark.id,
+					parentId: foundedBookmark.parentId,
+					order: foundedBookmark.order,
+					customBackground: input.customBackground,
+					customTextColor: input.customTextColor,
+					sticker: input.sticker,
+					title: input.title?.trim(),
+					icon: input.icon || null,
+					type: foundedBookmark.type,
+					url: foundedBookmark.type === 'BOOKMARK' ? input.url : null,
+				})
+			)
+
+			if (error) {
+				const translated: string | Record<string, string> = translateError(error)
+				const msg =
+					typeof translated === 'string'
+						? translated
+						: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
+				toast.error(msg, {
+					duration: 5000,
+				})
+				return
+			}
+			updatedBookmark = fetchedUpdate
+		}
+
+		const index = bookmarks.findIndex(
+			(b) => b.id === foundedBookmark.id || b.onlineId === foundedBookmark.onlineId
+		)
+		if (index !== -1) {
+			bookmarks[index] = {
+				...foundedBookmark,
+				title: input.title?.trim(),
+				customBackground: input.customBackground,
+				customTextColor: input.customTextColor,
+				sticker: input.sticker,
+				url:
+					foundedBookmark.type === 'BOOKMARK' ? input.url : foundedBookmark.url,
+				icon: input.icon ? await fileToBase64(input.icon) : foundedBookmark.icon,
+				onlineId: updatedBookmark ? updatedBookmark.id : foundedBookmark.onlineId,
+				id: updatedBookmark ? updatedBookmark.id : foundedBookmark.id,
+				isLocal: updatedBookmark ? false : foundedBookmark.isLocal,
+			}
+			console.log('Updated bookmark:', bookmarks[index])
+			setBookmarks([...bookmarks])
+
+			await setToStorage('bookmarks', bookmarks)
+			Analytics.event('edit_bookmark')
+		}
+
+		cb()
 	}
 
 	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {

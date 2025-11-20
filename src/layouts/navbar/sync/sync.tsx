@@ -331,9 +331,9 @@ function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 		url: bookmark.url,
 		icon: bookmark.icon,
 		onlineId: bookmark.id,
-		sticker: bookmark.sticker,
-		customTextColor: bookmark.customTextColor,
-		customBackground: bookmark.customBackground,
+		sticker: bookmark.sticker ?? null,
+		customTextColor: bookmark.customTextColor ?? null,
+		customBackground: bookmark.customBackground ?? null,
 		order: bookmark.order || 0,
 	}))
 

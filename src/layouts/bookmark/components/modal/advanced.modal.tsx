@@ -9,15 +9,26 @@ import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
-import type { BookmarkCreateFormFields } from './add-bookmark.modal'
+import type { BookmarkType } from '../../types/bookmark.types'
 
 interface AdvancedModalProps {
 	title: string
 	onClose: (
-		data: { background?: string; textColor?: string; sticker?: string } | null
+		data: {
+			background: string | null
+			textColor: string | null
+			sticker: string | null
+		} | null
 	) => void
 	isOpen: boolean
-	bookmark: BookmarkCreateFormFields
+	bookmark: {
+		customBackground: string | null
+		customTextColor: string | null
+		sticker: string | null
+		type: BookmarkType
+		title: string
+		url: string | null
+	}
 }
 
 export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModalProps) {
@@ -124,27 +135,18 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	const resetBackground = () => {
-		setBackground('')
+		setBackground(null)
 	}
 
 	const resetTextColor = () => {
-		setTextColor('')
+		setTextColor(null)
 	}
 
 	function handleClose() {
-		const hasBackgroundChanged = background !== bookmark.customBackground
-		const hasTextColorChanged = textColor !== bookmark.customTextColor
-		const hasEmojiChanged = sticker !== bookmark.sticker
-
-		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
-			onClose(null)
-			return
-		}
-
 		onClose({
-			background: hasBackgroundChanged ? (background ?? undefined) : undefined,
-			textColor: hasTextColorChanged ? (textColor ?? undefined) : undefined,
-			sticker: hasEmojiChanged ? (sticker ?? undefined) : undefined,
+			background: background,
+			textColor: textColor,
+			sticker: sticker,
 		})
 	}
 

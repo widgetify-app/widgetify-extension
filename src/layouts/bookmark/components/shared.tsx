@@ -3,10 +3,6 @@ import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
 import type { BookmarkType } from '../types/bookmark.types'
-import type {
-	AddBookmarkUpdateFormData,
-	BookmarkCreateFormFields,
-} from './modal/add-bookmark.modal'
 import toast from 'react-hot-toast'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
@@ -87,15 +83,12 @@ export function useBookmarkIcon() {
 	const [iconLoadError, setIconLoadError] = useState(false)
 
 	const renderIconPreview = (
-		formData: BookmarkCreateFormFields,
+		icon: string | File | null,
 		iconSource: IconSourceType,
 		setIconSource: (source: IconSourceType) => void,
-		updateFormData: <K extends keyof BookmarkCreateFormFields>(
-			key: K,
-			value: BookmarkCreateFormFields[K]
-		) => void,
-		type: BookmarkType
+		cb: (value: File | null) => void
 	) => {
+		console.log('Rendering icon preview with icon:', icon)
 		const handlePreviewClick = () => {
 			if (iconSource === 'upload') {
 				fileInputRef.current?.click()
@@ -104,7 +97,7 @@ export function useBookmarkIcon() {
 
 		const handleRemoveCustomImage = (e: React.MouseEvent) => {
 			e.stopPropagation()
-			updateFormData('icon', null)
+			cb(null)
 			setIconSource('auto')
 		}
 
@@ -123,11 +116,11 @@ export function useBookmarkIcon() {
 
 			const file = e.dataTransfer.files[0]
 			if (!file || !file.type.startsWith('image/')) return
-			updateFormData('icon', file)
+			cb(file)
 			setIconSource('upload')
 		}
 
-		if (formData.icon) {
+		if (icon && typeof icon !== 'string') {
 			return (
 				<div
 					className="relative flex flex-col items-center justify-center w-12 h-12 p-2 cursor-pointer group"
@@ -137,7 +130,7 @@ export function useBookmarkIcon() {
 					onDrop={handleDrop}
 				>
 					<img
-						src={URL.createObjectURL(formData.icon)}
+						src={URL.createObjectURL(icon)}
 						alt="Custom"
 						className="object-cover w-full h-full transition-opacity rounded-lg group-hover:opacity-75"
 					/>
@@ -154,7 +147,7 @@ export function useBookmarkIcon() {
 			)
 		}
 
-		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
+		if (icon) {
 			return (
 				<div
 					className={`relative w-12 h-12 cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
@@ -164,11 +157,11 @@ export function useBookmarkIcon() {
 					onDrop={handleDrop}
 				>
 					<img
-						src={formData.icon}
+						src={icon}
 						alt="Favicon"
 						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg border-content group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
-							updateFormData('icon', null)
+							cb(null)
 							setIconLoadError(true)
 						}}
 					/>
@@ -209,7 +202,7 @@ export function useBookmarkIcon() {
 	}
 	const handleImageUpload = (
 		e: React.ChangeEvent<HTMLInputElement>,
-		updateFormData: AddBookmarkUpdateFormData,
+		cb: (icon: File | null) => void,
 		setIconSource: (source: IconSourceType) => void
 	) => {
 		const file = e.target.files?.[0]
@@ -220,7 +213,7 @@ export function useBookmarkIcon() {
 			return
 		}
 
-		updateFormData('icon', file)
+		cb(file)
 		setIconSource('upload')
 	}
 

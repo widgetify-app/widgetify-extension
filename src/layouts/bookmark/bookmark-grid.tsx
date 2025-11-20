@@ -195,7 +195,9 @@ export function BookmarkGrid({
 				<EditBookmarkModal
 					isOpen={showEditBookmarkModal}
 					onClose={() => setShowEditBookmarkModal(false)}
-					onSave={(bookmark) => editBookmark(bookmark)}
+					onSave={(bookmark) =>
+						editBookmark(bookmark, () => setShowEditBookmarkModal(false))
+					}
 					bookmark={bookmarkToEdit}
 				/>
 			)}

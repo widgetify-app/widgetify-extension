@@ -163,14 +163,16 @@ export function BookmarksList() {
 					/>
 				</div>
 			</DndContext>
-			<AddBookmarkModal
-				isOpen={showAddBookmarkModal}
-				onClose={() => setShowAddBookmarkModal(false)}
-				onAdd={(bookmark) =>
-					addBookmark(bookmark, () => setShowAddBookmarkModal(false))
-				}
-				parentId={currentFolderId}
-			/>
+			{showAddBookmarkModal && (
+				<AddBookmarkModal
+					isOpen={showAddBookmarkModal}
+					onClose={() => setShowAddBookmarkModal(false)}
+					onAdd={(bookmark) =>
+						addBookmark(bookmark, () => setShowAddBookmarkModal(false))
+					}
+					parentId={currentFolderId}
+				/>
+			)}
 		</>
 	)
 }

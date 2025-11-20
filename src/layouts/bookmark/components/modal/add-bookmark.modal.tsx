@@ -113,7 +113,7 @@ export function AddBookmarkModal({
 		}
 		const baseBookmark: BookmarkCreateFormFields = {
 			title: formData.title.trim(),
-			url: newUrl?.trim() || null,
+			url: type === 'BOOKMARK' && newUrl ? newUrl.trim() : null,
 			type,
 			parentId,
 			customImage: formData.customImage,
@@ -153,7 +153,11 @@ export function AddBookmarkModal({
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null
+		data: {
+			background: string | null
+			textColor: string | null
+			sticker: string | null
+		} | null
 	) => {
 		setShowAdvanced(false)
 
@@ -211,11 +215,10 @@ export function AddBookmarkModal({
 								/>
 							)}
 							{renderIconPreview(
-								formData,
+								formData.icon,
 								type === 'FOLDER' ? 'upload' : iconSource,
 								setIconSource,
-								updateFormData,
-								type
+								(value) => updateFormData('icon', value)
 							)}
 						</div>
 						<input
@@ -224,7 +227,11 @@ export function AddBookmarkModal({
 							className="hidden"
 							accept="image/*"
 							onChange={(e) =>
-								handleImageUpload(e, updateFormData, setIconSource)
+								handleImageUpload(
+									e,
+									(file) => updateFormData('icon', file),
+									setIconSource
+								)
 							}
 						/>
 						<TextInput
