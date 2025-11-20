@@ -1,4 +1,3 @@
-import ms from 'ms'
 import { v4 as uuidv4 } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -25,7 +24,7 @@ export interface BookmarkStoreContext {
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
-	deleteBookmark: (id: string) => void
+	deleteBookmark: (id: string, cb: () => void) => void
 }
 
 const bookmarkContext = createContext<BookmarkStoreContext>({
@@ -203,8 +202,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			await setToStorage('bookmarks', localBookmarks)
 
 			Analytics.event('add_bookmark')
-			if (!createdBookmark) {
-				await new Promise((resolve) => setTimeout(resolve, ms('3s')))
+			if (!createdBookmark && isAuthenticated) {
 				callEvent('startSync', SyncTarget.BOOKMARKS)
 			}
 		} catch (error) {
@@ -302,7 +300,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		return result
 	}
 
-	const deleteBookmark = async (id: string) => {
+	const deleteBookmark = async (id: string, cb: () => void) => {
 		if (!bookmarks) return
 
 		const bookmarkToDelete = bookmarks.find((b) => b.id === id || b.onlineId === id)
@@ -331,6 +329,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		await setToStorage('bookmarks', localBookmarks)
 
 		Analytics.event('delete_bookmark')
+		cb()
 	}
 
 	return (

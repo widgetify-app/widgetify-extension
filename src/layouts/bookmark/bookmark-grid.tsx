@@ -125,7 +125,10 @@ export function BookmarkGrid({
 
 	const handleConfirmDelete = () => {
 		if (bookmarkToDelete) {
-			deleteBookmark(bookmarkToDelete.onlineId || bookmarkToDelete.id)
+			deleteBookmark(bookmarkToDelete.onlineId || bookmarkToDelete.id, () => {
+				setBookmarkToDelete(null)
+				setShowDeleteConfirmationModal(false)
+			})
 		}
 	}
 
