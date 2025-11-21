@@ -4,10 +4,10 @@ import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
-import { TooltipProvider } from '@/components/clickableTooltip'
+import { ClickableTooltip } from '@/components/clickableTooltip'
+import { toolTipContent } from './day/toolTipContent'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
@@ -23,7 +23,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	setSelectedDate,
 }) => {
 	const { user } = useAuth()
+	const [isOpenTooltip, setIsOpenTooltip] = useState<boolean>(false)
 	const { selected_timezone: timezone } = useGeneralSetting()
+	const [clickedElement, setClickedElement] = useState<HTMLDivElement | null>(null)
 
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
@@ -51,29 +53,29 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const selectedDateStr = formatDateStr(selectedDate)
 
 	return (
-		<div className="grid grid-cols-7 gap-1 py-2 text-center">
-			{WEEKDAYS.map((day) => (
-				<div key={day} className={'text-sm mb-1 text-content opacity-80'}>
-					{day}
-				</div>
-			))}
+		<>
+			<div className="grid grid-cols-7 gap-1 py-2 text-center">
+				{WEEKDAYS.map((day) => (
+					<div key={day} className={'text-sm mb-1 text-content opacity-80'}>
+						{day}
+					</div>
+				))}
 
-			{Array.from({ length: emptyDays }).map((_, i) => (
-				<div
-					key={`prev-month-${i}`}
-					className={`
+				{Array.from({ length: emptyDays }).map((_, i) => (
+					<div
+						key={`prev-month-${i}`}
+						className={`
 						p-0 text-xs
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
 						text-content opacity-40
 					`}
-				>
-					{prevMonthStartDay + i}
-				</div>
-			))}
-			<TooltipProvider>
+					>
+						{prevMonthStartDay + i}
+					</div>
+				))}
 				{Array.from({ length: daysInMonth }, (_, i) => (
 					<DayItem
-						key={uuidv4()}
+						key={`day-${i}`}
 						currentDate={currentDate}
 						day={i + 1}
 						events={events}
@@ -82,22 +84,35 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 						setSelectedDate={setSelectedDate}
 						todos={todos}
 						timezone={timezone.value}
+						onClick={(element) => {
+							setClickedElement(element)
+							setIsOpenTooltip(true)
+						}}
 					/>
 				))}
-			</TooltipProvider>
 
-			{Array.from({ length: nextMonthDays }).map((_, i) => (
-				<div
-					key={`next-month-${i}`}
-					className={`
+				{Array.from({ length: nextMonthDays }).map((_, i) => (
+					<div
+						key={`next-month-${i}`}
+						className={`
 						p-0 text-xs 
 						h-6 w-6 mx-auto flex items-center justify-center rounded-full
 						text-content opacity-40
 					`}
-				>
-					{i + 1}
-				</div>
-			))}
-		</div>
+					>
+						{i + 1}
+					</div>
+				))}
+			</div>
+
+			{clickedElement && (
+				<ClickableTooltip
+					triggerRef={{ current: clickedElement }}
+					content={toolTipContent(events, googleEvents || [])}
+					isOpen={isOpenTooltip}
+					setIsOpen={setIsOpenTooltip}
+				/>
+			)}
+		</>
 	)
 }

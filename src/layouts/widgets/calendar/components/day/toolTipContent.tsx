@@ -2,43 +2,45 @@ import moment from 'jalali-moment'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
-import type { FetchedEvent } from '@/services/hooks/date/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
 	convertShamsiToHijri,
 	filterGoogleEventsByDate,
-	type WidgetifyDate,
+	getGregorianEvents,
+	getHijriEvents,
+	getShamsiEvents,
 } from '../../utils'
+import { useDate } from '@/context/date.context'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 
 export const toolTipContent = (
-	cellDate: WidgetifyDate,
-	events: {
-		todayShamsiEvents: FetchedEvent[]
-		todayHijriEvents: FetchedEvent[]
-		todayGregorianEvents: FetchedEvent[]
-		googleEvents: GoogleCalendarEvent[]
-	},
+	events: FetchedAllEvents,
+	googleEvents: GoogleCalendarEvent[],
 	eventIcon?: string
 ) => {
+	const { selectedDate } = useDate()
+
+	const todayShamsiEvents = getShamsiEvents(events, selectedDate)
+	const todayHijriEvents = getHijriEvents(events, selectedDate)
+	const todayGregorianEvents = getGregorianEvents(events, selectedDate)
+
 	const isHoliday =
-		cellDate.day() === 5 ||
-		events.todayShamsiEvents.some((event) => event.isHoliday) ||
-		events.todayHijriEvents.some((event) => event.isHoliday)
+		selectedDate.day() === 5 ||
+		todayShamsiEvents.some((event) => event.isHoliday) ||
+		todayHijriEvents.some((event) => event.isHoliday)
 
 	const dayEvent = [
-		...events.todayShamsiEvents,
-		...events.todayGregorianEvents,
-		...events.todayHijriEvents,
+		...todayShamsiEvents,
+		...todayGregorianEvents,
+		...todayHijriEvents,
 	].sort((a) => (a.isHoliday ? -1 : 1))
 
-	const hijri = convertShamsiToHijri(cellDate)
-	const gregorian = cellDate.clone().doAsGregorian().format('YYYY MMMM DD')
-	const jalali = cellDate.format('jYYYY/jMM/jD')
-	const jalaliDay = cellDate.format('ddd')
+	const hijri = convertShamsiToHijri(selectedDate)
+	const gregorian = selectedDate.clone().doAsGregorian().format('YYYY MMMM DD')
+	const jalali = selectedDate.format('jYYYY/jMM/jD')
+	const jalaliDay = selectedDate.format('ddd')
 
-	const dayGoogleEvents = events.googleEvents
-		? filterGoogleEventsByDate(events.googleEvents, cellDate)
-		: []
+	const dayGoogleEvents = filterGoogleEventsByDate(googleEvents, selectedDate)
 
 	// is holiday style
 	const holidayStyle = isHoliday
