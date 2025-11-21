@@ -8,7 +8,6 @@ interface SortableBookmarkProps {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
-	isManageable: boolean
 	id: string
 }
 
@@ -16,13 +15,11 @@ export function SortableBookmarkItem({
 	bookmark,
 	onClick,
 	onMenuClick,
-	isManageable,
 	id,
 }: SortableBookmarkProps) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
 			id,
-			disabled: !isManageable,
 		})
 
 	const style = {
@@ -44,15 +41,14 @@ export function SortableBookmarkItem({
 					bookmark={bookmark}
 					onClick={onClick}
 					isDragging={isDragging}
-					onMenuClick={isManageable ? onMenuClick : undefined}
+					onMenuClick={onMenuClick}
 				/>
 			) : (
 				<BookmarkItem
 					bookmark={bookmark}
 					onClick={onClick}
-					canAdd={true}
 					isDragging={isDragging}
-					onMenuClick={isManageable ? onMenuClick : undefined}
+					onMenuClick={onMenuClick}
 				/>
 			)}
 		</div>

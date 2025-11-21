@@ -1,8 +1,8 @@
 import { cleanupOutdatedCaches } from 'workbox-precaching'
 import { getFromStorage, setToStorage } from '../src/common/storage'
-import { setupCaching } from '../background/cache'
-import { setupEventListeners } from '../background/events'
-import { normalizeKey, trySync } from '../background/utils'
+import { setupCaching } from './cache'
+import { setupEventListeners } from './events'
+import { normalizeKey, trySync } from './utils'
 
 let debounceTimer: any = null
 

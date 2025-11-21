@@ -98,6 +98,8 @@ export function NavbarLayout(): JSX.Element {
 				data-tour="navbar"
 			>
 				<MarketButton />
+				<SyncButton />
+
 				<div
 					className={`relative flex flex-row-reverse items-center h-full px-1 overflow-hidden bg-content bg-glass rounded-xl ${w}`}
 				>
@@ -119,7 +121,6 @@ export function NavbarLayout(): JSX.Element {
 					<div className="flex items-center justify-end gap-1 transition-all rounded-xl">
 						<ProfileNav />
 						<FriendsList />
-						<SyncButton />
 						<SettingsDropdown setShowSettings={setShowSettings} />
 						<NavButton
 							onClick={() => {}}

@@ -82,7 +82,7 @@ export function RenderStickerPattern(bookmark: Bookmark) {
 						}}
 					>
 						<img
-							src={bookmark.sticker}
+							src={bookmark.sticker || ''}
 							alt=""
 							className="hidden object-contain w-full h-full rounded-sm sm:block"
 							style={{

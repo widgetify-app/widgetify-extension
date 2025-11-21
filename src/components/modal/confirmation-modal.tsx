@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { FaSpinner } from 'react-icons/fa'
 import { FiAlertTriangle, FiCheck, FiTrash2 } from 'react-icons/fi'
 import { Button } from '../button/button'
 import Modal from '../modal'
@@ -99,22 +100,27 @@ export function ConfirmationModal({
 				{/* Action Buttons */}
 				<div className="flex gap-3 pt-2">
 					<Button
+						onClick={handleConfirm}
+						size="md"
+						disabled={isLoading}
+						loading={isLoading}
+						loadingText={
+							<div className="flex items-center gap-1">
+								<FaSpinner className="animate-spin" size={12} />
+								<span className="text-xs">در حال انجام...</span>
+							</div>
+						}
+						className={`flex-1 ${config.confirmBg} ${config.confirmText} border-none rounded-2xl`}
+					>
+						{confirmText}
+					</Button>
+					<Button
 						onClick={handleCancel}
 						size="md"
 						disabled={isLoading}
 						className="flex-1 border border-content/20 text-content hover:bg-base-300/50 rounded-2xl"
 					>
 						{cancelText}
-					</Button>
-					<Button
-						onClick={handleConfirm}
-						size="md"
-						disabled={isLoading}
-						loading={isLoading}
-						loadingText="در حال انجام..."
-						className={`flex-1 ${config.confirmBg} ${config.confirmText} border-none rounded-2xl`}
-					>
-						{confirmText}
 					</Button>
 				</div>
 			</div>

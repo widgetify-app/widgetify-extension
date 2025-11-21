@@ -2,23 +2,51 @@ import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { useEffect, useState, useTransition } from 'react'
-import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
+import { useEffect, useState } from 'react'
+import type { Bookmark } from '../../types/bookmark.types'
 import {
-	type BookmarkFormData,
 	IconSourceSelector,
 	type IconSourceType,
 	ShowAdvancedButton,
 	useBookmarkIcon,
 } from '../shared'
 import { AdvancedModal } from './advanced.modal'
+import { useIsMutating } from '@tanstack/react-query'
 
 interface EditBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
-	onSave: (bookmark: Bookmark) => void
+	onSave: (out: BookmarkUpdateFormFields) => void
 	bookmark: Bookmark
 }
+
+export interface BookmarkUpdateFormFields {
+	readonly id?: string
+	readonly onlineId?: string
+	title: string
+	url: string | null
+	customImage: File | null
+	customBackground: string | null
+	customTextColor: string | null
+	sticker: string | null
+	icon: File | null
+}
+
+const empty: BookmarkUpdateFormFields = {
+	id: undefined,
+	onlineId: undefined,
+	title: '',
+	url: '',
+	customImage: null,
+	customBackground: '',
+	customTextColor: '',
+	sticker: '',
+	icon: null,
+}
+type UpdateBookmarkUpdateFormData = <K extends keyof BookmarkUpdateFormFields>(
+	key: K,
+	value: BookmarkUpdateFormFields[K]
+) => void
 
 export function EditBookmarkModal({
 	isOpen,
@@ -26,99 +54,50 @@ export function EditBookmarkModal({
 	onSave,
 	bookmark,
 }: EditBookmarkModalProps) {
-	const [formData, setFormData] = useState<BookmarkFormData>({
-		title: '',
-		url: '',
-		icon: '',
-		customImage: '',
-		customBackground: '',
-		customTextColor: '',
-		sticker: '',
-		touched: false,
-	})
+	const [formData, setFormData] = useState<BookmarkUpdateFormFields>(
+		structuredClone(empty)
+	)
+
+	const isUpdating = useIsMutating({ mutationKey: ['updateBookmark'] }) > 0
 
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
-	const [isPending, startTransition] = useTransition()
+	const [icon, setIcon] = useState<string | null | File>(null)
 
 	const type = bookmark?.type
 
-	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
-		useBookmarkIcon()
+	const { fileInputRef, renderIconPreview, handleImageUpload } = useBookmarkIcon()
 
-	const updateFormData = (key: string, value: string) => {
-		setFormData((prev) => ({ ...prev, [key]: value, touched: true }))
+	const updateFormData: UpdateBookmarkUpdateFormData = (key, value) => {
+		if (key === 'icon') {
+			setIcon(value || null)
+		}
+		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
 
-	useEffect(() => {
-		if (bookmark) {
-			setFormData({
-				title: bookmark.title,
-				url: bookmark.type === 'BOOKMARK' ? bookmark.url : '',
-				icon:
-					bookmark.type === 'BOOKMARK'
-						? bookmark.icon || getFaviconFromUrl(bookmark.url)
-						: '',
-				customImage: bookmark.customImage || '',
-				customBackground: bookmark.customBackground || '',
-				customTextColor: bookmark.customTextColor || '',
-				sticker: bookmark.sticker || '',
-				touched: false,
-			})
-
-			setIconSource(bookmark.customImage ? 'upload' : 'auto')
-		}
-	}, [bookmark])
-
-	useEffect(() => {
-		if (iconSource === 'auto' && formData.url && formData.touched) {
-			setIconLoadError(false)
-			const url = formData.url
-			requestAnimationFrame(() => {
-				updateFormData('icon', getFaviconFromUrl(url))
-			})
-		}
-	}, [formData.url, iconSource, formData.touched])
-
 	const handleSave = () => {
-		startTransition(() => {
-			if (!formData.title?.trim() || !bookmark) return
+		if (!formData.title?.trim() || !bookmark) return
 
-			let iconUrl: string | undefined = undefined
-			if (
-				type === 'BOOKMARK' &&
-				iconSource === 'auto' &&
-				formData.icon &&
-				!formData.customImage
-			) {
-				iconUrl = getFaviconFromUrl(formData.url)
-			}
-
-			const updatedBookmark = {
-				...bookmark,
-				title: formData.title.trim(),
-				customImage: formData.customImage,
-				customBackground: formData.customBackground || undefined,
-				customTextColor: formData.customTextColor || undefined,
-				sticker: formData.sticker || undefined,
-			}
-
-			if (type === 'BOOKMARK') {
-				let newUrl = formData.url
-				if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
-					newUrl = `https://${newUrl}`
-				}
-				updatedBookmark.url = newUrl.trim()
-				updatedBookmark.icon = iconUrl || bookmark.icon
-			}
-
-			onSave(updatedBookmark)
-			onClose()
+		onSave({
+			title: formData.title.trim(),
+			url: formData.url || null,
+			customBackground: formData.customBackground || null,
+			customImage: formData.customImage,
+			customTextColor: formData.customTextColor || null,
+			sticker: formData.sticker || null,
+			icon: formData.icon,
+			id: bookmark.id,
+			onlineId: bookmark.onlineId || undefined,
 		})
+		// onClose()
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null
+		data: {
+			background: string | null
+			textColor: string | null
+			sticker: string | null
+		} | null
 	) => {
 		setShowAdvanced(false)
 
@@ -137,6 +116,28 @@ export function EditBookmarkModal({
 		}
 	}
 
+	useEffect(() => {
+		if (bookmark) {
+			setFormData({
+				onlineId: bookmark.onlineId || undefined,
+				id: bookmark.id,
+				title: bookmark.title,
+				customBackground: bookmark.customBackground,
+				customImage: null,
+				customTextColor: bookmark.customTextColor,
+				icon: null,
+				sticker: bookmark.sticker,
+				url: bookmark.url,
+			})
+			setIconSource(bookmark.icon ? 'upload' : 'auto')
+			if (bookmark.icon) {
+				setIcon(bookmark.icon)
+			} else if (bookmark.type === 'BOOKMARK' && bookmark.url) {
+				setIcon(getFaviconFromUrl(bookmark.url))
+			}
+		}
+	}, [bookmark])
+
 	if (!bookmark) return null
 
 	return (
@@ -147,6 +148,7 @@ export function EditBookmarkModal({
 			title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
 			direction="rtl"
 			className="!overflow-y-hidden"
+			closeOnBackdropClick={false}
 		>
 			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]">
 				<div className="flex flex-col gap-2">
@@ -158,11 +160,10 @@ export function EditBookmarkModal({
 							/>
 						)}
 						{renderIconPreview(
-							formData,
-							iconSource,
+							icon,
+							type === 'FOLDER' ? 'upload' : iconSource,
 							setIconSource,
-							updateFormData,
-							type as BookmarkType
+							(value) => updateFormData('icon', value)
 						)}
 						<p className="mb-2 text-xs text-center text-content">
 							برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
@@ -175,7 +176,11 @@ export function EditBookmarkModal({
 						className="hidden"
 						accept="image/*"
 						onChange={(e) =>
-							handleImageUpload(e, updateFormData, setIconSource)
+							handleImageUpload(
+								e,
+								(file) => updateFormData('icon', file),
+								setIconSource
+							)
 						}
 					/>
 
@@ -196,7 +201,7 @@ export function EditBookmarkModal({
 								name="url"
 								type="text"
 								placeholder="آدرس لینک"
-								value={formData.url}
+								value={formData.url || ''}
 								onChange={(value) => updateFormData('url', value)}
 								className={
 									'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
@@ -216,6 +221,7 @@ export function EditBookmarkModal({
 						<Button
 							onClick={onClose}
 							size="md"
+							disabled={isUpdating}
 							className={
 								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
 							}
@@ -227,15 +233,16 @@ export function EditBookmarkModal({
 							disabled={
 								!formData.title?.trim() ||
 								(type === 'BOOKMARK' && !formData.url?.trim()) ||
-								isPending
+								isUpdating
 							}
 							size="md"
 							isPrimary={true}
+							loading={isUpdating}
 							className={
 								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 							}
 						>
-							{isPending ? 'در حال ذخیره' : 'ذخیره'}
+							ذخیره
 						</Button>
 					</div>
 				</div>

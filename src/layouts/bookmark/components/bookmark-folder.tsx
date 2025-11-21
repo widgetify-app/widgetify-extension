@@ -25,7 +25,7 @@ export function FolderBookmarkItem({
 	}
 
 	const displayIcon =
-		bookmark.customImage ||
+		bookmark.icon ||
 		(isHovered ? (
 			<FaFolderOpen className="w-6 h-6 text-blue-400" />
 		) : (
@@ -84,7 +84,7 @@ export function FolderBookmarkItem({
 					</div>
 					<BookmarkTitle
 						title={bookmark.title}
-						customTextColor={bookmark.customTextColor}
+						customTextColor={bookmark.customTextColor || ''}
 					/>
 
 					{onMenuClick && (

@@ -8,22 +8,26 @@ import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
-import type { Bookmark } from '../../types/bookmark.types'
 import { BookmarkItem } from '../bookmark-item'
+import type { BookmarkType } from '../../types/bookmark.types'
 
 interface AdvancedModalProps {
 	title: string
 	onClose: (
-		data: { background?: string; textColor?: string; sticker?: string } | null
+		data: {
+			background: string | null
+			textColor: string | null
+			sticker: string | null
+		} | null
 	) => void
 	isOpen: boolean
 	bookmark: {
-		type: Bookmark['type']
-		customBackground: string
-		customTextColor: string
-		title?: string
-		url?: string
-		sticker?: string
+		customBackground: string | null
+		customTextColor: string | null
+		sticker: string | null
+		type: BookmarkType
+		title: string
+		url: string | null
 	}
 }
 
@@ -131,27 +135,18 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	const resetBackground = () => {
-		setBackground('')
+		setBackground(null)
 	}
 
 	const resetTextColor = () => {
-		setTextColor('')
+		setTextColor(null)
 	}
 
 	function handleClose() {
-		const hasBackgroundChanged = background !== bookmark.customBackground
-		const hasTextColorChanged = textColor !== bookmark.customTextColor
-		const hasEmojiChanged = sticker !== bookmark.sticker
-
-		if (!hasBackgroundChanged && !hasTextColorChanged && !hasEmojiChanged) {
-			onClose(null)
-			return
-		}
-
 		onClose({
-			background: hasBackgroundChanged ? background : undefined,
-			textColor: hasTextColorChanged ? textColor : undefined,
-			sticker: hasEmojiChanged ? sticker : undefined,
+			background: background,
+			textColor: textColor,
+			sticker: sticker,
 		})
 	}
 
@@ -175,7 +170,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
-								value={background}
+								value={background || ''}
 								onChange={setBackground}
 								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
@@ -183,7 +178,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker
-									color={background}
+									color={background || ''}
 									onChange={setBackground}
 								/>
 							</div>
@@ -202,7 +197,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						<div className="relative flex flex-1">
 							<TextInput
 								type="text"
-								value={textColor}
+								value={textColor || ''}
 								onChange={setTextColor}
 								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
 								placeholder="#000000"
@@ -210,7 +205,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
 								<PopoverColorPicker
-									color={textColor}
+									color={textColor || ''}
 									onChange={setTextColor}
 								/>
 							</div>
@@ -297,17 +292,17 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className="flex justify-center p-4 overflow-hidden rounded-lg"
 						style={{
 							backgroundImage: document.body.style.backgroundImage,
-							backgroundColor:
-								document.body.style.backgroundColor || undefined,
+							backgroundColor: document.body.style.backgroundColor,
 							backgroundSize: 'cover',
 							backgroundPosition: 'center',
 						}}
 					>
 						<BookmarkItem
 							bookmark={{
-								customBackground: background || undefined,
-								customTextColor: textColor || undefined,
-								sticker: sticker || undefined,
+								customBackground: background,
+								customTextColor: textColor,
+								sticker: sticker,
+								order: null,
 								icon: getFaviconFromUrl(bookmark.url || 'google.com'),
 								title: bookmark.title || 'پیش‌نمایش',
 								url: 'https://www.google.com',
@@ -317,7 +312,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								parentId: null,
 								type: bookmark.type,
 							}}
-							canAdd={false}
 							onClick={() => {}}
 						/>
 					</div>

@@ -72,6 +72,8 @@ const errorTranslations: Record<string, string> = {
 	NOT_ENOUGH_COINS: 'ویج‌کوین‌هات کافی نیست 😕',
 	INVALID_REFERRAL_CODE: 'کد دعوت نامعتبر است',
 	ITEM_ALREADY_EXISTS: 'این رو قبلاً با ویج‌کوین گرفتی — نیازی به خرید دوباره نیست.',
+
+	INVALID_ID: 'آیدی نامعتبر است',
 }
 
 const validationTranslations: Record<string, string> = {

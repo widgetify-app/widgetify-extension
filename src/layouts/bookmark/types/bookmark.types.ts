@@ -7,14 +7,16 @@ export interface Bookmark {
 	parentId: string | null
 	isLocal: boolean
 	onlineId: string | null
-	url: string
-	icon?: string
-	pinned?: boolean
-	customImage?: string
-	customBackground?: string
-	customTextColor?: string
-	sticker?: string
-	order?: number
+	url: string | null
+	icon: string | null
+	customBackground: string | null
+	customTextColor: string | null
+	sticker: string | null
+	order: number | null
+}
+
+export interface LocalBookmark extends Bookmark {
+	file?: string // base64 encoded image
 }
 
 export interface FolderPathItem {

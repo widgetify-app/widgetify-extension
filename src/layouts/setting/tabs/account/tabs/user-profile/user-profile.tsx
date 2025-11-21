@@ -1,13 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { AiOutlineFileSync } from 'react-icons/ai'
 import { FiLogOut } from 'react-icons/fi'
-import { setToStorage } from '@/common/storage'
-import { isSyncActive } from '@/common/sync-checker'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
-import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
 import { useGetOrCreateReferralCode } from '@/services/hooks/user/referralsService.hook'
 import {
@@ -32,23 +28,12 @@ export const UserProfile = () => {
 		refetch,
 	} = useGetUserProfile()
 	const sendVerificationMutation = useSendVerificationEmail()
-	const [enableSync, setEnableSync] = useState<boolean>(true)
 	const [isEditing, setIsEditing] = useState(false)
 	const { data: referralCode } = useGetOrCreateReferralCode(profile?.verified || false)
 
 	useEffect(() => {
-		const loadSyncSettings = async () => {
-			const syncEnabled = await isSyncActive()
-			setEnableSync(syncEnabled)
-		}
 		refetch()
-		loadSyncSettings()
 	}, [])
-
-	const handleSyncToggle = async (newState: boolean) => {
-		setEnableSync(newState)
-		await setToStorage('enable_sync', newState)
-	}
 
 	const handleEditToggle = () => {
 		setIsEditing(!isEditing)
@@ -130,37 +115,6 @@ export const UserProfile = () => {
 				)
 			)}
 			<ActivityInput activity={profile?.activity || ''} />
-
-			<SectionPanel title="همگام‌سازی" size="xs">
-				<div className="flex items-center justify-between p-2 transition-colors rounded-lg">
-					<div className="pr-2">
-						<p
-							className={
-								'text-sm font-medium text-content flex items-center gap-1.5'
-							}
-						>
-							<AiOutlineFileSync
-								size={16}
-								className={enableSync ? 'text-blue-500' : 'text-content'}
-							/>
-							فعال‌سازی همگام‌سازی (Sync)
-						</p>
-						<p
-							className={
-								'text-xs text-content font-light opacity-80 mt-2 max-w-md'
-							}
-						>
-							با فعال کردن همگام‌سازی، تنظیمات شما به صورت خودکار ذخیره و در
-							نسخه‌های مختلف همگام‌سازی می‌شوند.
-						</p>
-					</div>
-					<ToggleSwitch
-						enabled={enableSync}
-						onToggle={() => handleSyncToggle(!enableSync)}
-						key={'sync-toggle'}
-					/>
-				</div>
-			</SectionPanel>
 
 			<Connections />
 
