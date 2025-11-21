@@ -2,21 +2,10 @@ import { useRef, useState } from 'react'
 import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import type { BookmarkType } from '../types/bookmark.types'
+import toast from 'react-hot-toast'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
-
-export interface BookmarkFormData {
-	title: string
-	url: string
-	icon: string
-	customImage: string
-	customBackground: string
-	customTextColor: string
-	sticker: string
-	touched?: boolean
-}
 
 export function IconSourceSelector({
 	iconSource,
@@ -94,12 +83,12 @@ export function useBookmarkIcon() {
 	const [iconLoadError, setIconLoadError] = useState(false)
 
 	const renderIconPreview = (
-		formData: BookmarkFormData,
+		icon: string | File | null,
 		iconSource: IconSourceType,
 		setIconSource: (source: IconSourceType) => void,
-		updateFormData: (key: string, value: string) => void,
-		type: BookmarkType
+		cb: (value: File | null) => void
 	) => {
+		console.log('Rendering icon preview with icon:', icon)
 		const handlePreviewClick = () => {
 			if (iconSource === 'upload') {
 				fileInputRef.current?.click()
@@ -108,7 +97,7 @@ export function useBookmarkIcon() {
 
 		const handleRemoveCustomImage = (e: React.MouseEvent) => {
 			e.stopPropagation()
-			updateFormData('customImage', '')
+			cb(null)
 			setIconSource('auto')
 		}
 
@@ -127,17 +116,11 @@ export function useBookmarkIcon() {
 
 			const file = e.dataTransfer.files[0]
 			if (!file || !file.type.startsWith('image/')) return
-
-			const reader = new FileReader()
-			reader.onloadend = () => {
-				const base64String = reader.result as string
-				updateFormData('customImage', base64String)
-				setIconSource('upload')
-			}
-			reader.readAsDataURL(file)
+			cb(file)
+			setIconSource('upload')
 		}
 
-		if (formData.customImage) {
+		if (icon && typeof icon !== 'string') {
 			return (
 				<div
 					className="relative flex flex-col items-center justify-center w-12 h-12 p-2 cursor-pointer group"
@@ -147,7 +130,7 @@ export function useBookmarkIcon() {
 					onDrop={handleDrop}
 				>
 					<img
-						src={formData.customImage}
+						src={URL.createObjectURL(icon)}
 						alt="Custom"
 						className="object-cover w-full h-full transition-opacity rounded-lg group-hover:opacity-75"
 					/>
@@ -164,7 +147,7 @@ export function useBookmarkIcon() {
 			)
 		}
 
-		if (type === 'BOOKMARK' && formData.icon && iconSource === 'auto') {
+		if (icon) {
 			return (
 				<div
 					className={`relative w-12 h-12 cursor-pointer group ${isDragging ? 'ring-2 ring-blue-400' : ''}`}
@@ -174,17 +157,12 @@ export function useBookmarkIcon() {
 					onDrop={handleDrop}
 				>
 					<img
-						src={formData.icon}
+						src={icon}
 						alt="Favicon"
 						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg border-content group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
-							try {
-								updateFormData('icon', getFaviconFromUrl(formData.url))
-								setIconLoadError(true)
-							} catch {
-								updateFormData('icon', '')
-								setIconLoadError(true)
-							}
+							cb(null)
+							setIconLoadError(true)
 						}}
 					/>
 					<div className="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
@@ -222,27 +200,21 @@ export function useBookmarkIcon() {
 			</div>
 		)
 	}
-
 	const handleImageUpload = (
 		e: React.ChangeEvent<HTMLInputElement>,
-		updateFormData: (key: string, value: string) => void,
+		cb: (icon: File | null) => void,
 		setIconSource: (source: IconSourceType) => void
 	) => {
 		const file = e.target.files?.[0]
 		if (!file) return
 
 		if (!file.type.startsWith('image/')) {
-			alert('لطفاً فقط فایل تصویری آپلود کنید')
+			toast.error('لطفاً فقط فایل تصویری آپلود کنید')
 			return
 		}
 
-		const reader = new FileReader()
-		reader.onloadend = () => {
-			const base64String = reader.result as string
-			updateFormData('customImage', base64String)
-			setIconSource('upload')
-		}
-		reader.readAsDataURL(file)
+		cb(file)
+		setIconSource('upload')
 	}
 
 	return {

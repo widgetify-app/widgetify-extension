@@ -1,11 +1,11 @@
-import { type ReactNode, useEffect } from 'react'
+import React, { type ReactNode, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { LuX } from 'react-icons/lu'
 
 type ModalProps = {
 	isOpen: boolean
 	onClose: () => void
-	title?: string
+	title?: React.ReactNode
 	size?: 'sm' | 'md' | 'lg' | 'xl'
 	children: ReactNode
 	direction?: 'rtl' | 'ltr'
@@ -70,7 +70,7 @@ export default function Modal({
 		<dialog
 			open={isOpen}
 			dir={direction}
-			aria-labelledby={title}
+			aria-labelledby={typeof title === 'string' ? title : undefined}
 			aria-modal="true"
 			onClick={() => closeOnBackdropClick && onClose()}
 			className={`modal modal-middle flex items-center justify-center transition-opacity duration-200 ${

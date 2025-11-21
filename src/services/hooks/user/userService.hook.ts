@@ -29,6 +29,7 @@ interface FetchedProfile {
 	birthDate: string | null
 	font: FontFamily
 	timeZone: string
+	coins: number
 }
 
 export interface UserProfile extends FetchedProfile {

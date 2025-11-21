@@ -42,12 +42,6 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 
 	return (
 		<div className="flex flex-col w-full h-full">
-			{error && (
-				<div className="flex items-center justify-center p-3 mb-4 text-sm text-white rounded-lg bg-error">
-					<span className="text-center">{error}</span>
-				</div>
-			)}
-
 			<form onSubmit={handleSubmit} className="flex flex-col w-full gap-5">
 				<div className="flex flex-col gap-1">
 					<label className="flex text-sm font-medium text-muted">ایمیل</label>
@@ -91,13 +85,17 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 						disabled={signInMutation.isPending}
 						isPrimary={true}
 						size="md"
-						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-xl font-medium shadow-none min-w-[200px]"
+						className="flex items-center justify-center px-20 py-2.5 text-white cursor-pointer transition-colors rounded-2xl font-medium shadow-none min-w-[200px]"
 					>
 						{signInMutation.isPending ? 'درحال پردازش...' : 'ورود به حساب'}
 					</Button>
 				</div>
 			</form>
-
+			{error && (
+				<div className="p-3 mt-4 border rounded-lg bg-error/20 text-error border-error/30">
+					<span className="text-center">{error}</span>
+				</div>
+			)}
 			<div className="flex items-center justify-center w-full mt-4">
 				<p className="flex items-center gap-1 text-sm text-muted">
 					<span>حساب کاربری ندارید؟</span>

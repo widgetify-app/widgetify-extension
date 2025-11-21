@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import { useChangeTheme } from '@/services/hooks/extension/updateSetting.hook'
 import { useAuth } from './auth.context'
 
 interface ThemeContextType {
@@ -18,6 +18,7 @@ export enum Theme {
 	LightGlass = 'lightglass',
 	Icy = 'icy',
 	Zarna = 'zarna',
+	esteghlal = 'esteghlal',
 }
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
@@ -25,7 +26,7 @@ export const ThemeContext = createContext<ThemeContextType | null>(null)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<string>('')
 	const { isAuthenticated } = useAuth()
-	const { mutateAsync } = useUpdateExtensionSettings()
+	const { mutateAsync } = useChangeTheme()
 	async function loadTheme() {
 		const theme = await getFromStorage('theme')
 		return theme
@@ -42,12 +43,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 
-		const event = listenEvent('themeChanged', (newTheme: Theme) => {
+		const event = listenEvent('theme_change', (newTheme: Theme) => {
 			applyThemeChange(newTheme)
+		})
+
+		const eventForTitle = listenEvent('browser_title_change', (newTitle) => {
+			document.title = newTitle.template
+			setToStorage('browserTitle', newTitle)
 		})
 
 		return () => {
 			event()
+			eventForTitle()
 		}
 	}, [])
 
@@ -79,14 +86,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const applyThemeChange = (theme: string) => {
+		document.documentElement.setAttribute('data-theme', theme)
 		setTheme(theme)
 		setToStorage('theme', theme as any)
-		document.documentElement.setAttribute('data-theme', theme)
-		const oldTheme = document.documentElement?.getAttribute('data-theme') || 'light'
-		Analytics.event('theme_change', {
-			previous_theme: oldTheme,
-			new_theme: theme,
-		})
+		Analytics.event('theme_change')
 	}
 
 	const contextValue: ThemeContextType = {

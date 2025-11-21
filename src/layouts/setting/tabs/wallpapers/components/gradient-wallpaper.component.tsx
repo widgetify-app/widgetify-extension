@@ -1,7 +1,6 @@
+import { useEffect, useState } from 'react'
 import type { GradientColors, Wallpaper } from '@/common/wallpaper.interface'
 import { SectionPanel } from '@/components/section-panel'
-import { TextInput } from '@/components/text-input'
-import { useEffect, useState } from 'react'
 
 interface GradientWallpaperProps {
 	onSelectGradient: (gradient: Wallpaper) => void
@@ -34,8 +33,6 @@ export function GradientWallpaper({
 	onSelectGradient,
 	selectedGradient,
 }: GradientWallpaperProps) {
-	const [customFromColor, setCustomFromColor] = useState('#7F00FF')
-	const [customToColor, setCustomToColor] = useState('#E100FF')
 	const [direction, setDirection] = useState<GradientColors['direction']>('to-r')
 
 	useEffect(() => {
@@ -84,15 +81,6 @@ export function GradientWallpaper({
 		}
 	}
 
-	const handleCustomGradientSelect = () => {
-		const gradient = createGradientWallpaper(
-			customFromColor,
-			customToColor,
-			'گرادیان سفارشی'
-		)
-		onSelectGradient(gradient)
-	}
-
 	const handlePredefinedGradientSelect = (from: string, to: string, name: string) => {
 		const gradient = createGradientWallpaper(from, to, name)
 		onSelectGradient(gradient)
@@ -103,19 +91,6 @@ export function GradientWallpaper({
 
 		const gradientId = createGradientId(from, to)
 		return selectedGradient.id === gradientId
-	}
-
-	function getStyle(selected: boolean) {
-		let style =
-			'p-2 border rounded-md flex items-center justify-center  cursor-pointer transition-colors hover:bg-content'
-
-		if (selected) {
-			style += ' border-primary bg-content'
-		} else {
-			style += 'border-content'
-		}
-
-		return style
 	}
 
 	return (
@@ -148,113 +123,6 @@ export function GradientWallpaper({
 						</div>
 					))}
 				</div>
-			</SectionPanel>
-
-			<SectionPanel title="گرادیان سفارشی">
-				<div className="flex flex-col gap-4 mb-4 sm:flex-row">
-					<div className="flex-1 space-y-2">
-						<label className={'block text-sm font-medium text-content'}>
-							رنگ شروع
-						</label>
-						<div className="flex items-center gap-2">
-							<TextInput
-								key={'customFromColor'}
-								type="color"
-								value={customFromColor}
-								onChange={(value) => setCustomFromColor(value)}
-								className="!w-10 !h-10 cursor-pointer"
-							/>
-							<TextInput
-								key={'customFromColorText'}
-								type="text"
-								value={customFromColor}
-								onChange={(value) => setCustomFromColor(value)}
-								className="flex-1 px-3 py-2rounded-md"
-								placeholder="#000000"
-							/>
-						</div>
-					</div>
-
-					<div className="flex-1 space-y-2">
-						<label className={'block text-sm font-medium text-content'}>
-							رنگ پایان
-						</label>
-						<div className="flex items-center gap-2">
-							<TextInput
-								key={'customToColor'}
-								type="color"
-								value={customToColor}
-								onChange={(value) => setCustomToColor(value)}
-								className="!w-10 !h-10 cursor-pointer rounded"
-							/>
-							<TextInput
-								key={'customToColorText'}
-								type="text"
-								value={customToColor}
-								onChange={(value) => setCustomToColor(value)}
-								placeholder="#000000"
-							/>
-						</div>
-					</div>
-				</div>
-
-				<div className="mb-4">
-					<label className={'block mb-2 text-sm font-medium text-content'}>
-						جهت گرادیان
-					</label>
-					<div className="grid grid-cols-4 gap-2">
-						{directions.map((dir) => (
-							<button
-								key={dir.value}
-								type="button"
-								onClick={() =>
-									setDirection(dir.value as GradientColors['direction'])
-								}
-								className={getStyle(direction === dir.value)}
-								title={dir.label}
-							>
-								{dir.value === 'to-r' && (
-									<span className="text-lg">→</span>
-								)}
-								{dir.value === 'to-l' && (
-									<span className="text-lg">←</span>
-								)}
-								{dir.value === 'to-t' && (
-									<span className="text-lg">↑</span>
-								)}
-								{dir.value === 'to-b' && (
-									<span className="text-lg">↓</span>
-								)}
-								{dir.value === 'to-tr' && (
-									<span className="text-lg">↗</span>
-								)}
-								{dir.value === 'to-tl' && (
-									<span className="text-lg">↖</span>
-								)}
-								{dir.value === 'to-br' && (
-									<span className="text-lg">↘</span>
-								)}
-								{dir.value === 'to-bl' && (
-									<span className="text-lg">↙</span>
-								)}
-							</button>
-						))}
-					</div>
-				</div>
-
-				<div
-					className="relative h-32 mb-4 overflow-hidden rounded-lg"
-					style={{
-						backgroundImage: `linear-gradient(${getTailwindDirectionToCss(direction)}, ${customFromColor}, ${customToColor})`,
-					}}
-				></div>
-
-				<button
-					onClick={handleCustomGradientSelect}
-					className="w-full px-4 py-2 text-white transition-colors bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600"
-				>
-					اعمال گرادیان
-				</button>
 			</SectionPanel>
 		</div>
 	)

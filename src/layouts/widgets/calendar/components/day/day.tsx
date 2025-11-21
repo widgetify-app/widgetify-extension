@@ -46,6 +46,7 @@ export function DayItem({
 	const hasEvent =
 		todayShamsiEvents.length || todayHijriEvents.length || hasGoogleEvents
 	const eventIcons = [
+		...todayGregorianEvents.filter((event) => event.icon).map((event) => event.icon),
 		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
 		...todayHijriEvents.filter((event) => event.icon).map((event) => event.icon),
 	].filter(Boolean) as string[]
@@ -143,34 +144,27 @@ export function DayItem({
 				{day}
 				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
 					{eventIcons.length > 0 ? (
-						eventIcons.slice(0, 1).map((icon, idx) => (
-							<img
-								key={idx}
-								src={icon}
-								alt="مناسبت"
-								className="object-contain w-2 h-2 transition-all rounded-full "
-								onError={(e) => {
-									e.currentTarget.style.display = 'none'
-
-									const parent = e.currentTarget.parentElement
-									if (parent) {
-										const span = document.createElement('span')
-										span.className = `w-1 h-1 ${getEventIndicatorStyle()} rounded-full`
-										parent.appendChild(span)
-									}
-								}}
-							/>
-						))
+						eventIcons
+							.slice(0, 1)
+							.map((icon, idx) => (
+								<img
+									key={idx}
+									src={icon}
+									alt="مناسبت"
+									className="object-contain w-6 h-6 transition-all rounded-full"
+									loading="lazy"
+								/>
+							))
 					) : (
 						<>
 							{hasEvent ? (
 								<span
-									className={`w-[3px] h-[3px] rounded-full ${getEventIndicatorStyle()}`}
+									className={`w-[3px] h-[1px] rounded-full ${getEventIndicatorStyle()}`}
 								/>
 							) : null}
 							{hasTodo ? (
 								<span
-									className={`w-[3px] h-[3px] rounded-full ${getTodoIndicatorStyle()}`}
+									className={`w-[3px] h-[1px] rounded-full ${getTodoIndicatorStyle()}`}
 								/>
 							) : null}
 						</>

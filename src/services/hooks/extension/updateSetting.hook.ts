@@ -19,3 +19,30 @@ export function useUpdateExtensionSettings() {
 		},
 	})
 }
+
+export function useChangeWallpaper() {
+	return useMutation<any, unknown, { wallpaperId: string | null }>({
+		mutationFn: async ({ wallpaperId }) => {
+			const client = await getMainClient()
+			await client.put('/wallpapers/@me', { wallpaperId })
+		},
+	})
+}
+
+export function useChangeTheme() {
+	return useMutation<any, unknown, { theme: string }>({
+		mutationFn: async ({ theme }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/theme', { theme })
+		},
+	})
+}
+
+export function useChangeBrowserTitle() {
+	return useMutation<any, unknown, { browserTitleId: string }>({
+		mutationFn: async ({ browserTitleId }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/browser-title', { browserTitleId })
+		},
+	})
+}

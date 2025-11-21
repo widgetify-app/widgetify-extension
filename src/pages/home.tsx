@@ -20,13 +20,13 @@ const steps: Step[] = [
 	{
 		target: 'body',
 		content:
-			'به ویجتی‌فای خوش آمدید! بیایید با هم قسمت‌های مختلف برنامه را بررسی کنیم تا با امکانات آن آشنا شوید.',
+			'به ویجتی‌فای خوش آمدید! بیایید با هم قسمت‌های مختلف افزونه را بررسی کنیم تا با امکانات آن آشنا شوید.',
 		disableBeacon: true,
 	},
 	{
 		target: '#settings-button',
 		content:
-			'از این دکمه می‌توانید به تنظیمات عمومی برنامه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
+			'از این دکمه می‌توانید به تنظیمات عمومی افزونه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
 	},
 	{
 		target: '#profile-and-friends-list',
@@ -68,7 +68,14 @@ export function HomePage() {
 		}
 
 		async function loadWallpaper() {
-			const wallpaper = await getFromStorage('wallpaper')
+			const [wallpaper, browserTitle] = await Promise.all([
+				getFromStorage('wallpaper'),
+				getFromStorage('browserTitle'),
+			])
+			if (browserTitle) {
+				document.title = browserTitle.template
+			}
+
 			if (wallpaper) {
 				changeWallpaper(wallpaper)
 			} else {

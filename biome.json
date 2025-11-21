@@ -71,6 +71,13 @@
 			"indentWidth": 4
 		}
 	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "off"
+			}
+		}
+	},
 	"overrides": [
 		{
 			"includes": ["*.tsx", "*.jsx"],

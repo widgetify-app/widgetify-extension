@@ -8,7 +8,8 @@ export interface Wallpaper {
 	source?: string
 	gradient?: GradientColors
 	categoryId?: string
-	usageCount?: number
+	coin?: number
+	isOwned?: boolean
 }
 
 export interface GradientColors {
@@ -27,6 +28,7 @@ export interface StoredWallpaper {
 
 export interface WallpaperResponse {
 	wallpapers: Wallpaper[]
+	totalPages: number
 }
 
 // New Category interface

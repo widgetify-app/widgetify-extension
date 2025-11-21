@@ -1,13 +1,10 @@
-import { useState, useTransition } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { useState } from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import type { Bookmark, BookmarkType } from '../../types/bookmark.types'
+import type { BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import {
-	type BookmarkFormData,
 	IconSourceSelector,
 	type IconSourceType,
 	ShowAdvancedButton,
@@ -15,13 +12,43 @@ import {
 	useBookmarkIcon,
 } from '../shared'
 import { AdvancedModal } from './advanced.modal'
+import { useIsMutating } from '@tanstack/react-query'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
-	onAdd: (bookmark: Bookmark) => void
+	onAdd: (bookmark: BookmarkCreateFormFields) => void
 	parentId: string | null
 }
+
+export interface BookmarkCreateFormFields {
+	title: string
+	type: BookmarkType
+	parentId: string | null
+	url: string | null
+	customImage: File | null
+	customBackground: string | null
+	customTextColor: string | null
+	sticker: string | null
+	icon: File | null
+}
+
+const empty: BookmarkCreateFormFields = {
+	title: '',
+	url: '',
+	customImage: null,
+	customBackground: '',
+	parentId: '',
+	type: 'BOOKMARK',
+	customTextColor: '',
+	sticker: '',
+	icon: null,
+}
+
+export type AddBookmarkUpdateFormData = <K extends keyof BookmarkCreateFormFields>(
+	key: K,
+	value: BookmarkCreateFormFields[K]
+) => void
 
 export function AddBookmarkModal({
 	isOpen,
@@ -32,22 +59,22 @@ export function AddBookmarkModal({
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
-	const [isPending, startTransition] = useTransition()
 
-	const [formData, setFormData] = useState<BookmarkFormData>({
-		title: '',
-		url: '',
-		icon: '',
-		customImage: '',
-		customBackground: '',
-		customTextColor: '',
-		sticker: '',
-	})
+	const isAdding = useIsMutating({ mutationKey: ['addBookmark'] }) > 0
+
+	const [formData, setFormData] = useState<BookmarkCreateFormFields>(
+		structuredClone(empty)
+	)
 
 	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
 		useBookmarkIcon()
 
-	const updateFormData = (key: string, value: string) => {
+	const updateFormData: AddBookmarkUpdateFormData = <
+		K extends keyof BookmarkCreateFormFields,
+	>(
+		key: K,
+		value: BookmarkCreateFormFields[K]
+	) => {
 		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
 
@@ -57,7 +84,7 @@ export function AddBookmarkModal({
 
 		if (iconSource === 'auto') {
 			setIconLoadError(false)
-			updateFormData('icon', getFaviconFromUrl(newUrl))
+			updateFormData('icon', null)
 		}
 
 		if (formData.title.trim() === '' && newUrl !== '') {
@@ -78,64 +105,29 @@ export function AddBookmarkModal({
 	const handleAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		startTransition(() => {
-			if (!formData.title.trim()) return
+		if (!formData.title.trim()) return
 
-			let iconUrl: undefined | string
-			const id = uuidv4()
-			if (
-				type === 'BOOKMARK' &&
-				iconSource === 'auto' &&
-				formData.icon &&
-				!formData.customImage
-			) {
-				iconUrl = getFaviconFromUrl(formData.url)
-			}
+		let newUrl = formData.url
+		if (newUrl && !newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
+			newUrl = `https://${newUrl}`
+		}
+		const baseBookmark: BookmarkCreateFormFields = {
+			title: formData.title.trim(),
+			url: type === 'BOOKMARK' && newUrl ? newUrl.trim() : null,
+			type,
+			parentId,
+			customImage: formData.customImage,
+			customBackground: formData.customBackground || null,
+			customTextColor: formData.customTextColor || null,
+			sticker: formData.sticker || null,
+			icon: formData.icon,
+		}
 
-			const baseBookmark = {
-				id,
-				title: formData.title.trim(),
-				type,
-				isLocal: true,
-				pinned: false,
-				parentId,
-				customImage: formData.customImage,
-				customBackground: formData.customBackground || undefined,
-				customTextColor: formData.customTextColor || undefined,
-				sticker: formData.sticker || undefined,
-			}
-
-			if (type === 'FOLDER') {
-				onAdd({ ...baseBookmark, onlineId: null } as Bookmark)
-			} else {
-				let newUrl = formData.url
-				if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
-					newUrl = `https://${newUrl}`
-				}
-
-				onAdd({
-					...baseBookmark,
-					type: 'BOOKMARK',
-					url: newUrl.trim(),
-					icon: iconUrl,
-					onlineId: null,
-				} as Bookmark)
-			}
-
-			onCloseHandler()
-		})
+		onAdd(baseBookmark)
 	}
 
 	const resetForm = () => {
-		setFormData({
-			title: '',
-			url: '',
-			icon: '',
-			customImage: '',
-			customBackground: '',
-			customTextColor: '',
-			sticker: '',
-		})
+		setFormData(structuredClone(empty))
 		setType('BOOKMARK')
 		setIconSource('auto')
 		setShowAdvanced(false)
@@ -156,13 +148,16 @@ export function AddBookmarkModal({
 
 		if (iconSource === 'auto') {
 			setIconLoadError(false)
-			const iconUrl = suggestion.icon || getFaviconFromUrl(suggestion.url)
-			updateFormData('icon', iconUrl)
+			updateFormData('icon', null)
 		}
 	}
 
 	const handleAdvancedModalClose = (
-		data: { background?: string; textColor?: string; sticker?: string } | null
+		data: {
+			background: string | null
+			textColor: string | null
+			sticker: string | null
+		} | null
 	) => {
 		setShowAdvanced(false)
 
@@ -180,6 +175,12 @@ export function AddBookmarkModal({
 			}
 		}
 	}
+
+	useEffect(() => {
+		if (isOpen) {
+			resetForm()
+		}
+	}, [isOpen])
 
 	return (
 		<Modal
@@ -214,11 +215,10 @@ export function AddBookmarkModal({
 								/>
 							)}
 							{renderIconPreview(
-								formData,
+								formData.icon,
 								type === 'FOLDER' ? 'upload' : iconSource,
 								setIconSource,
-								updateFormData,
-								type
+								(value) => updateFormData('icon', value)
 							)}
 						</div>
 						<input
@@ -227,7 +227,11 @@ export function AddBookmarkModal({
 							className="hidden"
 							accept="image/*"
 							onChange={(e) =>
-								handleImageUpload(e, updateFormData, setIconSource)
+								handleImageUpload(
+									e,
+									(file) => updateFormData('icon', file),
+									setIconSource
+								)
 							}
 						/>
 						<TextInput
@@ -246,7 +250,7 @@ export function AddBookmarkModal({
 									type="text"
 									name="url"
 									placeholder="آدرس لینک"
-									value={formData.url}
+									value={formData.url || ''}
 									onChange={(v) => handleUrlChange(v)}
 									className={
 										'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
@@ -260,14 +264,7 @@ export function AddBookmarkModal({
 					</div>
 
 					<AdvancedModal
-						bookmark={{
-							customBackground: formData.customBackground,
-							customTextColor: formData.customTextColor,
-							sticker: formData.sticker,
-							type,
-							title: formData.title,
-							url: formData.url,
-						}}
+						bookmark={formData}
 						isOpen={showAdvanced}
 						onClose={handleAdvancedModalClose}
 						title={'تنظیمات پیشرفته'}
@@ -295,15 +292,16 @@ export function AddBookmarkModal({
 							disabled={
 								!formData.title?.trim() ||
 								(type === 'BOOKMARK' && !formData.url?.trim()) ||
-								isPending
+								isAdding
 							}
 							size="md"
 							isPrimary={true}
+							loading={isAdding}
 							className={
 								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
 							}
 						>
-							{isPending ? 'در حال ذخیره' : 'ذخیره'}
+							ذخیره
 						</Button>
 					</div>
 				</div>

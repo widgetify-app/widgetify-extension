@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 interface SectionPanelProps {
-	title: string
+	title: ReactNode
 	children: ReactNode
 	delay?: number
 	size?: 'xs' | 'sm' | 'md' | 'lg'

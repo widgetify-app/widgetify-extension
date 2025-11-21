@@ -201,3 +201,12 @@ html.modal-isActive::-webkit-scrollbar {
 	pointer-events: none;
 	transition: filter 300ms ease-in;
 }
+
+img {
+	/* disable user selection */
+	user-select: none;
+	-webkit-user-drag: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+}

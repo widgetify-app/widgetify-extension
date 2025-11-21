@@ -1,7 +1,7 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
-import { Button } from '@/components/button/button'
 import { useRef } from 'react'
 import { FiEdit, FiUploadCloud } from 'react-icons/fi'
+import type { Wallpaper } from '@/common/wallpaper.interface'
+import { Button } from '@/components/button/button'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { MediaPreview } from './media-preview.component'
 
@@ -23,7 +23,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			processFile(file, 'file_selector')
+			processFile(file)
 			e.target.value = ''
 		}
 	}
@@ -72,7 +72,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				</div>
 
 				<div className="flex-1 mx-3">
-					<p className={'text-sm font-medium text-content'}>پس‌زمینه فعال</p>
+					<p className={'text-sm font-medium text-content'}>تصویر زمینه فعال</p>
 					<p className={'text-xs text-muted truncate max-w-[200px]'}>
 						{customWallpaper.name || 'بدون نام'}
 					</p>

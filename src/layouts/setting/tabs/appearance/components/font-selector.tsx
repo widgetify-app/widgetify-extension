@@ -6,29 +6,27 @@ interface FontSelectorProps {
 	fontFamily: FontFamily
 	setFontFamily: (fontFamily: FontFamily) => void
 }
-
+const availableFonts: { value: FontFamily; label: string }[] = [
+	{
+		value: 'Vazir',
+		label: 'وزیر',
+	},
+	{
+		value: 'Samim',
+		label: 'صمیم',
+	},
+	{
+		value: 'Pofak',
+		label: 'پفـک',
+	},
+	{
+		value: 'rooyin',
+		label: 'رویین',
+	},
+]
 export function FontSelector({ fontFamily, setFontFamily }: FontSelectorProps) {
-	const availableFonts: { value: FontFamily; label: string }[] = [
-		{
-			value: 'Vazir',
-			label: 'وزیر',
-		},
-		{
-			value: 'Samim',
-			label: 'صمیم',
-		},
-		{
-			value: 'Pofak',
-			label: 'پفـک',
-		},
-		{
-			value: 'rooyin',
-			label: 'رویین',
-		},
-	]
-
 	return (
-		<SectionPanel title="فونت افزونه" delay={0.15}>
+		<SectionPanel title="فونت افزونه" delay={0.15} size="sm">
 			<div className="space-y-3">
 				<p className={'text-sm text-muted'}>
 					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های افزونه انتخاب کنید:

@@ -1,9 +1,64 @@
+import type React from 'react'
+import { useEffect, useState } from 'react'
+import { FiShoppingBag } from 'react-icons/fi'
 import { IoMdMoon, IoMdStar, IoMdSunny } from 'react-icons/io'
 import { MdOutlineBlurOn } from 'react-icons/md'
+import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
+import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
+import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
+import type {
+	UserInventoryItem,
+	UserInventoryResponse,
+} from '@/services/hooks/market/market.interface'
 
-export function ThemeSelector() {
+interface ThemeItem {
+	id: string
+	name: string
+	icon: React.ReactElement
+	description?: string
+}
+
+const defaultThemes: ThemeItem[] = [
+	{
+		id: 'glass',
+		name: 'شیشه‌ای',
+		icon: <MdOutlineBlurOn size={14} />,
+		description: 'تم شفاف با افکت شیشه‌ای',
+	},
+	{
+		id: 'icy',
+		name: 'یخی',
+		icon: <MdOutlineBlurOn size={14} />,
+		description: 'تم سفید شفاف با حالت یخی',
+	},
+	{
+		id: 'light',
+		name: 'روشن',
+		icon: <IoMdSunny size={14} />,
+		description: 'تم کلاسیک روشن',
+	},
+	{
+		id: 'dark',
+		name: 'تیره',
+		icon: <IoMdMoon size={14} />,
+		description: 'تم کلاسیک تیره',
+	},
+	{
+		id: 'zarna',
+		name: 'زرنا',
+		icon: <IoMdStar size={14} />,
+		description: 'تم زرنا با رنگ‌های گرم',
+	},
+]
+
+interface Props {
+	fetched_themes: UserInventoryItem[]
+}
+
+export function ThemeSelector({ fetched_themes }: Props) {
 	const { setTheme, theme } = useTheme()
 	const themes = [
 		{
@@ -52,14 +107,15 @@ export function ThemeSelector() {
 	]
 
 	return (
-		<SectionPanel title="انتخاب تم" delay={0.2}>
-			<div className="flex flex-col gap-4">
-				<p className="text-muted">تم ظاهری ویجتی‌فای را انتخاب کنید.</p>
+		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
+			<div className="space-y-3">
+				<p className="text-sm text-muted">تم ظاهری ویجتی‌فای را انتخاب کنید.</p>
 
-				<div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+				<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
 					{themes.map((item) => (
-						<div
-							data-theme={item.id}
+						<ItemSelector
+							isActive={selected?.id === item.id}
+							onClick={() => onClick(item)}
 							key={item.id}
 							onClick={() => setTheme(item.id)}
 							className={`
@@ -79,6 +135,13 @@ export function ThemeSelector() {
 							</div>
 						</div>
 					))}
+					<div
+						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
+						onClick={() => handleMoreClick()}
+					>
+						<FiShoppingBag size={18} />
+						<span>فروشگاه</span>
+					</div>
 				</div>
 			</div>
 		</SectionPanel>

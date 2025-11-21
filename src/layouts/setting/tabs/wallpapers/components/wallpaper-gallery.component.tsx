@@ -1,6 +1,6 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useRef } from 'react'
-import { WallpaperItem } from '../item.wallpaper'
+import type { Wallpaper } from '@/common/wallpaper.interface'
+import { WallpaperItem } from '../tab/gallery/components/wallpaper-item/wallpaper-item'
 
 interface WallpaperGalleryProps {
 	isLoading: boolean
@@ -8,6 +8,7 @@ interface WallpaperGalleryProps {
 	wallpapers: Wallpaper[]
 	selectedBackground: Wallpaper | null
 	onSelectBackground: (wallpaper: Wallpaper) => void
+	onPreviewBackground: (wallpaper: Wallpaper) => void
 }
 
 export function WallpaperGallery({
@@ -16,6 +17,7 @@ export function WallpaperGallery({
 	wallpapers,
 	selectedBackground,
 	onSelectBackground,
+	onPreviewBackground,
 }: WallpaperGalleryProps) {
 	const galleryRef = useRef<HTMLDivElement>(null)
 
@@ -76,6 +78,7 @@ export function WallpaperGallery({
 									wallpaper={wallpaper}
 									selectedBackground={selectedBackground}
 									setSelectedBackground={onSelectBackground}
+									onPreviewBackground={onPreviewBackground}
 								/>
 							</div>
 						))}

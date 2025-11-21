@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAuth } from '@/context/auth.context'
 import { AuthForm } from './auth-form/auth-form'
-import { UserProfile } from './user-profile'
+import { UserProfile } from './tabs/user-profile/user-profile'
 
 export const AccountTab = () => {
 	const { isAuthenticated } = useAuth()
 
 	return (
-		<div className="h-full">
+		<div className="w-full h-full max-w-xl mx-auto">
 			<AnimatePresence mode="wait">
 				{isAuthenticated ? (
 					<motion.div

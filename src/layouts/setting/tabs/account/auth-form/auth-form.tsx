@@ -63,10 +63,7 @@ export const AuthForm = () => {
 						onSwitchToSignUp={() => handleModeChange('signup')}
 					/>
 				) : (
-					<SignUpForm
-						key="signup"
-						onSwitchToSignIn={() => handleModeChange('signin')}
-					/>
+					<SignUpForm key="signup" />
 				)}
 			</div>
 		</SectionPanel>
