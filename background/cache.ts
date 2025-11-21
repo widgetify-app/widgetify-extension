@@ -91,26 +91,6 @@ export function setupCaching() {
 			})
 		)
 
-		registerRoute(
-			({ url, request }) =>
-				url.origin !== self.location.origin &&
-				!url.hostname.includes('widgetify.ir') &&
-				request.method === 'GET',
-			new StaleWhileRevalidate({
-				cacheName: 'cross-origin-cache-v1',
-				plugins: [
-					new ExpirationPlugin({
-						maxEntries: 50,
-						maxAgeSeconds: 1 * 60 * 60, // 1 hours
-						purgeOnQuotaError: true,
-					}),
-					new CacheableResponsePlugin({
-						statuses: [0, 200],
-					}),
-				],
-			})
-		)
-
 		const navigationRoute = new NavigationRoute(
 			new NetworkFirst({
 				cacheName: 'navigation-cache-v1',
