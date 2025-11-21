@@ -79,10 +79,10 @@ export function SyncButton() {
 		}
 
 		const event = listenEvent('startSync', handleSyncRequest)
-
-		checkSyncData().then((alert) => {
-			setShowAlert(alert)
-		})
+		if (isAuthenticated)
+			checkSyncData().then((alert) => {
+				setShowAlert(alert)
+			})
 
 		return event()
 	}, [isAuthenticated])
@@ -182,7 +182,7 @@ export function SyncButton() {
 		setSyncState(SyncState.Success)
 	}
 
-	if (!showAlert.show) {
+	if (!showAlert.show || !isAuthenticated) {
 		return <></>
 	}
 

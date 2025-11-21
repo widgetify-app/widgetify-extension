@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4, validate } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Analytics from '@/analytics'
@@ -57,39 +57,17 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const bookEvent = listenEvent('bookmarksChanged', async (data: Bookmark[]) => {
 			if (data) {
 				const current = (await getFromStorage('bookmarks')) || []
-				const all = [...current, ...data]
-				const uniqueBookmarks = all.reduce(
-					(acc: Bookmark[], bookmark: Bookmark) => {
-						if (
-							!acc.some(
-								(b) =>
-									b.id === bookmark.id ||
-									b.onlineId === bookmark.onlineId ||
-									b.onlineId === bookmark.id
-							)
-						) {
-							acc.push(bookmark)
-						} else {
-							// update existing bookmark
-							const index = acc.findIndex(
-								(b) =>
-									b.id === bookmark.id ||
-									b.onlineId === bookmark.onlineId ||
-									b.onlineId === bookmark.id
-							)
-							if (index !== -1) {
-								acc[index] = {
-									...bookmark,
-									icon: bookmark.icon,
-								}
-							}
-						}
-						return acc
-					},
-					[]
-				)
 
-				setBookmarks(uniqueBookmarks)
+				const localBookmarks = current.filter(
+					(b: Bookmark) => validate(b.id) && !b.onlineId
+				)
+				const filteredLocalBookmarks = localBookmarks.filter((localB) => {
+					return !data.some(
+						(b) => b.id === localB.id || b.onlineId === localB.id
+					)
+				})
+
+				setBookmarks([...data, ...filteredLocalBookmarks])
 			}
 		})
 
@@ -151,10 +129,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			let createdBookmark: Bookmark | null = null
 
 			if (isAuthenticated) {
+				let parentId = inputBookmark.parentId
+				if (validate(inputBookmark.parentId)) {
+					// parentId is a local ID, find the onlineId
+					const parentBookmark = bookmarks?.find(
+						(b) =>
+							b.id === inputBookmark.parentId ||
+							b.onlineId === inputBookmark.parentId
+					)
+					if (parentBookmark?.onlineId) {
+						parentId = parentBookmark.onlineId
+					}
+				}
 				const [err, response] = await safeAwait<AxiosError, Bookmark>(
 					addBookmarkAsync({
 						order: maxOrder + 1,
-						parentId: inputBookmark.parentId,
+						parentId: parentId,
 						title: inputBookmark.title,
 						customBackground: inputBookmark.customBackground,
 						customTextColor: inputBookmark.customTextColor,
@@ -316,7 +306,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (isAuthenticated) {
 			const [error, _] = await safeAwait(removeBookmarkAsync(id))
 			if (error) {
-				return toast.error(translateError(error) as string)
+				toast.error(translateError(error) as string)
 			}
 		}
 
