@@ -7,6 +7,7 @@ import type React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
+import { TooltipProvider } from '@/components/clickableTooltip'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
@@ -69,20 +70,21 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					{prevMonthStartDay + i}
 				</div>
 			))}
-
-			{Array.from({ length: daysInMonth }, (_, i) => (
-				<DayItem
-					key={uuidv4()}
-					currentDate={currentDate}
-					day={i + 1}
-					events={events}
-					googleEvents={googleEvents || []}
-					selectedDateStr={selectedDateStr}
-					setSelectedDate={setSelectedDate}
-					todos={todos}
-					timezone={timezone.value}
-				/>
-			))}
+			<TooltipProvider>
+				{Array.from({ length: daysInMonth }, (_, i) => (
+					<DayItem
+						key={uuidv4()}
+						currentDate={currentDate}
+						day={i + 1}
+						events={events}
+						googleEvents={googleEvents || []}
+						selectedDateStr={selectedDateStr}
+						setSelectedDate={setSelectedDate}
+						todos={todos}
+						timezone={timezone.value}
+					/>
+				))}
+			</TooltipProvider>
 
 			{Array.from({ length: nextMonthDays }).map((_, i) => (
 				<div
