@@ -45,6 +45,8 @@ export function ComboWidget() {
 		load()
 	}, [])
 
+	if (!activeTab) return null
+
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
 			<div className="flex items-center justify-between pb-2">
