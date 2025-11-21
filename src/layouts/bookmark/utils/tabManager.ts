@@ -13,8 +13,11 @@ export async function openBookmarksOptimized(bookmark: Bookmark, children: Bookm
 		'yellow',
 	]
 
+	const nonEmptyUrls = children.filter((b) => b.url && b.url.trim().length > 0)
+	if (nonEmptyUrls.length === 0) return
+
 	const tabs = await Promise.all(
-		children.map((b) => browser.tabs.create({ url: b.url, active: false }))
+		nonEmptyUrls.map((b) => browser.tabs.create({ url: b.url || '', active: false }))
 	)
 
 	const tabIds = tabs.map((tab) => tab.id).filter((id): id is number => id !== null)
