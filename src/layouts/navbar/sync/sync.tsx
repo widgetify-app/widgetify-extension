@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { isSyncActive } from '@/common/sync-checker'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
@@ -57,11 +56,6 @@ export function SyncButton() {
 				return
 			}
 
-			const isSyncEnabled = await isSyncActive()
-			if (!isSyncEnabled) {
-				return
-			}
-
 			initialSyncDoneRef.current = true
 
 			setTimeout(async () => {
@@ -96,11 +90,6 @@ export function SyncButton() {
 		lastSyncTimeRef.current = now
 
 		if (!isAuthenticated) {
-			return
-		}
-
-		const isSyncEnabled = await isSyncActive()
-		if (!isSyncEnabled) {
 			return
 		}
 

@@ -56,7 +56,6 @@ export interface StorageKV {
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]
 	analyticsSession: any
-	enable_sync: boolean
 	notes_data: {
 		body: string
 		createdAt: number
