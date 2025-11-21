@@ -10,8 +10,6 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 } from '../../utils'
-import { toolTipContent } from './toolTipContent'
-import { ClickableTooltip } from '@/components/clickableTooltip'
 
 interface DayItemProps {
 	day: number
@@ -22,6 +20,7 @@ interface DayItemProps {
 	setSelectedDate: (date: jalaliMoment.Moment) => void
 	googleEvents: GoogleCalendarEvent[]
 	timezone: string
+	onClick?: (element: HTMLDivElement) => void
 }
 
 export function DayItem({
@@ -33,7 +32,9 @@ export function DayItem({
 	selectedDateStr,
 	setSelectedDate,
 	timezone,
+	onClick,
 }: DayItemProps) {
+	const dayRef = useRef<HTMLDivElement>(null)
 	const cellDate = currentDate.clone().jDate(day)
 	const dateStr = formatDateStr(cellDate)
 	const todayShamsiEvents = getShamsiEvents(events, cellDate)
@@ -64,7 +65,6 @@ export function DayItem({
 		todayShamsiEvents.some((event) => event.isHoliday) ||
 		todayHijriEvents.some((event) => event.isHoliday)
 
-	// Theme-specific styles
 	const getDayTextStyle = () => {
 		if (isHoliday) {
 			return 'text-error bg-error/10'
@@ -97,83 +97,56 @@ export function DayItem({
 		return 'ring-1 ring-primary/80'
 	}
 
-	const getEventIndicatorStyle = () => {
-		if (isHolidayEvent) {
-			return 'bg-red-400/80'
-		}
-
-		return 'bg-info'
-	}
-
-	const getTodoIndicatorStyle = () => {
-		return 'bg-success'
-	}
-
-	function onClick() {
+	function onClickHandler() {
 		Analytics.event('calendar_day_click', {
 			selected_date: cellDate.format('YYYY-MM-DD'),
 		})
 		setSelectedDate(cellDate)
+		if (onClick && dayRef.current) {
+			onClick(dayRef.current)
+		}
 	}
 
 	return (
-		<ClickableTooltip
-			content={toolTipContent(
-				cellDate,
-				{
-					todayShamsiEvents,
-					todayHijriEvents,
-					todayGregorianEvents,
-					googleEvents: googleEventsForDay,
-				},
-				eventIcons[0]
-			)}
-			position="top"
-			key={`day-${day}`}
-			closeOnClickOutside={true}
-			offset={-10}
-		>
-			<div
-				onClick={onClick}
-				className={`
+		<div
+			onClick={onClickHandler}
+			ref={dayRef}
+			className={`
                     relative p-0 rounded-2xl text-xs transition-colors cursor-pointer
                     h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
                     ${getDayTextStyle()}
                     ${isSelected ? getSelectedDayStyle() : getHoverStyle()}
                     ${isCurrentDay ? getTodayRingStyle() : ''}
                 `}
-			>
-				{day}
-				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
-					{eventIcons.length > 0 ? (
-						eventIcons
-							.slice(0, 1)
-							.map((icon, idx) => (
-								<img
-									key={idx}
-									src={icon}
-									alt="مناسبت"
-									className="object-contain w-6 h-6 transition-all rounded-full"
-									loading="lazy"
-								/>
-							))
-					) : (
-						<>
-							{hasEvent ? (
-								<span
-									className={`w-[3px] h-[1px] rounded-full ${getEventIndicatorStyle()}`}
-								/>
-							) : null}
-							{hasTodo ? (
-								<span
-									className={`w-[3px] h-[1px] rounded-full ${getTodoIndicatorStyle()}`}
-								/>
-							) : null}
-						</>
-					)}
-				</div>
+		>
+			{day}
+			<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
+				{eventIcons.length > 0 ? (
+					eventIcons
+						.slice(0, 1)
+						.map((icon, idx) => (
+							<img
+								key={idx}
+								src={icon}
+								alt="مناسبت"
+								className="object-contain w-6 h-6 transition-all rounded-full"
+								loading="lazy"
+							/>
+						))
+				) : (
+					<>
+						{hasEvent ? (
+							<span
+								className={`w-[3px] h-[1px] rounded-full ${isHolidayEvent ? 'bg-red-400/80' : 'bg-info'}`}
+							/>
+						) : null}
+						{hasTodo ? (
+							<span className={`w-[3px] h-[1px] rounded-full bg-success`} />
+						) : null}
+					</>
+				)}
 			</div>
-		</ClickableTooltip>
+		</div>
 	)
 }
 

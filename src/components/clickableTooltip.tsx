@@ -1,12 +1,5 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
-import {
-	type ReactNode,
-	useEffect,
-	useRef,
-	useState,
-	createContext,
-	useContext,
-} from 'react'
+import { type ReactNode, useEffect, useRef, useState, type RefObject } from 'react'
 import ReactDOM from 'react-dom'
 
 type Position =
@@ -20,7 +13,7 @@ type Position =
 	| 'top-left'
 
 interface ClickableTooltipProps {
-	children: ReactNode
+	children?: ReactNode
 	content: ReactNode | null
 	position?: Position
 	offset?: number
@@ -28,46 +21,26 @@ interface ClickableTooltipProps {
 	className?: string
 	contentClassName?: string
 	closeOnClickOutside?: boolean
-}
-
-export const TooltipContext = createContext<{
-	openTooltipId: string | null
-	setOpenTooltipId: (id: string | null) => void
-}>({
-	openTooltipId: null,
-	setOpenTooltipId: () => {},
-})
-
-export const TooltipProvider = ({ children }: { children: ReactNode }) => {
-	const [openTooltipId, setOpenTooltipId] = useState<string | null>(null)
-
-	return (
-		<TooltipContext.Provider value={{ openTooltipId, setOpenTooltipId }}>
-			{children}
-		</TooltipContext.Provider>
-	)
+	triggerRef: RefObject<HTMLElement | null>
+	isOpen: boolean
+	setIsOpen: (isOpen: boolean) => void
 }
 
 const ClickableTooltip = ({
-	children,
 	content,
 	position = 'top',
-	offset = 8,
+	offset = 4,
 	disableAutoPosition = false,
-	className = '',
 	contentClassName = '',
 	closeOnClickOutside = true,
+	triggerRef,
+	isOpen,
+	setIsOpen,
 }: ClickableTooltipProps) => {
-	const tooltipId = useRef(`tooltip-${Math.random().toString(36).substr(2, 9)}`).current
-	const context = useContext(TooltipContext)
-
 	const [calculatedPosition, setCalculatedPosition] = useState<Position>(position)
 	const [tooltipCoords, setTooltipCoords] = useState({ x: 0, y: 0 })
 
-	const triggerRef = useRef<HTMLDivElement>(null)
 	const tooltipRef = useRef<HTMLDivElement>(null)
-
-	const isVisible = context ? context.openTooltipId === tooltipId : false
 
 	const calculatePosition = () => {
 		if (!triggerRef.current || !tooltipRef.current) return
@@ -140,13 +113,11 @@ const ClickableTooltip = ({
 	}
 
 	const toggleTooltip = () => {
-		if (context) {
-			context.setOpenTooltipId(isVisible ? null : tooltipId)
-		}
+		setIsOpen(!isOpen)
 	}
 
 	useEffect(() => {
-		if (isVisible) {
+		if (isOpen) {
 			calculatePosition()
 
 			const handleResize = () => calculatePosition()
@@ -158,10 +129,10 @@ const ClickableTooltip = ({
 				window.removeEventListener('scroll', handleResize, true)
 			}
 		}
-	}, [isVisible])
+	}, [isOpen])
 
 	useEffect(() => {
-		if (!closeOnClickOutside || !isVisible || !context) return
+		if (!closeOnClickOutside || !isOpen) return
 
 		const handleClickOutside = (e: MouseEvent) => {
 			if (
@@ -170,19 +141,30 @@ const ClickableTooltip = ({
 				!triggerRef.current.contains(e.target as Node) &&
 				!tooltipRef.current.contains(e.target as Node)
 			) {
-				context.setOpenTooltipId(null)
+				setIsOpen(false)
 			}
 		}
 
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
-	}, [isVisible, closeOnClickOutside, context])
+	}, [isOpen, closeOnClickOutside])
 
-	const handleClick = (e: React.MouseEvent) => {
-		e.preventDefault()
-		e.stopPropagation()
-		toggleTooltip()
-	}
+	useEffect(() => {
+		if (!triggerRef?.current) return
+
+		const handleClick = (e: Event) => {
+			e.preventDefault()
+			e.stopPropagation()
+			toggleTooltip()
+		}
+
+		const element = triggerRef.current
+		element.addEventListener('click', handleClick, true)
+
+		return () => {
+			element.removeEventListener('click', handleClick, true)
+		}
+	}, [triggerRef, isOpen])
 
 	const variants = {
 		top: {
@@ -220,27 +202,18 @@ const ClickableTooltip = ({
 	}
 
 	if (!content) {
-		return <>{children}</>
+		return null
 	}
 
 	return (
 		<>
-			<div
-				ref={triggerRef}
-				className={`inline-block ${className}`}
-				onClickCapture={handleClick}
-			>
-				{children}
-			</div>
-
 			{ReactDOM.createPortal(
 				<LazyMotion features={domAnimation}>
 					<AnimatePresence mode="wait">
-						{isVisible && (
+						{isOpen && (
 							<m.div
-								key={tooltipId}
 								ref={tooltipRef}
-								className={`fixed rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow bg-glass  ${contentClassName}`}
+								className={`fixed rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow bg-glass ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,
