@@ -1,6 +1,5 @@
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
-import Tooltip from '@/components/toolTip'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type { Todo } from '../../interface/todo.interface'
@@ -12,6 +11,7 @@ import {
 	getShamsiEvents,
 } from '../../utils'
 import { toolTipContent } from './toolTipContent'
+import { ClickableTooltip } from '@/components/clickableTooltip'
 
 interface DayItemProps {
 	day: number
@@ -117,7 +117,7 @@ export function DayItem({
 	}
 
 	return (
-		<Tooltip
+		<ClickableTooltip
 			content={toolTipContent(
 				cellDate,
 				{
@@ -130,6 +130,8 @@ export function DayItem({
 			)}
 			position="top"
 			key={`day-${day}`}
+			closeOnClickOutside={true}
+			offset={-10}
 		>
 			<div
 				onClick={onClick}
@@ -171,7 +173,7 @@ export function DayItem({
 					)}
 				</div>
 			</div>
-		</Tooltip>
+		</ClickableTooltip>
 	)
 }
 
