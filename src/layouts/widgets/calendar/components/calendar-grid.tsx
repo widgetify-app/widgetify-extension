@@ -7,7 +7,7 @@ import type React from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
 import { ClickableTooltip } from '@/components/clickableTooltip'
-import { toolTipContent } from './day/toolTipContent'
+import { CalendarDayDetails } from './day/toolTipContent'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
@@ -108,7 +108,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 			{clickedElement && (
 				<ClickableTooltip
 					triggerRef={{ current: clickedElement }}
-					content={toolTipContent(events, googleEvents || [])}
+					content={CalendarDayDetails(events, googleEvents || [])}
 					isOpen={isOpenTooltip}
 					setIsOpen={setIsOpenTooltip}
 				/>

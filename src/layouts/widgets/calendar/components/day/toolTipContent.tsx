@@ -13,7 +13,7 @@ import {
 import { useDate } from '@/context/date.context'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 
-export const toolTipContent = (
+export const CalendarDayDetails = (
 	events: FetchedAllEvents,
 	googleEvents: GoogleCalendarEvent[],
 	eventIcon?: string
