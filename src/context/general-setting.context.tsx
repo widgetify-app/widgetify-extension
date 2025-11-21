@@ -145,126 +145,89 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		}
 	}
 
-	const setBrowserBookmarksEnabled = async (value: boolean) => {
-		const permissions: Browser.runtime.ManifestPermissions[] = ['bookmarks']
-		if (import.meta.env.FIREFOX) {
-			if (value) {
-				browser.permissions
-					.request({ permissions })
-					.then((granted) => {
-						if (granted) {
-							updateSetting('browserBookmarksEnabled', true)
-							Analytics.event('browser_bookmarks_enabled')
-						}
-					})
-					.catch(console.error)
-			} else {
-				browser.permissions
-					.remove({ permissions })
-					.then(() => {
-						updateSetting('browserBookmarksEnabled', false)
-						Analytics.event('browser_bookmarks_disabled')
-					})
-					.catch(console.error)
-			}
-		} else {
-			browser.permissions.contains({ permissions }).then((hasPermission) => {
-				if (value) {
-					browser.permissions
-						.request({ permissions })
-						.then((granted) => {
-							if (granted) {
-								updateSetting('browserBookmarksEnabled', true)
-								Analytics.event('browser_bookmarks_enabled')
-							} else {
-								console.log('Permission denied')
-							}
-						})
-						.catch(console.error)
-				} else {
-					if (!hasPermission) {
-						updateSetting('browserBookmarksEnabled', false)
-						return
-					}
-
-					Analytics.event('browser_bookmarks_disabled')
-
-					browser.permissions
-						.remove({ permissions })
-						.then(() => {
-							updateSetting('browserBookmarksEnabled', false)
-						})
-						.catch(() => {
-							updateSetting('browserBookmarksEnabled', false)
-						})
-				}
-			})
-		}
-	}
-
 	//#region [⚠️ Important note:]
 	// In Firefox, browser.permissions.request can only be called directly
 	// from a user input handler (like a click event).
 	// Using async/await breaks this direct connection and Firefox throws an error.
-	// Therefore, this function is written entirely without async/await
-	// and uses Promise chaining instead.
+	// Therefore, these functions are written entirely without async/await
+	// and use Promise chaining instead.
 	//#endregion
-	const setBrowserTabsEnabled = (value: boolean) => {
-		const permissions: Browser.runtime.ManifestPermissions[] = ['tabs', 'tabGroups']
-		if (import.meta.env.FIREFOX) {
-			if (value) {
-				browser.permissions
-					.request({ permissions })
-					.then((granted) => {
-						if (granted) {
-							updateSetting('browserTabsEnabled', true)
-							Analytics.event('browser_tabs_enabled')
-						}
-					})
-					.catch(console.error)
-			} else {
-				browser.permissions
-					.remove({ permissions })
-					.then(() => {
-						updateSetting('browserTabsEnabled', false)
-						Analytics.event('browser_tabs_disabled')
-					})
-					.catch(console.error)
-			}
-		} else {
-			browser.permissions.contains({ permissions }).then((hasPermission) => {
+	const togglePermission =
+		(
+			permissions: Browser.runtime.ManifestPermissions[],
+			settingKey: keyof GeneralData,
+			enableEvent: string,
+			disableEvent: string
+		) =>
+		(value: boolean) => {
+			if (import.meta.env.FIREFOX) {
 				if (value) {
 					browser.permissions
 						.request({ permissions })
 						.then((granted) => {
 							if (granted) {
-								updateSetting('browserTabsEnabled', true)
-								Analytics.event('browser_tabs_enabled')
-							} else {
-								console.log('Permission denied')
+								updateSetting(settingKey, true)
+								Analytics.event(enableEvent)
 							}
 						})
 						.catch(console.error)
 				} else {
-					if (!hasPermission) {
-						updateSetting('browserTabsEnabled', false)
-						return
-					}
-
-					Analytics.event('browser_tabs_disabled')
-
 					browser.permissions
 						.remove({ permissions })
 						.then(() => {
-							updateSetting('browserTabsEnabled', false)
+							updateSetting(settingKey, false)
+							Analytics.event(disableEvent)
 						})
-						.catch(() => {
-							updateSetting('browserTabsEnabled', false)
-						})
+						.catch(console.error)
 				}
-			})
+			} else {
+				browser.permissions.contains({ permissions }).then((hasPermission) => {
+					if (value) {
+						browser.permissions
+							.request({ permissions })
+							.then((granted) => {
+								if (granted) {
+									updateSetting(settingKey, true)
+									Analytics.event(enableEvent)
+								} else {
+									console.log('Permission denied')
+								}
+							})
+							.catch(console.error)
+					} else {
+						if (!hasPermission) {
+							updateSetting(settingKey, false)
+							return
+						}
+
+						Analytics.event(disableEvent)
+
+						browser.permissions
+							.remove({ permissions })
+							.then(() => {
+								updateSetting(settingKey, false)
+							})
+							.catch(() => {
+								updateSetting(settingKey, false)
+							})
+					}
+				})
+			}
 		}
-	}
+
+	const setBrowserBookmarksEnabled = togglePermission(
+		['bookmarks'],
+		'browserBookmarksEnabled',
+		'browser_bookmarks_enabled',
+		'browser_bookmarks_disabled'
+	)
+
+	const setBrowserTabsEnabled = togglePermission(
+		['tabs', 'tabGroups'],
+		'browserTabsEnabled',
+		'browser_tabs_enabled',
+		'browser_tabs_disabled'
+	)
 
 	const setSelectedCity = (val: SelectedCity) => {
 		updateSetting('selectedCity', val)
