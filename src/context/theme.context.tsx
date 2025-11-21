@@ -65,10 +65,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 				(event.ctrlKey || event.metaKey)
 			) {
 				event.preventDefault()
-				const themes = Object.values(Theme)
-				const currentIndex = themes.indexOf(theme as Theme)
-				const nextIndex = (currentIndex + 1) % themes.length
-				const nextTheme = themes[nextIndex]
+				const freeThemes = [
+					Theme.Light,
+					Theme.Dark,
+					Theme.Glass,
+					Theme.Icy,
+					Theme.Zarna,
+				]
+				const currentIndex = freeThemes.indexOf(theme as Theme)
+				const nextIndex = (currentIndex + 1) % freeThemes.length
+				const nextTheme = freeThemes[nextIndex]
 				setThemeCallback(nextTheme)
 			}
 		}
