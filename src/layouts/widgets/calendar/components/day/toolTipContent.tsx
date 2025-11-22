@@ -89,7 +89,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			return
 		}
 
-		setMood(mood)
+		setMood(value as MoodType)
 		toast.success('مود روزانه با موفقیت ثبت شد!')
 	}
 
