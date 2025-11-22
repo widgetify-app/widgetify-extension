@@ -74,6 +74,8 @@ const errorTranslations: Record<string, string> = {
 	ITEM_ALREADY_EXISTS: 'این رو قبلاً با ویج‌کوین گرفتی — نیازی به خرید دوباره نیست.',
 
 	INVALID_ID: 'آیدی نامعتبر است',
+
+	DATE_OUT_OF_RANGE: 'تاریخ انتخاب شده خارج از محدوده مجاز است',
 }
 
 const validationTranslations: Record<string, string> = {

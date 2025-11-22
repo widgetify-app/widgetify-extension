@@ -4,6 +4,7 @@ import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
+import { useState } from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
 import { ClickableTooltip } from '@/components/clickableTooltip'
@@ -108,7 +109,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 			{clickedElement && (
 				<ClickableTooltip
 					triggerRef={{ current: clickedElement }}
-					content={CalendarDayDetails(events, googleEvents || [])}
+					content={
+						<CalendarDayDetails
+							events={events}
+							googleEvents={googleEvents || []}
+						/>
+					}
 					isOpen={isOpenTooltip}
 					setIsOpen={setIsOpenTooltip}
 				/>
