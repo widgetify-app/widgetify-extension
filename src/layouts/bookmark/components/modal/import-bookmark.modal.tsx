@@ -42,22 +42,30 @@ export function ImportBookmarkModal({
 }: ImportBookmarkModalProps) {
 	const [browserBookmarks, setBrowserBookmarks] = useState<FetchedBrowserBookmark[]>([])
 	const [loading, setLoading] = useState(false)
-	const [selectedItems, setSelectedItems] = useState<Map<string, SelectedItem>>(new Map())
+	const [selectedItems, setSelectedItems] = useState<Map<string, SelectedItem>>(
+		new Map()
+	)
 	const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
 	const [showPermissionInfoModal, setShowPermissionInfoModal] = useState(false)
 	const [isImporting, setIsImporting] = useState(false)
 
 	const { browserBookmarksEnabled, setBrowserBookmarksEnabled } = useGeneralSetting()
-	const { bookmarks: existingBookmarks, setBookmarks, getCurrentFolderItems } = useBookmarkStore()
+	const {
+		bookmarks: existingBookmarks,
+		setBookmarks,
+		getCurrentFolderItems,
+	} = useBookmarkStore()
 
 	// Check permission when modal opens
 	useEffect(() => {
 		if (isOpen && !browserBookmarksEnabled) {
-			browser.permissions.contains({ permissions: ['bookmarks'] }).then((hasPermission) => {
-				if (!hasPermission) {
-					setShowPermissionInfoModal(true)
-				}
-			})
+			browser.permissions
+				.contains({ permissions: ['bookmarks'] })
+				.then((hasPermission) => {
+					if (!hasPermission) {
+						setShowPermissionInfoModal(true)
+					}
+				})
 		}
 	}, [isOpen, browserBookmarksEnabled])
 
@@ -67,7 +75,10 @@ export function ImportBookmarkModal({
 
 			setLoading(true)
 			try {
-				const fetched = await getBrowserBookmarks({ includeFolders: true, asTree: true })
+				const fetched = await getBrowserBookmarks({
+					includeFolders: true,
+					asTree: true,
+				})
 				// Filter out root folders (Bookmarks bar, Other bookmarks, etc.)
 				const filtered = fetched
 					.filter((root) => root.children && root.children.length > 0)
@@ -149,13 +160,16 @@ export function ImportBookmarkModal({
 		const newSelected = new Map(selectedItems)
 		const item = newSelected.get(folderId)
 		if (item && item.type === 'FOLDER') {
-			const childrenCount = item.children?.filter(c => c.type === 'BOOKMARK').length || 0
+			const childrenCount =
+				item.children?.filter((c) => c.type === 'BOOKMARK').length || 0
 			// Check limit based on the new folder's capacity (50 slots for folders)
 			const folderCapacity = 50
-			const wouldExceed = !item.importChildren && (childrenCount > folderCapacity)
+			const wouldExceed = !item.importChildren && childrenCount > folderCapacity
 
 			if (wouldExceed) {
-				toast.error(`این پوشه ${childrenCount} بوکمارک دارد که از ${folderCapacity} جایگاه مجاز بیشتر است`)
+				toast.error(
+					`این پوشه ${childrenCount} بوکمارک دارد که از ${folderCapacity} جایگاه مجاز بیشتر است`
+				)
 				return
 			}
 
@@ -173,7 +187,7 @@ export function ImportBookmarkModal({
 			if (item.type === 'BOOKMARK') {
 				count++
 			} else if (item.type === 'FOLDER' && item.importChildren) {
-				count += item.children?.filter(c => c.type === 'BOOKMARK').length || 0
+				count += item.children?.filter((c) => c.type === 'BOOKMARK').length || 0
 			}
 		})
 		return count
@@ -189,8 +203,11 @@ export function ImportBookmarkModal({
 		return (
 			<div key={item.id} className="w-full">
 				<div
-					className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-colors ${isSelected ? 'bg-primary/20 border border-primary' : 'hover:bg-base-300/50'
-						}`}
+					className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-colors ${
+						isSelected
+							? 'bg-primary/20 border border-primary'
+							: 'hover:bg-base-300/50'
+					}`}
 				>
 					<input
 						id={item.id}
@@ -198,7 +215,11 @@ export function ImportBookmarkModal({
 						checked={isSelected}
 						onChange={() => toggleItemSelection(item)}
 						className="checkbox w-4 h-4 cursor-pointer"
-						disabled={!isFolder && getSelectedCount(selectedItems) >= availableSlots && !isSelected}
+						disabled={
+							!isFolder &&
+							getSelectedCount(selectedItems) >= availableSlots &&
+							!isSelected
+						}
 					/>
 
 					{isFolder ? (
@@ -208,7 +229,9 @@ export function ImportBookmarkModal({
 							className="flex items-center gap-2 flex-1 text-right"
 						>
 							<FiFolder className="text-blue-400 size-5" />
-							<span className="flex-1 text-sm line-clamp-1">{item.title}</span>
+							<span className="flex-1 text-sm line-clamp-1">
+								{item.title}
+							</span>
 							{isFolder && isSelected && hasChildren && (
 								<button
 									type="button"
@@ -216,12 +239,15 @@ export function ImportBookmarkModal({
 										e.stopPropagation()
 										toggleImportChildren(item.id)
 									}}
-									className={`px-2 py-1 text-xs rounded transition-colors ${selectedItem?.importChildren
-										? 'bg-primary text-white'
-										: 'bg-base-300 text-content'
-										}`}
+									className={`px-2 py-1 text-xs rounded transition-colors ${
+										selectedItem?.importChildren
+											? 'bg-primary text-white'
+											: 'bg-base-300 text-content'
+									}`}
 								>
-									{selectedItem?.importChildren ? 'با محتوا' : 'بدون محتوا'}
+									{selectedItem?.importChildren
+										? 'با محتوا'
+										: 'بدون محتوا'}
 								</button>
 							)}
 							<FiChevronLeft
@@ -229,8 +255,10 @@ export function ImportBookmarkModal({
 							/>
 						</button>
 					) : (
-
-						<label htmlFor={item.id} className={`flex items-center gap-2 flex-1 ${!isFolder && getSelectedCount(selectedItems) >= availableSlots && !isSelected ? 'cursor-not-allowed opacity-50' : ''}`} >
+						<label
+							htmlFor={item.id}
+							className={`flex items-center gap-2 flex-1 ${!isFolder && getSelectedCount(selectedItems) >= availableSlots && !isSelected ? 'cursor-not-allowed opacity-50' : ''}`}
+						>
 							{item.url ? (
 								<img
 									src={getFaviconFromUrl(item.url)}
@@ -242,16 +270,18 @@ export function ImportBookmarkModal({
 									}}
 								/>
 							) : null}
-							<span className="flex-1 text-sm line-clamp-1">{item.title}</span>
+							<span className="flex-1 text-sm line-clamp-1">
+								{item.title}
+							</span>
 						</label>
 					)}
-
-
 				</div>
 
 				{isFolder && isExpanded && hasChildren && (
 					<div className="mr-4 mt-1">
-						{item.children?.map((child) => renderBookmarkItem(child, level + 1))}
+						{item.children?.map((child) =>
+							renderBookmarkItem(child, level + 1)
+						)}
 					</div>
 				)}
 			</div>
@@ -296,7 +326,9 @@ export function ImportBookmarkModal({
 
 					// Import children if requested
 					if (selectedItem.importChildren && selectedItem.children) {
-						const childBookmarks = selectedItem.children.filter(c => c.type === 'BOOKMARK')
+						const childBookmarks = selectedItem.children.filter(
+							(c) => c.type === 'BOOKMARK'
+						)
 						for (const child of childBookmarks) {
 							if (child.url) {
 								const newBookmark: LocalBookmark = {
@@ -418,9 +450,7 @@ export function ImportBookmarkModal({
 						</Button>
 					)}
 				</div>
-
 			</div>
 		</Modal>
 	)
 }
-

@@ -29,11 +29,11 @@ export interface BookmarkStoreContext {
 
 const bookmarkContext = createContext<BookmarkStoreContext>({
 	bookmarks: [],
-	setBookmarks: () => { },
+	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
-	addBookmark: async () => { },
-	editBookmark: () => { },
-	deleteBookmark: () => { },
+	addBookmark: async () => {},
+	editBookmark: () => {},
+	deleteBookmark: () => {},
 })
 
 export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({

@@ -71,7 +71,9 @@ export function BrowserBookmarkSelector({ onSelect }: BrowserBookmarkSelectorPro
 								onSelect({
 									title: bookmark.title,
 									url: bookmark.url || '',
-									icon: bookmark.url ? getFaviconFromUrl(bookmark.url) : null,
+									icon: bookmark.url
+										? getFaviconFromUrl(bookmark.url)
+										: null,
 								})
 							}
 							className="p-2 flex flex-col items-center gap-y-0.5 text-center transition-colors duration-200 bg-content hover:!bg-base-300/75 border border-base-300/40 rounded-xl cursor-pointer"
@@ -85,7 +87,9 @@ export function BrowserBookmarkSelector({ onSelect }: BrowserBookmarkSelectorPro
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'
-											target.nextElementSibling?.classList.remove('hidden')
+											target.nextElementSibling?.classList.remove(
+												'hidden'
+											)
 										}}
 									/>
 								) : null}

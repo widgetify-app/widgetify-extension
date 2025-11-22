@@ -154,7 +154,6 @@ export function AddBookmarkModal({
 		}
 	}
 
-
 	const handleAdvancedModalClose = (
 		data: {
 			background: string | null
@@ -257,7 +256,9 @@ export function AddBookmarkModal({
 							<TextInput
 								type="text"
 								name="title"
-								placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+								placeholder={
+									type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+								}
 								value={formData.title}
 								onChange={(v) => updateFormData('title', v)}
 								className={
@@ -278,7 +279,6 @@ export function AddBookmarkModal({
 									/>
 								)}
 							</div>
-							
 							{type === 'BOOKMARK' && (
 								<BookmarkSuggestions onSelect={handleSuggestionSelect} />
 							)}
