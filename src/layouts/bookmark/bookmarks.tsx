@@ -10,6 +10,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { FolderHeader } from './components/folder-header'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
+import { ImportBookmarkModal } from './components/modal/import-bookmark.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
@@ -22,6 +23,7 @@ export function BookmarksList() {
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
+	const [showImportBookmarkModal, setShowImportBookmarkModal] = useState(false)
 
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
@@ -139,6 +141,17 @@ export function BookmarksList() {
 
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
 
+	// Calculate available slots
+	const getAvailableSlots = (): number => {
+		if (!currentFolderId) {
+			return Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
+		}
+		// For folders, use a larger limit (e.g., 50)
+		return Math.max(0, 50 - currentFolderItems.length)
+	}
+
+	const availableSlots = getAvailableSlots()
+
 	const getDisplayedBookmarks = (): Bookmark[] => {
 		if (!currentFolderId) {
 			const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
@@ -186,7 +199,10 @@ export function BookmarksList() {
 						folderPath={folderPath}
 						setCurrentFolderId={(id) => setCurrentFolderId(id)}
 						setFolderPath={(path) => setFolderPath(path)}
-						openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
+						openAddBookmarkModal={() => {
+							setShowAddBookmarkModal(true)
+							setShowImportBookmarkModal(false)
+						}}
 					/>
 				</div>
 			</DndContext>
@@ -198,6 +214,18 @@ export function BookmarksList() {
 						addBookmark(bookmark, () => setShowAddBookmarkModal(false))
 					}
 					parentId={currentFolderId}
+					onOpenImportModal={() => {
+						setShowAddBookmarkModal(false)
+						setShowImportBookmarkModal(true)
+					}}
+				/>
+			)}
+			{showImportBookmarkModal && (
+				<ImportBookmarkModal
+					isOpen={showImportBookmarkModal}
+					onClose={() => setShowImportBookmarkModal(false)}
+					parentId={currentFolderId}
+					availableSlots={availableSlots}
 				/>
 			)}
 		</>
