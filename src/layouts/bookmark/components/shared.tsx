@@ -88,7 +88,6 @@ export function useBookmarkIcon() {
 		setIconSource: (source: IconSourceType) => void,
 		cb: (value: File | null) => void
 	) => {
-		console.log('Rendering icon preview with icon:', icon)
 		const handlePreviewClick = () => {
 			if (iconSource === 'upload') {
 				fileInputRef.current?.click()

@@ -120,8 +120,6 @@ export function BookmarksList() {
 			}
 
 			Analytics.event('bookmark_reorder')
-		} else {
-			console.log('Actual source or target index not found')
 		}
 	}
 

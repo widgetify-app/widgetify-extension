@@ -211,17 +211,29 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {
 		if (!input.title?.trim() || !bookmarks) return
-		console.log('editBookmark called with input:', input)
 		const foundedBookmark = bookmarks.find(
 			(b) => b.id === input.id || b.onlineId === input.onlineId
 		)
 		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
 
 		let updatedBookmark: Bookmark | undefined = undefined
+		let onlineId: string | null = null
+
 		if (isAuthenticated) {
+			let idForEdit = input.id
+			const isValidUuid = validate(idForEdit)
+			if (isValidUuid) {
+				idForEdit = foundedBookmark.onlineId || foundedBookmark.id
+			}
+
+			if (!idForEdit) {
+				showToast('شناسه بوکمارک نامعتبر است!', 'error')
+				return
+			}
+
 			const [error, fetchedUpdate] = await safeAwait<AxiosError, Bookmark>(
 				updateBookmarkAsync({
-					id: foundedBookmark.onlineId || foundedBookmark.id,
+					id: idForEdit,
 					parentId: foundedBookmark.parentId,
 					order: foundedBookmark.order,
 					customBackground: input.customBackground,
@@ -243,6 +255,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				showToast(msg, 'error')
 				return
 			}
+
+			onlineId = fetchedUpdate.id
+
+			// input.id can be localId(old bookmarks)
+			fetchedUpdate.id = input.id || fetchedUpdate.id
 			updatedBookmark = fetchedUpdate
 		}
 
@@ -259,15 +276,16 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				url:
 					foundedBookmark.type === 'BOOKMARK' ? input.url : foundedBookmark.url,
 				icon: input.icon ? await fileToBase64(input.icon) : foundedBookmark.icon,
-				onlineId: updatedBookmark ? updatedBookmark.id : foundedBookmark.onlineId,
+				onlineId: onlineId || foundedBookmark.onlineId,
 				id: updatedBookmark ? updatedBookmark.id : foundedBookmark.id,
 				isLocal: updatedBookmark ? false : foundedBookmark.isLocal,
 			}
-			console.log('Updated bookmark:', bookmarks[index])
 			setBookmarks([...bookmarks])
 
 			await setToStorage('bookmarks', bookmarks)
 			Analytics.event('edit_bookmark')
+		} else {
+			showToast('بوکمارک یافت نشد!', 'error')
 		}
 
 		cb()

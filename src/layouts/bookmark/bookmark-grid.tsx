@@ -59,11 +59,6 @@ export function BookmarkGrid({
 				openBookmarks(bookmark)
 			} else {
 				const isValidUUid = validate(bookmark.id)
-				console.log(
-					'isValidUUid for folder navigation:',
-					isValidUUid,
-					bookmark?.id
-				)
 				setCurrentFolderId(isValidUUid ? bookmark.id : bookmark.onlineId)
 				setFolderPath([...folderPath, { id: bookmark.id, title: bookmark.title }])
 			}
@@ -181,7 +176,7 @@ export function BookmarkGrid({
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div
-							key={bookmark.id}
+							key={bookmark.id + '-' + i}
 							className="transition-transform duration-200"
 						>
 							<SortableBookmarkItem
