@@ -16,7 +16,6 @@ import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalenda
 import type React from 'react'
 import { Button } from '@/components/button/button'
 import { useAuth } from '@/context/auth.context'
-import toast from 'react-hot-toast'
 import {
 	type MoodType,
 	useUpsertMoodLog,
@@ -25,6 +24,7 @@ import { safeAwait } from '@/services/api'
 import type { AxiosError } from 'axios'
 import { translateError } from '@/utils/translate-error'
 import { useIsMutating } from '@tanstack/react-query'
+import { showToast } from '@/common/toast'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
@@ -55,7 +55,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		if (isAdding) return
 		if (value === '') return
 		if (!isAuthenticated) {
-			toast.error('برای ثبت مود روزانه باید وارد حساب کاربری خود شوید.')
+			showToast('برای ثبت مود روزانه باید وارد حساب کاربری خود شوید.', 'error')
 			return
 		}
 
@@ -63,7 +63,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		const selectedGregorian = selectedDate.clone().doAsGregorian()
 
 		if (selectedGregorian.isAfter(currentGregorian, 'day')) {
-			toast.error('تاریخ انتخاب شده نمی‌تواند در آینده باشد.')
+			showToast('تاریخ انتخاب شده نمی‌تواند در آینده باشد.', 'error')
 			return
 		}
 
@@ -73,7 +73,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				'day'
 			)
 		) {
-			toast.error('تاریخ انتخاب شده نمی‌تواند بیش از ۷ روز گذشته باشد.')
+			showToast('تاریخ انتخاب شده نمی‌تواند بیش از ۷ روز گذشته باشد.', 'error')
 			return
 		}
 
@@ -85,12 +85,13 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		)
 		if (error) {
 			const msg = translateError(error)
-			toast.error(msg as any)
+			showToast(msg as any, 'error')
+
 			return
 		}
 
 		setMood(value as MoodType)
-		toast.success('مود روزانه با موفقیت ثبت شد!')
+		showToast('مود روزانه با موفقیت ثبت شد!', 'success')
 	}
 
 	const todayShamsiEvents = getShamsiEvents(events, selectedDate)
