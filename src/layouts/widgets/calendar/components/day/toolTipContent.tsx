@@ -213,12 +213,18 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 										: `bg-base-300 hover:bg-base-300/70 opacity-60 hover:opacity-100`
 								}`}
 							>
-								<div className="text-lg leading-none mb-0.5">
-									{option.emoji}
-								</div>
-								<div className="text-[10px] leading-tight">
-									{option.label}
-								</div>
+								{isAdding ? (
+									<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
+								) : (
+									<>
+										<div className="text-lg leading-none mb-0.5">
+											{option.emoji}
+										</div>
+										<div className="text-[10px] leading-tight">
+											{option.label}
+										</div>
+									</>
+								)}
 							</button>
 						))}
 					</div>

@@ -19,10 +19,10 @@ export interface EventName {
 	openWidgetsSettings: { tab: WidgetTabKeys | null }
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
-		enablePets?: boolean
 		petName?: string
 		petType: PetTypes
 	}
+	updatedPetState: boolean
 	theme_change: Theme
 	auth_logout: null
 	browser_title_change: {
