@@ -1,5 +1,5 @@
-import toast from 'react-hot-toast'
 import Tooltip from '@/components/toolTip'
+import { showToast } from '@/common/toast'
 
 interface NetworkIPCardProps {
 	ip: string | null
@@ -10,9 +10,7 @@ export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
 	function copyToClipboard() {
 		if (ip && navigator?.clipboard) {
 			navigator.clipboard?.writeText(ip).then(() => {
-				toast.success('آدرس IP کپی شد', {
-					position: 'bottom-center',
-				})
+				showToast('آدرس IP کپی شد!', 'success')
 			})
 		}
 	}

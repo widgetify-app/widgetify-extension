@@ -1,7 +1,6 @@
 import type { AxiosError } from 'axios'
 import moment from 'jalali-moment'
 import { useEffect, useRef, useState } from 'react'
-import toast from 'react-hot-toast'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { ItemSelector } from '@/components/item-selector'
@@ -14,6 +13,7 @@ import {
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
 import JalaliDatePicker from './ProfileDatePicker'
+import { showToast } from '@/common/toast'
 
 interface ProfileEditFormProps {
 	profile?: UserProfile
@@ -98,15 +98,13 @@ export const ProfileEditForm = ({
 	const onChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file && file.size > 1024 * 1024) {
-			toast.error('فایل باید کمتر از 1 مگابایت باشد')
+			showToast('فایل باید کمتر از 1 مگابایت باشد', 'error')
 			return
 		}
 
 		const validTypes = ['image/png', 'image/jpeg', 'image/webp']
 		if (file && !validTypes.includes(file.type)) {
-			toast.error('فقط فرمت‌های png، jpeg و webp مجاز هستند', {
-				duration: 4000,
-			})
+			showToast('فقط فرمت‌های png، jpeg و webp مجاز هستند', 'error')
 			return
 		}
 

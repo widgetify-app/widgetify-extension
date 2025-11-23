@@ -6,7 +6,6 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
@@ -21,6 +20,7 @@ import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
 import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
+import { showToast } from '@/common/toast'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -222,8 +222,9 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 			if (!isCurrentlyVisible) {
 				if (!isAuthenticated && prev.length >= MAX_VISIBLE_WIDGETS) {
-					toast.error(
-						`کاربران مهمان تنها می‌توانند حداکثر ${MAX_VISIBLE_WIDGETS} ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.`
+					showToast(
+						`کاربران مهمان تنها می‌توانند حداکثر ${MAX_VISIBLE_WIDGETS} ویجت فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود شوید.`,
+						'error'
 					)
 					return prev
 				}

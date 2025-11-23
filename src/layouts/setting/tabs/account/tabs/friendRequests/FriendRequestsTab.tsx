@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { FiUserCheck } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
@@ -14,6 +13,7 @@ import {
 import { translateError } from '@/utils/translate-error'
 import { FriendsList } from '../../components/friends-List'
 import { RemoveFriendButton } from '../../components/remove-button'
+import { showToast } from '@/common/toast'
 
 export const FriendRequestsTab = () => {
 	const { user } = useAuth()
@@ -26,8 +26,9 @@ export const FriendRequestsTab = () => {
 
 	const handleSendRequest = () => {
 		if (!user?.username) {
-			toast.error(
-				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در پروفایل تنظیم کنید.'
+			showToast(
+				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش پروفایل تنظیم کنید.',
+				'error'
 			)
 			return
 		}
@@ -40,13 +41,13 @@ export const FriendRequestsTab = () => {
 			{
 				onSuccess: () => {
 					setUsername('')
-					toast.success('درخواست دوستی با موفقیت ارسال شد')
+					showToast('درخواست دوستی با موفقیت ارسال شد', 'success')
 					setTranslatedError(null)
 				},
 				onError: (err) => {
 					const message = translateError(err)
 					if (typeof message === 'string') {
-						toast.error(message)
+						showToast(message, 'error')
 					} else {
 						setTranslatedError(message.username)
 					}

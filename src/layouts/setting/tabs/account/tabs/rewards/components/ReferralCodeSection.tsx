@@ -1,6 +1,6 @@
-import toast from 'react-hot-toast'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
+import { showToast } from '@/common/toast'
 
 interface ReferralCodeSectionProps {
 	code: string
@@ -16,10 +16,10 @@ export const ReferralCodeSection = ({
 	const handleCopyCode = async () => {
 		try {
 			await navigator.clipboard.writeText(code)
-			toast.success('کد دعوت کپی شد!')
+			showToast('کد دعوت کپی شد!', 'success')
 		} catch (error) {
 			console.error('Failed to copy code:', error)
-			toast.error('خطا در کپی کردن کد')
+			showToast('خطا در کپی کردن کد', 'error')
 		}
 	}
 

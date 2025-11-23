@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { FiLogOut } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
@@ -16,6 +15,7 @@ import { ProfileDisplay } from '../../components/profile-display'
 import { ProfileEditForm } from '../../components/profile-edit-form'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { Connections } from './connections/connections'
+import { showToast } from '@/common/toast'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -47,11 +47,9 @@ export const UserProfile = () => {
 	const handleSendVerificationEmail = async () => {
 		try {
 			await sendVerificationMutation.mutateAsync()
-			toast.success('ایمیل تایید با موفقیت ارسال شد!', {
-				duration: 4000,
-			})
+			showToast('ایمیل تایید با موفقیت ارسال شد!', 'success')
 		} catch {
-			toast.error('خطا در ارسال ایمیل تایید. لطفاً دوباره تلاش کنید.')
+			showToast('خطا در ارسال ایمیل تایید. لطفاً دوباره تلاش کنید.', 'error')
 		}
 	}
 

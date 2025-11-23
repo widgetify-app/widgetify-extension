@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
@@ -8,6 +7,7 @@ import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { ConnectionModal } from './components/connection-modal'
 import type { Platform } from './components/platform-config.js'
 import { PLATFORM_CONFIGS } from './components/platform-data'
+import { showToast } from '@/common/toast'
 
 export function Connections() {
 	const { data: profile } = useGetUserProfile()
@@ -38,18 +38,16 @@ export function Connections() {
 
 	const handleConnectionClick = (platformId: string) => {
 		if (!profile?.verified) {
-			return toast.error('لطفا اول حساب کاربری خود را تأیید کنید.', {
-				duration: 4000,
-			})
+			return showToast('لطفا اول حساب کاربری خود را تأیید کنید.', 'error')
 		}
 
 		const platform = platforms.find((p) => p.id === platformId)
 		if (!platform) {
-			return toast.error('این پلتفرم در حال حاضر غیرفعال است.')
+			return showToast('این پلتفرم در حال حاضر غیرفعال است.', 'error')
 		}
 
 		if (!platform.isActive && !platform.connected) {
-			return toast.error('این پلتفرم هنوز آماده نیست.')
+			return showToast('این پلتفرم هنوز آماده نیست.', 'error')
 		}
 
 		setSelectedPlatform(platform)
@@ -77,7 +75,7 @@ export function Connections() {
 					)
 				)
 
-				toast.success(`اتصال به ${selectedPlatform.name} قطع شد.`)
+				showToast(`اتصال به ${selectedPlatform.name} قطع شد.`, 'success')
 			} else {
 				const api = await getMainClient()
 				const response = await api.post(`/${selectedPlatform.id}/connect`)
@@ -91,8 +89,9 @@ export function Connections() {
 				)
 			)
 
-			toast.error(
-				`خطا در ارتباط با ${selectedPlatform.name}. لطفا دوباره تلاش کنید.`
+			showToast(
+				`خطا در ارتباط با ${selectedPlatform.name}. لطفا دوباره تلاش کنید.`,
+				'error'
 			)
 		}
 
