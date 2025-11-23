@@ -13,12 +13,19 @@ export function PetSettings() {
 
 	useEffect(() => {
 		async function load() {
-			const storedPets = await getFromStorage('pets')
-			if (storedPets) {
+			const [storedPets, petState] = await Promise.all([
+				getFromStorage('pets'),
+				getFromStorage('petState'),
+			])
+			if (storedPets?.petOptions) {
 				const type = storedPets.petType || PetTypes.DOG_AKITA
-				setEnablePets(storedPets.enablePets)
 				setPetType(type)
 				setPetName(storedPets.petOptions[type].name)
+			}
+			if (typeof petState === 'boolean') {
+				setEnablePets(petState)
+			} else {
+				setEnablePets(true)
 			}
 		}
 
@@ -26,10 +33,7 @@ export function PetSettings() {
 	}, [])
 
 	async function onChangeEnablePets(value: boolean) {
-		callEvent('updatedPetSettings', {
-			enablePets: value,
-			petType,
-		})
+		callEvent('updatedPetState', value)
 		setEnablePets(value)
 	}
 
