@@ -1,5 +1,4 @@
-import toast from 'react-hot-toast'
-import { FiCheck, FiEye, FiShoppingBag, FiShoppingCart } from 'react-icons/fi'
+import { FiEye, FiShoppingBag, FiShoppingCart } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
@@ -7,6 +6,7 @@ import { renderBrowserTitlePreview } from '@/components/market/title/title-rende
 import Tooltip from '@/components/toolTip'
 import { Theme } from '@/context/theme.context'
 import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
+import { showToast } from '@/common/toast'
 
 interface MarketItemCardProps {
 	item: MarketItem
@@ -50,14 +50,11 @@ export function MarketItemCard({
 
 	function onPurchaseButtonClick() {
 		if (needUpgrade) {
-			return toast.error(
+			showToast(
 				'این مورد نیاز به به‌روزرسانی افزونه دارد! لطفا افزونه خود را به‌روزرسانی کنید.',
-				{
-					duration: 8000,
-					style: { maxWidth: '400px', fontFamily: 'inherit' },
-					className: '!bg-error !text-error-content !font-bold',
-				}
+				'error'
 			)
+			return
 		}
 
 		onPurchase()

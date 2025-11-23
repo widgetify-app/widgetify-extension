@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
 import { useUpdateActivity } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 const ACTIVITY_MAX_LENGTH = 40
 interface Prop {
@@ -16,8 +16,9 @@ export function ActivityInput({ activity }: Prop) {
 
 	const handleActivityUpdate = () => {
 		if (activityText.length > ACTIVITY_MAX_LENGTH) {
-			toast.error(
-				`وضعیت فعالیت نمی‌تواند بیشتر از ${ACTIVITY_MAX_LENGTH} کاراکتر باشد.`
+			showToast(
+				`وضعیت فعالیت نمی‌تواند بیشتر از ${ACTIVITY_MAX_LENGTH} کاراکتر باشد.`,
+				'error'
 			)
 			return
 		}
@@ -26,14 +27,17 @@ export function ActivityInput({ activity }: Prop) {
 			{ activity: activityText || undefined },
 			{
 				onSuccess: () => {
-					toast.success('وضعیت با موفقیت بروزرسانی شد')
+					showToast('وضعیت با موفقیت بروزرسانی شد', 'success')
 				},
 				onError: (error) => {
 					const content = translateError(error)
 					if (typeof content === 'string') {
-						toast.error(content)
+						showToast(content, 'error')
 					} else {
-						toast.error('خطا در بروزرسانی وضعیت. لطفاً دوباره تلاش کنید.')
+						showToast(
+							'خطا در بروزرسانی وضعیت. لطفاً دوباره تلاش کنید.',
+							'error'
+						)
 					}
 				},
 			}

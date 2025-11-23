@@ -18,8 +18,8 @@ import type { UserInventoryItem } from '@/services/hooks/market/market.interface
 import { validate } from 'uuid'
 import { MdSyncProblem } from 'react-icons/md'
 import Tooltip from '@/components/toolTip'
-import toast from 'react-hot-toast'
 import { SyncAlertModal } from './sync-alert.modal'
+import { showToast } from '@/common/toast'
 
 enum SyncState {
 	Syncing = 0,
@@ -158,9 +158,9 @@ export function SyncButton() {
 		if (showAlert.type === 'BOOKMARKS') {
 			const result = await SyncBookmark('POST')
 			if (result) {
-				toast.success('بوکمارک‌ها با موفقیت همگام‌سازی شدند.')
+				showToast('بوکمارک‌ها با موفقیت همگام‌سازی شدند.', 'success')
 			} else {
-				toast.error('خطا در همگام‌سازی بوکمارک‌ها.')
+				showToast('خطا در همگام‌سازی بوکمارک‌ها.', 'error')
 			}
 
 			setSyncState(result ? SyncState.Success : SyncState.Error)
