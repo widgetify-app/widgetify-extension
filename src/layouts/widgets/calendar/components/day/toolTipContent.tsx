@@ -131,7 +131,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			)
 		} else {
 			setMood(value as MoodType)
-			showToast('مود شما با موفقیت ثبت شد!', 'success')
+			showToast('مود شما با موفقیت ثبت شد!', 'success', {
+				alarmSound: true,
+			})
 		}
 
 		Analytics.event('calendar_mood_clicked')
@@ -210,7 +212,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								className={`p-1.5 rounded-md transition-all cursor-pointer ${
 									mood === option.value
 										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
-										: `bg-base-300 hover:bg-base-300/70 opacity-60 hover:opacity-100`
+										: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
 								}`}
 							>
 								{isAdding ? (
