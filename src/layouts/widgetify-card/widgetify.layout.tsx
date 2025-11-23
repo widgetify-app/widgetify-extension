@@ -5,7 +5,6 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
-import { GoogleOverviewCard } from './overviewCards/google.overviewCard'
 import { TodoOverviewCard } from './overviewCards/todo-overviewCard'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
@@ -53,7 +52,6 @@ export const WidgetifyLayout = () => {
 						</Tooltip>
 					</div>
 
-					{/* Daily Summary Content */}
 					<div
 						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto small-scrollbar`}
 					>
@@ -61,7 +59,7 @@ export const WidgetifyLayout = () => {
 							className={`flex flex-col gap-1 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
 							<TodoOverviewCard />
-							<GoogleOverviewCard />
+							{/* <GoogleOverviewCard /> */}
 						</div>
 						<NotificationCenter />
 					</div>
