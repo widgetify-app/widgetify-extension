@@ -1,6 +1,5 @@
 import { v4 as uuidv4, validate } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
@@ -15,6 +14,7 @@ import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
 import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
 import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
+import { showToast } from '@/common/toast'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 
@@ -119,8 +119,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	) => {
 		try {
 			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
-				toast.error(
-					`تصویر انتخاب شده (${(inputBookmark.icon.size / (1024 * 1024)).toFixed(1)} مگابایت) بزرگتر از حداکثر مجاز است.`
+				showToast(
+					`تصویر انتخاب شده (${(inputBookmark.icon.size / (1024 * 1024)).toFixed(1)} مگابایت) بزرگتر از حداکثر مجاز است.`,
+					'error'
 				)
 				cb()
 				return
@@ -169,9 +170,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 							? translated
 							: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
 
-					toast.error(msg, {
-						duration: 5000,
-					})
+					showToast(msg, 'error')
 				} else {
 					createdBookmark = response
 				}
@@ -204,7 +203,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
-			toast.error('خطا در افزودن بوکمارک')
+			showToast('خطا در افزودن بوکمارک', 'error')
 		} finally {
 			cb()
 		}
@@ -216,7 +215,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const foundedBookmark = bookmarks.find(
 			(b) => b.id === input.id || b.onlineId === input.onlineId
 		)
-		if (!foundedBookmark) return toast.error('بوکمارک یافت نشد!')
+		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
 
 		let updatedBookmark: Bookmark | undefined = undefined
 		if (isAuthenticated) {
@@ -241,9 +240,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					typeof translated === 'string'
 						? translated
 						: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
-				toast.error(msg, {
-					duration: 5000,
-				})
+				showToast(msg, 'error')
 				return
 			}
 			updatedBookmark = fetchedUpdate
@@ -313,7 +310,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (isAuthenticated) {
 			const [error, _] = await safeAwait(removeBookmarkAsync(id))
 			if (error) {
-				toast.error(translateError(error) as string)
+				showToast(translateError(error) as string, 'error')
 			}
 		}
 

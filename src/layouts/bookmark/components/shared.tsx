@@ -3,7 +3,7 @@ import { FaImage, FaUpload } from 'react-icons/fa'
 import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
 import type { BookmarkType } from '../types/bookmark.types'
-import toast from 'react-hot-toast'
+import { showToast } from '@/common/toast'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
 
@@ -209,7 +209,7 @@ export function useBookmarkIcon() {
 		if (!file) return
 
 		if (!file.type.startsWith('image/')) {
-			toast.error('لطفاً فقط فایل تصویری آپلود کنید')
+			showToast('لطفاً فقط فایل تصویری آپلود کنید', 'error')
 			return
 		}
 

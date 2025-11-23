@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { FaSearch, FaShareAlt, FaUsers, FaYoutube } from 'react-icons/fa'
 import { FiGift } from 'react-icons/fi'
 import Analytics from '@/analytics'
@@ -9,6 +8,7 @@ import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { type ReferralSource, useSignUp } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 interface ReferralOption {
 	id: ReferralSource
@@ -78,7 +78,7 @@ export const SignUpForm = () => {
 			}
 
 			setError(errorContent)
-			toast.error(errorContent)
+			showToast(errorContent, 'error')
 		}
 	}
 

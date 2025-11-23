@@ -1,6 +1,5 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
 import { GoArrowSwitch } from 'react-icons/go'
 import { MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbLanguage } from 'react-icons/tb'
@@ -21,6 +20,7 @@ import { PlatformModal } from './components/platform-modal'
 import { TranslationInput } from './components/translation-input'
 import { TranslationResult } from './components/translation-result'
 import { validateTranslateRequest } from './shared'
+import { showToast } from '@/common/toast'
 
 export const TranslateComponent: React.FC = () => {
 	const { isAuthenticated, user } = useAuth()
@@ -45,7 +45,7 @@ export const TranslateComponent: React.FC = () => {
 
 	const handleTranslate = async () => {
 		if (!isEnabled) {
-			toast.error('برای استفاده از مترجم لطفا وارد شوید')
+			showToast('برای استفاده از مترجم لطفا وارد شوید', 'error')
 			return
 		}
 

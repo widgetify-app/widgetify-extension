@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast'
 import { FiCheck, FiX } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
@@ -10,6 +9,7 @@ import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
@@ -40,20 +40,16 @@ export function MarketItemPurchaseModal({
 			{ itemId: item.id },
 			{
 				onSuccess: (_response) => {
-					toast.success(`${item.name} با موفقیت خریداری شد! 🎉`, {
-						duration: 5000,
-						style: { maxWidth: '400px', fontFamily: 'inherit' },
-						className: '!bg-success !text-success-content !font-bold',
-					})
+					showToast(`${item.name} با موفقیت خریداری شد! 🎉`, 'success')
 					Analytics.event('market_item_purchased')
 					onPurchaseSuccess(item)
 				},
 				onError: (error) => {
-					toast.error((translateError(error) as string) || 'خطا در خرید آیتم', {
-						duration: 8000,
-						style: { maxWidth: '400px', fontFamily: 'inherit' },
-						className: '!bg-error !text-error-content !font-bold',
-					})
+					showToast(
+						(translateError(error) as string) || 'خطا در خرید آیتم',
+						'error'
+					)
+
 					Analytics.event('market_item_purchase_failed')
 				},
 			}

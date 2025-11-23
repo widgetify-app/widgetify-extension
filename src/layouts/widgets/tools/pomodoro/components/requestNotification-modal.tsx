@@ -1,7 +1,7 @@
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
+import { showToast } from '@/common/toast'
 
 interface Prop {
 	showRequireNotificationModal: boolean
@@ -22,16 +22,16 @@ export function RequestNotificationModal({
 		try {
 			const perm = await Notification.requestPermission()
 			if (perm === 'granted') {
-				toast.success('اعلان‌ها با موفقیت فعال شدند!')
+				showToast('اعلان‌ها با موفقیت فعال شدند!', 'success')
 				setShowRequireNotificationModal(false)
 				startPomodoro()
 				Analytics.event('grant_notification_permission')
 			} else {
-				toast.error('برای شروع باید اعلان‌ها را فعال کنید.')
+				showToast('برای شروع باید اعلان‌ها را فعال کنید.', 'error')
 				Analytics.event('deny_notification_permission')
 			}
 		} catch {
-			toast.error('خطا در درخواست دسترسی اعلان‌ها.')
+			showToast('خطا در درخواست دسترسی اعلان‌ها.', 'error')
 		}
 	}
 

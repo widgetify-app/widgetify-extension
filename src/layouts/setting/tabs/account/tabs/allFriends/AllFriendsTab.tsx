@@ -1,9 +1,9 @@
-import toast from 'react-hot-toast'
 import { SectionPanel } from '@/components/section-panel'
 import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import { FriendsList } from '../../components/friends-List'
 import { RemoveFriendButton } from '../../components/remove-button'
+import { showToast } from '@/common/toast'
 
 export const AllFriendsTab = () => {
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
@@ -12,12 +12,7 @@ export const AllFriendsTab = () => {
 		removeFriend(friendId, {
 			onError: (error) => {
 				const msg = translateError(error)
-				toast.error(msg as string, {
-					style: {
-						backgroundColor: '#f8d7da',
-						color: '#721c24',
-					},
-				})
+				showToast(msg as string, 'error')
 			},
 		})
 	}

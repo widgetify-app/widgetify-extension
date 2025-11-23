@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
+import { showToast } from '@/common/toast'
 
 declare global {
 	interface Window {
@@ -29,7 +29,7 @@ export function useVoiceSearch(
 		const SpeechRecognition =
 			window.SpeechRecognition || window.webkitSpeechRecognition
 		if (!SpeechRecognition) {
-			toast.error('مرورگر شما از جستجوی صوتی پشتیبانی نمی‌کند.')
+			showToast('مرورگر شما از جستجوی صوتی پشتیبانی نمی‌کند.', 'error')
 			return null
 		}
 
