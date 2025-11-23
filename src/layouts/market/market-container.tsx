@@ -8,7 +8,7 @@ import { UserCoin } from '../setting/tabs/account/components/user-coin'
 import Analytics from '@/analytics'
 
 export function MarketContainer() {
-	const { user } = useAuth()
+	const { isAuthenticated, user } = useAuth()
 	const [activeTab, setActiveTab] = useState('other')
 
 	const tabs = [
@@ -61,8 +61,11 @@ export function MarketContainer() {
 					</div>
 					{
 						<div className="flex items-center justify-center pl-2">
-							{user && (
-								<UserCoin coins={user.coins} title="موجودی ویج‌کوین شما" />
+							{isAuthenticated && (
+								<UserCoin
+									coins={user?.coins || 0}
+									title="موجودی ویج‌کوین شما"
+								/>
 							)}
 						</div>
 					}
