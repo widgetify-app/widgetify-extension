@@ -2,6 +2,7 @@ import moment from 'jalali-moment'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
+import { HiSparkles } from 'react-icons/hi2'
 import { useState } from 'react'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
@@ -14,7 +15,6 @@ import {
 import { useDate } from '@/context/date.context'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
-import { Button } from '@/components/button/button'
 import { useAuth } from '@/context/auth.context'
 import {
 	type MoodType,
@@ -25,28 +25,58 @@ import type { AxiosError } from 'axios'
 import { translateError } from '@/utils/translate-error'
 import { useIsMutating } from '@tanstack/react-query'
 import { showToast } from '@/common/toast'
+import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
+import Analytics from '@/analytics'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
 	googleEvents: GoogleCalendarEvent[]
 	eventIcon?: string
+	moods: MoodEntry[]
+	onMoodChange?: (mood: MoodType) => void
 }
 
-const moodOptions = [
-	{ value: 'sad', emoji: '😢', label: 'ناراحت' },
-	{ value: 'normal', emoji: '😐', label: 'معمولی' },
-	{ value: 'happy', emoji: '😊', label: 'خوب' },
-	{ value: 'excited', emoji: '😂', label: 'سرحال' },
+export const moodOptions = [
+	{
+		value: 'sad',
+		emoji: '😢',
+		label: 'ناراحت',
+		colorClass: 'error',
+		ringClass: 'ring-error/50',
+	},
+	{
+		value: 'normal',
+		emoji: '😐',
+		label: 'معمولی',
+		colorClass: 'warning',
+		ringClass: 'ring-yellow-400/50',
+	},
+	{
+		value: 'happy',
+		emoji: '😊',
+		label: 'خوب',
+		colorClass: 'secondary',
+		ringClass: 'ring-secondary/50',
+	},
+	{
+		value: 'excited',
+		emoji: '😂',
+		label: 'سرحال',
+		colorClass: 'success',
+		ringClass: 'ring-green-400/50',
+	},
 ]
 
 export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	events,
 	googleEvents,
-	eventIcon,
+	moods,
+	onMoodChange,
 }) => {
 	const { selectedDate, today } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: upsertMoodLog } = useUpsertMoodLog()
+
 	const [mood, setMood] = useState<MoodType | ''>('')
 
 	const isAdding = useIsMutating({ mutationKey: ['upsertMoodLog'] }) > 0
@@ -77,7 +107,10 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			return
 		}
 
-		const [error, _] = await safeAwait<AxiosError, any>(
+		const [error, response] = await safeAwait<
+			AxiosError,
+			{ action: 'added' | 'removed' }
+		>(
 			upsertMoodLog({
 				mood: value as MoodType,
 				date: selectedGregorian.format('YYYY-MM-DD'),
@@ -86,12 +119,22 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		if (error) {
 			const msg = translateError(error)
 			showToast(msg as any, 'error')
-
 			return
 		}
 
-		setMood(value as MoodType)
-		showToast('مود روزانه با موفقیت ثبت شد!', 'success')
+		onMoodChange?.(value as MoodType)
+		if (response.action === 'removed') {
+			setMood('')
+			showToast(
+				'مودت حذف شد. اگه بعداً خواستی دوباره می‌تونی یکی انتخاب کنی.',
+				'info'
+			)
+		} else {
+			setMood(value as MoodType)
+			showToast('مود شما با موفقیت ثبت شد!', 'success')
+		}
+
+		Analytics.event('calendar_mood_clicked')
 	}
 
 	const todayShamsiEvents = getShamsiEvents(events, selectedDate)
@@ -110,127 +153,118 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	].sort((a) => (a.isHoliday ? -1 : 1))
 
 	const hijri = convertShamsiToHijri(selectedDate)
-	const gregorian = selectedDate.clone().doAsGregorian().format('YYYY MMMM DD')
+	const gregorian = selectedDate.clone().doAsGregorian().format('DD MMM YYYY')
 	const jalali = selectedDate.format('jYYYY/jMM/jD')
-	const jalaliDay = selectedDate.format('ddd')
+	const jalaliDay = selectedDate.format('dddd')
 
 	const dayGoogleEvents = filterGoogleEventsByDate(googleEvents, selectedDate)
-
+	const totalEvents = dayEvent.length + dayGoogleEvents.length
 	const holidayStyle = isHoliday
 		? 'from-orange-600 to-red-700'
 		: 'from-sky-500 to-blue-700'
-	const headerStyle = `max-w-full py-1 px-3 rounded text-center text-white bg-gradient-to-r ${holidayStyle}`
 
-	const infoStyle = 'text-sm'
-	const googleStyle = 'text-[#4285f4]'
+	useEffect(() => {
+		const selectedDateStr = selectedDate.doAsGregorian().format('YYYY-MM-DD')
+		const existingMood = moods?.find((m) => m.date === selectedDateStr)
+		setMood(existingMood?.mood || '')
+	}, [selectedDate, moods])
 
 	return (
-		<div className="my-1 flex flex-col min-w-[250px] max-w-[250px] rounded-xl overflow-hidden transition-shadow">
-			<div className={headerStyle}>
-				<div className="flex items-center justify-between gap-2">
-					<div className="flex items-center gap-1">
-						{eventIcon && (
-							<img
-								src={eventIcon}
-								alt="مناسبت"
-								className="object-cover w-6 h-6 transition-all rounded-full"
-								onError={(e) => {
-									e.currentTarget.style.display = 'none'
-								}}
-							/>
-						)}
-						<span className="text-sm truncate">{jalaliDay}</span>
-					</div>
-					<span className="text-sm truncate">{jalali}</span>
+		<div className="my-1 flex flex-col w-[240px] rounded-xl overflow-hidden bg-base-100 border border-base-300">
+			{/* Header */}
+			<div className={`px-3 py-2 bg-gradient-to-r ${holidayStyle} text-white`}>
+				<div className="flex items-center justify-between text-sm">
+					<span className="font-medium">{jalaliDay}</span>
+					<span className="opacity-90">{jalali}</span>
 				</div>
 			</div>
 
-			<div className="p-3 space-y-2">
-				<div className="flex items-center gap-2">
-					<FaMoon className="flex-shrink-0 text-amber-500" />
-					<span className="text-sm font-medium rtl">
-						{hijri.format('iD iMMMM iYYYY')}
-					</span>
+			<div className="p-2 space-y-2">
+				<div className="flex items-center justify-between px-1 text-xs text-muted">
+					<div className="flex items-center gap-1">
+						<FaMoon size={10} />
+						<span>{hijri.format('iD iMMMM')}</span>
+					</div>
+					<div className="flex items-center gap-1">
+						<FaGlobeAsia size={10} />
+						<span>{gregorian}</span>
+					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
-					<FaGlobeAsia className="flex-shrink-0 text-blue-500" />
-					<span className={infoStyle}>{gregorian}</span>
-				</div>
-
-				{dayGoogleEvents.length > 0 && (
-					<div className="flex items-start gap-2 pt-2 mt-2 border-t rounded-lg border-content">
-						<AiOutlineGoogle
-							className={`mt-1 flex-shrink-0 ${googleStyle}`}
-						/>
-						<div className="flex-1">
-							<div className={`text-sm font-medium ${googleStyle} mb-1`}>
-								{dayGoogleEvents.length} تقویم گوگل
-							</div>
-							{dayGoogleEvents.map((event, index) => (
-								<div
-									key={index}
-									className={`text-xs mt-1 whitespace-normal break-words ${infoStyle}`}
-								>
-									• {event.summary} - (
-									{moment(event.start.dateTime).format('HH:mm')})
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-
-				{dayEvent.length > 0 && (
-					<div className="flex items-start gap-2 pt-2 mt-2 border-t rounded-lg border-content ">
-						<div className="flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1">
-							<span className="block w-2 h-2 bg-blue-500 rounded-full"></span>
-						</div>
-						<div className="flex-1">
-							<div className={`text-sm font-medium ${infoStyle} mb-1`}>
-								{dayEvent.length} مناسبت
-							</div>
-							{dayEvent.map((event, index) => (
-								<div
-									key={index}
-									className={`text-xs mt-1 whitespace-normal break-words ${event.isHoliday ? 'text-red-500' : infoStyle}`}
-								>
-									• {event.title} {event.isHoliday && '(تعطیل)'}
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-
-				<div className="pt-2 mt-2 border-t rounded-lg border-content">
-					<div className="flex items-center gap-1.5">
-						<span className="text-xl">💭</span>
-						<span className="text-xs font-medium text-content">
-							چه حالی داری؟
+				<div className="p-1.5 rounded-2xl bg-content">
+					<div className="flex items-center gap-1 mb-1.5 px-0.5">
+						<HiSparkles className="text-secondary" size={12} />
+						<span className="text-[10px] font-medium text-content">
+							مود امروز
+						</span>
+						<span className="text-white badge badge-primary badge-xs !p-0.5">
+							جدید
 						</span>
 					</div>
-					<div className="flex items-center justify-between gap-1.5 h-10">
+					<div className="grid grid-cols-4 gap-1">
 						{moodOptions.map((option) => (
-							<Button
-								size="xs"
+							<button
 								key={option.value}
 								onClick={() => handleMoodChange(option.value)}
 								disabled={isAdding}
-								className={`flex-1 flex flex-col items-center gap-1 py-2 px-1 rounded-2xl relative transition-all border text-content ${
+								className={`p-1.5 rounded-md transition-all cursor-pointer ${
 									mood === option.value
-										? 'bg-primary/80 scale-105 shadow-sm border-primary/80'
-										: 'bg-content/80 border-content hover:scale-105'
+										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
+										: `bg-base-300 hover:bg-base-300/70 opacity-60 hover:opacity-100`
 								}`}
 							>
-								<span className="absolute z-50 text-xl leading-none -top-2">
+								<div className="text-lg leading-none mb-0.5">
 									{option.emoji}
-								</span>
-								<span className="text-[10px] z-50 leading-tight text-center absolute -bottom-3.5">
+								</div>
+								<div className="text-[10px] leading-tight">
 									{option.label}
-								</span>
-							</Button>
+								</div>
+							</button>
 						))}
 					</div>
 				</div>
+
+				{totalEvents > 0 && (
+					<div className="pr-1 space-y-1 overflow-y-auto max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
+						{dayGoogleEvents.map((event, idx) => (
+							<div
+								key={`g-${idx}`}
+								className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-info/10 border border-info/20"
+							>
+								<AiOutlineGoogle
+									className="flex-shrink-0 text-info"
+									size={12}
+								/>
+								<div className="flex-1 min-w-0">
+									<div className="text-[10px] text-content truncate">
+										{event.summary}
+									</div>
+									<div className="text-[8px] text-muted">
+										{moment(event.start.dateTime).format('HH:mm')}
+									</div>
+								</div>
+							</div>
+						))}
+
+						{dayEvent.map((event, idx) => (
+							<div
+								key={`e-${idx}`}
+								className={`flex items-center gap-1.5 p-1.5 rounded-2xl ${
+									event.isHoliday
+										? 'bg-error/10 border border-error/20'
+										: 'bg-base-200'
+								}`}
+							>
+								<div
+									className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${event.isHoliday ? 'bg-error' : 'bg-info'}`}
+								/>
+								<div className="flex-1 min-w-0 text-[10px] text-content truncate">
+									{event.title}
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 			</div>
 		</div>
 	)
