@@ -1,7 +1,6 @@
 import type { Category } from '@/common/wallpaper.interface'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
-import { RetouchFilter } from '../../components/retouch-filter.component'
 import { UploadArea } from '../../components/upload-area.component'
 import { useWallpaper } from '../../hooks/use-wallpaper'
 import { CategoryView } from './components/category/category-view'
@@ -13,12 +12,10 @@ export function GalleryTab() {
 	function goBackToCategories() {
 		setSelectedCategory(null)
 	}
-	const {
-		customWallpaper,
-		handleCustomWallpaperChange,
-		isRetouchEnabled,
-		toggleRetouch,
-	} = useWallpaper([], isAuthenticated)
+	const { customWallpaper, handleCustomWallpaperChange } = useWallpaper(
+		[],
+		isAuthenticated
+	)
 
 	return (
 		<>
@@ -40,10 +37,6 @@ export function GalleryTab() {
 					customWallpaper={customWallpaper}
 					onWallpaperChange={handleCustomWallpaperChange}
 				/>
-			</SectionPanel>
-
-			<SectionPanel title="تنظیمات تصویر" size="md">
-				<RetouchFilter isEnabled={isRetouchEnabled} onToggle={toggleRetouch} />
 			</SectionPanel>
 		</>
 	)
