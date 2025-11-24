@@ -19,13 +19,17 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { showToast } from '@/common/toast'
 
 export function BookmarksList() {
-	const { bookmarks, getCurrentFolderItems, addBookmark, setBookmarks } =
-		useBookmarkStore()
+	const {
+		bookmarks,
+		getCurrentFolderItems,
+		currentFolderId,
+		setCurrentFolderId,
+		addBookmark,
+		setBookmarks,
+	} = useBookmarkStore()
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
-
-	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
@@ -188,7 +192,6 @@ export function BookmarksList() {
 					<BookmarkGrid
 						displayedBookmarks={displayedBookmarks}
 						folderPath={folderPath}
-						setCurrentFolderId={(id) => setCurrentFolderId(id)}
 						setFolderPath={(path) => setFolderPath(path)}
 						openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
 					/>

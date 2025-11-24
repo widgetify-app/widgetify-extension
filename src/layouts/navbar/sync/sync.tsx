@@ -297,9 +297,7 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		])
 
 		let fetchedBookmarks: FetchedBookmark[] = []
-		if (method === 'GET') {
-			fetchedBookmarks = await getBookmarks()
-		} else {
+		if (method === 'POST') {
 			const offlineBookmarks = bookmarks?.filter(
 				(b) => validate(b.id) && (b.onlineId === null || b.onlineId === undefined)
 			)
@@ -327,17 +325,13 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 async function getAll() {
 	const client = await getMainClient()
 	const response = await client.get<{
-		bookmarks: FetchedBookmark[]
 		todos: FetchedTodo[]
 		wallpaper: Wallpaper
 		theme: Theme | null
 		browserTitle: UserInventoryItem
 	}>('/extension/@me/sync')
 
-	const { bookmarks, todos, wallpaper, theme, browserTitle } = response.data
-
-	const mappedFetched: Bookmark[] = mapBookmarks(bookmarks)
-	callEvent('bookmarksChanged', mappedFetched)
+	const { todos, wallpaper, theme, browserTitle } = response.data
 
 	const mappedTodos: Todo[] = mapFetchedTodos(todos)
 	callEvent('todosChanged', mappedTodos)

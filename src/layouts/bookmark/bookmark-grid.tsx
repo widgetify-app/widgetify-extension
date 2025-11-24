@@ -19,18 +19,17 @@ interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
 	openAddBookmarkModal: () => void
 	folderPath: FolderPathItem[]
-	setCurrentFolderId: (id: string | null) => void
 	setFolderPath: (path: FolderPathItem[]) => void
 }
 
 export function BookmarkGrid({
 	displayedBookmarks,
 	openAddBookmarkModal,
-	setCurrentFolderId,
 	setFolderPath,
 	folderPath,
 }: BookmarkGridProps) {
-	const { getCurrentFolderItems, editBookmark, deleteBookmark } = useBookmarkStore()
+	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
+		useBookmarkStore()
 	const { browserTabsEnabled } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 

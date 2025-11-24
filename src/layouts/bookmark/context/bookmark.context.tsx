@@ -1,10 +1,9 @@
-import { v4 as uuidv4, validate } from 'uuid'
+import { validate } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Bookmark, LocalBookmark } from '@/layouts/bookmark/types/bookmark.types'
-import { SyncTarget } from '@/layouts/navbar/sync/sync'
+import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
 import { translateError } from '@/utils/translate-error'
@@ -15,6 +14,10 @@ import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.
 import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
 import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
 import { showToast } from '@/common/toast'
+import {
+	FetchedBookmark,
+	useGetBookmarks,
+} from '@/services/hooks/bookmark/getBookmarks.hook'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 
@@ -25,6 +28,8 @@ export interface BookmarkStoreContext {
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string, cb: () => void) => void
+	currentFolderId: string | null
+	setCurrentFolderId: (id: string | null) => void
 }
 
 const bookmarkContext = createContext<BookmarkStoreContext>({
@@ -34,13 +39,21 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	addBookmark: async () => {},
 	editBookmark: () => {},
 	deleteBookmark: () => {},
+	currentFolderId: null,
+	setCurrentFolderId: () => {},
 })
 
 export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
+	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 	const { isAuthenticated } = useAuth()
+	const { data, refetch, dataUpdatedAt } = useGetBookmarks(
+		currentFolderId,
+		isAuthenticated
+	)
+
 	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
 	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
 	const { mutateAsync: updateBookmarkAsync } = useUpdateBookmark()
@@ -54,22 +67,25 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 		loadBookmarks()
 
-		const bookEvent = listenEvent('bookmarksChanged', async (data: Bookmark[]) => {
-			if (data) {
-				const current = (await getFromStorage('bookmarks')) || []
+		const bookEvent = listenEvent(
+			'bookmarksChanged',
+			async (eventData: Bookmark[]) => {
+				if (eventData) {
+					const current = (await getFromStorage('bookmarks')) || []
 
-				const localBookmarks = current.filter(
-					(b: Bookmark) => validate(b.id) && !b.onlineId
-				)
-				const filteredLocalBookmarks = localBookmarks.filter((localB) => {
-					return !data.some(
-						(b) => b.id === localB.id || b.onlineId === localB.id
+					const localBookmarks = current.filter(
+						(b: Bookmark) => validate(b.id) && !b.onlineId
 					)
-				})
+					const filteredLocalBookmarks = localBookmarks.filter((localB) => {
+						return !eventData.some(
+							(b) => b.id === localB.id || b.onlineId === localB.id
+						)
+					})
 
-				setBookmarks([...data, ...filteredLocalBookmarks])
+					setBookmarks([...eventData, ...filteredLocalBookmarks])
+				}
 			}
-		})
+		)
 
 		return () => {
 			bookEvent()
@@ -85,6 +101,34 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			saveBookmarks(bookmarks)
 		}
 	}, [bookmarks])
+
+	useEffect(() => {
+		if (!data || data.length === 0) return
+
+		function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
+			const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
+				id: bookmark.offlineId || bookmark.id,
+				title: bookmark.title,
+				type: bookmark.type,
+				parentId: bookmark.parentId,
+				isLocal: true,
+				isManageable: bookmark.isManageable,
+				url: bookmark.url,
+				icon: bookmark.icon,
+				onlineId: bookmark.id,
+				sticker: bookmark.sticker ?? null,
+				customTextColor: bookmark.customTextColor ?? null,
+				customBackground: bookmark.customBackground ?? null,
+				order: bookmark.order || 0,
+			}))
+
+			return mappedFetched
+		}
+
+		const mappedFetched = mapBookmarks(data)
+
+		callEvent('bookmarksChanged', mappedFetched)
+	}, [data, dataUpdatedAt])
 
 	const getCurrentFolderItems = (parentId: string | null) => {
 		if (!bookmarks) return []
@@ -147,7 +191,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					parentId = parentBookmark.onlineId
 				}
 			}
-			const [err, createdBookmark] = await safeAwait<AxiosError, Bookmark>(
+			const [err, _] = await safeAwait<AxiosError, Bookmark>(
 				addBookmarkAsync({
 					order: maxOrder + 1,
 					parentId: parentId,
@@ -172,25 +216,26 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 
 			cb()
-			const newBookmark: LocalBookmark = {
-				order: createdBookmark.order || maxOrder + 1,
-				id: createdBookmark.id,
-				isLocal: false,
-				onlineId: createdBookmark.id,
-				parentId: inputBookmark.parentId,
-				title: inputBookmark.title,
-				customBackground: inputBookmark.customBackground,
-				customTextColor: inputBookmark.customTextColor,
-				sticker: inputBookmark.sticker,
-				type: inputBookmark.type,
-				url: inputBookmark.url,
-				icon: createdBookmark.icon,
-			}
+			await refetch()
+			// const newBookmark: LocalBookmark = {
+			// 	order: createdBookmark.order || maxOrder + 1,
+			// 	id: createdBookmark.id,
+			// 	isLocal: false,
+			// 	onlineId: createdBookmark.id,
+			// 	parentId: inputBookmark.parentId,
+			// 	title: inputBookmark.title,
+			// 	customBackground: inputBookmark.customBackground,
+			// 	customTextColor: inputBookmark.customTextColor,
+			// 	sticker: inputBookmark.sticker,
+			// 	type: inputBookmark.type,
+			// 	url: inputBookmark.url,
+			// 	icon: createdBookmark.icon,
+			// }
 
-			const updatedBookmarks = [...(bookmarks || []), newBookmark]
-			setBookmarks(updatedBookmarks)
-			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-			await setToStorage('bookmarks', localBookmarks)
+			// const updatedBookmarks = [...(bookmarks || []), newBookmark]
+			// setBookmarks(updatedBookmarks)
+			// const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
+			// await setToStorage('bookmarks', localBookmarks)
 			Analytics.event('add_bookmark')
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
@@ -210,20 +255,25 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		)
 		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
 
-		let idForEdit = input.id
-		const isValidUuid = validate(idForEdit)
-		if (isValidUuid) {
-			idForEdit = foundedBookmark.onlineId || foundedBookmark.id
+		let bookmarkIdToEdit = input.id
+		if (validate(bookmarkIdToEdit)) {
+			bookmarkIdToEdit = foundedBookmark.onlineId || foundedBookmark.id
 		}
 
-		if (!idForEdit) {
-			showToast('شناسه بوکمارک نامعتبر است!', 'error')
+		if (!bookmarkIdToEdit || validate(bookmarkIdToEdit)) {
+			showToast(
+				'برای ویرایش این بوکمارک، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'error',
+				{
+					duration: 8000, // 8 seconds
+				}
+			)
 			return
 		}
 
 		const [error, _] = await safeAwait<AxiosError, Bookmark>(
 			updateBookmarkAsync({
-				id: idForEdit,
+				id: bookmarkIdToEdit,
 				customBackground: input.customBackground,
 				customTextColor: input.customTextColor,
 				sticker: input.sticker,
@@ -243,7 +293,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			return
 		}
 
-		// input.id can be localId(old bookmarks)
+		await refetch()
+		// todo: call reFetch bookmarks
 		// const index = bookmarks.findIndex(
 		// 	(b) => b.id === foundedBookmark.id || b.onlineId === foundedBookmark.onlineId
 		// )
@@ -294,32 +345,46 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	}
 
 	const deleteBookmark = async (id: string, cb: () => void) => {
+		if (!isAuthenticated) return
+
 		if (!bookmarks) return
 
 		const bookmarkToDelete = bookmarks.find((b) => b.id === id || b.onlineId === id)
 		if (!bookmarkToDelete) return
 
-		let itemsToDelete = [id]
+		const idToDelete = bookmarkToDelete.onlineId || bookmarkToDelete.id
 
-		if (bookmarkToDelete.type === 'FOLDER') {
-			const nestedItems = getNestedItems(id)
-			itemsToDelete = [...itemsToDelete, ...nestedItems]
+		if (validate(idToDelete)) {
+			showToast(
+				'برای حـذف این بوکمارک، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'error',
+				{
+					duration: 8000, // 8 seconds
+				}
+			)
+			return
+		}
+		// let itemsToDelete = [id]
+
+		// if (bookmarkToDelete.type === 'FOLDER') {
+		// 	const nestedItems = getNestedItems(id)
+		// 	itemsToDelete = [...itemsToDelete, ...nestedItems]
+		// }
+
+		const [error, _] = await safeAwait(removeBookmarkAsync(idToDelete))
+		if (error) {
+			showToast(translateError(error) as string, 'error')
+			return
 		}
 
-		if (isAuthenticated) {
-			const [error, _] = await safeAwait(removeBookmarkAsync(id))
-			if (error) {
-				showToast(translateError(error) as string, 'error')
-			}
-		}
-
-		const updatedBookmarks = bookmarks.filter(
-			(b) =>
-				!itemsToDelete.includes(b.id) && !itemsToDelete.includes(b.onlineId || '')
-		)
-		setBookmarks(updatedBookmarks)
-		const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-		await setToStorage('bookmarks', localBookmarks)
+		await refetch()
+		// const updatedBookmarks = bookmarks.filter(
+		// 	(b) =>
+		// 		!itemsToDelete.includes(b.id) && !itemsToDelete.includes(b.onlineId || '')
+		// )
+		// setBookmarks(updatedBookmarks)
+		// const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
+		// await setToStorage('bookmarks', localBookmarks)
 
 		Analytics.event('delete_bookmark')
 		cb()
@@ -334,6 +399,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				addBookmark,
 				editBookmark,
 				deleteBookmark,
+				currentFolderId,
+				setCurrentFolderId,
 			}}
 		>
 			{children}
@@ -347,21 +414,4 @@ export function useBookmarkStore(): BookmarkStoreContext {
 		throw new Error('useBookmarkStore must be used within a BookmarkProvider')
 	}
 	return context
-}
-
-function fileToBase64(file: File): Promise<string> {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader()
-		reader.onload = () => {
-			if (typeof reader.result === 'string') {
-				resolve(reader.result)
-			} else {
-				reject(new Error('Failed to convert file to base64'))
-			}
-		}
-		reader.onerror = () => {
-			reject(new Error('Failed to read file'))
-		}
-		reader.readAsDataURL(file)
-	})
 }

@@ -78,6 +78,7 @@ export function ConfirmationModal({
 			direction={direction}
 			closeOnBackdropClick={!isLoading}
 			showCloseButton={!isLoading}
+			title={' '}
 		>
 			<div className="space-y-2 text-center">
 				<div className="flex justify-center">
