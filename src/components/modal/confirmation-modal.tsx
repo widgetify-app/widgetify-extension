@@ -20,24 +20,24 @@ interface ConfirmationModalProps {
 
 const variantConfig = {
 	danger: {
-		icon: <FiTrash2 size={20} />,
+		icon: <FiTrash2 size={24} />,
 		iconBg: 'bg-error/10',
 		iconColor: 'text-error',
 		confirmBg: 'bg-error hover:bg-error/90',
 		confirmText: 'text-white',
 	},
 	warning: {
-		icon: <FiAlertTriangle size={20} />,
+		icon: <FiAlertTriangle size={24} />,
 		iconBg: 'bg-warning/10',
 		iconColor: 'text-warning',
 		confirmBg: 'bg-warning hover:bg-warning/90',
 		confirmText: 'text-white',
 	},
 	info: {
-		icon: <FiCheck size={20} />,
+		icon: <FiCheck size={24} />,
 		iconBg: 'bg-info/10',
 		iconColor: 'text-info',
-		confirmBg: 'bg-info hover:bg-info/90',
+		confirmBg: 'bg-info/80 hover:bg-info/90',
 		confirmText: 'text-white',
 	},
 }
@@ -80,7 +80,6 @@ export function ConfirmationModal({
 			showCloseButton={!isLoading}
 		>
 			<div className="space-y-2 text-center">
-				{/* Icon */}
 				<div className="flex justify-center">
 					<div
 						className={`w-16 h-16 rounded-full flex items-center justify-center ${config.iconBg}`}
@@ -89,15 +88,12 @@ export function ConfirmationModal({
 					</div>
 				</div>
 
-				{/* Title */}
 				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
 
-				{/* Message */}
 				<div className="text-sm leading-relaxed text-muted">
 					{typeof message === 'string' ? <p>{message}</p> : message}
 				</div>
 
-				{/* Action Buttons */}
 				<div className="flex gap-3 pt-2">
 					<Button
 						onClick={handleConfirm}
