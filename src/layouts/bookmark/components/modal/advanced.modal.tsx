@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { FiRotateCcw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
@@ -160,61 +159,55 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			direction="rtl"
 		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
-				<RequireAuth mode="preview">
-					<div>
-						<label
-							className={'block text-sm font-medium mb-1.5 text-content'}
-						>
-							رنگ پس زمینه (اختیاری)
-						</label>
-						<div className="relative flex flex-1">
-							<TextInput
-								type="text"
-								value={background || ''}
+				<div>
+					<label className={'block text-sm font-medium mb-1.5 text-content'}>
+						رنگ پس زمینه (اختیاری)
+					</label>
+					<div className="relative flex flex-1">
+						<TextInput
+							type="text"
+							value={background || ''}
+							onChange={setBackground}
+							className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
+							placeholder="#000000"
+							debounce={true}
+						/>
+						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
+							<PopoverColorPicker
+								color={background || ''}
 								onChange={setBackground}
-								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
-								placeholder="#000000"
-								debounce={true}
 							/>
-							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-								<PopoverColorPicker
-									color={background || ''}
-									onChange={setBackground}
-								/>
-							</div>
-							<Button type="button" onClick={resetBackground} size="md">
-								<FiRotateCcw className="w-4 h-4" />
-							</Button>
 						</div>
+						<Button type="button" onClick={resetBackground} size="md">
+							<FiRotateCcw className="w-4 h-4" />
+						</Button>
 					</div>
+				</div>
 
-					<div>
-						<label
-							className={'block text-sm  font-medium mb-1.5 text-content'}
-						>
-							رنگ متن (اختیاری)
-						</label>
-						<div className="relative flex flex-1">
-							<TextInput
-								type="text"
-								value={textColor || ''}
+				<div>
+					<label className={'block text-sm  font-medium mb-1.5 text-content'}>
+						رنگ متن (اختیاری)
+					</label>
+					<div className="relative flex flex-1">
+						<TextInput
+							type="text"
+							value={textColor || ''}
+							onChange={setTextColor}
+							className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
+							placeholder="#000000"
+							debounce={true}
+						/>
+						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
+							<PopoverColorPicker
+								color={textColor || ''}
 								onChange={setTextColor}
-								className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
-								placeholder="#000000"
-								debounce={true}
 							/>
-							<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-								<PopoverColorPicker
-									color={textColor || ''}
-									onChange={setTextColor}
-								/>
-							</div>
-							<Button type="button" onClick={resetTextColor} size="md">
-								<FiRotateCcw className="w-4 h-4" />
-							</Button>
 						</div>
+						<Button type="button" onClick={resetTextColor} size="md">
+							<FiRotateCcw className="w-4 h-4" />
+						</Button>
 					</div>
-				</RequireAuth>
+				</div>
 
 				<div className="relative" ref={emojiPopoverRef}>
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
