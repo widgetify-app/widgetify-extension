@@ -336,7 +336,7 @@ async function getAll() {
 	const wallpaperStore = await getFromStorage('wallpaper')
 	if (
 		(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
-		wallpaper.src !== wallpaperStore?.src
+		wallpaper?.src !== wallpaperStore?.src
 	) {
 		if (wallpaperStore?.id === 'custom-wallpaper') {
 			return
