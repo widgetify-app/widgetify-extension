@@ -32,6 +32,10 @@ export async function getFromStorage<K extends keyof StorageKV>(
 	return value as StorageKV[K]
 }
 
+export async function clearStorage() {
+	await storage.clear('local')
+}
+
 export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }
