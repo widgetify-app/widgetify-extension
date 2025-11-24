@@ -1,7 +1,7 @@
-import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { IoIosLogIn } from 'react-icons/io'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
+import { Button } from '../button/button'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean
@@ -15,7 +15,7 @@ interface AuthRequiredModalProps {
 export function AuthRequiredModal({
 	isOpen,
 	onClose,
-	title = 'ورود به حساب کاربری',
+	title = '🔐 ورود به حساب کاربری',
 	message = 'برای دسترسی به این بخش یا انجام این عملیات، ابتدا وارد حساب کاربری خود شوید.',
 	loginButtonText = 'ورود به حساب',
 	cancelButtonText = 'بعداً',
@@ -27,35 +27,29 @@ export function AuthRequiredModal({
 
 	return (
 		<Modal size="sm" isOpen={isOpen} onClose={onClose} direction="rtl" title={title}>
-			<div className="flex flex-col items-center justify-center w-full gap-6 p-5 text-center">
-				<div className="flex items-center justify-center w-16 h-16 mb-2 rounded-full bg-blue-500/10">
-					<IoIosLogIn size={32} className="text-blue-500" />
+			<div className="flex flex-col items-center justify-between w-full h-56 text-center">
+				<div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10">
+					<IoIosLogIn size={24} className="text-blue-500" />
 				</div>
 
-				<p className={'text-content text-base'}>{message}</p>
+				<p className={'text-content text-sm'}>{message}</p>
 
-				<div className="flex flex-row items-center justify-center gap-3 mt-2">
-					<LazyMotion features={domAnimation}>
-						<m.button
-							className={
-								'px-5 py-2.5 rounded-lg cursor-pointer font-medium transition-colors text-content border border-content'
-							}
-							onClick={onClose}
-							whileHover={{ scale: 1.03 }}
-							whileTap={{ scale: 0.97 }}
-						>
-							{cancelButtonText}
-						</m.button>
-
-						<m.button
-							className="px-5 py-2.5 text-white cursor-pointer transition-colors bg-blue-500 rounded-xl font-medium hover:bg-blue-600"
-							onClick={triggerAccountTabDisplay}
-							whileHover={{ scale: 1.03 }}
-							whileTap={{ scale: 0.97 }}
-						>
-							{loginButtonText}
-						</m.button>
-					</LazyMotion>
+				<div className="flex w-full gap-2">
+					<Button
+						onClick={triggerAccountTabDisplay}
+						size="md"
+						isPrimary={true}
+						className={`flex-1 border-none rounded-2xl text-xs w-full`}
+					>
+						{loginButtonText}
+					</Button>
+					<Button
+						onClick={onClose}
+						size="md"
+						className="w-32 border border-content/20 text-content hover:bg-base-300/50 rounded-2xl"
+					>
+						{cancelButtonText}
+					</Button>
 				</div>
 			</div>
 		</Modal>

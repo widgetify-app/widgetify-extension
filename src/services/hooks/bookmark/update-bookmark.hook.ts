@@ -1,15 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { Bookmark, BookmarkType } from '@/layouts/bookmark/types/bookmark.types'
+import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 
 export interface BookmarkUpdatePayload {
 	id: string
 	title: string
-	type: BookmarkType
 	url: string | null
 	sticker: string | null
-	parentId: string | null
-	order: number | null
 	customTextColor: string | null
 	customBackground: string | null
 	icon: File | null

@@ -117,6 +117,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		inputBookmark: BookmarkCreateFormFields,
 		cb: () => void
 	) => {
+		if (!isAuthenticated)
+			return showToast('برای افزودن بوکمارک باید وارد شوید.', 'error')
+
 		try {
 			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
 				showToast(
@@ -127,60 +130,53 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				return
 			}
 
-			// Calculate the order for the new bookmark
 			const currentFolderItems = getCurrentFolderItems(inputBookmark.parentId)
 			const maxOrder = currentFolderItems.reduce(
 				(max, item) => Math.max(max, item.order || 0),
 				-1
 			)
 
-			let createdBookmark: Bookmark | null = null
-
-			if (isAuthenticated) {
-				let parentId = inputBookmark.parentId
-				if (validate(inputBookmark.parentId)) {
-					// parentId is a local ID, find the onlineId
-					const parentBookmark = bookmarks?.find(
-						(b) =>
-							b.id === inputBookmark.parentId ||
-							b.onlineId === inputBookmark.parentId
-					)
-					if (parentBookmark?.onlineId) {
-						parentId = parentBookmark.onlineId
-					}
-				}
-				const [err, response] = await safeAwait<AxiosError, Bookmark>(
-					addBookmarkAsync({
-						order: maxOrder + 1,
-						parentId: parentId,
-						title: inputBookmark.title,
-						customBackground: inputBookmark.customBackground,
-						customTextColor: inputBookmark.customTextColor,
-						sticker: inputBookmark.sticker,
-						type: inputBookmark.type,
-						url: inputBookmark.url,
-						icon: inputBookmark.icon || null,
-					})
+			let parentId = inputBookmark.parentId
+			if (validate(inputBookmark.parentId)) {
+				const parentBookmark = bookmarks?.find(
+					(b) =>
+						b.id === inputBookmark.parentId ||
+						b.onlineId === inputBookmark.parentId
 				)
-				if (err) {
-					const translated: string | Record<string, string> =
-						translateError(err)
-					const msg =
-						typeof translated === 'string'
-							? translated
-							: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
-
-					showToast(msg, 'error')
-				} else {
-					createdBookmark = response
+				if (parentBookmark?.onlineId) {
+					parentId = parentBookmark.onlineId
 				}
 			}
+			const [err, createdBookmark] = await safeAwait<AxiosError, Bookmark>(
+				addBookmarkAsync({
+					order: maxOrder + 1,
+					parentId: parentId,
+					title: inputBookmark.title,
+					customBackground: inputBookmark.customBackground,
+					customTextColor: inputBookmark.customTextColor,
+					sticker: inputBookmark.sticker,
+					type: inputBookmark.type,
+					url: inputBookmark.url,
+					icon: inputBookmark.icon || null,
+				})
+			)
+			if (err) {
+				const translated: string | Record<string, string> = translateError(err)
+				const msg =
+					typeof translated === 'string'
+						? translated
+						: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
 
+				showToast(msg, 'error')
+				return
+			}
+
+			cb()
 			const newBookmark: LocalBookmark = {
-				order: createdBookmark?.order || maxOrder + 1,
-				id: createdBookmark?.id || uuidv4(),
-				isLocal: createdBookmark ? false : true,
-				onlineId: createdBookmark?.id || null,
+				order: createdBookmark.order || maxOrder + 1,
+				id: createdBookmark.id,
+				isLocal: false,
+				onlineId: createdBookmark.id,
 				parentId: inputBookmark.parentId,
 				title: inputBookmark.title,
 				customBackground: inputBookmark.customBackground,
@@ -188,105 +184,90 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				sticker: inputBookmark.sticker,
 				type: inputBookmark.type,
 				url: inputBookmark.url,
-				icon:
-					createdBookmark?.icon ||
-					(inputBookmark.icon ? await fileToBase64(inputBookmark.icon) : null),
+				icon: createdBookmark.icon,
 			}
+
 			const updatedBookmarks = [...(bookmarks || []), newBookmark]
 			setBookmarks(updatedBookmarks)
 			const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
 			await setToStorage('bookmarks', localBookmarks)
-
 			Analytics.event('add_bookmark')
-			if (!createdBookmark && isAuthenticated) {
-				callEvent('startSync', SyncTarget.BOOKMARKS)
-			}
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
 			showToast('خطا در افزودن بوکمارک', 'error')
-		} finally {
-			cb()
 		}
 	}
 
 	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {
+		if (!isAuthenticated) return
+
 		if (!input.title?.trim() || !bookmarks) return
+
 		const foundedBookmark = bookmarks.find(
-			(b) => b.id === input.id || b.onlineId === input.onlineId
+			(b) =>
+				b.id === input.id ||
+				(typeof b.onlineId === 'string' && b.onlineId === input.onlineId)
 		)
 		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
 
-		let updatedBookmark: Bookmark | undefined = undefined
-		let onlineId: string | null = null
-
-		if (isAuthenticated) {
-			let idForEdit = input.id
-			const isValidUuid = validate(idForEdit)
-			if (isValidUuid) {
-				idForEdit = foundedBookmark.onlineId || foundedBookmark.id
-			}
-
-			if (!idForEdit) {
-				showToast('شناسه بوکمارک نامعتبر است!', 'error')
-				return
-			}
-
-			const [error, fetchedUpdate] = await safeAwait<AxiosError, Bookmark>(
-				updateBookmarkAsync({
-					id: idForEdit,
-					parentId: foundedBookmark.parentId,
-					order: foundedBookmark.order,
-					customBackground: input.customBackground,
-					customTextColor: input.customTextColor,
-					sticker: input.sticker,
-					title: input.title?.trim(),
-					icon: input.icon || null,
-					type: foundedBookmark.type,
-					url: foundedBookmark.type === 'BOOKMARK' ? input.url : null,
-				})
-			)
-
-			if (error) {
-				const translated: string | Record<string, string> = translateError(error)
-				const msg =
-					typeof translated === 'string'
-						? translated
-						: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
-				showToast(msg, 'error')
-				return
-			}
-
-			onlineId = fetchedUpdate.id
-
-			// input.id can be localId(old bookmarks)
-			fetchedUpdate.id = input.id || fetchedUpdate.id
-			updatedBookmark = fetchedUpdate
+		let idForEdit = input.id
+		const isValidUuid = validate(idForEdit)
+		if (isValidUuid) {
+			idForEdit = foundedBookmark.onlineId || foundedBookmark.id
 		}
 
-		const index = bookmarks.findIndex(
-			(b) => b.id === foundedBookmark.id || b.onlineId === foundedBookmark.onlineId
-		)
-		if (index !== -1) {
-			bookmarks[index] = {
-				...foundedBookmark,
-				title: input.title?.trim(),
+		if (!idForEdit) {
+			showToast('شناسه بوکمارک نامعتبر است!', 'error')
+			return
+		}
+
+		const [error, _] = await safeAwait<AxiosError, Bookmark>(
+			updateBookmarkAsync({
+				id: idForEdit,
 				customBackground: input.customBackground,
 				customTextColor: input.customTextColor,
 				sticker: input.sticker,
-				url:
-					foundedBookmark.type === 'BOOKMARK' ? input.url : foundedBookmark.url,
-				icon: input.icon ? await fileToBase64(input.icon) : foundedBookmark.icon,
-				onlineId: onlineId || foundedBookmark.onlineId,
-				id: updatedBookmark ? updatedBookmark.id : foundedBookmark.id,
-				isLocal: updatedBookmark ? false : foundedBookmark.isLocal,
-			}
-			setBookmarks([...bookmarks])
+				title: input.title?.trim(),
+				icon: input.icon || null,
+				url: input.url,
+			})
+		)
 
-			await setToStorage('bookmarks', bookmarks)
-			Analytics.event('edit_bookmark')
-		} else {
-			showToast('بوکمارک یافت نشد!', 'error')
+		if (error) {
+			const translated: string | Record<string, string> = translateError(error)
+			const msg =
+				typeof translated === 'string'
+					? translated
+					: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
+			showToast(msg, 'error')
+			return
 		}
+
+		// input.id can be localId(old bookmarks)
+		// const index = bookmarks.findIndex(
+		// 	(b) => b.id === foundedBookmark.id || b.onlineId === foundedBookmark.onlineId
+		// )
+		// if (index !== -1) {
+		// 	bookmarks[index] = {
+		// 		...foundedBookmark,
+		// 		title: input.title?.trim(),
+		// 		customBackground: input.customBackground,
+		// 		customTextColor: input.customTextColor,
+		// 		sticker: input.sticker,
+		// 		url:
+		// 			foundedBookmark.type === 'BOOKMARK' ? input.url : foundedBookmark.url,
+		// 		icon: input.icon ? await fileToBase64(input.icon) : foundedBookmark.icon,
+		// 		onlineId: onlineId || foundedBookmark.onlineId,
+		// 		id: updatedBookmark ? updatedBookmark.id : foundedBookmark.id,
+		// 		isLocal: updatedBookmark ? false : foundedBookmark.isLocal,
+		// 	}
+		// 	setBookmarks([...bookmarks])
+
+		// 	await setToStorage('bookmarks', bookmarks)
+		// 	Analytics.event('edit_bookmark')
+		// } else {
+		// 	showToast('بوکمارک یافت نشد!', 'error')
+		// }
 
 		cb()
 	}
