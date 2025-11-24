@@ -10,10 +10,7 @@ import type {
 	Todo,
 } from '@/layouts/widgets/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
-import {
-	type FetchedBookmark,
-	getBookmarks,
-} from '@/services/hooks/bookmark/getBookmarks.hook'
+import type { FetchedBookmark } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 import { validate } from 'uuid'
 import { MdSyncProblem } from 'react-icons/md'
