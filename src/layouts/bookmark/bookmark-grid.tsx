@@ -11,24 +11,27 @@ import { EditBookmarkModal } from './components/modal/edit-bookmark.modal'
 import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 import { useBookmarkStore } from './context/bookmark.context'
 import { validate } from 'uuid'
+import { useAuth } from '@/context/auth.context'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { showToast } from '@/common/toast'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
 	openAddBookmarkModal: () => void
 	folderPath: FolderPathItem[]
-	setCurrentFolderId: (id: string | null) => void
 	setFolderPath: (path: FolderPathItem[]) => void
 }
 
 export function BookmarkGrid({
 	displayedBookmarks,
 	openAddBookmarkModal,
-	setCurrentFolderId,
 	setFolderPath,
 	folderPath,
 }: BookmarkGridProps) {
-	const { getCurrentFolderItems, editBookmark, deleteBookmark } = useBookmarkStore()
+	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
+		useBookmarkStore()
 	const { browserTabsEnabled } = useGeneralSetting()
+	const { isAuthenticated } = useAuth()
 
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
 	const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false)
@@ -113,6 +116,10 @@ export function BookmarkGrid({
 	}
 
 	const handleDeleteBookmark = (bookmark: Bookmark) => {
+		if (!isAuthenticated) {
+			return showToast('برای حذف بوکمارک باید وارد حساب کاربری خود شوید.', 'error')
+		}
+
 		setBookmarkToDelete(bookmark)
 		setShowDeleteConfirmationModal(true)
 		setSelectedBookmark(null)
@@ -196,16 +203,27 @@ export function BookmarkGrid({
 				)}
 			</SortableContext>
 
-			{showEditBookmarkModal && bookmarkToEdit && (
-				<EditBookmarkModal
-					isOpen={showEditBookmarkModal}
+			{showEditBookmarkModal && bookmarkToEdit && !isAuthenticated ? (
+				<AuthRequiredModal
+					isOpen={true}
 					onClose={() => setShowEditBookmarkModal(false)}
-					onSave={(bookmark) =>
-						editBookmark(bookmark, () => setShowEditBookmarkModal(false))
-					}
-					bookmark={bookmarkToEdit}
+					message="برای ویرایش بوکمارک باید وارد حساب کاربری خود شوید."
+					loginButtonText="ورود به حساب کاربری"
 				/>
+			) : (
+				showEditBookmarkModal &&
+				bookmarkToEdit && (
+					<EditBookmarkModal
+						isOpen={showEditBookmarkModal}
+						onClose={() => setShowEditBookmarkModal(false)}
+						onSave={(bookmark) =>
+							editBookmark(bookmark, () => setShowEditBookmarkModal(false))
+						}
+						bookmark={bookmarkToEdit}
+					/>
+				)
 			)}
+
 			<ConfirmationModal
 				isOpen={showDeleteConfirmationModal}
 				onClose={handleCancelDelete}
