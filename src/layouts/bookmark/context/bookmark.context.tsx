@@ -49,10 +49,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [bookmarks, setBookmarks] = useState<Bookmark[] | null>(null)
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 	const { isAuthenticated } = useAuth()
-	const { data, refetch, dataUpdatedAt } = useGetBookmarks(
-		currentFolderId,
-		isAuthenticated
-	)
+	const { data, refetch, dataUpdatedAt } = useGetBookmarks(null, isAuthenticated)
 
 	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
 	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
