@@ -15,7 +15,7 @@ import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark
 import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
 import { showToast } from '@/common/toast'
 import {
-	FetchedBookmark,
+	type FetchedBookmark,
 	useGetBookmarks,
 } from '@/services/hooks/bookmark/getBookmarks.hook'
 
@@ -217,25 +217,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			cb()
 			await refetch()
-			// const newBookmark: LocalBookmark = {
-			// 	order: createdBookmark.order || maxOrder + 1,
-			// 	id: createdBookmark.id,
-			// 	isLocal: false,
-			// 	onlineId: createdBookmark.id,
-			// 	parentId: inputBookmark.parentId,
-			// 	title: inputBookmark.title,
-			// 	customBackground: inputBookmark.customBackground,
-			// 	customTextColor: inputBookmark.customTextColor,
-			// 	sticker: inputBookmark.sticker,
-			// 	type: inputBookmark.type,
-			// 	url: inputBookmark.url,
-			// 	icon: createdBookmark.icon,
-			// }
 
-			// const updatedBookmarks = [...(bookmarks || []), newBookmark]
-			// setBookmarks(updatedBookmarks)
-			// const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-			// await setToStorage('bookmarks', localBookmarks)
 			Analytics.event('add_bookmark')
 		} catch (error) {
 			console.error('Error adding bookmark:', error)
@@ -294,54 +276,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 
 		await refetch()
-		// todo: call reFetch bookmarks
-		// const index = bookmarks.findIndex(
-		// 	(b) => b.id === foundedBookmark.id || b.onlineId === foundedBookmark.onlineId
-		// )
-		// if (index !== -1) {
-		// 	bookmarks[index] = {
-		// 		...foundedBookmark,
-		// 		title: input.title?.trim(),
-		// 		customBackground: input.customBackground,
-		// 		customTextColor: input.customTextColor,
-		// 		sticker: input.sticker,
-		// 		url:
-		// 			foundedBookmark.type === 'BOOKMARK' ? input.url : foundedBookmark.url,
-		// 		icon: input.icon ? await fileToBase64(input.icon) : foundedBookmark.icon,
-		// 		onlineId: onlineId || foundedBookmark.onlineId,
-		// 		id: updatedBookmark ? updatedBookmark.id : foundedBookmark.id,
-		// 		isLocal: updatedBookmark ? false : foundedBookmark.isLocal,
-		// 	}
-		// 	setBookmarks([...bookmarks])
-
-		// 	await setToStorage('bookmarks', bookmarks)
-		// 	Analytics.event('edit_bookmark')
-		// } else {
-		// 	showToast('بوکمارک یافت نشد!', 'error')
-		// }
 
 		cb()
-	}
-
-	const getNestedItems = (parentId: string, visited = new Set<string>()): string[] => {
-		if (!bookmarks) return []
-
-		visited.add(parentId)
-		const result: string[] = []
-		const children = bookmarks.filter((b) => b.parentId === parentId)
-
-		for (const child of children) {
-			result.push(child.id)
-
-			if (child.type === 'FOLDER' && !visited.has(child.id)) {
-				const nestedItems = getNestedItems(child.id, new Set(visited))
-				for (const nestedItem of nestedItems) {
-					result.push(nestedItem)
-				}
-			}
-		}
-
-		return result
 	}
 
 	const deleteBookmark = async (id: string, cb: () => void) => {
@@ -364,12 +300,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			)
 			return
 		}
-		// let itemsToDelete = [id]
-
-		// if (bookmarkToDelete.type === 'FOLDER') {
-		// 	const nestedItems = getNestedItems(id)
-		// 	itemsToDelete = [...itemsToDelete, ...nestedItems]
-		// }
 
 		const [error, _] = await safeAwait(removeBookmarkAsync(idToDelete))
 		if (error) {
@@ -378,13 +308,6 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 
 		await refetch()
-		// const updatedBookmarks = bookmarks.filter(
-		// 	(b) =>
-		// 		!itemsToDelete.includes(b.id) && !itemsToDelete.includes(b.onlineId || '')
-		// )
-		// setBookmarks(updatedBookmarks)
-		// const localBookmarks = updatedBookmarks.filter((b) => b.isLocal)
-		// await setToStorage('bookmarks', localBookmarks)
 
 		Analytics.event('delete_bookmark')
 		cb()
