@@ -26,15 +26,22 @@ export function AuthRequiredModal({
 	}
 
 	return (
-		<Modal size="sm" isOpen={isOpen} onClose={onClose} direction="rtl" title={title}>
+		<Modal
+			size="sm"
+			isOpen={isOpen}
+			onClose={onClose}
+			direction="rtl"
+			title={'نیاز ورود به حساب کاربری'}
+			closeOnBackdropClick={true}
+		>
 			<div className="flex flex-col items-center justify-between w-full h-56 text-center">
 				<div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10">
 					<IoIosLogIn size={24} className="text-blue-500" />
 				</div>
-
+				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
 				<p className={'text-content text-sm'}>{message}</p>
 
-				<div className="flex w-full gap-2">
+				<div className="flex w-full gap-2 mt-1">
 					<Button
 						onClick={triggerAccountTabDisplay}
 						size="md"
