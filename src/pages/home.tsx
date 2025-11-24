@@ -216,7 +216,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
+		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
 					<NavbarLayout />

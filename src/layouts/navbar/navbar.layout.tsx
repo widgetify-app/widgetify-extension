@@ -94,7 +94,7 @@ export function NavbarLayout(): JSX.Element {
 	return (
 		<>
 			<nav
-				className={`mt-0.5 px-2 gap-x-1 md:px-4 md:mt-1 w-full  transition-all duration-100  flex justify-end`}
+				className={`mt-0.5 px-1 gap-x-1 md:px-4 md:mt-1 w-full  transition-all duration-100  flex justify-end`}
 				data-tour="navbar"
 			>
 				<MarketButton />

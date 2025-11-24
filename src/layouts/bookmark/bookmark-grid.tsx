@@ -172,7 +172,7 @@ export function BookmarkGrid({
 
 	return (
 		<div
-			className={`grid w-full grid-cols-5 gap-4 transition-all duration-300 rounded-2xl lg:gap-2 lg:px-1`}
+			className={`grid w-full grid-cols-5 gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2 lg:px-1`}
 		>
 			<SortableContext
 				items={displayedBookmarks
