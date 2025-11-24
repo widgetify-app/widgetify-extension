@@ -76,7 +76,7 @@ export const SignUpForm = () => {
 				errorContent = content
 			} else {
 				if (Object.keys(content).length === 0) {
-					errorContent = 'خطا در احراز هویت. لطفاً دوباره تلاش کنید.'
+					errorContent = 'خطا در ورود. لطفاً دوباره تلاش کنید.'
 					return
 				}
 				errorContent = `${Object.keys(content)[0]}: ${Object.values(content)[0]}`

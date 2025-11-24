@@ -5,6 +5,9 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
+import Analytics from '@/analytics'
+import { useAuth } from './auth.context'
+import { showToast } from '@/common/toast'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -43,6 +46,7 @@ interface TodoContextType {
 const TodoContext = createContext<TodoContextType | null>(null)
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
+	const { isAuthenticated } = useAuth()
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
 		viewMode: TodoViewType.All,
@@ -121,6 +125,11 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const addTodo = (input: AddTodoInput) => {
+		if (!isAuthenticated) {
+			showToast('برای اضافه کردن وظیفه باید وارد حساب کاربری شوید.', 'error')
+			return
+		}
+
 		const old = todos || []
 		const sameDateTodos = old.filter((t) => t.date === input.date)
 		const maxOrder =
@@ -142,6 +151,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				order: maxOrder + 1,
 			},
 		])
+		Analytics.event('todo_added')
 		callEvent('startSync', SyncTarget.TODOS)
 	}
 
@@ -154,7 +164,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			return prev.filter((todo) => todo.id !== id)
 		})
 
-		if (todo?.onlineId) {
+		if (todo?.onlineId && isAuthenticated) {
 			const old = await getFromStorage('deletedTodos')
 			const deletedTodos = old || []
 

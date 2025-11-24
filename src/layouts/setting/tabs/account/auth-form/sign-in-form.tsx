@@ -32,7 +32,7 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 				setError(content)
 			} else {
 				if (Object.keys(content).length === 0) {
-					setError('خطا در احراز هویت. لطفاً دوباره تلاش کنید.')
+					setError('خطا در ورود. لطفاً دوباره تلاش کنید.')
 					return
 				}
 				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)

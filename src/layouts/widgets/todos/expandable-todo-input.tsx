@@ -77,7 +77,6 @@ export function ExpandableTodoInput({
 				notes: notes.trim() || undefined,
 				priority: priority,
 			})
-			Analytics.event('todo_added')
 			resetForm()
 		}
 	}
