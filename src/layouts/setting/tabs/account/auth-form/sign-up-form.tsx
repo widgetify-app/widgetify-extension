@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaEnvelope, FaSearch, FaShareAlt, FaUsers, FaYoutube } from 'react-icons/fa'
+import { FaSearch, FaShareAlt, FaUsers, FaYoutube } from 'react-icons/fa'
 import { FiGift } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
