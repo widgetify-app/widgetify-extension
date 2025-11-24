@@ -353,11 +353,6 @@ async function getAll() {
 
 		await setToStorage('wallpaper', {
 			...wallpaper,
-			isRetouchEnabled: false,
-		})
-		callEvent('wallpaperChanged', {
-			...wallpaper,
-			isRetouchEnabled: false,
 		})
 	}
 
