@@ -13,7 +13,7 @@ import { MdSyncProblem } from 'react-icons/md'
 import Tooltip from '@/components/toolTip'
 import { SyncAlertModal } from './sync-alert.modal'
 import { showToast } from '@/common/toast'
-import { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
+import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 
 enum SyncState {
 	Syncing = 0,
@@ -140,6 +140,20 @@ export function SyncButton() {
 			}
 		}
 
+		const todosFromStorage = (await getFromStorage('todos')) || []
+
+		const todoNotSynced = todosFromStorage.some(
+			(t: Todo) =>
+				validate(t.id) && (t.onlineId === null || t.onlineId === undefined)
+		)
+
+		if (todoNotSynced) {
+			return {
+				show: true,
+				type: 'TODOS',
+			}
+		}
+
 		return {
 			show: false,
 			type: null,
@@ -160,8 +174,20 @@ export function SyncButton() {
 			setShowModal(false)
 			setShowAlert({ show: false, type: null })
 		}
+		if (showAlert.type === 'TODOS') {
+			const result = await SyncTodo('POST')
+			if (result) {
+				showToast('وظایف با موفقیت همگام‌سازی شدند.', 'success', {
+					alarmSound: true,
+				})
+			} else {
+				showToast('خطا در همگام‌سازی وظایف.', 'error')
+			}
 
-		setSyncState(SyncState.Success)
+			setSyncState(result ? SyncState.Success : SyncState.Error)
+			setShowModal(false)
+			setShowAlert({ show: false, type: null })
+		}
 	}
 
 	if (!showAlert.show || !isAuthenticated) {

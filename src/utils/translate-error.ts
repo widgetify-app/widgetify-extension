@@ -76,6 +76,8 @@ const errorTranslations: Record<string, string> = {
 	INVALID_ID: 'آیدی نامعتبر است',
 
 	DATE_OUT_OF_RANGE: 'تاریخ انتخاب شده خارج از محدوده مجاز است',
+
+	TODO_NOT_FOUND: 'وظیفه مورد نظر یافت نشد',
 }
 
 const validationTranslations: Record<string, string> = {
