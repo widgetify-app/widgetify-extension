@@ -177,7 +177,7 @@ export function BookmarksList() {
 				<div
 					className={`flex flex-col transition-all duration-300 ${
 						currentFolderId
-							? 'bg-widget widget-wrapper max-h-60 overflow-y-auto py-1 rounded-2xl'
+							? 'bg-widget max-h-60 overflow-y-auto py-1 rounded-2xl'
 							: ''
 					}`}
 					id="bookmarks"
