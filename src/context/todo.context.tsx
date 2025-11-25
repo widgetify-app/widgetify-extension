@@ -109,7 +109,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (!fetchedTodos) return
-		if (todos?.length && !fetchedTodos.length) return
+		if (!fetchedTodos.length) return
 
 		const mappedTodos = fetchedTodos.map((todo: FetchedTodo) => ({
 			id: todo.id,
