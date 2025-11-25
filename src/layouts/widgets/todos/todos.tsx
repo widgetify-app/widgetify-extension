@@ -28,6 +28,8 @@ import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { useIsMutating } from '@tanstack/react-query'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
@@ -107,6 +109,8 @@ export function TodosLayout() {
 		}
 	}
 
+	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
+
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
@@ -127,6 +131,7 @@ export function TodosLayout() {
 											? ' امروز'
 											: ` ${selectedDate.format('jD jMMMM')}`}
 							</span>
+							{isUpdating && <IconLoading title="درحال بروزرسانی" />}
 						</h4>
 
 						<div className="flex gap-1.5">

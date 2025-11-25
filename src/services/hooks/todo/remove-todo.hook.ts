@@ -1,10 +1,10 @@
 import { getMainClient } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
 
-export const useRemoveTodo = () => {
+export const useRemoveTodo = (id: string) => {
 	return useMutation({
-		mutationKey: ['removeTodo'],
-		mutationFn: (todoId: string) => RemoveTodoApi(todoId),
+		mutationKey: ['removeTodo', id],
+		mutationFn: () => RemoveTodoApi(id),
 	})
 }
 

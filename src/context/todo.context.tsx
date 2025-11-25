@@ -9,7 +9,6 @@ import { showToast } from '@/common/toast'
 import { useAddTodo } from '@/services/hooks/todo/add-todo.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/utils/translate-error'
-import { useRemoveTodo } from '@/services/hooks/todo/remove-todo.hook'
 import { useReorderTodos } from '@/services/hooks/todo/reorder-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
@@ -38,9 +37,10 @@ export interface AddTodoInput {
 
 interface TodoContextType {
 	todos: Todo[]
+	setTodos: (todos: Todo[]) => void
 	addTodo: (input: AddTodoInput) => void
 	todoOptions: TodoOptions
-	removeTodo: (id: string) => void
+	refetchTodos: any
 	toggleTodo: (id: string) => void
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
@@ -59,7 +59,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	const { data: fetchedTodos, refetch } = useGetTodos(isAuthenticated)
 	const { mutateAsync: addTodoAsync } = useAddTodo()
-	const { mutateAsync: removeTodoAsync } = useRemoveTodo()
 	const { mutateAsync: updateTodoAsync } = useUpdateTodo()
 	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
@@ -109,7 +108,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}, [])
 
 	useEffect(() => {
-		if (!fetchedTodos || !fetchedTodos.length) return
+		if (!fetchedTodos) return
+		if (todos?.length && !fetchedTodos.length) return
 
 		const mappedTodos = fetchedTodos.map((todo: FetchedTodo) => ({
 			id: todo.id,
@@ -183,28 +183,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 		refetch()
 		Analytics.event('todo_added')
-	}
-
-	const removeTodo = async (id: string) => {
-		if (!isAuthenticated) return
-		const todo = todos?.find((todo) => todo.id === id)
-		if (!todo) return
-
-		const onlineId = todo.onlineId || todo.id
-		if (validate(onlineId)) {
-			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را حذف کرد.',
-				'error'
-			)
-		}
-		const [err, _] = await safeAwait(removeTodoAsync(onlineId))
-		if (err) {
-			showToast(translateError(err) as string, 'error')
-			return
-		}
-
-		refetch()
-		Analytics.event('todo_removed')
 	}
 
 	const toggleTodo = async (id: string) => {
@@ -322,14 +300,15 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		<TodoContext.Provider
 			value={{
 				todos: todos || [],
+				setTodos,
 				addTodo,
-				removeTodo,
 				toggleTodo,
 				updateTodo,
 				clearCompleted,
 				updateOptions,
 				todoOptions,
 				reorderTodos,
+				refetchTodos: refetch,
 			}}
 		>
 			{children}

@@ -7,9 +7,14 @@ import { useTodoStore, type TodoPriority } from '@/context/todo.context'
 import { useIsMutating } from '@tanstack/react-query'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
-import { FaSpinner } from 'react-icons/fa'
 import { useAuth } from '@/context/auth.context'
 import { showToast } from '@/common/toast'
+import { useRemoveTodo } from '@/services/hooks/todo/remove-todo.hook'
+import { safeAwait } from '@/services/api'
+import { translateError } from '@/utils/translate-error'
+import { validate } from 'uuid'
+import Analytics from '@/analytics'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 interface Prop {
 	todo: Todo
@@ -30,16 +35,16 @@ export function TodoItem({
 	isDragging = false,
 	dragHandle,
 }: Prop) {
-	const { toggleTodo, removeTodo } = useTodoStore()
+	const { toggleTodo, refetchTodos, todos, setTodos } = useTodoStore()
 	const { isAuthenticated } = useAuth()
 	const [expanded, setExpanded] = useState(false)
 	const [showConfirmation, setShowConfirmation] = useState(false)
 	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
-	const isRemoving = useIsMutating({ mutationKey: ['removeTodo'] }) > 0
+	const { mutateAsync, isPending } = useRemoveTodo(todo.onlineId || todo.id)
 
 	const handleDelete = (e: React.MouseEvent) => {
 		e.stopPropagation()
-		if (isRemoving) return
+		if (isPending) return
 		if (!isAuthenticated) return showToast('برای حذف وظیفه باید وارد شوید', 'error')
 
 		setShowConfirmation(true)
@@ -50,9 +55,31 @@ export function TodoItem({
 		setExpanded(!expanded)
 	}
 
-	const onConfirmDelete = () => {
-		if (isRemoving) return
-		removeTodo(todo.id)
+	const onConfirmDelete = async () => {
+		if (isPending) return
+
+		const onlineId = todo.onlineId || todo.id
+		if (validate(onlineId)) {
+			return showToast(
+				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را حذف کرد.',
+				'error'
+			)
+		}
+
+		const [err, _] = await safeAwait(mutateAsync())
+		setShowConfirmation(false)
+		if (err) {
+			showToast(translateError(err) as any, 'error')
+			return
+		}
+
+		Analytics.event('todo_removed')
+		const updatedTodos = todos.filter(
+			(t) => t.id !== onlineId || t.onlineId !== onlineId
+		)
+		setTodos(updatedTodos)
+
+		refetchTodos()
 	}
 
 	const getBorderStyle = () => {
@@ -144,11 +171,11 @@ export function TodoItem({
 					</div>
 				</div>
 
-				<span
+				<div
 					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap  text-xs ${todo.completed ? 'line-through text-content opacity-60' : 'text-content'}`}
 				>
 					{todo.text}
-				</span>
+				</div>
 
 				{/* Actions */}
 				<div className="flex items-center gap-x-1">
@@ -202,15 +229,9 @@ export function TodoItem({
 			{showConfirmation && (
 				<ConfirmationModal
 					isOpen={showConfirmation}
-					onClose={() => (isRemoving ? null : setShowConfirmation(false))}
+					onClose={() => (isPending ? null : setShowConfirmation(false))}
 					onConfirm={() => onConfirmDelete()}
-					confirmText={
-						isRemoving ? (
-							<FaSpinner className="mx-auto animate-spin" size={12} />
-						) : (
-							'حذف'
-						)
-					}
+					confirmText={isPending ? <IconLoading /> : 'حذف'}
 					message="آیا از حذف این وظیفه مطمئن هستید؟"
 					variant="danger"
 				/>

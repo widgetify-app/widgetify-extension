@@ -6,7 +6,7 @@ import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
 import { useIsMutating } from '@tanstack/react-query'
-import { FaSpinner } from 'react-icons/fa'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -117,7 +117,7 @@ export function ExpandableTodoInput({
 						onClick={handleAddTodo}
 						disabled={!todoText.trim() || isAdding}
 						loading={isAdding}
-						loadingText={<FaSpinner className="animate-spin" />}
+						loadingText={<IconLoading />}
 						size="sm"
 						isPrimary={true}
 						rounded="lg"

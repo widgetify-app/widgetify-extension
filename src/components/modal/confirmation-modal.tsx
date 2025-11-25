@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { FaSpinner } from 'react-icons/fa'
 import { FiAlertTriangle, FiCheck, FiTrash2 } from 'react-icons/fi'
 import { Button } from '../button/button'
 import Modal from '../modal'
+import { IconLoading } from '../loading/icon-loading'
 
 interface ConfirmationModalProps {
 	isOpen: boolean
@@ -103,7 +103,7 @@ export function ConfirmationModal({
 						loading={isLoading}
 						loadingText={
 							<div className="flex items-center gap-1">
-								<FaSpinner className="animate-spin" size={12} />
+								<IconLoading className="!mx-0 !text-white" />
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}
