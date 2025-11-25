@@ -5,10 +5,6 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
 import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type {
-	FetchedTodo,
-	Todo,
-} from '@/layouts/widgets/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
 import type { FetchedBookmark } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
@@ -17,6 +13,7 @@ import { MdSyncProblem } from 'react-icons/md'
 import Tooltip from '@/components/toolTip'
 import { SyncAlertModal } from './sync-alert.modal'
 import { showToast } from '@/common/toast'
+import { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 
 enum SyncState {
 	Syncing = 0,
@@ -57,31 +54,30 @@ export function SyncButton() {
 
 			setTimeout(async () => {
 				await syncData(SyncTarget.ALL, 'GET')
-				// await syncData(SyncTarget.BOOKMARKS, "POST")
 			}, 1000)
 		}
-		initialSync()
-	}, [isAuthenticated])
 
-	useEffect(() => {
-		const handleSyncRequest = (eventData: any) => {
-			const target = eventData.detail as SyncTarget
+		const handleSyncRequest = (eventData: SyncTarget) => {
+			const target = eventData as SyncTarget
 			syncData(target, 'POST')
 		}
 
 		const event = listenEvent('startSync', handleSyncRequest)
-		if (isAuthenticated)
+		if (isAuthenticated) {
 			checkSyncData().then((alert) => {
 				setShowAlert(alert)
 			})
+		}
 
-		return event()
+		initialSync()
+		return () => {
+			event()
+		}
 	}, [isAuthenticated])
 
 	const syncData = async (syncTarget: SyncTarget, method: 'POST' | 'GET') => {
 		const now = Date.now()
 		if (now - lastSyncTimeRef.current < 500) {
-			console.info('Sync request ignored due to rapid succession')
 			return
 		}
 		lastSyncTimeRef.current = now
@@ -230,16 +226,13 @@ async function SyncTodo(method: 'POST' | 'GET'): Promise<boolean> {
 			})
 
 			fetchedTodos = response.data
-		} else {
-			const response = await apiClient.get<FetchedTodo[]>('/todos/@me')
-			fetchedTodos = response.data
+
+			const mapped: Todo[] = mapFetchedTodos(fetchedTodos)
+
+			await setToStorage('deletedTodos', [])
+
+			callEvent('todosChanged', mapped)
 		}
-
-		const mapped: Todo[] = mapFetchedTodos(fetchedTodos)
-
-		await setToStorage('deletedTodos', [])
-
-		callEvent('todosChanged', mapped)
 
 		return true
 	} catch (error) {

@@ -41,7 +41,6 @@ export function TodosLayout() {
 		updateOptions,
 		todoOptions,
 		reorderTodos,
-		showNewBadge,
 	} = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
@@ -240,9 +239,6 @@ export function TodosLayout() {
 								</button>
 							</div>
 							<div className="relative">
-								{showNewBadge && (
-									<span className="absolute w-2 h-2 rounded-full left-4 -bottom-0.5 bg-error animate-pulse z-30"></span>
-								)}
 								<select
 									value={todoOptions.viewMode}
 									onChange={(e) =>
