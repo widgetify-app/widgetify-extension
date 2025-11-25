@@ -5,7 +5,6 @@ import type { TodoOptions } from '@/context/todo.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
-import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type {
@@ -26,6 +25,7 @@ import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTren
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 export interface StorageKV {
 	currencies: string[]
