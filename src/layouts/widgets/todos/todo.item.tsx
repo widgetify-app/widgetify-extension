@@ -8,6 +8,8 @@ import { useIsMutating } from '@tanstack/react-query'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { FaSpinner } from 'react-icons/fa'
+import { useAuth } from '@/context/auth.context'
+import { showToast } from '@/common/toast'
 
 interface Prop {
 	todo: Todo
@@ -29,6 +31,7 @@ export function TodoItem({
 	dragHandle,
 }: Prop) {
 	const { toggleTodo, removeTodo } = useTodoStore()
+	const { isAuthenticated } = useAuth()
 	const [expanded, setExpanded] = useState(false)
 	const [showConfirmation, setShowConfirmation] = useState(false)
 	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
@@ -37,6 +40,8 @@ export function TodoItem({
 	const handleDelete = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		if (isRemoving) return
+		if (!isAuthenticated) return showToast('برای حذف وظیفه باید وارد شوید', 'error')
+
 		setShowConfirmation(true)
 	}
 
@@ -105,6 +110,11 @@ export function TodoItem({
 	const onToggleClick = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		if (isUpdating) return
+
+		if (!isAuthenticated) {
+			return showToast('برای تغییر وضعیت وظیفه باید وارد شوید', 'error')
+		}
+
 		toggleTodo(todo.id)
 	}
 

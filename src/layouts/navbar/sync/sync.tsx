@@ -341,16 +341,12 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 async function getAll() {
 	const client = await getMainClient()
 	const response = await client.get<{
-		todos: FetchedTodo[]
 		wallpaper: Wallpaper
 		theme: Theme | null
 		browserTitle: UserInventoryItem
 	}>('/extension/@me/sync')
 
-	const { todos, wallpaper, theme, browserTitle } = response.data
-
-	const mappedTodos: Todo[] = mapFetchedTodos(todos)
-	callEvent('todosChanged', mappedTodos)
+	const { wallpaper, theme, browserTitle } = response.data
 
 	const wallpaperStore = await getFromStorage('wallpaper')
 	if (
