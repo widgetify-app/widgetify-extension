@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { validate } from 'uuid'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { SyncTarget } from '@/layouts/navbar/sync/sync'
 import Analytics from '@/analytics'
 import { useAuth } from './auth.context'
 import { showToast } from '@/common/toast'
@@ -11,6 +10,7 @@ import { useAddTodo } from '@/services/hooks/todo/add-todo.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/utils/translate-error'
 import { useRemoveTodo } from '@/services/hooks/todo/remove-todo.hook'
+import { useReorderTodos } from '@/services/hooks/todo/reorder-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
@@ -45,7 +45,7 @@ interface TodoContextType {
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
-	reorderTodos: (todos: Todo[]) => void
+	reorderTodos: (todos: Todo[]) => Promise<void>
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -61,6 +61,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const { mutateAsync: addTodoAsync } = useAddTodo()
 	const { mutateAsync: removeTodoAsync } = useRemoveTodo()
 	const { mutateAsync: updateTodoAsync } = useUpdateTodo()
+	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
 	const didLoadInitialOptions = useRef(false)
 
@@ -156,7 +157,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				? Math.max(...sameDateTodos.map((t) => t.order || 0))
 				: 0
 
-		// todo: post to server
 		const [err, _] = await safeAwait(
 			addTodoAsync({
 				text: input.text,
@@ -204,10 +204,10 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		refetch()
+		Analytics.event('todo_removed')
 	}
 
 	const toggleTodo = async (id: string) => {
-		console.log('Toggle todo called from todo store: ' + id)
 		if (!isAuthenticated) return console.log('Not authenticated, toggle aborted')
 
 		const current = todos?.find((todo) => todo.id === id || todo.onlineId === id)
@@ -236,6 +236,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		refetch()
+		Analytics.event('todo_toggled')
 	}
 
 	const updateTodo = async (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
@@ -272,6 +273,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		refetch()
+		Analytics.event('todo_updated')
 	}
 
 	const clearCompleted = (date?: string) => {
@@ -281,13 +283,39 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		})
 	}
 
-	const reorderTodos = (newTodos: Todo[]) => {
-		const todosWithOrder = newTodos.map((todo, index) => ({
+	const reorderTodos = async (reorderedTodos: Todo[]) => {
+		if (!isAuthenticated || !todos) return
+
+		const todosWithNewOrder = reorderedTodos.map((todo, index) => ({
 			...todo,
 			order: index,
 		}))
-		setTodos(todosWithOrder)
-		callEvent('startSync', SyncTarget.TODOS)
+
+		const updatedAllTodos = todos.map((todo) => {
+			const updated = todosWithNewOrder.find((t) => t.id === todo.id)
+			return updated || todo
+		})
+
+		setTodos(updatedAllTodos)
+
+		const changedTodos = todosWithNewOrder.filter((todo) => {
+			const oldTodo = todos.find((t) => t.id === todo.id)
+			return oldTodo && (oldTodo.order || 0) !== todo.order
+		})
+
+		const reorderData = changedTodos.map((todo) => ({
+			id: todo.onlineId || todo.id,
+			order: todo.order,
+		}))
+
+		if (reorderData.length === 0) return
+		const [err, _] = await safeAwait(reorderTodosAsync(reorderData))
+		if (err) {
+			showToast(translateError(err) as string, 'error')
+			return
+		}
+
+		Analytics.event('todo_reorder')
 	}
 
 	return (

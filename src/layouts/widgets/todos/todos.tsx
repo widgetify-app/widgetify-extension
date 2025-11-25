@@ -15,7 +15,6 @@ import { useState } from 'react'
 import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
 import { IoMdHelp } from 'react-icons/io'
-import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
@@ -102,50 +101,9 @@ export function TodosLayout() {
 		const overIndex = selectedDateTodos.findIndex((todo) => todo.id === over.id)
 
 		if (activeIndex !== -1 && overIndex !== -1) {
-			let allSelectedDateTodos = todos
-				.filter((todo) => {
-					if (todoOptions.viewMode === TodoViewType.Monthly) {
-						const currentMonth = selectedDate.format('jMM')
-						return todo.date.startsWith(
-							`${selectedDate.year()}-${currentMonth}`
-						)
-					} else if (todoOptions.viewMode === TodoViewType.All) {
-						return true
-					}
-					return todo.date === selectedDateStr
-				})
-				.sort((a, b) => (a.order || 0) - (b.order || 0))
+			const reorderedTodos = arrayMove(selectedDateTodos, activeIndex, overIndex)
 
-			const fullActiveIndex = allSelectedDateTodos.findIndex(
-				(todo) => todo.id === active.id
-			)
-			const fullOverIndex = allSelectedDateTodos.findIndex(
-				(todo) => todo.id === over.id
-			)
-
-			if (fullActiveIndex !== -1 && fullOverIndex !== -1) {
-				const reorderedDateTodos = arrayMove(
-					allSelectedDateTodos,
-					fullActiveIndex,
-					fullOverIndex
-				)
-
-				const todosFromOtherDates = todos.filter((todo) => {
-					if (todoOptions.viewMode === 'monthly') {
-						const currentMonth = selectedDate.format('jMM')
-						return !todo.date.startsWith(
-							`${selectedDate.year()}-${currentMonth}`
-						)
-					} else if (todoOptions.viewMode === 'all') {
-						return false
-					}
-					return todo.date !== selectedDateStr
-				})
-
-				reorderTodos([...todosFromOtherDates, ...reorderedDateTodos])
-
-				Analytics.event('todo_reorder')
-			}
+			reorderTodos(reorderedTodos)
 		}
 	}
 
