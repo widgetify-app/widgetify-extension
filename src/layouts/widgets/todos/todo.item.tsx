@@ -4,12 +4,12 @@ import { FiChevronDown, FiRotateCcw, FiTrash2 } from 'react-icons/fi'
 import { MdDragIndicator } from 'react-icons/md'
 import { Button } from '@/components/button/button'
 import CustomCheckbox from '@/components/checkbox'
-import type { Todo } from '../calendar/interface/todo.interface'
+import { useTodoStore, type TodoPriority } from '@/context/todo.context'
+import { useIsMutating } from '@tanstack/react-query'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 interface Prop {
 	todo: Todo
-	toggleTodo: (id: string) => void
-	deleteTodo: (id: string) => void
 	blurMode?: boolean
 	isDragging?: boolean
 	dragHandle?: any
@@ -23,15 +23,16 @@ const translatedPriority = {
 
 export function TodoItem({
 	todo,
-	deleteTodo,
-	toggleTodo,
+
 	blurMode = false,
 	isDragging = false,
 	dragHandle,
 }: Prop) {
+	const { toggleTodo, removeTodo } = useTodoStore()
 	const [expanded, setExpanded] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [countdown, setCountdown] = useState(5)
+	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout
@@ -41,12 +42,11 @@ export function TodoItem({
 				setCountdown(countdown - 1)
 			}, 1000)
 		} else if (isDeleting && countdown === 0) {
-			deleteTodo(todo.id)
+			removeTodo(todo.id)
 		}
 
 		return () => clearTimeout(timer)
-	}, [isDeleting, countdown, deleteTodo, todo.id])
-
+	}, [isDeleting, countdown, removeTodo, todo.id])
 	const handleDelete = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		setIsDeleting(true)
@@ -114,9 +114,16 @@ export function TodoItem({
 				return 'bg-primary text-primary-content'
 		}
 	}
+
+	const onToggleClick = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		if (isUpdating) return
+		toggleTodo(todo.id)
+	}
+
 	return (
 		<div
-			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98 cursor-pointer group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''} ${isDragging ? 'opacity-50' : ''}`}
+			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98  group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''} ${isDragging ? 'opacity-50' : ''}`}
 		>
 			{isDeleting ? (
 				<div className="flex items-center justify-between p-1.5">
@@ -138,10 +145,7 @@ export function TodoItem({
 				</div>
 			) : (
 				<>
-					<div
-						onClick={() => toggleTodo(todo.id)}
-						className={'flex items-center gap-2 pr-0.5 py-1'}
-					>
+					<div className={'flex items-center gap-2 pr-0.5 py-1'}>
 						<div className="flex flex-row items-center gap-1">
 							<div
 								{...dragHandle}
@@ -154,16 +158,17 @@ export function TodoItem({
 							<div className="flex-shrink-0">
 								<CustomCheckbox
 									checked={todo.completed}
-									onChange={() => toggleTodo(todo.id)}
+									disabled={isUpdating}
 									className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle()}`}
-									unCheckedCheckBoxClassName={`${getUnCheckedCheckboxStyle()}`}
-									checkedCheckBoxClassName={`${getCheckedCheckboxStyle()}`}
+									unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle()}
+									checkedCheckBoxClassName={getCheckedCheckboxStyle()}
+									onClick={(e) => onToggleClick(e)}
 								/>
 							</div>
 						</div>
 
 						<span
-							className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-xs ${todo.completed ? 'line-through text-content opacity-60' : 'text-content'}`}
+							className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap  text-xs ${todo.completed ? 'line-through text-content opacity-60' : 'text-content'}`}
 						>
 							{todo.text}
 						</span>
@@ -212,7 +217,7 @@ export function TodoItem({
 								<span
 									className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
 								>
-									{translatedPriority[todo.priority]}
+									{translatedPriority[todo.priority as TodoPriority]}
 								</span>
 								<span>{todo.date}</span>
 							</div>

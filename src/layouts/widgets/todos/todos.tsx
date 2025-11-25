@@ -33,15 +33,7 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { isAuthenticated } = useAuth()
-	const {
-		addTodo,
-		todos,
-		removeTodo,
-		toggleTodo,
-		updateOptions,
-		todoOptions,
-		reorderTodos,
-	} = useTodoStore()
+	const { addTodo, todos, updateOptions, todoOptions, reorderTodos } = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [showHelpModal, setShowHelpModal] = useState<boolean>(false)
@@ -155,19 +147,6 @@ export function TodosLayout() {
 				Analytics.event('todo_reorder')
 			}
 		}
-	}
-
-	const onToggle = (id: string) => {
-		if (!isAuthenticated) {
-			setShowAuthModal(true)
-			return
-		}
-
-		toggleTodo(id)
-	}
-
-	const onDelete = (id: string) => {
-		removeTodo(id)
 	}
 
 	return (
@@ -298,10 +277,7 @@ export function TodosLayout() {
 										{selectedDateTodos.map((todo) => (
 											<SortableTodoItem
 												key={todo.id}
-												id={todo.id}
 												todo={todo}
-												deleteTodo={(id) => onDelete(id)}
-												toggleTodo={(id) => onToggle(id)}
 												blurMode={blurMode}
 											/>
 										))}

@@ -2,8 +2,9 @@ import { memo } from 'react'
 
 interface CustomCheckboxProps {
 	checked: boolean
-	onChange: (checked: boolean) => void
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 	label?: string
+	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	className?: string
 	disabled?: boolean
 	unCheckedCheckBoxClassName?: string
@@ -20,6 +21,7 @@ const CustomCheckbox = ({
 	className = '',
 	unCheckedCheckBoxClassName = '',
 	checkedCheckBoxClassName = '',
+	onClick,
 }: CustomCheckboxProps) => {
 	const getCheckboxStyle = () => {
 		if (checked) {
@@ -31,6 +33,20 @@ const CustomCheckbox = ({
 		return 'border-content'
 	}
 
+	const onChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault()
+		if (!disabled) {
+			onChange?.(e)
+		}
+	}
+
+	const onClickEvent = (e: React.MouseEvent<HTMLInputElement>) => {
+		e.preventDefault()
+		if (!disabled) {
+			onClick?.(e)
+		}
+	}
+
 	return (
 		<label className="relative flex items-center transition-transform cursor-pointer group active:scale95">
 			<div className="relative">
@@ -38,8 +54,9 @@ const CustomCheckbox = ({
 					type="checkbox"
 					className={'sr-only'}
 					checked={checked}
-					onChange={(e) => !disabled && onChange(e.target.checked)}
+					onChange={onChangeEvent}
 					disabled={disabled}
+					onClick={onClickEvent}
 				/>
 				<div
 					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}

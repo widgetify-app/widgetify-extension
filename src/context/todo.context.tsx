@@ -1,5 +1,5 @@
 import type React from 'react'
-import { createContext, use, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { validate } from 'uuid'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
@@ -207,10 +207,11 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const toggleTodo = async (id: string) => {
-		if (!isAuthenticated) return
+		console.log('Toggle todo called from todo store: ' + id)
+		if (!isAuthenticated) return console.log('Not authenticated, toggle aborted')
 
 		const current = todos?.find((todo) => todo.id === id || todo.onlineId === id)
-		if (!current) return
+		if (!current) return console.log('Todo not found, toggle aborted')
 		const onlineId = current.onlineId || current.id
 
 		if (validate(onlineId)) {

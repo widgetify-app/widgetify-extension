@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
-import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
+import { useIsMutating } from '@tanstack/react-query'
+import { FaSpinner } from 'react-icons/fa'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -45,6 +46,7 @@ export function ExpandableTodoInput({
 	const [notes, setNotes] = useState('')
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
+	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -113,7 +115,9 @@ export function ExpandableTodoInput({
 					</div>
 					<Button
 						onClick={handleAddTodo}
-						disabled={!todoText.trim()}
+						disabled={!todoText.trim() || isAdding}
+						loading={isAdding}
+						loadingText={<FaSpinner className="animate-spin" />}
 						size="sm"
 						isPrimary={true}
 						rounded="lg"
