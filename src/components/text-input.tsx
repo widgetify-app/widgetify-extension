@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, memo } from 'react'
 
 enum TextInputSize {
 	XS = 'xs',
@@ -7,6 +7,7 @@ enum TextInputSize {
 	LG = 'lg',
 	XL = 'xl',
 }
+
 interface TextInputProps {
 	id?: string
 	value: string
@@ -28,7 +29,15 @@ interface TextInputProps {
 	max?: number
 }
 
-export function TextInput({
+const sizes: Record<TextInputSize, string> = {
+	[TextInputSize.XS]: 'input-xs',
+	[TextInputSize.SM]: 'input-sm',
+	[TextInputSize.MD]: 'input-md',
+	[TextInputSize.LG]: 'input-lg',
+	[TextInputSize.XL]: 'input-xl',
+}
+
+export const TextInput = memo(function TextInput({
 	onChange,
 	value,
 	placeholder,
@@ -48,29 +57,26 @@ export function TextInput({
 	min,
 	max,
 }: TextInputProps) {
-	const sizes: Record<TextInputSize, string> = {
-		[TextInputSize.XS]: 'input-xs',
-		[TextInputSize.SM]: 'input-sm',
-		[TextInputSize.MD]: 'input-md',
-		[TextInputSize.LG]: 'input-lg',
-		[TextInputSize.XL]: 'input-xl',
-	}
 	const [localValue, setLocalValue] = useState(value)
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
 	useEffect(() => {
-		setLocalValue(value)
-	}, [value])
+		if (debounce) {
+			setLocalValue(value)
+		}
+	}, [value, debounce])
 
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value
-			setLocalValue(newValue)
 
 			if (!debounce) {
+				// بدون هیچ تاخیری مستقیم onChange را صدا بزن
 				onChange(newValue)
 				return
 			}
+
+			setLocalValue(newValue)
 
 			if (debounceTimerRef.current) {
 				clearTimeout(debounceTimerRef.current)
@@ -85,13 +91,24 @@ export function TextInput({
 		},
 		[onChange, debounce, type, debounceTime]
 	)
+
+	useEffect(() => {
+		return () => {
+			if (debounceTimerRef.current) {
+				clearTimeout(debounceTimerRef.current)
+			}
+		}
+	}, [])
+
+	const displayValue = debounce ? localValue : value
+
 	return (
 		<input
 			ref={ref}
 			id={id}
 			type={type}
 			name={name}
-			value={localValue}
+			value={displayValue}
 			disabled={disabled}
 			onFocus={onFocus}
 			onKeyDown={onKeyDown}
@@ -107,4 +124,6 @@ export function TextInput({
 			max={max}
 		/>
 	)
-}
+})
+
+TextInput.displayName = 'TextInput'

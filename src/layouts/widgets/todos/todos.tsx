@@ -15,7 +15,6 @@ import { useState } from 'react'
 import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
 import { IoMdHelp } from 'react-icons/io'
-import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
@@ -29,20 +28,13 @@ import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { useIsMutating } from '@tanstack/react-query'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
 	const { isAuthenticated } = useAuth()
-	const {
-		addTodo,
-		todos,
-		removeTodo,
-		toggleTodo,
-		updateOptions,
-		todoOptions,
-		reorderTodos,
-		showNewBadge,
-	} = useTodoStore()
+	const { addTodo, todos, updateOptions, todoOptions, reorderTodos } = useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 	const [showHelpModal, setShowHelpModal] = useState<boolean>(false)
@@ -111,65 +103,13 @@ export function TodosLayout() {
 		const overIndex = selectedDateTodos.findIndex((todo) => todo.id === over.id)
 
 		if (activeIndex !== -1 && overIndex !== -1) {
-			let allSelectedDateTodos = todos
-				.filter((todo) => {
-					if (todoOptions.viewMode === TodoViewType.Monthly) {
-						const currentMonth = selectedDate.format('jMM')
-						return todo.date.startsWith(
-							`${selectedDate.year()}-${currentMonth}`
-						)
-					} else if (todoOptions.viewMode === TodoViewType.All) {
-						return true
-					}
-					return todo.date === selectedDateStr
-				})
-				.sort((a, b) => (a.order || 0) - (b.order || 0))
+			const reorderedTodos = arrayMove(selectedDateTodos, activeIndex, overIndex)
 
-			const fullActiveIndex = allSelectedDateTodos.findIndex(
-				(todo) => todo.id === active.id
-			)
-			const fullOverIndex = allSelectedDateTodos.findIndex(
-				(todo) => todo.id === over.id
-			)
-
-			if (fullActiveIndex !== -1 && fullOverIndex !== -1) {
-				const reorderedDateTodos = arrayMove(
-					allSelectedDateTodos,
-					fullActiveIndex,
-					fullOverIndex
-				)
-
-				const todosFromOtherDates = todos.filter((todo) => {
-					if (todoOptions.viewMode === 'monthly') {
-						const currentMonth = selectedDate.format('jMM')
-						return !todo.date.startsWith(
-							`${selectedDate.year()}-${currentMonth}`
-						)
-					} else if (todoOptions.viewMode === 'all') {
-						return false
-					}
-					return todo.date !== selectedDateStr
-				})
-
-				reorderTodos([...todosFromOtherDates, ...reorderedDateTodos])
-
-				Analytics.event('todo_reorder')
-			}
+			reorderTodos(reorderedTodos)
 		}
 	}
 
-	const onToggle = (id: string) => {
-		if (!isAuthenticated) {
-			setShowAuthModal(true)
-			return
-		}
-
-		toggleTodo(id)
-	}
-
-	const onDelete = (id: string) => {
-		removeTodo(id)
-	}
+	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
 
 	return (
 		<WidgetContainer>
@@ -191,6 +131,7 @@ export function TodosLayout() {
 											? ' امروز'
 											: ` ${selectedDate.format('jD jMMMM')}`}
 							</span>
+							{isUpdating && <IconLoading title="درحال بروزرسانی" />}
 						</h4>
 
 						<div className="flex gap-1.5">
@@ -240,9 +181,6 @@ export function TodosLayout() {
 								</button>
 							</div>
 							<div className="relative">
-								{showNewBadge && (
-									<span className="absolute w-2 h-2 rounded-full left-4 -bottom-0.5 bg-error animate-pulse z-30"></span>
-								)}
 								<select
 									value={todoOptions.viewMode}
 									onChange={(e) =>
@@ -302,10 +240,7 @@ export function TodosLayout() {
 										{selectedDateTodos.map((todo) => (
 											<SortableTodoItem
 												key={todo.id}
-												id={todo.id}
 												todo={todo}
-												deleteTodo={(id) => onDelete(id)}
-												toggleTodo={(id) => onToggle(id)}
 												blurMode={blurMode}
 											/>
 										))}

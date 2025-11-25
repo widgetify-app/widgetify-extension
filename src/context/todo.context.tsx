@@ -1,13 +1,18 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { validate } from 'uuid'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { SyncTarget } from '@/layouts/navbar/sync/sync'
-import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import Analytics from '@/analytics'
 import { useAuth } from './auth.context'
 import { showToast } from '@/common/toast'
+import { useAddTodo } from '@/services/hooks/todo/add-todo.hook'
+import { safeAwait } from '@/services/api'
+import { translateError } from '@/utils/translate-error'
+import { useReorderTodos } from '@/services/hooks/todo/reorder-todo.hook'
+import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
+import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
+import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -32,15 +37,15 @@ export interface AddTodoInput {
 
 interface TodoContextType {
 	todos: Todo[]
+	setTodos: (todos: Todo[]) => void
 	addTodo: (input: AddTodoInput) => void
 	todoOptions: TodoOptions
-	removeTodo: (id: string) => void
+	refetchTodos: any
 	toggleTodo: (id: string) => void
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
-	reorderTodos: (todos: Todo[]) => void
-	showNewBadge: boolean
+	reorderTodos: (todos: Todo[]) => Promise<void>
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -51,21 +56,20 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
 		viewMode: TodoViewType.All,
 	})
-	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
+
+	const { data: fetchedTodos, refetch } = useGetTodos(isAuthenticated)
+	const { mutateAsync: addTodoAsync } = useAddTodo()
+	const { mutateAsync: updateTodoAsync } = useUpdateTodo()
+	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
 	const didLoadInitialOptions = useRef(false)
 
 	useEffect(() => {
 		async function load() {
-			const [todos, todoOptions, seenTodoNewViewMode] = await Promise.all([
+			const [todos, todoOptions] = await Promise.all([
 				getFromStorage('todos'),
 				getFromStorage('todoOptions'),
-				getFromStorage('seenTodoNewViewMode'),
 			])
-
-			if (!seenTodoNewViewMode) {
-				setShowNewBadge(true)
-			}
 
 			const migratedTodos = (todos || []).map((todo: Todo, index: number) => ({
 				...todo,
@@ -104,6 +108,25 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}, [])
 
 	useEffect(() => {
+		if (!fetchedTodos) return
+		if (!fetchedTodos.length) return
+
+		const mappedTodos = fetchedTodos.map((todo: FetchedTodo) => ({
+			id: todo.id,
+			text: todo.text,
+			onlineId: todo.id,
+			completed: todo.completed,
+			date: todo.date,
+			priority: todo.priority,
+			category: todo.category,
+			notes: todo.description,
+			order: todo.order || 0,
+		}))
+
+		callEvent('todosChanged', mappedTodos)
+	}, [fetchedTodos])
+
+	useEffect(() => {
 		if (todos === null) return
 		setToStorage('todos', todos)
 	}, [todos])
@@ -115,16 +138,13 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	}, [todoOptions])
 
 	function updateOptions(options: Partial<TodoOptions>) {
-		if (options.viewMode && showNewBadge) {
-			setToStorage('seenTodoNewViewMode', true)
-		}
 		setTodoOptions((prev) => ({
 			...prev,
 			...options,
 		}))
 	}
 
-	const addTodo = (input: AddTodoInput) => {
+	const addTodo = async (input: AddTodoInput) => {
 		if (!isAuthenticated) {
 			showToast('برای اضافه کردن وظیفه باید وارد حساب کاربری شوید.', 'error')
 			return
@@ -137,59 +157,101 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				? Math.max(...sameDateTodos.map((t) => t.order || 0))
 				: 0
 
-		setTodos([
-			...old,
-			{
-				id: uuidv4(),
+		const [err, _] = await safeAwait(
+			addTodoAsync({
 				text: input.text,
 				completed: false,
 				date: input.date,
-				priority: input.priority || 'low',
+				priority: input.priority || TodoPriority.Low,
 				category: input.category || '',
-				notes: input.notes || '',
-				onlineId: null,
 				order: maxOrder + 1,
-			},
-		])
-		Analytics.event('todo_added')
-		callEvent('startSync', SyncTarget.TODOS)
-	}
-
-	const removeTodo = async (id: string) => {
-		const todo = todos?.find((todo) => todo.id === id)
-		if (!todo) return
-
-		setTodos((prev) => {
-			if (!prev) return null
-			return prev.filter((todo) => todo.id !== id)
-		})
-
-		if (todo?.onlineId && isAuthenticated) {
-			const old = await getFromStorage('deletedTodos')
-			const deletedTodos = old || []
-
-			deletedTodos.push(todo)
-			setToStorage('deletedTodos', deletedTodos)
-			callEvent('startSync', SyncTarget.TODOS)
+				description: input.notes || '',
+			})
+		)
+		if (err) {
+			const content = translateError(err)
+			if (typeof content === 'string') {
+				showToast(content, 'error')
+			} else {
+				showToast(
+					`${Object.keys(content)[0]}: ${Object.values(content)[0]}`,
+					'error'
+				)
+			}
+			return
 		}
+
+		refetch()
+		Analytics.event('todo_added')
 	}
 
-	const toggleTodo = (id: string) => {
-		setTodos((prev) => {
-			if (!prev) return null
-			return prev.map((todo) =>
-				todo.id === id ? { ...todo, completed: !todo.completed } : todo
+	const toggleTodo = async (id: string) => {
+		if (!isAuthenticated) return console.log('Not authenticated, toggle aborted')
+
+		const current = todos?.find((todo) => todo.id === id || todo.onlineId === id)
+		if (!current) return console.log('Todo not found, toggle aborted')
+		const onlineId = current.onlineId || current.id
+
+		if (validate(onlineId)) {
+			return showToast(
+				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
+				'error'
 			)
-		})
-		callEvent('startSync', SyncTarget.TODOS)
+		}
+
+		const [err, _] = await safeAwait(
+			updateTodoAsync({
+				id: onlineId,
+				input: {
+					completed: !current.completed,
+				},
+			})
+		)
+
+		if (err) {
+			showToast(translateError(err) as string, 'error')
+			return
+		}
+
+		refetch()
+		Analytics.event('todo_toggled')
 	}
 
-	const updateTodo = (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
-		setTodos((prev) => {
-			if (!prev) return null
-			return prev.map((todo) => (todo.id === id ? { ...todo, ...updates } : todo))
-		})
-		callEvent('startSync', SyncTarget.TODOS)
+	const updateTodo = async (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
+		if (!isAuthenticated) return
+
+		const current = todos?.find((todo) => todo.id === id || todo.onlineId === id)
+		if (!current) return
+		const onlineId = current.onlineId || current.id
+		if (validate(onlineId)) {
+			return showToast(
+				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
+				'error'
+			)
+		}
+
+		const [err, _] = await safeAwait(
+			updateTodoAsync({
+				id: onlineId,
+				input: {
+					category: updates.category,
+					completed: updates.completed,
+					date: updates.date,
+					description: updates.notes,
+					priority: updates.priority as TodoPriority,
+					text: updates.text,
+					order: updates.order,
+				},
+			})
+		)
+
+		if (err) {
+			showToast(translateError(err) as string, 'error')
+			return
+		}
+
+		refetch()
+		Analytics.event('todo_updated')
 	}
 
 	const clearCompleted = (date?: string) => {
@@ -199,28 +261,54 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		})
 	}
 
-	const reorderTodos = (newTodos: Todo[]) => {
-		const todosWithOrder = newTodos.map((todo, index) => ({
+	const reorderTodos = async (reorderedTodos: Todo[]) => {
+		if (!isAuthenticated || !todos) return
+
+		const todosWithNewOrder = reorderedTodos.map((todo, index) => ({
 			...todo,
 			order: index,
 		}))
-		setTodos(todosWithOrder)
-		callEvent('startSync', SyncTarget.TODOS)
+
+		const updatedAllTodos = todos.map((todo) => {
+			const updated = todosWithNewOrder.find((t) => t.id === todo.id)
+			return updated || todo
+		})
+
+		setTodos(updatedAllTodos)
+
+		const changedTodos = todosWithNewOrder.filter((todo) => {
+			const oldTodo = todos.find((t) => t.id === todo.id)
+			return oldTodo && (oldTodo.order || 0) !== todo.order
+		})
+
+		const reorderData = changedTodos.map((todo) => ({
+			id: todo.onlineId || todo.id,
+			order: todo.order,
+		}))
+
+		if (reorderData.length === 0) return
+		const [err, _] = await safeAwait(reorderTodosAsync(reorderData))
+		if (err) {
+			showToast(translateError(err) as string, 'error')
+			return
+		}
+
+		Analytics.event('todo_reorder')
 	}
 
 	return (
 		<TodoContext.Provider
 			value={{
 				todos: todos || [],
+				setTodos,
 				addTodo,
-				removeTodo,
 				toggleTodo,
 				updateTodo,
 				clearCompleted,
 				updateOptions,
 				todoOptions,
 				reorderTodos,
-				showNewBadge,
+				refetchTodos: refetch,
 			}}
 		>
 			{children}

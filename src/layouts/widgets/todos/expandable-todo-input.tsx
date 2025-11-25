@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
-import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
+import { useIsMutating } from '@tanstack/react-query'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -13,7 +14,7 @@ interface ExpandableTodoInputProps {
 	onAddTodo: (input: Omit<AddTodoInput, 'date'>) => void
 }
 
-const PrIORITY_OPTIONS = [
+const PRIORITY_OPTIONS = [
 	{
 		value: 'low',
 		ariaLabel: 'اولویت کم',
@@ -34,6 +35,35 @@ const PrIORITY_OPTIONS = [
 	},
 ]
 
+const PriorityButton = memo(
+	({
+		option,
+		isSelected,
+		onClick,
+	}: {
+		option: (typeof PRIORITY_OPTIONS)[0]
+		isSelected: boolean
+		onClick: () => void
+	}) => (
+		<Tooltip content={option.ariaLabel}>
+			<button
+				type="button"
+				onClick={onClick}
+				className={`
+				flex items-center justify-center w-10 h-5 rounded-full
+				transition-all duration-150 cursor-pointer 
+				${option.bgColor} ${option.hoverBgColor}
+				${isSelected ? 'ring-2 ring-offset-0 ring-primary' : ''}
+			`}
+			>
+				{isSelected && <FiFlag size={8} className="text-white" />}
+			</button>
+		</Tooltip>
+	)
+)
+
+PriorityButton.displayName = 'PriorityButton'
+
 export function ExpandableTodoInput({
 	todoText,
 	onChangeTodoText,
@@ -45,6 +75,7 @@ export function ExpandableTodoInput({
 	const [notes, setNotes] = useState('')
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
+	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -65,11 +96,19 @@ export function ExpandableTodoInput({
 		}
 	}, [isExpanded, todoText])
 
-	const handleInputFocus = () => {
+	const handleInputFocus = useCallback(() => {
 		setIsExpanded(true)
-	}
+	}, [])
 
-	const handleAddTodo = () => {
+	const resetForm = useCallback(() => {
+		onChangeTodoText('')
+		setCategory('')
+		setNotes('')
+		setPriority(TodoPriority.Medium)
+		setIsExpanded(false)
+	}, [onChangeTodoText])
+
+	const handleAddTodo = useCallback(() => {
 		if (todoText.trim()) {
 			onAddTodo({
 				text: todoText.trim(),
@@ -79,21 +118,16 @@ export function ExpandableTodoInput({
 			})
 			resetForm()
 		}
-	}
+	}, [todoText, category, notes, priority, onAddTodo, resetForm])
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter' && todoText.trim()) {
-			handleAddTodo()
-		}
-	}
-
-	const resetForm = () => {
-		onChangeTodoText('')
-		setCategory('')
-		setNotes('')
-		setPriority(TodoPriority.Medium)
-		setIsExpanded(false)
-	}
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent<HTMLInputElement>) => {
+			if (e.key === 'Enter' && todoText.trim()) {
+				handleAddTodo()
+			}
+		},
+		[todoText, handleAddTodo]
+	)
 
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
@@ -109,11 +143,14 @@ export function ExpandableTodoInput({
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
+							debounce={false}
 						/>
 					</div>
 					<Button
 						onClick={handleAddTodo}
-						disabled={!todoText.trim()}
+						disabled={!todoText.trim() || isAdding}
+						loading={isAdding}
+						loadingText={<IconLoading />}
 						size="sm"
 						isPrimary={true}
 						rounded="lg"
@@ -133,49 +170,25 @@ export function ExpandableTodoInput({
 						>
 							<div className="px-2 py-3 space-y-3">
 								<div className="flex items-center justify-between py-1">
-									<label
-										className={
-											'block text-sm font-medium text-content'
-										}
-									>
+									<label className="block text-sm font-medium text-content">
 										اولویت:
 									</label>
 									<div className="flex items-center gap-3 pl-1">
-										{PrIORITY_OPTIONS.map(
-											({
-												value,
-												ariaLabel,
-												bgColor,
-												hoverBgColor,
-											}) => (
-												<Tooltip content={ariaLabel} key={value}>
-													<button
-														key={value}
-														type="button"
-														onClick={() =>
-															setPriority(
-																value as TodoPriority
-															)
-														}
-														className={`
-													flex items-center justify-center w-10 h-5 rounded-full
-													transition-all duration-150 cursor-pointer 
-													${bgColor} ${hoverBgColor}
-													${priority === value ? 'ring-2 ring-offset-0 ring-primary' : ''}
-												`}
-													>
-														{priority === value && (
-															<FiFlag
-																size={8}
-																className="text-white"
-															/>
-														)}
-													</button>
-												</Tooltip>
-											)
-										)}
+										{PRIORITY_OPTIONS.map((option) => (
+											<PriorityButton
+												key={option.value}
+												option={option}
+												isSelected={priority === option.value}
+												onClick={() =>
+													setPriority(
+														option.value as TodoPriority
+													)
+												}
+											/>
+										))}
 									</div>
-								</div>{' '}
+								</div>
+
 								<div className="space-y-2">
 									<div className="flex items-center gap-3">
 										<div className="flex-shrink-0 text-center">
@@ -187,9 +200,10 @@ export function ExpandableTodoInput({
 										<TextInput
 											type="text"
 											value={category}
-											onChange={(value) => setCategory(value)}
+											onChange={setCategory}
 											placeholder="دسته‌بندی (مثال: شخصی، کاری)"
 											className="text-xs placeholder:text-xs py-1.5"
+											debounce={false}
 										/>
 									</div>
 
@@ -202,9 +216,10 @@ export function ExpandableTodoInput({
 										</div>
 										<TextInput
 											value={notes}
-											onChange={(value) => setNotes(value)}
+											onChange={setNotes}
 											placeholder="یادداشت یا لینک (اختیاری)"
 											className="text-xs placeholder:text-xs py-1.5"
+											debounce={false}
 										/>
 									</div>
 								</div>

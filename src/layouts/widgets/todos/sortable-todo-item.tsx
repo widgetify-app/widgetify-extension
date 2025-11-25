@@ -1,26 +1,17 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Todo } from '../calendar/interface/todo.interface'
 import { TodoItem } from './todo.item'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 interface SortableTodoItemProps {
 	todo: Todo
-	toggleTodo: (id: string) => void
-	deleteTodo: (id: string) => void
 	blurMode?: boolean
-	id: string
 }
 
-export function SortableTodoItem({
-	todo,
-	toggleTodo,
-	deleteTodo,
-	blurMode = false,
-	id,
-}: SortableTodoItemProps) {
+export function SortableTodoItem({ todo, blurMode = false }: SortableTodoItemProps) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
-			id,
+			id: todo.id,
 		})
 
 	const style = {
@@ -37,8 +28,6 @@ export function SortableTodoItem({
 		>
 			<TodoItem
 				todo={todo}
-				toggleTodo={toggleTodo}
-				deleteTodo={deleteTodo}
 				blurMode={blurMode}
 				isDragging={isDragging}
 				dragHandle={{ ...attributes, ...listeners }}

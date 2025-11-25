@@ -3,7 +3,6 @@ import { useRef } from 'react'
 import Analytics from '@/analytics'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import type { Todo } from '../../interface/todo.interface'
 import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
 import {
 	formatDateStr,
@@ -13,6 +12,7 @@ import {
 	getShamsiEvents,
 } from '../../utils'
 import { moodOptions } from './toolTipContent'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 interface DayItemProps {
 	day: number

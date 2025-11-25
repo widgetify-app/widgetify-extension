@@ -3,13 +3,13 @@ import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
-import type { Todo } from '@/layouts/widgets/calendar/interface/todo.interface'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
 import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 export interface EventName {
 	startSync: SyncTarget
