@@ -12,6 +12,7 @@ import {
 } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import { GetPrice } from '../utils/getPrice'
 import { CurrencyModalComponent } from './currency-modal'
+import { showToast } from '@/common/toast'
 
 interface CurrencyBoxProps {
 	code: string
@@ -70,7 +71,7 @@ export const CurrencyBox = ({
 
 	function toggleCurrencyModal() {
 		if (currency?.url && currency?.isSponsored) {
-			toast.success('🔗 درحال انتقال به سایت اسپانسر...')
+			showToast('🔗 درحال انتقال به سایت اسپانسر...', 'success')
 			setTimeout(() => {
 				toast.dismiss()
 				Analytics.event('currency_sponsor', {

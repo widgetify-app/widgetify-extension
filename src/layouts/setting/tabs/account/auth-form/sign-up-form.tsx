@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import { FaSearch, FaShareAlt, FaUsers, FaYoutube } from 'react-icons/fa'
 import { FiGift } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
+import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { ItemSelector } from '@/components/item-selector'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { type ReferralSource, useSignUp } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 interface ReferralOption {
 	id: ReferralSource
@@ -45,14 +46,19 @@ export const SignUpForm = () => {
 	const [referralSource, setReferralSource] = useState<ReferralSource | null>(null)
 	const [referralCode, setReferralCode] = useState('')
 	const [error, setError] = useState<string | null>(null)
+	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
 	const { login } = useAuth()
 	const signUpMutation = useSignUp()
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
 		setError(null)
+		setIsConfirmModalOpen(true)
+	}
 
+	const handleConfirm = async () => {
+		setIsConfirmModalOpen(false)
 		try {
 			const response = await signUpMutation.mutateAsync({
 				name,
@@ -62,7 +68,6 @@ export const SignUpForm = () => {
 				referralCode: referralCode || undefined,
 			})
 			login(response.data)
-
 			Analytics.event('sign_up')
 		} catch (err) {
 			const content = translateError(err)
@@ -71,15 +76,20 @@ export const SignUpForm = () => {
 				errorContent = content
 			} else {
 				if (Object.keys(content).length === 0) {
-					errorContent = 'خطا در احراز هویت. لطفاً دوباره تلاش کنید.'
+					errorContent = 'خطا در ورود. لطفاً دوباره تلاش کنید.'
 					return
 				}
 				errorContent = `${Object.keys(content)[0]}: ${Object.values(content)[0]}`
 			}
 
 			setError(errorContent)
-			toast.error(errorContent)
+			showToast(errorContent, 'error')
 		}
+	}
+
+	const onEditButtonClick = () => {
+		setIsConfirmModalOpen(false)
+		Analytics.event('sign_up_edit_email')
 	}
 
 	return (
@@ -194,6 +204,25 @@ export const SignUpForm = () => {
 					<span className="text-center">{error}</span>
 				</div>
 			)}
+
+			<ConfirmationModal
+				isOpen={isConfirmModalOpen}
+				onClose={onEditButtonClick}
+				onConfirm={handleConfirm}
+				title="آیا از ثبت‌نام با این ایمیل اطمینان دارید؟"
+				message={
+					<div className="w-full p-3 text-center border bg-content border-content rounded-2xl">
+						<strong className="font-sans font-medium text-primary">
+							{email}
+						</strong>
+					</div>
+				}
+				confirmText="ادامه"
+				cancelText="ویرایش"
+				variant="info"
+				isLoading={signUpMutation.isPending}
+				direction="rtl"
+			/>
 		</div>
 	)
 }

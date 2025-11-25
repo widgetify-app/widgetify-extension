@@ -16,16 +16,22 @@ import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
 import { useAuth } from '@/context/auth.context'
 import { validate } from 'uuid'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { showToast } from '@/common/toast'
 
 export function BookmarksList() {
-	const { bookmarks, getCurrentFolderItems, addBookmark, setBookmarks } =
-		useBookmarkStore()
+	const {
+		bookmarks,
+		getCurrentFolderItems,
+		currentFolderId,
+		setCurrentFolderId,
+		addBookmark,
+		setBookmarks,
+	} = useBookmarkStore()
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showImportBookmarkModal, setShowImportBookmarkModal] = useState(false)
-
-	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
@@ -40,6 +46,12 @@ export function BookmarksList() {
 	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
 
 	const handleDragEnd = async (event: DragEndEvent) => {
+		if (!isAuthenticated)
+			return showToast(
+				'برای مرتب‌سازی بوکمارک‌ها باید وارد حساب کاربری خود شوید.',
+				'error'
+			)
+
 		const { active, over } = event
 
 		if (!over || active.id === over.id) {
@@ -98,32 +110,28 @@ export function BookmarksList() {
 			})
 
 			setBookmarks(updatedBookmarks)
-			if (isAuthenticated) {
-				let folderIdToSend = currentFolderId
+			let folderIdToSend = currentFolderId
 
-				const isFolderIdValidUuid = validate(currentFolderId)
-				if (isFolderIdValidUuid) {
-					const foundedFolder = bookmarks.find((b) => b.id === currentFolderId)
-					if (foundedFolder) {
-						folderIdToSend = foundedFolder.onlineId || currentFolderId
-					}
+			const isFolderIdValidUuid = validate(currentFolderId)
+			if (isFolderIdValidUuid) {
+				const foundedFolder = bookmarks.find((b) => b.id === currentFolderId)
+				if (foundedFolder) {
+					folderIdToSend = foundedFolder.onlineId || currentFolderId
 				}
-
-				browser.runtime.sendMessage({
-					type: 'REORDER',
-					folderId: folderIdToSend,
-					bookmarks: updatedBookmarks
-						.filter((b) => b.parentId === currentFolderId)
-						.map((b) => ({
-							id: b.onlineId || b.id,
-							order: b.order,
-						})),
-				})
 			}
 
+			browser.runtime.sendMessage({
+				type: 'REORDER',
+				folderId: folderIdToSend,
+				bookmarks: updatedBookmarks
+					.filter((b) => b.parentId === currentFolderId)
+					.map((b) => ({
+						id: b.onlineId || b.id,
+						order: b.order,
+					})),
+			})
+
 			Analytics.event('bookmark_reorder')
-		} else {
-			console.log('Actual source or target index not found')
 		}
 	}
 
@@ -197,7 +205,6 @@ export function BookmarksList() {
 					<BookmarkGrid
 						displayedBookmarks={displayedBookmarks}
 						folderPath={folderPath}
-						setCurrentFolderId={(id) => setCurrentFolderId(id)}
 						setFolderPath={(path) => setFolderPath(path)}
 						openAddBookmarkModal={() => {
 							setShowAddBookmarkModal(true)
@@ -206,21 +213,30 @@ export function BookmarksList() {
 					/>
 				</div>
 			</DndContext>
-			{showAddBookmarkModal && (
-				<AddBookmarkModal
-					isOpen={showAddBookmarkModal}
+			{showAddBookmarkModal && !isAuthenticated ? (
+				<AuthRequiredModal
+					isOpen={true}
 					onClose={() => setShowAddBookmarkModal(false)}
-					onAdd={(bookmark) =>
-						addBookmark(bookmark, () => setShowAddBookmarkModal(false))
-					}
-					parentId={currentFolderId}
-					onOpenImportModal={() => {
-						setShowAddBookmarkModal(false)
-						setShowImportBookmarkModal(true)
-					}}
+					message="برای افزودن بوکمارک جدید باید وارد حساب کاربری خود شوید."
+					loginButtonText="ورود به حساب کاربری"
 				/>
+			) : (
+				showAddBookmarkModal && (
+					<AddBookmarkModal
+						isOpen={showAddBookmarkModal}
+						onClose={() => setShowAddBookmarkModal(false)}
+						onAdd={(bookmark) =>
+							addBookmark(bookmark, () => setShowAddBookmarkModal(false))
+						}
+						parentId={currentFolderId}
+						onOpenImportModal={() => {
+							setShowAddBookmarkModal(false)
+							setShowImportBookmarkModal(true)
+						}}
+					/>
+				)
 			)}
-			{showImportBookmarkModal && (
+			{showImportBookmarkModal && isAuthenticated && (
 				<ImportBookmarkModal
 					isOpen={showImportBookmarkModal}
 					onClose={() => setShowImportBookmarkModal(false)}

@@ -15,7 +15,7 @@ export interface FetchedBookmark {
 	isManageable: boolean
 	type: 'BOOKMARK' | 'FOLDER'
 	parentId: string
-	widgetify_host: boolean
+	iconIsS3Hosted: boolean
 	children: FetchedBookmark[]
 	customTextColor?: string
 	customBackground?: string
@@ -23,11 +23,14 @@ export interface FetchedBookmark {
 	order?: number
 }
 
-export const useGetBookmarks = () => {
+export const useGetBookmarks = (id: string | null, enabled: boolean) => {
+	const queryKey = id ? ['getBookmarks', id] : ['getBookmarks']
+
 	return useQuery<FetchedBookmark[]>({
-		queryKey: ['getBookmarks'],
-		queryFn: async () => getBookmarks(),
+		queryKey,
+		queryFn: async () => getBookmarks(id),
 		retry: 0,
+		enabled,
 		initialData: [],
 	})
 }
@@ -42,9 +45,10 @@ export const useGetSuggestedBookmarks = () => {
 	})
 }
 
-export async function getBookmarks(): Promise<FetchedBookmark[]> {
+export async function getBookmarks(id: string | null): Promise<FetchedBookmark[]> {
+	const params = id ? { id } : {}
 	const client = await getMainClient()
-	const { data } = await client.get<FetchedBookmark[]>('/bookmarks/@me')
+	const { data } = await client.get<FetchedBookmark[]>('/bookmarks/@me', { params })
 	return data
 }
 

@@ -23,6 +23,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 					src={displayIcon}
 					className="transition-transform duration-300 rounded-md group-hover:scale-105"
 					alt={bookmark.title}
+					loading="lazy"
 				/>
 			) : (
 				displayIcon

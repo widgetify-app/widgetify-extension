@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast'
 import { TbUsersPlus } from 'react-icons/tb'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friendService.hook'
@@ -6,6 +5,7 @@ import { translateError } from '@/utils/translate-error'
 import { AvatarComponent } from '../avatar.component'
 import { Button } from '../button/button'
 import type { UserCardUser } from './user-card-portal'
+import { showToast } from '@/common/toast'
 
 interface UserCardProps {
 	user: UserCardUser
@@ -25,14 +25,14 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 			{ username: user.username },
 			{
 				onSuccess: () => {
-					toast.success('درخواست دوستی با موفقیت ارسال شد')
+					showToast('درخواست دوستی با موفقیت ارسال شد', 'success')
 				},
 				onError: (err) => {
 					const message = translateError(err)
 					if (typeof message === 'string') {
-						toast.error(message)
+						showToast(message, 'error')
 					} else {
-						toast.error(message.username)
+						showToast(message.username as string, 'error')
 					}
 				},
 			}

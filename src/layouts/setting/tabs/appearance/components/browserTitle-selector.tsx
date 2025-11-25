@@ -1,6 +1,5 @@
 import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -8,14 +7,11 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import { SectionPanel } from '@/components/section-panel'
-import { useAuth } from '@/context/auth.context'
 import { safeAwait } from '@/services/api'
 import { useChangeBrowserTitle } from '@/services/hooks/extension/updateSetting.hook'
-import type {
-	UserInventoryItem,
-	UserInventoryResponse,
-} from '@/services/hooks/market/market.interface'
+import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 interface BrowserTitle {
 	id: string
@@ -50,11 +46,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 				mutateAsync({ browserTitleId: item.id })
 			)
 			if (error) {
-				toast.error(translateError(error) as string, {
-					duration: 8000,
-					style: { maxWidth: '400px', fontFamily: 'inherit' },
-					className: '!bg-error !text-error-content !font-bold',
-				})
+				showToast(translateError(error) as string, 'error')
 				return
 			}
 			setToStorage('browserTitle', item)

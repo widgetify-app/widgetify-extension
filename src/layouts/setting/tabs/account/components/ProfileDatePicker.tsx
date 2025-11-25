@@ -1,7 +1,7 @@
 import jalaliMoment from 'jalali-moment'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { SelectBox } from '@/components/selectbox/selectbox'
+import { showToast } from '@/common/toast'
 
 interface JalaliDatePickerProps {
 	id: string
@@ -66,7 +66,7 @@ export default function JalaliDatePicker({
 			setMonth(monthValue)
 			setDay(dayValue)
 		} else {
-			toast.error('تاریخ نامعتبر است')
+			showToast('تاریخ نامعتبر است', 'error')
 		}
 	}, [value])
 

@@ -10,16 +10,13 @@ import type {
 	Todo,
 } from '@/layouts/widgets/calendar/interface/todo.interface'
 import { getMainClient } from '@/services/api'
-import {
-	type FetchedBookmark,
-	getBookmarks,
-} from '@/services/hooks/bookmark/getBookmarks.hook'
+import type { FetchedBookmark } from '@/services/hooks/bookmark/getBookmarks.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 import { validate } from 'uuid'
 import { MdSyncProblem } from 'react-icons/md'
 import Tooltip from '@/components/toolTip'
-import toast from 'react-hot-toast'
 import { SyncAlertModal } from './sync-alert.modal'
+import { showToast } from '@/common/toast'
 
 enum SyncState {
 	Syncing = 0,
@@ -158,9 +155,9 @@ export function SyncButton() {
 		if (showAlert.type === 'BOOKMARKS') {
 			const result = await SyncBookmark('POST')
 			if (result) {
-				toast.success('بوکمارک‌ها با موفقیت همگام‌سازی شدند.')
+				showToast('بوکمارک‌ها با موفقیت همگام‌سازی شدند.', 'success')
 			} else {
-				toast.error('خطا در همگام‌سازی بوکمارک‌ها.')
+				showToast('خطا در همگام‌سازی بوکمارک‌ها.', 'error')
 			}
 
 			setSyncState(result ? SyncState.Success : SyncState.Error)
@@ -297,9 +294,7 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 		])
 
 		let fetchedBookmarks: FetchedBookmark[] = []
-		if (method === 'GET') {
-			fetchedBookmarks = await getBookmarks()
-		} else {
+		if (method === 'POST') {
 			const offlineBookmarks = bookmarks?.filter(
 				(b) => validate(b.id) && (b.onlineId === null || b.onlineId === undefined)
 			)
@@ -327,17 +322,13 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 async function getAll() {
 	const client = await getMainClient()
 	const response = await client.get<{
-		bookmarks: FetchedBookmark[]
 		todos: FetchedTodo[]
 		wallpaper: Wallpaper
 		theme: Theme | null
 		browserTitle: UserInventoryItem
 	}>('/extension/@me/sync')
 
-	const { bookmarks, todos, wallpaper, theme, browserTitle } = response.data
-
-	const mappedFetched: Bookmark[] = mapBookmarks(bookmarks)
-	callEvent('bookmarksChanged', mappedFetched)
+	const { todos, wallpaper, theme, browserTitle } = response.data
 
 	const mappedTodos: Todo[] = mapFetchedTodos(todos)
 	callEvent('todosChanged', mappedTodos)
@@ -345,7 +336,7 @@ async function getAll() {
 	const wallpaperStore = await getFromStorage('wallpaper')
 	if (
 		(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
-		wallpaper.src !== wallpaperStore?.src
+		wallpaper?.src !== wallpaperStore?.src
 	) {
 		if (wallpaperStore?.id === 'custom-wallpaper') {
 			return
@@ -353,11 +344,6 @@ async function getAll() {
 
 		await setToStorage('wallpaper', {
 			...wallpaper,
-			isRetouchEnabled: false,
-		})
-		callEvent('wallpaperChanged', {
-			...wallpaper,
-			isRetouchEnabled: false,
 		})
 	}
 

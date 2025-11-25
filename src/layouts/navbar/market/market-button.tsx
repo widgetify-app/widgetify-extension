@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'

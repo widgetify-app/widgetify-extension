@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
-import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { clearStorage, getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import {
 	type UserProfile,
@@ -33,15 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	})
 
 	const logout = async () => {
-		await Promise.all([
-			removeFromStorage('auth_token'),
-			removeFromStorage('refresh_token'),
-			removeFromStorage('profile'),
-			removeFromStorage('theme'),
-			removeFromStorage('wallpaper'),
-			removeFromStorage('browserTitle'),
-		])
-
+		await clearStorage()
 		setToken(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 	}

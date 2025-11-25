@@ -22,7 +22,6 @@ export interface StoredWallpaper {
 	id: string
 	type: 'IMAGE' | 'VIDEO' | 'GRADIENT'
 	src: string
-	isRetouchEnabled: boolean
 	gradient?: GradientColors
 }
 

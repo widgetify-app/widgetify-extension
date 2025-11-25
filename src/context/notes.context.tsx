@@ -7,7 +7,6 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { sleep } from '@/common/utils/timeout'
@@ -19,6 +18,7 @@ import {
 	upsertNote,
 } from '@/services/note/note-api'
 import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
 
 export interface Note {
 	id: string
@@ -121,10 +121,10 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			if (error) {
 				const translatedError = translateError(error)
 				if (typeof translatedError === 'string') {
-					return toast.error(translatedError)
+					return showToast(translatedError, 'error')
 				}
 				const key = Object.keys(translatedError)[0]
-				return toast.error(`${key}: ${translatedError[key]}`)
+				return showToast(`${key}: ${translatedError[key]}`, 'error')
 			}
 
 			// update notes

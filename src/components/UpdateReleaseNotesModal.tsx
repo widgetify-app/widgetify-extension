@@ -26,8 +26,42 @@ type ReleaseNote = {
 const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
+		title: 'ثبت حال روزانــه در تقویم!',
+		type: 'feature',
+		description:
+			'از حالا می‌تونید در ویجت تقویم، حال روزتون رو ثبت کنید. یک نگاه کافی‌ست تا ببینید روزها با چه حالی گذشتند.',
+	},
+	{
+		title: 'بوکمارک‌ها',
+		type: 'bugfix',
+		description: 'مشکل همگام‌سازی بوکمارک‌ها برطرف شد و حالا بدون خطا کار می‌کند.',
+	},
+	{
+		title: 'حیوان خانگی',
+		type: 'bugfix',
+		description: 'مشکل غیرفعال کردن حیوان خانگی برطرف شد — الان کاملاً درست عمل می‌کنه',
+	},
+	{
+		title: 'بهبود تجربه کاربری',
+		type: 'improvement',
+		description: 'چند تغییر ظاهری برای بهتر و تمیزتر شدن رابط کاربری اعمال کردیم ✨',
+	},
+
+	{
+		title: 'بهبود عملکرد',
+		type: 'improvement',
+		description: 'بهبود عملکرد کلی افزونه.',
+	},
+	{
 		title: 'معرفی ویج‌کوین - ارز داخلی ویجتیفای',
 		type: 'feature',
+		media: [
+			{
+				type: 'image',
+				url: 'https://widgetify-ir.storage.c2.liara.space/extension/wig-banner.png',
+				caption: 'ویج‌کوین، ارز داخلی ویجتیفای',
+			},
+		],
 		description:
 			'ویج‌کوین، ارز اختصاصی ویجتیفای معرفی شد! حالا می‌توانید با انجام فعالیت‌های مختلف ویج‌کوین جمع‌آوری کنید و آن‌ها را برای خرید محتوای پریمیوم استفاده کنید.',
 	},
@@ -209,10 +243,10 @@ export const UpdateReleaseNotesModal = ({
 					<div className="w-16 h-1 mb-2 bg-blue-500 rounded-full"></div>
 					<img
 						src={
-							'https://widgetify-ir.storage.c2.liara.space/extension/wig-banner.png'
+							'https://widgetify-ir.storage.c2.liara.space/extension/user-moods.png'
 						}
 						alt={'تصویر بروزرسانی'}
-						className="object-contain w-full h-auto"
+						className="object-contain w-full h-auto rounded-2xl"
 						loading="lazy"
 					/>
 				</div>

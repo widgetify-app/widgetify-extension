@@ -22,7 +22,7 @@ export function UserCoin({ coins, title }: Prop) {
 					</div>
 
 					<span className="text-sm font-semibold text-warning bg-gradient-to-r from-warning to-warning/80 bg-clip-text">
-						{coins.toLocaleString() || '۰'}
+						{coins?.toLocaleString() || '۰'}
 					</span>
 				</div>
 			</div>

@@ -40,7 +40,9 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 							'absolute inset-0 p-4 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
 						}
 					>
-						<h3 className="text-lg font-semibold">نیاز به احراز هویت</h3>
+						<h3 className="text-lg font-semibold">
+							نیاز ورود به حساب کاربری
+						</h3>
 						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 						</p>
@@ -67,7 +69,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-content'
 				}
 			>
-				<h3 className="mb-2 text-xl font-semibold">نیاز به احراز هویت</h3>
+				<h3 className="mb-2 text-xl font-semibold">نیاز ورود به حساب کاربری</h3>
 				<p className={'text-xs mb-4 text-content text-center'}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>

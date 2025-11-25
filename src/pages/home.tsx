@@ -85,7 +85,6 @@ export function HomePage() {
 						id: randomWallpaper.id,
 						type: randomWallpaper.type,
 						src: randomWallpaper.src,
-						isRetouchEnabled: false,
 						gradient: randomWallpaper.gradient,
 					}
 					changeWallpaper(defWallpaper)
@@ -95,7 +94,6 @@ export function HomePage() {
 						id: 'gradient-a1c4fd-c2e9fb',
 						type: 'GRADIENT',
 						src: '',
-						isRetouchEnabled: false,
 						gradient: {
 							from: '#a1c4fd',
 							to: '#c2e9fb',
@@ -160,11 +158,7 @@ export function HomePage() {
 		}
 
 		if (wallpaper.type === 'IMAGE') {
-			const gradient = wallpaper.isRetouchEnabled
-				? 'linear-gradient(rgb(53 53 53 / 42%), rgb(0 0 0 / 16%)), '
-				: ''
-
-			document.body.style.backgroundImage = `${gradient}url(${wallpaper.src})`
+			document.body.style.backgroundImage = `url(${wallpaper.src})`
 			document.body.style.backgroundPosition = 'center'
 			document.body.style.backgroundRepeat = 'no-repeat'
 			document.body.style.backgroundSize = 'cover'
@@ -209,16 +203,6 @@ export function HomePage() {
 				objectFit: 'cover',
 			})
 
-			const activeFilters = []
-
-			if (wallpaper.isRetouchEnabled) {
-				activeFilters.push('brightness(0.7)')
-			}
-
-			if (activeFilters.length > 0) {
-				video.style.filter = activeFilters.join(' ')
-			}
-
 			document.body.prepend(video)
 		}
 	}
@@ -232,7 +216,7 @@ export function HomePage() {
 	}
 
 	return (
-		<div className="w-full min-h-screen px-2 mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
+		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
 			<GeneralSettingProvider>
 				<WidgetVisibilityProvider>
 					<NavbarLayout />

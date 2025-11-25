@@ -2,12 +2,13 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
-import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
+import { useState } from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import { CalendarDayDetails } from './day/toolTipContent'
+import { useGetCalendarData } from '@/services/hooks/calendar/get-calendarData.hook'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
@@ -22,7 +23,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	selectedDate,
 	setSelectedDate,
 }) => {
-	const { user } = useAuth()
+	const { isAuthenticated } = useAuth()
 	const [isOpenTooltip, setIsOpenTooltip] = useState<boolean>(false)
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const [clickedElement, setClickedElement] = useState<HTMLDivElement | null>(null)
@@ -30,13 +31,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const { data: events } = useGetEvents()
 	const { todos } = useTodoStore()
 
-	const startOfMonth = currentDate.clone().startOf('jMonth').toDate()
-	const endOfMonth = currentDate.clone().endOf('jMonth').toDate()
-
-	const { data: googleEvents } = useGetGoogleCalendarEvents(
-		user?.connections?.includes('google') || false,
-		startOfMonth,
-		endOfMonth
+	const { data: calendarData, refetch } = useGetCalendarData(
+		isAuthenticated,
+		currentDate.clone().doAsGregorian().startOf('jMonth').format('YYYY-MM-DD'),
+		currentDate.clone().doAsGregorian().endOf('jMonth').format('YYYY-MM-DD')
 	)
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
@@ -79,11 +77,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 						currentDate={currentDate}
 						day={i + 1}
 						events={events}
-						googleEvents={googleEvents || []}
+						googleEvents={calendarData?.googleEvents || []}
 						selectedDateStr={selectedDateStr}
 						setSelectedDate={setSelectedDate}
 						todos={todos}
 						timezone={timezone.value}
+						moods={calendarData?.moods ?? []}
 						onClick={(element) => {
 							setClickedElement(element)
 							setIsOpenTooltip(true)
@@ -108,7 +107,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 			{clickedElement && (
 				<ClickableTooltip
 					triggerRef={{ current: clickedElement }}
-					content={CalendarDayDetails(events, googleEvents || [])}
+					content={
+						<CalendarDayDetails
+							events={events}
+							googleEvents={calendarData?.googleEvents || []}
+							moods={calendarData?.moods ?? []}
+							onMoodChange={() => refetch()}
+						/>
+					}
 					isOpen={isOpenTooltip}
 					setIsOpen={setIsOpenTooltip}
 				/>

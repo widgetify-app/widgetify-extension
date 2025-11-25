@@ -88,4 +88,5 @@ export interface StorageKV {
 		name: string
 	}
 	pendingOrders: any
+	petState: boolean
 }

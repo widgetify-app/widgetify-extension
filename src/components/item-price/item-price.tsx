@@ -17,7 +17,7 @@ export function ItemPrice({
 				className="w-4 h-4"
 			/>
 			<span className="text-content">
-				{price === 0 ? 'رایگان' : price.toLocaleString('fa-IR')}
+				{price === 0 ? 'رایگان' : price?.toLocaleString('fa-IR')}
 			</span>
 			{currency && price !== 0 && (
 				<span className="text-[10px] text-muted">{currency}</span>

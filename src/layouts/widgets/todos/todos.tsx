@@ -27,9 +27,12 @@ import { ExpandableTodoInput } from './expandable-todo-input'
 import { TodoHelpModal } from './help-modal'
 import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
+import { useAuth } from '@/context/auth.context'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 
 export function TodosLayout() {
 	const { selectedDate, isToday } = useDate()
+	const { isAuthenticated } = useAuth()
 	const {
 		addTodo,
 		todos,
@@ -46,6 +49,7 @@ export function TodosLayout() {
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
+	const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -79,6 +83,11 @@ export function TodosLayout() {
 	}
 
 	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'>) => {
+		if (!isAuthenticated) {
+			setShowAuthModal(true)
+			return
+		}
+
 		addTodo({
 			...todoInput,
 			date: selectedDateStr,
@@ -87,6 +96,11 @@ export function TodosLayout() {
 	}
 
 	const handleDragEnd = (event: DragEndEvent) => {
+		if (!isAuthenticated) {
+			setShowAuthModal(true)
+			return
+		}
+
 		const { active, over } = event
 
 		if (!over || active.id === over.id) {
@@ -142,6 +156,19 @@ export function TodosLayout() {
 				Analytics.event('todo_reorder')
 			}
 		}
+	}
+
+	const onToggle = (id: string) => {
+		if (!isAuthenticated) {
+			setShowAuthModal(true)
+			return
+		}
+
+		toggleTodo(id)
+	}
+
+	const onDelete = (id: string) => {
+		removeTodo(id)
 	}
 
 	return (
@@ -277,8 +304,8 @@ export function TodosLayout() {
 												key={todo.id}
 												id={todo.id}
 												todo={todo}
-												deleteTodo={removeTodo}
-												toggleTodo={toggleTodo}
+												deleteTodo={(id) => onDelete(id)}
+												toggleTodo={(id) => onToggle(id)}
 												blurMode={blurMode}
 											/>
 										))}
@@ -317,6 +344,11 @@ export function TodosLayout() {
 				)}
 			</div>
 
+			<AuthRequiredModal
+				isOpen={showAuthModal}
+				onClose={() => setShowAuthModal(false)}
+				message="برای استفاده از وظایف، لطفاً وارد حساب کاربری خود شوید."
+			/>
 			<TodoHelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
 		</WidgetContainer>
 	)

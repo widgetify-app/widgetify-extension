@@ -42,7 +42,7 @@ export const AuthForm = () => {
 	}
 
 	return (
-		<SectionPanel title="احراز هویت" size="xs">
+		<SectionPanel title="ورود به حساب کاربری" size="xs">
 			<div className="flex gap-1 p-1 mb-4 rounded-2xl bg-base-200">
 				{authTabs.map((tab) => (
 					<button
