@@ -279,7 +279,7 @@ export function HomePage() {
 			<UpdateReleaseNotesModal
 				isOpen={showReleaseNotes}
 				onClose={() => onCloseReleaseNotes()}
-				counterValue={5}
+				counterValue={2}
 			/>
 		</div>
 	)
