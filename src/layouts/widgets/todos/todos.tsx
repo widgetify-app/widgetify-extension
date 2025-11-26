@@ -109,7 +109,9 @@ export function TodosLayout() {
 		}
 	}
 
-	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
+	const updateMutating = useIsMutating({ mutationKey: ['updateTodo'] })
+	const addMutating = useIsMutating({ mutationKey: ['addTodo'] })
+	const isUpdating = updateMutating > 0 || addMutating > 0
 
 	return (
 		<WidgetContainer>

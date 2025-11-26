@@ -18,17 +18,6 @@ const predefinedGradients: { from: string; to: string; name: string }[] = [
 	{ from: '#fbc2eb', to: '#a6c1ee', name: 'بنفش ملایم' },
 ]
 
-const directions = [
-	{ value: 'to-r', label: 'راست به چپ' },
-	{ value: 'to-l', label: 'چپ به راست' },
-	{ value: 'to-t', label: 'پایین به بالا' },
-	{ value: 'to-b', label: 'بالا به پایین' },
-	{ value: 'to-tr', label: 'مورب بالا-راست' },
-	{ value: 'to-tl', label: 'مورب بالا-چپ' },
-	{ value: 'to-br', label: 'مورب پایین-راست' },
-	{ value: 'to-bl', label: 'مورب پایین-چپ' },
-]
-
 export function GradientWallpaper({
 	onSelectGradient,
 	selectedGradient,

@@ -63,10 +63,9 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 
 	const renderFontPreview = ({ value }: FontItem) => (
 		<span className="text-lg truncate" style={{ fontFamily: value }}>
-			دریایچه‌ای از آرامش
+			دریاچه‌ای از آرامش
 		</span>
 	)
-
 	return (
 		<SectionPanel title="فونت افزونه" delay={0.15} size="sm">
 			<div className="space-y-3">

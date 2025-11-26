@@ -58,7 +58,7 @@ export function ItemSelector({
 				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
 			</div>
 			{description && (
-				<p className={'text-xs text-muted text-right'}>{description}</p>
+				<div className={'text-xs text-muted text-right'}>{description}</div>
 			)}
 		</div>
 	)

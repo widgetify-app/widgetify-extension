@@ -7,6 +7,7 @@ import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
+import { listenEvent } from '@/common/utils/call-event'
 
 export enum FontFamily {
 	Vazir = 'Vazir',
@@ -41,7 +42,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
 	const { mutateAsync: changeFontAsync } = useChangeFont()
-	const { isAuthenticated, user } = useAuth()
+	const { isAuthenticated } = useAuth()
 
 	useEffect(() => {
 		async function loadSettings() {
@@ -59,19 +60,17 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			}
 		}
 
-		loadSettings()
-	}, [])
+		const eventForFont = listenEvent('font_change', async (newFont) => {
+			document.body.style.fontFamily = `"${newFont}", sans-serif`
+			updateSetting('fontFamily', newFont as FontFamily)
+		})
 
-	useEffect(() => {
-		if (user) {
-			if (user && user.font !== settings.fontFamily) {
-				setSettings({
-					...settings,
-					fontFamily: user.font || DEFAULT_SETTINGS.fontFamily,
-				})
-			}
+		loadSettings()
+
+		return () => {
+			eventForFont()
 		}
-	}, [user])
+	}, [])
 
 	const updateSetting = <K extends keyof AppearanceData>(
 		key: K,
@@ -117,7 +116,8 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	}
 
 	const contextValue: AppearanceContextContextType = {
-		...settings,
+		contentAlignment: settings.contentAlignment,
+		fontFamily: settings.fontFamily,
 		updateSetting,
 		setContentAlignment,
 		setFontFamily,

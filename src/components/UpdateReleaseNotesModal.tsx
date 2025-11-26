@@ -26,6 +26,12 @@ type ReleaseNote = {
 const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
+		title: 'رفع مشکل عدم ذخیره سازی وظایف',
+		type: 'bugfix',
+		description:
+			'مشکل عدم ذخیره‌سازی وظایف در ویجت تسک‌لیست برطرف شد. حالا می‌تونید با خیال راحت وظایف‌تون رو اضافه و مدیریت کنید.',
+	},
+	{
 		title: 'ثبت حال روزانــه در تقویم!',
 		type: 'feature',
 		description:
