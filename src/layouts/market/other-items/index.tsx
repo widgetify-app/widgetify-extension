@@ -9,6 +9,8 @@ import { useGetMarketItems } from '@/services/hooks/market/getMarketItems.hook'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
+import { showToast } from '@/common/toast'
+import type { FontFamily } from '@/context/appearance.context'
 
 export function MarketOtherItems() {
 	const { user, isAuthenticated, refetchUser } = useAuth()
@@ -29,6 +31,12 @@ export function MarketOtherItems() {
 	const filteredItems = marketData?.items || []
 
 	const handlePurchaseClick = (item: MarketItem) => {
+		if (!isAuthenticated) {
+			Analytics.event('market_item_purchase_unauthenticated')
+			showToast('برای خرید آیتم باید وارد حساب کاربری خود شوید.', 'error')
+			return
+		}
+
 		setSelectedItem(item)
 		setShowPurchaseModal(true)
 	}
@@ -48,6 +56,10 @@ export function MarketOtherItems() {
 		}
 		if (item.type === 'THEME') {
 			callEvent('theme_change', item.itemValue as Theme)
+		}
+
+		if (item.type === 'FONT') {
+			callEvent('font_change', item.itemValue as FontFamily)
 		}
 	}
 

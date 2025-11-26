@@ -2,14 +2,13 @@ import { FiCheck, FiX } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
-import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
-import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
 import Modal from '@/components/modal'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
 import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
+import { RenderPreview } from './renderPreview'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
@@ -72,29 +71,7 @@ export function MarketItemPurchaseModal({
 					<p className="mt-1 mb-1 text-xs text-muted">{item.description}</p>
 
 					{/* Item preview */}
-					{item.type === 'BROWSER_TITLE' ? (
-						<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
-							{renderBrowserTitlePreview({
-								template: item.meta?.template || item.name,
-								className: '!w-96 !max-w-96',
-							})}
-						</div>
-					) : item.previewUrl ? (
-						<div className="relative flex items-center justify-center flex-1 p-2 border bg-base-100 rounded-xl border-base-200">
-							<img
-								src={item.previewUrl}
-								alt={'تصویر پیش‌نمایش'}
-								className="object-contain max-w-full rounded-lg max-h-20 min-h-20"
-								loading="lazy"
-							/>
-						</div>
-					) : (
-						<div className="flex items-center justify-center flex-1 border border-dashed bg-base-100 rounded-xl border-base-300">
-							<span className="text-2xl opacity-50">
-								{getItemTypeEmoji(item.type)}
-							</span>
-						</div>
-					)}
+					<RenderPreview item={item} handlePreviewClick={() => {}} />
 				</div>
 
 				<div className="p-3 space-y-2 border rounded-xl border-primary/20 bg-primary/5">

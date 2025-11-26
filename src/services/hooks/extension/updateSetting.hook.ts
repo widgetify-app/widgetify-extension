@@ -5,7 +5,7 @@ import { getMainClient } from '@/services/api'
 export interface UpdateExtensionSettingsInput {
 	pet?: string | null
 	petName?: string | null
-	font?: FontFamily
+	font?: any
 	theme?: string
 	timeZone?: string
 	wallpaperId?: string
@@ -43,6 +43,15 @@ export function useChangeBrowserTitle() {
 		mutationFn: async ({ browserTitleId }) => {
 			const client = await getMainClient()
 			await client.put('/extension/@me/browser-title', { browserTitleId })
+		},
+	})
+}
+
+export function useChangeFont() {
+	return useMutation<any, unknown, { font: FontFamily }>({
+		mutationFn: async ({ font }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/font', { font })
 		},
 	})
 }

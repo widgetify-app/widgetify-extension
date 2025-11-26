@@ -6,8 +6,7 @@ import { ContentAlignmentSettings } from './components/content-alignment-setting
 import { FontSelector } from './components/font-selector'
 import { ThemeSelector } from './components/theme-selector'
 export function AppearanceSettingTab() {
-	const { contentAlignment, setContentAlignment, fontFamily, setFontFamily } =
-		useAppearanceSetting()
+	const { contentAlignment, setContentAlignment } = useAppearanceSetting()
 
 	const { isAuthenticated } = useAuth()
 	const { data } = useGetUserInventory(isAuthenticated)
@@ -23,7 +22,7 @@ export function AppearanceSettingTab() {
 				contentAlignment={contentAlignment}
 				setContentAlignment={setContentAlignment}
 			/>
-			<FontSelector fontFamily={fontFamily} setFontFamily={setFontFamily} />
+			<FontSelector fetched_fonts={data?.fonts || []} />
 		</div>
 	)
 }
