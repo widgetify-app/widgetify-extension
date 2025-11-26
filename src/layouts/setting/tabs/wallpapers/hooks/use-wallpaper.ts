@@ -78,7 +78,6 @@ export function useWallpaper(
 		if (selectedBackground.type === 'GRADIENT' && selectedBackground.gradient) {
 			wallpaperData.gradient = selectedBackground.gradient
 		}
-
 		setToStorage('wallpaper', wallpaperData)
 
 		if (selectedBackground.id === 'custom-wallpaper') {

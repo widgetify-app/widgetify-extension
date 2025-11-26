@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, getMultipleFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
 import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
@@ -14,6 +14,7 @@ import Tooltip from '@/components/toolTip'
 import { SyncAlertModal } from './sync-alert.modal'
 import { showToast } from '@/common/toast'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
+import type { FontFamily } from '@/context/appearance.context'
 
 enum SyncState {
 	Syncing = 0,
@@ -338,61 +339,6 @@ async function SyncBookmark(method: 'GET' | 'POST') {
 	}
 }
 
-async function getAll() {
-	const client = await getMainClient()
-	const response = await client.get<{
-		wallpaper: Wallpaper
-		theme: Theme | null
-		browserTitle: UserInventoryItem
-	}>('/extension/@me/sync')
-
-	const { wallpaper, theme, browserTitle } = response.data
-
-	const wallpaperStore = await getFromStorage('wallpaper')
-	if (
-		(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
-		wallpaper?.src !== wallpaperStore?.src
-	) {
-		if (wallpaperStore?.id === 'custom-wallpaper') {
-			return
-		}
-
-		await setToStorage('wallpaper', {
-			...wallpaper,
-		})
-	}
-
-	const [themeStore, browserTitleStore] = await Promise.all([
-		getFromStorage('theme'),
-		getFromStorage('browserTitle'),
-	])
-	if (theme && theme !== themeStore) {
-		callEvent('theme_change', theme)
-	}
-
-	if (browserTitleStore) {
-		if (
-			browserTitleStore.id !== browserTitle.id ||
-			browserTitleStore.template !== browserTitle.value ||
-			browserTitleStore.name !== browserTitle.name
-		) {
-			document.title = browserTitle.value
-			setToStorage('browserTitle', {
-				id: browserTitle.id,
-				name: browserTitle.name || 'بدون نام',
-				template: browserTitle.value,
-			})
-		}
-	} else {
-		document.title = browserTitle.value
-		setToStorage('browserTitle', {
-			id: browserTitle.id,
-			name: browserTitle.name || 'بدون نام',
-			template: browserTitle.value,
-		})
-	}
-}
-
 function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 	const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
 		id: bookmark.offlineId || bookmark.id,
@@ -411,4 +357,107 @@ function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
 	}))
 
 	return mappedFetched
+}
+
+async function getAll() {
+	const client = await getMainClient()
+	const response = await client.get<{
+		wallpaper: Wallpaper
+		theme: Theme | null
+		browserTitle: UserInventoryItem
+		font: FontFamily | null
+	}>('/extension/@me/sync')
+
+	const { wallpaper, theme, browserTitle, font } = response.data
+	const store = await getMultipleFromStorage([
+		'wallpaper',
+		'theme',
+		'browserTitle',
+		'appearance',
+	])
+
+	await Promise.all([
+		processWallpaper(wallpaper, store?.wallpaper),
+		processBrowserTitle(browserTitle, store?.browserTitle),
+	])
+
+	processFont(font, store?.appearance)
+	processTheme(theme, store?.theme)
+}
+
+async function processWallpaper(
+	wallpaper: Wallpaper,
+	wallpaperStore: StoredWallpaper | undefined
+) {
+	try {
+		if (!wallpaper) return
+		if (
+			(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
+			wallpaper?.src !== wallpaperStore?.src
+		) {
+			if (wallpaperStore?.id === 'custom-wallpaper') {
+				return
+			}
+
+			await setToStorage('wallpaper', {
+				...wallpaper,
+			})
+		}
+	} catch (er) {
+		console.log(er)
+	}
+}
+
+async function processBrowserTitle(
+	browserTitle: UserInventoryItem | null,
+	browserTitleStore: { id: string; template: string; name: string } | undefined
+) {
+	try {
+		if (!browserTitle) return
+		if (browserTitleStore) {
+			if (
+				browserTitleStore.id !== browserTitle.id ||
+				browserTitleStore.template !== browserTitle.value ||
+				browserTitleStore.name !== browserTitle.name
+			) {
+				document.title = browserTitle.value
+				await setToStorage('browserTitle', {
+					id: browserTitle.id,
+					name: browserTitle.name || 'بدون نام',
+					template: browserTitle.value,
+				})
+			}
+		} else {
+			document.title = browserTitle.value
+			await setToStorage('browserTitle', {
+				id: browserTitle.id,
+				name: browserTitle.name || 'بدون نام',
+				template: browserTitle.value,
+			})
+		}
+	} catch (er) {
+		console.log(er)
+	}
+}
+
+function processTheme(theme: Theme | null, themeStore: Theme | undefined) {
+	try {
+		if (!theme) return
+		if (theme !== themeStore) {
+			callEvent('theme_change', theme)
+		}
+	} catch (er) {
+		console.log(er)
+	}
+}
+function processFont(font: FontFamily | null, appearanceStore?: Record<string, any>) {
+	try {
+		if (!font) return
+		const fontStore = appearanceStore?.fontFamily as FontFamily | undefined
+		if (font !== fontStore) {
+			callEvent('font_change', font)
+		}
+	} catch (er) {
+		console.log(er)
+	}
 }

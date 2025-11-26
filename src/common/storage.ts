@@ -32,6 +32,24 @@ export async function getFromStorage<K extends keyof StorageKV>(
 	return value as StorageKV[K]
 }
 
+export async function getMultipleFromStorage<K extends keyof StorageKV>(
+	keys: K[]
+): Promise<Partial<Pick<StorageKV, K>>> {
+	try {
+		const storageKeys = keys.map((key) => `local:${key}`)
+		const result = await storage.getItems(storageKeys as any)
+		const output: Partial<Pick<StorageKV, K>> = {}
+		for (const item of result) {
+			const key = item.key.replace('local:', '') as K
+			output[key] = item.value
+		}
+
+		return output
+	} catch {
+		return {}
+	}
+}
+
 export async function clearStorage() {
 	await storage.clear('local')
 }

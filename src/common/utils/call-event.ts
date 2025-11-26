@@ -10,7 +10,7 @@ import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
-import { FontFamily } from '@/context/appearance.context'
+import type { FontFamily } from '@/context/appearance.context'
 
 export interface EventName {
 	startSync: SyncTarget
