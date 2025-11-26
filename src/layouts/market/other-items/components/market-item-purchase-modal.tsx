@@ -39,7 +39,9 @@ export function MarketItemPurchaseModal({
 			{ itemId: item.id },
 			{
 				onSuccess: (_response) => {
-					showToast(`${item.name} با موفقیت خریداری شد! 🎉`, 'success')
+					showToast(`${item.name} با موفقیت خریداری شد! 🎉`, 'success', {
+						alarmSound: true,
+					})
 					Analytics.event('market_item_purchased')
 					onPurchaseSuccess(item)
 				},
