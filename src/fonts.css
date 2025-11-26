@@ -115,6 +115,27 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Arad";
+	src: url("https://widgetify-ir.storage.c2.liara.space/fonts/arad/Arad-Light.woff2") format("woff2");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Arad";
+	src: url("https://widgetify-ir.storage.c2.liara.space/fonts/arad/Arad-Medium.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Arad";
+	src: url("https://widgetify-ir.storage.c2.liara.space/fonts/arad/Arad-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+}
+
 body {
 	-moz-font-feature-settings: "ss01";
 	-webkit-font-feature-settings: "ss01";

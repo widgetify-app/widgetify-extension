@@ -2,10 +2,19 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { useUpdateExtensionSettings } from '@/services/hooks/extension/updateSetting.hook'
+import { useChangeFont } from '@/services/hooks/extension/updateSetting.hook'
 import { useAuth } from './auth.context'
+import { safeAwait } from '@/services/api'
+import { showToast } from '@/common/toast'
+import { translateError } from '@/utils/translate-error'
 
-export type FontFamily = 'Vazir' | 'Samim' | 'Pofak' | 'rooyin'
+export enum FontFamily {
+	Vazir = 'Vazir',
+	Samim = 'Samim',
+	Pofak = 'Pofak',
+	rooyin = 'rooyin',
+	Arad = 'Arad',
+}
 
 export interface AppearanceData {
 	contentAlignment: 'center' | 'top'
@@ -23,7 +32,7 @@ interface AppearanceContextContextType extends AppearanceData {
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	contentAlignment: 'top',
-	fontFamily: 'Vazir',
+	fontFamily: FontFamily.Vazir,
 }
 
 export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
@@ -31,7 +40,7 @@ export const AppearanceContext = createContext<AppearanceContextContextType | nu
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
-	const { mutateAsync: updateSettings } = useUpdateExtensionSettings()
+	const { mutateAsync: changeFontAsync } = useChangeFont()
 	const { isAuthenticated, user } = useAuth()
 
 	useEffect(() => {
@@ -85,11 +94,16 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	}
 
 	const setFontFamily = async (value: FontFamily) => {
+		const currentFont = settings.fontFamily
 		updateSetting('fontFamily', value)
-		if (isAuthenticated) {
-			await updateSettings({ font: value })
-		}
 		Analytics.event(`set_font_${value}`)
+		if (isAuthenticated) {
+			const [err] = await safeAwait(changeFontAsync({ font: value }))
+			if (err) {
+				updateSetting('fontFamily', currentFont)
+				return showToast(translateError(err) as any, 'error')
+			}
+		}
 	}
 
 	useEffect(() => {

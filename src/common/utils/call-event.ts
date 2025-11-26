@@ -10,6 +10,7 @@ import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
+import { FontFamily } from '@/context/appearance.context'
 
 export interface EventName {
 	startSync: SyncTarget
@@ -43,6 +44,7 @@ export interface EventName {
 	closeAllDropdowns: null
 	openProfile: null
 	openMarketModal: null
+	font_change: FontFamily
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

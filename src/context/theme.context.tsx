@@ -51,9 +51,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			setToStorage('browserTitle', newTitle)
 		})
 
+		const eventForFont = listenEvent('font_change', async (newFont) => {
+			document.body.style.fontFamily = `"${newFont}", sans-serif`
+		})
+
 		return () => {
 			event()
 			eventForTitle()
+			eventForFont()
 		}
 	}, [])
 

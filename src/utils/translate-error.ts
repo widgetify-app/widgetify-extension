@@ -77,6 +77,7 @@ const errorTranslations: Record<string, string> = {
 
 	DATE_OUT_OF_RANGE: 'تاریخ انتخاب شده خارج از محدوده مجاز است',
 
+	ITEM_NOT_FOUND: 'آیتم مورد نظر یافت نشد',
 	TODO_NOT_FOUND: 'وظیفه مورد نظر یافت نشد',
 }
 
