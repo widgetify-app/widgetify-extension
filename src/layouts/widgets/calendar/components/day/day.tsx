@@ -78,7 +78,7 @@ export function DayItem({
 
 	const getMoodRingStyle = () => {
 		if (!hasMood || !dayMood?.value) return ''
-		return `ring-2 ${dayMood.ringClass}`
+		return `border-2 ${dayMood.borderClass}`
 	}
 
 	const getDayTextStyle = () => {
