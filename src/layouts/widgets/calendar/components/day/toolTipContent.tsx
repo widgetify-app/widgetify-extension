@@ -40,30 +40,30 @@ export const moodOptions = [
 	{
 		value: 'sad',
 		emoji: '😢',
-		label: 'ناراحت',
+		label: 'بی‌حال',
 		colorClass: 'error',
-		ringClass: 'ring-error/50',
+		borderClass: 'border-error/50',
 	},
 	{
 		value: 'normal',
 		emoji: '😐',
 		label: 'معمولی',
 		colorClass: 'warning',
-		ringClass: 'ring-yellow-400/50',
+		borderClass: 'border-yellow-400/50',
 	},
 	{
 		value: 'happy',
 		emoji: '😊',
 		label: 'خوب',
 		colorClass: 'secondary',
-		ringClass: 'ring-secondary/50',
+		borderClass: 'border-secondary/50',
 	},
 	{
 		value: 'excited',
 		emoji: '😂',
 		label: 'سرحال',
 		colorClass: 'success',
-		ringClass: 'ring-green-400/50',
+		borderClass: 'border-green-400/50',
 	},
 ]
 
