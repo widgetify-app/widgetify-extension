@@ -1,6 +1,7 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 
 import { unitsFlag } from '../unitSymbols'
+import moment from 'jalali-moment'
 
 interface WeatherLayoutProps {
 	forecast?: FetchedWeather['forecast'] | null
@@ -12,34 +13,21 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
 			{forecast?.map((forecast) => {
 				return (
 					<div
-						className="flex flex-row-reverse items-center justify-around px-1"
 						key={forecast.date}
+						className="flex flex-col items-center justify-between w-16 gap-2 py-3 transition-all duration-200 border rounded-2xl bg-base-200/40 border-content hover:bg-base-100/50"
 					>
-						<div className="relative">
-							<img
-								src={forecast.icon}
-								alt="weather status"
-								className="w-8 h-8 drop-shadow-md"
-							/>
-							<div className="absolute inset-0 w-2 h-2 rounded-full bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl -z-10" />
-						</div>
-						<div
-							className={
-								'mt-0.5 text-sm font-bold text-muted animate-in zoom-in-95 duration-300  w-14 text-center'
-							}
-						>
+						<span className="text-[10px] font-medium text-muted">
+							{moment(forecast.date).locale('fa').format('HH:mm')}
+						</span>
+
+						<img src={forecast.icon} className="w-9 h-9" alt="weather icon" />
+
+						<span className="text-sm font-bold text-base-content">
 							{Math.round(forecast.temp)}
-							<span className="text-xs font-medium">
-								{unitsFlag[temperatureUnit]}
+							<span className="text-[10px] font-medium text-muted">
+								{unitsFlag[temperatureUnit || 'metric']}
 							</span>
-						</div>
-						<div>
-							{new Date(forecast.date).toLocaleTimeString([], {
-								hour: '2-digit',
-								minute: '2-digit',
-								hour12: false,
-							})}
-						</div>
+						</span>
 					</div>
 				)
 			})}

@@ -4,6 +4,7 @@ export interface FetchedWeather {
 		en: string
 	}
 	weather: {
+		statusBanner: string | null
 		label: string
 		icon: {
 			url: string

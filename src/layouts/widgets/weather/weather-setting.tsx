@@ -1,13 +1,11 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { SectionPanel } from '@/components/section-panel'
-import { SelectBox } from '@/components/selectbox/selectbox'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { SelectCity } from '@/layouts/setting/tabs/general/components/select-city'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import type { WeatherSettings } from './weather.interface'
 
-const count = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 export function WeatherSetting() {
 	const [setting, setSetting] = useState<WeatherSettings>({
 		useAI: true,
@@ -45,33 +43,8 @@ export function WeatherSetting() {
 	return (
 		<WidgetSettingWrapper>
 			<SelectCity key={'selectCity'} />
-			<SectionPanel title="تنظیمات نمایش">
+			<SectionPanel title="تنظیمات نمایش" size="sm">
 				<div className="flex flex-col space-y-4">
-					<div className="flex flex-col space-y-2">
-						<div className="flex items-center justify-between">
-							<label
-								htmlFor="forecastCount"
-								className={
-									'flex items-center text-sm font-medium text-content'
-								}
-							>
-								<span>تعداد پیش‌بینی</span>
-							</label>
-							<div className="flex items-center">
-								<SelectBox
-									options={count.map((c) => ({
-										label: c.toString(),
-										value: c.toString(),
-									}))}
-									value={setting.forecastCount.toString()}
-									onChange={(val) =>
-										updateWeatherSettings('forecastCount', val)
-									}
-								/>
-							</div>
-						</div>
-					</div>
-
 					{/* Temperature Unit */}
 					<div className="flex flex-col space-y-2">
 						<div className="flex items-center justify-between">
@@ -127,25 +100,6 @@ export function WeatherSetting() {
 							{setting.temperatureUnit === 'standard' &&
 								'واحد کلوین در محاسبات علمی استفاده می‌شود'}
 						</div>
-					</div>
-
-					{/* AI Toggle */}
-					<div className="flex items-center justify-between">
-						<div>
-							<p className={'text-sm text-content'}>
-								استفاده از هوش مصنوعی
-							</p>
-							<p className={'text-xs font-light text-muted'}>
-								توصیف شرایط آب و هوا و پیشنهاد پلی لیست مناسب با کمک هوش
-								مصنوعی
-							</p>
-						</div>
-						<ToggleSwitch
-							enabled={setting.useAI}
-							onToggle={() =>
-								updateWeatherSettings('useAI', !setting.useAI)
-							}
-						/>
 					</div>
 
 					<div className="flex items-center justify-between">
