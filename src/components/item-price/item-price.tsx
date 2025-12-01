@@ -12,7 +12,7 @@ export function ItemPrice({
 	return (
 		<div className={`flex items-center gap-1 text-sm font-medium ${className}`}>
 			<img
-				src="https://widgetify-ir.storage.c2.liara.space/extension/wig-icon.png"
+				src="https://cdn.widgetify.ir/extension/wig-icon.png"
 				alt="ویج‌کوین"
 				className="w-4 h-4"
 			/>

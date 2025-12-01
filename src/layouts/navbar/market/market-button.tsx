@@ -28,7 +28,7 @@ export function MarketButton() {
 					className="flex flex-row-reverse items-center justify-center w-8 h-full px-1 overflow-hidden transition-all duration-200 cursor-pointer bg-content bg-glass rounded-xl hover:bg-primary/10 hover:scale-105 group"
 					style={{
 						backgroundImage:
-							'url(https://widgetify-ir.storage.c2.liara.space/extension/market-button.gif)',
+							'url(https://cdn.widgetify.ir/extension/market-button.gif)',
 						backgroundPosition: 'center',
 						backgroundSize: 'cover',
 					}}

@@ -64,7 +64,7 @@ const releaseNotes: ReleaseNote[] = [
 		media: [
 			{
 				type: 'image',
-				url: 'https://widgetify-ir.storage.c2.liara.space/extension/wig-banner.png',
+				url: 'https://cdn.widgetify.ir/extension/wig-banner.png',
 				caption: 'ویج‌کوین، ارز داخلی ویجتیفای',
 			},
 		],
@@ -248,9 +248,7 @@ export const UpdateReleaseNotesModal = ({
 					</h2>
 					<div className="w-16 h-1 mb-2 bg-blue-500 rounded-full"></div>
 					<img
-						src={
-							'https://widgetify-ir.storage.c2.liara.space/extension/user-moods.png'
-						}
+						src={'https://cdn.widgetify.ir/extension/user-moods.png'}
 						alt={'تصویر بروزرسانی'}
 						className="object-contain w-full h-auto rounded-2xl"
 						loading="lazy"

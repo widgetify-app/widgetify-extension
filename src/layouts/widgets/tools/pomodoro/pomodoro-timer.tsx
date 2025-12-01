@@ -115,7 +115,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					//todo: implement Firefox specific audio playback
 				} else {
 					const audio = new Audio(
-						'https://widgetify-ir.storage.c2.liara.space/effects/alarm_1.mp3'
+						'https://cdn.widgetify.ir/effects/alarm_1.mp3'
 					)
 					audio.autoplay = true
 					audio.play()

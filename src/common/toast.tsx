@@ -13,9 +13,7 @@ interface ToastOptions {
 		| 'bottom-right'
 	alarmSound?: boolean
 }
-const audio = new Audio(
-	'https://widgetify-ir.storage.c2.liara.space/effects/alarm-success.mp3'
-)
+const audio = new Audio('https://cdn.widgetify.ir/effects/alarm-success.mp3')
 audio.preload = 'auto'
 
 export function showToast(

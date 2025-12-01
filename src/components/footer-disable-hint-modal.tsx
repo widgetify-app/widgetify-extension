@@ -30,7 +30,7 @@ export function FooterDisableHintModal({ show, onClose }: FooterDisableHintModal
 				>
 					<div className="flex items-center justify-center">
 						<img
-							src="https://widgetify-ir.storage.c2.liara.space/extension/how-to-disable-footer.png"
+							src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 							alt="نحوه مخفی کردن نوار پایین مرورگر"
 							className="h-auto max-w-full rounded-lg shadow-xl"
 							style={{ maxHeight: '220px' }}
