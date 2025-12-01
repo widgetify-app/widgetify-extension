@@ -19,16 +19,18 @@ export function CurrentWeatherBox({
 }: CurrentWeatherBoxProps) {
 	return (
 		<>
-			<div className="relative p-2 overflow-hidden border rounded-2xl border-content min-h-28 max-h-28">
+			<div
+				className={`relative p-2 overflow-hidden border ${fetchedWeather?.statusBanner && 'border-r-0'} rounded-2xl border-content min-h-28 max-h-28`}
+			>
 				{fetchedWeather?.statusBanner && (
 					<div
-						className="absolute inset-0 bg-center bg-cover"
+						className="absolute inset-0 transition-opacity duration-500 bg-center bg-cover"
 						style={{
 							backgroundImage: `url(${fetchedWeather.statusBanner})`,
 							maskImage:
-								'linear-gradient(to left, rgba(0, 0, 0, 0.4) 10%, rgba(0, 0, 0, 0) 80%)',
+								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
 							WebkitMaskImage:
-								'linear-gradient(to left, rgba(0, 0, 0, 0.4) 10%, rgba(0, 0, 0, 0) 80%)',
+								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
 						}}
 					/>
 				)}
@@ -51,8 +53,8 @@ export function CurrentWeatherBox({
 						</span>
 
 						<span className="text-xs leading-tight text-muted drop-shadow-lg">
-							{fetchedWeather?.description.text} •{' '}
-							{fetchedWeather?.temperature.temp_description}
+							{fetchedWeather?.description?.text} •{' '}
+							{fetchedWeather?.temperature?.temp_description}
 						</span>
 					</div>
 
@@ -70,7 +72,7 @@ export function CurrentWeatherBox({
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
 							<TbWind className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
-								{Math.round(fetchedWeather?.temperature.wind_speed || 0)}{' '}
+								{Math.round(fetchedWeather?.temperature?.wind_speed || 0)}{' '}
 								m/s
 							</span>
 						</div>
@@ -80,7 +82,7 @@ export function CurrentWeatherBox({
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
 							<WiHumidity className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
-								{fetchedWeather?.temperature.humidity || 0}%
+								{fetchedWeather?.temperature?.humidity || 0}%
 							</span>
 						</div>
 					</Tooltip>
@@ -89,7 +91,7 @@ export function CurrentWeatherBox({
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
 							<WiCloudy className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
-								{fetchedWeather?.temperature.clouds || 0}%
+								{fetchedWeather?.temperature?.clouds || 0}%
 							</span>
 						</div>
 					</Tooltip>
