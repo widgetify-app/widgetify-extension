@@ -1,149 +1,107 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
+import { unitsFlag } from '../unitSymbols'
+import Tooltip from '@/components/toolTip'
+import { TbWind } from 'react-icons/tb'
+import { WiCloudy, WiHumidity } from 'react-icons/wi'
 
 interface CurrentWeatherBoxProps {
-	weather?: FetchedWeather['weather']
+	fetchedWeather: FetchedWeather['weather'] | null
+	enabledShowName: boolean
+	temperatureUnit: keyof typeof unitsFlag
+	selectedCityName: string
 }
 
-export function CurrentWeatherBox({ weather }: CurrentWeatherBoxProps) {
+export function CurrentWeatherBox({
+	fetchedWeather,
+	enabledShowName,
+	selectedCityName,
+	temperatureUnit,
+}: CurrentWeatherBoxProps) {
 	return (
-		<div className="grid items-center justify-center w-full h-full grid-cols-2 gap-2">
-			<div className="flex flex-col justify-between w-full h-[5.3rem] p-2 border rounded-2xl border-content">
-				<p className="text-[10px] text-muted">سرعت باد</p>
+		<>
+			<div
+				className={`relative p-2 overflow-hidden border ${fetchedWeather?.statusBanner && 'border-r-0'} rounded-2xl border-content min-h-28 max-h-28`}
+			>
+				{fetchedWeather?.statusBanner && (
+					<div
+						className="absolute inset-0 transition-opacity duration-500 bg-center bg-cover"
+						style={{
+							backgroundImage: `url(${fetchedWeather.statusBanner})`,
+							maskImage:
+								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
+							WebkitMaskImage:
+								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
+						}}
+					/>
+				)}
 
-				<p className="self-end text-sm font-bold text-content" dir="ltr">
-					{weather?.temperature?.wind_speed} km/h
-				</p>
+				{!fetchedWeather?.statusBanner && (
+					<div className="absolute inset-0 bg-gradient-to-br from-base-200/80 to-base-200/60"></div>
+				)}
 
-				<p className="text-[11px] text-muted truncate">
-					تندباد:{' '}
-					<span dir="ltr" className="ml-1">
-						{weather?.temperature?.wind_gus ?? '-'} km/h
-					</span>
-				</p>
-			</div>
-			<div className="flex flex-col justify-between w-full h-[5.3rem] p-2 border rounded-2xl border-content">
-				<p className="text-[10px] text-muted">رطوبت</p>
-				<p className="self-end text-sm font-bold text-content" dir="ltr">
-					{weather?.temperature?.humidity}%
-				</p>
-				<p className="text-[11px] text-muted truncate">رطوبت هوا</p>
-			</div>
+				<div className="relative z-10 flex items-center justify-between py-1">
+					<div className="flex flex-col gap-1.5">
+						<span className="text-xs font-medium text-muted drop-shadow-lg">
+							{enabledShowName ? cleanCityName(selectedCityName) : '🏠'}
+						</span>
 
-			<CompactAirQualityCard airPollution={weather?.airPollution} />
+						<span className="flex items-baseline gap-1.5 text-4xl font-bold leading-none text-base-content drop-shadow-lg">
+							{Math.round(fetchedWeather?.temperature?.temp || 0)}
+							<span className="text-xl font-medium text-base-content/90 drop-shadow-lg">
+								{unitsFlag[temperatureUnit || 'metric']}
+							</span>
+						</span>
 
-			<div className="flex flex-col justify-between w-full h-[5.3rem] p-2 border rounded-2xl border-content">
-				<p className="text-[10px] text-muted">ابرها</p>
-				<p className="self-end text-sm font-bold text-content" dir="ltr">
-					{weather?.temperature?.clouds}%
-				</p>
-				<p className="text-[11px] text-muted truncate">میزان پوشش ابر</p>
-			</div>
-		</div>
-	)
-}
-
-interface CompactAirQualityCardProp {
-	airPollution?: FetchedWeather['weather']['airPollution']
-}
-function CompactAirQualityCard({ airPollution }: CompactAirQualityCardProp) {
-	const getAirQualityInfo = (aqi: any, components: any) => {
-		if (!aqi && !components) return { status: '-', color: 'text-gray-500' }
-
-		if (aqi) {
-			switch (aqi) {
-				case 1:
-					return { status: 'عالی', color: 'text-green-600' }
-				case 2:
-					return { status: 'خوب', color: 'text-green-500' }
-				case 3:
-					return { status: 'متوسط', color: 'text-yellow-600' }
-				case 4:
-					return { status: 'ناسالم', color: 'text-orange-600' }
-				case 5:
-					return { status: 'خطرناک', color: 'text-red-600' }
-				default:
-					return { status: 'نامعلوم', color: 'text-gray-500' }
-			}
-		}
-
-		if (components) {
-			if (components.pm2_5 > 50 || components.pm10 > 100) {
-				return { status: 'هوای ناسالم', color: 'text-orange-600' }
-			}
-			return { status: 'کیفیت مناسب', color: 'text-green-600' }
-		}
-
-		return { status: '-', color: 'text-gray-500' }
-	}
-
-	const getStatusDot = (aqi: any) => {
-		if (!aqi) return 'bg-gray-400'
-
-		switch (aqi) {
-			case 1:
-				return 'bg-green-500'
-			case 2:
-				return 'bg-green-400'
-			case 3:
-				return 'bg-yellow-500'
-			case 4:
-				return 'bg-orange-500'
-			case 5:
-				return 'bg-red-500'
-			default:
-				return 'bg-gray-400'
-		}
-	}
-
-	const airQuality = getAirQualityInfo(airPollution?.aqi, airPollution?.components)
-
-	return (
-		<div className="flex flex-col justify-between w-full h-[5.3rem] p-2 border rounded-2xl border-content hover:shadow-md transition-shadow duration-200">
-			<div className="flex items-center justify-between">
-				<p className="text-[10px] text-muted">کیفیت هوا</p>
-				<div
-					className={`w-2 h-2 rounded-full ${getStatusDot(airPollution?.aqi)}`}
-				></div>
-			</div>
-
-			<div className="flex items-end justify-between">
-				<p className={`text-sm font-bold ${airQuality.color}`} dir="ltr">
-					{airPollution?.aqi ?? '-'}
-				</p>
-
-				{airPollution?.aqi && (
-					<div className="flex space-x-0.5" dir="ltr">
-						{[1, 2, 3, 4, 5].map((level) => (
-							<div
-								key={level}
-								className={`w-1 h-3 rounded-sm ${
-									level <= airPollution?.aqi
-										? level <= 2
-											? 'bg-green-500'
-											: level === 3
-												? 'bg-yellow-500'
-												: level === 4
-													? 'bg-orange-500'
-													: 'bg-red-500'
-										: 'bg-gray-200'
-								}`}
-							/>
-						))}
+						<span className="text-xs leading-tight text-muted drop-shadow-lg">
+							{fetchedWeather?.description?.text} •{' '}
+							{fetchedWeather?.temperature?.temp_description}
+						</span>
 					</div>
-				)}
+
+					<img
+						src={fetchedWeather?.icon?.url}
+						className="w-20 h-20 drop-shadow"
+						alt={fetchedWeather?.description?.text}
+					/>
+				</div>
 			</div>
 
-			<div className="flex items-center justify-between">
-				<p className={`text-[11px] truncate ${airQuality.color}`}>
-					{airQuality.status}
-				</p>
+			<div className="p-2 border rounded-2xl bg-base-200/40 border-content">
+				<div className="grid grid-cols-3 gap-1.5">
+					<Tooltip content={'باد'}>
+						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
+							<TbWind className="w-4 h-4 text-muted" />
+							<span className="text-xs font-medium text-muted">
+								{Math.round(fetchedWeather?.temperature?.wind_speed || 0)}{' '}
+								m/s
+							</span>
+						</div>
+					</Tooltip>
 
-				{airPollution?.components && (
-					<p className="text-[9px] text-muted" dir="ltr">
-						PM2.5: {airPollution.components?.pm2_5.toFixed(0)}
-					</p>
-				)}
+					<Tooltip content={'رطوبت'}>
+						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
+							<WiHumidity className="w-4 h-4 text-muted" />
+							<span className="text-xs font-medium text-muted">
+								{fetchedWeather?.temperature?.humidity || 0}%
+							</span>
+						</div>
+					</Tooltip>
+
+					<Tooltip content="پوشش ابری">
+						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
+							<WiCloudy className="w-4 h-4 text-muted" />
+							<span className="text-xs font-medium text-muted">
+								{fetchedWeather?.temperature?.clouds || 0}%
+							</span>
+						</div>
+					</Tooltip>
+				</div>
 			</div>
-		</div>
+		</>
 	)
+}
+
+function cleanCityName(name: string) {
+	const regex = /\s*شهرستان\s*/g
+	return name.replace(regex, ' ').trim()
 }
