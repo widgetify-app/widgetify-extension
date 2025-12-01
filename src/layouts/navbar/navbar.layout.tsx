@@ -1,5 +1,6 @@
 import { type JSX, useCallback, useEffect, useState } from 'react'
-import { HiHome } from 'react-icons/hi'
+import { HiHome, HiX } from 'react-icons/hi'
+import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
@@ -11,6 +12,7 @@ import { FriendsList } from './friends-list/friends'
 import { MarketButton } from './market/market-button'
 import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
+import { useAppearanceSetting } from '@/context/appearance.context'
 
 export interface PageLink {
 	name: string
@@ -32,6 +34,7 @@ const WIDGETIFY_URLS = {
 } as const
 
 export function NavbarLayout(): JSX.Element {
+	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
 	const [showSettings, setShowSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
@@ -134,6 +137,32 @@ export function NavbarLayout(): JSX.Element {
 						/>
 					</div>
 				</div>
+
+				{canReOrderWidget && (
+					<div
+						className="fixed transform -translate-x-1/2 top-1 left-1/2"
+						style={{
+							zIndex: 100,
+						}}
+					>
+						<div className="p-2 border shadow-xl rounded-xl bg-warning/90 backdrop-blur-sm border-warning-content/20">
+							<div className="flex items-center gap-3 text-warning-content">
+								<AiOutlineDrag size={20} className="animate-bounce" />
+								<span className="text-sm font-medium">
+									حالت جابجایی ویجت‌ها فعال است. بالای هر ویجت رو نگه
+									داشته و جابجا کنید
+								</span>
+
+								<button
+									onClick={() => toggleCanReOrderWidget()}
+									className="transition-colors cursor-pointer text-warning-content/70 hover:text-warning-content"
+								>
+									<HiX size={16} />
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
 			</nav>
 
 			<SettingModal

@@ -89,4 +89,5 @@ export interface StorageKV {
 	}
 	pendingOrders: any
 	petState: boolean
+	showNewBadgeForReOrderWidgets: boolean
 }
