@@ -3,11 +3,15 @@ import { HiCog, HiViewGridAdd } from 'react-icons/hi'
 import { callEvent } from '@/common/utils/call-event'
 import { Dropdown } from '@/components/dropdown'
 import Tooltip from '@/components/toolTip'
+import { useAppearanceSetting } from '@/context/appearance.context'
+import { AiOutlineDrag } from 'react-icons/ai'
 
 interface SettingsProps {
 	setShowSettings: (value: boolean) => void
 }
 export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
+	const { canReOrderWidget, toggleCanReOrderWidget, showNewBadge } =
+		useAppearanceSetting()
 	const handleWidgetSettingsClick = useCallback(() => {
 		callEvent('openWidgetsSettings', { tab: null })
 		callEvent('closeAllDropdowns')
@@ -25,6 +29,9 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				id="settings-button"
 			>
 				<HiCog size={20} className="text-muted group-hover:!text-primary" />
+				{showNewBadge && (
+					<span className="absolute w-2 h-2 rounded-full right-4 bottom-1 bg-error animate-pulse"></span>
+				)}
 			</div>
 		</Tooltip>
 	)
@@ -56,6 +63,25 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 						<span>مدیریت ویجت‌ها</span>
 					</div>
 				</button>
+
+				<div
+					className="relative px-3 py-2 border-t cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
+					onClick={() => toggleCanReOrderWidget()}
+				>
+					<div className="flex items-center gap-3">
+						<AiOutlineDrag
+							size={16}
+							className="text-muted group-hover:!text-primary"
+						/>
+						{canReOrderWidget ? (
+							<span>غیرفعال‌سازی حالت جابجایی</span>
+						) : (
+							<span>حالت جابجایی ویجت ها</span>
+						)}
+					</div>
+
+					<span className="absolute w-2 h-2 rounded-full left-4 top-2 bg-error animate-pulse"></span>
+				</div>
 			</div>
 		</Dropdown>
 	)

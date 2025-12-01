@@ -76,7 +76,7 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 }
 
 export function ContentSection() {
-	const { contentAlignment } = useAppearanceSetting()
+	const { contentAlignment, canReOrderWidget } = useAppearanceSetting()
 	const { getSortedWidgets, reorderWidgets } = useWidgetVisibility()
 	const sortedWidgets = getSortedWidgets().filter((widget) => !widget.disabled)
 
@@ -91,6 +91,7 @@ export function ContentSection() {
 	)
 
 	const handleDragEnd = (event: DragEndEvent) => {
+		if (!canReOrderWidget) return
 		const { active, over } = event
 
 		if (!over || active.id === over.id) {
@@ -145,9 +146,11 @@ export function ContentSection() {
 					{sortedWidgets.length > 0 && (
 						<div className="w-full" id="widgets">
 							<DndContext
-								sensors={sensors}
-								collisionDetection={closestCenter}
-								onDragEnd={handleDragEnd}
+								sensors={canReOrderWidget ? sensors : []}
+								collisionDetection={
+									canReOrderWidget ? closestCenter : undefined
+								}
+								onDragEnd={canReOrderWidget ? handleDragEnd : undefined}
 							>
 								<SortableContext
 									items={sortedWidgets.map((widget) => widget.id)}
@@ -161,15 +164,23 @@ export function ContentSection() {
 														key={widget.id}
 														className="flex-shrink-0 w-full lg:w-3/12"
 													>
-														<SortableWidget widget={widget} />
+														{canReOrderWidget ? (
+															<SortableWidget
+																widget={widget}
+															/>
+														) : (
+															widget.node
+														)}
 													</div>
 												)
 											}
-											return (
+											return canReOrderWidget ? (
 												<SortableWidget
 													key={widget.id}
 													widget={widget}
 												/>
+											) : (
+												widget.node
 											)
 										})}
 									</div>

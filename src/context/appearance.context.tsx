@@ -29,6 +29,9 @@ interface AppearanceContextContextType extends AppearanceData {
 	) => void
 	setContentAlignment: (value: 'center' | 'top') => void
 	setFontFamily: (value: FontFamily) => void
+	canReOrderWidget: boolean
+	toggleCanReOrderWidget: () => void
+	showNewBadge: boolean
 }
 
 const DEFAULT_SETTINGS: AppearanceData = {
@@ -41,19 +44,32 @@ export const AppearanceContext = createContext<AppearanceContextContextType | nu
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
+	const [canReOrderWidget, setCanReOrderWidget] = useState(false)
+	const [showNewBadge, setNewBadge] = useState<boolean>(false)
 	const { mutateAsync: changeFontAsync } = useChangeFont()
 	const { isAuthenticated } = useAuth()
 
 	useEffect(() => {
 		async function loadSettings() {
 			try {
-				const storedSettings = await getFromStorage('appearance')
-
+				const [storedSettings, showNewBadgeForReOrderWidgets] = await Promise.all(
+					[
+						getFromStorage('appearance'),
+						getFromStorage('showNewBadgeForReOrderWidgets'),
+					]
+				)
 				if (storedSettings) {
 					setSettings({
 						...DEFAULT_SETTINGS,
 						...storedSettings,
 					})
+				}
+
+				if (typeof showNewBadgeForReOrderWidgets === 'boolean') {
+					setNewBadge(showNewBadgeForReOrderWidgets)
+				} else {
+					setNewBadge(true)
+					await setToStorage('showNewBadgeForReOrderWidgets', true)
 				}
 			} finally {
 				setIsInitialized(true)
@@ -105,6 +121,15 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		}
 	}
 
+	const toggleCanReOrderWidget = async () => {
+		setCanReOrderWidget(!canReOrderWidget)
+		if (showNewBadge) {
+			setNewBadge(false)
+			await setToStorage('showNewBadgeForReOrderWidgets', false)
+		}
+		Analytics.event('toggle_can_reorder_widget')
+	}
+
 	useEffect(() => {
 		if (isInitialized && settings.fontFamily) {
 			document.body.style.fontFamily = `"${settings.fontFamily}", sans-serif`
@@ -121,6 +146,9 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		updateSetting,
 		setContentAlignment,
 		setFontFamily,
+		canReOrderWidget,
+		showNewBadge,
+		toggleCanReOrderWidget,
 	}
 
 	return (
