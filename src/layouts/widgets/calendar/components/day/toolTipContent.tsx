@@ -209,7 +209,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								key={option.value}
 								onClick={() => handleMoodChange(option.value)}
 								disabled={isAdding}
-								className={`p-1.5 rounded-md transition-all cursor-pointer ${
+								className={`p-1.5 rounded-xl transition-all cursor-pointer ${
 									mood === option.value
 										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
 										: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
