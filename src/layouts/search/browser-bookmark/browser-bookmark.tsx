@@ -14,6 +14,10 @@ import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
 } from '@/layouts/bookmark/utils/browser-bookmarks.util'
+import { FaBoxOpen, FaExternalLinkAlt, FaParachuteBox } from 'react-icons/fa'
+import { BsBoxSeamFill } from 'react-icons/bs'
+import { ClickableTooltip } from '@/components/clickableTooltip'
+import { Dropdown } from '@/components/dropdown'
 
 interface BookmarkItem {
 	id?: string
@@ -46,7 +50,7 @@ function BookmarkSwiper({
 		spaceBetween,
 		slidesPerView,
 		grabCursor,
-		className: 'w-full bg-content rounded-2xl !pl-3.5 !pr-1',
+		className: 'w-full bg-content rounded-2xl !pl-3.5 ',
 		dir: 'rtl' as const,
 	}
 
@@ -97,7 +101,7 @@ function BookmarkSwiper({
 
 export function BrowserBookmark() {
 	const { browserBookmarksEnabled } = useGeneralSetting()
-
+	const ref = useRef(null)
 	const { data } = useGetTrends({
 		enabled: true,
 	})
@@ -166,10 +170,94 @@ export function BrowserBookmark() {
 		}
 	}, [data])
 
+	const trigger = () => {
+		return (
+			<Tooltip content={'جعبه پفک'}>
+				<div
+					className="flex items-center mt-1 cursor-pointer group"
+					// onClick={() => onClick(item)}
+				>
+					<div className="flex items-center justify-center w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 rounded-lg group-hover:scale-110 bg-primary/10">
+						{/* <FaParachuteBox
+							size={16}
+							className="transition-all duration-200 ease-in text-primary/80 animate-bounce"
+						/> */}
+						<img
+							src="https://uxwing.com/wp-content/themes/uxwing/download/logistics-shipping-delivery/parcel-box-package-icon.png"
+							className="object-contain w-4 h-4"
+							alt=""
+						/>
+					</div>
+				</div>
+			</Tooltip>
+		)
+	}
+
 	return (
 		<div
 			className={`flex flex-row w-full gap-2 px-2  py-1 ${browserBookmarksEnabled ? 'justify-between' : 'justify-end'}`}
+			ref={ref}
 		>
+			<Dropdown trigger={trigger()} width="400px" position="bottom-center">
+				<div className="w-full p-3 bg-content bg-glass">
+					{/* Header */}
+					<div className="pb-3 mb-2 border-b border-content">
+						<h3 className="text-sm font-semibold text-content">
+							سایت‌های پیشنهادی
+						</h3>
+						<p className="text-xs text-muted">دسترسی سریع به ابزارها</p>
+					</div>
+
+					{/* Sites Grid */}
+					<div className="grid grid-cols-4 gap-2 py-1 overflow-y-auto max-h-56 hide-scrollbar">
+						{data.recommendedSites.map((site, index) => (
+							<button
+								key={`${site.url}-${index}`}
+								className="relative flex flex-col items-center p-2 transition-all duration-200 cursor-pointer rounded-xl hover:bg-primary/20 group"
+							>
+								<div className="relative mb-2">
+									<div className="flex items-center justify-center w-12 h-12 transition-transform duration-200 rounded-xl bg-slate-100 group-hover:scale-110 group-hover:shadow-md">
+										<img
+											src={site.icon}
+											alt={site.title}
+											className="object-contain w-8 h-8 rounded-lg"
+											onError={(e) => {
+												const target =
+													e.target as HTMLImageElement
+												target.src = getFaviconFromUrl(
+													site.url || ''
+												)
+											}}
+										/>
+									</div>
+
+									<div className="absolute inset-0 transition-opacity duration-200 opacity-0 rounded-xl bg-blue-500/10 group-hover:opacity-100" />
+								</div>
+
+								<span className="text-xs font-medium text-center transition-colors text-content group-hover:text-blue-600">
+									{site.title}
+								</span>
+
+								<div className="absolute transition-opacity duration-200 opacity-0 top-1 right-1 group-hover:opacity-100">
+									<FaExternalLinkAlt
+										size={10}
+										className="text-slate-400"
+									/>
+								</div>
+							</button>
+						))}
+					</div>
+
+					{/* Empty State */}
+					{data.recommendedSites.length === 0 && (
+						<div className="py-8 text-center">
+							<div className="mb-2 text-2xl">🌐</div>
+							<p className="text-sm text-slate-500">سایتی یافت نشد</p>
+						</div>
+					)}
+				</div>
+			</Dropdown>
+
 			<BookmarkSwiper
 				items={data?.recommendedSites || []}
 				spaceBetween={1}

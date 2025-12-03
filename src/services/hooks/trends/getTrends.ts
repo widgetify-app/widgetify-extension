@@ -15,7 +15,7 @@ export interface RecommendedSubSite {
 }
 
 export interface RecommendedSite {
-	name: string
+	title: string
 	url: string | null
 	icon: string
 	priority: number

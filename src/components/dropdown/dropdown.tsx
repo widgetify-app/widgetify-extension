@@ -63,10 +63,13 @@ export function Dropdown({
 			width === 'auto'
 				? 250
 				: width === 'full'
-					? Math.min(400, viewportWidth - 32)
+					? rect.width
 					: parseInt(width as string, 10) || 250
 
-		const dropdownHeight = 300
+		const dropdownHeight = Math.min(
+			parseInt(maxHeight, 10) || 300,
+			viewportHeight - 32
+		)
 
 		let top: number
 		let left: number
@@ -87,8 +90,8 @@ export function Dropdown({
 				left = rect.left + scrollX
 		}
 
-		// Calculate vertical position
 		if (position.startsWith('bottom')) {
+			// Calculate vertical position
 			top = rect.bottom + scrollY + 4
 			if (rect.bottom + dropdownHeight > viewportHeight) {
 				top = rect.top + scrollY - dropdownHeight - 4
