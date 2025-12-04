@@ -8,7 +8,7 @@ import { NoteNavigation } from './components/note-navigation'
 import { NoteItem } from './components/note-item'
 
 function NotesContent() {
-	const { notes, activeNoteId, updateNote } = useNotes()
+	const { notes, activeNoteId } = useNotes()
 	const { blurMode } = useGeneralSetting()
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
@@ -36,7 +36,7 @@ function NotesContent() {
 			className={`mt-2 flex-grow overflow-auto h-[calc(100%-40px)] ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div key={activeNoteId} className="h-full">
-				<NoteEditor note={activeNote} onUpdateNote={updateNote} />
+				<NoteEditor note={activeNote} />
 			</div>
 		</div>
 	)
