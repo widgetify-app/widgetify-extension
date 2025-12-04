@@ -8,7 +8,7 @@ import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
 
 function NotesContent() {
-	const { notes, activeNoteId, addNote, updateNote } = useNotes()
+	const { notes, activeNoteId, updateNote } = useNotes()
 	const { blurMode } = useGeneralSetting()
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
@@ -20,12 +20,9 @@ function NotesContent() {
 			>
 				<PiNotepad size={42} className={'mb-2 text-content opacity-50'} />
 				<p className={'text-sm text-muted'}>یادداشتی پیدا نشد</p>
-				<button
-					onClick={addNote}
-					className="px-3 py-1 mt-2 text-sm text-white transition-colors bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-600"
-				>
-					ساخت یادداشت جدید
-				</button>
+				<span className="font-light text-muted">
+					منتظر چی هستی؟ شروع کن به نوشتن!
+				</span>
 			</div>
 		)
 	}

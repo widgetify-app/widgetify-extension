@@ -9,16 +9,14 @@ import {
 } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { sleep } from '@/common/utils/timeout'
 import { safeAwait } from '@/services/api'
-import {
-	deleteNote,
-	type FetchedNote,
-	getNotes,
-	upsertNote,
-} from '@/services/note/note-api'
 import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
+import { useGetNotes } from '@/services/hooks/note/get-notes.hook'
+import { useAuth } from './auth.context'
+import { useRemoveNote } from '@/services/hooks/note/delete-note.hook'
+import { useUpsertNote } from '@/services/hooks/note/upsert-note.hook'
+import type { FetchedNote } from '@/services/hooks/note/note.interface'
 
 export interface Note {
 	id: string
@@ -42,11 +40,15 @@ interface NotesContextType {
 const NotesContext = createContext<NotesContextType | undefined>(undefined)
 
 export function NotesProvider({ children }: { children: ReactNode }) {
+	const { isAuthenticated } = useAuth()
 	const [notes, setNotes] = useState<Note[]>([])
 	const [activeNoteId, setActiveNoteId] = useState<string | null>(null)
 	const [isSaving, setIsSaving] = useState(false)
 	const [isCreatingNote, setIsCreatingNote] = useState(false)
 	const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+	const { data: fetchedNotes, dataUpdatedAt, refetch } = useGetNotes(isAuthenticated)
+	const { mutateAsync: removeNoteAsync } = useRemoveNote()
+	const { mutateAsync: upsertNoteAsync } = useUpsertNote()
 
 	useEffect(() => {
 		async function loadNotes() {
@@ -54,20 +56,16 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			if (storedNotes && Array.isArray(storedNotes) && storedNotes.length > 0) {
 				setNotes(storedNotes)
 			}
-
-			await sleep(1000)
-			setIsSaving(true)
-			const [error, fetchedNotes] = await safeAwait<AxiosError, FetchedNote[]>(
-				getNotes()
-			)
-			setIsSaving(false)
-			if (!error) {
-				setNotes(fetchedNotes)
-			}
 		}
 
 		loadNotes()
 	}, [])
+
+	useEffect(() => {
+		if (fetchedNotes.length) {
+			setNotes(fetchedNotes)
+		}
+	}, [dataUpdatedAt])
 
 	const addNote = async () => {
 		if (isCreatingNote) return
@@ -83,12 +81,13 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}
 
 		const [er, createdNote] = await safeAwait<AxiosError, FetchedNote>(
-			upsertNote(newNote)
+			upsertNoteAsync(newNote)
 		)
 
 		setIsCreatingNote(false)
 
 		if (er) {
+			showToast(translateError(er) as any, 'error')
 			return
 		}
 
@@ -111,7 +110,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		saveTimeoutRef.current = setTimeout(async () => {
 			Analytics.event('update_notes')
 			const [error, updatedNote] = await safeAwait<AxiosError, FetchedNote>(
-				upsertNote({
+				upsertNoteAsync({
 					title: updates.title || null,
 					body: updates.body || null,
 					id,
@@ -137,20 +136,17 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	}
 
 	const onDeleteNote = async (id: string) => {
-		const existingNote = notes.findIndex((note) => note.id === id)
-		if (existingNote !== -1) {
-			setIsSaving(true)
-			const updatedNotes = [...notes]
-			updatedNotes.splice(existingNote, 1)
-			setNotes(updatedNotes)
-			setActiveNoteId(null)
-
-			await safeAwait(deleteNote(id))
-
-			await setToStorage('notes_data', updatedNotes)
+		setIsSaving(true)
+		const [err, _] = await safeAwait(removeNoteAsync(id))
+		if (err) {
 			setIsSaving(false)
+			return showToast(translateError(err) as any, 'error')
 		}
+
 		Analytics.event('delete_notes')
+		setActiveNoteId(null)
+		refetch()
+		setIsSaving(false)
 	}
 
 	return (
