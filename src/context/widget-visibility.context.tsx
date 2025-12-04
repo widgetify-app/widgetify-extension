@@ -21,6 +21,7 @@ import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 import { showToast } from '@/common/toast'
+import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -34,6 +35,7 @@ export enum WidgetKeys {
 	youtube = 'youtube',
 	wigiPad = 'wigiPad',
 	network = 'network',
+	yadKar = 'yadKar',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -59,6 +61,15 @@ export const widgetItems: WidgetItem[] = [
 		popular: true,
 	},
 	{
+		id: WidgetKeys.yadKar,
+		emoji: '📒',
+		label: 'یادکار (وظایف و یادداشت)',
+		order: 0,
+		node: <YadkarWidget />,
+		canToggle: true,
+		isNew: true,
+	},
+	{
 		id: WidgetKeys.tools,
 		emoji: '🧰',
 		label: 'ابزارها',
@@ -66,14 +77,7 @@ export const widgetItems: WidgetItem[] = [
 		node: <ToolsLayout />,
 		canToggle: true,
 	},
-	{
-		id: WidgetKeys.todos,
-		emoji: '✅',
-		label: 'وظایف',
-		order: 2,
-		node: <TodosLayout />,
-		canToggle: true,
-	},
+
 	{
 		id: WidgetKeys.weather,
 		emoji: '🌤️',
@@ -117,12 +121,13 @@ export const widgetItems: WidgetItem[] = [
 	},
 
 	{
-		id: WidgetKeys.notes,
-		emoji: '📝',
-		label: 'یادداشت‌ها',
-		order: 7,
-		node: <NotesLayout />,
+		id: WidgetKeys.network,
+		emoji: '🌐',
+		label: 'شبکه',
+		order: 9,
+		node: <NetworkLayout />,
 		canToggle: true,
+		isNew: false,
 	},
 	{
 		id: WidgetKeys.youtube,
@@ -135,13 +140,22 @@ export const widgetItems: WidgetItem[] = [
 		soon: true,
 	},
 	{
-		id: WidgetKeys.network,
-		emoji: '🌐',
-		label: 'شبکه',
-		order: 9,
-		node: <NetworkLayout />,
-		canToggle: true,
-		isNew: true,
+		id: WidgetKeys.todos,
+		emoji: '✅',
+		label: 'وظایف',
+		order: 2,
+		node: <TodosLayout />,
+		canToggle: false,
+		disabled: true,
+	},
+	{
+		id: WidgetKeys.notes,
+		emoji: '📝',
+		label: 'یادداشت‌ها',
+		order: 7,
+		node: <NotesLayout />,
+		canToggle: false,
+		disabled: true,
 	},
 ]
 
@@ -155,7 +169,7 @@ interface WidgetVisibilityContextType {
 const defaultVisibility: WidgetKeys[] = [
 	WidgetKeys.calendar,
 	WidgetKeys.tools,
-	WidgetKeys.todos,
+	WidgetKeys.yadKar,
 	WidgetKeys.comboWidget,
 ]
 export const MAX_VISIBLE_WIDGETS = 5
@@ -178,6 +192,17 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
 	const firstRender = useRef(true)
 	const { isAuthenticated } = useAuth()
+
+	const saveActiveWidgets = () => {
+		const activeWidgets = widgetItems
+			.filter((item) => visibility.includes(item.id))
+			.map((item) => ({
+				...item,
+				order: widgetOrders[item.id] ?? item.order,
+			}))
+		setToStorage('activeWidgets', activeWidgets)
+	}
+
 	useEffect(() => {
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
@@ -185,6 +210,16 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				const visibilityIds = storedVisibility
 					.filter((item) => widgetItems.some((w) => w.id === item.id))
 					.map((item: any) => item.id as WidgetKeys)
+
+				if (
+					visibilityIds.includes(WidgetKeys.todos) ||
+					visibilityIds.includes(WidgetKeys.notes)
+				) {
+					Analytics.event('yadkar_merged')
+					visibilityIds.push(WidgetKeys.yadKar)
+					saveActiveWidgets()
+				}
+
 				setVisibility(visibilityIds)
 
 				const orders: Record<WidgetKeys, number> = {} as Record<
@@ -205,17 +240,13 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 		loadSettings()
 	}, [])
+
 	useEffect(() => {
 		if (!firstRender.current) {
-			const activeWidgets = widgetItems
-				.filter((item) => visibility.includes(item.id))
-				.map((item) => ({
-					...item,
-					order: widgetOrders[item.id] ?? item.order,
-				}))
-			setToStorage('activeWidgets', activeWidgets)
+			saveActiveWidgets()
 		}
 	}, [visibility, widgetOrders])
+
 	const toggleWidget = (widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
 			const isCurrentlyVisible = prev.includes(widgetId)

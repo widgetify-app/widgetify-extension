@@ -31,8 +31,11 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
 
-export function TodosLayout() {
-	const { selectedDate, isToday } = useDate()
+interface Prop {
+	onChangeTab?: any
+}
+export function TodosLayout({ onChangeTab }: Prop) {
+	const { selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { addTodo, todos, updateOptions, todoOptions, reorderTodos } = useTodoStore()
 	const { blurMode } = useGeneralSetting()
@@ -112,29 +115,27 @@ export function TodosLayout() {
 	const updateMutating = useIsMutating({ mutationKey: ['updateTodo'] })
 	const addMutating = useIsMutating({ mutationKey: ['addTodo'] })
 	const isUpdating = updateMutating > 0 || addMutating > 0
-
+	console.log('todo')
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<h4
-							className={
-								'text-xs font-medium flex items-center text-content'
-							}
+						<div
+							className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content"
+							onClick={() => onChangeTab?.()}
 						>
-							<span>وظایف</span>
-							<span className="mr-1 font-semibold">
-								{todoOptions.viewMode === TodoViewType.Monthly
-									? `${selectedDate.format('jMMMM')} ماه`
-									: todoOptions.viewMode === TodoViewType.All
-										? ''
-										: isToday(selectedDate)
-											? ' امروز'
-											: ` ${selectedDate.format('jD jMMMM')}`}
-							</span>
+							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
+								<span>وظایـف</span>
+							</div>
+							<div
+								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-1"
+								onClick={() => onChangeTab()}
+							>
+								یادداشت
+							</div>
 							{isUpdating && <IconLoading title="درحال بروزرسانی" />}
-						</h4>
+						</div>
 
 						<div className="flex gap-1.5">
 							<Tooltip content={'آموزش'}>

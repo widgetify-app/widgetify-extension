@@ -1,7 +1,6 @@
 import moment from 'jalali-moment'
 import { PiNotepad } from 'react-icons/pi'
 import Analytics from '@/analytics'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { WidgetContainer } from '../widget-container'
@@ -76,27 +75,30 @@ function NoteList() {
 	)
 }
 
-function NotesHeader() {
-	return (
-		<div className="flex items-center justify-between">
-			<h4 className={'text-sm font-medium text-content truncate'}>
-				دفترچه یادداشت
-			</h4>
-
-			<NoteNavigation />
-		</div>
-	)
+interface Prop {
+	onChangeTab?: any
 }
-
-export function NotesLayout() {
+export function NotesLayout({ onChangeTab }: Prop) {
 	return (
 		<WidgetContainer className="overflow-hidden">
 			<NotesProvider>
 				<div className="flex flex-col h-full">
-					<RequireAuth mode="preview">
-						<NotesHeader />
-						<NotesContent />
-					</RequireAuth>
+					<div className="flex items-center justify-between">
+						<div className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content">
+							<div
+								onClick={() => onChangeTab()}
+								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-1"
+							>
+								<span>وظایف</span>
+							</div>
+							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
+								یادداشت
+							</div>
+						</div>
+
+						<NoteNavigation />
+					</div>
+					<NotesContent />
 				</div>
 			</NotesProvider>
 		</WidgetContainer>
