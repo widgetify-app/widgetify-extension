@@ -14,12 +14,12 @@ let items: Record<
 	}
 > = {
 	BOOKMARKS: {
-		title: 'خطا در همگام‌سازی بوکمارک‌ها',
+		title: 'همگام‌سازی بوکمارک‌ها',
 		message:
 			'برخی از بوکمارک‌های شما همگام‌سازی نشده‌اند. لطفاً برای همگام‌سازی دوباره تلاش کنید.',
 	},
 	TODOS: {
-		title: 'خطا در همگام‌سازی وظایف',
+		title: 'همگام‌سازی وظایف',
 		message:
 			'برخی از وظایف شما همگام‌سازی نشده‌اند. لطفاً برای همگام‌سازی دوباره تلاش کنید.',
 	},
@@ -53,7 +53,7 @@ export function SyncAlertModal({
 					<div className="p-1 rounded-full bg-error/20">
 						<MdSyncProblem size={20} className="text-error" />
 					</div>
-					<span>خطا در همگام‌سازی داده‌ها</span>
+					<span>همگام‌سازی داده‌ها</span>
 				</div>
 			}
 			direction="rtl"
@@ -87,7 +87,7 @@ export function SyncAlertModal({
 					loading={isSyncing}
 					className="w-full rounded-xl"
 				>
-					تلاش دوباره
+					همگام‌سـازی
 				</Button>
 			</div>
 		</Modal>
