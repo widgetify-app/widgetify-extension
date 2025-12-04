@@ -1,4 +1,3 @@
-import moment from 'jalali-moment'
 import { PiNotepad } from 'react-icons/pi'
 import Analytics from '@/analytics'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -6,6 +5,7 @@ import { NotesProvider, useNotes } from '@/context/notes.context'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
+import { NoteItem } from './components/note-item'
 
 function NotesContent() {
 	const { notes, activeNoteId, updateNote } = useNotes()
@@ -55,18 +55,7 @@ function NoteList() {
 			className={`w-full overflow-y-auto hide-scrollbar h-96 flex flex-col gap-0.5 mt-4 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			{notes.map((note) => (
-				<div
-					key={note.id}
-					className={`p-2   bg-base-300/70 hover:bg-base-300 border border-base-300/70 rounded-md flex group justify-between items-center cursor-pointer hover:bg-opacity-80 transition-colors`}
-					onClick={() => handleNoteClick(note.id)}
-				>
-					<span className="flex-1 text-xs truncate text-content">
-						{note.title || 'بدون عنوان'}
-					</span>
-					<span className="text-[10px] text-muted">
-						{moment(note.createdAt).locale('fa').format('jD jMMM YY')}
-					</span>
-				</div>
+				<NoteItem note={note} handleNoteClick={handleNoteClick} key={note.id} />
 			))}
 		</div>
 	)

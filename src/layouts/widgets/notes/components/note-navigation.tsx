@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 import { FaPlus } from 'react-icons/fa6'
-import { FiChevronLeft, FiLoader, FiTrash2 } from 'react-icons/fi'
+import { FiChevronLeft, FiTrash2 } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
@@ -47,11 +48,7 @@ export function NoteNavigation() {
 	return (
 		<div className="flex items-center justify-between gap-x-1">
 			<div className="flex items-center">
-				{isSaving && (
-					<FiLoader
-						className={'mx-2 block w-4 h-4 animate-spin text-content'}
-					/>
-				)}
+				{isSaving && <IconLoading title="درحال ذخیره..." />}
 				{activeNoteId ? (
 					<>
 						<Tooltip
@@ -94,7 +91,7 @@ export function NoteNavigation() {
 							className={`h-6 w-6 text-xs !p-0 font-medium rounded-[0.55rem] transition-colors border-none shadow-none bg-primary text-white`}
 						>
 							{isCreatingNote ? (
-								<FiLoader className="block w-4 h-4 mx-2 animate-spin text-content" />
+								<IconLoading title="در حال ساخت..." />
 							) : (
 								<FaPlus size={12} />
 							)}

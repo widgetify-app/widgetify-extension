@@ -12,7 +12,6 @@ export const useGetNotes = (enabled: boolean) => {
 	return useQuery<FetchedNote[]>({
 		queryKey: ['getNotes'],
 		queryFn: async () => getNotes(),
-		retry: 0,
 		enabled,
 		initialData: [],
 	})

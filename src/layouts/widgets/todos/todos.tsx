@@ -115,7 +115,6 @@ export function TodosLayout({ onChangeTab }: Prop) {
 	const updateMutating = useIsMutating({ mutationKey: ['updateTodo'] })
 	const addMutating = useIsMutating({ mutationKey: ['addTodo'] })
 	const isUpdating = updateMutating > 0 || addMutating > 0
-	console.log('todo')
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
