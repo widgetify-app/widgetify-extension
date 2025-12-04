@@ -91,7 +91,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 			<textarea
 				ref={bodyRef}
 				className={
-					'w-full px-2 pt-2 text-sm flex-grow resize-none text-content rounded-xl bg-base-300/70 outline-none'
+					'w-full px-2 pt-2 text-sm flex-grow resize-none rounded-xl bg-base-300/70 outline-none font-light'
 				}
 				placeholder="متن یادداشت..."
 				value={currentBody}
