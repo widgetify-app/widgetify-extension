@@ -120,10 +120,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<div
-							className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content"
-							onClick={() => onChangeTab?.()}
-						>
+						<div className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content">
 							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
 								<span>وظایـف</span>
 							</div>

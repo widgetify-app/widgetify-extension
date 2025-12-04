@@ -55,10 +55,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	}, [])
 
 	useEffect(() => {
-		console.log('fetchedNotes')
-		if (fetchedNotes.length) {
-			sync(fetchedNotes, true)
-		}
+		sync(fetchedNotes || [], true)
 	}, [dataUpdatedAt])
 
 	const addNote = async () => {
@@ -132,7 +129,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return showToast(translateError(err) as any, 'error')
 		}
 
-		refetch()
+		await refetch()
 		Analytics.event('delete_notes')
 		setActiveNoteId(null)
 		setIsSaving(false)
