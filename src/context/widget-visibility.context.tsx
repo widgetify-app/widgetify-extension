@@ -216,6 +216,10 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 					visibilityIds.includes(WidgetKeys.notes)
 				) {
 					Analytics.event('yadkar_merged')
+
+					visibilityIds.splice(visibilityIds.indexOf(WidgetKeys.todos), 1)
+					visibilityIds.splice(visibilityIds.indexOf(WidgetKeys.notes), 1)
+
 					visibilityIds.push(WidgetKeys.yadKar)
 					saveActiveWidgets()
 				}
