@@ -49,8 +49,7 @@ export function DayItem({
 	const googleEventsForDay = filterGoogleEventsByDate(googleEvents, cellDate)
 	const hasGoogleEvents = googleEventsForDay.length > 0
 
-	const hasEvent =
-		todayShamsiEvents.length || todayHijriEvents.length || hasGoogleEvents
+	const hasEvent = todayShamsiEvents.length || hasGoogleEvents
 	const eventIcons = [
 		...todayGregorianEvents.filter((event) => event.icon).map((event) => event.icon),
 		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
@@ -138,14 +137,14 @@ export function DayItem({
 		if (!hasEvent && !hasTodo) return null
 
 		return (
-			<div className="flex items-center  gap-0.5">
+			<div className="flex items-center">
 				{hasEvent && (
 					<span
 						className={`w-1 h-1 rounded-full ${isHolidayEvent ? 'bg-red-500' : 'bg-blue-500'} shadow-sm`}
 					/>
 				)}
 				{hasTodo && (
-					<span className="w-1 h-1 bg-green-500 rounded-full shadow-sm" />
+					<span className="w-1 h-1 bg-green-500 rounded-full shadow-sm opacity-50" />
 				)}
 			</div>
 		)

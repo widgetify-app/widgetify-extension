@@ -1,68 +1,24 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState, memo, useCallback } from 'react'
-import { FiFlag, FiMessageSquare, FiPlus, FiTag } from 'react-icons/fi'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { FiMessageSquare, FiPlus, FiTag, FiCalendar } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
-import Tooltip from '@/components/toolTip'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
 import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { ClickableTooltip } from '@/components/clickableTooltip'
+import type jalaliMoment from 'jalali-moment'
+import { formatDateStr } from '../calendar/utils'
+import { DatePicker } from '@/components/date-picker/date-picker'
+import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PriorityButton } from '@/components/priority-options/priority-options'
+import Analytics from '@/analytics'
 
 interface ExpandableTodoInputProps {
 	todoText: string
 	onChangeTodoText: (value: string) => void
-	onAddTodo: (input: Omit<AddTodoInput, 'date'>) => void
+	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date?: string }) => void
 }
-
-const PRIORITY_OPTIONS = [
-	{
-		value: 'low',
-		ariaLabel: 'اولویت کم',
-		bgColor: 'bg-green-500',
-		hoverBgColor: 'hover:bg-green-600',
-	},
-	{
-		value: 'medium',
-		ariaLabel: 'اولویت متوسط',
-		bgColor: 'bg-yellow-400',
-		hoverBgColor: 'hover:bg-yellow-400',
-	},
-	{
-		value: 'high',
-		ariaLabel: 'اولویت زیاد',
-		bgColor: 'bg-red-500',
-		hoverBgColor: 'hover:bg-red-500',
-	},
-]
-
-const PriorityButton = memo(
-	({
-		option,
-		isSelected,
-		onClick,
-	}: {
-		option: (typeof PRIORITY_OPTIONS)[0]
-		isSelected: boolean
-		onClick: () => void
-	}) => (
-		<Tooltip content={option.ariaLabel}>
-			<button
-				type="button"
-				onClick={onClick}
-				className={`
-				flex items-center justify-center w-10 h-5 rounded-full
-				transition-all duration-150 cursor-pointer 
-				${option.bgColor} ${option.hoverBgColor}
-				${isSelected ? 'ring-2 ring-offset-0 ring-primary' : ''}
-			`}
-			>
-				{isSelected && <FiFlag size={8} className="text-white" />}
-			</button>
-		</Tooltip>
-	)
-)
-
-PriorityButton.displayName = 'PriorityButton'
 
 export function ExpandableTodoInput({
 	todoText,
@@ -73,8 +29,11 @@ export function ExpandableTodoInput({
 	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
 	const [notes, setNotes] = useState('')
+	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment | undefined>()
+	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
+	const datePickerButtonRef = useRef<HTMLButtonElement>(null)
 	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
 
 	useEffect(() => {
@@ -84,7 +43,13 @@ export function ExpandableTodoInput({
 				!containerRef.current.contains(event.target as Node) &&
 				isExpanded
 			) {
-				if (!todoText.trim()) {
+				const isClickInsideDatePicker =
+					event.target instanceof Element &&
+					(event.target.closest('[data-date-picker]') ||
+						event.target.closest('.fixed') ||
+						event.target.closest('[role="tooltip"]'))
+
+				if (!todoText.trim() && !isClickInsideDatePicker) {
 					setIsExpanded(false)
 				}
 			}
@@ -105,6 +70,7 @@ export function ExpandableTodoInput({
 		setCategory('')
 		setNotes('')
 		setPriority(TodoPriority.Medium)
+		setSelectedDate(undefined)
 		setIsExpanded(false)
 	}, [onChangeTodoText])
 
@@ -115,10 +81,11 @@ export function ExpandableTodoInput({
 				category: category.trim() || undefined,
 				notes: notes.trim() || undefined,
 				priority: priority,
+				date: selectedDate ? formatDateStr(selectedDate) : undefined,
 			})
 			resetForm()
 		}
-	}, [todoText, category, notes, priority, onAddTodo, resetForm])
+	}, [todoText, category, notes, priority, selectedDate, onAddTodo, resetForm])
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -128,6 +95,11 @@ export function ExpandableTodoInput({
 		},
 		[todoText, handleAddTodo]
 	)
+
+	const onClickOpenDatePicker = () => {
+		setIsDatePickerOpen(!isDatePickerOpen)
+		Analytics.event('todo_datepicker_open_click')
+	}
 
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
@@ -169,11 +141,49 @@ export function ExpandableTodoInput({
 							transition={{ duration: 0.2 }}
 						>
 							<div className="px-2 py-3 space-y-3">
-								<div className="flex items-center justify-between py-1">
-									<label className="block text-sm font-medium text-content">
-										اولویت:
-									</label>
-									<div className="flex items-center gap-3 pl-1">
+								<div className="flex items-center justify-between gap-2">
+									<div className="flex items-center flex-1 gap-2 ">
+										<div
+											className="relative flex-shrink-0 text-center"
+											onClick={() => onClickOpenDatePicker()}
+										>
+											<span className="absolute w-2 h-2 rounded-full -left-0.5 -bottom-0.5 bg-error animate-pulse"></span>
+											<FiCalendar
+												className="text-indigo-400"
+												size={16}
+											/>
+										</div>
+										<div className="flex-1">
+											<button
+												ref={datePickerButtonRef}
+												onClick={() => onClickOpenDatePicker()}
+												className="w-full  text-right px-2 py-1.5 min-h-8 text-xs  rounded-xl border border-base-300 hover:border-primary/50 transition-colors bg-content text-content opacity-75 cursor-pointer"
+											>
+												{selectedDate
+													? selectedDate.format(
+															'dddd، jD jMMMM jYYYY'
+														)
+													: 'انتخاب تاریخ'}
+											</button>
+											<ClickableTooltip
+												triggerRef={datePickerButtonRef}
+												isOpen={isDatePickerOpen}
+												setIsOpen={setIsDatePickerOpen}
+												content={
+													<DatePicker
+														onDateSelect={(date) => {
+															setSelectedDate(date)
+															setIsDatePickerOpen(false)
+														}}
+														selectedDate={selectedDate}
+													/>
+												}
+												contentClassName="!p-0 !bg-transparent !border-none !shadow-none"
+											/>
+										</div>
+									</div>
+
+									<div className="flex items-center gap-1">
 										{PRIORITY_OPTIONS.map((option) => (
 											<PriorityButton
 												key={option.value}
