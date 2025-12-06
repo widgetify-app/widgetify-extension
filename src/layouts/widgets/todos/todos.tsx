@@ -28,6 +28,7 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
+import Analytics from '@/analytics'
 
 interface Prop {
 	onChangeTab?: any
@@ -37,7 +38,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 	const { isAuthenticated } = useAuth()
 	const { addTodo, todos, updateOptions, todoOptions, reorderTodos } = useTodoStore()
 	const { blurMode } = useGeneralSetting()
-	const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
+	const [filter, setFilter] = useState<'active' | 'completed'>('active')
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
@@ -53,6 +54,11 @@ export function TodosLayout({ onChangeTab }: Prop) {
 
 	const handleChangeViewMode = (viewMode: TodoViewType) => {
 		updateOptions({ viewMode })
+	}
+
+	const updateTodoFilter = (newFilter: 'active' | 'completed') => {
+		setFilter(newFilter)
+		Analytics.event(`todo_filter_${newFilter}_click`)
 	}
 
 	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
@@ -149,19 +155,13 @@ export function TodosLayout({ onChangeTab }: Prop) {
 						<div className="flex justify-between mb-2">
 							<div className="flex gap-0.5">
 								<button
-									onClick={() => setFilter('all')}
-									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-								>
-									همه
-								</button>
-								<button
-									onClick={() => setFilter('active')}
+									onClick={() => updateTodoFilter('active')}
 									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									فعال
 								</button>
 								<button
-									onClick={() => setFilter('completed')}
+									onClick={() => updateTodoFilter('completed')}
 									className={`px-1.5 py-0.5 rounded-full border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									تکمیل شده
