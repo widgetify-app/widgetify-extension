@@ -12,6 +12,7 @@ import { formatDateStr } from '../calendar/utils'
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { PriorityButton } from '@/components/priority-options/priority-options'
+import Analytics from '@/analytics'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -95,6 +96,11 @@ export function ExpandableTodoInput({
 		[todoText, handleAddTodo]
 	)
 
+	const onClickOpenDatePicker = () => {
+		setIsDatePickerOpen(!isDatePickerOpen)
+		Analytics.event('todo_datepicker_open_click')
+	}
+
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
 			<div className="overflow-hidden rounded-xl">
@@ -136,8 +142,11 @@ export function ExpandableTodoInput({
 						>
 							<div className="px-2 py-3 space-y-3">
 								<div className="flex items-center justify-between gap-2">
-									<div className="flex items-center flex-1 gap-2">
-										<div className="flex-shrink-0 text-center">
+									<div className="relative flex items-center flex-1 gap-2">
+										<div
+											className="flex-shrink-0 text-center"
+											onClick={() => onClickOpenDatePicker()}
+										>
 											<FiCalendar
 												className="text-indigo-400"
 												size={16}
@@ -146,9 +155,7 @@ export function ExpandableTodoInput({
 										<div className="flex-1">
 											<button
 												ref={datePickerButtonRef}
-												onClick={() =>
-													setIsDatePickerOpen(!isDatePickerOpen)
-												}
+												onClick={() => onClickOpenDatePicker()}
 												className="w-full  text-right px-2 py-1.5 min-h-8 text-xs  rounded-xl border border-base-300 hover:border-primary/50 transition-colors bg-content text-content opacity-75 cursor-pointer"
 											>
 												{selectedDate
@@ -170,7 +177,6 @@ export function ExpandableTodoInput({
 														selectedDate={selectedDate}
 													/>
 												}
-												position="bottom-left"
 												contentClassName="!p-0 !bg-transparent !border-none !shadow-none"
 											/>
 										</div>
