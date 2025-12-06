@@ -142,11 +142,12 @@ export function ExpandableTodoInput({
 						>
 							<div className="px-2 py-3 space-y-3">
 								<div className="flex items-center justify-between gap-2">
-									<div className="relative flex items-center flex-1 gap-2">
+									<div className="flex items-center flex-1 gap-2 ">
 										<div
-											className="flex-shrink-0 text-center"
+											className="relative flex-shrink-0 text-center"
 											onClick={() => onClickOpenDatePicker()}
 										>
+											<span className="absolute w-2 h-2 rounded-full -left-0.5 -bottom-0.5 bg-error animate-pulse"></span>
 											<FiCalendar
 												className="text-indigo-400"
 												size={16}
