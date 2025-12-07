@@ -6,24 +6,11 @@ import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { useSignIn, useGoogleSignIn } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
 
 interface SignInFormProps {
 	onSwitchToSignUp: () => void
 }
-async function getAuthToken() {
-	try {
-		const token = await browser.identity.getAuthToken({
-			interactive: true,
-		})
 
-		console.log('Access token:', token)
-		return token
-	} catch (error) {
-		console.error('Auth error:', error)
-		throw error
-	}
-}
 export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -206,7 +193,7 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 			</div>
 
 			<Modal
-				isOpen={true}
+				isOpen={showReferralModal}
 				onClose={() => setShowReferralModal(false)}
 				title=""
 				size="sm"
@@ -263,7 +250,7 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 							onClick={() => handleGoogleSignIn(referralCode || undefined)}
 							isPrimary={true}
 							size="sm"
-							className="px-8 py-2.5 rounded-xl font-medium shadow-lg"
+							className="px-8 py-2.5 rounded-xl font-medium shadow-lg !border-2 !border-gray-200 hover:!border-gray-300"
 						>
 							{referralCode ? 'تایید و ادامه' : 'ادامه بدون کد'}
 						</Button>

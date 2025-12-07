@@ -1,71 +1,63 @@
 import { useState } from 'react'
-import { FiLogIn, FiUserPlus } from 'react-icons/fi'
+import { FiLock } from 'react-icons/fi'
 import Analytics from '@/analytics'
-import { SectionPanel } from '@/components/section-panel'
-import { SignInForm } from './sign-in-form'
-import { SignUpForm } from './sign-up-form'
-
-type AuthMode = 'signin' | 'signup'
-
-interface AuthTab {
-	id: AuthMode
-	label: string
-	icon: React.ComponentType<{ size?: number; className?: string }>
-}
+import { AuthWithPassword } from './steps/auth-password'
+import { AuthWithOTP } from './steps/auth-otp'
+import { LoginGoogleButton } from './components/login-google.button'
 
 export const AuthForm = () => {
-	const [activeMode, setActiveMode] = useState<AuthMode>('signin')
+	const [showPasswordForm, setShowPasswordForm] = useState(false)
 
-	const authTabs: AuthTab[] = [
-		{
-			id: 'signin',
-			label: 'ورود به حساب',
-			icon: FiLogIn,
-		},
-		{
-			id: 'signup',
-			label: 'ثبت‌نام',
-			icon: FiUserPlus,
-		},
-	]
-
-	const getTabStyle = (isActive: boolean) => {
-		if (isActive) {
-			return 'bg-primary text-white border-primary shadow-md'
-		}
-		return 'bg-transparent text-muted border-base-300 hover:bg-primary/10'
+	const handleShowPasswordForm = () => {
+		setShowPasswordForm(true)
+		Analytics.event('auth_method_changed')
 	}
 
-	const handleModeChange = (mode: AuthMode) => {
-		setActiveMode(mode)
-		Analytics.event(`auth_tab_change_${mode}`)
+	const handleBackToOTP = () => {
+		setShowPasswordForm(false)
+		Analytics.event('auth_method_changed')
 	}
 
 	return (
-		<SectionPanel title="ورود به حساب کاربری" size="xs">
-			<div className="flex gap-1 p-1 mb-4 rounded-2xl bg-base-200">
-				{authTabs.map((tab) => (
-					<button
-						key={tab.id}
-						onClick={() => handleModeChange(tab.id)}
-						className={`flex-1 flex cursor-pointer items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${getTabStyle(activeMode === tab.id)}`}
-					>
-						<tab.icon size={16} />
-						{tab.label}
-					</button>
-				))}
-			</div>
-
-			<div className="flex flex-col justify-center max-w-md mx-auto">
-				{activeMode === 'signin' ? (
-					<SignInForm
-						key="signin"
-						onSwitchToSignUp={() => handleModeChange('signup')}
-					/>
+		<div className="flex flex-col w-full max-w-lg mx-auto ">
+			<div className="p-6 border shadow border-content bg-content rounded-2xl backdrop-blur-sm">
+				{showPasswordForm ? (
+					<AuthWithPassword onBack={handleBackToOTP} />
 				) : (
-					<SignUpForm key="signup" />
+					<AuthWithOTP />
 				)}
 			</div>
-		</SectionPanel>
+
+			{!showPasswordForm && (
+				<>
+					<div className="relative my-2">
+						<div className="absolute inset-0 flex items-center">
+							<div className="w-full border-t border-content"></div>
+						</div>
+						<div className="relative flex justify-center text-sm">
+							<span className="px-6 py-2 font-medium border rounded-full text-content border-content bg-content">
+								یا
+							</span>
+						</div>
+					</div>
+
+					<div className="flex flex-row items-center gap-2">
+						<LoginGoogleButton
+							onLoginSuccess={() => Analytics.event('google_login_success')}
+						/>
+
+						<button
+							onClick={handleShowPasswordForm}
+							className="group px-8 py-2.5 rounded-xl font-medium shadow-lg h-full w-full flex items-center justify-center border-2 border-content bg-content hover:bg-gray-100 transition-colors gap-2 cursor-pointer"
+						>
+							<FiLock className="w-5 h-5 transition-all duration-200 group-hover:scale-110" />
+							<span className="transition-all duration-200 group-hover:scale-105">
+								ورود با رمز عبور
+							</span>
+						</button>
+					</div>
+				</>
+			)}
+		</div>
 	)
 }
