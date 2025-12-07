@@ -21,13 +21,21 @@ interface AuthResponse {
 	statusCode: number
 	message: string | null
 	data: string // token
+	isNewUser?: boolean
 }
-
 interface GoogleAuthCredentials {
 	token: string
 	referralCode?: string
 }
 
+interface OtpPayload {
+	email: string
+}
+
+interface OtpVerifyPayload {
+	email: string
+	code: string
+}
 async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 	const client = await getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signin', credentials)
@@ -79,6 +87,25 @@ async function googleSignIn(credentials: GoogleAuthCredentials): Promise<AuthRes
 	return response.data
 }
 
+async function requestOtp(payload: OtpPayload): Promise<any> {
+	const client = await getMainClient()
+
+	const response = await client.post('/auth/otp', payload)
+
+	return response.data
+}
+
+async function verifyOtp(payload: OtpVerifyPayload): Promise<AuthResponse> {
+	const client = await getMainClient()
+	const response = await client.post('/auth/otp/verify', payload)
+
+	if (response.headers?.refresh_token) {
+		await setToStorage('refresh_token', response.headers.refresh_token)
+	}
+
+	return response.data
+}
+
 export function useSignIn() {
 	return useMutation({
 		mutationFn: (credentials: LoginCredentials) => signIn(credentials),
@@ -106,5 +133,17 @@ export function useUpdateUsername() {
 export function useGoogleSignIn() {
 	return useMutation({
 		mutationFn: (credentials: GoogleAuthCredentials) => googleSignIn(credentials),
+	})
+}
+
+export function useRequestOtp() {
+	return useMutation({
+		mutationFn: (payload: OtpPayload) => requestOtp(payload),
+	})
+}
+
+export function useVerifyOtp() {
+	return useMutation({
+		mutationFn: (payload: OtpVerifyPayload) => verifyOtp(payload),
 	})
 }
