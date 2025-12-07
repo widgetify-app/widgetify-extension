@@ -12,15 +12,29 @@ export function AuthWithOTP() {
 	const [otp, setOtp] = useState('')
 	const [step, setStep] = useState<'enter-username' | 'enter-otp'>('enter-username')
 	const [error, setError] = useState<string | null>(null)
-	const { mutateAsync: requestOtp } = useRequestOtp()
+	const { mutateAsync: requestOtp, isPending } = useRequestOtp()
 	const { mutateAsync: verifyOtp } = useVerifyOtp()
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setError(null)
 		if (step === 'enter-username') {
+			if (username.trim() === '') {
+				setError('لطفاً ایمیل خود را وارد کنید.')
+				return
+			}
+			const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)
+			if (!isEmail) {
+				setError('لطفاً یک ایمیل معتبر وارد کنید.')
+				return
+			}
+
 			await onSubmitRequest()
 		} else {
+			if (otp.trim() === '') {
+				setError('لطفاً کد تایید را وارد کنید.')
+				return
+			}
 			await onVerifyOtp()
 		}
 	}
@@ -114,6 +128,8 @@ export function AuthWithOTP() {
 							type="submit"
 							isPrimary={true}
 							size="md"
+							loading={isPending}
+							disabled={isPending}
 							className="relative flex items-center justify-center w-full px-6 py-3 font-semibold transition-all duration-300 shadow text-white group rounded-xl disabled:!text-gray-100"
 						>
 							<span className="transition-transform duration-200 group-hover:scale-105">
@@ -156,7 +172,7 @@ export function AuthWithOTP() {
 							type="text"
 							value={otp}
 							onChange={setOtp}
-							placeholder="123456"
+							placeholder="- - - - - -"
 							className="w-full !py-3.5 text-center tracking-widest text-lg font-semibold"
 							maxLength={6}
 						/>
@@ -172,7 +188,7 @@ export function AuthWithOTP() {
 					<span>{error}</span>
 				</div>
 
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-4">
 					<Button
 						type="submit"
 						isPrimary={true}
@@ -191,9 +207,9 @@ export function AuthWithOTP() {
 							setOtp('')
 							setError(null)
 						}}
-						className="text-sm transition-colors text-primary hover:text-primary/80"
+						className="text-sm transition-colors text-primary hover:!text-primary/80 cursor-pointer hover:underline underline-offset-2 flex justify-center"
 					>
-						تغییر ایمیل/شماره
+						ارسال مجدد کد تایید/تغییر ایمیل
 					</button>
 				</div>
 			</form>
