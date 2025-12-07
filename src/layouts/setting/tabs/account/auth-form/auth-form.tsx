@@ -10,12 +10,12 @@ export const AuthForm = () => {
 
 	const handleShowPasswordForm = () => {
 		setShowPasswordForm(true)
-		Analytics.event('auth_method_changed')
+		Analytics.event('auth_method_changed_to_password')
 	}
 
 	const handleBackToOTP = () => {
 		setShowPasswordForm(false)
-		Analytics.event('auth_method_changed')
+		Analytics.event('auth_method_changed_to_otp')
 	}
 
 	return (
@@ -42,9 +42,7 @@ export const AuthForm = () => {
 					</div>
 
 					<div className="flex flex-row items-center gap-2">
-						<LoginGoogleButton
-							onLoginSuccess={() => Analytics.event('google_login_success')}
-						/>
+						<LoginGoogleButton />
 
 						<button
 							onClick={handleShowPasswordForm}

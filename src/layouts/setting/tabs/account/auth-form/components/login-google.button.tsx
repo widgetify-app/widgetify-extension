@@ -1,14 +1,23 @@
 import { IconLoading } from '@/components/loading/icon-loading'
+import { useAuth } from '@/context/auth.context'
+import {
+	type AuthResponse,
+	useGoogleSignIn,
+} from '@/services/hooks/auth/authService.hook'
 import { useState } from 'react'
+import { safeAwait } from '@/services/api'
+import type { AxiosError } from 'axios'
+import { showToast } from '@/common/toast'
+import { translateError } from '@/utils/translate-error'
+import Analytics from '@/analytics'
 
-interface LoginGoogleButtonProps {
-	onLoginSuccess?: () => void
-}
-
-export function LoginGoogleButton({ onLoginSuccess }: LoginGoogleButtonProps) {
+export function LoginGoogleButton() {
+	const { login } = useAuth()
 	const [isLoading, setIsLoading] = useState(false)
+	const googleSignInMutation = useGoogleSignIn()
 
 	const loginGoogle = async () => {
+		Analytics.event('auth_method_changed_to_google')
 		setIsLoading(true)
 		try {
 			if (
@@ -39,7 +48,7 @@ export function LoginGoogleButton({ onLoginSuccess }: LoginGoogleButtonProps) {
 			)
 
 			const redirectUrl = await browser.identity.launchWebAuthFlow({
-				url: url.toString(), // لینک OAuth گوگل
+				url: url.toString(),
 				interactive: true,
 			})
 
@@ -48,8 +57,17 @@ export function LoginGoogleButton({ onLoginSuccess }: LoginGoogleButtonProps) {
 			console.log('Access Token:', token)
 
 			if (token) {
-				// setGoogleToken(token)
-				// setShowReferralModal(true)
+				const [err, response] = await safeAwait<AxiosError, AuthResponse>(
+					googleSignInMutation.mutateAsync({
+						token,
+						referralCode: undefined,
+					})
+				)
+				if (err) {
+					return showToast(translateError(err) as string, 'error')
+				}
+
+				login(response.data)
 			}
 		} finally {
 			setIsLoading(false)

@@ -11,8 +11,6 @@ interface Prop {
 	onBack: () => void
 }
 export function AuthWithPassword({ onBack }: Prop) {
-	// Implementation of password authentication step: enter email/phone and password -> verify
-
 	const [username, setUsername] = useState('') // email can be phone number as well
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState<string | null>(null)
@@ -46,7 +44,6 @@ export function AuthWithPassword({ onBack }: Prop) {
 	}
 	return (
 		<div className="flex flex-col w-full gap-2">
-			{/* Header */}
 			<div className="flex items-center gap-3">
 				<div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 flex-shrink-0 mt-0.5">
 					<FiLock className="w-5 h-5 text-primary" />
@@ -62,7 +59,6 @@ export function AuthWithPassword({ onBack }: Prop) {
 			</div>
 
 			<form onSubmit={handleSubmit} className="flex flex-col w-full gap-4">
-				{/* Email Field */}
 				<div className="space-y-2">
 					<label className="block text-sm font-semibold text-content">
 						ایمیل
@@ -83,7 +79,6 @@ export function AuthWithPassword({ onBack }: Prop) {
 					</div>
 				</div>
 
-				{/* Password Field */}
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
 						<label className="block text-sm font-semibold text-content">
@@ -114,7 +109,6 @@ export function AuthWithPassword({ onBack }: Prop) {
 					</div>
 				</div>
 
-				{/* Error Message */}
 				{error && (
 					<div className="flex items-start gap-3 p-4 text-sm text-red-700 border border-red-200 rounded-xl bg-red-50">
 						<div className="flex items-center justify-center w-5 h-5 mt-0.5 bg-red-100 rounded-full flex-shrink-0">

@@ -17,7 +17,7 @@ interface SignUpCredentials {
 	referralCode?: string
 }
 
-interface AuthResponse {
+export interface AuthResponse {
 	statusCode: number
 	message: string | null
 	data: string // token
