@@ -208,25 +208,53 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 			<Modal
 				isOpen={true}
 				onClose={() => setShowReferralModal(false)}
-				title="فقط یک قدم مونده!"
+				title=""
 				size="sm"
 				direction="rtl"
+				showCloseButton={false}
 			>
-				<div className="flex flex-col gap-4">
-					<p className="text-sm text-center text-muted">
-						اگه میخای پاداش بگیری و کد دعوت داری کد رو وارد کن!
-					</p>
-					<TextInput
-						value={referralCode}
-						onChange={setReferralCode}
-						placeholder="کد رفرال را وارد کنید"
-					/>
-					<div className="flex justify-end gap-2">
+				<div className="flex flex-col gap-4 py-2 text-center">
+					<div className="flex justify-center">
+						<div className="relative">
+							<div className="flex items-center justify-center rounded-full w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/10">
+								<div className="font-sans text-2xl">🎁</div>
+							</div>
+							<div className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 rounded-full bg-primary">
+								<span className="text-xs text-white">!</span>
+							</div>
+						</div>
+					</div>
+
+					<div className="flex flex-col gap-2">
+						<h3 className="text-lg font-semibold text-foreground">
+							فقط یک قدم مونده!
+						</h3>
+						<p className="text-sm leading-relaxed text-muted">
+							اگه میخای پاداش بگیری و کد دعوت داری، کد رو وارد کن!
+							<br />
+							<span className="text-xs font-medium text-primary">
+								بدون کد هم می‌تونی ادامه بدی
+							</span>
+						</p>
+					</div>
+
+					{/* Input Section */}
+					<div className="flex flex-col gap-3">
+						<TextInput
+							value={referralCode}
+							onChange={setReferralCode}
+							placeholder="کد دعـوت را وارد کنید (اختیاری)"
+							className="text-center"
+						/>
+					</div>
+
+					{/* Action Buttons */}
+					<div className="flex justify-center gap-3">
 						<Button
 							type="button"
 							onClick={() => handleGoogleSignIn()}
 							size="sm"
-							className="px-4 py-2 rounded-2xl"
+							className="px-6 py-2.5 rounded-xl text-muted hover:text-foreground transition-colors"
 						>
 							رد کردن
 						</Button>
@@ -235,9 +263,9 @@ export const SignInForm = ({ onSwitchToSignUp }: SignInFormProps) => {
 							onClick={() => handleGoogleSignIn(referralCode || undefined)}
 							isPrimary={true}
 							size="sm"
-							className="w-32 px-4 py-2 rounded-2xl"
+							className="px-8 py-2.5 rounded-xl font-medium shadow-lg"
 						>
-							تایید
+							{referralCode ? 'تایید و ادامه' : 'ادامه بدون کد'}
 						</Button>
 					</div>
 				</div>
