@@ -1,5 +1,4 @@
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
 import type { WidgetifyDate } from '../../calendar/utils'
 import { DailyZikrBox } from './components/daily-zikr-box'
@@ -8,7 +7,6 @@ import { useAuth } from '@/context/auth.context'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import { callEvent } from '@/common/utils/call-event'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import Analytics from '@/analytics'
 
 interface Prop {
@@ -43,9 +41,16 @@ export function ReligiousTime({ currentDate }: Prop) {
 
 	const {
 		data: religiousTimeData,
-		loading,
+		isLoading: loading,
 		error,
+		refetch,
 	} = useReligiousTime(day, month, isAuthenticated && user?.city?.id != null)
+
+	useEffect(() => {
+		if (isAuthenticated && user?.city?.id) {
+			refetch()
+		}
+	}, [user?.city?.id, isAuthenticated, refetch])
 
 	const dailyZikr = DAILY_ZIKRS.find((item) => item.day === weekDay)
 	const getBoxIconStyle = () => {

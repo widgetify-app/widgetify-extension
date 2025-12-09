@@ -22,20 +22,27 @@ export function WeatherLayout() {
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
 	const [weatherState, setWeather] = useState<FetchedWeather | null>(null)
 	const [forecastWeather, setForecastWeather] = useState<FetchedForecast[] | null>(null)
-	const { data, dataUpdatedAt } = useGetWeatherByLatLon({
+	const {
+		data,
+		dataUpdatedAt,
+		refetch: refetchWeather,
+	} = useGetWeatherByLatLon({
 		refetchInterval: 0,
 		units: weatherSettings?.temperatureUnit,
 		useAI: weatherSettings?.useAI,
 		enabled: isAuthenticated && user?.city?.id != null,
 	})
 
-	const { data: forecastData, dataUpdatedAt: forecastDataUpdatedAt } =
-		useGetForecastWeatherByLatLon({
-			count: 6,
-			units: weatherSettings?.temperatureUnit,
-			enabled: isAuthenticated && user?.city?.id != null,
-			refetchInterval: 0,
-		})
+	const {
+		data: forecastData,
+		dataUpdatedAt: forecastDataUpdatedAt,
+		refetch: refetchForecast,
+	} = useGetForecastWeatherByLatLon({
+		count: 6,
+		units: weatherSettings?.temperatureUnit,
+		enabled: isAuthenticated && user?.city?.id != null,
+		refetchInterval: 0,
+	})
 
 	useEffect(() => {
 		async function load() {
@@ -92,6 +99,13 @@ export function WeatherLayout() {
 			setForecastWeather(forecastData)
 		}
 	}, [forecastDataUpdatedAt])
+
+	useEffect(() => {
+		if (isAuthenticated && user?.city?.id) {
+			refetchWeather()
+			refetchForecast()
+		}
+	}, [user?.city?.id, isAuthenticated, refetchWeather, refetchForecast])
 
 	const onClickSetCity = () => {
 		callEvent('openWidgetsSettings', {

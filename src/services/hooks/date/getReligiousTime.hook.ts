@@ -19,7 +19,7 @@ export interface FetchedReligiousTimeData {
 }
 
 export const useReligiousTime = (day: number, month: number, enabled: boolean) => {
-	const { data, isLoading, error } = useQuery({
+	return useQuery({
 		queryKey: ['religiousTime', day, month],
 		queryFn: async () => {
 			const client = await getMainClient()
@@ -36,6 +36,4 @@ export const useReligiousTime = (day: number, month: number, enabled: boolean) =
 		},
 		enabled,
 	})
-
-	return { data, loading: isLoading, error }
 }
