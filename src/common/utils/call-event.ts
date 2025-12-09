@@ -14,7 +14,7 @@ import type { FontFamily } from '@/context/appearance.context'
 
 export interface EventName {
 	startSync: SyncTarget
-	openSettings: 'account' | 'wallpapers' | null
+	openSettings: 'account' | 'wallpapers' | 'general' | null
 	todosChanged: Todo[]
 	wallpaperChanged: StoredWallpaper
 	openWidgetsSettings: { tab: WidgetTabKeys | null }

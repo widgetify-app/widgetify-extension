@@ -13,7 +13,6 @@ import { useAuth } from '@/context/auth.context'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
-import type { AxiosError } from 'axios'
 import { Button } from '@/components/button/button'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import Analytics from '@/analytics'
@@ -23,12 +22,11 @@ export function WeatherLayout() {
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
 	const [weatherState, setWeather] = useState<FetchedWeather | null>(null)
 	const [forecastWeather, setForecastWeather] = useState<FetchedForecast[] | null>(null)
-	const [showSetCityMessage, setShowSetCityMessage] = useState(false)
-	const { data, dataUpdatedAt, error } = useGetWeatherByLatLon({
+	const { data, dataUpdatedAt } = useGetWeatherByLatLon({
 		refetchInterval: 0,
 		units: weatherSettings?.temperatureUnit,
 		useAI: weatherSettings?.useAI,
-		enabled: isAuthenticated,
+		enabled: isAuthenticated && user?.city?.id != null,
 	})
 
 	const { data: forecastData, dataUpdatedAt: forecastDataUpdatedAt } =
@@ -86,13 +84,7 @@ export function WeatherLayout() {
 			setToStorage('currentWeather', data)
 			setWeather(data)
 		}
-		if (error) {
-			const axiosError = error as AxiosError<any>
-			if (axiosError.response?.data?.message === 'USER_CITY_NOT_SET') {
-				setShowSetCityMessage(true)
-			}
-		}
-	}, [data, dataUpdatedAt, error])
+	}, [data, dataUpdatedAt])
 
 	useEffect(() => {
 		if (forecastData) {
@@ -113,7 +105,7 @@ export function WeatherLayout() {
 	return (
 		<WidgetContainer>
 			<RequireAuth mode="preview">
-				{showSetCityMessage ? (
+				{!user?.city?.id ? (
 					<div className="flex flex-col items-center justify-center w-full h-full p-4 text-center rounded-2xl">
 						<div className="mb-4 text-4xl">🌤️</div>
 						<p className="mb-4 text-sm leading-relaxed text-muted">

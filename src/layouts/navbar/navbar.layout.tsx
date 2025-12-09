@@ -40,10 +40,13 @@ export function NavbarLayout(): JSX.Element {
 	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
 	const { isAuthenticated } = useAuth()
 
-	const handleOpenSettings = useCallback((tabName: 'account' | 'wallpapers' | null) => {
-		if (tabName) setTab(tabName)
-		setShowSettings(true)
-	}, [])
+	const handleOpenSettings = useCallback(
+		(tabName: 'account' | 'wallpapers' | 'general' | null) => {
+			if (tabName) setTab(tabName)
+			setShowSettings(true)
+		},
+		[]
+	)
 
 	const settingsModalCloseHandler = () => setShowSettings(false)
 
