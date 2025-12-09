@@ -30,6 +30,9 @@ interface FetchedProfile {
 	font: FontFamily
 	timeZone: string
 	coins: number
+	city?: {
+		id: string
+	}
 }
 
 export interface UserProfile extends FetchedProfile {
@@ -113,5 +116,21 @@ export function useSendVerificationEmail() {
 	return useMutation({
 		mutationFn: sendVerificationEmail,
 		mutationKey: ['sendVerificationEmail'],
+	})
+}
+
+async function setCityToServer(cityId: string): Promise<void> {
+	const client = await getMainClient()
+	await client.put('/users/@me/city', { cityId })
+}
+
+export function useSetCity() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: (cityId: string) => setCityToServer(cityId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		},
 	})
 }
