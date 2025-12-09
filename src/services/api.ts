@@ -45,7 +45,13 @@ export async function getMainClient(): Promise<AxiosInstance> {
 				_retry?: boolean
 			}
 
-			const ignoreEndpoints = ['/auth/signin', '/auth/signup']
+			const ignoreEndpoints = [
+				'/auth/signin',
+				'/auth/signup',
+				'/auth/otp',
+				'/auth/otp/verify',
+				'/auth/oauth/google',
+			]
 			if (
 				ignoreEndpoints.some((endpoint) =>
 					originalRequest.url?.includes(endpoint)
