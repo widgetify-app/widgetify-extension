@@ -3,210 +3,233 @@
 @import "./styles/theme-colors.css";
 
 html {
-	font-size: 16px !important;
+  font-size: 16px !important;
 }
 
 html {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 body {
-	overflow-x: hidden;
-	overflow-y: hidden;
-	font-family: "Vazir", sans-serif;
-	height: 100vh;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-family: "Vazir", sans-serif;
+  height: 100vh;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .custom-select-box hr {
-	color: #333333;
+  color: #333333;
 }
 
 @layer base {
-	body {
-		direction: rtl;
-		font-family: Vazirmatn, sans-serif;
-	}
+  body {
+    direction: rtl;
+    font-family: Vazirmatn, sans-serif;
+  }
 }
 
 .bg-content {
-	@apply bg-base-200;
+  @apply bg-base-200;
 }
 
 .bg-widget {
-	@apply bg-base-100;
+  @apply bg-base-100;
 }
 
 .text-content {
-	@apply text-base-content/90;
+  @apply text-base-content/90;
 }
 
-
 .text-muted {
-	@apply text-base-content/70;
+  @apply text-base-content/70;
 }
 
 .border-content {
-	@apply border-base-300;
+  @apply border-base-300;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Hide the spinner in Firefox */
 input[type="number"] {
-	-moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 /* Custom styling for color inputs */
+/* English text (email) input styles */
+input[type="email"] {
+  direction: ltr;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.5px;
+}
+
 input[type="color"] {
-	-webkit-appearance: none;
-	border: none;
-	padding: 0;
-	width: 32px;
-	height: 32px;
-	border-radius: 4px;
-	cursor: pointer;
-	background: transparent;
+  -webkit-appearance: none;
+  border: none;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
-	padding: 0;
-	border-radius: 4px;
-	overflow: hidden;
+  padding: 0;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 input[type="color"]::-webkit-color-swatch {
-	border: none;
-	border-radius: 4px;
+  border: none;
+  border-radius: 4px;
 }
 
 input[type="color"]::-moz-color-swatch {
-	border: none;
-	border-radius: 4px;
+  border: none;
+  border-radius: 4px;
 }
 
 /* Hide scrollbar for webkit browsers */
 .hide-scrollbar::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 /* Hide scrollbar for Firefox and other browsers */
 .hide-scrollbar {
-	-ms-overflow-style: none;
-	/* IE and Edge */
-	scrollbar-width: none;
-	/* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-	background: transparent;
-	border-radius: 4px;
+  background: transparent;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(156, 163, 175, 0.5);
-	border-radius: 4px;
-	transition: background-color 0.2s ease;
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(156, 163, 175, 0.8);
+  background: rgba(156, 163, 175, 0.8);
 }
 
 /* Firefox scrollbar styles */
 * {
-	scrollbar-width: thin;
-	scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
 
 /* Add this to your CSS file */
 .weather-forecast-slider {
-	padding-bottom: 25px !important;
-	/* Space for pagination bullets */
+  padding-bottom: 25px !important;
+  /* Space for pagination bullets */
 }
 
 .weather-forecast-slider .swiper-slide {
-	width: auto;
-	max-width: 150px;
+  width: auto;
+  max-width: 150px;
 }
 
 .weather-forecast-slider .swiper-pagination {
-	bottom: 0;
+  bottom: 0;
 }
 
 /* Custom scrollbar styles for info panel */
 .scrollbar-thin {
-	scrollbar-width: thin;
+  scrollbar-width: thin;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar {
-	width: 4px;
+  width: 4px;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-track {
-	background: transparent;
+  background: transparent;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb {
-	background: hsl(var(--bc) / 0.2);
-	border-radius: 2px;
+  background: hsl(var(--bc) / 0.2);
+  border-radius: 2px;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb:hover {
-	background: hsl(var(--bc) / 0.3);
+  background: hsl(var(--bc) / 0.3);
 }
 
 .scrollbar-none {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 html.modal-isActive {
-	scrollbar-width: none !important;
+  scrollbar-width: none !important;
 }
 
 html.modal-isActive::-webkit-scrollbar {
-	display: none !important;
+  display: none !important;
 }
 
 .disabled-blur-mode {
-	filter: blur(0px);
-	transition: filter 300ms ease-in-out;
+  filter: blur(0px);
+  transition: filter 300ms ease-in-out;
 }
 
 .blur-mode {
-	filter: blur(8px);
-	pointer-events: none;
-	transition: filter 300ms ease-in;
+  filter: blur(8px);
+  pointer-events: none;
+  transition: filter 300ms ease-in;
 }
 
 img {
-	/* disable user selection */
-	user-select: none;
-	-webkit-user-drag: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
+  /* disable user selection */
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+}
+
+/* Modal animations */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-in {
+  animation: modal-in 0.2s ease-out;
 }

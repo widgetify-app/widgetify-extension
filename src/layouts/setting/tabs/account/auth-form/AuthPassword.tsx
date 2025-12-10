@@ -10,7 +10,7 @@ import { translateError } from '@/utils/translate-error'
 interface Prop {
 	onBack: () => void
 }
-export function AuthWithPassword({ onBack }: Prop) {
+export default function AuthPassword({ onBack }: Prop) {
 	const [username, setUsername] = useState('') // email can be phone number as well
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState<string | null>(null)

@@ -11,7 +11,7 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 import Analytics from '@/analytics'
 
-export function LoginGoogleButton() {
+export default function LoginGoogleButton() {
 	const { login } = useAuth()
 	const [isLoading, setIsLoading] = useState(false)
 	const googleSignInMutation = useGoogleSignIn()

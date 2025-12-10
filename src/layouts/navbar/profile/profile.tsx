@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LuCircleUser } from 'react-icons/lu'
+import { LuLogIn } from 'react-icons/lu'
 import { listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
@@ -65,7 +65,7 @@ export function ProfileNav() {
 						id="profile-and-friends-list"
 						onClick={handleProfileClick}
 					>
-						<LuCircleUser
+						<LuLogIn
 							size={20}
 							className="text-muted group-hover:!text-primary"
 						/>
