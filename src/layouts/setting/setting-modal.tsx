@@ -96,22 +96,26 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				defaultTab="general"
 				selectedTab={selectedTab}
 				direction="rtl"
-			/>
-			<button
-				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
-				onClick={() => openWidgetSettings()}
 			>
-				<TbApps size={20} className="text-muted" />
-				<span className="text-sm font-light">مدیریت ویجت ها</span>
-				<span className="absolute w-2 h-2 rounded-full right-4 top-2 bg-error animate-pulse"></span>
-			</button>
-			<button
-				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
-				onClick={() => setUpdateModalOpen(true)}
-			>
-				<VscMegaphone size={20} />
-				<span className="text-sm font-light">تغییرات اخیر</span>
-			</button>
+				<div className="flex flex-row gap-1 sm:flex-col">
+					<button
+						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+						onClick={() => openWidgetSettings()}
+					>
+						<TbApps size={20} className="text-muted" />
+						<span className="text-sm font-light">مدیریت ویجت ها</span>
+						<span className="absolute w-2 h-2 rounded-full right-4 top-2 bg-error animate-pulse"></span>
+					</button>
+					<button
+						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+						onClick={() => setUpdateModalOpen(true)}
+					>
+						<VscMegaphone size={20} />
+						<span className="text-sm font-light">تغییرات اخیر</span>
+					</button>
+				</div>
+			</TabManager>
+
 			<UpdateReleaseNotesModal
 				isOpen={isUpdateModalOpen}
 				onClose={() => setUpdateModalOpen(false)}
