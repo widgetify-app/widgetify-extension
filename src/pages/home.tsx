@@ -6,9 +6,11 @@ import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import { AIChat } from '@/components/ai-chat/ai-chat'
+import { FloatingPet } from '@/components/floating-pet'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
-import { GeneralSettingProvider } from '@/context/general-setting.context'
+import { GeneralSettingProvider, useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
@@ -45,6 +47,7 @@ const steps: Step[] = [
 	},
 ]
 export function HomePage() {
+	const { widgetMode } = useGeneralSetting()
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
@@ -281,6 +284,7 @@ export function HomePage() {
 				onClose={() => onCloseReleaseNotes()}
 				counterValue={2}
 			/>
+			{widgetMode === 'chatBot' ? <AIChat /> : <FloatingPet />}
 		</div>
 	)
 }
