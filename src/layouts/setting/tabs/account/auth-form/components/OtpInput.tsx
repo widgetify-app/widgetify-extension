@@ -46,7 +46,11 @@ const OtpInput: React.FC<OtpInputProps> = ({ otp, setOtp, error, setError }) => 
 	}
 
 	return (
-		<div className="flex gap-2 justify-center" onPaste={handlePaste} dir="ltr">
+		<div
+			className="flex gap-1.5 md:gap-2 justify-center"
+			onPaste={handlePaste}
+			dir="ltr"
+		>
 			{otp.map((digit, index) => (
 				<input
 					key={index}
@@ -57,11 +61,12 @@ const OtpInput: React.FC<OtpInputProps> = ({ otp, setOtp, error, setError }) => 
 					inputMode="numeric"
 					maxLength={1}
 					value={digit}
+					aria-label={`کد تایید رقم ${index + 1}`}
 					onChange={(e) => handleChange(index, e.target.value)}
 					onKeyDown={(e) => handleKeyDown(index, e)}
-					className={`w-12 h-14 text-center text-2xl font-bold bg-dark-bg border ${
-						error ? 'border-red-500' : 'border-dark-border'
-					} rounded-xl text-white focus:outline-none focus:border-primary transition-all duration-300 hover:border-primary/50`}
+					className={`w-10 h-12 md:w-12 md:h-14 text-center text-xl md:text-2xl font-bold bg-dark-bg border-2 ${
+						error ? 'border-red-500 bg-red-50/5' : 'border-dark-border'
+					} rounded-lg md:rounded-xl text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 hover:border-primary/50 active:scale-95`}
 				/>
 			))}
 		</div>

@@ -15,8 +15,8 @@ const AuthForm = () => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-lg mx-auto ">
-			<div className="p-7 my-2 border shadow border-content bg-content rounded-2xl backdrop-blur-sm">
+		<div className="flex flex-col w-full max-w-lg mx-auto px-2 md:px-0">
+			<div className="p-4 md:p-6 lg:p-7 my-2 border shadow-md border-content bg-content rounded-xl md:rounded-2xl backdrop-blur-sm">
 				{showPasswordForm ? (
 					<AuthWithPassword onBack={handleBackToOTP} />
 				) : (

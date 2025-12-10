@@ -87,22 +87,25 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 	if (step === 'enter-email')
 		return (
 			<section>
-				<header className="flex items-center gap-3 ">
+				<header className="flex items-center gap-2.5 md:gap-3">
 					<div
 						aria-hidden="true"
-						className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10"
+						className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/10 flex-shrink-0"
 					>
-						<FiAtSign className="w-5 h-5 text-primary" />
+						<FiAtSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 					</div>
 
-					<h4 className="text-lg font-semibold text-content">
+					<h4 className="text-base md:text-lg font-semibold text-content">
 						ورود یا ثبت‌نام با ایمیل
 					</h4>
 				</header>
 
-				<form onSubmit={handleSubmit} className="mt-5">
+				<form onSubmit={handleSubmit} className="mt-4 md:mt-5">
 					<div>
-						<label className="block mb-1 text-sm font-semibold text-content">
+						<label
+							htmlFor="email"
+							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-content"
+						>
 							ایمیل
 						</label>
 
@@ -113,31 +116,33 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							value={email}
 							onChange={setEmail}
 							placeholder="example@gmail.com"
-							className="w-full !py-3.5"
+							disabled={isPending}
+							className="w-full !py-2.5 md:!py-3.5"
 						/>
-						<InputTextError
-							message={error || ''}
-							className={!error ? 'opacity-0' : 'opacity-100'}
-						/>
-					</div>
-
-					<div className="bg-primary/10 border border-primary/30 rounded-xl p-2 my-5 font-extralight">
-						<p className="text-muted text-sm flex items-center gap-1.5 leading-relaxed">
-							<span className="text-primary text-lg">ℹ️</span>
-							<span> کد تایید به ایمیل شما ارسال می‌شود.</span>
+						<InputTextError message={error} />
+					</div>{' '}
+					<div className="bg-primary/10 border border-primary/30 rounded-lg md:rounded-xl p-2 md:p-2.5 my-4 md:my-5">
+						<p className="text-muted text-xs md:text-sm flex items-center gap-1.5 leading-relaxed">
+							<span
+								className="text-primary text-base md:text-lg flex-shrink-0"
+								role="img"
+								aria-label="اطلاعات"
+							>
+								ℹ️
+							</span>
+							<span>کد تایید به ایمیل شما ارسال می‌شود.</span>
 						</p>
 					</div>
-
 					<Button
 						type="submit"
 						isPrimary={true}
 						size="md"
 						loading={isPending}
-						disabled={isPending}
-						className="relative w-full transition-all duration-300 shadow text-white group rounded-xl disabled:!text-gray-100"
+						disabled={isPending || !email}
+						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
-							تایید ایمیل
+							{isPending ? 'درحال ارسال...' : 'تایید ایمیل'}
 						</span>
 					</Button>
 				</form>
@@ -146,27 +151,34 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 	return (
 		<section>
-			<header className="flex items-center gap-3">
+			<header className="flex items-center gap-2.5 md:gap-3">
 				<div
 					aria-hidden="true"
-					className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10"
+					className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/10 flex-shrink-0"
 				>
-					<FiKey className="w-5 h-5 text-primary" />
+					<FiKey className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 				</div>
 
-				<div>
-					<h4 className="text-lg font-semibold text-content">تایید کد ورود</h4>
-					<p className="text-muted text-sm flex items-center gap-1.5 leading-relaxed">
-						کد تایید به{' '}
-						<span className="font-semibold text-content">{email}</span> ارسال
-						شد.
+				<div className="min-w-0 flex-1">
+					<h4 className="text-base md:text-lg font-semibold text-content">
+						تایید کد ورود
+					</h4>
+					<p className="text-muted text-xs md:text-sm flex flex-wrap items-center gap-1 md:gap-1.5 leading-relaxed mt-0.5">
+						<span>کد تایید به</span>
+						<span
+							className="font-semibold text-content truncate max-w-[200px]"
+							title={email}
+						>
+							{email}
+						</span>
+						<span>ارسال شد.</span>
 					</p>
 				</div>
 			</header>
 
-			<form onSubmit={handleSubmit} className="mt-5">
+			<form onSubmit={handleSubmit} className="mt-4 md:mt-5">
 				<div>
-					<label className="block mb-1 text-sm font-semibold text-content">
+					<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-content text-center">
 						کد تایید
 					</label>
 
@@ -176,31 +188,24 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 						error={error}
 						setError={setError}
 					/>
-					<InputTextError
-						message={error || ''}
-						className={`mr-4 ${!error ? 'opacity-0' : 'opacity-100'}`}
-					/>
-				</div>
-
+					<InputTextError message={error} className="justify-center" />
+				</div>{' '}
 				<button
 					type="button"
-					className="flex items-center mx-auto hover:text-primary gap-1.5 font-medium   disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-gray-300 group mt-2 mb-4 duration-200"
+					aria-label="ارسال دوباره کد تایید"
+					className="flex items-center mx-auto hover:text-primary gap-1 md:gap-1.5 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-gray-300 group mt-2 mb-3 md:mb-4 duration-200 active:scale-95"
 				>
 					<span className="transition-all duration-200 group-hover:scale-105">
 						ارسال دوباره کد؟
 					</span>
-					<FiRefreshCw
-						size={16}
-						className="transition-all duration-200   group-hover:rotate-180 group-hover:scale-110"
-					/>
+					<FiRefreshCw className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:rotate-180 group-hover:scale-110" />
 					{/* TODO: add timer component for resending */}
 				</button>
-
 				<Button
 					type="submit"
 					isPrimary={true}
 					size="md"
-					className="relative flex items-center justify-center w-full px-6 py-3 font-semibold transition-all duration-300 shadow text-white group rounded-xl disabled:!text-gray-100"
+					className="relative flex items-center justify-center w-full py-2.5 md:py-3 text-sm md:text-base font-semibold transition-all duration-200 shadow text-white group rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
 					disabled={otp.join('').length !== 6}
 				>
 					<span className="transition-transform duration-200 group-hover:scale-105">
@@ -216,12 +221,10 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					setOtp(['', '', '', '', '', ''])
 					setError(null)
 				}}
-				className="flex items-center mx-auto gap-0.5 my-3 font-medium cursor-pointer group text-gray-400 hover:text-primary duration-200"
+				aria-label="بازگشت به صفحه ایمیل"
+				className="flex items-center mx-auto gap-1 md:gap-1.5 my-2.5 md:my-3 text-xs md:text-sm font-medium cursor-pointer group text-gray-400 hover:text-primary hover:bg-base-200 px-3 py-1.5 rounded-lg duration-200 active:scale-95"
 			>
-				<FiArrowRight
-					size={16}
-					className="transition-all duration-200 group-hover:translate-x-1 group-hover:scale-110"
-				/>
+				<FiArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:translate-x-1 group-hover:scale-110" />
 				<span className="transition-all duration-200 group-hover:scale-105">
 					بازگشت
 				</span>

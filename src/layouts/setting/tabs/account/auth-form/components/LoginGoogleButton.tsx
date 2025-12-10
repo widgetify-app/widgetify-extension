@@ -79,20 +79,22 @@ export default function LoginGoogleButton() {
 			type="button"
 			onClick={loginGoogle}
 			disabled={isLoading}
-			className="group px-8 py-2.5 rounded-xl font-medium shadow-lg h-full w-full flex items-center justify-center border-2 border-content bg-content hover:bg-gray-100 transition-colors gap-2 cursor-pointer"
+			aria-label="ورود با گوگل"
+			className="group px-4 md:px-8 py-2.5 md:py-3 rounded-lg md:rounded-xl text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full flex items-center justify-center border-2 border-content bg-content hover:bg-base-200 transition-all duration-200 gap-1.5 md:gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 disabled:active:scale-100"
 		>
-			<div className="relative flex items-center justify-center">
+			<div className="relative flex items-center justify-center flex-shrink-0">
 				{isLoading ? (
-					<IconLoading className="!h-5 !w-5" />
+					<IconLoading className="!h-4 !w-4 md:!h-5 md:!w-5" />
 				) : (
 					<img
 						src="https://cdn.widgetify.ir/sites/google.png"
-						alt="Google Logo"
-						className="w-5 h-5 transition-all duration-200 group-hover:scale-110 group-hover:rotate-3"
+						alt=""
+						aria-hidden="true"
+						className="w-4 h-4 md:w-5 md:h-5 transition-all duration-200 group-hover:scale-110 group-hover:rotate-3"
 					/>
 				)}
 			</div>
-			<span className="transition-all duration-200 group-hover:scale-105">
+			<span className="transition-all duration-200 group-hover:scale-105 whitespace-nowrap">
 				{isLoading ? 'درحال پردازش...' : 'ورود با گوگل'}
 			</span>
 		</button>
