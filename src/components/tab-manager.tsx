@@ -72,33 +72,29 @@ export const TabManager = ({
 			: 'md:flex-col md:w-48 shrink-0 md:overflow-y-auto'
 	return (
 		<div dir={direction} className={`flex ${headClass}   overflow-hidden`}>
-			<aside className="md:h-full flex justify-between flex-col  overflow-hidden">
+			<aside className="flex flex-row justify-between overflow-hidden sm:flex-col md:h-full">
 				<div
-					className={`flex w-full gap-2 p-2 overflow-x-auto rounded-lg ${contentClass}`}
+					className={`flex  w-full md:h-full justify-between overflow-x-auto rounded-lg ${contentClass}`}
 				>
-					{tabs.map(({ label, value, icon, isNew }) => (
-						<button
-							key={value}
-							onClick={() => handleTabChange(value)}
-							className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
-						>
-							<span
-								className={`relative ${getTabIconStyle(activeTab === value)}`}
+					<div className="flex flex-row sm:flex-col sm:gap-2">
+						{tabs.map(({ label, value, icon, isNew }) => (
+							<button
+								key={value}
+								onClick={() => handleTabChange(value)}
+								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
 							>
-								{icon}
-								{isNew && (
-									<span className="absolute left-0 z-30 w-2 h-2 duration-200 rounded-full -bottom-1 bg-error animate-ping"></span>
-								)}
-							</span>
-							<span className="text-sm">{label}</span>
-						</button>
-					))}
-					{children}
-				</div>
-				<div
-					aria-label="bottom tab buttons container"
-					className={`md:flex w-full gap-2 p-2 overflow-x-auto rounded-lg ${contentClass} hidden`}
-				>
+								<span
+									className={`relative ${getTabIconStyle(activeTab === value)}`}
+								>
+									{icon}
+									{isNew && (
+										<span className="absolute left-0 z-30 w-2 h-2 duration-200 rounded-full -bottom-1 bg-error animate-ping"></span>
+									)}
+								</span>
+								<span className="text-sm">{label}</span>
+							</button>
+						))}
+					</div>
 					{children}
 				</div>
 			</aside>
