@@ -86,7 +86,7 @@ export function ReligiousTime({ currentDate }: Prop) {
 					<div className="flex flex-col items-center justify-center w-full h-full p-4 text-center rounded-2xl">
 						<div className="mb-4 text-4xl">🕋</div>
 						<p className="mb-4 text-sm leading-relaxed text-muted">
-							برای نمایش اوقات شرعی، لطفاً ابتدا در تنظیمات ویجت، شهر خود را
+							برای نمایش اوقات شرعی، لطفاً ابتدا شهر خود را در تنظیمات ویجت
 							تنظیم کنید.
 						</p>
 						<Button
