@@ -1,23 +1,24 @@
-import axios, {
-	type AxiosError,
-	type AxiosInstance,
-	type AxiosResponse,
-	type InternalAxiosRequestConfig,
+import type {
+	AxiosError,
+	AxiosInstance,
+	AxiosResponse,
+	InternalAxiosRequestConfig,
 } from 'axios'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 
-const rawGithubApi = axios.create({
-	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
-})
 export let API_URL = ''
 export async function getMainClient(): Promise<AxiosInstance> {
+	const axios = (await import('axios')).default
 	let instance: AxiosInstance | undefined
 
 	const token = await getFromStorage('auth_token')
 	API_URL = import.meta.env.VITE_API
 
 	if (!API_URL) {
+		const rawGithubApi = axios.create({
+			baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
+		})
 		const urlResponse = await rawGithubApi.get('/.github/api.txt')
 		API_URL = urlResponse.data
 	}

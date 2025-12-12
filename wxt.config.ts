@@ -2,6 +2,9 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'wxt'
 
 export default defineConfig({
+	dev: {
+		prerender: false,
+	},
 	vite: () =>
 		({
 			plugins: [tailwindcss()],
