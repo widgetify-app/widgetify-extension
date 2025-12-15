@@ -1,0 +1,72 @@
+@plugin "daisyui/theme" {
+    name: "lightglass";
+    default: false;
+    --color-base-100: rgba(255, 255, 255, 0.75);
+    --color-base-200: rgba(255, 255, 255, 0.6);
+    --color-base-300: rgba(0, 0, 0, 0.05);
+    --color-base-content: rgba(0, 0, 0, 0.85);
+
+    --color-primary: rgba(var(--brand-primary-rgb), 0.9);
+    --color-primary-focus: rgba(var(--brand-primary-rgb), 1);
+    --color-primary-content: rgba(255, 255, 255, 1);
+
+    --color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
+    --color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
+    --color-secondary-content: rgba(255, 255, 255, 1);
+
+    --color-accent: rgba(34, 197, 94, 0.8);
+    --color-accent-focus: rgba(22, 163, 74, 0.9);
+    --color-accent-content: rgba(255, 255, 255, 1);
+
+    --color-error: rgba(239, 68, 68, 0.8);
+    --color-success: rgba(34, 197, 94, 0.8);
+    --color-warning: rgba(245, 158, 11, 0.8);
+    --color-warning-content: #271b06;
+    --color-info: rgba(59, 130, 246, 0.8);
+
+    --glass: true;
+    --glass-opacity: 35%;
+    --glass-border-opacity: 20%;
+    --glass-reflex-degree: 120%;
+    --glass-reflex-opacity: 10%;
+    --glass-blur: 32px;
+}
+
+[data-theme="lightglass"] .menu,
+[data-theme="lightglass"] .navbar,
+[data-theme="lightglass"] .modal-box,
+[data-theme="lightglass"] .drawer-side,
+[data-theme="lightglass"] .collapse {
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="lightglass"] .search-box {
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="lightglass"] .widget-wrapper,
+[data-theme="lightglass"] .bg-glass,
+[data-theme="lightglass"] .tooltip {
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+[data-theme="lightglass"] #bookmarks .bg-widget:hover .flex {
+    color: #ffffff;
+}
+
+
+[data-theme="lightglass"] .modal-box {
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    backdrop-filter: blur(40px) saturate(200%);
+    background-color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="lightglass"] select {
+    background-color: rgba(255, 255, 255, 1);
+}
