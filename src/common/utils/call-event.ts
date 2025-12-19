@@ -31,6 +31,8 @@ export interface EventName {
 		name: string
 		template: string
 	}
+	openJumpPage: null
+	closeJumpPage: null
 
 	// setting keys
 	wigiPadDateSettingsChanged: WigiPadDateSetting

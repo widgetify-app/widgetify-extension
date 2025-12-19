@@ -199,11 +199,11 @@ export function SyncButton() {
 		<>
 			<Tooltip content="خطا در همگام‌سازی داده‌ها">
 				<div
-					className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 cursor-pointer hover:opacity-80 group hover:bg-primary/10 bg-content bg-glass rounded-xl hover:scale-105"
+					className="relative p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
 					id="profile-and-friends-list"
 					onClick={() => setShowModal(true)}
 				>
-					<span className="absolute z-0 w-4 h-4 duration-200 rounded-full z- left-2 bottom-2 bg-error animate-ping"></span>
+					<span className="absolute z-0 w-4 h-4 duration-200 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-error animate-ping"></span>
 					<MdSyncProblem size={24} className="z-10 text-error" />
 				</div>
 			</Tooltip>

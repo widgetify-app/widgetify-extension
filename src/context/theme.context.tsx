@@ -37,8 +37,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 				setTheme(theme)
 				document.documentElement.setAttribute('data-theme', theme)
 			} else {
-				setTheme(Theme.Light)
-				document.documentElement.setAttribute('data-theme', Theme.Light)
+				setTheme(Theme.Dark)
+				document.documentElement.setAttribute('data-theme', Theme.Dark)
 			}
 		})
 
