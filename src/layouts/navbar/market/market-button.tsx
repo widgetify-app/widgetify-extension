@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import Tooltip from '@/components/toolTip'
 import { MarketContainer } from '@/layouts/market/market-container'
+import { HiShoppingBag } from 'react-icons/hi2'
 
 export function MarketButton() {
 	const [showMarket, setShowMarket] = useState(false)
@@ -22,19 +22,12 @@ export function MarketButton() {
 
 	return (
 		<>
-			<Tooltip content="فروشگاه">
-				<button
-					onClick={handleClick}
-					className="flex flex-row-reverse items-center justify-center w-8 h-full px-1 overflow-hidden transition-all duration-200 cursor-pointer bg-content bg-glass rounded-xl hover:bg-primary/10 hover:scale-105 group"
-					style={{
-						backgroundImage:
-							'url(https://cdn.widgetify.ir/extension/market-button.gif)',
-						backgroundPosition: 'center',
-						backgroundSize: 'cover',
-					}}
-				></button>
-			</Tooltip>
-
+			<button
+				onClick={() => handleClick()}
+				className="p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
+			>
+				<HiShoppingBag size={19} />
+			</button>
 			<Modal
 				isOpen={showMarket}
 				onClose={() => setShowMarket(false)}

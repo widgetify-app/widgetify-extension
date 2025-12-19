@@ -61,14 +61,11 @@ export function ProfileNav() {
 			{!isAuth ? (
 				<Tooltip content="ورود به حساب کاربری">
 					<div
-						className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 rounded-full cursor-pointer hover:opacity-80 group hover:bg-primary/10"
+						className="relative p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
 						id="profile-and-friends-list"
 						onClick={handleProfileClick}
 					>
-						<LuCircleUser
-							size={20}
-							className="text-muted group-hover:!text-primary"
-						/>
+						<LuCircleUser size={20} />
 					</div>
 				</Tooltip>
 			) : (
