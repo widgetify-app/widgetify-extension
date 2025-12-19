@@ -84,7 +84,7 @@ export function NavbarLayout(): JSX.Element {
 			{canReOrderWidget && (
 				<div className="fixed z-[100] transform -translate-x-1/2 top-4 left-1/2 w-max">
 					<div className="px-4 py-2 border shadow-2xl shadow-warning bg-warning border-warning rounded-2xl">
-						<div className="flex items-center gap-3 text-xs font-bold text-white">
+						<div className="flex items-center gap-3 text-xs font-bold text-warning-content">
 							<AiOutlineDrag
 								size={16}
 								className="animate-bounce text-warning"
@@ -113,7 +113,7 @@ export function NavbarLayout(): JSX.Element {
 			<div
 				className={`fixed z-50 -translate-x-1/2 left-1/2 transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
 					isVisible
-						? 'bottom-2 opacity-100 scale-100'
+						? 'bottom-4 opacity-100 scale-100'
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 				}`}
 			>
