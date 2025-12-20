@@ -110,7 +110,7 @@ export function NavbarLayout(): JSX.Element {
 			{!isVisible && (
 				<button
 					onClick={() => onToggleNavbar()}
-					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 px-10 py-2.5 bg-white/[0.05] backdrop-blur-[40px] backdrop-saturate-[180%] border-t border-x border-white/10 rounded-t-3xl shadow-[0_-10px_30px_rgba(0,0,0,0.5)] transition-all hover:bg-white/[0.08]"
+					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 px-10 py-2.5 bg-white/[0.05] backdrop-blur-[40px] backdrop-saturate-[180%] border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08]"
 				>
 					<div className="w-10 h-1 rounded-full bg-white/30" />
 				</button>
@@ -123,7 +123,7 @@ export function NavbarLayout(): JSX.Element {
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 				}`}
 			>
-				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-[60px] backdrop-saturate-[180%] border border-white/[0.08] rounded-[2.5rem] shadow-[0_20px_40px_rgba(0,0,0,0.4)] before:absolute before:inset-0 before:rounded-[2.5rem] before:bg-gradient-to-b before:from-white/[0.1] before:to-transparent before:pointer-events-none">
+				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-md border border-white/[0.08] rounded-[2.5rem]">
 					<button
 						onClick={() => onToggleNavbar()}
 						className="relative z-10 p-2 transition-colors cursor-pointer text-white/20 hover:text-white/40"

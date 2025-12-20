@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import type {
 	FetchedForecast,
 	FetchedWeather,
@@ -13,9 +13,6 @@ import { useAuth } from '@/context/auth.context'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
-import { Button } from '@/components/button/button'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import Analytics from '@/analytics'
 
 export function WeatherLayout() {
 	const { isAuthenticated, user } = useAuth()
@@ -30,7 +27,9 @@ export function WeatherLayout() {
 		refetchInterval: 0,
 		units: weatherSettings?.temperatureUnit,
 		useAI: weatherSettings?.useAI,
-		enabled: isAuthenticated && user?.city?.id != null,
+		lat: user?.city?.id ? undefined : 35.696111,
+		lon: user?.city?.id ? undefined : 51.423056,
+		enabled: isAuthenticated,
 	})
 
 	const {
@@ -40,8 +39,10 @@ export function WeatherLayout() {
 	} = useGetForecastWeatherByLatLon({
 		count: 6,
 		units: weatherSettings?.temperatureUnit,
-		enabled: isAuthenticated && user?.city?.id != null,
+		enabled: isAuthenticated,
 		refetchInterval: 0,
+		lat: user?.city?.id ? undefined : 35.696111,
+		lon: user?.city?.id ? undefined : 51.423056,
 	})
 
 	useEffect(() => {
@@ -107,50 +108,24 @@ export function WeatherLayout() {
 		}
 	}, [user?.city?.id, isAuthenticated, refetchWeather, refetchForecast])
 
-	const onClickSetCity = () => {
-		callEvent('openWidgetsSettings', {
-			tab: WidgetTabKeys.weather_settings,
-		})
-		Analytics.event('weather_set_city_clicked')
-	}
-
 	if (!weatherSettings) return null
 
 	return (
 		<WidgetContainer>
 			<RequireAuth mode="preview">
-				{!user?.city?.id ? (
-					<div className="flex flex-col items-center justify-center w-full h-full p-4 text-center rounded-2xl">
-						<div className="mb-4 text-4xl">🌤️</div>
-						<p className="mb-4 text-sm leading-relaxed text-muted">
-							به‌دلیل تغییرات، لازم است شهر خود را دوباره در تنظیمات ویجت
-							انتخاب کنید
-						</p>
-						<Button
-							size="md"
-							isPrimary={true}
-							className="px-6 py-2 font-medium text-white transition-colors rounded-2xl"
-							onClick={onClickSetCity}
-						>
-							تنظیم شهر
-						</Button>
-					</div>
-				) : (
-					<div className="flex flex-col w-full h-full gap-2 py-1">
-						<CurrentWeatherBox
-							enabledShowName={weatherSettings.enableShowName}
-							fetchedWeather={weatherState || null}
-							temperatureUnit={weatherSettings.temperatureUnit}
-						/>
+				<div className="flex flex-col w-full h-full gap-2 py-1">
+					<CurrentWeatherBox
+						fetchedWeather={weatherState || null}
+						temperatureUnit={weatherSettings.temperatureUnit}
+					/>
 
-						<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
-							<Forecast
-								temperatureUnit={weatherSettings.temperatureUnit}
-								forecast={forecastWeather}
-							/>
-						</div>
+					<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
+						<Forecast
+							temperatureUnit={weatherSettings.temperatureUnit}
+							forecast={forecastWeather}
+						/>
 					</div>
-				)}
+				</div>
 			</RequireAuth>
 		</WidgetContainer>
 	)
