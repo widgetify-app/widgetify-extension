@@ -1,5 +1,6 @@
 import type React from 'react'
 import toast from 'react-hot-toast'
+import { playAlarm } from './playAlarm'
 
 type ToastType = 'success' | 'error' | 'info'
 interface ToastOptions {
@@ -13,8 +14,6 @@ interface ToastOptions {
 		| 'bottom-right'
 	alarmSound?: boolean
 }
-const audio = new Audio('https://cdn.widgetify.ir/effects/alarm-success.mp3')
-audio.preload = 'auto'
 
 export function showToast(
 	message: React.ReactNode | string,
@@ -180,9 +179,6 @@ export function showToast(
 	}
 
 	if (options?.alarmSound) {
-		const sound = audio.cloneNode() as HTMLAudioElement
-		sound.play().catch(() => {
-			console.log('Audio blocked by browser autoplay policy')
-		})
+		playAlarm('success')
 	}
 }

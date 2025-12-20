@@ -75,7 +75,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 	}
 
 	return (
-		<div className="flex flex-col h-full gap-y-2">
+		<div className="flex flex-col h-full overflow-hidden gap-y-2">
 			<input
 				ref={titleRef}
 				type="text"
