@@ -15,6 +15,7 @@ export interface GeneralData {
 	selected_timezone: FetchedTimezone
 	browserBookmarksEnabled: boolean
 	browserTabsEnabled: boolean
+	widgetMode: 'chatBot' | 'imageCorner'
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -35,6 +36,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	},
 	browserBookmarksEnabled: false,
 	browserTabsEnabled: false,
+	widgetMode: 'chatBot',
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -223,6 +225,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setBrowserBookmarksEnabled,
 		browserTabsEnabled: settings.browserTabsEnabled,
 		setBrowserTabsEnabled,
+		widgetMode: settings.widgetMode,
 	}
 
 	return (
