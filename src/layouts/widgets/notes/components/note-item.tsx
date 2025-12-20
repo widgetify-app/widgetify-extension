@@ -26,9 +26,7 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 				</div>
 			</div>
 			<div className="w-full p-2 rounded-md bg-base-200/50 min-h-10">
-				<p className="text-xs font-light text-muted line-clamp-2">
-					{note.body ? note.body.slice(0, 45) + '...' : ''}
-				</p>
+				<p className="text-xs font-light text-muted">{note.body}</p>
 			</div>
 		</div>
 	)

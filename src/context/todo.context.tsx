@@ -13,6 +13,7 @@ import { useReorderTodos } from '@/services/hooks/todo/reorder-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
+import { playAlarm } from '@/common/playAlarm'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -199,12 +200,12 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				'error'
 			)
 		}
-
+		const isCompleted = !current.completed
 		const [err, _] = await safeAwait(
 			updateTodoAsync({
 				id: onlineId,
 				input: {
-					completed: !current.completed,
+					completed: isCompleted,
 				},
 			})
 		)
@@ -213,9 +214,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			showToast(translateError(err) as string, 'error')
 			return
 		}
-
 		refetch()
 		Analytics.event('todo_toggled')
+		if (isCompleted) playAlarm('done_todo')
 	}
 
 	const updateTodo = async (id: string, updates: Partial<Omit<Todo, 'id'>>) => {

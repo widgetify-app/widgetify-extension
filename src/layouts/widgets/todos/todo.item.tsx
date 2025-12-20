@@ -39,7 +39,7 @@ export function TodoItem({
 }: Prop) {
 	const { toggleTodo, refetchTodos, todos, setTodos } = useTodoStore()
 	const { isAuthenticated } = useAuth()
-	const [expanded, setExpanded] = useState(false)
+	const [expanded, setExpanded] = useState(true)
 	const [showConfirmation, setShowConfirmation] = useState(false)
 	const [showEditModal, setShowEditModal] = useState(false)
 	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
