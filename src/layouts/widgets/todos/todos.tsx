@@ -26,7 +26,6 @@ import { SortableTodoItem } from './sortable-todo-item'
 import { TodoStats } from './todo-stats'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
-import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
 import Analytics from '@/analytics'
 
@@ -36,7 +35,8 @@ interface Prop {
 export function TodosLayout({ onChangeTab }: Prop) {
 	const { selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
-	const { addTodo, todos, updateOptions, todoOptions, reorderTodos } = useTodoStore()
+	const { addTodo, todos, updateOptions, todoOptions, reorderTodos, isPending } =
+		useTodoStore()
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'active' | 'completed'>('active')
 	const [showStats, setShowStats] = useState<boolean>(false)
@@ -115,9 +115,6 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		}
 	}
 
-	const updateMutating = useIsMutating({ mutationKey: ['updateTodo'] })
-	const addMutating = useIsMutating({ mutationKey: ['addTodo'] })
-	const isUpdating = updateMutating > 0 || addMutating > 0
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
@@ -136,7 +133,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 						</div>
 
 						<div className="flex gap-1.5 items-center">
-							{isUpdating && <IconLoading title="درحال بروزرسانی" />}
+							{isPending ? <IconLoading /> : null}
 							<Tooltip content={showStats ? 'بازگشت به لیست' : 'آمار'}>
 								<Button
 									onClick={() => setShowStats(!showStats)}
