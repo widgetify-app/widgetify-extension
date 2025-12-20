@@ -173,7 +173,6 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 					/>
 				</div>
 
-				{/* Notes */}
 				<div className="flex items-center gap-2">
 					<div className="flex-shrink-0 text-center">
 						<FiMessageSquare className="text-indigo-400" size={14} />
@@ -187,26 +186,28 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 				</div>
 
 				{/* Action Buttons */}
-				<div className="flex gap-2 pt-4">
-					<Button
-						onClick={handleSave}
-						isPrimary={true}
-						size="md"
-						rounded="lg"
-						disabled={isPending}
-						loading={isPending}
-						className="flex-1 !rounded-2xl"
-					>
-						ذخیره
-					</Button>
+				<div className="flex items-center justify-end gap-2 pt-4">
 					<Button
 						onClick={onClose}
 						size="md"
-						rounded="lg"
 						disabled={isPending}
-						className="w-32 text-white !rounded-2xl"
+						className={
+							'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none !rounded-2xl transition-colors duration-300 ease-in-out'
+						}
 					>
-						انصراف
+						لغو
+					</Button>
+					<Button
+						onClick={handleSave}
+						disabled={!text?.trim() || isPending}
+						size="md"
+						isPrimary={true}
+						loading={isPending}
+						className={
+							'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary !rounded-2xl transition-colors duration-300 ease-in-out'
+						}
+					>
+						ذخیره
 					</Button>
 				</div>
 			</div>
