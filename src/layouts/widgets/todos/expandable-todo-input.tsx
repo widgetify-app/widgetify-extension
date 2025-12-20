@@ -8,7 +8,6 @@ import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import type jalaliMoment from 'jalali-moment'
-import { formatDateStr } from '../calendar/utils'
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { PriorityButton } from '@/components/priority-options/priority-options'
@@ -81,7 +80,7 @@ export function ExpandableTodoInput({
 				category: category.trim() || undefined,
 				notes: notes.trim() || undefined,
 				priority: priority,
-				date: selectedDate ? formatDateStr(selectedDate) : undefined,
+				date: selectedDate?.add(3.5, 'hours').toISOString(),
 			})
 			resetForm()
 		}

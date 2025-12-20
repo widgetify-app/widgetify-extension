@@ -46,6 +46,7 @@ interface TodoContextType {
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
 	reorderTodos: (todos: Todo[]) => Promise<void>
+	isPending: boolean
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -57,9 +58,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		viewMode: TodoViewType.All,
 	})
 
-	const { data: fetchedTodos, refetch } = useGetTodos(isAuthenticated)
-	const { mutateAsync: addTodoAsync } = useAddTodo()
-	const { mutateAsync: updateTodoAsync } = useUpdateTodo()
+	const { data: fetchedTodos, refetch, isPending } = useGetTodos(isAuthenticated)
+	const { mutateAsync: addTodoAsync, isPending: isAdding } = useAddTodo()
+	const { mutateAsync: updateTodoAsync, isPending: isUpdating } = useUpdateTodo()
 	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
 	const didLoadInitialOptions = useRef(false)
@@ -309,6 +310,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				todoOptions,
 				reorderTodos,
 				refetchTodos: refetch,
+				isPending: isPending || isAdding || isUpdating,
 			}}
 		>
 			{children}
