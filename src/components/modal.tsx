@@ -28,7 +28,7 @@ const sizeClasses = {
 		h: 'max-h-[85vh]',
 	},
 	xl: {
-		w: 'max-w-4xl',
+		w: 'max-w-6xl h-[90%]',
 		h: 'max-h-[90vh]',
 	},
 } as const
@@ -73,7 +73,7 @@ export default function Modal({
 			aria-labelledby={typeof title === 'string' ? title : undefined}
 			aria-modal="true"
 			onClick={() => closeOnBackdropClick && onClose()}
-			className={`modal modal-middle flex items-center justify-center transition-opacity duration-200 ${
+			className={`modal modal-middle  flex items-center justify-center transition-opacity duration-200 ${
 				isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
 			}`}
 		>
