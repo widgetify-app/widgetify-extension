@@ -2,12 +2,7 @@ import { Button } from '@/components/button/button'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useRef, useState, useEffect } from 'react'
 import { FiCheck } from 'react-icons/fi'
-import {
-	LuBriefcase,
-	LuCalendarDays,
-	LuChevronDown,
-	LuChevronRight,
-} from 'react-icons/lu'
+import { LuCalendarDays, LuChevronRight } from 'react-icons/lu'
 
 const PERSIAN_MONTHS = [
 	'فروردین',
@@ -35,8 +30,6 @@ interface JalaliDatePickerProps {
 }
 
 export default function JalaliDatePicker({
-	id,
-	label,
 	value,
 	onChange,
 	enable,
@@ -196,7 +189,7 @@ interface ScrollWheelProps {
 	startYear?: number
 }
 
-function ScrollWheel({ label, value, max, onChange, type, startYear }: ScrollWheelProps) {
+function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const scrollTimeoutRef = useRef<NodeJS.Timeout>(null)
 	const ITEM_HEIGHT = 40
