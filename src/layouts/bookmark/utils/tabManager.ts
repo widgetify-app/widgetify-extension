@@ -22,7 +22,7 @@ export async function openBookmarksOptimized(bookmark: Bookmark, children: Bookm
 
 	const tabIds = tabs.map((tab) => tab.id).filter((id): id is number => id !== null)
 
-	if (tabIds.length > 0) {
+	if (tabIds.length > 0 && browser.tabs.group && browser.tabGroups) {
 		const groupId = await browser.tabs.group({
 			tabIds: tabIds as [number, ...number[]],
 		})
