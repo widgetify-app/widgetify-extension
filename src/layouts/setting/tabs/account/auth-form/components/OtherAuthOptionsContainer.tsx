@@ -12,11 +12,11 @@ const OtherOptionsContainer: React.FC<OtherOptionsContainerProps> = ({
 	showPasswordForm,
 }) => {
 	return (
-		<div className="space-y-3 md:space-y-4">
-			<div className="relative my-3 md:my-4">
+		<div className="space-y-2">
+			<div className="relative my-1 md:my-4">
 				<span
 					aria-hidden="true"
-					className="absolute inset-0 flex items-center w-full border-t border-content translate-y-1/2"
+					className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-content"
 				/>
 
 				<div className="relative z-10 flex justify-center">
@@ -25,7 +25,7 @@ const OtherOptionsContainer: React.FC<OtherOptionsContainerProps> = ({
 					</span>
 				</div>
 			</div>
-			<div className="flex flex-col sm:flex-row items-stretch gap-2 md:gap-3">
+			<div className="flex flex-col items-stretch gap-2 sm:flex-row md:gap-3">
 				{showPasswordForm ? (
 					<LoginOtpButton setShowPasswordForm={setShowPasswordForm} />
 				) : (

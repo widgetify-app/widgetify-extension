@@ -37,7 +37,6 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 		resetErrors()
 
 		if (step === 'enter-email') {
-			// Email validation
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
@@ -52,7 +51,6 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 			onSendOtp()
 		} else if (step === 'enter-otp') {
-			// OTP validation
 			if (isEmpty(otp) || isLessThan(otp, 6))
 				return setError((prev) => ({
 					...prev,
@@ -69,36 +67,50 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			setStep('enter-otp')
 		} catch (err: any) {
 			const content = translateError(err)
-			console.log(content)
-			// if (typeof content === 'string') {
-			// 	setError((prev) => ({ ...prev, api: content }))
-			// } else {
-			// 	if (Object.keys(content).length === 0) {
-			// 		setError('خطا در ورود. لطفاً دوباره تلاش کنید.')
-			// 		return
-			// 	}
-			// 	setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
-			// }
+			setError({
+				api: content as string,
+				email: null,
+				otp: null,
+			})
 		}
 	}
 
 	const onVerifyOtp = async () => {
-		// try {
-		// 	setError(null)
-		// 	const response = await verifyOtp({ email, code: otp })
-		// 	login(response.data)
-		// } catch (err: any) {
-		// 	const content = translateError(err)
-		// 	if (typeof content === 'string') {
-		// 		setError(content)
-		// 	} else {
-		// 		if (Object.keys(content).length === 0) {
-		// 			setError('کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.')
-		// 			return
-		// 		}
-		// 		setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
-		// 	}
-		// }
+		try {
+			setError({ email: null, otp: null, api: null })
+			const response = await verifyOtp({ email, code: otp })
+			login(response.data)
+		} catch (err: any) {
+			const content = translateError(err)
+			if (typeof content === 'string') {
+				if (err.response?.data?.message === 'INVALID_OTP_CODE') {
+					setError({
+						email: null,
+						otp: 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+						api: null,
+					})
+				} else setError({ email: null, otp: null, api: content })
+			} else {
+				if (Object.keys(content).length === 0) {
+					setError({
+						email: null,
+						otp: null,
+						api: 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+					})
+					return
+				}
+				setError({
+					email: null,
+					otp: null,
+					api: `${Object.keys(content)[0]}: ${Object.values(content)[0]}`,
+				})
+			}
+		}
+	}
+
+	const onSetOtp = (value: string) => {
+		setOtp(value)
+		setError((prev) => ({ ...prev, otp: null }))
 	}
 
 	if (step === 'enter-email')
@@ -107,12 +119,12 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				<header className="flex items-center gap-2.5 md:gap-3">
 					<div
 						aria-hidden="true"
-						className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/10 flex-shrink-0"
+						className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
 					>
 						<FiAtSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 					</div>
 					<div>
-						<h3 className="text-base md:text-lg font-semibold text-content">
+						<h3 className="text-base font-semibold md:text-lg text-content">
 							ورود یا ثبت‌نام با ایمیل
 						</h3>
 						<p className="text-xs md:text-sm text-muted mt-0.5">
@@ -123,7 +135,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 				<form
 					onSubmit={validateInputs}
-					className="flex flex-col gap-3 md:gap-4 mt-4 md:mt-5"
+					className="flex flex-col gap-3 mt-4 md:gap-4 md:mt-5"
 				>
 					<div>
 						<label
@@ -142,6 +154,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							placeholder="example@gmail.com"
 							disabled={isPending}
 							className="w-full !py-2.5 md:!py-3.5"
+							autoComplete="on"
 						/>
 						<InputTextError message={error.email} />
 					</div>
@@ -151,7 +164,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 						size="md"
 						loading={isPending}
 						disabled={isPending || !email}
-						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
 							{isPending ? 'درحال ارسال...' : 'تایید ایمیل'}
@@ -166,19 +179,19 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			<header className="flex items-center gap-2.5 md:gap-3">
 				<div
 					aria-hidden="true"
-					className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/10 flex-shrink-0"
+					className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
 				>
 					<FiKey className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 				</div>
 
-				<div className="min-w-0 flex-1">
-					<h4 className="text-base md:text-lg font-semibold text-content">
+				<div className="flex-1 min-w-0">
+					<h4 className="text-base font-semibold md:text-lg text-content">
 						تایید کد ورود
 					</h4>
 					<p className="text-muted text-xs md:text-sm flex flex-wrap items-center gap-1 md:gap-1.5 leading-relaxed mt-0.5">
 						<span>کد تایید به</span>
 						<span
-							className="font-semibold text-content truncate max-w-[200px]"
+							className="font-semibold underline truncate text-content max-w-50"
 							title={email}
 						>
 							{email}
@@ -196,7 +209,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 					<OtpInput
 						otp={otp}
-						setOtp={setOtp}
+						setOtp={onSetOtp}
 						isError={!!error.otp || !!error.api}
 					/>
 					<InputTextError message={error.otp} className="justify-center" />
@@ -204,7 +217,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				<button
 					type="button"
 					aria-label="ارسال دوباره کد تایید"
-					className="flex items-center mx-auto hover:text-primary gap-1 md:gap-1.5 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-gray-300 group mt-2 mb-3 md:mb-4 duration-200 active:scale-95"
+					className="flex items-center mx-auto hover:text-primary gap-1 md:gap-1.5 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-muted group mt-2 mb-3 md:mb-4 duration-200 active:scale-95"
 				>
 					<span className="transition-all duration-200 group-hover:scale-105">
 						ارسال دوباره کد؟
@@ -233,7 +246,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					resetErrors()
 				}}
 				aria-label="بازگشت به صفحه ایمیل"
-				className="flex items-center mx-auto gap-1 md:gap-1.5 my-2.5 md:my-3 text-xs md:text-sm font-medium cursor-pointer group text-gray-400 hover:text-primary hover:bg-base-200 px-3 py-1.5 rounded-lg duration-200 active:scale-95"
+				className="flex items-center mx-auto gap-1 md:gap-1.5 my-2.5 md:my-3 text-xs md:text-sm font-medium cursor-pointer group text-muted hover:text-primary hover:bg-base-200 px-3 py-1.5 rounded-lg duration-200 active:scale-95"
 			>
 				<FiArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:translate-x-1 group-hover:scale-110" />
 				<span className="transition-all duration-200 group-hover:scale-105">

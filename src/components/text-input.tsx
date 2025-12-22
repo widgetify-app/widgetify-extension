@@ -27,6 +27,7 @@ interface TextInputProps {
 	size?: TextInputSize
 	min?: number
 	max?: number
+	autoComplete?: 'on' | 'off'
 }
 
 const sizes: Record<TextInputSize, string> = {
@@ -56,6 +57,7 @@ export const TextInput = memo(function TextInput({
 	size = TextInputSize.MD,
 	min,
 	max,
+	autoComplete = 'off',
 }: TextInputProps) {
 	const [localValue, setLocalValue] = useState(value)
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -119,7 +121,7 @@ export const TextInput = memo(function TextInput({
                font-light ${className}`}
 			onChange={handleChange}
 			maxLength={maxLength}
-			autoComplete="off"
+			autoComplete={autoComplete}
 			min={min}
 			max={max}
 		/>

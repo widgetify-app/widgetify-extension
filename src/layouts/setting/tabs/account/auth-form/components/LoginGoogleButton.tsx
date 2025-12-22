@@ -79,8 +79,7 @@ export default function LoginGoogleButton() {
 			type="button"
 			onClick={loginGoogle}
 			disabled={isLoading}
-			aria-label="ورود با گوگل"
-			className="group px-4 md:px-8 py-2.5 md:py-3 rounded-lg md:rounded-xl text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full flex items-center justify-center border-2 border-content bg-content hover:bg-base-200 transition-all duration-200 gap-1.5 md:gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 disabled:active:scale-100"
+			className="group px-4 md:px-8 py-2.5 md:py-3 rounded-2xl text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full flex items-center justify-center border-2 border-content bg-content hover:bg-base-200 transition-all duration-200 gap-1.5 md:gap-2 cursor-pointer active:scale-95"
 		>
 			<div className="relative flex items-center justify-center flex-shrink-0">
 				{isLoading ? (
@@ -90,7 +89,7 @@ export default function LoginGoogleButton() {
 						src="https://cdn.widgetify.ir/sites/google.png"
 						alt=""
 						aria-hidden="true"
-						className="w-4 h-4 md:w-5 md:h-5 transition-all duration-200 group-hover:scale-110 group-hover:rotate-3"
+						className="w-4 h-4 transition-all duration-200 md:w-5 md:h-5 group-hover:scale-110 group-hover:rotate-3"
 					/>
 				)}
 			</div>

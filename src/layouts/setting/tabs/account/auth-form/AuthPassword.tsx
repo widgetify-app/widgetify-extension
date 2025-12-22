@@ -12,15 +12,17 @@ import { isEmail, isEmpty, isLessThan } from '@/utils/validators'
 export default function AuthPassword() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [error, setError] = useState<{ email: string | null; password: string | null }>(
-		{ email: null, password: null }
-	)
+	const [error, setError] = useState<{
+		email: string | null
+		password: string | null
+		api: string | null
+	}>({ email: null, password: null, api: null })
 
 	const { login } = useAuth()
 	const { mutateAsync: signInMutation, isPending } = useSignIn()
 
 	const resetErrors = () => {
-		setError({ email: null, password: null })
+		setError({ email: null, password: null, api: null })
 	}
 
 	const validateInputs = () => {
@@ -54,26 +56,40 @@ export default function AuthPassword() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		resetErrors()
-
-		// try {
-		// 	const response = await signInMutation({
-		// 		email,
-		// 		password,
-		// 	})
-		// 	login(response.data)
-		// 	Analytics.event('sign_in')
-		// } catch (err) {
-		// 	const content = translateError(err)
-		// 	if (typeof content === 'string') {
-		// 		setError(content)
-		// 	} else {
-		// 		if (Object.keys(content).length === 0) {
-		// 			setError('خطا در ورود. لطفاً دوباره تلاش کنید.')
-		// 			return
-		// 		}
-		// 		setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
-		// 	}
-		// }
+		validateInputs()
+		try {
+			const response = await signInMutation({
+				email,
+				password,
+			})
+			console.log('Sign-in response:', response)
+			login(response.data)
+			Analytics.event('sign_in')
+		} catch (err) {
+			const content = translateError(err)
+			console.log('Sign-in error content:', content)
+			if (typeof content === 'string') {
+				setError({
+					email: null,
+					password: null,
+					api: content,
+				})
+			} else {
+				if (Object.keys(content).length === 0) {
+					setError({
+						email: null,
+						password: null,
+						api: 'خطای ناشناخته رخ داد. لطفا دوباره تلاش کنید.',
+					})
+					return
+				}
+				setError({
+					email: content.email,
+					password: content.password,
+					api: null,
+				})
+			}
+		}
 	}
 
 	return (
@@ -81,12 +97,12 @@ export default function AuthPassword() {
 			<header className="flex items-center gap-2.5 md:gap-3">
 				<div
 					aria-hidden="true"
-					className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-primary/10 flex-shrink-0"
+					className="flex items-center justify-center flex-shrink-0 rounded-lg w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
 				>
 					<FiLock className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 				</div>
 				<div>
-					<h3 className="text-base md:text-lg font-semibold text-content">
+					<h3 className="text-base font-semibold md:text-lg text-content">
 						ورود با رمز عبور
 					</h3>
 					<p className="text-xs md:text-sm text-muted mt-0.5">
@@ -95,9 +111,15 @@ export default function AuthPassword() {
 				</div>
 			</header>
 
+			{error.api && (
+				<div className="mt-2 px-4 py-2.5 md:py-3 bg-error/10 text-error border-error/20 rounded-2xl">
+					{error.api}
+				</div>
+			)}
+
 			<form
 				onSubmit={handleSubmit}
-				className="flex flex-col gap-3 md:gap-4 mt-4 md:mt-5"
+				className="flex flex-col gap-3 mt-4 md:gap-4 md:mt-5"
 			>
 				<div>
 					<label
@@ -116,6 +138,7 @@ export default function AuthPassword() {
 						placeholder="example@email.com"
 						disabled={isPending}
 						className="w-full !py-2.5 md:!py-3.5"
+						autoComplete="on"
 					/>
 					<InputTextError message={error.email} />
 				</div>
@@ -146,7 +169,7 @@ export default function AuthPassword() {
 					loading={isPending}
 					isPrimary={true}
 					size="md"
-					className="flex items-center justify-center w-full py-2.5 md:py-3 text-sm md:text-base text-white transition-all duration-200 rounded-xl md:rounded-2xl font-medium shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+					className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
 				>
 					{isPending ? 'درحال پردازش...' : 'ورود به حساب'}
 				</Button>
