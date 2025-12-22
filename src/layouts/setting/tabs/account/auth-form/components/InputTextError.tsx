@@ -9,9 +9,9 @@ const InputTextError: React.FC<InputTextErrorProps> = ({ message, className }) =
 	const hasError = Boolean(message)
 
 	const classes = twMerge(
-		'mt-1.5 text-xs md:text-sm text-red-500 flex items-center gap-1.5 min-h-[20px] transition-all duration-300 ease-in-out overflow-hidden',
+		'text-xs text-red-500 flex items-center gap-1.5  transition-all duration-300  ease-in-out overflow-hidden',
 		hasError
-			? 'opacity-100 translate-y-0'
+			? 'opacity-100 translate-y-0 mt-1 min-h-[20px]'
 			: 'opacity-0 -translate-y-1 pointer-events-none',
 		className
 	)

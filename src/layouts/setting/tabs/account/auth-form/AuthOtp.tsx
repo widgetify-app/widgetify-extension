@@ -5,7 +5,7 @@ import { Button } from '@/components/button/button'
 import { useRequestOtp, useVerifyOtp } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
-import { isEmpty, isEmail } from '@/utils/validators'
+import { isEmpty, isEmail, isLessThan } from '@/utils/validators'
 import InputTextError from './components/InputTextError'
 import OtpInput from './components/OtpInput'
 
@@ -17,33 +17,49 @@ type AuthOtpProps = {
 const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 	const { login } = useAuth()
 	const [email, setEmail] = useState('')
-	const [otp, setOtp] = useState(['', '', '', '', '', ''])
+	const [otp, setOtp] = useState('')
 
-	const [error, setError] = useState<string | null>(null)
+	const [error, setError] = useState<{
+		email: string | null
+		otp: string | null
+		api: string | null
+	}>({ email: null, otp: null, api: null })
+
+	const resetErrors = () => {
+		setError({ email: null, otp: null, api: null })
+	}
+
 	const { mutateAsync: requestOtp, isPending } = useRequestOtp()
 	const { mutateAsync: verifyOtp } = useVerifyOtp()
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const validateInputs = async (e: React.FormEvent) => {
 		e.preventDefault()
-		setError(null)
+		resetErrors()
+
 		if (step === 'enter-email') {
-			if (isEmpty(email)) {
-				setError('لطفاً ایمیل خود را وارد کنید.')
-				return
-			}
+			// Email validation
+			if (isEmpty(email))
+				return setError((prev) => ({
+					...prev,
+					email: 'لطفاً ایمیل خود را وارد کنید.',
+				}))
 
-			if (!isEmail(email)) {
-				setError('لطفاً یک ایمیل معتبر وارد کنید.')
-				return
-			}
+			if (!isEmail(email))
+				return setError((prev) => ({
+					...prev,
+					email: 'لطفاً یک ایمیل معتبر وارد کنید.',
+				}))
 
-			await onSendOtp()
+			onSendOtp()
 		} else if (step === 'enter-otp') {
-			if (isEmpty(otp.join(''))) {
-				setError('لطفا کد ارسال شده را وارد کنید.')
-				return
-			}
-			await onVerifyOtp()
+			// OTP validation
+			if (isEmpty(otp) || isLessThan(otp, 6))
+				return setError((prev) => ({
+					...prev,
+					otp: 'لطفا کد ارسال شده را وارد کنید.',
+				}))
+
+			onVerifyOtp()
 		}
 	}
 
@@ -53,35 +69,36 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			setStep('enter-otp')
 		} catch (err: any) {
 			const content = translateError(err)
-			if (typeof content === 'string') {
-				setError(content)
-			} else {
-				if (Object.keys(content).length === 0) {
-					setError('خطا در ورود. لطفاً دوباره تلاش کنید.')
-					return
-				}
-				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
-			}
+			console.log(content)
+			// if (typeof content === 'string') {
+			// 	setError((prev) => ({ ...prev, api: content }))
+			// } else {
+			// 	if (Object.keys(content).length === 0) {
+			// 		setError('خطا در ورود. لطفاً دوباره تلاش کنید.')
+			// 		return
+			// 	}
+			// 	setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
+			// }
 		}
 	}
 
 	const onVerifyOtp = async () => {
-		try {
-			setError(null)
-			const response = await verifyOtp({ email, code: otp.join('') })
-			login(response.data)
-		} catch (err: any) {
-			const content = translateError(err)
-			if (typeof content === 'string') {
-				setError(content)
-			} else {
-				if (Object.keys(content).length === 0) {
-					setError('کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.')
-					return
-				}
-				setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
-			}
-		}
+		// try {
+		// 	setError(null)
+		// 	const response = await verifyOtp({ email, code: otp })
+		// 	login(response.data)
+		// } catch (err: any) {
+		// 	const content = translateError(err)
+		// 	if (typeof content === 'string') {
+		// 		setError(content)
+		// 	} else {
+		// 		if (Object.keys(content).length === 0) {
+		// 			setError('کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.')
+		// 			return
+		// 		}
+		// 		setError(`${Object.keys(content)[0]}: ${Object.values(content)[0]}`)
+		// 	}
+		// }
 	}
 
 	if (step === 'enter-email')
@@ -94,13 +111,20 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					>
 						<FiAtSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 					</div>
-
-					<h4 className="text-base md:text-lg font-semibold text-content">
-						ورود یا ثبت‌نام با ایمیل
-					</h4>
+					<div>
+						<h3 className="text-base md:text-lg font-semibold text-content">
+							ورود یا ثبت‌نام با ایمیل
+						</h3>
+						<p className="text-xs md:text-sm text-muted mt-0.5">
+							کد تایید به ایمیل شما ارسال می‌شود.
+						</p>
+					</div>
 				</header>
 
-				<form onSubmit={handleSubmit} className="mt-4 md:mt-5">
+				<form
+					onSubmit={validateInputs}
+					className="flex flex-col gap-3 md:gap-4 mt-4 md:mt-5"
+				>
 					<div>
 						<label
 							htmlFor="email"
@@ -119,19 +143,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							disabled={isPending}
 							className="w-full !py-2.5 md:!py-3.5"
 						/>
-						<InputTextError message={error} />
-					</div>{' '}
-					<div className="bg-primary/10 border border-primary/30 rounded-lg md:rounded-xl p-2 md:p-2.5 my-4 md:my-5">
-						<p className="text-muted text-xs md:text-sm flex items-center gap-1.5 leading-relaxed">
-							<span
-								className="text-primary text-base md:text-lg flex-shrink-0"
-								role="img"
-								aria-label="اطلاعات"
-							>
-								ℹ️
-							</span>
-							<span>کد تایید به ایمیل شما ارسال می‌شود.</span>
-						</p>
+						<InputTextError message={error.email} />
 					</div>
 					<Button
 						type="submit"
@@ -176,7 +188,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				</div>
 			</header>
 
-			<form onSubmit={handleSubmit} className="mt-4 md:mt-5">
+			<form onSubmit={validateInputs} className="mt-4 md:mt-5">
 				<div>
 					<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-content text-center">
 						کد تایید
@@ -185,10 +197,9 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					<OtpInput
 						otp={otp}
 						setOtp={setOtp}
-						error={error}
-						setError={setError}
+						isError={!!error.otp || !!error.api}
 					/>
-					<InputTextError message={error} className="justify-center" />
+					<InputTextError message={error.otp} className="justify-center" />
 				</div>{' '}
 				<button
 					type="button"
@@ -206,7 +217,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					isPrimary={true}
 					size="md"
 					className="relative flex items-center justify-center w-full py-2.5 md:py-3 text-sm md:text-base font-semibold transition-all duration-200 shadow text-white group rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
-					disabled={otp.join('').length !== 6}
+					disabled={otp.length !== 6}
 				>
 					<span className="transition-transform duration-200 group-hover:scale-105">
 						تایید کد
@@ -218,8 +229,8 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				type="button"
 				onClick={() => {
 					setStep('enter-email')
-					setOtp(['', '', '', '', '', ''])
-					setError(null)
+					setOtp('')
+					resetErrors()
 				}}
 				aria-label="بازگشت به صفحه ایمیل"
 				className="flex items-center mx-auto gap-1 md:gap-1.5 my-2.5 md:my-3 text-xs md:text-sm font-medium cursor-pointer group text-gray-400 hover:text-primary hover:bg-base-200 px-3 py-1.5 rounded-lg duration-200 active:scale-95"

@@ -1,12 +1,15 @@
 import LoginGoogleButton from './LoginGoogleButton'
 import LoginPasswordButton from './LoginPasswordButton'
+import LoginOtpButton from './LoginOtpButton'
 
 type OtherOptionsContainerProps = {
 	setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>
+	showPasswordForm: boolean
 }
 
 const OtherOptionsContainer: React.FC<OtherOptionsContainerProps> = ({
 	setShowPasswordForm,
+	showPasswordForm,
 }) => {
 	return (
 		<div className="space-y-3 md:space-y-4">
@@ -23,7 +26,11 @@ const OtherOptionsContainer: React.FC<OtherOptionsContainerProps> = ({
 				</div>
 			</div>
 			<div className="flex flex-col sm:flex-row items-stretch gap-2 md:gap-3">
-				<LoginPasswordButton setShowPasswordForm={setShowPasswordForm} />
+				{showPasswordForm ? (
+					<LoginOtpButton setShowPasswordForm={setShowPasswordForm} />
+				) : (
+					<LoginPasswordButton setShowPasswordForm={setShowPasswordForm} />
+				)}
 				<LoginGoogleButton />
 			</div>
 		</div>
