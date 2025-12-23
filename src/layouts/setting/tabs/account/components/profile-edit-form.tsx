@@ -73,8 +73,8 @@ export const ProfileEditForm = ({
 			birthdate: profile?.birthDate || '',
 			avatar: null,
 			username: profile?.username || null,
-			occupation: profile?.occupation || null,
-			interests: profile?.interests || [],
+			occupation: profile?.occupation?.id || null,
+			interests: profile?.interests.map((i) => i.id) || [],
 		})
 	}, [profile])
 

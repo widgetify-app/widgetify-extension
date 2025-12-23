@@ -34,8 +34,15 @@ interface FetchedProfile {
 		id: string
 	}
 
-	occupation: string
-	interests: string[]
+	occupation: {
+		id: string
+		label: string
+	}
+	interests: Array<{
+		id: string
+		label: string
+	}>
+	joinedAt: string
 }
 
 export interface UserProfile extends FetchedProfile {
