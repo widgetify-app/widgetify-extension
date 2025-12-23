@@ -93,7 +93,7 @@ export default function LoginGoogleButton() {
 					/>
 				)}
 			</div>
-			<span className="transition-all duration-200 group-hover:scale-105 whitespace-nowrap">
+			<span className="transition-all duration-200 group-hover:scale-105 whitespace-nowrap text-muted hover:text-content!">
 				{isLoading ? 'درحال پردازش...' : 'ورود با گوگل'}
 			</span>
 		</button>
