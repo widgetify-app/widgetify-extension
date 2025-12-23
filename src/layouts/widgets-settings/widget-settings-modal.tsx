@@ -89,16 +89,17 @@ export function WidgetSettingsModal({
 				tabOwner="widgets-settings"
 				defaultTab={selectedTab || WidgetTabKeys.widget_management}
 				direction="rtl"
-			/>
-			<button
-				className={`relative  items-center hidden md:flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
-				onClick={() => {
-					onClickSettings()
-				}}
 			>
-				<VscSettings size={20} className="text-muted" />
-				<span className="text-sm font-light">تنظیمات</span>
-			</button>
+				<button
+					className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+					onClick={() => {
+						onClickSettings()
+					}}
+				>
+					<VscSettings size={20} className="text-muted" />
+					<span className="text-sm font-light">تنظیمات</span>
+				</button>
+			</TabManager>
 		</Modal>
 	)
 }

@@ -13,6 +13,7 @@ import { useReorderTodos } from '@/services/hooks/todo/reorder-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
+import { playAlarm } from '@/common/playAlarm'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -46,6 +47,7 @@ interface TodoContextType {
 	clearCompleted: (date?: string) => void
 	updateOptions: (options: Partial<TodoOptions>) => void
 	reorderTodos: (todos: Todo[]) => Promise<void>
+	isPending: boolean
 }
 
 const TodoContext = createContext<TodoContextType | null>(null)
@@ -57,9 +59,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		viewMode: TodoViewType.All,
 	})
 
-	const { data: fetchedTodos, refetch } = useGetTodos(isAuthenticated)
-	const { mutateAsync: addTodoAsync } = useAddTodo()
-	const { mutateAsync: updateTodoAsync } = useUpdateTodo()
+	const { data: fetchedTodos, refetch, isPending } = useGetTodos(isAuthenticated)
+	const { mutateAsync: addTodoAsync, isPending: isAdding } = useAddTodo()
+	const { mutateAsync: updateTodoAsync, isPending: isUpdating } = useUpdateTodo()
 	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
 	const didLoadInitialOptions = useRef(false)
@@ -198,12 +200,12 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				'error'
 			)
 		}
-
+		const isCompleted = !current.completed
 		const [err, _] = await safeAwait(
 			updateTodoAsync({
 				id: onlineId,
 				input: {
-					completed: !current.completed,
+					completed: isCompleted,
 				},
 			})
 		)
@@ -212,9 +214,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			showToast(translateError(err) as string, 'error')
 			return
 		}
-
 		refetch()
 		Analytics.event('todo_toggled')
+		if (isCompleted) playAlarm('done_todo')
 	}
 
 	const updateTodo = async (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
@@ -309,6 +311,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				todoOptions,
 				reorderTodos,
 				refetchTodos: refetch,
+				isPending: isPending || isAdding || isUpdating,
 			}}
 		>
 			{children}

@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import {
 	RiBug2Line,
-	RiInformationLine,
-	RiStarLine,
+	RiCheckboxCircleLine,
 	RiThumbUpLine,
-	RiToolsLine,
+	RiSparklingLine,
+	RiCompassDiscoverLine,
 } from 'react-icons/ri'
-import { ConfigKey } from '@/common/constant/config.key'
 import { Button } from './button/button'
 import Modal from './modal'
 
@@ -23,83 +22,49 @@ type ReleaseNote = {
 	media?: MediaContent[]
 }
 
-const VERSION_NAME = ConfigKey.VERSION_NAME
+const VERSION_NAME = 'نسخه یلدا 🍉'
+
 const releaseNotes: ReleaseNote[] = [
 	{
-		title: 'رفع مشکل عدم ذخیره سازی وظایف',
+		title: 'ویرایش وظایف',
+		type: 'feature',
+		description:
+			'بالاخره اضافه شد! دیگه لازم نیست برای یه تغییر کوچیک، کل تسک رو پاک کنی و از اول بنویسی.',
+	},
+	{
+		title: 'برنامه‌ریزی دقیق‌تر',
+		type: 'feature',
+		description:
+			'حالا می‌تونی برای کارهات تاریخ و میزان اهمیت (اولویت) تعیین کنی تا هیچ چیزی یادت نره.',
+	},
+	{
+		title: 'انتخاب راحت‌تر شهر',
+		type: 'improvement',
+		description:
+			'بخش آب‌وهوا رو جوری ردیف کردیم که خیلی سریع‌تر و راحت‌تر بتونی شهرت رو پیدا کنی.',
+	},
+	{
+		title: 'خوشگل‌سازی منو',
+		type: 'improvement',
+		description:
+			'منوی دسترسی پایین رو کمی دست‌کاری کردیم تا هم خوشگل‌تر بشه و هم کار کردن باهاش حال بده.',
+	},
+	{
+		title: 'آب‌وهوای خلوت‌تر',
+		type: 'improvement',
+		description:
+			'ویجت آب‌وهوا رو ساده کردیم تا فقط چیزایی که لازمه رو در یک نگاه ببینی.',
+	},
+	{
+		title: 'بهبود فیلترهای صوتی',
+		type: 'improvement',
+		description:
+			'بخش فیلترها و صداهای لیست وظایف رو بهینه کردیم تا حس بهتری موقع کار داشته باشی.',
+	},
+	{
+		title: 'خداحافظی با فضای خالی',
 		type: 'bugfix',
-		description:
-			'مشکل عدم ذخیره‌سازی وظایف در ویجت تسک‌لیست برطرف شد. حالا می‌تونید با خیال راحت وظایف‌تون رو اضافه و مدیریت کنید.',
-	},
-	{
-		title: 'ثبت حال روزانــه در تقویم!',
-		type: 'feature',
-		description:
-			'از حالا می‌تونید در ویجت تقویم، حال روزتون رو ثبت کنید. یک نگاه کافی‌ست تا ببینید روزها با چه حالی گذشتند.',
-	},
-	{
-		title: 'بوکمارک‌ها',
-		type: 'bugfix',
-		description: 'مشکل همگام‌سازی بوکمارک‌ها برطرف شد و حالا بدون خطا کار می‌کند.',
-	},
-	{
-		title: 'حیوان خانگی',
-		type: 'bugfix',
-		description: 'مشکل غیرفعال کردن حیوان خانگی برطرف شد — الان کاملاً درست عمل می‌کنه',
-	},
-	{
-		title: 'بهبود تجربه کاربری',
-		type: 'improvement',
-		description: 'چند تغییر ظاهری برای بهتر و تمیزتر شدن رابط کاربری اعمال کردیم ✨',
-	},
-
-	{
-		title: 'بهبود عملکرد',
-		type: 'improvement',
-		description: 'بهبود عملکرد کلی افزونه.',
-	},
-	{
-		title: 'معرفی ویج‌کوین - ارز داخلی ویجتیفای',
-		type: 'feature',
-		media: [
-			{
-				type: 'image',
-				url: 'https://cdn.widgetify.ir/extension/wig-banner.png',
-				caption: 'ویج‌کوین، ارز داخلی ویجتیفای',
-			},
-		],
-		description:
-			'ویج‌کوین، ارز اختصاصی ویجتیفای معرفی شد! حالا می‌توانید با انجام فعالیت‌های مختلف ویج‌کوین جمع‌آوری کنید و آن‌ها را برای خرید محتوای پریمیوم استفاده کنید.',
-	},
-	{
-		title: 'سیستم پاداش‌دهی و ماموریت‌ها',
-		type: 'feature',
-		description:
-			'سیستم پاداش‌دهی جدید با ماموریت‌های مختلف اضافه شد. با تکمیل ماموریت‌ها ویج‌کوین دریافت کنید و از امکانات ویژه استفاده کنید.',
-	},
-	{
-		title: 'دعوت دوستان با کد اختصاصی',
-		type: 'feature',
-		description:
-			'اکنون می‌توانید با استفاده از کد دعوت مخصوص خود، دوستان‌تان را به ویجتیفای دعوت کنید و در ازای هر دعوت موفق، ویج‌کوین پاداش بگیرید.',
-	},
-	{
-		title: 'فروشگاه والپیپر در گالری',
-		type: 'feature',
-		description:
-			'فروشگاه جدید در قسمت گالری اضافه شد! حالا می‌توانید با ویج‌کوین‌های جمع‌آوری شده، والپیپرهای پریمیوم و اختصاصی خریداری کنید.',
-	},
-	{
-		title: 'بهبود رابط کاربری',
-		type: 'improvement',
-		description:
-			'بهبود‌های گسترده در طراحی و رابط کاربری قسمت‌های مختلف ویجتیفای، شامل پروفایل کاربری، تنظیمات حساب کاربری و صفحات مختلف.',
-	},
-	{
-		title: 'بهبود عملکرد و پایداری',
-		type: 'improvement',
-		description:
-			'بهبود عملکرد کلی افزونه، رفع مشکلات گزارش شده و افزایش پایداری سیستم برای تجربه کاربری بهتر.',
+		description: 'اون فضای خالی و اضافه پایین پنجره‌ها که رو مخ بود رو کلاً حذف کردیم.',
 	},
 ]
 
@@ -134,197 +99,97 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}, [isOpen])
 
-	const getTypeIcon = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
-		switch (type) {
+	const getTypeIcon = (note: ReleaseNote) => {
+		switch (note.type) {
 			case 'feature':
-				return <RiStarLine className="text-blue-500" size={18} />
+				return <RiSparklingLine className="text-primary" size={18} />
 			case 'bugfix':
 				return <RiBug2Line className="text-red-500" size={18} />
 			case 'improvement':
-				return <RiToolsLine className="text-green-500" size={18} />
-			case 'info':
-				return <RiInformationLine className="text-purple-500" size={18} />
-		}
-	}
-
-	const getTypePriority = (
-		type: 'feature' | 'bugfix' | 'improvement' | 'info'
-	): number => {
-		switch (type) {
-			case 'feature':
-				return 1
-			case 'improvement':
-				return 2
-			case 'bugfix':
-				return 3
-			case 'info':
-				return 4
+				return <RiCheckboxCircleLine className="text-green-500" size={18} />
 			default:
-				return 5
+				return <RiSparklingLine className="text-muted" size={18} />
 		}
-	}
-
-	const getTypeLabel = (type: 'feature' | 'bugfix' | 'improvement' | 'info') => {
-		switch (type) {
-			case 'feature':
-				return 'ویژگی جدید'
-			case 'bugfix':
-				return 'رفع اشکال'
-			case 'improvement':
-				return 'بهبود'
-			case 'info':
-				return 'اطلاعات'
-			default:
-				return ''
-		}
-	}
-
-	const renderMedia = (media: MediaContent) => {
-		if (media.type === 'image') {
-			return (
-				<div className="my-2 overflow-hidden rounded-lg shadow-md">
-					<img
-						src={media.url}
-						alt={media.caption || 'تصویر بروزرسانی'}
-						className="object-contain w-full h-auto"
-						loading="lazy"
-					/>
-					{media.caption && (
-						<p className="p-2 text-xs text-center text-muted bg-content/30">
-							{media.caption}
-						</p>
-					)}
-				</div>
-			)
-		} else if (media.type === 'video') {
-			return (
-				<div className="my-2 overflow-hidden rounded-lg shadow-md">
-					<div className="relative">
-						<video
-							controls
-							className="w-full h-auto"
-							poster="/assets/video-poster.png"
-							aria-label={media.caption || 'ویدیو بروزرسانی'}
-						>
-							<source src={media.url} type="video/mp4" />
-							<track
-								kind="captions"
-								src="/assets/captions.vtt"
-								label="فارسی"
-								srcLang="fa"
-								default
-							/>
-							مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
-						</video>
-					</div>
-					{media.caption && (
-						<p className="p-2 text-xs text-center text-muted bg-content/30">
-							{media.caption}
-						</p>
-					)}
-				</div>
-			)
-		}
-		return null
 	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'آپدیت جدید نصب شد 🎉'}
+			title={'آپدیت جدید رسید'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 			showCloseButton={false}
 		>
-			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				<div className="flex flex-col items-center mb-2 text-center">
-					<h2
-						className={'text-2xl font-bold mb-2 text-content animate-fade-in'}
-						style={{ animationDelay: '0.1s' }}
-					>
-						{VERSION_NAME}
-					</h2>
-					<div className="w-16 h-1 mb-2 bg-blue-500 rounded-full"></div>
-					<img
-						src={'https://cdn.widgetify.ir/extension/user-moods.png'}
-						alt={'تصویر بروزرسانی'}
-						className="object-contain w-full h-auto rounded-2xl"
-						loading="lazy"
-					/>
-				</div>
-
-				<div className="flex flex-col h-64 gap-2">
-					{releaseNotes.map((note, index) => (
-						<article
-							key={index}
-							className="pb-4 border-b blog-post border-content animate-fade-in animate-slide-up"
-							style={{ animationDelay: `${0.2 + index * 0.1}s` }}
-						>
-							<div className="flex items-start justify-between mb-3">
-								<h3 className="text-xl font-bold text-content">
-									{note.title}
-								</h3>
-								<span
-									className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${getTypePriority(note.type)}`}
-								>
-									{getTypeIcon(note.type)}
-									<span className="mr-1">
-										{getTypeLabel(note.type)}
-									</span>
-								</span>
-							</div>
-
-							<div className="mt-2">
-								<p className="leading-relaxed text-justify text-muted">
-									{note.description}
-								</p>
-							</div>
-
-							{note.media && note.media.length > 0 && (
-								<div className="media-container">
-									{note.media.map((mediaItem, mediaIndex) => (
-										<div key={mediaIndex}>
-											{renderMedia(mediaItem)}
-										</div>
-									))}
-								</div>
-							)}
-						</article>
-					))}
-					<div
-						className="flex items-center justify-center p-4 mt-2 rounded-lg animate-fade-in bg-content/10"
-						style={{ animationDelay: '0.6s' }}
-					>
-						<div className="flex items-center">
-							<RiThumbUpLine className="ml-2 text-blue-500" size={20} />
-							<p className="text-sm text-muted">
-								از اینکه ویجتی‌فای را انتخاب کرده‌اید سپاسگزاریم 💙
+			<div className="flex flex-col max-h-[80vh]">
+				<div className="flex flex-col gap-1 p-4 border-b border-base-300/20 bg-base-200/20">
+					<div className="flex items-center justify-between">
+						<div className="flex flex-col italic">
+							<h2 className="text-3xl font-black text-content">
+								{VERSION_NAME}
+							</h2>
+							<p className="mt-1 text-xs font-medium text-muted opacity-60">
+								تغییرات جدید برای طولانی‌ترین شب سال
 							</p>
+						</div>
+						<div className="p-2 border rounded-2xl bg-base-200/50 text-primary border-base-300/20">
+							<RiCompassDiscoverLine size={24} />
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div className="flex items-center justify-between p-4 border-t border-content">
-				<a
-					href="https://feedback.widgetify.ir"
-					target="_blank"
-					rel="noreferrer"
-					className="text-xs underline transition-colors duration-300 text-muted hover:text-blue-500"
-				>
-					گزارش مشکل / پیشنهاد
-				</a>
-				<Button
-					onClick={onClose}
-					disabled={counter > 0}
-					className="transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] px-5 py-2 rounded-2xl"
-					size="md"
-					isPrimary={true}
-				>
-					شروع استفاده {counter > 0 ? `(${counter})` : ''}
-				</Button>
+				<div className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-none">
+					<div className="flex flex-col gap-1">
+						{releaseNotes.map((note, index) => (
+							<div
+								key={index}
+								className="flex flex-col gap-2 p-4 italic border bg-base-200/10 border-base-300/20 rounded-[2rem] animate-in fade-in slide-in-from-bottom-3"
+								style={{ animationDelay: `${index * 50}ms` }}
+							>
+								<div className="flex items-center justify-between">
+									<div className="flex items-center gap-2">
+										<div className="w-1 h-3 rounded-full bg-primary" />
+										<h3 className="text-xs font-black tracking-wider uppercase text-content">
+											{note.title}
+										</h3>
+									</div>
+									{getTypeIcon(note)}
+								</div>
+								<p className="text-[10px] leading-relaxed text-muted font-light pr-3">
+									{note.description}
+								</p>
+							</div>
+						))}
+					</div>
+
+					<div className="flex items-center justify-center p-6 italic border border-dashed border-base-300/20 rounded-[2rem] opacity-30">
+						<RiThumbUpLine className="ml-2" size={16} />
+						<span className="text-[9px] font-black tracking-widest uppercase">
+							دمت گرم که همراه مایی
+						</span>
+					</div>
+				</div>
+
+				<div className="flex items-center justify-between p-5 border-t border-base-300/10 bg-base-200/40">
+					<a
+						href="https://feedback.widgetify.ir"
+						target="_blank"
+						rel="noreferrer"
+						className="text-[10px] italic font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
+					>
+						پیشنهاد یا گزارش مشکل
+					</a>
+					<Button
+						size="sm"
+						onClick={onClose}
+						disabled={counter > 0}
+						className="min-w-[130px] h-11 !rounded-2xl font-black italic text-[11px] shadow-lg shadow-primary/10 active:scale-90 transition-all"
+						isPrimary={true}
+					>
+						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	)

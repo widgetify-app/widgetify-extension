@@ -1,6 +1,6 @@
 import type React from 'react'
 import { useState } from 'react'
-import { FiChevronDown, FiTrash2 } from 'react-icons/fi'
+import { FiChevronDown, FiTrash2, FiEdit3 } from 'react-icons/fi'
 import { MdDragIndicator } from 'react-icons/md'
 import CustomCheckbox from '@/components/checkbox'
 import { useTodoStore, type TodoPriority } from '@/context/todo.context'
@@ -15,6 +15,8 @@ import { translateError } from '@/utils/translate-error'
 import { validate } from 'uuid'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { parseTodoDate } from './tools/parse-date'
+import { EditTodoModal } from './edit-todo-modal'
 
 interface Prop {
 	todo: Todo
@@ -37,8 +39,9 @@ export function TodoItem({
 }: Prop) {
 	const { toggleTodo, refetchTodos, todos, setTodos } = useTodoStore()
 	const { isAuthenticated } = useAuth()
-	const [expanded, setExpanded] = useState(false)
+	const [expanded, setExpanded] = useState(true)
 	const [showConfirmation, setShowConfirmation] = useState(false)
+	const [showEditModal, setShowEditModal] = useState(false)
 	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
 	const { mutateAsync, isPending } = useRemoveTodo(todo.onlineId || todo.id)
 
@@ -48,6 +51,13 @@ export function TodoItem({
 		if (!isAuthenticated) return showToast('برای حذف وظیفه باید وارد شوید', 'error')
 
 		setShowConfirmation(true)
+	}
+
+	const handleEdit = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		if (!isAuthenticated)
+			return showToast('برای ویرایش وظیفه باید وارد شوید', 'error')
+		setShowEditModal(true)
 	}
 
 	const handleExpand = (e: React.MouseEvent) => {
@@ -180,6 +190,14 @@ export function TodoItem({
 				{/* Actions */}
 				<div className="flex items-center gap-x-1">
 					<button
+						onClick={handleEdit}
+						className={
+							'p-1 rounded-full cursor-pointer hover:bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
+						}
+					>
+						<FiEdit3 size={13} />
+					</button>
+					<button
 						onClick={handleDelete}
 						className={
 							'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
@@ -219,7 +237,11 @@ export function TodoItem({
 						>
 							{translatedPriority[todo.priority as TodoPriority]}
 						</span>
-						<span>{todo.date}</span>
+						<span className="flex-1 text-[10px] text-base-content/50">
+							{parseTodoDate(todo.date)
+								.locale('fa')
+								.format('ddd، jD jMMMM')}
+						</span>
 					</div>
 
 					{/* Notes */}
@@ -234,6 +256,13 @@ export function TodoItem({
 					confirmText={isPending ? <IconLoading /> : 'حذف'}
 					message="آیا از حذف این وظیفه مطمئن هستید؟"
 					variant="danger"
+				/>
+			)}
+			{showEditModal && (
+				<EditTodoModal
+					todo={todo}
+					isOpen={showEditModal}
+					onClose={() => setShowEditModal(false)}
 				/>
 			)}
 		</div>

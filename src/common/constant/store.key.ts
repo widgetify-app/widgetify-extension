@@ -1,5 +1,4 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
-import type { SelectedCity } from '@/context/general-setting.context'
 import type { Theme } from '@/context/theme.context'
 import type { TodoOptions } from '@/context/todo.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
@@ -31,7 +30,6 @@ export interface StorageKV {
 	currencies: string[]
 	currencyColorMode: CurrencyColorMode
 	hasShownPwaModal: boolean
-	selectedCity: SelectedCity | null
 	currentWeather: FetchedWeather
 	todos: Todo[]
 	wallpaper: StoredWallpaper

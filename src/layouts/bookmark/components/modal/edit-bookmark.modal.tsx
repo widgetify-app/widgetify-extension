@@ -223,7 +223,7 @@ export function EditBookmarkModal({
 							size="md"
 							disabled={isUpdating}
 							className={
-								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
+								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none !rounded-2xl transition-colors duration-300 ease-in-out'
 							}
 						>
 							لغو
@@ -239,7 +239,7 @@ export function EditBookmarkModal({
 							isPrimary={true}
 							loading={isUpdating}
 							className={
-								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
+								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary !rounded-2xl transition-colors duration-300 ease-in-out'
 							}
 						>
 							ذخیره

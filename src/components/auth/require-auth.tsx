@@ -73,7 +73,12 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				<p className={'text-xs mb-4 text-content text-center'}>
 					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
 				</p>
-				<Button onClick={handleAuthClick} size="sm">
+				<Button
+					onClick={handleAuthClick}
+					size="sm"
+					isPrimary={true}
+					className="btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out"
+				>
 					ورود به حساب
 				</Button>
 			</motion.div>

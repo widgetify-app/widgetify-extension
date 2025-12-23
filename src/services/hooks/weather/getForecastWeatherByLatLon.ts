@@ -4,40 +4,34 @@ import type {
 	FetchedForecast,
 	TemperatureUnit,
 } from '../../../layouts/widgets/weather/weather.interface'
-
-async function fetchForecastWeatherByLatLon(
-	lat: number,
-	lon: number,
-	count?: number,
+interface Options {
+	refetchInterval: number | null
+	count?: number
 	units?: TemperatureUnit
+	enabled: boolean
+	lat?: number
+	lon?: number
+}
+async function fetchForecastWeatherByLatLon(
+	options: Options
 ): Promise<FetchedForecast[]> {
 	const client = await getMainClient()
 
 	const response = await client.get<FetchedForecast[]>('/weather/forecast', {
 		params: {
-			lat,
-			lon,
-			...(count !== null && { count }),
-			...(units !== null && { units }),
+			...(options.count !== null && { count: options.count }),
+			...(options.units !== null && { units: options.units }),
+			...(options.lat !== null && { lat: options.lat }),
+			...(options.lon !== null && { lon: options.lon }),
 		},
 	})
 	return response.data
 }
 
-export function useGetForecastWeatherByLatLon(
-	lat: number,
-	lon: number,
-	options: {
-		refetchInterval: number | null
-		count?: number
-		units?: TemperatureUnit
-		enabled: boolean
-	}
-) {
+export function useGetForecastWeatherByLatLon(options: Options) {
 	return useQuery({
-		queryKey: ['ForecastGetWeatherByLatLon', lat, lon],
-		queryFn: () =>
-			fetchForecastWeatherByLatLon(lat, lon, options.count, options.units),
+		queryKey: ['ForecastGetWeatherByLatLon', options],
+		queryFn: () => fetchForecastWeatherByLatLon(options),
 		refetchInterval: options.refetchInterval || false,
 		enabled: options.enabled,
 	})

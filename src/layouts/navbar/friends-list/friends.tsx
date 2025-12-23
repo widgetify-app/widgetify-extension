@@ -1,30 +1,22 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { FiSettings, FiUserPlus } from 'react-icons/fi'
-import { HiUserGroup } from 'react-icons/hi'
 import { callEvent } from '@/common/utils/call-event'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
-import { Dropdown } from '@/components/dropdown'
-import Tooltip from '@/components/toolTip'
+import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
 import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 import { FriendItem } from './friend.item'
-
-const renderFriendsTrigger = () => (
-	<Tooltip content="دوستان" position="bottom">
-		<div className="relative flex items-center justify-center w-8 h-8 px-1 transition-all duration-300 rounded-full cursor-pointer hover:opacity-80 group hover:bg-primary/10">
-			<HiUserGroup size={18} className="text-muted group-hover:!text-primary" />
-		</div>
-	</Tooltip>
-)
+import { HiUserGroup } from 'react-icons/hi2'
 
 const renderFriendsDropdownContent = (
 	friends: any[],
 	activeProfileId: string | null,
 	setActiveProfileId: (id: string | null) => void,
-	onOpenSettings: () => void
+	onOpenSettings: () => void,
+	setIsOpen: (isOpen: boolean) => void
 ) => (
-	<div className="py-2 bg-content bg-glass">
+	<div className="py-2 bg-content bg-glass min-w-[280px] rounded-2xl">
 		<div className="px-3 pb-2 mb-2 border-b border-content">
 			<div className="flex items-center justify-between">
 				<h3 className="text-sm font-medium">دوستان</h3>
@@ -32,9 +24,9 @@ const renderFriendsDropdownContent = (
 					onClick={(e) => {
 						e.stopPropagation()
 						onOpenSettings()
+						setIsOpen(false)
 					}}
 					className="p-1 transition-colors rounded-md cursor-pointer hover:bg-primary/10 group"
-					title="تنظیمات دوستان"
 				>
 					<FiSettings
 						size={14}
@@ -52,6 +44,7 @@ const renderFriendsDropdownContent = (
 					onClick={(e) => {
 						e.stopPropagation()
 						onOpenSettings()
+						setIsOpen(false)
 					}}
 					className="mt-2 text-xs text-primary hover:underline"
 				>
@@ -82,6 +75,8 @@ export function FriendsList() {
 	const [firstAuth, setFirstAuth] = useState(false)
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
+	const [isOpen, setIsOpen] = useState(false)
+	const triggerRef = useRef<HTMLDivElement>(null)
 
 	const { data: friendsData, refetch: refetchFriends } = useGetFriends({
 		status: 'ACCEPTED',
@@ -111,18 +106,27 @@ export function FriendsList() {
 
 	return (
 		<>
-			<Dropdown
-				trigger={renderFriendsTrigger()}
-				position="bottom-right"
-				width="280px"
+			<div
+				ref={triggerRef}
+				className="relative p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
 			>
-				{renderFriendsDropdownContent(
+				<HiUserGroup size={18} />
+			</div>
+
+			<ClickableTooltip
+				triggerRef={triggerRef}
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				content={renderFriendsDropdownContent(
 					friends,
 					activeProfileId,
 					setActiveProfileId,
-					handleOpenSettings
+					handleOpenSettings,
+					setIsOpen
 				)}
-			</Dropdown>
+				contentClassName="!p-0"
+				closeOnClickOutside={true}
+			/>
 
 			<UserAccountModal
 				isOpen={showSettingsModal}

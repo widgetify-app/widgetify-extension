@@ -4,24 +4,15 @@ import { getMainClient } from '@/services/api'
 import type { FetchedWeather } from '../../../layouts/widgets/weather/weather.interface'
 
 type units = 'standard' | 'metric' | 'imperial'
-async function fetchWeatherByLatLon(
-	lat: number,
-	lon: number,
-	units?: units,
-	useAI?: boolean
-): Promise<FetchedWeather> {
-	if (lat === 0 && lon === 0) {
-		throw new Error('Invalid coordinates')
-	}
-
+async function fetchWeatherByLatLon(op: GetWeatherByLatLon): Promise<FetchedWeather> {
 	const client = await getMainClient()
 
 	const response = await client.get<FetchedWeather>('/weather/current', {
 		params: {
-			lat,
-			lon,
-			units,
-			useAI,
+			lat: op.lat,
+			lon: op.lon,
+			units: op.units,
+			useAI: op.useAI,
 		},
 	})
 	return response.data
@@ -32,15 +23,13 @@ type GetWeatherByLatLon = {
 	useAI?: boolean
 	refetchInterval: number | null
 	enabled: boolean
+	lat?: number
+	lon?: number
 }
-export function useGetWeatherByLatLon(
-	lat: number,
-	lon: number,
-	options: GetWeatherByLatLon
-) {
+export function useGetWeatherByLatLon(options: GetWeatherByLatLon) {
 	return useQuery({
-		queryKey: ['getWeatherByLatLon', lat, lon],
-		queryFn: () => fetchWeatherByLatLon(lat, lon, options.units, options.useAI),
+		queryKey: ['getWeatherByLatLon', options],
+		queryFn: () => fetchWeatherByLatLon(options),
 		refetchInterval: options?.refetchInterval || false,
 		enabled: options.enabled,
 		staleTime: ms('5m'),

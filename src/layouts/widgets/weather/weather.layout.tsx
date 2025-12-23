@@ -1,41 +1,49 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import type {
 	FetchedForecast,
 	FetchedWeather,
 	WeatherSettings,
 } from '@/layouts/widgets/weather/weather.interface'
-import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { WidgetContainer } from '../widget-container'
 import { Forecast } from './forecast/forecast'
 import { CurrentWeatherBox } from './current/current-box.weather'
+import { useAuth } from '@/context/auth.context'
+import { RequireAuth } from '@/components/auth/require-auth'
+import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
+import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
 
 export function WeatherLayout() {
-	const { selectedCity } = useGeneralSetting()
+	const { isAuthenticated, user } = useAuth()
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
 	const [weatherState, setWeather] = useState<FetchedWeather | null>(null)
 	const [forecastWeather, setForecastWeather] = useState<FetchedForecast[] | null>(null)
-	const { data, dataUpdatedAt } = useGetWeatherByLatLon(
-		selectedCity.lat,
-		selectedCity.lon,
-		{
-			refetchInterval: 0,
-			units: weatherSettings?.temperatureUnit,
-			useAI: weatherSettings?.useAI,
-			enabled: !!weatherSettings,
-		}
-	)
+	const {
+		data,
+		dataUpdatedAt,
+		refetch: refetchWeather,
+	} = useGetWeatherByLatLon({
+		refetchInterval: 0,
+		units: weatherSettings?.temperatureUnit,
+		useAI: weatherSettings?.useAI,
+		lat: user?.city?.id ? undefined : 35.696111,
+		lon: user?.city?.id ? undefined : 51.423056,
+		enabled: isAuthenticated,
+	})
 
-	const { data: forecastData, dataUpdatedAt: forecastDataUpdatedAt } =
-		useGetForecastWeatherByLatLon(selectedCity.lat, selectedCity.lon, {
-			count: 6,
-			units: weatherSettings?.temperatureUnit,
-			enabled: !!weatherSettings,
-			refetchInterval: 0,
-		})
+	const {
+		data: forecastData,
+		dataUpdatedAt: forecastDataUpdatedAt,
+		refetch: refetchForecast,
+	} = useGetForecastWeatherByLatLon({
+		count: 6,
+		units: weatherSettings?.temperatureUnit,
+		enabled: isAuthenticated,
+		refetchInterval: 0,
+		lat: user?.city?.id ? undefined : 35.696111,
+		lon: user?.city?.id ? undefined : 51.423056,
+	})
 
 	useEffect(() => {
 		async function load() {
@@ -93,25 +101,32 @@ export function WeatherLayout() {
 		}
 	}, [forecastDataUpdatedAt])
 
-	if (selectedCity === null || !weatherSettings) return null
+	useEffect(() => {
+		if (isAuthenticated && user?.city?.id) {
+			refetchWeather()
+			refetchForecast()
+		}
+	}, [user?.city?.id, isAuthenticated, refetchWeather, refetchForecast])
+
+	if (!weatherSettings) return null
 
 	return (
 		<WidgetContainer>
-			<div className="flex flex-col w-full h-full gap-2 py-1">
-				<CurrentWeatherBox
-					enabledShowName={weatherSettings.enableShowName}
-					selectedCityName={selectedCity.name}
-					fetchedWeather={weatherState?.weather || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
-				/>
-
-				<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
-					<Forecast
+			<RequireAuth mode="preview">
+				<div className="flex flex-col w-full h-full gap-2 py-1">
+					<CurrentWeatherBox
+						fetchedWeather={weatherState || null}
 						temperatureUnit={weatherSettings.temperatureUnit}
-						forecast={forecastWeather}
 					/>
+
+					<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
+						<Forecast
+							temperatureUnit={weatherSettings.temperatureUnit}
+							forecast={forecastWeather}
+						/>
+					</div>
 				</div>
-			</div>
+			</RequireAuth>
 		</WidgetContainer>
 	)
 }
