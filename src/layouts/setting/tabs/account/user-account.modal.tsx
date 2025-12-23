@@ -5,7 +5,7 @@ import { type TabItem, TabManager } from '@/components/tab-manager'
 import { useAuth } from '@/context/auth.context'
 import { AccountTab } from '@/layouts/setting/tabs/account/account'
 import { AllFriendsTab, FriendRequestsTab, RewardsTab } from './tabs'
-
+import AuthForm from './auth-form/auth-form'
 interface FriendSettingModalProps {
 	isOpen: boolean
 	onClose: () => void
@@ -44,9 +44,20 @@ export const UserAccountModal = ({
 	selectedTab,
 }: FriendSettingModalProps) => {
 	const { isAuthenticated } = useAuth()
-	const filteredTabs = isAuthenticated
-		? tabs
-		: [tabs.find((tab) => tab.value === 'profile') as any]
+
+	if (!isAuthenticated)
+		return (
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				size="md"
+				title="ورود به حساب کاربری"
+				direction="rtl"
+			>
+				<AuthForm />
+			</Modal>
+		)
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -57,7 +68,7 @@ export const UserAccountModal = ({
 		>
 			<TabManager
 				tabOwner="user"
-				tabs={filteredTabs}
+				tabs={tabs}
 				defaultTab="all"
 				selectedTab={selectedTab}
 				direction="rtl"

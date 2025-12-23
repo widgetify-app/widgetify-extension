@@ -79,6 +79,8 @@ const errorTranslations: Record<string, string> = {
 
 	ITEM_NOT_FOUND: 'آیتم مورد نظر یافت نشد',
 	TODO_NOT_FOUND: 'وظیفه مورد نظر یافت نشد',
+	INVALID_OTP_CODE: 'کد تایید نامعتبر است',
+	USE_EMAIL_FOR_OTP: 'لطفا از ایمیل برای دریافت کد تایید استفاده کنید',
 }
 
 const validationTranslations: Record<string, string> = {
