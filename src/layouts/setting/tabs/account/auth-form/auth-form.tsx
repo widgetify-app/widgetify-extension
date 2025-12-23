@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import AuthWithPassword from './auth-password'
 import AuthOtp from './auth-otp'
-import OtherOptionsContainer from './components/OtherAuthOptionsContainer'
+import OtherOptionsContainer from './components/other-auth-options.container'
 
 const AuthForm = () => {
 	const [showPasswordForm, setShowPasswordForm] = useState(false)

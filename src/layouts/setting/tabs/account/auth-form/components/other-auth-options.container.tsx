@@ -1,6 +1,6 @@
-import LoginGoogleButton from './LoginGoogleButton'
-import LoginPasswordButton from './LoginPasswordButton'
-import LoginOtpButton from './LoginOtpButton'
+import LoginGoogleButton from './login-google.button'
+import LoginPasswordButton from './login-password.button'
+import LoginOtpButton from './login-otp-button'
 
 type OtherOptionsContainerProps = {
 	setShowPasswordForm: React.Dispatch<React.SetStateAction<boolean>>
