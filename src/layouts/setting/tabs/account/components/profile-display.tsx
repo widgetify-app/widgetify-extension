@@ -1,6 +1,7 @@
 import moment from 'jalali-moment'
 import { BsGenderAmbiguous, BsGenderFemale, BsGenderMale } from 'react-icons/bs'
-import { FiCalendar, FiEdit, FiMail } from 'react-icons/fi'
+import { FiCalendar, FiEdit, FiMail, FiUser } from 'react-icons/fi'
+import { LuBriefcase, LuHeart } from 'react-icons/lu'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
@@ -13,151 +14,155 @@ interface ProfileDisplayProps {
 }
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
-	if (gender === 'MALE')
-		return {
-			label: 'مذکر',
-			icon: <BsGenderMale />,
-		}
-	if (gender === 'FEMALE')
-		return {
-			label: 'مؤنث',
-			icon: <BsGenderFemale />,
-		}
-	if (gender === 'OTHER')
-		return {
-			label: 'نامشخص',
-			icon: <BsGenderAmbiguous />,
-		}
-
-	return {
-		label: 'نامشخص',
-		icon: <BsGenderAmbiguous />,
-	}
+	if (gender === 'MALE') return { label: 'مذکر', icon: <BsGenderMale size={18} /> }
+	if (gender === 'FEMALE') return { label: 'مؤنث', icon: <BsGenderFemale size={18} /> }
+	return { label: 'نامشخص', icon: <BsGenderAmbiguous size={18} /> }
 }
 
 const formatJalaliDate = (dateString: string | null | undefined): string => {
-	if (!dateString) return '-'
+	if (!dateString) return 'تنظیم نشده'
 	try {
 		const jalaliDate = moment(dateString, 'jYYYY-jMM-jDD')
-
-		if (!jalaliDate.isValid()) {
-			return dateString
-		}
-
-		return jalaliDate.locale('fa').format('jD jMMMM jYYYY')
+		return jalaliDate.isValid()
+			? jalaliDate.locale('fa').format('jD jMMMM jYYYY')
+			: dateString
 	} catch {
-		return dateString
+		return dateString || '-'
 	}
 }
 
 export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) => {
+	const genderInfo = getGenderInfo(profile?.gender)
+
 	return (
-		<div className="relative mb-4 overflow-hidden border border-base-300/50 rounded-2xl bg-gradient-to-br from-base-100/80 to-base-200/60">
-			<div className="absolute inset-0 opacity-5">
-				<div className="absolute top-0 left-0 w-24 h-24 -translate-x-12 -translate-y-12 rounded-full bg-gradient-to-br from-primary/30 to-transparent"></div>
-				<div className="absolute bottom-0 right-0 w-20 h-20 translate-x-10 translate-y-10 rounded-full bg-gradient-to-tl from-secondary/30 to-transparent"></div>
-			</div>
-
-			<div className="relative p-4">
-				<div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
-					<div className="relative flex-shrink-0 group">
-						<div className="relative p-0.5 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm">
-							<AvatarComponent
-								url={profile?.avatar || null}
-								placeholder={profile?.name || 'کاربر'}
-								size="lg"
-								className="relative border-2 shadow-xl border-base-content/10 backdrop-blur-sm"
-							/>
-						</div>
-						<div className="absolute w-3 h-3 border-2 rounded-full shadow-md bottom-1 right-1 bg-success border-base-100"></div>
-					</div>
-
-					<div className="flex-1 space-y-4 text-center md:text-right">
-						<div className="space-y-2">
-							<div className="flex flex-col items-center justify-between gap-2 md:flex-row md:items-start">
-								<div className="space-y-0.5">
-									<h1 className="text-xl font-bold text-base-content bg-gradient-to-r from-base-content to-base-content/80 bg-clip-text">
-										{profile?.name || 'کاربر'}
-									</h1>
-									<p className="text-xs font-medium text-base-content/60">
-										@{profile?.username || '-'}
-									</p>
-								</div>
-								{profile?.coins !== undefined && (
-									<div className="transition-all duration-300 transform hover:scale-105">
-										<UserCoin coins={profile?.coins || 0} />
-									</div>
-								)}
+		<div className="flex flex-col space-y-4">
+			<div className="relative flex flex-col items-center p-2 overflow-hidden border bg-base-100/50 border-base-300/50 rounded-3xl">
+				{profile?.joinedAt && (
+					<div className="absolute -top-1 -left-1 group">
+						<div className="relative flex items-center gap-1.5 px-3 py-1.5 bg-primary/10  border border-primary/20 rounded-br-2xl rounded-tl-xl shadow-inner transform -rotate-2 group-hover:rotate-0 transition-all duration-300">
+							<span className="text-primary animate-pulse">✨</span>
+							<div className="flex flex-col items-start leading-none">
+								<span className="text-xs font-medium opacity-70 mb-0.5">
+									شروعِ ماجرا از
+								</span>
+								<span className="text-[10px] font-black text-primary">
+									{moment(profile.joinedAt)
+										.locale('fa')
+										.format('jMMMM jYYYY')}
+								</span>
 							</div>
-						</div>
-
-						<div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl  hover:bg-base-100/70 sm:col-span-2">
-								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-primary/20 to-primary/10">
-									<FiMail size={12} className="text-primary" />
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="text-xs text-base-content/60 mb-0.5">
-										ایمیل
-									</p>
-									<p className="text-sm font-medium truncate text-base-content dir-ltr">
-										{profile?.email || '-'}
-									</p>
-								</div>
-							</div>
-
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl hover:bg-base-100/70">
-								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-secondary/20 to-secondary/10">
-									{getGenderInfo(profile?.gender).icon && (
-										<div className="text-sm text-secondary">
-											{getGenderInfo(profile?.gender).icon}
-										</div>
-									)}
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="text-xs text-base-content/60 mb-0.5">
-										جنسیت
-									</p>
-									<p className="text-sm font-medium text-base-content">
-										{getGenderInfo(profile?.gender).label}
-									</p>
-								</div>
-							</div>
-
-							<div className="flex items-center gap-2.5 px-3 py-2.5 transition-all duration-300 border bg-base-100/50 border-content rounded-2xl hover:bg-base-100/70 sm:col-span-3">
-								<div className="flex items-center justify-center flex-shrink-0 rounded-lg w-7 h-7 bg-gradient-to-br from-accent/20 to-accent/10">
-									<FiCalendar size={12} className="text-accent" />
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="text-xs text-base-content/60 mb-0.5">
-										تاریخ تولد
-									</p>
-									<p className="text-sm font-medium text-base-content dir-rtl">
-										{formatJalaliDate(profile?.birthDate)}
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div className="flex justify-center md:justify-start">
-							<Button
-								onClick={onEditToggle}
-								className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-300 transform border shadow-md bg-gradient-to-r from-primary to-primary/90 rounded-2xl hover:shadow-lg hover:scale-105 hover:from-primary/90 hover:to-primary border-primary/20"
-								size="sm"
-							>
-								<FiEdit size={14} />
-								ویرایش پروفایل
-							</Button>
 						</div>
 					</div>
+				)}
+				<div className="relative group">
+					<div className="p-1 rounded-full">
+						<AvatarComponent
+							url={profile?.avatar || null}
+							placeholder={profile?.name || 'کاربر'}
+							size="xl"
+							className="border-4 border-base-100"
+						/>
+					</div>
+					<div className="absolute w-5 h-5 border-4 rounded-full shadow-lg bottom-1 right-2 bg-success border-base-100"></div>
 				</div>
 
-				{profile?.inCache && (
-					<div className="w-full p-1 mt-3">
-						<OfflineIndicator mode="notification" />
+				<h2 className="text-xl font-bold text-content">
+					{profile?.name || 'کاربر'}
+				</h2>
+				<p className="text-sm opacity-60" dir="ltr">
+					@{profile?.username || 'username'}
+				</p>
+
+				{profile?.coins !== undefined && (
+					<div className="mt-1">
+						<UserCoin coins={profile.coins} />
 					</div>
 				)}
 			</div>
+
+			<div className="overflow-hidden border border-base-300/50 rounded-3xl bg-base-100/30">
+				<DisplayRow
+					icon={<FiUser className="text-primary" />}
+					label="نام و نام خانوادگی"
+					value={profile?.name}
+				/>
+
+				<DisplayRow
+					icon={<FiMail className="text-secondary" />}
+					label="ایمیل"
+					value={profile?.email}
+					isLtr
+				/>
+
+				<DisplayRow
+					icon={<div className="text-accent">{genderInfo.icon}</div>}
+					label="جنسیت"
+					value={genderInfo.label}
+				/>
+
+				<DisplayRow
+					icon={<FiCalendar className="text-warning" />}
+					label="تاریخ تولد"
+					value={formatJalaliDate(profile?.birthDate)}
+				/>
+
+				<DisplayRow
+					icon={<LuBriefcase className="text-info" />}
+					label="شغل"
+					value={profile?.occupation?.label}
+				/>
+
+				<DisplayRow
+					icon={<LuHeart className="text-error" />}
+					label="علایق"
+					value={
+						profile?.interests?.map((i) => i.label).join('، ') ||
+						'انتخاب نشده'
+					}
+				/>
+			</div>
+
+			{/* دکمه ویرایش */}
+			<Button
+				size="sm"
+				onClick={onEditToggle}
+				className="w-full h-12 gap-2 text-base text-white shadow-sm rounded-2xl bg-primary hover:bg-primary/90"
+			>
+				<FiEdit size={18} />
+				ویرایش پروفایل
+			</Button>
+
+			{profile?.inCache && (
+				<div className="pt-2">
+					<OfflineIndicator mode="notification" />
+				</div>
+			)}
 		</div>
 	)
 }
+
+const DisplayRow = ({
+	icon,
+	label,
+	value,
+	isLtr = false,
+}: {
+	icon: React.ReactNode
+	label: string
+	value?: string
+	isLtr?: boolean
+}) => (
+	<div className="flex items-center justify-between p-4 transition-colors border-b last:border-b-0 border-base-300/30 hover:bg-base-200/20">
+		<div className="flex items-center gap-3">
+			<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-200/50">
+				{icon}
+			</div>
+			<span className="text-xs font-medium opacity-60">{label}</span>
+		</div>
+		<span
+			className={`text-sm font-semibold text-content ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
+		>
+			{value || '-'}
+		</span>
+	</div>
+)

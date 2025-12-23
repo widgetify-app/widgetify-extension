@@ -106,7 +106,7 @@ export default function Modal({
 			aria-labelledby={typeof title === 'string' ? title : 'modal-title'}
 			aria-modal="true"
 			onClick={() => closeOnBackdropClick && onClose()}
-			className="modal modal-middle flex items-center justify-center transition-opacity duration-200 opacity-100 p-2 md:p-4"
+			className="flex items-center justify-center p-2 transition-opacity duration-200 opacity-100 modal modal-middle md:p-4"
 		>
 			<div
 				ref={modalRef}
@@ -114,11 +114,11 @@ export default function Modal({
 				className={`${modalBoxClasses} animate-modal-in`}
 			>
 				{(title || showCloseButton) && (
-					<div className="flex items-center justify-between mb-2 md:mb-3 gap-2 md:gap-4">
+					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
 						{title && (
 							<h3
 								id="modal-title"
-								className="text-base md:text-lg font-semibold"
+								className="text-base font-semibold md:text-lg"
 							>
 								{title}
 							</h3>

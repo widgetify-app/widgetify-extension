@@ -65,7 +65,7 @@ export const TabManager = ({
 	const headClass =
 		tabPosition === 'top'
 			? 'flex-col gap-1 h-[80vh]'
-			: 'flex-col md:flex-row gap-4 h-[60vh]'
+			: 'flex-col md:flex-row gap-4 h-[80vh]'
 	const contentClass =
 		tabPosition === 'top'
 			? 'shrink-0 md:overflow-y-auto w-full'

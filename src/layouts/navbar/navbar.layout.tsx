@@ -123,7 +123,7 @@ export function NavbarLayout(): JSX.Element {
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 				}`}
 			>
-				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-md border border-white/[0.08] rounded-[2.5rem]">
+				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-[2.5rem]">
 					<button
 						onClick={() => onToggleNavbar()}
 						className="relative z-10 p-2 transition-colors cursor-pointer text-white/20 hover:text-white/40"
