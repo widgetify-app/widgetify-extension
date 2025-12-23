@@ -6,7 +6,7 @@ import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { useSignIn } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
-import InputTextError from './components/InputTextError'
+import InputTextError from './components/input-text-error'
 import { isEmail, isEmpty, isLessThan } from '@/utils/validators'
 
 export default function AuthPassword() {

@@ -6,8 +6,8 @@ import { useRequestOtp, useVerifyOtp } from '@/services/hooks/auth/authService.h
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { isEmpty, isEmail, isLessThan } from '@/utils/validators'
-import InputTextError from './components/InputTextError'
-import OtpInput from './components/OtpInput'
+import InputTextError from './components/input-text-error'
+import OtpInput from './components/otp-input'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'

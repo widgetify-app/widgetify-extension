@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import AuthWithPassword from './AuthPassword'
-import AuthOtp from './AuthOtp'
+import AuthWithPassword from './auth-password'
+import AuthOtp from './auth-otp'
 import OtherOptionsContainer from './components/OtherAuthOptionsContainer'
 
 const AuthForm = () => {
