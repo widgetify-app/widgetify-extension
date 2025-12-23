@@ -17,19 +17,25 @@ interface SignUpCredentials {
 	referralCode?: string
 }
 
-interface AuthResponse {
+export interface AuthResponse {
 	statusCode: number
 	message: string | null
 	data: string // token
+	isNewUser?: boolean
+}
+interface GoogleAuthCredentials {
+	token: string
+	referralCode?: string
 }
 
-interface User {
-	name: string
-	gender?: 'MALE' | 'FEMALE' | 'OTHER'
-	birthdate?: string
-	avatar?: string
+interface OtpPayload {
+	email: string
 }
 
+interface OtpVerifyPayload {
+	email: string
+	code: string
+}
 async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 	const client = await getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signin', credentials)
@@ -52,7 +58,7 @@ async function signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
 	return response.data
 }
 
-async function updateUserProfile(formData: FormData): Promise<User> {
+async function updateUserProfile(formData: FormData): Promise<any> {
 	const api = await getMainClient()
 	const response = await api.patch('/users/@me', formData, {
 		headers: {
@@ -62,11 +68,41 @@ async function updateUserProfile(formData: FormData): Promise<User> {
 	return response.data
 }
 
-async function updateUsername(username: string): Promise<User> {
+async function updateUsername(username: string): Promise<any> {
 	const api = await getMainClient()
 	const response = await api.put('/users/@me/username', {
 		username,
 	})
+	return response.data
+}
+
+async function googleSignIn(credentials: GoogleAuthCredentials): Promise<AuthResponse> {
+	const client = await getMainClient()
+	const response = await client.post<AuthResponse>('/auth/oauth/google', credentials)
+
+	if (response.headers?.refresh_token) {
+		await setToStorage('refresh_token', response.headers.refresh_token)
+	}
+
+	return response.data
+}
+
+async function requestOtp(payload: OtpPayload): Promise<any> {
+	const client = await getMainClient()
+
+	const response = await client.post('/auth/otp', payload)
+
+	return response.data
+}
+
+async function verifyOtp(payload: OtpVerifyPayload): Promise<AuthResponse> {
+	const client = await getMainClient()
+	const response = await client.post('/auth/otp/verify', payload)
+
+	if (response.headers?.refresh_token) {
+		await setToStorage('refresh_token', response.headers.refresh_token)
+	}
+
 	return response.data
 }
 
@@ -91,5 +127,23 @@ export function useUpdateUserProfile() {
 export function useUpdateUsername() {
 	return useMutation({
 		mutationFn: (username: string) => updateUsername(username),
+	})
+}
+
+export function useGoogleSignIn() {
+	return useMutation({
+		mutationFn: (credentials: GoogleAuthCredentials) => googleSignIn(credentials),
+	})
+}
+
+export function useRequestOtp() {
+	return useMutation({
+		mutationFn: (payload: OtpPayload) => requestOtp(payload),
+	})
+}
+
+export function useVerifyOtp() {
+	return useMutation({
+		mutationFn: (payload: OtpVerifyPayload) => verifyOtp(payload),
 	})
 }

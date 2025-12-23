@@ -18,7 +18,7 @@ import {
 	useGetInterests,
 } from '@/services/hooks/profile/getProfileMeta.hook'
 import { translateError } from '@/utils/translate-error'
-import JalaliDatePicker from './ProfileDatePicker'
+import JalaliDatePicker from './profile-date-picker'
 import { showToast } from '@/common/toast'
 import { SectionPanel } from '@/components/section-panel'
 import { FaMars, FaQuestion, FaVenus } from 'react-icons/fa'
