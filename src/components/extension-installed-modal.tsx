@@ -1,4 +1,3 @@
-import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import keepItImage from '@/assets/keep-it.png'
@@ -11,32 +10,10 @@ interface ExtensionInstalledModalProps {
 	onClose: () => void
 	onGetStarted: () => void
 }
-
-type Step = number
-
 export function ExtensionInstalledModal({
 	show,
 	onGetStarted,
 }: ExtensionInstalledModalProps) {
-	const [currentStep, setCurrentStep] = useState<Step>(1)
-	const totalSteps = 3
-
-	const renderStepContent = () => {
-		switch (currentStep) {
-			case 1:
-				if (import.meta.env.FIREFOX) {
-					return <StepFirefoxConsent setCurrentStep={setCurrentStep} />
-				}
-				return <StepOne setCurrentStep={setCurrentStep} />
-			case 2:
-				return <StepFooterDisable setCurrentStep={setCurrentStep} />
-			case 3:
-				return <StepThree onGetStarted={onGetStarted} />
-			default:
-				return null
-		}
-	}
-
 	return (
 		<Modal
 			isOpen={show}
@@ -46,59 +23,23 @@ export function ExtensionInstalledModal({
 			showCloseButton={false}
 			closeOnBackdropClick={false}
 		>
-			<LazyMotion features={domAnimation}>
-				<m.div
-					className={'flex flex-col items-center p-2 text-center w-full'}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.4 }}
-				>
-					{renderStepContent()}
-				</m.div>
-			</LazyMotion>
-
-			<StepIndicator totalSteps={totalSteps} currentStep={currentStep} />
+			{import.meta.env.FIREFOX ? (
+				<StepFirefoxConsent onGetStarted={onGetStarted} />
+			) : (
+				<StepOne onGetStarted={onGetStarted} />
+			)}
 		</Modal>
 	)
 }
-interface StepIndicatorProps {
-	totalSteps: number
-	currentStep: Step
-}
-const StepIndicator = ({ totalSteps, currentStep }: StepIndicatorProps) => (
-	<div
-		className="flex items-center justify-center gap-3"
-		role="progressbar"
-		aria-valuenow={currentStep}
-		aria-valuemin={1}
-		aria-valuemax={totalSteps}
-	>
-		{Array.from({ length: totalSteps }).map((_, index) => (
-			<button
-				key={index}
-				aria-label={`رفتن به گام ${index + 1}`}
-				aria-current={index + 1 === currentStep ? 'step' : undefined}
-				className={`w-10 h-2 cursor-default rounded-full transition-all duration-300 ${
-					index + 1 === currentStep
-						? 'bg-blue-500 shadow-lg shadow-blue-500/30'
-						: index + 1 < currentStep
-							? 'bg-blue-600'
-							: 'bg-gray-700 hover:bg-gray-600'
-				}`}
-			/>
-		))}
-	</div>
-)
-
 interface StepOneProps {
-	setCurrentStep: (step: Step) => void
+	onGetStarted: () => void
 }
-const StepOne = ({ setCurrentStep }: StepOneProps) => {
+const StepOne = ({ onGetStarted }: StepOneProps) => {
 	return (
 		<>
 			<div className="mb-3">
 				<h3 className={'mb-0 text-2xl font-bold text-content'}>
-					به ویجتی‌فای خوش آمدید! 🎉
+					به ویجتیفای خوش آمدید! 🎉
 				</h3>
 			</div>
 
@@ -119,7 +60,7 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 
 			<div
 				className={
-					'p-3 mb-3 text-content rounded-lg border border-content  bg-content'
+					'p-3 mb-2 text-content rounded-lg border border-content  bg-content'
 				}
 			>
 				<p className="font-bold text-muted">
@@ -129,135 +70,20 @@ const StepOne = ({ setCurrentStep }: StepOneProps) => {
 
 			<Button
 				size="md"
-				onClick={() => setCurrentStep(2)}
-				className="!px-4 !py-2 mx-auto font-light shadow w-52 rounded-2xl shadow-primary"
+				onClick={onGetStarted}
+				className="w-full text-base font-light shadow-sm rounded-2xl shadow-primary outline-none!"
 				isPrimary={true}
 			>
-				Keep It رو زدم!
+				شروع کنید
 			</Button>
 		</>
 	)
 }
 
-interface StepFooterDisableProps {
-	setCurrentStep: (step: Step) => void
-}
-const StepFooterDisable = ({ setCurrentStep }: StepFooterDisableProps) => {
-	const [counter, setCounter] = useState<number>(5)
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setCounter((prev) => {
-				if (prev <= 1) {
-					clearInterval(interval)
-					return 0
-				}
-				return prev - 1
-			})
-		}, 1000)
-		return () => clearInterval(interval)
-	}, [])
-
-	return (
-		<>
-			<div className="mb-3">
-				<h3 className={'mb-0 text-2xl font-bold text-content'}>
-					مخفی کردن نوار پایین مرورگر
-				</h3>
-			</div>
-
-			<div
-				className={
-					'relative p-1 mt-1 mb-3 border rounded-xl border-content bg-content'
-				}
-			>
-				<div className="flex items-center justify-center">
-					<img
-						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
-						alt="نحوه مخفی کردن نوار پایین مرورگر"
-						className="h-auto max-w-full rounded-lg shadow-xl"
-						style={{ maxHeight: '220px' }}
-					/>
-				</div>
-			</div>
-
-			<div
-				className={
-					'p-3 mb-3 text-content rounded-lg border border-content  bg-content'
-				}
-			>
-				<p className="font-bold text-muted">
-					💡 برای زیبایی بیشتر، میتونید نوار خاکستری پایین مرورگر رو مانند این
-					تصویر مخفی کنید
-				</p>
-			</div>
-
-			{counter === 0 ? (
-				<Button
-					size="sm"
-					onClick={() => setCurrentStep(3)}
-					className="!px-4 !py-2 mx-auto font-light shadow w-52 rounded-2xl shadow-primary"
-					isPrimary={true}
-				>
-					گام بعدی
-				</Button>
-			) : (
-				<div className="px-4 py-2 mx-auto text-sm text-center border w-52 text-muted rounded-2xl border-content">
-					لطفاً صبر کنید... {counter} ثانیه
-				</div>
-			)}
-		</>
-	)
-}
-
-interface StepThreeProps {
+interface StepFirefoxConsentProps {
 	onGetStarted: () => void
 }
-const StepThree = ({ onGetStarted }: StepThreeProps) => {
-	return (
-		<>
-			<m.div
-				className="mb-6"
-				initial={{ y: -20 }}
-				animate={{ y: 0 }}
-				transition={{ duration: 0.5, delay: 0.2 }}
-			>
-				<h3 className={'mb-3 text-2xl font-bold text-content'}>
-					آماده شروع هستید؟
-				</h3>
-			</m.div>
-
-			<m.div
-				className={
-					'p-3 mb-6 border rounded-lg bg-content backdrop-blur-sm border-content'
-				}
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.5, delay: 0.3 }}
-			>
-				<p className="text-muted">
-					بریم که یک تجربه جدید و جذاب را شروع کنیم! 😎
-				</p>
-			</m.div>
-
-			<div className="flex flex-col w-full gap-4 mt-4 sm:flex-row">
-				<Button
-					onClick={onGetStarted}
-					className="w-full font-light sm:flex-1 rounded-2xl"
-					size="md"
-					isPrimary={true}
-				>
-					شروع کنید
-				</Button>
-			</div>
-		</>
-	)
-}
-
-interface StepFirefoxConsentProps {
-	setCurrentStep: (step: Step) => void
-}
-const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
+const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 	const [isAccepted, setIsAccepted] = useState(false)
 	const handleDecline = () => {
 		if (browser.management?.uninstallSelf) {
@@ -273,7 +99,7 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 	return (
 		<div className="w-full overflow-clip">
 			<h3 className="mb-3 text-2xl font-bold text-content">Privacy Notice</h3>
-			<p className="mb-2 font-semibold">خلاصه سیاست حریم خصوصی ویجتی‌فای:</p>
+			<p className="mb-2 font-semibold">خلاصه سیاست حریم خصوصی ویجتیفای:</p>
 			<div className="w-full px-2">
 				<ul className="w-full h-56 space-y-1 overflow-y-auto text-xs list-disc list-inside border border-content rounded-2xl">
 					<li>هیچ داده شخصی به‌طور پیش‌فرض جمع‌آوری نمی‌شود.</li>
@@ -296,7 +122,7 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 						می‌شود. این مورد کاملاً اختیاری است و می‌توانید آن را رد کنید.
 					</li>
 					<li>هیچ داده‌ای با اشخاص ثالث به اشتراک گذاشته نمی‌شود.</li>
-					<li>ویجتی‌فای متن‌باز است و کد آن روی GitHub قابل بررسی است.</li>
+					<li>ویجتیفای متن‌باز است و کد آن روی GitHub قابل بررسی است.</li>
 					<li>
 						درخواست حذف کامل داده‌ها در هر زمان از طریق{' '}
 						<a
@@ -332,7 +158,7 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 						onChange={() => setIsAccepted(!isAccepted)}
 					/>
 					<span className="mr-2 text-sm">
-						با سیاست حریم خصوصی ویجتی‌فای موافقم.
+						با سیاست حریم خصوصی ویجتیفای موافقم.
 					</span>
 				</div>
 			</div>
@@ -346,7 +172,7 @@ const StepFirefoxConsent = ({ setCurrentStep }: StepFirefoxConsentProps) => {
 					🚫 حذف افزونه
 				</Button>
 				<Button
-					onClick={() => setCurrentStep(2)}
+					onClick={onGetStarted}
 					size="md"
 					className="w-40 btn btn-success rounded-xl"
 					disabled={!isAccepted}

@@ -93,6 +93,10 @@ export function NavbarLayout(): JSX.Element {
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 				}`}
 			>
+				<div
+					className="absolute w-full h-10 bg-transparent -bottom-16"
+					id="chrome-footer"
+				></div>
 				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-[2.5rem]">
 					<button
 						onClick={() => onToggleNavbar()}

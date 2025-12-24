@@ -73,7 +73,7 @@ export function ShortcutsTab() {
 			<SectionPanel title="کلیدهای میانبر" delay={0.1}>
 				<div className="space-y-5">
 					<p className="text-muted">
-						کلیدهای میانبر افزونه ویجتی‌فای برای استفاده راحت‌تر و سریع‌تر
+						کلیدهای میانبر افزونه ویجتیفای برای استفاده راحت‌تر و سریع‌تر
 					</p>
 
 					{Object.entries(categories).map(([category, categoryShortcuts]) => (
