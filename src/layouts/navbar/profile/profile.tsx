@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { LuCircleUser } from 'react-icons/lu'
 import { listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
+import { WelcomeWizard } from '@/components/welcome-wizard'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {
@@ -32,6 +33,7 @@ const getTooltipContent = (user: any) => {
 export function ProfileNav() {
 	const { user, isAuthenticated } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
+	const [openedWizard, setOpenedWizard] = useState(false)
 
 	const handleProfileClick = () => {
 		setShowSettingsModal(true)
@@ -51,8 +53,19 @@ export function ProfileNav() {
 			handleProfileClick()
 		})
 
+		const eventClose = listenEvent('close_all_modals', () => {
+			modalCloseHandler()
+		})
+
+		const openWizardEvent = listenEvent('openWizardModal', () => {
+			modalCloseHandler()
+			setOpenedWizard(true)
+		})
+
 		return () => {
 			event()
+			eventClose()
+			openWizardEvent()
 		}
 	}, [])
 
@@ -85,6 +98,13 @@ export function ProfileNav() {
 				selectedTab="profile"
 				onClose={modalCloseHandler}
 			/>
+
+			{openedWizard && (
+				<WelcomeWizard
+					isOpen={openedWizard}
+					onClose={() => setOpenedWizard(false)}
+				/>
+			)}
 		</>
 	)
 }

@@ -44,7 +44,7 @@ export function AboutUsTab() {
 						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600'
 					}
 				>
-					ویجتی‌فای
+					ویجتیفای
 				</h1>
 				<div
 					className={
@@ -56,7 +56,7 @@ export function AboutUsTab() {
 
 				{/* Description */}
 				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-content'}>
-					ویجتی‌فای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با
+					ویجتیفای یک افزونه متن‌باز برای مرورگر شماست که صفحه جدید را با
 					ابزارهای کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل
 					می‌کند.
 				</p>
