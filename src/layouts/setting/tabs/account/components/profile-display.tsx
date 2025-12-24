@@ -14,9 +14,10 @@ interface ProfileDisplayProps {
 }
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
-	if (gender === 'MALE') return { label: 'مذکر', icon: <BsGenderMale size={18} /> }
-	if (gender === 'FEMALE') return { label: 'مؤنث', icon: <BsGenderFemale size={18} /> }
-	return { label: 'نامشخص', icon: <BsGenderAmbiguous size={18} /> }
+	if (gender === 'MALE') return { label: 'آقا هستم', icon: <BsGenderMale size={18} /> }
+	if (gender === 'FEMALE')
+		return { label: 'خانم هستم', icon: <BsGenderFemale size={18} /> }
+	return { label: 'بماند', icon: <BsGenderAmbiguous size={18} /> }
 }
 
 const formatJalaliDate = (dateString: string | null | undefined): string => {

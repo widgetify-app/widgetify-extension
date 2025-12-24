@@ -36,6 +36,17 @@ interface OtpVerifyPayload {
 	email: string
 	code: string
 }
+
+interface WizardPayload {
+	occupationId: string
+
+	interestsIds: string[]
+
+	referralSource: ReferralSource
+
+	referralCode?: string
+}
+
 async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 	const client = await getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signin', credentials)
@@ -106,6 +117,12 @@ async function verifyOtp(payload: OtpVerifyPayload): Promise<AuthResponse> {
 	return response.data
 }
 
+async function setupWizard(data: WizardPayload): Promise<any> {
+	const client = await getMainClient()
+	const response = await client.post('/users/@me/complete-wizard', data)
+	return response.data
+}
+
 export function useSignIn() {
 	return useMutation({
 		mutationFn: (credentials: LoginCredentials) => signIn(credentials),
@@ -145,5 +162,11 @@ export function useRequestOtp() {
 export function useVerifyOtp() {
 	return useMutation({
 		mutationFn: (payload: OtpVerifyPayload) => verifyOtp(payload),
+	})
+}
+
+export function useSetupWizard() {
+	return useMutation({
+		mutationFn: (data: WizardPayload) => setupWizard(data),
 	})
 }

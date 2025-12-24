@@ -5,7 +5,6 @@ import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
-import { Button } from '@/components/button/button'
 import { WelcomeWizard } from '@/components/welcome-wizard'
 
 const renderUserAvatar = (user: any) => {
@@ -34,7 +33,7 @@ const getTooltipContent = (user: any) => {
 export function ProfileNav() {
 	const { user, isAuthenticated } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
-	const [openedWizard, setOpenedWizard] = useState(true)
+	const [openedWizard, setOpenedWizard] = useState(false)
 
 	const handleProfileClick = () => {
 		setShowSettingsModal(true)

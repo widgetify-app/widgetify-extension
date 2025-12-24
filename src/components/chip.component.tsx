@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface ChipProps {
 	selected: boolean
 	onClick: () => void

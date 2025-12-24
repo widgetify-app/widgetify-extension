@@ -81,6 +81,10 @@ const errorTranslations: Record<string, string> = {
 	TODO_NOT_FOUND: 'وظیفه مورد نظر یافت نشد',
 	INVALID_OTP_CODE: 'کد تایید نامعتبر است',
 	USE_EMAIL_FOR_OTP: 'لطفا از ایمیل برای دریافت کد تایید استفاده کنید',
+
+	INVALID_OCCUPATION_ID: 'شغل نامعتبری انتخاب کردی!',
+	ONE_OR_MORE_INVALID_INTEREST_IDS:
+		'یک یا چندتا از علاقه‌مندی‌هایی که انتخاب کردی نامعتبر هستن!',
 }
 
 const validationTranslations: Record<string, string> = {

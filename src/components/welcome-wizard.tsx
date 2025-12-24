@@ -10,6 +10,10 @@ import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
 import { Chip } from '@/components/chip.component'
 import { ItemSelector } from './item-selector'
+import { useSetupWizard } from '@/services/hooks/auth/authService.hook'
+import { showToast } from '@/common/toast'
+import { safeAwait } from '@/services/api'
+import Analytics from '@/analytics'
 
 export enum ReferralSource {
 	Social = 'social',
@@ -44,17 +48,21 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	const [referralCode, setReferralCode] = useState<string>('')
 	const totalSteps = 5
 
+	const { mutateAsync, isPending } = useSetupWizard()
+
 	const { data: occupations, isLoading: occupationsLoading } =
 		useGetOccupations(fetching)
 	const { data: interests, isLoading: interestsLoading } = useGetInterests(fetching)
 
 	const nextStep = () => {
+		Analytics.event(`welcome_wizard_step_${currentStep}_completed`)
 		if (currentStep < totalSteps) setCurrentStep(currentStep + 1)
 		else onClose()
 	}
 
 	const prevStep = () => {
 		if (currentStep > 1) setCurrentStep(currentStep - 1)
+		Analytics.event('welcome_wizard_step_back_clicked')
 	}
 
 	useEffect(() => {
@@ -63,12 +71,35 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			setFetching(true)
 		}
 		load()
+		Analytics.event('welcome_wizard_opened')
 	}, [])
 
 	const save = async () => {
-		// todo: send data to server
-		// when done, close the wizard
-		onClose()
+		if (
+			!selectedOccupation ||
+			selectedInterests.length === 0 ||
+			!selectedReferralSource
+		) {
+			showToast('لطفاً تمام مراحل را تکمیل کنید.', 'error')
+			return
+		}
+
+		const [err, _] = await safeAwait(
+			mutateAsync({
+				occupationId: selectedOccupation,
+				interestsIds: selectedInterests,
+				referralSource: selectedReferralSource,
+				referralCode: referralCode || undefined,
+			})
+		)
+		if (err) {
+			showToast('خطا در ثبت اطلاعات. لطفاً دوباره تلاش کنید.', 'error')
+			Analytics.event('welcome_wizard_completion_failed')
+			return
+		}
+
+		setCurrentStep(currentStep + 1)
+		Analytics.event('welcome_wizard_completed')
 	}
 
 	const renderStepContent = () => {
@@ -275,8 +306,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 
 							<Button
 								size="sm"
-								onClick={nextStep}
-								disabled={!selectedReferralSource}
+								onClick={() => save()}
+								disabled={!selectedReferralSource || isPending}
+								loading={isPending}
 								className="w-full h-12 mt-4 text-base font-bold text-white shadow-lg rounded-2xl"
 								isPrimary
 							>
@@ -302,7 +334,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							</div>
 							<Button
 								size="sm"
-								onClick={() => save()}
+								onClick={onClose}
 								className="w-full h-12 text-base font-bold text-white shadow-lg rounded-2xl"
 								isPrimary
 							>
