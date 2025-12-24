@@ -14,6 +14,7 @@ import { PriorityButton } from '@/components/priority-options/priority-options'
 import Analytics from '@/analytics'
 import { Chip } from '@/components/chip.component'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
+import { useAuth } from '@/context/auth.context'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -26,10 +27,11 @@ export function ExpandableTodoInput({
 	onChangeTodoText,
 	onAddTodo,
 }: ExpandableTodoInputProps) {
+	const { isAuthenticated } = useAuth()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
-	const { data: fetchedTags } = useGetTags(true)
+	const { data: fetchedTags } = useGetTags(isAuthenticated)
 	const [notes, setNotes] = useState('')
 	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
 	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment | undefined>()
