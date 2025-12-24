@@ -12,6 +12,8 @@ import { DatePicker } from '@/components/date-picker/date-picker'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { PriorityButton } from '@/components/priority-options/priority-options'
 import Analytics from '@/analytics'
+import { Chip } from '@/components/chip.component'
+import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 
 interface ExpandableTodoInputProps {
 	todoText: string
@@ -27,13 +29,22 @@ export function ExpandableTodoInput({
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
+	const { data: fetchedTags } = useGetTags(true)
 	const [notes, setNotes] = useState('')
+	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
 	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment | undefined>()
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const datePickerButtonRef = useRef<HTMLButtonElement>(null)
+	const categoryInputRef = useRef<HTMLInputElement | null>(null)
 	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
+
+	const onSelectCategory = (tag: string) => {
+		setCategory(tag)
+		setIsTagTooltipOpen(false)
+		Analytics.event('todo_category_select')
+	}
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -207,12 +218,41 @@ export function ExpandableTodoInput({
 											/>
 										</div>
 										<TextInput
+											ref={categoryInputRef}
 											type="text"
 											value={category}
-											onChange={setCategory}
+											onChange={onSelectCategory}
+											onFocus={() => setIsTagTooltipOpen(true)}
 											placeholder="دسته‌بندی (مثال: شخصی، کاری)"
 											className="text-xs placeholder:text-xs py-1.5"
 											debounce={false}
+										/>
+										<ClickableTooltip
+											triggerRef={categoryInputRef}
+											isOpen={isTagTooltipOpen}
+											setIsOpen={setIsTagTooltipOpen}
+											content={
+												<div className="flex flex-wrap gap-1 overflow-x-hidden overflow-y-auto max-w-48 max-h-32 scrollbar-none">
+													{fetchedTags
+														?.filter((tag) => tag.trim())
+														?.map((tag) => (
+															<Chip
+																key={tag}
+																selected={false}
+																onClick={() => {
+																	setCategory(tag)
+																	setIsTagTooltipOpen(
+																		false
+																	)
+																}}
+																className="text-xs w-fit p-0! py-1! px-3!"
+															>
+																{tag}
+															</Chip>
+														))}
+												</div>
+											}
+											position="top"
 										/>
 									</div>
 
