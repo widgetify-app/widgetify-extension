@@ -32,7 +32,7 @@ export const OccupationSelector = ({
 	const content = (
 		<div className="w-48 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
 			{isLoading ? (
-				<div className="py-4 text-center text-[10px] font-black italic animate-pulse">
+				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					درحال بارگذاری...
 				</div>
 			) : (
@@ -46,7 +46,7 @@ export const OccupationSelector = ({
 								onClick={() => handleSelect(occupation.id)}
 								className={`
 									h-8 px-3 w-fit flex items-center justify-center 
-									text-[10px] font-black italic rounded-full text-muted border 
+									text-[10px] font-black  rounded-full text-muted border 
 									transition-all duration-200 active:scale-95 cursor-pointer
 									${
 										isActive

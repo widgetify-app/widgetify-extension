@@ -24,7 +24,7 @@ export const InterestsSelector = ({
 		const isSelected = selectedInterests.includes(interestId)
 		if (isSelected) {
 			onSelect(selectedInterests.filter((id) => id !== interestId))
-		} else if (selectedInterests.length < 3) {
+		} else {
 			onSelect([...selectedInterests, interestId])
 		}
 	}
@@ -32,31 +32,27 @@ export const InterestsSelector = ({
 	const content = (
 		<div className="w-48 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
 			{isLoading ? (
-				<div className="py-4 text-center text-[10px] font-black italic animate-pulse">
+				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					صبر کنید...
 				</div>
 			) : (
 				<div className="flex flex-row flex-wrap gap-1">
 					{interests.map((interest) => {
 						const isSelected = selectedInterests.includes(interest.id)
-						const canSelect = selectedInterests.length < 3 || isSelected
 
 						return (
 							<button
 								key={interest.id}
 								type="button"
-								disabled={!canSelect}
 								onClick={() => handleInterestToggle(interest.id)}
 								className={`
 									h-8 px-3 w-fit flex items-center justify-center 
-									text-[10px] font-black italic rounded-full text-muted border 
+									text-[10px] font-black rounded-full text-muted border 
 									transition-all duration-200 active:scale-95 cursor-pointer
 									${
 										isSelected
 											? 'bg-primary border-primary text-white! shadow-md shadow-primary/20'
-											: !canSelect
-												? 'opacity-30 cursor-not-allowed border-base-300'
-												: 'bg-base-200/50 border-base-300/30 text-content/70 hover:bg-base-200'
+											: 'bg-base-200/50 border-base-300/30 text-content/70 hover:bg-base-200'
 									}
 								`}
 							>

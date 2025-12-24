@@ -306,7 +306,7 @@ export const ProfileEditForm = ({
 
 						<div className="space-y-2">
 							<label className="px-1 text-xs text-content">
-								<span>به چی علاقه داری؟ (3 تا)</span>
+								<span>به چی علاقه داری؟</span>
 							</label>
 							<InterestsSelector
 								interests={interests}
@@ -316,12 +316,12 @@ export const ProfileEditForm = ({
 								}
 								isLoading={interestsLoading}
 								triggerElement={
-									<div className="flex flex-wrap w-64 gap-2 p-3 transition-all border min-h-14 border-content rounded-2xl hover:border-primary/40! cursor-pointer">
+									<div className="flex flex-wrap w-72 max-h-32 overflow-y-auto gap-1 p-3 transition-all border   border-content rounded-2xl hover:border-primary/40! cursor-pointer">
 										{formData.interests.length > 0 ? (
 											formData.interests.map((id) => (
 												<div
 													key={id}
-													className="flex items-center gap-1 px-2 py-1 text-[11px] bg-primary/10 text-primary rounded-full  border border-primary/20"
+													className="flex items-center w-fit px-2 py-1 text-[11px] bg-primary/10 text-primary rounded-full border border-primary/20 h-6"
 												>
 													{
 														interests.find((i) => i.id === id)
