@@ -5,7 +5,6 @@ import { HiHome } from 'react-icons/hi'
 import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent, callEvent } from '@/common/utils/call-event'
-import { getConfigData } from '@/services/config-data/config_data-api'
 import { SettingModal } from '../setting/setting-modal'
 import { SettingsDropdown } from './components/settingsDropdown'
 import { FriendsList } from './friends-list/friends'
@@ -15,16 +14,6 @@ import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
 
-interface LogoData {
-	logoUrl: string | null
-	content: string | null
-}
-
-const DEFAULT_LOGO_DATA: LogoData = {
-	logoUrl: null,
-	content: '<h1 class="text-xl text-gray-100">ویجتی‌فای</h1>',
-}
-
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
 } as const
@@ -32,9 +21,8 @@ const WIDGETIFY_URLS = {
 export function NavbarLayout(): JSX.Element {
 	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
 	const [showSettings, setShowSettings] = useState(false)
-	const [isVisible, setIsVisible] = useState(true)
+	const [isVisible, setIsVisible] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
-	const [logoData, setLogoData] = useState<LogoData>(DEFAULT_LOGO_DATA)
 
 	const handleOpenSettings = useCallback(
 		(tabName: 'account' | 'wallpapers' | 'general' | null) => {
@@ -46,44 +34,26 @@ export function NavbarLayout(): JSX.Element {
 
 	const onToggleNavbar = () => {
 		setIsVisible((prev) => !prev)
+		setToStorage('navbarVisible', !isVisible)
 		Analytics.event(`navbar_${isVisible ? 'closed' : 'opened'}`)
 	}
 
 	const settingsModalCloseHandler = () => setShowSettings(false)
 
-	const sanitizeAndUpdateLogo = useCallback(
-		(logoUrl: string | null, logoId: string, storeData: any) => {
-			const newLogoData = { content: '', logoUrl }
-			setLogoData(newLogoData)
-			return setToStorage('configData', {
-				...storeData,
-				logo: { id: logoId, content: '', logoUrl: logoUrl },
-			})
-		},
-		[]
-	)
-
-	const loadConfig = useCallback(async () => {
-		try {
-			const storeData = await getFromStorage('configData')
-			if (storeData?.logo) {
-				setLogoData({
-					content: storeData.logo.content,
-					logoUrl: storeData.logo.logoUrl,
-				})
-			}
-			const data = await getConfigData()
-			if (data.logo?.logoUrl) {
-				await sanitizeAndUpdateLogo(data.logo.logoUrl, data.logo.id, storeData)
-			}
-		} catch {}
-	}, [sanitizeAndUpdateLogo])
-
 	useEffect(() => {
+		const load = async () => {
+			const storedVisibility = await getFromStorage('navbarVisible')
+			if (typeof storedVisibility === 'boolean') {
+				setIsVisible(storedVisibility)
+			} else {
+				setIsVisible(true)
+			}
+		}
+
+		load()
 		const openSettingEvent = listenEvent('openSettings', handleOpenSettings)
-		loadConfig()
 		return () => openSettingEvent()
-	}, [handleOpenSettings, loadConfig])
+	}, [handleOpenSettings])
 
 	return (
 		<>
@@ -126,7 +96,7 @@ export function NavbarLayout(): JSX.Element {
 				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-[2.5rem]">
 					<button
 						onClick={() => onToggleNavbar()}
-						className="relative z-10 p-2 transition-colors cursor-pointer text-white/20 hover:text-white/40"
+						className="relative z-10 p-2 transition-colors cursor-pointer nav-btn text-white/20 hover:text-white/40"
 					>
 						<FiChevronDown size={18} />
 					</button>
@@ -156,20 +126,18 @@ export function NavbarLayout(): JSX.Element {
 						>
 							<HiHome size={19} />
 						</button>
-						{logoData.logoUrl && (
-							<a
-								href={WIDGETIFY_URLS.website}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center justify-center w-8 h-8 border rounded-full border-white/10 bg-black/20"
-							>
-								<img
-									src={logoData.logoUrl}
-									alt="Logo"
-									className="object-contain w-5 h-5 opacity-80"
-								/>
-							</a>
-						)}
+						<a
+							href={WIDGETIFY_URLS.website}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center justify-center w-8 h-8 border rounded-full border-white/10 bg-black/20"
+						>
+							<img
+								src={'https://cdn.widgetify.ir/extension/logo.png'}
+								alt="Logo"
+								className="object-contain w-5 h-5 opacity-80"
+							/>
+						</a>
 					</div>
 				</nav>
 			</div>

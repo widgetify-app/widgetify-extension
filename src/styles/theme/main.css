@@ -4,3 +4,9 @@
     --brand-secondary: #7c8df0;
     --brand-secondary-rgb: 124, 141, 240;
 }
+
+[data-theme="light"] {
+    .nav-btn {
+        @apply text-gray-500 hover:text-gray-700;
+    }
+}
