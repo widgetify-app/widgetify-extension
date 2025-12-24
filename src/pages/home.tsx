@@ -40,7 +40,6 @@ const steps: Step[] = [
 					<div className="absolute inset-0 pointer-events-none rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
 				</div>
 
-				{/* نام دقیق گزینه برای تطبیق سریع چشم کاربر */}
 				<div className="p-2 border border-dashed rounded-lg bg-base-100/10 border-base-100/20">
 					<code className="text-[11px] font-bold text-content/60">
 						"Hide footer on New Tab page"
