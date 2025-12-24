@@ -74,7 +74,7 @@ export function ProfileNav() {
 			{!isAuth ? (
 				<Tooltip content="ورود به حساب کاربری">
 					<div
-						className="relative p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
+						className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 						id="profile-and-friends-list"
 						onClick={handleProfileClick}
 					>

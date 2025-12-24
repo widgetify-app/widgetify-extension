@@ -24,7 +24,7 @@ export function MarketButton() {
 		<>
 			<button
 				onClick={() => handleClick()}
-				className="p-2 transition-all cursor-pointer text-white/40 hover:text-white active:scale-90"
+				className="p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 			>
 				<HiShoppingBag size={19} />
 			</button>
