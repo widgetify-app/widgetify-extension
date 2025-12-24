@@ -77,7 +77,12 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		selectedDateTodos = todos
 	}
 
-	selectedDateTodos = selectedDateTodos.sort((a, b) => (a.order || 0) - (b.order || 0))
+	selectedDateTodos = selectedDateTodos.sort((a, b) => {
+		if (a.completed !== b.completed) {
+			return a.completed ? 1 : -1
+		}
+		return (a.order || 0) - (b.order || 0)
+	})
 
 	if (filter === 'active') {
 		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
