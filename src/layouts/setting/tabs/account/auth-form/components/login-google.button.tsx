@@ -38,7 +38,6 @@ export default function LoginGoogleButton() {
 			}
 
 			const redirectUri = browser.identity.getRedirectURL('google')
-			console.log('Redirect URI:', redirectUri)
 			const url = new URL('https://accounts.google.com/o/oauth2/v2/auth')
 			url.searchParams.set('client_id', import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID)
 			url.searchParams.set('response_type', 'token')
@@ -56,7 +55,6 @@ export default function LoginGoogleButton() {
 
 			const params = new URLSearchParams(redirectUrl?.split('#')[1])
 			const token = params.get('access_token')
-			console.log('Access Token:', token)
 
 			if (token) {
 				const [err, response] = await safeAwait<AxiosError, AuthResponse>(

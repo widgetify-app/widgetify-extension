@@ -48,12 +48,12 @@ export default defineConfig({
 		'@wxt-dev/module-react',
 	],
 	manifest: {
-		version: '1.0.60',
+		version: '1.0.61',
 		name: 'Widgetify',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
 		permissions: ['storage', 'search'],
-		optional_permissions: ['tabs', 'tabGroups', 'bookmarks'],
+		optional_permissions: ['tabs', 'tabGroups', 'bookmarks', 'identity'],
 		browser_specific_settings: {
 			gecko: {
 				id: 'widgetify@widgetify-app.github.io',
