@@ -5,10 +5,11 @@ import {
 	useGetOccupations,
 	useGetInterests,
 } from '@/services/hooks/profile/getProfileMeta.hook'
-import { LuChevronLeft, LuSparkles } from 'react-icons/lu'
-import { FaCheck } from 'react-icons/fa'
+import { LuChevronLeft } from 'react-icons/lu'
 import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
+import { Chip } from '@/components/chip.component'
+import { ItemSelector } from './item-selector'
 
 export enum ReferralSource {
 	Social = 'social',
@@ -64,6 +65,12 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 		load()
 	}, [])
 
+	const save = async () => {
+		// todo: send data to server
+		// when done, close the wizard
+		onClose()
+	}
+
 	const renderStepContent = () => {
 		switch (currentStep) {
 			case 1:
@@ -105,7 +112,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 										حرفه‌ات رو انتخاب کن
 									</p>
 								</div>
-								<div className="grid w-full grid-cols-2 gap-3 p-2 overflow-y-auto max-h-75 scrollbar-none">
+								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
 									{occupationsLoading ? (
 										<div className="col-span-2 py-10 text-center animate-pulse">
 											در حال بارگذاری...
@@ -115,37 +122,15 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 											const isSelected =
 												selectedOccupation === job.id
 											return (
-												<button
+												<Chip
 													key={job.id}
+													selected={isSelected}
 													onClick={() =>
 														setSelectedOccupation(job.id)
 													}
-													className={`relative flex flex-col items-center justify-center p-4 gap-2 border rounded-2xl transition-all duration-300 cursor-pointer ${
-														isSelected
-															? 'border-primary bg-primary/5 scale-[1.02]'
-															: 'border-base-300/30 bg-base-100 hover:border-primary/30'
-													}`}
 												>
-													<LuSparkles
-														className={
-															isSelected
-																? 'text-primary'
-																: 'text-base-300'
-														}
-														size={20}
-													/>
-													<span
-														className={`text-xs font-bold ${isSelected ? 'text-primary' : 'text-content/80'}`}
-													>
-														{job.title}
-													</span>
-													{isSelected && (
-														<FaCheck
-															className="absolute top-2 right-2 text-primary"
-															size={16}
-														/>
-													)}
-												</button>
+													{job.title}
+												</Chip>
 											)
 										})
 									)}
@@ -177,7 +162,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 										به چی علاقه داری؟
 									</h2>
 									<p className="text-sm font-medium opacity-60">
-										تا ۳ مورد رو می‌تونی انتخاب کنی
+										هر تعداد که دوست داری انتخاب کن
 									</p>
 								</div>
 								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
@@ -191,8 +176,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 												item.id
 											)
 											return (
-												<button
+												<Chip
 													key={item.id}
+													selected={isSelected}
 													onClick={() => {
 														if (isSelected)
 															setSelectedInterests(
@@ -200,22 +186,15 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 																	(id) => id !== item.id
 																)
 															)
-														else if (
-															selectedInterests.length < 3
-														)
+														else
 															setSelectedInterests([
 																...selectedInterests,
 																item.id,
 															])
 													}}
-													className={`px-4 py-2 cursor-pointer rounded-full text-xs font-bold transition-all border-2 ${
-														isSelected
-															? 'bg-primary border-primary text-white'
-															: 'bg-base-100 border-base-300/30 text-muted hover:border-primary/30'
-													}`}
 												>
 													{item.title}
-												</button>
+												</Chip>
 											)
 										})
 									)}
@@ -251,79 +230,36 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							</div>
 
 							<div className="w-full max-w-md space-y-4">
-								<div className="space-y-2">
-									<label className="flex items-center cursor-pointer">
-										<input
-											type="radio"
-											name="referral"
-											value={ReferralSource.Social}
-											checked={
-												selectedReferralSource ===
-												ReferralSource.Social
+								<div className="flex flex-wrap gap-2">
+									{[
+										{
+											value: ReferralSource.Social,
+											label: 'شبکه‌های اجتماعی',
+										},
+										{
+											value: ReferralSource.Youtube,
+											label: 'یوتیوب',
+										},
+										{
+											value: ReferralSource.Friends,
+											label: 'دوستان',
+										},
+										{
+											value: ReferralSource.SearchOther,
+											label: 'جستجو یا سایر',
+										},
+									].map((option) => (
+										<ItemSelector
+											isActive={
+												selectedReferralSource === option.value
 											}
-											onChange={(e) =>
-												setSelectedReferralSource(
-													e.target.value as ReferralSource
-												)
+											label={option.label}
+											key={option.value}
+											onClick={() =>
+												setSelectedReferralSource(option.value)
 											}
-											className="radio radio-primary"
 										/>
-										<span className="mr-2">شبکه‌های اجتماعی</span>
-									</label>
-									<label className="flex items-center cursor-pointer">
-										<input
-											type="radio"
-											name="referral"
-											value={ReferralSource.Youtube}
-											checked={
-												selectedReferralSource ===
-												ReferralSource.Youtube
-											}
-											onChange={(e) =>
-												setSelectedReferralSource(
-													e.target.value as ReferralSource
-												)
-											}
-											className="radio radio-primary"
-										/>
-										<span className="mr-2">یوتیوب</span>
-									</label>
-									<label className="flex items-center cursor-pointer">
-										<input
-											type="radio"
-											name="referral"
-											value={ReferralSource.Friends}
-											checked={
-												selectedReferralSource ===
-												ReferralSource.Friends
-											}
-											onChange={(e) =>
-												setSelectedReferralSource(
-													e.target.value as ReferralSource
-												)
-											}
-											className="radio radio-primary"
-										/>
-										<span className="mr-2">دوستان</span>
-									</label>
-									<label className="flex items-center cursor-pointer">
-										<input
-											type="radio"
-											name="referral"
-											value={ReferralSource.SearchOther}
-											checked={
-												selectedReferralSource ===
-												ReferralSource.SearchOther
-											}
-											onChange={(e) =>
-												setSelectedReferralSource(
-													e.target.value as ReferralSource
-												)
-											}
-											className="radio radio-primary"
-										/>
-										<span className="mr-2">جستجو یا سایر</span>
-									</label>
+									))}
 								</div>
 
 								{selectedReferralSource === ReferralSource.Friends && (
@@ -341,10 +277,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								size="sm"
 								onClick={nextStep}
 								disabled={!selectedReferralSource}
-								className="w-full h-12 mt-8 text-base font-bold text-white shadow-lg shadow-primary/30 rounded-2xl"
-								isPrimary={true}
+								className="w-full h-12 mt-4 text-base font-bold text-white shadow-lg rounded-2xl"
+								isPrimary
 							>
-								بعدی
+								ادامه
 							</Button>
 						</div>
 						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
@@ -366,7 +302,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							</div>
 							<Button
 								size="sm"
-								onClick={onClose}
+								onClick={() => save()}
 								className="w-full h-12 text-base font-bold text-white shadow-lg rounded-2xl"
 								isPrimary
 							>

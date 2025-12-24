@@ -34,7 +34,7 @@ const getTooltipContent = (user: any) => {
 export function ProfileNav() {
 	const { user, isAuthenticated } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
-	const [openedWizard, setOpenedWizard] = useState(false)
+	const [openedWizard, setOpenedWizard] = useState(true)
 
 	const handleProfileClick = () => {
 		setShowSettingsModal(true)
