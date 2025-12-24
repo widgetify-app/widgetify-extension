@@ -36,7 +36,7 @@ export const OccupationSelector = ({
 					درحال بارگذاری...
 				</div>
 			) : (
-				<div className="flex flex-row flex-wrap gap-1">
+				<div className="flex flex-row flex-wrap gap-2">
 					{occupations.map((occupation) => {
 						const isActive = selectedOccupation === occupation.id
 						return (
@@ -51,7 +51,7 @@ export const OccupationSelector = ({
 									${
 										isActive
 											? 'bg-primary border-primary shadow-sm text-white!'
-											: 'bg-base-200/50 border-base-300/30 text-content hover:bg-base-200'
+											: 'bg-base-200/50 border-base-300 text-content  hover:bg-base-200 shadow-xs'
 									}
 								`}
 							>

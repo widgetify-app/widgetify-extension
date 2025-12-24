@@ -7,6 +7,8 @@ import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { UserCoin } from './user-coin'
+import React from 'react'
+import { Chip } from '@/components/chip.component'
 
 interface ProfileDisplayProps {
 	profile?: UserProfile
@@ -117,13 +119,22 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 					icon={<LuHeart className="text-error" />}
 					label="علایق"
 					value={
-						profile?.interests?.map((i) => i.label).join('، ') ||
-						'انتخاب نشده'
+						<div className="flex flex-wrap self-end justify-end flex-1 gap-1">
+							{profile?.interests?.map((i) => (
+								<Chip
+									onClick={() => {}}
+									selected={true}
+									key={i.id}
+									className="p-0! px-1!"
+								>
+									{i.label}
+								</Chip>
+							))}
+						</div>
 					}
 				/>
 			</div>
 
-			{/* دکمه ویرایش */}
 			<Button
 				size="sm"
 				onClick={onEditToggle}
@@ -150,7 +161,7 @@ const DisplayRow = ({
 }: {
 	icon: React.ReactNode
 	label: string
-	value?: string
+	value?: React.ReactNode
 	isLtr?: boolean
 }) => (
 	<div className="flex items-center justify-between p-4 transition-colors border-b last:border-b-0 border-base-300/30 hover:bg-base-200/20">
@@ -161,7 +172,7 @@ const DisplayRow = ({
 			<span className="text-xs font-medium opacity-60">{label}</span>
 		</div>
 		<span
-			className={`text-sm font-semibold text-content ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
+			className={`text-sm w-52 text-end font-semibold text-content  max-h-12 overflow-y-auto scrollbar-none ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
 		>
 			{value || '-'}
 		</span>

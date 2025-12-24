@@ -36,7 +36,7 @@ export const InterestsSelector = ({
 					صبر کنید...
 				</div>
 			) : (
-				<div className="flex flex-row flex-wrap gap-1">
+				<div className="flex flex-row flex-wrap gap-2">
 					{interests.map((interest) => {
 						const isSelected = selectedInterests.includes(interest.id)
 
@@ -51,8 +51,8 @@ export const InterestsSelector = ({
 									transition-all duration-200 active:scale-95 cursor-pointer
 									${
 										isSelected
-											? 'bg-primary border-primary text-white! shadow-md shadow-primary/20'
-											: 'bg-base-200/50 border-base-300/30 text-content/70 hover:bg-base-200'
+											? 'bg-primary border-primary shadow-sm text-white!'
+											: 'bg-base-200/50 border-base-300 text-content  hover:bg-base-200 shadow-xs'
 									}
 								`}
 							>
