@@ -19,7 +19,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 
 	return (
 		<div className="mt-2">
-			<SectionPanel title="پیشنهاد ویجتی‌فای" size="xs">
+			<SectionPanel title="پیشنهاد ویجتیفای" size="xs">
 				<div className="grid h-16 grid-cols-5 gap-2 mt-1 overflow-y-auto">
 					{suggestions.map((suggestion, index) => (
 						<div

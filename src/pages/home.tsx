@@ -18,10 +18,44 @@ import { ContentSection } from './home/content-section'
 
 const steps: Step[] = [
 	{
-		target: 'body',
-		content:
-			'به ویجتی‌فای خوش آمدید! بیایید با هم قسمت‌های مختلف افزونه را بررسی کنیم تا با امکانات آن آشنا شوید.',
+		target: '#chrome-footer',
+		content: (
+			<div className="flex flex-col gap-1 text-center">
+				<h4 className="text-[14px] font-black text-primary italic">
+					خلوت کردن فضای مرورگر
+				</h4>
+
+				<p className="text-[12px] leading-6 text-base-200 font-medium">
+					برای مخفی کردن این نوار، کافیست روی آن{' '}
+					<span className="font-black text-error">راست کلیک</span> کرده و گزینه
+					زیر را انتخاب کنید:
+				</p>
+
+				<div className="relative group">
+					<img
+						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
+						alt="نحوه مخفی کردن نوار پایین مرورگر"
+						className="object-cover w-full transition-transform duration-500 rounded-xl shadow-2xl border-2 border-primary/20 group-hover:scale-[1.02]"
+					/>
+					<div className="absolute inset-0 pointer-events-none rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+				</div>
+
+				{/* نام دقیق گزینه برای تطبیق سریع چشم کاربر */}
+				<div className="p-2 border border-dashed rounded-lg bg-base-100/10 border-base-100/20">
+					<code className="text-[11px] font-bold text-content/60">
+						"Hide footer on New Tab page"
+					</code>
+				</div>
+			</div>
+		),
 		disableBeacon: true,
+		showSkipButton: true,
+		styles: {
+			options: {
+				width: 320,
+				zIndex: 10000,
+			},
+		},
 	},
 	{
 		target: '#settings-button',

@@ -78,7 +78,7 @@ export function AboutUsTab() {
 						</div>
 						<h3 className={'text-sm font-medium text-content'}>حمایت مالی</h3>
 						<p className={'mt-1 text-xs text-center text-content'}>
-							کمک به توسعه ویجتی‌فای
+							کمک به توسعه ویجتیفای
 						</p>
 					</a>
 
@@ -147,7 +147,7 @@ export function AboutUsTab() {
 			</div>
 
 			<div className={'mt-2 mb-4 text-xs text-center text-content opacity-55'}>
-				© ویجتی‌فای - تمامی حقوق محفوظ است
+				© ویجتیفای - تمامی حقوق محفوظ است
 			</div>
 		</div>
 	)
