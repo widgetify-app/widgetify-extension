@@ -10,12 +10,11 @@ import { WidgetContainer } from '../widget-container'
 import { Forecast } from './forecast/forecast'
 import { CurrentWeatherBox } from './current/current-box.weather'
 import { useAuth } from '@/context/auth.context'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
 import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
 
 export function WeatherLayout() {
-	const { isAuthenticated, user } = useAuth()
+	const { user } = useAuth()
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
 	const [weatherState, setWeather] = useState<FetchedWeather | null>(null)
 	const [forecastWeather, setForecastWeather] = useState<FetchedForecast[] | null>(null)
@@ -29,7 +28,7 @@ export function WeatherLayout() {
 		useAI: weatherSettings?.useAI,
 		lat: user?.city?.id ? undefined : 35.696111,
 		lon: user?.city?.id ? undefined : 51.423056,
-		enabled: isAuthenticated,
+		enabled: true,
 	})
 
 	const {
@@ -39,7 +38,7 @@ export function WeatherLayout() {
 	} = useGetForecastWeatherByLatLon({
 		count: 6,
 		units: weatherSettings?.temperatureUnit,
-		enabled: isAuthenticated,
+		enabled: true,
 		refetchInterval: 0,
 		lat: user?.city?.id ? undefined : 35.696111,
 		lon: user?.city?.id ? undefined : 51.423056,
@@ -102,31 +101,29 @@ export function WeatherLayout() {
 	}, [forecastDataUpdatedAt])
 
 	useEffect(() => {
-		if (isAuthenticated && user?.city?.id) {
+		if (user?.city?.id) {
 			refetchWeather()
 			refetchForecast()
 		}
-	}, [user?.city?.id, isAuthenticated, refetchWeather, refetchForecast])
+	}, [user?.city?.id, refetchWeather, refetchForecast])
 
 	if (!weatherSettings) return null
 
 	return (
 		<WidgetContainer>
-			<RequireAuth mode="preview">
-				<div className="flex flex-col w-full h-full gap-2 py-1">
-					<CurrentWeatherBox
-						fetchedWeather={weatherState || null}
-						temperatureUnit={weatherSettings.temperatureUnit}
-					/>
+			<div className="flex flex-col w-full h-full gap-2 py-1">
+				<CurrentWeatherBox
+					fetchedWeather={weatherState || null}
+					temperatureUnit={weatherSettings.temperatureUnit}
+				/>
 
-					<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
-						<Forecast
-							temperatureUnit={weatherSettings.temperatureUnit}
-							forecast={forecastWeather}
-						/>
-					</div>
+				<div className="flex justify-between gap-0.5 px-1  rounded-2xl bg-base-200/40">
+					<Forecast
+						temperatureUnit={weatherSettings.temperatureUnit}
+						forecast={forecastWeather}
+					/>
 				</div>
-			</RequireAuth>
+			</div>
 		</WidgetContainer>
 	)
 }
