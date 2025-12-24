@@ -8,6 +8,7 @@ import {
 } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
+import { ConfigKey } from '@/common/constant/config.key'
 
 type MediaContent = {
 	type: 'image' | 'video'
@@ -22,7 +23,7 @@ type ReleaseNote = {
 	media?: MediaContent[]
 }
 
-const VERSION_NAME = 'نسخه یلدا 🍉'
+const VERSION_NAME = ConfigKey.VERSION_NAME
 
 const releaseNotes: ReleaseNote[] = [
 	{
@@ -184,7 +185,7 @@ export const UpdateReleaseNotesModal = ({
 						size="sm"
 						onClick={onClose}
 						disabled={counter > 0}
-						className="min-w-[130px] h-11 !rounded-2xl font-black italic text-[11px] shadow-lg shadow-primary/10 active:scale-90 transition-all"
+						className="min-w-[130px] h-11 !rounded-2xl font-black italic text-[11px] shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
 						isPrimary={true}
 					>
 						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
