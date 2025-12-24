@@ -31,13 +31,24 @@ const StepWrapper = ({ children }: { children: React.ReactNode }) => {
 	return <div className="flex flex-col md:flex-row min-h-125">{children}</div>
 }
 
-const StepImage = ({ src, alt }: { src: string; alt: string }) => {
+const StepImage = ({ src }: { src: string; alt: string }) => {
 	return (
-		<div className="relative flex items-center justify-center w-full p-2 bg-base-200/50 md:w-1/2">
-			<img src={src} alt={alt} className="object-cover w-full rounded max-h-124" />
+		<div className="relative flex items-center justify-center w-full overflow-hidden bg-base-200/50 md:w-1/2 min-h-80 rounded-2xl group">
+			<div
+				className="absolute inset-0 transition-opacity duration-700 bg-center bg-cover"
+				style={{
+					backgroundImage: `url(${src})`,
+
+					maskImage:
+						'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)',
+					WebkitMaskImage:
+						'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)',
+				}}
+			/>
 		</div>
 	)
 }
+
 export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	const [currentStep, setCurrentStep] = useState(1)
 	const [fetching, setFetching] = useState(false)
@@ -126,7 +137,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								بزن بریم
 							</Button>
 						</div>
-						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/1.webp"
+							alt="Welcome"
+						/>
 					</StepWrapper>
 				)
 
@@ -179,7 +193,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								</Button>
 							</div>
 						</div>
-						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/2.webp"
+							alt="Welcome"
+						/>
 					</StepWrapper>
 				)
 
@@ -243,7 +260,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								</Button>
 							</div>
 						</div>
-						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/3.webp"
+							alt="Welcome"
+						/>
 					</StepWrapper>
 				)
 
@@ -315,7 +335,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								ادامه
 							</Button>
 						</div>
-						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/4.webp"
+							alt="Welcome"
+						/>
 					</StepWrapper>
 				)
 
@@ -341,7 +364,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								شروع استفاده
 							</Button>
 						</div>
-						<StepImage src="https://picsum.photos/400/601" alt="Welcome" />
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/5.webp"
+							alt="Welcome"
+						/>
 					</StepWrapper>
 				)
 		}
