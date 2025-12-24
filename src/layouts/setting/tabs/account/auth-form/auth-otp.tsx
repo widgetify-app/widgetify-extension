@@ -8,6 +8,8 @@ import { useAuth } from '@/context/auth.context'
 import { isEmpty, isEmail, isLessThan } from '@/utils/validators'
 import InputTextError from './components/input-text-error'
 import OtpInput from './components/otp-input'
+import { callEvent } from '@/common/utils/call-event'
+import { sleep } from '@/common/utils/timeout'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -79,6 +81,11 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 		try {
 			setError({ email: null, otp: null, api: null })
 			const response = await verifyOtp({ email, code: otp })
+			if (response.isNewUser) {
+				callEvent('openWizardModal')
+				await sleep(500)
+			}
+
 			login(response.data)
 		} catch (err: any) {
 			const content = translateError(err)

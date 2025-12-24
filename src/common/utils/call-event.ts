@@ -47,6 +47,8 @@ export interface EventName {
 	openProfile: null
 	openMarketModal: null
 	font_change: FontFamily
+	close_all_modals: null
+	openWizardModal: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

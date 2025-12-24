@@ -5,7 +5,6 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useAuth } from '@/context/auth.context'
 import { useGetFriends } from '@/services/hooks/friends/friendService.hook'
-import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 import { FriendItem } from './friend.item'
 import { HiUserGroup } from 'react-icons/hi2'
 
@@ -73,12 +72,11 @@ export function FriendsList() {
 	const { isAuthenticated } = useAuth()
 
 	const [firstAuth, setFirstAuth] = useState(false)
-	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
 
-	const { data: friendsData, refetch: refetchFriends } = useGetFriends({
+	const { data: friendsData } = useGetFriends({
 		status: 'ACCEPTED',
 		enabled: isAuthenticated,
 	})
@@ -91,13 +89,8 @@ export function FriendsList() {
 			setFirstAuth(true)
 			return
 		}
-		setShowSettingsModal(true)
 	}
 
-	const handleSettingsModalClose = () => {
-		setShowSettingsModal(false)
-		refetchFriends()
-	}
 	const handleAuthModalClose = () => setFirstAuth(false)
 
 	if (!isAuthenticated) {
@@ -126,11 +119,6 @@ export function FriendsList() {
 				)}
 				contentClassName="!p-0"
 				closeOnClickOutside={true}
-			/>
-
-			<UserAccountModal
-				isOpen={showSettingsModal}
-				onClose={handleSettingsModalClose}
 			/>
 
 			<AuthRequiredModal

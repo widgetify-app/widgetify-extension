@@ -10,6 +10,8 @@ import type { AxiosError } from 'axios'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
+import { sleep } from '@/common/utils/timeout'
 
 export default function LoginGoogleButton() {
 	const { login } = useAuth()
@@ -65,6 +67,11 @@ export default function LoginGoogleButton() {
 				)
 				if (err) {
 					return showToast(translateError(err) as string, 'error')
+				}
+
+				if (response.isNewUser) {
+					callEvent('openWizardModal')
+					await sleep(300)
 				}
 
 				login(response.data)
