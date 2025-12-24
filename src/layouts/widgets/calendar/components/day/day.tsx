@@ -140,11 +140,11 @@ export function DayItem({
 			<div className="flex items-center">
 				{hasEvent && (
 					<span
-						className={`w-1 h-1 rounded-full ${isHolidayEvent ? 'bg-red-500' : 'bg-blue-500'} shadow-sm`}
+						className={`w-0.5 h-0.5 rounded-full ${isHolidayEvent ? 'bg-red-500' : 'bg-blue-500/80'} shadow-sm`}
 					/>
 				)}
 				{hasTodo && (
-					<span className="w-1 h-1 bg-green-500 rounded-full shadow-sm opacity-50" />
+					<span className="w-0.5 h-0.5 rounded-full shadow-sm bg-green-500/80" />
 				)}
 			</div>
 		)
@@ -164,11 +164,11 @@ export function DayItem({
 			`}
 		>
 			{day}
-			{renderIndicators() && (
+			{
 				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
 					{renderIndicators()}
 				</div>
-			)}
+			}
 		</div>
 	)
 }
