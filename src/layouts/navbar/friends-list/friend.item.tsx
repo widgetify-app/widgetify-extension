@@ -1,7 +1,5 @@
-import { useRef } from 'react'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
-import { UserCardPortal } from '@/components/user/user-card-portal'
 import type { FriendUser } from '@/services/hooks/friends/friendService.hook'
 
 interface FriendItemProps {
@@ -15,7 +13,6 @@ export function FriendItem({
 	activeProfileId,
 	setActiveProfileId,
 }: FriendItemProps) {
-	const containerRef = useRef<HTMLDivElement>(null)
 	const isActive = activeProfileId === user.userId
 
 	const handleClick = () => {
@@ -50,7 +47,6 @@ export function FriendItem({
 				}
 			>
 				<div
-					ref={containerRef}
 					className="flex flex-col items-center justify-center overflow-hidden transition-all cursor-pointer hover:scale-105 group"
 					onClick={handleClick}
 				>
@@ -71,20 +67,6 @@ export function FriendItem({
 					</span>
 				</div>
 			</Tooltip>
-
-			<UserCardPortal
-				user={{
-					avatar: user.avatar,
-					name: user.name,
-					username: user.username,
-					friendshipStatus: 'ACCEPTED',
-					isSelf: false,
-					extras: user.extras,
-				}}
-				isOpen={isActive}
-				onClose={() => setActiveProfileId(null)}
-				triggerRef={containerRef as React.RefObject<HTMLElement>}
-			/>
 		</div>
 	)
 }
