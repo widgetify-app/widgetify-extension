@@ -12,13 +12,11 @@ import {
 	getShamsiEvents,
 } from '../../utils'
 import { moodOptions } from './toolTipContent'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 interface DayItemProps {
 	day: number
 	currentDate: jalaliMoment.Moment
 	events: FetchedAllEvents
-	todos: Todo[]
 	selectedDateStr: string
 	setSelectedDate: (date: jalaliMoment.Moment) => void
 	googleEvents: GoogleCalendarEvent[]
@@ -32,7 +30,6 @@ export function DayItem({
 	currentDate,
 	events,
 	googleEvents = [],
-	todos,
 	selectedDateStr,
 	setSelectedDate,
 	timezone,
@@ -56,7 +53,6 @@ export function DayItem({
 		...todayHijriEvents.filter((event) => event.icon).map((event) => event.icon),
 	].filter(Boolean) as string[]
 
-	const hasTodo = todos.some((todo) => todo.date === dateStr)
 	const isSelected = selectedDateStr === dateStr
 	const isCurrentDay = isToday(cellDate, timezone)
 
@@ -134,7 +130,7 @@ export function DayItem({
 			)
 		}
 
-		if (!hasEvent && !hasTodo) return null
+		if (!hasEvent) return null
 
 		return (
 			<div className="flex items-center">
@@ -142,9 +138,6 @@ export function DayItem({
 					<span
 						className={`w-0.5 h-0.5 rounded-full ${isHolidayEvent ? 'bg-red-500' : 'bg-blue-500/80'} shadow-sm`}
 					/>
-				)}
-				{hasTodo && (
-					<span className="w-0.5 h-0.5 rounded-full shadow-sm bg-green-500/80" />
 				)}
 			</div>
 		)

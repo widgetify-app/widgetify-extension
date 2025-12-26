@@ -29,7 +29,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const [clickedElement, setClickedElement] = useState<HTMLDivElement | null>(null)
 
 	const { data: events } = useGetEvents()
-	const { todos } = useTodoStore()
 
 	const { data: calendarData, refetch } = useGetCalendarData(
 		isAuthenticated,
@@ -80,7 +79,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 						googleEvents={calendarData?.googleEvents || []}
 						selectedDateStr={selectedDateStr}
 						setSelectedDate={setSelectedDate}
-						todos={todos}
 						timezone={timezone.value}
 						moods={calendarData?.moods ?? []}
 						onClick={(element) => {

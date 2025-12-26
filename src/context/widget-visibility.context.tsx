@@ -12,8 +12,6 @@ import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/comboWidget/combo-widget.layout'
 import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
-import { NotesLayout } from '@/layouts/widgets/notes/notes.layout'
-import { TodosLayout } from '@/layouts/widgets/todos/todos'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
@@ -22,6 +20,7 @@ import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 import { showToast } from '@/common/toast'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
+import { TodoProvider } from './todo.context'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -65,7 +64,11 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📒',
 		label: 'یادکار (وظایف و یادداشت)',
 		order: 0,
-		node: <YadkarWidget />,
+		node: (
+			<TodoProvider>
+				<YadkarWidget />
+			</TodoProvider>
+		),
 		canToggle: true,
 		isNew: true,
 	},
@@ -138,24 +141,6 @@ export const widgetItems: WidgetItem[] = [
 		canToggle: false,
 		disabled: true,
 		soon: true,
-	},
-	{
-		id: WidgetKeys.todos,
-		emoji: '✅',
-		label: 'وظایف',
-		order: 2,
-		node: <TodosLayout />,
-		canToggle: false,
-		disabled: true,
-	},
-	{
-		id: WidgetKeys.notes,
-		emoji: '📝',
-		label: 'یادداشت‌ها',
-		order: 7,
-		node: <NotesLayout />,
-		canToggle: false,
-		disabled: true,
 	},
 ]
 

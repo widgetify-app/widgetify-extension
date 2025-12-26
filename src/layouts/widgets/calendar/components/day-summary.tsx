@@ -1,11 +1,9 @@
 import type React from 'react'
-import { FiCalendar, FiClipboard } from 'react-icons/fi'
+import { FiCalendar } from 'react-icons/fi'
 import { useAuth } from '@/context/auth.context'
-import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import {
-	formatDateStr,
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
@@ -18,7 +16,6 @@ interface DaySummaryProps {
 
 export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 	const { user } = useAuth()
-	const { todos } = useTodoStore()
 	const { data: events } = useGetEvents()
 
 	const startOfMonth = selectedDate.clone().startOf('jMonth').toDate()
@@ -29,8 +26,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 		startOfMonth,
 		endOfMonth
 	)
-
-	const selectedDateStr = formatDateStr(selectedDate)
 
 	const googleEventsForSelectedDate = googleEvents.filter((event) => {
 		if (!event || !event.start || !event.start.dateTime) {
@@ -44,11 +39,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 
 	const googleEventCount = googleEventsForSelectedDate.length
 
-	const todosForSelectedDate = todos.filter((todo) => todo.date === selectedDateStr)
-
-	const completedTodos = todosForSelectedDate.filter((todo) => todo.completed).length
-	const totalTodos = todosForSelectedDate.length
-
 	const shamsiEvents = events ? getShamsiEvents(events, selectedDate) : []
 	const gregorianEvents = events ? getGregorianEvents(events, selectedDate) : []
 	const hijriEvents = events ? getHijriEvents(events, selectedDate) : []
@@ -59,8 +49,8 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 
 	return (
 		<div className={'overflow-hidden border border-content rounded-xl'}>
-			<div className="p-1.5">
-				<div className="grid grid-cols-2 gap-1.5">
+			<div className="p-0.5">
+				<div className="grid grid-cols-1 gap-1.5">
 					<div
 						className={
 							'p-1 rounded-lg cursor-pointer bg-base-300 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
@@ -69,7 +59,7 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 						<FiCalendar
 							className={`text-base ml-2 flex-shrink-0 ${totalEventsCount > 0 ? 'text-blue-500' : 'text-gray-400'}`}
 						/>
-						<div className="flex-1 min-w-0">
+						<div className="min-w-0 flex-">
 							<div className={'text-xs font-medium text-content truncate'}>
 								<span>{totalEventsCount}</span> مناسبت
 							</div>
@@ -81,30 +71,6 @@ export const DaySummary: React.FC<DaySummaryProps> = ({ selectedDate }) => {
 								{holidayEvents > 0
 									? `${holidayEvents} مناسبت تعطیل`
 									: 'بدون تعطیلی'}
-							</div>
-						</div>
-					</div>
-
-					{/* Todos card */}
-					<div
-						className={
-							'p-1 rounded-lg cursor-pointer bg-base-300 flex items-center opacity-80 hover:opacity-100 transition-all duration-200'
-						}
-					>
-						<FiClipboard
-							className={`text-base ml-2 flex-shrink-0 ${totalTodos > 0 ? 'text-green-500' : 'text-gray-400'}`}
-						/>
-						<div className="flex-1 min-w-0">
-							{' '}
-							<div className={'text-xs font-medium text-content truncate'}>
-								<span>{totalTodos}</span> وظیفه
-							</div>
-							<div
-								className={'text-[.50rem] widget-item-sub-text truncate'}
-							>
-								{totalTodos > 0
-									? `${completedTodos} از ${totalTodos} تکمیل شده`
-									: 'بدون وظیفه'}
 							</div>
 						</div>
 					</div>
