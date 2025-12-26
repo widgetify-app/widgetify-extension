@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { FaGear } from 'react-icons/fa6'
-import { FiDollarSign } from 'react-icons/fi'
-import { LuNewspaper } from 'react-icons/lu'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
@@ -50,31 +48,27 @@ export function ComboWidget() {
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
 			<div className="flex items-center justify-between pb-2">
-				<div className="flex w-full gap-2">
-					<button
+				<div className="flex items-center justify-around p-1 text-xs font-medium w-28 bg-base-300 rounded-2xl text-content">
+					<div
 						onClick={() => onTabClick('currency')}
-						className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
+						className={`cursor-pointer text-xs w-full text-center  rounded-xl py-0.5 px-1 ${
 							activeTab === 'currency'
-								? 'bg-primary text-white'
-								: 'text-muted hover:bg-base-300'
-						}
-								`}
+								? 'bg-primary text-gray-200 '
+								: 'hover:bg-primary/10'
+						}`}
 					>
-						<FiDollarSign className="w-3 h-3" />
 						<span>ارزها</span>
-					</button>
-					<button
+					</div>
+					<div
 						onClick={() => onTabClick('news')}
-						className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer rounded-xl active:scale-95 ${
+						className={`cursor-pointer text-xs w-full text-center rounded-xl py-0.5 px-1 ${
 							activeTab === 'news'
-								? 'bg-primary text-white'
-								: 'text-muted hover:bg-base-300'
-						}
-								`}
+								? 'bg-primary text-gray-200'
+								: 'hover:bg-primary/10'
+						}`}
 					>
-						<LuNewspaper className="w-3 h-3" />
 						<span>اخبار</span>
-					</button>
+					</div>
 				</div>
 				<div className="flex items-center gap-x-1">
 					<Button

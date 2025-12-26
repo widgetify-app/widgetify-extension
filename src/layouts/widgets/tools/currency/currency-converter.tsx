@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-
-import { BsCurrencyExchange } from 'react-icons/bs'
-import { TbArrowsUpDown } from 'react-icons/tb'
-import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
+import { TbArrowsUpDown, TbInfoCircle } from 'react-icons/tb'
 import { SelectBox } from '@/components/selectbox/selectbox'
 import { TextInput } from '@/components/text-input'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/getCurrencyByCode.hook'
@@ -20,193 +16,128 @@ export const CurrencyConverter: React.FC = () => {
 
 	const { data: supportedCurrencies, isLoading: isLoadingSupported } =
 		useGetSupportCurrencies()
-
-	const { data: fromCurrencyData, isLoading: isLoadingFrom } = useGetCurrencyByCode(
-		fromCurrency,
-		{ refetchInterval: null }
-	)
-
-	const { data: toCurrencyData, isLoading: isLoadingTo } = useGetCurrencyByCode(
-		toCurrency,
-		{ refetchInterval: null }
-	)
+	const { data: fromCurrencyData } = useGetCurrencyByCode(fromCurrency, {
+		refetchInterval: null,
+	})
+	const { data: toCurrencyData } = useGetCurrencyByCode(toCurrency, {
+		refetchInterval: null,
+	})
 
 	useEffect(() => {
 		if (fromCurrencyData && toCurrencyData && amount) {
-			const fromRialPrice = fromCurrencyData.rialPrice
-			const toRialPrice = toCurrencyData.rialPrice
-
-			if (fromRialPrice && toRialPrice) {
-				const converted = (amount * fromRialPrice) / toRialPrice
-				setConvertedAmount(Number(converted.toFixed(2)))
-				Analytics.event(
-					`currency_converter_convert_${fromCurrency}_to_${toCurrency}`
-				)
-			}
+			const converted =
+				(amount * fromCurrencyData.rialPrice) / toCurrencyData.rialPrice
+			setConvertedAmount(Number(converted.toFixed(2)))
 		}
 	}, [fromCurrencyData, toCurrencyData, amount])
 
 	const handleSwap = () => {
 		setIsSwapping(true)
-		const temp = fromCurrency
 		setFromCurrency(toCurrency)
-		setToCurrency(temp)
-
+		setToCurrency(fromCurrency)
 		setTimeout(() => setIsSwapping(false), 300)
-		Analytics.event(`currency_converter_swap`)
 	}
 
-	const formatNumber = (num: number, currency?: string) => {
-		const decimals = currency === 'IRT' || currency === 'IRR' ? 0 : 3
-		return new Intl.NumberFormat('fa-IR', {
-			maximumFractionDigits: decimals,
-			minimumFractionDigits: decimals,
-		}).format(num)
+	const formatNumber = (num: number) => {
+		return new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 2 }).format(num)
 	}
 
-	const getCurrencyDisplay = (currencyCode: string) => {
-		const currency = supportedCurrencies?.find((c) => c.key === currencyCode)
-		return {
-			code: currencyCode,
-			name: currency?.label.fa || currencyCode,
-		}
-	}
-
-	if (isLoadingSupported) {
+	if (isLoadingSupported)
 		return (
-			<div className="flex flex-col items-center justify-center h-64 space-y-3">
-				<div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-					<BsCurrencyExchange className="w-6 h-6 text-primary animate-pulse" />
-				</div>
-				<div className="loading loading-spinner loading-md"></div>
-				<p className="text-sm text-content">بارگذاری ارزها...</p>
+			<div className="flex items-center justify-center text-sm h-44 opacity-20">
+				در حال بروزرسانی...
 			</div>
 		)
-	}
-
-	const fromDisplay = getCurrencyDisplay(fromCurrency)
-	const toDisplay = getCurrencyDisplay(toCurrency)
 
 	return (
-		<div className="flex flex-col gap-1 p-0.5">
-			<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
-				<SelectBox
-					options={supportedCurrencies?.map((c) => ({
-						label: `${c.label.fa || c.key} - ${c.label.en || ''}`,
-						value: c.key,
-					}))}
-					value={fromCurrency}
-					onChange={(val) => setFromCurrency(val)}
-					className="h-10 !rounded-2xl"
-				/>
-				<TextInput
-					type="number"
-					value={amount.toString()}
-					onChange={(e) => setAmount(Number(e))}
-					className="!rounded-2xl !px-4 border-content"
-					min={0}
-					placeholder="مبلغ"
-				/>
-			</div>
+		<div className="flex flex-col w-full gap-3 p-1 select-none">
+			<div className="bg-base-200/40 border border-base-300/40 rounded-[2.8rem] p-5 relative flex flex-col gap-6">
+				<div className="flex items-center justify-between gap-3">
+					<TextInput
+						type="number"
+						value={amount.toString()}
+						onChange={(e) => setAmount(Number(e))}
+						className="flex-1 text-3xl font-black !bg-transparent border-none !p-0 focus:ring-0 text-content"
+					/>
+					<SelectBox
+						options={supportedCurrencies?.map((c) => ({
+							label: c.key,
+							value: c.key,
+						}))}
+						value={fromCurrency}
+						onChange={setFromCurrency}
+						className="!w-24 !h-11 !rounded-2xl !bg-base-100 border border-base-300 shadow-sm font-bold text-xs"
+					/>
+				</div>
 
-			<div className="flex justify-center">
-				<Button
-					size="xs"
-					onClick={handleSwap}
-					className="btn btn-ghost btn-sm btn-circle"
-					disabled={isSwapping}
-				>
-					<motion.div
-						animate={{ rotate: isSwapping ? 180 : 0 }}
-						transition={{ duration: 0.3 }}
+				<div className="absolute z-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+					<button
+						onClick={handleSwap}
+						className="flex items-center justify-center transition-all border rounded-full shadow-lg cursor-pointer bg-base-300 w-11 h-11 border-primary/10 text-content hover:text-primary active:scale-90 hover:scale-105"
 					>
-						<TbArrowsUpDown />
-					</motion.div>
-				</Button>
-			</div>
-
-			<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content">
-				<SelectBox
-					options={supportedCurrencies?.map((c) => ({
-						label: `${c.label.fa || c.key} - ${c.label.en || ''}`,
-						value: c.key,
-					}))}
-					value={toCurrency}
-					onChange={(val) => setToCurrency(val)}
-					className="h-10 !w-24 !rounded-2xl"
-				/>
-				<div className="w-32 text-lg font-medium text-right">
-					{isLoadingFrom || isLoadingTo ? (
-						<div className="flex items-center justify-center">
-							<div className="loading loading-spinner loading-sm opacity-60"></div>
-						</div>
-					) : (
-						<motion.div
-							initial={{ opacity: 0, scale: 0.9 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.2 }}
-							className="font-bold text-content"
-						>
-							{formatNumber(convertedAmount, toCurrency)}
+						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
+							<TbArrowsUpDown size={20} />
 						</motion.div>
-					)}
+					</button>
+				</div>
+
+				<div className="flex items-center justify-between gap-3 mt-1">
+					<div className="flex-1 text-3xl font-black truncate text-primary">
+						{formatNumber(convertedAmount)}
+					</div>
+					<SelectBox
+						options={supportedCurrencies?.map((c) => ({
+							label: c.key,
+							value: c.key,
+						}))}
+						value={toCurrency}
+						onChange={setToCurrency}
+						className="!w-24 !h-11 !rounded-2xl  border border-primary/20 shadow-sm font-bold text-xs"
+					/>
 				</div>
 			</div>
 
-			<div className="p-1 bg-content rounded-2xl">
-				<div className="mb-0.5 text-center">
-					<div className="text-lg font-medium text-content">
-						<div className="text-xs font-extrabold text-content">معادل</div>
-						<span className="font-bold ">
-							{fromCurrencyData && toCurrencyData
-								? formatNumber(convertedAmount, toCurrency)
-								: '...'}
-						</span>
-						<span className="text-xs font-bold text-content">
-							{' '}
-							{toDisplay.name}
-						</span>
-					</div>
+			<div className="flex flex-col gap-2 px-2 mt-1">
+				<div className="flex justify-between items-center text-[11px] font-bold opacity-50">
+					<span>ارزش به تومان:</span>
+					<span className="text-[12px] font-black text-content">
+						{fromCurrencyData
+							? formatNumber(fromCurrencyData.rialPrice * amount)
+							: 0}{' '}
+						تومان
+					</span>
 				</div>
 
-				<div className="border-t border-content">
-					<div className="flex items-center justify-between p-0.5 rounded-lg bg-base-200/30">
-						<span className="text-xs font-bold text-content">
-							معادل تومان:
-						</span>
-						<span className="text-sm font-medium text-content">
-							{fromCurrencyData && amount
-								? formatNumber(fromCurrencyData.rialPrice * amount, 'IRT')
-								: '0'}{' '}
-							<span className="text-xs font-bold">تومان</span>
-						</span>
-					</div>
-
-					<div className="grid grid-cols-1 gap-2">
-						<div className="flex justify-between text-xs">
-							<div className="flex-1 text-center rounded bg-base-200/20">
-								<div className="font-bold text-content">
-									۱ {fromDisplay.name}
-								</div>
-								<div className="font-medium text-content">
-									{fromCurrencyData
-										? formatNumber(fromCurrencyData.rialPrice, 'IRT')
-										: '0'}{' '}
-									تومان
-								</div>
-							</div>
-							<div className="flex-1 text-center rounded bg-base-200/20">
-								<div className="font-extrabold text-content">
-									۱ {toDisplay.name}
-								</div>
-								<div className="font-medium text-content">
-									{toCurrencyData
-										? formatNumber(toCurrencyData.rialPrice, 'IRT')
-										: '0'}{' '}
-									تومان
-								</div>
-							</div>
+				<div className="flex items-center justify-between p-3.5 bg-primary/5 rounded-[1.5rem] border border-primary/10">
+					<div className="flex gap-5">
+						<div className="flex flex-col gap-0.5">
+							<span className="text-[8px] font-black opacity-30 uppercase">
+								{fromCurrency}
+							</span>
+							<span className="text-[11px] font-black opacity-70">
+								{fromCurrencyData
+									? formatNumber(fromCurrencyData.rialPrice)
+									: 0}
+							</span>
 						</div>
+						<div className="flex flex-col gap-0.5">
+							<span className="text-[8px] font-black opacity-30 uppercase">
+								{toCurrency}
+							</span>
+							<span className="text-[11px] font-black opacity-70">
+								{toCurrencyData
+									? formatNumber(toCurrencyData.rialPrice)
+									: 0}
+							</span>
+						</div>
+					</div>
+					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-background/50 px-2 py-1 rounded-lg">
+						<TbInfoCircle size={14} className="opacity-40" />۱ ={' '}
+						{fromCurrencyData && toCurrencyData
+							? formatNumber(
+									fromCurrencyData.rialPrice / toCurrencyData.rialPrice
+								)
+							: 0}
 					</div>
 				</div>
 			</div>

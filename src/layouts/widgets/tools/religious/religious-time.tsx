@@ -1,29 +1,26 @@
+import { useEffect } from 'react'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
-import type { WidgetifyDate } from '../../calendar/utils'
-import { DailyZikrBox } from './components/daily-zikr-box'
-import { PrayerTimeBox } from './components/prayer-time-box'
 import { useAuth } from '@/context/auth.context'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { Button } from '@/components/button/button'
 import { callEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 
-interface Prop {
-	currentDate: WidgetifyDate
-	isPreview?: boolean
-}
-
 const DAILY_ZIKRS = [
 	{ day: 'شنبه', zikr: 'یا رَبَّ الْعَالَمِینَ', meaning: 'ای پروردگار جهانیان' },
-	{ day: 'یک‌شنبه', zikr: 'یا ذَالْجَلَالِ وَالْإِکْرَامِ', meaning: 'ای صاحب جلال و بزرگواری' },
+	{
+		day: 'یک‌شنبه',
+		zikr: 'یا ذَالْجَلَالِ وَالْإِکْرَامِ',
+		meaning: 'ای صاحب جلال و بزرگواری',
+	},
 	{ day: 'دوشنبه', zikr: 'یا قاضی الحاجات', meaning: 'ای برآورنده حاجات' },
 	{ day: 'سه‌شنبه', zikr: 'یا أَرْحَمَ الرَّاحِمِینَ', meaning: 'ای مهربان‌ترین مهربانان' },
 	{ day: 'چهارشنبه', zikr: 'یا حَیُّ یا قَیُّومُ', meaning: 'ای زنده پاینده' },
 	{
 		day: 'پنج‌شنبه',
 		zikr: 'لا إِلَهَ إِلَّا اللَّهُ الْمَلِکُ الْحَقُّ الْمُبِینُ',
-		meaning: 'نیست معبودی جز خدای یکتا که پادشاه حق آشکار است',
+		meaning: 'نیست معبودی جز خدای یکتا',
 	},
 	{
 		day: 'جمعه',
@@ -32,11 +29,10 @@ const DAILY_ZIKRS = [
 	},
 ]
 
-export function ReligiousTime({ currentDate }: Prop) {
+export function ReligiousTime({ currentDate }: { currentDate: any }) {
 	const { isAuthenticated, user } = useAuth()
 	const day = currentDate.jDate()
 	const month = currentDate.jMonth() + 1
-	3
 	const weekDay = currentDate.format('dddd')
 
 	const {
@@ -53,23 +49,12 @@ export function ReligiousTime({ currentDate }: Prop) {
 	}, [user?.city?.id, isAuthenticated, refetch])
 
 	const dailyZikr = DAILY_ZIKRS.find((item) => item.day === weekDay)
-	const getBoxIconStyle = () => {
-		return 'text-primary'
-	}
 
 	const prayerTimeBoxes = [
 		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
-		{
-			title: 'طلوع آفتاب',
-			value: religiousTimeData?.tolu_aftab,
-			icon: FiSunrise,
-		},
+		{ title: 'طلوع', value: religiousTimeData?.tolu_aftab, icon: FiSunrise },
 		{ title: 'اذان ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
-		{
-			title: 'غروب آفتاب',
-			value: religiousTimeData?.ghorub_aftab,
-			icon: FiSunset,
-		},
+		{ title: 'غروب', value: religiousTimeData?.ghorub_aftab, icon: FiSunset },
 		{ title: 'اذان مغرب', value: religiousTimeData?.azan_maghreb, icon: FiClock },
 		{ title: 'نیمه شب', value: religiousTimeData?.nimeshab, icon: FiMoon },
 	]
@@ -80,77 +65,68 @@ export function ReligiousTime({ currentDate }: Prop) {
 	}
 
 	return (
-		<div>
+		<div className="flex flex-col w-full gap-3 p-1 overflow-hidden select-none">
 			<RequireAuth>
 				{!user?.city?.id ? (
-					<div className="flex flex-col items-center justify-center w-full h-full p-4 text-center rounded-2xl">
-						<div className="mb-4 text-4xl">🕋</div>
-						<p className="mb-4 text-sm leading-relaxed text-muted">
-							برای نمایش اوقات شرعی، لطفاً ابتدا شهر خود را در تنظیمات ویجت
-							تنظیم کنید.
+					<div className="flex flex-col items-center justify-center py-8 bg-base-200/30 rounded-[2rem] border border-dashed border-base-300">
+						<span className="mb-3 text-4xl">🕋</span>
+						<p className="text-[12px] font-black text-content/60 mb-4 text-center">
+							شهر خود را انتخاب کنید
 						</p>
 						<Button
-							size="md"
+							size="sm"
 							isPrimary={true}
-							className="px-6 py-2 font-medium text-white transition-colors rounded-2xl"
+							className="!rounded-xl px-6 font-black"
 							onClick={onClickSetCity}
 						>
 							تنظیم شهر
 						</Button>
 					</div>
 				) : loading ? (
-					<div className="grid grid-cols-2 gap-1.5 mb-1 md:grid-cols-3">
-						{prayerTimeBoxes.map((box, index) => (
-							<PrayerTimeBox
-								key={index}
-								title={box.title}
-								icon={box.icon}
-								index={index}
-								iconColorStyle={getBoxIconStyle()}
-								isLoading={true}
+					<div className="grid grid-cols-3 gap-2">
+						{[...Array(6)].map((_, i) => (
+							<div
+								key={i}
+								className="h-20 bg-base-200/50 rounded-[1.5rem] animate-pulse"
 							/>
 						))}
 					</div>
-				) : error ? (
-					<div
-						className={
-							'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-16'
-						}
-					>
-						<div
-							className={
-								'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-							}
-						>
-							<FiSunrise className="text-content" size={24} />
-						</div>
-						<p className="mt-1 text-center text-content">
-							مشکلی در دریافت اطلاعات وجود دارد
-						</p>
-					</div>
 				) : (
 					<>
-						<div className="grid grid-cols-3 gap-[.4rem] mb-1">
+						<div className="grid grid-cols-3 gap-2">
 							{prayerTimeBoxes.map((box, index) => (
-								<PrayerTimeBox
+								<div
 									key={index}
-									title={box.title}
-									value={box.value}
-									icon={box.icon}
-									index={index}
-									iconColorStyle={getBoxIconStyle()}
-								/>
+									className="flex flex-col items-center justify-center p-3 rounded-[1.5rem] bg-base-200/40 border border-base-300/30"
+								>
+									<div className="mb-1 text-primary/70">
+										<box.icon size={18} />
+									</div>
+									<span className="text-[8px] font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
+										{box.title}
+									</span>
+									<span className="text-[12px] font-black text-content">
+										{box.value}
+									</span>
+								</div>
 							))}
-						</div>{' '}
-						{loading ? (
-							<DailyZikrBox isLoading={true} />
-						) : (
-							dailyZikr && (
-								<DailyZikrBox
-									zikr={dailyZikr.zikr}
-									meaning={dailyZikr.meaning}
-								/>
-							)
+						</div>
+
+						{dailyZikr && (
+							<div className="p-2 bg-primary/5 border border-primary/10 rounded-[1.8rem] flex flex-col items-center gap-1">
+								<div className="flex items-center gap-1.5 mb-0.5">
+									<div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+									<span className="text-[9px] font-black text-primary-content">
+										ذکر روز {weekDay}
+									</span>
+								</div>
+								<div className="text-[14px] font-black text-content text-center leading-tight">
+									{dailyZikr.zikr}
+								</div>
+								<div className="text-[10px] font-bold text-muted text-center truncate w-full px-2">
+									{dailyZikr.meaning}
+								</div>
+							</div>
 						)}
 					</>
 				)}

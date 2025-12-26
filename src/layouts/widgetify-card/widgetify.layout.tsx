@@ -55,12 +55,6 @@ export const WidgetifyLayout = () => {
 					<div
 						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto small-scrollbar`}
 					>
-						<div
-							className={`flex flex-col gap-1 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-						>
-							{/* <TodoOverviewCard /> */}
-							{/* <GoogleOverviewCard /> */}
-						</div>
 						<NotificationCenter />
 					</div>
 				</div>
