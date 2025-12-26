@@ -113,7 +113,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					content={
 						<CalendarDayDetails
 							events={eventsForCalendar}
-							googleEvents={calendarData?.googleEvents || []}
 							moods={calendarData?.moods ?? []}
 							onMoodChange={() => refetch()}
 						/>

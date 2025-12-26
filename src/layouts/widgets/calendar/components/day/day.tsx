@@ -29,7 +29,6 @@ export function DayItem({
 	day,
 	currentDate,
 	events,
-	googleEvents = [],
 	selectedDateStr,
 	setSelectedDate,
 	timezone,
@@ -43,10 +42,7 @@ export function DayItem({
 	const todayHijriEvents = getHijriEvents(events, cellDate)
 	const todayGregorianEvents = getGregorianEvents(events, cellDate)
 
-	const googleEventsForDay = filterGoogleEventsByDate(googleEvents, cellDate)
-	const hasGoogleEvents = googleEventsForDay.length > 0
-
-	const hasEvent = todayShamsiEvents.length || hasGoogleEvents
+	const hasEvent = todayShamsiEvents.length
 	const eventIcons = [
 		...todayGregorianEvents.filter((event) => event.icon).map((event) => event.icon),
 		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
@@ -173,21 +169,4 @@ const isToday = (date: jalaliMoment.Moment, timezone: string) => {
 		date.jMonth() === today.jMonth() &&
 		date.jYear() === today.jYear()
 	)
-}
-
-const filterGoogleEventsByDate = (
-	googleEvents: GoogleCalendarEvent[],
-	date: jalaliMoment.Moment
-) => {
-	return googleEvents.filter((event) => {
-		if (event.eventType !== 'birthday') {
-			const eventDate = jalaliMoment(event.start.dateTime)
-			return (
-				eventDate.jDate() === date.jDate() &&
-				eventDate.jMonth() === date.jMonth() &&
-				eventDate.jYear() === date.jYear()
-			)
-		}
-		return undefined
-	})
 }
