@@ -19,11 +19,7 @@ export const useGetEvents = () => {
 		queryKey: ['get-events'],
 		queryFn: async () => getEvents(),
 		retry: 0,
-		initialData: {
-			shamsiEvents: [],
-			gregorianEvents: [],
-			hijriEvents: [],
-		},
+		staleTime: 10 * 60 * 1000,
 	})
 }
 

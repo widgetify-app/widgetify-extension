@@ -117,79 +117,73 @@ export function ContentSection() {
 
 	return (
 		<DateProvider>
-			<TodoProvider>
-				<div
-					data-tour="content"
-					className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-2 px-1 md:px-4 py-2`}
-				>
-					<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-						<div className="order-3 w-full lg:w-1/4 lg:order-1">
-							<WidgetifyLayout />
-						</div>
-
-						<div
-							className={
-								'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-2'
-							}
-						>
-							<SearchLayout />
-							<BookmarkProvider>
-								<BookmarksList />
-							</BookmarkProvider>
-						</div>
-
-						<div className="order-2 w-full lg:w-1/4 lg:order-3">
-							<WigiPadWidget />
-						</div>
+			<div
+				data-tour="content"
+				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-2 px-1 md:px-4 py-2`}
+			>
+				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
+					<div className="order-3 w-full lg:w-1/4 lg:order-1">
+						<WidgetifyLayout />
 					</div>
 
-					{sortedWidgets.length > 0 && (
-						<div className="w-full" id="widgets">
-							<DndContext
-								sensors={canReOrderWidget ? sensors : []}
-								collisionDetection={
-									canReOrderWidget ? closestCenter : undefined
-								}
-								onDragEnd={canReOrderWidget ? handleDragEnd : undefined}
-							>
-								<SortableContext
-									items={sortedWidgets.map((widget) => widget.id)}
-									strategy={rectSortingStrategy}
-								>
-									<div className={layoutClasses}>
-										{sortedWidgets.map((widget) => {
-											if (totalWidgetCount === 2) {
-												return (
-													<div
-														key={widget.id}
-														className="flex-shrink-0 w-full lg:w-3/12"
-													>
-														{canReOrderWidget ? (
-															<SortableWidget
-																widget={widget}
-															/>
-														) : (
-															widget.node
-														)}
-													</div>
-												)
-											}
-											return canReOrderWidget ? (
-												<SortableWidget
-													key={widget.id}
-													widget={widget}
-												/>
-											) : (
-												widget.node
-											)
-										})}
-									</div>
-								</SortableContext>
-							</DndContext>
-						</div>
-					)}
+					<div
+						className={'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-2'}
+					>
+						<SearchLayout />
+						<BookmarkProvider>
+							<BookmarksList />
+						</BookmarkProvider>
+					</div>
+
+					<div className="order-2 w-full lg:w-1/4 lg:order-3">
+						<WigiPadWidget />
+					</div>
 				</div>
-			</TodoProvider>
+
+				{sortedWidgets.length > 0 && (
+					<div className="w-full" id="widgets">
+						<DndContext
+							sensors={canReOrderWidget ? sensors : []}
+							collisionDetection={
+								canReOrderWidget ? closestCenter : undefined
+							}
+							onDragEnd={canReOrderWidget ? handleDragEnd : undefined}
+						>
+							<SortableContext
+								items={sortedWidgets.map((widget) => widget.id)}
+								strategy={rectSortingStrategy}
+							>
+								<div className={layoutClasses}>
+									{sortedWidgets.map((widget) => {
+										if (totalWidgetCount === 2) {
+											return (
+												<div
+													key={widget.id}
+													className="flex-shrink-0 w-full lg:w-3/12"
+												>
+													{canReOrderWidget ? (
+														<SortableWidget widget={widget} />
+													) : (
+														widget.node
+													)}
+												</div>
+											)
+										}
+										return canReOrderWidget ? (
+											<SortableWidget
+												key={widget.id}
+												widget={widget}
+											/>
+										) : (
+											widget.node
+										)
+									})}
+								</div>
+							</SortableContext>
+						</DndContext>
+					</div>
+				)}
+			</div>
 		</DateProvider>
 	)
 }

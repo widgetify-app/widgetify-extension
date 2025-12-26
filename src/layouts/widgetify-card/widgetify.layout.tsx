@@ -5,7 +5,6 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
-import { TodoOverviewCard } from './overviewCards/todo-overviewCard'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 import Snowfall from 'react-snowfall'
@@ -26,7 +25,6 @@ export const WidgetifyLayout = () => {
 		const newBlurMode = !blurMode
 		updateSetting('blurMode', newBlurMode)
 	}
-
 	return (
 		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">
 			<div className="relative w-full h-full">
@@ -60,7 +58,7 @@ export const WidgetifyLayout = () => {
 						<div
 							className={`flex flex-col gap-1 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
-							<TodoOverviewCard />
+							{/* <TodoOverviewCard /> */}
 							{/* <GoogleOverviewCard /> */}
 						</div>
 						<NotificationCenter />

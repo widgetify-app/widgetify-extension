@@ -1,5 +1,3 @@
-import moment from 'jalali-moment'
-import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
 import { HiSparkles } from 'react-icons/hi2'
@@ -7,13 +5,11 @@ import { useState } from 'react'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
 	convertShamsiToHijri,
-	filterGoogleEventsByDate,
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
 } from '../../utils'
 import { useDate } from '@/context/date.context'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import type React from 'react'
 import { useAuth } from '@/context/auth.context'
 import {
@@ -30,7 +26,6 @@ import Analytics from '@/analytics'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
-	googleEvents: GoogleCalendarEvent[]
 	eventIcon?: string
 	moods: MoodEntry[]
 	onMoodChange?: (mood: MoodType) => void
@@ -69,7 +64,6 @@ export const moodOptions = [
 
 export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	events,
-	googleEvents,
 	moods,
 	onMoodChange,
 }) => {
@@ -159,8 +153,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	const jalali = selectedDate.format('jYYYY/jMM/jD')
 	const jalaliDay = selectedDate.format('dddd')
 
-	const dayGoogleEvents = filterGoogleEventsByDate(googleEvents, selectedDate)
-	const totalEvents = dayEvent.length + dayGoogleEvents.length
+	const totalEvents = dayEvent.length
 	const holidayStyle = isHoliday
 		? 'from-orange-600 to-red-700'
 		: 'from-sky-500 to-blue-700'
@@ -234,26 +227,6 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 				{totalEvents > 0 && (
 					<div className="pr-1 space-y-1 overflow-y-auto max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
-						{dayGoogleEvents.map((event, idx) => (
-							<div
-								key={`g-${idx}`}
-								className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-info/10 border border-info/20"
-							>
-								<AiOutlineGoogle
-									className="flex-shrink-0 text-info"
-									size={12}
-								/>
-								<div className="flex-1 min-w-0">
-									<div className="text-[10px] text-content truncate">
-										{event.summary}
-									</div>
-									<div className="text-[8px] text-muted">
-										{moment(event.start.dateTime).format('HH:mm')}
-									</div>
-								</div>
-							</div>
-						))}
-
 						{dayEvent.map((event, idx) => (
 							<div
 								key={`e-${idx}`}

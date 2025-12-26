@@ -1,6 +1,5 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useTodoStore } from '@/context/todo.context'
 import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import type React from 'react'
 import { useState } from 'react'
@@ -29,7 +28,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const [clickedElement, setClickedElement] = useState<HTMLDivElement | null>(null)
 
 	const { data: events } = useGetEvents()
-	const { todos } = useTodoStore()
+
+	const eventsForCalendar = events || {
+		gregorianEvents: [],
+		hijriEvents: [],
+		shamsiEvents: [],
+	}
 
 	const { data: calendarData, refetch } = useGetCalendarData(
 		isAuthenticated,
@@ -76,11 +80,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 						key={`day-${i}`}
 						currentDate={currentDate}
 						day={i + 1}
-						events={events}
+						events={eventsForCalendar}
 						googleEvents={calendarData?.googleEvents || []}
 						selectedDateStr={selectedDateStr}
 						setSelectedDate={setSelectedDate}
-						todos={todos}
 						timezone={timezone.value}
 						moods={calendarData?.moods ?? []}
 						onClick={(element) => {
@@ -109,8 +112,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 					triggerRef={{ current: clickedElement }}
 					content={
 						<CalendarDayDetails
-							events={events}
-							googleEvents={calendarData?.googleEvents || []}
+							events={eventsForCalendar}
 							moods={calendarData?.moods ?? []}
 							onMoodChange={() => refetch()}
 						/>

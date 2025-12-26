@@ -44,8 +44,17 @@ export function TodoItem({
 	const [showEditModal, setShowEditModal] = useState(false)
 	const isUpdating = useIsMutating({ mutationKey: ['updateTodo'] }) > 0
 	const { mutateAsync, isPending } = useRemoveTodo(todo.onlineId || todo.id)
+	const [isSyncing, setIsSyncing] = useState(todo.id.startsWith('temp-') || false)
 
+	const isTemp = todo.id.startsWith('temp-')
 	const handleDelete = (e: React.MouseEvent) => {
+		if (isTemp) {
+			return showToast(
+				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را حذف کرد.',
+				'error'
+			)
+		}
+
 		e.stopPropagation()
 		if (isPending) return
 		if (!isAuthenticated) return showToast('برای حذف وظیفه باید وارد شوید', 'error')
@@ -54,19 +63,21 @@ export function TodoItem({
 	}
 
 	const handleEdit = (e: React.MouseEvent) => {
+		if (isTemp) {
+			return showToast(
+				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را ویرایش کرد.',
+				'error'
+			)
+		}
+
 		e.stopPropagation()
 		if (!isAuthenticated)
 			return showToast('برای ویرایش وظیفه باید وارد شوید', 'error')
 		setShowEditModal(true)
 	}
 
-	const handleExpand = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setExpanded(!expanded)
-	}
-
 	const onConfirmDelete = async () => {
-		if (isPending) return
+		if (isPending || isSyncing) return
 
 		const onlineId = todo.onlineId || todo.id
 		if (validate(onlineId)) {
@@ -92,67 +103,24 @@ export function TodoItem({
 		refetchTodos()
 	}
 
-	const getBorderStyle = () => {
-		switch (todo.priority) {
-			case 'high':
-				return '!border-error'
-			case 'medium':
-				return '!border-warning'
-			case 'low':
-				return '!border-success'
-			default:
-				return '!border-primary'
-		}
-	}
-
-	const getCheckedCheckboxStyle = () => {
-		switch (todo.priority) {
-			case 'high':
-				return '!border-error !bg-error'
-			case 'medium':
-				return '!border-warning !bg-warning'
-			case 'low':
-				return '!border-success !bg-success'
-			default:
-				return '!border-primary !bg-primary'
-		}
-	}
-
-	const getUnCheckedCheckboxStyle = () => {
-		switch (todo.priority) {
-			case 'high':
-				return '!border-error'
-			case 'medium':
-				return '!border-warning'
-			case 'low':
-				return '!border-success'
-			default:
-				return '!border-primary'
-		}
-	}
-
-	const getPriorityColor = () => {
-		switch (todo.priority) {
-			case 'high':
-				return 'bg-error/10 text-error'
-			case 'medium':
-				return 'bg-warning/10 text-warning'
-			case 'low':
-				return 'bg-success/10 text-success'
-			default:
-				return 'bg-primary text-primary-content'
-		}
-	}
-
-	const onToggleClick = (e: React.MouseEvent) => {
+	const onToggleClick = async (e: React.MouseEvent) => {
 		e.stopPropagation()
-		if (isUpdating) return
+		if (isUpdating || isSyncing) return
 
 		if (!isAuthenticated) {
 			return showToast('برای تغییر وضعیت وظیفه باید وارد شوید', 'error')
 		}
+		setIsSyncing(true)
+		try {
+			await toggleTodo(todo.id)
+		} finally {
+			setIsSyncing(false)
+		}
+	}
 
-		toggleTodo(todo.id)
+	const handleExpand = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		setExpanded(!expanded)
 	}
 
 	return (
@@ -172,10 +140,14 @@ export function TodoItem({
 					<div className="flex-shrink-0">
 						<CustomCheckbox
 							checked={todo.completed}
-							disabled={isUpdating}
-							className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle()}`}
-							unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle()}
-							checkedCheckBoxClassName={getCheckedCheckboxStyle()}
+							disabled={isUpdating || isSyncing}
+							className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle(todo.priority)}`}
+							unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle(
+								todo.priority
+							)}
+							checkedCheckBoxClassName={getCheckedCheckboxStyle(
+								todo.priority
+							)}
 							onClick={(e) => onToggleClick(e)}
 						/>
 					</div>
@@ -189,22 +161,28 @@ export function TodoItem({
 
 				{/* Actions */}
 				<div className="flex items-center gap-x-1">
-					<button
-						onClick={handleEdit}
-						className={
-							'p-1 rounded-full cursor-pointer hover:bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
-						}
-					>
-						<FiEdit3 size={13} />
-					</button>
-					<button
-						onClick={handleDelete}
-						className={
-							'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
-						}
-					>
-						<FiTrash2 size={13} />
-					</button>
+					{isSyncing ? (
+						<IconLoading className="text-base-content/50 mx-0!" />
+					) : (
+						<>
+							<button
+								onClick={handleEdit}
+								className={
+									'p-1 rounded-full cursor-pointer hover:bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
+								}
+							>
+								<FiEdit3 size={13} />
+							</button>
+							<button
+								onClick={handleDelete}
+								className={
+									'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
+								}
+							>
+								<FiTrash2 size={13} />
+							</button>
+						</>
+					)}
 
 					<button
 						onClick={handleExpand}
@@ -227,13 +205,13 @@ export function TodoItem({
 					<div className="flex items-center gap-1.5 mt-0.5 mb-1">
 						{todo.category && (
 							<span
-								className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
+								className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor(todo.priority)}`}
 							>
 								{todo.category}
 							</span>
 						)}
 						<span
-							className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor()}`}
+							className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor(todo.priority)}`}
 						>
 							{translatedPriority[todo.priority as TodoPriority]}
 						</span>
@@ -288,4 +266,56 @@ function NoteLinkRenderer({ note }: NoteIsLinkProps): React.JSX.Element | null {
 	}
 
 	return <p className="mt-0.5 font-light">{note}</p>
+}
+
+const getBorderStyle = (priority: string) => {
+	switch (priority) {
+		case 'high':
+			return '!border-error'
+		case 'medium':
+			return '!border-warning'
+		case 'low':
+			return '!border-success'
+		default:
+			return '!border-primary'
+	}
+}
+
+const getCheckedCheckboxStyle = (priority: string) => {
+	switch (priority) {
+		case 'high':
+			return '!border-error !bg-error'
+		case 'medium':
+			return '!border-warning !bg-warning'
+		case 'low':
+			return '!border-success !bg-success'
+		default:
+			return '!border-primary !bg-primary'
+	}
+}
+
+const getUnCheckedCheckboxStyle = (priority: string) => {
+	switch (priority) {
+		case 'high':
+			return '!border-error'
+		case 'medium':
+			return '!border-warning'
+		case 'low':
+			return '!border-success'
+		default:
+			return '!border-primary'
+	}
+}
+
+const getPriorityColor = (priority: string) => {
+	switch (priority) {
+		case 'high':
+			return 'bg-error/10 text-error'
+		case 'medium':
+			return 'bg-warning/10 text-warning'
+		case 'low':
+			return 'bg-success/10 text-success'
+		default:
+			return 'bg-primary text-primary-content'
+	}
 }

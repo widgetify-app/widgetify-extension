@@ -14,6 +14,7 @@ import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { playAlarm } from '@/common/playAlarm'
+import { sleep } from '@/common/utils/timeout'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -159,17 +160,21 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				? Math.max(...sameDateTodos.map((t) => t.order || 0))
 				: 0
 
-		const [err, _] = await safeAwait(
-			addTodoAsync({
-				text: input.text,
-				completed: false,
-				date: input.date,
-				priority: input.priority || TodoPriority.Low,
-				category: input.category || '',
-				order: maxOrder + 1,
-				description: input.notes || '',
-			})
-		)
+		const item: any = {
+			text: input.text,
+			completed: false,
+			date: input.date,
+			priority: input.priority || TodoPriority.Low,
+			category: input.category || '',
+			order: maxOrder + 1,
+			description: input.notes || '',
+		}
+		const id = `temp-${Date.now()}`
+		old.unshift({ ...item, order: 0, id })
+		setTodos(() => old)
+
+		await sleep(3000)
+		const [err, _] = await safeAwait(addTodoAsync(item))
 		if (err) {
 			const content = translateError(err)
 			if (typeof content === 'string') {
@@ -201,6 +206,20 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			)
 		}
 		const isCompleted = !current.completed
+
+		setTodos((prev) => {
+			if (!prev) return prev
+			return prev.map((todo) => {
+				if (todo.id === id || todo.onlineId === id) {
+					return {
+						...todo,
+						completed: isCompleted,
+					}
+				}
+				return todo
+			})
+		})
+
 		const [err, _] = await safeAwait(
 			updateTodoAsync({
 				id: onlineId,
@@ -214,9 +233,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			showToast(translateError(err) as string, 'error')
 			return
 		}
-		refetch()
-		Analytics.event('todo_toggled')
+
 		if (isCompleted) playAlarm('done_todo')
+		Analytics.event('todo_toggled')
 	}
 
 	const updateTodo = async (id: string, updates: Partial<Omit<Todo, 'id'>>) => {
