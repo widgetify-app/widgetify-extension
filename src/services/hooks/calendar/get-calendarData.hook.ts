@@ -18,10 +18,8 @@ export const useGetCalendarData = (enabled: boolean, start: string, end: string)
 		queryFn: async () => getCalendarData(start, end),
 		retry: 0,
 		enabled: enabled && !!start && !!end,
-		initialData: {
-			moods: [],
-			googleEvents: [],
-		},
+		staleTime: 5 * 60 * 1000,
+		gcTime: 10 * 60 * 1000,
 		refetchOnWindowFocus: false,
 	})
 }

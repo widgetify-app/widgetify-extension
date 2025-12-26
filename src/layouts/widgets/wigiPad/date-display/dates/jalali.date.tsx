@@ -6,7 +6,12 @@ import { HolidayBadge } from '../components/holiday.badge'
 export function JalaliDate() {
 	const { today, todayIsHoliday } = useDate()
 	const { data: events } = useGetEvents()
-	const sortedEvents = combineAndSortEvents(events, today.clone(), [])
+	const eventsForCalendar = events || {
+		gregorianEvents: [],
+		hijriEvents: [],
+		shamsiEvents: [],
+	}
+	const sortedEvents = combineAndSortEvents(eventsForCalendar, today.clone(), [])
 	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
 
 	const textColor = 'text-content drop-shadow-md'

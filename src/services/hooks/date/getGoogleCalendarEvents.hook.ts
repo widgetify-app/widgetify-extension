@@ -82,7 +82,7 @@ export const useGetGoogleCalendarEvents = (
 	const cacheKey = `${startParam}-${endParam}`
 
 	return useQuery<GoogleCalendarEvent[]>({
-		queryKey: ['google-calendar-events', startParam, endParam],
+		queryKey: ['google-calendar-events', cacheKey],
 		queryFn: async () => {
 			if (cache.has(cacheKey)) {
 				return cache.get(cacheKey) || []
@@ -93,7 +93,6 @@ export const useGetGoogleCalendarEvents = (
 			return events
 		},
 		retry: 1,
-		// initialData: cache.get(cacheKey) || [],
 		enabled: enabled,
 	})
 }
