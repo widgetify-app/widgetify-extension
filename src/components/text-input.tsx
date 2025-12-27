@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, memo } from 'react'
+import { useCallback, useEffect, useRef, memo } from 'react'
 
 enum TextInputSize {
 	XS = 'xs',
@@ -10,7 +10,8 @@ enum TextInputSize {
 
 interface TextInputProps {
 	id?: string
-	value: string
+	value?: string
+	defaultValue?: string
 	onChange: (value: string) => void
 	placeholder?: string
 	onFocus?: () => void
@@ -41,6 +42,7 @@ const sizes: Record<TextInputSize, string> = {
 export const TextInput = memo(function TextInput({
 	onChange,
 	value,
+	defaultValue,
 	placeholder,
 	onFocus,
 	onKeyDown,
@@ -59,26 +61,17 @@ export const TextInput = memo(function TextInput({
 	max,
 	autoComplete = 'off',
 }: TextInputProps) {
-	const [localValue, setLocalValue] = useState(value)
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
-
-	useEffect(() => {
-		if (debounce) {
-			setLocalValue(value)
-		}
-	}, [value, debounce])
+	const isControlled = value !== undefined
 
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value
 
 			if (!debounce) {
-				// بدون هیچ تاخیری مستقیم onChange را صدا بزن
 				onChange(newValue)
 				return
 			}
-
-			setLocalValue(newValue)
 
 			if (debounceTimerRef.current) {
 				clearTimeout(debounceTimerRef.current)
@@ -102,30 +95,29 @@ export const TextInput = memo(function TextInput({
 		}
 	}, [])
 
-	const displayValue = debounce ? localValue : value
+	const inputProps = {
+		ref,
+		id,
+		type,
+		name,
+		disabled,
+		onFocus,
+		onKeyDown,
+		dir: direction,
+		placeholder: placeholder || '',
+		className: `input bg-content w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20 focus:border-primary font-light ${className}`,
+		onChange: handleChange,
+		maxLength,
+		autoComplete,
+		min,
+		max,
+	}
 
-	return (
-		<input
-			ref={ref}
-			id={id}
-			type={type}
-			name={name}
-			value={displayValue}
-			disabled={disabled}
-			onFocus={onFocus}
-			onKeyDown={onKeyDown}
-			dir={direction}
-			placeholder={placeholder || ''}
-			className={`input bg-content w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20
-			   focus:border-primary
-               font-light ${className}`}
-			onChange={handleChange}
-			maxLength={maxLength}
-			autoComplete={autoComplete}
-			min={min}
-			max={max}
-		/>
-	)
+	if (isControlled) {
+		return <input {...inputProps} value={value} />
+	}
+
+	return <input {...inputProps} defaultValue={defaultValue} />
 })
 
 TextInput.displayName = 'TextInput'

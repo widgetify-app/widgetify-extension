@@ -15,38 +15,46 @@ import Analytics from '@/analytics'
 import { Chip } from '@/components/chip.component'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
+import { useDate } from '@/context/date.context'
 
 interface ExpandableTodoInputProps {
-	todoText: string
-	onChangeTodoText: (value: string) => void
-	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date?: string }) => void
+	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date: string }) => void
 }
 
-export function ExpandableTodoInput({
-	todoText,
-	onChangeTodoText,
-	onAddTodo,
-}: ExpandableTodoInputProps) {
+export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 	const { isAuthenticated } = useAuth()
+	const { today } = useDate()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
 	const { data: fetchedTags } = useGetTags(isAuthenticated)
-	const [notes, setNotes] = useState('')
 	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
-	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment | undefined>()
+	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(today)
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+
 	const inputRef = useRef<HTMLInputElement | null>(null)
+	const todoTextRef = useRef<string>('')
+	const notesRef = useRef<string>('')
 	const containerRef = useRef<HTMLDivElement>(null)
 	const datePickerButtonRef = useRef<HTMLButtonElement>(null)
 	const categoryInputRef = useRef<HTMLInputElement | null>(null)
+	const notesInputRef = useRef<HTMLInputElement | null>(null)
+
 	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
 
-	const onSelectCategory = (tag: string) => {
+	const handleTodoTextChange = useCallback((value: string) => {
+		todoTextRef.current = value
+	}, [])
+
+	const onSelectCategory = useCallback((tag: string) => {
 		setCategory(tag)
 		setIsTagTooltipOpen(false)
 		Analytics.event('todo_category_select')
-	}
+	}, [])
+
+	const handleNotesChange = useCallback((value: string) => {
+		notesRef.current = value
+	}, [])
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -61,7 +69,7 @@ export function ExpandableTodoInput({
 						event.target.closest('.fixed') ||
 						event.target.closest('[role="tooltip"]'))
 
-				if (!todoText.trim() && !isClickInsideDatePicker) {
+				if (!todoTextRef.current.trim() && !isClickInsideDatePicker) {
 					setIsExpanded(false)
 				}
 			}
@@ -71,47 +79,54 @@ export function ExpandableTodoInput({
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
 		}
-	}, [isExpanded, todoText])
+	}, [isExpanded])
 
 	const handleInputFocus = useCallback(() => {
 		setIsExpanded(true)
 	}, [])
 
 	const resetForm = useCallback(() => {
-		onChangeTodoText('')
+		todoTextRef.current = ''
+		notesRef.current = ''
+		if (inputRef.current) {
+			inputRef.current.value = ''
+		}
+		if (notesInputRef.current) {
+			notesInputRef.current.value = ''
+		}
 		setCategory('')
-		setNotes('')
 		setPriority(TodoPriority.Medium)
-		setSelectedDate(undefined)
+		setSelectedDate(today.clone())
 		setIsExpanded(false)
-	}, [onChangeTodoText])
+	}, [today])
 
 	const handleAddTodo = useCallback(() => {
-		if (todoText.trim()) {
+		const text = todoTextRef.current.trim()
+		if (text) {
 			onAddTodo({
-				text: todoText.trim(),
+				text,
 				category: category.trim() || undefined,
-				notes: notes.trim() || undefined,
+				notes: notesRef.current.trim() || undefined,
 				priority: priority,
-				date: selectedDate?.add(3.5, 'hours').toISOString(),
+				date: selectedDate.toISOString(),
 			})
 			resetForm()
 		}
-	}, [todoText, category, notes, priority, selectedDate, onAddTodo, resetForm])
+	}, [category, priority, selectedDate, onAddTodo, resetForm])
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent<HTMLInputElement>) => {
-			if (e.key === 'Enter' && todoText.trim()) {
+			if (e.key === 'Enter' && todoTextRef.current.trim()) {
 				handleAddTodo()
 			}
 		},
-		[todoText, handleAddTodo]
+		[handleAddTodo]
 	)
 
-	const onClickOpenDatePicker = () => {
+	const onClickOpenDatePicker = useCallback(() => {
 		setIsDatePickerOpen(!isDatePickerOpen)
 		Analytics.event('todo_datepicker_open_click')
-	}
+	}, [isDatePickerOpen])
 
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
@@ -120,8 +135,8 @@ export function ExpandableTodoInput({
 					<div className="flex-grow w-full">
 						<TextInput
 							ref={inputRef}
-							value={todoText}
-							onChange={onChangeTodoText}
+							defaultValue=""
+							onChange={handleTodoTextChange}
 							placeholder="عنوان وظیفه جدید..."
 							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 text-sm !rounded-lg !bg-transparent"
 							onFocus={handleInputFocus}
@@ -132,7 +147,7 @@ export function ExpandableTodoInput({
 					</div>
 					<Button
 						onClick={handleAddTodo}
-						disabled={!todoText.trim() || isAdding}
+						disabled={isAdding}
 						loading={isAdding}
 						loadingText={<IconLoading />}
 						size="sm"
@@ -157,7 +172,7 @@ export function ExpandableTodoInput({
 									<div className="flex items-center flex-1 gap-2 ">
 										<div
 											className="relative flex-shrink-0 text-center"
-											onClick={() => onClickOpenDatePicker()}
+											onClick={onClickOpenDatePicker}
 										>
 											<span className="absolute w-2 h-2 rounded-full -left-0.5 -bottom-0.5 bg-error animate-pulse"></span>
 											<FiCalendar
@@ -168,7 +183,7 @@ export function ExpandableTodoInput({
 										<div className="flex-1">
 											<button
 												ref={datePickerButtonRef}
-												onClick={() => onClickOpenDatePicker()}
+												onClick={onClickOpenDatePicker}
 												className="w-full  text-right px-2 py-1.5 min-h-8 text-xs  rounded-xl border border-base-300 hover:border-primary/50 transition-colors bg-content text-content opacity-75 cursor-pointer"
 											>
 												{selectedDate
@@ -266,8 +281,9 @@ export function ExpandableTodoInput({
 											/>
 										</div>
 										<TextInput
-											value={notes}
-											onChange={setNotes}
+											ref={notesInputRef}
+											defaultValue=""
+											onChange={handleNotesChange}
 											placeholder="یادداشت یا لینک (اختیاری)"
 											className="text-xs placeholder:text-xs py-1.5"
 											debounce={false}
