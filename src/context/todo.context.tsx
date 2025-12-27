@@ -14,7 +14,6 @@ import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { playAlarm } from '@/common/playAlarm'
-import { sleep } from '@/common/utils/timeout'
 
 export enum TodoViewType {
 	Day = 'day',
@@ -173,7 +172,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		old.unshift({ ...item, order: 0, id })
 		setTodos(() => old)
 
-		await sleep(3000)
 		const [err, _] = await safeAwait(addTodoAsync(item))
 		if (err) {
 			const content = translateError(err)

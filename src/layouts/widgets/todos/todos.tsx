@@ -29,14 +29,18 @@ import { SelectBox } from '@/components/selectbox/selectbox'
 import Analytics from '@/analytics'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { parseTodoDate } from './tools/parse-date'
+
 const viewModeOptions = [
 	{ value: TodoViewType.Day, label: 'لیست امروز' },
 	{ value: TodoViewType.Monthly, label: 'لیست ماهانه' },
 	{ value: TodoViewType.All, label: 'همه وظایف' },
 ]
+
 interface Prop {
 	onChangeTab?: any
 }
+
 export function TodosLayout({ onChangeTab }: Prop) {
 	const { selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
@@ -45,7 +49,6 @@ export function TodosLayout({ onChangeTab }: Prop) {
 	const { blurMode } = useGeneralSetting()
 	const [filter, setFilter] = useState<'active' | 'completed' | 'all'>('all')
 	const [showStats, setShowStats] = useState<boolean>(false)
-	const [todoText, setTodoText] = useState('')
 	const selectedDateStr = formatDateStr(selectedDate.clone())
 	const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
 
@@ -66,15 +69,19 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		Analytics.event(`todo_filter_${newFilter}_click`)
 	}
 
-	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
-
+	let selectedDateTodos = todos
 	if (todoOptions.viewMode === TodoViewType.Monthly) {
 		const currentMonth = selectedDate.format('jMM')
+		const currentYear = selectedDate.format('jYYYY')
 		selectedDateTodos = todos.filter((todo) => {
-			return todo.date.startsWith(`${selectedDate.year()}-${currentMonth}`)
+			const todoDate = parseTodoDate(todo.date)
+			return todoDate.format('jYYYY-jMM') === `${currentYear}-${currentMonth}`
 		})
-	} else if (todoOptions.viewMode === TodoViewType.All) {
-		selectedDateTodos = todos
+	} else if (todoOptions.viewMode === TodoViewType.Day) {
+		selectedDateTodos = todos.filter((todo) => {
+			const todoDate = parseTodoDate(todo.date)
+			return todoDate.format('jYYYY-jMM-jDD') === selectedDateStr
+		})
 	}
 
 	selectedDateTodos = selectedDateTodos.sort((a, b) => {
@@ -90,7 +97,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		selectedDateTodos = selectedDateTodos.filter((todo) => todo.completed)
 	}
 
-	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'> & { date?: string }) => {
+	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'> & { date: string }) => {
 		if (!isAuthenticated) {
 			setShowAuthModal(true)
 			return
@@ -98,9 +105,8 @@ export function TodosLayout({ onChangeTab }: Prop) {
 
 		addTodo({
 			...todoInput,
-			date: todoInput.date || selectedDateStr,
+			date: todoInput.date,
 		})
-		setTodoText('')
 	}
 
 	const handleDragEnd = (event: DragEndEvent) => {
@@ -132,7 +138,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 					<div className="flex items-center justify-between mb-2">
 						<div className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content">
 							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
-								<span>وظایـف</span>
+								<span>وظایف</span>
 							</div>
 							<div
 								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-1"
@@ -241,14 +247,8 @@ export function TodosLayout({ onChangeTab }: Prop) {
 							</div>
 						</DndContext>
 					)}
-				</div>{' '}
-				{!showStats && (
-					<ExpandableTodoInput
-						todoText={todoText}
-						onChangeTodoText={setTodoText}
-						onAddTodo={handleAddTodo}
-					/>
-				)}
+				</div>
+				{!showStats && <ExpandableTodoInput onAddTodo={handleAddTodo} />}
 			</div>
 
 			<AuthRequiredModal
