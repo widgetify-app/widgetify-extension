@@ -7,7 +7,6 @@ import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
-import Snowfall from 'react-snowfall'
 
 export const WidgetifyLayout = () => {
 	const { user, isAuthenticated } = useAuth()
@@ -28,7 +27,6 @@ export const WidgetifyLayout = () => {
 	return (
 		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">
 			<div className="relative w-full h-full">
-				<Snowfall snowflakeCount={20} speed={[0.1, 0.3]} />
 				{
 					<PetProvider>
 						<Pet />
