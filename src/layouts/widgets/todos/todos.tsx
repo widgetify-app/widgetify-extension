@@ -29,6 +29,7 @@ import { SelectBox } from '@/components/selectbox/selectbox'
 import Analytics from '@/analytics'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { parseTodoDate } from './tools/parse-date'
 
 const viewModeOptions = [
 	{ value: TodoViewType.Day, label: 'لیست امروز' },
@@ -68,15 +69,19 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		Analytics.event(`todo_filter_${newFilter}_click`)
 	}
 
-	let selectedDateTodos = todos.filter((todo) => todo.date === selectedDateStr)
-
+	let selectedDateTodos = todos
 	if (todoOptions.viewMode === TodoViewType.Monthly) {
 		const currentMonth = selectedDate.format('jMM')
+		const currentYear = selectedDate.format('jYYYY')
 		selectedDateTodos = todos.filter((todo) => {
-			return todo.date.startsWith(`${selectedDate.year()}-${currentMonth}`)
+			const todoDate = parseTodoDate(todo.date)
+			return todoDate.format('jYYYY-jMM') === `${currentYear}-${currentMonth}`
 		})
-	} else if (todoOptions.viewMode === TodoViewType.All) {
-		selectedDateTodos = todos
+	} else if (todoOptions.viewMode === TodoViewType.Day) {
+		selectedDateTodos = todos.filter((todo) => {
+			const todoDate = parseTodoDate(todo.date)
+			return todoDate.format('jYYYY-jMM-jDD') === selectedDateStr
+		})
 	}
 
 	selectedDateTodos = selectedDateTodos.sort((a, b) => {
