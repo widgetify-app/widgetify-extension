@@ -5,6 +5,7 @@ import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { TrendingSearches } from './trending/trending-searches'
 import { VoiceSearchButton } from './voice/VoiceSearchButton'
+import { FcGoogle } from 'react-icons/fc'
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
@@ -75,7 +76,7 @@ export function SearchLayout() {
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center gap-x-2 py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-widget group  rounded-2xl search-box'
+							'relative flex items-center  py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-widget group  rounded-2xl search-box'
 						}
 					>
 						<button
@@ -89,7 +90,7 @@ export function SearchLayout() {
 								}
 							}}
 						>
-							<CiSearch size={22} strokeWidth={1} opacity={0.5} />
+							<FcGoogle size={22} opacity={0.8} />
 						</button>
 						<input
 							ref={inputRef}
@@ -99,9 +100,9 @@ export function SearchLayout() {
 							onChange={handleSearchInputChange}
 							onFocus={() => onFocusInput()}
 							className={
-								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-content'
+								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/80 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent '
 							}
-							placeholder="جستجو ..."
+							placeholder="جستجو در گوگل"
 							autoComplete="off"
 						/>
 						<button
