@@ -15,6 +15,7 @@ export interface GeneralData {
 	selected_timezone: FetchedTimezone
 	browserBookmarksEnabled: boolean
 	browserTabsEnabled: boolean
+	browserHistoryEnabled: boolean
 }
 
 interface GeneralSettingContextType extends GeneralData {
@@ -23,6 +24,7 @@ interface GeneralSettingContextType extends GeneralData {
 	setTimezone: (value: FetchedTimezone) => void
 	setBrowserBookmarksEnabled: (value: boolean) => void
 	setBrowserTabsEnabled: (value: boolean, event?: React.MouseEvent) => void
+	setBrowserHistoryEnabled: (value: boolean) => void
 }
 
 const DEFAULT_SETTINGS: GeneralData = {
@@ -35,6 +37,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	},
 	browserBookmarksEnabled: false,
 	browserTabsEnabled: false,
+	browserHistoryEnabled: false,
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -208,6 +211,13 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		'browser_tabs_disabled'
 	)
 
+	const setBrowserHistoryEnabled = togglePermission(
+		['history'],
+		'browserHistoryEnabled',
+		'browser_history_enabled',
+		'browser_history_disabled'
+	)
+
 	if (!isInitialized) {
 		return null
 	}
@@ -223,6 +233,8 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setBrowserBookmarksEnabled,
 		browserTabsEnabled: settings.browserTabsEnabled,
 		setBrowserTabsEnabled,
+		browserHistoryEnabled: settings.browserHistoryEnabled,
+		setBrowserHistoryEnabled,
 	}
 
 	return (

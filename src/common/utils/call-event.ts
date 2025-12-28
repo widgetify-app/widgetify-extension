@@ -49,6 +49,7 @@ export interface EventName {
 	font_change: FontFamily
 	close_all_modals: null
 	openWizardModal: null
+	show_browser_history_privacy_modal: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

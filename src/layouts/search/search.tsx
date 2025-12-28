@@ -1,15 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
-import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
-import { TrendingSearches } from './trending/trending-searches'
+import { SearchboxDropdown } from './searchbox-dropdown'
 import { VoiceSearchButton } from './voice/VoiceSearchButton'
 import { FcGoogle } from 'react-icons/fc'
+import { listenEvent } from '@/common/utils/call-event'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import Modal from '@/components/modal'
+import { FaShieldAlt } from 'react-icons/fa'
+import { Button } from '@/components/button/button'
+import { LuShieldAlert, LuShieldCheck } from 'react-icons/lu'
 
 export function SearchLayout() {
+	const { browserHistoryEnabled, setBrowserHistoryEnabled } = useGeneralSetting()
+
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
+	const [showPrivacyModal, setShowPrivacyModal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trendingRef = useRef<HTMLDivElement>(null)
@@ -41,12 +49,34 @@ export function SearchLayout() {
 		}
 	}
 
-	const handleSelectTrend = (trend: string) => {
+	const handleSelectHistory = (url: string) => {
 		setIsInputFocused(false)
-		// Optional: auto-submit the search
-		browser.search.query({ text: trend })
-		Analytics.event('search_trend_selected')
+		browser.tabs.create({ url })
+		Analytics.event('search_history_selected')
 	}
+
+	const confirmEnable = () => {
+		setBrowserHistoryEnabled(true)
+		setShowPrivacyModal(false)
+		Analytics.event('browser_history_enabled')
+	}
+
+	const hidePrivacyModal = () => {
+		setBrowserHistoryEnabled(false)
+		setShowPrivacyModal(false)
+		Analytics.event('browser_history_enable_ignored')
+	}
+
+	useEffect(() => {
+		const event = listenEvent('show_browser_history_privacy_modal', () => {
+			setIsInputFocused(false)
+			setShowPrivacyModal(true)
+			Analytics.event('browser_history_privacy_modal_shown')
+		})
+		return () => {
+			event()
+		}
+	}, [])
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -123,11 +153,57 @@ export function SearchLayout() {
 				<BrowserBookmark />
 			</div>
 			<div ref={trendingRef}>
-				<TrendingSearches
+				<SearchboxDropdown
 					visible={isInputFocused && searchQuery === ''}
-					onSelectTrend={handleSelectTrend}
+					onSelectHistory={handleSelectHistory}
 				/>
 			</div>
+
+			<Modal
+				isOpen={showPrivacyModal}
+				onClose={() => setShowPrivacyModal(false)}
+				title="خیالت راحت، امنیتت با ما!"
+				size="sm"
+				direction="rtl"
+				closeOnBackdropClick={false}
+			>
+				<div className="flex flex-col gap-4 p-1 text-right" dir="rtl">
+					<div className="flex justify-center py-2">
+						<div className="relative flex items-center justify-center p-3 rounded-full bg-primary/10 text-primary">
+							<div className="absolute inset-0 rounded-full animate-ping bg-primary/10 opacity-20" />
+							<LuShieldAlert size={24} />
+						</div>
+					</div>
+
+					<p className="text-sm font-bold text-content">
+						اطلاعاتت اصلا از مرورگر خارج نمی‌شه
+					</p>
+
+					<p className="text-xs leading-relaxed text-muted">
+						این لیست رو مستقیما از تاریخچه خود مرورگرت می‌خونیم. همه‌چی همین‌جا
+						(روی سیستم خودت) نمایش داده می‌شه و هیچ دیتایی رو به سرورهای ما یا
+						جای دیگه نمی‌فرستیم.
+					</p>
+
+					<div className="flex gap-2 mt-2">
+						<Button
+							onClick={confirmEnable}
+							className="flex-1 text-base rounded-2xl"
+							isPrimary
+							size="sm"
+						>
+							حله، فعالش کن
+						</Button>
+						<Button
+							size="sm"
+							onClick={() => hidePrivacyModal()}
+							className="flex-1 rounded-2xl"
+						>
+							بیخیال
+						</Button>
+					</div>
+				</div>
+			</Modal>
 		</div>
 	)
 }

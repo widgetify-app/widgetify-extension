@@ -4,7 +4,7 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
-import { TabNavigation } from './components/tab-navigation'
+import { TabNavigation } from '../../../components/tabs/tab-navigation'
 
 const ReligiousTime = React.lazy(() =>
 	import('./religious/religious-time').then((module) => ({
@@ -21,6 +21,12 @@ const CurrencyConverter = React.lazy(() =>
 		default: module.CurrencyConverter,
 	}))
 )
+
+const tabs = [
+	{ id: 'pomodoro' as ToolsTabType, label: 'پومودورو' },
+	{ id: 'religious-time' as ToolsTabType, label: 'اوقات شرعی' },
+	{ id: 'currency-converter' as ToolsTabType, label: 'مبدل قیمت' },
+]
 
 export enum ToolsTab {
 	pomodoro = 'pomodoro',
@@ -59,6 +65,7 @@ export const ToolsLayout: React.FC<any> = () => {
 		<WidgetContainer>
 			<div>
 				<TabNavigation
+					tabs={tabs}
 					activeTab={activeTab}
 					onTabClick={onTabClick || (() => {})}
 				/>
