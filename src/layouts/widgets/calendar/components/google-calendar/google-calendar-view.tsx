@@ -33,7 +33,7 @@ export const GoogleCalendarView: React.FC = () => {
 	const { data: events } = useGetGoogleCalendarEvents(
 		isCalendarConnected,
 		selectedDate.clone().startOf('day').toDate(),
-		selectedDate.clone().endOf('day').toDate()
+		selectedDate.clone().startOf('day').toDate()
 	)
 
 	const handleEventClick = (event: any) => {
