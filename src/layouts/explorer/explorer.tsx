@@ -82,118 +82,127 @@ export function ExplorerContent() {
 
 					<div
 						ref={scrollContainerRef}
-						className="flex-1 pb-4 pr-1 space-y-6 overflow-y-auto scrollbar-none scroll-smooth"
+						className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
 					>
-						{/* <div className="grid grid-cols-1 gap-4 md:grid-cols-3"> </div> */}
+						{/* تغییر اصلی: استفاده از گرید برای دسته‌بندی‌ها */}
+						<div className="grid grid-cols-1 gap-4 pb-10 md:grid-cols-2">
+							{catalogData?.contents?.map(
+								(category: CategoryItem, index: number) => (
+									<div
+										key={category.id}
+										id={category.id}
+										ref={(el) => {
+											categoryRefs.current[category.id] = el
+										}}
+										/* منطق Bento: هر دسته‌بندی سوم یا دسته‌هایی با تعداد لینک زیاد، تمام عرض را می‌گیرند */
+										className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
+											index % 3 === 0
+												? 'md:col-span-2'
+												: 'md:col-span-1'
+										}`}
+									>
+										{category.banner && (
+											<div className="w-full overflow-hidden h-28">
+												<img
+													src={category.banner}
+													className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
+													style={{
+														maskImage:
+															'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%)',
+														WebkitMaskImage:
+															'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%)',
+													}}
+													alt=""
+												/>
+											</div>
+										)}
 
-						<div className="flex flex-col gap-4 pb-10">
-							{catalogData?.contents?.map((category: CategoryItem) => (
-								<div
-									key={category.id}
-									id={category.id}
-									ref={(el) => {
-										categoryRefs.current[category.id] = el
-									}}
-									className="relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl"
-								>
-									{category.banner && (
-										<div className="w-full overflow-hidden h-28">
-											<img
-												src={category.banner}
-												className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
-												style={{
-													maskImage:
-														'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%)',
-													WebkitMaskImage:
-														'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0) 100%)',
-												}}
-												alt=""
-											/>
-										</div>
-									)}
-
-									<div className="p-4">
-										<div className="flex items-center gap-4 mb-8">
-											<div className="flex items-center gap-2.5">
-												{category.icon ? (
-													<div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+										<div className="p-4">
+											<div className="flex items-center gap-4 mb-6">
+												<div className="flex items-center gap-2.5">
+													{category.icon ? (
 														<img
 															src={category.icon}
-															className="relative z-10 object-contain w-full h-full transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110"
+															className="object-contain w-4 h-4 opacity-80"
 															alt=""
 														/>
-													</div>
-												) : (
-													<div className="w-1 h-3.5 rounded-full bg-primary/60 shadow-[0_0_8px_rgba(var(--p),0.4)] shrink-0" />
-												)}
-
-												<h3 className="text-[11px] font-black tracking-[0.25em] uppercase opacity-40 group-hover:opacity-100 transition-opacity">
-													{category.category}
-												</h3>
+													) : (
+														<div className="w-1 h-3.5 rounded-full bg-primary/60 shrink-0" />
+													)}
+													<h3 className="text-[10px] font-black tracking-[0.2em] uppercase opacity-40">
+														{category.category}
+													</h3>
+												</div>
+												<div className="flex-1 h-px bg-base-content/10" />
 											</div>
-											<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
-										</div>
 
-										<div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-7 gap-y-6 gap-x-2">
-											{category.links?.map((link, index) => (
-												<a
-													key={index}
-													href={getUrl(link.url)}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="flex flex-col items-center gap-3 transition-all duration-300 cursor-pointer group/item active:scale-95 hover:scale-105"
-												>
-													<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 border border-content rounded-2xl group-hover/item:border-primary!">
-														{link.badge && (
-															<span
-																className="absolute -top-1.5 -right-1.5 z-20 px-1.5 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-sm border border-white/10"
-																style={{
-																	backgroundColor:
-																		link.badgeColor ||
-																		'var(--p)',
-																	color: '#fff',
+											{/* تنظیم تعداد ستون لینک‌ها بر اساس عرض کارت */}
+											<div
+												className={`grid gap-y-6 gap-x-2 ${
+													index % 3 === 0
+														? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8'
+														: 'grid-cols-3 sm:grid-cols-4'
+												}`}
+											>
+												{category.links?.map((link, idx) => (
+													<a
+														key={idx}
+														href={getUrl(link.url)}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="flex flex-col items-center gap-3 transition-all duration-300 cursor-pointer group/item active:scale-95 hover:scale-105"
+													>
+														<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 border border-content rounded-2xl group-hover/item:border-primary!">
+															{link.badge && (
+																<span
+																	className="absolute -top-1.5 -right-1.5 z-20 px-1.5 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-sm border border-white/10"
+																	style={{
+																		backgroundColor:
+																			link.badgeColor ||
+																			'var(--p)',
+																		color: '#fff',
+																	}}
+																>
+																	{link.badge}
+																</span>
+															)}
+															<img
+																src={
+																	link.icon ||
+																	getFaviconFromUrl(
+																		link.url
+																	)
+																}
+																className="object-contain w-6 h-6 transition-transform rounded-md group-hover/item:scale-110"
+																alt={link.name}
+																onError={(e) => {
+																	e.currentTarget.src =
+																		'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text y="18" font-size="16">🌐</text></svg>'
 																}}
-															>
-																{link.badge}
-															</span>
-														)}
-
-														<img
-															src={
-																link.icon ||
-																getFaviconFromUrl(
-																	link.url
-																)
-															}
-															className="object-contain w-6 h-6 transition-transform rounded-md group-hover/item:scale-110"
-															alt={link.name}
-															onError={(e) => {
-																e.currentTarget.src =
-																	'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><text y="18" font-size="16">🌐</text></svg>'
-															}}
-														/>
-													</div>
-
-													<span className="text-[10px] font-bold tracking-tighter text-center truncate w-full opacity-50 group-hover/item:opacity-100 transition-opacity">
-														{link.name}
-													</span>
-												</a>
-											))}
+															/>
+														</div>
+														<span className="text-[10px] font-bold tracking-tighter text-center truncate w-full opacity-50 group-hover/item:opacity-100 transition-opacity">
+															{link.name}
+														</span>
+													</a>
+												))}
+											</div>
 										</div>
 									</div>
-								</div>
-							))}
+								)
+							)}
 						</div>
 					</div>
 				</div>
-				<div className="hidden h-full pb-4 space-y-4 lg:block lg:col-span-4">
-					<div className="sticky space-y-4 ">
+
+				{/* <div className="hidden h-full pb-4 space-y-4 lg:block lg:col-span-4">
+					<div className="sticky space-y-4">
 						<DateProvider>
 							<ToolsLayout />
 						</DateProvider>
 						<NetworkLayout />
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	)
