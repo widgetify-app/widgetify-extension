@@ -15,6 +15,7 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { ContentSection } from './home/content-section'
+import { ExplorerContent } from '@/layouts/explorer/explorer'
 
 const steps: Step[] = [
 	{
@@ -83,6 +84,7 @@ export function HomePage() {
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
+	const [currentView, setCurrentView] = useState<'home' | 'explore'>('home')
 
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -160,11 +162,21 @@ export function HomePage() {
 			}
 		)
 
+		const openExplorerPageEvent = listenEvent('openExplorerPage', () => {
+			setCurrentView('explore')
+		})
+
+		const closeExplorerPageEvent = listenEvent('closeExplorerPage', () => {
+			setCurrentView('home')
+		})
+
 		Analytics.pageView('Home', '/')
 
 		return () => {
 			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
+			openExplorerPageEvent()
+			closeExplorerPageEvent()
 		}
 	}, [])
 
@@ -254,7 +266,7 @@ export function HomePage() {
 				<WidgetVisibilityProvider>
 					<NavbarLayout />
 
-					<ContentSection />
+					{currentView === 'home' ? <ContentSection /> : <ExplorerContent />}
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {
