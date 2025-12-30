@@ -35,8 +35,9 @@ export function NavbarTabs() {
 
 	const handleTabClick = (tab: string) => {
 		setActiveTab(tab)
-		if (tab === 'home') callEvent('closeJumpPage')
-		else callEvent('openJumpPage')
+		if (tab === 'home') callEvent('closeExplorerPage')
+		else callEvent('openExplorerPage')
+		Analytics.event(`navbar_tab_${tab}_click`)
 	}
 
 	return (

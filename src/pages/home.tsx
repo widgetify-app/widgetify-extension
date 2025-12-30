@@ -162,11 +162,11 @@ export function HomePage() {
 			}
 		)
 
-		const openJumpPageEvent = listenEvent('openJumpPage', () => {
-			setCurrentView('catalog')
+		const openExplorerPageEvent = listenEvent('openExplorerPage', () => {
+			setCurrentView('explore')
 		})
 
-		const closeJumpPageEvent = listenEvent('closeJumpPage', () => {
+		const closeExplorerPageEvent = listenEvent('closeExplorerPage', () => {
 			setCurrentView('home')
 		})
 
@@ -175,8 +175,8 @@ export function HomePage() {
 		return () => {
 			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
-			openJumpPageEvent()
-			closeJumpPageEvent()
+			openExplorerPageEvent()
+			closeExplorerPageEvent()
 		}
 	}, [])
 
