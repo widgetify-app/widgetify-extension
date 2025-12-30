@@ -193,14 +193,14 @@ export function ExplorerContent() {
 					</div>
 				</div>
 
-				{/* <div className="hidden h-full pb-4 space-y-4 lg:block lg:col-span-4">
+				<div className="h-full pb-4 space-y-4 lg:block lg:col-span-4">
 					<div className="sticky space-y-4">
 						<DateProvider>
 							<ToolsLayout />
 						</DateProvider>
 						<NetworkLayout />
 					</div>
-				</div> */}
+				</div>
 			</div>
 		</div>
 	)
