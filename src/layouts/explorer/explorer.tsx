@@ -228,7 +228,7 @@ export function ExplorerContent() {
 																			link.url
 																		)
 																	}
-																	className="object-contain w-6 h-6 transition-transform rounded group-hover/item:scale-110 group-hover/item:brightness-125"
+																	className="object-contain w-6 h-6 transition-transform rounded group-hover/item:scale-110"
 																	alt={link.name}
 																/>
 															</div>
