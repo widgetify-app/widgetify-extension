@@ -84,25 +84,7 @@ export function ExplorerContent() {
 						ref={scrollContainerRef}
 						className="flex-1 pb-4 pr-1 space-y-6 overflow-y-auto scrollbar-none scroll-smooth"
 					>
-						{/* <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-							<div className="p-6 border shadow md:col-span-2 rounded-3xl bg-content bg-glass border-white/10">
-								<h2 className="mb-2 text-lg font-bold">سوپرایزم کن</h2>
-								<p className="text-sm opacity-80">
-								 
-								</p>
-								<button className="mt-4 text-white transition-transform border-none shadow btn btn-sm bg-primary rounded-xl hover:scale-105">
-								 
-								</button>
-							</div>
-							<div className="flex flex-col gap-4">
-								<div className="flex items-center justify-center flex-1 text-xs border opacity-50 bg-content bg-glass rounded-2xl border-base-300/50">
-									 
-								</div>
-								<div className="flex items-center justify-center flex-1 text-xs border opacity-50 bg-content bg-glass rounded-2xl border-base-300/50">
-								 
-								</div>
-							</div>
-						</div> */}
+						{/* <div className="grid grid-cols-1 gap-4 md:grid-cols-3"> </div> */}
 
 						<div className="flex flex-col gap-4 pb-10">
 							{catalogData?.contents?.map((category: CategoryItem) => (
@@ -115,7 +97,7 @@ export function ExplorerContent() {
 									className="relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl"
 								>
 									{category.banner && (
-										<div className="w-full overflow-hidden h-36">
+										<div className="w-full overflow-hidden h-28">
 											<img
 												src={category.banner}
 												className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
