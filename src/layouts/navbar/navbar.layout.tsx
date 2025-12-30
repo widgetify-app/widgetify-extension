@@ -13,10 +13,70 @@ import { SyncButton } from './sync/sync'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
+import { HiRectangleGroup } from 'react-icons/hi2'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
 } as const
+
+const tabs = [
+	{
+		id: 'explorer',
+		icon: <HiRectangleGroup size={22} />,
+		hasBadge: true,
+	},
+	{
+		id: 'home',
+		icon: <HiHome size={22} />,
+	},
+]
+export function NavbarTabs() {
+	const [activeTab, setActiveTab] = useState<string | null>('home')
+
+	const handleTabClick = (tab: string) => {
+		setActiveTab(tab)
+		if (tab === 'home') callEvent('closeJumpPage')
+		else callEvent('openJumpPage')
+	}
+
+	return (
+		<div className="flex items-center gap-0.5">
+			{tabs.map((tab) => (
+				<button
+					key={tab.id}
+					onClick={() => handleTabClick(tab.id)}
+					className="relative p-2 cursor-pointer group nav-btn"
+				>
+					<span
+						className={`
+            relative z-10 transition-all duration-300 block
+            ${activeTab === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
+        `}
+					>
+						{tab.icon}
+
+						{tab.hasBadge && (
+							<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+								<span
+									className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${activeTab === tab.id ? 'block' : 'hidden'}`}
+								></span>
+								<span
+									className={`relative inline-flex rounded-full h-2 w-2 border border-black/50 ${activeTab === tab.id ? 'bg-primary' : 'bg-primary/80'}`}
+								></span>
+							</span>
+						)}
+					</span>
+
+					{activeTab === tab.id && (
+						<div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]">
+							<div className="absolute inset-0 bg-primary blur-[2px]" />
+						</div>
+					)}
+				</button>
+			))}
+		</div>
+	)
+}
 
 export function NavbarLayout(): JSX.Element {
 	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
@@ -124,12 +184,7 @@ export function NavbarLayout(): JSX.Element {
 					<div className="relative z-10 w-[1px] h-6 bg-white/[0.08]" />
 
 					<div className="relative z-10 flex items-center gap-2 pr-1 ml-0.5">
-						<button
-							onClick={() => callEvent('closeJumpPage')}
-							className="relative p-2 transition-all rounded-full text-white bg-primary shadow-[0_5px_15px_rgba(var(--primary-rgb),0.3)] active:scale-90 group"
-						>
-							<HiHome size={19} />
-						</button>
+						<NavbarTabs />
 						<a
 							href={WIDGETIFY_URLS.website}
 							target="_blank"

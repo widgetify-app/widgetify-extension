@@ -5,9 +5,8 @@ export const useGetTags = (enabled: boolean) => {
 	return useQuery<string[]>({
 		queryKey: ['getTags'],
 		queryFn: async () => getTags(),
-		retry: 0,
+		staleTime: 5 * 60 * 1000, // 5 minutes
 		enabled,
-		initialData: [],
 	})
 }
 export async function getTags(): Promise<string[]> {
