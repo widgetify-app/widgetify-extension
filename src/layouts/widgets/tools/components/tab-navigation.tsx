@@ -16,7 +16,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	onTabClick,
 }) => {
 	return (
-		<div className="flex items-center p-1 mb-1 text-xs font-medium bg-content rounded-2xl">
+		<div className="flex items-center p-1 mb-1 text-xs font-medium bg-base-100 rounded-2xl">
 			{tabs.map((tab) => (
 				<div
 					key={tab.id}
