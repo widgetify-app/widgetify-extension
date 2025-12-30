@@ -119,7 +119,7 @@ export function ContentSection() {
 		<DateProvider>
 			<div
 				data-tour="content"
-				className={`flex flex-col items-center ${layoutPositions[contentAlignment]} flex-1 w-full gap-2 px-1 md:px-4 py-2`}
+				className={`flex flex-col items-center overflow-y-auto scrollbar-none ${layoutPositions[contentAlignment]} flex-1 w-full gap-2 px-1 md:px-4 py-2`}
 			>
 				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
 					<div className="order-3 w-full lg:w-1/4 lg:order-1">
