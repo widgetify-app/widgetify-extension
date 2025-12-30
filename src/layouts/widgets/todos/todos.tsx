@@ -40,14 +40,14 @@ const viewModeOptions = [
 interface Prop {
 	onChangeTab?: any
 }
-
+type TodoFilterType = 'active' | 'completed' | 'all'
 export function TodosLayout({ onChangeTab }: Prop) {
 	const { selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { addTodo, todos, updateOptions, todoOptions, reorderTodos, isPending } =
 		useTodoStore()
 	const { blurMode } = useGeneralSetting()
-	const [filter, setFilter] = useState<'active' | 'completed' | 'all'>('all')
+	const [filter, setFilter] = useState<TodoFilterType>('active')
 	const [showStats, setShowStats] = useState<boolean>(false)
 	const selectedDateStr = formatDateStr(selectedDate.clone())
 	const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
@@ -64,7 +64,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		updateOptions({ viewMode })
 	}
 
-	const updateTodoFilter = (newFilter: 'active' | 'completed' | 'all') => {
+	const updateTodoFilter = (newFilter: TodoFilterType) => {
 		setFilter(newFilter)
 		Analytics.event(`todo_filter_${newFilter}_click`)
 	}
@@ -136,12 +136,12 @@ export function TodosLayout({ onChangeTab }: Prop) {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<div className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content">
-							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
+						<div className="flex items-center justify-around w-32 p-1 text-xs font-medium bg-base-300 rounded-2xl text-content">
+							<div className="bg-primary rounded-xl py-0.5 px-2 text-gray-200">
 								<span>وظایف</span>
 							</div>
 							<div
-								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-1"
+								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-2"
 								onClick={() => onChangeTab()}
 							>
 								یادداشت
@@ -168,22 +168,22 @@ export function TodosLayout({ onChangeTab }: Prop) {
 						<div className="flex justify-between mb-2">
 							<div className="flex gap-0.5">
 								<button
-									onClick={() => updateTodoFilter('all')}
-									className={`px-1 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-								>
-									همه
-								</button>
-								<button
 									onClick={() => updateTodoFilter('active')}
-									className={`px-1 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									فعال
 								</button>
 								<button
 									onClick={() => updateTodoFilter('completed')}
-									className={`px-1 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
 								>
 									تکمیل‌ها
+								</button>
+								<button
+									onClick={() => updateTodoFilter('all')}
+									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
+								>
+									همه
 								</button>
 							</div>
 							<div className="relative">

@@ -70,14 +70,14 @@ export function NotesLayout({ onChangeTab }: Prop) {
 			<NotesProvider>
 				<div className="flex flex-col h-full">
 					<div className="flex items-center justify-between">
-						<div className="flex items-center justify-around p-1 text-xs font-medium bg-base-300 w-28 rounded-2xl text-content">
+						<div className="flex items-center justify-around w-32 p-1 text-xs font-medium bg-base-300 rounded-2xl text-content">
 							<div
 								onClick={() => onChangeTab()}
-								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-1"
+								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-2"
 							>
 								<span>وظایف</span>
 							</div>
-							<div className="bg-primary rounded-xl py-0.5 px-1 text-gray-200">
+							<div className="bg-primary rounded-xl py-0.5 px-2 text-gray-200">
 								یادداشت
 							</div>
 						</div>
