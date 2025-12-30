@@ -16,12 +16,12 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 	onTabClick,
 }) => {
 	return (
-		<div className="flex items-center p-1 text-xs font-medium bg-content rounded-2xl">
+		<div className="flex items-center p-1 mb-1 text-xs font-medium bg-content rounded-2xl">
 			{tabs.map((tab) => (
 				<div
 					key={tab.id}
 					onClick={() => onTabClick(tab.id)}
-					className={`flex-1 cursor-pointer text-center rounded-xl py-1.5 px-3 transition-all duration-200 ${
+					className={`flex-1 cursor-pointer text-center rounded-xl py-1 px-3 transition-all duration-200 ${
 						activeTab === tab.id
 							? 'bg-primary text-white'
 							: 'text-content hover:bg-base-300'
