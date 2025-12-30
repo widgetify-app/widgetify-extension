@@ -2,6 +2,7 @@ import { useGetContents } from '@/services/hooks/content/get-content.hook'
 import { useRef, useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import { HiOutlineLightBulb } from 'react-icons/hi2'
 
 interface LinkItem {
 	name: string
@@ -242,6 +243,33 @@ export function ExplorerContent() {
 									)
 								)}
 							</div>
+						</div>
+					</div>
+					<div className="hidden h-full pb-4 space-y-4 overflow-y-auto lg:block lg:col-span-4 scrollbar-none">
+						<div className="sticky top-0 flex flex-col gap-4">
+							<a
+								href="https://feedback.widgetify.ir"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="relative flex flex-col items-center justify-center p-5 overflow-hidden text-center transition-all duration-500 border border-dashed group bg-content bg-glass border-base-300 rounded-3xl hover:border-primary/50 hover:bg-primary/5 min-h-20"
+							>
+								<div className="p-3 mb-3 transition-all duration-500 rounded-2xl bg-base-200/50 text-base-content/40 group-hover:scale-110 group-hover:rotate-12 group-hover:text-warning group-hover:bg-warning/10">
+									<HiOutlineLightBulb
+										size={28}
+										className="transition-transform duration-500"
+									/>
+								</div>
+
+								<h3 className="font-bold tracking-tight transition-colors duration-300 text-muted group-hover:text-primary">
+									چیزی جا انداختیم؟
+								</h3>
+
+								<p className="mt-1 text-[10px] font-medium opacity-40 transition-opacity duration-300 group-hover:opacity-100">
+									بهمون بگو تا اضافه‌اش کنیم
+								</p>
+
+								<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary/30 transition-all duration-500 group-hover:w-1/3" />
+							</a>
 						</div>
 					</div>
 				</div>
