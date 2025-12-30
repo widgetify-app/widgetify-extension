@@ -53,6 +53,7 @@ export function ExplorerContent() {
 	}, [catalogData])
 
 	const scrollToCategory = (id: string) => {
+		setActiveCategory(id)
 		categoryRefs.current[id]?.scrollIntoView({
 			behavior: 'smooth',
 			block: 'start',
@@ -84,7 +85,6 @@ export function ExplorerContent() {
 						ref={scrollContainerRef}
 						className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
 					>
-						{/* تغییر اصلی: استفاده از گرید برای دسته‌بندی‌ها */}
 						<div className="grid grid-cols-1 gap-4 pb-10 md:grid-cols-2">
 							{catalogData?.contents?.map(
 								(category: CategoryItem, index: number) => (
@@ -94,7 +94,6 @@ export function ExplorerContent() {
 										ref={(el) => {
 											categoryRefs.current[category.id] = el
 										}}
-										/* منطق Bento: هر دسته‌بندی سوم یا دسته‌هایی با تعداد لینک زیاد، تمام عرض را می‌گیرند */
 										className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
 											index % 3 === 0
 												? 'md:col-span-2'
@@ -136,7 +135,6 @@ export function ExplorerContent() {
 												<div className="flex-1 h-px bg-base-content/10" />
 											</div>
 
-											{/* تنظیم تعداد ستون لینک‌ها بر اساس عرض کارت */}
 											<div
 												className={`grid gap-y-6 gap-x-2 ${
 													index % 3 === 0
