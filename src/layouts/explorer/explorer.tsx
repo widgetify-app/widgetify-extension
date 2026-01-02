@@ -106,7 +106,7 @@ export function ExplorerContent() {
 				</div>
 			</aside>
 
-			<div className="flex flex-col flex-1 w-full h-full gap-3 px-2 py-3 overflow-hidden md:px-6">
+			<div className="flex flex-col w-full h-full gap-3 px-2 py-3 overflow-hidden md:px-24">
 				<div className="md:hidden sticky top-0 z-50 flex items-center w-full gap-2 p-1.5 overflow-x-auto bg-base-100/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg no-scrollbar flex-nowrap">
 					{catalogData?.contents?.map((cat: CategoryItem) => (
 						<button
@@ -126,13 +126,13 @@ export function ExplorerContent() {
 					))}
 				</div>
 
-				<div className="grid w-full h-full grid-cols-1 gap-6 overflow-hidden lg:grid-cols-12">
-					<div className="flex flex-col h-full gap-4 overflow-hidden lg:col-span-8">
+				<div className="grid w-full h-full grid-cols-1 gap-6 overflow-hidden lg:grid-cols-1">
+					<div className="flex flex-col h-full gap-4 overflow-hidden lg:col-span-1">
 						<div
 							ref={scrollContainerRef}
 							className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
 						>
-							<div className="grid grid-cols-1 gap-4 pb-10 md:grid-cols-2">
+							<div className="grid max-w-5xl grid-cols-1 gap-4 pb-10 mx-auto md:grid-cols-2">
 								{catalogData?.contents?.map(
 									(category: CategoryItem, index: number) => (
 										<div
@@ -233,33 +233,6 @@ export function ExplorerContent() {
 									)
 								)}
 							</div>
-						</div>
-					</div>
-					<div className="hidden h-full pb-4 space-y-4 overflow-y-auto lg:block lg:col-span-4 scrollbar-none">
-						<div className="sticky top-0 flex flex-col gap-4">
-							<a
-								href="https://feedback.widgetify.ir"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="relative flex flex-col items-center justify-center p-5 overflow-hidden text-center transition-all duration-500 border border-dashed group bg-content bg-glass border-base-300 rounded-3xl hover:border-primary/50 hover:bg-primary/5 min-h-20"
-							>
-								<div className="p-3 mb-3 transition-all duration-500 rounded-2xl bg-base-200/50 text-base-content/40 group-hover:scale-110 group-hover:rotate-12 group-hover:text-warning group-hover:bg-warning/10">
-									<HiOutlineLightBulb
-										size={28}
-										className="transition-transform duration-500"
-									/>
-								</div>
-
-								<h3 className="font-bold tracking-tight transition-colors duration-300 text-muted group-hover:text-primary">
-									چیزی جا انداختیم؟
-								</h3>
-
-								<p className="mt-1 text-[10px] font-medium opacity-40 transition-opacity duration-300 group-hover:opacity-100">
-									بهمون بگو تا اضافه‌اش کنیم
-								</p>
-
-								<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary/30 transition-all duration-500 group-hover:w-1/3" />
-							</a>
 						</div>
 					</div>
 				</div>
