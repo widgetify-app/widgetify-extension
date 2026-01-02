@@ -72,15 +72,15 @@ export function ExplorerContent() {
 						<button
 							key={cat.id}
 							onClick={() => scrollToCategory(cat.id)}
-							className={`relative group flex flex-col items-center justify-center w-14 min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-500 cursor-pointer ${
+							className={`relative group flex flex-col items-center justify-center w-14 min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-500 cursor-pointer border ${
 								activeCategory === cat.id
-									? 'bg-primary text-white shadow-lg shadow-primary/40 scale-110'
-									: 'bg-white/[0.03] hover:bg-primary/10 text-base-content/60 hover:text-primary hover:scale-105 border border-white/5 hover:border-primary/20'
+									? 'bg-primary text-white shadow-md shadow-primary/40 scale-110 border-primary/50'
+									: 'bg-white/[0.03] border-white/5 text-base-content/60 hover:bg-primary/10 hover:text-primary hover:scale-105 hover:border-primary/30'
 							}`}
 						>
-							{activeCategory === cat.id && (
-								<div className="absolute w-1 h-8 rounded-r-full -left-2 bg-primary" />
-							)}
+							<div
+								className={`absolute w-1 h-8 rounded-r-full -left-2 bg-primary transition-all duration-500 ${activeCategory === cat.id ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0'}`}
+							/>
 							{cat.icon ? (
 								<img
 									src={cat.icon}
@@ -147,9 +147,20 @@ export function ExplorerContent() {
 												categoryRefs.current[category.id] = el
 											}}
 											className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-3xl transition-all duration-300 ${
-												index % 3 === 0
-													? 'md:col-span-2'
-													: 'md:col-span-1'
+												index === 0
+													? 'md:col-span-2' // آیتم اول همیشه تمام عرض
+													: (
+																index ===
+																	catalogData.contents
+																		.length -
+																		1 &&
+																	catalogData.contents
+																		.length %
+																		2 ===
+																		0
+															)
+														? 'md:col-span-2' // اگر تعداد کل زوج بود (مثل ۶ تا)، آخری تمام عرض شود تا جای خالی پر شود
+														: 'md:col-span-1'
 											}`}
 										>
 											{category.banner && (
@@ -186,7 +197,7 @@ export function ExplorerContent() {
 													<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
 												</div>
 												<div
-													className={`grid gap-y-6 gap-x-2 ${index % 3 === 0 ? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8' : 'grid-cols-3 sm:grid-cols-4'}`}
+													className={`grid gap-y-6 gap-x-2 grid-cols-3 sm:grid-cols-5`}
 												>
 													{category.links?.map((link, idx) => (
 														<a
