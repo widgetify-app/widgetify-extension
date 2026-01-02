@@ -59,26 +59,26 @@ export function ExplorerContent() {
 
 	return (
 		<div className="flex flex-row w-full h-screen overflow-hidden">
-			<aside className="flex-col items-center hidden w-24 gap-3 py-2 md:flex border-base-300 bg-content bg-glass lg:mt-3 rounded-t-2xl rounded-b-2xl h-[calc(100vh-10rem)]">
-				<div className="flex flex-col items-center w-full gap-3 px-2 overflow-x-hidden overflow-y-auto scrollbar-none">
+			<aside className="flex-col items-center hidden w-20 gap-3 py-4 md:flex bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-[2.5rem] lg:mt-4  h-fit max-h-[calc(100vh-160px)] sticky top-4">
+				<div className="flex flex-col items-center w-full gap-2 px-2 py-2 overflow-x-hidden overflow-y-auto scrollbar-none">
 					{catalogData?.contents?.map((cat: CategoryItem) => (
 						<button
 							key={cat.id}
 							onClick={() => scrollToCategory(cat.id)}
-							className={`relative group flex flex-col items-center justify-center w-full py-3 px-2 rounded-2xl transition-all duration-300 cursor-pointer ${
+							className={`							relative group flex flex-col items-center justify-center w-14  min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-300 cursor-pointer ${
 								activeCategory === cat.id
-									? 'bg-primary/80 text-white shadow-sm shadow-primary/20'
-									: 'bg-base-200/60 hover:bg-base-300 text-base-content/70 hover:scale-102'
+									? 'bg-primary/80 text-white shadow-md shadow-primary/30 scale-110'
+									: 'bg-white/[0.01] hover:bg-white/[0.1] text-base-content/60 hover:scale-105'
 							}`}
 						>
 							{activeCategory === cat.id && (
-								<div className="absolute w-1 h-10 rounded-r-full -left-2 bg-primary" />
+								<div className="absolute w-1 h-8 rounded-r-full -left-2 bg-primary" />
 							)}
 
 							{cat.icon ? (
 								<img
 									src={cat.icon}
-									className={`w-8 h-8 mb-2 object-contain transition-transform ${
+									className={`w-7 h-7 object-contain transition-transform ${
 										activeCategory === cat.id
 											? 'scale-110'
 											: 'opacity-70 group-hover:opacity-100'
@@ -87,7 +87,7 @@ export function ExplorerContent() {
 								/>
 							) : (
 								<div
-									className={`w-8 h-8 mb-2 rounded-xl flex items-center justify-center text-lg font-bold transition-all ${
+									className={`w-7 h-7 rounded-xl flex items-center justify-center text-sm font-bold transition-all ${
 										activeCategory === cat.id
 											? 'bg-white/20'
 											: 'bg-base-content/10 group-hover:bg-base-content/20'
@@ -96,16 +96,6 @@ export function ExplorerContent() {
 									{cat.category.substring(0, 1)}
 								</div>
 							)}
-
-							<span
-								className={`text-[9px] font-bold text-center leading-tight transition-all line-clamp-2 ${
-									activeCategory === cat.id
-										? 'opacity-100'
-										: 'opacity-60 group-hover:opacity-90'
-								}`}
-							>
-								{cat.category}
-							</span>
 
 							<div className="absolute z-50 px-3 py-2 ml-4 text-xs font-semibold transition-opacity rounded-lg shadow-xl opacity-0 pointer-events-none left-full bg-neutral text-neutral-content group-hover:opacity-100 whitespace-nowrap">
 								{cat.category}
