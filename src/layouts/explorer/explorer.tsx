@@ -26,12 +26,10 @@ export function ExplorerContent() {
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		// اگر دیتا لود نشده یا کانتینر آماده نیست، کاری نکن
 		if (!catalogData?.contents || !scrollContainerRef.current) return
 
 		const observerOptions = {
 			root: scrollContainerRef.current,
-			// ایجاد یک ناحیه حساس در قسمت بالایی کانتینر
 			rootMargin: '0px 0px -40% 0px',
 			threshold: 0.1,
 		}
@@ -46,14 +44,13 @@ export function ExplorerContent() {
 
 		const observer = new IntersectionObserver(observerCallback, observerOptions)
 
-		// مشاهده تمام دسته‌بندی‌ها
 		const currentRefs = categoryRefs.current
 		Object.values(currentRefs).forEach((div) => {
 			if (div) observer.observe(div)
 		})
 
 		return () => observer.disconnect()
-	}, [catalogData?.contents]) // وابستگی به محتوا برای اجرای مجدد پس از لود
+	}, [catalogData?.contents])
 
 	const scrollToCategory = (id: string) => {
 		setActiveCategory(id)
