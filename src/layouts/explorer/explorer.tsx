@@ -72,10 +72,10 @@ export function ExplorerContent() {
 						<button
 							key={cat.id}
 							onClick={() => scrollToCategory(cat.id)}
-							className={`relative group flex flex-col items-center justify-center w-14  min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-300 cursor-pointer ${
+							className={`relative group flex flex-col items-center justify-center w-14 min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-500 cursor-pointer ${
 								activeCategory === cat.id
-									? 'bg-primary/80 text-white shadow-md shadow-primary/30 scale-110'
-									: 'bg-white/[0.01] hover:bg-white/[0.1] text-base-content/60 hover:scale-105'
+									? 'bg-primary text-white shadow-lg shadow-primary/40 scale-110'
+									: 'bg-white/[0.03] hover:bg-primary/10 text-base-content/60 hover:text-primary hover:scale-105 border border-white/5 hover:border-primary/20'
 							}`}
 						>
 							{activeCategory === cat.id && (
@@ -119,8 +119,8 @@ export function ExplorerContent() {
 							onClick={() => scrollToCategory(cat.id)}
 							className={`flex items-center gap-2 px-4 py-2 text-[10px] font-bold whitespace-nowrap rounded-xl transition-all shrink-0 ${
 								activeCategory === cat.id
-									? 'bg-primary text-white shadow-md'
-									: 'bg-base-200/50'
+									? 'bg-primary text-white shadow-md scale-105'
+									: 'bg-base-200/50 hover:bg-primary/10 hover:text-primary'
 							}`}
 						>
 							{cat.icon && (
@@ -196,10 +196,10 @@ export function ExplorerContent() {
 															rel="noopener noreferrer"
 															className="flex flex-col items-center gap-3 group/item active:scale-95"
 														>
-															<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-300 bg-base-200/40 rounded-2xl group-hover/item:bg-primary/10">
+															<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-500 bg-base-200/40 rounded-2xl group-hover/item:bg-primary/20 group-hover/item:shadow-lg group-hover/item:shadow-primary/20 group-hover/item:-translate-y-1.5 border border-transparent group-hover/item:border-primary/20">
 																{link.badge && (
 																	<span
-																		className="absolute -top-1 -right-1 z-20 px-1.5 py-0.5 rounded-lg text-[8px] font-black border border-white/10"
+																		className="absolute -top-1 -right-1 z-20 px-1.5 py-0.5 rounded-lg text-[8px] font-black border border-white/10 shadow-sm"
 																		style={{
 																			backgroundColor:
 																				link.badgeColor ||
@@ -217,11 +217,11 @@ export function ExplorerContent() {
 																			link.url
 																		)
 																	}
-																	className="object-contain w-6 h-6 transition-transform rounded group-hover/item:scale-110"
+																	className="object-contain w-6 h-6 transition-all duration-500 rounded group-hover/item:scale-110 group-hover/item:brightness-110"
 																	alt={link.name}
 																/>
 															</div>
-															<span className="text-[10px] font-medium tracking-tighter text-center truncate w-full opacity-50 group-hover/item:opacity-100 transition-opacity">
+															<span className="text-[10px] font-semibold tracking-tighter text-center truncate w-full opacity-40 group-hover/item:opacity-100 group-hover/item:text-primary transition-all duration-300">
 																{link.name}
 															</span>
 														</a>
