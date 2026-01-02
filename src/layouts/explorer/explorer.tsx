@@ -2,7 +2,6 @@ import { useGetContents } from '@/services/hooks/content/get-content.hook'
 import { useRef, useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { HiOutlineLightBulb } from 'react-icons/hi2'
 
 interface LinkItem {
 	name: string
@@ -27,10 +26,14 @@ export function ExplorerContent() {
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
+		// اگر دیتا لود نشده یا کانتینر آماده نیست، کاری نکن
+		if (!catalogData?.contents || !scrollContainerRef.current) return
+
 		const observerOptions = {
 			root: scrollContainerRef.current,
-			rootMargin: '-10% 0px -80% 0px',
-			threshold: 0,
+			// ایجاد یک ناحیه حساس در قسمت بالایی کانتینر
+			rootMargin: '0px 0px -40% 0px',
+			threshold: 0.1,
 		}
 
 		const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -42,18 +45,25 @@ export function ExplorerContent() {
 		}
 
 		const observer = new IntersectionObserver(observerCallback, observerOptions)
-		Object.values(categoryRefs.current).forEach((div) => {
+
+		// مشاهده تمام دسته‌بندی‌ها
+		const currentRefs = categoryRefs.current
+		Object.values(currentRefs).forEach((div) => {
 			if (div) observer.observe(div)
 		})
+
 		return () => observer.disconnect()
-	}, [catalogData])
+	}, [catalogData?.contents]) // وابستگی به محتوا برای اجرای مجدد پس از لود
 
 	const scrollToCategory = (id: string) => {
 		setActiveCategory(id)
-		categoryRefs.current[id]?.scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-		})
+		const element = categoryRefs.current[id]
+		if (element) {
+			element.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			})
+		}
 		Analytics.event('explorer_click_category')
 	}
 
@@ -65,7 +75,7 @@ export function ExplorerContent() {
 						<button
 							key={cat.id}
 							onClick={() => scrollToCategory(cat.id)}
-							className={`							relative group flex flex-col items-center justify-center w-14  min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-300 cursor-pointer ${
+							className={`relative group flex flex-col items-center justify-center w-14  min-h-14 max-h-14 rounded-[1.5rem] transition-all duration-300 cursor-pointer ${
 								activeCategory === cat.id
 									? 'bg-primary/80 text-white shadow-md shadow-primary/30 scale-110'
 									: 'bg-white/[0.01] hover:bg-white/[0.1] text-base-content/60 hover:scale-105'
@@ -74,7 +84,6 @@ export function ExplorerContent() {
 							{activeCategory === cat.id && (
 								<div className="absolute w-1 h-8 rounded-r-full -left-2 bg-primary" />
 							)}
-
 							{cat.icon ? (
 								<img
 									src={cat.icon}
@@ -96,7 +105,6 @@ export function ExplorerContent() {
 									{cat.category.substring(0, 1)}
 								</div>
 							)}
-
 							<div className="absolute z-50 px-3 py-2 ml-4 text-xs font-semibold transition-opacity rounded-lg shadow-xl opacity-0 pointer-events-none left-full bg-neutral text-neutral-content group-hover:opacity-100 whitespace-nowrap">
 								{cat.category}
 								<div className="absolute -translate-y-1/2 border-4 border-transparent right-full top-1/2 border-r-neutral" />
@@ -132,7 +140,7 @@ export function ExplorerContent() {
 							ref={scrollContainerRef}
 							className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
 						>
-							<div className="grid max-w-5xl grid-cols-1 gap-4 pb-10 mx-auto md:grid-cols-2">
+							<div className="grid max-w-5xl grid-cols-1 gap-4 pb-[50vh] mx-auto md:grid-cols-2">
 								{catalogData?.contents?.map(
 									(category: CategoryItem, index: number) => (
 										<div
@@ -141,7 +149,7 @@ export function ExplorerContent() {
 											ref={(el) => {
 												categoryRefs.current[category.id] = el
 											}}
-											className={`relative overflow-hidden border scroll-mt-2 bg-content bg-glass border-base-300 rounded-3xl transition-all duration-300 ${
+											className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-3xl transition-all duration-300 ${
 												index % 3 === 0
 													? 'md:col-span-2'
 													: 'md:col-span-1'
@@ -162,7 +170,6 @@ export function ExplorerContent() {
 													/>
 												</div>
 											)}
-
 											<div className="p-5">
 												<div className="flex items-center gap-4 mb-6">
 													<div className="flex items-center gap-2.5">
@@ -181,13 +188,8 @@ export function ExplorerContent() {
 													</div>
 													<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
 												</div>
-
 												<div
-													className={`grid gap-y-6 gap-x-2 ${
-														index % 3 === 0
-															? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8'
-															: 'grid-cols-3 sm:grid-cols-4'
-													}`}
+													className={`grid gap-y-6 gap-x-2 ${index % 3 === 0 ? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8' : 'grid-cols-3 sm:grid-cols-4'}`}
 												>
 													{category.links?.map((link, idx) => (
 														<a
