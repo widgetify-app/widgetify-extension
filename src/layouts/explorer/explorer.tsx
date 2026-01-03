@@ -124,7 +124,7 @@ export function ExplorerContent() {
 				</div>
 			</aside>
 
-			<div className="flex flex-col w-full h-full gap-3 px-2 py-3 overflow-hidden md:px-24">
+			<div className="flex flex-col w-full h-full gap-3 px-2 py-3 overflow-hidden md:px-10">
 				<div className="md:hidden sticky top-0 z-50 flex items-center w-full gap-2 p-1.5 overflow-x-auto bg-base-100/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg no-scrollbar flex-nowrap">
 					{catalogData?.contents?.map((cat: CategoryItem) => (
 						<button
@@ -200,7 +200,7 @@ export function ExplorerContent() {
 												</div>
 											)}
 											<div className="p-5">
-												<div className="flex items-center gap-4 mb-6">
+												<div className="flex items-center gap-4 mb-4">
 													<div className="flex items-center gap-2.5">
 														{category.icon ? (
 															<img
@@ -314,9 +314,11 @@ interface IframeProp {
 	fontFamily: string
 }
 function RenderIframeLinks({ link, theme, fontFamily }: IframeProp) {
-	const url = link.url.includes('?')
-		? `${link.url}&theme=${theme}&font=${fontFamily}`
-		: `${link.url}?theme=${theme}&font=${fontFamily}`
+	const urlObj = new URL(link.url)
+	urlObj.searchParams.set('theme', encodeURIComponent(theme))
+	urlObj.searchParams.set('font', encodeURIComponent(fontFamily))
+	urlObj.searchParams.set('referrer', 'extension')
+	const url = urlObj.toString()
 
 	return (
 		<div
