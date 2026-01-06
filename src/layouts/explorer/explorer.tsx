@@ -12,6 +12,7 @@ interface LinkItem {
 	icon?: string
 	badge?: string
 	badgeColor?: string
+	badgeAnimate?: 'bounce' | 'pulse'
 	span?: {
 		col?: number | null
 		row?: number | null
@@ -222,6 +223,7 @@ export function ExplorerContent() {
 													category={category}
 													theme={theme}
 													fontFamily={fontFamily}
+													colSpan={category.span?.col}
 												/>
 											</div>
 										</div>
@@ -244,10 +246,17 @@ interface Prop {
 	category: CategoryItem
 	theme: string
 	fontFamily: string
+	colSpan?: number | null
 }
-function HandleCatalogs({ category, theme, fontFamily }: Prop) {
+function HandleCatalogs({ category, theme, fontFamily, colSpan }: Prop) {
+	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 5
 	return (
-		<div className={`grid gap-y-6 gap-x-2 grid-cols-3 sm:grid-cols-5`}>
+		<div
+			className="grid grid-cols-3 gap-y-6 gap-x-2"
+			style={{
+				gridTemplateColumns: `repeat(${colSpanValue}, minmax(0, 1fr))`,
+			}}
+		>
 			{category.links?.map((link) =>
 				link.type === 'REMOTE_IFRAME' ? (
 					<RenderIframeLinks
@@ -267,13 +276,20 @@ function HandleCatalogs({ category, theme, fontFamily }: Prop) {
 interface SiteProp {
 	link: LinkItem
 }
+const ANIMATES = {
+	bounce: 'bounce 1.5s infinite',
+	pulse: 'pulse 2s infinite',
+	spin: 'spin 2s linear infinite',
+}
 function RenderSiteLinks({ link }: SiteProp) {
+	const animate = link.badgeAnimate || null
+	const badge = link.badge?.trim() || null
 	return (
 		<a
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className="flex flex-col items-center gap-3 group/item active:scale-95"
+			className="flex flex-col items-center gap-1 group/item active:scale-95"
 			style={{
 				gridColumn: link.span?.col
 					? `span ${link.span.col} / span ${link.span.col}`
@@ -284,15 +300,16 @@ function RenderSiteLinks({ link }: SiteProp) {
 			}}
 		>
 			<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-500 bg-base-200/40 rounded-2xl group-hover/item:bg-primary/20 group-hover/item:shadow-lg group-hover/item:shadow-primary/20 group-hover/item:-translate-y-1.5 border border-transparent group-hover/item:border-primary/20">
-				{link.badge && (
+				{badge && (
 					<span
-						className="absolute -top-1 -right-1 z-20 px-1.5 py-0.5 rounded-lg text-[8px] font-black border border-white/10 shadow-sm"
+						className="absolute -top-3 -right-1 z-20 px-1.5 py-0.5 rounded-2xl text-[8px] font-semibold border border-white/10 shadow-sm"
 						style={{
 							backgroundColor: link.badgeColor || 'var(--p)',
 							color: '#fff',
+							animation: animate ? ANIMATES[animate] : 'none',
 						}}
 					>
-						{link.badge}
+						{badge}
 					</span>
 				)}
 				<img
@@ -301,7 +318,7 @@ function RenderSiteLinks({ link }: SiteProp) {
 					alt={link.name}
 				/>
 			</div>
-			<span className="text-[10px] font-semibold tracking-tighter text-center truncate w-full opacity-40 group-hover/item:opacity-100 group-hover/item:text-primary transition-all duration-300">
+			<span className="text-[10px] font-semibold tracking-tighter text-center truncate w-full opacity-60 group-hover/item:opacity-100 group-hover/item:text-primary transition-all duration-300">
 				{link.name}
 			</span>
 		</a>
