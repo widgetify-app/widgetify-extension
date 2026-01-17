@@ -42,6 +42,7 @@
     "swiper": "12.0.2",
     "tailwind-merge": "^3.4.0",
     "uuid": "13.0.0",
+    "webextension-polyfill": "^0.12.0",
     "workbox-background-sync": "7.4.0",
     "workbox-cacheable-response": "7.4.0",
     "workbox-expiration": "7.4.0",
@@ -69,6 +70,7 @@
     "tailwindcss": "4.1.18",
     "terser": "5.44.1",
     "typescript": "5.9.3",
-    "vite": "7.3.0"
+    "vite": "7.3.0",
+    "web-ext": "^9.2.0"
   }
 }
