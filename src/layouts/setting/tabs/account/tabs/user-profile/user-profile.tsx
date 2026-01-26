@@ -16,6 +16,7 @@ import { ProfileEditForm } from '../../components/profile-edit-form'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { Connections } from './connections/connections'
 import { showToast } from '@/common/toast'
+import { translateError } from '@/utils/translate-error'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -48,8 +49,8 @@ export const UserProfile = () => {
 		try {
 			await sendVerificationMutation.mutateAsync()
 			showToast('ایمیل تایید با موفقیت ارسال شد!', 'success')
-		} catch {
-			showToast('خطا در ارسال ایمیل تایید. لطفاً دوباره تلاش کنید.', 'error')
+		} catch (err: any) {
+			showToast(translateError(err) as string, 'error')
 		}
 	}
 
@@ -98,19 +99,19 @@ export const UserProfile = () => {
 				<ProfileDisplay profile={profile} onEditToggle={handleEditToggle} />
 			)}
 
-			{!profile?.verified ? (
+			{profile?.email && !profile?.verified && (
 				<AccountVerificationStatus
 					sendVerificationMutation={sendVerificationMutation}
 					onSendVerificationEmail={handleSendVerificationEmail}
 				/>
-			) : (
-				referralCode?.referralCode && (
-					<ReferralCodeSection
-						code={referralCode.referralCode}
-						enableNewBadge={true}
-						className="!p-2 !px-4"
-					/>
-				)
+			)}
+
+			{referralCode?.referralCode && (
+				<ReferralCodeSection
+					code={referralCode.referralCode}
+					enableNewBadge={true}
+					className="!p-2 !px-4"
+				/>
 			)}
 			<ActivityInput activity={profile?.activity || ''} />
 

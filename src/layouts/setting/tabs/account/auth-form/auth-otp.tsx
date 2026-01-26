@@ -42,13 +42,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفاً ایمیل خود را وارد کنید.',
-				}))
-
-			if (!isEmail(email))
-				return setError((prev) => ({
-					...prev,
-					email: 'لطفاً یک ایمیل معتبر وارد کنید.',
+					email: 'لطفاً ایمیل/شماره همراه خود را وارد کنید.',
 				}))
 
 			onSendOtp()
@@ -65,7 +59,11 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 	const onSendOtp = async () => {
 		try {
-			await requestOtp({ email })
+			if (isEmail(email)) {
+				await requestOtp({ email })
+			} else {
+				await requestOtp({ phone: email })
+			}
 			setStep('enter-otp')
 		} catch (err: any) {
 			const content = translateError(err)
@@ -80,7 +78,13 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 	const onVerifyOtp = async () => {
 		try {
 			setError({ email: null, otp: null, api: null })
-			const response = await verifyOtp({ email, code: otp })
+			let response: any
+			if (isEmail(email)) {
+				response = await verifyOtp({ email, code: otp })
+			} else {
+				response = await verifyOtp({ phone: email, code: otp })
+			}
+
 			if (response.isNewUser) {
 				callEvent('openWizardModal')
 				await sleep(500)
@@ -149,19 +153,20 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							htmlFor="email"
 							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-content"
 						>
-							ایمیل
+							ایمیل / شماره همراه
 						</label>
 
 						<TextInput
 							id="email"
-							type="email"
+							type="text"
 							name="email"
 							value={email}
 							onChange={setEmail}
-							placeholder="example@gmail.com"
+							placeholder="example@gmail.com / 091..."
 							disabled={isPending}
-							className="w-full !py-2.5 md:!py-3.5"
+							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
+							direction="ltr"
 						/>
 						<InputTextError message={error.email} />
 					</div>

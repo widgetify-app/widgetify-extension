@@ -20,7 +20,6 @@ export const RequireVerification = ({
 	const handleVerificationClick = () => {
 		callEvent('openProfile')
 	}
-
 	if (isLoadingUser) {
 		return (
 			<div className="flex items-center justify-center h-full">
@@ -32,7 +31,7 @@ export const RequireVerification = ({
 		)
 	}
 
-	if (user && !user.verified) {
+	if (!!user?.email && !user?.verified) {
 		if (mode === 'preview') {
 			return (
 				<div className="relative w-full h-full overflow-hidden">
@@ -44,19 +43,11 @@ export const RequireVerification = ({
 							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
 						}
 					>
-						<MdOutlineVerifiedUser size={20} />
+						<MdOutlineVerifiedUser size={20} className="text-success/80" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
 						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفاً حساب کاربری خود را تأیید کنید.
 						</p>
-						<Button
-							onClick={handleVerificationClick}
-							size="sm"
-							isPrimary={true}
-							className="btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out"
-						>
-							تأیید حساب
-						</Button>
 					</div>
 				</div>
 			)

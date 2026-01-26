@@ -66,7 +66,7 @@ const errorTranslations: Record<string, string> = {
 	CONNECTION_TIMEOUT: 'زمان اتصال به پایان رسید. لطفا مجدداً تلاش کنید',
 	CONNECTION_REFUSED: 'اتصال رد شد. لطفا بعداً تلاش کنید',
 
-	FIRST_VERIFY_YOUR_ACCOUNT: 'ابتدا حساب کاربری خود را تایید کنید',
+	FIRST_VERIFY_YOUR_ACCOUNT: 'اول باید حساب‌ کاربری رو تایید کنی!',
 	USERNAME_ALREADY_EXISTS: 'این نام کاربری قبلا وجود داشته است',
 	INVALID_FILE_TYPE: 'نوع فایل نامعتبر است',
 	NOT_ENOUGH_COINS: 'ویج‌کوین‌هات کافی نیست 😕',
@@ -85,6 +85,18 @@ const errorTranslations: Record<string, string> = {
 	INVALID_OCCUPATION_ID: 'شغل نامعتبری انتخاب کردی!',
 	ONE_OR_MORE_INVALID_INTEREST_IDS:
 		'یک یا چندتا از علاقه‌مندی‌هایی که انتخاب کردی نامعتبر هستن!',
+
+	TOO_MANY_ATTEMPTS: 'بیش از حد',
+	OTP_EXPIRED: 'کد منقضی شده!',
+	INVALID_PHONE_NUMBER_FORMAT: 'فرمت شماره وارد شده نامعتبره!',
+	CANNOT_CHANGE_PHONE_NUMBER: 'نمیتونی شماره همراه رو تغییر بدی!',
+
+	SAME_PHONE_NUMBER_ERROR: 'شماره همراه تکراریه!',
+	PHONE_NUMBER_ALREADY_EXISTS: 'این شماره همراه قبلا رزرو شده!',
+	INVALID_VERIFICATION_CODE: 'کد تایید نامعتبره!',
+	CANNOT_CHANGE_EMAIL: 'نمیتونی ایمیل رو تغییر بدی!',
+	SAME_EMAIL_ERROR: 'ایمیل تکراریه!',
+	FIRST_SET_EMAIL: 'هنوز ایمیل ست نکردی!',
 }
 
 const validationTranslations: Record<string, string> = {

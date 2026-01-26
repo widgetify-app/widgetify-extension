@@ -29,11 +29,13 @@ interface GoogleAuthCredentials {
 }
 
 interface OtpPayload {
-	email: string
+	email?: string
+	phone?: string
 }
 
 interface OtpVerifyPayload {
-	email: string
+	email?: string
+	phone?: string
 	code: string
 }
 

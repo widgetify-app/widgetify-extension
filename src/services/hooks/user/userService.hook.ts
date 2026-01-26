@@ -11,7 +11,8 @@ import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 
 interface FetchedProfile {
-	email: string
+	email?: string
+	phone?: string
 	avatar: string
 	username?: string
 	name: string
