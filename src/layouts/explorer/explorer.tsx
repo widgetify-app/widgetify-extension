@@ -1,36 +1,13 @@
 import { useGetContents } from '@/services/hooks/content/get-content.hook'
 import { useRef, useState, useEffect } from 'react'
 import Analytics from '@/analytics'
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useTheme } from '@/context/theme.context'
 import { useAppearanceSetting } from '@/context/appearance.context'
+import { RenderContentIframe } from './components/content-iframe'
+import { RenderContentSite } from './components/content-site'
+import type { CategoryItem } from './interfaces/category.interface'
+import { RenderContentBanner } from './components/content-banner'
 
-interface LinkItem {
-	name: string
-	url: string
-	type?: 'SITE' | 'REMOTE_IFRAME'
-	icon?: string
-	badge?: string
-	badgeColor?: string
-	badgeAnimate?: 'bounce' | 'pulse'
-	span?: {
-		col?: number | null
-		row?: number | null
-	}
-	height?: number
-}
-
-interface CategoryItem {
-	id: string
-	category: string
-	banner?: string
-	links: LinkItem[]
-	icon?: string
-	span?: {
-		col?: number | null
-		row?: number | null
-	}
-}
 export function ExplorerContent() {
 	const { theme } = useTheme()
 	const { fontFamily } = useAppearanceSetting()
@@ -80,10 +57,10 @@ export function ExplorerContent() {
 
 	return (
 		<div className="flex flex-row w-full h-screen overflow-hidden">
-			<aside className="flex-col items-center hidden w-20 gap-3 py-4 md:flex bg-white/2 backdrop-blur-sm border border-white/8 rounded-3xl lg:mt-4  h-fit max-h-[calc(100vh-160px)] sticky top-4">
+			<aside className="flex-col items-center hidden w-20 gap-3 py-4 md:flex bg-white/2 backdrop-blur-sm border border-white/8 rounded-3xl lg:mt-4  h-fit max-h-[calc(100vh-200px)] sticky top-4">
 				<div className="flex flex-col items-center w-full gap-2 px-2 py-2 overflow-x-hidden overflow-y-auto scrollbar-none">
 					{catalogData?.contents?.map((cat: CategoryItem) => (
-						<button
+						<div
 							key={cat.id}
 							onClick={() => scrollToCategory(cat.id)}
 							className={`relative group flex flex-col items-center justify-center w-14 min-h-14 max-h-14 rounded-3xl transition-all duration-500 cursor-pointer border ${
@@ -116,11 +93,7 @@ export function ExplorerContent() {
 									{cat.category.substring(0, 1)}
 								</div>
 							)}
-							<div className="absolute z-50 px-3 py-2 ml-4 text-xs font-semibold transition-opacity rounded-lg shadow-xl opacity-0 pointer-events-none left-full bg-neutral text-neutral-content group-hover:opacity-100 whitespace-nowrap">
-								{cat.category}
-								<div className="absolute -translate-y-1/2 border-4 border-transparent right-full top-1/2 border-r-neutral" />
-							</div>
-						</button>
+						</div>
 					))}
 				</div>
 			</aside>
@@ -151,7 +124,7 @@ export function ExplorerContent() {
 							ref={scrollContainerRef}
 							className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
 						>
-							<div className="grid max-w-5xl grid-cols-1 gap-4 pb-[50vh] mx-auto md:grid-cols-3">
+							<div className="grid max-w-5xl grid-cols-1 gap-2 pb-[50vh] mx-auto md:grid-cols-3">
 								{catalogData?.contents?.map(
 									(category: CategoryItem, index: number) => (
 										<div
@@ -168,7 +141,7 @@ export function ExplorerContent() {
 													? `span ${category.span.row} / span ${category.span.row}`
 													: undefined,
 											}}
-											className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-3xl transition-all duration-300 ${
+											className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
 												index === 0
 													? 'md:col-span-2'
 													: (
@@ -186,7 +159,7 @@ export function ExplorerContent() {
 											}`}
 										>
 											{category.banner && (
-												<div className="w-full overflow-hidden h-28">
+												<div className="w-full h-16 overflow-hidden">
 													<img
 														src={category.banner}
 														className="object-cover w-full h-full"
@@ -200,24 +173,26 @@ export function ExplorerContent() {
 													/>
 												</div>
 											)}
-											<div className="p-5">
-												<div className="flex items-center gap-4 mb-4">
-													<div className="flex items-center gap-2.5">
-														{category.icon ? (
-															<img
-																src={category.icon}
-																className="w-4 h-4 opacity-70"
-																alt=""
-															/>
-														) : (
-															<div className="w-1 h-3.5 rounded-full bg-primary" />
-														)}
-														<h3 className="text-xs font-black tracking-widest uppercase opacity-70">
-															{category.category}
-														</h3>
+											<div className="p-4">
+												{!category.hideName && (
+													<div className="flex items-center gap-4 mb-4">
+														<div className="flex items-center gap-2.5">
+															{category.icon ? (
+																<img
+																	src={category.icon}
+																	className="w-4 h-4 opacity-70"
+																	alt=""
+																/>
+															) : (
+																<div className="w-1 h-3.5 rounded-full bg-primary" />
+															)}
+															<h3 className="text-xs font-black tracking-widest uppercase opacity-70">
+																{category.category}
+															</h3>
+														</div>
+														<div className="flex-1 h-px bg-linear-to-r from-base-content/5 to-transparent" />
 													</div>
-													<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
-												</div>
+												)}
 
 												<HandleCatalogs
 													category={category}
@@ -238,10 +213,6 @@ export function ExplorerContent() {
 	)
 }
 
-function getUrl(url: string) {
-	return url.startsWith('http') ? url : `https://${url}`
-}
-
 interface Prop {
 	category: CategoryItem
 	theme: string
@@ -249,7 +220,7 @@ interface Prop {
 	colSpan?: number | null
 }
 function HandleCatalogs({ category, theme, fontFamily, colSpan }: Prop) {
-	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 5
+	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 7
 	return (
 		<div
 			className="grid grid-cols-3 gap-y-6 gap-x-2"
@@ -259,106 +230,18 @@ function HandleCatalogs({ category, theme, fontFamily, colSpan }: Prop) {
 		>
 			{category.links?.map((link) =>
 				link.type === 'REMOTE_IFRAME' ? (
-					<RenderIframeLinks
+					<RenderContentIframe
 						key={link.url}
 						link={link}
 						theme={theme}
 						fontFamily={fontFamily}
 					/>
-				) : (
-					<RenderSiteLinks key={link.url} link={link} />
-				)
+				) : link.type === 'SITE' ? (
+					<RenderContentSite key={link.url} link={link} />
+				) : link.type === 'BANNER' ? (
+					<RenderContentBanner key={link.url} link={link} />
+				) : null
 			)}
-		</div>
-	)
-}
-
-interface SiteProp {
-	link: LinkItem
-}
-const ANIMATES = {
-	bounce: 'bounce 1.5s infinite',
-	pulse: 'pulse 2s infinite',
-	spin: 'spin 2s linear infinite',
-}
-function RenderSiteLinks({ link }: SiteProp) {
-	const animate = link.badgeAnimate || null
-	const badge = link.badge?.trim() || null
-	return (
-		<a
-			href={getUrl(link.url)}
-			target="_blank"
-			rel="noopener noreferrer"
-			className="flex flex-col items-center gap-1 group/item active:scale-95"
-			style={{
-				gridColumn: link.span?.col
-					? `span ${link.span.col} / span ${link.span.col}`
-					: undefined,
-				gridRow: link.span?.row
-					? `span ${link.span.row} / span ${link.span.row}`
-					: undefined,
-			}}
-		>
-			<div className="relative flex items-center justify-center w-12 h-12 transition-all duration-500 bg-base-200/40 rounded-2xl group-hover/item:bg-primary/20 group-hover/item:shadow-lg group-hover/item:shadow-primary/20 group-hover/item:-translate-y-1.5 border border-transparent group-hover/item:border-primary/20">
-				{badge && (
-					<span
-						className="absolute -top-3 -right-1 z-20 px-1.5 py-0.5 rounded-2xl text-[8px] font-semibold border border-white/10 shadow-sm"
-						style={{
-							backgroundColor: link.badgeColor || 'var(--p)',
-							color: '#fff',
-							animation: animate ? ANIMATES[animate] : 'none',
-						}}
-					>
-						{badge}
-					</span>
-				)}
-				<img
-					src={link.icon || getFaviconFromUrl(link.url)}
-					className="object-contain w-6 h-6 transition-all duration-500 rounded group-hover/item:scale-110 group-hover/item:brightness-110"
-					alt={link.name}
-				/>
-			</div>
-			<span className="text-[10px] font-semibold tracking-tighter text-center truncate w-full opacity-60 group-hover/item:opacity-100 group-hover/item:text-primary transition-all duration-300">
-				{link.name}
-			</span>
-		</a>
-	)
-}
-
-interface IframeProp {
-	link: LinkItem
-	theme: string
-	fontFamily: string
-}
-function RenderIframeLinks({ link, theme, fontFamily }: IframeProp) {
-	const urlObj = new URL(link.url)
-	urlObj.searchParams.set('theme', encodeURIComponent(theme))
-	urlObj.searchParams.set('font', encodeURIComponent(fontFamily))
-	urlObj.searchParams.set('referrer', 'extension')
-	const url = urlObj.toString()
-
-	return (
-		<div
-			className="w-full"
-			style={{
-				gridColumn: link.span?.col
-					? `span ${link.span.col} / span ${link.span.col}`
-					: 'span 3 / span 3',
-				gridRow: link.span?.row
-					? `span ${link.span.row} / span ${link.span.row}`
-					: undefined,
-			}}
-		>
-			<iframe
-				src={url}
-				height={link.height}
-				style={{
-					border: 'none',
-					borderRadius: '1.5rem',
-					width: '100%',
-				}}
-				title={link.name}
-			/>
 		</div>
 	)
 }
