@@ -10,7 +10,7 @@ export function EmptyBookmarkSlot({
 	canAdd: boolean
 }) {
 	const getBookmarkStyle = () => {
-		return 'bg-widget hover:!bg-base-300 text-content backdrop-blur-sm border-content bg-glass'
+		return 'bg-content hover:!bg-base-300 text-content backdrop-blur-sm border-content bg-glass'
 	}
 
 	const getEmptySlotStyle = () => {

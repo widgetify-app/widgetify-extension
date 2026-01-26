@@ -21,7 +21,7 @@ export function BookmarkItem({
 	onMenuClick,
 }: BookmarkItemProps) {
 	const getBookmarkStyle = () => {
-		return 'bg-widget hover:bg-base-300 text-content backdrop-blur-sm bg-glass'
+		return 'bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass'
 	}
 
 	const customStyles = bookmark.customBackground

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { CiSearch } from 'react-icons/ci'
 import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
@@ -72,11 +71,11 @@ export function SearchLayout() {
 
 	return (
 		<div className="relative z-50 flex flex-col items-center justify-start h-24">
-			<div ref={searchRef} className="w-full bg-widget widget-wrapper rounded-2xl">
+			<div ref={searchRef} className="w-full bg-content widget-wrapper rounded-2xl">
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center  py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-widget group  rounded-2xl search-box'
+							'relative flex items-center  py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-content group  rounded-2xl search-box'
 						}
 					>
 						<button
