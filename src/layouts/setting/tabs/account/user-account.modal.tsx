@@ -23,7 +23,6 @@ const tabs: TabItem[] = [
 		value: 'tasks',
 		icon: <FiGift size={20} />,
 		element: <RewardsTab />,
-		isNew: true,
 	},
 	{
 		label: 'همه دوستان',

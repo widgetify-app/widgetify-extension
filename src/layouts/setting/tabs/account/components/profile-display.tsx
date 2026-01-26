@@ -130,6 +130,7 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 						</Button>
 					}
 					isLtr
+					showBadge
 				/>
 
 				<DisplayRow
@@ -195,16 +196,21 @@ const DisplayRow = ({
 	label,
 	value,
 	isLtr = false,
+	showBadge,
 }: {
 	icon: React.ReactNode
 	label: string
 	value?: React.ReactNode
 	isLtr?: boolean
+	showBadge?: boolean
 }) => (
 	<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-base-300/30 hover:bg-base-200/20">
 		<div className="flex items-center gap-3">
-			<div className="flex items-center justify-center w-7 h-7 rounded-xl bg-base-200/50">
+			<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-base-200/50">
 				{icon}
+				{showBadge && (
+					<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-error animate-pulse"></span>
+				)}
 			</div>
 			<span className="text-[10px] font-medium opacity-60">{label}</span>
 		</div>
