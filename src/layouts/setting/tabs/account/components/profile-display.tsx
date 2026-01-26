@@ -7,8 +7,10 @@ import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { UserCoin } from './user-coin'
-import React from 'react'
+import type React from 'react'
 import { Chip } from '@/components/chip.component'
+import { AddPhoneModal } from './add-phone.modal'
+import { useAuth } from '@/context/auth.context'
 
 interface ProfileDisplayProps {
 	profile?: UserProfile
@@ -35,7 +37,14 @@ const formatJalaliDate = (dateString: string | null | undefined): string => {
 }
 
 export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) => {
+	const { refetchUser } = useAuth()
+	const [showModal, setShowModal] = useState(false)
 	const genderInfo = getGenderInfo(profile?.gender)
+
+	const onCloseModal = () => {
+		setShowModal(false)
+		refetchUser()
+	}
 
 	return (
 		<div className="flex flex-col space-y-4">
@@ -99,8 +108,18 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 
 				<DisplayRow
 					icon={<FiPhone className="text-secondary" />}
-					label="شماره همراه"
-					value={profile?.phone}
+					label="شماره موبایل"
+					value={
+						profile?.phone || (
+							<Button
+								size="xs"
+								className="rounded-2xl"
+								onClick={() => setShowModal(true)}
+							>
+								افزودن شماره موبایل
+							</Button>
+						)
+					}
 					isLtr
 				/>
 
@@ -156,6 +175,8 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 					<OfflineIndicator mode="notification" />
 				</div>
 			)}
+
+			<AddPhoneModal isOpen={showModal} onClose={() => onCloseModal()} />
 		</div>
 	)
 }

@@ -145,3 +145,29 @@ export function useSetCity() {
 		},
 	})
 }
+
+export function useChangePhoneRequest() {
+	return useMutation({
+		mutationFn: async (phone: string) => {
+			const client = await getMainClient()
+			const response = await client.put<UpdateActivityResponse>(
+				'/users/@me/change-phone',
+				{ phone }
+			)
+			return response.data
+		},
+	})
+}
+
+export function useChangePhoneVerify() {
+	return useMutation({
+		mutationFn: async (body: { phone: string; code: string }) => {
+			const client = await getMainClient()
+			const response = await client.put<UpdateActivityResponse>(
+				'/users/@me/change-phone/verify',
+				body
+			)
+			return response.data
+		},
+	})
+}
