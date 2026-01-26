@@ -43,7 +43,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفاً ایمیل/شماره همراه خود را وارد کنید.',
+					email: 'لطفاً ایمیل/شماره موبایل خود را وارد کنید.',
 				}))
 
 			onSendOtp()

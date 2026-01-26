@@ -89,10 +89,10 @@ const errorTranslations: Record<string, string> = {
 	TOO_MANY_ATTEMPTS: 'بیش از حد',
 	OTP_EXPIRED: 'کد منقضی شده!',
 	INVALID_PHONE_NUMBER_FORMAT: 'فرمت شماره وارد شده نامعتبره!',
-	CANNOT_CHANGE_PHONE_NUMBER: 'نمیتونی شماره همراه رو تغییر بدی!',
+	CANNOT_CHANGE_PHONE_NUMBER: 'نمیتونی شماره موبایل رو تغییر بدی!',
 
-	SAME_PHONE_NUMBER_ERROR: 'شماره همراه تکراریه!',
-	PHONE_NUMBER_ALREADY_EXISTS: 'این شماره همراه قبلا رزرو شده!',
+	SAME_PHONE_NUMBER_ERROR: 'شماره موبایل تکراریه!',
+	PHONE_NUMBER_ALREADY_EXISTS: 'این شماره موبایل قبلا رزرو شده!',
 	INVALID_VERIFICATION_CODE: 'کد تایید نامعتبره!',
 	CANNOT_CHANGE_EMAIL: 'نمیتونی ایمیل رو تغییر بدی!',
 	SAME_EMAIL_ERROR: 'ایمیل تکراریه!',

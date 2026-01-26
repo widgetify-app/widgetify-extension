@@ -173,7 +173,7 @@ export const ProfileEditForm = ({
 
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<SectionPanel
-						title="کی هستی؟"
+						title="پروفایل"
 						icon={<LuUser size={18} className="text-primary" />}
 						size="xs"
 					>
@@ -217,10 +217,10 @@ export const ProfileEditForm = ({
 											onClick={() =>
 												setFormData((p) => ({ ...p, gender: g }))
 											}
-											className={`flex-1 py-2 px-1 flex flex-col items-center gap-1 text-[10px] font-bold rounded-xl transition-all duration-300 cursor-pointer ${
+											className={`flex-1 py-2 px-1 flex flex-col  items-center gap-1 text-[10px] font-bold rounded-xl transition-all duration-300 cursor-pointer ${
 												isActive
 													? 'text-primary shadow-sm ring-1 ring-primary/20 scale-[1.02]'
-													: 'text-muted hover:text-content hover:bg-content/5'
+													: 'text-base-content/80 hover:text-primary/80 hover:ring-1 hover:ring-primary/10'
 											}`}
 										>
 											<span
