@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FiAtSign, FiKey, FiArrowRight, FiRefreshCw } from 'react-icons/fi'
+import { FiKey, FiArrowRight, FiRefreshCw } from 'react-icons/fi'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/button/button'
 import { useRequestOtp, useVerifyOtp } from '@/services/hooks/auth/authService.hook'
@@ -10,6 +10,7 @@ import InputTextError from './components/input-text-error'
 import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
+import { MdDoorSliding } from 'react-icons/md'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -130,16 +131,16 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				<header className="flex items-center gap-2.5 md:gap-3">
 					<div
 						aria-hidden="true"
-						className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
+						className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:rounded-xl bg-primary/10"
 					>
-						<FiAtSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+						<MdDoorSliding className="w-5 h-5 text-primary" />
 					</div>
 					<div>
 						<h3 className="text-base font-semibold md:text-lg text-content">
-							ورود یا ثبت‌نام با ایمیل
+							ورود یا ثبت نام
 						</h3>
 						<p className="text-xs md:text-sm text-muted mt-0.5">
-							کد تایید به ایمیل شما ارسال می‌شود.
+							ایمیل یا شماره موبایلتان را وارد کنید
 						</p>
 					</div>
 				</header>
@@ -153,7 +154,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							htmlFor="email"
 							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-content"
 						>
-							ایمیل / شماره همراه
+							شماره موبایل یا ایمیل
 						</label>
 
 						<TextInput
@@ -162,7 +163,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							name="email"
 							value={email}
 							onChange={setEmail}
-							placeholder="example@gmail.com / 091..."
+							placeholder="0939... یا example@gmail.com"
 							disabled={isPending}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
@@ -179,7 +180,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
-							{isPending ? 'درحال ارسال...' : 'تایید ایمیل'}
+							{isPending ? 'درحال ارسال...' : 'ادامه'}
 						</span>
 					</Button>
 				</form>
