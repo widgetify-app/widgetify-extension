@@ -11,6 +11,8 @@ import type React from 'react'
 import { Chip } from '@/components/chip.component'
 import { AddPhoneModal } from './add-phone.modal'
 import { useAuth } from '@/context/auth.context'
+import { IoMdAddCircle } from 'react-icons/io'
+import Analytics from '@/analytics'
 
 interface ProfileDisplayProps {
 	profile?: UserProfile
@@ -44,6 +46,12 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 	const onCloseModal = () => {
 		setShowModal(false)
 		refetchUser()
+		Analytics.event('close_add_phone_modal')
+	}
+
+	const clickToShow = () => {
+		setShowModal(true)
+		Analytics.event('open_add_phone_modal')
 	}
 
 	return (
@@ -110,15 +118,16 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 					icon={<FiPhone className="text-secondary" />}
 					label="شماره موبایل"
 					value={
-						profile?.phone || (
-							<Button
-								size="xs"
-								className="rounded-2xl"
-								onClick={() => setShowModal(true)}
-							>
+						<Button
+							size="xs"
+							className="rounded-2xl"
+							onClick={() => clickToShow()}
+						>
+							<div className="flex items-center gap-1">
+								<IoMdAddCircle />
 								افزودن شماره موبایل
-							</Button>
-						)
+							</div>
+						</Button>
 					}
 					isLtr
 				/>

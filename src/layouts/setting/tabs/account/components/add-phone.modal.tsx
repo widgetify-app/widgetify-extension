@@ -1,7 +1,6 @@
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { isEmpty, isLessThan } from '@/utils/validators'
-import { MdDoorSliding, MdPhone } from 'react-icons/md'
 import InputTextError from '../auth-form/components/input-text-error'
 import { Button } from '@/components/button/button'
 import OtpInput from '../auth-form/components/otp-input'
