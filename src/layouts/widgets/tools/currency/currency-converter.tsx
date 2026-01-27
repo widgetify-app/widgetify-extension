@@ -51,7 +51,7 @@ export const CurrencyConverter: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 select-none">
-			<div className="bg-base-200/40 border border-base-300/40 rounded-[2.8rem] p-5 relative flex flex-col gap-6">
+			<div className="relative flex flex-col gap-6 p-5 border bg-base-200/40 border-base-300/40 rounded-2xl">
 				<div className="flex items-center justify-between gap-3">
 					<TextInput
 						type="number"
@@ -97,7 +97,7 @@ export const CurrencyConverter: React.FC = () => {
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-2 px-2 mt-1">
+			<div className="flex flex-col gap-2 px-1 mt-1">
 				<div className="flex justify-between items-center text-[11px] font-bold opacity-50">
 					<span>ارزش به تومان:</span>
 					<span className="text-[12px] font-black text-content">
@@ -108,7 +108,7 @@ export const CurrencyConverter: React.FC = () => {
 					</span>
 				</div>
 
-				<div className="flex items-center justify-between p-3.5 bg-primary/5 rounded-[1.5rem] border border-primary/10">
+				<div className="flex items-center justify-between p-3.5 bg-content rounded-2xl border border-content">
 					<div className="flex gap-5">
 						<div className="flex flex-col gap-0.5">
 							<span className="text-[8px] font-black opacity-30 uppercase">

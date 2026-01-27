@@ -18,17 +18,30 @@ export interface FetchedReligiousTimeData {
 	nimeshab: string
 }
 
-export const useReligiousTime = (day: number, month: number, enabled: boolean) => {
+interface Prop {
+	day: number
+	month: number
+	lat?: number
+	lon?: number
+}
+export const useReligiousTime = (op: Prop, enabled: boolean) => {
+	const key = ['religiousTime', op.day, op.month]
+	if (op.lon && op.lat) {
+		key.push(`${op.lat}-${op.lon}`)
+	}
+
 	return useQuery({
-		queryKey: ['religiousTime', day, month],
+		queryKey: key,
 		queryFn: async () => {
 			const client = await getMainClient()
 			const { data: result } = await client.get<FetchedReligiousTimeData>(
 				'/date/owghat',
 				{
 					params: {
-						day,
-						month,
+						day: op.day,
+						month: op.month,
+						lat: op.lat || undefined,
+						lan: op.lon || undefined,
 					},
 				}
 			)

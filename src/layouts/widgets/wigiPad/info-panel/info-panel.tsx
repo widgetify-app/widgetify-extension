@@ -11,11 +11,6 @@ export function InfoPanel() {
 	const sections = [
 		{ id: 'all', label: 'ویجی تب', icon: '📋' },
 		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
-		{
-			id: 'google-meetings',
-			label: 'گوگل کلندر',
-			icon: '📅',
-		},
 	]
 
 	const handleSectionClick = (
@@ -69,7 +64,7 @@ export function InfoPanel() {
 		<div className="flex flex-col h-full overflow-hidden">
 			<div
 				ref={tabContainerRef}
-				className="py-1 flex lg:justify-between overflow-x-auto scrollbar-none gap-x-0.5"
+				className="py-1 flex lg:justify-start overflow-x-auto scrollbar-none gap-x-0.5"
 			>
 				{sections.map((section) => (
 					<button

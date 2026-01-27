@@ -49,9 +49,7 @@ export function NotificationCardItem({
 					</h4>
 				</div>
 				<p className="mt-0.5 text-xs text-muted font-bold">{subTitle}</p>
-				<p className="mt-1 text-xs font-light line-clamp-2 opacity-80">
-					{description}
-				</p>
+				<p className="mt-1 text-xs font-light opacity-80">{description}</p>
 			</div>
 		</Wrapper>
 	)
