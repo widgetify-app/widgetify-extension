@@ -15,7 +15,7 @@ import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { MdDoorSliding } from 'react-icons/md'
-import { TiInfoOutline, TiWarningOutline } from 'react-icons/ti'
+import { TiWarningOutline } from 'react-icons/ti'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -182,7 +182,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							autoComplete="on"
 							direction="ltr"
 						/>
-						<InputTextError message={error.email} />
+						<InputTextError message={error.api} />
 					</div>
 					<Button
 						type="submit"
