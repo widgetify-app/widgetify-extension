@@ -27,45 +27,14 @@ const VERSION_NAME = ConfigKey.VERSION_NAME
 
 const releaseNotes: ReleaseNote[] = [
 	{
-		title: 'ویرایش وظایف',
-		type: 'feature',
-		description:
-			'بالاخره اضافه شد! دیگه لازم نیست برای یه تغییر کوچیک، کل تسک رو پاک کنی و از اول بنویسی.',
-	},
-	{
-		title: 'برنامه‌ریزی دقیق‌تر',
-		type: 'feature',
-		description:
-			'حالا می‌تونی برای کارهات تاریخ و میزان اهمیت (اولویت) تعیین کنی تا هیچ چیزی یادت نره.',
-	},
-	{
-		title: 'انتخاب راحت‌تر شهر',
 		type: 'improvement',
-		description:
-			'بخش آب‌وهوا رو جوری ردیف کردیم که خیلی سریع‌تر و راحت‌تر بتونی شهرت رو پیدا کنی.',
+		title: 'بهبود ظاهری',
+		description: 'ظاهر بعضی از قسمت هارو بهتر کردیم',
 	},
 	{
-		title: 'خوشگل‌سازی منو',
-		type: 'improvement',
-		description:
-			'منوی دسترسی پایین رو کمی دست‌کاری کردیم تا هم خوشگل‌تر بشه و هم کار کردن باهاش حال بده.',
-	},
-	{
-		title: 'آب‌وهوای خلوت‌تر',
-		type: 'improvement',
-		description:
-			'ویجت آب‌وهوا رو ساده کردیم تا فقط چیزایی که لازمه رو در یک نگاه ببینی.',
-	},
-	{
-		title: 'بهبود فیلترهای صوتی',
-		type: 'improvement',
-		description:
-			'بخش فیلترها و صداهای لیست وظایف رو بهینه کردیم تا حس بهتری موقع کار داشته باشی.',
-	},
-	{
-		title: 'خداحافظی با فضای خالی',
 		type: 'bugfix',
-		description: 'اون فضای خالی و اضافه پایین پنجره‌ها که رو مخ بود رو کلاً حذف کردیم.',
+		title: 'رفع چندین مشکل جزئی',
+		description: 'با سپاس از شما، مشکلات گزارش شده رو برطرف کردیم',
 	},
 ]
 
@@ -126,12 +95,12 @@ export const UpdateReleaseNotesModal = ({
 			<div className="flex flex-col max-h-[80vh]">
 				<div className="flex flex-col gap-1 p-4 border-b border-base-300/20 bg-base-200/20">
 					<div className="flex items-center justify-between">
-						<div className="flex flex-col italic">
+						<div className="flex flex-col">
 							<h2 className="text-3xl font-black text-content">
 								{VERSION_NAME}
 							</h2>
-							<p className="mt-1 text-xs font-medium text-muted opacity-60">
-								تغییرات جدید برای طولانی‌ترین شب سال
+							<p className="mt-1 text-xs font-medium text-muted">
+								انسان به امید زنـدست! 🤞💙
 							</p>
 						</div>
 						<div className="p-2 border rounded-2xl bg-base-200/50 text-primary border-base-300/20">
@@ -145,7 +114,7 @@ export const UpdateReleaseNotesModal = ({
 						{releaseNotes.map((note, index) => (
 							<div
 								key={index}
-								className="flex flex-col gap-2 p-4 italic border bg-base-200/10 border-base-300/20 rounded-[2rem] animate-in fade-in slide-in-from-bottom-3"
+								className="flex flex-col gap-2 p-4 border bg-base-200/10 border-base-300/20 rounded-2xl animate-in fade-in slide-in-from-bottom-3"
 								style={{ animationDelay: `${index * 50}ms` }}
 							>
 								<div className="flex items-center justify-between">
