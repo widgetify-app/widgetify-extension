@@ -7,6 +7,7 @@ import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
 import { NoteItem } from './components/note-item'
 import { TabNavigation } from '@/components/tab-navigation'
+import { HiDocumentText, HiOutlineCheckCircle } from 'react-icons/hi2'
 
 function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
@@ -69,23 +70,29 @@ export function NotesLayout({ onChangeTab }: Prop) {
 	return (
 		<WidgetContainer className="overflow-hidden">
 			<NotesProvider>
-				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-between">
-						<TabNavigation
-							activeTab="notes"
-							onTabClick={onChangeTab}
-							tabs={[
-								{ id: 'todos', label: 'وظایف' },
-								{ id: 'notes', label: 'یادداشت' },
-							]}
-							size="small"
-							className="w-32"
-						/>
+				<div className="flex items-center justify-between">
+					<TabNavigation
+						activeTab="notes"
+						onTabClick={onChangeTab}
+						tabs={[
+							{
+								id: 'todos',
+								label: 'وظایف',
+								icon: <HiOutlineCheckCircle size={14} />,
+							},
+							{
+								id: 'notes',
+								label: 'یادداشت',
+								icon: <HiDocumentText size={14} />,
+							},
+						]}
+						size="small"
+						className="w-fit"
+					/>
 
-						<NoteNavigation />
-					</div>
-					<NotesContent />
+					<NoteNavigation />
 				</div>
+				<NotesContent />
 			</NotesProvider>
 		</WidgetContainer>
 	)

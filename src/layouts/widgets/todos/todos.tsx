@@ -31,6 +31,7 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
 import { TabNavigation } from '@/components/tab-navigation'
+import { HiDocumentText, HiOutlineCheckCircle } from 'react-icons/hi2'
 
 const viewModeOptions = [
 	{ value: TodoViewType.Day, label: 'لیست امروز' },
@@ -141,11 +142,19 @@ export function TodosLayout({ onChangeTab }: Prop) {
 							activeTab="todos"
 							onTabClick={onChangeTab}
 							tabs={[
-								{ id: 'todos', label: 'وظایف' },
-								{ id: 'notes', label: 'یادداشت' },
+								{
+									id: 'todos',
+									label: 'وظایف',
+									icon: <HiOutlineCheckCircle size={14} />,
+								},
+								{
+									id: 'notes',
+									label: 'یادداشت',
+									icon: <HiDocumentText size={14} />,
+								},
 							]}
 							size="small"
-							className="w-32"
+							className="w-fit"
 						/>
 
 						<div className="flex gap-1.5 items-center">

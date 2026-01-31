@@ -40,7 +40,7 @@ export const TabNavigation = <T,>({
 						type="button"
 						onClick={() => onTabClick(tab.id)}
 						className={`
-                            flex-1 flex items-center justify-center gap-2 
+                            flex-1 flex items-center justify-center gap-1 
                             cursor-pointer rounded-xl 
                             transition-all duration-200 
                             active:scale-95 z-10 

@@ -1,6 +1,6 @@
 import type React from 'react'
 import { useState } from 'react'
-import { FiChevronDown, FiTrash2, FiEdit3 } from 'react-icons/fi'
+import { FiChevronDown, FiTrash2, FiEdit3, FiClock, FiTag } from 'react-icons/fi'
 import { MdDragIndicator } from 'react-icons/md'
 import CustomCheckbox from '@/components/checkbox'
 import { useTodoStore, type TodoPriority } from '@/context/todo.context'
@@ -28,7 +28,7 @@ interface Prop {
 const translatedPriority = {
 	low: 'کم',
 	medium: 'متوسط',
-	high: 'زیاد',
+	high: 'مهم',
 }
 
 export function TodoItem({
@@ -47,47 +47,28 @@ export function TodoItem({
 	const [isSyncing, setIsSyncing] = useState(todo.id.startsWith('temp-') || false)
 
 	const isTemp = todo.id.startsWith('temp-')
-	const handleDelete = (e: React.MouseEvent) => {
-		if (isTemp) {
-			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را حذف کرد.',
-				'error'
-			)
-		}
 
+	const handleDelete = (e: React.MouseEvent) => {
+		if (isTemp) return showToast('این وظیفه هنوز همگام‌سازی نشده است.', 'error')
 		e.stopPropagation()
 		if (isPending) return
-		if (!isAuthenticated) return showToast('برای حذف وظیفه باید وارد شوید', 'error')
-
+		if (!isAuthenticated) return showToast('برای حذف باید وارد شوید', 'error')
 		setShowConfirmation(true)
 	}
 
 	const handleEdit = (e: React.MouseEvent) => {
-		if (isTemp) {
-			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را ویرایش کرد.',
-				'error'
-			)
-		}
-
+		if (isTemp) return showToast('این وظیفه هنوز همگام‌سازی نشده است.', 'error')
 		e.stopPropagation()
-		if (!isAuthenticated)
-			return showToast('برای ویرایش وظیفه باید وارد شوید', 'error')
+		if (!isAuthenticated) return showToast('برای ویرایش باید وارد شوید', 'error')
 		setShowEditModal(true)
 	}
 
 	const onConfirmDelete = async () => {
 		if (isPending || isSyncing) return
-
 		const onlineId = todo.onlineId || todo.id
-		if (validate(onlineId)) {
-			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را حذف کرد.',
-				'error'
-			)
-		}
+		if (validate(onlineId)) return showToast('خطا در شناسه وظیفه', 'error')
 
-		const [err, _] = await safeAwait(mutateAsync())
+		const [err] = await safeAwait(mutateAsync())
 		setShowConfirmation(false)
 		if (err) {
 			showToast(translateError(err) as any, 'error')
@@ -110,6 +91,7 @@ export function TodoItem({
 		if (!isAuthenticated) {
 			return showToast('برای تغییر وضعیت وظیفه باید وارد شوید', 'error')
 		}
+
 		setIsSyncing(true)
 		try {
 			await toggleTodo(todo.id)
@@ -118,121 +100,117 @@ export function TodoItem({
 		}
 	}
 
-	const handleExpand = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setExpanded(!expanded)
-	}
-
 	return (
 		<div
-			className={`px-1 py-[1px] bg-base-300/90 hover:bg-base-300 border border-base-300/60 active:scale-98  group overflow-hidden rounded-lg transition delay-150 duration-300 ease-in-out ${blurMode ? 'blur-item' : ''} ${isDragging ? 'opacity-50' : ''}`}
+			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 bg-glass transition-all ${
+				isDragging ? 'scale-[1.02] opacity-50 shadow-lg' : ''
+			} ${blurMode ? 'blur-[2px] opacity-40' : ''}`}
 		>
-			<div className={'flex items-center gap-2 pr-0.5 py-1'}>
-				<div className="flex flex-row items-center gap-1">
+			<div className="flex items-center gap-1.5 px-2 py-1">
+				<div className="flex items-center gap-1">
 					<div
 						{...dragHandle}
-						className="flex-shrink-0 cursor-grab active:cursor-grabbing p-0.5 rounded opacity-100 transition-opacity duration-200"
-						onClick={(e) => e.stopPropagation()}
+						className="cursor-grab p-0.5 text-muted hover:text-base-content active:cursor-grabbing"
 					>
-						<MdDragIndicator size={12} className="text-muted" />
+						<MdDragIndicator size={14} />
 					</div>
 
-					<div className="flex-shrink-0">
-						<CustomCheckbox
-							checked={todo.completed}
-							disabled={isUpdating || isSyncing}
-							className={`!w-[1.125rem] !h-[1.125rem] !border ${getBorderStyle(todo.priority)}`}
-							unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle(
-								todo.priority
-							)}
-							checkedCheckBoxClassName={getCheckedCheckboxStyle(
-								todo.priority
-							)}
-							onClick={(e) => onToggleClick(e)}
-						/>
-					</div>
+					<CustomCheckbox
+						checked={todo.completed}
+						disabled={isUpdating || isSyncing}
+						className={`!h-4 !w-4 !border transition-transform active:scale-90 ${getBorderStyle(todo.priority)}`}
+						unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle(
+							todo.priority
+						)}
+						checkedCheckBoxClassName={getCheckedCheckboxStyle(todo.priority)}
+						onClick={onToggleClick}
+					/>
 				</div>
 
 				<div
-					className={`flex-1 overflow-hidden text-ellipsis whitespace-nowrap  text-xs ${todo.completed ? 'line-through text-content opacity-60' : 'text-content'}`}
+					className="flex-1 py-1 overflow-hidden cursor-pointer"
+					onClick={() => setExpanded(!expanded)}
 				>
-					{todo.text}
+					<p
+						className={`truncate text-[12.5px] font-medium transition-all ${
+							todo.completed
+								? 'text-base-content/40 line-through font-normal'
+								: 'text-base-content/90'
+						}`}
+					>
+						{todo.text}
+					</p>
 				</div>
 
-				{/* Actions */}
-				<div className="flex items-center gap-x-1">
+				<div className="flex items-center gap-0.5">
 					{isSyncing ? (
-						<IconLoading className="text-base-content/50 mx-0!" />
+						<IconLoading className="scale-[0.6] opacity-40 mx-1" />
 					) : (
-						<>
+						<div className="flex items-center transition-opacity duration-150 opacity-0 group-hover:opacity-100">
 							<button
 								onClick={handleEdit}
-								className={
-									'p-1 rounded-full cursor-pointer hover:bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
-								}
+								className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"
 							>
 								<FiEdit3 size={13} />
 							</button>
 							<button
 								onClick={handleDelete}
-								className={
-									'p-1 rounded-full cursor-pointer hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 delay-100 group-hover:select-none'
-								}
+								className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error"
 							>
 								<FiTrash2 size={13} />
 							</button>
-						</>
+						</div>
 					)}
-
 					<button
-						onClick={handleExpand}
-						className={
-							'p-1 rounded-full cursor-pointer hover:bg-gray-500/10 text-gray-400'
-						}
+						onClick={() => setExpanded(!expanded)}
+						className={`rounded p-0.5 text-muted/50 cursor-pointer transition-transform duration-300 ${expanded ? 'rotate-180' : ''} hover:scale-110`}
 					>
-						<FiChevronDown
-							size={14}
-							className={`${expanded ? 'rotate-0' : 'rotate-180'} transition-transform duration-300`}
-						/>
+						<FiChevronDown size={15} />
 					</button>
 				</div>
 			</div>
 
 			{expanded && (
-				<div className={'px-2 pb-1.5 text-[10px] text-content transition-all'}>
-					<p className="mt-0.5 mb-1 break-words">{todo.text}</p>
+				<div className="border-t border-base-content/5 bg-base-content/1 px-2.5 py-2">
+					<p className="mb-2 text-[11px] leading-snug text-base-content/70 whitespace-pre-wrap">
+						{todo.text}
+					</p>
 
-					<div className="flex items-center gap-1.5 mt-0.5 mb-1">
+					<div className="flex items-center gap-2 text-[10px]">
 						{todo.category && (
-							<span
-								className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor(todo.priority)}`}
-							>
+							<span className="flex items-center gap-1 rounded bg-base-content/5 px-1.5 py-0.5 text-muted">
+								<FiTag size={9} />
 								{todo.category}
 							</span>
 						)}
+
 						<span
-							className={`text-[10px] px-1 py-0.25 rounded-full ${getPriorityColor(todo.priority)}`}
+							className={`rounded-lg px-1.5 py-0.5 font-bold ${getPriorityColor(todo.priority)}`}
 						>
 							{translatedPriority[todo.priority as TodoPriority]}
 						</span>
-						<span className="flex-1 text-[10px] text-base-content/50">
-							{parseTodoDate(todo.date)
-								.locale('fa')
-								.format('ddd، jD jMMMM')}
+
+						<span className="flex items-center gap-1 mr-auto text-muted/60">
+							<FiClock size={9} />
+							{parseTodoDate(todo.date).locale('fa').format('jD jMMMM')}
 						</span>
 					</div>
 
-					{/* Notes */}
-					{todo.notes && <NoteLinkRenderer note={todo.notes} />}
+					{todo.notes && (
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-base-content/5 bg-base-100/30 p-1.5 text-[11px] font-black">
+							<NoteLinkRenderer note={todo.notes} />
+						</div>
+					)}
 				</div>
 			)}
+
 			{showConfirmation && (
 				<ConfirmationModal
 					isOpen={showConfirmation}
-					onClose={() => (isPending ? null : setShowConfirmation(false))}
-					onConfirm={() => onConfirmDelete()}
+					onClose={() => setShowConfirmation(false)}
+					onConfirm={onConfirmDelete}
 					confirmText={isPending ? <IconLoading /> : 'حذف'}
-					message="آیا از حذف این وظیفه مطمئن هستید؟"
+					message="آیا از حذف مطمئن هستید؟"
 					variant="danger"
 				/>
 			)}
@@ -246,10 +224,8 @@ export function TodoItem({
 		</div>
 	)
 }
-interface NoteIsLinkProps {
-	note: string
-}
-function NoteLinkRenderer({ note }: NoteIsLinkProps): React.JSX.Element | null {
+
+function NoteLinkRenderer({ note }: { note: string }) {
 	const urlRegex = /(https?:\/\/[^\s]+)/gi
 	const urls = note.match(urlRegex)
 	if (urls) {
@@ -258,14 +234,13 @@ function NoteLinkRenderer({ note }: NoteIsLinkProps): React.JSX.Element | null {
 				href={urls[0]}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="text-blue-500 underline break-all"
+				className="block text-blue-500 underline break-all"
 			>
 				{urls[0]}
 			</a>
 		)
 	}
-
-	return <p className="mt-0.5 font-light">{note}</p>
+	return <p className="font-light opacity-70">{note}</p>
 }
 
 const getBorderStyle = (priority: string) => {
@@ -294,18 +269,7 @@ const getCheckedCheckboxStyle = (priority: string) => {
 	}
 }
 
-const getUnCheckedCheckboxStyle = (priority: string) => {
-	switch (priority) {
-		case 'high':
-			return '!border-error'
-		case 'medium':
-			return '!border-warning'
-		case 'low':
-			return '!border-success'
-		default:
-			return '!border-primary'
-	}
-}
+const getUnCheckedCheckboxStyle = (priority: string) => getBorderStyle(priority)
 
 const getPriorityColor = (priority: string) => {
 	switch (priority) {
@@ -316,6 +280,6 @@ const getPriorityColor = (priority: string) => {
 		case 'low':
 			return 'bg-success/10 text-success'
 		default:
-			return 'bg-primary text-primary-content'
+			return 'bg-primary/10 text-primary'
 	}
 }

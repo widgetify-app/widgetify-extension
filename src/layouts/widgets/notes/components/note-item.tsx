@@ -1,6 +1,7 @@
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import moment from 'jalali-moment'
+import { FiCalendar } from 'react-icons/fi'
 
 interface Prop {
 	note: FetchedNote
@@ -8,25 +9,31 @@ interface Prop {
 }
 export function NoteItem({ note, handleNoteClick }: Prop) {
 	const p = PRIORITY_OPTIONS.find((p) => p.value === note.priority)
+
 	return (
 		<div
-			key={note.id}
-			className={`p-2 bg-base-300/70 hover:bg-base-300 border border-base-300/70 rounded-xl flex flex-col group justify-between items-center cursor-pointer hover:bg-opacity-80 transition-colors gap-2`}
+			className="group flex flex-col rounded-2xl border border-base-300/40 bg-base-300/30 transition-all hover:bg-base-300/60 active:scale-[0.98] cursor-pointer"
 			onClick={() => handleNoteClick(note.id)}
 		>
-			<div className="flex flex-row items-center justify-between w-full">
-				<div
-					className={`${p?.bgColor || 'bg-content'} w-2 h-2 rounded-full ml-2`}
-				/>
-				<div className="flex-1 text-xs truncate text-content">
-					{note.title || 'بدون عنوان'}
+			<div className="flex items-center justify-between gap-2 px-2.5 py-1.5 border-b border-base-content/5  bg-base-content/2 rounded-t-2xl">
+				<div className="flex items-center gap-1.5 min-w-0">
+					<div
+						className={`h-1.5 w-1.5 shrink-0 rounded-full ${p?.bgColor || 'bg-base-content/20'}`}
+					/>
+					<h3 className=" text-[12px] font-bold text-base-content/90">
+						{note.title || 'بدون عنوان'}
+					</h3>
 				</div>
-				<div className="text-[10px] text-muted">
-					{moment(note.createdAt).locale('fa').format('jD jMMM YY')}
+				<div className="flex items-center gap-1 shrink-0 text-muted/60">
+					<FiCalendar size={10} />
+					<span className="text-[10px]">
+						{moment(note.createdAt).locale('fa').format('jD jMMM')}
+					</span>
 				</div>
 			</div>
-			<div className="w-full p-2 overflow-y-auto rounded-md bg-base-200/50 min-h-10 max-h-32">
-				<p className="text-xs font-light leading-relaxed text-muted whitespace-break-spaces">
+
+			<div className="p-2.5 bg-base-100/10">
+				<p className="text-[11.5px] leading-relaxed text-base-content/80 whitespace-pre-wrap wrap-break-word font-medium">
 					{note.body}
 				</p>
 			</div>

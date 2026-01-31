@@ -5,11 +5,23 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from '@/components/tab-navigation'
-// import { TabNavigation } from './components/tab-navigation'
+import { MdCurrencyExchange, MdMosque, MdTimer } from 'react-icons/md'
 const tabs = [
-	{ id: 'pomodoro' as ToolsTabType, label: 'پومودورو' },
-	{ id: 'religious-time' as ToolsTabType, label: 'اوقات شرعی' },
-	{ id: 'currency-converter' as ToolsTabType, label: 'مبدل قیمت' },
+	{
+		id: 'pomodoro' as ToolsTabType,
+		label: 'پومودورو',
+		icon: <MdTimer size={14} />,
+	},
+	{
+		id: 'religious-time' as ToolsTabType,
+		label: 'اوقات شرعی',
+		icon: <MdMosque size={14} />,
+	},
+	{
+		id: 'currency-converter' as ToolsTabType,
+		label: 'تبدیل',
+		icon: <MdCurrencyExchange size={14} />,
+	},
 ]
 
 const ReligiousTime = React.lazy(() =>
@@ -69,6 +81,7 @@ export const ToolsLayout: React.FC<any> = () => {
 					onTabClick={onTabClick}
 					tabs={tabs}
 					size="small"
+					className="w-full "
 				/>
 			</div>
 

@@ -284,7 +284,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	return (
-		<div className="relative overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
+		<div className="relative overflow-hidden duration-300 mt-1.5 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			{/* Mode Selection */}
 			<div className="relative flex items-center justify-between mb-1  py-0.5">
 				<div className={`flex items-center gap-x-0.5`}>

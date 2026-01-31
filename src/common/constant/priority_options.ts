@@ -13,7 +13,7 @@ export const PRIORITY_OPTIONS = [
 	},
 	{
 		value: 'high',
-		ariaLabel: 'اولویت زیاد',
+		ariaLabel: 'اولویت مهم',
 		bgColor: 'bg-red-500',
 		hoverBgColor: 'hover:bg-red-500',
 	},
