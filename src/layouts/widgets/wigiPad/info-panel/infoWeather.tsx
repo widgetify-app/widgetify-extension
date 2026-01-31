@@ -20,25 +20,28 @@ export function InfoWeather() {
 	const hasBanner = !!weather.weather?.statusBanner
 
 	return (
-		<div className="relative flex flex-col justify-between overflow-hidden border rounded-xl group border-base-content/5">
+		<div className="relative flex flex-col justify-between overflow-hidden rounded-xl group">
 			{hasBanner ? (
 				<div
 					className="absolute inset-0 transition-transform duration-700 bg-center bg-cover group-hover:scale-105"
-					style={{ backgroundImage: `url(${weather.weather?.statusBanner})` }}
-				>
-					<div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/20" />
-				</div>
+					style={{
+						backgroundImage: `url(${weather.weather?.statusBanner})`,
+						maskImage:
+							'linear-gradient(-1deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
+						WebkitMaskImage:
+							'linear-gradient(-1deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
+					}}
+				></div>
 			) : (
 				<div className="absolute inset-0 bg-linear-to-br from-base-200 to-base-300" />
 			)}
 
-			{/* Main Content */}
 			<div className="relative z-10 flex items-center justify-between p-1 px-2">
 				<div className="flex flex-col">
 					<span
 						className={`text-[10px]  tracking-tight uppercase mb-0.5 ${
 							hasBanner
-								? 'text-white/90 drop-shadow-md'
+								? "text-white/90 [html[data-theme='light']_&]:text-gray-400 drop-shadow-md"
 								: 'text-base-content/60'
 						}`}
 					>

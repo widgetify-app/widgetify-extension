@@ -102,7 +102,7 @@ export function TodoItem({
 
 	return (
 		<div
-			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 bg-glass transition-all ${
+			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 transition-all ${
 				isDragging ? 'scale-[1.02] opacity-50 shadow-lg' : ''
 			} ${blurMode ? 'blur-[2px] opacity-40' : ''}`}
 		>
