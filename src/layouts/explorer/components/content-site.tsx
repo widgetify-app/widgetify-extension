@@ -26,14 +26,14 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={` flex  flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded-2xl`}
+			className={`flex flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded-2xl hover:bg-base-300  group-hover:shadow-sm p-0.5`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
 			}}
 		>
 			{link.icon && (
-				<div className="relative flex items-center justify-center w-10 h-10 transition-all duration-500 rounded-xl bg-base-300/50 group-hover:scale-105 group-hover:shadow-sm">
+				<div className="relative flex items-center justify-center w-10 h-10 transition-all duration-500 rounded-xl bg-base-300/50 group-hover:scale-105">
 					{badge && (
 						<span
 							className="absolute -top-3 -left-2 text-center z-20 truncate px-1 rounded-xl text-[10px] font-light max-w-20 border border-white/10 shadow-sm"
