@@ -93,18 +93,30 @@ export const UpdateReleaseNotesModal = ({
 			showCloseButton={false}
 		>
 			<div className="flex flex-col max-h-[80vh]">
-				<div className="flex flex-col gap-1 p-4 border-b border-base-300/20 bg-base-200/20">
-					<div className="flex items-center justify-between">
-						<div className="flex flex-col">
-							<h2 className="text-3xl font-black text-content">
-								{VERSION_NAME}
-							</h2>
-							<p className="mt-1 text-xs font-medium text-muted">
-								انسان به امید زنـدست! 🤞💙
-							</p>
-						</div>
-						<div className="p-2 border rounded-2xl bg-base-200/50 text-primary border-base-300/20">
-							<RiCompassDiscoverLine size={24} />
+				<div className="relative overflow-hidden border-b border-base-300/20 rounded-2xl h-28">
+					<div
+						className="absolute inset-0 scale-105 bg-center bg-no-repeat bg-cover animate-pan"
+						style={{
+							backgroundImage:
+								'url(http://cdn.widgetify.ir/extension/hope.png)',
+							filter: 'brightness(0.35) contrast(1.1)',
+							maskImage:
+								'linear-gradient(to bottom, black 0%, transparent 100%)',
+							WebkitMaskImage:
+								'linear-gradient(to bottom, black 0%, transparent 100%)',
+						}}
+					/>
+
+					<div className="relative flex flex-col gap-1 p-5">
+						<div className="flex items-center justify-between">
+							<div className="flex flex-col">
+								<h2 className="text-3xl font-black text-content">
+									{VERSION_NAME}
+								</h2>
+								<p className="mt-1 text-xs font-medium text-muted">
+									آدمیزاد به امید زندسـت! 🤞💙{' '}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -133,11 +145,9 @@ export const UpdateReleaseNotesModal = ({
 						))}
 					</div>
 
-					<div className="flex items-center justify-center p-6 italic border border-dashed border-base-300/20 rounded-[2rem] opacity-30">
+					<div className="flex items-center justify-center p-6 text-muted">
 						<RiThumbUpLine className="ml-2" size={16} />
-						<span className="text-[9px] font-black tracking-widest uppercase">
-							دمت گرم که همراه مایی
-						</span>
+						<span className="text-xs">دمت گرم که همراه مایی</span>
 					</div>
 				</div>
 
@@ -146,7 +156,7 @@ export const UpdateReleaseNotesModal = ({
 						href="https://feedback.widgetify.ir"
 						target="_blank"
 						rel="noreferrer"
-						className="text-[10px] italic font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
+						className="text-[10px]  font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
 					>
 						پیشنهاد یا گزارش مشکل
 					</a>
@@ -154,7 +164,7 @@ export const UpdateReleaseNotesModal = ({
 						size="sm"
 						onClick={onClose}
 						disabled={counter > 0}
-						className="min-w-[130px] h-11 !rounded-2xl font-black italic text-[11px] shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
+						className="min-w-[130px] h-11 !rounded-2xl font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
 						isPrimary={true}
 					>
 						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}

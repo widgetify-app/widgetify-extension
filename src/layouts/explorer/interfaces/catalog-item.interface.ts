@@ -1,7 +1,7 @@
 export interface LinkItem {
 	name?: string | null
 	url: string
-	type?: 'SITE' | 'REMOTE_IFRAME'
+	type?: 'SITE' | 'REMOTE_IFRAME' | 'BANNER'
 	icon?: string
 	badge?: string
 	badgeColor?: string

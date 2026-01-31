@@ -1,164 +1,22 @@
-import { useEffect, useState } from 'react'
-import { type RecommendedSite, useGetTrends } from '@/services/hooks/trends/getTrends'
-import 'swiper/css'
-
-import { FiChevronLeft, FiFolder } from 'react-icons/fi'
-import { FreeMode, Navigation } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { useState, useRef, useEffect } from 'react'
+import { useGetTrends } from '@/services/hooks/trends/getTrends'
+import { setToStorage } from '@/common/storage'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
-import { useGeneralSetting } from '@/context/general-setting.context'
-import {
-	type FetchedBrowserBookmark,
-	getBrowserBookmarks,
-} from '@/layouts/bookmark/utils/browser-bookmarks.util'
-
-interface BookmarkItem {
-	id?: string
-	name?: string
-	title?: string
-	url?: string | null
-	icon?: string | React.ReactNode
-	isFolder?: boolean
-}
-
-interface BookmarkSwiperProps {
-	items: BookmarkItem[]
-	spaceBetween?: number
-	grabCursor?: boolean
-	navigation?: boolean
-	slidesPerView: number
-	type: 'browser' | 'recommended'
-}
-
-function BookmarkSwiper({
-	items,
-	spaceBetween = 1,
-	grabCursor = true,
-	type,
-	onItemClick,
-	slidesPerView,
-}: BookmarkSwiperProps & { onItemClick?: (item: BookmarkItem) => void }) {
-	const swiperProps = {
-		modules: [FreeMode, Navigation],
-		spaceBetween,
-		slidesPerView,
-		grabCursor,
-		className: 'w-full bg-content rounded-2xl !pl-3.5 !pr-1',
-		dir: 'rtl' as const,
-	}
-
-	function onClick(item: BookmarkItem) {
-		if (onItemClick) {
-			onItemClick(item)
-			Analytics.event('browser_bookmark_folder_clicked')
-			return
-		}
-
-		if (item.url) {
-			window.open(item.url, '_blank')
-			Analytics.event(`${type}_bookmark_clicked`)
-		}
-	}
-
-	return (
-		<Swiper {...swiperProps}>
-			{items.map((item, index) => (
-				<SwiperSlide key={item.id || item.name || index}>
-					<Tooltip content={item.name || item.title || item.url || ''}>
-						<div
-							className="flex items-center mt-1 cursor-pointer group"
-							onClick={() => onClick(item)}
-						>
-							{typeof item.icon === 'string' ? (
-								<img
-									src={item.icon || getFaviconFromUrl(item.url || '')}
-									className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
-								/>
-							) : item.icon ? (
-								<div className="flex items-center justify-center w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 rounded-full group-hover:scale-110 bg-primary/20">
-									{item.icon}
-								</div>
-							) : (
-								<img
-									src={getFaviconFromUrl(item.url || '')}
-									className="object-cover w-4 h-4 sm:w-6 sm:h-6 text-xs p-0.5 transition-transform duration-200 !rounded-full group-hover:scale-110 bg-primary/20"
-								/>
-							)}
-						</div>
-					</Tooltip>
-				</SwiperSlide>
-			))}
-		</Swiper>
-	)
-}
+import { HiRectangleGroup } from 'react-icons/hi2'
+import { MdFolderSpecial } from 'react-icons/md'
+import { BookmarkPopover } from './bookmark-popover'
+import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
+import { usePage } from '@/context/page.context'
 
 export function BrowserBookmark() {
-	const { browserBookmarksEnabled } = useGeneralSetting()
+	const { data } = useGetTrends({ enabled: true })
+	const { setPage } = usePage()
 
-	const { data } = useGetTrends({
-		enabled: true,
-	})
-	const [fetchedBookmarks, setFetchedBookmarks] = useState<FetchedBrowserBookmark[]>([])
-	const [browserBookmarks, setBrowserBookmarks] = useState<BookmarkItem[]>([])
-	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
-
-	useEffect(() => {
-		async function fetchBrowserBookmarks() {
-			const bookmarks = await getBrowserBookmarks({ includeFolders: true })
-
-			setFetchedBookmarks(bookmarks)
-		}
-		if (browserBookmarksEnabled) {
-			fetchBrowserBookmarks()
-		}
-	}, [browserBookmarksEnabled])
-
-	useEffect(() => {
-		const isOtherFolderTitle = (title?: string) => {
-			if (!title) return false
-			const t = title.toLowerCase()
-			return t.includes('other') && t.includes('bookmark')
-		}
-
-		let candidates: FetchedBrowserBookmark[] = []
-		if (currentFolderId) {
-			candidates = fetchedBookmarks.filter(
-				(b) => (b.parentId ?? null) === currentFolderId
-			)
-		} else {
-			const otherFolder = fetchedBookmarks.find(
-				(b) => b.type === 'FOLDER' && isOtherFolderTitle(b.title)
-			)
-
-			const rootEntries = fetchedBookmarks.filter(
-				(b) => (b.parentId ?? null) === null && b.id !== otherFolder?.id
-			)
-
-			const otherChildren = otherFolder
-				? fetchedBookmarks.filter((b) => b.parentId === otherFolder.id)
-				: []
-
-			candidates = [...rootEntries, ...otherChildren]
-		}
-
-		const visible = candidates.map((b) => ({
-			id: b.id,
-			title: b.title,
-			url: b.url,
-			icon:
-				b.type === 'FOLDER' ? (
-					<FiFolder size={16} />
-				) : (
-					getFaviconFromUrl(b.url || '')
-				),
-			isFolder: b.type === 'FOLDER',
-		}))
-
-		setBrowserBookmarks(visible)
-	}, [fetchedBookmarks, currentFolderId])
+	const [isOpen, setIsOpen] = useState(false)
+	const [popoverCoords, setPopoverCoords] = useState({ top: 0, left: 0 })
+	const iconRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		if (data?.recommendedSites?.length) {
@@ -166,53 +24,95 @@ export function BrowserBookmark() {
 		}
 	}, [data])
 
-	return (
-		<div
-			className={`flex flex-row w-full gap-2 px-2  py-1 ${browserBookmarksEnabled ? 'justify-between' : 'justify-end'}`}
-		>
-			<BookmarkSwiper
-				items={data?.recommendedSites || []}
-				spaceBetween={1}
-				grabCursor={true}
-				type="recommended"
-				slidesPerView={browserBookmarksEnabled ? 8 : 16}
-			/>
-			{browserBookmarksEnabled && (
-				<BookmarkSwiper
-					slidesPerView={8}
-					items={
-						currentFolderId
-							? [
-									{
-										id: '__up__',
-										title: 'بازگشت',
-										icon: <FiChevronLeft />,
-										isFolder: false,
-									} as BookmarkItem,
-									...browserBookmarks,
-								]
-							: browserBookmarks
-					}
-					spaceBetween={2}
-					grabCursor={false}
-					type="browser"
-					onItemClick={(item) => {
-						if (item.id === '__up__') {
-							const current = fetchedBookmarks.find(
-								(b) => b.id === currentFolderId
-							)
-							setCurrentFolderId(current?.parentId ?? null)
-							return
-						}
+	const handleTogglePopover = () => {
+		if (iconRef.current) {
+			const rect = iconRef.current.getBoundingClientRect()
+			setPopoverCoords({
+				top: rect.bottom + 10,
+				left: rect.left,
+			})
+		}
 
-						if (item.isFolder) {
-							setCurrentFolderId(item.id || null)
-						} else if (item.url) {
-							window.open(item.url, '_blank')
-						}
-					}}
-				/>
-			)}
+		Analytics.event('browser_bookmark_popover_toggled')
+
+		setIsOpen((prev) => !prev)
+	}
+
+	const onClickToExplorer = () => {
+		setPage('explorer')
+		Analytics.event('searchbox_explorer_page_opened')
+	}
+
+	return (
+		<div className="flex flex-row items-center justify-start w-full gap-2 px-2 py-1 overflow-hidden min-h-[40px]">
+			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto flex-nowrap no-scrollbar scroll-smooth">
+				<div className="flex items-center justify-center shrink-0">
+					<Tooltip content="کاووش">
+						<div
+							className="flex items-center cursor-pointer group"
+							onClick={() => onClickToExplorer()}
+						>
+							<div className="flex items-center justify-center w-6 h-6 p-0.5 transition-transform duration-200 rounded-lg group-hover:scale-110 bg-primary/10">
+								<HiRectangleGroup
+									size={20}
+									className="text-base-content/60 hover:text-primary/80"
+								/>
+							</div>
+						</div>
+					</Tooltip>
+				</div>
+
+				<div ref={iconRef} className="flex items-center justify-center shrink-0">
+					<Tooltip content="بوکمارک‌های مرورگر">
+						<div
+							className="flex items-center cursor-pointer group"
+							onClick={handleTogglePopover}
+						>
+							<div
+								className={`flex items-center justify-center w-6 h-6 p-0.5 transition-all duration-200 rounded-lg group-hover:scale-110 ${
+									isOpen
+										? 'bg-primary text-white shadow-lg'
+										: 'bg-primary/10 text-base-content/60'
+								}`}
+							>
+								<MdFolderSpecial size={24} />
+							</div>
+						</div>
+					</Tooltip>
+				</div>
+
+				<div className="self-center w-[1px] h-4 bg-base-content/10 shrink-0 mx-1" />
+
+				<div className="flex flex-row items-center gap-1 flex-nowrap">
+					{data?.recommendedSites?.map((item) => (
+						<div
+							key={item.url}
+							className="flex items-center justify-center shrink-0"
+						>
+							<Tooltip content={item.name || item.title || ''}>
+								<div
+									className="flex items-center cursor-pointer group"
+									onClick={() => window.open(item.url || '', '_blank')}
+								>
+									<img
+										src={
+											item.icon || getFaviconFromUrl(item.url || '')
+										}
+										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-110 bg-primary/10"
+										alt={item.name}
+									/>
+								</div>
+							</Tooltip>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<BookmarkPopover
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}
+				coords={popoverCoords}
+			/>
 		</div>
 	)
 }

@@ -107,27 +107,33 @@ export const ProfileDisplay = ({ profile, onEditToggle }: ProfileDisplayProps) =
 					value={profile?.name}
 				/>
 
-				<DisplayRow
-					icon={<FiMail className="text-secondary" />}
-					label="ایمیل"
-					value={profile?.email}
-					isLtr
-				/>
+				{profile?.email && (
+					<DisplayRow
+						icon={<FiMail className="text-secondary" />}
+						label="ایمیل"
+						value={profile?.email}
+						isLtr
+					/>
+				)}
 
 				<DisplayRow
 					icon={<FiPhone className="text-secondary" />}
 					label="شماره موبایل"
 					value={
-						<Button
-							size="xs"
-							className="rounded-2xl"
-							onClick={() => clickToShow()}
-						>
-							<div className="flex items-center gap-1">
-								<IoMdAddCircle />
-								افزودن شماره موبایل
-							</div>
-						</Button>
+						profile?.phone ? (
+							profile.phone
+						) : (
+							<Button
+								size="xs"
+								className="rounded-2xl"
+								onClick={() => clickToShow()}
+							>
+								<div className="flex items-center gap-1">
+									<IoMdAddCircle />
+									افزودن شماره موبایل
+								</div>
+							</Button>
+						)
 					}
 					isLtr
 					showBadge

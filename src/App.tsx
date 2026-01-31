@@ -3,6 +3,7 @@ import { AppearanceProvider } from './context/appearance.context'
 import { AuthProvider } from './context/auth.context'
 import { ThemeProvider } from './context/theme.context'
 import { HomePage } from './pages/home'
+import { PageProvider } from './context/page.context'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -18,7 +19,9 @@ function App() {
 			<AuthProvider>
 				<ThemeProvider>
 					<AppearanceProvider>
-						<HomePage />
+						<PageProvider>
+							<HomePage />
+						</PageProvider>
 					</AppearanceProvider>
 				</ThemeProvider>
 			</AuthProvider>

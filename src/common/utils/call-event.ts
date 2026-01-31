@@ -31,8 +31,6 @@ export interface EventName {
 		name: string
 		template: string
 	}
-	openExplorerPage: null
-	closeExplorerPage: null
 
 	// setting keys
 	wigiPadDateSettingsChanged: WigiPadDateSetting
