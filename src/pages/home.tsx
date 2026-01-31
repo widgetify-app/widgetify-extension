@@ -268,7 +268,7 @@ export function HomePage() {
 								duration: 0.15,
 								ease: 'linear',
 							}}
-							className="w-full h-full"
+							className="flex w-full h-full"
 						>
 							{page === 'home' ? <ContentSection /> : <ExplorerContent />}
 						</motion.div>
