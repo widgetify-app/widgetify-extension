@@ -6,6 +6,7 @@ import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
 import { NoteItem } from './components/note-item'
+import { TabNavigation } from '@/components/tab-navigation'
 
 function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
@@ -70,17 +71,16 @@ export function NotesLayout({ onChangeTab }: Prop) {
 			<NotesProvider>
 				<div className="flex flex-col h-full">
 					<div className="flex items-center justify-between">
-						<div className="flex items-center justify-around w-32 p-1 text-xs font-medium bg-base-300 rounded-2xl text-content">
-							<div
-								onClick={() => onChangeTab()}
-								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-2"
-							>
-								<span>وظایف</span>
-							</div>
-							<div className="bg-primary rounded-xl py-0.5 px-2 text-gray-200">
-								یادداشت
-							</div>
-						</div>
+						<TabNavigation
+							activeTab="notes"
+							onTabClick={onChangeTab}
+							tabs={[
+								{ id: 'todos', label: 'وظایف' },
+								{ id: 'notes', label: 'یادداشت' },
+							]}
+							size="small"
+							className="w-32"
+						/>
 
 						<NoteNavigation />
 					</div>

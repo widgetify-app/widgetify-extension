@@ -8,6 +8,7 @@ import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
+import { TabNavigation } from '@/components/tab-navigation'
 
 export type ComboTabType = 'news' | 'currency'
 
@@ -48,28 +49,16 @@ export function ComboWidget() {
 	return (
 		<WidgetContainer className={'flex flex-col gap-1'}>
 			<div className="flex items-center justify-between pb-2">
-				<div className="flex items-center justify-around p-1 text-xs font-medium w-28 bg-base-300 rounded-2xl text-content">
-					<div
-						onClick={() => onTabClick('currency')}
-						className={`cursor-pointer text-xs w-full text-center  rounded-xl py-0.5 px-1 ${
-							activeTab === 'currency'
-								? 'bg-primary text-gray-200 '
-								: 'hover:bg-primary/10'
-						}`}
-					>
-						<span>ارزها</span>
-					</div>
-					<div
-						onClick={() => onTabClick('news')}
-						className={`cursor-pointer text-xs w-full text-center rounded-xl py-0.5 px-1 ${
-							activeTab === 'news'
-								? 'bg-primary text-gray-200'
-								: 'hover:bg-primary/10'
-						}`}
-					>
-						<span>اخبار</span>
-					</div>
-				</div>
+				<TabNavigation
+					activeTab={activeTab}
+					onTabClick={onTabClick}
+					tabs={[
+						{ id: 'currency', label: 'ارزها' },
+						{ id: 'news', label: 'اخبار' },
+					]}
+					size="small"
+					className="w-32"
+				/>
 				<div className="flex items-center gap-x-1">
 					<Button
 						onClick={handleSettingsClick}

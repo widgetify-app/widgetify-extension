@@ -25,8 +25,10 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 					{moment(note.createdAt).locale('fa').format('jD jMMM YY')}
 				</div>
 			</div>
-			<div className="w-full p-2 rounded-md bg-base-200/50 min-h-10">
-				<p className="text-xs font-light text-muted">{note.body}</p>
+			<div className="w-full p-2 overflow-y-auto rounded-md bg-base-200/50 min-h-10 max-h-32">
+				<p className="text-xs font-light leading-relaxed text-muted whitespace-break-spaces">
+					{note.body}
+				</p>
 			</div>
 		</div>
 	)
