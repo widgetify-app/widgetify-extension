@@ -1,14 +1,12 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useGetTrends } from '@/services/hooks/trends/getTrends'
-import { setToStorage } from '@/common/storage'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
 import { HiRectangleGroup } from 'react-icons/hi2'
 import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
-import Analytics from '@/analytics'
-import { callEvent } from '@/common/utils/call-event'
 import { usePage } from '@/context/page.context'
+import Analytics from '@/analytics'
 
 export function BrowserBookmark() {
 	const { data } = useGetTrends({ enabled: true })
@@ -18,24 +16,43 @@ export function BrowserBookmark() {
 	const [popoverCoords, setPopoverCoords] = useState({ top: 0, left: 0 })
 	const iconRef = useRef<HTMLDivElement>(null)
 
-	useEffect(() => {
-		if (data?.recommendedSites?.length) {
-			setToStorage('recommended_sites', data.recommendedSites)
-		}
-	}, [data])
-
-	const handleTogglePopover = () => {
+	const updateCoords = useCallback(() => {
 		if (iconRef.current) {
 			const rect = iconRef.current.getBoundingClientRect()
+			const popoverWidth = 280
+			const padding = 10
+
+			let left = rect.left
+			if (left + popoverWidth > window.innerWidth) {
+				left = window.innerWidth - popoverWidth - padding
+			}
+
+			left = Math.max(padding, left)
+
 			setPopoverCoords({
-				top: rect.bottom + 10,
-				left: rect.left,
+				top: rect.bottom + window.scrollY + 8,
+				left: left,
 			})
 		}
+	}, [])
 
-		Analytics.event('browser_bookmark_popover_toggled')
+	useEffect(() => {
+		if (isOpen) {
+			updateCoords()
+			const handleUpdate = () => requestAnimationFrame(updateCoords)
+			window.addEventListener('resize', handleUpdate)
+			window.addEventListener('scroll', handleUpdate)
+			return () => {
+				window.removeEventListener('resize', handleUpdate)
+				window.removeEventListener('scroll', handleUpdate)
+			}
+		}
+	}, [isOpen, updateCoords])
 
+	const handleTogglePopover = () => {
+		updateCoords()
 		setIsOpen((prev) => !prev)
+		Analytics.event('browser_bookmark_popover_toggled')
 	}
 
 	const onClickToExplorer = () => {
@@ -44,18 +61,18 @@ export function BrowserBookmark() {
 	}
 
 	return (
-		<div className="flex flex-row items-center justify-start w-full gap-2 px-2 py-1 overflow-hidden min-h-[40px]">
-			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto flex-nowrap no-scrollbar scroll-smooth">
-				<div className="flex items-center justify-center shrink-0">
+		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-1">
+			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto no-scrollbar scroll-smooth">
+				<div className="flex items-center shrink-0">
 					<Tooltip content="کاووش">
 						<div
 							className="flex items-center cursor-pointer group"
 							onClick={() => onClickToExplorer()}
 						>
-							<div className="flex items-center justify-center w-6 h-6 p-0.5 transition-transform duration-200 rounded-lg group-hover:scale-110 bg-primary/10">
+							<div className="flex items-center justify-center w-6 h-6 p-0.5 rounded-lg bg-primary/10 group-hover:scale-110 transition-transform">
 								<HiRectangleGroup
 									size={20}
-									className="text-base-content/60 hover:text-primary/80"
+									className="text-base-content/60"
 								/>
 							</div>
 						</div>
@@ -81,7 +98,7 @@ export function BrowserBookmark() {
 					</Tooltip>
 				</div>
 
-				<div className="self-center w-[1px] h-4 bg-base-content/10 shrink-0 mx-1" />
+				<div className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0" />
 
 				<div className="flex flex-row items-center gap-1 flex-nowrap">
 					{data?.recommendedSites?.map((item) => (
@@ -108,6 +125,7 @@ export function BrowserBookmark() {
 				</div>
 			</div>
 
+			{/* پاپ‌اور با مختصات هوشمند */}
 			<BookmarkPopover
 				isOpen={isOpen}
 				onClose={() => setIsOpen(false)}
