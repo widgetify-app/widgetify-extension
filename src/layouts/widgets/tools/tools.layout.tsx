@@ -5,22 +5,26 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { TabNavigation } from '@/components/tab-navigation'
-import { MdCurrencyExchange, MdMosque, MdTimer } from 'react-icons/md'
+import {
+	MdOutlineCurrencyExchange,
+	MdOutlineMosque,
+	MdOutlineTimer,
+} from 'react-icons/md'
 const tabs = [
 	{
 		id: 'pomodoro' as ToolsTabType,
 		label: 'پومودورو',
-		icon: <MdTimer size={14} />,
+		icon: <MdOutlineTimer size={14} />,
 	},
 	{
 		id: 'religious-time' as ToolsTabType,
 		label: 'اوقات شرعی',
-		icon: <MdMosque size={14} />,
+		icon: <MdOutlineMosque size={14} />,
 	},
 	{
 		id: 'currency-converter' as ToolsTabType,
 		label: 'تبدیل',
-		icon: <MdCurrencyExchange size={14} />,
+		icon: <MdOutlineCurrencyExchange size={14} />,
 	},
 ]
 

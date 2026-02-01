@@ -7,7 +7,7 @@ import { NoteEditor } from './components/note-editor'
 import { NoteNavigation } from './components/note-navigation'
 import { NoteItem } from './components/note-item'
 import { TabNavigation } from '@/components/tab-navigation'
-import { HiDocumentText, HiOutlineCheckCircle } from 'react-icons/hi2'
+import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
 
 function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
@@ -83,7 +83,7 @@ export function NotesLayout({ onChangeTab }: Prop) {
 							{
 								id: 'notes',
 								label: 'یادداشت',
-								icon: <HiDocumentText size={14} />,
+								icon: <HiOutlineDocumentText size={14} />,
 							},
 						]}
 						size="small"
