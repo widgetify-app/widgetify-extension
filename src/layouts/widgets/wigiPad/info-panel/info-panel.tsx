@@ -5,11 +5,12 @@ import { BirthdayTab } from './tabs/birthday/birthday-tab'
 import { BsFillCalendar2WeekFill } from 'react-icons/bs'
 import { TabNavigation } from '@/components/tab-navigation'
 import { InfoWeather } from './infoWeather'
+import { MdOutlineAccessAlarm, MdOutlineCloud, MdOutlineTab } from 'react-icons/md'
 
 const sections = [
-	{ id: 'all', label: 'ویجی تب', icon: '📋' },
-	{ id: 'weather', label: 'آب و هوا', icon: '⛅' },
-	{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
+	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={10} /> },
+	{ id: 'weather', label: 'آب و هوا', icon: <MdOutlineCloud size={10} /> },
+	{ id: 'birthdays', label: 'تولدها', icon: <MdOutlineAccessAlarm size={10} /> },
 ]
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
