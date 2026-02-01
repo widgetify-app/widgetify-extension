@@ -57,3 +57,31 @@ export async function clearStorage() {
 export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }
+
+export async function setWithExpiry<K extends keyof StorageKV>(
+	key: K,
+	value: StorageKV[K],
+	minutes: number
+) {
+	const expiry = Date.now() + minutes * 60000
+	const data = { value, expiry }
+
+	await setToStorage(key, data as any)
+}
+
+export async function getWithExpiry<K extends keyof StorageKV>(
+	key: K
+): Promise<StorageKV[K] | null> {
+	const data = (await getFromStorage(key)) as any
+
+	if (!data || typeof data !== 'object' || !('expiry' in data)) {
+		return data
+	}
+
+	if (Date.now() > data.expiry) {
+		await removeFromStorage(key)
+		return null
+	}
+
+	return data.value as StorageKV[K]
+}

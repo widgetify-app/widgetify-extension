@@ -61,7 +61,7 @@ export const TabNavigation = <T,>({
 						)}
 
 						<span
-							className={`block font-bold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
+							className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
 						>
 							{tab.label}
 						</span>

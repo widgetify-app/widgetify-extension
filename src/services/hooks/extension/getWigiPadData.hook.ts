@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
+import type { ReactNode } from 'react'
 
 export interface WigiPadBirthday {
 	name: string
@@ -32,11 +33,18 @@ export interface UpcomingCalendarEvent {
 }
 
 export interface NotificationItem {
-	title: string
-	subTitle: string
+	id?: string
+	title?: string
+	subTitle?: string
 	description?: string
+	node?: ReactNode
 	link?: string
 	icon?: string
+	closeable: boolean
+	ttl?: number
+	type?: 'text' | 'url' | 'action' | 'page'
+	goTo?: 'explorer'
+	target?: string
 }
 export interface WigiPadDataResponse {
 	birthdays: WigiPadBirthday[]

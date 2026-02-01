@@ -7,16 +7,23 @@ import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
-
+import { callEvent } from '@/common/utils/call-event'
+import { DelayMoodNotification } from './delay-mood'
 export const WidgetifyLayout = () => {
-	const { user, isAuthenticated } = useAuth()
+	const { user, isAuthenticated, isLoadingUser } = useAuth()
 	const { blurMode, updateSetting } = useGeneralSetting()
 
 	const [userName, setUserName] = useState<string>('')
 
 	useEffect(() => {
-		if (isAuthenticated && user && user.name) {
-			setUserName(user.name)
+		if (isAuthenticated && !isLoadingUser) {
+			if (user?.name) setUserName(user.name)
+			if (!user?.hasTodayMood) {
+				callEvent('add_to_notifications', {
+					id: 'notificationMood',
+					node: <DelayMoodNotification />,
+				})
+			}
 		}
 	}, [isAuthenticated, user])
 
@@ -24,6 +31,7 @@ export const WidgetifyLayout = () => {
 		const newBlurMode = !blurMode
 		updateSetting('blurMode', newBlurMode)
 	}
+
 	return (
 		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">
 			<div className="relative w-full h-full">

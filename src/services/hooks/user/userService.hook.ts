@@ -44,6 +44,8 @@ interface FetchedProfile {
 		label: string
 	}>
 	joinedAt: string
+
+	hasTodayMood: boolean
 }
 
 export interface UserProfile extends FetchedProfile {

@@ -11,6 +11,7 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { FontFamily } from '@/context/appearance.context'
+import React from 'react'
 
 export interface EventName {
 	startSync: SyncTarget
@@ -47,6 +48,9 @@ export interface EventName {
 	font_change: FontFamily
 	close_all_modals: null
 	openWizardModal: null
+	add_to_notifications: { id: string; node: React.ReactNode }
+	remove_from_notifications: { id: string; ttl?: number }
+	go_to_page: 'explorer' | 'home'
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

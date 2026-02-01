@@ -89,4 +89,5 @@ export interface StorageKV {
 	petState: boolean
 	showNewBadgeForReOrderWidgets: boolean
 	navbarVisible: boolean
+	[key: `removed_notification_${string}`]: string
 }

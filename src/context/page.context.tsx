@@ -1,3 +1,4 @@
+import { listenEvent } from '@/common/utils/call-event'
 import type React from 'react'
 import { createContext, useContext, useState } from 'react'
 
@@ -10,6 +11,17 @@ interface PageContextType {
 export const PageContext = createContext<PageContextType | null>(null)
 export function PageProvider({ children }: { children: React.ReactNode }) {
 	const [page, setPage] = useState<Page>('home')
+
+	useEffect(() => {
+		const event = listenEvent('go_to_page', (p) => {
+			console.log('listenEvent', p)
+			setPage(p)
+		})
+		console.log('listenEvent go_to_page')
+		return () => {
+			event()
+		}
+	}, [])
 
 	return (
 		<PageContext.Provider value={{ page, setPage }}>{children}</PageContext.Provider>

@@ -29,7 +29,6 @@ export function RenderContentIframe({ link, theme, fontFamily }: IframeProp) {
 				height={link.height}
 				style={{
 					border: 'none',
-					borderRadius: '1.5rem',
 					width: '100%',
 				}}
 				title={link.name || link.url}
