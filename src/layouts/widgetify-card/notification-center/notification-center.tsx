@@ -99,9 +99,6 @@ export function NotificationCenter() {
 				<div key={event.id} className="relative">
 					<NotificationCardItem
 						title={event.title}
-						subTitle={`
-امروز، ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
-                            `}
 						closeable={false}
 						onClose={() => {}}
 						description={event.location || ''}
@@ -138,10 +135,9 @@ export function NotificationCenter() {
 					closeable={item.closeable}
 					key={index}
 					title={item.title}
-					subTitle={item.subTitle}
 					description={item.description}
 					link={item.link}
-					onClose={(e) => onClose(e, item.id || '')}
+					onClose={(e) => onClose(e, item.id || '', item.ttl)}
 					icon={item.icon}
 					goTo={item.goTo}
 					target={item.target}

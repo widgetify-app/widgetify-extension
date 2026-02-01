@@ -35,7 +35,6 @@ export interface UpcomingCalendarEvent {
 export interface NotificationItem {
 	id?: string
 	title: string
-	subTitle: string
 	description?: string
 	link?: string
 	icon?: string
@@ -43,6 +42,7 @@ export interface NotificationItem {
 	type?: 'text' | 'url' | 'action' | 'page'
 	goTo?: 'explorer'
 	target?: string
+	ttl?: number
 }
 export interface WigiPadDataResponse {
 	birthdays: WigiPadBirthday[]
