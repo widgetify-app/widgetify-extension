@@ -3,21 +3,16 @@ import GoogleCalendar from '@/assets/google-calendar.png'
 import GoogleMeet from '@/assets/google-meet.png'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
-import { useGeneralSetting } from '@/context/general-setting.context'
-import {
-	type NotificationItem,
-	useGetWigiPadData,
-} from '@/services/hooks/extension/getWigiPadData.hook'
+import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData.hook'
 import { NotificationCardItem } from './components/notification-item'
 import { listenEvent } from '@/common/utils/call-event'
 import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import type { ReactNode } from 'react'
+import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
 
 export function NotificationCenter() {
-	const { selected_timezone: timezone } = useGeneralSetting()
-	const { data } = useGetWigiPadData({
+	const { data: fetchedNotifications } = useGetNotifications({
 		enabled: true,
-		timezone: timezone.value,
 	})
 
 	const [notifications, setNotifications] = useState<NotificationItem[]>([])
@@ -70,7 +65,7 @@ export function NotificationCenter() {
 		async function handle() {
 			const validNotifications: NotificationItem[] = []
 
-			for (const item of data?.widgetifyCardNotifications || []) {
+			for (const item of fetchedNotifications?.data?.notifications || []) {
 				if (item.id) {
 					const cacheItem = await getWithExpiry(
 						`removed_notification_${item.id}`
@@ -88,7 +83,7 @@ export function NotificationCenter() {
 		}
 
 		handle()
-	}, [data])
+	}, [fetchedNotifications])
 
 	const onClose = async (e: any, id: string, ttl = 1200) => {
 		e.preventDefault()
@@ -100,7 +95,7 @@ export function NotificationCenter() {
 
 	return (
 		<div className="flex flex-col gap-1">
-			{data?.upcomingCalendarEvents?.map((event) => (
+			{fetchedNotifications?.data?.upcomingCalendarEvents?.map((event) => (
 				<div key={event.id} className="relative">
 					<NotificationCardItem
 						title={event.title}
