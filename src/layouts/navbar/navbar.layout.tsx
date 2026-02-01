@@ -4,7 +4,7 @@ import { FiChevronDown } from 'react-icons/fi'
 import { HiHome } from 'react-icons/hi'
 import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent, callEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
 import { SettingsDropdown } from './components/settingsDropdown'
 import { FriendsList } from './friends-list/friends'
@@ -14,6 +14,7 @@ import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
 import { HiRectangleGroup } from 'react-icons/hi2'
+import { usePage } from '@/context/page.context'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -31,12 +32,10 @@ const tabs = [
 	},
 ]
 export function NavbarTabs() {
-	const [activeTab, setActiveTab] = useState<string | null>('home')
+	const { page, setPage } = usePage()
 
-	const handleTabClick = (tab: string) => {
-		setActiveTab(tab)
-		if (tab === 'home') callEvent('closeExplorerPage')
-		else callEvent('openExplorerPage')
+	const handleTabClick = (tab: any) => {
+		setPage(tab)
 		Analytics.event(`navbar_tab_${tab}_click`)
 	}
 
@@ -51,7 +50,7 @@ export function NavbarTabs() {
 					<span
 						className={`
             relative z-10 transition-all duration-300 block
-            ${activeTab === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
+            ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
         `}
 					>
 						{tab.icon}
@@ -59,16 +58,16 @@ export function NavbarTabs() {
 						{tab.hasBadge && (
 							<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
 								<span
-									className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${activeTab === tab.id ? 'block' : 'hidden'}`}
+									className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${page === tab.id ? 'block' : 'hidden'}`}
 								></span>
 								<span
-									className={`relative inline-flex rounded-full h-2 w-2 border border-black/50 ${activeTab === tab.id ? 'bg-primary' : 'bg-primary/80'}`}
+									className={`relative inline-flex rounded-full h-2 w-2 border border-black/50 ${page === tab.id ? 'bg-primary' : 'bg-primary/80'}`}
 								></span>
 							</span>
 						)}
 					</span>
 
-					{activeTab === tab.id && (
+					{page === tab.id && (
 						<div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]">
 							<div className="absolute inset-0 bg-primary blur-[2px]" />
 						</div>

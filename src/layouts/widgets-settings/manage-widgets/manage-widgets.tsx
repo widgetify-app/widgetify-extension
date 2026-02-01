@@ -37,20 +37,6 @@ export function ManageWidgets() {
 					))}
 				</div>
 			</SectionPanel>
-			<SectionPanel title="ترتیب ویجت‌های فعال" size="sm">
-				<div className="flex items-start gap-3 p-3 border rounded-lg bg-primary/10 border-primary/20">
-					<span className="text-lg">💡</span>
-					<div className="text-sm">
-						<p className="mb-1 font-medium text-primary">
-							چگونه ترتیب ویجت‌ها را تغییر دهم؟
-						</p>
-						<p className="leading-relaxed text-muted">
-							در صفحه، روی بالای هر ویجت کلیک کرده و آن را بکشید تا ترتیب
-							آن‌ها را تغییر دهید. تغییرات به‌صورت خودکار ذخیره می‌شوند.
-						</p>
-					</div>
-				</div>
-			</SectionPanel>
 		</WidgetSettingWrapper>
 	)
 }

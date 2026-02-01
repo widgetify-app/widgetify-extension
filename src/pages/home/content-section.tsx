@@ -11,7 +11,6 @@ import { CSS } from '@dnd-kit/utilities'
 import Analytics from '@/analytics'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { DateProvider } from '@/context/date.context'
-import { TodoProvider } from '@/context/todo.context'
 import { useWidgetVisibility, type WidgetItem } from '@/context/widget-visibility.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
@@ -122,20 +121,18 @@ export function ContentSection() {
 				className={`flex flex-col items-center overflow-y-auto scrollbar-none ${layoutPositions[contentAlignment]} flex-1 w-full gap-2 px-1 md:px-4 py-2`}
 			>
 				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-					<div className="order-3 w-full lg:w-1/4 lg:order-1">
+					<div className="order-3 w-full lg:w-[28%] lg:order-1">
 						<WidgetifyLayout />
 					</div>
 
-					<div
-						className={'order-1 w-full lg:w-2/4 lg:order-2 lg:px-2 space-y-2'}
-					>
+					<div className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2'}>
 						<SearchLayout />
 						<BookmarkProvider>
 							<BookmarksList />
 						</BookmarkProvider>
 					</div>
 
-					<div className="order-2 w-full lg:w-1/4 lg:order-3">
+					<div className="order-2 w-full lg:w-[28%] lg:order-3">
 						<WigiPadWidget />
 					</div>
 				</div>

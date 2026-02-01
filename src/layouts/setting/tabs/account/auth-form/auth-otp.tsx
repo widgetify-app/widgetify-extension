@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { FiKey, FiArrowRight, FiRefreshCw } from 'react-icons/fi'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/button/button'
-import { useRequestOtp, useVerifyOtp } from '@/services/hooks/auth/authService.hook'
+import {
+	useGetAuthStatus,
+	useRequestOtp,
+	useVerifyOtp,
+} from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { isEmpty, isEmail, isLessThan } from '@/utils/validators'
@@ -11,6 +15,7 @@ import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { MdDoorSliding } from 'react-icons/md'
+import { TiWarningOutline } from 'react-icons/ti'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -32,6 +37,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 		setError({ email: null, otp: null, api: null })
 	}
 
+	const { data: authStatus } = useGetAuthStatus()
 	const { mutateAsync: requestOtp, isPending } = useRequestOtp()
 	const { mutateAsync: verifyOtp } = useVerifyOtp()
 
@@ -128,7 +134,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 	if (step === 'enter-email')
 		return (
 			<section>
-				<header className="flex items-center gap-2.5 md:gap-3">
+				<div className="flex items-center gap-2.5 md:gap-3">
 					<div
 						aria-hidden="true"
 						className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:rounded-xl bg-primary/10"
@@ -143,11 +149,18 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							ایمیل یا شماره موبایلتان را وارد کنید
 						</p>
 					</div>
-				</header>
+				</div>
+
+				{authStatus?.content && (
+					<div className="my-4 alert alert-warning rounded-2xl ring-4 ring-warning/10">
+						<TiWarningOutline className="w-6 h-6" />
+						{authStatus.content}
+					</div>
+				)}
 
 				<form
 					onSubmit={validateInputs}
-					className="flex flex-col gap-3 mt-4 md:gap-4 md:mt-5"
+					className="flex flex-col gap-3 mt-2 md:gap-4"
 				>
 					<div>
 						<label
@@ -163,13 +176,13 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							name="email"
 							value={email}
 							onChange={setEmail}
-							placeholder="0939... یا example@gmail.com"
+							placeholder="0939... یا exa..e@gma...om"
 							disabled={isPending}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
 							direction="ltr"
 						/>
-						<InputTextError message={error.email} />
+						<InputTextError message={error.api} />
 					</div>
 					<Button
 						type="submit"

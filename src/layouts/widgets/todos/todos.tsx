@@ -30,6 +30,8 @@ import Analytics from '@/analytics'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
+import { TabNavigation } from '@/components/tab-navigation'
+import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
 
 const viewModeOptions = [
 	{ value: TodoViewType.Day, label: 'لیست امروز' },
@@ -136,17 +138,24 @@ export function TodosLayout({ onChangeTab }: Prop) {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<div className="flex items-center justify-between mb-2">
-						<div className="flex items-center justify-around w-32 p-1 text-xs font-medium bg-base-300 rounded-2xl text-content">
-							<div className="bg-primary rounded-xl py-0.5 px-2 text-gray-200">
-								<span>وظایف</span>
-							</div>
-							<div
-								className="cursor-pointer hover:bg-primary/10 rounded-xl py-0.5 px-2"
-								onClick={() => onChangeTab()}
-							>
-								یادداشت
-							</div>
-						</div>
+						<TabNavigation
+							activeTab="todos"
+							onTabClick={onChangeTab}
+							tabs={[
+								{
+									id: 'todos',
+									label: 'وظایف',
+									icon: <HiOutlineCheckCircle size={14} />,
+								},
+								{
+									id: 'notes',
+									label: 'یادداشت',
+									icon: <HiOutlineDocumentText size={14} />,
+								},
+							]}
+							size="small"
+							className="w-fit"
+						/>
 
 						<div className="flex gap-1.5 items-center">
 							{isPending ? <IconLoading /> : null}

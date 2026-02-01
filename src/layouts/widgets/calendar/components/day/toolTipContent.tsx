@@ -1,6 +1,5 @@
 import { FaGlobeAsia } from 'react-icons/fa'
 import { FaMoon } from 'react-icons/fa6'
-import { HiSparkles } from 'react-icons/hi2'
 import { useState } from 'react'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
@@ -23,6 +22,8 @@ import { useIsMutating } from '@tanstack/react-query'
 import { showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
 import Analytics from '@/analytics'
+import { moodOptions } from '@/common/constant/moods'
+import { TbMoodHappy } from 'react-icons/tb'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
@@ -30,37 +31,6 @@ interface CalendarDayDetailsProps {
 	moods: MoodEntry[]
 	onMoodChange?: (mood: MoodType) => void
 }
-
-export const moodOptions = [
-	{
-		value: 'sad',
-		emoji: '😢',
-		label: 'بی‌حال',
-		colorClass: 'error',
-		borderClass: 'border-error/50',
-	},
-	{
-		value: 'normal',
-		emoji: '😐',
-		label: 'معمولی',
-		colorClass: 'warning',
-		borderClass: 'border-yellow-400/50',
-	},
-	{
-		value: 'happy',
-		emoji: '😊',
-		label: 'خوب',
-		colorClass: 'secondary',
-		borderClass: 'border-secondary/50',
-	},
-	{
-		value: 'excited',
-		emoji: '😂',
-		label: 'سرحال',
-		colorClass: 'success',
-		borderClass: 'border-green-400/50',
-	},
-]
 
 export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	events,
@@ -125,7 +95,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			)
 		} else {
 			setMood(value as MoodType)
-			showToast('مود شما با موفقیت ثبت شد!', 'success', {
+			showToast('مود شما با موفقیت ثبت شد.', 'success', {
 				alarmSound: true,
 			})
 		}
@@ -188,12 +158,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 				<div className="p-1.5 rounded-2xl bg-content">
 					<div className="flex items-center gap-1 mb-1.5 px-0.5">
-						<HiSparkles className="text-secondary" size={12} />
+						<TbMoodHappy className="text-secondary" size={12} />
 						<span className="text-[10px] font-medium text-content">
 							مود امروز
-						</span>
-						<span className="text-white badge badge-primary badge-xs !p-0.5">
-							جدید
 						</span>
 					</div>
 					<div className="grid grid-cols-4 gap-1">

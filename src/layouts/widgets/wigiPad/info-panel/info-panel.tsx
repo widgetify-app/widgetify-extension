@@ -3,40 +3,23 @@ import { NotificationItem } from './components/ann-item'
 import { useInfoPanelData } from './hooks/useInfoPanelData'
 import { BirthdayTab } from './tabs/birthday/birthday-tab'
 import { BsFillCalendar2WeekFill } from 'react-icons/bs'
+import { TabNavigation } from '@/components/tab-navigation'
+import { InfoWeather } from './infoWeather'
 
+const sections = [
+	{ id: 'all', label: 'ویجی تب', icon: '📋' },
+	{ id: 'weather', label: 'آب و هوا', icon: '⛅' },
+	{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
+]
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')
 	const data = useInfoPanelData()
 	const tabContainerRef = useRef<HTMLDivElement>(null)
-	const sections = [
-		{ id: 'all', label: 'ویجی تب', icon: '📋' },
-		{ id: 'birthdays', label: 'تولدها', icon: '🎂' },
-	]
 
-	const handleSectionClick = (
-		sectionId: string,
-		event: React.MouseEvent<HTMLButtonElement>
-	) => {
-		setActiveSection(sectionId)
-
-		const button = event.currentTarget
-		const container = tabContainerRef.current
-
-		if (button && container) {
-			const containerRect = container.getBoundingClientRect()
-			const buttonRect = button.getBoundingClientRect()
-
-			const scrollLeft =
-				button.offsetLeft - containerRect.width / 2 + buttonRect.width / 2
-
-			container.scrollTo({
-				left: scrollLeft,
-				behavior: 'smooth',
-			})
-		}
-	}
 	const renderContent = () => {
 		switch (activeSection) {
+			case 'weather':
+				return <InfoWeather />
 			case 'birthdays':
 				return <BirthdayTab birthdays={data.birthdays} />
 			case 'google-meetings':
@@ -62,29 +45,21 @@ export function InfoPanel() {
 
 	return (
 		<div className="flex flex-col h-full overflow-hidden">
-			<div
-				ref={tabContainerRef}
-				className="py-1 flex lg:justify-start overflow-x-auto scrollbar-none gap-x-0.5"
-			>
-				{sections.map((section) => (
-					<button
-						key={section.id}
-						onClick={(event) => handleSectionClick(section.id, event)}
-						className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] leading-none font-medium whitespace-nowrap transition-colors cursor-pointer rounded-full ${
-							activeSection === section.id
-								? 'bg-primary text-white'
-								: 'text-muted bg-base-300/70 border border-base-300/70'
-						}
-						 ${section.id === 'google-meetings' ? 'line-through' : ''}`}
-					>
-						<span>{section.icon}</span>
-						<span>{section.label}</span>
-					</button>
-				))}
+			<div className="flex-1 p-0.5 space-y-1 overflow-y-auto scrollbar-none">
+				{renderContent()}
 			</div>
 
-			<div className="flex-1 p-2 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-base-300">
-				{renderContent()}
+			<div
+				ref={tabContainerRef}
+				className="py-1 flex lg:justify-start overflow-x-auto scrollbar-none gap-x-0.5 border-t border-base-content/5 bg-base-200/20"
+			>
+				<TabNavigation
+					activeTab={activeSection}
+					onTabClick={(tab) => setActiveSection(tab)}
+					tabs={sections}
+					size="small"
+					className="m-0! py-0.5! border-none! flex-nowrap w-full"
+				/>
 			</div>
 		</div>
 	)

@@ -4,6 +4,8 @@ import { FiChevronUp } from 'react-icons/fi'
 import { LuX } from 'react-icons/lu'
 import type { BookmarkType } from '../types/bookmark.types'
 import { showToast } from '@/common/toast'
+import { HiOutlineBookmark, HiOutlineFolder } from 'react-icons/hi2'
+import { TabNavigation } from '@/components/tab-navigation'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
 
@@ -15,29 +17,16 @@ export function IconSourceSelector({
 	setIconSource: (source: IconSourceType) => void
 	theme?: string
 }) {
-	const getButtonStyle = (isActive: boolean) => {
-		if (isActive) {
-			return 'bg-primary text-white'
-		}
-
-		return 'text-content'
-	}
-
 	return (
-		<div className="w-fit p-1 flex justify-center gap-1 rounded-2xl text-[10px] bg-base-300">
-			<div
-				onClick={() => setIconSource('auto')}
-				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'auto')}`}
-			>
-				آیکون خودکار
-			</div>
-			<div
-				onClick={() => setIconSource('upload')}
-				className={`px-3 py-1 cursor-pointer rounded-xl transition-all duration-300 ${getButtonStyle(iconSource === 'upload')}`}
-			>
-				آپلود آیکون
-			</div>
-		</div>
+		<TabNavigation<IconSourceType>
+			size="small"
+			tabs={[
+				{ id: 'auto', label: 'آیکون خودکار' },
+				{ id: 'upload', label: 'آپلود آیکون' },
+			]}
+			activeTab={iconSource}
+			onTabClick={(tab) => setIconSource(tab)}
+		/>
 	)
 }
 
@@ -47,33 +36,22 @@ export function TypeSelector({
 }: {
 	type: BookmarkType
 	setType: (type: BookmarkType) => void
-	theme?: string
 }) {
 	return (
-		<>
-			<button
-				type="button"
-				onClick={() => setType('BOOKMARK')}
-				className={`flex-1 py-1.5 cursor-pointer rounded-xl transition-colors duration-300 active:scale-95 ${
-					type === 'BOOKMARK'
-						? 'bg-primary text-white/85'
-						: 'bg-base-300 text-content'
-				}`}
-			>
-				بوکمارک
-			</button>
-			<button
-				type="button"
-				onClick={() => setType('FOLDER')}
-				className={`flex-1 py-1.5 cursor-pointer rounded-xl transition-colors duration-300 active:scale-95 ${
-					type === 'FOLDER'
-						? 'bg-primary text-white/85'
-						: 'bg-base-300 text-content'
-				}`}
-			>
-				پوشه
-			</button>
-		</>
+		<TabNavigation<BookmarkType>
+			className="w-full!"
+			size="small"
+			tabs={[
+				{
+					id: 'BOOKMARK',
+					label: 'بوکمارک',
+					icon: <HiOutlineBookmark size={14} />,
+				},
+				{ id: 'FOLDER', label: 'پوشه', icon: <HiOutlineFolder size={14} /> },
+			]}
+			activeTab={type}
+			onTabClick={(tab) => setType(tab)}
+		/>
 	)
 }
 

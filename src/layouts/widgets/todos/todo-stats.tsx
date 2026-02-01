@@ -82,7 +82,7 @@ export function TodoStats() {
 									}}
 								></div>
 							</div>
-							<span className={'text-xs text-content'}>زیاد</span>
+							<span className={'text-xs text-content'}>مهم</span>
 						</div>
 						<div className="text-center">
 							<div className="flex items-end h-8">

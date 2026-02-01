@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { setToStorage } from '@/common/storage'
 import { getMainClient } from '@/services/api'
 
@@ -119,6 +119,15 @@ async function verifyOtp(payload: OtpVerifyPayload): Promise<AuthResponse> {
 	return response.data
 }
 
+async function getAuthState(): Promise<{
+	content?: string
+	type?: 'warning' | 'info'
+}> {
+	const client = await getMainClient()
+	const response = await client.get('/auth/status')
+	return response.data.data
+}
+
 async function setupWizard(data: WizardPayload): Promise<any> {
 	const client = await getMainClient()
 	const response = await client.post('/users/@me/complete-wizard', data)
@@ -155,6 +164,12 @@ export function useGoogleSignIn() {
 	})
 }
 
+export function useGetAuthStatus() {
+	return useQuery({
+		queryFn: () => getAuthState(),
+		queryKey: ['get-auth-status'],
+	})
+}
 export function useRequestOtp() {
 	return useMutation({
 		mutationFn: (payload: OtpPayload) => requestOtp(payload),

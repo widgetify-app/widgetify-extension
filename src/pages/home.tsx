@@ -16,6 +16,8 @@ import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { ContentSection } from './home/content-section'
 import { ExplorerContent } from '@/layouts/explorer/explorer'
+import { usePage } from '@/context/page.context'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const steps: Step[] = [
 	{
@@ -84,7 +86,7 @@ export function HomePage() {
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
-	const [currentView, setCurrentView] = useState<'home' | 'explore'>('home')
+	const { page } = usePage()
 
 	useEffect(() => {
 		async function displayModalIfNeeded() {
@@ -162,21 +164,11 @@ export function HomePage() {
 			}
 		)
 
-		const openExplorerPageEvent = listenEvent('openExplorerPage', () => {
-			setCurrentView('explore')
-		})
-
-		const closeExplorerPageEvent = listenEvent('closeExplorerPage', () => {
-			setCurrentView('home')
-		})
-
 		Analytics.pageView('Home', '/')
 
 		return () => {
 			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
-			openExplorerPageEvent()
-			closeExplorerPageEvent()
 		}
 	}, [])
 
@@ -266,7 +258,21 @@ export function HomePage() {
 				<WidgetVisibilityProvider>
 					<NavbarLayout />
 
-					{currentView === 'home' ? <ContentSection /> : <ExplorerContent />}
+					<AnimatePresence mode="wait">
+						<motion.div
+							key={page}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{
+								duration: 0.15,
+								ease: 'linear',
+							}}
+							className="flex w-full h-full"
+						>
+							{page === 'home' ? <ContentSection /> : <ExplorerContent />}
+						</motion.div>
+					</AnimatePresence>
 					<WidgetSettingsModal
 						isOpen={showWidgetSettings}
 						onClose={() => {

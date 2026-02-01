@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
-import { TrendingSearches } from './trending/trending-searches'
 import { VoiceSearchButton } from './voice/VoiceSearchButton'
 import { FcGoogle } from 'react-icons/fc'
 
@@ -38,13 +37,6 @@ export function SearchLayout() {
 			browser.search.query({ text: query.trim() })
 			Analytics.event('voice_search_submitted')
 		}
-	}
-
-	const handleSelectTrend = (trend: string) => {
-		setIsInputFocused(false)
-		// Optional: auto-submit the search
-		browser.search.query({ text: trend })
-		Analytics.event('search_trend_selected')
 	}
 
 	useEffect(() => {
@@ -120,12 +112,6 @@ export function SearchLayout() {
 					</div>
 				</form>
 				<BrowserBookmark />
-			</div>
-			<div ref={trendingRef}>
-				<TrendingSearches
-					visible={isInputFocused && searchQuery === ''}
-					onSelectTrend={handleSelectTrend}
-				/>
 			</div>
 		</div>
 	)
