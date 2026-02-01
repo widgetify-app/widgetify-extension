@@ -23,7 +23,7 @@ export function DailyMoodNotification() {
 	const isAdding = useIsMutating({ mutationKey: ['upsertMoodLog'] }) > 0
 
 	const onRemoveNotif = () => {
-		callEvent('remove_from_notifications', { id: 'notificationMood', ttl: 1440 })
+		callEvent('remove_from_notifications', { id: 'notificationMood', ttl: 420 })
 	}
 
 	const handleMoodChange = async (value: string) => {
@@ -66,7 +66,7 @@ export function DailyMoodNotification() {
 			})
 			callEvent('remove_from_notifications', {
 				id: 'notificationMood',
-				ttl: 1440,
+				ttl: 420,
 			})
 		}, 1500)
 		Analytics.event('notification_mood_clicked')
