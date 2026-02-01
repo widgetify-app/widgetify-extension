@@ -9,6 +9,7 @@ import { listenEvent } from '@/common/utils/call-event'
 import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import type { ReactNode } from 'react'
 import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
+import Analytics from '@/analytics'
 
 export function NotificationCenter() {
 	const { data: fetchedNotifications } = useGetNotifications({
@@ -91,6 +92,7 @@ export function NotificationCenter() {
 
 		const filtered = notifications.filter((f) => f.id !== id)
 		setNotifications([...filtered])
+		Analytics.event('notifications_close')
 	}
 
 	return (

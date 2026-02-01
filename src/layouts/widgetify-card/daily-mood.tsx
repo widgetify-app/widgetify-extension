@@ -29,7 +29,7 @@ export function DailyMoodNotification() {
 	const handleMoodChange = async (value: string) => {
 		if (isAdding) return
 		if (value === '') return
-
+		Analytics.event('notifications_daily_moods')
 		const currentGregorian = today.clone().doAsGregorian()
 
 		const [error, response] = await safeAwait<
