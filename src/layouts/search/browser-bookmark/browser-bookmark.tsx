@@ -125,7 +125,6 @@ export function BrowserBookmark() {
 				</div>
 			</div>
 
-			{/* پاپ‌اور با مختصات هوشمند */}
 			<BookmarkPopover
 				isOpen={isOpen}
 				onClose={() => setIsOpen(false)}
