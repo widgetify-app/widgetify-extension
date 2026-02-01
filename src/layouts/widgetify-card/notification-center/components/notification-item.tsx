@@ -15,12 +15,14 @@ interface Prop {
 	goTo: NotificationItem['goTo']
 }
 
-function Wrapper({ link, children, className, type, goTo }: Prop) {
-	const isClickable = !!link || type === 'page'
+function Wrapper({ link, children, className, type, goTo, target }: Prop) {
+	const isClickable = !!link || ['page', 'action'].includes(type || '---')
 
 	const handleClick = () => {
 		if (type === 'page' && goTo) {
 			callEvent('go_to_page', goTo)
+		} else if (type === 'action' && target) {
+			callEvent(target as any)
 		}
 	}
 
