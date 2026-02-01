@@ -8,7 +8,7 @@ import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 import { callEvent } from '@/common/utils/call-event'
-import { DelayMoodNotification } from './delay-mood'
+import { DailyMoodNotification } from './daily-mood'
 export const WidgetifyLayout = () => {
 	const { user, isAuthenticated, isLoadingUser } = useAuth()
 	const { blurMode, updateSetting } = useGeneralSetting()
@@ -21,7 +21,7 @@ export const WidgetifyLayout = () => {
 			if (!user?.hasTodayMood) {
 				callEvent('add_to_notifications', {
 					id: 'notificationMood',
-					node: <DelayMoodNotification />,
+					node: <DailyMoodNotification />,
 				})
 			}
 		}

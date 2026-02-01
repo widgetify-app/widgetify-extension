@@ -14,7 +14,7 @@ import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 import { HiXMark } from 'react-icons/hi2'
 
-export function DelayMoodNotification() {
+export function DailyMoodNotification() {
 	const queryClient = useQueryClient()
 	const { user } = useAuth()
 	const { today } = useDate()
@@ -99,7 +99,7 @@ export function DelayMoodNotification() {
 						<div
 							key={option.value}
 							onClick={() => !isAdding && handleMoodChange(option.value)}
-							className={`p-1.5 w-full border border-content rounded-xl transition-all cursor-pointer ${
+							className={`p-1.5 w-full shadow-sm rounded-xl transition-all cursor-pointer ${
 								mood === option.value
 									? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
 									: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100 hover:scale-95`
