@@ -95,30 +95,34 @@ export function DailyMoodNotification() {
 					</button>
 				</div>
 				<div className="flex justify-around w-full h-10 mt-2 gap-0.5">
-					{moodOptions.map((option) => (
-						<div
-							key={option.value}
-							onClick={() => !isAdding && handleMoodChange(option.value)}
-							className={`p-1.5 w-full shadow-sm rounded-xl transition-all cursor-pointer ${
-								mood === option.value
-									? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
-									: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100 hover:scale-95`
-							}`}
-						>
-							{isAdding ? (
-								<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
-							) : (
-								<div className="flex flex-col items-center gap-0.5 hover:scale-95">
-									<div className="text-lg leading-none">
-										{option.emoji}
+					{moodOptions
+						.filter((f) => f.label)
+						.map((option) => (
+							<div
+								key={option.value}
+								onClick={() =>
+									!isAdding && handleMoodChange(option.value)
+								}
+								className={`p-1.5 w-full shadow-sm rounded-xl transition-all cursor-pointer ${
+									mood === option.value
+										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
+										: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100 hover:scale-95`
+								}`}
+							>
+								{isAdding ? (
+									<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
+								) : (
+									<div className="flex flex-col items-center gap-0.5 hover:scale-95">
+										<div className="text-lg leading-none">
+											{option.emoji}
+										</div>
+										<div className="text-[10px] leading-tight">
+											{option.label}
+										</div>
 									</div>
-									<div className="text-[10px] leading-tight">
-										{option.label}
-									</div>
-								</div>
-							)}
-						</div>
-					))}
+								)}
+							</div>
+						))}
 				</div>
 			</div>
 		</div>
