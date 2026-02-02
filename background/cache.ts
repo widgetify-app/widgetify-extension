@@ -3,6 +3,13 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { NavigationRoute } from 'workbox-routing'
+const allowedPaths = [
+	'/extension/wigi-pad-data',
+	'/date/events',
+	'/news/rss',
+	'/currencies',
+	'/wallpapers',
+]
 
 export function setupCaching() {
 	if (typeof self !== 'undefined' && '__WB_MANIFEST' in self) {
@@ -10,6 +17,29 @@ export function setupCaching() {
 			precacheAndRoute((self as any).__WB_MANIFEST)
 		})
 	}
+
+	registerRoute(
+		({ url, request }) => {
+			if (request.method !== 'GET') return false
+			if (url.origin !== 'https://api.widgetify.ir') return false
+
+			return allowedPaths.some((path) => url.pathname.startsWith(path))
+		},
+
+		new StaleWhileRevalidate({
+			cacheName: 'widgetify-public-api',
+			plugins: [
+				new CacheableResponsePlugin({
+					statuses: [200],
+				}),
+				new ExpirationPlugin({
+					maxEntries: 150,
+					maxAgeSeconds: 60 * 60 * 5,
+					purgeOnQuotaError: true,
+				}),
+			],
+		})
+	)
 
 	const isDev = import.meta.env.DEV
 

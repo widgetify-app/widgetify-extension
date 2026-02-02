@@ -27,7 +27,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
 	const [category, setCategory] = useState('')
-	const { data: fetchedTags } = useGetTags(isAuthenticated)
+	const { data: fetchedTags } = useGetTags(isAuthenticated && isExpanded)
 	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
 	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(today)
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
