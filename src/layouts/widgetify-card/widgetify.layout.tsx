@@ -18,7 +18,7 @@ export const WidgetifyLayout = () => {
 	useEffect(() => {
 		if (isAuthenticated && !isLoadingUser) {
 			if (user?.name) setUserName(user.name)
-			if (!user?.hasTodayMood) {
+			if (!user?.hasTodayMood && !user?.inCache) {
 				callEvent('add_to_notifications', {
 					id: 'notificationMood',
 					node: <DailyMoodNotification />,
