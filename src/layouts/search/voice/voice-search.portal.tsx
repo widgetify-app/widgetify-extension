@@ -31,7 +31,7 @@ export function VoiceSearchPortal({ onClose, onSearch }: VoiceSearchPortalProps)
 	}, [selectedLanguage])
 
 	return (
-		<div className="absolute top-0 left-0 w-full z-[60] bg-base-100 rounded-[28px] shadow-2xl p-5 animate-in fade-in slide-in-from-top-4 duration-300">
+		<div className="absolute top-0 left-0 w-full z-[60] bg-base-100 portal rounded-2xl shadow-2xl p-5 animate-in fade-in slide-in-from-top-4 duration-300">
 			<div className="flex items-center justify-between px-1 mb-6">
 				<div className="flex items-center gap-2">
 					<span className="text-[15px] font-medium text-base-content/90">

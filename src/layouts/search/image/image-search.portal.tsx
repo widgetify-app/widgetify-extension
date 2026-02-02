@@ -70,7 +70,7 @@ export function ImageSearchPortal({ onClose }: { onClose: () => void }) {
 	}
 
 	return (
-		<div className="absolute top-0 left-0 w-full min-h-[160px] z-[60] bg-base-100 rounded-3xl shadow-2xl p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+		<div className="absolute top-0 left-0 w-full min-h-[160px] z-[60] bg-content  rounded-2xl portal shadow-2xl p-4 animate-in fade-in slide-in-from-top-2 duration-200">
 			<div className="flex items-center justify-between px-2 mb-4">
 				<span className="text-sm font-black text-base-content/80">
 					جستجوی تصویر با گوگل

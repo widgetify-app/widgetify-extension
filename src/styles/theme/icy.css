@@ -98,3 +98,9 @@
     background-color: #171717b3;
     color: white;
 }
+
+[data-theme="icy"] .portal {
+    background-color: rgba(54, 54, 54, 0.921);
+    backdrop-filter: blur(40px) saturate(160%) brightness(112%);
+
+}

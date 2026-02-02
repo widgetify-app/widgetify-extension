@@ -9,6 +9,7 @@ const allowedPaths = [
 	'/news/rss',
 	'/currencies',
 	'/wallpapers',
+	'/contents',
 ]
 
 export function setupCaching() {
