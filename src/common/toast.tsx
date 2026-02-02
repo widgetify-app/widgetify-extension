@@ -1,4 +1,4 @@
-import type React from 'react'
+import React from 'react'
 import toast from 'react-hot-toast'
 import { playAlarm } from './playAlarm'
 
@@ -165,17 +165,18 @@ export function showToast(
 			)
 		}
 	} else {
-		toast.custom((t) => (
-			<div
-				className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-			>
-				<div className="flex-1 w-0 p-4">
-					<div className="flex items-start">
-						<div className="flex-1 ml-3">{message}</div>
+		if (React.isValidElement(message))
+			toast.custom((t) => (
+				<div
+					className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+				>
+					<div className="flex-1 w-0 p-4">
+						<div className="flex items-start">
+							<div className="flex-1 ml-3">{message}</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		))
+			))
 	}
 
 	if (options?.alarmSound) {

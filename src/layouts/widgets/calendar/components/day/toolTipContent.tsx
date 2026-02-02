@@ -82,7 +82,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		)
 		if (error) {
 			const msg = translateError(error)
-			showToast(msg as any, 'error')
+			showToast(typeof msg === 'string' ? msg : 'خطایی رخ داد!', 'error')
 			return
 		}
 
