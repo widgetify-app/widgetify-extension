@@ -4,7 +4,7 @@ import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { VoiceSearchButton } from './voice/voice-search.button'
 import { FcGoogle } from 'react-icons/fc'
-import { ImageSearchPortal } from './image/image-search.modal'
+import { ImageSearchPortal } from './image/image-search.portal'
 import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
 
