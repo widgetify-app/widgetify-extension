@@ -35,7 +35,12 @@ export function NotificationCenter() {
 				)
 				if (!notifFromStorage) {
 					setPushed((prev: any) => {
-						if (prev.some((item: NotificationItem) => item.id === notif.id)) {
+						if (
+							prev.some(
+								(item: { id: string; node: ReactNode }) =>
+									item.id === notif.id
+							)
+						) {
 							return prev
 						}
 						return [...prev, notif]
@@ -47,7 +52,7 @@ export function NotificationCenter() {
 		const removeEvent = listenEvent(
 			'remove_from_notifications',
 			async ({ id, ttl }) => {
-				setNotifications((prev) => prev.filter((item) => item.id !== id))
+				setPushed((prev) => prev.filter((item) => item.id !== id))
 				if (ttl) {
 					await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
 				} else {

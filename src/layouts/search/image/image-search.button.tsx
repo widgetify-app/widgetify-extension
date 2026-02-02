@@ -12,7 +12,7 @@ export function ImageSearchButton({ onClick }: { onClick: () => void }) {
 			<button
 				type="button"
 				onClick={() => onClickHandle()}
-				className="flex items-center justify-center transition-colors rounded-full cursor-pointer h-9 w-9 hover:bg-base-300 shrink-0"
+				className="relative flex items-center justify-center transition-colors rounded-full cursor-pointer h-9 w-9 hover:bg-base-300 shrink-0"
 			>
 				<svg
 					className="w-6 h-6 transition-colors text-base-content/50"
