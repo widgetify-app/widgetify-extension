@@ -57,52 +57,51 @@ interface Props {
 
 export function ThemeSelector({ fetched_themes }: Props) {
 	const { setTheme, theme } = useTheme()
-	const [themes, setThemes] = useState<ThemeItem[]>(defaultThemes)
-	const [selected, setSelected] = useState<ThemeItem | null>(null)
-
-	function onClick(item: ThemeItem) {
-		setTheme(item.id)
-		setSelected(item)
-		Analytics.event('theme_selected')
-	}
-
-	useEffect(() => {
-		const currentTheme = themes.find((t) => t.id === theme)
-		if (currentTheme) {
-			setSelected(currentTheme)
-		}
-	}, [themes])
-
-	useEffect(() => {
-		if (fetched_themes.length) {
-			const mapped: ThemeItem[] = fetched_themes.map((item) => ({
-				id: item.value,
-				name: item.name ?? 'بدون نام',
-				icon: <IoMdStar size={14} />,
-				description: item?.description || 'تم خریداری شده',
-			}))
-			setThemes([...defaultThemes, ...mapped])
-		}
-	}, [fetched_themes])
-
-	const handleMoreClick = () => {
-		Analytics.event('theme_market_opened')
-		callEvent('openMarketModal')
-	}
-
-	const renderThemePreview = (item: ThemeItem) => (
-		<Tooltip content={item.description}>
-			<div className="flex items-center gap-2">
-				<span
-					className="flex items-center justify-center w-5 h-5 rounded-full bg-content bg-glass text-primary"
-					data-theme={item.id}
-				>
-					{item.icon}
-				</span>
-				<span className="w-32 text-xs truncate">{item.description}</span>
-			</div>
-		</Tooltip>
-	)
+	const themes = [
+		{
+			id: 'glass',
+			name: 'شیشه‌ای تیره',
+			icon: <MdOutlineBlurOn size={18} />,
+			buttonClass: 'backdrop-blur-md text-white bg-black/40',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'lightglass',
+			name: 'شیشه‌ای روشن',
+			icon: <MdOutlineBlurOn size={18} />,
+			buttonClass: 'backdrop-blur-md text-gray-800 bg-white/55',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'icy',
+			name: 'یخی (آزمایشی)',
+			icon: <MdOutlineBlurOn size={18} />,
+			buttonClass:
+				'backdrop-blur-md text-gray-800 bg-white/50 border border-white/20',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'light',
+			name: 'روشن',
+			icon: <IoMdSunny size={18} />,
+			buttonClass: 'bg-gray-100 text-gray-800 border border-gray-200',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'dark',
+			name: 'تیره',
+			icon: <IoMdMoon size={18} />,
+			buttonClass: 'text-white',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+		{
+			id: 'zarna',
+			name: 'زرنا',
+			icon: <IoMdStar size={18} />,
+			buttonClass: 'text-content',
+			activeClass: 'ring-2 ring-blue-500',
+		},
+	]
 
 	return (
 		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
@@ -115,10 +114,23 @@ export function ThemeSelector({ fetched_themes }: Props) {
 							isActive={selected?.id === item.id}
 							onClick={() => onClick(item)}
 							key={item.id}
-							className="w-full !h-20 !max-h-20 !min-h-20"
-							label={item.name}
-							description={renderThemePreview(item)}
-						/>
+							onClick={() => setTheme(item.id)}
+							className={`
+                			relative flex flex-col p-2 rounded-lg transition-all cursor-pointer duration-300 shadow-md hover:shadow-lg bg-base-100  justify-center
+                			${item.buttonClass}
+                			${theme === item.id ? item.activeClass : 'hover:ring-2 hover:ring-blue-300'}
+              									`}
+						>
+							<div className="flex items-center gap-2">
+								<span className="flex items-center justify-center w-8 h-8 rounded-full bg-black/10">
+									{item.icon}
+								</span>
+								<span className="text-xs font-medium">{item.name}</span>
+								{theme === item.id && (
+									<div className="absolute w-2 h-2 bg-blue-500 rounded-full top-2 right-2" />
+								)}
+							</div>
+						</div>
 					))}
 					<div
 						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
