@@ -6,9 +6,7 @@ import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
-import noInternet from '@/assets/images/no-internet.png'
 
 export function FolderBookmarkItem({
 	bookmark,
@@ -42,13 +40,7 @@ export function FolderBookmarkItem({
 							key={index}
 							className="flex items-center justify-center w-4 h-4"
 						>
-							<img
-								src={child.icon || getFaviconFromUrl(child.url || '')}
-								className="object-center p-0.5 h-full rounded-md"
-								onError={(e) => {
-									;(e.target as HTMLImageElement).src = noInternet
-								}}
-							/>
+							<BookmarkIcon bookmark={child} />
 						</div>
 					))}
 				</div>
