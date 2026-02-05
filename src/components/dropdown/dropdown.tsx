@@ -197,7 +197,7 @@ export function Dropdown({
 								fixed z-[9999] border border-content rounded-xl
 								bg-content shadow-xl
 								overflow-hidden pointer-events-auto
-								animate-in fade-in-0 zoom-in-95 duration-100
+								animate-in fade-in-0 zoom-in-95 duration-100 bg-glass
 								${dropdownClassName}
 							`}
 							style={{
