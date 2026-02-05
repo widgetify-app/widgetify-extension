@@ -104,31 +104,25 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={<p className="mt-4"> 🥳 نسخه جدید، آمادست!</p>}
+			title={'🥳 نسخه جدید، آمادست!'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 			showCloseButton={false}
 		>
 			<div className="flex flex-col max-h-[80vh]">
-				<div className="relative overflow-hidden border-b border-base-300/20 rounded-2xl h-28">
-					<div className="absolute inset-0 scale-105 bg-center bg-no-repeat bg-cover animate-pan" />
-
-					<div className="relative flex flex-col gap-1 p-5">
-						<div className="flex items-center justify-between">
-							<div className="flex flex-col">
-								<h2 className="text-3xl font-black text-content">
-									{VERSION_NAME}
-								</h2>
-								<p className="mt-1 text-xs font-medium text-muted">
-									آپدیت جدید با کلی ویژگی و بهبود جذاب اومده!
-								</p>
-							</div>
-						</div>
+				<div className="flex items-center justify-between">
+					<div className="flex flex-col">
+						<h2 className="text-2xl font-black text-content">
+							{VERSION_NAME}
+						</h2>
+						<p className="mt-1 text-xs font-medium text-muted">
+							آپدیت جدید با کلی ویژگی و بهبود جذاب اومده!
+						</p>
 					</div>
 				</div>
 
-				<div className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-none">
+				<div className="flex-1 p-2 space-y-1 overflow-y-auto max-h-72">
 					<div className="flex flex-col gap-1">
 						{releaseNotes.map((note, index) => (
 							<div
@@ -152,31 +146,30 @@ export const UpdateReleaseNotesModal = ({
 						))}
 					</div>
 
-					<div className="flex items-center justify-center p-6 text-muted">
+					<div className="flex items-center justify-center p-2 text-muted">
 						<RiThumbUpLine className="ml-2" size={16} />
 						<span className="text-xs">دمت گرم که همراه مایی</span>
 					</div>
 				</div>
-
-				<div className="flex items-center justify-between p-5 border-t border-base-300/10 bg-base-200/40">
-					<a
-						href="https://feedback.widgetify.ir"
-						target="_blank"
-						rel="noreferrer"
-						className="text-[10px]  font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
-					>
-						پیشنهاد یا گزارش مشکل
-					</a>
-					<Button
-						size="sm"
-						onClick={onClose}
-						disabled={counter > 0}
-						className="min-w-[130px] h-11 !rounded-2xl font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
-						isPrimary={true}
-					>
-						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
-					</Button>
-				</div>
+			</div>
+			<div className="flex items-center justify-between p-5 border-t border-base-300/10 bg-base-200/40">
+				<a
+					href="https://feedback.widgetify.ir"
+					target="_blank"
+					rel="noreferrer"
+					className="text-[10px]  font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
+				>
+					پیشنهاد یا گزارش مشکل
+				</a>
+				<Button
+					size="sm"
+					onClick={onClose}
+					disabled={counter > 0}
+					className="min-w-[130px] h-11 !rounded-2xl font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
+					isPrimary={true}
+				>
+					{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
+				</Button>
 			</div>
 		</Modal>
 	)
