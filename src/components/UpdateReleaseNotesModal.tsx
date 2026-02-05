@@ -4,7 +4,6 @@ import {
 	RiCheckboxCircleLine,
 	RiThumbUpLine,
 	RiSparklingLine,
-	RiCompassDiscoverLine,
 } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
@@ -27,14 +26,33 @@ const VERSION_NAME = ConfigKey.VERSION_NAME
 
 const releaseNotes: ReleaseNote[] = [
 	{
-		type: 'improvement',
-		title: 'بهبود ظاهری',
-		description: 'ظاهر بعضی از قسمت هارو بهتر کردیم',
+		type: 'feature',
+		title: 'امکان سرچ با عکس',
+		description:
+			'حالا میتونی با آپلود عکس، چیزایی که میخوای رو پیدا کنی! امتحانش کن، ممکنه عاشقش بشی! 🖼️🔍',
 	},
 	{
-		type: 'bugfix',
-		title: 'رفع چندین مشکل جزئی',
-		description: 'با سپاس از شما، مشکلات گزارش شده رو برطرف کردیم',
+		type: 'feature',
+		title: 'امکان جستجوی صوتی',
+		description:
+			'حالا میتونی با صدات جستجو کنی! فقط کافی‌یه روی آیکون میکروفون کلیک کنی و شروع به صحبت کنی! 🎤',
+	},
+	{
+		type: 'feature',
+		title: 'امکان فیلتر تگ وظایف',
+		description:
+			'حالا میتونی توی ویجت وظایف، فقط اونایی که تگ خاصی دارن رو ببینی! یه عالمه کارایی که میتونی باهاش انجام بدی 🏷️',
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود ظاهری',
+		description: 'یکم به ظاهر رسیدگی کردیم، حالا همه چیز جذاب‌تر و دلنشین‌تر شده!',
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود عملکرد کلی',
+		description:
+			'با بهینه‌سازی‌های انجام شده، حالا همه چیز سریع‌تر و روان‌تر از قبل اجرا میشه',
 	},
 ]
 
@@ -86,7 +104,7 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'آپدیت جدید رسید'}
+			title={'🥳 نسخه جدید، آمادست!'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
@@ -94,18 +112,7 @@ export const UpdateReleaseNotesModal = ({
 		>
 			<div className="flex flex-col max-h-[80vh]">
 				<div className="relative overflow-hidden border-b border-base-300/20 rounded-2xl h-28">
-					<div
-						className="absolute inset-0 scale-105 bg-center bg-no-repeat bg-cover animate-pan"
-						style={{
-							backgroundImage:
-								'url(http://cdn.widgetify.ir/extension/hope.png)',
-							filter: 'brightness(0.35) contrast(1.1)',
-							maskImage:
-								'linear-gradient(to bottom, black 0%, transparent 100%)',
-							WebkitMaskImage:
-								'linear-gradient(to bottom, black 0%, transparent 100%)',
-						}}
-					/>
+					<div className="absolute inset-0 scale-105 bg-center bg-no-repeat bg-cover animate-pan" />
 
 					<div className="relative flex flex-col gap-1 p-5">
 						<div className="flex items-center justify-between">
@@ -114,7 +121,7 @@ export const UpdateReleaseNotesModal = ({
 									{VERSION_NAME}
 								</h2>
 								<p className="mt-1 text-xs font-medium text-muted">
-									آدمیزاد به امید زندسـت! 🤞💙{' '}
+									آپدیت جدید با کلی ویژگی و بهبود جذاب اومده!
 								</p>
 							</div>
 						</div>
@@ -138,7 +145,7 @@ export const UpdateReleaseNotesModal = ({
 									</div>
 									{getTypeIcon(note)}
 								</div>
-								<p className="text-[10px] leading-relaxed text-muted font-light pr-3">
+								<p className="text-[10px] leading-relaxed text-base-content/80  pr-1">
 									{note.description}
 								</p>
 							</div>
