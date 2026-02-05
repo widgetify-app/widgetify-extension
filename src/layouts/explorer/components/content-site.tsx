@@ -26,7 +26,7 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1 transition-all duration-500 group active:scale-95 ${pos} rounded-2xl hover:bg-base-300  group-hover:shadow-sm p-0.5 ${!link.hasBorder ? 'border-r border-l border-b border-base-300 hover:border-none' : ''}`}
+			className={`relative flex flex-col items-center gap-1 transition-all duration-500 group active:scale-95 ${pos} rounded-2xl hover:bg-base-300  group-hover:shadow-sm p-0.5 ${link.hasBorder ? 'border-r border-l border-b border-base-300 hover:border-none' : ''}`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
