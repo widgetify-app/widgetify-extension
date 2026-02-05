@@ -14,10 +14,8 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		const event = listenEvent('go_to_page', (p) => {
-			console.log('listenEvent', p)
 			setPage(p)
 		})
-		console.log('listenEvent go_to_page')
 		return () => {
 			event()
 		}
