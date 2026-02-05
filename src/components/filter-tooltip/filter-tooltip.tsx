@@ -2,6 +2,7 @@ import { useState, useRef, ReactNode } from 'react'
 import { FaFilter } from 'react-icons/fa'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import Tooltip from '../toolTip'
+import { Button } from '../button/button'
 
 export interface FilterOption {
 	value: string
@@ -40,12 +41,13 @@ export function FilterTooltip({
 	return (
 		<div className={className}>
 			<Tooltip content={placeholder}>
-				<button
+				<Button
+					size="sm"
 					ref={filterButtonRef}
-					className={`flex items-center cursor-pointer hover:bg-base-300! rounded-full gap-1 px-2 py-2 text-[10px] transition-all duration-200   bg-content border-content hover:border-primary/40 text-content ${buttonClassName || ''}`}
+					className={`px-2 border h-7! rounded-xl text-base-content/40 shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
-				</button>
+				</Button>
 			</Tooltip>
 			<ClickableTooltip
 				triggerRef={filterButtonRef}
@@ -54,7 +56,7 @@ export function FilterTooltip({
 				position="bottom"
 				contentClassName={`!p-2 !max-w-none ${tooltipClassName || ''}`}
 				content={
-					<div className="flex flex-col gap-1 min-w-[100px]">
+					<div className="flex flex-col gap-1 min-w-[100px] max-h-52 overflow-y-auto pl-1">
 						{options.map((option) => (
 							<button
 								key={option.value}

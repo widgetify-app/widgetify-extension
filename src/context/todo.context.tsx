@@ -129,7 +129,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			text: input.text,
 			completed: false,
 			date: input.date,
-			priority: input.priority || TodoPriority.Low,
+			priority: input.priority,
 			category: input.category || '',
 			order: maxOrder + 1,
 			description: input.notes || '',

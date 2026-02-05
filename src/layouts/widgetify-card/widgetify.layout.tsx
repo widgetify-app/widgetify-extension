@@ -9,6 +9,7 @@ import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 import { callEvent } from '@/common/utils/call-event'
 import { DailyMoodNotification } from './daily-mood'
+import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 export const WidgetifyLayout = () => {
 	const { user, isAuthenticated, isLoadingUser } = useAuth()
 	const { blurMode, updateSetting } = useGeneralSetting()
@@ -44,18 +45,12 @@ export const WidgetifyLayout = () => {
 				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-60 small-scrollbar">
 					<div className={'flex items-center w-full justify-between'}>
 						<div className="flex items-center gap-2">
-							<p className="w-32 text-sm font-semibold truncate">
+							<p className="w-32 text-xs font-semibold truncate">
 								سلام {userName || '👋'}
 							</p>
 						</div>
-						<Tooltip content={blurMode ? 'نمایش' : 'حالت مخفی'}>
-							<div
-								className="flex items-center px-1 overflow-hidden transition-all border cursor-pointer border-content rounded-xl bg-content backdrop-blur-sm hover:opacity-80"
-								onClick={handleBlurModeToggle}
-							>
-								{blurMode ? <FaEye /> : <FaEyeSlash />}
-							</div>
-						</Tooltip>
+
+						<BlurModeButton />
 					</div>
 
 					<div

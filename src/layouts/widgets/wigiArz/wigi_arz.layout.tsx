@@ -102,7 +102,7 @@ export function WigiArzLayout({
 							onDragEnd={handleDragEnd}
 						>
 							<div
-								className={`mt-2 flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
+								className={`flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
 								style={{
 									scrollbarWidth: 'none',
 								}}

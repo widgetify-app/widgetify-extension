@@ -70,11 +70,11 @@ export function ComboWidget() {
 				/>
 				<div className="flex justify-end px-1 my-1">
 					<Button
+						size="sm"
 						onClick={handleSettingsClick}
-						size="xs"
-						className="h-6 w-6 p-0 flex items-center justify-center rounded-full border-none !shadow-none"
+						className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 					>
-						<CgOptions className="w-4 h-4 text-muted" />
+						<CgOptions className="w-4 h-4" />
 					</Button>
 				</div>
 			</div>

@@ -8,9 +8,11 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { MdEdit } from 'react-icons/md'
+import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
+
 	const [isOpen, setIsOpen] = useState(false)
 	const {
 		notes,
@@ -47,44 +49,44 @@ export function NoteNavigation() {
 
 	return (
 		<div
-			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-center'} gap-x-1`}
+			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-between px-1'} gap-x-1`}
 		>
-			<div className="flex items-center">
-				{isSaving && <IconLoading title="درحال ذخیره..." />}
-				{activeNoteId ? (
-					<>
-						<Tooltip
-							alwaysShow={showDeleteConfirm}
-							content={
-								showDeleteConfirm ? (
-									<ToolTipConfirmContent
-										onConfirm={onDelete}
-										onCancel={() => setShowDeleteConfirm(false)}
-									/>
-								) : (
-									'حذف یادداشت'
-								)
-							}
-							position="bottom"
+			{isSaving && <IconLoading title="درحال ذخیره..." />}
+			{activeNoteId ? (
+				<>
+					<Tooltip
+						alwaysShow={showDeleteConfirm}
+						content={
+							showDeleteConfirm ? (
+								<ToolTipConfirmContent
+									onConfirm={onDelete}
+									onCancel={() => setShowDeleteConfirm(false)}
+								/>
+							) : (
+								'حذف یادداشت'
+							)
+						}
+						position="bottom"
+					>
+						<Button
+							size="xs"
+							onClick={() => setShowDeleteConfirm(true)}
+							className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
 						>
-							<Button
-								size="xs"
-								onClick={() => setShowDeleteConfirm(true)}
-								className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
-							>
-								<FiTrash2 size={14} />
-							</Button>
-						</Tooltip>
-						<Tooltip content="لیست یادداشت ها" position="top">
-							<button
-								className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
-								onClick={() => onBackToList()}
-							>
-								<FiChevronLeft size={18} className="text-content" />
-							</button>
-						</Tooltip>
-					</>
-				) : (
+							<FiTrash2 size={14} />
+						</Button>
+					</Tooltip>
+					<Tooltip content="لیست یادداشت ها" position="top">
+						<button
+							className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+							onClick={() => onBackToList()}
+						>
+							<FiChevronLeft size={18} className="text-content" />
+						</button>
+					</Tooltip>
+				</>
+			) : (
+				<>
 					<Button
 						onClick={onAdd}
 						size="xs"
@@ -97,8 +99,9 @@ export function NoteNavigation() {
 						<MdEdit size={12} />
 						چیزی بنویس
 					</Button>
-				)}
-			</div>
+					<BlurModeButton />
+				</>
+			)}
 
 			<AuthRequiredModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
 		</div>

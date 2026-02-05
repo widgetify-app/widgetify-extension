@@ -18,6 +18,7 @@ import { TabNavigation } from '@/components/tab-navigation'
 import { GoGear } from 'react-icons/go'
 import { TfiCup } from 'react-icons/tfi'
 import { CiPause1, CiPlay1 } from 'react-icons/ci'
+import { Button } from '@/components/button/button'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -318,7 +319,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					)}
 				</div>
 
-				<div className="flex flex-row items-center gap-x-1">
+				<div className="flex flex-row items-center px-1 gap-x-1">
 					<Tooltip
 						content={
 							currentTab === 'timer'
@@ -326,24 +327,26 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 								: 'بازگشت به تایمر'
 						}
 					>
-						<button
-							className={`p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer  hover:scale-110 active:scale-90 ${currentTab === 'top-users' && 'bg-primary text-white'}`}
+						<Button
+							size="sm"
 							onClick={() =>
 								setCurrentTab(
 									currentTab === 'timer' ? 'top-users' : 'timer'
 								)
 							}
+							className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
 							<TfiCup size={12} />
-						</button>
+						</Button>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
-						<button
-							className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
+						<Button
+							size="sm"
 							onClick={() => setShowSettings(!showSettings)}
+							className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
 							<GoGear className="w-4 h-4" />
-						</button>
+						</Button>
 					</Tooltip>
 				</div>
 			</div>

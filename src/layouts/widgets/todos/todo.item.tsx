@@ -17,6 +17,7 @@ import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
 import { EditTodoModal } from './edit-todo-modal'
+import { IoCalendarOutline } from 'react-icons/io5'
 
 interface Prop {
 	todo: Todo
@@ -189,14 +190,16 @@ export function TodoItem({
 							</span>
 						)}
 
-						<span
-							className={`rounded-lg px-1.5 py-0.5 font-bold ${getPriorityColor(todo.priority)}`}
-						>
-							{translatedPriority[todo.priority as TodoPriority]}
-						</span>
+						{todo.priority && (
+							<span
+								className={`rounded-lg px-1.5 py-0.5 font-bold ${getPriorityColor(todo.priority)}`}
+							>
+								{translatedPriority[todo.priority as TodoPriority]}
+							</span>
+						)}
 
 						<span className="flex items-center gap-1 mr-auto text-muted/60">
-							<FiClock size={9} />
+							<IoCalendarOutline size={12} />
 							{parseTodoDate(todo.date).locale('fa').format('jD jMMMM')}
 						</span>
 					</div>

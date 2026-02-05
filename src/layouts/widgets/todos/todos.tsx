@@ -33,6 +33,7 @@ import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { MdOutlineFilterList, MdOutlineFilterListOff } from 'react-icons/md'
+import { Button } from '@/components/button/button'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -251,12 +252,12 @@ export function TodosLayout({ onChangeTab }: Prop) {
 									icon={
 										dateFilter !== 'all' ? (
 											<MdOutlineFilterList
-												size={12}
+												size={10}
 												className="text-primary"
 											/>
 										) : (
 											<MdOutlineFilterListOff
-												size={12}
+												size={10}
 												className="text-muted"
 											/>
 										)
@@ -300,15 +301,16 @@ export function TodosLayout({ onChangeTab }: Prop) {
 								/>
 							</div>
 						</div>
-						<div className="flex items-center gap-1">
+						<div className="flex items-center gap-1 px-1">
 							{isPending ? <IconLoading /> : null}
 							<Tooltip content={blurMode ? 'نمایش' : 'حالت مخفی'}>
-								<div
-									className="flex items-center cursor-pointer hover:bg-base-300! rounded-full gap-1 px-2 py-2 text-[10px] transition-all duration-200   bg-content border-content hover:border-primary/40 text-content"
+								<Button
+									size="sm"
 									onClick={handleBlurModeToggle}
+									className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 								>
 									{blurMode ? <FaEye /> : <FaEyeSlash />}
-								</div>
+								</Button>
 							</Tooltip>
 						</div>
 					</div>

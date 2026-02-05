@@ -95,7 +95,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 		}
 		setIsTagTooltipOpen(false)
 		setCategory('')
-		setPriority(TodoPriority.Medium)
+		setPriority(undefined)
 		setSelectedDate(today.clone())
 		setIsExpanded(false)
 	}, [today])
