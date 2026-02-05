@@ -1,6 +1,13 @@
 import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
 
+export interface ExplorerCategoryBadge {
+	label?: string
+	iconSrc?: string
+	bgColor?: string
+	textColor?: string
+	url?: string
+}
 export interface FetchedContent {
 	id: string
 	category: string
@@ -10,7 +17,7 @@ export interface FetchedContent {
 	links: {
 		name: string
 		url: string
-		type: 'SITE' | 'REMOTE_IFRAME'
+		type: 'SITE' | 'REMOTE_IFRAME' | 'BANNER'
 		icon?: string
 		span?: {
 			col?: number | null
@@ -24,6 +31,7 @@ export interface FetchedContent {
 		backgroundSrc?: string
 		badgeAnimate?: 'bounce' | 'pulse'
 	}[]
+	badges: ExplorerCategoryBadge[]
 	span?: {
 		col?: number | null
 		row?: number | null

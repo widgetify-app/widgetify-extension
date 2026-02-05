@@ -1,13 +1,8 @@
 import { useGetContents } from '@/services/hooks/content/get-content.hook'
 import { useRef, useState, useEffect } from 'react'
 import Analytics from '@/analytics'
-import { useTheme } from '@/context/theme.context'
-import { useAppearanceSetting } from '@/context/appearance.context'
-import { RenderContentIframe } from './components/content-iframe'
-import { RenderContentSite } from './components/content-site'
 import type { CategoryItem } from './interfaces/category.interface'
-import { RenderContentBanner } from './components/content-banner'
-import { TabNavigation } from '@/components/tab-navigation'
+import { ExplorerCategory } from './components/category'
 
 function ExplorerSkeleton() {
 	return (
@@ -36,8 +31,6 @@ function ExplorerSkeleton() {
 }
 
 export function ExplorerContent() {
-	const { theme } = useTheme()
-	const { fontFamily } = useAppearanceSetting()
 	const { data: catalogData, isLoading } = useGetContents()
 	const [activeCategory, setActiveCategory] = useState<string | null>(null)
 	const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
@@ -131,77 +124,14 @@ export function ExplorerContent() {
 								<div className="grid  grid-cols-1 gap-2 pb-[50vh]  md:grid-cols-3 py-2  px-2">
 									{contents.map(
 										(category: CategoryItem, index: number) => (
-											<div
-												key={category.id}
-												id={category.id}
-												ref={(el) => {
-													categoryRefs.current[category.id] = el
-												}}
-												style={{
-													gridColumn: category.span?.col
-														? `span ${category.span.col} / span ${category.span.col}`
-														: undefined,
-													gridRow: category.span?.row
-														? `span ${category.span.row} / span ${category.span.row}`
-														: undefined,
-												}}
-												className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
-													index === 0
-														? 'md:col-span-2'
-														: index === contents.length - 1 &&
-																contents.length % 2 === 0
-															? 'md:col-span-2'
-															: 'md:col-span-1'
-												}
-												${category.id === activeCategory && 'outline-2 outline-offset-1 outline-primary/80'}
-												`}
-											>
-												{category.banner && (
-													<div className="w-full overflow-hidden h-14">
-														<img
-															src={category.banner}
-															className="object-cover w-full h-full filter brightness-75 contrast-110"
-															style={{
-																maskImage:
-																	'linear-gradient(to bottom, black 0%, transparent 100%)',
-																WebkitMaskImage:
-																	'linear-gradient(to bottom, black 0%, transparent 100%)',
-															}}
-															alt=""
-														/>
-													</div>
-												)}
-												<div className="p-4">
-													{!category.hideName && (
-														<div className="flex items-center gap-4 mb-4">
-															<div className="flex items-center gap-2.5">
-																{category.icon ? (
-																	<img
-																		src={
-																			category.icon
-																		}
-																		className="w-4 h-4 opacity-70"
-																		alt=""
-																	/>
-																) : (
-																	<div className="w-1 h-3.5 rounded-full bg-primary" />
-																)}
-																<h3 className="text-xs font-black tracking-widest uppercase opacity-70">
-																	{category.category}
-																</h3>
-															</div>
-															<div className="flex-1 h-px bg-linear-to-r from-base-content/5 to-transparent" />
-														</div>
-													)}
-
-													<HandleCatalogs
-														category={category}
-														theme={theme}
-														fontFamily={fontFamily}
-														colSpan={category.span?.col}
-													/>
-												</div>
-											</div>
+											<ExplorerCategory
+												activeCategory={activeCategory || ''}
+												category={category}
+												categoryRefs={categoryRefs}
+												contentLength={contents.length}
+												index={index}
+												key={category.category || index}
+											/>
 										)
 									)}
 								</div>
@@ -210,40 +140,6 @@ export function ExplorerContent() {
 					</div>
 				</div>
 			</div>
-		</div>
-	)
-}
-
-interface Prop {
-	category: CategoryItem
-	theme: string
-	fontFamily: string
-	colSpan?: number | null
-}
-
-function HandleCatalogs({ category, theme, fontFamily, colSpan }: Prop) {
-	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 7
-	return (
-		<div
-			className="grid grid-cols-3 gap-y-6 gap-x-2"
-			style={{
-				gridTemplateColumns: `repeat(${colSpanValue}, minmax(0, 1fr))`,
-			}}
-		>
-			{category.links?.map((link) =>
-				link.type === 'REMOTE_IFRAME' ? (
-					<RenderContentIframe
-						key={link.url}
-						link={link}
-						theme={theme}
-						fontFamily={fontFamily}
-					/>
-				) : link.type === 'SITE' ? (
-					<RenderContentSite key={link.url} link={link} />
-				) : link.type === 'BANNER' ? (
-					<RenderContentBanner key={link.url} link={link} />
-				) : null
-			)}
 		</div>
 	)
 }

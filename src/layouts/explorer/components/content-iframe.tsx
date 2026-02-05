@@ -1,11 +1,13 @@
+import { useAppearanceSetting } from '@/context/appearance.context'
 import type { CatalogItem } from '../interfaces/catalog-item.interface'
+import { useTheme } from '@/context/theme.context'
 
 interface IframeProp {
 	link: CatalogItem
-	theme: string
-	fontFamily: string
 }
-export function RenderContentIframe({ link, theme, fontFamily }: IframeProp) {
+export function RenderContentIframe({ link }: IframeProp) {
+	const { fontFamily } = useAppearanceSetting()
+	const { theme } = useTheme()
 	const urlObj = new URL(link.url)
 	urlObj.searchParams.set('theme', encodeURIComponent(theme))
 	urlObj.searchParams.set('font', encodeURIComponent(fontFamily))
