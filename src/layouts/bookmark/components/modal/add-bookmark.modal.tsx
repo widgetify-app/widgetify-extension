@@ -13,6 +13,7 @@ import {
 } from '../shared'
 import { AdvancedModal } from './advanced.modal'
 import { useIsMutating } from '@tanstack/react-query'
+import { getFaviconFromUrl } from '@/common/utils/icon'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -215,7 +216,8 @@ export function AddBookmarkModal({
 								/>
 							)}
 							{renderIconPreview(
-								formData.icon,
+								formData.icon ||
+									(formData.url && getFaviconFromUrl(formData.url)),
 								type === 'FOLDER' ? 'upload' : iconSource,
 								setIconSource,
 								(value) => updateFormData('icon', value)

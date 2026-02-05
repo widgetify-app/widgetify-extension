@@ -96,7 +96,6 @@ export function useBookmarkIcon() {
 			cb(file)
 			setIconSource('upload')
 		}
-
 		if (icon && typeof icon !== 'string') {
 			return (
 				<div
@@ -109,7 +108,7 @@ export function useBookmarkIcon() {
 					<img
 						src={URL.createObjectURL(icon)}
 						alt="Custom"
-						className="object-cover w-full h-full transition-opacity rounded-lg group-hover:opacity-75"
+						className="object-cover w-full h-full transition-opacity rounded-md group-hover:opacity-75"
 					/>
 					<div className="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
 						<FaUpload className="w-4 h-4 text-white" />
@@ -136,7 +135,7 @@ export function useBookmarkIcon() {
 					<img
 						src={icon}
 						alt="Favicon"
-						className={`object-contain w-full h-full p-2 transition-opacity border rounded-lg border-content group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
+						className={`object-contain w-full  h-full p-2 transition-opacity border rounded-md border-content group-hover:opacity-75 ${iconLoadError ? 'opacity-30' : ''}`}
 						onError={() => {
 							cb(null)
 							setIconLoadError(true)

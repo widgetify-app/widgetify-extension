@@ -92,11 +92,11 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative h-[calc(100%-0.6rem)] self-end flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 cursor-pointer group rounded-tl-2xl rounded-b-2xl shadow-sm w-full ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : ''} transition-transform ease-in-out 
-				before:content-[''] before:absolute before:-top-[10px] before:-right-px before:w-1/2 before:h-2.5 before:rounded-tl-2xl before:rounded-tr-lg before:border-t-md before:border-r before:border-l before:transition-all before:duration-300 before:border-primary/0 group-hover:before:border-primary/40
+				className={`relative h-[calc(100%-0.6rem)] self-end flex flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-tl-2xl rounded-b-2xl shadow-sm w-full ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : ''} transition-transform ease-in-out 
+				before:content-[''] before:absolute before:-top-[10px] before:-right-px before:w-1/2 before:h-2.5 before:rounded-tl-2xl before:rounded-tr-lg before:border-t-md before:border-r before:border-l before:transition-all before:duration-300 before:border-base-300 group-hover:before:border-primary/40 border-content
 					${
 						!bookmark.customBackground
-							? `${getFolderStyle()} before:bg-base-200 border-primary/0 hover:border-primary/40`
+							? `${getFolderStyle()} before:bg-base-200 hover:border-primary/40!`
 							: `before:bg-inherit border-transparent`
 					}
 					transition-all ease-in-out duration-300 folder-bookmark-item border-l border-b border-r border-t-0
