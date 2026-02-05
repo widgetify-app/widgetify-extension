@@ -71,7 +71,7 @@ export function ExplorerCategory({
 								<div className="w-1 h-3.5 rounded-full bg-primary" />
 							)}
 							<h3
-								className={`text-xs font-semibold tracking-widest  ${category.banner ? 'text-base-content' : 'text-base-content/70'}`}
+								className={`text-xs font-semibold tracking-widest  ${category.banner ? 'text-base-content/90' : 'text-base-content/70'}`}
 							>
 								{category.category}
 							</h3>
