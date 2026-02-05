@@ -351,11 +351,13 @@ export function TodosLayout({ onChangeTab }: Prop) {
 				{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
 			</div>
 
-			<AuthRequiredModal
-				isOpen={showAuthModal}
-				onClose={() => setShowAuthModal(false)}
-				message="برای استفاده از وظایف، لطفاً وارد حساب کاربری خود شوید."
-			/>
+			{showAuthModal && (
+				<AuthRequiredModal
+					isOpen={showAuthModal}
+					onClose={() => setShowAuthModal(false)}
+					message="برای استفاده از وظایف، لطفاً وارد حساب کاربری خود شوید."
+				/>
+			)}
 		</WidgetContainer>
 	)
 }

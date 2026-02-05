@@ -109,11 +109,13 @@ export function SelectCity() {
 					</div>
 				)}
 			</div>
-			<AuthRequiredModal
-				isOpen={showAuthModal}
-				onClose={() => setShowAuthModal(!showAuthModal)}
-				message="برای انتخاب شهر، لطفاً وارد حساب کاربری خود شوید."
-			/>
+			{showAuthModal && (
+				<AuthRequiredModal
+					isOpen={showAuthModal}
+					onClose={() => setShowAuthModal(!showAuthModal)}
+					message="برای انتخاب شهر، لطفاً وارد حساب کاربری خود شوید."
+				/>
+			)}
 			<Modal
 				isOpen={isModalOpen}
 				onClose={() => {

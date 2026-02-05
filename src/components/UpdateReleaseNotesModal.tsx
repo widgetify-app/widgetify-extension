@@ -104,7 +104,7 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🥳 نسخه جدید، آمادست!'}
+			title={<p className="mt-4"> 🥳 نسخه جدید، آمادست!</p>}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}

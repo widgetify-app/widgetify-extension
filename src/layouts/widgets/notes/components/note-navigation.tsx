@@ -102,8 +102,9 @@ export function NoteNavigation() {
 					<BlurModeButton />
 				</>
 			)}
-
-			<AuthRequiredModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+			{isOpen && (
+				<AuthRequiredModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+			)}
 		</div>
 	)
 }
