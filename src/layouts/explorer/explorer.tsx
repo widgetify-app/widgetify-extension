@@ -76,7 +76,7 @@ export function ExplorerContent() {
 	}
 
 	const contents = catalogData?.contents || []
-	const categories = contents.filter((f) => !f.hideName)
+	const categories = contents.filter((f) => !f.hideName && f.links.length)
 
 	return (
 		<div className="flex flex-row w-full h-screen overflow-hidden">
@@ -121,7 +121,7 @@ export function ExplorerContent() {
 							{isLoading ? (
 								<ExplorerSkeleton />
 							) : (
-								<div className="grid  grid-cols-1 gap-2 pb-[50vh]  md:grid-cols-3 py-2  px-2">
+								<div className="grid  grid-cols-1 gap-2 pb-[50vh] place-content-evenly md:grid-cols-3 py-2 px-2">
 									{contents.map(
 										(category: CategoryItem, index: number) => (
 											<ExplorerCategory

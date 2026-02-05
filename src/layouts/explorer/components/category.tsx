@@ -18,6 +18,7 @@ export function ExplorerCategory({
 	contentLength,
 	activeCategory,
 }: Prop) {
+	const childLength = !category.links?.length
 	return (
 		<div
 			key={category.id}
@@ -36,14 +37,14 @@ export function ExplorerCategory({
 					'--banner-url': `url(${category.banner})`,
 				}),
 			}}
-			className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
+			className={`${childLength && 'invisible'} relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
 				index === 0
 					? 'md:col-span-2'
 					: index === contentLength - 1 && contentLength % 2 === 0
 						? 'md:col-span-2'
 						: 'md:col-span-1'
 			}
-			${category.id === activeCategory && 'outline-2 outline-offset-1 outline-primary/80'}
+			${category.id === activeCategory && 'outline-1 outline-offset-1 outline-primary/80 scale-101'}
 			${category.banner ? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none' : ''}
 			`}
 		>
