@@ -133,7 +133,7 @@ export function TodoItem({
 					onClick={() => setExpanded(!expanded)}
 				>
 					<p
-						className={`truncate text-[12.5px] font-medium transition-all ${
+						className={`truncate text-[10px] font-medium transition-all ${
 							todo.completed
 								? 'text-base-content/40 line-through font-normal'
 								: 'text-base-content/90'
@@ -147,8 +147,8 @@ export function TodoItem({
 					{isSyncing ? (
 						<IconLoading className="scale-[0.6] opacity-40 mx-1" />
 					) : (
-						<div className="absolute px-2 left-4 group-hover:bg-base-200">
-							<div className="flex items-center transition-opacity duration-150 opacity-0 group-hover:opacity-100">
+						<div className="hidden transition-all duration-150 group-hover:flex">
+							<div className="flex items-center">
 								<button
 									onClick={handleEdit}
 									className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"

@@ -68,7 +68,7 @@ export function ComboWidget() {
 					size="small"
 					className="w-full"
 				/>
-				<div className="flex justify-end px-1 my-1">
+				<div className="flex justify-end my-1">
 					<Button
 						size="sm"
 						onClick={handleSettingsClick}

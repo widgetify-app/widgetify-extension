@@ -69,13 +69,9 @@ export function FolderBookmarkItem({
 		}
 	}
 
-	const getFolderStyle = () => {
-		return 'bg-content bg-glass hover:bg-primary/20'
-	}
-
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} group h-20 md:h-[5.5rem] flex overflow-hidden`}
+			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden`}
 		>
 			<button
 				onClick={onClick}
@@ -84,18 +80,16 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative h-[calc(100%-0.6rem)] self-end flex flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-tl-2xl rounded-b-2xl shadow-sm w-full ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : ''} transition-transform ease-in-out 
-				before:content-[''] before:absolute before:-top-[10px] before:-right-px before:w-1/2 before:h-2.5 before:rounded-tl-2xl before:rounded-tr-lg before:border-t-md before:border-r before:border-l before:transition-all before:duration-300 before:border-base-300 group-hover:before:border-primary/40 border-content
+				className={`relative self-end flex group h-20 md:h-[5.5rem]  flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out 
 					${
 						!bookmark.customBackground
-							? `${getFolderStyle()} before:bg-base-200 hover:border-primary/40!`
+							? `bg-content bg-glass hover:bg-primary/20 bg-content text-content backdrop-blur-sm bg-glass`
 							: `before:bg-inherit border-transparent`
 					}
-					transition-all ease-in-out duration-300 folder-bookmark-item border-l border-b border-r border-t-0
+					transition-all ease-in-out duration-300
 				`}
 			>
 				{RenderStickerPattern(bookmark)}
-
 				<div className="flex flex-col h-full">
 					<div className="flex items-center justify-center flex-1">
 						{renderFolderIcons()}
@@ -114,7 +108,7 @@ export function FolderBookmarkItem({
 							onMenuClick(e)
 						}}
 						className={
-							'absolute cursor-pointer top-1.5 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
+							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
 						<SlOptions size={12} />

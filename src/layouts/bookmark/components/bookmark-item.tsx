@@ -52,7 +52,7 @@ export function BookmarkItem({
 							onMenuClick(e)
 						}}
 						className={
-							'absolute cursor-pointer top-1.5 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
+							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
 						<SlOptions size={12} />

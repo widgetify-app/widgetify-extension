@@ -49,7 +49,7 @@ export function NoteNavigation() {
 
 	return (
 		<div
-			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-between px-1'} gap-x-1`}
+			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-between'} gap-x-1`}
 		>
 			{isSaving && <IconLoading title="درحال ذخیره..." />}
 			{activeNoteId ? (

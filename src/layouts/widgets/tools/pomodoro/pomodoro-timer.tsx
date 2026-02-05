@@ -319,7 +319,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					)}
 				</div>
 
-				<div className="flex flex-row items-center px-1 gap-x-1">
+				<div className="flex flex-row items-center gap-x-1">
 					<Tooltip
 						content={
 							currentTab === 'timer'

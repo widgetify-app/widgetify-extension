@@ -53,7 +53,6 @@
 
 [data-theme="icy"] .widget-wrapper,
 [data-theme="icy"] .bg-glass,
-[data-theme="icy"] .folder-bookmark-item::before,
 [data-theme="icy"] .tooltip {
     background-color: rgba(23, 23, 23, 0.12);
     -webkit-backdrop-filter: blur(18px) saturate(150%) brightness(108%);
@@ -64,9 +63,6 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="icy"] .folder-bookmark-item::before {
-    background-color: rgba(255, 255, 255, 0.03);
-}
 
 [data-theme="icy"] .modal-box {
     -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(115%);

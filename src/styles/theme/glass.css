@@ -45,7 +45,6 @@
 
 [data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .bg-glass,
-[data-theme="glass"] .folder-bookmark-item::before,
 [data-theme="glass"] .tooltip {
     background-color: #171717b3;
     -webkit-backdrop-filter: blur(16px) saturate(150%);

@@ -125,7 +125,9 @@ export function ContentSection() {
 						<WidgetifyLayout />
 					</div>
 
-					<div className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2'}>
+					<div
+						className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2 px-2'}
+					>
 						<SearchLayout />
 						<BookmarkProvider>
 							<BookmarksList />
@@ -138,7 +140,7 @@ export function ContentSection() {
 				</div>
 
 				{sortedWidgets.length > 0 && (
-					<div className="w-full" id="widgets">
+					<div className="w-full mt-2" id="widgets">
 						<DndContext
 							sensors={canReOrderWidget ? sensors : []}
 							collisionDetection={

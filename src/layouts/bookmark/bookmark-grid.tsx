@@ -169,10 +169,11 @@ export function BookmarkGrid({
 			document.removeEventListener('click', handleClickOutside)
 		}
 	}, [])
+	// todo:  padding: 0px 8px;
 
 	return (
 		<div
-			className={`grid w-full grid-cols-5 gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2 lg:px-1`}
+			className={`grid w-full grid-cols-5 gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2`}
 		>
 			<SortableContext
 				items={displayedBookmarks

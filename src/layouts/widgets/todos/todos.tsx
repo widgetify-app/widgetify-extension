@@ -296,7 +296,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 								/>
 							</div>
 						</div>
-						<div className="flex items-center gap-1 px-1">
+						<div className="flex items-center gap-1">
 							{isPending ? <IconLoading /> : null}
 							<BlurModeButton />
 						</div>
