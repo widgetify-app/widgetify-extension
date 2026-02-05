@@ -1,7 +1,7 @@
-import type { LinkItem } from '../interfaces/catalog-item.interface'
+import type { CatalogItem } from '../interfaces/catalog-item.interface'
 
 interface IframeProp {
-	link: LinkItem
+	link: CatalogItem
 	theme: string
 	fontFamily: string
 }

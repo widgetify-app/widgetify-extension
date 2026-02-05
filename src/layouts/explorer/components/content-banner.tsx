@@ -1,7 +1,7 @@
-import type { LinkItem } from '../interfaces/catalog-item.interface'
+import type { CatalogItem } from '../interfaces/catalog-item.interface'
 
 interface SiteProp {
-	link: LinkItem
+	link: CatalogItem
 }
 
 function getUrl(url: string) {

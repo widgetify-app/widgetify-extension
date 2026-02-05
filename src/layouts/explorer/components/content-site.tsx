@@ -1,8 +1,8 @@
 import { NewBadge } from '@/components/badges/new.badge'
-import type { LinkItem } from '../interfaces/catalog-item.interface'
+import type { CatalogItem } from '../interfaces/catalog-item.interface'
 
 interface SiteProp {
-	link: LinkItem
+	link: CatalogItem
 }
 const ANIMATES = {
 	bounce: 'bounce 1.5s infinite',
