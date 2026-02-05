@@ -13,9 +13,7 @@ import {
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { FiList } from 'react-icons/fi'
-import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { type AddTodoInput, useTodoStore } from '@/context/todo.context'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
@@ -28,12 +26,13 @@ import { parseTodoDate } from './tools/parse-date'
 import { TabNavigation } from '@/components/tab-navigation'
 import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
 import { FilterTooltip } from '@/components/filter-tooltip'
-import { FaEye, FaEyeSlash, FaSortAmountDown, FaTags } from 'react-icons/fa'
+import { FaSortAmountDown, FaTags } from 'react-icons/fa'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { MdOutlineFilterList, MdOutlineFilterListOff } from 'react-icons/md'
-import { Button } from '@/components/button/button'
+import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
+import { useGeneralSetting } from '@/context/general-setting.context'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -56,8 +55,9 @@ interface Prop {
 export function TodosLayout({ onChangeTab }: Prop) {
 	const { today } = useDate()
 	const { isAuthenticated } = useAuth()
+	const { blurMode } = useGeneralSetting()
+
 	const { addTodo, todos, reorderTodos, isPending } = useTodoStore()
-	const { blurMode, updateSetting } = useGeneralSetting()
 	const [dateFilter, setDateFilter] = useState<string>('all')
 	const [sort, setSort] = useState<string>('def')
 	const [tagFilter, setTagFilter] = useState<string>('')
@@ -169,11 +169,6 @@ export function TodosLayout({ onChangeTab }: Prop) {
 
 			reorderTodos(reorderedTodos)
 		}
-	}
-
-	const handleBlurModeToggle = () => {
-		const newBlurMode = !blurMode
-		updateSetting('blurMode', newBlurMode)
 	}
 
 	const onDateFilterChange = (value: string) => {
@@ -303,15 +298,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 						</div>
 						<div className="flex items-center gap-1 px-1">
 							{isPending ? <IconLoading /> : null}
-							<Tooltip content={blurMode ? 'نمایش' : 'حالت مخفی'}>
-								<Button
-									size="sm"
-									onClick={handleBlurModeToggle}
-									className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
-								>
-									{blurMode ? <FaEye /> : <FaEyeSlash />}
-								</Button>
-							</Tooltip>
+							<BlurModeButton />
 						</div>
 					</div>
 				</div>
