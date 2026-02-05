@@ -32,6 +32,9 @@ export function ExplorerCategory({
 				gridRow: category.span?.row
 					? `span ${category.span.row} / span ${category.span.row}`
 					: undefined,
+				...(category.banner && {
+					'--banner-url': `url(${category.banner})`,
+				}),
 			}}
 			className={`relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
 				index === 0
@@ -40,25 +43,21 @@ export function ExplorerCategory({
 						? 'md:col-span-2'
 						: 'md:col-span-1'
 			}
-												${category.id === activeCategory && 'outline-2 outline-offset-1 outline-primary/80'}
-												`}
+			${category.id === activeCategory && 'outline-2 outline-offset-1 outline-primary/80'}
+			${category.banner ? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none' : ''}
+			`}
 		>
 			{category.banner && (
-				<div className="w-full overflow-hidden h-14">
-					<img
-						src={category.banner}
-						className="object-cover w-full h-full filter brightness-75 contrast-110"
-						style={{
-							maskImage:
-								'linear-gradient(to bottom, black 0%, transparent 100%)',
-							WebkitMaskImage:
-								'linear-gradient(to bottom, black 0%, transparent 100%)',
-						}}
-						alt=""
-					/>
-				</div>
+				<style>
+					{`#${category.id}::before {
+						content: "";
+						background-image: var(--banner-url);
+						mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+						-webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+					}`}
+				</style>
 			)}
-			<div className="p-3">
+			<div className="relative z-10 p-3">
 				{!category.hideName && (
 					<div className="flex items-center justify-between gap-4 mb-2">
 						<div className="flex items-center gap-2.5">
@@ -71,7 +70,9 @@ export function ExplorerCategory({
 							) : (
 								<div className="w-1 h-3.5 rounded-full bg-primary" />
 							)}
-							<h3 className="text-xs font-black tracking-widest uppercase opacity-70">
+							<h3
+								className={`text-xs font-semibold tracking-widest  ${category.banner ? 'text-base-content' : 'text-base-content/70'}`}
+							>
 								{category.category}
 							</h3>
 						</div>
