@@ -17,7 +17,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	}
 
 	return (
-		<div className="relative items-center justify-center w-4 h-4 mb-2 sm:w-5 sm:h-5 md:w-8 md:h-8">
+		<div className="relative items-center justify-center w-4 h-4 sm:w-5 sm:h-5 md:w-8 md:h-8">
 			{typeof displayIcon === 'string' ? (
 				<img
 					src={displayIcon}
