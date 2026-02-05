@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Portal } from '../portal/Portal'
 import { useDropdown } from './useDropdown'
+import { useEffect, useState } from 'react'
 
 export interface DropdownOption {
 	id: string
@@ -38,6 +39,7 @@ export function Dropdown({
 	placeholder,
 }: DropdownProps) {
 	const { isOpen, toggle, close, dropdownRef, dropdownContentRef } = useDropdown()
+	const [dropdownPosition, setDropdownPosition] = useState({ top: '0px', left: '0px' })
 
 	const handleOptionClick = (option: DropdownOption) => {
 		if (option.disabled) return
@@ -50,72 +52,108 @@ export function Dropdown({
 		}
 	}
 
-	const getDropdownPosition = () => {
-		if (!dropdownRef.current || !isOpen) return {}
+	useEffect(() => {
+		if (!isOpen || !dropdownRef.current) return
 
-		const rect = dropdownRef.current.getBoundingClientRect()
-		const viewportHeight = window.innerHeight
-		const viewportWidth = window.innerWidth
-		const scrollY = window.scrollY
-		const scrollX = window.scrollX
+		const calculatePosition = () => {
+			if (!dropdownRef.current) return
 
-		const dropdownWidth =
-			width === 'auto'
-				? 250
-				: width === 'full'
-					? Math.min(400, viewportWidth - 32)
-					: parseInt(width as string, 10) || 250
+			const rect = dropdownRef.current.getBoundingClientRect()
+			const viewportHeight = window.innerHeight
+			const viewportWidth = window.innerWidth
 
-		const dropdownHeight = 300
+			const dropdownWidth =
+				width === 'auto'
+					? 250
+					: width === 'full'
+						? Math.min(400, viewportWidth - 32)
+						: parseInt(width as string, 10) || 250
 
-		let top: number
-		let left: number
+			const dropdownHeight = dropdownContentRef.current
+				? dropdownContentRef.current.offsetHeight
+				: parseInt(maxHeight, 10) || 300
 
-		switch (position) {
-			case 'bottom-left':
-			case 'top-left':
-				left = rect.left + scrollX
-				break
-			case 'bottom-right':
-			case 'top-right':
-				left = rect.right + scrollX - dropdownWidth
-				break
-			case 'bottom-center':
-				left = rect.left + scrollX + rect.width / 2 - dropdownWidth / 2
-				break
-			default:
-				left = rect.left + scrollX
-		}
+			let top: number
+			let left: number
 
-		// Calculate vertical position
-		if (position.startsWith('bottom')) {
-			top = rect.bottom + scrollY + 4
-			if (rect.bottom + dropdownHeight > viewportHeight) {
-				top = rect.top + scrollY - dropdownHeight - 4
+			switch (position) {
+				case 'bottom-left':
+				case 'top-left':
+					left = rect.left
+					break
+				case 'bottom-right':
+				case 'top-right':
+					left = rect.right - dropdownWidth
+					break
+				case 'bottom-center':
+					left = rect.left + rect.width / 2 - dropdownWidth / 2
+					break
+				default:
+					left = rect.left
 			}
-		} else {
-			top = rect.top + scrollY - dropdownHeight - 4
-			if (rect.top - dropdownHeight < 0) {
-				top = rect.bottom + scrollY + 4
+
+			if (position.startsWith('bottom')) {
+				top = rect.bottom + 4
+				if (top + dropdownHeight > viewportHeight - 16) {
+					top = rect.top - dropdownHeight - 4
+				}
+			} else {
+				top = rect.top - dropdownHeight - 4
+				if (top < 16) {
+					top = rect.bottom + 4
+				}
 			}
+
+			const padding = 16
+			if (left < padding) left = padding
+			if (left + dropdownWidth > viewportWidth - padding) {
+				left = viewportWidth - dropdownWidth - padding
+			}
+
+			if (top < padding) top = padding
+			if (top + dropdownHeight > viewportHeight - padding) {
+				top = viewportHeight - dropdownHeight - padding
+			}
+
+			setDropdownPosition({
+				top: `${Math.max(0, top)}px`,
+				left: `${Math.max(0, left)}px`,
+			})
 		}
 
-		const padding = 16
-		if (left < padding) left = padding
-		if (left + dropdownWidth > viewportWidth - padding) {
-			left = viewportWidth - dropdownWidth - padding
+		// محاسبه اولیه با تاخیر کوچک
+		const initialTimeout = setTimeout(calculatePosition, 10)
+
+		// Event listeners
+		window.addEventListener('resize', calculatePosition)
+		window.addEventListener('scroll', calculatePosition, true)
+
+		// ResizeObserver برای track کردن تغییرات سایز
+		const resizeObserver = new ResizeObserver(() => {
+			// استفاده از requestAnimationFrame فقط برای این callback
+			// تا smooth باشد اما loop نداشته باشیم
+			requestAnimationFrame(calculatePosition)
+		})
+
+		// Track trigger و همه parent هاش
+		let element: HTMLElement | null = dropdownRef.current
+		while (element) {
+			resizeObserver.observe(element)
+			element = element.parentElement
 		}
 
-		if (top < padding) top = padding
-		if (top + dropdownHeight > viewportHeight - padding) {
-			top = viewportHeight - dropdownHeight - padding
+		// Track خود dropdown هم
+		if (dropdownContentRef.current) {
+			resizeObserver.observe(dropdownContentRef.current)
 		}
 
-		return {
-			top: `${Math.max(0, top)}px`,
-			left: `${Math.max(0, left)}px`,
+		return () => {
+			clearTimeout(initialTimeout)
+			window.removeEventListener('resize', calculatePosition)
+			window.removeEventListener('scroll', calculatePosition, true)
+			resizeObserver.disconnect()
 		}
-	}
+	}, [isOpen, position, width, maxHeight])
 
 	const dropdownContent = children || (
 		<>
@@ -150,7 +188,6 @@ export function Dropdown({
 				{trigger}
 			</div>
 
-			{/* Dropdown Menu Portal */}
 			{isOpen && !disabled && (
 				<Portal>
 					<div className="fixed inset-0 z-[9998] pointer-events-none">
@@ -158,9 +195,9 @@ export function Dropdown({
 							ref={dropdownContentRef}
 							className={`
 								fixed z-[9999] border border-content rounded-xl
-								bg-content  shadow-xl
+								bg-content shadow-xl
 								overflow-hidden pointer-events-auto
-								animate-in fade-in-0 zoom-in-95 duration-100
+								animate-in fade-in-0 zoom-in-95 duration-100 bg-glass
 								${dropdownClassName}
 							`}
 							style={{
@@ -172,7 +209,7 @@ export function Dropdown({
 											? '100%'
 											: width,
 								minWidth: width === 'auto' ? '150px' : undefined,
-								...getDropdownPosition(),
+								...dropdownPosition,
 							}}
 						>
 							<div className="max-h-full overflow-y-auto">

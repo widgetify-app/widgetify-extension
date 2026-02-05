@@ -259,6 +259,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				title: input.title?.trim(),
 				icon: input.icon || null,
 				url: input.url,
+				isDeletedIcon: input.isDeletedIcon,
 			})
 		)
 

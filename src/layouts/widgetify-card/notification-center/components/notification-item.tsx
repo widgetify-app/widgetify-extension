@@ -1,6 +1,8 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData.hook'
-import { HiXMark } from 'react-icons/hi2' // آیکون مدرن‌تر
+import { HiChevronDown, HiXMark } from 'react-icons/hi2' // آیکون مدرن‌تر
+import { useState } from 'react'
+import Analytics from '@/analytics'
 
 interface NotificationItemProps extends NotificationItem {
 	onClose(e: any, id: string): any
@@ -21,8 +23,10 @@ function Wrapper({ link, children, className, type, goTo, target }: Prop) {
 	const handleClick = () => {
 		if (type === 'page' && goTo) {
 			callEvent('go_to_page', goTo)
+			Analytics.event('notifications_page')
 		} else if (type === 'action' && target) {
 			callEvent(target as any)
+			Analytics.event('notifications_action')
 		}
 	}
 
@@ -53,13 +57,25 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	const { link, icon, title, closeable, id, onClose, description, target, goTo, type } =
 		prop
 
+	const [isExpanded, setIsExpanded] = useState(false)
+	const CHARACTER_LIMIT = 85
+
+	const toggleExpand = (e: React.MouseEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsExpanded(!isExpanded)
+		Analytics.event('notifications_toggle_expand')
+	}
+
+	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
+
 	return (
 		<Wrapper
 			link={link}
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${link && 'cursor-pointer'} bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-98 group relative`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${link && 'cursor-pointer'} bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-[0.99] group relative`}
 		>
 			{icon && (
 				<div className="flex-shrink-0">
@@ -77,9 +93,26 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				</div>
 
 				{description && (
-					<p className="mt-1 text-[11px] font-medium text-base-content/60 leading-relaxed whitespace-pre-wrap wrap-break-word">
-						{description}
-					</p>
+					<div className="relative">
+						<p
+							className={`mt-1 text-[11px] font-medium text-base-content/60 leading-relaxed whitespace-pre-wrap break-words transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+						>
+							{description}
+						</p>
+
+						{shouldShowReadMore && (
+							<button
+								onClick={toggleExpand}
+								className="mt-1 flex items-center gap-1 text-[10px] font-light text-muted hover:underline cursor-pointer"
+							>
+								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
+								<HiChevronDown
+									className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+									size={12}
+								/>
+							</button>
+						)}
+					</div>
 				)}
 			</div>
 

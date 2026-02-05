@@ -9,6 +9,7 @@ import { listenEvent } from '@/common/utils/call-event'
 import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import type { ReactNode } from 'react'
 import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
+import Analytics from '@/analytics'
 
 export function NotificationCenter() {
 	const { data: fetchedNotifications } = useGetNotifications({
@@ -34,7 +35,12 @@ export function NotificationCenter() {
 				)
 				if (!notifFromStorage) {
 					setPushed((prev: any) => {
-						if (prev.some((item: NotificationItem) => item.id === notif.id)) {
+						if (
+							prev.some(
+								(item: { id: string; node: ReactNode }) =>
+									item.id === notif.id
+							)
+						) {
 							return prev
 						}
 						return [...prev, notif]
@@ -46,7 +52,7 @@ export function NotificationCenter() {
 		const removeEvent = listenEvent(
 			'remove_from_notifications',
 			async ({ id, ttl }) => {
-				setNotifications((prev) => prev.filter((item) => item.id !== id))
+				setPushed((prev) => prev.filter((item) => item.id !== id))
 				if (ttl) {
 					await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
 				} else {
@@ -91,6 +97,7 @@ export function NotificationCenter() {
 
 		const filtered = notifications.filter((f) => f.id !== id)
 		setNotifications([...filtered])
+		Analytics.event('notifications_close')
 	}
 
 	return (
@@ -99,9 +106,6 @@ export function NotificationCenter() {
 				<div key={event.id} className="relative">
 					<NotificationCardItem
 						title={event.title}
-						subTitle={`
-امروز، ${moment(event.start).format('HH:mm')} - ${moment(event.end).format('HH:mm')}
-                            `}
 						closeable={false}
 						onClose={() => {}}
 						description={event.location || ''}
@@ -138,10 +142,9 @@ export function NotificationCenter() {
 					closeable={item.closeable}
 					key={index}
 					title={item.title}
-					subTitle={item.subTitle}
 					description={item.description}
 					link={item.link}
-					onClose={(e) => onClose(e, item.id || '')}
+					onClose={(e) => onClose(e, item.id || '', item.ttl)}
 					icon={item.icon}
 					goTo={item.goTo}
 					target={item.target}

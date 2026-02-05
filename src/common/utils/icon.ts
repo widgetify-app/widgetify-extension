@@ -24,7 +24,7 @@ export const getFaviconFromUrl = (url: string): string => {
 		}
 
 		const urlObj = new URL(processedUrl)
-		return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`
+		return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64&fallback_opts=404`
 	} catch {
 		return ''
 	}

@@ -63,7 +63,8 @@ export async function setWithExpiry<K extends keyof StorageKV>(
 	value: StorageKV[K],
 	minutes: number
 ) {
-	const expiry = Date.now() + minutes * 60000
+	const safeMinutes = Math.max(1, minutes)
+	const expiry = Date.now() + safeMinutes * 60_000
 	const data = { value, expiry }
 
 	await setToStorage(key, data as any)

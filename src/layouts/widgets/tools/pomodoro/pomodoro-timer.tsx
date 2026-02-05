@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { FaChartSimple, FaGear } from 'react-icons/fa6'
-import { FiCheckCircle, FiCoffee, FiPause, FiPlay, FiRefreshCw } from 'react-icons/fi'
+import { FiCheckCircle, FiCoffee, FiRefreshCw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { SelectBox } from '@/components/selectbox/selectbox'
@@ -10,13 +9,16 @@ import { useAuth } from '@/context/auth.context'
 import { useCreatePomodoroSession } from '@/services/hooks/pomodoro/createSession.hook'
 import { TopUsersType } from '@/services/hooks/pomodoro/getTopUsers.hook'
 import { ControlButton } from './components/control-button'
-import { ModeButton } from './components/mode-button'
 import { RequestNotificationModal } from './components/requestNotification-modal'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
-import { modeLabels } from './constants'
 import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
+import { TabNavigation } from '@/components/tab-navigation'
+import { GoGear } from 'react-icons/go'
+import { TfiCup } from 'react-icons/tfi'
+import { CiPause1, CiPlay1 } from 'react-icons/ci'
+import { Button } from '@/components/button/button'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -284,25 +286,26 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	return (
-		<div className="relative overflow-hidden duration-300 mt-1.5 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
-			{/* Mode Selection */}
+		<div className="relative overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
 			<div className="relative flex items-center justify-between mb-1  py-0.5">
 				<div className={`flex items-center gap-x-0.5`}>
 					{currentTab === 'timer' ? (
-						<>
-							<ModeButton
-								mode="work"
-								label={modeLabels.work}
-								currentMode={mode}
-								onClick={() => handleModeChange('work')}
-							/>
-							<ModeButton
-								label={modeLabels['short-break']}
-								mode="short-break"
-								currentMode={mode}
-								onClick={() => handleModeChange('short-break')}
-							/>
-						</>
+						<TabNavigation
+							activeTab={mode}
+							onTabClick={(v) => handleModeChange(v as any)}
+							tabs={[
+								{
+									label: 'کار',
+									id: 'work',
+								},
+								{
+									label: 'استراحت',
+									id: 'short-break',
+								},
+							]}
+							size="small"
+							className="h-8 mb-0! border-none w-28"
+						/>
 					) : (
 						<SelectBox
 							value={topUsersType}
@@ -316,7 +319,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					)}
 				</div>
 
-				<div className="flex flex-row items-center gap-x-1">
+				<div className="flex flex-row items-center px-1 gap-x-1">
 					<Tooltip
 						content={
 							currentTab === 'timer'
@@ -324,50 +327,51 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 								: 'بازگشت به تایمر'
 						}
 					>
-						<button
-							className={`p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer  hover:scale-110 active:scale-90 ${currentTab === 'top-users' && 'bg-primary text-white'}`}
+						<Button
+							size="sm"
 							onClick={() =>
 								setCurrentTab(
 									currentTab === 'timer' ? 'top-users' : 'timer'
 								)
 							}
+							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
-							<FaChartSimple className="w-3 h-3 opacity-70 hover:opacity-100" />
-						</button>
+							<TfiCup size={12} />
+						</Button>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
-						<button
-							className="p-1 transition-transform duration-150 ease-in-out rounded-full cursor-pointer hover:bg-gray-500/10 hover:scale-110 active:scale-90"
+						<Button
+							size="sm"
 							onClick={() => setShowSettings(!showSettings)}
+							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
-							<FaGear className="w-3 h-3 opacity-70 hover:opacity-100" />
-						</button>
+							<GoGear className="w-4 h-4" />
+						</Button>
 					</Tooltip>
 				</div>
 			</div>
-			{/* Timer Display */}
+
 			{currentTab === 'timer' ? (
 				<div className="relative flex flex-col justify-around mt-2 gap-y-4">
 					<TimerDisplay timeLeft={timeLeft} progress={progress} mode={mode} />
 
-					{/* Control buttons */}
 					<div className="flex justify-center gap-x-4">
 						<ControlButton
 							mode={'reset'}
-							icon={<FiRefreshCw size={16} strokeWidth={2.25} />}
+							icon={<FiRefreshCw size={16} strokeWidth={1} />}
 							onClick={handleReset}
 						/>
 
 						{isRunning ? (
 							<ControlButton
 								mode={'pause'}
-								icon={<FiPause size={16} strokeWidth={2.25} />}
+								icon={<CiPause1 size={16} strokeWidth={0.55} />}
 								onClick={handlePause}
 							/>
 						) : (
 							<ControlButton
 								mode={'play'}
-								icon={<FiPlay size={16} strokeWidth={2.25} />}
+								icon={<CiPlay1 size={24} strokeWidth={0.55} />}
 								onClick={handleStart}
 							/>
 						)}
@@ -375,7 +379,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						{mode.includes('break') && (
 							<ControlButton
 								mode={'check'}
-								icon={<FiCheckCircle size={16} strokeWidth={2.25} />}
+								icon={<FiCheckCircle size={16} strokeWidth={0.55} />}
 								onClick={() => handleModeChange('work')}
 							/>
 						)}
@@ -383,7 +387,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						{mode === 'work' && (
 							<ControlButton
 								mode={'coffee'}
-								icon={<FiCoffee size={16} strokeWidth={2.25} />}
+								icon={<FiCoffee size={16} strokeWidth={1} />}
 								onClick={() => handleModeChange('short-break')}
 							/>
 						)}

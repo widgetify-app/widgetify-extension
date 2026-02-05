@@ -82,7 +82,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		)
 		if (error) {
 			const msg = translateError(error)
-			showToast(msg as any, 'error')
+			showToast(typeof msg === 'string' ? msg : 'خطایی رخ داد!', 'error')
 			return
 		}
 
@@ -164,31 +164,33 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 						</span>
 					</div>
 					<div className="grid grid-cols-4 gap-1">
-						{moodOptions.map((option) => (
-							<button
-								key={option.value}
-								onClick={() => handleMoodChange(option.value)}
-								disabled={isAdding}
-								className={`p-1.5 rounded-xl transition-all cursor-pointer ${
-									mood === option.value
-										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
-										: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
-								}`}
-							>
-								{isAdding ? (
-									<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
-								) : (
-									<>
-										<div className="text-lg leading-none mb-0.5">
-											{option.emoji}
-										</div>
-										<div className="text-[10px] leading-tight">
-											{option.label}
-										</div>
-									</>
-								)}
-							</button>
-						))}
+						{moodOptions
+							.filter((f) => f.label)
+							.map((option) => (
+								<button
+									key={option.value}
+									onClick={() => handleMoodChange(option.value)}
+									disabled={isAdding}
+									className={`p-1.5 rounded-xl transition-all cursor-pointer ${
+										mood === option.value
+											? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
+											: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
+									}`}
+								>
+									{isAdding ? (
+										<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
+									) : (
+										<>
+											<div className="text-lg leading-none mb-0.5">
+												{option.emoji}
+											</div>
+											<div className="text-[10px] leading-tight">
+												{option.label}
+											</div>
+										</>
+									)}
+								</button>
+							))}
 					</div>
 				</div>
 

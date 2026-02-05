@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { FaPlus } from 'react-icons/fa6'
 import { FiChevronLeft, FiTrash2 } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
@@ -8,9 +7,12 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { MdEdit } from 'react-icons/md'
+import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
+
 	const [isOpen, setIsOpen] = useState(false)
 	const {
 		notes,
@@ -46,59 +48,60 @@ export function NoteNavigation() {
 	}
 
 	return (
-		<div className="flex items-center justify-between gap-x-1">
-			<div className="flex items-center">
-				{isSaving && <IconLoading title="درحال ذخیره..." />}
-				{activeNoteId ? (
-					<>
-						<Tooltip
-							alwaysShow={showDeleteConfirm}
-							content={
-								showDeleteConfirm ? (
-									<ToolTipConfirmContent
-										onConfirm={onDelete}
-										onCancel={() => setShowDeleteConfirm(false)}
-									/>
-								) : (
-									'حذف یادداشت'
-								)
-							}
-							position="bottom"
-						>
-							<Button
-								size="xs"
-								onClick={() => setShowDeleteConfirm(true)}
-								className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
-							>
-								<FiTrash2 size={14} />
-							</Button>
-						</Tooltip>
-						<Tooltip content="لیست یادداشت ها" position="top">
-							<button
-								className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
-								onClick={() => onBackToList()}
-							>
-								<FiChevronLeft size={18} className="text-content" />
-							</button>
-						</Tooltip>
-					</>
-				) : (
-					<Tooltip content="یادداشت جدید" position="top" offset={5}>
-						<Button
-							onClick={onAdd}
-							size="xs"
-							disabled={isCreatingNote}
-							className={`h-6 w-6 text-xs !p-0 font-medium rounded-[0.55rem] transition-colors border-none shadow-none bg-primary text-white`}
-						>
-							{isCreatingNote ? (
-								<IconLoading title="در حال ساخت..." />
+		<div
+			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-between px-1'} gap-x-1`}
+		>
+			{isSaving && <IconLoading title="درحال ذخیره..." />}
+			{activeNoteId ? (
+				<>
+					<Tooltip
+						alwaysShow={showDeleteConfirm}
+						content={
+							showDeleteConfirm ? (
+								<ToolTipConfirmContent
+									onConfirm={onDelete}
+									onCancel={() => setShowDeleteConfirm(false)}
+								/>
 							) : (
-								<FaPlus size={12} />
-							)}
+								'حذف یادداشت'
+							)
+						}
+						position="bottom"
+					>
+						<Button
+							size="xs"
+							onClick={() => setShowDeleteConfirm(true)}
+							className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
+						>
+							<FiTrash2 size={14} />
 						</Button>
 					</Tooltip>
-				)}
-			</div>
+					<Tooltip content="لیست یادداشت ها" position="top">
+						<button
+							className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
+							onClick={() => onBackToList()}
+						>
+							<FiChevronLeft size={18} className="text-content" />
+						</button>
+					</Tooltip>
+				</>
+			) : (
+				<>
+					<Button
+						onClick={onAdd}
+						size="xs"
+						disabled={isCreatingNote}
+						loading={isCreatingNote}
+						loadingText={<IconLoading title="درحال ساخت..." />}
+						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95 rounded-xl`}
+						isPrimary={true}
+					>
+						<MdEdit size={12} />
+						چیزی بنویس
+					</Button>
+					<BlurModeButton />
+				</>
+			)}
 
 			<AuthRequiredModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
 		</div>

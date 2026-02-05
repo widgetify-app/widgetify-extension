@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { FiMessageSquare, FiPlus, FiTag, FiCalendar } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
@@ -8,15 +7,15 @@ import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import type jalaliMoment from 'jalali-moment'
-import { DatePicker } from '@/components/date-picker/date-picker'
-import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
-import { PriorityButton } from '@/components/priority-options/priority-options'
 import Analytics from '@/analytics'
 import { Chip } from '@/components/chip.component'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
-
+import { IoCalendarOutline, IoPricetagOutline, IoAddOutline } from 'react-icons/io5'
+import { DatePicker } from '@/components/date-picker/date-picker'
+import { PriorityDropdown } from './components/priority.dropdown'
+import { FiPlus } from 'react-icons/fi'
 interface ExpandableTodoInputProps {
 	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date: string }) => void
 }
@@ -25,18 +24,18 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 	const { isAuthenticated } = useAuth()
 	const { today } = useDate()
 	const [isExpanded, setIsExpanded] = useState(false)
-	const [priority, setPriority] = useState<TodoPriority>(TodoPriority.Medium)
+	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
 	const [category, setCategory] = useState('')
-	const { data: fetchedTags } = useGetTags(isAuthenticated)
+	const { data: fetchedTags } = useGetTags(isAuthenticated && isExpanded)
 	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
 	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(today)
-	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+	const [showDatePicker, setShowDatePicker] = useState(false)
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const todoTextRef = useRef<string>('')
-	const notesRef = useRef<string>('')
+	const notesRef = useRef<HTMLTextAreaElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
-	const datePickerButtonRef = useRef<HTMLButtonElement>(null)
+	const dateButtonRef = useRef<HTMLButtonElement>(null)
 	const categoryInputRef = useRef<HTMLInputElement | null>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -46,14 +45,14 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 		todoTextRef.current = value
 	}, [])
 
-	const onSelectCategory = useCallback((tag: string) => {
-		setCategory(tag)
+	const onSelectCategory = (v: string) => {
+		setCategory(v)
 		setIsTagTooltipOpen(false)
 		Analytics.event('todo_category_select')
-	}, [])
+	}
 
 	const handleNotesChange = useCallback((value: string) => {
-		notesRef.current = value
+		if (notesRef.current) notesRef.current.value = value
 	}, [])
 
 	useEffect(() => {
@@ -87,15 +86,16 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 
 	const resetForm = useCallback(() => {
 		todoTextRef.current = ''
-		notesRef.current = ''
+		if (notesRef.current) notesRef.current.value = ''
 		if (inputRef.current) {
 			inputRef.current.value = ''
 		}
 		if (notesInputRef.current) {
 			notesInputRef.current.value = ''
 		}
+		setIsTagTooltipOpen(false)
 		setCategory('')
-		setPriority(TodoPriority.Medium)
+		setPriority(undefined)
 		setSelectedDate(today.clone())
 		setIsExpanded(false)
 	}, [today])
@@ -106,7 +106,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 			onAddTodo({
 				text,
 				category: category.trim() || undefined,
-				notes: notesRef.current.trim() || undefined,
+				notes: notesRef.current?.value.trim() || undefined,
 				priority: priority,
 				date: selectedDate.toISOString(),
 			})
@@ -123,22 +123,19 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 		[handleAddTodo]
 	)
 
-	const onClickOpenDatePicker = useCallback(() => {
-		setIsDatePickerOpen(!isDatePickerOpen)
-		Analytics.event('todo_datepicker_open_click')
-	}, [isDatePickerOpen])
-
 	return (
 		<div ref={containerRef} className="flex-none pt-3 mt-auto">
-			<div className="overflow-hidden rounded-xl">
-				<div className="flex items-center gap-1 p-2 rounded-xl bg-base-300">
+			<div
+				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
+			>
+				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-base-200 border-base-content/5">
 					<div className="flex-grow w-full">
 						<TextInput
 							ref={inputRef}
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان وظیفه جدید..."
-							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 text-sm !rounded-lg !bg-transparent"
+							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 pr-1 text-sm !bg-transparent rounded-2xl focus:placeholder:text-base-content/20"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
@@ -152,8 +149,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 						loadingText={<IconLoading />}
 						size="sm"
 						isPrimary={true}
-						rounded="lg"
-						className="p-1.5 h-7 !bg-none"
+						className="rounded-full px-0! w-8"
 					>
 						<FiPlus size={16} />
 					</Button>
@@ -167,129 +163,111 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 							exit={{ opacity: 0, height: 0 }}
 							transition={{ duration: 0.2 }}
 						>
-							<div className="px-2 py-3 space-y-3">
-								<div className="flex items-center justify-between gap-2">
-									<div className="flex items-center flex-1 gap-2 ">
-										<div
-											className="relative flex-shrink-0 text-center"
-											onClick={onClickOpenDatePicker}
-										>
-											<span className="absolute w-2 h-2 rounded-full -left-0.5 -bottom-0.5 bg-error animate-pulse"></span>
-											<FiCalendar
-												className="text-indigo-400"
-												size={16}
-											/>
-										</div>
-										<div className="flex-1">
-											<button
-												ref={datePickerButtonRef}
-												onClick={onClickOpenDatePicker}
-												className="w-full  text-right px-2 py-1.5 min-h-8 text-xs  rounded-xl border border-base-300 hover:border-primary/50 transition-colors bg-content text-content opacity-75 cursor-pointer"
-											>
-												{selectedDate
-													? selectedDate.format(
-															'dddd، jD jMMMM jYYYY'
-														)
-													: 'انتخاب تاریخ'}
-											</button>
-											<ClickableTooltip
-												triggerRef={datePickerButtonRef}
-												isOpen={isDatePickerOpen}
-												setIsOpen={setIsDatePickerOpen}
-												content={
-													<DatePicker
-														onDateSelect={(date) => {
-															setSelectedDate(date)
-															setIsDatePickerOpen(false)
-														}}
-														selectedDate={selectedDate}
-													/>
-												}
-												contentClassName="!p-0 !bg-transparent !border-none !shadow-none"
-											/>
-										</div>
-									</div>
-
-									<div className="flex items-center gap-1">
-										{PRIORITY_OPTIONS.map((option) => (
-											<PriorityButton
-												key={option.value}
-												option={option}
-												isSelected={priority === option.value}
-												onClick={() =>
-													setPriority(
-														option.value as TodoPriority
-													)
-												}
-											/>
-										))}
-									</div>
-								</div>
-
-								<div className="space-y-2">
-									<div className="flex items-center gap-3">
-										<div className="flex-shrink-0 text-center">
-											<FiTag
-												className="text-indigo-400"
-												size={16}
-											/>
-										</div>
-										<TextInput
-											ref={categoryInputRef}
-											type="text"
-											value={category}
-											onChange={onSelectCategory}
-											onFocus={() => setIsTagTooltipOpen(true)}
-											placeholder="دسته‌بندی (مثال: شخصی، کاری)"
-											className="text-xs placeholder:text-xs py-1.5"
-											debounce={false}
-										/>
-										<ClickableTooltip
-											triggerRef={categoryInputRef}
-											isOpen={isTagTooltipOpen}
-											setIsOpen={setIsTagTooltipOpen}
-											content={
-												<div className="flex flex-wrap gap-1 overflow-x-hidden overflow-y-auto max-w-48 max-h-32 scrollbar-none">
-													{fetchedTags
-														?.filter((tag) => tag.trim())
-														?.map((tag) => (
-															<Chip
-																key={tag}
-																selected={false}
-																onClick={() => {
-																	setCategory(tag)
-																	setIsTagTooltipOpen(
-																		false
-																	)
-																}}
-																className="text-xs w-fit p-0! py-1! px-3!"
-															>
-																{tag}
-															</Chip>
-														))}
-												</div>
+							<div className="px-2 py-2">
+								<div className="flex flex-col gap-1">
+									<div>
+										<textarea
+											ref={notesRef}
+											onChange={(e) =>
+												handleNotesChange(e.target.value)
 											}
-											position="top"
+											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
+											className="w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60"
 										/>
 									</div>
-
-									<div className="flex items-center gap-3">
-										<div className="flex-shrink-0 text-center">
-											<FiMessageSquare
-												className="text-indigo-400"
-												size={16}
-											/>
-										</div>
-										<TextInput
-											ref={notesInputRef}
-											defaultValue=""
-											onChange={handleNotesChange}
-											placeholder="یادداشت یا لینک (اختیاری)"
-											className="text-xs placeholder:text-xs py-1.5"
-											debounce={false}
+									<div className="flex gap-1">
+										<Button
+											size="sm"
+											className={`p-2 border rounded-xl text-base-content/40 shrink-0 active:scale-95`}
+											onClick={() => setShowDatePicker(true)}
+											ref={dateButtonRef}
+										>
+											<IoCalendarOutline size={18} />
+										</Button>
+										<PriorityDropdown
+											priority={priority}
+											setPriority={setPriority}
 										/>
+										<Button
+											size="sm"
+											className={`p-2 border rounded-xl  text-[10px]  text-muted shrink-0 active:scale-95`}
+											ref={categoryInputRef}
+											onClick={() => setIsTagTooltipOpen(true)}
+										>
+											<IoPricetagOutline
+												size={16}
+												className="text-base-content/40 "
+											/>
+											<p className="truncate max-w-14 min-w-5">
+												{category || 'دسته‌بندی'}
+											</p>
+										</Button>
 									</div>
 								</div>
+								<ClickableTooltip
+									isOpen={isTagTooltipOpen}
+									triggerRef={categoryInputRef}
+									position="top"
+									contentClassName={`!p-2 !max-w-none`}
+									setIsOpen={setIsTagTooltipOpen}
+									content={
+										<div className="flex flex-col w-56 gap-2">
+											<div className="flex flex-row items-center gap-1 border-b-2 border-content">
+												<TextInput
+													value={category}
+													onChange={(val) => setCategory(val)}
+													placeholder="مثلا: کارهای خونه"
+												/>
+												<Button
+													size="xs"
+													isPrimary={true}
+													className="rounded-full p-0! w-8 h-8"
+													onClick={() =>
+														setIsTagTooltipOpen(false)
+													}
+												>
+													<IoAddOutline size={18} />
+												</Button>
+											</div>
+											<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
+												{fetchedTags
+													?.filter((tag) => tag.trim())
+													?.map((tag) => (
+														<Chip
+															key={tag}
+															selected={false}
+															onClick={() =>
+																onSelectCategory(tag)
+															}
+															className="flex gap-1 text-xs px-2! py-1!e"
+														>
+															<IoPricetagOutline
+																size={16}
+																className="text-base-content/40"
+															/>
+															{tag}
+														</Chip>
+													))}
+											</div>
+										</div>
+									}
+								/>
+								<ClickableTooltip
+									triggerRef={dateButtonRef}
+									isOpen={showDatePicker}
+									setIsOpen={setShowDatePicker}
+									position="top"
+									contentClassName="!p-1 !max-w-none shadow-2xl border border-base-200 rounded-3xl"
+									content={
+										<DatePicker
+											selectedDate={selectedDate}
+											onDateSelect={(date) => {
+												setSelectedDate(date)
+												setShowDatePicker(false)
+											}}
+										/>
+									}
+								/>
 							</div>
 						</motion.div>
 					)}

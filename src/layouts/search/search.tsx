@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
-import { VoiceSearchButton } from './voice/VoiceSearchButton'
+import { VoiceSearchButton } from './voice/voice-search.button'
 import { FcGoogle } from 'react-icons/fc'
+import { ImageSearchPortal } from './image/image-search.portal'
+import { VoiceSearchPortal } from './voice/voice-search.portal'
+import { ImageSearchButton } from './image/image-search.button'
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
@@ -11,6 +14,7 @@ export function SearchLayout() {
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trendingRef = useRef<HTMLDivElement>(null)
+	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -64,6 +68,15 @@ export function SearchLayout() {
 	return (
 		<div className="relative z-50 flex flex-col items-center justify-start h-24">
 			<div ref={searchRef} className="w-full bg-content widget-wrapper rounded-2xl">
+				{activePortal === 'voice' && (
+					<VoiceSearchPortal
+						onClose={() => setActivePortal(null)}
+						onSearch={handleVoiceSearch}
+					/>
+				)}
+				{activePortal === 'image' && (
+					<ImageSearchPortal onClose={() => setActivePortal(null)} />
+				)}
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
@@ -103,7 +116,10 @@ export function SearchLayout() {
 						>
 							<MdOutlineClear size={20} className="opacity-50" />
 						</button>
-						<VoiceSearchButton onSearch={handleVoiceSearch} />
+						<div className="flex items-center gap-0.5 ml-1">
+							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
+							<ImageSearchButton onClick={() => setActivePortal('image')} />
+						</div>
 						<div
 							className={
 								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-content'

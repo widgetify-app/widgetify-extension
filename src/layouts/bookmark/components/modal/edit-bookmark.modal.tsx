@@ -30,6 +30,7 @@ export interface BookmarkUpdateFormFields {
 	customTextColor: string | null
 	sticker: string | null
 	icon: File | null
+	isDeletedIcon: boolean
 }
 
 const empty: BookmarkUpdateFormFields = {
@@ -42,6 +43,7 @@ const empty: BookmarkUpdateFormFields = {
 	customTextColor: '',
 	sticker: '',
 	icon: null,
+	isDeletedIcon: false,
 }
 type UpdateBookmarkUpdateFormData = <K extends keyof BookmarkUpdateFormFields>(
 	key: K,
@@ -65,11 +67,11 @@ export function EditBookmarkModal({
 	const [icon, setIcon] = useState<string | null | File>(null)
 
 	const type = bookmark?.type
-
 	const { fileInputRef, renderIconPreview, handleImageUpload } = useBookmarkIcon()
 
 	const updateFormData: UpdateBookmarkUpdateFormData = (key, value) => {
 		if (key === 'icon') {
+			// @ts-expect-error
 			setIcon(value || null)
 		}
 		setFormData((prev) => ({ ...prev, [key]: value }))
@@ -88,8 +90,16 @@ export function EditBookmarkModal({
 			icon: formData.icon,
 			id: bookmark.id,
 			onlineId: bookmark.onlineId || undefined,
+			isDeletedIcon: formData.isDeletedIcon,
 		})
 		// onClose()
+	}
+
+	const onRemoveIcon = () => {
+		setIcon(null)
+		updateFormData('icon', null)
+		updateFormData('isDeletedIcon', true)
+		setIconSource('auto')
 	}
 
 	const handleAdvancedModalClose = (
@@ -128,6 +138,7 @@ export function EditBookmarkModal({
 				icon: null,
 				sticker: bookmark.sticker,
 				url: bookmark.url,
+				isDeletedIcon: false,
 			})
 			setIconSource(bookmark.icon ? 'upload' : 'auto')
 			if (bookmark.icon) {
@@ -152,22 +163,30 @@ export function EditBookmarkModal({
 		>
 			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]">
 				<div className="flex flex-col gap-2">
-					<div className="flex flex-col items-center gap-4">
+					<div className="flex flex-col items-center gap-2">
 						{type === 'BOOKMARK' && (
 							<IconSourceSelector
 								iconSource={iconSource}
 								setIconSource={setIconSource}
 							/>
 						)}
-						{renderIconPreview(
-							icon,
-							type === 'FOLDER' ? 'upload' : iconSource,
-							setIconSource,
-							(value) => updateFormData('icon', value)
-						)}
-						<p className="mb-2 text-xs text-center text-content">
-							برای آپلود تصویر کلیک کنید یا فایل را بکشید و رها کنید
-						</p>
+						<div className="relative flex flex-col items-center">
+							{renderIconPreview(
+								icon,
+								type === 'FOLDER' ? 'upload' : iconSource,
+								setIconSource,
+								(value) => updateFormData('icon', value)
+							)}
+							{iconSource === 'upload' && Boolean(icon) && (
+								<Button
+									size="xs"
+									onClick={() => onRemoveIcon()}
+									className="mt-1 btn btn-ghost text-error hover:bg-error/10 rounded-xl"
+								>
+									حذف آیکون
+								</Button>
+							)}
+						</div>
 					</div>
 
 					<input
@@ -252,10 +271,11 @@ export function EditBookmarkModal({
 				isOpen={showAdvanced}
 				onClose={handleAdvancedModalClose}
 				bookmark={{
+					icon: icon,
 					customBackground: formData.customBackground,
 					customTextColor: formData.customTextColor,
 					sticker: formData.sticker,
-					type,
+					type: bookmark.type,
 					title: formData.title,
 					url: formData.url,
 				}}

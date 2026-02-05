@@ -27,6 +27,7 @@ interface AdvancedModalProps {
 		type: BookmarkType
 		title: string
 		url: string | null
+		icon: any
 	}
 }
 
@@ -290,23 +291,25 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							backgroundPosition: 'center',
 						}}
 					>
-						<BookmarkItem
-							bookmark={{
-								customBackground: background,
-								customTextColor: textColor,
-								sticker: sticker,
-								order: null,
-								icon: getFaviconFromUrl(bookmark.url || 'google.com'),
-								title: bookmark.title || 'پیش‌نمایش',
-								url: 'https://www.google.com',
-								id: 'preview',
-								isLocal: false,
-								onlineId: null,
-								parentId: null,
-								type: bookmark.type,
-							}}
-							onClick={() => {}}
-						/>
+						<div className="w-28">
+							<BookmarkItem
+								bookmark={{
+									customBackground: background,
+									customTextColor: textColor,
+									sticker: sticker,
+									order: null,
+									icon: bookmark.icon,
+									title: bookmark.title || 'پیش‌نمایش',
+									url: 'https://widgetify.ir',
+									id: 'preview',
+									isLocal: false,
+									onlineId: null,
+									parentId: null,
+									type: bookmark.type,
+								}}
+								onClick={() => {}}
+							/>
+						</div>
 					</div>
 				</div>
 

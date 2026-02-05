@@ -15,6 +15,7 @@ interface ButtonProps {
 	children?: React.ReactNode
 	isPrimary?: boolean
 	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+	ref?: any
 }
 export function Button(prop: ButtonProps) {
 	const sizes: Record<string, string> = {
@@ -32,6 +33,7 @@ export function Button(prop: ButtonProps) {
 			disabled={prop.disabled}
 			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
 			style={prop.style}
+			ref={prop.ref}
 		>
 			{prop.loading
 				? prop.loadingText || (

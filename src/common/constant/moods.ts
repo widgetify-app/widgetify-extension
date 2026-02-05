@@ -7,6 +7,13 @@ export const moodOptions = [
 		borderClass: 'border-error/50',
 	},
 	{
+		value: 'normal',
+		emoji: '😴',
+		label: '',
+		colorClass: 'warning',
+		borderClass: 'border-yellow-400/50',
+	},
+	{
 		value: 'tired',
 		emoji: '😴',
 		label: 'خستم',

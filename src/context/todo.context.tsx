@@ -25,13 +25,11 @@ export enum TodoPriority {
 	Medium = 'medium',
 	High = 'high',
 }
-export interface TodoOptions {
-	viewMode: TodoViewType
-}
+
 export interface AddTodoInput {
 	text: string
 	date: string
-	priority?: TodoPriority
+	priority?: TodoPriority | null
 	category?: string
 	notes?: string
 }
@@ -40,12 +38,10 @@ interface TodoContextType {
 	todos: Todo[]
 	setTodos: (todos: Todo[]) => void
 	addTodo: (input: AddTodoInput) => void
-	todoOptions: TodoOptions
 	refetchTodos: any
 	toggleTodo: (id: string) => void
 	updateTodo: (id: string, updates: Partial<Omit<Todo, 'id'>>) => void
 	clearCompleted: (date?: string) => void
-	updateOptions: (options: Partial<TodoOptions>) => void
 	reorderTodos: (todos: Todo[]) => Promise<void>
 	isPending: boolean
 }
@@ -55,23 +51,15 @@ const TodoContext = createContext<TodoContextType | null>(null)
 export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated } = useAuth()
 	const [todos, setTodos] = useState<Todo[] | null>(null)
-	const [todoOptions, setTodoOptions] = useState<TodoOptions>({
-		viewMode: TodoViewType.All,
-	})
 
 	const { data: fetchedTodos, refetch, isPending } = useGetTodos(isAuthenticated)
 	const { mutateAsync: addTodoAsync, isPending: isAdding } = useAddTodo()
 	const { mutateAsync: updateTodoAsync, isPending: isUpdating } = useUpdateTodo()
 	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
 
-	const didLoadInitialOptions = useRef(false)
-
 	useEffect(() => {
 		async function load() {
-			const [todos, todoOptions] = await Promise.all([
-				getFromStorage('todos'),
-				getFromStorage('todoOptions'),
-			])
+			const todos = await getFromStorage('todos')
 
 			const migratedTodos = (todos || []).map((todo: Todo, index: number) => ({
 				...todo,
@@ -79,15 +67,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			}))
 
 			setTodos(migratedTodos)
-			if (todoOptions) {
-				setTodoOptions(todoOptions)
-			} else {
-				setToStorage('todoOptions', {
-					viewMode: TodoViewType.All,
-				})
-			}
-
-			didLoadInitialOptions.current = true
 		}
 
 		const todosChangedEvent = listenEvent('todosChanged', (todoList: Todo[]) => {
@@ -133,19 +112,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		setToStorage('todos', todos)
 	}, [todos])
 
-	useEffect(() => {
-		if (!didLoadInitialOptions.current) return
-
-		setToStorage('todoOptions', todoOptions)
-	}, [todoOptions])
-
-	function updateOptions(options: Partial<TodoOptions>) {
-		setTodoOptions((prev) => ({
-			...prev,
-			...options,
-		}))
-	}
-
 	const addTodo = async (input: AddTodoInput) => {
 		if (!isAuthenticated) {
 			showToast('برای اضافه کردن وظیفه باید وارد حساب کاربری شوید.', 'error')
@@ -163,7 +129,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 			text: input.text,
 			completed: false,
 			date: input.date,
-			priority: input.priority || TodoPriority.Low,
+			priority: input.priority,
 			category: input.category || '',
 			order: maxOrder + 1,
 			description: input.notes || '',
@@ -324,8 +290,6 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				toggleTodo,
 				updateTodo,
 				clearCompleted,
-				updateOptions,
-				todoOptions,
 				reorderTodos,
 				refetchTodos: refetch,
 				isPending: isPending || isAdding || isUpdating,

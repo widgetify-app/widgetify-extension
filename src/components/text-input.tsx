@@ -19,7 +19,7 @@ interface TextInputProps {
 	disabled?: boolean
 	name?: string
 	type?: string
-	direction?: 'rtl' | 'ltr' | ''
+	direction?: 'rtl' | 'ltr' | 'auto' | ''
 	className?: string
 	ref?: React.RefObject<HTMLInputElement | null>
 	debounce?: boolean

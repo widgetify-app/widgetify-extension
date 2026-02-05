@@ -45,6 +45,7 @@
 
 [data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .bg-glass,
+[data-theme="glass"] .folder-bookmark-item::before,
 [data-theme="glass"] .tooltip {
     background-color: #171717b3;
     -webkit-backdrop-filter: blur(16px) saturate(150%);
@@ -52,9 +53,13 @@
 }
 
 [data-theme="glass"] .modal-box {
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(200px) saturate(200%);
+    backdrop-filter: blur(40px) saturate(10%);
     background-color: #171717b3;
+}
+
+[data-theme="glass"] .portal {
+    background-color: #171717fa;
 }
 
 
