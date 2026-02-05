@@ -10,6 +10,7 @@ export interface BookmarkUpdatePayload {
 	customTextColor: string | null
 	customBackground: string | null
 	icon: File | null
+	isDeletedIcon: boolean
 }
 
 export const useUpdateBookmark = () => {

@@ -90,7 +90,7 @@ export function FolderBookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
 				className={`relative h-[calc(100%-0.6rem)] self-end flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 cursor-pointer group rounded-tl-2xl rounded-b-2xl shadow-sm w-full ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : ''} transition-transform ease-in-out 
-				before:content-[''] before:absolute before:-top-[10px] before:-right-px before:w-1/2 before:h-2.5 before:rounded-tr-lg before:rounded-tl before:border-t-md before:border-r before:border-l before:transition-all before:duration-300 before:border-primary/0 group-hover:before:border-primary/40
+				before:content-[''] before:absolute before:-top-[10px] before:-right-px before:w-1/2 before:h-2.5 before:rounded-tl-2xl before:rounded-tr-lg before:border-t-md before:border-r before:border-l before:transition-all before:duration-300 before:border-primary/0 group-hover:before:border-primary/40
 					${
 						!bookmark.customBackground
 							? `${getFolderStyle()} before:bg-base-200 border-primary/0 hover:border-primary/40`
