@@ -16,7 +16,7 @@ export function BlurModeButton() {
 			<Button
 				size="sm"
 				onClick={handleBlurModeToggle}
-				className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+				className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 			>
 				{blurMode ? <FaEye /> : <FaEyeSlash />}
 			</Button>

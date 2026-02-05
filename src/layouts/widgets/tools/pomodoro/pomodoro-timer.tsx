@@ -334,7 +334,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 									currentTab === 'timer' ? 'top-users' : 'timer'
 								)
 							}
-							className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
 							<TfiCup size={12} />
 						</Button>
@@ -343,7 +343,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						<Button
 							size="sm"
 							onClick={() => setShowSettings(!showSettings)}
-							className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
 							<GoGear className="w-4 h-4" />
 						</Button>

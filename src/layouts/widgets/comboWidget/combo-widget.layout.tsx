@@ -72,7 +72,7 @@ export function ComboWidget() {
 					<Button
 						size="sm"
 						onClick={handleSettingsClick}
-						className={`px-2 py-0! border rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+						className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 					>
 						<CgOptions className="w-4 h-4" />
 					</Button>

@@ -44,7 +44,7 @@ export function FilterTooltip({
 				<Button
 					size="sm"
 					ref={filterButtonRef}
-					className={`px-2 border h-7! rounded-xl text-base-content/40 shrink-0 active:scale-95 ${buttonClassName || ''}`}
+					className={`px-2 border h-7! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
 				</Button>
