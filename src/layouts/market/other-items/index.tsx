@@ -10,7 +10,6 @@ import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 import { showToast } from '@/common/toast'
-import type { FontFamily } from '@/context/appearance.context'
 
 export function MarketOtherItems() {
 	const { user, isAuthenticated, refetchUser } = useAuth()
@@ -59,7 +58,7 @@ export function MarketOtherItems() {
 		}
 
 		if (item.type === 'FONT') {
-			callEvent('font_change', item.itemValue as FontFamily)
+			callEvent('font_change', item.itemValue as string)
 		}
 	}
 

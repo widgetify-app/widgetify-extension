@@ -14,7 +14,6 @@ import Tooltip from '@/components/toolTip'
 import { SyncAlertModal } from './sync-alert.modal'
 import { showToast } from '@/common/toast'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
-import type { FontFamily } from '@/context/appearance.context'
 
 enum SyncState {
 	Syncing = 0,
@@ -365,7 +364,7 @@ async function getAll() {
 		wallpaper: Wallpaper
 		theme: Theme | null
 		browserTitle: UserInventoryItem
-		font: FontFamily | null
+		font: string | null
 	}>('/extension/@me/sync')
 
 	const { wallpaper, theme, browserTitle, font } = response.data
@@ -450,10 +449,10 @@ function processTheme(theme: Theme | null, themeStore: Theme | undefined) {
 		console.log(er)
 	}
 }
-function processFont(font: FontFamily | null, appearanceStore?: Record<string, any>) {
+function processFont(font: string | null, appearanceStore?: Record<string, any>) {
 	try {
 		if (!font) return
-		const fontStore = appearanceStore?.fontFamily as FontFamily | undefined
+		const fontStore = appearanceStore?.fontFamily as string | undefined
 		if (font !== fontStore) {
 			callEvent('font_change', font)
 		}

@@ -10,7 +10,6 @@ import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
-import type { FontFamily } from '@/context/appearance.context'
 import React from 'react'
 
 export interface EventName {
@@ -45,7 +44,7 @@ export interface EventName {
 	closeAllDropdowns: null
 	openProfile: null
 	openMarketModal: null
-	font_change: FontFamily
+	font_change: string
 	close_all_modals: null
 	openWizardModal: null
 	add_to_notifications: { id: string; node: React.ReactNode }

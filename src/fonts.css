@@ -1,3 +1,5 @@
+@import url('https://cdn.widgetify.ir/fonts/remote-fonts.css');
+
 /* Vazir Font Family */
 @font-face {
 	font-family: "Vazir";
@@ -85,56 +87,7 @@
 }
 
 
-/* Rooyin Font Family */
-@font-face {
-	font-family: "rooyin";
-	src: url("https://cdn.widgetify.ir/fonts/rooyin/Rooyin-Regular.woff2") format("woff2");
-	font-weight: 400;
-	font-style: normal;
-}
 
-@font-face {
-	font-family: "rooyin";
-	src: url("https://cdn.widgetify.ir/fonts/rooyin/Rooyin-Bold.woff2") format("woff2");
-	font-weight: 700;
-	font-style: normal;
-}
-
-/* Pofak Font Family */
-@font-face {
-	font-family: "Pofak";
-	src: url("https://cdn.widgetify.ir/fonts/Pofak-Regular.woff2") format("woff2");
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Pofak";
-	src: url("https://cdn.widgetify.ir/fonts/Pofak-Bold.woff2") format("woff2");
-	font-weight: 600;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Arad";
-	src: url("https://cdn.widgetify.ir/fonts/arad/Arad-Light.woff2") format("woff2");
-	font-weight: 300;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Arad";
-	src: url("https://cdn.widgetify.ir/fonts/arad/Arad-Medium.woff2") format("woff2");
-	font-weight: 500;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Arad";
-	src: url("https://cdn.widgetify.ir/fonts/arad/Arad-Bold.woff2") format("woff2");
-	font-weight: 700;
-	font-style: normal;
-}
 
 body {
 	-moz-font-feature-settings: "ss01";

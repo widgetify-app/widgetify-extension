@@ -9,17 +9,9 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
-export enum FontFamily {
-	Vazir = 'Vazir',
-	Samim = 'Samim',
-	Pofak = 'Pofak',
-	rooyin = 'rooyin',
-	Arad = 'Arad',
-}
-
 export interface AppearanceData {
 	contentAlignment: 'center' | 'top'
-	fontFamily: FontFamily
+	fontFamily: string
 }
 
 interface AppearanceContextContextType extends AppearanceData {
@@ -28,7 +20,7 @@ interface AppearanceContextContextType extends AppearanceData {
 		value: AppearanceData[K]
 	) => void
 	setContentAlignment: (value: 'center' | 'top') => void
-	setFontFamily: (value: FontFamily) => void
+	setFontFamily: (value: string) => void
 	canReOrderWidget: boolean
 	toggleCanReOrderWidget: () => void
 	showNewBadge: boolean
@@ -36,7 +28,7 @@ interface AppearanceContextContextType extends AppearanceData {
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	contentAlignment: 'top',
-	fontFamily: FontFamily.Vazir,
+	fontFamily: 'Vazir',
 }
 
 export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
@@ -78,7 +70,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 		const eventForFont = listenEvent('font_change', async (newFont) => {
 			document.body.style.fontFamily = `"${newFont}", sans-serif`
-			updateSetting('fontFamily', newFont as FontFamily)
+			updateSetting('fontFamily', newFont)
 		})
 
 		loadSettings()
@@ -108,7 +100,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		Analytics.event(`set_content_alignment_${value}`)
 	}
 
-	const setFontFamily = async (value: FontFamily) => {
+	const setFontFamily = async (value: string) => {
 		const currentFont = settings.fontFamily
 		updateSetting('fontFamily', value)
 		Analytics.event(`set_font_${value}`)

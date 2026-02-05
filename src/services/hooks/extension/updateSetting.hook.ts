@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import type { FontFamily } from '@/context/appearance.context'
 import { getMainClient } from '@/services/api'
 
 export interface UpdateExtensionSettingsInput {
@@ -48,7 +47,7 @@ export function useChangeBrowserTitle() {
 }
 
 export function useChangeFont() {
-	return useMutation<any, unknown, { font: FontFamily }>({
+	return useMutation<any, unknown, { font: string }>({
 		mutationFn: async ({ font }) => {
 			const client = await getMainClient()
 			await client.put('/extension/@me/font', { font })

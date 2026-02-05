@@ -5,7 +5,6 @@ import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
 import { Theme } from '@/context/theme.context'
 import type { MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { showToast } from '@/common/toast'
-import { FontFamily } from '@/context/appearance.context'
 import { RenderPreview } from './renderPreview'
 
 interface MarketItemCardProps {
@@ -45,8 +44,6 @@ export function MarketItemCard({
 	if (!needUpgrade) {
 		if (item.itemValue) {
 			if (item.type === 'THEME' && !(item.itemValue in Theme)) needUpgrade = true
-			if (item.type === 'FONT' && !(item.itemValue in FontFamily))
-				needUpgrade = true
 		}
 	}
 

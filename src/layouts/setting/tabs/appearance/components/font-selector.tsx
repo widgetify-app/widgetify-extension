@@ -4,33 +4,33 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
-import { FontFamily, useAppearanceSetting } from '@/context/appearance.context'
+import { useAppearanceSetting } from '@/context/appearance.context'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 
 interface FontItem {
-	value: FontFamily
 	label: string
+	value: string
 	description?: string
 }
 
 const defaultFonts: FontItem[] = [
 	{
-		value: FontFamily.Vazir,
+		value: 'Vazir',
 		label: 'وزیر',
 		description: 'وقتی بچه بودم می‌خواستم بزرگ بشم!',
 	},
 	{
-		value: FontFamily.Samim,
+		value: 'Samim',
 		label: 'صمیم',
 		description: 'وقتی بچه بودم می‌خواستم بزرگ بشم!',
 	},
 	{
-		value: FontFamily.Pofak,
+		value: 'Pofak',
 		label: 'پفـک',
 		description: 'وقتی بچه بودم می‌خواستم بزرگ بشم!',
 	},
 	{
-		value: FontFamily.rooyin,
+		value: 'rooyin',
 		label: 'رویین',
 		description: 'وقتی بچه بودم می‌خواستم بزرگ بشم!',
 	},
@@ -48,7 +48,7 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 	useEffect(() => {
 		if (fetched_fonts.length) {
 			const mapped: FontItem[] = fetched_fonts.map((item) => ({
-				value: item.value as FontFamily,
+				value: item.value,
 				label: item.name ?? 'بدون نام',
 				description: item?.description || 'فونت خریداری شده',
 			}))
