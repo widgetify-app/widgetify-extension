@@ -114,15 +114,16 @@ export default function Modal({
 				className={`${modalBoxClasses} animate-modal-in`}
 			>
 				{(title || showCloseButton) && (
-					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
+					<div className="relative flex items-center justify-end mb-2 md:mb-3">
 						{title && (
 							<h3
 								id="modal-title"
-								className="text-base font-semibold md:text-lg"
+								className="absolute inset-x-0 text-base font-semibold text-center pointer-events-none md:text-lg"
 							>
 								{title}
 							</h3>
 						)}
+
 						{showCloseButton && (
 							<button
 								type="button"

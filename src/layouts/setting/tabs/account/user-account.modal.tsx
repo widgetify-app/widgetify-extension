@@ -1,42 +1,12 @@
-import { BiUserCircle } from 'react-icons/bi'
-import { FiGift, FiUserCheck, FiUsers } from 'react-icons/fi'
 import Modal from '@/components/modal'
-import { type TabItem, TabManager } from '@/components/tab-manager'
 import { useAuth } from '@/context/auth.context'
-import { AccountTab } from '@/layouts/setting/tabs/account/account'
-import { AllFriendsTab, FriendRequestsTab, RewardsTab } from './tabs'
 import AuthForm from './auth-form/auth-form'
+import { SettingModal } from '../../setting-modal'
 interface FriendSettingModalProps {
 	isOpen: boolean
 	onClose: () => void
 	selectedTab?: string | null
 }
-const tabs: TabItem[] = [
-	{
-		label: 'پروفایل من',
-		value: 'profile',
-		icon: <BiUserCircle size={20} />,
-		element: <AccountTab />,
-	},
-	{
-		label: 'ماموریت‌ها و پاداش',
-		value: 'tasks',
-		icon: <FiGift size={20} />,
-		element: <RewardsTab />,
-	},
-	{
-		label: 'همه دوستان',
-		value: 'all',
-		icon: <FiUsers size={20} />,
-		element: <AllFriendsTab />,
-	},
-	{
-		label: 'درخواست‌ها',
-		value: 'requests',
-		icon: <FiUserCheck size={20} />,
-		element: <FriendRequestsTab />,
-	},
-]
 export const UserAccountModal = ({
 	isOpen,
 	onClose,
@@ -58,20 +28,10 @@ export const UserAccountModal = ({
 		)
 
 	return (
-		<Modal
+		<SettingModal
 			isOpen={isOpen}
 			onClose={onClose}
-			size="xl"
-			title="حساب کاربری"
-			direction="rtl"
-		>
-			<TabManager
-				tabOwner="user"
-				tabs={tabs}
-				defaultTab="all"
-				selectedTab={selectedTab}
-				direction="rtl"
-			/>
-		</Modal>
+			selectedTab={selectedTab as any}
+		/>
 	)
 }

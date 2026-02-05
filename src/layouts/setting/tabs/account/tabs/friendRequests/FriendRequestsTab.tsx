@@ -105,7 +105,7 @@ export const FriendRequestsTab = () => {
 
 	return (
 		<div className="space-y-6">
-			<SectionPanel title="درخواست دوستی جدید" size="sm">
+			<SectionPanel title="مدیریت درخواست ها" size="sm">
 				<div className="space-y-2">
 					<label className={'block text-sm font-medium text-content'}>
 						نام کاربری
@@ -146,9 +146,6 @@ export const FriendRequestsTab = () => {
 						</div>
 					)}
 				</div>
-			</SectionPanel>
-
-			<SectionPanel title="درخواست‌های دوستی" size="sm">
 				<FriendsList
 					status="PENDING"
 					renderFriendActions={renderFriendActions}

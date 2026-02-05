@@ -4,6 +4,7 @@ import { translateError } from '@/utils/translate-error'
 import { FriendsList } from '../../components/friends-List'
 import { RemoveFriendButton } from '../../components/remove-button'
 import { showToast } from '@/common/toast'
+import { FriendRequestsTab } from '../friendRequests/FriendRequestsTab'
 
 export const AllFriendsTab = () => {
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
@@ -27,12 +28,15 @@ export const AllFriendsTab = () => {
 	)
 
 	return (
-		<SectionPanel title="لیست دوستان" size="sm">
-			<FriendsList
-				status="ACCEPTED"
-				renderFriendActions={renderFriendActions}
-				emptyMessage="هنوز هیچ دوستی اضافه نکرده‌اید"
-			/>
-		</SectionPanel>
+		<>
+			<FriendRequestsTab />
+			<SectionPanel title="لیست دوستان" size="sm">
+				<FriendsList
+					status="ACCEPTED"
+					renderFriendActions={renderFriendActions}
+					emptyMessage="هنوز هیچ دوستی اضافه نکرده‌اید"
+				/>
+			</SectionPanel>
+		</>
 	)
 }

@@ -19,6 +19,10 @@ import { GeneralSettingTab } from './tabs/general/general'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
+import { BiUserCircle } from 'react-icons/bi'
+import { AccountTab } from './tabs/account/account'
+import { FiGift, FiUsers } from 'react-icons/fi'
+import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -27,41 +31,75 @@ interface SettingModalProps {
 }
 const tabs: TabItem[] = [
 	{
-		label: 'عمومی',
-		value: 'general',
-		icon: <VscSettingsGear size={20} />,
-		element: <GeneralSettingTab />,
+		parentName: 'حساب کاربری',
+		needAuth: true,
+		children: [
+			{
+				label: 'پروفایل من',
+				value: 'profile',
+				icon: <BiUserCircle size={20} />,
+				element: <AccountTab />,
+			},
+			{
+				label: 'ماموریت‌ها و پاداش',
+				value: 'tasks',
+				icon: <FiGift size={20} />,
+				element: <RewardsTab />,
+			},
+			{
+				label: 'دوستان',
+				value: 'friends',
+				icon: <FiUsers size={20} />,
+				element: <AllFriendsTab />,
+			},
+		],
 	},
+	{
+		parentName: 'تنظیمات',
+		children: [
+			{
+				label: 'عمومی',
+				value: 'general',
+				icon: <VscSettingsGear size={20} />,
+				element: <GeneralSettingTab />,
+			},
 
-	{
-		label: 'حریم خصوصی',
-		value: 'access',
-		icon: <MdOutlinePrivacyTip size={20} />,
-		element: <PrivacySettings key="privacy" />,
+			{
+				label: 'حریم خصوصی',
+				value: 'access',
+				icon: <MdOutlinePrivacyTip size={20} />,
+				element: <PrivacySettings key="privacy" />,
+			},
+			{
+				label: 'ظاهری',
+				value: 'appearance',
+				icon: <VscColorMode size={20} />,
+				element: <AppearanceSettingTab />,
+			},
+			{
+				label: 'تصویر زمینه ها',
+				value: 'wallpapers',
+				icon: <VscPaintcan size={20} />,
+				element: <WallpaperSetting />,
+			},
+			{
+				label: 'میانبرها',
+				value: 'shortcuts',
+				icon: <VscRecordKeys size={20} />,
+				element: <ShortcutsTab />,
+			},
+		],
 	},
 	{
-		label: 'ظاهری',
-		value: 'appearance',
-		icon: <VscColorMode size={20} />,
-		element: <AppearanceSettingTab />,
-	},
-	{
-		label: 'تصویر زمینه ها',
-		value: 'wallpapers',
-		icon: <VscPaintcan size={20} />,
-		element: <WallpaperSetting />,
-	},
-	{
-		label: 'میانبرها',
-		value: 'shortcuts',
-		icon: <VscRecordKeys size={20} />,
-		element: <ShortcutsTab />,
-	},
-	{
-		label: 'درباره ما',
-		value: 'about',
-		icon: <VscInfo size={20} />,
-		element: <AboutUsTab />,
+		parentName: 'ویجتیفای',
+		children: [
+			{
+				label: 'درباره ما',
+				value: 'about',
+				icon: <VscInfo size={20} />,
+				element: <AboutUsTab />,
+			},
+		],
 	},
 ]
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
@@ -103,7 +141,6 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 					>
 						<TbApps size={20} className="text-muted" />
 						<span className="text-sm font-light">مدیریت ویجت ها</span>
-						<span className="absolute w-2 h-2 rounded-full right-4 top-2 bg-error animate-pulse"></span>
 					</button>
 					<button
 						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}

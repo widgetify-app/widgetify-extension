@@ -12,6 +12,9 @@ export function UserCoin({ coins, title }: Prop) {
 				<div className="absolute inset-0 opacity-50 bg-gradient-to-r from-warning/5 to-transparent"></div>
 
 				<div className="relative flex items-center gap-2 px-2 py-0.5">
+					<span className="text-sm font-semibold text-warning bg-gradient-to-r from-warning to-warning/80 bg-clip-text">
+						{coins?.toLocaleString() || '۰'}
+					</span>
 					<div className="relative">
 						<div className="absolute inset-0 rounded-full bg-gradient-to-br from-warning/30 to-warning/10 blur-xs"></div>
 						<img
@@ -20,10 +23,6 @@ export function UserCoin({ coins, title }: Prop) {
 							className="relative w-6 h-6"
 						/>
 					</div>
-
-					<span className="text-sm font-semibold text-warning bg-gradient-to-r from-warning to-warning/80 bg-clip-text">
-						{coins?.toLocaleString() || '۰'}
-					</span>
 				</div>
 			</div>
 		</Tooltip>

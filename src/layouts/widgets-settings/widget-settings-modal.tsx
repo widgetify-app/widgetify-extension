@@ -6,7 +6,7 @@ import { VscSettings } from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import { TabManager } from '@/components/tab-manager'
+import { TabItem, TabManager } from '@/components/tab-manager'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
@@ -20,47 +20,47 @@ interface WidgetSettingsModalProps {
 	onClose: () => void
 	selectedTab: string | null
 }
-const tabs: {
-	label: string
-	element: JSX.Element
-	value: WidgetTabKeys
-	icon: JSX.Element
-}[] = [
+const tabs: TabItem[] = [
 	{
-		label: 'مدیریت ویجت ها',
-		element: <ManageWidgets />,
-		value: WidgetTabKeys.widget_management,
-		icon: <TbApps size={20} />,
-	},
-	{
-		label: 'ویجی پد',
-		element: <WigiPadSetting />,
-		value: WidgetTabKeys.wigiPad,
-		icon: <TbCalendarUser size={20} />,
-	},
-	{
-		label: 'ویجی ارز',
-		element: <WigiArzSetting />,
-		value: WidgetTabKeys.wigiArz,
-		icon: <TbCurrencyDollar size={20} />,
-	},
-	{
-		label: 'ویجی نیوز',
-		element: <RssFeedSetting />,
-		value: WidgetTabKeys.news_settings,
-		icon: <TbNews size={20} />,
-	},
-	{
-		label: 'ویجت آب و هوا',
-		element: <WeatherSetting />,
-		value: WidgetTabKeys.weather_settings,
-		icon: <TiWeatherCloudy size={20} />,
-	},
-	{
-		label: 'حیوان خانگی',
-		value: WidgetTabKeys.Pet,
-		icon: <MdPets size={20} />,
-		element: <PetSettings />,
+		parentName: 'مدیریت ویجت‌ها',
+		children: [
+			{
+				label: 'مدیریت ویجت ها',
+				element: <ManageWidgets />,
+				value: WidgetTabKeys.widget_management,
+				icon: <TbApps size={20} />,
+			},
+			{
+				label: 'ویجی پد',
+				element: <WigiPadSetting />,
+				value: WidgetTabKeys.wigiPad,
+				icon: <TbCalendarUser size={20} />,
+			},
+			{
+				label: 'ویجی ارز',
+				element: <WigiArzSetting />,
+				value: WidgetTabKeys.wigiArz,
+				icon: <TbCurrencyDollar size={20} />,
+			},
+			{
+				label: 'ویجی نیوز',
+				element: <RssFeedSetting />,
+				value: WidgetTabKeys.news_settings,
+				icon: <TbNews size={20} />,
+			},
+			{
+				label: 'ویجت آب و هوا',
+				element: <WeatherSetting />,
+				value: WidgetTabKeys.weather_settings,
+				icon: <TiWeatherCloudy size={20} />,
+			},
+			{
+				label: 'حیوان خانگی',
+				value: WidgetTabKeys.Pet,
+				icon: <MdPets size={20} />,
+				element: <PetSettings />,
+			},
+		],
 	},
 ]
 

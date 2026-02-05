@@ -1,12 +1,17 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { useAuth } from '@/context/auth.context'
 
 export interface TabItem {
-	label: string
-	value: string
-	icon: ReactNode
-	element: ReactNode
-	isNew?: boolean
+	parentName?: string
+	needAuth?: boolean
+	children?: {
+		label: string
+		value: string
+		icon: ReactNode
+		element: ReactNode
+		isNew?: boolean
+	}[]
 }
 
 interface TabManagerProps {
@@ -30,7 +35,8 @@ export const TabManager = ({
 	tabPosition,
 	children,
 }: TabManagerProps) => {
-	const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.value || '')
+	const { isAuthenticated } = useAuth()
+	const [activeTab, setActiveTab] = useState(defaultTab || '')
 	const contentRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -76,24 +82,45 @@ export const TabManager = ({
 				<div
 					className={`flex  w-full md:h-full justify-between overflow-x-auto rounded-lg ${contentClass}`}
 				>
-					<div className="flex flex-row sm:flex-col sm:gap-2">
-						{tabs.map(({ label, value, icon, isNew }) => (
-							<button
-								key={value}
-								onClick={() => handleTabChange(value)}
-								className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(activeTab === value)}`}
-							>
-								<span
-									className={`relative ${getTabIconStyle(activeTab === value)}`}
-								>
-									{icon}
-									{isNew && (
-										<span className="absolute left-0 z-30 w-2 h-2 duration-200 rounded-full -bottom-1 bg-error animate-ping"></span>
+					<div className="flex flex-row sm:flex-col sm:gap-4">
+						{tabs
+							.filter((f) => !f.needAuth || isAuthenticated)
+							.map((group, idx) => (
+								<div key={idx} className="flex flex-col gap-1">
+									{group.parentName && (
+										<div className="relative mx-4 my-2">
+											<div className="h-px bg-base-300" />
+											<span className="absolute right-0 px-2 text-xs font-medium -top-2 bg-base-100 text-muted">
+												{group.parentName}
+											</span>
+										</div>
 									)}
-								</span>
-								<span className="text-sm">{label}</span>
-							</button>
-						))}
+
+									{group.children?.map(
+										({ label, value, icon, isNew }) => (
+											<button
+												key={value}
+												onClick={() => handleTabChange(value)}
+												className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
+													activeTab === value
+												)}`}
+											>
+												<span
+													className={`relative ${getTabIconStyle(
+														activeTab === value
+													)}`}
+												>
+													{icon}
+													{isNew && (
+														<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-error animate-ping" />
+													)}
+												</span>
+												<span className="text-sm">{label}</span>
+											</button>
+										)
+									)}
+								</div>
+							))}
 					</div>
 					{children}
 				</div>
@@ -103,18 +130,20 @@ export const TabManager = ({
 				className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
 				ref={contentRef}
 			>
-				{tabs.map(({ value, element }) => (
-					<div
-						key={value}
-						className={`absolute inset-0 p-1 rounded-lg transition-all duration-200 ease-in-out ${
-							activeTab === value
-								? 'opacity-100 translate-x-0 z-10'
-								: 'opacity-0 translate-x-5 z-0 pointer-events-none'
-						}`}
-					>
-						{activeTab === value && element}
-					</div>
-				))}
+				{tabs.flatMap((tab) =>
+					tab.children?.map(({ value, element }) => (
+						<div
+							key={value}
+							className={`absolute inset-0 p-1 rounded-lg transition-all duration-200 ${
+								activeTab === value
+									? 'opacity-100 translate-x-0 z-10'
+									: 'opacity-0 translate-x-5 z-0 pointer-events-none'
+							}`}
+						>
+							{activeTab === value && element}
+						</div>
+					))
+				)}
 			</div>
 		</div>
 	)
