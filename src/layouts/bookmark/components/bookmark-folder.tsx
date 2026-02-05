@@ -29,9 +29,9 @@ export function FolderBookmarkItem({
 		.slice(0, 6)
 
 	const renderFolderIcons = () => {
-		// if (bookmark.icon) {
-		// 	return <BookmarkIcon bookmark={bookmark} />
-		// }
+		if (bookmark.icon) {
+			return <BookmarkIcon bookmark={bookmark} />
+		}
 
 		if (folderItems.length > 0) {
 			return (
