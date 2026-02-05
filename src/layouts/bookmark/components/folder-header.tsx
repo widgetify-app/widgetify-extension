@@ -6,6 +6,8 @@ import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import type { FolderPathItem } from '../types/bookmark.types'
 import { FolderPath } from './folder-path'
+import { IoHome } from 'react-icons/io5'
+import { LuX } from 'react-icons/lu'
 
 interface FolderHeaderProps {
 	folderPath: FolderPathItem[]
@@ -34,6 +36,15 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 						className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
 					>
 						<IoMdHelp size={12} />
+					</Button>
+				</Tooltip>
+				<Tooltip content={'بستن'}>
+					<Button
+						onClick={() => onNavigate(null, -1)}
+						size="xs"
+						className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
+					>
+						<LuX size={12} />
 					</Button>
 				</Tooltip>
 			</div>

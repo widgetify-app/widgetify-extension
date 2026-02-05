@@ -30,7 +30,6 @@ export function BookmarksList() {
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
-
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
 	const sensors = useSensors(
@@ -51,10 +50,7 @@ export function BookmarksList() {
 			)
 
 		const { active, over } = event
-
-		if (!over || active.id === over.id) {
-			return
-		}
+		if (!over || active.id === over.id) return
 
 		const allBookmarks = [...bookmarks]
 		const currentItems = getCurrentFolderItems(currentFolderId)
@@ -63,9 +59,7 @@ export function BookmarksList() {
 			(b) => b.id === active.id || b.onlineId === active.id
 		)
 
-		if (!sourceBookmark) {
-			return
-		}
+		if (!sourceBookmark) return
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id
@@ -74,9 +68,7 @@ export function BookmarksList() {
 			(item) => item.id === over.id || item.onlineId === over.id
 		)
 
-		if (sourceIndex === -1 || sourceIndex === targetIndex) {
-			return
-		}
+		if (sourceIndex === -1 || sourceIndex === targetIndex) return
 
 		const actualSourceIndex = allBookmarks.findIndex(
 			(b) =>
@@ -109,7 +101,6 @@ export function BookmarksList() {
 
 			setBookmarks(updatedBookmarks)
 			let folderIdToSend = currentFolderId
-
 			const isFolderIdValidUuid = validate(currentFolderId)
 			if (isFolderIdValidUuid) {
 				const foundedFolder = bookmarks.find((b) => b.id === currentFolderId)
@@ -139,7 +130,6 @@ export function BookmarksList() {
 			setCurrentFolderId(null)
 			return
 		}
-
 		const newPath = folderPath.slice(0, depth + 1)
 		setFolderPath(newPath)
 		setCurrentFolderId(folderId)
@@ -153,15 +143,12 @@ export function BookmarksList() {
 			const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
 			const fillers = new Array(fillersCount).fill(null)
 			const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
-
 			return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
 		}
-
 		const bookmarkCount = currentFolderItems.length
 		const minBookmarks = 10
 		const needsFillers = bookmarkCount < minBookmarks
 		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
-
 		return [...currentFolderItems, ...new Array(fillersCount).fill(null), null]
 	}
 
@@ -177,7 +164,7 @@ export function BookmarksList() {
 				<div
 					className={`flex flex-col transition-all duration-300 ${
 						currentFolderId
-							? 'bg-widget max-h-60 overflow-y-auto py-1 rounded-2xl'
+							? 'bg-content bg-glass rounded-2xl shadow-2xl overflow-hidden'
 							: ''
 					}`}
 					id="bookmarks"
@@ -189,12 +176,16 @@ export function BookmarksList() {
 						/>
 					)}
 
-					<BookmarkGrid
-						displayedBookmarks={displayedBookmarks}
-						folderPath={folderPath}
-						setFolderPath={(path) => setFolderPath(path)}
-						openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
-					/>
+					<div
+						className={currentFolderId ? 'max-h-60 overflow-y-auto py-1' : ''}
+					>
+						<BookmarkGrid
+							displayedBookmarks={displayedBookmarks}
+							folderPath={folderPath}
+							setFolderPath={(path) => setFolderPath(path)}
+							openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
+						/>
+					</div>
 				</div>
 			</DndContext>
 			{showAddBookmarkModal && !isAuthenticated ? (
