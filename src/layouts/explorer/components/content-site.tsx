@@ -33,27 +33,27 @@ export function RenderContentSite({ link }: SiteProp) {
 			}}
 		>
 			{link.isNew && <NewBadge className="top-2 right-1" />}
-			{link.icon && (
-				<div className="relative flex items-center justify-center w-10 h-10 transition-all duration-500 rounded-xl group-hover:scale-105">
-					{badge && (
-						<span
-							className="absolute -top-2 -left-2 text-center z-20 truncate px-1 rounded-xl text-[10px] font-light max-w-20 border border-white/10 shadow-sm"
-							style={{
-								backgroundColor: link.badgeColor,
-								color: '#fff',
-								animation: animate ? ANIMATES[animate] : 'none',
-							}}
-						>
-							{badge}
-						</span>
-					)}
-					<img
-						src={link.icon}
-						className="object-contain transition-all duration-500 rounded-md min-w-6 min-h-6 max-w-6 max-h-6"
-						alt={link.name || link.url}
-					/>
-				</div>
+
+			{badge && (
+				<span
+					className="absolute top-0 -left-1 rounded-r-lg text-center z-20 truncate px-1 rounded text-[10px] font-light max-w-20 border border-white/10 shadow-lg"
+					style={{
+						backgroundColor: link.badgeColor,
+						color: '#fff',
+						animation: animate ? ANIMATES[animate] : 'none',
+					}}
+				>
+					{badge}
+				</span>
 			)}
+			<div className="flex items-center justify-center w-10 h-10 transition-all duration-500 rounded-xl group-hover:scale-105">
+				<img
+					src={link.icon}
+					className="object-contain transition-all duration-500 rounded-md min-w-6 min-h-6 max-w-6 max-h-6"
+					alt={link.name || link.url}
+				/>
+			</div>
+
 			<span className="text-[10px] font-medium tracking-tighter text-center truncate opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105">
 				{link.name}
 			</span>
