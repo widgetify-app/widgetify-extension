@@ -91,7 +91,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 			<textarea
 				ref={bodyRef}
 				className={
-					'w-full px-2 pt-2 text-sm flex-grow resize-none rounded-xl bg-base-300/70 outline-none font-light'
+					'w-full h-full px-2 pt-1 pb-4 text-sm flex-grow resize-none rounded-xl bg-base-300/70 outline-none font-light'
 				}
 				placeholder="متن یادداشت..."
 				value={currentBody}
@@ -111,7 +111,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						/>
 					))}
 				</div>
-				<div>
+				<div className="flex items-center gap-1">
 					<Button
 						size="sm"
 						onClick={() => onSave()}

@@ -45,7 +45,7 @@ export function BookmarkItem({
 					onAuxClick={onClick}
 					onMouseDown={handleMouseDown}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-2 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+					className={`relative  flex flex-col items-center justify-center p-2 transition-all duration-300 border border-content cursor-pointer group rounded-3xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `${getBookmarkStyle()}` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 				>
 					{onMenuClick && bookmark && (
 						<div
@@ -66,10 +66,12 @@ export function BookmarkItem({
 					)}
 					{RenderStickerPattern(bookmark)}
 					<BookmarkIcon bookmark={bookmark} />
-					<BookmarkTitle
-						title={bookmark.title}
-						customTextColor={bookmark.customTextColor || ''}
-					/>
+					<div className="mt-0.5">
+						<BookmarkTitle
+							title={bookmark.title}
+							customTextColor={bookmark.customTextColor || ''}
+						/>
+					</div>
 
 					<div
 						className={

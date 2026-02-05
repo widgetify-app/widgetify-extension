@@ -79,15 +79,13 @@ export const ToolsLayout: React.FC<any> = () => {
 
 	return (
 		<WidgetContainer>
-			<div>
-				<TabNavigation
-					activeTab={activeTab}
-					onTabClick={onTabClick}
-					tabs={tabs}
-					size="small"
-					className="w-full "
-				/>
-			</div>
+			<TabNavigation
+				activeTab={activeTab}
+				onTabClick={onTabClick}
+				tabs={tabs}
+				size="small"
+				className="w-full"
+			/>
 
 			<Suspense>
 				{activeTab === 'religious-time' && (

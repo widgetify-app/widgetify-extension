@@ -12,46 +12,56 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
-import { FaChartSimple } from 'react-icons/fa6'
 import { FiList } from 'react-icons/fi'
-import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { type AddTodoInput, TodoViewType, useTodoStore } from '@/context/todo.context'
-import { formatDateStr } from '../calendar/utils'
+import { type AddTodoInput, useTodoStore } from '@/context/todo.context'
 import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { SortableTodoItem } from './sortable-todo-item'
-import { TodoStats } from './todo-stats'
 import { useAuth } from '@/context/auth.context'
-import { SelectBox } from '@/components/selectbox/selectbox'
 import Analytics from '@/analytics'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
 import { TabNavigation } from '@/components/tab-navigation'
 import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
+import { FilterTooltip } from '@/components/filter-tooltip'
+import { FaEye, FaEyeSlash, FaSortAmountDown, FaTags } from 'react-icons/fa'
+import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { MdOutlineFilterList, MdOutlineFilterListOff } from 'react-icons/md'
 
-const viewModeOptions = [
-	{ value: TodoViewType.Day, label: 'لیست امروز' },
-	{ value: TodoViewType.Monthly, label: 'لیست ماهانه' },
-	{ value: TodoViewType.All, label: 'همه وظایف' },
+const filterOptions = [
+	{ value: 'all', label: 'همه' },
+	{ value: 'today', label: 'امروز' },
+	{ value: 'thisMonth', label: 'این ماه' },
+	{ value: 'done', label: 'تکمیل‌شده' },
+	{ value: 'pending', label: 'در انتظار' },
 ]
 
+const sortOptions = [
+	{ value: 'def', label: 'پیشفرض' },
+	{ value: 'high', label: 'مهم' },
+	{ value: 'medium', label: 'متوسط' },
+	{ value: 'low', label: 'کم اهمیت' },
+]
+const TagList = ['', '-all-']
 interface Prop {
 	onChangeTab?: any
 }
-type TodoFilterType = 'active' | 'completed' | 'all'
 export function TodosLayout({ onChangeTab }: Prop) {
-	const { selectedDate } = useDate()
+	const { today } = useDate()
 	const { isAuthenticated } = useAuth()
-	const { addTodo, todos, updateOptions, todoOptions, reorderTodos, isPending } =
-		useTodoStore()
-	const { blurMode } = useGeneralSetting()
-	const [filter, setFilter] = useState<TodoFilterType>('active')
-	const [showStats, setShowStats] = useState<boolean>(false)
-	const selectedDateStr = formatDateStr(selectedDate.clone())
+	const { addTodo, todos, reorderTodos, isPending } = useTodoStore()
+	const { blurMode, updateSetting } = useGeneralSetting()
+	const [dateFilter, setDateFilter] = useState<string>('all')
+	const [sort, setSort] = useState<string>('def')
+	const [tagFilter, setTagFilter] = useState<string>('')
+	const { data: fetchedTags } = useGetTags(isAuthenticated)
+
 	const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
 
 	const sensors = useSensors(
@@ -62,42 +72,69 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		})
 	)
 
-	const handleChangeViewMode = (viewMode: TodoViewType) => {
-		updateOptions({ viewMode })
+	const isToday = (todoDate: string) => {
+		const todoMoment = parseTodoDate(todoDate)
+
+		return (
+			todoMoment.isValid() &&
+			todoMoment.format('YYYY-MM-DD') === today.doAsGregorian().format('YYYY-MM-DD')
+		)
 	}
 
-	const updateTodoFilter = (newFilter: TodoFilterType) => {
-		setFilter(newFilter)
-		Analytics.event(`todo_filter_${newFilter}_click`)
+	const isThisMonth = (todoDate: string) => {
+		const todoMoment = parseTodoDate(todoDate)
+
+		return (
+			todoMoment.isValid() &&
+			todoMoment.jYear() === today.doAsGregorian().jYear() &&
+			todoMoment.jMonth() === today.doAsGregorian().jMonth()
+		)
 	}
 
 	let selectedDateTodos = todos
-	if (todoOptions.viewMode === TodoViewType.Monthly) {
-		const currentMonth = selectedDate.format('jMM')
-		const currentYear = selectedDate.format('jYYYY')
-		selectedDateTodos = todos.filter((todo) => {
-			const todoDate = parseTodoDate(todo.date)
-			return todoDate.format('jYYYY-jMM') === `${currentYear}-${currentMonth}`
-		})
-	} else if (todoOptions.viewMode === TodoViewType.Day) {
-		selectedDateTodos = todos.filter((todo) => {
-			const todoDate = parseTodoDate(todo.date)
-			return todoDate.format('jYYYY-jMM-jDD') === selectedDateStr
-		})
-	}
 
 	selectedDateTodos = selectedDateTodos.sort((a, b) => {
-		if (a.completed !== b.completed) {
-			return a.completed ? 1 : -1
+		switch (sort) {
+			case 'def':
+				return (a.order || 0) - (b.order || 0)
+			case 'high':
+				return b.priority === 'high' ? 1 : a.priority === 'high' ? -1 : 0
+			case 'medium':
+				return b.priority === 'medium' ? 1 : a.priority === 'medium' ? -1 : 0
+			case 'low':
+				return b.priority === 'low' ? 1 : a.priority === 'low' ? -1 : 0
+			default:
+				return (a.order || 0) - (b.order || 0)
 		}
-		return (a.order || 0) - (b.order || 0)
 	})
 
-	if (filter === 'active') {
-		selectedDateTodos = selectedDateTodos.filter((todo) => !todo.completed)
-	} else if (filter === 'completed') {
-		selectedDateTodos = selectedDateTodos.filter((todo) => todo.completed)
+	const filterTodos = (todos: Todo[]) => {
+		let result: Todo[] = []
+		switch (dateFilter) {
+			case 'today':
+				result = todos.filter((todo) => todo.date && isToday(todo.date))
+				break
+			case 'thisMonth':
+				result = todos.filter((todo) => todo.date && isThisMonth(todo.date))
+				break
+			case 'done':
+				result = todos.filter((t) => t.completed)
+				break
+			case 'pending':
+				result = todos.filter((t) => !t.completed)
+				break
+			default:
+				result = todos
+		}
+
+		if (tagFilter && tagFilter !== '-all-') {
+			result = result.filter((f) => f.category === tagFilter)
+		}
+
+		return result
 	}
+
+	selectedDateTodos = filterTodos(selectedDateTodos)
 
 	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'> & { date: string }) => {
 		if (!isAuthenticated) {
@@ -133,131 +170,196 @@ export function TodosLayout({ onChangeTab }: Prop) {
 		}
 	}
 
+	const handleBlurModeToggle = () => {
+		const newBlurMode = !blurMode
+		updateSetting('blurMode', newBlurMode)
+	}
+
+	const onDateFilterChange = (value: string) => {
+		setDateFilter(value)
+		Analytics.event(`todo_filter_${value}_click`)
+		setToStorage('todoFilter', value)
+	}
+
+	const onSortChange = (value: string) => {
+		setSort(value)
+		Analytics.event(`todo_select_sort_${value}`)
+		setToStorage('todoSort', value)
+	}
+
+	const onTagFilterChange = (value: string) => {
+		setTagFilter(value)
+		Analytics.event(`todo_tag_change`)
+	}
+
+	const tagFilterOptions =
+		fetchedTags
+			?.filter((t) => t)
+			?.map((t) => ({
+				label: t,
+				value: t,
+			})) || []
+	if (tagFilterOptions.length) {
+		tagFilterOptions.unshift({
+			label: 'همه',
+			value: '-all-',
+		})
+	}
+
+	useEffect(() => {
+		async function load() {
+			const [todoFilter, todoSort] = await Promise.all([
+				getFromStorage('todoFilter'),
+				getFromStorage('todoSort'),
+			])
+			if (todoFilter) setDateFilter(todoFilter)
+			if (todoSort) setSort(todoSort)
+		}
+
+		load()
+	}, [])
+
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
-					<div className="flex items-center justify-between mb-2">
-						<TabNavigation
-							activeTab="todos"
-							onTabClick={onChangeTab}
-							tabs={[
-								{
-									id: 'todos',
-									label: 'وظایف',
-									icon: <HiOutlineCheckCircle size={14} />,
-								},
-								{
-									id: 'notes',
-									label: 'یادداشت',
-									icon: <HiOutlineDocumentText size={14} />,
-								},
-							]}
-							size="small"
-							className="w-fit"
-						/>
+					<TabNavigation
+						activeTab="todos"
+						onTabClick={onChangeTab}
+						tabs={[
+							{
+								id: 'todos',
+								label: 'وظایف',
+								icon: <HiOutlineCheckCircle size={14} />,
+							},
+							{
+								id: 'notes',
+								label: 'یادداشت',
+								icon: <HiOutlineDocumentText size={14} />,
+							},
+						]}
+						size="small"
+						className="w-full"
+					/>
 
-						<div className="flex gap-1.5 items-center">
-							{isPending ? <IconLoading /> : null}
-							<Tooltip content={showStats ? 'بازگشت به لیست' : 'آمار'}>
-								<Button
-									onClick={() => setShowStats(!showStats)}
-									size="xs"
-									className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none ${showStats ? 'bg-primary text-white' : 'text-muted hover:bg-base-300'}`}
-								>
-									<FaChartSimple size={12} />
-								</Button>
-							</Tooltip>
-						</div>
-					</div>
-
-					{showStats ? (
-						<TodoStats />
-					) : (
-						<div className="flex justify-between mb-2">
-							<div className="flex gap-0.5">
-								<button
-									onClick={() => updateTodoFilter('active')}
-									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'active' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-								>
-									فعال
-								</button>
-								<button
-									onClick={() => updateTodoFilter('completed')}
-									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'completed' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-								>
-									تکمیل‌ها
-								</button>
-								<button
-									onClick={() => updateTodoFilter('all')}
-									className={`px-1.5 rounded-xl border-none text-[10px] leading-none cursor-pointer active:scale-95 ${filter === 'all' ? 'bg-primary text-white' : 'text-muted bg-base-300'}`}
-								>
-									همه
-								</button>
-							</div>
-							<div className="relative">
-								<SelectBox
-									options={viewModeOptions}
-									value={todoOptions.viewMode}
-									onChange={(value) =>
-										handleChangeViewMode(value as TodoViewType)
+					<div className="flex justify-between my-1">
+						<div className="flex gap-0.5">
+							<div className="flex flex-row items-center gap-1">
+								<FilterTooltip
+									options={filterOptions}
+									value={dateFilter}
+									icon={
+										dateFilter !== 'all' ? (
+											<MdOutlineFilterList
+												size={12}
+												className="text-primary"
+											/>
+										) : (
+											<MdOutlineFilterListOff
+												size={12}
+												className="text-muted"
+											/>
+										)
 									}
-									className="!text-[10px] !w-[4.5rem] !px-2.5 rounded-xl !outline-none !border-none !shadow-none text-muted bg-base-300 cursor-pointer"
-									optionClassName="text-content"
+									onChange={onDateFilterChange}
+									placeholder="فیلتر"
+									buttonClassName={`truncate gap-1.5`}
+								/>
+								<FilterTooltip
+									icon={
+										<FaTags
+											size={10}
+											className={
+												TagList.includes(tagFilter)
+													? 'text-muted'
+													: 'text-primary!'
+											}
+										/>
+									}
+									options={tagFilterOptions}
+									value={tagFilter || '-all-'}
+									onChange={onTagFilterChange}
+									placeholder="دسته‌بندی"
+								/>
+								<FilterTooltip
+									icon={
+										<FaSortAmountDown
+											size={10}
+											className={
+												sort !== 'def'
+													? 'text-primary!'
+													: 'text-muted'
+											}
+										/>
+									}
+									options={sortOptions}
+									value={sort}
+									onChange={onSortChange}
+									placeholder="ترتیب"
+									buttonClassName="truncate gap-2"
 								/>
 							</div>
 						</div>
-					)}
+						<div className="flex items-center gap-1">
+							{isPending ? <IconLoading /> : null}
+							<Tooltip content={blurMode ? 'نمایش' : 'حالت مخفی'}>
+								<div
+									className="flex items-center cursor-pointer hover:bg-base-300! rounded-full gap-1 px-2 py-2 text-[10px] transition-all duration-200   bg-content border-content hover:border-primary/40 text-content"
+									onClick={handleBlurModeToggle}
+								>
+									{blurMode ? <FaEye /> : <FaEyeSlash />}
+								</div>
+							</Tooltip>
+						</div>
+					</div>
 				</div>
 				<div className="mt-0.5 flex-grow overflow-hidden">
-					{!showStats && (
-						<DndContext
-							sensors={sensors}
-							collisionDetection={closestCenter}
-							onDragEnd={handleDragEnd}
+					<DndContext
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+					>
+						<div
+							className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
-							<div
-								className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-							>
-								{selectedDateTodos.length > 0 ? (
-									<SortableContext
-										items={selectedDateTodos.map((todo) => todo.id)}
-										strategy={verticalListSortingStrategy}
-									>
-										{selectedDateTodos.map((todo) => (
-											<SortableTodoItem
-												key={todo.id}
-												todo={todo}
-												blurMode={blurMode}
-											/>
-										))}
-									</SortableContext>
-								) : (
+							{selectedDateTodos.length > 0 ? (
+								<SortableContext
+									items={selectedDateTodos.map((todo) => todo.id)}
+									strategy={verticalListSortingStrategy}
+								>
+									{selectedDateTodos.map((todo) => (
+										<SortableTodoItem
+											key={todo.id}
+											todo={todo}
+											blurMode={blurMode}
+										/>
+									))}
+								</SortableContext>
+							) : (
+								<div
+									className={
+										'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
+									}
+								>
 									<div
 										className={
-											'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
+											'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 										}
 									>
-										<div
-											className={
-												'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-											}
-										>
-											<FiList className="text-content" size={24} />
-										</div>
-										<p className="mt-1 text-center text-content">
-											وظیفه‌ای برای این روز وجود ندارد.
-										</p>
-										<p className="text-center text-[.65rem] text-content opacity-75">
-											یک وظیفه جدید اضافه کنید.
-										</p>
+										<FiList className="text-content" size={24} />
 									</div>
-								)}
-							</div>
-						</DndContext>
-					)}
+									<p className="mt-1 text-center text-content">
+										وظیفه‌ای برای این روز وجود ندارد.
+									</p>
+									<p className="text-center text-[.65rem] text-content opacity-75">
+										یک وظیفه جدید اضافه کنید.
+									</p>
+								</div>
+							)}
+						</div>
+					</DndContext>
 				</div>
-				{!showStats && <ExpandableTodoInput onAddTodo={handleAddTodo} />}
+				{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
 			</div>
 
 			<AuthRequiredModal

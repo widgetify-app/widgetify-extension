@@ -6,6 +6,9 @@ import Tooltip from '@/components/toolTip'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
+import { useBookmarkStore } from '../context/bookmark.context'
+import { getFaviconFromUrl } from '@/common/utils/icon'
+import { BookmarkIcon } from './bookmark/bookmark-icon'
 
 export function FolderBookmarkItem({
 	bookmark,
@@ -18,25 +21,56 @@ export function FolderBookmarkItem({
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }) {
+	const { getCurrentFolderItems } = useBookmarkStore()
+
 	const [isHovered, setIsHovered] = useState(false)
 
 	const getFolderStyle = () => {
-		return 'border border-primary/0 hover:border-primary/40 bg-content bg-glass hover:bg-primary/20'
+		return 'bg-content bg-glass hover:bg-primary/20'
 	}
 
-	const displayIcon =
-		bookmark.icon ||
-		(isHovered ? (
-			<FaFolderOpen className="w-6 h-6 text-blue-400" />
+	const folderItems = getCurrentFolderItems(bookmark.id)
+		.filter((item) => item.type === 'BOOKMARK')
+		.slice(0, 6)
+
+	const renderFolderIcons = () => {
+		// if (bookmark.icon) {
+		// 	return <BookmarkIcon bookmark={bookmark} />
+		// }
+
+		if (folderItems.length > 0) {
+			return (
+				<div className="grid grid-cols-3 gap-1.5">
+					{folderItems.map((child, index) => (
+						<div
+							key={index}
+							className="flex items-center justify-center w-5 h-5"
+						>
+							<img
+								src={child.icon || getFaviconFromUrl(child.url || '')}
+								className="object-center p-0.5 h-full rounded-md"
+								alt=""
+							/>
+						</div>
+					))}
+				</div>
+			)
+		}
+
+		return isHovered ? (
+			<FaFolderOpen className="w-8 h-8 text-blue-400" />
 		) : (
-			<FaFolder className="w-6 h-6 text-blue-400" />
-		))
+			<FaFolder className="w-8 h-8 text-blue-400" />
+		)
+	}
 
 	const customStyles = bookmark.customBackground
-		? {
+		? ({
+				'--custom-bg': bookmark.customBackground,
+				'--custom-border': addOpacityToColor(bookmark.customBackground, 0.2),
 				backgroundColor: bookmark.customBackground,
 				borderColor: addOpacityToColor(bookmark.customBackground, 0.2),
-			}
+			} as React.CSSProperties)
 		: {}
 
 	const handleMouseDown = (e: React.MouseEvent) => {
@@ -46,7 +80,7 @@ export function FolderBookmarkItem({
 	}
 
 	return (
-		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
+		<div className={`relative ${isDragging ? 'opacity-50' : ''} group`}>
 			<Tooltip content={bookmark.title} className="w-full lg:min-w-[5.4rem]">
 				<button
 					onClick={onClick}
@@ -55,32 +89,21 @@ export function FolderBookmarkItem({
 					onMouseEnter={() => setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={customStyles}
-					className={`relative flex flex-col items-center justify-center p-2 transition-all duration-300 cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] shadow-sm ${!bookmark.customBackground ? getFolderStyle() : 'border hover:border-blue-400/40'} transition-all ease-in-out duration-300 folder-bookmark-item`}
+					className={`relative flex flex-col items-center justify-center p-2 transition-all duration-300 mt-1 cursor-pointer rounded-b-3xl rounded-tl-3xl w-full md:h-[5.2rem] shadow-sm 
+					border-l border-b border-r border-t-0
+					${!bookmark.customBackground ? 'border-primary/0 hover:border-primary/40' : 'border-transparent'}
+					before:content-[''] before:absolute before:-top-[8px] before:-right-px before:w-1/2 before:h-2 before:rounded-t-lg before:border-t before:border-r before:border-l before:transition-all before:duration-300 before:border-primary/0 group-hover:before:border-primary/40
+					${
+						!bookmark.customBackground
+							? `${getFolderStyle()} before:bg-base-200`
+							: `before:bg-inherit `
+					}
+					transition-all ease-in-out duration-300 folder-bookmark-item`}
 				>
 					{RenderStickerPattern(bookmark)}
-					<div className="absolute inset-0 overflow-hidden rounded-2xl">
-						<div
-							className={
-								'absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-info/5 to-transparent'
-							}
-						/>
-						<div
-							className={
-								'absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-primary/10 to-transparent invisible  group-hover:visible'
-							}
-						/>
-					</div>
-					<div className="absolute -top-[1px] w-8 h-2 transform -translate-x-1/2 rounded-b-sm shadow left-1/2 bg-primary/60" />
-					<div className="relative z-10 flex items-center justify-center w-8 h-8 mb-2">
-						{typeof displayIcon === 'string' ? (
-							<img
-								src={displayIcon}
-								className="transition-transform duration-300 group-hover:scale-110"
-								alt={bookmark.title}
-							/>
-						) : (
-							displayIcon
-						)}
+
+					<div className="flex items-center justify-center flex-1 w-full">
+						{renderFolderIcons()}
 					</div>
 					<BookmarkTitle
 						title={bookmark.title}

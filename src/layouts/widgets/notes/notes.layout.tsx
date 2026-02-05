@@ -4,10 +4,10 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
 import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
-import { NoteNavigation } from './components/note-navigation'
 import { NoteItem } from './components/note-item'
 import { TabNavigation } from '@/components/tab-navigation'
 import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
+import { NoteNavigation } from './components/note-navigation'
 
 function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
@@ -35,7 +35,7 @@ function NotesContent() {
 
 	return (
 		<div
-			className={`mt-2 flex-grow overflow-auto h-[calc(100%-40px)] ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`flex-grow overflow-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div key={activeNoteId} className="h-full">
 				<NoteEditor note={activeNote} />
@@ -54,7 +54,7 @@ function NoteList() {
 
 	return (
 		<div
-			className={`w-full overflow-y-auto hide-scrollbar h-96 flex flex-col gap-0.5 mt-4 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`w-full overflow-y-auto scrollbar-none h-full flex flex-col gap-0.5 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			{notes.map((note) => (
 				<NoteItem note={note} handleNoteClick={handleNoteClick} key={note.id} />
@@ -68,31 +68,40 @@ interface Prop {
 }
 export function NotesLayout({ onChangeTab }: Prop) {
 	return (
-		<WidgetContainer className="overflow-hidden">
+		<WidgetContainer>
 			<NotesProvider>
-				<div className="flex items-center justify-between">
-					<TabNavigation
-						activeTab="notes"
-						onTabClick={onChangeTab}
-						tabs={[
-							{
-								id: 'todos',
-								label: 'وظایف',
-								icon: <HiOutlineCheckCircle size={14} />,
-							},
-							{
-								id: 'notes',
-								label: 'یادداشت',
-								icon: <HiOutlineDocumentText size={14} />,
-							},
-						]}
-						size="small"
-						className="w-fit"
-					/>
+				<div className="flex flex-col h-full">
+					<div className="flex-none">
+						<div className="flex items-center justify-between">
+							<TabNavigation
+								activeTab="notes"
+								onTabClick={onChangeTab}
+								tabs={[
+									{
+										id: 'todos',
+										label: 'وظایف',
+										icon: <HiOutlineCheckCircle size={14} />,
+									},
+									{
+										id: 'notes',
+										label: 'یادداشت',
+										icon: <HiOutlineDocumentText size={14} />,
+									},
+								]}
+								size="small"
+								className="w-full"
+							/>
+						</div>
 
-					<NoteNavigation />
+						<div className="w-full my-1">
+							<NoteNavigation />
+						</div>
+					</div>
+
+					<div className="mt-0.5 flex-grow overflow-hidden">
+						<NotesContent />
+					</div>
 				</div>
-				<NotesContent />
 			</NotesProvider>
 		</WidgetContainer>
 	)

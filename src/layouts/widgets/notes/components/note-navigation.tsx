@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { FaPlus } from 'react-icons/fa6'
 import { FiChevronLeft, FiTrash2 } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
@@ -8,6 +7,7 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { MdEdit } from 'react-icons/md'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
@@ -46,7 +46,9 @@ export function NoteNavigation() {
 	}
 
 	return (
-		<div className="flex items-center justify-between gap-x-1">
+		<div
+			className={`flex items-center ${activeNoteId ? 'justify-end' : 'justify-center'} gap-x-1`}
+		>
 			<div className="flex items-center">
 				{isSaving && <IconLoading title="درحال ذخیره..." />}
 				{activeNoteId ? (
@@ -83,20 +85,18 @@ export function NoteNavigation() {
 						</Tooltip>
 					</>
 				) : (
-					<Tooltip content="یادداشت جدید" position="top" offset={5}>
-						<Button
-							onClick={onAdd}
-							size="xs"
-							disabled={isCreatingNote}
-							className={`h-6 w-6 text-xs !p-0 font-medium rounded-[0.55rem] transition-colors border-none shadow-none bg-primary text-white`}
-						>
-							{isCreatingNote ? (
-								<IconLoading title="در حال ساخت..." />
-							) : (
-								<FaPlus size={12} />
-							)}
-						</Button>
-					</Tooltip>
+					<Button
+						onClick={onAdd}
+						size="xs"
+						disabled={isCreatingNote}
+						loading={isCreatingNote}
+						loadingText={<IconLoading title="درحال ساخت..." />}
+						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95 rounded-xl`}
+						isPrimary={true}
+					>
+						<MdEdit size={12} />
+						چیزی بنویس
+					</Button>
 				)}
 			</div>
 

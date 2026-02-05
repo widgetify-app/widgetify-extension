@@ -107,7 +107,7 @@ export function TodoItem({
 			} ${blurMode ? 'blur-[2px] opacity-40' : ''}`}
 		>
 			<div className="flex items-center gap-1.5 px-2 py-1">
-				<div className="flex items-center gap-1">
+				<div className="flex items-center gap-1 shrink-0">
 					<div
 						{...dragHandle}
 						className="cursor-grab p-0.5 text-muted hover:text-base-content active:cursor-grabbing"
@@ -128,7 +128,7 @@ export function TodoItem({
 				</div>
 
 				<div
-					className="flex-1 py-1 overflow-hidden cursor-pointer"
+					className="flex-1 min-w-0 py-1 overflow-hidden cursor-pointer"
 					onClick={() => setExpanded(!expanded)}
 				>
 					<p
@@ -142,28 +142,33 @@ export function TodoItem({
 					</p>
 				</div>
 
-				<div className="flex items-center gap-0.5">
+				<div className="flex relative items-center gap-0.5 shrink-0">
 					{isSyncing ? (
 						<IconLoading className="scale-[0.6] opacity-40 mx-1" />
 					) : (
-						<div className="flex items-center transition-opacity duration-150 opacity-0 group-hover:opacity-100">
-							<button
-								onClick={handleEdit}
-								className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"
-							>
-								<FiEdit3 size={13} />
-							</button>
-							<button
-								onClick={handleDelete}
-								className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error"
-							>
-								<FiTrash2 size={13} />
-							</button>
+						<div className="absolute px-2 left-4 group-hover:bg-base-200">
+							<div className="flex items-center transition-opacity duration-150 opacity-0 group-hover:opacity-100">
+								<button
+									onClick={handleEdit}
+									className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"
+								>
+									<FiEdit3 size={13} />
+								</button>
+								<button
+									onClick={handleDelete}
+									className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error"
+								>
+									<FiTrash2 size={13} />
+								</button>
+							</div>
 						</div>
 					)}
+
 					<button
 						onClick={() => setExpanded(!expanded)}
-						className={`rounded p-0.5 text-muted/50 cursor-pointer transition-transform duration-300 ${expanded ? 'rotate-180' : ''} hover:scale-110`}
+						className={`rounded p-0.5 text-muted/50 cursor-pointer transition-transform duration-300 ${
+							expanded ? 'rotate-180' : ''
+						} hover:scale-110`}
 					>
 						<FiChevronDown size={15} />
 					</button>
@@ -178,7 +183,7 @@ export function TodoItem({
 
 					<div className="flex items-center gap-2 text-[10px]">
 						{todo.category && (
-							<span className="flex items-center gap-1 rounded bg-base-content/5 px-1.5 py-0.5 text-muted">
+							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-base-content/20 px-1.5 text-muted">
 								<FiTag size={9} />
 								{todo.category}
 							</span>

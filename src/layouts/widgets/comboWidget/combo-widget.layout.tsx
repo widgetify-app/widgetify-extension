@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { FaGear } from 'react-icons/fa6'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
@@ -10,6 +9,7 @@ import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
 import { TabNavigation } from '@/components/tab-navigation'
 import { HiOutlineCurrencyBangladeshi, HiOutlineNewspaper } from 'react-icons/hi2'
+import { CgOptions } from 'react-icons/cg'
 
 export type ComboTabType = 'news' | 'currency'
 
@@ -48,8 +48,8 @@ export function ComboWidget() {
 	if (!activeTab) return null
 
 	return (
-		<WidgetContainer className={'flex flex-col gap-1'}>
-			<div className="flex items-center justify-between pb-2">
+		<WidgetContainer className={'flex flex-col'}>
+			<div className="flex-none">
 				<TabNavigation
 					activeTab={activeTab}
 					onTabClick={onTabClick}
@@ -66,18 +66,15 @@ export function ComboWidget() {
 						},
 					]}
 					size="small"
-					className="w-32"
+					className="w-full"
 				/>
-				<div className="flex items-center gap-x-1">
+				<div className="flex justify-end px-1 my-1">
 					<Button
 						onClick={handleSettingsClick}
 						size="xs"
-						className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+						className="h-6 w-6 p-0 flex items-center justify-center rounded-full border-none !shadow-none"
 					>
-						<FaGear
-							size={12}
-							className="text-content opacity-70 hover:opacity-100"
-						/>
+						<CgOptions className="w-4 h-4 text-muted" />
 					</Button>
 				</div>
 			</div>
