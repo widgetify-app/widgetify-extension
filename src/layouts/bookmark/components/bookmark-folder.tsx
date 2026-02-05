@@ -8,6 +8,7 @@ import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
+import noInternet from '@/assets/images/no-internet.png'
 
 export function FolderBookmarkItem({
 	bookmark,
@@ -44,7 +45,9 @@ export function FolderBookmarkItem({
 							<img
 								src={child.icon || getFaviconFromUrl(child.url || '')}
 								className="object-center p-0.5 h-full rounded-md"
-								alt=""
+								onError={(e) => {
+									;(e.target as HTMLImageElement).src = noInternet
+								}}
 							/>
 						</div>
 					))}

@@ -1,6 +1,7 @@
 import { FaFolder } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import type { Bookmark } from '../../types/bookmark.types'
+import noInternet from '@/assets/images/no-internet.png'
 
 export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	let displayIcon: string | React.ReactNode
@@ -24,6 +25,9 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 					className="transition-transform duration-300 rounded-md group-hover:scale-105"
 					alt={bookmark.title}
 					loading="lazy"
+					onError={(e) => {
+						;(e.target as HTMLImageElement).src = noInternet
+					}}
 				/>
 			) : (
 				displayIcon

@@ -7,13 +7,10 @@ export function BookmarkTitle({
 	customTextColor?: string
 }) {
 	return (
-		<div className="mt-0.5 truncate w-full text-center" dir="auto">
+		<div className="mt-0.5 text-center w-20 truncate" dir="auto">
 			<span
-				style={{
-					color: customTextColor || undefined,
-					zIndex: 10,
-				}}
-				className={`text-[.7rem]  w-full text-center font-medium transition-colors duration-300 truncate opacity-85 ${!customTextColor && 'text-content'} group-hover:opacity-100`}
+				style={{ color: customTextColor || undefined, zIndex: 10 }}
+				className={`text-[.7rem] font-medium transition-colors duration-300 opacity-85 ${!customTextColor && 'text-content'} group-hover:opacity-100`}
 			>
 				{title}
 			</span>
