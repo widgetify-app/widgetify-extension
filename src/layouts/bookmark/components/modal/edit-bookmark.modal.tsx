@@ -71,6 +71,7 @@ export function EditBookmarkModal({
 
 	const updateFormData: UpdateBookmarkUpdateFormData = (key, value) => {
 		if (key === 'icon') {
+			// @ts-expect-error
 			setIcon(value || null)
 		}
 		setFormData((prev) => ({ ...prev, [key]: value }))

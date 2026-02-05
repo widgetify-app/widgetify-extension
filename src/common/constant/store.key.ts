@@ -1,6 +1,5 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Theme } from '@/context/theme.context'
-import type { TodoOptions } from '@/context/todo.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -63,7 +62,6 @@ export interface StorageKV {
 	}[]
 	calendarDrawerState: boolean
 	pets: PetSettings
-	todoOptions: TodoOptions
 	youtubeSettings: {
 		username: string | null
 		subscriptionStyle: 'short' | 'long'
