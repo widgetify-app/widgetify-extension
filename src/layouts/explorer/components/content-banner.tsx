@@ -28,7 +28,7 @@ export function RenderContentBanner({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded-2xl hover:shadow-sm hover:scale-98`}
+			className={`relative flex flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded hover:shadow-sm hover:scale-98`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,

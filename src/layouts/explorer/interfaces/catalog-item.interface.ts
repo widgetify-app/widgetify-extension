@@ -12,4 +12,6 @@ export interface LinkItem {
 	}
 	backgroundSrc?: string | null
 	height?: number
+	hasBorder?: boolean
+	isNew?: boolean
 }
