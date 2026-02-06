@@ -220,6 +220,7 @@ export function TodosLayout({ onChangeTab }: Prop) {
 			<div className="flex flex-col h-full">
 				<div className="flex-none">
 					<TabNavigation
+						tabMode="advanced"
 						activeTab="todos"
 						onTabClick={onChangeTab}
 						tabs={[

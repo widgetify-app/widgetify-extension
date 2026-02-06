@@ -55,6 +55,7 @@ export function InfoPanel() {
 				className="py-1 flex lg:justify-start overflow-x-auto scrollbar-none gap-x-0.5 border-t border-base-content/5 bg-base-200/20"
 			>
 				<TabNavigation
+					tabMode="advanced"
 					activeTab={activeSection}
 					onTabClick={(tab) => setActiveSection(tab)}
 					tabs={sections}

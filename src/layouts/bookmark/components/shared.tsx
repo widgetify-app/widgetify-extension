@@ -20,6 +20,7 @@ export function IconSourceSelector({
 	return (
 		<TabNavigation<IconSourceType>
 			size="small"
+			tabMode="sample"
 			tabs={[
 				{ id: 'auto', label: 'آیکون خودکار' },
 				{ id: 'upload', label: 'آپلود آیکون' },
@@ -40,6 +41,7 @@ export function TypeSelector({
 	return (
 		<TabNavigation<BookmarkType>
 			className="w-full!"
+			tabMode="sample"
 			size="small"
 			tabs={[
 				{

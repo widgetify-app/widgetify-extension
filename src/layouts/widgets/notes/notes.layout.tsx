@@ -74,6 +74,7 @@ export function NotesLayout({ onChangeTab }: Prop) {
 					<div className="flex-none">
 						<div className="flex items-center justify-between">
 							<TabNavigation
+								tabMode="advanced"
 								activeTab="notes"
 								onTabClick={onChangeTab}
 								tabs={[

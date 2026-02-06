@@ -291,6 +291,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				<div className={`flex items-center gap-x-0.5`}>
 					{currentTab === 'timer' ? (
 						<TabNavigation
+							tabMode="sample"
 							activeTab={mode}
 							onTabClick={(v) => handleModeChange(v as any)}
 							tabs={[

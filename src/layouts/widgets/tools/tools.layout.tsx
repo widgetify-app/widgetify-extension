@@ -80,6 +80,7 @@ export const ToolsLayout: React.FC<any> = () => {
 	return (
 		<WidgetContainer>
 			<TabNavigation
+				tabMode="advanced"
 				activeTab={activeTab}
 				onTabClick={onTabClick}
 				tabs={tabs}

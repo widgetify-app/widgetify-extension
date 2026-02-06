@@ -12,6 +12,7 @@ interface TabNavigationProps<T> {
 	onTabClick: (tab: T) => void
 	size?: 'small' | 'medium' | 'large'
 	className?: string
+	tabMode: 'advanced' | 'sample'
 }
 
 export const TabNavigation = <T,>({
@@ -20,11 +21,21 @@ export const TabNavigation = <T,>({
 	onTabClick,
 	size = 'medium',
 	className = '',
+	tabMode,
 }: TabNavigationProps<T>) => {
 	const sizeClasses = {
 		small: 'py-1 px-2 text-[10px]',
 		medium: 'py-2 px-1 text-xs',
 		large: 'py-3 px-2 text-sm',
+	}
+	const buttonClass = (isActive: boolean) => {
+		if (tabMode === 'sample') {
+			return 'flex-1'
+		}
+
+		if (isActive) {
+			return 'flex-2'
+		} else return 'flex-1'
 	}
 
 	return (
@@ -40,7 +51,7 @@ export const TabNavigation = <T,>({
 						type="button"
 						onClick={() => onTabClick(tab.id)}
 						className={`
-                            flex-1 flex items-center justify-center gap-1 
+                            ${buttonClass(isActive)} flex items-center justify-center gap-1 
                             cursor-pointer rounded-xl 
                             transition-all duration-200 
                             active:scale-95 z-10 
@@ -60,11 +71,21 @@ export const TabNavigation = <T,>({
 							</span>
 						)}
 
-						<span
-							className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
-						>
-							{tab.label}
-						</span>
+						{tabMode === 'sample' ? (
+							<span
+								className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
+							>
+								{tab.label}
+							</span>
+						) : (
+							isActive && (
+								<span
+									className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
+								>
+									{tab.label}
+								</span>
+							)
+						)}
 					</button>
 				)
 			})}
