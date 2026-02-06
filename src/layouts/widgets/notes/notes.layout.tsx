@@ -2,11 +2,8 @@ import { PiNotepad } from 'react-icons/pi'
 import Analytics from '@/analytics'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
-import { WidgetContainer } from '../widget-container'
 import { NoteEditor } from './components/note-editor'
 import { NoteItem } from './components/note-item'
-import { TabNavigation } from '@/components/tab-navigation'
-import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
 import { NoteNavigation } from './components/note-navigation'
 
 function NotesContent() {
@@ -35,7 +32,7 @@ function NotesContent() {
 
 	return (
 		<div
-			className={`flex-grow overflow-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`grow overflow-auto h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div key={activeNoteId} className="h-full">
 				<NoteEditor note={activeNote} />
@@ -63,47 +60,18 @@ function NoteList() {
 	)
 }
 
-interface Prop {
-	onChangeTab?: any
-}
-export function NotesLayout({ onChangeTab }: Prop) {
+export function NotesLayout() {
 	return (
-		<WidgetContainer>
-			<NotesProvider>
-				<div className="flex flex-col h-full">
-					<div className="flex-none">
-						<div className="flex items-center justify-between">
-							<TabNavigation
-								tabMode="advanced"
-								activeTab="notes"
-								onTabClick={onChangeTab}
-								tabs={[
-									{
-										id: 'todos',
-										label: 'وظایف',
-										icon: <HiOutlineCheckCircle size={14} />,
-									},
-									{
-										id: 'notes',
-										label: 'یادداشت',
-										icon: <HiOutlineDocumentText size={14} />,
-									},
-								]}
-								size="small"
-								className="w-full"
-							/>
-						</div>
-
-						<div className="w-full my-1">
-							<NoteNavigation />
-						</div>
-					</div>
-
-					<div className="mt-0.5 flex-grow overflow-hidden">
-						<NotesContent />
-					</div>
+		<NotesProvider>
+			<div className="flex-none">
+				<div className="w-full my-1">
+					<NoteNavigation />
 				</div>
-			</NotesProvider>
-		</WidgetContainer>
+			</div>
+
+			<div className="mt-0.5 grow overflow-hidden">
+				<NotesContent />
+			</div>
+		</NotesProvider>
 	)
 }

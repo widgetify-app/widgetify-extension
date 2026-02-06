@@ -73,7 +73,7 @@ export const CurrencyConverter: React.FC = () => {
 				<div className="absolute z-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
 					<button
 						onClick={handleSwap}
-						className="flex items-center justify-center transition-all border rounded-full shadow-lg cursor-pointer bg-base-300 w-11 h-11 border-primary/10 text-content hover:text-primary active:scale-90 hover:scale-105"
+						className="flex items-center justify-center transition-all border rounded-full shadow-lg cursor-pointer bg-base-300 w-11 h-11 border-primary/10 text-content hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
 							<TbArrowsUpDown size={20} />

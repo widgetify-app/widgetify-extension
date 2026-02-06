@@ -15,7 +15,6 @@ import { useState } from 'react'
 import { FiList } from 'react-icons/fi'
 import { useDate } from '@/context/date.context'
 import { type AddTodoInput, useTodoStore } from '@/context/todo.context'
-import { WidgetContainer } from '../widget-container'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { SortableTodoItem } from './sortable-todo-item'
 import { useAuth } from '@/context/auth.context'
@@ -23,8 +22,6 @@ import Analytics from '@/analytics'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
-import { TabNavigation } from '@/components/tab-navigation'
-import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
 import { FilterTooltip } from '@/components/filter-tooltip'
 import { FaSortAmountDown, FaTags } from 'react-icons/fa'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
@@ -49,10 +46,8 @@ const sortOptions = [
 	{ value: 'low', label: 'کم اهمیت' },
 ]
 const TagList = ['', '-all-']
-interface Prop {
-	onChangeTab?: any
-}
-export function TodosLayout({ onChangeTab }: Prop) {
+
+export function TodosLayout() {
 	const { today } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
@@ -216,141 +211,119 @@ export function TodosLayout({ onChangeTab }: Prop) {
 	}, [])
 
 	return (
-		<WidgetContainer>
-			<div className="flex flex-col h-full">
-				<div className="flex-none">
-					<TabNavigation
-						tabMode="advanced"
-						activeTab="todos"
-						onTabClick={onChangeTab}
-						tabs={[
-							{
-								id: 'todos',
-								label: 'وظایف',
-								icon: <HiOutlineCheckCircle size={14} />,
-							},
-							{
-								id: 'notes',
-								label: 'یادداشت',
-								icon: <HiOutlineDocumentText size={14} />,
-							},
-						]}
-						size="small"
-						className="w-full"
-					/>
-
-					<div className="flex justify-between my-1">
-						<div className="flex gap-0.5">
-							<div className="flex flex-row items-center gap-1">
-								<FilterTooltip
-									options={filterOptions}
-									value={dateFilter}
-									icon={
-										dateFilter !== 'all' ? (
-											<MdOutlineFilterList
-												size={10}
-												className="text-primary"
-											/>
-										) : (
-											<MdOutlineFilterListOff
-												size={10}
-												className="text-muted"
-											/>
-										)
-									}
-									onChange={onDateFilterChange}
-									placeholder="فیلتر"
-									buttonClassName={`truncate gap-1.5`}
-								/>
-								<FilterTooltip
-									icon={
-										<FaTags
+		<>
+			<div className="flex-none">
+				<div className="flex justify-between my-1">
+					<div className="flex gap-0.5">
+						<div className="flex flex-row items-center gap-1">
+							<FilterTooltip
+								options={filterOptions}
+								value={dateFilter}
+								icon={
+									dateFilter !== 'all' ? (
+										<MdOutlineFilterList
 											size={10}
-											className={
-												TagList.includes(tagFilter)
-													? 'text-muted'
-													: 'text-primary!'
-											}
+											className="text-primary"
 										/>
-									}
-									options={tagFilterOptions}
-									value={tagFilter || '-all-'}
-									onChange={onTagFilterChange}
-									placeholder="دسته‌بندی"
-								/>
-								<FilterTooltip
-									icon={
-										<FaSortAmountDown
+									) : (
+										<MdOutlineFilterListOff
 											size={10}
-											className={
-												sort !== 'def'
-													? 'text-primary!'
-													: 'text-muted'
-											}
+											className="text-muted"
 										/>
-									}
-									options={sortOptions}
-									value={sort}
-									onChange={onSortChange}
-									placeholder="ترتیب"
-									buttonClassName="truncate gap-2"
-								/>
-							</div>
-						</div>
-						<div className="flex items-center gap-1">
-							{isPending ? <IconLoading /> : null}
-							<BlurModeButton />
+									)
+								}
+								onChange={onDateFilterChange}
+								placeholder="فیلتر"
+								buttonClassName={`truncate gap-1.5`}
+							/>
+							<FilterTooltip
+								icon={
+									<FaTags
+										size={10}
+										className={
+											TagList.includes(tagFilter)
+												? 'text-muted'
+												: 'text-primary!'
+										}
+									/>
+								}
+								options={tagFilterOptions}
+								value={tagFilter || '-all-'}
+								onChange={onTagFilterChange}
+								placeholder="دسته‌بندی"
+							/>
+							<FilterTooltip
+								icon={
+									<FaSortAmountDown
+										size={10}
+										className={
+											sort !== 'def'
+												? 'text-primary!'
+												: 'text-muted'
+										}
+									/>
+								}
+								options={sortOptions}
+								value={sort}
+								onChange={onSortChange}
+								placeholder="ترتیب"
+								buttonClassName="truncate gap-2"
+							/>
 						</div>
 					</div>
+					<div className="flex items-center gap-1">
+						{isPending ? <IconLoading /> : null}
+						<BlurModeButton />
+					</div>
 				</div>
-				<div className="mt-0.5 flex-grow overflow-hidden">
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
+			</div>
+			<div className="mt-0.5 grow overflow-hidden">
+				<DndContext
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
+				>
+					<div
+						className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 					>
-						<div
-							className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-						>
-							{selectedDateTodos.length > 0 ? (
-								<SortableContext
-									items={selectedDateTodos.map((todo) => todo.id)}
-									strategy={verticalListSortingStrategy}
-								>
-									{selectedDateTodos.map((todo) => (
-										<SortableTodoItem
-											key={todo.id}
-											todo={todo}
-											blurMode={blurMode}
-										/>
-									))}
-								</SortableContext>
-							) : (
+						{selectedDateTodos.length > 0 ? (
+							<SortableContext
+								items={selectedDateTodos.map((todo) => todo.id)}
+								strategy={verticalListSortingStrategy}
+							>
+								{selectedDateTodos.map((todo) => (
+									<SortableTodoItem
+										key={todo.id}
+										todo={todo}
+										blurMode={blurMode}
+									/>
+								))}
+							</SortableContext>
+						) : (
+							<div
+								className={
+									'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
+								}
+							>
 								<div
 									className={
-										'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
+										'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 									}
 								>
-									<div
-										className={
-											'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-										}
-									>
-										<FiList className="text-content" size={24} />
-									</div>
-									<p className="mt-1 text-center text-content">
-										وظیفه‌ای برای این روز وجود ندارد.
-									</p>
-									<p className="text-center text-[.65rem] text-content opacity-75">
-										یک وظیفه جدید اضافه کنید.
-									</p>
+									<FiList className="text-content" size={24} />
 								</div>
-							)}
-						</div>
-					</DndContext>
-				</div>
-				{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
+								<p className="mt-1 text-center text-content">
+									وظیفه‌ای برای این روز وجود ندارد.
+								</p>
+								<p className="text-center text-[.65rem] text-content opacity-75">
+									یک وظیفه جدید اضافه کنید.
+								</p>
+							</div>
+						)}
+					</div>
+				</DndContext>
 			</div>
+			{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
 
 			{showAuthModal && (
 				<AuthRequiredModal
@@ -359,6 +332,6 @@ export function TodosLayout({ onChangeTab }: Prop) {
 					message="برای استفاده از وظایف، لطفاً وارد حساب کاربری خود شوید."
 				/>
 			)}
-		</WidgetContainer>
+		</>
 	)
 }

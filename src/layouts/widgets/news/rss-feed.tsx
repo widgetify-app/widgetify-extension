@@ -17,7 +17,7 @@ export function RssFeedComponent({ url, sourceName }: Prop) {
 
 	return data?.map((rss, index) => (
 		<NewsItem
-			key={`${rss.title}`}
+			key={`rssfeed-${index}`}
 			title={rss.title}
 			description={rss.description}
 			image_url={rss.image_url}
