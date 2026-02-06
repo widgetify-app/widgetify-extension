@@ -51,6 +51,7 @@ export function ComboWidget() {
 		<WidgetContainer className={'flex flex-col'}>
 			<div className="flex-none">
 				<TabNavigation
+					tabMode="advanced"
 					activeTab={activeTab}
 					onTabClick={onTabClick}
 					tabs={[
