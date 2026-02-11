@@ -18,7 +18,7 @@ export function ProfileProgressNotification() {
 
 	return (
 		<div
-			className="flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl bg-base-300/70 border-base-300/70"
+			className="flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl bg-base-300/70 border-base-300/70 hover:scale-[0.99] active:scale-[0.99]"
 			id="update_profile"
 			onClick={() => onClick()}
 		>
