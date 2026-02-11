@@ -12,6 +12,7 @@ interface AuthContextType {
 	token: string | null
 	user: UserProfile | null
 	isLoadingUser: boolean
+	profilePercentage: number
 	login: (token: string) => void
 	logout: () => void
 	refetchUser: () => Promise<UserProfile | null>
@@ -84,6 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				isLoadingUser: initialLoading || (!!token && isLoading),
 				login,
 				logout,
+				profilePercentage:
+					calculateProgressPercentage(userProfile?.progressbar || []) || 0,
 				refetchUser,
 			}}
 		>
@@ -98,4 +101,16 @@ export function useAuth() {
 		throw new Error('useAuth must be used within an AuthProvider')
 	}
 	return context
+}
+
+function calculateProgressPercentage(progressArray: UserProfile['progressbar']) {
+	if (!progressArray || progressArray.length === 0) {
+		return 0
+	}
+
+	const doneItems = progressArray.filter((item) => item.isDone === true).length
+
+	const percentage = Math.round((doneItems / progressArray.length) * 100)
+	if (percentage === 100) return 0
+	return percentage
 }

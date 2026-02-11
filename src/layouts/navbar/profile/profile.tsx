@@ -31,7 +31,7 @@ const getTooltipContent = (user: any) => {
 }
 
 export function ProfileNav() {
-	const { user, isAuthenticated } = useAuth()
+	const { user, isAuthenticated, profilePercentage } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [openedWizard, setOpenedWizard] = useState(false)
 
@@ -83,7 +83,19 @@ export function ProfileNav() {
 				</Tooltip>
 			) : (
 				<Tooltip content={getTooltipContent(user)}>
-					<div className={containerClasses} onClick={handleProfileClick}>
+					{profilePercentage ? (
+						<div
+							className="absolute radial-progress text-primary/80"
+							style={{
+								// @ts-expect-error
+								'--value': profilePercentage,
+								'--size': '2rem',
+							}}
+							aria-valuenow={0}
+							role="progressbar"
+						></div>
+					) : null}
+					<div className={`${containerClasses} `} onClick={handleProfileClick}>
 						{renderUserAvatar(user)}
 						{hasPendingRequests &&
 							renderPendingNotification(

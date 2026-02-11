@@ -4,6 +4,7 @@ import keepItImage from '@/assets/keep-it.png'
 import { Button } from './button/button'
 import Checkbox from './checkbox'
 import Modal from './modal'
+import { setToStorage } from '@/common/storage'
 
 interface ExtensionInstalledModalProps {
 	show: boolean
@@ -84,7 +85,9 @@ interface StepFirefoxConsentProps {
 	onGetStarted: () => void
 }
 const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
-	const [isAccepted, setIsAccepted] = useState(false)
+	const [allowAnalytics, setAllowAnalytics] = useState(false)
+	const [allowIcon, setAllowIcon] = useState(false)
+
 	const handleDecline = () => {
 		if (browser.management?.uninstallSelf) {
 			// @ts-expect-error
@@ -96,71 +99,60 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 		}
 	}
 
+	const handleConfirm = () => {
+		localStorage.setItem('wxt_local:allowAnalytics', String(allowAnalytics))
+		localStorage.setItem('wxt_local:allowFaviconService', String(allowIcon))
+
+		onGetStarted()
+	}
+
 	return (
 		<div className="w-full overflow-clip">
-			<h3 className="mb-3 text-2xl font-bold text-content">Privacy Notice</h3>
-			<p className="mb-2 font-semibold">خلاصه سیاست حریم خصوصی ویجتیفای:</p>
+			<h3 className="mb-3 text-2xl font-bold text-content">
+				{' '}
+				Privacy Notice (حریم خصوصی)
+			</h3>
+			<p className="mb-2 font-semibold">لطفاً انتخاب کنید چه داده‌هایی ارسال شوند:</p>
+
 			<div className="w-full px-2">
-				<ul className="w-full h-56 space-y-1 overflow-y-auto text-xs list-disc list-inside border border-content rounded-2xl">
-					<li>هیچ داده شخصی به‌طور پیش‌فرض جمع‌آوری نمی‌شود.</li>
-					<li>تنظیمات فقط در دستگاه شما (Local Storage) ذخیره می‌شوند.</li>
+				<ul className="w-full h-32 p-2 mb-2 space-y-1 overflow-y-auto text-xs list-disc list-inside border border-content rounded-2xl">
+					<li>تنظیمات محلی: همه تنظیمات شما در دستگاه خودتان ذخیره می‌شود.</li>
 					<li>
-						اطلاعات اختیاری مثل نام و ایمیل فقط برای همگام‌سازی بین دستگاه‌ها
-						استفاده می‌شوند (در صورت تمایل شما).
+						آیکون وب‌سایت‌ها: دامنه سایت خوانده می‌شود تا از سرویس گوگل آیکون
+						بگیرد. (به رضایت آمار نیاز دارد)
 					</li>
-					<li>
-						اتصال به گوگل کاملاً اختیاری است و فقط برای نمایش رویدادهای تقویم
-						(دسترسی خواندنی) استفاده می‌شود.
-					</li>
-					<li>
-						برای نمایش آیکون بوکمارک‌ها، «دامنه‌ وب‌سایت» شما خوانده می‌شود؛ این
-						داده شخصی محسوب شده و فقط در همان لحظه برای نمایش آیکون استفاده
-						می‌شود و جایی ذخیره یا ارسال نمی‌گردد.
-					</li>
-					<li>
-						اطلاعات آماری استفاده (Analytics) برای بهبود تجربه کاربری جمع‌آوری
-						می‌شود. این مورد کاملاً اختیاری است و می‌توانید آن را رد کنید.
-					</li>
-					<li>هیچ داده‌ای با اشخاص ثالث به اشتراک گذاشته نمی‌شود.</li>
-					<li>ویجتیفای متن‌باز است و کد آن روی GitHub قابل بررسی است.</li>
-					<li>
-						درخواست حذف کامل داده‌ها در هر زمان از طریق{' '}
-						<a
-							href="mailto:privacy@widgetify.ir"
-							className="text-blue-600 underline"
-						>
-							privacy@widgetify.ir
-						</a>{' '}
-						ممکن است.
-					</li>
+					<li>همگام‌سازی و تقویم: فقط در صورت لاگین فعال می‌شوند.</li>
 				</ul>
+
+				<div className="mb-3 space-y-2">
+					<label className="flex items-center p-2 text-sm rounded-lg cursor-pointer hover:bg-base-200">
+						<Checkbox
+							checked={allowAnalytics}
+							onChange={() => setAllowAnalytics(!allowAnalytics)}
+						/>
+						<span className="mr-2">
+							ارسال آمار فنی غیرشخصی (برای بهبود افزونه)
+						</span>
+					</label>
+
+					<label className="flex items-center p-2 text-sm rounded-lg cursor-pointer hover:bg-base-200">
+						<Checkbox
+							checked={allowIcon}
+							onChange={() => setAllowIcon(!allowIcon)}
+						/>
+						<span className="mr-2">نمایش آیکون‌های بوکمارک</span>
+					</label>
+				</div>
 
 				<a
 					href="https://widgetify.ir/privacy"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="flex items-center justify-center font-medium underline text-primary gap-0.5"
+					className="flex items-center justify-center font-medium underline text-primary gap-0.5 mb-2"
 				>
 					<FaExternalLinkAlt />
-					مشاهده سیاست کامل حریم خصوصی
+					سیاست کامل حریم خصوصی
 				</a>
-				<p className="mt-2 text-sm text-content">
-					اگر رد کنید، افزونه قادر به انجام وظایف اصلی خود نخواهد بود. در صورت
-					تمایل می‌توانید افزونه را همین حالا حذف کنید.
-				</p>
-
-				<div
-					className="flex items-center p-1 mt-2 text-white bg-gray-400 rounded cursor-pointer"
-					onClick={() => setIsAccepted(!isAccepted)}
-				>
-					<Checkbox
-						checked={isAccepted}
-						onChange={() => setIsAccepted(!isAccepted)}
-					/>
-					<span className="mr-2 text-sm">
-						با سیاست حریم خصوصی ویجتیفای موافقم.
-					</span>
-				</div>
 			</div>
 
 			<div className="flex gap-3 mt-4">
@@ -172,12 +164,11 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 					🚫 حذف افزونه
 				</Button>
 				<Button
-					onClick={onGetStarted}
+					onClick={handleConfirm}
 					size="md"
 					className="w-40 btn btn-success rounded-xl"
-					disabled={!isAccepted}
 				>
-					✅ قبول می‌کنم
+					✅ تأیید و ادامه
 				</Button>
 			</div>
 		</div>

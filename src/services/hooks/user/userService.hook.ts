@@ -32,6 +32,7 @@ interface FetchedProfile {
 	coins: number
 	city?: {
 		id: string
+		name: string
 	}
 
 	occupation: {
@@ -43,7 +44,11 @@ interface FetchedProfile {
 		label: string
 	}>
 	joinedAt: string
-
+	progressbar: {
+		field: string
+		isDone: boolean
+	}[]
+	isProfileCompleted: boolean
 	hasTodayMood: boolean
 }
 
@@ -166,6 +171,32 @@ export function useChangePhoneVerify() {
 			const client = await getMainClient()
 			const response = await client.put<UpdateActivityResponse>(
 				'/users/@me/change-phone/verify',
+				body
+			)
+			return response.data
+		},
+	})
+}
+
+export function useChangeEmailRequest() {
+	return useMutation({
+		mutationFn: async (email: string) => {
+			const client = await getMainClient()
+			const response = await client.put<UpdateActivityResponse>(
+				'/users/@me/change-email',
+				{ email }
+			)
+			return response.data
+		},
+	})
+}
+
+export function useChangeEmailVerify() {
+	return useMutation({
+		mutationFn: async (body: { email: string; code: string }) => {
+			const client = await getMainClient()
+			const response = await client.put<UpdateActivityResponse>(
+				'/users/@me/change-email/verify',
 				body
 			)
 			return response.data

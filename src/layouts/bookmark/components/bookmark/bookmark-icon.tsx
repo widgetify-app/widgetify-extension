@@ -18,6 +18,10 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 		displayIcon = <FaFolder className="w-6 h-6 text-blue-400" />
 	}
 
+	if (displayIcon === '') {
+		displayIcon = 'https://cdn.widgetify.ir/system/bookmark.png'
+	}
+
 	const handleImageAnalysis = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
 		const img = e.target as HTMLImageElement
 

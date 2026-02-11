@@ -4,15 +4,10 @@ import { showToast } from '@/common/toast'
 
 interface ReferralCodeSectionProps {
 	code: string
-	enableNewBadge?: boolean
 	className?: string
 }
 
-export const ReferralCodeSection = ({
-	code,
-	enableNewBadge = false,
-	className,
-}: ReferralCodeSectionProps) => {
+export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProps) => {
 	const handleCopyCode = async () => {
 		try {
 			await navigator.clipboard.writeText(code)
@@ -28,11 +23,6 @@ export const ReferralCodeSection = ({
 			title={
 				<div className="flex items-center gap-2">
 					<span>کد دعوت شما</span>
-					{enableNewBadge && (
-						<span className="text-white badge badge-primary badge-xs">
-							جدید
-						</span>
-					)}
 				</div>
 			}
 			size="sm"

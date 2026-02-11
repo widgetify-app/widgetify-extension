@@ -17,7 +17,11 @@ interface SelectedCity {
 	cityId: string
 }
 
-export function SelectCity() {
+interface Prop {
+	size?: 'lg' | 'xs'
+	onSave?: () => void
+}
+export function SelectCity({ onSave, size }: Prop) {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showAuthModal, setShowAuthModal] = useState(false)
@@ -77,7 +81,7 @@ export function SelectCity() {
 		: null
 
 	return (
-		<SectionPanel title="انتخاب شهر" size="sm">
+		<SectionPanel title="انتخاب شهر" size={size ? size : 'sm'}>
 			<div className="space-y-2">
 				<button
 					onClick={onModalOpen}

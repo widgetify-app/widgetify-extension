@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
+import { Button } from '@/components/button/button'
+import { FiCheck } from 'react-icons/fi'
 
 interface InterestsSelectorProps {
 	interests: ProfileMetaItem[]
@@ -30,13 +32,13 @@ export const InterestsSelector = ({
 	}
 
 	const content = (
-		<div className="w-48 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
+		<div className="w-64 p-1">
 			{isLoading ? (
-				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
+				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-muted">
 					صبر کنید...
 				</div>
 			) : (
-				<div className="flex flex-row flex-wrap gap-2">
+				<div className="flex flex-wrap gap-2 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
 					{interests.map((interest) => {
 						const isSelected = selectedInterests.includes(interest.id)
 
@@ -46,22 +48,42 @@ export const InterestsSelector = ({
 								type="button"
 								onClick={() => handleInterestToggle(interest.id)}
 								className={`
-									h-8 px-3 w-fit flex items-center justify-center 
-									text-[10px] font-black rounded-full text-muted border 
-									transition-all duration-200 active:scale-95 cursor-pointer
-									${
-										isSelected
-											? 'bg-primary border-primary shadow-sm text-white!'
-											: 'bg-base-200/50 border-base-300 text-content  hover:bg-base-200 shadow-xs'
-									}
-								`}
+								h-8 px-2 flex items-center justify-center w-fit gap-1.5 hover:border-none cursor-pointer
+								text-[11px] font-medium rounded-xl border whitespace-nowrap
+								transition-all duration-150 active:scale-95
+								${
+									isSelected
+										? 'bg-primary border-primary text-white shadow-sm'
+										: 'border border-base-content/20 text-content'
+								}
+							`}
 							>
-								{interest.title}
+								<span className="text-[11px] leading-none">
+									{interest.title}
+								</span>
 							</button>
 						)
 					})}
 				</div>
 			)}
+
+			<div className="flex gap-2 pt-2">
+				<Button
+					onClick={() => setIsOpen(!isOpen)}
+					size="sm"
+					className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
+				>
+					<FiCheck size={16} className="ml-1" />
+					تایید{' '}
+				</Button>
+				<Button
+					onClick={() => setIsOpen(!isOpen)}
+					size="sm"
+					className="w-20 rounded-2xl border-muted hover:bg-muted/50 text-content"
+				>
+					لغو
+				</Button>
+			</div>
 		</div>
 	)
 

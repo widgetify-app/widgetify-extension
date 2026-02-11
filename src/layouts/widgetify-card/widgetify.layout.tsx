@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
-import { useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
@@ -10,9 +7,9 @@ import { PetProvider } from './pets/pet.context'
 import { callEvent } from '@/common/utils/call-event'
 import { DailyMoodNotification } from './daily-mood'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
+import { ProfileProgressNotification } from './profile-progress'
 export const WidgetifyLayout = () => {
-	const { user, isAuthenticated, isLoadingUser } = useAuth()
-	const { blurMode, updateSetting } = useGeneralSetting()
+	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
 
 	const [userName, setUserName] = useState<string>('')
 
@@ -25,13 +22,23 @@ export const WidgetifyLayout = () => {
 					node: <DailyMoodNotification />,
 				})
 			}
+
+			if (
+				user?.progressbar?.length &&
+				!user.isProfileCompleted &&
+				profilePercentage > 0
+			) {
+				callEvent('add_to_notifications', {
+					id: 'update_profile',
+					node: <ProfileProgressNotification />,
+				})
+			} else {
+				try {
+					document.getElementById('update_profile')?.remove()
+				} catch {}
+			}
 		}
 	}, [isAuthenticated, user])
-
-	const handleBlurModeToggle = () => {
-		const newBlurMode = !blurMode
-		updateSetting('blurMode', newBlurMode)
-	}
 
 	return (
 		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">

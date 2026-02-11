@@ -18,6 +18,13 @@ export const getFaviconFromUrl = (url: string): string => {
 			return ''
 		}
 
+		if (import.meta.env.FIREFOX) {
+			const privacyConfig = localStorage.getItem('wxt_local:allowFaviconService')
+			if (privacyConfig !== 'true') {
+				return ''
+			}
+		}
+
 		let processedUrl = url
 		if (!processedUrl.startsWith('http://') && !processedUrl.startsWith('https://')) {
 			processedUrl = `https://${processedUrl}`

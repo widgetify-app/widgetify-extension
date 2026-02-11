@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
+import { Button } from '@/components/button/button'
+import { FiCheck } from 'react-icons/fi'
 
 interface OccupationSelectorProps {
 	occupations: ProfileMetaItem[]
@@ -30,13 +32,13 @@ export const OccupationSelector = ({
 	}
 
 	const content = (
-		<div className="w-48 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
+		<div className="w-64 p-1 ">
 			{isLoading ? (
 				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					درحال بارگذاری...
 				</div>
 			) : (
-				<div className="flex flex-row flex-wrap gap-2">
+				<div className="flex flex-row flex-wrap gap-2 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
 					{occupations.map((occupation) => {
 						const isActive = selectedOccupation === occupation.id
 						return (
@@ -45,15 +47,15 @@ export const OccupationSelector = ({
 								type="button"
 								onClick={() => handleSelect(occupation.id)}
 								className={`
-									h-8 px-3 w-fit flex items-center justify-center 
-									text-[10px] font-black  rounded-full text-muted border 
-									transition-all duration-200 active:scale-95 cursor-pointer
-									${
-										isActive
-											? 'bg-primary border-primary shadow-sm text-white!'
-											: 'bg-base-200/50 border-base-300 text-content  hover:bg-base-200 shadow-xs'
-									}
-								`}
+								h-8 px-2 flex items-center justify-center w-fit gap-1.5 hover:border-none cursor-pointer
+								text-[11px] font-medium rounded-xl border whitespace-nowrap
+								transition-all duration-150 active:scale-95
+								${
+									isActive
+										? 'bg-primary border-primary text-white shadow-sm'
+										: 'border border-base-content/20 text-content'
+								}
+							`}
 							>
 								{occupation.title}
 							</button>
@@ -61,6 +63,24 @@ export const OccupationSelector = ({
 					})}
 				</div>
 			)}
+
+			<div className="flex gap-2 pt-2">
+				<Button
+					onClick={() => setIsOpen(!isOpen)}
+					size="sm"
+					className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
+				>
+					<FiCheck size={16} className="ml-1" />
+					تایید{' '}
+				</Button>
+				<Button
+					onClick={() => setIsOpen(!isOpen)}
+					size="sm"
+					className="w-20 rounded-2xl border-muted hover:bg-muted/50 text-content"
+				>
+					لغو
+				</Button>
+			</div>
 		</div>
 	)
 

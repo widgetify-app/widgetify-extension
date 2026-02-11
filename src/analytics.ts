@@ -21,7 +21,12 @@ const Analytics = (() => {
 	async function pageView(pageTitle: string, pagePath: string): Promise<void> {
 		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) return
-
+		if (import.meta.env.FIREFOX) {
+			const privacyConfig = localStorage.getItem('wxt_local:allowAnalytics')
+			if (privacyConfig !== 'true') {
+				return
+			}
+		}
 		const clientId = await getClientId()
 
 		const payload = {
@@ -48,6 +53,13 @@ const Analytics = (() => {
 		if (setting?.disable_analytics) {
 			console.log('Analytics disabled, skipping event:', eventName)
 			return
+		}
+
+		if (import.meta.env.FIREFOX) {
+			const privacyConfig = localStorage.getItem('wxt_local:allowAnalytics')
+			if (privacyConfig !== 'true') {
+				return
+			}
 		}
 
 		const clientId = await getClientId()
@@ -94,6 +106,13 @@ const Analytics = (() => {
 	async function error(errorMessage: string, errorSource: string): Promise<void> {
 		const setting = await getFromStorage('generalSettings')
 		if (setting?.disable_analytics) return
+
+		if (import.meta.env.FIREFOX) {
+			const privacyConfig = localStorage.getItem('wxt_local:allowAnalytics')
+			if (privacyConfig !== 'true') {
+				return
+			}
+		}
 
 		await event('error', {
 			error_message: errorMessage,

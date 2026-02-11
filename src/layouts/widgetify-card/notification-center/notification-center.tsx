@@ -12,7 +12,7 @@ import { useGetNotifications } from '@/services/hooks/extension/getNotifications
 import Analytics from '@/analytics'
 
 export function NotificationCenter() {
-	const { data: fetchedNotifications } = useGetNotifications({
+	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications({
 		enabled: true,
 	})
 
@@ -78,18 +78,17 @@ export function NotificationCenter() {
 					)
 
 					if (!cacheItem) {
-						validNotifications.push(item)
+						if (notifications.findIndex((f) => f.id === item.id) === -1)
+							validNotifications.push(item)
 					}
-				} else {
-					validNotifications.push(item)
 				}
 			}
-
-			setNotifications([...validNotifications, ...notifications])
+			console.log(validNotifications)
+			setNotifications([...validNotifications])
 		}
 
 		handle()
-	}, [fetchedNotifications])
+	}, [dataUpdatedAt])
 
 	const onClose = async (e: any, id: string, ttl = 1200) => {
 		e.preventDefault()

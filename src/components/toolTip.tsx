@@ -28,7 +28,7 @@ const Tooltip = ({
 	children,
 	content,
 	position = 'top',
-	offset = 8,
+	offset = 10,
 	disableAutoPosition = false,
 	className = '',
 	contentClassName = '',
@@ -155,43 +155,52 @@ const Tooltip = ({
 		}
 	}, [delayTimeout])
 
+	// Refined animations
 	const variants = {
 		top: {
-			hidden: { opacity: 0, y: -5 },
-			visible: { opacity: 1, y: 0 },
-		},
-		right: {
-			hidden: { opacity: 0, x: 5 },
-			visible: { opacity: 1, x: 0 },
-		},
-		bottom: {
-			hidden: { opacity: 0, y: 5 },
-			visible: { opacity: 1, y: 0 },
-		},
-		left: {
-			hidden: { opacity: 0, x: -5 },
-			visible: { opacity: 1, x: 0 },
-		},
-		'bottom-right': {
-			hidden: { opacity: 0, y: 5 },
-			visible: { opacity: 1, y: 0 },
-		},
-		'bottom-left': {
 			hidden: { opacity: 0, y: 2 },
 			visible: { opacity: 1, y: 0 },
 		},
-		'top-right': {
-			hidden: { opacity: 0, y: -5 },
+		right: {
+			hidden: { opacity: 0, x: -2 },
+			visible: { opacity: 1, x: 0 },
+		},
+		bottom: {
+			hidden: { opacity: 0, y: -2 },
 			visible: { opacity: 1, y: 0 },
 		},
-		'top-left': {
-			hidden: { opacity: 0, y: -5 },
-			visible: { opacity: 1, y: 0 },
+		left: {
+			hidden: { opacity: 0, x: 2 },
+			visible: { opacity: 1, x: 0 },
 		},
+		// For corner positions, use the closest main direction for animation
+		'bottom-right': { hidden: { opacity: 0, y: -2 }, visible: { opacity: 1, y: 0 } },
+		'bottom-left': { hidden: { opacity: 0, y: -2 }, visible: { opacity: 1, y: 0 } },
+		'top-right': { hidden: { opacity: 0, y: 2 }, visible: { opacity: 1, y: 0 } },
+		'top-left': { hidden: { opacity: 0, y: 2 }, visible: { opacity: 1, y: 0 } },
 	}
 
 	if (!content) {
 		return <>{children}</>
+	}
+
+	// Helper to get arrow classes based on calculated position
+	const getArrowClasses = (pos: Position) => {
+		const base = 'absolute w-0 h-0 border-solid'
+		switch (pos) {
+			case 'top':
+			case 'top-left':
+			case 'top-right':
+				return `${base} bottom-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-base-200`
+			case 'bottom':
+			case 'bottom-left':
+			case 'bottom-right':
+				return `${base} top-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-base-200`
+			case 'left':
+				return `${base} right-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-base-200`
+			case 'right':
+				return `${base} left-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-base-200`
+		}
 	}
 
 	return (
@@ -213,21 +222,21 @@ const Tooltip = ({
 						<AnimatePresence>
 							<m.div
 								ref={tooltipRef}
-								className={`tooltip fixed  rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow ${contentClassName}`}
+								className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-[9999] ${contentClassName}`}
 								style={{
 									left: tooltipCoords.x,
 									top: tooltipCoords.y,
-									zIndex: 9999,
 								}}
 								initial="hidden"
 								animate="visible"
 								exit="hidden"
 								variants={variants[calculatedPosition]}
-								transition={{ duration: 0.2 }}
+								transition={{ duration: 0.15, ease: 'easeOut' }}
 								onMouseEnter={showTooltip}
 								onMouseLeave={hideTooltip}
 							>
 								{content}
+								<div className={getArrowClasses(calculatedPosition)} />
 							</m.div>
 						</AnimatePresence>
 					</LazyMotion>,
