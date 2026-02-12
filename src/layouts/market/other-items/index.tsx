@@ -27,7 +27,9 @@ export function MarketOtherItems() {
 		page: currentPage,
 	})
 
-	const filteredItems = marketData?.items || []
+	const filteredItems = (marketData?.items || []).sort((a, b) => {
+		return a.isOwned === b.isOwned ? 1 : -1
+	})
 
 	const handlePurchaseClick = (item: MarketItem) => {
 		if (!isAuthenticated) {
@@ -87,27 +89,29 @@ export function MarketOtherItems() {
 	return (
 		<>
 			{isLoading ? (
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{Array.from({ length: 6 }).map((_, index) => (
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					{Array.from({ length: 8 }).map((_, index) => (
 						<div
 							key={index}
-							className="p-4 border rounded-xl border-base-300 animate-pulse"
+							className="p-3 border rounded-2xl border-base-300 bg-base-200/20"
 						>
-							<div className="h-4 mb-3 rounded bg-base-300"></div>
-							<div className="h-3 mb-2 rounded bg-base-300"></div>
-							<div className="h-8 rounded bg-base-300"></div>
+							<div className="w-full h-24 mb-4 rounded-xl bg-base-300 animate-pulse" />
+							<div className="w-2/3 h-4 mb-2 rounded bg-base-300 animate-pulse" />
+							<div className="w-full h-3 mb-4 rounded bg-base-300/50 animate-pulse" />
+							<div className="h-10 rounded-xl bg-base-300 animate-pulse" />
 						</div>
 					))}
 				</div>
 			) : filteredItems.length > 0 ? (
-				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-2 pb-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
 					{filteredItems.map((item) => (
-						<MarketItemCard
-							key={item.id}
-							item={item}
-							onPurchase={() => handlePurchaseClick(item)}
-							isAuthenticated={isAuthenticated}
-						/>
+						<div key={item.id} className="transition-transform duration-300 ">
+							<MarketItemCard
+								item={item}
+								onPurchase={() => handlePurchaseClick(item)}
+								isAuthenticated={isAuthenticated}
+							/>
+						</div>
 					))}
 				</div>
 			) : (

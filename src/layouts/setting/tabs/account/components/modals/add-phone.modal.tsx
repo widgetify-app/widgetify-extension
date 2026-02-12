@@ -115,7 +115,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 							name="email"
 							value={phone}
 							onChange={setPhone}
-							placeholder="09371112233"
+							placeholder="شماره موبایل رو وارد کنید..."
 							disabled={isPending || step === 'enter-otp'}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"

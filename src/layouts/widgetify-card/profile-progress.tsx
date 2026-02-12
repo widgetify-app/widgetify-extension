@@ -1,7 +1,6 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { HiXMark } from 'react-icons/hi2'
 
 export function ProfileProgressNotification() {

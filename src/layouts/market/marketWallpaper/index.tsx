@@ -1,7 +1,6 @@
 import Analytics from '@/analytics'
 import { Pagination } from '@/components/pagination'
 import { useAuth } from '@/context/auth.context'
-import { WallpaperGallery } from '@/layouts/setting/tabs/wallpapers/components/wallpaper-gallery.component'
 import { useWallpaper } from '@/layouts/setting/tabs/wallpapers/hooks/use-wallpaper'
 import { WallpaperItem } from '@/layouts/setting/tabs/wallpapers/tab/gallery/components/wallpaper-item/wallpaper-item'
 import { useGetWallpapers } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
@@ -51,7 +50,7 @@ export function MarketWallpaper() {
 				totalPages={data?.totalPages || 1}
 				onNextPage={onNextPage}
 				onPrevPage={onPrevPage}
-				className="!mt-0 "
+				className="!mt-8"
 			/>
 		</>
 	)

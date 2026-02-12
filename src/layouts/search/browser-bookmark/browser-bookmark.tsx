@@ -7,6 +7,7 @@ import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
 import { usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
+import { NewBadge } from '@/components/badges/new.badge'
 
 export function BrowserBookmark() {
 	const { data } = useGetTrends({ enabled: true })
@@ -64,19 +65,19 @@ export function BrowserBookmark() {
 		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-1">
 			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto no-scrollbar scroll-smooth">
 				<div className="flex items-center shrink-0">
-					<Tooltip content="کاووش">
-						<div
-							className="flex items-center cursor-pointer group"
-							onClick={() => onClickToExplorer()}
-						>
-							<div className="flex items-center justify-center w-6 h-6 p-0.5 rounded-lg bg-primary/10 group-hover:scale-110 transition-transform">
-								<HiRectangleGroup
-									size={20}
-									className="text-base-content/60"
-								/>
-							</div>
+					<div
+						className="flex items-center cursor-pointer group "
+						onClick={() => onClickToExplorer()}
+					>
+						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-lg bg-primary/10 group-hover:scale-95 transition-transform">
+							<HiRectangleGroup
+								size={20}
+								className="text-base-content/60"
+							/>
+							<NewBadge className="-left-0.5 -top-1" />
+							<p className="font-semibold text-base-content/60">کاوش</p>
 						</div>
-					</Tooltip>
+					</div>
 				</div>
 
 				<div ref={iconRef} className="flex items-center justify-center shrink-0">
@@ -86,7 +87,7 @@ export function BrowserBookmark() {
 							onClick={handleTogglePopover}
 						>
 							<div
-								className={`flex items-center justify-center w-6 h-6 p-0.5 transition-all duration-200 rounded-lg group-hover:scale-110 ${
+								className={`flex items-center justify-center w-6 h-6 p-0.5 transition-all duration-200 rounded-lg group-hover:scale-95 ${
 									isOpen
 										? 'bg-primary text-white shadow-lg'
 										: 'bg-primary/10 text-base-content/60'
@@ -115,7 +116,7 @@ export function BrowserBookmark() {
 										src={
 											item.icon || getFaviconFromUrl(item.url || '')
 										}
-										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-110 bg-primary/10"
+										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-95 bg-primary/10"
 										alt={item.name}
 									/>
 								</div>

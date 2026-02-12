@@ -1,4 +1,5 @@
-import type React from 'react'
+import React, { useId } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface TabItem<T> {
 	id: T
@@ -23,68 +24,50 @@ export const TabNavigation = <T,>({
 	className = '',
 	tabMode,
 }: TabNavigationProps<T>) => {
+	const uniqueId = useId()
+
 	const sizeClasses = {
 		small: 'py-1 px-2 text-[10px]',
-		medium: 'py-2 px-1 text-xs',
+		medium: 'py-2 px-2 text-[10px]',
 		large: 'py-3 px-2 text-sm',
-	}
-	const buttonClass = (isActive: boolean) => {
-		if (tabMode === 'sample') {
-			return 'flex-1'
-		}
-
-		if (isActive) {
-			return 'flex-2'
-		} else return 'flex-1'
 	}
 
 	return (
 		<div
-			className={`flex items-center p-1 bg-base-300/40 rounded-2xl border border-base-content/5 ${className}`}
+			className={`flex items-center p-1 bg-base-300/40 rounded-2xl border border-base-content/5 relative ${className}`}
 		>
 			{tabs.map((tab) => {
 				const isActive = activeTab === tab.id
 
 				return (
 					<button
-						key={tab.id as unknown as string}
-						type="button"
+						key={tab.id as any}
 						onClick={() => onTabClick(tab.id)}
 						className={`
-                            ${buttonClass(isActive)} flex items-center justify-center gap-1 
-                            cursor-pointer rounded-xl 
-                            transition-all duration-200 
-                            active:scale-95 z-10 
+                            relative flex items-center justify-center gap-1 
+                            cursor-pointer rounded-xl z-10 
+                            transition-colors duration-200
                             ${sizeClasses[size]}
-                            ${
-								isActive
-									? 'bg-primary text-white shadow-md'
-									: 'text-base-content/50 hover:text-base-content hover:bg-base-content/5 active:bg-base-content/10'
-							}
+                            ${tabMode === 'sample' || isActive ? 'flex-2' : 'flex-1'}
+                            ${isActive ? 'text-white' : 'text-base-content/50 hover:bg-base-300 hover:text-white/80'}
                         `}
 					>
-						{tab.icon && (
-							<span
-								className={`transition-transform duration-200 ${isActive ? 'scale-110' : ''}`}
-							>
-								{tab.icon}
-							</span>
+						{tab.icon && <span>{tab.icon}</span>}
+						{(tabMode === 'sample' || isActive) && (
+							<span className="font-semibold truncate">{tab.label}</span>
 						)}
 
-						{tabMode === 'sample' ? (
-							<span
-								className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
-							>
-								{tab.label}
-							</span>
-						) : (
-							isActive && (
-								<span
-									className={`block font-semibold truncate transition-opacity ${isActive ? 'opacity-100' : 'opacity-80'}`}
-								>
-									{tab.label}
-								</span>
-							)
+						{isActive && (
+							<motion.div
+								layoutId={`active-pill-${uniqueId}`}
+								className="absolute inset-0 shadow-md bg-primary/90 rounded-xl -z-10"
+								transition={{
+									type: 'spring',
+									stiffness: 500,
+									damping: 35,
+									mass: 1,
+								}}
+							/>
 						)}
 					</button>
 				)

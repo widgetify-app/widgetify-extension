@@ -1,4 +1,4 @@
-import { FiShoppingCart } from 'react-icons/fi'
+import { FiShoppingCart, FiCheck } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
@@ -13,7 +13,9 @@ interface MarketItemCardProps {
 	isAuthenticated: boolean
 	isOwned?: boolean
 }
+
 const SUPPORTED_TYPES: MarketItemType[] = ['BROWSER_TITLE', 'THEME', 'FONT']
+
 const getItemTypeLabel = (type: string) => {
 	switch (type) {
 		case 'BROWSER_TITLE':
@@ -33,68 +35,81 @@ export function MarketItemCard({
 	isAuthenticated,
 }: MarketItemCardProps) {
 	const canAfford = isAuthenticated
+	const isOwned = item.isOwned
 
 	const handlePreviewClick = () => {
-		if (item.previewUrl) {
-			window.open(item.previewUrl, '_blank')
-		}
+		if (item.previewUrl) window.open(item.previewUrl, '_blank')
 	}
 
 	let needUpgrade = !SUPPORTED_TYPES.includes(item.type)
-	if (!needUpgrade) {
-		if (item.itemValue) {
-			if (item.type === 'THEME' && !(item.itemValue in Theme)) needUpgrade = true
-		}
+	if (
+		!needUpgrade &&
+		item.itemValue &&
+		item.type === 'THEME' &&
+		!(item.itemValue in Theme)
+	) {
+		needUpgrade = true
 	}
 
 	function onPurchaseButtonClick() {
 		if (needUpgrade) {
-			showToast(
-				'این مورد نیاز به به‌روزرسانی افزونه دارد! لطفا افزونه خود را به‌روزرسانی کنید.',
-				'error'
-			)
+			showToast('نیاز به به‌روزرسانی افزونه دارد!', 'error')
 			return
 		}
-
 		onPurchase()
 	}
 
 	return (
-		<div className="relative p-2 transition-all duration-200 border rounded-xl border-base-300 bg-content hover:border-primary/30 hover:shadow-md group min-h-[14rem] flex flex-col">
-			<div className="flex items-center justify-between">
-				<div className="flex flex-row gap-0.5 items-center">
-					<span className="text-lg">{getItemTypeEmoji(item.type)}</span>
-					<h3 className="font-medium text-content truncate max-w-[5rem]">
+		<div className="group relative flex flex-col h-full bg-base-100 rounded-2xl p-3 border border-base-300/70 hover:border-primary/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
+			<div className="flex items-start justify-between px-1 mb-3">
+				<div className="flex flex-col overflow-hidden">
+					<h3 className="text-sm font-bold truncate transition-colors text-content group-hover:text-primary">
 						{item.name}
 					</h3>
-				</div>
-				<div>
-					<span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+					<span className="text-[10px] text-muted/60 mt-0.5">
 						{getItemTypeLabel(item.type)}
 					</span>
 				</div>
+				<span className="text-lg transition-transform opacity-80 group-hover:scale-110">
+					{getItemTypeEmoji(item.type)}
+				</span>
 			</div>
 
-			<section className="mb-4 min-h-[7rem] flex flex-col gap-3 flex-1">
+			<div className="flex-1 mb-3 overflow-hidden rounded-xl">
 				<RenderPreview item={item} handlePreviewClick={handlePreviewClick} />
-				{item.description && (
-					<p className="px-1 text-xs leading-relaxed text-muted line-clamp-2">
-						{item.description}
-					</p>
-				)}
-			</section>
+			</div>
 
-			<div className="flex items-center justify-between mt-auto">
-				<ItemPrice price={item.price} />
-				<Button
-					size="sm"
-					onClick={onPurchaseButtonClick}
-					disabled={item.isOwned}
-					className={`disabled:bg-base-300 disabled:text-muted disabled:opacity-80 disabled:cursor-not-allowed bg-primary hover:bg-primary/90 text-white rounded-xl`}
-				>
-					<FiShoppingCart size={16} className="ml-1" />
-					{canAfford ? 'خرید' : 'ناکافی'}
-				</Button>
+			{item.description && (
+				<p className="px-1 mb-4 text-[11px] leading-relaxed text-muted/80 line-clamp-2 h-8">
+					{item.description}
+				</p>
+			)}
+
+			<div className="flex items-center justify-between pt-2 mt-auto border-t border-base-200/40">
+				<div className="origin-right scale-90">
+					<ItemPrice price={item.price} />
+				</div>
+
+				{isOwned ? (
+					<div className="flex items-center h-8 gap-1 px-1 border bg-success/10 text-success rounded-xl border-success/20">
+						<FiCheck size={14} />
+						<span>خریداری‌شده</span>
+					</div>
+				) : (
+					<Button
+						size="sm"
+						onClick={onPurchaseButtonClick}
+						disabled={isOwned}
+						className={`
+						h-8 px-4 rounded-xl text-xs font-bold transition-all bg-primary/80 text-white hover:bg-primary active:scale-95
+					`}
+					>
+						<div className="flex items-center gap-1">
+							<FiShoppingCart size={14} />
+							<span>{canAfford ? 'خرید' : 'موجودی'}</span>
+						</div>
+					</Button>
+				)}
 			</div>
 		</div>
 	)

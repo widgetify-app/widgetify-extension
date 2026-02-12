@@ -83,7 +83,6 @@ export function NotificationCenter() {
 					}
 				}
 			}
-			console.log(validNotifications)
 			setNotifications([...validNotifications])
 		}
 

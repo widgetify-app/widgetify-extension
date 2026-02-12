@@ -135,10 +135,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 		return (
 			<section>
 				<div className="flex items-center gap-2.5 md:gap-3">
-					<div
-						aria-hidden="true"
-						className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:rounded-xl bg-primary/10"
-					>
+					<div className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:rounded-xl bg-primary/10">
 						<MdDoorSliding className="w-5 h-5 text-primary" />
 					</div>
 					<div>
@@ -160,12 +157,12 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 				<form
 					onSubmit={validateInputs}
-					className="flex flex-col gap-3 mt-2 md:gap-4"
+					className="flex flex-col gap-3 mt-4 md:gap-4"
 				>
 					<div>
 						<label
 							htmlFor="email"
-							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-content"
+							className="block mb-1  md:mb-1.5 text-xs md:text-sm font-semibold text-content"
 						>
 							شماره موبایل یا ایمیل
 						</label>
@@ -176,11 +173,11 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 							name="email"
 							value={email}
 							onChange={setEmail}
-							placeholder="0939... یا exa..e@gma...om"
+							placeholder="شماره / ایمیل رو وارد کنید..."
 							disabled={isPending}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
-							direction="ltr"
+							direction={!email ? 'rtl' : 'ltr'}
 						/>
 						<InputTextError message={error.api} />
 					</div>
@@ -193,7 +190,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
-							{isPending ? 'درحال ارسال...' : 'ادامه'}
+							{isPending ? 'درحال ارسال...' : 'بزن بریم'}
 						</span>
 					</Button>
 				</form>

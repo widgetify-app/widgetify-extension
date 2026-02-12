@@ -8,9 +8,9 @@ import { InfoWeather } from './infoWeather'
 import { MdOutlineAccessAlarm, MdOutlineCloud, MdOutlineTab } from 'react-icons/md'
 
 const sections = [
-	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={10} /> },
-	{ id: 'weather', label: 'آب و هوا', icon: <MdOutlineCloud size={10} /> },
-	{ id: 'birthdays', label: 'تولدها', icon: <MdOutlineAccessAlarm size={10} /> },
+	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={14} /> },
+	{ id: 'weather', label: 'آب و هوا', icon: <MdOutlineCloud size={14} /> },
+	{ id: 'birthdays', label: 'تولدها', icon: <MdOutlineAccessAlarm size={14} /> },
 ]
 export function InfoPanel() {
 	const [activeSection, setActiveSection] = useState<string>('all')

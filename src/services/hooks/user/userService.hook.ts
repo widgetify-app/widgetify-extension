@@ -93,6 +93,22 @@ export function useGetUserProfile(options?: Partial<UseQueryOptions<UserProfile>
 	})
 }
 
+export function useGetUserMoodStatus(enabled: boolean) {
+	return useQuery({
+		queryKey: ['userMoodStatus'],
+		queryFn: async () => {
+			const client = await getMainClient()
+
+			const response = await client.get('/users/@me/moods/status')
+
+			return response.data.data
+		},
+		retry: 1,
+		refetchOnWindowFocus: false,
+		enabled,
+	})
+}
+
 interface UpdateActivityParams {
 	activity: string | undefined
 }

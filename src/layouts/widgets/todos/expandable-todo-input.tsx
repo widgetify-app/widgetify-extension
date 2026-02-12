@@ -16,6 +16,7 @@ import { IoCalendarOutline, IoPricetagOutline, IoAddOutline } from 'react-icons/
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PriorityDropdown } from './components/priority.dropdown'
 import { FiPlus } from 'react-icons/fi'
+import moment from 'jalali-moment'
 interface ExpandableTodoInputProps {
 	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date: string }) => void
 }
@@ -183,6 +184,11 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 											ref={dateButtonRef}
 										>
 											<IoCalendarOutline size={18} />
+											<p className="truncate max-w-14 min-w-5">
+												{moment(selectedDate)
+													.locale('fa')
+													.format('jD jMMMM')}
+											</p>
 										</Button>
 										<PriorityDropdown
 											priority={priority}

@@ -67,7 +67,7 @@ export function SearchLayout() {
 
 	return (
 		<div className="relative z-50 flex flex-col items-center justify-start h-24">
-			<div ref={searchRef} className="w-full bg-content widget-wrapper rounded-2xl">
+			<div ref={searchRef} className="w-full bg-content bg-glass rounded-2xl">
 				{activePortal === 'voice' && (
 					<VoiceSearchPortal
 						onClose={() => setActivePortal(null)}
@@ -80,13 +80,13 @@ export function SearchLayout() {
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center  py-2 px-3 overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl bg-content group  rounded-2xl search-box'
+							'relative flex items-center  py-2 px-3 overflow-hidden shadow-xs transition-all duration-300  bg-content group  rounded-2xl search-box'
 						}
 					>
 						<button
 							type="submit"
 							className={
-								'h-9 w-9 shrink-0 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 hover:bg-base-300 cursor-pointer transition-all duration-300'
+								'h-9 w-9 shrink-0 flex items-center justify-center rounded-full opacity-70 transition-all duration-300'
 							}
 							onClick={() => {
 								if (!searchQuery) {
@@ -104,9 +104,9 @@ export function SearchLayout() {
 							onChange={handleSearchInputChange}
 							onFocus={() => onFocusInput()}
 							className={
-								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/80 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent '
+								'w-full py-1.5 text-base  font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
 							}
-							placeholder="جستجو در گوگل"
+							placeholder="جستجو در گوگل..."
 							autoComplete="off"
 						/>
 						<button
