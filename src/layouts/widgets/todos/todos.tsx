@@ -27,9 +27,11 @@ import { FaSortAmountDown, FaTags } from 'react-icons/fa'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { MdOutlineFilterList, MdOutlineFilterListOff } from 'react-icons/md'
+import { MdOutlineFilterList, MdOutlineFilterListOff, MdRefresh } from 'react-icons/md'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { Button } from '@/components/button/button'
+import Tooltip from '@/components/toolTip'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -52,7 +54,7 @@ export function TodosLayout() {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 
-	const { addTodo, todos, reorderTodos, isPending } = useTodoStore()
+	const { addTodo, todos, reorderTodos, isPending, refetchTodos } = useTodoStore()
 	const [dateFilter, setDateFilter] = useState<string>('all')
 	const [sort, setSort] = useState<string>('def')
 	const [tagFilter, setTagFilter] = useState<string>('')
@@ -183,6 +185,11 @@ export function TodosLayout() {
 		Analytics.event(`todo_tag_change`)
 	}
 
+	const onRefresh = () => {
+		refetchTodos()
+		Analytics.event(`todo_refetch`)
+	}
+
 	const tagFilterOptions =
 		fetchedTags
 			?.filter((t) => t)
@@ -274,6 +281,17 @@ export function TodosLayout() {
 					<div className="flex items-center gap-1">
 						{isPending ? <IconLoading /> : null}
 						<BlurModeButton />
+						<Tooltip content="بارگزاری مجدد">
+							<Button
+								size="sm"
+								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								onClick={onRefresh}
+							>
+								<MdRefresh
+									className={`text-content opacity-50 hover:opacity-100 ${isPending ? 'animate-spin' : ''}`}
+								/>
+							</Button>
+						</Tooltip>
 					</div>
 				</div>
 			</div>

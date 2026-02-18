@@ -74,7 +74,6 @@ export function BrowserBookmark() {
 								size={20}
 								className="text-base-content/60"
 							/>
-							<NewBadge className="-left-0.5 -top-1" />
 							<p className="font-semibold text-base-content/60">کاوش</p>
 						</div>
 					</div>

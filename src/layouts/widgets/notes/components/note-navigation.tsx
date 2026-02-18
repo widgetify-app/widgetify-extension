@@ -7,7 +7,7 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
-import { MdEdit } from 'react-icons/md'
+import { MdEdit, MdRefresh } from 'react-icons/md'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 
 export function NoteNavigation() {
@@ -22,6 +22,8 @@ export function NoteNavigation() {
 		setActiveNoteId,
 		isSaving,
 		deleteNote,
+		isRefetching,
+		refetch,
 	} = useNotes()
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
@@ -45,6 +47,11 @@ export function NoteNavigation() {
 			return
 		}
 		addNote()
+	}
+
+	const onRefresh = () => {
+		refetch()
+		Analytics.event(`note_refetch`)
 	}
 
 	return (
@@ -99,7 +106,20 @@ export function NoteNavigation() {
 						<MdEdit size={12} />
 						چیزی بنویس
 					</Button>
-					<BlurModeButton />
+					<div className="space-x-1">
+						<BlurModeButton />
+						<Tooltip content="بارگزاری مجدد">
+							<Button
+								size="sm"
+								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								onClick={onRefresh}
+							>
+								<MdRefresh
+									className={`text-content opacity-50 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
+								/>
+							</Button>
+						</Tooltip>
+					</div>
 				</>
 			)}
 			{isOpen && (

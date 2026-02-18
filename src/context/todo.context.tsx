@@ -52,7 +52,12 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated } = useAuth()
 	const [todos, setTodos] = useState<Todo[] | null>(null)
 
-	const { data: fetchedTodos, refetch, isPending } = useGetTodos(isAuthenticated)
+	const {
+		data: fetchedTodos,
+		refetch,
+		isPending,
+		isRefetching,
+	} = useGetTodos(isAuthenticated)
 	const { mutateAsync: addTodoAsync, isPending: isAdding } = useAddTodo()
 	const { mutateAsync: updateTodoAsync, isPending: isUpdating } = useUpdateTodo()
 	const { mutateAsync: reorderTodosAsync } = useReorderTodos()
@@ -292,7 +297,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 				clearCompleted,
 				reorderTodos,
 				refetchTodos: refetch,
-				isPending: isPending || isAdding || isUpdating,
+				isPending: isPending || isAdding || isUpdating || isRefetching,
 			}}
 		>
 			{children}

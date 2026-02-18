@@ -27,6 +27,8 @@ interface NotesContextType {
 	deleteNote: (id: string) => void
 	isSaving: boolean
 	isCreatingNote: boolean
+	isRefetching: boolean
+	refetch: any
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined)
@@ -39,7 +41,12 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	const [isCreatingNote, setIsCreatingNote] = useState(false)
 	const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-	const { data: fetchedNotes, refetch, dataUpdatedAt } = useGetNotes(isAuthenticated)
+	const {
+		data: fetchedNotes,
+		refetch,
+		dataUpdatedAt,
+		isRefetching,
+	} = useGetNotes(isAuthenticated)
 	const { mutateAsync: removeNoteAsync } = useRemoveNote()
 	const { mutateAsync: upsertNoteAsync } = useUpsertNote()
 
@@ -152,6 +159,8 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				updateNote,
 				deleteNote: onDeleteNote,
 				isSaving,
+				isRefetching,
+				refetch,
 				isCreatingNote,
 			}}
 		>
