@@ -157,7 +157,7 @@ export function NavbarLayout(): JSX.Element {
 					className="absolute w-full h-10 bg-transparent -bottom-16"
 					id="chrome-footer"
 				></div>
-				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-[2.5rem]">
+				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-xs border border-white/[0.08] rounded-[2.5rem]">
 					<button
 						onClick={() => onToggleNavbar()}
 						className="relative z-10 p-2 transition-colors cursor-pointer nav-btn text-white/20 hover:text-white/40"
