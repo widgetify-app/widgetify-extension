@@ -11,6 +11,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient, safeAwait } from '@/services/api'
 import { WidgetContainer } from '../widget-container'
 import { NetworkIPCard, NetworkLoadingSkeleton, NetworkPingCard } from './components'
+import { IoRefreshOutline } from 'react-icons/io5'
 
 interface NetworkInfo {
 	status: 'online' | 'offline'
@@ -138,67 +139,71 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 					)}
 
 					<div className="flex-1 space-y-2">
-						{isLoading ? (
-							<NetworkLoadingSkeleton />
-						) : (
-							<>
-								<div className="relative overflow-hidden border border-content rounded-2xl">
-									<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-									<div className="relative p-2 space-y-3 max-h-32 min-h-32">
-										<div className="flex items-center justify-between">
-											<div className="flex items-center gap-2">
-												<div
-													className={`w-2 h-2 rounded-full animate-pulse ${networkInfo.status === 'online' ? 'bg-success' : 'bg-red-500'}`}
-												></div>
-												<span className="text-xs font-medium text-muted">
-													{networkInfo.status === 'online'
-														? 'متصل'
-														: 'قطع شده'}
-												</span>
-											</div>
-											{networkInfo.countryIcon && (
-												<Tooltip
-													content={
-														networkInfo.isp ||
-														'ارائه‌دهنده خدمات اینترنتی نامشخص'
-													}
-												>
-													<AvatarComponent
-														url={networkInfo.countryIcon}
-														placeholder="flag"
-														className="rounded-sm shadow-sm"
-														size="xs"
-													/>
-												</Tooltip>
-											)}
-										</div>
-
-										<NetworkIPCard
-											blurMode={blurMode}
-											ip={networkInfo.ip}
-										/>
-
-										{/* Location Info */}
-										{(networkInfo.city || networkInfo.country) && (
-											<div className="flex items-center justify-center gap-2 text-xs flex-warp">
-												{networkInfo.city && (
-													<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10">
-														{networkInfo.city}
-													</span>
-												)}
-												{networkInfo.country && (
-													<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10">
-														{networkInfo.country}
-													</span>
-												)}
-											</div>
-										)}
+						<div className="relative overflow-hidden border border-content rounded-2xl">
+							<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+							<div className="relative p-2 space-y-3 max-h-32 min-h-32">
+								<div className="flex items-center justify-between">
+									<div className="flex items-center gap-2">
+										<div
+											className={`w-2 h-2 rounded-full animate-pulse ${networkInfo.status === 'online' ? 'bg-success' : 'bg-red-500'}`}
+										></div>
+										<span className="text-xs font-medium text-muted">
+											{networkInfo.status === 'online'
+												? 'متصل'
+												: 'قطع شده'}
+										</span>
 									</div>
+									{networkInfo.countryIcon && (
+										<Tooltip
+											content={
+												networkInfo.isp ||
+												'ارائه‌دهنده خدمات اینترنتی نامشخص'
+											}
+										>
+											<AvatarComponent
+												url={networkInfo.countryIcon}
+												placeholder="flag"
+												className="rounded-sm shadow-sm"
+												size="xs"
+											/>
+										</Tooltip>
+									)}
 								</div>
 
-								<NetworkPingCard ping={networkInfo.ping} />
-							</>
-						)}
+								<NetworkIPCard blurMode={blurMode} ip={networkInfo.ip} />
+
+								{/* Location Info */}
+								{(networkInfo.city || networkInfo.country) && (
+									<div className="flex items-center justify-center gap-2 text-xs flex-warp">
+										{networkInfo.city && (
+											<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10">
+												{networkInfo.city}
+											</span>
+										)}
+										{networkInfo.country && (
+											<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10">
+												{networkInfo.country}
+											</span>
+										)}
+									</div>
+								)}
+							</div>
+						</div>
+
+						<NetworkPingCard ping={networkInfo.ping} />
+
+						<Button
+							size="md"
+							type="button"
+							className="w-full h-8 border border-content rounded-2xl"
+							onClick={handleRefresh}
+						>
+							<IoRefreshOutline
+								size={14}
+								className={isLoading ? 'animate-spin' : ''}
+							/>
+							به‌روزرسانی شبکه
+						</Button>
 					</div>
 				</div>
 			</RequireAuth>
