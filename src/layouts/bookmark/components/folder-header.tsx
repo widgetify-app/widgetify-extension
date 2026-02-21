@@ -23,7 +23,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 	}, [isOpen])
 	return (
 		<>
-			<div className="flex flex-row justify-between px-1 border-b border-content mb-0.5">
+			<div className="flex flex-row justify-between p-1 border-b border-content mb-0.5 bg-glass">
 				<FolderPath
 					folderPath={folderPath}
 					onNavigate={onNavigate}
@@ -42,7 +42,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 					<Button
 						onClick={() => onNavigate(null, -1)}
 						size="xs"
-						className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
+						className={`h-7 w-7 mr-1 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
 					>
 						<LuX size={12} />
 					</Button>

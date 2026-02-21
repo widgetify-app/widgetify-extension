@@ -4,39 +4,16 @@ import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
-import { callEvent } from '@/common/utils/call-event'
-import { DailyMoodNotification } from './daily-mood'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
-import { ProfileProgressNotification } from './profile-progress'
+
 export const WidgetifyLayout = () => {
-	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
+	const { user, isAuthenticated, isLoadingUser } = useAuth()
 
 	const [userName, setUserName] = useState<string>('')
 
 	useEffect(() => {
 		if (isAuthenticated && !isLoadingUser) {
 			if (user?.name) setUserName(user.name)
-			if (user?.hasTodayMood === false && !user?.inCache) {
-				callEvent('add_to_notifications', {
-					id: 'notificationMood',
-					node: <DailyMoodNotification />,
-				})
-			}
-
-			if (
-				user?.progressbar?.length &&
-				!user.isProfileCompleted &&
-				profilePercentage > 0
-			) {
-				callEvent('add_to_notifications', {
-					id: 'update_profile',
-					node: <ProfileProgressNotification />,
-				})
-			} else {
-				try {
-					document.getElementById('update_profile')?.remove()
-				} catch {}
-			}
 		}
 	}, [isAuthenticated, user])
 

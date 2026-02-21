@@ -10,6 +10,7 @@ import { MdOutlineCalendarMonth, MdOutlineNetworkWifi, MdPets } from 'react-icon
 import { HiOutlineCurrencyBangladeshi } from 'react-icons/hi'
 import React, { useState, Suspense } from 'react'
 import { DateProvider } from '@/context/date.context'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 const Calendar = React.lazy(() =>
 	import('./widgets/calendar-simplify').then((module) => ({
@@ -90,14 +91,28 @@ const tabs = [
 type TabId = string
 
 export function SimpleTools() {
-	const [tab, setTab] = useState<TabId>('calendar')
+	const [tab, setTab] = useState<TabId | null>(null)
 
 	const onChangeTab = (newTab: TabId) => {
 		setTab(newTab)
 		Analytics.event('yadkar_change_tab')
+		setToStorage('widget_tab', newTab)
 	}
 
 	const ElementData = tabs.find((f) => f.id === tab)?.element
+
+	useEffect(() => {
+		async function load() {
+			const tabFromStorage = await getFromStorage('widget_tab')
+			if (!tabFromStorage) {
+				setTab('calendar')
+			} else {
+				setTab(tabFromStorage)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
 		<WidgetContainer>

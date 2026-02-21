@@ -8,6 +8,7 @@ import { InfoWeather } from '../widgets/wigiPad/info-panel/infoWeather'
 import { NotificationItem } from '../widgets/wigiPad/info-panel/components/ann-item'
 import Analytics from '@/analytics'
 import { PomodoroTimer } from '../widgets/tools/pomodoro/pomodoro-timer'
+import { NotificationCenter } from '../widgetify-card/notification-center/notification-center'
 
 const sections = [
 	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={14} /> },
@@ -45,6 +46,9 @@ export function SimplifyYadkar() {
 										notification={notification}
 									/>
 								))}
+								<div className="mt-2">
+									<NotificationCenter />
+								</div>
 							</div>
 						</div>
 					</div>

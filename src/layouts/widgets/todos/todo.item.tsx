@@ -133,7 +133,7 @@ export function TodoItem({
 					onClick={() => setExpanded(!expanded)}
 				>
 					<p
-						className={`truncate text-[10px] font-medium transition-all ${
+						className={`truncate text-[10px] text-shadow-2xs font-medium transition-all ${
 							todo.completed
 								? 'text-base-content/40 line-through font-normal'
 								: 'text-base-content/90'

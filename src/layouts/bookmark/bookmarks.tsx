@@ -164,7 +164,7 @@ export function BookmarksList() {
 				<div
 					className={`flex flex-col transition-all duration-300 ${
 						currentFolderId
-							? 'bg-content bg-glass rounded-2xl shadow-2xl overflow-hidden pr-1'
+							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden pr-1'
 							: ''
 					}`}
 					id="bookmarks"

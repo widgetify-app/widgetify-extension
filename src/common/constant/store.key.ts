@@ -90,4 +90,6 @@ export interface StorageKV {
 	todoFilter: string
 	todoSort: string
 	[key: `removed_notification_${string}`]: string
+
+	widget_tab: string
 }

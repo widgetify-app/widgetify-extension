@@ -10,8 +10,12 @@ import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import type { ReactNode } from 'react'
 import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
 import Analytics from '@/analytics'
+import { useAuth } from '@/context/auth.context'
+import { DailyMoodNotification } from '../daily-mood'
+import { ProfileProgressNotification } from '../profile-progress'
 
 export function NotificationCenter() {
+	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
 	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications({
 		enabled: true,
 	})
@@ -25,6 +29,48 @@ export function NotificationCenter() {
 			event.description?.includes('meet.google.com')
 		)
 	}
+
+	const addToNodes = async (notif: { id: string; node: React.ReactNode }) => {
+		const notifFromStorage = await getWithExpiry(`removed_notification_${notif.id}`)
+		if (!notifFromStorage) {
+			setPushed((prev: any) => {
+				if (
+					prev.some(
+						(item: { id: string; node: ReactNode }) => item.id === notif.id
+					)
+				) {
+					return prev
+				}
+				return [...prev, notif]
+			})
+		}
+	}
+
+	useEffect(() => {
+		if (isAuthenticated && !isLoadingUser) {
+			if (user?.hasTodayMood === false && !user?.inCache) {
+				addToNodes({
+					id: 'notificationMood',
+					node: <DailyMoodNotification />,
+				})
+			}
+
+			if (
+				user?.progressbar?.length &&
+				!user.isProfileCompleted &&
+				profilePercentage > 0
+			) {
+				addToNodes({
+					id: 'update_profile',
+					node: <ProfileProgressNotification />,
+				})
+			} else {
+				try {
+					document.getElementById('update_profile')?.remove()
+				} catch {}
+			}
+		}
+	}, [isAuthenticated, user])
 
 	useEffect(() => {
 		const addEvent = listenEvent(

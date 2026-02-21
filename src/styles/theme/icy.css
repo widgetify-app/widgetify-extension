@@ -55,8 +55,9 @@
 [data-theme="icy"] .bg-glass,
 [data-theme="icy"] .tooltip {
     background-color: rgba(23, 23, 23, 0.12);
-    -webkit-backdrop-filter: blur(18px) saturate(150%) brightness(108%);
-    backdrop-filter: blur(18px) saturate(150%) brightness(108%);
+    -webkit-backdrop-filter: blur(3px) saturate(150%) brightness(108%);
+    backdrop-filter: blur(3px) saturate(150%) brightness(108%);
+    /* @apply bg-black/[0.002] backdrop-blur-xs; */
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow:
         0 6px 24px rgba(0, 0, 0, 0.06),

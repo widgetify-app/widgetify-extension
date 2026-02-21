@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData.hook'
-import { HiChevronDown, HiXMark } from 'react-icons/hi2' // آیکون مدرن‌تر
+import { HiChevronDown, HiXMark } from 'react-icons/hi2'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 
