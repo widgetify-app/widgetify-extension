@@ -4,12 +4,13 @@ import { callEvent } from '@/common/utils/call-event'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { AiOutlineDrag } from 'react-icons/ai'
+import { showToast } from '@/common/toast'
 
 interface SettingsProps {
 	setShowSettings: (value: boolean) => void
 }
 export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
-	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
+	const { canReOrderWidget, toggleCanReOrderWidget, ui } = useAppearanceSetting()
 	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
 
@@ -24,6 +25,15 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 		callEvent('closeAllDropdowns')
 		setIsOpen(false)
 	}, [])
+
+	const onClick = () => {
+		if (ui === 'SIMPLE') {
+			showToast('در حالت ظاهری ساده، امکان تغییر و جابجایی ویجت ها نیست!', 'error')
+			return
+		}
+		toggleCanReOrderWidget()
+		setIsOpen(false)
+	}
 
 	const content = (
 		<div className="py-2 bg-content bg-glass min-w-[200px] rounded-2xl">
@@ -54,10 +64,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 
 			<div
 				className="relative px-3 py-2 border-t cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
-				onClick={() => {
-					toggleCanReOrderWidget()
-					setIsOpen(false)
-				}}
+				onClick={() => onClick()}
 			>
 				<div className="flex items-center gap-3">
 					<AiOutlineDrag
@@ -70,8 +77,6 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 						<span>حالت جابجایی ویجت ها</span>
 					)}
 				</div>
-
-				<span className="absolute w-2 h-2 rounded-full left-4 top-2 bg-error animate-pulse"></span>
 			</div>
 		</div>
 	)

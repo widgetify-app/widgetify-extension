@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import {
-	RiBug2Line,
-	RiCheckboxCircleLine,
-	RiThumbUpLine,
-	RiSparklingLine,
-} from 'react-icons/ri'
+import { RiCheckboxCircleLine, RiThumbUpLine, RiLayoutLine } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
 import { ConfigKey } from '@/common/constant/config.key'
-
+import { callEvent } from '@/common/utils/call-event'
+import { useAuth } from '@/context/auth.context'
+import Analytics from '@/analytics'
 type MediaContent = {
 	type: 'image' | 'video'
 	url: string
@@ -23,38 +20,8 @@ type ReleaseNote = {
 }
 
 const VERSION_NAME = ConfigKey.VERSION_NAME
-
-const releaseNotes: ReleaseNote[] = [
-	{
-		type: 'feature',
-		title: 'امکان سرچ با عکس',
-		description:
-			'حالا میتونی با آپلود عکس، چیزایی که میخوای رو پیدا کنی! امتحانش کن، ممکنه عاشقش بشی! 🖼️🔍',
-	},
-	{
-		type: 'feature',
-		title: 'امکان جستجوی صوتی',
-		description:
-			'حالا میتونی با صدات جستجو کنی! فقط کافی‌یه روی آیکون میکروفون کلیک کنی و شروع به صحبت کنی! 🎤',
-	},
-	{
-		type: 'feature',
-		title: 'امکان فیلتر تگ وظایف',
-		description:
-			'حالا میتونی توی ویجت وظایف، فقط اونایی که تگ خاصی دارن رو ببینی! یه عالمه کارایی که میتونی باهاش انجام بدی 🏷️',
-	},
-	{
-		type: 'improvement',
-		title: 'بهبود ظاهری',
-		description: 'یکم به ظاهر رسیدگی کردیم، حالا همه چیز جذاب‌تر و دلنشین‌تر شده!',
-	},
-	{
-		type: 'improvement',
-		title: 'بهبود عملکرد کلی',
-		description:
-			'با بهینه‌سازی‌های انجام شده، حالا همه چیز سریع‌تر و روان‌تر از قبل اجرا میشه',
-	},
-]
+// ignore for this update
+const releaseNotes: ReleaseNote[] = []
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
@@ -68,7 +35,9 @@ export const UpdateReleaseNotesModal = ({
 	counterValue,
 }: UpdateReleaseNotesModalProps) => {
 	const [counter, setCounter] = useState<number>(0)
-
+	const [activated, setActivated] = useState<boolean>(false)
+	const videoRef = useRef<HTMLVideoElement>(null)
+	const { isAuthenticated } = useAuth()
 	useEffect(() => {
 		if (isOpen && counterValue !== null) {
 			setCounter(counterValue === null ? 10 : counterValue)
@@ -87,17 +56,16 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}, [isOpen])
 
-	const getTypeIcon = (note: ReleaseNote) => {
-		switch (note.type) {
-			case 'feature':
-				return <RiSparklingLine className="text-primary" size={18} />
-			case 'bugfix':
-				return <RiBug2Line className="text-red-500" size={18} />
-			case 'improvement':
-				return <RiCheckboxCircleLine className="text-green-500" size={18} />
-			default:
-				return <RiSparklingLine className="text-muted" size={18} />
+	useEffect(() => {
+		if (isOpen && videoRef.current) {
+			videoRef.current.play().catch(() => {})
 		}
+	}, [isOpen])
+
+	const handleActivate = () => {
+		callEvent('ui_change', 'SIMPLE')
+		setActivated(true)
+		Analytics.event('release_modal_active_ui')
 	}
 
 	return (
@@ -108,68 +76,119 @@ export const UpdateReleaseNotesModal = ({
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
-			showCloseButton={false}
 		>
 			<div className="flex flex-col max-h-[80vh]">
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between px-1 pb-1">
 					<div className="flex flex-col">
-						<h2 className="text-2xl font-black text-content">
-							{VERSION_NAME}
-						</h2>
 						<p className="mt-1 text-xs font-medium text-muted">
-							آپدیت جدید با کلی ویژگی و بهبود جذاب اومده!
+							آپدیت جدید به مناسبت ۱ سالگی ویجتیفای 🎂
 						</p>
 					</div>
 				</div>
 
-				<div className="flex-1 p-2 space-y-1 overflow-y-auto max-h-72">
-					<div className="flex flex-col gap-1">
-						{releaseNotes.map((note, index) => (
-							<div
-								key={index}
-								className="flex flex-col gap-2 p-4 border bg-base-200/10 border-base-300/20 rounded-2xl animate-in fade-in slide-in-from-bottom-3"
-								style={{ animationDelay: `${index * 50}ms` }}
-							>
-								<div className="flex items-center justify-between">
-									<div className="flex items-center gap-2">
-										<div className="w-1 h-3 rounded-full bg-primary" />
-										<h3 className="text-xs font-black tracking-wider uppercase text-content">
-											{note.title}
-										</h3>
-									</div>
-									{getTypeIcon(note)}
-								</div>
-								<p className="text-[10px] leading-relaxed text-base-content/80  pr-1">
-									{note.description}
-								</p>
-							</div>
-						))}
+				<div className="pb-2 space-y-4 overflow-y-auto h-110">
+					<div className="relative w-full overflow-hidden border-2 shadow-inner rounded-2xl bg-base-300/20 border-base-300">
+						<video
+							ref={videoRef}
+							src={'https://cdn.widgetify.ir/extension/new_ui_update.mp4'}
+							autoPlay
+							muted
+							loop
+							playsInline
+							className="object-cover w-full max-h-70 rounded-2xl"
+						/>
+						<div className="absolute bottom-2 left-2 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full">
+							<span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+							<span className="text-[10px] font-bold text-white/80">
+								آموزش تغییر رابط کاربری
+							</span>
+						</div>
 					</div>
 
-					<div className="flex items-center justify-center p-2 text-muted">
-						<RiThumbUpLine className="ml-2" size={16} />
+					<div className="p-4 space-y-3 border rounded-2xl bg-base-300/20 border-base-300/10">
+						<div className="flex items-center gap-2">
+							<RiLayoutLine className="text-primary shrink-0" size={20} />
+							<h3 className="text-sm font-black text-content">
+								رابط کاربری تازه از راه رسید!
+							</h3>
+						</div>
+						<p className="text-xs leading-6 text-muted">
+							یه{' '}
+							<span className="font-bold text-content">
+								ظاهر و چیدمان تازه
+							</span>{' '}
+							به ویجیتفای اضافه کردیم! رابط قبلی سر جاشه، فقط حالا می‌تونی
+							بین دو سبک مختلف جابه‌جا بشی و اونی که بیشتر به کارت میاد رو
+							انتخاب کنی.
+						</p>
+						<ul className="space-y-1">
+							{[
+								'رابط قبلی همچنان در دسترسه',
+								'یه رابط جدید با حس‌وحال متفاوت',
+								'تغییر سریع از مسیر تنظیمات ← ظاهر',
+							].map((item, i) => (
+								<li
+									key={i}
+									className="flex items-center gap-2 text-xs text-muted"
+								>
+									<RiCheckboxCircleLine
+										className="text-green-500 shrink-0"
+										size={14}
+									/>
+									{item}
+								</li>
+							))}
+						</ul>
+
+						{isAuthenticated && (
+							<button
+								onClick={handleActivate}
+								disabled={activated}
+								className={`w-full py-2.5 rounded-xl cursor-pointer text-xs font-black transition-all active:scale-95 border ${
+									activated
+										? 'bg-green-500/10 border-green-500/30 text-green-500 cursor-default'
+										: 'bg-primary/10 border-primary/20 text-primary hover:bg-primary/20'
+								}`}
+							>
+								{activated ? (
+									<span className="flex items-center justify-center gap-2">
+										<RiCheckboxCircleLine size={14} />
+										رابط جدید فعاله!
+									</span>
+								) : (
+									<span className="flex items-center justify-center gap-2">
+										همین الان امتحانش کن
+									</span>
+								)}
+							</button>
+						)}
+					</div>
+
+					<div className="flex items-center justify-center gap-2 py-1 text-muted">
+						<RiThumbUpLine size={14} />
 						<span className="text-xs">دمت گرم که همراه مایی</span>
 					</div>
 				</div>
-			</div>
-			<div className="flex items-center justify-between p-5 border-t border-base-300/10 bg-base-200/40">
-				<a
-					href="https://feedback.widgetify.ir"
-					target="_blank"
-					rel="noreferrer"
-					className="text-[10px]  font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
-				>
-					پیشنهاد یا گزارش مشکل
-				</a>
-				<Button
-					size="sm"
-					onClick={onClose}
-					disabled={counter > 0}
-					className="min-w-[130px] h-11 !rounded-2xl font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
-					isPrimary={true}
-				>
-					{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
-				</Button>
+
+				<div className="flex items-center justify-between px-4 py-2 border border-t border-base-300/10 bg-base-200/40 rounded-3xl">
+					<a
+						href="https://feedback.widgetify.ir"
+						target="_blank"
+						rel="noreferrer"
+						className="text-[10px] font-black text-muted hover:text-content transition-all underline decoration-dotted underline-offset-4"
+					>
+						پیشنهاد یا گزارش مشکل
+					</a>
+					<Button
+						size="sm"
+						onClick={onClose}
+						disabled={counter > 0}
+						className="min-w-[130px] h-11 !rounded-2xl font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
+						isPrimary={true}
+					>
+						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	)
