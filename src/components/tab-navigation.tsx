@@ -54,7 +54,7 @@ export const TabNavigation = <T,>({
 					>
 						{tab.icon && <span>{tab.icon}</span>}
 						{(tabMode === 'sample' || isActive) && (
-							<span className="font-semibold truncate">{tab.label}</span>
+							<span className="font-medium truncate">{tab.label}</span>
 						)}
 
 						{isActive && (

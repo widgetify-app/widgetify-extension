@@ -9,23 +9,23 @@ import {
 } from '@/context/widget-visibility.context'
 import { ItemSelector } from '../../../components/item-selector'
 import { WidgetSettingWrapper } from '../widget-settings-wrapper'
+import { useAppearanceSetting } from '@/context/appearance.context'
 
 export function ManageWidgets() {
 	const { isAuthenticated } = useAuth()
+	const { ui } = useAppearanceSetting()
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	return (
 		<WidgetSettingWrapper>
-			{!isAuthenticated && (
-				<div className="p-3 mb-4 border rounded-lg border-warning/20 bg-warning/10">
-					<p className="text-sm text-warning">
-						⚠️ کاربران مهمان تنها می‌توانند حداکثر {MAX_VISIBLE_WIDGETS} ویجت
-						فعال کنند. برای فعال کردن ویجت‌های بیشتر، وارد حساب کاربری خود
-						شوید.
-					</p>
+			{ui === 'SIMPLE' && (
+				<div className="alert alert-warning rounded-2xl ring-4 ring-warning/10">
+					در حالت ظاهری ساده، امکان مدیریت ویجت ها نیست!
 				</div>
-			)}{' '}
+			)}
 			<SectionPanel title="انتخاب ویجت‌ها برای نمایش" size="sm">
-				<div className="grid grid-cols-2 gap-2">
+				<div
+					className={`grid grid-cols-2 gap-2 ${ui === 'SIMPLE' ? 'pointer-events-none blur-xs' : ''}`}
+				>
 					{widgetItems.map((widget) => (
 						<WidgetItemComponent
 							widget={widget}

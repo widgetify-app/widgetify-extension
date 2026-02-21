@@ -50,7 +50,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	return (
 		<>
 			{inComboWidget ? (
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-2 mt-1 overflow-y-auto min-h-52 scrollbar-none">
 					<NewsContainer
 						customFeeds={rssState.customFeeds}
 						useDefaultNews={rssState.useDefaultNews}

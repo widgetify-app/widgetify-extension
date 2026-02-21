@@ -45,6 +45,7 @@ export interface EventName {
 	openProfile: null
 	openMarketModal: null
 	font_change: string
+	ui_change: string
 	close_all_modals: null
 	openWizardModal: null
 	add_to_notifications: { id: string; node: React.ReactNode }

@@ -21,7 +21,7 @@ export function InfoWeather() {
 
 	return (
 		<div className="relative flex flex-col justify-between overflow-hidden rounded-xl group">
-			{hasBanner ? (
+			{hasBanner && (
 				<div
 					className="absolute inset-0 transition-transform duration-700 bg-center bg-cover group-hover:scale-105"
 					style={{
@@ -32,8 +32,6 @@ export function InfoWeather() {
 							'linear-gradient(-1deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
 					}}
 				></div>
-			) : (
-				<div className="absolute inset-0 bg-linear-to-br from-base-200 to-base-300" />
 			)}
 
 			<div className="relative z-10 flex items-center justify-between p-1 px-2">

@@ -18,7 +18,7 @@ export const NewsContainer = ({ customFeeds, useDefaultNews }: NewsContainerProp
 	}
 
 	return (
-		<div className={`flex flex-col h-full gap-1`}>
+		<div className={`flex flex-col gap-1`}>
 			{enabledFeeds.map((feed) => (
 				<RssFeedComponent key={feed.url} url={feed.url} sourceName={feed.name} />
 			))}

@@ -24,11 +24,13 @@ import { SortableCurrencyBox } from './components/sortable-currency-box'
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
 	inComboWidget: boolean
+	comboClassName?: string
 }
 
 export function WigiArzLayout({
 	enableBackground = true,
 	inComboWidget,
+	comboClassName,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()
@@ -69,7 +71,7 @@ export function WigiArzLayout({
 	return (
 		<>
 			{inComboWidget ? (
-				<div className="flex items-center justify-between pb-2">
+				<div className={`flex items-center justify-between pb-2 mt-1`}>
 					{selectedCurrencies.length === 0 ? (
 						<div
 							className={
@@ -102,7 +104,7 @@ export function WigiArzLayout({
 							onDragEnd={handleDragEnd}
 						>
 							<div
-								className={`flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
+								className={`flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'} ${comboClassName}`}
 								style={{
 									scrollbarWidth: 'none',
 								}}

@@ -80,7 +80,7 @@ export function ComboWidget() {
 				</div>
 			</div>
 
-			<div className="flex-1 overflow-hidden">
+			<div className="flex-1 mt-2 overflow-hidden">
 				<div className="h-full overflow-y-auto hide-scrollbar  [&::-webkit-scrollbar]:w-0.1">
 					{activeTab === 'currency' ? (
 						<WigiArzLayout inComboWidget={true} enableBackground={false} />

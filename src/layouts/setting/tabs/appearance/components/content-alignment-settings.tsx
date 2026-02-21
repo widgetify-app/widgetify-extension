@@ -1,19 +1,14 @@
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
+import { useAppearanceSetting } from '@/context/appearance.context'
 
-interface ContentAlignmentSettingsProps {
-	contentAlignment: 'center' | 'top'
-	setContentAlignment: (alignment: 'center' | 'top') => void
-}
-
-export function ContentAlignmentSettings({
-	contentAlignment,
-	setContentAlignment,
-}: ContentAlignmentSettingsProps) {
+export function ContentAlignmentSettings() {
+	const { contentAlignment, setContentAlignment, ui } = useAppearanceSetting()
+	if (ui === 'SIMPLE') return null
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3} size="sm">
-			<div className="space-y-3">
-				<p className="text-muted">موقعیت عمودی محتوا</p>
+			<div className={`space-y-3`}>
+				<p className="text-xs text-muted">موقعیت عمودی محتوا</p>
 				<div className="flex gap-3">
 					<ItemSelector
 						isActive={contentAlignment === 'center'}

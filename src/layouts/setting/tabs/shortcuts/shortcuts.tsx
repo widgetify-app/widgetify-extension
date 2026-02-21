@@ -54,7 +54,14 @@ export function ShortcutsTab() {
 			windowsKey: 'CTRL + ALT + T',
 			macKey: '⌘ + ALT + T',
 			description: 'تغییر تم',
-			category: 'تم',
+			category: 'ظاهری',
+		},
+		{
+			id: 'toggle_theme',
+			windowsKey: 'CTRL + ALT + Y',
+			macKey: '⌘ + ALT + Y',
+			description: 'تغییر رابط کاربری',
+			category: 'ظاهری',
 		},
 	]
 

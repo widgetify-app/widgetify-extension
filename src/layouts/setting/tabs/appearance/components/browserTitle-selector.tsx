@@ -97,7 +97,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 	return (
 		<SectionPanel title="عنوان مرورگر" size="sm">
 			<div className="space-y-3">
-				<p className={'text-sm text-muted'}>
+				<p className={'text-xs text-muted'}>
 					عنوان تب مرورگر خود را همین‌جا تغییر دهید تا هر وقت روی تب بودید،
 					راحت‌تر پیدایش کنید.
 				</p>

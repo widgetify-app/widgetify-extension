@@ -23,7 +23,11 @@ interface NetworkInfo {
 	speed: string
 }
 
-export function NetworkLayout() {
+interface Prop {
+	inComboWidget: boolean
+	enableBackground: false
+}
+export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 	const { blurMode } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 
@@ -106,27 +110,32 @@ export function NetworkLayout() {
 	}
 
 	return (
-		<WidgetContainer>
+		<WidgetContainer
+			className={`${inComboWidget ? 'h-52! max-h-52! min-h-52! mt-1' : ''}`}
+			background={enableBackground}
+		>
 			<RequireAuth mode="preview">
 				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-between mb-2">
-						<h4 className="flex items-center gap-2 text-sm font-semibold text-content">
-							شبکه
-						</h4>
+					{!inComboWidget && (
+						<div className="flex items-center justify-between mb-2">
+							<h4 className="flex items-center gap-2 text-sm font-semibold text-content">
+								شبکه
+							</h4>
 
-						<Tooltip content="بارگذاری مجدد">
-							<Button
-								onClick={handleRefresh}
-								size="xs"
-								className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
-							>
-								<MdRefresh
-									size={12}
-									className="text-content opacity-70 hover:opacity-100"
-								/>
-							</Button>
-						</Tooltip>
-					</div>
+							<Tooltip content="بارگذاری مجدد">
+								<Button
+									onClick={handleRefresh}
+									size="xs"
+									className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+								>
+									<MdRefresh
+										size={12}
+										className="text-content opacity-70 hover:opacity-100"
+									/>
+								</Button>
+							</Tooltip>
+						</div>
+					)}
 
 					<div className="flex-1 space-y-2">
 						{isLoading ? (
@@ -135,7 +144,7 @@ export function NetworkLayout() {
 							<>
 								<div className="relative overflow-hidden border border-content rounded-2xl">
 									<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-									<div className="relative p-4 space-y-3 max-h-44 min-h-44">
+									<div className="relative p-2 space-y-3 max-h-32 min-h-32">
 										<div className="flex items-center justify-between">
 											<div className="flex items-center gap-2">
 												<div

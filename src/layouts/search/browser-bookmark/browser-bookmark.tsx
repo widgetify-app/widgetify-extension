@@ -69,12 +69,12 @@ export function BrowserBookmark() {
 						className="flex items-center cursor-pointer group "
 						onClick={() => onClickToExplorer()}
 					>
-						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-lg bg-primary/10 group-hover:scale-95 transition-transform">
+						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-lg bg-base-300 group-hover:scale-95 transition-transform">
 							<HiRectangleGroup
 								size={20}
 								className="text-base-content/60"
 							/>
-							<p className="font-semibold text-base-content/60">کاوش</p>
+							<p className="font-medium text-base-content/60">کاوش</p>
 						</div>
 					</div>
 				</div>
@@ -89,7 +89,7 @@ export function BrowserBookmark() {
 								className={`flex items-center justify-center w-6 h-6 p-0.5 transition-all duration-200 rounded-lg group-hover:scale-95 ${
 									isOpen
 										? 'bg-primary text-white shadow-lg'
-										: 'bg-primary/10 text-base-content/60'
+										: 'bg-base-300  text-base-content/60'
 								}`}
 							>
 								<MdFolderSpecial size={24} />
@@ -115,7 +115,7 @@ export function BrowserBookmark() {
 										src={
 											item.icon || getFaviconFromUrl(item.url || '')
 										}
-										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-95 bg-primary/10"
+										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-95 bg-base-300 "
 										alt={item.name}
 									/>
 								</div>

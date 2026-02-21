@@ -49,14 +49,14 @@ export default defineConfig({
 	],
 	manifest: {
 		version: '1.0.81',
-		name: 'Widgetify',
+		name: 'Widgetify-beta',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
 		permissions: ['storage', 'search'],
 		optional_permissions: ['tabs', 'tabGroups', 'bookmarks', 'identity'],
 		browser_specific_settings: {
 			gecko: {
-				id: 'widgetify@widgetify-app.github.io',
+				id: 'widgetify-beta@widgetify-app.github.io',
 			},
 		},
 		action: {

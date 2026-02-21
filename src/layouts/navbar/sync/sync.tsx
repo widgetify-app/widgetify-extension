@@ -365,9 +365,10 @@ async function getAll() {
 		theme: Theme | null
 		browserTitle: UserInventoryItem
 		font: string | null
+		ui: string | null
 	}>('/extension/@me/sync')
 
-	const { wallpaper, theme, browserTitle, font } = response.data
+	const { wallpaper, theme, browserTitle, font, ui } = response.data
 	const store = await getMultipleFromStorage([
 		'wallpaper',
 		'theme',
@@ -382,6 +383,7 @@ async function getAll() {
 
 	processFont(font, store?.appearance)
 	processTheme(theme, store?.theme)
+	processUI(ui, store?.appearance)
 }
 
 async function processWallpaper(
@@ -459,4 +461,13 @@ function processFont(font: string | null, appearanceStore?: Record<string, any>)
 	} catch (er) {
 		console.log(er)
 	}
+}
+function processUI(ui: string | null, appearanceStore?: Record<string, any>) {
+	try {
+		if (!ui) return
+		const uiStore = appearanceStore?.ui as string | undefined
+		if (ui !== uiStore) {
+			callEvent('ui_change', ui)
+		}
+	} catch {}
 }

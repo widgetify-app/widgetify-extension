@@ -69,7 +69,7 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 	return (
 		<SectionPanel title="فونت افزونه" delay={0.15} size="sm">
 			<div className="space-y-3">
-				<p className={'text-sm text-muted'}>
+				<p className={'text-xs text-muted'}>
 					فونت مورد نظر خود را برای نمایش در تمامی بخش‌های افزونه انتخاب کنید:
 				</p>
 				<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">

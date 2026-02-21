@@ -54,3 +54,12 @@ export function useChangeFont() {
 		},
 	})
 }
+
+export function useChangeUI() {
+	return useMutation<any, unknown, { ui: string }>({
+		mutationFn: async ({ ui }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/ui', { ui })
+		},
+	})
+}

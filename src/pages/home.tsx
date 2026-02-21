@@ -18,6 +18,8 @@ import { ContentSection } from './home/content-section'
 import { ExplorerContent } from '@/layouts/explorer/explorer'
 import { usePage } from '@/context/page.context'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useAppearanceSetting } from '@/context/appearance.context'
+import { HomeContentSimplify } from './home/home-content-simplify'
 
 const steps: Step[] = [
 	{
@@ -81,6 +83,7 @@ const steps: Step[] = [
 	},
 ]
 export function HomePage() {
+	const { ui } = useAppearanceSetting()
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
@@ -270,7 +273,15 @@ export function HomePage() {
 							}}
 							className="flex w-full h-full"
 						>
-							{page === 'home' ? <ContentSection /> : <ExplorerContent />}
+							{page === 'home' ? (
+								ui === 'ADVANCED' ? (
+									<ContentSection />
+								) : (
+									<HomeContentSimplify />
+								)
+							) : (
+								<ExplorerContent />
+							)}
 						</motion.div>
 					</AnimatePresence>
 					<WidgetSettingsModal
