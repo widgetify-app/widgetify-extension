@@ -32,7 +32,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 		return (
 			<div
 				className={
-					'relative rounded-lg overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
+					'relative rounded-xl border border-dashed border-base-content/5 overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
 				}
 			>
 				<button
@@ -58,7 +58,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	return (
 		<div
 			className={
-				'relative overflow-hidden  rounded-lg backdrop-blur-sm shadow-sm border border-content bg-content'
+				'relative overflow-hidden  rounded-xl backdrop-blur-sm shadow-sm border border-content bg-content'
 			}
 		>
 			<div className="flex items-center p-2.5">

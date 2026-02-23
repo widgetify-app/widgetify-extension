@@ -16,10 +16,10 @@ export function CategoryFolder({
 	return (
 		<div
 			onClick={() => onSelect(id)}
-			className="flex flex-col h-32 p-3 transition-all border rounded-lg cursor-pointer bg-content border-content max-h-32 hover:border-primary/20"
+			className="flex flex-col h-32 px-2 py-1 transition-all border cursor-pointer rounded-2xl bg-content border-content max-h-32 hover:border-primary/20! active:scale-98"
 		>
 			<div className="flex items-center gap-2 mb-2">
-				<FiFolder className="text-blue-500" size={18} />
+				<FiFolder className="text-base-content/10" size={12} />
 				<p className="font-medium truncate text-muted">{name}</p>
 			</div>
 
@@ -34,7 +34,7 @@ export function CategoryFolder({
 								<img
 									src={image.previewSrc}
 									alt={image.name}
-									className="object-cover w-full h-full"
+									className="object-cover w-full h-full rounded-lg"
 									loading="lazy"
 								/>
 							</div>

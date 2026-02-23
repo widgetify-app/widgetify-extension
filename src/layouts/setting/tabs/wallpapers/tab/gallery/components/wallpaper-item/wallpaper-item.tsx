@@ -36,8 +36,8 @@ function wallpaperItem({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-blue-500 ring-offset-1 ring-offset-blue-100'
-		: 'ring-1 ring-gray-300/50 group-hover:ring-blue-300/70'
+		? 'ring-2 ring-primary/80 ring-offset-blue-100'
+		: 'ring-1 ring-base-content/10 group-hover:ring-blue-300/70'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -77,7 +77,7 @@ function wallpaperItem({
 		<>
 			<div
 				ref={elementRef}
-				className={`relative overflow-hidden rounded-lg cursor-pointer group aspect-video ${itemOutlineStyle}`}
+				className={`relative overflow-hidden rounded-xl cursor-pointer group aspect-video ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 				onClick={handleSelect}
 			>
 				{!loaded && (
@@ -142,7 +142,7 @@ function wallpaperItem({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary">
+							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary/80">
 								<FiCheck size={12} />
 							</div>
 						)}

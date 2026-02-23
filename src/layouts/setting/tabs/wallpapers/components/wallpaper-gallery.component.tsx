@@ -62,27 +62,23 @@ export function WallpaperGallery({
 	}
 
 	return (
-		<div className="space-y-3">
-			<div
-				ref={galleryRef}
-				className={
-					'p-2 overflow-x-hidden overflow-y-auto h-96 custom-scrollbar rounded-lg bg-content'
-				}
-				style={{ WebkitOverflowScrolling: 'touch' }}
-			>
-				<div>
-					<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-						{wallpapers.map((wallpaper) => (
-							<div key={wallpaper.id} className="transform-gpu">
-								<WallpaperItem
-									wallpaper={wallpaper}
-									selectedBackground={selectedBackground}
-									setSelectedBackground={onSelectBackground}
-									onPreviewBackground={onPreviewBackground}
-								/>
-							</div>
-						))}
-					</div>
+		<div
+			ref={galleryRef}
+			className={'p-2 overflow-x-hidden bg-content rounded-b-xl rounded-l-xl'}
+			style={{ WebkitOverflowScrolling: 'touch' }}
+		>
+			<div>
+				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+					{wallpapers.map((wallpaper) => (
+						<div key={wallpaper.id} className="transform-gpu">
+							<WallpaperItem
+								wallpaper={wallpaper}
+								selectedBackground={selectedBackground}
+								setSelectedBackground={onSelectBackground}
+								onPreviewBackground={onPreviewBackground}
+							/>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>

@@ -63,8 +63,8 @@ export function WallpaperView({
 	if (!selectedCategory) return null
 
 	return (
-		<div>
-			<div className="flex justify-center mt-1">
+		<div className="relative flex flex-col justify-between gap-2 overflow-y-auto h-96">
+			<div className="absolute right-0 flex justify-center p-1 mt-1 -top-3 bg-content rounded-t-2xl">
 				<FolderPath
 					folderPath={[
 						{
@@ -75,14 +75,16 @@ export function WallpaperView({
 					onNavigate={onBackToCategories}
 				/>
 			</div>
-			<WallpaperGallery
-				isLoading={isLoading}
-				error={error}
-				wallpapers={wallpaperResponse?.wallpapers || []}
-				selectedBackground={selectedBackground}
-				onSelectBackground={handleSelectBackground}
-				onPreviewBackground={handlePreviewBackground}
-			/>
+			<div className="mt-5">
+				<WallpaperGallery
+					isLoading={isLoading}
+					error={error}
+					wallpapers={wallpaperResponse?.wallpapers || []}
+					selectedBackground={selectedBackground}
+					onSelectBackground={handleSelectBackground}
+					onPreviewBackground={handlePreviewBackground}
+				/>
+			</div>
 
 			<Pagination
 				currentPage={currentPage}
