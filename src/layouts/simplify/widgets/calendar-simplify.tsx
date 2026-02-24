@@ -107,7 +107,7 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 				size="small"
 				tabMode="advanced"
 				className="h-8 mb-2 bg-transparent! border-none w-60"
-				activeBgClass="bg-transparent! border-t  border-base-content/10"
+				activeBgClass="bg-transparent! shadow-none! border-t border-base-content/15"
 				activeTextClass="text-base-content!"
 			/>
 		</div>
