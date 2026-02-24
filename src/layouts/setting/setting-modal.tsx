@@ -1,4 +1,4 @@
-import { MdOutlinePrivacyTip } from 'react-icons/md'
+import { MdApps, MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbApps } from 'react-icons/tb'
 import {
 	VscColorMode,
@@ -23,6 +23,9 @@ import { BiUserCircle } from 'react-icons/bi'
 import { AccountTab } from './tabs/account/account'
 import { FiGift, FiUsers } from 'react-icons/fi'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
+import { RiApps2AiLine } from 'react-icons/ri'
+import { Connections } from './tabs/account/tabs/user-profile/connections/connections'
+import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connectionsTab'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -39,6 +42,12 @@ const tabs: TabItem[] = [
 				value: 'profile',
 				icon: <BiUserCircle size={20} />,
 				element: <AccountTab />,
+			},
+			{
+				label: 'پلتفرم‌ها',
+				value: 'platforms',
+				icon: <RiApps2AiLine size={20} />,
+				element: <ConnectionPlatformsTab />,
 			},
 			{
 				label: 'ماموریت‌ها و پاداش',

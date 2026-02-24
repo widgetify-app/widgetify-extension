@@ -1,6 +1,6 @@
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
-
+import momentTz from 'moment-timezone'
 import type { FetchedAllEvents, FetchedEvent } from '@/services/hooks/date/getEvents.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
@@ -144,8 +144,8 @@ export function getGregorianEvents(
 }
 
 export function getCurrentDate(timeZone: string) {
-	const date = new Date(new Date().toLocaleString('en-US', { timeZone }))
-	return jalaliMoment(date).locale('fa')
+	const tzMoment = momentTz.tz(new Date(), timeZone)
+	return jalaliMoment(tzMoment.toDate()).locale('fa')
 }
 
 export function filterGoogleEventsByDate(

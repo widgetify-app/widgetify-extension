@@ -1,201 +1,187 @@
+import type React from 'react'
+import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
+import { HiChevronLeft, HiChevronRight, HiOutlineCalendar } from 'react-icons/hi2'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import { useDate } from '@/context/date.context'
 import { CalendarEvent } from './google-event.item'
 import { useAuth } from '@/context/auth.context'
 import { Button } from '@/components/button/button'
 import { callEvent } from '@/common/utils/call-event'
+import type { WidgetifyDate } from '../../utils'
+import { GoogleEventItemSkeleton } from './google-event.item-skeleton'
 
-const HOUR_HEIGHT = 80
 export const GoogleCalendarView: React.FC = () => {
 	const { user, isAuthenticated } = useAuth()
-	const { selectedDate, isToday, setSelectedDate, currentDate } = useDate()
-	const containerRef = useRef<HTMLDivElement>(null)
+	const { currentDate, isToday } = useDate()
 	const [currentTime, setCurrentTime] = useState(new Date())
+	const [selectedDay, setSelectedDay] = useState(currentDate)
 
 	const isCalendarConnected = user?.connections?.includes('google') || false
 
 	useEffect(() => {
-		const timer = setInterval(() => setCurrentTime(new Date()), 60000)
+		const timer = setInterval(() => setCurrentTime(new Date()), 30000)
 		return () => clearInterval(timer)
 	}, [])
 
-	useEffect(() => {
-		if (containerRef.current && isToday(selectedDate)) {
-			const now = new Date()
-			const scrollPos =
-				((now.getHours() * 60 + now.getMinutes()) / 60) * HOUR_HEIGHT - 100
-			containerRef.current.scrollTo({ top: scrollPos, behavior: 'smooth' })
-		}
-	}, [selectedDate])
+	const getStartOfDay = (date: WidgetifyDate) => {
+		return `${date.clone().locale('en').format('YYYY-MM-DD')}T00:00:00+03:30`
+	}
 
-	const { data: events } = useGetGoogleCalendarEvents(
+	const getEndOfDay = (date: WidgetifyDate) => {
+		return `${date.clone().locale('en').format('YYYY-MM-DD')}T23:59:59+03:30`
+	}
+
+	const { data: events, isLoading } = useGetGoogleCalendarEvents(
 		isCalendarConnected,
-		selectedDate.clone().startOf('day').toDate(),
-		selectedDate.clone().startOf('day').toDate()
+		getStartOfDay(selectedDay),
+		getEndOfDay(selectedDay)
 	)
 
 	const handleEventClick = (event: any) => {
 		Analytics.event('google_calendar_event_click')
-		if (event.hangoutLink) {
-			window.open(event.hangoutLink, '_blank')
-		} else if (event.location) {
-			window.open(
-				`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`,
-				'_blank'
-			)
-		}
-	}
-
-	const onNextDay = () => {
-		setSelectedDate(selectedDate.clone().add(1, 'jD'))
-		Analytics.event('google_calendar_next_day')
-	}
-
-	const onPrevDay = () => {
-		setSelectedDate(selectedDate.clone().add(-1, 'jD'))
-		Analytics.event('google_calendar_prev_day')
-	}
-
-	const onGoToToday = () => {
-		setSelectedDate(currentDate.clone())
-		Analytics.event('google_calendar_go_to_today')
+		const link =
+			event.hangoutLink ||
+			(event.location
+				? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+						event.location
+					)}`
+				: null)
+		if (link) window.open(link, '_blank')
 	}
 
 	const getInitials = (email: string) =>
 		email.split('@')[0].substring(0, 2).toUpperCase()
 
-	const hours = Array.from({ length: 24 }, (_, i) => i)
+	const todayFlag = isToday(selectedDay)
+	const selectedDate = selectedDay.toDate()
+	const now = currentTime
+	const startOfToday = currentDate.startOf('day').toDate()
+	const classified = [...(events ?? [])]
+		.sort(
+			(a, b) =>
+				new Date(a.start.dateTime).getTime() -
+				new Date(b.start.dateTime).getTime()
+		)
+		.map((event) => {
+			const start = new Date(event.start.dateTime)
+			const end = new Date(event.end.dateTime)
 
-	const nextEvent = events?.find((e) => new Date(e.start.dateTime) > currentTime)
+			const isNow = todayFlag && now >= start && now <= end
+
+			let isPast = false
+
+			if (selectedDate < startOfToday) {
+				isPast = true
+			} else if (todayFlag) {
+				isPast = end < now
+			}
+
+			return { event, isNow, isPast }
+		})
+
+	const nextIdx = classified.findIndex((e) => !e.isNow && !e.isPast)
 
 	if (!isCalendarConnected) {
 		return (
-			<div className="flex flex-col items-center justify-center h-full p-4 text-center">
-				<p className="mb-2 text-sm text-content">
+			<div className="flex flex-col items-center justify-center h-full gap-3 p-4 text-center">
+				<div className="p-3 rounded-2xl bg-primary/10 text-primary">
+					<HiOutlineCalendar size={24} />
+				</div>
+				<p className="text-[11px] text-base-content/60 leading-relaxed">
 					{isAuthenticated
-						? 'برای مشاهده رویدادهای گوگل، لطفاً حساب گوگل خود را متصل کنید.'
-						: 'برای مشاهده رویدادهای گوگل، لطفاً وارد حساب کاربری خود شوید.'}
+						? 'برای مشاهده برنامه‌ها، تقویم گوگل را متصل کنید.'
+						: 'لطفاً وارد حساب کاربری خود شوید.'}
 				</p>
 				<Button
 					size="sm"
-					className="rounded-2xl text-xs! btn"
-					onClick={() => callEvent('openProfile')}
+					className="text-xs rounded-xl"
+					onClick={() => callEvent('openProfile', 'platforms')}
 				>
-					{isAuthenticated ? 'اتصال حساب گوگل' : 'ورود به حساب کاربری'}
+					{isAuthenticated ? 'اتصال تقویم' : 'ورود'}
 				</Button>
 			</div>
 		)
 	}
 
+	const handlePrevDay = () => {
+		setSelectedDay(selectedDay.clone().add(-1, 'jD'))
+		Analytics.event('google_calendar_prev_day')
+	}
+	const handleNextDay = () => {
+		setSelectedDay(selectedDay.clone().add(1, 'jD'))
+		Analytics.event('google_calendar_next_day')
+	}
+
+	const handleResetDay = () => {
+		setSelectedDay(currentDate.clone())
+		Analytics.event('google_calendar_reset_day')
+	}
+
 	return (
-		<div className="relative flex flex-col h-full overflow-hidden">
-			<div className="sticky top-0 z-50 flex flex-row justify-between p-2 border-b border-content">
-				<div className="flex-1 text-xs font-bold text-content">
-					{events?.length || 0} رویداد
-				</div>
-				{nextEvent && (
-					<div className="text-[10px] truncate text-muted line-clamp-1">
-						بعدی: {new Date(nextEvent.start.dateTime).getHours()}:
-						{new Date(nextEvent.start.dateTime)
-							.getMinutes()
-							.toString()
-							.padStart(2, '0')}{' '}
-						- {nextEvent.summary}
+		<div className="flex flex-col h-full overflow-hidden">
+			<div className="flex items-center justify-between px-2 shrink-0">
+				<button
+					onClick={() => handlePrevDay()}
+					className="flex items-center justify-center transition-colors rounded-lg cursor-pointer w-7 h-7 hover:bg-base-200 text-base-content/40 hover:text-base-content"
+				>
+					<HiChevronRight size={16} />
+				</button>
+
+				<button
+					onClick={() => handleResetDay()}
+					className="flex flex-col items-center cursor-pointer select-none"
+				>
+					<span
+						className={`text-[12px] font-black leading-tight text-base-content`}
+					>
+						{todayFlag
+							? `امروز، ${selectedDay.format('dddd')}`
+							: selectedDay.format('dddd')}
+					</span>
+					<span
+						className={`text-[9px] leading-none mt-0.5 text-base-content/35`}
+					>
+						{selectedDay.format('jD jMMMM jYYYY')}
+					</span>
+				</button>
+
+				<button
+					onClick={() => handleNextDay()}
+					className="flex items-center justify-center transition-colors rounded-lg cursor-pointer w-7 h-7 hover:bg-base-200 text-base-content/40 hover:text-base-content"
+				>
+					<HiChevronLeft size={16} />
+				</button>
+			</div>
+
+			<div className="flex-1 overflow-y-auto px-1 pb-2 flex flex-col gap-0.5 min-h-0">
+				{isLoading &&
+					Array.from({ length: 4 }).map((_, i) => (
+						<GoogleEventItemSkeleton key={`google-item-loading-${i}`} />
+					))}
+
+				{!isLoading && classified.length === 0 && (
+					<div className="flex flex-col items-center justify-center flex-1 gap-2 py-8 opacity-25">
+						<HiOutlineCalendar size={28} strokeWidth={1.5} />
+						<p className="text-[10px] font-medium text-base-content">
+							رویدادی وجود ندارد
+						</p>
 					</div>
 				)}
-			</div>
 
-			<div
-				ref={containerRef}
-				className="relative flex-1 pb-20 overflow-y-auto custom-scrollbar"
-			>
-				<div
-					className="relative w-full"
-					style={{ height: `${24 * HOUR_HEIGHT}px` }}
-				>
-					{hours.map((hour) => {
-						const isPast =
-							isToday(selectedDate) && currentTime.getHours() > hour
-						return (
-							<div
-								key={hour}
-								className="flex items-start border-b border-base-200/40"
-								style={{ height: `${HOUR_HEIGHT}px` }}
-							>
-								<div
-									className={`w-10 text-[10px] text-center pt-1 border-l border-base-200/50 sticky right-0 z-30 font-bold transition-opacity ${isPast ? 'opacity-30' : 'opacity-80'}`}
-								>
-									{hour === 0 ? '۱۲' : hour <= 12 ? hour : hour - 12}
-									<span className="block text-[8px] font-medium">
-										{hour < 12 ? 'ق.ظ' : 'ب.ظ'}
-									</span>
-								</div>
-								<div
-									className={`relative flex-1 h-full ${isPast ? 'bg-base-200/5' : ''}`}
-								/>
-							</div>
-						)
-					})}
-
-					{isToday(selectedDate) && (
-						<div
-							className="absolute left-0 z-40 flex items-center w-full pointer-events-none"
-							style={{
-								top: `${((currentTime.getHours() * 60 + currentTime.getMinutes()) / 60) * HOUR_HEIGHT}px`,
-							}}
-						>
-							<div className="w-2.5 h-2.5 bg-red-500 rounded-full sticky right-0 z-50 shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-							<div
-								className="flex-1 h-[1.5px] bg-red-500/80"
-								style={{ marginRight: '-4px' }}
-							/>
-						</div>
-					)}
-
-					{events?.map((event) => (
+				{!isLoading &&
+					classified.map(({ event, isNow, isPast }, i) => (
 						<CalendarEvent
-							key={event.id}
+							key={`google-item-${i}`}
 							event={event}
-							isToday={isToday(selectedDate)}
+							isNow={isNow}
+							isPast={isPast}
+							isNext={i === nextIdx}
 							currentTime={currentTime}
-							hourHeight={HOUR_HEIGHT}
-							onEventClick={handleEventClick}
 							getInitials={getInitials}
+							onEventClick={handleEventClick}
 						/>
 					))}
-				</div>
-			</div>
-
-			<div
-				className="absolute bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1.5  rounded-2xl w-[70%] max-w-50 justify-between bg-content bg-white/2 border border-white/8 z-50
-				"
-			>
-				<button
-					className="p-1.5 hover:bg-base-200 rounded-xl transition-colors cursor-pointer text-muted"
-					onClick={() => onPrevDay()}
-				>
-					<HiChevronRight size={18} />
-				</button>
-
-				<button
-					className={`px-3 py-1 text-[10px] font-black rounded-lg cursor-pointer transition-all ${
-						isToday(selectedDate)
-							? 'bg-primary/10 text-primary-content'
-							: 'hover:bg-base-200 text-content'
-					}`}
-					onClick={() => onGoToToday()}
-				>
-					{selectedDate.format('dddd')}
-				</button>
-
-				<button
-					className="p-1.5 hover:bg-base-200 rounded-xl transition-colors cursor-pointer text-muted"
-					onClick={() => onNextDay()}
-				>
-					<HiChevronLeft size={18} />
-				</button>
 			</div>
 		</div>
 	)

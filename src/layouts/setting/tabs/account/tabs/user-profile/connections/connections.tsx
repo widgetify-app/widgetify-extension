@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/section-panel'
 import { getMainClient } from '@/services/api'
 import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
 import { ConnectionModal } from './components/connection-modal'
@@ -105,71 +103,67 @@ export function Connections() {
 	}
 
 	return (
-		<SectionPanel title="پلتفرم‌های متصل" delay={0.4} size="xs">
-			<div className="space-y-4">
-				<p className={'text-sm font-light text-content'}>
-					مدیریت اتصالات پلتفرم‌ها و سرویس‌های متصل به حساب کاربری شما.
-				</p>
-
-				<div className="grid grid-cols-1 gap-3 mt-2 sm:grid-cols-2">
-					{platforms.map((platform) => (
-						<div
-							key={platform.id}
-							className={`p-3 rounded-lg border border-content cursor-pointer transition-colors hover:bg-base-200/50
-                                ${platform.isActive ? '' : 'opacity-50'}
-                            `}
-							onClick={() => handleConnectionClick(platform.id)}
-						>
-							<div className="flex items-center justify-between">
-								<div className="flex items-center gap-2">
-									<div
-										className={`flex items-center justify-center w-8 h-8 ${platform.bgColor} rounded-md`}
-									>
-										{platform.icon}
-									</div>
-									<div>
-										<p className={'font-medium text-content'}>
-											{platform.name}
-										</p>
-										<p className="text-xs font-light text-content">
-											{platform.connected
-												? 'متصل شده'
-												: 'متصل نشده'}
-										</p>
-									</div>
-								</div>
-								<Button
-									onClick={() => handleConnectionClick(platform.id)}
-									disabled={
-										platform.isLoading ||
-										(!platform.isActive && !platform.connected)
-									}
-									size="xs"
-									className={`rounded-2xl w-20 ${platform.connected ? 'btn-error' : 'btn-primary'} text-white/90`}
+		<div className="space-y-4">
+			<div className="grid grid-cols-1 gap-2 mt-3 sm:grid-cols-2">
+				{platforms.map((platform) => (
+					<div
+						key={platform.id}
+						onClick={() =>
+							(platform.isActive || platform.connected) &&
+							handleConnectionClick(platform.id)
+						}
+						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-base-200 border-base-300
+                ${
+					platform.connected ? '' : ' hover:bg-base-200/40'
+				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
+					>
+						<div className="flex items-center justify-between gap-3">
+							<div className="flex items-center gap-2.5 overflow-hidden">
+								<div
+									className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-lg ${platform.bgColor} text-white`}
 								>
-									{platform.isLoading ? (
-										<div className="w-4 h-4 border-2 border-current rounded-full animate-spin border-t-transparent" />
-									) : !platform.isActive && !platform.connected ? (
-										'به زودی ...'
-									) : platform.connected ? (
-										'قطع اتصال'
-									) : (
-										'اتصال'
-									)}
-								</Button>
+									{platform.icon}
+								</div>
+								<div className="overflow-hidden">
+									<h3 className="text-[13px] font-bold text-content truncate">
+										{platform.name}
+									</h3>
+									<p
+										className={`text-[10px]  font-medium truncate ${platform.connected ? 'text-success' : 'text-muted'}`}
+									>
+										{platform.connected ? 'متصل شده' : 'عدم اتصال'}
+									</p>
+								</div>
+							</div>
+
+							<div
+								className={`h-7 px-3 flex items-center justify-center rounded-lg text-[10px] font-black shrink-0 transition-all
+                    ${
+						platform.connected
+							? 'bg-error/10 text-error'
+							: 'bg-primary text-white'
+					} ${!platform.isActive && !platform.connected ? 'bg-base-300! text-muted' : ''}`}
+							>
+								{platform.isLoading ? (
+									<div className="w-3 h-3 border-2 border-current rounded-full animate-spin border-t-transparent" />
+								) : platform.connected ? (
+									'قطع'
+								) : (
+									'اتصال'
+								)}
 							</div>
 						</div>
-					))}
-				</div>
-
-				<ConnectionModal
-					platform={selectedPlatform}
-					isOpen={isModalOpen}
-					onClose={handleModalClose}
-					onConfirm={handleConnectionConfirm}
-					isLoading={selectedPlatform?.isLoading || false}
-				/>
+					</div>
+				))}
 			</div>
-		</SectionPanel>
+
+			<ConnectionModal
+				platform={selectedPlatform}
+				isOpen={isModalOpen}
+				onClose={handleModalClose}
+				onConfirm={handleConnectionConfirm}
+				isLoading={selectedPlatform?.isLoading || false}
+			/>
+		</div>
 	)
 }

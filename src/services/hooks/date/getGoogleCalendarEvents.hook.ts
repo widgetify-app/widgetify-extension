@@ -64,21 +64,11 @@ const cache: Map<string, GoogleCalendarEvent[]> = new Map()
 
 export const useGetGoogleCalendarEvents = (
 	enabled: boolean,
-	startDate?: Date,
-	endDate?: Date
+	startDate: string,
+	endDate?: string
 ) => {
-	const today = new Date()
-	const defaultStartDate =
-		startDate || new Date(today.getFullYear(), today.getMonth(), 1)
-	const defaultEndDate =
-		endDate || new Date(today.getFullYear(), today.getMonth() + 1, 0)
-
-	const formatDateParam = (date: Date) => {
-		return date.toISOString().split('T')[0]
-	}
-
-	const startParam = formatDateParam(defaultStartDate)
-	const endParam = formatDateParam(defaultEndDate)
+	const startParam = startDate
+	const endParam = endDate
 	const cacheKey = `${startParam}-${endParam}`
 
 	return useQuery<GoogleCalendarEvent[]>({
@@ -99,14 +89,13 @@ export const useGetGoogleCalendarEvents = (
 
 async function getGoogleCalendarEvents(
 	startDate: string,
-	endDate: string
+	endDate?: string
 ): Promise<GoogleCalendarEvent[]> {
 	try {
 		const client = await getMainClient()
 		const { data } = await client.get<GoogleCalendarResponse>(
-			`/google/events?start=${startDate}&end=${endDate}`
+			`/google/events?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate ?? '')}`
 		)
-
 		return data.events || []
 	} catch (error) {
 		console.error('Error fetching Google Calendar events:', error)

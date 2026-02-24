@@ -12,7 +12,6 @@ import { AccountVerificationStatus } from '../../components/account-verification
 import { ActivityInput } from '../../components/activity-input'
 import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
-import { Connections } from './connections/connections'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 
@@ -91,8 +90,6 @@ export const UserProfile = () => {
 				/>
 			)}
 			<ActivityInput activity={profile?.activity || ''} />
-
-			<Connections />
 
 			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
 				<div className="p-2 space-y-3 transition-colors rounded-lg">

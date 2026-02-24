@@ -3,115 +3,175 @@ import { HiOutlineMapPin, HiOutlineVideoCamera } from 'react-icons/hi2'
 
 interface CalendarEventProps {
 	event: any
-	isToday: boolean
+	isNow: boolean
+	isPast: boolean
+	isNext: boolean
 	currentTime: Date
-	hourHeight: number
-	onEventClick: (event: any) => void
 	getInitials: (email: string) => string
+	onEventClick: (event: any) => void
 }
 
 export const CalendarEvent = ({
 	event,
-	isToday,
+	isNow,
+	isPast,
+	isNext,
 	currentTime,
-	onEventClick,
 	getInitials,
-	hourHeight,
+	onEventClick,
 }: CalendarEventProps) => {
 	const start = new Date(event.start.dateTime)
 	const end = new Date(event.end.dateTime)
-	const isNow = isToday && currentTime >= start && currentTime <= end
-	const duration = (end.getTime() - start.getTime()) / 60000
-	const isShort = duration <= 45
 	const hasAction = !!(event.hangoutLink || event.location)
-	const isEnd = end <= currentTime
-	const getEventStyle = (event: any) => {
-		const start = new Date(event.start.dateTime)
-		const end = new Date(event.end.dateTime)
-		const startMinutes = start.getHours() * 60 + start.getMinutes()
-		const duration = (end.getTime() - start.getTime()) / 60000
+	const minsLeft = Math.ceil((end.getTime() - currentTime.getTime()) / 60000)
 
-		return {
-			top: `${(startMinutes / 60) * hourHeight + 2}px`,
-			right: '38px',
-			left: '10px',
-			height: `${Math.max((duration / 60) * hourHeight - 4, 42)}px`,
-		}
+	const timeStr = (d: Date) =>
+		d.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
+
+	if (isNow) {
+		return (
+			<div
+				onClick={() => hasAction && onEventClick(event)}
+				className={`relative flex items-center gap-0 px-1 py-1 rounded-xl transition-colors shrink-0 ${hasAction ? 'cursor-pointer hover:bg-primary/8 active:scale-[0.98]' : 'cursor-default'}`}
+			>
+				<div className="flex flex-col items-end justify-center shrink-0 w-[40px] gap-0.5 pl-1">
+					<span className="text-[11px] font-bold tabular-nums leading-none text-primary">
+						{timeStr(start)}
+					</span>
+					<span className="text-[9px] tabular-nums leading-none text-primary/50">
+						{timeStr(end)}
+					</span>
+				</div>
+
+				<div className="w-[3px] self-stretch rounded-full mx-2 shrink-0 bg-primary" />
+
+				<div className="flex-1 min-w-0 flex flex-col gap-0.5">
+					<div className="flex items-center min-w-0 gap-1">
+						<span className="text-[11px] font-bold truncate flex-1 text-base-content">
+							{event.summary || 'بدون عنوان'}
+						</span>
+						{event.hangoutLink ? (
+							<button
+								onClick={(e) => {
+									e.stopPropagation()
+									onEventClick(event)
+								}}
+								className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-primary text-white text-[9px]  cursor-pointer transition-all hover:brightness-110 active:scale-95 shrink-0 font-medium"
+							>
+								<HiOutlineVideoCamera size={9} />
+								ورود به جلسه
+							</button>
+						) : event.location ? (
+							<></>
+						) : null}
+					</div>
+
+					<div className="flex items-center gap-1.5">
+						<span className="relative flex w-1.5 h-1.5 shrink-0">
+							<span className="absolute inline-flex w-full h-full rounded-full opacity-60 animate-ping bg-primary" />
+							<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-primary" />
+						</span>
+						<span className="text-[9px] font-bold text-primary">
+							در حال برگزاری
+						</span>
+						<span className="text-[9px] text-base-content/40 tabular-nums">
+							· {minsLeft} دقیقه مانده
+						</span>
+					</div>
+				</div>
+
+				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-primary/15">
+					<div
+						className="h-full transition-all duration-1000 bg-primary/50"
+						style={{
+							width: `${Math.min(100, ((currentTime.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * 100)}%`,
+						}}
+					/>
+				</div>
+			</div>
+		)
 	}
 
 	return (
 		<div
-			onClick={() => onEventClick(event)}
-			className={`absolute z-20 px-3 py-2 overflow-hidden transition-all border-r-2 rounded-xl shadow-sm
-                ${hasAction ? 'cursor-pointer hover:shadow-md active:scale-[0.98]' : 'cursor-default'}
-                ${isNow ? 'bg-primary/15 border-primary backdrop-blur-md ring-1 ring-primary/30' : 'bg-base-300/90 hover:bg-base-300 border-primary/40'}
-                ${isEnd && 'opacity-60! border-r!'}
-            `}
-			style={getEventStyle(event)}
+			onClick={() => hasAction && onEventClick(event)}
+			className={`flex items-center gap-0 px-1 py-1.5 rounded-xl transition-colors
+				${hasAction && !isPast ? 'cursor-pointer hover:bg-base-200/40 active:scale-[0.98]' : 'cursor-default'}
+				${isPast ? 'opacity-35' : ''}
+			`}
 		>
-			<div className="flex flex-col h-full gap-1">
-				<div className="flex items-start justify-between gap-2">
-					<h4
-						className={`font-medium text-[11px] leading-tight line-clamp-2 ${isNow ? 'text-primary' : 'text-muted'}`}
+			<div className="flex flex-col items-end justify-center shrink-0 w-[40px] gap-0.5 pl-1">
+				<span
+					className={`text-[11px] font-bold tabular-nums leading-none ${isNext ? 'text-warning' : 'text-base-content'}`}
+				>
+					{timeStr(start)}
+				</span>
+				<span className="text-[9px] tabular-nums leading-none text-base-content/35">
+					{timeStr(end)}
+				</span>
+			</div>
+
+			<div
+				className={`w-[3px] self-stretch rounded-full mx-2 shrink-0 ${
+					isNext ? 'bg-warning' : 'bg-base-content/10'
+				}`}
+			/>
+
+			<div className="flex-1 min-w-0 flex flex-col gap-0.5">
+				<div className="flex items-center min-w-0 gap-1">
+					<span
+						className={`text-[11px] font-semibold leading-snug truncate flex-1 ${
+							isPast
+								? 'line-through text-base-content/40'
+								: 'text-base-content'
+						}`}
 					>
-						{event.summary}
-					</h4>
-					{!isShort && event.hangoutLink && (
-						<div className="flex items-center gap-1 bg-primary/50 text-[8px] px-1.5 py-0.5 rounded-full font-bold">
-							<HiOutlineVideoCamera size={10} />
-							<span>میت</span>
-						</div>
+						{event.summary || 'بدون عنوان'}
+					</span>
+					{event.hangoutLink && (
+						<HiOutlineVideoCamera
+							size={11}
+							className="shrink-0 text-base-content/30"
+						/>
+					)}
+					{!event.hangoutLink && event.location && (
+						<HiOutlineMapPin
+							size={11}
+							className="shrink-0 text-base-content/30"
+						/>
 					)}
 				</div>
 
-				<div className="flex items-center gap-2 mt-auto">
-					<div className="flex items-center gap-1 opacity-70">
-						<span className="text-[9px] font-medium tracking-tighter">
-							{start.toLocaleTimeString('fa-IR', {
-								hour: '2-digit',
-								minute: '2-digit',
-							})}{' '}
-							{' - '}{' '}
-							{end.toLocaleTimeString('fa-IR', {
-								hour: '2-digit',
-								minute: '2-digit',
-							})}
+				<div className="flex items-center min-w-0 gap-2">
+					{isNext && (
+						<span className="text-[9px] font-bold text-warning shrink-0">
+							بعدی
 						</span>
-					</div>
-					{event.location && !isShort && (
-						<div className="flex items-center gap-1 opacity-60">
-							<HiOutlineMapPin size={10} />
-							<span className="text-[9px] truncate max-w-15">
-								{event.location}
-							</span>
-						</div>
 					)}
-				</div>
-
-				{!isShort && event.attendees && (
-					<div className="flex items-center mt-0.5">
-						<div className="flex -space-x-1.5 rtl:space-x-reverse">
-							{event.attendees
-								.slice(0, 3)
-								.map((attendee: any, idx: number) => (
-									<Tooltip
-										key={`attendee-${idx}`}
-										content={attendee.email}
-										position="top"
-									>
-										<div className="w-4 h-4 rounded-full bg-base-300 flex items-center justify-center text-[5px] font-bold text-base-content/50 border border-primary/30">
-											{getInitials(attendee.email)}
+					{event.location && (
+						<span className="text-[9px] text-base-content/35 truncate max-w-[70px]">
+							{event.location}
+						</span>
+					)}
+					{event.attendees && event.attendees.length > 0 && (
+						<div className="flex items-center gap-1 mr-auto shrink-0">
+							<div className="flex -space-x-1 rtl:space-x-reverse">
+								{event.attendees.slice(0, 3).map((a: any, i: number) => (
+									<Tooltip key={i} content={a.email} position="top">
+										<div className="w-3.5 h-3.5 rounded-full bg-base-300 border border-base-content/10 flex items-center justify-center text-[5px] font-bold text-base-content/50">
+											{getInitials(a.email)}
 										</div>
 									</Tooltip>
 								))}
+							</div>
 							{event.attendees.length > 3 && (
-								<div className="w-5 h-5 rounded-full border-2 border-base-100 bg-base-100 flex items-center justify-center text-[7px] font-bold text-muted text-center">
+								<span className="text-[8px] text-base-content/35">
 									+{event.attendees.length - 3}
-								</div>
+								</span>
 							)}
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		</div>
 	)

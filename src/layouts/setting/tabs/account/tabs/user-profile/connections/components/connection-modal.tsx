@@ -102,29 +102,24 @@ export function ConnectionModal({
 						size="sm"
 						onClick={onClose}
 						disabled={isLoading}
-						className="w-32 rounded-2xl bg-base-300 text-content hover:bg-base-300/90"
+						className="flex-1 text-xs font-bold border-none cursor-pointer h-9 rounded-xl bg-base-200 text-content hover:bg-base-300/90"
 					>
 						لغو
 					</Button>
 					<Button
 						size="sm"
 						onClick={() => (isLoading ? undefined : onConfirm())}
-						className={`w-32 rounded-2xl ${isLoading && '!cursor-not-allowed'} ${
-							platform.connected
-								? 'bg-error/20 text-error border-error/30 hover:bg-error/25'
-								: 'btn-primary text-white'
-						}`}
+						loading={isLoading}
+						loadingText={
+							<span className="flex items-center justify-center gap-2">
+								<div className="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin" />
+								در حال پردازش
+							</span>
+						}
+						className={`flex-[2] h-9 rounded-xl font-black text-sm transition-all shadow-sm active:scale-95
+                    ${platform.connected ? 'bg-error text-white' : 'bg-primary text-white'}`}
 					>
-						{isLoading ? (
-							<div className="flex items-center gap-1">
-								<div className="w-2 h-2 border-2 border-current rounded-full animate-spin border-t-transparent" />
-								در حال پردازش...
-							</div>
-						) : platform.connected ? (
-							'قطع اتصال'
-						) : (
-							'ادامه'
-						)}
+						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
 					</Button>
 				</div>
 			</div>

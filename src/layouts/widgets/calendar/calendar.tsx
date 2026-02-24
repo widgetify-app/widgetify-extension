@@ -9,10 +9,6 @@ import { GoogleCalendarView } from './components/google-calendar/google-calendar
 import { FcCalendar } from 'react-icons/fc'
 import Analytics from '@/analytics'
 import { TabNavigation } from '@/components/tab-navigation'
-import { useGetUserMoodStatus } from '@/services/hooks/user/userService.hook'
-import Tooltip from '@/components/toolTip'
-import { useAuth } from '@/context/auth.context'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { CompactMoodWidget } from './components/mood/mood-status'
 
 interface CalendarTabSelectorProps {

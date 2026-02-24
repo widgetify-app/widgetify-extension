@@ -34,6 +34,7 @@ export function ProfileNav() {
 	const { user, isAuthenticated, profilePercentage } = useAuth()
 	const [showSettingsModal, setShowSettingsModal] = useState(false)
 	const [openedWizard, setOpenedWizard] = useState(false)
+	const [activeTab, setActiveTab] = useState<string>()
 
 	const handleProfileClick = () => {
 		setShowSettingsModal(true)
@@ -49,7 +50,8 @@ export function ProfileNav() {
 	const isAuth = user || isAuthenticated
 
 	useEffect(() => {
-		const event = listenEvent('openProfile', () => {
+		const event = listenEvent('openProfile', (active) => {
+			setActiveTab(active)
 			handleProfileClick()
 		})
 
@@ -107,7 +109,7 @@ export function ProfileNav() {
 
 			<UserAccountModal
 				isOpen={showSettingsModal}
-				selectedTab="profile"
+				selectedTab={activeTab}
 				onClose={modalCloseHandler}
 			/>
 
