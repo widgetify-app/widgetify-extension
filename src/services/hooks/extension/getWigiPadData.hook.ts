@@ -40,8 +40,8 @@ export interface NotificationItem {
 	icon?: string
 	closeable: boolean | null
 	type?: 'text' | 'url' | 'action' | 'page'
-	goTo?: 'explorer'
-	target?: string
+	goTo?: 'explorer' | 'openProfile' | 'openSettings'
+	target?: string //ex: tab key: platforms
 	ttl?: number
 }
 export interface WigiPadDataResponse {

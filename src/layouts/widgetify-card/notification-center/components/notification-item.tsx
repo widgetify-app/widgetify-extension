@@ -22,10 +22,10 @@ function Wrapper({ link, children, className, type, goTo, target }: Prop) {
 
 	const handleClick = () => {
 		if (type === 'page' && goTo) {
-			callEvent('go_to_page', goTo)
+			callEvent('go_to_page', goTo as any)
 			Analytics.event('notifications_page')
-		} else if (type === 'action' && target) {
-			callEvent(target as any)
+		} else if (type === 'action') {
+			callEvent(goTo as any, target as any)
 			Analytics.event('notifications_action')
 		}
 	}
@@ -119,7 +119,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					className="absolute p-1 transition-opacity rounded-md opacity-0 cursor-pointer top-2 left-2 bg-base-content/5 text-base-content/40 group-hover:opacity-100 hover:bg-error/10 hover:text-error"
+					className="flex items-center justify-center w-6 h-6 p-1 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-base-content/5 text-base-content/40 hover:bg-error/10 hover:text-error"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
