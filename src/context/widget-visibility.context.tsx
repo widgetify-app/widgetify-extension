@@ -128,7 +128,7 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '🌐',
 		label: 'شبکه',
 		order: 9,
-		node: <NetworkLayout />,
+		node: <NetworkLayout inComboWidget={false} enableBackground={true} />,
 		canToggle: true,
 		isNew: false,
 	},

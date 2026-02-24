@@ -26,7 +26,7 @@ interface NetworkInfo {
 
 interface Prop {
 	inComboWidget: boolean
-	enableBackground: false
+	enableBackground: boolean
 }
 export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 	const { blurMode } = useGeneralSetting()
