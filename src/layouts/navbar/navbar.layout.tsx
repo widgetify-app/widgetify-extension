@@ -1,8 +1,7 @@
-import { type JSX, useCallback, useEffect, useState } from 'react'
+import { type JSX, use, useCallback, useEffect, useState } from 'react'
 import { HiX } from 'react-icons/hi'
 import { FiChevronDown } from 'react-icons/fi'
-import { HiHome } from 'react-icons/hi'
-import { AiOutlineDrag } from 'react-icons/ai'
+import { AiOutlineDrag, AiOutlineGlobal } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
@@ -15,6 +14,11 @@ import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
 import { HiRectangleGroup } from 'react-icons/hi2'
 import { usePage } from '@/context/page.context'
+import { useAuth } from '@/context/auth.context'
+import { TbSmartHome } from 'react-icons/tb'
+import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
+import { UserProfile } from '@/services/hooks/user/userService.hook'
+import Tooltip from '@/components/toolTip'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -22,13 +26,13 @@ const WIDGETIFY_URLS = {
 
 const tabs = [
 	{
-		id: 'explorer',
-		icon: <HiRectangleGroup size={22} />,
-		hasBadge: true,
+		id: 'home',
+		icon: <TbSmartHome size={22} />,
 	},
 	{
-		id: 'home',
-		icon: <HiHome size={22} />,
+		id: 'explorer',
+		icon: <HiRectangleGroup size={22} />,
+		hasBadge: false,
 	},
 ]
 export function NavbarTabs() {
@@ -40,7 +44,7 @@ export function NavbarTabs() {
 	}
 
 	return (
-		<div className="flex items-center gap-0.5">
+		<div className="flex items-center gap-4">
 			{tabs.map((tab) => (
 				<button
 					key={tab.id}
@@ -68,8 +72,8 @@ export function NavbarTabs() {
 					</span>
 
 					{page === tab.id && (
-						<div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]">
-							<div className="absolute inset-0 bg-primary blur-[2px]" />
+						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]">
+							{/* <div className="absolute inset-0 bg-primary blur-[2px]" /> */}
 						</div>
 					)}
 				</button>
@@ -82,6 +86,7 @@ export function NavbarLayout(): JSX.Element {
 	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
 	const [showSettings, setShowSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
+	const { user } = useAuth()
 	const [tab, setTab] = useState<string | null>(null)
 
 	const handleOpenSettings = useCallback(
@@ -140,14 +145,14 @@ export function NavbarLayout(): JSX.Element {
 			{!isVisible && (
 				<button
 					onClick={() => onToggleNavbar()}
-					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 px-10 py-2.5 bg-white/[0.05] backdrop-blur-[40px] backdrop-saturate-[180%] border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08]"
+					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08] cursor-pointer group"
 				>
-					<div className="w-10 h-1 rounded-full bg-white/30" />
+					<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
 				</button>
 			)}
 
 			<div
-				className={`fixed z-50 -translate-x-1/2 left-1/2 transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
+				className={`fixed z-50  -translate-x-1/2 left-1/2 lg:w-260 md:w-200 w-120  transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
 					isVisible
 						? 'bottom-4 opacity-100 scale-100'
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
@@ -157,46 +162,45 @@ export function NavbarLayout(): JSX.Element {
 					className="absolute w-full h-10 bg-transparent -bottom-16"
 					id="chrome-footer"
 				></div>
-				<nav className="relative flex items-center gap-1 p-1.5 bg-white/[0.02] backdrop-blur-xs border border-white/[0.08] rounded-[2.5rem]">
-					<button
-						onClick={() => onToggleNavbar()}
-						className="relative z-10 p-2 transition-colors cursor-pointer nav-btn text-white/20 hover:text-white/40"
-					>
-						<FiChevronDown size={18} />
-					</button>
 
-					<div className="relative z-10 w-[1px] h-6 bg-white/[0.08]" />
-
-					<div className="relative z-10 flex items-center gap-0.5">
-						<ProfileNav />
-						<SyncButton />
-						<FriendsList />
-					</div>
-
-					<div className="relative z-10 w-[1px] h-6 bg-white/[0.08]" />
-
-					<div className="relative z-10 flex items-center gap-0.5">
-						<MarketButton />
-
-						<SettingsDropdown setShowSettings={setShowSettings} />
-					</div>
-
-					<div className="relative z-10 w-[1px] h-6 bg-white/[0.08]" />
-
-					<div className="relative z-10 flex items-center gap-2 pr-1 ml-0.5">
-						<NavbarTabs />
+				<nav className="relative flex items-center p-1.5 justify-between gap-1  bg-base-200 bg-glass rounded-3xl h-14">
+					<div className="relative z-10 flex items-center gap-2 pr-1 ml-0.5 flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center justify-center w-8 h-8 border rounded-full border-white/10 bg-black/20"
+							className="flex items-center justify-center border rounded-full border-white/10 bg-black/20"
 						>
 							<img
 								src={'https://cdn.widgetify.ir/extension/logo.png'}
 								alt="Logo"
-								className="object-contain w-5 h-5 opacity-80"
+								className="object-contain w-8 h-8"
 							/>
 						</a>
+						<p className="text-sm font-semibold text-content">
+							{getUserLabel(user)}
+						</p>
+					</div>
+
+					<div className="">
+						<NavbarTabs />
+					</div>
+
+					<div className="flex items-center justify-end flex-1 gap-2">
+						<Tooltip content="بستن نوار">
+							<button
+								onClick={() => onToggleNavbar()}
+								className="p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
+							>
+								<FiChevronDown size={15} />
+							</button>
+						</Tooltip>
+						<BlurModeButton />
+						<SyncButton />
+						<SettingsDropdown setShowSettings={setShowSettings} />
+						<FriendsList />
+						<MarketButton />
+						<ProfileNav />
 					</div>
 				</nav>
 			</div>
@@ -208,4 +212,10 @@ export function NavbarLayout(): JSX.Element {
 			/>
 		</>
 	)
+}
+
+function getUserLabel(user: UserProfile | null) {
+	if (!user) return 'ویجتیفای'
+
+	return `	سلام ${user.name}!`
 }

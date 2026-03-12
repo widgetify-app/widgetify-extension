@@ -26,7 +26,7 @@ export function MarketButton() {
 				onClick={() => handleClick()}
 				className="p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 			>
-				<HiShoppingBag size={19} />
+				<HiShoppingBag size={15} />
 			</button>
 			<Modal
 				isOpen={showMarket}

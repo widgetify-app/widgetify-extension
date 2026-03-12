@@ -28,7 +28,6 @@ import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { MdOutlineFilterList, MdOutlineFilterListOff, MdRefresh } from 'react-icons/md'
-import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
@@ -280,7 +279,6 @@ export function TodosLayout() {
 					</div>
 					<div className="flex items-center gap-1">
 						{isPending ? <IconLoading /> : null}
-						<BlurModeButton />
 						<Tooltip content="بارگزاری مجدد">
 							<Button
 								size="sm"

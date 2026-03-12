@@ -9,7 +9,7 @@ import { WelcomeWizard } from '@/components/welcome-wizard'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {
-		return <AvatarComponent url={user.avatar} size="xs" className="!w-5 !h-5" />
+		return <AvatarComponent url={user.avatar} className="!w-8 !h-8" />
 	}
 
 	const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'
@@ -42,7 +42,7 @@ export function ProfileNav() {
 
 	const modalCloseHandler = () => setShowSettingsModal(false)
 
-	const containerClasses = `relative flex justify-center items-center h-8 px-1 transition-all duration-300 cursor-pointer w-8 rounded-full hover:opacity-80 group hover:bg-primary/10 ${
+	const containerClasses = `relative  w-10 flex justify-center items-center h-8 px-1 transition-all duration-300 cursor-pointer w-8 rounded-full hover:opacity-80 group hover:bg-primary/10 ${
 		user?.inCache ? `ring-1 ring-error relative overflow-visible` : ''
 	}`
 
@@ -80,7 +80,7 @@ export function ProfileNav() {
 						id="profile-and-friends-list"
 						onClick={handleProfileClick}
 					>
-						<LuCircleUser size={20} />
+						<LuCircleUser size={15} />
 					</div>
 				</Tooltip>
 			) : (

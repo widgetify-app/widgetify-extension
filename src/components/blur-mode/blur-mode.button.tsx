@@ -1,6 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
 import Tooltip from '../toolTip'
-import { Button } from '../button/button'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export function BlurModeButton() {
@@ -12,14 +11,13 @@ export function BlurModeButton() {
 	}
 
 	return (
-		<Tooltip content={blurMode ? 'نمایش' : 'حالت مخفی'}>
-			<Button
-				size="sm"
+		<Tooltip content={blurMode ? 'فعالسازی حالت مخفی' : 'غیرفعالسازی'}>
+			<div
 				onClick={handleBlurModeToggle}
-				className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 			>
-				{blurMode ? <FaEye /> : <FaEyeSlash />}
-			</Button>
+				{blurMode ? <FaEye size={15} /> : <FaEyeSlash size={15} />}
+			</div>
 		</Tooltip>
 	)
 }

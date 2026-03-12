@@ -104,7 +104,7 @@ export function FriendsList() {
 				ref={triggerRef}
 				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 			>
-				<HiUserGroup size={18} />
+				<HiUserGroup size={15} />
 			</div>
 
 			<ClickableTooltip

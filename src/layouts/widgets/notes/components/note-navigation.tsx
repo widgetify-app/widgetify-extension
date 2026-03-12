@@ -8,7 +8,6 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { MdEdit, MdRefresh } from 'react-icons/md'
-import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
@@ -107,7 +106,6 @@ export function NoteNavigation() {
 						چیزی بنویس
 					</Button>
 					<div className="space-x-1">
-						<BlurModeButton />
 						<Tooltip content="بارگزاری مجدد">
 							<Button
 								size="sm"

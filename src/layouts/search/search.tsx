@@ -66,8 +66,8 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="relative z-50 flex flex-col items-center justify-start h-24">
-			<div ref={searchRef} className="w-full bg-content bg-glass rounded-2xl">
+		<div className="relative z-50 flex flex-col items-center justify-start h-24 max-h-24">
+			<div ref={searchRef} className="w-full p-0.5 bg-content bg-glass rounded-2xl">
 				{activePortal === 'voice' && (
 					<VoiceSearchPortal
 						onClose={() => setActivePortal(null)}
@@ -104,9 +104,9 @@ export function SearchLayout() {
 							onChange={handleSearchInputChange}
 							onFocus={() => onFocusInput()}
 							className={
-								'w-full py-1.5 text-base  font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
+								'w-full  py-1.5 text-base  font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
 							}
-							placeholder="جستجو در گوگل..."
+							placeholder="جستجو در گوگل"
 							autoComplete="off"
 						/>
 						<button
@@ -117,8 +117,8 @@ export function SearchLayout() {
 							<MdOutlineClear size={20} className="opacity-50" />
 						</button>
 						<div className="flex items-center gap-0.5 ml-1">
-							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
 							<ImageSearchButton onClick={() => setActivePortal('image')} />
+							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
 						</div>
 						<div
 							className={
