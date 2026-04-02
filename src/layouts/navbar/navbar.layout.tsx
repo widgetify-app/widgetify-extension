@@ -152,7 +152,7 @@ export function NavbarLayout(): JSX.Element {
 			)}
 
 			<div
-				className={`fixed z-50  -translate-x-1/2 left-1/2 lg:w-260 md:w-200 w-120  transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
+				className={`fixed z-50  -translate-x-1/2 left-1/2 lg:w-255 xl:w-260  md:w-200 w-120  transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
 					isVisible
 						? 'bottom-4 opacity-100 scale-100'
 						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
