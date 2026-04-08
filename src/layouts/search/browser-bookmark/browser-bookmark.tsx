@@ -2,12 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
-import { HiRectangleGroup } from 'react-icons/hi2'
+import { HiGlobeAlt } from 'react-icons/hi2'
 import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
 import { usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
-import { NewBadge } from '@/components/badges/new.badge'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })
@@ -70,10 +69,7 @@ export function BrowserBookmark() {
 						onClick={() => onClickToExplorer()}
 					>
 						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-lg bg-base-300 group-hover:scale-95 transition-transform">
-							<HiRectangleGroup
-								size={20}
-								className="text-base-content/60"
-							/>
+							<HiGlobeAlt size={20} className="text-base-content/60" />
 							<p className="font-medium text-base-content/60">کاوش</p>
 						</div>
 					</div>

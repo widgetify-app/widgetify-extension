@@ -12,7 +12,7 @@ import { SyncButton } from './sync/sync'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
-import { HiRectangleGroup } from 'react-icons/hi2'
+import { HiGlobeAlt } from 'react-icons/hi2'
 import { usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
 import { TbSmartHome } from 'react-icons/tb'
@@ -31,7 +31,7 @@ const tabs = [
 	},
 	{
 		id: 'explorer',
-		icon: <HiRectangleGroup size={22} />,
+		icon: <HiGlobeAlt size={22} />,
 		hasBadge: false,
 	},
 ]
