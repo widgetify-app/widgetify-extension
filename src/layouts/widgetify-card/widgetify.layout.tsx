@@ -5,7 +5,7 @@ import { PetProvider } from './pets/pet.context'
 
 export const WidgetifyLayout = () => {
 	return (
-		<WidgetContainer className="overflow-hidden !h-72 !min-h-72 !max-h-72">
+		<WidgetContainer className="overflow-hidden flex flex-col !p-2 !h-72 !min-h-72 !max-h-72">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>

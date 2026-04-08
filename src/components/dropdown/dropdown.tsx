@@ -22,6 +22,7 @@ export interface DropdownProps {
 	maxHeight?: string
 	onOptionSelect?: (option: DropdownOption) => void
 	disabled?: boolean
+	id?: string
 	placeholder?: string
 }
 
@@ -37,6 +38,7 @@ export function Dropdown({
 	onOptionSelect,
 	disabled = false,
 	placeholder,
+	id,
 }: DropdownProps) {
 	const { isOpen, toggle, close, dropdownRef, dropdownContentRef } = useDropdown()
 	const [dropdownPosition, setDropdownPosition] = useState({ top: '0px', left: '0px' })
@@ -121,28 +123,21 @@ export function Dropdown({
 			})
 		}
 
-		// محاسبه اولیه با تاخیر کوچک
 		const initialTimeout = setTimeout(calculatePosition, 10)
 
-		// Event listeners
 		window.addEventListener('resize', calculatePosition)
 		window.addEventListener('scroll', calculatePosition, true)
 
-		// ResizeObserver برای track کردن تغییرات سایز
 		const resizeObserver = new ResizeObserver(() => {
-			// استفاده از requestAnimationFrame فقط برای این callback
-			// تا smooth باشد اما loop نداشته باشیم
 			requestAnimationFrame(calculatePosition)
 		})
 
-		// Track trigger و همه parent هاش
 		let element: HTMLElement | null = dropdownRef.current
 		while (element) {
 			resizeObserver.observe(element)
 			element = element.parentElement
 		}
 
-		// Track خود dropdown هم
 		if (dropdownContentRef.current) {
 			resizeObserver.observe(dropdownContentRef.current)
 		}
@@ -190,7 +185,7 @@ export function Dropdown({
 
 			{isOpen && !disabled && (
 				<Portal>
-					<div className="fixed inset-0 z-[9998] pointer-events-none">
+					<div id={id} className="fixed inset-0 z-[9998] pointer-events-none">
 						<div
 							ref={dropdownContentRef}
 							className={`

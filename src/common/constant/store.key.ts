@@ -19,7 +19,11 @@ import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/cloc
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
+import type {
+	EngineMeta,
+	RecommendedSite,
+	TrendItem,
+} from '@/services/hooks/trends/getTrends'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
@@ -90,6 +94,6 @@ export interface StorageKV {
 	todoFilter: string
 	todoSort: string
 	[key: `removed_notification_${string}`]: string
-
+	selected_engine: EngineMeta | null
 	widget_tab: string
 }

@@ -3,14 +3,20 @@ import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { VoiceSearchButton } from './voice/voice-search.button'
-import { FcGoogle } from 'react-icons/fc'
 import { ImageSearchPortal } from './image/image-search.portal'
 import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
+import { EngineSelector } from './enginge-selector'
+import { SearchHistoryPortal } from './history.portal'
+import { EngineMeta } from '@/services/hooks/trends/getTrends'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
+	const [selectedEngine, setSelectedEngine] = useState<EngineMeta | null>(null)
+
+	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trendingRef = useRef<HTMLDivElement>(null)
@@ -20,8 +26,13 @@ export function SearchLayout() {
 		e.preventDefault()
 		const query = searchQuery.trim()
 		if (query) {
-			browser.search.query({ text: query })
-			Analytics.event('search_query_submitted')
+			SearchHandler({
+				content: query,
+				engine: selectedEngine,
+			})
+
+			Analytics.event('search_query_submitted', { engine: selectedEngine })
+			setShowHistoryPortal(false)
 		}
 	}
 
@@ -38,30 +49,57 @@ export function SearchLayout() {
 
 	const handleVoiceSearch = (query: string) => {
 		if (query.trim()) {
-			browser.search.query({ text: query.trim() })
+			SearchHandler({ content: query.trim(), engine: selectedEngine })
 			Analytics.event('voice_search_submitted')
 		}
 	}
 
+	const handleHistorySearch = (query: string) => {
+		setSearchQuery(query)
+		SearchHandler({
+			content: query.trim(),
+			engine: selectedEngine,
+		})
+		Analytics.event('history_search_submitted')
+	}
+
+	const onEngineChange = (engine: EngineMeta) => {
+		setSelectedEngine(engine)
+		setToStorage('selected_engine', engine)
+	}
+
+	useEffect(() => {
+		const fetchDataFromStorage = async () => {
+			const savedEngine = await getFromStorage('selected_engine')
+			if (savedEngine) {
+				setSelectedEngine(savedEngine)
+			}
+		}
+
+		fetchDataFromStorage()
+	}, [])
+
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
-				isInputFocused &&
+				(isInputFocused || showHistoryPortal) &&
 				searchRef.current &&
 				trendingRef.current &&
 				!searchRef.current.contains(event.target as Node) &&
 				!trendingRef.current.contains(event.target as Node)
 			) {
 				setIsInputFocused(false)
+				setShowHistoryPortal(false)
 			}
 		}
 
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
-	}, [isInputFocused])
+	}, [isInputFocused, showHistoryPortal])
 
 	function onFocusInput() {
 		setIsInputFocused(true)
+		setShowHistoryPortal(true)
 		Analytics.event('search_input_focused')
 	}
 
@@ -83,19 +121,11 @@ export function SearchLayout() {
 							'relative flex items-center  py-2 px-3 overflow-hidden shadow-xs transition-all duration-300  bg-content group  rounded-2xl search-box'
 						}
 					>
-						<button
-							type="submit"
-							className={
-								'h-9 w-9 shrink-0 flex items-center justify-center rounded-full opacity-70 transition-all duration-300'
-							}
-							onClick={() => {
-								if (!searchQuery) {
-									inputRef.current?.focus()
-								}
-							}}
-						>
-							<FcGoogle size={22} opacity={0.8} />
-						</button>
+						<EngineSelector
+							onSelected={onEngineChange}
+							selected={selectedEngine}
+						/>
+
 						<input
 							ref={inputRef}
 							type="text"
@@ -106,7 +136,7 @@ export function SearchLayout() {
 							className={
 								'w-full  py-1.5 text-base  font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
 							}
-							placeholder="جستجو در گوگل"
+							placeholder={`جستجو در ${selectedEngine?.label || 'گوگل'}`}
 							autoComplete="off"
 						/>
 						<button
@@ -122,13 +152,36 @@ export function SearchLayout() {
 						</div>
 						<div
 							className={
-								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-content'
+								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
 							}
 						/>
 					</div>
 				</form>
+
+				{showHistoryPortal && !activePortal && (
+					<SearchHistoryPortal
+						onClose={() => setShowHistoryPortal(false)}
+						onSearch={handleHistorySearch}
+						onEngineChange={onEngineChange}
+					/>
+				)}
+
 				<BrowserBookmark />
 			</div>
 		</div>
 	)
+}
+
+function SearchHandler({
+	content,
+	engine,
+}: {
+	content: string
+	engine: EngineMeta | null
+}) {
+	if (!engine || engine?.id === 'google') {
+		browser.search.query({ text: content })
+	} else {
+		window.open(engine?.prefix + encodeURIComponent(content), '_self')
+	}
 }

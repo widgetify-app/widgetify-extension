@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useGetTrends } from '@/services/hooks/trends/getTrends'
+import { useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
 import { HiRectangleGroup } from 'react-icons/hi2'
@@ -10,7 +10,7 @@ import Analytics from '@/analytics'
 import { NewBadge } from '@/components/badges/new.badge'
 
 export function BrowserBookmark() {
-	const { data } = useGetTrends({ enabled: true })
+	const { data } = useGetSearchboxData({ enabled: true })
 	const { setPage } = usePage()
 
 	const [isOpen, setIsOpen] = useState(false)

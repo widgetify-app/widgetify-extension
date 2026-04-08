@@ -22,13 +22,18 @@ export interface RecommendedSite {
 	priority: number
 	subSites?: RecommendedSubSite[]
 }
-
+export interface EngineMeta {
+	id: string
+	label: string
+	icon: any
+	prefix: string
+}
 export interface SearchBoxResponse {
-	trends: TrendItem[]
+	engines: EngineMeta[]
 	recommendedSites: RecommendedSite[]
 }
 
-async function fetchTrends(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
+async function fetchSearchbox(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
 	const client = await getMainClient()
 
 	const response = await client.get<SearchBoxResponse>('/extension/searchbox', {
@@ -40,7 +45,7 @@ async function fetchTrends(region = 'IR', limit = 10): Promise<SearchBoxResponse
 	return response.data
 }
 
-export function useGetTrends(
+export function useGetSearchboxData(
 	options: {
 		region?: string
 		limit?: number
@@ -65,7 +70,7 @@ export function useGetTrends(
 	const { region = 'IR', limit = 10, refetchInterval = null, enabled = true } = options
 	return useQuery<SearchBoxResponse>({
 		queryKey: ['getTrends', region, limit],
-		queryFn: () => fetchTrends(region, limit),
+		queryFn: () => fetchSearchbox(region, limit),
 		refetchInterval: refetchInterval || false,
 		enabled,
 		initialData,
