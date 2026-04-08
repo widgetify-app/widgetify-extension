@@ -1,15 +1,9 @@
 import { CalendarHeader } from '../../widgets/calendar/components/calendar-header'
 import { CalendarGrid } from '../../widgets/calendar/components/calendar-grid'
 import { useDate } from '@/context/date.context'
-import { FcCalendar } from 'react-icons/fc'
-import { TabNavigation } from '@/components/tab-navigation'
-import GoogleCalendar from '@/assets/google-calendar.png'
-import emotions from '@/assets/emotions.png'
 import Analytics from '@/analytics'
-import { MdApps, MdAppsOutage, MdArrowUpward, MdSettings } from 'react-icons/md'
-import { IoMdOptions } from 'react-icons/io'
 import { GoogleCalendarView } from '@/layouts/widgets/calendar/components/google-calendar/google-calendar-view'
-import { CompactMoodWidget } from '@/layouts/widgets/calendar/components/mood/mood-status'
+import { BiCalendar, BiLogoGoogle } from 'react-icons/bi'
 
 export function SimplifyCalendar() {
 	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
@@ -40,10 +34,8 @@ export function SimplifyCalendar() {
 							/>
 						</div>
 					</>
-				) : activeTab === 'google' ? (
-					<GoogleCalendarView />
 				) : (
-					<CompactMoodWidget />
+					<GoogleCalendarView />
 				)}
 			</div>
 			<div className="flex items-center w-full cursor-pointer h-7 rounded-2xl">
@@ -66,50 +58,32 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 	setActiveTab,
 }) => {
 	return (
-		<div className="shrink-0">
-			<TabNavigation
-				activeTab={activeTab}
-				onTabClick={(val) => setActiveTab(val)}
-				tabs={[
-					{
-						id: 'calendar',
-						label: 'تقویم',
-						icon: (
-							<FcCalendar
-								size={18}
-								className={`w-3 h-3 ${activeTab !== 'calendar' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-					{
-						id: 'google',
-						label: 'گوگل‌کلندر',
-						icon: (
-							<img
-								src={GoogleCalendar}
-								alt="Google Calendar"
-								className={`w-3 h-3 rounded-sm ${activeTab !== 'google' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-					{
-						id: 'mood',
-						label: 'مود روزانه',
-						icon: (
-							<img
-								src={emotions}
-								alt="mood"
-								className={`w-3 h-3 rounded-sm ${activeTab !== 'mood' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-				]}
-				size="small"
-				tabMode="advanced"
-				className="h-8 mb-2 bg-transparent! border-none w-60"
-				activeBgClass="bg-transparent! shadow-none! border-t border-base-content/15"
-				activeTextClass="text-base-content!"
-			/>
+		<div className="flex items-center w-full gap-1 p-1 transition-all duration-200 ease-in-out bg-muted rounded-xl">
+			<button
+				onClick={() => setActiveTab('calendar')}
+				className={`flex cursor-pointer items-center justify-center gap-1 flex-1 text-sm rounded-lg transition-all duration-200 px-2 py-1
+					${
+						activeTab === 'calendar'
+							? 'bg-background text-content shadow-xs'
+							: 'text-base-content/60 hover:text-base-content'
+					}`}
+			>
+				<BiCalendar size={12} />
+				<span>تقویم</span>
+			</button>
+
+			<button
+				onClick={() => setActiveTab('google')}
+				className={`flex cursor-pointer items-center justify-center gap-1 flex-1 text-sm rounded-lg transition-all duration-200 px-2 py-1
+					${
+						activeTab === 'google'
+							? 'bg-background text-content shadow-xs'
+							: 'text-base-content/60 hover:text-base-content'
+					}`}
+			>
+				<BiLogoGoogle size={12} />
+				<span>گوگل‌کلندر</span>
+			</button>
 		</div>
 	)
 }
