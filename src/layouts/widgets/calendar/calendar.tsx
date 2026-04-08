@@ -1,15 +1,11 @@
 import { useState } from 'react'
-import GoogleCalendar from '@/assets/google-calendar.png'
-import emotions from '@/assets/emotions.png'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
-import { FcCalendar } from 'react-icons/fc'
 import Analytics from '@/analytics'
-import { TabNavigation } from '@/components/tab-navigation'
-import { CompactMoodWidget } from './components/mood/mood-status'
+import { BiCalendar, BiLogoGoogle } from 'react-icons/bi'
 
 interface CalendarTabSelectorProps {
 	activeTab: string
@@ -21,47 +17,32 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 	setActiveTab,
 }) => {
 	return (
-		<div className="p-1 mt-1 shrink-0">
-			<TabNavigation
-				activeTab={activeTab}
-				onTabClick={(val) => setActiveTab(val)}
-				tabs={[
-					{
-						id: 'calendar',
-						label: 'تقویم',
-						icon: (
-							<FcCalendar
-								size={18}
-								className={`w-5 h-5 ${activeTab !== 'calendar' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-					{
-						id: 'google',
-						label: 'گوگل‌کلندر',
-						icon: (
-							<img
-								src={GoogleCalendar}
-								alt="Google Calendar"
-								className={`w-5 h-5 rounded-sm ${activeTab !== 'google' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-					{
-						id: 'mood',
-						label: 'مود روزانه',
-						icon: (
-							<img
-								src={emotions}
-								alt="mood"
-								className={`w-5 h-5 rounded-sm ${activeTab !== 'mood' ? 'opacity-45' : ''}`}
-							/>
-						),
-					},
-				]}
-				size="small"
-				tabMode="advanced"
-			/>
+		<div className="flex items-center w-full gap-1 p-1 transition-all duration-200 ease-in-out bg-muted rounded-xl">
+			<button
+				onClick={() => setActiveTab('calendar')}
+				className={`flex cursor-pointer items-center justify-center gap-1 flex-1 text-sm rounded-lg transition-all duration-200 px-2 py-1
+					${
+						activeTab === 'calendar'
+							? 'bg-background text-content shadow-xs'
+							: 'text-base-content/60 hover:text-base-content'
+					}`}
+			>
+				<BiCalendar size={12} />
+				<span>تقویم</span>
+			</button>
+
+			<button
+				onClick={() => setActiveTab('google')}
+				className={`flex cursor-pointer items-center justify-center gap-1 flex-1 text-sm rounded-lg transition-all duration-200 px-2 py-1
+					${
+						activeTab === 'google'
+							? 'bg-background text-content shadow-xs'
+							: 'text-base-content/60 hover:text-base-content'
+					}`}
+			>
+				<BiLogoGoogle size={12} />
+				<span>گوگل‌کلندر</span>
+			</button>
 		</div>
 	)
 }
@@ -77,7 +58,7 @@ const CalendarLayout: React.FC = () => {
 	}
 
 	return (
-		<WidgetContainer className="flex flex-col w-full overflow-hidden transition-all duration-300 md:flex-1">
+		<WidgetContainer className="flex flex-col md:flex-1">
 			<div className="flex flex-col flex-1 overflow-hidden">
 				{activeTab === 'calendar' ? (
 					<>
@@ -95,14 +76,16 @@ const CalendarLayout: React.FC = () => {
 							/>
 						</div>
 					</>
-				) : activeTab === 'google' ? (
-					<GoogleCalendarView />
 				) : (
-					<CompactMoodWidget />
+					<GoogleCalendarView />
 				)}
 			</div>
-
-			<CalendarTabSelector activeTab={activeTab} setActiveTab={onSetActiveTab} />
+			<div className="flex-none">
+				<CalendarTabSelector
+					activeTab={activeTab}
+					setActiveTab={onSetActiveTab}
+				/>
+			</div>
 		</WidgetContainer>
 	)
 }
