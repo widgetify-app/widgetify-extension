@@ -7,10 +7,12 @@ import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
 import { usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
+import { NewBadge } from '@/components/badges/new.badge'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })
 	const { setPage } = usePage()
+	const { data: fetchedSearchbox } = useGetSearchboxData({})
 
 	const [isOpen, setIsOpen] = useState(false)
 	const [popoverCoords, setPopoverCoords] = useState({ top: 0, left: 0 })
@@ -71,6 +73,9 @@ export function BrowserBookmark() {
 						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
 							<HiGlobeAlt size={20} className="text-base-content/60" />
 							<p className="font-medium text-base-content/60">کاوش</p>
+							{fetchedSearchbox?.explorer?.newBadge && (
+								<NewBadge className="top-0 left-0" />
+							)}
 						</div>
 					</div>
 				</div>

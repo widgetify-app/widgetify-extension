@@ -8,14 +8,13 @@ import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './enginge-selector'
 import { SearchHistoryPortal } from './history.portal'
-import { EngineMeta } from '@/services/hooks/trends/getTrends'
+import type { EngineMeta } from '@/services/hooks/trends/getTrends'
 import { getFromStorage, setToStorage } from '@/common/storage'
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta | null>(null)
-
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)

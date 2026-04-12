@@ -31,6 +31,9 @@ export interface EngineMeta {
 export interface SearchBoxResponse {
 	engines: EngineMeta[]
 	recommendedSites: RecommendedSite[]
+	explorer: {
+		newBadge: boolean
+	}
 }
 
 async function fetchSearchbox(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
