@@ -1,8 +1,8 @@
 import { callEvent } from '@/common/utils/call-event'
-import type { NotificationItem } from '@/services/hooks/extension/getWigiPadData.hook'
 import { HiChevronDown, HiXMark } from 'react-icons/hi2'
 import { useState } from 'react'
 import Analytics from '@/analytics'
+import type { NotificationItem } from '@/services/hooks/extension/getNotifications.hook'
 
 interface NotificationItemProps extends NotificationItem {
 	onClose(e: any, id: string): any
@@ -54,8 +54,19 @@ function Wrapper({ link, children, className, type, goTo, target }: Prop) {
 }
 
 export function NotificationCardItem(prop: NotificationItemProps) {
-	const { link, icon, title, closeable, id, onClose, description, target, goTo, type } =
-		prop
+	const {
+		link,
+		icon,
+		title,
+		closeable,
+		id,
+		onClose,
+		description,
+		target,
+		goTo,
+		type,
+		titleDecoration,
+	} = prop
 
 	const [isExpanded, setIsExpanded] = useState(false)
 	const CHARACTER_LIMIT = 85
@@ -68,6 +79,11 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	}
 
 	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
+	const isText = type === 'text'
+
+	const headTitleStyle: React.CSSProperties = {
+		textDecoration: titleDecoration,
+	}
 
 	return (
 		<Wrapper
@@ -75,19 +91,30 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${link && 'cursor-pointer'} bg-base-300/70 hover:bg-base-300 border-base-300/70 active:scale-[0.99] group relative hover:scale-[0.99]`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'} bg-base-300/70  border-base-300/70 group relative`}
 		>
 			{icon && (
 				<div className="flex-shrink-0">
 					<div className="p-1.5 bg-base-content/5 rounded-lg">
-						<img src={icon} alt="icon" className="object-contain w-4 h-4" />
+						{icon.startsWith('http') ? (
+							<img
+								src={icon}
+								alt="icon"
+								className="object-contain w-4 h-4"
+							/>
+						) : (
+							<span className="w-4 h-4 text-sm">{icon}</span>
+						)}
 					</div>
 				</div>
 			)}
 
 			<div className="flex-1 min-w-0">
 				<div className="flex items-start justify-between gap-2">
-					<h4 className="text-[13px] font-black tracking-tight text-base-content/90">
+					<h4
+						className="text-[13px] font-black tracking-tight text-base-content/90"
+						style={headTitleStyle}
+					>
 						{title}
 					</h4>
 				</div>

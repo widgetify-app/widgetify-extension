@@ -117,7 +117,7 @@ export function NotificationCenter() {
 		async function handle() {
 			const validNotifications: NotificationItem[] = []
 
-			for (const item of fetchedNotifications?.data?.notifications || []) {
+			for (const item of fetchedNotifications?.widgetifyCard || []) {
 				if (item.id) {
 					const cacheItem = await getWithExpiry(
 						`removed_notification_${item.id}`
@@ -146,7 +146,7 @@ export function NotificationCenter() {
 
 	return (
 		<div className="flex flex-col gap-1">
-			{fetchedNotifications?.data?.upcomingCalendarEvents?.map((event) => (
+			{/* {fetchedNotifications?.data?.upcomingCalendarEvents?.map((event) => (
 				<div key={event.id} className="relative">
 					<NotificationCardItem
 						title={event.title}
@@ -179,7 +179,7 @@ export function NotificationCenter() {
 						</Button>
 					)}
 				</div>
-			))}
+			))} */}
 			{notifications?.map((item, index) => (
 				<NotificationCardItem
 					id={item.id}
@@ -193,6 +193,7 @@ export function NotificationCenter() {
 					goTo={item.goTo}
 					target={item.target}
 					type={item.type}
+					titleDecoration={item.titleDecoration}
 				/>
 			))}
 

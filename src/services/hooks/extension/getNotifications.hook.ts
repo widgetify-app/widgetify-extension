@@ -1,56 +1,55 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { ReactNode } from 'react'
 
 export interface NotificationItem {
 	id?: string
-	title?: string
-	subTitle?: string
+	title: string
+	subTitle: string
 	description?: string
-	node?: ReactNode
 	link?: string
 	icon?: string
-	closeable?: boolean
-	ttl?: number
-	type?: 'text' | 'url' | 'action' | 'page'
-	goTo?: 'explorer'
+	closeable: boolean | null
+	type?: 'text' | 'url' | 'action' | 'page' | 'banner'
+	goTo?: 'explorer' | 'openProfile' | 'openSettings'
 	target?: string
+	backgroundColor?: string
+	borderRadius?: string
+	titleColor?: string
+	titleDecoration?: string
+	ttl?: number
+	hasBorder?: boolean
+	hight?: number
 }
 
 export interface NotificationItemResponse {
-	data: {
-		notifications: Array<{
-			id?: string
-			title: string
-			subTitle: string
-			description?: string
-			link?: string
-			icon?: string
-			closeable: boolean | null
-			type?: 'text' | 'url' | 'action' | 'page'
-			goTo?: 'explorer'
-			target?: string
-		}>
-		upcomingCalendarEvents: any[]
-	}
+	wigiPad: Array<NotificationItem>
+	widgetifyCard: Array<NotificationItem>
 }
 
-async function fetchNotifications(): Promise<NotificationItemResponse> {
+async function fetchNotifications(q: {
+	timezone?: string
+}): Promise<NotificationItemResponse> {
 	const client = await getMainClient()
-	const { data } = await client.get<NotificationItemResponse>('/notifications/beta')
+	const { data } = await client.get<{ data: NotificationItemResponse }>(
+		'/extension/notifications',
+		{
+			params: q,
+		}
+	)
 
-	return data
+	return data.data
 }
 
 export function useGetNotifications(options: {
 	enabled?: boolean
 	refetchInterval?: number | null
+	timezone?: string
 }) {
 	const { enabled = true, refetchInterval = null } = options
 
 	return useQuery<NotificationItemResponse>({
 		queryKey: ['notifications'],
-		queryFn: () => fetchNotifications(),
+		queryFn: () => fetchNotifications({ timezone: options.timezone }),
 		enabled,
 		refetchInterval: refetchInterval || false,
 		retry: 1,

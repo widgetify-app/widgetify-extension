@@ -1,14 +1,14 @@
 import { WidgetContainer } from '../widgets/widget-container'
 import { DateDisplay } from '../widgets/wigiPad/date-display/date.display'
 import { ClockDisplay } from '../widgets/wigiPad/clock-display/clock-display'
-import { useInfoPanelData } from '../widgets/wigiPad/info-panel/hooks/useInfoPanelData'
 import { MdOutlineCloud, MdOutlineTab, MdOutlineTimer } from 'react-icons/md'
 import { TabNavigation } from '@/components/tab-navigation'
 import { InfoWeather } from '../widgets/wigiPad/info-panel/infoWeather'
-import { NotificationItem } from '../widgets/wigiPad/info-panel/components/ann-item'
 import Analytics from '@/analytics'
 import { PomodoroTimer } from '../widgets/tools/pomodoro/pomodoro-timer'
 import { NotificationCenter } from '../widgetify-card/notification-center/notification-center'
+import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
+import { RenderWigiPadItem } from '../widgets/wigiPad/info-panel/components/ann-item'
 
 const sections = [
 	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={14} /> },
@@ -18,7 +18,7 @@ const sections = [
 
 export function SimplifyYadkar() {
 	const [activeSection, setActiveSection] = useState<string>('all')
-	const data = useInfoPanelData()
+	const { data: fetchedData } = useGetNotifications({})
 	const tabContainerRef = useRef<HTMLDivElement>(null)
 
 	const onChangeTab = (val: string) => {
@@ -40,13 +40,13 @@ export function SimplifyYadkar() {
 						<ClockDisplay />
 						<div className="col-span-2">
 							<div className="overflow-y-auto scrollbar-none max-h-32 min-h-32">
-								{data.notifications.map((notification, index) => (
-									<NotificationItem
-										key={index}
+								{fetchedData?.wigiPad.map((notification, index) => (
+									<RenderWigiPadItem
+										key={`wigipad-item-${index}`}
 										notification={notification}
 									/>
 								))}
-								<div className="pb-2 mt-2">
+								<div className="pb-2 mt-1">
 									<NotificationCenter />
 								</div>
 							</div>

@@ -53,7 +53,7 @@ export const TabNavigation = <T,>({
                             transition-colors duration-200
                             ${sizeClasses[size]}
                             ${tabMode === 'sample' || isActive ? 'flex-2' : 'flex-1'}
-                            ${isActive ? `text-primary font-bold text-icy ${activeTextClass}` : 'text-base-content/50 hover:bg-base-300 hover:text-base-content/30'}
+                            ${isActive ? `text-primary/80 text-shadow-2xs font-bold text-icy ${activeTextClass}` : 'text-base-content/50 hover:bg-base-300 hover:text-base-content/30'}
                         `}
 					>
 						{tab.icon && <span>{tab.icon}</span>}
@@ -64,7 +64,7 @@ export const TabNavigation = <T,>({
 						{isActive && (
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
-								className={`absolute inset-0 shadow-md bg-primary/20 rounded-xl -z-10 ${activeBgClass}`}
+								className={`absolute inset-0 shadow-md bg-primary/30 rounded-xl -z-10 ${activeBgClass}`}
 								transition={{
 									type: 'spring',
 									stiffness: 500,
