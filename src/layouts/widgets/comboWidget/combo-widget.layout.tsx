@@ -69,15 +69,6 @@ export function ComboWidget() {
 					size="small"
 					className="w-full"
 				/>
-				<div className="flex justify-end my-0.5">
-					<Button
-						size="sm"
-						onClick={handleSettingsClick}
-						className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
-					>
-						<CgOptions className="w-4 h-4" />
-					</Button>
-				</div>
 			</div>
 
 			<div className="flex-1 overflow-hidden">
@@ -89,6 +80,14 @@ export function ComboWidget() {
 					)}
 				</div>
 			</div>
+
+			<Button
+				size="sm"
+				onClick={handleSettingsClick}
+				className={`px-2 py-0! border-none! rounded-lg text-base-content/40 shrink-0 active:scale-95 h-7!`}
+			>
+				<CgOptions className="w-4 h-4" />
+			</Button>
 		</WidgetContainer>
 	)
 }

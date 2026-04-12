@@ -13,6 +13,6 @@
 
 [data-theme="icy"] {
     .text-icy {
-        @apply text-white;
+        @apply text-white/70;
     }
 }
