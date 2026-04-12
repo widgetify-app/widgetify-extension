@@ -44,12 +44,12 @@ export function NavbarTabs() {
 	}
 
 	return (
-		<div className="flex items-center gap-4">
+		<div className="flex items-center gap-2 sm:gap-4">
 			{tabs.map((tab) => (
 				<button
 					key={tab.id}
 					onClick={() => handleTabClick(tab.id)}
-					className="relative p-2 cursor-pointer group nav-btn"
+					className="relative p-1.5 sm:p-2 cursor-pointer group nav-btn"
 				>
 					<span
 						className={`
@@ -57,7 +57,9 @@ export function NavbarTabs() {
             ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
         `}
 					>
-						{tab.icon}
+						<span className="block text-[18px] sm:text-[22px]">
+							{tab.icon}
+						</span>
 
 						{tab.hasBadge && (
 							<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
@@ -152,19 +154,26 @@ export function NavbarLayout(): JSX.Element {
 			)}
 
 			<div
-				className={`fixed z-50  -translate-x-1/2 left-1/2 w-[93%] max-w-[1080px]  transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-					isVisible
-						? 'bottom-2 opacity-100 scale-100'
-						: '-bottom-32 opacity-0 scale-95 pointer-events-none'
-				}`}
+				className={`fixed z-50 -translate-x-1/2 left-1/2 
+					w-full
+					px-2
+					md:px-4
+					lg:px-4
+					max-w-[1080px] 
+					transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] 
+					${
+						isVisible
+							? 'bottom-2 opacity-100 scale-100'
+							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
+					}`}
 			>
 				<div
 					className="absolute w-full h-10 bg-transparent -bottom-16"
 					id="chrome-footer"
 				></div>
 
-				<nav className="relative flex items-center p-1.5 justify-between gap-1  bg-base-200 bg-glass rounded-2xl h-14">
-					<div className="relative z-10 flex items-center gap-2 pr-1 ml-0.5 flex-1">
+				<nav className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-base-200 bg-glass rounded-2xl sm:rounded-3xl h-12 sm:h-14">
+					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
@@ -174,10 +183,10 @@ export function NavbarLayout(): JSX.Element {
 							<img
 								src={'https://cdn.widgetify.ir/extension/logo.png'}
 								alt="Logo"
-								className="object-contain w-8 h-8"
+								className="object-contain w-7 h-7 sm:w-8 sm:h-8"
 							/>
 						</a>
-						<p className="text-sm font-semibold text-content">
+						<p className="hidden text-xs font-semibold sm:block sm:text-sm text-content">
 							{getUserLabel(user)}
 						</p>
 					</div>
@@ -186,7 +195,7 @@ export function NavbarLayout(): JSX.Element {
 						<NavbarTabs />
 					</div>
 
-					<div className="flex items-center justify-end flex-1 gap-2">
+					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
 						<Tooltip content="بستن نوار">
 							<button
 								onClick={() => onToggleNavbar()}
