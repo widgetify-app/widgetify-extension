@@ -26,7 +26,7 @@ export function YadkarWidget() {
 							tabs={[
 								{
 									id: 'todos',
-									label: 'وظایف',
+									label: 'تسک‌ها',
 									icon: <HiOutlineCheckCircle size={14} />,
 								},
 								{

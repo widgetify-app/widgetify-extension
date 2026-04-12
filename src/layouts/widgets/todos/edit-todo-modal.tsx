@@ -71,7 +71,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 
 	const handleSave = useCallback(async () => {
 		if (!text.trim()) {
-			showToast('متن وظیفه نمی‌تواند خالی باشد', 'error')
+			showToast('متن تسک نمی‌تواند خالی باشد', 'error')
 			return
 		}
 
@@ -94,7 +94,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 			showToast(translateError(err) as any, 'error')
 			return
 		}
-		showToast('وظیفه با موفقیت ویرایش شد', 'success')
+		showToast('تسک با موفقیت ویرایش شد', 'success')
 		onClose()
 		queryClient.invalidateQueries({ queryKey: ['getTodos'] })
 	}, [text, notes, category, priority, selectedDate, onClose])
@@ -103,7 +103,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title="ویرایش وظیفه"
+			title="ویرایش تسک"
 			size="md"
 			direction="rtl"
 		>
@@ -112,7 +112,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 					<TextInput
 						value={text}
 						onChange={handleTextChange}
-						placeholder="متن وظیفه را وارد کنید"
+						placeholder="متن تسک را وارد کنید"
 						className="text-sm"
 						debounce={false}
 					/>

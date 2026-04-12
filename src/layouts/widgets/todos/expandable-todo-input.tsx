@@ -135,7 +135,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 							ref={inputRef}
 							defaultValue=""
 							onChange={handleTodoTextChange}
-							placeholder="عنوان وظیفه جدید..."
+							placeholder="عنوان تسک جدید..."
 							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 pr-1 text-sm !bg-transparent rounded-2xl focus:placeholder:text-base-content/20"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}

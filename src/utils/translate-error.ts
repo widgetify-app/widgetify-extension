@@ -78,7 +78,7 @@ const errorTranslations: Record<string, string> = {
 	DATE_OUT_OF_RANGE: 'تاریخ انتخاب شده خارج از محدوده مجاز است',
 
 	ITEM_NOT_FOUND: 'آیتم مورد نظر یافت نشد',
-	TODO_NOT_FOUND: 'وظیفه مورد نظر یافت نشد',
+	TODO_NOT_FOUND: 'تسک مورد نظر یافت نشد',
 	INVALID_OTP_CODE: 'کد تایید نامعتبر است',
 	USE_EMAIL_FOR_OTP: 'لطفا موقتاََ از ایمیل برای دریافت کد تایید استفاده کنید',
 	USE_PHONE_FOR_OTP: 'لطفا موقتاََ از شماره موبایل برای دریافت کد تایید استفاده کنید',

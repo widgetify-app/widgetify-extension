@@ -119,7 +119,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 	const addTodo = async (input: AddTodoInput) => {
 		if (!isAuthenticated) {
-			showToast('برای اضافه کردن وظیفه باید وارد حساب کاربری شوید.', 'error')
+			showToast('برای اضافه کردن تسک باید وارد حساب کاربری شوید.', 'error')
 			return
 		}
 
@@ -170,7 +170,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 		if (validate(onlineId)) {
 			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
+				'این تسک هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
 				'error'
 			)
 		}
@@ -215,7 +215,7 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 		const onlineId = current.onlineId || current.id
 		if (validate(onlineId)) {
 			return showToast(
-				'این وظیفه هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
+				'این تسک هنوز همگام‌سازی نشده است و نمی‌توان آن را تغییر داد.',
 				'error'
 			)
 		}

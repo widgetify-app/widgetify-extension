@@ -55,17 +55,19 @@ export function EngineSelector({ trigger, onSelected, selected }: EngineSelector
 		<Dropdown
 			trigger={
 				trigger || (
-					<button
-						type="button"
-						className={
-							'h-9 w-9 shrink-0 hover:bg-base-content/10 cursor-pointer ml-2 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 transition-all duration-300'
-						}
-					>
-						<EngineIcon
-							engineId={currentEngine.id}
-							icon={currentEngine.icon}
-						/>
-					</button>
+					<div className="flex items-center w-12 ml-2 rounded-2xl bg-base-300/50">
+						<button
+							type="button"
+							className={
+								'h-8 w-8 shrink-0 hover:bg-base-content/10 cursor-pointer ml-2 flex items-center justify-center rounded-full opacity-70 hover:opacity-100  transition-all duration-300'
+							}
+						>
+							<EngineIcon
+								engineId={currentEngine.id}
+								icon={currentEngine.icon}
+							/>
+						</button>
+					</div>
 				)
 			}
 			dropdownClassName="engine-selector"

@@ -118,7 +118,7 @@ export function SearchLayout() {
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center  py-2 px-3 overflow-hidden shadow-xs transition-all duration-300  bg-content group  rounded-2xl search-box'
+							'relative flex items-center  py-2 px-3 overflow-hidden shadow-xs transition-all duration-300  bg-content group  rounded-2xl '
 						}
 					>
 						<EngineSelector

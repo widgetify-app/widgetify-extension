@@ -50,7 +50,7 @@ export function TodoItem({
 	const isTemp = todo.id.startsWith('temp-')
 
 	const handleDelete = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این وظیفه هنوز همگام‌سازی نشده است.', 'error')
+		if (isTemp) return showToast('این تسک هنوز همگام‌سازی نشده است.', 'error')
 		e.stopPropagation()
 		if (isPending) return
 		if (!isAuthenticated) return showToast('برای حذف باید وارد شوید', 'error')
@@ -58,7 +58,7 @@ export function TodoItem({
 	}
 
 	const handleEdit = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این وظیفه هنوز همگام‌سازی نشده است.', 'error')
+		if (isTemp) return showToast('این تسک هنوز همگام‌سازی نشده است.', 'error')
 		e.stopPropagation()
 		if (!isAuthenticated) return showToast('برای ویرایش باید وارد شوید', 'error')
 		setShowEditModal(true)
@@ -67,7 +67,7 @@ export function TodoItem({
 	const onConfirmDelete = async () => {
 		if (isPending || isSyncing) return
 		const onlineId = todo.onlineId || todo.id
-		if (validate(onlineId)) return showToast('خطا در شناسه وظیفه', 'error')
+		if (validate(onlineId)) return showToast('خطا در شناسه تسک', 'error')
 
 		const [err] = await safeAwait(mutateAsync())
 		setShowConfirmation(false)
@@ -90,7 +90,7 @@ export function TodoItem({
 		if (isUpdating || isSyncing) return
 
 		if (!isAuthenticated) {
-			return showToast('برای تغییر وضعیت وظیفه باید وارد شوید', 'error')
+			return showToast('برای تغییر وضعیت تسک باید وارد شوید', 'error')
 		}
 
 		setIsSyncing(true)

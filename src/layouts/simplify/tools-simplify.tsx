@@ -51,7 +51,7 @@ const NewsSimplify = React.lazy(() =>
 const tabs = [
 	{
 		id: 'todos',
-		label: 'وظایف',
+		label: 'تسک ها',
 		icon: <HiOutlineCheckCircle />,
 		element: TodosLayout,
 	},

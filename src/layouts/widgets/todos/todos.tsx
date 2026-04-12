@@ -328,11 +328,11 @@ export function TodosLayout() {
 								>
 									<FiList className="text-content" size={24} />
 								</div>
-								<p className="mt-1 text-center text-content">
-									وظیفه‌ای برای این روز وجود ندارد.
+								<p className="mt-1 font-bold text-center text-content">
+									هیچ تسکی برای نمایش وجود ندارد
 								</p>
 								<p className="text-center text-[.65rem] text-content opacity-75">
-									یک وظیفه جدید اضافه کنید.
+									یک تسک جدید اضافه کنید یا فیلترها را تغییر دهید
 								</p>
 							</div>
 						)}
