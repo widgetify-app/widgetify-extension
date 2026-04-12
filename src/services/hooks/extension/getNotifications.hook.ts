@@ -4,7 +4,6 @@ import { getMainClient } from '@/services/api'
 export interface NotificationItem {
 	id?: string
 	title: string
-	subTitle: string
 	description?: string
 	link?: string
 	icon?: string
