@@ -64,7 +64,7 @@ export const TabNavigation = <T,>({
 						{isActive && (
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
-								className={`absolute inset-0 shadow-md bg-base-100 rounded-xl -z-10 ${activeBgClass}`}
+								className={`absolute inset-0 shadow-md bg-base-200 rounded-xl -z-10 ${activeBgClass}`}
 								transition={{
 									type: 'spring',
 									stiffness: 500,
