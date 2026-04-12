@@ -68,7 +68,7 @@ export function BrowserBookmark() {
 						className="flex items-center cursor-pointer group "
 						onClick={() => onClickToExplorer()}
 					>
-						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-lg bg-base-300 group-hover:scale-95 transition-transform">
+						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
 							<HiGlobeAlt size={20} className="text-base-content/60" />
 							<p className="font-medium text-base-content/60">کاوش</p>
 						</div>
@@ -82,13 +82,14 @@ export function BrowserBookmark() {
 							onClick={handleTogglePopover}
 						>
 							<div
-								className={`flex items-center justify-center w-6 h-6 p-0.5 transition-all duration-200 rounded-lg group-hover:scale-95 ${
+								className={`relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
 									isOpen
 										? 'bg-primary text-white shadow-lg'
 										: 'bg-base-300  text-base-content/60'
 								}`}
 							>
-								<MdFolderSpecial size={24} />
+								<MdFolderSpecial size={20} />
+								<p className="font-medium">بوکمارک مروگر</p>
 							</div>
 						</div>
 					</Tooltip>
@@ -111,7 +112,7 @@ export function BrowserBookmark() {
 										src={
 											item.icon || getFaviconFromUrl(item.url || '')
 										}
-										className="object-cover w-6 h-6 p-1 transition-transform duration-200 rounded-lg group-hover:scale-95 bg-base-300 "
+										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-base-300 "
 										alt={item.name}
 									/>
 								</div>
