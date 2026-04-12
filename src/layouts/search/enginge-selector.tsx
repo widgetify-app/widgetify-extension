@@ -1,4 +1,5 @@
 import { getFromStorage } from '@/common/storage'
+import { NewBadge } from '@/components/badges/new.badge'
 import { Dropdown } from '@/components/dropdown'
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import type { ReactNode } from 'react'
@@ -16,9 +17,15 @@ type EngineSelectorProps = {
 	onSelected: any
 	selected: EngineMeta | null
 	trigger?: ReactNode
+	showNewBadge?: boolean
 }
 
-export function EngineSelector({ trigger, onSelected, selected }: EngineSelectorProps) {
+export function EngineSelector({
+	trigger,
+	onSelected,
+	selected,
+	showNewBadge,
+}: EngineSelectorProps) {
 	const { data: fetchedEngines, isLoading } = useGetSearchboxData({ enabled: true })
 	const [currentEngine, setCurrentEngine] = useState<EngineMeta>(GOOGLE)
 
@@ -55,19 +62,18 @@ export function EngineSelector({ trigger, onSelected, selected }: EngineSelector
 		<Dropdown
 			trigger={
 				trigger || (
-					<div className="flex items-center w-12 ml-2 rounded-2xl bg-base-300/50">
-						<button
-							type="button"
-							className={
-								'h-8 w-8 shrink-0 hover:bg-base-content/10 cursor-pointer ml-2 flex items-center justify-center rounded-full opacity-70 hover:opacity-100  transition-all duration-300'
-							}
-						>
-							<EngineIcon
-								engineId={currentEngine.id}
-								icon={currentEngine.icon}
-							/>
-						</button>
-					</div>
+					<button
+						type="button"
+						className={
+							'relative h-8 w-8 shrink-0 hover:bg-base-content/10 cursor-pointer ml-2 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 bg-base-300 transition-all duration-300'
+						}
+					>
+						<EngineIcon
+							engineId={currentEngine.id}
+							icon={currentEngine.icon}
+						/>
+						{showNewBadge && <NewBadge className="right-1 bottom-1" />}
+					</button>
 				)
 			}
 			dropdownClassName="engine-selector"
@@ -124,5 +130,5 @@ function EngineIcon({ engineId, icon, label }: Prop) {
 	if (engineId === 'google') {
 		return <FcGoogle size={20} opacity={0.8} />
 	}
-	return <img width={18} height={18} src={icon} alt={label} className="rounded-sm" />
+	return <img width={20} height={20} src={icon} alt={label} className="rounded-sm" />
 }

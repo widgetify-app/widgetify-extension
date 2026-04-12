@@ -19,6 +19,7 @@ export function SearchLayout() {
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trendingRef = useRef<HTMLDivElement>(null)
+	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,6 +66,9 @@ export function SearchLayout() {
 	const onEngineChange = (engine: EngineMeta) => {
 		setSelectedEngine(engine)
 		setToStorage('selected_engine', engine)
+		if (showNewBadge) {
+			setShowNewBadge(false)
+		}
 	}
 
 	useEffect(() => {
@@ -72,6 +76,8 @@ export function SearchLayout() {
 			const savedEngine = await getFromStorage('selected_engine')
 			if (savedEngine) {
 				setSelectedEngine(savedEngine)
+			} else {
+				setShowNewBadge(true)
 			}
 		}
 
@@ -123,6 +129,7 @@ export function SearchLayout() {
 						<EngineSelector
 							onSelected={onEngineChange}
 							selected={selectedEngine}
+							showNewBadge={showNewBadge}
 						/>
 
 						<input
