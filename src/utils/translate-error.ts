@@ -98,6 +98,13 @@ const errorTranslations: Record<string, string> = {
 	CANNOT_CHANGE_EMAIL: 'نمیتونی ایمیل رو تغییر بدی!',
 	SAME_EMAIL_ERROR: 'ایمیل تکراریه!',
 	FIRST_SET_EMAIL: 'هنوز ایمیل ست نکردی!',
+
+	PACKAGE_NOT_FOUND: 'پکیج مورد نظر یافت نشد',
+	PAYMENT_FAILED: 'پرداخت ناموفق بود. لطفا دوباره تلاش کنید',
+	PAYMENT_ALREADY_PROCESSED: 'این پرداخت قبلا پردازش شده است',
+	PAYMENT_NOT_FOUND: 'پرداخت مورد نظر یافت نشد',
+
+	TRY_NEXT_TIME: 'چیزی اشتباه پیش رفت، لطفا بعدا دوباره تلاش کنید',
 }
 
 const validationTranslations: Record<string, string> = {
