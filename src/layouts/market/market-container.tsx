@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaPaintBrush } from 'react-icons/fa'
+import { FaCoins, FaPaintBrush } from 'react-icons/fa'
 import { FaPhotoFilm } from 'react-icons/fa6'
 import { useAuth } from '@/context/auth.context'
 import { MarketWallpaper } from './marketWallpaper'
@@ -7,25 +7,32 @@ import { MarketOtherItems } from './other-items'
 import { UserCoin } from '../setting/tabs/account/components/user-coin'
 import Analytics from '@/analytics'
 import { TabNavigation } from '@/components/tab-navigation'
+import { MarketCoins } from './market-coins'
+
+const tabs = [
+	{
+		id: 'other',
+		label: 'شخصی‌سازی',
+		icon: <FaPaintBrush />,
+		element: <MarketOtherItems />,
+	},
+	{
+		id: 'wallpapers',
+		label: 'تصویر زمینه‌ها',
+		icon: <FaPhotoFilm />,
+		element: <MarketWallpaper />,
+	},
+	{
+		id: 'coins',
+		label: 'خرید ویج‌‌کوین',
+		icon: <FaCoins />,
+		element: <MarketCoins />,
+	},
+]
 
 export function MarketContainer() {
 	const { isAuthenticated, user } = useAuth()
 	const [activeTab, setActiveTab] = useState('other')
-
-	const tabs = [
-		{
-			id: 'other',
-			label: 'شخصی‌سازی',
-			icon: <FaPaintBrush />,
-			element: <MarketOtherItems />,
-		},
-		{
-			id: 'wallpapers',
-			label: 'تصویر زمینه‌ها',
-			icon: <FaPhotoFilm />,
-			element: <MarketWallpaper />,
-		},
-	]
 
 	const handleTabChange = (tabValue: string) => {
 		setActiveTab(tabValue)
