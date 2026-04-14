@@ -8,7 +8,13 @@ interface AvatarProps {
 	className?: string
 	onClick?: () => void
 }
-
+const sizeClasses = {
+	xs: 'w-6 h-6 text-xs',
+	sm: 'w-8 h-8 text-sm',
+	md: 'w-10 h-10 text-base',
+	lg: 'w-12 h-12 text-lg',
+	xl: 'w-16 h-16 text-xl',
+}
 export function AvatarComponent({
 	url,
 	file,
@@ -19,14 +25,6 @@ export function AvatarComponent({
 }: AvatarProps) {
 	const [imageError, setImageError] = useState(false)
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-
-	const sizeClasses = {
-		xs: 'w-6 h-6 text-xs',
-		sm: 'w-8 h-8 text-sm',
-		md: 'w-10 h-10 text-base',
-		lg: 'w-12 h-12 text-lg',
-		xl: 'w-16 h-16 text-xl',
-	}
 
 	useEffect(() => {
 		if (file) {
@@ -55,7 +53,7 @@ export function AvatarComponent({
 
 	return (
 		<div
-			className={`rounded-full overflow-hidden flex items-center justify-center bg-gray-200 ${sizeClasses[size]} ${className}`}
+			className={`rounded-full overflow-hidden flex items-center justify-center  ${sizeClasses[size]} ${className}`}
 			onClick={onClick}
 		>
 			{shouldShowImage ? (

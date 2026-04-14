@@ -9,7 +9,7 @@ import { WelcomeWizard } from '@/components/welcome-wizard'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {
-		return <AvatarComponent url={user.avatar} className="!w-8 !h-8" />
+		return <AvatarComponent url={user.avatar} className="w-8! h-8!" />
 	}
 
 	const initial = user?.username?.charAt(0) || user?.email?.charAt(0) || 'U'
@@ -41,10 +41,6 @@ export function ProfileNav() {
 	}
 
 	const modalCloseHandler = () => setShowSettingsModal(false)
-
-	const containerClasses = `relative  w-10 flex justify-center items-center h-8 px-1 transition-all duration-300 cursor-pointer w-8 rounded-full hover:opacity-80 group hover:bg-primary/10 ${
-		user?.inCache ? `ring-1 ring-error relative overflow-visible` : ''
-	}`
 
 	const hasPendingRequests = (user?.friendshipStats?.pending ?? 0) > 0
 	const isAuth = user || isAuthenticated
@@ -97,7 +93,10 @@ export function ProfileNav() {
 							role="progressbar"
 						></div>
 					) : null}
-					<div className={`${containerClasses} `} onClick={handleProfileClick}>
+					<div
+						className={`relative w-8 flex justify-center items-center  transition-all duration-300 cursor-pointer rounded-full hover:opacity-80 group hover:bg-primary/10 ${user?.inCache && 'ring-2 ring-error/40 relative overflow-visible'}`}
+						onClick={handleProfileClick}
+					>
 						{renderUserAvatar(user)}
 						{hasPendingRequests &&
 							renderPendingNotification(
