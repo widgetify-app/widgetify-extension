@@ -9,16 +9,16 @@ interface CoinPurchaseModalProps {
 	isOpen: boolean
 	onClose: () => void
 	wallpaper: Wallpaper | null
-	onBuy: () => void
-	isBuying?: boolean
+	onPurchase: () => void
+	isPurchasing?: boolean
 }
 
 export function CoinPurchaseModal({
 	isOpen,
 	onClose,
 	wallpaper,
-	onBuy,
-	isBuying = false,
+	onPurchase,
+	isPurchasing = false,
 }: CoinPurchaseModalProps) {
 	const { isAuthenticated } = useAuth()
 	if (!wallpaper) return null
@@ -34,8 +34,8 @@ export function CoinPurchaseModal({
 			onClose={onClose}
 			size="md"
 			direction="rtl"
-			closeOnBackdropClick={!isBuying}
-			showCloseButton={!isBuying}
+			closeOnBackdropClick={!isPurchasing}
+			showCloseButton={!isPurchasing}
 			title=" "
 		>
 			<div className="space-y-4">
@@ -91,10 +91,10 @@ export function CoinPurchaseModal({
 								لغو
 							</Button>
 							<Button
-								onClick={onBuy}
+								onClick={onPurchase}
 								size="md"
-								disabled={isBuying}
-								loading={isBuying}
+								disabled={isPurchasing}
+								loading={isPurchasing}
 								loadingText="در حال باز کردن..."
 								className="flex-1 text-white transition-all duration-200 border-none shadow-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 rounded-2xl"
 							>

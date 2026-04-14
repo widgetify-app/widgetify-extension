@@ -8,6 +8,7 @@ import { UserCoin } from '../setting/tabs/account/components/user-coin'
 import Analytics from '@/analytics'
 import { TabNavigation } from '@/components/tab-navigation'
 import { MarketCoins } from './market-coins'
+import { listenEvent } from '@/common/utils/call-event'
 
 const tabs = [
 	{
@@ -38,6 +39,16 @@ export function MarketContainer() {
 		setActiveTab(tabValue)
 		Analytics.event(`market_select_tab_${tabValue}`)
 	}
+
+	useEffect(() => {
+		const listen = listenEvent('market_change_tab', (tab) => {
+			setActiveTab(tab)
+		})
+
+		return () => {
+			listen()
+		}
+	}, [])
 
 	return (
 		<div className="flex flex-col gap-4 p-1">

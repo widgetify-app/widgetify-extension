@@ -51,6 +51,7 @@ export interface EventName {
 	add_to_notifications: { id: string; node: React.ReactNode }
 	remove_from_notifications: { id: string; ttl?: number }
 	go_to_page: 'explorer' | 'home'
+	market_change_tab: string
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

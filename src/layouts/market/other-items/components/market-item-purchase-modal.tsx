@@ -12,7 +12,7 @@ import { RenderPreview } from './renderPreview'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
-	onClose: () => void
+	onClose: (switchToCoins?: boolean) => void
 	item: MarketItem | null
 	onPurchaseSuccess: (item: MarketItem) => void
 	userCoins: number
@@ -68,18 +68,17 @@ export function MarketItemPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="px-2 py-1 border rounded-xl border-base-300 bg-content/50">
+				<div className="px-2 py-1 border rounded-xl border-base-300 bg-content">
 					<h3 className="text-lg font-semibold text-content">{item.name}</h3>
 					<p className="mt-1 mb-1 text-xs text-muted">{item.description}</p>
 
-					{/* Item preview */}
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
 				</div>
 
-				<div className="p-3 space-y-2 border rounded-xl border-primary/20 bg-primary/5">
+				<div className="p-3 space-y-2 border rounded-xl border-base-300 bg-base-100">
 					<div className="flex items-center justify-between">
 						<span className="text-sm text-content">موجودی فعلی:</span>
-						<UserCoin coins={userCoins} />
+						<ItemPrice price={userCoins} />
 					</div>
 					<div className="flex items-center justify-between">
 						<span className="text-sm text-content">قیمت آیتم:</span>
@@ -90,19 +89,21 @@ export function MarketItemPurchaseModal({
 						<span className="text-sm font-medium text-content">
 							موجودی باقی‌مانده:
 						</span>
-						<UserCoin coins={Math.max(0, remainingCoins)} />
+						<ItemPrice
+							price={canAfford ? Math.max(0, remainingCoins) : userCoins}
+						/>
 					</div>
 				</div>
 
 				{!canAfford && (
-					<div className="p-3 border rounded-xl border-warning/20 bg-warning/5">
+					<div className="p-3 border rounded-xl border-error/20 bg-error/5">
 						<div className="flex items-start gap-2">
-							<FiX className="w-5 h-5 mt-0.5 text-warning flex-shrink-0" />
+							<FiX className="w-5 h-5 mt-0.5 text-error flex-shrink-0" />
 							<div>
-								<p className="text-sm font-medium text-warning">
+								<p className="text-sm font-medium text-error">
 									موجودی ناکافی
 								</p>
-								<p className="text-xs text-warning/80">
+								<p className="text-xs text-error/80">
 									برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
 									بیشتر نیاز دارید
 								</p>
@@ -112,22 +113,22 @@ export function MarketItemPurchaseModal({
 				)}
 			</div>
 
-			<div className="flex gap-3 pt-4">
-				<Button
-					onClick={onClose}
-					size="md"
-					disabled={isPending}
-					className="flex-1 rounded-2xl border-muted hover:bg-muted/50 text-content"
-				>
-					لغو
-				</Button>
+			<div className="flex flex-col gap-1 pt-4">
+				{!canAfford && (
+					<div
+						className="w-full text-center cursor-pointer text-muted rounded-xl btn-link hover:scale-95"
+						onClick={() => onClose(true)}
+					>
+						خرید ویج‌کوین
+					</div>
+				)}
 				<Button
 					onClick={handlePurchase}
 					size="md"
 					disabled={!canAfford || isPending}
 					loading={isPending}
 					loadingText="در حال خرید..."
-					className={`flex-1 rounded-2xl ${
+					className={`rounded-2xl ${
 						canAfford
 							? 'bg-primary hover:bg-primary/90 text-white'
 							: 'bg-base-300 text-muted cursor-not-allowed'

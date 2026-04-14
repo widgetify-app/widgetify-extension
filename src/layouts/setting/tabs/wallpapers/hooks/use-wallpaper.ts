@@ -8,11 +8,14 @@ import { useChangeWallpaper } from '@/services/hooks/extension/updateSetting.hoo
 import { translateError } from '@/utils/translate-error'
 import Analytics from '../../../../../analytics'
 import { showToast } from '@/common/toast'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function useWallpaper(
 	fetchedWallpapers: Wallpaper[] | undefined,
 	isAuthenticated: boolean
 ) {
+	const queryClient = useQueryClient()
+
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const { mutateAsync } = useChangeWallpaper()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
@@ -111,6 +114,7 @@ export function useWallpaper(
 
 			if (wallpaper.coin && !wallpaper.isOwned) {
 				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
+				queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 			}
 		}
 

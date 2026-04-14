@@ -74,6 +74,12 @@ export function MarketOtherItems() {
 		Analytics.event('market_other_items_prev_page')
 	}
 
+	const handleOnClose = (switchToCoins?: boolean) => {
+		if (switchToCoins) {
+			callEvent('market_change_tab', 'coins')
+		}
+	}
+
 	if (error) {
 		return (
 			<div className="flex flex-col items-center justify-center h-64 text-center">
@@ -133,7 +139,7 @@ export function MarketOtherItems() {
 			/>
 			<MarketItemPurchaseModal
 				isOpen={showPurchaseModal}
-				onClose={() => setShowPurchaseModal(false)}
+				onClose={(switchToCoins) => handleOnClose(switchToCoins)}
 				item={selectedItem}
 				onPurchaseSuccess={handlePurchaseSuccess}
 				userCoins={user?.coins || 0}

@@ -64,7 +64,7 @@ function wallpaperItem({
 		}
 	}
 
-	const handleBuy = () => {
+	const handlePurchase = () => {
 		setSelectedBackground(wallpaper)
 		setIsModalOpen(false)
 	}
@@ -163,7 +163,7 @@ function wallpaperItem({
 				isOpen={isModalOpen}
 				onClose={handleCloseModal}
 				wallpaper={wallpaper}
-				onBuy={handleBuy}
+				onPurchase={handlePurchase}
 			/>
 		</>
 	)
