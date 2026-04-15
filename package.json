@@ -1,7 +1,8 @@
 {
-  "name": "widgetify-webapp",
+  "name": "Widgetify",
+  "description": "Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.83",
   "type": "module",
   "scripts": {
     "dev": "wxt",

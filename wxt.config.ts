@@ -30,28 +30,12 @@ export default defineConfig({
 				assetsInlineLimit: 4096,
 			},
 		}) as any,
-	alias: {
-		'@/common': './src/common',
-		'@/analytics': './src/analytics',
-		'@/services': './src/services',
-		'@/components': './src/components',
-		'@/context': './src/context',
-		'@/hooks': './src/hooks',
-		'@/utils': './src/utils',
-		'@/layouts': './src/layouts',
-		'@/pages': './src/pages',
-		'@/assets': './src/assets',
-	},
 	modules: [
 		'@wxt-dev/webextension-polyfill',
 		'@wxt-dev/auto-icons',
 		'@wxt-dev/module-react',
 	],
 	manifest: {
-		version: '1.0.83',
-		name: 'Widgetify',
-		description:
-			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
 		permissions: ['storage', 'search'],
 		optional_permissions: ['tabs', 'tabGroups', 'bookmarks', 'identity'],
 		browser_specific_settings: {
