@@ -137,7 +137,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	return (
 		<div className="my-1 flex flex-col w-[240px] rounded-xl overflow-hidden bg-base-100 border border-base-300">
 			{/* Header */}
-			<div className={`px-3 py-2 bg-gradient-to-r ${holidayStyle} text-white`}>
+			<div
+				className={`px-3 py-2 bg-gradient-to-r rounded-b-lg ${holidayStyle} text-white`}
+			>
 				<div className="flex items-center justify-between text-sm">
 					<span className="font-medium">{jalaliDay}</span>
 					<span className="opacity-90">{jalali}</span>
@@ -195,20 +197,20 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				</div>
 
 				{totalEvents > 0 && (
-					<div className="pr-1 space-y-1 overflow-y-auto max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
+					<div className="flex flex-row flex-wrap pr-1 space-y-1 overflow-y-auto gap-x-1 max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
 						{dayEvent.map((event, idx) => (
 							<div
 								key={`e-${idx}`}
-								className={`flex items-center gap-1.5 p-1.5 rounded-2xl ${
+								className={`flex items-center py-1! gap-1 h-5  w-fit px-2 outline rounded-lg ${
 									event.isHoliday
-										? 'bg-error/10 border border-error/20'
-										: 'bg-base-200'
+										? 'bg-error/20 text-error outline-error/10'
+										: 'badge badge-ghost text-content outline-base-200'
 								}`}
 							>
 								<div
-									className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${event.isHoliday ? 'bg-error' : 'bg-info'}`}
+									className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${event.isHoliday ? 'bg-red-400 animate-pulse' : 'bg-info'} `}
 								/>
-								<div className="flex-1 min-w-0 text-[10px] text-content truncate">
+								<div className="flex-1 min-w-0 max-w-42 text-[12px] truncate">
 									{event.title}
 								</div>
 							</div>
