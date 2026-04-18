@@ -38,7 +38,7 @@ export function FolderBookmarkItem({
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-8 h-8 scale-75"
+							className="flex items-center justify-center w-8 h-8 scale-60"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>
