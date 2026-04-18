@@ -31,6 +31,7 @@ import { MdOutlineFilterList, MdOutlineFilterListOff, MdRefresh } from 'react-ic
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
+import { callEvent } from '@/common/utils/call-event'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -58,8 +59,6 @@ export function TodosLayout() {
 	const [sort, setSort] = useState<string>('def')
 	const [tagFilter, setTagFilter] = useState<string>('')
 	const { data: fetchedTags } = useGetTags(isAuthenticated)
-
-	const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -135,7 +134,7 @@ export function TodosLayout() {
 
 	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'> & { date: string }) => {
 		if (!isAuthenticated) {
-			setShowAuthModal(true)
+			callEvent('open_require_auth_modal')
 			return
 		}
 
@@ -147,7 +146,7 @@ export function TodosLayout() {
 
 	const handleDragEnd = (event: DragEndEvent) => {
 		if (!isAuthenticated) {
-			setShowAuthModal(true)
+			callEvent('open_require_auth_modal')
 			return
 		}
 
@@ -340,14 +339,6 @@ export function TodosLayout() {
 				</DndContext>
 			</div>
 			{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
-
-			{showAuthModal && (
-				<AuthRequiredModal
-					isOpen={showAuthModal}
-					onClose={() => setShowAuthModal(false)}
-					message="برای استفاده از وظایف، لطفاً وارد حساب کاربری خود شوید."
-				/>
-			)}
 		</>
 	)
 }

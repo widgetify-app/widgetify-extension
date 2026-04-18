@@ -94,6 +94,6 @@ export interface StorageKV {
 	todoFilter: string
 	todoSort: string
 	[key: `removed_notification_${string}`]: string
-	selected_engine: EngineMeta | null
+	selected_engine: string | null
 	widget_tab: string
 }

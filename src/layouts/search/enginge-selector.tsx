@@ -1,61 +1,81 @@
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
 import { NewBadge } from '@/components/badges/new.badge'
 import { Dropdown } from '@/components/dropdown'
+import { useAuth } from '@/context/auth.context'
+import { useChangeSearchEngine } from '@/services/hooks/extension/updateSetting.hook'
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import type { ReactNode } from 'react'
 import { useState, useEffect, useMemo } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 
 const GOOGLE: EngineMeta = {
-	id: 'google' as string,
+	id: 'google',
 	prefix: '',
 	label: 'گوگل',
 	icon: '',
 }
 
 type EngineSelectorProps = {
-	onSelected: any
-	selected: EngineMeta | null
+	onSelected?: (engine: EngineMeta) => void
 	trigger?: ReactNode
-	showNewBadge?: boolean
 }
 
-export function EngineSelector({
-	trigger,
-	onSelected,
-	selected,
-	showNewBadge,
-}: EngineSelectorProps) {
-	const { data: fetchedEngines, isLoading } = useGetSearchboxData({ enabled: true })
+export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
+	const { isAuthenticated } = useAuth()
+	const { data: searchboxData, isLoading } = useGetSearchboxData({ enabled: true })
+	const changeEngineMutation = useChangeSearchEngine()
 	const [currentEngine, setCurrentEngine] = useState<EngineMeta>(GOOGLE)
+	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
 
 	const engines = useMemo(() => {
-		if (fetchedEngines?.engines?.length) {
-			return [GOOGLE, ...fetchedEngines.engines]
+		if (searchboxData?.search_engines?.length) {
+			return [GOOGLE, ...searchboxData.search_engines]
 		}
 		return [GOOGLE]
-	}, [fetchedEngines])
+	}, [searchboxData?.search_engines])
+
+	const findEngine = (engineId: string): EngineMeta => {
+		return engines.find((e) => e.id === engineId) || GOOGLE
+	}
 
 	useEffect(() => {
-		const fetchDataFromStorage = async () => {
-			const savedEngine = await getFromStorage('selected_engine')
-			if (savedEngine) {
-				setCurrentEngine(savedEngine)
-			} else {
-				onSelected(GOOGLE)
+		const loadInitialEngine = async () => {
+			const savedEngineData = await getFromStorage('selected_engine')
+			if (savedEngineData) {
+				const engine = findEngine(savedEngineData)
+				setCurrentEngine(engine)
+				onSelected?.(engine)
 			}
 		}
-
-		fetchDataFromStorage()
-	}, [])
+		loadInitialEngine()
+	}, [engines])
 
 	useEffect(() => {
-		if (selected) setCurrentEngine(selected)
-	}, [selected])
+		if (searchboxData?.selected_engine) {
+			const serverEngine = findEngine(searchboxData.selected_engine)
+			if (serverEngine.id !== currentEngine.id) {
+				setCurrentEngine(serverEngine)
+				onSelected?.(serverEngine)
+				setToStorage('selected_engine', serverEngine.id)
+			}
+		} else {
+			if (!isLoading) setShowNewBadge(true)
+		}
+	}, [searchboxData?.selected_engine, engines])
 
-	const handleSelect = (eng: EngineMeta) => {
-		onSelected(eng)
-		setCurrentEngine(eng)
+	const handleSelect = async (engine: EngineMeta) => {
+		if (!isAuthenticated) {
+			callEvent('open_require_auth_modal')
+			return
+		}
+		setCurrentEngine(engine)
+
+		await setToStorage('selected_engine', engine.id)
+
+		changeEngineMutation.mutate({ search_engine: engine.id })
+
+		onSelected?.(engine)
 	}
 
 	return (
@@ -64,9 +84,7 @@ export function EngineSelector({
 				trigger || (
 					<button
 						type="button"
-						className={
-							'relative h-8 w-8 shrink-0 hover:bg-base-content/10 cursor-pointer ml-2 flex items-center justify-center rounded-full opacity-70 hover:opacity-100 bg-base-300 transition-all duration-300'
-						}
+						className="relative flex items-center justify-center w-8 h-8 ml-2 transition-all duration-300 rounded-full cursor-pointer shrink-0 hover:bg-base-content/10 opacity-70 hover:opacity-100"
 					>
 						<EngineIcon
 							engineId={currentEngine.id}
@@ -82,10 +100,12 @@ export function EngineSelector({
 				<p className="px-2 mb-1 text-xs font-medium text-base-content/60">
 					انتخاب موتور جستجو
 				</p>
+
 				{engines.map((engine) => (
 					<button
 						key={engine.id}
 						onClick={() => handleSelect(engine)}
+						disabled={changeEngineMutation.isPending}
 						className={`flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl transition-all duration-200 ${
 							currentEngine?.id === engine.id
 								? 'bg-base-content/10'
@@ -101,7 +121,7 @@ export function EngineSelector({
 						</div>
 						<span className="text-sm font-medium">{engine.label}</span>
 						{currentEngine?.id === engine.id && (
-							<div className="w-2 h-2 mr-auto rounded-full bg-primary"></div>
+							<div className="w-2 h-2 mr-auto rounded-full bg-primary" />
 						)}
 					</button>
 				))}
@@ -109,7 +129,7 @@ export function EngineSelector({
 				{isLoading &&
 					[...Array(3)].map((_, i) => (
 						<div
-							key={`note_${i}`}
+							key={`loading_${i}`}
 							className="flex items-center gap-2 px-3 py-2"
 						>
 							<div className="w-5 h-5 rounded-full skeleton" />
@@ -121,14 +141,24 @@ export function EngineSelector({
 	)
 }
 
-interface Prop {
+interface EngineIconProps {
 	engineId: string
 	icon?: string
 	label?: string
 }
-function EngineIcon({ engineId, icon, label }: Prop) {
+
+function EngineIcon({ engineId, icon, label }: EngineIconProps) {
 	if (engineId === 'google') {
 		return <FcGoogle size={20} opacity={0.8} />
 	}
-	return <img width={20} height={20} src={icon} alt={label} className="rounded-sm" />
+	return (
+		<img
+			width={20}
+			height={20}
+			src={icon}
+			alt={label}
+			className="rounded-sm"
+			loading="lazy"
+		/>
+	)
 }

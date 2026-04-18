@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import { SelectBox } from '@/components/selectbox/selectbox'
@@ -22,7 +21,6 @@ export function WigiArzSetting() {
 	const [currencyType, setCurrencyType] = useState<string>('all')
 	const [searchQuery, setSearchQuery] = useState('')
 	const { isAuthenticated } = useAuth()
-	const [showAuthRequired, setShowAuthRequired] = useState(false)
 
 	const toggleCurrency = (currencyKey: string) => {
 		const isRemoving = selectedCurrencies.includes(currencyKey)
@@ -36,7 +34,7 @@ export function WigiArzSetting() {
 		})
 
 		if (modifiedCurrencySelection.length > 4 && !isAuthenticated) {
-			setShowAuthRequired(true)
+			callEvent('open_require_auth_modal')
 			Analytics.event('currency_selection_blocked')
 			return
 		}
@@ -186,15 +184,6 @@ export function WigiArzSetting() {
 					</div>
 				</SectionPanel>
 			</div>
-
-			{showAuthRequired && (
-				<AuthRequiredModal
-					message="برای بهبود تجربه کاربری و جلوگیری از بارگذاری بیش از حد، امکان انتخاب حداکثر ارز بدون ورود به حساب کاربری وجود دارد. برای دسترسی به ارزهای بیشتر و بهره‌مندی از خدمات کامل، لطفاً وارد حساب کاربری خود شوید."
-					title="🔐 ورود به حساب کاربری"
-					isOpen={showAuthRequired}
-					onClose={() => setShowAuthRequired(false)}
-				/>
-			)}
 		</WidgetSettingWrapper>
 	)
 }

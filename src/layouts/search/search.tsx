@@ -1,3 +1,4 @@
+// search.tsx
 import { useEffect, useRef, useState } from 'react'
 import { MdOutlineClear } from 'react-icons/md'
 import Analytics from '@/analytics'
@@ -9,17 +10,22 @@ import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './enginge-selector'
 import { SearchHistoryPortal } from './history.portal'
 import type { EngineMeta } from '@/services/hooks/trends/getTrends'
-import { getFromStorage, setToStorage } from '@/common/storage'
+
+const DEFAULT_ENGINE: EngineMeta = {
+	id: 'google',
+	prefix: '',
+	label: 'گوگل',
+	icon: '',
+}
 
 export function SearchLayout() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
-	const [selectedEngine, setSelectedEngine] = useState<EngineMeta | null>(null)
+	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trendingRef = useRef<HTMLDivElement>(null)
-	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +37,7 @@ export function SearchLayout() {
 				engine: selectedEngine,
 			})
 
-			Analytics.event('search_query_submitted', { engine: selectedEngine })
+			Analytics.event('search_query_submitted')
 			setShowHistoryPortal(false)
 		}
 	}
@@ -65,24 +71,7 @@ export function SearchLayout() {
 
 	const onEngineChange = (engine: EngineMeta) => {
 		setSelectedEngine(engine)
-		setToStorage('selected_engine', engine)
-		if (showNewBadge) {
-			setShowNewBadge(false)
-		}
 	}
-
-	useEffect(() => {
-		const fetchDataFromStorage = async () => {
-			const savedEngine = await getFromStorage('selected_engine')
-			if (savedEngine) {
-				setSelectedEngine(savedEngine)
-			} else {
-				setShowNewBadge(true)
-			}
-		}
-
-		fetchDataFromStorage()
-	}, [])
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -123,14 +112,10 @@ export function SearchLayout() {
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center  py-2 px-3 overflow-hidden shadow-xs transition-all duration-300  bg-content group  rounded-2xl '
+							'relative flex items-center py-2 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group rounded-2xl'
 						}
 					>
-						<EngineSelector
-							onSelected={onEngineChange}
-							selected={selectedEngine}
-							showNewBadge={showNewBadge}
-						/>
+						<EngineSelector onSelected={onEngineChange} />
 
 						<input
 							ref={inputRef}
@@ -140,9 +125,9 @@ export function SearchLayout() {
 							onChange={handleSearchInputChange}
 							onFocus={() => onFocusInput()}
 							className={
-								'w-full  py-1.5 text-base  font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
+								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
 							}
-							placeholder={`جستجو در ${selectedEngine?.label || 'گوگل'}`}
+							placeholder={`جستجو در ${selectedEngine.label}`}
 							autoComplete="off"
 						/>
 						<button
@@ -178,16 +163,10 @@ export function SearchLayout() {
 	)
 }
 
-function SearchHandler({
-	content,
-	engine,
-}: {
-	content: string
-	engine: EngineMeta | null
-}) {
-	if (!engine || engine?.id === 'google') {
+function SearchHandler({ content, engine }: { content: string; engine: EngineMeta }) {
+	if (engine.id === 'google') {
 		browser.search.query({ text: content })
 	} else {
-		window.open(engine?.prefix + encodeURIComponent(content), '_self')
+		window.open(engine.prefix + encodeURIComponent(content), '_self')
 	}
 }

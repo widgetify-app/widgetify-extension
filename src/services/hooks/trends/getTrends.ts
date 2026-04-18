@@ -29,11 +29,12 @@ export interface EngineMeta {
 	prefix: string
 }
 export interface SearchBoxResponse {
-	engines: EngineMeta[]
+	search_engines: EngineMeta[]
 	recommendedSites: RecommendedSite[]
 	explorer: {
 		newBadge: boolean
 	}
+	selected_engine: string
 }
 
 async function fetchSearchbox(region = 'IR', limit = 10): Promise<SearchBoxResponse> {

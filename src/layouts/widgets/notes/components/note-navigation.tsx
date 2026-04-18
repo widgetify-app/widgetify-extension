@@ -4,15 +4,14 @@ import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { MdEdit, MdRefresh } from 'react-icons/md'
+import { callEvent } from '@/common/utils/call-event'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
 
-	const [isOpen, setIsOpen] = useState(false)
 	const {
 		notes,
 		activeNoteId,
@@ -41,7 +40,7 @@ export function NoteNavigation() {
 
 	const onAdd = () => {
 		if (!isAuthenticated) {
-			setIsOpen(true)
+			callEvent('open_require_auth_modal')
 			Analytics.event('note_open_required_auth_modal')
 			return
 		}
@@ -119,9 +118,6 @@ export function NoteNavigation() {
 						</Tooltip>
 					</div>
 				</>
-			)}
-			{isOpen && (
-				<AuthRequiredModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
 			)}
 		</div>
 	)

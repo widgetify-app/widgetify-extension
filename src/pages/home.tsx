@@ -20,6 +20,7 @@ import { usePage } from '@/context/page.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { HomeContentSimplify } from './home/home-content-simplify'
+import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 
 const steps: Step[] = [
 	{
@@ -87,6 +88,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
+	const [showAuthRequired, setAuthRequired] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
 	const [showTour, setShowTour] = useState(false)
 	const { page } = usePage()
@@ -167,11 +169,16 @@ export function HomePage() {
 			}
 		)
 
+		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
+			setAuthRequired(true)
+		})
+
 		Analytics.pageView('Home', '/')
 
 		return () => {
 			wallpaperChangedEvent()
 			openWidgetsSettingsEvent()
+			openAuthRequireModal()
 		}
 	}, [])
 
@@ -332,17 +339,28 @@ export function HomePage() {
 					duration: 5000,
 				}}
 			/>
-			<ExtensionInstalledModal
-				show={showWelcomeModal}
-				onClose={() => handleGetStarted}
-				onGetStarted={handleGetStarted}
-			/>
+			{showWelcomeModal && (
+				<ExtensionInstalledModal
+					show={showWelcomeModal}
+					onClose={() => handleGetStarted}
+					onGetStarted={handleGetStarted}
+				/>
+			)}
 
-			<UpdateReleaseNotesModal
-				isOpen={showReleaseNotes}
-				onClose={() => onCloseReleaseNotes()}
-				counterValue={2}
-			/>
+			{showReleaseNotes && (
+				<UpdateReleaseNotesModal
+					isOpen={showReleaseNotes}
+					onClose={() => onCloseReleaseNotes()}
+					counterValue={2}
+				/>
+			)}
+
+			{showAuthRequired && (
+				<AuthRequiredModal
+					isOpen={showAuthRequired}
+					onClose={() => setAuthRequired(false)}
+				/>
+			)}
 		</div>
 	)
 }

@@ -52,6 +52,7 @@ export interface EventName {
 	remove_from_notifications: { id: string; ttl?: number }
 	go_to_page: 'explorer' | 'home'
 	market_change_tab: string
+	open_require_auth_modal: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

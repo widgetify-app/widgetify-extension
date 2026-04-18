@@ -63,3 +63,12 @@ export function useChangeUI() {
 		},
 	})
 }
+
+export function useChangeSearchEngine() {
+	return useMutation<any, unknown, { search_engine: string }>({
+		mutationFn: async ({ search_engine }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/search-engine', { search_engine })
+		},
+	})
+}

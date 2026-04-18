@@ -1,7 +1,7 @@
-import { IoIosLogIn } from 'react-icons/io'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { Button } from '../button/button'
+import { FiLock } from 'react-icons/fi'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean
@@ -15,7 +15,7 @@ interface AuthRequiredModalProps {
 export function AuthRequiredModal({
 	isOpen,
 	onClose,
-	title = '🔐 ورود به حساب کاربری',
+	title = 'ورود به حساب کاربری',
 	message = 'برای دسترسی به این بخش یا انجام این عملیات، ابتدا وارد حساب کاربری خود شوید.',
 	loginButtonText = 'ورود به حساب',
 	cancelButtonText = 'بعداً',
@@ -35,11 +35,15 @@ export function AuthRequiredModal({
 			closeOnBackdropClick={true}
 		>
 			<div className="flex flex-col items-center justify-between w-full h-56 text-center">
-				<div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10">
-					<IoIosLogIn size={24} className="text-blue-500" />
+				<div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10">
+					<div
+						className="absolute inset-0 rounded-full bg-primary/5 animate-ping"
+						style={{ animationDuration: '2s' }}
+					/>
+					<FiLock className="relative text-2xl md:text-3xl text-primary" />
 				</div>
 				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
-				<p className={'text-content text-sm'}>{message}</p>
+				<p className={'text-muted text-sm font-medium'}>{message}</p>
 
 				<div className="flex w-full gap-2 mt-1">
 					<Button

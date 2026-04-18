@@ -169,7 +169,6 @@ export function SearchHistoryPortal({
 							</Button>
 						}
 						onSelected={onEngineChange}
-						selected={null}
 					/>
 				</div>
 			</div>
