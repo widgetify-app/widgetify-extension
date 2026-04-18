@@ -100,7 +100,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 							<img
 								src={icon}
 								alt="icon"
-								className="object-contain w-4 h-4"
+								className="object-contain w-4 h-4 rounded"
 							/>
 						) : (
 							<span className="w-4 h-4 text-sm">{icon}</span>

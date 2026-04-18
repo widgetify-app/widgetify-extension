@@ -34,11 +34,11 @@ export function FolderBookmarkItem({
 
 		if (folderItems.length > 0) {
 			return (
-				<div className="grid grid-cols-3 gap-1.5 min-h-10 max-h-10">
+				<div className="grid grid-cols-3">
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-4 h-4"
+							className="flex items-center justify-center w-8 h-8 scale-75"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>
@@ -83,7 +83,7 @@ export function FolderBookmarkItem({
 				className={`relative self-end flex group h-20 md:h-[5.5rem]  flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out 
 					${
 						!bookmark.customBackground
-							? `bg-content bg-glass hover:bg-primary/20 bg-content text-content backdrop-blur-sm bg-glass`
+							? `bg-content bg-glass hover:bg-primary/20 bg-content text-content  bg-glass`
 							: `before:bg-inherit border-transparent`
 					}
 					transition-all ease-in-out duration-300
