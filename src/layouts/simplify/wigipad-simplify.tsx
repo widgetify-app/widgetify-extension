@@ -66,7 +66,7 @@ export function SimplifyYadkar() {
 					onTabClick={(tab) => onChangeTab(tab)}
 					tabs={sections}
 					size="small"
-					className="m-0! py-0.5! border-none! flex-nowrap w-full"
+					className="h-fit  border-none! flex-nowrap w-full"
 				/>
 			</div>
 		</WidgetContainer>

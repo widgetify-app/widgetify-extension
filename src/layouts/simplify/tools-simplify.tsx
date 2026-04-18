@@ -138,7 +138,7 @@ export function SimpleTools() {
 						onTabClick={onChangeTab}
 						tabs={tabs}
 						size="small"
-						className="w-full"
+						className="h-fit  border-none! flex-nowrap w-full"
 					/>
 				</div>
 			</div>
