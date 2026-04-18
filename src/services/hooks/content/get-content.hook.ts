@@ -30,6 +30,7 @@ export interface FetchedContent {
 		badgeColor?: string
 		backgroundSrc?: string
 		badgeAnimate?: 'bounce' | 'pulse'
+		webAppAuthRequired?: boolean
 	}[]
 	badges: ExplorerCategoryBadge[]
 	span?: {

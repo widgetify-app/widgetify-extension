@@ -92,23 +92,36 @@ export function ExplorerContent() {
 					</div>
 				) : (
 					<div className="sticky top-0 z-50 px-2">
-						<div className="sticky top-0 z-50 flex items-center w-full mx-auto gap-2 p-1.5 overflow-x-auto bg-base-100/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg no-scrollbar flex-nowrap overflow-y-hidden">
-							{categories.map((cat: CategoryItem) => (
-								<button
-									key={cat.id}
-									onClick={() => scrollToCategory(cat.id)}
-									className={`flex items-center gap-2 px-4 py-2 cursor-pointer text-[10px] font-bold whitespace-nowrap rounded-xl transition-all shrink-0 ${
-										activeCategory === cat.id
-											? 'bg-primary text-white shadow-md scale-105'
-											: 'bg-base-200/50 hover:bg-primary/10 hover:text-primary'
-									}`}
-								>
-									{cat.icon && (
-										<img src={cat.icon} className="w-4 h-4" alt="" />
-									)}
-									{cat.category}
-								</button>
-							))}
+						<div className="flex items-center w-full gap-2 p-2 mx-auto overflow-x-auto border shadow-md bg-content backdrop-blur-xl rounded-2xl border-white/10 no-scrollbar flex-nowrap">
+							{categories.map((cat: CategoryItem) => {
+								const active = activeCategory === cat.id
+
+								return (
+									<button
+										key={cat.id}
+										onClick={() => scrollToCategory(cat.id)}
+										className={`relative flex items-center gap-2 px-3 py-2 text-[11px] font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 ${
+											active
+												? 'bg-primary text-white shadow-md scale-105'
+												: 'text-base-content/70 hover:text-primary hover:bg-primary/10'
+										}`}
+									>
+										{cat.icon && (
+											<img
+												src={cat.icon}
+												className={`w-4 h-4 transition-all ${active ? 'brightness-200' : ''}`}
+												alt=""
+											/>
+										)}
+
+										{cat.category}
+
+										{active && (
+											<span className="absolute w-1 h-1 -translate-x-1/2 rounded-full -bottom-1 left-1/2 bg-white/80" />
+										)}
+									</button>
+								)
+							})}
 						</div>
 					</div>
 				)}

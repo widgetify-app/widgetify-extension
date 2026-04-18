@@ -6,7 +6,7 @@ type ModalProps = {
 	isOpen: boolean
 	onClose: () => void
 	title?: React.ReactNode
-	size?: 'sm' | 'md' | 'lg' | 'xl'
+	size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
 	children: ReactNode
 	direction?: 'rtl' | 'ltr'
 	closeOnBackdropClick?: boolean
@@ -34,6 +34,11 @@ const sizeClasses = {
 		w: 'w-[calc(100vw-2rem)] max-w-4xl',
 		h: 'max-h-[calc(100vh-4rem)] md:max-h-[800px]',
 		minH: 'min-h-[280px]',
+	},
+	full: {
+		w: 'w-[calc(100vw-1rem)] max-w-5xl',
+		h: 'h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)]',
+		minH: 'min-h-[calc(100vh-4rem)]',
 	},
 } as const
 
@@ -94,7 +99,7 @@ export default function Modal({
 
 	const modalBoxClasses = `
 		modal-box overflow-hidden rounded-xl md:rounded-2xl p-3 md:p-4 shadow-xl transition-all duration-200
-		${sizeValue.w} ${sizeValue.minH} ${className}
+		${sizeValue.w} ${sizeValue.minH} ${size === 'full' ? sizeValue.h : ''} ${className}
 	`
 
 	if (!isOpen) return null
@@ -137,7 +142,7 @@ export default function Modal({
 					</div>
 				)}
 				<div
-					className={`overflow-y-auto overflow-x-hidden ${sizeValue.h} pr-0.5 md:pr-1`}
+					className={`overflow-y-auto overflow-x-hidden ${size !== 'full' ? sizeValue.h : 'h-full'} pr-0.5 md:pr-1`}
 				>
 					{children}
 				</div>

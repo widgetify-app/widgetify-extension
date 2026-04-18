@@ -3,6 +3,7 @@ import type { CategoryItem } from '../interfaces/category.interface'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'
 import { RenderContentSite } from './content-site'
+import { RenderWebApp } from './content-web-app/content-web-app'
 
 interface Prop {
 	category: CategoryItem
@@ -44,7 +45,7 @@ export function ExplorerCategory({
 						? 'md:col-span-2'
 						: 'md:col-span-1'
 			}
-			${category.id === activeCategory && 'outline-1 outline-offset-1 outline-primary/80 scale-101'}
+			${category.id === activeCategory && 'outline-1 outline-offset-2 outline-primary/80'}
 			${category.banner ? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none' : ''}
 			`}
 		>
@@ -117,6 +118,8 @@ function HandleCatalogs({ category, colSpan }: HandleCatalogsProp) {
 					<RenderContentSite key={link.url} link={link} />
 				) : link.type === 'BANNER' ? (
 					<RenderContentBanner key={link.url} link={link} />
+				) : link.type === 'WEB_APP' ? (
+					<RenderWebApp key={link.url} content={link} />
 				) : null
 			)}
 		</div>
