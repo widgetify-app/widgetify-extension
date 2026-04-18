@@ -70,8 +70,8 @@ export const CurrencyBox = ({
 	}, [currency?.price])
 
 	function toggleCurrencyModal() {
-		if (currency?.url && currency?.isSponsored) {
-			showToast('🔗 درحال انتقال به سایت اسپانسر...', 'success')
+		if (currency?.url && currency?.isPartnerShip) {
+			showToast('🔗 درحال انتقال به سایت همکار...', 'success')
 			setTimeout(() => {
 				toast.dismiss()
 				Analytics.event('currency_sponsor', {
@@ -117,6 +117,14 @@ export const CurrencyBox = ({
 								alt={currency?.name?.en}
 								className="object-cover w-6 h-6 rounded-full min-h-6 min-w-6"
 							/>
+
+							{currency?.partnershipLogo && (
+								<img
+									className="absolute right-0 z-50 w-3 h-3 -bottom-1"
+									src={currency.partnershipLogo}
+								></img>
+							)}
+
 							<div
 								className="absolute inset-0 border rounded-full border-opacity-20"
 								style={{ borderColor: imgMainColor }}

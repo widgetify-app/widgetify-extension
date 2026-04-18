@@ -15,7 +15,8 @@ export interface FetchedCurrency {
 	type: 'coin' | 'crypto' | 'currency'
 	url: string | null
 	useDollar: boolean
-	isSponsored: boolean
+	isPartnerShip: boolean
+	partnershipLogo: string
 }
 
 export interface PriceHistory {
