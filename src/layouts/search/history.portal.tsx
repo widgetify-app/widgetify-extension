@@ -41,7 +41,7 @@ export function SearchHistoryPortal({
 	return (
 		<div
 			ref={portalRef}
-			className="absolute left-0 w-full mt-1 overflow-hidden duration-300 shadow-2xl top-full z-60 bg-content bg-glass rounded-2xl animate-in fade-in"
+			className="absolute left-0 w-full mt-1 overflow-hidden duration-300 shadow-2xl portal top-full z-60 bg-content bg-glass rounded-2xl animate-in fade-in"
 		>
 			{/* <div className="flex items-center justify-between px-2 pt-2 pb-3">
 				<div className="flex items-center gap-3">
