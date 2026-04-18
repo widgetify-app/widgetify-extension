@@ -1,34 +1,12 @@
 import { useEffect, useState } from 'react'
-import {
-	RiCheckboxCircleLine,
-	RiThumbUpLine,
-	RiLayoutLine,
-	RiSparklingLine,
-	RiInformationLine,
-} from 'react-icons/ri'
+import { RiThumbUpLine, RiInformationLine } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
 import { ConfigKey } from '@/common/constant/config.key'
-import { callEvent } from '@/common/utils/call-event'
-import { useAuth } from '@/context/auth.context'
-import Analytics from '@/analytics'
-import { BiMessageDetail } from 'react-icons/bi'
-type MediaContent = {
-	type: 'image' | 'video'
-	url: string
-	caption?: string
-}
 
-type ReleaseNote = {
-	type: 'feature' | 'bugfix' | 'improvement' | 'info'
-	title: string
-	description: string
-	media?: MediaContent[]
-}
+import { BiMessageDetail } from 'react-icons/bi'
 
 const VERSION_NAME = ConfigKey.VERSION_NAME
-// ignore for this update
-const releaseNotes: ReleaseNote[] = []
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
@@ -42,9 +20,9 @@ export const UpdateReleaseNotesModal = ({
 	counterValue,
 }: UpdateReleaseNotesModalProps) => {
 	const [counter, setCounter] = useState<number>(0)
-	const [activated, setActivated] = useState<boolean>(false)
+
 	const videoRef = useRef<HTMLVideoElement>(null)
-	const { isAuthenticated } = useAuth()
+
 	useEffect(() => {
 		if (isOpen && counterValue !== null) {
 			setCounter(counterValue === null ? 10 : counterValue)
@@ -68,12 +46,6 @@ export const UpdateReleaseNotesModal = ({
 			videoRef.current.play().catch(() => {})
 		}
 	}, [isOpen])
-
-	const handleActivate = () => {
-		callEvent('ui_change', 'SIMPLE')
-		setActivated(true)
-		Analytics.event('release_modal_active_ui')
-	}
 
 	return (
 		<Modal
