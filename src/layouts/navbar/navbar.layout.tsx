@@ -178,7 +178,7 @@ export function NavbarLayout(): JSX.Element {
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center justify-center border rounded-full border-white/10 bg-black/20"
+							className="flex items-center justify-center border rounded-full border-white/10 bg-black/20 outline-2 outline-base-300"
 						>
 							<img
 								src={'https://cdn.widgetify.ir/extension/logo.png'}
