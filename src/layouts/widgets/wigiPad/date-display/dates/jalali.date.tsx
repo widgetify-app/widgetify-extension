@@ -17,8 +17,8 @@ export function JalaliDate() {
 	const textColor = 'text-content drop-shadow-md'
 	const gregorianDate = today.clone().locale('en')
 
-	const gFormatted = `${gregorianDate.format('YY')}/${gregorianDate.format('MM').slice(0, 3)}/${gregorianDate.format('DD')}`
-	const jFormatted = `${today.format('YY')}/${today.format('MM').slice(0, 3)}/${today.format('DD')}`
+	const gFormatted = gregorianDate.format('YY/MM/DD')
+	const jFormatted = today.format('YY/MM/DD')
 
 	return (
 		<>
@@ -38,10 +38,12 @@ export function JalaliDate() {
 					>
 						{today.locale('fa').format('MMMM YYYY')}
 					</span>
-					<div className={`text-xs opacity-90 ${textColor} px-0.5`} dir="ltr">
-						<span>{gFormatted}</span>
+					<div className={`opacity-90 ${textColor}`} dir="ltr">
+						<span className="text-[10px]">{gFormatted}</span>
 						<span className="mx-1"></span>
-						<span>{jFormatted}</span>
+						<span className="text-[10px]" dir="">
+							{jFormatted}
+						</span>
 					</div>
 				</div>
 			</div>

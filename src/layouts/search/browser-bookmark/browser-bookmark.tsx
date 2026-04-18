@@ -81,23 +81,21 @@ export function BrowserBookmark() {
 				</div>
 
 				<div ref={iconRef} className="flex items-center justify-center shrink-0">
-					<Tooltip content="بوکمارک‌های مرورگر">
+					<div
+						className="flex items-center cursor-pointer group"
+						onClick={handleTogglePopover}
+					>
 						<div
-							className="flex items-center cursor-pointer group"
-							onClick={handleTogglePopover}
+							className={`relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
+								isOpen
+									? 'bg-primary text-white shadow-lg'
+									: 'bg-base-300  text-base-content/60'
+							}`}
 						>
-							<div
-								className={`relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
-									isOpen
-										? 'bg-primary text-white shadow-lg'
-										: 'bg-base-300  text-base-content/60'
-								}`}
-							>
-								<MdFolderSpecial size={20} />
-								<p className="font-medium">بوکمارک مروگر</p>
-							</div>
+							<MdFolderSpecial size={20} />
+							<p className="font-medium">بوکمارک مروگر</p>
 						</div>
-					</Tooltip>
+					</div>
 				</div>
 
 				<div className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0" />
