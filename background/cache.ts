@@ -10,6 +10,8 @@ const allowedPaths = [
 	'/currencies',
 	'/wallpapers',
 	'/contents',
+	'/extension/notifications',
+	'/extension/searchbox',
 ]
 
 export function setupCaching() {
@@ -22,7 +24,7 @@ export function setupCaching() {
 	registerRoute(
 		({ url, request }) => {
 			if (request.method !== 'GET') return false
-			if (url.origin !== 'https://api.widgetify.ir') return false
+			// if (url.origin !== 'https://api.widgetify.ir') return false
 
 			return allowedPaths.some((path) => url.pathname.startsWith(path))
 		},
