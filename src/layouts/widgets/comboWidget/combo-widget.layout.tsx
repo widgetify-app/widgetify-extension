@@ -67,7 +67,7 @@ export function ComboWidget() {
 						},
 					]}
 					size="small"
-					className="w-full"
+					className="w-full border-none"
 				/>
 			</div>
 

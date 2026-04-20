@@ -85,7 +85,7 @@ export const ToolsLayout: React.FC<any> = () => {
 				onTabClick={onTabClick}
 				tabs={tabs}
 				size="small"
-				className="w-full"
+				className="w-full border-none"
 			/>
 
 			<Suspense>

@@ -36,7 +36,7 @@ export function YadkarWidget() {
 								},
 							]}
 							size="small"
-							className="w-full"
+							className="w-full border-none"
 						/>
 					</div>
 				</div>
