@@ -23,7 +23,7 @@ export function JalaliDate() {
 	return (
 		<>
 			{isHoliday && <HolidayBadge />}
-			<div className="flex flex-col items-center justify-center gap-4 mt-0.5">
+			<div className="flex flex-col items-center justify-center gap-3 mt-0.5">
 				<span className={`text-base !leading-none ${textColor} mb-4`}>
 					{today.locale('fa').format('dddd')}
 				</span>
@@ -33,11 +33,14 @@ export function JalaliDate() {
 					{today.jDate()}
 				</div>
 				<div className="flex flex-col">
-					<span
+					<div
 						className={`text-lg font-medium transition-all duration-200 ${textColor}`}
 					>
-						{today.locale('fa').format('MMMM YYYY')}
-					</span>
+						{today.locale('fa').format('MMMM')}{' '}
+						<span className="text-sm">
+							{today.locale('fa').format('YYYY')}
+						</span>
+					</div>
 					<div className={`opacity-90 ${textColor}`} dir="ltr">
 						<span className="text-[10px]">{gFormatted}</span>
 						<span className="mx-1"></span>

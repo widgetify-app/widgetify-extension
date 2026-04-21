@@ -24,7 +24,7 @@ export function setupCaching() {
 	registerRoute(
 		({ url, request }) => {
 			if (request.method !== 'GET') return false
-			// if (url.origin !== 'https://api.widgetify.ir') return false
+			if (url.origin !== 'https://api.widgetify.ir') return false
 
 			return allowedPaths.some((path) => url.pathname.startsWith(path))
 		},
@@ -36,8 +36,8 @@ export function setupCaching() {
 					statuses: [200],
 				}),
 				new ExpirationPlugin({
-					maxEntries: 150,
-					maxAgeSeconds: 60 * 60 * 5,
+					maxEntries: 200,
+					maxAgeSeconds: 60 * 60 * 12,
 					purgeOnQuotaError: true,
 				}),
 			],
@@ -57,7 +57,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 200,
-						maxAgeSeconds: 1 * 60 * 60, // 1 hours
+						maxAgeSeconds: 10 * 24 * 60 * 60,
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({
@@ -74,7 +74,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 300,
-						maxAgeSeconds: 1 * 60 * 60, // 1 hours
+						maxAgeSeconds: 5 * 24 * 60 * 60,
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({
@@ -91,7 +91,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 50,
-						maxAgeSeconds: 1 * 60 * 60, // 1 hours
+						maxAgeSeconds: 2 * 24 * 60 * 60,
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({

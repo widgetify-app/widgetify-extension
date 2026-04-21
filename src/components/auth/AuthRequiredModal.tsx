@@ -34,8 +34,8 @@ export function AuthRequiredModal({
 			title={'نیاز ورود به حساب کاربری'}
 			closeOnBackdropClick={true}
 		>
-			<div className="flex flex-col items-center justify-between w-full h-56 text-center">
-				<div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10">
+			<div className="flex flex-col items-center justify-between w-full text-center h-62">
+				<div className="relative flex items-center justify-center w-16 h-16 mt-8 rounded-full bg-blue-500/10">
 					<div
 						className="absolute inset-0 rounded-full bg-primary/5 animate-ping"
 						style={{ animationDuration: '2s' }}
@@ -43,7 +43,7 @@ export function AuthRequiredModal({
 					<FiLock className="relative text-2xl md:text-3xl text-primary" />
 				</div>
 				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
-				<p className={'text-muted text-sm font-medium'}>{message}</p>
+				<p className={'text-muted text-xs font-medium'}>{message}</p>
 
 				<div className="flex w-full gap-2 mt-1">
 					<Button
@@ -57,7 +57,7 @@ export function AuthRequiredModal({
 					<Button
 						onClick={onClose}
 						size="md"
-						className="w-32 border border-content/20 text-content hover:bg-base-300/50 rounded-2xl"
+						className="w-32 border border-content text-content hover:bg-base-300/50 rounded-2xl"
 					>
 						{cancelButtonText}
 					</Button>
