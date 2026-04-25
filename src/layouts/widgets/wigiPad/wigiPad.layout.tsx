@@ -44,7 +44,7 @@ export function WigiPadWidget() {
 	}
 
 	return (
-		<WidgetContainer className="flex flex-col !p-2 !h-72 !min-h-72 !max-h-72">
+		<WidgetContainer className="flex flex-col !p-1.5 !h-72 !min-h-72 !max-h-72">
 			<div className="flex-1 h-60">{renderContent()}</div>
 			<div ref={tabContainerRef} className="col-span-2">
 				<TabNavigation

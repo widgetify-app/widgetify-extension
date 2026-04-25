@@ -17,7 +17,7 @@ export interface FetchedContent {
 	links: {
 		name: string
 		url: string
-		type: 'SITE' | 'REMOTE_IFRAME' | 'BANNER'
+		type: 'SITE' | 'REMOTE_IFRAME' | 'BANNER' | 'MINI_APP'
 		icon?: string
 		span?: {
 			col?: number | null
@@ -30,7 +30,7 @@ export interface FetchedContent {
 		badgeColor?: string
 		backgroundSrc?: string
 		badgeAnimate?: 'bounce' | 'pulse'
-		webAppAuthRequired?: boolean
+		miniAppAuthRequired?: boolean
 	}[]
 	badges: ExplorerCategoryBadge[]
 	span?: {

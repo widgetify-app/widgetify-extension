@@ -7,8 +7,8 @@ import { Button } from '@/components/button/button'
 import { LuRefreshCw } from 'react-icons/lu'
 import { useAuth } from '@/context/auth.context'
 import { useEffect, useRef, useState } from 'react'
-import { WebAppAuthGate } from './content-web-app.auth'
-import { WebAppStartGate } from './content-web-app.start'
+import { WebAppAuthGate } from './content-mini-app.auth'
+import { WebAppStartGate } from './content-mini-app.start'
 import Analytics from '@/analytics'
 
 interface Prop {
@@ -33,7 +33,7 @@ export function WebAppModal({ content, showModal, onClose }: Prop) {
 	const { fontFamily } = useAppearanceSetting()
 	const { theme } = useTheme()
 
-	const requiresAuth = content?.webAppAuthRequired === true
+	const requiresAuth = content?.miniAppAuthRequired === true
 
 	const urlObj = new URL(content.url)
 	urlObj.searchParams.set('theme', encodeURIComponent(theme))

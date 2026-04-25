@@ -1,7 +1,7 @@
 import { NewBadge } from '@/components/badges/new.badge'
 import type { CatalogItem } from '../../interfaces/catalog-item.interface'
 import { useState } from 'react'
-import { WebAppModal } from './content-web-app.modal'
+import { WebAppModal } from './content-mini-app.modal'
 import { HiOutlineSquares2X2 } from 'react-icons/hi2'
 
 interface Prop {
