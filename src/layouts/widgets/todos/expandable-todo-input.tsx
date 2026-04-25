@@ -176,7 +176,11 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 											className="w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60"
 										/>
 									</div>
-									<div className="flex gap-1">
+									<div className="flex gap-1 pl-1 overflow-x-auto">
+										<PriorityDropdown
+											priority={priority}
+											setPriority={setPriority}
+										/>
 										<Button
 											size="sm"
 											className={`p-2 border rounded-xl text-base-content/40 shrink-0 active:scale-95`}
@@ -190,10 +194,6 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 													.format('jD jMMMM')}
 											</p>
 										</Button>
-										<PriorityDropdown
-											priority={priority}
-											setPriority={setPriority}
-										/>
 										<Button
 											size="sm"
 											className={`p-2 border rounded-xl  text-[10px]  text-muted shrink-0 active:scale-95`}
