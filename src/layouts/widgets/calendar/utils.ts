@@ -9,7 +9,9 @@ export const formatDateStr = (date: jalaliMoment.Moment) => {
 
 export type WidgetifyDate = jalaliMoment.Moment
 
-export const iranianHijriMonthDays: { [key: number]: { [key: number]: number } } = {
+export const iranianHijriMonthDays: {
+	[key: number]: { [key: number]: number }
+} = {
 	1445: {
 		1: 30,
 		2: 29,
@@ -49,7 +51,21 @@ export const iranianHijriMonthDays: { [key: number]: { [key: number]: number } }
 		8: 29,
 		9: 30,
 		10: 29,
-		11: 30,
+		11: 29, // Dhul-Qi'dah
+		12: 29,
+	},
+	1448: {
+		1: 30,
+		2: 29,
+		3: 30,
+		4: 29,
+		5: 30,
+		6: 30,
+		7: 30,
+		8: 29,
+		9: 30,
+		10: 30,
+		11: 29, // Dhul-Qi'dah
 		12: 29,
 	},
 }
@@ -74,7 +90,7 @@ export function convertShamsiToHijri(
 		.startOf('day')
 	const referenceHijri = { year: 1445, month: 1, day: 1 }
 
-	const daysPassed = shamsiDate.startOf('day').diff(referenceShamsi, 'days')
+	const daysPassed = shamsiDate.clone().startOf('day').diff(referenceShamsi, 'days')
 
 	if (daysPassed < 0) {
 		return hijriMoment('1445-01-01', 'iYYYY-iM-iD') // fake date to avoid crash
@@ -112,8 +128,6 @@ export function convertShamsiToHijri(
 	}
 
 	return hijriMoment(`${currentYear}-${currentMonth}-${currentDay}`, 'iYYYY-iM-iD')
-		.utc()
-		.add(3.5, 'hours')
 }
 
 export function getHijriEvents(
