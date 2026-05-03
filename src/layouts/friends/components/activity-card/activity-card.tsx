@@ -24,7 +24,7 @@ export const ActivityCard = ({ avatar, name, activity, onClick }: ActivityCardPr
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
 						`}
 					>
-						<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none">
+						<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none text-shadow-2xs">
 							{activity}
 						</div>
 					</div>

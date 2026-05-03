@@ -16,25 +16,31 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 		>
 			<div className="relative flex flex-col items-center">
 				<div className="relative w-24 h-16">
-					<div
-						className={`
+					<div className="relative w-24 h-16">
+						<div
+							className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-base-300/40 shadow-md text-base-content/80
+							bg-content shadow-md text-base-content/80
+							group-hover:scale-95 cursor-pointer z-10
 						`}
-					>
-						<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none">
-							<RiQuillPenAiLine className="w-5 h-5" />
+						>
+							<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none">
+								<RiQuillPenAiLine className="w-5 h-5" />
+							</div>
 						</div>
-					</div>
 
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-base-300/40  z-10" />
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-base-300/40 shadow-md  z-10" />
+						<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-base-300 -bottom-6 left-10" />
+					</div>
 					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-base-300/40 " />
 					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-base-300/40 shadow-md " />
 					<div className="absolute w-2 h-2 -translate-x-3 rounded-full shadow-md bg-base-300 -bottom-6 left-10" />
 				</div>
 
 				{/* Avatar */}
-				<div className="mt-2">
+				<div className="-mt-1">
 					<div className="transition-all rounded-full ring-2 ring-base-300">
 						<AvatarComponent
 							url={avatar}
