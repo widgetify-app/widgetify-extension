@@ -21,6 +21,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { HomeContentSimplify } from './home/home-content-simplify'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { UpdateChecker } from '@/components/updater/updater'
 
 const steps: Step[] = [
 	{
@@ -339,6 +340,7 @@ export function HomePage() {
 					duration: 5000,
 				}}
 			/>
+			<UpdateChecker />
 			{showWelcomeModal && (
 				<ExtensionInstalledModal
 					show={showWelcomeModal}
