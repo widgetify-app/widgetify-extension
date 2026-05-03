@@ -98,7 +98,7 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="relative z-50 flex flex-col items-center justify-start h-24 max-h-24">
+		<div className="relative flex flex-col items-center justify-start h-24 max-h-24">
 			<div ref={searchRef} className="w-full p-0.5 bg-content bg-glass rounded-2xl">
 				{activePortal === 'voice' && (
 					<VoiceSearchPortal

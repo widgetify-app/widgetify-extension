@@ -16,12 +16,6 @@ const renderUserAvatar = (user: any) => {
 	return <span className="text-2xl font-bold text-content">{initial}</span>
 }
 
-const renderPendingNotification = (pendingCount: number) => (
-	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] font-bold text-white bg-red-500 rounded-full bottom-1 right-2 p-0.5 text-center">
-		{pendingCount}
-	</div>
-)
-
 const getTooltipContent = (user: any) => {
 	return user?.inCache ? (
 		<span className="text-error">خطا در بارگیری پروفایل</span>
@@ -42,7 +36,6 @@ export function ProfileNav() {
 
 	const modalCloseHandler = () => setShowSettingsModal(false)
 
-	const hasPendingRequests = (user?.friendshipStats?.pending ?? 0) > 0
 	const isAuth = user || isAuthenticated
 
 	useEffect(() => {
@@ -98,10 +91,6 @@ export function ProfileNav() {
 						onClick={handleProfileClick}
 					>
 						{renderUserAvatar(user)}
-						{hasPendingRequests &&
-							renderPendingNotification(
-								user?.friendshipStats?.pending || 0
-							)}
 					</div>
 				</Tooltip>
 			)}

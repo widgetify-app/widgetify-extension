@@ -219,3 +219,32 @@ export function useChangeEmailVerify() {
 		},
 	})
 }
+
+export function useSetActivity() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (body: { content: string }) => {
+			const client = await getMainClient()
+			const response = await client.put('/users/@me/activities/beta', body)
+			return response.data
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['friends-activities'] })
+		},
+	})
+}
+export function useRemoveActivity() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (body: { id: string }) => {
+			const client = await getMainClient()
+			const response = await client.delete(`/users/@me/activities/${body.id}`)
+			return response.data
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['friends-activities'] })
+		},
+	})
+}

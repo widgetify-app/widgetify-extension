@@ -6,7 +6,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
 import { SettingsDropdown } from './components/settingsDropdown'
-import { FriendsList } from './friends-list/friends'
+import { FriendsListNavbar } from './friends-list/friends.navbar'
 import { ProfileNav } from './profile/profile'
 import { SyncButton } from './sync/sync'
 import { useAppearanceSetting } from '@/context/appearance.context'
@@ -207,7 +207,7 @@ export function NavbarLayout(): JSX.Element {
 						<BlurModeButton />
 						<SyncButton />
 						<SettingsDropdown setShowSettings={setShowSettings} />
-						<FriendsList />
+						<FriendsListNavbar />
 						<MarketButton />
 						<ProfileNav />
 					</div>

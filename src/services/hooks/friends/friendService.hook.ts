@@ -1,6 +1,6 @@
-import { translateError } from '@/utils/translate-error'
 import {
 	type UseMutationOptions,
+	useInfiniteQuery,
 	useMutation,
 	useQuery,
 	useQueryClient,
@@ -31,7 +31,7 @@ export interface FriendUser {
 	username: string
 	userId: string
 	extras?: {
-		activity?: string
+		activity?: string // a short text (like discord, instagram), example: "Hello World" | "good day!"..
 		selectedWallpaper?: string
 	}
 }
@@ -50,11 +50,25 @@ export interface FriendsResponse {
 	}
 }
 
+export interface UserActivity {
+	name: string
+	username: string
+	avatar: string
+	activityId: string | null
+	content: string
+	isSelf: boolean
+}
+export interface ActivitiesResponse {
+	activities: UserActivity[]
+	currentUser: UserActivity | null
+}
+
 export interface GetFriendsParams {
 	status: 'PENDING' | 'ACCEPTED'
 	page?: number
 	limit?: number
 	enabled?: boolean
+	caching: boolean
 }
 
 export interface FriendActionParams {
@@ -83,10 +97,18 @@ async function getFriends(params: GetFriendsParams): Promise<FriendsResponse> {
 	if (page !== undefined) queryParams.append('page', page.toString())
 	if (limit !== undefined) queryParams.append('limit', limit.toString())
 
-	const response = await client.get<FriendsResponse>(
-		`/friends?${queryParams.toString()}`
-	)
+	const response = await client.get<FriendsResponse>(`/friends`, {
+		params: queryParams,
+	})
 	return response.data
+}
+
+async function getActivities(): Promise<ActivitiesResponse> {
+	const client = await getMainClient()
+	const response = await client.get<{ data: ActivitiesResponse }>(
+		`/friends/activities/beta`
+	)
+	return response.data.data
 }
 
 async function handleFriendRequest(
@@ -114,12 +136,59 @@ export function useSendFriendRequest() {
 	})
 }
 
-export function useGetFriends(params: GetFriendsParams) {
+export function useGetFriends(q: GetFriendsParams) {
+	if (q.caching) {
+		// biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
+		return useInfiniteQuery({
+			queryKey: ['friends', q.status, q.limit],
+			queryFn: async ({ pageParam }) =>
+				getFriends({ ...q, page: pageParam as number }),
+			retry: 1,
+			staleTime: 5 * 60 * 1000, // 5 minutes
+			gcTime: 10 * 60 * 1000, // 10 minutes
+			enabled: q.enabled !== undefined ? q.enabled : true,
+			initialPageParam: 1,
+			getNextPageParam: (lastPage, allPages) => {
+				const currentPage = allPages.length
+				return currentPage < lastPage.data.totalPages
+					? currentPage + 1
+					: undefined
+			},
+			refetchOnWindowFocus: false,
+			refetchOnMount: false,
+			refetchOnReconnect: false,
+		})
+	} else {
+		// biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
+		return useInfiniteQuery({
+			queryKey: ['friends', q.status, q.limit, 'no-cache'],
+			queryFn: async ({ pageParam }) =>
+				getFriends({ ...q, page: pageParam as number }),
+			retry: 1,
+			staleTime: 0,
+			gcTime: 0,
+			enabled: q.enabled !== undefined ? q.enabled : true,
+			initialPageParam: 1,
+			getNextPageParam: (lastPage, allPages) => {
+				const currentPage = allPages.length
+				return currentPage < lastPage.data.totalPages
+					? currentPage + 1
+					: undefined
+			},
+			refetchOnWindowFocus: true,
+			refetchOnMount: true,
+			refetchOnReconnect: true,
+		})
+	}
+}
+
+export function useGetActivities() {
 	return useQuery({
-		queryKey: ['friends', params.status, params.page, params.limit],
-		queryFn: () => getFriends(params),
+		queryKey: ['friends-activities'],
+		queryFn: () => getActivities(),
 		retry: 1,
-		enabled: params.enabled !== undefined ? params.enabled : true,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
 	})
 }
 
