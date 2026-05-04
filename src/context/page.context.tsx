@@ -2,7 +2,11 @@ import { listenEvent } from '@/common/utils/call-event'
 import type React from 'react'
 import { createContext, useContext, useState } from 'react'
 
-type Page = 'home' | 'explorer'
+export enum Page {
+	Home = 'home',
+	Explorer = 'explorer',
+	MiniApps = 'mini-apps',
+}
 interface PageContextType {
 	page: Page
 	setPage: (page: Page) => void
@@ -10,7 +14,7 @@ interface PageContextType {
 
 export const PageContext = createContext<PageContextType | null>(null)
 export function PageProvider({ children }: { children: React.ReactNode }) {
-	const [page, setPage] = useState<Page>('home')
+	const [page, setPage] = useState<Page>(Page.Home)
 
 	useEffect(() => {
 		const event = listenEvent('go_to_page', (p) => {

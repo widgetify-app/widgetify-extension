@@ -1,7 +1,7 @@
-import { type JSX, use, useCallback, useEffect, useState } from 'react'
+import { type JSX, useCallback, useEffect, useState } from 'react'
 import { HiX } from 'react-icons/hi'
 import { FiChevronDown } from 'react-icons/fi'
-import { AiOutlineDrag, AiOutlineGlobal } from 'react-icons/ai'
+import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
@@ -12,12 +12,18 @@ import { SyncButton } from './sync/sync'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
-import { HiGlobeAlt } from 'react-icons/hi2'
-import { usePage } from '@/context/page.context'
+import {
+	HiGlobeAlt,
+	HiHome,
+	HiOutlineGlobeAlt,
+	HiOutlineHome,
+	HiOutlineSquares2X2,
+	HiSquares2X2,
+} from 'react-icons/hi2'
+import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
-import { TbSmartHome } from 'react-icons/tb'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
-import { UserProfile } from '@/services/hooks/user/userService.hook'
+import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import Tooltip from '@/components/toolTip'
 
 const WIDGETIFY_URLS = {
@@ -26,19 +32,29 @@ const WIDGETIFY_URLS = {
 
 const tabs = [
 	{
-		id: 'home',
-		icon: <TbSmartHome size={22} />,
+		id: Page.Home,
+		icon: <HiOutlineHome />,
+		activeIcon: <HiHome />,
+		label: 'ویجتیفای',
+	},
+
+	{
+		id: Page.Explorer,
+		icon: <HiOutlineGlobeAlt size={22} />,
+		activeIcon: <HiGlobeAlt size={22} />,
+		label: 'کاوش',
 	},
 	{
-		id: 'explorer',
-		icon: <HiGlobeAlt size={22} />,
-		hasBadge: false,
+		id: Page.MiniApps,
+		icon: <HiOutlineSquares2X2 size={22} />,
+		activeIcon: <HiSquares2X2 size={22} />,
+		label: 'برنامک‌ها',
 	},
 ]
 export function NavbarTabs() {
 	const { page, setPage } = usePage()
 
-	const handleTabClick = (tab: any) => {
+	const handleTabClick = (tab: Page) => {
 		setPage(tab)
 		Analytics.event(`navbar_tab_${tab}_click`)
 	}
@@ -57,18 +73,13 @@ export function NavbarTabs() {
             ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
         `}
 					>
-						<span className="block text-[18px] sm:text-[22px]">
-							{tab.icon}
-						</span>
-
-						{tab.hasBadge && (
-							<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-								<span
-									className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${page === tab.id ? 'block' : 'hidden'}`}
-								></span>
-								<span
-									className={`relative inline-flex rounded-full h-2 w-2 border border-black/50 ${page === tab.id ? 'bg-primary' : 'bg-primary/80'}`}
-								></span>
+						{page === tab.id && tab.activeIcon ? (
+							<span className="block text-[18px] sm:text-[22px]">
+								{tab.activeIcon}
+							</span>
+						) : (
+							<span className="block text-[18px] sm:text-[22px]">
+								{tab.icon}
 							</span>
 						)}
 					</span>

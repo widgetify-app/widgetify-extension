@@ -16,7 +16,7 @@ import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { ContentSection } from './home/content-section'
 import { ExplorerContent } from '@/layouts/explorer/explorer'
-import { usePage } from '@/context/page.context'
+import { Page, usePage } from '@/context/page.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { HomeContentSimplify } from './home/home-content-simplify'
@@ -281,15 +281,15 @@ export function HomePage() {
 							}}
 							className="flex w-full h-full"
 						>
-							{page === 'home' ? (
+							{page === Page.Home ? (
 								ui === 'ADVANCED' ? (
 									<ContentSection />
 								) : (
 									<HomeContentSimplify />
 								)
-							) : (
+							) : page === Page.Explorer ? (
 								<ExplorerContent />
-							)}
+							) : null}
 						</motion.div>
 					</AnimatePresence>
 					<WidgetSettingsModal

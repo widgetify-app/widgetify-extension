@@ -11,6 +11,7 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import React from 'react'
+import { Page } from '@/context/page.context'
 
 export interface EventName {
 	startSync: SyncTarget
@@ -50,7 +51,7 @@ export interface EventName {
 	openWizardModal: null
 	add_to_notifications: { id: string; node: React.ReactNode }
 	remove_from_notifications: { id: string; ttl?: number }
-	go_to_page: 'explorer' | 'home'
+	go_to_page: Page
 	market_change_tab: string
 	open_require_auth_modal: null
 }
