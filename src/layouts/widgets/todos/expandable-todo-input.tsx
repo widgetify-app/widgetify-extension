@@ -22,6 +22,7 @@ import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
 import type { Friend } from '@/services/hooks/friends/friendService.hook'
 import { TodoSelectFriends } from './components/select-friends.todo'
+import { callEvent } from '@/common/utils/call-event'
 interface ExpandableTodoInputProps {
 	editTodo?: FetchedTodo
 	onClose: any
@@ -168,6 +169,11 @@ export function ExpandableTodoInput({
 	}, [today])
 
 	const handleSave = useCallback(async () => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
+
 		const text = inputRef.current?.value?.trim()
 		if (text) {
 			try {
