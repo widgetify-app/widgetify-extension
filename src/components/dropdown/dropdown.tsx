@@ -24,6 +24,7 @@ export interface DropdownProps {
 	disabled?: boolean
 	id?: string
 	placeholder?: string
+	onClose?: () => void
 }
 
 export function Dropdown({
@@ -39,6 +40,7 @@ export function Dropdown({
 	disabled = false,
 	placeholder,
 	id,
+	onClose,
 }: DropdownProps) {
 	const { isOpen, toggle, close, dropdownRef, dropdownContentRef } = useDropdown()
 	const [dropdownPosition, setDropdownPosition] = useState({ top: '0px', left: '0px' })
@@ -53,6 +55,12 @@ export function Dropdown({
 			close()
 		}
 	}
+
+	useEffect(() => {
+		if (!isOpen) {
+			onClose?.()
+		}
+	}, [isOpen])
 
 	useEffect(() => {
 		if (!isOpen || !dropdownRef.current) return

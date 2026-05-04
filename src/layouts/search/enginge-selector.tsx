@@ -7,7 +7,9 @@ import { useChangeSearchEngine } from '@/services/hooks/extension/updateSetting.
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import type { ReactNode } from 'react'
 import { useState, useEffect, useMemo } from 'react'
+import { FaArrowDown } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
+import { HiArrowDown, HiChevronDown } from 'react-icons/hi2'
 
 const GOOGLE: EngineMeta = {
 	id: 'google',
@@ -27,6 +29,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 	const changeEngineMutation = useChangeSearchEngine()
 	const [currentEngine, setCurrentEngine] = useState<EngineMeta>(GOOGLE)
 	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
+	const [clicked, setClicked] = useState<boolean>(false)
 
 	const engines = useMemo(() => {
 		if (searchboxData?.search_engines?.length) {
@@ -49,6 +52,10 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 			}
 		}
 		loadInitialEngine()
+
+		return () => {
+			setClicked(false)
+		}
 	}, [engines])
 
 	useEffect(() => {
@@ -83,17 +90,23 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 			trigger={
 				trigger || (
 					<button
+						onClick={() => setClicked(!clicked)}
 						type="button"
-						className="relative flex items-center justify-center w-8 h-8 ml-2 transition-all duration-300 rounded-full cursor-pointer shrink-0 hover:bg-base-content/10 opacity-70 hover:opacity-100"
+						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-all duration-300  cursor-pointer h-7 shrink-0 bg-base-300 opacity-70 hover:opacity-100 rounded-xl"
 					>
 						<EngineIcon
 							engineId={currentEngine.id}
 							icon={currentEngine.icon}
 						/>
 						{showNewBadge && <NewBadge className="right-1 bottom-1" />}
+						<HiChevronDown
+							className={` text-muted transition-transform duration-300 ${clicked ? 'rotate-180' : ''}`}
+							size={12}
+						/>
 					</button>
 				)
 			}
+			onClose={() => setClicked(false)}
 			dropdownClassName="engine-selector"
 		>
 			<div className="flex flex-col gap-1 p-2 min-w-40">
