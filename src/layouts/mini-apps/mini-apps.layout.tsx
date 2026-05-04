@@ -1,0 +1,116 @@
+import { useGetMiniApps } from '@/services/hooks/mini-apps/get-mini-apps.hook'
+import { MiniAppCard } from './components/card/mini-app-card'
+import { MiniAppCardSkeleton } from './components/card/mini-app-card-skeleton'
+import { useEffect, useRef } from 'react'
+import { MiniAppRunner } from './mini-app-runner.page'
+import { listenEvent } from '@/common/utils/call-event'
+import Analytics from '@/analytics'
+
+export function MiniAppsLayout() {
+	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
+		useGetMiniApps({ limit: 10 })
+	const [selectedAppId, setSelectedAppId] = useState<string | null>(null)
+	const miniApps = data?.pages?.flatMap((f) => f.data.miniApps) ?? []
+	const isEmpty = !isLoading && !isError && miniApps.length === 0
+	const [isFullScreen, setIsFullScreen] = useState(false)
+
+	const onClickToExist = () => {
+		setSelectedAppId(null)
+		if (isFullScreen) setIsFullScreen(false)
+		Analytics.event('mini_app_exist')
+	}
+	const observerRef = useRef<IntersectionObserver | null>(null)
+	const loadMoreRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		const event = listenEvent('toggle_miniApp_fullScreen', (newState) => {
+			setIsFullScreen(newState)
+		})
+
+		return () => {
+			event()
+		}
+	}, [])
+
+	useEffect(() => {
+		if (observerRef.current) {
+			observerRef.current.disconnect()
+		}
+
+		observerRef.current = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+					fetchNextPage()
+				}
+			},
+			{ threshold: 0.1 }
+		)
+
+		if (loadMoreRef.current) {
+			observerRef.current.observe(loadMoreRef.current)
+		}
+
+		return () => {
+			if (observerRef.current) {
+				observerRef.current.disconnect()
+			}
+		}
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+	return (
+		<div className="w-full h-[calc(100vh-4rem)] overflow-hidden">
+			<div className="flex flex-row justify-between w-full h-full px-4 py-2 overflow-hidden">
+				<div
+					className={`flex-1 w-full h-full p-1 border-l border-content bg-content bg-glass rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-all duration-200`}
+				>
+					<div className="px-1 py-2">
+						<p className="text-lg font-bold"> برنامک ها</p>
+					</div>
+					<div className="flex flex-col gap-1 overflow-y-auto  h-[calc(100vh-10rem)]">
+						{isEmpty && (
+							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-content">
+								<div className="text-5xl">📭</div>
+								<p className="text-base font-medium text-content">
+									هنوز برنامکی وجود ندارد
+								</p>
+								<p className="text-sm text-muted">به زودی پر میشه...</p>
+							</div>
+						)}
+						{miniApps.map((app) => (
+							<div key={app.appId}>
+								<MiniAppCard
+									app={app}
+									onLaunch={() => setSelectedAppId(app.appId)}
+								/>
+							</div>
+						))}
+
+						{hasNextPage && (
+							<div
+								ref={loadMoreRef}
+								className="flex flex-col gap-1 mt-1 shrink-0"
+							>
+								{isFetchingNextPage &&
+									[...Array(5)].map((_, i) => (
+										<MiniAppCardSkeleton key={i} />
+									))}
+							</div>
+						)}
+					</div>
+				</div>
+				<div
+					className={`flex items-center justify-center w-full h-full rounded-tr-none rounded-br-none bg-content bg-glass flex-3 rounded-2xl text-content rounded-bl-2xl ${isFullScreen ? 'rounded-2xl!' : ''}`}
+				>
+					{selectedAppId ? (
+						<MiniAppRunner
+							appId={selectedAppId}
+							onClickToExist={() => onClickToExist()}
+						/>
+					) : (
+						'برنامکی انتخاب نکردید'
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}

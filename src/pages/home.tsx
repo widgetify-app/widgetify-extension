@@ -22,6 +22,8 @@ import { useAppearanceSetting } from '@/context/appearance.context'
 import { HomeContentSimplify } from './home/home-content-simplify'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { UpdateChecker } from '@/components/updater/updater'
+import { MiniAppsLayout } from '@/layouts/mini-apps/mini-apps.layout'
+import { MiniAppPage } from './mini-apps/mini-app.page'
 
 const steps: Step[] = [
 	{
@@ -289,7 +291,9 @@ export function HomePage() {
 								)
 							) : page === Page.Explorer ? (
 								<ExplorerContent />
-							) : null}
+							) : (
+								<MiniAppPage />
+							)}
 						</motion.div>
 					</AnimatePresence>
 					<WidgetSettingsModal
