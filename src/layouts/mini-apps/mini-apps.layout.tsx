@@ -2,10 +2,10 @@ import { useGetMiniApps } from '@/services/hooks/mini-apps/get-mini-apps.hook'
 import { MiniAppCard } from './components/card/mini-app-card'
 import { MiniAppCardSkeleton } from './components/card/mini-app-card-skeleton'
 import { useEffect, useRef } from 'react'
-import { MiniAppRunner } from './mini-app-runner.page'
+import { MiniAppRunner } from './mini-app-runner'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
-
+const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
 		useGetMiniApps({ limit: 10 })
@@ -107,7 +107,19 @@ export function MiniAppsLayout() {
 							onClickToExist={() => onClickToExist()}
 						/>
 					) : (
-						'برنامکی انتخاب نکردید'
+						<div className="flex flex-col items-center text-center">
+							<img
+								src={EmptyMiniAppImage}
+								className="max-h-80 max-w-80"
+								onError={(e) => {
+									// @ts-ignore
+									e.target?.remove()
+								}}
+							/>
+							<p className="text-lg font-bold text-content">
+								یه برنامک انتخاب کن
+							</p>
+						</div>
 					)}
 				</div>
 			</div>
