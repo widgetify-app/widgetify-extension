@@ -22,6 +22,7 @@ async function checkForUpdates() {
 				force: data.chrome.force,
 				updateUrl: data.chrome.updateUrl,
 				downloadUrl: data.chrome.downloadUrl,
+				notes: data.chrome.notes,
 			}
 
 			return updateInfo
@@ -40,6 +41,7 @@ interface UpdateInfo {
 	force: boolean
 	updateUrl: string
 	downloadUrl: string
+	notes: string[]
 }
 
 export function UpdateChecker() {
@@ -97,8 +99,6 @@ export function UpdateChecker() {
 								نسخه جدید رسید!
 							</div>
 						</div>
-
-						<div className="absolute inset-0 opacity-75 pointer-events-none rounded-l-2xl bg-primary/30 animate-ping" />
 					</div>
 
 					<div
@@ -137,7 +137,7 @@ export function UpdateChecker() {
 			<Modal
 				isOpen={showModal}
 				onClose={() => !updateInfo.force && setShowModal(false)}
-				title="به‌روزرسانی موجود است"
+				title={'📦 نسخه جدید رسید!'}
 				direction="rtl"
 				size="md"
 				closeOnBackdropClick={!updateInfo.force}
@@ -170,9 +170,9 @@ export function UpdateChecker() {
 					<div className="p-4 space-y-2 rounded-lg bg-base-200">
 						<h4 className="text-sm font-medium">چرا باید آپدیت کنم؟</h4>
 						<ul className="pr-4 space-y-1 text-xs opacity-70">
-							<li>• دریافت آخرین ویژگی‌های جدید</li>
-							<li>• رفع باگ‌ها و بهبود عملکرد</li>
-							<li>• امنیت بیشتر</li>
+							{updateInfo.notes.map((f) => (
+								<li key={`li-${f}`}>• {f}</li>
+							))}
 						</ul>
 					</div>
 

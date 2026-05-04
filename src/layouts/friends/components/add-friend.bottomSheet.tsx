@@ -18,9 +18,10 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 	const [username, setUsername] = useState('')
 	const [translatedError, setTranslatedError] = useState<string | null>(null)
 	const { mutate: sendFriendRequest, isPending: isSending } = useSendFriendRequest()
+	const canSendRequest = !!user?.username
 
 	const handleSendRequest = () => {
-		if (!user?.username) {
+		if (!canSendRequest) {
 			showToast(
 				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش پروفایل تنظیم کنید.',
 				'error'
@@ -67,7 +68,6 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 		setTranslatedError(null)
 		onClose()
 	}
-
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -92,7 +92,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 					</p>
 				</div>
 
-				{!user?.username && (
+				{!canSendRequest && (
 					<div className="flex items-start gap-3 p-4 border rounded-xl bg-yellow-500/10 border-yellow-500/20">
 						<FiAlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
 						<p className="text-sm leading-relaxed text-warning">
@@ -134,10 +134,10 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 					<Button
 						type="button"
 						onClick={handleSendRequest}
-						disabled={!username || isSending}
+						disabled={!canSendRequest || isSending || !username}
 						size="lg"
 						rounded="xl"
-						className={`w-full h-12 bg-success text-success-content shadow-sm shadow-success/20  border-none`}
+						className={`w-full h-12 enabled:hover:opacity-75 disabled:bg-success/70 bg-success text-success-content shadow-sm shadow-success/20  border-none`}
 					>
 						ارسال درخواست
 					</Button>

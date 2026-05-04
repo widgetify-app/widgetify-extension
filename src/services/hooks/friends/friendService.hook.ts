@@ -203,6 +203,7 @@ export function useHandleFriendRequest(
 		mutationFn: handleFriendRequest,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['friends'] })
+			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 		},
 		...options,
 	})
