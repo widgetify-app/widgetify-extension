@@ -9,7 +9,6 @@ import {
 	useSendVerificationEmail,
 } from '@/services/hooks/user/userService.hook'
 import { AccountVerificationStatus } from '../../components/account-verification-status'
-import { ActivityInput } from '../../components/activity-input'
 import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { showToast } from '@/common/toast'
@@ -98,7 +97,6 @@ export const UserProfile = () => {
 					className="!p-2 !px-4"
 				/>
 			)}
-			<ActivityInput activity={profile?.activity || ''} />
 
 			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
 				<div className="p-2 space-y-3 transition-colors rounded-lg">

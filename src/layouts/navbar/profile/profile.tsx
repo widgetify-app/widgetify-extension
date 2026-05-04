@@ -30,8 +30,9 @@ export function ProfileNav() {
 	const [openedWizard, setOpenedWizard] = useState(false)
 	const [activeTab, setActiveTab] = useState<string>()
 
-	const handleProfileClick = () => {
+	const handleProfileClick = (active?: string) => {
 		setShowSettingsModal(true)
+		if (active) setActiveTab(active)
 	}
 
 	const modalCloseHandler = () => setShowSettingsModal(false)
@@ -40,8 +41,7 @@ export function ProfileNav() {
 
 	useEffect(() => {
 		const event = listenEvent('openProfile', (active) => {
-			setActiveTab(active)
-			handleProfileClick()
+			handleProfileClick(active)
 		})
 
 		const eventClose = listenEvent('close_all_modals', () => {
@@ -67,7 +67,7 @@ export function ProfileNav() {
 					<div
 						className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 						id="profile-and-friends-list"
-						onClick={handleProfileClick}
+						onClick={() => handleProfileClick()}
 					>
 						<LuCircleUser size={15} />
 					</div>
@@ -88,7 +88,7 @@ export function ProfileNav() {
 					) : null}
 					<div
 						className={`relative w-8 flex justify-center items-center  transition-all duration-300 cursor-pointer rounded-full hover:opacity-80 group hover:bg-primary/10 ${user?.inCache && 'ring-2 ring-error/40 relative overflow-visible'}`}
-						onClick={handleProfileClick}
+						onClick={() => handleProfileClick('profile')}
 					>
 						{renderUserAvatar(user)}
 					</div>

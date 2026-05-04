@@ -3,7 +3,6 @@ import type { CategoryItem } from '../interfaces/category.interface'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'
 import { RenderContentSite } from './content-site'
-import { RenderWebApp } from './content-mini-app/content-mini-app'
 
 interface Prop {
 	category: CategoryItem
@@ -19,7 +18,7 @@ export function ExplorerCategory({
 	contentLength,
 	activeCategory,
 }: Prop) {
-	const childLength = !category.links?.length
+	if (!category.links?.length) return null
 	return (
 		<div
 			key={category.id}
@@ -38,7 +37,7 @@ export function ExplorerCategory({
 					'--banner-url': `url(${category.banner})`,
 				}),
 			}}
-			className={`${childLength && 'invisible'} relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
+			className={` relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
 				index === 0
 					? 'md:col-span-2'
 					: index === contentLength - 1 && contentLength % 2 === 0
@@ -118,8 +117,6 @@ function HandleCatalogs({ category, colSpan }: HandleCatalogsProp) {
 					<RenderContentSite key={link.url} link={link} />
 				) : link.type === 'BANNER' ? (
 					<RenderContentBanner key={link.url} link={link} />
-				) : link.type === 'MINI_APP' ? (
-					<RenderWebApp key={link.url} content={link} />
 				) : null
 			)}
 		</div>
