@@ -2,8 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { FiMessageSquare, FiTag, FiCalendar } from 'react-icons/fi'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/button/button'
-import type { TodoPriority } from '@/context/todo.context'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 import Modal from '@/components/modal'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { PriorityButton } from '@/components/priority-options/priority-options'
@@ -35,13 +34,13 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 	const datePickerButtonRef = useRef<HTMLButtonElement>(null)
 
 	const [text, setText] = useState(todo.text)
-	const [notes, setNotes] = useState(todo.notes || '')
+	const [notes, setNotes] = useState(todo.description || '')
 	const [category, setCategory] = useState(todo.category || '')
 	const [priority, setPriority] = useState<TodoPriority>(todo.priority as TodoPriority)
 
 	useEffect(() => {
 		setText(todo.text)
-		setNotes(todo.notes || '')
+		setNotes(todo.description || '')
 		setCategory(todo.category || '')
 		setPriority(todo.priority as TodoPriority)
 		setSelectedDate(todo.date ? parseTodoDate(todo.date) : undefined)
@@ -85,7 +84,7 @@ export function EditTodoModal({ todo, isOpen, onClose }: EditTodoModalProps) {
 
 		const [err, _] = await safeAwait(
 			mutateAsync({
-				id: todo.onlineId || todo.id,
+				id: todo.id,
 				input,
 			})
 		)

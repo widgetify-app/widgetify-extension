@@ -11,6 +11,7 @@ import { HiOutlineCurrencyBangladeshi } from 'react-icons/hi'
 import React, { useState, Suspense } from 'react'
 import { DateProvider } from '@/context/date.context'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { TodosLayout } from '../widgets/todos/todos'
 
 const Calendar = React.lazy(() =>
 	import('./widgets/calendar-simplify').then((module) => ({
@@ -21,12 +22,6 @@ const Calendar = React.lazy(() =>
 const NetworkSimplify = React.lazy(() =>
 	import('./widgets/network-simplify').then((module) => ({
 		default: module.NetworkSimplify,
-	}))
-)
-
-const TodosLayout = React.lazy(() =>
-	import('../widgets/todos/todos-with-provider').then((module) => ({
-		default: module.TodosWithProvider,
 	}))
 )
 

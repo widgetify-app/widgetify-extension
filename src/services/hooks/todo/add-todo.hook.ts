@@ -1,15 +1,16 @@
-import { useMutation } from '@tanstack/react-query'
+import { useIsMutating, useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { TodoPriority } from '@/context/todo.context'
+import type { TodoPriority } from '@/services/hooks/todo/todo.interface'
 
 export interface TodoCreationPayload {
 	text: string
-	category: string
 	date: string
-	description: string
-	priority: TodoPriority
-	completed: boolean
-	order: number
+	category?: string
+	description?: string
+	priority?: TodoPriority
+	completed?: boolean
+	order?: number
+	friendIds: string[]
 }
 
 export const useAddTodo = () => {
@@ -19,6 +20,14 @@ export const useAddTodo = () => {
 			return await AddTodoApi(input)
 		},
 	})
+}
+
+export const useAddTodoState = () => {
+	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
+
+	return {
+		isPending: isAdding,
+	}
 }
 
 export async function AddTodoApi(input: TodoCreationPayload) {

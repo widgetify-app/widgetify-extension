@@ -20,7 +20,6 @@ import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 import { showToast } from '@/common/toast'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
-import { TodoProvider } from './todo.context'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -64,11 +63,7 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📒',
 		label: 'یادکار (وظایف و یادداشت)',
 		order: 0,
-		node: (
-			<TodoProvider>
-				<YadkarWidget />
-			</TodoProvider>
-		),
+		node: <YadkarWidget />,
 		canToggle: true,
 		isNew: true,
 	},

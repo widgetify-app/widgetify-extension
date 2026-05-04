@@ -1,7 +1,7 @@
 import { BsFilterLeft } from 'react-icons/bs'
 import { Dropdown } from '@/components/dropdown'
 import { Button } from '@/components/button/button'
-import { TodoPriority } from '@/context/todo.context'
+import { TodoPriority } from '@/services/hooks/todo/todo.interface'
 
 const priorityOptions = [
 	{

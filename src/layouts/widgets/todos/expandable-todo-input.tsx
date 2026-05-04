@@ -2,11 +2,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
-import { type AddTodoInput, TodoPriority } from '@/context/todo.context'
-import { useIsMutating } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { ClickableTooltip } from '@/components/clickableTooltip'
-import type jalaliMoment from 'jalali-moment'
+import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
 import { Chip } from '@/components/chip.component'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
@@ -15,14 +13,34 @@ import { useDate } from '@/context/date.context'
 import { IoCalendarOutline, IoPricetagOutline, IoAddOutline } from 'react-icons/io5'
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PriorityDropdown } from './components/priority.dropdown'
-import { FiPlus } from 'react-icons/fi'
-import moment from 'jalali-moment'
+import { FiPlus, FiSave } from 'react-icons/fi'
+import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
+import { LuX } from 'react-icons/lu'
+import { type TodoCreationPayload, useAddTodo } from '@/services/hooks/todo/add-todo.hook'
+import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
+import { translateError } from '@/utils/translate-error'
+import { showToast } from '@/common/toast'
+import type { Friend } from '@/services/hooks/friends/friendService.hook'
+import { TodoSelectFriends } from './components/select-friends.todo'
 interface ExpandableTodoInputProps {
-	onAddTodo: (input: Omit<AddTodoInput, 'date'> & { date: string }) => void
+	editTodo?: FetchedTodo
+	onClose: any
+	isEdit: boolean
+	onUpdated?: () => void
 }
-
-export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
+const getTodayJalaliMoment = () => jalaliMoment().locale('fa')
+const formatJalaliDateForDisplay = (date: jalaliMoment.Moment) => date.format('jD jMMM')
+export function ExpandableTodoInput({
+	editTodo,
+	onClose,
+	isEdit,
+	onUpdated,
+}: ExpandableTodoInputProps) {
 	const { isAuthenticated } = useAuth()
+	const { mutateAsync: addTodoAsync, isPending: isCreatingTodo } = useAddTodo()
+	const { mutateAsync: updateTodoAsync, isPending: isUpdatingTodo } = useUpdateTodo(
+		editTodo?.id || null
+	)
 	const { today } = useDate()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
@@ -33,18 +51,64 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 	const [showDatePicker, setShowDatePicker] = useState(false)
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
-	const todoTextRef = useRef<string>('')
 	const notesRef = useRef<HTMLTextAreaElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const dateButtonRef = useRef<HTMLButtonElement>(null)
 	const categoryInputRef = useRef<HTMLInputElement | null>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
+	const [selectedFriends, setSelectedFriends] = useState<Friend[]>([])
 
-	const isAdding = useIsMutating({ mutationKey: ['addTodo'] }) > 0
+	const isPending = isCreatingTodo || isUpdatingTodo
 
 	const handleTodoTextChange = useCallback((value: string) => {
-		todoTextRef.current = value
+		if (inputRef.current) inputRef.current.value = value
 	}, [])
+
+	useEffect(() => {
+		if (isEdit && editTodo) {
+			if (inputRef.current) {
+				inputRef.current.value = editTodo.text || ''
+			}
+
+			setCategory(editTodo.category || '')
+			setPriority(editTodo.priority)
+
+			if (editTodo.date) {
+				const parsedDate = jalaliMoment(
+					editTodo.date,
+					'dddd، jD jMMMM jYYYY'
+				).locale('fa')
+				if (!parsedDate.isValid()) {
+					setSelectedDate(
+						jalaliMoment(editTodo.date).isValid()
+							? jalaliMoment(editTodo.date).locale('fa')
+							: getTodayJalaliMoment()
+					)
+				} else {
+					setSelectedDate(parsedDate)
+				}
+			}
+			if (editTodo.friends && editTodo.friends.length > 0) {
+				// Load friends if editing
+				const friends: any[] = editTodo.friends.map((f) => ({
+					user: {
+						name: f.name,
+						avatar: f.avatar,
+						userId: null,
+					},
+					status: 'ACCEPTED' as const,
+				}))
+				setSelectedFriends(friends)
+			}
+
+			setIsExpanded(true)
+			setTimeout(() => {
+				if (notesRef.current) notesRef.current.value = editTodo.description || ''
+			}, 2)
+		} else {
+			resetForm()
+		}
+	}, [editTodo])
 
 	const onSelectCategory = (v: string) => {
 		setCategory(v)
@@ -58,6 +122,7 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
+			if (isEdit) return
 			if (
 				containerRef.current &&
 				!containerRef.current.contains(event.target as Node) &&
@@ -69,8 +134,9 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 						event.target.closest('.fixed') ||
 						event.target.closest('[role="tooltip"]'))
 
-				if (!todoTextRef.current.trim() && !isClickInsideDatePicker) {
+				if (!inputRef.current?.value.trim() && !isClickInsideDatePicker) {
 					setIsExpanded(false)
+					resetForm()
 				}
 			}
 		}
@@ -86,7 +152,6 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 	}, [])
 
 	const resetForm = useCallback(() => {
-		todoTextRef.current = ''
 		if (notesRef.current) notesRef.current.value = ''
 		if (inputRef.current) {
 			inputRef.current.value = ''
@@ -99,29 +164,54 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 		setPriority(undefined)
 		setSelectedDate(today.clone())
 		setIsExpanded(false)
+		setSelectedFriends([])
 	}, [today])
 
-	const handleAddTodo = useCallback(() => {
-		const text = todoTextRef.current.trim()
+	const handleSave = useCallback(async () => {
+		const text = inputRef.current?.value?.trim()
 		if (text) {
-			onAddTodo({
-				text,
-				category: category.trim() || undefined,
-				notes: notesRef.current?.value.trim() || undefined,
-				priority: priority,
-				date: selectedDate.toISOString(),
-			})
-			resetForm()
+			try {
+				const payload: TodoCreationPayload = {
+					text,
+					category: category.trim() || undefined,
+					description: notesRef.current?.value.trim(),
+					priority: priority,
+					date: selectedDate.add(3.5, 'hours').toISOString(),
+					friendIds: selectedFriends.map((f) => f.id), // Add friend IDs
+				}
+
+				if (isEdit && editTodo?.id) {
+					await updateTodoAsync({ id: editTodo.id, input: payload })
+				} else {
+					await addTodoAsync({ ...payload, completed: false, order: 0 })
+				}
+
+				resetForm()
+				if (isEdit) {
+					setIsExpanded(false)
+				}
+				onUpdated?.()
+				onClose()
+			} catch (error) {
+				const errorContent = translateError(error)
+				showToast(errorContent as string, 'error')
+			}
 		}
-	}, [category, priority, selectedDate, onAddTodo, resetForm])
+	}, [category, priority, selectedDate, resetForm, isEdit])
+
+	const onCloseEdit = () => {
+		resetForm()
+		setIsExpanded(false)
+		onClose()
+	}
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent<HTMLInputElement>) => {
-			if (e.key === 'Enter' && todoTextRef.current.trim()) {
-				handleAddTodo()
+			if (e.key === 'Enter' && inputRef?.current?.value.trim()) {
+				handleSave()
 			}
 		},
-		[handleAddTodo]
+		[handleSave]
 	)
 
 	return (
@@ -130,30 +220,43 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
 				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-base-200 border-base-content/5">
-					<div className="flex-grow w-full">
+					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان تسک جدید..."
-							className="!h-6 !border-none !outline-none !shadow-none !ring-0 w-full p-0 pr-1 text-sm !bg-transparent rounded-2xl focus:placeholder:text-base-content/20"
+							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl focus:placeholder:text-base-content/20"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
 							debounce={false}
 						/>
 					</div>
-					<Button
-						onClick={handleAddTodo}
-						disabled={isAdding}
-						loading={isAdding}
-						loadingText={<IconLoading />}
-						size="sm"
-						isPrimary={true}
-						className="rounded-full px-0! w-8"
-					>
-						<FiPlus size={16} />
-					</Button>
+					<div className="flex items-center">
+						{isEdit && (
+							<Button
+								onClick={() => onCloseEdit()}
+								disabled={isPending}
+								loading={isPending}
+								size="sm"
+								className="rounded-full px-0! w-8 btn-ghost"
+							>
+								<LuX size={12} className="" />
+							</Button>
+						)}
+						<Button
+							onClick={() => handleSave()}
+							disabled={isPending}
+							loading={isPending}
+							loadingText={<IconLoading />}
+							size="sm"
+							isPrimary={true}
+							className="rounded-full px-0! w-8"
+						>
+							{isEdit ? <FiSave size={16} /> : <FiPlus size={16} />}
+						</Button>
+					</div>
 				</div>
 
 				<AnimatePresence>
@@ -176,7 +279,13 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 											className="w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60"
 										/>
 									</div>
-									<div className="flex gap-1 pl-1 overflow-x-auto">
+									<div className="flex pl-1 gap-0.5 overflow-x-auto">
+										{!isEdit && isAuthenticated && (
+											<TodoSelectFriends
+												selectedFriends={selectedFriends}
+												setSelectedFriends={setSelectedFriends}
+											/>
+										)}
 										<PriorityDropdown
 											priority={priority}
 											setPriority={setPriority}
@@ -189,9 +298,11 @@ export function ExpandableTodoInput({ onAddTodo }: ExpandableTodoInputProps) {
 										>
 											<IoCalendarOutline size={18} />
 											<p className="truncate max-w-14 min-w-5">
-												{moment(selectedDate)
-													.locale('fa')
-													.format('jD jMMMM')}
+												{selectedDate
+													? formatJalaliDateForDisplay(
+															selectedDate
+														)
+													: 'تاریخ انجامش'}
 											</p>
 										</Button>
 										<Button

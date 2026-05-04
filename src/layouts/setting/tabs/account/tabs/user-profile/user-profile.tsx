@@ -14,9 +14,11 @@ import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
+import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
+	const [showConfirm, setShowConfirm] = useState<boolean>(false)
 	const {
 		data: profile,
 		isLoading,
@@ -30,6 +32,13 @@ export const UserProfile = () => {
 	useEffect(() => {
 		refetch()
 	}, [])
+
+	const onClickLogout = () => {
+		logout()
+		setTimeout(() => {
+			location.reload()
+		}, 1000)
+	}
 
 	const handleSendVerificationEmail = async () => {
 		try {
@@ -62,7 +71,7 @@ export const UserProfile = () => {
 			<div className="flex flex-col items-center justify-center h-full">
 				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
 				<Button
-					onClick={() => logout()}
+					onClick={() => onClickLogout()}
 					className="text-white/90 btn-error"
 					size="md"
 				>
@@ -97,7 +106,7 @@ export const UserProfile = () => {
 						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 					</p>
 					<Button
-						onClick={() => logout()}
+						onClick={() => setShowConfirm(true)}
 						className="text-white/90 btn-error rounded-2xl"
 						size="md"
 					>
@@ -106,6 +115,15 @@ export const UserProfile = () => {
 					</Button>{' '}
 				</div>
 			</SectionPanel>
+
+			<ConfirmationModal
+				isOpen={showConfirm}
+				onClose={() => setShowConfirm(false)}
+				onConfirm={() => onClickLogout()}
+				message="مطمعنی میخای از حسابت خارج بشی؟"
+				title="خروج از حساب کاربری"
+				confirmText="بله، خروج"
+			></ConfirmationModal>
 		</div>
 	)
 }

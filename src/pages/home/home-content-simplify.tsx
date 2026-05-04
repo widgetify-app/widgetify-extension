@@ -1,6 +1,5 @@
 import { CurrencyProvider } from '@/context/currency.context'
 import { DateProvider } from '@/context/date.context'
-import { TodoProvider } from '@/context/todo.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { SearchLayout } from '@/layouts/search/search'
@@ -41,9 +40,7 @@ export function HomeContentSimplify() {
 
 						<div className="w-full md:w-1/4 rounded-2xl">
 							<DateProvider>
-								<TodoProvider>
-									<SimplifyYadkar />
-								</TodoProvider>
+								<SimplifyYadkar />
 							</DateProvider>
 						</div>
 					</div>

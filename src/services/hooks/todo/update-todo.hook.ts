@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { TodoPriority } from '@/context/todo.context'
+import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 
 export interface TodoUpdatePayload {
 	text?: string
@@ -12,9 +12,9 @@ export interface TodoUpdatePayload {
 	order?: number
 }
 
-export const useUpdateTodo = () => {
+export const useUpdateTodo = (todoId: string | null) => {
 	return useMutation({
-		mutationKey: ['updateTodo'],
+		mutationKey: ['updateTodo', todoId],
 		mutationFn: async ({ id, input }: { id: string; input: TodoUpdatePayload }) => {
 			return await UpdateTodoApi(id, input)
 		},
@@ -24,7 +24,11 @@ export const useUpdateTodo = () => {
 export async function UpdateTodoApi(id: string, input: TodoUpdatePayload) {
 	const client = await getMainClient()
 
-	const response = await client.patch<TodoUpdatePayload>(`/todos/${id}`, input)
+	const response = await client.patch<{
+		data: {
+			todo: FetchedTodo
+		}
+	}>(`/todos/${id}`, input)
 
-	return response.data
+	return response.data.data.todo
 }

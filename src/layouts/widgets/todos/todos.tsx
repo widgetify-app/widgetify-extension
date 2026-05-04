@@ -1,27 +1,9 @@
-import {
-	closestCenter,
-	DndContext,
-	type DragEndEvent,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core'
-import {
-	arrayMove,
-	SortableContext,
-	verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { FiList } from 'react-icons/fi'
-import { useDate } from '@/context/date.context'
-import { type AddTodoInput, useTodoStore } from '@/context/todo.context'
 import { ExpandableTodoInput } from './expandable-todo-input'
-import { SortableTodoItem } from './sortable-todo-item'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { IconLoading } from '@/components/loading/icon-loading'
-import { parseTodoDate } from './tools/parse-date'
 import { FilterTooltip } from '@/components/filter-tooltip'
 import { FaSortAmountDown, FaTags } from 'react-icons/fa'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
@@ -31,7 +13,8 @@ import { MdOutlineFilterList, MdOutlineFilterListOff, MdRefresh } from 'react-ic
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
-import { callEvent } from '@/common/utils/call-event'
+import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
+import { TodoItem } from './todo.item'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -50,49 +33,54 @@ const sortOptions = [
 const TagList = ['', '-all-']
 
 export function TodosLayout() {
-	const { today } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
-
-	const { addTodo, todos, reorderTodos, isPending, refetchTodos } = useTodoStore()
+	const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
 	const [dateFilter, setDateFilter] = useState<string>('all')
 	const [sort, setSort] = useState<string>('def')
 	const [tagFilter, setTagFilter] = useState<string>('')
+
+	const observerRef = useRef<IntersectionObserver | null>(null)
+	const loadMoreRef = useRef<HTMLDivElement | null>(null)
+
+	const getServerFilters = () => {
+		const filters: any = {
+			limit: 5,
+		}
+
+		if (dateFilter === 'today') {
+			filters.dateFilter = 'today'
+		} else if (dateFilter === 'this_month') {
+			filters.dateFilter = 'this_month'
+		} else if (dateFilter === 'done') {
+			filters.isCompleted = true
+		} else if (dateFilter === 'pending') {
+			filters.isCompleted = false
+		}
+
+		if (tagFilter && tagFilter !== '-all-') {
+			filters.category = tagFilter
+		}
+
+		return filters
+	}
+
+	const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+		useGetTodos(isAuthenticated, getServerFilters())
 	const { data: fetchedTags } = useGetTags(isAuthenticated)
 
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5,
-			},
-		})
-	)
+	const allTodos = data?.pages.flatMap((page) => page.todos) || []
 
-	const isToday = (todoDate: string) => {
-		const todoMoment = parseTodoDate(todoDate)
-
-		return (
-			todoMoment.isValid() &&
-			todoMoment.format('YYYY-MM-DD') === today.doAsGregorian().format('YYYY-MM-DD')
-		)
-	}
-
-	const isThisMonth = (todoDate: string) => {
-		const todoMoment = parseTodoDate(todoDate)
-
-		return (
-			todoMoment.isValid() &&
-			todoMoment.jYear() === today.doAsGregorian().jYear() &&
-			todoMoment.jMonth() === today.doAsGregorian().jMonth()
-		)
-	}
-
-	let selectedDateTodos = todos
-
-	selectedDateTodos = selectedDateTodos.sort((a, b) => {
+	const sortedTodos = [...allTodos].sort((a, b) => {
 		switch (sort) {
 			case 'def':
-				return (a.order || 0) - (b.order || 0)
+				return a.order - b.order
+			case 'pending-first':
+				if (a.completed === b.completed) return a.order - b.order
+				return a.completed ? 1 : -1
+			case 'done-first':
+				if (a.completed === b.completed) return a.order - b.order
+				return a.completed ? -1 : 1
 			case 'high':
 				return b.priority === 'high' ? 1 : a.priority === 'high' ? -1 : 0
 			case 'medium':
@@ -100,75 +88,43 @@ export function TodosLayout() {
 			case 'low':
 				return b.priority === 'low' ? 1 : a.priority === 'low' ? -1 : 0
 			default:
-				return (a.order || 0) - (b.order || 0)
+				return a.order - b.order
 		}
 	})
 
-	const filterTodos = (todos: Todo[]) => {
-		let result: Todo[] = []
-		switch (dateFilter) {
-			case 'today':
-				result = todos.filter((todo) => todo.date && isToday(todo.date))
-				break
-			case 'thisMonth':
-				result = todos.filter((todo) => todo.date && isThisMonth(todo.date))
-				break
-			case 'done':
-				result = todos.filter((t) => t.completed)
-				break
-			case 'pending':
-				result = todos.filter((t) => !t.completed)
-				break
-			default:
-				result = todos
+	useEffect(() => {
+		if (observerRef.current) {
+			observerRef.current.disconnect()
 		}
 
-		if (tagFilter && tagFilter !== '-all-') {
-			result = result.filter((f) => f.category === tagFilter)
+		observerRef.current = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+					fetchNextPage()
+				}
+			},
+			{ threshold: 0.1 }
+		)
+
+		if (loadMoreRef.current) {
+			observerRef.current.observe(loadMoreRef.current)
 		}
 
-		return result
-	}
-
-	selectedDateTodos = filterTodos(selectedDateTodos)
-
-	const handleAddTodo = (todoInput: Omit<AddTodoInput, 'date'> & { date: string }) => {
-		if (!isAuthenticated) {
-			callEvent('open_require_auth_modal')
-			return
+		return () => {
+			if (observerRef.current) {
+				observerRef.current.disconnect()
+			}
 		}
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-		addTodo({
-			...todoInput,
-			date: todoInput.date,
-		})
-	}
-
-	const handleDragEnd = (event: DragEndEvent) => {
-		if (!isAuthenticated) {
-			callEvent('open_require_auth_modal')
-			return
-		}
-
-		const { active, over } = event
-
-		if (!over || active.id === over.id) {
-			return
-		}
-
-		const activeIndex = selectedDateTodos.findIndex((todo) => todo.id === active.id)
-		const overIndex = selectedDateTodos.findIndex((todo) => todo.id === over.id)
-
-		if (activeIndex !== -1 && overIndex !== -1) {
-			const reorderedTodos = arrayMove(selectedDateTodos, activeIndex, overIndex)
-
-			reorderTodos(reorderedTodos)
-		}
+	const handleCloseTodoEditor = () => {
+		setEditingTodo(null)
+		Analytics.event('todo_edit_close')
 	}
 
 	const onDateFilterChange = (value: string) => {
 		setDateFilter(value)
-		Analytics.event(`todo_filter_${value}_click`)
+		Analytics.event(`todo_select_date_${value}_filter`)
 		setToStorage('todoFilter', value)
 	}
 
@@ -183,10 +139,18 @@ export function TodosLayout() {
 		Analytics.event(`todo_tag_change`)
 	}
 
-	const onRefresh = () => {
-		refetchTodos()
-		Analytics.event(`todo_refetch`)
-	}
+	useEffect(() => {
+		async function load() {
+			const [todoFilter, todoSort] = await Promise.all([
+				getFromStorage('todoFilter'),
+				getFromStorage('todoSort'),
+			])
+			if (todoFilter) setDateFilter(todoFilter)
+			if (todoSort) setSort(todoSort)
+		}
+
+		load()
+	}, [])
 
 	const tagFilterOptions =
 		fetchedTags
@@ -202,18 +166,15 @@ export function TodosLayout() {
 		})
 	}
 
-	useEffect(() => {
-		async function load() {
-			const [todoFilter, todoSort] = await Promise.all([
-				getFromStorage('todoFilter'),
-				getFromStorage('todoSort'),
-			])
-			if (todoFilter) setDateFilter(todoFilter)
-			if (todoSort) setSort(todoSort)
-		}
+	const openEditTodo = (todo: Todo) => {
+		setEditingTodo(todo)
+		Analytics.event('todo_edit_open')
+	}
 
-		load()
-	}, [])
+	const onRefresh = () => {
+		refetch()
+		Analytics.event(`todo_refetch`)
+	}
 
 	return (
 		<>
@@ -277,7 +238,7 @@ export function TodosLayout() {
 						</div>
 					</div>
 					<div className="flex items-center gap-1">
-						{isPending ? <IconLoading /> : null}
+						{isLoading ? <IconLoading /> : null}
 						<Tooltip content="بارگزاری مجدد">
 							<Button
 								size="sm"
@@ -285,7 +246,7 @@ export function TodosLayout() {
 								onClick={onRefresh}
 							>
 								<MdRefresh
-									className={`text-content opacity-50 hover:opacity-100 ${isPending ? 'animate-spin' : ''}`}
+									className={`text-content opacity-50 hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>
@@ -293,52 +254,88 @@ export function TodosLayout() {
 				</div>
 			</div>
 			<div className="mt-0.5 grow overflow-hidden">
-				<DndContext
-					sensors={sensors}
-					collisionDetection={closestCenter}
-					onDragEnd={handleDragEnd}
+				<div
+					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 				>
-					<div
-						className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-					>
-						{selectedDateTodos.length > 0 ? (
-							<SortableContext
-								items={selectedDateTodos.map((todo) => todo.id)}
-								strategy={verticalListSortingStrategy}
-							>
-								{selectedDateTodos.map((todo) => (
-									<SortableTodoItem
-										key={todo.id}
-										todo={todo}
-										blurMode={blurMode}
-									/>
-								))}
-							</SortableContext>
-						) : (
-							<div
-								className={
-									'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
-								}
-							>
-								<div
-									className={
-										'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-									}
-								>
-									<FiList className="text-content" size={24} />
+					{isLoading ? (
+						<div className="flex flex-col gap-1">
+							{[...Array(5)].map((_, i) => (
+								<TodoSkeleton key={i} />
+							))}
+						</div>
+					) : sortedTodos.length === 0 ? (
+						<TodosEmpty />
+					) : (
+						<div className="flex flex-col gap-0">
+							{sortedTodos.map((todo) => (
+								<TodoItem
+									blurMode={blurMode}
+									key={todo.id}
+									todo={todo}
+									onUpdated={() => refetch()}
+									onEdit={(t: any) => openEditTodo(t)}
+								/>
+							))}
+
+							{hasNextPage && (
+								<div ref={loadMoreRef} className="">
+									{isFetchingNextPage && (
+										<div className="flex flex-col gap-1">
+											{[...Array(3)].map((_, i) => (
+												<TodoSkeleton key={i} />
+											))}
+										</div>
+									)}
 								</div>
-								<p className="mt-1 font-bold text-center text-content">
-									هیچ تسکی برای نمایش وجود ندارد
-								</p>
-								<p className="text-center text-[.65rem] text-content opacity-75">
-									یک تسک جدید اضافه کنید یا فیلترها را تغییر دهید
-								</p>
-							</div>
-						)}
-					</div>
-				</DndContext>
+							)}
+						</div>
+					)}
+				</div>
 			</div>
-			{<ExpandableTodoInput onAddTodo={handleAddTodo} />}
+			{
+				<ExpandableTodoInput
+					editTodo={editingTodo as any}
+					onClose={() => handleCloseTodoEditor()}
+					isEdit={!!editingTodo}
+					onUpdated={refetch}
+				/>
+			}
 		</>
+	)
+}
+
+function TodosEmpty() {
+	return (
+		<div
+			className={
+				'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
+			}
+		>
+			<div
+				className={
+					'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
+				}
+			>
+				<FiList className="text-content" size={24} />
+			</div>
+			<p className="mt-1 font-bold text-center text-content">
+				هیچ تسکی برای نمایش وجود ندارد
+			</p>
+			<p className="text-center text-[.65rem] text-content opacity-75">
+				یک تسک جدید اضافه کنید یا فیلترها را تغییر دهید
+			</p>
+		</div>
+	)
+}
+
+export function TodoSkeleton() {
+	return (
+		<div className="flex flex-row justify-between gap-1 p-1 overflow-hidden border rounded-lg shadow-sm border-content bg-glass bg-base-300/30">
+			<div className="flex items-center gap-1">
+				<div className="w-5 h-5 rounded-md skeleton shrink-0"></div>
+				<div className="w-32 h-5 skeleton"></div>
+			</div>
+			<div className="w-5 h-5 rounded-md skeleton shrink-0"></div>
+		</div>
 	)
 }
