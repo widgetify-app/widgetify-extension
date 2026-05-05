@@ -55,6 +55,7 @@ export const TabNavigation = <T,>({
                             ${tabMode === 'sample' || isActive ? 'flex-2' : 'flex-1'}
                             ${isActive ? `text-base-content/60 text-shadow-2xs font-bold text-icy ${activeTextClass}` : 'text-base-content/50 hover:bg-base-300 hover:text-base-content/30'}
                         `}
+						type="button"
 					>
 						{tab.icon && <span>{tab.icon}</span>}
 						{(tabMode === 'sample' || isActive) && (

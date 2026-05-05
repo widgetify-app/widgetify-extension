@@ -40,7 +40,7 @@ export function TypeSelector({
 }) {
 	return (
 		<TabNavigation<BookmarkType>
-			className="w-full!"
+			className="w-full! border-none!"
 			tabMode="sample"
 			size="small"
 			tabs={[
