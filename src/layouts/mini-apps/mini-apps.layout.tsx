@@ -5,6 +5,9 @@ import { useEffect, useRef } from 'react'
 import { MiniAppRunner } from './mini-app-runner'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
+import { HiOutlineInformationCircle } from 'react-icons/hi2'
+import Modal from '@/components/modal'
+import { Button } from '@/components/button/button'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
@@ -13,6 +16,7 @@ export function MiniAppsLayout() {
 	const miniApps = data?.pages?.flatMap((f) => f.data.miniApps) ?? []
 	const isEmpty = !isLoading && !isError && miniApps.length === 0
 	const [isFullScreen, setIsFullScreen] = useState(false)
+	const [showInfo, setShowInfo] = useState(false)
 
 	const onClickToExist = () => {
 		setSelectedAppId(null)
@@ -31,6 +35,11 @@ export function MiniAppsLayout() {
 			event()
 		}
 	}, [])
+
+	const onClickToShowInfo = () => {
+		Analytics.event('mini_apps_show_info_modal')
+		setShowInfo(true)
+	}
 
 	useEffect(() => {
 		if (observerRef.current) {
@@ -63,8 +72,14 @@ export function MiniAppsLayout() {
 				<div
 					className={`flex-1 w-full h-full p-1 border-l border-content bg-content bg-glass rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-all duration-200`}
 				>
-					<div className="px-1 py-2">
+					<div className="flex justify-between px-1 py-2">
 						<p className="text-lg font-bold"> برنامک ها</p>
+						<div
+							onClick={() => onClickToShowInfo()}
+							className="p-1 text-lg font-bold cursor-pointer text-base-content/80 hover:text-base-content active:scale-95"
+						>
+							<HiOutlineInformationCircle className="m-auto text-center" />
+						</div>
 					</div>
 					<div className="flex flex-col gap-1 overflow-y-auto  h-[calc(100vh-10rem)]">
 						{isEmpty && (
@@ -123,6 +138,44 @@ export function MiniAppsLayout() {
 					)}
 				</div>
 			</div>
+
+			{showInfo && (
+				<Modal
+					title="برنامک ها"
+					isOpen
+					onClose={() => setShowInfo(false)}
+					direction="rtl"
+				>
+					<div className="space-y-3 text-sm">
+						<p className="font-semibold">
+							برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
+							می‌تونی ازشون استفاده کنی، بدون اینکه مجبور باشی از اپ اصلی بری
+							بیرون.
+						</p>
+
+						<p>
+							خیالت راحت! این برنامک‌ها به طور پیش‌فرض به هیچ اطلاعاتی ازت
+							دسترسی ندارن و فقط و فقط با اجازه خودت می‌تونن به اطلاعاتت
+							دسترسی پیدا کنن.
+						</p>
+
+						<p>
+							اگر علاقه‌مند به همکاری با ما در این حوزه هستید، راه‌های ارتباطی
+							در دسترس شماست.
+						</p>
+					</div>
+
+					<Button
+						size="sm"
+						type="button"
+						isPrimary
+						onClick={() => setShowInfo(false)}
+						className="h-12 mt-2 text-base font-bold shadow-sm btn-block rounded-2xl"
+					>
+						باشه
+					</Button>
+				</Modal>
+			)}
 		</div>
 	)
 }

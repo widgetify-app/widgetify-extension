@@ -44,7 +44,7 @@ export function DateDisplay() {
 	return (
 		<div
 			className={
-				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500 rounded-xl group'
+				'relative flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden text-center transition-all duration-500 rounded-xl group min-h-32 max-h-32'
 			}
 		>
 			<div className="absolute inset-0 z-20 group">

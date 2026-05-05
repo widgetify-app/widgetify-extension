@@ -23,6 +23,7 @@ async function checkForUpdates() {
 				updateUrl: data.chrome.updateUrl,
 				downloadUrl: data.chrome.downloadUrl,
 				notes: data.chrome.notes,
+				versionName: data.chrome.versionName,
 			}
 
 			return updateInfo
@@ -42,6 +43,7 @@ interface UpdateInfo {
 	updateUrl: string
 	downloadUrl: string
 	notes: string[]
+	versionName: string
 }
 
 export function UpdateChecker() {
@@ -137,26 +139,24 @@ export function UpdateChecker() {
 			<Modal
 				isOpen={showModal}
 				onClose={() => !updateInfo.force && setShowModal(false)}
-				title={'📦 نسخه جدید رسید!'}
+				title={'📦 نسخه جدید رسید'}
 				direction="rtl"
 				size="md"
 				closeOnBackdropClick={!updateInfo.force}
 				showCloseButton={!updateInfo.force}
 			>
 				<div className="flex flex-col gap-4 p-2 mt-4">
-					<div className="flex justify-center">
-						<div className="relative">
-							<div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" />
-							<div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/10">
-								<LuDownload className="w-8 h-8 text-primary" />
-							</div>
-						</div>
-					</div>
-
 					<div className="space-y-2 text-center">
 						<h3 className="text-lg font-semibold">
-							نسخه جدید ویجتیفای منتشر شد!
+							بروزرسانی جدید ویجتیفای منتشر شد!
 						</h3>
+						<div
+							className={
+								'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-primary/80'
+							}
+						>
+							<span>"{updateInfo.versionName}"</span>
+						</div>
 					</div>
 
 					{updateInfo.force && (
