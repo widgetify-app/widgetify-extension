@@ -203,7 +203,7 @@ export function ExpandableTodoInput({
 				showToast(errorContent as string, 'error')
 			}
 		}
-	}, [category, priority, selectedDate, resetForm, isEdit])
+	}, [category, priority, selectedDate, resetForm, isEdit, isAuthenticated])
 
 	const onCloseEdit = () => {
 		resetForm()

@@ -70,6 +70,8 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 		if (app && app.scopes.length === 0 && !launchData) {
 			doLaunch()
 		}
+
+		setUserConfirmedScopes(false)
 	}, [app, appId])
 
 	useEffect(() => {
@@ -99,7 +101,6 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 		return () => {
 			window.removeEventListener('message', handleMessage)
 			clearTimer()
-			setUserConfirmedScopes(false)
 		}
 	}, [launchData])
 

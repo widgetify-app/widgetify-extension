@@ -7,7 +7,6 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
-import Tooltip from '@/components/toolTip'
 import { useTheme } from '@/context/theme.context'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 
@@ -91,17 +90,15 @@ export function ThemeSelector({ fetched_themes }: Props) {
 	}
 
 	const renderThemePreview = (item: ThemeItem) => (
-		<Tooltip content={item.description}>
-			<div className="flex items-center gap-2">
-				<span
-					className="flex items-center justify-center w-5 h-5 rounded-full bg-content bg-glass text-primary"
-					data-theme={item.id}
-				>
-					{item.icon}
-				</span>
-				<span className="w-32 text-xs truncate">{item.description}</span>
-			</div>
-		</Tooltip>
+		<div className="flex items-center gap-2">
+			<span
+				className="flex items-center justify-center w-5 h-5 rounded-full bg-content bg-glass text-primary"
+				data-theme={item.id}
+			>
+				{item.icon}
+			</span>
+			<span className="w-32 text-xs truncate">{item.description}</span>
+		</div>
 	)
 
 	return (
