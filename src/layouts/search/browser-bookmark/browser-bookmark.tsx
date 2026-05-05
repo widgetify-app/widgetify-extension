@@ -5,7 +5,7 @@ import Tooltip from '@/components/toolTip'
 import { HiGlobeAlt } from 'react-icons/hi2'
 import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
-import { usePage } from '@/context/page.context'
+import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
 import { NewBadge } from '@/components/badges/new.badge'
 
@@ -58,7 +58,7 @@ export function BrowserBookmark() {
 	}
 
 	const onClickToExplorer = () => {
-		setPage('explorer')
+		setPage(Page.Explorer)
 		Analytics.event('searchbox_explorer_page_opened')
 	}
 

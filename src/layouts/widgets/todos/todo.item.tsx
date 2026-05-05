@@ -13,7 +13,6 @@ import { validate } from 'uuid'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
-import { EditTodoModal } from './edit-todo-modal'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { playAlarm } from '@/common/playAlarm'
@@ -38,7 +37,6 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 	const [currentTodo, setCurrentTodo] = useState<FetchedTodo>(todo)
 	const [expanded, setExpanded] = useState(false)
 	const [showConfirmation, setShowConfirmation] = useState(false)
-	const [showEditModal, setShowEditModal] = useState(false)
 	const { mutateAsync, isPending: isRemoving } = useRemoveTodo(todo.id)
 	const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateTodo(
 		currentTodo?.id
@@ -241,13 +239,6 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					confirmText={isPending ? <IconLoading /> : 'حذف'}
 					message="آیا از حذف مطمئن هستید؟"
 					variant="danger"
-				/>
-			)}
-			{showEditModal && (
-				<EditTodoModal
-					todo={currentTodo}
-					isOpen={showEditModal}
-					onClose={() => setShowEditModal(false)}
 				/>
 			)}
 		</div>

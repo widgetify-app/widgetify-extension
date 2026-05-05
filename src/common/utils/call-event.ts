@@ -1,7 +1,6 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { SyncTarget } from '@/layouts/navbar/sync/sync'
 import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
@@ -14,7 +13,6 @@ import React from 'react'
 import { Page } from '@/context/page.context'
 
 export interface EventName {
-	startSync: SyncTarget
 	openSettings: 'account' | 'wallpapers' | 'general' | null
 	todosChanged: Todo[]
 	wallpaperChanged: StoredWallpaper
