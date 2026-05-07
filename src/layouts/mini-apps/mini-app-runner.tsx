@@ -130,7 +130,7 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 				isLoadingApp={isLoadingApp}
 			/>
 
-			<div className="relative flex-1 overflow-hidden rounded-bl-2xl">
+			<div className="relative flex-1 overflow-hidden rounded-b-2xl">
 				{isLoading && <MiniAppInit icon={app?.icon} name={app?.name} />}
 
 				{shouldShowAuthGate && (
