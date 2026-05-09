@@ -92,6 +92,9 @@ export const ProfileDisplay = () => {
 						>
 							<LuCamera size={12} />
 						</button>
+						{showEditBadge('avatar') && (
+							<span className="absolute w-2 h-2 rounded-full right-4 -bottom-0.5 bg-error animate-pulse"></span>
+						)}
 					</div>
 					<div className="flex flex-col gap-2 mr-2">
 						<h2 className="text-xl font-bold text-content">

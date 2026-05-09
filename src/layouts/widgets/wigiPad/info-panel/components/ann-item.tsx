@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { getContrastingTextColor } from '@/common/color'
 import { callEvent } from '@/common/utils/call-event'
 import type { NotificationItem } from '@/services/hooks/extension/getNotifications.hook'
 
@@ -60,7 +61,10 @@ export function RenderWigiPadItem({ notification }: NotificationItemProps) {
 	}
 
 	const titleStyle: React.CSSProperties = {
-		color: notification.titleColor || undefined,
+		color:
+			notification.titleColor || notification.backgroundColor
+				? getContrastingTextColor(notification.backgroundColor || '')
+				: undefined,
 		textDecoration: notification.titleDecoration,
 	}
 
@@ -97,7 +101,7 @@ export function RenderWigiPadItem({ notification }: NotificationItemProps) {
 		>
 			<div
 				className={`
-        group relative flex items-center gap-1.5 w-fit px-2 py-0.5 ${notification.hasBorder && 'border border-content'}  ${clickable ? 'transition-all duration-150 active:scale-95' : ''}
+        group relative flex items-center gap-1 w-fit px-1 py-0.5 ${notification.hasBorder && 'border border-content'}  ${clickable ? 'transition-all duration-150 active:scale-95' : ''}
       `}
 				style={containerStyle}
 			>

@@ -73,10 +73,17 @@ export function ProfileNav() {
 					</div>
 				</Tooltip>
 			) : (
-				<Tooltip content={getTooltipContent(user)}>
+				<Tooltip
+					content={
+						profilePercentage
+							? 'پروفایلت رو کامل کن!'
+							: getTooltipContent(user)
+					}
+					className="cursor-pointer"
+				>
 					{profilePercentage ? (
 						<div
-							className="absolute radial-progress text-primary/80"
+							className="absolute z-10 outline-2 outline-primary/40 radial-progress text-primary/80"
 							style={{
 								// @ts-expect-error
 								'--value': profilePercentage,
@@ -84,6 +91,7 @@ export function ProfileNav() {
 							}}
 							aria-valuenow={0}
 							role="progressbar"
+							onClick={() => handleProfileClick('profile')}
 						></div>
 					) : null}
 					<div

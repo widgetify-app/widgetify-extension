@@ -53,7 +53,7 @@ export function ClockDisplay() {
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden min-h-32 max-h-32">
+		<div className="relative flex flex-col items-center justify-center p-1 overflow-hidden">
 			<div className="absolute inset-0 z-20 group ">
 				<Button
 					size="xs"
