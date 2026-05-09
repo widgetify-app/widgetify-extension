@@ -158,6 +158,8 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 							launchUrl={app?.launchUrl}
 							ref={iframeRef}
 							isAppReady={isAppReady}
+							allowPermission={app.allowPermission}
+							sandboxPermission={app.sandboxPermission}
 						/>
 					)}
 			</div>

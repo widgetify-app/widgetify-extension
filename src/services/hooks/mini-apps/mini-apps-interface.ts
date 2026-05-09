@@ -16,6 +16,8 @@ export interface MiniApp {
 	badge: string | null
 	badgeColor: string | null
 	badgeAnimate: boolean
+	allowPermission: string[]
+	sandboxPermission: string[]
 	scopes: MiniAppScopeEnum[]
 }
 

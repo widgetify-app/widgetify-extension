@@ -6,8 +6,17 @@ interface Prop {
 	ref: any
 	appName: string
 	isAppReady: boolean
+	allowPermission: string[]
+	sandboxPermission: string[]
 }
-export function MiniAppIframe({ appName, launchUrl, ref, isAppReady }: Prop) {
+export function MiniAppIframe({
+	appName,
+	launchUrl,
+	ref,
+	isAppReady,
+	allowPermission,
+	sandboxPermission,
+}: Prop) {
 	const { fontFamily } = useAppearanceSetting()
 	const { theme } = useTheme()
 	const urlObj = new URL(launchUrl || '')
@@ -23,9 +32,9 @@ export function MiniAppIframe({ appName, launchUrl, ref, isAppReady }: Prop) {
 			ref={ref}
 			src={url}
 			className={`w-full h-full border-none transition-opacity duration-300 ${isAppReady ? 'opacity-100' : 'opacity-0'}`}
-			title={appName ?? 'مینی‌اپ'}
-			allow="camera; microphone; geolocation"
-			sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+			title={appName ?? 'برنامک'}
+			allow={allowPermission.join('; ')}
+			sandbox={sandboxPermission.join(' ')}
 		/>
 	)
 }
