@@ -45,6 +45,12 @@ export const ActiveFriendsHorizontal = () => {
 									name={'شما'}
 									activity={currentUserActivity?.content || ''}
 									onClick={() => setIsBottomSheetOpen(true)}
+									reactions={
+										activitiesData.attachments?.reactions || []
+									}
+									isSelf
+									id={currentUserActivity.activityId}
+									index={5}
 								/>
 							}
 							position="top-right"
@@ -61,6 +67,8 @@ export const ActiveFriendsHorizontal = () => {
 											}
 										: null
 								}
+								reactions={activitiesData.attachments?.reactions || []}
+								templates={activitiesData?.attachments?.templates || []}
 							/>
 						</Dropdown>
 					) : (
@@ -78,17 +86,23 @@ export const ActiveFriendsHorizontal = () => {
 								isOpen={isBottomSheetOpen}
 								onClose={() => setIsBottomSheetOpen(false)}
 								currentActivity={null}
+								reactions={activitiesData?.attachments?.reactions || []}
+								templates={activitiesData?.attachments?.templates || []}
 							/>
 						</Dropdown>
 					))}
 
-				{activitiesData?.activities?.map((activity) => {
+				{activitiesData?.activities?.map((activity, index) => {
 					return (
 						<ActivityCard
-							key={activity.avatar}
+							index={index}
+							id={activity.activityId}
+							isSelf={false}
+							key={`activity-avatar-${index}`}
 							avatar={activity.avatar || ''}
 							name={activity.name}
 							activity={activity.content.trim()}
+							reactions={activitiesData.attachments?.reactions || []}
 						/>
 					)
 				})}

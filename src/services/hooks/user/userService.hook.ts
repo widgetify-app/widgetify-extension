@@ -224,7 +224,7 @@ export function useSetActivity() {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: async (body: { content: string }) => {
+		mutationFn: async (body: { content: string, time: number }) => {
 			const client = await getMainClient()
 			const response = await client.put('/users/@me/activities/beta', body)
 			return response.data

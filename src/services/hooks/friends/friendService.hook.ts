@@ -19,10 +19,10 @@ interface FriendRequestResponse {
 export interface FriendRequestError {
 	success: false
 	message:
-		| 'CANT_REQUEST_YOURSELF'
-		| 'USER_NOT_FOUND'
-		| 'FRIEND_REQUEST_ALREADY_SENT'
-		| 'FRIEND_REQUEST_ALREADY_EXISTS'
+	| 'CANT_REQUEST_YOURSELF'
+	| 'USER_NOT_FOUND'
+	| 'FRIEND_REQUEST_ALREADY_SENT'
+	| 'FRIEND_REQUEST_ALREADY_EXISTS'
 }
 
 export interface FriendUser {
@@ -54,13 +54,47 @@ export interface UserActivity {
 	name: string
 	username: string
 	avatar: string
-	activityId: string | null
+	activityId: string
 	content: string
 	isSelf: boolean
+	reactionCount: number
+}
+export const ReactionKey = {
+	CRYING: 'CRYING',
+	HEART_BLUE: 'HEART_BLUE',
+	LIKE: 'LIKE',
+	DIS_LIKE: 'DIS_LIKE',
+	LAUGH: 'LAUGH',
+	FIRE: 'FIRE',
+} as const
+
+export type ReactionKey = (typeof ReactionKey)[keyof typeof ReactionKey]
+
+export interface AttachmentReaction {
+	id: ReactionKey
+	isEmoji: boolean
+	content: string //emoji
 }
 export interface ActivitiesResponse {
 	activities: UserActivity[]
 	currentUser: UserActivity | null
+	attachments: {
+		reactions: AttachmentReaction[]
+		templates: string[]
+	}
+}
+
+export interface ActivityReactionItem {
+	username: string | null
+	avatar: string | null
+	name: string
+	createdAt: string
+	reaction: string
+}
+export interface GetActivityReactionResponse {
+	reactions: ActivityReactionItem[]
+	currentUser: Pick<ActivityReactionItem, 'reaction' | 'createdAt'>
+	isOwnedActivity: boolean
 }
 
 export interface GetFriendsParams {
@@ -189,6 +223,34 @@ export function useGetActivities() {
 		retry: 1,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		gcTime: 10 * 60 * 1000, // 10 minutes
+	})
+}
+
+export function useGetActivityReactions(id: string, enabled: boolean) {
+	return useQuery({
+		queryKey: ['activity-reactions', id],
+		enabled,
+		queryFn: async (): Promise<GetActivityReactionResponse> => {
+			const client = await getMainClient()
+
+			const response = await client.get(`/friends/activities/beta/${id}/reactions`)
+			return response.data.data
+		},
+		retry: 1,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
+	})
+}
+
+export function useUpsertActivityReaction() {
+	return useMutation({
+		mutationFn: async (input: { reactionKey: string; activityId: string }) => {
+			const client = await getMainClient()
+
+			await client.put(`/friends/activities/beta/${input.activityId}/reactions`, {
+				reaction: input.reactionKey,
+			})
+		},
 	})
 }
 
