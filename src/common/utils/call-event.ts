@@ -53,6 +53,7 @@ export interface EventName {
 	market_change_tab: string
 	open_require_auth_modal: null
 	toggle_miniApp_fullScreen: boolean
+	close_friends_bottomSheet: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

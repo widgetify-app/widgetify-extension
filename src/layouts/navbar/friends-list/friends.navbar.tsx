@@ -4,7 +4,7 @@ import { useAuth } from '@/context/auth.context'
 import { HiOutlineUserGroup, HiOutlineUserPlus } from 'react-icons/hi2'
 import { BottomSheet } from '@/components/bottom-sheet/bottom-sheet'
 import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities'
-import { callEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
 
 const renderPendingNotification = (pendingCount: number) => (
@@ -26,6 +26,14 @@ export function FriendsListNavbar() {
 		}
 		callEvent('openProfile', 'friends')
 	}
+
+	useEffect(() => {
+		const event = listenEvent('close_friends_bottomSheet', () => setIsOpen(false))
+		return () => {
+			event()
+		}
+	}, [])
+
 	if (!isAuthenticated) {
 		return null
 	}

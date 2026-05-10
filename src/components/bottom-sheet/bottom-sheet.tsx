@@ -55,7 +55,7 @@ export function BottomSheet({
 				{isOpen && (
 					<>
 						<motion.div
-							className={`fixed inset-0 z-40 ${isDragging ? '' : 'bg-black'}`}
+							className={`fixed inset-0 z-50 ${isDragging ? '' : 'bg-black'}`}
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 0.5 }}
 							exit={{ opacity: 0 }}

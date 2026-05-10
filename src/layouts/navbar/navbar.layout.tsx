@@ -3,7 +3,7 @@ import { HiX } from 'react-icons/hi'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
 import { SettingsDropdown } from './components/settingsDropdown'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
@@ -110,6 +110,9 @@ export function NavbarLayout(): JSX.Element {
 	)
 
 	const onToggleNavbar = () => {
+		if (isVisible) {
+			callEvent('close_friends_bottomSheet')
+		}
 		setIsVisible((prev) => !prev)
 		setToStorage('navbarVisible', !isVisible)
 		Analytics.event(`navbar_${isVisible ? 'closed' : 'opened'}`)
@@ -164,7 +167,7 @@ export function NavbarLayout(): JSX.Element {
 			)}
 
 			<div
-				className={`fixed z-50 -translate-x-1/2 left-1/2 
+				className={`fixed z-60 -translate-x-1/2 left-1/2 
 					w-full
 					px-2
 					md:px-4
@@ -235,5 +238,5 @@ export function NavbarLayout(): JSX.Element {
 function getUserLabel(user: UserProfile | null) {
 	if (!user) return 'ویجتیفای'
 
-	return `	سلام ${user.name}!`
+	return `	سلام ${user.name}`
 }
