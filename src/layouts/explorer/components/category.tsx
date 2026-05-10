@@ -117,7 +117,14 @@ function HandleCatalogs({ category, colSpan }: HandleCatalogsProp) {
 					<RenderContentSite key={link.url} link={link} />
 				) : link.type === 'BANNER' ? (
 					<RenderContentBanner key={link.url} link={link} />
-				) : null
+				) : (
+					<div
+						className="flex items-center justify-center w-full h-full text-[10px] border blur-sm hover:blur-none transition-all duration-200  border-dashed border-content rounded-2xl text-muted"
+						key=""
+					>
+						نیازمند بروزرسانی
+					</div>
+				)
 			)}
 		</div>
 	)
