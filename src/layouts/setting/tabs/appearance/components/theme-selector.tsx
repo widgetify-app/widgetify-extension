@@ -19,18 +19,6 @@ interface ThemeItem {
 
 const defaultThemes: ThemeItem[] = [
 	{
-		id: 'glass',
-		name: 'شیشه‌ای',
-		icon: <MdOutlineBlurOn size={14} />,
-		description: 'تم شفاف با افکت شیشه‌ای',
-	},
-	{
-		id: 'icy',
-		name: 'یخی',
-		icon: <MdOutlineBlurOn size={14} />,
-		description: 'تم سفید شفاف با حالت یخی',
-	},
-	{
 		id: 'light',
 		name: 'روشن',
 		icon: <IoMdSunny size={14} />,
@@ -41,6 +29,18 @@ const defaultThemes: ThemeItem[] = [
 		name: 'تیره',
 		icon: <IoMdMoon size={14} />,
 		description: 'تم کلاسیک تیره',
+	},
+	{
+		id: 'glass',
+		name: 'شیشه‌ای',
+		icon: <MdOutlineBlurOn size={14} />,
+		description: 'تم شفاف با افکت شیشه‌ای',
+	},
+	{
+		id: 'icy',
+		name: 'یخی',
+		icon: <MdOutlineBlurOn size={14} />,
+		description: 'تم سفید شفاف با حالت یخی',
 	},
 	{
 		id: 'zarna',
