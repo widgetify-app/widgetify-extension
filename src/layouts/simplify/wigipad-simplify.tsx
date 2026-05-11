@@ -46,7 +46,7 @@ export function SimplifyYadkar() {
 										notification={notification}
 									/>
 								))}
-								<div className="pb-2 mt-1">
+								<div className="pb-4 mt-1">
 									<NotificationCenter />
 								</div>
 							</div>
