@@ -89,18 +89,6 @@ export function ThemeSelector({ fetched_themes }: Props) {
 		callEvent('openMarketModal')
 	}
 
-	const renderThemePreview = (item: ThemeItem) => (
-		<div className="flex items-center gap-2">
-			<span
-				className="flex items-center justify-center w-5 h-5 rounded-full bg-content bg-glass text-primary"
-				data-theme={item.id}
-			>
-				{item.icon}
-			</span>
-			<span className="w-32 text-xs truncate">{item.description}</span>
-		</div>
-	)
-
 	return (
 		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
 			<div className="space-y-3">
@@ -110,15 +98,13 @@ export function ThemeSelector({ fetched_themes }: Props) {
 					{themes.map((item) => (
 						<ItemSelector
 							isActive={selected?.id === item.id}
-							onClick={() => onClick(item)}
 							key={item.id}
-							className="w-full !h-20 !max-h-20 !min-h-20"
 							label={item.name}
-							description={renderThemePreview(item)}
+							onClick={() => onClick(item)}
 						/>
 					))}
 					<div
-						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
+						className="flex items-center justify-center w-full h-10 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<FiShoppingBag size={18} />
