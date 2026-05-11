@@ -9,13 +9,20 @@ import { translateError } from '@/utils/translate-error'
 import Analytics from '../../../../../analytics'
 import { showToast } from '@/common/toast'
 import { useQueryClient } from '@tanstack/react-query'
+import { playAlarm } from '@/common/playAlarm'
+import { Button } from '@/components/button/button'
+import { TbInfoCircle } from 'react-icons/tb'
+import { useAuth } from '@/context/auth.context'
+import { useAppearanceSetting } from '@/context/appearance.context'
 
-export function useWallpaper(
-	fetchedWallpapers: Wallpaper[] | undefined,
-	isAuthenticated: boolean
-) {
+const UI_LABELS: Record<string, string> = {
+	ADVANCED: 'پیشرفته (پیشفرض)',
+	SIMPLE: 'ساده و دلنواز',
+}
+export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const queryClient = useQueryClient()
-
+	const { isAuthenticated } = useAuth()
+	const { ui } = useAppearanceSetting()
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const { mutateAsync } = useChangeWallpaper()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
@@ -97,8 +104,11 @@ export function useWallpaper(
 				'error'
 			)
 		}
-
-		if (!wallpaper.coin || wallpaper.isOwned) setSelectedBackground(wallpaper)
+		let isSet = false
+		if (!wallpaper.coin || wallpaper.isOwned) {
+			setToBackground(wallpaper)
+			isSet = true
+		}
 
 		if (isAuthenticated) {
 			const wallpaperId =
@@ -110,12 +120,13 @@ export function useWallpaper(
 				return
 			}
 
-			setSelectedBackground(wallpaper)
-
 			if (wallpaper.coin && !wallpaper.isOwned) {
 				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
 				queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+				playAlarm('market')
 			}
+
+			if (!isSet) setToBackground(wallpaper)
 		}
 
 		Analytics.event('wallpaper_changed')
@@ -123,8 +134,47 @@ export function useWallpaper(
 
 	const handlePreviewBackground = (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
-
 		Analytics.event('wallpaper_previewed')
+	}
+
+	const setToBackground = (wallpaper: Wallpaper) => {
+		setSelectedBackground(wallpaper)
+
+		if (isAuthenticated && wallpaper.extensionUI) {
+			if (wallpaper.extensionUI !== ui) {
+				showToast(
+					<div className="flex items-center justify-between h-20 p-1 px-4 shadow flex- bg-base-200 rounded-3xl outline outline-primary/10">
+						<div className="flex items-center gap-1">
+							<div className="flex items-center justify-center rounded-full text-primary/80">
+								<TbInfoCircle size={18} />
+							</div>
+							<div className="mr-1 text-sm">
+								<p>
+									حالت ظاهری{' '}
+									<strong>{UI_LABELS[wallpaper.extensionUI]}</strong>{' '}
+									پیشنهاد شده!
+								</p>
+								<span className="text-[10px]">
+									حالت ظاهری رو میتونید تو تنظیمات تغییر بدید.
+								</span>
+							</div>
+						</div>
+						<Button
+							size="sm"
+							className="w-24 transition-all duration-200 rounded-xl active:scale-95"
+							isPrimary
+							onClick={() =>
+								callEvent('ui_change', wallpaper.extensionUI as any)
+							}
+						>
+							اعمال تغییرات
+						</Button>
+					</div>,
+					'info',
+					{ position: 'top-left' }
+				)
+			}
+		}
 	}
 
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {

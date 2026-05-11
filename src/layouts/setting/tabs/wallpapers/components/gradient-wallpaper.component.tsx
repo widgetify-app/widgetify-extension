@@ -83,8 +83,8 @@ export function GradientWallpaper({
 	}
 
 	return (
-		<div className="space-y-4">
-			<SectionPanel title="گرادیان‌های پیش‌فرض">
+		<SectionPanel title="گرادیان‌ها" size="xs">
+			<div className="mt-5 space-y-4">
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
 					{predefinedGradients.map((gradient, index) => (
 						<div
@@ -112,7 +112,7 @@ export function GradientWallpaper({
 						</div>
 					))}
 				</div>
-			</SectionPanel>
-		</div>
+			</div>
+		</SectionPanel>
 	)
 }

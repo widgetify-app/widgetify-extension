@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { preloadImages } from '@/common/utils/preloadImages'
 import type { Category } from '@/common/wallpaper.interface'
 import { Pagination } from '@/components/pagination'
-import { useAuth } from '@/context/auth.context'
 import { FolderPath } from '@/layouts/bookmark/components/folder-path'
 import { useGetWallpapers } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { WallpaperGallery } from '../../../../components/wallpaper-gallery.component'
@@ -17,7 +16,6 @@ export function WallpaperView({
 	selectedCategory,
 	onBackToCategories,
 }: WallpaperViewProps) {
-	const { isAuthenticated } = useAuth()
 	const [currentPage, setCurrentPage] = useState(1)
 
 	const {
@@ -47,7 +45,7 @@ export function WallpaperView({
 	}
 
 	const { selectedBackground, handleSelectBackground, handlePreviewBackground } =
-		useWallpaper(wallpaperResponse?.wallpapers || [], isAuthenticated)
+		useWallpaper(wallpaperResponse?.wallpapers || [])
 
 	useEffect(() => {
 		if (wallpaperResponse?.wallpapers?.length) {

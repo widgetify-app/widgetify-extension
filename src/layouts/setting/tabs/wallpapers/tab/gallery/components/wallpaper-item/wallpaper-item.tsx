@@ -4,6 +4,8 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from '../../../../hooks/use-lazy-load'
+import { LuLayers, LuLayoutTemplate } from 'react-icons/lu'
+import Tooltip from '@/components/toolTip'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -140,6 +142,26 @@ function wallpaperItem({
 								)}
 							</div>
 						</div>
+						{wallpaper.extensionUI ? (
+							<div className="absolute top-0 h-5 py-0.5 px-3 rounded rounded-bl-xl rounded-r-none rounded-tr-xl w-fit bg-black/5 backdrop-blur-lg">
+								<Tooltip
+									content={
+										wallpaper.extensionUI === 'ADVANCED'
+											? ' مناسب حالت ظاهری پیشفرض'
+											: 'مناسب حالت ظاهری ساده'
+									}
+								>
+									{wallpaper.extensionUI === 'SIMPLE' ? (
+										<LuLayoutTemplate
+											size={14}
+											className="text-white/80"
+										/>
+									) : (
+										<LuLayers size={14} className="text-white/80" />
+									)}
+								</Tooltip>
+							</div>
+						) : null}
 
 						{isSelected && (
 							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary/80">

@@ -10,6 +10,7 @@ export interface Wallpaper {
 	categoryId?: string
 	coin?: number
 	isOwned?: boolean
+	extensionUI?: "SIMPLE" | "ADVANCED" | null
 }
 
 export interface GradientColors {
