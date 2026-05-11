@@ -5,7 +5,7 @@ import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { AiOutlineDrag } from 'react-icons/ai'
 import { showToast } from '@/common/toast'
-import { HiOutlineCog } from 'react-icons/hi2'
+import { HiOutlineCog6Tooth } from 'react-icons/hi2'
 
 interface SettingsProps {
 	setShowSettings: (value: boolean) => void
@@ -89,7 +89,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
 				id="settings-button"
 			>
-				<HiOutlineCog size={15} />
+				<HiOutlineCog6Tooth size={15} />
 			</div>
 			<ClickableTooltip
 				triggerRef={triggerRef}
