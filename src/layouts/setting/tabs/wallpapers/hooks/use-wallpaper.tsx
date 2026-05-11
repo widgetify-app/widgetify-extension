@@ -142,6 +142,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 
 		if (isAuthenticated && wallpaper.extensionUI) {
 			if (wallpaper.extensionUI !== ui) {
+				playAlarm('info')
 				showToast(
 					<div className="flex items-center justify-between h-20 p-1 px-4 shadow flex- bg-base-200 rounded-3xl outline outline-primary/10">
 						<div className="flex items-center gap-1">

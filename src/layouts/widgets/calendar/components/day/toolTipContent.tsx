@@ -90,7 +90,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		if (response.action === 'removed') {
 			setMood('')
 			showToast(
-				'مودت حذف شد. اگه بعداً خواستی دوباره می‌تونی یکی انتخاب کنی.',
+				'مودت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
 				'info'
 			)
 		} else {
