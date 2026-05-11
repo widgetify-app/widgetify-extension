@@ -4,7 +4,6 @@ import keepItImage from '@/assets/keep-it.png'
 import { Button } from './button/button'
 import Checkbox from './checkbox'
 import Modal from './modal'
-import { setToStorage } from '@/common/storage'
 
 interface ExtensionInstalledModalProps {
 	show: boolean

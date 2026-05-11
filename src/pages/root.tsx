@@ -1,116 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import Joyride, { type Step } from 'react-joyride'
 import Analytics from '@/analytics'
-import { ConfigKey } from '@/common/constant/config.key'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
-import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
-import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-import { ContentSection } from './home/content-section'
-import { ExplorerContent } from '@/layouts/explorer/explorer'
 import { Page, usePage } from '@/context/page.context'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useAppearanceSetting } from '@/context/appearance.context'
-import { HomeContentSimplify } from './home/home-content-simplify'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { UpdateChecker } from '@/components/updater/updater'
 import { MiniAppPage } from './mini-apps/mini-app.page'
+import { ExplorerPage } from './explorer/explorer.pge'
+import { HomePage } from './home/home.page'
 
-const steps: Step[] = [
-	{
-		target: '#chrome-footer',
-		content: (
-			<div className="flex flex-col gap-1 text-center">
-				<h4 className="text-[14px] font-black text-primary italic">
-					خلوت کردن فضای مرورگر
-				</h4>
-
-				<p className="text-[12px] leading-6 text-base-200 font-medium">
-					برای مخفی کردن این نوار، کافیست روی آن{' '}
-					<span className="font-black text-error">راست کلیک</span> کرده و گزینه
-					زیر را انتخاب کنید:
-				</p>
-
-				<div className="relative group">
-					<img
-						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
-						alt="نحوه مخفی کردن نوار پایین مرورگر"
-						className="object-cover w-full transition-transform duration-500 rounded-xl shadow-2xl border-2 border-primary/20 group-hover:scale-[1.02]"
-					/>
-					<div className="absolute inset-0 pointer-events-none rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
-				</div>
-
-				<div className="p-2 border border-dashed rounded-lg bg-base-100/10 border-base-100/20">
-					<code className="text-[11px] font-bold text-content/60">
-						"Hide footer on New Tab page"
-					</code>
-				</div>
-			</div>
-		),
-		disableBeacon: true,
-		showSkipButton: true,
-		styles: {
-			options: {
-				width: 320,
-				zIndex: 10000,
-			},
-		},
-	},
-	{
-		target: '#settings-button',
-		content:
-			'از این دکمه می‌توانید به تنظیمات عمومی افزونه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
-	},
-	{
-		target: '#profile-and-friends-list',
-		content:
-			'از این بخش می‌توانید به پروفایل شخصی خود و لیست دوستان دسترسی پیدا کنید و آن‌ها را مدیریت کنید.',
-	},
-	{
-		target: '#bookmarks',
-		content:
-			'این بخش به شما امکان می‌دهد بوکمارک‌ها را مدیریت کنید: بوکمارک جدید اضافه کنید، بوکمارک‌های موجود را ویرایش یا حذف کنید و تنظیمات هر بوکمارک را تغییر دهید.',
-	},
-	{
-		target: '#widgets',
-		content:
-			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
-	},
-]
-export function HomePage() {
-	const { ui } = useAppearanceSetting()
-	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
-	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+export function RootLayout() {
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const [tab, setTab] = useState<string | null>(null)
-	const [showTour, setShowTour] = useState(false)
 	const { page } = usePage()
 
 	useEffect(() => {
-		async function displayModalIfNeeded() {
-			const shouldShowWelcome = await getFromStorage('showWelcomeModal')
-
-			if (shouldShowWelcome || shouldShowWelcome === null) {
-				setShowWelcomeModal(true)
-				return
-			}
-
-			const lastVersion = await getFromStorage('lastVersion')
-			if (lastVersion !== ConfigKey.VERSION_NAME) {
-				setShowReleaseNotes(true)
-				return
-			}
-		}
-
 		async function loadWallpaper() {
 			const [wallpaper, browserTitle] = await Promise.all([
 				getFromStorage('wallpaper'),
@@ -150,7 +64,6 @@ export function HomePage() {
 			}
 		}
 
-		displayModalIfNeeded()
 		loadWallpaper()
 
 		const wallpaperChangedEvent = listenEvent(
@@ -183,22 +96,6 @@ export function HomePage() {
 			openAuthRequireModal()
 		}
 	}, [])
-
-	const handleGetStarted = async () => {
-		const [hasSeenTour] = await Promise.all([
-			getFromStorage('hasSeenTour'),
-			setToStorage('showWelcomeModal', false),
-		])
-		setShowWelcomeModal(false)
-		if (!hasSeenTour) {
-			setShowTour(true)
-		}
-	}
-
-	const onCloseReleaseNotes = async () => {
-		await setToStorage('lastVersion', ConfigKey.VERSION_NAME)
-		setShowReleaseNotes(false)
-	}
 
 	function changeWallpaper(wallpaper: StoredWallpaper) {
 		const existingVideo = document.getElementById('background-video')
@@ -256,14 +153,6 @@ export function HomePage() {
 		}
 	}
 
-	function onDoneTour(data: any) {
-		if (data.status === 'finished' || data.status === 'skipped') {
-			setToStorage('hasSeenTour', true)
-			setShowTour(false)
-			Analytics.event(`tour_${data.status}`)
-		}
-	}
-
 	return (
 		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
 			<GeneralSettingProvider>
@@ -283,13 +172,9 @@ export function HomePage() {
 							className="flex w-full h-full"
 						>
 							{page === Page.Home ? (
-								ui === 'ADVANCED' ? (
-									<ContentSection />
-								) : (
-									<HomeContentSimplify />
-								)
+								<HomePage />
 							) : page === Page.Explorer ? (
-								<ExplorerContent />
+								<ExplorerPage />
 							) : (
 								<MiniAppPage />
 							)}
@@ -305,27 +190,7 @@ export function HomePage() {
 					/>
 				</WidgetVisibilityProvider>
 			</GeneralSettingProvider>
-			<Joyride
-				steps={steps}
-				run={showTour}
-				continuous
-				showProgress
-				showSkipButton
-				locale={{
-					next: 'بعدی',
-					back: 'قبلی',
-					skip: 'رد کردن',
-					last: 'پایان',
-					close: 'بستن',
-					nextLabelWithProgress: 'بعدی {step}/{steps}',
-				}}
-				callback={onDoneTour}
-				styles={{
-					options: {
-						primaryColor: '#3b82f6',
-					},
-				}}
-			/>
+
 			<Toaster
 				toastOptions={{
 					error: {
@@ -344,21 +209,6 @@ export function HomePage() {
 				}}
 			/>
 			<UpdateChecker />
-			{showWelcomeModal && (
-				<ExtensionInstalledModal
-					show={showWelcomeModal}
-					onClose={() => handleGetStarted}
-					onGetStarted={handleGetStarted}
-				/>
-			)}
-
-			{showReleaseNotes && (
-				<UpdateReleaseNotesModal
-					isOpen={showReleaseNotes}
-					onClose={() => onCloseReleaseNotes()}
-					counterValue={2}
-				/>
-			)}
 
 			{showAuthRequired && (
 				<AuthRequiredModal

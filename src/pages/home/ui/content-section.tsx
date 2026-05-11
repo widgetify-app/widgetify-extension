@@ -17,7 +17,6 @@ import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
-import { HomeContentSimplify } from './home-content-simplify'
 
 const layoutPositions: Record<string, string> = {
 	center: 'justify-center',
