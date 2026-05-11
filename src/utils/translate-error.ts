@@ -1,4 +1,7 @@
 const errorTranslations: Record<string, string> = {
+	ACTIVITY_ALREADY_EXISTS: 'فقط یک نوشته میتونی داشته باشی!',
+	MAX_SHARED_USERS_EXCEEDED: 'تعداد کاربران قابل اشتراک این تسک بیشتر از حد مجازهه!',
+	ACTIVITY_NOT_FOUND: 'نوشته پیدا نشد!!',
 	// Authentication errors
 	INVALID_PASS_MAIL: 'ایمیل یا رمز عبور اشتباه است',
 	INVALID_CREDENTIALS: 'اطلاعات ورود نامعتبر است',
@@ -144,6 +147,7 @@ const validationTranslations: Record<string, string> = {
 	'friend request already sent': 'درخواست دوستی قبلا ارسال شده است',
 	'name must be longer than or equal to 2 characters':
 		'وارد کردن نام کاربری الزامی است',
+	CONTENT_CONTAINS_PROFANITY: 'محتوا شامل کلمات یا عبارات نامناسب است.',
 }
 
 export function translateValidationMessage(message: string): string {
