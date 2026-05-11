@@ -162,7 +162,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 						</div>
 						<Button
 							size="sm"
-							className="w-24 transition-all duration-200 rounded-xl active:scale-95"
+							className="px-2 transition-all duration-200 w-fit rounded-xl active:scale-95"
 							isPrimary
 							onClick={() =>
 								callEvent('ui_change', wallpaper.extensionUI as any)
