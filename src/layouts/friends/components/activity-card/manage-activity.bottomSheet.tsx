@@ -232,6 +232,7 @@ export function ManageActivityBottomSheet({
 									selected={false}
 									key={''}
 									className="h-fit"
+									dir="auto"
 								>
 									{text}
 								</Chip>
