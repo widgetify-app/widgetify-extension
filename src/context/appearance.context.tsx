@@ -126,7 +126,6 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	}
 
 	const setUI = async (ui: UI) => {
-		console.log('ui changed.', ui)
 		if (!isAuthenticated)
 			return showToast(
 				'برای استفاده از این حالت، باید وارد حساب کاربری خود شوید!',

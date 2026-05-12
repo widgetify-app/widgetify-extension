@@ -22,7 +22,7 @@ const UI_LABELS: Record<string, string> = {
 export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	const queryClient = useQueryClient()
 	const { isAuthenticated } = useAuth()
-	const { ui } = useAppearanceSetting()
+	const { setUI, ui } = useAppearanceSetting()
 	const [selectedBackground, setSelectedBackground] = useState<Wallpaper | null>(null)
 	const { mutateAsync } = useChangeWallpaper()
 	const [customWallpaper, setCustomWallpaper] = useState<Wallpaper | null>(null)
@@ -137,6 +137,10 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 		Analytics.event('wallpaper_previewed')
 	}
 
+	const onChangeUI = (ui: any) => {
+		setUI(ui)
+	}
+
 	const setToBackground = (wallpaper: Wallpaper) => {
 		setSelectedBackground(wallpaper)
 
@@ -164,9 +168,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 							size="sm"
 							className="px-2 transition-all duration-200 w-fit rounded-xl active:scale-95"
 							isPrimary
-							onClick={() =>
-								callEvent('ui_change', wallpaper.extensionUI as any)
-							}
+							onClick={() => onChangeUI(wallpaper.extensionUI as any)}
 						>
 							اعمال تغییرات
 						</Button>
