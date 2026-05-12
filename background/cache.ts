@@ -12,6 +12,7 @@ const allowedPaths = [
 	'/contents',
 	'/extension/notifications',
 	'/extension/searchbox',
+	'/mini-apps'
 ]
 
 export function setupCaching() {
