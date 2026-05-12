@@ -24,6 +24,7 @@ import { useAuth } from '@/context/auth.context'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import Tooltip from '@/components/toolTip'
+import { SyncAccount } from './sync'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -52,7 +53,7 @@ const tabs = [
 ]
 export function NavbarTabs() {
 	const { page, setPage } = usePage()
-
+	SyncAccount()
 	const handleTabClick = (tab: Page) => {
 		setPage(tab)
 		Analytics.event(`navbar_tab_${tab}_click`)

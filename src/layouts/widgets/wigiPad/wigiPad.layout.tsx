@@ -16,7 +16,6 @@ export function WigiPadWidget() {
 	const { data: fetchedData } = useGetNotifications({
 		enabled: true,
 	})
-	const tabContainerRef = useRef<HTMLDivElement>(null)
 
 	const renderContent = () => {
 		switch (activeSection) {
@@ -29,7 +28,7 @@ export function WigiPadWidget() {
 						<DateDisplay />
 						<ClockDisplay />
 						<div className="col-span-2">
-							<div className="flex flex-col mt-1 gap-0.5 overflow-y-auto gap-y-1 scrollbar-none max-h-24 min-h-24">
+							<div className="flex flex-col mt-1 gap-0.5 overflow-y-auto gap-y-1 scrollbar-none max-h-22 min-h-22">
 								{fetchedData?.wigiPad.map((notification, index) => (
 									<RenderWigiPadItem
 										key={index}
@@ -46,16 +45,14 @@ export function WigiPadWidget() {
 	return (
 		<WidgetContainer className="flex flex-col !p-1.5 !h-72 !min-h-72 !max-h-72">
 			<div className="flex-1 h-60">{renderContent()}</div>
-			<div ref={tabContainerRef} className="col-span-2">
-				<TabNavigation
-					tabMode="advanced"
-					activeTab={activeSection}
-					onTabClick={(tab) => setActiveSection(tab)}
-					tabs={sections}
-					size="small"
-					className="m-0! py-0.5! border-none! flex-nowrap w-full"
-				/>
-			</div>
+			<TabNavigation
+				tabMode="advanced"
+				activeTab={activeSection}
+				onTabClick={(tab) => setActiveSection(tab)}
+				tabs={sections}
+				size="small"
+				className="m-0! py-0.5! border-none! flex-nowrap w-full"
+			/>
 		</WidgetContainer>
 	)
 }

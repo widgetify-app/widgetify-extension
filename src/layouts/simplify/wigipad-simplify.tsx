@@ -39,8 +39,8 @@ export function SimplifyYadkar() {
 						<DateDisplay />
 						<ClockDisplay />
 						<div className="col-span-2">
-							<div className="mt-1 flex flex-col gap-0.5 overflow-y-auto scrollbar-none max-h-32 min-h-32">
-								{fetchedData?.wigiPad.map((notification, index) => (
+							<div className="mt-1 flex flex-col gap-0.5 overflow-y-auto scrollbar-none max-h-28 min-h-28">
+								{fetchedData?.wigiPad?.map((notification, index) => (
 									<RenderWigiPadItem
 										key={`wigipad-item-${index}`}
 										notification={notification}
