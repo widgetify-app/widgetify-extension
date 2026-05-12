@@ -158,43 +158,45 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 					</div>
 				</div>
 
-				<div className="p-1.5 rounded-2xl bg-content">
-					<div className="flex items-center gap-1 mb-1.5 px-0.5">
-						<TbMoodHappy className="text-secondary" size={12} />
-						<span className="text-[10px] font-medium text-content">
-							مود امروز
-						</span>
+				{selectedDate.isBefore() && (
+					<div className="p-1.5 rounded-2xl bg-content">
+						<div className="flex items-center gap-1 mb-1.5 px-0.5">
+							<TbMoodHappy className="text-secondary" size={12} />
+							<span className="text-[10px] font-medium text-content">
+								مود {jalaliDay === today.format('dddd') ? 'امروز' : 'روز'}
+							</span>
+						</div>
+						<div className="grid grid-cols-4 gap-1">
+							{moodOptions
+								.filter((f) => f.label)
+								.map((option) => (
+									<button
+										key={option.value}
+										onClick={() => handleMoodChange(option.value)}
+										disabled={isAdding}
+										className={`p-1.5 rounded-xl transition-all cursor-pointer ${
+											mood === option.value
+												? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
+												: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
+										}`}
+									>
+										{isAdding ? (
+											<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
+										) : (
+											<>
+												<div className="text-lg leading-none mb-0.5">
+													{option.emoji}
+												</div>
+												<div className="text-[10px] leading-tight">
+													{option.label}
+												</div>
+											</>
+										)}
+									</button>
+								))}
+						</div>
 					</div>
-					<div className="grid grid-cols-4 gap-1">
-						{moodOptions
-							.filter((f) => f.label)
-							.map((option) => (
-								<button
-									key={option.value}
-									onClick={() => handleMoodChange(option.value)}
-									disabled={isAdding}
-									className={`p-1.5 rounded-xl transition-all cursor-pointer ${
-										mood === option.value
-											? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
-											: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100`
-									}`}
-								>
-									{isAdding ? (
-										<div className="w-5 h-5 mx-auto border-2 border-white rounded-full border-t-transparent animate-spin" />
-									) : (
-										<>
-											<div className="text-lg leading-none mb-0.5">
-												{option.emoji}
-											</div>
-											<div className="text-[10px] leading-tight">
-												{option.label}
-											</div>
-										</>
-									)}
-								</button>
-							))}
-					</div>
-				</div>
+				)}
 
 				{totalEvents > 0 && (
 					<div className="flex flex-row flex-wrap pr-1 space-y-1 overflow-y-auto gap-x-1 max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">

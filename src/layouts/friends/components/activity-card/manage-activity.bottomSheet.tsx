@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { BottomSheet } from '@/components/bottom-sheet/bottom-sheet'
 import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
 import { FiTrash2 } from 'react-icons/fi'
@@ -8,7 +7,7 @@ import { useRemoveActivity, useSetActivity } from '@/services/hooks/user/userSer
 import { translateError } from '@/utils/translate-error'
 import { playAlarm } from '@/common/playAlarm'
 import {
-	AttachmentReaction,
+	type AttachmentReaction,
 	useGetActivityReactions,
 } from '@/services/hooks/friends/friendService.hook'
 import { MakeSkeletonFriendItem } from '../friend-item/friend-item.skeleton'
@@ -17,6 +16,8 @@ import { AvatarComponent } from '@/components/avatar.component'
 import { callEvent } from '@/common/utils/call-event'
 import { Chip } from '@/components/chip.component'
 import { SelectBox } from '@/components/selectbox/selectbox'
+import { BsInfoCircle } from 'react-icons/bs'
+import Tooltip from '@/components/toolTip'
 
 interface ManageActivityBottomSheetProps {
 	isOpen: boolean
@@ -182,7 +183,12 @@ export function ManageActivityBottomSheet({
 				<div className="space-y-1">
 					<div className="space-y-1">
 						<div className="flex justify-between">
-							<p className="text-sm font-medium text-content"> متن نوشته</p>
+							<p className="flex text-sm font-medium text-content">
+								متن نوشته
+								<Tooltip content="نوشته فقط برای دوستان نمایش داده میشه!">
+									<BsInfoCircle className="mr-1 text-muted mt-0.5" />
+								</Tooltip>
+							</p>
 							<SelectBox
 								options={[
 									{
