@@ -1,11 +1,13 @@
-import { IconLoading } from '@/components/loading/icon-loading'
+import type { ReactNode } from 'react'
 
 interface Prop {
 	icon?: string
 	name?: string
+	label: string
+	labelIcon: ReactNode
 }
 
-export function MiniAppInit({ icon, name }: Prop) {
+export function MiniAppLoadingState({ icon, name, label, labelIcon }: Prop) {
 	return (
 		<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 p-6 backdrop-blur-md">
 			{icon && (
@@ -18,10 +20,8 @@ export function MiniAppInit({ icon, name }: Prop) {
 				</div>
 			)}
 			<div className="flex items-center">
-				<IconLoading className="ml-1!" />
-				<span className="text-sm font-medium text-content">
-					{`			در حال اجرای ${name}...`}
-				</span>
+				{labelIcon}
+				{label}
 			</div>
 		</div>
 	)

@@ -96,6 +96,7 @@ export function MiniAppsLayout() {
 								<MiniAppCard
 									app={app}
 									onLaunch={() => setSelectedAppId(app.appId)}
+									isSelected={selectedAppId === app.appId}
 								/>
 							</div>
 						))}

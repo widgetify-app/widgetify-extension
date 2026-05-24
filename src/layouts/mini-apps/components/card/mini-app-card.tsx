@@ -4,12 +4,13 @@ import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps-interface'
 interface MiniAppCardProps {
 	app: MiniApp
 	onLaunch: (app: MiniApp) => void
+	isSelected: boolean
 }
 
-export function MiniAppCard({ app, onLaunch }: MiniAppCardProps) {
+export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 	return (
 		<div
-			className="flex relative items-center  gap-3 p-2 rounded-2xl bg-content border border-base-content/5 active:scale-[0.98] transition-transform overflow-hidden cursor-pointer bg-glass hover:opacity-70"
+			className={`flex relative items-center  gap-3 p-2 rounded-2xl duration-150 border border-base-content/5 active:scale-[0.98] transition-transform overflow-hidden cursor-pointer ${isSelected ? 'border-primary/20 bg-primary/10 text-primary/90' : '  hover:bg-primary/10! bg-content bg-glass! '}`}
 			onClick={() => onLaunch(app)}
 		>
 			<div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-xl shrink-0">
@@ -25,9 +26,11 @@ export function MiniAppCard({ app, onLaunch }: MiniAppCardProps) {
 			</div>
 
 			<div className="flex-1 min-w-0">
-				<p className="text-sm font-semibold truncate text-content">{app.name}</p>
+				<p className="text-sm font-semibold truncate">{app.name}</p>
 				{app.description && (
-					<p className="text-xs text-muted truncate mt-0.5">
+					<p
+						className={`text-xs  truncate mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
+					>
 						{app.description}
 					</p>
 				)}

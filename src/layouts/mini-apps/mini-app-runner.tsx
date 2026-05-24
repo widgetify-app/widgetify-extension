@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLaunchMiniApp } from '@/services/hooks/mini-apps/launch-mini-app.hook'
 import { useGetMiniApp } from '@/services/hooks/mini-apps/get-mini-app.hook'
-import { MiniAppIsConnecting } from './states/mini-app-isConnecting'
 import { MiniAppError } from './states/mini-app-error'
-import { MiniAppInit } from './states/mini-app-init'
+import { MiniAppLoadingState } from './states/mini-app-loading'
 import { MiniAppRunnerHeader } from './components/header/runner.header'
 import { MiniAppIframe } from './components/runner/mini-app-iframe.runner'
 import { WebAppAuthGate } from './states/mini-app.auth'
+import { IconLoading } from '@/components/loading/icon-loading'
 const LOAD_TIMEOUT = 8000
 
 interface Prop {
@@ -131,7 +131,14 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 			/>
 
 			<div className="relative flex-1 overflow-hidden rounded-b-2xl">
-				{isLoading && <MiniAppInit icon={app?.icon} name={app?.name} />}
+				{isLoading && (
+					<MiniAppLoadingState
+						icon={app?.icon}
+						name={app?.name}
+						label={`در حال اجرای ${app?.name || 'برنامک'}...`}
+						labelIcon={<IconLoading className="ml-1!" />}
+					/>
+				)}
 
 				{shouldShowAuthGate && (
 					<WebAppAuthGate scopes={app.scopes} onConfirm={handleConfirmScopes} />
@@ -139,7 +146,12 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 
 				{/* wait WIDGETIFY_APP_READY */}
 				{isConnecting && !shouldShowAuthGate && (
-					<MiniAppIsConnecting icon={app?.icon} name={app?.name} />
+					<MiniAppLoadingState
+						icon={app?.icon}
+						name={app?.name}
+						label={`در حال اتصال به ${app?.name || 'برنامک'}...`}
+						labelIcon={<IconLoading className="ml-1!" />}
+					/>
 				)}
 
 				{hasError && !shouldShowAuthGate && !isLoading && (
