@@ -81,7 +81,7 @@ export function MiniAppsLayout() {
 							<HiOutlineInformationCircle className="m-auto text-center" />
 						</div>
 					</div>
-					<div className="flex flex-col gap-1 overflow-y-auto  h-[calc(100vh-10rem)]">
+					<div className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]">
 						{isEmpty && (
 							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-content">
 								<div className="text-5xl">📭</div>

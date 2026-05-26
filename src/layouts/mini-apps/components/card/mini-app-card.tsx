@@ -1,4 +1,5 @@
 import { getContrastingTextColor } from '@/common/color'
+import { NewBadge } from '@/components/badges/new.badge'
 import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps-interface'
 
 interface MiniAppCardProps {
@@ -29,7 +30,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<p className="text-sm font-semibold truncate">{app.name}</p>
 				{app.description && (
 					<p
-						className={`text-xs  truncate mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
+						className={`text-xs  max-w-48 mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
 					>
 						{app.description}
 					</p>
@@ -49,6 +50,10 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 					</div>
 				</div>
 			)}
+
+			{/* { app.isNew && ( */}
+			<NewBadge className="bottom-1 right-8" />
+			{/* )} */}
 		</div>
 	)
 }
