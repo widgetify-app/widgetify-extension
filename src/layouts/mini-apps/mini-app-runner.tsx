@@ -64,14 +64,12 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 	}
 
 	useEffect(() => {
-		if (app && app.scopes.length === 0) {
-			handleConfirmScopes()
-		}
-		if (app && app.scopes.length === 0 && !launchData) {
-			doLaunch()
-		}
+		if (!app) return
 
-		setUserConfirmedScopes(false)
+		if (app.scopes.length === 0 || app.isLaunchedByUser) {
+			handleConfirmScopes()
+		} // without permission
+		else setUserConfirmedScopes(false)
 	}, [app, appId])
 
 	useEffect(() => {
@@ -117,7 +115,10 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 	const isConnecting = !isLoading && !!launchData && !isAppReady && !hasError
 
 	const shouldShowAuthGate =
-		app?.scopes && app.scopes.length > 0 && !userConfirmedScopes
+		app?.scopes &&
+		app.scopes.length > 0 &&
+		!userConfirmedScopes &&
+		!appData?.data.isLaunchedByUser
 
 	return (
 		<div className="flex flex-col w-full h-full  rounded-l-2xl!">

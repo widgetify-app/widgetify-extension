@@ -21,6 +21,10 @@ export interface MiniApp {
 	scopes: MiniAppScopeEnum[]
 }
 
+export interface SingleMiniApp extends MiniApp {
+	isLaunchedByUser: boolean
+}
+
 export interface MiniAppsListResponse {
 	data: {
 		miniApps: MiniApp[]
