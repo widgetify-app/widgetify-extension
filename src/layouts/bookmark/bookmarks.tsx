@@ -138,18 +138,11 @@ export function BookmarksList() {
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
 
 	const getDisplayedBookmarks = (): Bookmark[] => {
-		if (!currentFolderId) {
-			const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
-			const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
-			const fillers = new Array(fillersCount).fill(null)
-			const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
-			return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
-		}
-		const bookmarkCount = currentFolderItems.length
-		const minBookmarks = 10
-		const needsFillers = bookmarkCount < minBookmarks
-		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
-		return [...currentFolderItems, ...new Array(fillersCount).fill(null), null]
+		const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
+		const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
+		const fillers = new Array(fillersCount).fill(null)
+		const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
+		return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
 	}
 
 	const displayedBookmarks = getDisplayedBookmarks() || []
@@ -164,7 +157,7 @@ export function BookmarksList() {
 				<div
 					className={`flex flex-col transition-all duration-300 ${
 						currentFolderId
-							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden pr-1'
+							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden p-1'
 							: ''
 					}`}
 					id="bookmarks"
