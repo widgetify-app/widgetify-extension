@@ -114,7 +114,9 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
 
-			const [error] = await safeAwait<AxiosError, any>(mutateAsync({ wallpaperId }))
+			const [error, responseWallpaper] = await safeAwait<AxiosError, Wallpaper>(
+				mutateAsync({ wallpaperId })
+			)
 			if (error) {
 				showToast(translateError(error) as string, 'error')
 				return
@@ -126,7 +128,7 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 				playAlarm('market')
 			}
 
-			if (!isSet) setToBackground(wallpaper)
+			if (!isSet) setToBackground(responseWallpaper)
 		}
 
 		Analytics.event('wallpaper_changed')

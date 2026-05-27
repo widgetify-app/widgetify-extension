@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 
 export interface UpdateExtensionSettingsInput {
 	pet?: string | null
@@ -23,7 +24,10 @@ export function useChangeWallpaper() {
 	return useMutation<any, unknown, { wallpaperId: string | null }>({
 		mutationFn: async ({ wallpaperId }) => {
 			const client = await getMainClient()
-			await client.put('/wallpapers/@me', { wallpaperId })
+			const response = await client.put<{ data: Wallpaper }>('/wallpapers/@me', {
+				wallpaperId,
+			})
+			return response.data.data
 		},
 	})
 }
