@@ -51,6 +51,7 @@ interface FetchedProfile {
 	isProfileCompleted: boolean
 	hasTodayMood: boolean
 	searchAutocompleteEnabled: boolean
+	isVip: boolean
 }
 
 export interface UserProfile extends FetchedProfile {

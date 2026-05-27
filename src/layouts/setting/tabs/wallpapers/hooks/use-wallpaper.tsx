@@ -98,6 +98,10 @@ export function useWallpaper(fetchedWallpapers: Wallpaper[] | undefined) {
 	}, [selectedBackground])
 
 	const handleSelectBackground = async (wallpaper: Wallpaper) => {
+		if (wallpaper.isCustom) {
+			setToBackground(wallpaper)
+			return
+		}
 		if (wallpaper.coin && !isAuthenticated) {
 			return showToast(
 				'برای انتخاب این تصویر تصویر زمینه باید وارد حساب کاربری شوید.',

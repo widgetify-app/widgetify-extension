@@ -34,8 +34,23 @@ export function CategoryView({ onCategorySelect }: CategoryGridProps) {
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-center h-48">
-				<div className="text-muted">در حال بارگذاری دسته‌بندی‌ها...</div>
+			<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+				{Array.from({ length: CATEGORIES_PER_PAGE }).map((_, index) => (
+					<div
+						key={index}
+						className="w-full h-24 bg-content bg-glass rounded-2xl"
+					>
+						<div className="w-24 h-3 mt-1 mr-2 bg-base-content/5 rounded-xl skeleton"></div>
+						<div className="grid grid-cols-2 mt-1 gap-1 p-0.5 px-2">
+							{[1, 2, 3, 4].map((_, imgIndex) => (
+								<div
+									key={imgIndex}
+									className="w-full h-8 rounded bg-base-content/5 skeleton"
+								></div>
+							))}
+						</div>
+					</div>
+				))}
 			</div>
 		)
 	}
