@@ -134,11 +134,24 @@ export function BookmarksList() {
 	const currentFolderItems = getCurrentFolderItems(currentFolderId)
 
 	const getDisplayedBookmarks = (): Bookmark[] => {
-		const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
-		const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
-		const fillers = new Array(fillersCount).fill(null)
-		const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
-		return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
+		if (!currentFolderId) {
+			const baseItems = currentFolderItems.slice(0, TOTAL_BOOKMARKS)
+			const fillersCount = Math.max(0, TOTAL_BOOKMARKS - currentFolderItems.length)
+			const fillers = new Array(fillersCount).fill(null)
+			const addButton = currentFolderItems.length < TOTAL_BOOKMARKS ? [null] : []
+			return [...baseItems, ...fillers, ...addButton].slice(0, TOTAL_BOOKMARKS)
+		}
+
+		const bookmarkCount = currentFolderItems.length
+		const minBookmarks = 10
+		const needsFillers = bookmarkCount < minBookmarks
+		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
+		const folderItems = [...currentFolderItems, ...new Array(fillersCount).fill(null)]
+
+		if (folderItems.length > minBookmarks) {
+			folderItems.push(null)
+		}
+		return folderItems
 	}
 
 	const displayedBookmarks = getDisplayedBookmarks() || []

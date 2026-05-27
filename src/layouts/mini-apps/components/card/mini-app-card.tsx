@@ -30,7 +30,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<p className="text-sm font-semibold truncate">{app.name}</p>
 				{app.description && (
 					<p
-						className={`text-xs  max-w-48 mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
+						className={`text-xs min-w-60  max-w-60 mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
 					>
 						{app.description}
 					</p>
