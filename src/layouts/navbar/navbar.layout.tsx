@@ -174,7 +174,7 @@ export function NavbarLayout(): JSX.Element {
 					md:px-4
 					lg:px-4
 					max-w-[1080px] 
-					transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] 
+					transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						isVisible
 							? 'bottom-2 opacity-100 scale-100'
