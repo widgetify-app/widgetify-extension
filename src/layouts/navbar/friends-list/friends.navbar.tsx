@@ -6,6 +6,7 @@ import { BottomSheet } from '@/components/bottom-sheet/bottom-sheet'
 import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
+import Analytics from '@/analytics'
 
 const renderPendingNotification = (pendingCount: number) => (
 	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-white bg-red-500 rounded-full top-1 right-1 p-0.5 text-center">
@@ -19,12 +20,22 @@ export function FriendsListNavbar() {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const handleAuthModalClose = () => setFirstAuth(false)
+
 	const handleOpenSettings = () => {
 		if (!isAuthenticated) {
 			setFirstAuth(true)
 			return
 		}
 		callEvent('openProfile', 'friends')
+	}
+
+	const clickToOpenSheet = () => {
+		if (isOpen === false) {
+			//current state
+			Analytics.event('friends_navbar_opened')
+		}
+
+		setIsOpen(!isOpen)
 	}
 
 	useEffect(() => {
@@ -44,7 +55,7 @@ export function FriendsListNavbar() {
 		<>
 			<div
 				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
-				onClick={() => setIsOpen(!isOpen)}
+				onClick={() => clickToOpenSheet()}
 			>
 				<HiOutlineUserGroup size={15} />
 				{hasPendingRequests &&
