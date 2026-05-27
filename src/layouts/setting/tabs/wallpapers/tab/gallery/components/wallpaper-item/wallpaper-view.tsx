@@ -91,14 +91,6 @@ export function WallpaperView({
 					</div>
 				)}
 			</div>
-
-			{/* <Pagination
-				currentPage={currentPage}
-				totalPages={wallpaperResponse?.totalPages || 1}
-				onNextPage={goToNextPage}
-				onPrevPage={goToPrevPage}
-				isLoading={isFetching}
-			/> */}
 		</div>
 	)
 }

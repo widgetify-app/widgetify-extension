@@ -70,14 +70,8 @@ export function CoinPurchaseModal({
 					</div>
 					<p className="text-sm text-muted">
 						این تصویر زمینه زیبا را با ویج‌کوین باز کنید و برای همیشه استفاده
-						کنید! 🎨
+						🎨 کنید
 					</p>
-					<div className="flex items-center gap-2 p-3 border rounded-xl bg-primary/5 border-primary/20 backdrop-blur-sm">
-						<span className="text-sm">💡</span>
-						<p className="text-xs text-primary/80">
-							ویج‌کوین با انجام فعالیت‌ها و دعوت دوستان کسب می‌شود
-						</p>
-					</div>
 				</div>
 
 				<div className="flex gap-3 pt-4">

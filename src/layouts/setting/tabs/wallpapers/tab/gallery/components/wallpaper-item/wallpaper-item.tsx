@@ -79,15 +79,14 @@ function wallpaperItem({
 		<>
 			<div
 				ref={elementRef}
-				className={`relative rounded-xl cursor-pointer group aspect-video ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+				className={`relative rounded-xl cursor-pointer group aspect-video h-full  ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="flex items-center justify-center w-full h-full bg-gray-900/60">
+					<div className="flex items-center justify-center w-full h-full bg-gray-900/60 rounded-2xl">
 						<div className="w-5 h-5 border-2 rounded-full border-blue-500/30 border-t-blue-500 animate-spin"></div>
 					</div>
 				)}
-
 				{error && (
 					<div className="flex flex-col items-center justify-center w-full h-full bg-red-500/10">
 						<FiHeart className="text-red-400" />
@@ -95,24 +94,13 @@ function wallpaperItem({
 					</div>
 				)}
 
-				{wallpaper.type === 'IMAGE' ? (
+				{wallpaper.type === 'IMAGE' && (
 					<img
 						ref={imgRef}
-						className="object-cover w-full h-full transition-opacity"
+						className="object-cover w-full h-full transition-opacity rounded-xl"
 						style={{ opacity: loaded && !error ? 1 : 0 }}
 						alt={wallpaper.name || 'Wallpaper'}
 						onLoad={handleLoad}
-						onError={handleError}
-					/>
-				) : (
-					<video
-						ref={videoRef}
-						className="object-cover w-full h-full transition-opacity"
-						style={{ opacity: loaded && !error ? 1 : 0 }}
-						loop
-						muted
-						playsInline
-						onLoadedData={handleLoad}
 						onError={handleError}
 					/>
 				)}
@@ -120,7 +108,7 @@ function wallpaperItem({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex justify-between inset-x-0 bottom-0 p-2 transition-opacity duration-300 bg-gradient-to-t from-black/80 to-black/0 items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-gradient-to-t from-black/80 to-black/0 items-center`}
 						>
 							{wallpaper.name && (
 								<div className="flex-1 text-xs font-medium text-white">
@@ -176,7 +164,7 @@ function wallpaperItem({
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10"></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 "></div>
 					</>
 				)}
 			</div>
