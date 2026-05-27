@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { getFromStorage } from '@/common/storage'
 import { getMainClient } from '@/services/api'
 
 export interface TrendItem {
@@ -40,7 +39,7 @@ export interface SearchBoxResponse {
 async function fetchSearchbox(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
 	const client = await getMainClient()
 
-	const response = await client.get<SearchBoxResponse>('/extension/searchbox', {
+	const response = await client.get<SearchBoxResponse>('/searchbox', {
 		params: {
 			region,
 			limit,
@@ -57,26 +56,11 @@ export function useGetSearchboxData(
 		enabled?: boolean
 	} = {}
 ) {
-	const [initialData, setInitialData] = useState<any>(undefined)
-
-	useEffect(() => {
-		;(async () => {
-			const stored = await getFromStorage('recommended_sites')
-			if (stored?.length) {
-				setInitialData({
-					recommendedSites: stored,
-					trends: [],
-				})
-			}
-		})()
-	}, [])
-
 	const { region = 'IR', limit = 10, refetchInterval = null, enabled = true } = options
 	return useQuery<SearchBoxResponse>({
 		queryKey: ['getTrends', region, limit],
 		queryFn: () => fetchSearchbox(region, limit),
 		refetchInterval: refetchInterval || false,
 		enabled,
-		initialData,
 	})
 }
