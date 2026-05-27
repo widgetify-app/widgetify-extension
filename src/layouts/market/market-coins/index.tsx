@@ -30,7 +30,6 @@ export function MarketCoins() {
 			showToast('برای خرید پکیج باید وارد حساب کاربری خود شوید.', 'error')
 			return
 		}
-
 		setSelectedPackage(pkg)
 		setShowPurchaseModal(true)
 	}
@@ -55,37 +54,40 @@ export function MarketCoins() {
 	return (
 		<>
 			{isLoading ? (
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 					{Array.from({ length: 8 }).map((_, index) => (
 						<div
 							key={index}
-							className="p-4 border rounded-2xl border-base-300 bg-base-200/20"
+							className="h-64 rounded-2xl border border-base-300/60 bg-base-100 overflow-hidden"
 						>
-							<div className="w-full h-32 mb-4 rounded-xl skeleton" />
-							<div className="w-2/3 h-5 mb-2 rounded skeleton" />
-							<div className="w-full h-3 mb-4 rounded bg-base-300/50 skeleton" />
-							<div className="h-10 rounded-xl skeleton" />
+							<div className="h-44 bg-base-200 animate-pulse" />
+							<div className="p-3 space-y-2">
+								<div className="w-2/3 h-3.5 rounded-lg bg-base-200 animate-pulse" />
+								<div className="w-full h-7 rounded-lg bg-base-200 animate-pulse" />
+							</div>
 						</div>
 					))}
 				</div>
 			) : packagesData?.packages && packagesData.packages.length > 0 ? (
-				<div className="grid grid-cols-1 gap-4 pb-10 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-2 gap-3 pb-10 sm:grid-cols-3 lg:grid-cols-4">
 					{packagesData.packages.map((pkg) => (
-						<div key={pkg.id} className="transition-transform duration-300">
-							<CoinPackageCard
-								package={pkg}
-								onPurchase={() => handlePurchaseClick(pkg)}
-								isAuthenticated={isAuthenticated}
-							/>
-						</div>
+						<CoinPackageCard
+							key={pkg.id}
+							package={pkg}
+							onPurchase={() => handlePurchaseClick(pkg)}
+							isAuthenticated={isAuthenticated}
+						/>
 					))}
 				</div>
 			) : (
-				<div className="flex flex-col items-center justify-center h-64 text-center">
-					<p className="text-lg font-medium text-content">
-						فعلا چیزی واسه خرید نیست! 😢
-					</p>
-					<p className="text-sm text-muted">بعداً دوباره بررسی کنید</p>
+				<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
+					<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
+						<FaCoins size={20} className="text-muted" />
+					</div>
+					<div>
+						<p className="text-sm font-medium text-content">فعلا چیزی واسه خرید نیست!</p>
+						<p className="text-xs text-muted mt-1">بعداً دوباره بررسی کنید</p>
+					</div>
 				</div>
 			)}
 

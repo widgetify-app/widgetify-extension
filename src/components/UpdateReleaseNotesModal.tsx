@@ -27,6 +27,16 @@ const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
 		type: 'feature',
+		title: 'برنامک ها',
+		description: ' اضافه شدن برنامک‌ها (مینی آپ ها)',
+	},
+	{
+		type: 'feature',
+		title: 'انتشار نوشته برای دوستان 💭',
+		description: 'حالا میتونی نوشته هاتو با دوستانت به اشتراک بذاری!',
+	},
+	{
+		type: 'feature',
 		title: ' 😃 واکنش به نوشته ها ',
 		description: 'حالا میتونی به نوشته های دوستانت یه واکنش (ری اکشن) بدی! 👍',
 	},
@@ -34,6 +44,12 @@ const releaseNotes: ReleaseNote[] = [
 		type: 'feature',
 		title: ' ⏳ نوشته زمان دار',
 		description: 'از این پس میتونی مدت زمان نمایش نوشته رو تنظیم کنی',
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود مدیریت دوستان',
+		description:
+			'قسمت مدیریت دوستان رو بازطراحی کردیم تا استفاده ازش راحت تر و لذت بخش تر باشه',
 	},
 	{
 		type: 'improvement',

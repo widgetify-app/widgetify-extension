@@ -3,7 +3,7 @@ import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { MarketContainer } from '@/layouts/market/market-container'
-import { HiOutlineShoppingBag, HiShoppingBag } from 'react-icons/hi2'
+import { HiOutlineShoppingBag } from 'react-icons/hi2'
 
 export function MarketButton() {
 	const [showMarket, setShowMarket] = useState(false)

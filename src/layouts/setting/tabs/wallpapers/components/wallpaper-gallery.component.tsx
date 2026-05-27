@@ -12,35 +12,12 @@ interface WallpaperGalleryProps {
 }
 
 export function WallpaperGallery({
-	isLoading,
-	error,
 	wallpapers,
 	selectedBackground,
 	onSelectBackground,
 	onPreviewBackground,
 }: WallpaperGalleryProps) {
 	const galleryRef = useRef<HTMLDivElement>(null)
-
-	if (isLoading) {
-		return (
-			<div className="flex flex-col items-center justify-center h-full py-6">
-				<div className="w-8 h-8 rounded-full border-3 border-t-blue-500 border-blue-500/30 animate-spin"></div>
-				<p className={'mt-3 text-sm text-muted'}>در حال بارگذاری...</p>
-			</div>
-		)
-	}
-
-	if (error) {
-		return (
-			<div
-				className={
-					'flex flex-col items-center justify-center p-4 text-center rounded-lg'
-				}
-			>
-				<h4 className="text-base font-medium text-red-400">خطا در بارگذاری</h4>
-			</div>
-		)
-	}
 
 	return (
 		<div

@@ -15,6 +15,7 @@ export function MarketWallpaper() {
 		true
 	)
 	const { selectedBackground, handleSelectBackground } = useWallpaper(data?.wallpapers)
+
 	const onNextPage = () => {
 		setCurrentPage(currentPage + 1)
 		Analytics.event('market_wallpaper_next_page')
@@ -27,7 +28,7 @@ export function MarketWallpaper() {
 
 	return (
 		<>
-			<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 sm:gap-3">
+			<div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
 				{data?.wallpapers.map((wallpaper) => (
 					<div key={wallpaper.id} className="transform-gpu">
 						<WallpaperItem

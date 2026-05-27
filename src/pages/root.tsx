@@ -13,7 +13,7 @@ import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCate
 import { Page, usePage } from '@/context/page.context'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
-import { UpdateChecker } from '@/components/updater/updater'
+// import { UpdateChecker } from '@/components/updater/updater'
 import { MiniAppPage } from './mini-apps/mini-app.page'
 import { ExplorerPage } from './explorer/explorer.pge'
 import { HomePage } from './home/home.page'
@@ -208,7 +208,7 @@ export function RootLayout() {
 					duration: 5000,
 				}}
 			/>
-			<UpdateChecker />
+			{/* <UpdateChecker /> */}
 
 			{showAuthRequired && (
 				<AuthRequiredModal

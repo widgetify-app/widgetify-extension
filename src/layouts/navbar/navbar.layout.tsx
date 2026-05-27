@@ -85,9 +85,7 @@ export function NavbarTabs() {
 					</span>
 
 					{page === tab.id && (
-						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]">
-							<div className="absolute inset-0 bg-primary blur-[2px]" />
-						</div>
+						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]"></div>
 					)}
 				</button>
 			))}

@@ -79,7 +79,7 @@ function wallpaperItem({
 		<>
 			<div
 				ref={elementRef}
-				className={`relative overflow-hidden rounded-xl cursor-pointer group aspect-video ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+				className={`relative rounded-xl cursor-pointer group aspect-video ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 				onClick={handleSelect}
 			>
 				{!loaded && (
@@ -143,7 +143,7 @@ function wallpaperItem({
 							</div>
 						</div>
 						{wallpaper.extensionUI ? (
-							<div className="absolute top-0 h-5 py-0.5 px-3 rounded rounded-bl-xl rounded-r-none rounded-tr-xl w-fit bg-black/5 backdrop-blur-lg">
+							<div className="absolute top-0  h-5 py-0.5 px-3 rounded rounded-bl-xl rounded-r-none rounded-tr-xl w-fit bg-black/5 backdrop-blur-lg">
 								<Tooltip
 									content={
 										wallpaper.extensionUI === 'ADVANCED'
@@ -170,7 +170,7 @@ function wallpaperItem({
 						)}
 
 						{!isSelected && wallpaper.isOwned && (
-							<div className="absolute flex gap-0.5 px-1 rounded-full shadow-sm text-success bg-black/80 items-center top-2 right-2">
+							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-success text-success-content shadow-sm  items-center top-0 inset-x-0 m-auto w-max h-4">
 								<FiShoppingBag size={10} />
 								<span className="!text-[10px] font-normal">باز شده</span>
 							</div>

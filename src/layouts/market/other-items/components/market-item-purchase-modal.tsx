@@ -1,4 +1,4 @@
-import { FiCheck, FiX } from 'react-icons/fi'
+import { FiCheck, FiX, FiAlertCircle } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
@@ -50,7 +50,6 @@ export function MarketItemPurchaseModal({
 						(translateError(error) as string) || 'خطا در خرید آیتم',
 						'error'
 					)
-
 					Analytics.event('market_item_purchase_failed')
 				},
 			}
@@ -67,28 +66,28 @@ export function MarketItemPurchaseModal({
 			closeOnBackdropClick={!isPending}
 			showCloseButton={!isPending}
 		>
-			<div className="space-y-4">
-				<div className="px-2 py-1 border rounded-xl border-base-300 bg-content">
-					<h3 className="text-lg font-semibold text-content">{item.name}</h3>
-					<p className="mt-1 mb-1 text-xs text-muted">{item.description}</p>
-
+			<div className="space-y-3">
+				<div className="rounded-2xl border border-base-300/60 overflow-hidden bg-base-100">
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
+					<div className="px-3 py-2.5">
+						<h3 className="text-sm font-semibold text-content">{item.name}</h3>
+						{item.description && (
+							<p className="mt-0.5 text-xs text-muted">{item.description}</p>
+						)}
+					</div>
 				</div>
 
-				<div className="p-3 space-y-2 border rounded-xl border-base-300 bg-base-100">
-					<div className="flex items-center justify-between">
-						<span className="text-sm text-content">موجودی فعلی:</span>
+				<div className="rounded-2xl border border-base-300/60 bg-base-100 divide-y divide-base-200/60">
+					<div className="flex items-center justify-between px-3 py-2.5">
+						<span className="text-xs text-muted">موجودی فعلی</span>
 						<ItemPrice price={userCoins} />
 					</div>
-					<div className="flex items-center justify-between">
-						<span className="text-sm text-content">قیمت آیتم:</span>
+					<div className="flex items-center justify-between px-3 py-2.5">
+						<span className="text-xs text-muted">قیمت آیتم</span>
 						<ItemPrice price={item.price} />
 					</div>
-					<hr className="border-primary/20" />
-					<div className="flex items-center justify-between">
-						<span className="text-sm font-medium text-content">
-							موجودی باقی‌مانده:
-						</span>
+					<div className="flex items-center justify-between px-3 py-2.5">
+						<span className="text-xs font-medium text-content">موجودی باقی‌مانده</span>
 						<ItemPrice
 							price={canAfford ? Math.max(0, remainingCoins) : userCoins}
 						/>
@@ -96,47 +95,42 @@ export function MarketItemPurchaseModal({
 				</div>
 
 				{!canAfford && (
-					<div className="p-3 border rounded-xl border-error/20 bg-error/5">
-						<div className="flex items-start gap-2">
-							<FiX className="w-5 h-5 mt-0.5 text-error flex-shrink-0" />
-							<div>
-								<p className="text-sm font-medium text-error">
-									موجودی ناکافی
-								</p>
-								<p className="text-xs text-error/80">
-									برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
-									بیشتر نیاز دارید
-								</p>
-							</div>
+					<div className="flex items-start gap-2.5 px-3 py-2.5 rounded-2xl border border-error/20 bg-error/5">
+						<FiAlertCircle className="w-4 h-4 mt-0.5 text-error flex-shrink-0" />
+						<div>
+							<p className="text-xs font-medium text-error">موجودی ناکافی</p>
+							<p className="text-[11px] text-error/75 mt-0.5">
+								برای خرید این آیتم به {item.price - userCoins} ویج‌کوین بیشتر نیاز دارید
+							</p>
 						</div>
 					</div>
 				)}
-			</div>
 
-			<div className="flex flex-col gap-1 pt-4">
-				{!canAfford && (
-					<div
-						className="w-full text-center cursor-pointer text-muted rounded-xl btn-link hover:scale-95"
-						onClick={() => onClose(true)}
+				<div className="flex flex-col gap-2 pt-1">
+					{!canAfford && (
+						<button
+							className="w-full text-center text-xs text-muted hover:text-primary transition-colors py-1 cursor-pointer"
+							onClick={() => onClose(true)}
+						>
+							خرید ویج‌کوین
+						</button>
+					)}
+					<Button
+						onClick={handlePurchase}
+						size="md"
+						disabled={!canAfford || isPending}
+						loading={isPending}
+						loadingText="در حال خرید..."
+						className={`rounded-2xl ${
+							canAfford
+								? 'bg-primary hover:bg-primary/90 text-white'
+								: 'bg-base-300 text-muted cursor-not-allowed'
+						}`}
 					>
-						خرید ویج‌کوین
-					</div>
-				)}
-				<Button
-					onClick={handlePurchase}
-					size="md"
-					disabled={!canAfford || isPending}
-					loading={isPending}
-					loadingText="در حال خرید..."
-					className={`rounded-2xl ${
-						canAfford
-							? 'bg-primary hover:bg-primary/90 text-white'
-							: 'bg-base-300 text-muted cursor-not-allowed'
-					}`}
-				>
-					<FiCheck size={16} className="ml-1" />
-					تایید خرید
-				</Button>
+						<FiCheck size={15} className="ml-1" />
+						تایید خرید
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	)

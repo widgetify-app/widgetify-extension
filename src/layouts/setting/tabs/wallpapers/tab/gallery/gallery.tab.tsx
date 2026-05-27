@@ -16,7 +16,7 @@ export function GalleryTab() {
 
 	return (
 		<SectionPanel title="گالری تصاویر" size="xs">
-			<div className="p-4">
+			<div className="p-1">
 				{!selectedCategory ? (
 					<CategoryView onCategorySelect={setSelectedCategory} />
 				) : (

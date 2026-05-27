@@ -1,67 +1,66 @@
 import { useEffect } from 'react'
 import { preloadImages } from '@/common/utils/preloadImages'
 import type { Category } from '@/common/wallpaper.interface'
-import { Pagination } from '@/components/pagination'
 import { FolderPath } from '@/layouts/bookmark/components/folder-path'
 import { useGetWallpapers } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-import { WallpaperGallery } from '../../../../components/wallpaper-gallery.component'
 import { useWallpaper } from '../../../../hooks/use-wallpaper'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
+import { WallpaperItem } from './wallpaper-item'
 
 interface WallpaperViewProps {
 	selectedCategory: Category | null
 	onBackToCategories: () => void
 }
-const WALLPAPERS_PER_PAGE = 9
+const WALLPAPERS_PER_PAGE = 12
 export function WallpaperView({
 	selectedCategory,
 	onBackToCategories,
 }: WallpaperViewProps) {
-	const [currentPage, setCurrentPage] = useState(1)
-
 	const {
 		data: wallpaperResponse,
-		isLoading,
-		isFetching,
-		error,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
 	} = useGetWallpapers(
 		{
-			categoryId: selectedCategory?.id || undefined,
-			page: currentPage,
+			categoryId: selectedCategory?.id,
 			limit: WALLPAPERS_PER_PAGE,
 		},
 		!!selectedCategory
 	)
 
-	const goToNextPage = () => {
-		if (currentPage < (wallpaperResponse?.totalPages || 1)) {
-			setCurrentPage(currentPage + 1)
-		}
-	}
+	const { containerRef, loadMoreRef } = useInfiniteScroll({
+		hasNextPage: hasNextPage ?? false,
+		isFetchingNextPage,
+		fetchNextPage,
+		direction: 'vertical',
+		threshold: 0.1,
+	})
 
-	const goToPrevPage = () => {
-		if (currentPage > 1) {
-			setCurrentPage(currentPage - 1)
-		}
-	}
+	const allWallpapers =
+		wallpaperResponse?.pages.flatMap((page) => page.wallpapers) || []
 
 	const { selectedBackground, handleSelectBackground, handlePreviewBackground } =
-		useWallpaper(wallpaperResponse?.wallpapers || [])
+		useWallpaper(allWallpapers)
 
 	useEffect(() => {
-		if (wallpaperResponse?.wallpapers?.length) {
-			const imageUrls = wallpaperResponse.wallpapers
+		if (allWallpapers.length) {
+			const imageUrls = allWallpapers
 				.filter((wp) => wp.type === 'IMAGE')
 				.slice(0, 5)
 				.map((wp) => wp.src)
 
 			preloadImages(imageUrls)
 		}
-	}, [wallpaperResponse?.wallpapers])
+	}, [allWallpapers])
 
 	if (!selectedCategory) return null
 
 	return (
-		<div className="relative flex flex-col justify-between gap-2 overflow-y-auto h-96">
+		<div
+			className="relative flex flex-col justify-between gap-2 overflow-y-auto h-96"
+			ref={containerRef}
+		>
 			<div className="absolute right-0 flex justify-center p-1 mt-1 -top-3 bg-content rounded-t-2xl">
 				<FolderPath
 					folderPath={[
@@ -73,24 +72,42 @@ export function WallpaperView({
 					onNavigate={onBackToCategories}
 				/>
 			</div>
-			<div className="mt-5">
-				<WallpaperGallery
-					isLoading={isLoading}
-					error={error}
-					wallpapers={wallpaperResponse?.wallpapers || []}
-					selectedBackground={selectedBackground}
-					onSelectBackground={handleSelectBackground}
-					onPreviewBackground={handlePreviewBackground}
-				/>
+			<div className="p-2 mt-5 overflow-x-hidden bg-content rounded-b-xl rounded-l-xl">
+				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+					{allWallpapers.map((wallpaper) => (
+						<div key={wallpaper.id} className="transform-gpu">
+							<WallpaperItem
+								wallpaper={wallpaper}
+								selectedBackground={selectedBackground}
+								setSelectedBackground={handleSelectBackground}
+								onPreviewBackground={handlePreviewBackground}
+							/>
+						</div>
+					))}
+				</div>
+				{hasNextPage && (
+					<div ref={loadMoreRef} className="flex justify-center gap-3 p-1 mt-2">
+						{MakeSkeleton(3)}
+					</div>
+				)}
 			</div>
 
-			<Pagination
+			{/* <Pagination
 				currentPage={currentPage}
 				totalPages={wallpaperResponse?.totalPages || 1}
 				onNextPage={goToNextPage}
 				onPrevPage={goToPrevPage}
 				isLoading={isFetching}
-			/>
+			/> */}
 		</div>
 	)
+}
+
+function MakeSkeleton(count: number) {
+	return [...Array(count)].map((_, catIdx) => (
+		<div
+			key={`loading-${catIdx}`}
+			className="w-full h-24 rounded-xl skeleton bg-base-content/5"
+		></div>
+	))
 }

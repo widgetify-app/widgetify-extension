@@ -37,7 +37,6 @@ export function MarketOtherItems() {
 			showToast('برای خرید آیتم باید وارد حساب کاربری خود شوید.', 'error')
 			return
 		}
-
 		setSelectedItem(item)
 		setShowPurchaseModal(true)
 	}
@@ -58,7 +57,6 @@ export function MarketOtherItems() {
 		if (item.type === 'THEME') {
 			callEvent('theme_change', item.itemValue as Theme)
 		}
-
 		if (item.type === 'FONT') {
 			callEvent('font_change', item.itemValue as string)
 		}
@@ -82,12 +80,14 @@ export function MarketOtherItems() {
 
 	if (error) {
 		return (
-			<div className="flex flex-col items-center justify-center h-64 text-center">
-				<FiShoppingBag size={48} className="mb-4 text-muted" />
-				<p className="text-lg font-medium text-content">
-					خطا در بارگذاری آیتم‌های مارکت
-				</p>
-				<p className="text-sm text-muted">لطفاً دوباره تلاش کنید</p>
+			<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
+				<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
+					<FiShoppingBag size={22} className="text-muted" />
+				</div>
+				<div>
+					<p className="text-sm font-medium text-content">خطا در بارگذاری آیتم‌های مارکت</p>
+					<p className="text-xs text-muted mt-1">لطفاً دوباره تلاش کنید</p>
+				</div>
 			</div>
 		)
 	}
@@ -95,38 +95,41 @@ export function MarketOtherItems() {
 	return (
 		<>
 			{isLoading ? (
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 					{Array.from({ length: 8 }).map((_, index) => (
 						<div
 							key={index}
-							className="p-3 border rounded-2xl border-base-300 bg-base-200/20"
+							className="rounded-2xl border border-base-300/60 overflow-hidden bg-base-100"
 						>
-							<div className="w-full h-24 mb-4 rounded-xl bg-base-300 animate-pulse" />
-							<div className="w-2/3 h-4 mb-2 rounded bg-base-300 animate-pulse" />
-							<div className="w-full h-3 mb-4 rounded bg-base-300/50 animate-pulse" />
-							<div className="h-10 rounded-xl bg-base-300 animate-pulse" />
+							<div className="w-full h-24 bg-base-200 animate-pulse" />
+							<div className="p-3 space-y-2">
+								<div className="w-2/3 h-3.5 rounded-lg bg-base-200 animate-pulse" />
+								<div className="w-1/3 h-2.5 rounded-lg bg-base-200/70 animate-pulse" />
+								<div className="w-full h-7 rounded-lg bg-base-200 animate-pulse mt-3" />
+							</div>
 						</div>
 					))}
 				</div>
 			) : filteredItems.length > 0 ? (
-				<div className="grid grid-cols-1 gap-2 pb-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+				<div className="grid grid-cols-2 gap-3 pb-10 sm:grid-cols-3 lg:grid-cols-4">
 					{filteredItems.map((item) => (
-						<div key={item.id} className="transition-transform duration-300 ">
-							<MarketItemCard
-								item={item}
-								onPurchase={() => handlePurchaseClick(item)}
-								isAuthenticated={isAuthenticated}
-							/>
-						</div>
+						<MarketItemCard
+							key={item.id}
+							item={item}
+							onPurchase={() => handlePurchaseClick(item)}
+							isAuthenticated={isAuthenticated}
+						/>
 					))}
 				</div>
 			) : (
-				<div className="flex flex-col items-center justify-center h-64 text-center">
-					<FiShoppingBag size={48} className="mb-4 text-muted" />
-					<p className="text-lg font-medium text-content">
-						آیتمی برای نمایش وجود ندارد
-					</p>
-					<p className="text-sm text-muted">بعداً دوباره بررسی کنید</p>
+				<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
+					<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
+						<FiShoppingBag size={22} className="text-muted" />
+					</div>
+					<div>
+						<p className="text-sm font-medium text-content">آیتمی برای نمایش وجود ندارد</p>
+						<p className="text-xs text-muted mt-1">بعداً دوباره بررسی کنید</p>
+					</div>
 				</div>
 			)}
 
