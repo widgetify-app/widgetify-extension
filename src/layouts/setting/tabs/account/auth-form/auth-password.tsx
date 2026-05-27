@@ -159,6 +159,7 @@ export default function AuthPassword() {
 						placeholder="رمز عبور خود را وارد کنید"
 						disabled={isPending}
 						className="w-full !py-2.5 md:!py-3.5"
+						direction={password ? 'ltr' : 'rtl'}
 					/>
 					<InputTextError message={error.password} />
 				</div>
