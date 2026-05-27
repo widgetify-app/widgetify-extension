@@ -15,7 +15,7 @@ interface TabNavigationProps<T> {
 	className?: string
 	activeBgClass?: string
 	activeTextClass?: string
-	tabMode: 'advanced' | 'sample'
+	tabMode: 'advanced' | 'simple'
 }
 
 export const TabNavigation = <T,>({
@@ -52,13 +52,13 @@ export const TabNavigation = <T,>({
                             cursor-pointer rounded-xl z-10 
                             transition-colors duration-200
                             ${sizeClasses[size]}
-                            ${tabMode === 'sample' || isActive ? 'flex-2' : 'flex-1'}
+                            ${tabMode === 'simple' || isActive ? 'flex-2' : 'flex-1'}
                             ${isActive ? `text-base-content/60 text-shadow-2xs font-bold text-icy ${activeTextClass}` : 'text-base-content/50 hover:bg-base-300 hover:text-base-content/30'}
                         `}
 						type="button"
 					>
 						{tab.icon && <span>{tab.icon}</span>}
-						{(tabMode === 'sample' || isActive) && (
+						{(tabMode === 'simple' || isActive) && (
 							<span className="font-medium truncate">{tab.label}</span>
 						)}
 

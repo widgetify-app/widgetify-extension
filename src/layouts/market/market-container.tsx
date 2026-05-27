@@ -59,7 +59,7 @@ export function MarketContainer() {
 						activeTab={activeTab}
 						onTabClick={(va) => handleTabChange(va)}
 						tabs={tabs}
-						tabMode="sample"
+						tabMode="simple"
 						size="medium"
 					/>
 
