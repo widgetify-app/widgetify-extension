@@ -10,6 +10,7 @@ export interface MiniApp {
 	backgroundColor: string
 	order: number
 	launchUrl: string
+	isNew: boolean
 	origin: string
 	requireAuth: boolean
 	createdAt: string

@@ -51,9 +51,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				</div>
 			)}
 
-			{/* { app.isNew && ( */}
-			<NewBadge className="bottom-1 right-8" />
-			{/* )} */}
+			{app.isNew ? <NewBadge className="bottom-1 right-8" /> : null}
 		</div>
 	)
 }
