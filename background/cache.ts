@@ -12,7 +12,9 @@ const allowedPaths = [
 	'/contents',
 	'/extension/notifications',
 	'/extension/searchbox',
-	'/mini-apps'
+	'/mini-apps',
+	'/widgets/calendar',
+	'/searchbox',
 ]
 
 export function setupCaching() {
@@ -38,8 +40,8 @@ export function setupCaching() {
 				}),
 				new ExpirationPlugin({
 					maxEntries: 200,
-					maxAgeSeconds: 60 * 60 * 12,
-					purgeOnQuotaError: true,
+					maxAgeSeconds: 10 * 24 * 60 * 60, // 10 days
+					purgeOnQuotaError: true, // Automatically cleanup if quota is exceeded
 				}),
 			],
 		})
@@ -58,7 +60,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 200,
-						maxAgeSeconds: 10 * 24 * 60 * 60,
+						maxAgeSeconds: 10 * 24 * 60 * 60, // 10 days
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({
@@ -75,7 +77,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 300,
-						maxAgeSeconds: 5 * 24 * 60 * 60,
+						maxAgeSeconds: 5 * 24 * 60 * 60, // 5 days
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({
@@ -92,7 +94,7 @@ export function setupCaching() {
 				plugins: [
 					new ExpirationPlugin({
 						maxEntries: 50,
-						maxAgeSeconds: 2 * 24 * 60 * 60,
+						maxAgeSeconds: 2 * 24 * 60 * 60, // 2 days
 						purgeOnQuotaError: true,
 					}),
 					new CacheableResponsePlugin({
@@ -109,7 +111,8 @@ export function setupCaching() {
 				url.origin === 'https://cdnjs.cloudflare.com' ||
 				url.hostname.includes('googleapis.com') ||
 				url.hostname.includes('gstatic.com') ||
-				url.hostname.includes('storage'),
+				url.hostname.includes('storage') ||
+				url.hostname.includes('cdn'),
 			new StaleWhileRevalidate({
 				cacheName: 'cdn-cache-v1',
 				plugins: [

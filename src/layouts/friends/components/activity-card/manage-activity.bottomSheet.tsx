@@ -129,7 +129,9 @@ export function ManageActivityBottomSheet({
 						واکنش ها ({fetchedReactions?.reactions?.length || 0})
 					</p>
 					{isPending ? (
-						MakeSkeletonFriendItem(3)
+						<div className="flex flex-col gap-1 h-28">
+							{MakeSkeletonFriendItem(3)}
+						</div>
 					) : fetchedReactions?.reactions.length ? (
 						<div className="flex flex-wrap items-start justify-start gap-1 pb-4 pl-1 overflow-y-auto h-28">
 							{fetchedReactions.reactions.map((r, i) => (
