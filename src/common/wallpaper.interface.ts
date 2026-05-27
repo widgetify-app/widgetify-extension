@@ -4,13 +4,14 @@ export interface Wallpaper {
 	type: 'IMAGE' | 'VIDEO' | 'GRADIENT'
 	src: string
 	previewSrc: string
+	previewVideoSrc?: string
 	isCustom?: boolean
 	source?: string
 	gradient?: GradientColors
 	categoryId?: string
 	coin?: number
 	isOwned?: boolean
-	extensionUI?: "SIMPLE" | "ADVANCED" | null
+	extensionUI?: 'SIMPLE' | 'ADVANCED' | null
 }
 
 export interface GradientColors {

@@ -4,6 +4,7 @@ import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { useAuth } from '@/context/auth.context'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { HoverPlayVideo } from '../tab/gallery/components/hover-play-video'
 
 interface CoinPurchaseModalProps {
 	isOpen: boolean
@@ -47,13 +48,17 @@ export function CoinPurchaseModal({
 							className="object-cover w-full h-full rounded"
 						/>
 					) : (
-						<video
-							src={wallpaper.src}
-							className="object-cover w-full h-full"
-							loop
-							muted
-							playsInline
-							autoPlay
+						<HoverPlayVideo
+							videoSrc={
+								wallpaper.previewVideoSrc || //demo video
+								wallpaper.src ||
+								wallpaper.previewSrc
+							}
+							posterSrc={wallpaper.previewSrc} //previewSrc is poster
+							className="object-cover w-full h-full transition-opacity rounded-xl"
+							onClick={(e) => {
+								e.stopPropagation()
+							}}
 						/>
 					)}
 				</div>

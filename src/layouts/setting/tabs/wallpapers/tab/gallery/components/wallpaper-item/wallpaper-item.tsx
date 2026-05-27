@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FiCheck, FiHeart, FiShoppingBag } from 'react-icons/fi'
+import { FiCheck, FiHeart, FiPlay, FiShoppingBag } from 'react-icons/fi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from '../../../../hooks/use-lazy-load'
 import { LuLayers, LuLayoutTemplate } from 'react-icons/lu'
 import Tooltip from '@/components/toolTip'
+import { HoverPlayVideo } from '../hover-play-video'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -75,6 +76,11 @@ function wallpaperItem({
 		setIsModalOpen(false)
 	}
 
+	const isAnimated =
+		wallpaper?.type === 'VIDEO' ||
+		wallpaper?.src?.endsWith('.gif') ||
+		wallpaper?.previewSrc?.endsWith('.gif')
+
 	return (
 		<>
 			<div
@@ -94,7 +100,7 @@ function wallpaperItem({
 					</div>
 				)}
 
-				{wallpaper.type === 'IMAGE' && (
+				{wallpaper.type === 'IMAGE' ? (
 					<img
 						ref={imgRef}
 						className="object-cover w-full h-full transition-opacity rounded-xl"
@@ -102,6 +108,23 @@ function wallpaperItem({
 						alt={wallpaper.name || 'Wallpaper'}
 						onLoad={handleLoad}
 						onError={handleError}
+					/>
+				) : (
+					<HoverPlayVideo
+						videoSrc={
+							wallpaper.previewVideoSrc ||
+							wallpaper.src ||
+							wallpaper.previewSrc
+						}
+						posterSrc={wallpaper.previewSrc} //previewSrc is poster
+						className="object-cover w-full h-full transition-opacity rounded-xl"
+						style={{ opacity: loaded && !error ? 1 : 0 }}
+						onLoadedData={handleLoad}
+						onError={handleError}
+						onClick={(e) => {
+							e.stopPropagation()
+							handleSelect()
+						}}
 					/>
 				)}
 
@@ -158,9 +181,16 @@ function wallpaperItem({
 						)}
 
 						{!isSelected && wallpaper.isOwned && (
-							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-success text-success-content shadow-sm  items-center top-0 inset-x-0 m-auto w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-success-content shadow-sm  items-center top-0 left-0 w-max h-4">
 								<FiShoppingBag size={10} />
-								<span className="!text-[10px] font-normal">باز شده</span>
+								<span className="text-[10px]! font-normal">باز شده</span>
+							</div>
+						)}
+
+						{isAnimated && (
+							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-info-content shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
+								<FiPlay size={12} />
+								<span className="text-[10px]! font-normal">متحرک</span>
 							</div>
 						)}
 

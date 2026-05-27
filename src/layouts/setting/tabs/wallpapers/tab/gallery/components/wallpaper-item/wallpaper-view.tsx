@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { preloadImages } from '@/common/utils/preloadImages'
 import type { Category } from '@/common/wallpaper.interface'
 import { FolderPath } from '@/layouts/bookmark/components/folder-path'
-import { useGetWallpapers } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { useGetWallpapersInfiniteQuery } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useWallpaper } from '../../../../hooks/use-wallpaper'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { WallpaperItem } from './wallpaper-item'
@@ -21,7 +21,7 @@ export function WallpaperView({
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-	} = useGetWallpapers(
+	} = useGetWallpapersInfiniteQuery(
 		{
 			categoryId: selectedCategory?.id,
 			limit: WALLPAPERS_PER_PAGE,

@@ -63,6 +63,37 @@ interface GetWallpaperQuery {
 }
 
 export const useGetWallpapers = (q: GetWallpaperQuery, enabled: boolean) => {
+	const queryParams = new URLSearchParams()
+
+	if (q.categoryId) {
+		queryParams.append('categoryId', q.categoryId)
+	}
+	if (q.market) {
+		queryParams.append('market', String(q.market))
+	}
+	if (q.page) {
+		queryParams.append('page', String(q.page))
+	}
+	if (q.limit) {
+		queryParams.append('limit', String(q.limit))
+	}
+
+	const endpoint = `/wallpapers?${queryParams.toString()}`
+
+	return useQuery<WallpaperResponse>({
+		queryKey: ['getWallpapers', queryParams.toString()],
+		queryFn: async () => {
+			const client = await getMainClient()
+			const { data } = await client.get<WallpaperResponse>(endpoint)
+			return data
+		},
+		retry: 0,
+		enabled: enabled,
+		staleTime: 1000 * 60 * 5, // 5 minutes
+	})
+}
+
+export const useGetWallpapersInfiniteQuery = (q: GetWallpaperQuery, enabled: boolean) => {
 	return useInfiniteQuery<WallpaperResponse>({
 		queryKey: ['getWallpapers', q.limit, q.categoryId],
 		queryFn: async ({ pageParam }) =>

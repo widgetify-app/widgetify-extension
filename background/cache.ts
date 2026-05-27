@@ -88,6 +88,23 @@ export function setupCaching() {
 			)
 
 			registerRoute(
+				({ request }) => request.destination === 'video',
+				new CacheFirst({
+					cacheName: 'videos-cache-v1',
+					plugins: [
+						new ExpirationPlugin({
+							maxEntries: 300,
+							maxAgeSeconds: 5 * 24 * 60 * 60, // 5 days
+							purgeOnQuotaError: true,
+						}),
+						new CacheableResponsePlugin({
+							statuses: [0, 200],
+						}),
+					],
+				})
+			)
+
+			registerRoute(
 				({ request }) => request.destination === 'document',
 				new NetworkFirst({
 					cacheName: 'html-cache-v1',

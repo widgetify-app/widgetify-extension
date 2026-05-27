@@ -8,7 +8,7 @@ import { useWallpaper } from '../../hooks/use-wallpaper'
 
 export function GalleryTab() {
 	const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-	const { user } = useAuth()
+	const { user, isSuccessFetchingUser } = useAuth()
 	const { customWallpaper, handleCustomWallpaperChange } = useWallpaper([])
 	function goBackToCategories() {
 		setSelectedCategory(null)
@@ -27,7 +27,7 @@ export function GalleryTab() {
 				)}
 			</div>
 
-			{user?.isVip ? (
+			{user?.isVip && isSuccessFetchingUser ? (
 				<SectionPanel title="تصویر دلخواه" size="xs">
 					<div className="p-4">
 						<UploadArea

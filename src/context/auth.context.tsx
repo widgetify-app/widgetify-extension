@@ -13,6 +13,7 @@ interface AuthContextType {
 	user: UserProfile | null
 	isLoadingUser: boolean
 	profilePercentage: number
+	isSuccessFetchingUser: boolean
 	login: (token: string) => void
 	logout: () => void
 	refetchUser: () => Promise<UserProfile | null>
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		data: userProfile,
 		refetch: userRefetch,
 		isLoading,
+		isSuccess,
 	} = useGetUserProfile({
 		enabled: !!token,
 	})
@@ -88,6 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				profilePercentage:
 					calculateProgressPercentage(userProfile?.progressbar || []) || 0,
 				refetchUser,
+				isSuccessFetchingUser: isSuccess,
 			}}
 		>
 			{children}

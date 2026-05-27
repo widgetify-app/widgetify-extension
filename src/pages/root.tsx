@@ -125,9 +125,11 @@ export function RootLayout() {
 			document.body.style.backgroundColor = ''
 			document.body.style.backdropFilter = ''
 		} else if (wallpaper.type === 'VIDEO') {
+			const oldVideo = document.getElementById('background-video')
+			if (oldVideo) oldVideo.remove()
+			document.body.style.backgroundColor = '#000'
 			document.body.style.backgroundImage = ''
 			document.body.style.backdropFilter = ''
-			document.body.style.backgroundColor = '#000'
 
 			const video = document.createElement('video')
 			video.id = 'background-video'
@@ -136,6 +138,7 @@ export function RootLayout() {
 			video.loop = true
 			video.muted = true
 			video.playsInline = true
+			video.preload = 'auto'
 
 			Object.assign(video.style, {
 				position: 'fixed',
@@ -149,7 +152,24 @@ export function RootLayout() {
 				objectFit: 'cover',
 			})
 
+			video.onerror = (e) => {
+				console.error('Video error:', video.error)
+				document.body.style.backgroundColor = '#000'
+			}
+
+			video.onloadeddata = () => {
+				video.play().catch((e) => console.warn('Play failed:', e))
+			}
+
+			video.onplaying = () => {
+				document.body.style.backgroundColor = 'transparent'
+			}
+
 			document.body.prepend(video)
+
+			if (video.readyState >= 2) {
+				video.play().catch((e) => console.warn('Immediate play failed:', e))
+			}
 		}
 	}
 
