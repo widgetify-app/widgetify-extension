@@ -1,6 +1,7 @@
 import { SectionPanel } from '@/components/section-panel'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { SearchAutocompleteSwitch } from './components/search-autocomplete.switch'
 
 export function PrivacySettings() {
 	const {
@@ -71,6 +72,7 @@ export function PrivacySettings() {
 							/>
 						</div>
 					</div>
+					<SearchAutocompleteSwitch />
 				</div>
 			</SectionPanel>
 		</div>

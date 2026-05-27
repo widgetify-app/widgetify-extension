@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 
@@ -73,6 +73,20 @@ export function useChangeSearchEngine() {
 		mutationFn: async ({ search_engine }) => {
 			const client = await getMainClient()
 			await client.put('/extension/@me/search-engine', { search_engine })
+		},
+	})
+}
+
+export function useUpdateSearchAutocomplete() {
+	const queryClient = useQueryClient()
+
+	return useMutation<any, unknown, { isActive: boolean }>({
+		mutationFn: async ({ isActive }) => {
+			const client = await getMainClient()
+			await client.put('/extension/@me/search-search-autocomplete', { isActive })
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 		},
 	})
 }

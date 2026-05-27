@@ -7,9 +7,8 @@ import { useChangeSearchEngine } from '@/services/hooks/extension/updateSetting.
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import type { ReactNode } from 'react'
 import { useState, useEffect, useMemo } from 'react'
-import { FaArrowDown } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { HiArrowDown, HiChevronDown } from 'react-icons/hi2'
+import { HiChevronDown } from 'react-icons/hi2'
 
 const GOOGLE: EngineMeta = {
 	id: 'google',

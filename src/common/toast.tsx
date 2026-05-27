@@ -4,6 +4,7 @@ import { playAlarm } from './playAlarm'
 import { TfiCheck, TfiInfo } from 'react-icons/tfi'
 import { LuX } from 'react-icons/lu'
 import { MdError } from 'react-icons/md'
+import { translateError } from '@/utils/translate-error'
 
 type ToastType = 'success' | 'error' | 'info'
 interface ToastOptions {
@@ -91,5 +92,14 @@ export function showToast(
 
 	if (options?.alarmSound) {
 		playAlarm('success')
+	}
+}
+
+export function autoFormatErrorToast(err: any) {
+	const message = translateError(err)
+	if (typeof message === 'string') {
+		showToast(message, 'error')
+	} else {
+		showToast(`${Object.keys(message)[0]}: ${Object.values(message)[0]}`, 'error')
 	}
 }

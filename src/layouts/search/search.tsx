@@ -1,13 +1,12 @@
-// search.tsx
 import { useEffect, useRef, useState } from 'react'
-import { MdOutlineClear } from 'react-icons/md'
+import { MdOutlineClear, MdOutlineSearch } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { VoiceSearchButton } from './voice/voice-search.button'
 import { ImageSearchPortal } from './image/image-search.portal'
 import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
-import { EngineSelector } from './enginge-selector'
+import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
 import type { EngineMeta } from '@/services/hooks/trends/getTrends'
 
@@ -25,7 +24,6 @@ export function SearchLayout() {
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
-	const trendingRef = useRef<HTMLDivElement>(null)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,12 +73,14 @@ export function SearchLayout() {
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
+			const target: HTMLDivElement =
+				(event.target as any).parentNode || (event.target as any)
+			if (target.classList.contains('searchbox-item')) return console.log('not')
+
 			if (
 				(isInputFocused || showHistoryPortal) &&
 				searchRef.current &&
-				trendingRef.current &&
-				!searchRef.current.contains(event.target as Node) &&
-				!trendingRef.current.contains(event.target as Node)
+				!searchRef.current.contains(event.target as Node)
 			) {
 				setIsInputFocused(false)
 				setShowHistoryPortal(false)
@@ -90,6 +90,14 @@ export function SearchLayout() {
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
 	}, [isInputFocused, showHistoryPortal])
+
+	const onSearchButtonClick = () => {
+		const query = searchQuery.trim()
+		if (query.trim()) {
+			SearchHandler({ content: query.trim(), engine: selectedEngine })
+			Analytics.event('search_button_submitted')
+		}
+	}
 
 	function onFocusInput() {
 		setIsInputFocused(true)
@@ -121,7 +129,6 @@ export function SearchLayout() {
 							ref={inputRef}
 							type="text"
 							name="search"
-							value={searchQuery}
 							onChange={handleSearchInputChange}
 							onFocus={() => onFocusInput()}
 							className={
@@ -137,9 +144,17 @@ export function SearchLayout() {
 						>
 							<MdOutlineClear size={20} className="opacity-50" />
 						</button>
-						<div className="flex items-center gap-0.5 ml-1">
+						<div
+							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
+						>
 							<ImageSearchButton onClick={() => setActivePortal('image')} />
 							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
+						</div>
+						<div
+							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer  hover:bg-base-300`}
+							onClick={() => onSearchButtonClick()}
+						>
+							<MdOutlineSearch size={20} className="opacity-50" />
 						</div>
 						<div
 							className={
@@ -154,6 +169,7 @@ export function SearchLayout() {
 						onClose={() => setShowHistoryPortal(false)}
 						onSearch={handleHistorySearch}
 						onEngineChange={onEngineChange}
+						searchQuery={searchQuery}
 					/>
 				)}
 
@@ -165,7 +181,10 @@ export function SearchLayout() {
 
 function SearchHandler({ content, engine }: { content: string; engine: EngineMeta }) {
 	if (engine.id === 'google') {
-		browser.search.query({ text: content })
+		browser.search.query({
+			text: content,
+			disposition: browser.search.Disposition.CURRENT_TAB,
+		})
 	} else {
 		window.open(engine.prefix + encodeURIComponent(content), '_self')
 	}
