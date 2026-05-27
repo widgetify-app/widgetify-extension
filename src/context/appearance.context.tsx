@@ -58,7 +58,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		}
 
 		const eventForFont = listenEvent('font_change', async (newFont) => {
-			document.body.style.fontFamily = `"${newFont}", sans-serif`
+			document.body.style.fontFamily = `"${newFont}", Vazir`
 			updateSetting('fontFamily', newFont)
 		})
 
@@ -149,7 +149,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 	useEffect(() => {
 		if (isInitialized && settings.fontFamily) {
-			document.body.style.fontFamily = `"${settings.fontFamily}", sans-serif`
+			document.body.style.fontFamily = `"${settings.fontFamily}", Vazir`
 		}
 	}, [isInitialized, settings.fontFamily])
 

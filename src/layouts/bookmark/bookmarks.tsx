@@ -14,9 +14,9 @@ import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
 import { useAuth } from '@/context/auth.context'
-import { validate } from 'uuid'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { showToast } from '@/common/toast'
+import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
 
 export function BookmarksList() {
 	const {
@@ -30,6 +30,7 @@ export function BookmarksList() {
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
+	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
 	const sensors = useSensors(
@@ -52,14 +53,7 @@ export function BookmarksList() {
 		const { active, over } = event
 		if (!over || active.id === over.id) return
 
-		const allBookmarks = [...bookmarks]
 		const currentItems = getCurrentFolderItems(currentFolderId)
-
-		const sourceBookmark = allBookmarks.find(
-			(b) => b.id === active.id || b.onlineId === active.id
-		)
-
-		if (!sourceBookmark) return
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id
@@ -68,60 +62,62 @@ export function BookmarksList() {
 			(item) => item.id === over.id || item.onlineId === over.id
 		)
 
-		if (sourceIndex === -1 || sourceIndex === targetIndex) return
+		if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex)
+			return
 
-		const actualSourceIndex = allBookmarks.findIndex(
-			(b) =>
-				b.id === currentItems[sourceIndex].id ||
-				b.onlineId === currentItems[sourceIndex].id
+		const newCurrentItems = [...currentItems]
+		const [movedItem] = newCurrentItems.splice(sourceIndex, 1)
+		newCurrentItems.splice(targetIndex, 0, movedItem)
+
+		const parentBookmark = bookmarks.find(
+			(b) => b.id === currentFolderId || b.onlineId === currentFolderId
 		)
 
-		const actualTargetIndex = allBookmarks.findIndex(
-			(b) =>
-				b.id === currentItems[targetIndex].id ||
-				b.onlineId === currentItems[targetIndex].id
-		)
+		const updatedBookmarks = bookmarks.map((bookmark) => {
+			const isInCurrentFolder =
+				bookmark.parentId === currentFolderId ||
+				(parentBookmark?.id && bookmark.parentId === parentBookmark.id) ||
+				(parentBookmark?.onlineId &&
+					bookmark.parentId === parentBookmark.onlineId)
 
-		if (actualSourceIndex !== -1 && actualTargetIndex !== -1) {
-			const [movedBookmark] = allBookmarks.splice(actualSourceIndex, 1)
-			allBookmarks.splice(actualTargetIndex, 0, movedBookmark)
-
-			const updatedBookmarks = allBookmarks.map((bookmark) => {
-				if (bookmark.parentId === currentFolderId) {
-					const newIndex = allBookmarks.findIndex(
-						(b) =>
-							b.id === bookmark.id ||
-							b.onlineId === bookmark.id ||
-							b.onlineId === bookmark.onlineId
-					)
+			if (isInCurrentFolder) {
+				const newIndex = newCurrentItems.findIndex(
+					(item) => item.id === bookmark.id || item.onlineId === bookmark.id
+				)
+				if (newIndex !== -1) {
 					return { ...bookmark, order: newIndex }
 				}
-				return bookmark
-			})
-
-			setBookmarks(updatedBookmarks)
-			let folderIdToSend = currentFolderId
-			const isFolderIdValidUuid = validate(currentFolderId)
-			if (isFolderIdValidUuid) {
-				const foundedFolder = bookmarks.find((b) => b.id === currentFolderId)
-				if (foundedFolder) {
-					folderIdToSend = foundedFolder.onlineId || currentFolderId
-				}
 			}
+			return bookmark
+		})
 
-			browser.runtime.sendMessage({
-				type: 'REORDER',
-				folderId: folderIdToSend,
-				bookmarks: updatedBookmarks
-					.filter((b) => b.parentId === currentFolderId)
-					.map((b) => ({
-						id: b.onlineId || b.id,
-						order: b.order,
-					})),
-			})
+		setBookmarks(updatedBookmarks)
 
-			Analytics.event('bookmark_reorder')
+		const itemsToReorder = updatedBookmarks.filter(
+			(b) =>
+				b.parentId === currentFolderId ||
+				(parentBookmark?.id && b.parentId === parentBookmark.id) ||
+				(parentBookmark?.onlineId && b.parentId === parentBookmark.onlineId)
+		)
+
+		let folderIdForApi = currentFolderId
+		if (parentBookmark?.onlineId) {
+			folderIdForApi = parentBookmark.onlineId
 		}
+
+		try {
+			await updateOrder({
+				folderId: folderIdForApi,
+				bookmarks: itemsToReorder.map((b) => ({
+					id: b.onlineId || b.id,
+					order: b.order,
+				})),
+			})
+		} catch {
+			showToast('خطا در مرتب‌سازی بوکمارک‌ها', 'error')
+		}
+
+		Analytics.event('bookmark_reorder')
 	}
 
 	const handleNavigate = (folderId: string | null, depth: number) => {

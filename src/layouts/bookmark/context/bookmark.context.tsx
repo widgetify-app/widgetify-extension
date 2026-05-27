@@ -103,21 +103,23 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (!data || data.length === 0) return
 
 		function mapBookmarks(fetchedBookmarks: FetchedBookmark[]) {
-			const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => ({
-				id: bookmark.offlineId || bookmark.id,
-				title: bookmark.title,
-				type: bookmark.type,
-				parentId: bookmark.parentId,
-				isLocal: true,
-				isManageable: bookmark.isManageable,
-				url: bookmark.url,
-				icon: bookmark.icon,
-				onlineId: bookmark.id,
-				sticker: bookmark.sticker ?? null,
-				customTextColor: bookmark.customTextColor ?? null,
-				customBackground: bookmark.customBackground ?? null,
-				order: bookmark.order || 0,
-			}))
+			const mappedFetched: Bookmark[] = fetchedBookmarks.map((bookmark) => {
+				return {
+					id: bookmark.id || bookmark.offlineId || '',
+					title: bookmark.title,
+					type: bookmark.type,
+					parentId: bookmark.parentId,
+					isLocal: true,
+					isManageable: bookmark.isManageable,
+					url: bookmark.url,
+					icon: bookmark.icon,
+					onlineId: bookmark.id,
+					sticker: bookmark.sticker ?? null,
+					customTextColor: bookmark.customTextColor ?? null,
+					customBackground: bookmark.customBackground ?? null,
+					order: bookmark.order || 0,
+				}
+			})
 
 			return mappedFetched
 		}
@@ -129,19 +131,24 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const getCurrentFolderItems = (parentId: string | null) => {
 		if (!bookmarks) return []
-		const parentBookmark = bookmarks.find(
-			(b) => b.id === parentId || b.onlineId === parentId
-		)
 
 		let currentFolderBookmarks: Bookmark[] = []
 		if (parentId) {
-			currentFolderBookmarks = bookmarks.filter(
-				(bookmark) =>
-					(typeof bookmark.parentId === 'string' &&
-						bookmark.parentId === parentId) ||
-					(typeof bookmark.parentId === 'string' &&
-						bookmark.parentId === parentBookmark?.onlineId)
+			const parentBookmark = bookmarks.find(
+				(b) => b.id === parentId || b.onlineId === parentId
 			)
+
+			currentFolderBookmarks = bookmarks.filter((bookmark) => {
+				if (bookmark.parentId === parentId) return true
+				if (parentBookmark?.id && bookmark.parentId === parentBookmark.id)
+					return true
+				if (
+					parentBookmark?.onlineId &&
+					bookmark.parentId === parentBookmark.onlineId
+				)
+					return true
+				return false
+			})
 		} else {
 			currentFolderBookmarks = bookmarks.filter(
 				(bookmark) => bookmark.parentId === null
@@ -177,21 +184,21 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				-1
 			)
 
-			let parentId = inputBookmark.parentId
-			if (validate(inputBookmark.parentId)) {
+			let parentIdForApi = inputBookmark.parentId
+			if (inputBookmark.parentId && validate(inputBookmark.parentId)) {
 				const parentBookmark = bookmarks?.find(
 					(b) =>
 						b.id === inputBookmark.parentId ||
 						b.onlineId === inputBookmark.parentId
 				)
 				if (parentBookmark?.onlineId) {
-					parentId = parentBookmark.onlineId
+					parentIdForApi = parentBookmark.onlineId
 				}
 			}
 			const [err, _] = await safeAwait<AxiosError, Bookmark>(
 				addBookmarkAsync({
 					order: maxOrder + 1,
-					parentId: parentId,
+					parentId: parentIdForApi,
 					title: inputBookmark.title,
 					customBackground: inputBookmark.customBackground,
 					customTextColor: inputBookmark.customTextColor,
