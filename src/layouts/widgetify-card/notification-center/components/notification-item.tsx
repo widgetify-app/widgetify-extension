@@ -91,7 +91,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'} bg-base-300/70  border-base-300/70 group relative`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-base-300/70 group relative`}
 		>
 			{icon && (
 				<div className="flex-shrink-0">
