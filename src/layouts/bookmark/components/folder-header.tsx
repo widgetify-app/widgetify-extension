@@ -6,7 +6,6 @@ import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import type { FolderPathItem } from '../types/bookmark.types'
 import { FolderPath } from './folder-path'
-import { IoHome } from 'react-icons/io5'
 import { LuX } from 'react-icons/lu'
 
 interface FolderHeaderProps {
@@ -23,7 +22,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 	}, [isOpen])
 	return (
 		<>
-			<div className="flex flex-row justify-between p-1 border-b border-content mb-0.5 bg-glass">
+			<div className="flex flex-row justify-between p-1 border-b border-content mb-0.5 bg-glass rounded-2xl">
 				<FolderPath
 					folderPath={folderPath}
 					onNavigate={onNavigate}
