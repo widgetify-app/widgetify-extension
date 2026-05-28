@@ -13,7 +13,7 @@ import React from 'react'
 import { Page } from '@/context/page.context'
 
 export interface EventName {
-	openSettings: 'account' | 'wallpapers' | 'general' | null
+	openSettings: 'account' | 'profile' | 'wallpapers' | 'general' | null
 	todosChanged: Todo[]
 	wallpaperChanged: StoredWallpaper
 	openWidgetsSettings: { tab: WidgetTabKeys | null }

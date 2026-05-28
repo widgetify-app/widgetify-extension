@@ -11,7 +11,7 @@ export function ProfileProgressNotification() {
 	}
 
 	const onClick = () => {
-		callEvent('openSettings', 'account')
+		callEvent('openSettings', 'profile')
 		Analytics.event('profile_progressbar_click')
 	}
 
