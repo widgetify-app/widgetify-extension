@@ -23,11 +23,14 @@ import { showToast } from '@/common/toast'
 import type { Friend } from '@/services/hooks/friends/friendService.hook'
 import { TodoSelectFriends } from './components/select-friends.todo'
 import { callEvent } from '@/common/utils/call-event'
+import { twMerge } from 'tailwind-merge'
 interface ExpandableTodoInputProps {
 	editTodo?: FetchedTodo
 	onClose: any
 	isEdit: boolean
 	onUpdated?: () => void
+	className?: string
+	transparentInput?: boolean
 }
 const getTodayJalaliMoment = () => jalaliMoment().locale('fa')
 const formatJalaliDateForDisplay = (date: jalaliMoment.Moment) => date.format('jD jMMM')
@@ -36,6 +39,8 @@ export function ExpandableTodoInput({
 	onClose,
 	isEdit,
 	onUpdated,
+	className,
+	transparentInput,
 }: ExpandableTodoInputProps) {
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: addTodoAsync, isPending: isCreatingTodo } = useAddTodo()
@@ -173,7 +178,6 @@ export function ExpandableTodoInput({
 			callEvent('openProfile')
 			return
 		}
-
 		const text = inputRef.current?.value?.trim()
 		if (text) {
 			try {
@@ -203,7 +207,15 @@ export function ExpandableTodoInput({
 				showToast(errorContent as string, 'error')
 			}
 		}
-	}, [category, priority, selectedDate, resetForm, isEdit, isAuthenticated])
+	}, [
+		category,
+		priority,
+		selectedDate,
+		resetForm,
+		isEdit,
+		isAuthenticated,
+		selectedFriends,
+	])
 
 	const onCloseEdit = () => {
 		resetForm()
@@ -221,7 +233,7 @@ export function ExpandableTodoInput({
 	)
 
 	return (
-		<div ref={containerRef} className="flex-none pt-3 mt-auto">
+		<div ref={containerRef} className={twMerge('flex-none pt-3 mt-auto', className)}>
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
@@ -282,14 +294,19 @@ export function ExpandableTodoInput({
 												handleNotesChange(e.target.value)
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
-											className="w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60"
+											className={twMerge(
+												'w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60',
+												`${transparentInput ? 'bg-transparent!' : 'bg-base-200! focus:ring-primary'} border-none! shadow-none!`
+											)}
 										/>
 									</div>
 									<div className="flex pl-1 gap-0.5 overflow-x-auto">
 										{!isEdit && isAuthenticated && (
 											<TodoSelectFriends
 												selectedFriends={selectedFriends}
-												setSelectedFriends={setSelectedFriends}
+												setSelectedFriends={(fList: Friend[]) => {
+													setSelectedFriends(fList)
+												}}
 											/>
 										)}
 										<PriorityDropdown
@@ -313,14 +330,11 @@ export function ExpandableTodoInput({
 										</Button>
 										<Button
 											size="sm"
-											className={`p-2 border rounded-xl  text-[10px]  text-muted shrink-0 active:scale-95`}
+											className={`p-2 border rounded-xl  text-[10px]  text-base-content/40 shrink-0 active:scale-95`}
 											ref={categoryInputRef}
 											onClick={() => setIsTagTooltipOpen(true)}
 										>
-											<IoPricetagOutline
-												size={16}
-												className="text-base-content/40 "
-											/>
+											<IoPricetagOutline size={16} />
 											<p className="truncate max-w-14 min-w-5">
 												{category || 'دسته‌بندی'}
 											</p>
