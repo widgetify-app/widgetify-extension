@@ -7,6 +7,7 @@ import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import Joyride, { type Step } from 'react-joyride'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import Analytics from '@/analytics'
+import { DialogChecker } from './dialog/dialog'
 const steps: Step[] = [
 	{
 		target: '#chrome-footer',
@@ -74,6 +75,7 @@ export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showTour, setShowTour] = useState(false)
+	const [appIsReady, setAppIsReady] = useState(false)
 
 	const handleGetStarted = async () => {
 		const [hasSeenTour] = await Promise.all([
@@ -113,6 +115,8 @@ export function HomePage() {
 				setShowReleaseNotes(true)
 				return
 			}
+
+			setAppIsReady(true)
 		}
 
 		displayModalIfNeeded()
@@ -129,6 +133,8 @@ export function HomePage() {
 					onGetStarted={handleGetStarted}
 				/>
 			)}
+
+			{appIsReady && <DialogChecker />}
 
 			<Joyride
 				steps={steps}

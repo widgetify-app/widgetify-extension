@@ -2,6 +2,13 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
 
+export type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
+export enum NotificationGoTo {
+	Explorer = 'explorer',
+	Profile = 'openProfile',
+	Settings = 'openSettings',
+}
+
 export interface NotificationItem {
 	id?: string
 	title: string
@@ -9,8 +16,8 @@ export interface NotificationItem {
 	link?: string
 	icon?: string
 	closeable: boolean | null
-	type?: 'text' | 'url' | 'action' | 'page' | 'banner'
-	goTo?: 'explorer' | 'openProfile' | 'openSettings'
+	type?: NotificationType
+	goTo?: NotificationGoTo
 	target?: string
 	backgroundColor?: string
 	borderRadius?: string
@@ -21,9 +28,24 @@ export interface NotificationItem {
 	hight?: number
 }
 
+export interface DialogNotificationItem {
+	id: string
+	title: string
+	dialogTitle: string | null
+	description: string
+	media: string
+	link: string
+	type: NotificationType
+	target: string
+	goTo: NotificationGoTo
+	buttonColor: string
+	buttonLabel: string
+}
+
 export interface NotificationItemResponse {
 	wigiPad: Array<NotificationItem>
 	widgetifyCard: Array<NotificationItem>
+	dialog: DialogNotificationItem | null
 }
 
 async function fetchNotifications(q: {
