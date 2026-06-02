@@ -15,7 +15,6 @@ import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
-import { YouTubeLayout } from '@/layouts/widgets/youtube/youtube.layout'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 import { showToast } from '@/common/toast'
@@ -126,16 +125,6 @@ export const widgetItems: WidgetItem[] = [
 		node: <NetworkLayout inComboWidget={false} enableBackground={true} />,
 		canToggle: true,
 		isNew: false,
-	},
-	{
-		id: WidgetKeys.youtube,
-		emoji: '📺',
-		label: 'آمار یوتیوب',
-		order: 8,
-		node: <YouTubeLayout />,
-		canToggle: false,
-		disabled: true,
-		soon: true,
 	},
 ]
 
