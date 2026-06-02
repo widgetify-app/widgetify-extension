@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import toast from 'react-hot-toast'
 import { playAlarm } from './playAlarm'
-import { TfiCheck, TfiInfo } from 'react-icons/tfi'
-import { LuX } from 'react-icons/lu'
-import { MdError } from 'react-icons/md'
 import { translateError } from '@/utils/translate-error'
+import { TfiAlert, TfiCheck } from 'react-icons/tfi'
+import { TiInfo } from 'react-icons/ti'
+import { LuX } from 'react-icons/lu'
 
-type ToastType = 'success' | 'error' | 'info'
+type ToastType = 'success' | 'error' | 'info' | 'warning'
+
 interface ToastOptions {
 	duration?: number
 	position?:
@@ -17,89 +18,88 @@ interface ToastOptions {
 		| 'bottom-center'
 		| 'bottom-right'
 	alarmSound?: boolean
+	title?: string
 }
 
-const TT: Record<ToastType, any> = {
+const TT: Record<
+	ToastType,
+	{ borderColor: string; iconBg: string; iconColor: string; icon: ReactNode }
+> = {
 	success: {
-		container: 'bg-success/90 outline-success/20',
-		message: 'text-white/80',
-		closeButton: 'text-white/80 bg-green-100/15',
-		iconDiv: 'bg-success-content/10',
-		icon: <TfiCheck size={18} />,
+		borderColor: 'border-r-success border-br-success',
+		iconBg: 'bg-success/10',
+		iconColor: 'text-success',
+		icon: <TfiCheck />,
 	},
 	error: {
-		container: 'bg-error outline-error/20 shadow-xl',
-		message: 'text-white/80',
-		closeButton: 'text-red-100 bg-red-100/15',
-		iconDiv: 'bg-error-content/10 text-error-content',
-		icon: <MdError size={18} />,
+		borderColor: 'border-r-error',
+		iconBg: 'bg-error/10',
+		iconColor: 'text-error',
+		icon: <TfiAlert />,
 	},
 	info: {
-		container: 'bg-info/90 outline-info/20 shadow',
-		message: 'text-white/80',
-		closeButton: 'text-white/80 bg-green-100/15',
-		iconDiv: 'bg-info-content/10',
-		icon: <TfiInfo size={18} />,
+		borderColor: 'border-r-info',
+		iconBg: 'bg-info/10',
+		iconColor: 'text-info',
+		icon: <TiInfo />,
+	},
+	warning: {
+		borderColor: 'border-r-warning',
+		iconBg: 'bg-warning/10',
+		iconColor: 'text-warning',
+		icon: <TfiAlert />,
 	},
 }
+
 export function showToast(
 	message: React.ReactNode | string,
 	type: ToastType,
 	options?: ToastOptions
 ) {
-	if (typeof message === 'string' && type) {
-		toast.custom(
-			(t) => (
-				<div
-					className={`${
-						t.visible ? 'animate-enter' : 'animate-leave'
-					} ${TT[type].container}  shadow-lg rounded-4xl flex items-center w-80 gap-2.5 p-3 outline-2 outline-offset-1 max-w-sm backdrop-blur-xs`}
-				>
-					<div
-						className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0  ${TT[type].iconDiv}`}
-					>
-						{TT[type].icon}
-					</div>
-					<p className={`flex-1 text-xs font-medium ${TT[type].message}`}>
-						{message}
-					</p>
-					<button
-						onClick={() => toast.remove(t.id, t.toasterId)}
-						className={`flex-shrink-0 ${TT[type].closeButton} p-1.5 mr-2 transition-opacity rounded-full cursor-pointer  hover:opacity-80`}
-					>
-						<LuX size={18} className="" />
-					</button>
-				</div>
-			),
-			{
-				duration: options?.duration ?? 5000,
-				position: options?.position,
-			}
-		)
-	} else {
-		if (React.isValidElement(message))
-			toast.custom(
-				(t) => (
-					<div
-						className={`${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full`}
-					>
-						{message}
-					</div>
-				),
-				options
-			)
-	}
+	const tt = TT[type]
 
-	if (options?.alarmSound) {
-		playAlarm('success')
-	}
+	toast.custom(
+		(t) => (
+			<div
+				className={`
+  flex items-center gap-3
+  bg-base-100 border  border-base-300 border-r-4
+  ${tt.borderColor} bg-glass shadow-md
+  rounded-xl px-3.5 py-3 w-[320px]
+  ${t.visible ? 'animate-enter' : 'animate-leave'}
+`}
+			>
+				<div
+					className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 text-sm ${tt.iconBg} ${tt.iconColor}`}
+				>
+					{tt.icon}
+				</div>
+				<div className="flex-1 min-w-0">
+					<p className="text-[13px] font-medium text-base-content m-0">
+						{options?.title}
+					</p>
+					<p className="text-[12px] text-base-content/60 m-0">{message}</p>
+				</div>
+				<button
+					onClick={() => toast.remove(t.id, t.toasterId)}
+					className="rounded-full btn text-base-content/80 btn-xs btn-ghost"
+				>
+					<LuX size={15} className="" />
+				</button>
+			</div>
+		),
+		{ duration: options?.duration ?? 5000, position: options?.position }
+	)
+
+	if (options?.alarmSound) playAlarm('success')
 }
 
 export function autoFormatErrorToast(err: any) {
 	const message = translateError(err)
-	if (typeof message === 'string') {
-		showToast(message, 'error')
-	} else {
-		showToast(`${Object.keys(message)[0]}: ${Object.values(message)[0]}`, 'error')
-	}
+	showToast(
+		typeof message === 'string'
+			? message
+			: `${Object.keys(message)[0]}: ${Object.values(message)[0]}`,
+		'error'
+	)
 }

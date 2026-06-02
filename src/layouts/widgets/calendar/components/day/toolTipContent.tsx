@@ -17,9 +17,8 @@ import {
 } from '@/services/hooks/moodLog/upsert-moodLog.hook'
 import { safeAwait } from '@/services/api'
 import type { AxiosError } from 'axios'
-import { translateError } from '@/utils/translate-error'
 import { useIsMutating } from '@tanstack/react-query'
-import { showToast } from '@/common/toast'
+import { autoFormatErrorToast, showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constant/moods'
@@ -49,7 +48,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		if (isAdding) return
 		if (value === '') return
 		if (!isAuthenticated) {
-			showToast('برای ثبت مود روزانه باید وارد حساب کاربری خود شوید.', 'error')
+			showToast('برای ثبت حال روزانه باید وارد حساب کاربری خود شوید.', 'error')
 			return
 		}
 
@@ -81,8 +80,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			})
 		)
 		if (error) {
-			const msg = translateError(error)
-			showToast(typeof msg === 'string' ? msg : 'خطایی رخ داد!', 'error')
+			autoFormatErrorToast(error)
 			return
 		}
 
@@ -90,12 +88,12 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		if (response.action === 'removed') {
 			setMood('')
 			showToast(
-				'مودت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
+				'حال روزانت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
 				'info'
 			)
 		} else {
 			setMood(value as MoodType)
-			showToast('مود شما با موفقیت ثبت شد.', 'success', {
+			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success', {
 				alarmSound: true,
 			})
 		}
@@ -163,7 +161,8 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 						<div className="flex items-center gap-1 mb-1.5 px-0.5">
 							<TbMoodHappy className="text-secondary" size={12} />
 							<span className="text-[10px] font-medium text-content">
-								مود {jalaliDay === today.format('dddd') ? 'امروز' : 'روز'}
+								حس و حال{' '}
+								{jalaliDay === today.format('dddd') ? 'امروز' : 'روز'}
 							</span>
 						</div>
 						<div className="grid grid-cols-4 gap-1">

@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constant/moods'
-import { showToast } from '@/common/toast'
+import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
@@ -42,20 +42,19 @@ export function DailyMoodNotification() {
 			})
 		)
 		if (error) {
-			const msg = translateError(error)
-			showToast(msg as any, 'error')
+			autoFormatErrorToast(error)
 			return
 		}
 
 		if (response.action === 'removed') {
 			setMood(value)
 			showToast(
-				'مودت حذف شد. اگه بعداً خواستی دوباره می‌تونی یکی انتخاب کنی.',
+				'حال روزانت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
 				'info'
 			)
 		} else {
 			setMood(value as MoodType)
-			showToast('مود شما با موفقیت ثبت شد.', 'success', {
+			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success', {
 				alarmSound: true,
 			})
 		}
