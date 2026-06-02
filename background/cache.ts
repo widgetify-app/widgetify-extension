@@ -128,8 +128,7 @@ export function setupCaching() {
 					url.origin === 'https://cdnjs.cloudflare.com' ||
 					url.hostname.includes('googleapis.com') ||
 					url.hostname.includes('gstatic.com') ||
-					url.hostname.includes('storage') ||
-					url.hostname.includes('cdn'),
+					url.hostname.includes('storage'),
 				new StaleWhileRevalidate({
 					cacheName: 'cdn-cache-v1',
 					plugins: [
