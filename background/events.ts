@@ -2,6 +2,7 @@ import { cleanupOutdatedCaches } from 'workbox-precaching'
 import Analytics from '../src/analytics'
 import { removeFromStorage, setToStorage } from '../src/common/storage'
 import { preloadCriticalResources } from './utils'
+import { type SwEvent, SwEventType } from '@/common/types/sw-events'
 
 export function setupEventListeners() {
 	if (!import.meta.env.FIREFOX) {
@@ -42,5 +43,49 @@ export function setupEventListeners() {
 
 	browser.runtime.onStartup.addListener(async () => {
 		Analytics.event('Startup')
+	})
+
+	browser.runtime.onMessage.addListener(async (message: SwEvent) => {
+		switch (message.type) {
+			case SwEventType.DeleteCache: {
+				const cache = await caches.open(message.cacheName)
+				const requests = await cache.keys()
+
+				await Promise.all(
+					requests
+						.filter((request) => {
+							const url = new URL(request.url)
+
+							return (
+								url.origin === 'https://api.widgetify.ir' &&
+								url.pathname.startsWith(message.path)
+							)
+						})
+						.map((request) => cache.delete(request))
+				)
+
+				break
+			}
+			case SwEventType.UpdateCache: {
+				const cache = await caches.open(message.cacheName)
+
+				const requests = await cache.keys()
+				const existingRequest = requests.find((request) => {
+					const url = new URL(request.url)
+					return url.pathname === message.path
+				})
+
+				if (!existingRequest) break
+
+				const response = new Response(JSON.stringify(message.data), {
+					status: 200,
+					headers: { 'Content-Type': 'application/json' },
+				})
+
+				await cache.put(existingRequest, response)
+
+				break
+			}
+		}
 	})
 }

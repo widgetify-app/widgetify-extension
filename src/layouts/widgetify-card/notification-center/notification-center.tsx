@@ -5,17 +5,21 @@ import type { ReactNode } from 'react'
 import {
 	type NotificationItem,
 	useGetNotifications,
+	useNotifyAsSeen,
 } from '@/services/hooks/extension/getNotifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
 import { DailyMoodNotification } from '../daily-mood'
 import { ProfileProgressNotification } from '../profile-progress'
+import { safeAwait } from '@/services/api'
 
+const localIds = ['notificationMood', 'update_profile']
 export function NotificationCenter() {
 	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
 	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications({
 		enabled: true,
 	})
+	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
 
 	const [notifications, setNotifications] = useState<NotificationItem[]>([])
 	const [pushed, setPushed] = useState<{ id: string; node: ReactNode }[]>([])
@@ -109,14 +113,8 @@ export function NotificationCenter() {
 
 			for (const item of fetchedNotifications?.widgetifyCard || []) {
 				if (item.id) {
-					const cacheItem = await getWithExpiry(
-						`removed_notification_${item.id}`
-					)
-
-					if (!cacheItem) {
-						if (notifications.findIndex((f) => f.id === item.id) === -1)
-							validNotifications.push(item)
-					}
+					if (notifications.findIndex((f) => f.id === item.id) === -1)
+						validNotifications.push(item)
 				}
 			}
 			setNotifications([...validNotifications])
@@ -127,11 +125,18 @@ export function NotificationCenter() {
 
 	const onClose = async (e: any, id: string, ttl = 1200) => {
 		e.preventDefault()
-		await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
+		const notif = notifications.find((f) => f.id === id)
+		if (notif) {
+			const filtered = notifications.filter((f) => f.id !== id)
+			setNotifications([...filtered])
 
-		const filtered = notifications.filter((f) => f.id !== id)
-		setNotifications([...filtered])
-		Analytics.event('notifications_close')
+			Analytics.event('notifications_close')
+			if (!localIds.includes(id)) {
+				await safeAwait(notifyAsSeen(id))
+			} else {
+				await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
+			}
+		}
 	}
 
 	return (

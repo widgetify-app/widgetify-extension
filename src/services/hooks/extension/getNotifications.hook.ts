@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
+import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
 
 export interface NotificationItem {
 	id?: string
@@ -53,5 +54,22 @@ export function useGetNotifications(options: {
 		refetchInterval: refetchInterval || false,
 		retry: 1,
 		staleTime: 5 * 60 * 1000, // 5 minutes
+	})
+}
+
+export function useNotifyAsSeen() {
+	return useMutation({
+		mutationFn: async (id: string) => {
+			const client = await getMainClient()
+			await client.put(`/notifications/${id}/seen`)
+		},
+		onSuccess: () => {
+			browser.runtime.sendMessage<SwEvent>({
+				cacheName: CacheName.API,
+				type: SwEventType.DeleteCache,
+				path: '/extension/notifications',
+			})
+		},
+		mutationKey: ['seen_notification'],
 	})
 }
