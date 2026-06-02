@@ -122,12 +122,12 @@ export function ContentSection() {
 				className={`flex flex-col items-center overflow-y-auto scrollbar-none ${layoutPositions[contentAlignment]} flex-1 w-full px-1 md:px-4 py-1`}
 			>
 				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-					<div className="order-3 w-full lg:w-[28%] lg:order-1">
+					<div className="order-3 w-full lg:w-xs lg:order-1">
 						<WidgetifyLayout />
 					</div>
 
 					<div
-						className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2 px-2'}
+						className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2 px-1'}
 					>
 						<SearchLayout />
 						<BookmarkProvider>
@@ -135,7 +135,7 @@ export function ContentSection() {
 						</BookmarkProvider>
 					</div>
 
-					<div className="order-2 w-full lg:w-[28%] lg:order-3">
+					<div className="order-2 w-full lg:w-xs lg:order-3">
 						<WigiPadWidget />
 					</div>
 				</div>
