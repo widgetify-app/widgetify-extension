@@ -1,31 +1,11 @@
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
-import { useAuth } from '@/context/auth.context'
 import { TbWind } from 'react-icons/tb'
 import { WiHumidity } from 'react-icons/wi'
 import { unitsFlag } from '../../weather/unitSymbols'
-import { Forecast } from '../../weather/forecast/forecast'
-import { useGetForecastWeatherByLatLon } from '@/services/hooks/weather/getForecastWeatherByLatLon'
 import moment from 'jalali-moment'
 
 export function InfoWeather() {
-	const { user } = useAuth()
-
-	const { data: weather } = useGetWeatherByLatLon({
-		units: 'metric',
-		lat: user?.city?.id ? undefined : 35.696111,
-		lon: user?.city?.id ? undefined : 51.423056,
-		enabled: true,
-		refetchInterval: 0,
-	})
-
-	const { data: forecastData } = useGetForecastWeatherByLatLon({
-		count: 6,
-		units: 'metric',
-		enabled: true,
-		refetchInterval: 0,
-		lat: user?.city?.id ? undefined : 35.696111,
-		lon: user?.city?.id ? undefined : 51.423056,
-	})
+	const { data: weather } = useGetWeatherByLatLon()
 
 	if (!weather) return <div className="h-24 animate-pulse bg-base-300/20 rounded-xl" />
 
@@ -138,7 +118,7 @@ export function InfoWeather() {
 			</div>
 
 			<div className="flex flex-col h-48 gap-1 px-2 pb-2 overflow-y-auto scrollbar-none">
-				{forecastData?.map((forecast) => (
+				{weather?.forecast?.map((forecast) => (
 					<div
 						key={forecast.date}
 						className="flex items-center justify-between p-1 transition-colors border border-transparent rounded-xl bg-base-200/20 hover:bg-base-200/40 hover:border-base-content/5"

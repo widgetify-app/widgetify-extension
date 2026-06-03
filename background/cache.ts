@@ -14,6 +14,7 @@ const allowedPaths = [
 	'/extension/searchbox',
 	'/mini-apps',
 	'/searchbox',
+	'/weather',
 ]
 
 export function setupCaching() {
