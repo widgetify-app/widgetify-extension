@@ -8,6 +8,7 @@ import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storag
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
+import { CacheName, type SwEvent, SwEventType } from '../../../common/types/sw-events'
 
 interface FetchedProfile {
 	email?: string
@@ -164,8 +165,16 @@ export function useSetCity() {
 
 	return useMutation({
 		mutationFn: (cityId: string) => setCityToServer(cityId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		onSuccess: async () => {
+			await browser.runtime.sendMessage<SwEvent>({
+				cacheName: CacheName.API,
+				type: SwEventType.DeleteCache,
+				path: '/weather/current',
+			})
+			Promise.all([
+				queryClient.invalidateQueries({ queryKey: ['userProfile'] }),
+				queryClient.invalidateQueries({ queryKey: ['getWeatherByLatLon'] }),
+			])
 		},
 	})
 }

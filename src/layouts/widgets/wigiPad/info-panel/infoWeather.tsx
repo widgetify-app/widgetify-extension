@@ -5,7 +5,7 @@ import { unitsFlag } from '../../weather/unitSymbols'
 import moment from 'jalali-moment'
 
 export function InfoWeather() {
-	const { data: weather } = useGetWeatherByLatLon()
+	const { data: weather } = useGetWeatherByLatLon(true)
 
 	if (!weather) return <div className="h-24 animate-pulse bg-base-300/20 rounded-xl" />
 

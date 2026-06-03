@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
 
@@ -47,6 +47,7 @@ export interface NotificationItemResponse {
 	wigiPad: Array<NotificationItem>
 	widgetifyCard: Array<NotificationItem>
 	dialog: DialogNotificationItem | null
+	wigipadBanner: string | null
 }
 
 async function fetchNotifications(q: {
@@ -81,6 +82,8 @@ export function useGetNotifications(options: {
 }
 
 export function useNotifyAsSeen() {
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const client = await getMainClient()
@@ -92,6 +95,7 @@ export function useNotifyAsSeen() {
 				type: SwEventType.DeleteCache,
 				path: '/extension/notifications',
 			})
+			queryClient.invalidateQueries({ queryKey: ['notifications'] })
 		},
 		mutationKey: ['seen_notification'],
 	})

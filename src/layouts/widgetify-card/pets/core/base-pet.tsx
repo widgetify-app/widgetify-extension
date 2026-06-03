@@ -9,6 +9,7 @@ import {
 	type PetDurations,
 	type Position,
 } from './pet-types'
+import { useAppearanceSetting } from '@/context/appearance.context'
 
 export interface BasePetProps {
 	name: string
@@ -82,11 +83,11 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	isHungry,
 }) => {
 	const showToolTip = showName || isHungry
-
+	const { ui } = useAppearanceSetting()
 	return (
 		<div
 			ref={containerRef}
-			className="absolute hidden w-full h-16 overflow-hidden -bottom-2 md:flex"
+			className={`absolute hidden w-full h-16 overflow-hidden ${ui === 'SIMPLE' ? 'bottom-0.5 md:flex' : ' -bottom-2 md:flex'}`}
 			style={{
 				zIndex: 50,
 			}}

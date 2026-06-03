@@ -9,6 +9,9 @@ import { PomodoroTimer } from '../widgets/tools/pomodoro/pomodoro-timer'
 import { NotificationCenter } from '../widgetify-card/notification-center/notification-center'
 import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
 import { RenderWigiPadItem } from '../widgets/wigiPad/info-panel/components/ann-item'
+import { WigiPadMain } from '../widgets/wigiPad/wigi-pad-main/wigi-pad-main'
+import { PetProvider, usePetContext } from '../widgetify-card/pets/pet.context'
+import { Pet } from '../widgetify-card/pets/pet'
 
 const sections = [
 	{ id: 'all', label: 'ویجی تب', icon: <MdOutlineTab size={14} /> },
@@ -17,58 +20,42 @@ const sections = [
 ]
 
 export function SimplifyYadkar() {
-	const [activeSection, setActiveSection] = useState<string>('all')
 	const { data: fetchedData } = useGetNotifications({})
-	const tabContainerRef = useRef<HTMLDivElement>(null)
+	return (
+		<WidgetContainer className="relative flex flex-col w-full overflow-hidden h-60 max-h-60!">
+			<div className="flex flex-col flex-1 min-h-0 gap-2 ">
+				<div className="shrink-0">
+					<WigiPadMain banner={null} />
+				</div>
 
-	const onChangeTab = (val: string) => {
-		setActiveSection(val)
-		Analytics.event(`wigipad_simplify_tab_${val}`)
-	}
+				<div className="flex-1 min-h-0 pb-10 mt-1 overflow-y-auto scrollbar-none">
+					<div className="flex flex-col gap-1.5 pb-2">
+						{fetchedData?.wigiPad?.map((notification, index) => (
+							<RenderWigiPadItem
+								key={`wigipad-item-${index}`}
+								notification={notification}
+							/>
+						))}
 
-	const renderContent = () => {
-		switch (activeSection) {
-			case 'weather':
-				return <InfoWeather />
-			case 'pomodoro':
-				return <PomodoroTimer />
-
-			default:
-				return (
-					<div className="grid grid-cols-2 grid-rows-2 gap-x-2">
-						<DateDisplay />
-						<ClockDisplay />
-						<div className="col-span-2">
-							<div className="mt-1 flex flex-col gap-0.5 overflow-y-auto scrollbar-none max-h-28 min-h-28">
-								{fetchedData?.wigiPad?.map((notification, index) => (
-									<RenderWigiPadItem
-										key={`wigipad-item-${index}`}
-										notification={notification}
-									/>
-								))}
-								<div className="pb-4 mt-1">
-									<NotificationCenter />
-								</div>
-							</div>
+						<div className="mt-2">
+							<NotificationCenter />
 						</div>
 					</div>
-				)
-		}
-	}
+				</div>
+			</div>
+			<PetProvider>
+				<PetRender />
+			</PetProvider>
+		</WidgetContainer>
+	)
+}
+function PetRender() {
+	const { isEnabled } = usePetContext()
+	if (!isEnabled) return null
 
 	return (
-		<WidgetContainer className="flex flex-col">
-			<div className="relative flex-1 h-60">{renderContent()}</div>
-			<div ref={tabContainerRef} className="col-span-2">
-				<TabNavigation
-					tabMode="advanced"
-					activeTab={activeSection}
-					onTabClick={(tab) => onChangeTab(tab)}
-					tabs={sections}
-					size="small"
-					className="h-fit  border-none! flex-nowrap w-full"
-				/>
-			</div>
-		</WidgetContainer>
+		<div className="z-10 h-7 bg-content ">
+			<Pet />
+		</div>
 	)
 }

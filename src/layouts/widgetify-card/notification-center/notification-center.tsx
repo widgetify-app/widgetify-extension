@@ -144,6 +144,7 @@ export function NotificationCenter() {
 			{notifications?.map((item, index) => (
 				<NotificationCardItem
 					notification={item}
+					key={`no-${index}`}
 					onClose={(e) => onClose(e, item.id || '', item.ttl)}
 				/>
 			))}

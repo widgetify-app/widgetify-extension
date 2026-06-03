@@ -3,17 +3,21 @@ import ms from 'ms'
 import { getMainClient } from '@/services/api'
 import type { FetchedWeather } from '../../../layouts/widgets/weather/weather.interface'
 
-async function fetchWeatherByLatLon(): Promise<FetchedWeather> {
+async function fetchWeatherByLatLon(addForecast: boolean): Promise<FetchedWeather> {
 	const client = await getMainClient()
+	const params = new URLSearchParams()
+	if (addForecast) {
+		params.append('addForecast', 'true')
+	}
 
-	const response = await client.get<FetchedWeather>('/weather/current')
+	const response = await client.get<FetchedWeather>('/weather/current', { params })
 	return response.data
 }
 
-export function useGetWeatherByLatLon() {
+export function useGetWeatherByLatLon(addForecast: boolean) {
 	return useQuery({
-		queryKey: ['getWeatherByLatLon'],
-		queryFn: () => fetchWeatherByLatLon(),
+		queryKey: ['getWeatherByLatLon', addForecast],
+		queryFn: () => fetchWeatherByLatLon(addForecast),
 		staleTime: ms('5m'),
 		gcTime: ms('5m'),
 	})
