@@ -143,18 +143,8 @@ export function NotificationCenter() {
 		<div className="flex flex-col gap-1">
 			{notifications?.map((item, index) => (
 				<NotificationCardItem
-					id={item.id}
-					closeable={item.closeable}
-					key={index}
-					title={item.title}
-					description={item.description}
-					link={item.link}
+					notification={item}
 					onClose={(e) => onClose(e, item.id || '', item.ttl)}
-					icon={item.icon}
-					goTo={item.goTo}
-					target={item.target}
-					type={item.type}
-					titleDecoration={item.titleDecoration}
 				/>
 			))}
 

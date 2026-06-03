@@ -26,6 +26,7 @@ export interface NotificationItem {
 	ttl?: number
 	hasBorder?: boolean
 	hight?: number
+	createdAt?: string
 }
 
 export interface DialogNotificationItem {

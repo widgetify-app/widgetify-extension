@@ -39,7 +39,7 @@ export function DialogChecker() {
 		if (!data?.dialog?.id) return
 
 		setShow(false)
-		await safeAwait(asSeen(data.dialog.id))
+		if (isAuthenticated) await safeAwait(asSeen(data.dialog.id))
 	}
 
 	const onButtonClick = async () => {
@@ -57,7 +57,7 @@ export function DialogChecker() {
 		}
 
 		setShow(false)
-		safeAwait(asSeen(data?.dialog?.id))
+		if (isAuthenticated) safeAwait(asSeen(data?.dialog?.id))
 	}
 
 	if (!data?.dialog) return null

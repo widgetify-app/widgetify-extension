@@ -4,8 +4,9 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import type { NotificationItem } from '@/services/hooks/extension/getNotifications.hook'
 
-interface NotificationItemProps extends NotificationItem {
+interface NotificationItemProps {
 	onClose(e: any, id: string): any
+	notification: NotificationItem
 }
 
 interface Prop {
@@ -60,13 +61,14 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		title,
 		closeable,
 		id,
-		onClose,
+
 		description,
 		target,
 		goTo,
 		type,
 		titleDecoration,
-	} = prop
+		createdAt,
+	} = prop.notification
 
 	const [isExpanded, setIsExpanded] = useState(false)
 	const CHARACTER_LIMIT = 85
@@ -85,6 +87,16 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		textDecoration: titleDecoration,
 	}
 
+	const formattedJalaliDate = createdAt
+		? new Intl.DateTimeFormat('fa-IR', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+			}).format(new Date(createdAt))
+		: null
+
 	return (
 		<Wrapper
 			link={link}
@@ -94,13 +106,13 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			className={`flex gap-2 p-2 transition-all duration-300 border rounded-xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-base-300/70 group relative`}
 		>
 			{icon && (
-				<div className="flex-shrink-0">
-					<div className="p-1.5 bg-base-content/5 rounded-lg">
+				<div className="shrink-0 self-start mt-0.5">
+					<div className="p-1 rounded-lg bg-base-content/5">
 						{icon.startsWith('http') ? (
 							<img
 								src={icon}
 								alt="icon"
-								className="object-contain w-4 h-4 rounded"
+								className="object-contain w-3 h-3 rounded"
 							/>
 						) : (
 							<span className="w-4 h-4 text-sm">{icon}</span>
@@ -122,7 +134,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				{description && (
 					<div className="relative">
 						<p
-							className={`mt-1 text-[11px] font-medium text-base-content/60 leading-relaxed whitespace-pre-wrap break-words transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+							className={`mt-1 text-[10px] font-medium text-base-content/60 leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
 							{description}
 						</p>
@@ -130,7 +142,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						{shouldShowReadMore && (
 							<button
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 text-[10px] font-light text-muted hover:underline cursor-pointer"
+								className="mt-1 flex items-center gap-1 border border-base-content/4 rounded-xl px-1 hover:border-base-content/10 text-[10px] font-light text-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<HiChevronDown
@@ -141,16 +153,24 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						)}
 					</div>
 				)}
+
+				{formattedJalaliDate && (
+					<div className="flex justify-start mt-0.5">
+						<span className="text-[10px] font-light text-base-content/40">
+							{formattedJalaliDate}
+						</span>
+					</div>
+				)}
 			</div>
 
 			{closeable && id && (
 				<button
 					type="button"
-					className="flex items-center justify-center w-6 h-6 p-1 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-base-content/5 text-base-content/40 hover:bg-error/10 hover:text-error"
+					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-base-content/5 text-base-content/40 hover:bg-error/10 hover:text-error"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
-						onClose(e, id)
+						prop?.onClose(e, id)
 					}}
 				>
 					<HiXMark size={14} />

@@ -73,7 +73,7 @@ export function DailyMoodNotification() {
 
 	return (
 		<div
-			className="flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl bg-base-300/70 border-base-300/70"
+			className="flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-base-300/70"
 			id="notificationMood "
 		>
 			<div className="flex-1 min-w-0 ">
@@ -93,7 +93,7 @@ export function DailyMoodNotification() {
 						<HiXMark size={14} />
 					</button>
 				</div>
-				<div className="flex justify-around w-full h-10 mt-2 gap-0.5">
+				<div className="flex justify-around w-full h-10 gap-1 mt-2">
 					{moodOptions
 						.filter((f) => f.label)
 						.map((option) => (
