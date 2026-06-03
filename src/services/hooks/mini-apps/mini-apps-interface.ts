@@ -18,6 +18,7 @@ export interface MiniApp {
 	badgeColor: string | null
 	badgeAnimate: boolean
 	allowPermission: string[]
+	timeout?: number
 	sandboxPermission: string[]
 	scopes: MiniAppScopeEnum[]
 }

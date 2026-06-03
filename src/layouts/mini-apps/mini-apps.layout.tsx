@@ -121,6 +121,7 @@ export function MiniAppsLayout() {
 						<MiniAppRunner
 							appId={selectedAppId}
 							onClickToExist={() => onClickToExist()}
+							isFullScreen={isFullScreen}
 						/>
 					) : (
 						<div className="flex flex-col items-center text-center">

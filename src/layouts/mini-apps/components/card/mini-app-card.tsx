@@ -11,10 +11,32 @@ interface MiniAppCardProps {
 export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 	return (
 		<div
-			className={`flex relative items-center  gap-3 p-2 rounded-2xl duration-150 border border-base-content/5 active:scale-[0.98] transition-transform overflow-hidden cursor-pointer ${isSelected ? 'border-primary/20 bg-primary/10 text-primary/90' : '  hover:bg-primary/10! bg-content bg-glass! '}`}
 			onClick={() => onLaunch(app)}
+			className={`
+                group relative flex items-center gap-3 p-2 rounded-2xl cursor-pointer
+                transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
+                border ${
+					isSelected
+						? `border-primary/30 bg-linear-to-t from-primary/10 via-primary/5 to-transparent shadow-md shadow-primary/10`
+						: `border-base-content/5 bg-content bg-glass! hover:bg-primary/5 hover:border-primary/10`
+				}
+            `}
 		>
-			<div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-xl shrink-0">
+			<div
+				className={`
+                    absolute right-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full
+                    transition-all duration-200
+                    ${isSelected ? 'bg-primary opacity-100' : 'opacity-0'}
+                `}
+			/>
+
+			<div
+				className={`
+                    z-10 flex items-center justify-center w-8 h-8 overflow-hidden rounded-xl shrink-0
+                    transition-transform duration-200
+                    ${isSelected ? 'scale-105' : 'group-hover:scale-105'}
+                `}
+			>
 				{app.icon ? (
 					<img
 						src={app.icon}
@@ -26,12 +48,18 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				)}
 			</div>
 
-			<div className="flex-1 min-w-0">
-				<p className="text-sm font-semibold truncate">{app.name}</p>
+			<div className="z-10 flex-1 min-w-0">
+				<p
+					className={`
+                        text-sm font-semibold truncate transition-colors
+                        ${isSelected ? 'text-primary' : 'text-base-content'}
+                    `}
+				>
+					{app.name}
+				</p>
+
 				{app.description && (
-					<p
-						className={`text-xs min-w-60  max-w-60 mt-0.5 ${isSelected ? 'text-primary/80' : 'text-base-content/80'}`}
-					>
+					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-base-content/70 ">
 						{app.description}
 					</p>
 				)}
@@ -39,7 +67,12 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 
 			{app.badge && (
 				<div
-					className={`absolute px-2 py-0.5 text-xs transform ${app.badgeAnimate && 'animate-bounce'} transition-all duration-200  shadow-xl left-0 w-32  text-center top-0 rounded-br-2xl`}
+					className={`
+                        absolute px-2 py-0.5 text-xs left-0 w-32 text-center top-0 rounded-br-2xl
+                        transform transition-all duration-200 shadow-xl
+                        ${app.badgeAnimate ? 'animate-bounce' : ''}
+                        ${isSelected ? 'opacity-100' : 'opacity-90'}
+                    `}
 					style={{
 						backgroundColor: app.badgeColor || '#536dfe',
 						color: getContrastingTextColor(app.badgeColor || '#536dfe'),

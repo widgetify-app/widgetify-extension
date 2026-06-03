@@ -12,8 +12,9 @@ const LOAD_TIMEOUT = 8000
 interface Prop {
 	appId: string
 	onClickToExist: () => void
+	isFullScreen: boolean
 }
-export function MiniAppRunner({ appId, onClickToExist }: Prop) {
+export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 	const timeoutRef = useRef<any>(null)
 	const iframeRef = useRef<HTMLIFrameElement>(null)
 
@@ -60,7 +61,7 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 			setIsAppReady(false)
 			setLaunchData(null)
 			setHasError(true)
-		}, LOAD_TIMEOUT)
+		}, app?.timeout || LOAD_TIMEOUT)
 	}
 
 	useEffect(() => {
@@ -131,7 +132,9 @@ export function MiniAppRunner({ appId, onClickToExist }: Prop) {
 				isLoadingApp={isLoadingApp}
 			/>
 
-			<div className="relative flex-1 overflow-hidden rounded-b-2xl">
+			<div
+				className={`relative flex-1 overflow-hidden  ${isFullScreen ? 'rounded-b-2xl' : 'rounded-bl-2xl'}`}
+			>
 				{isLoading && (
 					<MiniAppLoadingState
 						icon={app?.icon}
