@@ -42,14 +42,6 @@ export function MarketItemCard({
 	}
 
 	let needUpgrade = !SUPPORTED_TYPES.includes(item.type)
-	if (
-		!needUpgrade &&
-		item.itemValue &&
-		item.type === 'THEME' &&
-		!(item.itemValue in Theme)
-	) {
-		needUpgrade = true
-	}
 
 	function onPurchaseButtonClick() {
 		if (needUpgrade) {
@@ -60,8 +52,8 @@ export function MarketItemCard({
 	}
 
 	return (
-		<div className="group relative flex flex-col h-full bg-base-100 rounded-2xl border border-base-300/60 hover:border-primary/30 hover:shadow-lg transition-all duration-200 overflow-hidden">
-			<div className="relative flex-shrink-0 bg-base-200/40 overflow-hidden">
+		<div className="relative flex flex-col h-full overflow-hidden transition-all duration-200 border group bg-base-100 rounded-2xl border-base-300/60 hover:border-primary/30 hover:shadow-lg">
+			<div className="relative flex-shrink-0 overflow-hidden bg-base-200/40">
 				<RenderPreview item={item} handlePreviewClick={handlePreviewClick} />
 				{isOwned && (
 					<div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-success/15 border border-success/25 text-success">
@@ -71,10 +63,10 @@ export function MarketItemCard({
 				)}
 			</div>
 
-			<div className="flex flex-col flex-1 p-3 gap-2">
+			<div className="flex flex-col flex-1 gap-2 p-3">
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex flex-col min-w-0">
-						<h3 className="text-sm font-semibold truncate text-content group-hover:text-primary transition-colors">
+						<h3 className="text-sm font-semibold truncate transition-colors text-content group-hover:text-primary">
 							{item.name}
 						</h3>
 						<span className="text-[10px] text-muted mt-0.5 flex items-center gap-1">
@@ -90,7 +82,7 @@ export function MarketItemCard({
 					</p>
 				)}
 
-				<div className="flex items-center justify-between pt-2 border-t border-base-200/50 mt-auto">
+				<div className="flex items-center justify-between pt-2 mt-auto border-t border-base-200/50">
 					<ItemPrice price={item.price} />
 
 					{isOwned ? (

@@ -1,5 +1,4 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
-import type { Theme } from '@/context/theme.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
@@ -19,13 +18,8 @@ import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/cloc
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import type {
-	EngineMeta,
-	RecommendedSite,
-	TrendItem,
-} from '@/services/hooks/trends/getTrends'
+import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
-import type { FetchedYouTubeProfile } from '@/services/hooks/youtube/getYouTubeProfile.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 
@@ -46,7 +40,7 @@ export interface StorageKV {
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
-	theme: Theme
+	theme: string
 	lastVersion: string
 	forecastWeather: FetchedForecast[]
 	auth_token: string | undefined
@@ -66,11 +60,6 @@ export interface StorageKV {
 	}[]
 	calendarDrawerState: boolean
 	pets: PetSettings
-	youtubeSettings: {
-		username: string | null
-		subscriptionStyle: 'short' | 'long'
-	}
-	youtubeProfile: FetchedYouTubeProfile & { isCached?: boolean }
 	clock: ClockSettings
 	wigiPadDate: WigiPadDateSetting
 	configData: ExtensionConfigResponse

@@ -127,7 +127,7 @@ export function ContentSection() {
 					</div>
 
 					<div
-						className={'order-1 w-full lg:w-[60%] lg:order-2 space-y-2 px-1'}
+						className={'order-1 w-full lg:w-[65%] lg:order-2 space-y-2 px-1'}
 					>
 						<SearchLayout />
 						<BookmarkProvider>
