@@ -70,7 +70,7 @@ export function NavbarTabs() {
 					<span
 						className={`
             relative z-10 transition-all duration-300 block
-            ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-white/20 hover:text-white/40'}
+            ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-base-content/20 hover:text-base-content/40'}
         `}
 					>
 						{page === tab.id && tab.activeIcon ? (
@@ -211,7 +211,7 @@ export function NavbarLayout(): JSX.Element {
 						<Tooltip content="بستن نوار">
 							<button
 								onClick={() => onToggleNavbar()}
-								className="p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
+								className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 							>
 								<FiChevronDown size={15} />
 							</button>

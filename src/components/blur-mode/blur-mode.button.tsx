@@ -14,7 +14,7 @@ export function BlurModeButton() {
 		<Tooltip content={blurMode ? 'غیرفعالسازی' : 'فعالسازی حالت مخفی'}>
 			<div
 				onClick={handleBlurModeToggle}
-				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
+				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 			>
 				{blurMode ? <HiOutlineEye size={15} /> : <HiOutlineEyeSlash size={15} />}
 			</div>

@@ -78,7 +78,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 				id: item.value,
 				name: item.name ?? 'بدون نام',
 				icon: <IoMdStar size={14} />,
-				description: item?.description || 'تم خریداری شده',
+				description: item?.description || 'پوسته خریداری شده',
 			}))
 			setThemes([...defaultThemes, ...mapped])
 		}
@@ -90,9 +90,9 @@ export function ThemeSelector({ fetched_themes }: Props) {
 	}
 
 	return (
-		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
+		<SectionPanel title="انتخاب پوسته" delay={0.2} size="sm">
 			<div className="space-y-3">
-				<p className="text-sm text-muted">تم ظاهری ویجتیفای را انتخاب کنید.</p>
+				<p className="text-sm text-muted">پوسته ظاهری ویجتیفای را انتخاب کنید.</p>
 
 				<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
 					{themes.map((item) => (

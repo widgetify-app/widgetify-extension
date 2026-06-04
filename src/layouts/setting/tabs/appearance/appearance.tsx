@@ -12,13 +12,13 @@ export function AppearanceSettingTab() {
 	return (
 		<div className="w-full max-w-xl mx-auto" dir="rtl">
 			<UISelector />
+			<ThemeSelector fetched_themes={data?.themes || []} />
+			<FontSelector fetched_fonts={data?.fonts || []} />
 			<BrowserTitleSelector
 				fetched_browserTitles={data?.browser_titles || []}
 				isAuthenticated={isAuthenticated}
 			/>
-			<ThemeSelector fetched_themes={data?.themes || []} />
 			<ContentAlignmentSettings />
-			<FontSelector fetched_fonts={data?.fonts || []} />
 		</div>
 	)
 }

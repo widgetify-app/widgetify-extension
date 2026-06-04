@@ -54,7 +54,7 @@ export function FriendsListNavbar() {
 	return (
 		<>
 			<div
-				className="relative p-2 transition-all cursor-pointer nav-btn text-white/40 hover:text-white active:scale-90"
+				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 				onClick={() => clickToOpenSheet()}
 			>
 				<HiOutlineUserGroup size={15} />
