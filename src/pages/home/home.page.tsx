@@ -17,7 +17,7 @@ const steps: Step[] = [
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-6 text-base-200 font-medium">
+				<p className="text-[12px] leading-6 text-content font-medium">
 					برای مخفی کردن این نوار، کافیست روی آن{' '}
 					<span className="font-black text-error">راست کلیک</span> کرده و گزینه
 					زیر را انتخاب کنید:

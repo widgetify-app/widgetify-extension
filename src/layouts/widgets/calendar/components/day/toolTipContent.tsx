@@ -3,10 +3,10 @@ import { FaMoon } from 'react-icons/fa6'
 import { useState } from 'react'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
-	convertShamsiToHijri,
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
+	hijriMonthNames,
 } from '../../utils'
 import { useDate } from '@/context/date.context'
 import type React from 'react'
@@ -36,7 +36,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	moods,
 	onMoodChange,
 }) => {
-	const { selectedDate, today } = useDate()
+	const { selectedDate, today, getHijriDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: upsertMoodLog } = useUpsertMoodLog()
 
@@ -116,7 +116,10 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		...todayHijriEvents,
 	].sort((a) => (a.isHoliday ? -1 : 1))
 
-	const hijri = convertShamsiToHijri(selectedDate)
+	const hijriRaw = getHijriDate(selectedDate)
+	const [_, hijriMonth, hijriDate] = hijriRaw.split('/')
+	const hijriMonthName = hijriMonthNames[Number(hijriMonth) - 1] || hijriMonth
+
 	const gregorian = selectedDate.clone().doAsGregorian().format('DD MMM YYYY')
 	const jalali = selectedDate.format('jYYYY/jMM/jD')
 	const jalaliDay = selectedDate.format('dddd')
@@ -148,7 +151,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				<div className="flex items-center justify-between px-1 text-xs text-muted">
 					<div className="flex items-center gap-1">
 						<FaMoon size={10} />
-						<span>{hijri.format('iD iMMMM')}</span>
+						<span>
+							{hijriDate} {hijriMonthName}
+						</span>
 					</div>
 					<div className="flex items-center gap-1">
 						<FaGlobeAsia size={10} />

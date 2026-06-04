@@ -6,7 +6,20 @@ import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalenda
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
-
+export const hijriMonthNames = [
+	'محرم',
+	'صفر',
+	'ربیع‌الأول',
+	'ربیع‌الثانی',
+	'جمادی الاول',
+	'جمادی‌الثانی',
+	'رجب',
+	'شعبان',
+	'رمضان',
+	'شوال',
+	'ذوالقعده',
+	'ذوالحجه',
+]
 export type WidgetifyDate = jalaliMoment.Moment
 
 export const iranianHijriMonthDays: {
@@ -81,7 +94,6 @@ export function getShamsiEvents(
 	)
 }
 
-// rewritten by Grok
 export function convertShamsiToHijri(
 	shamsiDate: jalaliMoment.Moment
 ): hijriMoment.Moment {
