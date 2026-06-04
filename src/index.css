@@ -33,7 +33,7 @@ body {
 @layer base {
   body {
     direction: rtl;
-    font-family: Vazirmatn, sans-serif;
+    font-family: "Vazir", sans-serif;
   }
 }
 
