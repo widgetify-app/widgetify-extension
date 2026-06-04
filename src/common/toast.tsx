@@ -65,7 +65,7 @@ export function showToast(
   flex items-center gap-3
   bg-base-100 border  border-base-300 border-r-4
   ${tt.borderColor} bg-glass shadow-md
-  rounded-xl px-3.5 py-3 w-[320px]
+  rounded-2xl px-3.5 py-3 w-[320px]
   ${t.visible ? 'animate-enter' : 'animate-leave'}
 `}
 			>
