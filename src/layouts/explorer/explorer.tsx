@@ -79,7 +79,7 @@ export function ExplorerContent() {
 	const categories = contents.filter((f) => !f.hideName && f.links.length)
 
 	return (
-		<div className="flex flex-row w-full h-screen overflow-hidden">
+		<div className="flex flex-row w-full h-screen overflow-hidden ">
 			<div className="flex flex-col w-full h-full gap-1 px-1 py-2 overflow-hidden">
 				{isLoading ? (
 					<div className="sticky top-0 z-50 flex items-center w-[calc(100%-2rem)] mx-auto gap-2 p-1.5 overflow-x-auto bg-base-100/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg no-scrollbar flex-nowrap overflow-y-hidden">
@@ -91,7 +91,7 @@ export function ExplorerContent() {
 						))}
 					</div>
 				) : (
-					<div className="sticky top-0 z-50 px-2">
+					<div className="sticky top-0 z-50 px-2 ">
 						<div className="flex items-center w-full gap-2 p-2 mx-auto overflow-x-auto border shadow-md bg-content backdrop-blur-xl rounded-2xl border-white/10 no-scrollbar flex-nowrap">
 							{categories.map((cat: CategoryItem) => {
 								const active = activeCategory === cat.id
@@ -126,10 +126,10 @@ export function ExplorerContent() {
 					</div>
 				)}
 				<div className="grid w-full h-full grid-cols-1 gap-6 overflow-hidden lg:grid-cols-1">
-					<div className="flex flex-col h-full gap-4 overflow-hidden lg:col-span-1">
+					<div className="flex flex-col h-full gap-4 overflow-hidden lg:col-span-1 ">
 						<div
 							ref={scrollContainerRef}
-							className="flex-1 pb-10 pr-1 overflow-y-auto scrollbar-none scroll-smooth"
+							className="flex-1 px-1 pb-10 overflow-y-auto scrollbar-none scroll-smooth "
 						>
 							{isLoading ? (
 								<ExplorerSkeleton />

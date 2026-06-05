@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Pagination } from '@/components/pagination'
@@ -10,12 +9,22 @@ import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 import { showToast } from '@/common/toast'
+import { Chip } from '@/components/chip.component'
+import { FiShoppingBag } from 'react-icons/fi'
+
+const FILTER_OPTIONS = [
+	{ id: 'all', label: 'همه' },
+	{ id: 'THEME', label: 'تم' },
+	{ id: 'FONT', label: 'فونت' },
+	{ id: 'BROWSER_TITLE', label: 'عنوان مرورگر' },
+]
 
 export function MarketOtherItems() {
 	const { user, isAuthenticated, refetchUser } = useAuth()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
+	const [activeFilter, setActiveFilter] = useState('all')
 
 	const {
 		data: marketData,
@@ -27,9 +36,17 @@ export function MarketOtherItems() {
 		page: currentPage,
 	})
 
-	const filteredItems = (marketData?.items || []).sort((a, b) => {
-		return a.isOwned === b.isOwned ? 1 : -1
-	})
+	const filteredItems = (marketData?.items || [])
+		.filter((item) => activeFilter === 'all' || item.type === activeFilter)
+		.sort((a, b) => {
+			if (a.isOwned === b.isOwned) return 0
+			return a.isOwned ? 1 : -1
+		})
+
+	const handleFilterChange = (filter: string) => {
+		setActiveFilter(filter)
+		setCurrentPage(1)
+	}
 
 	const handlePurchaseClick = (item: MarketItem) => {
 		if (!isAuthenticated) {
@@ -54,64 +71,58 @@ export function MarketOtherItems() {
 				template: item.itemValue as string,
 			})
 		}
-		if (item.type === 'THEME') {
-			callEvent('theme_change', item.itemValue as Theme)
-		}
-		if (item.type === 'FONT') {
-			callEvent('font_change', item.itemValue as string)
-		}
-	}
-
-	const onNextPage = () => {
-		setCurrentPage(currentPage + 1)
-		Analytics.event('market_other_items_next_page')
-	}
-
-	const onPrevPage = () => {
-		setCurrentPage(currentPage - 1)
-		Analytics.event('market_other_items_prev_page')
+		if (item.type === 'THEME') callEvent('theme_change', item.itemValue as Theme)
+		if (item.type === 'FONT') callEvent('font_change', item.itemValue as string)
 	}
 
 	const handleOnClose = (switchToCoins?: boolean) => {
-		if (switchToCoins) {
-			callEvent('market_change_tab', 'coins')
-		}
-	}
-
-	if (error) {
-		return (
-			<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
-				<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
-					<FiShoppingBag size={22} className="text-muted" />
-				</div>
-				<div>
-					<p className="text-sm font-medium text-content">خطا در بارگذاری آیتم‌های مارکت</p>
-					<p className="text-xs text-muted mt-1">لطفاً دوباره تلاش کنید</p>
-				</div>
-			</div>
-		)
+		if (switchToCoins) callEvent('market_change_tab', 'coins')
 	}
 
 	return (
 		<>
-			{isLoading ? (
+			{/* Filter chips */}
+			<div className="flex items-center gap-1.5 flex-wrap mb-4">
+				{FILTER_OPTIONS.map((opt) => (
+					<Chip
+						key={opt.id}
+						selected={activeFilter === opt.id}
+						onClick={() => handleFilterChange(opt.id)}
+						dir="rtl"
+					>
+						{opt.label}
+					</Chip>
+				))}
+			</div>
+
+			{error ? (
+				<div className="flex flex-col items-center justify-center h-48 gap-3">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
+						<FiShoppingBag size={20} className="text-base-content/20" />
+					</div>
+					<p className="text-xs text-base-content/40">خطا در بارگذاری آیتم‌ها</p>
+				</div>
+			) : isLoading ? (
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-					{Array.from({ length: 8 }).map((_, index) => (
+					{Array.from({ length: 8 }).map((_, i) => (
 						<div
-							key={index}
-							className="rounded-2xl border border-base-300/60 overflow-hidden bg-base-100"
+							key={i}
+							className="overflow-hidden border rounded-2xl border-base-300/40 bg-base-100/60"
 						>
-							<div className="w-full h-24 bg-base-200 animate-pulse" />
+							<div className="w-full h-24 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
-								<div className="w-2/3 h-3.5 rounded-lg bg-base-200 animate-pulse" />
-								<div className="w-1/3 h-2.5 rounded-lg bg-base-200/70 animate-pulse" />
-								<div className="w-full h-7 rounded-lg bg-base-200 animate-pulse mt-3" />
+								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
+								<div className="w-2/5 h-2.5 skeleton rounded-lg opacity-20" />
+								<div className="flex items-center justify-between pt-2 mt-1 border-t border-base-content/5">
+									<div className="w-10 h-2.5 skeleton rounded-lg opacity-20" />
+									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
+								</div>
 							</div>
 						</div>
 					))}
 				</div>
 			) : filteredItems.length > 0 ? (
-				<div className="grid grid-cols-2 gap-3 pb-10 sm:grid-cols-3 lg:grid-cols-4">
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 					{filteredItems.map((item) => (
 						<MarketItemCard
 							key={item.id}
@@ -122,24 +133,30 @@ export function MarketOtherItems() {
 					))}
 				</div>
 			) : (
-				<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
-					<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
-						<FiShoppingBag size={22} className="text-muted" />
+				<div className="flex flex-col items-center justify-center h-48 gap-3">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
+						<FiShoppingBag size={20} className="text-base-content/20" />
 					</div>
-					<div>
-						<p className="text-sm font-medium text-content">آیتمی برای نمایش وجود ندارد</p>
-						<p className="text-xs text-muted mt-1">بعداً دوباره بررسی کنید</p>
-					</div>
+					<p className="text-xs text-base-content/40">
+						آیتمی در این دسته‌بندی وجود ندارد
+					</p>
 				</div>
 			)}
 
 			<Pagination
 				currentPage={currentPage}
 				totalPages={marketData?.totalPages || 1}
-				onNextPage={onNextPage}
-				onPrevPage={onPrevPage}
+				onNextPage={() => {
+					setCurrentPage((p) => p + 1)
+					Analytics.event('market_other_items_next_page')
+				}}
+				onPrevPage={() => {
+					setCurrentPage((p) => p - 1)
+					Analytics.event('market_other_items_prev_page')
+				}}
 				isLoading={isLoading}
 			/>
+
 			<MarketItemPurchaseModal
 				isOpen={showPurchaseModal}
 				onClose={(switchToCoins) => handleOnClose(switchToCoins)}

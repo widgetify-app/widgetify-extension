@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Analytics from '@/analytics'
 import { Pagination } from '@/components/pagination'
 import { useWallpaper } from '@/layouts/setting/tabs/wallpapers/hooks/use-wallpaper'
@@ -28,7 +29,7 @@ export function MarketWallpaper() {
 
 	return (
 		<>
-			<div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
+			<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 				{data?.wallpapers.map((wallpaper) => (
 					<div key={wallpaper.id} className="transform-gpu">
 						<WallpaperItem

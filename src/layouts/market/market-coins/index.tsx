@@ -15,11 +15,7 @@ export function MarketCoins() {
 	const [selectedPackage, setSelectedPackage] = useState<CoinPackage | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
 
-	const {
-		data: packagesData,
-		isLoading,
-		refetch,
-	} = useGetCoinPackages({
+	const { data: packagesData, isLoading, refetch } = useGetCoinPackages({
 		limit: 12,
 		page: currentPage,
 	})
@@ -41,35 +37,25 @@ export function MarketCoins() {
 		refetch()
 	}
 
-	const onNextPage = () => {
-		setCurrentPage(currentPage + 1)
-		Analytics.event('market_coins_next_page')
-	}
-
-	const onPrevPage = () => {
-		setCurrentPage(currentPage - 1)
-		Analytics.event('market_coins_prev_page')
-	}
-
 	return (
 		<>
 			{isLoading ? (
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-					{Array.from({ length: 8 }).map((_, index) => (
-						<div
-							key={index}
-							className="h-64 rounded-2xl border border-base-300/60 bg-base-100 overflow-hidden"
-						>
-							<div className="h-44 bg-base-200 animate-pulse" />
+					{Array.from({ length: 8 }).map((_, i) => (
+						<div key={i} className="rounded-2xl border border-base-content/8 bg-base-100/60 overflow-hidden">
+							<div className="h-28 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
-								<div className="w-2/3 h-3.5 rounded-lg bg-base-200 animate-pulse" />
-								<div className="w-full h-7 rounded-lg bg-base-200 animate-pulse" />
+								<div className="w-3/5 h-3 skeleton rounded-lg opacity-30" />
+								<div className="flex items-center justify-between pt-2 border-t border-base-content/5">
+									<div className="w-12 h-3 skeleton rounded-lg opacity-20" />
+									<div className="w-12 h-6 skeleton rounded-lg opacity-20" />
+								</div>
 							</div>
 						</div>
 					))}
 				</div>
-			) : packagesData?.packages && packagesData.packages.length > 0 ? (
-				<div className="grid grid-cols-2 gap-3 pb-10 sm:grid-cols-3 lg:grid-cols-4">
+			) : packagesData?.packages?.length ? (
+				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 					{packagesData.packages.map((pkg) => (
 						<CoinPackageCard
 							key={pkg.id}
@@ -80,22 +66,19 @@ export function MarketCoins() {
 					))}
 				</div>
 			) : (
-				<div className="flex flex-col items-center justify-center h-64 text-center gap-3">
-					<div className="w-12 h-12 rounded-2xl bg-base-200 flex items-center justify-center">
-						<FaCoins size={20} className="text-muted" />
+				<div className="flex flex-col items-center justify-center h-48 gap-3">
+					<div className="w-12 h-12 rounded-2xl bg-base-200/60 flex items-center justify-center">
+						<FaCoins size={20} className="text-base-content/20" />
 					</div>
-					<div>
-						<p className="text-sm font-medium text-content">فعلا چیزی واسه خرید نیست!</p>
-						<p className="text-xs text-muted mt-1">بعداً دوباره بررسی کنید</p>
-					</div>
+					<p className="text-xs text-base-content/40">فعلاً چیزی برای خرید نیست</p>
 				</div>
 			)}
 
 			<Pagination
 				currentPage={currentPage}
 				totalPages={packagesData?.totalPages || 1}
-				onNextPage={onNextPage}
-				onPrevPage={onPrevPage}
+				onNextPage={() => { setCurrentPage(p => p + 1); Analytics.event('market_coins_next_page') }}
+				onPrevPage={() => { setCurrentPage(p => p - 1); Analytics.event('market_coins_prev_page') }}
 				isLoading={isLoading}
 			/>
 
