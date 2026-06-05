@@ -7,11 +7,11 @@ export function GregorianDate() {
 	const date = today.locale('en')
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
-			<span className={`text-base !leading-none ${textColor}`}>
+			<span className={`text-base mt-2 !leading-none ${textColor}`}>
 				{date.format('dddd')}
 			</span>
 			<div
-				className={`text-7xl font-bold mt-2 leading-[1] h-[0.3em] flex items-center ${textColor}`}
+				className={`text-7xl font-bold mt-4 leading-[1] h-[0.3em] flex items-center ${textColor}`}
 			>
 				{date.format('DD')}
 			</div>
@@ -21,7 +21,7 @@ export function GregorianDate() {
 				>
 					{date.format('MMMM')}
 				</span>
-				<div className={`text-sm opacity-90 ${textColor} px-0.5`} dir="ltr">
+				<div className={`text-sm opacity-90  ${textColor} px-0.5`} dir="ltr">
 					<span>{date.format('YYYY')}</span>
 				</div>
 			</div>

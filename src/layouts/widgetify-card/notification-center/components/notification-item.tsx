@@ -134,7 +134,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				{description && (
 					<div className="relative">
 						<p
-							className={`mt-1 text-[10px] font-medium text-base-content/60 leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+							className={`mt-0.5 text-[9px] font-medium  text-base-content/70  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
 							{description}
 						</p>
