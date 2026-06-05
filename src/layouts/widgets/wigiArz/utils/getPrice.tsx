@@ -12,14 +12,14 @@ export function GetPrice(code: string, currency: FetchedCurrency): GetPriceResul
 			label: (
 				<>
 					<FaDollarSign className="inline" />
-					{currency.price.toLocaleString()}
+					{currency.price?.toLocaleString()}
 				</>
 			),
 		}
 	} else {
 		return {
 			price: currency.rialPrice,
-			label: currency.rialPrice.toLocaleString(),
+			label: currency.rialPrice?.toLocaleString(),
 		}
 	}
 }

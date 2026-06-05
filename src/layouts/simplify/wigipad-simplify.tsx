@@ -16,7 +16,7 @@ export function SimplifyYadkar() {
 				</div>
 
 				<div className="flex-1 min-h-0 pb-10 overflow-y-auto scrollbar-none">
-					<div className="flex flex-col gap-1.5 pb-2">
+					<div className="flex flex-col gap-1 pb-2">
 						{fetchedData?.wigiPad?.map((notification, index) => (
 							<RenderWigiPadItem
 								key={`wigipad-item-${index}`}

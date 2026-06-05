@@ -18,7 +18,6 @@ interface WallpaperContextValue {
 	currentStoredWallpaper: StoredWallpaper | null
 	allWallpapers: (fetchedWallpapers?: Wallpaper[]) => Wallpaper[]
 	handleSelectBackground: (wallpaper: Wallpaper) => Promise<void>
-	handlePreviewBackground: (wallpaper: Wallpaper) => void
 	handleCustomWallpaperChange: (wallpaper: Wallpaper) => void
 	syncWithFetchedWallpapers: (wallpapers: Wallpaper[]) => void
 }
@@ -142,11 +141,6 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		Analytics.event('wallpaper_changed')
 	}
 
-	const handlePreviewBackground = (wallpaper: Wallpaper) => {
-		setSelectedBackground(wallpaper)
-		Analytics.event('wallpaper_previewed')
-	}
-
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
 		setCustomWallpaper(newWallpaper)
 		handleSelectBackground(newWallpaper)
@@ -165,7 +159,6 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 				currentStoredWallpaper,
 				allWallpapers,
 				handleSelectBackground,
-				handlePreviewBackground,
 				handleCustomWallpaperChange,
 				syncWithFetchedWallpapers,
 			}}

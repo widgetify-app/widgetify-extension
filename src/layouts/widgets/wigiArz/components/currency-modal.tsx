@@ -66,7 +66,7 @@ export const CurrencyModalComponent = ({
 	}
 
 	const formatNumberWithCommas = (num: number) => {
-		return num.toLocaleString('en-US')
+		return num?.toLocaleString('en-US')
 	}
 
 	const parseFormattedNumber = (str: string) => {

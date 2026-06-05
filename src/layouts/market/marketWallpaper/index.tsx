@@ -46,6 +46,8 @@ export function MarketWallpaper() {
 				wallpaper: currentStoredWallpaper,
 			}
 		)
+
+		Analytics.event('wallpaper_previewed')
 	}
 
 	return (

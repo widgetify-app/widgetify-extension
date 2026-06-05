@@ -15,7 +15,7 @@ export const WidgetifyLayout = () => {
 
 				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-60 small-scrollbar">
 					<div
-						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto small-scrollbar`}
+						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto scrollbar-none pb-2`}
 					>
 						<NotificationCenter />
 					</div>

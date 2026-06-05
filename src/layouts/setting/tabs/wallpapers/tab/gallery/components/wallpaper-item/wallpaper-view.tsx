@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
 import { preloadImages } from '@/common/utils/preloadImages'
-import type { Category } from '@/common/wallpaper.interface'
+import type { Category, Wallpaper } from '@/common/wallpaper.interface'
 import { FolderPath } from '@/layouts/bookmark/components/folder-path'
 import { useGetWallpapersInfiniteQuery } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { WallpaperItem } from './wallpaper-item'
+import { usePreviewHandler } from '@/hooks/usePreviewHandler'
+import { MarketItemType } from '@/services/hooks/market/market.interface'
+import Analytics from '@/analytics'
 
 interface WallpaperViewProps {
 	selectedCategory: Category | null
@@ -18,6 +21,42 @@ export function WallpaperView({
 	selectedCategory,
 	onBackToCategories,
 }: WallpaperViewProps) {
+	const {
+		selectedBackground,
+		handleSelectBackground,
+
+		syncWithFetchedWallpapers,
+		currentStoredWallpaper,
+	} = useWallpaperContext()
+
+	const { previewHandler } = usePreviewHandler()
+
+	const handlePreview = (wallpaper: Wallpaper) => {
+		previewHandler(
+			{
+				id: wallpaper.id,
+				name: wallpaper.name,
+				type: MarketItemType.wallpapers,
+				price: wallpaper.coin || 0,
+				description: '',
+				meta: {
+					wallpaperType: wallpaper.type,
+				},
+				previewUrl: wallpaper.previewSrc,
+				itemValue: wallpaper.src,
+				isOwned: wallpaper.isOwned || false,
+			},
+			{
+				theme: '',
+				font: '',
+				browserTitle: '',
+				wallpaper: currentStoredWallpaper,
+			}
+		)
+
+		Analytics.event('wallpaper_previewed')
+	}
+
 	const {
 		data: wallpaperResponse,
 		fetchNextPage,
@@ -41,13 +80,6 @@ export function WallpaperView({
 
 	const allWallpapers =
 		wallpaperResponse?.pages.flatMap((page) => page.wallpapers) || []
-
-	const {
-		selectedBackground,
-		handleSelectBackground,
-		handlePreviewBackground,
-		syncWithFetchedWallpapers,
-	} = useWallpaperContext()
 
 	useEffect(() => {
 		if (allWallpapers.length) {
@@ -86,7 +118,7 @@ export function WallpaperView({
 								wallpaper={wallpaper}
 								selectedBackground={selectedBackground}
 								setSelectedBackground={handleSelectBackground}
-								onPreviewBackground={handlePreviewBackground}
+								onPreviewBackground={handlePreview}
 							/>
 						</div>
 					))}

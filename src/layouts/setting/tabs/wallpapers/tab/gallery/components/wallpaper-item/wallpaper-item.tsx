@@ -197,7 +197,6 @@ function WallpaperItemFu({
 
 						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 "></div>
 
-						{/* Preview button — فقط برای والپیپرهایی که هنوز خریداری نشده‌اند */}
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin && (
 							<button
 								onClick={(e) => {
