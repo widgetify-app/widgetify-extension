@@ -13,7 +13,7 @@ import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
 import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
 import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
-import { showToast } from '@/common/toast'
+import { autoFormatErrorToast, showToast } from '@/common/toast'
 import {
 	type FetchedBookmark,
 	useGetBookmarks,
@@ -202,13 +202,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				})
 			)
 			if (err) {
-				const translated: string | Record<string, string> = translateError(err)
-				const msg =
-					typeof translated === 'string'
-						? translated
-						: `${Object.keys(translated)[0]}: ${Object.values(translated)[0]}`
-
-				showToast(msg, 'error')
+				autoFormatErrorToast(err)
 				return
 			}
 
@@ -216,8 +210,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			await refetch()
 
 			Analytics.event('add_bookmark')
-		} catch (error) {
-			console.error('Error adding bookmark:', error)
+		} catch {
 			showToast('خطا در افزودن بوکمارک', 'error')
 		}
 	}
@@ -317,7 +310,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				bookmarks: bookmarks || [],
 				setBookmarks,
 				getCurrentFolderItems,
-				addBookmark,
+				addBookmark: addBookmark as any,
 				editBookmark,
 				deleteBookmark,
 				currentFolderId,

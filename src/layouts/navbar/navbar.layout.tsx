@@ -100,13 +100,10 @@ export function NavbarLayout(): JSX.Element {
 	const { user } = useAuth()
 	const [tab, setTab] = useState<string | null>(null)
 
-	const handleOpenSettings = useCallback(
-		(tabName: 'account' | 'wallpapers' | 'general' | null) => {
-			if (tabName) setTab(tabName)
-			setShowSettings(true)
-		},
-		[]
-	)
+	const handleOpenSettings = useCallback((tabName: string | null) => {
+		if (tabName) setTab(tabName)
+		setShowSettings(true)
+	}, [])
 
 	const onToggleNavbar = () => {
 		if (isVisible) {
