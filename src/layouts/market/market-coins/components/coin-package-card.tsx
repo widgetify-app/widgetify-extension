@@ -9,52 +9,49 @@ interface CoinPackageCardProps {
 	isAuthenticated: boolean
 }
 
-const formatPrice = (price: number) => {
-	return new Intl.NumberFormat('fa-IR').format(price)
-}
+const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardProps) {
 	return (
-		<div className="group relative flex flex-col bg-base-100 rounded-2xl border border-base-300/60 hover:border-primary/30 hover:shadow-lg transition-all duration-200 overflow-hidden h-64 max-h-64 min-h-64">
-			<div className="flex items-center justify-center flex-1 relative bg-base-200/30">
-				<div className="flex flex-col items-center gap-1">
-					<img
-						src={ConfigKey.WIG_COIN_ICON}
-						alt="ویج‌کوین"
-						className="w-12 h-12 group-hover:scale-110 transition-transform duration-200"
-					/>
-					<div className="flex items-baseline gap-1 mt-1">
-						<span className="text-3xl font-bold text-primary tabular-nums">
-							{formatPrice(pkg.coin)}
-						</span>
+		<div className="flex flex-col bg-base-100/80 rounded-2xl border border-base-content/8 hover:border-primary/30 hover:shadow-sm transition-all duration-200 overflow-hidden group">
+			{/* Coin visual area */}
+			<div className="flex items-center justify-center py-6 bg-base-200/40">
+				<div className="flex flex-col items-center gap-2">
+					<div className="relative">
+						<div className="absolute inset-0 rounded-full bg-warning/20 blur-md scale-125" />
+						<img
+							src={ConfigKey.WIG_COIN_ICON}
+							alt="ویج‌کوین"
+							className="relative w-10 h-10 group-hover:scale-105 transition-transform duration-200"
+						/>
 					</div>
-					<span className="text-xs text-muted">عدد ویج‌کوین</span>
+					<p className="text-2xl font-bold text-primary tabular-nums leading-none">{fmt(pkg.coin)}</p>
+					<p className="text-[10px] text-base-content/40 font-medium">ویج‌کوین</p>
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-1 p-3 border-t border-base-200/50">
-				<h3 className="text-sm font-semibold text-content group-hover:text-primary transition-colors truncate">
-					{pkg.title}
-				</h3>
-				{pkg.description && (
-					<p className="text-[11px] text-muted line-clamp-1">{pkg.description}</p>
-				)}
+			{/* Info */}
+			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-base-content/5">
+				<div>
+					<p className="text-[12px] font-semibold text-base-content leading-snug truncate">{pkg.title}</p>
+					{pkg.description && (
+						<p className="text-[10px] text-base-content/40 mt-0.5 line-clamp-1">{pkg.description}</p>
+					)}
+				</div>
 
-				<div className="flex items-center justify-between mt-1.5">
-					<div className="flex items-baseline gap-1">
-						<span className="text-sm font-bold text-content tabular-nums">
-							{formatPrice(pkg.price)}
-						</span>
-						<span className="text-[11px] text-muted">تومان</span>
+				<div className="flex items-center justify-between">
+					<div className="flex items-baseline gap-0.5">
+						<span className="text-sm font-bold text-base-content tabular-nums">{fmt(pkg.price)}</span>
+						<span className="text-[10px] text-base-content/40 mr-0.5">تومان</span>
 					</div>
 
 					<Button
 						size="xs"
 						onClick={onPurchase}
-						className="h-7 px-3 text-[11px] font-semibold text-white transition-all rounded-lg bg-primary/85 hover:bg-primary active:scale-95"
+						className="h-6 px-2.5 text-[11px] font-medium text-white rounded-lg bg-primary/90 hover:bg-primary active:scale-95 transition-all"
 					>
 						<div className="flex items-center gap-1">
-							<FiShoppingCart size={12} />
+							<FiShoppingCart size={10} />
 							<span>خرید</span>
 						</div>
 					</Button>

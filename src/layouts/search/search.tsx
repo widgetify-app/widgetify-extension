@@ -75,7 +75,7 @@ export function SearchLayout() {
 		const handleClickOutside = (event: MouseEvent) => {
 			const target: HTMLDivElement =
 				(event.target as any).parentNode || (event.target as any)
-			if (target.classList.contains('searchbox-item')) return console.log('not')
+			if (target.classList.contains('searchbox-item')) return
 
 			if (
 				(isInputFocused || showHistoryPortal) &&

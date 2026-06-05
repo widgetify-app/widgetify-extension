@@ -1,4 +1,9 @@
-export type MarketItemType = 'BROWSER_TITLE' | 'FONT' | 'THEME' | 'wallpapers' | string
+export enum MarketItemType {
+	BROWSER_TITLE = 'BROWSER_TITLE',
+	FONT = 'FONT',
+	THEME = 'THEME',
+	wallpapers = 'wallpapers',
+}
 
 export interface MarketItem {
 	id: string

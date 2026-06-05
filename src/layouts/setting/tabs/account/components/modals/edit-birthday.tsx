@@ -38,7 +38,6 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 
 	useEffect(() => {
 		if (currentValue) setValue(currentValue)
-		console.log(currentValue)
 	}, [])
 
 	return (

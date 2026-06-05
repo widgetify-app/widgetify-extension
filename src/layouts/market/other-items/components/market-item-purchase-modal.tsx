@@ -1,9 +1,8 @@
-import { FiCheck, FiX, FiAlertCircle } from 'react-icons/fi'
+import { FiCheck, FiAlertCircle } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import Modal from '@/components/modal'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
 import { translateError } from '@/utils/translate-error'
@@ -59,7 +58,7 @@ export function MarketItemPurchaseModal({
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={() => onClose(false)}
 			title="تایید خرید"
 			size="md"
 			direction="rtl"
@@ -67,17 +66,21 @@ export function MarketItemPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-3">
-				<div className="rounded-2xl border border-base-300/60 overflow-hidden bg-base-100">
+				<div className="overflow-hidden border rounded-2xl border-base-300/60 bg-base-100">
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
 					<div className="px-3 py-2.5">
-						<h3 className="text-sm font-semibold text-content">{item.name}</h3>
+						<h3 className="text-sm font-semibold text-content">
+							{item.name}
+						</h3>
 						{item.description && (
-							<p className="mt-0.5 text-xs text-muted">{item.description}</p>
+							<p className="mt-0.5 text-xs text-muted">
+								{item.description}
+							</p>
 						)}
 					</div>
 				</div>
 
-				<div className="rounded-2xl border border-base-300/60 bg-base-100 divide-y divide-base-200/60">
+				<div className="border divide-y rounded-2xl border-base-300/60 bg-base-100 divide-base-200/60">
 					<div className="flex items-center justify-between px-3 py-2.5">
 						<span className="text-xs text-muted">موجودی فعلی</span>
 						<ItemPrice price={userCoins} />
@@ -87,7 +90,9 @@ export function MarketItemPurchaseModal({
 						<ItemPrice price={item.price} />
 					</div>
 					<div className="flex items-center justify-between px-3 py-2.5">
-						<span className="text-xs font-medium text-content">موجودی باقی‌مانده</span>
+						<span className="text-xs font-medium text-content">
+							موجودی باقی‌مانده
+						</span>
 						<ItemPrice
 							price={canAfford ? Math.max(0, remainingCoins) : userCoins}
 						/>
@@ -98,9 +103,12 @@ export function MarketItemPurchaseModal({
 					<div className="flex items-start gap-2.5 px-3 py-2.5 rounded-2xl border border-error/20 bg-error/5">
 						<FiAlertCircle className="w-4 h-4 mt-0.5 text-error flex-shrink-0" />
 						<div>
-							<p className="text-xs font-medium text-error">موجودی ناکافی</p>
+							<p className="text-xs font-medium text-error">
+								موجودی ناکافی
+							</p>
 							<p className="text-[11px] text-error/75 mt-0.5">
-								برای خرید این آیتم به {item.price - userCoins} ویج‌کوین بیشتر نیاز دارید
+								برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
+								بیشتر نیاز دارید
 							</p>
 						</div>
 					</div>
@@ -109,7 +117,7 @@ export function MarketItemPurchaseModal({
 				<div className="flex flex-col gap-2 pt-1">
 					{!canAfford && (
 						<button
-							className="w-full text-center text-xs text-muted hover:text-primary transition-colors py-1 cursor-pointer"
+							className="w-full py-1 text-xs text-center transition-colors cursor-pointer text-muted hover:text-primary"
 							onClick={() => onClose(true)}
 						>
 							خرید ویج‌کوین

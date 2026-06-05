@@ -3,7 +3,7 @@ import { preloadImages } from '@/common/utils/preloadImages'
 import type { Category } from '@/common/wallpaper.interface'
 import { FolderPath } from '@/layouts/bookmark/components/folder-path'
 import { useGetWallpapersInfiniteQuery } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
-import { useWallpaper } from '../../../../hooks/use-wallpaper'
+import { useWallpaperContext } from '@/context/wallpaper.context'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { WallpaperItem } from './wallpaper-item'
 
@@ -11,7 +11,9 @@ interface WallpaperViewProps {
 	selectedCategory: Category | null
 	onBackToCategories: () => void
 }
+
 const WALLPAPERS_PER_PAGE = 12
+
 export function WallpaperView({
 	selectedCategory,
 	onBackToCategories,
@@ -40,16 +42,20 @@ export function WallpaperView({
 	const allWallpapers =
 		wallpaperResponse?.pages.flatMap((page) => page.wallpapers) || []
 
-	const { selectedBackground, handleSelectBackground, handlePreviewBackground } =
-		useWallpaper(allWallpapers)
+	const {
+		selectedBackground,
+		handleSelectBackground,
+		handlePreviewBackground,
+		syncWithFetchedWallpapers,
+	} = useWallpaperContext()
 
 	useEffect(() => {
 		if (allWallpapers.length) {
+			syncWithFetchedWallpapers(allWallpapers)
 			const imageUrls = allWallpapers
 				.filter((wp) => wp.type === 'IMAGE')
 				.slice(0, 5)
 				.map((wp) => wp.src)
-
 			preloadImages(imageUrls)
 		}
 	}, [allWallpapers])

@@ -1,5 +1,4 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
-import type { Theme } from '@/context/theme.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
@@ -9,13 +8,12 @@ import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import type { StoredWallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
-import React from 'react'
-import { Page } from '@/context/page.context'
+import type { Page } from '@/context/page.context'
 
 export interface EventName {
 	openSettings: 'account' | 'profile' | 'wallpapers' | 'general' | null
 	todosChanged: Todo[]
-	wallpaperChanged: StoredWallpaper
+	wallpaper_change: StoredWallpaper
 	openWidgetsSettings: { tab: WidgetTabKeys | null }
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
@@ -23,12 +21,16 @@ export interface EventName {
 		petType: PetTypes
 	}
 	updatedPetState: boolean
-	theme_change: Theme
+	theme_change: {
+		theme: string
+		sync: boolean
+	}
 	auth_logout: null
 	browser_title_change: {
 		id: string
 		name: string
 		template: string
+		sync: boolean
 	}
 
 	// setting keys
@@ -43,7 +45,10 @@ export interface EventName {
 	closeAllDropdowns: null
 	openProfile?: 'friends' | 'platforms'
 	openMarketModal: null
-	font_change: string
+	font_change: {
+		font: string
+		sync: boolean
+	}
 	ui_change: string
 	close_all_modals: null
 	openWizardModal: null
@@ -54,6 +59,7 @@ export interface EventName {
 	open_require_auth_modal: null
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
+	resetWallpaper: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

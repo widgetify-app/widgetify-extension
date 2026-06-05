@@ -3,28 +3,34 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Pagination } from '@/components/pagination'
 import { useAuth } from '@/context/auth.context'
-import type { Theme } from '@/context/theme.context'
+import { useTheme } from '@/context/theme.context'
 import { useGetMarketItems } from '@/services/hooks/market/getMarketItems.hook'
-import type { MarketItem } from '@/services/hooks/market/market.interface'
+import { MarketItemType, type MarketItem } from '@/services/hooks/market/market.interface'
 import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 import { showToast } from '@/common/toast'
 import { Chip } from '@/components/chip.component'
 import { FiShoppingBag } from 'react-icons/fi'
+import { useAppearanceSetting } from '@/context/appearance.context'
+import { usePreviewHandler } from '@/hooks/usePreviewHandler'
 
 const FILTER_OPTIONS = [
 	{ id: 'all', label: 'همه' },
-	{ id: 'THEME', label: 'تم' },
-	{ id: 'FONT', label: 'فونت' },
-	{ id: 'BROWSER_TITLE', label: 'عنوان مرورگر' },
+	{ id: MarketItemType.THEME, label: 'تم' },
+	{ id: MarketItemType.FONT, label: 'فونت' },
+	{ id: MarketItemType.BROWSER_TITLE, label: 'عنوان مرورگر' },
 ]
 
 export function MarketOtherItems() {
+	const { fontFamily } = useAppearanceSetting()
+	const { theme } = useTheme()
 	const { user, isAuthenticated, refetchUser } = useAuth()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
 	const [activeFilter, setActiveFilter] = useState('all')
+
+	const { previewHandler } = usePreviewHandler()
 
 	const {
 		data: marketData,
@@ -64,19 +70,39 @@ export function MarketOtherItems() {
 		refetchUser()
 		refetch()
 
-		if (item.type === 'BROWSER_TITLE') {
+		if (item.type === MarketItemType.BROWSER_TITLE) {
 			callEvent('browser_title_change', {
 				id: item.id,
 				name: item.name,
 				template: item.itemValue as string,
+				sync: true,
 			})
 		}
-		if (item.type === 'THEME') callEvent('theme_change', item.itemValue as Theme)
-		if (item.type === 'FONT') callEvent('font_change', item.itemValue as string)
+		if (item.type === MarketItemType.THEME) {
+			callEvent('theme_change', {
+				theme: item.itemValue as string,
+				sync: true,
+			})
+		}
+		if (item.type === MarketItemType.FONT) {
+			callEvent('font_change', {
+				font: item.itemValue as string,
+				sync: true,
+			})
+		}
 	}
 
 	const handleOnClose = (switchToCoins?: boolean) => {
 		if (switchToCoins) callEvent('market_change_tab', 'coins')
+		setShowPurchaseModal(false)
+	}
+
+	const handlePreview = (item: MarketItem) => {
+		previewHandler(item, {
+			theme,
+			font: fontFamily,
+			browserTitle: document.title,
+		})
 	}
 
 	return (
@@ -129,6 +155,7 @@ export function MarketOtherItems() {
 							item={item}
 							onPurchase={() => handlePurchaseClick(item)}
 							isAuthenticated={isAuthenticated}
+							onClickPreview={() => handlePreview(item)}
 						/>
 					))}
 				</div>

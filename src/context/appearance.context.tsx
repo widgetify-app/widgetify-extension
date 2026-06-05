@@ -57,10 +57,13 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			setIsInitialized(true)
 		}
 
-		const eventForFont = listenEvent('font_change', async (newFont) => {
-			document.body.style.fontFamily = `"${newFont}", Vazir`
-			updateSetting('fontFamily', newFont)
-		})
+		const eventForFont = listenEvent(
+			'font_change',
+			async ({ font: newFont, sync }) => {
+				document.body.style.fontFamily = `"${newFont}", Vazir`
+				if (sync) updateSetting('fontFamily', newFont)
+			}
+		)
 
 		const eventForUI = listenEvent('ui_change', async (newUI: any) => {
 			updateSetting('ui', newUI)

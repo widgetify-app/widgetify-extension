@@ -51,7 +51,7 @@ export function MarketContainer() {
 
 	return (
 		<div dir="rtl" className="flex flex-col h-[80vh] overflow-hidden">
-			<div className="flex flex-row items-center justify-between w-full px-1 mb-4">
+			<div className="flex flex-row items-center justify-between flex-shrink-0 w-full px-1 mb-2">
 				<TabNavigation
 					activeTab={activeTab}
 					onTabClick={(va) => handleTabChange(va)}
@@ -67,7 +67,7 @@ export function MarketContainer() {
 				)}
 			</div>
 
-			<div className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-xl custom-scrollbar">
+			<div className="relative flex-1 min-h-0 rounded-xl">
 				{tabs.map(({ id, element }) => (
 					<div
 						key={id}
@@ -78,7 +78,9 @@ export function MarketContainer() {
 						}`}
 					>
 						{activeTab === id && (
-							<div className="h-full px-1 pb-2">{element}</div>
+							<div className="h-full px-1 pb-2 overflow-x-hidden overflow-y-auto">
+								{element}
+							</div>
 						)}
 					</div>
 				))}

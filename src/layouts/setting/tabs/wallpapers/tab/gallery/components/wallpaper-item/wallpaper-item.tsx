@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FiCheck, FiHeart, FiPlay, FiShoppingBag } from 'react-icons/fi'
+import { FiCheck, FiEye, FiHeart, FiPlay, FiShoppingBag } from 'react-icons/fi'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
@@ -15,10 +15,11 @@ interface WallpaperItemProps {
 	onPreviewBackground: (wallpaper: Wallpaper) => void
 }
 
-function wallpaperItem({
+function WallpaperItemFu({
 	wallpaper,
 	selectedBackground,
 	setSelectedBackground,
+	onPreviewBackground,
 }: WallpaperItemProps) {
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
@@ -195,6 +196,20 @@ function wallpaperItem({
 						)}
 
 						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 "></div>
+
+						{/* Preview button — فقط برای والپیپرهایی که هنوز خریداری نشده‌اند */}
+						{!isSelected && !wallpaper.isOwned && wallpaper.coin && (
+							<button
+								onClick={(e) => {
+									e.stopPropagation()
+									onPreviewBackground(wallpaper)
+								}}
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/60 border border-white/10 text-white/80 hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+							>
+								<FiEye size={10} />
+								<span>پیش‌نمایش</span>
+							</button>
+						)}
 					</>
 				)}
 			</div>
@@ -210,7 +225,7 @@ function wallpaperItem({
 }
 
 export const WallpaperItem = React.memo(
-	wallpaperItem,
+	WallpaperItemFu,
 	(prevProps, nextProps) =>
 		prevProps.wallpaper.id === nextProps.wallpaper.id &&
 		prevProps.selectedBackground?.id === nextProps.selectedBackground?.id

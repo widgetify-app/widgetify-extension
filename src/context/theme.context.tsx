@@ -42,13 +42,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 
-		const event = listenEvent('theme_change', (newTheme: Theme) => {
-			themeChangeHandler(newTheme)
+		const event = listenEvent('theme_change', ({ sync, theme: newTheme }) => {
+			themeChangeHandler(newTheme, sync)
 		})
 
 		const eventForTitle = listenEvent('browser_title_change', (newTitle) => {
 			document.title = newTitle.template
-			setToStorage('browserTitle', newTitle)
+			if (newTitle.sync) setToStorage('browserTitle', newTitle)
 		})
 
 		return () => {
@@ -78,21 +78,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	}, [theme])
 
 	const setThemeCallback = async (theme: string) => {
-		themeChangeHandler(theme)
+		themeChangeHandler(theme, true)
 		if (isAuthenticated) {
 			await mutateAsync({ theme: theme })
 		}
 	}
 
-	const themeChangeHandler = (theme: any) => {
-		if (!Object.values(Theme).includes(theme)) {
+	const themeChangeHandler = (theme: string, sync: boolean) => {
+		if (!Object.values(Theme).includes(theme as any)) {
 			loadRemoteTheme(theme)
 		} else {
 			applyThemeToDom(theme)
 		}
-
 		setTheme(theme)
-		setToStorage('theme', theme as any)
+		if (sync) setToStorage('theme', theme as any)
+
 		Analytics.event('theme_change')
 	}
 

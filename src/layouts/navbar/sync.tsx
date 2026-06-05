@@ -53,7 +53,7 @@ async function getAll() {
 		])
 
 		processFont(font, store?.appearance)
-		processTheme(theme, store?.theme)
+		processTheme(theme, store?.theme as any)
 		processUI(ui, store?.appearance)
 	} catch {}
 }
@@ -76,9 +76,7 @@ async function processWallpaper(
 				...wallpaper,
 			})
 		}
-	} catch (er) {
-		console.log(er)
-	}
+	} catch {}
 }
 
 async function processBrowserTitle(
@@ -108,31 +106,31 @@ async function processBrowserTitle(
 				template: browserTitle.value,
 			})
 		}
-	} catch (er) {
-		console.log(er)
-	}
+	} catch {}
 }
 
-function processTheme(theme: Theme | null, themeStore: Theme | undefined) {
+function processTheme(theme: string | null, themeStore: string | undefined) {
 	try {
 		if (!theme) return
 		if (theme !== themeStore) {
-			callEvent('theme_change', theme)
+			callEvent('theme_change', {
+				theme,
+				sync: true,
+			})
 		}
-	} catch (er) {
-		console.log(er)
-	}
+	} catch {}
 }
 function processFont(font: string | null, appearanceStore?: Record<string, any>) {
 	try {
 		if (!font) return
 		const fontStore = appearanceStore?.fontFamily as string | undefined
 		if (font !== fontStore) {
-			callEvent('font_change', font)
+			callEvent('font_change', {
+				font,
+				sync: true,
+			})
 		}
-	} catch (er) {
-		console.log(er)
-	}
+	} catch {}
 }
 function processUI(ui: string | null, appearanceStore?: Record<string, any>) {
 	try {
