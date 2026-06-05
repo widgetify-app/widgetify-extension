@@ -23,8 +23,10 @@ export function SearchLayout() {
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
 	const searchRef = useRef<HTMLDivElement>(null)
+	const portalRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
+	const [portalStyles, setPortalStyles] = useState<React.CSSProperties>({})
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -72,25 +74,60 @@ export function SearchLayout() {
 		setSelectedEngine(engine)
 	}
 
+	const updatePortalPosition = () => {
+		if (searchRef.current) {
+			const rect = searchRef.current.getBoundingClientRect()
+			setPortalStyles({
+				position: 'fixed',
+				top: `${rect.bottom + window.scrollY + 8}px`,
+				left: `${rect.left + window.scrollX}px`,
+				width: `${rect.width}px`,
+			})
+		}
+	}
+
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			const target: HTMLDivElement =
-				(event.target as any).parentNode || (event.target as any)
-			if (target.classList.contains('searchbox-item')) return
+			const target = event.target as HTMLElement
+			if (!target) return
+
+			const parentNode = target.parentNode as HTMLElement | null
+			if (
+				target.classList.contains('searchbox-item') ||
+				parentNode?.classList?.contains('searchbox-item')
+			)
+				return
+
+			if (portalRef?.current?.contains(event.target as Node)) {
+				return
+			}
 
 			if (
-				(isInputFocused || showHistoryPortal) &&
-				searchRef.current &&
-				!searchRef.current.contains(event.target as Node)
+				(isInputFocused || showHistoryPortal || activePortal) &&
+				searchRef?.current &&
+				!searchRef?.current?.contains(event.target as Node)
 			) {
 				setIsInputFocused(false)
 				setShowHistoryPortal(false)
+				setActivePortal(null)
 			}
 		}
 
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
-	}, [isInputFocused, showHistoryPortal])
+	}, [isInputFocused, showHistoryPortal, activePortal])
+
+	useEffect(() => {
+		if (showHistoryPortal || activePortal) {
+			updatePortalPosition()
+			window.addEventListener('resize', updatePortalPosition)
+			window.addEventListener('scroll', updatePortalPosition)
+		}
+		return () => {
+			window.removeEventListener('resize', updatePortalPosition)
+			window.removeEventListener('scroll', updatePortalPosition)
+		}
+	}, [showHistoryPortal, activePortal])
 
 	const onSearchButtonClick = () => {
 		const query = searchQuery.trim()
@@ -104,20 +141,15 @@ export function SearchLayout() {
 		setIsInputFocused(true)
 		setShowHistoryPortal(true)
 		Analytics.event('search_input_focused')
+		updatePortalPosition()
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-start h-24 max-h-24">
-			<div ref={searchRef} className="w-full p-0.5 bg-content bg-glass rounded-2xl">
-				{activePortal === 'voice' && (
-					<VoiceSearchPortal
-						onClose={() => setActivePortal(null)}
-						onSearch={handleVoiceSearch}
-					/>
-				)}
-				{activePortal === 'image' && (
-					<ImageSearchPortal onClose={() => setActivePortal(null)} />
-				)}
+		<div className="flex flex-col items-center justify-start h-24 max-h-24">
+			<div
+				ref={searchRef}
+				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
+			>
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
@@ -165,12 +197,31 @@ export function SearchLayout() {
 					</div>
 				</form>
 
+				{activePortal === 'voice' && (
+					<VoiceSearchPortal
+						portalRef={portalRef}
+						portalStyles={portalStyles}
+						onClose={() => setActivePortal(null)}
+						onSearch={handleVoiceSearch}
+					/>
+				)}
+
+				{activePortal === 'image' && (
+					<ImageSearchPortal
+						portalRef={portalRef}
+						portalStyles={portalStyles}
+						onClose={() => setActivePortal(null)}
+					/>
+				)}
+
 				{showHistoryPortal && !activePortal && (
 					<SearchHistoryPortal
+						portalRef={portalRef}
 						onClose={() => setShowHistoryPortal(false)}
 						onSearch={handleHistorySearch}
 						onEngineChange={onEngineChange}
 						searchQuery={searchQuery}
+						portalStyles={portalStyles}
 					/>
 				)}
 
