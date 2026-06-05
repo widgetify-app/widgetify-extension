@@ -47,6 +47,7 @@ export function SearchLayout() {
 	const handleClearSearch = () => {
 		setSearchQuery('')
 		if (inputRef.current) {
+			inputRef.current.value = ''
 			inputRef.current.focus()
 		}
 	}
