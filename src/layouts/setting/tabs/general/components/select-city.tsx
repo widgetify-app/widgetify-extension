@@ -21,7 +21,7 @@ interface Prop {
 	size?: 'lg' | 'xs'
 	onSave?: () => void
 }
-export function SelectCity({ onSave, size }: Prop) {
+export function SelectCity({ size }: Prop) {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showAuthModal, setShowAuthModal] = useState(false)

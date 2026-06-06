@@ -4,7 +4,7 @@ import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
 import { HolidayBadge } from '../components/holiday.badge'
 import { hijriMonthNames } from '@/layouts/widgets/calendar/utils'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
-import { SimpleWeather } from '../../weather/simple-weather'
+import { InlineWeather } from '../../weather/simple-weather'
 
 export function JalaliDate() {
 	const { today, todayIsHoliday, getHijriDate } = useDate()
@@ -34,7 +34,7 @@ export function JalaliDate() {
 					{today.locale('fa').format('dddd')}
 				</span>
 				<div
-					className={`text-6xl font-bold leading-[1] h-[0.3em] flex items-center ${textColor}`}
+					className={`text-5xl font-bold leading-[1] h-[0.3em] flex items-center ${textColor}`}
 				>
 					{today.jDate()}
 				</div>
@@ -51,7 +51,7 @@ export function JalaliDate() {
 						{gregorianShort} <span className="mx-1 opacity-50">·</span>
 						{hijriDate} {hijriMonthName}
 					</span>
-					<SimpleWeather weather={weather} hasBanner={false} />
+					<InlineWeather weather={weather} hasBanner={false} />
 				</div>
 			</div>
 		</>

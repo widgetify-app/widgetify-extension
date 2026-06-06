@@ -2,10 +2,13 @@ interface Prop {
 	weather: any
 	hasBanner: boolean
 }
-export function SimpleWeather({ weather, hasBanner }: Prop) {
+export function InlineWeather({ weather, hasBanner }: Prop) {
 	const temp = Math.round(weather?.weather?.temperature?.temp || 0)
 	const description = weather?.weather?.description?.text
-	const iconUrl = weather?.weather?.icon?.url
+	let iconUrl: string | null = weather?.weather?.icon?.url
+	if (iconUrl?.includes('error')) {
+		iconUrl = null
+	}
 
 	return (
 		<div className="flex items-center justify-between w-full gap-1">
@@ -14,7 +17,7 @@ export function SimpleWeather({ weather, hasBanner }: Prop) {
 					<img
 						src={iconUrl}
 						alt={description || 'weather'}
-						className="absolute object-contain w-5 h-5 -left-2.5 -top-0.5 drop-shadow-sm filter saturate-200"
+						className="object-contain w-3.5 h-3.5 -left-2.5 -top-0.5 drop-shadow-sm filter saturate-200"
 					/>
 				)}
 				<div className="flex items-baseline gap-1 mt-1">
@@ -22,7 +25,7 @@ export function SimpleWeather({ weather, hasBanner }: Prop) {
 						{weather ? `${temp}°` : '–°'}
 					</span>
 					<span
-						className={`text-[11px] font-medium max-w-[70px] truncate ${hasBanner ? 'text-white/90' : 'text-base-content/70'}`}
+						className={`text-[9px] font-medium max-w-[70px] truncate ${hasBanner ? 'text-white/90' : 'text-base-content/70'}`}
 					>
 						{description || 'آب‌وهوا'}
 					</span>
