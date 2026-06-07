@@ -82,8 +82,6 @@ export function useGetNotifications(options: {
 }
 
 export function useNotifyAsSeen() {
-	const queryClient = useQueryClient()
-
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const client = await getMainClient()
@@ -95,7 +93,6 @@ export function useNotifyAsSeen() {
 				type: SwEventType.DeleteCache,
 				path: '/extension/notifications',
 			})
-			queryClient.invalidateQueries({ queryKey: ['notifications'] })
 		},
 		mutationKey: ['seen_notification'],
 	})
