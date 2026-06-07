@@ -75,6 +75,7 @@ async function processWallpaper(
 			await setToStorage('wallpaper', {
 				...wallpaper,
 			})
+			callEvent('wallpaper_change', wallpaper)
 		}
 	} catch {}
 }
