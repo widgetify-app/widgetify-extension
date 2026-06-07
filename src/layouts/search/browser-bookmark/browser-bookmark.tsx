@@ -93,7 +93,7 @@ export function BrowserBookmark() {
 							}`}
 						>
 							<MdFolderSpecial size={20} />
-							<p className="font-medium">بوکمارک مروگر</p>
+							<p className="font-medium">بوکمارک مرورگر</p>
 						</div>
 					</div>
 				</div>
