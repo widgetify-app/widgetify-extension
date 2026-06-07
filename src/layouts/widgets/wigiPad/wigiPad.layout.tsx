@@ -8,22 +8,10 @@ export function WigiPadWidget() {
 	const { data: fetchedData } = useGetNotifications({
 		enabled: true,
 	})
-	const hasBanner = !!fetchedData?.wigipadBanner
 
 	return (
 		<WidgetContainer className="flex flex-col !p-1.5 !h-72 !min-h-72 !max-h-72">
-			<div className="relative grid justify-between grid-cols-2 border border-content rounded-2xl">
-				{hasBanner ? (
-					<>
-						<div
-							className="absolute inset-0 transition-transform duration-500 scale-100 bg-center bg-cover rounded-2xl"
-							style={{
-								backgroundImage: `url(${fetchedData?.wigipadBanner})`,
-							}}
-						/>
-						<div className="absolute inset-0 bg-neutral/50 backdrop-blur-[0.7px] rounded-2xl" />
-					</>
-				) : null}
+			<div className="relative grid justify-between grid-cols-2 rounded-2xl">
 				<DateDisplay />
 				<ClockDisplay />
 			</div>
