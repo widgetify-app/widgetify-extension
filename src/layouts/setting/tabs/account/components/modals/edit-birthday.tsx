@@ -48,7 +48,7 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 			showCloseButton={false}
 		>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title="تاریخ تولدت؟">
+				<SectionPanel title="تاریخ تولدت؟" size="xs">
 					<JalaliDatePicker
 						value={value}
 						enable={!updateProfileMutation.isPending}
