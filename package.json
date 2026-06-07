@@ -24,6 +24,7 @@
     "@tanstack/react-query": "5.100.9",
     "@wxt-dev/webextension-polyfill": "1.0.0",
     "axios": "1.16.0",
+    "canvas-confetti": "^1.9.4",
     "chart.js": "4.5.1",
     "dompurify": "3.4.2",
     "jalali-moment": "3.3.11",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.14",
     "@tailwindcss/vite": "4.2.4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/moment-hijri": "2.1.4",
     "@types/ms": "2.1.0",
     "@types/node": "25.6.0",

@@ -26,6 +26,7 @@ import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import Tooltip from '@/components/toolTip'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils'
+import { useBirthdayConfetti } from '@/hooks/useBirthdayConfetti'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -100,7 +101,6 @@ export function NavbarLayout(): JSX.Element {
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
 	const [tab, setTab] = useState<string | null>(null)
-
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		if (tabName) setTab(tabName)
 		setShowSettings(true)
@@ -132,6 +132,7 @@ export function NavbarLayout(): JSX.Element {
 		return () => openSettingEvent()
 	}, [handleOpenSettings])
 
+	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
 			{canReOrderWidget && (
