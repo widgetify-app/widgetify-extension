@@ -25,6 +25,7 @@ import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import Tooltip from '@/components/toolTip'
 import { SyncAccount } from './sync'
+import { getCurrentDate } from '../widgets/calendar/utils'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -228,5 +229,21 @@ export function NavbarLayout(): JSX.Element {
 function getUserLabel(user: UserProfile | null) {
 	if (!user) return 'ویجتیفای'
 
-	return `	سلام ${user.name}`
+	if (user.isBirthdayToday) {
+		return `🎂  تولدت مبارک ${user.name}`
+	}
+
+	const hour = getCurrentDate(user.timeZone).hours()
+
+	let greeting = 'سلام'
+
+	if (hour >= 5 && hour < 12) {
+		greeting = 'صبح بخیر'
+	} else if (hour >= 12 && hour < 17) {
+		greeting = 'ظهر بخیر'
+	} else if (hour >= 17 && hour < 21) {
+		greeting = 'عصر بخیر'
+	}
+
+	return `${greeting} ${user.name}`
 }

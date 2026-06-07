@@ -53,6 +53,8 @@ interface FetchedProfile {
 	hasTodayMood: boolean
 	searchAutocompleteEnabled: boolean
 	isVip: boolean
+	isBirthdayToday: boolean
+	birthDateUrl: string
 }
 
 export interface UserProfile extends FetchedProfile {
