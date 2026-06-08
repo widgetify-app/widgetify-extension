@@ -5,9 +5,7 @@ import { useGetNotifications } from '@/services/hooks/extension/getNotifications
 import { RenderWigiPadItem } from './info-panel/components/ann-item'
 
 export function WigiPadWidget() {
-	const { data: fetchedData } = useGetNotifications({
-		enabled: true,
-	})
+	const { data: fetchedData } = useGetNotifications()
 
 	return (
 		<WidgetContainer className="flex flex-col !p-1.5 !h-72 !min-h-72 !max-h-72">

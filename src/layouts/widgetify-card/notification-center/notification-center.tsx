@@ -16,9 +16,7 @@ import { safeAwait } from '@/services/api'
 const localIds = ['notificationMood', 'update_profile']
 export function NotificationCenter() {
 	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
-	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications({
-		enabled: true,
-	})
+	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications()
 	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
 
 	const [notifications, setNotifications] = useState<NotificationItem[]>([])

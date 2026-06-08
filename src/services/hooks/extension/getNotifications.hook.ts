@@ -50,33 +50,20 @@ export interface NotificationItemResponse {
 	wigipadBanner: string | null
 }
 
-async function fetchNotifications(q: {
-	timezone?: string
-}): Promise<NotificationItemResponse> {
+async function fetchNotifications(): Promise<NotificationItemResponse> {
 	const client = await getMainClient()
 	const { data } = await client.get<{ data: NotificationItemResponse }>(
-		'/extension/notifications',
-		{
-			params: q,
-		}
+		'/extension/notifications'
 	)
 
 	return data.data
 }
 
-export function useGetNotifications(options: {
-	enabled?: boolean
-	refetchInterval?: number | null
-	timezone?: string
-}) {
-	const { enabled = true, refetchInterval = null } = options
-
+export function useGetNotifications() {
 	return useQuery<NotificationItemResponse>({
 		queryKey: ['notifications'],
-		queryFn: () => fetchNotifications({ timezone: options.timezone }),
-		enabled,
-		refetchInterval: refetchInterval || false,
 		retry: 1,
+		queryFn: () => fetchNotifications(),
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	})
 }

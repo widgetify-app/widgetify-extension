@@ -6,7 +6,7 @@ import { DateDisplay } from '../widgets/wigiPad/date-display/date.display'
 import { ClockDisplay } from '../widgets/wigiPad/clock-display/clock-display'
 
 export function SimplifyYadkar() {
-	const { data: fetchedData } = useGetNotifications({})
+	const { data: fetchedData } = useGetNotifications()
 
 	const hasBanner = !!fetchedData?.wigipadBanner
 

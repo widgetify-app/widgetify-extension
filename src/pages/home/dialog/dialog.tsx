@@ -13,9 +13,7 @@ import {
 export function DialogChecker() {
 	const { isAuthenticated } = useAuth()
 	const [show, setShow] = useState(false)
-	const { data } = useGetNotifications({
-		enabled: isAuthenticated,
-	})
+	const { data } = useGetNotifications()
 	const { mutateAsync: asSeen } = useNotifyAsSeen()
 
 	useEffect(() => {
