@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { getFromStorage, setToStorage } from '@/common/storage'
 import { getMainClient } from '@/services/api'
 
 export interface NewsSource {
@@ -30,35 +29,10 @@ export const useGetNews = (enabled: boolean) => {
 }
 
 export const useGetRss = (url: string, sourceName: string) => {
-	const [initialData, setInitialData] = useState<any>(undefined)
-
-	useEffect(() => {
-		if (!url || !sourceName) return
-
-		;(async () => {
-			const stored = await getFromStorage('rssOptions')
-			if (stored?.lastFetchedItems[url]) {
-				setInitialData(stored.lastFetchedItems[url])
-			}
-		})()
-	}, [url, sourceName])
-
 	return useQuery<FetchedRssItem[]>({
 		queryKey: ['getRss', url, sourceName],
-		queryFn: async () => {
-			const data = await getRss(url, sourceName)
-			const stored = await getFromStorage('rssOptions')
-			if (stored) {
-				stored.lastFetchedItems = {
-					...stored.lastFetchedItems,
-					[url]: data,
-				}
-				await setToStorage('rssOptions', stored)
-			}
-			return data
-		},
+		queryFn: () => getRss(url, sourceName),
 		enabled: !!url && !!sourceName,
-		initialData,
 	})
 }
 export async function getRss(url: string, sourceName: string): Promise<FetchedRssItem[]> {
@@ -66,7 +40,7 @@ export async function getRss(url: string, sourceName: string): Promise<FetchedRs
 	const { data } = await client.get<FetchedRssItem[]>(
 		`/news/rss?url=${encodeURIComponent(url)}&sourceName=${encodeURIComponent(sourceName)}`
 	)
-	return data
+	return data || []
 }
 
 export async function getNews(): Promise<FetchedRssItem[]> {

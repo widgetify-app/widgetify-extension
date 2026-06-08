@@ -178,20 +178,7 @@ export function SelectCity({ size }: Prop) {
 
 					<div className="pt-2 border-t border-base-300">
 						<p className="text-sm text-center text-base-content/60">
-							شهر شما در لیست نیست یا مشکلی مشاهده می‌کنید؟{' '}
-							<a
-								href="https://feedback.widgetify.ir"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="font-medium text-primary hover:underline"
-								onClick={() =>
-									Analytics.event('feedback_link_clicked', {
-										source: 'city_selection',
-									})
-								}
-							>
-								اطلاع دهید
-							</a>
+							اگه شهر شما تو لیست نبود، لطفا اطلاع بدید تا اضافه بشه🤝
 						</p>
 					</div>
 				</div>

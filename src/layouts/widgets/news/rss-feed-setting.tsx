@@ -192,7 +192,7 @@ export const RssFeedSetting = () => {
 					{error}
 				</div>
 			)}
-			<SectionPanel title="تنظیمات کلی" size="sm">
+			<SectionPanel title="تنظیمات کلی" size="xs">
 				<CheckBoxWithDescription
 					isEnabled={rssState.useDefaultNews}
 					onToggle={toggleDefaultNews}
@@ -201,7 +201,7 @@ export const RssFeedSetting = () => {
 				/>
 			</SectionPanel>
 
-			<SectionPanel title="افزودن فید RSS جدید" size="sm">
+			<SectionPanel title="افزودن فید RSS جدید" size="xs">
 				<div className="flex flex-col gap-3">
 					<TextInput
 						type="text"
@@ -230,15 +230,14 @@ export const RssFeedSetting = () => {
 				</div>
 			</SectionPanel>
 
-			{/* Suggested Feeds Section */}
-			<SectionPanel title="فیدهای پیشنهادی" size="sm">
+			<SectionPanel title="فیدهای پیشنهادی" size="xs">
 				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 					{SUGGESTED_FEEDS.filter((feed) => !isFeedAlreadyAdded(feed.url)).map(
 						(feed) => (
 							<div
 								key={feed.url}
 								className={
-									'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-content border-content'
+									'flex items-center justify-center transition-all duration-200 p-2 border rounded-xl cursor-pointer bg-content border-content hover:opacity-75'
 								}
 								onClick={() => addSuggestedFeed(feed)}
 							>
