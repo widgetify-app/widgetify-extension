@@ -27,39 +27,39 @@ const VERSION_NAME = ConfigKey.VERSION_NAME
 const releaseNotes: ReleaseNote[] = [
 	{
 		type: 'feature',
-		title: 'برنامک ها',
-		description: ' اضافه شدن برنامک‌ها (مینی آپ ها)',
-	},
-	{
-		type: 'feature',
-		title: 'انتشار نوشته برای دوستان 💭',
-		description: 'حالا میتونی نوشته هاتو با دوستانت به اشتراک بذاری!',
-	},
-	{
-		type: 'feature',
-		title: ' 😃 واکنش به نوشته ها ',
-		description: 'حالا میتونی به نوشته های دوستانت یه واکنش (ری اکشن) بدی! 👍',
-	},
-	{
-		type: 'feature',
-		title: ' ⏳ نوشته زمان دار',
-		description: 'از این پس میتونی مدت زمان نمایش نوشته رو تنظیم کنی',
-	},
-	{
-		type: 'improvement',
-		title: 'بهبود مدیریت دوستان',
+		title: 'امکان پیشنمایش در فروشگاه',
 		description:
-			'قسمت مدیریت دوستان رو بازطراحی کردیم تا استفاده ازش راحت تر و لذت بخش تر باشه',
+			'الان دیگه قبل اینکه از فروشگاه والپیپر یا هرچیز دیگه ای بخری، میتونی پیشنمایش داشته باشی🐳',
+	},
+	{
+		type: 'feature',
+		title: 'مدیریت اعلانات',
+		description: '',
 	},
 	{
 		type: 'improvement',
-		title: 'بهبود ظاهری',
-		description: 'تقویم و ساعت رو تو ویجی پد بهبود دادیم',
+		title: 'بهبود ظاهری فروشگاه',
+		description: '',
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود قسمت سرچ های پیشنهادی',
+		description: '',
+	},
+	{
+		type: 'improvement',
+		title: 'بهبود برنامک ها',
+		description: '',
+	},
+	{
+		type: 'improvement',
+		description: '',
+		title: 'بهبود عملکرد کلی',
 	},
 	{
 		type: 'bugfix',
-		title: 'برطرف کردن مشکلات برنامک ها',
-		description: 'یکسری باگ های این قسمت رو برطرف کردیم',
+		description: '',
+		title: 'رفع مشکلات گزارش شده',
 	},
 ]
 
@@ -111,30 +111,33 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🥳 نسخه جدید نصب شد!'}
+			title={'🏖️ نسخه جدید نصب شد!'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 			showCloseButton={false}
 		>
-			<div className="flex flex-col max-h-[80vh]">
-				<div className="flex items-center justify-between">
-					<div className="flex flex-col">
-						<h2 className="text-2xl font-black text-content">
-							{VERSION_NAME}
-						</h2>
-						<p className="mt-1 text-xs font-medium text-muted">
-							آپدیت جدید با کلی ویژگی و بهبود جذاب اومده!
-						</p>
-					</div>
+			<div className="flex flex-col max-h-[85vh]">
+				<div className="relative overflow-hidden border-b border-base-300/20 rounded-2xl h-62">
+					<div
+						className="absolute inset-0 scale-105 bg-top bg-no-repeat bg-contain animate-pan"
+						style={{
+							backgroundImage:
+								'url(http://cdn.widgetify.ir/extension/sahel-update.jpg)',
+							maskImage:
+								'linear-gradient(to bottom, black 65%, transparent 100%)',
+							WebkitMaskImage:
+								'linear-gradient(to bottom, black 65%, transparent 100%)',
+						}}
+					/>
 				</div>
 
-				<div className="flex-1 p-2 space-y-1 overflow-y-auto max-h-72">
+				<div className="flex-1 p-2 space-y-1 overflow-y-auto max-h-40">
 					<div className="flex flex-col gap-1">
 						{releaseNotes.map((note, index) => (
 							<div
 								key={index}
-								className="flex flex-col gap-2 p-4 border bg-base-200/10 border-base-300/20 rounded-2xl animate-in fade-in slide-in-from-bottom-3"
+								className="flex flex-col gap-2 px-2 py-1 border bg-base-200/10 border-base-300/20 rounded-2xl animate-in fade-in slide-in-from-bottom-3"
 								style={{ animationDelay: `${index * 50}ms` }}
 							>
 								<div className="flex items-center justify-between">
@@ -159,7 +162,7 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 				</div>
 			</div>
-			<div className="flex items-center justify-between p-5 border-t border-base-300/10 bg-base-200/40">
+			<div className="flex items-center justify-between p-2 border-t border-base-300/10 bg-base-200/40">
 				<a
 					href="https://ble.ir/widgetify"
 					target="_blank"

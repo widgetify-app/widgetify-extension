@@ -2,8 +2,6 @@ import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from '../widgetify-card/notification-center/notification-center'
 import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
 import { RenderWigiPadItem } from '../widgets/wigiPad/info-panel/components/ann-item'
-import { PetProvider, usePetContext } from '../widgetify-card/pets/pet.context'
-import { Pet } from '../widgetify-card/pets/pet'
 import { DateDisplay } from '../widgets/wigiPad/date-display/date.display'
 import { ClockDisplay } from '../widgets/wigiPad/clock-display/clock-display'
 
@@ -14,7 +12,7 @@ export function SimplifyYadkar() {
 
 	return (
 		<WidgetContainer className="relative flex flex-col w-full overflow-hidden h-60 max-h-60!">
-			<div className="relative grid justify-between grid-cols-2 border border-content rounded-2xl">
+			<div className="relative grid justify-between grid-cols-2 rounded-2xl">
 				{hasBanner ? (
 					<>
 						<div
