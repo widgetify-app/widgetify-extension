@@ -70,7 +70,7 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 }
 
 export function ContentSection() {
-	const { contentAlignment, canReOrderWidget } = useAppearanceSetting()
+	const { canReOrderWidget } = useAppearanceSetting()
 
 	const { getSortedWidgets, reorderWidgets } = useWidgetVisibility()
 	const sortedWidgets = getSortedWidgets().filter((widget) => !widget.disabled)
