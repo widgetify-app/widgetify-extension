@@ -78,13 +78,14 @@ export function RenderWigiPadItem({ notification }: NotificationItemProps) {
 				className=""
 			>
 				<div
-					className="w-full rounded max-h-24 min-h-24"
+					className="w-full rounded max-h-24"
 					style={{
-						height: notification.hight,
+						height: notification.hight || '6rem',
 						backgroundImage: `url('${notification.icon}')`,
 						backgroundPosition: 'bottom',
 						backgroundSize: 'cover',
 						backgroundRepeat: 'no-repeat',
+						...containerStyle,
 					}}
 				></div>
 			</Wrapper>
