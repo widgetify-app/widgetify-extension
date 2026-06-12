@@ -18,11 +18,6 @@ import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 
-const layoutPositions: Record<string, string> = {
-	center: 'justify-center',
-	top: 'justify-start',
-}
-
 function SortableWidget({ widget }: { widget: WidgetItem }) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
@@ -119,7 +114,7 @@ export function ContentSection() {
 		<DateProvider>
 			<div
 				data-tour="content"
-				className={`flex flex-col items-center overflow-y-auto scrollbar-none  ${totalWidgetCount > 4 ? 'pb-30!' : ''}  ${layoutPositions[contentAlignment]} flex-1 w-full px-1 md:px-4 py-1`}
+				className={`flex flex-col items-center overflow-y-auto scrollbar-none  ${totalWidgetCount > 4 ? 'pb-30!' : ''}  justify-start flex-1 w-full px-1 md:px-4 py-1`}
 			>
 				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
 					<div className="order-3 w-full lg:w-xs lg:order-1">
