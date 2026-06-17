@@ -71,7 +71,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	const colorClass = hasCustomColors ? '' : getColorFromTitle(bookmark.title)
 
 	return (
-		<div className="relative flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 md:w-8 md:h-8">
+		<div className="relative flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 md:w-9 md:h-9">
 			{typeof displayIcon === 'string' && !imageError ? (
 				<img
 					src={displayIcon}

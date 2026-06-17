@@ -4,14 +4,10 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { useEffect, useState } from 'react'
 import type { Bookmark } from '../../types/bookmark.types'
-import {
-	IconSourceSelector,
-	type IconSourceType,
-	ShowAdvancedButton,
-	useBookmarkIcon,
-} from '../shared'
+import { type IconSourceType, ShowAdvancedButton } from '../shared'
 import { AdvancedModal } from './advanced.modal'
 import { useIsMutating } from '@tanstack/react-query'
+import { BookmarkIconPicker } from '../bookmark-icon.picker'
 
 interface EditBookmarkModalProps {
 	isOpen: boolean
@@ -67,7 +63,6 @@ export function EditBookmarkModal({
 	const [icon, setIcon] = useState<string | null | File>(null)
 
 	const type = bookmark?.type
-	const { fileInputRef, renderIconPreview, handleImageUpload } = useBookmarkIcon()
 
 	const updateFormData: UpdateBookmarkUpdateFormData = (key, value) => {
 		if (key === 'icon') {
@@ -141,6 +136,7 @@ export function EditBookmarkModal({
 				isDeletedIcon: false,
 			})
 			setIconSource(bookmark.icon ? 'upload' : 'auto')
+			console.log(bookmark)
 			if (bookmark.icon) {
 				setIcon(bookmark.icon)
 			} else if (bookmark.type === 'BOOKMARK' && bookmark.url) {
@@ -164,19 +160,12 @@ export function EditBookmarkModal({
 			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]">
 				<div className="flex flex-col gap-2">
 					<div className="flex flex-col items-center gap-2">
-						{type === 'BOOKMARK' && (
-							<IconSourceSelector
-								iconSource={iconSource}
-								setIconSource={setIconSource}
-							/>
-						)}
 						<div className="relative flex flex-col items-center">
-							{renderIconPreview(
-								icon,
-								type === 'FOLDER' ? 'upload' : iconSource,
-								setIconSource,
-								(value) => updateFormData('icon', value)
-							)}
+							<BookmarkIconPicker
+								onChange={(value) => updateFormData('icon', value)}
+								value={icon}
+								url={formData.url}
+							/>
 							{iconSource === 'upload' && Boolean(icon) && (
 								<Button
 									size="xs"
@@ -188,20 +177,6 @@ export function EditBookmarkModal({
 							)}
 						</div>
 					</div>
-
-					<input
-						type="file"
-						ref={fileInputRef}
-						className="hidden"
-						accept="image/*"
-						onChange={(e) =>
-							handleImageUpload(
-								e,
-								(file) => updateFormData('icon', file),
-								setIconSource
-							)
-						}
-					/>
 
 					<TextInput
 						type="text"
