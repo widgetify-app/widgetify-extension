@@ -53,15 +53,13 @@ export function setupCaching() {
 		if (!isDev) {
 			registerRoute(
 				({ request }) =>
-					request.destination === 'script' ||
-					request.destination === 'style' ||
-					request.destination === 'font',
+					request.destination === 'script' || request.destination === 'style',
 				new CacheFirst({
 					cacheName: 'static-assets-v1',
 					plugins: [
 						new ExpirationPlugin({
 							maxEntries: 200,
-							maxAgeSeconds: 10 * 24 * 60 * 60, // 10 days
+							maxAgeSeconds: 10 * 24 * 60 * 60,
 							purgeOnQuotaError: true,
 						}),
 						new CacheableResponsePlugin({
@@ -72,13 +70,13 @@ export function setupCaching() {
 			)
 
 			registerRoute(
-				({ request }) => request.destination === 'image',
+				({ request }) => request.destination === 'font',
 				new CacheFirst({
-					cacheName: 'images-cache-v1',
+					cacheName: 'fonts-cache-v1',
 					plugins: [
 						new ExpirationPlugin({
-							maxEntries: 300,
-							maxAgeSeconds: 5 * 24 * 60 * 60, // 5 days
+							maxEntries: 50,
+							maxAgeSeconds: 2 * 60,
 							purgeOnQuotaError: true,
 						}),
 						new CacheableResponsePlugin({
