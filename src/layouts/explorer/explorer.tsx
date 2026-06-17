@@ -100,7 +100,7 @@ export function ExplorerContent() {
 									<button
 										key={cat.id}
 										onClick={() => scrollToCategory(cat.id)}
-										className={`relative flex items-center gap-2 px-3 py-2 text-[11px] font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 ${
+										className={`relative flex items-center gap-2 px-3 py-2 text-[11px] font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
 											active
 												? 'bg-primary text-white shadow-md scale-105'
 												: 'text-base-content/70 hover:text-primary hover:bg-primary/10'
@@ -109,7 +109,7 @@ export function ExplorerContent() {
 										{cat.icon && (
 											<img
 												src={cat.icon}
-												className={`w-4 h-4 transition-all ${active ? 'brightness-200' : ''}`}
+												className={`w-4 h-4 transition-all`}
 												alt=""
 											/>
 										)}
@@ -143,7 +143,7 @@ export function ExplorerContent() {
 												categoryRefs={categoryRefs}
 												contentLength={contents.length}
 												index={index}
-												key={category.category || index}
+												key={category.id}
 											/>
 										)
 									)}

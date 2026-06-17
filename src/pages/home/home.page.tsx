@@ -4,7 +4,7 @@ import { HomeContentSimplify } from './ui/home-content-simplify'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
-import Joyride, { type Step } from 'react-joyride'
+import { Joyride, type Step } from 'react-joyride'
 import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
 import Analytics from '@/analytics'
 import { DialogChecker } from './dialog/dialog'
@@ -39,14 +39,6 @@ const steps: Step[] = [
 				</div>
 			</div>
 		),
-		disableBeacon: true,
-		showSkipButton: true,
-		styles: {
-			options: {
-				width: 320,
-				zIndex: 10000,
-			},
-		},
 	},
 	{
 		target: '#settings-button',
@@ -89,7 +81,12 @@ export function HomePage() {
 	}
 
 	function onDoneTour(data: any) {
-		if (data.status === 'finished' || data.status === 'skipped') {
+		console.log(data)
+		if (
+			data.status === 'finished' ||
+			data.status === 'skipped' ||
+			data.status === 'close'
+		) {
 			setToStorage('hasSeenTour', true)
 			setShowTour(false)
 			Analytics.event(`tour_${data.status}`)
@@ -140,22 +137,22 @@ export function HomePage() {
 				steps={steps}
 				run={showTour}
 				continuous
-				showProgress
-				showSkipButton
 				locale={{
 					next: 'بعدی',
 					back: 'قبلی',
 					skip: 'رد کردن',
 					last: 'پایان',
 					close: 'بستن',
-					nextLabelWithProgress: 'بعدی {step}/{steps}',
+					nextWithProgress: 'بعدی {current}/{total}',
 				}}
-				callback={onDoneTour}
-				styles={{
-					options: {
-						primaryColor: '#3b82f6',
-					},
+				options={{
+					showProgress: true,
+					skipBeacon: true,
+					primaryColor: '#3b82f6',
+					dismissKeyAction: 'close',
+					buttons: ['skip', 'primary', 'back'],
 				}}
+				onEvent={onDoneTour}
 			/>
 
 			{showReleaseNotes && (

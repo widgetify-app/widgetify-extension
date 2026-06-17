@@ -3,6 +3,7 @@ import type { CategoryItem } from '../interfaces/category.interface'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'
 import { RenderContentSite } from './content-site'
+import { twJoin, twMerge } from 'tailwind-merge'
 
 interface Prop {
 	category: CategoryItem
@@ -19,10 +20,11 @@ export function ExplorerCategory({
 	activeCategory,
 }: Prop) {
 	if (!category.links?.length) return null
+	const id = category.id.replaceAll(' ', '_')
 	return (
 		<div
-			key={category.id}
-			id={category.id}
+			key={id}
+			id={id}
 			ref={(el) => {
 				categoryRefs.current[category.id] = el
 			}}
@@ -37,20 +39,23 @@ export function ExplorerCategory({
 					'--banner-url': `url(${category.banner})`,
 				}),
 			}}
-			className={` relative overflow-hidden border scroll-mt-4 bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300 ${
+			className={twJoin(
+				'relative overflow-hidden  border scroll-mt-4  bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300',
 				index === 0
 					? 'md:col-span-2'
 					: index === contentLength - 1 && contentLength % 2 === 0
 						? 'md:col-span-2'
-						: 'md:col-span-1'
-			}
-			${category.id === activeCategory && 'outline-1 outline-offset-2 outline-primary/80'}
-			${category.banner ? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none' : ''}
-			`}
+						: 'md:col-span-1',
+				category.id === activeCategory &&
+					'outline-1 outline-offset-2 outline-primary/80',
+				category.banner
+					? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
+					: ''
+			)}
 		>
 			{category.banner && (
 				<style>
-					{`#${category.id}::before {
+					{`#${id}::before {
 						content: "";
 						background-image: var(--banner-url);
 						mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
@@ -103,9 +108,10 @@ interface HandleCatalogsProp {
 
 function HandleCatalogs({ category, colSpan }: HandleCatalogsProp) {
 	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 7
+	const maxH = category.lockHeight ? 'max-h-52 overflow-y-auto' : ''
 	return (
 		<div
-			className="grid grid-cols-3 gap-y-6 gap-x-2"
+			className={`grid grid-cols-3  gap-y-6 gap-x-2 ${maxH}`}
 			style={{
 				gridTemplateColumns: `repeat(${colSpanValue}, minmax(0, 1fr))`,
 			}}
