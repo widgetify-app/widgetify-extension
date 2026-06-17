@@ -3,7 +3,7 @@ import type { CategoryItem } from '../interfaces/category.interface'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'
 import { RenderContentSite } from './content-site'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twJoin } from 'tailwind-merge'
 
 interface Prop {
 	category: CategoryItem
