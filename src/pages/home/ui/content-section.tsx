@@ -70,7 +70,7 @@ function SortableWidget({ widget }: { widget: WidgetItem }) {
 }
 
 export function ContentSection() {
-	const { canReOrderWidget } = useAppearanceSetting()
+	const { canReOrderWidget, contentAlignment } = useAppearanceSetting()
 
 	const { getSortedWidgets, reorderWidgets } = useWidgetVisibility()
 	const sortedWidgets = getSortedWidgets().filter((widget) => !widget.disabled)
@@ -114,70 +114,82 @@ export function ContentSection() {
 		<DateProvider>
 			<div
 				data-tour="content"
-				className={`flex flex-col items-center overflow-y-auto scrollbar-none  ${totalWidgetCount > 4 ? 'pb-30!' : ''}  justify-start flex-1 w-full px-1 md:px-4 py-1`}
+				className="flex flex-col flex-1 w-full overflow-y-auto scrollbar-none"
 			>
-				<div className="flex flex-col w-full gap-4 lg:flex-row lg:gap-2">
-					<div className="order-3 w-full lg:w-xs lg:order-1">
-						<WidgetifyLayout />
-					</div>
+				<div
+					className={`flex flex-col flex-1 w-full pb-20 px-1 md:px-4 py-1 ${
+						contentAlignment === 'center'
+							? 'items-center justify-center'
+							: 'items-start'
+					}`}
+				>
+					<div className="flex flex-col w-full max-w-6xl gap-4 lg:flex-row lg:gap-2">
+						<div className="order-3 w-full lg:w-xs lg:order-1">
+							<WidgetifyLayout />
+						</div>
 
-					<div
-						className={'order-1 w-full lg:w-[65%] lg:order-2 space-y-2 px-1'}
-					>
-						<SearchLayout />
-						<BookmarkProvider>
-							<BookmarksList />
-						</BookmarkProvider>
-					</div>
-
-					<div className="order-2 w-full lg:w-xs lg:order-3">
-						<WigiPadWidget />
-					</div>
-				</div>
-
-				{sortedWidgets.length > 0 && (
-					<div className="w-full mt-2" id="widgets">
-						<DndContext
-							sensors={canReOrderWidget ? sensors : []}
-							collisionDetection={
-								canReOrderWidget ? closestCenter : undefined
+						<div
+							className={
+								'order-1 w-full lg:w-[65%] lg:order-2 space-y-2 px-1'
 							}
-							onDragEnd={canReOrderWidget ? handleDragEnd : undefined}
 						>
-							<SortableContext
-								items={sortedWidgets.map((widget) => widget.id)}
-								strategy={rectSortingStrategy}
-							>
-								<div className={layoutClasses}>
-									{sortedWidgets.map((widget) => {
-										if (totalWidgetCount === 2) {
-											return (
-												<div
-													key={widget.id}
-													className="flex-shrink-0 w-full lg:w-3/12"
-												>
-													{canReOrderWidget ? (
-														<SortableWidget widget={widget} />
-													) : (
-														widget.node
-													)}
-												</div>
-											)
-										}
-										return canReOrderWidget ? (
-											<SortableWidget
-												key={widget.id}
-												widget={widget}
-											/>
-										) : (
-											widget.node
-										)
-									})}
-								</div>
-							</SortableContext>
-						</DndContext>
+							<SearchLayout />
+							<BookmarkProvider>
+								<BookmarksList />
+							</BookmarkProvider>
+						</div>
+
+						<div className="order-2 w-full lg:w-xs lg:order-3">
+							<WigiPadWidget />
+						</div>
 					</div>
-				)}
+
+					{sortedWidgets.length > 0 && (
+						<div className="w-full mt-2" id="widgets">
+							<DndContext
+								sensors={canReOrderWidget ? sensors : []}
+								collisionDetection={
+									canReOrderWidget ? closestCenter : undefined
+								}
+								onDragEnd={canReOrderWidget ? handleDragEnd : undefined}
+							>
+								<SortableContext
+									items={sortedWidgets.map((widget) => widget.id)}
+									strategy={rectSortingStrategy}
+								>
+									<div className={layoutClasses}>
+										{sortedWidgets.map((widget) => {
+											if (totalWidgetCount === 2) {
+												return (
+													<div
+														key={widget.id}
+														className="flex-shrink-0 w-full lg:w-3/12"
+													>
+														{canReOrderWidget ? (
+															<SortableWidget
+																widget={widget}
+															/>
+														) : (
+															widget.node
+														)}
+													</div>
+												)
+											}
+											return canReOrderWidget ? (
+												<SortableWidget
+													key={widget.id}
+													widget={widget}
+												/>
+											) : (
+												widget.node
+											)
+										})}
+									</div>
+								</SortableContext>
+							</DndContext>
+						</div>
+					)}
+				</div>
 			</div>
 		</DateProvider>
 	)

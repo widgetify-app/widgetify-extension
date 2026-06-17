@@ -12,6 +12,7 @@ import { listenEvent } from '@/common/utils/call-event'
 type UI = 'SIMPLE' | 'ADVANCED'
 export interface AppearanceData {
 	fontFamily: string
+	contentAlignment: 'center' | 'top'
 	ui: UI
 }
 interface AppearanceContextContextType extends AppearanceData {
@@ -21,14 +22,17 @@ interface AppearanceContextContextType extends AppearanceData {
 	) => void
 	setFontFamily: (value: string) => void
 	setUI: (value: UI) => void
+	contentAlignment: 'center' | 'top'
 	canReOrderWidget: boolean
 	toggleCanReOrderWidget: () => void
 	ui: UI
+	setContentAlignment: (value: 'center' | 'top') => void
 }
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	fontFamily: 'Vazir',
 	ui: 'ADVANCED',
+	contentAlignment: 'top',
 }
 
 export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
@@ -120,6 +124,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		}
 	}
 
+	const setContentAlignment = (value: 'center' | 'top') => {
+		updateSetting('contentAlignment', value)
+		Analytics.event(`set_content_alignment_${value}`)
+	}
+
 	const setUI = async (ui: UI) => {
 		if (!isAuthenticated)
 			return showToast(
@@ -154,12 +163,14 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 	const contextValue: AppearanceContextContextType = {
 		fontFamily: settings.fontFamily,
+		contentAlignment: settings.contentAlignment,
 		updateSetting,
 		setFontFamily,
 		canReOrderWidget,
 		ui: settings.ui,
 		setUI: setUI,
 		toggleCanReOrderWidget,
+		setContentAlignment,
 	}
 
 	return (
