@@ -115,7 +115,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 transition-all  ${blurMode ? 'blur-[2px] opacity-40' : ''}`}
+			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 transition-all ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div className="flex items-center gap-1.5 px-2 py-1">
 				<div className="flex items-center gap-1 shrink-0">

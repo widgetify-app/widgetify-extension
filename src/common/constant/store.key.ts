@@ -59,6 +59,7 @@ export interface StorageKV {
 		updatedAt: number
 	}[]
 	calendarDrawerState: boolean
+	recent_searches: any
 	pets: PetSettings
 	clock: ClockSettings
 	wigiPadDate: WigiPadDateSetting
