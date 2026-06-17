@@ -163,7 +163,7 @@ export function ContentSection() {
 												return (
 													<div
 														key={widget.id}
-														className="flex-shrink-0 w-full lg:w-3/12"
+														className="flex-shrink-0 w-full lg:w-62.5"
 													>
 														{canReOrderWidget ? (
 															<SortableWidget
