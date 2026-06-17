@@ -4,6 +4,7 @@ import { BrowserTitleSelector } from './components/browserTitle-selector'
 import { FontSelector } from './components/font-selector'
 import { ThemeSelector } from './components/theme-selector'
 import { UISelector } from './components/ui-selector'
+import { ContentAlignmentSettings } from './components/content-alignment-settings'
 export function AppearanceSettingTab() {
 	const { isAuthenticated } = useAuth()
 	const { data } = useGetUserInventory(isAuthenticated)
@@ -17,6 +18,7 @@ export function AppearanceSettingTab() {
 				fetched_browserTitles={data?.browser_titles || []}
 				isAuthenticated={isAuthenticated}
 			/>
+			<ContentAlignmentSettings />
 		</div>
 	)
 }

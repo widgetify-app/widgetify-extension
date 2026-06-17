@@ -9,6 +9,8 @@ import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
 import type { EngineMeta } from '@/services/hooks/trends/getTrends'
+import { useSearchHistory } from './hooks/useSearchHistory'
+import { useAuth } from '@/context/auth.context'
 
 const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',
@@ -27,11 +29,16 @@ export function SearchLayout() {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 	const [portalStyles, setPortalStyles] = useState<React.CSSProperties>({})
+	const { user } = useAuth()
+
+	const { addSearch } = useSearchHistory()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const query = searchQuery.trim()
 		if (query) {
+			if (user?.searchAutocompleteEnabled) addSearch(query)
+
 			SearchHandler({
 				content: query,
 				engine: selectedEngine,
@@ -56,6 +63,8 @@ export function SearchLayout() {
 
 	const handleVoiceSearch = (query: string) => {
 		if (query.trim()) {
+			if (user?.searchAutocompleteEnabled) addSearch(query.trim())
+
 			SearchHandler({ content: query.trim(), engine: selectedEngine })
 			Analytics.event('voice_search_submitted')
 		}
@@ -132,6 +141,8 @@ export function SearchLayout() {
 	const onSearchButtonClick = () => {
 		const query = searchQuery.trim()
 		if (query.trim()) {
+			if (user?.searchAutocompleteEnabled) addSearch(query.trim())
+
 			SearchHandler({ content: query.trim(), engine: selectedEngine })
 			Analytics.event('search_button_submitted')
 		}

@@ -4,16 +4,10 @@ import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import type { BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
-import {
-	IconSourceSelector,
-	type IconSourceType,
-	ShowAdvancedButton,
-	TypeSelector,
-	useBookmarkIcon,
-} from '../shared'
+import { ShowAdvancedButton, TypeSelector } from '../shared'
 import { AdvancedModal } from './advanced.modal'
 import { useIsMutating } from '@tanstack/react-query'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { BookmarkIconPicker } from '../bookmark-icon.picker'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -58,7 +52,6 @@ export function AddBookmarkModal({
 	parentId = null,
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
-	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
 
 	const isAdding = useIsMutating({ mutationKey: ['addBookmark'] }) > 0
@@ -66,9 +59,6 @@ export function AddBookmarkModal({
 	const [formData, setFormData] = useState<BookmarkCreateFormFields>(
 		structuredClone(empty)
 	)
-
-	const { fileInputRef, setIconLoadError, renderIconPreview, handleImageUpload } =
-		useBookmarkIcon()
 
 	const updateFormData: AddBookmarkUpdateFormData = <
 		K extends keyof BookmarkCreateFormFields,
@@ -83,10 +73,7 @@ export function AddBookmarkModal({
 		const newUrl = value.trim()
 		updateFormData('url', newUrl)
 
-		if (iconSource === 'auto') {
-			setIconLoadError(false)
-			updateFormData('icon', null)
-		}
+		updateFormData('icon', null)
 
 		if (formData.title.trim() === '' && newUrl !== '') {
 			let hostName = ''
@@ -130,7 +117,6 @@ export function AddBookmarkModal({
 	const resetForm = () => {
 		setFormData(structuredClone(empty))
 		setType('BOOKMARK')
-		setIconSource('auto')
 		setShowAdvanced(false)
 	}
 
@@ -146,11 +132,6 @@ export function AddBookmarkModal({
 	}) => {
 		updateFormData('title', suggestion.title)
 		updateFormData('url', suggestion.url)
-
-		if (iconSource === 'auto') {
-			setIconLoadError(false)
-			updateFormData('icon', null)
-		}
 	}
 
 	const handleAdvancedModalClose = (
@@ -190,52 +171,27 @@ export function AddBookmarkModal({
 			size="md"
 			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
 			direction="rtl"
-			className="!overflow-y-hidden"
+			className="overflow-y-hidden!"
 			closeOnBackdropClick={false}
 		>
 			<form
 				onSubmit={handleAdd}
-				className="flex flex-col justify-between gap-2 overflow-y-auto h-[24rem]"
+				className="flex flex-col justify-between gap-2 overflow-y-auto h-96"
 			>
 				<div className="mt-1 overflow-hidden">
-					<div className="flex h-8 gap-2 mb-2">
-						<TypeSelector type={type} setType={setType} />
-					</div>
+					<TypeSelector type={type} setType={setType} />
 
 					<div className="py-2 overflow-auto">
-						{' '}
 						<div
-							className={`mb-0.5 flex flex-row  w-full items-center gap-y-2.5
-								${type === 'FOLDER' ? 'items-start justify-center' : 'items-center justify-between'}
+							className={`mb-0.5 flex flex-row  w-full items-center gap-y-2.5 justify-center
 							`}
 						>
-							{type === 'BOOKMARK' && (
-								<IconSourceSelector
-									iconSource={iconSource}
-									setIconSource={setIconSource}
-								/>
-							)}
-							{renderIconPreview(
-								formData.icon ||
-									(formData.url && getFaviconFromUrl(formData.url)),
-								type === 'FOLDER' ? 'upload' : iconSource,
-								setIconSource,
-								(value) => updateFormData('icon', value)
-							)}
+							<BookmarkIconPicker
+								onChange={(value) => updateFormData('icon', value)}
+								value={formData.icon}
+								url={formData.url}
+							/>
 						</div>
-						<input
-							type="file"
-							ref={fileInputRef}
-							className="hidden"
-							accept="image/*"
-							onChange={(e) =>
-								handleImageUpload(
-									e,
-									(file) => updateFormData('icon', file),
-									setIconSource
-								)
-							}
-						/>
 						<TextInput
 							type="text"
 							name="title"
@@ -246,7 +202,7 @@ export function AddBookmarkModal({
 								'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
 							}
 						/>
-						<div className="relative h-[50px]">
+						<div className="relative h-12.5">
 							{type === 'BOOKMARK' && (
 								<TextInput
 									type="text"

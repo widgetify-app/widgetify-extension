@@ -1,5 +1,5 @@
 import React, { useId } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 interface TabItem<T> {
 	id: T

@@ -22,8 +22,9 @@ export function SearchAutocompleteSwitch() {
 			<div className="flex-1 space-y-2">
 				<h3 className="font-medium text-content">پیشنهادهای جستجو</h3>
 				<p className="text-sm font-light leading-relaxed text-muted">
-					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما از
-					گوگل دریافت می‌شوند. هیچ اطلاعاتی ذخیره نمی‌شود.
+					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما
+					گوگل دریافت می‌شوند و تاریخچه جستجو در دستگاه شما ذخیره میشوند. هیچ
+					اطلاعاتی به سرور ارسال نمی‌شود.
 				</p>
 			</div>
 			<div className="flex-shrink-0 ml-4">
