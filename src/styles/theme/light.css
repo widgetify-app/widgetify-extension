@@ -2,5 +2,6 @@
     name: "light";
     --color-primary: var(--brand-primary);
     --color-primary-focus: #4f46e5;
+    --color-secondary: var(--brand-secondary);
     --color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
 }
