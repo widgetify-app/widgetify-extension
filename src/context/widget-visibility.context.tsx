@@ -19,6 +19,7 @@ import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
 import { showToast } from '@/common/toast'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
+import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -33,6 +34,7 @@ export enum WidgetKeys {
 	wigiPad = 'wigiPad',
 	network = 'network',
 	yadKar = 'yadKar',
+	HabitTracker = 'HabitTracker',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -125,6 +127,15 @@ export const widgetItems: WidgetItem[] = [
 		node: <NetworkLayout inComboWidget={false} enableBackground={true} />,
 		canToggle: true,
 		isNew: false,
+	},
+	{
+		id: WidgetKeys.HabitTracker,
+		emoji: '🎯',
+		label: 'عادات',
+		order: 10,
+		node: <HabitsLayout />,
+		canToggle: true,
+		isNew: true,
 	},
 ]
 
