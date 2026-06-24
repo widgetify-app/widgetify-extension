@@ -78,7 +78,7 @@ export function HabitItem({
 		>
 			<div className="flex items-center gap-2">
 				<div
-					className="flex items-center justify-center text-sm transition-transform rounded-lg w-7 h-7 shrink-0 active:scale-90 disabled:opacity-60"
+					className="flex items-center justify-center text-sm transition-transform rounded-lg cursor-pointer w-7 h-7 shrink-0 active:scale-90 disabled:opacity-60"
 					style={{
 						backgroundColor: `${color}22`,
 						color: isDone ? getContrastingTextColor(color) : color,
@@ -86,7 +86,7 @@ export function HabitItem({
 				>
 					{habit.emoji || '🎯'}
 				</div>
-				<div className="flex-1 min-w-0">
+				<div className="flex-1 min-w-0 cursor-pointer">
 					<p className="text-xs font-medium truncate text-content">
 						{habit.title}
 					</p>
