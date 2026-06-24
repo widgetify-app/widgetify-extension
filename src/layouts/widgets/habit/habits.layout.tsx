@@ -17,6 +17,8 @@ import { HabitDetailModal } from './components/habit-detail.modal'
 import { HabitFormModal } from './components/habit-form.modal'
 import { HabitItem } from './components/habit.item'
 import { BiPlus } from 'react-icons/bi'
+import { callEvent } from '@/common/utils/call-event'
+import { HabitItemSkeleton } from './components/habit-item.skeleton'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
@@ -37,12 +39,21 @@ export function HabitsContent() {
 	}
 
 	const handleAddHabit = () => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
 		setEditingHabit(null)
 		setShowForm(true)
 		Analytics.event('habit_form_opened')
 	}
 
 	const handleEditHabit = (habit: Habit) => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
+
 		setEditingHabit(habit)
 		setShowForm(true)
 		Analytics.event('habit_edit_opened')
@@ -65,6 +76,11 @@ export function HabitsContent() {
 	}
 
 	const onRefresh = () => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
+
 		refetch()
 		Analytics.event('habit_refetch')
 	}
@@ -83,9 +99,6 @@ export function HabitsContent() {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-1">
 						<h2 className="text-sm font-semibold text-content">عادت‌ها</h2>
-						{/* <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-primary/15 text-primary/90">
-							آزمایشی
-						</span> */}
 					</div>
 
 					<div className="flex items-center gap-1">
@@ -111,13 +124,14 @@ export function HabitsContent() {
 				<div
 					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 				>
+					{isRefetching ? (
+						<HabitItemSkeleton key={`skeleton-fetching`} />
+					) : null}
+
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">
-							{[...Array(3)].map((_, i) => (
-								<div
-									key={i}
-									className="h-16 rounded-lg bg-base-300/30 animate-pulse"
-								/>
+							{[...Array(4)].map((_, i) => (
+								<HabitItemSkeleton key={`skeleton-${i}`} />
 							))}
 						</div>
 					) : data?.items?.length === 0 ? (
