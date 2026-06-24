@@ -60,7 +60,6 @@ function applyWallpaper(wallpaper: StoredWallpaper) {
 		})
 
 		video.onerror = () => {
-			console.error('Video error:', video.error)
 			document.body.style.backgroundColor = '#000'
 		}
 		video.onloadeddata = () => {

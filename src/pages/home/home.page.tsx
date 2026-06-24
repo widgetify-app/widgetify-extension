@@ -81,7 +81,6 @@ export function HomePage() {
 	}
 
 	function onDoneTour(data: any) {
-		console.log(data)
 		if (
 			data.status === 'finished' ||
 			data.status === 'skipped' ||
