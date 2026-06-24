@@ -24,8 +24,9 @@ import {
 import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
 import { translateError } from '@/utils/translate-error'
 import Tooltip from '@/components/toolTip'
-import { BiInfoCircle } from 'react-icons/bi'
+import { BiChevronDown, BiInfoCircle } from 'react-icons/bi'
 import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface HabitFormModalProps {
 	isOpen: boolean
@@ -56,6 +57,7 @@ export function HabitFormModal({
 	colors,
 }: HabitFormModalProps) {
 	const isEdit = !!habit
+	const [showAdvanced, setShowAdvanced] = useState(false)
 	const [form, setForm] = useState<CreateHabitInput>(defaultForm)
 	const { mutateAsync: addHabit, isPending: isAdding } = useAddHabit()
 	const { mutateAsync: updateHabit, isPending: isUpdating } = useUpdateHabit()
@@ -145,7 +147,7 @@ export function HabitFormModal({
 				<div className="grid grid-cols-2 gap-4">
 					<div>
 						<label className="block mb-1 text-xs text-muted">شکلک</label>
-						<div className="grid grid-cols-5 gap-1.5  h-20 max-h-20 overflow-y-auto pl-1">
+						<div className="grid grid-cols-5 gap-1.5 py-1 h-20 max-h-20 overflow-y-auto pl-1">
 							{icons.map((emoji) => (
 								<button
 									key={emoji.content}
@@ -164,7 +166,7 @@ export function HabitFormModal({
 					</div>
 					<div>
 						<label className="block mb-1 text-xs text-muted">رنگ</label>
-						<div className="grid h-20 grid-cols-5 gap-1 overflow-y-auto max-h-20">
+						<div className="grid h-20 grid-cols-5 gap-1 py-1 overflow-y-auto max-h-20">
 							{colors.map((color) => (
 								<button
 									key={color}
@@ -182,132 +184,181 @@ export function HabitFormModal({
 					</div>
 				</div>
 
-				<div className="p-3 border bg-base-200/50 rounded-xl border-base-300">
-					<div className="grid grid-cols-2 gap-3 mb-3">
-						<div>
-							<div className="flex items-center gap-1 mb-1">
-								<label className="text-xs text-muted">
-									واحد اندازه‌گیری
-								</label>
-								<Tooltip content="واحد شمارش کار شما چیه؟ مثلاً 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
-									<BiInfoCircle
-										name="info-circle"
-										className="w-3 h-3 cursor-pointer text-muted"
-									/>
-								</Tooltip>
-							</div>
-							<SelectBox
-								options={HABIT_UNIT_OPTIONS}
-								value={form.unit}
-								onChange={(value) =>
-									updateField('unit', value as HabitUnit)
-								}
-								className="!w-full h-8!"
-							/>
-						</div>
-						<div>
-							<div className="flex items-center gap-1 mb-1">
-								<label className="text-xs text-muted">
-									نحوه رسیدن به هدف
-								</label>
-								<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقاً همین مقدار؟">
-									<BiInfoCircle
-										name="info-circle"
-										className="w-3 h-3 cursor-pointer text-muted"
-									/>
-								</Tooltip>
-							</div>
-							<SelectBox
-								options={HABIT_COMPARISON_OPTIONS}
-								value={form.comparison}
-								onChange={(value) =>
-									updateField('comparison', value as HabitComparison)
-								}
-								className="!w-full h-8!"
-							/>
-						</div>
-					</div>
+				<div className="overflow-hidden border bg-base-200/50 rounded-xl border-base-300">
+					<button
+						type="button"
+						onClick={() => setShowAdvanced((prev) => !prev)}
+						className="flex items-center justify-between w-full p-3 cursor-pointer"
+					>
+						<span className="text-sm font-medium">پیشرفته</span>
+						<motion.div
+							animate={{ rotate: showAdvanced ? 180 : 0 }}
+							transition={{ duration: 0.2 }}
+						>
+							<BiChevronDown className="w-4 h-4 text-muted" />
+						</motion.div>
+					</button>
 
-					{form.unit === HabitUnit.CUSTOM && (
-						<div className="mb-3">
-							<TextInput
-								value={form.customUnit}
-								onChange={(value) => updateField('customUnit', value)}
-								placeholder="نام واحد (مثلا: کیلومتر)"
-								direction="rtl"
-								className="h-8!"
-							/>
-						</div>
-					)}
+					<AnimatePresence initial={false}>
+						{showAdvanced && (
+							<motion.div
+								initial={{ height: 0, opacity: 0 }}
+								animate={{ height: 'auto', opacity: 1 }}
+								exit={{ height: 0, opacity: 0 }}
+								transition={{ duration: 0.25, ease: 'easeInOut' }}
+								className="overflow-hidden"
+							>
+								<div className="p-3 pt-0">
+									<div className="grid grid-cols-2 gap-3 mb-3">
+										<div>
+											<div className="flex items-center gap-1 mb-1">
+												<label className="text-xs text-muted">
+													واحد اندازه‌گیری
+												</label>
+												<Tooltip content="واحد شمارش کار شما چیه؟ مثلاً 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
+													<BiInfoCircle
+														name="info-circle"
+														className="w-3 h-3 cursor-pointer text-muted"
+													/>
+												</Tooltip>
+											</div>
+											<SelectBox
+												options={HABIT_UNIT_OPTIONS}
+												value={form.unit}
+												onChange={(value) =>
+													updateField(
+														'unit',
+														value as HabitUnit
+													)
+												}
+												className="w-full! h-8!"
+											/>
+										</div>
+										<div>
+											<div className="flex items-center gap-1 mb-1">
+												<label className="text-xs text-muted">
+													نحوه رسیدن به هدف
+												</label>
+												<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقاً همین مقدار؟">
+													<BiInfoCircle
+														name="info-circle"
+														className="w-3 h-3 cursor-pointer text-muted"
+													/>
+												</Tooltip>
+											</div>
+											<SelectBox
+												options={HABIT_COMPARISON_OPTIONS}
+												value={form.comparison}
+												onChange={(value) =>
+													updateField(
+														'comparison',
+														value as HabitComparison
+													)
+												}
+												className="w-full! h-8!"
+											/>
+										</div>
+									</div>
 
-					<div className="grid grid-cols-2 gap-3">
-						<div>
-							<div className="flex items-center gap-1 mb-1">
-								<label className="text-xs text-muted">مقدار هدف</label>
-								<Tooltip content="یعنی می‌خوای در نهایت چقدر از اون واحد رو انجام بدی؟ مثلا اگه واحد رو 'لیوان' انتخاب کردی و اینجا عدد 8 رو بزنی، یعنی هدفت نوشیدن 8 لیوان آبه.">
-									<BiInfoCircle
-										name="info-circle"
-										className="w-3 h-3 cursor-pointer text-muted"
-									/>
-								</Tooltip>
-							</div>
-							<TextInput
-								type="number"
-								min={0}
-								className="h-8!"
-								value={String(form.target)}
-								onChange={(value) =>
-									updateField('target', Number(value) || 0)
-								}
-							/>
-						</div>
-						<div>
-							<div className="flex items-center gap-1 mb-1">
-								<label className="text-xs text-muted">تکرار برنامه</label>
-								<Tooltip content="تعیین کن که می‌خوای این عادت رو به صورت روزانه پیگیری کنی یا قصد داری فقط در روزهای خاصی از هفته یا ماه انجامش بدی؟">
-									<BiInfoCircle
-										name="info-circle"
-										className="w-3 h-3 cursor-pointer text-muted"
-									/>
-								</Tooltip>
-							</div>
-							<SelectBox
-								options={HABIT_FREQUENCY_OPTIONS}
-								value={form.frequency}
-								onChange={(value) =>
-									updateField('frequency', value as HabitFrequency)
-								}
-								className="!w-full h-8!"
-							/>
-						</div>
-					</div>
+									{form.unit === HabitUnit.CUSTOM && (
+										<div className="mb-3">
+											<TextInput
+												value={form.customUnit}
+												onChange={(value) =>
+													updateField('customUnit', value)
+												}
+												placeholder="نام واحد (مثلا: کیلومتر)"
+												direction="rtl"
+												className="h-8!"
+											/>
+										</div>
+									)}
 
-					{form.frequency !== HabitFrequency.DAILY && (
-						<div className="mt-3">
-							<div className="flex items-center gap-1 mb-1">
-								<label className="text-xs text-muted">
-									تعداد دفعات انجام
-								</label>
-								<Tooltip
-									content={`توی هر ${form.frequency === HabitFrequency.WEEKLY ? 'هفته' : 'ماه'}، چند بار می‌خوای این کار رو تکرار کنی؟`}
-								>
-									<BiInfoCircle
-										name="info-circle"
-										className="w-3 h-3 cursor-pointer text-muted"
-									/>
-								</Tooltip>
-							</div>
-							<TextInput
-								type="number"
-								min={1}
-								value={String(form.frequencyCount || 1)}
-								onChange={(value) =>
-									updateField('frequencyCount', Number(value) || 1)
-								}
-								className="h-8!"
-							/>
-						</div>
-					)}
+									<div className="grid grid-cols-2 gap-3">
+										<div>
+											<div className="flex items-center gap-1 mb-1">
+												<label className="text-xs text-muted">
+													مقدار هدف
+												</label>
+												<Tooltip content="یعنی می‌خوای در نهایت چقدر از اون واحد رو انجام بدی؟ مثلا اگه واحد رو 'لیوان' انتخاب کردی و اینجا عدد 8 رو بزنی، یعنی هدفت نوشیدن 8 لیوان آبه.">
+													<BiInfoCircle
+														name="info-circle"
+														className="w-3 h-3 cursor-pointer text-muted"
+													/>
+												</Tooltip>
+											</div>
+											<TextInput
+												type="number"
+												min={0}
+												className="h-8!"
+												value={String(form.target)}
+												onChange={(value) =>
+													updateField(
+														'target',
+														Number(value) || 0
+													)
+												}
+											/>
+										</div>
+										<div>
+											<div className="flex items-center gap-1 mb-1">
+												<label className="text-xs text-muted">
+													تکرار برنامه
+												</label>
+												<Tooltip content="تعیین کن که می‌خوای این عادت رو به صورت روزانه پیگیری کنی یا قصد داری فقط در روزهای خاصی از هفته یا ماه انجامش بدی؟">
+													<BiInfoCircle
+														name="info-circle"
+														className="w-3 h-3 cursor-pointer text-muted"
+													/>
+												</Tooltip>
+											</div>
+											<SelectBox
+												options={HABIT_FREQUENCY_OPTIONS}
+												value={form.frequency}
+												onChange={(value) =>
+													updateField(
+														'frequency',
+														value as HabitFrequency
+													)
+												}
+												className="w-full! h-8!"
+											/>
+										</div>
+									</div>
+
+									{form.frequency !== HabitFrequency.DAILY && (
+										<div className="mt-3">
+											<div className="flex items-center gap-1 mb-1">
+												<label className="text-xs text-muted">
+													تعداد دفعات انجام
+												</label>
+												<Tooltip
+													content={`توی هر ${form.frequency === HabitFrequency.WEEKLY ? 'هفته' : 'ماه'}، چند بار می‌خوای این کار رو تکرار کنی؟`}
+												>
+													<BiInfoCircle
+														name="info-circle"
+														className="w-3 h-3 cursor-pointer text-muted"
+													/>
+												</Tooltip>
+											</div>
+											<TextInput
+												type="number"
+												min={1}
+												value={String(form.frequencyCount || 1)}
+												onChange={(value) =>
+													updateField(
+														'frequencyCount',
+														Number(value) || 1
+													)
+												}
+												className="h-8!"
+											/>
+										</div>
+									)}
+								</div>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
 
 				<Button
