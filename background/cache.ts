@@ -52,6 +52,24 @@ export function setupCaching() {
 
 		if (!isDev) {
 			registerRoute(
+				({ url }) =>
+					url.href === 'https://cdn.widgetify.ir/fonts/remote-fonts.css',
+				new StaleWhileRevalidate({
+					cacheName: 'remote-fonts-css-cache',
+					plugins: [
+						new CacheableResponsePlugin({
+							statuses: [0, 200],
+						}),
+						new ExpirationPlugin({
+							maxEntries: 1,
+							maxAgeSeconds: 2 * 60,
+							purgeOnQuotaError: true,
+						}),
+					],
+				})
+			)
+
+			registerRoute(
 				({ request }) =>
 					request.destination === 'script' || request.destination === 'style',
 				new CacheFirst({
