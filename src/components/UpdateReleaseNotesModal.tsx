@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { RiCheckboxCircleLine, RiThumbUpLine } from 'react-icons/ri'
+import { RiThumbUpLine } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
 
@@ -44,7 +44,7 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🥳 نسخه جدید، آمادست!'}
+			title={'🎯 نسخه جدید، آمادست!'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
@@ -82,24 +82,13 @@ export const UpdateReleaseNotesModal = ({
 							پیشرفتت همیشه جلوی چشمت خواهد بود.
 						</p>
 
-						<ul className="space-y-1">
-							{[
-								'ثبت و پیگیری عادت‌های روزانه',
-								'مشاهده میزان پایبندی و استریک‌ها',
-								'اضافه کردن چندین عادت در یک ویجت',
-							].map((item, i) => (
-								<li
-									key={i}
-									className="flex items-center gap-2 text-xs text-muted"
-								>
-									<RiCheckboxCircleLine
-										className="text-green-500 shrink-0"
-										size={14}
-									/>
-									{item}
-								</li>
-							))}
-						</ul>
+						<p className="text-xs leading-6 text-muted">
+							از قسمت{' '}
+							<span className="font-bold text-content">مدیریت ویجت‌ها</span>{' '}
+							می‌تونی این ویجت رو فعال کنی یا از ویجت{' '}
+							<span className="font-bold text-content">یادکار</span> استفاده
+							کنی.
+						</p>
 					</div>
 
 					<div className="flex items-center justify-center gap-2 py-1 text-muted">
