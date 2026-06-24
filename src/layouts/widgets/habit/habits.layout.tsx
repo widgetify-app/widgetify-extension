@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { MdRefresh } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { Button } from '@/components/button/button'
-import { IconLoading } from '@/components/loading/icon-loading'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { RequireAuth } from '@/components/auth/require-auth'
 import Tooltip from '@/components/toolTip'
@@ -27,11 +26,11 @@ export function HabitsContent() {
 	const { blurMode } = useGeneralSetting()
 
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
-	const [detailHabit, setDetailHabit] = useState<Habit | null>(null)
+	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
 	const [showForm, setShowForm] = useState(false)
 	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
 
-	const { data, isLoading, refetch } = useGetHabits(isAuthenticated)
+	const { data, isLoading, refetch, isRefetching } = useGetHabits(isAuthenticated)
 	const { mutateAsync: archiveHabit, isPending: isArchiving } = useArchiveHabit()
 
 	const handleCloseForm = () => {
@@ -72,6 +71,14 @@ export function HabitsContent() {
 		Analytics.event('habit_refetch')
 	}
 
+	const onCloseDetailModal = () => {
+		setDetailHabitId(null)
+		refetch()
+		Analytics.event('habit_close_detail_model')
+	}
+
+	const isWaiting = isLoading || isRefetching
+
 	return (
 		<>
 			<div className="flex-none">
@@ -85,17 +92,16 @@ export function HabitsContent() {
 					</div>
 
 					<div className="flex items-center gap-1">
-						{isLoading ? <IconLoading /> : null}
-
 						<Tooltip content="بارگذاری مجدد">
 							<Button
 								size="sm"
 								className="px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
 								onClick={onRefresh}
+								disabled={isWaiting}
 							>
 								<MdRefresh
 									className={`text-content opacity-50 hover:opacity-100 ${
-										isLoading ? 'animate-spin' : ''
+										isWaiting ? 'animate-spin' : ''
 									}`}
 								/>
 							</Button>
@@ -139,7 +145,7 @@ export function HabitsContent() {
 									onChanged={refetch}
 									onEdit={() => handleEditHabit(habit)}
 									onArchive={() => setArchiveConfirm(habit.id)}
-									onViewDetails={() => setDetailHabit(habit)}
+									onViewDetails={() => setDetailHabitId(habit.id)}
 								/>
 							))}
 						</div>
@@ -167,9 +173,9 @@ export function HabitsContent() {
 			/>
 
 			<HabitDetailModal
-				isOpen={!!detailHabit}
-				habit={detailHabit}
-				onClose={() => setDetailHabit(null)}
+				isOpen={!!detailHabitId}
+				habitId={detailHabitId}
+				onClose={() => onCloseDetailModal()}
 			/>
 
 			<ConfirmationModal
