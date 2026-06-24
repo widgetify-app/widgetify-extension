@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { MdRefresh } from 'react-icons/md'
 import Analytics from '@/analytics'
-import { showToast } from '@/common/toast'
+import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { Button } from '@/components/button/button'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
-import { RequireAuth } from '@/components/auth/require-auth'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
@@ -13,7 +12,6 @@ import { safeAwait } from '@/services/api'
 import { useArchiveHabit } from '@/services/hooks/habit/archive-habit.hook'
 import { useGetHabits } from '@/services/hooks/habit/get-habits.hook'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
-import { translateError } from '@/utils/translate-error'
 import { WidgetContainer } from '../widget-container'
 import { HabitDetailModal } from './components/habit-detail.modal'
 import { HabitFormModal } from './components/habit-form.modal'
@@ -56,7 +54,7 @@ export function HabitsContent() {
 		const [error] = await safeAwait(archiveHabit(archiveConfirm))
 
 		if (error) {
-			showToast(translateError(error) as string, 'error')
+			autoFormatErrorToast(error)
 			return
 		}
 
@@ -83,12 +81,11 @@ export function HabitsContent() {
 		<>
 			<div className="flex-none">
 				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<h2 className="text-sm font-semibold text-content">🎯 عادت‌ها</h2>
-
-						<span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-warning/15 text-warning border border-warning/20">
+					<div className="flex items-center gap-1">
+						<h2 className="text-sm font-semibold text-content">عادت‌ها</h2>
+						{/* <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-primary/15 text-primary/90">
 							آزمایشی
-						</span>
+						</span> */}
 					</div>
 
 					<div className="flex items-center gap-1">
@@ -198,9 +195,7 @@ export function HabitsContent() {
 export function HabitsLayout() {
 	return (
 		<WidgetContainer>
-			<RequireAuth mode="preview">
-				<HabitsContent />
-			</RequireAuth>
+			<HabitsContent />
 		</WidgetContainer>
 	)
 }

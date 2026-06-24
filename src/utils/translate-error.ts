@@ -108,6 +108,8 @@ const errorTranslations: Record<string, string> = {
 	PAYMENT_NOT_FOUND: 'پرداخت مورد نظر یافت نشد',
 
 	TRY_NEXT_TIME: 'چیزی اشتباه پیش رفت، لطفا بعدا دوباره تلاش کنید',
+
+	TOO_MANY_ATTEMPTS_HABIT: 'بیش از حد نمیتونید بسازید.',
 }
 
 const validationTranslations: Record<string, string> = {

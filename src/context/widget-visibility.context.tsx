@@ -66,7 +66,7 @@ export const widgetItems: WidgetItem[] = [
 		order: 0,
 		node: <YadkarWidget />,
 		canToggle: true,
-		isNew: true,
+		isNew: false,
 	},
 	{
 		id: WidgetKeys.tools,
