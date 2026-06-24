@@ -1,4 +1,3 @@
-import { PiNotepad } from 'react-icons/pi'
 import Analytics from '@/analytics'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotesProvider, useNotes } from '@/context/notes.context'
@@ -17,7 +16,13 @@ function NotesContent() {
 			<div
 				className={`flex flex-col items-center justify-center h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 			>
-				<PiNotepad size={42} className={'mb-2 text-content opacity-50'} />
+				<div className="flex items-center justify-center w-12 h-12">
+					<img
+						src="https://cdn.widgetify.ir/system/no-items.png"
+						alt="بدون عادت"
+						className="object-contain w-48 h-auto select-none"
+					/>
+				</div>
 				<p className={'text-sm text-muted'}>یادداشتی پیدا نشد</p>
 				<span className="font-light text-muted">
 					منتظر چی هستی؟ شروع کن به نوشتن!

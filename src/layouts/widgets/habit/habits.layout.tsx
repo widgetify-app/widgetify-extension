@@ -136,8 +136,12 @@ export function HabitsContent() {
 						</div>
 					) : data?.items?.length === 0 ? (
 						<div className="flex flex-col items-center justify-center h-full gap-2 px-4">
-							<div className="flex items-center justify-center w-12 h-12 rounded-full bg-base-300/70">
-								<span className="text-lg">🎯</span>
+							<div className="flex items-center justify-center w-12 h-12">
+								<img
+									src="https://cdn.widgetify.ir/system/no-items.png"
+									alt="بدون عادت"
+									className="object-contain w-48 h-auto select-none"
+								/>
 							</div>
 							<p className="font-bold text-center text-content">
 								هیچ عادتی برای نمایش وجود ندارد
