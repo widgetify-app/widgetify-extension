@@ -47,6 +47,7 @@ export interface WidgetItem {
 	disabled?: boolean
 	soon?: boolean
 	popular?: boolean
+	isBeta?: boolean
 }
 
 export const widgetItems: WidgetItem[] = [
@@ -62,7 +63,7 @@ export const widgetItems: WidgetItem[] = [
 	{
 		id: WidgetKeys.yadKar,
 		emoji: '📒',
-		label: 'یادکار (وظایف و یادداشت)',
+		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
 		order: 0,
 		node: <YadkarWidget />,
 		canToggle: true,
@@ -136,6 +137,7 @@ export const widgetItems: WidgetItem[] = [
 		node: <HabitsLayout />,
 		canToggle: true,
 		isNew: true,
+		isBeta: true,
 	},
 ]
 

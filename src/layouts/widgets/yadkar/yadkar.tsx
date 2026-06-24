@@ -10,6 +10,8 @@ import {
 } from 'react-icons/hi2'
 import { WidgetContainer } from '../widget-container'
 import { HabitsContent } from '../habit/habits.layout'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useEffect } from 'react'
 
 type Tab = 'todos' | 'notes' | 'rabbit'
 export function YadkarWidget() {
@@ -18,7 +20,19 @@ export function YadkarWidget() {
 	const onChangeTab = (newTab: Tab) => {
 		setTab(newTab)
 		Analytics.event('yadkar_change_tab')
+		setToStorage('yadkar_tab', newTab)
 	}
+
+	useEffect(() => {
+		const load = async () => {
+			const currentTab = await getFromStorage('yadkar_tab')
+			if (currentTab) {
+				setTab(currentTab as Tab)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
 		<WidgetContainer>
@@ -42,7 +56,7 @@ export function YadkarWidget() {
 								},
 								{
 									id: 'rabbit',
-									label: 'عادت‌ها',
+									label: 'عادت‌ها (بتا)',
 									icon: <HiOutlineFire size={14} />,
 								},
 							]}
