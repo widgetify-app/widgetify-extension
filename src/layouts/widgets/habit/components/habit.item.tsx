@@ -8,8 +8,8 @@ import { safeAwait } from '@/services/api'
 import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { translateError } from '@/utils/translate-error'
-import { HABIT_UNIT_STEP } from '../../../../common/constant/habit-options'
-import { formatHabitGoal } from '../utils/habit.utils'
+import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
+import { formatHabitGoal } from '../utils'
 
 interface HabitItemProps {
 	habit: Habit
@@ -17,6 +17,7 @@ interface HabitItemProps {
 	onChanged: () => void
 	onEdit: () => void
 	onArchive: () => void
+	onViewDetails: () => void
 }
 
 export function HabitItem({
@@ -25,13 +26,15 @@ export function HabitItem({
 	onChanged,
 	onEdit,
 	onArchive,
+	onViewDetails,
 }: HabitItemProps) {
 	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 	const isDone = habit.today.isDone
 	const color = habit.color || '#3b82f6'
 	const target = habit.target || 1
 
-	const handleQuickLog = async () => {
+	const handleQuickLog = async (e?: React.MouseEvent) => {
+		if (e) e.stopPropagation()
 		if (isPending) return
 		const date = today.clone().doAsGregorian().format('YYYY-MM-DD')
 		let step = HABIT_UNIT_STEP[habit.unit] || 1
@@ -68,7 +71,11 @@ export function HabitItem({
 	}
 
 	return (
-		<div className="p-1.5 transition-all border rounded-xl group border-base-300/40 bg-base-300/30">
+		<button
+			type="button"
+			onClick={onViewDetails}
+			className="w-full p-1.5 transition-all border rounded-xl group border-base-300/40 bg-base-300/30 hover:border-base-300/70 hover:bg-base-300/50 text-right"
+		>
 			<div className="flex items-center gap-2">
 				<div
 					className="flex items-center justify-center text-sm transition-transform rounded-lg w-7 h-7 shrink-0 active:scale-90 disabled:opacity-60"
@@ -90,7 +97,10 @@ export function HabitItem({
 				<div className="items-center hidden gap-1 group-hover:flex">
 					<button
 						type="button"
-						onClick={handleQuickLog}
+						onClick={(e) => {
+							e.stopPropagation()
+							handleQuickLog(e)
+						}}
 						disabled={isPending}
 						className="p-1 rounded-md cursor-pointer text-base-content/40 hover:text-success hover:bg-success/10"
 					>
@@ -98,14 +108,20 @@ export function HabitItem({
 					</button>
 					<button
 						type="button"
-						onClick={onEdit}
+						onClick={(e) => {
+							e.stopPropagation()
+							onEdit()
+						}}
 						className="p-1 rounded-md cursor-pointer text-base-content/40 hover:text-primary hover:bg-primary/10"
 					>
 						<FiEdit3 size={12} />
 					</button>
 					<button
 						type="button"
-						onClick={onArchive}
+						onClick={(e) => {
+							e.stopPropagation()
+							onArchive()
+						}}
 						className="p-1 rounded-md cursor-pointer text-base-content/40 hover:text-error hover:bg-error/10"
 					>
 						<FiArchive size={12} />
@@ -137,6 +153,6 @@ export function HabitItem({
 					)
 				})}
 			</div>
-		</div>
+		</button>
 	)
 }

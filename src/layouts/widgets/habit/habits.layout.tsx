@@ -16,9 +16,9 @@ import { useGetHabits } from '@/services/hooks/habit/get-habits.hook'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { translateError } from '@/utils/translate-error'
 import { WidgetContainer } from '../widget-container'
+import { HabitDetailModal } from './components/habit-detail.modal'
 import { HabitFormModal } from './components/habit-form.modal'
 import { HabitItem } from './components/habit.item'
-import { CgAdd, CgAddR } from 'react-icons/cg'
 import { BiPlus } from 'react-icons/bi'
 
 export function HabitsContent() {
@@ -27,6 +27,7 @@ export function HabitsContent() {
 	const { blurMode } = useGeneralSetting()
 
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
+	const [detailHabit, setDetailHabit] = useState<Habit | null>(null)
 	const [showForm, setShowForm] = useState(false)
 	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
 
@@ -103,7 +104,7 @@ export function HabitsContent() {
 				</div>
 			</div>
 
-			<div className="mt-0.5 grow overflow-hidden  pb-2">
+			<div className="mt-0.5 grow overflow-hidden pb-2">
 				<div
 					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 				>
@@ -138,6 +139,7 @@ export function HabitsContent() {
 									onChanged={refetch}
 									onEdit={() => handleEditHabit(habit)}
 									onArchive={() => setArchiveConfirm(habit.id)}
+									onViewDetails={() => setDetailHabit(habit)}
 								/>
 							))}
 						</div>
@@ -148,7 +150,7 @@ export function HabitsContent() {
 			<Button
 				size="sm"
 				onClick={handleAddHabit}
-				className="px-2 py-0! border-none!  rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
+				className="px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
 			>
 				<BiPlus className="w-4 h-4" />
 				افزودن
@@ -162,6 +164,12 @@ export function HabitsContent() {
 					handleCloseForm()
 					refetch()
 				}}
+			/>
+
+			<HabitDetailModal
+				isOpen={!!detailHabit}
+				habit={detailHabit}
+				onClose={() => setDetailHabit(null)}
 			/>
 
 			<ConfirmationModal

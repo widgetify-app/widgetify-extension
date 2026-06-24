@@ -40,6 +40,7 @@ export interface Habit {
 	archivedAt: string | null
 	today: HabitDayProgress
 	history: HabitDayProgress[]
+	calendarData: Record<string, Record<string, { value: number; isDone: boolean }>>
 	progressThisPeriod: {
 		done: number
 		required: number
