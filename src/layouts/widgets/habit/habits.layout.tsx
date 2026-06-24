@@ -123,7 +123,7 @@ export function HabitsContent() {
 								/>
 							))}
 						</div>
-					) : data.items.length === 0 ? (
+					) : data?.items?.length === 0 ? (
 						<div className="flex flex-col items-center justify-center h-full gap-2 px-4">
 							<div className="flex items-center justify-center w-12 h-12 rounded-full bg-base-300/70">
 								<span className="text-lg">🎯</span>
@@ -137,7 +137,7 @@ export function HabitsContent() {
 						</div>
 					) : (
 						<div className="flex flex-col gap-1">
-							{data.items.map((habit) => (
+							{data?.items?.map((habit) => (
 								<HabitItem
 									key={habit.id}
 									habit={habit}
@@ -170,6 +170,8 @@ export function HabitsContent() {
 					handleCloseForm()
 					refetch()
 				}}
+				icons={data?.icons || []}
+				colors={data?.colors || []}
 			/>
 
 			<HabitDetailModal

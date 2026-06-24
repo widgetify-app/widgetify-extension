@@ -1,12 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import { Habit } from './habit.interface'
+import type { Habit } from './habit.interface'
 
+export interface HabitIcon {
+	type: 'EMOJI'
+	content: string
+}
 interface GetHabitsResponse {
 	items: Habit[]
 	page: number
 	limit: number
 	total: number
+	icons: HabitIcon[]
+	colors: string[]
 }
 
 export const useGetHabits = (enabled: boolean, archived = false) => {
@@ -15,12 +21,6 @@ export const useGetHabits = (enabled: boolean, archived = false) => {
 		queryFn: () => getHabits(archived),
 		retry: 0,
 		enabled,
-		initialData: {
-			items: [],
-			page: 1,
-			limit: 20,
-			total: 0,
-		},
 		refetchOnWindowFocus: false,
 	})
 }

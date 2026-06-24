@@ -25,17 +25,19 @@ import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
 import { translateError } from '@/utils/translate-error'
 import Tooltip from '@/components/toolTip'
 import { BiInfoCircle } from 'react-icons/bi'
+import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
 
 interface HabitFormModalProps {
 	isOpen: boolean
 	habit: Habit | null
 	onClose: () => void
 	onSaved: () => void
+	icons: HabitIcon[]
+	colors: string[]
 }
 
 const defaultForm: CreateHabitInput = {
 	title: '',
-	emoji: HABIT_EMOJI_PRESETS[0],
 	color: HABIT_COLOR_PRESETS[0],
 	comparison: HabitComparison.AT_LEAST,
 	unit: HabitUnit.TIMES,
@@ -45,7 +47,14 @@ const defaultForm: CreateHabitInput = {
 	frequencyCount: 1,
 }
 
-export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormModalProps) {
+export function HabitFormModal({
+	isOpen,
+	habit,
+	onClose,
+	onSaved,
+	icons,
+	colors,
+}: HabitFormModalProps) {
 	const isEdit = !!habit
 	const [form, setForm] = useState<CreateHabitInput>(defaultForm)
 	const { mutateAsync: addHabit, isPending: isAdding } = useAddHabit()
@@ -136,27 +145,27 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 				<div className="grid grid-cols-2 gap-4">
 					<div>
 						<label className="block mb-1 text-xs text-muted">شکلک</label>
-						<div className="grid grid-cols-5 gap-1.5  h-20 max-h-20 overflow-y-auto">
-							{HABIT_EMOJI_PRESETS.map((emoji) => (
+						<div className="grid grid-cols-5 gap-1.5  h-20 max-h-20 overflow-y-auto pl-1">
+							{icons.map((emoji) => (
 								<button
-									key={emoji}
+									key={emoji.content}
 									type="button"
-									onClick={() => updateField('emoji', emoji)}
+									onClick={() => updateField('emoji', emoji.content)}
 									className={`flex items-center justify-center cursor-pointer w-8 h-8 text-base rounded-lg border transition-all ${
-										form.emoji === emoji
+										form.emoji === emoji.content
 											? 'border-primary bg-primary/10'
 											: 'border-content bg-base-300/40'
 									}`}
 								>
-									{emoji}
+									{emoji.content}
 								</button>
 							))}
 						</div>
 					</div>
 					<div>
 						<label className="block mb-1 text-xs text-muted">رنگ</label>
-						<div className="grid grid-cols-5 gap-1.5  h-20 max-h-20 overflow-y-auto">
-							{HABIT_COLOR_PRESETS.map((color) => (
+						<div className="grid h-20 grid-cols-5 gap-1 overflow-y-auto max-h-20">
+							{colors.map((color) => (
 								<button
 									key={color}
 									type="button"
@@ -183,7 +192,7 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 								<Tooltip content="واحد شمارش کار شما چیه؟ مثلاً 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
 									<BiInfoCircle
 										name="info-circle"
-										className="w-3 h-3 text-muted"
+										className="w-3 h-3 cursor-pointer text-muted"
 									/>
 								</Tooltip>
 							</div>
@@ -204,7 +213,7 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 								<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقاً همین مقدار؟">
 									<BiInfoCircle
 										name="info-circle"
-										className="w-3 h-3 text-muted"
+										className="w-3 h-3 cursor-pointer text-muted"
 									/>
 								</Tooltip>
 							</div>
@@ -238,7 +247,7 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 								<Tooltip content="یعنی می‌خوای در نهایت چقدر از اون واحد رو انجام بدی؟ مثلا اگه واحد رو 'لیوان' انتخاب کردی و اینجا عدد 8 رو بزنی، یعنی هدفت نوشیدن 8 لیوان آبه.">
 									<BiInfoCircle
 										name="info-circle"
-										className="w-3 h-3 text-muted"
+										className="w-3 h-3 cursor-pointer text-muted"
 									/>
 								</Tooltip>
 							</div>
@@ -258,7 +267,7 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 								<Tooltip content="تعیین کن که می‌خوای این عادت رو به صورت روزانه پیگیری کنی یا قصد داری فقط در روزهای خاصی از هفته یا ماه انجامش بدی؟">
 									<BiInfoCircle
 										name="info-circle"
-										className="w-3 h-3 text-muted"
+										className="w-3 h-3 cursor-pointer text-muted"
 									/>
 								</Tooltip>
 							</div>
@@ -284,7 +293,7 @@ export function HabitFormModal({ isOpen, habit, onClose, onSaved }: HabitFormMod
 								>
 									<BiInfoCircle
 										name="info-circle"
-										className="w-3 h-3 text-muted"
+										className="w-3 h-3 cursor-pointer text-muted"
 									/>
 								</Tooltip>
 							</div>
