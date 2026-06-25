@@ -124,10 +124,6 @@ export function HabitsContent() {
 				<div
 					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 				>
-					{isRefetching ? (
-						<HabitItemSkeleton key={`skeleton-fetching`} />
-					) : null}
-
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">
 							{[...Array(4)].map((_, i) => (
