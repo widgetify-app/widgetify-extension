@@ -6,12 +6,6 @@
 
 Official Website: [widgetify.ir](https://widgetify.ir)
 
-<a href="https://discord.gg/p9TZzEV39e" target="_blank">
-         <img src="https://discordapp.com/api/guilds/1375251820326162578/widget.png?style=banner2" alt="total" >
-</a>
-
-![Alt](https://repobeats.axiom.co/api/embed/50a64e3cf86c61211e3c0ee3daf94215e9fb0ec4.svg "Repobeats analytics image")
-
 ## Contributing | Development
 
 We welcome your contributions to improve Widgetify! To contribute please read the following document:
@@ -59,7 +53,6 @@ Please share your comments and suggestions with us through one of the following 
 
 -  [Github issues](https://github.com/widgetify-app/widgetify-extension/issues)
 
--  [Send feedback](https://feedback.onl/fa/b/widgetify)
 
   
 
