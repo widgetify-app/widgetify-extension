@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { FiList } from 'react-icons/fi'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
@@ -311,12 +310,12 @@ function TodosEmpty() {
 				'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
 			}
 		>
-			<div
-				className={
-					'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-				}
-			>
-				<FiList className="text-content" size={24} />
+			<div className="flex items-center justify-center w-12 h-12">
+				<img
+					src="https://cdn.widgetify.ir/system/no-items.png"
+					alt="بدون عادت"
+					className="object-contain w-48 h-auto select-none"
+				/>
 			</div>
 			<p className="mt-1 font-bold text-center text-content">
 				هیچ تسکی برای نمایش وجود ندارد

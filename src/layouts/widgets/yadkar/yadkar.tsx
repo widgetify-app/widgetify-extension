@@ -3,16 +3,36 @@ import Analytics from '@/analytics'
 import { NotesLayout } from '../notes/notes.layout'
 import { TodosLayout } from '../todos/todos'
 import { TabNavigation } from '@/components/tab-navigation'
-import { HiOutlineCheckCircle, HiOutlineDocumentText } from 'react-icons/hi2'
+import {
+	HiOutlineCheckCircle,
+	HiOutlineDocumentText,
+	HiOutlineFire,
+} from 'react-icons/hi2'
 import { WidgetContainer } from '../widget-container'
+import { HabitsContent } from '../habit/habits.layout'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useEffect } from 'react'
 
+type Tab = 'todos' | 'notes' | 'rabbit'
 export function YadkarWidget() {
-	const [tab, setTab] = useState<'todos' | 'notes'>('todos')
+	const [tab, setTab] = useState<Tab>('todos')
 
-	const onChangeTab = (newTab: 'todos' | 'notes') => {
+	const onChangeTab = (newTab: Tab) => {
 		setTab(newTab)
 		Analytics.event('yadkar_change_tab')
+		setToStorage('yadkar_tab', newTab)
 	}
+
+	useEffect(() => {
+		const load = async () => {
+			const currentTab = await getFromStorage('yadkar_tab')
+			if (currentTab) {
+				setTab(currentTab as Tab)
+			}
+		}
+
+		load()
+	}, [])
 
 	return (
 		<WidgetContainer>
@@ -34,6 +54,11 @@ export function YadkarWidget() {
 									label: 'یادداشت',
 									icon: <HiOutlineDocumentText size={14} />,
 								},
+								{
+									id: 'rabbit',
+									label: 'عادت‌ها (بتا)',
+									icon: <HiOutlineFire size={14} />,
+								},
 							]}
 							size="small"
 							className="w-full border-none"
@@ -41,7 +66,13 @@ export function YadkarWidget() {
 					</div>
 				</div>
 
-				{tab === 'todos' ? <TodosLayout /> : <NotesLayout />}
+				{tab === 'todos' ? (
+					<TodosLayout />
+				) : tab === 'notes' ? (
+					<NotesLayout />
+				) : (
+					<HabitsContent />
+				)}
 			</div>
 		</WidgetContainer>
 	)

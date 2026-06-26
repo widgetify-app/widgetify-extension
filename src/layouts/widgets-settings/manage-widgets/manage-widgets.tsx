@@ -60,6 +60,7 @@ function WidgetItemComponent({
 
 	const isDisabled = widget.disabled || false
 	const isSoon = widget.soon || false
+	const isBeta = widget.isBeta || false
 
 	const finalCanToggle = canToggle && !isDisabled
 
@@ -68,7 +69,7 @@ function WidgetItemComponent({
 		extraClasses += ' border-red-500/50 bg-red-500/10'
 	}
 	if (isSoon) {
-		extraClasses += ' border-warning/50 bg-warning/10'
+		extraClasses += 'border border-warning/50'
 	}
 
 	return (
@@ -86,7 +87,7 @@ function WidgetItemComponent({
 					</span>
 					<div className="flex gap-0.5">
 						{widget.isNew && (
-							<span className="text-white badge badge-primary badge-xs">
+							<span className="text-white badge badge-primary badge-sm">
 								جدید
 							</span>
 						)}
@@ -96,10 +97,13 @@ function WidgetItemComponent({
 							</span>
 						)}
 						{isDisabled && (
-							<span className="badge badge-error badge-xs">غیرفعال</span>
+							<span className="badge badge-error badge-sm">غیرفعال</span>
 						)}
 						{isSoon && (
-							<span className="badge badge-warning badge-xs">به زودی</span>
+							<span className="badge badge-warning badge-sm">به زودی</span>
+						)}
+						{isBeta && (
+							<span className="badge badge-warning badge-sm">آزمایشی</span>
 						)}
 					</div>
 				</div>
