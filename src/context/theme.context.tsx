@@ -46,14 +46,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			themeChangeHandler(newTheme, sync)
 		})
 
-		const eventForTitle = listenEvent('browser_title_change', (newTitle) => {
-			document.title = newTitle.template
-			if (newTitle.sync) setToStorage('browserTitle', newTitle)
-		})
-
 		return () => {
 			event()
-			eventForTitle()
 		}
 	}, [])
 

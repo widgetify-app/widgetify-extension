@@ -40,16 +40,11 @@ async function getAll() {
 		}>('/extension/@me/sync')
 
 		const { wallpaper, theme, browserTitle, font, ui } = response.data
-		const store = await getMultipleFromStorage([
-			'wallpaper',
-			'theme',
-			'browserTitle',
-			'appearance',
-		])
+		const store = await getMultipleFromStorage(['wallpaper', 'theme', 'appearance'])
 
 		await Promise.all([
 			processWallpaper(wallpaper, store?.wallpaper),
-			processBrowserTitle(browserTitle, store?.browserTitle),
+			processBrowserTitle(browserTitle),
 		])
 
 		processFont(font, store?.appearance)
@@ -80,33 +75,19 @@ async function processWallpaper(
 	} catch {}
 }
 
-async function processBrowserTitle(
-	browserTitle: UserInventoryItem | null,
-	browserTitleStore: { id: string; template: string; name: string } | undefined
-) {
+async function processBrowserTitle(browserTitle: UserInventoryItem | null) {
 	try {
-		if (!browserTitle) return
-		if (browserTitleStore) {
-			if (
-				browserTitleStore.id !== browserTitle.id ||
-				browserTitleStore.template !== browserTitle.value ||
-				browserTitleStore.name !== browserTitle.name
-			) {
-				document.title = browserTitle.value
-				await setToStorage('browserTitle', {
-					id: browserTitle.id,
-					name: browserTitle.name || 'بدون نام',
-					template: browserTitle.value,
-				})
-			}
-		} else {
-			document.title = browserTitle.value
-			await setToStorage('browserTitle', {
-				id: browserTitle.id,
-				name: browserTitle.name || 'بدون نام',
-				template: browserTitle.value,
-			})
-		}
+		if (!browserTitle) return console.log('not found title')
+
+		if (browserTitle.value === document.title) return
+
+		await setToStorage('browserTitle', {
+			id: browserTitle.id,
+			name: browserTitle.name || 'بدون نام',
+			template: browserTitle.value,
+		})
+
+		document.title = browserTitle.value
 	} catch {}
 }
 
