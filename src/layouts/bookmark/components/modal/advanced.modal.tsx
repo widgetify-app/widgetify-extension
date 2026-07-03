@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { FiRotateCcw } from 'react-icons/fi'
 import Analytics from '@/analytics'
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
@@ -9,6 +7,7 @@ import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '../../types/bookmark.types'
+import { Icon } from '@/src/icons'
 
 interface AdvancedModalProps {
 	title: string
@@ -180,7 +179,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 						</div>
 						<Button type="button" onClick={resetBackground} size="md">
-							<FiRotateCcw className="w-4 h-4" />
+							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>
@@ -205,7 +204,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							/>
 						</div>
 						<Button type="button" onClick={resetTextColor} size="md">
-							<FiRotateCcw className="w-4 h-4" />
+							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>

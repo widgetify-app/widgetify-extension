@@ -1,10 +1,9 @@
-import { useState } from 'react' // اضافه شد
+import { useState } from 'react'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import moment from 'jalali-moment'
-import { FiCalendar } from 'react-icons/fi'
-import { HiChevronDown } from 'react-icons/hi2' // آیکون برای dropdown
 import Analytics from '@/analytics'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	note: FetchedNote
@@ -38,7 +37,7 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 					</h3>
 				</div>
 				<div className="flex items-center gap-1 shrink-0">
-					<FiCalendar size={10} />
+					<Icon name="calendarDays" size={10} />
 					<span className="text-[10px]">
 						{moment(note.createdAt).locale('fa').format('jD jMMM')}
 					</span>
@@ -60,7 +59,8 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 							onClick={toggleExpand}
 							className="flex items-center gap-1 mt-1 text-xs font-medium cursor-pointer text-muted hover:bg-base-300 p-0.5 rounded-full"
 						>
-							<HiChevronDown
+							<Icon
+								name="chevronDown"
 								className={`transition-transform duration-300 ${
 									isExpanded ? 'rotate-180' : ''
 								}`}

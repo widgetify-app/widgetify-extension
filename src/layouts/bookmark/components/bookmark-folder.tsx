@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { FaFolder, FaFolderOpen } from 'react-icons/fa'
-import { SlOptions } from 'react-icons/sl'
 import { addOpacityToColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
+import { Icon } from '@/src/icons'
 
 export function FolderBookmarkItem({
 	bookmark,
@@ -48,9 +47,9 @@ export function FolderBookmarkItem({
 		}
 
 		return isHovered ? (
-			<FaFolderOpen className="w-8 h-8 text-blue-400" />
+			<Icon name="folderOpen" className="w-8 h-8 text-blue-400" />
 		) : (
-			<FaFolder className="w-8 h-8 text-blue-400" />
+			<Icon name="folder" className="w-8 h-8 text-blue-400" />
 		)
 	}
 
@@ -111,7 +110,7 @@ export function FolderBookmarkItem({
 							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
-						<SlOptions size={12} />
+						<Icon name="menuOption" size={12} />
 					</div>
 				)}
 			</button>

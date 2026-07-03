@@ -1,9 +1,9 @@
-import { SlOptions } from 'react-icons/sl'
 import { addOpacityToColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
+import { Icon } from '@/src/icons'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark
@@ -55,7 +55,7 @@ export function BookmarkItem({
 							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
-						<SlOptions size={12} />
+						<Icon name="menuOption" size={12} />
 					</div>
 				)}
 				{RenderStickerPattern(bookmark)}

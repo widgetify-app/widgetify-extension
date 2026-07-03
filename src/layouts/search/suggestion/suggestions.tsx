@@ -1,6 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { LuHistory } from 'react-icons/lu'
-import { MdSearch } from 'react-icons/md'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	combinedSuggestions: { text: string; isRecent: boolean }[]
@@ -20,9 +19,17 @@ export function Suggestions({ combinedSuggestions, handleSearch }: Prop) {
 					className={`flex items-center w-full gap-2 px-3 py-2 text-right transition-colors cursor-pointer rounded-xl hover:bg-base-content/5 ${item.isRecent && blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 				>
 					{item.isRecent ? (
-						<LuHistory size={15} className="text-base-content/30 shrink-0" />
+						<Icon
+							name="history"
+							size={15}
+							className="text-base-content/30 shrink-0"
+						/>
 					) : (
-						<MdSearch size={15} className="text-base-content/30 shrink-0" />
+						<Icon
+							name="search"
+							size={15}
+							className="text-base-content/30 shrink-0"
+						/>
 					)}
 					<span className="text-sm font-medium truncate text-base-content/80">
 						{item.text}

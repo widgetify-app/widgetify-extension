@@ -1,5 +1,4 @@
 import { showToast } from '@/common/toast'
-import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { SectionPanel } from '@/components/section-panel'
 import { TextInput } from '@/components/text-input'
@@ -9,6 +8,7 @@ import type { UserProfile } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
 import type { AxiosError } from 'axios'
 import { useState } from 'react'
+import { FooterButtons } from './footer-buttons'
 
 interface Prop {
 	show: boolean
@@ -66,26 +66,11 @@ export function ChangeUsernameModal({ show, onClose, currentValue }: Prop) {
 					/>
 				</SectionPanel>
 
-				<div className="flex gap-2">
-					<Button
-						size="sm"
-						type="submit"
-						disabled={updateUsernameMutation.isPending}
-						isPrimary={true}
-						onClick={() => onClickSave()}
-						className="text-sm shadow-xs flex-2 rounded-xl shadow-primary/20"
-					>
-						{updateUsernameMutation.isPending ? 'در حال ذخیره...' : 'ذخیره'}
-					</Button>
-					<Button
-						size="sm"
-						type="button"
-						onClick={onCancel}
-						className="flex-1 text-sm font-medium border-none rounded-2xl bg-content"
-					>
-						انصراف
-					</Button>
-				</div>
+				<FooterButtons
+					handleCancel={onCancel}
+					handleConfirm={onClickSave}
+					isPending={updateUsernameMutation.isPending}
+				/>
 			</div>
 		</Modal>
 	)

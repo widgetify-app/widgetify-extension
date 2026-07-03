@@ -5,10 +5,9 @@ import { Dropdown } from '@/components/dropdown'
 import { useAuth } from '@/context/auth.context'
 import { useChangeSearchEngine } from '@/services/hooks/extension/updateSetting.hook'
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/getTrends'
+import { Icon } from '@/src/icons'
 import type { ReactNode } from 'react'
 import { useState, useEffect, useMemo } from 'react'
-import { FcGoogle } from 'react-icons/fc'
-import { HiChevronDown } from 'react-icons/hi2'
 
 const GOOGLE: EngineMeta = {
 	id: 'google',
@@ -98,8 +97,9 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 							icon={currentEngine.icon}
 						/>
 						{showNewBadge && <NewBadge className="right-1 bottom-1" />}
-						<HiChevronDown
-							className={` text-muted transition-transform duration-300 ${clicked ? 'rotate-180' : ''}`}
+						<Icon
+							name="chevronDown"
+							className={`text-muted transition-transform duration-300 ${clicked ? 'rotate-180' : ''}`}
 							size={12}
 						/>
 					</button>
@@ -161,7 +161,7 @@ interface EngineIconProps {
 
 function EngineIcon({ engineId, icon, label }: EngineIconProps) {
 	if (engineId === 'google') {
-		return <FcGoogle size={20} opacity={0.8} />
+		return <Icon name="googleLogo" size={20} opacity={0.8} />
 	}
 	return (
 		<img

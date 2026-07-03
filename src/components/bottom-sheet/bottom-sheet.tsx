@@ -1,8 +1,7 @@
-import { useState, useRef, type ReactNode } from 'react'
-import { motion, AnimatePresence, PanInfo } from 'framer-motion'
-import { MdClose } from 'react-icons/md'
+import { useState, type ReactNode } from 'react'
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion'
 import { Portal } from '../portal/Portal'
-import { HiChevronRight } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 type SheetSize = 'small' | 'medium' | 'large' | 'full' | 'screen'
 
@@ -107,7 +106,8 @@ export function BottomSheet({
 											className="absolute p-2 transition-all duration-200 rounded-full right-6 active:scale-95"
 											aria-label="بستن"
 										>
-											<HiChevronRight
+											<Icon
+												name="chevronRight"
 												size={20}
 												className="text-base-content/60"
 											/>

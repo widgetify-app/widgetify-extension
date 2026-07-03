@@ -16,6 +16,7 @@ import { HomePage } from './home/home.page'
 import { useEffect } from 'react'
 import { useWallpaperApply } from '@/layouts/setting/tabs/wallpapers/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
+import { IconProvider } from '../icons/icons.context'
 
 export function RootLayout() {
 	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
@@ -48,69 +49,70 @@ export function RootLayout() {
 
 	return (
 		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
-			<GeneralSettingProvider>
-				<WallpaperProvider>
-					<WidgetVisibilityProvider>
-						<NavbarLayout />
+			<IconProvider defaultTheme="default">
+				<GeneralSettingProvider>
+					<WallpaperProvider>
+						<WidgetVisibilityProvider>
+							<NavbarLayout />
 
-						<AnimatePresence mode="wait">
-							<motion.div
-								key={page}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{
-									duration: 0.15,
-									ease: 'linear',
+							<AnimatePresence mode="wait">
+								<motion.div
+									key={page}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									transition={{
+										duration: 0.15,
+										ease: 'linear',
+									}}
+									className="flex w-full h-full"
+								>
+									{page === Page.Home ? (
+										<HomePage />
+									) : page === Page.Explorer ? (
+										<ExplorerPage />
+									) : (
+										<MiniAppPage />
+									)}
+								</motion.div>
+							</AnimatePresence>
+							<WidgetSettingsModal
+								isOpen={showWidgetSettings}
+								onClose={() => {
+									setShowWidgetSettings(false)
+									setTab(null)
 								}}
-								className="flex w-full h-full"
-							>
-								{page === Page.Home ? (
-									<HomePage />
-								) : page === Page.Explorer ? (
-									<ExplorerPage />
-								) : (
-									<MiniAppPage />
-								)}
-							</motion.div>
-						</AnimatePresence>
-						<WidgetSettingsModal
-							isOpen={showWidgetSettings}
-							onClose={() => {
-								setShowWidgetSettings(false)
-								setTab(null)
-							}}
-							selectedTab={tab}
-						/>
-					</WidgetVisibilityProvider>
-				</WallpaperProvider>
-			</GeneralSettingProvider>
-
-			<Toaster
-				toastOptions={{
-					error: {
-						style: {
-							backgroundColor: '#f8d7da',
-							color: '#721c24',
+								selectedTab={tab}
+							/>
+						</WidgetVisibilityProvider>
+					</WallpaperProvider>
+				</GeneralSettingProvider>
+				<Toaster
+					toastOptions={{
+						error: {
+							style: {
+								backgroundColor: '#f8d7da',
+								color: '#721c24',
+							},
 						},
-					},
-					success: {
-						style: {
-							backgroundColor: '#d4edda',
-							color: '#155724',
+						success: {
+							style: {
+								backgroundColor: '#d4edda',
+								color: '#155724',
+							},
 						},
-					},
-					duration: 5000,
-				}}
-			/>
-			{/* <UpdateChecker /> */}
-
-			{showAuthRequired && (
-				<AuthRequiredModal
-					isOpen={showAuthRequired}
-					onClose={() => setAuthRequired(false)}
+						duration: 5000,
+					}}
 				/>
-			)}
+				{/* <UpdateChecker /> */}
+
+				{showAuthRequired && (
+					<AuthRequiredModal
+						isOpen={showAuthRequired}
+						onClose={() => setAuthRequired(false)}
+					/>
+				)}
+			</IconProvider>
 		</div>
 	)
 }

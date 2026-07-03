@@ -1,5 +1,3 @@
-import { FiUserCheck } from 'react-icons/fi'
-
 import {
 	type Friend,
 	useHandleFriendRequest,
@@ -10,6 +8,7 @@ import { FriendsList } from './friends-List'
 import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
 import Modal from '@/components/modal'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	isOpen: boolean
@@ -53,7 +52,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 				rounded-lg transition-all
 				active:scale-[0.97]"
 					>
-						<FiUserCheck size={18} />
+						<Icon name="userCheck" size={18} />
 						<span className="text-xs font-medium">دوست شیم</span>
 					</Button>
 					<RemoveFriendButton

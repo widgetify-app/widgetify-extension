@@ -13,9 +13,8 @@ import { useDate } from '@/context/date.context'
 import { IoCalendarOutline, IoPricetagOutline, IoAddOutline } from 'react-icons/io5'
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PriorityDropdown } from './components/priority.dropdown'
-import { FiPlus, FiSave } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
-import { LuX } from 'react-icons/lu'
 import { type TodoCreationPayload, useAddTodo } from '@/services/hooks/todo/add-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { translateError } from '@/utils/translate-error'
@@ -24,6 +23,7 @@ import type { Friend } from '@/services/hooks/friends/friendService.hook'
 import { TodoSelectFriends } from './components/select-friends.todo'
 import { callEvent } from '@/common/utils/call-event'
 import { twMerge } from 'tailwind-merge'
+import { Icon } from '@/src/icons'
 interface ExpandableTodoInputProps {
 	editTodo?: FetchedTodo
 	onClose: any
@@ -260,7 +260,7 @@ export function ExpandableTodoInput({
 								size="sm"
 								className="rounded-full px-0! w-8 btn-ghost"
 							>
-								<LuX size={12} className="" />
+								<Icon name="close" size={12} className="" />
 							</Button>
 						)}
 						<Button
@@ -272,7 +272,11 @@ export function ExpandableTodoInput({
 							isPrimary={true}
 							className="rounded-full px-0! w-8"
 						>
-							{isEdit ? <FiSave size={16} /> : <FiPlus size={16} />}
+							{isEdit ? (
+								<FiSave size={16} />
+							) : (
+								<Icon name="plus" size={16} />
+							)}
 						</Button>
 					</div>
 				</div>

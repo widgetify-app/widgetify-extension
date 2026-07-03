@@ -6,7 +6,7 @@ import { AutocompleteConsentModal } from './suggestion/autocomplete-consent.moda
 import { Portal } from '@/components/portal/Portal'
 import { useSearchHistory } from './hooks/useSearchHistory'
 import { Suggestions } from './suggestion/suggestions'
-import { MdSearch } from 'react-icons/md'
+import { Icon } from '@/src/icons'
 
 interface SearchHistoryPortalProps {
 	onClose: () => void
@@ -102,7 +102,11 @@ export function SearchHistoryPortal({
 					{showEnableButton && (
 						<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
 							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-content/5">
-								<MdSearch size={15} className="text-base-content/40" />
+								<Icon
+									name="search"
+									size={15}
+									className="text-base-content/40"
+								/>
 							</div>
 							<div className="space-y-1">
 								<p className="text-xs font-medium text-base-content/70">

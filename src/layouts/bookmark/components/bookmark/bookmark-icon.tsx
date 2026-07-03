@@ -1,7 +1,7 @@
-import { FaFolder } from 'react-icons/fa'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import type { Bookmark } from '../../types/bookmark.types'
 import { useState } from 'react'
+import { Icon } from '@/src/icons'
 const colors = [
 	'bg-blue-500/60',
 	'bg-purple-500/60',
@@ -48,7 +48,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			displayIcon = bookmark.icon
 		}
 	} else {
-		displayIcon = <FaFolder className="w-6 h-6 text-blue-400" />
+		displayIcon = <Icon name="folder" className="w-6 h-6 text-blue-400" />
 	}
 
 	if (displayIcon === '') {

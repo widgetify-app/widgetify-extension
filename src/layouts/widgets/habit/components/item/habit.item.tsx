@@ -1,4 +1,3 @@
-import { FiCheck, FiPlus } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getContrastingTextColor } from '@/common/color'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
@@ -12,6 +11,7 @@ import { translateError } from '@/utils/translate-error'
 import { formatHabitGoal } from '../../utils'
 import { SegmentedProgressRing } from './button.progress-ring'
 import { SimpleProgressRing } from './button.simple-progress-ring'
+import { Icon } from '@/src/icons'
 
 interface HabitItemProps {
 	habit: Habit
@@ -109,11 +109,11 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 
 					<div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full">
 						{habit.today.isDone ? (
-							<FiCheck size={18} strokeWidth={3} />
+							<Icon name="check" size={12} strokeWidth={3} />
 						) : isSimpleHabit ? (
-							<FiCheck size={18} strokeWidth={3} />
+							<Icon name="check" size={12} strokeWidth={3} />
 						) : (
-							<FiPlus size={18} strokeWidth={3} />
+							<Icon name="plus" size={12} strokeWidth={3} />
 						)}
 					</div>
 				</button>

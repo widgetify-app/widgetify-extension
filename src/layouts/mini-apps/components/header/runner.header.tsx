@@ -1,8 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps-interface'
-import { FiMaximize, FiMinimize } from 'react-icons/fi'
-import { HiChevronRight } from 'react-icons/hi2'
-import { TbRefresh } from 'react-icons/tb'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	onClickToBack: any
@@ -35,7 +33,8 @@ export function MiniAppRunnerHeader({
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
-						<HiChevronRight
+						<Icon
+							name="chevronRight"
 							size={20}
 							className="transition-colors duration-200 text-base-content/60 group-hover:text-base-content"
 						/>
@@ -77,12 +76,14 @@ export function MiniAppRunnerHeader({
 						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-base-200/50 active:scale-95 group border-base-content/5 disabled:opacity-40"
 					>
 						{isFullScreen ? (
-							<FiMinimize
+							<Icon
+								name="minimize"
 								size={18}
 								className={`transition-colors duration-200 text-base-content/60 group-hover:text-base-content`}
 							/>
 						) : (
-							<FiMaximize
+							<Icon
+								name="maximize"
 								size={18}
 								className={`transition-colors duration-200 text-base-content/60 group-hover:text-base-content`}
 							/>
@@ -93,7 +94,8 @@ export function MiniAppRunnerHeader({
 						onClick={handleReload}
 						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-base-200/50 active:scale-95 group border-base-content/5 disabled:opacity-40"
 					>
-						<TbRefresh
+						<Icon
+							name="reload"
 							size={18}
 							className={`transition-colors duration-200 text-base-content/60 group-hover:text-base-content ${isLoading || isConnecting ? 'animate-spin' : ''}`}
 						/>

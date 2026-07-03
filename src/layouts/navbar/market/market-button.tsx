@@ -3,7 +3,7 @@ import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { MarketContainer } from '@/layouts/market/market-container'
-import { HiOutlineShoppingBag } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 export function MarketButton() {
 	const [showMarket, setShowMarket] = useState(false)
@@ -26,7 +26,7 @@ export function MarketButton() {
 				onClick={() => handleClick()}
 				className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 			>
-				<HiOutlineShoppingBag size={15} />
+				<Icon name="outlineShoppingBag" size={15} />
 			</button>
 			<Modal
 				isOpen={showMarket}

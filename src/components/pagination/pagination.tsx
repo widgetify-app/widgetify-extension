@@ -1,5 +1,5 @@
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
+import { Icon } from '@/src/icons'
 
 export interface PaginationProps {
 	currentPage: number
@@ -31,7 +31,8 @@ export function Pagination({
 				className="btn-soft rounded-2xl"
 				isPrimary={currentPage !== 1}
 			>
-				<FiChevronRight
+				<Icon
+					name="chevronRight"
 					size={18}
 					className={`${currentPage === 1 ? 'text-muted' : 'text-primary'}`}
 				/>
@@ -48,7 +49,7 @@ export function Pagination({
 				isPrimary={true}
 				size="xs"
 			>
-				<FiChevronLeft size={18} className="text-primary" />
+				<Icon name="chevronLeft" size={18} className="text-primary" />
 			</Button>
 		</div>
 	)

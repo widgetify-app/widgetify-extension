@@ -1,6 +1,6 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
 import Tooltip from '../toolTip'
-import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 export function BlurModeButton() {
 	const { blurMode, updateSetting } = useGeneralSetting()
@@ -16,7 +16,11 @@ export function BlurModeButton() {
 				onClick={handleBlurModeToggle}
 				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 			>
-				{blurMode ? <HiOutlineEye size={15} /> : <HiOutlineEyeSlash size={15} />}
+				{blurMode ? (
+					<Icon name="outlineEye" size={15} />
+				) : (
+					<Icon name="outlineEyeSlash" size={15} />
+				)}
 			</div>
 		</Tooltip>
 	)

@@ -3,7 +3,7 @@ import { Button } from '@/components/button/button'
 import { Dropdown } from '@/components/dropdown'
 import { SelectFriendLayout } from '@/layouts/friends/components/select-friend.layout'
 import type { Friend } from '@/services/hooks/friends/friendService.hook'
-import { FiUserPlus } from 'react-icons/fi'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	selectedFriends: Friend[]
@@ -25,7 +25,11 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 						</div>
 					) : (
 						<div className="flex gap-0.5 text-base-content/40">
-							<FiUserPlus size={16} className="text-base-content/40" />
+							<Icon
+								name="friends"
+								size={16}
+								className="text-base-content/40"
+							/>
 							دوستان
 						</div>
 					)}

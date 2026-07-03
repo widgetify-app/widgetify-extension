@@ -1,4 +1,3 @@
-import { MdApps, MdOutlinePrivacyTip } from 'react-icons/md'
 import { TbApps } from 'react-icons/tb'
 import {
 	VscColorMode,
@@ -19,13 +18,12 @@ import { GeneralSettingTab } from './tabs/general/general'
 import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
-import { BiUserCircle } from 'react-icons/bi'
 import { AccountTab } from './tabs/account/account'
 import { FiGift, FiUsers } from 'react-icons/fi'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { RiApps2AiLine } from 'react-icons/ri'
-import { Connections } from './tabs/account/tabs/user-profile/connections/connections'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connectionsTab'
+import { Icon } from '@/src/icons'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -40,7 +38,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'پروفایل من',
 				value: 'profile',
-				icon: <BiUserCircle size={20} />,
+				icon: <Icon name="user" size={20} />,
 				element: <AccountTab />,
 			},
 			{
@@ -76,7 +74,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'حریم خصوصی',
 				value: 'access',
-				icon: <MdOutlinePrivacyTip size={20} />,
+				icon: <Icon name="outlinePrivacyTip" size={20} />,
 				element: <PrivacySettings key="privacy" />,
 			},
 			{

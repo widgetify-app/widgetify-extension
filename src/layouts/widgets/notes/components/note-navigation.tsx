@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
-import { FiChevronLeft, FiTrash2 } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
-import { MdEdit, MdRefresh } from 'react-icons/md'
 import { callEvent } from '@/common/utils/call-event'
+import { Icon } from '@/src/icons'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
@@ -78,7 +77,7 @@ export function NoteNavigation() {
 							onClick={() => setShowDeleteConfirm(true)}
 							className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
 						>
-							<FiTrash2 size={14} />
+							<Icon name="trash" size={14} />
 						</Button>
 					</Tooltip>
 					<Tooltip content="لیست یادداشت ها" position="top">
@@ -86,7 +85,7 @@ export function NoteNavigation() {
 							className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 							onClick={() => onBackToList()}
 						>
-							<FiChevronLeft size={18} className="text-content" />
+							<Icon name="trash" size={18} className="text-content" />
 						</button>
 					</Tooltip>
 				</>
@@ -101,7 +100,7 @@ export function NoteNavigation() {
 						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95 rounded-xl`}
 						isPrimary={true}
 					>
-						<MdEdit size={12} />
+						<Icon name="pen" size={12} />
 						چیزی بنویس
 					</Button>
 					<div className="space-x-1">
@@ -111,7 +110,8 @@ export function NoteNavigation() {
 								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 								onClick={onRefresh}
 							>
-								<MdRefresh
+								<Icon
+									name="reload"
 									className={`text-content opacity-50 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
 								/>
 							</Button>

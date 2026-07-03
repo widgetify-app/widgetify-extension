@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { LuDownload, LuX } from 'react-icons/lu'
 import Modal from '@/components/modal'
 import { Button } from '@/components/button/button'
 import { getMainClient } from '@/services/api'
+import { Icon } from '@/src/icons'
 
 let updateInfo = null
 
@@ -96,7 +96,10 @@ export function UpdateChecker() {
 						className="absolute right-0 flex items-center justify-center gap-2 px-1 py-6 transition-all duration-300 shadow-2xl cursor-pointer bg-gradient-to-br from-primary to-primary/90 rounded-l-2xl group-hover:opacity-0"
 					>
 						<div className="flex flex-col items-center gap-2">
-							<LuDownload className="w-4 h-4 text-white animate-bounce" />
+							<Icon
+								name="download"
+								className="w-4 h-4 text-white animate-bounce"
+							/>
 							<div className="text-xs font-semibold text-white rotate-180 writing-mode-vertical whitespace-nowrap">
 								نسخه جدید رسید!
 							</div>
@@ -113,12 +116,15 @@ export function UpdateChecker() {
 								className="absolute top-2 left-2 p-1.5 rounded-lg hover:bg-white/20 transition-colors z-10"
 								aria-label="بستن"
 							>
-								<LuX className="w-4 h-4 text-white" />
+								<Icon name="close" className="w-4 h-4 text-white" />
 							</button>
 
 							<div className="flex items-start gap-2">
 								<div className="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-white/20 rounded-xl">
-									<LuDownload className="w-6 h-6 text-white" />
+									<Icon
+										name="download"
+										className="w-6 h-6 text-white"
+									/>
 								</div>
 								<div className="flex-1">
 									<h4 className="mb-2 text-sm font-semibold text-white">
@@ -184,7 +190,7 @@ export function UpdateChecker() {
 							isPrimary
 							rounded="xl"
 						>
-							<LuDownload className="w-4 h-4" />
+							<Icon name="download" className="w-4 h-4" />
 							<span>دانلود و نصب</span>
 						</Button>
 						{!updateInfo.force && (

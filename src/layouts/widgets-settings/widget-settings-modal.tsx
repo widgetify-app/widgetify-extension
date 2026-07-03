@@ -1,12 +1,10 @@
-import type { JSX } from 'react'
 import { MdPets } from 'react-icons/md'
 import { TbApps, TbCalendarUser, TbCurrencyDollar, TbNews } from 'react-icons/tb'
-import { TiWeatherCloudy } from 'react-icons/ti'
 import { VscSettings } from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import { TabItem, TabManager } from '@/components/tab-manager'
+import { type TabItem, TabManager } from '@/components/tab-manager'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
@@ -14,6 +12,7 @@ import { WigiArzSetting } from '../widgets/wigiArz/wigiArz-setting'
 import { WigiPadSetting } from '../widgets/wigiPad/wigiPad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
 import { ManageWidgets } from './manage-widgets/manage-widgets'
+import { Icon } from '@/src/icons'
 
 interface WidgetSettingsModalProps {
 	isOpen: boolean
@@ -52,7 +51,7 @@ const tabs: TabItem[] = [
 				label: 'ویجت آب و هوا',
 				element: <WeatherSetting />,
 				value: WidgetTabKeys.weather_settings,
-				icon: <TiWeatherCloudy size={20} />,
+				icon: <Icon name="cloudy" size={20} />,
 			},
 			{
 				label: 'حیوان خانگی',

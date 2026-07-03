@@ -1,6 +1,6 @@
 import { Button } from '@/components/button/button'
 import type { Friend } from '@/services/hooks/friends/friendService.hook'
-import { FiUserX } from 'react-icons/fi'
+import { Icon } from '@/src/icons'
 
 type Props = {
 	friend: Friend
@@ -26,7 +26,7 @@ export function RemoveFriendButton({ friend, onClick, disabled, label }: Props) 
 				disabled:opacity-50 disabled:cursor-not-allowed
 			"
 		>
-			<FiUserX size={16} />
+			<Icon name="userX" size={16} />
 			<span className="text-xs font-medium">{label || 'حذف'}</span>
 		</Button>
 	)

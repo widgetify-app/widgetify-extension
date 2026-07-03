@@ -1,5 +1,5 @@
 import { ContextMenu } from '@/components/contextMenu.component'
-import { LuPen, LuPlus, LuTrash } from 'react-icons/lu'
+import { Icon } from '@/src/icons'
 
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
@@ -30,7 +30,7 @@ export function BookmarkContextMenu({
 					onClick={onOpenInNewTab}
 					className={`w-full px-3 py-1 flex items-center gap-x-1.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
 				>
-					<LuPlus size={15} />
+					<Icon name="plus" size={15} />
 					<span className="font-medium">در تب جدید</span>
 				</button>
 			)}
@@ -39,7 +39,7 @@ export function BookmarkContextMenu({
 				onClick={onEdit}
 				className={`w-full px-3 py-1 flex items-center gap-x-[9px] cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
 			>
-				<LuPen size={13} />
+				<Icon name="pen" size={13} />
 				<span className="font-medium">ویرایش</span>
 			</button>
 
@@ -47,7 +47,7 @@ export function BookmarkContextMenu({
 				onClick={onDelete}
 				className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle(true)}`}
 			>
-				<LuTrash size={14} />
+				<Icon name="trash" size={14} />
 				<span className="font-medium">حذف</span>
 			</button>
 		</ContextMenu>

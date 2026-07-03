@@ -1,5 +1,5 @@
+import { Icon } from '@/src/icons'
 import type React from 'react'
-import { FaSpinner } from 'react-icons/fa'
 
 interface ButtonProps {
 	onClick?: () => void
@@ -38,7 +38,7 @@ export function Button(prop: ButtonProps) {
 			{prop.loading
 				? prop.loadingText || (
 						<div className="flex items-center gap-1">
-							<FaSpinner className="animate-spin" />
+							<Icon name="spinner" className="animate-spin" />
 							<span className="text-xs">صبر کنید...</span>
 						</div>
 					)

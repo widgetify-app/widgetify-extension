@@ -1,9 +1,8 @@
 import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/common/utils/icon'
+import { Icon } from '@/src/icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
-import { FaUpload, FaImage } from 'react-icons/fa'
-import { LuX } from 'react-icons/lu'
 
 type Props = {
 	value: File | string | null
@@ -85,11 +84,11 @@ export function BookmarkIconPicker({ value, url, onChange }: Props) {
 						onError={() => setError(true)}
 					/>
 				) : (
-					<FaImage />
+					<Icon name="image" />
 				)}
 
 				<div className="absolute inset-0 flex items-center justify-center transition opacity-0 hover:opacity-100">
-					<FaUpload />
+					<Icon name="uploadImage" />
 				</div>
 
 				{isFile && (
@@ -97,7 +96,7 @@ export function BookmarkIconPicker({ value, url, onChange }: Props) {
 						onClick={handleRemove}
 						className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 rounded-full bg-base-300"
 					>
-						<LuX size={12} />
+						<Icon name="close" size={12} />
 					</button>
 				)}
 			</div>

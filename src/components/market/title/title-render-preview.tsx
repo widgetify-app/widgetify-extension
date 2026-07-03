@@ -1,4 +1,4 @@
-import { IoMdClose } from 'react-icons/io'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	template: string
@@ -11,7 +11,7 @@ export function renderBrowserTitlePreview(item: Prop) {
 			className={`flex items-center justify-between w-40 p-1.5 text-xs font-medium border shadow-sm text-content bg-content border-content rounded-t-md max-w-40 ${item.className || ''} font-sans`}
 		>
 			<div className="flex items-center gap-1">
-				<IoMdClose />
+				<Icon name="close" />
 				{isPersian && (
 					<span className="text-[10px] truncate">{item.template}</span>
 				)}

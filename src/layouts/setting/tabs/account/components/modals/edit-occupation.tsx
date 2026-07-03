@@ -1,11 +1,11 @@
-import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { useUpdateUserProfile } from '@/services/hooks/auth/authService.hook'
 import { useState } from 'react'
 import { OccupationSelector } from '../occupation-selector'
 import { useGetOccupations } from '@/services/hooks/profile/getProfileMeta.hook'
-import { LuBriefcase, LuChevronRight } from 'react-icons/lu'
 import { SectionPanel } from '@/components/section-panel'
+import { Icon } from '@/src/icons'
+import { FooterButtons } from './footer-buttons'
 
 interface Prop {
 	show: boolean
@@ -53,7 +53,11 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 						triggerElement={
 							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-content rounded-xl hover:border-primary/50!">
 								<div className="flex items-center gap-3">
-									<LuBriefcase size={14} className="text-primary" />
+									<Icon
+										name="briefcase"
+										size={14}
+										className="text-primary"
+									/>
 									<span
 										className={`text-sm ${occupation ? 'text-content' : 'text-muted'}`}
 									>
@@ -64,31 +68,21 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 											: 'انتخاب شغل'}
 									</span>
 								</div>
-								<LuChevronRight size={18} className="text-muted" />
+								<Icon
+									name="chevronRight"
+									size={18}
+									className="text-muted"
+								/>
 							</div>
 						}
 					/>
 				</SectionPanel>
-				<div className="flex gap-2">
-					<Button
-						size="sm"
-						type="submit"
-						disabled={updateProfileMutation.isPending}
-						isPrimary={true}
-						onClick={() => onClickSave()}
-						className="text-sm shadow-xs flex-2 rounded-xl shadow-primary/20"
-					>
-						{updateProfileMutation.isPending ? 'در حال ذخیره...' : 'ذخیره'}
-					</Button>
-					<Button
-						size="sm"
-						type="button"
-						onClick={onCancel}
-						className="flex-1 text-sm font-medium border-none rounded-2xl bg-content"
-					>
-						انصراف
-					</Button>
-				</div>
+
+				<FooterButtons
+					handleCancel={onCancel}
+					handleConfirm={onClickSave}
+					isPending={updateProfileMutation.isPending}
+				/>
 			</div>
 		</Modal>
 	)

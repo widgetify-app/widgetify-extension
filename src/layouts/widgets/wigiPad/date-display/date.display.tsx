@@ -1,4 +1,3 @@
-import { FaCog } from 'react-icons/fa'
 import { getFromStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
@@ -6,6 +5,7 @@ import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type WigiPadDateSetting, WigiPadDateType } from './date-setting.interface'
 import { GregorianDate } from './dates/gregorian.date'
 import { JalaliDate } from './dates/jalali.date'
+import { Icon } from '@/src/icons'
 
 export function DateDisplay() {
 	const [wigiPadDateSettings, setWigiPadDateSettings] =
@@ -53,7 +53,7 @@ export function DateDisplay() {
 					size="xs"
 					className="m-1.5 h-5 w-5 p-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 !border-none !shadow-none transition-all duration-300 delay-200"
 				>
-					<FaCog size={12} className="text-content" />
+					<Icon name="settings" size={12} className="text-content" />
 				</Button>
 			</div>
 

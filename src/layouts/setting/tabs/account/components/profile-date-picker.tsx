@@ -1,8 +1,7 @@
 import { Button } from '@/components/button/button'
 import { ClickableTooltip } from '@/components/clickableTooltip'
+import { Icon } from '@/src/icons'
 import { useRef, useState, useEffect } from 'react'
-import { FiCheck } from 'react-icons/fi'
-import { LuCalendarDays, LuChevronRight } from 'react-icons/lu'
 
 const PERSIAN_MONTHS = [
 	'فروردین',
@@ -112,12 +111,12 @@ export default function JalaliDatePicker({
 					className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-content rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary/50! cursor-pointer'}`}
 				>
 					<div className="flex items-center gap-3">
-						<LuCalendarDays size={14} className="text-primary" />
+						<Icon name="calendarDays" size={14} className="text-primary" />
 						<span className={value ? 'text-content' : 'text-muted'}>
 							{value || 'انتخاب تاریخ'}
 						</span>
 					</div>
-					<LuChevronRight size={18} className="text-muted" />
+					<Icon name="chevronRight" size={18} className="text-muted" />
 				</div>
 			</button>
 
@@ -158,7 +157,7 @@ export default function JalaliDatePicker({
 								size="sm"
 								className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
 							>
-								<FiCheck size={16} className="ml-1" />
+								<Icon name="check" size={16} className="ml-1" />
 								تایید{' '}
 							</Button>
 							<Button

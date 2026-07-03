@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { FiLock } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
@@ -8,6 +7,7 @@ import { useSignIn } from '@/services/hooks/auth/authService.hook'
 import { translateError } from '@/utils/translate-error'
 import InputTextError from './components/input-text-error'
 import { isEmail, isEmpty, isLessThan } from '@/utils/validators'
+import { Icon } from '@/src/icons'
 
 export default function AuthPassword() {
 	const [email, setEmail] = useState('')
@@ -99,7 +99,7 @@ export default function AuthPassword() {
 					aria-hidden="true"
 					className="flex items-center justify-center flex-shrink-0 rounded-lg w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
 				>
-					<FiLock className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+					<Icon name="lock" className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 				</div>
 				<div>
 					<h3 className="text-base font-semibold md:text-lg text-content">

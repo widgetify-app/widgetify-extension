@@ -6,7 +6,7 @@ import {
 	HiOutlineDocumentText,
 	HiOutlineNewspaper,
 } from 'react-icons/hi2'
-import { MdOutlineCalendarMonth, MdOutlineNetworkWifi, MdPets } from 'react-icons/md'
+import { MdOutlineCalendarMonth, MdOutlineNetworkWifi } from 'react-icons/md'
 import { HiOutlineCurrencyBangladeshi } from 'react-icons/hi'
 import React, { useState, Suspense } from 'react'
 import { DateProvider } from '@/context/date.context'

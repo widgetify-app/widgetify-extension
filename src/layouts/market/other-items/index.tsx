@@ -10,9 +10,9 @@ import { MarketItemCard } from './components/market-item-card'
 import { MarketItemPurchaseModal } from './components/market-item-purchase-modal'
 import { showToast } from '@/common/toast'
 import { Chip } from '@/components/chip.component'
-import { FiShoppingBag } from 'react-icons/fi'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { usePreviewHandler } from '@/hooks/usePreviewHandler'
+import { Icon } from '@/src/icons'
 
 const FILTER_OPTIONS = [
 	{ id: 'all', label: 'همه' },
@@ -124,7 +124,11 @@ export function MarketOtherItems() {
 			{error ? (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
-						<FiShoppingBag size={20} className="text-base-content/20" />
+						<Icon
+							name="shoppingBag"
+							size={20}
+							className="text-base-content/20"
+						/>
 					</div>
 					<p className="text-xs text-base-content/40">خطا در بارگذاری آیتم‌ها</p>
 				</div>
@@ -162,7 +166,11 @@ export function MarketOtherItems() {
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
-						<FiShoppingBag size={20} className="text-base-content/20" />
+						<Icon
+							name="shoppingBag"
+							size={20}
+							className="text-base-content/20"
+						/>
 					</div>
 					<p className="text-xs text-base-content/40">
 						آیتمی در این دسته‌بندی وجود ندارد

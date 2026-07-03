@@ -1,8 +1,7 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 import { unitsFlag } from '../unitSymbols'
 import Tooltip from '@/components/toolTip'
-import { TbWind } from 'react-icons/tb'
-import { WiCloudy, WiHumidity } from 'react-icons/wi'
+import { Icon } from '@/src/icons'
 
 interface CurrentWeatherBoxProps {
 	fetchedWeather: FetchedWeather | null
@@ -70,7 +69,7 @@ export function CurrentWeatherBox({
 				<div className="grid grid-cols-3 gap-1.5">
 					<Tooltip content={'باد'}>
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<TbWind className="w-4 h-4 text-muted" />
+							<Icon name="wind" className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
 								{Math.round(
 									fetchedWeather?.weather?.temperature?.wind_speed || 0
@@ -82,7 +81,7 @@ export function CurrentWeatherBox({
 
 					<Tooltip content={'رطوبت'}>
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<WiHumidity className="w-4 h-4 text-muted" />
+							<Icon name="humidity" className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
 								{fetchedWeather?.weather?.temperature?.humidity || 0}%
 							</span>
@@ -91,7 +90,7 @@ export function CurrentWeatherBox({
 
 					<Tooltip content="پوشش ابری">
 						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<WiCloudy className="w-4 h-4 text-muted" />
+							<Icon name="cloudy" className="w-4 h-4 text-muted" />
 							<span className="text-xs font-medium text-muted">
 								{fetchedWeather?.weather?.temperature?.clouds || 0}%
 							</span>

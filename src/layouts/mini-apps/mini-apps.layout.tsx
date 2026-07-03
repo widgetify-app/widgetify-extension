@@ -5,9 +5,9 @@ import { useEffect, useRef } from 'react'
 import { MiniAppRunner } from './mini-app-runner'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
-import { HiOutlineInformationCircle } from 'react-icons/hi2'
 import Modal from '@/components/modal'
 import { Button } from '@/components/button/button'
+import { Icon } from '@/src/icons'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
@@ -78,7 +78,7 @@ export function MiniAppsLayout() {
 							onClick={() => onClickToShowInfo()}
 							className="p-1 text-lg font-bold cursor-pointer text-base-content/80 hover:text-base-content active:scale-95"
 						>
-							<HiOutlineInformationCircle className="m-auto text-center" />
+							<Icon name="info" className="m-auto text-center" />
 						</div>
 					</div>
 					<div className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]">

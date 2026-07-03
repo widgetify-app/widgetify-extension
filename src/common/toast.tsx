@@ -2,9 +2,7 @@ import React, { ReactNode } from 'react'
 import toast from 'react-hot-toast'
 import { playAlarm } from './playAlarm'
 import { translateError } from '@/utils/translate-error'
-import { TfiAlert, TfiCheck } from 'react-icons/tfi'
-import { TiInfo } from 'react-icons/ti'
-import { LuX } from 'react-icons/lu'
+import { Icon } from '../icons'
 
 type ToastType = 'success' | 'error' | 'info' | 'warning'
 
@@ -29,25 +27,25 @@ const TT: Record<
 		borderColor: 'border-r-success border-br-success',
 		iconBg: 'bg-success/10',
 		iconColor: 'text-success',
-		icon: <TfiCheck />,
+		icon: <Icon name="check" />,
 	},
 	error: {
 		borderColor: 'border-r-error',
 		iconBg: 'bg-error/10',
 		iconColor: 'text-error',
-		icon: <TfiAlert />,
+		icon: <Icon name="alert" />,
 	},
 	info: {
 		borderColor: 'border-r-info',
 		iconBg: 'bg-info/10',
 		iconColor: 'text-info',
-		icon: <TiInfo />,
+		icon: <Icon name="info" />,
 	},
 	warning: {
 		borderColor: 'border-r-warning',
 		iconBg: 'bg-warning/10',
 		iconColor: 'text-warning',
-		icon: <TfiAlert />,
+		icon: <Icon name="alert" />,
 	},
 }
 
@@ -80,7 +78,7 @@ export function showToast(message: string, type: ToastType, options?: ToastOptio
 					onClick={() => toast.remove(t.id, t.toasterId)}
 					className="rounded-full btn text-base-content/80 btn-xs btn-ghost"
 				>
-					<LuX size={15} className="" />
+					<Icon name="close" size={15} />
 				</button>
 			</div>
 		),
@@ -117,7 +115,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 			>
 				<div className="flex items-center gap-1.5 min-w-0">
 					<div className="relative flex items-center justify-center w-6 h-6 rounded-xl bg-primary/10 shrink-0">
-						<TiInfo className="text-base text-primary" />
+						<Icon name="info" className="text-base text-primary" />
 						<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
 							<span className="absolute inline-flex w-full h-full rounded-full animate-ping bg-primary opacity-60" />
 							<span className="relative inline-flex w-2 h-2 rounded-full bg-primary" />
@@ -139,7 +137,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 					}}
 					className="shrink-0 flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-xl bg-base-200 hover:bg-error/10 hover:text-error text-base-content/60 transition-all duration-150 cursor-pointer border border-base-content/8 active:scale-95"
 				>
-					<LuX size={11} />
+					<Icon name="close" size={11} />
 					بازگشت
 				</button>
 			</div>

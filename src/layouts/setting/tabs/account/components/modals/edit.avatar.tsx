@@ -1,13 +1,13 @@
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { AvatarComponent } from '@/components/avatar.component'
-import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
 import { useUpdateUserProfile } from '@/services/hooks/auth/authService.hook'
 import { useRef, useState } from 'react'
-import { TbCameraPlus } from 'react-icons/tb'
+import { FooterButtons } from './footer-buttons'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	show: boolean
@@ -66,7 +66,7 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 								className="transition-all cursor-pointer ring-4 ring-primary/5"
 							/>
 						) : (
-							<TbCameraPlus />
+							<Icon name="cameraPlus" />
 						)}
 					</div>
 
@@ -78,27 +78,12 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 						className="hidden"
 					/>
 				</SectionPanel>
-				<div className="flex gap-2 ">
-					<Button
-						size="sm"
-						type="submit"
-						disabled={updateProfileMutation.isPending}
-						isPrimary={true}
-						onClick={() => onSave()}
-						className="text-sm shadow-xs flex-2 rounded-xl shadow-primary/20"
-					>
-						{updateProfileMutation.isPending ? 'در حال ذخیره...' : 'ذخیره'}
-					</Button>
-					<Button
-						size="sm"
-						type="button"
-						disabled={updateProfileMutation.isPending}
-						onClick={() => onClose()}
-						className="flex-1 text-sm font-medium border-none rounded-2xl bg-content"
-					>
-						انصراف
-					</Button>
-				</div>
+
+				<FooterButtons
+					handleConfirm={onSave}
+					handleCancel={onClose}
+					isPending={updateProfileMutation.isPending}
+				/>
 			</div>
 		</Modal>
 	)

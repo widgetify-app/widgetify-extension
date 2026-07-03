@@ -1,7 +1,7 @@
-import { FaExternalLinkAlt, FaGlobe, FaHeart, FaTelegramPlane } from 'react-icons/fa'
 import { SectionPanel } from '@/components/section-panel'
 import { ConfigKey } from '../../../../common/constant/config.key'
 import { RiArticleLine } from 'react-icons/ri'
+import { Icon } from '@/src/icons'
 
 export function AboutUsTab() {
 	return (
@@ -38,7 +38,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-primary/10 text-primary group-hover:scale-110">
-								<FaGlobe size={18} />
+								<Icon name="globe" size={18} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-base-content">
@@ -49,7 +49,8 @@ export function AboutUsTab() {
 								</p>
 							</div>
 						</div>
-						<FaExternalLinkAlt
+						<Icon
+							name="externalLink"
 							size={12}
 							className="transition-colors text-base-content/20 group-hover:text-primary"
 						/>
@@ -74,7 +75,8 @@ export function AboutUsTab() {
 								</p>
 							</div>
 						</div>
-						<FaExternalLinkAlt
+						<Icon
+							name="externalLink"
 							size={12}
 							className="transition-colors text-base-content/20 group-hover:text-secondary"
 						/>
@@ -88,7 +90,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info/10 text-info group-hover:scale-110">
-								<FaTelegramPlane size={18} />
+								<Icon name="telegramLogo" size={18} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-base-content">
@@ -99,7 +101,8 @@ export function AboutUsTab() {
 								</p>
 							</div>
 						</div>
-						<FaExternalLinkAlt
+						<Icon
+							name="externalLink"
 							size={12}
 							className="transition-colors text-base-content/20 group-hover:text-info"
 						/>
@@ -135,7 +138,8 @@ export function AboutUsTab() {
 								</p>
 							</div>
 						</div>
-						<FaExternalLinkAlt
+						<Icon
+							name="externalLink"
 							size={12}
 							className="transition-colors text-base-content/20 group-hover:text-success"
 						/>
@@ -149,9 +153,7 @@ export function AboutUsTab() {
 					'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-content opacity-75'
 				}
 			>
-				<span>ساخته شده با</span>
-				<FaHeart className="mx-1 text-red-500 animate-pulse" size={14} />
-				<span>در ایران</span>
+				<span>ساخته شده با</span>💙<span>در ایران</span>
 			</div>
 
 			<div className={'mt-2 mb-4 text-xs text-center text-content opacity-55'}>

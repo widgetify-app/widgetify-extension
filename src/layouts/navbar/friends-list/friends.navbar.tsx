@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { useAuth } from '@/context/auth.context'
-import { HiOutlineUserGroup, HiOutlineUserPlus } from 'react-icons/hi2'
 import { BottomSheet } from '@/components/bottom-sheet/bottom-sheet'
 import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
 import Analytics from '@/analytics'
+import { Icon } from '@/src/icons'
 
 const renderPendingNotification = (pendingCount: number) => (
 	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-white bg-red-500 rounded-full top-1 right-1 p-0.5 text-center">
@@ -57,7 +57,7 @@ export function FriendsListNavbar() {
 				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 				onClick={() => clickToOpenSheet()}
 			>
-				<HiOutlineUserGroup size={15} />
+				<Icon name="friends" size={15} />
 				{hasPendingRequests &&
 					renderPendingNotification(user?.friendshipStats?.pending || 0)}
 			</div>
@@ -72,7 +72,8 @@ export function FriendsListNavbar() {
 						}}
 						className="flex items-center gap-1 px-2 py-1.5 transition-all border cursor-pointer rounded-xl bg-content text-content border-content active:scale-95 group group-hover:opacity-85"
 					>
-						<HiOutlineUserPlus
+						<Icon
+							name="usersPlus"
 							size={14}
 							className="text-base-content/90 group-hover:text-base-content/70"
 						/>

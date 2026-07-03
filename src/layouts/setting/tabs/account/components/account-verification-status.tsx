@@ -1,6 +1,6 @@
-import { FiMail } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
+import { Icon } from '@/src/icons'
 
 interface AccountVerificationStatusProps {
 	sendVerificationMutation: {
@@ -17,7 +17,7 @@ export const AccountVerificationStatus = ({
 		<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
 			<div className="flex items-center justify-between p-3 border rounded-2xl bg-warning/10 border-warning/20">
 				<div className="flex items-center gap-3">
-					<FiMail className="text-warning" size={24} />
+					<Icon name="mail" className="text-warning" size={24} />
 					<div>
 						<p className="text-sm font-medium text-warning">
 							⚠️ حساب شما تایید نشده است

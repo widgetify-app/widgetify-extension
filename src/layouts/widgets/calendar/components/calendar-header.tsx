@@ -1,8 +1,7 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type React from 'react'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { TfiBackRight } from 'react-icons/tfi'
 import { type WidgetifyDate, getCurrentDate } from '../utils'
+import { Icon } from '@/src/icons'
 
 interface CalendarHeaderProps {
 	currentDate: WidgetifyDate
@@ -56,7 +55,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 							'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 text-muted hover:bg-base-300 duration-300 hover:opacity-100 animate-in fade-in-0 zoom-in-95'
 						}
 					>
-						<TfiBackRight size={12} strokeWidth={1} />
+						<Icon name="backRight" size={12} strokeWidth={1} />
 					</button>
 				)}
 
@@ -66,7 +65,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 duration-300'
 					}
 				>
-					<FaChevronRight size={12} strokeWidth={1} />
+					<Icon name="chevronRight" size={12} strokeWidth={1} />
 				</button>
 
 				<button
@@ -75,7 +74,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 						'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 duration-300'
 					}
 				>
-					<FaChevronLeft size={12} strokeWidth={1} />
+					<Icon name="chevronLeft" size={12} strokeWidth={1} />
 				</button>
 			</div>
 		</div>

@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
-import { MdOutlineVerifiedUser } from 'react-icons/md'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Button } from '../button/button'
+import { Icon } from '@/src/icons'
 
 interface RequireVerificationProps {
 	children: ReactNode
@@ -43,7 +43,7 @@ export const RequireVerification = ({
 							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
 						}
 					>
-						<MdOutlineVerifiedUser size={20} className="text-success/80" />
+						<Icon name="verifyUser" size={20} className="text-success/80" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
 						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفاً حساب کاربری خود را تأیید کنید.

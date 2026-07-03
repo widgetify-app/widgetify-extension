@@ -2,11 +2,8 @@ import { useEffect } from 'react'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
 import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
 import { useAuth } from '@/context/auth.context'
-import { Button } from '@/components/button/button'
-import { callEvent } from '@/common/utils/call-event'
-import Analytics from '@/analytics'
 
-const DAILY_ZIKRS = [
+const DAILY_LIST = [
 	{ day: 'شنبه', zikr: 'یا رَبَّ الْعَالَمِینَ', meaning: 'ای پروردگار جهانیان' },
 	{
 		day: 'یک‌شنبه',
@@ -54,7 +51,7 @@ export function ReligiousTime({ currentDate }: { currentDate: any }) {
 		}
 	}, [user?.city?.id, isAuthenticated, refetch])
 
-	const dailyZikr = DAILY_ZIKRS.find((item) => item.day === weekDay)
+	const dailyZikr = DAILY_LIST.find((item) => item.day === weekDay)
 
 	const prayerTimeBoxes = [
 		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },

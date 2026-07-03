@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { MdClose, MdLink, MdOutlinePrivacyTip } from 'react-icons/md'
 import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
 import { TextInput } from '@/components/text-input'
@@ -8,6 +7,7 @@ import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
 import { translateError } from '@/utils/translate-error'
 import { Portal } from '@/components/portal/Portal'
+import { Icon } from '@/src/icons'
 
 interface ImageSearchPortalProps {
 	onClose: () => void
@@ -99,13 +99,13 @@ export function ImageSearchPortal({
 							target="_blank"
 							rel="noreferrer"
 						>
-							<MdOutlinePrivacyTip size={18} />
+							<Icon name="outlinePrivacyTip" size={18} />
 						</a>
 						<button
 							onClick={onClose}
 							className="p-1 transition-colors rounded-full cursor-pointer hover:bg-base-200 text-base-content/50"
 						>
-							<MdClose size={22} />
+							<Icon name="close" size={22} />
 						</button>
 					</div>
 				</div>
@@ -202,7 +202,7 @@ export function ImageSearchPortal({
 					</RequireAuth>
 					<div className="flex items-center gap-2 p-1 border bg-base-200 rounded-xl border-base-content/5">
 						<div className="pl-3 text-base-content/30">
-							<MdLink size={20} />
+							<Icon name="link" size={20} />
 						</div>
 						<TextInput
 							type="url"

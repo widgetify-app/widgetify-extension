@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { MdOutlineClear, MdOutlineSearch } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { BrowserBookmark } from './browser-bookmark/browser-bookmark'
 import { VoiceSearchButton } from './voice/voice-search.button'
@@ -11,6 +10,7 @@ import { SearchHistoryPortal } from './history.portal'
 import type { EngineMeta } from '@/services/hooks/trends/getTrends'
 import { useSearchHistory } from './hooks/useSearchHistory'
 import { useAuth } from '@/context/auth.context'
+import { Icon } from '@/src/icons'
 
 const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',
@@ -186,7 +186,7 @@ export function SearchLayout() {
 							onClick={handleClearSearch}
 							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-base-300' : 'opacity-0 pointer-events-none'}`}
 						>
-							<MdOutlineClear size={20} className="opacity-50" />
+							<Icon name="close" size={20} className="opacity-50" />
 						</button>
 						<div
 							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
@@ -198,7 +198,7 @@ export function SearchLayout() {
 							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer  hover:bg-base-300`}
 							onClick={() => onSearchButtonClick()}
 						>
-							<MdOutlineSearch size={20} className="opacity-50" />
+							<Icon name="search" size={20} className="opacity-50" />
 						</div>
 						<div
 							className={

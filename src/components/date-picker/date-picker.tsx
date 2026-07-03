@@ -1,7 +1,6 @@
+import { Icon } from '@/src/icons'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { TfiBackRight } from 'react-icons/tfi'
 
 interface DatePickerProps {
 	onDateSelect: (date: jalaliMoment.Moment) => void
@@ -202,20 +201,20 @@ export function DatePicker({
 							onClick={goToToday}
 							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 						>
-							<TfiBackRight size={12} />
+							<Icon name="backRight" size={12} />
 						</button>
 					)}
 					<button
 						onClick={() => changeMonth(-1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 					>
-						<FaChevronRight size={12} />
+						<Icon name="chevronRight" size={12} />
 					</button>
 					<button
 						onClick={() => changeMonth(1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 					>
-						<FaChevronLeft size={12} />
+						<Icon name="chevronLeft" size={12} />
 					</button>
 				</div>
 			</div>

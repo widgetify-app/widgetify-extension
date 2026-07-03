@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { RiThumbUpLine } from 'react-icons/ri'
 import { Button } from './button/button'
 import Modal from './modal'
 
@@ -92,8 +91,7 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 
 					<div className="flex items-center justify-center gap-2 py-1 text-muted">
-						<RiThumbUpLine size={14} />
-						<span className="text-xs">دمت گرم که همراه مایی</span>
+						💙<span className="text-xs">دمت گرم که همراه مایی</span>
 					</div>
 				</div>
 

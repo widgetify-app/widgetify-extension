@@ -1,11 +1,9 @@
 import { useCallback, useState, useRef } from 'react'
-import { HiCog, HiViewGridAdd } from 'react-icons/hi'
 import { callEvent } from '@/common/utils/call-event'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import { useAppearanceSetting } from '@/context/appearance.context'
-import { AiOutlineDrag } from 'react-icons/ai'
 import { showToast } from '@/common/toast'
-import { HiOutlineCog6Tooth } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 interface SettingsProps {
 	setShowSettings: (value: boolean) => void
@@ -44,7 +42,11 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				}}
 				className="flex items-center w-full gap-3 px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
 			>
-				<HiCog size={16} className="text-muted group-hover:!text-primary" />
+				<Icon
+					name="settings"
+					size={14}
+					className="text-muted group-hover:!text-primary"
+				/>
 				<span>تنظیمات</span>
 			</button>
 
@@ -55,7 +57,8 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				className="flex items-center justify-between w-full px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
 			>
 				<div className="flex items-center gap-3">
-					<HiViewGridAdd
+					<Icon
+						name="viewGridAdd"
 						size={16}
 						className="text-muted group-hover:!text-primary"
 					/>
@@ -68,7 +71,8 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				onClick={() => onClick()}
 			>
 				<div className="flex items-center gap-3">
-					<AiOutlineDrag
+					<Icon
+						name="outlineDrag"
 						size={16}
 						className="text-muted group-hover:!text-primary"
 					/>
@@ -89,7 +93,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 				id="settings-button"
 			>
-				<HiOutlineCog6Tooth size={15} />
+				<Icon name="settings" size={15} />
 			</div>
 			<ClickableTooltip
 				triggerRef={triggerRef}

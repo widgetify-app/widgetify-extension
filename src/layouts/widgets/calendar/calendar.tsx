@@ -5,7 +5,7 @@ import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
 import Analytics from '@/analytics'
-import { BiCalendar, BiLogoGoogle } from 'react-icons/bi'
+import { Icon } from '@/src/icons'
 
 interface CalendarTabSelectorProps {
 	activeTab: string
@@ -27,7 +27,7 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 							: 'text-base-content/60 hover:text-base-content'
 					}`}
 			>
-				<BiCalendar size={12} />
+				<Icon name="calendar" size={12} />
 				<span>تقویم</span>
 			</button>
 
@@ -40,7 +40,7 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 							: 'text-base-content/60 hover:text-base-content'
 					}`}
 			>
-				<BiLogoGoogle size={12} />
+				<Icon name="googleCalendar" size={12} />
 				<span>گوگل‌کلندر</span>
 			</button>
 		</div>

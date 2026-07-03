@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import { TfiBackRight } from 'react-icons/tfi'
 import jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
@@ -10,6 +8,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { Icon } from '@/src/icons'
 
 interface HabitCalendarProps {
 	habit: Habit
@@ -236,20 +235,20 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 							onClick={goToToday}
 							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 						>
-							<TfiBackRight size={12} />
+							<Icon name="backRight" size={12} />
 						</button>
 					)}
 					<button
 						onClick={() => changeMonth(-1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 					>
-						<FaChevronRight size={12} />
+						<Icon name="chevronRight" size={12} />
 					</button>
 					<button
 						onClick={() => changeMonth(1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
 					>
-						<FaChevronLeft size={12} />
+						<Icon name="chevronLeft" size={12} />
 					</button>
 				</div>
 			</div>

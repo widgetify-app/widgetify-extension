@@ -5,7 +5,6 @@ import {
 	useGetOccupations,
 	useGetInterests,
 } from '@/services/hooks/profile/getProfileMeta.hook'
-import { LuChevronLeft } from 'react-icons/lu'
 import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
 import { Chip } from '@/components/chip.component'
@@ -14,6 +13,7 @@ import { useSetupWizard } from '@/services/hooks/auth/authService.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'
+import { Icon } from '../icons'
 
 export enum ReferralSource {
 	Social = 'social',
@@ -381,7 +381,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						onClick={prevStep}
 						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-base-200/50 text-content hover:bg-base-300"
 					>
-						<LuChevronLeft size={20} />
+						<Icon name="chevronLeft" size={20} />
 					</button>
 				)}
 				{renderStepContent()}

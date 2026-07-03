@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { HiXMark } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 export function ProfileProgressNotification() {
 	const { profilePercentage } = useAuth()
@@ -37,7 +37,7 @@ export function ProfileProgressNotification() {
 						onRemoveNotif()
 					}}
 				>
-					<HiXMark size={14} />
+					<Icon name="close" size={14} />
 				</button>
 			</div>
 		</div>

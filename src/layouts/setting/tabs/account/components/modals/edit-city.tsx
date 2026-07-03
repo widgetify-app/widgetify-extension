@@ -1,6 +1,6 @@
-import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { SelectCity } from '../../../general/components/select-city'
+import { FooterButtons } from './footer-buttons'
 
 interface Prop {
 	show: boolean
@@ -32,25 +32,11 @@ export function ChangeCityModal({ show, onClose }: Prop) {
 					<SelectCity size="xs" />
 				</div>
 
-				<div className="flex gap-2">
-					<Button
-						size="sm"
-						type="submit"
-						isPrimary={true}
-						onClick={() => onClickSave()}
-						className="text-sm shadow-xs flex-2 rounded-xl shadow-primary/20"
-					>
-						ذخیره
-					</Button>
-					<Button
-						size="sm"
-						type="button"
-						onClick={onCancel}
-						className="flex-1 text-sm font-medium border-none rounded-2xl bg-content"
-					>
-						انصراف
-					</Button>
-				</div>
+				<FooterButtons
+					isPending={false}
+					handleCancel={onCancel}
+					handleConfirm={onClickSave}
+				/>
 			</div>
 		</Modal>
 	)

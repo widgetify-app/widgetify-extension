@@ -1,6 +1,5 @@
 import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import { MdRefresh } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { AvatarComponent } from '@/components/avatar.component'
@@ -10,8 +9,8 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient, safeAwait } from '@/services/api'
 import { WidgetContainer } from '../widget-container'
-import { NetworkIPCard, NetworkLoadingSkeleton, NetworkPingCard } from './components'
-import { IoRefreshOutline } from 'react-icons/io5'
+import { NetworkIPCard, NetworkPingCard } from './components'
+import { Icon } from '@/src/icons'
 
 interface NetworkInfo {
 	status: 'online' | 'offline'
@@ -129,7 +128,8 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 									size="xs"
 									className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 								>
-									<MdRefresh
+									<Icon
+										name="reload"
 										size={12}
 										className="text-content opacity-70 hover:opacity-100"
 									/>
@@ -198,7 +198,8 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 							className="w-full h-8 border border-content rounded-2xl"
 							onClick={handleRefresh}
 						>
-							<IoRefreshOutline
+							<Icon
+								name="reload"
 								size={14}
 								className={isLoading ? 'animate-spin' : ''}
 							/>

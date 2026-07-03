@@ -1,10 +1,10 @@
-import { FiCheck, FiShoppingCart, FiEye } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
 import { type MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './renderPreview'
+import { Icon } from '@/src/icons'
 
 interface MarketItemCardProps {
 	item: MarketItem
@@ -61,19 +61,12 @@ export function MarketItemCard({
 					</span>
 				</div>
 
-				{isOwned && (
-					<div className="absolute top-2 left-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-success/15 border border-success/20 text-success">
-						<FiCheck size={9} />
-						<span className="text-[9px] font-semibold">دارید</span>
-					</div>
-				)}
-
 				{!canPreview && (
 					<button
 						onClick={handlePreview}
 						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-base-100/85 border border-base-content/10 text-base-content/60 hover:text-primary transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 					>
-						<FiEye size={10} />
+						<Icon name="outlineEye" size={10} />
 						<span>پیش‌نمایش</span>
 					</button>
 				)}
@@ -90,7 +83,7 @@ export function MarketItemCard({
 
 					{isOwned ? (
 						<span className="text-[10px] text-success font-medium flex items-center gap-1">
-							<FiCheck size={10} />
+							<Icon name="check" size={10} />
 							خریداری‌شده
 						</span>
 					) : (
@@ -100,7 +93,7 @@ export function MarketItemCard({
 							className="h-6 px-2.5 rounded-lg text-[11px] font-medium bg-primary/90 text-white hover:bg-primary active:scale-95 transition-all"
 						>
 							<div className="flex items-center gap-1">
-								<FiShoppingCart size={10} />
+								<Icon name="shoppingCart" size={10} />
 								<span>خرید</span>
 							</div>
 						</Button>

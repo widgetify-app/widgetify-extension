@@ -3,7 +3,7 @@ import { CalendarGrid } from '../../widgets/calendar/components/calendar-grid'
 import { useDate } from '@/context/date.context'
 import Analytics from '@/analytics'
 import { GoogleCalendarView } from '@/layouts/widgets/calendar/components/google-calendar/google-calendar-view'
-import { BiCalendar, BiLogoGoogle } from 'react-icons/bi'
+import { Icon } from '@/src/icons'
 
 export function SimplifyCalendar() {
 	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
@@ -68,7 +68,7 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 							: 'text-base-content/60 hover:text-base-content'
 					}`}
 			>
-				<BiCalendar size={12} />
+				<Icon name="calendar" size={12} />
 				<span>تقویم</span>
 			</button>
 
@@ -81,7 +81,7 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 							: 'text-base-content/60 hover:text-base-content'
 					}`}
 			>
-				<BiLogoGoogle size={12} />
+				<Icon name="googleCalendar" size={12} />
 				<span>گوگل‌کلندر</span>
 			</button>
 		</div>

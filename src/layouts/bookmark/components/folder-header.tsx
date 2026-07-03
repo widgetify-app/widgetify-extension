@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { IoMdHelp } from 'react-icons/io'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import Tooltip from '@/components/toolTip'
 import type { FolderPathItem } from '../types/bookmark.types'
 import { FolderPath } from './folder-path'
-import { LuX } from 'react-icons/lu'
+import { Icon } from '@/src/icons'
 
 interface FolderHeaderProps {
 	folderPath: FolderPathItem[]
@@ -34,7 +33,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 						size="xs"
 						className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
 					>
-						<IoMdHelp size={12} />
+						<Icon name="help" size={12} />
 					</Button>
 				</Tooltip>
 				<Tooltip content={'بستن'}>
@@ -43,7 +42,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 						size="xs"
 						className={`h-7 w-7 mr-1 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
 					>
-						<LuX size={12} />
+						<Icon name="close" size={12} />
 					</Button>
 				</Tooltip>
 			</div>
