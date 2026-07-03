@@ -70,6 +70,7 @@ export function HabitsContent() {
 		}
 
 		setArchiveConfirm(null)
+		setDetailHabitId(null)
 		showToast('عادت حذف شد.', 'success')
 		Analytics.event('habit_archived')
 		refetch()
