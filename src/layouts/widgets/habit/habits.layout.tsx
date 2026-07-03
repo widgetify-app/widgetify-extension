@@ -15,10 +15,10 @@ import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { WidgetContainer } from '../widget-container'
 import { HabitDetailModal } from './components/habit-detail.modal'
 import { HabitFormModal } from './components/habit-form.modal'
-import { HabitItem } from './components/habit.item'
+import { HabitItem } from './components/item/habit.item'
 import { BiPlus } from 'react-icons/bi'
 import { callEvent } from '@/common/utils/call-event'
-import { HabitItemSkeleton } from './components/habit-item.skeleton'
+import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
@@ -111,7 +111,7 @@ export function HabitsContent() {
 							>
 								<MdRefresh
 									className={`text-content opacity-50 hover:opacity-100 ${
-										isWaiting ? 'animate-spin' : ''
+										isLoading ? 'animate-spin' : ''
 									}`}
 								/>
 							</Button>
@@ -154,8 +154,6 @@ export function HabitsContent() {
 									habit={habit}
 									today={today}
 									onChanged={refetch}
-									onEdit={() => handleEditHabit(habit)}
-									onArchive={() => setArchiveConfirm(habit.id)}
 									onViewDetails={() => setDetailHabitId(habit.id)}
 								/>
 							))}
@@ -185,20 +183,24 @@ export function HabitsContent() {
 				colors={data?.colors || []}
 			/>
 
-			<HabitDetailModal
-				isOpen={!!detailHabitId}
-				habitId={detailHabitId}
-				onClose={() => onCloseDetailModal()}
-			/>
+			{!!detailHabitId && (
+				<HabitDetailModal
+					isOpen={true}
+					habitId={detailHabitId}
+					onClose={() => onCloseDetailModal()}
+					onEdit={(habit) => handleEditHabit(habit)}
+					onArchive={() => setArchiveConfirm(detailHabitId)}
+				/>
+			)}
 
 			<ConfirmationModal
 				isOpen={!!archiveConfirm}
 				onClose={() => setArchiveConfirm(null)}
 				onConfirm={handleConfirmArchive}
 				variant="danger"
-				title="آرشیو عادت"
-				message="آیا از آرشیو این عادت اطمینان داری؟"
-				confirmText="آرشیو"
+				title=""
+				message={`از بایگانی کردن این عادت اطمینان داری؟`}
+				confirmText="بله، بایگانی کن"
 				cancelText="انصراف"
 				isLoading={isArchiving}
 			/>
