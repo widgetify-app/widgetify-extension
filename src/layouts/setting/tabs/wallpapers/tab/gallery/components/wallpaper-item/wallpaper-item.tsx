@@ -6,6 +6,7 @@ import { useLazyLoad } from '../../../../hooks/use-lazy-load'
 import Tooltip from '@/components/toolTip'
 import { HoverPlayVideo } from '../hover-play-video'
 import { Icon } from '@/src/icons'
+import { UI } from '@/context/appearance.context'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -131,7 +132,7 @@ function WallpaperItemFu({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-gradient-to-t from-black/80 to-black/0 items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-black/80 to-black/0 items-center`}
 						>
 							{wallpaper.name && (
 								<div className="flex-1 text-xs font-medium text-white">
@@ -162,7 +163,7 @@ function WallpaperItemFu({
 											: 'مناسب حالت ظاهری ساده'
 									}
 								>
-									{wallpaper.extensionUI === 'SIMPLE' ? (
+									{wallpaper.extensionUI === UI.SIMPLE ? (
 										<Icon
 											name="simple_ui"
 											size={14}

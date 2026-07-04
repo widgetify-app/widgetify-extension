@@ -1,11 +1,11 @@
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { Icon } from '@/src/icons'
 
 export function UISelector() {
 	const { setUI, ui } = useAppearanceSetting()
-	function onClick(item: string) {
+	function onClick(item: UI) {
 		setUI(item as any)
 	}
 
@@ -31,7 +31,7 @@ export function UISelector() {
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
 					<ItemSelector
 						isActive={ui === 'ADVANCED'}
-						onClick={() => onClick('ADVANCED')}
+						onClick={() => onClick(UI.ADVANCED)}
 						label={
 							<div className="flex items-center gap-2">
 								<Icon
@@ -45,8 +45,8 @@ export function UISelector() {
 						description="همه‌چیز جلوی چشمته؛ ابزارها، ویجت‌ها و آزادی کامل برای چیدمان."
 					/>
 					<ItemSelector
-						isActive={ui === 'SIMPLE'}
-						onClick={() => onClick('SIMPLE')}
+						isActive={ui === UI.SIMPLE}
+						onClick={() => onClick(UI.SIMPLE)}
 						label={
 							<div className="flex items-center gap-2">
 								<Icon

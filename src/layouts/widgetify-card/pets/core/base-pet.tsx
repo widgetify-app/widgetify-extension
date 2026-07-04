@@ -9,7 +9,7 @@ import {
 	type PetDurations,
 	type Position,
 } from './pet-types'
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 export interface BasePetProps {
 	name: string
@@ -87,7 +87,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className={`absolute  hidden w-full overflow-hidden ${ui === 'SIMPLE' ? 'bottom-0.5 md:flex  h-8 -mr-2' : ' -bottom-2 md:flex  h-16'}`}
+			className={`absolute  hidden w-full overflow-hidden ${ui === UI.SIMPLE ? 'bottom-0.5 md:flex  h-8 -mr-2' : ' -bottom-2 md:flex  h-16'}`}
 			style={{
 				zIndex: 50,
 			}}

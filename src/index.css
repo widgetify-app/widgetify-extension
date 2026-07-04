@@ -144,20 +144,7 @@ input[type="color"]::-moz-color-swatch {
   scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
 
-/* Add this to your CSS file */
-.weather-forecast-slider {
-  padding-bottom: 25px !important;
-  /* Space for pagination bullets */
-}
 
-.weather-forecast-slider .swiper-slide {
-  width: auto;
-  max-width: 150px;
-}
-
-.weather-forecast-slider .swiper-pagination {
-  bottom: 0;
-}
 
 /* Custom scrollbar styles for info panel */
 .scrollbar-thin {
