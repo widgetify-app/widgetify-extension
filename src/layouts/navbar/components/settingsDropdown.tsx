@@ -45,7 +45,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				<Icon
 					name="settings"
 					size={14}
-					className="text-muted group-hover:!text-primary"
+					className="text-muted group-hover:text-primary!"
 				/>
 				<span>تنظیمات</span>
 			</button>
@@ -93,7 +93,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 				id="settings-button"
 			>
-				<Icon name="settings" size={15} />
+				<Icon name="settings" size={14} />
 			</div>
 			<ClickableTooltip
 				triggerRef={triggerRef}

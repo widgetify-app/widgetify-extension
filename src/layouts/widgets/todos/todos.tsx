@@ -248,7 +248,7 @@ export function TodosLayout() {
 								onClick={onRefresh}
 							>
 								<Icon
-									name="reload"
+									name="refresh"
 									className={`text-content opacity-50 hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
 								/>
 							</Button>

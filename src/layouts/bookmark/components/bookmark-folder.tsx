@@ -110,7 +110,7 @@ export function FolderBookmarkItem({
 							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
-						<Icon name="menuOption" size={12} />
+						<Icon name="menuOption" size={12} strokeWidth={2} />
 					</div>
 				)}
 			</button>

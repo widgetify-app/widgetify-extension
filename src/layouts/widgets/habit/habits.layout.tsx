@@ -110,7 +110,7 @@ export function HabitsContent() {
 								disabled={isWaiting}
 							>
 								<Icon
-									name="reload"
+									name="refresh"
 									className={`text-content opacity-50 hover:opacity-100 ${
 										isLoading ? 'animate-spin' : ''
 									}`}

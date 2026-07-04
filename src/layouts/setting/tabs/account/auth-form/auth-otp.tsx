@@ -244,7 +244,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 						ارسال دوباره کد؟
 					</span>
 					<Icon
-						name="reload"
+						name="refresh"
 						className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:rotate-180 group-hover:scale-110"
 					/>
 					{/* TODO: add timer component for resending */}

@@ -111,7 +111,7 @@ export function NoteNavigation() {
 								onClick={onRefresh}
 							>
 								<Icon
-									name="reload"
+									name="refresh"
 									className={`text-content opacity-50 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
 								/>
 							</Button>

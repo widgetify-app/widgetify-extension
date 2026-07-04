@@ -95,7 +95,7 @@ export function MiniAppRunnerHeader({
 						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-base-200/50 active:scale-95 group border-base-content/5 disabled:opacity-40"
 					>
 						<Icon
-							name="reload"
+							name="refresh"
 							size={18}
 							className={`transition-colors duration-200 text-base-content/60 group-hover:text-base-content ${isLoading || isConnecting ? 'animate-spin' : ''}`}
 						/>

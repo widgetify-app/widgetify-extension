@@ -129,7 +129,7 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 									className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 								>
 									<Icon
-										name="reload"
+										name="refresh"
 										size={12}
 										className="text-content opacity-70 hover:opacity-100"
 									/>
@@ -199,7 +199,7 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 							onClick={handleRefresh}
 						>
 							<Icon
-								name="reload"
+								name="refresh"
 								size={14}
 								className={isLoading ? 'animate-spin' : ''}
 							/>
