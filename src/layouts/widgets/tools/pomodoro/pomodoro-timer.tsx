@@ -337,13 +337,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 							<Icon name="cup" size={12} />
 						</Button>
 					</Tooltip>
-					<Tooltip content="تنظیمات">
+					<Tooltip content="شخصی سازی">
 						<Button
 							size="sm"
 							onClick={() => setShowSettings(!showSettings)}
 							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
-							<Icon name="settings" className="w-4 h-4" />
+							<Icon name="menuOption" className="w-4 h-4" />
 						</Button>
 					</Tooltip>
 				</div>
@@ -356,7 +356,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					<div className="flex justify-center gap-x-4">
 						<ControlButton
 							mode={'reset'}
-							icon={<Icon name="refresh" size={16} strokeWidth={1} />}
+							icon={<Icon name="reload" size={16} strokeWidth={1} />}
 							onClick={handleReset}
 						/>
 
@@ -369,7 +369,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						) : (
 							<ControlButton
 								mode={'play'}
-								icon={<Icon name="play" size={24} strokeWidth={1.4} />}
+								icon={<Icon name="play" size={24} />}
 								onClick={handleStart}
 							/>
 						)}

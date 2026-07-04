@@ -8,7 +8,6 @@ const allowedPaths = [
 	'/date/events',
 	'/news/rss',
 	'/currencies',
-	'/wallpapers',
 	'/contents',
 	'/extension/notifications',
 	'/extension/searchbox',

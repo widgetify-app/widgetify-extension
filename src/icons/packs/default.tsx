@@ -72,6 +72,7 @@ import {
 	TbApps,
 	TbNotebook,
 	TbArrowsRightLeft,
+	TbCloudUpload,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -119,7 +120,7 @@ import { AiOutlineDrag } from 'react-icons/ai'
 import { HiOutlineViewGridAdd } from 'react-icons/hi'
 import { BsFilterLeft, BsGenderAmbiguous } from 'react-icons/bs'
 import { IoPricetagOutline } from 'react-icons/io5'
-import { VscColorMode, VscMegaphone, VscRecordKeys } from 'react-icons/vsc'
+import { VscColorMode, VscMegaphone, VscPlay, VscRecordKeys } from 'react-icons/vsc'
 
 export const defaultIcons = {
 	home: HiHome,
@@ -152,7 +153,7 @@ export const defaultIcons = {
 	folder: FaFolder,
 	folderOpen: FaFolderOpen,
 	menuOption: GoKebabHorizontal,
-	uploadImage: FaUpload,
+	uploadImage: TbCloudUpload,
 	image: FaImage,
 	help: IoMdHelp,
 	outlineBookmark: HiOutlineBookmark,
@@ -211,7 +212,7 @@ export const defaultIcons = {
 	edit: TbEdit,
 	target: FiTarget,
 	logOut: FiLogOut,
-	play: FiPlay,
+	play: VscPlay,
 	globeAsia: FaGlobeAsia,
 	moon: FaMoon,
 	outlineNewspaper: HiOutlineNewspaper,
