@@ -7,7 +7,7 @@ import axios, {
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 
-export const API_URL = import.meta.env.VITE_API
+export const API_URL = import.meta.env.VITE_API || 'https://api.widgetify.ir'
 
 const VERSION = browser.runtime.getManifest().version
 
