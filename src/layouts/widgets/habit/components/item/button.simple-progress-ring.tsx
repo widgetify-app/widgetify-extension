@@ -26,7 +26,7 @@ export function SimpleProgressRing({
 				cy={center}
 				r={radius}
 				fill="none"
-				stroke="#d1d5db"
+				className={'stroke-base-200'}
 				strokeWidth={strokeWidth}
 				opacity={0.3}
 			/>
