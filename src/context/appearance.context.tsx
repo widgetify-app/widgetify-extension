@@ -9,7 +9,10 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
-type UI = 'SIMPLE' | 'ADVANCED'
+export enum UI {
+	SIMPLE = 'SIMPLE',
+	ADVANCED = 'ADVANCED',
+}
 export interface AppearanceData {
 	fontFamily: string
 	contentAlignment: 'center' | 'top'
@@ -31,7 +34,7 @@ interface AppearanceContextContextType extends AppearanceData {
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	fontFamily: 'Vazir',
-	ui: 'ADVANCED',
+	ui: UI.ADVANCED,
 	contentAlignment: 'top',
 }
 
@@ -96,7 +99,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 				(event.ctrlKey || event.metaKey)
 			) {
 				event.preventDefault()
-				setUI(settings.ui === 'ADVANCED' ? 'SIMPLE' : 'ADVANCED')
+				setUI(settings.ui === UI.ADVANCED ? UI.SIMPLE : UI.ADVANCED)
 			}
 		}
 

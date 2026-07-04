@@ -9,7 +9,7 @@ import {
 } from '@/context/widget-visibility.context'
 import { ItemSelector } from '../../../components/item-selector'
 import { WidgetSettingWrapper } from '../widget-settings-wrapper'
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 export function ManageWidgets() {
 	const { isAuthenticated } = useAuth()
@@ -17,14 +17,14 @@ export function ManageWidgets() {
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	return (
 		<WidgetSettingWrapper>
-			{ui === 'SIMPLE' && (
+			{ui === UI.SIMPLE && (
 				<div className="alert alert-warning rounded-2xl ring-4 ring-warning/10">
 					در حالت ظاهری ساده، امکان مدیریت ویجت ها نیست!
 				</div>
 			)}
 			<SectionPanel title="انتخاب ویجت‌ها برای نمایش" size="sm">
 				<div
-					className={`grid grid-cols-2 gap-2 ${ui === 'SIMPLE' ? 'pointer-events-none blur-xs' : ''}`}
+					className={`grid grid-cols-2 gap-2 ${ui === UI.SIMPLE ? 'pointer-events-none blur-xs' : ''}`}
 				>
 					{widgetItems.map((widget) => (
 						<WidgetItemComponent

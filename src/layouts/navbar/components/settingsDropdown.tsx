@@ -1,108 +1,142 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback } from 'react'
 import { callEvent } from '@/common/utils/call-event'
-import { ClickableTooltip } from '@/components/clickableTooltip'
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
+import { useAuth } from '@/context/auth.context'
+import { Dropdown } from '@/components/dropdown'
 
 interface SettingsProps {
 	setShowSettings: (value: boolean) => void
 }
 export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
+	const { isAuthenticated } = useAuth()
 	const { canReOrderWidget, toggleCanReOrderWidget, ui } = useAppearanceSetting()
-	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
 
 	const handleWidgetSettingsClick = useCallback(() => {
 		callEvent('openWidgetsSettings', { tab: null })
 		callEvent('closeAllDropdowns')
-		setIsOpen(false)
 	}, [])
 
 	const handleSettingsClick = useCallback(() => {
 		setShowSettings(true)
 		callEvent('closeAllDropdowns')
-		setIsOpen(false)
 	}, [])
 
 	const onClick = () => {
-		if (ui === 'SIMPLE') {
+		if (ui === UI.SIMPLE) {
 			showToast('در حالت ظاهری ساده، امکان تغییر و جابجایی ویجت ها نیست!', 'error')
 			return
 		}
 		toggleCanReOrderWidget()
-		setIsOpen(false)
+		callEvent('closeAllDropdowns')
 	}
 
-	const content = (
-		<div className="py-2 bg-content bg-glass min-w-[200px] rounded-2xl">
-			<button
-				onClick={(_e) => {
-					handleSettingsClick()
-				}}
-				className="flex items-center w-full gap-3 px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
-			>
-				<Icon
-					name="settings"
-					size={14}
-					className="text-muted group-hover:text-primary!"
-				/>
-				<span>تنظیمات</span>
-			</button>
+	const onClickToChangeUI = () => {
+		callEvent('ui_change', ui === 'SIMPLE' ? UI.ADVANCED : UI.SIMPLE)
+	}
 
-			<button
-				onClick={(_e) => {
-					handleWidgetSettingsClick()
-				}}
-				className="flex items-center justify-between w-full px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
-			>
-				<div className="flex items-center gap-3">
-					<Icon
-						name="appsPlus"
-						size={16}
-						className="text-muted group-hover:!text-primary"
-					/>
-					<span>مدیریت ویجت‌ها</span>
-				</div>
-			</button>
-
-			<div
-				className="relative px-3 py-2 border-t cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
-				onClick={() => onClick()}
-			>
-				<div className="flex items-center gap-3">
-					<Icon
-						name="outlineDrag"
-						size={16}
-						className="text-muted group-hover:!text-primary"
-					/>
-					{canReOrderWidget ? (
-						<span>غیرفعال‌سازی حالت جابجایی</span>
-					) : (
-						<span>حالت جابجایی ویجت ها</span>
-					)}
-				</div>
-			</div>
-		</div>
-	)
+	const onClickToOpenGallery = () => {
+		callEvent('openSettings', 'wallpapers')
+		callEvent('closeAllDropdowns')
+	}
 
 	return (
-		<>
-			<div
-				ref={triggerRef}
-				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-				id="settings-button"
-			>
-				<Icon name="settings" size={14} />
+		<Dropdown
+			trigger={
+				<div
+					ref={triggerRef}
+					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+					id="settings-button"
+				>
+					<Icon name="settings" size={14} />
+				</div>
+			}
+		>
+			<div className="py-2 bg-content bg-glass min-w-50 rounded-2xl">
+				<button
+					onClick={(_e) => {
+						handleSettingsClick()
+					}}
+					className="flex items-center w-full gap-3 px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
+				>
+					<Icon
+						name="settings"
+						size={14}
+						className="text-muted group-hover:text-primary!"
+					/>
+					<span>تنظیمات</span>
+				</button>
+
+				<button
+					onClick={(_e) => {
+						handleWidgetSettingsClick()
+					}}
+					className="flex items-center justify-between w-full px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
+				>
+					<div className="flex items-center gap-3">
+						<Icon
+							name="appsPlus"
+							size={14}
+							className="text-muted group-hover:text-primary!"
+						/>
+						<span>مدیریت ویجت‌ها</span>
+					</div>
+				</button>
+
+				<div
+					className="relative px-3 py-2 cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
+					onClick={() => onClickToOpenGallery()}
+				>
+					<div className="flex items-center gap-3">
+						<Icon
+							name={'wallpapers'}
+							size={14}
+							className="text-muted group-hover:!text-primary"
+						/>
+						تصویر زمینه‌ها
+					</div>
+				</div>
+
+				{isAuthenticated ? (
+					<div
+						className="relative px-3 py-2 cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
+						onClick={() => onClickToChangeUI()}
+					>
+						<div className="flex items-center gap-3">
+							<Icon
+								name={ui === UI.ADVANCED ? 'simple_ui' : 'advanced_ui'}
+								size={14}
+								className="text-muted group-hover:text-primary!"
+							/>
+							{ui === UI.SIMPLE ? (
+								<span> تغییر حالت ظاهری به پیشفرض</span>
+							) : (
+								<span>تغییر حالت ظاهری به ساده</span>
+							)}
+						</div>
+					</div>
+				) : null}
+
+				<div
+					className="relative px-3 py-2 border-t cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
+					onClick={() => onClick()}
+				>
+					<div className="flex items-center gap-3">
+						<Icon
+							name="outlineDrag"
+							size={14}
+							className="text-muted group-hover:!text-primary"
+						/>
+						{canReOrderWidget ? (
+							<span>غیرفعال‌سازی حالت جابجایی</span>
+						) : (
+							<span>حالت جابجایی ویجت ها</span>
+						)}
+					</div>
+				</div>
 			</div>
-			<ClickableTooltip
-				triggerRef={triggerRef}
-				isOpen={isOpen}
-				setIsOpen={setIsOpen}
-				content={content}
-				contentClassName="!p-0"
-				closeOnClickOutside={true}
-			/>
-		</>
+		</Dropdown>
 	)
 }

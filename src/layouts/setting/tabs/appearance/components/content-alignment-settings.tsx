@@ -1,10 +1,10 @@
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 export function ContentAlignmentSettings() {
 	const { contentAlignment, setContentAlignment, ui } = useAppearanceSetting()
-	if (ui === 'SIMPLE') return null
+	if (ui === UI.SIMPLE) return null
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3} size="sm">
 			<div className={`space-y-3`}>
