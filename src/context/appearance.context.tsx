@@ -1,7 +1,7 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getMultipleFromStorage, setToStorage } from '@/common/storage'
 import { useChangeFont, useChangeUI } from '@/services/hooks/extension/updateSetting.hook'
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
@@ -47,12 +47,16 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
 	useEffect(() => {
 		async function loadSettings() {
-			const storedSettings = await getFromStorage('appearance')
-			if (storedSettings) {
+			const { appearance, browserTitle } = await getMultipleFromStorage([
+				'appearance',
+				'browserTitle',
+			])
+			if (appearance) {
 				setSettings({
 					...DEFAULT_SETTINGS,
-					...storedSettings,
+					...appearance,
 				})
+				if (browserTitle) document.title = browserTitle.template
 			}
 
 			setIsInitialized(true)
@@ -70,11 +74,17 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			updateSetting('ui', newUI)
 		})
 
+		const eventForTitle = listenEvent('browser_title_change', (newTitle) => {
+			document.title = newTitle.template
+			if (newTitle.sync) setToStorage('browserTitle', newTitle)
+		})
+
 		loadSettings()
 
 		return () => {
 			eventForFont()
 			eventForUI()
+			eventForTitle()
 		}
 	}, [])
 
