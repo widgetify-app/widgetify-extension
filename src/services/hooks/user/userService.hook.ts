@@ -52,7 +52,6 @@ interface FetchedProfile {
 	isProfileCompleted: boolean
 	hasTodayMood: boolean
 	searchAutocompleteEnabled: boolean
-	isVip: boolean
 	isBirthdayToday: boolean
 	birthDateUrl: string
 }
