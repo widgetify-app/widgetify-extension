@@ -147,13 +147,13 @@ export function HabitFormModal({
 				<div className="grid grid-cols-2 gap-4">
 					<div>
 						<label className="block mb-1 text-xs text-muted">شکلک</label>
-						<div className="grid grid-cols-5 gap-1.5 py-1 h-20 max-h-20 overflow-y-auto pl-1">
+						<div className="grid grid-cols-5 gap-1.5 py-1 h-24 max-h-24 overflow-y-auto pl-1">
 							{icons.map((emoji) => (
 								<button
 									key={emoji.content}
 									type="button"
 									onClick={() => updateField('emoji', emoji.content)}
-									className={`flex items-center justify-center cursor-pointer w-8 h-8 text-base rounded-lg border transition-all ${
+									className={`flex items-center justify-center cursor-pointer w-8 h-8 text-base rounded-xl border transition-all ${
 										form.emoji === emoji.content
 											? 'border-primary bg-primary/10'
 											: 'border-content bg-base-300/40'
@@ -166,7 +166,7 @@ export function HabitFormModal({
 					</div>
 					<div>
 						<label className="block mb-1 text-xs text-muted">رنگ</label>
-						<div className="grid h-20 grid-cols-5 gap-1 py-1 overflow-y-auto max-h-20">
+						<div className="grid h-24 grid-cols-5 gap-1 py-1 overflow-y-auto max-h-24">
 							{colors.map((color) => (
 								<button
 									key={color}

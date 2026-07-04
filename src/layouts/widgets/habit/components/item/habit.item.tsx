@@ -66,10 +66,10 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 				</div>
 
 				<div className="flex-1 min-w-0">
-					<p className="text-xs font-semibold truncate text-content">
+					<p className="text-xs font-bold truncate text-content">
 						{habit.title}
 					</p>
-					<p className="mt-0.5 text-[10px] truncate text-muted">
+					<p className="mt-0.5 text-[9px] truncate text-muted">
 						{formatHabitGoal(habit)}
 					</p>
 				</div>
@@ -92,7 +92,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 									target={target}
 									color={color}
 									size={28}
-									strokeWidth={3.5}
+									strokeWidth={3}
 								/>
 							) : (
 								<SegmentedProgressRing
@@ -100,7 +100,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 									target={target}
 									color={color}
 									size={28}
-									strokeWidth={3.5}
+									strokeWidth={3}
 									gap={6}
 								/>
 							)}
@@ -109,9 +109,9 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 
 					<div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full">
 						{habit.today.isDone ? (
-							<Icon name="check" size={12} strokeWidth={3} />
+							<Icon name="check" size={12} strokeWidth={2.5} />
 						) : isSimpleHabit ? (
-							<Icon name="check" size={12} strokeWidth={3} />
+							<Icon name="check" size={12} strokeWidth={2.5} />
 						) : (
 							<Icon name="plus" size={12} strokeWidth={3} />
 						)}
