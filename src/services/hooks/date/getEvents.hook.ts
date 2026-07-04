@@ -24,7 +24,7 @@ export const useGetEvents = () => {
 }
 
 async function getEvents(): Promise<FetchedAllEvents> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<FetchedAllEvents>('/date/events')
 	return data ?? []
 }

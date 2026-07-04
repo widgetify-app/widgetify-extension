@@ -7,7 +7,7 @@ export interface CityResponse {
 }
 
 async function fetchCitiesList(): Promise<CityResponse[]> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get<CityResponse[]>('/cities/list')
 	return response.data
 }

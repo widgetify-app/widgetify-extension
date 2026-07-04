@@ -12,7 +12,7 @@ export interface PomodoroSession {
 export function useCreatePomodoroSession() {
 	return useMutation({
 		mutationFn: async (data: PomodoroSession) => {
-			const api = await getMainClient()
+			const api = getMainClient()
 			await api.post('/pomodoro/session', data)
 		},
 	})

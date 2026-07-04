@@ -26,7 +26,7 @@ export function useGetTopUsers(type: TopUsersType) {
 	return useQuery({
 		queryKey: ['pomodoro', 'top-users', type],
 		queryFn: async (): Promise<TopUsersResponse> => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const res = await client.get<TopUsersResponse>('/pomodoro/tops', {
 				params: { type },
 			})

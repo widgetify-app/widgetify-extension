@@ -48,7 +48,7 @@ export const useGetContents = () => {
 	return useQuery<FetchedContentsResponse>({
 		queryKey: ['contents'],
 		queryFn: async () => {
-			const api = await getMainClient()
+			const api = getMainClient()
 
 			const { data } = await api.get<FetchedContentsResponse>('/contents')
 			return data

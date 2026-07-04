@@ -16,7 +16,7 @@ export const useReorderTodos = () => {
 }
 
 export async function ReorderTodosApi(todos: TodoReorderPayload[]) {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.put('/todos/order', { todos })
 

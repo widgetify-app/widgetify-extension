@@ -61,7 +61,7 @@ export interface UserProfile extends FetchedProfile {
 }
 
 export async function fetchUserProfile(): Promise<UserProfile> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	try {
 		const response = await client.get<UserProfile>('/extension/@me')
 		await setToStorage('profile', { ...response.data, inCache: true })
@@ -101,7 +101,7 @@ export function useGetUserMoodStatus(enabled: boolean) {
 	return useQuery({
 		queryKey: ['userMoodStatus'],
 		queryFn: async () => {
-			const client = await getMainClient()
+			const client = getMainClient()
 
 			const response = await client.get('/users/@me/moods/status')
 
@@ -124,7 +124,7 @@ interface UpdateActivityResponse {
 async function updateActivity(
 	body: UpdateActivityParams
 ): Promise<UpdateActivityResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.put<UpdateActivityResponse>(
 		'/extension/@me/activity',
 		body
@@ -144,7 +144,7 @@ export function useUpdateActivity() {
 }
 
 export async function sendVerificationEmail(): Promise<void> {
-	const api = await getMainClient()
+	const api = getMainClient()
 	const response = await api.post('/auth/email/resend-verify')
 	return response.data
 }
@@ -157,7 +157,7 @@ export function useSendVerificationEmail() {
 }
 
 async function setCityToServer(cityId: string): Promise<void> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	await client.put('/users/@me/city', { cityId })
 }
 
@@ -183,7 +183,7 @@ export function useSetCity() {
 export function useChangePhoneRequest() {
 	return useMutation({
 		mutationFn: async (phone: string) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put<UpdateActivityResponse>(
 				'/users/@me/change-phone',
 				{ phone }
@@ -196,7 +196,7 @@ export function useChangePhoneRequest() {
 export function useChangePhoneVerify() {
 	return useMutation({
 		mutationFn: async (body: { phone: string; code: string }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put<UpdateActivityResponse>(
 				'/users/@me/change-phone/verify',
 				body
@@ -209,7 +209,7 @@ export function useChangePhoneVerify() {
 export function useChangeEmailRequest() {
 	return useMutation({
 		mutationFn: async (email: string) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put<UpdateActivityResponse>(
 				'/users/@me/change-email',
 				{ email }
@@ -222,7 +222,7 @@ export function useChangeEmailRequest() {
 export function useChangeEmailVerify() {
 	return useMutation({
 		mutationFn: async (body: { email: string; code: string }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put<UpdateActivityResponse>(
 				'/users/@me/change-email/verify',
 				body
@@ -237,7 +237,7 @@ export function useSetActivity() {
 
 	return useMutation({
 		mutationFn: async (body: { content: string; time: number }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put('/users/@me/activities/beta', body)
 			return response.data
 		},
@@ -251,7 +251,7 @@ export function useRemoveActivity() {
 
 	return useMutation({
 		mutationFn: async (body: { id: string }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.delete(`/users/@me/activities/${body.id}`)
 			return response.data
 		},

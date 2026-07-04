@@ -13,7 +13,7 @@ export const useGetUserInventory = (enabled: boolean, params?: MarketQueryParams
 export async function getUserInventory(
 	params?: MarketQueryParams
 ): Promise<UserInventoryResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const searchParams = new URLSearchParams()
 
 	if (params?.page) searchParams.append('page', params.page.toString())

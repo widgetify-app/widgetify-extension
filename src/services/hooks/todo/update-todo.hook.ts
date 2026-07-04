@@ -22,7 +22,7 @@ export const useUpdateTodo = (todoId: string | null) => {
 }
 
 export async function UpdateTodoApi(id: string, input: TodoUpdatePayload) {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.patch<{
 		data: {

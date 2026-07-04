@@ -6,7 +6,7 @@ export const useAddHabit = () => {
 	return useMutation({
 		mutationKey: ['addHabit'],
 		mutationFn: async (input: CreateHabitInput) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.post('/widgets/habits', input)
 			return response.data
 		},

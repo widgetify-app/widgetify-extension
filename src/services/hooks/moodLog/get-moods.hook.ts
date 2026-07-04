@@ -24,7 +24,7 @@ export const useGetMoods = (enabled: boolean, start: string, end: string) => {
 }
 
 async function getMoods(start: string, end: string): Promise<GetMoodsResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<GetMoodsResponse>(
 		`/users/@me/moods?start=${start}&end=${end}`
 	)

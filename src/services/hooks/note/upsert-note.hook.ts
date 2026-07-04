@@ -10,7 +10,7 @@ export const useUpsertNote = () => {
 }
 
 export async function upsertNote(input: NoteCreateInput): Promise<FetchedNote> {
-	const api = await getMainClient()
+	const api = getMainClient()
 
 	const response = await api.post('/notes', input)
 

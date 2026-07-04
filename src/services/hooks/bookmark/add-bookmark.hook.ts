@@ -24,7 +24,7 @@ export const useAddBookmark = () => {
 }
 
 export async function AddBookmarkApi(input: BookmarkCreationPayload) {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const formData = new FormData()
 

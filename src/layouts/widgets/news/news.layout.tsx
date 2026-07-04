@@ -59,7 +59,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			) : (
 				<WidgetContainer
 					background={enableBackground}
-					className={'flex flex-col gap-1 px-2 py-2 overflow-y-auto'}
+					className={'flex flex-col gap-1 px-2 py-2'}
 					style={{
 						scrollbarWidth: 'none',
 					}}

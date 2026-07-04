@@ -3,7 +3,7 @@ import { getMainClient } from '../../api'
 import type { FetchedNote, GetNotesResponse } from './note.interface'
 
 export async function getNotes(): Promise<FetchedNote[]> {
-	const api = await getMainClient()
+	const api = getMainClient()
 	const response = await api.get<GetNotesResponse>('/notes')
 	return response.data.notes
 }

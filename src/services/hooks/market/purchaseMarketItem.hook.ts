@@ -27,7 +27,7 @@ export const usePurchaseMarketItem = () => {
 export async function purchaseMarketItem(
 	params: PurchaseMarketItemParams
 ): Promise<PurchaseMarketItemResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.post<PurchaseMarketItemResponse>(
 		'/market/purchase',
 		params

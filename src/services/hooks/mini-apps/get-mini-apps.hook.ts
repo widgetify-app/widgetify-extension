@@ -11,7 +11,7 @@ export const useGetMiniApps = ({ limit = 20 }: GetMiniAppsParams = {}) => {
 	return useInfiniteQuery<MiniAppsListResponse>({
 		queryKey: ['mini-apps', limit],
 		queryFn: async ({ pageParam }) => {
-			const api = await getMainClient()
+			const api = getMainClient()
 			const response = await api.get<MiniAppsListResponse>('/mini-apps/beta/list', {
 				params: { page: pageParam, limit },
 			})

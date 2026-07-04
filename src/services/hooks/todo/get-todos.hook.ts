@@ -32,7 +32,7 @@ export const useGetTodos = (enabled: boolean, params?: Omit<GetTodosParams, 'pag
 }
 
 export async function getTodos(params?: GetTodosParams): Promise<GetTodosResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const queryParams = new URLSearchParams()
 
 	if (params?.page) queryParams.append('page', params.page.toString())

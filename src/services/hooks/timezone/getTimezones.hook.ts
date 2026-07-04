@@ -9,7 +9,7 @@ export interface FetchedTimezone {
 
 export async function getTimezones(): Promise<FetchedTimezone[]> {
 	try {
-		const api = await getMainClient()
+		const api = getMainClient()
 		const response = await api.get<FetchedTimezone[]>('/date/timezones')
 		return response.data
 	} catch {

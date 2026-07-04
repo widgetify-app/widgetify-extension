@@ -47,7 +47,7 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 	const fetchNetworkData = async () => {
 		setIsLoading(true)
 		try {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.get('/extension/@me/ip')
 			const data = response.data
 			setNetworkInfo((prev) => ({
@@ -70,7 +70,7 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 		}
 
 		try {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const start = Date.now()
 			const [err, _ok] = await safeAwait<AxiosError, any>(client.get('/'))
 			if (err) {

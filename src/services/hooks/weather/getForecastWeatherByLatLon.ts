@@ -8,7 +8,7 @@ interface Options {
 async function fetchForecastWeatherByLatLon(
 	options: Options
 ): Promise<FetchedForecast[]> {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.get<FetchedForecast[]>('/weather/forecast', {
 		params: {

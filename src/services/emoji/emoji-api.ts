@@ -7,7 +7,7 @@ interface EmojiResponse {
 
 export async function getEmojiList(): Promise<string[]> {
 	try {
-		const api = await getMainClient()
+		const api = getMainClient()
 
 		const emojisRes = await api.get<EmojiResponse>('/extension/emojis')
 

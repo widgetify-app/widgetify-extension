@@ -51,7 +51,7 @@ export interface NotificationItemResponse {
 }
 
 async function fetchNotifications(): Promise<NotificationItemResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<{ data: NotificationItemResponse }>(
 		'/extension/notifications'
 	)
@@ -71,7 +71,7 @@ export function useGetNotifications() {
 export function useNotifyAsSeen() {
 	return useMutation({
 		mutationFn: async (id: string) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			await client.put(`/notifications/${id}/seen`)
 		},
 		onSuccess: () => {

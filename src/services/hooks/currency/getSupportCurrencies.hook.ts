@@ -22,7 +22,7 @@ export const useGetSupportCurrencies = () => {
 }
 
 async function getSupportCurrencies(): Promise<SupportedCurrencies> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<SupportedCurrencies>('/currencies/supported-list')
 	return data
 }

@@ -9,6 +9,6 @@ export const useRemoveNote = () => {
 }
 
 export async function deleteNote(id: string) {
-	const api = await getMainClient()
+	const api = getMainClient()
 	await api.delete(`/notes/${id}`)
 }

@@ -6,7 +6,7 @@ export const useUpdateHabit = () => {
 	return useMutation({
 		mutationKey: ['updateHabit'],
 		mutationFn: async ({ id, input }: { id: string; input: UpdateHabitInput }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.patch(`/widgets/habits/${id}`, input)
 			return response.data
 		},

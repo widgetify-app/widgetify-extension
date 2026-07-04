@@ -5,7 +5,7 @@ interface WallpaperPreviewResponse {
 }
 
 export async function fetchWallpaperPreviewUrl(wallpaperId: string): Promise<string> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<{ data: WallpaperPreviewResponse }>(
 		`/wallpapers/${wallpaperId}/preview`
 	)
