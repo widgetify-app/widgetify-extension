@@ -11,7 +11,6 @@ const allowedPaths = [
 	'/contents',
 	'/extension/notifications',
 	'/extension/searchbox',
-	'/mini-apps',
 	'/searchbox',
 	'/weather',
 ]
