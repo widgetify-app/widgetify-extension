@@ -62,7 +62,7 @@ export function Connections() {
 
 		try {
 			if (selectedPlatform.connected) {
-				const api = await getMainClient()
+				const api = getMainClient()
 				await api.post(`/${selectedPlatform.id}/disconnect`)
 
 				setPlatforms((prev) =>
@@ -75,7 +75,7 @@ export function Connections() {
 
 				showToast(`اتصال به ${selectedPlatform.name} قطع شد.`, 'success')
 			} else {
-				const api = await getMainClient()
+				const api = getMainClient()
 				const response = await api.post(`/${selectedPlatform.id}/connect`)
 
 				window.location.href = response.data.url

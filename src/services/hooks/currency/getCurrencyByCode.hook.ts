@@ -38,7 +38,7 @@ export const useGetCurrencyByCode = (
 }
 
 async function getSupportCurrencies(currency: string): Promise<FetchedCurrency> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<FetchedCurrency>(`/currencies/${currency}`)
 	return data
 }

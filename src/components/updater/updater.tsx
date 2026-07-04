@@ -8,7 +8,7 @@ let updateInfo = null
 
 async function checkForUpdates() {
 	try {
-		const client = await getMainClient()
+		const client = getMainClient()
 		const { data } = await client.get('/extension/version')
 
 		const currentVersion = browser.runtime.getManifest().version

@@ -9,6 +9,6 @@ export const useRemoveTodo = (id: string) => {
 }
 
 export async function RemoveTodoApi(todoId: string) {
-	const client = await getMainClient()
+	const client = getMainClient()
 	await client.delete(`/todos/${todoId}`)
 }

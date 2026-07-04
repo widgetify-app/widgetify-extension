@@ -10,7 +10,7 @@ export const useGetTags = (enabled: boolean) => {
 	})
 }
 export async function getTags(): Promise<string[]> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<string[]>('/todos/@me/tags')
 	return data
 }

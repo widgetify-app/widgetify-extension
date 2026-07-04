@@ -22,7 +22,7 @@ const IGNORE_ENDPOINTS = [
 let instance: AxiosInstance | null = null
 let refreshPromise: Promise<string | null> | null = null
 
-export async function getMainClient(): Promise<AxiosInstance> {
+export function getMainClient(): AxiosInstance {
 	if (instance) {
 		return instance
 	}

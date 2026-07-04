@@ -17,7 +17,7 @@ export const useUpdateBookmark = () => {
 	return useMutation({
 		mutationKey: ['updateBookmark'],
 		mutationFn: async (input: BookmarkUpdatePayload): Promise<Bookmark> => {
-			const client = await getMainClient()
+			const client = getMainClient()
 
 			const formData = new FormData()
 

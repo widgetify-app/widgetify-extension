@@ -4,7 +4,7 @@ import { getMainClient } from '@/services/api'
 import type { FetchedWeather } from '../../../layouts/widgets/weather/weather.interface'
 
 async function fetchWeatherByLatLon(addForecast: boolean): Promise<FetchedWeather> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const params = new URLSearchParams()
 	if (addForecast) {
 		params.append('addForecast', 'true')

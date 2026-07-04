@@ -4,7 +4,7 @@ import type { FetchedCity } from '../../../layouts/widgets/weather/weather.inter
 
 async function fetchRelatedCities(city: string): Promise<FetchedCity[]> {
 	if (city.length > 1) {
-		const client = await getMainClient()
+		const client = getMainClient()
 
 		const response = await client.get<any>(`/weather/cities?city=${city}`)
 		return response.data

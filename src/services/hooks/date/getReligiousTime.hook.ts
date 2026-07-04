@@ -33,7 +33,7 @@ export const useReligiousTime = (op: Prop, enabled: boolean) => {
 	return useQuery({
 		queryKey: key,
 		queryFn: async () => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const { data: result } = await client.get<FetchedReligiousTimeData>(
 				'/date/owghat',
 				{

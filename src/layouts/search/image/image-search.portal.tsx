@@ -44,7 +44,7 @@ export function ImageSearchPortal({
 			const formData = new FormData()
 			formData.append('image', file)
 
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.post('/users/@me/upload/search', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',

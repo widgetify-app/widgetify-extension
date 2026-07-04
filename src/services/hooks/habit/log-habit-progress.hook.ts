@@ -12,7 +12,7 @@ export const useLogHabitProgress = () => {
 			id: string
 			input: LogHabitProgressInput
 		}) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const response = await client.put(`/widgets/habits/${id}/progress`, input)
 			return response.data
 		},

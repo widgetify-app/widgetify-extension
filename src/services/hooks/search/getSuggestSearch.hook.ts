@@ -10,10 +10,13 @@ interface SuggestSearchResponse {
 }
 
 async function fetchSuggestSearch(term: string): Promise<string[]> {
-	const client = await getMainClient()
-	const response = await client.get<SuggestSearchResponse>('/searchbox/suggest-search', {
-		params: { term },
-	})
+	const client = getMainClient()
+	const response = await client.get<SuggestSearchResponse>(
+		'/searchbox/suggest-search',
+		{
+			params: { term },
+		}
+	)
 	return (response.data?.data?.list ?? []).slice(0, MAX_SUGGESTIONS)
 }
 

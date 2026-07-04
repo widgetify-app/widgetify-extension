@@ -26,7 +26,7 @@ export const useGetHabits = (enabled: boolean, archived = false) => {
 }
 
 async function getHabits(archived: boolean): Promise<GetHabitsResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<{ data: GetHabitsResponse }>('/widgets/habits', {
 		params: { archived, limit: 50 },
 	})

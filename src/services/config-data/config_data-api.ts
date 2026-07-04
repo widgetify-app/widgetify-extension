@@ -10,7 +10,7 @@ export interface ExtensionConfigResponse {
 }
 
 export async function getConfigData(): Promise<ExtensionConfigResponse> {
-	const api = await getMainClient()
+	const api = getMainClient()
 
 	const result = await api.get<ExtensionConfigResponse>('/extension')
 

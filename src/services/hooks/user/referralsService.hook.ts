@@ -38,7 +38,7 @@ export interface GetReferralsParams {
 
 async function getReferrals(params: GetReferralsParams = {}): Promise<ReferralsResponse> {
 	const { page, limit } = params
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const queryParams = new URLSearchParams()
 	if (page !== undefined) queryParams.append('page', page.toString())
@@ -60,7 +60,7 @@ export function useGetReferrals(params: GetReferralsParams = {}) {
 }
 
 async function getOrCreateReferralCode(): Promise<{ referralCode: string }> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get<{ referralCode: string }>('/users/@me/rewards/code')
 	return response.data
 }

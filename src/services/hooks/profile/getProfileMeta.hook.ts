@@ -14,7 +14,7 @@ export interface ProfileMetaItem {
 async function fetchProfileMeta(
 	type: 'OCCUPATION' | 'INTEREST'
 ): Promise<ProfileMetaItem[]> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get<ProfileMetaItem[]>(`/profile-meta?type=${type}`)
 	return response.data
 }

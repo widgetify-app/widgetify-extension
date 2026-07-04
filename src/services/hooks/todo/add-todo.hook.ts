@@ -31,7 +31,7 @@ export const useAddTodoState = () => {
 }
 
 export async function AddTodoApi(input: TodoCreationPayload) {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.post<TodoCreationPayload>(`/todos`, input)
 

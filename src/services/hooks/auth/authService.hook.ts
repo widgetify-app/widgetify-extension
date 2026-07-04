@@ -50,7 +50,7 @@ interface WizardPayload {
 }
 
 async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signin', credentials)
 
 	if (response.headers?.refresh_token) {
@@ -61,7 +61,7 @@ async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 }
 
 async function signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signup', credentials)
 
 	if (response.headers?.refresh_token) {
@@ -72,7 +72,7 @@ async function signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
 }
 
 async function updateUserProfile(formData: FormData): Promise<any> {
-	const api = await getMainClient()
+	const api = getMainClient()
 	const response = await api.patch('/users/@me', formData, {
 		headers: {
 			'Content-Type': 'multipart/form-data',
@@ -82,7 +82,7 @@ async function updateUserProfile(formData: FormData): Promise<any> {
 }
 
 async function updateUsername(username: string): Promise<any> {
-	const api = await getMainClient()
+	const api = getMainClient()
 	const response = await api.put('/users/@me/username', {
 		username,
 	})
@@ -90,7 +90,7 @@ async function updateUsername(username: string): Promise<any> {
 }
 
 async function googleSignIn(credentials: GoogleAuthCredentials): Promise<AuthResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post<AuthResponse>('/auth/oauth/google', credentials)
 
 	if (response.headers?.refresh_token) {
@@ -101,7 +101,7 @@ async function googleSignIn(credentials: GoogleAuthCredentials): Promise<AuthRes
 }
 
 async function requestOtp(payload: OtpPayload): Promise<any> {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.post('/auth/otp', payload)
 
@@ -109,7 +109,7 @@ async function requestOtp(payload: OtpPayload): Promise<any> {
 }
 
 async function verifyOtp(payload: OtpVerifyPayload): Promise<AuthResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post('/auth/otp/verify', payload)
 
 	if (response.headers?.refresh_token) {
@@ -123,13 +123,13 @@ async function getAuthState(): Promise<{
 	content?: string
 	type?: 'warning' | 'info'
 }> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get('/auth/status')
 	return response.data.data
 }
 
 async function setupWizard(data: WizardPayload): Promise<any> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post('/users/@me/complete-wizard', data)
 	return response.data
 }

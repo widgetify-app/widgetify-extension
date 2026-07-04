@@ -17,7 +17,7 @@ export function useUpsertMoodLog() {
 	return useMutation({
 		mutationKey: ['upsertMoodLog'],
 		mutationFn: async (data: MoodLogCreateInput) => {
-			const api = await getMainClient()
+			const api = getMainClient()
 			const response = await api.put('/users/@me/moods', data)
 			return response.data
 		},

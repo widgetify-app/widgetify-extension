@@ -19,10 +19,10 @@ interface FriendRequestResponse {
 export interface FriendRequestError {
 	success: false
 	message:
-	| 'CANT_REQUEST_YOURSELF'
-	| 'USER_NOT_FOUND'
-	| 'FRIEND_REQUEST_ALREADY_SENT'
-	| 'FRIEND_REQUEST_ALREADY_EXISTS'
+		| 'CANT_REQUEST_YOURSELF'
+		| 'USER_NOT_FOUND'
+		| 'FRIEND_REQUEST_ALREADY_SENT'
+		| 'FRIEND_REQUEST_ALREADY_EXISTS'
 }
 
 export interface FriendUser {
@@ -117,14 +117,14 @@ interface FriendActionResponse {
 async function sendFriendRequest(
 	params: FriendRequestParams
 ): Promise<FriendRequestResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post<FriendRequestResponse>('/friends/requests', params)
 	return response.data
 }
 
 async function getFriends(params: GetFriendsParams): Promise<FriendsResponse> {
 	const { status, page, limit } = params
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const queryParams = new URLSearchParams()
 	queryParams.append('status', status)
@@ -138,7 +138,7 @@ async function getFriends(params: GetFriendsParams): Promise<FriendsResponse> {
 }
 
 async function getActivities(): Promise<ActivitiesResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get<{ data: ActivitiesResponse }>(
 		`/friends/activities/beta`
 	)
@@ -148,7 +148,7 @@ async function getActivities(): Promise<ActivitiesResponse> {
 async function handleFriendRequest(
 	params: FriendActionParams
 ): Promise<FriendActionResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.put<FriendActionResponse>(
 		`/friends/requests/${params.friendId}`,
 		{
@@ -159,7 +159,7 @@ async function handleFriendRequest(
 }
 
 async function removeFriend(friendId: string): Promise<FriendActionResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.delete<FriendActionResponse>(`/friends/${friendId}`)
 	return response.data
 }
@@ -231,7 +231,7 @@ export function useGetActivityReactions(id: string, enabled: boolean) {
 		queryKey: ['activity-reactions', id],
 		enabled,
 		queryFn: async (): Promise<GetActivityReactionResponse> => {
-			const client = await getMainClient()
+			const client = getMainClient()
 
 			const response = await client.get(`/friends/activities/beta/${id}/reactions`)
 			return response.data.data
@@ -245,7 +245,7 @@ export function useGetActivityReactions(id: string, enabled: boolean) {
 export function useUpsertActivityReaction() {
 	return useMutation({
 		mutationFn: async (input: { reactionKey: string; activityId: string }) => {
-			const client = await getMainClient()
+			const client = getMainClient()
 
 			await client.put(`/friends/activities/beta/${input.activityId}/reactions`, {
 				reaction: input.reactionKey,

@@ -30,7 +30,7 @@ export function SyncAccount() {
 
 async function getAll() {
 	try {
-		const client = await getMainClient()
+		const client = getMainClient()
 		const response = await client.get<{
 			wallpaper: Wallpaper
 			theme: Theme | null

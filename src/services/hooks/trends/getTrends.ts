@@ -37,7 +37,7 @@ export interface SearchBoxResponse {
 }
 
 async function fetchSearchbox(region = 'IR', limit = 10): Promise<SearchBoxResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 
 	const response = await client.get<SearchBoxResponse>('/searchbox', {
 		params: {

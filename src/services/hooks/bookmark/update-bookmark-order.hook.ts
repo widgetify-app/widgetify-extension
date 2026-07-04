@@ -10,7 +10,7 @@ export const useUpdateBookmarkOrder = () => {
 	return useMutation({
 		mutationKey: ['updateBookmarkOrder'],
 		mutationFn: async (input: BookmarkOrderUpdatePayload): Promise<void> => {
-			const client = await getMainClient()
+			const client = getMainClient()
 
 			await client.put('/bookmarks/order', input)
 		},

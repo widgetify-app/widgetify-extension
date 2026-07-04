@@ -39,7 +39,7 @@ export const useGetWallpaperCategoriesPaginated = (
 	return useQuery<CategoryResponse>({
 		queryKey: ['getWallpaperCategoriesPaginated', queryParams.toString()],
 		queryFn: async () => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const { data } = await client.get<CategoryResponse>(endpoint)
 			return data
 		},
@@ -50,7 +50,7 @@ export const useGetWallpaperCategoriesPaginated = (
 }
 
 async function getWallpaperCategories(): Promise<Category[]> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<Category[]>('/wallpapers/categories')
 	return data
 }
@@ -83,7 +83,7 @@ export const useGetWallpapers = (q: GetWallpaperQuery, enabled: boolean) => {
 	return useQuery<WallpaperResponse>({
 		queryKey: ['getWallpapers', queryParams.toString()],
 		queryFn: async () => {
-			const client = await getMainClient()
+			const client = getMainClient()
 			const { data } = await client.get<WallpaperResponse>(endpoint)
 			return data
 		},
@@ -126,7 +126,7 @@ async function getWallpapersByCategoryId(
 		queryParams.append('market', String(params.market))
 	}
 
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<WallpaperResponse>('/wallpapers', {
 		params: queryParams,
 	})
@@ -135,7 +135,7 @@ async function getWallpapersByCategoryId(
 
 export async function getRandomWallpaper(): Promise<Wallpaper | null> {
 	try {
-		const client = await getMainClient()
+		const client = getMainClient()
 		const { data } = await client.get<WallpaperResponse>('/wallpapers?random=true')
 		return data.wallpapers[0]
 	} catch {

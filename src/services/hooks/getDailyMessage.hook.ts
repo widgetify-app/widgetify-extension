@@ -7,16 +7,12 @@ export interface DailyMessageResponse {
 }
 
 async function fetchDailyMessage(): Promise<DailyMessageResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<DailyMessageResponse>('/extension/day/daily')
 	return data
 }
 
-export function useGetDailyMessage(
-	options: {
-		enabled?: boolean
-	} = {}
-) {
+export function useGetDailyMessage(options: { enabled?: boolean } = {}) {
 	return useQuery<DailyMessageResponse>({
 		queryKey: ['daily-message'],
 		queryFn: fetchDailyMessage,

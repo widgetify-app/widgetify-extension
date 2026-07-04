@@ -14,7 +14,7 @@ interface GetCoinPackagesParams {
 const getCoinPackages = async (
 	params: GetCoinPackagesParams
 ): Promise<GetCoinPackagesResponse> => {
-	const api = await getMainClient()
+	const api = getMainClient()
 	const response = await api.get('/market/packages/coins', {
 		params: {
 			limit: params.limit || 12,
@@ -42,7 +42,7 @@ export const useGetCoinPackages = (params: GetCoinPackagesParams = {}) => {
 const purchaseCoinPackage = async (
 	data: PurchaseCoinPackageInput
 ): Promise<PurchaseCoinPackageResponse> => {
-	const api = await getMainClient()
+	const api = getMainClient()
 
 	const response = await api.post('/market/packages/coins/purchase', data)
 

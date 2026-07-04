@@ -9,13 +9,13 @@ import type {
 export async function translateText(
 	request: TranslateRequestInput
 ): Promise<TranslateApiResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.post<TranslateSuccessResponse>('/translate', request)
 	return response.data
 }
 
 export async function getAvailableLanguages(): Promise<AvailableLanguagesResponse> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const response = await client.get<AvailableLanguagesResponse>(
 		'/translate/available-languages'
 	)

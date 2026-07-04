@@ -13,7 +13,7 @@ export const useGetHabitDetail = (habitId: string, enabled: boolean) => {
 }
 
 async function getHabitDetail(habitId: string): Promise<Habit> {
-	const client = await getMainClient()
+	const client = getMainClient()
 	const { data } = await client.get<{ data: Habit }>(`/widgets/habits/${habitId}`)
 	return data.data
 }

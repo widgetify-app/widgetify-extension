@@ -92,7 +92,7 @@ async function getGoogleCalendarEvents(
 	endDate?: string
 ): Promise<GoogleCalendarEvent[]> {
 	try {
-		const client = await getMainClient()
+		const client = getMainClient()
 		const { data } = await client.get<GoogleCalendarResponse>(
 			`/google/events?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate ?? '')}`
 		)
