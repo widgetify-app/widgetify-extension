@@ -40,7 +40,7 @@ export const AccountVerificationStatus = ({
 						</>
 					) : (
 						<>
-							<FiMail size={16} />
+							<Icon name="mail" size={16} />
 							ارسال ایمیل تایید
 						</>
 					)}
