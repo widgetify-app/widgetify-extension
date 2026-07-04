@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { MdRefresh } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { Button } from '@/components/button/button'
@@ -16,9 +15,9 @@ import { WidgetContainer } from '../widget-container'
 import { HabitDetailModal } from './components/habit-detail.modal'
 import { HabitFormModal } from './components/habit-form.modal'
 import { HabitItem } from './components/item/habit.item'
-import { BiPlus } from 'react-icons/bi'
 import { callEvent } from '@/common/utils/call-event'
 import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
+import { Icon } from '@/src/icons'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
@@ -110,7 +109,8 @@ export function HabitsContent() {
 								onClick={onRefresh}
 								disabled={isWaiting}
 							>
-								<MdRefresh
+								<Icon
+									name="refresh"
 									className={`text-content opacity-50 hover:opacity-100 ${
 										isLoading ? 'animate-spin' : ''
 									}`}
@@ -168,7 +168,7 @@ export function HabitsContent() {
 				onClick={handleAddHabit}
 				className="px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
 			>
-				<BiPlus className="w-4 h-4" />
+				<Icon name="plus" className="w-4 h-4" />
 				افزودن
 			</Button>
 

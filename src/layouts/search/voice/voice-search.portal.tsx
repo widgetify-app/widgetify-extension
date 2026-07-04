@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { MdClose, MdMic, MdSettings } from 'react-icons/md'
 import { useVoiceSearch } from './useVoiceSearch'
 import { Portal } from '@/components/portal/Portal'
+import { Icon } from '@/src/icons'
 
 interface VoiceSearchPortalProps {
 	onClose: () => void
@@ -69,7 +69,7 @@ export function VoiceSearchPortal({
 						onClick={onClose}
 						className="p-2 transition-colors rounded-full cursor-pointer hover:bg-base-200 text-base-content/60"
 					>
-						<MdClose size={22} />
+						<Icon name="close" size={22} />
 					</button>
 				</div>
 
@@ -91,7 +91,7 @@ export function VoiceSearchPortal({
 								onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
 								className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-base-200 rounded-xl transition-colors text-xs font-bold text-base-content/60"
 							>
-								<MdSettings size={18} />
+								<Icon name="settings" size={14} />
 								{languages.find((l) => l.code === selectedLanguage)?.name}
 							</button>
 
@@ -119,7 +119,8 @@ export function VoiceSearchPortal({
 							}
 							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-all ${isListening ? 'bg-error text-white shadow-lg shadow-error/20' : 'bg-primary text-white shadow-lg shadow-primary/20'}`}
 						>
-							<MdMic
+							<Icon
+								name="mic"
 								size={24}
 								className={isListening ? 'animate-pulse' : ''}
 							/>

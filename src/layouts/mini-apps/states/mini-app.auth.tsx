@@ -3,7 +3,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
 import { useAuth } from '@/context/auth.context'
 import type { MiniAppScopeEnum } from '@/services/hooks/mini-apps/mini-apps-interface'
-import { CiCircleAlert } from 'react-icons/ci'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	scopes: MiniAppScopeEnum[]
@@ -27,7 +27,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 			<div className="flex flex-col items-center w-full max-w-sm gap-6 p-6 text-center rounded-2xl bg-background">
 				<div className="flex items-center justify-center w-12 h-12 rounded-xl bg-warning/10">
 					<span className="text-2xl text-warning">
-						<CiCircleAlert />
+						<Icon name="alert" />
 					</span>
 				</div>
 

@@ -4,11 +4,11 @@ import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-List'
-import { FiUserPlus } from 'react-icons/fi'
 import { AddFriendBottomSheet } from './components/add-friend.bottomSheet'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { FriendRequestsButton } from './components/buttons/friend-requests.button'
 import { useAuth } from '@/context/auth.context'
+import { Icon } from '@/src/icons'
 
 export const FriendsLayout = () => {
 	const { user } = useAuth()
@@ -60,7 +60,7 @@ export const FriendsLayout = () => {
 							aria-label="افزودن دوست جدید"
 							type="button"
 						>
-							<FiUserPlus className="w-4 h-4" />
+							<Icon name="usersPlus" className="w-4 h-4" />
 							<span className="hidden text-sm font-medium sm:inline">
 								افزودن دوست
 							</span>

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { LuCircleUser } from 'react-icons/lu'
 import { listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
 import Tooltip from '@/components/toolTip'
 import { useAuth } from '@/context/auth.context'
 import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 import { WelcomeWizard } from '@/components/welcome-wizard'
+import { Icon } from '@/src/icons'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {
@@ -69,7 +69,7 @@ export function ProfileNav() {
 						id="profile-and-friends-list"
 						onClick={() => handleProfileClick()}
 					>
-						<LuCircleUser size={15} />
+						<Icon name="user" size={15} />
 					</div>
 				</Tooltip>
 			) : (

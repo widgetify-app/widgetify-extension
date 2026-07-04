@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
-import { MdDragIndicator } from 'react-icons/md'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { CurrencyColorMode } from '@/context/currency.context'
@@ -13,6 +11,7 @@ import {
 import { GetPrice } from '../utils/getPrice'
 import { CurrencyModalComponent } from './currency-modal'
 import { showToast } from '@/common/toast'
+import { Icon } from '@/src/icons'
 
 interface CurrencyBoxProps {
 	code: string
@@ -108,7 +107,7 @@ export const CurrencyBox = ({
 								{...dragHandle}
 								className="flex items-center justify-center w-4 h-4 transition-colors cursor-grab active:cursor-grabbing text-muted hover:bg-primary/10"
 							>
-								<MdDragIndicator size={14} />
+								<Icon name="dragIndicator" size={14} />
 							</div>
 						)}
 						<div className="relative">
@@ -146,9 +145,9 @@ export const CurrencyBox = ({
 						{priceChange !== 0 && (
 							<span className={`text-xs ${priceChangeColor}`}>
 								{priceChange > 0 ? (
-									<FaArrowUpLong className="inline" />
+									<Icon name="upLong" className="inline" />
 								) : (
-									<FaArrowDownLong className="inline" />
+									<Icon name="downLong" className="inline" />
 								)}
 							</span>
 						)}

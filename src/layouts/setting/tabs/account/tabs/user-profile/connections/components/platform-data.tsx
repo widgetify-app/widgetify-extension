@@ -1,4 +1,3 @@
-import { FaGithub } from 'react-icons/fa'
 import type { Platform } from './platform-config'
 import GoogleCalendar from '@/assets/google-calendar.png'
 
@@ -22,15 +21,5 @@ export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 		],
 		permissions: ['مشاهده تقویم (سرویس گوگل کلندر)'],
 		isOptionalPermissions: true,
-	},
-	{
-		id: 'github',
-		name: 'گیت‌هاب',
-		description: 'اتصال به گیت‌هاب برای مشاهده مخازن، کامیت‌ها و فعالیت‌های پروژه',
-		bgColor: 'bg-gray-800',
-		isActive: false,
-		icon: <FaGithub size={20} className="text-white" />,
-		features: [],
-		permissions: [],
 	},
 ]

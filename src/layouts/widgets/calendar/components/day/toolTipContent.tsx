@@ -1,5 +1,3 @@
-import { FaGlobeAsia } from 'react-icons/fa'
-import { FaMoon } from 'react-icons/fa6'
 import { useState } from 'react'
 import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
 import {
@@ -22,7 +20,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constant/moods'
-import { TbMoodHappy } from 'react-icons/tb'
+import { Icon } from '@/src/icons'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
@@ -150,13 +148,13 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			<div className="p-2 space-y-2">
 				<div className="flex items-center justify-between px-1 text-xs text-muted">
 					<div className="flex items-center gap-1">
-						<FaMoon size={10} />
+						<Icon name="moon" size={10} />
 						<span>
 							{hijriDate} {hijriMonthName}
 						</span>
 					</div>
 					<div className="flex items-center gap-1">
-						<FaGlobeAsia size={10} />
+						<Icon name="globeAsia" size={10} />
 						<span>{gregorian}</span>
 					</div>
 				</div>
@@ -164,7 +162,6 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				{selectedDate.isBefore() && (
 					<div className="p-1.5 rounded-2xl bg-content">
 						<div className="flex items-center gap-1 mb-1.5 px-0.5">
-							<TbMoodHappy className="text-secondary" size={12} />
 							<span className="text-[10px] font-medium text-content">
 								حس و حال{' '}
 								{jalaliDay === today.format('dddd') ? 'امروز' : 'روز'}

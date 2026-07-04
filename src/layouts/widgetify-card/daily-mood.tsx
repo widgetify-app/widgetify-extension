@@ -9,10 +9,9 @@ import {
 	type MoodType,
 	useUpsertMoodLog,
 } from '@/services/hooks/moodLog/upsert-moodLog.hook'
-import { translateError } from '@/utils/translate-error'
+import { Icon } from '@/src/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
-import { HiXMark } from 'react-icons/hi2'
 
 export function DailyMoodNotification() {
 	const queryClient = useQueryClient()
@@ -90,7 +89,7 @@ export function DailyMoodNotification() {
 							onRemoveNotif()
 						}}
 					>
-						<HiXMark size={14} />
+						<Icon name="close" size={14} />
 					</button>
 				</div>
 				<div className="flex justify-around w-full h-10 gap-1 mt-2">

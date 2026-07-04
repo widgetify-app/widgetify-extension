@@ -5,8 +5,8 @@ import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { FiUserPlus, FiAlertCircle } from 'react-icons/fi'
 import Modal from '@/components/modal'
+import { Icon } from '@/src/icons'
 
 interface AddFriendBottomSheetProps {
 	isOpen: boolean
@@ -80,7 +80,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				<div className="flex items-center justify-center">
 					<div className="relative mb-2">
 						<div className="flex items-center justify-center w-16 h-16 rounded-xl bg-content">
-							<FiUserPlus className="text-content" size={26} />
+							<Icon name="usersPlus" className="text-content" size={26} />
 						</div>
 						<div className="absolute inset-0 rounded-full bg-content blur-xl opacity-40" />
 					</div>
@@ -94,7 +94,10 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 
 				{!canSendRequest && (
 					<div className="flex items-start gap-3 p-4 border rounded-xl bg-yellow-500/10 border-yellow-500/20">
-						<FiAlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+						<Icon
+							name="alert"
+							className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5"
+						/>
 						<p className="text-sm leading-relaxed text-warning">
 							برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
 							پروفایل تنظیم کنید.
@@ -125,7 +128,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 
 						{translatedError && (
 							<p className="flex items-center gap-1 text-sm text-red-500">
-								<FiAlertCircle className="w-4 h-4" />
+								<Icon name="alert" className="w-4 h-4" />
 								{translatedError}
 							</p>
 						)}

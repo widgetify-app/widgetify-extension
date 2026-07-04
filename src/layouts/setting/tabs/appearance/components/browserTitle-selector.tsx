@@ -1,6 +1,5 @@
 import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
-import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
@@ -12,6 +11,7 @@ import { useChangeBrowserTitle } from '@/services/hooks/extension/updateSetting.
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
+import { Icon } from '@/src/icons'
 
 interface BrowserTitle {
 	id: string
@@ -116,7 +116,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5  text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200  rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
-						<FiShoppingBag size={18} />
+						<Icon name="shoppingBag" size={18} />
 						<span>فروشگاه</span>
 					</div>
 				</div>

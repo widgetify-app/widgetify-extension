@@ -1,4 +1,3 @@
-import { FiCheck, FiAlertCircle } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
@@ -8,6 +7,7 @@ import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketIte
 import { translateError } from '@/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './renderPreview'
+import { Icon } from '@/src/icons'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
@@ -101,7 +101,10 @@ export function MarketItemPurchaseModal({
 
 				{!canAfford && (
 					<div className="flex items-start gap-2.5 px-3 py-2.5 rounded-2xl border border-error/20 bg-error/5">
-						<FiAlertCircle className="w-4 h-4 mt-0.5 text-error flex-shrink-0" />
+						<Icon
+							name="alert"
+							className="w-4 h-4 mt-0.5 text-error flex-shrink-0"
+						/>
 						<div>
 							<p className="text-xs font-medium text-error">
 								موجودی ناکافی
@@ -135,7 +138,7 @@ export function MarketItemPurchaseModal({
 								: 'bg-base-300 text-muted cursor-not-allowed'
 						}`}
 					>
-						<FiCheck size={15} className="ml-1" />
+						<Icon name="check" size={15} className="ml-1" />
 						تایید خرید
 					</Button>
 				</div>

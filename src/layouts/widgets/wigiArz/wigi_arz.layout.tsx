@@ -11,7 +11,6 @@ import {
 	SortableContext,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { FiDollarSign } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
@@ -83,7 +82,7 @@ export function WigiArzLayout({
 									'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
 								}
 							>
-								<FiDollarSign className="text-content" size={24} />
+								💲
 							</div>
 							<p className="mt-1 text-center text-content">
 								ارزهای مورد نظر خود را اضافه کنید
@@ -132,7 +131,7 @@ export function WigiArzLayout({
 					className={'flex flex-col gap-1'}
 				>
 					<ArzHeader
-						title="ویجی‌ ارز"
+						title="ویجی ارز"
 						onSettingsClick={() => onSettingClick()}
 					/>
 
@@ -147,7 +146,7 @@ export function WigiArzLayout({
 									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
 								}
 							>
-								<FiDollarSign className="text-content" size={24} />
+								💲
 							</div>
 							<p className="text-center text-content">
 								ارزهای مورد نظر خود را اضافه کنید.

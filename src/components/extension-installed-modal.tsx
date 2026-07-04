@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { FaExternalLinkAlt } from 'react-icons/fa'
 import keepItImage from '@/assets/keep-it.png'
 import { Button } from './button/button'
 import Checkbox from './checkbox'
 import Modal from './modal'
+import { Icon } from '../icons'
 
 interface ExtensionInstalledModalProps {
 	show: boolean
@@ -149,7 +149,7 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 					rel="noopener noreferrer"
 					className="flex items-center justify-center font-medium underline text-primary gap-0.5 mb-2"
 				>
-					<FaExternalLinkAlt />
+					<Icon name="externalLink" />
 					سیاست کامل حریم خصوصی
 				</a>
 			</div>

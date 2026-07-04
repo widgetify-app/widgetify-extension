@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import { FaCoins, FaPaintBrush } from 'react-icons/fa'
-import { FaPhotoFilm } from 'react-icons/fa6'
 import { useAuth } from '@/context/auth.context'
 import { MarketWallpaper } from './marketWallpaper'
 import { MarketOtherItems } from './other-items'
@@ -9,24 +7,25 @@ import Analytics from '@/analytics'
 import { TabNavigation } from '@/components/tab-navigation'
 import { MarketCoins } from './market-coins'
 import { listenEvent } from '@/common/utils/call-event'
+import { Icon } from '@/src/icons'
 
 const tabs = [
 	{
 		id: 'other',
 		label: 'شخصی‌سازی',
-		icon: <FaPaintBrush />,
+		icon: <Icon name="brush" />,
 		element: <MarketOtherItems />,
 	},
 	{
 		id: 'wallpapers',
 		label: 'تصویر زمینه‌ها',
-		icon: <FaPhotoFilm />,
+		icon: <Icon name="photoFilm" />,
 		element: <MarketWallpaper />,
 	},
 	{
 		id: 'coins',
 		label: 'خرید ویج‌‌کوین',
-		icon: <FaCoins />,
+		icon: <Icon name="coin" />,
 		element: <MarketCoins />,
 	},
 ]

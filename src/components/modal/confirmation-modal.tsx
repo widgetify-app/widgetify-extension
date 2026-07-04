@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { FiAlertTriangle, FiCheck, FiTrash2 } from 'react-icons/fi'
 import { Button } from '../button/button'
 import Modal from '../modal'
 import { IconLoading } from '../loading/icon-loading'
+import { Icon } from '@/src/icons'
 
 interface ConfirmationModalProps {
 	isOpen: boolean
@@ -20,21 +20,21 @@ interface ConfirmationModalProps {
 
 const variantConfig = {
 	danger: {
-		icon: <FiTrash2 size={24} />,
+		icon: <Icon name="trash" size={24} />,
 		iconBg: 'bg-error/10',
 		iconColor: 'text-error',
 		confirmBg: 'bg-error hover:bg-error/90',
 		confirmText: 'text-white',
 	},
 	warning: {
-		icon: <FiAlertTriangle size={24} />,
+		icon: <Icon name="alert" size={24} />,
 		iconBg: 'bg-warning/10',
 		iconColor: 'text-warning',
 		confirmBg: 'bg-warning hover:bg-warning/90',
 		confirmText: 'text-white',
 	},
 	info: {
-		icon: <FiCheck size={24} />,
+		icon: <Icon name="info" size={24} />,
 		iconBg: 'bg-info/10',
 		iconColor: 'text-info',
 		confirmBg: 'bg-info/80 hover:bg-info/90',

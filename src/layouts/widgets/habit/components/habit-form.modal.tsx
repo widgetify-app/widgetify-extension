@@ -24,9 +24,9 @@ import {
 import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
 import { translateError } from '@/utils/translate-error'
 import Tooltip from '@/components/toolTip'
-import { BiChevronDown, BiInfoCircle } from 'react-icons/bi'
 import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Icon } from '@/src/icons'
 
 interface HabitFormModalProps {
 	isOpen: boolean
@@ -195,7 +195,7 @@ export function HabitFormModal({
 							animate={{ rotate: showAdvanced ? 180 : 0 }}
 							transition={{ duration: 0.2 }}
 						>
-							<BiChevronDown className="w-4 h-4 text-muted" />
+							<Icon name="chevronDown" className="w-4 h-4 text-muted" />
 						</motion.div>
 					</button>
 
@@ -216,8 +216,8 @@ export function HabitFormModal({
 													واحد اندازه‌گیری
 												</label>
 												<Tooltip content="واحد شمارش کار شما چیه؟ مثلاً 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
-													<BiInfoCircle
-														name="info-circle"
+													<Icon
+														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
 													/>
 												</Tooltip>
@@ -240,8 +240,8 @@ export function HabitFormModal({
 													نحوه رسیدن به هدف
 												</label>
 												<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقاً همین مقدار؟">
-													<BiInfoCircle
-														name="info-circle"
+													<Icon
+														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
 													/>
 												</Tooltip>
@@ -281,8 +281,8 @@ export function HabitFormModal({
 													مقدار هدف
 												</label>
 												<Tooltip content="یعنی می‌خوای در نهایت چقدر از اون واحد رو انجام بدی؟ مثلا اگه واحد رو 'لیوان' انتخاب کردی و اینجا عدد 8 رو بزنی، یعنی هدفت نوشیدن 8 لیوان آبه.">
-													<BiInfoCircle
-														name="info-circle"
+													<Icon
+														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
 													/>
 												</Tooltip>
@@ -306,8 +306,8 @@ export function HabitFormModal({
 													تکرار برنامه
 												</label>
 												<Tooltip content="تعیین کن که می‌خوای این عادت رو به صورت روزانه پیگیری کنی یا قصد داری فقط در روزهای خاصی از هفته یا ماه انجامش بدی؟">
-													<BiInfoCircle
-														name="info-circle"
+													<Icon
+														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
 													/>
 												</Tooltip>
@@ -335,8 +335,8 @@ export function HabitFormModal({
 												<Tooltip
 													content={`توی هر ${form.frequency === HabitFrequency.WEEKLY ? 'هفته' : 'ماه'}، چند بار می‌خوای این کار رو تکرار کنی؟`}
 												>
-													<BiInfoCircle
-														name="info-circle"
+													<Icon
+														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
 													/>
 												</Tooltip>

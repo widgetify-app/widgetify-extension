@@ -1,7 +1,4 @@
 import { type JSX, useCallback, useEffect, useState } from 'react'
-import { HiX } from 'react-icons/hi'
-import { FiChevronDown } from 'react-icons/fi'
-import { AiOutlineDrag } from 'react-icons/ai'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
@@ -11,14 +8,6 @@ import { ProfileNav } from './profile/profile'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
-import {
-	HiGlobeAlt,
-	HiHome,
-	HiOutlineGlobeAlt,
-	HiOutlineHome,
-	HiOutlineSquares2X2,
-	HiSquares2X2,
-} from 'react-icons/hi2'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
@@ -27,6 +16,7 @@ import Tooltip from '@/components/toolTip'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils'
 import { useBirthdayConfetti } from '@/hooks/useBirthdayConfetti'
+import { Icon } from '@/src/icons'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -35,21 +25,21 @@ const WIDGETIFY_URLS = {
 const tabs = [
 	{
 		id: Page.Home,
-		icon: <HiOutlineHome />,
-		activeIcon: <HiHome />,
+		icon: <Icon name="outlineHome" />,
+		activeIcon: <Icon name="home" />,
 		label: 'ویجتیفای',
 	},
 
 	{
 		id: Page.Explorer,
-		icon: <HiOutlineGlobeAlt size={22} />,
-		activeIcon: <HiGlobeAlt size={22} />,
+		icon: <Icon name="outlineGlobe" size={22} />,
+		activeIcon: <Icon name="globe" size={22} />,
 		label: 'کاوش',
 	},
 	{
 		id: Page.MiniApps,
-		icon: <HiOutlineSquares2X2 size={22} />,
-		activeIcon: <HiSquares2X2 size={22} />,
+		icon: <Icon name="outlineSquares2X2" size={22} />,
+		activeIcon: <Icon name="squares2X2" size={22} />,
 		label: 'برنامک‌ها',
 	},
 ]
@@ -136,10 +126,11 @@ export function NavbarLayout(): JSX.Element {
 	return (
 		<>
 			{canReOrderWidget && (
-				<div className="fixed z-[100] transform -translate-x-1/2 top-4 left-1/2 w-max">
+				<div className="fixed transform -translate-x-1/2 z-100 top-4 left-1/2 w-max">
 					<div className="px-4 py-2 border shadow-2xl shadow-warning bg-warning border-warning rounded-2xl">
 						<div className="flex items-center gap-3 text-xs font-bold text-warning-content">
-							<AiOutlineDrag
+							<Icon
+								name="outlineDrag"
 								size={16}
 								className="animate-bounce text-warning"
 							/>
@@ -148,7 +139,7 @@ export function NavbarLayout(): JSX.Element {
 								onClick={() => toggleCanReOrderWidget()}
 								className="transition-colors hover:text-red-400"
 							>
-								<HiX size={16} />
+								<Icon name="close" size={16} />
 							</button>
 						</div>
 					</div>
@@ -206,7 +197,7 @@ export function NavbarLayout(): JSX.Element {
 								onClick={() => onToggleNavbar()}
 								className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
 							>
-								<FiChevronDown size={15} />
+								<Icon name="chevronDown" size={15} />
 							</button>
 						</Tooltip>
 						<BlurModeButton />

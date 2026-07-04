@@ -1,7 +1,4 @@
 import moment from 'jalali-moment'
-import { BsGenderAmbiguous } from 'react-icons/bs'
-import { FiCalendar, FiMail, FiPhone, FiUser } from 'react-icons/fi'
-import { LuAtSign, LuBriefcase, LuCamera, LuHeart } from 'react-icons/lu'
 import { AvatarComponent } from '@/components/avatar.component'
 import { Button } from '@/components/button/button'
 import { OfflineIndicator } from '@/components/offline-indicator'
@@ -10,10 +7,7 @@ import type React from 'react'
 import { Chip } from '@/components/chip.component'
 import { AddPhoneModal } from './modals/add-phone.modal'
 import { useAuth } from '@/context/auth.context'
-import { IoMdAddCircle } from 'react-icons/io'
 import Analytics from '@/analytics'
-import { FaTreeCity } from 'react-icons/fa6'
-import { TbEdit } from 'react-icons/tb'
 import { ChangeGenderModal } from './modals/edit-gender'
 import { ChangeBirthdayModal } from './modals/edit-birthday'
 import { ChangeOccupationModal } from './modals/edit-occupation'
@@ -23,6 +17,7 @@ import { ChangeCityModal } from './modals/edit-city'
 import { EditAvatarModal } from './modals/edit.avatar'
 import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
+import { Icon } from '@/src/icons'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE') return { label: 'آقا هستم' }
@@ -90,7 +85,7 @@ export const ProfileDisplay = () => {
 							onClick={() => onClick()}
 							className="absolute p-0.5 cursor-pointer text-white transition-all rounded-full shadow-xl -bottom-1 right-1 bg-primary hover:scale-110 active:scale-95"
 						>
-							<LuCamera size={12} />
+							<Icon name="cameraPlus" size={12} />
 						</button>
 						{showEditBadge('avatar') && (
 							<span className="absolute w-2 h-2 rounded-full right-4 -bottom-0.5 bg-error animate-pulse"></span>
@@ -120,7 +115,7 @@ export const ProfileDisplay = () => {
 
 			<div className="overflow-hidden border border-base-300/50 rounded-2xl bg-base-100/30">
 				<DisplayRow
-					icon={<FiUser className="text-primary" />}
+					icon={<Icon name="user" className="text-primary" />}
 					label="نام و نام خانوادگی"
 					value={user?.name}
 					editable
@@ -130,7 +125,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<LuAtSign className="text-primary/60" />}
+					icon={<Icon name="atSign" className="text-primary/60" />}
 					label="نام کاربری (یوزرنیم)"
 					value={user?.username}
 					editable
@@ -141,7 +136,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<FiMail className="text-secondary" />}
+					icon={<Icon name="mail" className="text-secondary" />}
 					label="ایمیل"
 					value={user?.email}
 					isLtr
@@ -152,7 +147,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<FiPhone className="text-secondary" />}
+					icon={<Icon name="phone" className="text-secondary" />}
 					label="شماره موبایل"
 					value={
 						user?.phone ? (
@@ -164,7 +159,7 @@ export const ProfileDisplay = () => {
 								onClick={() => clickToShow()}
 							>
 								<div className="flex items-center gap-1">
-									<IoMdAddCircle />
+									<Icon name="outlineAddCircle" />
 									افزودن شماره موبایل
 								</div>
 							</Button>
@@ -177,7 +172,7 @@ export const ProfileDisplay = () => {
 				<DisplayRow
 					icon={
 						<div className="text-accent">
-							<BsGenderAmbiguous />
+							<Icon name="gender" />
 						</div>
 					}
 					label="جنسیت"
@@ -190,7 +185,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<FiCalendar className="text-warning" />}
+					icon={<Icon name="calendar" className="text-warning" />}
 					label="تاریخ تولد"
 					value={formatJalaliDate(user?.birthDate)}
 					showBadge={showEditBadge('birthDate')}
@@ -201,7 +196,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<LuBriefcase className="text-info" />}
+					icon={<Icon name="briefcase" className="text-info" />}
 					label="شغل"
 					value={user?.occupation?.label}
 					showBadge={showEditBadge('occupation')}
@@ -212,7 +207,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<LuHeart className="text-error" />}
+					icon={<Icon name="outlineHeart" className="text-error" />}
 					label="علایق"
 					editable
 					value={
@@ -236,7 +231,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<FaTreeCity className="text-primary/50" />}
+					icon={<Icon name="treeCity" className="text-primary/50" />}
 					label="شهر"
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}
@@ -321,7 +316,7 @@ const DisplayRow = ({
 						className="absolute p-1 -translate-y-1/2 cursor-pointer text-muted -right-4 top-1/2 active:scale-95"
 						onClick={onClickEdit}
 					>
-						<TbEdit />
+						<Icon name="edit" />
 					</div>
 				)}
 			</div>

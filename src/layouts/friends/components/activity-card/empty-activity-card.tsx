@@ -1,5 +1,5 @@
 import { AvatarComponent } from '@/components/avatar.component'
-import { RiQuillPenAiLine } from 'react-icons/ri'
+import { Icon } from '@/src/icons'
 
 interface EmptyActivityCardProps {
 	avatar: string
@@ -26,7 +26,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 						`}
 						>
 							<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none">
-								<RiQuillPenAiLine className="w-5 h-5" />
+								<Icon name="penAI" className="w-5 h-5" />
 							</div>
 						</div>
 

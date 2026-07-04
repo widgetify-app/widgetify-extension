@@ -1,6 +1,5 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { FiCheckCircle, FiCoffee, FiRefreshCw } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { SelectBox } from '@/components/selectbox/selectbox'
@@ -15,10 +14,8 @@ import { TimerDisplay } from './components/timer-display'
 import { TopUsersTab } from './topUsers/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 import { TabNavigation } from '@/components/tab-navigation'
-import { GoGear } from 'react-icons/go'
-import { TfiCup } from 'react-icons/tfi'
-import { CiPause1, CiPlay1 } from 'react-icons/ci'
 import { Button } from '@/components/button/button'
+import { Icon } from '@/src/icons'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -337,7 +334,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 							}
 							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
-							<TfiCup size={12} />
+							<Icon name="cup" size={12} />
 						</Button>
 					</Tooltip>
 					<Tooltip content="تنظیمات">
@@ -346,7 +343,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 							onClick={() => setShowSettings(!showSettings)}
 							className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 						>
-							<GoGear className="w-4 h-4" />
+							<Icon name="settings" className="w-4 h-4" />
 						</Button>
 					</Tooltip>
 				</div>
@@ -359,20 +356,20 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 					<div className="flex justify-center gap-x-4">
 						<ControlButton
 							mode={'reset'}
-							icon={<FiRefreshCw size={16} strokeWidth={1} />}
+							icon={<Icon name="refresh" size={16} strokeWidth={1} />}
 							onClick={handleReset}
 						/>
 
 						{isRunning ? (
 							<ControlButton
 								mode={'pause'}
-								icon={<CiPause1 size={16} strokeWidth={0.55} />}
+								icon={<Icon name="pause" size={16} strokeWidth={0.55} />}
 								onClick={handlePause}
 							/>
 						) : (
 							<ControlButton
 								mode={'play'}
-								icon={<CiPlay1 size={24} strokeWidth={0.55} />}
+								icon={<Icon name="play" size={24} strokeWidth={1.4} />}
 								onClick={handleStart}
 							/>
 						)}
@@ -380,7 +377,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						{mode.includes('break') && (
 							<ControlButton
 								mode={'check'}
-								icon={<FiCheckCircle size={16} strokeWidth={0.55} />}
+								icon={<Icon name="check" size={16} strokeWidth={0.55} />}
 								onClick={() => handleModeChange('work')}
 							/>
 						)}
@@ -388,7 +385,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 						{mode === 'work' && (
 							<ControlButton
 								mode={'coffee'}
-								icon={<FiCoffee size={16} strokeWidth={1} />}
+								icon={<Icon name="coffee" size={16} strokeWidth={1} />}
 								onClick={() => handleModeChange('short-break')}
 							/>
 						)}

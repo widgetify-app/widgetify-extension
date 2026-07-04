@@ -5,9 +5,9 @@ import { useAuth } from '@/context/auth.context'
 import { CoinPackageCard } from './components/coin-package-card'
 import { CoinPackagePurchaseModal } from './components/coin-package-purchase-modal'
 import { showToast } from '@/common/toast'
-import { FaCoins } from 'react-icons/fa'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
 import { useGetCoinPackages } from '@/services/hooks/market/market-coints.hook'
+import { Icon } from '@/src/icons'
 
 export function MarketCoins() {
 	const { isAuthenticated, refetchUser } = useAuth()
@@ -75,7 +75,7 @@ export function MarketCoins() {
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
-						<FaCoins size={20} className="text-base-content/20" />
+						<Icon name="coin" size={20} className="text-base-content/20" />
 					</div>
 					<p className="text-xs text-base-content/40">
 						فعلا چیزی برای خرید نیست

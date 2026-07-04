@@ -1,4 +1,4 @@
-import { RiArrowLeftSLine } from 'react-icons/ri'
+import { Icon } from '@/src/icons'
 import type { FolderPathItem } from '../types/bookmark.types'
 
 type FolderPathProps = {
@@ -30,7 +30,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 
 				{folderPath.map((item, index) => (
 					<li key={item.id} className="flex items-center">
-						<RiArrowLeftSLine className="text-content" size={14} />
+						<Icon name="chevronLeft" className="text-content" size={14} />
 						<button
 							onClick={() => onNavigate(item.id, index)}
 							className={

@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { FiRotateCcw } from 'react-icons/fi'
 import Analytics from '@/analytics'
-import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import PopoverColorPicker from '@/components/PopoverColorPicker'
@@ -9,6 +7,7 @@ import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '../../types/bookmark.types'
+import { Icon } from '@/src/icons'
 
 interface AdvancedModalProps {
 	title: string
@@ -164,12 +163,12 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
 						رنگ پس زمینه (اختیاری)
 					</label>
-					<div className="relative flex flex-1">
+					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
 							type="text"
 							value={background || ''}
 							onChange={setBackground}
-							className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
+							className="w-full px-3 py-2 pl-24 pr-10 rounded-2xl"
 							placeholder="#000000"
 							debounce={true}
 						/>
@@ -179,8 +178,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								onChange={setBackground}
 							/>
 						</div>
-						<Button type="button" onClick={resetBackground} size="md">
-							<FiRotateCcw className="w-4 h-4" />
+						<Button
+							type="button"
+							onClick={resetBackground}
+							size="md"
+							className="rounded-2xl p-3!"
+						>
+							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>
@@ -189,12 +193,12 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<label className={'block text-sm  font-medium mb-1.5 text-content'}>
 						رنگ متن (اختیاری)
 					</label>
-					<div className="relative flex flex-1">
+					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
 							type="text"
 							value={textColor || ''}
 							onChange={setTextColor}
-							className="w-full px-3 py-2 pr-10 pl-24 !rounded-md"
+							className="w-full px-3 py-2 pl-24 pr-10 rounded-2xl"
 							placeholder="#000000"
 							debounce={true}
 						/>
@@ -204,8 +208,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								onChange={setTextColor}
 							/>
 						</div>
-						<Button type="button" onClick={resetTextColor} size="md">
-							<FiRotateCcw className="w-4 h-4" />
+						<Button
+							type="button"
+							onClick={resetTextColor}
+							size="md"
+							className="rounded-2xl p-3!"
+						>
+							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>

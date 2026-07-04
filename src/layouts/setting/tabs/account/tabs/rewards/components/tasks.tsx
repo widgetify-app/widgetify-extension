@@ -1,25 +1,11 @@
-import { BiLinkExternal } from 'react-icons/bi'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { FiBookmark, FiCheck, FiStar, FiTarget, FiUser, FiUserPlus } from 'react-icons/fi'
 import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
 import type { Task } from '@/services/hooks/user/referralsService.hook'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	tasks: Task[]
 	isLoading: boolean
-}
-
-const getTaskIcon = (iconName: string) => {
-	const iconMap: Record<string, any> = {
-		'user-plus': FiUserPlus,
-		user: FiUser,
-		bookmark: FiBookmark,
-		star: FiStar,
-		target: FiTarget,
-	}
-
-	return iconMap[iconName] || FiTarget
 }
 
 export function RewardTasks({ tasks, isLoading }: Prop) {
@@ -33,7 +19,6 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					</div>
 				) : tasks.length > 0 ? (
 					tasks.map((taskItem, index) => {
-						const IconComponent = getTaskIcon(taskItem.icon)
 						return (
 							<div
 								key={index}
@@ -54,11 +39,17 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										>
 											{taskItem.isDone ? (
 												<div className="relative">
-													<FiCheck className="w-5 h-5 text-white drop-shadow-lg" />
+													<Icon
+														name="check"
+														className="w-5 h-5 text-white drop-shadow-lg"
+													/>
 													<div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
 												</div>
 											) : (
-												<IconComponent className="w-5 h-5 text-white" />
+												<Icon
+													name="target"
+													className="w-5 h-5 text-white"
+												/>
 											)}
 										</div>
 										<div className="flex-1 min-w-0">
@@ -80,7 +71,10 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 															rel="noopener noreferrer"
 															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-primary/10 text-primary hover:bg-primary/20"
 														>
-															<BiLinkExternal className="w-3.5 h-3.5 ml-2" />
+															<Icon
+																name="externalLink"
+																className="w-3.5 h-3.5 ml-2"
+															/>
 															{taskItem.button.label}
 														</a>
 													)}
@@ -117,7 +111,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 				) : (
 					<div className="py-12 text-center">
 						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-base-200 to-base-300">
-							<FiCheck className="w-8 h-8 text-muted" />
+							<Icon name="check" className="w-8 h-8 text-muted" />
 							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-white/5"></div>
 						</div>
 						<p className="text-sm font-medium text-muted">

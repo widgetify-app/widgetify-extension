@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { FiShoppingBag } from 'react-icons/fi'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
+import { Icon } from '@/src/icons'
 
 interface FontItem {
 	label: string
@@ -88,7 +88,7 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
-						<FiShoppingBag size={18} />
+						<Icon name="shoppingBag" size={18} />
 						<span>فروشگاه</span>
 					</div>
 				</div>

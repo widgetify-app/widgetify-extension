@@ -1,31 +1,8 @@
-import { FiChevronUp } from 'react-icons/fi'
 import type { BookmarkType } from '../types/bookmark.types'
-import { HiOutlineBookmark, HiOutlineFolder } from 'react-icons/hi2'
 import { TabNavigation } from '@/components/tab-navigation'
+import { Icon } from '@/src/icons'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
-
-export function IconSourceSelector({
-	iconSource,
-	setIconSource,
-}: {
-	iconSource: IconSourceType
-	setIconSource: (source: IconSourceType) => void
-	theme?: string
-}) {
-	return (
-		<TabNavigation<IconSourceType>
-			size="small"
-			tabMode="simple"
-			tabs={[
-				{ id: 'auto', label: 'آیکون خودکار' },
-				{ id: 'upload', label: 'آپلود آیکون' },
-			]}
-			activeTab={iconSource}
-			onTabClick={(tab) => setIconSource(tab)}
-		/>
-	)
-}
 
 export function TypeSelector({
 	type,
@@ -43,9 +20,13 @@ export function TypeSelector({
 				{
 					id: 'BOOKMARK',
 					label: 'بوکمارک',
-					icon: <HiOutlineBookmark size={14} />,
+					icon: <Icon name="outlineBookmark" size={14} />,
 				},
-				{ id: 'FOLDER', label: 'پوشه', icon: <HiOutlineFolder size={14} /> },
+				{
+					id: 'FOLDER',
+					label: 'پوشه',
+					icon: <Icon name="outlineFolder" size={14} />,
+				},
 			]}
 			activeTab={type}
 			onTabClick={(tab) => setType(tab)}
@@ -70,7 +51,8 @@ export function ShowAdvancedButton({
 			}
 		>
 			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
-			<FiChevronUp
+			<Icon
+				name="chevronUp"
 				size={16}
 				className={`transition-all duration-300 ${showAdvanced ? 'rotate-0' : 'rotate-180'}`}
 			/>

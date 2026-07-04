@@ -1,4 +1,3 @@
-import { TbUsersPlus } from 'react-icons/tb'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friendService.hook'
 import { translateError } from '@/utils/translate-error'
@@ -6,6 +5,7 @@ import { AvatarComponent } from '../avatar.component'
 import { Button } from '../button/button'
 import type { UserCardUser } from './user-card-portal'
 import { showToast } from '@/common/toast'
+import { Icon } from '@/src/icons'
 
 interface UserCardProps {
 	user: UserCardUser
@@ -70,7 +70,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 												loadingText="در حال ارسال..."
 												onClick={() => onAddClick()}
 											>
-												<TbUsersPlus size={14} />
+												<Icon name="usersPlus" size={14} />
 												درخواست
 											</Button>
 										)}

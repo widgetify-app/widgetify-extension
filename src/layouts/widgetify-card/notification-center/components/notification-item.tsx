@@ -1,8 +1,8 @@
 import { callEvent } from '@/common/utils/call-event'
-import { HiChevronDown, HiXMark } from 'react-icons/hi2'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import type { NotificationItem } from '@/services/hooks/extension/getNotifications.hook'
+import { Icon } from '@/src/icons'
 
 interface NotificationItemProps {
 	onClose(e: any, id: string): any
@@ -145,7 +145,8 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 								className="mt-1 flex items-center gap-1 border border-base-content/4 rounded-xl px-1 hover:border-base-content/10 text-[10px] font-light text-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
-								<HiChevronDown
+								<Icon
+									name="chevronDown"
 									className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
 									size={12}
 								/>
@@ -173,7 +174,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						prop?.onClose(e, id)
 					}}
 				>
-					<HiXMark size={14} />
+					<Icon name="close" size={14} />
 				</button>
 			)}
 		</Wrapper>

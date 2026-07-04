@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react'
-import { CiLocationOn } from 'react-icons/ci'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import Modal from '@/components/modal'
@@ -11,6 +10,7 @@ import { useSetCity } from '@/services/hooks/user/userService.hook'
 import { TextInput } from '@/components/text-input'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
+import { Icon } from '@/src/icons'
 
 interface SelectedCity {
 	city: string
@@ -98,7 +98,7 @@ export function SelectCity({ size }: Prop) {
 					{isSettingCity ? (
 						<IconLoading />
 					) : (
-						<CiLocationOn className="w-5 h-5 text-primary" />
+						<Icon name="location" className="w-5 h-5 text-primary" />
 					)}
 				</button>
 
@@ -139,7 +139,10 @@ export function SelectCity({ size }: Prop) {
 							ref={searchInputRef}
 							onChange={(value) => setSearchTerm(value)}
 						/>
-						<CiLocationOn className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-base-content/40" />
+						<Icon
+							name="location"
+							className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-base-content/40"
+						/>
 					</div>
 
 					<div className="overflow-y-auto min-h-52 max-h-52 custom-scrollbar">
@@ -155,7 +158,10 @@ export function SelectCity({ size }: Prop) {
 									onClick={() => handleSelectCity(city)}
 									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-base-200/30 last:border-b-0 group rounded-2xl hover:bg-primary/20 hover:text-primary"
 								>
-									<CiLocationOn className="flex-shrink-0 w-5 h-5 ml-3 transition-transform text-primary group-hover:scale-110" />
+									<Icon
+										name="location"
+										className="flex-shrink-0 w-5 h-5 ml-3 transition-transform text-primary group-hover:scale-110"
+									/>
 									<span className="flex-1 font-medium">
 										{city.city}
 									</span>

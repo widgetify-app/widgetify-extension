@@ -7,7 +7,7 @@ import { Button } from '@/components/button/button'
 import { Dropdown } from '@/components/dropdown'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
-import { GoArchive, GoKebabHorizontal, GoPencil } from 'react-icons/go'
+import { Icon } from '@/src/icons'
 
 interface ModalProps {
 	isOpen: boolean
@@ -76,7 +76,11 @@ export function HabitDetailModal({
 									size="xs"
 									className="text-xs border-none py-1! rounded-xl"
 								>
-									<GoKebabHorizontal size={15} strokeWidth={0.35} />
+									<Icon
+										name="menuOption"
+										size={15}
+										strokeWidth={0.35}
+									/>
 								</Button>
 							}
 							dropdownClassName="p-2"
@@ -85,7 +89,7 @@ export function HabitDetailModal({
 								className={`w-full px-3 py-1 flex items-center gap-x-2.25 cursor-pointer rounded-lg transition-colors duration-200 text-content hover:text-content/90 hover:bg-base-300/70! `}
 								onClick={onClickEdit}
 							>
-								<GoPencil size={13} />
+								<Icon name="pen" size={13} />
 								<span className="font-medium">ویرایش</span>
 							</button>
 
@@ -93,7 +97,7 @@ export function HabitDetailModal({
 								className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 text-error hover:text-error/90 hover:bg-error/10!`}
 								onClick={onClickArchive}
 							>
-								<GoArchive size={14} />
+								<Icon name="archive" size={14} />
 								<span className="font-medium">بایگانی</span>
 							</button>
 						</Dropdown>

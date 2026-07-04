@@ -1,4 +1,4 @@
-import { FiFolder } from 'react-icons/fi'
+import { Icon } from '@/src/icons'
 
 interface CategoryFolderProps {
 	id: string
@@ -19,7 +19,7 @@ export function CategoryFolder({
 			className="flex flex-col h-32 px-2 py-1 transition-all border cursor-pointer rounded-2xl bg-content border-content max-h-32 hover:border-primary/20! active:scale-98"
 		>
 			<div className="flex items-center gap-2 mb-2">
-				<FiFolder className="text-base-content/10" size={12} />
+				<Icon name="folder" className="text-base-content/10" size={12} />
 				<p className="font-medium truncate text-muted">{name}</p>
 			</div>
 
@@ -42,7 +42,7 @@ export function CategoryFolder({
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center h-full rounded">
-						<FiFolder className="mb-2 text-content/40" size={32} />
+						<Icon name="folder" className="mb-2 text-content/40" size={32} />
 						<p className="text-xs text-gray-400">بدون تصویر</p>
 					</div>
 				)}

@@ -1,6 +1,5 @@
 import { AvatarComponent } from '@/components/avatar.component'
 import { type Friend, useGetFriends } from '@/services/hooks/friends/friendService.hook'
-import { FiUsers } from 'react-icons/fi'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { FriendEmptyList } from './empty-list.friend'
 

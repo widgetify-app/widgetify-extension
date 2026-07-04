@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6'
-import { TbArrowsRightLeft } from 'react-icons/tb'
 import Analytics from '@/analytics'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/getPrice'
+import { Icon } from '@/src/icons'
 
 interface CurrencyModalComponentProps {
 	code: string
@@ -116,7 +115,7 @@ export const CurrencyModalComponent = ({
 							className="cursor-pointer hover:text-primary"
 							onClick={() => onClickConverter()}
 						>
-							<TbArrowsRightLeft />
+							<Icon name="arrowRightLeft" />
 						</div>
 					</div>
 				</div>
@@ -132,9 +131,9 @@ export const CurrencyModalComponent = ({
 								className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
 							>
 								{priceChange > 0 ? (
-									<FaArrowUpLong className="mr-1" />
+									<Icon name="upLong" className="mr-1" />
 								) : (
-									<FaArrowDownLong className="mr-1" />
+									<Icon name="downLong" className="mr-1" />
 								)}
 
 								<span>

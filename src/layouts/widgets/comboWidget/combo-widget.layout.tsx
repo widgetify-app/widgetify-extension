@@ -8,8 +8,7 @@ import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigiArz/wigi_arz.layout'
 import { TabNavigation } from '@/components/tab-navigation'
-import { HiOutlineCurrencyBangladeshi, HiOutlineNewspaper } from 'react-icons/hi2'
-import { CgOptions } from 'react-icons/cg'
+import { Icon } from '@/src/icons'
 
 export type ComboTabType = 'news' | 'currency'
 
@@ -58,12 +57,12 @@ export function ComboWidget() {
 						{
 							id: 'currency',
 							label: 'ارزها',
-							icon: <HiOutlineCurrencyBangladeshi size={14} />,
+							icon: <Icon name="currency" size={14} />,
 						},
 						{
 							id: 'news',
 							label: 'اخبار',
-							icon: <HiOutlineNewspaper size={14} />,
+							icon: <Icon name="outlineNewspaper" size={14} />,
 						},
 					]}
 					size="small"
@@ -86,7 +85,7 @@ export function ComboWidget() {
 				onClick={handleSettingsClick}
 				className={`px-2 py-0! border-none! rounded-lg text-base-content/40 shrink-0 active:scale-95 h-7!`}
 			>
-				<CgOptions className="w-4 h-4" />
+				<Icon name="menuOption" className="w-4 h-4" />
 			</Button>
 		</WidgetContainer>
 	)

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
 import { Button } from '@/components/button/button'
-import { FiCheck } from 'react-icons/fi'
+import { Icon } from '@/src/icons'
 
 interface OccupationSelectorProps {
 	occupations: ProfileMetaItem[]
@@ -70,7 +70,7 @@ export const OccupationSelector = ({
 					size="sm"
 					className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
 				>
-					<FiCheck size={16} className="ml-1" />
+					<Icon name="check" size={16} className="ml-1" />
 					تایید{' '}
 				</Button>
 				<Button

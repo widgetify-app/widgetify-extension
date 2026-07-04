@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
-import { FiTrash2 } from 'react-icons/fi'
 import Modal from '@/components/modal'
 import { useRemoveActivity, useSetActivity } from '@/services/hooks/user/userService.hook'
 import { translateError } from '@/utils/translate-error'
@@ -16,8 +15,8 @@ import { AvatarComponent } from '@/components/avatar.component'
 import { callEvent } from '@/common/utils/call-event'
 import { Chip } from '@/components/chip.component'
 import { SelectBox } from '@/components/selectbox/selectbox'
-import { BsInfoCircle } from 'react-icons/bs'
 import Tooltip from '@/components/toolTip'
+import { Icon } from '@/src/icons'
 
 interface ManageActivityBottomSheetProps {
 	isOpen: boolean
@@ -108,7 +107,7 @@ export function ManageActivityBottomSheet({
 							loading={isRemoving}
 						>
 							<div className="flex items-center justify-center gap-1 text-error-content leading-1">
-								<FiTrash2 />
+								<Icon name="trash" />
 								حذف نوشته
 							</div>
 						</Button>
@@ -188,7 +187,10 @@ export function ManageActivityBottomSheet({
 							<p className="flex text-sm font-medium text-content">
 								متن نوشته
 								<Tooltip content="نوشته فقط برای دوستان نمایش داده میشه!">
-									<BsInfoCircle className="mr-1 text-muted mt-0.5" />
+									<Icon
+										name="info"
+										className="mr-1 text-muted mt-0.5"
+									/>
 								</Tooltip>
 							</p>
 							<SelectBox

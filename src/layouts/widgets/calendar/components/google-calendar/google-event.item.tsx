@@ -1,5 +1,5 @@
 import Tooltip from '@/components/toolTip'
-import { HiOutlineMapPin, HiOutlineVideoCamera } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 interface CalendarEventProps {
 	event: any
@@ -58,7 +58,7 @@ export const CalendarEvent = ({
 								}}
 								className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-primary text-white text-[9px]  cursor-pointer transition-all hover:brightness-110 active:scale-95 shrink-0 font-medium"
 							>
-								<HiOutlineVideoCamera size={9} />
+								<Icon name="videoCamera" size={9} />
 								ورود به جلسه
 							</button>
 						) : event.location ? (
@@ -129,13 +129,15 @@ export const CalendarEvent = ({
 						{event.summary || 'بدون عنوان'}
 					</span>
 					{event.hangoutLink && (
-						<HiOutlineVideoCamera
+						<Icon
+							name="videoCamera"
 							size={11}
 							className="shrink-0 text-base-content/30"
 						/>
 					)}
 					{!event.hangoutLink && event.location && (
-						<HiOutlineMapPin
+						<Icon
+							name="location"
 							size={11}
 							className="shrink-0 text-base-content/30"
 						/>

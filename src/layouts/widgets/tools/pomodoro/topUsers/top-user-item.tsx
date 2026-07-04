@@ -1,7 +1,7 @@
-import { FaCrown } from 'react-icons/fa'
 import { AvatarComponent } from '@/components/avatar.component'
 import { UserCardPortal } from '@/components/user/user-card-portal'
 import type { TopUser } from '@/services/hooks/pomodoro/getTopUsers.hook'
+import { Icon } from '@/src/icons'
 
 interface TopUserItemProps {
 	user: TopUser
@@ -42,7 +42,8 @@ export function TopUserItem({
 				ref={containerRef}
 			>
 				{rank <= 3 && (
-					<FaCrown
+					<Icon
+						name="crown"
 						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} shadow-md`}
 					/>
 				)}

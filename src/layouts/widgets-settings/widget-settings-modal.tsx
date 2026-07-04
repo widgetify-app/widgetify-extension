@@ -1,12 +1,7 @@
-import type { JSX } from 'react'
-import { MdPets } from 'react-icons/md'
-import { TbApps, TbCalendarUser, TbCurrencyDollar, TbNews } from 'react-icons/tb'
-import { TiWeatherCloudy } from 'react-icons/ti'
-import { VscSettings } from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
-import { TabItem, TabManager } from '@/components/tab-manager'
+import { type TabItem, TabManager } from '@/components/tab-manager'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
@@ -14,6 +9,7 @@ import { WigiArzSetting } from '../widgets/wigiArz/wigiArz-setting'
 import { WigiPadSetting } from '../widgets/wigiPad/wigiPad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
 import { ManageWidgets } from './manage-widgets/manage-widgets'
+import { Icon } from '@/src/icons'
 
 interface WidgetSettingsModalProps {
 	isOpen: boolean
@@ -28,36 +24,36 @@ const tabs: TabItem[] = [
 				label: 'مدیریت ویجت ها',
 				element: <ManageWidgets />,
 				value: WidgetTabKeys.widget_management,
-				icon: <TbApps size={20} />,
+				icon: <Icon name="appsPlus" size={20} />,
 			},
 			{
 				label: 'ویجی پد',
 				element: <WigiPadSetting />,
 				value: WidgetTabKeys.wigiPad,
-				icon: <TbCalendarUser size={20} />,
+				icon: <Icon name="wigiPad" size={20} />,
 			},
 			{
 				label: 'ویجی ارز',
 				element: <WigiArzSetting />,
 				value: WidgetTabKeys.wigiArz,
-				icon: <TbCurrencyDollar size={20} />,
+				icon: <Icon name="currency" size={20} />,
 			},
 			{
 				label: 'ویجی نیوز',
 				element: <RssFeedSetting />,
 				value: WidgetTabKeys.news_settings,
-				icon: <TbNews size={20} />,
+				icon: <Icon name="rss" size={20} />,
 			},
 			{
 				label: 'ویجت آب و هوا',
 				element: <WeatherSetting />,
 				value: WidgetTabKeys.weather_settings,
-				icon: <TiWeatherCloudy size={20} />,
+				icon: <Icon name="cloudy" size={20} />,
 			},
 			{
 				label: 'حیوان خانگی',
 				value: WidgetTabKeys.Pet,
-				icon: <MdPets size={20} />,
+				icon: <Icon name="pets" size={20} />,
 				element: <PetSettings />,
 			},
 		],
@@ -96,7 +92,7 @@ export function WidgetSettingsModal({
 						onClickSettings()
 					}}
 				>
-					<VscSettings size={20} className="text-muted" />
+					<Icon name="settings" size={14} className="text-muted" />
 					<span className="text-sm font-light">تنظیمات</span>
 				</button>
 			</TabManager>

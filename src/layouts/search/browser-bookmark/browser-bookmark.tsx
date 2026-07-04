@@ -2,12 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useGetSearchboxData } from '@/services/hooks/trends/getTrends'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import Tooltip from '@/components/toolTip'
-import { HiGlobeAlt } from 'react-icons/hi2'
-import { MdFolderSpecial } from 'react-icons/md'
 import { BookmarkPopover } from './bookmark-popover'
 import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
 import { NewBadge } from '@/components/badges/new.badge'
+import { Icon } from '@/src/icons'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })
@@ -71,7 +70,11 @@ export function BrowserBookmark() {
 						onClick={() => onClickToExplorer()}
 					>
 						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
-							<HiGlobeAlt size={20} className="text-base-content/60" />
+							<Icon
+								name="outlineGlobe"
+								size={14}
+								className="text-base-content/60"
+							/>
 							<p className="font-medium text-base-content/60">کاوش</p>
 							{fetchedSearchbox?.explorer?.newBadge && (
 								<NewBadge className="top-0 left-0" />
@@ -92,7 +95,7 @@ export function BrowserBookmark() {
 									: 'bg-base-300  text-base-content/60'
 							}`}
 						>
-							<MdFolderSpecial size={20} />
+							<Icon name="folderSpecial" size={14} />
 							<p className="font-medium">بوکمارک مرورگر</p>
 						</div>
 					</div>

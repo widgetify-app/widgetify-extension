@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
 import { Button } from '../button/button'
-import { FiLock } from 'react-icons/fi'
+import { Icon } from '@/src/icons'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean
@@ -40,7 +40,10 @@ export function AuthRequiredModal({
 						className="absolute inset-0 rounded-full bg-primary/5 animate-ping"
 						style={{ animationDuration: '2s' }}
 					/>
-					<FiLock className="relative text-2xl md:text-3xl text-primary" />
+					<Icon
+						name="lock"
+						className="relative text-2xl md:text-3xl text-primary"
+					/>
 				</div>
 				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
 				<p className={'text-muted text-xs font-medium'}>{message}</p>

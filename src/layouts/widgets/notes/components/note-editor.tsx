@@ -4,8 +4,8 @@ import { IconLoading } from '@/components/loading/icon-loading'
 import Tooltip from '@/components/toolTip'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
+import { Icon } from '@/src/icons'
 import { useEffect, useRef, useState } from 'react'
-import { FiFlag } from 'react-icons/fi'
 
 interface NoteEditorProps {
 	note: FetchedNote
@@ -149,7 +149,7 @@ const PriorityButton = ({
 				${isSelected ? 'ring-2 ring-offset-0 ring-primary' : ''}
 			`}
 		>
-			{isSelected && <FiFlag size={8} className="text-white" />}
+			{isSelected && <Icon name="check" size={8} className="text-white" />}
 		</button>
 	</Tooltip>
 )

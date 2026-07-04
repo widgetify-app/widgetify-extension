@@ -1,6 +1,5 @@
 import type React from 'react'
 import { useState } from 'react'
-import { FiChevronDown, FiTrash2, FiEdit3, FiTag, FiUsers } from 'react-icons/fi'
 import CustomCheckbox from '@/components/checkbox'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
@@ -13,11 +12,11 @@ import { validate } from 'uuid'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { parseTodoDate } from './tools/parse-date'
-import { IoCalendarOutline } from 'react-icons/io5'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { playAlarm } from '@/common/playAlarm'
 import Tooltip from '@/components/toolTip'
 import { TodoFriends } from './components/friends.todo'
+import { Icon } from '@/src/icons'
 
 interface Prop {
 	todo: Todo
@@ -152,7 +151,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					{isPending && <IconLoading />}
 					{hasFriends && (
 						<Tooltip content="مشترک">
-							<FiUsers size={12} className="text-muted" />
+							<Icon name="users" size={12} className="text-muted" />
 						</Tooltip>
 					)}
 					<div className="hidden transition-all duration-150 group-hover:flex">
@@ -162,14 +161,14 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 									onClick={handleEdit}
 									className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"
 								>
-									<FiEdit3 size={13} />
+									<Icon name="edit" size={13} />
 								</button>
 							)}
 							<button
 								onClick={handleDelete}
 								className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error"
 							>
-								<FiTrash2 size={13} />
+								<Icon name="trash" size={13} />
 							</button>
 						</div>
 					</div>
@@ -180,7 +179,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							expanded ? 'rotate-180' : ''
 						} hover:scale-110`}
 					>
-						<FiChevronDown size={15} />
+						<Icon name="chevronDown" size={15} />
 					</button>
 				</div>
 			</div>
@@ -202,7 +201,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					<div className="flex items-center gap-2 text-[10px]">
 						{currentTodo.category && (
 							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-base-content/20 px-1.5 text-muted">
-								<FiTag size={9} />
+								<Icon name="tags" size={9} />
 								{currentTodo.category}
 							</span>
 						)}
@@ -215,8 +214,8 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							</span>
 						)}
 
-						<span className="flex items-center gap-1 mr-auto text-muted/60">
-							<IoCalendarOutline size={12} />
+						<span className="flex items-center gap-1 mr-auto text-base-content/60">
+							<Icon name="calendar" size={12} />
 							{parseTodoDate(currentTodo.date)
 								.locale('fa')
 								.format('jD jMMMM')}

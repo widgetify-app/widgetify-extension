@@ -1,5 +1,4 @@
 import { useState, useRef, ReactNode } from 'react'
-import { FaFilter } from 'react-icons/fa'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import Tooltip from '../toolTip'
 import { Button } from '../button/button'

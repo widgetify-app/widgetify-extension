@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { FiChevronRight, FiFolder, FiExternalLink, FiLock } from 'react-icons/fi'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import {
@@ -9,7 +8,7 @@ import {
 } from '@/layouts/bookmark/utils/browser-bookmarks.util'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
-import { HiChevronRight } from 'react-icons/hi2'
+import { Icon } from '@/src/icons'
 
 interface BookmarkPopoverProps {
 	isOpen: boolean
@@ -87,7 +86,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 			{!browserBookmarksEnabled ? (
 				<div className="p-5 text-center">
 					<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-primary/10">
-						<FiLock className="text-primary" size={18} />
+						<Icon name="lock" className="text-primary" size={18} />
 					</div>
 					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
 					<p className="mb-4 text-xs leading-relaxed text-muted">
@@ -113,7 +112,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 								onClick={handleGoBack}
 								className="text-[10px] btn-ghost text-muted rounded-xl flex items-center gap-1!"
 							>
-								<HiChevronRight />
+								<Icon name="chevronRight" />
 								بازگشت
 							</Button>
 						)}
@@ -128,7 +127,8 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									className="flex items-center gap-2.5 p-2 hover:bg-primary/5 hover:text-primary/80 rounded-xl cursor-pointer transition-all group"
 								>
 									{item.type === 'FOLDER' ? (
-										<FiFolder
+										<Icon
+											name="folder"
 											className="text-primary/80 shrink-0"
 											size={18}
 										/>
@@ -143,12 +143,14 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 										{item.title}
 									</span>
 									{item.type === 'FOLDER' ? (
-										<FiChevronRight
+										<Icon
+											name="chevronLeft"
 											size={12}
 											className="opacity-20 group-hover:opacity-50"
 										/>
 									) : (
-										<FiExternalLink
+										<Icon
+											name="externalLink"
 											size={12}
 											className="opacity-0 group-hover:opacity-30"
 										/>

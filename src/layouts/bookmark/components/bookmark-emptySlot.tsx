@@ -1,4 +1,4 @@
-import { TbBookmarkPlus } from 'react-icons/tb'
+import { Icon } from '@/src/icons'
 
 export function EmptyBookmarkSlot({
 	onClick,
@@ -28,7 +28,7 @@ export function EmptyBookmarkSlot({
 			<div className="relative flex items-center justify-center w-14 h-14">
 				{canAdd ? (
 					<div className="flex items-center justify-center ">
-						<TbBookmarkPlus size={38} className="opacity-50" />
+						<Icon name="bookmarkPlus" size={38} className="opacity-50" />
 					</div>
 				) : (
 					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>

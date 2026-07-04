@@ -1,17 +1,11 @@
 import Analytics from '@/analytics'
 import { WidgetContainer } from '../widgets/widget-container'
 import { TabNavigation } from '@/components/tab-navigation'
-import {
-	HiOutlineCheckCircle,
-	HiOutlineDocumentText,
-	HiOutlineNewspaper,
-} from 'react-icons/hi2'
-import { MdOutlineCalendarMonth, MdOutlineNetworkWifi, MdPets } from 'react-icons/md'
-import { HiOutlineCurrencyBangladeshi } from 'react-icons/hi'
 import React, { useState, Suspense } from 'react'
 import { DateProvider } from '@/context/date.context'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { TodosLayout } from '../widgets/todos/todos'
+import { Icon } from '@/src/icons'
 
 const Calendar = React.lazy(() =>
 	import('./widgets/calendar-simplify').then((module) => ({
@@ -47,38 +41,38 @@ const tabs = [
 	{
 		id: 'todos',
 		label: 'تسک ها',
-		icon: <HiOutlineCheckCircle />,
+		icon: <Icon name="taskList" />,
 		element: TodosLayout,
 	},
 	{
 		id: 'notes',
 		label: 'یادداشت',
-		icon: <HiOutlineDocumentText />,
+		icon: <Icon name="notebook" />,
 		element: NotesLayout,
 	},
 	{
 		id: 'calendar',
 		label: 'تقویم',
-		icon: <MdOutlineCalendarMonth />,
+		icon: <Icon name="calendar" />,
 		element: Calendar,
 	},
 
 	{
 		id: 'currency',
 		label: 'ارزها',
-		icon: <HiOutlineCurrencyBangladeshi />,
+		icon: <Icon name="currency" />,
 		element: ArzSimplify,
 	},
 	{
 		id: 'news',
 		label: 'اخبار',
-		icon: <HiOutlineNewspaper />,
+		icon: <Icon name="outlineNewspaper" />,
 		element: NewsSimplify,
 	},
 	{
 		id: 'network',
 		label: 'شبکه',
-		icon: <MdOutlineNetworkWifi />,
+		icon: <Icon name="network" />,
 		element: NetworkSimplify,
 	},
 ]

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { FiKey, FiArrowRight, FiRefreshCw } from 'react-icons/fi'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/button/button'
 import {
@@ -14,8 +13,7 @@ import InputTextError from './components/input-text-error'
 import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
-import { MdDoorSliding } from 'react-icons/md'
-import { TiWarningOutline } from 'react-icons/ti'
+import { Icon } from '@/src/icons'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -136,7 +134,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			<section>
 				<div className="flex items-center gap-2.5 md:gap-3">
 					<div className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:rounded-xl bg-primary/10">
-						<MdDoorSliding className="w-5 h-5 text-primary" />
+						<Icon name="lock" className="w-5 h-5 text-primary" />
 					</div>
 					<div>
 						<h3 className="text-base font-semibold md:text-lg text-content">
@@ -150,7 +148,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 
 				{authStatus?.content && (
 					<div className="my-4 alert alert-warning rounded-2xl ring-4 ring-warning/10">
-						<TiWarningOutline className="w-6 h-6" />
+						<Icon name="alert" className="w-6 h-6" />
 						{authStatus.content}
 					</div>
 				)}
@@ -204,7 +202,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					aria-hidden="true"
 					className="flex items-center justify-center rounded-lg shrink-0 w-9 h-9 md:w-10 md:h-10 md:rounded-xl bg-primary/10"
 				>
-					<FiKey className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+					<Icon name="key" className="w-4 h-4 md:w-5 md:h-5 text-primary" />
 				</div>
 
 				<div className="flex-1 min-w-0">
@@ -245,7 +243,10 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					<span className="transition-all duration-200 group-hover:scale-105">
 						ارسال دوباره کد؟
 					</span>
-					<FiRefreshCw className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:rotate-180 group-hover:scale-110" />
+					<Icon
+						name="refresh"
+						className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:rotate-180 group-hover:scale-110"
+					/>
 					{/* TODO: add timer component for resending */}
 				</button>
 				<Button
@@ -271,7 +272,10 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				aria-label="بازگشت به صفحه ایمیل"
 				className="flex items-center mx-auto gap-1 md:gap-1.5 my-2.5 md:my-3 text-xs md:text-sm font-medium cursor-pointer group text-muted hover:text-primary hover:bg-base-200 px-3 py-1.5 rounded-lg duration-200 active:scale-95"
 			>
-				<FiArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:translate-x-1 group-hover:scale-110" />
+				<Icon
+					name="backRight"
+					className="w-3.5 h-3.5 md:w-4 md:h-4 transition-all duration-200 group-hover:translate-x-1 group-hover:scale-110"
+				/>
 				<span className="transition-all duration-200 group-hover:scale-105">
 					بازگشت
 				</span>
