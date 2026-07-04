@@ -52,6 +52,20 @@ export function useSearchHistory() {
 		} catch {}
 	}, [])
 
+	const removeHistoryItem = useCallback((query: string) => {
+		try {
+			setRecentSearches((prev) => {
+				const filtered = prev.filter((item) => item.query !== query)
+
+				try {
+					setToStorage(STORAGE_KEY, filtered)
+				} catch {}
+
+				return filtered
+			})
+		} catch {}
+	}, [])
+
 	const clearHistory = useCallback(async () => {
 		try {
 			setRecentSearches([])
@@ -66,5 +80,6 @@ export function useSearchHistory() {
 		addSearch,
 		clearHistory,
 		isLoaded,
+		removeHistoryItem,
 	}
 }

@@ -25,7 +25,7 @@ export function SearchHistoryPortal({
 }: SearchHistoryPortalProps) {
 	const { isAuthenticated, user } = useAuth()
 	const [showConsentModal, setShowConsentModal] = useState(false)
-	const { recentSearches, addSearch } = useSearchHistory()
+	const { recentSearches, addSearch, removeHistoryItem } = useSearchHistory()
 
 	const { data: suggestions, isFetching } = useSearchSuggestions(
 		searchQuery,
@@ -67,6 +67,10 @@ export function SearchHistoryPortal({
 		onSearch(query)
 	}
 
+	const onRemoveHistoryItem = (query: string) => {
+		removeHistoryItem(query)
+	}
+
 	const showLocalSearches =
 		user?.searchAutocompleteEnabled && recentSearches.length > 0 && !hasQuery
 
@@ -86,6 +90,7 @@ export function SearchHistoryPortal({
 							<Suggestions
 								combinedSuggestions={combinedSuggestions}
 								handleSearch={handleSearch}
+								onRemove={onRemoveHistoryItem}
 							/>
 						) : null)}
 
@@ -96,6 +101,7 @@ export function SearchHistoryPortal({
 								text: f.query,
 							}))}
 							handleSearch={handleSearch}
+							onRemove={onRemoveHistoryItem}
 						/>
 					)}
 
