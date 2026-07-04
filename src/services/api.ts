@@ -7,53 +7,59 @@ import axios, {
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 
-const rawGithubApi = axios.create({
-	baseURL: 'https://raw.githubusercontent.com/sajjadmrx/btime-desktop/main',
-})
-export let API_URL = ''
-export async function getMainClient(): Promise<AxiosInstance> {
-	let instance: AxiosInstance | undefined
+export const API_URL = import.meta.env.VITE_API
 
-	const token = await getFromStorage('auth_token')
-	API_URL = import.meta.env.VITE_API
+const VERSION = browser.runtime.getManifest().version
+
+const IGNORE_ENDPOINTS = [
+	'/auth/signin',
+	'/auth/signup',
+	'/auth/otp',
+	'/auth/otp/verify',
+	'/auth/oauth/google',
+]
+
+let instance: AxiosInstance | null = null
+let refreshPromise: Promise<string | null> | null = null
+
+export async function getMainClient(): Promise<AxiosInstance> {
+	if (instance) {
+		return instance
+	}
 
 	if (!API_URL) {
-		const urlResponse = await rawGithubApi.get('/.github/api.txt')
-		API_URL = urlResponse.data
+		throw new Error('API base URL is not defined')
 	}
 
 	instance = axios.create({
 		baseURL: API_URL,
 		headers: {
-			Authorization: token ? `Bearer ${token}` : undefined,
 			client: 'widgetify-extension',
-			version: browser.runtime.getManifest().version,
+			version: VERSION,
 		},
 	})
 
-	if (!instance) {
-		throw new Error('API base URL is not defined')
-	}
+	instance.interceptors.request.use(async (config) => {
+		const token = await getFromStorage('auth_token')
 
-	// Response interceptor to handle token refreshing
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`
+		} else {
+			delete config.headers.Authorization
+		}
+
+		return config
+	})
+
 	instance.interceptors.response.use(
-		(response: AxiosResponse) => {
-			return response
-		},
+		(response: AxiosResponse) => response,
 		async (error: AxiosError) => {
 			const originalRequest = error.config as InternalAxiosRequestConfig & {
 				_retry?: boolean
 			}
 
-			const ignoreEndpoints = [
-				'/auth/signin',
-				'/auth/signup',
-				'/auth/otp',
-				'/auth/otp/verify',
-				'/auth/oauth/google',
-			]
 			if (
-				ignoreEndpoints.some((endpoint) =>
+				IGNORE_ENDPOINTS.some((endpoint) =>
 					originalRequest.url?.includes(endpoint)
 				)
 			) {
@@ -62,29 +68,49 @@ export async function getMainClient(): Promise<AxiosInstance> {
 
 			if (error.response?.status === 401 && !originalRequest._retry) {
 				originalRequest._retry = true
+
 				try {
-					const refresh_token: string | null =
-						await getFromStorage('refresh_token')
+					if (!refreshPromise) {
+						refreshPromise = (async () => {
+							const refreshToken = await getFromStorage('refresh_token')
 
-					if (!refresh_token) {
-						return
+							if (!refreshToken) {
+								return null
+							}
+
+							const response = await axios.post(`${API_URL}/auth/refresh`, {
+								refresh_token: refreshToken,
+							})
+
+							const newToken = response.data.data
+
+							if (!newToken) {
+								return null
+							}
+
+							await setToStorage('auth_token', newToken)
+
+							return newToken
+						})()
+
+						refreshPromise.finally(() => {
+							refreshPromise = null
+						})
 					}
 
-					const response = await axios.post(`${API_URL}/auth/refresh`, {
-						refresh_token,
-					})
+					const newToken = await refreshPromise
 
-					const newToken = response.data.data
-					if (newToken) {
-						await setToStorage('auth_token', newToken)
-						originalRequest.headers.Authorization = `Bearer ${newToken}`
-					} else {
+					if (!newToken) {
 						callEvent('auth_logout', null)
+						return Promise.reject(error)
 					}
 
-					return instance(originalRequest)
+					originalRequest.headers.Authorization = `Bearer ${newToken}`
+
+					return instance!(originalRequest)
 				} catch (_refreshError) {
 					callEvent('auth_logout', null)
+					return Promise.reject(error)
 				}
 			}
 
