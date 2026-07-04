@@ -1,6 +1,3 @@
-import { MdPets } from 'react-icons/md'
-import { TbApps, TbCalendarUser, TbCurrencyDollar, TbNews } from 'react-icons/tb'
-import { VscSettings } from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
@@ -27,25 +24,25 @@ const tabs: TabItem[] = [
 				label: 'مدیریت ویجت ها',
 				element: <ManageWidgets />,
 				value: WidgetTabKeys.widget_management,
-				icon: <TbApps size={20} />,
+				icon: <Icon name="appsPlus" size={20} />,
 			},
 			{
 				label: 'ویجی پد',
 				element: <WigiPadSetting />,
 				value: WidgetTabKeys.wigiPad,
-				icon: <TbCalendarUser size={20} />,
+				icon: <Icon name="wigiPad" size={20} />,
 			},
 			{
 				label: 'ویجی ارز',
 				element: <WigiArzSetting />,
 				value: WidgetTabKeys.wigiArz,
-				icon: <TbCurrencyDollar size={20} />,
+				icon: <Icon name="currency" size={20} />,
 			},
 			{
 				label: 'ویجی نیوز',
 				element: <RssFeedSetting />,
 				value: WidgetTabKeys.news_settings,
-				icon: <TbNews size={20} />,
+				icon: <Icon name="rss" size={20} />,
 			},
 			{
 				label: 'ویجت آب و هوا',
@@ -56,7 +53,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'حیوان خانگی',
 				value: WidgetTabKeys.Pet,
-				icon: <MdPets size={20} />,
+				icon: <Icon name="pets" size={20} />,
 				element: <PetSettings />,
 			},
 		],
@@ -95,7 +92,7 @@ export function WidgetSettingsModal({
 						onClickSettings()
 					}}
 				>
-					<VscSettings size={20} className="text-muted" />
+					<Icon name="settings" size={14} className="text-muted" />
 					<span className="text-sm font-light">تنظیمات</span>
 				</button>
 			</TabManager>

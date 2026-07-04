@@ -10,10 +10,8 @@ import { Chip } from '@/components/chip.component'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
-import { IoCalendarOutline, IoPricetagOutline, IoAddOutline } from 'react-icons/io5'
 import { DatePicker } from '@/components/date-picker/date-picker'
 import { PriorityDropdown } from './components/priority.dropdown'
-import { FiSave } from 'react-icons/fi'
 import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 import { type TodoCreationPayload, useAddTodo } from '@/services/hooks/todo/add-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
@@ -273,7 +271,7 @@ export function ExpandableTodoInput({
 							className="rounded-full px-0! w-8"
 						>
 							{isEdit ? (
-								<FiSave size={16} />
+								<Icon name="save" size={16} />
 							) : (
 								<Icon name="plus" size={16} />
 							)}
@@ -323,7 +321,7 @@ export function ExpandableTodoInput({
 											onClick={() => setShowDatePicker(true)}
 											ref={dateButtonRef}
 										>
-											<IoCalendarOutline size={18} />
+											<Icon name="calendarDays" size={18} />
 											<p className="truncate max-w-14 min-w-5">
 												{selectedDate
 													? formatJalaliDateForDisplay(
@@ -338,7 +336,7 @@ export function ExpandableTodoInput({
 											ref={categoryInputRef}
 											onClick={() => setIsTagTooltipOpen(true)}
 										>
-											<IoPricetagOutline size={16} />
+											<Icon name="tags" size={16} />
 											<p className="truncate max-w-14 min-w-5">
 												{category || 'دسته‌بندی'}
 											</p>
@@ -367,7 +365,7 @@ export function ExpandableTodoInput({
 														setIsTagTooltipOpen(false)
 													}
 												>
-													<IoAddOutline size={18} />
+													<Icon name="plus" size={18} />
 												</Button>
 											</div>
 											<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
@@ -382,7 +380,8 @@ export function ExpandableTodoInput({
 															}
 															className="flex gap-1 text-xs px-2! py-1!e"
 														>
-															<IoPricetagOutline
+															<Icon
+																name="tags"
 																size={16}
 																className="text-base-content/40"
 															/>

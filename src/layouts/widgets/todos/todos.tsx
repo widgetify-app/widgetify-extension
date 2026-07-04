@@ -4,16 +4,15 @@ import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { FilterTooltip } from '@/components/filter-tooltip'
-import { FaSortAmountDown, FaTags } from 'react-icons/fa'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { MdOutlineFilterList, MdOutlineFilterListOff, MdRefresh } from 'react-icons/md'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Button } from '@/components/button/button'
 import Tooltip from '@/components/toolTip'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import { TodoItem } from './todo.item'
+import { Icon } from '@/src/icons'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -186,12 +185,14 @@ export function TodosLayout() {
 								value={dateFilter}
 								icon={
 									dateFilter !== 'all' ? (
-										<MdOutlineFilterList
+										<Icon
+											name="outlineFilterList"
 											size={10}
 											className="text-primary"
 										/>
 									) : (
-										<MdOutlineFilterListOff
+										<Icon
+											name="outlineFilterListOff"
 											size={10}
 											className="text-muted"
 										/>
@@ -203,7 +204,8 @@ export function TodosLayout() {
 							/>
 							<FilterTooltip
 								icon={
-									<FaTags
+									<Icon
+										name="tags"
 										size={10}
 										className={
 											TagList.includes(tagFilter)
@@ -219,7 +221,8 @@ export function TodosLayout() {
 							/>
 							<FilterTooltip
 								icon={
-									<FaSortAmountDown
+									<Icon
+										name="sortDown"
 										size={10}
 										className={
 											sort !== 'def'
@@ -244,7 +247,8 @@ export function TodosLayout() {
 								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 								onClick={onRefresh}
 							>
-								<MdRefresh
+								<Icon
+									name="reload"
 									className={`text-content opacity-50 hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
 								/>
 							</Button>

@@ -1,5 +1,4 @@
 import type React from 'react'
-import { FaDollarSign } from 'react-icons/fa'
 import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
 export interface GetPriceResult {
 	price: number
@@ -9,12 +8,7 @@ export function GetPrice(code: string, currency: FetchedCurrency): GetPriceResul
 	if (code.toLowerCase() === 'btc' || currency.useDollar) {
 		return {
 			price: currency.price,
-			label: (
-				<>
-					<FaDollarSign className="inline" />
-					{currency.price?.toLocaleString()}
-				</>
-			),
+			label: <>💲{currency.price?.toLocaleString()}</>,
 		}
 	} else {
 		return {

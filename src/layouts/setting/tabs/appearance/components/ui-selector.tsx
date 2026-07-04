@@ -1,7 +1,7 @@
 import { ItemSelector } from '@/components/item-selector'
 import { SectionPanel } from '@/components/section-panel'
-import { LuLayers, LuLayoutTemplate } from 'react-icons/lu'
 import { useAppearanceSetting } from '@/context/appearance.context'
+import { Icon } from '@/src/icons'
 
 export function UISelector() {
 	const { setUI, ui } = useAppearanceSetting()
@@ -34,7 +34,11 @@ export function UISelector() {
 						onClick={() => onClick('ADVANCED')}
 						label={
 							<div className="flex items-center gap-2">
-								<LuLayers size={16} className="text-primary/80" />
+								<Icon
+									name="advanced_ui"
+									size={16}
+									className="text-primary/80"
+								/>
 								<span> پیشفرض</span>
 							</div>
 						}
@@ -45,7 +49,11 @@ export function UISelector() {
 						onClick={() => onClick('SIMPLE')}
 						label={
 							<div className="flex items-center gap-2">
-								<LuLayoutTemplate size={16} className="text-primary/80" />
+								<Icon
+									name="simple_ui"
+									size={16}
+									className="text-primary/80"
+								/>
 								<span>ساده و خلوت</span>
 							</div>
 						}

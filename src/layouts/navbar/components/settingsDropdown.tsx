@@ -58,7 +58,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 			>
 				<div className="flex items-center gap-3">
 					<Icon
-						name="viewGridAdd"
+						name="appsPlus"
 						size={16}
 						className="text-muted group-hover:!text-primary"
 					/>

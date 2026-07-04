@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { BiRss } from 'react-icons/bi'
-import { VscAdd, VscTrash } from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
@@ -11,6 +9,7 @@ import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import type { WigiNewsSetting } from './rss.interface'
+import { Icon } from '@/src/icons'
 
 const SUGGESTED_FEEDS = [
 	{
@@ -224,7 +223,7 @@ export const RssFeedSetting = () => {
 						className="text-white rounded-xl btn-primary"
 						onClick={addNewFeed}
 					>
-						<VscAdd size={16} />
+						<Icon name="plus" size={16} />
 						<span>افزودن فید جدید</span>
 					</Button>
 				</div>
@@ -282,7 +281,11 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 						'flex flex-col items-center justify-center p-2 text-center border border-dashed rounded-lg border-content'
 					}
 				>
-					<BiRss className={'mb-3 opacity-50 text-content'} size={32} />
+					<Icon
+						name="rss"
+						className={'mb-3 opacity-50 text-content'}
+						size={32}
+					/>
 					<p className={'mb-1 text-sm font-medium opacity-70 text-content'}>
 						هیچ فید RSS اضافه نشده است
 					</p>
@@ -351,7 +354,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 				onClick={onRemove}
 				disabled={disabled}
 			>
-				<VscTrash size={18} />
+				<Icon name="trash" size={18} />
 			</Button>
 		</div>
 	)

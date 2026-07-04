@@ -1,4 +1,3 @@
-import { BsCurrencyExchange } from 'react-icons/bs'
 import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
 
@@ -11,7 +10,6 @@ export const ArzHeader = ({ title, onSettingsClick }: ArzHeaderProps) => {
 	return (
 		<div className={'top-0 z-20 pb-2 flex items-center justify-between w-full'}>
 			<div className="flex items-center gap-1.5">
-				<BsCurrencyExchange className="w-3.5 h-3.5 opacity-70" />
 				<p className="text-base font-medium">{title}</p>
 			</div>
 

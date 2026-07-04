@@ -1,17 +1,26 @@
 import {
+	FiAtSign,
 	FiBell,
 	FiClock,
+	FiCoffee,
+	FiGift,
 	FiInbox,
 	FiKey,
 	FiLoader,
 	FiLock,
+	FiLogOut,
 	FiMail,
 	FiMaximize,
 	FiMinimize,
+	FiPhone,
+	FiPlay,
+	FiRefreshCw,
 	FiRotateCcw,
+	FiSave,
 	FiSettings,
 	FiShoppingBag,
 	FiShoppingCart,
+	FiTarget,
 	FiTrash2,
 	FiUser,
 	FiUserCheck,
@@ -19,7 +28,7 @@ import {
 	FiUserX,
 } from 'react-icons/fi'
 import type { IconMap } from '../types'
-import { TfiAlert, TfiBackRight, TfiCheck } from 'react-icons/tfi'
+import { TfiAlert, TfiBackRight, TfiCheck, TfiCup } from 'react-icons/tfi'
 import {
 	LuBriefcase,
 	LuCalendarDays,
@@ -28,20 +37,25 @@ import {
 	LuChevronRight,
 	LuChevronUp,
 	LuDownload,
+	LuHeart,
 	LuHistory,
+	LuLayers,
+	LuLayoutTemplate,
 	LuPen,
 	LuPlus,
 	LuX,
 } from 'react-icons/lu'
-import { TiInfo } from 'react-icons/ti'
 import {
-	FaBrush,
 	FaCoins,
+	FaCrown,
 	FaExternalLinkAlt,
 	FaGithub,
 	FaGlobe,
+	FaGlobeAsia,
 	FaImage,
+	FaMoon,
 	FaPaintBrush,
+	FaSortAmountDown,
 	FaSpinner,
 	FaTelegramPlane,
 	FaUpload,
@@ -52,42 +66,60 @@ import {
 	TbBookmarkPlus,
 	TbCameraPlus,
 	TbWind,
+	TbEdit,
+	TbArrowsUpDown,
+	TbCalendarUser,
+	TbApps,
+	TbNotebook,
+	TbArrowsRightLeft,
 } from 'react-icons/tb'
 import {
+	MdDragIndicator,
 	MdFolderSpecial,
 	MdLink,
 	MdMic,
+	MdOutlineFilterList,
+	MdOutlineFilterListOff,
+	MdOutlineNetworkWifi,
 	MdOutlinePrivacyTip,
 	MdOutlineVerifiedUser,
+	MdOutlineWallpaper,
+	MdPets,
 	MdSearch,
 } from 'react-icons/md'
 import {
 	HiHome,
-	HiInbox,
 	HiOutlineBookmark,
+	HiOutlineCurrencyBangladeshi,
 	HiOutlineEye,
 	HiOutlineEyeSlash,
+	HiOutlineFire,
 	HiOutlineFolder,
 	HiOutlineGlobeAlt,
 	HiOutlineHome,
 	HiOutlineInbox,
 	HiOutlineInformationCircle,
+	HiOutlineNewspaper,
 	HiOutlineShoppingBag,
 	HiOutlineSquares2X2,
 	HiOutlineUserGroup,
+	HiOutlineVideoCamera,
 	HiSquares2X2,
 } from 'react-icons/hi2'
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
-import { GoArchive, GoKebabHorizontal } from 'react-icons/go'
-import { IoMdHelp } from 'react-icons/io'
-import { FaPhotoFilm } from 'react-icons/fa6'
-import { BiCalendar, BiLogoGoogle } from 'react-icons/bi'
+import { GoArchive, GoKebabHorizontal, GoTasklist } from 'react-icons/go'
+import { IoMdAddCircle, IoMdHelp } from 'react-icons/io'
+import { FaArrowDownLong, FaArrowUpLong, FaPhotoFilm, FaTreeCity } from 'react-icons/fa6'
+import { BiCalendar, BiLogoGoogle, BiRss } from 'react-icons/bi'
 import { FcGoogle } from 'react-icons/fc'
-import { CiLocationOn } from 'react-icons/ci'
+import { CiLocationOn, CiPause1 } from 'react-icons/ci'
 import { WiCloudy, WiHumidity } from 'react-icons/wi'
-import { RiQuillPenAiLine } from 'react-icons/ri'
+import { RiApps2AiLine, RiQuillPenAiLine } from 'react-icons/ri'
 import { AiOutlineDrag } from 'react-icons/ai'
 import { HiOutlineViewGridAdd } from 'react-icons/hi'
+import { BsFilterLeft, BsGenderAmbiguous } from 'react-icons/bs'
+import { IoPricetagOutline } from 'react-icons/io5'
+import { VscColorMode, VscMegaphone, VscRecordKeys } from 'react-icons/vsc'
 
 export const defaultIcons = {
 	home: HiHome,
@@ -170,4 +202,51 @@ export const defaultIcons = {
 	folderSpecial: MdFolderSpecial,
 	history: LuHistory,
 	mic: MdMic,
+	gender: BsGenderAmbiguous,
+	phone: FiPhone,
+	atSign: FiAtSign,
+	outlineHeart: LuHeart,
+	outlineAddCircle: IoMdAddCircle,
+	treeCity: FaTreeCity,
+	edit: TbEdit,
+	target: FiTarget,
+	logOut: FiLogOut,
+	play: FiPlay,
+	globeAsia: FaGlobeAsia,
+	moon: FaMoon,
+	outlineNewspaper: HiOutlineNewspaper,
+	currency: HiOutlineCurrencyBangladeshi,
+	rss: BiRss,
+	tags: IoPricetagOutline,
+	save: FiSave,
+	sortDown: FaSortAmountDown,
+	outlineFilterListOff: MdOutlineFilterListOff,
+	outlineFilterList: MdOutlineFilterList,
+	crown: FaCrown,
+	filterLeft: BsFilterLeft,
+	upDown: TbArrowsUpDown,
+	coffee: FiCoffee,
+	refresh: FiRefreshCw,
+	cup: TfiCup,
+	pause: CiPause1,
+	dragIndicator: MdDragIndicator,
+	upLong: FaArrowUpLong,
+	downLong: FaArrowDownLong,
+	pets: MdPets,
+	wigiPad: TbCalendarUser,
+	appsPlus: TbApps,
+	taskList: GoTasklist,
+	strike: HiOutlineFire,
+	notebook: TbNotebook,
+	gift: FiGift,
+	platforms: RiApps2AiLine,
+	wallpapers: MdOutlineWallpaper,
+	lastUpdate: VscMegaphone,
+	shortcuts: VscRecordKeys,
+	theme: VscColorMode,
+	network: MdOutlineNetworkWifi,
+	videoCamera: HiOutlineVideoCamera,
+	advanced_ui: LuLayers,
+	simple_ui: LuLayoutTemplate,
+	arrowRightLeft: TbArrowsRightLeft,
 } satisfies IconMap

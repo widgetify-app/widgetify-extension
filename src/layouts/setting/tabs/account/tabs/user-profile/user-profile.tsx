@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { FiLogOut } from 'react-icons/fi'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
@@ -14,6 +13,7 @@ import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/utils/translate-error'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
+import { Icon } from '@/src/icons'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -74,7 +74,7 @@ export const UserProfile = () => {
 					className="text-white/90 btn-error"
 					size="md"
 				>
-					<FiLogOut size={16} />
+					<Icon name="logOut" size={16} />
 					خروج از حساب کاربری
 				</Button>
 			</div>
@@ -108,7 +108,7 @@ export const UserProfile = () => {
 						className="text-white/90 btn-error rounded-2xl"
 						size="md"
 					>
-						<FiLogOut size={16} />
+						<Icon name="logOut" size={16} />
 						خروج از حساب کاربری
 					</Button>{' '}
 				</div>

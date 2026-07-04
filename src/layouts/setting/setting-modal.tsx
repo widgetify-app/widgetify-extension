@@ -1,12 +1,3 @@
-import { TbApps } from 'react-icons/tb'
-import {
-	VscColorMode,
-	VscInfo,
-	VscMegaphone,
-	VscPaintcan,
-	VscRecordKeys,
-	VscSettingsGear,
-} from 'react-icons/vsc'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import Modal from '@/components/modal'
@@ -19,9 +10,7 @@ import { PrivacySettings } from './tabs/privacy/privacy-settings'
 import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { AccountTab } from './tabs/account/account'
-import { FiGift, FiUsers } from 'react-icons/fi'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
-import { RiApps2AiLine } from 'react-icons/ri'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connectionsTab'
 import { Icon } from '@/src/icons'
 
@@ -44,19 +33,19 @@ const tabs: TabItem[] = [
 			{
 				label: 'پلتفرم‌ها',
 				value: 'platforms',
-				icon: <RiApps2AiLine size={20} />,
+				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
 			},
 			{
 				label: 'ماموریت‌ها و پاداش',
 				value: 'tasks',
-				icon: <FiGift size={20} />,
+				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
 			},
 			{
 				label: 'دوستان',
 				value: 'friends',
-				icon: <FiUsers size={20} />,
+				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
 			},
 		],
@@ -67,7 +56,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'عمومی',
 				value: 'general',
-				icon: <VscSettingsGear size={20} />,
+				icon: <Icon name="settings" size={18} />,
 				element: <GeneralSettingTab />,
 			},
 
@@ -80,19 +69,19 @@ const tabs: TabItem[] = [
 			{
 				label: 'ظاهری',
 				value: 'appearance',
-				icon: <VscColorMode size={20} />,
+				icon: <Icon name="theme" size={20} />,
 				element: <AppearanceSettingTab />,
 			},
 			{
-				label: 'تصویر زمینه ها',
+				label: 'تصویر زمینه‌ها',
 				value: 'wallpapers',
-				icon: <VscPaintcan size={20} />,
+				icon: <Icon name="wallpapers" size={20} />,
 				element: <WallpaperSetting />,
 			},
 			{
 				label: 'میانبرها',
 				value: 'shortcuts',
-				icon: <VscRecordKeys size={20} />,
+				icon: <Icon name="shortcuts" size={20} />,
 				element: <ShortcutsTab />,
 			},
 		],
@@ -103,7 +92,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'درباره ما',
 				value: 'about',
-				icon: <VscInfo size={20} />,
+				icon: <Icon name="info" size={20} />,
 				element: <AboutUsTab />,
 			},
 		],
@@ -146,14 +135,14 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
 						onClick={() => openWidgetSettings()}
 					>
-						<TbApps size={20} className="text-muted" />
+						<Icon name="appsPlus" size={20} className="text-muted" />
 						<span className="text-sm font-light">مدیریت ویجت ها</span>
 					</button>
 					<button
 						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
 						onClick={() => setUpdateModalOpen(true)}
 					>
-						<VscMegaphone size={20} />
+						<Icon name="lastUpdate" size={20} />
 						<span className="text-sm font-light">تغییرات اخیر</span>
 					</button>
 				</div>

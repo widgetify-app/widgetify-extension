@@ -1,7 +1,7 @@
-import { BsFilterLeft } from 'react-icons/bs'
 import { Dropdown } from '@/components/dropdown'
 import { Button } from '@/components/button/button'
 import { TodoPriority } from '@/services/hooks/todo/todo.interface'
+import { Icon } from '@/src/icons'
 
 const priorityOptions = [
 	{
@@ -46,7 +46,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 							: 'text-base-content/40 hover:text-primary/60'
 					}`}
 				>
-					<BsFilterLeft size={18} />
+					<Icon name="filterLeft" size={18} />
 				</Button>
 			}
 			dropdownClassName="p-1.5"

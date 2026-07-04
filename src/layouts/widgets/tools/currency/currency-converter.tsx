@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { TbArrowsUpDown, TbInfoCircle } from 'react-icons/tb'
 import { SelectBox } from '@/components/selectbox/selectbox'
 import { TextInput } from '@/components/text-input'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/getCurrencyByCode.hook'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/getSupportCurrencies.hook'
+import { Icon } from '@/src/icons'
 
 export const CurrencyConverter: React.FC = () => {
 	const [fromCurrency, setFromCurrency] = useState<string>('EUR')
@@ -66,7 +66,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={fromCurrency}
 						onChange={setFromCurrency}
-						className="!w-24 !h-11 !rounded-2xl !bg-base-100 border border-base-300 shadow-sm font-bold text-xs"
+						className="!w-24 !h-11 rounded-2xl! !bg-base-100 border border-base-300 shadow-sm font-bold text-xs"
 					/>
 				</div>
 
@@ -76,7 +76,7 @@ export const CurrencyConverter: React.FC = () => {
 						className="flex items-center justify-center transition-all border rounded-full shadow-lg cursor-pointer bg-base-300 w-11 h-11 border-primary/10 text-content hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
-							<TbArrowsUpDown size={20} />
+							<Icon name="upDown" size={20} />
 						</motion.div>
 					</button>
 				</div>
@@ -132,7 +132,7 @@ export const CurrencyConverter: React.FC = () => {
 						</div>
 					</div>
 					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-background/50 px-2 py-1 rounded-lg">
-						<TbInfoCircle size={14} className="opacity-40" />۱ ={' '}
+						<Icon name="info" size={14} className="opacity-40" />۱ ={' '}
 						{fromCurrencyData && toCurrencyData
 							? formatNumber(
 									fromCurrencyData.rialPrice / toCurrencyData.rialPrice

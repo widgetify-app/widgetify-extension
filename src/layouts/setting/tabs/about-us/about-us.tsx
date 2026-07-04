@@ -1,6 +1,5 @@
 import { SectionPanel } from '@/components/section-panel'
 import { ConfigKey } from '../../../../common/constant/config.key'
-import { RiArticleLine } from 'react-icons/ri'
 import { Icon } from '@/src/icons'
 
 export function AboutUsTab() {
@@ -64,7 +63,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary/10 text-secondary group-hover:scale-110">
-								<RiArticleLine size={18} />
+								<Icon name="externalLink" size={18} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-base-content">

@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
-import { HiChevronLeft, HiChevronRight, HiOutlineCalendar } from 'react-icons/hi2'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
 import { useDate } from '@/context/date.context'
 import { CalendarEvent } from './google-event.item'
@@ -10,6 +9,7 @@ import { Button } from '@/components/button/button'
 import { callEvent } from '@/common/utils/call-event'
 import type { WidgetifyDate } from '../../utils'
 import { GoogleEventItemSkeleton } from './google-event.item-skeleton'
+import { Icon } from '@/src/icons'
 
 export const GoogleCalendarView: React.FC = () => {
 	const { user, isAuthenticated } = useAuth()
@@ -86,7 +86,7 @@ export const GoogleCalendarView: React.FC = () => {
 		return (
 			<div className="flex flex-col items-center justify-center h-full gap-3 p-4 text-center">
 				<div className="p-3 rounded-2xl bg-primary/10 text-primary">
-					<HiOutlineCalendar size={24} />
+					<Icon name="calendar" size={24} />
 				</div>
 				<p className="text-[11px] text-base-content/60 leading-relaxed">
 					{isAuthenticated
@@ -125,7 +125,7 @@ export const GoogleCalendarView: React.FC = () => {
 					onClick={() => handlePrevDay()}
 					className="flex items-center justify-center transition-colors rounded-lg cursor-pointer w-7 h-7 hover:bg-base-200 text-base-content/40 hover:text-base-content"
 				>
-					<HiChevronRight size={16} />
+					<Icon name="chevronRight" size={16} />
 				</button>
 
 				<button
@@ -150,7 +150,7 @@ export const GoogleCalendarView: React.FC = () => {
 					onClick={() => handleNextDay()}
 					className="flex items-center justify-center transition-colors rounded-lg cursor-pointer w-7 h-7 hover:bg-base-200 text-base-content/40 hover:text-base-content"
 				>
-					<HiChevronLeft size={16} />
+					<Icon name="chevronLeft" size={16} />
 				</button>
 			</div>
 
@@ -162,7 +162,7 @@ export const GoogleCalendarView: React.FC = () => {
 
 				{!isLoading && classified.length === 0 && (
 					<div className="flex flex-col items-center justify-center flex-1 gap-2 py-8 opacity-25">
-						<HiOutlineCalendar size={28} strokeWidth={1.5} />
+						<Icon name="calendar" size={28} strokeWidth={1.5} />
 						<p className="text-[10px] font-medium text-base-content">
 							رویدادی وجود ندارد
 						</p>

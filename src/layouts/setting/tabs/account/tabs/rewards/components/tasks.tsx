@@ -2,15 +2,10 @@ import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
 import type { Task } from '@/services/hooks/user/referralsService.hook'
 import { Icon } from '@/src/icons'
-import { FiTarget } from 'react-icons/fi'
 
 interface Prop {
 	tasks: Task[]
 	isLoading: boolean
-}
-
-const getTaskIcon = (iconName: string) => {
-	return FiTarget
 }
 
 export function RewardTasks({ tasks, isLoading }: Prop) {
@@ -24,7 +19,6 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					</div>
 				) : tasks.length > 0 ? (
 					tasks.map((taskItem, index) => {
-						const IconComponent = getTaskIcon(taskItem.icon)
 						return (
 							<div
 								key={index}
@@ -52,7 +46,10 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 													<div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
 												</div>
 											) : (
-												<IconComponent className="w-5 h-5 text-white" />
+												<Icon
+													name="target"
+													className="w-5 h-5 text-white"
+												/>
 											)}
 										</div>
 										<div className="flex-1 min-w-0">
