@@ -20,7 +20,7 @@ export const ArzHeader = ({ title, onSettingsClick }: ArzHeaderProps) => {
 					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
 				>
 					<Icon
-						name="settings"
+						name="menuOption"
 						size={12}
 						className="text-content opacity-70 hover:opacity-100"
 					/>
