@@ -6,7 +6,7 @@ import { CategoryFolder } from './category-folder.component'
 interface CategoryGridProps {
 	onCategorySelect: (category: Category) => void
 }
-const CATEGORIES_PER_PAGE = 12
+const CATEGORIES_PER_PAGE = 9
 export function CategoryView({ onCategorySelect }: CategoryGridProps) {
 	const [currentPage, setCurrentPage] = useState(1)
 

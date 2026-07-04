@@ -1,7 +1,9 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import Analytics from '../../../../../analytics'
+import { showToast } from '@/common/toast'
 
-const MAX_FILE_SIZE = 6 * 1024 * 1024 // 6MB
+const MAX_SIZE = 3
+const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024 // 3MB
 
 interface UseWallpaperUploadProps {
 	onWallpaperChange: (wallpaper: Wallpaper) => void
@@ -13,13 +15,14 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 		const isVideo = file.type.startsWith('video/')
 
 		if (!isImage && !isVideo) {
-			alert('لطفا یک فایل تصویری یا ویدیویی انتخاب کنید')
+			showToast('لطفا یک فایل تصویری یا ویدیویی انتخاب کنید', 'error')
 			return
 		}
 
 		if (file.size > MAX_FILE_SIZE) {
-			alert(
-				`حجم فایل نباید بیشتر از 6 مگابایت باشد. حجم فعلی: ${(file.size / (1024 * 1024)).toFixed(1)} مگابایت`
+			showToast(
+				`حجم فایل نباید بیشتر از ${MAX_SIZE} مگابایت باشد. حجم فعلی: ${(file.size / (1024 * 1024)).toFixed(1)} مگابایت`,
+				'error'
 			)
 			return
 		}

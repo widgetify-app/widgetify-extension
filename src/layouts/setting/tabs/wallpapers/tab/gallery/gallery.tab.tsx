@@ -4,12 +4,10 @@ import { SectionPanel } from '@/components/section-panel'
 import { CategoryView } from './components/category/category-view'
 import { WallpaperView } from './components/wallpaper-item/wallpaper-view'
 import { UploadArea } from '../../components/upload-area.component'
-import { useAuth } from '@/context/auth.context'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 
 export function GalleryTab() {
 	const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-	const { user, isSuccessFetchingUser } = useAuth()
 	const { customWallpaper, handleCustomWallpaperChange } = useWallpaperContext()
 
 	return (
@@ -25,16 +23,14 @@ export function GalleryTab() {
 				)}
 			</div>
 
-			{user?.isVip && isSuccessFetchingUser ? (
-				<SectionPanel title="تصویر دلخواه" size="xs">
-					<div className="p-4">
-						<UploadArea
-							customWallpaper={customWallpaper}
-							onWallpaperChange={handleCustomWallpaperChange}
-						/>
-					</div>
-				</SectionPanel>
-			) : null}
+			<SectionPanel title="تصویر دلخواه" size="xs">
+				<div className="p-1">
+					<UploadArea
+						customWallpaper={customWallpaper}
+						onWallpaperChange={handleCustomWallpaperChange}
+					/>
+				</div>
+			</SectionPanel>
 		</SectionPanel>
 	)
 }

@@ -32,7 +32,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 		return (
 			<div
 				className={
-					'relative rounded-xl border border-dashed border-base-content/5 overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
+					'relative rounded-2xl border border-dashed border-base-content/5 overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
 				}
 			>
 				<button
@@ -58,13 +58,13 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 	return (
 		<div
 			className={
-				'relative overflow-hidden  rounded-xl backdrop-blur-sm shadow-sm border border-content bg-content'
+				'relative overflow-hidden  rounded-2xl backdrop-blur-sm shadow-sm border border-content bg-content'
 			}
 		>
 			<div className="flex items-center p-2.5">
-				<div className="relative flex-shrink-0 w-16 h-12 overflow-hidden rounded-md shadow-sm">
+				<div className="relative w-16 h-12 overflow-hidden rounded-md shadow-sm shrink-0">
 					<MediaPreview customWallpaper={customWallpaper} />
-					<div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/30"></div>
+					<div className="absolute inset-0 bg-linear-to-r from-transparent to-black/30"></div>
 
 					<div className="absolute top-1 right-1 px-1.5 py-0.5 text-[10px] font-medium text-white rounded-sm backdrop-blur-md bg-blue-500/80">
 						{customWallpaper.type === 'IMAGE' ? 'تصویر' : 'ویدیو'}
@@ -73,13 +73,17 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 
 				<div className="flex-1 mx-3">
 					<p className={'text-sm font-medium text-content'}>تصویر زمینه فعال</p>
-					<p className={'text-xs text-muted truncate max-w-[200px]'}>
+					<p className={'text-xs text-muted truncate max-w-50'}>
 						{customWallpaper.name || 'بدون نام'}
 					</p>
 				</div>
 
 				<div className="flex gap-2">
-					<Button onClick={() => handleFileSelect()} size="sm">
+					<Button
+						onClick={() => handleFileSelect()}
+						size="sm"
+						className="rounded-2xl"
+					>
 						<Icon name="edit" size={14} />
 						<span>تغییر</span>
 					</Button>
