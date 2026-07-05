@@ -91,6 +91,10 @@ export function MiniAppsLayout() {
 								<p className="text-sm text-muted">به زودی پر میشه...</p>
 							</div>
 						)}
+						{isLoading
+							? [...Array(5)].map((_, i) => <MiniAppCardSkeleton key={i} />)
+							: null}
+
 						{miniApps.map((app) => (
 							<div key={app.appId}>
 								<MiniAppCard
