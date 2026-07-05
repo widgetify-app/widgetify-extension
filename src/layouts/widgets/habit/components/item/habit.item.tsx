@@ -12,6 +12,7 @@ import { formatHabitGoal } from '../../utils'
 import { SegmentedProgressRing } from './button.progress-ring'
 import { SimpleProgressRing } from './button.simple-progress-ring'
 import { Icon } from '@/src/icons'
+import { IconLoading } from '@/components/loading/icon-loading'
 
 interface HabitItemProps {
 	habit: Habit
@@ -37,6 +38,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 		if (habit.comparison === HabitComparison.AT_MOST && value + step > target) {
 			return showToast(`مقدار فعلی به حداکثر هدف (${target}) رسیده است.`, 'error')
 		}
+
 		const [error] = await safeAwait(
 			logProgress({ id: habit.id, input: { date, amount: step } })
 		)
@@ -44,7 +46,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 			showToast(translateError(error) as string, 'error')
 			return
 		}
-		playAlarm('success')
+		playAlarm('info')
 		Analytics.event('habit_quick_log')
 		onChanged()
 	}
@@ -62,7 +64,11 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						color: getContrastingTextColor(color),
 					}}
 				>
-					{habit.emoji || '🎯'}
+					{isPending ? (
+						<IconLoading className="text-base-content/80" />
+					) : (
+						habit.emoji || '🎯'
+					)}
 				</div>
 
 				<div className="flex-1 min-w-0 ">

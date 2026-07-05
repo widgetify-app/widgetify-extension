@@ -43,50 +43,50 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🎯 نسخه جدید، آمادست!'}
+			title={'🪁 بادبادک؛ نسخه جدید ویجتیفای'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 		>
 			<div className="flex flex-col max-h-[80vh]">
-				<div className="flex items-center justify-between px-1 pb-1">
-					<div className="flex flex-col">
-						<p className="mt-1 text-xs font-medium text-muted">
-							آپدیت جدید، با ویجت جدید رسید! (نسخه آزمایشی)
-						</p>
-					</div>
-				</div>
-
 				<div className="pb-2 space-y-4 overflow-y-auto h-110">
 					<div className="relative w-full overflow-hidden border shadow-inner rounded-2xl bg-base-300/20 border-base-300">
 						<img
-							src={'https://cdn.widgetify.ir/extension/habit_tracker.png'}
+							src={'https://cdn.widgetify.ir/extension/badbodak-update.jpg'}
 							className="object-center w-full max-h-70 rounded-2xl"
 						/>
 					</div>
 
-					<div className="p-2 space-y-3 border rounded-2xl bg-base-300/20 border-base-300/10">
+					<div className="p-2 space-y-1.5 border rounded-2xl bg-base-300/20 border-base-300/10">
 						<div className="flex items-center gap-2">
 							<h3 className="text-sm font-black text-content">
-								ویجت عادت‌ها (Habit Tracker) اضافه شد!
+								بادبادک، پر از بهبودهای دوست‌داشتنی! 🪁
 							</h3>
 						</div>
 
 						<p className="text-xs leading-6 text-muted">
-							از امروز می‌تونی{' '}
+							از این نسخه می‌تونی{' '}
 							<span className="font-bold text-content">
-								عادت‌های روزانه‌ات رو ثبت و دنبال کنی
+								والپیپرهای دلخواهت رو کاملا رایگان از بین عکس‌های خودت
 							</span>
-							. هر روز که به هدفت پایبند باشی، زنجیره عادتت کامل‌تر میشه و
-							پیشرفتت همیشه جلوی چشمت خواهد بود.
+							؛ بدون هیچ محدودیتی انتخاب کنی!
 						</p>
 
 						<p className="text-xs leading-6 text-muted">
-							از قسمت{' '}
-							<span className="font-bold text-content">مدیریت ویجت‌ها</span>{' '}
-							می‌تونی این ویجت رو فعال کنی یا از ویجت{' '}
-							<span className="font-bold text-content">یادکار</span> استفاده
-							کنی.
+							همچنین{' '}
+							<span className="font-bold text-content">
+								ظاهر ویجت عادت‌ها (Habit Tracker)
+							</span>{' '}
+							بازطراحی شده، ظاهر ساده ویجتیفای بهبود پیدا کرده و عملکرد کلی
+							افزونه هم روان‌تر شده.
+						</p>
+
+						<p className="text-xs leading-6 text-muted">
+							علاوه بر این، مشکل نمایش{' '}
+							<span className="font-bold text-content">
+								عنوان بوکمارک‌ها
+							</span>{' '}
+							هم برطرف شده تا تجربه بهتری داشته باشی.
 						</p>
 					</div>
 
