@@ -13,21 +13,15 @@ const Calendar = React.lazy(() =>
 	}))
 )
 
-const NetworkSimplify = React.lazy(() =>
-	import('./widgets/network-simplify').then((module) => ({
-		default: module.NetworkSimplify,
-	}))
-)
-
-const NotesLayout = React.lazy(() =>
-	import('../widgets/notes/notes.layout').then((module) => ({
-		default: module.NotesLayout,
-	}))
-)
-
 const ArzSimplify = React.lazy(() =>
 	import('./widgets/arz-simplify').then((module) => ({
 		default: module.ArzSimplify,
+	}))
+)
+
+const Habit = React.lazy(() =>
+	import('./widgets/habit-simplify').then((module) => ({
+		default: module.HabitSimplify,
 	}))
 )
 
@@ -45,18 +39,18 @@ const tabs = [
 		element: TodosLayout,
 	},
 	{
-		id: 'notes',
-		label: 'یادداشت',
-		icon: <Icon name="notebook" />,
-		element: NotesLayout,
+		id: 'habit',
+		label: 'عادت ها',
+		icon: <Icon name="strike" />,
+		element: Habit,
 	},
+
 	{
 		id: 'calendar',
 		label: 'تقویم',
 		icon: <Icon name="calendar" />,
 		element: Calendar,
 	},
-
 	{
 		id: 'currency',
 		label: 'ارزها',
@@ -68,12 +62,6 @@ const tabs = [
 		label: 'اخبار',
 		icon: <Icon name="outlineNewspaper" />,
 		element: NewsSimplify,
-	},
-	{
-		id: 'network',
-		label: 'شبکه',
-		icon: <Icon name="network" />,
-		element: NetworkSimplify,
 	},
 ]
 
