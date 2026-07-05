@@ -94,7 +94,7 @@ export function HabitsContent() {
 	const isWaiting = isLoading || isRefetching
 
 	return (
-		<>
+		<div className="flex flex-col h-full">
 			<div className="flex-none">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-1">
@@ -166,7 +166,7 @@ export function HabitsContent() {
 			<Button
 				size="sm"
 				onClick={handleAddHabit}
-				className="px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
+				className="px-2 py-0!  w-full border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
 			>
 				<Icon name="plus" className="w-4 h-4" />
 				افزودن
@@ -205,7 +205,7 @@ export function HabitsContent() {
 				cancelText="انصراف"
 				isLoading={isArchiving}
 			/>
-		</>
+		</div>
 	)
 }
 

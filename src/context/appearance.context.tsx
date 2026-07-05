@@ -99,7 +99,10 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 				(event.ctrlKey || event.metaKey)
 			) {
 				event.preventDefault()
-				setUI(settings.ui === UI.ADVANCED ? UI.SIMPLE : UI.ADVANCED)
+				setUI(
+					settings.ui === UI.ADVANCED ? UI.SIMPLE : UI.ADVANCED,
+					isAuthenticated
+				)
 			}
 		}
 
@@ -142,8 +145,8 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		Analytics.event(`set_content_alignment_${value}`)
 	}
 
-	const setUI = async (ui: UI) => {
-		if (!isAuthenticated)
+	const setUI = async (ui: UI, isAuth: boolean) => {
+		if (!isAuth)
 			return showToast(
 				'برای استفاده از این حالت، باید وارد حساب کاربری خود شوید!',
 				'error'
@@ -181,7 +184,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		setFontFamily,
 		canReOrderWidget,
 		ui: settings.ui,
-		setUI: setUI,
+		setUI: (val) => setUI(val, isAuthenticated),
 		toggleCanReOrderWidget,
 		setContentAlignment,
 	}

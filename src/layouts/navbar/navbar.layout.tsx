@@ -92,7 +92,7 @@ export function NavbarLayout(): JSX.Element {
 	const { user } = useAuth()
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
-		if (tabName) setTab(tabName)
+		setTab(tabName)
 		setShowSettings(true)
 	}, [])
 
@@ -201,7 +201,7 @@ export function NavbarLayout(): JSX.Element {
 							</button>
 						</Tooltip>
 						<BlurModeButton />
-						<SettingsDropdown setShowSettings={setShowSettings} />
+						<SettingsDropdown />
 						<FriendsListNavbar />
 						<MarketButton />
 						<ProfileNav />

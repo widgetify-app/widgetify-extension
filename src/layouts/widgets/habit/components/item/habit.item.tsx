@@ -52,9 +52,9 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	return (
 		<div
 			onClick={onViewDetails}
-			className="w-full p-2 transition-all border cursor-pointer rounded-xl border-base-300/40 bg-base-300/30 hover:border-base-300/70 hover:bg-base-300/50 text-right active:scale-[0.99]"
+			className="w-full p-2 transition-all border rounded-2xl border-base-300/40 bg-base-300/30 hover:border-base-300/70 hover:bg-base-300/50 text-right active:scale-[0.99]"
 		>
-			<div className="flex items-center gap-2">
+			<div className="flex items-center gap-2 cursor-pointer">
 				<div
 					className="flex items-center justify-center w-8 h-8 text-sm rounded-lg shrink-0"
 					style={{
@@ -65,7 +65,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					{habit.emoji || '🎯'}
 				</div>
 
-				<div className="flex-1 min-w-0">
+				<div className="flex-1 min-w-0 ">
 					<p className="text-xs font-bold truncate text-content">
 						{habit.title}
 					</p>

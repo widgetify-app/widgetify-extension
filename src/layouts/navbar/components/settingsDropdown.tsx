@@ -6,12 +6,9 @@ import { Icon } from '@/src/icons'
 import { useAuth } from '@/context/auth.context'
 import { Dropdown } from '@/components/dropdown'
 
-interface SettingsProps {
-	setShowSettings: (value: boolean) => void
-}
-export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
+export const SettingsDropdown = () => {
 	const { isAuthenticated } = useAuth()
-	const { canReOrderWidget, toggleCanReOrderWidget, ui } = useAppearanceSetting()
+	const { canReOrderWidget, toggleCanReOrderWidget, ui, setUI } = useAppearanceSetting()
 	const triggerRef = useRef<HTMLDivElement>(null)
 
 	const handleWidgetSettingsClick = useCallback(() => {
@@ -20,7 +17,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 	}, [])
 
 	const handleSettingsClick = useCallback(() => {
-		setShowSettings(true)
+		callEvent('openSettings', 'general')
 		callEvent('closeAllDropdowns')
 	}, [])
 
@@ -34,7 +31,7 @@ export const SettingsDropdown = ({ setShowSettings }: SettingsProps) => {
 	}
 
 	const onClickToChangeUI = () => {
-		callEvent('ui_change', ui === 'SIMPLE' ? UI.ADVANCED : UI.SIMPLE)
+		setUI(ui === 'SIMPLE' ? UI.ADVANCED : UI.SIMPLE)
 	}
 
 	const onClickToOpenGallery = () => {
