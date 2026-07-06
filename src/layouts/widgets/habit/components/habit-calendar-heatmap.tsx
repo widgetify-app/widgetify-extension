@@ -25,16 +25,6 @@ const isToday = (today: jalaliMoment.Moment, date: jalaliMoment.Moment) => {
 	)
 }
 
-const isPast = (todayGregorian: any, date: jalaliMoment.Moment) => {
-	const greg = toGregorian(date)
-	return greg <= todayGregorian
-}
-
-const toGregorian = (date: jalaliMoment.Moment): string => {
-	const d = date.toDate()
-	return moment(d).format('YYYY-MM-DD')
-}
-
 export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 	const today = jalaliMoment()
 	const queryClient = useQueryClient()
@@ -49,8 +39,6 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		const d = date.toDate()
 		return moment(d).format('YYYY-MM-DD')
 	}
-
-	const todayGregorian = toGregorian(today)
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
@@ -146,18 +134,18 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		const habitData = getHabitData(gregorianDate)
 		const value = habitData.value
 		const isDayToday = isToday(today, cellDate)
-		const isDayPast = isPast(todayGregorian, cellDate)
-		const clickable = isDayPast && isCurrentMonth
 
 		const bgColor = value > 0 ? `${color}22` : ''
 		let Opacity = isCurrentMonth ? 'opacity-100' : ''
-
+		let clickable = true
 		if (cellDate.isAfter() && !value) {
 			Opacity = 'opacity-50'
+			clickable = false
 		}
 
 		if (cellDate.isBefore() && !isCurrentMonth && !value) {
 			Opacity = 'opacity-50'
+			clickable = false
 		}
 
 		let indicator = null
@@ -190,7 +178,11 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		return (
 			<div
 				key={`${isCurrentMonth ? 'c' : isPrevMonth ? 'p' : 'n'}-${day}`}
-				onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth)}
+				onClick={() =>
+					clickable
+						? handleDateClick(day, isCurrentMonth, isPrevMonth)
+						: undefined
+				}
 				className={`relative rounded-xl transition-all  h-10 w-10 mx-auto flex flex-col items-center justify-center ${Opacity} ${clickable ? 'hover:scale-110 cursor-pointer' : 'cursor-not-allowed'} ${isDayToday ? 'border-b scale-110 font-extrabold' : ''}`}
 				style={{
 					backgroundColor: bgColor,
