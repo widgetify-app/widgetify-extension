@@ -1,5 +1,6 @@
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
+import { RangeRequestsPlugin } from 'workbox-range-requests'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheNames } from './cache-names'
@@ -19,6 +20,20 @@ function matchesApiPaths(url: URL, request: Request, paths: string[]): boolean {
 	if (url.origin !== API_ORIGIN) return false
 	if (NEVER_CACHE_API_PATHS.some((path) => url.pathname.includes(path))) return false
 	return paths.some((path) => url.pathname.startsWith(path))
+}
+
+// Browser-initiated requests for CDN assets (<img>, <link>, ...) default to
+// no-cors, which yields opaque responses. Opaque responses can't be validated
+// and get a large, misleading padding added to storage estimates. Since the CDN
+// sends `Access-Control-Allow-Origin: *`, upgrade the fetch to CORS so we store
+// a real, unpadded response instead.
+const upgradeCdnToCorsPlugin = {
+	requestWillFetch: async ({ request }: { request: Request }) => {
+		if (request.mode === 'no-cors' && new URL(request.url).origin === CDN_ORIGIN) {
+			return new Request(request.url, { mode: 'cors', credentials: 'omit' })
+		}
+		return request
+	},
 }
 
 const DAY = 24 * 60 * 60
@@ -61,16 +76,24 @@ export function setupCaching() {
 			({ url }) => activeWallpaperUrls.has(url.href),
 			new CacheFirst({
 				cacheName: CacheNames.wallpaper,
-				plugins: [new CacheableResponsePlugin({ statuses: [0, 200] })],
+				plugins: [
+					new CacheableResponsePlugin({ statuses: [200] }),
+					// Video wallpapers issue Range requests; serve proper 206 slices
+					// from the cached full 200 instead of relying on browser leniency.
+					new RangeRequestsPlugin(),
+				],
 			})
 		)
 
 		registerRoute(
 			({ url }) => url.origin === CDN_ORIGIN && url.pathname.endsWith('.css'),
 			new StaleWhileRevalidate({
-				cacheName: CacheNames.cdn,
+				// Separate cache from the general CDN route: two ExpirationPlugins
+				// sharing one cache name fight over ownership and thrash IndexedDB.
+				cacheName: CacheNames.cdnCss,
 				plugins: [
-					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					upgradeCdnToCorsPlugin,
+					new CacheableResponsePlugin({ statuses: [200] }),
 					new ExpirationPlugin({
 						maxEntries: 20,
 						maxAgeSeconds: 30 * DAY,
@@ -103,7 +126,8 @@ export function setupCaching() {
 			new CacheFirst({
 				cacheName: CacheNames.cdn,
 				plugins: [
-					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					upgradeCdnToCorsPlugin,
+					new CacheableResponsePlugin({ statuses: [200] }),
 					new ExpirationPlugin({
 						maxEntries: 150,
 						maxAgeSeconds: 30 * DAY,

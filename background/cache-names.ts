@@ -17,6 +17,7 @@ export const CacheNames = {
 	wallpaper: ns('wallpaper'),
 	fonts: ns('fonts'),
 	cdn: ns('cdn'),
+	cdnCss: ns('cdn-css'),
 } as const
 
 export const EXPECTED_CACHES = new Set<string>(Object.values(CacheNames))

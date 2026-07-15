@@ -33,7 +33,12 @@ export async function enforceCacheBudget(): Promise<void> {
 
 		if (!(await overBudget())) return
 
-		const trimOrder = [CacheNames.cdn, CacheNames.api, CacheNames.fonts]
+		const trimOrder = [
+			CacheNames.cdnCss,
+			CacheNames.cdn,
+			CacheNames.api,
+			CacheNames.fonts,
+		]
 		for (const name of trimOrder) {
 			const cache = await caches.open(name)
 			const keys = await cache.keys()

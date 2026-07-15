@@ -33,9 +33,16 @@ export async function setActiveWallpaper(src: string): Promise<void> {
 		)
 
 		const already = await cache.match(src)
-		if (!already) {
-			const response = await fetch(src, { mode: 'no-cors' })
-			await cache.put(src, response)
+		// Replace any previously stored opaque response (status 0 / type opaque):
+		// opaque entries get a large, misleading padding added to storage estimates.
+		const isOpaque = !!already && (already.type === 'opaque' || already.status === 0)
+		if (!already || isOpaque) {
+			// Fetch with CORS (cdn.widgetify.ir sends ACAO) so we store a real
+			// response instead of an opaque one.
+			const response = await fetch(src, { mode: 'cors' })
+			if (response.ok) {
+				await cache.put(src, response)
+			}
 		}
 	} catch {}
 }
