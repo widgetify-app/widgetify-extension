@@ -1,0 +1,24 @@
+name: 🔁 Mirror to GitLab
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+  delete:
+    branches: ['**']
+    tags: ['**']
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to GitLab
+        run: |
+          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/${{ secrets.GITLAB_USERNAME }}/${{ github.event.repository.name }}.git
+          git push gitlab --all --force
+          git push gitlab --tags --force
