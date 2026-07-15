@@ -2,7 +2,9 @@ import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
-import { NavigationRoute } from 'workbox-routing'
+import { CacheNames } from './cache-names'
+import { activeWallpaperUrls } from './wallpaper-cache'
+
 const allowedPaths = [
 	'/extension/wigi-pad-data',
 	'/date/events',
@@ -15,6 +17,12 @@ const allowedPaths = [
 	'/weather',
 ]
 
+const API_ORIGIN = 'https://api.widgetify.ir'
+const CDN_ORIGIN = 'https://cdn.widgetify.ir'
+const CDN_NO_CACHE_PREFIXES = ['/wallpapers/', '/avatars/']
+
+const DAY = 24 * 60 * 60
+
 export function setupCaching() {
 	try {
 		if (typeof self !== 'undefined' && '__WB_MANIFEST' in self) {
@@ -26,151 +34,79 @@ export function setupCaching() {
 		registerRoute(
 			({ url, request }) => {
 				if (request.method !== 'GET') return false
-				if (url.origin !== 'https://api.widgetify.ir') return false
-
+				if (url.origin !== API_ORIGIN) return false
 				return allowedPaths.some((path) => url.pathname.startsWith(path))
 			},
-
-			new StaleWhileRevalidate({
-				cacheName: 'widgetify-public-api',
+			new NetworkFirst({
+				cacheName: CacheNames.api,
+				networkTimeoutSeconds: 3,
 				plugins: [
-					new CacheableResponsePlugin({
-						statuses: [200],
-					}),
+					new CacheableResponsePlugin({ statuses: [200] }),
 					new ExpirationPlugin({
-						maxEntries: 200,
-						maxAgeSeconds: 10 * 24 * 60 * 60, // 10 days
-						purgeOnQuotaError: true, // Automatically cleanup if quota is exceeded
+						maxEntries: 50,
+						maxAgeSeconds: 2 * DAY,
+						purgeOnQuotaError: true,
 					}),
 				],
 			})
 		)
 
+		registerRoute(
+			({ url }) => activeWallpaperUrls.has(url.href),
+			new CacheFirst({
+				cacheName: CacheNames.wallpaper,
+				plugins: [new CacheableResponsePlugin({ statuses: [0, 200] })],
+			})
+		)
+
 		const isDev = import.meta.env.DEV
+		if (isDev) return
 
-		if (!isDev) {
-			registerRoute(
-				({ url }) =>
-					url.href === 'https://cdn.widgetify.ir/fonts/remote-fonts.css',
-				new StaleWhileRevalidate({
-					cacheName: 'remote-fonts-css-cache',
-					plugins: [
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-						new ExpirationPlugin({
-							maxEntries: 1,
-							maxAgeSeconds: 2 * 60,
-							purgeOnQuotaError: true,
-						}),
-					],
-				})
-			)
+		registerRoute(
+			({ url }) => url.origin === CDN_ORIGIN && url.pathname.endsWith('.css'),
+			new StaleWhileRevalidate({
+				cacheName: CacheNames.cdn,
+				plugins: [
+					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					new ExpirationPlugin({
+						maxEntries: 20,
+						maxAgeSeconds: 30 * DAY,
+						purgeOnQuotaError: true,
+					}),
+				],
+			})
+		)
 
-			registerRoute(
-				({ request }) =>
-					request.destination === 'script' || request.destination === 'style',
-				new CacheFirst({
-					cacheName: 'static-assets-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 200,
-							maxAgeSeconds: 10 * 24 * 60 * 60,
-							purgeOnQuotaError: true,
-						}),
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-					],
-				})
-			)
+		registerRoute(
+			({ request }) => request.destination === 'font',
+			new CacheFirst({
+				cacheName: CacheNames.fonts,
+				plugins: [
+					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					new ExpirationPlugin({
+						maxEntries: 30,
+						maxAgeSeconds: 60 * DAY,
+						purgeOnQuotaError: true,
+					}),
+				],
+			})
+		)
 
-			registerRoute(
-				({ request }) => request.destination === 'font',
-				new CacheFirst({
-					cacheName: 'fonts-cache-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 50,
-							maxAgeSeconds: 2 * 60,
-							purgeOnQuotaError: true,
-						}),
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-					],
-				})
-			)
-
-			registerRoute(
-				({ request }) => request.destination === 'video',
-				new CacheFirst({
-					cacheName: 'videos-cache-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 300,
-							maxAgeSeconds: 5 * 24 * 60 * 60, // 5 days
-							purgeOnQuotaError: true,
-						}),
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-					],
-				})
-			)
-
-			registerRoute(
-				({ request }) => request.destination === 'document',
-				new NetworkFirst({
-					cacheName: 'html-cache-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 50,
-							maxAgeSeconds: 2 * 24 * 60 * 60, // 2 days
-							purgeOnQuotaError: true,
-						}),
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-					],
-				})
-			)
-
-			registerRoute(
-				({ url }) =>
-					url.origin === 'https://cdn.jsdelivr.net' ||
-					url.origin === 'https://unpkg.com' ||
-					url.origin === 'https://cdnjs.cloudflare.com' ||
-					url.hostname.includes('googleapis.com') ||
-					url.hostname.includes('gstatic.com') ||
-					url.hostname.includes('storage'),
-				new StaleWhileRevalidate({
-					cacheName: 'cdn-cache-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 100,
-							maxAgeSeconds: 1 * 60 * 60, // 1 hours
-							purgeOnQuotaError: true,
-						}),
-						new CacheableResponsePlugin({
-							statuses: [0, 200],
-						}),
-					],
-				})
-			)
-
-			const navigationRoute = new NavigationRoute(
-				new NetworkFirst({
-					cacheName: 'navigation-cache-v1',
-					plugins: [
-						new ExpirationPlugin({
-							maxEntries: 30,
-							maxAgeSeconds: 1 * 60 * 60, // 1 hours
-						}),
-					],
-				})
-			)
-			registerRoute(navigationRoute)
-		}
+		registerRoute(
+			({ url }) =>
+				url.origin === CDN_ORIGIN &&
+				!CDN_NO_CACHE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix)),
+			new CacheFirst({
+				cacheName: CacheNames.cdn,
+				plugins: [
+					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					new ExpirationPlugin({
+						maxEntries: 150,
+						maxAgeSeconds: 30 * DAY,
+						purgeOnQuotaError: true,
+					}),
+				],
+			})
+		)
 	} catch {}
 }

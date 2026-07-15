@@ -1,6 +1,7 @@
 export enum SwEventType {
 	DeleteCache = 'DELETE_CACHE',
 	UpdateCache = 'UPDATE_CACHE',
+	SetActiveWallpaper = 'SET_ACTIVE_WALLPAPER',
 }
 
 export enum CacheName {
@@ -19,4 +20,10 @@ export type UpdateCacheEvent = {
 	data: any
 }
 
-export type SwEvent = DeleteCacheEvent | UpdateCacheEvent
+export type SetActiveWallpaperEvent = {
+	type: SwEventType.SetActiveWallpaper
+	src: string
+	wallpaperType: 'IMAGE' | 'VIDEO'
+}
+
+export type SwEvent = DeleteCacheEvent | UpdateCacheEvent | SetActiveWallpaperEvent
