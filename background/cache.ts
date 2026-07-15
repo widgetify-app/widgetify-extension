@@ -4,20 +4,21 @@ import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheNames } from './cache-names'
 import {
-	CACHEABLE_API_PATHS,
 	CDN_NO_CACHE_PREFIXES,
+	NETWORK_FIRST_API_PATHS,
 	NEVER_CACHE_API_PATHS,
+	SWR_API_PATHS,
 } from './cache-config'
 import { activeWallpaperUrls } from './wallpaper-cache'
 
 const API_ORIGIN = 'https://api.widgetify.ir'
 const CDN_ORIGIN = 'https://cdn.widgetify.ir'
 
-function isCacheableApiRequest(url: URL, request: Request): boolean {
+function matchesApiPaths(url: URL, request: Request, paths: string[]): boolean {
 	if (request.method !== 'GET') return false
 	if (url.origin !== API_ORIGIN) return false
 	if (NEVER_CACHE_API_PATHS.some((path) => url.pathname.includes(path))) return false
-	return CACHEABLE_API_PATHS.some((path) => url.pathname.startsWith(path))
+	return paths.some((path) => url.pathname.startsWith(path))
 }
 
 const DAY = 24 * 60 * 60
@@ -30,19 +31,29 @@ export function setupCaching() {
 			})
 		}
 
+		const apiCachePlugins = () => [
+			new CacheableResponsePlugin({ statuses: [200] }),
+			new ExpirationPlugin({
+				maxEntries: 50,
+				maxAgeSeconds: 2 * DAY,
+				purgeOnQuotaError: true,
+			}),
+		]
+
 		registerRoute(
-			({ url, request }) => isCacheableApiRequest(url, request),
+			({ url, request }) => matchesApiPaths(url, request, SWR_API_PATHS),
+			new StaleWhileRevalidate({
+				cacheName: CacheNames.api,
+				plugins: apiCachePlugins(),
+			})
+		)
+
+		registerRoute(
+			({ url, request }) => matchesApiPaths(url, request, NETWORK_FIRST_API_PATHS),
 			new NetworkFirst({
 				cacheName: CacheNames.api,
 				networkTimeoutSeconds: 3,
-				plugins: [
-					new CacheableResponsePlugin({ statuses: [200] }),
-					new ExpirationPlugin({
-						maxEntries: 50,
-						maxAgeSeconds: 2 * DAY,
-						purgeOnQuotaError: true,
-					}),
-				],
+				plugins: apiCachePlugins(),
 			})
 		)
 
