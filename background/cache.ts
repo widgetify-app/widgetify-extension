@@ -59,9 +59,6 @@ export function setupCaching() {
 			})
 		)
 
-		const isDev = import.meta.env.DEV
-		if (isDev) return
-
 		registerRoute(
 			({ url }) => url.origin === CDN_ORIGIN && url.pathname.endsWith('.css'),
 			new StaleWhileRevalidate({
@@ -78,7 +75,8 @@ export function setupCaching() {
 		)
 
 		registerRoute(
-			({ request }) => request.destination === 'font',
+			({ url, request }) =>
+				request.destination === 'font' && url.protocol === 'https:',
 			new CacheFirst({
 				cacheName: CacheNames.fonts,
 				plugins: [
