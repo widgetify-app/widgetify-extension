@@ -1,0 +1,40 @@
+name: 'cn utility: lint, type-check, test, build'
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Code Quality & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun runtime
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies (locked versions)
+        run: bun install --frozen-lockfile
+
+      - name: Format check & lint (Biome)
+        run: bunx biome check . --diagnostic-level=warn
+
+      - name: Type check (TypeScript)
+        run: bunx tsc --noEmit
+
+      - name: Run unit tests with coverage
+        run: bunx vitest run --coverage
+
+      - name: Build extension (Chrome)
+        run: bun run build
