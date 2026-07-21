@@ -39,7 +39,10 @@ function createMotionComponent<T extends keyof typeof motion, P extends object>(
 		const { isOptimalMode } = useGeneralSetting()
 
 		return (
-			<Component ref={ref} {...(isOptimalMode ? cleanMotionProps(props) : props)} />
+			<Component
+				ref={ref}
+				{...((isOptimalMode ? cleanMotionProps(props) : props) as P)}
+			/>
 		)
 	})
 }
