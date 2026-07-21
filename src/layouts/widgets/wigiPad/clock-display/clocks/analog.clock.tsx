@@ -1,5 +1,6 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type { ClockSettings } from '../clock-setting.interface'
+import { useGeneralSetting } from '@/context/general-setting.context'
 
 interface AnalogClockProps {
 	timezone: FetchedTimezone
@@ -10,15 +11,29 @@ export function AnalogClock({ timezone, setting }: AnalogClockProps) {
 	const [time, setTime] = useState(
 		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
 	)
+	const { isOptimalMode } = useGeneralSetting()
+
+	const showSeconds = setting.showSeconds && !isOptimalMode
 
 	useEffect(() => {
-		const timer = setInterval(() => {
+		const updateTime = () => {
 			setTime(
-				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+				new Date(
+					new Date().toLocaleString('en-US', {
+						timeZone: timezone.value,
+					})
+				)
 			)
-		}, 1000)
+		}
+
+		updateTime()
+
+		const interval = showSeconds ? 1000 : 60_000
+
+		const timer = setInterval(updateTime, interval)
+
 		return () => clearInterval(timer)
-	}, [timezone])
+	}, [timezone.value, showSeconds])
 
 	const hours = time.getHours() % 12
 	const minutes = time.getMinutes()

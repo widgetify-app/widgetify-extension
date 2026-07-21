@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { Motion as motion } from "@/common/motion";
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'

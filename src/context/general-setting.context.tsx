@@ -11,6 +11,7 @@ import { useAuth } from './auth.context'
 
 export interface GeneralData {
 	blurMode: boolean
+	isOptimalMode: boolean
 	analyticsEnabled: boolean
 	selected_timezone: FetchedTimezone
 	browserBookmarksEnabled: boolean
@@ -35,6 +36,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	},
 	browserBookmarksEnabled: false,
 	browserTabsEnabled: false,
+	isOptimalMode: false,
 }
 
 export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
@@ -223,6 +225,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setBrowserBookmarksEnabled,
 		browserTabsEnabled: settings.browserTabsEnabled,
 		setBrowserTabsEnabled,
+		isOptimalMode: settings.isOptimalMode,
 	}
 
 	return (
