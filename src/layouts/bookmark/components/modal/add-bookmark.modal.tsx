@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
@@ -181,17 +181,7 @@ export function AddBookmarkModal({
 				<div className="mt-1 overflow-hidden">
 					<TypeSelector type={type} setType={setType} />
 
-					<div className="py-2 overflow-auto">
-						<div
-							className={`mb-0.5 flex flex-row  w-full items-center gap-y-2.5 justify-center
-							`}
-						>
-							<BookmarkIconPicker
-								onChange={(value) => updateFormData('icon', value)}
-								value={formData.icon}
-								url={formData.url}
-							/>
-						</div>
+					<div className="flex items-center gap-2 mt-2">
 						<TextInput
 							type="text"
 							name="title"
@@ -199,27 +189,33 @@ export function AddBookmarkModal({
 							value={formData.title}
 							onChange={(v) => updateFormData('title', v)}
 							className={
-								'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
+								'w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
 							}
 						/>
-						<div className="relative h-12.5">
-							{type === 'BOOKMARK' && (
-								<TextInput
-									type="text"
-									name="url"
-									placeholder="آدرس لینک"
-									value={formData.url || ''}
-									onChange={(v) => handleUrlChange(v)}
-									className={
-										'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-									}
-								/>
-							)}
-						</div>
+
+						<BookmarkIconPicker
+							onChange={(value) => updateFormData('icon', value)}
+							value={formData.icon}
+							url={formData.url}
+						/>
+					</div>
+					<div className="relative h-12.5">
 						{type === 'BOOKMARK' && (
-							<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+							<TextInput
+								type="text"
+								name="url"
+								placeholder="آدرس لینک"
+								value={formData.url || ''}
+								onChange={(v) => handleUrlChange(v)}
+								className={
+									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+								}
+							/>
 						)}
 					</div>
+					{type === 'BOOKMARK' && (
+						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+					)}
 
 					<AdvancedModal
 						bookmark={formData}

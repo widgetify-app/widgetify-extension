@@ -71,7 +71,7 @@ export function BookmarkIconPicker({ value, url, onChange }: Props) {
 				}}
 				onDragLeave={() => setIsDragging(false)}
 				onDrop={handleDrop}
-				className={`relative w-12 h-12 flex items-center justify-center cursor-pointer border-2 rounded-xl transition
+				className={`relative w-12 h-10 flex items-center justify-center cursor-pointer border-2 rounded-xl transition
 					${isDragging ? 'border-blue-400' : 'border-base-300'}
 				`}
 			>

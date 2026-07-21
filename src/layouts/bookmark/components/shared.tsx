@@ -1,5 +1,5 @@
+import { ItemSelector } from '@/components/item-selector'
 import type { BookmarkType } from '../types/bookmark.types'
-import { TabNavigation } from '@/components/tab-navigation'
 import { Icon } from '@/src/icons'
 
 export type IconSourceType = 'auto' | 'upload' | 'url'
@@ -12,25 +12,36 @@ export function TypeSelector({
 	setType: (type: BookmarkType) => void
 }) {
 	return (
-		<TabNavigation<BookmarkType>
-			className="w-full! border-none! h-12"
-			tabMode="simple"
-			size="medium"
-			tabs={[
-				{
-					id: 'BOOKMARK',
-					label: 'بوکمارک',
-					icon: <Icon name="outlineBookmark" size={14} />,
-				},
-				{
-					id: 'FOLDER',
-					label: 'پوشه',
-					icon: <Icon name="outlineFolder" size={14} />,
-				},
-			]}
-			activeTab={type}
-			onTabClick={(tab) => setType(tab)}
-		/>
+		<div className="grid grid-cols-2 gap-2">
+			<ItemSelector
+				isActive={type === 'BOOKMARK'}
+				onClick={() => setType('BOOKMARK')}
+				label={
+					<div
+						className={`flex items-center gap-1 ${type === 'BOOKMARK' ? 'text-primary' : 'text-muted'}`}
+					>
+						<Icon name="bookmark" />
+						بوکمارک
+					</div>
+				}
+				className="p-2! h-14!"
+				description={'ذخیره یک لینک یا وب‌سایت'}
+			/>
+			<ItemSelector
+				isActive={type === 'FOLDER'}
+				onClick={() => setType('FOLDER')}
+				label={
+					<div
+						className={`flex items-center gap-1 ${type === 'FOLDER' ? 'text-primary' : 'text-muted'}`}
+					>
+						<Icon name="folder" />
+						پوشه
+					</div>
+				}
+				className="p-2! h-14!"
+				description={'دسته‌بندی و مرتب‌سازی بوکمارک‌ها'}
+			/>
+		</div>
 	)
 }
 
