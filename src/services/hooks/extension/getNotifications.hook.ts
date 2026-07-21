@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 export type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
 export enum NotificationGoTo {
@@ -60,10 +60,25 @@ async function fetchNotifications(): Promise<NotificationItemResponse> {
 }
 
 export function useGetNotifications() {
+	const [cachedData, setCachedData] = useState<NotificationItemResponse | undefined>(
+		undefined
+	)
+
+	useEffect(() => {
+		getFromStorage('notifications').then((cached) => {
+			if (cached) setCachedData(cached)
+		})
+	}, [])
+
 	return useQuery<NotificationItemResponse>({
 		queryKey: ['notifications'],
 		retry: 1,
-		queryFn: () => fetchNotifications(),
+		queryFn: async () => {
+			const response = await fetchNotifications()
+			await setToStorage('notifications', response)
+			return response
+		},
+		placeholderData: cachedData,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	})
 }
@@ -73,13 +88,6 @@ export function useNotifyAsSeen() {
 		mutationFn: async (id: string) => {
 			const client = getMainClient()
 			await client.put(`/notifications/${id}/seen`)
-		},
-		onSuccess: () => {
-			browser.runtime.sendMessage<SwEvent>({
-				cacheName: CacheName.API,
-				type: SwEventType.DeleteCache,
-				path: '/extension/notifications',
-			})
 		},
 		mutationKey: ['seen_notification'],
 	})
