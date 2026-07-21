@@ -38,7 +38,8 @@
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"useIterableCallbackReturn": "off"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "off",
