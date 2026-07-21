@@ -23,13 +23,13 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 						<div
 							key={index}
 							onClick={() => onSelect(suggestion)}
-							className="p-2 flex flex-col items-center gap-y-0.5 text-center transition-colors duration-200 bg-content hover:!bg-base-300/75 border border-base-300/40 rounded-xl cursor-pointer"
+							className="p-1 flex flex-col items-center justify-center text-center transition-colors duration-200 bg-content hover:!bg-base-300/75 h-12 border border-base-300/40 rounded-xl cursor-pointer"
 						>
-							<div className="flex items-center justify-center flex-shrink-0 w-6 h-6 mb-1">
+							<div className="flex items-center justify-center flex-shrink-0 w-5 h-5 mb-1">
 								<img
 									src={suggestion.icon || ''}
 									alt={suggestion.title}
-									className="object-contain w-6 h-6 rounded-md"
+									className="object-contain w-5 h-5 rounded-md"
 									onError={(e) => {
 										const target = e.target as HTMLImageElement
 										target.style.display = 'none'

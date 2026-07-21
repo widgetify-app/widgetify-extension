@@ -10,6 +10,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { FolderHeader } from './components/folder-header'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
+import { ImportBrowserBookmarksModal } from './components/modal/import-browser-bookmarks.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
@@ -30,6 +31,7 @@ export function BookmarksList() {
 	const { isAuthenticated } = useAuth()
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
+	const [showImportBookmarksModal, setShowImportBookmarksModal] = useState(false)
 	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
@@ -206,8 +208,19 @@ export function BookmarksList() {
 							addBookmark(bookmark, () => setShowAddBookmarkModal(false))
 						}
 						parentId={currentFolderId}
+						onOpenImport={() => {
+							setShowAddBookmarkModal(false)
+							setShowImportBookmarksModal(true)
+						}}
 					/>
 				)
+			)}
+			{showImportBookmarksModal && (
+				<ImportBrowserBookmarksModal
+					isOpen={showImportBookmarksModal}
+					onClose={() => setShowImportBookmarksModal(false)}
+					parentId={currentFolderId}
+				/>
 			)}
 		</>
 	)

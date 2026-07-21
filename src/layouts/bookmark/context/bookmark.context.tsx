@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { Bookmark, BrowserImportNode } from '@/layouts/bookmark/types/bookmark.types'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
 import { translateError } from '@/utils/translate-error'
@@ -26,6 +26,11 @@ export interface BookmarkStoreContext {
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
+	importBrowserBookmarks: (
+		nodes: BrowserImportNode[],
+		parentId: string | null,
+		onProgress?: (done: number, total: number) => void
+	) => Promise<{ successCount: number; failCount: number }>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string, cb: () => void) => void
 	currentFolderId: string | null
@@ -37,6 +42,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
 	addBookmark: async () => {},
+	importBrowserBookmarks: async () => ({ successCount: 0, failCount: 0 }),
 	editBookmark: () => {},
 	deleteBookmark: () => {},
 	currentFolderId: null,
@@ -215,6 +221,100 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
+	const importBrowserBookmarks = async (
+		nodes: BrowserImportNode[],
+		parentId: string | null,
+		onProgress?: (done: number, total: number) => void
+	): Promise<{ successCount: number; failCount: number }> => {
+		if (!isAuthenticated) {
+			showToast('برای درون‌ریزی بوکمارک‌ها باید وارد شوید.', 'error')
+			return { successCount: 0, failCount: 0 }
+		}
+
+		const countNodes = (list: BrowserImportNode[]): number =>
+			list.reduce(
+				(sum, node) => sum + 1 + (node.children ? countNodes(node.children) : 0),
+				0
+			)
+		const total = countNodes(nodes)
+
+		let done = 0
+		let successCount = 0
+		let failCount = 0
+
+		let resolvedParentId = parentId
+		if (parentId && validate(parentId)) {
+			const parentBookmark = bookmarks?.find(
+				(b) => b.id === parentId || b.onlineId === parentId
+			)
+			if (parentBookmark?.onlineId) {
+				resolvedParentId = parentBookmark.onlineId
+			}
+		}
+
+		const orderCounters = new Map<string, number>()
+		const getNextOrder = (folderId: string | null) => {
+			const key = folderId || 'root'
+			if (!orderCounters.has(key)) {
+				const items = getCurrentFolderItems(folderId)
+				const maxOrder = items.reduce(
+					(max, item) => Math.max(max, item.order || 0),
+					-1
+				)
+				orderCounters.set(key, maxOrder + 1)
+			}
+			const next = orderCounters.get(key) as number
+			orderCounters.set(key, next + 1)
+			return next
+		}
+
+		const importNode = async (
+			node: BrowserImportNode,
+			targetParentId: string | null
+		) => {
+			const [err, created] = await safeAwait<AxiosError, Bookmark>(
+				addBookmarkAsync({
+					order: getNextOrder(targetParentId),
+					parentId: targetParentId,
+					title: node.title,
+					customBackground: null,
+					customTextColor: null,
+					sticker: null,
+					type: node.type,
+					url: node.type === 'BOOKMARK' ? node.url : null,
+					icon: null,
+				})
+			)
+
+			done += 1
+			onProgress?.(done, total)
+
+			if (err || !created) {
+				failCount += 1
+				return
+			}
+
+			successCount += 1
+
+			if (node.type === 'FOLDER' && node.children?.length) {
+				for (const child of node.children) {
+					await importNode(child, created.id)
+				}
+			}
+		}
+
+		for (const node of nodes) {
+			await importNode(node, resolvedParentId)
+		}
+
+		if (successCount > 0) {
+			await refetch()
+			Analytics.event('import_browser_bookmarks')
+		}
+
+		return { successCount, failCount }
+	}
+
 	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {
 		if (!isAuthenticated) return
 
@@ -311,6 +411,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				setBookmarks,
 				getCurrentFolderItems,
 				addBookmark: addBookmark as any,
+				importBrowserBookmarks,
 				editBookmark,
 				deleteBookmark,
 				currentFolderId,

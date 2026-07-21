@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
+import { Icon } from '@/src/icons'
 import type { BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import { ShowAdvancedButton, TypeSelector } from '../shared'
@@ -14,6 +15,7 @@ interface AddBookmarkModalProps {
 	onClose: () => void
 	onAdd: (bookmark: BookmarkCreateFormFields) => void
 	parentId: string | null
+	onOpenImport?: () => void
 }
 
 export interface BookmarkCreateFormFields {
@@ -50,6 +52,7 @@ export function AddBookmarkModal({
 	onClose,
 	onAdd,
 	parentId = null,
+	onOpenImport,
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [showAdvanced, setShowAdvanced] = useState(false)
@@ -181,17 +184,16 @@ export function AddBookmarkModal({
 				<div className="mt-1 overflow-hidden">
 					<TypeSelector type={type} setType={setType} />
 
-					<div className="py-2 overflow-auto">
-						<div
-							className={`mb-0.5 flex flex-row  w-full items-center gap-y-2.5 justify-center
-							`}
-						>
-							<BookmarkIconPicker
-								onChange={(value) => updateFormData('icon', value)}
-								value={formData.icon}
-								url={formData.url}
-							/>
-						</div>
+					<button
+						type="button"
+						onClick={onOpenImport}
+						className="flex items-center justify-center w-full gap-1.5 mt-1 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer text-base  hover:bg-base-200/80"
+					>
+						<Icon name="download" size={12} />
+						افزودن از بوکمارک‌های مرورگر
+					</button>
+
+					<div className="flex items-center gap-2 mt-2">
 						<TextInput
 							type="text"
 							name="title"
@@ -199,27 +201,33 @@ export function AddBookmarkModal({
 							value={formData.title}
 							onChange={(v) => updateFormData('title', v)}
 							className={
-								'mt-2 w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
+								'w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
 							}
 						/>
-						<div className="relative h-12.5">
-							{type === 'BOOKMARK' && (
-								<TextInput
-									type="text"
-									name="url"
-									placeholder="آدرس لینک"
-									value={formData.url || ''}
-									onChange={(v) => handleUrlChange(v)}
-									className={
-										'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-									}
-								/>
-							)}
-						</div>
+
+						<BookmarkIconPicker
+							onChange={(value) => updateFormData('icon', value)}
+							value={formData.icon}
+							url={formData.url}
+						/>
+					</div>
+					<div className="relative h-12.5">
 						{type === 'BOOKMARK' && (
-							<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+							<TextInput
+								type="text"
+								name="url"
+								placeholder="آدرس لینک"
+								value={formData.url || ''}
+								onChange={(v) => handleUrlChange(v)}
+								className={
+									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+								}
+							/>
 						)}
 					</div>
+					{type === 'BOOKMARK' && (
+						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+					)}
 
 					<AdvancedModal
 						bookmark={formData}
