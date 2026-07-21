@@ -1,7 +1,9 @@
 import { cleanupOutdatedCaches } from 'workbox-precaching'
 import Analytics from '../src/analytics'
 import { removeFromStorage, setToStorage } from '../src/common/storage'
-import { preloadCriticalResources } from './utils'
+import { enforceCacheBudget, purgeStaleCaches } from './utils'
+import { resolveCacheName } from './cache-names'
+import { initActiveWallpaper, setActiveWallpaper } from './wallpaper-cache'
 import { type SwEvent, SwEventType } from '@/common/types/sw-events'
 
 export function setupEventListeners() {
@@ -25,7 +27,6 @@ export function setupEventListeners() {
 					offlineSupport: true,
 				})
 			}
-			import.meta.env.DEV && (await preloadCriticalResources())
 		} else if (details.reason === 'update') {
 			const manifest = browser.runtime.getManifest()
 			const previousVersion = details.previousVersion || 'unknown'
@@ -37,7 +38,8 @@ export function setupEventListeners() {
 			})
 
 			await cleanupOutdatedCaches()
-			await preloadCriticalResources()
+			await purgeStaleCaches()
+			await initActiveWallpaper()
 		}
 	})
 
@@ -48,7 +50,7 @@ export function setupEventListeners() {
 	browser.runtime.onMessage.addListener(async (message: SwEvent) => {
 		switch (message.type) {
 			case SwEventType.DeleteCache: {
-				const cache = await caches.open(message.cacheName)
+				const cache = await caches.open(resolveCacheName(message.cacheName))
 				const requests = await cache.keys()
 
 				await Promise.all(
@@ -67,7 +69,7 @@ export function setupEventListeners() {
 				break
 			}
 			case SwEventType.UpdateCache: {
-				const cache = await caches.open(message.cacheName)
+				const cache = await caches.open(resolveCacheName(message.cacheName))
 
 				const requests = await cache.keys()
 				const existingRequest = requests.find((request) => {
@@ -84,6 +86,11 @@ export function setupEventListeners() {
 
 				await cache.put(existingRequest, response)
 
+				break
+			}
+			case SwEventType.SetActiveWallpaper: {
+				await setActiveWallpaper(message.src)
+				await enforceCacheBudget()
 				break
 			}
 		}

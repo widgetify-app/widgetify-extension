@@ -87,4 +87,5 @@ export interface StorageKV {
 	selected_engine: string | null
 	widget_tab: string
 	yadkar_tab: string
+	notifications: any
 }

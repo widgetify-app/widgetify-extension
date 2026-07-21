@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { motion, AnimatePresence, type PanInfo } from 'framer-motion'
+import { Presence, Motion as motion } from '@/common/motion'
 import { Portal } from '../portal/Portal'
 import { Icon } from '@/src/icons'
 
@@ -40,7 +40,7 @@ export function BottomSheet({
 		screen: '98vh',
 	}
 
-	const handleDragEnd = (_: any, info: PanInfo) => {
+	const handleDragEnd = (_: any, info: any) => {
 		setIsDragging(false)
 
 		if (info.offset.y > dragThreshold) {
@@ -50,7 +50,7 @@ export function BottomSheet({
 
 	return (
 		<Portal>
-			<AnimatePresence>
+			<Presence>
 				{isOpen && (
 					<>
 						<motion.div
@@ -133,7 +133,7 @@ export function BottomSheet({
 						</motion.div>
 					</>
 				)}
-			</AnimatePresence>
+			</Presence>
 		</Portal>
 	)
 }

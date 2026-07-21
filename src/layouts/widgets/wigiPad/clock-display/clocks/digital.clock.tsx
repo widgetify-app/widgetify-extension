@@ -1,23 +1,38 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/getTimezones.hook'
 import type { ClockSettings } from '../clock-setting.interface'
+import { useGeneralSetting } from '@/context/general-setting.context'
 
 interface DigitalClockProps {
 	timezone: FetchedTimezone
 	setting: ClockSettings
 }
 export function DigitalClock({ timezone, setting }: DigitalClockProps) {
+	const { isOptimalMode } = useGeneralSetting()
 	const [time, setTime] = useState(
 		new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
 	)
 
+	const showSeconds = setting.showSeconds && !isOptimalMode
+
 	useEffect(() => {
-		const timer = setInterval(() => {
+		const updateTime = () => {
 			setTime(
-				new Date(new Date().toLocaleString('en-US', { timeZone: timezone.value }))
+				new Date(
+					new Date().toLocaleString('en-US', {
+						timeZone: timezone.value,
+					})
+				)
 			)
-		}, 1000)
+		}
+
+		updateTime()
+
+		const interval = showSeconds ? 1000 : 60_000
+
+		const timer = setInterval(updateTime, interval)
+
 		return () => clearInterval(timer)
-	}, [timezone])
+	}, [timezone.value, showSeconds])
 
 	const hours = time.getHours().toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
@@ -31,7 +46,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 			: '-translate-y-[calc(50%+0.9rem)]'
 	}
 
-	const digitalClockStyles = setting.showSeconds
+	const digitalClockStyles = showSeconds
 		? `inset-x-5 ${
 				setting.showTimeZone
 					? getFontTranslateClass()
@@ -43,11 +58,9 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 					: '-translate-y-[calc(50%)]'
 			} text-[3.4rem]`
 
-	const clockWidth = setting.showSeconds
-		? 'w-[calc(100%-2.8rem)]'
-		: 'w-[calc(100%-2.5rem)]'
+	const clockWidth = showSeconds ? 'w-[calc(100%-2.8rem)]' : 'w-[calc(100%-2.5rem)]'
 
-	const timeZoneStyles = setting.showSeconds
+	const timeZoneStyles = showSeconds
 		? 'inset-x-5 w-[calc(100%-2.5rem)] text-xs'
 		: 'translate-y-20 text-sm'
 
@@ -114,7 +127,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 
 	return (
 		<div className="relative flex flex-col items-center">
-			{setting.showSeconds && (
+			{showSeconds ? (
 				<svg
 					width="120"
 					height="160"
@@ -136,7 +149,7 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 						/>
 					))}
 				</svg>
-			)}
+			) : null}
 
 			<div
 				className={`${textColor} absolute top-1/2 ${digitalClockStyles} ${clockWidth}

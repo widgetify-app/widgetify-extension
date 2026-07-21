@@ -12,7 +12,7 @@ export function TimezoneSettings() {
 	}
 
 	return (
-		<SectionPanel title="منطقه‌ی زمانی" delay={0.1}>
+		<SectionPanel title="منطقه‌ی زمانی" delay={0.1} size="sm">
 			<div className="space-y-3">
 				<p className={'text-sm text-muted'}>
 					منطقه‌ی زمانی مورد نظر خود را انتخاب کنید.

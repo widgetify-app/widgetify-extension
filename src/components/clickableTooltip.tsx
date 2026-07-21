@@ -1,4 +1,5 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
+
 import { type ReactNode, useEffect, useRef, useState, type RefObject } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -208,28 +209,26 @@ const ClickableTooltip = ({
 	return (
 		<>
 			{ReactDOM.createPortal(
-				<LazyMotion features={domAnimation}>
-					<AnimatePresence mode="wait">
-						{isOpen && (
-							<m.div
-								ref={tooltipRef}
-								className={`fixed rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow bg-glass ${contentClassName}`}
-								style={{
-									left: tooltipCoords.x,
-									top: tooltipCoords.y,
-									zIndex: 9999,
-								}}
-								initial="hidden"
-								animate="visible"
-								exit="hidden"
-								variants={variants[calculatedPosition]}
-								transition={{ duration: 0.15, ease: 'easeOut' }}
-							>
-								{content}
-							</m.div>
-						)}
-					</AnimatePresence>
-				</LazyMotion>,
+				<Presence mode="wait">
+					{isOpen && (
+						<motion.div
+							ref={tooltipRef}
+							className={`fixed rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow bg-glass ${contentClassName}`}
+							style={{
+								left: tooltipCoords.x,
+								top: tooltipCoords.y,
+								zIndex: 9999,
+							}}
+							initial="hidden"
+							animate="visible"
+							exit="hidden"
+							variants={variants[calculatedPosition]}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
+						>
+							{content}
+						</motion.div>
+					)}
+				</Presence>,
 				document.body
 			)}
 		</>

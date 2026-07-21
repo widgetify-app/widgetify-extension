@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { Motion as motion } from "@/common/motion";
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { SelectBox } from '@/components/selectbox/selectbox'

@@ -25,7 +25,8 @@ import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
 import { translateError } from '@/utils/translate-error'
 import Tooltip from '@/components/toolTip'
 import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
-import { AnimatePresence, motion } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
+
 import { Icon } from '@/src/icons'
 
 interface HabitFormModalProps {
@@ -64,8 +65,13 @@ export function HabitFormModal({
 	const isPending = isAdding || isUpdating
 
 	useEffect(() => {
-		if (!isOpen) return
+		if (!isOpen) {
+			if (showAdvanced) setShowAdvanced(false)
 
+			return
+		}
+
+		
 		if (habit) {
 			setForm({
 				title: habit.title,
@@ -199,7 +205,7 @@ export function HabitFormModal({
 						</motion.div>
 					</button>
 
-					<AnimatePresence initial={false}>
+					<Presence initial={false}>
 						{showAdvanced && (
 							<motion.div
 								initial={{ height: 0, opacity: 0 }}
@@ -358,7 +364,7 @@ export function HabitFormModal({
 								</div>
 							</motion.div>
 						)}
-					</AnimatePresence>
+					</Presence>
 				</div>
 
 				<Button

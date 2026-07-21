@@ -1,4 +1,4 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -218,28 +218,26 @@ const Tooltip = ({
 
 			{(alwaysShow || isVisible) &&
 				ReactDOM.createPortal(
-					<LazyMotion features={domAnimation}>
-						<AnimatePresence>
-							<m.div
-								ref={tooltipRef}
-								className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-[9999] ${contentClassName}`}
-								style={{
-									left: tooltipCoords.x,
-									top: tooltipCoords.y,
-								}}
-								initial="hidden"
-								animate="visible"
-								exit="hidden"
-								variants={variants[calculatedPosition]}
-								transition={{ duration: 0.15, ease: 'easeOut' }}
-								onMouseEnter={showTooltip}
-								onMouseLeave={hideTooltip}
-							>
-								{content}
-								<div className={getArrowClasses(calculatedPosition)} />
-							</m.div>
-						</AnimatePresence>
-					</LazyMotion>,
+					<Presence>
+						<motion.div
+							ref={tooltipRef}
+							className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-[9999] ${contentClassName}`}
+							style={{
+								left: tooltipCoords.x,
+								top: tooltipCoords.y,
+							}}
+							initial="hidden"
+							animate="visible"
+							exit="hidden"
+							variants={variants[calculatedPosition]}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
+							onMouseEnter={showTooltip}
+							onMouseLeave={hideTooltip}
+						>
+							{content}
+							<div className={getArrowClasses(calculatedPosition)} />
+						</motion.div>
+					</Presence>,
 					document.body
 				)}
 		</>

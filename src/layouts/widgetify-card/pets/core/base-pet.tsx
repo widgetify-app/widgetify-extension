@@ -84,6 +84,19 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 }) => {
 	const showToolTip = showName || isHungry
 	const { ui } = useAppearanceSetting()
+
+	const currentSrc = getAnimationForCurrentAction()
+	const [loadedSrcs, setLoadedSrcs] = useState<string[]>(() =>
+		currentSrc ? [currentSrc] : []
+	)
+
+	useEffect(() => {
+		if (!currentSrc) return
+		setLoadedSrcs((prev) =>
+			prev.includes(currentSrc) ? prev : [...prev, currentSrc]
+		)
+	}, [currentSrc])
+
 	return (
 		<div
 			ref={containerRef}
@@ -114,10 +127,14 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 						isAnimation={isHungry}
 					/>
 				)}
-				<img
-					src={getAnimationForCurrentAction()}
-					className="object-contain w-full h-full pointer-events-none"
-				/>
+				{loadedSrcs.map((src) => (
+					<img
+						key={src}
+						src={src}
+						className="absolute inset-0 object-contain w-full h-full pointer-events-none"
+						style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
+					/>
+				))}
 			</div>
 		</div>
 	)

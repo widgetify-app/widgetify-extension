@@ -4,6 +4,20 @@ import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
 import { safeAwait } from '@/services/api'
+import { SwEventType } from '@/common/types/sw-events'
+
+function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
+	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return
+	if (!/^https?:\/\//.test(wallpaper.src)) return
+
+	browser.runtime
+		.sendMessage({
+			type: SwEventType.SetActiveWallpaper,
+			src: wallpaper.src,
+			wallpaperType: wallpaper.type,
+		})
+		.catch(() => {})
+}
 
 const GRADIENT_DIRECTION_MAP: Record<string, string> = {
 	'to-r': 'to right',
@@ -17,6 +31,8 @@ const GRADIENT_DIRECTION_MAP: Record<string, string> = {
 }
 
 function applyWallpaper(wallpaper: StoredWallpaper) {
+	pinWallpaperForOffline(wallpaper)
+
 	const existingVideo = document.getElementById('background-video')
 	if (existingVideo) existingVideo.remove()
 

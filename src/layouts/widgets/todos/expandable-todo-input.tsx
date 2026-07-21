@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
+
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
@@ -279,7 +280,7 @@ export function ExpandableTodoInput({
 					</div>
 				</div>
 
-				<AnimatePresence>
+				<Presence mode="wait">
 					{isExpanded && (
 						<motion.div
 							initial={{ opacity: 0, height: 0 }}
@@ -411,7 +412,7 @@ export function ExpandableTodoInput({
 							</div>
 						</motion.div>
 					)}
-				</AnimatePresence>
+				</Presence>
 			</div>
 		</div>
 	)
