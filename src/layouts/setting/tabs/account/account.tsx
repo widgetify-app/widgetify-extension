@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
 import { useAuth } from '@/context/auth.context'
 import AuthForm from './auth-form/auth-form'
 import { UserProfile } from './tabs/user-profile/user-profile'
@@ -8,7 +8,7 @@ export const AccountTab = () => {
 
 	return (
 		<div className="w-full h-full max-w-xl mx-auto">
-			<AnimatePresence mode="wait">
+			<Presence mode="wait">
 				{isAuthenticated ? (
 					<motion.div
 						key="profile"
@@ -32,7 +32,7 @@ export const AccountTab = () => {
 						<AuthForm />
 					</motion.div>
 				)}
-			</AnimatePresence>
+			</Presence>
 		</div>
 	)
 }

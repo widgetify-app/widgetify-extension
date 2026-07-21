@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { Motion as motion } from "@/common/motion";
 import React, { Suspense, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'

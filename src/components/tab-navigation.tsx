@@ -1,5 +1,5 @@
 import React, { useId } from 'react'
-import { motion } from 'framer-motion'
+import { Motion as motion } from "@/common/motion";
 
 interface TabItem<T> {
 	id: T
