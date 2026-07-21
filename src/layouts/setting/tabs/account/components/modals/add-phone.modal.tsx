@@ -119,7 +119,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 							disabled={isPending || step === 'enter-otp'}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
-							direction="ltr"
+							direction={phone ? 'auto' : 'rtl'}
 						/>
 						<InputTextError message={error.phone} />
 					</div>
