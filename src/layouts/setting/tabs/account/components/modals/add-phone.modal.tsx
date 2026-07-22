@@ -44,7 +44,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			if (isEmpty(phone))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفاً ایمیل/شماره موبایل خود را وارد کنید.',
+					email: 'لطفا ایمیل/شماره موبایل خود را وارد کنید.',
 				}))
 			const [err, _] = await safeAwait(requestChange(phone))
 			if (err) {

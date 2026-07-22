@@ -1,4 +1,4 @@
-import { Motion as motion } from "@/common/motion";
+import { Motion as motion } from '@/common/motion'
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
@@ -46,7 +46,7 @@ export const RequireVerification = ({
 						<Icon name="verifyUser" size={20} className="text-success/80" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
 						<p className={'text-xs text-content text-center'}>
-							برای دسترسی به این بخش، لطفاً حساب کاربری خود را تأیید کنید.
+							برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 						</p>
 					</div>
 				</div>
@@ -65,7 +65,7 @@ export const RequireVerification = ({
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به تأیید حساب</h3>
 				<p className={'text-xs mb-4 text-content text-center'}>
-					برای دسترسی به این بخش، لطفاً حساب کاربری خود را تأیید کنید.
+					برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 				</p>
 				<Button onClick={handleVerificationClick} size="sm">
 					تأیید حساب

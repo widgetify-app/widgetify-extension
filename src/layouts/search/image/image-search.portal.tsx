@@ -27,7 +27,7 @@ export function ImageSearchPortal({
 
 	const handleUpload = async (file: File) => {
 		if (!file.type.startsWith('image/')) {
-			showToast('لطفاً فقط فایل تصویری انتخاب کنید', 'error')
+			showToast('لطفا فقط فایل تصویری انتخاب کنید', 'error')
 			return
 		}
 

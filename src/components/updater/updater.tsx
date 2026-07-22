@@ -168,7 +168,7 @@ export function UpdateChecker() {
 					{updateInfo.force && (
 						<div className="p-3 border rounded-lg bg-error/10 border-error/20">
 							<p className="text-sm text-center text-error">
-								⚠️ این به‌روزرسانی اجباری است و باید حتماً نصب شود
+								⚠️ این به‌روزرسانی اجباری است و باید حتما نصب شود
 							</p>
 						</div>
 					)}
@@ -199,7 +199,7 @@ export function UpdateChecker() {
 								onClick={() => setShowModal(false)}
 								rounded="xl"
 							>
-								بعداً
+								بعدا
 							</Button>
 						)}
 					</div>

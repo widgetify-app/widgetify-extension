@@ -14,7 +14,7 @@ const errorTranslations: Record<string, string> = {
 
 	// Password reset errors
 	FORGOT_PASSWORD_REQUEST_LIMIT:
-		'تعداد درخواست‌های بازیابی رمز عبور به حد مجاز رسیده است. لطفاً بعداً تلاش کنید',
+		'تعداد درخواست‌های بازیابی رمز عبور به حد مجاز رسیده است. لطفا بعدا تلاش کنید',
 	RESET_TOKEN_EXPIRED:
 		'لینک بازیابی رمز عبور منقضی شده است. لطفا درخواست جدید ارسال کنید',
 	INVALID_RESET_TOKEN: 'لینک بازیابی رمز عبور نامعتبر است',
@@ -29,22 +29,22 @@ const errorTranslations: Record<string, string> = {
 	// HTTP status errors
 	INTERNAL_SERVER_ERROR: 'خطای داخلی سرور رخ داده است',
 	SERVICE_UNAVAILABLE: 'سرویس در حال حاضر در دسترس نیست',
-	TOO_MANY_REQUESTS: 'تعداد درخواست‌ها بیش از حد مجاز است. لطفاً کمی صبر کنید',
+	TOO_MANY_REQUESTS: 'تعداد درخواست‌ها بیش از حد مجاز است. لطفا کمی صبر کنید',
 	BAD_REQUEST: 'درخواست نامعتبر است',
 	NOT_FOUND: 'منبع درخواستی یافت نشد',
 	ACTIVITY_UPDATE_RATE_LIMIT_EXCEEDED:
-		'تعداد درخواست‌ها برای بروزرسانی "وضعیت" بیش از حد مجاز است. لطفاً کمی صبر کنید',
+		'تعداد درخواست‌ها برای بروزرسانی "وضعیت" بیش از حد مجاز است. لطفا کمی صبر کنید',
 	// Friend-related errors
 	CANT_REQUEST_YOURSELF: 'نمی‌توانید به خودتان درخواست دوستی ارسال کنید',
-	FRIEND_REQUEST_ALREADY_SENT: 'درخواست دوستی قبلاً ارسال شده است',
-	FRIEND_REQUEST_ALREADY_EXISTS: 'درخواست دوستی قبلاً وجود دارد',
+	FRIEND_REQUEST_ALREADY_SENT: 'درخواست دوستی قبلا ارسال شده است',
+	FRIEND_REQUEST_ALREADY_EXISTS: 'درخواست دوستی قبلا وجود دارد',
 	FAILED_TO_FETCH_FRIENDS: 'خطا در دریافت لیست دوستان',
 	FAILED_TO_SEND_REQUEST: 'خطا در ارسال درخواست دوستی',
 	FAILED_TO_ACCEPT_REQUEST: 'خطا در پذیرش درخواست دوستی',
 	FAILED_TO_REMOVE_FRIEND: 'خطا در حذف دوست',
 	FRIEND_REQUEST_SENT: 'درخواست دوستی ارسال شد',
 	FRIEND_REQUEST_NOT_FOUND: 'درخواست دوستی یافت نشد',
-	SET_USERNAME_FIRST: 'لطفاً ابتدا نام کاربری خود را تنظیم کنید',
+	SET_USERNAME_FIRST: 'لطفا ابتدا نام کاربری خود را تنظیم کنید',
 
 	// Translate-related errors
 	SOURCE_AND_TARGET_LANG_MUST_BE_DIFFERENT: 'زبان مبدأ و مقصد نمی‌توانند یکسان باشند',
@@ -60,21 +60,21 @@ const errorTranslations: Record<string, string> = {
 
 	// Widget-related errors
 	WIDGET_NOT_FOUND: 'ویجت مورد نظر یافت نشد',
-	WIDGET_ALREADY_EXISTS: 'این ویجت قبلاً اضافه شده است',
+	WIDGET_ALREADY_EXISTS: 'این ویجت قبلا اضافه شده است',
 	INVALID_WIDGET_POSITION: 'موقعیت ویجت نامعتبر است',
 	MAX_WIDGETS_REACHED: 'به حداکثر تعداد مجاز ویجت رسیده‌اید',
 
 	// Network errors
 	NETWORK_ERROR: 'خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید',
-	CONNECTION_TIMEOUT: 'زمان اتصال به پایان رسید. لطفا مجدداً تلاش کنید',
-	CONNECTION_REFUSED: 'اتصال رد شد. لطفا بعداً تلاش کنید',
+	CONNECTION_TIMEOUT: 'زمان اتصال به پایان رسید. لطفا مجددا تلاش کنید',
+	CONNECTION_REFUSED: 'اتصال رد شد. لطفا بعدا تلاش کنید',
 
 	FIRST_VERIFY_YOUR_ACCOUNT: 'اول باید حساب‌ کاربری رو تایید کنی!',
 	USERNAME_ALREADY_EXISTS: 'این نام کاربری قبلا وجود داشته است',
 	INVALID_FILE_TYPE: 'نوع فایل نامعتبر است',
 	NOT_ENOUGH_COINS: 'ویج‌کوین‌هات کافی نیست 😕',
 	INVALID_REFERRAL_CODE: 'کد دعوت نامعتبر است',
-	ITEM_ALREADY_EXISTS: 'این رو قبلاً با ویج‌کوین گرفتی — نیازی به خرید دوباره نیست.',
+	ITEM_ALREADY_EXISTS: 'این رو قبلا با ویج‌کوین گرفتی — نیازی به خرید دوباره نیست.',
 
 	INVALID_ID: 'آیدی نامعتبر است',
 

@@ -73,6 +73,7 @@ import {
 	TbNotebook,
 	TbArrowsRightLeft,
 	TbCloudUpload,
+	TbBookmark,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -89,6 +90,7 @@ import {
 	MdSearch,
 } from 'react-icons/md'
 import {
+	HiBookmark,
 	HiHome,
 	HiOutlineBookmark,
 	HiOutlineCurrencyBangladeshi,
@@ -250,4 +252,8 @@ export const defaultIcons = {
 	advanced_ui: LuLayers,
 	simple_ui: LuLayoutTemplate,
 	arrowRightLeft: TbArrowsRightLeft,
+	bookmark: HiBookmark,
 } satisfies IconMap
+
+
+

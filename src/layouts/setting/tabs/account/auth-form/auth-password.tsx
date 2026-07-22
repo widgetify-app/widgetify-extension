@@ -30,13 +30,13 @@ export default function AuthPassword() {
 		if (isEmpty(email))
 			return setError((prev) => ({
 				...prev,
-				email: 'لطفاً ایمیل خود را وارد کنید.',
+				email: 'لطفا ایمیل خود را وارد کنید.',
 			}))
 
 		if (!isEmail(email))
 			return setError((prev) => ({
 				...prev,
-				email: 'لطفاً یک ایمیل معتبر وارد کنید.',
+				email: 'لطفا یک ایمیل معتبر وارد کنید.',
 			}))
 
 		// Password validation

@@ -1,4 +1,4 @@
-import { Motion as motion } from "@/common/motion";
+import { Motion as motion } from '@/common/motion'
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
@@ -44,7 +44,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 							نیاز ورود به حساب کاربری
 						</h3>
 						<p className={'text-xs text-content text-center'}>
-							برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
+							برای دسترسی به این بخش، لطفا وارد حساب کاربری خود شوید.
 						</p>
 						<Button
 							onClick={handleAuthClick}
@@ -71,7 +71,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز ورود به حساب کاربری</h3>
 				<p className={'text-xs mb-4 text-content text-center'}>
-					برای دسترسی به این بخش، لطفاً وارد حساب کاربری خود شوید.
+					برای دسترسی به این بخش، لطفا وارد حساب کاربری خود شوید.
 				</p>
 				<Button
 					onClick={handleAuthClick}

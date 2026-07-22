@@ -91,7 +91,7 @@ export const GoogleCalendarView: React.FC = () => {
 				<p className="text-[11px] text-base-content/60 leading-relaxed">
 					{isAuthenticated
 						? 'برای مشاهده برنامه‌ها، تقویم گوگل را متصل کنید.'
-						: 'لطفاً وارد حساب کاربری خود شوید.'}
+						: 'لطفا وارد حساب کاربری خود شوید.'}
 				</p>
 				<Button
 					size="sm"

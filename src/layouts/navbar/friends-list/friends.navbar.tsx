@@ -94,7 +94,7 @@ export function FriendsListNavbar() {
 					title="ورود به حساب کاربری"
 					message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
 					loginButtonText="ورود به حساب"
-					cancelButtonText="بعداً"
+					cancelButtonText="بعدا"
 				/>
 			)}
 		</>

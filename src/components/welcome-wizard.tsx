@@ -91,7 +91,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			selectedInterests.length === 0 ||
 			!selectedReferralSource
 		) {
-			showToast('لطفاً تمام مراحل را تکمیل کنید.', 'error')
+			showToast('لطفا تمام مراحل را تکمیل کنید.', 'error')
 			return
 		}
 
@@ -104,7 +104,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			})
 		)
 		if (err) {
-			showToast('خطا در ثبت اطلاعات. لطفاً دوباره تلاش کنید.', 'error')
+			showToast('خطا در ثبت اطلاعات. لطفا دوباره تلاش کنید.', 'error')
 			Analytics.event('welcome_wizard_completion_failed')
 			return
 		}
@@ -276,7 +276,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									مرحله ۴: از کجا شنیدی؟
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70 text-balance">
-									لطفاً بگو از کجا با ویجتیفای آشنا شدی.
+									لطفا بگو از کجا با ویجتیفای آشنا شدی.
 								</p>
 							</div>
 

@@ -71,7 +71,6 @@ export function HabitFormModal({
 			return
 		}
 
-		
 		if (habit) {
 			setForm({
 				title: habit.title,
@@ -221,7 +220,7 @@ export function HabitFormModal({
 												<label className="text-xs text-muted">
 													واحد اندازه‌گیری
 												</label>
-												<Tooltip content="واحد شمارش کار شما چیه؟ مثلاً 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
+												<Tooltip content="واحد شمارش کار شما چیه؟ مثلا 'لیوان' برای آب یا 'دقیقه' برای ورزش.">
 													<Icon
 														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"
@@ -245,7 +244,7 @@ export function HabitFormModal({
 												<label className="text-xs text-muted">
 													نحوه رسیدن به هدف
 												</label>
-												<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقاً همین مقدار؟">
+												<Tooltip content="می‌خوای حداقل به این مقدار برسی یا دقیقا همین مقدار؟">
 													<Icon
 														name="info"
 														className="w-3 h-3 cursor-pointer text-muted"

@@ -108,7 +108,7 @@ export function SelectCity({ size }: Prop) {
 							خطا در دریافت اطلاعات
 						</div>
 						<div className="mt-1 text-error/80">
-							لطفا اتصال اینترنت خود را بررسی کرده و مجدداً تلاش کنید.
+							لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
 						</div>
 					</div>
 				)}
@@ -117,7 +117,7 @@ export function SelectCity({ size }: Prop) {
 				<AuthRequiredModal
 					isOpen={showAuthModal}
 					onClose={() => setShowAuthModal(!showAuthModal)}
-					message="برای انتخاب شهر، لطفاً وارد حساب کاربری خود شوید."
+					message="برای انتخاب شهر، لطفا وارد حساب کاربری خود شوید."
 				/>
 			)}
 			<Modal

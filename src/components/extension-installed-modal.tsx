@@ -111,7 +111,7 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 				{' '}
 				Privacy Notice (حریم خصوصی)
 			</h3>
-			<p className="mb-2 font-semibold">لطفاً انتخاب کنید چه داده‌هایی ارسال شوند:</p>
+			<p className="mb-2 font-semibold">لطفا انتخاب کنید چه داده‌هایی ارسال شوند:</p>
 
 			<div className="w-full px-2">
 				<ul className="w-full h-32 p-2 mb-2 space-y-1 overflow-y-auto text-xs list-disc list-inside border border-content rounded-2xl">

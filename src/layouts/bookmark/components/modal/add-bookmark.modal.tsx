@@ -183,16 +183,16 @@ export function AddBookmarkModal({
 			>
 				<div className="mt-1 overflow-hidden">
 					<TypeSelector type={type} setType={setType} />
-
-					<button
-						type="button"
-						onClick={onOpenImport}
-						className="flex items-center justify-center w-full gap-1.5 mt-1 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer text-base  hover:bg-base-200/80"
-					>
-						<Icon name="download" size={12} />
-						افزودن از بوکمارک‌های مرورگر
-					</button>
-
+					{onOpenImport && (
+						<button
+							type="button"
+							onClick={onOpenImport}
+							className="flex items-center justify-center w-fit mx-auto px-3 gap-1.5 mt-2 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary bg-base-200 hover:bg-primary/10"
+						>
+							<Icon name="download" size={12} />
+							درون‌ریزی از بوکمارک‌های مرورگر
+						</button>
+					)}
 					<div className="flex items-center gap-2 mt-2">
 						<TextInput
 							type="text"
