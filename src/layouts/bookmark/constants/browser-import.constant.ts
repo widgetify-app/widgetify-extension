@@ -1,0 +1,1 @@
+export const MAX_BROWSER_IMPORT_ITEMS = 50

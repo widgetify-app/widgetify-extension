@@ -9,6 +9,8 @@ import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hoo
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
+import { useImportBrowserBookmarks } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
+import type { BulkImportBookmarkNode } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
 import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
 import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
@@ -28,9 +30,8 @@ export interface BookmarkStoreContext {
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	importBrowserBookmarks: (
 		nodes: BrowserImportNode[],
-		parentId: string | null,
-		onProgress?: (done: number, total: number) => void
-	) => Promise<{ successCount: number; failCount: number }>
+		parentId: string | null
+	) => Promise<{ importedCount: number; createdFolders: number } | null>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string, cb: () => void) => void
 	currentFolderId: string | null
@@ -42,7 +43,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
 	addBookmark: async () => {},
-	importBrowserBookmarks: async () => ({ successCount: 0, failCount: 0 }),
+	importBrowserBookmarks: async () => null,
 	editBookmark: () => {},
 	deleteBookmark: () => {},
 	currentFolderId: null,
@@ -59,6 +60,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
 	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
+	const { mutateAsync: importBrowserBookmarksAsync } = useImportBrowserBookmarks()
 	const { mutateAsync: updateBookmarkAsync } = useUpdateBookmark()
 
 	useEffect(() => {
@@ -223,24 +225,12 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const importBrowserBookmarks = async (
 		nodes: BrowserImportNode[],
-		parentId: string | null,
-		onProgress?: (done: number, total: number) => void
-	): Promise<{ successCount: number; failCount: number }> => {
+		parentId: string | null
+	): Promise<{ importedCount: number; createdFolders: number } | null> => {
 		if (!isAuthenticated) {
 			showToast('برای درون‌ریزی بوکمارک‌ها باید وارد شوید.', 'error')
-			return { successCount: 0, failCount: 0 }
+			return null
 		}
-
-		const countNodes = (list: BrowserImportNode[]): number =>
-			list.reduce(
-				(sum, node) => sum + 1 + (node.children ? countNodes(node.children) : 0),
-				0
-			)
-		const total = countNodes(nodes)
-
-		let done = 0
-		let successCount = 0
-		let failCount = 0
 
 		let resolvedParentId = parentId
 		if (parentId && validate(parentId)) {
@@ -252,67 +242,41 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 		}
 
-		const orderCounters = new Map<string, number>()
-		const getNextOrder = (folderId: string | null) => {
-			const key = folderId || 'root'
-			if (!orderCounters.has(key)) {
-				const items = getCurrentFolderItems(folderId)
-				const maxOrder = items.reduce(
-					(max, item) => Math.max(max, item.order || 0),
-					-1
-				)
-				orderCounters.set(key, maxOrder + 1)
-			}
-			const next = orderCounters.get(key) as number
-			orderCounters.set(key, next + 1)
-			return next
-		}
-
-		const importNode = async (
-			node: BrowserImportNode,
-			targetParentId: string | null
-		) => {
-			const [err, created] = await safeAwait<AxiosError, Bookmark>(
-				addBookmarkAsync({
-					order: getNextOrder(targetParentId),
-					parentId: targetParentId,
-					title: node.title,
-					customBackground: null,
-					customTextColor: null,
-					sticker: null,
-					type: node.type,
-					url: node.type === 'BOOKMARK' ? node.url : null,
-					icon: null,
-				})
+		if (resolvedParentId && validate(resolvedParentId)) {
+			showToast(
+				'برای درون‌ریزی در این پوشه، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'error',
+				{ duration: 8000 }
 			)
-
-			done += 1
-			onProgress?.(done, total)
-
-			if (err || !created) {
-				failCount += 1
-				return
-			}
-
-			successCount += 1
-
-			if (node.type === 'FOLDER' && node.children?.length) {
-				for (const child of node.children) {
-					await importNode(child, created.id)
-				}
-			}
+			return null
 		}
 
-		for (const node of nodes) {
-			await importNode(node, resolvedParentId)
+		const toApiNode = (node: BrowserImportNode): BulkImportBookmarkNode => ({
+			title: node.title,
+			type: node.type,
+			url: node.type === 'BOOKMARK' ? node.url : null,
+			children: node.children?.map(toApiNode),
+		})
+
+		const [err, result] = await safeAwait<
+			AxiosError,
+			{ importedCount: number; createdFolders: number }
+		>(
+			importBrowserBookmarksAsync({
+				parentId: resolvedParentId,
+				items: nodes.map(toApiNode),
+			})
+		)
+
+		if (err || !result) {
+			autoFormatErrorToast(err)
+			return null
 		}
 
-		if (successCount > 0) {
-			await refetch()
-			Analytics.event('import_browser_bookmarks')
-		}
+		await refetch()
+		Analytics.event('import_browser_bookmarks')
 
-		return { successCount, failCount }
+		return result
 	}
 
 	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {

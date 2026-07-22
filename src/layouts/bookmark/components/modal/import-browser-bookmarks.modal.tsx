@@ -7,6 +7,7 @@ import { Icon } from '@/src/icons'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { useBookmarkStore } from '../../context/bookmark.context'
+import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants/browser-import.constant'
 import type { BrowserImportNode } from '../../types/bookmark.types'
 import {
 	type FetchedBrowserBookmark,
@@ -57,15 +58,11 @@ function buildImportNodes(
 	return result
 }
 
-function countSelectedBookmarks(
-	nodes: FetchedBrowserBookmark[],
-	selectedIds: Set<string>
-): number {
+function countAllNodes(nodes: FetchedBrowserBookmark[]): number {
 	let count = 0
 	for (const node of nodes) {
-		if (selectedIds.has(node.id) && node.type === 'BOOKMARK') count++
-		if (node.children?.length)
-			count += countSelectedBookmarks(node.children, selectedIds)
+		count += 1
+		if (node.children?.length) count += countAllNodes(node.children)
 	}
 	return count
 }
@@ -197,13 +194,11 @@ export function ImportBrowserBookmarksModal({
 	const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
 	const [isLoadingTree, setIsLoadingTree] = useState(false)
 	const [isImporting, setIsImporting] = useState(false)
-	const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
 
 	useEffect(() => {
 		if (!isOpen) return
 
 		setSelectedIds(new Set())
-		setProgress(null)
 	}, [isOpen])
 
 	useEffect(() => {
@@ -243,24 +238,59 @@ export function ImportBrowserBookmarksModal({
 
 	const handleToggleSelect = (node: FetchedBrowserBookmark) => {
 		setSelectedIds((prev) => {
-			const next = new Set(prev)
 			const ids = new Set<string>()
 			collectDescendantIds(node, ids)
 
-			const shouldSelect = !next.has(node.id)
+			const shouldSelect = !prev.has(node.id)
+
 			if (shouldSelect) {
-				ids.forEach((id) => next.add(id))
-			} else {
-				ids.forEach((id) => next.delete(id))
+				const newIds = [...ids].filter((id) => !prev.has(id))
+				if (prev.size + newIds.length > MAX_BROWSER_IMPORT_ITEMS) {
+					showToast(
+						`حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد در هر بار قابل انتخاب است.`,
+						'error'
+					)
+					return prev
+				}
+
+				const next = new Set(prev)
+				newIds.forEach((id) => next.add(id))
+				return next
 			}
+
+			const next = new Set(prev)
+			ids.forEach((id) => next.delete(id))
 			return next
 		})
 	}
 
-	const selectedBookmarkCount = useMemo(
-		() => countSelectedBookmarks(rootNodes, selectedIds),
-		[rootNodes, selectedIds]
-	)
+	const handleSelectAll = () => {
+		const totalAvailable = countAllNodes(rootNodes)
+
+		if (totalAvailable <= MAX_BROWSER_IMPORT_ITEMS) {
+			const all = new Set<string>()
+			rootNodes.forEach((n) => collectDescendantIds(n, all))
+			setSelectedIds(all)
+			return
+		}
+
+		const capped = new Set<string>()
+		const visit = (nodes: FetchedBrowserBookmark[]) => {
+			for (const node of nodes) {
+				if (capped.size >= MAX_BROWSER_IMPORT_ITEMS) return
+				capped.add(node.id)
+				if (node.children?.length) visit(node.children)
+			}
+		}
+		visit(rootNodes)
+		setSelectedIds(capped)
+		showToast(
+			`تعداد بوکمارک‌های شما بیشتر از حد مجاز است؛ فقط ${MAX_BROWSER_IMPORT_ITEMS} مورد اول انتخاب شد.`,
+			'warning'
+		)
+	}
+
+	const handleClearAll = () => setSelectedIds(new Set())
 
 	const handleImport = async () => {
 		const importNodes = buildImportNodes(rootNodes, selectedIds)
@@ -270,27 +300,17 @@ export function ImportBrowserBookmarksModal({
 		}
 
 		setIsImporting(true)
-		setProgress({ done: 0, total: 0 })
 
-		const { successCount, failCount } = await importBrowserBookmarks(
-			importNodes,
-			parentId,
-			(done, total) => setProgress({ done, total })
-		)
+		const result = await importBrowserBookmarks(importNodes, parentId)
 
 		setIsImporting(false)
 
-		if (successCount > 0) {
-			showToast(
-				failCount > 0
-					? `${successCount} مورد درون‌ریزی شد، ${failCount} مورد ناموفق بود.`
-					: `${successCount} مورد با موفقیت درون‌ریزی شد.`,
-				failCount > 0 ? 'warning' : 'success'
-			)
+		if (result && result.importedCount > 0) {
+			showToast(`${result.importedCount} مورد با موفقیت درون‌ریزی شد.`, 'success')
 			onImported?.()
 			onClose()
-		} else {
-			showToast('درون‌ریزی بوکمارک‌ها ناموفق بود.', 'error')
+		} else if (result) {
+			showToast('موردی برای درون‌ریزی یافت نشد.', 'error')
 		}
 	}
 
@@ -326,10 +346,26 @@ export function ImportBrowserBookmarksModal({
 				<div className="flex flex-col justify-between h-96">
 					<div className="flex items-center justify-between mb-2 shrink-0">
 						<span className="text-xs text-muted">
-							{selectedBookmarkCount > 0
-								? `${selectedBookmarkCount} بوکمارک انتخاب شده`
-								: 'موردی انتخاب نشده'}
+							{selectedIds.size > 0
+								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
+								: `حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد قابل انتخاب است`}
 						</span>
+						<div className="flex items-center gap-2">
+							<button
+								type="button"
+								onClick={handleSelectAll}
+								className="text-[11px] font-medium text-primary hover:underline"
+							>
+								انتخاب همه
+							</button>
+							<button
+								type="button"
+								onClick={handleClearAll}
+								className="text-[11px] font-medium text-muted hover:underline"
+							>
+								پاک کردن
+							</button>
+						</div>
 					</div>
 
 					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-base-content/5 custom-scrollbar">
@@ -365,7 +401,7 @@ export function ImportBrowserBookmarksModal({
 							onClick={onClose}
 							size="md"
 							disabled={isImporting}
-							className="btn btn-circle bg-base-300! hover:bg-error/10! text-muted hover:text-error! px-8 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out"
+							className="btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-8 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out"
 						>
 							انصراف
 						</Button>
@@ -373,16 +409,12 @@ export function ImportBrowserBookmarksModal({
 							onClick={handleImport}
 							size="md"
 							isPrimary
-							disabled={selectedBookmarkCount === 0 || isImporting}
+							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={
-								<span className="text-xs">
-									{progress && progress.total > 0
-										? `در حال درون‌ریزی... (${progress.done}/${progress.total})`
-										: 'در حال آماده‌سازی...'}
-								</span>
+								<span className="text-xs">در حال درون‌ریزی...</span>
 							}
-							className="btn btn-circle w-fit! px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out"
+							className="btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out"
 						>
 							درون‌ریزی
 						</Button>
