@@ -169,7 +169,6 @@ export function BookmarkGrid({
 			document.removeEventListener('click', handleClickOutside)
 		}
 	}, [])
-	// todo:  padding: 0px 8px;
 
 	return (
 		<div

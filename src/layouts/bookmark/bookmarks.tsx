@@ -145,12 +145,12 @@ export function BookmarksList() {
 		}
 
 		const bookmarkCount = currentFolderItems.length
-		const minBookmarks = 10
-		const needsFillers = bookmarkCount < minBookmarks
-		const fillersCount = needsFillers ? minBookmarks - bookmarkCount : 0
+		const maxBookmarks = 10
+		const needsFillers = bookmarkCount < maxBookmarks
+		const fillersCount = needsFillers ? maxBookmarks - bookmarkCount : 0
 		const folderItems = [...currentFolderItems, ...new Array(fillersCount).fill(null)]
 
-		if (folderItems.length > minBookmarks) {
+		if (bookmarkCount >= maxBookmarks) {
 			folderItems.push(null)
 		}
 		return folderItems
