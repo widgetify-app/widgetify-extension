@@ -58,15 +58,6 @@ function buildImportNodes(
 	return result
 }
 
-function countAllNodes(nodes: FetchedBrowserBookmark[]): number {
-	let count = 0
-	for (const node of nodes) {
-		count += 1
-		if (node.children?.length) count += countAllNodes(node.children)
-	}
-	return count
-}
-
 interface TreeNodeProps {
 	node: FetchedBrowserBookmark
 	depth: number
@@ -264,34 +255,6 @@ export function ImportBrowserBookmarksModal({
 		})
 	}
 
-	const handleSelectAll = () => {
-		const totalAvailable = countAllNodes(rootNodes)
-
-		if (totalAvailable <= MAX_BROWSER_IMPORT_ITEMS) {
-			const all = new Set<string>()
-			rootNodes.forEach((n) => collectDescendantIds(n, all))
-			setSelectedIds(all)
-			return
-		}
-
-		const capped = new Set<string>()
-		const visit = (nodes: FetchedBrowserBookmark[]) => {
-			for (const node of nodes) {
-				if (capped.size >= MAX_BROWSER_IMPORT_ITEMS) return
-				capped.add(node.id)
-				if (node.children?.length) visit(node.children)
-			}
-		}
-		visit(rootNodes)
-		setSelectedIds(capped)
-		showToast(
-			`تعداد بوکمارک‌های شما بیشتر از حد مجاز است؛ فقط ${MAX_BROWSER_IMPORT_ITEMS} مورد اول انتخاب شد.`,
-			'warning'
-		)
-	}
-
-	const handleClearAll = () => setSelectedIds(new Set())
-
 	const handleImport = async () => {
 		const importNodes = buildImportNodes(rootNodes, selectedIds)
 		if (importNodes.length === 0) {
@@ -350,22 +313,6 @@ export function ImportBrowserBookmarksModal({
 								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
 								: `حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد قابل انتخاب است`}
 						</span>
-						<div className="flex items-center gap-2">
-							<button
-								type="button"
-								onClick={handleSelectAll}
-								className="text-[11px] font-medium text-primary hover:underline"
-							>
-								انتخاب همه
-							</button>
-							<button
-								type="button"
-								onClick={handleClearAll}
-								className="text-[11px] font-medium text-muted hover:underline"
-							>
-								پاک کردن
-							</button>
-						</div>
 					</div>
 
 					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-base-content/5 custom-scrollbar">
@@ -401,7 +348,7 @@ export function ImportBrowserBookmarksModal({
 							onClick={onClose}
 							size="md"
 							disabled={isImporting}
-							className="btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-8 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out"
+							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 						>
 							انصراف
 						</Button>
@@ -414,7 +361,7 @@ export function ImportBrowserBookmarksModal({
 							loadingText={
 								<span className="text-xs">در حال درون‌ریزی...</span>
 							}
-							className="btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out"
+							className="w-32 transition-colors duration-300 ease-in-out border-none shadow-none btn btn-circle text-secondary rounded-2xl"
 						>
 							درون‌ریزی
 						</Button>

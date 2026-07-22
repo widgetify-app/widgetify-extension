@@ -36,7 +36,7 @@ export async function ImportBrowserBookmarksApi(
 ): Promise<BulkImportBookmarksResult> {
 	const client = getMainClient()
 
-	const { data } = await client.post<BulkImportBookmarksResult>(
+	const { data } = await client.post<{ data: BulkImportBookmarksResult }>(
 		'/bookmarks/import',
 		{
 			parentId: input.parentId || undefined,
@@ -44,5 +44,5 @@ export async function ImportBrowserBookmarksApi(
 		}
 	)
 
-	return data
+	return data.data
 }

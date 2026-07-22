@@ -110,6 +110,10 @@ const errorTranslations: Record<string, string> = {
 	TRY_NEXT_TIME: 'چیزی اشتباه پیش رفت، لطفا بعدا دوباره تلاش کنید',
 
 	TOO_MANY_ATTEMPTS_HABIT: 'بیش از حد نمیتونید بسازید.',
+
+	FOLDER_STRUCTURE_TOO_DEEP: 'FOLDER_STRUCTURE_TOO_DEEP',
+	BULK_IMPORT_LIMIT_EXCEEDED: `تعداد آیتم درون‌ریزی بیش‌از حد هست`,
+	NO_VALID_ITEMS_TO_IMPORT: 'هیچ آیتم معتبری برای درون‌ریزی وجود نداره',
 }
 
 const validationTranslations: Record<string, string> = {
