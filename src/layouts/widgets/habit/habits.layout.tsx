@@ -199,7 +199,7 @@ export function HabitsContent() {
 				onClose={() => setArchiveConfirm(null)}
 				onConfirm={handleConfirmArchive}
 				variant="danger"
-				title=""
+				title="بایگانی عادت؟"
 				message={`از بایگانی کردن این عادت اطمینان داری؟`}
 				confirmText="بله، بایگانی کن"
 				cancelText="انصراف"

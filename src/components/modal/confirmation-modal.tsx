@@ -12,7 +12,7 @@ interface ConfirmationModalProps {
 	message?: string | ReactNode
 	confirmText?: ReactNode
 	cancelText?: string
-	variant?: 'danger' | 'warning' | 'info'
+	variant?: 'danger' | 'warning' | 'info' | 'primary'
 	isLoading?: boolean
 	icon?: ReactNode
 	direction?: 'rtl' | 'ltr'
@@ -20,24 +20,35 @@ interface ConfirmationModalProps {
 
 const variantConfig = {
 	danger: {
-		icon: <Icon name="trash" size={24} />,
+		icon: <Icon name="trash" size={18} />,
+		accentBar: 'bg-error',
 		iconBg: 'bg-error/10',
 		iconColor: 'text-error',
 		confirmBg: 'bg-error hover:bg-error/90',
 		confirmText: 'text-white',
 	},
 	warning: {
-		icon: <Icon name="alert" size={24} />,
+		icon: <Icon name="alert" size={18} />,
+		accentBar: 'bg-warning',
 		iconBg: 'bg-warning/10',
 		iconColor: 'text-warning',
 		confirmBg: 'bg-warning hover:bg-warning/90',
 		confirmText: 'text-white',
 	},
 	info: {
-		icon: <Icon name="info" size={24} />,
+		icon: <Icon name="info" size={18} />,
+		accentBar: 'bg-info',
 		iconBg: 'bg-info/10',
 		iconColor: 'text-info',
 		confirmBg: 'bg-info/80 hover:bg-info/90',
+		confirmText: 'text-white',
+	},
+	primary: {
+		icon: <Icon name="info" size={18} />,
+		accentBar: 'bg-primary',
+		iconBg: 'bg-primary/10',
+		iconColor: 'text-primary',
+		confirmBg: 'bg-primary/80 hover:bg-primary/90',
 		confirmText: 'text-white',
 	},
 }
@@ -46,9 +57,9 @@ export function ConfirmationModal({
 	isOpen,
 	onClose,
 	onConfirm,
-	title = 'تأیید عملیات',
+	title = 'تایید عملیات',
 	message = 'آیا از انجام این عملیات اطمینان دارید؟',
-	confirmText = 'تأیید',
+	confirmText = 'تایید',
 	cancelText = 'انصراف',
 	variant = 'danger',
 	isLoading = false,
@@ -78,24 +89,35 @@ export function ConfirmationModal({
 			direction={direction}
 			closeOnBackdropClick={!isLoading}
 			showCloseButton={!isLoading}
-			title={' '}
-		>
-			<div className="space-y-2 text-center">
-				<div className="flex justify-center">
+			title={
+				<div className="flex items-center gap-3">
 					<div
-						className={`w-16 h-16 rounded-full flex items-center justify-center ${config.iconBg}`}
+						className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${config.iconBg}`}
 					>
 						<div className={config.iconColor}>{displayIcon}</div>
 					</div>
+					{title && (
+						<h3 className="text-base font-semibold text-content">{title}</h3>
+					)}
 				</div>
-
-				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
-
-				<div className="text-sm leading-relaxed text-muted">
+			}
+		>
+			<div className="relative overflow-hidden">
+				<div className="pt-1 text-sm leading-relaxed text-muted">
 					{typeof message === 'string' ? <p>{message}</p> : message}
 				</div>
 
-				<div className="flex gap-3 pt-2">
+				<div className="mt-4 border-t border-base-content/10" />
+
+				<div className="flex items-center justify-end gap-2 pt-3">
+					<Button
+						onClick={handleCancel}
+						size="md"
+						disabled={isLoading}
+						className="bg-transparent border-none text-muted hover:text-content hover:bg-base-300/40 rounded-2xl"
+					>
+						{cancelText}
+					</Button>
 					<Button
 						onClick={handleConfirm}
 						size="md"
@@ -103,21 +125,13 @@ export function ConfirmationModal({
 						loading={isLoading}
 						loadingText={
 							<div className="flex items-center gap-1">
-								<IconLoading className="!mx-0 !text-white" />
+								<IconLoading className="mx-0! text-white!" />
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}
-						className={`flex-1 ${config.confirmBg} ${config.confirmText} border-none rounded-2xl`}
+						className={`${config.confirmBg} ${config.confirmText} w-fit px-8 border-none rounded-2xl`}
 					>
 						{confirmText}
-					</Button>
-					<Button
-						onClick={handleCancel}
-						size="md"
-						disabled={isLoading}
-						className="flex-1 border border-content/20 text-content hover:bg-base-300/50 rounded-2xl"
-					>
-						{cancelText}
 					</Button>
 				</div>
 			</div>
