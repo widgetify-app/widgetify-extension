@@ -50,7 +50,7 @@ export function ManageActivityBottomSheet({
 
 	const handleSave = async () => {
 		if (!activity.trim()) {
-			showToast('لطفاً متنی وارد کنید', 'error')
+			showToast('لطفا متنی وارد کنید', 'error')
 			return
 		}
 
@@ -277,7 +277,7 @@ export function ManageActivityBottomSheet({
 						در صورت گزارش محتوای نامناسب، حساب کاربری شما ممکن است محدود شود.
 					</p>
 
-					<p>لطفاً با رعایت قوانین به ما در حفظ فضای امن و دوستانه کمک کنید.</p>
+					<p>لطفا با رعایت قوانین به ما در حفظ فضای امن و دوستانه کمک کنید.</p>
 
 					<p>در هر روز فقط یک بار امکان انتشار نوشته جدید دارید.</p>
 				</div>

@@ -45,7 +45,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفاً ایمیل خود را وارد کنید.',
+					email: 'لطفا ایمیل خود را وارد کنید.',
 				}))
 			const [err, _] = await safeAwait(requestChange(email))
 			if (err) {

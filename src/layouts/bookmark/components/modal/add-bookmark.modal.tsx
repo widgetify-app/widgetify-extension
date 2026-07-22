@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
+import { Icon } from '@/src/icons'
 import type { BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import { ShowAdvancedButton, TypeSelector } from '../shared'
@@ -14,6 +15,7 @@ interface AddBookmarkModalProps {
 	onClose: () => void
 	onAdd: (bookmark: BookmarkCreateFormFields) => void
 	parentId: string | null
+	onOpenImport?: () => void
 }
 
 export interface BookmarkCreateFormFields {
@@ -50,6 +52,7 @@ export function AddBookmarkModal({
 	onClose,
 	onAdd,
 	parentId = null,
+	onOpenImport,
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [showAdvanced, setShowAdvanced] = useState(false)
@@ -180,7 +183,16 @@ export function AddBookmarkModal({
 			>
 				<div className="mt-1 overflow-hidden">
 					<TypeSelector type={type} setType={setType} />
-
+					{onOpenImport && (
+						<button
+							type="button"
+							onClick={onOpenImport}
+							className="flex items-center justify-center w-fit mx-auto px-3 gap-1.5 mt-2 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary text-base-content/80 bg-base-200 hover:bg-primary/10"
+						>
+							<Icon name="download" size={12} />
+							درون‌ریزی از بوکمارک‌های مرورگر
+						</button>
+					)}
 					<div className="flex items-center gap-2 mt-2">
 						<TextInput
 							type="text"
@@ -235,9 +247,7 @@ export function AddBookmarkModal({
 						<Button
 							onClick={onCloseHandler}
 							size="md"
-							className={
-								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none rounded-xl transition-colors duration-300 ease-in-out'
-							}
+							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 						>
 							لغو
 						</Button>
@@ -252,7 +262,7 @@ export function AddBookmarkModal({
 							isPrimary={true}
 							loading={isAdding}
 							className={
-								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary rounded-xl transition-colors duration-300 ease-in-out'
+								'btn w-28 border-none shadow-none text-secondary rounded-2xl transition-colors duration-300 ease-in-out'
 							}
 						>
 							ذخیره

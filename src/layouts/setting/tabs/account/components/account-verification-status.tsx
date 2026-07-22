@@ -23,7 +23,7 @@ export const AccountVerificationStatus = ({
 							⚠️ حساب شما تایید نشده است
 						</p>
 						<p className="text-xs text-warning/90">
-							لطفاً ایمیل خود را بررسی کنید یا ایمیل جدید درخواست کنید.
+							لطفا ایمیل خود را بررسی کنید یا ایمیل جدید درخواست کنید.
 						</p>
 					</div>
 				</div>

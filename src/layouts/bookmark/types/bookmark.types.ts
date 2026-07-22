@@ -23,3 +23,10 @@ export interface FolderPathItem {
 	id: string
 	title: string
 }
+
+export interface BrowserImportNode {
+	title: string
+	type: BookmarkType
+	url: string | null
+	children?: BrowserImportNode[]
+}

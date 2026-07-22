@@ -18,7 +18,7 @@ export function AuthRequiredModal({
 	title = 'ورود به حساب کاربری',
 	message = 'برای دسترسی به این بخش یا انجام این عملیات، ابتدا وارد حساب کاربری خود شوید.',
 	loginButtonText = 'ورود به حساب',
-	cancelButtonText = 'بعداً',
+	cancelButtonText = 'بعدا',
 }: AuthRequiredModalProps) {
 	function triggerAccountTabDisplay() {
 		onClose()

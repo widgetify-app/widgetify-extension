@@ -3,12 +3,14 @@ import React, { createContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { Bookmark, BrowserImportNode } from '@/layouts/bookmark/types/bookmark.types'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
 import { translateError } from '@/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
+import { useImportBrowserBookmarks } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
+import type { BulkImportBookmarkNode } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
 import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from '../components/modal/add-bookmark.modal'
 import type { BookmarkUpdateFormFields } from '../components/modal/edit-bookmark.modal'
@@ -26,6 +28,10 @@ export interface BookmarkStoreContext {
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
+	importBrowserBookmarks: (
+		nodes: BrowserImportNode[],
+		parentId: string | null
+	) => Promise<{ importedCount: number; createdFolders: number } | null>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string, cb: () => void) => void
 	currentFolderId: string | null
@@ -37,6 +43,7 @@ const bookmarkContext = createContext<BookmarkStoreContext>({
 	setBookmarks: () => {},
 	getCurrentFolderItems: () => [],
 	addBookmark: async () => {},
+	importBrowserBookmarks: async () => null,
 	editBookmark: () => {},
 	deleteBookmark: () => {},
 	currentFolderId: null,
@@ -53,6 +60,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const { mutateAsync: removeBookmarkAsync } = useRemoveBookmark()
 	const { mutateAsync: addBookmarkAsync } = useAddBookmark()
+	const { mutateAsync: importBrowserBookmarksAsync } = useImportBrowserBookmarks()
 	const { mutateAsync: updateBookmarkAsync } = useUpdateBookmark()
 
 	useEffect(() => {
@@ -215,6 +223,62 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
+	const importBrowserBookmarks = async (
+		nodes: BrowserImportNode[],
+		parentId: string | null
+	): Promise<{ importedCount: number; createdFolders: number } | null> => {
+		if (!isAuthenticated) {
+			showToast('برای درون‌ریزی بوکمارک‌ها باید وارد شوید.', 'error')
+			return null
+		}
+
+		let resolvedParentId = parentId
+		if (parentId && validate(parentId)) {
+			const parentBookmark = bookmarks?.find(
+				(b) => b.id === parentId || b.onlineId === parentId
+			)
+			if (parentBookmark?.onlineId) {
+				resolvedParentId = parentBookmark.onlineId
+			}
+		}
+
+		if (resolvedParentId && validate(resolvedParentId)) {
+			showToast(
+				'برای درون‌ریزی در این پوشه، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'error',
+				{ duration: 8000 }
+			)
+			return null
+		}
+
+		const toApiNode = (node: BrowserImportNode): BulkImportBookmarkNode => ({
+			title: node.title,
+			type: node.type,
+			url: node.type === 'BOOKMARK' ? node.url : null,
+			children: node.children?.map(toApiNode),
+		})
+
+		const [err, result] = await safeAwait<
+			AxiosError,
+			{ importedCount: number; createdFolders: number }
+		>(
+			importBrowserBookmarksAsync({
+				parentId: resolvedParentId,
+				items: nodes.map(toApiNode),
+			})
+		)
+
+		if (err || !result) {
+			autoFormatErrorToast(err)
+			return null
+		}
+
+		await refetch()
+		Analytics.event('import_browser_bookmarks')
+
+		return result
+	}
+
 	const editBookmark = async (input: BookmarkUpdateFormFields, cb: () => void) => {
 		if (!isAuthenticated) return
 
@@ -311,6 +375,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				setBookmarks,
 				getCurrentFolderItems,
 				addBookmark: addBookmark as any,
+				importBrowserBookmarks,
 				editBookmark,
 				deleteBookmark,
 				currentFolderId,

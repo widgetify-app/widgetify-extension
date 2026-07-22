@@ -86,7 +86,7 @@ export function RequestNotificationModal({
 						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-2xl border-content text-content"
 						size="md"
 					>
-						فعلاً نه
+						فعلا نه
 					</Button>
 					<Button
 						isPrimary={true}

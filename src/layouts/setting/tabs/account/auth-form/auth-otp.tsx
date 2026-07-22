@@ -47,7 +47,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفاً ایمیل/شماره موبایل خود را وارد کنید.',
+					email: 'لطفا ایمیل/شماره موبایل خود را وارد کنید.',
 				}))
 
 			onSendOtp()
@@ -102,7 +102,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				if (err.response?.data?.message === 'INVALID_OTP_CODE') {
 					setError({
 						email: null,
-						otp: 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+						otp: 'کد تایید نامعتبر است. لطفا دوباره تلاش کنید.',
 						api: null,
 					})
 				} else setError({ email: null, otp: null, api: content })
@@ -111,7 +111,7 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					setError({
 						email: null,
 						otp: null,
-						api: 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+						api: 'کد تایید نامعتبر است. لطفا دوباره تلاش کنید.',
 					})
 					return
 				}

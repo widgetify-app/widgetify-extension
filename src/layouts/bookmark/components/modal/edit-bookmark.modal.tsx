@@ -154,10 +154,10 @@ export function EditBookmarkModal({
 			size="md"
 			title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
 			direction="rtl"
-			className="!overflow-y-hidden"
+			className="overflow-y-hidden!"
 			closeOnBackdropClick={false}
 		>
-			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-[23rem]">
+			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-92">
 				<div className="flex flex-col gap-2">
 					<div className="flex flex-col items-center gap-2">
 						<div className="relative flex flex-col items-center">
@@ -189,7 +189,7 @@ export function EditBookmarkModal({
 						}
 					/>
 
-					<div className="relative h-[50px]">
+					<div className="relative h-12.5">
 						{type === 'BOOKMARK' && (
 							<TextInput
 								name="url"
@@ -216,9 +216,7 @@ export function EditBookmarkModal({
 							onClick={onClose}
 							size="md"
 							disabled={isUpdating}
-							className={
-								'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none !rounded-2xl transition-colors duration-300 ease-in-out'
-							}
+							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 						>
 							لغو
 						</Button>
@@ -232,9 +230,7 @@ export function EditBookmarkModal({
 							size="md"
 							isPrimary={true}
 							loading={isUpdating}
-							className={
-								'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary !rounded-2xl transition-colors duration-300 ease-in-out'
-							}
+							className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28 text-secondary rounded-2xl"
 						>
 							ذخیره
 						</Button>

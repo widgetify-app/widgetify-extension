@@ -85,7 +85,7 @@ export const RssFeedSetting = () => {
 		)
 
 		if (feedExists) {
-			setError(`فید "${suggestedFeed.name}" قبلاً اضافه شده است`)
+			setError(`فید "${suggestedFeed.name}" قبلا اضافه شده است`)
 			return
 		}
 
