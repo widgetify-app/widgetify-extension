@@ -14,6 +14,7 @@ import { validate } from 'uuid'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { showToast } from '@/common/toast'
+import { Icon } from '@/src/icons'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
@@ -228,15 +229,14 @@ export function BookmarkGrid({
 				isOpen={showDeleteConfirmationModal}
 				onClose={handleCancelDelete}
 				onConfirm={handleConfirmDelete}
-				title="حذف بوکمارک"
+				title="حذف بوکمارک؟"
 				message={
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
-							<p>
-								آیا از حذف پوشه "{bookmarkToDelete.title}" اطمینان دارید؟
-							</p>
-							<p className="mt-2 text-xs text-error">
-								تمام بوکمارک‌های داخل این پوشه نیز حذف خواهند شد.
+							<p>آیا از حذف پوشه "{bookmarkToDelete.title}" مطمئن هستی؟</p>
+							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-error/20 text-error">
+								با حذف این پوشه، تمام بوکمارک‌های داخلش هم برای همیشه حذف
+								میشن و این عمل قابل بازگشت نیست!
 							</p>
 						</div>
 					) : (

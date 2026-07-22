@@ -59,6 +59,7 @@ import {
 	FaSpinner,
 	FaTelegramPlane,
 	FaUpload,
+	FaUserSecret,
 } from 'react-icons/fa'
 import {
 	TbCloudOff,
@@ -253,7 +254,5 @@ export const defaultIcons = {
 	simple_ui: LuLayoutTemplate,
 	arrowRightLeft: TbArrowsRightLeft,
 	bookmark: HiBookmark,
+	userSecret: FaUserSecret,
 } satisfies IconMap
-
-
-

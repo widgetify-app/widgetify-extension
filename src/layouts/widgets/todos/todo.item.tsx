@@ -236,8 +236,9 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					onClose={() => setShowConfirmation(false)}
 					onConfirm={onConfirmDelete}
 					confirmText={isPending ? <IconLoading /> : 'حذف'}
-					message="آیا از حذف مطمئن هستید؟"
+					message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
 					variant="danger"
+					title="حذف این تسک؟"
 				/>
 			)}
 		</div>

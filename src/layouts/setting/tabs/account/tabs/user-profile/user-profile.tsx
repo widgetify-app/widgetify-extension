@@ -118,6 +118,7 @@ export const UserProfile = () => {
 				isOpen={showConfirm}
 				onClose={() => setShowConfirm(false)}
 				onConfirm={() => onClickLogout()}
+				icon={<Icon name="logOut" />}
 				message="مطمعنی میخای از حسابت خارج بشی؟"
 				title="خروج از حساب کاربری"
 				confirmText="بله، خروج"
