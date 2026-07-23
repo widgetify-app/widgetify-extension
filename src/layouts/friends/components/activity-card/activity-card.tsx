@@ -147,7 +147,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 			}
 			className="absolute! top-0! left-0!"
 		>
-			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg">
+			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg bg-base-300">
 				{isPending
 					? Array.from({ length: 5 }).map((_, i) => (
 							<div

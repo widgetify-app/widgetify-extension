@@ -211,14 +211,7 @@ export function Dropdown({
 					<div id={id} className="fixed inset-0 z-[9998] pointer-events-none">
 						<div
 							ref={dropdownContentRef}
-							className={`
-                fixed z-[9999] border border-content rounded-xl
-                bg-content shadow-xl overflow-hidden
-                transition-opacity duration-100
-                ${isReady ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-                bg-glass
-                ${dropdownClassName}
-              `}
+							className={`fixed z-9999 shadow-xl overflow-hidden rounded-2xl bg-transparent! transition-opacity duration-100 ${isReady ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} bg-glass ${dropdownClassName}`}
 							style={{
 								maxHeight,
 								width:
@@ -241,52 +234,5 @@ export function Dropdown({
 				</Portal>
 			)}
 		</div>
-	)
-}
-
-export interface SimpleDropdownProps extends Omit<DropdownProps, 'options' | 'trigger'> {
-	triggerText: string
-	triggerIcon?: ReactNode
-	options: (string | { label: string; value: any; disabled?: boolean })[]
-	onSelect?: (value: any) => void
-}
-
-export function SimpleDropdown({
-	triggerText,
-	triggerIcon,
-	options,
-	onSelect,
-	...dropdownProps
-}: SimpleDropdownProps) {
-	const formattedOptions: DropdownOption[] = options.map((option, index) => {
-		if (typeof option === 'string') {
-			return {
-				id: `option-${index}`,
-				label: option,
-				value: option,
-			}
-		}
-		return {
-			id: `option-${index}`,
-			label: option.label,
-			value: option.value,
-			disabled: option.disabled,
-		}
-	})
-
-	const trigger = (
-		<div className="flex items-center gap-2 px-3 py-2 transition-colors border rounded-lg bg-content border-border hover:bg-primary/5">
-			{triggerIcon}
-			<span>{triggerText}</span>
-		</div>
-	)
-
-	return (
-		<Dropdown
-			{...dropdownProps}
-			trigger={trigger}
-			options={formattedOptions}
-			onOptionSelect={(option) => onSelect?.(option.value)}
-		/>
 	)
 }

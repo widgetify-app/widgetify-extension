@@ -30,7 +30,6 @@ interface ManageActivityBottomSheetProps {
 }
 
 const MAX_ACTIVITY_LENGTH = 40
-// const ACTIVITY_COOLDOWN_HOURS = 24
 
 export function ManageActivityBottomSheet({
 	onClose,
@@ -92,7 +91,7 @@ export function ManageActivityBottomSheet({
 
 	if (currentActivity) {
 		return (
-			<div className="flex flex-col gap-3 p-2 min-w-96 max-w-96">
+			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-base-200 border-base-300 rounded-2xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex flex-row items-center justify-between">
 						<p className="text-sm font-bold text-base-content/70">
@@ -180,7 +179,7 @@ export function ManageActivityBottomSheet({
 
 	return (
 		<>
-			<div className="flex flex-col gap-2 p-2 min-w-96 max-w-96">
+			<div className="flex flex-col gap-2 p-2 border min-w-96 max-w-96 bg-base-200 border-base-300 rounded-2xl">
 				<div className="space-y-1">
 					<div className="space-y-1">
 						<div className="flex justify-between">
