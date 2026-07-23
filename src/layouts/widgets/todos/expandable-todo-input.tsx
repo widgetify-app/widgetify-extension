@@ -322,7 +322,7 @@ export function ExpandableTodoInput({
 											onClick={() => setShowDatePicker(true)}
 											ref={dateButtonRef}
 										>
-											<Icon name="calendarDays" size={18} />
+											<Icon name="calendarDays" size={16} />
 											<p className="truncate max-w-14 min-w-5">
 												{selectedDate
 													? formatJalaliDateForDisplay(
