@@ -1,6 +1,7 @@
-import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { Button } from '@/components/button/button'
 import { IconLoading } from '@/components/loading/icon-loading'
+import { TextInput } from '@/components/text-input'
 import Tooltip from '@/components/toolTip'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
@@ -29,27 +30,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 		}
 	}, [note.id, note.title, note.body])
 
-	// auto resize
-	useEffect(() => {
-		const titleElement = titleRef.current
-		const bodyElement = bodyRef.current
-
-		if (titleElement) {
-			titleElement.style.height = 'auto'
-			titleElement.style.height = `${titleElement.scrollHeight}px`
-		}
-
-		if (bodyElement) {
-			bodyElement.style.height = 'auto'
-			bodyElement.style.height = `${bodyElement.scrollHeight}px`
-		}
-	}, [currentTitle, currentBody, note.id])
-
-	const handleInputChange = (
-		field: 'title' | 'body',
-		value: string,
-		targetElement: HTMLTextAreaElement | HTMLInputElement
-	) => {
+	const handleInputChange = (field: 'title' | 'body', value: string) => {
 		if (field === 'title') {
 			setCurrentTitle(value)
 			note.title = value
@@ -57,9 +38,6 @@ export function NoteEditor({ note }: NoteEditorProps) {
 			setCurrentBody(value)
 			note.body = value
 		}
-
-		targetElement.style.height = 'auto'
-		targetElement.style.height = `${targetElement.scrollHeight}px`
 	}
 
 	const onSave = () => {
@@ -74,33 +52,29 @@ export function NoteEditor({ note }: NoteEditorProps) {
 		setPriority(value as any)
 	}
 
+	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : ' bg-base-300/70'
 	return (
-		<div className="flex flex-col h-full overflow-hidden gap-y-2">
-			<input
+		<div className="flex flex-col h-full overflow-hidden">
+			<TextInput
 				ref={titleRef}
 				type="text"
-				className={
-					'w-full py-3 px-2 text-xs font-medium text-content rounded-xl bg-base-300/70 outline-none'
-				}
+				className={`w-full h-12 font-bold! border-0 rounded-b-none! ${bgColor}`}
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
-				onChange={(e) => handleInputChange('title', e.target.value, e.target)}
-				dir="rtl"
+				onChange={(val) => handleInputChange('title', val)}
 			/>
 
 			<textarea
 				ref={bodyRef}
-				className={
-					'w-full h-full px-2 pt-1 pb-4 text-sm flex-grow resize-none rounded-xl bg-base-300/70 outline-none font-light'
-				}
+				className={`w-full h-full px-2 pt-1 pb-4 text-sm grow resize-none text-shadow-2xs rounded-b-2xl  outline-none font-light ${bgColor}`}
 				placeholder="متن یادداشت..."
 				value={currentBody}
-				onChange={(e) => handleInputChange('body', e.target.value, e.target)}
+				onChange={(e) => handleInputChange('body', e.target.value)}
 				rows={3}
 				dir="rtl"
 			/>
 
-			<div className="flex flex-row items-center justify-between w-full h-6 px-1 rounded-xl">
+			<div className="flex flex-row items-center justify-between mt-1 w-full py-0.5 px-1 rounded-xl">
 				<div className="flex items-center gap-1">
 					{PRIORITY_OPTIONS.map((p) => (
 						<PriorityButton
@@ -111,7 +85,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						/>
 					))}
 				</div>
-				<div className="flex items-center gap-1">
+				<div className="flex items-center">
 					<Button
 						size="sm"
 						onClick={() => onSave()}
@@ -119,9 +93,9 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						disabled={isSaving}
 						loadingText={<IconLoading />}
 						isPrimary={true}
-						className="!p-0 !h-full !w-14  rounded-2xl !px-2"
+						className="w-24 h-6 rounded-2xl"
 					>
-						<span className="!text-[12px]">ذخیـره</span>
+						<span className="text-xs">ذخیـره</span>
 					</Button>
 				</div>
 			</div>

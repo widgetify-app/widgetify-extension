@@ -243,7 +243,7 @@ export function ExpandableTodoInput({
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان تسک جدید..."
-							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl focus:placeholder:text-base-content/20"
+							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
@@ -304,14 +304,6 @@ export function ExpandableTodoInput({
 										/>
 									</div>
 									<div className="flex pl-1 gap-0.5 overflow-x-auto">
-										{!isEdit && isAuthenticated && (
-											<TodoSelectFriends
-												selectedFriends={selectedFriends}
-												setSelectedFriends={(fList: Friend[]) => {
-													setSelectedFriends(fList)
-												}}
-											/>
-										)}
 										<PriorityDropdown
 											priority={priority}
 											setPriority={setPriority}
@@ -342,26 +334,35 @@ export function ExpandableTodoInput({
 												{category || 'دسته‌بندی'}
 											</p>
 										</Button>
+
+										{!isEdit && isAuthenticated && (
+											<TodoSelectFriends
+												selectedFriends={selectedFriends}
+												setSelectedFriends={(fList: Friend[]) => {
+													setSelectedFriends(fList)
+												}}
+											/>
+										)}
 									</div>
 								</div>
 								<ClickableTooltip
 									isOpen={isTagTooltipOpen}
 									triggerRef={categoryInputRef}
 									position="top"
-									contentClassName={`!p-2 !max-w-none`}
 									setIsOpen={setIsTagTooltipOpen}
 									content={
-										<div className="flex flex-col w-56 gap-2">
-											<div className="flex flex-row items-center gap-1 border-b-2 border-content">
+										<div className="flex flex-col gap-2 p-2 border w-62 bg-base-200 rounded-2xl border-base-300">
+											<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-base-200">
 												<TextInput
 													value={category}
 													onChange={(val) => setCategory(val)}
 													placeholder="مثلا: کارهای خونه"
+													className="duration-75 border-0 bg-transparent!"
 												/>
 												<Button
 													size="xs"
 													isPrimary={true}
-													className="rounded-full p-0! w-8 h-8"
+													className="rounded-full p-0! w-6 h-6"
 													onClick={() =>
 														setIsTagTooltipOpen(false)
 													}
@@ -369,6 +370,7 @@ export function ExpandableTodoInput({
 													<Icon name="plus" size={18} />
 												</Button>
 											</div>
+											<div className="w-full h-0.5  rounded-full bg-base-300" />
 											<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
 												{fetchedTags
 													?.filter((tag) => tag.trim())
@@ -379,7 +381,7 @@ export function ExpandableTodoInput({
 															onClick={() =>
 																onSelectCategory(tag)
 															}
-															className="flex gap-1 text-xs px-2! py-1!e"
+															className="flex gap-1 text-xs px-2! py-1!"
 														>
 															<Icon
 																name="tags"
@@ -398,7 +400,6 @@ export function ExpandableTodoInput({
 									isOpen={showDatePicker}
 									setIsOpen={setShowDatePicker}
 									position="top"
-									contentClassName="!p-1 !max-w-none shadow-2xl border border-base-200 rounded-3xl"
 									content={
 										<DatePicker
 											selectedDate={selectedDate}

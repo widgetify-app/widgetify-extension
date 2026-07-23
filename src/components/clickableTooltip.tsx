@@ -213,7 +213,7 @@ const ClickableTooltip = ({
 					{isOpen && (
 						<motion.div
 							ref={tooltipRef}
-							className={`fixed rounded-xl py-1 px-2 text-xs max-w-xs bg-base-300 shadow bg-glass ${contentClassName}`}
+							className={`fixed text-xs  max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
 							style={{
 								left: tooltipCoords.x,
 								top: tooltipCoords.y,

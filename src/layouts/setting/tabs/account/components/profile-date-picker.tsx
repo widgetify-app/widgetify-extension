@@ -125,7 +125,7 @@ export default function JalaliDatePicker({
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 				content={
-					<div className="min-w-52">
+					<div className="p-2 border min-w-52 bg-base-200 rounded-2xl border-base-300">
 						<div className="flex gap-3 mb-5">
 							<ScrollWheel
 								label="روز"
@@ -172,7 +172,6 @@ export default function JalaliDatePicker({
 				}
 				position="bottom"
 				offset={8}
-				contentClassName="p-4 border shadow-xl bg-glass bg-content border-base-300/20 rounded-2xl max-w-none"
 				closeOnClickOutside={true}
 			/>
 		</>

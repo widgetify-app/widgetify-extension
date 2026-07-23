@@ -105,7 +105,7 @@ export const TextInput = memo(function TextInput({
 		onKeyDown,
 		dir: direction,
 		placeholder: placeholder || '',
-		className: `input bg-content w-full text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-300 focus:ring-1 focus:ring-blue-500/20 focus:border-primary font-light ${className}`,
+		className: `input bg-base-200 w-full ring-0! text-[14px] ${sizes[size]} rounded-xl !outline-none transition-all duration-200 focus:ring-1 focus:ring-primary/20 focus:border-primary font-light focus:placeholder:text-base-content/20 ${className}`,
 		onChange: handleChange,
 		maxLength,
 		autoComplete,

@@ -103,11 +103,6 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	const todayHijriEvents = getHijriEvents(events, selectedDate)
 	const todayGregorianEvents = getGregorianEvents(events, selectedDate)
 
-	const isHoliday =
-		selectedDate.day() === 5 ||
-		todayShamsiEvents.some((event) => event.isHoliday) ||
-		todayHijriEvents.some((event) => event.isHoliday)
-
 	const dayEvent = [
 		...todayShamsiEvents,
 		...todayGregorianEvents,
@@ -123,9 +118,6 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	const jalaliDay = selectedDate.format('dddd')
 
 	const totalEvents = dayEvent.length
-	const holidayStyle = isHoliday
-		? 'from-orange-600 to-red-700'
-		: 'from-sky-500 to-blue-700'
 
 	useEffect(() => {
 		const selectedDateStr = selectedDate.doAsGregorian().format('YYYY-MM-DD')
@@ -134,11 +126,8 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	}, [selectedDate, moods])
 
 	return (
-		<div className="my-1 flex flex-col w-[240px] rounded-xl overflow-hidden bg-base-100 border border-base-300">
-			{/* Header */}
-			<div
-				className={`px-3 py-2 bg-gradient-to-r rounded-b-lg ${holidayStyle} text-white`}
-			>
+		<div className="flex flex-col overflow-hidden border w-60 bg-base-200 border-base-300 rounded-2xl">
+			<div className={`px-3 py-2  bg-primary/90   text-white`}>
 				<div className="flex items-center justify-between text-sm">
 					<span className="font-medium">{jalaliDay}</span>
 					<span className="opacity-90">{jalali}</span>
@@ -200,20 +189,20 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				)}
 
 				{totalEvents > 0 && (
-					<div className="flex flex-row flex-wrap pr-1 space-y-1 overflow-y-auto gap-x-1 max-h-32 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
+					<div className="flex flex-col p-1 pl-1 space-y-1 overflow-y-auto gap-x-1 max-h-28 scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-transparent">
 						{dayEvent.map((event, idx) => (
 							<div
 								key={`e-${idx}`}
-								className={`flex items-center py-1! gap-1 h-5  w-fit px-2 outline rounded-lg ${
+								className={`flex relative overflow-hidden outline items-center py-0.5 gap-1 min-h-6 h-fit  w-full px-2  rounded-xl ${
 									event.isHoliday
-										? 'bg-error/20 text-error outline-error/10'
-										: 'badge badge-ghost text-content outline-base-200'
+										? 'bg-error/20 text-error outline-error/30'
+										: 'badge badge-ghost text-content  outline-base-300'
 								}`}
 							>
 								<div
-									className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${event.isHoliday ? 'bg-red-400 animate-pulse' : 'bg-info'} `}
+									className={`w-1.5 h-1.5 ml-0.5 -mr-0.5 rounded-full shrink-0 ${event.isHoliday ? 'bg-red-400 animate-pulse ring-2 ring-error/20' : 'bg-primary/80 ring-2 ring-primary/20'} `}
 								/>
-								<div className="flex-1 min-w-0 max-w-42 text-[12px] truncate">
+								<div className="flex-1 min-w-0 text-[11px]">
 									{event.title}
 								</div>
 							</div>
