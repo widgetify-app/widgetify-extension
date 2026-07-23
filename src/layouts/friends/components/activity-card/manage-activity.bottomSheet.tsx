@@ -208,7 +208,7 @@ export function ManageActivityBottomSheet({
 									},
 								]}
 								optionalText="نمایش"
-								className="w-32!"
+								className="w-32! border-none"
 								onChange={(val) => setTime((Number(val) as any) || 24)}
 							></SelectBox>
 						</div>
