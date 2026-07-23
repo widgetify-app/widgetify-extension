@@ -1,6 +1,5 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { NewBadge } from '@/components/badges/new.badge'
 import { Dropdown } from '@/components/dropdown'
 import { useAuth } from '@/context/auth.context'
 import { useChangeSearchEngine } from '@/services/hooks/extension/updateSetting.hook'
@@ -26,7 +25,6 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 	const { data: searchboxData, isLoading } = useGetSearchboxData({ enabled: true })
 	const changeEngineMutation = useChangeSearchEngine()
 	const [currentEngine, setCurrentEngine] = useState<EngineMeta>(GOOGLE)
-	const [showNewBadge, setShowNewBadge] = useState<boolean>(false)
 	const [clicked, setClicked] = useState<boolean>(false)
 
 	const engines = useMemo(() => {
@@ -64,8 +62,6 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 				onSelected?.(serverEngine)
 				setToStorage('selected_engine', serverEngine.id)
 			}
-		} else {
-			if (!isLoading) setShowNewBadge(true)
 		}
 	}, [searchboxData?.selected_engine, engines])
 
@@ -96,7 +92,6 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 							engineId={currentEngine.id}
 							icon={currentEngine.icon}
 						/>
-						{showNewBadge && <NewBadge className="right-1 bottom-1" />}
 						<Icon
 							name="chevronDown"
 							className={`text-muted transition-transform duration-300 ${clicked ? 'rotate-180' : ''}`}
