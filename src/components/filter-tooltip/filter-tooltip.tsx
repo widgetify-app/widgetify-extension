@@ -1,4 +1,4 @@
-import { useState, useRef, ReactNode } from 'react'
+import { useState, useRef, type ReactNode } from 'react'
 import { ClickableTooltip } from '@/components/clickableTooltip'
 import Tooltip from '../toolTip'
 import { Button } from '../button/button'
@@ -53,9 +53,9 @@ export function FilterTooltip({
 				isOpen={showTooltip}
 				setIsOpen={setShowTooltip}
 				position="bottom"
-				contentClassName={`!p-2 !max-w-none ${tooltipClassName || ''}`}
+				contentClassName={tooltipClassName || ''}
 				content={
-					<div className="flex flex-col gap-1 min-w-[100px] max-h-52 overflow-y-auto pl-1">
+					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-base-300 rounded-2xl min-w-25 bg-base-200 max-h-52">
 						{options.map((option) => (
 							<button
 								key={option.value}

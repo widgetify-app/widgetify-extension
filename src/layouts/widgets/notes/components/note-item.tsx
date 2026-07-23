@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import moment from 'jalali-moment'
 import Analytics from '@/analytics'
@@ -11,7 +11,7 @@ interface Prop {
 }
 
 export function NoteItem({ note, handleNoteClick }: Prop) {
-	const p = PRIORITY_OPTIONS.find((p) => p.value === note.priority)
+	const pBg = note.priority ? PRIORITY_BG_COLORS[note.priority] : 'bg-base-300'
 	const [isExpanded, setIsExpanded] = useState(false)
 
 	const CHARACTER_LIMIT = 120
@@ -27,10 +27,10 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 
 	return (
 		<div
-			className={`group flex flex-col rounded-2xl border border-base-300/40  transition-all active:scale-[0.99] cursor-pointer ${p?.bgColor || 'bg-base-300/30'} hover:opacity-90`}
+			className={`group flex flex-col rounded-2xl active:scale-[0.99] cursor-pointer ${pBg} hover:opacity-90`}
 			onClick={() => handleNoteClick(note.id)}
 		>
-			<div className="flex items-center justify-between gap-2 px-2.5 py-1.5  rounded-t-2xl">
+			<div className="flex items-center justify-between gap-2 px-2.5 py-1.5 ">
 				<div className="flex items-center gap-1.5 min-w-0">
 					<h3 className="text-[12px] font-bold">
 						{note.title || 'بدون عنوان'}
@@ -44,10 +44,10 @@ export function NoteItem({ note, handleNoteClick }: Prop) {
 				</div>
 			</div>
 
-			<div className="p-2.5 bg-base-100/10">
+			<div className="p-2.5">
 				<div className="relative">
 					<p
-						className={`text-[11.5px] leading-relaxed  whitespace-pre-wrap wrap-break-word font-medium transition-all duration-300 ${
+						className={`text-[11.5px] leading-relaxed text-shadow-2xs  whitespace-pre-wrap wrap-break-word font-medium transition-all duration-300 ${
 							!isExpanded && shouldShowReadMore ? 'line-clamp-3' : ''
 						}`}
 					>

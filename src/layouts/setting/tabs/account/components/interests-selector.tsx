@@ -3,6 +3,7 @@ import { ClickableTooltip } from '@/components/clickableTooltip'
 import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
 import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
+import { Chip } from '@/components/chip.component'
 
 interface InterestsSelectorProps {
 	interests: ProfileMetaItem[]
@@ -32,36 +33,25 @@ export const InterestsSelector = ({
 	}
 
 	const content = (
-		<div className="w-64 p-1">
+		<div className="p-2 border w-72 bg-base-200 rounded-2xl border-base-300">
 			{isLoading ? (
 				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-muted">
 					صبر کنید...
 				</div>
 			) : (
-				<div className="flex flex-wrap gap-2 p-1 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
+				<div className="flex flex-wrap gap-0.5 p-1 overflow-x-hidden overflow-y-auto max-h-40">
 					{interests.map((interest) => {
 						const isSelected = selectedInterests.includes(interest.id)
 
 						return (
-							<button
+							<Chip
 								key={interest.id}
-								type="button"
+								selected={isSelected}
+								className="w-fit! text-[11px]"
 								onClick={() => handleInterestToggle(interest.id)}
-								className={`
-								h-8 px-2 flex items-center justify-center w-fit gap-1.5 hover:border-none cursor-pointer
-								text-[11px] font-medium rounded-xl border whitespace-nowrap
-								transition-all duration-150 active:scale-95
-								${
-									isSelected
-										? 'bg-primary border-primary text-white shadow-sm'
-										: 'border border-base-content/20 text-content'
-								}
-							`}
 							>
-								<span className="text-[11px] leading-none">
-									{interest.title}
-								</span>
-							</button>
+								{interest.title}
+							</Chip>
 						)
 					})}
 				</div>

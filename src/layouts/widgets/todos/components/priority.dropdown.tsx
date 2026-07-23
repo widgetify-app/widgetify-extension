@@ -49,10 +49,9 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					<Icon name="filterLeft" size={18} />
 				</Button>
 			}
-			dropdownClassName="p-1.5"
 			position="top-left"
 		>
-			<div className="flex flex-col gap-1 min-w-32">
+			<div className="flex flex-col gap-1 border min-w-32 bg-base-200 border-base-300 rounded-2xl p-1.5">
 				<button
 					onClick={() => setPriority(undefined)}
 					className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${

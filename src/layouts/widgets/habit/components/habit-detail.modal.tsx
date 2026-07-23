@@ -83,23 +83,24 @@ export function HabitDetailModal({
 									/>
 								</Button>
 							}
-							dropdownClassName="p-2"
 						>
-							<button
-								className={`w-full px-3 py-1 flex items-center gap-x-2.25 cursor-pointer rounded-lg transition-colors duration-200 text-content hover:text-content/90 hover:bg-base-300/70! `}
-								onClick={onClickEdit}
-							>
-								<Icon name="pen" size={13} />
-								<span className="font-medium">ویرایش</span>
-							</button>
+							<div className="flex flex-col p-2 border bg-base-200 border-base-300 rounded-2xl">
+								<button
+									className={`w-full px-3 py-1 flex items-center gap-x-2.25 cursor-pointer rounded-lg transition-colors duration-200 text-content hover:text-content/90 hover:bg-base-300/70!`}
+									onClick={onClickEdit}
+								>
+									<Icon name="pen" size={13} />
+									<span className="font-medium">ویرایش</span>
+								</button>
 
-							<button
-								className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 text-error hover:text-error/90 hover:bg-error/10!`}
-								onClick={onClickArchive}
-							>
-								<Icon name="archive" size={14} />
-								<span className="font-medium">بایگانی</span>
-							</button>
+								<button
+									className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 text-error hover:text-error/90 hover:bg-error/10!`}
+									onClick={onClickArchive}
+								>
+									<Icon name="archive" size={14} />
+									<span className="font-medium">بایگانی</span>
+								</button>
+							</div>
 						</Dropdown>
 					</div>
 					<p className="text-[10px] truncate text-muted">

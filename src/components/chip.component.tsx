@@ -16,7 +16,7 @@ export const Chip: React.FC<ChipProps> = ({
 	return (
 		<button
 			onClick={onClick}
-			className={`px-4 py-2 cursor-pointer rounded-full text-xs font-bold transition-all border-2 ${selected ? 'bg-primary border-primary text-white' : 'bg-base-100 border-base-300/30 text-muted hover:border-primary/30'} ${className}`}
+			className={`px-4 py-2 cursor-pointer rounded-full text-xs font-bold active:scale-95 transition-all border-2 ${selected ? 'bg-primary border-primary text-white' : 'bg-base-100 border-base-300/30 text-muted hover:border-primary/30'} ${className}`}
 			dir={dir}
 		>
 			{children}

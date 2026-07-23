@@ -3,6 +3,7 @@ import { ClickableTooltip } from '@/components/clickableTooltip'
 import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
 import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
+import { Chip } from '@/components/chip.component'
 
 interface OccupationSelectorProps {
 	occupations: ProfileMetaItem[]
@@ -32,33 +33,24 @@ export const OccupationSelector = ({
 	}
 
 	const content = (
-		<div className="w-64 p-1 ">
+		<div className="w-64 p-2 border bg-base-200 rounded-2xl border-base-300">
 			{isLoading ? (
 				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					درحال بارگذاری...
 				</div>
 			) : (
-				<div className="flex flex-row flex-wrap gap-2 overflow-x-hidden overflow-y-auto scrollbar-none max-h-40">
+				<div className="flex flex-row flex-wrap gap-1 overflow-x-hidden overflow-y-auto max-h-40">
 					{occupations.map((occupation) => {
 						const isActive = selectedOccupation === occupation.id
 						return (
-							<button
+							<Chip
+								selected={isActive}
+								className="text-[11px]"
 								key={occupation.id}
-								type="button"
 								onClick={() => handleSelect(occupation.id)}
-								className={`
-								h-8 px-2 flex items-center justify-center w-fit gap-1.5 hover:border-none cursor-pointer
-								text-[11px] font-medium rounded-xl border whitespace-nowrap
-								transition-all duration-150 active:scale-95
-								${
-									isActive
-										? 'bg-primary border-primary text-white shadow-sm'
-										: 'border border-base-content/20 text-content'
-								}
-							`}
 							>
 								{occupation.title}
-							</button>
+							</Chip>
 						)
 					})}
 				</div>

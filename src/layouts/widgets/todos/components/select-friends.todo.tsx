@@ -38,7 +38,7 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 			dropdownClassName="select-friends"
 			position="top-right"
 		>
-			<div className="p-2 min-w-xs min-h-80 max-h-80">
+			<div className="p-2 border min-w-xs min-h-80 max-h-80 bg-base-200 border-base-300 rounded-2xl">
 				<p className="pr-1 mb-1 text-sm font-bold">افزودن دوست به تسک</p>
 				<div className="h-56 max-h-56">
 					<SelectFriendLayout
@@ -49,8 +49,9 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 				</div>
 				<Button
 					size="sm"
+					isPrimary
 					onClick={() => callEvent('closeAllDropdowns')}
-					className="w-full  border-none! mt-2.5 border! border-content! rounded-t-xl text-base-content/80"
+					className="w-full rounded-2xl"
 				>
 					ذخیره و بستن
 				</Button>

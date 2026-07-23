@@ -85,7 +85,11 @@ export function NoteNavigation() {
 							className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 							onClick={() => onBackToList()}
 						>
-							<Icon name="trash" size={18} className="text-content" />
+							<Icon
+								name="chevronLeft"
+								size={18}
+								className="text-content"
+							/>
 						</button>
 					</Tooltip>
 				</>
