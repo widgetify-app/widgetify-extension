@@ -43,7 +43,7 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🪁 بادبادک؛ نسخه جدید ویجتیفای'}
+			title={'🌊 موج؛ آپدیت جدید ویجتیفای'}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
@@ -52,7 +52,7 @@ export const UpdateReleaseNotesModal = ({
 				<div className="pb-2 space-y-4 overflow-y-auto h-110">
 					<div className="relative w-full overflow-hidden border shadow-inner rounded-2xl bg-base-300/20 border-base-300">
 						<img
-							src={'https://cdn.widgetify.ir/extension/badbodak-update.jpg'}
+							src={'https://cdn.widgetify.ir/extension/mooj_update.jpg'}
 							className="object-center w-full max-h-70 rounded-2xl"
 						/>
 					</div>
@@ -60,36 +60,45 @@ export const UpdateReleaseNotesModal = ({
 					<div className="p-2 space-y-1.5 border rounded-2xl bg-base-300/20 border-base-300/10">
 						<div className="flex items-center gap-2">
 							<h3 className="text-sm font-black text-content">
-								بادبادک، پر از بهبودهای دوست‌داشتنی! 🪁
+								موج، روان‌تر از همیشه! 🌊
 							</h3>
 						</div>
 
 						<p className="text-xs leading-6 text-muted">
-							از این نسخه می‌تونی{' '}
+							این بار بیشتر از اضافه کردن قابلیت‌های جدید، تمرکزمان روی{' '}
 							<span className="font-bold text-content">
-								والپیپرهای دلخواهت رو کاملا رایگان از بین عکس‌های خودت
+								سریع‌تر، روان‌تر و لذت‌بخش‌تر شدن ویجتیفای
+							</span>{' '}
+							بوده تا تجربه بهتری از هر بار باز کردن تب جدید داشته باشی.
+						</p>
+
+						<p className="text-xs leading-6 text-muted">
+							از حالا می‌تونی{' '}
+							<span className="font-bold text-content">
+								بوکمارک‌های مرورگرت رو مستقیما هنگام ساخت بوکمارک درون‌ریزی
+								(import) کنی
 							</span>
-							؛ بدون هیچ محدودیتی انتخاب کنی!
+							؛ بدون اینکه لازم باشه دوباره همه چیز رو از اول اضافه کنی.
+						</p>
+						<p className="text-xs leading-6 text-muted">
+							همچنین قابلیت{' '}
+							<span className="font-bold text-content">حالت بهینه</span> هم
+							اضافه شده که می‌تونی از بخش{' '}
+							<span className="font-bold text-content">
+								تنظیمات ← عمومی
+							</span>{' '}
+							فعال یا غیرفعالش کنی. با فعال بودن این حالت، انیمیشن‌ها و
+							افکت‌ها کاهش پیدا می‌کنن تا ویجتیفای روان‌تر اجرا بشه.
 						</p>
 
 						<p className="text-xs leading-6 text-muted">
-							همچنین{' '}
+							در کنار این‌ها،{' '}
 							<span className="font-bold text-content">
-								ظاهر ویجت عادت‌ها (Habit Tracker)
+								بهبودهای ظاهری و بهینه‌سازی‌های متعددی
 							</span>{' '}
-							بازطراحی شده، ظاهر ساده ویجتیفای بهبود پیدا کرده و عملکرد کلی
-							افزونه هم روان‌تر شده.
-						</p>
-
-						<p className="text-xs leading-6 text-muted">
-							علاوه بر این، مشکل نمایش{' '}
-							<span className="font-bold text-content">
-								عنوان بوکمارک‌ها
-							</span>{' '}
-							هم برطرف شده تا تجربه بهتری داشته باشی.
+							انجام شده تا همه چیز مثل یک موج، نرم و بدون وقفه پیش بره 😅
 						</p>
 					</div>
-
 					<div className="flex items-center justify-center gap-2 py-1 text-muted">
 						💙<span className="text-xs">دمت گرم که همراه مایی</span>
 					</div>
