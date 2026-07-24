@@ -6,17 +6,18 @@ import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCate
 import { safeAwait } from '@/services/api'
 import { SwEventType } from '@/common/types/sw-events'
 
-function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
-	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return
-	if (!/^https?:\/\//.test(wallpaper.src)) return
+function pinWallpaperForOffline(wallpaper: StoredWallpaper): Promise<void> {
+	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return Promise.resolve()
+	if (!/^https?:\/\//.test(wallpaper.src)) return Promise.resolve()
 
-	browser.runtime
+	return browser.runtime
 		.sendMessage({
 			type: SwEventType.SetActiveWallpaper,
 			src: wallpaper.src,
 			wallpaperType: wallpaper.type,
 		})
-		.catch(() => {})
+		.then(() => undefined)
+		.catch(() => undefined)
 }
 
 const GRADIENT_DIRECTION_MAP: Record<string, string> = {
@@ -30,18 +31,62 @@ const GRADIENT_DIRECTION_MAP: Record<string, string> = {
 	'to-bl': 'to bottom left',
 }
 
+let applyToken = 0
+
+const RETRY_LIMIT = 4
+const RETRY_BASE_MS = 500
+
+function setImageStyles() {
+	document.body.style.backgroundPosition = 'center'
+	document.body.style.backgroundRepeat = 'no-repeat'
+	document.body.style.backgroundSize = 'cover'
+	document.body.style.backgroundColor = ''
+}
+
+// A background-image whose request failed is never retried by the browser, and
+// re-assigning the same url() is a no-op. Clear it for one frame to force a
+// fresh evaluation once the bytes are actually available.
+function forceReapplyImage(src: string, token: number) {
+	if (token !== applyToken) return
+	document.body.style.backgroundImage = 'none'
+	requestAnimationFrame(() => {
+		if (token !== applyToken) return
+		setImageStyles()
+		document.body.style.backgroundImage = `url("${src}")`
+	})
+}
+
+// background-image emits no load/error events, so probe the URL out-of-band. If
+// the first paint missed (cold worker, or a cache emptied by an update), wait
+// for the worker to pin the wallpaper, then retry and re-apply once loadable.
+function verifyImage(src: string, pinned: Promise<void>, token: number, attempt: number) {
+	const probe = new Image()
+	probe.onload = () => {
+		if (attempt > 0) forceReapplyImage(src, token)
+	}
+	probe.onerror = () => {
+		if (token !== applyToken || attempt >= RETRY_LIMIT) return
+		const retry = () => verifyImage(src, pinned, token, attempt + 1)
+		if (attempt === 0) {
+			pinned.then(() => window.setTimeout(retry, RETRY_BASE_MS))
+		} else {
+			window.setTimeout(retry, RETRY_BASE_MS * (attempt + 1))
+		}
+	}
+	probe.src = src
+}
+
 function applyWallpaper(wallpaper: StoredWallpaper) {
-	pinWallpaperForOffline(wallpaper)
+	const token = ++applyToken
+	const pinned = pinWallpaperForOffline(wallpaper)
 
 	const existingVideo = document.getElementById('background-video')
 	if (existingVideo) existingVideo.remove()
 
 	if (wallpaper.type === 'IMAGE') {
-		document.body.style.backgroundImage = `url(${wallpaper.src})`
-		document.body.style.backgroundPosition = 'center'
-		document.body.style.backgroundRepeat = 'no-repeat'
-		document.body.style.backgroundSize = 'cover'
-		document.body.style.backgroundColor = ''
+		setImageStyles()
+		document.body.style.backgroundImage = `url("${wallpaper.src}")`
+		verifyImage(wallpaper.src, pinned, token, 0)
 	} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 		const { from, to, direction } = wallpaper.gradient
 		const cssDirection = GRADIENT_DIRECTION_MAP[direction] ?? direction
@@ -75,8 +120,19 @@ function applyWallpaper(wallpaper: StoredWallpaper) {
 			objectFit: 'cover',
 		})
 
+		let videoRetries = 0
 		video.onerror = () => {
 			document.body.style.backgroundColor = '#000'
+			// Retry driven by the error event (not a one-shot check) so it also
+			// recovers when the error arrives after pinning has resolved.
+			if (token !== applyToken || videoRetries >= RETRY_LIMIT) return
+			videoRetries++
+			const delay = RETRY_BASE_MS * videoRetries
+			pinned.then(() =>
+				window.setTimeout(() => {
+					if (token === applyToken && video.isConnected) video.load()
+				}, delay)
+			)
 		}
 		video.onloadeddata = () => {
 			video.play().catch((e) => console.warn('Play failed:', e))
@@ -144,8 +200,18 @@ export function useWallpaperApply() {
 			}
 		)
 
+		// Back online: re-pin and re-apply so a wallpaper that couldn't be fetched
+		// while offline (e.g. right after an update cleared its cache) recovers on
+		// its own instead of staying black until the user re-selects one.
+		const handleOnline = async () => {
+			const wallpaper: StoredWallpaper | null = await getFromStorage('wallpaper')
+			if (wallpaper) applyWallpaper(wallpaper)
+		}
+		window.addEventListener('online', handleOnline)
+
 		return () => {
 			unsubscribe()
+			window.removeEventListener('online', handleOnline)
 		}
 	}, [])
 }

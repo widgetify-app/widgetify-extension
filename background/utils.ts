@@ -38,6 +38,7 @@ export async function enforceCacheBudget(): Promise<void> {
 			CacheNames.cdn,
 			CacheNames.api,
 			CacheNames.fonts,
+			CacheNames.favicons,
 		]
 		for (const name of trimOrder) {
 			const cache = await caches.open(name)
