@@ -39,6 +39,10 @@ const steps: Step[] = [
 				</div>
 			</div>
 		),
+		buttons: ['primary', 'back'],
+		locale: {
+			nextWithProgress: 'مخفی کردم / نبودش',
+		},
 	},
 	{
 		target: '#settings-button',
