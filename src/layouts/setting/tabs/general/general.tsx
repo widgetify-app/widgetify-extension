@@ -22,7 +22,7 @@ export function GeneralSettingTab() {
 				size="sm"
 			>
 				<div className="flex">
-					<p className="flex-1 text-sm font-light leading-relaxed text-muted">
+					<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-muted">
 						برای کاهش مصرف منابع، انیمیشن‌ها، حیوان خانگی، ثانیه‌شمار ساعت و
 						برخی افکت‌های بصری غیرفعال می‌شوند.
 					</p>

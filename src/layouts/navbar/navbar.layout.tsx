@@ -159,7 +159,7 @@ export function NavbarLayout(): JSX.Element {
 				className={`fixed z-60 -translate-x-1/2 left-1/2 w-full px-2 md:px-4 lg:px-4 max-w-[1080px] transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						isVisible
-							? 'bottom-2 opacity-100 scale-100'
+							? 'bottom-1 opacity-100 scale-100'
 							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 					}`}
 			>
