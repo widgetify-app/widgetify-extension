@@ -14,7 +14,10 @@ import { ProfileProgressNotification } from '../profile-progress'
 import { safeAwait } from '@/services/api'
 
 const localIds = ['notificationMood', 'update_profile']
-export function NotificationCenter() {
+interface Prop {
+	hasBorder?: boolean
+}
+export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
 	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications()
 	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
@@ -43,7 +46,11 @@ export function NotificationCenter() {
 			if (user?.hasTodayMood === false && !user?.inCache) {
 				addToNodes({
 					id: 'notificationMood',
-					node: <DailyMoodNotification />,
+					node: (
+						<DailyMoodNotification
+							className={`${hasBorder ? '' : 'border-none!'}`}
+						/>
+					),
 				})
 			}
 
@@ -54,7 +61,11 @@ export function NotificationCenter() {
 			) {
 				addToNodes({
 					id: 'update_profile',
-					node: <ProfileProgressNotification />,
+					node: (
+						<ProfileProgressNotification
+							className={`${hasBorder ? '' : 'border-none!'}`}
+						/>
+					),
 				})
 			} else {
 				try {
@@ -62,7 +73,7 @@ export function NotificationCenter() {
 				} catch {}
 			}
 		}
-	}, [isAuthenticated, user])
+	}, [isAuthenticated, user, hasBorder])
 
 	useEffect(() => {
 		const addEvent = listenEvent(
@@ -142,6 +153,7 @@ export function NotificationCenter() {
 			{notifications?.map((item, index) => (
 				<NotificationCardItem
 					notification={item}
+					className={`${hasBorder ? '' : 'border-none!'}`}
 					key={`no-${index}`}
 					onClose={(e) => onClose(e, item.id || '', item.ttl)}
 				/>

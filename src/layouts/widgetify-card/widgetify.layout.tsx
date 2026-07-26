@@ -17,7 +17,7 @@ export const WidgetifyLayout = () => {
 					<div
 						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto scrollbar-none pb-2`}
 					>
-						<NotificationCenter />
+						<NotificationCenter hasBorder />
 					</div>
 				</div>
 			</div>

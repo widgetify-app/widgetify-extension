@@ -14,7 +14,7 @@ export function WigiPadWidget() {
 				<ClockDisplay />
 			</div>
 			<div className="col-span-2 px-1 mt-1">
-				<div className="flex flex-col overflow-y-auto  gap-y-0.5 scrollbar-none h-28 max-h-28 pb-4">
+				<div className="flex flex-col overflow-y-auto  gap-y-0.5 pl-0.5 h-28 max-h-28 pb-4">
 					{fetchedData?.wigiPad.map((notification, index) => (
 						<RenderWigiPadItem key={index} notification={notification} />
 					))}

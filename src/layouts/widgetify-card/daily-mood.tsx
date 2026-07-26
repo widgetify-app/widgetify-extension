@@ -2,6 +2,7 @@ import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constant/moods'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
+import { GetUserFirstName } from '@/common/utils/getFirstname'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
 import { safeAwait } from '@/services/api'
@@ -13,7 +14,10 @@ import { Icon } from '@/src/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 
-export function DailyMoodNotification() {
+interface Prop {
+	className: string
+}
+export function DailyMoodNotification({ className }: Prop) {
 	const queryClient = useQueryClient()
 	const { user } = useAuth()
 	const { today } = useDate()
@@ -72,13 +76,13 @@ export function DailyMoodNotification() {
 
 	return (
 		<div
-			className="flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-base-300/70"
+			className={`flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-base-300/70 ${className}`}
 			id="notificationMood "
 		>
 			<div className="flex-1 min-w-0 ">
 				<div className="flex items-center justify-between">
 					<h4 className="text-[10px] font-medium truncate text-content">
-						{user?.name}، امروز حالت چطوره؟
+						{GetUserFirstName(user?.name || '')}، امروز حالت چطوره؟
 					</h4>
 					<button
 						type="button"
@@ -101,7 +105,7 @@ export function DailyMoodNotification() {
 								onClick={() =>
 									!isAdding && handleMoodChange(option.value)
 								}
-								className={`p-1.5 w-full shadow-sm rounded-xl transition-all cursor-pointer ${
+								className={`p-1.5 w-full shadow-xs rounded-xl transition-all cursor-pointer ${
 									mood === option.value
 										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
 										: `bg-base-300 hover:bg-base-300/70 opacity-80 hover:opacity-100 hover:scale-95`

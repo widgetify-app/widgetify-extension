@@ -7,6 +7,7 @@ import { Icon } from '@/src/icons'
 interface NotificationItemProps {
 	onClose(e: any, id: string): any
 	notification: NotificationItem
+	className?: string
 }
 
 interface Prop {
@@ -103,7 +104,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-base-300/70 group relative`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-base-300  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-base-300/70 group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">

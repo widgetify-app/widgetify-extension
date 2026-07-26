@@ -3,7 +3,10 @@ import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/src/icons'
 
-export function ProfileProgressNotification() {
+interface Prop {
+	className: string
+}
+export function ProfileProgressNotification({ className }: Prop) {
 	const { profilePercentage } = useAuth()
 	const onRemoveNotif = () => {
 		callEvent('remove_from_notifications', { id: 'update_profile', ttl: 240 })
@@ -17,7 +20,7 @@ export function ProfileProgressNotification() {
 
 	return (
 		<div
-			className="flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-base-300/70 hover:scale-[0.99] active:scale-[0.99]"
+			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-base-300/70 hover:scale-[0.99] active:scale-[0.99] ${className}`}
 			id="update_profile"
 			onClick={() => onClick()}
 		>

@@ -29,7 +29,7 @@ export function SimplifyYadkar() {
 			</div>
 
 			<div className="col-span-2 px-1 mt-1">
-				<div className="overflow-y-auto scrollbar-none max-h-36 min-h-36">
+				<div className="overflow-y-auto max-h-36 min-h-36 pl-0.5">
 					<div className="pb-8">
 						{fetchedData?.wigiPad?.map((notification, index) => (
 							<RenderWigiPadItem
@@ -37,7 +37,7 @@ export function SimplifyYadkar() {
 								notification={notification}
 							/>
 						))}
-						<NotificationCenter />
+						<NotificationCenter hasBorder={false} />
 					</div>
 				</div>
 			</div>

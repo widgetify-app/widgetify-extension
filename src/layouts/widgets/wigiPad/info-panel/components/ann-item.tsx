@@ -116,14 +116,14 @@ export function RenderWigiPadItem({ notification }: NotificationItemProps) {
 								className="object-contain w-5 h-5 rounded "
 							/>
 						) : (
-							<span>{notification.icon}</span>
+							<span className="text-[11px]">{notification.icon}</span>
 						)}
 					</div>
 				)}
 
 				<div className="flex-1 min-w-0">
 					<div
-						className="text-xs font-semibold leading-tight line-clamp-1 text-base-content/90"
+						className="text-[11px] font-semibold leading-tight line-clamp-1 text-base-content/90"
 						style={titleStyle}
 					>
 						{notification.title}
