@@ -17,6 +17,7 @@ import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils'
 import { useBirthdayConfetti } from '@/hooks/useBirthdayConfetti'
 import { Icon } from '@/src/icons'
+import { GetUserFirstName } from '@/common/utils/getFirstname'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -159,7 +160,7 @@ export function NavbarLayout(): JSX.Element {
 				className={`fixed z-60 -translate-x-1/2 left-1/2 w-full px-2 md:px-4 lg:px-4 max-w-[1080px] transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						isVisible
-							? 'bottom-1 opacity-100 scale-100'
+							? 'bottom-2 opacity-100 scale-100'
 							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 					}`}
 			>
@@ -220,9 +221,9 @@ export function NavbarLayout(): JSX.Element {
 
 function getUserLabel(user: UserProfile | null) {
 	if (!user) return 'ویجتیفای'
-
+	const firstName = GetUserFirstName(user.name)
 	if (user.isBirthdayToday) {
-		return `🎂  تولدت مبارک ${user.name}`
+		return `🎂  تولدت مبارک ${firstName}`
 	}
 
 	const hour = getCurrentDate(user.timeZone).hours()
@@ -237,5 +238,5 @@ function getUserLabel(user: UserProfile | null) {
 		greeting = 'عصر بخیر'
 	}
 
-	return `${greeting} ${user.name}`
+	return `${greeting} ${firstName}`
 }
