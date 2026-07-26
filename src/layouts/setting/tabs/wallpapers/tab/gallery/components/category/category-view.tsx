@@ -72,6 +72,7 @@ export function CategoryView({ onCategorySelect }: CategoryGridProps) {
 						id={category.id}
 						name={category.name}
 						previewImages={category.wallpapers || []}
+						hasNewContent={category.hasNewContent}
 						onSelect={() => onCategorySelect(category)}
 					/>
 				))}
