@@ -1,9 +1,11 @@
+import { NewBadge } from '@/components/badges/new.badge'
 import { Icon } from '@/src/icons'
 
 interface CategoryFolderProps {
 	id: string
 	name: string
 	previewImages: any[]
+	hasNewContent: boolean
 	onSelect: (categoryId: string) => void
 }
 
@@ -12,12 +14,15 @@ export function CategoryFolder({
 	name,
 	previewImages,
 	onSelect,
+	hasNewContent,
 }: CategoryFolderProps) {
 	return (
 		<div
 			onClick={() => onSelect(id)}
-			className="flex flex-col h-32 px-2 py-1 transition-all border cursor-pointer rounded-2xl bg-content border-content max-h-32 hover:border-primary/20! active:scale-98"
+			className="flex flex-col h-32 px-2 py-1 transition-all border cursor-pointer rounded-2xl bg-content border-content max-h-32 hover:border-primary/20! active:scale-98 relative"
 		>
+			{hasNewContent ? <NewBadge className="top-2 left-2" /> : null}
+
 			<div className="flex items-center gap-2 mb-2">
 				<Icon name="folder" className="text-base-content/10" size={12} />
 				<p className="font-medium truncate text-muted">{name}</p>

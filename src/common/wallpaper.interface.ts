@@ -39,5 +39,6 @@ export interface Category {
 	slug: string
 	createdAt: string
 	updatedAt: string
+	hasNewContent: boolean
 	wallpapers?: Wallpaper[] // just last 4 wallpapers for preview (images only)
 }
