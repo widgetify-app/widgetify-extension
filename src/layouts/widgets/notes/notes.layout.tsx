@@ -4,6 +4,7 @@ import { NotesProvider, useNotes } from '@/context/notes.context'
 import { NoteEditor } from './components/note-editor'
 import { NoteItem } from './components/note-item'
 import { NoteNavigation } from './components/note-navigation'
+import { NoteEmpty } from './components/note-empty'
 
 function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
@@ -12,23 +13,7 @@ function NotesContent() {
 	const activeNote = notes.find((note) => note.id === activeNoteId)
 
 	if (!activeNote && !notes.length) {
-		return (
-			<div
-				className={`flex flex-col items-center justify-center h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-			>
-				<div className="flex items-center justify-center w-12 h-12">
-					<img
-						src="https://cdn.widgetify.ir/system/no-items.png"
-						alt="بدون عادت"
-						className="object-contain w-48 h-auto select-none"
-					/>
-				</div>
-				<p className={'text-sm text-muted'}>یادداشتی پیدا نشد</p>
-				<span className="font-light text-muted">
-					منتظر چی هستی؟ شروع کن به نوشتن!
-				</span>
-			</div>
-		)
+		return <NoteEmpty />
 	}
 
 	if (!activeNote) {
