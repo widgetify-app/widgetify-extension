@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import type React from 'react'
 import { createContext, useContext, useState } from 'react'
@@ -19,6 +20,7 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		const event = listenEvent('go_to_page', (p) => {
 			setPage(p)
+			Analytics.event(`goto_page_${p}`)
 		})
 		return () => {
 			event()

@@ -27,6 +27,8 @@ export function MiniAppsLayout() {
 	const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
+		Analytics.event('mini_apps_page')
+
 		const event = listenEvent('toggle_miniApp_fullScreen', (newState) => {
 			setIsFullScreen(newState)
 		})

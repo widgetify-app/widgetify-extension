@@ -3,9 +3,16 @@ import { SelectCity } from './components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SectionPanel } from '@/components/section-panel'
+import Analytics from '@/analytics'
 
 export function GeneralSettingTab() {
 	const { isOptimalMode, updateSetting } = useGeneralSetting()
+
+	const toggleOptimal = () => {
+		updateSetting('isOptimalMode', !isOptimalMode)
+		Analytics.event('toggle_optimalMode')
+	}
+
 	return (
 		<div className="w-full max-w-xl mx-auto">
 			<SelectCity key={'selectCity'} />
@@ -28,7 +35,7 @@ export function GeneralSettingTab() {
 					</p>
 					<ToggleSwitch
 						enabled={isOptimalMode}
-						onToggle={() => updateSetting('isOptimalMode', !isOptimalMode)}
+						onToggle={() => toggleOptimal()}
 					/>
 				</div>
 			</SectionPanel>

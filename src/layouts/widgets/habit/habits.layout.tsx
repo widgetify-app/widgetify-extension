@@ -18,6 +18,7 @@ import { HabitItem } from './components/item/habit.item'
 import { callEvent } from '@/common/utils/call-event'
 import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 import { Icon } from '@/src/icons'
+import { HabitEmpty } from './components/habit-empty'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
@@ -92,7 +93,7 @@ export function HabitsContent() {
 	}
 
 	const isWaiting = isLoading || isRefetching
-
+	const isEmpty = (!isLoading && data?.items?.length === 0) || !isAuthenticated
 	return (
 		<div className="flex flex-col h-full">
 			<div className="flex-none">
@@ -122,33 +123,19 @@ export function HabitsContent() {
 			</div>
 
 			<div className="mt-0.5 grow overflow-hidden pb-2">
-				<div
-					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-				>
+				<div className="space-y-1.5 overflow-y-auto scrollbar-none h-full">
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">
 							{[...Array(4)].map((_, i) => (
 								<HabitItemSkeleton key={`skeleton-${i}`} />
 							))}
 						</div>
-					) : data?.items?.length === 0 ? (
-						<div className="flex flex-col items-center justify-center h-full gap-2 px-4">
-							<div className="flex items-center justify-center w-12 h-12">
-								<img
-									src="https://cdn.widgetify.ir/system/no-items.png"
-									alt="بدون عادت"
-									className="object-contain w-48 h-auto select-none"
-								/>
-							</div>
-							<p className="font-bold text-center text-content">
-								هیچ عادتی برای نمایش وجود ندارد
-							</p>
-							<p className="text-[.65rem] text-center text-content opacity-75">
-								یک عادت جدید اضافه کن تا شروع کنی
-							</p>
-						</div>
+					) : isEmpty ? (
+						<HabitEmpty />
 					) : (
-						<div className="flex flex-col gap-1">
+						<div
+							className={`flex flex-col gap-1 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+						>
 							{data?.items?.map((habit) => (
 								<HabitItem
 									key={habit.id}

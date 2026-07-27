@@ -13,6 +13,7 @@ import Tooltip from '@/components/toolTip'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import { TodoItem } from './todo.item'
 import { Icon } from '@/src/icons'
+import { TodosEmpty } from './components/todo-empty'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -257,9 +258,7 @@ export function TodosLayout() {
 				</div>
 			</div>
 			<div className="mt-0.5 grow overflow-hidden">
-				<div
-					className={`space-y-1.5 overflow-y-auto scrollbar-none h-full ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
-				>
+				<div className={`space-y-1.5 overflow-y-auto scrollbar-none h-full`}>
 					{isLoading ? (
 						<div className="flex flex-col gap-1">
 							{[...Array(5)].map((_, i) => (
@@ -269,7 +268,9 @@ export function TodosLayout() {
 					) : sortedTodos.length === 0 ? (
 						<TodosEmpty />
 					) : (
-						<div className="flex flex-col gap-0">
+						<div
+							className={`flex flex-col gap-0 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+						>
 							{sortedTodos.map((todo) => (
 								<TodoItem
 									blurMode={blurMode}
@@ -304,30 +305,6 @@ export function TodosLayout() {
 				/>
 			}
 		</>
-	)
-}
-
-function TodosEmpty() {
-	return (
-		<div
-			className={
-				'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-8'
-			}
-		>
-			<div className="flex items-center justify-center w-12 h-12">
-				<img
-					src="https://cdn.widgetify.ir/system/no-items.png"
-					alt="بدون عادت"
-					className="object-contain w-48 h-auto select-none"
-				/>
-			</div>
-			<p className="mt-1 font-bold text-center text-content">
-				هیچ تسکی برای نمایش وجود ندارد
-			</p>
-			<p className="text-center text-[.65rem] text-content opacity-75">
-				یک تسک جدید اضافه کنید یا فیلترها را تغییر دهید
-			</p>
-		</div>
 	)
 }
 

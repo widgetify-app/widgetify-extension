@@ -69,9 +69,9 @@ export function BrowserBookmark() {
 						className="flex items-center cursor-pointer group "
 						onClick={() => onClickToExplorer()}
 					>
-						<div className="relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
+						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
 							<Icon
-								name="outlineGlobe"
+								name="globe"
 								size={14}
 								className="text-base-content/60"
 							/>
@@ -89,7 +89,7 @@ export function BrowserBookmark() {
 						onClick={handleTogglePopover}
 					>
 						<div
-							className={`relative flex items-center justify-center w-fit px-1 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
+							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
 								isOpen
 									? 'bg-primary text-white shadow-lg'
 									: 'bg-base-300  text-base-content/60'
