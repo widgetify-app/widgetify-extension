@@ -18,10 +18,24 @@ export default defineConfig({
 					},
 				},
 				rollupOptions: {
+					// WXT builds with rolldown, whose treeshake options are a
+					// subset of Rollup's: annotations, commonjs,
+					// manualPureFunctions, moduleSideEffects,
+					// propertyReadSideEffects, unknownGlobalSideEffects.
+					// `tryCatchDeoptimization` is Rollup-only and was rejected
+					// with "Expected never but received ..." on every build.
+					//
+					// `moduleSideEffects: false` is deliberately NOT set. It
+					// asserts that no module anywhere has side effects, which
+					// overrides the conservative default for the many deps that
+					// declare no `sideEffects` field of their own — including
+					// @wxt-dev/webextension-polyfill (a polyfill is *entirely*
+					// side effect), the workbox packages that register routes,
+					// and react-ga4. Measured on this project it saved 205 bytes
+					// of JS+CSS out of ~2.46 MB (0.008%), which does not come
+					// close to justifying that class of silent breakage.
 					treeshake: {
-						moduleSideEffects: false,
 						propertyReadSideEffects: false,
-						tryCatchDeoptimization: false,
 					},
 				},
 				chunkSizeWarningLimit: 1000,
@@ -37,6 +51,7 @@ export default defineConfig({
 		'@/components': './src/components',
 		'@/context': './src/context',
 		'@/hooks': './src/hooks',
+		'@/styles': './src/styles',
 		'@/utils': './src/utils',
 		'@/layouts': './src/layouts',
 		'@/pages': './src/pages',
