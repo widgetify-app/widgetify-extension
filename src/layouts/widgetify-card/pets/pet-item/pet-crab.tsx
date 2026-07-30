@@ -1,8 +1,8 @@
 import crabFood from '@/assets/animals/crab/crab-food.png'
-import idle from '@/assets/animals/crab/red_idle_8fps.gif'
-import running from '@/assets/animals/crab/red_run_8fps.gif'
-import swipe from '@/assets/animals/crab/red_swipe_8fps.gif'
-import walking from '@/assets/animals/crab/red_walk_fast_8fps.gif'
+import idle from '@/assets/animals/crab/red_idle_8fps.webp'
+import running from '@/assets/animals/crab/red_run_8fps.webp'
+import swipe from '@/assets/animals/crab/red_swipe_8fps.webp'
+import walking from '@/assets/animals/crab/red_walk_fast_8fps.webp'
 
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import { PetFood } from '../core/pet-food'

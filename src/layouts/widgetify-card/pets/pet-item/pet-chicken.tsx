@@ -1,8 +1,8 @@
 import chickenFood from '@/assets/animals/chicken/chicken-food.png'
-import idle from '@/assets/animals/chicken/white_idle_8fps.gif'
-import running from '@/assets/animals/chicken/white_run_8fps.gif'
-import swipe from '@/assets/animals/chicken/white_swipe_8fps.gif'
-import walking from '@/assets/animals/chicken/white_walk_fast_8fps.gif'
+import idle from '@/assets/animals/chicken/white_idle_8fps.webp'
+import running from '@/assets/animals/chicken/white_run_8fps.webp'
+import swipe from '@/assets/animals/chicken/white_swipe_8fps.webp'
+import walking from '@/assets/animals/chicken/white_walk_fast_8fps.webp'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import { PetFood } from '../core/pet-food'
 import {

@@ -11,6 +11,13 @@ import {
 } from './pet-types'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
+/** How fast a pet still airborne (e.g. mid-climb) settles back to the ground. */
+const FALL_SPEED = 1.5
+
+function randomDuration({ min, max }: { min: number; max: number }): number {
+	return Math.floor(Math.random() * (max - min) + min)
+}
+
 export interface BasePetProps {
 	name: string
 	animations: PetAnimations
@@ -157,6 +164,9 @@ export function useBasePetLogic({
 	const [action, setAction] = useState<keyof PetAnimations>('idle')
 	const [actionTimer, setActionTimer] = useState(0)
 	const [behaviorState, setBehaviorState] = useState<PetBehavior>(PetBehavior.RESTING)
+	// Whether a climb is heading back down. Keeps the pet in the CLIMBING behavior
+	// for the whole up-and-down trip so it never idles mid-air — see climbWall.
+	const [isDescending, setIsDescending] = useState(false)
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
 	const [showName, setShowName] = useState(false)
@@ -166,11 +176,17 @@ export function useBasePetLogic({
 
 	const getMovementBounds = useCallback(() => {
 		const container = containerRef.current
+		const visibleHeight = container?.offsetHeight ?? dimensions.maxHeight
+
 		return {
 			minX: 10,
 			maxX: (container?.offsetWidth || 300) - dimensions.size - 10,
 			minY: 0,
-			maxY: dimensions.maxHeight,
+			// The container clips overflow (see BasePetContainer's h-16/h-8), which is
+			// shorter than several pets' configured maxHeight (80-100px). Climbing past
+			// it pushed pets above the visible area, so they'd reappear "floating" back
+			// down into frame — clamp to whichever is actually smaller.
+			maxY: Math.max(0, Math.min(dimensions.maxHeight, visibleHeight - dimensions.size)),
 		}
 	}, [dimensions.size, dimensions.maxHeight])
 
@@ -226,15 +242,22 @@ export function useBasePetLogic({
 				setCollectibles((prev) => [...prev, newCollectible])
 				setCollectibleIdCounter((prev) => prev + 1)
 
-				if (action === 'sit' || action === 'idle') {
-					updateAction('stand')
-					setTimeout(() => {
+				// Only force an immediate chase reaction while grounded. If the pet is
+				// mid-climb, forcing 'run' here would move it horizontally while still
+				// airborne (the same "flying" bug climbWall guards against) — let it
+				// land first; updateBehavior picks up the waiting collectible on its own
+				// the moment position.y reaches 0.
+				if (position.y === 0) {
+					if (action === 'sit' || action === 'idle') {
+						updateAction('stand')
+						setTimeout(() => {
+							updateAction('run')
+							updateBehaviorState(PetBehavior.CHASING)
+						}, 300)
+					} else {
 						updateAction('run')
 						updateBehaviorState(PetBehavior.CHASING)
-					}, 300)
-				} else {
-					updateAction('run')
-					updateBehaviorState(PetBehavior.CHASING)
+					}
 				}
 			}
 		},
@@ -242,6 +265,7 @@ export function useBasePetLogic({
 			collectibleIdCounter,
 			assets.collectibleSize,
 			action,
+			position.y,
 			getMovementBounds,
 			updateAction,
 			updateBehaviorState,
@@ -347,64 +371,40 @@ export function useBasePetLogic({
 	}, [collectibles])
 
 	const roamOrRest = useCallback(() => {
+		// Always land before switching to anything else — never leave the pet
+		// paused mid-climb. climbWall handles the actual descent and transitions
+		// to RESTING itself once position.y reaches 0.
+		if (behaviorState === PetBehavior.CLIMBING) {
+			setIsDescending(true)
+			return
+		}
+
 		if (isHungry) {
 			updateBehaviorState(PetBehavior.RESTING)
 			updateAction('sit')
-			setActionTimer(
-				Math.floor(
-					Math.random() * (durations.rest.max - durations.rest.min) +
-						durations.rest.min
-				)
-			)
-
+			setActionTimer(randomDuration(durations.rest))
 			return
 		}
+
 		const random = Math.random()
 		if (behaviorState === PetBehavior.ROAMING) {
 			if (isNearWall() && random > 0.7 && animations.climb) {
+				setIsDescending(false)
 				updateBehaviorState(PetBehavior.CLIMBING)
 				updateAction('climb')
-				setActionTimer(
-					Math.floor(
-						Math.random() * (durations.climb.max - durations.climb.min) +
-							durations.climb.min
-					)
-				)
+				setActionTimer(randomDuration(durations.climb))
 			} else {
 				updateBehaviorState(PetBehavior.RESTING)
 				const shouldSit = Math.random() > 0.5 && animations.sit
 				updateAction(shouldSit ? 'sit' : 'idle')
-				setActionTimer(
-					Math.floor(
-						Math.random() * (durations.rest.max - durations.rest.min) +
-							durations.rest.min
-					)
-				)
+				setActionTimer(randomDuration(durations.rest))
 			}
-		} else if (behaviorState === PetBehavior.CLIMBING) {
-			updateBehaviorState(PetBehavior.RESTING)
-			updateAction(animations.stand ? 'stand' : 'idle')
-			setActionTimer(
-				Math.floor(
-					Math.random() * (durations.rest.max - durations.rest.min) +
-						durations.rest.min
-				)
-			)
 		} else {
 			// Includes PetBehavior.RESTING or initial state
 			updateBehaviorState(PetBehavior.ROAMING)
 			const shouldRun = Math.random() > 0.6
 			updateAction(shouldRun ? 'run' : 'walk')
-			setActionTimer(
-				Math.floor(
-					Math.random() *
-						(shouldRun
-							? durations.run.max - durations.run.min + durations.run.min
-							: durations.walk.max -
-								durations.walk.min +
-								durations.walk.min)
-				)
-			)
+			setActionTimer(randomDuration(shouldRun ? durations.run : durations.walk))
 		}
 
 		if (onLevelDownHungryState) {
@@ -412,10 +412,10 @@ export function useBasePetLogic({
 		}
 	}, [
 		behaviorState,
+		isHungry,
 		isNearWall,
 		animations.climb,
 		animations.sit,
-		animations.stand,
 		durations,
 		updateAction,
 		updateBehaviorState,
@@ -424,7 +424,11 @@ export function useBasePetLogic({
 	const updateBehavior = useCallback(() => {
 		const nearestCollectible = findNearestCollectible(collectibles)
 
-		if (nearestCollectible) {
+		// Only chase while grounded. Reacting to a collectible mid-climb used to
+		// switch straight to 'run' and move horizontally while the pet was still
+		// airborne — i.e. it would fly toward the treat. Once landed, this same
+		// check runs again next tick and starts the chase normally.
+		if (nearestCollectible && position.y === 0) {
 			if (behaviorState !== PetBehavior.CHASING) {
 				updateBehaviorState(PetBehavior.CHASING)
 				updateAction('run')
@@ -455,6 +459,7 @@ export function useBasePetLogic({
 		behaviorState,
 		isMovingToTarget,
 		actionTimer,
+		position.y,
 		updateAction,
 		updateBehaviorState,
 		roamOrRest,
@@ -476,7 +481,10 @@ export function useBasePetLogic({
 			if (newDirection !== currentDirection) {
 				setDirection(newDirection)
 			}
-			const newY = currentPosition.y > 0 ? Math.max(0, currentPosition.y - 0.5) : 0
+			const newY =
+				currentPosition.y > 0
+					? Math.max(0, currentPosition.y - FALL_SPEED)
+					: 0
 			return { x: newX, y: newY }
 		},
 		[getMovementBounds, getCurrentSpeed]
@@ -538,22 +546,42 @@ export function useBasePetLogic({
 	const climbWall = useCallback(
 		(currentPosition: Position, currentDirection: number) => {
 			const bounds = getMovementBounds()
-			let newY = currentPosition.y + dimensions.climbSpeed
-			if (newY >= bounds.maxY) {
-				newY = bounds.maxY
-				// Optionally, transition to another state once max height is reached
-				// updateBehaviorState(PetBehavior.RESTING);
-				// updateAction('idle');
-			}
 			const wallX = currentDirection === 1 ? bounds.maxX : bounds.minX
+
+			if (isDescending) {
+				const newY = currentPosition.y - dimensions.climbSpeed
+				if (newY <= 0) {
+					// Landed. Hand off to the normal rest cycle here, at y=0, instead of
+					// switching to an idle/stand pose earlier and leaving gravity to
+					// trickle the position down separately — that gap is what made pets
+					// (most visibly the dog) look like they were floating back to earth.
+					setIsDescending(false)
+					updateBehaviorState(PetBehavior.RESTING)
+					updateAction(animations.stand ? 'stand' : 'idle')
+					setActionTimer(randomDuration(durations.rest))
+					return { x: wallX, y: 0 }
+				}
+				return { x: wallX, y: newY }
+			}
+
+			const newY = Math.min(currentPosition.y + dimensions.climbSpeed, bounds.maxY)
 			return { x: wallX, y: newY }
 		},
-		[dimensions.climbSpeed, dimensions.maxHeight, getMovementBounds]
+		[
+			isDescending,
+			dimensions.climbSpeed,
+			durations.rest,
+			animations.stand,
+			getMovementBounds,
+			updateBehaviorState,
+			updateAction,
+		]
 	)
 
+	/** Safety net for a pet ever left with y > 0 outside an active climb. */
 	const applyGravity = useCallback((currentPosition: Position) => {
 		if (currentPosition.y > 0) {
-			return { ...currentPosition, y: Math.max(0, currentPosition.y - 1.5) }
+			return { ...currentPosition, y: Math.max(0, currentPosition.y - FALL_SPEED) }
 		}
 		return currentPosition
 	}, [])
@@ -594,10 +622,30 @@ export function useBasePetLogic({
 		applyGravity,
 	])
 
+	// physicsUpdate gets a new identity on almost every tick (it transitively
+	// depends on position/behaviorState via updateBehavior/movePet/etc.), so an
+	// effect keyed on it would tear down and recreate the timer ~60 times a
+	// second. Keeping the latest version in a ref lets the loop itself mount
+	// once. requestAnimationFrame also pauses automatically while the tab is
+	// backgrounded, unlike setInterval.
+	const physicsUpdateRef = useRef(physicsUpdate)
+	physicsUpdateRef.current = physicsUpdate
+
 	useEffect(() => {
-		const animationLoop = setInterval(physicsUpdate, 16) // Approx 60 FPS
-		return () => clearInterval(animationLoop)
-	}, [physicsUpdate])
+		let frameId: number
+		let lastTick = performance.now()
+
+		const loop = (now: number) => {
+			if (now - lastTick >= 16) {
+				lastTick = now
+				physicsUpdateRef.current()
+			}
+			frameId = requestAnimationFrame(loop)
+		}
+
+		frameId = requestAnimationFrame(loop)
+		return () => cancelAnimationFrame(frameId)
+	}, [])
 
 	useEffect(() => {
 		const container = containerRef.current
