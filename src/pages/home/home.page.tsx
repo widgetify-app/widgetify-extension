@@ -151,7 +151,7 @@ export function HomePage() {
 				options={{
 					showProgress: true,
 					skipBeacon: true,
-					primaryColor: '#3b82f6',
+					primaryColor: '#536dfe',
 					dismissKeyAction: 'close',
 					buttons: ['skip', 'primary', 'back'],
 				}}

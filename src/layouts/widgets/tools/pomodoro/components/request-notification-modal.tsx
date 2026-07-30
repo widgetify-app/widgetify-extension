@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { showToast } from '@/common/toast'
 
 interface Prop {

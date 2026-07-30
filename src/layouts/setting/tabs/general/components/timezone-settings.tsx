@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/hooks/timezone/get-timezones.hook'
 
@@ -22,10 +22,10 @@ export function TimezoneSettings() {
 					<div className="flex items-center gap-2">
 						{isLoading ? (
 							<div className="flex justify-center w-full p-3">
-								<div className="w-6 h-6 border-2 border-blue-200 rounded-full border-t-blue-500 animate-spin"></div>
+								<div className="w-6 h-6 border-2 border-primary rounded-full border-t-primary animate-spin"></div>
 							</div>
 						) : error ? (
-							<div className="w-full p-3 text-center text-red-500">
+							<div className="w-full p-3 text-center text-error">
 								خطا در دریافت اطلاعات مناطق زمانی
 							</div>
 						) : (
@@ -33,7 +33,7 @@ export function TimezoneSettings() {
 								value={timezone.value}
 								onChange={handleSelectTimezone}
 								className={
-									'w-full rounded-lg appearance-none border-content border select focus:outline-none focus:ring-2 focus:ring-blue-500'
+									'w-full rounded-lg appearance-none border-content border select focus:outline-none focus:ring-2 focus:ring-primary'
 								}
 							>
 								{!timezone && (

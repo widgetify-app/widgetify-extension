@@ -76,7 +76,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 					<MediaPreview customWallpaper={customWallpaper} />
 					<div className="absolute inset-0 bg-linear-to-r from-transparent to-black/30"></div>
 
-					<div className="absolute top-1 right-1 px-1.5 py-0.5 text-[10px] font-medium text-white rounded-sm backdrop-blur-md bg-blue-500/80">
+					<div className="absolute top-1 right-1 px-1.5 py-0.5 text-[10px] font-medium text-white rounded-sm backdrop-blur-md bg-primary/80">
 						{customWallpaper.type === 'IMAGE' ? 'تصویر' : 'ویدیو'}
 					</div>
 				</div>

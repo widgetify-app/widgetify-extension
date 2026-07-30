@@ -2,7 +2,7 @@ import { Motion as motion } from '@/common/motion'
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { Button } from '../button/button'
+import { Button } from '@/components/ui'
 
 interface RequireAuthProps {
 	children: ReactNode
@@ -49,8 +49,8 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						<Button
 							onClick={handleAuthClick}
 							size="sm"
-							isPrimary={true}
-							className="btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out"
+							variant="primary"
+							className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
 						>
 							ورود به حساب
 						</Button>
@@ -76,8 +76,8 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				<Button
 					onClick={handleAuthClick}
 					size="sm"
-					isPrimary={true}
-					className="btn mt-2 !w-fit px-6 border-none shadow-none text-white rounded-3xl transition-colors duration-300 ease-in-out"
+					variant="primary"
+					className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
 				>
 					ورود به حساب
 				</Button>

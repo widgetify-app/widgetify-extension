@@ -1,7 +1,7 @@
 import { Motion as motion } from "@/common/motion";
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { SelectBox } from '@/components/selectbox/selectbox'
+import { SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/get-currency-by-code.hook'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'

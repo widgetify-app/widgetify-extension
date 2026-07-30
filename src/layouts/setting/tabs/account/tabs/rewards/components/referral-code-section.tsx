@@ -1,5 +1,5 @@
 import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { showToast } from '@/common/toast'
 
 interface ReferralCodeSectionProps {

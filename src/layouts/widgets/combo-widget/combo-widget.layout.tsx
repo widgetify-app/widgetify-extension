@@ -7,7 +7,7 @@ import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigi-arz/wigi_arz.layout'
-import { TabNavigation } from '@/components/tab-navigation'
+import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 export type ComboTabType = 'news' | 'currency'

@@ -87,14 +87,14 @@ export const CurrencyBox = ({
 
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
-			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
-			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
+			? `${priceChange > 0 ? 'text-error' : 'text-success'}`
+			: `${priceChange > 0 ? 'text-success' : 'text-error'}`
 
 	return (
 		<>
 			<div
 				className={`flex items-center justify-between gap-2 py-2 rounded-xl cursor-pointer 
-				bg-base-300 opacity-100 hover:!bg-gray-500/10
+				bg-base-300 opacity-100 hover:!bg-base-content/10
 				transition-all duration-200 ease-in-out
 				transform`}
 				onClick={() => toggleCurrencyModal()}

@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/button/button'
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 import { SelectFriendLayout } from '@/layouts/friends/components/select-friend.layout'
 import type { Friend } from '@/services/hooks/friends/friend-service.hook'
 import { Icon } from '@/src/icons'

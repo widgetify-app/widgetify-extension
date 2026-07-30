@@ -1,4 +1,4 @@
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 import { Button } from '@/components/button/button'
 import { TodoPriority } from '@/services/hooks/todo/todo.interface'
 import { Icon } from '@/src/icons'

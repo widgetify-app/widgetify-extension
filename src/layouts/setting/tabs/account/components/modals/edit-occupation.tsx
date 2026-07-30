@@ -1,9 +1,9 @@
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useState } from 'react'
 import { OccupationSelector } from '../occupation-selector'
 import { useGetOccupations } from '@/services/hooks/profile/get-profile-meta.hook'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import { FooterButtons } from './footer-buttons'
 

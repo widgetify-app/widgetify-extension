@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/avatar.component'
+import { AvatarComponent } from '@/components/ui'
 import { type Friend, useGetFriends } from '@/services/hooks/friends/friend-service.hook'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { FriendEmptyList } from './empty-list.friend'

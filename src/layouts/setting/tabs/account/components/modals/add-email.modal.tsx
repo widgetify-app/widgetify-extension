@@ -1,5 +1,5 @@
-import Modal from '@/components/modal'
-import { TextInput } from '@/components/text-input'
+import { Modal } from '@/components/ui'
+import { TextInput } from '@/components/ui'
 import { isEmpty, isLessThan } from '@/common/utils/validators'
 import { Button } from '@/components/button/button'
 import {

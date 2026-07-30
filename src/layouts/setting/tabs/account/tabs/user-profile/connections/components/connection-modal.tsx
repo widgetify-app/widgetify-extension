@@ -1,5 +1,5 @@
 import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import type { Platform } from './platform-config.js'
 
 interface ConnectionModalProps {

@@ -1,5 +1,5 @@
 import { ConfigKey } from '@/common/constant/config.key'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import type { Task } from '@/services/hooks/user/referrals-service.hook'
 import { Icon } from '@/src/icons'
 

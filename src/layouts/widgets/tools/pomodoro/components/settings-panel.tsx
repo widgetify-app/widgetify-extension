@@ -1,7 +1,7 @@
 import type React from 'react'
 import { Button } from '@/components/button/button'
-import CustomCheckbox from '@/components/checkbox'
-import Modal from '@/components/modal'
+import { Checkbox } from '@/components/ui'
+import { Modal } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import type { PomodoroSettings } from '../types'
 
@@ -101,7 +101,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						max={30}
 					/>
 					<div className="flex items-start gap-3">
-						<CustomCheckbox
+						<Checkbox
 							checked={settings.alarmEnabled}
 							onChange={() =>
 								handleSettingChange(

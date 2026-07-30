@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { Button } from '@/components/button/button'
 import {
 	useGetOccupations,
@@ -7,8 +7,8 @@ import {
 } from '@/services/hooks/profile/get-profile-meta.hook'
 import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
-import { Chip } from '@/components/chip.component'
-import { ItemSelector } from './item-selector'
+import { Chip } from '@/components/ui'
+import { ItemSelector } from '@/components/ui'
 import { useSetupWizard } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'

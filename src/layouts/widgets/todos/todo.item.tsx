@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useState } from 'react'
-import CustomCheckbox from '@/components/checkbox'
+import { Checkbox } from '@/components/ui'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
-import { ConfirmationModal } from '@/components/modal/confirmation-modal'
+import { ConfirmationModal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { showToast } from '@/common/toast'
 import { useRemoveTodo } from '@/services/hooks/todo/remove-todo.hook'
@@ -10,11 +10,11 @@ import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { validate } from 'uuid'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 import { parseTodoDate } from './tools/parse-date'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { playAlarm } from '@/common/play-alarm'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { TodoFriends } from './components/friends.todo'
 import { Icon } from '@/src/icons'
 
@@ -118,7 +118,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 		>
 			<div className="flex items-center gap-1.5 px-2 py-1">
 				<div className="flex items-center gap-1 shrink-0">
-					<CustomCheckbox
+					<Checkbox
 						checked={isDone}
 						disabled={isUpdating}
 						className={`h-4! w-4! border! transition-transform active:scale-90 ${getBorderStyle(currentTodo.priority)}`}
@@ -159,7 +159,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							{isOwner && (
 								<button
 									onClick={handleEdit}
-									className="p-1 rounded-lg cursor-pointer text-blue-500/60 hover:bg-blue-500/10 hover:text-blue-500"
+									className="p-1 rounded-lg cursor-pointer text-primary/60 hover:bg-primary/10 hover:text-primary"
 								>
 									<Icon name="edit" size={13} />
 								</button>
@@ -254,7 +254,7 @@ function NoteLinkRenderer({ note }: { note: string }) {
 				href={urls[0]}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="block text-blue-500 underline break-all"
+				className="block text-primary underline break-all"
 			>
 				{urls[0]}
 			</a>

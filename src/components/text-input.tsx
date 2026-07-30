@@ -39,6 +39,13 @@ const sizes: Record<TextInputSize, string> = {
 	[TextInputSize.XL]: 'input-xl',
 }
 
+/**
+ * @deprecated Use `import { TextInput } from '@/components/ui'`.
+ *
+ * The replacement is source-compatible (no call site passes `size`, and the
+ * unexported `TextInputSize` enum is now a string union), so migration is a
+ * pure import swap — done in batches so each screen gets looked at.
+ */
 export const TextInput = memo(function TextInput({
 	onChange,
 	value,

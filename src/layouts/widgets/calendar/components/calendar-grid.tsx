@@ -5,7 +5,7 @@ import type React from 'react'
 import { useState } from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
-import { ClickableTooltip } from '@/components/clickable-tooltip'
+import { ClickableTooltip } from '@/components/ui'
 import { CalendarDayDetails } from './day/tool-tip-content'
 import { useGetCalendarData } from '@/services/hooks/calendar/get-calendar-data.hook'
 

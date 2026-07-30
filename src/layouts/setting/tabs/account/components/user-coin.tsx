@@ -1,5 +1,5 @@
 import { ConfigKey } from '@/common/constant/config.key'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 
 interface Prop {
 	coins: number

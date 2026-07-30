@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useGetSearchboxData } from '@/services/hooks/trends/get-trends'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { BookmarkPopover } from './bookmark-popover'
 import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
-import { NewBadge } from '@/components/badges/new.badge'
+import { NewBadge } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 export function BrowserBookmark() {

@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchase-market-item.hook'
 import { translateError } from '@/common/utils/translate-error'

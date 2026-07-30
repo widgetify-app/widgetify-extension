@@ -1,5 +1,5 @@
-import { AvatarComponent } from '@/components/avatar.component'
-import { Dropdown } from '@/components/dropdown'
+import { AvatarComponent } from '@/components/ui'
+import { Dropdown } from '@/components/ui'
 import {
 	type AttachmentReaction,
 	type ReactionKey,

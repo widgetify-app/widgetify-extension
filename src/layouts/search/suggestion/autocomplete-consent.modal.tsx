@@ -1,6 +1,6 @@
 import { autoFormatErrorToast } from '@/common/toast'
 import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { safeAwait } from '@/services/api'
 import { useUpdateSearchAutocomplete } from '@/services/hooks/extension/update-setting.hook'
 

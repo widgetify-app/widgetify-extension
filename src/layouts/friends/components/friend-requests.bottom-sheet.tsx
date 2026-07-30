@@ -7,7 +7,7 @@ import { RemoveFriendButton } from './remove-button'
 import { FriendsList } from './friends-list'
 import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface Prop {

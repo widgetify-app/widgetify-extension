@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from './button/button'
-import Modal from './modal'
+import { Modal } from '@/components/ui'
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGetOrCreateReferralCode } from '@/services/hooks/user/referrals-service.hook'
 import {
@@ -12,7 +12,7 @@ import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/referral-code-section'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { ConfirmationModal } from '@/components/modal/confirmation-modal'
+import { ConfirmationModal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 export const UserProfile = () => {
@@ -60,7 +60,7 @@ export const UserProfile = () => {
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-full">
-				<div className="w-10 h-10 border-4 rounded-full border-blue-500/20 border-t-blue-500 animate-spin"></div>
+				<div className="w-10 h-10 border-4 rounded-full border-primary/20 border-t-primary animate-spin"></div>
 			</div>
 		)
 	}

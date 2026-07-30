@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
-import { ClickableTooltip } from '@/components/clickable-tooltip'
+import { ClickableTooltip } from '@/components/ui'
 import type { ProfileMetaItem } from '@/services/hooks/profile/get-profile-meta.hook'
 import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
-import { Chip } from '@/components/chip.component'
+import { Chip } from '@/components/ui'
 
 interface InterestsSelectorProps {
 	interests: ProfileMetaItem[]

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { Button } from '@/components/button/button'
 import { getMainClient } from '@/services/api'
 import { Icon } from '@/src/icons'
@@ -90,7 +90,7 @@ export function UpdateChecker() {
 	return (
 		<>
 			{showNotification && (
-				<div className="fixed right-0 top-1/3 -translate-y-1/2 z-[9999] group">
+				<div className="fixed right-0 top-1/3 -translate-y-1/2 z-popover group">
 					<div
 						onClick={handleOpenModal}
 						className="absolute right-0 flex items-center justify-center gap-2 px-1 py-6 transition-all duration-300 shadow-2xl cursor-pointer bg-gradient-to-br from-primary to-primary/90 rounded-l-2xl group-hover:opacity-0"

@@ -200,7 +200,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								}`}
 							>
 								<div
-									className={`w-1.5 h-1.5 ml-0.5 -mr-0.5 rounded-full shrink-0 ${event.isHoliday ? 'bg-red-400 animate-pulse ring-2 ring-error/20' : 'bg-primary/80 ring-2 ring-primary/20'} `}
+									className={`w-1.5 h-1.5 ml-0.5 -mr-0.5 rounded-full shrink-0 ${event.isHoliday ? 'bg-error animate-pulse ring-2 ring-error/20' : 'bg-primary/80 ring-2 ring-primary/20'} `}
 								/>
 								<div className="flex-1 min-w-0 text-[11px]">
 									{event.title}

@@ -1,9 +1,9 @@
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import JalaliDatePicker from '../profile-date-picker'
 import moment from 'jalali-moment'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
 
 interface Prop {

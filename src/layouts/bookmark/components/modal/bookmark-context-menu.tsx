@@ -1,4 +1,4 @@
-import { ContextMenu } from '@/components/context-menu.component'
+import { ContextMenu } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface BookmarkContextMenuProps {

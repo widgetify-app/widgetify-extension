@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/avatar.component'
+import { AvatarComponent } from '@/components/ui'
 import { useGetFriends, type Friend } from '@/services/hooks/friends/friend-service.hook'
 import { FriendEmptyList } from './empty-list.friend'
 

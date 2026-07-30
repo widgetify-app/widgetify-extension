@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import Tooltip from '../tool-tip'
+import { Tooltip } from '@/components/ui'
 import { Icon } from '@/src/icons'
-import { ConfirmationModal } from '../modal/confirmation-modal'
+import { ConfirmationModal } from '@/components/ui'
 import Analytics from '@/analytics'
 
 export function BlurModeButton() {

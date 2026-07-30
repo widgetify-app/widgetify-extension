@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import type { Category } from '@/common/wallpaper.interface'
 import { Icon } from '@/src/icons'
-import { NewBadge } from '@/components/badges/new.badge'
-import { TabNavigation } from '@/components/tab-navigation'
+import { NewBadge, TabNavigation } from '@/components/ui'
 
 type FilterType = 'all' | 'image' | 'video'
 type FilterAccess = 'all' | 'free' | 'coin'

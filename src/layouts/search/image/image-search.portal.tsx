@@ -6,7 +6,7 @@ import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
-import { Portal } from '@/components/portal/portal'
+import { Portal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface ImageSearchPortalProps {

@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import {
 	MAX_VISIBLE_WIDGETS,
@@ -7,7 +7,7 @@ import {
 	type WidgetKeys,
 	widgetItems,
 } from '@/context/widget-visibility.context'
-import { ItemSelector } from '../../../components/item-selector'
+import { ItemSelector } from '@/components/ui'
 import { WidgetSettingWrapper } from '../widget-settings-wrapper'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
@@ -66,7 +66,7 @@ function WidgetItemComponent({
 
 	let extraClasses = ''
 	if (isDisabled) {
-		extraClasses += ' border-red-500/50 bg-red-500/10'
+		extraClasses += ' border-error/50 bg-error/10'
 	}
 	if (isSoon) {
 		extraClasses += 'border border-warning/50'

@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import {
 	type BookmarkSuggestion,
 	useGetSuggestedBookmarks,

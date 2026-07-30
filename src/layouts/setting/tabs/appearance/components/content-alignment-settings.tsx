@@ -1,5 +1,5 @@
-import { ItemSelector } from '@/components/item-selector'
-import { SectionPanel } from '@/components/section-panel'
+import { ItemSelector } from '@/components/ui'
+import { SectionPanel } from '@/components/ui'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 export function ContentAlignmentSettings() {

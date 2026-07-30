@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
-import PopoverColorPicker from '@/components/popover-color-picker'
+import { Modal } from '@/components/ui'
+import { ColorPicker } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
@@ -100,7 +100,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-blue-500 border-blue-500/30 animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-primary/30 animate-spin"></div>
 				</div>
 			)
 		}
@@ -114,8 +114,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-blue-500/25 border-2 border-blue-500 transform scale-110'
-									: 'border border-transparent hover:bg-gray-500/10 active:bg-gray-500/20'
+									? 'bg-primary/25 border-2 border-primary transform scale-110'
+									: 'border border-transparent hover:bg-base-content/10 active:bg-base-content/20'
 							}`}
 					>
 						<img
@@ -173,7 +173,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							debounce={true}
 						/>
 						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-							<PopoverColorPicker
+							<ColorPicker
 								color={background || ''}
 								onChange={setBackground}
 							/>
@@ -203,7 +203,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							debounce={true}
 						/>
 						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-							<PopoverColorPicker
+							<ColorPicker
 								color={textColor || ''}
 								onChange={setTextColor}
 							/>
@@ -266,7 +266,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
 								className={
-									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-red-600 hover:bg-red-50'
+									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-error hover:bg-error/10'
 								}
 							>
 								حذف

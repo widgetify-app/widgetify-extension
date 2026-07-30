@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { MarketContainer } from '@/layouts/market/market-container'
 import { Icon } from '@/src/icons'
 

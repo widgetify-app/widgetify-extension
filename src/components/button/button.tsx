@@ -17,6 +17,15 @@ interface ButtonProps {
 	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 	ref?: any
 }
+/**
+ * @deprecated Use `import { Button } from '@/components/ui'`.
+ *
+ * Not a re-export shim on purpose: the new Button drops daisyUI's `btn` base,
+ * which would make the `btn-*` modifiers that 16+ call sites pass in
+ * `className` inert (in daisyUI 5 they only set `--btn-color`, which nothing
+ * reads without `.btn`). Those buttons would silently render grey instead of
+ * red/transparent/full-width. Migrate call sites in reviewed batches instead.
+ */
 export function Button(prop: ButtonProps) {
 	const sizes: Record<string, string> = {
 		xs: 'btn-xs',
@@ -31,7 +40,7 @@ export function Button(prop: ButtonProps) {
 			type={prop.type || 'button'}
 			onClick={prop.onClick}
 			disabled={prop.disabled}
-			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
+			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
 			style={prop.style}
 			ref={prop.ref}
 		>

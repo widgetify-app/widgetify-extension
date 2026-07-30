@@ -4,7 +4,7 @@ import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
 import { useAuth } from '@/context/auth.context'
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 
 export const SettingsDropdown = () => {
 	const { isAuthenticated } = useAuth()

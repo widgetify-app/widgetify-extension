@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'

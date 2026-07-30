@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/avatar.component'
+import { AvatarComponent } from '@/components/ui'
 import { UserCardPortal } from '@/components/user/user-card-portal'
 import type { TopUser } from '@/services/hooks/pomodoro/get-top-users.hook'
 import { Icon } from '@/src/icons'

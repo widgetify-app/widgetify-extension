@@ -1,4 +1,4 @@
-import { NewBadge } from '@/components/badges/new.badge'
+import { NewBadge } from '@/components/ui'
 import type { CatalogItem } from '../interfaces/catalog-item.interface'
 
 interface SiteProp {

@@ -6,7 +6,7 @@ import { MiniAppLoadingState } from './states/mini-app-loading'
 import { MiniAppRunnerHeader } from './components/header/runner.header'
 import { MiniAppIframe } from './components/runner/mini-app-iframe.runner'
 import { WebAppAuthGate } from './states/mini-app.auth'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 const LOAD_TIMEOUT = 8000
 
 interface Prop {

@@ -1,8 +1,8 @@
-import { ToggleSwitch } from '@/components/toggle-switch.component'
+import { ToggleSwitch } from '@/components/ui'
 import { SelectCity } from './components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import Analytics from '@/analytics'
 
 export function GeneralSettingTab() {

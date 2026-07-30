@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
-import Modal from '@/components/modal'
-import { Button } from '../button/button'
+import { Modal } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface AuthRequiredModalProps {
@@ -35,7 +35,7 @@ export function AuthRequiredModal({
 			closeOnBackdropClick={true}
 		>
 			<div className="flex flex-col items-center justify-between w-full text-center h-62">
-				<div className="relative flex items-center justify-center w-16 h-16 mt-8 rounded-full bg-blue-500/10">
+				<div className="relative flex items-center justify-center w-16 h-16 mt-8 rounded-full bg-primary/10">
 					<div
 						className="absolute inset-0 rounded-full bg-primary/5 animate-ping"
 						style={{ animationDuration: '2s' }}
@@ -52,7 +52,7 @@ export function AuthRequiredModal({
 					<Button
 						onClick={triggerAccountTabDisplay}
 						size="md"
-						isPrimary={true}
+						variant="primary"
 						className={`flex-1 border-none rounded-2xl text-xs w-full`}
 					>
 						{loginButtonText}
@@ -60,7 +60,8 @@ export function AuthRequiredModal({
 					<Button
 						onClick={onClose}
 						size="md"
-						className="w-32 border border-content text-content hover:bg-base-300/50 rounded-2xl"
+						variant="outline"
+						className="w-32 rounded-2xl"
 					>
 						{cancelButtonText}
 					</Button>

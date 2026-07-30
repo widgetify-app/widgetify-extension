@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { HoverPlayVideo } from '../tab/gallery/components/hover-play-video'

@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { WidgetContainer } from '../widgets/widget-container'
-import { TabNavigation } from '@/components/tab-navigation'
+import { TabNavigation } from '@/components/ui'
 import React, { useState, Suspense } from 'react'
 import { DateProvider } from '@/context/date.context'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -98,7 +98,7 @@ export function SimpleTools() {
 					{ElementData && (
 						<Suspense
 							fallback={
-								<div className="flex items-center justify-center h-full text-sm text-gray-400">
+								<div className="flex items-center justify-center h-full text-sm text-muted">
 									در حال بارگذاری...
 								</div>
 							}

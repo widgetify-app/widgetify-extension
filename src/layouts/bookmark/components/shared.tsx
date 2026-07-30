@@ -1,4 +1,4 @@
-import { ItemSelector } from '@/components/item-selector'
+import { ItemSelector } from '@/components/ui'
 import type { BookmarkType } from '../types/bookmark.types'
 import { Icon } from '@/src/icons'
 

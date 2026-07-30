@@ -1,5 +1,5 @@
-import { AvatarComponent } from '@/components/avatar.component'
-import Tooltip from '@/components/tool-tip'
+import { AvatarComponent } from '@/components/ui'
+import { Tooltip } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface UserItemProp {

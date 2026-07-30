@@ -12,7 +12,7 @@ import { formatHabitGoal } from '../../utils'
 import { SegmentedProgressRing } from './button.progress-ring'
 import { SimpleProgressRing } from './button.simple-progress-ring'
 import { Icon } from '@/src/icons'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 
 interface HabitItemProps {
 	habit: Habit
@@ -24,7 +24,7 @@ interface HabitItemProps {
 export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
 	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 
-	const color = habit.color || '#3b82f6'
+	const color = habit.color || '#536dfe'
 	const target = habit.target || 1
 	const value = habit.today.value
 	const isSimpleHabit = target === 1

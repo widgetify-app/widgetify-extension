@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useChangeSearchEngine } from '@/services/hooks/extension/update-setting.hook'
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/get-trends'

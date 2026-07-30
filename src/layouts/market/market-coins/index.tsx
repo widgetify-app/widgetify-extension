@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { Pagination } from '@/components/pagination'
+import { Pagination } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { CoinPackageCard } from './components/coin-package-card'
 import { CoinPackagePurchaseModal } from './components/coin-package-purchase-modal'

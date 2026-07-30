@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Button } from '@/components/button/button'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
 

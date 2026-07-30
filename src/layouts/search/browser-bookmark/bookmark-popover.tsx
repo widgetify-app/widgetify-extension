@@ -76,7 +76,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 
 	return createPortal(
 		<div
-			className="bookmark-popover fixed z-[9999] w-72  border border-base-content/10 shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in duration-200 origin-top-left bg-content bg-glass"
+			className="bookmark-popover fixed z-popover w-72  border border-base-content/10 shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in duration-200 origin-top-left bg-content bg-glass"
 			style={{
 				top: coords.top,
 				left: coords.left,

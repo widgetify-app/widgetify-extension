@@ -4,7 +4,7 @@ import { useAuth } from '@/context/auth.context'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityBottomSheet } from './activity-card/manage-activity.bottom-sheet'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 
 export const ActiveFriendsHorizontal = () => {
 	const { user } = useAuth()
