@@ -1,9 +1,8 @@
-import { cleanupOutdatedCaches } from 'workbox-precaching'
 import Analytics from '../src/analytics'
 import { removeFromStorage, setToStorage } from '../src/common/storage'
-import { enforceCacheBudget, purgeStaleCaches } from './utils'
+import { enforceCacheBudget } from './utils'
 import { resolveCacheName } from './cache-names'
-import { initActiveWallpaper, setActiveWallpaper } from './wallpaper-cache'
+import { setActiveWallpaper } from './wallpaper-cache'
 import { type SwEvent, SwEventType } from '@/common/types/sw-events'
 
 export function setupEventListeners() {
@@ -37,9 +36,10 @@ export function setupEventListeners() {
 				offlineSupport: true,
 			})
 
-			await cleanupOutdatedCaches()
-			await purgeStaleCaches()
-			await initActiveWallpaper()
+			// Cache maintenance and wallpaper init deliberately do NOT run here.
+			// An update restarts the service worker, so the startup path in
+			// entrypoints/background.ts already performs both — doing it again
+			// meant the whole sequence ran up to three times per update.
 		}
 	})
 

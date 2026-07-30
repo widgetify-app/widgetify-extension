@@ -14,7 +14,6 @@ function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
 		.sendMessage({
 			type: SwEventType.SetActiveWallpaper,
 			src: wallpaper.src,
-			wallpaperType: wallpaper.type,
 		})
 		.catch(() => {})
 }

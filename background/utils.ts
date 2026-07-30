@@ -1,15 +1,16 @@
-import { CacheNames, EXPECTED_CACHES, LEGACY_CACHES } from './cache-names'
-
-export const BOOKMARK_ORDER_KEY = '__root__'
+import { CACHE_PREFIX, CacheNames, EXPECTED_CACHES, LEGACY_CACHES } from './cache-names'
 
 const MAX_CACHE_BYTES = 100 * 1024 * 1024
+
+/** How many entries to delete before re-checking the storage estimate. */
+const TRIM_BATCH_SIZE = 20
 
 export async function purgeStaleCaches(): Promise<void> {
 	try {
 		const names = await caches.keys()
 		await Promise.all(
 			names.map((name) => {
-				const isOurs = name.startsWith('wgf-')
+				const isOurs = name.startsWith(CACHE_PREFIX)
 				const isStaleVersion = isOurs && !EXPECTED_CACHES.has(name)
 				const isLegacy = LEGACY_CACHES.includes(name)
 				return isStaleVersion || isLegacy
@@ -18,9 +19,31 @@ export async function purgeStaleCaches(): Promise<void> {
 			})
 		)
 	} catch (error) {
-		console.error('Failed to purge stale caches:', error)
+		console.error('[widgetify] failed to purge stale caches:', error)
 	}
 }
+
+/**
+ * Keep total cache usage under budget by evicting from cheapest-to-refetch to
+ * most expensive.
+ *
+ * Order matters. The wallpaper cache is FIRST because it holds a single entry
+ * that can be a multi-megabyte video — by far the most likely thing to blow the
+ * budget on its own. It was previously omitted entirely, which meant an
+ * oversized wallpaper caused every other cache to be wiped (destroying offline
+ * support and forcing refetches) while the actual offender stayed put, often
+ * still over budget afterwards.
+ *
+ * Fonts come last: they are small, immutable, and their absence is immediately
+ * visible as a font swap.
+ */
+const TRIM_ORDER = [
+	CacheNames.wallpaper,
+	CacheNames.cdnCss,
+	CacheNames.cdn,
+	CacheNames.api,
+	CacheNames.fonts,
+] as const
 
 export async function enforceCacheBudget(): Promise<void> {
 	try {
@@ -33,31 +56,23 @@ export async function enforceCacheBudget(): Promise<void> {
 
 		if (!(await overBudget())) return
 
-		const trimOrder = [
-			CacheNames.cdnCss,
-			CacheNames.cdn,
-			CacheNames.api,
-			CacheNames.fonts,
-		]
-		for (const name of trimOrder) {
+		for (const name of TRIM_ORDER) {
 			const cache = await caches.open(name)
 			const keys = await cache.keys()
+			if (keys.length === 0) continue
 
-			let deletions = 0
-			for (const request of keys) {
-				await cache.delete(request)
-				if (++deletions % 10 === 0 && !(await overBudget())) return
+			// Delete in parallel batches rather than one awaited call per entry.
+			// A cache holding hundreds of entries previously meant hundreds of
+			// sequential round-trips, and `storage.estimate()` — which is not
+			// cheap — was being re-run every 10 of them.
+			for (let i = 0; i < keys.length; i += TRIM_BATCH_SIZE) {
+				const batch = keys.slice(i, i + TRIM_BATCH_SIZE)
+				await Promise.all(batch.map((request) => cache.delete(request)))
+
+				if (!(await overBudget())) return
 			}
-
-			if (!(await overBudget())) return
 		}
-	} catch {}
-}
-
-export function normalizeKey(folderId: string | null): string {
-	return folderId == null ? BOOKMARK_ORDER_KEY : folderId
-}
-
-export function denormalizeKey(key: string) {
-	return key === BOOKMARK_ORDER_KEY ? null : key
+	} catch (error) {
+		console.error('[widgetify] failed to enforce cache budget:', error)
+	}
 }

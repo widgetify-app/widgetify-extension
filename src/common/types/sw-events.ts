@@ -23,7 +23,6 @@ export type UpdateCacheEvent = {
 export type SetActiveWallpaperEvent = {
 	type: SwEventType.SetActiveWallpaper
 	src: string
-	wallpaperType: 'IMAGE' | 'VIDEO'
 }
 
 export type SwEvent = DeleteCacheEvent | UpdateCacheEvent | SetActiveWallpaperEvent

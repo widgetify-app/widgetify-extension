@@ -34,11 +34,18 @@ export const LEGACY_CACHES: string[] = [
 	'critical-resources-v1',
 ]
 
+/**
+ * Maps the logical cache name sent in a message to the versioned cache it
+ * actually lives in.
+ *
+ * A Record (rather than a switch with a catch-all default) makes this
+ * exhaustive: adding a member to `CacheName` becomes a TypeScript error here
+ * instead of silently resolving to the API cache.
+ */
+const CACHE_BY_LOGICAL_NAME: Record<CacheName, string> = {
+	[CacheName.API]: CacheNames.api,
+}
+
 export function resolveCacheName(logical: CacheName): string {
-	switch (logical) {
-		case CacheName.API:
-			return CacheNames.api
-		default:
-			return CacheNames.api
-	}
+	return CACHE_BY_LOGICAL_NAME[logical] ?? CacheNames.api
 }
