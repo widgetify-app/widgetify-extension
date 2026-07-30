@@ -1,5 +1,5 @@
 import type { Platform } from './platform-config'
-import GoogleCalendar from '@/assets/google-calendar.png'
+import GoogleCalendar from '@/assets/images/google-calendar.png'
 
 export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 	{
