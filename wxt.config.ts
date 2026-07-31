@@ -36,7 +36,6 @@ export default defineConfig({
 		'@/context': './src/context',
 		'@/hooks': './src/hooks',
 		'@/styles': './src/styles',
-		'@/utils': './src/utils',
 		'@/layouts': './src/layouts',
 		'@/pages': './src/pages',
 		'@/assets': './src/assets',

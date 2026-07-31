@@ -1,13 +1,13 @@
 import Modal from '@/components/modal'
 import { TextInput } from '@/components/text-input'
-import { isEmpty, isLessThan } from '@/utils/validators'
+import { isEmpty, isLessThan } from '@/common/utils/validators'
 import { Button } from '@/components/button/button'
 import {
 	useChangeEmailRequest,
 	useChangeEmailVerify,
 } from '@/services/hooks/user/userService.hook'
 import { safeAwait } from '@/services/api'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import InputTextError from '../../auth-form/components/input-text-error'
 import OtpInput from '../../auth-form/components/otp-input'

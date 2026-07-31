@@ -11,7 +11,7 @@ import { AccountVerificationStatus } from '../../components/account-verification
 import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/ReferralCodeSection'
 import { showToast } from '@/common/toast'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { ConfirmationModal } from '@/components/modal/confirmation-modal'
 import { Icon } from '@/src/icons'
 

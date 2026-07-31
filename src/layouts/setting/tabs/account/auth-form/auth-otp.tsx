@@ -6,9 +6,9 @@ import {
 	useRequestOtp,
 	useVerifyOtp,
 } from '@/services/hooks/auth/authService.hook'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
-import { isEmpty, isEmail, isLessThan } from '@/utils/validators'
+import { isEmpty, isEmail, isLessThan } from '@/common/utils/validators'
 import InputTextError from './components/input-text-error'
 import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'

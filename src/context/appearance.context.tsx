@@ -6,7 +6,7 @@ import { useChangeFont, useChangeUI } from '@/services/hooks/extension/updateSet
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
 export enum UI {

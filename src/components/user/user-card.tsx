@@ -1,6 +1,6 @@
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friendService.hook'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { AvatarComponent } from '../avatar.component'
 import { Button } from '../button/button'
 import type { UserCardUser } from './user-card-portal'

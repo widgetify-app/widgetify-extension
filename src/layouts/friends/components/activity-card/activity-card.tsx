@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react'
 import { GetContentFromReactions, RenderReactionContent } from './activity-reaction'
 import { safeAwait } from '@/services/api'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { playAlarm } from '@/common/playAlarm'
 

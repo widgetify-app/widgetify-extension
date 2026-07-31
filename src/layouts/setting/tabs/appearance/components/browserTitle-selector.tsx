@@ -9,7 +9,7 @@ import { SectionPanel } from '@/components/section-panel'
 import { safeAwait } from '@/services/api'
 import { useChangeBrowserTitle } from '@/services/hooks/extension/updateSetting.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
 

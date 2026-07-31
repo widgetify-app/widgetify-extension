@@ -22,7 +22,7 @@ import {
 	HabitUnit,
 } from '@/services/hooks/habit/habit.interface'
 import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import Tooltip from '@/components/toolTip'
 import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
 import { Motion as motion, Presence } from '@/common/motion'

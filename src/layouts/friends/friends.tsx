@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friendService.hook'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-List'

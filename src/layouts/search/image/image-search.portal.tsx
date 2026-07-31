@@ -5,7 +5,7 @@ import { TextInput } from '@/components/text-input'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { Portal } from '@/components/portal/Portal'
 import { Icon } from '@/src/icons'
 

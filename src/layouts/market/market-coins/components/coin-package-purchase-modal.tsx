@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import Modal from '@/components/modal'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { ConfigKey } from '@/common/constant/config.key'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'

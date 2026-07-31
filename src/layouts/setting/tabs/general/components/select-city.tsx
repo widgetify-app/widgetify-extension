@@ -9,7 +9,7 @@ import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
 import { useSetCity } from '@/services/hooks/user/userService.hook'
 import { TextInput } from '@/components/text-input'
 import { showToast } from '@/common/toast'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '@/src/icons'
 
 interface SelectedCity {
