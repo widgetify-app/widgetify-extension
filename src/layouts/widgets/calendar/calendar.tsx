@@ -4,6 +4,7 @@ import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
+import { DateConverterView } from './components/date-converter/date-converter-view'
 import Analytics from '@/analytics'
 import { Icon } from '@/src/icons'
 
@@ -29,6 +30,19 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 			>
 				<Icon name="calendar" size={12} />
 				<span>تقویم</span>
+			</button>
+
+			<button
+				onClick={() => setActiveTab('converter')}
+				className={`flex cursor-pointer items-center justify-center gap-1 flex-1 text-sm rounded-lg transition-all duration-200 px-2 py-1
+					${
+						activeTab === 'converter'
+							? 'bg-background text-content shadow-xs'
+							: 'text-base-content/60 hover:text-base-content'
+					}`}
+			>
+				<Icon name="arrowRightLeft" size={12} />
+				<span>تبدیل</span>
 			</button>
 
 			<button
@@ -76,6 +90,8 @@ const CalendarLayout: React.FC = () => {
 							/>
 						</div>
 					</>
+				) : activeTab === 'converter' ? (
+					<DateConverterView />
 				) : (
 					<GoogleCalendarView />
 				)}
