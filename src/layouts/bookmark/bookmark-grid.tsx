@@ -12,7 +12,7 @@ import { SortableBookmarkItem } from './components/sortable-bookmark-item'
 import { useBookmarkStore } from './context/bookmark.context'
 import { validate } from 'uuid'
 import { useAuth } from '@/context/auth.context'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
 

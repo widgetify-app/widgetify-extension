@@ -12,7 +12,7 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { Page, usePage } from '@/context/page.context'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { MiniAppPage } from './mini-apps/mini-app.page'
 import { ExplorerPage } from './explorer/explorer.page'
 import { HomePage } from './home/home.page'
