@@ -1,54 +1,51 @@
 # Build Instructions for Widgetify Extension
 
 ## Environment Setup
-This extension must be built with the following environment:
-- Node.js version 24.2.0
-- npm version 11.3.0
-- Ubuntu 24.04 LTS (or Docker, see below)
 
+This extension is built exclusively via Docker, which pins the exact toolchain used for our releases:
+- Node.js 24.2.0
+- npm 11.3.0
 
-## Option 1: Docker Build (we highly recommend this method)
+You do not need Node.js, npm, or any dependencies installed on your host machine -- only Docker.
 
-We've provided a `Dockerfile` and `docker-compose.yml` that set up the exact build environment and copy built files to your local machine automatically.
+## Prerequisites
+
+- Docker Engine
+- Docker Compose (v2, i.e. the `docker compose` command)
 
 ## Steps
-1. Install Docker and Docker Compose.
-2. Navigate to the project directory.
-3. Build and run:
+
+1. Extract the source code to a directory.
+2. Navigate to the project directory:
+```bash
+cd widgetify-extension
+```
+3. Build:
 ```bash
 docker compose up --build
 ```
 
-### After the build finishes:
-- The built extension will appear directly in your local machine inside the `local_output` folder.
-- This folder is synced via Docker volume.
+## After the build finishes
+
+- The built Firefox extension will appear on your local machine in the `local_output` folder (synced via a Docker volume from the container's `.output` directory).
+- The zipped extension and matching source archive will be at:
+  - `local_output/widgetify-webapp-<version>-firefox.zip`
+  - `local_output/widgetify-webapp-<version>-sources.zip`
+
+## Verifying a reproducible build
+
+Because this build relies on the committed `package-lock.json` and pinned Docker base image, running it twice from the same unmodified source should produce byte-identical output. To verify:
+```bash
+docker compose up --build
+mv local_output/firefox-mv2 /tmp/build1
+docker compose up --build
+diff -rq /tmp/build1 local_output/firefox-mv2
+```
+No output from `diff` means the build is reproducible.
 
 ## Notes
 
-- Always build from a clean environment.
-- Do not modify source files or update dependencies before building.
-- Output for Firefox build will be in `.output` (inside container) or `local_output` (on your local machine).
-- If you have questions or issues, contact the extension developer
-
-
-## Option 2: Direct Build
-
-1. Clone or extract the source code to a directory
-2. Navigate to the project directory
-```bash
-cd widgetify-extension
-```
-
-3. Install dependencies with exact versions specified in package.json
-```bash
-npm ci
-```
-**Important**: Use `npm ci` instead of `npm install` to ensure exact versions are installed according to package-lock.json
-
-4. Build the extension for Firefox
-```bash
-npm run build:firefox:clean
-```
-
-5. The built extension will be available in the `dist` directory
-
+- Always build from a clean, unmodified copy of the source.
+- Do not modify source files, `package.json`, or `package-lock.json` before building.
+- Do not run `npm install` or `npm update` outside the container -- the lockfile must be installed as-is via `npm ci`, which happens automatically inside the Docker build.
+- If you have questions or issues, contact the extension developer.
