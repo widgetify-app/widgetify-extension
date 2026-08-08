@@ -45,12 +45,22 @@
 				"useExhaustiveDependencies": "off",
 				"noUnusedVariables": "warn",
 				"noUnusedImports": "warn",
-				"useUniqueElementIds": "off"
+				"useUniqueElementIds": "off",
+				"noInvalidPositionAtImportRule": "off"
 			},
 			"complexity": {
 				"noUselessTernary": "off",
 				"noImportantStyles": "off"
 			}
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		},
+		"formatter": {
+			"indentStyle": "tab",
+			"indentWidth": 4
 		}
 	},
 	"javascript": {

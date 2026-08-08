@@ -31,7 +31,7 @@ export const RequireVerification = ({
 		)
 	}
 
-	if (!!user?.email && !user?.verified) {
+	if (user?.email && !user?.verified) {
 		if (mode === 'preview') {
 			return (
 				<div className="relative w-full h-full overflow-hidden">

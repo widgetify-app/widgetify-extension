@@ -101,6 +101,6 @@ export function CurrencyChart({ priceHistory }: CurrencyChartProp) {
 			},
 		},
 	}
-	// @ts-ignore
+	// @ts-expect-error
 	return <Line className="w-full" data={chartData} options={chartOptions} />
 }
