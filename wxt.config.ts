@@ -19,9 +19,7 @@ export default defineConfig({
 				},
 				rollupOptions: {
 					treeshake: {
-						moduleSideEffects: false,
 						propertyReadSideEffects: false,
-						tryCatchDeoptimization: false,
 					},
 				},
 				chunkSizeWarningLimit: 1000,
@@ -37,6 +35,7 @@ export default defineConfig({
 		'@/components': './src/components',
 		'@/context': './src/context',
 		'@/hooks': './src/hooks',
+		'@/styles': './src/styles',
 		'@/utils': './src/utils',
 		'@/layouts': './src/layouts',
 		'@/pages': './src/pages',

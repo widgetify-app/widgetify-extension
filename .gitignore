@@ -30,3 +30,5 @@ packages
 dev
 local_output
 diff.txt
+
+docs/*

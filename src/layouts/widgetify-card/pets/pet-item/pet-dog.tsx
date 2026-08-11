@@ -1,8 +1,8 @@
-import idle from '@/assets/animals/dog/akita_idle_8fps.gif'
-import lie from '@/assets/animals/dog/akita_lie_8fps.gif'
-import running from '@/assets/animals/dog/akita_run_8fps.gif'
-import swipe from '@/assets/animals/dog/akita_swipe_8fps.gif'
-import walking from '@/assets/animals/dog/akita_walk_fast_8fps.gif'
+import idle from '@/assets/animals/dog/akita_idle_8fps.webp'
+import lie from '@/assets/animals/dog/akita_lie_8fps.webp'
+import running from '@/assets/animals/dog/akita_run_8fps.webp'
+import swipe from '@/assets/animals/dog/akita_swipe_8fps.webp'
+import walking from '@/assets/animals/dog/akita_walk_fast_8fps.webp'
 import dogFood from '@/assets/animals/dog/dog-food.png'
 import { PetFood } from '../core/pet-food'
 
