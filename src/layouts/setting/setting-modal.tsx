@@ -11,7 +11,7 @@ import { ShortcutsTab } from './tabs/shortcuts/shortcuts'
 import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
-import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connectionsTab'
+import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
 import { Icon } from '@/src/icons'
 
 interface SettingModalProps {

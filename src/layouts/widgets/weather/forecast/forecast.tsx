@@ -1,6 +1,6 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 
-import { unitsFlag } from '../unitSymbols'
+import { unitsFlag } from '../unit-symbols'
 import moment from 'jalali-moment'
 
 interface WeatherLayoutProps {

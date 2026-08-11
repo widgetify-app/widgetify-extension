@@ -5,7 +5,7 @@ import {
 	useGetAuthStatus,
 	useRequestOtp,
 	useVerifyOtp,
-} from '@/services/hooks/auth/authService.hook'
+} from '@/services/hooks/auth/auth-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { isEmpty, isEmail, isLessThan } from '@/common/utils/validators'

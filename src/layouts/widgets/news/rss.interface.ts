@@ -1,4 +1,4 @@
-import type { FetchedRssItem } from '@/services/hooks/news/getNews.hook'
+import type { FetchedRssItem } from '@/services/hooks/news/get-news.hook'
 
 export interface RssFeed {
 	id: string

@@ -5,7 +5,7 @@ import { listenEvent } from '@/common/utils/call-event'
 import {
 	type UserProfile,
 	useGetUserProfile,
-} from '@/services/hooks/user/userService.hook'
+} from '@/services/hooks/user/user-service.hook'
 
 interface AuthContextType {
 	isAuthenticated: boolean

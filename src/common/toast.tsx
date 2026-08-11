@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import toast from 'react-hot-toast'
-import { playAlarm } from './playAlarm'
+import { playAlarm } from './play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
 

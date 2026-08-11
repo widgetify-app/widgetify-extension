@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { Portal } from '../portal/Portal'
-import { useDropdown } from './useDropdown'
+import { Portal } from '../portal/portal'
+import { useDropdown } from './use-dropdown'
 import { useState, useLayoutEffect, useRef } from 'react'
 
 export interface DropdownOption {

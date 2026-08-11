@@ -4,7 +4,7 @@ import type {
 	TranslateRequestInput,
 	TranslateResponse,
 } from './translate.types'
-import { getAvailableLanguages, translateText } from './translateService'
+import { getAvailableLanguages, translateText } from './translate-service'
 
 export function useTranslate() {
 	return useMutation<TranslateResponse, Error, TranslateRequestInput>({

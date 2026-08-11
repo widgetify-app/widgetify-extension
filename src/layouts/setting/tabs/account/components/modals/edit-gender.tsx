@@ -1,6 +1,6 @@
 import Modal from '@/components/modal'
 import { SectionPanel } from '@/components/section-panel'
-import { useUpdateUserProfile } from '@/services/hooks/auth/authService.hook'
+import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useState } from 'react'
 import { FooterButtons } from './footer-buttons'
 

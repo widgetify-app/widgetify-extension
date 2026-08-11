@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { Button } from '@/components/button/button'
 import { SectionPanel } from '@/components/section-panel'
 import { useAuth } from '@/context/auth.context'
-import { useGetOrCreateReferralCode } from '@/services/hooks/user/referralsService.hook'
+import { useGetOrCreateReferralCode } from '@/services/hooks/user/referrals-service.hook'
 import {
 	useGetUserProfile,
 	useSendVerificationEmail,
-} from '@/services/hooks/user/userService.hook'
+} from '@/services/hooks/user/user-service.hook'
 import { AccountVerificationStatus } from '../../components/account-verification-status'
 import { ProfileDisplay } from '../../components/profile-display'
 import { ReferralCodeSection } from '../rewards/components/referral-code-section'

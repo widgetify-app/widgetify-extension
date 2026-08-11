@@ -1,9 +1,9 @@
 import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
-import { getItemTypeEmoji } from '@/components/market/getItemTypeEmoji'
+import { getItemTypeEmoji } from '@/components/market/get-item-type-emoji'
 import { type MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { showToast } from '@/common/toast'
-import { RenderPreview } from './renderPreview'
+import { RenderPreview } from './render-preview'
 import { Icon } from '@/src/icons'
 
 interface MarketItemCardProps {

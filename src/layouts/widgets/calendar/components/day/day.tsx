@@ -1,9 +1,9 @@
 import jalaliMoment from 'jalali-moment'
 import { useRef } from 'react'
 import Analytics from '@/analytics'
-import type { FetchedAllEvents } from '@/services/hooks/date/getEvents.hook'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
-import type { MoodEntry } from '@/services/hooks/moodLog/get-moods.hook'
+import type { FetchedAllEvents } from '@/services/hooks/date/get-events.hook'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import {
 	formatDateStr,
 	getCurrentDate,

@@ -1,6 +1,6 @@
 import { ConfigKey } from '@/common/constant/config.key'
 import { SectionPanel } from '@/components/section-panel'
-import type { Task } from '@/services/hooks/user/referralsService.hook'
+import type { Task } from '@/services/hooks/user/referrals-service.hook'
 import { Icon } from '@/src/icons'
 
 interface Prop {

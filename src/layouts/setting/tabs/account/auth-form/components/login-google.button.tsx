@@ -3,7 +3,7 @@ import { useAuth } from '@/context/auth.context'
 import {
 	type AuthResponse,
 	useGoogleSignIn,
-} from '@/services/hooks/auth/authService.hook'
+} from '@/services/hooks/auth/auth-service.hook'
 import { useState } from 'react'
 import { safeAwait } from '@/services/api'
 import type { AxiosError } from 'axios'

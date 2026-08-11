@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useVoiceSearch } from './useVoiceSearch'
-import { Portal } from '@/components/portal/Portal'
+import { useVoiceSearch } from './use-voice-search'
+import { Portal } from '@/components/portal/portal'
 import { Icon } from '@/src/icons'
 
 interface VoiceSearchPortalProps {

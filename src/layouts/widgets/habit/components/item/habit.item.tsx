@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { getContrastingTextColor } from '@/common/color'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
-import { playAlarm } from '@/common/playAlarm'
+import { playAlarm } from '@/common/play-alarm'
 import { showToast } from '@/common/toast'
 import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
 import { safeAwait } from '@/services/api'

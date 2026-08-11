@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/avatar.component'
-import Tooltip from '@/components/toolTip'
+import Tooltip from '@/components/tool-tip'
 import { useAuth } from '@/context/auth.context'
 import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
 import { WelcomeWizard } from '@/components/welcome-wizard'

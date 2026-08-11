@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Button } from '@/components/button/button'
-import Tooltip from '@/components/toolTip'
+import Tooltip from '@/components/tool-tip'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'

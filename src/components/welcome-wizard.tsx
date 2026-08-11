@@ -4,12 +4,12 @@ import { Button } from '@/components/button/button'
 import {
 	useGetOccupations,
 	useGetInterests,
-} from '@/services/hooks/profile/getProfileMeta.hook'
+} from '@/services/hooks/profile/get-profile-meta.hook'
 import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
 import { Chip } from '@/components/chip.component'
 import { ItemSelector } from './item-selector'
-import { useSetupWizard } from '@/services/hooks/auth/authService.hook'
+import { useSetupWizard } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'

@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { useChangeTheme } from '@/services/hooks/extension/updateSetting.hook'
+import { useChangeTheme } from '@/services/hooks/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 
 interface ThemeContextType {

@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
-import { useGetGoogleCalendarEvents } from '@/services/hooks/date/getGoogleCalendarEvents.hook'
+import { useGetGoogleCalendarEvents } from '@/services/hooks/date/get-google-calendar-events.hook'
 import { useDate } from '@/context/date.context'
 import { CalendarEvent } from './google-event.item'
 import { useAuth } from '@/context/auth.context'

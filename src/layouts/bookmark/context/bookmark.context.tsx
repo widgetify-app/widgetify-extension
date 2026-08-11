@@ -19,7 +19,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import {
 	type FetchedBookmark,
 	useGetBookmarks,
-} from '@/services/hooks/bookmark/getBookmarks.hook'
+} from '@/services/hooks/bookmark/get-bookmarks.hook'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 

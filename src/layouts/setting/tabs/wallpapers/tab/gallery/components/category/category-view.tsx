@@ -1,6 +1,6 @@
 import type { Category } from '@/common/wallpaper.interface'
 import { Pagination } from '@/components/pagination'
-import { useGetWallpaperCategoriesPaginated } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { useGetWallpaperCategoriesPaginated } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { CategoryFolder } from './category-folder.component'
 
 interface CategoryGridProps {

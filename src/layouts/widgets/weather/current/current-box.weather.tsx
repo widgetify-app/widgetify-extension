@@ -1,6 +1,6 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
-import { unitsFlag } from '../unitSymbols'
-import Tooltip from '@/components/toolTip'
+import { unitsFlag } from '../unit-symbols'
+import Tooltip from '@/components/tool-tip'
 import { Icon } from '@/src/icons'
 
 interface CurrentWeatherBoxProps {

@@ -1,5 +1,5 @@
 import { AvatarComponent } from '@/components/avatar.component'
-import { useGetFriends, type Friend } from '@/services/hooks/friends/friendService.hook'
+import { useGetFriends, type Friend } from '@/services/hooks/friends/friend-service.hook'
 import { FriendEmptyList } from './empty-list.friend'
 
 interface SelectFriendBottomSheetProps {

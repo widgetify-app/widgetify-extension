@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/auth.context'
-import { useSendFriendRequest } from '@/services/hooks/friends/friendService.hook'
+import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { AvatarComponent } from '../avatar.component'
 import { Button } from '../button/button'

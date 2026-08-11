@@ -5,7 +5,7 @@ import { Button } from '@/components/button/button'
 import {
 	useChangeEmailRequest,
 	useChangeEmailVerify,
-} from '@/services/hooks/user/userService.hook'
+} from '@/services/hooks/user/user-service.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'

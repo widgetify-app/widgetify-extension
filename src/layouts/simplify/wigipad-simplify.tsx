@@ -1,9 +1,9 @@
 import { WidgetContainer } from '../widgets/widget-container'
 import { NotificationCenter } from '../widgetify-card/notification-center/notification-center'
-import { useGetNotifications } from '@/services/hooks/extension/getNotifications.hook'
-import { RenderWigiPadItem } from '../widgets/wigiPad/info-panel/components/ann-item'
-import { DateDisplay } from '../widgets/wigiPad/date-display/date.display'
-import { ClockDisplay } from '../widgets/wigiPad/clock-display/clock-display'
+import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
+import { RenderWigiPadItem } from '../widgets/wigi-pad/info-panel/components/ann-item'
+import { DateDisplay } from '../widgets/wigi-pad/date-display/date.display'
+import { ClockDisplay } from '../widgets/wigi-pad/clock-display/clock-display'
 
 export function SimplifyYadkar() {
 	const { data: fetchedData } = useGetNotifications()

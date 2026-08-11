@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getMainClient } from '@/services/api'
-import { useGetUserProfile } from '@/services/hooks/user/userService.hook'
+import { useGetUserProfile } from '@/services/hooks/user/user-service.hook'
 import { ConnectionModal } from './components/connection-modal'
 import type { Platform } from './components/platform-config.js'
 import { PLATFORM_CONFIGS } from './components/platform-data'

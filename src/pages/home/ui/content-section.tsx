@@ -15,7 +15,7 @@ import { useWidgetVisibility, type WidgetItem } from '@/context/widget-visibilit
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
 import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
-import { WigiPadWidget } from '@/layouts/widgets/wigiPad/wigiPad.layout'
+import { WigiPadWidget } from '@/layouts/widgets/wigi-pad/wigi-pad.layout'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 
 function SortableWidget({ widget }: { widget: WidgetItem }) {

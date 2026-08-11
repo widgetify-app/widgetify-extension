@@ -1,6 +1,6 @@
 import { SectionPanel } from '@/components/section-panel'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useTimezones } from '@/services/hooks/timezone/getTimezones.hook'
+import { useTimezones } from '@/services/hooks/timezone/get-timezones.hook'
 
 export function TimezoneSettings() {
 	const { selected_timezone: timezone, setTimezone } = useGeneralSetting()
