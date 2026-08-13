@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage, setToStorage } from '@/common/storage'
 
@@ -84,10 +84,16 @@ export function useGetNotifications() {
 }
 
 export function useNotifyAsSeen() {
+	const queryClient = useQueryClient()
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const client = getMainClient()
 			await client.put(`/notifications/${id}/seen`)
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['notifications'],
+			})
 		},
 		mutationKey: ['seen_notification'],
 	})
