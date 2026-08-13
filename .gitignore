@@ -32,3 +32,4 @@ local_output
 diff.txt
 
 docs/*
+.claude
