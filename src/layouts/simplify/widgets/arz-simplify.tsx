@@ -1,4 +1,4 @@
-import { WigiArzLayout } from '@/layouts/widgets/wigiArz/wigi_arz.layout'
+import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
 
 export function ArzSimplify() {
 	return (

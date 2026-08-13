@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useGetActivities } from '@/services/hooks/friends/friendService.hook'
+import { useGetActivities } from '@/services/hooks/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
 import { ActivityCard } from './activity-card/activity-card'
-import { ManageActivityBottomSheet } from './activity-card/manage-activity.bottomSheet'
+import { ManageActivityBottomSheet } from './activity-card/manage-activity.bottom-sheet'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
 import { Dropdown } from '@/components/dropdown'
 

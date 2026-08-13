@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { getRandomWallpaper } from '@/services/hooks/wallpapers/getWallpaperCategories.hook'
+import { getRandomWallpaper } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { safeAwait } from '@/services/api'
 import { SwEventType } from '@/common/types/sw-events'
 

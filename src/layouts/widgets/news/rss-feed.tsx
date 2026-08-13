@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { useGetRss } from '../../../services/hooks/news/getNews.hook'
+import { useGetRss } from '../../../services/hooks/news/get-news.hook'
 import { NewsItem } from './components/news-item'
 
 interface Prop {

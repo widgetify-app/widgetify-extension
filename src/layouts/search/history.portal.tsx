@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react'
-import { useSearchSuggestions } from '@/services/hooks/search/getSuggestSearch.hook'
+import { useSearchSuggestions } from '@/services/hooks/search/get-suggest-search.hook'
 import { SuggestionSkeleton } from './suggestion/suggestion.skeleton'
 import { useAuth } from '@/context/auth.context'
 import { AutocompleteConsentModal } from './suggestion/autocomplete-consent.modal'
-import { Portal } from '@/components/portal/Portal'
-import { useSearchHistory } from './hooks/useSearchHistory'
+import { Portal } from '@/components/portal/portal'
+import { useSearchHistory } from './hooks/use-search-history'
 import { Suggestions } from './suggestion/suggestions'
 import { Icon } from '@/src/icons'
 

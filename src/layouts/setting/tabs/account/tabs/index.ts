@@ -1,2 +1,2 @@
-export { AllFriendsTab } from './allFriends/friendsTab'
-export { RewardsTab } from './rewards/rewardsTab'
+export { AllFriendsTab } from './all-friends/friends-tab'
+export { RewardsTab } from './rewards/rewards-tab'

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/auth.context'
-import { MarketWallpaper } from './marketWallpaper'
+import { MarketWallpaper } from './market-wallpaper'
 import { MarketOtherItems } from './other-items'
 import { UserCoin } from '../setting/tabs/account/components/user-coin'
 import Analytics from '@/analytics'

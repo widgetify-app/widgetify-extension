@@ -1,4 +1,4 @@
-import Tooltip from '@/components/toolTip'
+import Tooltip from '@/components/tool-tip'
 import { Icon } from '@/src/icons'
 
 interface CalendarEventProps {

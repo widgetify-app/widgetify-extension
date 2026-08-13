@@ -8,7 +8,7 @@ import { safeAwait } from '@/services/api'
 import {
 	useGetNotifications,
 	useNotifyAsSeen,
-} from '@/services/hooks/extension/getNotifications.hook'
+} from '@/services/hooks/extension/get-notifications.hook'
 
 export function DialogChecker() {
 	const { isAuthenticated } = useAuth()

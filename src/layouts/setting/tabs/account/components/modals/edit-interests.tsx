@@ -1,8 +1,8 @@
 import Modal from '@/components/modal'
-import { useUpdateUserProfile } from '@/services/hooks/auth/authService.hook'
+import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import { InterestsSelector } from '../interests-selector'
-import { useGetInterests } from '@/services/hooks/profile/getProfileMeta.hook'
+import { useGetInterests } from '@/services/hooks/profile/get-profile-meta.hook'
 import { SectionPanel } from '@/components/section-panel'
 import { FooterButtons } from './footer-buttons'
 

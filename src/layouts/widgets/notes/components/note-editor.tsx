@@ -2,7 +2,7 @@ import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority
 import { Button } from '@/components/button/button'
 import { IconLoading } from '@/components/loading/icon-loading'
 import { TextInput } from '@/components/text-input'
-import Tooltip from '@/components/toolTip'
+import Tooltip from '@/components/tool-tip'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import { Icon } from '@/src/icons'

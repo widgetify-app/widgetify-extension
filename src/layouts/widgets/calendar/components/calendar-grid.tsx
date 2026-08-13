@@ -1,13 +1,13 @@
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useGetEvents } from '@/services/hooks/date/getEvents.hook'
+import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import type React from 'react'
 import { useState } from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
-import { ClickableTooltip } from '@/components/clickableTooltip'
-import { CalendarDayDetails } from './day/toolTipContent'
-import { useGetCalendarData } from '@/services/hooks/calendar/get-calendarData.hook'
+import { ClickableTooltip } from '@/components/clickable-tooltip'
+import { CalendarDayDetails } from './day/tool-tip-content'
+import { useGetCalendarData } from '@/services/hooks/calendar/get-calendar-data.hook'
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 

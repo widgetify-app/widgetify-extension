@@ -3,10 +3,10 @@ import Analytics from '@/analytics'
 import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
-import { useSignIn } from '@/services/hooks/auth/authService.hook'
-import { translateError } from '@/utils/translate-error'
+import { useSignIn } from '@/services/hooks/auth/auth-service.hook'
+import { translateError } from '@/common/utils/translate-error'
 import InputTextError from './components/input-text-error'
-import { isEmail, isEmpty, isLessThan } from '@/utils/validators'
+import { isEmail, isEmpty, isLessThan } from '@/common/utils/validators'
 import { Icon } from '@/src/icons'
 
 export default function AuthPassword() {

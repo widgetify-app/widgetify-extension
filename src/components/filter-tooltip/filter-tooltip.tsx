@@ -1,6 +1,6 @@
 import { useState, useRef, type ReactNode } from 'react'
-import { ClickableTooltip } from '@/components/clickableTooltip'
-import Tooltip from '../toolTip'
+import { ClickableTooltip } from '@/components/clickable-tooltip'
+import Tooltip from '../tool-tip'
 import { Button } from '../button/button'
 
 export interface FilterOption {

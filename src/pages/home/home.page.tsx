@@ -5,7 +5,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
 import { Joyride, type Step } from 'react-joyride'
-import { UpdateReleaseNotesModal } from '@/components/UpdateReleaseNotesModal'
+import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import Analytics from '@/analytics'
 import { DialogChecker } from './dialog/dialog'
 const steps: Step[] = [

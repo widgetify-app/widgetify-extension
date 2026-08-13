@@ -1,4 +1,4 @@
-import { FriendRequestsBottomSheet } from '../friend-requests.bottomSheet'
+import { FriendRequestsBottomSheet } from '../friend-requests.bottom-sheet'
 import { Icon } from '@/src/icons'
 
 interface Prop {

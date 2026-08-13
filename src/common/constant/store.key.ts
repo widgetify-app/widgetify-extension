@@ -2,7 +2,7 @@ import type { CurrencyColorMode } from '@/context/currency.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
-import type { ComboTabType } from '@/layouts/widgets/comboWidget/combo-widget.layout'
+import type { ComboTabType } from '@/layouts/widgets/combo-widget/combo-widget.layout'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type {
 	PomodoroSession,
@@ -14,12 +14,12 @@ import type {
 	FetchedWeather,
 	WeatherSettings,
 } from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigiPad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigiPad/date-display/date-setting.interface'
+import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
+import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config_data-api'
-import type { FetchedCurrency } from '@/services/hooks/currency/getCurrencyByCode.hook'
-import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/getTrends'
-import type { UserProfile } from '@/services/hooks/user/userService.hook'
+import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends'
+import type { UserProfile } from '@/services/hooks/user/user-service.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 

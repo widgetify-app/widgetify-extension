@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
-import { ClickableTooltip } from '@/components/clickableTooltip'
-import type { ProfileMetaItem } from '@/services/hooks/profile/getProfileMeta.hook'
+import { ClickableTooltip } from '@/components/clickable-tooltip'
+import type { ProfileMetaItem } from '@/services/hooks/profile/get-profile-meta.hook'
 import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
 import { Chip } from '@/components/chip.component'

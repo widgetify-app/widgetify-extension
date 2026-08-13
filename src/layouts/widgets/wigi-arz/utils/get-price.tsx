@@ -1,0 +1,19 @@
+import type React from 'react'
+import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+export interface GetPriceResult {
+	price: number
+	label: string | React.ReactNode
+}
+export function GetPrice(code: string, currency: FetchedCurrency): GetPriceResult {
+	if (code.toLowerCase() === 'btc' || currency.useDollar) {
+		return {
+			price: currency.price,
+			label: <>💲{currency.price?.toLocaleString()}</>,
+		}
+	} else {
+		return {
+			price: currency.rialPrice,
+			label: currency.rialPrice?.toLocaleString(),
+		}
+	}
+}

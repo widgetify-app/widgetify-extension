@@ -15,7 +15,7 @@ import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { BookmarkGrid } from './bookmark-grid'
 import { useBookmarkStore } from './context/bookmark.context'
 import { useAuth } from '@/context/auth.context'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
 

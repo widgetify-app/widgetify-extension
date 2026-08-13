@@ -5,7 +5,7 @@ import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interfac
 import { WidgetContainer } from '../widget-container'
 import { Forecast } from './forecast/forecast'
 import { CurrentWeatherBox } from './current/current-box.weather'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/getWeatherByLatLon'
+import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon'
 
 export function WeatherLayout() {
 	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)

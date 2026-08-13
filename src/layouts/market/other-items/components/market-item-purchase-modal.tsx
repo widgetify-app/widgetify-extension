@@ -3,10 +3,10 @@ import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import Modal from '@/components/modal'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
-import { usePurchaseMarketItem } from '@/services/hooks/market/purchaseMarketItem.hook'
-import { translateError } from '@/utils/translate-error'
+import { usePurchaseMarketItem } from '@/services/hooks/market/purchase-market-item.hook'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { RenderPreview } from './renderPreview'
+import { RenderPreview } from './render-preview'
 import { Icon } from '@/src/icons'
 
 interface MarketItemPurchaseModalProps {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
-import { useReligiousTime } from '@/services/hooks/date/getReligiousTime.hook'
+import { useReligiousTime } from '@/services/hooks/date/get-religious-time.hook'
 import { useAuth } from '@/context/auth.context'
 
 const DAILY_LIST = [

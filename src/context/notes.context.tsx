@@ -10,7 +10,7 @@ import {
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { safeAwait } from '@/services/api'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { useGetNotes } from '@/services/hooks/note/get-notes.hook'
 import { useAuth } from './auth.context'

@@ -6,7 +6,7 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Bookmark, BrowserImportNode } from '@/layouts/bookmark/types/bookmark.types'
 import { safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
 import { useImportBrowserBookmarks } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
@@ -19,7 +19,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import {
 	type FetchedBookmark,
 	useGetBookmarks,
-} from '@/services/hooks/bookmark/getBookmarks.hook'
+} from '@/services/hooks/bookmark/get-bookmarks.hook'
 
 const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 

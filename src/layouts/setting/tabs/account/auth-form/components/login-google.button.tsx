@@ -3,12 +3,12 @@ import { useAuth } from '@/context/auth.context'
 import {
 	type AuthResponse,
 	useGoogleSignIn,
-} from '@/services/hooks/auth/authService.hook'
+} from '@/services/hooks/auth/auth-service.hook'
 import { useState } from 'react'
 import { safeAwait } from '@/services/api'
 import type { AxiosError } from 'axios'
 import { showToast } from '@/common/toast'
-import { translateError } from '@/utils/translate-error'
+import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'

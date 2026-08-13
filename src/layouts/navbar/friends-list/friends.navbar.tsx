@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AuthRequiredModal } from '@/components/auth/AuthRequiredModal'
+import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { useAuth } from '@/context/auth.context'
 import { BottomSheet } from '@/components/bottom-sheet/bottom-sheet'
 import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities'

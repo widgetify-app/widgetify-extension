@@ -1,4 +1,4 @@
 export * from './translate.hook'
 export * from './translate.types'
 export * from './translate.utils'
-export * from './translateService'
+export * from './translate-service'

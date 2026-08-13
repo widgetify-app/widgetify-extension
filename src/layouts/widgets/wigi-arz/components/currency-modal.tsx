@@ -1,0 +1,186 @@
+import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
+import Modal from '@/components/modal'
+import { TextInput } from '@/components/text-input'
+import { CurrencyColorMode } from '@/context/currency.context'
+import { GetPrice } from '../utils/get-price'
+import { Icon } from '@/src/icons'
+
+interface CurrencyModalComponentProps {
+	code: string
+	currency: any
+
+	imgMainColor: string | undefined
+	isModalOpen: boolean
+	priceChange: number
+	currencyColorMode: CurrencyColorMode | null
+	toggleCurrencyModal: () => void
+}
+
+export const CurrencyModalComponent = ({
+	code,
+	currency,
+	priceChange,
+	imgMainColor,
+	isModalOpen,
+	toggleCurrencyModal,
+	currencyColorMode,
+}: CurrencyModalComponentProps) => {
+	const [showConverter, setShowConverter] = useState(false)
+	const [isVisible, setIsVisible] = useState(false)
+	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
+	const [tomanAmount, setTomanAmount] = useState<number>(0)
+
+	useEffect(() => {
+		let timerId: NodeJS.Timeout
+		if (isModalOpen) {
+			timerId = setTimeout(() => {
+				setIsVisible(true)
+			}, 50)
+		} else {
+			setIsVisible(false)
+		}
+		return () => clearTimeout(timerId)
+	}, [isModalOpen])
+
+	useEffect(() => {
+		if (isModalOpen && currency?.rialPrice) {
+			setCurrencyAmount(1)
+			setTomanAmount(currency.rialPrice)
+		}
+	}, [isModalOpen, currency?.rialPrice])
+
+	const handleCurrencyAmountChange = (value: number) => {
+		setCurrencyAmount(value)
+		if (currency?.rialPrice) {
+			setTomanAmount(value * currency.rialPrice)
+		}
+	}
+
+	const handleTomanAmountChange = (value: number) => {
+		setTomanAmount(value)
+		if (currency?.rialPrice) {
+			setCurrencyAmount(value / currency.rialPrice)
+		}
+	}
+
+	const formatNumberWithCommas = (num: number) => {
+		return num?.toLocaleString('en-US')
+	}
+
+	const parseFormattedNumber = (str: string) => {
+		return parseFloat(str.replace(/,/g, '')) || 0
+	}
+
+	const onClickConverter = () => {
+		setShowConverter(!showConverter)
+		Analytics.event('toggle_currency_converter_on_modal')
+	}
+
+	const priceChangeColor =
+		currencyColorMode === CurrencyColorMode.NORMAL
+			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
+			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
+
+	return (
+		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
+			<div
+				className={`relative p-8 flex flex-col items-center justify-center space-y-2 transition-all duration-300 ease-out ${
+					isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+				}`}
+			>
+				<div className="relative transition-transform duration-200 ease-out">
+					<img
+						src={currency?.icon}
+						alt={currency?.name?.en}
+						className="z-50 object-cover rounded-full shadow w-14 h-14"
+					/>
+					<div
+						className="absolute top-0 z-10 w-14 h-14 blur-xl opacity-30"
+						style={{ backgroundColor: imgMainColor }}
+					/>
+				</div>
+
+				<div className="mt-2 space-y-1 text-center">
+					<p className={'text-xl font-bold text-base-content'}>
+						{currency?.name.en}
+					</p>
+					<div
+						className={
+							'text-sm font-medium text-base-content opacity-60 flex items-center justify-center gap-1'
+						}
+					>
+						<p>{code.toUpperCase()}</p>
+						<div
+							className="cursor-pointer hover:text-primary"
+							onClick={() => onClickConverter()}
+						>
+							<Icon name="arrowRightLeft" />
+						</div>
+					</div>
+				</div>
+
+				<div className="w-full space-y-0">
+					<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
+						<p className={'text-xl font-bold text-base-content opacity-95'}>
+							{GetPrice(code, currency).label}
+						</p>
+
+						{priceChange > 0 && (
+							<div
+								className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
+							>
+								{priceChange > 0 ? (
+									<Icon name="upLong" className="mr-1" />
+								) : (
+									<Icon name="downLong" className="mr-1" />
+								)}
+
+								<span>
+									{Math.abs(
+										Number(priceChange.toFixed())
+									).toLocaleString()}
+								</span>
+							</div>
+						)}
+					</div>
+				</div>
+
+				{/* Calculator Section */}
+				<div
+					className={`flex flex-col gap-0.5 transition-all duration-300 ease-out ${showConverter ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}
+				>
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							{code.toUpperCase()}
+						</span>
+						<TextInput
+							type="text"
+							value={String(currencyAmount)}
+							onChange={(e) =>
+								handleCurrencyAmountChange(parseFormattedNumber(e))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
+					</div>
+
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
+						<span className="text-sm font-medium text-base-content min-w-fit">
+							تومان
+						</span>
+						<TextInput
+							type="text"
+							value={formatNumberWithCommas(tomanAmount)}
+							onChange={(value) =>
+								handleTomanAmountChange(parseFormattedNumber(value))
+							}
+							className=" !rounded-2xl !px-4 border-content"
+							placeholder="مبلغ"
+						/>
+					</div>
+				</div>
+			</div>
+		</Modal>
+	)
+}

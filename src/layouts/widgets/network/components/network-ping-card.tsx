@@ -5,7 +5,7 @@ import {
 	MdOutlineSignalCellularAlt2Bar,
 	MdRouter,
 } from 'react-icons/md'
-import Tooltip from '@/components/toolTip'
+import Tooltip from '@/components/tool-tip'
 
 interface NetworkPingCardProps {
 	ping: number | null

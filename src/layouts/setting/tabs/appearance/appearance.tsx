@@ -1,6 +1,6 @@
 import { useAuth } from '@/context/auth.context'
-import { useGetUserInventory } from '@/services/hooks/market/getUserInventory.hook'
-import { BrowserTitleSelector } from './components/browserTitle-selector'
+import { useGetUserInventory } from '@/services/hooks/market/get-user-inventory.hook'
+import { BrowserTitleSelector } from './components/browser-title-selector'
 import { FontSelector } from './components/font-selector'
 import { ThemeSelector } from './components/theme-selector'
 import { UISelector } from './components/ui-selector'

@@ -1,5 +1,5 @@
 import Modal from '@/components/modal'
-import { useUpdateUserProfile } from '@/services/hooks/auth/authService.hook'
+import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import JalaliDatePicker from '../profile-date-picker'
 import moment from 'jalali-moment'

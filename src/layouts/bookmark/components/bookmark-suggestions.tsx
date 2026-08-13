@@ -2,7 +2,7 @@ import { SectionPanel } from '@/components/section-panel'
 import {
 	type BookmarkSuggestion,
 	useGetSuggestedBookmarks,
-} from '@/services/hooks/bookmark/getBookmarks.hook'
+} from '@/services/hooks/bookmark/get-bookmarks.hook'
 
 interface BookmarkSuggestionsProps {
 	onSelect: (suggestion: BookmarkSuggestion) => void

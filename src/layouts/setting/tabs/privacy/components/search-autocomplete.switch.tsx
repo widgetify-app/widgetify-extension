@@ -2,7 +2,7 @@ import { autoFormatErrorToast } from '@/common/toast'
 import { ToggleSwitch } from '@/components/toggle-switch.component'
 import { useAuth } from '@/context/auth.context'
 import { safeAwait } from '@/services/api'
-import { useUpdateSearchAutocomplete } from '@/services/hooks/extension/updateSetting.hook'
+import { useUpdateSearchAutocomplete } from '@/services/hooks/extension/update-setting.hook'
 
 export function SearchAutocompleteSwitch() {
 	const { isAuthenticated, user } = useAuth()

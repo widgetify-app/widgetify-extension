@@ -1,5 +1,5 @@
 import { Icon } from '@/src/icons'
-import Tooltip from '../toolTip'
+import Tooltip from '../tool-tip'
 
 interface IconLoadingProps {
 	title?: string

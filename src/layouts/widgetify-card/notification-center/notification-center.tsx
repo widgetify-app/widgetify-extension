@@ -6,7 +6,7 @@ import {
 	type NotificationItem,
 	useGetNotifications,
 	useNotifyAsSeen,
-} from '@/services/hooks/extension/getNotifications.hook'
+} from '@/services/hooks/extension/get-notifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
 import { DailyMoodNotification } from '../daily-mood'

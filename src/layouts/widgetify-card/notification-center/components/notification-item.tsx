@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import type { NotificationItem } from '@/services/hooks/extension/getNotifications.hook'
+import type { NotificationItem } from '@/services/hooks/extension/get-notifications.hook'
 import { Icon } from '@/src/icons'
 
 interface NotificationItemProps {

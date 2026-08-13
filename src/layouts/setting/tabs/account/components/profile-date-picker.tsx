@@ -1,5 +1,5 @@
 import { Button } from '@/components/button/button'
-import { ClickableTooltip } from '@/components/clickableTooltip'
+import { ClickableTooltip } from '@/components/clickable-tooltip'
 import { Icon } from '@/src/icons'
 import { useRef, useState, useEffect } from 'react'
 
