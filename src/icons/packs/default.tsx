@@ -3,6 +3,7 @@ import {
 	FiBell,
 	FiClock,
 	FiCoffee,
+	FiFilter,
 	FiGift,
 	FiInbox,
 	FiKey,
@@ -13,7 +14,6 @@ import {
 	FiMaximize,
 	FiMinimize,
 	FiPhone,
-	FiPlay,
 	FiRefreshCw,
 	FiRotateCcw,
 	FiSave,
@@ -58,7 +58,6 @@ import {
 	FaSortAmountDown,
 	FaSpinner,
 	FaTelegramPlane,
-	FaUpload,
 	FaUserSecret,
 } from 'react-icons/fa'
 import {
@@ -74,7 +73,6 @@ import {
 	TbNotebook,
 	TbArrowsRightLeft,
 	TbCloudUpload,
-	TbBookmark,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -255,4 +253,5 @@ export const defaultIcons = {
 	arrowRightLeft: TbArrowsRightLeft,
 	bookmark: HiBookmark,
 	userSecret: FaUserSecret,
+	filter: FiFilter,
 } satisfies IconMap

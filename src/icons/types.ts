@@ -131,4 +131,5 @@ export type IconName =
 	| 'arrowRightLeft'
 	| 'bookmark'
 	| 'userSecret'
+	| 'filter'
 export type IconMap = Record<IconName, IconType>

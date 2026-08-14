@@ -134,16 +134,16 @@ function WallpaperItemFu({
 						<div
 							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-black/80 to-black/0 items-center`}
 						>
-							{wallpaper.name && (
-								<div className="flex-1 text-xs font-medium text-white">
+							{wallpaper.name ? (
+								<div className="flex-1 text-[10px] font-medium text-white">
 									{wallpaper.name}
 								</div>
-							)}
+							) : null}
 							<div className="flex items-center gap-1">
-								{wallpaper.coin && (
+								{wallpaper.coin ? (
 									<div className="origin-bottom-left scale-75">
 										<UserCoin
-											coins={wallpaper.coin}
+											coins={wallpaper.coin || 0}
 											title={
 												wallpaper.isOwned
 													? 'باز شده'
@@ -151,7 +151,7 @@ function WallpaperItemFu({
 											}
 										/>
 									</div>
-								)}
+								) : null}
 							</div>
 						</div>
 						{wallpaper.extensionUI ? (
@@ -200,9 +200,9 @@ function WallpaperItemFu({
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 "></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 rounded-2xl"></div>
 
-						{!isSelected && !wallpaper.isOwned && wallpaper.coin && (
+						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
 								onClick={(e) => {
 									e.stopPropagation()
@@ -213,7 +213,7 @@ function WallpaperItemFu({
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>
 							</button>
-						)}
+						) : null}
 					</>
 				)}
 			</div>

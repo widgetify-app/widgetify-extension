@@ -5,6 +5,9 @@ import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { MediaPreview } from './media-preview.component'
 import { Icon } from '@/src/icons'
 
+const MAX_SIZE = 2
+const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024
+
 interface UploadAreaProps {
 	customWallpaper: Wallpaper | null
 	onWallpaperChange: (newWallpaper: Wallpaper) => void
@@ -12,7 +15,11 @@ interface UploadAreaProps {
 
 export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaProps) {
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	const { processFile } = useWallpaperUpload({ onWallpaperChange })
+	const { processFile } = useWallpaperUpload({
+		onWallpaperChange,
+		max_size: MAX_SIZE,
+		max_file_size: MAX_FILE_SIZE,
+	})
 
 	const handleFileSelect = () => {
 		if (fileInputRef.current) {
@@ -32,23 +39,26 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 		return (
 			<div
 				className={
-					'relative rounded-2xl border border-dashed border-base-content/5 overflow-hidden bg-content opacity-70 hover:opacity-100 transition-all duration-300'
+					'relative w-full rounded-2xl border border-dashed border-base-content/20 overflow-hidden bg-content hover:opacity-100 transition-all duration-300 text-base-content/80 hover:text-base-content hover:border-base-content/40'
 				}
 			>
 				<button
-					className="flex items-center justify-center w-full gap-2 p-4 cursor-pointer"
+					className="flex flex-col items-center justify-center w-full gap-2 p-2 cursor-pointer"
 					onClick={handleFileSelect}
 				>
-					<Icon name="uploadImage" size={18} className={'text-content'} />
-					<p className={'text-sm font-medium text-content'}>
-						برای آپلود از سیستم کلیک کنید
-					</p>
+					<div className="flex items-center gap-2">
+						<Icon name="uploadImage" size={18} />
+						<p className={'text-sm font-medium'}>آپلود از سیستم</p>
+					</div>
+					<span className="text-xs text-muted">
+						(حداکثر حجم فایل : {MAX_SIZE} مگابایت)
+					</span>
 				</button>
 				<input
 					type="file"
 					ref={fileInputRef}
 					className="hidden"
-					accept="image/*,video/*"
+					accept="image/*"
 					onChange={handleFileChange}
 				/>
 			</div>
@@ -93,7 +103,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				type="file"
 				ref={fileInputRef}
 				className="hidden"
-				accept="image/*,video/*"
+				accept="image/*"
 				onChange={handleFileChange}
 			/>
 		</div>
