@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react'
+import type React from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 interface HoverPlayVideoProps {
 	videoSrc: string

@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { preloadImages } from '@/common/utils/preload-images'
-import type { Category, Wallpaper } from '@/common/wallpaper.interface'
-import { FolderPath } from '@/layouts/bookmark/components/folder-path'
+import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useGetWallpapersInfiniteQuery } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -9,22 +8,24 @@ import { WallpaperItem } from './wallpaper-item'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
 import { MarketItemType } from '@/services/hooks/market/market.interface'
 import Analytics from '@/analytics'
+import { Icon } from '@/src/icons'
 
 interface WallpaperViewProps {
-	selectedCategory: Category | null
-	onBackToCategories: () => void
+	selectedCategoryId: string | null
+	typeFilter: 'all' | 'image' | 'video'
+	accessFilter: 'all' | 'free' | 'coin'
 }
 
-const WALLPAPERS_PER_PAGE = 12
+const WALLPAPERS_PER_PAGE = 18
 
 export function WallpaperView({
-	selectedCategory,
-	onBackToCategories,
+	selectedCategoryId,
+	typeFilter,
+	accessFilter,
 }: WallpaperViewProps) {
 	const {
 		selectedBackground,
 		handleSelectBackground,
-
 		syncWithFetchedWallpapers,
 		currentStoredWallpaper,
 	} = useWallpaperContext()
@@ -62,12 +63,13 @@ export function WallpaperView({
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
+		isLoading,
 	} = useGetWallpapersInfiniteQuery(
 		{
-			categoryId: selectedCategory?.id,
+			categoryId: selectedCategoryId || undefined,
 			limit: WALLPAPERS_PER_PAGE,
 		},
-		!!selectedCategory
+		true
 	)
 
 	const { containerRef, loadMoreRef } = useInfiniteScroll({
@@ -78,8 +80,9 @@ export function WallpaperView({
 		threshold: 0.1,
 	})
 
-	const allWallpapers =
-		wallpaperResponse?.pages.flatMap((page) => page.wallpapers) || []
+	const allWallpapers = useMemo(() => {
+		return wallpaperResponse?.pages.flatMap((page) => page.wallpapers) || []
+	}, [wallpaperResponse])
 
 	useEffect(() => {
 		if (allWallpapers.length) {
@@ -92,52 +95,77 @@ export function WallpaperView({
 		}
 	}, [allWallpapers])
 
-	if (!selectedCategory) return null
+	const filteredWallpapers = useMemo(() => {
+		return allWallpapers.filter((wp) => {
+			if (typeFilter === 'image' && wp.type !== 'IMAGE') return false
+			if (
+				typeFilter === 'video' &&
+				wp.type !== 'VIDEO' &&
+				!wp.src?.endsWith('.gif') &&
+				!wp.previewSrc?.endsWith('.gif')
+			)
+				return false
+
+			if (accessFilter === 'free' && wp.coin && !wp.isOwned) return false
+			if (accessFilter === 'coin' && (!wp.coin || wp.isOwned)) return false
+
+			return true
+		})
+	}, [allWallpapers, typeFilter, accessFilter])
 
 	return (
 		<div
-			className="relative flex flex-col justify-between gap-2 overflow-y-auto h-96"
+			className="relative flex flex-col flex-1 h-full overflow-y-auto pr-1"
 			ref={containerRef}
 		>
-			<div className="absolute right-0 flex justify-center p-1 mt-1 -top-3 bg-content rounded-t-2xl">
-				<FolderPath
-					folderPath={[
-						{
-							id: 'subfolder',
-							title: selectedCategory?.name || 'پوشه',
-						},
-					]}
-					onNavigate={onBackToCategories}
-				/>
-			</div>
-			<div className="p-2 mt-5 overflow-x-hidden bg-content rounded-b-xl rounded-l-xl">
-				<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-					{allWallpapers.map((wallpaper) => (
-						<div key={wallpaper.id} className="transform-gpu">
-							<WallpaperItem
-								wallpaper={wallpaper}
-								selectedBackground={selectedBackground}
-								setSelectedBackground={handleSelectBackground}
-								onPreviewBackground={handlePreview}
-							/>
-						</div>
-					))}
+			{isLoading ? (
+				<div className="grid grid-cols-3 gap-3">{MakeSkeleton(6)}</div>
+			) : filteredWallpapers.length === 0 ? (
+				<div className="flex flex-col items-center justify-center flex-1 py-16 text-muted">
+					<Icon name="image" size={32} className="opacity-40 mb-2" />
+					<p className="text-sm font-medium">تصویر زمینه‌ای یافت نشد</p>
+					<p className="text-xs opacity-70 mt-0.5">
+						فیلترهای انتخابی را تغییر دهید
+					</p>
 				</div>
-				{hasNextPage && (
-					<div ref={loadMoreRef} className="flex justify-center gap-3 p-1 mt-2">
-						{MakeSkeleton(3)}
+			) : (
+				<div className="flex flex-col gap-4">
+					<div className="grid grid-cols-3 gap-3">
+						{filteredWallpapers.map((wallpaper) => (
+							<div key={wallpaper.id} className="transform-gpu">
+								<WallpaperItem
+									wallpaper={wallpaper}
+									selectedBackground={selectedBackground}
+									setSelectedBackground={handleSelectBackground}
+									onPreviewBackground={handlePreview}
+								/>
+							</div>
+						))}
 					</div>
-				)}
-			</div>
+
+					{hasNextPage && (
+						<div ref={loadMoreRef} className="grid grid-cols-3 gap-3 py-2">
+							{MakeSkeleton(3)}
+						</div>
+					)}
+
+					<div className="flex items-center justify-between py-2 text-xs text-muted border-t border-base-content/10">
+						<span>
+							نمایش {filteredWallpapers.length.toLocaleString('fa-IR')}{' '}
+							تصویر زمینه
+						</span>
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }
 
 function MakeSkeleton(count: number) {
-	return [...Array(count)].map((_, catIdx) => (
+	return [...Array(count)].map((_, idx) => (
 		<div
-			key={`loading-${catIdx}`}
-			className="w-full h-24 rounded-xl skeleton bg-base-content/5"
-		></div>
+			key={`loading-${idx}`}
+			className="w-full aspect-video rounded-xl skeleton bg-base-300 border border-base-content/5"
+		/>
 	))
 }

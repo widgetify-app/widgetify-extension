@@ -3,11 +3,14 @@ import type { Category, Wallpaper, WallpaperResponse } from '@/common/wallpaper.
 import { getMainClient } from '@/services/api'
 
 export const useGetWallpaperCategories = () => {
-	return useQuery<Category[]>({
+	return useQuery<CategoryResponse>({
 		queryKey: ['getWallpaperCategories'],
 		queryFn: async () => getWallpaperCategories(),
 		retry: 0,
-		initialData: [],
+		initialData: {
+			totalPages: 1,
+			categories: [],
+		},
 	})
 }
 
@@ -49,9 +52,9 @@ export const useGetWallpaperCategoriesPaginated = (
 	})
 }
 
-async function getWallpaperCategories(): Promise<Category[]> {
+async function getWallpaperCategories(): Promise<CategoryResponse> {
 	const client = getMainClient()
-	const { data } = await client.get<Category[]>('/wallpapers/categories')
+	const { data } = await client.get<CategoryResponse>('/wallpapers/categories')
 	return data
 }
 
@@ -95,7 +98,7 @@ export const useGetWallpapers = (q: GetWallpaperQuery, enabled: boolean) => {
 
 export const useGetWallpapersInfiniteQuery = (q: GetWallpaperQuery, enabled: boolean) => {
 	return useInfiniteQuery<WallpaperResponse>({
-		queryKey: ['getWallpapers', q.limit, q.categoryId],
+		queryKey: ['getWallpapers', q.page, q.categoryId],
 		queryFn: async ({ pageParam }) =>
 			getWallpapersByCategoryId({ ...q, page: pageParam as number }),
 		retry: 0,
