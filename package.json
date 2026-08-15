@@ -26,6 +26,7 @@
     "axios": "1.18.0",
     "canvas-confetti": "1.9.4",
     "chart.js": "4.5.1",
+    "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "framer-motion": "12.40.0",
     "jalali-moment": "3.3.11",
