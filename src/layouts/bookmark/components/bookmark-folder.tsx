@@ -70,7 +70,7 @@ export function FolderBookmarkItem({
 
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden`}
+			className={`relative ${isDragging ? 'opacity-50' : ''} flex`}
 		>
 			<button
 				onClick={onClick}
@@ -79,10 +79,10 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative self-end flex group h-20 md:h-[5.5rem]  flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out 
+				className={`relative self-end flex group h-20 md:h-[5.5rem]  flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-2xl  w-full ease-in-out 
 					${
 						!bookmark.customBackground
-							? `bg-content bg-glass hover:bg-primary/20 bg-content text-content  bg-glass`
+							? `bg-content bg-glass hover:bg-primary/20 text-content`
 							: `before:bg-inherit border-transparent`
 					}
 					transition-all ease-in-out duration-300

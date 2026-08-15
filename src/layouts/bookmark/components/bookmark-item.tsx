@@ -39,7 +39,7 @@ export function BookmarkItem({
 				onAuxClick={onClick}
 				onMouseDown={handleMouseDown}
 				style={customStyles}
-				className={`relative  flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+				className={`relative  flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content  bg-glass` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 			>
 				{onMenuClick && bookmark && (
 					<div
