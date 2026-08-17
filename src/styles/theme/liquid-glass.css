@@ -1,3 +1,15 @@
+/*
+ * Liquid Glass theme.
+ *
+ * Note: --glass-blur is intentionally 0px and no backdrop-filter is used
+ * anywhere in this file. The refraction/blur look for elements matched by
+ * liquid-glass-renderer.ts's GLASS_SELECTOR comes entirely from the WebGL
+ * pass behind the page. Adding backdrop-filter here would blur the same
+ * content twice (expensive) and fight visually with the WebGL distortion.
+ * If a new component needs the glass look, add its selector to both this
+ * file AND GLASS_SELECTOR / getGlassParams in liquid-glass-renderer.ts, or
+ * it will only get the flat translucent panel without the refraction.
+ */
 @plugin "daisyui/theme" {
     name: "liquid-glass";
     --color-base-100: rgba(18, 24, 34, 0.12);
@@ -90,7 +102,7 @@
 }
 
 [data-theme="liquid-glass"] .modal-box {
-    background-color: rgba(14, 18, 28, 0.25);
+    background-color: rgba(12, 16, 26, 0.42);
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -100,6 +112,11 @@
         inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.3),
         0 28px 72px -12px rgba(0, 0, 0, 0.6),
         0 4px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="liquid-glass"] .modal-backdrop,
+[data-theme="liquid-glass"] dialog.modal::backdrop {
+    background-color: rgba(4, 6, 10, 0.55);
 }
 
 [data-theme="liquid-glass"] .portal,
@@ -134,6 +151,10 @@
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Promote hover/active transform+shadow to their own compositor layer
+       so the frequent hover/press interactions on buttons don't repaint
+       the surrounding layout. */
+    will-change: transform, box-shadow;
 }
 
 [data-theme="liquid-glass"] .btn:hover {
@@ -197,6 +218,21 @@
 [data-theme="liquid-glass"] select:open {
     background-color: rgba(18, 24, 34, 0.95);
     color: white;
+}
+
+[data-theme="liquid-glass"] .toast,
+[data-theme="liquid-glass"] .alert {
+    background-color: rgba(16, 20, 30, 0.18);
+    color: rgba(255, 255, 255, 0.96);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+        0 12px 32px -6px rgba(0, 0, 0, 0.35),
+        0 2px 8px 0 rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="liquid-glass"] .tooltip {
