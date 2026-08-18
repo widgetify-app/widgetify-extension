@@ -168,9 +168,10 @@ export default function AuthPassword() {
 					type="submit"
 					disabled={isPending || !email || !password}
 					loading={isPending}
-					isPrimary={true}
+					variant={'primary'}
 					size="md"
-					className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
+					rounded={'2xl'}
+					className="text-sm md:text-base"
 				>
 					{isPending ? 'درحال پردازش...' : 'ورود به حساب'}
 				</Button>

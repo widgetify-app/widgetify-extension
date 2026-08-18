@@ -108,8 +108,9 @@ export const UpdateReleaseNotesModal = ({
 						size="sm"
 						onClick={onClose}
 						disabled={counter > 0}
-						className="min-w-32.5 h-11 rounded-2xl! self-end font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
+						className="h-11 min-w-32.5 font-black"
 						variant={'primary'}
+						rounded={'2xl'}
 					>
 						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
 					</Button>

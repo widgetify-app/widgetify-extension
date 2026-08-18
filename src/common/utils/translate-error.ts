@@ -114,6 +114,7 @@ const errorTranslations: Record<string, string> = {
 	FOLDER_STRUCTURE_TOO_DEEP: 'FOLDER_STRUCTURE_TOO_DEEP',
 	BULK_IMPORT_LIMIT_EXCEEDED: `تعداد آیتم درون‌ریزی بیش‌از حد هست`,
 	NO_VALID_ITEMS_TO_IMPORT: 'هیچ آیتم معتبری برای درون‌ریزی وجود نداره',
+	BIRTHDATE_CANNOT_BE_CHANGED: 'به تازگی تاریخ تولدت رو عوض کردی!',
 }
 
 const validationTranslations: Record<string, string> = {
