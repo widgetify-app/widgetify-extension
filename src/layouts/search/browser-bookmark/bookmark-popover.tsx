@@ -7,8 +7,8 @@ import {
 	getBrowserBookmarks,
 } from '@/layouts/bookmark/utils/browser-bookmarks.util'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
+import { Button } from '@/components/ui'
 
 interface BookmarkPopoverProps {
 	isOpen: boolean
@@ -96,21 +96,24 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 					<Button
 						size="sm"
 						onClick={() => handlePermission()}
-						className="w-full rounded-2xl"
-						isPrimary
+						className="w-full"
+						variant={'primary'}
+						rounded={'2xl'}
 					>
 						فعال‌سازی دسترسی
 					</Button>
 				</div>
 			) : (
-				<div className="flex flex-col max-h-[420px]">
+				<div className="flex flex-col max-h-105">
 					<div className="flex items-center justify-between p-3 border-b border-base-content/5 bg-base-200/30">
 						<span className="text-xs font-bold text-content">{c}</span>
 						{currentFolderId && (
 							<Button
 								size="sm"
 								onClick={handleGoBack}
-								className="text-[10px] btn-ghost text-muted rounded-xl flex items-center gap-1!"
+								variant={'default'}
+								rounded={'xl'}
+								className="text-[10px] flex items-center gap-1!"
 							>
 								<Icon name="chevronRight" />
 								بازگشت

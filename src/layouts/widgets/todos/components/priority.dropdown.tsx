@@ -1,5 +1,4 @@
-import { Dropdown } from '@/components/ui'
-import { Button } from '@/components/button/button'
+import { Button, Dropdown } from '@/components/ui'
 import { TodoPriority } from '@/services/hooks/todo/todo.interface'
 import { Icon } from '@/src/icons'
 
@@ -40,7 +39,8 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 			trigger={
 				<Button
 					size="sm"
-					className={`p-2 border rounded-xl shrink-0 active:scale-95 transition-colors ${
+					rounded={'xl'}
+					className={`p-2 border shrink-0 active:scale-95 transition-colors ${
 						selected
 							? `${selected.bg} ${selected.color} ${selected.border}`
 							: 'text-base-content/40 hover:text-primary/60'

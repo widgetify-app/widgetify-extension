@@ -1,6 +1,5 @@
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { showToast } from '@/common/toast'
 
 interface Prop {
@@ -67,7 +66,6 @@ export function RequestNotificationModal({
 						</div>
 					</div>
 
-					{/* Content */}
 					<div className="mt-2">
 						<p className="leading-relaxed text-justify text-muted">
 							برای اینکه به شما یادآوری کنیم، نیاز داریم اعلان‌ها را فعال
@@ -77,24 +75,26 @@ export function RequestNotificationModal({
 					</div>
 				</article>
 
-				{/* Actions */}
 				<div className="flex gap-3 mt-2">
+					<Button
+						variant={'primary'}
+						rounded={'2xl'}
+						size="md"
+						onClick={onRequestPermission}
+						className="flex-2 px-4 py-2 text-sm font-medium"
+					>
+						فعال کردن اعلان‌ها
+					</Button>
 					<Button
 						onClick={() => {
 							setShowRequireNotificationModal(false)
 						}}
-						className="flex-1 px-4 py-2 text-sm font-medium transition-colors border rounded-2xl border-content text-content"
+						className="flex-1 px-4 py-2 text-sm"
 						size="md"
+						rounded={'2xl'}
+						variant={'default'}
 					>
 						فعلا نه
-					</Button>
-					<Button
-						isPrimary={true}
-						size="md"
-						onClick={onRequestPermission}
-						className="flex-1 px-4 py-2 text-sm font-medium text-white transition-colors rounded-2xl"
-					>
-						فعال کردن اعلان‌ها
 					</Button>
 				</div>
 			</div>

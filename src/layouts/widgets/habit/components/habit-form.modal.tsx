@@ -8,8 +8,7 @@ import {
 	HABIT_UNIT_OPTIONS,
 } from '@/common/constant/habit-options'
 import { showToast } from '@/common/toast'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { safeAwait } from '@/services/api'
@@ -369,9 +368,10 @@ export function HabitFormModal({
 				<Button
 					onClick={handleSubmit}
 					size="md"
-					isPrimary
+					variant={'primary'}
+					rounded={'2xl'}
 					loading={isPending}
-					className="w-full text-white border-none rounded-2xl"
+					className="w-full"
 				>
 					{isEdit ? 'ذخیره تغییرات' : 'افزودن عادت'}
 				</Button>

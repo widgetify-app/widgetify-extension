@@ -1,5 +1,5 @@
+import { Button } from '@/components/ui'
 import type React from 'react'
-import { Button } from '@/components/button/button'
 
 interface ModeButtonProps {
 	label: string

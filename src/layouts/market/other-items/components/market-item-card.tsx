@@ -1,10 +1,10 @@
-import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { getItemTypeEmoji } from '@/components/market/get-item-type-emoji'
 import { type MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './render-preview'
 import { Icon } from '@/src/icons'
+import { Button } from '@/components/ui'
 
 interface MarketItemCardProps {
 	item: MarketItem
@@ -90,7 +90,9 @@ export function MarketItemCard({
 						<Button
 							size="xs"
 							onClick={handleBuy}
-							className="h-6 px-2.5 rounded-lg text-[11px] font-medium bg-primary/90 text-white hover:bg-primary active:scale-95 transition-all"
+							rounded={'lg'}
+							variant={'primary'}
+							className="h-6 px-2.5 rounded-lg text-[11px] active:scale-95 transition-all"
 						>
 							<div className="flex items-center gap-1">
 								<Icon name="shoppingCart" size={10} />

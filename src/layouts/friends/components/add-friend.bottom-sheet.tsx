@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface AddFriendBottomSheetProps {

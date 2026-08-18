@@ -1,8 +1,6 @@
 import { useState, useRef } from 'react'
-import { ClickableTooltip } from '@/components/ui'
+import { Dropdown } from '@/components/ui'
 import type { ProfileMetaItem } from '@/services/hooks/profile/get-profile-meta.hook'
-import { Button } from '@/components/button/button'
-import { Icon } from '@/src/icons'
 import { Chip } from '@/components/ui'
 
 interface OccupationSelectorProps {
@@ -55,46 +53,24 @@ export const OccupationSelector = ({
 					})}
 				</div>
 			)}
-
-			<div className="flex gap-2 pt-2">
-				<Button
-					onClick={() => setIsOpen(!isOpen)}
-					size="sm"
-					className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
-				>
-					<Icon name="check" size={16} className="ml-1" />
-					تایید{' '}
-				</Button>
-				<Button
-					onClick={() => setIsOpen(!isOpen)}
-					size="sm"
-					className="w-20 rounded-2xl border-muted hover:bg-muted/50 text-content"
-				>
-					لغو
-				</Button>
-			</div>
 		</div>
 	)
 
 	return (
-		<>
-			<button
-				ref={triggerRef}
-				type="button"
-				onClick={() => setIsOpen(!isOpen)}
-				className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-content"
-			>
-				{triggerElement}
-			</button>
-
-			<ClickableTooltip
-				content={content}
-				triggerRef={triggerRef}
-				isOpen={isOpen}
-				setIsOpen={setIsOpen}
-				position="bottom"
-				className=""
-			/>
-		</>
+		<Dropdown
+			trigger={
+				<button
+					ref={triggerRef}
+					type="button"
+					onClick={() => setIsOpen(!isOpen)}
+					className="flex items-center justify-between w-full py-2 text-right transition-colors hover:bg-content"
+				>
+					{triggerElement}
+				</button>
+			}
+			className="w-full"
+		>
+			{content}
+		</Dropdown>
 	)
 }

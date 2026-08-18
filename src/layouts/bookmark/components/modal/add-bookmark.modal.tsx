@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import type { BookmarkType } from '../../types/bookmark.types'
@@ -243,7 +242,7 @@ export function AddBookmarkModal({
 						setShowAdvanced={setShowAdvanced}
 					/>
 
-					<div className="flex items-center gap-x-2">
+					<div className="flex items-center gap-x-1">
 						<Button
 							onClick={onCloseHandler}
 							size="md"
@@ -259,11 +258,11 @@ export function AddBookmarkModal({
 								isAdding
 							}
 							size="md"
-							isPrimary={true}
 							loading={isAdding}
 							className={
-								'btn w-28 border-none shadow-none text-secondary rounded-2xl transition-colors duration-300 ease-in-out'
+								'btn w-28 border-none shadow-none  rounded-2xl transition-colors duration-300 ease-in-out'
 							}
+							variant={'primary'}
 						>
 							ذخیره
 						</Button>

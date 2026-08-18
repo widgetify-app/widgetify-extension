@@ -1,6 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
-import { Dropdown } from '@/components/ui'
+import { Button, Dropdown } from '@/components/ui'
 import { SelectFriendLayout } from '@/layouts/friends/components/select-friend.layout'
 import type { Friend } from '@/services/hooks/friends/friend-service.hook'
 import { Icon } from '@/src/icons'
@@ -16,7 +15,8 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 				<Button
 					type="button"
 					size="sm"
-					className="p-2 border rounded-xl  text-[10px]  text-muted shrink-0 active:scale-95"
+					rounded={'xl'}
+					className="p-2 border text-[10px]  text-muted shrink-0 active:scale-95"
 				>
 					{selectedFriends.length > 0 ? (
 						<div className="flex gap-0.5 text-base-content/40">
@@ -49,9 +49,10 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 				</div>
 				<Button
 					size="sm"
-					isPrimary
+					variant={'primary'}
+					rounded={'2xl'}
 					onClick={() => callEvent('closeAllDropdowns')}
-					className="w-full rounded-2xl"
+					className="w-full"
 				>
 					ذخیره و بستن
 				</Button>

@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigi-arz/wigi_arz.layout'
-import { TabNavigation } from '@/components/ui'
+import { Button, TabNavigation } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 export type ComboTabType = 'news' | 'currency'
@@ -83,7 +82,8 @@ export function ComboWidget() {
 			<Button
 				size="sm"
 				onClick={handleSettingsClick}
-				className={`px-2 py-0! border-none! rounded-lg text-base-content/40 shrink-0 active:scale-95 h-7!`}
+				rounded={'xl'}
+				className={`px-2 py-0! border-none! text-base-content/40 shrink-0 active:scale-95 h-7!`}
 			>
 				<Icon name="menuOption" className="w-4 h-4" />
 			</Button>

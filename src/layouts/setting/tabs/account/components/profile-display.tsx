@@ -1,6 +1,5 @@
 import moment from 'jalali-moment'
-import { AvatarComponent } from '@/components/ui'
-import { Button } from '@/components/button/button'
+import { AvatarComponent, Button } from '@/components/ui'
 import { OfflineIndicator } from '@/components/ui'
 import { UserCoin } from './user-coin'
 import type React from 'react'
@@ -155,7 +154,7 @@ export const ProfileDisplay = () => {
 						) : (
 							<Button
 								size="xs"
-								className="rounded-2xl"
+								rounded={'2xl'}
 								onClick={() => clickToShow()}
 							>
 								<div className="flex items-center gap-1">

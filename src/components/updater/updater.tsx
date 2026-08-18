@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Modal } from '@/components/ui'
-import { Button } from '@/components/button/button'
+import { Button, Modal } from '@/components/ui'
 import { getMainClient } from '@/services/api'
 import { Icon } from '@/src/icons'
 

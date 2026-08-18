@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
-import { Modal } from '@/components/ui'
-import { useRemoveActivity, useSetActivity } from '@/services/hooks/user/user-service.hook'
+import { Button, Modal } from '@/components/ui'
+import {
+	useRemoveActivity,
+	useSetActivity,
+} from '@/services/hooks/user/user-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { playAlarm } from '@/common/play-alarm'
 import {
@@ -248,8 +250,9 @@ export function ManageActivityBottomSheet({
 						onClick={handleSave}
 						disabled={isSubmitting || !activity.trim()}
 						size="sm"
-						className="w-full mt-1 rounded-xl"
-						isPrimary
+						className="w-full mt-1"
+						variant={'primary'}
+						rounded={'2xl'}
 						loading={isSubmitting}
 					>
 						انتشار نوشته

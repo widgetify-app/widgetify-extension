@@ -1,6 +1,5 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useEffect, useState } from 'react'
 import type { Bookmark } from '../../types/bookmark.types'
@@ -216,7 +215,8 @@ export function EditBookmarkModal({
 							onClick={onClose}
 							size="md"
 							disabled={isUpdating}
-							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
+							rounded={'2xl'}
 						>
 							لغو
 						</Button>
@@ -228,9 +228,10 @@ export function EditBookmarkModal({
 								isUpdating
 							}
 							size="md"
-							isPrimary={true}
 							loading={isUpdating}
-							className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28 text-secondary rounded-2xl"
+							variant={'primary'}
+							rounded={'2xl'}
+							className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28"
 						>
 							ذخیره
 						</Button>

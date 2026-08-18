@@ -12,7 +12,8 @@ export const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'bg-content text-content border-content hover:bg-raised',
+				default:
+					'bg-content text-content border-content hover:bg-base-content/5!',
 				primary: 'bg-primary text-white border-transparent hover:bg-primary/90',
 				secondary:
 					'bg-secondary text-secondary-content border-transparent hover:bg-secondary/90',
@@ -34,6 +35,7 @@ export const buttonVariants = cva(
 				md: 'rounded-md',
 				lg: 'rounded-lg',
 				xl: 'rounded-xl',
+				'2xl': 'rounded-2xl',
 				full: 'rounded-full',
 				card: 'rounded-card',
 			},

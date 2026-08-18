@@ -1,9 +1,8 @@
 import { Motion as motion, Presence } from '@/common/motion'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
-import { IconLoading } from '@/components/ui'
+import { Button, IconLoading } from '@/components/ui'
 import { ClickableTooltip } from '@/components/ui'
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
@@ -59,7 +58,7 @@ export function ExpandableTodoInput({
 	const notesRef = useRef<HTMLTextAreaElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const dateButtonRef = useRef<HTMLButtonElement>(null)
-	const categoryInputRef = useRef<HTMLInputElement | null>(null)
+	const categoryInputRef = useRef<HTMLButtonElement | null>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
 	const [selectedFriends, setSelectedFriends] = useState<Friend[]>([])
 
@@ -257,7 +256,9 @@ export function ExpandableTodoInput({
 								disabled={isPending}
 								loading={isPending}
 								size="sm"
-								className="rounded-full px-0! w-8 btn-ghost"
+								rounded={'full'}
+								variant={'ghost'}
+								className="px-0! w-8"
 							>
 								<Icon name="close" size={12} className="" />
 							</Button>
@@ -268,8 +269,9 @@ export function ExpandableTodoInput({
 							loading={isPending}
 							loadingText={<IconLoading />}
 							size="sm"
-							isPrimary={true}
-							className="rounded-full px-0! w-8"
+							variant={'primary'}
+							rounded={'full'}
+							className="px-0! w-8"
 						>
 							{isEdit ? (
 								<Icon name="save" size={16} />
@@ -310,7 +312,8 @@ export function ExpandableTodoInput({
 										/>
 										<Button
 											size="sm"
-											className={`p-2 border rounded-xl text-base-content/40 shrink-0 active:scale-95`}
+											rounded={'xl'}
+											className={`p-2 border text-base-content/40 shrink-0 active:scale-95`}
 											onClick={() => setShowDatePicker(true)}
 											ref={dateButtonRef}
 										>
@@ -361,8 +364,9 @@ export function ExpandableTodoInput({
 												/>
 												<Button
 													size="xs"
-													isPrimary={true}
-													className="rounded-full p-0! w-6 h-6"
+													variant={'primary'}
+													rounded={'full'}
+													className="p-0! w-6 h-6"
 													onClick={() =>
 														setIsTagTooltipOpen(false)
 													}

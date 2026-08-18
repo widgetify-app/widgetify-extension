@@ -1,7 +1,6 @@
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { isEmpty, isLessThan } from '@/common/utils/validators'
-import { Button } from '@/components/button/button'
 import {
 	useChangeEmailRequest,
 	useChangeEmailVerify,
@@ -141,11 +140,12 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					<InputTextError message={error.otp} className="justify-center" />
 					<Button
 						type="submit"
-						isPrimary={true}
+						variant={'primary'}
 						size="md"
+						rounded={'2xl'}
 						loading={isPending}
 						disabled={isPending}
-						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
+						className="text-base"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
 							{step === 'enter-code' ? 'تایید' : 'ادامه'}

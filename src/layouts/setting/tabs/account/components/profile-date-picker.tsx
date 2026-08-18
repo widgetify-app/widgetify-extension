@@ -1,5 +1,4 @@
-import { Button } from '@/components/button/button'
-import { ClickableTooltip } from '@/components/ui'
+import { Button, ClickableTooltip } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import { useRef, useState, useEffect } from 'react'
 
@@ -155,7 +154,9 @@ export default function JalaliDatePicker({
 							<Button
 								onClick={handleConfirm}
 								size="sm"
-								className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
+								rounded={'2xl'}
+								variant={'primary'}
+								className="flex-1"
 							>
 								<Icon name="check" size={16} className="ml-1" />
 								تایید{' '}
@@ -163,7 +164,9 @@ export default function JalaliDatePicker({
 							<Button
 								onClick={handleCancel}
 								size="sm"
-								className="w-20 rounded-2xl border-muted hover:bg-muted/50 text-content"
+								rounded={'2xl'}
+								variant={'default'}
+								className="w-20"
 							>
 								لغو
 							</Button>

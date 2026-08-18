@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import type { Friend } from '@/services/hooks/friends/friend-service.hook'
 import { Icon } from '@/src/icons'
 

@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { Button } from '@/components/button/button'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { MediaPreview } from './media-preview.component'
 import { Icon } from '@/src/icons'
+import { Button } from '@/components/ui'
 
 const MAX_SIZE = 2
 const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024
@@ -89,11 +89,7 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 				</div>
 
 				<div className="flex gap-2">
-					<Button
-						onClick={() => handleFileSelect()}
-						size="sm"
-						className="rounded-2xl"
-					>
+					<Button onClick={() => handleFileSelect()} size="sm" rounded={'2xl'}>
 						<Icon name="edit" size={14} />
 						<span>تغییر</span>
 					</Button>

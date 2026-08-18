@@ -15,11 +15,11 @@ export const chipVariants = cva(
 	{
 		variants: {
 			selected: {
-				true: ['bg-primary', 'border-primary', 'text-primary-content'],
+				true: ['bg-primary', 'border-primary', 'text-white'],
 				false: [
 					'bg-base-100',
 					'border-base-300/30',
-					'text-muted',
+					'text-base-content/80',
 					'hover:border-primary/30',
 				],
 			},

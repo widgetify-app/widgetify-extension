@@ -1,6 +1,5 @@
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { ConfigKey } from '@/common/constant/config.key'
@@ -115,7 +114,8 @@ export function CoinPackagePurchaseModal({
 						onClick={onClose}
 						size="md"
 						disabled={isPending}
-						className="flex-1 rounded-2xl border-muted hover:bg-muted/50 text-content"
+						className="flex-1"
+						rounded={'2xl'}
 					>
 						لغو
 					</Button>
@@ -125,7 +125,9 @@ export function CoinPackagePurchaseModal({
 						disabled={isPending}
 						loading={isPending}
 						loadingText="در حال انتقال..."
-						className="flex-1 text-white rounded-2xl bg-primary hover:bg-primary/90"
+						className="flex-1"
+						variant={'primary'}
+						rounded={'2xl'}
 					>
 						<Icon name="check" size={15} className="ml-1" />
 						تایید و پرداخت

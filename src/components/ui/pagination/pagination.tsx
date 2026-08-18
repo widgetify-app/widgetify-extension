@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge'
-import { Button } from '@/components/button/button'
 import { Icon } from '@/src/icons'
+import { Button } from '../button/button'
 
 export interface PaginationProps {
 	currentPage: number

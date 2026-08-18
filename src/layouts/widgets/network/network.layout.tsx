@@ -2,8 +2,7 @@ import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
-import { AvatarComponent } from '@/components/ui'
-import { Button } from '@/components/button/button'
+import { AvatarComponent, Button } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -195,8 +194,11 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 						<Button
 							size="md"
 							type="button"
-							className="w-full h-8 border border-content rounded-2xl"
+							className="w-full h-fit py-3.5"
+							rounded={'2xl'}
+							variant={'default'}
 							onClick={handleRefresh}
+							disabled={isLoading}
 						>
 							<Icon
 								name="refresh"

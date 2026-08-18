@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { ColorPicker } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
@@ -182,7 +181,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							type="button"
 							onClick={resetBackground}
 							size="md"
-							className="rounded-2xl p-3!"
+							className="p-3!"
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -212,7 +213,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							type="button"
 							onClick={resetTextColor}
 							size="md"
-							className="rounded-2xl p-3!"
+							className="p-3!"
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -229,9 +232,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={
-								'btn !w-fit px-8 border-none shadow-none bg-base-300 text-muted rounded-xl transition-colors duration-300 ease-in-out'
-							}
+							className={'btn !w-fit px-8'}
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							{sticker ? (
 								<>
@@ -326,9 +329,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<Button
 						size="md"
 						onClick={() => onClose(null)}
-						className={
-							'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none !rounded-2xl transition-colors duration-300 ease-in-out'
-						}
+						rounded={'2xl'}
+						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 					>
 						لغو
 					</Button>
@@ -336,10 +338,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						type="submit"
 						onClick={() => handleClose()}
 						size="md"
-						isPrimary={true}
-						className={
-							'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary !rounded-2xl transition-colors duration-300 ease-in-out'
-						}
+						variant={'primary'}
+						rounded={'2xl'}
+						className={'w-fit px-8  border-none'}
 					>
 						ذخیره
 					</Button>

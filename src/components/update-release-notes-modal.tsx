@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button } from './button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
@@ -110,7 +109,7 @@ export const UpdateReleaseNotesModal = ({
 						onClick={onClose}
 						disabled={counter > 0}
 						className="min-w-32.5 h-11 rounded-2xl! self-end font-black text-xs shadow-lg shadow-primary/10 disabled:shadow-none active:scale-90 transition-all disabled:text-base-content/30"
-						isPrimary={true}
+						variant={'primary'}
 					>
 						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
 					</Button>

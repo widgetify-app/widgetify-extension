@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface NewsHeaderProps {

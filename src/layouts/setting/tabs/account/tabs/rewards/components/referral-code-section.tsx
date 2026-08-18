@@ -1,5 +1,4 @@
-import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/ui'
+import { Button, SectionPanel } from '@/components/ui'
 import { showToast } from '@/common/toast'
 
 interface ReferralCodeSectionProps {
@@ -43,8 +42,8 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 					<Button
 						onClick={handleCopyCode}
 						size="sm"
-						className="rounded-2xl"
-						isPrimary={true}
+						rounded={'xl'}
+						variant={'primary'}
 					>
 						کپی کد
 					</Button>

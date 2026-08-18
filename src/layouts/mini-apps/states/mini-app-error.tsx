@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 
 interface Prop {
 	handleReload: () => void
@@ -33,8 +33,9 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				<Button
 					size="sm"
 					type="button"
-					className="w-full rounded-2xl"
-					isPrimary
+					className="w-full"
+					rounded={'2xl'}
+					variant={'primary'}
 					onClick={handleReload}
 				>
 					تلاش مجدد
@@ -42,7 +43,9 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				<Button
 					type="button"
 					size="sm"
-					className="text-muted rounded-2xl"
+					// className=""
+					variant={'default'}
+					rounded={'2xl'}
 					onClick={() => onClickToBack()}
 				>
 					بازگشت

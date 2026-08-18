@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react'
-import { Button } from '@/components/button/button'
 import { showToast } from '@/common/toast'
 import { TextInput } from '@/components/text-input'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
-import { Portal } from '@/components/ui'
+import { Button, Portal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface ImageSearchPortalProps {
@@ -216,8 +215,9 @@ export function ImageSearchPortal({
 						<Button
 							onClick={handleUrlSearch}
 							size="sm"
-							isPrimary={true}
-							className="w-20 rounded-2xl"
+							variant={'primary'}
+							rounded={'2xl'}
+							className="w-20"
 						>
 							جستجو
 						</Button>

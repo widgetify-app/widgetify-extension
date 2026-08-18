@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 
 interface Prop {
 	handleConfirm: any
@@ -12,9 +12,10 @@ export function FooterButtons({ handleCancel, handleConfirm, isPending }: Prop) 
 				size="sm"
 				type="submit"
 				disabled={isPending}
-				isPrimary={true}
+				variant={'primary'}
+				rounded={'2xl'}
 				onClick={() => handleConfirm()}
-				className="text-sm shadow-xs flex-2 rounded-xl shadow-primary/20"
+				className="text-sm flex-2 h-10"
 			>
 				{isPending ? 'در حال ذخیره...' : 'ذخیره'}
 			</Button>
@@ -22,7 +23,9 @@ export function FooterButtons({ handleCancel, handleConfirm, isPending }: Prop) 
 				size="sm"
 				type="button"
 				onClick={() => handleCancel()}
-				className="flex-1 text-sm font-medium border-none rounded-2xl bg-content"
+				variant={'default'}
+				rounded={'2xl'}
+				className="flex-1 h-10"
 			>
 				انصراف
 			</Button>

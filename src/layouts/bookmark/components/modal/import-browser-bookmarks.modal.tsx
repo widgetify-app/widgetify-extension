@@ -4,8 +4,7 @@ import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/src/icons'
-import { Button } from '@/components/button/button'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import { useBookmarkStore } from '../../context/bookmark.context'
 import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants/browser-import.constant'
 import type { BrowserImportNode } from '../../types/bookmark.types'
@@ -299,8 +298,8 @@ export function ImportBrowserBookmarksModal({
 					<Button
 						size="sm"
 						onClick={handlePermission}
-						className="rounded-2xl"
-						isPrimary
+						rounded={'2xl'}
+						variant={'primary'}
 					>
 						فعال‌سازی دسترسی
 					</Button>
@@ -348,20 +347,21 @@ export function ImportBrowserBookmarksModal({
 							onClick={onClose}
 							size="md"
 							disabled={isImporting}
-							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+							className="w-20 transition-colors duration-300 ease-in-out bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 						>
 							انصراف
 						</Button>
 						<Button
 							onClick={handleImport}
 							size="md"
-							isPrimary
+							variant={'primary'}
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={
 								<span className="text-xs">در حال درون‌ریزی...</span>
 							}
-							className="w-32 transition-colors duration-300 ease-in-out border-none shadow-none btn btn-circle text-secondary rounded-2xl"
+							rounded={'2xl'}
+							className="w-32"
 						>
 							درون‌ریزی
 						</Button>

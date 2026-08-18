@@ -55,7 +55,6 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 						onChange={(val) => setValue(val)}
 					/>
 				</SectionPanel>
-
 				<FooterButtons
 					handleCancel={onCancel}
 					handleConfirm={onClickSave}

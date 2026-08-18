@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { Button } from '@/components/button/button'
-import { ConfirmationModal } from '@/components/ui'
+import { Button, ConfirmationModal } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
@@ -106,7 +105,9 @@ export function HabitsContent() {
 						<Tooltip content="بارگذاری مجدد">
 							<Button
 								size="sm"
-								className="px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
+								className="px-2 py-0! active:scale-95"
+								variant={'ghost'}
+								rounded={'full'}
 								onClick={onRefresh}
 								disabled={isWaiting}
 							>
@@ -153,7 +154,9 @@ export function HabitsContent() {
 			<Button
 				size="sm"
 				onClick={handleAddHabit}
-				className="px-2 py-0!  w-full border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
+				rounded={'2xl'}
+				variant={'primary'}
+				className="px-2 py-0! w-full  shrink-0 active:scale-95 h-7!"
 			>
 				<Icon name="plus" className="w-4 h-4" />
 				افزودن

@@ -1,7 +1,6 @@
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
 import { ItemPrice } from '@/components/item-price/item-price'
-import { Modal } from '@/components/ui'
+import { Button, Modal } from '@/components/ui'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchase-market-item.hook'
 import { translateError } from '@/common/utils/translate-error'
@@ -103,7 +102,7 @@ export function MarketItemPurchaseModal({
 					<div className="flex items-start gap-2.5 px-3 py-2.5 rounded-2xl border border-error/20 bg-error/5">
 						<Icon
 							name="alert"
-							className="w-4 h-4 mt-0.5 text-error flex-shrink-0"
+							className="w-4 h-4 mt-0.5 text-error shrink-0"
 						/>
 						<div>
 							<p className="text-xs font-medium text-error">
@@ -132,11 +131,8 @@ export function MarketItemPurchaseModal({
 						disabled={!canAfford || isPending}
 						loading={isPending}
 						loadingText="در حال خرید..."
-						className={`rounded-2xl ${
-							canAfford
-								? 'bg-primary hover:bg-primary/90 text-white'
-								: 'bg-base-300 text-muted cursor-not-allowed'
-						}`}
+						rounded={'2xl'}
+						variant={canAfford ? 'primary' : 'default'}
 					>
 						<Icon name="check" size={15} className="ml-1" />
 						تایید خرید

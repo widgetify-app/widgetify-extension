@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/ui'
+import { Button, SectionPanel } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGetOrCreateReferralCode } from '@/services/hooks/user/referrals-service.hook'
 import {
@@ -71,7 +70,8 @@ export const UserProfile = () => {
 				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
 				<Button
 					onClick={() => onClickLogout()}
-					className="text-white/90 btn-error"
+					variant={'danger'}
+					rounded={'2xl'}
 					size="md"
 				>
 					<Icon name="logOut" size={16} />
@@ -105,12 +105,13 @@ export const UserProfile = () => {
 					</p>
 					<Button
 						onClick={() => setShowConfirm(true)}
-						className="text-white/90 btn-error rounded-2xl"
 						size="md"
+						variant={'danger'}
+						rounded={'2xl'}
 					>
 						<Icon name="logOut" size={16} />
 						خروج از حساب کاربری
-					</Button>{' '}
+					</Button>
 				</div>
 			</SectionPanel>
 

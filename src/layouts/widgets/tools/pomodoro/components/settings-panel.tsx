@@ -1,6 +1,5 @@
 import type React from 'react'
-import { Button } from '@/components/button/button'
-import { Checkbox } from '@/components/ui'
+import { Button, Checkbox } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import type { PomodoroSettings } from '../types'
@@ -133,8 +132,9 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 					<Button
 						size="md"
 						onClick={handleSaveAndClose}
-						isPrimary={true}
-						className="w-full rounded-xl"
+						variant={'primary'}
+						rounded={'2xl'}
+						className="w-full"
 					>
 						ذخیره و بستن
 					</Button>
