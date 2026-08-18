@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/avatar.component'
+import { AvatarComponent } from '@/components/ui'
 
 interface Prop {
 	avatar: string

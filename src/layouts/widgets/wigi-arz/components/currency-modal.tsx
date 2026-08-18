@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/get-price'
@@ -79,8 +79,8 @@ export const CurrencyModalComponent = ({
 
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
-			? `${priceChange > 0 ? 'text-red-500' : 'text-green-500'}`
-			: `${priceChange > 0 ? 'text-green-500' : 'text-red-500'}`
+			? `${priceChange > 0 ? 'text-error' : 'text-success'}`
+			: `${priceChange > 0 ? 'text-success' : 'text-error'}`
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">

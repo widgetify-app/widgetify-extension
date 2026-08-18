@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { Connections } from '../user-profile/connections/connections'
 import { Icon } from '@/src/icons'
 

@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import type { MiniAppScopeEnum } from '@/services/hooks/mini-apps/mini-apps-interface'
 import { Icon } from '@/src/icons'
@@ -57,7 +57,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							onClick={onClick}
 							size="sm"
 							rounded="xl"
-							isPrimary
+							variant={'primary'}
 							className="w-full text-sm font-medium border-none"
 						>
 							تایید و ادامه
@@ -79,7 +79,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							onClick={() => callEvent('openProfile')}
 							size="sm"
 							rounded="xl"
-							isPrimary
+							variant={'primary'}
 							className="w-full text-sm font-medium border-none"
 						>
 							باشه، ورود به حساب

@@ -1,6 +1,6 @@
-import { Button } from '@/components/button/button'
 import { ConfigKey } from '@/common/constant/config.key'
-import { CoinPackage } from '@/services/hooks/market/market-coins.interface'
+import { Button } from '@/components/ui'
+import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
 import { Icon } from '@/src/icons'
 
 interface CoinPackageCardProps {
@@ -60,7 +60,9 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 					<Button
 						size="xs"
 						onClick={onPurchase}
-						className="h-6 px-2.5 text-[11px] font-medium text-white rounded-lg bg-primary/90 hover:bg-primary active:scale-95 transition-all"
+						variant={'primary'}
+						rounded={'lg'}
+						className="px-2.5"
 					>
 						<div className="flex items-center gap-1">
 							<Icon name="shoppingCart" size={10} />

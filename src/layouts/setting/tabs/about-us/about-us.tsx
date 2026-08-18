@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { ConfigKey } from '../../../../common/constant/config.key'
 import { Icon } from '@/src/icons'
 
@@ -8,7 +8,7 @@ export function AboutUsTab() {
 			<div className="flex flex-col items-center p-3 text-center">
 				<h1
 					className={
-						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600'
+						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary'
 					}
 				>
 					ویجتیفای

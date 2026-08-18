@@ -8,9 +8,8 @@ import {
 	HABIT_UNIT_OPTIONS,
 } from '@/common/constant/habit-options'
 import { showToast } from '@/common/toast'
-import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
-import { SelectBox } from '@/components/selectbox/selectbox'
+import { Button, Modal } from '@/components/ui'
+import { SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { safeAwait } from '@/services/api'
 import { useAddHabit } from '@/services/hooks/habit/add-habit.hook'
@@ -23,7 +22,7 @@ import {
 } from '@/services/hooks/habit/habit.interface'
 import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
 import { translateError } from '@/common/utils/translate-error'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
 import { Motion as motion, Presence } from '@/common/motion'
 
@@ -369,9 +368,10 @@ export function HabitFormModal({
 				<Button
 					onClick={handleSubmit}
 					size="md"
-					isPrimary
+					variant={'primary'}
+					rounded={'2xl'}
 					loading={isPending}
-					className="w-full text-white border-none rounded-2xl"
+					className="w-full"
 				>
 					{isEdit ? 'ذخیره تغییرات' : 'افزودن عادت'}
 				</Button>

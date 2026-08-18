@@ -5,8 +5,7 @@ import { useEffect, useRef } from 'react'
 import { MiniAppRunner } from './mini-app-runner'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
-import Modal from '@/components/modal'
-import { Button } from '@/components/button/button'
+import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
@@ -176,9 +175,10 @@ export function MiniAppsLayout() {
 					<Button
 						size="sm"
 						type="button"
-						isPrimary
+						variant={'primary'}
+						rounded={'2xl'}
 						onClick={() => setShowInfo(false)}
-						className="h-12 mt-2 text-base font-bold shadow-sm btn-block rounded-2xl"
+						className="h-12 mt-2 text-base font-bold shadow-sm btn-block"
 					>
 						باشه
 					</Button>

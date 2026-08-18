@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 
 export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 	const onClickHandle = () => {

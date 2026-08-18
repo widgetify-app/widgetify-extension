@@ -1,10 +1,11 @@
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import JalaliDatePicker from '../profile-date-picker'
 import moment from 'jalali-moment'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
+import { autoFormatErrorToast } from '@/common/toast'
 
 interface Prop {
 	show: boolean
@@ -28,8 +29,12 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 			.format('YYYY-MM-DD')
 		data.append('birthdate', gregorianDate)
 
-		await updateProfileMutation.mutateAsync(data)
-		onClose('success')
+		try {
+			await updateProfileMutation.mutateAsync(data)
+			onClose('success')
+		} catch (er) {
+			autoFormatErrorToast(er)
+		}
 	}
 
 	const onCancel = () => {
@@ -55,7 +60,6 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 						onChange={(val) => setValue(val)}
 					/>
 				</SectionPanel>
-
 				<FooterButtons
 					handleCancel={onCancel}
 					handleConfirm={onClickSave}

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { ItemSelector } from '@/components/item-selector'
+import { ItemSelector } from '@/components/ui'
 import { WigiPadDateType } from './date-setting.interface'
 
 const DateOptions = [

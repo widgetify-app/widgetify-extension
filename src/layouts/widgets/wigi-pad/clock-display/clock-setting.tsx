@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
-import { ItemSelector } from '@/components/item-selector'
+import { CheckBoxWithDescription } from '@/components/ui'
+import { ItemSelector } from '@/components/ui'
 import { type ClockSettings, ClockType } from './clock-setting.interface'
 
 const CLOCK_OPTIONS = [

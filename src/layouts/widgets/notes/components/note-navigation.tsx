@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
-import { Button } from '@/components/button/button'
-import Tooltip from '@/components/tool-tip'
+import { Button, ConfirmationModal, Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
 
@@ -58,38 +57,20 @@ export function NoteNavigation() {
 			{isSaving && <IconLoading title="درحال ذخیره..." />}
 			{activeNoteId ? (
 				<>
-					<Tooltip
-						alwaysShow={showDeleteConfirm}
-						content={
-							showDeleteConfirm ? (
-								<ToolTipConfirmContent
-									onConfirm={onDelete}
-									onCancel={() => setShowDeleteConfirm(false)}
-								/>
-							) : (
-								'حذف یادداشت'
-							)
-						}
-						position="bottom"
+					<Button
+						size="xs"
+						onClick={() => setShowDeleteConfirm(true)}
+						className="h-7 w-7 p-0 text-muted bg-transparent! hover:bg-error/20! hover:text-error! border-none disabled:opacity-75 transition-all duration-300 shadow-none"
+						rounded={'full'}
 					>
-						<Button
-							size="xs"
-							onClick={() => setShowDeleteConfirm(true)}
-							className="h-7 w-7 p-0 text-muted !bg-transparent hover:!bg-error/20 hover:!text-error border-none rounded-full disabled:opacity-75 transition-all duration-300 shadow-none"
-						>
-							<Icon name="trash" size={14} />
-						</Button>
-					</Tooltip>
+						<Icon name="trash" size={14} />
+					</Button>
 					<Tooltip content="لیست یادداشت ها" position="top">
 						<button
 							className={`h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 hover:bg-base-300 hover:opacity-100 ${activeNoteIndex > 0 ? 'opacity-100' : 'opacity-30 cursor-not-allowed'} duration-300`}
 							onClick={() => onBackToList()}
 						>
-							<Icon
-								name="chevronLeft"
-								size={18}
-								className="text-content"
-							/>
+							<Icon name="chevronLeft" size={18} className="text-content" />
 						</button>
 					</Tooltip>
 				</>
@@ -101,8 +82,9 @@ export function NoteNavigation() {
 						disabled={isCreatingNote}
 						loading={isCreatingNote}
 						loadingText={<IconLoading title="درحال ساخت..." />}
-						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95 rounded-xl`}
-						isPrimary={true}
+						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95`}
+						variant={'primary'}
+						rounded={'xl'}
 					>
 						<Icon name="pen" size={12} />
 						چیزی بنویس
@@ -111,8 +93,9 @@ export function NoteNavigation() {
 						<Tooltip content="بارگزاری مجدد">
 							<Button
 								size="sm"
-								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								className={`px-2 py-0! border-none! text-base-content/40 shrink-0 active:scale-95 h-7!`}
 								onClick={onRefresh}
+								rounded={'xl'}
 							>
 								<Icon
 									name="refresh"
@@ -123,31 +106,13 @@ export function NoteNavigation() {
 					</div>
 				</>
 			)}
-		</div>
-	)
-}
-interface Props {
-	onConfirm: () => void
-	onCancel: () => void
-}
-function ToolTipConfirmContent({ onConfirm, onCancel }: Props) {
-	return (
-		<div className="flex flex-col gap-1 p-3 w-52">
-			<p className="mb-2 text-sm font-medium text-muted">
-				آیا از حذف این یادداشت مطمئن هستید؟
-			</p>
-			<div className="flex justify-between gap-2">
-				<Button onClick={onCancel} size="xs" className="btn rounded-2xl">
-					انصراف
-				</Button>
-				<Button
-					onClick={onConfirm}
-					size="xs"
-					className="text-white btn btn-error rounded-2xl"
-				>
-					حذف یادداشت
-				</Button>
-			</div>
+
+			<ConfirmationModal
+				isOpen={showDeleteConfirm}
+				onClose={() => setShowDeleteConfirm(false)}
+				onConfirm={() => onDelete()}
+				message="از حذف این یادداشت مطمعنی؟"
+			/>
 		</div>
 	)
 }

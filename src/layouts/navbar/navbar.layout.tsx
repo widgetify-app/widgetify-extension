@@ -12,7 +12,7 @@ import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils'
 import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
@@ -44,6 +44,7 @@ const tabs = [
 		label: 'برنامک‌ها',
 	},
 ]
+
 export function NavbarTabs() {
 	const { page, setPage } = usePage()
 	SyncAccount()
@@ -138,7 +139,7 @@ export function NavbarLayout(): JSX.Element {
 							<span>حالت جابجایی فعال، ویجت هارو جابجا کنید</span>
 							<button
 								onClick={() => toggleCanReOrderWidget()}
-								className="transition-colors hover:text-red-400"
+								className="transition-colors hover:text-error"
 							>
 								<Icon name="close" size={16} />
 							</button>

@@ -3,7 +3,7 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from '../../../../hooks/use-lazy-load'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { HoverPlayVideo } from '../hover-play-video'
 import { Icon } from '@/src/icons'
 import { UI } from '@/context/appearance.context'
@@ -41,7 +41,7 @@ function WallpaperItemFu({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary/80 ring-offset-blue-100'
-		: 'ring-1 ring-base-content/10 group-hover:ring-blue-300/70'
+		: 'ring-1 ring-base-content/10 group-hover:ring-primary/70'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -90,14 +90,14 @@ function WallpaperItemFu({
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="flex items-center justify-center w-full h-full bg-gray-900/60 rounded-2xl">
-						<div className="w-5 h-5 border-2 rounded-full border-blue-500/30 border-t-blue-500 animate-spin"></div>
+					<div className="flex items-center justify-center w-full h-full bg-neutral/60 rounded-2xl">
+						<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin"></div>
 					</div>
 				)}
 				{error && (
-					<div className="flex flex-col items-center justify-center w-full h-full bg-red-500/10">
-						<Icon name="outlineHeart" className="text-red-400" />
-						<p className="mt-2 text-xs text-gray-400">خطا در بارگذاری</p>
+					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10">
+						<Icon name="outlineHeart" className="text-error" />
+						<p className="mt-2 text-xs text-muted">خطا در بارگذاری</p>
 					</div>
 				)}
 

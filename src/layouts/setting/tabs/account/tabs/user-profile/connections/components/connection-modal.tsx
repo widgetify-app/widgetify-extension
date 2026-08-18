@@ -1,5 +1,4 @@
-import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
+import { Button, Modal } from '@/components/ui'
 import type { Platform } from './platform-config.js'
 
 interface ConnectionModalProps {
@@ -100,14 +99,6 @@ export function ConnectionModal({
 				<div className="flex justify-end gap-3">
 					<Button
 						size="sm"
-						onClick={onClose}
-						disabled={isLoading}
-						className="flex-1 text-xs font-bold border-none cursor-pointer h-9 rounded-xl bg-base-200 text-content hover:bg-base-300/90"
-					>
-						لغو
-					</Button>
-					<Button
-						size="sm"
 						onClick={() => (isLoading ? undefined : onConfirm())}
 						loading={isLoading}
 						loadingText={
@@ -116,10 +107,21 @@ export function ConnectionModal({
 								در حال پردازش
 							</span>
 						}
-						className={`flex-[2] h-9 rounded-xl font-black text-sm transition-all shadow-sm active:scale-95
-                    ${platform.connected ? 'bg-error text-white' : 'bg-primary text-white'}`}
+						className="flex-2 h-9 text-sm"
+						rounded={'2xl'}
+						variant={platform.connected ? 'danger' : 'primary'}
 					>
 						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
+					</Button>
+					<Button
+						size="sm"
+						onClick={onClose}
+						disabled={isLoading}
+						variant={'default'}
+						rounded={'2xl'}
+						className="flex-1 h-9"
+					>
+						لغو
 					</Button>
 				</div>
 			</div>

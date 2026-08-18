@@ -47,9 +47,9 @@ export function FolderBookmarkItem({
 		}
 
 		return isHovered ? (
-			<Icon name="folderOpen" className="w-8 h-8 text-blue-400" />
+			<Icon name="folderOpen" className="w-8 h-8 text-primary" />
 		) : (
-			<Icon name="folder" className="w-8 h-8 text-blue-400" />
+			<Icon name="folder" className="w-8 h-8 text-primary" />
 		)
 	}
 

@@ -1,4 +1,4 @@
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import AuthForm from './auth-form/auth-form'
 import { SettingModal } from '../../setting-modal'

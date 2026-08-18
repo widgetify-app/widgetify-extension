@@ -1,5 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { Icon } from '@/src/icons'
@@ -16,7 +16,8 @@ export function NewsSimplify() {
 				<Button
 					onClick={onClick}
 					size="xs"
-					className="absolute left-0 flex items-center justify-center w-6 h-6 p-0 rounded-full"
+					rounded={'full'}
+					className="absolute left-0 flex items-center justify-center w-6 h-6 p-0"
 				>
 					<Icon name="settings" size={12} className="text-muted" />
 				</Button>

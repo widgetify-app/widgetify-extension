@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import type React from 'react'
 
 interface ControlButtonProps {

@@ -1,10 +1,9 @@
 import moment from 'jalali-moment'
-import { AvatarComponent } from '@/components/avatar.component'
-import { Button } from '@/components/button/button'
-import { OfflineIndicator } from '@/components/offline-indicator'
+import { AvatarComponent, Button } from '@/components/ui'
+import { OfflineIndicator } from '@/components/ui'
 import { UserCoin } from './user-coin'
 import type React from 'react'
-import { Chip } from '@/components/chip.component'
+import { Chip } from '@/components/ui'
 import { AddPhoneModal } from './modals/add-phone.modal'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
@@ -155,7 +154,7 @@ export const ProfileDisplay = () => {
 						) : (
 							<Button
 								size="xs"
-								className="rounded-2xl"
+								rounded={'2xl'}
 								onClick={() => clickToShow()}
 							>
 								<div className="flex items-center gap-1">

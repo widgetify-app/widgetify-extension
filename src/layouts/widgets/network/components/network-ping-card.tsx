@@ -5,7 +5,7 @@ import {
 	MdOutlineSignalCellularAlt2Bar,
 	MdRouter,
 } from 'react-icons/md'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 
 interface NetworkPingCardProps {
 	ping: number | null
@@ -44,12 +44,12 @@ export function NetworkPingCard({ ping }: NetworkPingCardProps) {
 function getPingIcon(ping: number): JSX.Element {
 	switch (true) {
 		case ping === -1:
-			return <MdOutlineSignalCellularAlt1Bar className={' text-[#A63F3F]'} />
+			return <MdOutlineSignalCellularAlt1Bar className={' text-error'} />
 		case ping <= 100:
-			return <MdOutlineSignalCellularAlt className={' text-[#40CF4E]'} />
+			return <MdOutlineSignalCellularAlt className={' text-success'} />
 		case ping <= 180:
-			return <MdOutlineSignalCellularAlt2Bar className={' text-[#A6893F]'} />
+			return <MdOutlineSignalCellularAlt2Bar className={' text-warning'} />
 		default:
-			return <MdOutlineSignalCellularAlt1Bar className={' text-[#A63F3F]'} />
+			return <MdOutlineSignalCellularAlt1Bar className={' text-error'} />
 	}
 }

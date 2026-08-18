@@ -1,4 +1,4 @@
-import { Button } from '@/components/button/button'
+import { Button } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface ArzHeaderProps {
@@ -17,7 +17,8 @@ export const ArzHeader = ({ title, onSettingsClick }: ArzHeaderProps) => {
 				<Button
 					onClick={onSettingsClick}
 					size="xs"
-					className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+					variant={'ghost'}
+					className="h-6 w-6 p-0 flex items-center justify-center"
 				>
 					<Icon
 						name="menuOption"

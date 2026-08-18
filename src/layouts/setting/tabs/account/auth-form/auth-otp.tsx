@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { TextInput } from '@/components/text-input'
-import { Button } from '@/components/button/button'
 import {
 	useGetAuthStatus,
 	useRequestOtp,
@@ -14,6 +13,7 @@ import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { Icon } from '@/src/icons'
+import { Button } from '@/components/ui'
 
 type AuthOtpProps = {
 	step: 'enter-email' | 'enter-otp'
@@ -181,11 +181,12 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 					</div>
 					<Button
 						type="submit"
-						isPrimary={true}
+						variant={'primary'}
 						size="md"
+						rounded={'2xl'}
 						loading={isPending}
 						disabled={isPending || !email}
-						className="relative w-full py-2.5 md:py-3 text-sm md:text-base transition-all duration-200 shadow text-white group rounded-xl disabled:cursor-not-allowed disabled:text-base-content disabled:opacity-50"
+						className="group"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
 							{isPending ? 'درحال ارسال...' : 'بزن بریم'}
@@ -251,9 +252,10 @@ const AuthOtp: React.FC<AuthOtpProps> = ({ step, setStep }) => {
 				</button>
 				<Button
 					type="submit"
-					isPrimary={true}
+					variant={'primary'}
 					size="md"
-					className="relative flex items-center justify-center w-full py-2.5 md:py-3 text-sm md:text-base font-semibold transition-all duration-200 shadow text-white group rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+					className="w-full flex text-sm md:text-base"
+					rounded={'2xl'}
 					disabled={otp.length !== 6}
 				>
 					<span className="transition-transform duration-200 group-hover:scale-105">

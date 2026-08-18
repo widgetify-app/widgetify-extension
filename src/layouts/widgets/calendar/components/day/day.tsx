@@ -90,7 +90,7 @@ export function DayItem({
 
 	const getHoverStyle = () => {
 		if (isHoliday) {
-			return 'hover:bg-red-400/10'
+			return 'hover:bg-error/10'
 		}
 
 		return 'hover:bg-primary/10'
@@ -132,7 +132,7 @@ export function DayItem({
 			<div className="flex items-center">
 				{hasEvent && (
 					<span
-						className={`w-0.5 h-0.5 rounded-full ${isHolidayEvent ? 'bg-red-500' : 'bg-blue-500/80'} shadow-sm`}
+						className={`w-0.5 h-0.5 rounded-full ${isHolidayEvent ? 'bg-error' : 'bg-primary/80'} shadow-sm`}
 					/>
 				)}
 			</div>

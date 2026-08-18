@@ -19,7 +19,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 					<Icon name="inbox" className="w-4 h-4" />
 					<span className="text-sm font-medium">درخواست‌ها</span>
 					{pendingCount ? (
-						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-red-500 rounded-full -top-1 -right-1 p-0.5 text-center ">
+						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-error rounded-full -top-1 -right-1 p-0.5 text-center ">
 							{pendingCount}
 						</div>
 					) : (
@@ -36,7 +36,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 						className="w-4 h-4 text-base-content/90 group-hover:text-base-content/70"
 					/>
 					{pendingCount ? (
-						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-red-500 rounded-full -top-1 -right-1 p-0.5 text-center ">
+						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-error rounded-full -top-1 -right-1 p-0.5 text-center ">
 							{pendingCount}
 						</div>
 					) : (

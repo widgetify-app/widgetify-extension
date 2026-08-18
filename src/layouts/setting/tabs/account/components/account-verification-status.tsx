@@ -1,5 +1,4 @@
-import { Button } from '@/components/button/button'
-import { SectionPanel } from '@/components/section-panel'
+import { Button, SectionPanel } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface AccountVerificationStatusProps {

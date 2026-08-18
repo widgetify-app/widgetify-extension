@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { Pagination } from '@/components/pagination'
+import { Pagination } from '@/components/ui'
 import { WallpaperItem } from '@/layouts/setting/tabs/wallpapers/tab/gallery/components/wallpaper-item/wallpaper-item'
 import { useGetWallpapers } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'

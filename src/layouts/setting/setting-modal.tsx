@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 import { type TabItem, TabManager } from '@/components/tab-manager'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import { AboutUsTab } from './tabs/about-us/about-us'

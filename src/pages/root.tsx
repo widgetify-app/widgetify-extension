@@ -25,7 +25,7 @@ export function RootLayout() {
 	useWallpaperApply()
 
 	return (
-		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-[100vh] overflow-y-auto scrollbar-none">
+		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 			<IconProvider defaultTheme="default">
 				<GeneralSettingProvider>
 					<WallpaperProvider>
@@ -36,14 +36,14 @@ export function RootLayout() {
 					toastOptions={{
 						error: {
 							style: {
-								backgroundColor: '#f8d7da',
-								color: '#721c24',
+								backgroundColor: 'var(--color-error)',
+								color: 'var(--color-error-content)',
 							},
 						},
 						success: {
 							style: {
-								backgroundColor: '#d4edda',
-								color: '#155724',
+								backgroundColor: 'var(--color-success)',
+								color: 'var(--color-success-content)',
 							},
 						},
 						duration: 5000,

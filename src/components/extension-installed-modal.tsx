@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import keepItImage from '@/assets/images/keep-it.png'
-import { Button } from './button/button'
-import Checkbox from './checkbox'
-import Modal from './modal'
+import { Button } from './ui'
+import { Checkbox } from '@/components/ui'
+import { Modal } from '@/components/ui'
 import { Icon } from '../icons'
 
 interface ExtensionInstalledModalProps {
@@ -72,7 +72,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				size="md"
 				onClick={onGetStarted}
 				className="w-full text-base font-light shadow-sm rounded-2xl shadow-primary outline-none!"
-				isPrimary={true}
+				variant="primary"
 			>
 				شروع کنید
 			</Button>
@@ -158,14 +158,16 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 				<Button
 					onClick={handleDecline}
 					size="md"
-					className="flex items-center justify-center w-40 btn btn-error rounded-xl"
+					variant="danger"
+					className="flex items-center justify-center w-40 rounded-xl"
 				>
 					🚫 حذف افزونه
 				</Button>
 				<Button
 					onClick={handleConfirm}
 					size="md"
-					className="w-40 btn btn-success rounded-xl"
+					variant="success"
+					className="w-40 rounded-xl"
 				>
 					✅ تأیید و ادامه
 				</Button>

@@ -1,4 +1,4 @@
-import { ItemSelector } from '@/components/item-selector'
+import { Button, ItemSelector } from '@/components/ui'
 import type { BookmarkType } from '../types/bookmark.types'
 import { Icon } from '@/src/icons'
 
@@ -54,12 +54,13 @@ export function ShowAdvancedButton({
 	showAdvanced,
 }: ShowAdvancedButtonProps) {
 	return (
-		<button
+		<Button
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
-			className={
-				'bg-base-300 hover:bg-base-300/70 border border-base-300/70 flex items-center gap-1 px-3 py-1 text-sm font-medium transition-all duration-200 cursor-pointer text-content rounded-xl active:scale-95'
-			}
+			size={'md'}
+			rounded={'2xl'}
+			variant={'default'}
+			className="text-muted"
 		>
 			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
 			<Icon
@@ -67,6 +68,6 @@ export function ShowAdvancedButton({
 				size={16}
 				className={`transition-all duration-300 ${showAdvanced ? 'rotate-0' : 'rotate-180'}`}
 			/>
-		</button>
+		</Button>
 	)
 }

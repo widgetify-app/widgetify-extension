@@ -73,7 +73,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					// className="stroke-blue-100"
+					// className="stroke-primary"
 					className="stroke-base-content/10"
 					strokeWidth={strokeWidth}
 				/>

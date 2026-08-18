@@ -1,4 +1,4 @@
-import Modal from '@/components/modal'
+import { Modal } from '@/components/ui'
 
 interface Prop {
 	show: boolean

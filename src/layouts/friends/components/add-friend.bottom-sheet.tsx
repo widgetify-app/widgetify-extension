@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import Modal from '@/components/modal'
+import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface AddFriendBottomSheetProps {
@@ -93,10 +92,10 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				</div>
 
 				{!canSendRequest && (
-					<div className="flex items-start gap-3 p-4 border rounded-xl bg-yellow-500/10 border-yellow-500/20">
+					<div className="flex items-start gap-3 p-4 border rounded-xl bg-warning/10 border-warning/20">
 						<Icon
 							name="alert"
-							className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5"
+							className="w-5 h-5 text-warning flex-shrink-0 mt-0.5"
 						/>
 						<p className="text-sm leading-relaxed text-warning">
 							برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
@@ -127,7 +126,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						/>
 
 						{translatedError && (
-							<p className="flex items-center gap-1 text-sm text-red-500">
+							<p className="flex items-center gap-1 text-sm text-error">
 								<Icon name="alert" className="w-4 h-4" />
 								{translatedError}
 							</p>

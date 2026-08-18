@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
-import Tooltip from '@/components/tool-tip'
+import { Modal } from '@/components/ui'
 import type { FolderPathItem } from '../types/bookmark.types'
 import { FolderPath } from './folder-path'
-import { Icon } from '@/src/icons'
 
 interface FolderHeaderProps {
 	folderPath: FolderPathItem[]
@@ -27,24 +24,6 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 					onNavigate={onNavigate}
 					className="w-full "
 				/>
-				<Tooltip content={'آموزش'}>
-					<Button
-						onClick={() => setIsOpen(true)}
-						size="xs"
-						className={`h-7 w-7 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
-					>
-						<Icon name="help" size={12} />
-					</Button>
-				</Tooltip>
-				<Tooltip content={'بستن'}>
-					<Button
-						onClick={() => onNavigate(null, -1)}
-						size="xs"
-						className={`h-7 w-7 mr-1 text-xs font-medium rounded-[0.55rem] transition-colors border-none shadow-none text-muted hover:bg-base-300`}
-					>
-						<Icon name="close" size={12} />
-					</Button>
-				</Tooltip>
 			</div>
 
 			<Modal

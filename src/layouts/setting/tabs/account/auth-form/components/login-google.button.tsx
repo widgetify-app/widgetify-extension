@@ -1,4 +1,4 @@
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import {
 	type AuthResponse,

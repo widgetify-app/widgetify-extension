@@ -1,8 +1,7 @@
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
-import { AvatarComponent } from '../avatar.component'
-import { Button } from '../button/button'
+import { AvatarComponent, Button } from '@/components/ui'
 import type { UserCardUser } from './user-card-portal'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
@@ -43,10 +42,10 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 		<div className={`${className}`}>
 			<div
 				className={
-					'flex flex-col overflow-hidden border border-gray-700 rounded-lg shadow-xl bg-widget widget-wrapper'
+					'flex flex-col overflow-hidden border border-content rounded-widget elevation-lg bg-content bg-glass'
 				}
 			>
-				<div className="w-full h-16 bg-gray-900"></div>
+				<div className="w-full h-16 bg-raised"></div>
 
 				<div className="px-4 pb-4">
 					<div className="relative mb-3 -mt-8">
@@ -55,7 +54,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 								url={user.avatar}
 								placeholder={user.username || ''}
 								size="xl"
-								className="w-16 h-16 overflow-hidden border-2 border-gray-800 rounded-full"
+								className="w-16 h-16 overflow-hidden border-2 border-content rounded-full"
 							/>
 							{showManageFriend ? (
 								<div className={'w-24 top-9 absolute -right-3'} dir="rtl">
@@ -64,7 +63,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 											<Button
 												size="xs"
 												rounded="md"
-												className="flex items-center  !text-[10px]  text-gray-100"
+												className="flex items-center !text-[10px]"
 												isPrimary={true}
 												loading={isSending}
 												loadingText="در حال ارسال..."
@@ -97,7 +96,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 						</div>
 
 						{user.extras?.activity && (
-							<div className="flex items-center mt-2 text-sm text-gray-300">
+							<div className="flex items-center mt-2 text-sm text-muted">
 								<span className={'text-content opacity-85'}>
 									{user.extras.activity}
 								</span>

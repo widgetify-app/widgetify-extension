@@ -98,7 +98,7 @@ export function AnalogClock({ timezone, setting }: AnalogClockProps) {
 						x2={60 + 50 * Math.cos(((minuteAngle - 90) * Math.PI) / 180)}
 						y2={60 + 50 * Math.sin(((minuteAngle - 90) * Math.PI) / 180)}
 						strokeWidth="4"
-						className="transition-transform duration-300 ease-out stroke-gray-400"
+						className="transition-transform duration-300 ease-out stroke-base-content/40"
 						strokeLinecap="round"
 					/>
 

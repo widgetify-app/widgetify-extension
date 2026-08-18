@@ -1,6 +1,6 @@
 import { showToast } from '@/common/toast'
-import Modal from '@/components/modal'
-import { SectionPanel } from '@/components/section-panel'
+import { Modal } from '@/components/ui'
+import { SectionPanel } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { safeAwait } from '@/services/api'
 import { useUpdateUsername } from '@/services/hooks/auth/auth-service.hook'

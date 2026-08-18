@@ -1,17 +1,15 @@
 import { Motion as motion, Presence } from '@/common/motion'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { Button } from '@/components/button/button'
 import { TextInput } from '@/components/text-input'
-import { IconLoading } from '@/components/loading/icon-loading'
-import { ClickableTooltip } from '@/components/clickable-tooltip'
+import { Button, Dropdown, IconLoading } from '@/components/ui'
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
-import { Chip } from '@/components/chip.component'
+import { Chip } from '@/components/ui'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/context/date.context'
-import { DatePicker } from '@/components/date-picker/date-picker'
+import { DatePicker } from '@/components/ui'
 import { PriorityDropdown } from './components/priority.dropdown'
 import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 import { type TodoCreationPayload, useAddTodo } from '@/services/hooks/todo/add-todo.hook'
@@ -51,15 +49,11 @@ export function ExpandableTodoInput({
 	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
 	const [category, setCategory] = useState('')
 	const { data: fetchedTags } = useGetTags(isAuthenticated && isExpanded)
-	const [isTagTooltipOpen, setIsTagTooltipOpen] = useState(false)
 	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(today)
-	const [showDatePicker, setShowDatePicker] = useState(false)
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const notesRef = useRef<HTMLTextAreaElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
-	const dateButtonRef = useRef<HTMLButtonElement>(null)
-	const categoryInputRef = useRef<HTMLInputElement | null>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
 	const [selectedFriends, setSelectedFriends] = useState<Friend[]>([])
 
@@ -117,7 +111,7 @@ export function ExpandableTodoInput({
 
 	const onSelectCategory = (v: string) => {
 		setCategory(v)
-		setIsTagTooltipOpen(false)
+		callEvent('closeAllDropdowns')
 		Analytics.event('todo_category_select')
 	}
 
@@ -164,7 +158,6 @@ export function ExpandableTodoInput({
 		if (notesInputRef.current) {
 			notesInputRef.current.value = ''
 		}
-		setIsTagTooltipOpen(false)
 		setCategory('')
 		setPriority(undefined)
 		setSelectedDate(today.clone())
@@ -257,7 +250,9 @@ export function ExpandableTodoInput({
 								disabled={isPending}
 								loading={isPending}
 								size="sm"
-								className="rounded-full px-0! w-8 btn-ghost"
+								rounded={'full'}
+								variant={'ghost'}
+								className="px-0! w-8"
 							>
 								<Icon name="close" size={12} className="" />
 							</Button>
@@ -268,8 +263,9 @@ export function ExpandableTodoInput({
 							loading={isPending}
 							loadingText={<IconLoading />}
 							size="sm"
-							isPrimary={true}
-							className="rounded-full px-0! w-8"
+							variant={'primary'}
+							rounded={'full'}
+							className="px-0! w-8"
 						>
 							{isEdit ? (
 								<Icon name="save" size={16} />
@@ -308,32 +304,93 @@ export function ExpandableTodoInput({
 											priority={priority}
 											setPriority={setPriority}
 										/>
-										<Button
-											size="sm"
-											className={`p-2 border rounded-xl text-base-content/40 shrink-0 active:scale-95`}
-											onClick={() => setShowDatePicker(true)}
-											ref={dateButtonRef}
+
+										<Dropdown
+											trigger={
+												<Button
+													size="sm"
+													rounded={'xl'}
+													className={`p-2 border text-base-content/40 shrink-0 active:scale-95`}
+												>
+													<Icon name="calendarDays" size={16} />
+													<p className="truncate max-w-14 min-w-5">
+														{selectedDate
+															? formatJalaliDateForDisplay(
+																	selectedDate
+																)
+															: 'تاریخ انجامش'}
+													</p>
+												</Button>
+											}
 										>
-											<Icon name="calendarDays" size={16} />
-											<p className="truncate max-w-14 min-w-5">
-												{selectedDate
-													? formatJalaliDateForDisplay(
-															selectedDate
-														)
-													: 'تاریخ انجامش'}
-											</p>
-										</Button>
-										<Button
-											size="sm"
-											className={`p-2 border rounded-xl  text-[10px]  text-base-content/40 shrink-0 active:scale-95`}
-											ref={categoryInputRef}
-											onClick={() => setIsTagTooltipOpen(true)}
+											<DatePicker
+												selectedDate={selectedDate}
+												onDateSelect={(date) => {
+													setSelectedDate(date)
+													callEvent('closeAllDropdowns')
+												}}
+											/>
+										</Dropdown>
+
+										<Dropdown
+											trigger={
+												<Button
+													size="sm"
+													className={`p-2 border rounded-xl  text-[10px]  text-base-content/40 shrink-0 active:scale-95`}
+												>
+													<Icon name="tags" size={16} />
+													<p className="truncate max-w-14 min-w-5">
+														{category || 'دسته‌بندی'}
+													</p>
+												</Button>
+											}
 										>
-											<Icon name="tags" size={16} />
-											<p className="truncate max-w-14 min-w-5">
-												{category || 'دسته‌بندی'}
-											</p>
-										</Button>
+											<div className="flex flex-col gap-2 p-2 border w-62 bg-base-200 rounded-2xl border-base-300">
+												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-base-200">
+													<TextInput
+														value={category}
+														onChange={(val) =>
+															setCategory(val)
+														}
+														placeholder="مثلا: کارهای خونه"
+														className="duration-75 border-0 bg-transparent!"
+													/>
+													<Button
+														size="xs"
+														variant={'primary'}
+														rounded={'full'}
+														className="p-0! w-6 h-6"
+														onClick={() =>
+															callEvent('closeAllDropdowns')
+														}
+													>
+														<Icon name="plus" size={18} />
+													</Button>
+												</div>
+												<div className="w-full h-0.5  rounded-full bg-base-300" />
+												<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
+													{fetchedTags
+														?.filter((tag) => tag.trim())
+														?.map((tag) => (
+															<Chip
+																key={tag}
+																selected={false}
+																onClick={() =>
+																	onSelectCategory(tag)
+																}
+																className="flex gap-1 text-xs px-2! py-1!"
+															>
+																<Icon
+																	name="tags"
+																	size={16}
+																	className="text-base-content/40"
+																/>
+																{tag}
+															</Chip>
+														))}
+												</div>
+											</div>
+										</Dropdown>
 
 										{!isEdit && isAuthenticated && (
 											<TodoSelectFriends
@@ -345,71 +402,6 @@ export function ExpandableTodoInput({
 										)}
 									</div>
 								</div>
-								<ClickableTooltip
-									isOpen={isTagTooltipOpen}
-									triggerRef={categoryInputRef}
-									position="top"
-									setIsOpen={setIsTagTooltipOpen}
-									content={
-										<div className="flex flex-col gap-2 p-2 border w-62 bg-base-200 rounded-2xl border-base-300">
-											<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-base-200">
-												<TextInput
-													value={category}
-													onChange={(val) => setCategory(val)}
-													placeholder="مثلا: کارهای خونه"
-													className="duration-75 border-0 bg-transparent!"
-												/>
-												<Button
-													size="xs"
-													isPrimary={true}
-													className="rounded-full p-0! w-6 h-6"
-													onClick={() =>
-														setIsTagTooltipOpen(false)
-													}
-												>
-													<Icon name="plus" size={18} />
-												</Button>
-											</div>
-											<div className="w-full h-0.5  rounded-full bg-base-300" />
-											<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
-												{fetchedTags
-													?.filter((tag) => tag.trim())
-													?.map((tag) => (
-														<Chip
-															key={tag}
-															selected={false}
-															onClick={() =>
-																onSelectCategory(tag)
-															}
-															className="flex gap-1 text-xs px-2! py-1!"
-														>
-															<Icon
-																name="tags"
-																size={16}
-																className="text-base-content/40"
-															/>
-															{tag}
-														</Chip>
-													))}
-											</div>
-										</div>
-									}
-								/>
-								<ClickableTooltip
-									triggerRef={dateButtonRef}
-									isOpen={showDatePicker}
-									setIsOpen={setShowDatePicker}
-									position="top"
-									content={
-										<DatePicker
-											selectedDate={selectedDate}
-											onDateSelect={(date) => {
-												setSelectedDate(date)
-												setShowDatePicker(false)
-											}}
-										/>
-									}
-								/>
 							</div>
 						</motion.div>
 					)}

@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Generate WXT types
+        run: bunx wxt prepare
+
       - name: Build files
         run: bun compile
         

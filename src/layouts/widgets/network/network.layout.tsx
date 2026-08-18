@@ -2,9 +2,8 @@ import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
-import { AvatarComponent } from '@/components/avatar.component'
-import { Button } from '@/components/button/button'
-import Tooltip from '@/components/tool-tip'
+import { AvatarComponent, Button } from '@/components/ui'
+import { Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient, safeAwait } from '@/services/api'
@@ -145,7 +144,7 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
 										<div
-											className={`w-2 h-2 rounded-full animate-pulse ${networkInfo.status === 'online' ? 'bg-success' : 'bg-red-500'}`}
+											className={`w-2 h-2 rounded-full animate-pulse ${networkInfo.status === 'online' ? 'bg-success' : 'bg-error'}`}
 										></div>
 										<span className="text-xs font-medium text-muted">
 											{networkInfo.status === 'online'
@@ -176,12 +175,12 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 								{(networkInfo.city || networkInfo.country) && (
 									<div className="flex items-center justify-center gap-2 text-xs flex-warp">
 										{networkInfo.city && (
-											<span className="px-2 py-1 font-medium text-blue-600 rounded-full bg-blue-500/10">
+											<span className="px-2 py-1 font-medium text-primary rounded-full bg-primary/10">
 												{networkInfo.city}
 											</span>
 										)}
 										{networkInfo.country && (
-											<span className="px-2 py-1 font-medium text-purple-600 rounded-full bg-purple-500/10">
+											<span className="px-2 py-1 font-medium text-secondary rounded-full bg-secondary/10">
 												{networkInfo.country}
 											</span>
 										)}
@@ -195,8 +194,11 @@ export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
 						<Button
 							size="md"
 							type="button"
-							className="w-full h-8 border border-content rounded-2xl"
+							className="w-full h-fit py-3.5"
+							rounded={'2xl'}
+							variant={'default'}
 							onClick={handleRefresh}
+							disabled={isLoading}
 						>
 							<Icon
 								name="refresh"

@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import Modal from '@/components/modal'
-import { Button } from '@/components/button/button'
+import { Button, Modal } from '@/components/ui'
 import {
 	useGetOccupations,
 	useGetInterests,
 } from '@/services/hooks/profile/get-profile-meta.hook'
 import { TextInput } from '@/components/text-input'
 import { sleep } from '@/common/utils/timeout'
-import { Chip } from '@/components/chip.component'
-import { ItemSelector } from './item-selector'
+import { Chip } from '@/components/ui'
+import { ItemSelector } from '@/components/ui'
 import { useSetupWizard } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
@@ -131,8 +130,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<Button
 								size="sm"
 								onClick={nextStep}
-								className="w-full h-12 text-base font-bold text-white shadow-lg rounded-2xl"
-								isPrimary
+								className="w-full h-12 text-base font-bold shadow-lg"
+								variant={'primary'}
+								rounded={'2xl'}
 							>
 								بزن بریم
 							</Button>
@@ -186,8 +186,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									size="sm"
 									onClick={nextStep}
 									disabled={!selectedOccupation}
-									className="flex-1 h-12 font-bold text-white rounded-2xl"
-									isPrimary
+									className="flex-1 h-12 font-bold"
+									variant={'primary'}
+									rounded={'2xl'}
 								>
 									تایید و ادامه
 								</Button>
@@ -253,8 +254,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									size="sm"
 									onClick={nextStep}
 									disabled={selectedInterests.length === 0}
-									className="flex-1 h-12 font-bold text-white rounded-2xl"
-									isPrimary
+									className="flex-1 h-12 font-bold"
+									variant={'primary'}
+									rounded={'2xl'}
 								>
 									ادامه
 								</Button>
@@ -329,8 +331,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								onClick={() => save()}
 								disabled={!selectedReferralSource || isPending}
 								loading={isPending}
-								className="w-full h-12 mt-4 text-base font-bold text-white shadow-lg rounded-2xl"
-								isPrimary
+								className="flex-1 h-12 font-bold mt-4"
+								variant={'primary'}
+								rounded={'2xl'}
 							>
 								ادامه
 							</Button>
@@ -358,8 +361,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<Button
 								size="sm"
 								onClick={onClose}
-								className="w-full h-12 text-base font-bold text-white shadow-lg rounded-2xl"
-								isPrimary
+								className="flex-1 h-12 font-bold"
+								variant={'primary'}
+								rounded={'2xl'}
 							>
 								شروع استفاده
 							</Button>

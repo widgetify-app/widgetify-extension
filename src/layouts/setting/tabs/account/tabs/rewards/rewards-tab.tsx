@@ -1,5 +1,5 @@
 import { ConfigKey } from '@/common/constant/config.key'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { useGetReferrals } from '@/services/hooks/user/referrals-service.hook'
 import { ReferralCodeSection } from './components/referral-code-section'
 import { RewardTasks } from './components/tasks'
@@ -34,7 +34,7 @@ export const RewardsTab = () => {
 					}
 					size="xs"
 				>
-					<div className="p-2 border rounded-2xl bg-gradient-to-br from-primary/5 to-purple-500/5 border-primary/20">
+					<div className="p-2 border rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
 						<div className="flex items-start gap-3">
 							<Icon
 								name="info"

@@ -2,14 +2,13 @@ import { useState } from 'react'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/loading/icon-loading'
-import { FilterTooltip } from '@/components/filter-tooltip'
+import { Button, IconLoading } from '@/components/ui'
+import { FilterTooltip } from '@/components/ui'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Button } from '@/components/button/button'
-import Tooltip from '@/components/tool-tip'
+import { Tooltip } from '@/components/ui'
 import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import { TodoItem } from './todo.item'
 import { Icon } from '@/src/icons'
@@ -245,12 +244,12 @@ export function TodosLayout() {
 						<Tooltip content="بارگزاری مجدد">
 							<Button
 								size="sm"
-								className={`px-2 py-0! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								className={`px-2 py-0! border-none! group rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
 								onClick={onRefresh}
 							>
 								<Icon
 									name="refresh"
-									className={`text-content opacity-50 hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
+									className={`text-content opacity-50 group-hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>

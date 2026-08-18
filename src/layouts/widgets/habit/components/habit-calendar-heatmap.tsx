@@ -7,7 +7,7 @@ import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.h
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
-import { IconLoading } from '@/components/loading/icon-loading'
+import { IconLoading } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface HabitCalendarProps {

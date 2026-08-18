@@ -3,7 +3,7 @@ import { useSearchSuggestions } from '@/services/hooks/search/get-suggest-search
 import { SuggestionSkeleton } from './suggestion/suggestion.skeleton'
 import { useAuth } from '@/context/auth.context'
 import { AutocompleteConsentModal } from './suggestion/autocomplete-consent.modal'
-import { Portal } from '@/components/portal/portal'
+import { Portal } from '@/components/ui'
 import { useSearchHistory } from './hooks/use-search-history'
 import { Suggestions } from './suggestion/suggestions'
 import { Icon } from '@/src/icons'

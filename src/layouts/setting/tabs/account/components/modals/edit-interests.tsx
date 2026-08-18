@@ -1,9 +1,9 @@
-import Modal from '@/components/modal'
+import { Chip, Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import { InterestsSelector } from '../interests-selector'
 import { useGetInterests } from '@/services/hooks/profile/get-profile-meta.hook'
-import { SectionPanel } from '@/components/section-panel'
+import { SectionPanel } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
 
 interface Prop {
@@ -45,43 +45,39 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 			direction="rtl"
 			showCloseButton={false}
 		>
-			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title="به چی علاقه داری؟" size="xs">
-					<InterestsSelector
-						interests={fetchedInterests}
-						selectedInterests={interests}
-						onSelect={(ids) => setInterests(() => [...ids])}
-						isLoading={interestsLoading}
-						triggerElement={
-							<div className="flex flex-wrap w-full max-h-32 overflow-y-auto gap-1 p-3 transition-all border   border-content rounded-2xl hover:border-primary/40! cursor-pointer">
-								{interests.length > 0 ? (
-									interests.map((id) => (
-										<div
-											key={id}
-											className="flex items-center w-fit px-2 py-1 text-[11px] bg-primary/10 text-primary rounded-full border border-primary/20 h-6"
-										>
-											{
-												fetchedInterests.find((i) => i.id === id)
-													?.title
-											}
-										</div>
-									))
-								) : (
-									<span className="text-xs text-muted">
-										انتخاب زمینه‌های مورد علاقه...
-									</span>
-								)}
-							</div>
-						}
-					/>
-				</SectionPanel>
-
+			<SectionPanel title="به چی علاقه داری؟" size="xs">
+				<InterestsSelector
+					interests={fetchedInterests}
+					selectedInterests={interests}
+					onSelect={(ids) => setInterests(() => [...ids])}
+					isLoading={interestsLoading}
+					triggerElement={
+						<div className="flex flex-wrap w-full min-h-24 max-h-24 h-24 overflow-y-auto gap-1 p-2 transition-all border   border-content rounded-2xl hover:border-primary/40! cursor-pointer">
+							{interests.length > 0 ? (
+								interests.map((id) => (
+									<Chip
+										key={id}
+										className="py-0.5 px-1 h-fit"
+										selected
+										onClick={() => {}}
+									>
+										{fetchedInterests.find((i) => i.id === id)?.title}
+									</Chip>
+								))
+							) : (
+								<span className="text-xs text-muted">
+									انتخاب زمینه‌های مورد علاقه...
+								</span>
+							)}
+						</div>
+					}
+				/>
 				<FooterButtons
 					handleCancel={onCancel}
 					handleConfirm={onClickSave}
 					isPending={updateProfileMutation.isPending}
 				/>
-			</div>
+			</SectionPanel>
 		</Modal>
 	)
 }

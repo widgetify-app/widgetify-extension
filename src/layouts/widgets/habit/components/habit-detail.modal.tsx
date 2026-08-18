@@ -1,10 +1,9 @@
-import Modal from '@/components/modal'
+import { Button, Modal } from '@/components/ui'
 import { useGetHabitDetail } from '@/services/hooks/habit/get-habit-detail.hook'
 import { HabitCalendar } from './habit-calendar-heatmap'
 import { useAuth } from '@/context/auth.context'
 import { formatHabitGoal } from '../utils'
-import { Button } from '@/components/button/button'
-import { Dropdown } from '@/components/dropdown'
+import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
@@ -45,7 +44,7 @@ export function HabitDetailModal({
 		error,
 	} = useGetHabitDetail(habitId || '', isOpen && isAuthenticated)
 
-	const color = habit?.color || '#3b82f6'
+	const color = habit?.color || '#536dfe'
 
 	const title =
 		isLoading || !habit ? (
@@ -74,7 +73,8 @@ export function HabitDetailModal({
 							trigger={
 								<Button
 									size="xs"
-									className="text-xs border-none py-1! rounded-xl"
+									className="text-xs border-none py-1!"
+									rounded={'xl'}
 								>
 									<Icon
 										name="menuOption"

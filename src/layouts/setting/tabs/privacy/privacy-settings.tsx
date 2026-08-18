@@ -1,5 +1,5 @@
-import { SectionPanel } from '@/components/section-panel'
-import { ToggleSwitch } from '@/components/toggle-switch.component'
+import { SectionPanel } from '@/components/ui'
+import { ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete.switch'
 

@@ -2,11 +2,10 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
-import { CheckBoxWithDescription } from '@/components/checkbox-description.component'
-import { SectionPanel } from '@/components/section-panel'
+import { Button, CheckBoxWithDescription } from '@/components/ui'
+import { SectionPanel } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
-import { ToggleSwitch } from '@/components/toggle-switch.component'
+import { ToggleSwitch } from '@/components/ui'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import type { WigiNewsSetting } from './rss.interface'
 import { Icon } from '@/src/icons'
@@ -220,8 +219,9 @@ export const RssFeedSetting = () => {
 
 					<Button
 						size="md"
-						className="text-white rounded-xl btn-primary"
+						rounded={'2xl'}
 						onClick={addNewFeed}
+						variant={'primary'}
 					>
 						<Icon name="plus" size={16} />
 						<span>افزودن فید جدید</span>
@@ -348,9 +348,8 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			</div>
 			<Button
 				size="sm"
-				className={
-					'btn btn-circle h-9 w-9 bg-error/10 hover:!bg-error/20 text-error border-none shadow-none rounded-full transition-colors duration-300 ease-in-out'
-				}
+				variant={'danger'}
+				rounded={'full'}
 				onClick={onRemove}
 				disabled={disabled}
 			>

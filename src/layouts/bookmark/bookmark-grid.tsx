@@ -1,7 +1,7 @@
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
-import { ConfirmationModal } from '@/components/modal/confirmation-modal'
+import { ConfirmationModal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { openBookmarksOptimized } from './utils/tab-manager'

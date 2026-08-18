@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { Button } from '@/components/button/button'
-import Modal from '@/components/modal'
-import PopoverColorPicker from '@/components/popover-color-picker'
+import { Button, Modal } from '@/components/ui'
+import { ColorPicker } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
@@ -100,7 +99,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-blue-500 border-blue-500/30 animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-primary/30 animate-spin"></div>
 				</div>
 			)
 		}
@@ -114,8 +113,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-blue-500/25 border-2 border-blue-500 transform scale-110'
-									: 'border border-transparent hover:bg-gray-500/10 active:bg-gray-500/20'
+									? 'bg-primary/25 border-2 border-primary transform scale-110'
+									: 'border border-transparent hover:bg-base-content/10 active:bg-base-content/20'
 							}`}
 					>
 						<img
@@ -173,7 +172,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							debounce={true}
 						/>
 						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-							<PopoverColorPicker
+							<ColorPicker
 								color={background || ''}
 								onChange={setBackground}
 							/>
@@ -182,7 +181,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							type="button"
 							onClick={resetBackground}
 							size="md"
-							className="rounded-2xl p-3!"
+							className="p-3!"
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -203,7 +204,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							debounce={true}
 						/>
 						<div className="absolute flex items-center gap-2 -translate-y-1/2 right-1 top-1/2">
-							<PopoverColorPicker
+							<ColorPicker
 								color={textColor || ''}
 								onChange={setTextColor}
 							/>
@@ -212,7 +213,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							type="button"
 							onClick={resetTextColor}
 							size="md"
-							className="rounded-2xl p-3!"
+							className="p-3!"
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -229,9 +232,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={
-								'btn !w-fit px-8 border-none shadow-none bg-base-300 text-muted rounded-xl transition-colors duration-300 ease-in-out'
-							}
+							className={'btn !w-fit px-8'}
+							rounded={'2xl'}
+							variant={'default'}
 						>
 							{sticker ? (
 								<>
@@ -266,7 +269,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
 								className={
-									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-red-600 hover:bg-red-50'
+									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-error hover:bg-error/10'
 								}
 							>
 								حذف
@@ -326,9 +329,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<Button
 						size="md"
 						onClick={() => onClose(null)}
-						className={
-							'btn btn-circle !bg-base-300 hover:!bg-error/10 text-muted hover:!text-error px-10 border-none shadow-none !rounded-2xl transition-colors duration-300 ease-in-out'
-						}
+						rounded={'2xl'}
+						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 					>
 						لغو
 					</Button>
@@ -336,10 +338,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						type="submit"
 						onClick={() => handleClose()}
 						size="md"
-						isPrimary={true}
-						className={
-							'btn btn-circle !w-fit px-8 border-none shadow-none text-secondary !rounded-2xl transition-colors duration-300 ease-in-out'
-						}
+						variant={'primary'}
+						rounded={'2xl'}
+						className={'w-fit px-8  border-none'}
 					>
 						ذخیره
 					</Button>

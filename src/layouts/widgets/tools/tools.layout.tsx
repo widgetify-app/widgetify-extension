@@ -4,7 +4,7 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
-import { TabNavigation } from '@/components/tab-navigation'
+import { TabNavigation } from '@/components/ui'
 import {
 	MdOutlineCurrencyExchange,
 	MdOutlineMosque,

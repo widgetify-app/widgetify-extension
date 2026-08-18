@@ -67,12 +67,11 @@ export function UserCardPortal({
 	return createPortal(
 		<div
 			ref={cardRef}
-			className="fixed z-50 shadow-lg min-w-64 max-w-64"
+			className="fixed z-popover shadow-lg min-w-64 max-w-64"
 			style={{
 				top: `${position.top}px`,
 				left: `${position.left}px`,
 				transform: 'translateX(-50%)',
-				zIndex: 99999,
 			}}
 			dir="ltr"
 		>

@@ -13,12 +13,12 @@ import {
 } from '@dnd-kit/sortable'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
-import { Button } from '@/components/button/button'
 import { useCurrencyStore } from '@/context/currency.context'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
 import { ArzHeader } from './components/arz-header'
 import { SortableCurrencyBox } from './components/sortable-currency-box'
+import { Button } from '@/components/ui'
 
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
@@ -88,9 +88,9 @@ export function WigiArzLayout({
 								ارزهای مورد نظر خود را اضافه کنید
 							</p>
 							<Button
-								rounded="full"
+								rounded="xl"
 								size="sm"
-								className="mt-1 border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
+								variant={'primary'}
 								onClick={onSettingClick}
 							>
 								افزودن ارز
@@ -149,13 +149,13 @@ export function WigiArzLayout({
 								💲
 							</div>
 							<p className="text-center text-content">
-								ارزهای مورد نظر خود را اضافه کنید.
+								ارزهای مورد نظر خود را اضافه کنید
 							</p>
 							<Button
-								rounded="full"
-								onClick={() => onSettingClick()}
+								rounded="xl"
 								size="sm"
-								className="border border-base-300/70 px-5 bg-base-300/70 hover:!bg-primary hover:text-white hover:border-primary"
+								variant={'primary'}
+								onClick={onSettingClick}
 							>
 								افزودن ارز
 							</Button>

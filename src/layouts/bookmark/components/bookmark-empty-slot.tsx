@@ -31,7 +31,7 @@ export function EmptyBookmarkSlot({
 						<Icon name="bookmarkPlus" size={38} className="opacity-50" />
 					</div>
 				) : (
-					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-500/20"></div>
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20"></div>
 				)}
 			</div>
 

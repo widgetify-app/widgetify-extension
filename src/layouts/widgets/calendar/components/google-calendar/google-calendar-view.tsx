@@ -5,11 +5,11 @@ import { useGetGoogleCalendarEvents } from '@/services/hooks/date/get-google-cal
 import { useDate } from '@/context/date.context'
 import { CalendarEvent } from './google-event.item'
 import { useAuth } from '@/context/auth.context'
-import { Button } from '@/components/button/button'
 import { callEvent } from '@/common/utils/call-event'
 import type { WidgetifyDate } from '../../utils'
 import { GoogleEventItemSkeleton } from './google-event.item-skeleton'
 import { Icon } from '@/src/icons'
+import { Button } from '@/components/ui'
 
 export const GoogleCalendarView: React.FC = () => {
 	const { user, isAuthenticated } = useAuth()

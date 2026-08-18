@@ -1,5 +1,5 @@
-import { Button } from '@/components/button/button'
-import { ClickableTooltip } from '@/components/clickable-tooltip'
+import { callEvent } from '@/common/utils/call-event'
+import { Button, ClickableTooltip, Dropdown } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import { useRef, useState, useEffect } from 'react'
 
@@ -34,7 +34,6 @@ export default function JalaliDatePicker({
 	enable,
 }: JalaliDatePickerProps) {
 	const currentYear = 1403
-	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<any>(null)
 
 	const [tempDate, setTempDate] = useState({ year: 1380, month: 1, day: 1 })
@@ -51,11 +50,11 @@ export default function JalaliDatePicker({
 	}
 
 	useEffect(() => {
-		if (isOpen) {
+		if (value) {
 			const parsed = parseValue(value)
 			setTempDate(parsed)
 		}
-	}, [isOpen, value])
+	}, [value])
 
 	const getDaysInMonth = (m: number, y: number) => {
 		if (m === 12) {
@@ -84,97 +83,89 @@ export default function JalaliDatePicker({
 	const handleConfirm = () => {
 		const formattedDate = `${tempDate.year}-${tempDate.month.toString().padStart(2, '0')}-${tempDate.day.toString().padStart(2, '0')}`
 		onChange(formattedDate)
-		setIsOpen(false)
+		callEvent('closeAllDropdowns')
 	}
 
 	const handleCancel = () => {
-		setIsOpen(false)
-	}
-
-	const onClickToOpen = () => {
-		if (!enable) {
-			return
-		}
-
-		setIsOpen(true)
+		callEvent('closeAllDropdowns')
 	}
 
 	return (
-		<>
-			<button
-				ref={enable ? triggerRef : null}
-				type="button"
-				onClick={() => onClickToOpen()}
-				className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-content"
-			>
-				<div
-					className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-content rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary/50! cursor-pointer'}`}
+		<Dropdown
+			trigger={
+				<button
+					ref={enable ? triggerRef : null}
+					type="button"
+					className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-content"
 				>
-					<div className="flex items-center gap-3">
-						<Icon name="calendarDays" size={14} className="text-primary" />
-						<span className={value ? 'text-content' : 'text-muted'}>
-							{value || 'انتخاب تاریخ'}
-						</span>
+					<div
+						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-content rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary/50! cursor-pointer'}`}
+					>
+						<div className="flex items-center gap-3">
+							<Icon
+								name="calendarDays"
+								size={14}
+								className="text-primary"
+							/>
+							<span className={value ? 'text-content' : 'text-muted'}>
+								{value || 'انتخاب تاریخ'}
+							</span>
+						</div>
+						<Icon name="chevronRight" size={18} className="text-muted" />
 					</div>
-					<Icon name="chevronRight" size={18} className="text-muted" />
+				</button>
+			}
+			className="w-full"
+		>
+			<div className="p-2 border min-w-52 bg-base-200 rounded-2xl border-base-300">
+				<div className="flex gap-3 mb-5">
+					<ScrollWheel
+						label="روز"
+						value={tempDate.day}
+						max={getDaysInMonth(tempDate.month, tempDate.year)}
+						onChange={handleDayChange}
+						type="number"
+					/>
+					<ScrollWheel
+						label="ماه"
+						value={tempDate.month}
+						max={12}
+						onChange={handleMonthChange}
+						type="month"
+					/>
+					<ScrollWheel
+						label="سال"
+						value={tempDate.year}
+						max={80}
+						onChange={handleYearChange}
+						type="year"
+						startYear={currentYear - 10}
+					/>
 				</div>
-			</button>
 
-			<ClickableTooltip
-				triggerRef={triggerRef}
-				isOpen={isOpen}
-				setIsOpen={setIsOpen}
-				content={
-					<div className="p-2 border min-w-52 bg-base-200 rounded-2xl border-base-300">
-						<div className="flex gap-3 mb-5">
-							<ScrollWheel
-								label="روز"
-								value={tempDate.day}
-								max={getDaysInMonth(tempDate.month, tempDate.year)}
-								onChange={handleDayChange}
-								type="number"
-							/>
-							<ScrollWheel
-								label="ماه"
-								value={tempDate.month}
-								max={12}
-								onChange={handleMonthChange}
-								type="month"
-							/>
-							<ScrollWheel
-								label="سال"
-								value={tempDate.year}
-								max={80}
-								onChange={handleYearChange}
-								type="year"
-								startYear={currentYear - 10}
-							/>
-						</div>
-
-						<div className="flex gap-2">
-							<Button
-								onClick={handleConfirm}
-								size="sm"
-								className={`flex-1 rounded-2xl bg-primary hover:bg-primary/90 text-white`}
-							>
-								<Icon name="check" size={16} className="ml-1" />
-								تایید{' '}
-							</Button>
-							<Button
-								onClick={handleCancel}
-								size="sm"
-								className="w-20 rounded-2xl border-muted hover:bg-muted/50 text-content"
-							>
-								لغو
-							</Button>
-						</div>
-					</div>
-				}
-				position="bottom"
-				offset={8}
-				closeOnClickOutside={true}
-			/>
-		</>
+				<div className="flex gap-2">
+					<Button
+						onClick={handleConfirm}
+						size="sm"
+						rounded={'2xl'}
+						variant={'primary'}
+						className="flex-1"
+					>
+						<Icon name="check" size={16} className="ml-1" />
+						تایید{' '}
+					</Button>
+					<Button
+						onClick={handleCancel}
+						size="sm"
+						rounded={'2xl'}
+						variant={'default'}
+						className="w-20"
+					>
+						لغو
+					</Button>
+				</div>
+			</div>
+		</Dropdown>
 	)
 }
 
