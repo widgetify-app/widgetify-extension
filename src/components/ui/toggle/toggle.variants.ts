@@ -36,8 +36,6 @@ export const toggleThumbVariants = cva(
 	],
 	{
 		variants: {
-			// The track is LTR-fixed (a switch is not a directional control), so
-			// these translate values are intentionally not logical properties.
 			enabled: {
 				true: ['translate-x-0'],
 				false: ['translate-x-4'],

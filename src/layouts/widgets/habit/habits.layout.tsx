@@ -126,7 +126,7 @@ export function HabitsContent() {
 				<div className="space-y-1.5 overflow-y-auto scrollbar-none h-full">
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">
-							{[...Array(4)].map((_, i) => (
+							{[...Array(3)].map((_, i) => (
 								<HabitItemSkeleton key={`skeleton-${i}`} />
 							))}
 						</div>

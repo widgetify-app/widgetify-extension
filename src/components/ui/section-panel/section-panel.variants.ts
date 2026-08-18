@@ -1,11 +1,5 @@
 import { cva } from 'class-variance-authority'
 
-/**
- * Four slots scale together, so each gets its own cva keyed on the same `size`.
- * (cva has no multi-slot support — that is tailwind-variants — and four small
- * configs stay more readable than encoding slot names into one class string.)
- */
-
 export const sectionPanelVariants = cva(['overflow-hidden', 'duration-300'], {
 	variants: {
 		size: {

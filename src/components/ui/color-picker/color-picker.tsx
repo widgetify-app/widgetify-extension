@@ -71,11 +71,12 @@ export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 				createPortal(
 					<div
 						ref={popoverRef}
-						className="fixed z-popover flex p-2 border rounded-md shadow-lg bg-content border-content"
+						className="fixed  flex p-2 border rounded-md shadow-lg bg-content border-content"
 						style={{
 							top: `${position.top}px`,
 							left: `${position.left}px`,
 							width: '200px',
+							zIndex: 1000,
 						}}
 					>
 						<RgbaStringColorPicker color={displayColor} onChange={onChange} />

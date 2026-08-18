@@ -222,7 +222,7 @@ export const Tooltip = ({
 					<Presence>
 						<motion.div
 							ref={tooltipRef}
-							className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-tooltip ${contentClassName}`}
+							className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-popover  ${contentClassName}`}
 							style={{
 								left: tooltipCoords.x,
 								top: tooltipCoords.y,

@@ -1,12 +1,5 @@
 import { cva } from 'class-variance-authority'
 
-/**
- * Confirmation modal accent colours.
- *
- * Four slots share one `variant` key. The icon element itself stays in the
- * component — cva describes classes, not JSX.
- */
-
 export const confirmationAccentBarVariants = cva(['h-1', 'w-full'], {
 	variants: {
 		variant: {

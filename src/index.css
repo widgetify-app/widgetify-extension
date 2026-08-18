@@ -247,3 +247,11 @@ img {
 .animate-slide-in-right {
   animation: slide-in-right 0.3s ease-out;
 }
+
+.rounded-widget {
+  @apply rounded-2xl
+}
+
+.z-popover {
+  z-index: 9999 !important;
+}

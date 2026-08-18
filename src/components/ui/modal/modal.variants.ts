@@ -1,10 +1,5 @@
 import { cva } from 'class-variance-authority'
 
-/**
- * The modal box: width and min-height. The per-size max-height lives on the
- * inner scroll container instead (see modalScrollVariants), which is what
- * actually bounds the content.
- */
 export const modalBoxVariants = cva(
 	[
 		'modal-box',

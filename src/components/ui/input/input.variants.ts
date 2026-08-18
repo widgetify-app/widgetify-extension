@@ -1,15 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-/**
- * Text input variants.
- *
- * Same `--size-field * n` ladder as Button (24/32/40/48/56px), matching
- * daisyUI's `input-*` geometry so migrated call sites keep their dimensions.
- *
- * `rounded-xl` is kept rather than `rounded-card` so this pilot is a zero-delta
- * visual swap; tokenising the radius is a deliberate follow-up, not something
- * to slip into the migration commit.
- */
 export const textInputVariants = cva(
 	[
 		'w-full inline-flex items-center',

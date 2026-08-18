@@ -1,12 +1,5 @@
 import { cva } from 'class-variance-authority'
 
-/**
- * Tab trigger.
- *
- * `tabMode` controls how a tab shares horizontal space: in `simple` every tab
- * is wide, in `advanced` only the active one expands. That interaction between
- * `tabMode` and `active` is what compoundVariants exist for.
- */
 export const tabTriggerVariants = cva(
 	[
 		'relative',

@@ -1,18 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-/**
- * Button variants.
- *
- * cva declares WHICH classes a variant contributes. It never merges — merging
- * is `cn()`'s job (see common/utils/cn.ts).
- *
- * Sizes mirror daisyUI's `--size-field * n` ladder (24/32/40/48/56px) and its
- * padding/font ramp on purpose: a call site migrating off `btn` keeps its exact
- * geometry, so the only thing that changes is colour — which is the part worth
- * reviewing.
- *
- * Colour comes from the project's semantic tokens, never from `btn-*`.
- */
 export const buttonVariants = cva(
 	[
 		'inline-flex shrink-0 items-center justify-center gap-1.5',
@@ -26,8 +13,7 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				default: 'bg-content text-content border-content hover:bg-raised',
-				primary:
-					'bg-primary text-primary-content border-transparent hover:bg-primary/90',
+				primary: 'bg-primary text-white border-transparent hover:bg-primary/90',
 				secondary:
 					'bg-secondary text-secondary-content border-transparent hover:bg-secondary/90',
 				outline: 'bg-transparent text-content border-content hover:bg-raised',
@@ -43,12 +29,6 @@ export const buttonVariants = cva(
 				lg: 'h-12 px-5 text-lg',
 				xl: 'h-14 px-6 text-[1.375rem]',
 			},
-			/**
-			 * Literal class names only. The previous implementation built
-			 * `rounded-${prop.rounded}` at runtime, which Tailwind v4's source
-			 * scanner cannot see — those classes only shipped by coincidence,
-			 * when the same literal happened to appear elsewhere in the codebase.
-			 */
 			rounded: {
 				sm: 'rounded-sm',
 				md: 'rounded-md',

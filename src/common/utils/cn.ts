@@ -24,7 +24,6 @@ const twMerge = extendTailwindMerge<'wg-backdrop'>({
 				'z-sheet',
 				'z-modal',
 				'z-popover',
-				'z-tooltip',
 				'z-toast',
 				'z-pet',
 			],

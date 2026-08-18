@@ -17,6 +17,13 @@ interface ButtonProps {
 	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 	ref?: any
 }
+const sizes: Record<string, string> = {
+	xs: 'btn-xs',
+	sm: 'btn-sm',
+	md: 'btn-md',
+	lg: 'btn-lg',
+	xl: 'btn-xl',
+}
 /**
  * @deprecated Use `import { Button } from '@/components/ui'`.
  *
@@ -27,20 +34,12 @@ interface ButtonProps {
  * red/transparent/full-width. Migrate call sites in reviewed batches instead.
  */
 export function Button(prop: ButtonProps) {
-	const sizes: Record<string, string> = {
-		xs: 'btn-xs',
-		sm: 'btn-sm',
-		md: 'btn-md',
-		lg: 'btn-lg',
-		xl: 'btn-xl',
-	}
-
 	return (
 		<button
 			type={prop.type || 'button'}
 			onClick={prop.onClick}
 			disabled={prop.disabled}
-			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
+			className={`btn cursor-pointer ${prop.fullWidth ? 'full-width' : ''} ${prop.className} ${prop.rounded ? `rounded-${prop.rounded}` : ''} ${prop.isPrimary ? 'btn-primary text-white' : ''} ${sizes[prop.size] || 'btn-md'} active:!translate-y-0`}
 			style={prop.style}
 			ref={prop.ref}
 		>

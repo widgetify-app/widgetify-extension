@@ -1,19 +1,3 @@
-/**
- * UI primitives.
- *
- * Generic, app-agnostic building blocks. Feature components that know about
- * Widgetify's domain (auth guards, market, updater, user card, welcome wizard,
- * widget tab manager) stay in `src/components/`.
- *
- * Conventions:
- *   - A component with real variants (discrete options: variant / size /
- *     orientation) gets a `<name>.variants.ts` exporting a `cva` config, and
- *     composes it with `cn(xVariants({ … }), className)`.
- *   - A component whose styling is only conditional (booleans, states) gets NO
- *     variants file — it merges with `twMerge` directly.
- *   - `cva` declares variants. It never merges.
- */
-
 export * from './avatar/avatar'
 export * from './avatar/avatar.variants'
 

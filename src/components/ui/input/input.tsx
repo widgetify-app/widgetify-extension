@@ -69,8 +69,6 @@ export const TextInput = memo(function TextInput({
 				() => {
 					onChange(newValue)
 				},
-				// Colour pickers fire continuously while dragging, so they need a
-				// much shorter debounce to still feel live.
 				type === 'color' ? 50 : debounceTime
 			)
 		},
