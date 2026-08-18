@@ -155,7 +155,7 @@ export function HabitsContent() {
 				size="sm"
 				onClick={handleAddHabit}
 				rounded={'2xl'}
-				variant={'primary'}
+				variant={'default'}
 				className="px-2 py-0! w-full  shrink-0 active:scale-95 h-7!"
 			>
 				<Icon name="plus" className="w-4 h-4" />

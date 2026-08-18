@@ -23,7 +23,6 @@ interface ConfirmationModalProps {
 	direction?: 'rtl' | 'ltr'
 }
 
-/** Only the icon element lives here now — all classes come from cva. */
 const variantIcon = {
 	danger: <Icon name="trash" size={18} />,
 	warning: <Icon name="alert" size={18} />,

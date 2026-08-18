@@ -31,9 +31,9 @@ export const confirmationConfirmButtonVariants = cva([], {
 	variants: {
 		variant: {
 			danger: ['bg-error', 'hover:bg-error/90!', 'text-error-content'],
-			warning: ['bg-warning', 'hover:bg-warning/90', 'text-warning-content'],
-			info: ['bg-info/80', 'hover:bg-info/90', 'text-info-content'],
-			primary: ['bg-primary/80', 'hover:bg-primary/90', 'text-primary-content'],
+			warning: ['bg-warning', 'hover:bg-warning/90!', 'text-warning-content'],
+			info: ['bg-info/80', 'hover:bg-info/90!', 'text-info-content'],
+			primary: ['bg-primary/80', 'hover:bg-primary/90!', 'text-white'],
 		},
 	},
 	defaultVariants: { variant: 'danger' },
