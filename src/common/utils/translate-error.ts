@@ -58,11 +58,22 @@ const errorTranslations: Record<string, string> = {
 	// Success messages
 	SUCCESS: 'عملیات با موفقیت انجام شد',
 
-	// Widget-related errors
+	// Widget-related messages
 	WIDGET_NOT_FOUND: 'ویجت مورد نظر یافت نشد',
+	WIDGET_DELETED: 'ویجت حذف شد',
+	WIDGET_DUPLICATED: 'ویجت با موفقیت تکرار شد',
 	WIDGET_ALREADY_EXISTS: 'این ویجت قبلا اضافه شده است',
 	INVALID_WIDGET_POSITION: 'موقعیت ویجت نامعتبر است',
 	MAX_WIDGETS_REACHED: 'به حداکثر تعداد مجاز ویجت رسیده‌اید',
+	NO_SPACE_FOR_WIDGET: 'فضای کافی برای قرارگیری ویجت وجود ندارد',
+	NO_SPACE_FOR_DUPLICATE: 'فضای کافی برای تکرار ویجت وجود ندارد',
+
+	// Bookmark-related messages
+	BOOKMARK_DELETED: 'بوکمارک با موفقیت حذف شد',
+	BOOKMARK_ADDED: 'بوکمارک با موفقیت اضافه شد',
+	BOOKMARK_UPDATED: 'بوکمارک با موفقیت ویرایش شد',
+	BOOKMARK_PARENT_NOT_FOUND: 'پوشه والد یافت نشد',
+	FILE_SIZE_EXCEEDED: 'حجم فایل بیشتر از حد مجاز است',
 
 	// Network errors
 	NETWORK_ERROR: 'خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید',

@@ -64,7 +64,13 @@ function computeBookmarkGridDimensions(size?: WidgetSize): {
 	let rowsCount = 2
 
 	if (size) {
-		if (size.w === 2 && size.h === 1) {
+		if (size.w === 1 && size.h === 1) {
+			colsCount = 1
+			rowsCount = 1
+		} else if (size.w === 1) {
+			colsCount = 1
+			rowsCount = size.h
+		} else if (size.w === 2 && size.h === 1) {
 			colsCount = 2
 			rowsCount = 1
 		} else if (size.w === 2 && size.h === 2) {
@@ -78,12 +84,6 @@ function computeBookmarkGridDimensions(size?: WidgetSize): {
 			rowsCount = 1
 		} else if (size.w === 4) {
 			colsCount = 5
-			rowsCount = size.h
-		} else if (size.w >= 8 && size.h === 1) {
-			colsCount = 10
-			rowsCount = 1
-		} else if (size.w >= 8) {
-			colsCount = 10
 			rowsCount = size.h
 		}
 	}
@@ -269,6 +269,13 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(dim.totalBookmarks).toBe(10)
 	})
 
+	it('computes 1-bookmark size (1x1) as 1 bookmark slot in 1 row of 1', () => {
+		const dim = computeBookmarkGridDimensions({ w: 1, h: 1 })
+		expect(dim.colsCount).toBe(1)
+		expect(dim.rowsCount).toBe(1)
+		expect(dim.totalBookmarks).toBe(1)
+	})
+
 	it('computes 2-bookmark size (2x1) as 2 bookmark slots in 1 row of 2', () => {
 		const dim = computeBookmarkGridDimensions({ w: 2, h: 1 })
 		expect(dim.colsCount).toBe(2)
@@ -281,13 +288,6 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(dim.colsCount).toBe(2)
 		expect(dim.rowsCount).toBe(2)
 		expect(dim.totalBookmarks).toBe(4)
-	})
-
-	it('computes wide size (8x2) as 20 bookmark slots in 2 rows of 10', () => {
-		const dim = computeBookmarkGridDimensions({ w: 8, h: 2 })
-		expect(dim.colsCount).toBe(10)
-		expect(dim.rowsCount).toBe(2)
-		expect(dim.totalBookmarks).toBe(20)
 	})
 
 	it('pads bookmarks array with null empty slots up to total count', () => {
@@ -320,7 +320,7 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(slots2[1]).toBeNull()
 	})
 
-	it('scopes bookmarks by widgetId while preserving legacy bookmarks', () => {
+	it('scopes bookmarks by widgetId while preserving legacy bookmarks in primary widget', () => {
 		const mixedBookmarks: Bookmark[] = [
 			{
 				id: 'legacy-bm',
@@ -337,47 +337,90 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 				order: 0,
 			},
 			{
-				id: 'widget-1-bm',
-				title: 'بوکمارک ویجت ۱',
+				id: 'default-widget-bm',
+				title: 'بوکمارک ویجت پیش‌فرض',
 				type: 'BOOKMARK',
 				parentId: null,
 				isLocal: true,
-				onlineId: 'w1-bm',
-				url: 'https://w1.com',
+				onlineId: 'default-bm',
+				url: 'https://default.com',
 				icon: null,
 				customBackground: null,
 				customTextColor: null,
 				sticker: null,
 				order: 1,
-				widgetId: 'widget-instance-1',
+				widgetId: 'bookmarks-default',
 			},
 			{
-				id: 'widget-2-bm',
-				title: 'بوکمارک ویجت ۲',
+				id: 'duplicated-widget-bm',
+				title: 'بوکمارک ویجت تکراری',
 				type: 'BOOKMARK',
 				parentId: null,
 				isLocal: true,
-				onlineId: 'w2-bm',
-				url: 'https://w2.com',
+				onlineId: 'dup-bm',
+				url: 'https://dup.com',
 				icon: null,
 				customBackground: null,
 				customTextColor: null,
 				sticker: null,
 				order: 2,
-				widgetId: 'widget-instance-2',
+				widgetId: 'bookmarks-duplicated-123',
 			},
 		]
 
-		const forWidget1 = mixedBookmarks.filter(
-			(b) => b.parentId === null && (!b.widgetId || b.widgetId === 'widget-instance-1')
-		)
-		expect(forWidget1).toHaveLength(2)
-		expect(forWidget1.map((b) => b.id)).toEqual(['legacy-bm', 'widget-1-bm'])
+		const filterForWidget = (
+			widgetId?: string | null,
+			isPrimary?: boolean
+		) => {
+			return mixedBookmarks.filter((b) => {
+				if (b.parentId !== null) return false
+				const shouldIncludeLegacy =
+					isPrimary !== undefined
+						? isPrimary
+						: !widgetId || widgetId === 'bookmarks-default'
 
-		const forWidget2 = mixedBookmarks.filter(
-			(b) => b.parentId === null && (!b.widgetId || b.widgetId === 'widget-instance-2')
-		)
-		expect(forWidget2).toHaveLength(2)
-		expect(forWidget2.map((b) => b.id)).toEqual(['legacy-bm', 'widget-2-bm'])
+				if (shouldIncludeLegacy) {
+					return (
+						!b.widgetId ||
+						b.widgetId === 'bookmarks-default' ||
+						(widgetId ? b.widgetId === widgetId : false)
+					)
+				}
+				return b.widgetId === widgetId
+			})
+		}
+
+		// Primary / Default widget receives legacy bookmarks + its own
+		const primaryItems = filterForWidget('bookmarks-default', true)
+		expect(primaryItems).toHaveLength(2)
+		expect(primaryItems.map((b) => b.id)).toEqual([
+			'legacy-bm',
+			'default-widget-bm',
+		])
+
+		// Primary widget with a dynamic MongoDB ObjectId (e.g. 6a8624e1...) ALSO receives legacy bookmarks + default
+		const mongoPrimaryItems = filterForWidget('6a8624e18ad0a538d22483dd', true)
+		expect(mongoPrimaryItems).toHaveLength(2)
+		expect(mongoPrimaryItems.map((b) => b.id)).toEqual([
+			'legacy-bm',
+			'default-widget-bm',
+		])
+
+		// Generic / Simplify / Advanced view without instanceId also receives legacy bookmarks
+		const genericItems = filterForWidget(null, true)
+		expect(genericItems).toHaveLength(2)
+		expect(genericItems.map((b) => b.id)).toEqual([
+			'legacy-bm',
+			'default-widget-bm',
+		])
+
+		// Duplicated / New separate instance receives ONLY its own bookmarks and starts clean
+		const duplicatedItems = filterForWidget('bookmarks-duplicated-123', false)
+		expect(duplicatedItems).toHaveLength(1)
+		expect(duplicatedItems.map((b) => b.id)).toEqual(['duplicated-widget-bm'])
+
+		// A brand new duplicated instance without any bookmarks yet has length 0
+		const emptyNewInstance = filterForWidget('bookmarks-brand-new-999', false)
+		expect(emptyNewInstance).toHaveLength(0)
 	})
 })

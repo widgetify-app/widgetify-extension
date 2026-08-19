@@ -10,6 +10,7 @@ import {
 import Analytics from '@/analytics'
 import { setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
+import { translateError } from '@/common/utils/translate-error'
 import {
 	DEFAULT_CELL_HEIGHT,
 	DEFAULT_COLS,
@@ -59,7 +60,7 @@ interface FreeWidgetContextType {
 	updateContainerWidth: (containerWidth: number) => void
 }
 
-const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
+export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated } = useAuth()
@@ -467,11 +468,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				) {
 					deleteUserWidgetApi(newInstanceId).catch(() => {})
 				}
-				showToast('فضای کافی برای تکرار ویجت وجود ندارد', 'error')
+				showToast(translateError('NO_SPACE_FOR_DUPLICATE') as string, 'error')
 				return false
 			}
 
-			showToast('ویجت با موفقیت تکرار شد', 'success')
+			showToast(translateError('WIDGET_DUPLICATED') as string, 'success')
 			return commitMutation('duplicate', result, newInstanceId)
 		},
 		[runtimeLayout, cols, commitMutation, isAuthenticated]
@@ -518,15 +519,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				setSelectedInstanceId(null)
 			}
 
-			if (
-				isAuthenticated &&
-				typeof instanceId === 'string' &&
-				/^[0-9a-fA-F]{24}$/.test(instanceId)
-			) {
+			if (isAuthenticated && typeof instanceId === 'string' && instanceId.trim()) {
 				deleteUserWidgetApi(instanceId).catch(() => {})
 			}
 
-			showToast('ویجت حذف شد', 'success')
+			showToast(translateError('WIDGET_DELETED') as string, 'success')
 			return commitMutation('remove', result, instanceId)
 		},
 		[
@@ -574,4 +571,8 @@ export function useFreeWidgets() {
 		throw new Error('useFreeWidgets must be used within a FreeWidgetProvider')
 	}
 	return context
+}
+
+export function useOptionalFreeWidgets() {
+	return useContext(FreeWidgetContext)
 }

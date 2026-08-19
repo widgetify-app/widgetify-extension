@@ -48,12 +48,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'بوکمارک‌ها',
 		emoji: '🔖',
 		allowedSizes: [
+			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
-			{ w: 8, h: 1 },
-			{ w: 8, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
 		canDuplicate: true,

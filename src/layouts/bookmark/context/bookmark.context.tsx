@@ -28,7 +28,8 @@ export interface BookmarkStoreContext {
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (
 		parentId: string | null,
-		widgetId?: string | null
+		widgetId?: string | null,
+		isPrimary?: boolean
 	) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	importBrowserBookmarks: (
@@ -141,7 +142,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const getCurrentFolderItems = (
 		parentId: string | null,
-		widgetId?: string | null
+		widgetId?: string | null,
+		isPrimary?: boolean
 	) => {
 		if (!bookmarks) return []
 		const parentBookmark = bookmarks.find(
@@ -162,11 +164,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 						bookmark.parentId === parentBookmark.onlineId)
 			)
 		} else {
+			const shouldIncludeLegacy =
+				isPrimary !== undefined
+					? isPrimary
+					: !widgetId || widgetId === 'bookmarks-default'
+
 			currentFolderBookmarks = bookmarks.filter((bookmark) => {
 				const isRoot = bookmark.parentId === null
 				if (!isRoot) return false
-				if (!widgetId) return true
-				return !bookmark.widgetId || bookmark.widgetId === widgetId
+				if (shouldIncludeLegacy) {
+					return (
+						!bookmark.widgetId ||
+						bookmark.widgetId === 'bookmarks-default' ||
+						(widgetId ? bookmark.widgetId === widgetId : false)
+					)
+				}
+				return bookmark.widgetId === widgetId
 			})
 		}
 
@@ -181,19 +194,19 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		cb: () => void
 	) => {
 		if (!isAuthenticated)
-			return showToast('برای افزودن بوکمارک باید وارد شوید.', 'error')
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 
 		try {
 			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
-				showToast(
-					`تصویر انتخاب شده (${(inputBookmark.icon.size / (1024 * 1024)).toFixed(1)} مگابایت) بزرگتر از حداکثر مجاز است.`,
-					'error'
-				)
+				showToast(translateError('FILE_SIZE_EXCEEDED') as string, 'error')
 				cb()
 				return
 			}
 
-			const currentFolderItems = getCurrentFolderItems(inputBookmark.parentId)
+			const currentFolderItems = getCurrentFolderItems(
+				inputBookmark.parentId,
+				inputBookmark.widgetId
+			)
 			const maxOrder = currentFolderItems.reduce(
 				(max, item) => Math.max(max, item.order || 0),
 				-1
@@ -304,7 +317,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				b.id === input.id ||
 				(typeof b.onlineId === 'string' && b.onlineId === input.onlineId)
 		)
-		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
+		if (!foundedBookmark) return showToast(translateError('ITEM_NOT_FOUND') as string, 'error')
 
 		let bookmarkIdToEdit = input.id
 		if (validate(bookmarkIdToEdit)) {

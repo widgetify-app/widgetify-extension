@@ -17,8 +17,10 @@ import { useBookmarkStore } from './context/bookmark.context'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
+import { translateError } from '@/common/utils/translate-error'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
-import type { WidgetSize } from '../widgets/layout-engine/types'
+import { useOptionalFreeWidgets } from '@/context/free-widget.context'
+import { WidgetKeys, type WidgetSize } from '../widgets/layout-engine/types'
 
 interface BookmarksListProps {
 	size?: WidgetSize
@@ -53,7 +55,13 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	let rowsCount = 2
 
 	if (size) {
-		if (size.w === 2 && size.h === 1) {
+		if (size.w === 1 && size.h === 1) {
+			colsCount = 1
+			rowsCount = 1
+		} else if (size.w === 1) {
+			colsCount = 1
+			rowsCount = size.h
+		} else if (size.w === 2 && size.h === 1) {
 			colsCount = 2
 			rowsCount = 1
 		} else if (size.w === 2 && size.h === 2) {
@@ -68,12 +76,6 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		} else if (size.w === 4) {
 			colsCount = 5
 			rowsCount = size.h
-		} else if (size.w >= 8 && size.h === 1) {
-			colsCount = 10
-			rowsCount = 1
-		} else if (size.w >= 8) {
-			colsCount = 10
-			rowsCount = size.h
 		}
 	}
 
@@ -81,10 +83,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 
 	const handleDragEnd = async (event: DragEndEvent) => {
 		if (!isAuthenticated)
-			return showToast(
-				'برای مرتب‌سازی بوکمارک‌ها باید وارد حساب کاربری خود شوید.',
-				'error'
-			)
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 
 		const { active, over } = event
 		if (!over || active.id === over.id) return
@@ -167,7 +166,22 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		setCurrentFolderId(folderId)
 	}
 
-	const currentFolderItems = getCurrentFolderItems(currentFolderId, instanceId)
+	const freeWidgetContext = useOptionalFreeWidgets()
+	const isPrimary = (() => {
+		if (!instanceId || instanceId === 'bookmarks-default') return true
+		if (!freeWidgetContext) return true
+		const bookmarkWidgets = freeWidgetContext.runtimeLayout.filter(
+			(w) => w.id === WidgetKeys.bookmarks
+		)
+		if (bookmarkWidgets.length === 0) return true
+		return bookmarkWidgets[0].instanceId === instanceId
+	})()
+
+	const currentFolderItems = getCurrentFolderItems(
+		currentFolderId,
+		instanceId,
+		isPrimary
+	)
 
 	const getDisplayedBookmarks = (): Bookmark[] => {
 		if (!currentFolderId) {

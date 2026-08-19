@@ -1,4 +1,5 @@
-import { ContextMenu } from '@/components/ui'
+import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Icon } from '@/src/icons'
 
 interface BookmarkContextMenuProps {
@@ -6,6 +7,7 @@ interface BookmarkContextMenuProps {
 	onDelete: () => void
 	onEdit: () => void
 	onOpenInNewTab?: () => void
+	onClose: () => void
 	isFolder?: boolean
 }
 
@@ -14,42 +16,106 @@ export function BookmarkContextMenu({
 	onDelete,
 	onEdit,
 	onOpenInNewTab,
+	onClose,
 }: BookmarkContextMenuProps) {
-	const getMenuItemStyle = (isDelete = false) => {
-		if (isDelete) {
-			return 'text-error hover:text-error/90 hover:!bg-error/10'
+	const menuRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+				onClose()
+			}
 		}
 
-		return 'text-content hover:text-content/90 hover:!bg-base-300/70'
-	}
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				onClose()
+			}
+		}
 
-	return (
-		<ContextMenu position={position} className="gap-y-1">
+		const handleScroll = () => {
+			onClose()
+		}
+
+		document.addEventListener('mousedown', handleClickOutside)
+		document.addEventListener('keydown', handleKeyDown)
+		window.addEventListener('scroll', handleScroll, { passive: true })
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+			document.removeEventListener('keydown', handleKeyDown)
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [onClose])
+
+	const MENU_WIDTH = 148
+	const MENU_HEIGHT = onOpenInNewTab ? 120 : 85
+
+	const adjustedLeft = Math.min(
+		Math.max(10, position.x),
+		Math.max(10, window.innerWidth - MENU_WIDTH - 10)
+	)
+	const adjustedTop = Math.min(
+		Math.max(10, position.y),
+		Math.max(10, window.innerHeight - MENU_HEIGHT - 10)
+	)
+
+	return createPortal(
+		<div
+			ref={menuRef}
+			style={{
+				position: 'fixed',
+				left: adjustedLeft,
+				top: adjustedTop,
+				zIndex: 99999,
+			}}
+			className="w-[148px] bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-1.5 text-right text-xs flex flex-col gap-1 select-none animate-in fade-in zoom-in-95 duration-150"
+			onClick={(e) => e.stopPropagation()}
+			onContextMenu={(e) => {
+				e.preventDefault()
+				e.stopPropagation()
+			}}
+		>
 			{onOpenInNewTab && (
 				<button
-					onClick={onOpenInNewTab}
-					className={`w-full px-3 py-1 flex items-center gap-x-1.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
+					type="button"
+					onClick={() => {
+						onOpenInNewTab()
+						onClose()
+					}}
+					className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-content hover:bg-base-300 text-xs"
 				>
-					<Icon name="plus" size={15} />
 					<span className="font-medium">در تب جدید</span>
+					<Icon name="plus" size={13} className="text-muted" />
 				</button>
 			)}
 
 			<button
-				onClick={onEdit}
-				className={`w-full px-3 py-1 flex items-center gap-x-[9px] cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
+				type="button"
+				onClick={() => {
+					onEdit()
+					onClose()
+				}}
+				className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-content hover:bg-base-300 text-xs"
 			>
-				<Icon name="pen" size={13} />
 				<span className="font-medium">ویرایش</span>
+				<Icon name="pen" size={12} className="text-muted" />
 			</button>
 
+			<div className="h-px bg-base-content/10 my-0.5" />
+
 			<button
-				onClick={onDelete}
-				className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle(true)}`}
+				type="button"
+				onClick={() => {
+					onDelete()
+					onClose()
+				}}
+				className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-error hover:bg-error/15 text-xs"
 			>
-				<Icon name="trash" size={14} />
 				<span className="font-medium">حذف</span>
+				<Icon name="trash" size={13} className="text-error" />
 			</button>
-		</ContextMenu>
+		</div>,
+		document.body
 	)
 }

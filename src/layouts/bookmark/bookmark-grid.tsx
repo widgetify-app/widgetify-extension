@@ -14,7 +14,7 @@ import { validate } from 'uuid'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { translateError } from '@/common/utils/translate-error'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
@@ -85,12 +85,24 @@ export function BookmarkGrid({
 
 	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
+		e.stopPropagation()
 		setSelectedBookmark(bookmark)
-		const button = e.currentTarget
-		if (button) {
-			const rect = button.getBoundingClientRect()
-			setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
+
+		const isContextMenu = e.type === 'contextmenu'
+		let x: number
+		let y: number
+
+		if (isContextMenu && e.clientX && e.clientY) {
+			x = e.clientX
+			y = e.clientY
+		} else {
+			const target = e.currentTarget
+			const rect = target.getBoundingClientRect()
+			x = rect.left + rect.width / 2 - 74
+			y = rect.bottom + 4
 		}
+
+		setContextMenuPos({ x, y })
 	}
 
 	const openBookmarks = (bookmark: Bookmark) => {
@@ -120,7 +132,7 @@ export function BookmarkGrid({
 
 	const handleDeleteBookmark = (bookmark: Bookmark) => {
 		if (!isAuthenticated) {
-			return showToast('برای حذف بوکمارک باید وارد حساب کاربری خود شوید.', 'error')
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 		}
 
 		setBookmarkToDelete(bookmark)
@@ -174,11 +186,7 @@ export function BookmarkGrid({
 	}, [])
 
 	const gridColsClass =
-		colsCount === 2
-			? 'grid-cols-2'
-			: colsCount === 10
-				? 'grid-cols-5 sm:grid-cols-10'
-				: 'grid-cols-5'
+		colsCount === 1 ? 'grid-cols-1' : colsCount === 2 ? 'grid-cols-2' : 'grid-cols-5'
 
 	return (
 		<div
@@ -265,7 +273,12 @@ export function BookmarkGrid({
 					position={contextMenuPos}
 					onDelete={() => handleDeleteBookmark(selectedBookmark)}
 					onEdit={() => handleEditBookmark(selectedBookmark)}
-					onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
+					onOpenInNewTab={
+						selectedBookmark.type === 'BOOKMARK'
+							? () => onOpenInNewTab(selectedBookmark)
+							: undefined
+					}
+					onClose={() => setSelectedBookmark(null)}
 				/>
 			)}
 		</div>
