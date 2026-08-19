@@ -8,7 +8,7 @@ import {
 	useState,
 } from 'react'
 import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
 import {
 	DEFAULT_CELL_HEIGHT,
@@ -54,19 +54,12 @@ interface FreeWidgetContextType {
 const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
-	const {
-		canvasMode,
-		setCanvasMode,
-		selectedInstanceId,
-		setSelectedInstanceId,
-	} = useAppearance()
+	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
+		useAppearance()
 
-	const [savedLayout, setSavedLayout] = useState<StoredWidget[]>(
-		DEFAULT_WIDGET_LAYOUT
-	)
-	const [runtimeLayout, setRuntimeLayout] = useState<StoredWidget[]>(
-		DEFAULT_WIDGET_LAYOUT
-	)
+	const [savedLayout, setSavedLayout] = useState<StoredWidget[]>(DEFAULT_WIDGET_LAYOUT)
+	const [runtimeLayout, setRuntimeLayout] =
+		useState<StoredWidget[]>(DEFAULT_WIDGET_LAYOUT)
 	const [cols, setCols] = useState<number>(DEFAULT_COLS)
 	const [cellHeight, setCellHeight] = useState<number>(DEFAULT_CELL_HEIGHT)
 	const [gap, setGap] = useState<number>(DEFAULT_GAP)
@@ -153,11 +146,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	}, [])
 
 	const commitMutation = useCallback(
-		(
-			operation: string,
-			nextRuntime: StoredWidget[],
-			targetInstanceId?: string
-		) => {
+		(operation: string, nextRuntime: StoredWidget[], targetInstanceId?: string) => {
 			if (!validateLayout(nextRuntime, cols)) {
 				return false
 			}

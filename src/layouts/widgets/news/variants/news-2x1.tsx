@@ -1,10 +1,13 @@
-import { useGetNews } from '@/services/hooks/news/get-news.hook'
+import { useGetNews, type FetchedRssItem } from '@/services/hooks/news/get-news.hook'
 import { Icon } from '@/src/icons'
 import Analytics from '@/analytics'
 
 export function NewsCompactRow() {
-	const { data: newsItems, isLoading } = useGetNews(true)
-	const topNews = newsItems?.[0]
+	const { data, isLoading } = useGetNews(true)
+	const newsList: FetchedRssItem[] = Array.isArray(data)
+		? data
+		: (data as any)?.news || []
+	const topNews = newsList[0]
 
 	const handleOpen = () => {
 		if (topNews?.link) {

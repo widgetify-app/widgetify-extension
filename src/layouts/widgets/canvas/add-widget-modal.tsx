@@ -1,7 +1,6 @@
 import { Modal } from '@/components/ui'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
-import { WidgetKeys } from '../layout-engine/types'
 
 interface AddWidgetModalProps {
 	isOpen: boolean
@@ -11,9 +10,7 @@ interface AddWidgetModalProps {
 export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 	const { runtimeLayout, addWidget } = useFreeWidgets()
 
-	const allDefinitions = Object.values(WIDGET_DEFINITIONS).filter(
-		(def) => def.id !== WidgetKeys.youtube
-	)
+	const allDefinitions = Object.values(WIDGET_DEFINITIONS)
 
 	const handleAdd = (id: string) => {
 		const success = addWidget(id)

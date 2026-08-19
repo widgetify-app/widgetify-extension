@@ -156,9 +156,9 @@ interface WidgetVisibilityContextType {
 
 const defaultVisibility: WidgetKeys[] = [
 	WidgetKeys.calendar,
-	WidgetKeys.tools,
-	WidgetKeys.yadKar,
 	WidgetKeys.comboWidget,
+	WidgetKeys.yadKar,
+	WidgetKeys.tools,
 ]
 export const MAX_VISIBLE_WIDGETS = 5
 

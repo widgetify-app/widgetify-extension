@@ -1,4 +1,3 @@
-import type React from 'react'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
@@ -21,7 +20,7 @@ import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import { type WidgetDefinition, WidgetKeys, type WidgetSize } from './layout-engine/types'
+import { type WidgetDefinition, WidgetKeys } from './layout-engine/types'
 
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -102,6 +101,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
+			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
@@ -140,6 +140,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
@@ -160,6 +162,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 2, h: 2 },
@@ -183,7 +186,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-1.5 flex flex-col justify-between">
@@ -207,10 +210,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.weather_settings,
 		canDuplicate: true,
 		preview: () => (
@@ -227,9 +231,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🔗',
 		allowedSizes: [
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-between">
@@ -258,7 +263,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-between">
@@ -278,9 +283,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex items-center justify-around">
@@ -303,7 +309,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
 		canDuplicate: true,
 		preview: () => (
@@ -331,10 +337,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
 		canDuplicate: true,
 		preview: () => (
@@ -355,9 +362,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex items-center justify-between">
@@ -384,7 +392,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-between">
@@ -412,7 +420,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-center gap-1">
@@ -442,7 +450,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
 		],
-		defaultSize: { w: 2, h: 2 },
+		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-center gap-1">
@@ -459,19 +467,5 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				<NotesLayout size={size} />
 			</WidgetContainer>
 		),
-	},
-	[WidgetKeys.youtube]: {
-		id: WidgetKeys.youtube,
-		label: 'یوتیوب',
-		emoji: '▶️',
-		allowedSizes: [{ w: 2, h: 2 }],
-		defaultSize: { w: 2, h: 2 },
-		canDuplicate: false,
-		preview: () => (
-			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex items-center justify-center">
-				<span className="text-xl">▶️</span>
-			</div>
-		),
-		node: () => null,
 	},
 }

@@ -46,7 +46,10 @@ function NewsBannerCard({ news }: { news: FetchedRssItem }) {
 
 export function NewsWideBanner() {
 	const { data, isLoading } = useGetNews(true)
-	const topNews = data.news?.slice(0, 2) || []
+	const newsList: FetchedRssItem[] = Array.isArray(data)
+		? data
+		: (data as any)?.news || []
+	const topNews = newsList.slice(0, 2)
 
 	if (isLoading) {
 		return (
@@ -68,7 +71,7 @@ export function NewsWideBanner() {
 
 	return (
 		<div className="grid grid-cols-2 gap-2 h-full w-full select-none overflow-hidden">
-			{topNews.map((item, idx) => (
+			{topNews.map((item: FetchedRssItem, idx: number) => (
 				<NewsBannerCard key={item.link || idx} news={item} />
 			))}
 		</div>

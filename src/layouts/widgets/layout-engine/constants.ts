@@ -38,8 +38,8 @@ export const GRID_BREAKPOINTS: GridBreakpoint[] = [
 
 export const DEFAULT_WIDGET_LAYOUT: StoredWidget[] = [
 	{
-		id: WidgetKeys.widgetify,
-		instanceId: 'widgetify-default',
+		id: WidgetKeys.wigiPad,
+		instanceId: 'wigipad-default',
 		position: { col: 0, row: 0 },
 		size: { w: 2, h: 3 },
 	},
@@ -56,33 +56,33 @@ export const DEFAULT_WIDGET_LAYOUT: StoredWidget[] = [
 		size: { w: 4, h: 2 },
 	},
 	{
-		id: WidgetKeys.wigiPad,
-		instanceId: 'wigipad-default',
+		id: WidgetKeys.widgetify,
+		instanceId: 'widgetify-default',
 		position: { col: 6, row: 0 },
 		size: { w: 2, h: 3 },
 	},
 	{
-		id: WidgetKeys.calendar,
-		instanceId: 'calendar-default',
+		id: WidgetKeys.comboWidget,
+		instanceId: 'comboWidget-default',
 		position: { col: 0, row: 3 },
-		size: { w: 2, h: 2 },
+		size: { w: 2, h: 3 },
 	},
 	{
 		id: WidgetKeys.tools,
 		instanceId: 'tools-default',
 		position: { col: 2, row: 3 },
-		size: { w: 2, h: 2 },
+		size: { w: 2, h: 3 },
 	},
 	{
 		id: WidgetKeys.yadKar,
-		instanceId: 'yadkar-default',
+		instanceId: 'yadKar-default',
 		position: { col: 4, row: 3 },
-		size: { w: 2, h: 2 },
+		size: { w: 2, h: 3 },
 	},
 	{
-		id: WidgetKeys.comboWidget,
-		instanceId: 'combo-default',
+		id: WidgetKeys.calendar,
+		instanceId: 'calendar-default',
 		position: { col: 6, row: 3 },
-		size: { w: 2, h: 2 },
+		size: { w: 2, h: 3 },
 	},
 ]
