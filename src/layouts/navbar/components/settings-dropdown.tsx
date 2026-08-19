@@ -1,14 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
-import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
 import { useAuth } from '@/context/auth.context'
 import { Dropdown } from '@/components/ui'
 
 export const SettingsDropdown = () => {
 	const { isAuthenticated } = useAuth()
-	const { canReOrderWidget, toggleCanReOrderWidget, ui, setUI } = useAppearanceSetting()
+	const { ui, setUI } = useAppearanceSetting()
 	const triggerRef = useRef<HTMLDivElement>(null)
 
 	const handleWidgetSettingsClick = useCallback(() => {
@@ -20,15 +19,6 @@ export const SettingsDropdown = () => {
 		callEvent('openSettings', 'general')
 		callEvent('closeAllDropdowns')
 	}, [])
-
-	const onClick = () => {
-		if (ui === UI.SIMPLE) {
-			showToast('در حالت ظاهری ساده، امکان تغییر و جابجایی ویجت ها نیست!', 'error')
-			return
-		}
-		toggleCanReOrderWidget()
-		callEvent('closeAllDropdowns')
-	}
 
 	const onClickToChangeUI = () => {
 		setUI(ui === 'SIMPLE' ? UI.ADVANCED : UI.SIMPLE)
@@ -115,24 +105,6 @@ export const SettingsDropdown = () => {
 						</div>
 					</div>
 				) : null}
-
-				<div
-					className="relative px-3 py-2 border-t cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
-					onClick={() => onClick()}
-				>
-					<div className="flex items-center gap-3">
-						<Icon
-							name="outlineDrag"
-							size={14}
-							className="text-muted group-hover:!text-primary"
-						/>
-						{canReOrderWidget ? (
-							<span>غیرفعال‌سازی حالت جابجایی</span>
-						) : (
-							<span>حالت جابجایی ویجت ها</span>
-						)}
-					</div>
-				</div>
 			</div>
 		</Dropdown>
 	)

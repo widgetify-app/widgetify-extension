@@ -88,7 +88,6 @@ export function NavbarTabs() {
 }
 
 export function NavbarLayout(): JSX.Element {
-	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
 	const [showSettings, setShowSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
@@ -127,27 +126,6 @@ export function NavbarLayout(): JSX.Element {
 	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
-			{canReOrderWidget && (
-				<div className="fixed transform -translate-x-1/2 z-100 top-4 left-1/2 w-max">
-					<div className="px-4 py-2 border shadow-2xl shadow-warning bg-warning border-warning rounded-2xl">
-						<div className="flex items-center gap-3 text-xs font-bold text-warning-content">
-							<Icon
-								name="outlineDrag"
-								size={16}
-								className="animate-bounce text-warning"
-							/>
-							<span>حالت جابجایی فعال، ویجت هارو جابجا کنید</span>
-							<button
-								onClick={() => toggleCanReOrderWidget()}
-								className="transition-colors hover:text-error"
-							>
-								<Icon name="close" size={16} />
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
 			{!isVisible && (
 				<button
 					onClick={() => onToggleNavbar()}
