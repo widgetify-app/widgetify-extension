@@ -17,6 +17,7 @@ export enum WidgetKeys {
 	widgetify = 'widgetify',
 	clock = 'clock',
 	date = 'date',
+	pet = 'pet',
 }
 
 export interface WidgetPosition {

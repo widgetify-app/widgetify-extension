@@ -7,8 +7,12 @@ import { ChickenComponent } from './pet-item/pet-chicken'
 import { CrabComponent } from './pet-item/pet-crab'
 import { DogComponent } from './pet-item/pet-dog'
 import { FrogComponent } from './pet-item/pet-frog'
+import { cn } from '@/common/utils/cn'
 
-export const PetFactory: React.FC = () => {
+interface Prop {
+	className?: string
+}
+export const PetFactory: React.FC<Prop> = ({ className }) => {
 	const { petType, getPetHungryState } = usePetContext()
 	if (!petType) return null
 

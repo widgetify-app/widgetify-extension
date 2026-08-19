@@ -16,24 +16,27 @@ import { callEvent } from '@/common/utils/call-event'
 import { useCurrencyStore } from '@/context/currency.context'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
-import { ArzHeader } from './components/arz-header'
 import { SortableCurrencyBox } from './components/sortable-currency-box'
+import { CurrencyCompactSquare } from './variants/currency-compact-square'
+import { CurrencyCompactRow } from './variants/currency-compact-row'
+import { CurrencyWideBanner } from './variants/currency-wide-banner'
+import { CurrencyWideGrid } from './variants/currency-wide-grid'
 import { Button } from '@/components/ui'
 
 import type { WidgetSize } from '../layout-engine/types'
 
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
-	inComboWidget: boolean
+	inComboWidget?: boolean
 	comboClassName?: string
 	size?: WidgetSize
 }
 
 export function WigiArzLayout({
 	enableBackground = true,
-	inComboWidget,
+	inComboWidget = false,
 	comboClassName,
-	size,
+	size = { w: 2, h: 2 },
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()
@@ -71,129 +74,137 @@ export function WigiArzLayout({
 		callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
 	}
 
-	return (
-		<>
-			{inComboWidget ? (
-				<div className={`flex items-center justify-between pb-2 mt-1`}>
-					{selectedCurrencies.length === 0 ? (
-						<div
-							className={
-								'flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-16'
-							}
-						>
-							<div
-								className={
-									'flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70'
-								}
-							>
-								💲
-							</div>
-							<p className="mt-1 text-center text-content">
-								ارزهای مورد نظر خود را اضافه کنید
-							</p>
-							<Button
-								rounded="xl"
-								size="sm"
-								variant={'primary'}
-								onClick={onSettingClick}
-							>
-								افزودن ارز
-							</Button>
+	if (!inComboWidget) {
+		if (size.w === 1 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<CurrencyCompactSquare code={selectedCurrencies[0] || 'USD'} />
+				</WidgetContainer>
+			)
+		}
+
+		if (size.w === 2 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<CurrencyCompactRow currencies={selectedCurrencies} />
+				</WidgetContainer>
+			)
+		}
+
+		if (size.w >= 4 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<CurrencyWideBanner currencies={selectedCurrencies} />
+				</WidgetContainer>
+			)
+		}
+
+		if (size.w >= 4 && size.h >= 2) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<CurrencyWideGrid currencies={selectedCurrencies} />
+				</WidgetContainer>
+			)
+		}
+	}
+
+	if (inComboWidget) {
+		return (
+			<div className={`flex items-center justify-between pb-2 mt-1`}>
+				{selectedCurrencies.length === 0 ? (
+					<div className="flex-1 flex flex-col items-center justify-center gap-y-1.5 px-5 py-16">
+						<div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300/70 border-base/70">
+							💲
 						</div>
-					) : (
-						<DndContext
-							sensors={sensors}
-							collisionDetection={closestCenter}
-							onDragEnd={handleDragEnd}
+						<p className="mt-1 text-center text-content">
+							ارزهای مورد نظر خود را اضافه کنید
+						</p>
+						<Button
+							rounded="xl"
+							size="sm"
+							variant={'primary'}
+							onClick={onSettingClick}
 						>
-							<div
-								className={`flex flex-col w-full gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'} ${comboClassName}`}
-								style={{
-									scrollbarWidth: 'none',
-								}}
+							افزودن ارز
+						</Button>
+					</div>
+				) : (
+					<DndContext
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+					>
+						<div
+							className={`flex flex-col w-full gap-1 overflow-x-hidden ${comboClassName}`}
+							style={{ scrollbarWidth: 'none' }}
+						>
+							<SortableContext
+								items={selectedCurrencies}
+								strategy={verticalListSortingStrategy}
 							>
-								<SortableContext
-									items={selectedCurrencies}
-									strategy={verticalListSortingStrategy}
-								>
-									{selectedCurrencies.map((currency) => (
-										<SortableCurrencyBox
-											key={currency}
-											id={currency}
-											code={currency}
-											currencyColorMode={currencyColorMode}
-										/>
-									))}
-								</SortableContext>
-							</div>
-						</DndContext>
-					)}
+								{selectedCurrencies.map((currency) => (
+									<SortableCurrencyBox
+										key={currency}
+										id={currency}
+										code={currency}
+										currencyColorMode={currencyColorMode}
+									/>
+								))}
+							</SortableContext>
+						</div>
+					</DndContext>
+				)}
+			</div>
+		)
+	}
+
+	return (
+		<WidgetContainer
+			background={enableBackground}
+			className={'flex flex-col gap-1 h-full w-full'}
+		>
+			{selectedCurrencies.length === 0 ? (
+				<div className="flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-12">
+					<div className="mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300">
+						💲
+					</div>
+					<p className="text-center text-content">
+						ارزهای مورد نظر خود را اضافه کنید
+					</p>
+					<Button
+						rounded="xl"
+						size="sm"
+						variant={'primary'}
+						onClick={onSettingClick}
+					>
+						افزودن ارز
+					</Button>
 				</div>
 			) : (
-				<WidgetContainer
-					background={enableBackground}
-					className={'flex flex-col gap-1'}
+				<DndContext
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
 				>
-					<ArzHeader
-						title="ویجی ارز"
-						onSettingsClick={() => onSettingClick()}
-					/>
-
-					{selectedCurrencies.length === 0 ? (
-						<div
-							className={
-								'flex-1 flex flex-col items-center justify-center gap-y-1 px-5 py-12'
-							}
+					<div
+						className="flex flex-col gap-1 overflow-y-auto overflow-x-hidden h-full scrollbar-none"
+					>
+						<SortableContext
+							items={selectedCurrencies}
+							strategy={verticalListSortingStrategy}
 						>
-							<div
-								className={
-									'mt-1 flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-300'
-								}
-							>
-								💲
-							</div>
-							<p className="text-center text-content">
-								ارزهای مورد نظر خود را اضافه کنید
-							</p>
-							<Button
-								rounded="xl"
-								size="sm"
-								variant={'primary'}
-								onClick={onSettingClick}
-							>
-								افزودن ارز
-							</Button>
-						</div>
-					) : (
-						<DndContext
-							sensors={sensors}
-							collisionDetection={closestCenter}
-							onDragEnd={handleDragEnd}
-						>
-							<div
-								className={`flex flex-col gap-1 overflow-x-hidden ${inComboWidget ? '' : 'overflow-y-auto'}`}
-								style={{
-									scrollbarWidth: 'none',
-								}}
-							>
-								<SortableContext
-									items={selectedCurrencies}
-									strategy={verticalListSortingStrategy}
-								>
-									{selectedCurrencies.map((currency) => (
-										<SortableCurrencyBox
-											key={currency}
-											id={currency}
-											code={currency}
-											currencyColorMode={currencyColorMode}
-										/>
-									))}
-								</SortableContext>
-							</div>
-						</DndContext>
-					)}
-				</WidgetContainer>
+							{selectedCurrencies.map((currency) => (
+								<SortableCurrencyBox
+									key={currency}
+									id={currency}
+									code={currency}
+									currencyColorMode={currencyColorMode}
+								/>
+							))}
+						</SortableContext>
+					</div>
+				</DndContext>
 			)}
-		</>
+		</WidgetContainer>
 	)
 }

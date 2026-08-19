@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ExpandableTodoInput } from './expandable-todo-input'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
@@ -13,6 +13,8 @@ import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import { TodoItem } from './todo.item'
 import { Icon } from '@/src/icons'
 import { TodosEmpty } from './components/todo-empty'
+import { TodoCompactRow } from './variants/todo-compact-row'
+import type { WidgetSize } from '../layout-engine/types'
 
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
@@ -30,7 +32,11 @@ const sortOptions = [
 ]
 const TagList = ['', '-all-']
 
-export function TodosLayout() {
+interface TodosLayoutProps {
+	size?: WidgetSize
+}
+
+export function TodosLayout({ size = { w: 2, h: 2 } }: TodosLayoutProps = {}) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
@@ -172,6 +178,16 @@ export function TodosLayout() {
 	const onRefresh = () => {
 		refetch()
 		Analytics.event(`todo_refetch`)
+	}
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<TodoCompactRow
+				todos={sortedTodos}
+				isLoading={isLoading}
+				onRefresh={onRefresh}
+			/>
+		)
 	}
 
 	return (

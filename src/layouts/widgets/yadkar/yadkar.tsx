@@ -70,7 +70,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 				</div>
 
 				{tab === 'todos' ? (
-					<TodosLayout />
+					<TodosLayout size={size} />
 				) : tab === 'notes' ? (
 					<NotesLayout />
 				) : (

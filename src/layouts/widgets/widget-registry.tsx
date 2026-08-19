@@ -16,6 +16,7 @@ import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 import { CurrencyProvider } from '@/context/currency.context'
 import { ClockWidget } from './clock/clock.widget'
 import { DateWidget } from './date/date.widget'
+import { PetWidget } from './pet/pet.widget'
 import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
@@ -93,6 +94,25 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			</div>
 		),
 		node: (instanceId, size) => <WidgetifyLayout size={size} />,
+	},
+	[WidgetKeys.pet]: {
+		id: WidgetKeys.pet,
+		label: 'پت (حیوان خانگی)',
+		emoji: '🐾',
+		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
+		],
+		defaultSize: { w: 2, h: 1 },
+		settingsTab: WidgetTabKeys.Pet,
+		canDuplicate: true,
+		preview: () => (
+			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col items-center justify-center gap-1">
+				<span className="text-2xl">🐶</span>
+				<span className="text-[10px] text-muted">حیوان خانگی</span>
+			</div>
+		),
+		node: (instanceId, size) => <PetWidget size={size} />,
 	},
 	[WidgetKeys.wigiPad]: {
 		id: WidgetKeys.wigiPad,
@@ -271,7 +291,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی ارز',
 		emoji: '💰',
 		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 3 },
+			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 2 },
@@ -333,11 +357,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			</div>
 		),
 		node: (instanceId, size) => (
-			<NetworkLayout
-				inComboWidget={false}
-				enableBackground={true}
-				size={size}
-			/>
+			<NetworkLayout inComboWidget={false} enableBackground={true} size={size} />
 		),
 	},
 	[WidgetKeys.HabitTracker]: {
@@ -352,9 +372,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: true,
 		preview: () => (
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-between">
-				<span className="text-[11px] font-bold text-content">
-					عادات روزانه
-				</span>
+				<span className="text-[11px] font-bold text-content">عادات روزانه</span>
 				<div className="flex gap-1">
 					{[...Array(5)].map((_, i) => (
 						<div
@@ -374,9 +392,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'تسک‌ها',
 		emoji: '✅',
 		allowedSizes: [
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,
@@ -394,7 +412,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		),
 		node: (instanceId, size) => (
 			<WidgetContainer>
-				<TodosLayout />
+				<TodosLayout size={size} />
 			</WidgetContainer>
 		),
 	},
