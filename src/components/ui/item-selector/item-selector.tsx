@@ -26,10 +26,11 @@ export function ItemSelector({
 	}
 
 	return (
-		<div
+		<button
+			type="button"
 			onClick={onClick}
 			className={cn(
-				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl',
+				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
 				className,
 				isActive
 					? 'border-primary/25 bg-primary/20'
@@ -39,7 +40,7 @@ export function ItemSelector({
 		>
 			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
-					className={`w-4 h-4 rounded-full text-white border ${getRadioBorderStyle(isActive)}`}
+					className={`w-4 h-4 rounded-full text-white border flex items-center justify-center ${getRadioBorderStyle(isActive)}`}
 				>
 					{isActive && (
 						<svg
@@ -58,11 +59,11 @@ export function ItemSelector({
 						</svg>
 					)}
 				</div>
-				<span className={'mr-1.5 text-sm font-medium text-content'}>{label}</span>
+				<span className="mr-1.5 text-sm font-medium text-content">{label}</span>
 			</div>
 			{description && (
-				<div className={'text-xs text-muted text-right'}>{description}</div>
+				<div className="text-xs text-muted text-right">{description}</div>
 			)}
-		</div>
+		</button>
 	)
 }

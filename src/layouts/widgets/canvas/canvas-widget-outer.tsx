@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
@@ -10,7 +10,6 @@ import type {
 	WidgetSize,
 } from '../layout-engine/types'
 import { WidgetContextMenu } from './widget-context-menu'
-import { WidgetSizeToolbar } from './widget-size-toolbar'
 
 interface CanvasWidgetOuterProps {
 	widget: StoredWidget
@@ -81,9 +80,7 @@ export function CanvasWidgetOuter({
 			target.closest('a') ||
 			target.closest('.no-drag')
 		) {
-			if (canvasMode !== 'edit') {
-				return
-			}
+			return
 		}
 
 		clearLongPress()
@@ -140,11 +137,12 @@ export function CanvasWidgetOuter({
 			)
 			const targetRow = Math.max(0, dragStartPosRef.current.row + deltaRow)
 
-			if (targetCol !== widget.position.col || targetRow !== widget.position.row) {
+			if (
+				targetCol !== widget.position.col ||
+				targetRow !== widget.position.row
+			) {
 				moveWidget(widget.instanceId, { col: targetCol, row: targetRow })
 			}
-		} else if (canvasMode === 'edit') {
-			setSelectedInstanceId(widget.instanceId)
 		}
 
 		pointerStartRef.current = null
@@ -227,11 +225,14 @@ export function CanvasWidgetOuter({
 				{canvasMode === 'edit' && (
 					<button
 						type="button"
+						onPointerDown={(e) => e.stopPropagation()}
+						onPointerUp={(e) => e.stopPropagation()}
 						onClick={(e) => {
+							e.preventDefault()
 							e.stopPropagation()
 							handleDelete()
 						}}
-						className="absolute -top-2 -right-2 z-40 w-6 h-6 rounded-full bg-error text-white text-xs font-bold flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-transform"
+						className="absolute -top-2 -right-2 z-50 w-6 h-6 rounded-full bg-error text-white text-xs font-bold flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-transform"
 						title="حذف ویجت"
 					>
 						✕

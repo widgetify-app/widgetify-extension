@@ -258,21 +258,35 @@ img {
 
 @keyframes widget-wiggle {
   0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-1.2deg);
-  }
-  75% {
-    transform: rotate(1.2deg);
+    transform: rotate(-0.35deg);
   }
   100% {
-    transform: rotate(0deg);
+    transform: rotate(0.35deg);
+  }
+}
+
+@keyframes widget-wiggle-alt {
+  0% {
+    transform: rotate(0.3deg);
+  }
+  100% {
+    transform: rotate(-0.3deg);
   }
 }
 
 .animate-widget-wiggle {
-  animation: widget-wiggle 0.28s ease-in-out infinite;
+  animation: widget-wiggle 0.46s ease-in-out infinite alternate;
+  transform-origin: 50% 10%;
+}
+
+.animate-widget-wiggle:nth-child(2n) {
+  animation: widget-wiggle-alt 0.48s ease-in-out infinite alternate;
+  animation-delay: -0.15s;
+}
+
+.animate-widget-wiggle:nth-child(3n) {
+  animation: widget-wiggle 0.52s ease-in-out infinite alternate;
+  animation-delay: -0.3s;
 }
 
 .widget-canvas-item-transition {

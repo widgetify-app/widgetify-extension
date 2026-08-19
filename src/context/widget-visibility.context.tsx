@@ -8,18 +8,22 @@ import {
 } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { showToast } from '@/common/toast'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/combo-widget/combo-widget.layout'
+import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
+import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
+import {
+	getUserWidgetsApi,
+	syncUserWidgetsApi,
+} from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
-import { showToast } from '@/common/toast'
-import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
-import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -129,7 +133,13 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '🌐',
 		label: 'شبکه',
 		order: 7,
-		node: <NetworkLayout inComboWidget={false} enableBackground={true} size={{ w: 2, h: 3 }} />,
+		node: (
+			<NetworkLayout
+				inComboWidget={false}
+				enableBackground={true}
+				size={{ w: 2, h: 3 }}
+			/>
+		),
 		canToggle: true,
 		isNew: false,
 	},
@@ -160,9 +170,9 @@ const defaultVisibility: WidgetKeys[] = [
 ]
 export const MAX_VISIBLE_WIDGETS = 5
 
-const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
-	undefined
-)
+const WidgetVisibilityContext = createContext<
+	WidgetVisibilityContextType | undefined
+>(undefined)
 
 const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
 	const orders: Record<WidgetKeys, number> = {} as Record<WidgetKeys, number>
@@ -172,79 +182,136 @@ const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
 	return orders
 }
 
-export function WidgetVisibilityProvider({ children }: { children: ReactNode }) {
-	const [visibility, setVisibility] = useState<WidgetKeys[]>([])
+export function WidgetVisibilityProvider({
+	children,
+}: { children: ReactNode }) {
+	const [visibility, setVisibility] = useState<WidgetKeys[]>(defaultVisibility)
 	const [widgetOrders, setWidgetOrders] =
 		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
-	const firstRender = useRef(true)
+	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
+	const hasFetchedServerRef = useRef<boolean>(false)
 	const { isAuthenticated } = useAuth()
 
-	const saveActiveWidgets = () => {
+	const saveActiveWidgets = (currentVisibility = visibility, currentOrders = widgetOrders) => {
 		const activeWidgets = widgetItems
-			.filter((item) => visibility.includes(item.id))
+			.filter((item) => currentVisibility.includes(item.id))
 			.map((item) => ({
 				...item,
-				order: widgetOrders[item.id] ?? item.order,
+				order: currentOrders[item.id] ?? item.order,
 			}))
 		setToStorage('activeWidgets', activeWidgets)
+
+		if (isAuthenticated) {
+			if (syncTimerRef.current) {
+				clearTimeout(syncTimerRef.current)
+			}
+			syncTimerRef.current = setTimeout(() => {
+				syncUserWidgetsApi({
+					ui: 'ADVANCED',
+					workspace: 'HOME',
+					widgets: activeWidgets.map((w, index) => ({
+						widgetKey: w.id,
+						order: w.order ?? index,
+						col: 0,
+						row: 0,
+						width: 2,
+						height: 3,
+					})),
+				}).catch(() => {})
+			}, 1000)
+		}
 	}
 
 	useEffect(() => {
-		async function loadSettings() {
-			const storedVisibility = await getFromStorage('activeWidgets')
-			if (
-				storedVisibility &&
-				Array.isArray(storedVisibility) &&
-				storedVisibility.length > 0
-			) {
-				const visibilityIds = storedVisibility
-					.filter((item) => widgetItems.some((w) => w.id === item.id))
-					.map((item: any) => item.id as WidgetKeys)
-
+		async function initActiveWidgets() {
+			try {
+				const storedVisibility = await getFromStorage('activeWidgets')
 				if (
-					visibilityIds.includes(WidgetKeys.todos) ||
-					visibilityIds.includes(WidgetKeys.notes)
+					storedVisibility &&
+					Array.isArray(storedVisibility) &&
+					storedVisibility.length > 0
 				) {
-					Analytics.event('yadkar_merged')
+					let visibilityIds = storedVisibility
+						.filter((item) => widgetItems.some((w) => w.id === item.id))
+						.map((item: any) => item.id as WidgetKeys)
 
-					visibilityIds.splice(visibilityIds.indexOf(WidgetKeys.todos), 1)
-					visibilityIds.splice(visibilityIds.indexOf(WidgetKeys.notes), 1)
+					if (
+						visibilityIds.includes(WidgetKeys.todos) ||
+						visibilityIds.includes(WidgetKeys.notes)
+					) {
+						Analytics.event('yadkar_merged')
+						visibilityIds = visibilityIds.filter(
+							(id) => id !== WidgetKeys.todos && id !== WidgetKeys.notes
+						)
+						if (!visibilityIds.includes(WidgetKeys.yadKar)) {
+							visibilityIds.push(WidgetKeys.yadKar)
+						}
+					}
 
-					visibilityIds.push(WidgetKeys.yadKar)
-					saveActiveWidgets()
-				}
-
-				if (visibilityIds.length > 0) {
-					setVisibility(visibilityIds)
-
-					const orders: Record<WidgetKeys, number> = {} as Record<
-						WidgetKeys,
-						number
-					>
+					const orders: Record<WidgetKeys, number> = getDefaultWidgetOrders()
 					for (const item of storedVisibility) {
 						orders[item.id as WidgetKeys] =
 							item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
 					}
-					setWidgetOrders(orders)
-				} else {
-					setVisibility(defaultVisibility)
-					setWidgetOrders(getDefaultWidgetOrders())
+
+					if (visibilityIds.length > 0) {
+						setVisibility(visibilityIds)
+						setWidgetOrders(orders)
+					}
 				}
-			} else {
-				setVisibility(defaultVisibility)
-				setWidgetOrders(getDefaultWidgetOrders())
+			} catch (err) {
+				console.error('Failed to load local active widgets', err)
 			}
-			firstRender.current = false
 		}
 
-		loadSettings()
+		initActiveWidgets()
 	}, [])
 
 	useEffect(() => {
-		if (!firstRender.current) {
-			saveActiveWidgets()
+		if (!isAuthenticated || hasFetchedServerRef.current) return
+		hasFetchedServerRef.current = true
+
+		let isCancelled = false
+
+		async function fetchAndReconcileVisibility() {
+			try {
+				const serverWidgets = await getUserWidgetsApi('ADVANCED', 'HOME')
+
+				if (isCancelled) return
+
+				if (serverWidgets && serverWidgets.length > 0) {
+					const visibilityIds = serverWidgets
+						.map((sw) => sw.widgetKey as WidgetKeys)
+						.filter((k) => widgetItems.some((w) => w.id === k))
+
+					const orders: Record<WidgetKeys, number> = getDefaultWidgetOrders()
+					for (const sw of serverWidgets) {
+						orders[sw.widgetKey as WidgetKeys] = sw.order ?? 0
+					}
+
+					if (visibilityIds.length > 0) {
+						setVisibility(visibilityIds)
+						setWidgetOrders(orders)
+						const activeWidgets = widgetItems
+							.filter((item) => visibilityIds.includes(item.id))
+							.map((item) => ({
+								...item,
+								order: orders[item.id] ?? item.order,
+							}))
+						setToStorage('activeWidgets', activeWidgets)
+					}
+				}
+			} catch (err) {
+				console.error('Background visibility fetch error', err)
+			}
 		}
-	}, [visibility, widgetOrders])
+
+		fetchAndReconcileVisibility()
+
+		return () => {
+			isCancelled = true
+		}
+	}, [isAuthenticated])
 
 	const toggleWidget = (widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
@@ -269,6 +336,8 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			} else {
 				Analytics.event(`widget_add_${widgetId}`)
 			}
+
+			saveActiveWidgets(newVisibility, widgetOrders)
 			return newVisibility
 		})
 	}
@@ -289,6 +358,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				newOrders[widget.id] = index
 			})
 
+			saveActiveWidgets(visibility, newOrders)
 			return newOrders
 		})
 	}

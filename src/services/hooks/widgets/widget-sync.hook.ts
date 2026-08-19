@@ -1,64 +1,196 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient, safeAwait } from '@/services/api'
-import type { WidgetPosition, WidgetSize } from '@/layouts/widgets/layout-engine/types'
-import type { AxiosError } from 'axios'
+import type { AxiosError, AxiosResponse } from 'axios'
 
-export interface CreateWidgetPayload {
-	type: string
-	position: WidgetPosition
-	size: WidgetSize
-	clientInstanceId: string
-	settings?: Record<string, unknown>
-}
-
-export interface ServerWidgetResponse {
-	id: string
-	type: string
-	position: WidgetPosition
-	size: WidgetSize
+export interface ServerUserWidget {
+	instanceId: string
+	widgetKey: string
+	ui: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
+	workspace: 'HOME'
+	col: number
+	row: number
+	width: number
+	height: number
+	order: number
+	meta?: any
+	disabled: boolean
 	createdAt: string
+	updatedAt: string
 }
 
-/**
- * Creates a widget record on the server.
- * 
- * NOTE (Future Server Contract):
- * Endpoint: POST /widgets
- * When the server implementation is completed:
- * 1. The client sends { type, position, size, clientInstanceId, settings }
- * 2. The server creates the widget entity and returns { id, type, position, size, createdAt }
- * 3. The returned `id` is stored as `widgetId` on the client widget instance.
- * 4. All bookmarks, notes, or widgets-scoped items created inside this widget will reference this `widgetId`.
- */
-export async function createWidgetApi(
-	payload: CreateWidgetPayload
-): Promise<ServerWidgetResponse> {
-	const client = getMainClient()
+export interface CreateUserWidgetPayload {
+	widgetKey: string
+	ui?: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
+	workspace?: 'HOME'
+	col?: number
+	row?: number
+	width?: number
+	height?: number
+	order?: number
+	meta?: any
+	disabled?: boolean
+}
 
-	const [err, response] = await safeAwait<AxiosError, ServerWidgetResponse>(
-		client.post<ServerWidgetResponse>('/widgets', payload)
+export interface UpdateUserWidgetPayload {
+	col?: number
+	row?: number
+	width?: number
+	height?: number
+	order?: number
+	meta?: any
+	disabled?: boolean
+}
+
+export interface SyncWidgetItemPayload {
+	instanceId?: string
+	widgetKey: string
+	col?: number
+	row?: number
+	width?: number
+	height?: number
+	order?: number
+	meta?: any
+	disabled?: boolean
+}
+
+export interface SyncUserWidgetsPayload {
+	ui?: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
+	workspace?: 'HOME'
+	widgets: SyncWidgetItemPayload[]
+}
+
+export async function getUserWidgetsApi(
+	ui: string = 'ADVANCED',
+	workspace: string = 'HOME'
+): Promise<ServerUserWidget[]> {
+	const client = getMainClient()
+	const [err, response] = await safeAwait<
+		AxiosError,
+		AxiosResponse<{ widgets: ServerUserWidget[] }>
+	>(
+		client.get<{ widgets: ServerUserWidget[] }>('/user-widgets', {
+			params: { ui, workspace },
+		})
 	)
 
 	if (err || !response) {
-		// Mock fallback until server endpoint is implemented
-		const mockServerWidgetId = `widget-srv-${payload.clientInstanceId}-${Date.now().toString(36)}`
-		return {
-			id: mockServerWidgetId,
-			type: payload.type,
-			position: payload.position,
-			size: payload.size,
-			createdAt: new Date().toISOString(),
-		}
+		return []
 	}
 
-	return response
+	return response.data?.widgets || []
 }
 
-export const useCreateWidget = () => {
+export async function createUserWidgetApi(
+	payload: CreateUserWidgetPayload
+): Promise<ServerUserWidget | null> {
+	const client = getMainClient()
+	const [err, response] = await safeAwait<
+		AxiosError,
+		AxiosResponse<ServerUserWidget>
+	>(client.post<ServerUserWidget>('/user-widgets', payload))
+
+	if (err || !response) {
+		return null
+	}
+
+	return response.data
+}
+
+export async function updateUserWidgetApi(
+	instanceId: string,
+	payload: UpdateUserWidgetPayload
+): Promise<ServerUserWidget | null> {
+	const client = getMainClient()
+	const [err, response] = await safeAwait<
+		AxiosError,
+		AxiosResponse<ServerUserWidget>
+	>(client.put<ServerUserWidget>(`/user-widgets/${instanceId}`, payload))
+
+	if (err || !response) {
+		return null
+	}
+
+	return response.data
+}
+
+export async function deleteUserWidgetApi(
+	instanceId: string
+): Promise<{ success: boolean; message?: string } | null> {
+	const client = getMainClient()
+	const [err, response] = await safeAwait<
+		AxiosError,
+		AxiosResponse<{ success: boolean; message?: string }>
+	>(
+		client.delete<{ success: boolean; message?: string }>(
+			`/user-widgets/${instanceId}`
+		)
+	)
+
+	if (err || !response) {
+		return null
+	}
+
+	return response.data
+}
+
+export async function syncUserWidgetsApi(
+	payload: SyncUserWidgetsPayload
+): Promise<ServerUserWidget[]> {
+	const client = getMainClient()
+	const [err, response] = await safeAwait<
+		AxiosError,
+		AxiosResponse<{ widgets: ServerUserWidget[] }>
+	>(
+		client.post<{ widgets: ServerUserWidget[] }>('/user-widgets/sync', payload)
+	)
+
+	if (err || !response) {
+		return []
+	}
+
+	return response.data?.widgets || []
+}
+
+export const useGetUserWidgets = (
+	ui: 'ADVANCED' | 'SIMPLE' | 'CUSTOM' = 'ADVANCED',
+	workspace: 'HOME' = 'HOME',
+	enabled: boolean = true
+) => {
+	return useQuery<ServerUserWidget[]>({
+		queryKey: ['getUserWidgets', ui, workspace],
+		queryFn: () => getUserWidgetsApi(ui, workspace),
+		enabled,
+	})
+}
+
+export const useCreateUserWidget = () => {
 	return useMutation({
-		mutationKey: ['createWidget'],
-		mutationFn: async (payload: CreateWidgetPayload) => {
-			return await createWidgetApi(payload)
-		},
+		mutationKey: ['createUserWidget'],
+		mutationFn: (payload: CreateUserWidgetPayload) => createUserWidgetApi(payload),
+	})
+}
+
+export const useUpdateUserWidget = () => {
+	return useMutation({
+		mutationKey: ['updateUserWidget'],
+		mutationFn: ({
+			instanceId,
+			payload,
+		}: { instanceId: string; payload: UpdateUserWidgetPayload }) =>
+			updateUserWidgetApi(instanceId, payload),
+	})
+}
+
+export const useDeleteUserWidget = () => {
+	return useMutation({
+		mutationKey: ['deleteUserWidget'],
+		mutationFn: (instanceId: string) => deleteUserWidgetApi(instanceId),
+	})
+}
+
+export const useSyncUserWidgets = () => {
+	return useMutation({
+		mutationKey: ['syncUserWidgets'],
+		mutationFn: (payload: SyncUserWidgetsPayload) => syncUserWidgetsApi(payload),
 	})
 }

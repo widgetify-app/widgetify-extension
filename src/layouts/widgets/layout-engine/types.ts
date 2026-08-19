@@ -35,6 +35,8 @@ export interface StoredWidget {
 	position: WidgetPosition
 	size: WidgetSize
 	widgetId?: string | null
+	meta?: any
+	disabled?: boolean
 }
 
 export type LayoutOperation =

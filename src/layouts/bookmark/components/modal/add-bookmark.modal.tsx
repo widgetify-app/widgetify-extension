@@ -8,6 +8,7 @@ import { ShowAdvancedButton, TypeSelector } from '../shared'
 import { AdvancedModal } from './advanced.modal'
 import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon.picker'
+import type { BookmarkSuggestion } from '@/services/hooks/bookmark/get-bookmarks.hook'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -75,25 +76,31 @@ export function AddBookmarkModal({
 		setFormData((prev) => ({ ...prev, [key]: value }))
 	}
 
+	const handleTypeChange = (newType: BookmarkType) => {
+		setType(newType)
+		updateFormData('type', newType)
+	}
+
 	const handleUrlChange = (value: string) => {
 		const newUrl = value.trim()
-		updateFormData('url', newUrl)
-
-		updateFormData('icon', null)
-
+		let hostName = ''
 		if (formData.title.trim() === '' && newUrl !== '') {
-			let hostName = ''
 			try {
-				hostName = new URL(newUrl).hostname
+				hostName = new URL(newUrl.startsWith('http') ? newUrl : `https://${newUrl}`).hostname
 				if (hostName && hostName.split('.').length > 2) {
 					hostName = hostName.split('.')[1]
 				}
 			} catch {
 				hostName = newUrl
 			}
-
-			updateFormData('title', hostName)
 		}
+
+		setFormData((prev) => ({
+			...prev,
+			url: newUrl,
+			icon: null,
+			title: prev.title.trim() === '' && hostName ? hostName : prev.title,
+		}))
 	}
 
 	const handleAdd = (e: React.FormEvent) => {
@@ -132,13 +139,13 @@ export function AddBookmarkModal({
 		onClose()
 	}
 
-	const handleSuggestionSelect = (suggestion: {
-		title: string
-		url: string
-		icon: string | null
-	}) => {
-		updateFormData('title', suggestion.title)
-		updateFormData('url', suggestion.url)
+	const handleSuggestionSelect = (suggestion: BookmarkSuggestion) => {
+		setFormData((prev) => ({
+			...prev,
+			title: suggestion.title,
+			url: suggestion.url,
+			icon: null,
+		}))
 	}
 
 	const handleAdvancedModalClose = (
@@ -183,10 +190,11 @@ export function AddBookmarkModal({
 		>
 			<form
 				onSubmit={handleAdd}
+				onContextMenu={(e) => e.stopPropagation()}
 				className="flex flex-col justify-between gap-2 overflow-y-auto h-96"
 			>
 				<div className="mt-1 overflow-hidden">
-					<TypeSelector type={type} setType={setType} />
+					<TypeSelector type={type} setType={handleTypeChange} />
 					{onOpenImport && (
 						<button
 							type="button"
@@ -204,9 +212,7 @@ export function AddBookmarkModal({
 							placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
 							value={formData.title}
 							onChange={(v) => updateFormData('title', v)}
-							className={
-								'w-full px-4 py-3 text-right rounded-lg transition-all duration-200 '
-							}
+							className="w-full px-4 py-3 text-right rounded-lg transition-all duration-200"
 						/>
 
 						<BookmarkIconPicker
@@ -215,20 +221,20 @@ export function AddBookmarkModal({
 							url={formData.url}
 						/>
 					</div>
-					<div className="relative h-12.5">
-						{type === 'BOOKMARK' && (
+
+					{type === 'BOOKMARK' && (
+						<div className="mt-2">
 							<TextInput
 								type="text"
 								name="url"
 								placeholder="آدرس لینک"
 								value={formData.url || ''}
 								onChange={(v) => handleUrlChange(v)}
-								className={
-									'mt-2 w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-								}
+								className="w-full px-4 py-3 text-right rounded-lg transition-all duration-200"
 							/>
-						)}
-					</div>
+						</div>
+					)}
+
 					{type === 'BOOKMARK' && (
 						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
 					)}
@@ -237,7 +243,7 @@ export function AddBookmarkModal({
 						bookmark={formData}
 						isOpen={showAdvanced}
 						onClose={handleAdvancedModalClose}
-						title={'تنظیمات پیشرفته'}
+						title="تنظیمات پیشرفته"
 					/>
 				</div>
 
@@ -249,6 +255,7 @@ export function AddBookmarkModal({
 
 					<div className="flex items-center gap-x-1">
 						<Button
+							type="button"
 							onClick={onCloseHandler}
 							size="md"
 							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
@@ -264,10 +271,8 @@ export function AddBookmarkModal({
 							}
 							size="md"
 							loading={isAdding}
-							className={
-								'btn w-28 border-none shadow-none  rounded-2xl transition-colors duration-300 ease-in-out'
-							}
-							variant={'primary'}
+							className="btn w-28 border-none shadow-none rounded-2xl transition-colors duration-300 ease-in-out"
+							variant="primary"
 						>
 							ذخیره
 						</Button>

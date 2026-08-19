@@ -27,8 +27,15 @@ import type {
 } from '@/layouts/widgets/layout-engine/types'
 import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
-import { createWidgetApi } from '@/services/hooks/widgets/widget-sync.hook'
+import {
+	createUserWidgetApi,
+	deleteUserWidgetApi,
+	getUserWidgetsApi,
+	syncUserWidgetsApi,
+	updateUserWidgetApi,
+} from '@/services/hooks/widgets/widget-sync.hook'
 import { useAppearance } from './appearance.context'
+import { useAuth } from './auth.context'
 
 interface FreeWidgetContextType {
 	savedLayout: StoredWidget[]
@@ -38,35 +45,39 @@ interface FreeWidgetContextType {
 	cellHeight: number
 	gap: number
 	isListFallback: boolean
+	isLoaded: boolean
 	canvasMode: 'normal' | 'edit'
 	selectedInstanceId: string | null
 	setCanvasMode: (mode: 'normal' | 'edit') => void
 	setSelectedInstanceId: (id: string | null) => void
 	resizeWidget: (instanceId: string, newSize: WidgetSize) => boolean
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
-	addWidget: (id: string, targetPosition?: WidgetPosition) => boolean
-	duplicateWidget: (instanceId: string) => boolean
+	addWidget: (id: string, targetPosition?: WidgetPosition) => Promise<boolean>
+	duplicateWidget: (instanceId: string) => Promise<boolean>
 	removeWidget: (instanceId: string) => boolean
-	resetToDefaultLayout: () => void
+	updateWidgetSettings: (instanceId: string, meta: any) => void
 	updateContainerWidth: (containerWidth: number) => void
 }
 
 const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
+	const { isAuthenticated } = useAuth()
 	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
 		useAppearance()
 
-	const [savedLayout, setSavedLayout] = useState<StoredWidget[]>(DEFAULT_WIDGET_LAYOUT)
-	const [runtimeLayout, setRuntimeLayout] =
-		useState<StoredWidget[]>(DEFAULT_WIDGET_LAYOUT)
+	const [isLoaded, setIsLoaded] = useState<boolean>(false)
+	const [savedLayout, setSavedLayout] = useState<StoredWidget[]>([])
+	const [runtimeLayout, setRuntimeLayout] = useState<StoredWidget[]>([])
 	const [cols, setCols] = useState<number>(DEFAULT_COLS)
 	const [cellHeight, setCellHeight] = useState<number>(DEFAULT_CELL_HEIGHT)
 	const [gap, setGap] = useState<number>(DEFAULT_GAP)
 	const [cellWidth, setCellWidth] = useState<number>(100)
 	const [isListFallback, setIsListFallback] = useState<boolean>(false)
-	const isInitialized = useRef<boolean>(false)
+	const colsRef = useRef<number>(DEFAULT_COLS)
 	const containerWidthRef = useRef<number>(1200)
+	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
+	const hasFetchedServerRef = useRef<boolean>(false)
 
 	const persistLayout = useCallback((layoutToPersist: StoredWidget[]) => {
 		setToStorage('storedWidgets', layoutToPersist)
@@ -107,6 +118,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			const fallback = computedCellWidth < MIN_CELL_WIDTH
 
+			colsRef.current = matched.cols
 			setCols(matched.cols)
 			setCellHeight(matched.cellHeight)
 			setGap(matched.gap)
@@ -127,23 +139,133 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	)
 
 	useEffect(() => {
-		async function init() {
+		async function loadFromLocalStorage() {
 			try {
-				const migrated = await migrateWidgetLayoutIfNeeded()
-				setSavedLayout(migrated)
-				const reflowed = reflowForColumns(migrated, cols)
+				const localLayout = await migrateWidgetLayoutIfNeeded()
+				setSavedLayout(localLayout)
+				const reflowed = reflowForColumns(localLayout, colsRef.current)
 				setRuntimeLayout(reflowed)
 			} catch (err) {
-				console.error('Failed to load widget layout', err)
+				console.error('Failed to load local widget layout', err)
 				setSavedLayout(DEFAULT_WIDGET_LAYOUT)
 				setRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
 			} finally {
-				isInitialized.current = true
+				setIsLoaded(true)
 			}
 		}
 
-		init()
-	}, [])
+		loadFromLocalStorage()
+	}, [reflowForColumns])
+
+	useEffect(() => {
+		if (!isAuthenticated || hasFetchedServerRef.current) return
+		hasFetchedServerRef.current = true
+
+		async function fetchAndReconcileWithServer() {
+			try {
+				const serverWidgets = await getUserWidgetsApi('CUSTOM', 'HOME')
+
+				if (serverWidgets && serverWidgets.length > 0) {
+					const fromSrv: StoredWidget[] = serverWidgets.map((sw) => ({
+						id: sw.widgetKey as any,
+						instanceId: sw.instanceId,
+						widgetId: sw.instanceId,
+						position: { col: sw.col, row: sw.row },
+						size: { w: sw.width, h: sw.height },
+						meta: sw.meta,
+						disabled: sw.disabled,
+					}))
+
+					setSavedLayout(fromSrv)
+					const reflowed = reflowForColumns(fromSrv, colsRef.current)
+					setRuntimeLayout(reflowed)
+					persistLayout(fromSrv)
+				} else {
+					const localLayout = await migrateWidgetLayoutIfNeeded()
+					if (localLayout && localLayout.length > 0) {
+						const synced = await syncUserWidgetsApi({
+							ui: 'CUSTOM',
+							workspace: 'HOME',
+							widgets: localLayout.map((w) => ({
+								instanceId:
+									typeof w.instanceId === 'string' &&
+									/^[0-9a-fA-F]{24}$/.test(w.instanceId)
+										? w.instanceId
+										: undefined,
+								widgetKey: w.id,
+								col: w.position.col,
+								row: w.position.row,
+								width: w.size.w,
+								height: w.size.h,
+								meta: w.meta,
+								disabled: w.disabled ?? false,
+							})),
+						})
+
+						if (synced && synced.length > 0) {
+							setSavedLayout((prev) => {
+								const updated = prev.map((w, index) => {
+									const matching =
+										synced.find((s) => s.instanceId === w.instanceId) ||
+										synced.find((s) => s.widgetKey === w.id) ||
+										synced[index]
+									if (
+										matching?.instanceId &&
+										matching.instanceId !== w.instanceId
+									) {
+										return {
+											...w,
+											instanceId: matching.instanceId,
+											widgetId: matching.instanceId,
+										}
+									}
+									return w
+								})
+								persistLayout(updated)
+								return updated
+							})
+						}
+					}
+				}
+			} catch (err) {
+				console.error('Background widget fetch error', err)
+			}
+		}
+
+		fetchAndReconcileWithServer()
+	}, [isAuthenticated, reflowForColumns, persistLayout])
+
+	const triggerServerSync = useCallback(
+		(currentLayout: StoredWidget[]) => {
+			if (!isAuthenticated) return
+
+			if (syncTimerRef.current) {
+				clearTimeout(syncTimerRef.current)
+			}
+
+			syncTimerRef.current = setTimeout(() => {
+				syncUserWidgetsApi({
+					ui: 'CUSTOM',
+					workspace: 'HOME',
+					widgets: currentLayout.map((w) => ({
+						instanceId:
+							typeof w.instanceId === 'string' &&
+							/^[0-9a-fA-F]{24}$/.test(w.instanceId)
+								? w.instanceId
+								: undefined,
+						widgetKey: w.id,
+						col: w.position.col,
+						row: w.position.row,
+						width: w.size.w,
+						height: w.size.h,
+						meta: w.meta,
+						disabled: w.disabled ?? false,
+					})),
+				}).catch(() => {})
+			}, 1000)
+		},
+		[isAuthenticated]
+	)
 
 	const commitMutation = useCallback(
 		(operation: string, nextRuntime: StoredWidget[], targetInstanceId?: string) => {
@@ -156,6 +278,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			if (cols >= DEFAULT_COLS) {
 				setSavedLayout(nextRuntime)
 				persistLayout(nextRuntime)
+				triggerServerSync(nextRuntime)
 			} else {
 				setSavedLayout((prevSaved) => {
 					const updated = prevSaved.map((savedW) => {
@@ -178,6 +301,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 					const finalSaved = [...updated, ...newItems]
 					persistLayout(finalSaved)
+					triggerServerSync(finalSaved)
 					return finalSaved
 				})
 			}
@@ -187,7 +311,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			})
 			return true
 		},
-		[cols, persistLayout]
+		[cols, persistLayout, triggerServerSync]
 	)
 
 	const resizeWidget = useCallback(
@@ -230,7 +354,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	)
 
 	const addWidget = useCallback(
-		(id: string, targetPosition?: WidgetPosition): boolean => {
+		async (id: string, targetPosition?: WidgetPosition): Promise<boolean> => {
 			const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 			if (!def) return false
 
@@ -240,13 +364,29 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
-			const instanceId = `${id}-${Date.now().toString(36)}`
+			let finalInstanceId = `${id}-${Date.now().toString(36)}`
+
+			if (isAuthenticated) {
+				const serverWidget = await createUserWidgetApi({
+					widgetKey: def.id,
+					ui: 'CUSTOM',
+					workspace: 'HOME',
+					col: targetPosition?.col ?? 0,
+					row: targetPosition?.row ?? 0,
+					width: def.defaultSize.w,
+					height: def.defaultSize.h,
+				})
+				if (serverWidget?.instanceId) {
+					finalInstanceId = serverWidget.instanceId
+				}
+			}
+
 			const newWidget: StoredWidget = {
 				id: def.id,
-				instanceId,
+				instanceId: finalInstanceId,
 				position: targetPosition || { col: 0, row: 0 },
 				size: def.defaultSize,
-				widgetId: `widget-${instanceId}`,
+				widgetId: finalInstanceId,
 			}
 
 			const result = resolveLayoutChange({
@@ -258,46 +398,25 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			})
 
 			if (!result) {
+				if (
+					isAuthenticated &&
+					typeof finalInstanceId === 'string' &&
+					/^[0-9a-fA-F]{24}$/.test(finalInstanceId)
+				) {
+					deleteUserWidgetApi(finalInstanceId).catch(() => {})
+				}
 				showToast('فضای کافی برای افزودن ویجت وجود ندارد', 'error')
 				return false
 			}
 
-			createWidgetApi({
-				type: def.id,
-				position: newWidget.position,
-				size: newWidget.size,
-				clientInstanceId: instanceId,
-			})
-				.then((serverWidget) => {
-					if (serverWidget?.id) {
-						setSavedLayout((prev) => {
-							const updated = prev.map((w) =>
-								w.instanceId === instanceId
-									? { ...w, widgetId: serverWidget.id }
-									: w
-							)
-							persistLayout(updated)
-							return updated
-						})
-						setRuntimeLayout((prev) =>
-							prev.map((w) =>
-								w.instanceId === instanceId
-									? { ...w, widgetId: serverWidget.id }
-									: w
-							)
-						)
-					}
-				})
-				.catch(() => {})
-
 			showToast(`ویجت ${def.label} افزوده شد`, 'success')
-			return commitMutation('add', result, instanceId)
+			return commitMutation('add', result, finalInstanceId)
 		},
-		[runtimeLayout, cols, commitMutation, persistLayout]
+		[runtimeLayout, cols, commitMutation, isAuthenticated]
 	)
 
 	const duplicateWidget = useCallback(
-		(instanceId: string): boolean => {
+		async (instanceId: string): Promise<boolean> => {
 			const original = runtimeLayout.find((w) => w.instanceId === instanceId)
 			if (!original) return false
 
@@ -307,59 +426,79 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
+			let newInstanceId = `${original.id}-${Date.now().toString(36)}`
+
+			if (isAuthenticated) {
+				const serverWidget = await createUserWidgetApi({
+					widgetKey: def.id,
+					ui: 'CUSTOM',
+					workspace: 'HOME',
+					col: original.position.col,
+					row: original.position.row,
+					width: original.size.w,
+					height: original.size.h,
+				})
+				if (serverWidget?.instanceId) {
+					newInstanceId = serverWidget.instanceId
+				}
+			}
+
+			const newWidget: StoredWidget = {
+				id: original.id,
+				instanceId: newInstanceId,
+				position: original.position,
+				size: original.size,
+				widgetId: newInstanceId,
+			}
+
 			const result = resolveLayoutChange({
 				layout: runtimeLayout,
 				operation: 'duplicate',
 				instanceId,
+				newWidget,
 				cols,
 			})
 
 			if (!result) {
+				if (
+					isAuthenticated &&
+					typeof newInstanceId === 'string' &&
+					/^[0-9a-fA-F]{24}$/.test(newInstanceId)
+				) {
+					deleteUserWidgetApi(newInstanceId).catch(() => {})
+				}
 				showToast('فضای کافی برای تکرار ویجت وجود ندارد', 'error')
 				return false
 			}
 
-			const duplicated = result.find(
-				(w) =>
-					w.id === original.id &&
-					w.instanceId !== original.instanceId &&
-					!runtimeLayout.some((r) => r.instanceId === w.instanceId)
+			showToast('ویجت با موفقیت تکرار شد', 'success')
+			return commitMutation('duplicate', result, newInstanceId)
+		},
+		[runtimeLayout, cols, commitMutation, isAuthenticated]
+	)
+
+	const updateWidgetSettings = useCallback(
+		(instanceId: string, meta: any) => {
+			setSavedLayout((prev) => {
+				const updated = prev.map((w) =>
+					w.instanceId === instanceId ? { ...w, meta } : w
+				)
+				persistLayout(updated)
+				return updated
+			})
+			setRuntimeLayout((prev) =>
+				prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
 			)
 
-			if (duplicated) {
-				createWidgetApi({
-					type: duplicated.id,
-					position: duplicated.position,
-					size: duplicated.size,
-					clientInstanceId: duplicated.instanceId,
-				})
-					.then((serverWidget) => {
-						if (serverWidget?.id) {
-							setSavedLayout((prev) => {
-								const updated = prev.map((w) =>
-									w.instanceId === duplicated.instanceId
-										? { ...w, widgetId: serverWidget.id }
-										: w
-								)
-								persistLayout(updated)
-								return updated
-							})
-							setRuntimeLayout((prev) =>
-								prev.map((w) =>
-									w.instanceId === duplicated.instanceId
-										? { ...w, widgetId: serverWidget.id }
-										: w
-								)
-							)
-						}
-					})
-					.catch(() => {})
+			if (
+				isAuthenticated &&
+				typeof instanceId === 'string' &&
+				/^[0-9a-fA-F]{24}$/.test(instanceId)
+			) {
+				updateUserWidgetApi(instanceId, { meta }).catch(() => {})
 			}
-
-			showToast('ویجت با موفقیت تکرار شد', 'success')
-			return commitMutation('duplicate', result, instanceId)
 		},
-		[runtimeLayout, cols, commitMutation, persistLayout]
+		[isAuthenticated, persistLayout]
 	)
 
 	const removeWidget = useCallback(
@@ -379,20 +518,26 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				setSelectedInstanceId(null)
 			}
 
+			if (
+				isAuthenticated &&
+				typeof instanceId === 'string' &&
+				/^[0-9a-fA-F]{24}$/.test(instanceId)
+			) {
+				deleteUserWidgetApi(instanceId).catch(() => {})
+			}
+
 			showToast('ویجت حذف شد', 'success')
 			return commitMutation('remove', result, instanceId)
 		},
-		[runtimeLayout, cols, selectedInstanceId, setSelectedInstanceId, commitMutation]
+		[
+			runtimeLayout,
+			cols,
+			selectedInstanceId,
+			setSelectedInstanceId,
+			commitMutation,
+			isAuthenticated,
+		]
 	)
-
-	const resetToDefaultLayout = useCallback(() => {
-		setSavedLayout(DEFAULT_WIDGET_LAYOUT)
-		const reflowed = reflowForColumns(DEFAULT_WIDGET_LAYOUT, cols)
-		setRuntimeLayout(reflowed)
-		persistLayout(DEFAULT_WIDGET_LAYOUT)
-		setSelectedInstanceId(null)
-		showToast('چیدمان پیش‌فرض بازیابی شد', 'success')
-	}, [cols, reflowForColumns, persistLayout, setSelectedInstanceId])
 
 	return (
 		<FreeWidgetContext.Provider
@@ -404,6 +549,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				cellHeight,
 				gap,
 				isListFallback,
+				isLoaded,
 				canvasMode,
 				selectedInstanceId,
 				setCanvasMode,
@@ -413,7 +559,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				addWidget,
 				duplicateWidget,
 				removeWidget,
-				resetToDefaultLayout,
+				updateWidgetSettings,
 				updateContainerWidth,
 			}}
 		>

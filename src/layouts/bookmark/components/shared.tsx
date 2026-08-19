@@ -24,8 +24,8 @@ export function TypeSelector({
 						بوکمارک
 					</div>
 				}
-				className="p-2! h-14!"
-				description={'ذخیره یک لینک یا وب‌سایت'}
+				className="p-2! h-auto min-h-[56px]"
+				description="ذخیره یک لینک یا وب‌سایت"
 			/>
 			<ItemSelector
 				isActive={type === 'FOLDER'}
@@ -38,8 +38,8 @@ export function TypeSelector({
 						پوشه
 					</div>
 				}
-				className="p-2! h-14!"
-				description={'دسته‌بندی و مرتب‌سازی بوکمارک‌ها'}
+				className="p-2! h-auto min-h-[56px]"
+				description="دسته‌بندی و مرتب‌سازی بوکمارک‌ها"
 			/>
 		</div>
 	)
@@ -57,9 +57,9 @@ export function ShowAdvancedButton({
 		<Button
 			type="button"
 			onClick={() => setShowAdvanced(!showAdvanced)}
-			size={'md'}
-			rounded={'2xl'}
-			variant={'default'}
+			size="md"
+			rounded="2xl"
+			variant="default"
 			className="text-muted"
 		>
 			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>

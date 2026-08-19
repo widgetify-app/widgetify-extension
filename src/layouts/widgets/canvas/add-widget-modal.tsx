@@ -12,8 +12,8 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 
 	const allDefinitions = Object.values(WIDGET_DEFINITIONS)
 
-	const handleAdd = (id: string) => {
-		const success = addWidget(id)
+	const handleAdd = async (id: string) => {
+		const success = await addWidget(id)
 		if (success) {
 			onClose()
 		}

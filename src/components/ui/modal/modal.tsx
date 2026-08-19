@@ -81,11 +81,13 @@ export function Modal({
 			aria-labelledby={typeof title === 'string' ? title : 'modal-title'}
 			aria-modal="true"
 			onClick={() => closeOnBackdropClick && onClose()}
+			onContextMenu={(e) => e.stopPropagation()}
 			className="flex items-center justify-center p-2 transition-opacity duration-200 opacity-100 modal modal-middle md:p-4"
 		>
 			<div
 				ref={modalRef}
 				onClick={(e) => e.stopPropagation()}
+				onContextMenu={(e) => e.stopPropagation()}
 				className={cn(modalBoxClasses, 'animate-modal-in')}
 			>
 				{(title || showCloseButton) && (

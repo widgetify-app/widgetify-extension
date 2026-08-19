@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
-import { useContainerSize } from '@/hooks/use-container-size'
 import { useFreeWidgets } from '@/context/free-widget.context'
+import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal } from './add-widget-modal'
@@ -20,11 +20,11 @@ export function FreeWidgetCanvas() {
 		cellHeight,
 		gap,
 		isListFallback,
+		isLoaded,
 		canvasMode,
 		setCanvasMode,
 		setSelectedInstanceId,
 		updateContainerWidth,
-		resetToDefaultLayout,
 		removeWidget,
 	} = useFreeWidgets()
 
@@ -85,6 +85,10 @@ export function FreeWidgetCanvas() {
 		getCanvasHeight(runtimeLayout, cellHeight, gap)
 	)
 
+	if (!isLoaded) {
+		return <div ref={containerRef} className="w-full min-h-[300px]" />
+	}
+
 	if (isListFallback) {
 		const sortedList = [...runtimeLayout].sort((a, b) => {
 			if (a.position.row !== b.position.row) {
@@ -109,32 +113,15 @@ export function FreeWidgetCanvas() {
 									<span>{def.emoji}</span>
 									<span>{def.label}</span>
 								</div>
-								<div className="flex items-center gap-1">
-									{def.settingsTab && (
-										<button
-											type="button"
-											onClick={() => {
-												if (def.settingsTab) {
-													callEvent('openWidgetsSettings', {
-														tab: def.settingsTab,
-													})
-												}
-											}}
-											className="text-xs px-2 py-0.5 rounded-lg bg-base-300 text-content cursor-pointer hover:bg-base-100"
-										>
-											تنظیمات
-										</button>
-									)}
-									<button
-										type="button"
-										onClick={() => removeWidget(widget.instanceId)}
-										className="text-xs px-2 py-0.5 rounded-lg bg-error/20 text-error"
-									>
-										حذف
-									</button>
-								</div>
+								<button
+									type="button"
+									onClick={() => removeWidget(widget.instanceId)}
+									className="text-error text-xs hover:bg-error/10 px-2 py-0.5 rounded-lg transition-colors"
+								>
+									حذف
+								</button>
 							</div>
-							<div className="w-full min-h-24">
+							<div className="w-full">
 								{def.node(widget.instanceId, widget.size)}
 							</div>
 						</div>
@@ -145,51 +132,56 @@ export function FreeWidgetCanvas() {
 	}
 
 	return (
-		<div className="relative w-full flex flex-col items-center">
-			{canvasMode === 'edit' && (
-				<div className="sticky top-2 z-40 mb-3 flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-white shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
-					<span className="text-xs font-medium">
-						حالت ویرایش ویجت‌ها فعال است
-					</span>
-					<button
-						type="button"
-						onClick={() => setIsAddModalOpen(true)}
-						className="px-2.5 py-0.5 text-xs rounded-full bg-white/20 hover:bg-white/30 text-white font-medium cursor-pointer transition-colors"
-					>
-						+ افزودن ویجت
-					</button>
-					<button
-						type="button"
-						onClick={() => {
-							setCanvasMode('normal')
-							setSelectedInstanceId(null)
-						}}
-						className="px-2.5 py-0.5 text-xs rounded-full bg-white/20 hover:bg-white/30 text-white font-medium cursor-pointer transition-colors"
-					>
-						اتمام ویرایش
-					</button>
-				</div>
-			)}
-
+		<div
+			ref={containerRef}
+			className="w-full relative select-none"
+			onClick={handleCanvasClick}
+			onContextMenu={handleCanvasContextMenu}
+		>
 			<div
-				ref={containerRef}
-				onClick={handleCanvasClick}
-				onContextMenu={handleCanvasContextMenu}
-				className="canvas-background relative w-full transition-all duration-200"
+				className="canvas-background relative w-full rounded-3xl transition-all duration-300"
 				style={{
-					minHeight: `${Math.max(320, canvasPixelHeight)}px`,
+					minHeight: `${canvasPixelHeight}px`,
 					height: `${canvasPixelHeight}px`,
 				}}
 			>
 				{canvasMode === 'edit' && (
+					<div className="absolute top-2 left-2 z-40 flex items-center gap-2 bg-base-200/90 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-base-content/10 shadow-lg animate-in fade-in duration-200">
+						<span className="inline-block w-2 h-2 rounded-full bg-primary animate-ping" />
+						<span className="text-xs font-medium text-content">
+							حالت ویرایش چیدمان ویجت‌ها
+						</span>
+						<button
+							type="button"
+							onClick={() => setIsAddModalOpen(true)}
+							className="mr-2 px-2.5 py-1 text-xs rounded-xl bg-primary text-white hover:bg-primary/90 cursor-pointer transition-colors"
+						>
+							+ افزودن ویجت
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								setCanvasMode('normal')
+								setSelectedInstanceId(null)
+							}}
+							className="px-2.5 py-1 text-xs rounded-xl bg-base-300 hover:bg-base-300/80 text-content cursor-pointer transition-colors"
+						>
+							پایان ویرایش
+						</button>
+					</div>
+				)}
+
+				{canvasMode === 'edit' && (
 					<div
-						className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
-						aria-hidden="true"
+						className="absolute inset-0 pointer-events-none rounded-3xl overflow-hidden"
+						style={{
+							gap: `${gap}px`,
+						}}
 					>
 						{Array.from({ length: totalGridRows }).map((_, r) => (
 							<div
 								key={r}
-								className="absolute flex"
+								className="absolute w-full flex"
 								style={{
 									top: `${r * (cellHeight + gap)}px`,
 									height: `${cellHeight}px`,
@@ -242,7 +234,6 @@ export function FreeWidgetCanvas() {
 					}}
 					onOpenAddWidget={() => setIsAddModalOpen(true)}
 					onOpenAppearanceSettings={() => callEvent('openSettings')}
-					onResetLayout={resetToDefaultLayout}
 				/>
 			)}
 
