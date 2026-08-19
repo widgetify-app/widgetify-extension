@@ -214,12 +214,11 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex flex-col transition-all duration-300 ${
+					className={`flex bookmarks flex-col transition-all duration-300 ${
 						currentFolderId
 							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden p-1'
 							: ''
 					}`}
-					id="bookmarks"
 				>
 					{currentFolderId && (
 						<FolderHeader
