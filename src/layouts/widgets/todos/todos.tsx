@@ -13,7 +13,7 @@ import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
 import { TodoItem } from './todo.item'
 import { Icon } from '@/src/icons'
 import { TodosEmpty } from './components/todo-empty'
-import { TodoCompactRow } from './variants/todo-compact-row'
+import { TodoCompactRow } from './variants/todo-2x1'
 import type { WidgetSize } from '../layout-engine/types'
 
 const filterOptions = [

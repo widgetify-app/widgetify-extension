@@ -178,6 +178,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'تقویم',
 		emoji: '📆',
 		allowedSizes: [
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
@@ -274,7 +275,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		id: WidgetKeys.tools,
 		label: 'ابزارها',
 		emoji: '🧰',
-		allowedSizes: [{ w: 2, h: 2 }],
+		allowedSizes: [
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+			{ w: 4, h: 1 },
+		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,
 		preview: () => (
@@ -305,11 +310,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col justify-around">
 				<div className="flex justify-between text-[11px]">
 					<span className="font-bold text-content">USD / IRR</span>
-					<span className="text-success font-mono">60,000</span>
+					<span className="text-success">60,000</span>
 				</div>
 				<div className="flex justify-between text-[11px]">
 					<span className="font-bold text-content">EUR / IRR</span>
-					<span className="text-success font-mono">65,000</span>
+					<span className="text-success">65,000</span>
 				</div>
 			</div>
 		),
@@ -324,7 +329,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی نیوز',
 		emoji: '📰',
 		allowedSizes: [
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 2 },
@@ -344,7 +351,12 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		id: WidgetKeys.network,
 		label: 'شبکه',
 		emoji: '🌐',
-		allowedSizes: [{ w: 2, h: 2 }],
+		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+			{ w: 4, h: 1 },
+		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,
 		preview: () => (
@@ -353,7 +365,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 					<div className="w-2 h-2 rounded-full bg-success animate-pulse" />
 					<span>متصل</span>
 				</div>
-				<span className="text-xs font-mono text-content">Ping: 32ms</span>
+				<span className="text-xs text-content">Ping: 32ms</span>
 			</div>
 		),
 		node: (instanceId, size) => (
@@ -365,8 +377,12 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'عادات',
 		emoji: '🎯',
 		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
+			{ w: 4, h: 1 },
+			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,
@@ -421,6 +437,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'یادداشت',
 		emoji: '📝',
 		allowedSizes: [
+			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 			{ w: 4, h: 2 },
@@ -439,7 +456,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		),
 		node: (instanceId, size) => (
 			<WidgetContainer>
-				<NotesLayout />
+				<NotesLayout size={size} />
 			</WidgetContainer>
 		),
 	},

@@ -1,25 +1,35 @@
 import type { Habit } from '@/services/hooks/habit/habit.interface'
+import { toPersianDigits } from '@/common/utils/persian-digits'
 import { SimpleProgressRing } from '../components/item/button.simple-progress-ring'
 import { Icon } from '@/src/icons'
 
-function toPersianDigits(val: string | number): string {
-	const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
-	return String(val).replace(/\d/g, (x) => farsiDigits[Number.parseInt(x, 10)])
+function getHabitStreak(h: Habit): number {
+	let streak = h.today?.isDone ? 1 : 0
+	if (!h.history) return streak
+	for (let i = h.history.length - 1; i >= 0; i--) {
+		if (h.history[i]?.isDone) {
+			streak++
+		} else {
+			break
+		}
+	}
+	return streak
 }
 
-interface HabitCompactRowProps {
+interface HabitWideBannerProps {
 	habits: Habit[]
 	isLoading: boolean
 }
 
-export function HabitCompactRow({ habits, isLoading }: HabitCompactRowProps) {
-	const displayHabits = habits.slice(0, 2)
+export function HabitWideBanner({ habits, isLoading }: HabitWideBannerProps) {
+	const displayHabits = habits.slice(0, 4)
 
 	if (isLoading) {
 		return (
-			<div className="grid grid-cols-2 gap-1.5 h-full w-full select-none">
-				<div className="p-2 rounded-xl bg-base-200/40 skeleton" />
-				<div className="p-2 rounded-xl bg-base-200/40 skeleton" />
+			<div className="grid grid-cols-4 gap-1.5 h-full w-full select-none">
+				{[...Array(4)].map((_, i) => (
+					<div key={i} className="p-2 rounded-xl bg-base-200/40 skeleton" />
+				))}
 			</div>
 		)
 	}
@@ -34,12 +44,13 @@ export function HabitCompactRow({ habits, isLoading }: HabitCompactRowProps) {
 	}
 
 	return (
-		<div className="grid grid-cols-2 gap-1.5 h-full w-full select-none overflow-hidden">
+		<div className="grid grid-cols-4 gap-1.5 h-full w-full select-none overflow-hidden">
 			{displayHabits.map((habit) => {
 				const color = habit.color || '#536dfe'
 				const target = habit.target || 1
 				const value = habit.today.value
 				const isCompleted = value >= target
+				const streak = getHabitStreak(habit)
 
 				return (
 					<div
@@ -72,10 +83,10 @@ export function HabitCompactRow({ habits, isLoading }: HabitCompactRowProps) {
 							<span>
 								{toPersianDigits(value)} / {toPersianDigits(target)}
 							</span>
-							{habit.streak?.current ? (
-								<span className="flex items-center gap-0.5 text-warning font-mono">
+							{streak > 0 ? (
+								<span className="flex items-center gap-0.5 text-warning">
 									<span>🔥</span>
-									<span>{toPersianDigits(habit.streak.current)}</span>
+									<span>{toPersianDigits(streak)}</span>
 								</span>
 							) : null}
 						</div>

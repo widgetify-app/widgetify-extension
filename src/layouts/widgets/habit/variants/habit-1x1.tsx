@@ -1,9 +1,18 @@
 import type { Habit } from '@/services/hooks/habit/habit.interface'
+import { toPersianDigits } from '@/common/utils/persian-digits'
 import { Icon } from '@/src/icons'
 
-function toPersianDigits(val: string | number): string {
-	const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
-	return String(val).replace(/\d/g, (x) => farsiDigits[Number.parseInt(x, 10)])
+function getHabitStreak(h: Habit): number {
+	let streak = h.today?.isDone ? 1 : 0
+	if (!h.history) return streak
+	for (let i = h.history.length - 1; i >= 0; i--) {
+		if (h.history[i]?.isDone) {
+			streak++
+		} else {
+			break
+		}
+	}
+	return streak
 }
 
 interface HabitCompactSquareProps {
@@ -20,7 +29,7 @@ export function HabitCompactSquare({
 		(h) => h.today.value >= (h.target || 1)
 	).length
 	const percent = total > 0 ? Math.round((completed / total) * 100) : 0
-	const maxStreak = Math.max(...habits.map((h) => h.streak?.current || 0), 0)
+	const maxStreak = Math.max(...habits.map((h) => getHabitStreak(h)), 0)
 
 	if (isLoading) {
 		return (

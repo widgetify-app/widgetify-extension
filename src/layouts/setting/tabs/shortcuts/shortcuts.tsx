@@ -99,10 +99,7 @@ export function ShortcutsTab() {
 										<span className={'text-content'}>
 											{shortcut.description}
 										</span>
-										<div
-											className={'px-3 py-1 text-sm font-mono'}
-											dir="ltr"
-										>
+										<div className={'px-3 py-1 text-sm'} dir="ltr">
 											{formatShortcut(
 												isMac
 													? shortcut.macKey

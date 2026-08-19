@@ -92,7 +92,7 @@ export function WidgetContextMenu({
 										onResize(size)
 										onClose()
 									}}
-									className={`py-1 px-1.5 rounded-lg text-center font-mono text-[11px] cursor-pointer transition-all duration-150 ${
+									className={`py-1 px-1.5 rounded-lg text-center text-[11px] cursor-pointer transition-all duration-150 ${
 										isCurrent
 											? 'bg-primary text-white font-bold shadow-xs'
 											: 'bg-base-100 hover:bg-base-300 text-content'

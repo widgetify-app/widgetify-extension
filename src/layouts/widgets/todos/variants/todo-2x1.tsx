@@ -74,7 +74,7 @@ export function TodoCompactRow({ todos, isLoading, onRefresh }: TodoCompactRowPr
 			</div>
 
 			<div className="flex items-center gap-2 text-xs shrink-0">
-				<div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-200/50 text-base-content/70 border border-base-content/10 font-mono text-[11px]">
+				<div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-200/50 text-base-content/70 border border-base-content/10 text-[11px]">
 					<span className="text-success font-bold">{completedCount}</span>
 					<span>/</span>
 					<span>{totalCount}</span>

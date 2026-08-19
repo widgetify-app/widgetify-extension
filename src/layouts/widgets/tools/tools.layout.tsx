@@ -10,6 +10,10 @@ import {
 	MdOutlineMosque,
 	MdOutlineTimer,
 } from 'react-icons/md'
+import { ToolsCompactRow } from './variants/tools-2x1'
+import { ToolsWideBanner } from './variants/tools-4x1'
+import type { WidgetSize } from '../layout-engine/types'
+
 const tabs = [
 	{
 		id: 'pomodoro' as ToolsTabType,
@@ -51,7 +55,11 @@ export enum ToolsTab {
 }
 export type ToolsTabType = keyof typeof ToolsTab
 
-export const ToolsLayout: React.FC<any> = () => {
+interface ToolsLayoutProps {
+	size?: WidgetSize
+}
+
+export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 2 } }) => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
 	const { selectedDate } = useDate()
 
@@ -76,6 +84,22 @@ export const ToolsLayout: React.FC<any> = () => {
 
 		load()
 	}, [])
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<ToolsCompactRow onSelectTab={onTabClick} />
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w >= 4 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<ToolsWideBanner onSelectTab={onTabClick} />
+			</WidgetContainer>
+		)
+	}
 
 	return (
 		<WidgetContainer>

@@ -2,7 +2,7 @@ import { PetProvider } from '@/layouts/widgetify-card/pets/pet.context'
 import { PetFactory } from '@/layouts/widgetify-card/pets/pet-factory'
 import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
-import { PetCompactSquare } from './variants/pet-compact-square'
+import { PetCompactSquare } from './variants/pet-1x1'
 
 interface PetWidgetContentProps {
 	size?: WidgetSize

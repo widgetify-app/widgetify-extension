@@ -64,7 +64,7 @@ export function CurrencyCompactSquare({ code }: CurrencyCompactSquareProps) {
 			</div>
 
 			<div className="flex flex-col items-center my-auto">
-				<span className="text-lg font-black text-content font-mono leading-tight" dir="ltr">
+				<span className="text-lg font-black text-content leading-tight" dir="ltr">
 					{priceResult.label}
 				</span>
 			</div>
@@ -72,7 +72,7 @@ export function CurrencyCompactSquare({ code }: CurrencyCompactSquareProps) {
 			<div className="flex items-center gap-1">
 				{change !== undefined && (
 					<span
-						className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+						className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
 							isPositive
 								? 'bg-success/15 text-success'
 								: 'bg-error/15 text-error'

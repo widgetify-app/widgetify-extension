@@ -36,7 +36,7 @@ export function WidgetSizeToolbar({
 							e.stopPropagation()
 							onSelectSize(size)
 						}}
-						className={`px-2 py-1 text-xs font-mono font-medium rounded-lg cursor-pointer transition-all duration-150 ${
+						className={`px-2 py-1 text-xs font-medium rounded-lg cursor-pointer transition-all duration-150 ${
 							isCurrent
 								? 'bg-primary text-white shadow-sm scale-105'
 								: 'bg-base-100/60 text-content hover:bg-base-100 hover:text-content'

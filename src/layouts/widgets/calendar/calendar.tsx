@@ -4,8 +4,11 @@ import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
+import { CalendarCompactRow } from './variants/calendar-2x1'
+import { CalendarWideFull } from './variants/calendar-4x2'
 import Analytics from '@/analytics'
 import { Icon } from '@/src/icons'
+import type { WidgetSize } from '../layout-engine/types'
 
 interface CalendarTabSelectorProps {
 	activeTab: string
@@ -47,20 +50,41 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 	)
 }
 
-import type { WidgetSize } from '../layout-engine/types'
-
 interface CalendarLayoutProps {
 	size?: WidgetSize
 }
 
-const CalendarLayout: React.FC<CalendarLayoutProps> = ({ size }) => {
-	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
-		useDate()
+export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
+	size = { w: 2, h: 2 },
+}) => {
+	const {
+		currentDate,
+		selectedDate,
+		setCurrentDate,
+		setSelectedDate,
+		goToToday,
+	} = useDate()
 	const [activeTab, setActiveTab] = useState<string>('calendar')
 
 	const onSetActiveTab = (tab: string) => {
 		setActiveTab(tab)
 		Analytics.event(`calendar_tab_switch_to_${tab}`)
+	}
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<CalendarCompactRow />
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w >= 4 && size.h >= 2) {
+		return (
+			<WidgetContainer>
+				<CalendarWideFull />
+			</WidgetContainer>
+		)
 	}
 
 	return (

@@ -9,7 +9,11 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getMainClient, safeAwait } from '@/services/api'
 import { WidgetContainer } from '../widget-container'
 import { NetworkIPCard, NetworkPingCard } from './components'
+import { NetworkCompactSquare } from './variants/network-1x1'
+import { NetworkCompactRow } from './variants/network-2x1'
+import { NetworkWideBanner } from './variants/network-4x1'
 import { Icon } from '@/src/icons'
+import type { WidgetSize } from '../layout-engine/types'
 
 interface NetworkInfo {
 	status: 'online' | 'offline'
@@ -22,14 +26,12 @@ interface NetworkInfo {
 	speed: string
 }
 
-import type { WidgetSize } from '../layout-engine/types'
-
 interface Prop {
 	inComboWidget: boolean
 	enableBackground: boolean
 	size?: WidgetSize
 }
-export function NetworkLayout({ enableBackground, inComboWidget, size }: Prop) {
+export function NetworkLayout({ enableBackground, inComboWidget, size = { w: 2, h: 2 } }: Prop) {
 	const { blurMode } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 
@@ -101,6 +103,7 @@ export function NetworkLayout({ enableBackground, inComboWidget, size }: Prop) {
 				status: 'online',
 			}))
 		})
+
 		if (isAuthenticated) {
 			fetchNetworkData()
 		}
@@ -109,6 +112,52 @@ export function NetworkLayout({ enableBackground, inComboWidget, size }: Prop) {
 	function handleRefresh() {
 		Analytics.event('refresh_network_data')
 		fetchNetworkData()
+	}
+
+	if (!inComboWidget) {
+		if (size.w === 1 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<NetworkCompactSquare
+						status={networkInfo.status}
+						ping={networkInfo.ping}
+						isLoading={isLoading}
+					/>
+				</WidgetContainer>
+			)
+		}
+
+		if (size.w === 2 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<NetworkCompactRow
+						status={networkInfo.status}
+						ip={networkInfo.ip}
+						countryIcon={networkInfo.countryIcon}
+						city={networkInfo.city}
+						isp={networkInfo.isp}
+						ping={networkInfo.ping}
+						isLoading={isLoading}
+					/>
+				</WidgetContainer>
+			)
+		}
+
+		if (size.w >= 4 && size.h === 1) {
+			return (
+				<WidgetContainer background={enableBackground}>
+					<NetworkWideBanner
+						status={networkInfo.status}
+						ip={networkInfo.ip}
+						countryIcon={networkInfo.countryIcon}
+						city={networkInfo.city}
+						isp={networkInfo.isp}
+						ping={networkInfo.ping}
+						isLoading={isLoading}
+					/>
+				</WidgetContainer>
+			)
+		}
 	}
 
 	return (

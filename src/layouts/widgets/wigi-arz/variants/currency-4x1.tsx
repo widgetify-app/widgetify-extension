@@ -66,7 +66,10 @@ function CurrencyItemBanner({ code }: CurrencyItemBannerProps) {
 					</span>
 				</div>
 
-				<span className="text-xs font-black text-content font-mono leading-none shrink-0" dir="ltr">
+				<span
+					className="text-xs font-black text-content leading-none shrink-0"
+					dir="ltr"
+				>
 					{priceResult.label}
 				</span>
 			</div>
@@ -77,7 +80,7 @@ function CurrencyItemBanner({ code }: CurrencyItemBannerProps) {
 				</span>
 				{change !== undefined && (
 					<span
-						className={`font-mono font-bold shrink-0 px-1 py-0.2 rounded text-[9px] ${
+						className={`font-bold shrink-0 px-1 py-0.2 rounded text-[9px] ${
 							isPositive
 								? 'bg-success/15 text-success'
 								: 'bg-error/15 text-error'

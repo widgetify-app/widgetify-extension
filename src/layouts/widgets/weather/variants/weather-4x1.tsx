@@ -16,12 +16,9 @@ export function WeatherWideBanner({
 	const cityName = cleanCityName(fetchedWeather?.city?.fa || '')
 	const iconUrl = fetchedWeather?.weather?.icon?.url
 	const description = fetchedWeather?.weather?.description?.text || ''
-	const tempDescription =
-		fetchedWeather?.weather?.temperature?.temp_description || ''
+	const tempDescription = fetchedWeather?.weather?.temperature?.temp_description || ''
 	const humidity = fetchedWeather?.weather?.temperature?.humidity || 0
-	const windSpeed = Math.round(
-		fetchedWeather?.weather?.temperature?.wind_speed || 0
-	)
+	const windSpeed = Math.round(fetchedWeather?.weather?.temperature?.wind_speed || 0)
 	const clouds = fetchedWeather?.weather?.temperature?.clouds || 0
 
 	return (
@@ -60,17 +57,17 @@ export function WeatherWideBanner({
 			<div className="flex items-center gap-3 text-xs text-base-content/70">
 				<div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-base-200/50 border border-base-content/10">
 					<Icon name="wind" className="w-3.5 h-3.5 text-muted" />
-					<span className="font-mono text-xs">{windSpeed} m/s</span>
+					<span className="text-xs">{windSpeed} m/s</span>
 				</div>
 
 				<div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-base-200/50 border border-base-content/10">
 					<Icon name="humidity" className="w-3.5 h-3.5 text-muted" />
-					<span className="font-mono text-xs">{humidity}%</span>
+					<span className="text-xs">{humidity}%</span>
 				</div>
 
 				<div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-base-200/50 border border-base-content/10">
 					<Icon name="cloudy" className="w-3.5 h-3.5 text-muted" />
-					<span className="font-mono text-xs">{clouds}%</span>
+					<span className="text-xs">{clouds}%</span>
 				</div>
 			</div>
 		</div>

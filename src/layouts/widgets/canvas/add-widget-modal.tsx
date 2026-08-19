@@ -51,7 +51,7 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 									<span className="text-lg">{def.emoji}</span>
 									<span>{def.label}</span>
 								</div>
-								<span className="text-[11px] font-mono text-muted bg-base-300/60 px-1.5 py-0.5 rounded-md">
+								<span className="text-[11px] text-muted bg-base-300/60 px-1.5 py-0.5 rounded-md">
 									{def.defaultSize.w}×{def.defaultSize.h}
 								</span>
 							</div>

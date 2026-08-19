@@ -18,6 +18,11 @@ import { callEvent } from '@/common/utils/call-event'
 import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 import { Icon } from '@/src/icons'
 import { HabitEmpty } from './components/habit-empty'
+import { HabitCompactSquare } from './variants/habit-1x1'
+import { HabitCompactRow } from './variants/habit-2x1'
+import { HabitWideBanner } from './variants/habit-4x1'
+import { HabitWideFull } from './variants/habit-4x2'
+import type { WidgetSize } from '../layout-engine/types'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
@@ -98,24 +103,30 @@ export function HabitsContent() {
 			<div className="flex-none">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-1">
-						<h2 className="text-sm font-semibold text-content">عادت‌ها</h2>
+						<Tooltip content="عادت جدید">
+							<Button
+								variant="primary"
+								rounded="xl"
+								size="sm"
+								className="h-7! gap-1 px-2.5! text-xs shrink-0"
+								onClick={handleAddHabit}
+							>
+								<Icon name="plus" className="w-3.5 h-3.5" />
+								<span>جدید</span>
+							</Button>
+						</Tooltip>
 					</div>
 
 					<div className="flex items-center gap-1">
 						<Tooltip content="بارگذاری مجدد">
 							<Button
 								size="sm"
-								className="px-2 py-0! active:scale-95"
-								variant={'ghost'}
-								rounded={'full'}
+								className="px-2 py-0! border-none! group rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
 								onClick={onRefresh}
-								disabled={isWaiting}
 							>
 								<Icon
 									name="refresh"
-									className={`text-content opacity-50 hover:opacity-100 ${
-										isWaiting ? 'animate-spin' : ''
-									}`}
+									className={`text-content opacity-50 group-hover:opacity-100 ${isWaiting ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>
@@ -123,44 +134,36 @@ export function HabitsContent() {
 				</div>
 			</div>
 
-			<div className="mt-0.5 grow overflow-hidden pb-2">
+			<div className="mt-1 grow overflow-hidden">
 				<div className="space-y-1.5 overflow-y-auto scrollbar-none h-full">
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">
 							{[...Array(3)].map((_, i) => (
-								<HabitItemSkeleton key={`skeleton-${i}`} />
+								<HabitItemSkeleton key={i} />
 							))}
 						</div>
 					) : isEmpty ? (
 						<HabitEmpty />
 					) : (
 						<div
-							className={`flex flex-col gap-1 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+							className={`flex flex-col gap-1.5 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 						>
 							{data?.items?.map((habit) => (
 								<HabitItem
 									key={habit.id}
 									habit={habit}
 									today={today}
-									onChanged={refetch}
-									onViewDetails={() => setDetailHabitId(habit.id)}
+									onChanged={() => refetch()}
+									onViewDetails={() => {
+										setDetailHabitId(habit.id)
+										Analytics.event('habit_open_detail_model')
+									}}
 								/>
 							))}
 						</div>
 					)}
 				</div>
 			</div>
-
-			<Button
-				size="sm"
-				onClick={handleAddHabit}
-				rounded={'2xl'}
-				variant={'default'}
-				className="px-2 py-0! w-full  shrink-0 active:scale-95 h-7!"
-			>
-				<Icon name="plus" className="w-4 h-4" />
-				افزودن
-			</Button>
 
 			<HabitFormModal
 				isOpen={showForm}
@@ -174,9 +177,9 @@ export function HabitsContent() {
 				colors={data?.colors || []}
 			/>
 
-			{!!detailHabitId && (
+			{detailHabitId && (
 				<HabitDetailModal
-					isOpen={true}
+					isOpen={!!detailHabitId}
 					habitId={detailHabitId}
 					onClose={() => onCloseDetailModal()}
 					onEdit={(habit) => handleEditHabit(habit)}
@@ -199,13 +202,63 @@ export function HabitsContent() {
 	)
 }
 
-import type { WidgetSize } from '../layout-engine/types'
-
 interface HabitsLayoutProps {
 	size?: WidgetSize
 }
 
-export function HabitsLayout({ size }: HabitsLayoutProps = {}) {
+export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) {
+	const { isAuthenticated } = useAuth()
+	const { today } = useDate()
+	const { data, isLoading, refetch } = useGetHabits(isAuthenticated)
+	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
+
+	if (size.w === 1 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<HabitCompactSquare habits={data?.items || []} isLoading={isLoading} />
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<HabitCompactRow habits={data?.items || []} isLoading={isLoading} />
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w >= 4 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<HabitWideBanner habits={data?.items || []} isLoading={isLoading} />
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w >= 4 && size.h >= 2) {
+		return (
+			<WidgetContainer>
+				<HabitWideFull
+					habits={data?.items || []}
+					today={today}
+					isLoading={isLoading}
+					onChanged={() => refetch()}
+					onViewDetails={(id) => setDetailHabitId(id)}
+				/>
+				{detailHabitId && (
+					<HabitDetailModal
+						isOpen={!!detailHabitId}
+						habitId={detailHabitId}
+						onClose={() => setDetailHabitId(null)}
+						onEdit={() => {}}
+						onArchive={() => {}}
+					/>
+				)}
+			</WidgetContainer>
+		)
+	}
+
 	return (
 		<WidgetContainer>
 			<HabitsContent />

@@ -19,7 +19,7 @@ export interface FetchedRssItem {
 }
 
 export const useGetNews = (enabled: boolean) => {
-	return useQuery<FetchedRssItem[]>({
+	return useQuery({
 		queryKey: ['getNews'],
 		queryFn: async () => getNews(),
 		retry: 1,
@@ -43,8 +43,8 @@ export async function getRss(url: string, sourceName: string): Promise<FetchedRs
 	return data || []
 }
 
-export async function getNews(): Promise<FetchedRssItem[]> {
+export async function getNews() {
 	const client = getMainClient()
-	const { data } = await client.get<FetchedRssItem[]>('/news')
+	const { data } = await client.get('/news')
 	return data
 }

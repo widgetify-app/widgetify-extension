@@ -19,7 +19,7 @@ export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
 			<div className="mb-1 text-xs text-muted">آدرس IP</div>
 			<Tooltip content={ip ? 'کپی به کلیپ بورد' : 'در حال بارگذاری...'}>
 				<div
-					className={`text-lg font-mono font-bold text-content bg-base-200/50 px-3 py-1.5 rounded-xl backdrop-blur-sm ${blurMode ? 'blur-mode' : 'disabled-blur-mode'} cursor-pointer`}
+					className={`text-lg font-bold text-content bg-base-200/50 px-3 py-1.5 rounded-xl backdrop-blur-sm ${blurMode ? 'blur-mode' : 'disabled-blur-mode'} cursor-pointer`}
 					onClick={copyToClipboard}
 				>
 					{ip || '.........'}

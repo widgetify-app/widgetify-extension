@@ -72,7 +72,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 				{tab === 'todos' ? (
 					<TodosLayout size={size} />
 				) : tab === 'notes' ? (
-					<NotesLayout />
+					<NotesLayout size={size} />
 				) : (
 					<HabitsContent />
 				)}

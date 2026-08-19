@@ -5,10 +5,21 @@ import { NoteEditor } from './components/note-editor'
 import { NoteItem } from './components/note-item'
 import { NoteNavigation } from './components/note-navigation'
 import { NoteEmpty } from './components/note-empty'
+import { NoteCompactRow } from './variants/note-2x1'
+import { NoteWideFull } from './variants/note-4x2'
+import type { WidgetSize } from '../layout-engine/types'
 
-function NotesContent() {
+function NotesContent({ size }: { size?: WidgetSize }) {
 	const { notes, activeNoteId } = useNotes()
 	const { blurMode } = useGeneralSetting()
+
+	if (size && size.w === 2 && size.h === 1) {
+		return <NoteCompactRow />
+	}
+
+	if (size && size.w >= 4 && size.h >= 2) {
+		return <NoteWideFull />
+	}
 
 	const activeNote = notes.find((note) => note.id === activeNoteId)
 
@@ -50,7 +61,27 @@ function NoteList() {
 	)
 }
 
-export function NotesLayout() {
+interface NotesLayoutProps {
+	size?: WidgetSize
+}
+
+export function NotesLayout({ size = { w: 2, h: 2 } }: NotesLayoutProps = {}) {
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<NotesProvider>
+				<NoteCompactRow />
+			</NotesProvider>
+		)
+	}
+
+	if (size.w >= 4 && size.h >= 2) {
+		return (
+			<NotesProvider>
+				<NoteWideFull />
+			</NotesProvider>
+		)
+	}
+
 	return (
 		<NotesProvider>
 			<div className="flex-none">
@@ -60,7 +91,7 @@ export function NotesLayout() {
 			</div>
 
 			<div className="mt-0.5 grow overflow-hidden">
-				<NotesContent />
+				<NotesContent size={size} />
 			</div>
 		</NotesProvider>
 	)
