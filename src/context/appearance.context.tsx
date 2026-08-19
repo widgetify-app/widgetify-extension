@@ -2,7 +2,10 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
-import { useChangeFont, useChangeUI } from '@/services/hooks/extension/update-setting.hook'
+import {
+	useChangeFont,
+	useChangeUI,
+} from '@/services/hooks/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
@@ -10,8 +13,10 @@ import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
 export enum UI {
-	SIMPLE = 'SIMPLE',
+	DEFAULT = 'ADVANCED',
 	ADVANCED = 'ADVANCED',
+	SIMPLE = 'SIMPLE',
+	CUSTOM = 'CUSTOM',
 }
 export interface AppearanceData {
 	fontFamily: string
@@ -39,7 +44,7 @@ interface AppearanceContextContextType extends AppearanceData {
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	fontFamily: 'Vazir',
-	ui: UI.ADVANCED,
+	ui: UI.DEFAULT,
 	contentAlignment: 'top',
 }
 

@@ -1,6 +1,7 @@
-import { useAppearanceSetting } from '@/context/appearance.context'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { ContentSection } from './ui/content-section'
 import { HomeContentSimplify } from './ui/home-content-simplify'
+import { HomeContentCustom } from './ui/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
 import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
@@ -122,9 +123,22 @@ export function HomePage() {
 		displayModalIfNeeded()
 	}, [])
 
+	const renderContent = () => {
+		switch (ui) {
+			case UI.SIMPLE:
+				return <HomeContentSimplify />
+			case UI.CUSTOM:
+				return <HomeContentCustom />
+			case UI.DEFAULT:
+			case 'ADVANCED' as any:
+			default:
+				return <ContentSection />
+		}
+	}
+
 	return (
 		<>
-			{ui === 'ADVANCED' ? <ContentSection /> : <HomeContentSimplify />}
+			{renderContent()}
 
 			{showWelcomeModal && (
 				<ExtensionInstalledModal

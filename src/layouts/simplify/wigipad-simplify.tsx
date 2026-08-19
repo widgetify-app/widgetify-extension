@@ -5,13 +5,13 @@ import { RenderWigiPadItem } from '../widgets/wigi-pad/info-panel/components/ann
 import { DateDisplay } from '../widgets/wigi-pad/date-display/date.display'
 import { ClockDisplay } from '../widgets/wigi-pad/clock-display/clock-display'
 
-export function SimplifyYadkar() {
+export function SimplifyWigipad() {
 	const { data: fetchedData } = useGetNotifications()
 
 	const hasBanner = !!fetchedData?.wigipadBanner
 
 	return (
-		<WidgetContainer className="relative flex flex-col w-full overflow-hidden h-60 max-h-60!">
+		<WidgetContainer className="relative flex flex-col w-full overflow-hidden">
 			<div className="relative grid justify-between grid-cols-2 rounded-2xl">
 				{hasBanner ? (
 					<>

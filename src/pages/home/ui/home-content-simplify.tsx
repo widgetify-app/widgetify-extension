@@ -4,7 +4,7 @@ import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { SearchLayout } from '@/layouts/search/search'
 import { SimpleTools } from '@/layouts/simplify/tools-simplify'
-import { SimplifyYadkar } from '@/layouts/simplify/wigipad-simplify'
+import { SimplifyWigipad } from '@/layouts/simplify/wigipad-simplify'
 export function HomeContentSimplify() {
 	return (
 		<div className="flex w-full flex-1 md:h-[calc(100vh-4rem)] overflow-y-auto scrollbar-none">
@@ -14,7 +14,7 @@ export function HomeContentSimplify() {
 				</div>
 
 				<div className="flex flex-col md:flex-row w-full md:h-[calc(100%-8.5rem)] items-stretch md:items-end gap-2 justify-between">
-					<div className="w-full md:w-1/4 rounded-2xl">
+					<div className="w-full md:w-1/4 rounded-2xl h-80">
 						<DateProvider>
 							<CurrencyProvider>
 								<SimpleTools />
@@ -27,9 +27,9 @@ export function HomeContentSimplify() {
 						</BookmarkProvider>
 					</div>
 
-					<div className="w-full md:w-1/4 rounded-2xl">
+					<div className="w-full md:w-1/4 rounded-2xl h-80">
 						<DateProvider>
-							<SimplifyYadkar />
+							<SimplifyWigipad />
 						</DateProvider>
 					</div>
 				</div>

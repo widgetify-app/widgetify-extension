@@ -14,7 +14,7 @@ export function WigiPadWidget({ size }: WigiPadWidgetProps = {}) {
 	const { data: fetchedData } = useGetNotifications()
 
 	return (
-		<WidgetContainer className="flex flex-col !p-1.5 h-full">
+		<WidgetContainer className="flex flex-col h-full">
 			<div className="relative grid justify-between grid-cols-2 rounded-2xl">
 				<DateDisplay />
 				<ClockDisplay />

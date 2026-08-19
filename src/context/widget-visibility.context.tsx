@@ -62,7 +62,7 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📅',
 		label: 'تقویم',
 		order: 0,
-		node: <CalendarLayout />,
+		node: <CalendarLayout size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 		popular: true,
 	},
@@ -70,8 +70,8 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.yadKar,
 		emoji: '📒',
 		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
-		order: 0,
-		node: <YadkarWidget />,
+		order: 1,
+		node: <YadkarWidget size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 		isNew: false,
 	},
@@ -79,17 +79,16 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.tools,
 		emoji: '🧰',
 		label: 'ابزارها',
-		order: 1,
-		node: <ToolsLayout />,
+		order: 2,
+		node: <ToolsLayout size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 	},
-
 	{
 		id: WidgetKeys.weather,
 		emoji: '🌤️',
 		label: 'آب و هوا',
 		order: 3,
-		node: <WeatherLayout />,
+		node: <WeatherLayout size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 	},
 	{
@@ -99,7 +98,7 @@ export const widgetItems: WidgetItem[] = [
 		order: 4,
 		node: (
 			<CurrencyProvider>
-				<ComboWidget />
+				<ComboWidget size={{ w: 2, h: 3 }} />
 			</CurrencyProvider>
 		),
 		canToggle: true,
@@ -112,7 +111,7 @@ export const widgetItems: WidgetItem[] = [
 		order: 5,
 		node: (
 			<CurrencyProvider>
-				<WigiArzLayout inComboWidget={false} />
+				<WigiArzLayout inComboWidget={false} size={{ w: 2, h: 3 }} />
 			</CurrencyProvider>
 		),
 		canToggle: true,
@@ -122,16 +121,15 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📰',
 		label: 'ویجی نیوز',
 		order: 6,
-		node: <NewsLayout inComboWidget={false} />,
+		node: <NewsLayout inComboWidget={false} size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 	},
-
 	{
 		id: WidgetKeys.network,
 		emoji: '🌐',
 		label: 'شبکه',
-		order: 9,
-		node: <NetworkLayout inComboWidget={false} enableBackground={true} />,
+		order: 7,
+		node: <NetworkLayout inComboWidget={false} enableBackground={true} size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 		isNew: false,
 	},
@@ -139,8 +137,8 @@ export const widgetItems: WidgetItem[] = [
 		id: WidgetKeys.HabitTracker,
 		emoji: '🎯',
 		label: 'عادات',
-		order: 10,
-		node: <HabitsLayout />,
+		order: 8,
+		node: <HabitsLayout size={{ w: 2, h: 3 }} />,
 		canToggle: true,
 		isNew: true,
 		isBeta: true,
@@ -156,9 +154,9 @@ interface WidgetVisibilityContextType {
 
 const defaultVisibility: WidgetKeys[] = [
 	WidgetKeys.calendar,
-	WidgetKeys.comboWidget,
 	WidgetKeys.yadKar,
 	WidgetKeys.tools,
+	WidgetKeys.comboWidget,
 ]
 export const MAX_VISIBLE_WIDGETS = 5
 
@@ -194,7 +192,11 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 	useEffect(() => {
 		async function loadSettings() {
 			const storedVisibility = await getFromStorage('activeWidgets')
-			if (storedVisibility) {
+			if (
+				storedVisibility &&
+				Array.isArray(storedVisibility) &&
+				storedVisibility.length > 0
+			) {
 				const visibilityIds = storedVisibility
 					.filter((item) => widgetItems.some((w) => w.id === item.id))
 					.map((item: any) => item.id as WidgetKeys)
@@ -212,17 +214,22 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 					saveActiveWidgets()
 				}
 
-				setVisibility(visibilityIds)
+				if (visibilityIds.length > 0) {
+					setVisibility(visibilityIds)
 
-				const orders: Record<WidgetKeys, number> = {} as Record<
-					WidgetKeys,
-					number
-				>
-				for (const item of storedVisibility) {
-					orders[item.id as WidgetKeys] =
-						item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
+					const orders: Record<WidgetKeys, number> = {} as Record<
+						WidgetKeys,
+						number
+					>
+					for (const item of storedVisibility) {
+						orders[item.id as WidgetKeys] =
+							item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
+					}
+					setWidgetOrders(orders)
+				} else {
+					setVisibility(defaultVisibility)
+					setWidgetOrders(getDefaultWidgetOrders())
 				}
-				setWidgetOrders(orders)
 			} else {
 				setVisibility(defaultVisibility)
 				setWidgetOrders(getDefaultWidgetOrders())

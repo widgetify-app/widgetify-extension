@@ -163,7 +163,9 @@ export function SearchLayout({ size }: SearchLayoutProps = {}) {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center w-full h-full p-0.5 overflow-hidden">
+		<div
+			className={`flex flex-col items-center justify-center w-full ${size ? 'h-full' : 'h-auto'}`}
+		>
 			<div
 				ref={searchRef}
 				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
@@ -199,8 +201,12 @@ export function SearchLayout({ size }: SearchLayoutProps = {}) {
 							<div
 								className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
 							>
-								<ImageSearchButton onClick={() => setActivePortal('image')} />
-								<VoiceSearchButton onClick={() => setActivePortal('voice')} />
+								<ImageSearchButton
+									onClick={() => setActivePortal('image')}
+								/>
+								<VoiceSearchButton
+									onClick={() => setActivePortal('voice')}
+								/>
 							</div>
 						)}
 						<div

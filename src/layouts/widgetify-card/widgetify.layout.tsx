@@ -11,7 +11,7 @@ interface WidgetifyLayoutProps {
 
 export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = ({ size }) => {
 	return (
-		<WidgetContainer className="overflow-hidden flex flex-col !p-2 h-full">
+		<WidgetContainer className="overflow-hidden flex flex-col h-full">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>
