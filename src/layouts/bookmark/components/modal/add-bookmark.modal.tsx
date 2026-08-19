@@ -15,6 +15,7 @@ interface AddBookmarkModalProps {
 	onAdd: (bookmark: BookmarkCreateFormFields) => void
 	parentId: string | null
 	onOpenImport?: () => void
+	widgetId?: string | null
 }
 
 export interface BookmarkCreateFormFields {
@@ -27,6 +28,7 @@ export interface BookmarkCreateFormFields {
 	customTextColor: string | null
 	sticker: string | null
 	icon: File | null
+	widgetId?: string | null
 }
 
 const empty: BookmarkCreateFormFields = {
@@ -39,6 +41,7 @@ const empty: BookmarkCreateFormFields = {
 	customTextColor: '',
 	sticker: '',
 	icon: null,
+	widgetId: null,
 }
 
 export type AddBookmarkUpdateFormData = <K extends keyof BookmarkCreateFormFields>(
@@ -52,6 +55,7 @@ export function AddBookmarkModal({
 	onAdd,
 	parentId = null,
 	onOpenImport,
+	widgetId = null,
 }: AddBookmarkModalProps) {
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [showAdvanced, setShowAdvanced] = useState(false)
@@ -111,6 +115,7 @@ export function AddBookmarkModal({
 			customTextColor: formData.customTextColor || null,
 			sticker: formData.sticker || null,
 			icon: formData.icon,
+			widgetId: formData.widgetId || widgetId || null,
 		}
 
 		onAdd(baseBookmark)

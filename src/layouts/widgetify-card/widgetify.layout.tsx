@@ -3,9 +3,15 @@ import { NotificationCenter } from './notification-center/notification-center'
 import { Pet } from './pets/pet'
 import { PetProvider } from './pets/pet.context'
 
-export const WidgetifyLayout = () => {
+import type { WidgetSize } from '../widgets/layout-engine/types'
+
+interface WidgetifyLayoutProps {
+	size?: WidgetSize
+}
+
+export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = ({ size }) => {
 	return (
-		<WidgetContainer className="overflow-hidden flex flex-col !p-2 !h-72 !min-h-72 !max-h-72">
+		<WidgetContainer className="overflow-hidden flex flex-col !p-2 h-full">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>
@@ -13,7 +19,7 @@ export const WidgetifyLayout = () => {
 					</PetProvider>
 				}
 
-				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-60 small-scrollbar">
+				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-full small-scrollbar">
 					<div
 						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto scrollbar-none pb-2`}
 					>

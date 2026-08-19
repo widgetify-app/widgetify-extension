@@ -47,6 +47,8 @@ export interface StorageKV {
 	refresh_token: string | null
 	profile: UserProfile
 	activeWidgets: WidgetItem[]
+	storedWidgets: import('@/layouts/widgets/layout-engine/types').StoredWidget[]
+	widgetLayoutMigrationVersion: number
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
 	deletedTodos: Todo[]

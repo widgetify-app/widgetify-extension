@@ -255,3 +255,26 @@ img {
 .z-popover {
   z-index: 9999 !important;
 }
+
+@keyframes widget-wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-1.2deg);
+  }
+  75% {
+    transform: rotate(1.2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-widget-wiggle {
+  animation: widget-wiggle 0.28s ease-in-out infinite;
+}
+
+.widget-canvas-item-transition {
+  transition: left 200ms ease-out, top 200ms ease-out, width 200ms ease-out, height 200ms ease-out;
+}

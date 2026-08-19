@@ -22,11 +22,14 @@ interface NetworkInfo {
 	speed: string
 }
 
+import type { WidgetSize } from '../layout-engine/types'
+
 interface Prop {
 	inComboWidget: boolean
 	enableBackground: boolean
+	size?: WidgetSize
 }
-export function NetworkLayout({ enableBackground, inComboWidget }: Prop) {
+export function NetworkLayout({ enableBackground, inComboWidget, size }: Prop) {
 	const { blurMode } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 

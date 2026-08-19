@@ -18,8 +18,14 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
+import type { WidgetSize } from '../widgets/layout-engine/types'
 
-export function BookmarksList() {
+interface BookmarksListProps {
+	size?: WidgetSize
+	instanceId?: string
+}
+
+export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	const {
 		bookmarks,
 		getCurrentFolderItems,
@@ -42,8 +48,36 @@ export function BookmarksList() {
 			},
 		})
 	)
-	const BOOKMARKS_PER_ROW = 5
-	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
+
+	let colsCount = 5
+	let rowsCount = 2
+
+	if (size) {
+		if (size.w === 2 && size.h === 1) {
+			colsCount = 2
+			rowsCount = 1
+		} else if (size.w === 2 && size.h === 2) {
+			colsCount = 2
+			rowsCount = 2
+		} else if (size.w === 2) {
+			colsCount = 2
+			rowsCount = size.h
+		} else if (size.w === 4 && size.h === 1) {
+			colsCount = 5
+			rowsCount = 1
+		} else if (size.w === 4) {
+			colsCount = 5
+			rowsCount = size.h
+		} else if (size.w >= 8 && size.h === 1) {
+			colsCount = 10
+			rowsCount = 1
+		} else if (size.w >= 8) {
+			colsCount = 10
+			rowsCount = size.h
+		}
+	}
+
+	const TOTAL_BOOKMARKS = colsCount * rowsCount
 
 	const handleDragEnd = async (event: DragEndEvent) => {
 		if (!isAuthenticated)
@@ -55,7 +89,7 @@ export function BookmarksList() {
 		const { active, over } = event
 		if (!over || active.id === over.id) return
 
-		const currentItems = getCurrentFolderItems(currentFolderId)
+		const currentItems = getCurrentFolderItems(currentFolderId, instanceId)
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id
@@ -133,7 +167,7 @@ export function BookmarksList() {
 		setCurrentFolderId(folderId)
 	}
 
-	const currentFolderItems = getCurrentFolderItems(currentFolderId)
+	const currentFolderItems = getCurrentFolderItems(currentFolderId, instanceId)
 
 	const getDisplayedBookmarks = (): Bookmark[] => {
 		if (!currentFolderId) {
@@ -188,6 +222,7 @@ export function BookmarksList() {
 							folderPath={folderPath}
 							setFolderPath={(path) => setFolderPath(path)}
 							openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
+							colsCount={colsCount}
 						/>
 					</div>
 				</div>
@@ -208,6 +243,7 @@ export function BookmarksList() {
 							addBookmark(bookmark, () => setShowAddBookmarkModal(false))
 						}
 						parentId={currentFolderId}
+						widgetId={instanceId}
 						onOpenImport={() => {
 							setShowAddBookmarkModal(false)
 							setShowImportBookmarksModal(true)

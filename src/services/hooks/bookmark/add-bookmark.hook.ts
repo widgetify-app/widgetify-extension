@@ -12,6 +12,7 @@ export interface BookmarkCreationPayload {
 	customTextColor: string | null
 	customBackground: string | null
 	icon: File | null
+	widgetId?: string | null
 }
 
 export const useAddBookmark = () => {

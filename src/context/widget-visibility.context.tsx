@@ -35,6 +35,11 @@ export enum WidgetKeys {
 	network = 'network',
 	yadKar = 'yadKar',
 	HabitTracker = 'HabitTracker',
+	search = 'search',
+	bookmarks = 'bookmarks',
+	widgetify = 'widgetify',
+	clock = 'clock',
+	date = 'date',
 }
 export interface WidgetItem {
 	id: WidgetKeys

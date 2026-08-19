@@ -98,7 +98,7 @@ export function ReligiousTime({ currentDate }: { currentDate: any }) {
 						<div className="flex flex-col items-center gap-1 p-2 border bg-content border-content rounded-2xl">
 							<div className="flex items-center gap-1.5 mb-0.5">
 								<div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
-								<span className="text-[9px] font-black text-primary-content">
+								<span className="text-[9px] font-black text-white">
 									ذکر روز {weekDay}
 								</span>
 							</div>

@@ -47,7 +47,13 @@ const CalendarTabSelector: React.FC<CalendarTabSelectorProps> = ({
 	)
 }
 
-const CalendarLayout: React.FC = () => {
+import type { WidgetSize } from '../layout-engine/types'
+
+interface CalendarLayoutProps {
+	size?: WidgetSize
+}
+
+const CalendarLayout: React.FC<CalendarLayoutProps> = ({ size }) => {
 	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
 		useDate()
 	const [activeTab, setActiveTab] = useState<string>('calendar')

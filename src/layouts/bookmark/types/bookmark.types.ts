@@ -13,6 +13,7 @@ export interface Bookmark {
 	customTextColor: string | null
 	sticker: string | null
 	order: number | null
+	widgetId?: string | null
 }
 
 export interface LocalBookmark extends Bookmark {

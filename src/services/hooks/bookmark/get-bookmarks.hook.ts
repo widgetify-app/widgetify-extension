@@ -21,6 +21,7 @@ export interface FetchedBookmark {
 	customBackground?: string
 	sticker?: string
 	order?: number
+	widgetId?: string | null
 }
 
 export const useGetBookmarks = (id: string | null, enabled: boolean) => {

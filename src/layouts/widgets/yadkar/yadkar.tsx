@@ -10,7 +10,14 @@ import { useEffect } from 'react'
 import { Icon } from '@/src/icons'
 
 type Tab = 'todos' | 'notes' | 'rabbit'
-export function YadkarWidget() {
+
+import type { WidgetSize } from '../layout-engine/types'
+
+interface YadkarWidgetProps {
+	size?: WidgetSize
+}
+
+export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 	const [tab, setTab] = useState<Tab>('todos')
 
 	const onChangeTab = (newTab: Tab) => {

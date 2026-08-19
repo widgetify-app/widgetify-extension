@@ -21,6 +21,7 @@ interface BookmarkGridProps {
 	openAddBookmarkModal: () => void
 	folderPath: FolderPathItem[]
 	setFolderPath: (path: FolderPathItem[]) => void
+	colsCount?: number
 }
 
 export function BookmarkGrid({
@@ -28,6 +29,7 @@ export function BookmarkGrid({
 	openAddBookmarkModal,
 	setFolderPath,
 	folderPath,
+	colsCount = 5,
 }: BookmarkGridProps) {
 	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
 		useBookmarkStore()
@@ -171,9 +173,16 @@ export function BookmarkGrid({
 		}
 	}, [])
 
+	const gridColsClass =
+		colsCount === 2
+			? 'grid-cols-2'
+			: colsCount === 10
+				? 'grid-cols-5 sm:grid-cols-10'
+				: 'grid-cols-5'
+
 	return (
 		<div
-			className={`grid w-full grid-cols-5 gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2`}
+			className={`grid w-full ${gridColsClass} gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2`}
 		>
 			<SortableContext
 				items={displayedBookmarks

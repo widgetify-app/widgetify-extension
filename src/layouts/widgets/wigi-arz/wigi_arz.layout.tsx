@@ -20,16 +20,20 @@ import { ArzHeader } from './components/arz-header'
 import { SortableCurrencyBox } from './components/sortable-currency-box'
 import { Button } from '@/components/ui'
 
+import type { WidgetSize } from '../layout-engine/types'
+
 interface WigiArzLayoutProps {
 	enableBackground?: boolean
 	inComboWidget: boolean
 	comboClassName?: string
+	size?: WidgetSize
 }
 
 export function WigiArzLayout({
 	enableBackground = true,
 	inComboWidget,
 	comboClassName,
+	size,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()

@@ -26,7 +26,10 @@ const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
 	setBookmarks: (bookmarks: Bookmark[]) => void
-	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
+	getCurrentFolderItems: (
+		parentId: string | null,
+		widgetId?: string | null
+	) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	importBrowserBookmarks: (
 		nodes: BrowserImportNode[],
@@ -125,6 +128,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				customTextColor: bookmark.customTextColor ?? null,
 				customBackground: bookmark.customBackground ?? null,
 				order: bookmark.order || 0,
+				widgetId: bookmark.widgetId || null,
 			}))
 
 			return mappedFetched
@@ -135,7 +139,10 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		callEvent('bookmarksChanged', mappedFetched)
 	}, [data, dataUpdatedAt])
 
-	const getCurrentFolderItems = (parentId: string | null) => {
+	const getCurrentFolderItems = (
+		parentId: string | null,
+		widgetId?: string | null
+	) => {
 		if (!bookmarks) return []
 		const parentBookmark = bookmarks.find(
 			(b) => b.id === parentId || b.onlineId === parentId
@@ -148,12 +155,19 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					(typeof bookmark.parentId === 'string' &&
 						bookmark.parentId === parentId) ||
 					(typeof bookmark.parentId === 'string' &&
-						bookmark.parentId === parentBookmark?.onlineId)
+						parentBookmark?.id &&
+						bookmark.parentId === parentBookmark.id) ||
+					(typeof bookmark.parentId === 'string' &&
+						parentBookmark?.onlineId &&
+						bookmark.parentId === parentBookmark.onlineId)
 			)
 		} else {
-			currentFolderBookmarks = bookmarks.filter(
-				(bookmark) => bookmark.parentId === null
-			)
+			currentFolderBookmarks = bookmarks.filter((bookmark) => {
+				const isRoot = bookmark.parentId === null
+				if (!isRoot) return false
+				if (!widgetId) return true
+				return !bookmark.widgetId || bookmark.widgetId === widgetId
+			})
 		}
 
 		const sortedBookmarks = [...currentFolderBookmarks].sort((a, b) => {
@@ -207,6 +221,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					type: inputBookmark.type,
 					url: inputBookmark.url,
 					icon: inputBookmark.icon || null,
+					widgetId: inputBookmark.widgetId || null,
 				})
 			)
 			if (err) {

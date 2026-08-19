@@ -110,7 +110,7 @@ export function PetSettings() {
 					<p className="mb-1 text-xs font-medium text-primary">
 						💡 نکات مراقبت:
 					</p>
-					<ul className="text-xs text-primary-content space-y-0.5">
+					<ul className="text-xs text-white space-y-0.5">
 						<li>• برای بازی با حیوان خانگی، روی آن کلیک کنید</li>
 						<li>• برای غذا دادن به حیوان، در محیط اطراف کلیک کنید</li>
 					</ul>

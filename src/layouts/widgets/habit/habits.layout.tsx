@@ -199,7 +199,13 @@ export function HabitsContent() {
 	)
 }
 
-export function HabitsLayout() {
+import type { WidgetSize } from '../layout-engine/types'
+
+interface HabitsLayoutProps {
+	size?: WidgetSize
+}
+
+export function HabitsLayout({ size }: HabitsLayoutProps = {}) {
 	return (
 		<WidgetContainer>
 			<HabitsContent />

@@ -11,7 +11,13 @@ import { Icon } from '@/src/icons'
 
 export type ComboTabType = 'news' | 'currency'
 
-export function ComboWidget() {
+import type { WidgetSize } from '../layout-engine/types'
+
+interface ComboWidgetProps {
+	size?: WidgetSize
+}
+
+export function ComboWidget({ size }: ComboWidgetProps = {}) {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
 	const handleSettingsClick = () => {
 		if (activeTab === 'currency') {

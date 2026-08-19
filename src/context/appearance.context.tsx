@@ -30,6 +30,11 @@ interface AppearanceContextContextType extends AppearanceData {
 	toggleCanReOrderWidget: () => void
 	ui: UI
 	setContentAlignment: (value: 'center' | 'top') => void
+	canvasMode: 'normal' | 'edit'
+	setCanvasMode: (mode: 'normal' | 'edit') => void
+	selectedInstanceId: string | null
+	setSelectedInstanceId: (id: string | null) => void
+	toggleCanvasMode: () => void
 }
 
 const DEFAULT_SETTINGS: AppearanceData = {
@@ -44,9 +49,21 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
 	const [canReOrderWidget, setCanReOrderWidget] = useState(false)
+	const [canvasMode, setCanvasMode] = useState<'normal' | 'edit'>('normal')
+	const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null)
 	const { mutateAsync: changeFontAsync } = useChangeFont()
 	const { mutateAsync: changeUIAsync } = useChangeUI()
 	const { isAuthenticated } = useAuth()
+
+	const toggleCanvasMode = () => {
+		setCanvasMode((prev) => {
+			const next = prev === 'normal' ? 'edit' : 'normal'
+			if (next === 'normal') {
+				setSelectedInstanceId(null)
+			}
+			return next
+		})
+	}
 
 	useEffect(() => {
 		async function loadSettings() {
@@ -187,6 +204,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		setUI: (val) => setUI(val, isAuthenticated),
 		toggleCanReOrderWidget,
 		setContentAlignment,
+		canvasMode,
+		setCanvasMode,
+		selectedInstanceId,
+		setSelectedInstanceId,
+		toggleCanvasMode,
 	}
 
 	return (
@@ -205,3 +227,6 @@ export function useAppearanceSetting() {
 
 	return context
 }
+
+export const useAppearance = useAppearanceSetting
+

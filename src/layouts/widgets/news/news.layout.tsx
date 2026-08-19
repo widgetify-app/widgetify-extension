@@ -7,14 +7,18 @@ import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
 import type { WigiNewsSetting } from './rss.interface'
 
+import type { WidgetSize } from '../layout-engine/types'
+
 interface NewsLayoutProps {
 	inComboWidget: boolean
 	enableBackground?: boolean
+	size?: WidgetSize
 }
 
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
 	inComboWidget,
+	size,
 }) => {
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],

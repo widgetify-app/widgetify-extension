@@ -19,7 +19,14 @@ const DEFAULT_ENGINE: EngineMeta = {
 	icon: '',
 }
 
-export function SearchLayout() {
+import type { WidgetSize } from '../widgets/layout-engine/types'
+
+interface SearchLayoutProps {
+	size?: WidgetSize
+}
+
+export function SearchLayout({ size }: SearchLayoutProps = {}) {
+	const isCompact = Boolean(size && size.w <= 2)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
@@ -156,7 +163,7 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-start h-24 max-h-24">
+		<div className="flex flex-col items-center justify-center w-full h-full p-0.5 overflow-hidden">
 			<div
 				ref={searchRef}
 				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
@@ -188,12 +195,14 @@ export function SearchLayout() {
 						>
 							<Icon name="close" size={20} className="opacity-50" />
 						</button>
-						<div
-							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
-						>
-							<ImageSearchButton onClick={() => setActivePortal('image')} />
-							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
-						</div>
+						{!isCompact && (
+							<div
+								className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
+							>
+								<ImageSearchButton onClick={() => setActivePortal('image')} />
+								<VoiceSearchButton onClick={() => setActivePortal('voice')} />
+							</div>
+						)}
 						<div
 							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer  hover:bg-base-300`}
 							onClick={() => onSearchButtonClick()}
