@@ -16,7 +16,7 @@ interface ComboWidgetProps {
 	size?: WidgetSize
 }
 
-export function ComboWidget({ size = { w: 2, h: 2 } }: ComboWidgetProps = {}) {
+export function ComboWidget({ size = { w: 2, h: 3 } }: ComboWidgetProps = {}) {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
 	const handleSettingsClick = () => {
 		if (activeTab === 'currency') {
@@ -49,36 +49,6 @@ export function ComboWidget({ size = { w: 2, h: 2 } }: ComboWidgetProps = {}) {
 	}, [])
 
 	if (!activeTab) return null
-
-	if (size.w >= 4 && size.h >= 2) {
-		return (
-			<WidgetContainer className="grid grid-cols-1 md:grid-cols-2 gap-2 h-full w-full p-2 overflow-hidden">
-				<div className="flex flex-col h-full overflow-hidden p-2 rounded-2xl bg-base-200/30 border border-base-content/10">
-					<div className="flex items-center justify-between pb-1.5 border-b border-base-content/10 text-xs font-bold text-content">
-						<span className="flex items-center gap-1.5">
-							<Icon name="currency" className="w-3.5 h-3.5 text-primary" />
-							<span>قیمت لحظه‌ای ارز</span>
-						</span>
-					</div>
-					<div className="grow overflow-y-auto mt-1.5 scrollbar-none">
-						<WigiArzLayout inComboWidget={true} enableBackground={false} />
-					</div>
-				</div>
-
-				<div className="flex flex-col h-full overflow-hidden p-2 rounded-2xl bg-base-200/30 border border-base-content/10">
-					<div className="flex items-center justify-between pb-1.5 border-b border-base-content/10 text-xs font-bold text-content">
-						<span className="flex items-center gap-1.5">
-							<Icon name="outlineNewspaper" className="w-3.5 h-3.5 text-primary" />
-							<span>ویجی نیوز</span>
-						</span>
-					</div>
-					<div className="grow overflow-y-auto mt-1.5 scrollbar-none">
-						<NewsLayout inComboWidget={true} enableBackground={false} />
-					</div>
-				</div>
-			</WidgetContainer>
-		)
-	}
 
 	return (
 		<WidgetContainer className={'flex flex-col'}>

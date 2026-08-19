@@ -5,8 +5,6 @@ import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
 import { NewsHeader } from './components/news-header'
-import { NewsCompactRow } from './variants/news-2x1'
-import { NewsWideBanner } from './variants/news-4x1'
 import type { WigiNewsSetting } from './rss.interface'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -19,7 +17,7 @@ interface NewsLayoutProps {
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
 	inComboWidget,
-	size = { w: 2, h: 2 },
+	size = { w: 2, h: 3 },
 }) => {
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
@@ -51,24 +49,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			event()
 		}
 	}, [])
-
-	if (!inComboWidget) {
-		if (size.w === 2 && size.h === 1) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<NewsCompactRow />
-				</WidgetContainer>
-			)
-		}
-
-		if (size.w >= 4 && size.h === 1) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<NewsWideBanner />
-				</WidgetContainer>
-			)
-		}
-	}
 
 	if (inComboWidget) {
 		return (

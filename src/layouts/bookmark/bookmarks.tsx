@@ -9,6 +9,7 @@ import {
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { FolderHeader } from './components/folder-header'
+import { BookmarkFolderModal } from './components/modal/bookmark-folder.modal'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import { ImportBrowserBookmarksModal } from './components/modal/import-browser-bookmarks.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
@@ -21,6 +22,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
 import { useOptionalFreeWidgets } from '@/context/free-widget.context'
 import { WidgetKeys, type WidgetSize } from '../widgets/layout-engine/types'
+import { validate } from 'uuid'
 
 interface BookmarksListProps {
 	size?: WidgetSize
@@ -40,6 +42,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showImportBookmarksModal, setShowImportBookmarksModal] = useState(false)
+	const [folderModalPath, setFolderModalPath] = useState<FolderPathItem[]>([])
 	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
@@ -166,6 +169,12 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		setCurrentFolderId(folderId)
 	}
 
+	const handleOpenFolderInModal = (folder: Bookmark) => {
+		const isValidUuid = validate(folder.id)
+		const targetId = isValidUuid ? folder.id : folder.onlineId || folder.id
+		setFolderModalPath([{ id: targetId, title: folder.title }])
+	}
+
 	const freeWidgetContext = useOptionalFreeWidgets()
 	const isPrimary = (() => {
 		if (!instanceId || instanceId === 'bookmarks-default') return true
@@ -235,11 +244,23 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 							folderPath={folderPath}
 							setFolderPath={(path) => setFolderPath(path)}
 							openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
+							onOpenFolder={handleOpenFolderInModal}
 							colsCount={colsCount}
 						/>
 					</div>
 				</div>
 			</DndContext>
+
+			{folderModalPath.length > 0 && (
+				<BookmarkFolderModal
+					isOpen={folderModalPath.length > 0}
+					onClose={() => setFolderModalPath([])}
+					folderPath={folderModalPath}
+					setFolderPath={setFolderModalPath}
+					instanceId={instanceId}
+					isPrimary={isPrimary}
+				/>
+			)}
 			{showAddBookmarkModal && !isAuthenticated ? (
 				<AuthRequiredModal
 					isOpen={true}

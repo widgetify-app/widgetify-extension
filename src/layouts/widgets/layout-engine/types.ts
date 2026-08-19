@@ -15,7 +15,6 @@ export enum WidgetKeys {
 	bookmarks = 'bookmarks',
 	widgetify = 'widgetify',
 	clock = 'clock',
-	date = 'date',
 	pet = 'pet',
 }
 

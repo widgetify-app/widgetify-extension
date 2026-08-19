@@ -22,6 +22,7 @@ interface BookmarkGridProps {
 	folderPath: FolderPathItem[]
 	setFolderPath: (path: FolderPathItem[]) => void
 	colsCount?: number
+	onOpenFolder?: (folder: Bookmark) => void
 }
 
 export function BookmarkGrid({
@@ -30,6 +31,7 @@ export function BookmarkGrid({
 	setFolderPath,
 	folderPath,
 	colsCount = 5,
+	onOpenFolder,
 }: BookmarkGridProps) {
 	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
 		useBookmarkStore()
@@ -63,6 +65,8 @@ export function BookmarkGrid({
 		if (bookmark.type === 'FOLDER') {
 			if (e?.ctrlKey || e?.metaKey) {
 				openBookmarks(bookmark)
+			} else if (onOpenFolder) {
+				onOpenFolder(bookmark)
 			} else {
 				const isValidUUid = validate(bookmark.id)
 				setCurrentFolderId(isValidUUid ? bookmark.id : bookmark.onlineId)

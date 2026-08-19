@@ -79,7 +79,7 @@ export function FreeWidgetCanvas() {
 		0,
 		...runtimeLayout.map((w) => w.position.row + w.size.h)
 	)
-	const totalGridRows = Math.max(4, maxWidgetRow + 1)
+	const totalGridRows = Math.max(6, maxWidgetRow + 2)
 	const canvasPixelHeight = Math.max(
 		totalGridRows * cellHeight + Math.max(0, totalGridRows - 1) * gap,
 		getCanvasHeight(runtimeLayout, cellHeight, gap)

@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
 import { CalendarCompactRow } from './variants/calendar-2x1'
-import { CalendarWideFull } from './variants/calendar-4x2'
+import { Calendar1x1 } from './variants/calendar-1x1'
 import Analytics from '@/analytics'
 import { Icon } from '@/src/icons'
 import type { WidgetSize } from '../layout-engine/types'
@@ -55,15 +55,10 @@ interface CalendarLayoutProps {
 }
 
 export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
-	size = { w: 2, h: 2 },
+	size = { w: 2, h: 3 },
 }) => {
-	const {
-		currentDate,
-		selectedDate,
-		setCurrentDate,
-		setSelectedDate,
-		goToToday,
-	} = useDate()
+	const { currentDate, selectedDate, setCurrentDate, setSelectedDate, goToToday } =
+		useDate()
 	const [activeTab, setActiveTab] = useState<string>('calendar')
 
 	const onSetActiveTab = (tab: string) => {
@@ -71,24 +66,24 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 		Analytics.event(`calendar_tab_switch_to_${tab}`)
 	}
 
+	if (size.w === 1 && size.h === 1) {
+		return (
+			<WidgetContainer className="h-full">
+				<Calendar1x1 />
+			</WidgetContainer>
+		)
+	}
+
 	if (size.w === 2 && size.h === 1) {
 		return (
-			<WidgetContainer>
+			<WidgetContainer className="h-full">
 				<CalendarCompactRow />
 			</WidgetContainer>
 		)
 	}
 
-	if (size.w >= 4 && size.h >= 2) {
-		return (
-			<WidgetContainer>
-				<CalendarWideFull />
-			</WidgetContainer>
-		)
-	}
-
 	return (
-		<WidgetContainer className="flex flex-col md:flex-1">
+		<WidgetContainer className="flex flex-col md:flex-1 h-full">
 			<div className="flex flex-col flex-1 overflow-hidden">
 				{activeTab === 'calendar' ? (
 					<>

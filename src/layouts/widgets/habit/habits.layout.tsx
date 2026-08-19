@@ -19,8 +19,6 @@ import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 import { Icon } from '@/src/icons'
 import { HabitEmpty } from './components/habit-empty'
 import { HabitCompactSquare } from './variants/habit-1x1'
-import { HabitCompactRow } from './variants/habit-2x1'
-import { HabitWideBanner } from './variants/habit-4x1'
 import { HabitWideFull } from './variants/habit-4x2'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -216,22 +214,6 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 		return (
 			<WidgetContainer>
 				<HabitCompactSquare habits={data?.items || []} isLoading={isLoading} />
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w === 2 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<HabitCompactRow habits={data?.items || []} isLoading={isLoading} />
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w >= 4 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<HabitWideBanner habits={data?.items || []} isLoading={isLoading} />
 			</WidgetContainer>
 		)
 	}

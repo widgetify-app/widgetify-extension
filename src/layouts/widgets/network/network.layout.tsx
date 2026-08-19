@@ -11,7 +11,6 @@ import { WidgetContainer } from '../widget-container'
 import { NetworkIPCard, NetworkPingCard } from './components'
 import { NetworkCompactSquare } from './variants/network-1x1'
 import { NetworkCompactRow } from './variants/network-2x1'
-import { NetworkWideBanner } from './variants/network-4x1'
 import { Icon } from '@/src/icons'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -131,22 +130,6 @@ export function NetworkLayout({ enableBackground, inComboWidget, size = { w: 2, 
 			return (
 				<WidgetContainer background={enableBackground}>
 					<NetworkCompactRow
-						status={networkInfo.status}
-						ip={networkInfo.ip}
-						countryIcon={networkInfo.countryIcon}
-						city={networkInfo.city}
-						isp={networkInfo.isp}
-						ping={networkInfo.ping}
-						isLoading={isLoading}
-					/>
-				</WidgetContainer>
-			)
-		}
-
-		if (size.w >= 4 && size.h === 1) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<NetworkWideBanner
 						status={networkInfo.status}
 						ip={networkInfo.ip}
 						countryIcon={networkInfo.countryIcon}

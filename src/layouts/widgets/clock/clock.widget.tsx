@@ -12,7 +12,6 @@ import type { WidgetSize } from '../layout-engine/types'
 import { toPersianDigits } from '@/common/utils/persian-digits'
 import { Clock1x1 } from './variants/clock-1x1'
 import { Clock2x1 } from './variants/clock-2x1'
-import { Clock4x1 } from './variants/clock-4x1'
 
 interface ClockWidgetProps {
 	size?: WidgetSize
@@ -137,21 +136,6 @@ function ClockContent({
 			<Clock1x1
 				time={time}
 				setting={setting}
-				showSeconds={showSeconds}
-				hours={hours}
-				minutes={minutes}
-				seconds={seconds}
-			/>
-		)
-	}
-
-	if (size.w >= 4) {
-		return (
-			<Clock4x1
-				time={time}
-				setting={setting}
-				timezone={timezone}
-				timezoneLabel={timezoneLabel}
 				showSeconds={showSeconds}
 				hours={hours}
 				minutes={minutes}

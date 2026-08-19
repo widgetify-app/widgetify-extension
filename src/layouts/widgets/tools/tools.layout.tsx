@@ -4,14 +4,13 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
 import { WidgetContainer } from '../widget-container'
-import { TabNavigation } from '@/components/ui'
+import { Modal, TabNavigation } from '@/components/ui'
 import {
 	MdOutlineCurrencyExchange,
 	MdOutlineMosque,
 	MdOutlineTimer,
 } from 'react-icons/md'
 import { ToolsCompactRow } from './variants/tools-2x1'
-import { ToolsWideBanner } from './variants/tools-4x1'
 import type { WidgetSize } from '../layout-engine/types'
 
 const tabs = [
@@ -59,8 +58,9 @@ interface ToolsLayoutProps {
 	size?: WidgetSize
 }
 
-export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 2 } }) => {
+export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } }) => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
+	const [activeModalTool, setActiveModalTool] = useState<ToolsTabType | null>(null)
 	const { selectedDate } = useDate()
 
 	const onTabClick = (tab: ToolsTabType) => {
@@ -68,6 +68,11 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 2 } 
 		setActiveTab(tab)
 		setToStorage('toolsTab', tab)
 		Analytics.event(`tools_tab_change_to_${tab}`)
+	}
+
+	const onCompactToolClick = (tab: ToolsTabType) => {
+		setActiveModalTool(tab)
+		Analytics.event(`tools_compact_open_${tab}`)
 	}
 
 	useEffect(() => {
@@ -87,17 +92,35 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 2 } 
 
 	if (size.w === 2 && size.h === 1) {
 		return (
-			<WidgetContainer>
-				<ToolsCompactRow onSelectTab={onTabClick} />
-			</WidgetContainer>
-		)
-	}
+			<>
+				<WidgetContainer>
+					<ToolsCompactRow onSelectTab={onCompactToolClick} />
+				</WidgetContainer>
 
-	if (size.w >= 4 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<ToolsWideBanner onSelectTab={onTabClick} />
-			</WidgetContainer>
+				{activeModalTool && (
+					<Modal
+						isOpen={!!activeModalTool}
+						onClose={() => setActiveModalTool(null)}
+						title={
+							activeModalTool === 'pomodoro'
+								? 'تایمر پومودورو'
+								: activeModalTool === 'religious-time'
+									? 'اوقات شرعی'
+									: 'تبدیل ارز'
+						}
+						size="md"
+						direction="rtl"
+					>
+						<Suspense>
+							{activeModalTool === 'religious-time' && (
+								<ReligiousTime currentDate={selectedDate} />
+							)}
+							{activeModalTool === 'pomodoro' && <PomodoroTimer />}
+							{activeModalTool === 'currency-converter' && <CurrencyConverter />}
+						</Suspense>
+					</Modal>
+				)}
+			</>
 		)
 	}
 

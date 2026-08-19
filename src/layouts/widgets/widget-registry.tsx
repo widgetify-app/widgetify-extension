@@ -14,7 +14,6 @@ import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
 import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 import { CurrencyProvider } from '@/context/currency.context'
 import { ClockWidget } from './clock/clock.widget'
-import { DateWidget } from './date/date.widget'
 import { PetWidget } from './pet/pet.widget'
 import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
@@ -30,8 +29,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 4, h: 1 },
-			{ w: 6, h: 1 },
-			{ w: 8, h: 1 },
 		],
 		defaultSize: { w: 4, h: 1 },
 		canDuplicate: false,
@@ -79,7 +76,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجتیفای',
 		emoji: '✨',
 		allowedSizes: [
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -100,7 +96,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
@@ -118,7 +113,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی‌پد',
 		emoji: '⏰',
 		allowedSizes: [
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -139,9 +133,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
-			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.wigiPad,
@@ -153,37 +144,14 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		),
 		node: (instanceId, size) => <ClockWidget size={size} />,
 	},
-	[WidgetKeys.date]: {
-		id: WidgetKeys.date,
-		label: 'تاریخ',
-		emoji: '📅',
-		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
-			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
-		],
-		defaultSize: { w: 2, h: 2 },
-		settingsTab: WidgetTabKeys.wigiPad,
-		canDuplicate: true,
-		preview: () => (
-			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col items-center justify-center">
-				<span className="text-sm font-bold text-content">۲۸ مرداد ۱۴۰۵</span>
-				<span className="text-[10px] text-muted">سه‌شنبه</span>
-			</div>
-		),
-		node: (instanceId, size) => <DateWidget size={size} />,
-	},
 	[WidgetKeys.calendar]: {
 		id: WidgetKeys.calendar,
 		label: 'تقویم',
 		emoji: '📆',
 		allowedSizes: [
+			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
@@ -208,7 +176,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
@@ -229,9 +196,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجت ترکیبی (ارز و اخبار)',
 		emoji: '🔗',
 		allowedSizes: [
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
@@ -258,9 +223,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
 		emoji: '📒',
 		allowedSizes: [
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
@@ -281,9 +244,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🧰',
 		allowedSizes: [
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
@@ -302,11 +263,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '💰',
 		allowedSizes: [
 			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
@@ -334,11 +291,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی نیوز',
 		emoji: '📰',
 		allowedSizes: [
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
@@ -360,9 +313,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
@@ -385,10 +336,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🎯',
 		allowedSizes: [
 			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -416,7 +364,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '✅',
 		allowedSizes: [
 			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -444,10 +391,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'یادداشت',
 		emoji: '📝',
 		allowedSizes: [
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,

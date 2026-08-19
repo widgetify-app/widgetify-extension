@@ -53,7 +53,11 @@ interface FreeWidgetContextType {
 	setSelectedInstanceId: (id: string | null) => void
 	resizeWidget: (instanceId: string, newSize: WidgetSize) => boolean
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
-	addWidget: (id: string, targetPosition?: WidgetPosition) => Promise<boolean>
+	addWidget: (
+		id: string,
+		targetPosition?: WidgetPosition,
+		initialSize?: WidgetSize
+	) => Promise<boolean>
 	duplicateWidget: (instanceId: string) => Promise<boolean>
 	removeWidget: (instanceId: string) => boolean
 	updateWidgetSettings: (instanceId: string, meta: any) => void
@@ -355,16 +359,21 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	)
 
 	const addWidget = useCallback(
-		async (id: string, targetPosition?: WidgetPosition): Promise<boolean> => {
+		async (
+			id: string,
+			targetPosition?: WidgetPosition,
+			initialSize?: WidgetSize
+		): Promise<boolean> => {
 			const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 			if (!def) return false
 
 			const isAlreadyActive = runtimeLayout.some((w) => w.id === id)
 			if (!def.canDuplicate && isAlreadyActive) {
-				showToast('این ویجت قبلاً اضافه شده است', 'error')
+				showToast(translateError('WIDGET_ALREADY_EXISTS') as string, 'error')
 				return false
 			}
 
+			const chosenSize = initialSize || def.defaultSize
 			let finalInstanceId = `${id}-${Date.now().toString(36)}`
 
 			if (isAuthenticated) {
@@ -374,8 +383,8 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					workspace: 'HOME',
 					col: targetPosition?.col ?? 0,
 					row: targetPosition?.row ?? 0,
-					width: def.defaultSize.w,
-					height: def.defaultSize.h,
+					width: chosenSize.w,
+					height: chosenSize.h,
 				})
 				if (serverWidget?.instanceId) {
 					finalInstanceId = serverWidget.instanceId
@@ -386,7 +395,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				id: def.id,
 				instanceId: finalInstanceId,
 				position: targetPosition || { col: 0, row: 0 },
-				size: def.defaultSize,
+				size: chosenSize,
 				widgetId: finalInstanceId,
 			}
 
@@ -406,7 +415,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				) {
 					deleteUserWidgetApi(finalInstanceId).catch(() => {})
 				}
-				showToast('فضای کافی برای افزودن ویجت وجود ندارد', 'error')
+				showToast(translateError('NO_SPACE_FOR_WIDGET') as string, 'error')
 				return false
 			}
 

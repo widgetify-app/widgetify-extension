@@ -18,9 +18,6 @@ import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetContainer } from '../widget-container'
 import { SortableCurrencyBox } from './components/sortable-currency-box'
 import { CurrencyCompactSquare } from './variants/currency-1x1'
-import { CurrencyCompactRow } from './variants/currency-2x1'
-import { CurrencyWideBanner } from './variants/currency-4x1'
-import { CurrencyWideGrid } from './variants/currency-4x2'
 import { Button } from '@/components/ui'
 
 import type { WidgetSize } from '../layout-engine/types'
@@ -36,7 +33,7 @@ export function WigiArzLayout({
 	enableBackground = true,
 	inComboWidget = false,
 	comboClassName,
-	size = { w: 2, h: 2 },
+	size = { w: 2, h: 3 },
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()
@@ -79,30 +76,6 @@ export function WigiArzLayout({
 			return (
 				<WidgetContainer background={enableBackground}>
 					<CurrencyCompactSquare code={selectedCurrencies[0] || 'USD'} />
-				</WidgetContainer>
-			)
-		}
-
-		if (size.w === 2 && size.h === 1) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<CurrencyCompactRow currencies={selectedCurrencies} />
-				</WidgetContainer>
-			)
-		}
-
-		if (size.w >= 4 && size.h === 1) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<CurrencyWideBanner currencies={selectedCurrencies} />
-				</WidgetContainer>
-			)
-		}
-
-		if (size.w >= 4 && size.h >= 2) {
-			return (
-				<WidgetContainer background={enableBackground}>
-					<CurrencyWideGrid currencies={selectedCurrencies} />
 				</WidgetContainer>
 			)
 		}
