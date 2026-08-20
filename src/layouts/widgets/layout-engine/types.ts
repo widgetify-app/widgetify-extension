@@ -17,6 +17,7 @@ export enum WidgetKeys {
 	clock = 'clock',
 	pet = 'pet',
 	transparentClock = 'transparentClock',
+	moodTracker = 'moodTracker',
 }
 
 export interface WidgetPosition {
@@ -57,15 +58,17 @@ export interface GridBreakpoint {
 
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 
+export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
+
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
 	emoji: string
+	category?: WidgetCategory
 	allowedSizes: WidgetSize[]
 	defaultSize: WidgetSize
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean
-	preview: () => React.ReactNode
 	node: (instanceId: string, size: WidgetSize) => React.ReactNode
 }
 

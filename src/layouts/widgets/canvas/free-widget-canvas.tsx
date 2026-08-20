@@ -1,6 +1,6 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { callEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
@@ -40,6 +40,13 @@ export function FreeWidgetCanvas() {
 			updateContainerWidth(containerSize.width)
 		}
 	}, [containerSize.width, updateContainerWidth])
+
+	useEffect(() => {
+		const removeListener = listenEvent('openAddCustomWidgetModal', () => {
+			setIsAddModalOpen(true)
+		})
+		return () => removeListener()
+	}, [])
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {

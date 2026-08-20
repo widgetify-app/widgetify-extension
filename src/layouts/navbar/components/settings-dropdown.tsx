@@ -2,14 +2,20 @@ import { useCallback, useRef } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
 import { Dropdown } from '@/components/ui'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 export const SettingsDropdown = () => {
 	const triggerRef = useRef<HTMLDivElement>(null)
+	const { ui } = useAppearanceSetting()
 
 	const handleWidgetSettingsClick = useCallback(() => {
-		callEvent('openWidgetsSettings', { tab: null })
+		if (ui === UI.CUSTOM) {
+			callEvent('openAddCustomWidgetModal')
+		} else {
+			callEvent('openWidgetsSettings', { tab: null })
+		}
 		callEvent('closeAllDropdowns')
-	}, [])
+	}, [ui])
 
 	const handleSettingsClick = useCallback(() => {
 		callEvent('openSettings', 'general')
@@ -53,21 +59,25 @@ export const SettingsDropdown = () => {
 					<span>تنظیمات</span>
 				</button>
 
-				<button
-					onClick={(_e) => {
-						handleWidgetSettingsClick()
-					}}
-					className="flex items-center justify-between w-full px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
-				>
-					<div className="flex items-center gap-3">
-						<Icon
-							name="appsPlus"
-							size={14}
-							className="text-muted group-hover:text-primary!"
-						/>
-						<span>مدیریت ویجت‌ها</span>
-					</div>
-				</button>
+				{ui !== UI.SIMPLE && (
+					<button
+						onClick={(_e) => {
+							handleWidgetSettingsClick()
+						}}
+						className="flex items-center justify-between w-full px-3 py-2 text-sm text-right transition-colors rounded-none cursor-pointer group hover:bg-primary/10 hover:text-primary"
+					>
+						<div className="flex items-center gap-3">
+							<Icon
+								name="appsPlus"
+								size={14}
+								className="text-muted group-hover:text-primary!"
+							/>
+							<span>
+								{ui === UI.CUSTOM ? 'افزودن ویجت صفحه' : 'مدیریت ویجت‌ها'}
+							</span>
+						</div>
+					</button>
+				)}
 
 				<div
 					className="relative px-3 py-2 cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"

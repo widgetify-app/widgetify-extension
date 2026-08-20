@@ -18,6 +18,7 @@ import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
+import { MoodTrackerWidget } from '@/layouts/widgets/mood-tracker/mood-tracker.widget'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
@@ -45,6 +46,7 @@ export enum WidgetKeys {
 	clock = 'clock',
 	date = 'date',
 	pet = 'pet',
+	moodTracker = 'moodTracker',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -152,6 +154,15 @@ export const widgetItems: WidgetItem[] = [
 		canToggle: true,
 		isNew: true,
 		isBeta: true,
+	},
+	{
+		id: WidgetKeys.moodTracker,
+		emoji: '🥰',
+		label: 'حال روزانه (Mood)',
+		order: 9,
+		node: <MoodTrackerWidget size={{ w: 2, h: 3 }} />,
+		canToggle: true,
+		isNew: true,
 	},
 ]
 

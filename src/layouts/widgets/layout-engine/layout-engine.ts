@@ -107,15 +107,8 @@ export function resolveLayoutChange(
 					new Set([toAdd.instanceId]),
 					cols
 				)
-				if (resolved) {
-					const compacted = compactLayout(
-						resolved,
-						cols,
-						new Set([toAdd.instanceId])
-					)
-					if (validateLayout(compacted, cols)) {
-						return compacted
-					}
+				if (resolved && validateLayout(resolved, cols)) {
+					return resolved
 				}
 				cloned.pop()
 			}
@@ -124,12 +117,11 @@ export function resolveLayoutChange(
 			toAdd.position = slot
 			cloned.push(toAdd)
 
-			const compacted = compactLayout(cloned, cols)
-			if (!validateLayout(compacted, cols)) {
+			if (!validateLayout(cloned, cols)) {
 				return null
 			}
 
-			return compacted
+			return cloned
 		}
 
 		case 'duplicate': {
@@ -149,12 +141,11 @@ export function resolveLayoutChange(
 			duplicated.position = slot
 			cloned.push(duplicated)
 
-			const compacted = compactLayout(cloned, cols)
-			if (!validateLayout(compacted, cols)) {
+			if (!validateLayout(cloned, cols)) {
 				return null
 			}
 
-			return compacted
+			return cloned
 		}
 
 		case 'remove': {

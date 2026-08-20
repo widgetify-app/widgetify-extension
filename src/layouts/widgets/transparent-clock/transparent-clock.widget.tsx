@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 import {
 	type ClockSettings,
 	ClockType,
@@ -84,9 +82,6 @@ export function TransparentClockWidget({
 
 	const rawHours = time.getHours().toString().padStart(2, '0')
 	const rawMinutes = time.getMinutes().toString().padStart(2, '0')
-	const useFont = clockSettings?.useSelectedFont ?? true
-	const hours = useFont ? toPersianDigits(rawHours) : rawHours
-	const minutes = useFont ? toPersianDigits(rawMinutes) : rawMinutes
 
 	const weekday = time.toLocaleDateString('fa-IR', { weekday: 'long' })
 	const jalaliDate = time.toLocaleDateString('fa-IR', {
@@ -108,18 +103,18 @@ export function TransparentClockWidget({
 			padding={false}
 			className="h-full w-full select-none"
 		>
-			<div className="flex flex-col items-center justify-center w-full h-full text-center text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]">
+			<div className="flex flex-col items-center justify-center w-full h-full text-center drop-shadow-lg">
 				<div
 					dir="ltr"
-					className={`font-black tracking-tight leading-none text-white ${!useFont ? 'font-sans' : ''} ${
+					className={`font-black tracking-tight leading-none text-white  ${
 						isCompact
 							? 'text-4xl sm:text-5xl md:text-6xl'
 							: 'text-6xl sm:text-7xl md:text-8xl'
 					}`}
 				>
-					<span>{hours}</span>
-					<span className="inline-block mx-0.5 animate-pulse">:</span>
-					<span>{minutes}</span>
+					<span>{rawHours}</span>
+					<span className="inline-block mx-0.5">:</span>
+					<span>{rawMinutes}</span>
 				</div>
 
 				<div

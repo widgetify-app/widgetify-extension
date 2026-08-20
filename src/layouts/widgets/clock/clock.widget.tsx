@@ -108,39 +108,24 @@ function ClockContent({ size, setting, timezone, isOptimalMode }: ClockContentPr
 
 	const rawHours = time.getHours().toString().padStart(2, '0')
 	const rawMinutes = time.getMinutes().toString().padStart(2, '0')
-	const rawSeconds = time.getSeconds().toString().padStart(2, '0')
 
 	const hours = setting.useSelectedFont ? toPersianDigits(rawHours) : rawHours
 	const minutes = setting.useSelectedFont ? toPersianDigits(rawMinutes) : rawMinutes
-	const seconds = setting.useSelectedFont ? toPersianDigits(rawSeconds) : rawSeconds
 
 	const timezoneLabel = useMemo(() => {
 		return getTimeZoneLabel(timezone.label)
 	}, [timezone])
 
 	if (size.w === 1) {
-		return (
-			<Clock1x1
-				time={time}
-				setting={setting}
-				showSeconds={showSeconds}
-				hours={hours}
-				minutes={minutes}
-				seconds={seconds}
-			/>
-		)
+		return <Clock1x1 time={time} hours={hours} minutes={minutes} />
 	}
 
 	return (
 		<Clock2x1
 			time={time}
-			setting={setting}
-			timezone={timezone}
 			timezoneLabel={timezoneLabel}
-			showSeconds={showSeconds}
 			hours={hours}
 			minutes={minutes}
-			seconds={seconds}
 		/>
 	)
 }

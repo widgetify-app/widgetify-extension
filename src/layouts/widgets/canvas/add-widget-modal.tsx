@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Modal } from '@/components/ui'
+import { useMemo, useState } from 'react'
+import { Button, Modal } from '@/components/ui'
 import { useFreeWidgets } from '@/context/free-widget.context'
-import type { WidgetSize } from '../layout-engine/types'
+import type { WidgetCategory, WidgetSize } from '../layout-engine/types'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { toPersianDigits } from '@/common/utils/persian-digits'
 
@@ -64,6 +64,21 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 		}
 	}
 
+	const [activeCategory, setActiveCategory] = useState<WidgetCategory>('all')
+
+	const categories: { id: WidgetCategory; label: string }[] = [
+		{ id: 'all', label: 'همه' },
+		{ id: 'time', label: 'زمان و تاریخ' },
+		{ id: 'productivity', label: 'ابزار و تسک' },
+		{ id: 'info', label: 'اطلاعات و رسانه' },
+		{ id: 'lifestyle', label: 'سرگرمی' },
+	]
+
+	const filteredDefinitions = useMemo(() => {
+		if (activeCategory === 'all') return allDefinitions
+		return allDefinitions.filter((def) => def.category === activeCategory)
+	}, [allDefinitions, activeCategory])
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -77,11 +92,26 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 			<div className="flex flex-col md:flex-row gap-4 h-[550px] select-none">
 				{/* Right: Widget List (Sidebar) */}
 				<div className="w-full md:w-5/12 flex flex-col border-b md:border-b-0 md:border-l border-base-content/10 pl-0 md:pl-3 pb-3 md:pb-0">
-					<div className="text-xs font-bold text-muted mb-2 px-1">
-						ویجت‌های در دسترس ({toPersianDigits(allDefinitions.length)})
+					{/* Category Tabs */}
+					<div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-2 mb-2 border-b border-base-content/10">
+						{categories.map((cat) => (
+							<button
+								key={cat.id}
+								type="button"
+								onClick={() => setActiveCategory(cat.id)}
+								className={`px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer ${
+									activeCategory === cat.id
+										? 'bg-primary text-white font-bold shadow-xs'
+										: 'bg-base-200/60 hover:bg-base-200 text-muted font-medium'
+								}`}
+							>
+								{cat.label}
+							</button>
+						))}
 					</div>
+
 					<div className="flex-1 overflow-y-auto space-y-1.5 pr-0.5 scrollbar-none">
-						{allDefinitions.map((def) => {
+						{filteredDefinitions.map((def) => {
 							const isSelected = def.id === selectedId
 							const count = runtimeLayout.filter(
 								(w) => w.id === def.id
@@ -158,14 +188,6 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 										</p>
 									</div>
 								</div>
-
-								{isCurrentlyActive && (
-									<span className="text-xs px-2 py-0.5 rounded-xl bg-primary/15 text-primary font-medium">
-										{selectedDef.canDuplicate
-											? `${toPersianDigits(activeCount)} نسخه روی صفحه`
-											: 'روی صفحه فعال است'}
-									</span>
-								)}
 							</div>
 
 							{/* Size Selection Bar */}
@@ -234,13 +256,14 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 								</div>
 							</div>
 
-							{/* Action Footer */}
 							<div className="pt-2 border-t border-base-content/10">
 								{canAdd ? (
-									<button
+									<Button
 										type="button"
 										onClick={handleAdd}
-										className="w-full py-2.5 px-4 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 active:scale-[0.99] transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
+										className="w-full"
+										rounded={'2xl'}
+										variant={'primary'}
 									>
 										<span>+</span>
 										<span>
@@ -248,15 +271,16 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 											{toPersianDigits(selectedSize.w)}×
 											{toPersianDigits(selectedSize.h)}
 										</span>
-									</button>
+									</Button>
 								) : (
-									<button
-										type="button"
+									<Button
 										disabled
-										className="w-full py-2.5 px-4 rounded-xl bg-base-300 text-muted text-xs font-medium cursor-not-allowed flex items-center justify-center"
+										variant={'default'}
+										rounded={'2xl'}
+										className="w-full"
 									>
-										این ویجت قبلاً به صفحه اضافه شده است
-									</button>
+										این ویجت قبلا به صفحه اضافه شده!
+									</Button>
 								)}
 							</div>
 						</div>

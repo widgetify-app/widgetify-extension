@@ -9,13 +9,6 @@ export const moodOptions = [
 	{
 		value: 'normal',
 		emoji: '😴',
-		label: '',
-		colorClass: 'warning',
-		borderClass: 'border-yellow-400/50',
-	},
-	{
-		value: 'tired',
-		emoji: '😴',
 		label: 'خستم',
 		colorClass: 'warning',
 		borderClass: 'border-yellow-400/50',

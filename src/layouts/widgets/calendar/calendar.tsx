@@ -68,7 +68,7 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 
 	if (size.w === 1 && size.h === 1) {
 		return (
-			<WidgetContainer className="h-full">
+			<WidgetContainer padding={false} className="h-full">
 				<Calendar1x1 />
 			</WidgetContainer>
 		)

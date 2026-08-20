@@ -1,5 +1,6 @@
 import { useDate } from '@/context/date.context'
 import { toPersianDigits } from '@/common/utils/persian-digits'
+import { cn } from '@/common/utils/cn'
 
 export function Calendar1x1() {
 	const { today, todayIsHoliday } = useDate()
@@ -10,28 +11,42 @@ export function Calendar1x1() {
 	const isFriday = today.day() === 5 || todayIsHoliday
 
 	return (
-		<div className="flex flex-col items-center justify-between w-full h-full select-none p-1.5 text-center">
+		<div className="w-full h-full flex flex-col select-none overflow-hidden text-center">
 			<div
-				className={`w-full py-1 px-2 rounded-xl text-xs font-bold text-center transition-colors ${
-					isFriday
-						? 'bg-error/15 text-error'
-						: 'bg-primary/15 text-primary'
-				}`}
+				className={cn(
+					'w-full py-1.5 px-3 flex items-center justify-between transition-colors',
+					isFriday ? 'bg-error text-error-content' : 'bg-primary text-white'
+				)}
 			>
-				{weekDayName}
+				<div className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/60" />
+				<span className="text-xs font-black tracking-tight leading-none">
+					{monthName}
+				</span>
+				<div className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/60" />
 			</div>
 
-			<div className="flex flex-col items-center justify-center flex-1 my-0.5">
+			<div className="w-full border-b border-dashed border-base-content/15" />
+
+			<div className="flex-1 flex flex-col items-center justify-center py-1 px-2">
 				<span
-					className={`text-2xl md:text-3xl font-black leading-none tracking-tight ${
+					className={cn(
+						'text-3xl sm:text-4xl font-black leading-none tracking-[-0.04em] tabular-nums',
 						isFriday ? 'text-error' : 'text-content'
-					}`}
+					)}
 				>
 					{dayNumber}
 				</span>
-				<span className="text-[10px] font-medium text-muted mt-0.5">
-					{monthName}
-				</span>
+
+				<div className="mt-1.5">
+					<span
+						className={cn(
+							'px-2.5 py-0.5 rounded-full bg-base-200/80 text-[10px] font-bold',
+							isFriday ? 'text-error' : 'text-muted'
+						)}
+					>
+						{weekDayName}
+					</span>
+				</div>
 			</div>
 		</div>
 	)

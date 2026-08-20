@@ -35,7 +35,6 @@ export function HabitWideFull({
 	const total = habits.length
 	const completed = habits.filter((h) => h.today.value >= (h.target || 1)).length
 	const percent = total > 0 ? Math.round((completed / total) * 100) : 0
-	const maxStreak = Math.max(...habits.map((h) => getHabitStreak(h)), 0)
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-full w-full p-1 select-none">
@@ -58,17 +57,6 @@ export function HabitWideFull({
 							{toPersianDigits(percent)}٪
 						</span>
 					</div>
-					{maxStreak > 0 && (
-						<div className="flex items-center justify-between text-xs">
-							<span className="text-warning font-medium">
-								بیشترین استریک:
-							</span>
-							<span className="font-bold text-warning flex items-center gap-0.5">
-								<span>🔥</span>
-								<span>{toPersianDigits(maxStreak)} روز</span>
-							</span>
-						</div>
-					)}
 				</div>
 
 				<div className="w-full bg-base-300 rounded-full h-1.5 overflow-hidden">
