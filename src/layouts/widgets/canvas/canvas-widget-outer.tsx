@@ -175,6 +175,13 @@ export function CanvasWidgetOuter({
 		}
 	}
 
+	const handleEditVariant = () => {
+		callEvent('openAddCustomWidgetModal', {
+			instanceId: widget.instanceId,
+			widgetId: widget.id,
+		})
+	}
+
 	const handleDelete = () => {
 		removeWidget(widget.instanceId)
 	}
@@ -244,7 +251,7 @@ export function CanvasWidgetOuter({
 						canvasMode === 'edit' ? 'pointer-events-none select-none' : ''
 					}`}
 				>
-					{definition.node(widget.instanceId, widget.size)}
+					{definition.node(widget.instanceId, widget.size, widget.meta)}
 					{canvasMode === 'edit' && (
 						<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
 					)}
@@ -262,6 +269,7 @@ export function CanvasWidgetOuter({
 					onResize={handleResize}
 					onDuplicate={handleDuplicate}
 					onSettings={definition.settingsTab ? handleSettings : undefined}
+					onEditVariant={definition.variants?.length ? handleEditVariant : undefined}
 					onDelete={handleDelete}
 				/>
 			)}

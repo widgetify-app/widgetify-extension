@@ -60,6 +60,13 @@ import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys
 
 export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
 
+export interface WidgetVariantOption {
+	id: string
+	label: string
+	size: WidgetSize
+	meta?: Record<string, any>
+}
+
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
@@ -67,9 +74,10 @@ export interface WidgetDefinition {
 	category?: WidgetCategory
 	allowedSizes: WidgetSize[]
 	defaultSize: WidgetSize
+	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean
-	node: (instanceId: string, size: WidgetSize) => React.ReactNode
+	node: (instanceId: string, size: WidgetSize, meta?: any) => React.ReactNode
 }
 
 export interface LayoutEngineOptions {

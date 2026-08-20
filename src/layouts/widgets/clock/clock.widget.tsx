@@ -9,16 +9,20 @@ import {
 } from '../wigi-pad/clock-display/clock-setting.interface'
 import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 import { Clock1x1 } from './variants/clock-1x1'
 import { Clock2x1 } from './variants/clock-2x1'
+import { ClockAnalog } from './variants/clock-analog'
+import { ClockFlip } from './variants/clock-flip'
 import { getTimeZoneLabel } from '@/common/utils/get-timezone-label'
 
 interface ClockWidgetProps {
 	size?: WidgetSize
+	meta?: {
+		variant?: string
+	}
 }
 
-export function ClockWidget({ size = { w: 2, h: 1 } }: ClockWidgetProps) {
+export function ClockWidget({ size = { w: 2, h: 1 }, meta }: ClockWidgetProps) {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
 	const { selected_timezone: timezone, isOptimalMode } = useGeneralSetting()
 
@@ -57,13 +61,19 @@ export function ClockWidget({ size = { w: 2, h: 1 } }: ClockWidgetProps) {
 		return null
 	}
 
+	const background = !['analog', 'flip'].includes(meta?.variant || '')
+
 	return (
-		<WidgetContainer className="h-full w-full">
+		<WidgetContainer
+			background={background}
+			padding={background}
+			className="h-full w-full"
+		>
 			<ClockContent
 				size={size}
-				setting={clockSettings}
 				timezone={timezone}
 				isOptimalMode={Boolean(isOptimalMode)}
+				meta={meta}
 			/>
 		</WidgetContainer>
 	)
@@ -71,12 +81,14 @@ export function ClockWidget({ size = { w: 2, h: 1 } }: ClockWidgetProps) {
 
 interface ClockContentProps {
 	size: WidgetSize
-	setting: ClockSettings
 	timezone: FetchedTimezone
 	isOptimalMode: boolean
+	meta?: {
+		variant?: string
+	}
 }
 
-function ClockContent({ size, setting, timezone, isOptimalMode }: ClockContentProps) {
+function ClockContent({ size, timezone, isOptimalMode, meta }: ClockContentProps) {
 	const [time, setTime] = useState(
 		() =>
 			new Date(
@@ -86,10 +98,11 @@ function ClockContent({ size, setting, timezone, isOptimalMode }: ClockContentPr
 			)
 	)
 
-	const showSeconds = setting.showSeconds && !isOptimalMode
+	const isAnalog = meta?.variant === 'analog'
+	const showSeconds = isAnalog || !isOptimalMode
 
 	useEffect(() => {
-		const updateTime = () => {
+		function updateTime() {
 			setTime(
 				new Date(
 					new Date().toLocaleString('en-US', {
@@ -109,23 +122,28 @@ function ClockContent({ size, setting, timezone, isOptimalMode }: ClockContentPr
 	const rawHours = time.getHours().toString().padStart(2, '0')
 	const rawMinutes = time.getMinutes().toString().padStart(2, '0')
 
-	const hours = setting.useSelectedFont ? toPersianDigits(rawHours) : rawHours
-	const minutes = setting.useSelectedFont ? toPersianDigits(rawMinutes) : rawMinutes
-
 	const timezoneLabel = useMemo(() => {
 		return getTimeZoneLabel(timezone.label)
 	}, [timezone])
 
+	if (meta?.variant === 'analog') {
+		return <ClockAnalog size={size.w === 1 && size.h === 1 ? 76 : 96} time={time} />
+	}
+
+	if (meta?.variant === 'flip') {
+		return <ClockFlip />
+	}
+
 	if (size.w === 1) {
-		return <Clock1x1 time={time} hours={hours} minutes={minutes} />
+		return <Clock1x1 time={time} hours={rawHours} minutes={rawMinutes} />
 	}
 
 	return (
 		<Clock2x1
 			time={time}
 			timezoneLabel={timezoneLabel}
-			hours={hours}
-			minutes={minutes}
+			hours={rawHours}
+			minutes={rawMinutes}
 		/>
 	)
 }

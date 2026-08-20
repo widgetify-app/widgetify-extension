@@ -12,6 +12,7 @@ interface WidgetContextMenuProps {
 	onResize: (size: WidgetSize) => void
 	onDuplicate: () => void
 	onSettings?: () => void
+	onEditVariant?: () => void
 	onDelete: () => void
 }
 
@@ -25,6 +26,7 @@ export function WidgetContextMenu({
 	onResize,
 	onDuplicate,
 	onSettings,
+	onEditVariant,
 	onDelete,
 }: WidgetContextMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
@@ -50,7 +52,9 @@ export function WidgetContextMenu({
 		}
 	}, [onClose])
 
+	const hasVariants = Boolean(definition.variants && definition.variants.length > 0)
 	const fittingSizes = definition.allowedSizes.filter((s) => s.w <= cols)
+	const showResize = !hasVariants && fittingSizes.length > 1
 
 	const adjustedLeft = Math.min(Math.max(10, x), window.innerWidth - 220)
 	const adjustedTop = Math.min(Math.max(10, y), window.innerHeight - 260)
@@ -75,7 +79,7 @@ export function WidgetContextMenu({
 				</span>
 			</div>
 
-			{fittingSizes.length > 1 && (
+			{showResize && (
 				<div className="px-2 py-1 flex flex-col gap-1.5">
 					<span className="text-[11px] text-muted font-medium">
 						تغییر اندازه
@@ -119,6 +123,20 @@ export function WidgetContextMenu({
 				>
 					<Icon name="plus" size={14} className="text-muted" />
 					<span>تکرار ویجت</span>
+				</button>
+			)}
+
+			{hasVariants && onEditVariant && (
+				<button
+					type="button"
+					onClick={() => {
+						onEditVariant()
+						onClose()
+					}}
+					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
+				>
+					<Icon name="brush" size={14} className="text-muted" />
+					<span>تغییر مدل و استایل</span>
 				</button>
 			)}
 

@@ -99,13 +99,36 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🕒',
 		category: 'time',
 		allowedSizes: [
-			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
+			{ w: 1, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
-		settingsTab: WidgetTabKeys.wigiPad,
+		variants: [
+			{
+				id: 'digital',
+				label: 'ساعت دیجیتال',
+				size: { w: 2, h: 1 },
+			},
+			{
+				id: 'flip',
+				label: 'ساعت فیلیپ (ورقه‌ای)',
+				size: { w: 2, h: 1 },
+				meta: { variant: 'flip' },
+			},
+			{
+				id: 'digital-vertical',
+				label: 'ساعت دیجیتال عمودی',
+				size: { w: 1, h: 1 },
+			},
+			{
+				id: 'analog',
+				label: 'ساعت آنالوگ',
+				size: { w: 1, h: 1 },
+				meta: { variant: 'analog' },
+			},
+		],
 		canDuplicate: false,
-		node: (instanceId, size) => <ClockWidget size={size} />,
+		node: (instanceId, size, meta) => <ClockWidget size={size} meta={meta} />,
 	},
 	[WidgetKeys.calendar]: {
 		id: WidgetKeys.calendar,
@@ -267,7 +290,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.transparentClock]: {
 		id: WidgetKeys.transparentClock,
-		label: 'ساعت و تاریخ مینیمال',
+		label: 'ساعت یخی',
 		emoji: '🕒',
 		category: 'time',
 		allowedSizes: [

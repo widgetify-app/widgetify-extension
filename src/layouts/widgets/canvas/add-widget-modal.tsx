@@ -1,17 +1,25 @@
 import { useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { useFreeWidgets } from '@/context/free-widget.context'
-import type { WidgetCategory, WidgetSize } from '../layout-engine/types'
+import type {
+	WidgetCategory,
+	WidgetSize,
+	WidgetVariantOption,
+} from '../layout-engine/types'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { toPersianDigits } from '@/common/utils/persian-digits'
 
 interface AddWidgetModalProps {
 	isOpen: boolean
+	editTarget?: {
+		instanceId: string
+		widgetId: string
+	} | null
 	onClose: () => void
 }
 
-export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
-	const { runtimeLayout, addWidget } = useFreeWidgets()
+export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
+	const { runtimeLayout, addWidget, updateWidgetVariant } = useFreeWidgets()
 
 	const allDefinitions = Object.values(WIDGET_DEFINITIONS)
 	const [selectedId, setSelectedId] = useState<string>(allDefinitions[0]?.id || '')
@@ -23,12 +31,55 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 	const [selectedSize, setSelectedSize] = useState<WidgetSize>(
 		selectedDef?.defaultSize || { w: 2, h: 2 }
 	)
+	const [selectedVariant, setSelectedVariant] = useState<WidgetVariantOption | null>(
+		selectedDef?.variants?.[0] || null
+	)
+
+	useEffect(() => {
+		if (!isOpen) return
+		if (editTarget) {
+			const def =
+				WIDGET_DEFINITIONS[editTarget.widgetId as keyof typeof WIDGET_DEFINITIONS]
+			if (def) {
+				setSelectedId(def.id)
+				const currentWidget = runtimeLayout.find(
+					(w) => w.instanceId === editTarget.instanceId
+				)
+				if (def.variants && def.variants.length > 0) {
+					const match =
+						def.variants.find((v) => {
+							if (currentWidget?.meta?.variant) {
+								return v.meta?.variant === currentWidget.meta.variant
+							}
+							return (
+								v.size.w === currentWidget?.size.w &&
+								v.size.h === currentWidget?.size.h
+							)
+						}) || def.variants[0]
+					setSelectedVariant(match)
+					setSelectedSize(match.size)
+				} else {
+					setSelectedVariant(null)
+					setSelectedSize(currentWidget?.size || def.defaultSize)
+				}
+			}
+		}
+	}, [isOpen, editTarget, runtimeLayout])
+
+	const isEditMode = Boolean(editTarget)
 
 	const handleSelectWidget = (id: string) => {
+		if (isEditMode) return
 		setSelectedId(id)
 		const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 		if (def) {
-			setSelectedSize(def.defaultSize)
+			if (def.variants && def.variants.length > 0) {
+				setSelectedVariant(def.variants[0])
+				setSelectedSize(def.variants[0].size)
+			} else {
+				setSelectedVariant(null)
+				setSelectedSize(def.defaultSize)
+			}
 		}
 	}
 
@@ -36,9 +87,27 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 	const isCurrentlyActive = activeCount > 0
 	const canAdd = selectedDef?.canDuplicate || !isCurrentlyActive
 
-	const handleAdd = async () => {
-		if (!selectedDef || !canAdd) return
-		const success = await addWidget(selectedDef.id, undefined, selectedSize)
+	const handleSave = async () => {
+		if (!selectedDef) return
+		if (isEditMode && editTarget) {
+			const success = updateWidgetVariant(
+				editTarget.instanceId,
+				selectedSize,
+				selectedVariant?.meta
+			)
+			if (success) {
+				onClose()
+			}
+			return
+		}
+
+		if (!canAdd) return
+		const success = await addWidget(
+			selectedDef.id,
+			undefined,
+			selectedSize,
+			selectedVariant?.meta
+		)
 		if (success) {
 			onClose()
 		}
@@ -83,7 +152,11 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title="افزودن ویجت به صفحه"
+			title={
+				isEditMode
+					? `تغییر مدل و استایل ویجت ${selectedDef?.label || ''}`
+					: 'افزودن ویجت به صفحه'
+			}
 			size="xl"
 			direction="rtl"
 			closeOnBackdropClick={true}
@@ -190,47 +263,83 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 								</div>
 							</div>
 
-							{/* Size Selection Bar */}
-							<div className="flex flex-col gap-1.5">
-								<span className="text-xs font-bold text-content">
-									انتخاب اندازه ویجت:
-								</span>
-								<div className="flex flex-wrap gap-1.5">
-									{selectedDef.allowedSizes.map((sizeOption) => {
-										const isCurrentSize =
-											selectedSize.w === sizeOption.w &&
-											selectedSize.h === sizeOption.h
-										const isDefault =
-											selectedDef.defaultSize.w === sizeOption.w &&
-											selectedDef.defaultSize.h === sizeOption.h
+							{/* Size / Variant Selection */}
+							{selectedDef.variants && selectedDef.variants.length > 0 ? (
+								<div className="flex flex-col gap-1.5">
+									<span className="text-xs font-bold text-content">
+										انتخاب مدل و استایل:
+									</span>
+									<div className="flex flex-wrap gap-1.5">
+										{selectedDef.variants.map((variant) => {
+											const isCurrent =
+												selectedVariant?.id === variant.id ||
+												(!selectedVariant &&
+													selectedSize.w === variant.size.w &&
+													selectedSize.h === variant.size.h)
 
-										return (
-											<button
-												key={`${sizeOption.w}x${sizeOption.h}`}
-												type="button"
-												onClick={() =>
-													setSelectedSize(sizeOption)
-												}
-												className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer ${
-													isCurrentSize
-														? 'bg-primary text-white font-bold shadow-xs'
-														: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
-												}`}
-											>
-												<span>
-													{toPersianDigits(sizeOption.w)} ×{' '}
-													{toPersianDigits(sizeOption.h)}
-												</span>
-												{isDefault && !isCurrentSize && (
-													<span className="text-[9px] text-muted mr-1">
-														(پیش‌فرض)
-													</span>
-												)}
-											</button>
-										)
-									})}
+											return (
+												<button
+													key={variant.id}
+													type="button"
+													onClick={() => {
+														setSelectedVariant(variant)
+														setSelectedSize(variant.size)
+													}}
+													className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer ${
+														isCurrent
+															? 'bg-primary text-white font-bold shadow-xs'
+															: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
+													}`}
+												>
+													<span>{variant.label}</span>
+												</button>
+											)
+										})}
+									</div>
 								</div>
-							</div>
+							) : (
+								<div className="flex flex-col gap-1.5">
+									<span className="text-xs font-bold text-content">
+										انتخاب اندازه ویجت:
+									</span>
+									<div className="flex flex-wrap gap-1.5">
+										{selectedDef.allowedSizes.map((sizeOption) => {
+											const isCurrentSize =
+												selectedSize.w === sizeOption.w &&
+												selectedSize.h === sizeOption.h
+											const isDefault =
+												selectedDef.defaultSize.w === sizeOption.w &&
+												selectedDef.defaultSize.h === sizeOption.h
+
+											return (
+												<button
+													key={`${sizeOption.w}x${sizeOption.h}`}
+													type="button"
+													onClick={() => {
+														setSelectedVariant(null)
+														setSelectedSize(sizeOption)
+													}}
+													className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer ${
+														isCurrentSize
+															? 'bg-primary text-white font-bold shadow-xs'
+															: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
+													}`}
+												>
+													<span>
+														{toPersianDigits(sizeOption.w)} ×{' '}
+														{toPersianDigits(sizeOption.h)}
+													</span>
+													{isDefault && !isCurrentSize && (
+														<span className="text-[9px] text-muted mr-1">
+															(پیش‌فرض)
+														</span>
+													)}
+												</button>
+											)
+										})}
+									</div>
+								</div>
+							)}
 
 							{/* Dynamic Preview Container */}
 							<div
@@ -251,16 +360,30 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 									className="flex items-center justify-center overflow-hidden pointer-events-none select-none transition-all duration-200"
 								>
 									<div className="w-full h-full flex items-center justify-center">
-										{selectedDef.node('preview-sample', selectedSize)}
+										{selectedDef.node(
+											'preview-sample',
+											selectedSize,
+											selectedVariant?.meta
+										)}
 									</div>
 								</div>
 							</div>
 
 							<div className="pt-2 border-t border-base-content/10">
-								{canAdd ? (
+								{isEditMode ? (
 									<Button
 										type="button"
-										onClick={handleAdd}
+										onClick={handleSave}
+										className="w-full"
+										rounded={'2xl'}
+										variant={'primary'}
+									>
+										<span>ذخیره تغییرات</span>
+									</Button>
+								) : canAdd ? (
+									<Button
+										type="button"
+										onClick={handleSave}
 										className="w-full"
 										rounded={'2xl'}
 										variant={'primary'}

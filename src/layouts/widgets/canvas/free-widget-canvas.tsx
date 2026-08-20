@@ -30,6 +30,10 @@ export function FreeWidgetCanvas() {
 	} = useFreeWidgets()
 
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+	const [editTarget, setEditTarget] = useState<{
+		instanceId: string
+		widgetId: string
+	} | null>(null)
 	const [canvasContextMenuPos, setCanvasContextMenuPos] = useState<{
 		x: number
 		y: number
@@ -42,7 +46,12 @@ export function FreeWidgetCanvas() {
 	}, [containerSize.width, updateContainerWidth])
 
 	useEffect(() => {
-		const removeListener = listenEvent('openAddCustomWidgetModal', () => {
+		const removeListener = listenEvent('openAddCustomWidgetModal', (payload?: any) => {
+			if (payload?.instanceId && payload?.widgetId) {
+				setEditTarget(payload)
+			} else {
+				setEditTarget(null)
+			}
 			setIsAddModalOpen(true)
 		})
 		return () => removeListener()
@@ -231,7 +240,11 @@ export function FreeWidgetCanvas() {
 
 			<AddWidgetModal
 				isOpen={isAddModalOpen}
-				onClose={() => setIsAddModalOpen(false)}
+				editTarget={editTarget}
+				onClose={() => {
+					setIsAddModalOpen(false)
+					setEditTarget(null)
+				}}
 			/>
 		</div>
 	)

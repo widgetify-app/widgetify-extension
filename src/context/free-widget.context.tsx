@@ -56,11 +56,17 @@ interface FreeWidgetContextType {
 	addWidget: (
 		id: string,
 		targetPosition?: WidgetPosition,
-		initialSize?: WidgetSize
+		initialSize?: WidgetSize,
+		meta?: Record<string, any>
 	) => Promise<boolean>
 	duplicateWidget: (instanceId: string) => Promise<boolean>
 	removeWidget: (instanceId: string) => boolean
 	updateWidgetSettings: (instanceId: string, meta: any) => void
+	updateWidgetVariant: (
+		instanceId: string,
+		newSize: WidgetSize,
+		meta?: Record<string, any>
+	) => boolean
 	updateContainerWidth: (containerWidth: number) => void
 }
 
@@ -339,6 +345,57 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[runtimeLayout, cols, commitMutation]
 	)
 
+	const updateWidgetVariant = useCallback(
+		(
+			instanceId: string,
+			newSize: WidgetSize,
+			meta?: Record<string, any>
+		): boolean => {
+			const current = runtimeLayout.find((w) => w.instanceId === instanceId)
+			if (!current) return false
+
+			const isSizeSame =
+				current.size.w === newSize.w && current.size.h === newSize.h
+
+			if (isSizeSame) {
+				setSavedLayout((prev) => {
+					const updated = prev.map((w) =>
+						w.instanceId === instanceId ? { ...w, meta } : w
+					)
+					persistLayout(updated)
+					triggerServerSync(updated)
+					return updated
+				})
+				setRuntimeLayout((prev) =>
+					prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
+				)
+				showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
+				return true
+			}
+
+			const result = resolveLayoutChange({
+				layout: runtimeLayout,
+				operation: 'resize',
+				instanceId,
+				targetSize: newSize,
+				cols,
+			})
+
+			if (!result) {
+				showToast('فضای کافی برای این مدل ویجت وجود ندارد', 'error')
+				return false
+			}
+
+			const layoutWithMeta = result.map((w: StoredWidget) =>
+				w.instanceId === instanceId ? { ...w, meta } : w
+			)
+
+			showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
+			return commitMutation('resize', layoutWithMeta, instanceId)
+		},
+		[runtimeLayout, cols, commitMutation, persistLayout, triggerServerSync]
+	)
+
 	const moveWidget = useCallback(
 		(instanceId: string, targetPosition: WidgetPosition): boolean => {
 			const result = resolveLayoutChange({
@@ -362,7 +419,8 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		async (
 			id: string,
 			targetPosition?: WidgetPosition,
-			initialSize?: WidgetSize
+			initialSize?: WidgetSize,
+			meta?: Record<string, any>
 		): Promise<boolean> => {
 			const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 			if (!def) return false
@@ -397,6 +455,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				position: targetPosition || { col: 0, row: 0 },
 				size: chosenSize,
 				widgetId: finalInstanceId,
+				meta: meta || undefined,
 			}
 
 			const result = resolveLayoutChange({
@@ -566,6 +625,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				duplicateWidget,
 				removeWidget,
 				updateWidgetSettings,
+				updateWidgetVariant,
 				updateContainerWidth,
 			}}
 		>
