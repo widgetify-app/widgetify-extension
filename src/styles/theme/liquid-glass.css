@@ -1,0 +1,265 @@
+/*
+ * Liquid Glass theme.
+ *
+ * Note: --glass-blur is intentionally 0px and no backdrop-filter is used
+ * anywhere in this file. The refraction/blur look for elements matched by
+ * liquid-glass-renderer.ts's GLASS_SELECTOR comes entirely from the WebGL
+ * pass behind the page. Adding backdrop-filter here would blur the same
+ * content twice (expensive) and fight visually with the WebGL distortion.
+ * If a new component needs the glass look, add its selector to both this
+ * file AND GLASS_SELECTOR / getGlassParams in liquid-glass-renderer.ts, or
+ * it will only get the flat translucent panel without the refraction.
+ */
+@plugin "daisyui/theme" {
+    name: "liquid-glass";
+    --color-base-100: rgba(18, 24, 34, 0.12);
+    --color-base-200: rgba(14, 18, 26, 0.08);
+    --color-base-300: rgba(255, 255, 255, 0.05);
+    --color-base-content: rgba(255, 255, 255, 0.96);
+    --color-primary: rgba(var(--brand-primary-rgb), 0.9);
+    --color-primary-focus: rgba(var(--brand-primary-rgb), 1);
+    --color-primary-content: rgba(255, 255, 255, 1);
+    --color-secondary: rgba(var(--brand-secondary-rgb), 0.85);
+    --color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.95);
+    --color-secondary-content: rgba(255, 255, 255, 1);
+    --color-accent: rgba(56, 189, 248, 0.9);
+    --color-accent-focus: rgba(14, 165, 233, 1);
+    --color-accent-content: rgba(255, 255, 255, 1);
+    --color-error: rgba(244, 63, 94, 0.9);
+    --color-success: rgba(34, 197, 94, 0.9);
+    --color-warning: rgba(245, 158, 11, 0.9);
+    --color-warning-content: rgba(255, 255, 255, 0.95);
+    --color-info: rgba(59, 130, 246, 0.9);
+    --glass: true;
+    --glass-opacity: 10%;
+    --glass-border-opacity: 20%;
+    --glass-reflex-degree: 135%;
+    --glass-reflex-opacity: 15%;
+    --glass-blur: 0px;
+}
+
+[data-theme="liquid-glass"] {
+    color-scheme: dark;
+}
+
+[data-theme="liquid-glass"] .text-content {
+    color: rgba(255, 255, 255, 0.96);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="liquid-glass"] .text-muted {
+    color: rgba(255, 255, 255, 0.72);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="liquid-glass"] .widget-wrapper,
+[data-theme="liquid-glass"] .bg-glass {
+    background-color: rgba(16, 22, 32, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2),
+        0 16px 40px -10px rgba(0, 0, 0, 0.35),
+        0 2px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="liquid-glass"] .navbar {
+    background-color: rgba(16, 22, 32, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.45);
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+        inset 0 1.5px 0.5px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25),
+        0 20px 48px -8px rgba(0, 0, 0, 0.4),
+        0 2px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="liquid-glass"] .nav-btn {
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="liquid-glass"] .nav-btn:hover {
+    color: rgba(255, 255, 255, 1);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+[data-theme="liquid-glass"] .search-box {
+    background-color: rgba(16, 22, 30, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.38);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        inset 0 1.5px 0.5px 0 rgba(255, 255, 255, 0.4),
+        0 12px 32px -6px rgba(0, 0, 0, 0.3),
+        0 2px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="liquid-glass"] .modal-box {
+    background-color: rgba(12, 16, 26, 0.42);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        inset 0 1.5px 0 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.3),
+        0 28px 72px -12px rgba(0, 0, 0, 0.6),
+        0 4px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="liquid-glass"] .modal-backdrop,
+[data-theme="liquid-glass"] dialog.modal::backdrop {
+    background-color: rgba(4, 6, 10, 0.55);
+}
+
+[data-theme="liquid-glass"] .portal,
+[data-theme="liquid-glass"] .menu,
+[data-theme="liquid-glass"] .dropdown-content {
+    background-color: rgba(16, 20, 30, 0.35);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+        0 16px 44px -8px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="liquid-glass"] .card,
+[data-theme="liquid-glass"] .btn,
+[data-theme="liquid-glass"] .textarea,
+[data-theme="liquid-glass"] .input {
+    border-top: 1px solid rgba(255, 255, 255, 0.38);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 0 rgba(0, 0, 0, 0.18),
+        0 4px 12px -2px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme="liquid-glass"] .btn {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Promote hover/active transform+shadow to their own compositor layer
+       so the frequent hover/press interactions on buttons don't repaint
+       the surrounding layout. */
+    will-change: transform, box-shadow;
+}
+
+[data-theme="liquid-glass"] .btn:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-top-color: rgba(255, 255, 255, 0.7);
+    box-shadow:
+        inset 0 1.5px 0 0 rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 0 rgba(0, 0, 0, 0.22),
+        0 8px 20px -3px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+[data-theme="liquid-glass"] .btn:active {
+    transform: translateY(1px) scale(0.98);
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow:
+        inset 0 2px 4px 0 rgba(0, 0, 0, 0.35),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="liquid-glass"] .btn-primary {
+    background-color: rgba(var(--brand-primary-rgb), 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.65);
+    border-right: 1px solid rgba(var(--brand-primary-rgb), 0.85);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-left: 1px solid rgba(var(--brand-primary-rgb), 0.85);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.65),
+        0 6px 18px 0 rgba(var(--brand-primary-rgb), 0.45);
+}
+
+[data-theme="liquid-glass"] .btn-primary:hover {
+    background-color: rgba(var(--brand-primary-rgb), 0.95);
+    box-shadow:
+        inset 0 1.5px 0 0 rgba(255, 255, 255, 0.85),
+        0 8px 24px 0 rgba(var(--brand-primary-rgb), 0.6);
+}
+
+[data-theme="liquid-glass"] .input,
+[data-theme="liquid-glass"] .textarea,
+[data-theme="liquid-glass"] select {
+    background-color: rgba(10, 14, 22, 0.22);
+    border-top: 1px solid rgba(0, 0, 0, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="liquid-glass"] .input:focus,
+[data-theme="liquid-glass"] .textarea:focus,
+[data-theme="liquid-glass"] select:focus {
+    border-top-color: rgba(var(--brand-primary-rgb), 0.6);
+    border-bottom-color: rgba(var(--brand-primary-rgb), 0.6);
+    box-shadow:
+        inset 0 2px 4px 0 rgba(0, 0, 0, 0.3),
+        0 0 0 2px rgba(var(--brand-primary-rgb), 0.4);
+}
+
+[data-theme="liquid-glass"] select:open {
+    background-color: rgba(18, 24, 34, 0.95);
+    color: white;
+}
+
+[data-theme="liquid-glass"] .toast,
+[data-theme="liquid-glass"] .alert {
+    background-color: rgba(16, 20, 30, 0.18);
+    color: rgba(255, 255, 255, 0.96);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+        0 12px 32px -6px rgba(0, 0, 0, 0.35),
+        0 2px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="liquid-glass"] .tooltip {
+    background-color: rgba(14, 18, 26, 0.55);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+        0 8px 20px -4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="liquid-glass"] #bookmarks button {
+    border-top: 1px solid rgba(255, 255, 255, 0.38);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+        0 4px 12px -2px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme="liquid-glass"] #bookmarks button:hover {
+    border-top-color: rgba(255, 255, 255, 0.65);
+    box-shadow:
+        inset 0 1.5px 0 0 rgba(255, 255, 255, 0.75),
+        0 8px 20px -3px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+}

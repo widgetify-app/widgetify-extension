@@ -1,3 +1,4 @@
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
 
 export function EmptyBookmarkSlot({
@@ -10,22 +11,13 @@ export function EmptyBookmarkSlot({
 	canAdd: boolean
 	isCustomMode?: boolean
 }) {
-	const getBookmarkStyle = () => {
-		return 'bg-content hover:!bg-base-300 text-content backdrop-blur-sm border-content bg-glass'
-	}
-
-	const getEmptySlotStyle = () => {
-		if (!canAdd) {
-			return `opacity-30 bg-content ${getBookmarkStyle()} cursor-default`
-		}
-
-		return getBookmarkStyle()
-	}
-
 	return (
 		<button
 			onClick={canAdd ? onClick : undefined}
-			className={`relative flex flex-col items-center shadow-sm justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-2xl w-full ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} ${getEmptySlotStyle()} ${canAdd ? 'transition-transform ease-in-out group-hover:scale-102' : ''}`}
+			className={cn(
+				'relative flex flex-col items-center shadow-sm justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-2xl w-full transition-transform ease-in-out group-hover:scale-102',
+				isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-22'
+			)}
 		>
 			<div className="relative flex items-center justify-center w-14 h-14">
 				{canAdd ? (
