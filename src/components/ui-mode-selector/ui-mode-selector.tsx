@@ -15,7 +15,7 @@ export interface UIOption {
 export const UI_MODE_OPTIONS: UIOption[] = [
 	{
 		id: UI.DEFAULT,
-		title: 'کلاسیک',
+		title: 'پیشفرض',
 		iconName: 'advanced_ui',
 		description: 'چیدمان منظم و یکپارچه در ۳ ستون',
 		preview: (
