@@ -35,11 +35,11 @@ export function FolderBookmarkItem({
 
 		if (folderItems.length > 0) {
 			return (
-				<div className="grid grid-cols-3">
+				<div className="grid grid-cols-3 gap-0.5 max-w-[70px]">
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-8 h-8 scale-60"
+							className="flex items-center justify-center w-5 h-5 overflow-hidden [&>div]:!w-4 [&>div]:!h-4 [&>div_img]:!w-4 [&>div_img]:!h-4 [&>div_div]:!text-[7px]"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>
@@ -86,15 +86,15 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative self-end flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out ${
+				className={`relative flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out ${
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-primary/20 text-content'
 						: 'before:bg-inherit border-transparent'
 				}`}
 			>
 				{RenderStickerPattern(bookmark)}
-				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-center flex-1">
+				<div className="flex flex-col h-full w-full justify-between items-center min-h-0">
+					<div className="flex items-center justify-center flex-1 min-h-0">
 						{renderFolderIcons()}
 					</div>
 

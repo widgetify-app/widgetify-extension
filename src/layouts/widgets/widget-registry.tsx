@@ -46,6 +46,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 4 },
 			{ w: 4, h: 1 },
 			{ w: 4, h: 2 },
 		],
@@ -311,9 +312,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
-			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 1 },
+		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <MoodTrackerWidget size={size} />,
 	},

@@ -67,6 +67,8 @@ export interface WidgetVariantOption {
 	meta?: Record<string, any>
 }
 
+export type WidgetMode = 'DEFAULT' | 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
+
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
@@ -77,6 +79,7 @@ export interface WidgetDefinition {
 	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean
+	supportedModes?: WidgetMode[]
 	node: (instanceId: string, size: WidgetSize, meta?: any) => React.ReactNode
 }
 

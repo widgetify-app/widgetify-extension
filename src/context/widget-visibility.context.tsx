@@ -155,15 +155,6 @@ export const widgetItems: WidgetItem[] = [
 		isNew: true,
 		isBeta: true,
 	},
-	{
-		id: WidgetKeys.moodTracker,
-		emoji: '🥰',
-		label: 'حال روزانه (Mood)',
-		order: 9,
-		node: <MoodTrackerWidget size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-		isNew: true,
-	},
 ]
 
 interface WidgetVisibilityContextType {

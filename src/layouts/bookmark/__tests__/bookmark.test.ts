@@ -76,6 +76,9 @@ function computeBookmarkGridDimensions(size?: WidgetSize): {
 		} else if (size.w === 2 && size.h === 2) {
 			colsCount = 2
 			rowsCount = 2
+		} else if (size.w === 2 && size.h >= 3) {
+			colsCount = 2
+			rowsCount = 5
 		} else if (size.w === 2) {
 			colsCount = 2
 			rowsCount = size.h
@@ -288,6 +291,13 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(dim.colsCount).toBe(2)
 		expect(dim.rowsCount).toBe(2)
 		expect(dim.totalBookmarks).toBe(4)
+	})
+
+	it('computes vertical size (2x4) as 10 bookmark slots in 5 rows of 2', () => {
+		const dim = computeBookmarkGridDimensions({ w: 2, h: 4 })
+		expect(dim.colsCount).toBe(2)
+		expect(dim.rowsCount).toBe(5)
+		expect(dim.totalBookmarks).toBe(10)
 	})
 
 	it('pads bookmarks array with null empty slots up to total count', () => {

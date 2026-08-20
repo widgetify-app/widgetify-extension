@@ -13,7 +13,6 @@ import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
 import { Mood1x1 } from './variants/mood-1x1'
 import { Mood2x1 } from './variants/mood-2x1'
-import { Mood2x3 } from './variants/mood-2x3'
 import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
 
@@ -49,14 +48,23 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 				mood: optimisticMood as any,
 			}
 		}
-		return moodsData?.moods?.find((m) => m.date === todayDateStr)
+		return moodsData?.moods?.find(
+			(m) =>
+				m.date === todayDateStr ||
+				m.date?.startsWith(todayDateStr) ||
+				m.date?.split('T')[0] === todayDateStr
+		)
 	}, [optimisticMood, moodsData?.moods, todayDateStr])
 
-	const handleSelectMood = async (moodValue: MoodType) => {
+	const handleSelectMood = async (moodValue: MoodType, targetDateStr?: string) => {
 		if (isPending) return
 		Analytics.event('mood_widget_clicked')
 
-		setOptimisticMood(moodValue)
+		const dateToLog = targetDateStr || todayDateStr
+
+		if (dateToLog === todayDateStr) {
+			setOptimisticMood(moodValue)
+		}
 
 		const [error, response] = await safeAwait<
 			AxiosError,
@@ -64,21 +72,27 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 		>(
 			upsertMoodLog({
 				mood: moodValue,
-				date: todayDateStr,
+				date: dateToLog,
 			})
 		)
 
 		if (error) {
-			setOptimisticMood(null)
+			if (dateToLog === todayDateStr) {
+				setOptimisticMood(null)
+			}
 			autoFormatErrorToast(error)
 			return
 		}
 
 		if (response?.action === 'removed') {
-			setOptimisticMood(null)
+			if (dateToLog === todayDateStr) {
+				setOptimisticMood(null)
+			}
 			showToast('حال روزانه شما حذف شد.', 'info')
 		} else {
-			setOptimisticMood(moodValue)
+			if (dateToLog === todayDateStr) {
+				setOptimisticMood(moodValue)
+			}
 			showToast('حال روزانه شما ثبت شد.', 'success', {
 				alarmSound: true,
 			})
@@ -93,20 +107,6 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 			<WidgetContainer padding={false} className="h-full">
 				<Mood1x1
 					todayMood={todayMood}
-					onSelectMood={handleSelectMood}
-					isSaving={isPending}
-				/>
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w === 2 && size.h === 3) {
-		return (
-			<WidgetContainer padding={false} className="h-full">
-				<Mood2x3
-					today={today}
-					todayMood={todayMood}
-					moods={moodsData?.moods || []}
 					onSelectMood={handleSelectMood}
 					isSaving={isPending}
 				/>

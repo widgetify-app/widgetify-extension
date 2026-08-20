@@ -16,17 +16,20 @@ export const useGetMoods = (enabled: boolean, start: string, end: string) => {
 		queryFn: async () => getMoods(start, end),
 		retry: 0,
 		enabled: enabled && !!start && !!end,
-		initialData: {
-			moods: [],
-		},
 		refetchOnWindowFocus: false,
 	})
 }
 
 async function getMoods(start: string, end: string): Promise<GetMoodsResponse> {
 	const client = getMainClient()
-	const { data } = await client.get<GetMoodsResponse>(
+	const { data } = await client.get<any>(
 		`/users/@me/moods?start=${start}&end=${end}`
 	)
-	return data ?? { moods: [] }
+
+	if (!data) return { moods: [] }
+	if (Array.isArray(data)) return { moods: data }
+	if (Array.isArray(data.moods)) return { moods: data.moods }
+	if (Array.isArray(data.data)) return { moods: data.data }
+	if (data.data && Array.isArray(data.data.moods)) return { moods: data.data.moods }
+	return { moods: [] }
 }

@@ -208,6 +208,12 @@ export function BookmarkGrid({
 
 	return (
 		<div
+			style={{
+				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+				gridTemplateRows: isCustomMode
+					? `repeat(${rowsCount}, minmax(0, 1fr))`
+					: undefined,
+			}}
 			className={`grid w-full ${isCustomMode ? 'h-full grid-flow-row' : ''} ${gridColsClass} ${gridRowsClass} ${isCustomMode ? 'gap-2' : 'gap-x-1 gap-y-2 md:gap-4 lg:gap-2'} transition-all duration-300 rounded-2xl`}
 		>
 			<SortableContext

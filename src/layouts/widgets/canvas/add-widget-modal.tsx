@@ -21,7 +21,11 @@ interface AddWidgetModalProps {
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
 	const { runtimeLayout, addWidget, updateWidgetVariant } = useFreeWidgets()
 
-	const allDefinitions = Object.values(WIDGET_DEFINITIONS)
+	const allDefinitions = useMemo(() => {
+		return Object.values(WIDGET_DEFINITIONS).filter(
+			(def) => !def.supportedModes || def.supportedModes.includes('CUSTOM')
+		)
+	}, [])
 	const [selectedId, setSelectedId] = useState<string>(allDefinitions[0]?.id || '')
 
 	const selectedDef =

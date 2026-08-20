@@ -46,7 +46,7 @@ export function ClockAnalog({ size = 76, time: propTime }: ClockAnalogProps) {
 
 	return (
 		<div className="w-full h-full flex items-center justify-center select-none overflow-hidden">
-			<div className="w-21 h-21 shrink-0 rounded-full bg-content flex items-center justify-center p-1 shadow-xs border border-base-content/5">
+			<div className="w-21 h-21 shrink-0 rounded-full bg-content bg-glass flex items-center justify-center p-1 shadow-xs border border-base-content/5">
 				<div
 					style={{ width: `${size}px`, height: `${size}px` }}
 					className="relative flex items-center justify-center"

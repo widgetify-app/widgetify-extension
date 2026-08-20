@@ -72,8 +72,8 @@ export function BookmarkItem({
 				)}
 				{RenderStickerPattern(bookmark)}
 
-				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-center flex-1">
+				<div className="flex flex-col h-full w-full justify-between items-center min-h-0">
+					<div className="flex items-center justify-center flex-1 min-h-0">
 						<BookmarkIcon bookmark={bookmark} />
 					</div>
 

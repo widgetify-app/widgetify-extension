@@ -70,6 +70,9 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		} else if (size.w === 2 && size.h === 2) {
 			colsCount = 2
 			rowsCount = 2
+		} else if (size.w === 2 && size.h >= 3) {
+			colsCount = 2
+			rowsCount = 5
 		} else if (size.w === 2) {
 			colsCount = 2
 			rowsCount = size.h
