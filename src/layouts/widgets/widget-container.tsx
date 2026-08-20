@@ -21,9 +21,11 @@ export function WidgetContainer({
 	const { canvasMode } = useAppearance()
 
 	return (
-		<div className={`widget-outer relative h-full w-full overflow-hidden ${className}`}>
+		<div
+			className={`widget-outer relative h-full w-full overflow-hidden ${className}`}
+		>
 			<div
-				className={`widget-content h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-content bg-glass ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}
+				className={`h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-content bg-glass ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}
 				inert={canvasMode === 'edit' ? true : undefined}
 				style={{
 					containerType: 'size',

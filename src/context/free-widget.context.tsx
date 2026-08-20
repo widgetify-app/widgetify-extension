@@ -85,6 +85,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const [gap, setGap] = useState<number>(DEFAULT_GAP)
 	const [cellWidth, setCellWidth] = useState<number>(100)
 	const [isListFallback, setIsListFallback] = useState<boolean>(false)
+	const savedLayoutRef = useRef<StoredWidget[]>([])
 	const colsRef = useRef<number>(DEFAULT_COLS)
 	const containerWidthRef = useRef<number>(1200)
 	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -137,11 +138,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			setIsListFallback(fallback)
 
 			setSavedLayout((currentSaved) => {
-				if (fallback) {
-					setRuntimeLayout(currentSaved)
+				const base =
+					currentSaved.length > 0 ? currentSaved : savedLayoutRef.current
+				if (base.length === 0) {
 					return currentSaved
 				}
-				const nextRuntime = reflowForColumns(currentSaved, matched.cols)
+				if (fallback) {
+					setRuntimeLayout(base)
+					return currentSaved
+				}
+				const nextRuntime = reflowForColumns(base, matched.cols)
 				setRuntimeLayout(nextRuntime)
 				return currentSaved
 			})
@@ -153,11 +159,17 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		async function loadFromLocalStorage() {
 			try {
 				const localLayout = await migrateWidgetLayoutIfNeeded()
-				setSavedLayout(localLayout)
-				const reflowed = reflowForColumns(localLayout, colsRef.current)
+				const finalLayout =
+					localLayout && localLayout.length > 0
+						? localLayout
+						: DEFAULT_WIDGET_LAYOUT
+				savedLayoutRef.current = finalLayout
+				setSavedLayout(finalLayout)
+				const reflowed = reflowForColumns(finalLayout, colsRef.current)
 				setRuntimeLayout(reflowed)
 			} catch (err) {
 				console.error('Failed to load local widget layout', err)
+				savedLayoutRef.current = DEFAULT_WIDGET_LAYOUT
 				setSavedLayout(DEFAULT_WIDGET_LAYOUT)
 				setRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
 			} finally {
@@ -176,7 +188,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			try {
 				const serverWidgets = await getUserWidgetsApi('CUSTOM', 'HOME')
 
-				if (serverWidgets && serverWidgets.length > 0) {
+				if (serverWidgets === null) {
+					return
+				}
+
+				if (serverWidgets.length > 0) {
 					const fromSrv: StoredWidget[] = serverWidgets.map((sw) => ({
 						id: sw.widgetKey as any,
 						instanceId: sw.instanceId,
@@ -187,6 +203,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 						disabled: sw.disabled,
 					}))
 
+					savedLayoutRef.current = fromSrv
 					setSavedLayout(fromSrv)
 					const reflowed = reflowForColumns(fromSrv, colsRef.current)
 					setRuntimeLayout(reflowed)
@@ -232,6 +249,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 									}
 									return w
 								})
+								savedLayoutRef.current = updated
 								persistLayout(updated)
 								return updated
 							})

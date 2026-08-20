@@ -62,7 +62,7 @@ export interface SyncUserWidgetsPayload {
 export async function getUserWidgetsApi(
 	ui: string = 'ADVANCED',
 	workspace: string = 'HOME'
-): Promise<ServerUserWidget[]> {
+): Promise<ServerUserWidget[] | null> {
 	const client = getMainClient()
 	const [err, response] = await safeAwait<
 		AxiosError,
@@ -74,7 +74,7 @@ export async function getUserWidgetsApi(
 	)
 
 	if (err || !response) {
-		return []
+		return null
 	}
 
 	return response.data?.widgets || []
@@ -135,7 +135,7 @@ export async function deleteUserWidgetApi(
 
 export async function syncUserWidgetsApi(
 	payload: SyncUserWidgetsPayload
-): Promise<ServerUserWidget[]> {
+): Promise<ServerUserWidget[] | null> {
 	const client = getMainClient()
 	const [err, response] = await safeAwait<
 		AxiosError,
@@ -145,7 +145,7 @@ export async function syncUserWidgetsApi(
 	)
 
 	if (err || !response) {
-		return []
+		return null
 	}
 
 	return response.data?.widgets || []
@@ -156,7 +156,7 @@ export const useGetUserWidgets = (
 	workspace: 'HOME' = 'HOME',
 	enabled: boolean = true
 ) => {
-	return useQuery<ServerUserWidget[]>({
+	return useQuery<ServerUserWidget[] | null>({
 		queryKey: ['getUserWidgets', ui, workspace],
 		queryFn: () => getUserWidgetsApi(ui, workspace),
 		enabled,

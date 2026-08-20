@@ -21,9 +21,7 @@ interface MoodTrackerWidgetProps {
 	size?: WidgetSize
 }
 
-export function MoodTrackerWidget({
-	size = { w: 2, h: 1 },
-}: MoodTrackerWidgetProps) {
+export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetProps) {
 	const queryClient = useQueryClient()
 	const { isAuthenticated } = useAuth()
 	const { today } = useDate()
@@ -38,11 +36,7 @@ export function MoodTrackerWidget({
 		return today.clone().doAsGregorian().format('YYYY-MM-DD')
 	}, [today])
 
-	const { data: moodsData } = useGetMoods(
-		Boolean(isAuthenticated),
-		startStr,
-		endStr
-	)
+	const { data: moodsData } = useGetMoods(Boolean(isAuthenticated), startStr, endStr)
 
 	const todayDateStr = useMemo(() => {
 		return today.clone().doAsGregorian().format('YYYY-MM-DD')

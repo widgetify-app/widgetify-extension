@@ -5,7 +5,7 @@ import type { StoredWidget } from './layout-engine/types'
 export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 	const existingStored = await getFromStorage('storedWidgets')
 
-	if (Array.isArray(existingStored)) {
+	if (Array.isArray(existingStored) && existingStored.length > 0) {
 		return existingStored
 	}
 

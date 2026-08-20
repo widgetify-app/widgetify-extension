@@ -51,23 +51,23 @@ function FlipUnit({ value }: FlipUnitProps) {
 		>
 			{/* ── TOP CARD ── */}
 			<div
-				className="absolute inset-x-0 top-0 overflow-hidden flex items-end justify-center bg-content rounded-t-xl border-b border-base-content/15"
+				className="absolute inset-x-0 top-0 overflow-hidden flex items-end justify-center bg-content bg-glass rounded-t-xl border-b border-base-content/15"
 				style={{ height: CARD_H }}
 			>
 				<span className="translate-y-1/2 text-4xl font-black leading-none tracking-widest text-content">
 					{current}
 				</span>
-				<div className="absolute inset-0 bg-base-content/5" />
+				<div className="absolute inset-0" />
 			</div>
 
 			<div
-				className="absolute inset-x-0 bottom-0 overflow-hidden flex items-start justify-center bg-content rounded-b-xl"
+				className="absolute inset-x-0 bottom-0 overflow-hidden flex items-start justify-center bg-content bg-glass rounded-b-xl"
 				style={{ height: CARD_H }}
 			>
 				<span className="-translate-y-1/2 text-4xl font-black leading-none tracking-widest text-content">
 					{flipping === 'bottom' ? value : current}
 				</span>
-				<div className="absolute inset-0 bg-base-content/10" />
+				<div className="absolute inset-0 " />
 			</div>
 
 			{flipping && (
