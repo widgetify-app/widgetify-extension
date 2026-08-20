@@ -3,13 +3,15 @@ import { useCallback, useRef, useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
-import type {
-	StoredWidget,
-	WidgetDefinition,
-	WidgetPosition,
-	WidgetSize,
+import {
+	type StoredWidget,
+	type WidgetDefinition,
+	WidgetKeys,
+	type WidgetPosition,
+	type WidgetSize,
 } from '../layout-engine/types'
 import { WidgetContextMenu } from './widget-context-menu'
+import { BookmarkDeleteModal } from './bookmark-delete-modal'
 
 interface CanvasWidgetOuterProps {
 	widget: StoredWidget
@@ -169,6 +171,8 @@ export function CanvasWidgetOuter({
 		duplicateWidget(widget.instanceId)
 	}
 
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
 	const handleSettings = () => {
 		if (definition.settingsTab) {
 			callEvent('openWidgetsSettings', { tab: definition.settingsTab })
@@ -183,6 +187,10 @@ export function CanvasWidgetOuter({
 	}
 
 	const handleDelete = () => {
+		if (widget.id === WidgetKeys.bookmarks) {
+			setShowDeleteConfirm(true)
+			return
+		}
 		removeWidget(widget.instanceId)
 	}
 
@@ -273,6 +281,15 @@ export function CanvasWidgetOuter({
 					onDelete={handleDelete}
 				/>
 			)}
+
+			<BookmarkDeleteModal
+				isOpen={showDeleteConfirm}
+				onClose={() => setShowDeleteConfirm(false)}
+				onConfirm={() => {
+					setShowDeleteConfirm(false)
+					removeWidget(widget.instanceId)
+				}}
+			/>
 		</>
 	)
 }
