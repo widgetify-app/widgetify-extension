@@ -13,7 +13,7 @@ export function WeatherCompactSquare({
 }: WeatherCompactSquareProps) {
 	const temp = Math.round(fetchedWeather?.weather?.temperature?.temp || 0)
 	const cityName = cleanCityName(fetchedWeather?.city?.fa || '')
-	const iconUrl = fetchedWeather?.weather?.icon?.url
+	console.log(fetchedWeather?.weather?.icon?.url)
 	const description = fetchedWeather?.weather?.description?.text || ''
 
 	return (
@@ -23,16 +23,6 @@ export function WeatherCompactSquare({
 			</span>
 
 			<div className="flex flex-col items-center my-auto">
-				{iconUrl ? (
-					<img
-						src={iconUrl}
-						className="w-10 h-10 drop-shadow"
-						alt={description}
-					/>
-				) : (
-					<div className="w-10 h-10 rounded-full animate-pulse bg-base-300/50" />
-				)}
-
 				<span className="text-2xl font-black text-content leading-none mt-1">
 					{temp}
 					<span className="text-xs font-medium text-base-content/80 mr-0.5">
