@@ -9,6 +9,7 @@ interface SortableBookmarkProps {
 	onClick: (e?: React.MouseEvent<any>) => void
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 	id: string
+	isCustomMode?: boolean
 }
 
 export function SortableBookmarkItem({
@@ -16,6 +17,7 @@ export function SortableBookmarkItem({
 	onClick,
 	onMenuClick,
 	id,
+	isCustomMode = false,
 }: SortableBookmarkProps) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
@@ -32,7 +34,7 @@ export function SortableBookmarkItem({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`transition-transform duration-200 ${isDragging ? 'z-10' : ''}`}
+			className={`transition-transform duration-200 ${isDragging ? 'z-10' : ''} ${isCustomMode ? 'h-full w-full' : ''}`}
 			{...attributes}
 			{...listeners}
 		>
@@ -42,6 +44,7 @@ export function SortableBookmarkItem({
 					onClick={onClick}
 					isDragging={isDragging}
 					onMenuClick={onMenuClick}
+					isCustomMode={isCustomMode}
 				/>
 			) : (
 				<BookmarkItem
@@ -49,6 +52,7 @@ export function SortableBookmarkItem({
 					onClick={onClick}
 					isDragging={isDragging}
 					onMenuClick={onMenuClick}
+					isCustomMode={isCustomMode}
 				/>
 			)}
 		</div>

@@ -214,6 +214,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	}
 
 	const displayedBookmarks = getDisplayedBookmarks() || []
+	const isCustomMode = Boolean(size)
 
 	return (
 		<>
@@ -223,9 +224,9 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex bookmarks flex-col transition-all duration-300 ${
+					className={`flex bookmarks flex-col ${isCustomMode ? 'h-full w-full' : ''} transition-all duration-300 ${
 						currentFolderId
-							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden p-1'
+							? 'bg-content rounded-2xl shadow-2xl overflow-hidden p-1'
 							: ''
 					}`}
 				>
@@ -237,7 +238,13 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 					)}
 
 					<div
-						className={currentFolderId ? 'max-h-60 overflow-y-auto py-1' : ''}
+						className={
+							currentFolderId
+								? 'max-h-60 overflow-y-auto py-1'
+								: isCustomMode
+									? 'h-full w-full'
+									: ''
+						}
 					>
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}
@@ -246,6 +253,8 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 							openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
 							onOpenFolder={handleOpenFolderInModal}
 							colsCount={colsCount}
+							rowsCount={rowsCount}
+							isCustomMode={isCustomMode}
 						/>
 					</div>
 				</div>

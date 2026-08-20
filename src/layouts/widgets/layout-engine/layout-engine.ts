@@ -160,11 +160,10 @@ export function resolveLayoutChange(
 		case 'remove': {
 			if (!instanceId) return null
 			const filtered = cloned.filter((w) => w.instanceId !== instanceId)
-			const compacted = compactLayout(filtered, cols)
-			if (!validateLayout(compacted, cols)) {
+			if (!validateLayout(filtered, cols)) {
 				return null
 			}
-			return compacted
+			return filtered
 		}
 
 		case 'responsive-reflow': {

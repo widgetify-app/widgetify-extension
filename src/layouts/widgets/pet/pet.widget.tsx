@@ -18,7 +18,7 @@ function PetWidgetContent({ size = { w: 2, h: 1 } }: PetWidgetContentProps) {
 	}
 
 	return (
-		<WidgetContainer className="h-full w-full">
+		<WidgetContainer padding={false} className="h-full w-full">
 			<div className="relative w-full h-full overflow-hidden">
 				<PetFactory className="-bottom-0.5 z-999" />
 			</div>

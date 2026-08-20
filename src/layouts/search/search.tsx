@@ -7,6 +7,7 @@ import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
+import { SearchCompactRow } from './variants/search-2x1'
 import type { EngineMeta } from '@/services/hooks/trends/get-trends'
 import { useSearchHistory } from './hooks/use-search-history'
 import { useAuth } from '@/context/auth.context'
@@ -25,7 +26,7 @@ interface SearchLayoutProps {
 	size?: WidgetSize
 }
 
-export function SearchLayout({ size }: SearchLayoutProps = {}) {
+function SearchFullContent({ size }: SearchLayoutProps) {
 	const isCompact = Boolean(size && size.w <= 2)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
@@ -107,12 +108,15 @@ export function SearchLayout({ size }: SearchLayoutProps = {}) {
 			const target = event.target as HTMLElement
 			if (!target) return
 
-			const parentNode = target.parentNode as HTMLElement | null
 			if (
-				target.classList.contains('searchbox-item') ||
-				parentNode?.classList?.contains('searchbox-item')
-			)
+				target.closest('.modal') ||
+				target.closest('[role="dialog"]') ||
+				target.closest('.modal-backdrop') ||
+				target.closest('.searchbox-item') ||
+				target.classList.contains('searchbox-item')
+			) {
 				return
+			}
 
 			if (portalRef?.current?.contains(event.target as Node)) {
 				return
@@ -255,6 +259,13 @@ export function SearchLayout({ size }: SearchLayoutProps = {}) {
 			</div>
 		</div>
 	)
+}
+
+export function SearchLayout({ size }: SearchLayoutProps = {}) {
+	if (size && size.w <= 2 && size.h <= 1) {
+		return <SearchCompactRow />
+	}
+	return <SearchFullContent size={size} />
 }
 
 function SearchHandler({ content, engine }: { content: string; engine: EngineMeta }) {

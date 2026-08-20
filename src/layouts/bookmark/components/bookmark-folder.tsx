@@ -12,11 +12,13 @@ export function FolderBookmarkItem({
 	onClick,
 	isDragging = false,
 	onMenuClick,
+	isCustomMode = false,
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
+	isCustomMode?: boolean
 }) {
 	const { getCurrentFolderItems } = useBookmarkStore()
 
@@ -70,7 +72,7 @@ export function FolderBookmarkItem({
 
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden`}
+			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden ${isCustomMode ? 'h-full w-full' : ''}`}
 		>
 			<button
 				onClick={onClick}
@@ -84,7 +86,7 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative self-end flex group h-20 md:h-[5.5rem] flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out ${
+				className={`relative self-end flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out ${
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-primary/20 text-content'
 						: 'before:bg-inherit border-transparent'

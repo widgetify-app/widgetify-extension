@@ -211,8 +211,15 @@ export function AddWidgetModal({ isOpen, onClose }: AddWidgetModalProps) {
 							</div>
 
 							{/* Dynamic Preview Container */}
-							<div className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-base-300/40 border border-base-content/10 overflow-hidden relative min-h-47.5">
-								<div className="text-[10px] text-muted absolute top-2 right-2 font-medium">
+							<div
+								style={{
+									backgroundImage:
+										'radial-gradient(circle, currentColor 1px, transparent 1px)',
+									backgroundSize: '16px 16px',
+								}}
+								className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-base-300/10 text-base-content/15 border border-base-content/10 overflow-hidden relative min-h-47.5"
+							>
+								<div className="text-[10px] text-muted absolute top-2 right-2 font-medium bg-base-200/80 px-2 py-0.5 rounded-lg border border-base-content/10 z-10">
 									پیش‌نمایش در اندازه {toPersianDigits(selectedSize.w)}×
 									{toPersianDigits(selectedSize.h)}
 								</div>

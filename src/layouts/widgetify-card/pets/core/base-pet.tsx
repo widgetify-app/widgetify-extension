@@ -110,6 +110,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 			className={`absolute  hidden w-full overflow-hidden ${ui === UI.SIMPLE ? 'bottom-0.5 md:flex  h-8 -mr-2' : ' -bottom-2 md:flex  h-16'}`}
 			style={{
 				zIndex: 50,
+				...(ui === UI.CUSTOM ? { margin: '8px' } : {}),
 			}}
 		>
 			<CollectiblesRenderer collectibles={collectibles} assets={assets} />

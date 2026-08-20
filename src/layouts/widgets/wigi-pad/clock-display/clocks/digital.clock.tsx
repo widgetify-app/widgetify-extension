@@ -1,6 +1,7 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/get-timezones.hook'
 import type { ClockSettings } from '../clock-setting.interface'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { getTimeZoneLabel } from '@/common/utils/get-timezone-label'
 
 interface DigitalClockProps {
 	timezone: FetchedTimezone
@@ -172,15 +173,4 @@ export function DigitalClock({ timezone, setting }: DigitalClockProps) {
 			)}
 		</div>
 	)
-}
-function getTimeZoneLabel(timezone: string): string {
-	if (timezone.length === 3) {
-		return timezone
-	}
-
-	if (timezone.split('/')[1]) {
-		return timezone.split('/')[1].replace('_', ' ').toUpperCase()
-	}
-
-	return timezone
 }

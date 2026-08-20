@@ -1,13 +1,9 @@
 import { useCallback, useRef } from 'react'
 import { callEvent } from '@/common/utils/call-event'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { Icon } from '@/src/icons'
-import { useAuth } from '@/context/auth.context'
 import { Dropdown } from '@/components/ui'
 
 export const SettingsDropdown = () => {
-	const { isAuthenticated } = useAuth()
-	const { ui, setUI } = useAppearanceSetting()
 	const triggerRef = useRef<HTMLDivElement>(null)
 
 	const handleWidgetSettingsClick = useCallback(() => {
@@ -20,8 +16,9 @@ export const SettingsDropdown = () => {
 		callEvent('closeAllDropdowns')
 	}, [])
 
-	const onClickToChangeUI = () => {
-		setUI(ui === 'SIMPLE' ? UI.ADVANCED : UI.SIMPLE)
+	const onClickToOpenAppearance = () => {
+		callEvent('openSettings', 'appearance')
+		callEvent('closeAllDropdowns')
 	}
 
 	const onClickToOpenGallery = () => {
@@ -86,25 +83,19 @@ export const SettingsDropdown = () => {
 					</div>
 				</div>
 
-				{isAuthenticated ? (
-					<div
-						className="relative px-3 py-2 cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
-						onClick={() => onClickToChangeUI()}
-					>
-						<div className="flex items-center gap-3">
-							<Icon
-								name={ui === UI.ADVANCED ? 'simple_ui' : 'advanced_ui'}
-								size={14}
-								className="text-muted group-hover:text-primary!"
-							/>
-							{ui === UI.SIMPLE ? (
-								<span> تغییر حالت ظاهری به پیشفرض</span>
-							) : (
-								<span>تغییر حالت ظاهری به ساده</span>
-							)}
-						</div>
+				<div
+					className="relative px-3 py-2 cursor-pointer border-base-300 group hover:bg-primary/10 hover:text-primary"
+					onClick={() => onClickToOpenAppearance()}
+				>
+					<div className="flex items-center gap-3">
+						<Icon
+							name="theme"
+							size={14}
+							className="text-muted group-hover:text-primary!"
+						/>
+						<span>حالت ظاهری</span>
 					</div>
-				) : null}
+				</div>
 			</div>
 		</Dropdown>
 	)

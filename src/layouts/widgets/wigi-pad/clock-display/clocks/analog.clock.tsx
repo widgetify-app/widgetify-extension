@@ -1,6 +1,7 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/get-timezones.hook'
 import type { ClockSettings } from '../clock-setting.interface'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { getTimeZoneLabel } from '@/common/utils/get-timezone-label'
 
 interface AnalogClockProps {
 	timezone: FetchedTimezone
@@ -40,7 +41,7 @@ export function AnalogClock({ timezone, setting }: AnalogClockProps) {
 	const seconds = time.getSeconds()
 
 	const handColor = 'currentColor'
-	const timezoneLabel = useMemo(() => getTimeZoneLabel(timezone), [timezone])
+	const timezoneLabel = useMemo(() => getTimeZoneLabel(timezone?.label), [timezone])
 
 	const hourAngle = useMemo(() => hours * 30 + minutes * 0.5, [hours, minutes])
 	const minuteAngle = useMemo(() => minutes * 6, [minutes])
@@ -144,17 +145,4 @@ export function AnalogClock({ timezone, setting }: AnalogClockProps) {
 			</div>
 		</div>
 	)
-}
-
-function getTimeZoneLabel(timezone: FetchedTimezone): string {
-	if (!timezone.value) {
-		return 'UTC'
-	}
-
-	const parts = timezone.value.split('/')
-	if (parts.length > 1) {
-		const city = parts[1].replace(/_/g, ' ')
-		return city.slice(0, 3).toUpperCase()
-	}
-	return timezone.value.slice(0, 3).toUpperCase()
 }

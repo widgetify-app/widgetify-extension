@@ -15,6 +15,7 @@ import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 import { CurrencyProvider } from '@/context/currency.context'
 import { ClockWidget } from './clock/clock.widget'
 import { PetWidget } from './pet/pet.widget'
+import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
@@ -410,5 +411,26 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				<NotesLayout size={size} />
 			</WidgetContainer>
 		),
+	},
+	[WidgetKeys.transparentClock]: {
+		id: WidgetKeys.transparentClock,
+		label: 'ساعت و تاریخ مینیمال',
+		emoji: '🕒',
+		allowedSizes: [
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+			{ w: 4, h: 1 },
+			{ w: 4, h: 2 },
+		],
+		defaultSize: { w: 4, h: 2 },
+		canDuplicate: true,
+		preview: () => (
+			<div className="w-full h-16 rounded-xl bg-base-300/40 border border-base-content/10 p-2 flex flex-col items-center justify-center text-center gap-0.5">
+				<span className="text-sm font-bold text-content leading-none">۱۹:۳۸</span>
+				<span className="text-[9px] text-muted">چهارشنبه • تهران</span>
+				<span className="text-[8px] text-muted opacity-75">۱۴ مرداد ۱۴۰۵</span>
+			</div>
+		),
+		node: (_instanceId, size) => <TransparentClockWidget size={size} />,
 	},
 }

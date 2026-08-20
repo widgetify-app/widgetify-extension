@@ -8,6 +8,7 @@ import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal } from './add-widget-modal'
 import { CanvasContextMenu } from './canvas-context-menu'
 import { CanvasWidgetOuter } from './canvas-widget-outer'
+import { CanvasEditToolbar } from './canvas-edit-toolbar'
 
 export function FreeWidgetCanvas() {
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -146,29 +147,13 @@ export function FreeWidgetCanvas() {
 				}}
 			>
 				{canvasMode === 'edit' && (
-					<div className="absolute top-2 left-2 z-40 flex items-center gap-2 bg-base-200/90 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-base-content/10 shadow-lg animate-in fade-in duration-200">
-						<span className="inline-block w-2 h-2 rounded-full bg-primary animate-ping" />
-						<span className="text-xs font-medium text-content">
-							حالت ویرایش چیدمان ویجت‌ها
-						</span>
-						<button
-							type="button"
-							onClick={() => setIsAddModalOpen(true)}
-							className="mr-2 px-2.5 py-1 text-xs rounded-xl bg-primary text-white hover:bg-primary/90 cursor-pointer transition-colors"
-						>
-							+ افزودن ویجت
-						</button>
-						<button
-							type="button"
-							onClick={() => {
-								setCanvasMode('normal')
-								setSelectedInstanceId(null)
-							}}
-							className="px-2.5 py-1 text-xs rounded-xl bg-base-300 hover:bg-base-300/80 text-content cursor-pointer transition-colors"
-						>
-							پایان ویرایش
-						</button>
-					</div>
+					<CanvasEditToolbar
+						onAddWidget={() => setIsAddModalOpen(true)}
+						onExitEditMode={() => {
+							setCanvasMode('normal')
+							setSelectedInstanceId(null)
+						}}
+					/>
 				)}
 
 				{canvasMode === 'edit' && (

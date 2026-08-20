@@ -11,7 +11,19 @@ import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
 export interface EventName {
-	openSettings: 'account' | 'profile' | 'wallpapers' | 'general' | null
+	openSettings:
+		| 'account'
+		| 'profile'
+		| 'platforms'
+		| 'tasks'
+		| 'friends'
+		| 'general'
+		| 'access'
+		| 'appearance'
+		| 'wallpapers'
+		| 'shortcuts'
+		| 'about'
+		| null
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
 	openWidgetsSettings: { tab: WidgetTabKeys | null }

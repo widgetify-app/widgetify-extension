@@ -11,6 +11,7 @@ interface BookmarkItemProps {
 	onClick: (e?: React.MouseEvent<any>) => void
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
+	isCustomMode?: boolean
 }
 
 export function BookmarkItem({
@@ -18,6 +19,7 @@ export function BookmarkItem({
 	onClick,
 	isDragging = false,
 	onMenuClick,
+	isCustomMode = false,
 }: BookmarkItemProps) {
 	const customStyles = bookmark.customBackground
 		? {
@@ -33,7 +35,7 @@ export function BookmarkItem({
 	}
 
 	return (
-		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
+		<div className={`relative ${isDragging ? 'opacity-50' : ''} ${isCustomMode ? 'h-full w-full' : ''}`}>
 			<button
 				onClick={onClick}
 				onAuxClick={onClick}
@@ -44,7 +46,7 @@ export function BookmarkItem({
 					onMenuClick?.(e)
 				}}
 				style={customStyles}
-				className={`relative flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+				className={`relative flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
 			>
 				{onMenuClick && bookmark && (
 					<div
