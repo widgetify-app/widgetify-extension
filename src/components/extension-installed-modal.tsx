@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import keepItImage from '@/assets/images/keep-it.png'
 import { Button } from './ui'
 import { Checkbox } from '@/components/ui'

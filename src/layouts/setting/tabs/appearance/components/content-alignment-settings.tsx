@@ -1,10 +1,10 @@
 import { ItemSelector } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
-
+const LIST = [UI.CUSTOM, UI.SIMPLE]
 export function ContentAlignmentSettings() {
 	const { contentAlignment, setContentAlignment, ui } = useAppearanceSetting()
-	if (ui === UI.SIMPLE) return null
+	if (LIST.includes(ui)) return null
 	return (
 		<SectionPanel title="تنظیمات چیدمان" delay={0.3} size="sm">
 			<div className={`space-y-3`}>

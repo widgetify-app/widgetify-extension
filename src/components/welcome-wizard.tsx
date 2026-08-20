@@ -13,6 +13,8 @@ import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'
 import { Icon } from '../icons'
+import { UI, useAppearanceSetting } from '@/context/appearance.context'
+import { UIModeSelector } from '@/components/ui-mode-selector/ui-mode-selector'
 
 export enum ReferralSource {
 	Social = 'social',
@@ -49,6 +51,7 @@ const StepImage = ({ src }: { src: string; alt: string }) => {
 }
 
 export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
+	const { ui, setUI } = useAppearanceSetting()
 	const [currentStep, setCurrentStep] = useState(1)
 	const [fetching, setFetching] = useState(false)
 	const [selectedOccupation, setSelectedOccupation] = useState<string | null>(null)
@@ -56,7 +59,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	const [selectedReferralSource, setSelectedReferralSource] =
 		useState<ReferralSource | null>(null)
 	const [referralCode, setReferralCode] = useState<string>('')
-	const totalSteps = 5
+	const [selectedUI, setSelectedUI] = useState<UI>(
+		ui === UI.DEFAULT || (ui as string) === 'ADVANCED' ? UI.DEFAULT : ui
+	)
+	const totalSteps = 6
 
 	const { mutateAsync, isPending } = useSetupWizard()
 
@@ -331,7 +337,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								onClick={() => save()}
 								disabled={!selectedReferralSource || isPending}
 								loading={isPending}
-								className="flex-1 h-12 font-bold mt-4"
+								className="h-12 font-bold mt-4 w-full"
 								variant={'primary'}
 								rounded={'2xl'}
 							>
@@ -348,6 +354,52 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			case 5:
 				return (
 					<StepWrapper>
+						<div className="flex flex-col justify-between w-full p-4 md:w-1/2 md:p-8">
+							<div className="w-full">
+								<div className="mb-4 text-right">
+									<h2 className="mb-1 text-2xl font-black text-content">
+										چیدمان دلخواهت چیه؟
+									</h2>
+									<p className="text-xs font-medium opacity-60">
+										حالت ظاهر صفحه اصلی رو متناسب با نیازت انتخاب کن
+									</p>
+								</div>
+
+								<div className="overflow-y-auto max-h-80 scrollbar-none">
+									<UIModeSelector
+										value={selectedUI}
+										onChange={setSelectedUI}
+										variant="list"
+									/>
+								</div>
+							</div>
+
+							<div className="flex gap-3 mt-4">
+								<Button
+									size="sm"
+									onClick={() => {
+										setUI(selectedUI)
+										setCurrentStep(6)
+										Analytics.event('welcome_wizard_ui_selected')
+									}}
+									className="flex-1 h-12 font-bold"
+									variant={'primary'}
+									rounded={'2xl'}
+								>
+									تایید و ادامه
+								</Button>
+							</div>
+						</div>
+						<StepImage
+							src="https://cdn.widgetify.ir/extension/wizard/2.webp"
+							alt="Welcome"
+						/>
+					</StepWrapper>
+				)
+
+			case 6:
+				return (
+					<StepWrapper>
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
 								<h2 className="text-2xl font-black text-content">
@@ -361,7 +413,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<Button
 								size="sm"
 								onClick={onClose}
-								className="flex-1 h-12 font-bold"
+								className="h-12 font-bold w-full"
 								variant={'primary'}
 								rounded={'2xl'}
 							>

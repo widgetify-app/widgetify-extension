@@ -1,13 +1,9 @@
-import { ItemSelector } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
-import { Icon } from '@/src/icons'
+import { useAppearanceSetting } from '@/context/appearance.context'
+import { UIModeSelector } from '@/components/ui-mode-selector/ui-mode-selector'
 
 export function UISelector() {
 	const { setUI, ui } = useAppearanceSetting()
-	function onClick(item: UI) {
-		setUI(item)
-	}
 
 	return (
 		<SectionPanel
@@ -22,59 +18,11 @@ export function UISelector() {
 			size="sm"
 		>
 			<div className="space-y-4">
-				<div className="flex flex-col gap-1">
-					<p className="text-xs text-muted">
-						ظاهر محیط افزونه خود را بر اساس نیازتان شخصی‌سازی کنید.
-					</p>
-				</div>
+				<p className="text-xs text-muted">
+					سبک نمایش و نحوه تعامل ویجت‌ها در صفحه اصلی را انتخاب کنید
+				</p>
 
-				<div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-					<ItemSelector
-						isActive={ui === UI.DEFAULT || (ui as string) === 'ADVANCED'}
-						onClick={() => onClick(UI.DEFAULT)}
-						label={
-							<div className="flex items-center gap-2">
-								<Icon
-									name="advanced_ui"
-									size={16}
-									className="text-primary/80"
-								/>
-								<span>پیش‌فرض</span>
-							</div>
-						}
-						description="چیدمان استاندارد، منظم و یکپارچه ویجت‌ها."
-					/>
-					<ItemSelector
-						isActive={ui === UI.SIMPLE}
-						onClick={() => onClick(UI.SIMPLE)}
-						label={
-							<div className="flex items-center gap-2">
-								<Icon
-									name="simple_ui"
-									size={16}
-									className="text-primary/80"
-								/>
-								<span>ساده و خلوت</span>
-							</div>
-						}
-						description="خلوت، سریع و چشم‌نواز؛ برای وقتی که تمرکز مهمه."
-					/>
-					<ItemSelector
-						isActive={ui === UI.CUSTOM}
-						onClick={() => onClick(UI.CUSTOM)}
-						label={
-							<div className="flex items-center gap-2">
-								<Icon
-									name="platforms"
-									size={16}
-									className="text-primary/80"
-								/>
-								<span>شخصی‌سازی</span>
-							</div>
-						}
-						description="چیدمان آزادانه روی بوم با تغییر سایز و جابجایی ویجت‌ها."
-					/>
-				</div>
+				<UIModeSelector value={ui} onChange={setUI} />
 			</div>
 		</SectionPanel>
 	)
