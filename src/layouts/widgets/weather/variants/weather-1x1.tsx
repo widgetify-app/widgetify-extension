@@ -13,7 +13,6 @@ export function WeatherCompactSquare({
 }: WeatherCompactSquareProps) {
 	const temp = Math.round(fetchedWeather?.weather?.temperature?.temp || 0)
 	const cityName = cleanCityName(fetchedWeather?.city?.fa || '')
-	console.log(fetchedWeather?.weather?.icon?.url)
 	const description = fetchedWeather?.weather?.description?.text || ''
 
 	return (
