@@ -12,6 +12,7 @@ import type { WidgetSize } from '../layout-engine/types'
 import { toPersianDigits } from '@/common/utils/persian-digits'
 import { Clock1x1 } from './variants/clock-1x1'
 import { Clock2x1 } from './variants/clock-2x1'
+import { getTimeZoneLabel } from '@/common/utils/get-timezone-label'
 
 interface ClockWidgetProps {
 	size?: WidgetSize
@@ -75,12 +76,7 @@ interface ClockContentProps {
 	isOptimalMode: boolean
 }
 
-function ClockContent({
-	size,
-	setting,
-	timezone,
-	isOptimalMode,
-}: ClockContentProps) {
+function ClockContent({ size, setting, timezone, isOptimalMode }: ClockContentProps) {
 	const [time, setTime] = useState(
 		() =>
 			new Date(
@@ -115,20 +111,11 @@ function ClockContent({
 	const rawSeconds = time.getSeconds().toString().padStart(2, '0')
 
 	const hours = setting.useSelectedFont ? toPersianDigits(rawHours) : rawHours
-	const minutes = setting.useSelectedFont
-		? toPersianDigits(rawMinutes)
-		: rawMinutes
-	const seconds = setting.useSelectedFont
-		? toPersianDigits(rawSeconds)
-		: rawSeconds
+	const minutes = setting.useSelectedFont ? toPersianDigits(rawMinutes) : rawMinutes
+	const seconds = setting.useSelectedFont ? toPersianDigits(rawSeconds) : rawSeconds
 
 	const timezoneLabel = useMemo(() => {
-		if (!timezone?.value) return 'UTC'
-		const parts = timezone.value.split('/')
-		if (parts.length > 1) {
-			return parts[1].replace(/_/g, ' ')
-		}
-		return timezone.value
+		return getTimeZoneLabel(timezone.label)
 	}, [timezone])
 
 	if (size.w === 1) {

@@ -44,6 +44,7 @@ export function Clock2x1({
 					<div className="flex items-baseline gap-1.5 leading-none">
 						<span
 							className={`text-3xl sm:text-4xl font-black text-content tracking-tight ${!setting.useSelectedFont ? 'font-sans' : ''}`}
+							dir="ltr"
 						>
 							{hours} : {minutes}
 						</span>
