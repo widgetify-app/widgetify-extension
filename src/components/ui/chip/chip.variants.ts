@@ -18,6 +18,7 @@ export const chipVariants = cva(
 				true: ['bg-primary', 'border-primary', 'text-white'],
 				false: [
 					'bg-base-100',
+					'bg-glass',
 					'border-base-300/30',
 					'text-base-content/80',
 					'hover:border-primary/30',

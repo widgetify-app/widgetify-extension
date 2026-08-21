@@ -25,6 +25,12 @@ interface NetworkInfo {
 	speed: string
 }
 
+export enum NetworkLoadingState {
+	IDLE = 'IDLE',
+	INITIAL = 'INITIAL',
+	REFRESHING = 'REFRESHING',
+}
+
 interface Prop {
 	inComboWidget: boolean
 	enableBackground: boolean
@@ -49,10 +55,14 @@ export function NetworkLayout({
 		speed: 'به زودی..',
 	})
 
-	const [isLoading, setIsLoading] = useState(true)
+	const [loadingState, setLoadingState] = useState<NetworkLoadingState>(
+		NetworkLoadingState.INITIAL
+	)
 
-	const fetchNetworkData = async () => {
-		setIsLoading(true)
+	const fetchNetworkData = async (isRefresh = false) => {
+		setLoadingState(
+			isRefresh ? NetworkLoadingState.REFRESHING : NetworkLoadingState.INITIAL
+		)
 		try {
 			const client = getMainClient()
 			const response = await client.get('/extension/@me/ip')
@@ -90,7 +100,7 @@ export function NetworkLayout({
 		} catch {
 			setNetworkInfo((prev) => ({ ...prev, ping: null }))
 		}
-		setIsLoading(false)
+		setLoadingState(NetworkLoadingState.IDLE)
 	}
 
 	useEffect(() => {
@@ -114,8 +124,12 @@ export function NetworkLayout({
 
 	function handleRefresh() {
 		Analytics.event('refresh_network_data')
-		fetchNetworkData()
+		fetchNetworkData(true)
 	}
+
+	const isInitialLoading = loadingState === NetworkLoadingState.INITIAL
+	const isRefreshing = loadingState === NetworkLoadingState.REFRESHING
+	const isLoading = loadingState !== NetworkLoadingState.IDLE
 
 	if (!inComboWidget) {
 		if (size.w === 1 && size.h === 1) {
@@ -124,12 +138,14 @@ export function NetworkLayout({
 					<NetworkCompactSquare
 						status={networkInfo.status}
 						ping={networkInfo.ping}
-						isLoading={isLoading}
+						isInitialLoading={isInitialLoading}
+						isRefreshing={isRefreshing}
 						blurMode={blurMode}
 						countryIcon={networkInfo.countryIcon}
 						ip={networkInfo.ip}
 						isp={networkInfo.isp}
 						city={networkInfo.city}
+						onRefresh={handleRefresh}
 					/>
 				</WidgetContainer>
 			)

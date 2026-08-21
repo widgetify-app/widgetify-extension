@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Button, Modal } from '@/components/ui'
+import { Button, Chip, Modal } from '@/components/ui'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import type {
 	WidgetCategory,
@@ -165,10 +165,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			closeOnBackdropClick={true}
 			className="max-w-4xl md:max-w-5xl"
 		>
-			<div className="flex flex-col md:flex-row gap-4 h-[550px] select-none">
-				{/* Right: Widget List (Sidebar) */}
+			<div className="flex flex-col md:flex-row gap-4 h-137.5 select-none">
 				<div className="w-full md:w-5/12 flex flex-col border-b md:border-b-0 md:border-l border-base-content/10 pl-0 md:pl-3 pb-3 md:pb-0">
-					{/* Category Tabs */}
 					<div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-2 mb-2 border-b border-base-content/10">
 						{categories.map((cat) => (
 							<button
@@ -206,7 +204,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									}`}
 								>
 									<div className="flex items-center gap-2 min-w-0">
-										<span className="text-xl flex-shrink-0">
+										<span className="text-xl shrink-0">
 											{def.emoji}
 										</span>
 										<span
@@ -220,7 +218,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										</span>
 									</div>
 
-									<div className="flex items-center gap-1.5 flex-shrink-0 mr-2">
+									<div className="flex items-center gap-1.5 shrink-0 mr-2">
 										{def.canDuplicate ? (
 											<span
 												className={`text-[10px] px-1.5 py-0.5 rounded-lg font-medium ${
@@ -316,19 +314,14 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												selectedDef.defaultSize.h === sizeOption.h
 
 											return (
-												<button
-													key={`${sizeOption.w}x${sizeOption.h}`}
-													type="button"
+												<Chip
 													onClick={() => {
 														setSelectedVariant(null)
 														setSelectedSize(sizeOption)
 													}}
-													className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer ${
-														isCurrentSize
-															? 'bg-primary text-white font-bold shadow-xs'
-															: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
-														}`}
-													 dir='ltr'
+													key={`${sizeOption.w}x${sizeOption.h}`}
+													className="py-1"
+													selected={isCurrentSize}
 												>
 													<span>
 														{sizeOption.w} × {sizeOption.h}
@@ -338,14 +331,13 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 															(پیش‌فرض)
 														</span>
 													)}
-												</button>
+												</Chip>
 											)
 										})}
 									</div>
 								</div>
 							)}
 
-							{/* Dynamic Preview Container */}
 							<div
 								style={{
 									backgroundImage:

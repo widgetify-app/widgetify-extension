@@ -234,7 +234,7 @@ export function FreeWidgetCanvas() {
 						setSelectedInstanceId(null)
 					}}
 					onOpenAddWidget={() => setIsAddModalOpen(true)}
-					onOpenAppearanceSettings={() => callEvent('openSettings')}
+					onOpenAppearanceSettings={() => callEvent('openSettings','appearance')}
 				/>
 			)}
 

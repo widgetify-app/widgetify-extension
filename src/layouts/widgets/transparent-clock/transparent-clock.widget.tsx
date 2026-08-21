@@ -96,6 +96,21 @@ export function TransparentClockWidget({
 	})
 
 	const isCompact = size.h === 1
+	const isSmallWidth = size.w <= 2
+
+	const timeSizeClass = (() => {
+		if (size.w >= 4 && size.h >= 2) return 'text-6xl sm:text-7xl md:text-8xl'
+		if (size.w >= 4 && size.h === 1) return 'text-4xl sm:text-5xl md:text-6xl'
+		if (size.w <= 2 && size.h >= 2) return 'text-4xl sm:text-5xl'
+		return 'text-2xl sm:text-3xl md:text-4xl'
+	})()
+
+	const subtitleSizeClass = (() => {
+		if (size.w >= 4 && size.h >= 2) return 'text-sm sm:text-base md:text-lg mt-2 sm:mt-3'
+		if (size.w >= 4 && size.h === 1) return 'text-xs sm:text-sm mt-1'
+		if (size.w <= 2 && size.h >= 2) return 'text-xs sm:text-sm mt-1.5'
+		return 'text-[10px] sm:text-xs mt-0.5'
+	})()
 
 	return (
 		<WidgetContainer
@@ -106,11 +121,7 @@ export function TransparentClockWidget({
 			<div className="flex flex-col items-center justify-center w-full h-full text-center drop-shadow-lg">
 				<div
 					dir="ltr"
-					className={`font-black tracking-tight leading-none text-white  ${
-						isCompact
-							? 'text-4xl sm:text-5xl md:text-6xl'
-							: 'text-6xl sm:text-7xl md:text-8xl'
-					}`}
+					className={`font-black tracking-tight leading-none text-white ${timeSizeClass}`}
 				>
 					<span>{rawHours}</span>
 					<span className="inline-block mx-0.5">:</span>
@@ -118,11 +129,7 @@ export function TransparentClockWidget({
 				</div>
 
 				<div
-					className={`flex items-center justify-center gap-1.5 font-medium text-white/95 ${
-						isCompact
-							? 'text-xs sm:text-sm mt-1'
-							: 'text-sm sm:text-base md:text-lg mt-2 sm:mt-3'
-					}`}
+					className={`flex items-center justify-center gap-1.5 font-medium text-white/95 ${subtitleSizeClass}`}
 				>
 					<span>{weekday}</span>
 					<span className="opacity-60">•</span>
@@ -132,8 +139,12 @@ export function TransparentClockWidget({
 				{!isCompact && (
 					<div className="flex flex-wrap items-center justify-center gap-1.5 text-xs sm:text-sm font-light text-white/85 mt-1">
 						<span>{jalaliDate}</span>
-						<span className="opacity-60">•</span>
-						<span dir="ltr">{gregorianDate}</span>
+						{!isSmallWidth && (
+							<>
+								<span className="opacity-60">•</span>
+								<span dir="ltr">{gregorianDate}</span>
+							</>
+						)}
 					</div>
 				)}
 			</div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Icon } from '@/src/icons'
 import type { StoredWidget, WidgetDefinition, WidgetSize } from '../layout-engine/types'
+import { Chip } from '@/components/ui'
 
 interface WidgetContextMenuProps {
 	x: number
@@ -89,21 +90,17 @@ export function WidgetContextMenu({
 							const isCurrent =
 								size.w === widget.size.w && size.h === widget.size.h
 							return (
-								<button
+								<Chip
 									key={`${size.w}x${size.h}`}
-									type="button"
-									onClick={() => {
+										onClick={() => {
 										onResize(size)
 										onClose()
-									}}
-									className={`py-1 px-1.5 rounded-lg text-center text-[11px] cursor-pointer transition-all duration-150 ${
-										isCurrent
-											? 'bg-primary text-white font-bold shadow-xs'
-											: 'bg-base-100 hover:bg-base-300 text-content'
-									}`}
+										}}
+									selected={isCurrent}
+									className='py-0.5'
 								>
 									{size.w}×{size.h}
-								</button>
+								</Chip>
 							)
 						})}
 					</div>
