@@ -73,6 +73,7 @@ export interface StorageKV {
 	seenWidgetSettings_1: boolean
 	seenTodoNewViewMode: boolean
 	hasSeenFooterDisableHint: boolean
+	hasSeenCustomUIGuide: boolean
 	rssOptions: WigiNewsSetting
 	browserTitle: {
 		id: string

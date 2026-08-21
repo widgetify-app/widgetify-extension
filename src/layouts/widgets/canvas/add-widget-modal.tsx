@@ -327,7 +327,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 														isCurrentSize
 															? 'bg-primary text-white font-bold shadow-xs'
 															: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
-													}`}
+														}`}
+													 dir='ltr'
 												>
 													<span>
 														{sizeOption.w} × {sizeOption.h}
