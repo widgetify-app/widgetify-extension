@@ -1,3 +1,5 @@
+import { cn } from '@/common/utils/cn'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { Icon } from '@/src/icons'
@@ -12,6 +14,7 @@ export function TodoCompactRow({ todos, isLoading, onRefresh }: TodoCompactRowPr
 	const totalCount = todos.length
 	const completedCount = todos.filter((t) => t.completed).length
 	const nextPending = todos.find((t) => !t.completed) || todos[0]
+	const { blurMode } = useGeneralSetting()
 
 	const { mutateAsync: updateTodo } = useUpdateTodo(nextPending?.id || null)
 
@@ -45,22 +48,24 @@ export function TodoCompactRow({ todos, isLoading, onRefresh }: TodoCompactRowPr
 						<button
 							type="button"
 							onClick={handleToggle}
-							className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 cursor-pointer ${
+							className={cn(
+								'w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 cursor-pointer',
 								nextPending.completed
 									? 'bg-success/20 border-success text-success'
 									: 'border-base-content/30 hover:border-primary'
-							}`}
+							)}
 						>
 							{nextPending.completed && (
 								<Icon name="check" className="w-3.5 h-3.5" />
 							)}
 						</button>
 						<span
-							className={`text-xs font-medium truncate max-w-44 text-content ${
-								nextPending.completed
-									? 'line-through text-base-content/50'
-									: ''
-							}`}
+							className={cn(
+								'text-xs font-medium truncate max-w-44 text-content',
+								blurMode ? 'blur-mode' : 'disabled-blur-mode',
+								nextPending.completed &&
+									'line-through text-base-content/50'
+							)}
 						>
 							{nextPending.text}
 						</span>

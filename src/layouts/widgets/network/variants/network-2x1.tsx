@@ -1,3 +1,4 @@
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
 
 interface NetworkCompactRowProps {
@@ -8,6 +9,7 @@ interface NetworkCompactRowProps {
 	isp: string | null
 	ping: number | null
 	isLoading: boolean
+	blurMode: boolean
 }
 
 export function NetworkCompactRow({
@@ -18,6 +20,7 @@ export function NetworkCompactRow({
 	isp,
 	ping,
 	isLoading,
+	blurMode,
 }: NetworkCompactRowProps) {
 	const isOnline = status === 'online'
 
@@ -32,7 +35,12 @@ export function NetworkCompactRow({
 
 	return (
 		<div className="flex items-center justify-between h-full w-full px-3.5 py-2 select-none">
-			<div className="flex items-center gap-2.5 min-w-0">
+			<div
+				className={cn(
+					'flex items-center gap-2.5 min-w-0',
+					blurMode ? 'blur-mode' : 'disabled-blur-mode'
+				)}
+			>
 				{countryIcon ? (
 					<img
 						src={countryIcon}

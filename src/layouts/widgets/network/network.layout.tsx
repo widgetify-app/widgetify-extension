@@ -30,7 +30,11 @@ interface Prop {
 	enableBackground: boolean
 	size?: WidgetSize
 }
-export function NetworkLayout({ enableBackground, inComboWidget, size = { w: 2, h: 2 } }: Prop) {
+export function NetworkLayout({
+	enableBackground,
+	inComboWidget,
+	size = { w: 2, h: 2 },
+}: Prop) {
 	const { blurMode } = useGeneralSetting()
 	const { isAuthenticated } = useAuth()
 
@@ -121,6 +125,11 @@ export function NetworkLayout({ enableBackground, inComboWidget, size = { w: 2, 
 						status={networkInfo.status}
 						ping={networkInfo.ping}
 						isLoading={isLoading}
+						blurMode={blurMode}
+						countryIcon={networkInfo.countryIcon}
+						ip={networkInfo.ip}
+						isp={networkInfo.isp}
+						city={networkInfo.city}
 					/>
 				</WidgetContainer>
 			)
@@ -137,6 +146,7 @@ export function NetworkLayout({ enableBackground, inComboWidget, size = { w: 2, 
 						isp={networkInfo.isp}
 						ping={networkInfo.ping}
 						isLoading={isLoading}
+						blurMode={blurMode}
 					/>
 				</WidgetContainer>
 			)

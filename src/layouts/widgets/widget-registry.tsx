@@ -252,7 +252,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
