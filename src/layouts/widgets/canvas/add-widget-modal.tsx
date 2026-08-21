@@ -7,7 +7,6 @@ import type {
 	WidgetVariantOption,
 } from '../layout-engine/types'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 
 interface AddWidgetModalProps {
 	isOpen: boolean
@@ -231,7 +230,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												}`}
 											>
 												{isActive
-													? `${toPersianDigits(count)} فعال`
+													? `${count} فعال`
 													: 'قابل تکرار'}
 											</span>
 										) : isActive ? (
@@ -312,7 +311,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												selectedSize.w === sizeOption.w &&
 												selectedSize.h === sizeOption.h
 											const isDefault =
-												selectedDef.defaultSize.w === sizeOption.w &&
+												selectedDef.defaultSize.w ===
+													sizeOption.w &&
 												selectedDef.defaultSize.h === sizeOption.h
 
 											return (
@@ -330,8 +330,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 													}`}
 												>
 													<span>
-														{toPersianDigits(sizeOption.w)} ×{' '}
-														{toPersianDigits(sizeOption.h)}
+														{sizeOption.w} × {sizeOption.h}
 													</span>
 													{isDefault && !isCurrentSize && (
 														<span className="text-[9px] text-muted mr-1">
@@ -355,8 +354,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-base-300/10 text-base-content/15 border border-base-content/10 overflow-hidden relative min-h-47.5"
 							>
 								<div className="text-[10px] text-muted absolute top-2 right-2 font-medium bg-base-200/80 px-2 py-0.5 rounded-lg border border-base-content/10 z-10">
-									پیش‌نمایش در اندازه {toPersianDigits(selectedSize.w)}×
-									{toPersianDigits(selectedSize.h)}
+									پیش‌نمایش در اندازه {selectedSize.w}×{selectedSize.h}
 								</div>
 
 								<div
@@ -394,9 +392,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									>
 										<span>+</span>
 										<span>
-											افزودن ویجت با اندازه{' '}
-											{toPersianDigits(selectedSize.w)}×
-											{toPersianDigits(selectedSize.h)}
+											افزودن ویجت با اندازه {selectedSize.w}×
+											{selectedSize.h}
 										</span>
 									</Button>
 								) : (

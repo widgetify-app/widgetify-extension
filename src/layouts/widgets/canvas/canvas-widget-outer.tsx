@@ -79,7 +79,10 @@ export function CanvasWidgetOuter({
 			target.closest('button') ||
 			target.closest('input') ||
 			target.closest('textarea') ||
+			target.closest('select') ||
 			target.closest('a') ||
+			target.closest('[role="button"]') ||
+			target.closest('.cursor-pointer') ||
 			target.closest('.no-drag')
 		) {
 			return
@@ -97,8 +100,6 @@ export function CanvasWidgetOuter({
 				clearLongPress()
 			}, 450)
 		}
-
-		;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 	}
 
 	const handlePointerMove = (e: React.PointerEvent) => {
@@ -118,6 +119,9 @@ export function CanvasWidgetOuter({
 			if (!isDragActiveRef.current) {
 				isDragActiveRef.current = true
 				setIsDragging(true)
+				try {
+					;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+				} catch {}
 			}
 			setDragOffset({ x: dx, y: dy })
 		}

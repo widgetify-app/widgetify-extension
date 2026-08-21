@@ -1,7 +1,6 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 import { unitsFlag } from '../unit-symbols'
 import { cleanCityName } from '../utils/clean-city-name'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 
 interface WeatherCompactSquareProps {
 	fetchedWeather: FetchedWeather | null
@@ -37,7 +36,7 @@ export function WeatherCompactSquare({
 			<div className="flex flex-col my-auto">
 				<div className="flex items-baseline gap-0.5 leading-none">
 					<span className="text-3xl font-black text-content tracking-tight">
-						{toPersianDigits(temp)}
+						{temp}
 					</span>
 					<span className="text-xs font-bold text-muted">
 						{unitsFlag[temperatureUnit || 'metric']}

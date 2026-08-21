@@ -1,12 +1,11 @@
 import { useDate } from '@/context/date.context'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 import { cn } from '@/common/utils/cn'
 
 export function Calendar1x1() {
 	const { today, todayIsHoliday } = useDate()
 
 	const weekDayName = today.format('dddd')
-	const dayNumber = toPersianDigits(today.jDate())
+	const dayNumber = today.jDate()
 	const monthName = today.format('jMMMM')
 	const isFriday = today.day() === 5 || todayIsHoliday
 

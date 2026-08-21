@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDate } from '@/context/date.context'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 
 const FLIP_DURATION = 400
 
@@ -115,9 +114,6 @@ export function ClockFlip() {
 	const rawH = time.getHours().toString().padStart(2, '0')
 	const rawM = time.getMinutes().toString().padStart(2, '0')
 
-	const hours = toPersianDigits(rawH)
-	const minutes = toPersianDigits(rawM)
-
 	return (
 		<>
 			<style>{`
@@ -128,12 +124,12 @@ export function ClockFlip() {
 			`}</style>
 			<div className="w-full h-full flex items-center justify-center gap-2 p-2 select-none overflow-hidden">
 				<div dir="ltr" className="flex items-center gap-2">
-					<FlipUnit value={hours} />
+					<FlipUnit value={rawH} />
 					<div className="flex flex-col gap-2 opacity-60">
 						<div className="w-1.5 h-1.5 rounded-full bg-content" />
 						<div className="w-1.5 h-1.5 rounded-full bg-content" />
 					</div>
-					<FlipUnit value={minutes} />
+					<FlipUnit value={rawM} />
 				</div>
 			</div>
 		</>

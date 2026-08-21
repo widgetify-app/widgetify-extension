@@ -1,5 +1,4 @@
 import type { Habit } from '@/services/hooks/habit/habit.interface'
-import { toPersianDigits } from '@/common/utils/persian-digits'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
 
@@ -8,10 +7,7 @@ interface HabitCompactSquareProps {
 	isLoading: boolean
 }
 
-export function HabitCompactSquare({
-	habits,
-	isLoading,
-}: HabitCompactSquareProps) {
+export function HabitCompactSquare({ habits, isLoading }: HabitCompactSquareProps) {
 	const total = habits.length
 
 	const totalProgressSum = habits.reduce((acc, h) => {
@@ -40,8 +36,8 @@ export function HabitCompactSquare({
 
 	const singleHabit = total === 1 ? habits[0] : null
 	const displayRatio = singleHabit
-		? `${toPersianDigits(singleHabit.today.value)}/${toPersianDigits(singleHabit.target || 1)}`
-		: `${toPersianDigits(completedHabitsCount)}/${toPersianDigits(total)}`
+		? `${singleHabit.today.value}/${singleHabit.target || 1}`
+		: `${completedHabitsCount}/${total}`
 
 	const footerText =
 		total === 0
@@ -49,10 +45,10 @@ export function HabitCompactSquare({
 			: isAllCompleted
 				? 'تکمیل شد ✨'
 				: singleHabit
-					? `${toPersianDigits(singleHabit.today.value)} از ${toPersianDigits(singleHabit.target || 1)} انجام شد`
+					? `${singleHabit.today.value} از ${singleHabit.target || 1} انجام شد`
 					: completedHabitsCount > 0
-						? `${toPersianDigits(completedHabitsCount)} از ${toPersianDigits(total)} عادت انجام شد`
-						: `${toPersianDigits(percent)}٪ از اهداف امروز`
+						? `${completedHabitsCount} از ${total} عادت انجام شد`
+						: `${percent}٪ از اهداف امروز`
 
 	return (
 		<div className="relative flex flex-col justify-between items-center h-full w-full select-none text-center">
@@ -109,7 +105,7 @@ export function HabitCompactSquare({
 									isAllCompleted ? 'text-success' : 'text-content'
 								)}
 							>
-								{toPersianDigits(percent)}٪
+								{percent}٪
 							</span>
 						</div>
 					</>

@@ -213,12 +213,13 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 								/>
 							</div>
 						)}
-						<div
-							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer  hover:bg-base-300`}
+						<button
+							type="button"
+							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-base-300 border-none bg-transparent p-0`}
 							onClick={() => onSearchButtonClick()}
 						>
 							<Icon name="search" size={20} className="opacity-50" />
-						</div>
+						</button>
 						<div
 							className={
 								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
