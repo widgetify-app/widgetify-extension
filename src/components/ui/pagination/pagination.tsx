@@ -35,13 +35,9 @@ export function Pagination({
 				disabled={currentPage === 1 || isLoading}
 				size="xs"
 				className="btn-soft rounded-2xl"
-				isPrimary={currentPage !== 1}
+				variant={currentPage !== 1 ? 'primary' : 'default'}
 			>
-				<Icon
-					name="chevronRight"
-					size={18}
-					className={`${currentPage === 1 ? 'text-muted' : 'text-primary'}`}
-				/>
+				<Icon name="chevronRight" size={18} />
 			</Button>
 
 			<span className="mx-2 text-sm text-muted">
@@ -52,10 +48,10 @@ export function Pagination({
 				onClick={onNextPage}
 				disabled={currentPage === totalPages || isLoading}
 				className="btn-soft rounded-2xl"
-				isPrimary={true}
+				variant={'primary'}
 				size="xs"
 			>
-				<Icon name="chevronLeft" size={18} className="text-primary" />
+				<Icon name="chevronLeft" size={18} />
 			</Button>
 		</div>
 	)
