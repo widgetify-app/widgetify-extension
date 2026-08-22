@@ -9,7 +9,7 @@ import {
 } from 'react'
 import Analytics from '@/analytics'
 import { setToStorage } from '@/common/storage'
-import { showToast } from '@/common/toast'
+import { playNativeToastSound, showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import {
 	DEFAULT_CELL_HEIGHT,
@@ -234,7 +234,9 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 							setSavedLayout((prev) => {
 								const updated = prev.map((w, index) => {
 									const matching =
-										synced.find((s) => s.instanceId === w.instanceId) ||
+										synced.find(
+											(s) => s.instanceId === w.instanceId
+										) ||
 										synced.find((s) => s.widgetKey === w.id) ||
 										synced[index]
 									if (
@@ -496,7 +498,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
-			showToast(`ویجت ${def.label} افزوده شد`, 'success')
+			playNativeToastSound('success')
 			return commitMutation('add', result, finalInstanceId)
 		},
 		[runtimeLayout, cols, commitMutation, isAuthenticated]
@@ -609,7 +611,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				deleteUserWidgetApi(instanceId).catch(() => {})
 			}
 
-			showToast(translateError('WIDGET_DELETED') as string, 'success')
+			playNativeToastSound('warning')
 			return commitMutation('remove', result, instanceId)
 		},
 		[

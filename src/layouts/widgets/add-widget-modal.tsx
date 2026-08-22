@@ -183,7 +183,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			}
 		} else {
 			toggleWidget(selectedDef.id as any)
-			onClose()
+			// onClose()
 		}
 	}
 
