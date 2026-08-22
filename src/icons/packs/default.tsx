@@ -111,7 +111,13 @@ import {
 import { FaFolder, FaFolderOpen } from 'react-icons/fa'
 import { GoArchive, GoKebabHorizontal, GoTasklist } from 'react-icons/go'
 import { IoMdAddCircle, IoMdHelp } from 'react-icons/io'
-import { FaArrowDownLong, FaArrowUpLong, FaPhotoFilm, FaTreeCity } from 'react-icons/fa6'
+import {
+	FaArrowDownLong,
+	FaArrowUpLong,
+	FaExclamation,
+	FaPhotoFilm,
+	FaTreeCity,
+} from 'react-icons/fa6'
 import { BiCalendar, BiLogoGoogle, BiRss } from 'react-icons/bi'
 import { FcGoogle } from 'react-icons/fc'
 import { CiLocationOn, CiPause1 } from 'react-icons/ci'
@@ -254,4 +260,5 @@ export const defaultIcons = {
 	bookmark: HiBookmark,
 	userSecret: FaUserSecret,
 	filter: FiFilter,
+	exclamation: FaExclamation,
 } satisfies IconMap

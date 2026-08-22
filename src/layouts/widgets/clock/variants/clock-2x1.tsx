@@ -12,7 +12,7 @@ export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props)
 				<div className="flex flex-col items-start justify-center">
 					<div className="flex items-baseline gap-1.5 leading-none">
 						<span
-							className={`text-3xl sm:text-4xl font-black text-content tracking-tight`}
+							className="text-3xl sm:text-4xl font-black text-content tracking-tight"
 							dir="ltr"
 						>
 							{hours} : {minutes}

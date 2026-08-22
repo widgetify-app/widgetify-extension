@@ -1,5 +1,6 @@
 import { usePetContext } from '@/layouts/widgetify-card/pets/pet.context'
 import { PetEmojiMap } from '../pet-emoji-map'
+import { cn } from '@/common/utils/cn'
 
 export function PetCompactSquare() {
 	const { petType, getCurrentPetName, getPetHungryState } = usePetContext()
@@ -22,13 +23,14 @@ export function PetCompactSquare() {
 			<div className="w-full flex flex-col gap-1 items-center">
 				<div className="w-16 bg-base-300 rounded-full h-1.5 overflow-hidden">
 					<div
-						className={`h-full transition-all duration-300 ${
+						className={cn(
+							'h-full transition-all duration-300',
 							level > 50
 								? 'bg-success'
 								: level > 20
 									? 'bg-warning'
 									: 'bg-error'
-						}`}
+						)}
 						style={{ width: `${level}%` }}
 					/>
 				</div>

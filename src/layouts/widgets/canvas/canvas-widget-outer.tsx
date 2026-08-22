@@ -10,6 +10,7 @@ import {
 	type WidgetPosition,
 	type WidgetSize,
 } from '../layout-engine/types'
+import { cn } from '@/common/utils/cn'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
 
@@ -204,17 +205,16 @@ export function CanvasWidgetOuter({
 	return (
 		<>
 			<div
-				className={`widget-outer absolute select-none ${
+				className={cn(
+					'widget-outer absolute select-none',
 					isDragging
 						? 'z-50 shadow-2xl cursor-grabbing scale-[1.03]'
-						: 'z-10 cursor-default'
-				} ${!isDragging ? 'widget-canvas-item-transition' : ''} ${
-					isWiggling ? 'animate-widget-wiggle' : ''
-				} ${
-					isSelected
-						? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100 rounded-2xl'
-						: ''
-				}`}
+						: 'z-10 cursor-default',
+					!isDragging && 'widget-canvas-item-transition',
+					isWiggling && 'animate-widget-wiggle',
+					isSelected &&
+						'ring-2 ring-primary ring-offset-2 ring-offset-base-100 rounded-2xl'
+				)}
 				style={{
 					left: `${currentLeft}px`,
 					top: `${currentTop}px`,
@@ -259,9 +259,10 @@ export function CanvasWidgetOuter({
 				)}
 
 				<div
-					className={`w-full h-full relative ${
-						canvasMode === 'edit' ? 'pointer-events-none select-none' : ''
-					}`}
+					className={cn(
+						'w-full h-full relative',
+						canvasMode === 'edit' && 'pointer-events-none select-none'
+					)}
 				>
 					{definition.node(widget.instanceId, widget.size, widget.meta)}
 					{canvasMode === 'edit' && (

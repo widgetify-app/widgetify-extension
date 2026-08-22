@@ -132,4 +132,5 @@ export type IconName =
 	| 'bookmark'
 	| 'userSecret'
 	| 'filter'
+	| 'exclamation'
 export type IconMap = Record<IconName, IconType>

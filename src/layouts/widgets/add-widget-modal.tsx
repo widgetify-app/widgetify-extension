@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button, Chip, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import {
@@ -238,11 +240,12 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								key={cat.id}
 								type="button"
 								onClick={() => handleCategoryChange(cat.id)}
-								className={`px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer ${
+								className={cn(
+									'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 									activeCategory === cat.id
 										? 'bg-primary text-white font-bold shadow-xs'
-										: 'bg-base-200/60 hover:bg-base-200 text-muted font-medium'
-								}`}
+										: 'bg-base-200/60 hover:bg-base-200 text-muted'
+								)}
 							>
 								{cat.label}
 							</button>
@@ -263,22 +266,24 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								<div
 									key={def.id}
 									onClick={() => handleSelectWidget(def.id)}
-									className={`w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer ${
+									className={cn(
+										'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
 										isSelected
 											? 'bg-primary/10 border-primary shadow-xs'
 											: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
-									}`}
+									)}
 								>
 									<div className="flex items-center gap-2 min-w-0">
 										<span className="text-xl shrink-0">
 											{def.emoji}
 										</span>
 										<span
-											className={`text-xs truncate ${
+											className={cn(
+												'text-xs truncate',
 												isSelected
 													? 'font-bold text-primary'
 													: 'font-medium text-content'
-											}`}
+											)}
 										>
 											{def.label}
 										</span>
@@ -305,11 +310,12 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										)}
 										{isCustom && def.canDuplicate ? (
 											<span
-												className={`text-[10px] px-1.5 py-0.5 rounded-lg font-medium ${
+												className={cn(
+													'text-[10px] px-1.5 py-0.5 rounded-lg font-medium',
 													isActive
 														? 'bg-primary/15 text-primary'
 														: 'bg-base-300 text-muted'
-												}`}
+												)}
 											>
 												{isActive
 													? `${count} فعال`
@@ -384,11 +390,12 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 														onClick={() =>
 															handleVariantChange(variant)
 														}
-														className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer ${
+														className={cn(
+															'flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
 															isCurrent
 																? 'bg-primary text-white font-bold shadow-xs'
-																: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10 font-medium'
-														}`}
+																: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10'
+														)}
 													>
 														<span>{variant.label}</span>
 													</button>

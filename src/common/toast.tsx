@@ -1,12 +1,14 @@
-import React, { ReactNode } from 'react'
+import type React from 'react'
+import type { ReactNode } from 'react'
 import toast from 'react-hot-toast'
 import { playAlarm } from './play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
+import { cn } from '@/common/utils/cn'
 
-type ToastType = 'success' | 'error' | 'info' | 'warning'
+export type ToastType = 'success' | 'error' | 'info' | 'warning'
 
-interface ToastOptions {
+export interface ToastOptions {
 	duration?: number
 	position?:
 		| 'top-left'
@@ -16,129 +18,308 @@ interface ToastOptions {
 		| 'bottom-center'
 		| 'bottom-right'
 	alarmSound?: boolean
+	sound?: boolean
 	title?: string
+	actionText?: string
+	onAction?: () => void
 }
 
-const TT: Record<
+let audioCtx: AudioContext | null = null
+
+function getAudioContext(): AudioContext | null {
+	if (typeof window === 'undefined') return null
+	try {
+		const AudioContextClass =
+			window.AudioContext ||
+			(window as unknown as { webkitAudioContext: typeof AudioContext })
+				.webkitAudioContext
+		if (!AudioContextClass) return null
+		if (!audioCtx || audioCtx.state === 'closed') {
+			audioCtx = new AudioContextClass()
+		}
+		if (audioCtx.state === 'suspended') {
+			audioCtx.resume().catch(() => {})
+		}
+		return audioCtx
+	} catch {
+		return null
+	}
+}
+
+export const TOAST_SOUND_VOLUME = 0.55
+
+export function playNativeToastSound(
+	type: ToastType,
+	volume: number = TOAST_SOUND_VOLUME
+) {
+	try {
+		const ctx = getAudioContext()
+		if (!ctx) return
+
+		const now = ctx.currentTime
+
+		if (type === 'success') {
+			const osc1 = ctx.createOscillator()
+			const osc2 = ctx.createOscillator()
+			const gain = ctx.createGain()
+
+			osc1.type = 'sine'
+			osc2.type = 'triangle'
+
+			osc1.frequency.setValueAtTime(523.25, now)
+			osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.12)
+
+			osc2.frequency.setValueAtTime(659.25, now)
+			osc2.frequency.exponentialRampToValueAtTime(1046.5, now + 0.15)
+
+			gain.gain.setValueAtTime(0.001, now)
+			gain.gain.linearRampToValueAtTime(volume, now + 0.02)
+			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32)
+
+			osc1.connect(gain)
+			osc2.connect(gain)
+			gain.connect(ctx.destination)
+
+			osc1.start(now)
+			osc2.start(now)
+			osc1.stop(now + 0.32)
+			osc2.stop(now + 0.32)
+		} else if (type === 'error') {
+			const osc = ctx.createOscillator()
+			const gain = ctx.createGain()
+
+			osc.type = 'sawtooth'
+			osc.frequency.setValueAtTime(260, now)
+			osc.frequency.linearRampToValueAtTime(170, now + 0.16)
+
+			gain.gain.setValueAtTime(0.001, now)
+			gain.gain.linearRampToValueAtTime(volume * 0.85, now + 0.02)
+			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24)
+
+			osc.connect(gain)
+			gain.connect(ctx.destination)
+
+			osc.start(now)
+			osc.stop(now + 0.24)
+		} else if (type === 'warning') {
+			const osc = ctx.createOscillator()
+			const gain = ctx.createGain()
+
+			osc.type = 'sine'
+			osc.frequency.setValueAtTime(440, now)
+			osc.frequency.setValueAtTime(554.37, now + 0.08)
+
+			gain.gain.setValueAtTime(0.001, now)
+			gain.gain.linearRampToValueAtTime(volume, now + 0.02)
+			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26)
+
+			osc.connect(gain)
+			gain.connect(ctx.destination)
+
+			osc.start(now)
+			osc.stop(now + 0.26)
+		} else {
+			const osc = ctx.createOscillator()
+			const gain = ctx.createGain()
+
+			osc.type = 'sine'
+			osc.frequency.setValueAtTime(587.33, now)
+			osc.frequency.exponentialRampToValueAtTime(880, now + 0.08)
+
+			gain.gain.setValueAtTime(0.001, now)
+			gain.gain.linearRampToValueAtTime(volume * 0.9, now + 0.015)
+			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
+
+			osc.connect(gain)
+			gain.connect(ctx.destination)
+
+			osc.start(now)
+			osc.stop(now + 0.22)
+		}
+	} catch {}
+}
+
+const TOAST_THEMES: Record<
 	ToastType,
-	{ borderColor: string; iconBg: string; iconColor: string; icon: ReactNode }
+	{
+		container: string
+		icon: ReactNode
+		defaultTitle: string
+		defaultActionText: string
+		messageClass: string
+	}
 > = {
-	success: {
-		borderColor: 'border-r-success border-br-success',
-		iconBg: 'bg-success/10',
-		iconColor: 'text-success',
-		icon: <Icon name="check" />,
-	},
-	error: {
-		borderColor: 'border-r-error',
-		iconBg: 'bg-error/10',
-		iconColor: 'text-error',
-		icon: <Icon name="alert" />,
-	},
 	info: {
-		borderColor: 'border-r-info',
-		iconBg: 'bg-info/10',
-		iconColor: 'text-info',
-		icon: <Icon name="info" />,
-	},
-	warning: {
-		borderColor: 'border-r-warning',
-		iconBg: 'bg-warning/10',
-		iconColor: 'text-warning',
-		icon: <Icon name="alert" />,
-	},
-}
-
-export function showToast(message: string, type: ToastType, options?: ToastOptions) {
-	const tt = TT[type]
-
-	const myToast = toast.custom(
-		(t) => (
-			<div
-				className={`
-  flex items-center gap-3
-  bg-base-100 border  border-base-300 border-r-4
-  ${tt.borderColor} bg-glass shadow-md
-  rounded-2xl px-3.5 py-3 w-[320px]
-  ${t.visible ? 'animate-enter' : 'animate-leave'}
-`}
-			>
-				<div
-					className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 text-sm ${tt.iconBg} ${tt.iconColor}`}
-				>
-					{tt.icon}
-				</div>
-				<div className="flex-1 min-w-0">
-					<p className="text-[13px] font-medium text-base-content m-0">
-						{options?.title}
-					</p>
-					<p className="text-[12px] text-base-content/60 m-0">{message}</p>
-				</div>
-				<button
-					onClick={() => toast.remove(t.id, t.toasterId)}
-					className="rounded-full btn text-base-content/80 btn-xs btn-ghost"
-				>
-					<Icon name="close" size={15} />
-				</button>
+		container: 'bg-[#18181b]/95 border-white/10 text-white',
+		icon: (
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-white/10 text-white select-none">
+				<Icon name="atSign" size={15} />
 			</div>
 		),
-		{ duration: options?.duration ?? 5000, position: options?.position }
+		defaultTitle: 'اطلاعات',
+		defaultActionText: 'متوجه شدم',
+		messageClass: 'text-neutral-300',
+	},
+	error: {
+		container: 'bg-[#2a1317]/95 border-red-500/25 text-white',
+		icon: (
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-red-500 text-white shadow-sm select-none">
+				<Icon name="exclamation" size={13} />
+			</div>
+		),
+		defaultTitle: 'خطا',
+		defaultActionText: 'تلاش مجدد',
+		messageClass: 'text-red-200/85',
+	},
+	success: {
+		container: 'bg-[#142618]/95 border-emerald-500/25 text-white',
+		icon: (
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
+				<Icon name="check" size={15} className="stroke-[3]" />
+			</div>
+		),
+		defaultTitle: 'موفقیت آمیز',
+		defaultActionText: 'تایید',
+		messageClass: 'text-emerald-200/85',
+	},
+	warning: {
+		container: 'bg-[#2b2210]/95 border-amber-500/25 text-white',
+		icon: (
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-amber-500 text-black shadow-sm select-none">
+				<Icon name="exclamation" size={13} />
+			</div>
+		),
+		defaultTitle: 'هشدار',
+		defaultActionText: 'متوجه شدم',
+		messageClass: 'text-amber-200/85',
+	},
+}
+
+export function showToast(
+	message: string,
+	type: ToastType = 'info',
+	options?: ToastOptions
+) {
+	const theme = TOAST_THEMES[type] || TOAST_THEMES.info
+	const title = options?.title ?? theme.defaultTitle
+	const actionText = options?.actionText ?? theme.defaultActionText
+
+	if (options?.sound !== false) {
+		playNativeToastSound(type)
+	}
+
+	if (options?.alarmSound) {
+		playAlarm('success')
+	}
+
+	return toast.custom(
+		(t) => {
+			const handleAction = () => {
+				toast.remove(t.id, t.toasterId)
+				if (options?.onAction) {
+					options.onAction()
+				}
+			}
+
+			return (
+				<div
+					dir="rtl"
+					className={cn(
+						'w-full max-w-[390px] min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200',
+						theme.container,
+						t.visible ? 'animate-enter' : 'animate-leave'
+					)}
+				>
+					<div className="flex items-center gap-3 min-w-0 flex-1">
+						{theme.icon}
+						<div className="min-w-0 flex-1">
+							<p className="text-sm font-bold text-white leading-tight m-0 truncate">
+								{title}
+							</p>
+							{message && (
+								<p
+									className={cn(
+										'text-xs font-normal leading-relaxed m-0 mt-0.5 break-words line-clamp-2',
+										theme.messageClass
+									)}
+								>
+									{message}
+								</p>
+							)}
+						</div>
+					</div>
+
+					<button
+						type="button"
+						onClick={handleAction}
+						className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+					>
+						{actionText}
+					</button>
+				</div>
+			)
+		},
+		{
+			duration: options?.duration ?? 5000,
+			position: options?.position ?? 'top-center',
+		}
 	)
-
-	if (options?.alarmSound) playAlarm('success')
-
-	return myToast
 }
 
 export function showCustomToast(
 	message: React.ReactNode | string,
 	options?: ToastOptions
 ) {
-	const myToast = toast.custom(() => <>{message}</>, {
+	if (options?.sound !== false) {
+		playNativeToastSound('info')
+	}
+	if (options?.alarmSound) {
+		playAlarm('success')
+	}
+
+	return toast.custom(() => <>{message}</>, {
 		duration: options?.duration ?? 5000,
-		position: options?.position,
+		position: options?.position ?? 'top-center',
 	})
-
-	if (options?.alarmSound) playAlarm('success')
-
-	return myToast
 }
 
 export function showPreviewToast(itemName: string, onCancel: () => void): string {
 	const id = `preview-${Date.now()}`
 
+	playNativeToastSound('info')
+
 	toast.custom(
 		(t) => (
 			<div
-				dir="rtl"
-				className={`flex items-center justify-between gap-3 px-4 py-3 border shadow-xl rounded-2xl bg-glass bg-base-100/90 border-base-content/10 backdrop-blur-md ${t.visible ? 'animate-enter' : 'animate-leave'}`}
+				className={cn(
+					' rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					t.visible ? 'animate-enter' : 'animate-leave'
+				)}
 			>
-				<div className="flex items-center gap-1.5 min-w-0">
-					<div className="relative flex items-center justify-center w-6 h-6 rounded-xl bg-primary/10 shrink-0">
-						<Icon name="info" className="text-base text-primary" />
-						<span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-							<span className="absolute inline-flex w-full h-full rounded-full animate-ping bg-primary opacity-60" />
-							<span className="relative inline-flex w-2 h-2 rounded-full bg-primary" />
-						</span>
+				<div className="flex items-center gap-3 min-w-0 flex-1">
+					<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-primary/20 text-primary font-bold text-sm">
+						<Icon name="info" size={16} />
 					</div>
-					<div className="min-w-0">
-						<p className="text-[10px] text-base-content/40 m-0 leading-none mb-0.5">
+					<div className="min-w-0 flex-1">
+						<p className="text-[10px] text-white/50 leading-none m-0 mb-0.5">
 							حالت پیش‌نمایش
 						</p>
-						<p className="text-[13px] font-semibold text-base-content m-0 truncate max-w-[140px]">
+						<p className="text-sm font-bold text-white m-0 truncate">
 							{itemName}
 						</p>
 					</div>
 				</div>
+
 				<button
+					type="button"
 					onClick={() => {
 						toast.remove(id)
 						onCancel()
 					}}
-					className="shrink-0 flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-xl bg-base-200 hover:bg-error/10 hover:text-error text-base-content/60 transition-all duration-150 cursor-pointer border border-base-content/8 active:scale-95"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-red-500/20 hover:text-red-300 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
 				>
 					<Icon name="close" size={11} />
-					بازگشت
+					<span>بازگشت</span>
 				</button>
 			</div>
 		),

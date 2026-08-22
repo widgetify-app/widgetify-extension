@@ -35,11 +35,11 @@ export function FolderBookmarkItem({
 
 		if (folderItems.length > 0) {
 			return (
-				<div className="grid grid-cols-3 gap-0.5 max-w-[70px]">
+				<div className="grid grid-cols-3 gap-0.5 max-w-17.5">
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-5 h-5 overflow-hidden [&>div]:!w-4 [&>div]:!h-4 [&>div_img]:!w-4 [&>div_img]:!h-4 [&>div_div]:!text-[7px]"
+							className="flex items-center justify-center w-5 h-5 overflow-hidden [&>div]:!w-5 [&>div]:!h-5 [&>div_img]:!w-5 [&>div_img]:!h-5 [&>div_div]:!text-[7px]"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>

@@ -35,7 +35,7 @@ export function ContentSection() {
 					}`}
 				>
 					<div className="flex flex-col w-full max-w-6xl gap-4 lg:flex-row lg:gap-2">
-						<div className="order-3 w-full lg:w-xs lg:order-1">
+						<div className="order-3 w-full lg:w-xs lg:order-1 h-72">
 							<WidgetifyLayout />
 						</div>
 
@@ -46,8 +46,8 @@ export function ContentSection() {
 							</BookmarkProvider>
 						</div>
 
-						<div className="order-2 w-full lg:w-xs lg:order-3">
-							<WigiPadWidget size={{ w: 2, h: 3 }} />
+						<div className="order-2 w-full lg:w-xs lg:order-3 h-72">
+							<WigiPadWidget />
 						</div>
 					</div>
 
@@ -66,10 +66,7 @@ export function ContentSection() {
 										)
 									}
 									return (
-										<div
-											key={widget.id}
-											className="h-80 w-full"
-										>
+										<div key={widget.id} className="h-80 w-full">
 											{widget.node}
 										</div>
 									)

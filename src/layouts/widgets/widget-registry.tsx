@@ -98,7 +98,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		settingsTab: WidgetTabKeys.wigiPad,
 		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
-		node: (instanceId, size) => <WigiPadWidget size={size} />,
+		node: () => <WigiPadWidget />,
 	},
 	[WidgetKeys.clock]: {
 		id: WidgetKeys.clock,

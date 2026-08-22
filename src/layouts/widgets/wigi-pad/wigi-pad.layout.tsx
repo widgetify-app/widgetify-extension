@@ -4,13 +4,7 @@ import { DateDisplay } from './date-display/date.display'
 import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 import { RenderWigiPadItem } from './info-panel/components/ann-item'
 
-import type { WidgetSize } from '../layout-engine/types'
-
-interface WigiPadWidgetProps {
-	size?: WidgetSize
-}
-
-export function WigiPadWidget({ size }: WigiPadWidgetProps = {}) {
+export function WigiPadWidget() {
 	const { data: fetchedData } = useGetNotifications()
 
 	return (
