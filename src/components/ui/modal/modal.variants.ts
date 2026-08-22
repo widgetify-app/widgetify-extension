@@ -18,6 +18,7 @@ export const modalBoxVariants = cva(
 				md: ['w-[calc(100vw-2rem)]', 'max-w-md', 'min-h-[200px]'],
 				lg: ['w-[calc(100vw-2rem)]', 'max-w-lg', 'min-h-[240px]'],
 				xl: ['w-[calc(100vw-2rem)]', 'max-w-4xl', 'min-h-[280px]'],
+				'2xl': ['w-[calc(100vw-2rem)]', 'max-w-5xl', 'min-h-[320px]'],
 				full: [
 					'w-[calc(100vw-1rem)]',
 					'max-w-5xl',
@@ -48,6 +49,7 @@ export const modalScrollVariants = cva(
 				md: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[640px]'],
 				lg: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[720px]'],
 				xl: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[800px]'],
+				'2xl': ['max-h-[calc(100vh-4rem)]', 'md:max-h-[850px]'],
 				full: ['h-full'],
 			},
 		},

@@ -13,6 +13,7 @@ import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
 import { Icon } from '@/src/icons'
+import { UI, useAppearance } from '@/context/appearance.context'
 
 interface SettingModalProps {
 	isOpen: boolean
@@ -100,11 +101,12 @@ const tabs: TabItem[] = [
 ]
 export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
+	const { ui } = useAppearance()
 
 	function openWidgetSettings() {
-		onClose()
+		callEvent('openAddCustomWidgetModal')
 		Analytics.event('open_widgets_settings_from_settings_modal')
-		callEvent('openWidgetsSettings')
+		onClose()
 	}
 
 	useEffect(() => {
@@ -119,7 +121,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size="xl"
+			size="2xl"
 			title="تنظیمات"
 			direction="rtl"
 		>
@@ -131,13 +133,15 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				direction="rtl"
 			>
 				<div className="flex flex-row gap-1 sm:flex-col">
-					<button
-						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
-						onClick={() => openWidgetSettings()}
-					>
-						<Icon name="appsPlus" size={20} className="text-muted" />
-						<span className="text-sm font-light">مدیریت ویجت ها</span>
-					</button>
+					{ui !== UI.SIMPLE && (
+						<button
+							className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+							onClick={() => openWidgetSettings()}
+						>
+							<Icon name="appsPlus" size={20} className="text-muted" />
+							<span className="text-sm font-light">مدیریت ویجت ها</span>
+						</button>
+					)}
 					<button
 						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
 						onClick={() => setUpdateModalOpen(true)}

@@ -72,9 +72,7 @@ export const SettingsDropdown = () => {
 								size={14}
 								className="text-muted group-hover:text-primary!"
 							/>
-							<span>
-								{ui === UI.CUSTOM ? 'افزودن ویجت صفحه' : 'مدیریت ویجت‌ها'}
-							</span>
+							<span>مدیریت ویجت‌ها</span>
 						</div>
 					</button>
 				)}
@@ -87,7 +85,7 @@ export const SettingsDropdown = () => {
 						<Icon
 							name={'wallpapers'}
 							size={14}
-							className="text-muted group-hover:!text-primary"
+							className="text-muted group-hover:text-primary!"
 						/>
 						تصویر زمینه‌ها
 					</div>

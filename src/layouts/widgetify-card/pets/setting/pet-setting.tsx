@@ -5,7 +5,11 @@ import { ItemSelector } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { ToggleSwitch } from '@/components/ui'
 import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
-
+const persianType: Record<string, string> = {
+	dog: 'سگ',
+	chicken: 'مرغ',
+	crab: 'خرچنگ',
+}
 export function PetSettings() {
 	const [enablePets, setEnablePets] = useState(true)
 	const [petType, setPetType] = useState<PetTypes>(PetTypes.DOG_AKITA)
@@ -56,11 +60,7 @@ export function PetSettings() {
 			petType: value,
 		})
 	}
-	const persianType: Record<string, string> = {
-		dog: 'سگ',
-		chicken: 'مرغ',
-		crab: 'خرچنگ',
-	}
+
 	const availablePets = Object.entries(BASE_PET_OPTIONS.petOptions).map(
 		([key, value]) => ({
 			value: key as PetTypes,
@@ -84,16 +84,16 @@ export function PetSettings() {
 				/>
 			</div>
 
-			<div className={'p-4 mt-4 rounded-lg border border-content'}>
+			<div className={'p-2 mt-4 rounded-lg border border-content'}>
 				<p className={'mb-3 font-medium text-content'}>نوع حیوان خانگی</p>
-				<div className="grid grid-cols-3 gap-1.5 mb-2">
+				<div className="grid grid-cols-3 gap-1 mb-2">
 					{availablePets.map((pet) => (
 						<ItemSelector
 							isActive={petType === pet.value}
 							onClick={() => onChangePetType(pet.value)}
 							key={pet.value}
 							label={pet.label}
-							className="!w-full !h-12 !p-2.5 !text-sm text-center"
+							className="w-full! h-12! p-1.5! text-[11px]! text-center"
 						/>
 					))}
 				</div>
@@ -110,7 +110,7 @@ export function PetSettings() {
 					<p className="mb-1 text-xs font-medium text-primary">
 						💡 نکات مراقبت:
 					</p>
-					<ul className="text-xs text-white space-y-0.5">
+					<ul className="text-xs text-primary space-y-0.5">
 						<li>• برای بازی با حیوان خانگی، روی آن کلیک کنید</li>
 						<li>• برای غذا دادن به حیوان، در محیط اطراف کلیک کنید</li>
 					</ul>

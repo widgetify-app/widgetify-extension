@@ -5,7 +5,7 @@ import { useFreeWidgets } from '@/context/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
-import { AddWidgetModal } from './add-widget-modal'
+import { AddWidgetModal } from '../add-widget-modal'
 import { CanvasContextMenu } from './canvas-context-menu'
 import { CanvasWidgetOuter } from './canvas-widget-outer'
 import { CanvasEditToolbar } from './canvas-edit-toolbar'
@@ -46,14 +46,17 @@ export function FreeWidgetCanvas() {
 	}, [containerSize.width, updateContainerWidth])
 
 	useEffect(() => {
-		const removeListener = listenEvent('openAddCustomWidgetModal', (payload?: any) => {
-			if (payload?.instanceId && payload?.widgetId) {
-				setEditTarget(payload)
-			} else {
-				setEditTarget(null)
+		const removeListener = listenEvent(
+			'openAddCustomWidgetModal',
+			(payload?: any) => {
+				if (payload?.instanceId && payload?.widgetId) {
+					setEditTarget(payload)
+				} else {
+					setEditTarget(null)
+				}
+				setIsAddModalOpen(true)
 			}
-			setIsAddModalOpen(true)
-		})
+		)
 		return () => removeListener()
 	}, [])
 
@@ -234,7 +237,9 @@ export function FreeWidgetCanvas() {
 						setSelectedInstanceId(null)
 					}}
 					onOpenAddWidget={() => setIsAddModalOpen(true)}
-					onOpenAppearanceSettings={() => callEvent('openSettings','appearance')}
+					onOpenAppearanceSettings={() =>
+						callEvent('openSettings', 'appearance')
+					}
 				/>
 			)}
 

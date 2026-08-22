@@ -29,7 +29,6 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const [selectedDate, setSelectedDate] = useState<WidgetifyDate>(activeDate)
 	const [today, setToday] = useState<WidgetifyDate>(activeDate)
 
-	// Update today date every minute to ensure it stays current
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setToday(getCurrentDate(timezone.value))
@@ -87,9 +86,31 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useDate = (): DateContextType => {
 	const context = useContext(DateContext)
+	const generalSetting = useGeneralSetting()
+	const timezone = generalSetting?.selected_timezone?.value || 'Asia/Tehran'
 
 	if (!context) {
-		throw new Error('useDate must be used within a DateProvider')
+		const activeDate = getCurrentDate(timezone)
+		return {
+			currentDate: activeDate,
+			selectedDate: activeDate,
+			today: activeDate,
+			todayIsHoliday: activeDate.day() === 5,
+			setCurrentDate: () => {},
+			setSelectedDate: () => {},
+			goToToday: () => {},
+			isToday: (date: WidgetifyDate) => {
+				return (
+					date.jDate() === activeDate.jDate() &&
+					date.jMonth() === activeDate.jMonth() &&
+					date.jYear() === activeDate.jYear()
+				)
+			},
+			getHijriDate: (date: WidgetifyDate) => {
+				const hijriDate = convertShamsiToHijri(date)
+				return `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
+			},
+		}
 	}
 
 	return context

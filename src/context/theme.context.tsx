@@ -5,7 +5,6 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useChangeTheme } from '@/services/hooks/extension/update-setting.hook'
 import { useAuth } from './auth.context'
-import { liquidGlassRenderer } from '@/services/theme/liquid-glass-renderer'
 
 interface ThemeContextType {
 	theme: string
@@ -18,15 +17,8 @@ export enum Theme {
 	Icy = 'icy',
 	Zarna = 'zarna',
 	esteghlal = 'esteghlal',
-	LiquidGlass = 'liquid-glass',
 }
-const freeThemes = [
-	Theme.Light,
-	Theme.Dark,
-	Theme.Glass,
-	Theme.Icy,
-	Theme.Zarna,
-]
+const freeThemes = [Theme.Light, Theme.Dark, Theme.Glass, Theme.Icy, Theme.Zarna]
 
 export const ThemeContext = createContext<ThemeContextType | null>(null)
 
@@ -58,24 +50,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 			event()
 		}
 	}, [])
-
-	useEffect(() => {
-		if (theme === Theme.LiquidGlass || theme === 'liquid-glass') {
-			liquidGlassRenderer.mount()
-		} else {
-			liquidGlassRenderer.unmount()
-		}
-
-		const wpUnsub = listenEvent('wallpaper_change', () => {
-			if (theme === Theme.LiquidGlass || theme === 'liquid-glass') {
-				liquidGlassRenderer.syncBackground()
-			}
-		})
-
-		return () => {
-			wpUnsub()
-		}
-	}, [theme])
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {

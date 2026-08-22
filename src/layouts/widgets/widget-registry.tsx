@@ -13,6 +13,7 @@ import { WigiPadWidget } from '@/layouts/widgets/wigi-pad/wigi-pad.layout'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
 import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
 import { CurrencyProvider } from '@/context/currency.context'
+import { DateProvider } from '@/context/date.context'
 import { ClockWidget } from './clock/clock.widget'
 import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
@@ -34,6 +35,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 4, h: 1 },
+		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (instanceId, size) => <SearchLayout size={size} />,
 	},
@@ -51,6 +53,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
+		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (instanceId, size) => (
 			<BookmarkProvider>
@@ -66,6 +69,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.Pet,
+		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (instanceId, size) => <WidgetifyLayout size={size} />,
 	},
@@ -80,6 +84,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
+		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (instanceId, size) => <PetWidget size={size} />,
 	},
@@ -91,6 +96,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiPad,
+		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (instanceId, size) => <WigiPadWidget size={size} />,
 	},
@@ -104,6 +110,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
+		supportedModes: ['CUSTOM'],
 		variants: [
 			{
 				id: 'digital',
@@ -142,8 +149,13 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
-		node: (instanceId, size) => <CalendarLayout size={size} />,
+		node: (instanceId, size) => (
+			<DateProvider>
+				<CalendarLayout size={size} />
+			</DateProvider>
+		),
 	},
 	[WidgetKeys.weather]: {
 		id: WidgetKeys.weather,
@@ -159,6 +171,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.weather_settings,
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (instanceId, size) => <WeatherLayout size={size} />,
 	},
@@ -169,6 +182,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'info',
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (instanceId, size) => (
 			<CurrencyProvider>
@@ -183,6 +197,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (instanceId, size) => <YadkarWidget size={size} />,
 	},
@@ -196,6 +211,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (instanceId, size) => <ToolsLayout size={size} />,
 	},
@@ -210,6 +226,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (instanceId, size) => (
 			<CurrencyProvider>
@@ -225,6 +242,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (instanceId, size) => <NewsLayout inComboWidget={false} size={size} />,
 	},
@@ -239,6 +257,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (instanceId, size) => (
 			<NetworkLayout inComboWidget={false} enableBackground={true} size={size} />
@@ -254,6 +273,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (instanceId, size) => <HabitsLayout size={size} />,
 	},
@@ -267,6 +287,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (instanceId, size) => (
 			<WidgetContainer>
@@ -281,6 +302,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
+		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (instanceId, size) => (
 			<WidgetContainer>
@@ -300,6 +322,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
+		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <TransparentClockWidget size={size} />,
 	},

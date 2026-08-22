@@ -18,7 +18,6 @@ import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
 import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
-import { MoodTrackerWidget } from '@/layouts/widgets/mood-tracker/mood-tracker.widget'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
@@ -35,7 +34,6 @@ export enum WidgetKeys {
 	todos = 'todos',
 	tools = 'tools',
 	notes = 'notes',
-	youtube = 'youtube',
 	wigiPad = 'wigiPad',
 	network = 'network',
 	yadKar = 'yadKar',
@@ -47,6 +45,7 @@ export enum WidgetKeys {
 	date = 'date',
 	pet = 'pet',
 	moodTracker = 'moodTracker',
+	transparentClock = 'transparentClock',
 }
 export interface WidgetItem {
 	id: WidgetKeys
@@ -160,7 +159,6 @@ export const widgetItems: WidgetItem[] = [
 interface WidgetVisibilityContextType {
 	visibility: WidgetKeys[]
 	toggleWidget: (widgetId: WidgetKeys) => void
-	reorderWidgets: (sourceIndex: number, destinationIndex: number) => void
 	getSortedWidgets: () => WidgetItem[]
 }
 
@@ -172,9 +170,9 @@ const defaultVisibility: WidgetKeys[] = [
 ]
 export const MAX_VISIBLE_WIDGETS = 5
 
-const WidgetVisibilityContext = createContext<
-	WidgetVisibilityContextType | undefined
->(undefined)
+const WidgetVisibilityContext = createContext<WidgetVisibilityContextType | undefined>(
+	undefined
+)
 
 const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
 	const orders: Record<WidgetKeys, number> = {} as Record<WidgetKeys, number>
@@ -184,9 +182,7 @@ const getDefaultWidgetOrders = (): Record<WidgetKeys, number> => {
 	return orders
 }
 
-export function WidgetVisibilityProvider({
-	children,
-}: { children: ReactNode }) {
+export function WidgetVisibilityProvider({ children }: { children: ReactNode }) {
 	const [visibility, setVisibility] = useState<WidgetKeys[]>(defaultVisibility)
 	const [widgetOrders, setWidgetOrders] =
 		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
@@ -194,7 +190,10 @@ export function WidgetVisibilityProvider({
 	const hasFetchedServerRef = useRef<boolean>(false)
 	const { isAuthenticated } = useAuth()
 
-	const saveActiveWidgets = (currentVisibility = visibility, currentOrders = widgetOrders) => {
+	const saveActiveWidgets = (
+		currentVisibility = visibility,
+		currentOrders = widgetOrders
+	) => {
 		const activeWidgets = widgetItems
 			.filter((item) => currentVisibility.includes(item.id))
 			.map((item) => ({
@@ -344,27 +343,6 @@ export function WidgetVisibilityProvider({
 		})
 	}
 
-	const reorderWidgets = (sourceIndex: number, destinationIndex: number) => {
-		const visibleWidgets = getSortedWidgets()
-
-		if (sourceIndex === destinationIndex) return
-
-		setWidgetOrders((prev) => {
-			const newOrders = { ...prev }
-
-			const reorderedWidgets = [...visibleWidgets]
-			const [draggedWidget] = reorderedWidgets.splice(sourceIndex, 1)
-			reorderedWidgets.splice(destinationIndex, 0, draggedWidget)
-
-			reorderedWidgets.forEach((widget, index) => {
-				newOrders[widget.id] = index
-			})
-
-			saveActiveWidgets(visibility, newOrders)
-			return newOrders
-		})
-	}
-
 	const getSortedWidgets = (): WidgetItem[] => {
 		return widgetItems
 			.filter((item) => visibility.includes(item.id))
@@ -379,8 +357,6 @@ export function WidgetVisibilityProvider({
 			value={{
 				visibility,
 				toggleWidget,
-
-				reorderWidgets,
 				getSortedWidgets,
 			}}
 		>
