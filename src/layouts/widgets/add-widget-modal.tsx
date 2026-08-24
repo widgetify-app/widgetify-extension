@@ -16,6 +16,7 @@ import type {
 	WidgetVariantOption,
 } from '@/layouts/widgets/layout-engine/types'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
+import { VipBannerCard } from '@/components/vip'
 import { Icon } from '@/src/icons'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 
@@ -142,6 +143,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	}
 
 	const handleSizeChange = (sizeOption: WidgetSize) => {
+		if (!isCustom) return
 		setSelectedVariant(null)
 		setSelectedSize(sizeOption)
 	}
@@ -232,9 +234,18 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			closeOnBackdropClick
 			className="max-w-4xl md:max-w-5xl"
 		>
+			{isAuthenticated ? (
+				<VipBannerCard
+					className="mb-3"
+					onClick={() => {
+						onClose()
+						callEvent('openSettings', 'pro')
+					}}
+				/>
+			) : null}
 			<div className="flex flex-col md:flex-row gap-4 h-137.5 select-none w-full">
-				<div className="w-full md:w-5/12 flex flex-col border-b md:border-b-0 md:border-l border-base-content/10 pl-0 md:pl-3 pb-3 md:pb-0">
-					<div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-2 mb-2 border-b border-base-content/10">
+				<div className="flex flex-col w-full pb-3 pl-0 border-b md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
+					<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b scrollbar-none border-base-content/10">
 						{CATEGORIES.map((cat) => (
 							<button
 								key={cat.id}
@@ -273,7 +284,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 											: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
 									)}
 								>
-									<div className="flex items-center gap-2 min-w-0">
+									<div className="flex items-center min-w-0 gap-2">
 										<span className="text-xl shrink-0">
 											{def.emoji}
 										</span>
@@ -333,9 +344,9 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 					</div>
 				</div>
 
-				<div className="w-full md:w-7/12 flex flex-col justify-between pr-0 md:pr-1">
+				<div className="flex flex-col justify-between w-full pr-0 md:w-7/12 md:pr-1">
 					{selectedDef ? (
-						<div className="flex flex-col flex-1 justify-between gap-3">
+						<div className="flex flex-col justify-between flex-1 gap-3">
 							<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
 								<div className="flex items-center gap-2">
 									<span className="text-2xl">{selectedDef.emoji}</span>
@@ -367,87 +378,79 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								)}
 							</div>
 
-							{isCustom &&
-								(selectedDef.variants &&
-								selectedDef.variants.length > 0 ? (
-									<div className="flex flex-col gap-1.5">
-										<span className="text-xs font-bold text-content">
-											انتخاب مدل و استایل:
-										</span>
-										<div className="flex flex-wrap gap-1.5">
-											{selectedDef.variants.map((variant) => {
-												const isCurrent =
-													selectedVariant?.id === variant.id ||
-													(!selectedVariant &&
-														selectedSize.w ===
-															variant.size.w &&
-														selectedSize.h === variant.size.h)
+							{selectedDef.variants && selectedDef.variants.length > 0 ? (
+								<div className="flex flex-col gap-1.5">
+									<span className="text-xs font-bold text-content">
+										انتخاب مدل و استایل:
+									</span>
+									<div className="flex flex-wrap gap-1.5">
+										{selectedDef.variants.map((variant) => {
+											const isCurrent =
+												selectedVariant?.id === variant.id ||
+												(!selectedVariant &&
+													selectedSize.w === variant.size.w &&
+													selectedSize.h === variant.size.h)
 
-												return (
-													<button
-														key={variant.id}
-														type="button"
-														onClick={() =>
-															handleVariantChange(variant)
-														}
-														className={cn(
-															'flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
-															isCurrent
-																? 'bg-primary text-white font-bold shadow-xs'
-																: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10'
-														)}
-													>
-														<span>{variant.label}</span>
-													</button>
-												)
-											})}
-										</div>
+											return (
+												<button
+													key={variant.id}
+													type="button"
+													onClick={() =>
+														handleVariantChange(variant)
+													}
+													disabled={!isCustom}
+													className={cn(
+														'flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
+														isCurrent
+															? 'bg-primary text-white font-bold shadow-xs'
+															: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10'
+													)}
+												>
+													<span>{variant.label}</span>
+												</button>
+											)
+										})}
 									</div>
-								) : (
-									<div className="flex flex-col gap-1.5">
-										<span className="text-xs font-bold text-content">
-											انتخاب اندازه ویجت:
-										</span>
-										<div className="flex flex-wrap gap-1.5">
-											{selectedDef.allowedSizes.map(
-												(sizeOption) => {
-													const isCurrentSize =
-														selectedSize.w === sizeOption.w &&
-														selectedSize.h === sizeOption.h
-													const isDefault =
-														selectedDef.defaultSize.w ===
-															sizeOption.w &&
-														selectedDef.defaultSize.h ===
-															sizeOption.h
+								</div>
+							) : (
+								<div className="flex flex-col gap-1.5">
+									<span className="text-xs font-bold text-content">
+										انتخاب اندازه ویجت:
+									</span>
+									<div className="flex flex-wrap gap-1.5">
+										{selectedDef.allowedSizes.map((sizeOption) => {
+											const isCurrentSize =
+												selectedSize.w === sizeOption.w &&
+												selectedSize.h === sizeOption.h
+											const isDefault =
+												selectedDef.defaultSize.w ===
+													sizeOption.w &&
+												selectedDef.defaultSize.h === sizeOption.h
 
-													return (
-														<Chip
-															onClick={() =>
-																handleSizeChange(
-																	sizeOption
-																)
-															}
-															key={`${sizeOption.w}x${sizeOption.h}`}
-															className="py-1"
-															selected={isCurrentSize}
-														>
-															<span>
-																{sizeOption.w} ×{' '}
-																{sizeOption.h}
-															</span>
-															{isDefault &&
-																!isCurrentSize && (
-																	<span className="text-[9px] text-muted mr-1">
-																		(پیش‌فرض)
-																	</span>
-																)}
-														</Chip>
-													)
-												}
-											)}
-										</div>
+											return (
+												<Chip
+													onClick={() =>
+														handleSizeChange(sizeOption)
+													}
+													key={`${sizeOption.w}x${sizeOption.h}`}
+													className="py-1"
+													selected={isCurrentSize}
+													disabled={!isDefault && !isCustom}
+												>
+													<span>
+														{sizeOption.w} × {sizeOption.h}
+													</span>
+													{isDefault && !isCurrentSize && (
+														<span className="text-[9px] text-muted mr-1">
+															(پیش‌فرض)
+														</span>
+													)}
+												</Chip>
+											)
+										})}
 									</div>
-								))}
+								</div>
+							)}
 
 							<div
 								style={{
@@ -463,9 +466,9 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 
 								<div
 									style={getPreviewDimensions(previewSize)}
-									className="flex items-center justify-center overflow-hidden pointer-events-none select-none transition-all duration-200"
+									className="flex items-center justify-center overflow-hidden transition-all duration-200 pointer-events-none select-none"
 								>
-									<div className="w-full h-full flex items-center justify-center">
+									<div className="flex items-center justify-center w-full h-full">
 										{selectedDef.node(
 											'preview-sample',
 											previewSize,

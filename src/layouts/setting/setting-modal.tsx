@@ -12,6 +12,7 @@ import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
+import { ProTab } from './tabs/pro/pro-tab'
 import { Icon } from '@/src/icons'
 import { UI, useAppearance } from '@/context/appearance.context'
 
@@ -30,6 +31,12 @@ const tabs: TabItem[] = [
 				value: 'profile',
 				icon: <Icon name="user" size={20} />,
 				element: <AccountTab />,
+			},
+			{
+				label: 'اشتراک Pro',
+				value: 'pro',
+				icon: <Icon name="crown" size={20} />,
+				element: <ProTab />,
 			},
 			{
 				label: 'پلتفرم‌ها',
