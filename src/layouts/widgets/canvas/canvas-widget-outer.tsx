@@ -191,6 +191,10 @@ export function CanvasWidgetOuter({
 		})
 	}
 
+	const handleMove = () => {
+		setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
+	}
+
 	const handleDelete = () => {
 		if (widget.id === WidgetKeys.bookmarks) {
 			setShowDeleteConfirm(true)
@@ -281,6 +285,7 @@ export function CanvasWidgetOuter({
 					onClose={() => setContextMenuPos(null)}
 					onResize={handleResize}
 					onDuplicate={handleDuplicate}
+					onMove={handleMove}
 					onSettings={definition.settingsTab ? handleSettings : undefined}
 					onEditVariant={definition.variants?.length ? handleEditVariant : undefined}
 					onDelete={handleDelete}

@@ -12,6 +12,7 @@ interface WidgetContextMenuProps {
 	onClose: () => void
 	onResize: (size: WidgetSize) => void
 	onDuplicate: () => void
+	onMove?: () => void
 	onSettings?: () => void
 	onEditVariant?: () => void
 	onDelete: () => void
@@ -26,6 +27,7 @@ export function WidgetContextMenu({
 	onClose,
 	onResize,
 	onDuplicate,
+	onMove,
 	onSettings,
 	onEditVariant,
 	onDelete,
@@ -73,7 +75,7 @@ export function WidgetContextMenu({
 			onClick={(e) => e.stopPropagation()}
 			onContextMenu={(e) => e.preventDefault()}
 		>
-			<div className="flex items-center justify-between px-2 py-1 border-b border-base-content/10">
+			<div className="flex items-center justify-between px-2 py-1">
 				<span className="font-bold text-content flex items-center gap-1.5">
 					<span>{definition.emoji}</span>
 					<span>{definition.label}</span>
@@ -81,7 +83,7 @@ export function WidgetContextMenu({
 			</div>
 
 			{showResize && (
-				<div className="px-2 py-1 flex flex-col gap-1.5">
+				<div className="px-2 py-1 flex flex-col gap-1.5 border-t border-base-content/10">
 					<span className="text-[11px] text-muted font-medium">
 						تغییر اندازه
 					</span>
@@ -92,12 +94,12 @@ export function WidgetContextMenu({
 							return (
 								<Chip
 									key={`${size.w}x${size.h}`}
-										onClick={() => {
+									onClick={() => {
 										onResize(size)
 										onClose()
-										}}
+									}}
 									selected={isCurrent}
-									className='py-0.5'
+									className="py-0.5"
 								>
 									{size.w}×{size.h}
 								</Chip>
@@ -109,6 +111,20 @@ export function WidgetContextMenu({
 
 			<div className="h-px bg-base-content/10 my-0.5" />
 
+			{onMove && (
+				<button
+					type="button"
+					onClick={() => {
+						onMove()
+						onClose()
+					}}
+					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
+				>
+					<Icon name="outlineDrag" size={14} className="text-muted" />
+					<span>جابجایی</span>
+				</button>
+			)}
+
 			{definition.canDuplicate && (
 				<button
 					type="button"
@@ -118,7 +134,7 @@ export function WidgetContextMenu({
 					}}
 					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
 				>
-					<Icon name="plus" size={14} className="text-muted" />
+					<Icon name="copy" size={14} className="text-muted" />
 					<span>تکرار ویجت</span>
 				</button>
 			)}

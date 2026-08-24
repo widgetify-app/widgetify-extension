@@ -22,9 +22,9 @@ interface NotesContextType {
 	notes: FetchedNote[]
 	activeNoteId: string | null
 	setActiveNoteId: (id: string | null) => void
-	addNote: () => void
+	addNote: (initial?: Partial<FetchedNote>) => Promise<FetchedNote | null>
 	updateNote: (id: string, updates: Partial<FetchedNote>) => void
-	deleteNote: (id: string) => void
+	deleteNote: (id: string) => Promise<void>
 	isSaving: boolean
 	isCreatingNote: boolean
 	isRefetching: boolean
@@ -65,15 +65,18 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		sync(fetchedNotes || [], true)
 	}, [dataUpdatedAt])
 
-	const addNote = async () => {
-		if (isCreatingNote) return
+	const addNote = async (
+		initial?: Partial<FetchedNote>
+	): Promise<FetchedNote | null> => {
+		if (isCreatingNote) return null
 
 		setIsCreatingNote(true)
 
 		const newNote: FetchedNote = {
 			id: '',
-			title: '',
-			body: '',
+			title: initial?.title || '',
+			body: initial?.body || '',
+			priority: initial?.priority,
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 		}
@@ -86,27 +89,35 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
 		if (er) {
 			showToast(translateError(er) as any, 'error')
-			return
+			return null
 		}
 
 		sync([createdNote, ...notes], true)
 		setActiveNoteId(createdNote.id)
 		Analytics.event('add_notes')
+		return createdNote
 	}
 
 	const updateNote = (id: string, updates: Partial<FetchedNote>) => {
-		setIsSaving(true)
+		setNotes((prev) => {
+			const updated = prev.map((n) =>
+				n.id === id ? { ...n, ...updates } : n
+			)
+			setToStorage('notes_data', updated)
+			return updated
+		})
 
 		if (saveTimeoutRef.current) {
 			clearTimeout(saveTimeoutRef.current)
 		}
 
 		saveTimeoutRef.current = setTimeout(async () => {
+			setIsSaving(true)
 			Analytics.event('update_notes')
 			const [error, updatedNote] = await safeAwait<AxiosError, FetchedNote>(
 				upsertNoteAsync({
-					title: updates.title || null,
-					body: updates.body || null,
+					title: updates.title ?? null,
+					body: updates.body ?? null,
 					id,
 					priority: updates.priority,
 				})
@@ -121,11 +132,12 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 				return showToast(`${key}: ${translatedError[key]}`, 'error')
 			}
 
-			let noteIndex = notes.findIndex((n) => n.id === id)
-			if (noteIndex === -1) return showToast('یادداشت پیدا نشد', 'error')
-			notes[noteIndex] = updatedNote
-			sync(notes, true)
-		}, 400)
+			setNotes((prev) => {
+				const updated = prev.map((n) => (n.id === id ? updatedNote : n))
+				setToStorage('notes_data', updated)
+				return updated
+			})
+		}, 500)
 	}
 
 	const onDeleteNote = async (id: string) => {
@@ -143,9 +155,9 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	}
 
 	const sync = (data: FetchedNote[], syncLocal: boolean) => {
-		setNotes(data)
+		setNotes([...data])
 		if (syncLocal) {
-			setToStorage('notes_data', notes)
+			setToStorage('notes_data', data)
 		}
 	}
 

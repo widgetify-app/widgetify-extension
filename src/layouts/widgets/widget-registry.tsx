@@ -300,15 +300,36 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'یادداشت',
 		emoji: '📝',
 		category: 'productivity',
-		allowedSizes: [{ w: 2, h: 3 }],
+		allowedSizes: [
+			{ w: 2, h: 3 },
+			{ w: 2, h: 2 },
+		],
 		defaultSize: { w: 2, h: 3 },
 		supportedModes: ['CUSTOM', 'ADVANCED'],
-		canDuplicate: false,
-		node: (_instanceId, size) => (
-			<WidgetContainer>
-				<NotesLayout size={size} />
-			</WidgetContainer>
-		),
+		variants: [
+			{
+				id: 'list',
+				label: 'لیست یادداشت‌ها',
+				size: { w: 2, h: 3 },
+			},
+			{
+				id: 'sticky',
+				label: 'استیک نوت',
+				size: { w: 2, h: 2 },
+				meta: { variant: 'sticky' },
+			},
+		],
+		canDuplicate: true,
+		node: (instanceId, size, meta) => {
+			const isSticky =
+				meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
+
+			return (
+				<WidgetContainer padding={!isSticky} background={!isSticky}>
+					<NotesLayout size={size} meta={meta} instanceId={instanceId} />
+				</WidgetContainer>
+			)
+		},
 	},
 	[WidgetKeys.transparentClock]: {
 		id: WidgetKeys.transparentClock,

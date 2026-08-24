@@ -560,7 +560,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
-			showToast(translateError('WIDGET_DUPLICATED') as string, 'success')
+			playNativeToastSound('success')
 			return commitMutation('duplicate', result, newInstanceId)
 		},
 		[runtimeLayout, cols, commitMutation, isAuthenticated]

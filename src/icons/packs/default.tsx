@@ -36,6 +36,7 @@ import {
 	LuChevronLeft,
 	LuChevronRight,
 	LuChevronUp,
+	LuCopy,
 	LuDownload,
 	LuHeart,
 	LuHistory,
@@ -261,4 +262,5 @@ export const defaultIcons = {
 	userSecret: FaUserSecret,
 	filter: FiFilter,
 	exclamation: FaExclamation,
+	copy: LuCopy,
 } satisfies IconMap

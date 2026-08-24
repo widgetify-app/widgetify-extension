@@ -5,6 +5,7 @@ import { NoteEditor } from './components/note-editor'
 import { NoteItem } from './components/note-item'
 import { NoteNavigation } from './components/note-navigation'
 import { NoteEmpty } from './components/note-empty'
+import { NoteSticky } from './variants/note-sticky'
 import type { WidgetSize } from '../layout-engine/types'
 
 function NotesContent({ size }: { size?: WidgetSize }) {
@@ -53,20 +54,35 @@ function NoteList() {
 
 interface NotesLayoutProps {
 	size?: WidgetSize
+	meta?: Record<string, any>
+	instanceId?: string
 }
 
-export function NotesLayout({ size = { w: 2, h: 3 } }: NotesLayoutProps = {}) {
+export function NotesLayout({
+	size = { w: 2, h: 3 },
+	meta,
+	instanceId,
+}: NotesLayoutProps = {}) {
+	const isSticky =
+		meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
+
 	return (
 		<NotesProvider>
-			<div className="flex-none">
-				<div className="w-full my-1">
-					<NoteNavigation />
-				</div>
-			</div>
+			{isSticky ? (
+				<NoteSticky size={size} meta={meta} instanceId={instanceId} />
+			) : (
+				<div className="flex flex-col h-full overflow-hidden">
+					<div className="flex-none">
+						<div className="w-full my-1">
+							<NoteNavigation />
+						</div>
+					</div>
 
-			<div className="mt-0.5 grow overflow-hidden">
-				<NotesContent size={size} />
-			</div>
+					<div className="mt-0.5 grow overflow-hidden">
+						<NotesContent size={size} />
+					</div>
+				</div>
+			)}
 		</NotesProvider>
 	)
 }
