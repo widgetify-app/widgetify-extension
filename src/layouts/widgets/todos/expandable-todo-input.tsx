@@ -47,7 +47,9 @@ export function ExpandableTodoInput({
 	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
 	const [category, setCategory] = useState('')
 	const { data: fetchedTags } = useGetTags(isAuthenticated && isExpanded)
-	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(jalaliMoment())
+	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(
+		getTodayJalaliMoment()
+	)
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const notesRef = useRef<HTMLTextAreaElement>(null)
@@ -158,10 +160,10 @@ export function ExpandableTodoInput({
 		}
 		setCategory('')
 		setPriority(undefined)
-		setSelectedDate(today.clone())
+		setSelectedDate(getTodayJalaliMoment())
 		setIsExpanded(false)
 		setSelectedFriends([])
-	}, [today])
+	}, [])
 
 	const handleSave = useCallback(async () => {
 		if (!isAuthenticated) {
