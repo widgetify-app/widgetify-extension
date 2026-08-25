@@ -36,6 +36,7 @@ export interface StorageKV {
 	bookmarks: Bookmark[]
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
+	compact_currencies: any
 	weatherSettings: WeatherSettings
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency

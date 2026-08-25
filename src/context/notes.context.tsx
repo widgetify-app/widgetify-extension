@@ -100,9 +100,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
 	const updateNote = (id: string, updates: Partial<FetchedNote>) => {
 		setNotes((prev) => {
-			const updated = prev.map((n) =>
-				n.id === id ? { ...n, ...updates } : n
-			)
+			const updated = prev.map((n) => (n.id === id ? { ...n, ...updates } : n))
 			setToStorage('notes_data', updated)
 			return updated
 		})
@@ -140,7 +138,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}, 500)
 	}
 
-	const onDeleteNote = async (id: string) => {
+	const onDeleteNote = async (id: string): Promise<any> => {
 		setIsSaving(true)
 		const [err, _] = await safeAwait(removeNoteAsync(id))
 		if (err) {
