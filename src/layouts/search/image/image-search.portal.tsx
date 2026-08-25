@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { showToast } from '@/common/toast'
 import { TextInput } from '@/components/text-input'
 import Analytics from '@/analytics'
@@ -21,11 +21,20 @@ export function ImageSearchPortal({
 }: ImageSearchPortalProps) {
 	const [isUploading, setIsUploading] = useState(false)
 	const [imageUrl, setImageUrl] = useState('')
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [uploadProgress, setUploadProgress] = useState(0)
 
+	useEffect(() => {
+		return () => {
+			if (previewUrl) {
+				URL.revokeObjectURL(previewUrl)
+			}
+		}
+	}, [previewUrl])
+
 	const handleUpload = async (file: File) => {
-		if (!file.type.startsWith('image/')) {
+		if (!file || !file.type?.startsWith('image/')) {
 			showToast('لطفا فقط فایل تصویری انتخاب کنید', 'error')
 			return
 		}
@@ -35,6 +44,8 @@ export function ImageSearchPortal({
 			return
 		}
 
+		const objectUrl = URL.createObjectURL(file)
+		setPreviewUrl(objectUrl)
 		setIsUploading(true)
 		setUploadProgress(0)
 		Analytics.event('searchbox_image_file')
@@ -66,6 +77,10 @@ export function ImageSearchPortal({
 			showToast(translateError(er) as string, 'error')
 		} finally {
 			setIsUploading(false)
+			if (objectUrl) {
+				URL.revokeObjectURL(objectUrl)
+			}
+			setPreviewUrl(null)
 		}
 	}
 
@@ -167,12 +182,13 @@ export function ImageSearchPortal({
 							</p>
 							{isUploading && (
 								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-base-100">
-									<img
-										src={URL.createObjectURL(
-											fileInputRef.current?.files?.[0] as File
-										)}
-										className="absolute inset-0 object-cover w-full h-full opacity-30"
-									/>
+									{previewUrl && (
+										<img
+											src={previewUrl}
+											alt="پیش‌نمایش تصویر"
+											className="absolute inset-0 object-cover w-full h-full opacity-30"
+										/>
+									)}
 
 									<div className="relative flex flex-col items-center w-full gap-3 px-12">
 										<span className="loading loading-spinner loading-md text-primary"></span>

@@ -116,6 +116,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'digital',
 				label: 'ساعت دیجیتال',
 				size: { w: 2, h: 1 },
+				meta: { variant: 'digital' },
 			},
 			{
 				id: 'flip',
@@ -127,6 +128,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'digital-vertical',
 				label: 'ساعت دیجیتال عمودی',
 				size: { w: 1, h: 1 },
+				meta: { variant: 'digital-vertical' },
 			},
 			{
 				id: 'analog',

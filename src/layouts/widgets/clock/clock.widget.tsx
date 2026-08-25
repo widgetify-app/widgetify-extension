@@ -134,7 +134,11 @@ function ClockContent({ size, timezone, isOptimalMode, meta }: ClockContentProps
 		return <ClockFlip />
 	}
 
-	if (size.w === 1) {
+	if (
+		meta?.variant === 'digital-vertical' ||
+		meta?.variant === 'vertical' ||
+		(size.w === 1 && size.h === 1)
+	) {
 		return <Clock1x1 time={time} hours={rawHours} minutes={rawMinutes} />
 	}
 

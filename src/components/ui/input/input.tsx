@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/common/utils/cn'
 import { type TextInputSize, textInputVariants } from './input.variants'
 
@@ -9,6 +9,7 @@ export interface TextInputProps {
 	onChange: (value: string) => void
 	placeholder?: string
 	onFocus?: () => void
+	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
 	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 	disabled?: boolean
 	name?: string
@@ -32,6 +33,7 @@ export const TextInput = memo(function TextInput({
 	defaultValue,
 	placeholder,
 	onFocus,
+	onBlur,
 	onKeyDown,
 	disabled = false,
 	name,
@@ -51,10 +53,18 @@ export const TextInput = memo(function TextInput({
 }: TextInputProps) {
 	const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 	const isControlled = value !== undefined
+	const [internalValue, setInternalValue] = useState(value ?? defaultValue ?? '')
+
+	useEffect(() => {
+		if (value !== undefined) {
+			setInternalValue(value)
+		}
+	}, [value])
 
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value
+			setInternalValue(newValue)
 
 			if (!debounce) {
 				onChange(newValue)
@@ -68,11 +78,24 @@ export const TextInput = memo(function TextInput({
 			debounceTimerRef.current = setTimeout(
 				() => {
 					onChange(newValue)
+					debounceTimerRef.current = null
 				},
 				type === 'color' ? 50 : debounceTime
 			)
 		},
 		[onChange, debounce, type, debounceTime]
+	)
+
+	const handleBlur = useCallback(
+		(e: React.FocusEvent<HTMLInputElement>) => {
+			if (debounce && debounceTimerRef.current) {
+				clearTimeout(debounceTimerRef.current)
+				debounceTimerRef.current = null
+				onChange(internalValue)
+			}
+			onBlur?.(e)
+		},
+		[debounce, internalValue, onBlur, onChange]
 	)
 
 	useEffect(() => {
@@ -90,6 +113,7 @@ export const TextInput = memo(function TextInput({
 		name,
 		disabled,
 		onFocus,
+		onBlur: handleBlur,
 		onKeyDown,
 		dir: direction,
 		placeholder: placeholder || '',
@@ -102,7 +126,7 @@ export const TextInput = memo(function TextInput({
 	}
 
 	if (isControlled) {
-		return <input {...inputProps} value={value} />
+		return <input {...inputProps} value={internalValue} />
 	}
 
 	return <input {...inputProps} defaultValue={defaultValue} />

@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, ConfirmationModal, IconLoading, Tooltip } from '@/components/ui'
+import {
+	Button,
+	ConfirmationModal,
+	IconLoading,
+	TextInput,
+	Tooltip,
+} from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -90,7 +96,7 @@ export function NoteSticky() {
 			setLocalBody('')
 			setLocalPriority(undefined)
 		}
-	}, [currentNote?.id, currentNote?.title, currentNote?.body, currentNote?.priority])
+	}, [currentNote?.id])
 
 	const handleTitleChange = (val: string) => {
 		setLocalTitle(val)
@@ -186,16 +192,17 @@ export function NoteSticky() {
 			>
 				<div className="flex items-center gap-1.5 flex-1 min-w-0">
 					{currentNote ? (
-						<input
-							type="text"
+						<TextInput
 							value={localTitle}
-							onChange={(e) => handleTitleChange(e.target.value)}
+							onChange={handleTitleChange}
+							debounce
+							debounceTime={600}
 							placeholder="عنوان یادداشت..."
+							direction="rtl"
 							className={cn(
-								'bg-transparent text-xs font-bold outline-none w-full truncate placeholder:opacity-60',
+								'bg-transparent border-none text-xs font-bold outline-none w-full truncate placeholder:opacity-60 h-auto p-0 shadow-none focus:ring-0',
 								colorTheme.text
 							)}
-							dir="rtl"
 						/>
 					) : (
 						<span className="text-xs font-bold opacity-75">
