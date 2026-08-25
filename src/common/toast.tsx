@@ -156,7 +156,7 @@ const TOAST_THEMES: Record<
 				<Icon name="atSign" size={15} />
 			</div>
 		),
-		defaultTitle: 'اطلاعات',
+		defaultTitle: 'نکته',
 		defaultActionText: 'متوجه شدم',
 		messageClass: 'text-neutral-300',
 	},

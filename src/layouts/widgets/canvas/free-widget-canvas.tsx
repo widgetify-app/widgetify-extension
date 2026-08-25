@@ -6,6 +6,8 @@ import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal } from '../add-widget-modal'
+import { AddWidgetBottomSheet } from '../add-widget.bottom-sheet'
+import { WidgetHelpModal } from '../widget-help.modal'
 import { CanvasContextMenu } from './canvas-context-menu'
 import { CanvasWidgetOuter } from './canvas-widget-outer'
 import { CanvasEditToolbar } from './canvas-edit-toolbar'
@@ -30,6 +32,8 @@ export function FreeWidgetCanvas() {
 	} = useFreeWidgets()
 
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+	const [isAddBottomSheetOpen, setIsAddBottomSheetOpen] = useState(false)
+	const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
 	const [editTarget, setEditTarget] = useState<{
 		instanceId: string
 		widgetId: string
@@ -51,10 +55,11 @@ export function FreeWidgetCanvas() {
 			(payload?: any) => {
 				if (payload?.instanceId && payload?.widgetId) {
 					setEditTarget(payload)
+					setIsAddModalOpen(true)
 				} else {
 					setEditTarget(null)
+					setIsAddBottomSheetOpen(true)
 				}
-				setIsAddModalOpen(true)
 			}
 		)
 		return () => removeListener()
@@ -167,7 +172,7 @@ export function FreeWidgetCanvas() {
 			>
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
-						onAddWidget={() => setIsAddModalOpen(true)}
+						onAddWidget={() => setIsAddBottomSheetOpen(true)}
 						onExitEditMode={() => {
 							setCanvasMode('normal')
 							setSelectedInstanceId(null)
@@ -236,12 +241,19 @@ export function FreeWidgetCanvas() {
 						setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
 						setSelectedInstanceId(null)
 					}}
-					onOpenAddWidget={() => setIsAddModalOpen(true)}
+					onOpenAddWidget={() => setIsAddBottomSheetOpen(true)}
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
 					}
+					onOpenHelp={() => setIsHelpModalOpen(true)}
 				/>
 			)}
+
+			<AddWidgetBottomSheet
+				isOpen={isAddBottomSheetOpen}
+				onClose={() => setIsAddBottomSheetOpen(false)}
+				onOpenAdvanced={() => setIsAddModalOpen(true)}
+			/>
 
 			<AddWidgetModal
 				isOpen={isAddModalOpen}
@@ -250,6 +262,11 @@ export function FreeWidgetCanvas() {
 					setIsAddModalOpen(false)
 					setEditTarget(null)
 				}}
+			/>
+
+			<WidgetHelpModal
+				isOpen={isHelpModalOpen}
+				onClose={() => setIsHelpModalOpen(false)}
 			/>
 		</div>
 	)

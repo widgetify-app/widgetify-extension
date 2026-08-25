@@ -120,10 +120,10 @@ export function BottomSheet({
 							)}
 
 							<div
-								className="px-2 py-1 mt-1 overflow-y-auto scrollbar-none"
+								className="px-4 pt-2 pb-4 mt-1 overflow-y-auto scrollbar-none"
 								style={{
 									height: title
-										? `calc(${sizes[size]} - 40px)`
+										? `calc(${sizes[size]} - 44px)`
 										: `calc(${sizes[size]} - 30px)`,
 									WebkitOverflowScrolling: 'touch',
 								}}

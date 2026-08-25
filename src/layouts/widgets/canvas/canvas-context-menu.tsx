@@ -9,6 +9,7 @@ interface CanvasContextMenuProps {
 	onToggleEditMode: () => void
 	onOpenAddWidget: () => void
 	onOpenAppearanceSettings: () => void
+	onOpenHelp?: () => void
 }
 
 export function CanvasContextMenu({
@@ -19,6 +20,7 @@ export function CanvasContextMenu({
 	onToggleEditMode,
 	onOpenAddWidget,
 	onOpenAppearanceSettings,
+	onOpenHelp,
 }: CanvasContextMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
 
@@ -94,6 +96,20 @@ export function CanvasContextMenu({
 				<Icon name="brush" size={14} className="text-muted" />
 				<span>تنظیمات ظاهری</span>
 			</button>
+
+			{onOpenHelp && (
+				<button
+					type="button"
+					onClick={() => {
+						onOpenHelp()
+						onClose()
+					}}
+					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors border-t border-base-content/5 mt-0.5 pt-1.5"
+				>
+					<Icon name="help" size={14} className="text-muted" />
+					<span>راهنمای ویجت‌ها</span>
+				</button>
+			)}
 		</div>
 	)
 }
