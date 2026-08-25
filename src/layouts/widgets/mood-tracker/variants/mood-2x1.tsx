@@ -11,14 +11,14 @@ interface Mood2x1Props {
 
 export function Mood2x1({ todayMood, onSelectMood, isSaving }: Mood2x1Props) {
 	return (
-		<div className="w-full h-full flex flex-col justify-between p-2 select-none overflow-hidden text-right">
+		<div className="w-full h-full flex flex-col justify-between p-2.5 select-none overflow-hidden text-right">
 			<div className="flex items-center justify-between px-0.5">
 				<span className="text-[11px] font-bold text-content leading-none">
 					امروز چه حسی داری؟
 				</span>
 			</div>
 
-			<div className="grid grid-cols-4 gap-1.5 w-full my-auto">
+			<div className="grid grid-cols-4 gap-1.5 w-full my-3">
 				{moodOptions.map((opt) => {
 					const isSelected = todayMood?.mood === opt.value
 

@@ -249,7 +249,7 @@ img {
 }
 
 .rounded-widget {
-  @apply rounded-2xl
+  @apply rounded-3xl
 }
 
 .z-popover {
@@ -260,6 +260,7 @@ img {
   0% {
     transform: rotate(-0.35deg);
   }
+
   100% {
     transform: rotate(0.35deg);
   }
@@ -269,6 +270,7 @@ img {
   0% {
     transform: rotate(0.3deg);
   }
+
   100% {
     transform: rotate(-0.3deg);
   }

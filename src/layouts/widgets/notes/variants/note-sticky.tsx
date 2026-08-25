@@ -15,7 +15,7 @@ const STICKY_COLOR_MAP: Record<
 	{ bg: string; border: string; text: string; headerBg: string; divider: string }
 > = {
 	default: {
-		bg: 'bg-base-200',
+		bg: 'bg-base-200 bg-glass',
 		border: 'border-base-content/10',
 		text: 'text-content',
 		headerBg: 'bg-base-300/40',
@@ -172,7 +172,7 @@ export function NoteSticky() {
 	return (
 		<div
 			className={cn(
-				'h-full w-full flex flex-col justify-between p-3 rounded-2xl border transition-all duration-200 select-none overflow-hidden relative shadow-xs',
+				'h-full w-full flex flex-col justify-between p-3 rounded-2xl border transition-all duration-200 select-none overflow-hidden relative shadow-xs ',
 				colorTheme.bg,
 				colorTheme.border,
 				colorTheme.text
