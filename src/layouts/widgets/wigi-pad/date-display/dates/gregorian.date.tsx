@@ -1,7 +1,9 @@
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 export function GregorianDate() {
-	const { today } = useDate()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 
 	const textColor = 'text-content drop-shadow-md'
 	const date = today.locale('en')

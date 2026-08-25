@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { useAuth } from '@/context/auth.context'
 import { useGetMoods } from '@/services/hooks/mood-log/get-moods.hook'
 import {
@@ -23,7 +24,8 @@ interface MoodTrackerWidgetProps {
 export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetProps) {
 	const queryClient = useQueryClient()
 	const { isAuthenticated } = useAuth()
-	const { today } = useDate()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog, isPending } = useUpsertMoodLog()
 	const [optimisticMood, setOptimisticMood] = useState<string | null>(null)
 

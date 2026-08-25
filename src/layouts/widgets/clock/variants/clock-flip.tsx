@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 const FLIP_DURATION = 400
 
@@ -108,11 +109,18 @@ function FlipUnit({ value }: FlipUnitProps) {
 }
 
 export function ClockFlip() {
-	const { today } = useDate()
-	const time = today.toDate()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const [now, setNow] = useState(() => getCurrentDate(timezone.value).toDate())
 
-	const rawH = time.getHours().toString().padStart(2, '0')
-	const rawM = time.getMinutes().toString().padStart(2, '0')
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setNow(getCurrentDate(timezone.value).toDate())
+		}, 1000)
+		return () => clearInterval(timer)
+	}, [timezone])
+
+	const rawH = now.getHours().toString().padStart(2, '0')
+	const rawM = now.getMinutes().toString().padStart(2, '0')
 
 	return (
 		<>

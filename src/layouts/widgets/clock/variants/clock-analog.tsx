@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 interface ClockAnalogProps {
 	size?: number
@@ -7,8 +8,8 @@ interface ClockAnalogProps {
 }
 
 export function ClockAnalog({ size = 76, time: propTime }: ClockAnalogProps) {
-	const { today } = useDate()
-	const [internalTime, setInternalTime] = useState<Date>(() => today.toDate())
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const [internalTime, setInternalTime] = useState<Date>(() => getCurrentDate(timezone.value).toDate())
 
 	useEffect(() => {
 		if (propTime) return

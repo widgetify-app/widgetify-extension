@@ -8,7 +8,6 @@ import Analytics from '@/analytics'
 import { Chip } from '@/components/ui'
 import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
-import { useDate } from '@/context/date.context'
 import { DatePicker } from '@/components/ui'
 import { PriorityDropdown } from './components/priority.dropdown'
 import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
@@ -44,12 +43,11 @@ export function ExpandableTodoInput({
 	const { mutateAsync: updateTodoAsync, isPending: isUpdatingTodo } = useUpdateTodo(
 		editTodo?.id || null
 	)
-	const { today } = useDate()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
 	const [category, setCategory] = useState('')
 	const { data: fetchedTags } = useGetTags(isAuthenticated && isExpanded)
-	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(today)
+	const [selectedDate, setSelectedDate] = useState<jalaliMoment.Moment>(jalaliMoment())
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	const notesRef = useRef<HTMLTextAreaElement>(null)

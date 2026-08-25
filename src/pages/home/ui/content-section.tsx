@@ -1,5 +1,4 @@
 import { useAppearanceSetting } from '@/context/appearance.context'
-import { DateProvider } from '@/context/date.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
@@ -22,8 +21,7 @@ export function ContentSection() {
 	}
 
 	return (
-		<DateProvider>
-			<div
+		<div
 				data-tour="content"
 				className="flex flex-col flex-1 w-full overflow-y-auto scrollbar-none"
 			>
@@ -76,6 +74,5 @@ export function ContentSection() {
 					)}
 				</div>
 			</div>
-		</DateProvider>
 	)
 }

@@ -1,13 +1,14 @@
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { HolidayBadge } from '../components/holiday.badge'
-import { hijriMonthNames } from '@/layouts/widgets/calendar/utils'
+import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon'
 import { InlineWeather } from '../../weather/simple-weather'
 
 export function JalaliDate() {
-	const { today, todayIsHoliday, getHijriDate } = useDate()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 	const { data: events } = useGetEvents()
 	const eventsForCalendar = events || {
 		gregorianEvents: [],
@@ -15,14 +16,16 @@ export function JalaliDate() {
 		shamsiEvents: [],
 	}
 	const sortedEvents = combineAndSortEvents(eventsForCalendar, today.clone(), [])
+	const todayIsHoliday = today.day() === 5
 	const isHoliday = sortedEvents.some((event) => event.isHoliday) || todayIsHoliday
 
 	const textColor = 'text-content drop-shadow-md'
 
 	const gregorianShort = today.doAsGregorian().format('D MMM')
 
-	const hijriRaw = getHijriDate(today)
-	const [_, hijriMonth, hijriDate] = hijriRaw.split('/')
+	const hijriDate = convertShamsiToHijri(today)
+	const hijriRaw = `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
+	const [_, hijriMonth, hijriDateDay] = hijriRaw.split('/')
 	const hijriMonthName = hijriMonthNames[Number(hijriMonth) - 1] || hijriMonth
 	const { data: weather } = useGetWeatherByLatLon(false)
 
@@ -49,7 +52,7 @@ export function JalaliDate() {
 					</div>
 					<span className={`text-[10px]  text-base-content/70`}>
 						{gregorianShort} <span className="mx-1 opacity-50">·</span>
-						{hijriDate} {hijriMonthName}
+						{hijriDateDay} {hijriMonthName}
 					</span>
 					<InlineWeather weather={weather} hasBanner={false} />
 				</div>

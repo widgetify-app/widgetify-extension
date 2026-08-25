@@ -4,7 +4,8 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { GetUserFirstName } from '@/common/utils/get-firstname'
 import { useAuth } from '@/context/auth.context'
-import { useDate } from '@/context/date.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { safeAwait } from '@/services/api'
 import {
 	type MoodType,
@@ -20,7 +21,8 @@ interface Prop {
 export function DailyMoodNotification({ className }: Prop) {
 	const queryClient = useQueryClient()
 	const { user } = useAuth()
-	const { today } = useDate()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog } = useUpsertMoodLog()
 	const [mood, setMood] = useState<string>()
 	const isAdding = useIsMutating({ mutationKey: ['upsertMoodLog'] }) > 0

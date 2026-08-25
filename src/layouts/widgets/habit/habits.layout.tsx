@@ -4,8 +4,8 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { Button, ConfirmationModal } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { useDate } from '@/context/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { safeAwait } from '@/services/api'
 import { useArchiveHabit } from '@/services/hooks/habit/archive-habit.hook'
 import { useGetHabits } from '@/services/hooks/habit/get-habits.hook'
@@ -23,8 +23,8 @@ import type { WidgetSize } from '../layout-engine/types'
 
 export function HabitsContent() {
 	const { isAuthenticated } = useAuth()
-	const { today } = useDate()
-	const { blurMode } = useGeneralSetting()
+	const { selected_timezone: timezone, blurMode } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
 	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
