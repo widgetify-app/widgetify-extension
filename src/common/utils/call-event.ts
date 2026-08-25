@@ -26,7 +26,11 @@ export interface EventName {
 		| null
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
-	openWidgetsSettings: { tab: WidgetTabKeys | null }
+	openWidgetsSettings: {
+		tab: WidgetTabKeys | null
+		instanceId?: string
+		size?: { w: number; h: number }
+	}
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
 		petName?: string
@@ -51,6 +55,7 @@ export interface EventName {
 	currencies_updated: {
 		currencies: string[]
 		colorMode: CurrencyColorMode
+		compactCurrencies?: Record<string, string>
 	}
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings

@@ -4,7 +4,7 @@ import { WidgetContainer } from '../widget-container'
 import { CalendarGrid } from './components/calendar-grid'
 import { CalendarHeader } from './components/calendar-header'
 import { GoogleCalendarView } from './components/google-calendar/google-calendar-view'
-import { CalendarCompactRow } from './variants/calendar-2x1'
+import { Calendar2x1Row } from './variants/calendar-2x1'
 import { Calendar1x1 } from './variants/calendar-1x1'
 import Analytics from '@/analytics'
 import { Icon } from '@/src/icons'
@@ -77,7 +77,7 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 	if (size.w === 2 && size.h === 1) {
 		return (
 			<WidgetContainer className="h-full">
-				<CalendarCompactRow />
+				<Calendar2x1Row />
 			</WidgetContainer>
 		)
 	}

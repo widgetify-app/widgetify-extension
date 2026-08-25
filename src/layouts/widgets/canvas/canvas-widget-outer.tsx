@@ -180,7 +180,11 @@ export function CanvasWidgetOuter({
 
 	const handleSettings = () => {
 		if (definition.settingsTab) {
-			callEvent('openWidgetsSettings', { tab: definition.settingsTab })
+			callEvent('openWidgetsSettings', {
+				tab: definition.settingsTab,
+				instanceId: widget.instanceId,
+				size: widget.size,
+			})
 		}
 	}
 

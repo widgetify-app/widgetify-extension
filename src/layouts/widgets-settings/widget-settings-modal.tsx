@@ -48,6 +48,8 @@ interface WidgetSettingsModalProps {
 	onClose: () => void
 	selectedTab: WidgetTabKeys | null
 	activeSettingTab?: WidgetTabKeys | null
+	instanceId?: string
+	size?: { w: number; h: number }
 	onCloseSetting?: () => void
 }
 
@@ -56,6 +58,8 @@ export function WidgetSettingsModal({
 	onClose,
 	selectedTab,
 	activeSettingTab,
+	instanceId,
+	size,
 	onCloseSetting,
 }: WidgetSettingsModalProps) {
 	const { ui } = useAppearanceSetting()
@@ -89,7 +93,7 @@ export function WidgetSettingsModal({
 					direction="rtl"
 					closeOnBackdropClick
 				>
-					<activeSettingConfig.Component />
+					<activeSettingConfig.Component {...({ instanceId, size } as any)} />
 				</Modal>
 			)}
 		</>

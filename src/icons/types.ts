@@ -134,4 +134,6 @@ export type IconName =
 	| 'filter'
 	| 'exclamation'
 	| 'copy'
+	| 'wifi'
+	| 'wifiOff'
 export type IconMap = Record<IconName, IconType>

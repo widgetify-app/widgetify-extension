@@ -27,6 +27,8 @@ interface WigiArzLayoutProps {
 	inComboWidget?: boolean
 	comboClassName?: string
 	size?: WidgetSize
+	instanceId?: string
+	meta?: Record<string, any>
 }
 
 export function WigiArzLayout({
@@ -34,6 +36,8 @@ export function WigiArzLayout({
 	inComboWidget = false,
 	comboClassName,
 	size = { w: 2, h: 3 },
+	instanceId,
+	meta,
 }: WigiArzLayoutProps) {
 	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
 		useCurrencyStore()
@@ -74,8 +78,12 @@ export function WigiArzLayout({
 	if (!inComboWidget) {
 		if (size.w === 1 && size.h === 1) {
 			return (
-				<WidgetContainer background={enableBackground}>
-					<CurrencyCompactSquare code={selectedCurrencies[0] || 'USD'} />
+				<WidgetContainer background={enableBackground} padding={false} className="h-full">
+					<CurrencyCompactSquare
+						defaultCode={meta?.currencyCode || (!instanceId ? selectedCurrencies[0] || 'USD' : undefined)}
+						instanceId={instanceId}
+						meta={meta}
+					/>
 				</WidgetContainer>
 			)
 		}

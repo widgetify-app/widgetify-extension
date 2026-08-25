@@ -57,7 +57,11 @@ export function RootLayout() {
 
 function Main() {
 	const [showManageWidgets, setShowManageWidgets] = useState(false)
-	const [activeSettingTab, setActiveSettingTab] = useState<WidgetTabKeys | null>(null)
+	const [activeSettingPayload, setActiveSettingPayload] = useState<{
+		tab: WidgetTabKeys | null
+		instanceId?: string
+		size?: { w: number; h: number }
+	} | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page } = usePage()
 	const { isOptimalMode } = useGeneralSetting()
@@ -65,11 +69,15 @@ function Main() {
 	useEffect(() => {
 		const openWidgetsSettingsEvent = listenEvent(
 			'openWidgetsSettings',
-			(data: { tab: WidgetTabKeys | null }) => {
+			(data: {
+				tab: WidgetTabKeys | null
+				instanceId?: string
+				size?: { w: number; h: number }
+			}) => {
 				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
 					setShowManageWidgets(true)
 				} else {
-					setActiveSettingTab(data.tab)
+					setActiveSettingPayload(data)
 				}
 			}
 		)
@@ -117,8 +125,10 @@ function Main() {
 						isOpen={showManageWidgets}
 						onClose={() => setShowManageWidgets(false)}
 						selectedTab={null}
-						activeSettingTab={activeSettingTab}
-						onCloseSetting={() => setActiveSettingTab(null)}
+						activeSettingTab={activeSettingPayload?.tab}
+						instanceId={activeSettingPayload?.instanceId}
+						size={activeSettingPayload?.size}
+						onCloseSetting={() => setActiveSettingPayload(null)}
 					/>
 				</WidgetVisibilityProvider>
 			</FreeWidgetProvider>

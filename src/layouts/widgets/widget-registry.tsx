@@ -227,10 +227,28 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
 		supportedModes: ['CUSTOM', 'ADVANCED'],
+		variants: [
+			{
+				id: 'list',
+				label: 'لیست قیمت ارزها',
+				size: { w: 2, h: 3 },
+			},
+			{
+				id: 'compact',
+				label: 'تک ارز',
+				size: { w: 1, h: 1 },
+				meta: { currencyCode: 'USD' },
+			},
+		],
 		canDuplicate: true,
-		node: (_instanceId, size) => (
+		node: (instanceId, size, meta) => (
 			<CurrencyProvider>
-				<WigiArzLayout inComboWidget={false} size={size} />
+				<WigiArzLayout
+					inComboWidget={false}
+					size={size}
+					meta={meta}
+					instanceId={instanceId}
+				/>
 			</CurrencyProvider>
 		),
 	},

@@ -255,7 +255,7 @@ export function NetworkLayout({
 						<Button
 							size="md"
 							type="button"
-							className="w-full h-fit py-3.5"
+							className="w-full h-fit py-2.5"
 							rounded={'2xl'}
 							variant={'default'}
 							onClick={handleRefresh}
@@ -263,7 +263,7 @@ export function NetworkLayout({
 						>
 							<Icon
 								name="refresh"
-								size={14}
+								size={12}
 								className={isLoading ? 'animate-spin' : ''}
 							/>
 							به‌روزرسانی شبکه

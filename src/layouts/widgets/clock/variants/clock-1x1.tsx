@@ -7,12 +7,17 @@ interface Clock1x1Props {
 export function Clock1x1({ hours, minutes }: Clock1x1Props) {
 	return (
 		<div className="w-full h-full flex flex-col items-center justify-center p-1 overflow-hidden select-none">
-			<div className="flex flex-col items-center justify-center leading-none text-center">
-				<span className="text-2xl sm:text-3xl font-black text-content tracking-tight">
+			<div
+				dir="ltr"
+				className="flex gap-2 items-center justify-center leading-none"
+			>
+				<span className="text-2xl sm:text-3xl font-black text-content tracking-tight tabular-nums">
 					{hours}
 				</span>
-				<div className="w-4 h-0.5 bg-base-content/20 my-1 rounded-full" />
-				<span className="text-2xl sm:text-3xl font-black text-content tracking-tight">
+				<span className="text-2xl sm:text-3xl font-black text-content tracking-tight mx-0.5 -mt-1">
+					:
+				</span>
+				<span className="text-2xl sm:text-3xl font-black text-content tracking-tight tabular-nums">
 					{minutes}
 				</span>
 			</div>

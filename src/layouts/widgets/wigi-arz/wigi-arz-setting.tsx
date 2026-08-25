@@ -1,19 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { ItemSelector } from '@/components/ui'
-import { SectionPanel } from '@/components/ui'
-import { SelectBox } from '@/components/ui'
+import { ItemSelector, SectionPanel, SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { CurrencyColorMode } from '@/context/currency.context'
+import { useFreeWidgets } from '@/context/free-widget.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
 import { CurrenciesType, type SupportedCurrencies } from './wigi-arz-setting.interface'
 
-export function WigiArzSetting() {
+interface WigiArzSettingProps {
+	instanceId?: string
+	size?: { w: number; h: number }
+}
+
+export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	const { data: supportCurrencies } = useGetSupportCurrencies()
+	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
+
 	const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([])
 	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode>(
 		CurrencyColorMode.NORMAL
@@ -22,7 +28,47 @@ export function WigiArzSetting() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const { isAuthenticated } = useAuth()
 
+	const targetWidget = instanceId
+		? runtimeLayout.find((w) => w.instanceId === instanceId)
+		: null
+
+	const isCompact = size
+		? size.w === 1 && size.h === 1
+		: targetWidget
+			? targetWidget.size.w === 1 && targetWidget.size.h === 1
+			: false
+
+	useEffect(() => {
+		async function load() {
+			const [color, currencies] = await Promise.all([
+				getFromStorage('currencyColorMode'),
+				getFromStorage('currencies'),
+			])
+
+			if (color) {
+				setCurrencyColorMode(color)
+			}
+			if (currencies) {
+				setSelectedCurrencies(currencies)
+			}
+		}
+
+		load()
+	}, [])
+
 	const toggleCurrency = (currencyKey: string) => {
+		if (isCompact && instanceId) {
+			updateWidgetSettings(instanceId, {
+				...targetWidget?.meta,
+				currencyCode: currencyKey,
+			})
+			Analytics.event('currency_compact_setting_change', {
+				currency: currencyKey,
+				instanceId,
+			})
+			return
+		}
+
 		const isRemoving = selectedCurrencies.includes(currencyKey)
 		const modifiedCurrencySelection = isRemoving
 			? selectedCurrencies.filter((key) => key !== currencyKey)
@@ -44,6 +90,7 @@ export function WigiArzSetting() {
 			colorMode: currencyColorMode,
 		})
 		setSelectedCurrencies(modifiedCurrencySelection)
+		setToStorage('currencies', modifiedCurrencySelection)
 	}
 
 	const toggleCurrencyColorMode = (mode: CurrencyColorMode) => {
@@ -57,6 +104,7 @@ export function WigiArzSetting() {
 		})
 
 		setCurrencyColorMode(mode)
+		setToStorage('currencyColorMode', mode)
 	}
 
 	const currencyGroups = getCurrencyOptions(
@@ -73,27 +121,11 @@ export function WigiArzSetting() {
 		}))
 		.filter((group) => group.options.length > 0)
 
-	useEffect(() => {
-		async function load() {
-			const [color, currencies] = await Promise.all([
-				getFromStorage('currencyColorMode'),
-				getFromStorage('currencies'),
-			])
-
-			if (color) {
-				setCurrencyColorMode(color)
-			}
-			if (currencies) {
-				setSelectedCurrencies(currencies)
-			}
-		}
-
-		load()
-	}, [])
+	const activeCompactCode = targetWidget?.meta?.currencyCode || 'USD'
 
 	return (
 		<WidgetSettingWrapper>
-			<div className={`transition-all duration-300 ease-out`}>
+			<div className="transition-all duration-300 ease-out flex flex-col gap-3">
 				<SectionPanel title="رنگ تغییر قیمت" size="xs">
 					<div className="flex flex-row gap-2">
 						<ItemSelector
@@ -113,7 +145,10 @@ export function WigiArzSetting() {
 					</div>
 				</SectionPanel>
 
-				<SectionPanel title="ارزها" size="xs">
+				<SectionPanel
+					title={isCompact ? 'انتخاب ارز برای ویجت' : 'انتخاب ارزها'}
+					size="xs"
+				>
 					<div className="flex flex-col gap-1 mb-2">
 						<TextInput
 							type="text"
@@ -134,36 +169,30 @@ export function WigiArzSetting() {
 					</div>
 
 					<div
-						className={`px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out`}
+						className="px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out"
 					>
 						{filteredGroups.map((group, groupIndex) => (
 							<div
 								key={groupIndex}
-								className={`mb-6 transition-all duration-200 ease-out`}
+								className="mb-6 transition-all duration-200 ease-out"
 							>
-								<h3
-									className={
-										'text-sm font-medium mb-3 currency-group-heading'
-									}
-								>
+								<h3 className="text-sm font-medium mb-3 currency-group-heading">
 									{group.label}
 								</h3>
 								<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
 									{group.options.map((option) => {
-										const isSelected = selectedCurrencies.includes(
-											option.value
-										)
+										const isSelected = isCompact
+											? activeCompactCode === option.value
+											: selectedCurrencies.includes(option.value)
 
 										return (
 											<div
 												key={option.value}
-												className={`flex shadow flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-2xl 
+												className={`flex shadow-xs flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-2xl 
 														transition-all duration-200 ease-out active:scale-98 hover:scale-95
 														${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
 													  `}
-												onClick={() =>
-													toggleCurrency(option.value)
-												}
+												onClick={() => toggleCurrency(option.value)}
 											>
 												<div
 													className={`font-normal ${isSelected ? 'font-medium' : ''}`}
@@ -216,7 +245,6 @@ function getCurrencyOptions(supported: SupportedCurrencies): Option[] {
 			options: isCrypto.map((index) => ({
 				value: supported[index].key,
 				label: supported[index].label.fa,
-				labelEn: supported[index].key,
 			})),
 		},
 		{
@@ -224,7 +252,6 @@ function getCurrencyOptions(supported: SupportedCurrencies): Option[] {
 			options: isCurrency.map((index) => ({
 				value: supported[index].key,
 				label: supported[index].label.fa,
-				labelEn: supported[index].key,
 			})),
 		},
 		{

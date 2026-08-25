@@ -119,7 +119,7 @@ import {
 	FaPhotoFilm,
 	FaTreeCity,
 } from 'react-icons/fa6'
-import { BiCalendar, BiLogoGoogle, BiRss } from 'react-icons/bi'
+import { BiCalendar, BiLogoGoogle, BiRss, BiWifi, BiWifiOff } from 'react-icons/bi'
 import { FcGoogle } from 'react-icons/fc'
 import { CiLocationOn, CiPause1 } from 'react-icons/ci'
 import { WiCloudy, WiHumidity } from 'react-icons/wi'
@@ -263,4 +263,6 @@ export const defaultIcons = {
 	filter: FiFilter,
 	exclamation: FaExclamation,
 	copy: LuCopy,
+	wifi: BiWifi,
+	wifiOff: BiWifiOff,
 } satisfies IconMap
