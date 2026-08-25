@@ -18,6 +18,7 @@ import type {
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
 import { Icon } from '@/src/icons'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetHelpModal } from './widget-help.modal'
 
 interface AddWidgetModalProps {
 	isOpen: boolean
@@ -68,6 +69,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		selectedDef?.variants?.[0] || null
 	)
 	const [activeCategory, setActiveCategory] = useState<WidgetCategory>('all')
+	const [isHelpOpen, setIsHelpOpen] = useState(false)
 
 	useEffect(() => {
 		if (editTarget) {
@@ -223,15 +225,36 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		isAuthenticated || isCurrentlyActive || visibility.length < MAX_VISIBLE_WIDGETS
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			title={editTarget ? 'تغییر مدل و استایل ویجت' : 'مدیریت و افزودن ویجت‌ها'}
-			size="xl"
-			direction="rtl"
-			closeOnBackdropClick
-			className="max-w-4xl md:max-w-5xl"
-		>
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				title={
+					<div className="flex items-center gap-2.5">
+						<span>
+							{editTarget
+								? 'تغییر مدل و استایل ویجت'
+								: 'مدیریت و افزودن ویجت‌ها'}
+						</span>
+						<Button
+							type="button"
+							variant="default"
+							size="xs"
+							rounded="xl"
+							onClick={() => setIsHelpOpen(true)}
+							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
+							title="راهنمای مدیریت ویجت‌ها"
+						>
+							<Icon name="help" size={13} />
+							<span>راهنما</span>
+						</Button>
+					</div>
+				}
+				size="xl"
+				direction="rtl"
+				closeOnBackdropClick
+				className="max-w-4xl md:max-w-5xl"
+			>
 			<div className="flex flex-col md:flex-row gap-4 h-137.5 select-none w-full">
 				<div className="w-full md:w-5/12 flex flex-col border-b md:border-b-0 md:border-l border-base-content/10 pl-0 md:pl-3 pb-3 md:pb-0">
 					<div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-2 mb-2 border-b border-base-content/10">
@@ -548,5 +571,11 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 				</div>
 			</div>
 		</Modal>
+
+		<WidgetHelpModal
+			isOpen={isHelpOpen}
+			onClose={() => setIsHelpOpen(false)}
+		/>
+	</>
 	)
 }
