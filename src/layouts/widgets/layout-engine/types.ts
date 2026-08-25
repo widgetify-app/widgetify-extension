@@ -28,6 +28,7 @@ export interface WidgetPosition {
 export interface WidgetSize {
 	w: number
 	h: number
+	isVipOnly?: boolean
 }
 
 export interface StoredWidget {
@@ -64,6 +65,7 @@ export interface WidgetVariantOption {
 	id: string
 	label: string
 	size: WidgetSize
+	isVipOnly?: boolean
 	meta?: Record<string, any>
 }
 
@@ -74,6 +76,7 @@ export interface WidgetDefinition {
 	label: string
 	emoji: string
 	category?: WidgetCategory
+	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]
 	defaultSize: WidgetSize
 	variants?: WidgetVariantOption[]

@@ -11,6 +11,9 @@ import {
 	type WidgetSize,
 } from '../layout-engine/types'
 import { cn } from '@/common/utils/cn'
+import { useAuth } from '@/context/auth.context'
+import { Icon } from '@/src/icons'
+import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
 
@@ -31,6 +34,8 @@ export function CanvasWidgetOuter({
 	gap,
 	cols,
 }: CanvasWidgetOuterProps) {
+	const { isVip } = useAuth()
+	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly } = useWidgetVipResolver()
 	const {
 		canvasMode,
 		setCanvasMode,
@@ -41,6 +46,14 @@ export function CanvasWidgetOuter({
 		duplicateWidget,
 		removeWidget,
 	} = useFreeWidgets()
+
+	const isCurrentWidgetVipOnly = isWidgetVipOnly(widget.id)
+	const isCurrentVariantVipOnly = isVariantVipOnly(widget.id, widget.meta?.variant)
+	const isCurrentSizeVipOnly = isSizeVipOnly(widget.id, widget.size)
+	const isLocked =
+		!isVip &&
+		(isCurrentWidgetVipOnly || isCurrentVariantVipOnly || isCurrentSizeVipOnly)
+	const isCompactSize = widget.size.w === 1 && widget.size.h === 1
 
 	const [isDragging, setIsDragging] = useState(false)
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
@@ -144,10 +157,7 @@ export function CanvasWidgetOuter({
 			)
 			const targetRow = Math.max(0, dragStartPosRef.current.row + deltaRow)
 
-			if (
-				targetCol !== widget.position.col ||
-				targetRow !== widget.position.row
-			) {
+			if (targetCol !== widget.position.col || targetRow !== widget.position.row) {
 				moveWidget(widget.instanceId, { col: targetCol, row: targetRow })
 			}
 		}
@@ -273,6 +283,29 @@ export function CanvasWidgetOuter({
 					)}
 				>
 					{definition.node(widget.instanceId, widget.size, widget.meta)}
+					{isLocked && canvasMode === 'normal' && (
+						<div
+							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-warning/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
+							onClick={(e) => e.stopPropagation()}
+						>
+							<div
+								className={cn(
+									'rounded-full bg-warning/15 text-warning flex items-center justify-center shadow-2xs',
+									isCompactSize ? 'w-6 h-6 mb-1' : 'w-8 h-8 mb-1.5'
+								)}
+							>
+								<Icon name="crown" size={isCompactSize ? 12 : 15} />
+							</div>
+							<span
+								className={cn(
+									'font-bold text-content leading-tight',
+									isCompactSize ? 'text-[10px]' : 'text-xs'
+								)}
+							>
+								{isCompactSize ? 'مخصوص پرو' : 'مخصوص کاربران پرو'}
+							</span>
+						</div>
+					)}
 					{canvasMode === 'edit' && (
 						<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
 					)}
@@ -291,7 +324,9 @@ export function CanvasWidgetOuter({
 					onDuplicate={handleDuplicate}
 					onMove={handleMove}
 					onSettings={definition.settingsTab ? handleSettings : undefined}
-					onEditVariant={definition.variants?.length ? handleEditVariant : undefined}
+					onEditVariant={
+						definition.variants?.length ? handleEditVariant : undefined
+					}
 					onDelete={handleDelete}
 				/>
 			)}

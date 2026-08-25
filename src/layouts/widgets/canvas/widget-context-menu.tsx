@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { Icon } from '@/src/icons'
 import type { StoredWidget, WidgetDefinition, WidgetSize } from '../layout-engine/types'
-import { Chip } from '@/components/ui'
+import { Chip, ProBadge } from '@/components/ui'
+import { useAuth } from '@/context/auth.context'
+import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
+import { callEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 
 interface WidgetContextMenuProps {
 	x: number
@@ -33,6 +37,8 @@ export function WidgetContextMenu({
 	onDelete,
 }: WidgetContextMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
+	const { isVip } = useAuth()
+	const { isSizeVipOnly } = useWidgetVipResolver()
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -91,17 +97,36 @@ export function WidgetContextMenu({
 						{fittingSizes.map((size) => {
 							const isCurrent =
 								size.w === widget.size.w && size.h === widget.size.h
+							const isSizeVip = !isVip && isSizeVipOnly(definition.id, size)
+
 							return (
 								<Chip
 									key={`${size.w}x${size.h}`}
 									onClick={() => {
+										if (isSizeVip && !isVip) {
+											callEvent('openSettings', 'account')
+											onClose()
+											return
+										}
 										onResize(size)
 										onClose()
 									}}
 									selected={isCurrent}
-									className="py-0.5"
+									className={cn(
+										'py-0.5 flex items-center justify-center gap-0.5',
+										isSizeVip && !isCurrent && 'border-warning/30'
+									)}
 								>
-									{size.w}×{size.h}
+									<span>
+										{size.w}×{size.h}
+									</span>
+									{isSizeVip && (
+										<ProBadge
+											size="xs"
+											iconOnly
+											variant={isCurrent ? 'white' : 'warning'}
+										/>
+									)}
 								</Chip>
 							)
 						})}
@@ -125,21 +150,7 @@ export function WidgetContextMenu({
 				</button>
 			)}
 
-			{definition.canDuplicate && (
-				<button
-					type="button"
-					onClick={() => {
-						onDuplicate()
-						onClose()
-					}}
-					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
-				>
-					<Icon name="copy" size={14} className="text-muted" />
-					<span>تکرار ویجت</span>
-				</button>
-			)}
-
-			{hasVariants && onEditVariant && (
+			{onEditVariant && (
 				<button
 					type="button"
 					onClick={() => {
@@ -153,11 +164,33 @@ export function WidgetContextMenu({
 				</button>
 			)}
 
-			{definition.settingsTab && (
+			{onDuplicate && definition.canDuplicate && (
 				<button
 					type="button"
 					onClick={() => {
-						if (onSettings) onSettings()
+						if (!isVip) {
+							callEvent('openSettings', 'account')
+							onClose()
+							return
+						}
+						onDuplicate()
+						onClose()
+					}}
+					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center justify-between cursor-pointer transition-colors"
+				>
+					<div className="flex items-center gap-2">
+						<Icon name="copy" size={14} className="text-muted" />
+						<span>تکرار ویجت</span>
+					</div>
+					{!isVip && <ProBadge size="xs" />}
+				</button>
+			)}
+
+			{onSettings && (
+				<button
+					type="button"
+					onClick={() => {
+						onSettings()
 						onClose()
 					}}
 					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
@@ -167,15 +200,17 @@ export function WidgetContextMenu({
 				</button>
 			)}
 
+			<div className="h-px bg-base-content/10 my-0.5" />
+
 			<button
 				type="button"
 				onClick={() => {
 					onDelete()
 					onClose()
 				}}
-				className="w-full px-2 py-1.5 rounded-xl hover:bg-error/20 text-error text-right flex items-center gap-2 cursor-pointer transition-colors"
+				className="w-full px-2 py-1.5 rounded-xl hover:bg-error/15 text-error text-right flex items-center gap-2 cursor-pointer transition-colors"
 			>
-				<Icon name="trash" size={14} className="text-error" />
+				<Icon name="trash" size={14} />
 				<span>حذف ویجت</span>
 			</button>
 		</div>

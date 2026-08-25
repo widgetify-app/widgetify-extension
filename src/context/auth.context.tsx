@@ -11,6 +11,7 @@ interface AuthContextType {
 	isAuthenticated: boolean
 	token: string | null
 	user: UserProfile | null
+	isVip: boolean
 	isLoadingUser: boolean
 	profilePercentage: number
 	isSuccessFetchingUser: boolean
@@ -84,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				isAuthenticated: !!token,
 				token,
 				user: userProfile || null,
+				isVip: Boolean(userProfile?.isVip ?? false),
 				isLoadingUser: initialLoading || (!!token && isLoading),
 				login,
 				logout,

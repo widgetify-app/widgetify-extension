@@ -122,6 +122,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'flip',
 				label: 'ساعت فیلیپ (ورقه‌ای)',
 				size: { w: 2, h: 1 },
+				isVipOnly: true,
 				meta: { variant: 'flip' },
 			},
 			{
@@ -134,6 +135,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'analog',
 				label: 'ساعت آنالوگ',
 				size: { w: 1, h: 1 },
+				isVipOnly: true,
 				meta: { variant: 'analog' },
 			},
 		],
@@ -240,6 +242,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				label: 'تک ارز',
 				size: { w: 1, h: 1 },
 				meta: { currencyCode: 'USD' },
+				isVipOnly: true,
 			},
 		],
 		canDuplicate: true,
@@ -341,8 +344,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		canDuplicate: true,
 		node: (instanceId, size, meta) => {
-			const isSticky =
-				meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
+			const isSticky = meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
 
 			return (
 				<WidgetContainer padding={!isSticky} background={!isSticky}>
@@ -372,6 +374,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'حال روزانه (Mood)',
 		emoji: '🥰',
 		category: 'lifestyle',
+		isVipOnly: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },

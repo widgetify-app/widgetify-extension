@@ -6,7 +6,7 @@ import { WeatherSetting } from '../widgets/weather/weather-setting'
 import { WigiArzSetting } from '../widgets/wigi-arz/wigi-arz-setting'
 import { WigiPadSetting } from '../widgets/wigi-pad/wigi-pad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
-import { AddWidgetModal } from '../widgets/add-widget-modal'
+import { AddWidgetModal } from '../widgets-manager'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 interface WidgetSettingModalConfig {

@@ -2,6 +2,8 @@ export * from './avatar/avatar'
 export * from './avatar/avatar.variants'
 
 export * from './badge/badge'
+export * from './badge/pro-badge'
+export * from './badge/pro-badge.variants'
 
 export * from './bottom-sheet/bottom-sheet'
 

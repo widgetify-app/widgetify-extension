@@ -37,6 +37,7 @@ import {
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAppearance } from './appearance.context'
 import { useAuth } from './auth.context'
+import { callEvent } from '@/common/utils/call-event'
 
 interface FreeWidgetContextType {
 	savedLayout: StoredWidget[]
@@ -73,7 +74,7 @@ interface FreeWidgetContextType {
 export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
-	const { isAuthenticated } = useAuth()
+	const { isAuthenticated, isVip } = useAuth()
 	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
 		useAppearance()
 
@@ -452,6 +453,12 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			}
 
 			const chosenSize = initialSize || def.defaultSize
+			const isCurrentlyActive = runtimeLayout.some((w) => w.id === def.id)
+			if (isCurrentlyActive && !isVip) {
+				callEvent('openSettings', 'account')
+				return false
+			}
+
 			let finalInstanceId = `${id}-${Date.now().toString(36)}`
 
 			if (isAuthenticated) {
@@ -512,6 +519,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			const def = WIDGET_DEFINITIONS[original.id]
 			if (!def?.canDuplicate) {
 				showToast('امکان تکرار این ویجت وجود ندارد', 'error')
+				return false
+			}
+
+			if (!isVip) {
+				callEvent('openSettings', 'account')
 				return false
 			}
 

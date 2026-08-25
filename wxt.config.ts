@@ -46,7 +46,7 @@ export default defineConfig({
 		'@wxt-dev/module-react',
 	],
 	manifest: {
-		version: '1.1.6',
+		version: '1.1.8',
 		name: 'Widgetify beta',
 		description:
 			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',

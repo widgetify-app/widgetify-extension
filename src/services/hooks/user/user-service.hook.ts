@@ -17,6 +17,7 @@ interface FetchedProfile {
 	username?: string
 	name: string
 	verified: boolean
+	isVip?: boolean
 	connections: string[]
 	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
 	friendshipStats: {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, SectionPanel } from '@/components/ui'
 import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { UIModeSelector } from '@/components/ui-mode-selector/ui-mode-selector'
-import { WidgetHelpModal } from '@/layouts/widgets/widget-help.modal'
+import { WidgetHelpModal } from '@/layouts/widgets-manager'
 import { Icon } from '@/src/icons'
 
 export function UISelector() {
