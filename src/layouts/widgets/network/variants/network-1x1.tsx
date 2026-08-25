@@ -1,5 +1,6 @@
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
+import { showToast } from '@/common/toast'
 
 interface NetworkCompactSquareProps {
 	status: 'online' | 'offline'
@@ -27,6 +28,15 @@ export function NetworkCompactSquare({
 	onRefresh,
 }: NetworkCompactSquareProps) {
 	const isOnline = status === 'online'
+
+	const handleCopyIp = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		if (ip && navigator?.clipboard) {
+			navigator.clipboard.writeText(ip).then(() => {
+				showToast('آدرس IP کپی شد', 'success')
+			})
+		}
+	}
 
 	if (isInitialLoading) {
 		return (
@@ -118,12 +128,20 @@ export function NetworkCompactSquare({
 				)}
 			>
 				{isOnline ? (
-					<span
-						className="text-[10px] font-medium text-muted truncate max-w-full"
+					<button
+						type="button"
+						onClick={handleCopyIp}
+						disabled={!ip}
+						className={cn(
+							'text-[10px] font-medium text-muted truncate max-w-full',
+							ip
+								? 'hover:text-primary active:scale-95 cursor-pointer transition-all'
+								: 'cursor-default'
+						)}
 						dir="ltr"
 					>
 						{ip || isp || 'آنلاین'}
-					</span>
+					</button>
 				) : (
 					<span className="text-[10px] font-medium text-error truncate max-w-full">
 						عدم دسترسی
