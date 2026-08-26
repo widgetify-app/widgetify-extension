@@ -136,7 +136,7 @@ export function HomePage() {
 					dismissKeyAction: 'close',
 					buttons: ['skip', 'primary', 'back'],
 				}}
-				callback={onDoneTour}
+				onEvent={onDoneTour}
 			/>
 
 			{showReleaseNotes && (
