@@ -24,6 +24,7 @@ import {
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
+import { DateProvider } from './date.context'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -67,7 +68,11 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📅',
 		label: 'تقویم',
 		order: 0,
-		node: <CalendarLayout size={{ w: 2, h: 3 }} />,
+		node: (
+			<DateProvider>
+				<CalendarLayout size={{ w: 2, h: 3 }} />
+			</DateProvider>
+		),
 		canToggle: true,
 		popular: true,
 	},
