@@ -15,7 +15,7 @@ export function EmptyBookmarkSlot({
 		<button
 			onClick={canAdd ? onClick : undefined}
 			className={cn(
-				'relative flex flex-col items-center shadow-sm justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-2xl w-full transition-transform ease-in-out group-hover:scale-102',
+				'relative flex flex-col items-center shadow-sm justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget w-full transition-transform ease-in-out group-hover:scale-102',
 				isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-22'
 			)}
 		>

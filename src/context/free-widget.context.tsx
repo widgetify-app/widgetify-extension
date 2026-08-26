@@ -455,7 +455,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			const chosenSize = initialSize || def.defaultSize
 			const isCurrentlyActive = runtimeLayout.some((w) => w.id === def.id)
 			if (isCurrentlyActive && !isVip) {
-				callEvent('openSettings', 'account')
+				callEvent('openSettings', 'vip')
 				return false
 			}
 
@@ -523,7 +523,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			}
 
 			if (!isVip) {
-				callEvent('openSettings', 'account')
+				callEvent('openSettings', 'vip')
 				return false
 			}
 

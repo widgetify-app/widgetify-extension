@@ -50,7 +50,7 @@ export function BookmarkItem({
 				}}
 				style={customStyles}
 				className={cn(
-					'relative flex flex-col items-center justify-center px-2 py-0.5  duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full transition-transform ease-in-out group-hover:scale-102',
+					'relative flex flex-col items-center justify-center px-2 py-0.5  duration-300 border border-content cursor-pointer group rounded-widget shadow-sm w-full transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
 						? `bg-content hover:bg-base-300 text-content  bg-glass`
 						: '',

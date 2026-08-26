@@ -12,7 +12,7 @@ import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
-import { ProTab } from './tabs/pro/pro-tab'
+import { VipTab } from './tabs/vip/vip-tab'
 import { Icon } from '@/src/icons'
 import { UI, useAppearance } from '@/context/appearance.context'
 
@@ -33,10 +33,10 @@ const tabs: TabItem[] = [
 				element: <AccountTab />,
 			},
 			{
-				label: 'اشتراک Pro',
-				value: 'pro',
-				icon: <Icon name="crown" size={20} />,
-				element: <ProTab />,
+				label: 'ویجتیفای پرو',
+				value: 'vip',
+				icon: <Icon name="outlineCrown" size={20} />,
+				element: <VipTab />,
 			},
 			{
 				label: 'پلتفرم‌ها',

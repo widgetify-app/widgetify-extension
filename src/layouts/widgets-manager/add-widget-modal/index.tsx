@@ -164,7 +164,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		if (!selectedDef) return
 
 		if (isVipRequired && !isVip) {
-			callEvent('openSettings', 'account')
+			callEvent('openSettings', 'vip')
 			return
 		}
 
@@ -182,7 +182,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			}
 
 			if (isLimitReached) {
-				callEvent('openSettings', 'account')
+				callEvent('openSettings', 'vip')
 				return
 			}
 
@@ -198,7 +198,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			}
 		} else {
 			if (isLimitReached) {
-				callEvent('openSettings', 'account')
+				callEvent('openSettings', 'vip')
 				return
 			}
 			toggleWidget(selectedDef.id as any)

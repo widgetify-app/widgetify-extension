@@ -19,7 +19,7 @@ export function VipBannerCard({
 		if (onClick) {
 			onClick()
 		} else {
-			callEvent('openSettings', 'pro')
+			callEvent('openSettings', 'vip')
 		}
 	}
 
@@ -39,7 +39,7 @@ export function VipBannerCard({
 							{title}
 						</h3>
 						<span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-500/15 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
-							VIP
+							پرو
 						</span>
 					</div>
 					<p className="text-[11px] text-muted truncate mt-0.5 max-w-xs sm:max-w-md">
@@ -59,7 +59,7 @@ export function VipBannerCard({
 						handleClick()
 					}}
 				>
-					<span>ارتقا به VIP</span>
+					<span>ارتقا به پرو</span>
 					<Icon name="chevronLeft" size={12} />
 				</Button>
 			</div>

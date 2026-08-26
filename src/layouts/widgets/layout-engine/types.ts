@@ -83,7 +83,20 @@ export interface WidgetDefinition {
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean
 	supportedModes?: WidgetMode[]
+	order?: number
+	canToggle?: boolean
+	isNew?: boolean
+	disabled?: boolean
+	soon?: boolean
+	popular?: boolean
+	isBeta?: boolean
 	node: (instanceId: string, size: WidgetSize, meta?: any) => React.ReactNode
+}
+
+export interface WidgetItem
+	extends Omit<WidgetDefinition, 'allowedSizes' | 'defaultSize' | 'canDuplicate' | 'node'> {
+	node: React.ReactNode
+	order: number
 }
 
 export interface LayoutEngineOptions {

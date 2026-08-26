@@ -74,7 +74,7 @@ export function WidgetHelpModal({ isOpen, onClose }: WidgetHelpModalProps) {
 								</span>
 								<p className="text-xs text-content leading-relaxed">
 									روی فضای خالی صفحه کلیک راست کن و «ویرایش ویجت‌ها» رو
-									بزن (یا چند لحظه روی هر ویجت کلیک کن و نگه دار)
+									بزن
 								</p>
 							</div>
 

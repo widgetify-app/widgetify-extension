@@ -44,6 +44,7 @@ import {
 	LuLayoutTemplate,
 	LuPen,
 	LuPlus,
+	LuTicket,
 	LuX,
 } from 'react-icons/lu'
 import {
@@ -74,6 +75,7 @@ import {
 	TbNotebook,
 	TbArrowsRightLeft,
 	TbCloudUpload,
+	TbInfinity,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -124,7 +126,7 @@ import { FcGoogle } from 'react-icons/fc'
 import { CiLocationOn, CiPause1 } from 'react-icons/ci'
 import { WiCloudy, WiHumidity } from 'react-icons/wi'
 import { RiApps2AiLine, RiQuillPenAiLine } from 'react-icons/ri'
-import { AiOutlineDrag } from 'react-icons/ai'
+import { AiOutlineCrown, AiOutlineDrag } from 'react-icons/ai'
 import { HiOutlineViewGridAdd } from 'react-icons/hi'
 import { BsFilterLeft, BsGenderAmbiguous } from 'react-icons/bs'
 import { IoPricetagOutline } from 'react-icons/io5'
@@ -232,6 +234,7 @@ export const defaultIcons = {
 	outlineFilterListOff: MdOutlineFilterListOff,
 	outlineFilterList: MdOutlineFilterList,
 	crown: FaCrown,
+	outlineCrown: AiOutlineCrown,
 	filterLeft: BsFilterLeft,
 	upDown: TbArrowsUpDown,
 	coffee: FiCoffee,
@@ -265,4 +268,6 @@ export const defaultIcons = {
 	copy: LuCopy,
 	wifi: BiWifi,
 	wifiOff: BiWifiOff,
+	infinity: TbInfinity,
+	ticket: LuTicket,
 } satisfies IconMap

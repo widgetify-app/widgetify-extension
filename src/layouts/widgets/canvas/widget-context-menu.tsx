@@ -104,7 +104,7 @@ export function WidgetContextMenu({
 									key={`${size.w}x${size.h}`}
 									onClick={() => {
 										if (isSizeVip && !isVip) {
-											callEvent('openSettings', 'account')
+											callEvent('openSettings', 'vip')
 											onClose()
 											return
 										}
@@ -169,7 +169,7 @@ export function WidgetContextMenu({
 					type="button"
 					onClick={() => {
 						if (!isVip) {
-							callEvent('openSettings', 'account')
+							callEvent('openSettings', 'vip')
 							onClose()
 							return
 						}

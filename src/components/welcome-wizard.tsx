@@ -358,10 +358,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<div className="w-full">
 								<div className="mb-4 text-right">
 									<h2 className="mb-1 text-2xl font-black text-content">
-										چیدمان دلخواهت چیه؟
+										نوع صفحه دلخواهت چیه؟
 									</h2>
 									<p className="text-xs font-medium opacity-60">
-										حالت ظاهر صفحه اصلی رو متناسب با نیازت انتخاب کن
+										نوع صفحه اصلی رو متناسب با نیازت انتخاب کن
 									</p>
 								</div>
 

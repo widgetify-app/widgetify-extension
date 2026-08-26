@@ -22,7 +22,7 @@ import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import { type WidgetDefinition, WidgetKeys } from './layout-engine/types'
+import { type WidgetDefinition, type WidgetItem, WidgetKeys } from './layout-engine/types'
 
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -145,8 +145,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.calendar]: {
 		id: WidgetKeys.calendar,
 		label: 'تقویم',
-		emoji: '📆',
+		emoji: '📅',
 		category: 'time',
+		order: 0,
+		canToggle: true,
+		popular: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
@@ -166,6 +169,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'آب و هوا',
 		emoji: '🌤️',
 		category: 'info',
+		order: 3,
+		canToggle: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
@@ -184,6 +189,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجت ترکیبی (ارز و اخبار)',
 		emoji: '🔗',
 		category: 'info',
+		order: 4,
+		canToggle: true,
+		popular: true,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		supportedModes: ['CUSTOM', 'ADVANCED'],
@@ -199,6 +207,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
 		emoji: '📒',
 		category: 'productivity',
+		order: 1,
+		canToggle: true,
+		isNew: false,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		supportedModes: ['CUSTOM', 'ADVANCED'],
@@ -210,6 +221,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ابزارها',
 		emoji: '🧰',
 		category: 'productivity',
+		order: 2,
+		canToggle: true,
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
@@ -224,6 +237,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی ارز',
 		emoji: '💰',
 		category: 'info',
+		order: 5,
+		canToggle: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 3 },
@@ -262,6 +277,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی نیوز',
 		emoji: '📰',
 		category: 'info',
+		order: 6,
+		canToggle: true,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
@@ -274,6 +291,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'شبکه',
 		emoji: '🌐',
 		category: 'info',
+		order: 7,
+		canToggle: true,
+		isNew: false,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
@@ -291,6 +311,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'عادات',
 		emoji: '🎯',
 		category: 'productivity',
+		order: 8,
+		canToggle: true,
+		isNew: true,
+		isBeta: false,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 3 },
@@ -310,7 +334,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
+		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (_instanceId, size) => (
 			<WidgetContainer>
@@ -328,7 +352,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
+		supportedModes: ['CUSTOM'],
 		variants: [
 			{
 				id: 'list',
@@ -385,3 +409,14 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		node: (_instanceId, size) => <MoodTrackerWidget size={size} />,
 	},
 }
+
+export const widgetItems: WidgetItem[] = Object.values(WIDGET_DEFINITIONS)
+	.filter((def): def is WidgetDefinition & { order: number } =>
+		Boolean(def.supportedModes?.includes('ADVANCED') && typeof def.order === 'number')
+	)
+	.sort((a, b) => a.order - b.order)
+	.map((def) => ({
+		...def,
+		order: def.order,
+		node: def.node(def.id, def.defaultSize),
+	}))

@@ -9,152 +9,18 @@ import {
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
-import CalendarLayout from '@/layouts/widgets/calendar/calendar'
-import { ComboWidget } from '@/layouts/widgets/combo-widget/combo-widget.layout'
-import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
-import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
-import { NewsLayout } from '@/layouts/widgets/news/news.layout'
-import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
-import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
-import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
-import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
-import { CurrencyProvider } from './currency.context'
+import {
+	type WidgetItem,
+	WidgetKeys,
+} from '@/layouts/widgets/layout-engine/types'
+import { widgetItems } from '@/layouts/widgets/widget-registry'
 
-export enum WidgetKeys {
-	comboWidget = 'comboWidget',
-	arzLive = 'arzLive',
-	news = 'news',
-	calendar = 'calendar',
-	weather = 'weather',
-	todos = 'todos',
-	tools = 'tools',
-	notes = 'notes',
-	wigiPad = 'wigiPad',
-	network = 'network',
-	yadKar = 'yadKar',
-	HabitTracker = 'HabitTracker',
-	search = 'search',
-	bookmarks = 'bookmarks',
-	widgetify = 'widgetify',
-	clock = 'clock',
-	date = 'date',
-	pet = 'pet',
-	moodTracker = 'moodTracker',
-	transparentClock = 'transparentClock',
-}
-export interface WidgetItem {
-	id: WidgetKeys
-	emoji: string
-	label: string
-	node: any
-	order: number
-	canToggle?: boolean
-	isNew?: boolean
-	disabled?: boolean
-	soon?: boolean
-	popular?: boolean
-	isBeta?: boolean
-}
-
-export const widgetItems: WidgetItem[] = [
-	{
-		id: WidgetKeys.calendar,
-		emoji: '📅',
-		label: 'تقویم',
-		order: 0,
-		node: <CalendarLayout size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-		popular: true,
-	},
-	{
-		id: WidgetKeys.yadKar,
-		emoji: '📒',
-		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
-		order: 1,
-		node: <YadkarWidget size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-		isNew: false,
-	},
-	{
-		id: WidgetKeys.tools,
-		emoji: '🧰',
-		label: 'ابزارها',
-		order: 2,
-		node: <ToolsLayout size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-	},
-	{
-		id: WidgetKeys.weather,
-		emoji: '🌤️',
-		label: 'آب و هوا',
-		order: 3,
-		node: <WeatherLayout size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-	},
-	{
-		id: WidgetKeys.comboWidget,
-		emoji: '🔗',
-		label: 'ویجت ترکیبی (ارز و اخبار)',
-		order: 4,
-		node: (
-			<CurrencyProvider>
-				<ComboWidget size={{ w: 2, h: 3 }} />
-			</CurrencyProvider>
-		),
-		canToggle: true,
-		popular: true,
-	},
-	{
-		id: WidgetKeys.arzLive,
-		emoji: '💰',
-		label: 'ویجی ارز',
-		order: 5,
-		node: (
-			<CurrencyProvider>
-				<WigiArzLayout inComboWidget={false} size={{ w: 2, h: 3 }} />
-			</CurrencyProvider>
-		),
-		canToggle: true,
-	},
-	{
-		id: WidgetKeys.news,
-		emoji: '📰',
-		label: 'ویجی نیوز',
-		order: 6,
-		node: <NewsLayout inComboWidget={false} size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-	},
-	{
-		id: WidgetKeys.network,
-		emoji: '🌐',
-		label: 'شبکه',
-		order: 7,
-		node: (
-			<NetworkLayout
-				inComboWidget={false}
-				enableBackground={true}
-				size={{ w: 2, h: 3 }}
-			/>
-		),
-		canToggle: true,
-		isNew: false,
-	},
-	{
-		id: WidgetKeys.HabitTracker,
-		emoji: '🎯',
-		label: 'عادات',
-		order: 8,
-		node: <HabitsLayout size={{ w: 2, h: 3 }} />,
-		canToggle: true,
-		isNew: true,
-		isBeta: true,
-	},
-]
+export { WidgetKeys, type WidgetItem, widgetItems }
 
 interface WidgetVisibilityContextType {
 	visibility: WidgetKeys[]

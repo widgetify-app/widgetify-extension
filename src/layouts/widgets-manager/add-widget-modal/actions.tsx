@@ -32,7 +32,7 @@ export function AddWidgetActions({
 		return (
 			<Button
 				type="button"
-				onClick={() => callEvent('openSettings', 'account')}
+				onClick={() => callEvent('openSettings', 'vip')}
 				className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
 				rounded={'2xl'}
 				variant={'default'}
@@ -66,7 +66,7 @@ export function AddWidgetActions({
 			return (
 				<Button
 					type="button"
-					onClick={() => callEvent('openSettings', 'account')}
+					onClick={() => callEvent('openSettings', 'vip')}
 					className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
 					rounded={'2xl'}
 					variant={'default'}
@@ -98,7 +98,7 @@ export function AddWidgetActions({
 			return (
 				<Button
 					type="button"
-					onClick={() => callEvent('openSettings', 'account')}
+					onClick={() => callEvent('openSettings', 'vip')}
 					className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
 					rounded={'2xl'}
 					variant={'default'}
@@ -134,7 +134,7 @@ export function AddWidgetActions({
 		return (
 			<Button
 				type="button"
-				onClick={() => callEvent('openSettings', 'account')}
+				onClick={() => callEvent('openSettings', 'vip')}
 				className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
 				rounded={'2xl'}
 				variant={'default'}

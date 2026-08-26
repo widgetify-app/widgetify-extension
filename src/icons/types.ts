@@ -103,6 +103,7 @@ export type IconName =
 	| 'outlineFilterList'
 	| 'outlineFilterListOff'
 	| 'crown'
+	| 'outlineCrown'
 	| 'filterLeft'
 	| 'upDown'
 	| 'coffee'
@@ -136,4 +137,6 @@ export type IconName =
 	| 'copy'
 	| 'wifi'
 	| 'wifiOff'
+	| 'infinity'
+	| 'ticket'
 export type IconMap = Record<IconName, IconType>

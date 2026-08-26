@@ -86,7 +86,7 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out ${
+				className={`relative flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-widget shadow-sm w-full ease-in-out ${
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-primary/20 text-content'
 						: 'before:bg-inherit border-transparent'
