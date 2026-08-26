@@ -9,13 +9,14 @@ import {
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
-import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/combo-widget/combo-widget.layout'
 import { HabitsLayout } from '@/layouts/widgets/habit/habits.layout'
+import { WidgetKeys as RegistryWidgetKeys } from '@/layouts/widgets/layout-engine/types'
 import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
 import { NewsLayout } from '@/layouts/widgets/news/news.layout'
 import { ToolsLayout } from '@/layouts/widgets/tools/tools.layout'
 import { WeatherLayout } from '@/layouts/widgets/weather/weather.layout'
+import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
 import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi_arz.layout'
 import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar'
 import {
@@ -24,7 +25,6 @@ import {
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
 import { CurrencyProvider } from './currency.context'
-import { DateProvider } from './date.context'
 
 export enum WidgetKeys {
 	comboWidget = 'comboWidget',
@@ -68,11 +68,10 @@ export const widgetItems: WidgetItem[] = [
 		emoji: '📅',
 		label: 'تقویم',
 		order: 0,
-		node: (
-			<DateProvider>
-				<CalendarLayout size={{ w: 2, h: 3 }} />
-			</DateProvider>
-		),
+		node: WIDGET_DEFINITIONS[RegistryWidgetKeys.calendar].node('calendar', {
+			w: 2,
+			h: 3,
+		}),
 		canToggle: true,
 		popular: true,
 	},
