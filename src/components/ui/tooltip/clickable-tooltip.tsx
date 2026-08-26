@@ -25,6 +25,7 @@ interface ClickableTooltipProps {
 	triggerRef: RefObject<HTMLElement | null>
 	isOpen: boolean
 	setIsOpen: (isOpen: boolean) => void
+	toggleOnTriggerClick?: boolean
 }
 
 const ClickableTooltip = ({
@@ -37,6 +38,7 @@ const ClickableTooltip = ({
 	triggerRef,
 	isOpen,
 	setIsOpen,
+	toggleOnTriggerClick = true,
 }: ClickableTooltipProps) => {
 	const [calculatedPosition, setCalculatedPosition] = useState<Position>(position)
 	const [tooltipCoords, setTooltipCoords] = useState({ x: 0, y: 0 })
@@ -151,7 +153,7 @@ const ClickableTooltip = ({
 	}, [isOpen, closeOnClickOutside])
 
 	useEffect(() => {
-		if (!triggerRef?.current) return
+		if (!toggleOnTriggerClick || !triggerRef?.current) return
 
 		const handleClick = (e: Event) => {
 			e.preventDefault()
@@ -165,7 +167,7 @@ const ClickableTooltip = ({
 		return () => {
 			element.removeEventListener('click', handleClick, true)
 		}
-	}, [triggerRef, isOpen])
+	}, [triggerRef, isOpen, toggleOnTriggerClick])
 
 	const variants = {
 		top: {

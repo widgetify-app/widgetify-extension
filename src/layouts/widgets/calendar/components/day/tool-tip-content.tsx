@@ -5,6 +5,7 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	hijriMonthNames,
+	type WidgetifyDate,
 } from '../../utils'
 import { useDate } from '@/context/date.context'
 import type React from 'react'
@@ -23,6 +24,7 @@ import { moodOptions } from '@/common/constant/moods'
 import { Icon } from '@/src/icons'
 
 interface CalendarDayDetailsProps {
+	selectedDate: WidgetifyDate
 	events: FetchedAllEvents
 	eventIcon?: string
 	moods: MoodEntry[]
@@ -30,11 +32,12 @@ interface CalendarDayDetailsProps {
 }
 
 export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
+	selectedDate,
 	events,
 	moods,
 	onMoodChange,
 }) => {
-	const { selectedDate, today, getHijriDate } = useDate()
+	const { today, getHijriDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: upsertMoodLog } = useUpsertMoodLog()
 

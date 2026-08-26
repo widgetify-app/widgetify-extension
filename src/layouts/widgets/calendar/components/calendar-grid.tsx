@@ -2,7 +2,7 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import type React from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { type WidgetifyDate, formatDateStr } from '../utils'
 import { DayItem } from './day/day'
 import { ClickableTooltip } from '@/components/ui'
@@ -53,6 +53,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 	const nextMonthDays = totalCells - daysInMonth - emptyDays
 
 	const selectedDateStr = formatDateStr(selectedDate)
+	const triggerRef = useMemo(() => ({ current: clickedElement }), [clickedElement])
 
 	return (
 		<>
@@ -109,9 +110,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
 			{clickedElement && (
 				<ClickableTooltip
-					triggerRef={{ current: clickedElement }}
+					triggerRef={triggerRef}
+					toggleOnTriggerClick={false}
 					content={
 						<CalendarDayDetails
+							selectedDate={selectedDate}
 							events={eventsForCalendar}
 							moods={calendarData?.moods ?? []}
 							onMoodChange={() => refetch()}
