@@ -1,5 +1,5 @@
 import type React from 'react'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
 	convertShamsiToHijri,
 	getCurrentDate,
@@ -44,44 +44,54 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		setSelectedDate(newToday.clone())
 	}, [timezone])
 
-	const goToToday = () => {
+	const goToToday = useCallback(() => {
 		const newToday = getCurrentDate(timezone.value)
 		setCurrentDate(newToday.clone())
 		setSelectedDate(newToday.clone())
-	}
+	}, [timezone])
 
-	const isToday = (date: WidgetifyDate): boolean => {
-		return (
-			date.jDate() === today.jDate() &&
-			date.jMonth() === today.jMonth() &&
-			date.jYear() === today.jYear()
-		)
-	}
+	const isToday = useCallback(
+		(date: WidgetifyDate): boolean => {
+			return (
+				date.jDate() === today.jDate() &&
+				date.jMonth() === today.jMonth() &&
+				date.jYear() === today.jYear()
+			)
+		},
+		[today]
+	)
 
-	const getHijriDate = (date: WidgetifyDate): string => {
+	const getHijriDate = useCallback((date: WidgetifyDate): string => {
 		const hijriDate = convertShamsiToHijri(date)
 		return `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
-	}
+	}, [])
 
 	const todayIsHoliday = activeDate.day() === 5
 
-	return (
-		<DateContext.Provider
-			value={{
-				currentDate,
-				selectedDate,
-				todayIsHoliday,
-				today,
-				setCurrentDate,
-				setSelectedDate,
-				goToToday,
-				isToday,
-				getHijriDate,
-			}}
-		>
-			{children}
-		</DateContext.Provider>
+	const value = useMemo(
+		() => ({
+			currentDate,
+			selectedDate,
+			todayIsHoliday,
+			today,
+			setCurrentDate,
+			setSelectedDate,
+			goToToday,
+			isToday,
+			getHijriDate,
+		}),
+		[
+			currentDate,
+			selectedDate,
+			todayIsHoliday,
+			today,
+			goToToday,
+			isToday,
+			getHijriDate,
+		]
 	)
+
+	return <DateContext.Provider value={value}>{children}</DateContext.Provider>
 }
 
 export const useDate = (): DateContextType => {
