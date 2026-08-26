@@ -1,7 +1,9 @@
-import React from 'react'
+import type React from 'react'
 import { UI } from '@/context/appearance.context'
 import { Icon } from '@/src/icons'
 import { cn } from '@/common/utils/cn'
+import { Button } from '../ui/button/button'
+import { WidgetHelpModal } from '@/layouts/widgets-manager'
 
 export interface UIOption {
 	id: UI
@@ -60,7 +62,8 @@ export const UI_MODE_OPTIONS: UIOption[] = [
 		title: 'شخصی‌سازی',
 		badge: 'بوم آزاد',
 		iconName: 'platforms',
-		description: 'ویجت‌ها رو جابه‌جا کن و چیدمان رو خودت بچین',
+		description:
+			'ویجت‌ها رو جابه‌جا کن و چیدمان رو خودت بچین ( روی ویجت یا صفحه کلیک راست کن )',
 		preview: (
 			<div className="flex flex-col gap-1 w-full h-14 p-1.5 rounded-lg bg-base-300/40 border border-base-content/10">
 				<div className="grid grid-cols-4 gap-0.5 h-3">
@@ -94,7 +97,7 @@ export function UIModeSelector({
 }: UIModeSelectorProps) {
 	const currentUI =
 		value === UI.DEFAULT || (value as string) === 'ADVANCED' ? UI.DEFAULT : value
-
+	const [showGuideModal, setShowGuideModal] = useState(false)
 	const isList = variant === 'list'
 
 	return (
@@ -125,29 +128,15 @@ export function UIModeSelector({
 								isLast && 'col-span-2'
 							)}
 						>
-							{opt.badge && (
-								<span
-									className={cn(
-										'absolute left-2.5 top-2.5 z-10 rounded-md px-1.5 py-0.5 text-[10px] font-medium',
-										isSelected
-											? 'bg-primary text-white'
-											: 'bg-base-300 text-muted'
-									)}
-								>
-									{opt.badge}
-								</span>
-							)}
-
 							{isLast ? (
-								<div className="flex min-h-[92px] items-center gap-4">
+								<div className="flex min-h-23 items-center gap-4">
 									{showPreview && (
 										<div className="w-[42%] shrink-0">
 											{opt.preview}
 										</div>
 									)}
 
-									<div className="min-w-0 flex-1">
-										{/* Title */}
+									<div className="min-w-0 flex-1 relative">
 										<div className="mb-1.5 flex items-center gap-2">
 											<div
 												className={cn(
@@ -195,6 +184,20 @@ export function UIModeSelector({
 										<p className="text-[11px] leading-relaxed text-muted">
 											{opt.description}
 										</p>
+
+										{opt.id === 'CUSTOM' && (
+											<Button
+												type="button"
+												variant="default"
+												size="xs"
+												rounded="xl"
+												onClick={() => setShowGuideModal(true)}
+												className="flex items-center gap-1 text-xs text-muted hover:text-content  border border-base-content/10 shadow-none font-normal absolute -top-1 left-0"
+												title="راهنمای مدیریت ویجت‌ها"
+											>
+												<Icon name="help" size={13} />
+											</Button>
+										)}
 									</div>
 								</div>
 							) : (
@@ -319,6 +322,11 @@ export function UIModeSelector({
 					</button>
 				)
 			})}
+
+			<WidgetHelpModal
+				isOpen={showGuideModal}
+				onClose={() => setShowGuideModal(false)}
+			/>
 		</div>
 	)
 }

@@ -230,18 +230,20 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								? 'تغییر مدل و استایل ویجت'
 								: 'مدیریت و افزودن ویجت‌ها'}
 						</span>
-						<Button
-							type="button"
-							variant="default"
-							size="xs"
-							rounded="xl"
-							onClick={() => setIsHelpOpen(true)}
-							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
-							title="راهنمای مدیریت ویجت‌ها"
-						>
-							<Icon name="help" size={13} />
-							<span>راهنما</span>
-						</Button>
+						{isCustom && (
+							<Button
+								type="button"
+								variant="default"
+								size="xs"
+								rounded="xl"
+								onClick={() => setIsHelpOpen(true)}
+								className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
+								title="راهنمای مدیریت ویجت‌ها"
+							>
+								<Icon name="help" size={13} />
+								<span>راهنما</span>
+							</Button>
+						)}
 					</div>
 				}
 				size="xl"

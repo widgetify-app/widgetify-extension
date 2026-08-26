@@ -40,49 +40,19 @@ export const DEFAULT_WIDGET_LAYOUT: StoredWidget[] = [
 	{
 		id: WidgetKeys.clock,
 		instanceId: 'clock-default',
-		position: { col: 0, row: 0 },
-		size: { w: 1, h: 1 },
-	},
-	{
-		id: WidgetKeys.search,
-		instanceId: 'search-default',
-		position: { col: 1, row: 0 },
-		size: { w: 4, h: 1 },
-	},
-	{
-		id: WidgetKeys.network,
-		instanceId: 'network-default',
-		position: { col: 5, row: 0 },
-		size: { w: 1, h: 1 },
-	},
-	{
-		id: WidgetKeys.pet,
-		instanceId: 'pet-default',
 		position: { col: 6, row: 0 },
 		size: { w: 2, h: 1 },
 	},
 	{
+		id: WidgetKeys.search,
+		instanceId: 'search-default',
+		position: { col: 4, row: 1 },
+		size: { w: 4, h: 1 },
+	},
+	{
 		id: WidgetKeys.bookmarks,
 		instanceId: 'bookmarks-default',
-		position: { col: 0, row: 1 },
-		size: { w: 4, h: 2 },
-	},
-	{
-		id: WidgetKeys.calendar,
-		instanceId: 'calendar-default',
-		position: { col: 4, row: 1 },
-		size: { w: 2, h: 1 },
-	},
-	{
-		id: WidgetKeys.tools,
-		instanceId: 'tools-default',
-		position: { col: 6, row: 1 },
-		size: { w: 2, h: 1 },
-	},
-	{
-		id: WidgetKeys.weather,
-		instanceId: 'weather-default',
 		position: { col: 4, row: 2 },
-		size: { w: 2, h: 1 },
+		size: { w: 4, h: 2 },
 	},
 ]

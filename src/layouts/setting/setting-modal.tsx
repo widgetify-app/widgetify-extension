@@ -104,7 +104,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 	const { ui } = useAppearance()
 
 	function openWidgetSettings() {
-		callEvent('openAddCustomWidgetModal')
+		callEvent('openWidgetsSettings', { tab: null })
 		Analytics.event('open_widgets_settings_from_settings_modal')
 		onClose()
 	}
