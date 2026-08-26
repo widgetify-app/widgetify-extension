@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { useOptionalFreeWidgets } from '@/context/free-widget.context'
 import type {
@@ -22,11 +21,11 @@ import { AddWidgetOptions } from './options'
 import { AddWidgetPreview } from './preview'
 import { AddWidgetActions } from './actions'
 
+const isCustom = true
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly, maxFreeWidgets } =
 		useWidgetVipResolver()
-	const { ui } = useAppearanceSetting()
 	const { visibility, toggleWidget } = useWidgetVisibility()
 	const freeWidgets = useOptionalFreeWidgets()
 
@@ -34,14 +33,9 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	const addWidget = freeWidgets?.addWidget
 	const updateWidgetVariant = freeWidgets?.updateWidgetVariant
 
-	const isCustom = ui === UI.CUSTOM
-	const currentMode = isCustom ? 'CUSTOM' : 'ADVANCED'
-
 	const allDefinitions = useMemo(() => {
-		return Object.values(WIDGET_DEFINITIONS).filter(
-			(def) => !def.supportedModes || def.supportedModes.includes(currentMode)
-		)
-	}, [currentMode])
+		return Object.values(WIDGET_DEFINITIONS)
+	}, [])
 
 	const [selectedId, setSelectedId] = useState<string>(allDefinitions[0]?.id || '')
 
@@ -210,13 +204,11 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		return allDefinitions.filter((def) => def.category === activeCategory)
 	}, [allDefinitions, activeCategory])
 
-	if (ui === UI.SIMPLE || !isOpen) {
+	if (!isOpen) {
 		return null
 	}
 
-	const previewSize = isCustom
-		? selectedSize
-		: selectedDef?.defaultSize || { w: 2, h: 3 }
+	const previewSize = selectedSize
 
 	return (
 		<>
@@ -266,9 +258,9 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						onOpenWidgetSettings={handleOpenWidgetSettings}
 					/>
 
-					<div className="w-full md:w-7/12 flex flex-col justify-between pr-0 md:pr-1">
+					<div className="flex flex-col justify-between w-full pr-0 md:w-7/12 md:pr-1">
 						{selectedDef ? (
-							<div className="flex flex-col flex-1 justify-between gap-3">
+							<div className="flex flex-col justify-between flex-1 gap-3">
 								<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
 									<div className="flex items-center gap-2">
 										<span className="text-2xl">

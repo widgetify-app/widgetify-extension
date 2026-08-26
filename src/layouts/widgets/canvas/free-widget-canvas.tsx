@@ -119,7 +119,7 @@ export function FreeWidgetCanvas() {
 		})
 
 		return (
-			<div ref={containerRef} className="w-full flex flex-col gap-3 py-2 px-1">
+			<div ref={containerRef} className="flex flex-col w-full gap-3 px-1 py-2">
 				{sortedList.map((widget) => {
 					const def = WIDGET_DEFINITIONS[widget.id]
 					if (!def) return null
@@ -127,9 +127,9 @@ export function FreeWidgetCanvas() {
 					return (
 						<div
 							key={widget.instanceId}
-							className="relative w-full rounded-2xl bg-base-200/80 border border-base-content/10 p-2"
+							className="relative w-full p-2 border rounded-2xl bg-base-200/80 border-base-content/10"
 						>
-							<div className="flex items-center justify-between mb-2 pb-1 border-b border-base-content/10">
+							<div className="flex items-center justify-between pb-1 mb-2 border-b border-base-content/10">
 								<div className="flex items-center gap-1.5 font-bold text-xs text-content">
 									<span>{def.emoji}</span>
 									<span>{def.label}</span>
@@ -155,12 +155,13 @@ export function FreeWidgetCanvas() {
 	return (
 		<div
 			ref={containerRef}
-			className="w-full relative select-none"
+			id="widgets-canvas"
+			className="relative w-full select-none"
 			onClick={handleCanvasClick}
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
-				className="canvas-background relative w-full rounded-3xl transition-all duration-300"
+				className="relative w-full transition-all duration-300 canvas-background rounded-3xl"
 				style={{
 					minHeight: `${canvasPixelHeight}px`,
 					height: `${canvasPixelHeight}px`,
@@ -178,7 +179,7 @@ export function FreeWidgetCanvas() {
 
 				{canvasMode === 'edit' && (
 					<div
-						className="absolute inset-0 pointer-events-none rounded-3xl overflow-hidden"
+						className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl"
 						style={{
 							gap: `${gap}px`,
 						}}
@@ -186,7 +187,7 @@ export function FreeWidgetCanvas() {
 						{Array.from({ length: totalGridRows }).map((_, r) => (
 							<div
 								key={r}
-								className="absolute w-full flex"
+								className="absolute flex w-full"
 								style={{
 									top: `${r * (cellHeight + gap)}px`,
 									height: `${cellHeight}px`,
@@ -201,7 +202,7 @@ export function FreeWidgetCanvas() {
 											width: `${cellWidth}px`,
 											height: `${cellHeight}px`,
 										}}
-										className="rounded-2xl border border-dashed border-base-content/15 bg-base-300/10 transition-all duration-200"
+										className="transition-all duration-200 border border-dashed rounded-2xl border-base-content/15 bg-base-300/10"
 									/>
 								))}
 							</div>

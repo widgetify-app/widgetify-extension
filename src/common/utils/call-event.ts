@@ -79,7 +79,10 @@ export interface EventName {
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
 	resetWallpaper: null
-	openAddCustomWidgetModal: { instanceId?: string; widgetId?: string } | null | undefined
+	openAddCustomWidgetModal:
+		| { instanceId?: string; widgetId?: string }
+		| null
+		| undefined
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

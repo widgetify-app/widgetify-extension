@@ -40,4 +40,3 @@ export function ProBadge({
 
 export const VipBadge = ProBadge
 export type VipBadgeProps = ProBadgeProps
-

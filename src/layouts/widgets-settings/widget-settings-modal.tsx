@@ -7,7 +7,6 @@ import { WigiArzSetting } from '../widgets/wigi-arz/wigi-arz-setting'
 import { WigiPadSetting } from '../widgets/wigi-pad/wigi-pad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
 import { AddWidgetModal } from '../widgets-manager'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 interface WidgetSettingModalConfig {
 	title: string
@@ -62,12 +61,6 @@ export function WidgetSettingsModal({
 	size,
 	onCloseSetting,
 }: WidgetSettingsModalProps) {
-	const { ui } = useAppearanceSetting()
-
-	if (ui === UI.SIMPLE) {
-		return null
-	}
-
 	const isManageOpen =
 		isOpen && (!selectedTab || selectedTab === WidgetTabKeys.widget_management)
 

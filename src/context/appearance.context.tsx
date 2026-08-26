@@ -13,7 +13,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
 export enum UI {
-	DEFAULT = 'ADVANCED',
+	DEFAULT = 'CUSTOM',
 	ADVANCED = 'ADVANCED',
 	SIMPLE = 'SIMPLE',
 	CUSTOM = 'CUSTOM',
@@ -44,7 +44,7 @@ interface AppearanceContextContextType extends AppearanceData {
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	fontFamily: 'Vazir',
-	ui: UI.DEFAULT,
+	ui: UI.CUSTOM,
 	contentAlignment: 'top',
 }
 
@@ -80,6 +80,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 				setSettings({
 					...DEFAULT_SETTINGS,
 					...appearance,
+					ui: UI.CUSTOM,
 				})
 				if (browserTitle) document.title = browserTitle.template
 			}
@@ -112,27 +113,6 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			eventForTitle()
 		}
 	}, [])
-
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (
-				event.altKey &&
-				event.key.toLowerCase() === 'y' &&
-				(event.ctrlKey || event.metaKey)
-			) {
-				event.preventDefault()
-				setUI(
-					settings.ui === UI.ADVANCED ? UI.SIMPLE : UI.ADVANCED,
-					isAuthenticated
-				)
-			}
-		}
-
-		window.addEventListener('keydown', handleKeyDown)
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [isAuthenticated, settings])
 
 	const updateSetting = <K extends keyof AppearanceData>(
 		key: K,
@@ -234,4 +214,3 @@ export function useAppearanceSetting() {
 }
 
 export const useAppearance = useAppearanceSetting
-

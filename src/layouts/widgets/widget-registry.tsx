@@ -23,6 +23,8 @@ import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type WidgetDefinition, type WidgetItem, WidgetKeys } from './layout-engine/types'
+import { SimplifyWigipad } from '@/layouts/simplify/wigipad-simplify'
+import { SimpleTools } from '@/layouts/simplify/tools-simplify'
 
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -35,7 +37,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 4, h: 1 },
-		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <SearchLayout size={size} />,
 	},
@@ -53,7 +54,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
-		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (instanceId, size) => (
 			<BookmarkProvider>
@@ -69,7 +69,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.Pet,
-		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <WidgetifyLayout size={size} />,
 	},
@@ -84,7 +83,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
-		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (_instanceId, size) => <PetWidget size={size} />,
 	},
@@ -93,12 +91,33 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی‌پد',
 		emoji: '⏰',
 		category: 'time',
-		allowedSizes: [{ w: 2, h: 3 }],
+		allowedSizes: [
+			{ w: 2, h: 3 },
+			{ w: 2, h: 4 },
+		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiPad,
-		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
-		node: () => <WigiPadWidget />,
+		variants: [
+			{
+				id: 'standard',
+				label: 'ویجی‌پد پیشرفته',
+				size: { w: 2, h: 3 },
+				meta: { variant: 'standard' },
+			},
+			{
+				id: 'simplify',
+				label: 'ویجی‌پد ساده',
+				size: { w: 2, h: 4 },
+				meta: { variant: 'simplify' },
+			},
+		],
+		node: (_instanceId, _size, meta) => {
+			if (meta?.variant === 'simplify') {
+				return <SimplifyWigipad />
+			}
+			return <WigiPadWidget />
+		},
 	},
 	[WidgetKeys.clock]: {
 		id: WidgetKeys.clock,
@@ -110,7 +129,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
-		supportedModes: ['CUSTOM'],
 		variants: [
 			{
 				id: 'digital',
@@ -156,7 +174,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (_instanceId, size) => (
 			<DateProvider>
@@ -180,7 +197,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.weather_settings,
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (_instanceId, size) => <WeatherLayout size={size} />,
 	},
@@ -194,7 +210,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		popular: true,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (_instanceId, size) => (
 			<CurrencyProvider>
@@ -212,7 +227,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		isNew: false,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (_instanceId, size) => <YadkarWidget size={size} />,
 	},
@@ -226,11 +240,34 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
+			{ w: 2, h: 4 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
-		node: (_instanceId, size) => <ToolsLayout size={size} />,
+		variants: [
+			{
+				id: 'standard',
+				label: 'ابزارهای پیشرفته',
+				size: { w: 2, h: 3 },
+				meta: { variant: 'standard' },
+			},
+			{
+				id: 'simplify',
+				label: 'همچیز‌ یکجا',
+				size: { w: 2, h: 3 },
+				meta: { variant: 'simplify' },
+			},
+		],
+		node: (_instanceId, size, meta) => {
+			if (meta?.variant === 'simplify') {
+				return (
+					<CurrencyProvider>
+						<SimpleTools />
+					</CurrencyProvider>
+				)
+			}
+			return <ToolsLayout size={size} />
+		},
 	},
 	[WidgetKeys.arzLive]: {
 		id: WidgetKeys.arzLive,
@@ -245,7 +282,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		variants: [
 			{
 				id: 'list',
@@ -282,7 +318,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <NewsLayout inComboWidget={false} size={size} />,
 	},
@@ -300,7 +335,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: false,
 		node: (_instanceId, size) => (
 			<NetworkLayout inComboWidget={false} enableBackground={true} size={size} />
@@ -320,7 +354,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM', 'ADVANCED'],
 		canDuplicate: true,
 		node: (_instanceId, size) => <HabitsLayout size={size} />,
 	},
@@ -334,7 +367,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM'],
 		canDuplicate: true,
 		node: (_instanceId, size) => (
 			<WidgetContainer>
@@ -352,7 +384,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 2 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		supportedModes: ['CUSTOM'],
 		variants: [
 			{
 				id: 'list',
@@ -389,7 +420,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
-		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <TransparentClockWidget size={size} />,
 	},
@@ -404,7 +434,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
-		supportedModes: ['CUSTOM'],
 		canDuplicate: false,
 		node: (_instanceId, size) => <MoodTrackerWidget size={size} />,
 	},
@@ -412,7 +441,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 
 export const widgetItems: WidgetItem[] = Object.values(WIDGET_DEFINITIONS)
 	.filter((def): def is WidgetDefinition & { order: number } =>
-		Boolean(def.supportedModes?.includes('ADVANCED') && typeof def.order === 'number')
+		typeof def.order === 'number'
 	)
 	.sort((a, b) => a.order - b.order)
 	.map((def) => ({

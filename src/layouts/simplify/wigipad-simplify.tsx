@@ -11,8 +11,8 @@ export function SimplifyWigipad() {
 	const hasBanner = !!fetchedData?.wigipadBanner
 
 	return (
-		<WidgetContainer className="relative flex flex-col w-full overflow-hidden">
-			<div className="relative grid justify-between grid-cols-2 rounded-2xl">
+		<WidgetContainer className="relative flex flex-col w-full h-full overflow-hidden">
+			<div className="relative grid justify-between grid-cols-2 rounded-2xl flex-none">
 				{hasBanner ? (
 					<>
 						<div
@@ -28,8 +28,8 @@ export function SimplifyWigipad() {
 				<ClockDisplay />
 			</div>
 
-			<div className="col-span-2 px-1 mt-1">
-				<div className="overflow-y-auto max-h-36 min-h-36 pl-0.5">
+			<div className="col-span-2 px-1 mt-1 flex-1 min-h-0 overflow-hidden">
+				<div className="overflow-y-auto h-full pl-0.5">
 					<div className="pb-8">
 						{fetchedData?.wigiPad?.map((notification, index) => (
 							<RenderWigiPadItem

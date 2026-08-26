@@ -16,8 +16,8 @@ export function SimplifyCalendar() {
 	}
 
 	return (
-		<div className="flex flex-col flex-1 mt-1 overflow-hidden">
-			<div className="min-h-59 max-h-59">
+		<div className="flex flex-col h-full mt-1 overflow-hidden">
+			<div className="flex-1 min-h-0">
 				{activeTab === 'calendar' ? (
 					<>
 						<CalendarHeader
@@ -38,7 +38,7 @@ export function SimplifyCalendar() {
 					<GoogleCalendarView />
 				)}
 			</div>
-			<div className="flex items-center w-full cursor-pointer h-7 rounded-2xl">
+			<div className="flex items-center flex-none w-full mt-1 cursor-pointer h-7 rounded-2xl">
 				<CalendarTabSelector
 					activeTab={activeTab}
 					setActiveTab={onSetActiveTab}

@@ -11,7 +11,7 @@ export function NewsSimplify() {
 		})
 	}
 	return (
-		<div className="overflow-y-auto h-82 scrollbar-none">
+		<div className="overflow-y-auto h-full scrollbar-none">
 			<div className="sticky z-20 flex justify-start px-2 top-1">
 				<Button
 					onClick={onClick}

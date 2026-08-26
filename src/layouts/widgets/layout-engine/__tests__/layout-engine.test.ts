@@ -148,4 +148,49 @@ describe('Layout Engine Tests', () => {
 		const slot = findAvailableSlot(layout, { w: 2, h: 2 }, 8)
 		expect(slot).toEqual({ col: 0, row: 1 })
 	})
+
+	it('contains 8 widgets in the default layout matching the Advanced layout', () => {
+		expect(DEFAULT_WIDGET_LAYOUT.length).toBe(8)
+		const widgetIds = DEFAULT_WIDGET_LAYOUT.map((w) => w.id)
+		expect(widgetIds).toContain(WidgetKeys.widgetify)
+		expect(widgetIds).toContain(WidgetKeys.search)
+		expect(widgetIds).toContain(WidgetKeys.bookmarks)
+		expect(widgetIds).toContain(WidgetKeys.wigiPad)
+		expect(widgetIds).toContain(WidgetKeys.calendar)
+		expect(widgetIds).toContain(WidgetKeys.yadKar)
+		expect(widgetIds).toContain(WidgetKeys.tools)
+		expect(widgetIds).toContain(WidgetKeys.comboWidget)
+	})
+
+	it('validates Simple mode migration layout without overlaps', () => {
+		const simpleLayout: StoredWidget[] = [
+			{
+				id: WidgetKeys.search,
+				instanceId: 'search-default',
+				position: { col: 2, row: 0 },
+				size: { w: 4, h: 1 },
+			},
+			{
+				id: WidgetKeys.wigiPad,
+				instanceId: 'wigipad-default',
+				position: { col: 0, row: 3 },
+				size: { w: 2, h: 4 },
+				meta: { variant: 'simplify' },
+			},
+			{
+				id: WidgetKeys.bookmarks,
+				instanceId: 'bookmarks-default',
+				position: { col: 2, row: 5 },
+				size: { w: 4, h: 2 },
+			},
+			{
+				id: WidgetKeys.tools,
+				instanceId: 'tools-default',
+				position: { col: 6, row: 3 },
+				size: { w: 2, h: 4 },
+				meta: { variant: 'simplify' },
+			},
+		]
+		expect(validateLayout(simpleLayout, 8)).toBe(true)
+	})
 })

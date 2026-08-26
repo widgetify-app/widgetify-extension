@@ -24,7 +24,7 @@ const CLOCK_OPTIONS = [
 export function ClockSetting() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings>({
 		clockType: ClockType.Digital,
-		showSeconds: true,
+		showSeconds: false,
 		showTimeZone: true,
 		useSelectedFont: true,
 	})

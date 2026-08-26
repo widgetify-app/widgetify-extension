@@ -69,8 +69,6 @@ export interface WidgetVariantOption {
 	meta?: Record<string, any>
 }
 
-export type WidgetMode = 'DEFAULT' | 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
-
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
@@ -82,7 +80,6 @@ export interface WidgetDefinition {
 	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean
-	supportedModes?: WidgetMode[]
 	order?: number
 	canToggle?: boolean
 	isNew?: boolean
@@ -94,7 +91,10 @@ export interface WidgetDefinition {
 }
 
 export interface WidgetItem
-	extends Omit<WidgetDefinition, 'allowedSizes' | 'defaultSize' | 'canDuplicate' | 'node'> {
+	extends Omit<
+		WidgetDefinition,
+		'allowedSizes' | 'defaultSize' | 'canDuplicate' | 'node'
+	> {
 	node: React.ReactNode
 	order: number
 }

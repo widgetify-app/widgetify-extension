@@ -1,6 +1,3 @@
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
-import { ContentSection } from './ui/content-section'
-import { HomeContentSimplify } from './ui/home-content-simplify'
 import { HomeContentCustom } from './ui/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
@@ -9,66 +6,56 @@ import { Joyride, type Step } from 'react-joyride'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import Analytics from '@/analytics'
 import { DialogChecker } from './dialog/dialog'
+import { TourTooltip } from '@/components/tour/tour-tooltip'
+
 const steps: Step[] = [
 	{
 		target: '#chrome-footer',
 		content: (
-			<div className="flex flex-col gap-1 text-center">
-				<h4 className="text-[14px] font-black text-primary italic">
+			<div className="flex flex-col gap-2 text-center">
+				<h4 className="text-[13px] font-black text-primary">
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-6 text-content font-medium">
-					برای مخفی کردن این نوار، کافیست روی آن{' '}
-					<span className="font-black text-error">راست کلیک</span> کرده و گزینه
-					زیر را انتخاب کنید:
+				<p className="text-[12px] leading-5 text-base-content/80 font-medium">
+					برای مخفی کردن این نوار، کافیه روش{' '}
+					<span className="font-black text-error">راست‌کلیک</span> کنی و این
+					گزینه رو بزنی:
 				</p>
 
-				<div className="relative group">
+				<div className="relative overflow-hidden border rounded-xl border-base-content/10">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 						alt="نحوه مخفی کردن نوار پایین مرورگر"
-						className="object-cover w-full transition-transform duration-500 rounded-xl shadow-2xl border-2 border-primary/20 group-hover:scale-[1.02]"
+						className="object-cover w-full shadow-md rounded-xl"
 					/>
-					<div className="absolute inset-0 pointer-events-none rounded-xl bg-linear-to-t from-black/20 to-transparent" />
 				</div>
 
-				<div className="p-2 border border-dashed rounded-lg bg-base-100/10 border-base-100/20">
-					<code className="text-[11px] font-bold text-content/60">
+				<div className="p-1.5 border border-dashed rounded-lg bg-base-300/40 border-base-content/15">
+					<code className="text-[11px] font-bold text-base-content/70">
 						"Hide footer on New Tab page"
 					</code>
 				</div>
 			</div>
 		),
-		buttons: ['primary', 'back'],
-		locale: {
-			nextWithProgress: 'مخفی کردم / نبودش',
-		},
+	},
+	{
+		target: '.widget-outer',
+		content:
+			'برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه',
 	},
 	{
 		target: '#settings-button',
 		content:
-			'از این دکمه می‌توانید به تنظیمات عمومی افزونه و مدیریت ویجت‌ها دسترسی پیدا کنید و آن‌ها را سفارشی‌سازی کنید.',
+			'از این دکمه می‌تونی به تنظیمات عمومی، تصاویر زمینه و اضافه کردن ویجت‌ها دسترسی داشته باشی',
 	},
 	{
 		target: '#profile-and-friends-list',
-		content:
-			'از این بخش می‌توانید به پروفایل شخصی خود و لیست دوستان دسترسی پیدا کنید و آن‌ها را مدیریت کنید.',
-	},
-	{
-		target: '.bookmarks',
-		content:
-			'این بخش به شما امکان می‌دهد بوکمارک‌ها را مدیریت کنید: بوکمارک جدید اضافه کنید، بوکمارک‌های موجود را ویرایش یا حذف کنید و تنظیمات هر بوکمارک را تغییر دهید.',
-	},
-	{
-		target: '#widgets',
-		content:
-			'این محیط اصلی ویجت‌ها است. شما می‌توانید بدون محدودیت از ویجت‌ها استفاده کنید، اما برای جلوگیری از شلوغی بیش از حد، پیشنهاد می‌کنیم حداکثر ۴ ویجت را همزمان فعال نگه دارید.',
+		content: 'از این بخش می‌تونی پروفایلت رو ببینی و با دوستات در ارتباط باشی',
 	},
 ]
 
 export function HomePage() {
-	const { ui } = useAppearanceSetting()
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const [showTour, setShowTour] = useState(false)
@@ -123,22 +110,9 @@ export function HomePage() {
 		displayModalIfNeeded()
 	}, [])
 
-	const renderContent = () => {
-		switch (ui) {
-			case UI.SIMPLE:
-				return <HomeContentSimplify />
-			case UI.CUSTOM:
-				return <HomeContentCustom />
-			case UI.DEFAULT:
-			case 'ADVANCED' as any:
-			default:
-				return <ContentSection />
-		}
-	}
-
 	return (
 		<>
-			{renderContent()}
+			<HomeContentCustom />
 
 			{showWelcomeModal && (
 				<ExtensionInstalledModal
@@ -154,14 +128,7 @@ export function HomePage() {
 				steps={steps}
 				run={showTour}
 				continuous
-				locale={{
-					next: 'بعدی',
-					back: 'قبلی',
-					skip: 'رد کردن',
-					last: 'پایان',
-					close: 'بستن',
-					nextWithProgress: 'بعدی {current}/{total}',
-				}}
+				tooltipComponent={TourTooltip}
 				options={{
 					showProgress: true,
 					skipBeacon: true,
@@ -169,7 +136,7 @@ export function HomePage() {
 					dismissKeyAction: 'close',
 					buttons: ['skip', 'primary', 'back'],
 				}}
-				onEvent={onDoneTour}
+				callback={onDoneTour}
 			/>
 
 			{showReleaseNotes && (

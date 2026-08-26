@@ -9,7 +9,6 @@ import {
 	type PetDurations,
 	type Position,
 } from './pet-types'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
 
 /** How fast a pet still airborne (e.g. mid-climb) settles back to the ground. */
 const FALL_SPEED = 1.5
@@ -90,7 +89,6 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	isHungry,
 }) => {
 	const showToolTip = showName || isHungry
-	const { ui } = useAppearanceSetting()
 
 	const currentSrc = getAnimationForCurrentAction()
 	const [loadedSrcs, setLoadedSrcs] = useState<string[]>(() =>
@@ -107,10 +105,10 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className={`absolute  hidden w-full overflow-hidden ${ui === UI.SIMPLE ? 'bottom-0.5 md:flex  h-8 -mr-2' : ' -bottom-2 md:flex  h-16'}`}
+			className="absolute hidden w-full overflow-hidden -bottom-2 md:flex h-16"
 			style={{
 				zIndex: 50,
-				...(ui === UI.CUSTOM ? { margin: '8px' } : {}),
+				margin: '8px',
 			}}
 		>
 			<CollectiblesRenderer collectibles={collectibles} assets={assets} />
@@ -187,7 +185,10 @@ export function useBasePetLogic({
 			// shorter than several pets' configured maxHeight (80-100px). Climbing past
 			// it pushed pets above the visible area, so they'd reappear "floating" back
 			// down into frame — clamp to whichever is actually smaller.
-			maxY: Math.max(0, Math.min(dimensions.maxHeight, visibleHeight - dimensions.size)),
+			maxY: Math.max(
+				0,
+				Math.min(dimensions.maxHeight, visibleHeight - dimensions.size)
+			),
 		}
 	}, [dimensions.size, dimensions.maxHeight])
 
@@ -483,9 +484,7 @@ export function useBasePetLogic({
 				setDirection(newDirection)
 			}
 			const newY =
-				currentPosition.y > 0
-					? Math.max(0, currentPosition.y - FALL_SPEED)
-					: 0
+				currentPosition.y > 0 ? Math.max(0, currentPosition.y - FALL_SPEED) : 0
 			return { x: newX, y: newY }
 		},
 		[getMovementBounds, getCurrentSpeed]

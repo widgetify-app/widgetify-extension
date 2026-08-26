@@ -156,15 +156,15 @@ export function VipTab() {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-4xl px-2 sm:px-4 py-2 mx-auto space-y-4 text-right select-none">
+		<div className="flex flex-col w-full max-w-4xl px-2 py-2 mx-auto space-y-4 text-right select-none sm:px-4">
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-				<div className="lg:col-span-6 flex flex-col justify-between space-y-3">
+				<div className="flex flex-col justify-between space-y-3 lg:col-span-6">
 					<div className="space-y-1">
 						<div className="flex items-center gap-2">
 							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-primary/10 text-primary">
-								<Icon name="outlineCrown" size={18} />
+								<Icon name="crown" size={18} />
 							</div>
-							<h2 className="text-xl sm:text-2xl font-black text-content tracking-tight">
+							<h2 className="text-xl font-black tracking-tight sm:text-2xl text-content">
 								ویجتیفای <span className="text-primary">{VIP_LABEL}</span>
 							</h2>
 						</div>
@@ -173,7 +173,7 @@ export function VipTab() {
 							ویجتیفای رو مطابق سلیقه خودت بساز
 						</h3>
 
-						<p className="text-xs text-muted leading-relaxed">
+						<p className="text-xs leading-relaxed text-muted">
 							با {VIP_LABEL} به امکانات پیشرفته دسترسی داشته باش و تجربه‌ای
 							سریع‌تر، زیباتر و شخصی‌تر داشته باش
 						</p>
@@ -182,7 +182,7 @@ export function VipTab() {
 					<div className="min-h-48 max-h-48 flex flex-col justify-between p-3.5 rounded-2xl border border-base-content/10 bg-base-300/20">
 						<div className="space-y-1.5">
 							<div className="flex items-center gap-1">
-								<div className="flex items-center justify-center w-7 h-7 rounded-xl  text-primary shrink-0">
+								<div className="flex items-center justify-center w-7 h-7 rounded-xl text-primary shrink-0">
 									<Icon name={currentSlide.icon} size={15} />
 								</div>
 								<h4 className="text-sm font-bold text-content">
@@ -190,7 +190,7 @@ export function VipTab() {
 								</h4>
 							</div>
 
-							<p className="text-xs text-muted leading-relaxed pr-1">
+							<p className="pr-1 text-xs leading-relaxed text-muted">
 								{currentSlide.description}
 							</p>
 						</div>
@@ -201,7 +201,7 @@ export function VipTab() {
 									key={idx}
 									className="flex items-center gap-2 text-xs font-medium text-content/90"
 								>
-									<div className="flex items-center justify-center w-3 h-3 rounded-full bg-primary text-white shrink-0">
+									<div className="flex items-center justify-center w-3 h-3 text-white rounded-full bg-primary shrink-0">
 										<Icon name="check" size={8} />
 									</div>
 									<span>{bullet}</span>
@@ -213,7 +213,7 @@ export function VipTab() {
 							<button
 								type="button"
 								onClick={handlePrevSlide}
-								className="flex items-center justify-center w-7 h-7 rounded-xl border border-base-content/10 bg-base-100/50 hover:bg-base-300/60 text-content transition-colors cursor-pointer"
+								className="flex items-center justify-center transition-colors border cursor-pointer w-7 h-7 rounded-xl border-base-content/10 bg-base-100/50 hover:bg-base-300/60 text-content"
 								aria-label="قبلی"
 							>
 								<Icon name="chevronRight" size={13} />
@@ -239,7 +239,7 @@ export function VipTab() {
 							<button
 								type="button"
 								onClick={handleNextSlide}
-								className="flex items-center justify-center w-7 h-7 rounded-xl border border-base-content/10 bg-base-100/50 hover:bg-base-300/60 text-content transition-colors cursor-pointer"
+								className="flex items-center justify-center transition-colors border cursor-pointer w-7 h-7 rounded-xl border-base-content/10 bg-base-100/50 hover:bg-base-300/60 text-content"
 								aria-label="بعدی"
 							>
 								<Icon name="chevronLeft" size={13} />
@@ -252,11 +252,11 @@ export function VipTab() {
 					<img
 						src={vipPreviewImg}
 						alt={`پیش‌نمایش امکانات ${VIP_LABEL} ویجتیفای`}
-						className="w-full h-full object-cover rounded-3xl"
+						className="object-cover w-full h-full rounded-3xl"
 					/>
-					<div className="absolute inset-0 bg-black/10 transition-opacity group-hover:bg-black/5 pointer-events-none" />
+					<div className="absolute inset-0 transition-opacity pointer-events-none bg-black/10 group-hover:bg-black/5" />
 
-					<div className="absolute flex items-center justify-center w-12 h-12 rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-md shadow-lg border border-white/40 text-primary group-hover:scale-110 transition-transform cursor-pointer">
+					<div className="absolute flex items-center justify-center w-12 h-12 transition-transform border rounded-full shadow-lg cursor-pointer bg-white/90 dark:bg-black/70 backdrop-blur-md border-white/40 text-primary group-hover:scale-110">
 						<Icon name="play" size={18} className="translate-x-[-1px]" />
 					</div>
 				</div>
@@ -366,11 +366,11 @@ export function VipTab() {
 					</div>
 				</div>
 
-				<div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
 					<div className="flex flex-col items-start sm:items-end">
 						<span className="text-[11px] text-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
-							<span className="text-base sm:text-lg font-black text-content tabular-nums">
+							<span className="text-base font-black sm:text-lg text-content tabular-nums">
 								{selectedPlan ? fmt(selectedPlan.price) : '۰'}
 							</span>
 							<span className="text-xs text-muted">تومان</span>

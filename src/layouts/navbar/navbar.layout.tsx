@@ -6,7 +6,6 @@ import { SettingsDropdown } from './components/settings-dropdown'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
 import { ProfileNav } from './profile/profile'
 import { NotificationNavbar } from './notifications/notification.navbar'
-import { UI, useAppearanceSetting } from '@/context/appearance.context'
 import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
@@ -92,7 +91,6 @@ export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
-	const { ui } = useAppearanceSetting()
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
@@ -182,7 +180,7 @@ export function NavbarLayout(): JSX.Element {
 								<Icon name="chevronDown" size={15} />
 							</button>
 						</Tooltip>
-						{ui === UI.CUSTOM && <NotificationNavbar />}
+						<NotificationNavbar />
 						<BlurModeButton />
 						<SettingsDropdown />
 						<FriendsListNavbar />

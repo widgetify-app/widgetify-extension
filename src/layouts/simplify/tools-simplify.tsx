@@ -94,19 +94,21 @@ export function SimpleTools() {
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
-				<DateProvider>
-					{ElementData && (
-						<Suspense
-							fallback={
-								<div className="flex items-center justify-center h-full text-sm text-muted">
-									در حال بارگذاری...
-								</div>
-							}
-						>
-							<ElementData />
-						</Suspense>
-					)}
-				</DateProvider>
+				<div className="flex-1 min-h-0 overflow-hidden">
+					<DateProvider>
+						{ElementData && (
+							<Suspense
+								fallback={
+									<div className="flex items-center justify-center h-full text-sm text-muted">
+										در حال بارگذاری...
+									</div>
+								}
+							>
+								<ElementData />
+							</Suspense>
+						)}
+					</DateProvider>
+				</div>
 
 				<div className="flex-none mt-1">
 					<TabNavigation
@@ -115,7 +117,7 @@ export function SimpleTools() {
 						onTabClick={onChangeTab}
 						tabs={tabs}
 						size="small"
-						className="h-fit  border-none! flex-nowrap w-full"
+						className="h-fit border-none! flex-nowrap w-full"
 					/>
 				</div>
 			</div>
