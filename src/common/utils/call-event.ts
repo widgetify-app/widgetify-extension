@@ -15,6 +15,7 @@ export interface EventName {
 		| 'account'
 		| 'profile'
 		| 'platforms'
+		| 'pro'
 		| 'tasks'
 		| 'friends'
 		| 'general'
@@ -60,7 +61,7 @@ export interface EventName {
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings
 	closeAllDropdowns: null
-	openProfile?: 'friends' | 'platforms'
+	openProfile?: 'friends' | 'platforms' | 'pro'
 	openMarketModal: null
 	font_change: {
 		font: string
