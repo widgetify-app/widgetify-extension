@@ -23,7 +23,6 @@ interface BookmarkGridProps {
 	setFolderPath: (path: FolderPathItem[]) => void
 	colsCount?: number
 	rowsCount?: number
-	isCustomMode?: boolean
 	onOpenFolder?: (folder: Bookmark) => void
 }
 
@@ -34,7 +33,6 @@ export function BookmarkGrid({
 	folderPath,
 	colsCount = 5,
 	rowsCount = 2,
-	isCustomMode = false,
 	onOpenFolder,
 }: BookmarkGridProps) {
 	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
@@ -196,25 +194,22 @@ export function BookmarkGrid({
 	const gridColsClass =
 		colsCount === 1 ? 'grid-cols-1' : colsCount === 2 ? 'grid-cols-2' : 'grid-cols-5'
 
-	const gridRowsClass = isCustomMode
-		? rowsCount === 1
+	const gridRowsClass =
+		rowsCount === 1
 			? 'grid-rows-1'
 			: rowsCount === 2
 				? 'grid-rows-2'
 				: rowsCount === 3
 					? 'grid-rows-3'
 					: ''
-		: ''
 
 	return (
 		<div
 			style={{
 				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
-				gridTemplateRows: isCustomMode
-					? `repeat(${rowsCount}, minmax(0, 1fr))`
-					: undefined,
+				gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
 			}}
-			className={`grid w-full ${isCustomMode ? 'h-full grid-flow-row' : ''} ${gridColsClass} ${gridRowsClass} ${isCustomMode ? 'gap-2' : 'gap-x-1 gap-y-2 md:gap-4 lg:gap-2'} transition-all duration-300 rounded-2xl`}
+			className={`grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-2 transition-all duration-300 rounded-2xl`}
 		>
 			<SortableContext
 				items={displayedBookmarks
@@ -226,14 +221,13 @@ export function BookmarkGrid({
 					bookmark ? (
 						<div
 							key={bookmark.id + '-' + i}
-							className={`transition-transform duration-200 ${isCustomMode ? 'h-full w-full' : ''}`}
+							className={`transition-transform duration-200 h-full`}
 						>
 							<SortableBookmarkItem
 								bookmark={bookmark}
 								onClick={(e) => handleBookmarkClick(bookmark, e)}
 								onMenuClick={(e) => handleMenuClick(e, bookmark)}
 								id={bookmark.id}
-								isCustomMode={isCustomMode}
 							/>
 						</div>
 					) : (
@@ -241,7 +235,6 @@ export function BookmarkGrid({
 							key={i}
 							canAdd={true}
 							onClick={openAddBookmarkModal}
-							isCustomMode={isCustomMode}
 						/>
 					)
 				)}

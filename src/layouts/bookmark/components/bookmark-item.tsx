@@ -12,7 +12,6 @@ interface BookmarkItemProps {
 	onClick: (e?: React.MouseEvent<any>) => void
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
-	isCustomMode?: boolean
 }
 
 export function BookmarkItem({
@@ -20,7 +19,6 @@ export function BookmarkItem({
 	onClick,
 	isDragging = false,
 	onMenuClick,
-	isCustomMode = false,
 }: BookmarkItemProps) {
 	const customStyles = bookmark.customBackground
 		? {
@@ -36,9 +34,7 @@ export function BookmarkItem({
 	}
 
 	return (
-		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} ${isCustomMode ? 'h-full w-full' : ''}`}
-		>
+		<div className={`relative ${isDragging ? 'opacity-50' : ''} h-full w-full`}>
 			<button
 				onClick={onClick}
 				onAuxClick={onClick}
@@ -50,11 +46,10 @@ export function BookmarkItem({
 				}}
 				style={customStyles}
 				className={cn(
-					'relative flex flex-col items-center justify-center px-2 py-0.5  duration-300 border border-content cursor-pointer group rounded-widget shadow-sm w-full transition-transform ease-in-out group-hover:scale-102',
+					'relative flex flex-col items-center justify-center px-2 py-0.5 h-full min-h-0 duration-300 border border-content cursor-pointer group rounded-widget shadow-sm w-full transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
-						? `bg-content hover:bg-base-300 text-content  bg-glass`
-						: '',
-					isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-22'
+						? `bg-content hover:bg-base-300 text-content bg-glass`
+						: ''
 				)}
 			>
 				{onMenuClick && bookmark && (
@@ -81,7 +76,7 @@ export function BookmarkItem({
 				)}
 				{RenderStickerPattern(bookmark)}
 
-				<div className="flex flex-col h-full w-full justify-between items-center min-h-0">
+				<div className="flex flex-col items-center justify-between w-full h-full min-h-0">
 					<div className="flex items-center justify-center flex-1 min-h-0">
 						<BookmarkIcon bookmark={bookmark} />
 					</div>

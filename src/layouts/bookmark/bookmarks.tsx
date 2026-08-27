@@ -257,7 +257,6 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 							onOpenFolder={handleOpenFolderInModal}
 							colsCount={colsCount}
 							rowsCount={rowsCount}
-							isCustomMode={isCustomMode}
 						/>
 					</div>
 				</div>

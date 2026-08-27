@@ -18,7 +18,7 @@ export function ClockDisplay() {
 			} else {
 				setClockSettings({
 					clockType: ClockType.Digital,
-					showSeconds: true,
+					showSeconds: false,
 					showTimeZone: true,
 					useSelectedFont: true,
 				})

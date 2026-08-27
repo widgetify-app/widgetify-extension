@@ -15,7 +15,6 @@ interface AddWidgetSidebarProps {
 	definitions: WidgetDefinition[]
 	selectedId: string
 	onSelectWidget: (id: string) => void
-	isCustom: boolean
 	runtimeLayout: { id: string }[]
 	visibility: string[]
 	isVip?: boolean
@@ -29,7 +28,6 @@ export function AddWidgetSidebar({
 	definitions,
 	selectedId,
 	onSelectWidget,
-	isCustom,
 	runtimeLayout,
 	visibility,
 	isVip = false,
@@ -37,8 +35,8 @@ export function AddWidgetSidebar({
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
-		<div className="w-full md:w-5/12 flex flex-col border-b md:border-b-0 md:border-l border-base-content/10 pl-0 md:pl-3 pb-3 md:pb-0">
-			<div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-2 mb-2 border-b border-base-content/10">
+		<div className="flex flex-col w-full pb-3 pl-0 border-b md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
+			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b scrollbar-none border-base-content/10">
 				{CATEGORIES.map((cat) => (
 					<button
 						key={cat.id}
@@ -59,11 +57,7 @@ export function AddWidgetSidebar({
 			<div className="flex-1 overflow-y-auto space-y-1.5 pr-0.5 scrollbar-none">
 				{definitions.map((def) => {
 					const isSelected = def.id === selectedId
-					const count = isCustom
-						? runtimeLayout.filter((w) => w.id === def.id).length
-						: visibility.includes(def.id)
-							? 1
-							: 0
+					const count = runtimeLayout.filter((w) => w.id === def.id).length
 					const isActive = count > 0
 
 					return (
@@ -77,7 +71,7 @@ export function AddWidgetSidebar({
 									: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
 							)}
 						>
-							<div className="flex items-center gap-2 min-w-0">
+							<div className="flex items-center min-w-0 gap-2">
 								<span className="text-xl shrink-0">{def.emoji}</span>
 								<span
 									className={cn(
@@ -110,7 +104,7 @@ export function AddWidgetSidebar({
 										<Icon name="settings" size={13} />
 									</Button>
 								)}
-								{isCustom && def.canDuplicate ? (
+								{def.canDuplicate ? (
 									<span
 										className={cn(
 											'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',

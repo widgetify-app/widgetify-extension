@@ -6,7 +6,6 @@ import { Icon } from '@/src/icons'
 interface AddWidgetActionsProps {
 	isVipRequired: boolean
 	isVip: boolean
-	isCustom: boolean
 	isEditMode: boolean
 	isLimitReached: boolean
 	canAddCustom: boolean
@@ -19,7 +18,6 @@ interface AddWidgetActionsProps {
 export function AddWidgetActions({
 	isVipRequired,
 	isVip,
-	isCustom,
 	isEditMode,
 	isLimitReached,
 	canAddCustom,
@@ -33,7 +31,7 @@ export function AddWidgetActions({
 			<Button
 				type="button"
 				onClick={() => callEvent('openSettings', 'vip')}
-				className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
+				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
 				rounded={'2xl'}
 				variant={'default'}
 			>
@@ -47,71 +45,63 @@ export function AddWidgetActions({
 		)
 	}
 
-	if (isCustom) {
-		if (isEditMode) {
-			return (
-				<Button
-					type="button"
-					onClick={onSave}
-					className="w-full"
-					rounded={'2xl'}
-					variant={'primary'}
-				>
-					<span>ذخیره تغییرات</span>
-				</Button>
-			)
-		}
-
-		if (isLimitReached) {
-			return (
-				<Button
-					type="button"
-					onClick={() => callEvent('openSettings', 'vip')}
-					className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
-					rounded={'2xl'}
-					variant={'default'}
-				>
-					<Icon name="crown" size={14} />
-					<span>تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)</span>
-				</Button>
-			)
-		}
-
-		if (canAddCustom) {
-			return (
-				<Button
-					type="button"
-					onClick={onSave}
-					className="w-full"
-					rounded={'2xl'}
-					variant={'primary'}
-				>
-					<span>+</span>
-					<span>
-						افزودن ویجت با اندازه {selectedSize.w}×{selectedSize.h}
-					</span>
-				</Button>
-			)
-		}
-
-		if (!isVip && isCurrentlyActive && isDuplicateRestricted) {
-			return (
-				<Button
-					type="button"
-					onClick={() => callEvent('openSettings', 'vip')}
-					className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
-					rounded={'2xl'}
-					variant={'default'}
-				>
-					<Icon name="crown" size={14} />
-					<span>تکرار ویجت مخصوص کاربران پرو</span>
-				</Button>
-			)
-		}
-
+	if (isEditMode) {
 		return (
-			<Button disabled variant={'default'} rounded={'2xl'} className="w-full">
-				این ویجت قبلا به صفحه اضافه شده!
+			<Button
+				type="button"
+				onClick={onSave}
+				className="w-full"
+				rounded={'2xl'}
+				variant={'primary'}
+			>
+				<span>ذخیره تغییرات</span>
+			</Button>
+		)
+	}
+
+	if (isLimitReached) {
+		return (
+			<Button
+				type="button"
+				onClick={() => callEvent('openSettings', 'vip')}
+				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
+				rounded={'2xl'}
+				variant={'default'}
+			>
+				<Icon name="crown" size={14} />
+				<span>تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)</span>
+			</Button>
+		)
+	}
+
+	if (canAddCustom) {
+		return (
+			<Button
+				type="button"
+				onClick={onSave}
+				className="w-full"
+				rounded={'2xl'}
+				variant={'primary'}
+			>
+				<span>+</span>
+				<span>
+					افزودن ویجت با اندازه {selectedSize.w}×{selectedSize.h}
+				</span>
+			</Button>
+		)
+	}
+
+	if (!isVip && isCurrentlyActive && isDuplicateRestricted) {
+		return (
+			<Button
+				type="button"
+				onClick={() => callEvent('openSettings', 'vip')}
+				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
+				rounded={'2xl'}
+				variant={'default'}
+			>
+				<Icon name="crown" size={14} />
+				<span>تکرار ویجت مخصوص کاربران پرو</span>
 			</Button>
 		)
 	}
@@ -135,7 +125,7 @@ export function AddWidgetActions({
 			<Button
 				type="button"
 				onClick={() => callEvent('openSettings', 'vip')}
-				className="w-full flex items-center justify-center gap-2 bg-warning/15 hover:bg-warning/25 text-warning border border-warning/30 font-bold"
+				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
 				rounded={'2xl'}
 				variant={'default'}
 			>

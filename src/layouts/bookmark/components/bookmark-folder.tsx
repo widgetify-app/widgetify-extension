@@ -12,13 +12,11 @@ export function FolderBookmarkItem({
 	onClick,
 	isDragging = false,
 	onMenuClick,
-	isCustomMode = false,
 }: {
 	bookmark: Bookmark
 	onClick: (e?: React.MouseEvent<any>) => void
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
-	isCustomMode?: boolean
 }) {
 	const { getCurrentFolderItems } = useBookmarkStore()
 
@@ -72,7 +70,7 @@ export function FolderBookmarkItem({
 
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden ${isCustomMode ? 'h-full w-full' : ''}`}
+			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden h-full`}
 		>
 			<button
 				onClick={onClick}
@@ -86,14 +84,19 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-widget shadow-sm w-full ease-in-out ${
+				className={`relative flex group h-full min-h-0 flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-widget shadow-sm w-full ease-in-out ${
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-primary/20 text-content'
 						: 'before:bg-inherit border-transparent'
 				}`}
+				// className={`relative flex group ${isCustomMode ? 'h-full min-h-0' : 'h-20 md:h-[5.5rem]'} flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-widget shadow-sm w-full ease-in-out ${
+				// 	!bookmark.customBackground
+				// 		? 'bg-content bg-glass hover:bg-primary/20 text-content'
+				// 		: 'before:bg-inherit border-transparent'
+				// }`}
 			>
 				{RenderStickerPattern(bookmark)}
-				<div className="flex flex-col h-full w-full justify-between items-center min-h-0">
+				<div className="flex flex-col items-center justify-between w-full h-full min-h-0">
 					<div className="flex items-center justify-center flex-1 min-h-0">
 						{renderFolderIcons()}
 					</div>
