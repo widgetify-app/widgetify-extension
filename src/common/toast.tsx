@@ -48,6 +48,35 @@ function getAudioContext(): AudioContext | null {
 
 export const TOAST_SOUND_VOLUME = 0.55
 
+function playTone(
+	ctx: AudioContext,
+	freq: number,
+	start: number,
+	duration: number,
+	vol: number,
+	type: OscillatorType = 'sine',
+	endFreq?: number
+) {
+	const osc = ctx.createOscillator()
+	const gain = ctx.createGain()
+
+	osc.type = type
+	osc.frequency.setValueAtTime(Math.max(1, freq), start)
+	if (endFreq && endFreq > 0) {
+		osc.frequency.exponentialRampToValueAtTime(Math.max(1, endFreq), start + duration)
+	}
+
+	gain.gain.setValueAtTime(0.0001, start)
+	gain.gain.linearRampToValueAtTime(vol, start + 0.008)
+	gain.gain.exponentialRampToValueAtTime(0.0001, start + duration)
+
+	osc.connect(gain)
+	gain.connect(ctx.destination)
+
+	osc.start(start)
+	osc.stop(start + duration)
+}
+
 export function playNativeToastSound(
 	type: ToastType,
 	volume: number = TOAST_SOUND_VOLUME
@@ -59,82 +88,22 @@ export function playNativeToastSound(
 		const now = ctx.currentTime
 
 		if (type === 'success') {
-			const osc1 = ctx.createOscillator()
-			const osc2 = ctx.createOscillator()
-			const gain = ctx.createGain()
-
-			osc1.type = 'sine'
-			osc2.type = 'triangle'
-
-			osc1.frequency.setValueAtTime(523.25, now)
-			osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.12)
-
-			osc2.frequency.setValueAtTime(659.25, now)
-			osc2.frequency.exponentialRampToValueAtTime(1046.5, now + 0.15)
-
-			gain.gain.setValueAtTime(0.001, now)
-			gain.gain.linearRampToValueAtTime(volume, now + 0.02)
-			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32)
-
-			osc1.connect(gain)
-			osc2.connect(gain)
-			gain.connect(ctx.destination)
-
-			osc1.start(now)
-			osc2.start(now)
-			osc1.stop(now + 0.32)
-			osc2.stop(now + 0.32)
+			playTone(ctx, 784, now, 0.28, volume * 0.65, 'sine')
+			playTone(ctx, 1568, now, 0.22, volume * 0.18, 'triangle')
+			playTone(ctx, 1046.5, now + 0.08, 0.38, volume * 0.8, 'sine')
+			playTone(ctx, 1318.5, now + 0.08, 0.32, volume * 0.3, 'sine')
+			playTone(ctx, 2093, now + 0.08, 0.26, volume * 0.18, 'triangle')
 		} else if (type === 'error') {
-			const osc = ctx.createOscillator()
-			const gain = ctx.createGain()
-
-			osc.type = 'sawtooth'
-			osc.frequency.setValueAtTime(260, now)
-			osc.frequency.linearRampToValueAtTime(170, now + 0.16)
-
-			gain.gain.setValueAtTime(0.001, now)
-			gain.gain.linearRampToValueAtTime(volume * 0.85, now + 0.02)
-			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24)
-
-			osc.connect(gain)
-			gain.connect(ctx.destination)
-
-			osc.start(now)
-			osc.stop(now + 0.24)
+			playTone(ctx, 200, now, 0.1, volume * 0.6, 'sine', 150)
+			playTone(ctx, 150, now + 0.09, 0.14, volume * 0.7, 'sine', 100)
 		} else if (type === 'warning') {
-			const osc = ctx.createOscillator()
-			const gain = ctx.createGain()
-
-			osc.type = 'sine'
-			osc.frequency.setValueAtTime(440, now)
-			osc.frequency.setValueAtTime(554.37, now + 0.08)
-
-			gain.gain.setValueAtTime(0.001, now)
-			gain.gain.linearRampToValueAtTime(volume, now + 0.02)
-			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26)
-
-			osc.connect(gain)
-			gain.connect(ctx.destination)
-
-			osc.start(now)
-			osc.stop(now + 0.26)
+			playTone(ctx, 587.33, now, 0.18, volume * 0.55, 'sine')
+			playTone(ctx, 880, now + 0.07, 0.26, volume * 0.7, 'sine')
+			playTone(ctx, 1760, now + 0.07, 0.18, volume * 0.14, 'triangle')
 		} else {
-			const osc = ctx.createOscillator()
-			const gain = ctx.createGain()
-
-			osc.type = 'sine'
-			osc.frequency.setValueAtTime(587.33, now)
-			osc.frequency.exponentialRampToValueAtTime(880, now + 0.08)
-
-			gain.gain.setValueAtTime(0.001, now)
-			gain.gain.linearRampToValueAtTime(volume * 0.9, now + 0.015)
-			gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
-
-			osc.connect(gain)
-			gain.connect(ctx.destination)
-
-			osc.start(now)
-			osc.stop(now + 0.22)
+			playTone(ctx, 1100, now, 0.035, volume * 0.5, 'sine', 740)
+			playTone(ctx, 784, now + 0.015, 0.2, volume * 0.65, 'sine')
+			playTone(ctx, 1568, now + 0.015, 0.14, volume * 0.14, 'triangle')
 		}
 	} catch {}
 }
@@ -152,7 +121,7 @@ const TOAST_THEMES: Record<
 	info: {
 		container: 'bg-[#18181b]/95 border-white/10 text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-white/10 text-white select-none">
+			<div className="flex items-center justify-center w-8 h-8 text-white rounded-full select-none shrink-0 bg-white/10">
 				<Icon name="atSign" size={15} />
 			</div>
 		),
@@ -163,7 +132,7 @@ const TOAST_THEMES: Record<
 	error: {
 		container: 'bg-[#2a1317]/95 border-red-500/25 text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-red-500 text-white shadow-sm select-none">
+			<div className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full shadow-sm select-none shrink-0">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
@@ -185,7 +154,7 @@ const TOAST_THEMES: Record<
 	warning: {
 		container: 'bg-[#2b2210]/95 border-amber-500/25 text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-amber-500 text-black shadow-sm select-none">
+			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-amber-500">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
@@ -230,10 +199,10 @@ export function showToast(
 						t.visible ? 'animate-enter' : 'animate-leave'
 					)}
 				>
-					<div className="flex items-center gap-3 min-w-0 flex-1">
+					<div className="flex items-center flex-1 min-w-0 gap-3">
 						{theme.icon}
-						<div className="min-w-0 flex-1">
-							<p className="text-sm font-bold text-white leading-tight m-0 truncate">
+						<div className="flex-1 min-w-0">
+							<p className="m-0 text-sm font-bold leading-tight text-white truncate">
 								{title}
 							</p>
 							{message && (
@@ -296,15 +265,15 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 					t.visible ? 'animate-enter' : 'animate-leave'
 				)}
 			>
-				<div className="flex items-center gap-3 min-w-0 flex-1">
-					<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-primary/20 text-primary font-bold text-sm">
+				<div className="flex items-center flex-1 min-w-0 gap-3">
+					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-primary/20 text-primary">
 						<Icon name="info" size={16} />
 					</div>
-					<div className="min-w-0 flex-1">
+					<div className="flex-1 min-w-0">
 						<p className="text-[10px] text-white/50 leading-none m-0 mb-0.5">
 							حالت پیش‌نمایش
 						</p>
-						<p className="text-sm font-bold text-white m-0 truncate">
+						<p className="m-0 text-sm font-bold text-white truncate">
 							{itemName}
 						</p>
 					</div>

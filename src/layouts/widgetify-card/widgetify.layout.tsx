@@ -11,7 +11,7 @@ interface WidgetifyLayoutProps {
 
 export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = ({ size }) => {
 	return (
-		<WidgetContainer className="overflow-hidden flex flex-col h-full">
+		<WidgetContainer className="flex flex-col h-full overflow-hidden">
 			<div className="relative w-full h-full">
 				{
 					<PetProvider>
@@ -19,7 +19,7 @@ export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = ({ size }) => {
 					</PetProvider>
 				}
 
-				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-full small-scrollbar">
+				<div className="relative z-10 flex flex-col items-center h-full gap-2 overflow-y-auto small-scrollbar">
 					<div
 						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto scrollbar-none pb-2`}
 					>
