@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PetTooltip } from '../components/pet-tooltip'
+import { cn } from '@/common/utils/cn'
 import {
 	type CollectibleItem,
 	type PetAnimations,
@@ -73,6 +74,7 @@ interface BasePetContainerProps {
 	assets: PetAssets
 	isHungry: boolean
 	hungryLevel: number | undefined
+	className?: string
 }
 
 export const BasePetContainer: React.FC<BasePetContainerProps> = ({
@@ -87,6 +89,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	dimensions,
 	assets,
 	isHungry,
+	className,
 }) => {
 	const showToolTip = showName || isHungry
 
@@ -105,10 +108,13 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className="absolute hidden w-full overflow-hidden -bottom-2 md:flex h-16"
+			className={cn(
+				'absolute hidden w-full h-16 overflow-hidden -bottom-2 md:flex',
+				className
+			)}
 			style={{
 				zIndex: 50,
-				margin: '8px',
+				// margin: '8px',
 			}}
 		>
 			<CollectiblesRenderer collectibles={collectibles} assets={assets} />

@@ -15,7 +15,7 @@ import {
 } from '../core/pet-types'
 import { PetTypes, usePetContext } from '../pet.context'
 
-export const CrabComponent = () => {
+export const CrabComponent = ({ className }: { className?: string }) => {
 	const {
 		getCurrentPetName,
 		isPetHungry,
@@ -76,6 +76,7 @@ export const CrabComponent = () => {
 
 	return (
 		<BasePetContainer
+			className={className}
 			name={getCurrentPetName(PetTypes.CRAB)}
 			containerRef={containerRef}
 			petRef={petRef}

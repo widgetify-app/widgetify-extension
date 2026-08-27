@@ -16,7 +16,7 @@ export const PetFactory: React.FC<Prop> = ({ className }) => {
 	const { petType, getPetHungryState } = usePetContext()
 	if (!petType) return null
 
-	let PetComponent = null
+	let PetComponent: React.ComponentType<{ className?: string }> | null = null
 
 	switch (petType) {
 		case PetTypes.DOG_AKITA:
@@ -40,7 +40,7 @@ export const PetFactory: React.FC<Prop> = ({ className }) => {
 
 	return (
 		<Suspense fallback={<div></div>}>
-			<PetComponent />
+			<PetComponent className={className} />
 
 			<div className="absolute bottom-0 justify-center hidden left-2 md:flex">
 				<PetHud level={getPetHungryState(petType)?.level ?? 0} />

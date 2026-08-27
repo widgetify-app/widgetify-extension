@@ -78,13 +78,12 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🐾',
 		category: 'lifestyle',
 		allowedSizes: [
-			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 		],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
 		canDuplicate: true,
-		node: (_instanceId, size) => <PetWidget size={size} />,
+		node: (_instanceId, ) => <PetWidget />,
 	},
 	[WidgetKeys.wigiPad]: {
 		id: WidgetKeys.wigiPad,
