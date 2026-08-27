@@ -32,7 +32,7 @@ export function SortableBookmarkItem({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`transition-transform duration-200 ${isDragging ? 'z-10' : ''} h-full`}
+			className={`transition-transform duration-200 ${isDragging ? 'z-10' : ''}`}
 			{...attributes}
 			{...listeners}
 		>

@@ -209,7 +209,7 @@ export function BookmarkGrid({
 				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
 				gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
 			}}
-			className={`grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-2 transition-all duration-300 rounded-2xl`}
+			className={`grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-1 transition-all duration-300 rounded-2xl`}
 		>
 			<SortableContext
 				items={displayedBookmarks
@@ -221,7 +221,7 @@ export function BookmarkGrid({
 					bookmark ? (
 						<div
 							key={bookmark.id + '-' + i}
-							className={`transition-transform duration-200 h-full`}
+							className={`transition-transform duration-200`}
 						>
 							<SortableBookmarkItem
 								bookmark={bookmark}

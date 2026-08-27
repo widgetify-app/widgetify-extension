@@ -214,7 +214,7 @@ export function CanvasWidgetOuter({
 					left: `${currentLeft}px`,
 					top: `${currentTop}px`,
 					width: `${pixelRect.width}px`,
-					height: `${pixelRect.height}px`,
+					height: `${pixelRect.height - 12}px`,
 					touchAction: 'none',
 				}}
 				onPointerDown={handlePointerDown}
@@ -246,7 +246,7 @@ export function CanvasWidgetOuter({
 							e.stopPropagation()
 							handleDelete()
 						}}
-						className="absolute -top-2 -right-2 z-50 w-6 h-6 rounded-full bg-error text-white text-xs font-bold flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-transform"
+						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer -top-2 -right-2 bg-error hover:scale-110 active:scale-95"
 						title="حذف ویجت"
 					>
 						✕

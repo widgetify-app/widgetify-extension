@@ -176,7 +176,7 @@ export function BookmarkFolderModal({
 			title={
 				<div className="flex items-center gap-2">
 					<span className="text-xl">📁</span>
-					<span className="text-sm font-bold text-content truncate max-w-xs">
+					<span className="max-w-xs text-sm font-bold truncate text-content">
 						{currentFolder?.title || 'پوشه بوکمارک'}
 					</span>
 				</div>
@@ -197,7 +197,7 @@ export function BookmarkFolderModal({
 					collisionDetection={closestCenter}
 					onDragEnd={handleDragEnd}
 				>
-					<div className="max-h-[60vh] overflow-y-auto py-1 scrollbar-none">
+					<div className="max-h-[60vh] overflow-y-auto -mx-1 py-1 scrollbar-none">
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}
 							folderPath={folderPath}

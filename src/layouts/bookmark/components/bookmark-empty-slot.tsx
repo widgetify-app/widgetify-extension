@@ -13,7 +13,7 @@ export function EmptyBookmarkSlot({
 		<button
 			onClick={canAdd ? onClick : undefined}
 			className={cn(
-				'relative flex flex-col items-center shadow-sm h-full justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget w-full transition-transform ease-in-out group-hover:scale-102'
+				'relative flex flex-col items-center shadow-sm h-20 md:h-[5.7rem]  justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget w-full transition-transform ease-in-out group-hover:scale-102'
 			)}
 		>
 			<div className="relative flex items-center justify-center w-14 h-14">
