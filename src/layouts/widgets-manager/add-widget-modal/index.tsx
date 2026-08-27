@@ -250,7 +250,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						definitions={filteredDefinitions}
 						selectedId={selectedId}
 						onSelectWidget={handleSelectWidget}
-						isCustom={isCustom}
 						runtimeLayout={runtimeLayout}
 						visibility={visibility}
 						isVip={isVip}
@@ -317,7 +316,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									<AddWidgetActions
 										isVipRequired={isVipRequired}
 										isVip={isVip}
-										isCustom={isCustom}
 										isEditMode={isEditMode}
 										isLimitReached={isLimitReached}
 										canAddCustom={canAddCustom}
