@@ -17,7 +17,6 @@ interface NewsLayoutProps {
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
 	inComboWidget,
-	size = { w: 2, h: 3 },
 }) => {
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
@@ -68,7 +67,7 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			style={{ scrollbarWidth: 'none' }}
 		>
 			<NewsHeader
-				title="ویجی نیوز"
+				title="اخبار"
 				onSettingsClick={() =>
 					callEvent('openWidgetsSettings', {
 						tab: WidgetTabKeys.news_settings,

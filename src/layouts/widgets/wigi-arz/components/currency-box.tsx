@@ -34,13 +34,11 @@ export const CurrencyBox = ({
 
 	const prevPriceRef = useRef<number | null>(null)
 
-	const imgMainColor = useGetImageMainColor(currency?.icon)
-
 	useEffect(() => {
 		async function load() {
-			const currency = await getFromStorage(`currency:${code}`)
-			if (currency) {
-				setCurrency(currency)
+			const cached = await getFromStorage(`currency:${code}`)
+			if (cached) {
+				setCurrency(cached)
 			}
 		}
 		load()
@@ -53,7 +51,7 @@ export const CurrencyBox = ({
 		}
 		const event = new Event('fetched-data')
 		window.dispatchEvent(event)
-	}, [dataUpdatedAt])
+	}, [dataUpdatedAt, code, data])
 
 	useEffect(() => {
 		if (currency?.price) {
@@ -66,7 +64,7 @@ export const CurrencyBox = ({
 				}
 			}
 		}
-	}, [currency?.price])
+	}, [currency?.price, currency?.changePercentage, currency?.rialPrice])
 
 	function toggleCurrencyModal() {
 		if (currency?.url && currency?.isPartnerShip) {
@@ -93,53 +91,50 @@ export const CurrencyBox = ({
 	return (
 		<>
 			<div
-				className={`flex items-center justify-between gap-2 py-2 rounded-xl cursor-pointer 
-				bg-base-300 opacity-100 hover:!bg-base-content/10
-				transition-all duration-200 ease-in-out
-				transform`}
-				onClick={() => toggleCurrencyModal()}
+				className="group flex items-center justify-between gap-2 px-2.5 py-3 rounded-2xl cursor-pointer bg-base-300/70 hover:bg-base-300/40 border border-base-300/70 transition-all duration-200 active:scale-[0.98]"
+				onClick={toggleCurrencyModal}
 				dir="ltr"
 			>
-				<div className="flex  gap-x-2.5 max-w-full items-center">
-					<div className="flex items-center">
-						{dragHandle && (
-							<div
-								{...dragHandle}
-								className="flex items-center justify-center w-4 h-4 transition-colors cursor-grab active:cursor-grabbing text-muted hover:bg-primary/10"
-							>
-								<Icon name="dragIndicator" size={14} />
-							</div>
-						)}
-						<div className="relative">
-							<img
-								src={currency?.icon}
-								alt={currency?.name?.en}
-								className="object-cover w-6 h-6 rounded-full min-h-6 min-w-6"
-							/>
-
-							{currency?.partnershipLogo && (
-								<img
-									className="absolute right-0 z-50 w-3 h-3 -bottom-1"
-									src={currency.partnershipLogo}
-								></img>
-							)}
-
-							<div
-								className="absolute inset-0 border rounded-full border-opacity-20"
-								style={{ borderColor: imgMainColor }}
-							/>
+				<div className="flex items-center min-w-0 gap-2">
+					{dragHandle && (
+						<div
+							{...dragHandle}
+							className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-muted opacity-40 group-hover:opacity-90 shrink-0"
+						>
+							<Icon name="dragIndicator" size={14} />
 						</div>
+					)}
+
+					<div className="relative shrink-0">
+						{currency?.icon ? (
+							<img
+								src={currency.icon}
+								alt={currency?.name?.en || code}
+								className="object-cover w-5 h-5 rounded-lg bg-base-200"
+							/>
+						) : (
+							<div className="w-5 h-5 rounded-full bg-base-content/10 animate-pulse" />
+						)}
+
+						{currency?.partnershipLogo && (
+							<img
+								className="absolute right-0 z-50 w-3 h-3 -bottom-0.5"
+								src={currency.partnershipLogo}
+								alt="partnership"
+							/>
+						)}
 					</div>
-					<div className="flex items-center min-w-0 space-x-2 text-sm font-medium">
-						<span className="block text-sm font-bold truncate text-content">
+
+					<div className="flex items-center min-w-0">
+						<span className="text-xs font-bold uppercase truncate text-content">
 							{code}
 						</span>
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
-					<div className="flex items-baseline gap-2 pr-2">
-						<span className={'text-sm font-bold text-content'}>
+				<div className="flex items-center gap-2 shrink-0">
+					<div className="flex items-baseline gap-1.5">
+						<span className="text-xs font-bold tracking-tight text-content">
 							{currency ? GetPrice(code, currency).label : '-'}
 						</span>
 						{priceChange !== 0 && (
@@ -154,13 +149,14 @@ export const CurrencyBox = ({
 					</div>
 				</div>
 			</div>
+
 			{currency && !currency.url && (
 				<CurrencyModalComponent
 					code={code}
 					currencyColorMode={currencyColorMode}
 					currency={currency}
 					priceChange={priceChange}
-					imgMainColor={imgMainColor}
+					imgMainColor={''}
 					isModalOpen={isModalOpen}
 					toggleCurrencyModal={toggleCurrencyModal}
 					key={code}

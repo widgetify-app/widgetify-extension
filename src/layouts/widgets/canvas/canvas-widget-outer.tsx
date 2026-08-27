@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
@@ -65,7 +65,6 @@ export function CanvasWidgetOuter({
 	const isSelected = canvasMode === 'edit' && selectedInstanceId === widget.instanceId
 	const isWiggling = canvasMode === 'edit' && selectedInstanceId !== widget.instanceId
 
-	const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 	const pointerStartRef = useRef<{ x: number; y: number } | null>(null)
 	const dragStartPosRef = useRef<WidgetPosition>(widget.position)
 	const isDragActiveRef = useRef(false)
@@ -78,15 +77,8 @@ export function CanvasWidgetOuter({
 		gap
 	)
 
-	const clearLongPress = useCallback(() => {
-		if (longPressTimerRef.current) {
-			clearTimeout(longPressTimerRef.current)
-			longPressTimerRef.current = null
-		}
-	}, [])
-
 	const handlePointerDown = (e: React.PointerEvent) => {
-		if (e.button !== 0) return
+		if (e.button !== 0 || canvasMode !== 'edit') return
 
 		const target = e.target as HTMLElement
 		if (
@@ -102,34 +94,21 @@ export function CanvasWidgetOuter({
 			return
 		}
 
-		clearLongPress()
 		pointerStartRef.current = { x: e.clientX, y: e.clientY }
 		dragStartPosRef.current = { ...widget.position }
 		isDragActiveRef.current = false
-
-		if (canvasMode === 'normal') {
-			longPressTimerRef.current = setTimeout(() => {
-				setCanvasMode('edit')
-				setSelectedInstanceId(widget.instanceId)
-				clearLongPress()
-			}, 450)
-		}
 	}
 
 	const handlePointerMove = (e: React.PointerEvent) => {
-		if (!pointerStartRef.current) return
+		if (canvasMode !== 'edit' || !pointerStartRef.current) return
 
 		const dx = e.clientX - pointerStartRef.current.x
 		const dy = e.clientY - pointerStartRef.current.y
 		const dist = Math.sqrt(dx * dx + dy * dy)
 
-		if (dist > 8 && longPressTimerRef.current) {
-			clearLongPress()
-		}
+		const dragThreshold = 6
 
-		const dragThreshold = canvasMode === 'edit' ? 6 : 14
-
-		if (dist > dragThreshold && (canvasMode === 'edit' || isDragActiveRef.current)) {
+		if (dist > dragThreshold) {
 			if (!isDragActiveRef.current) {
 				isDragActiveRef.current = true
 				setIsDragging(true)
@@ -142,8 +121,6 @@ export function CanvasWidgetOuter({
 	}
 
 	const handlePointerUp = (e: React.PointerEvent) => {
-		clearLongPress()
-
 		if (isDragActiveRef.current) {
 			const unitW = cellWidth + gap
 			const unitH = cellHeight + gap

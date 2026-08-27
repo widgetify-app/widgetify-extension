@@ -93,7 +93,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'time',
 		allowedSizes: [
 			{ w: 2, h: 3 },
-			{ w: 2, h: 4 },
+			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiPad,
@@ -108,7 +108,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{
 				id: 'simplify',
 				label: 'ویجی‌پد ساده',
-				size: { w: 2, h: 4 },
+				size: { w: 2, h: 3 },
 				meta: { variant: 'simplify' },
 			},
 		],
@@ -278,6 +278,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canToggle: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
+			{ w: 2, h: 2 },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -287,12 +288,19 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'list',
 				label: 'لیست قیمت ارزها',
 				size: { w: 2, h: 3 },
+				meta: { variant: 'list' },
+			},
+			{
+				id: 'stacked',
+				label: 'خلاصه ۳ ارز',
+				size: { w: 2, h: 2 },
+				meta: { variant: 'stacked' },
 			},
 			{
 				id: 'compact',
 				label: 'تک ارز',
 				size: { w: 1, h: 1 },
-				meta: { currencyCode: 'USD' },
+				meta: { currencyCode: 'USD', variant: 'compact' },
 				isVipOnly: true,
 			},
 		],
@@ -310,7 +318,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.news]: {
 		id: WidgetKeys.news,
-		label: 'ویجی نیوز',
+		label: 'اخبار',
 		emoji: '📰',
 		category: 'info',
 		order: 6,
@@ -440,8 +448,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 }
 
 export const widgetItems: WidgetItem[] = Object.values(WIDGET_DEFINITIONS)
-	.filter((def): def is WidgetDefinition & { order: number } =>
-		typeof def.order === 'number'
+	.filter(
+		(def): def is WidgetDefinition & { order: number } =>
+			typeof def.order === 'number'
 	)
 	.sort((a, b) => a.order - b.order)
 	.map((def) => ({
