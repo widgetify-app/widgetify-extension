@@ -14,7 +14,7 @@ export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
 				return (
 					<div
 						key={forecast.date}
-						className="flex flex-col items-center justify-between w-16 gap-2 py-3 transition-all duration-200 border rounded-2xl bg-base-200/40 border-content hover:bg-base-100/50"
+						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-all duration-200 border rounded-2xl bg-base-200/40 border-content hover:bg-base-100/50"
 					>
 						<span className="text-[10px] font-medium text-muted">
 							{moment(forecast.date).locale('fa').format('HH:mm')}
