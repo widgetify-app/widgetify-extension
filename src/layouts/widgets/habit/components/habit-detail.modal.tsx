@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { useGetHabitDetail } from '@/services/hooks/habit/get-habit-detail.hook'
 import { HabitCalendar } from './habit-calendar-heatmap'
+import { HabitContributionChart } from './habit-contribution-chart'
+import { HabitShareModal } from './habit-share-modal'
 import { useAuth } from '@/context/auth.context'
 import { formatHabitGoal } from '../utils'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
+import { cn } from '@/common/utils/cn'
 
 interface ModalProps {
 	isOpen: boolean
@@ -24,6 +28,11 @@ export function HabitDetailModal({
 	onEdit,
 }: ModalProps) {
 	const { isAuthenticated } = useAuth()
+	const [activeView, setActiveView] = useState<'contribution' | 'calendar'>(
+		'contribution'
+	)
+	const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+
 	const onClickEdit = () => {
 		if (habit) {
 			callEvent('closeAllDropdowns')
@@ -111,32 +120,92 @@ export function HabitDetailModal({
 		)
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} direction="rtl" size="md" title={title}>
-			{isLoading ? (
-				<div className="p-2">
-					<div className="w-full h-85 rounded-2xl skeleton" />
-				</div>
-			) : error ? (
-				<div className="flex flex-col items-center justify-center py-16 text-center">
-					<p className="text-sm font-medium text-content">
-						خطا در دریافت اطلاعات
-					</p>
-					<p className="mt-1 text-xs text-muted">
-						لطفا چند لحظه دیگر دوباره تلاش کنید.
-					</p>
-				</div>
-			) : !habit ? (
-				<div className="flex flex-col items-center justify-center py-16 text-center">
-					<div className="mb-2 text-3xl">📭</div>
-					<p className="text-sm text-muted">اطلاعات این عادت پیدا نشد.</p>
-				</div>
-			) : (
-				<div className="">
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				direction="rtl"
+				size="lg"
+				title={title}
+			>
+				{isLoading ? (
 					<div className="p-2">
-						<HabitCalendar habit={habit} color={color} />
+						<div className="w-full h-85 rounded-2xl skeleton" />
 					</div>
-				</div>
+				) : error ? (
+					<div className="flex flex-col items-center justify-center py-16 text-center">
+						<p className="text-sm font-medium text-content">
+							خطا در دریافت اطلاعات
+						</p>
+						<p className="mt-1 text-xs text-muted">
+							لطفا چند لحظه دیگر دوباره تلاش کنید
+						</p>
+					</div>
+				) : !habit ? (
+					<div className="flex flex-col items-center justify-center py-16 text-center">
+						<div className="mb-2 text-3xl">📭</div>
+						<p className="text-sm text-muted">اطلاعات این عادت پیدا نشد</p>
+					</div>
+				) : (
+					<div className="flex flex-col gap-3 p-2">
+						<div className="flex items-center justify-between gap-2">
+							<div className="flex items-center p-1 border bg-base-300/40 rounded-2xl border-base-content/5">
+								<button
+									type="button"
+									onClick={() => setActiveView('contribution')}
+									className={cn(
+										'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+										activeView === 'contribution'
+											? 'bg-base-200 text-content shadow-sm'
+											: 'text-muted hover:text-content'
+									)}
+								>
+									<Icon name="squares2X2" size={13} />
+									<span>نمودار فعالیت</span>
+								</button>
+								<button
+									type="button"
+									onClick={() => setActiveView('calendar')}
+									className={cn(
+										'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+										activeView === 'calendar'
+											? 'bg-base-200 text-content shadow-sm'
+											: 'text-muted hover:text-content'
+									)}
+								>
+									<Icon name="calendar" size={13} />
+									<span>تقویم ماهانه</span>
+								</button>
+							</div>
+						</div>
+
+						{activeView === 'contribution' ? (
+							<HabitContributionChart habit={habit} color={color} />
+						) : (
+							<HabitCalendar habit={habit} color={color} />
+						)}
+					</div>
+				)}
+				<Button
+					size="md"
+					variant="primary"
+					className="w-full text-xs border-none"
+					rounded="xl"
+					onClick={() => setIsShareModalOpen(true)}
+				>
+					<Icon name="cameraPlus" size={15} />
+					اشتراک گذاری
+				</Button>
+			</Modal>
+
+			{habit && (
+				<HabitShareModal
+					isOpen={isShareModalOpen}
+					onClose={() => setIsShareModalOpen(false)}
+					habit={habit}
+					color={color}
+				/>
 			)}
-		</Modal>
+		</>
 	)
 }
