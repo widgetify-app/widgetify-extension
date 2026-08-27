@@ -3,10 +3,8 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
 import { useLazyLoad } from '../../../../hooks/use-lazy-load'
-import { Tooltip } from '@/components/ui'
 import { HoverPlayVideo } from '../hover-play-video'
 import { Icon } from '@/src/icons'
-import { UI } from '@/context/appearance.context'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -154,31 +152,6 @@ function WallpaperItemFu({
 								) : null}
 							</div>
 						</div>
-						{wallpaper.extensionUI ? (
-							<div className="absolute top-0  h-5 py-0.5 px-3 rounded rounded-bl-xl rounded-r-none rounded-tr-xl w-fit bg-black/5 backdrop-blur-lg">
-								<Tooltip
-									content={
-										wallpaper.extensionUI === 'ADVANCED'
-											? ' مناسب حالت ظاهری پیشفرض'
-											: 'مناسب حالت ظاهری ساده'
-									}
-								>
-									{wallpaper.extensionUI === UI.SIMPLE ? (
-										<Icon
-											name="simple_ui"
-											size={14}
-											className="text-white/80"
-										/>
-									) : (
-										<Icon
-											name="advanced_ui"
-											size={14}
-											className="text-white/80"
-										/>
-									)}
-								</Tooltip>
-							</div>
-						) : null}
 
 						{isSelected && (
 							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary/80">

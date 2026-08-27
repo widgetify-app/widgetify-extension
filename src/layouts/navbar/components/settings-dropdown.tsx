@@ -93,7 +93,7 @@ export const SettingsDropdown = () => {
 							size={14}
 							className="text-muted group-hover:text-primary!"
 						/>
-						<span>حالت ظاهری</span>
+						<span>تنظیمات ظاهری</span>
 					</div>
 				</div>
 			</div>
