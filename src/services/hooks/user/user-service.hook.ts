@@ -24,6 +24,7 @@ interface FetchedProfile {
 	name: string
 	verified: boolean
 	isVip?: boolean
+	vipExpiresAt?: string | null
 	connections: string[]
 	gender: 'MALE' | 'FEMALE' | 'OTHER' | null
 	friendshipStats: {

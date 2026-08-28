@@ -1,22 +1,24 @@
 import moment from 'jalali-moment'
-import { AvatarComponent, FloatingBadge } from '@/components/ui'
+import { AvatarComponent, FloatingBadge, Tooltip } from '@/components/ui'
 import { UserCoin } from './user-coin'
 import { Icon } from '@/src/icons'
 import { useAuth } from '@/context/auth.context'
+import { formatVipExpiryDate, formatVipRemaining } from '@/common/utils/vip-expiry'
+import { callEvent } from '@/common/utils/call-event'
 
 interface ProfileHeaderProps {
 	onClickAvatar: () => void
 	showEditBadge: (field: string) => boolean
 }
 const slots = [
-	{ dx: 70, dy: -48, baseRotate: 15 }, // Top Right
-	{ dx: -75, dy: -22, baseRotate: -20 }, // Top Left
-	{ dx: -80, dy: 45, baseRotate: -10 }, // Bottom Left
-	{ dx: 75, dy: 32, baseRotate: 20 }, // Bottom Right
-	{ dx: 0, dy: -70, baseRotate: 5 }, // Top Center
-	{ dx: -38, dy: 65, baseRotate: -15 }, // Bottom Left-Center
-	{ dx: 55, dy: 65, baseRotate: 10 }, // Bottom Right-Center
-	{ dx: -92, dy: 10, baseRotate: 25 }, // Left
+	{ dx: 70, dy: -48, baseRotate: 15 },
+	{ dx: -75, dy: -22, baseRotate: -20 },
+	{ dx: -80, dy: 45, baseRotate: -10 },
+	{ dx: 75, dy: 32, baseRotate: 20 },
+	{ dx: 0, dy: -70, baseRotate: 5 },
+	{ dx: -38, dy: 65, baseRotate: -15 },
+	{ dx: 55, dy: 65, baseRotate: 10 },
+	{ dx: -92, dy: 10, baseRotate: 25 },
 ]
 export const ProfileHeader = ({ onClickAvatar, showEditBadge }: ProfileHeaderProps) => {
 	const { user } = useAuth()
@@ -25,11 +27,40 @@ export const ProfileHeader = ({ onClickAvatar, showEditBadge }: ProfileHeaderPro
 
 	const seed = (user?.username?.length || 0) + (user?.name?.length || 0)
 
+	const vipRemaining = formatVipRemaining(user?.vipExpiresAt)
+	const vipExpiryDate = formatVipExpiryDate(user?.vipExpiresAt)
+
 	return (
 		<div className="relative flex flex-col items-center justify-center border bg-base-100/50 border-base-300 rounded-3xl">
 			<div className="absolute z-10 top-4 left-4">
 				<UserCoin coins={user?.coins || 0} />
 			</div>
+
+			{user?.vipExpiresAt ? (
+				<div className="absolute z-10 top-4 right-4">
+					<Tooltip content={vipExpiryDate ? `اعتبار تا ${vipExpiryDate}` : 'اشتراک پرو'}>
+						<button
+							type="button"
+							onClick={() => callEvent('openSettings', 'vip')}
+							className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all cursor-pointer select-none"
+						>
+							<Icon name="crown" size={13} />
+							<span>اعتبار پرو: {vipRemaining}</span>
+						</button>
+					</Tooltip>
+				</div>
+			) : user?.isVip ? (
+				<div className="absolute z-10 top-4 right-4">
+					<button
+						type="button"
+						onClick={() => callEvent('openSettings', 'vip')}
+						className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all cursor-pointer select-none"
+					>
+						<Icon name="crown" size={13} />
+						<span>اشتراک پرو</span>
+					</button>
+				</div>
+			) : null}
 
 			<div className="absolute z-10 text-xs font-medium bottom-4 left-4 opacity-70">
 				<span>
@@ -72,8 +103,12 @@ export const ProfileHeader = ({ onClickAvatar, showEditBadge }: ProfileHeaderPro
 							return (
 								<div
 									key={`${badge.id}-${i}`}
-									className="absolute z-20"
-									style={{ top: `${top}px`, left: `${left}px` }}
+									className="absolute z-20 animate-bounce-slow"
+									style={{
+										top: `${top}px`,
+										left: `${left}px`,
+										animationDelay: `${i * 0.4}s`,
+									}}
 								>
 									<FloatingBadge
 										name={badge.label}

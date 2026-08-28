@@ -12,6 +12,7 @@ import {
 	usePurchaseVipPlan,
 } from '@/services/hooks/market/market-vip.hook'
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
+import { formatVipExpiryDate, formatVipRemaining } from '@/common/utils/vip-expiry'
 import { cn } from '@/common/utils/cn'
 import vipPreviewImg from '@/assets/images/pro-preview.jpg'
 
@@ -89,7 +90,7 @@ const VIP_FEATURES: VipFeatureSlide[] = [
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function VipTab() {
-	const { isAuthenticated, refetchUser } = useAuth()
+	const { isAuthenticated, refetchUser, user } = useAuth()
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 	const [selectedPlan, setSelectedPlan] = useState<VipPlan | null>(null)
 
@@ -168,6 +169,18 @@ export function VipTab() {
 								ویجتیفای{' '}
 								<span className="text-indigo-500">{VIP_LABEL}</span>
 							</h2>
+							{user?.vipExpiresAt && (
+								<span
+									className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 border border-indigo-500/20"
+									title={
+										formatVipExpiryDate(user.vipExpiresAt)
+											? `اعتبار تا ${formatVipExpiryDate(user.vipExpiresAt)}`
+											: undefined
+									}
+								>
+									اعتبار: {formatVipRemaining(user.vipExpiresAt)}
+								</span>
+							)}
 						</div>
 
 						<h3 className="text-sm font-bold text-content/90">

@@ -97,8 +97,12 @@ export function NavbarLayout(): JSX.Element {
 	const showNavbar = isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
-		setTab(tabName)
-		setShowSettings(true)
+		if (showSettings) {
+			setTab(tabName)
+		} else {
+			setTab(tabName)
+			setShowSettings(true)
+		}
 	}, [])
 
 	const onToggleNavbar = () => {
