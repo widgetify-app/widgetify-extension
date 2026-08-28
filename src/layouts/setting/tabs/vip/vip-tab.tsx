@@ -165,7 +165,8 @@ export function VipTab() {
 								<Icon name="crown" size={18} />
 							</div>
 							<h2 className="text-xl font-black tracking-tight sm:text-2xl text-content">
-								ویجتیفای <span className="text-primary">{VIP_LABEL}</span>
+								ویجتیفای{' '}
+								<span className="text-indigo-500">{VIP_LABEL}</span>
 							</h2>
 						</div>
 
@@ -353,7 +354,7 @@ export function VipTab() {
 
 			<div className="p-3.5 rounded-2xl border border-base-content/10 bg-base-300/20 flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
-					<div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary shrink-0">
+					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-primary shrink-0">
 						<Icon name="ticket" size={19} />
 					</div>
 					<div className="flex flex-col">
@@ -380,13 +381,13 @@ export function VipTab() {
 					<div className="flex flex-col items-center gap-1">
 						<Button
 							size="md"
-							variant="primary"
+							variant="default"
 							rounded="2xl"
 							disabled={!selectedPlan || isPending}
 							loading={isPending}
 							loadingText="در حال انتقال..."
 							onClick={handlePurchase}
-							className="font-bold text-white flex items-center justify-center gap-1.5 px-6 h-10 shadow-xs cursor-pointer"
+							className="font-bold text-white bg-indigo-500 transition-all flex items-center justify-center gap-1.5 px-6 h-10 shadow-xs cursor-pointer hover:bg-indigo-500/80!"
 						>
 							<Icon name="crown" size={14} />
 							<span>فعال‌سازی {VIP_LABEL}</span>

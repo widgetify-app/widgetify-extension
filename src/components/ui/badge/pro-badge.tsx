@@ -7,6 +7,7 @@ const ICON_SIZES: Record<NonNullable<ProBadgeVariantProps['size']>, number> = {
 	xs: 9,
 	sm: 10,
 	md: 12,
+	lg: 14,
 }
 
 export interface ProBadgeProps
@@ -17,19 +18,23 @@ export interface ProBadgeProps
 }
 
 export function ProBadge({
-	size = 'xs',
-	variant = 'warning',
-	rounded = 'lg',
+	size = 'sm',
+	variant = 'indigo',
+	rounded = 'full',
 	iconOnly = false,
 	text = 'پرو',
 	className,
 	...props
 }: ProBadgeProps) {
-	const iconSize = ICON_SIZES[size || 'xs'] || 9
+	const iconSize = ICON_SIZES[size || 'sm'] || 10
 
 	return (
 		<span
-			className={cn(proBadgeVariants({ variant, size, rounded }), className)}
+			className={cn(
+				proBadgeVariants({ variant, size, rounded }),
+				iconOnly ? 'aspect-square px-0 w-fit justify-center' : '',
+				className
+			)}
 			{...props}
 		>
 			<Icon name="crown" size={iconSize} />
