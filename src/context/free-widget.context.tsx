@@ -54,6 +54,12 @@ interface FreeWidgetContextType {
 	setSelectedInstanceId: (id: string | null) => void
 	resizeWidget: (instanceId: string, newSize: WidgetSize) => boolean
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
+	startDragPreview: () => void
+	updateDragPreview: (instanceId: string, targetPosition: WidgetPosition) => void
+	endDragPreview: (
+		instanceId: string,
+		targetPosition: WidgetPosition | null
+	) => void
 	addWidget: (
 		id: string,
 		targetPosition?: WidgetPosition,
@@ -108,6 +114,12 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const hasLocalEditRef = useRef<boolean>(false)
 	const prevTokenRef = useRef<string | null | undefined>(undefined)
 	const lastPersistedSignatureRef = useRef<string | null>(null)
+	const runtimeLayoutRef = useRef<StoredWidget[]>([])
+	const dragBaseLayoutRef = useRef<StoredWidget[] | null>(null)
+
+	useEffect(() => {
+		runtimeLayoutRef.current = runtimeLayout
+	}, [runtimeLayout])
 
 	const persistLayout = useCallback((layoutToPersist: StoredWidget[]) => {
 		lastPersistedSignatureRef.current = JSON.stringify(layoutToPersist)
@@ -537,6 +549,71 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[runtimeLayout, cols, commitMutation]
 	)
 
+	const startDragPreview = useCallback(() => {
+		dragBaseLayoutRef.current = runtimeLayoutRef.current
+	}, [])
+
+	const updateDragPreview = useCallback(
+		(instanceId: string, targetPosition: WidgetPosition) => {
+			const base = dragBaseLayoutRef.current
+			if (!base) return
+
+			const result = resolveLayoutChange({
+				layout: base,
+				operation: 'move',
+				instanceId,
+				targetPosition,
+				cols: colsRef.current,
+				registry: WIDGET_DEFINITIONS,
+			})
+
+			if (result) {
+				setRuntimeLayout(result)
+			}
+		},
+		[]
+	)
+
+	const endDragPreview = useCallback(
+		(instanceId: string, targetPosition: WidgetPosition | null) => {
+			const base = dragBaseLayoutRef.current
+			dragBaseLayoutRef.current = null
+			if (!base) return
+
+			const restore = () => {
+				if (runtimeLayoutRef.current !== base) {
+					setRuntimeLayout(base)
+				}
+			}
+
+			const origin = base.find((w) => w.instanceId === instanceId)?.position
+			const isUnmoved =
+				origin &&
+				targetPosition &&
+				origin.col === targetPosition.col &&
+				origin.row === targetPosition.row
+
+			if (!targetPosition || isUnmoved) {
+				restore()
+				return
+			}
+
+			const result = resolveLayoutChange({
+				layout: base,
+				operation: 'move',
+				instanceId,
+				targetPosition,
+				cols: colsRef.current,
+				registry: WIDGET_DEFINITIONS,
+			})
+
+			if (!result || !commitMutation('move', result, instanceId)) {
+				restore()
+			}
+		},
+		[commitMutation]
+	)
+
 	const addWidget = useCallback(
 		async (
 			id: string,
@@ -757,6 +834,9 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				setSelectedInstanceId,
 				resizeWidget,
 				moveWidget,
+				startDragPreview,
+				updateDragPreview,
+				endDragPreview,
 				addWidget,
 				duplicateWidget,
 				removeWidget,
