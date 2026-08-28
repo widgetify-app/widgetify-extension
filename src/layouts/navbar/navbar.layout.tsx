@@ -10,6 +10,7 @@ import { MarketButton } from './market/market-button'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
+import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
 import { Tooltip } from '@/components/ui'
@@ -91,6 +92,11 @@ export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
+	const { canvasMode } = useAppearance()
+	// While the canvas is in layout-edit mode the navbar steps aside so the
+	// canvas edit toolbar can take its place at the bottom of the screen.
+	const isEditingCanvas = canvasMode === 'edit'
+	const showNavbar = isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
@@ -126,7 +132,7 @@ export function NavbarLayout(): JSX.Element {
 	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
-			{!isVisible && (
+			{!isVisible && !isEditingCanvas && (
 				<button
 					onClick={() => onToggleNavbar()}
 					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08] cursor-pointer group"
@@ -138,7 +144,7 @@ export function NavbarLayout(): JSX.Element {
 			<div
 				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
-						isVisible
+						showNavbar
 							? 'bottom-2 opacity-100 scale-100'
 							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
 					}`}
