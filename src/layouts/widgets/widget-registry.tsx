@@ -33,7 +33,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🔍',
 		category: 'productivity',
 		allowedSizes: [
-			{ w: 2, h: 1 },
+			{ w: 2, h: 1, isVipOnly: true },
 			{ w: 4, h: 1 },
 		],
 		defaultSize: { w: 4, h: 1 },
@@ -46,11 +46,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '🔖',
 		category: 'productivity',
 		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
-			{ w: 2, h: 4 },
-			{ w: 4, h: 1 },
+			{ w: 1, h: 1, isVipOnly: true },
+			{ w: 2, h: 1, isVipOnly: true },
+			{ w: 2, h: 2, isVipOnly: true },
+			{ w: 2, h: 4, isVipOnly: true },
+			{ w: 4, h: 1, isVipOnly: true },
 			{ w: 4, h: 2 },
 		],
 		defaultSize: { w: 4, h: 2 },
@@ -166,8 +166,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canToggle: true,
 		popular: true,
 		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
+			{ w: 1, h: 1, isVipOnly: false },
+			{ w: 2, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -186,11 +186,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		order: 3,
 		canToggle: true,
 		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
+			{ w: 1, h: 1, isVipOnly: true },
+			{ w: 2, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1 },
-			{ w: 4, h: 2 },
+			{ w: 4, h: 1, isVipOnly: true },
+			{ w: 4, h: 2, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.weather_settings,
@@ -224,7 +224,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		isNew: false,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
-		canDuplicate: true,
+		canDuplicate: false,
 		node: (_instanceId, size) => <YadkarWidget size={size} />,
 	},
 	[WidgetKeys.tools]: {
@@ -235,26 +235,12 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		order: 2,
 		canToggle: true,
 		allowedSizes: [
-			{ w: 2, h: 1 },
+			{ w: 2, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
-			{ w: 2, h: 4 },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
-		variants: [
-			{
-				id: 'standard',
-				label: 'ابزارهای پیشرفته',
-				size: { w: 2, h: 3 },
-				meta: { variant: 'standard' },
-			},
-			{
-				id: 'simplify',
-				label: 'همچیز‌ یکجا',
-				size: { w: 2, h: 3 },
-				meta: { variant: 'simplify' },
-			},
-		],
+
 		node: (_instanceId, size, meta) => {
 			if (meta?.variant === 'simplify') {
 				return (
@@ -274,9 +260,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		order: 5,
 		canToggle: true,
 		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 2 },
+			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
+			{ w: 2, h: 2, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
@@ -295,7 +281,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 			{
 				id: 'compact',
-				label: 'تک ارز',
+				label: 'تک ارز (قابل تکرار)',
 				size: { w: 1, h: 1 },
 				meta: { currencyCode: 'USD', variant: 'compact' },
 				isVipOnly: true,
@@ -335,8 +321,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canToggle: true,
 		isNew: false,
 		allowedSizes: [
-			{ w: 1, h: 1 },
-			{ w: 2, h: 1 },
+			{ w: 1, h: 1, isVipOnly: true },
+			{ w: 2, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -388,7 +374,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		allowedSizes: [
 			{ w: 2, h: 3 },
-			{ w: 2, h: 2 },
+			{ w: 2, h: 2, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		variants: [
@@ -437,6 +423,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 		],
 		canDuplicate: false,
+		isVipOnly: true,
 		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
 	},
 	[WidgetKeys.moodTracker]: {
