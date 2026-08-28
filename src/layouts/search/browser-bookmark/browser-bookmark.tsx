@@ -62,8 +62,8 @@ export function BrowserBookmark() {
 	}
 
 	return (
-		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-1">
-			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto no-scrollbar scroll-smooth">
+		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-0.5">
+			<div className="flex flex-row items-center w-full gap-1 py-0.5 overflow-x-auto no-scrollbar scroll-smooth">
 				<div className="flex items-center shrink-0">
 					<button
 						type="button"

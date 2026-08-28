@@ -142,13 +142,13 @@ export function SearchCompactRow() {
 	}, [showHistoryPortal])
 
 	return (
-		<div className="flex items-center justify-center w-full h-full p-1 select-none">
+		<div className="flex items-center justify-center w-full h-full select-none">
 			<div
 				ref={searchRef}
-				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
+				className="relative flex flex-col justify-center w-full h-full p-0.5 bg-content bg-glass rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
-					<div className="relative flex items-center py-1.5 px-2 overflow-hidden shadow-xs transition-all duration-300 bg-content rounded-2xl">
+					<div className="relative flex items-center py-1.5 px-2 overflow-hidden shadow-xs transition-all duration-300 bg-content rounded-widget">
 						<EngineSelector onSelected={onEngineChange} />
 
 						<input

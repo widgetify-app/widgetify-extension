@@ -166,18 +166,31 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 		updatePortalPosition()
 	}
 
+	/**
+	 * On the canvas every widget surface uses the shared `rounded-widget` radius,
+	 * which is also what the selection ring is drawn with. The nested surfaces
+	 * here sit only 2px apart, so they must share that radius too — mixing a
+	 * 16px inner curve with a 24px outer one reads as a broken border.
+	 */
+	const surfaceRadius = size ? 'rounded-widget' : 'rounded-2xl'
+
 	return (
 		<div
 			className={`flex flex-col items-center justify-center w-full ${size ? 'h-full' : 'h-auto'}`}
 		>
 			<div
 				ref={searchRef}
-				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
+				className={`relative w-full p-0.5 bg-content bg-glass ${surfaceRadius} ${
+					// On the canvas the visible box must fill the widget's grid cell,
+					// otherwise the selection ring (drawn on the cell) floats away from
+					// this box's shorter edges.
+					size ? 'h-full flex flex-col justify-center' : ''
+				}`}
 			>
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center py-2 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group rounded-2xl'
+							`relative flex items-center py-1 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group ${surfaceRadius}`
 						}
 					>
 						<EngineSelector onSelected={onEngineChange} />
@@ -222,7 +235,7 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 						</button>
 						<div
 							className={
-								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
+								`absolute inset-0 transition-all duration-300 border pointer-events-none ${surfaceRadius} border-base-content/5`
 							}
 						/>
 					</div>
