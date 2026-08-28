@@ -35,8 +35,8 @@ export function AddWidgetSidebar({
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
-		<div className="flex flex-col w-full pb-3 pl-0 border-b md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
-			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b scrollbar-none border-base-content/10">
+		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
+			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-base-content/10">
 				{CATEGORIES.map((cat) => (
 					<button
 						key={cat.id}
@@ -54,7 +54,7 @@ export function AddWidgetSidebar({
 				))}
 			</div>
 
-			<div className="flex-1 overflow-y-auto space-y-1.5 pr-0.5 scrollbar-none">
+			<div className="space-y-1.5 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
 				{definitions.map((def) => {
 					const isSelected = def.id === selectedId
 					const count = runtimeLayout.filter((w) => w.id === def.id).length
