@@ -214,7 +214,7 @@ export function CanvasWidgetOuter({
 					left: `${currentLeft}px`,
 					top: `${currentTop}px`,
 					width: `${pixelRect.width}px`,
-					height: `${pixelRect.height - 12}px`,
+					height: `${pixelRect.height}px`,
 					touchAction: 'none',
 				}}
 				onPointerDown={handlePointerDown}

@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { useWidgetVisibility } from '@/context/widget-visibility.context'
 import { useOptionalFreeWidgets } from '@/context/free-widget.context'
 import type {
 	WidgetCategory,
@@ -21,12 +20,10 @@ import { AddWidgetOptions } from './options'
 import { AddWidgetPreview } from './preview'
 import { AddWidgetActions } from './actions'
 
-const isCustom = true
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly, maxFreeWidgets } =
 		useWidgetVipResolver()
-	const { visibility, toggleWidget } = useWidgetVisibility()
 	const freeWidgets = useOptionalFreeWidgets()
 
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
@@ -129,15 +126,11 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		setSelectedSize(sizeOption)
 	}
 
-	const activeCount = isCustom
-		? runtimeLayout.filter((w) => w.id === selectedDef?.id).length
-		: visibility.includes(selectedDef?.id as any)
-			? 1
-			: 0
+	const activeCount = runtimeLayout.filter((w) => w.id === selectedDef?.id).length
 
 	const isCurrentlyActive = activeCount > 0
 	const isDuplicateRestricted =
-		isCustom && Boolean(selectedDef?.canDuplicate) && isCurrentlyActive && !isVip
+		Boolean(selectedDef?.canDuplicate) && isCurrentlyActive && !isVip
 
 	const canAddCustom = isVip
 		? Boolean(selectedDef?.canDuplicate || !isCurrentlyActive)
@@ -150,9 +143,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	const isVipRequired =
 		isCurrentWidgetVipOnly || isCurrentVariantVipOnly || isCurrentSizeVipOnly
 
-	const isLimitReached = isCustom
-		? !isVip && runtimeLayout.length >= maxFreeWidgets
-		: !isVip && !isCurrentlyActive && visibility.length >= maxFreeWidgets
+	const isLimitReached = !isVip && runtimeLayout.length >= maxFreeWidgets
 
 	const handleSave = async () => {
 		if (!selectedDef) return
@@ -162,40 +153,32 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			return
 		}
 
-		if (isCustom) {
-			if (isEditMode && editTarget && updateWidgetVariant) {
-				const success = updateWidgetVariant(
-					editTarget.instanceId,
-					selectedSize,
-					selectedVariant?.meta
-				)
-				if (success) {
-					onClose()
-				}
-				return
-			}
-
-			if (isLimitReached) {
-				callEvent('openSettings', 'vip')
-				return
-			}
-
-			if (!canAddCustom || !addWidget) return
-			const success = await addWidget(
-				selectedDef.id,
-				undefined,
+		if (isEditMode && editTarget && updateWidgetVariant) {
+			const success = updateWidgetVariant(
+				editTarget.instanceId,
 				selectedSize,
 				selectedVariant?.meta
 			)
 			if (success) {
 				onClose()
 			}
-		} else {
-			if (isLimitReached) {
-				callEvent('openSettings', 'vip')
-				return
-			}
-			toggleWidget(selectedDef.id as any)
+			return
+		}
+
+		if (isLimitReached) {
+			callEvent('openSettings', 'vip')
+			return
+		}
+
+		if (!canAddCustom || !addWidget) return
+		const success = await addWidget(
+			selectedDef.id,
+			undefined,
+			selectedSize,
+			selectedVariant?.meta
+		)
+		if (success) {
+			onClose()
 		}
 	}
 
@@ -222,20 +205,18 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								? 'تغییر مدل و استایل ویجت'
 								: 'مدیریت و افزودن ویجت‌ها'}
 						</span>
-						{isCustom && (
-							<Button
-								type="button"
-								variant="default"
-								size="xs"
-								rounded="xl"
-								onClick={() => setIsHelpOpen(true)}
-								className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
-								title="راهنمای مدیریت ویجت‌ها"
-							>
-								<Icon name="help" size={13} />
-								<span>راهنما</span>
-							</Button>
-						)}
+						<Button
+							type="button"
+							variant="default"
+							size="xs"
+							rounded="xl"
+							onClick={() => setIsHelpOpen(true)}
+							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
+							title="راهنمای مدیریت ویجت‌ها"
+						>
+							<Icon name="help" size={13} />
+							<span>راهنما</span>
+						</Button>
 					</div>
 				}
 				size="xl"
@@ -251,7 +232,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						selectedId={selectedId}
 						onSelectWidget={handleSelectWidget}
 						runtimeLayout={runtimeLayout}
-						visibility={visibility}
 						isVip={isVip}
 						isWidgetVipOnly={isWidgetVipOnly}
 						onOpenWidgetSettings={handleOpenWidgetSettings}
@@ -270,11 +250,9 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												{selectedDef.label}
 											</h3>
 											<p className="text-[11px] text-muted">
-												{isCustom
-													? selectedDef.canDuplicate
-														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
-														: 'ویجت تکی صفحه اصلی'
-													: 'ویجت در چیدمان استاندارد صفحه'}
+												{selectedDef.canDuplicate
+													? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
+													: 'ویجت تکی صفحه اصلی'}
 											</p>
 										</div>
 									</div>
@@ -293,18 +271,16 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									)}
 								</div>
 
-								{isCustom && (
-									<AddWidgetOptions
-										definition={selectedDef}
-										selectedSize={selectedSize}
-										selectedVariant={selectedVariant}
-										isVip={isVip}
-										onSelectSize={handleSizeChange}
-										onSelectVariant={handleVariantChange}
-										isVariantVipOnly={isVariantVipOnly}
-										isSizeVipOnly={isSizeVipOnly}
-									/>
-								)}
+								<AddWidgetOptions
+									definition={selectedDef}
+									selectedSize={selectedSize}
+									selectedVariant={selectedVariant}
+									isVip={isVip}
+									onSelectSize={handleSizeChange}
+									onSelectVariant={handleVariantChange}
+									isVariantVipOnly={isVariantVipOnly}
+									isSizeVipOnly={isSizeVipOnly}
+								/>
 
 								<AddWidgetPreview
 									definition={selectedDef}

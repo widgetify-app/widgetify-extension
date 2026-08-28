@@ -16,7 +16,6 @@ interface AddWidgetSidebarProps {
 	selectedId: string
 	onSelectWidget: (id: string) => void
 	runtimeLayout: { id: string }[]
-	visibility: string[]
 	isVip?: boolean
 	isWidgetVipOnly: (id: string) => boolean
 	onOpenWidgetSettings: (e: React.MouseEvent, settingsTab?: WidgetTabKeys) => void
@@ -29,7 +28,6 @@ export function AddWidgetSidebar({
 	selectedId,
 	onSelectWidget,
 	runtimeLayout,
-	visibility,
 	isVip = false,
 	isWidgetVipOnly,
 	onOpenWidgetSettings,
