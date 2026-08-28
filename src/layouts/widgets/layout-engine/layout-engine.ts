@@ -16,6 +16,7 @@ export function resolveLayoutChange(
 		newWidget,
 		cols,
 		allowedSizes,
+		registry,
 	} = options
 
 	const cloned: StoredWidget[] = layout.map((w) => ({
@@ -48,7 +49,7 @@ export function resolveLayoutChange(
 				return null
 			}
 
-			if (!validateLayout(resolved, cols)) {
+			if (!validateLayout(resolved, cols, registry)) {
 				return null
 			}
 
@@ -76,7 +77,7 @@ export function resolveLayoutChange(
 				return null
 			}
 
-			if (!validateLayout(resolved, cols)) {
+			if (!validateLayout(resolved, cols, registry)) {
 				return null
 			}
 
@@ -107,7 +108,7 @@ export function resolveLayoutChange(
 					new Set([toAdd.instanceId]),
 					cols
 				)
-				if (resolved && validateLayout(resolved, cols)) {
+				if (resolved && validateLayout(resolved, cols, registry)) {
 					return resolved
 				}
 				cloned.pop()
@@ -117,7 +118,7 @@ export function resolveLayoutChange(
 			toAdd.position = slot
 			cloned.push(toAdd)
 
-			if (!validateLayout(cloned, cols)) {
+			if (!validateLayout(cloned, cols, registry)) {
 				return null
 			}
 
@@ -141,7 +142,7 @@ export function resolveLayoutChange(
 			duplicated.position = slot
 			cloned.push(duplicated)
 
-			if (!validateLayout(cloned, cols)) {
+			if (!validateLayout(cloned, cols, registry)) {
 				return null
 			}
 
@@ -151,7 +152,7 @@ export function resolveLayoutChange(
 		case 'remove': {
 			if (!instanceId) return null
 			const filtered = cloned.filter((w) => w.instanceId !== instanceId)
-			if (!validateLayout(filtered, cols)) {
+			if (!validateLayout(filtered, cols, registry)) {
 				return null
 			}
 			return filtered
@@ -184,7 +185,7 @@ export function resolveLayoutChange(
 			}
 
 			const compacted = compactLayout(reflowed, cols)
-			if (!validateLayout(compacted, cols)) {
+			if (!validateLayout(compacted, cols, registry)) {
 				return null
 			}
 
