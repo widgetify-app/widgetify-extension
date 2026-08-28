@@ -8,7 +8,7 @@ import {
 	useState,
 } from 'react'
 import Analytics from '@/analytics'
-import { setToStorage } from '@/common/storage'
+import { setToStorage, watchStorage } from '@/common/storage'
 import { playNativeToastSound, showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import {
@@ -73,8 +73,31 @@ interface FreeWidgetContextType {
 
 export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
+/**
+ * Layouts coming from outside this tab (browser storage written by another tab,
+ * or the sync server) are not guaranteed to be collision free. Rendering one as
+ * is puts two widgets physically on top of each other, so run it through the
+ * layout engine to repair overlaps before it reaches state.
+ *
+ * No widget registry is passed on purpose — this repairs geometry and must not
+ * reject a layout just because it holds a legacy widget size.
+ */
+function sanitizeLayout(layout: StoredWidget[], cols: number): StoredWidget[] {
+	if (validateLayout(layout, cols)) {
+		return layout
+	}
+
+	return (
+		resolveLayoutChange({
+			layout,
+			operation: 'responsive-reflow',
+			cols,
+		}) ?? layout
+	)
+}
+
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
-	const { isAuthenticated, isVip } = useAuth()
+	const { isAuthenticated, isVip, token } = useAuth()
 	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
 		useAppearance()
 
@@ -91,24 +114,31 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const containerWidthRef = useRef<number>(1200)
 	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
 	const hasFetchedServerRef = useRef<boolean>(false)
+	const hasLocalEditRef = useRef<boolean>(false)
+	const prevTokenRef = useRef<string | null | undefined>(undefined)
+	const lastPersistedSignatureRef = useRef<string | null>(null)
 
 	const persistLayout = useCallback((layoutToPersist: StoredWidget[]) => {
+		lastPersistedSignatureRef.current = JSON.stringify(layoutToPersist)
 		setToStorage('storedWidgets', layoutToPersist)
 	}, [])
 
 	const reflowForColumns = useCallback(
 		(baseLayout: StoredWidget[], targetCols: number) => {
+			const safeLayout = sanitizeLayout(baseLayout, targetCols)
+
 			if (targetCols >= DEFAULT_COLS) {
-				return baseLayout
+				return safeLayout
 			}
 
 			const reflowed = resolveLayoutChange({
-				layout: baseLayout,
+				layout: safeLayout,
 				operation: 'responsive-reflow',
 				cols: targetCols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
-			return reflowed || baseLayout
+			return reflowed || safeLayout
 		},
 		[]
 	)
@@ -156,30 +186,65 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[reflowForColumns]
 	)
 
-	useEffect(() => {
-		async function loadFromLocalStorage() {
-			try {
-				const localLayout = await migrateWidgetLayoutIfNeeded()
-				const finalLayout =
-					localLayout && localLayout.length > 0
-						? localLayout
-						: DEFAULT_WIDGET_LAYOUT
-				savedLayoutRef.current = finalLayout
-				setSavedLayout(finalLayout)
-				const reflowed = reflowForColumns(finalLayout, colsRef.current)
-				setRuntimeLayout(reflowed)
-			} catch (err) {
-				console.error('Failed to load local widget layout', err)
-				savedLayoutRef.current = DEFAULT_WIDGET_LAYOUT
-				setSavedLayout(DEFAULT_WIDGET_LAYOUT)
-				setRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
-			} finally {
-				setIsLoaded(true)
-			}
+	const loadFromLocalStorage = useCallback(async () => {
+		try {
+			const localLayout = await migrateWidgetLayoutIfNeeded()
+			const finalLayout = sanitizeLayout(
+				localLayout && localLayout.length > 0
+					? localLayout
+					: DEFAULT_WIDGET_LAYOUT,
+				DEFAULT_COLS
+			)
+			savedLayoutRef.current = finalLayout
+			setSavedLayout(finalLayout)
+			const reflowed = reflowForColumns(finalLayout, colsRef.current)
+			setRuntimeLayout(reflowed)
+		} catch (err) {
+			console.error('Failed to load local widget layout', err)
+			savedLayoutRef.current = DEFAULT_WIDGET_LAYOUT
+			setSavedLayout(DEFAULT_WIDGET_LAYOUT)
+			setRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
+		} finally {
+			setIsLoaded(true)
 		}
-
-		loadFromLocalStorage()
 	}, [reflowForColumns])
+
+	useEffect(() => {
+		loadFromLocalStorage()
+	}, [loadFromLocalStorage])
+
+	useEffect(() => {
+		const unwatch = watchStorage('storedWidgets', (newValue) => {
+			if (!newValue || newValue.length === 0) return
+
+			// storage.watch also fires for writes made by THIS tab. Echoing our own
+			// persist back into state is at best redundant work and at worst lets a
+			// late echo clobber newer local state, so ignore it.
+			if (JSON.stringify(newValue) === lastPersistedSignatureRef.current) return
+
+			savedLayoutRef.current = newValue
+			setSavedLayout(newValue)
+			setRuntimeLayout(reflowForColumns(newValue, colsRef.current))
+		})
+		return () => unwatch()
+	}, [reflowForColumns])
+
+	useEffect(() => {
+		if (prevTokenRef.current === undefined) {
+			prevTokenRef.current = token
+			return
+		}
+		if (prevTokenRef.current === token) return
+		prevTokenRef.current = token
+
+		if (syncTimerRef.current) {
+			clearTimeout(syncTimerRef.current)
+			syncTimerRef.current = null
+		}
+		hasFetchedServerRef.current = false
+		hasLocalEditRef.current = false
+		loadFromLocalStorage()
+	}, [token, loadFromLocalStorage])
 
 	useEffect(() => {
 		if (!isAuthenticated || hasFetchedServerRef.current) return
@@ -194,15 +259,25 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				}
 
 				if (serverWidgets.length > 0) {
-					const fromSrv: StoredWidget[] = serverWidgets.map((sw) => ({
-						id: sw.widgetKey as any,
-						instanceId: sw.instanceId,
-						widgetId: sw.instanceId,
-						position: { col: sw.col, row: sw.row },
-						size: { w: sw.width, h: sw.height },
-						meta: sw.meta,
-						disabled: sw.disabled,
-					}))
+					if (hasLocalEditRef.current) {
+						// The user already changed the layout locally while this
+						// initial fetch was in flight — the debounced sync will push
+						// that change to the server, so don't roll it back here.
+						return
+					}
+
+					const fromSrv: StoredWidget[] = sanitizeLayout(
+						serverWidgets.map((sw) => ({
+							id: sw.widgetKey as any,
+							instanceId: sw.instanceId,
+							widgetId: sw.instanceId,
+							position: { col: sw.col, row: sw.row },
+							size: { w: sw.width, h: sw.height },
+							meta: sw.meta,
+							disabled: sw.disabled,
+						})),
+						DEFAULT_COLS
+					)
 
 					savedLayoutRef.current = fromSrv
 					setSavedLayout(fromSrv)
@@ -293,18 +368,57 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 						meta: w.meta,
 						disabled: w.disabled ?? false,
 					})),
-				}).catch(() => {})
+				})
+					.then((synced) => {
+						if (!synced || synced.length === 0) return
+
+						const idMap = new Map<string, string>()
+						currentLayout.forEach((w, index) => {
+							const isValidId =
+								typeof w.instanceId === 'string' &&
+								/^[0-9a-fA-F]{24}$/.test(w.instanceId)
+							if (isValidId) return
+							const matching =
+								synced.find((s) => s.widgetKey === w.id) || synced[index]
+							if (matching?.instanceId && matching.instanceId !== w.instanceId) {
+								idMap.set(w.instanceId, matching.instanceId)
+							}
+						})
+
+						if (idMap.size === 0) return
+
+						const applyIdMap = (list: StoredWidget[]) =>
+							list.map((w) =>
+								idMap.has(w.instanceId)
+									? {
+											...w,
+											instanceId: idMap.get(w.instanceId) as string,
+											widgetId: idMap.get(w.instanceId) as string,
+										}
+									: w
+							)
+
+						setSavedLayout((prev) => {
+							const updated = applyIdMap(prev)
+							savedLayoutRef.current = updated
+							persistLayout(updated)
+							return updated
+						})
+						setRuntimeLayout((prev) => applyIdMap(prev))
+					})
+					.catch(() => {})
 			}, 1000)
 		},
-		[isAuthenticated]
+		[isAuthenticated, persistLayout]
 	)
 
 	const commitMutation = useCallback(
 		(operation: string, nextRuntime: StoredWidget[], targetInstanceId?: string) => {
-			if (!validateLayout(nextRuntime, cols)) {
+			if (!validateLayout(nextRuntime, cols, WIDGET_DEFINITIONS)) {
 				return false
 			}
 
+			hasLocalEditRef.current = true
 			setRuntimeLayout(nextRuntime)
 
 			if (cols >= DEFAULT_COLS) {
@@ -354,6 +468,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				instanceId,
 				targetSize: newSize,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
@@ -400,6 +515,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				instanceId,
 				targetSize: newSize,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
@@ -425,6 +541,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				instanceId,
 				targetPosition,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
@@ -491,6 +608,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				newWidget,
 				targetPosition,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
@@ -558,6 +676,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				instanceId,
 				newWidget,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
@@ -609,6 +728,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				operation: 'remove',
 				instanceId,
 				cols,
+				registry: WIDGET_DEFINITIONS,
 			})
 
 			if (!result) {
