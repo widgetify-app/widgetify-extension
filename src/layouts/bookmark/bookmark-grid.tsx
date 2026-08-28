@@ -24,6 +24,7 @@ interface BookmarkGridProps {
 	colsCount?: number
 	rowsCount?: number
 	onOpenFolder?: (folder: Bookmark) => void
+	isModal?: boolean
 }
 
 export function BookmarkGrid({
@@ -34,6 +35,7 @@ export function BookmarkGrid({
 	colsCount = 5,
 	rowsCount = 2,
 	onOpenFolder,
+	isModal = false,
 }: BookmarkGridProps) {
 	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
 		useBookmarkStore()
@@ -191,6 +193,8 @@ export function BookmarkGrid({
 		}
 	}, [])
 
+	const isAutoRows = isModal || !rowsCount
+
 	const gridColsClass =
 		colsCount === 1 ? 'grid-cols-1' : colsCount === 2 ? 'grid-cols-2' : 'grid-cols-5'
 
@@ -205,11 +209,21 @@ export function BookmarkGrid({
 
 	return (
 		<div
-			style={{
-				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
-				gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
-			}}
-			className={`grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-1 transition-all duration-300 rounded-2xl`}
+			style={
+				isAutoRows
+					? {
+							gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+						}
+					: {
+							gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+							gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
+						}
+			}
+			className={
+				isAutoRows
+					? `grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] ${gridColsClass} gap-2 p-0.5 transition-all duration-300 rounded-2xl`
+					: `grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-1.5 transition-all duration-300 rounded-2xl`
+			}
 		>
 			<SortableContext
 				items={displayedBookmarks
@@ -221,7 +235,7 @@ export function BookmarkGrid({
 					bookmark ? (
 						<div
 							key={bookmark.id + '-' + i}
-							className={`transition-transform duration-200`}
+							className="w-full h-full transition-transform duration-200"
 						>
 							<SortableBookmarkItem
 								bookmark={bookmark}
@@ -231,11 +245,12 @@ export function BookmarkGrid({
 							/>
 						</div>
 					) : (
-						<EmptyBookmarkSlot
-							key={i}
-							canAdd={true}
-							onClick={openAddBookmarkModal}
-						/>
+						<div key={i} className="w-full h-full">
+							<EmptyBookmarkSlot
+								canAdd={true}
+								onClick={openAddBookmarkModal}
+							/>
+						</div>
 					)
 				)}
 			</SortableContext>

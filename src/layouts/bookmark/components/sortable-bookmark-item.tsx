@@ -25,14 +25,14 @@ export function SortableBookmarkItem({
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
-		zIndex: isDragging ? 10 : 1, // Bring dragged item to front
+		zIndex: isDragging ? 10 : 1,
 	}
 
 	return (
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`transition-transform duration-200 ${isDragging ? 'z-10' : ''}`}
+			className={`w-full h-full transition-transform duration-200 ${isDragging ? 'z-10' : ''}`}
 			{...attributes}
 			{...listeners}
 		>

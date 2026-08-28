@@ -34,7 +34,7 @@ export function BookmarkItem({
 	}
 
 	return (
-		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
+		<div className={cn('relative w-full h-full', isDragging && 'opacity-50')}>
 			<button
 				onClick={onClick}
 				onAuxClick={onClick}
@@ -46,9 +46,9 @@ export function BookmarkItem({
 				}}
 				style={customStyles}
 				className={cn(
-					'relative flex flex-col items-center justify-center  px-2 py-0.5 h-20 md:h-[5.7rem] duration-300 border border-content cursor-pointer group rounded-widget shadow-sm w-full transition-transform ease-in-out group-hover:scale-102',
+					'relative flex flex-col items-center justify-between px-2 py-1.5 h-full w-full duration-300 border border-content cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
-						? `bg-content hover:bg-base-300 text-content bg-glass`
+						? 'bg-content hover:bg-base-300 text-content bg-glass'
 						: ''
 				)}
 			>
@@ -87,11 +87,7 @@ export function BookmarkItem({
 					/>
 				</div>
 
-				<div
-					className={
-						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
-					}
-				/>
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-base-content/5 rounded-widget pointer-events-none" />
 			</button>
 		</div>
 	)

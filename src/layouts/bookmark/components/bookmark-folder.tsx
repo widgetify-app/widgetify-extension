@@ -6,6 +6,7 @@ import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { Icon } from '@/src/icons'
+import { cn } from '@/common/utils/cn'
 
 export function FolderBookmarkItem({
 	bookmark,
@@ -70,7 +71,10 @@ export function FolderBookmarkItem({
 
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden`}
+			className={cn(
+				'relative flex w-full h-full overflow-hidden',
+				isDragging && 'opacity-50'
+			)}
 		>
 			<button
 				onClick={onClick}
@@ -84,11 +88,12 @@ export function FolderBookmarkItem({
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative flex group h-20 md:h-[5.7rem] flex-col items-center justify-between px-1.5 py-1 transition-all duration-300 cursor-pointer group rounded-widget shadow-sm w-full ease-in-out ${
+				className={cn(
+					'relative flex group h-full w-full flex-col items-center justify-between px-1.5 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-primary/20 text-content'
 						: 'before:bg-inherit border-transparent'
-				}`}
+				)}
 			>
 				{RenderStickerPattern(bookmark)}
 				<div className="flex flex-col items-center justify-between w-full h-full min-h-0">

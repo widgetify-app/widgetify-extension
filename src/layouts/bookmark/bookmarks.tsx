@@ -34,7 +34,6 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		bookmarks,
 		getCurrentFolderItems,
 		currentFolderId,
-		setCurrentFolderId,
 		addBookmark,
 		setBookmarks,
 	} = useBookmarkStore()
@@ -161,17 +160,6 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		Analytics.event('bookmark_reorder')
 	}
 
-	const handleNavigate = (folderId: string | null, depth: number) => {
-		if (depth === -1) {
-			setFolderPath([])
-			setCurrentFolderId(null)
-			return
-		}
-		const newPath = folderPath.slice(0, depth + 1)
-		setFolderPath(newPath)
-		setCurrentFolderId(folderId)
-	}
-
 	const handleOpenFolderInModal = (folder: Bookmark) => {
 		const isValidUuid = validate(folder.id)
 		const targetId = isValidUuid ? folder.id : folder.onlineId || folder.id
@@ -226,26 +214,9 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex bookmarks  flex-col h-full w-full transition-all duration-300 ${
-						currentFolderId
-							? 'bg-content rounded-2xl shadow-2xl overflow-hidden p-1'
-							: ''
-					}`}
+					className={`flex bookmarks  flex-col h-full w-full transition-all duration-300`}
 				>
-					{currentFolderId && (
-						<FolderHeader
-							folderPath={folderPath}
-							onNavigate={handleNavigate}
-						/>
-					)}
-
-					<div
-						className={
-							currentFolderId
-								? 'max-h-60 overflow-y-auto py-1'
-								: 'h-full w-full'
-						}
-					>
+					<div className={'h-full w-full'}>
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}
 							folderPath={folderPath}
@@ -254,6 +225,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 							onOpenFolder={handleOpenFolderInModal}
 							colsCount={colsCount}
 							rowsCount={rowsCount}
+							isModal={Boolean(currentFolderId)}
 						/>
 					</div>
 				</div>

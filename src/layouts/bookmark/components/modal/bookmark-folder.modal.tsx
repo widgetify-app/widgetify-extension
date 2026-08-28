@@ -21,6 +21,7 @@ import { FolderPath } from '../folder-path'
 import { AddBookmarkModal } from './add-bookmark.modal'
 import { ImportBrowserBookmarksModal } from './import-browser-bookmarks.modal'
 import { validate } from 'uuid'
+import { BookmarkIcon } from '../bookmark/bookmark-icon'
 
 interface BookmarkFolderModalProps {
 	isOpen: boolean
@@ -181,13 +182,14 @@ export function BookmarkFolderModal({
 					</span>
 				</div>
 			}
-			size="lg"
+			size="md"
+			className="max-w-xl min-h-95 md:min-h-100 h-95 md:h-100 flex flex-col [&>div:last-child]:flex-1 [&>div:last-child]:min-h-0 [&>div:last-child]:flex [&>div:last-child]:flex-col"
 			direction="rtl"
 			closeOnBackdropClick={true}
 		>
-			<div className="flex flex-col gap-3 p-1 select-none">
+			<div className="flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">
 				{folderPath.length > 1 && (
-					<div className="pb-2 border-b border-base-content/10">
+					<div className="pb-2 border-b border-base-content/10 shrink-0">
 						<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 					</div>
 				)}
@@ -197,7 +199,7 @@ export function BookmarkFolderModal({
 					collisionDetection={closestCenter}
 					onDragEnd={handleDragEnd}
 				>
-					<div className="max-h-[60vh] overflow-y-auto -mx-1 py-1 scrollbar-none">
+					<div className="flex-1 h-full min-h-0 py-1 -mx-1 overflow-y-auto pl-0.5">
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}
 							folderPath={folderPath}
@@ -205,6 +207,7 @@ export function BookmarkFolderModal({
 							openAddBookmarkModal={() => setShowAddModal(true)}
 							onOpenFolder={handleOpenSubFolder}
 							colsCount={5}
+							isModal={true}
 						/>
 					</div>
 				</DndContext>

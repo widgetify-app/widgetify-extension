@@ -13,25 +13,21 @@ export function EmptyBookmarkSlot({
 		<button
 			onClick={canAdd ? onClick : undefined}
 			className={cn(
-				'relative flex flex-col items-center shadow-sm h-20 md:h-[5.7rem]  justify-center p-4 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget w-full transition-transform ease-in-out group-hover:scale-102'
+				'relative flex flex-col items-center shadow-xs h-full w-full justify-center p-2 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget transition-transform ease-in-out group-hover:scale-102'
 			)}
 		>
-			<div className="relative flex items-center justify-center w-14 h-14">
+			<div className="relative flex items-center justify-center w-full h-full">
 				{canAdd ? (
-					<div className="flex items-center justify-center ">
-						<Icon name="bookmarkPlus" size={38} className="opacity-50" />
+					<div className="flex items-center justify-center">
+						<Icon name="bookmarkPlus" size={32} className="opacity-50" />
 					</div>
 				) : (
-					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20"></div>
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20" />
 				)}
 			</div>
 
 			{canAdd && (
-				<div
-					className={
-						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
-					}
-				/>
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-base-content/5 rounded-widget pointer-events-none" />
 			)}
 		</button>
 	)
