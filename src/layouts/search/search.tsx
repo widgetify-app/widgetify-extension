@@ -166,22 +166,18 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 		updatePortalPosition()
 	}
 
-	const surfaceRadius = size ? 'rounded-widget' : 'rounded-2xl'
-
 	return (
 		<div
 			className={`flex flex-col items-center justify-center w-full ${size ? 'h-full' : 'h-auto'}`}
 		>
 			<div
 				ref={searchRef}
-				className={`relative w-full p-0.5 bg-content bg-glass ${surfaceRadius} ${
-					size ? 'h-full flex flex-col justify-center' : ''
-				}`}
+				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
 			>
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							`relative flex items-center py-1 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group ${surfaceRadius}`
+							'relative flex items-center py-2 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group rounded-2xl'
 						}
 					>
 						<EngineSelector onSelected={onEngineChange} />
@@ -226,7 +222,7 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 						</button>
 						<div
 							className={
-								`absolute inset-0 transition-all duration-300 border pointer-events-none ${surfaceRadius} border-base-content/5`
+								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
 							}
 						/>
 					</div>
