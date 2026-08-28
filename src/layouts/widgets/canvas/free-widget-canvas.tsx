@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
-import { getCanvasHeight, WIDGET_VERTICAL_INSET } from '../grid-geometry'
+import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal, WidgetHelpModal } from '@/layouts/widgets-manager'
 import { CanvasContextMenu } from './canvas-context-menu'
@@ -64,8 +64,6 @@ export function FreeWidgetCanvas() {
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape' && canvasMode === 'edit') {
-				// Escape aborts an in-progress drag and clears the selection, but
-				// never leaves edit mode — only the "پایان" button does that.
 				callEvent('cancelWidgetDrag', null)
 				setSelectedInstanceId(null)
 			}
@@ -80,9 +78,6 @@ export function FreeWidgetCanvas() {
 			e.target === containerRef.current ||
 			(e.target as HTMLElement).classList.contains('canvas-background')
 		) {
-			// Clicking empty canvas only clears the current selection. Leaving
-			// edit mode is deliberate and happens exclusively via the "پایان"
-			// button in the edit toolbar.
 			if (canvasMode === 'edit') {
 				setSelectedInstanceId(null)
 			}
@@ -194,7 +189,7 @@ export function FreeWidgetCanvas() {
 								className="absolute flex w-full"
 								style={{
 									top: `${r * (cellHeight + gap)}px`,
-									height: `${cellHeight - WIDGET_VERTICAL_INSET}px`,
+									height: `${cellHeight}px`,
 									left: 0,
 									gap: `${gap}px`,
 								}}
@@ -204,7 +199,7 @@ export function FreeWidgetCanvas() {
 										key={c}
 										style={{
 											width: `${cellWidth}px`,
-											height: `${cellHeight - WIDGET_VERTICAL_INSET}px`,
+											height: `${cellHeight}px`,
 										}}
 										className="transition-all duration-200 border border-dashed rounded-widget border-base-content/15 bg-base-300/10"
 									/>

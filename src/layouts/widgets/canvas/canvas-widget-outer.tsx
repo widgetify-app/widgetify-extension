@@ -2,7 +2,7 @@ import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
-import { getWidgetPixelRect, WIDGET_VERTICAL_INSET } from '../grid-geometry'
+import { getWidgetPixelRect } from '../grid-geometry'
 import {
 	type StoredWidget,
 	type WidgetDefinition,
@@ -63,7 +63,6 @@ export function CanvasWidgetOuter({
 		y: number
 	} | null>(null)
 
-	const isSelected = canvasMode === 'edit' && selectedInstanceId === widget.instanceId
 	const isWiggling = canvasMode === 'edit' && selectedInstanceId !== widget.instanceId
 
 	const pointerStartRef = useRef<{ x: number; y: number } | null>(null)
@@ -101,16 +100,6 @@ export function CanvasWidgetOuter({
 		return () => removeListener()
 	}, [resetDragState])
 
-	/**
-	 * While dragging, the live offset is applied via `transform` on top of the
-	 * committed `left/top`. On drop those two change in the same commit: the
-	 * transform disappears and `left/top` jump to the newly committed cell. With
-	 * the position transition still enabled the browser would animate `left/top`
-	 * from the ORIGINAL cell to the new one while the transform vanishes
-	 * instantly — the widget visibly snaps back to where the drag started and
-	 * then slides to the destination. Suppressing the transition for that one
-	 * frame lets it land exactly where it was dropped.
-	 */
 	useEffect(() => {
 		if (!isSettling) return
 
@@ -267,14 +256,13 @@ export function CanvasWidgetOuter({
 						? 'z-50 shadow-2xl cursor-grabbing scale-[1.03]'
 						: 'z-10 cursor-default',
 					!isDragging && !isSettling && 'widget-canvas-item-transition',
-					isWiggling && 'animate-widget-wiggle',
-					isSelected && 'ring-2 ring-primary rounded-widget'
+					isWiggling && 'animate-widget-wiggle'
 				)}
 				style={{
 					left: `${pixelRect.left}px`,
 					top: `${pixelRect.top}px`,
 					width: `${pixelRect.width}px`,
-					height: `${pixelRect.height - WIDGET_VERTICAL_INSET}px`,
+					height: `${pixelRect.height}px`,
 					touchAction: 'none',
 					transform: isDragging
 						? `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`
