@@ -270,64 +270,62 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						onOpenWidgetSettings={handleOpenWidgetSettings}
 					/>
 
-					<div className="flex flex-col w-full min-h-0 pr-0 md:w-7/12 md:pr-1">
+					<div className="flex flex-col justify-between w-full pr-0 md:w-7/12 md:pr-1">
 						{selectedDef ? (
-							<div className="flex flex-col flex-1 min-h-0 gap-3">
-								<div className="flex flex-col flex-1 min-h-0 gap-3 overflow-y-auto pr-0.5 scrollbar-none">
-									<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
-										<div className="flex items-center gap-2">
-											<span className="text-2xl">
-												{selectedDef.emoji}
-											</span>
-											<div>
-												<h3 className="text-sm font-bold text-content">
-													{selectedDef.label}
-												</h3>
-												<p className="text-[11px] text-muted">
-													{isCustom
-														? selectedDef.canDuplicate
-															? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
-															: 'ویجت تکی صفحه اصلی'
-														: 'ویجت در چیدمان استاندارد صفحه'}
-												</p>
-											</div>
+							<div className="flex flex-col justify-between flex-1 gap-3">
+								<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
+									<div className="flex items-center gap-2">
+										<span className="text-2xl">
+											{selectedDef.emoji}
+										</span>
+										<div>
+											<h3 className="text-sm font-bold text-content">
+												{selectedDef.label}
+											</h3>
+											<p className="text-[11px] text-muted">
+												{isCustom
+													? selectedDef.canDuplicate
+														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
+														: 'ویجت تکی صفحه اصلی'
+													: 'ویجت در چیدمان استاندارد صفحه'}
+											</p>
 										</div>
-
-										{selectedDef.settingsTab && (
-											<Button
-												variant="default"
-												size="xs"
-												rounded="xl"
-												onClick={handleOpenSelectedSettings}
-												className="flex items-center gap-1.5 text-xs text-muted hover:text-primary px-3 py-1.5"
-											>
-												<Icon name="settings" size={12} />
-												<span>تنظیمات ویجت</span>
-											</Button>
-										)}
 									</div>
 
-									{isCustom && (
-										<AddWidgetOptions
-											definition={selectedDef}
-											selectedSize={selectedSize}
-											selectedVariant={selectedVariant}
-											isVip={isVip}
-											onSelectSize={handleSizeChange}
-											onSelectVariant={handleVariantChange}
-											isVariantVipOnly={isVariantVipOnly}
-											isSizeVipOnly={isSizeVipOnly}
-										/>
+									{selectedDef.settingsTab && (
+										<Button
+											variant="default"
+											size="xs"
+											rounded="xl"
+											onClick={handleOpenSelectedSettings}
+											className="flex items-center gap-1.5 text-xs text-muted hover:text-primary px-3 py-1.5"
+										>
+											<Icon name="settings" size={12} />
+											<span>تنظیمات ویجت</span>
+										</Button>
 									)}
-
-									<AddWidgetPreview
-										definition={selectedDef}
-										previewSize={previewSize}
-										selectedVariant={selectedVariant}
-									/>
 								</div>
 
-								<div className="pt-2 border-t border-base-content/10 shrink-0">
+								{isCustom && (
+									<AddWidgetOptions
+										definition={selectedDef}
+										selectedSize={selectedSize}
+										selectedVariant={selectedVariant}
+										isVip={isVip}
+										onSelectSize={handleSizeChange}
+										onSelectVariant={handleVariantChange}
+										isVariantVipOnly={isVariantVipOnly}
+										isSizeVipOnly={isSizeVipOnly}
+									/>
+								)}
+
+								<AddWidgetPreview
+									definition={selectedDef}
+									previewSize={previewSize}
+									selectedVariant={selectedVariant}
+								/>
+
+								<div className="pt-2 border-t border-base-content/10">
 									<AddWidgetActions
 										isVipRequired={isVipRequired}
 										isVip={isVip}
