@@ -83,6 +83,7 @@ export interface EventName {
 		| { instanceId?: string; widgetId?: string }
 		| null
 		| undefined
+	cancelWidgetDrag: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

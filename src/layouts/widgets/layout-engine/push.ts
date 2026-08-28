@@ -28,6 +28,12 @@ export function generatePushCandidates(
 		if (seen.has(key)) return
 		seen.add(key)
 
+		if (
+			doRectanglesOverlap({ col, row }, widget.size, blocker.position, blocker.size)
+		) {
+			return
+		}
+
 		for (const other of layout) {
 			if (fixedIds.has(other.instanceId)) {
 				if (

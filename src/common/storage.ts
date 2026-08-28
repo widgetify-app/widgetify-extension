@@ -58,6 +58,13 @@ export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }
 
+export function watchStorage<K extends keyof StorageKV>(
+	key: K,
+	callback: (newValue: StorageKV[K] | null, oldValue: StorageKV[K] | null) => void
+) {
+	return storage.watch<StorageKV[K]>(`local:${key}`, callback)
+}
+
 export async function setWithExpiry<K extends keyof StorageKV>(
 	key: K,
 	value: StorageKV[K],

@@ -39,6 +39,7 @@ export function FreeWidgetCanvas() {
 		x: number
 		y: number
 	} | null>(null)
+	const pressStartedOnBackgroundRef = useRef(false)
 
 	useEffect(() => {
 		if (containerSize.width > 0) {
@@ -64,24 +65,32 @@ export function FreeWidgetCanvas() {
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape' && canvasMode === 'edit') {
-				setCanvasMode('normal')
+				callEvent('cancelWidgetDrag', null)
 				setSelectedInstanceId(null)
 			}
 		}
 
 		window.addEventListener('keydown', handleKeyDown)
 		return () => window.removeEventListener('keydown', handleKeyDown)
-	}, [canvasMode, setCanvasMode, setSelectedInstanceId])
+	}, [canvasMode, setSelectedInstanceId])
+
+	const isBackgroundTarget = (target: EventTarget | null) =>
+		target === containerRef.current ||
+		(target as HTMLElement)?.classList?.contains('canvas-background')
+
+	const handleCanvasPointerDown = (e: React.PointerEvent) => {
+		pressStartedOnBackgroundRef.current = isBackgroundTarget(e.target)
+	}
 
 	const handleCanvasClick = (e: React.MouseEvent) => {
-		if (
-			e.target === containerRef.current ||
-			(e.target as HTMLElement).classList.contains('canvas-background')
-		) {
-			if (canvasMode === 'edit') {
-				setCanvasMode('normal')
-				setSelectedInstanceId(null)
-			}
+		const startedOnBackground = pressStartedOnBackgroundRef.current
+		pressStartedOnBackgroundRef.current = false
+
+		if (!startedOnBackground || !isBackgroundTarget(e.target)) return
+
+		if (canvasMode === 'edit') {
+			setCanvasMode('normal')
+			setSelectedInstanceId(null)
 		}
 	}
 
@@ -157,6 +166,7 @@ export function FreeWidgetCanvas() {
 			ref={containerRef}
 			id="widgets-canvas"
 			className="relative w-full select-none"
+			onPointerDown={handleCanvasPointerDown}
 			onClick={handleCanvasClick}
 			onContextMenu={handleCanvasContextMenu}
 		>
@@ -202,7 +212,7 @@ export function FreeWidgetCanvas() {
 											width: `${cellWidth}px`,
 											height: `${cellHeight}px`,
 										}}
-										className="transition-all duration-200 border border-dashed rounded-2xl border-base-content/15 bg-base-300/10"
+										className="transition-all duration-200 border border-dashed rounded-widget border-base-content/15 bg-base-300/10"
 									/>
 								))}
 							</div>
@@ -223,6 +233,7 @@ export function FreeWidgetCanvas() {
 							cellHeight={cellHeight}
 							gap={gap}
 							cols={cols}
+							maxRows={totalGridRows}
 						/>
 					)
 				})}

@@ -29,6 +29,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
 	const addWidget = freeWidgets?.addWidget
 	const updateWidgetVariant = freeWidgets?.updateWidgetVariant
+	const removeWidget = freeWidgets?.removeWidget
 
 	const allDefinitions = useMemo(() => {
 		return Object.values(WIDGET_DEFINITIONS)
@@ -145,6 +146,13 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 
 	const isLimitReached = !isVip && runtimeLayout.length >= maxFreeWidgets
 
+	const handleRemove = () => {
+		if (!selectedDef || !removeWidget) return
+		const target = runtimeLayout.find((w) => w.id === selectedDef.id)
+		if (!target) return
+		removeWidget(target.instanceId)
+	}
+
 	const handleSave = async () => {
 		if (!selectedDef) return
 
@@ -224,7 +232,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 				closeOnBackdropClick
 				className="max-w-4xl md:max-w-5xl"
 			>
-				<div className="flex flex-col md:flex-row gap-4 h-137.5 select-none w-full">
+				<div className="flex flex-col md:flex-row gap-4 select-none w-full h-[calc(100dvh-11rem)] overflow-y-auto scrollbar-none md:h-[min(34.375rem,calc(100dvh-14rem))] md:overflow-visible">
 					<AddWidgetSidebar
 						activeCategory={activeCategory}
 						onSelectCategory={handleCategoryChange}
@@ -237,58 +245,60 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						onOpenWidgetSettings={handleOpenWidgetSettings}
 					/>
 
-					<div className="flex flex-col justify-between w-full pr-0 md:w-7/12 md:pr-1">
+					<div className="flex flex-col w-full pr-0 md:min-h-0 md:w-7/12 md:pr-1">
 						{selectedDef ? (
-							<div className="flex flex-col justify-between flex-1 gap-3">
-								<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
-									<div className="flex items-center gap-2">
-										<span className="text-2xl">
-											{selectedDef.emoji}
-										</span>
-										<div>
-											<h3 className="text-sm font-bold text-content">
-												{selectedDef.label}
-											</h3>
-											<p className="text-[11px] text-muted">
-												{selectedDef.canDuplicate
-													? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
-													: 'ویجت تکی صفحه اصلی'}
-											</p>
+							<div className="flex flex-col gap-3 md:flex-1 md:min-h-0">
+								<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:min-h-0 md:overflow-y-auto">
+									<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
+										<div className="flex items-center gap-2">
+											<span className="text-2xl">
+												{selectedDef.emoji}
+											</span>
+											<div>
+												<h3 className="text-sm font-bold text-content">
+													{selectedDef.label}
+												</h3>
+												<p className="text-[11px] text-muted">
+													{selectedDef.canDuplicate
+														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
+														: 'ویجت تکی صفحه اصلی'}
+												</p>
+											</div>
 										</div>
+
+										{selectedDef.settingsTab && (
+											<Button
+												variant="default"
+												size="xs"
+												rounded="xl"
+												onClick={handleOpenSelectedSettings}
+												className="flex items-center gap-1.5 text-xs text-muted hover:text-primary px-3 py-1.5"
+											>
+												<Icon name="settings" size={12} />
+												<span>تنظیمات ویجت</span>
+											</Button>
+										)}
 									</div>
 
-									{selectedDef.settingsTab && (
-										<Button
-											variant="default"
-											size="xs"
-											rounded="xl"
-											onClick={handleOpenSelectedSettings}
-											className="flex items-center gap-1.5 text-xs text-muted hover:text-primary px-3 py-1.5"
-										>
-											<Icon name="settings" size={12} />
-											<span>تنظیمات ویجت</span>
-										</Button>
-									)}
+									<AddWidgetOptions
+										definition={selectedDef}
+										selectedSize={selectedSize}
+										selectedVariant={selectedVariant}
+										isVip={isVip}
+										onSelectSize={handleSizeChange}
+										onSelectVariant={handleVariantChange}
+										isVariantVipOnly={isVariantVipOnly}
+										isSizeVipOnly={isSizeVipOnly}
+									/>
+
+									<AddWidgetPreview
+										definition={selectedDef}
+										previewSize={previewSize}
+										selectedVariant={selectedVariant}
+									/>
 								</div>
 
-								<AddWidgetOptions
-									definition={selectedDef}
-									selectedSize={selectedSize}
-									selectedVariant={selectedVariant}
-									isVip={isVip}
-									onSelectSize={handleSizeChange}
-									onSelectVariant={handleVariantChange}
-									isVariantVipOnly={isVariantVipOnly}
-									isSizeVipOnly={isSizeVipOnly}
-								/>
-
-								<AddWidgetPreview
-									definition={selectedDef}
-									previewSize={previewSize}
-									selectedVariant={selectedVariant}
-								/>
-
-								<div className="pt-2 border-t border-base-content/10">
+								<div className="pt-2 border-t border-base-content/10 shrink-0">
 									<AddWidgetActions
 										isVipRequired={isVipRequired}
 										isVip={isVip}
@@ -299,6 +309,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										isDuplicateRestricted={isDuplicateRestricted}
 										selectedSize={selectedSize}
 										onSave={handleSave}
+										onRemove={handleRemove}
 									/>
 								</div>
 							</div>

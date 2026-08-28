@@ -1,6 +1,6 @@
 import type React from 'react'
-import { useRef, useState } from 'react'
-import { callEvent } from '@/common/utils/call-event'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
 import {
@@ -24,6 +24,7 @@ interface CanvasWidgetOuterProps {
 	cellHeight: number
 	gap: number
 	cols: number
+	maxRows: number
 }
 
 export function CanvasWidgetOuter({
@@ -33,6 +34,7 @@ export function CanvasWidgetOuter({
 	cellHeight,
 	gap,
 	cols,
+	maxRows,
 }: CanvasWidgetOuterProps) {
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly } = useWidgetVipResolver()
@@ -42,7 +44,9 @@ export function CanvasWidgetOuter({
 		selectedInstanceId,
 		setSelectedInstanceId,
 		resizeWidget,
-		moveWidget,
+		startDragPreview,
+		updateDragPreview,
+		endDragPreview,
 		duplicateWidget,
 		removeWidget,
 	} = useFreeWidgets()
@@ -62,23 +66,78 @@ export function CanvasWidgetOuter({
 		y: number
 	} | null>(null)
 
-	const isSelected = canvasMode === 'edit' && selectedInstanceId === widget.instanceId
 	const isWiggling = canvasMode === 'edit' && selectedInstanceId !== widget.instanceId
 
 	const pointerStartRef = useRef<{ x: number; y: number } | null>(null)
 	const dragStartPosRef = useRef<WidgetPosition>(widget.position)
 	const isDragActiveRef = useRef(false)
+	const activePointerIdRef = useRef<number | null>(null)
+	const rafRef = useRef<number | null>(null)
+	const pendingOffsetRef = useRef<{ x: number; y: number } | null>(null)
+	const previewPosRef = useRef<WidgetPosition | null>(null)
 
+	const anchorPosition = isDragging ? dragStartPosRef.current : widget.position
 	const pixelRect = getWidgetPixelRect(
-		widget.position,
+		anchorPosition,
 		widget.size,
 		cellWidth,
 		cellHeight,
 		gap
 	)
 
+	const resetDragState = useCallback(() => {
+		if (rafRef.current !== null) {
+			cancelAnimationFrame(rafRef.current)
+			rafRef.current = null
+		}
+		pointerStartRef.current = null
+		isDragActiveRef.current = false
+		activePointerIdRef.current = null
+		pendingOffsetRef.current = null
+		previewPosRef.current = null
+		setIsDragging(false)
+		setDragOffset({ x: 0, y: 0 })
+	}, [])
+
+	const finishDrag = useCallback(
+		(targetPosition: WidgetPosition | null) => {
+			try {
+				if (isDragActiveRef.current) {
+					endDragPreview(widget.instanceId, targetPosition)
+				}
+			} finally {
+				resetDragState()
+			}
+		},
+		[endDragPreview, widget.instanceId, resetDragState]
+	)
+
+	useEffect(() => {
+		const removeListener = listenEvent('cancelWidgetDrag', () => {
+			finishDrag(null)
+		})
+		return () => removeListener()
+	}, [finishDrag])
+
+	useEffect(() => {
+		if (!isDragging) return
+
+		const settle = (e: PointerEvent) => {
+			if (e.pointerId !== activePointerIdRef.current) return
+			finishDrag(null)
+		}
+
+		window.addEventListener('pointerup', settle)
+		window.addEventListener('pointercancel', settle)
+		return () => {
+			window.removeEventListener('pointerup', settle)
+			window.removeEventListener('pointercancel', settle)
+		}
+	}, [isDragging, finishDrag])
+
 	const handlePointerDown = (e: React.PointerEvent) => {
 		if (e.button !== 0 || canvasMode !== 'edit') return
+		if (isDragActiveRef.current) return
 
 		const target = e.target as HTMLElement
 		if (
@@ -97,10 +156,34 @@ export function CanvasWidgetOuter({
 		pointerStartRef.current = { x: e.clientX, y: e.clientY }
 		dragStartPosRef.current = { ...widget.position }
 		isDragActiveRef.current = false
+		activePointerIdRef.current = e.pointerId
+		setSelectedInstanceId(widget.instanceId)
+	}
+
+	const getTargetPosition = (offset: { x: number; y: number }): WidgetPosition => {
+		const unitW = cellWidth + gap
+		const unitH = cellHeight + gap
+
+		const deltaCol = unitW > 0 ? Math.round(offset.x / unitW) : 0
+		const deltaRow = unitH > 0 ? Math.round(offset.y / unitH) : 0
+
+		const rowLimit = Math.max(0, maxRows - widget.size.h)
+
+		return {
+			col: Math.max(
+				0,
+				Math.min(cols - widget.size.w, dragStartPosRef.current.col + deltaCol)
+			),
+			row: Math.max(
+				0,
+				Math.min(rowLimit, dragStartPosRef.current.row + deltaRow)
+			),
+		}
 	}
 
 	const handlePointerMove = (e: React.PointerEvent) => {
 		if (canvasMode !== 'edit' || !pointerStartRef.current) return
+		if (e.pointerId !== activePointerIdRef.current) return
 
 		const dx = e.clientX - pointerStartRef.current.x
 		const dy = e.clientY - pointerStartRef.current.y
@@ -111,42 +194,59 @@ export function CanvasWidgetOuter({
 		if (dist > dragThreshold) {
 			if (!isDragActiveRef.current) {
 				isDragActiveRef.current = true
+				previewPosRef.current = { ...dragStartPosRef.current }
+				startDragPreview()
 				setIsDragging(true)
 				try {
 					;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 				} catch {}
 			}
-			setDragOffset({ x: dx, y: dy })
+			pendingOffsetRef.current = { x: dx, y: dy }
+			if (rafRef.current === null) {
+				rafRef.current = requestAnimationFrame(() => {
+					rafRef.current = null
+					const offset = pendingOffsetRef.current
+					if (!offset) return
+
+					setDragOffset(offset)
+
+					const target = getTargetPosition(offset)
+					const previous = previewPosRef.current
+					if (
+						!previous ||
+						target.col !== previous.col ||
+						target.row !== previous.row
+					) {
+						previewPosRef.current = target
+						updateDragPreview(widget.instanceId, target)
+					}
+				})
+			}
 		}
 	}
 
 	const handlePointerUp = (e: React.PointerEvent) => {
-		if (isDragActiveRef.current) {
-			const unitW = cellWidth + gap
-			const unitH = cellHeight + gap
+		if (e.pointerId !== activePointerIdRef.current) return
 
-			const deltaCol = unitW > 0 ? Math.round(dragOffset.x / unitW) : 0
-			const deltaRow = unitH > 0 ? Math.round(dragOffset.y / unitH) : 0
-
-			const targetCol = Math.max(
-				0,
-				Math.min(cols - widget.size.w, dragStartPosRef.current.col + deltaCol)
-			)
-			const targetRow = Math.max(0, dragStartPosRef.current.row + deltaRow)
-
-			if (targetCol !== widget.position.col || targetRow !== widget.position.row) {
-				moveWidget(widget.instanceId, { col: targetCol, row: targetRow })
-			}
-		}
-
-		pointerStartRef.current = null
-		isDragActiveRef.current = false
-		setIsDragging(false)
-		setDragOffset({ x: 0, y: 0 })
+		const dropTarget = isDragActiveRef.current
+			? getTargetPosition(pendingOffsetRef.current ?? dragOffset)
+			: null
 
 		try {
 			;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
 		} catch {}
+
+		finishDrag(dropTarget)
+	}
+
+	const handlePointerCancel = (e: React.PointerEvent) => {
+		if (e.pointerId !== activePointerIdRef.current) return
+		finishDrag(null)
+	}
+
+	const handleLostPointerCapture = (e: React.PointerEvent) => {
+		if (e.pointerId !== activePointerIdRef.current) return
+		finishDrag(null)
 	}
 
 	const handleContextMenu = (e: React.MouseEvent) => {
@@ -194,9 +294,6 @@ export function CanvasWidgetOuter({
 		removeWidget(widget.instanceId)
 	}
 
-	const currentLeft = isDragging ? pixelRect.left + dragOffset.x : pixelRect.left
-	const currentTop = isDragging ? pixelRect.top + dragOffset.y : pixelRect.top
-
 	return (
 		<>
 			<div
@@ -206,21 +303,23 @@ export function CanvasWidgetOuter({
 						? 'z-50 shadow-2xl cursor-grabbing scale-[1.03]'
 						: 'z-10 cursor-default',
 					!isDragging && 'widget-canvas-item-transition',
-					isWiggling && 'animate-widget-wiggle',
-					isSelected &&
-						'ring-2 ring-primary ring-offset-2 ring-offset-base-100 rounded-2xl'
+					isWiggling && 'animate-widget-wiggle'
 				)}
 				style={{
-					left: `${currentLeft}px`,
-					top: `${currentTop}px`,
+					left: `${pixelRect.left}px`,
+					top: `${pixelRect.top}px`,
 					width: `${pixelRect.width}px`,
 					height: `${pixelRect.height}px`,
 					touchAction: 'none',
+					transform: isDragging
+						? `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`
+						: undefined,
 				}}
 				onPointerDown={handlePointerDown}
 				onPointerMove={handlePointerMove}
 				onPointerUp={handlePointerUp}
-				onPointerCancel={handlePointerUp}
+				onPointerCancel={handlePointerCancel}
+				onLostPointerCapture={handleLostPointerCapture}
 				onContextMenu={handleContextMenu}
 				onClickCapture={(e) => {
 					if (canvasMode === 'edit') {

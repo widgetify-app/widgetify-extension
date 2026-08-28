@@ -108,4 +108,5 @@ export interface LayoutEngineOptions {
 	newWidget?: StoredWidget
 	cols: number
 	allowedSizes?: WidgetSize[]
+	registry?: Record<string, WidgetDefinition>
 }

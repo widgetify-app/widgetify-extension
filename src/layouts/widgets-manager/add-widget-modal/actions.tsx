@@ -13,6 +13,36 @@ interface AddWidgetActionsProps {
 	isDuplicateRestricted?: boolean
 	selectedSize: WidgetSize
 	onSave: () => void
+	onRemove: () => void
+}
+
+function ProUpgradeButton({ label }: { label: string }) {
+	return (
+		<Button
+			type="button"
+			onClick={() => callEvent('openSettings', 'vip')}
+			className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
+			rounded={'2xl'}
+			variant={'default'}
+		>
+			<Icon name="crown" size={14} />
+			<span>{label}</span>
+		</Button>
+	)
+}
+
+function RemoveFromPageButton({ onRemove }: { onRemove: () => void }) {
+	return (
+		<Button
+			type="button"
+			onClick={onRemove}
+			className="w-full text-error hover:bg-error/10 border-error/20"
+			rounded={'2xl'}
+			variant={'default'}
+		>
+			<span>حذف از صفحه</span>
+		</Button>
+	)
 }
 
 export function AddWidgetActions({
@@ -25,23 +55,17 @@ export function AddWidgetActions({
 	isDuplicateRestricted = false,
 	selectedSize,
 	onSave,
+	onRemove,
 }: AddWidgetActionsProps) {
 	if (isVipRequired && !isVip) {
 		return (
-			<Button
-				type="button"
-				onClick={() => callEvent('openSettings', 'vip')}
-				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
-				rounded={'2xl'}
-				variant={'default'}
-			>
-				<Icon name="crown" size={14} />
-				<span>
-					{isEditMode
+			<ProUpgradeButton
+				label={
+					isEditMode
 						? 'ارتقا به پرو برای ذخیره این مدل'
-						: 'ارتقا به پرو برای فعال‌سازی'}
-				</span>
-			</Button>
+						: 'ارتقا به پرو برای فعال‌سازی'
+				}
+			/>
 		)
 	}
 
@@ -59,19 +83,23 @@ export function AddWidgetActions({
 		)
 	}
 
-	if (isLimitReached) {
+	if (isCurrentlyActive && (isLimitReached || isDuplicateRestricted)) {
 		return (
-			<Button
-				type="button"
-				onClick={() => callEvent('openSettings', 'vip')}
-				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
-				rounded={'2xl'}
-				variant={'default'}
-			>
-				<Icon name="crown" size={14} />
-				<span>تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)</span>
-			</Button>
+			<div className="flex flex-col w-full gap-2">
+				<ProUpgradeButton
+					label={
+						isDuplicateRestricted
+							? 'تکرار ویجت مخصوص کاربران پرو'
+							: 'تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)'
+					}
+				/>
+				<RemoveFromPageButton onRemove={onRemove} />
+			</div>
 		)
+	}
+
+	if (isLimitReached) {
+		return <ProUpgradeButton label="تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)" />
 	}
 
 	if (canAddCustom) {
@@ -91,48 +119,8 @@ export function AddWidgetActions({
 		)
 	}
 
-	if (!isVip && isCurrentlyActive && isDuplicateRestricted) {
-		return (
-			<Button
-				type="button"
-				onClick={() => callEvent('openSettings', 'vip')}
-				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
-				rounded={'2xl'}
-				variant={'default'}
-			>
-				<Icon name="crown" size={14} />
-				<span>تکرار ویجت مخصوص کاربران پرو</span>
-			</Button>
-		)
-	}
-
 	if (isCurrentlyActive) {
-		return (
-			<Button
-				type="button"
-				onClick={onSave}
-				className="w-full text-error hover:bg-error/10 border-error/20"
-				rounded={'2xl'}
-				variant={'default'}
-			>
-				<span>حذف از صفحه</span>
-			</Button>
-		)
-	}
-
-	if (isLimitReached) {
-		return (
-			<Button
-				type="button"
-				onClick={() => callEvent('openSettings', 'vip')}
-				className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
-				rounded={'2xl'}
-				variant={'default'}
-			>
-				<Icon name="crown" size={14} />
-				<span>حداکثر ویجت‌های مجاز (ارتقا برای نامحدود)</span>
-			</Button>
-		)
+		return <RemoveFromPageButton onRemove={onRemove} />
 	}
 
 	return (
