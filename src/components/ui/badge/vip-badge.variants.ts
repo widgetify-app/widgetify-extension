@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-export const proBadgeVariants = cva(
+export const vipBadgeVariants = cva(
 	'inline-flex items-center justify-center font-bold select-none shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-default',
 	{
 		variants: {
@@ -36,7 +36,7 @@ export const proBadgeVariants = cva(
 	}
 )
 
-export type ProBadgeVariantProps = VariantProps<typeof proBadgeVariants>
+export type VipBadgeVariantProps = VariantProps<typeof vipBadgeVariants>
 
-export const vipBadgeVariants = proBadgeVariants
-export type VipBadgeVariantProps = ProBadgeVariantProps
+export const proBadgeVariants = vipBadgeVariants
+export type ProBadgeVariantProps = VipBadgeVariantProps

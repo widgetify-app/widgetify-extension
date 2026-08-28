@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Icon } from '@/src/icons'
 import type { StoredWidget, WidgetDefinition, WidgetSize } from '../layout-engine/types'
-import { Chip, ProBadge } from '@/components/ui'
+import { Chip, VipBadge } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { callEvent } from '@/common/utils/call-event'
@@ -121,7 +121,7 @@ export function WidgetContextMenu({
 										{size.w}×{size.h}
 									</span>
 									{isSizeVip && (
-										<ProBadge
+										<VipBadge
 											size="xs"
 											iconOnly
 											variant={isCurrent ? 'white' : 'warning'}
@@ -182,7 +182,7 @@ export function WidgetContextMenu({
 						<Icon name="copy" size={14} className="text-muted" />
 						<span>تکرار ویجت</span>
 					</div>
-					{!isVip && <ProBadge size="xs" />}
+					{!isVip && <VipBadge size="xs" />}
 				</button>
 			)}
 

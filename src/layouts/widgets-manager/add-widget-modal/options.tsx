@@ -1,4 +1,4 @@
-import { Chip, ProBadge } from '@/components/ui'
+import { Chip, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetDefinition,
@@ -57,7 +57,7 @@ export function AddWidgetOptions({
 							>
 								<span>{variant.label}</span>
 								{isVipBadge && (
-									<ProBadge
+									<VipBadge
 										size="xs"
 										variant={isCurrent ? 'white' : 'warning'}
 									/>
@@ -100,7 +100,7 @@ export function AddWidgetOptions({
 								{sizeOption.w} × {sizeOption.h}
 							</span>
 							{isVipBadge && (
-								<ProBadge
+								<VipBadge
 									size="xs"
 									variant={isCurrentSize ? 'white' : 'warning'}
 								/>

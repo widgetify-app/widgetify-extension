@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Button, ProBadge } from '@/components/ui'
+import { Button, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
@@ -85,7 +85,7 @@ export function AddWidgetSidebar({
 
 							<div className="flex items-center gap-1.5 shrink-0 mr-2">
 								{!isVip && isWidgetVipOnly(def.id) && (
-									<ProBadge size="xs" />
+									<VipBadge size="xs" />
 								)}
 								{def.settingsTab && (
 									<Button
