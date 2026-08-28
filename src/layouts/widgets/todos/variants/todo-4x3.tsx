@@ -4,6 +4,7 @@ import { Button, Chip, type FilterOption, FilterTooltip, Tooltip } from '@/compo
 import { useHorizontalWheelScroll } from '@/hooks/use-horizontal-wheel-scroll'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { Icon } from '@/src/icons'
+import { TodosEmpty } from '../components/todo-empty'
 import { ExpandableTodoInput } from '../expandable-todo-input'
 import { TodoItem } from '../todo.item'
 
@@ -65,13 +66,13 @@ export function TodoBoard({
 	return (
 		<div className="flex flex-col h-full gap-2" dir="rtl">
 			<div className="flex items-center flex-none gap-2.5">
-				<div className="min-w-0 shrink-0">
+				<div className="w-20 shrink-0">
 					<p className="text-sm font-bold leading-tight truncate text-content">
 						تسک‌ها
 					</p>
 					<p className="text-[10px] leading-tight truncate text-muted">
 						{total > 0
-							? `${completed} از ${total} تسک انجام شده`
+							? `${completed} از ${total} انجام شده`
 							: 'برنامه‌ی امروزت'}
 					</p>
 				</div>
@@ -153,20 +154,8 @@ export function TodoBoard({
 							))}
 						</div>
 					) : total === 0 ? (
-						<div className="flex flex-col items-center justify-center h-full gap-1.5 text-center">
-							<div className="flex items-center justify-center rounded-2xl size-11 bg-primary/10">
-								<Icon
-									name="taskList"
-									size={20}
-									className="text-primary"
-								/>
-							</div>
-							<p className="text-xs font-bold text-content">
-								اینجا فعلا خیلی آرومه...
-							</p>
-							<p className="text-[10px] leading-5 text-muted">
-								از پایین اولین تسکت رو اضافه کن
-							</p>
+						<div className="flex h-full">
+							<TodosEmpty />
 						</div>
 					) : (
 						<div
