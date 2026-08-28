@@ -19,6 +19,7 @@ import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 import { Icon } from '@/src/icons'
 import { HabitEmpty } from './components/habit-empty'
 import { HabitCompactSquare } from './variants/habit-1x1'
+import { HabitCompactWide } from './variants/habit-2x1'
 import type { WidgetSize } from '../layout-engine/types'
 
 export function HabitsContent() {
@@ -205,12 +206,67 @@ interface HabitsLayoutProps {
 
 export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) {
 	const { isAuthenticated } = useAuth()
-	const { data, isLoading } = useGetHabits(isAuthenticated)
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const { data, isLoading, refetch } = useGetHabits(isAuthenticated)
+	const [showForm, setShowForm] = useState(false)
+
+	const handleAddHabit = () => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
+		setShowForm(true)
+		Analytics.event('habit_form_opened')
+	}
+
+	const handleCloseForm = () => {
+		setShowForm(false)
+	}
 
 	if (size.w === 1 && size.h === 1) {
 		return (
 			<WidgetContainer>
-				<HabitCompactSquare habits={data?.items || []} isLoading={isLoading} />
+				<HabitCompactSquare
+					habits={data?.items || []}
+					isLoading={isLoading}
+					onAddHabit={handleAddHabit}
+				/>
+				<HabitFormModal
+					isOpen={showForm}
+					habit={null}
+					onClose={handleCloseForm}
+					onSaved={() => {
+						handleCloseForm()
+						refetch()
+					}}
+					icons={data?.icons || []}
+					colors={data?.colors || []}
+				/>
+			</WidgetContainer>
+		)
+	}
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<WidgetContainer>
+				<HabitCompactWide
+					habits={data?.items || []}
+					isLoading={isLoading}
+					today={getCurrentDate(timezone.value)}
+					onChanged={() => refetch()}
+					onAddHabit={handleAddHabit}
+				/>
+				<HabitFormModal
+					isOpen={showForm}
+					habit={null}
+					onClose={handleCloseForm}
+					onSaved={() => {
+						handleCloseForm()
+						refetch()
+					}}
+					icons={data?.icons || []}
+					colors={data?.colors || []}
+				/>
 			</WidgetContainer>
 		)
 	}

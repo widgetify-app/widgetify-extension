@@ -5,9 +5,14 @@ import { Icon } from '@/src/icons'
 interface HabitCompactSquareProps {
 	habits: Habit[]
 	isLoading: boolean
+	onAddHabit?: () => void
 }
 
-export function HabitCompactSquare({ habits, isLoading }: HabitCompactSquareProps) {
+export function HabitCompactSquare({
+	habits,
+	isLoading,
+	onAddHabit,
+}: HabitCompactSquareProps) {
 	const total = habits.length
 
 	const totalProgressSum = habits.reduce((acc, h) => {
@@ -51,7 +56,13 @@ export function HabitCompactSquare({ habits, isLoading }: HabitCompactSquareProp
 						: `${percent}٪ از اهداف امروز`
 
 	return (
-		<div className="relative flex flex-col justify-between items-center h-full w-full select-none text-center">
+		<div
+			onClick={total === 0 ? onAddHabit : undefined}
+			className={cn(
+				'relative flex flex-col justify-between items-center h-full w-full select-none text-center',
+				total === 0 && 'cursor-pointer active:scale-[0.98] transition-transform'
+			)}
+		>
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-1 text-content min-w-0">
 					<Icon name="target" className="w-3.5 h-3.5 text-primary shrink-0" />
