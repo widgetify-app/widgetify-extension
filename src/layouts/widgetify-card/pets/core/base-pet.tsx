@@ -114,7 +114,6 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 			)}
 			style={{
 				zIndex: 50,
-				// margin: '8px',
 			}}
 		>
 			<CollectiblesRenderer collectibles={collectibles} assets={assets} />
@@ -169,8 +168,7 @@ export function useBasePetLogic({
 	const [action, setAction] = useState<keyof PetAnimations>('idle')
 	const [actionTimer, setActionTimer] = useState(0)
 	const [behaviorState, setBehaviorState] = useState<PetBehavior>(PetBehavior.RESTING)
-	// Whether a climb is heading back down. Keeps the pet in the CLIMBING behavior
-	// for the whole up-and-down trip so it never idles mid-air — see climbWall.
+
 	const [isDescending, setIsDescending] = useState(false)
 	const [targetX, setTargetX] = useState<number | null>(null)
 	const [isMovingToTarget, setIsMovingToTarget] = useState(false)
@@ -187,10 +185,7 @@ export function useBasePetLogic({
 			minX: 10,
 			maxX: (container?.offsetWidth || 300) - dimensions.size - 10,
 			minY: 0,
-			// The container clips overflow (see BasePetContainer's h-16/h-8), which is
-			// shorter than several pets' configured maxHeight (80-100px). Climbing past
-			// it pushed pets above the visible area, so they'd reappear "floating" back
-			// down into frame — clamp to whichever is actually smaller.
+
 			maxY: Math.max(
 				0,
 				Math.min(dimensions.maxHeight, visibleHeight - dimensions.size)
@@ -250,11 +245,6 @@ export function useBasePetLogic({
 				setCollectibles((prev) => [...prev, newCollectible])
 				setCollectibleIdCounter((prev) => prev + 1)
 
-				// Only force an immediate chase reaction while grounded. If the pet is
-				// mid-climb, forcing 'run' here would move it horizontally while still
-				// airborne (the same "flying" bug climbWall guards against) — let it
-				// land first; updateBehavior picks up the waiting collectible on its own
-				// the moment position.y reaches 0.
 				if (position.y === 0) {
 					if (action === 'sit' || action === 'idle') {
 						updateAction('stand')
@@ -348,8 +338,7 @@ export function useBasePetLogic({
 					distance < dimensions.size / 1.5
 				) {
 					handleCollectibleCollection(collectible.id)
-					// The actual collection marking will be handled by handleCollectibleCollection's setCollectibles
-					// We return the original collectible here to avoid immediate re-render issues before the state update from handleCollectibleCollection
+
 					return collectible
 				}
 				return collectible
@@ -367,21 +356,17 @@ export function useBasePetLogic({
 		handleCollectibleCollection,
 	])
 
-	// Effect for removing collected items after a delay
 	useEffect(() => {
 		const collectedItems = collectibles.filter((c) => c.collected)
 		if (collectedItems.length > 0) {
 			const timer = setTimeout(() => {
 				setCollectibles((prev) => prev.filter((c) => !c.collected))
-			}, 2000) // Delay before removing
+			}, 2000)
 			return () => clearTimeout(timer)
 		}
 	}, [collectibles])
 
 	const roamOrRest = useCallback(() => {
-		// Always land before switching to anything else — never leave the pet
-		// paused mid-climb. climbWall handles the actual descent and transitions
-		// to RESTING itself once position.y reaches 0.
 		if (behaviorState === PetBehavior.CLIMBING) {
 			setIsDescending(true)
 			return
@@ -408,7 +393,6 @@ export function useBasePetLogic({
 				setActionTimer(randomDuration(durations.rest))
 			}
 		} else {
-			// Includes PetBehavior.RESTING or initial state
 			updateBehaviorState(PetBehavior.ROAMING)
 			const shouldRun = Math.random() > 0.6
 			updateAction(shouldRun ? 'run' : 'walk')
@@ -432,10 +416,6 @@ export function useBasePetLogic({
 	const updateBehavior = useCallback(() => {
 		const nearestCollectible = findNearestCollectible(collectibles)
 
-		// Only chase while grounded. Reacting to a collectible mid-climb used to
-		// switch straight to 'run' and move horizontally while the pet was still
-		// airborne — i.e. it would fly toward the treat. Once landed, this same
-		// check runs again next tick and starts the chase normally.
 		if (nearestCollectible && position.y === 0) {
 			if (behaviorState !== PetBehavior.CHASING) {
 				updateBehaviorState(PetBehavior.CHASING)
@@ -446,12 +426,11 @@ export function useBasePetLogic({
 			return
 		}
 
-		// If was chasing but no more collectibles, rest
 		if (behaviorState === PetBehavior.CHASING) {
 			updateBehaviorState(PetBehavior.RESTING)
 			updateAction('idle')
-			setActionTimer(2000) // Rest for 2 seconds
-			setIsMovingToTarget(false) // Stop chasing
+			setActionTimer(2000)
+			setIsMovingToTarget(false)
 			setTargetX(null)
 			return
 		}
@@ -459,7 +438,7 @@ export function useBasePetLogic({
 		if (!isMovingToTarget && actionTimer <= 0) {
 			roamOrRest()
 		} else if (!isMovingToTarget) {
-			setActionTimer((prev) => prev - 16) // Using 16ms interval from physicsUpdate
+			setActionTimer((prev) => prev - 16)
 		}
 	}, [
 		collectibles,
@@ -498,7 +477,7 @@ export function useBasePetLogic({
 
 	const moveToTarget = useCallback(
 		(currentPosition: Position) => {
-			if (targetX === null) return currentPosition // Should not happen if isMovingToTarget is true
+			if (targetX === null) return currentPosition
 
 			const bounds = getMovementBounds()
 			const delta = targetX - currentPosition.x
@@ -508,17 +487,16 @@ export function useBasePetLogic({
 			if (distance <= speed) {
 				setIsMovingToTarget(false)
 				setTargetX(null)
-				// After reaching target, decide next action based on behavior
+
 				if (behaviorState === PetBehavior.CHASING) {
 					const nextCollectible = findNearestCollectible(collectibles)
 					if (!nextCollectible) {
-						updateAction('idle') // No more collectibles to chase
+						updateAction('idle')
 						updateBehaviorState(PetBehavior.RESTING)
 					} else {
-						// If there's another collectible, updateBehavior will handle it in the next tick
 					}
 				} else {
-					updateAction('idle') // Default to idle if not chasing
+					updateAction('idle')
 				}
 				return { x: targetX, y: currentPosition.y }
 			}
@@ -557,10 +535,6 @@ export function useBasePetLogic({
 			if (isDescending) {
 				const newY = currentPosition.y - dimensions.climbSpeed
 				if (newY <= 0) {
-					// Landed. Hand off to the normal rest cycle here, at y=0, instead of
-					// switching to an idle/stand pose earlier and leaving gravity to
-					// trickle the position down separately — that gap is what made pets
-					// (most visibly the dog) look like they were floating back to earth.
 					setIsDescending(false)
 					updateBehaviorState(PetBehavior.RESTING)
 					updateAction(animations.stand ? 'stand' : 'idle')
@@ -628,12 +602,6 @@ export function useBasePetLogic({
 		applyGravity,
 	])
 
-	// physicsUpdate gets a new identity on almost every tick (it transitively
-	// depends on position/behaviorState via updateBehavior/movePet/etc.), so an
-	// effect keyed on it would tear down and recreate the timer ~60 times a
-	// second. Keeping the latest version in a ref lets the loop itself mount
-	// once. requestAnimationFrame also pauses automatically while the tab is
-	// backgrounded, unlike setInterval.
 	const physicsUpdateRef = useRef(physicsUpdate)
 	physicsUpdateRef.current = physicsUpdate
 
@@ -686,7 +654,7 @@ export function useBasePetLogic({
 			petElement.removeEventListener('mouseenter', handleMouseEnter)
 			petElement.removeEventListener('mouseleave', handleMouseLeave)
 		}
-	}, [petRef]) // Added petRef to dependency array
+	}, [petRef])
 
 	const getAnimationForCurrentAction = useCallback(() => {
 		return animations[action] || animations.idle
