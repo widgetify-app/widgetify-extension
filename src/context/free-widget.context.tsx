@@ -16,6 +16,7 @@ import {
 	DEFAULT_COLS,
 	DEFAULT_GAP,
 	DEFAULT_WIDGET_LAYOUT,
+	getBestAllowedSizeForColumns,
 	GRID_BREAKPOINTS,
 	MIN_CELL_WIDTH,
 	resolveLayoutChange,
@@ -79,17 +80,43 @@ interface FreeWidgetContextType {
 
 export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
+function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
+	let changed = false
+
+	const normalized = layout.map((widget) => {
+		const definition = WIDGET_DEFINITIONS[widget.id]
+		if (!definition) return widget
+
+		const isAllowed = definition.allowedSizes.some(
+			(s) => s.w === widget.size.w && s.h === widget.size.h
+		)
+		if (isAllowed) return widget
+
+		const size = getBestAllowedSizeForColumns(
+			definition.allowedSizes,
+			widget.size,
+			cols
+		)
+		changed = true
+		return { ...widget, size }
+	})
+
+	return changed ? normalized : layout
+}
+
 function sanitizeLayout(layout: StoredWidget[], cols: number): StoredWidget[] {
-	if (validateLayout(layout, cols)) {
-		return layout
+	const sized = normalizeWidgetSizes(layout, cols)
+
+	if (validateLayout(sized, cols)) {
+		return sized
 	}
 
 	return (
 		resolveLayoutChange({
-			layout,
+			layout: sized,
 			operation: 'responsive-reflow',
 			cols,
-		}) ?? layout
+		}) ?? sized
 	)
 }
 

@@ -57,6 +57,13 @@ body {
   @apply border-base-300;
 }
 
+.font-latin {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  -moz-font-feature-settings: normal;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

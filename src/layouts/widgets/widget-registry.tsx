@@ -420,15 +420,24 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ساعت یخی',
 		emoji: '🕒',
 		category: 'time',
-		allowedSizes: [
-			{ w: 2, h: 1 },
-			{ w: 2, h: 2 },
-			{ w: 4, h: 1 },
-			{ w: 4, h: 2 },
-		],
+		allowedSizes: [{ w: 4, h: 2 }],
 		defaultSize: { w: 4, h: 2 },
+		variants: [
+			{
+				id: 'persian',
+				label: 'ساعت یخی فارسی',
+				size: { w: 4, h: 2 },
+				meta: { variant: 'persian' },
+			},
+			{
+				id: 'english',
+				label: 'ساعت یخی انگلیسی',
+				size: { w: 4, h: 2 },
+				meta: { variant: 'english' },
+			},
+		],
 		canDuplicate: false,
-		node: (_instanceId, size) => <TransparentClockWidget size={size} />,
+		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
 	},
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,
