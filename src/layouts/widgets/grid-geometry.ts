@@ -7,6 +7,13 @@ export interface PixelRect {
 	height: number
 }
 
+/**
+ * Widgets are rendered slightly shorter than their grid rect so neighbouring
+ * rows breathe. The grid overlay cells must use the exact same inset, otherwise
+ * the dashed cells no longer line up with the widgets drawn on top of them.
+ */
+export const WIDGET_VERTICAL_INSET = 12
+
 export function getCellWidth(
 	containerWidth: number,
 	cols: number,
