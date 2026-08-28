@@ -57,10 +57,7 @@ interface FreeWidgetContextType {
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
 	startDragPreview: () => void
 	updateDragPreview: (instanceId: string, targetPosition: WidgetPosition) => void
-	endDragPreview: (
-		instanceId: string,
-		targetPosition: WidgetPosition | null
-	) => void
+	endDragPreview: (instanceId: string, targetPosition: WidgetPosition | null) => void
 	addWidget: (
 		id: string,
 		targetPosition?: WidgetPosition,
@@ -403,7 +400,10 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 							if (isValidId) return
 							const matching =
 								synced.find((s) => s.widgetKey === w.id) || synced[index]
-							if (matching?.instanceId && matching.instanceId !== w.instanceId) {
+							if (
+								matching?.instanceId &&
+								matching.instanceId !== w.instanceId
+							) {
 								idMap.set(w.instanceId, matching.instanceId)
 							}
 						})
