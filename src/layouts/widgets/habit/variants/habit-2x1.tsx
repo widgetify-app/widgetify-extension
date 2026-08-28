@@ -102,7 +102,7 @@ export function HabitCompactWide({
 			selectedHabit.comparison === HabitComparison.AT_MOST &&
 			value + step > target
 		) {
-			showToast(`مقدار فعلی به حداکثر هدف (${target}) رسیده است.`, 'error')
+			showToast(`مقدار فعلی به حداکثر هدف (${target}) رسیده است`, 'error')
 			return
 		}
 
@@ -173,7 +173,7 @@ export function HabitCompactWide({
 			</div>
 
 			{habits.length > 1 && (
-				<div className="flex flex-col items-center justify-center gap-2 py-2 pr-2 pl-2 overflow-y-auto border-r shrink-0 scrollbar-none border-base-content/10">
+				<div className="flex flex-col items-center justify-center gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-base-content/10">
 					{habits.map((habit) => {
 						const habitTarget = habit.target || 1
 						const habitProgress = Math.min(habit.today.value / habitTarget, 1)
