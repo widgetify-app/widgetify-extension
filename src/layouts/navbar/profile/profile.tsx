@@ -17,11 +17,10 @@ const renderUserAvatar = (user: any) => {
 }
 
 const getTooltipContent = (user: any) => {
-	return user?.inCache ? (
-		<span className="text-error">خطا در بارگیری پروفایل</span>
-	) : (
-		'پروفایل کاربری'
-	)
+	if (user?.inCache) {
+		return <span className="text-error">خطا در بارگیری پروفایل</span>
+	}
+	return 'پروفایل کاربری'
 }
 
 export function ProfileNav() {

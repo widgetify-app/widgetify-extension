@@ -1,20 +1,26 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
 import { Icon } from '@/src/icons'
+import { useAuth } from '@/context/auth.context'
 
 interface VipBannerCardProps {
 	className?: string
 	title?: string
 	description?: string
 	onClick?: () => void
+	isVip?: boolean
 }
 
 export function VipBannerCard({
 	className = '',
-	title = 'پرو شو و پرواز کن',
-	description = 'دسترسی نامحدود به ویجت‌ها، چیدمان‌های اختصاصی، همگام‌سازی ابری و امکانات پریمیوم',
+	title,
+	description,
 	onClick,
+	isVip: propIsVip,
 }: VipBannerCardProps) {
+	const { isVip: authIsVip } = useAuth()
+	const isVip = propIsVip ?? authIsVip
+
 	const handleClick = () => {
 		if (onClick) {
 			onClick()
@@ -23,37 +29,39 @@ export function VipBannerCard({
 		}
 	}
 
+	if (isVip) {
+		return null
+	}
+
 	return (
 		<div
 			onClick={handleClick}
 			className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-indigo-500/30 bg-base-200/70 hover:bg-base-200 hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-xs group ${className}`}
 		>
-			<div className="flex items-center gap-3 min-w-0">
-				<div className="flex items-center justify-center w-11 h-11 rounded-2xl bg-indigo-500/15 text-indigo-500 dark:text-indigo-400 shrink-0 transition-transform duration-200 group-hover:scale-105">
+			<div className="flex items-center min-w-0 gap-3">
+				<div className="flex items-center justify-center text-indigo-500 transition-transform duration-200 w-11 h-11 rounded-2xl shrink-0 group-hover:scale-105">
 					<Icon name="crown" size={22} />
 				</div>
 
-				<div className="flex flex-col text-right min-w-0">
+				<div className="flex flex-col min-w-0 text-right">
 					<div className="flex items-center gap-2">
-						<h3 className="text-sm sm:text-base font-black text-content truncate">
-							{title}
+						<h3 className="text-sm font-black truncate sm:text-base text-content">
+							{title || 'پرو شو و پرواز کن'}
 						</h3>
-						<span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-500/15 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
-							پرو
-						</span>
 					</div>
 					<p className="text-[11px] text-muted truncate mt-0.5 max-w-xs sm:max-w-md">
-						{description}
+						{description ||
+							'دسترسی نامحدود به ویجت‌ها، چیدمان‌های اختصاصی، همگام‌سازی ابری و امکانات پریمیوم'}
 					</p>
 				</div>
 			</div>
 
-			<div className="flex items-center gap-2 shrink-0 mr-2">
+			<div className="flex items-center gap-2 mr-2 shrink-0">
 				<Button
 					size="xs"
-					variant="primary"
+					variant="default"
 					rounded="xl"
-					className="px-3 py-1.5 font-bold gap-1"
+					className="px-3 py-1.5 font-bold gap-1 bg-indigo-500/15 text-indigo-500 hover:bg-indigo-500/10!"
 					onClick={(e) => {
 						e.stopPropagation()
 						handleClick()

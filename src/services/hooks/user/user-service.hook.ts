@@ -10,6 +10,12 @@ import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 import { CacheName, type SwEvent, SwEventType } from '../../../common/types/sw-events'
 
+interface Badge {
+	id: string
+	icon: string
+	label: string
+	glowColor: string
+}
 interface FetchedProfile {
 	email?: string
 	phone?: string
@@ -55,6 +61,7 @@ interface FetchedProfile {
 	searchAutocompleteEnabled: boolean
 	isBirthdayToday: boolean
 	birthDateUrl: string
+	badges: Badge[]
 }
 
 export interface UserProfile extends FetchedProfile {

@@ -1,7 +1,7 @@
 import moment from 'jalali-moment'
-import { AvatarComponent, Button } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { OfflineIndicator } from '@/components/ui'
-import { UserCoin } from './user-coin'
+import { ProfileHeader } from './profile-header'
 import type React from 'react'
 import { Chip } from '@/components/ui'
 import { AddPhoneModal } from './modals/add-phone.modal'
@@ -17,6 +17,7 @@ import { EditAvatarModal } from './modals/avatar/edit.avatar'
 import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
 import { Icon } from '@/src/icons'
+import { useState } from 'react'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE') return { label: 'آقا هستم' }
@@ -60,57 +61,14 @@ export const ProfileDisplay = () => {
 		Analytics.event('open_add_phone_modal')
 	}
 
-	const onClick = () => {
+	const onClickAvatar = () => {
 		setShowAvatar(true)
 		Analytics.event('edit_avatar_opened')
 	}
 
 	return (
 		<div className="flex flex-col space-y-4">
-			<div className="relative flex flex-row items-center justify-between p-2 overflow-hidden border bg-base-100/50 border-content rounded-3xl">
-				<div className="flex items-center">
-					<div className="relative group">
-						<div className="rounded-full shadow-lg">
-							<AvatarComponent
-								url={user?.avatar || ''}
-								placeholder={user?.name || 'کاربر'}
-								size="xl"
-								onClick={() => onClick()}
-								className="transition-all cursor-pointer ring-4 ring-primary/20"
-							/>
-						</div>
-						<button
-							type="button"
-							onClick={() => onClick()}
-							className="absolute p-0.5 cursor-pointer text-white transition-all rounded-full shadow-xl -bottom-1 right-1 bg-primary hover:scale-110 active:scale-95"
-						>
-							<Icon name="cameraPlus" size={12} />
-						</button>
-						{showEditBadge('avatar') && (
-							<span className="absolute w-2 h-2 rounded-full right-4 -bottom-0.5 bg-error animate-pulse"></span>
-						)}
-					</div>
-					<div className="flex flex-col gap-2 mr-2">
-						<h2 className="text-xl font-bold text-content">
-							{user?.name || 'کاربر'}
-						</h2>
-						<p className="text-sm opacity-60" dir="ltr">
-							@{user?.username || '-'}
-						</p>
-					</div>
-				</div>
-				<div className="flex flex-col items-end gap-2">
-					<div className="mt-1 itece">
-						<UserCoin coins={user?.coins || 0} />
-					</div>
-					<div className="text-xs font-medium opacity-70 mb-0.5">
-						<span>
-							شروعِ ماجرا از{' '}
-							{moment(user?.joinedAt).locale('fa').format('jMMMM jYYYY')}
-						</span>
-					</div>
-				</div>
-			</div>
+			<ProfileHeader onClickAvatar={onClickAvatar} showEditBadge={showEditBadge} />
 
 			<div className="overflow-hidden border border-base-300/50 rounded-2xl bg-base-100/30">
 				<DisplayRow
