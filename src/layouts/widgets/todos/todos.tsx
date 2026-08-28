@@ -14,6 +14,7 @@ import { TodoItem } from './todo.item'
 import { Icon } from '@/src/icons'
 import { TodosEmpty } from './components/todo-empty'
 import { TodoCompactRow } from './variants/todo-2x1'
+import { TodoBoard } from './variants/todo-4x3'
 import type { WidgetSize } from '../layout-engine/types'
 
 const filterOptions = [
@@ -47,9 +48,11 @@ export function TodosLayout({ size = { w: 2, h: 2 } }: TodosLayoutProps = {}) {
 	const observerRef = useRef<IntersectionObserver | null>(null)
 	const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
+	const isBoard = size.w === 4 && size.h === 3
+
 	const getServerFilters = () => {
 		const filters: any = {
-			limit: 5,
+			limit: isBoard ? 10 : 5,
 		}
 
 		if (dateFilter === 'today') {
@@ -186,6 +189,33 @@ export function TodosLayout({ size = { w: 2, h: 2 } }: TodosLayoutProps = {}) {
 				todos={sortedTodos}
 				isLoading={isLoading}
 				onRefresh={onRefresh}
+			/>
+		)
+	}
+
+	if (isBoard) {
+		return (
+			<TodoBoard
+				todos={sortedTodos}
+				isLoading={isLoading}
+				isFetchingNextPage={isFetchingNextPage}
+				hasNextPage={!!hasNextPage}
+				loadMoreRef={loadMoreRef}
+				blurMode={blurMode}
+				filterOptions={filterOptions}
+				sortOptions={sortOptions}
+				tagFilterOptions={tagFilterOptions}
+				dateFilter={dateFilter}
+				sort={sort}
+				tagFilter={tagFilter}
+				editingTodo={editingTodo}
+				onDateFilterChange={onDateFilterChange}
+				onSortChange={onSortChange}
+				onTagFilterChange={onTagFilterChange}
+				onRefresh={onRefresh}
+				onEdit={openEditTodo}
+				onUpdated={refetch}
+				onCloseEditor={handleCloseTodoEditor}
 			/>
 		)
 	}

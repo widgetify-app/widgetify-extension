@@ -21,6 +21,7 @@ import { Icon } from '@/src/icons'
 interface Prop {
 	todo: Todo
 	blurMode?: boolean
+	comfortable?: boolean
 	onEdit: any
 	onUpdated?: () => void
 }
@@ -31,7 +32,13 @@ const translatedPriority = {
 	high: 'مهم',
 }
 
-export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
+export function TodoItem({
+	todo,
+	blurMode = false,
+	comfortable = false,
+	onEdit,
+	onUpdated,
+}: Prop) {
 	const { isAuthenticated } = useAuth()
 	const [currentTodo, setCurrentTodo] = useState<FetchedTodo>(todo)
 	const [expanded, setExpanded] = useState(false)
@@ -114,14 +121,16 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group mb-1 overflow-hidden rounded-lg border border-base-300/40 bg-base-300/30 transition-all ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border border-base-300/40 bg-base-300/30 transition-all hover:border-base-300/70 hover:bg-base-300/50 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
-			<div className="flex items-center gap-1.5 px-2 py-1">
+			<div
+				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
+			>
 				<div className="flex items-center gap-1 shrink-0">
 					<Checkbox
 						checked={isDone}
 						disabled={isUpdating}
-						className={`h-4! w-4! border! transition-transform active:scale-90 ${getBorderStyle(currentTodo.priority)}`}
+						className={`${comfortable ? 'h-4.5! w-4.5!' : 'h-4! w-4!'} border! transition-transform active:scale-90 ${getBorderStyle(currentTodo.priority)}`}
 						unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle(
 							currentTodo.priority
 						)}
@@ -137,7 +146,9 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					onClick={() => setExpanded(!expanded)}
 				>
 					<p
-						className={`truncate text-[10px] text-shadow-2xs font-medium transition-all ${
+						className={`truncate text-shadow-2xs font-medium transition-all ${
+							comfortable ? 'text-[11.5px]' : 'text-[10px]'
+						} ${
 							isDone
 								? 'text-base-content/40 line-through font-normal'
 								: 'text-base-content/90'
@@ -145,6 +156,25 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 					>
 						{currentTodo.text}
 					</p>
+
+					{comfortable && !expanded && (
+						<div className="flex items-center gap-1.5 mt-1 text-[9px] text-muted">
+							<span className="flex items-center gap-1 shrink-0">
+								<Icon name="calendar" size={10} />
+								{parseTodoDate(currentTodo.date)
+									.locale('fa')
+									.format('jD jMMMM')}
+							</span>
+							{currentTodo.category && (
+								<span className="flex items-center gap-1 min-w-0">
+									<Icon name="tags" size={10} />
+									<span className="truncate">
+										{currentTodo.category}
+									</span>
+								</span>
+							)}
+						</div>
+					)}
 				</div>
 
 				<div className="flex relative items-center gap-0.5 shrink-0">
