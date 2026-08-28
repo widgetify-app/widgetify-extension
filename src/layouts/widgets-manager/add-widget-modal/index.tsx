@@ -32,6 +32,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
 	const addWidget = freeWidgets?.addWidget
 	const updateWidgetVariant = freeWidgets?.updateWidgetVariant
+	const removeWidget = freeWidgets?.removeWidget
 
 	const allDefinitions = useMemo(() => {
 		return Object.values(WIDGET_DEFINITIONS)
@@ -153,6 +154,18 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	const isLimitReached = isCustom
 		? !isVip && runtimeLayout.length >= maxFreeWidgets
 		: !isVip && !isCurrentlyActive && visibility.length >= maxFreeWidgets
+
+	/**
+	 * Removes the placed instance of the selected widget. The modal deliberately
+	 * stays open so several widgets can be managed in one session, and so the
+	 * action button can visibly flip back to "افزودن به صفحه".
+	 */
+	const handleRemove = () => {
+		if (!selectedDef || !removeWidget) return
+		const target = runtimeLayout.find((w) => w.id === selectedDef.id)
+		if (!target) return
+		removeWidget(target.instanceId)
+	}
 
 	const handleSave = async () => {
 		if (!selectedDef) return
@@ -323,6 +336,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										isDuplicateRestricted={isDuplicateRestricted}
 										selectedSize={selectedSize}
 										onSave={handleSave}
+										onRemove={handleRemove}
 									/>
 								</div>
 							</div>
