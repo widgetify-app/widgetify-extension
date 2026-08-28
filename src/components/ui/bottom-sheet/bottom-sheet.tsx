@@ -13,7 +13,6 @@ interface BottomSheetProps {
 	showBack?: boolean
 	onClickBack?: () => void
 	children: ReactNode
-	showCloseButton?: boolean
 	closeOnBackdrop?: boolean
 	dragThreshold?: number
 }
@@ -24,7 +23,6 @@ export function BottomSheet({
 	size = 'medium',
 	title,
 	children,
-	showCloseButton = true,
 	closeOnBackdrop = true,
 	dragThreshold = 100,
 	onClickBack,

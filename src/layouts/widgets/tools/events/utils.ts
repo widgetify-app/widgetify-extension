@@ -72,9 +72,3 @@ export function combineAndSortEvents(
 		return 0
 	})
 }
-
-export function formatEventTime(dateTimeStr: string) {
-	if (!dateTimeStr) return null
-	const date = new Date(dateTimeStr)
-	return date.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
-}

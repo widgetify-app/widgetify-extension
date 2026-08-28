@@ -8,15 +8,10 @@ import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigi-arz/wigi_arz.layout'
 import { Button, TabNavigation } from '@/components/ui'
 import { Icon } from '@/src/icons'
-import type { WidgetSize } from '../layout-engine/types'
 
 export type ComboTabType = 'news' | 'currency'
 
-interface ComboWidgetProps {
-	size?: WidgetSize
-}
-
-export function ComboWidget({ size = { w: 2, h: 3 } }: ComboWidgetProps = {}) {
+export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
 	const handleSettingsClick = () => {
 		if (activeTab === 'currency') {

@@ -75,10 +75,6 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 	const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
 	const [isGenerating, setIsGenerating] = useState(false)
-	const [streakInfo, setStreakInfo] = useState<{
-		current: number
-		longest: number
-	} | null>(null)
 
 	useEffect(() => {
 		if (!isOpen || !habit) return
@@ -308,11 +304,6 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 				checkIdx--
 			}
 		}
-
-		setStreakInfo({
-			current: currentStreak,
-			longest: longestStreak,
-		})
 
 		// ---------------------------------------------------------
 		// TOP BRAND

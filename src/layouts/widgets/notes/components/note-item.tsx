@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_BG_COLORS } from '@/common/constant/priority_options'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import moment from 'jalali-moment'
 import Analytics from '@/analytics'

@@ -1,4 +1,3 @@
-import type React from 'react'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'

@@ -3,7 +3,6 @@ import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { CurrencyColorMode } from '@/context/currency.context'
-import { useGetImageMainColor } from '@/hooks/use-get-image-main-color'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,

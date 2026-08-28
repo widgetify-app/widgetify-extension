@@ -1,10 +1,7 @@
-import { doRectanglesOverlap, getCollisions, rectanglesOverlap } from './collision'
-import type { StoredWidget, WidgetPosition, WidgetSize } from './types'
+import { doRectanglesOverlap, getCollisions } from './collision'
+import type { StoredWidget, WidgetPosition } from './types'
 
-export function getPushCost(
-	original: WidgetPosition,
-	candidate: WidgetPosition
-): number {
+export function getPushCost(original: WidgetPosition, candidate: WidgetPosition): number {
 	const dx = Math.abs(candidate.col - original.col)
 	const dy = Math.abs(candidate.row - original.row)
 	return dx + dy * 2 + candidate.row * 0.05 + candidate.col * 0.01

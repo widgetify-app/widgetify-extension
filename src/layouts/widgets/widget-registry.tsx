@@ -77,13 +77,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'پت (حیوان خانگی)',
 		emoji: '🐾',
 		category: 'lifestyle',
-		allowedSizes: [
-			{ w: 2, h: 1 },
-		],
+		allowedSizes: [{ w: 2, h: 1 }],
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
 		canDuplicate: true,
-		node: (_instanceId, ) => <PetWidget />,
+		node: (_instanceId) => <PetWidget />,
 	},
 	[WidgetKeys.wigiPad]: {
 		id: WidgetKeys.wigiPad,
@@ -212,7 +210,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: false,
 		node: (_instanceId, size) => (
 			<CurrencyProvider>
-				<ComboWidget size={size} />
+				<ComboWidget />
 			</CurrencyProvider>
 		),
 	},

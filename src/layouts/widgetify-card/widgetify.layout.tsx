@@ -9,7 +9,7 @@ interface WidgetifyLayoutProps {
 	size?: WidgetSize
 }
 
-export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = ({ size }) => {
+export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = () => {
 	return (
 		<WidgetContainer className="flex flex-col h-full overflow-hidden">
 			<div className="relative w-full h-full">

@@ -1,4 +1,3 @@
-import type React from 'react'
 import type { TooltipRenderProps } from 'react-joyride'
 import { Icon } from '@/src/icons'
 

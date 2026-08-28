@@ -7,15 +7,6 @@ export interface PixelRect {
 	height: number
 }
 
-export function getCellWidth(
-	containerWidth: number,
-	cols: number,
-	gap: number
-): number {
-	if (cols <= 0) return 0
-	return (containerWidth - (cols - 1) * gap) / cols
-}
-
 export function getWidgetPixelRect(
 	position: WidgetPosition,
 	size: WidgetSize,

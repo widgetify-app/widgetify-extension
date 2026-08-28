@@ -8,7 +8,7 @@ import { NoteEmpty } from './components/note-empty'
 import { NoteSticky } from './variants/note-sticky'
 import type { WidgetSize } from '../layout-engine/types'
 
-function NotesContent({ size }: { size?: WidgetSize }) {
+function NotesContent() {
 	const { notes, activeNoteId } = useNotes()
 	const { blurMode } = useGeneralSetting()
 
@@ -74,7 +74,7 @@ export function NotesLayout({ size = { w: 2, h: 3 }, meta }: NotesLayoutProps = 
 					</div>
 
 					<div className="mt-0.5 grow overflow-hidden">
-						<NotesContent size={size} />
+						<NotesContent />
 					</div>
 				</div>
 			)}
