@@ -20,10 +20,14 @@ import type { WidgetSize } from '../layout-engine/types'
 const filterOptions = [
 	{ value: 'all', label: 'همه' },
 	{ value: 'today', label: 'امروز' },
-	{ value: 'thisMonth', label: 'این ماه' },
+	{ value: 'this_month', label: 'این ماه' },
 	{ value: 'done', label: 'تکمیل‌شده' },
 	{ value: 'pending', label: 'در انتظار' },
 ]
+
+const legacyDateFilters: Record<string, string> = {
+	thisMonth: 'this_month',
+}
 
 const sortOptions = [
 	{ value: 'def', label: 'پیشفرض' },
@@ -152,7 +156,13 @@ export function TodosLayout({ size = { w: 2, h: 2 } }: TodosLayoutProps = {}) {
 				getFromStorage('todoFilter'),
 				getFromStorage('todoSort'),
 			])
-			if (todoFilter) setDateFilter(todoFilter)
+			if (todoFilter) {
+				const normalized = legacyDateFilters[todoFilter] || todoFilter
+				setDateFilter(normalized)
+				if (normalized !== todoFilter) {
+					setToStorage('todoFilter', normalized)
+				}
+			}
 			if (todoSort) setSort(todoSort)
 		}
 
