@@ -28,9 +28,6 @@ export function generatePushCandidates(
 		if (seen.has(key)) return
 		seen.add(key)
 
-		// A candidate must always escape the blocker that triggered this push,
-		// otherwise the widget's own current (still-colliding) position would be
-		// re-proposed as a "resolution", causing solve() to loop on a no-op.
 		if (
 			doRectanglesOverlap({ col, row }, widget.size, blocker.position, blocker.size)
 		) {

@@ -73,15 +73,6 @@ interface FreeWidgetContextType {
 
 export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
 
-/**
- * Layouts coming from outside this tab (browser storage written by another tab,
- * or the sync server) are not guaranteed to be collision free. Rendering one as
- * is puts two widgets physically on top of each other, so run it through the
- * layout engine to repair overlaps before it reaches state.
- *
- * No widget registry is passed on purpose — this repairs geometry and must not
- * reject a layout just because it holds a legacy widget size.
- */
 function sanitizeLayout(layout: StoredWidget[], cols: number): StoredWidget[] {
 	if (validateLayout(layout, cols)) {
 		return layout
@@ -216,10 +207,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	useEffect(() => {
 		const unwatch = watchStorage('storedWidgets', (newValue) => {
 			if (!newValue || newValue.length === 0) return
-
-			// storage.watch also fires for writes made by THIS tab. Echoing our own
-			// persist back into state is at best redundant work and at worst lets a
-			// late echo clobber newer local state, so ignore it.
 			if (JSON.stringify(newValue) === lastPersistedSignatureRef.current) return
 
 			savedLayoutRef.current = newValue
@@ -260,9 +247,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 				if (serverWidgets.length > 0) {
 					if (hasLocalEditRef.current) {
-						// The user already changed the layout locally while this
-						// initial fetch was in flight — the debounced sync will push
-						// that change to the server, so don't roll it back here.
 						return
 					}
 

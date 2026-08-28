@@ -83,12 +83,6 @@ export function AddWidgetActions({
 		)
 	}
 
-	/**
-	 * The widget is already on the page but a pro gate blocks adding another one.
-	 * Offer both paths side by side: upgrade to pro, or remove the placed widget.
-	 * Showing only the upsell would dead-end a free user who has filled every
-	 * slot, since removing is the one thing that frees capacity back up.
-	 */
 	if (isCurrentlyActive && (isLimitReached || isDuplicateRestricted)) {
 		return (
 			<div className="flex flex-col w-full gap-2">

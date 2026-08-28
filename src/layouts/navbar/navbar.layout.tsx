@@ -93,8 +93,6 @@ export function NavbarLayout(): JSX.Element {
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
 	const { canvasMode } = useAppearance()
-	// While the canvas is in layout-edit mode the navbar steps aside so the
-	// canvas edit toolbar can take its place at the bottom of the screen.
 	const isEditingCanvas = canvasMode === 'edit'
 	const showNavbar = isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
