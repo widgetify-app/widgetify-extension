@@ -21,6 +21,7 @@ interface HabitCompactWideProps {
 	today: WidgetifyDate
 	onChanged: () => void
 	onAddHabit?: () => void
+	onViewDetails?: (habitId: string) => void
 }
 
 export function HabitCompactWide({
@@ -29,6 +30,7 @@ export function HabitCompactWide({
 	today,
 	onChanged,
 	onAddHabit,
+	onViewDetails,
 }: HabitCompactWideProps) {
 	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 	const [selectedId, setSelectedId] = useState<string | null>(habits[0]?.id ?? null)
@@ -162,14 +164,30 @@ export function HabitCompactWide({
 					</div>
 				</button>
 
-				<div className="flex-1 min-w-0">
-					<p className="text-xs font-bold truncate text-content">
+				<div
+					onClick={() => onViewDetails?.(selectedHabit.id)}
+					className="flex-1 min-w-0 cursor-pointer group/title"
+					title="مشاهده جزئیات عادت"
+				>
+					<p className="text-xs font-bold truncate text-content group-hover/title:text-primary transition-colors">
 						{selectedHabit.title}
 					</p>
 					<p className="text-[9px] font-medium truncate text-muted">
 						{value} از {target} امروز
 					</p>
 				</div>
+
+				<button
+					type="button"
+					onClick={(e) => {
+						e.stopPropagation()
+						onViewDetails?.(selectedHabit.id)
+					}}
+					className="flex items-center justify-center w-6 h-6 rounded-lg text-base-content/40 hover:text-content hover:bg-base-content/10 transition-colors cursor-pointer shrink-0"
+					title="جزئیات عادت"
+				>
+					<Icon name="chevronLeft" size={13} />
+				</button>
 			</div>
 
 			{habits.length > 1 && (

@@ -208,19 +208,59 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 	const { isAuthenticated } = useAuth()
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const { data, isLoading, refetch } = useGetHabits(isAuthenticated)
+	const { mutateAsync: archiveHabit, isPending: isArchiving } = useArchiveHabit()
+
 	const [showForm, setShowForm] = useState(false)
+	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
+	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
+	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
 
 	const handleAddHabit = () => {
 		if (!isAuthenticated) {
 			callEvent('openProfile')
 			return
 		}
+		setEditingHabit(null)
 		setShowForm(true)
 		Analytics.event('habit_form_opened')
 	}
 
+	const handleEditHabit = (habit: Habit) => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
+		setEditingHabit(habit)
+		setShowForm(true)
+		Analytics.event('habit_edit_opened')
+	}
+
 	const handleCloseForm = () => {
 		setShowForm(false)
+		setEditingHabit(null)
+	}
+
+	const handleConfirmArchive = async () => {
+		if (!archiveConfirm || isArchiving) return
+
+		const [error] = await safeAwait(archiveHabit(archiveConfirm))
+
+		if (error) {
+			autoFormatErrorToast(error)
+			return
+		}
+
+		setArchiveConfirm(null)
+		setDetailHabitId(null)
+		showToast('عادت حذف شد', 'success')
+		Analytics.event('habit_archived')
+		refetch()
+	}
+
+	const handleCloseDetailModal = () => {
+		setDetailHabitId(null)
+		refetch()
+		Analytics.event('habit_close_detail_model')
 	}
 
 	if (size.w === 1 && size.h === 1) {
@@ -233,7 +273,7 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 				/>
 				<HabitFormModal
 					isOpen={showForm}
-					habit={null}
+					habit={editingHabit}
 					onClose={handleCloseForm}
 					onSaved={() => {
 						handleCloseForm()
@@ -255,10 +295,14 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 					today={getCurrentDate(timezone.value)}
 					onChanged={() => refetch()}
 					onAddHabit={handleAddHabit}
+					onViewDetails={(id) => {
+						setDetailHabitId(id)
+						Analytics.event('habit_open_detail_model')
+					}}
 				/>
 				<HabitFormModal
 					isOpen={showForm}
-					habit={null}
+					habit={editingHabit}
 					onClose={handleCloseForm}
 					onSaved={() => {
 						handleCloseForm()
@@ -266,6 +310,26 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 					}}
 					icons={data?.icons || []}
 					colors={data?.colors || []}
+				/>
+				{detailHabitId && (
+					<HabitDetailModal
+						isOpen={!!detailHabitId}
+						habitId={detailHabitId}
+						onClose={handleCloseDetailModal}
+						onEdit={handleEditHabit}
+						onArchive={() => setArchiveConfirm(detailHabitId)}
+					/>
+				)}
+				<ConfirmationModal
+					isOpen={!!archiveConfirm}
+					onClose={() => setArchiveConfirm(null)}
+					onConfirm={handleConfirmArchive}
+					variant="danger"
+					title="بایگانی عادت؟"
+					message="از بایگانی کردن این عادت اطمینان داری؟"
+					confirmText="بله، بایگانی کن"
+					cancelText="انصراف"
+					isLoading={isArchiving}
 				/>
 			</WidgetContainer>
 		)
