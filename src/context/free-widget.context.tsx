@@ -86,17 +86,14 @@ export interface FreeWidgetActions {
 
 export type FreeWidgetContextType = FreeWidgetLayoutState & FreeWidgetActions
 
-export const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(
-	null
-)
+export const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(null)
 export const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
 
 export interface FreeWidgetDerivedState {
 	primaryBookmarkInstanceId: string | null
 }
 
-export const FreeWidgetDerivedContext =
-	createContext<FreeWidgetDerivedState | null>(null)
+export const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(null)
 
 function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
 	let changed = false
@@ -328,7 +325,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 		async function fetchAndReconcileWithServer() {
 			try {
-				const serverWidgets = await getUserWidgetsApi('CUSTOM', 'HOME')
+				const serverWidgets = await getUserWidgetsApi('HOME')
 
 				if (serverWidgets === null) {
 					return
@@ -361,7 +358,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					const localLayout = await migrateWidgetLayoutIfNeeded()
 					if (localLayout && localLayout.length > 0) {
 						const synced = await syncUserWidgetsApi({
-							ui: 'CUSTOM',
 							workspace: 'HOME',
 							widgets: localLayout.map((w) => ({
 								instanceId:
@@ -425,7 +421,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			syncTimerRef.current = setTimeout(() => {
 				syncUserWidgetsApi({
-					ui: 'CUSTOM',
 					workspace: 'HOME',
 					widgets: currentLayout.map((w) => ({
 						instanceId:

@@ -54,13 +54,11 @@ export interface SyncWidgetItemPayload {
 }
 
 export interface SyncUserWidgetsPayload {
-	ui?: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
 	workspace?: 'HOME'
 	widgets: SyncWidgetItemPayload[]
 }
 
 export async function getUserWidgetsApi(
-	ui: string = 'ADVANCED',
 	workspace: string = 'HOME'
 ): Promise<ServerUserWidget[] | null> {
 	const client = getMainClient()
@@ -69,7 +67,7 @@ export async function getUserWidgetsApi(
 		AxiosResponse<{ widgets: ServerUserWidget[] }>
 	>(
 		client.get<{ widgets: ServerUserWidget[] }>('/user-widgets', {
-			params: { ui, workspace },
+			params: { workspace },
 		})
 	)
 
@@ -84,10 +82,9 @@ export async function createUserWidgetApi(
 	payload: CreateUserWidgetPayload
 ): Promise<ServerUserWidget | null> {
 	const client = getMainClient()
-	const [err, response] = await safeAwait<
-		AxiosError,
-		AxiosResponse<ServerUserWidget>
-	>(client.post<ServerUserWidget>('/user-widgets', payload))
+	const [err, response] = await safeAwait<AxiosError, AxiosResponse<ServerUserWidget>>(
+		client.post<ServerUserWidget>('/user-widgets', payload)
+	)
 
 	if (err || !response) {
 		return null
@@ -101,10 +98,9 @@ export async function updateUserWidgetApi(
 	payload: UpdateUserWidgetPayload
 ): Promise<ServerUserWidget | null> {
 	const client = getMainClient()
-	const [err, response] = await safeAwait<
-		AxiosError,
-		AxiosResponse<ServerUserWidget>
-	>(client.put<ServerUserWidget>(`/user-widgets/${instanceId}`, payload))
+	const [err, response] = await safeAwait<AxiosError, AxiosResponse<ServerUserWidget>>(
+		client.put<ServerUserWidget>(`/user-widgets/${instanceId}`, payload)
+	)
 
 	if (err || !response) {
 		return null
@@ -140,9 +136,7 @@ export async function syncUserWidgetsApi(
 	const [err, response] = await safeAwait<
 		AxiosError,
 		AxiosResponse<{ widgets: ServerUserWidget[] }>
-	>(
-		client.post<{ widgets: ServerUserWidget[] }>('/user-widgets/sync', payload)
-	)
+	>(client.post<{ widgets: ServerUserWidget[] }>('/user-widgets/sync', payload))
 
 	if (err || !response) {
 		return null
@@ -152,13 +146,12 @@ export async function syncUserWidgetsApi(
 }
 
 export const useGetUserWidgets = (
-	ui: 'ADVANCED' | 'SIMPLE' | 'CUSTOM' = 'ADVANCED',
 	workspace: 'HOME' = 'HOME',
 	enabled: boolean = true
 ) => {
 	return useQuery<ServerUserWidget[] | null>({
-		queryKey: ['getUserWidgets', ui, workspace],
-		queryFn: () => getUserWidgetsApi(ui, workspace),
+		queryKey: ['getUserWidgets', workspace],
+		queryFn: () => getUserWidgetsApi(workspace),
 		enabled,
 	})
 }
@@ -176,8 +169,10 @@ export const useUpdateUserWidget = () => {
 		mutationFn: ({
 			instanceId,
 			payload,
-		}: { instanceId: string; payload: UpdateUserWidgetPayload }) =>
-			updateUserWidgetApi(instanceId, payload),
+		}: {
+			instanceId: string
+			payload: UpdateUserWidgetPayload
+		}) => updateUserWidgetApi(instanceId, payload),
 	})
 }
 

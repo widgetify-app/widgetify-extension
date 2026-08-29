@@ -14,10 +14,7 @@ import {
 	syncUserWidgetsApi,
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
-import {
-	type WidgetItem,
-	WidgetKeys,
-} from '@/layouts/widgets/layout-engine/types'
+import { type WidgetItem, WidgetKeys } from '@/layouts/widgets/layout-engine/types'
 import { widgetItems } from '@/layouts/widgets/widget-registry'
 
 export { WidgetKeys, type WidgetItem, widgetItems }
@@ -74,7 +71,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 			}
 			syncTimerRef.current = setTimeout(() => {
 				syncUserWidgetsApi({
-					ui: 'ADVANCED',
 					workspace: 'HOME',
 					widgets: activeWidgets.map((w, index) => ({
 						widgetKey: w.id,
@@ -142,7 +138,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 		async function fetchAndReconcileVisibility() {
 			try {
-				const serverWidgets = await getUserWidgetsApi('ADVANCED', 'HOME')
+				const serverWidgets = await getUserWidgetsApi('HOME')
 
 				if (isCancelled) return
 
