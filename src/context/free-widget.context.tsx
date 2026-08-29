@@ -140,6 +140,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const lastPersistedSignatureRef = useRef<string | null>(null)
 	const runtimeLayoutRef = useRef<StoredWidget[]>([])
 	const dragBaseLayoutRef = useRef<StoredWidget[] | null>(null)
+	const isVipRef = useRef<boolean>(isVip)
+
+	useEffect(() => {
+		isVipRef.current = isVip
+	}, [isVip])
 
 	useEffect(() => {
 		runtimeLayoutRef.current = runtimeLayout
@@ -659,7 +664,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			const chosenSize = initialSize || def.defaultSize
 			const isCurrentlyActive = runtimeLayout.some((w) => w.id === def.id)
-			if (isCurrentlyActive && !isVip) {
+			if (isCurrentlyActive && !isVipRef.current) {
 				callEvent('openSettings', 'vip')
 				return false
 			}
@@ -714,7 +719,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			playNativeToastSound('success')
 			return commitMutation('add', result, finalInstanceId)
 		},
-		[runtimeLayout, cols, commitMutation, isAuthenticated]
+		[runtimeLayout, cols, commitMutation, isAuthenticated, isVip]
 	)
 
 	const duplicateWidget = useCallback(
@@ -728,7 +733,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
-			if (!isVip) {
+			if (!isVipRef.current) {
 				callEvent('openSettings', 'vip')
 				return false
 			}
@@ -782,7 +787,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			playNativeToastSound('success')
 			return commitMutation('duplicate', result, newInstanceId)
 		},
-		[runtimeLayout, cols, commitMutation, isAuthenticated]
+		[runtimeLayout, cols, commitMutation, isAuthenticated, isVip]
 	)
 
 	const updateWidgetSettings = useCallback(
