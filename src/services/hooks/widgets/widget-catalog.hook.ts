@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useCallback, useMemo } from 'react'
 import { getMainClient, safeAwait } from '@/services/api'
 import type { AxiosError, AxiosResponse } from 'axios'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
@@ -69,7 +70,7 @@ export function useWidgetVipResolver() {
 	const maxFreeWidgets =
 		serverCatalog?.config?.maxFreeWidgets ?? DEFAULT_MAX_FREE_WIDGETS
 
-	const isWidgetVipOnly = (widgetKey?: string): boolean => {
+	const isWidgetVipOnly = useCallback((widgetKey?: string): boolean => {
 		if (!widgetKey) return false
 		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
 		if (serverItem && typeof serverItem.isVipOnly === 'boolean') {
@@ -77,9 +78,10 @@ export function useWidgetVipResolver() {
 		}
 		const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
 		return Boolean(localDef?.isVipOnly)
-	}
+	}, [serverCatalog])
 
-	const isVariantVipOnly = (widgetKey?: string, variantId?: string): boolean => {
+	const isVariantVipOnly = useCallback(
+		(widgetKey?: string, variantId?: string): boolean => {
 		if (!widgetKey || !variantId) return false
 		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
 		if (serverItem?.variants) {
@@ -95,12 +97,12 @@ export function useWidgetVipResolver() {
 			(item) => item.id === variantId || item.meta?.variant === variantId
 		)
 		return Boolean(localVariant?.isVipOnly)
-	}
+		},
+		[serverCatalog]
+	)
 
-	const isSizeVipOnly = (
-		widgetKey?: string,
-		size?: { w: number; h: number }
-	): boolean => {
+	const isSizeVipOnly = useCallback(
+		(widgetKey?: string, size?: { w: number; h: number }): boolean => {
 		if (!widgetKey || !size) return false
 		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
 		if (serverItem?.allowedSizes) {
@@ -116,13 +118,24 @@ export function useWidgetVipResolver() {
 			(s) => s.w === size.w && s.h === size.h
 		)
 		return Boolean(localSize?.isVipOnly)
-	}
+		},
+		[serverCatalog]
+	)
 
-	return {
-		serverWidgets: serverCatalog?.widgets,
-		maxFreeWidgets,
-		isWidgetVipOnly,
-		isVariantVipOnly,
-		isSizeVipOnly,
-	}
+	return useMemo(
+		() => ({
+			serverWidgets: serverCatalog?.widgets,
+			maxFreeWidgets,
+			isWidgetVipOnly,
+			isVariantVipOnly,
+			isSizeVipOnly,
+		}),
+		[
+			serverCatalog,
+			maxFreeWidgets,
+			isWidgetVipOnly,
+			isVariantVipOnly,
+			isSizeVipOnly,
+		]
+	)
 }

@@ -1,8 +1,49 @@
 import { compactLayout } from './compact'
+import { reconcileIdentity } from './identity'
 import { findAvailableSlot, getBestAllowedSizeForColumns } from './placement'
 import { resolveCollisions } from './push'
-import type { LayoutEngineOptions, StoredWidget, WidgetSize } from './types'
-import { isWithinHorizontalBounds, validateLayout } from './validation'
+import type {
+	LayoutEngineOptions,
+	StoredWidget,
+	WidgetPosition,
+	WidgetSize,
+} from './types'
+import { validateLayout } from './validation'
+
+function patchWidget(
+	layout: StoredWidget[],
+	instanceId: string,
+	patch: { position?: WidgetPosition; size?: WidgetSize }
+): StoredWidget[] | null {
+	const index = layout.findIndex((w) => w.instanceId === instanceId)
+	if (index === -1) return null
+
+	const current = layout[index]
+	const next: StoredWidget = {
+		...current,
+		position: patch.position ?? current.position,
+		size: patch.size ?? current.size,
+	}
+
+	const updated = layout.slice()
+	updated[index] = next
+	return updated
+}
+
+function assertValidInDev(
+	layout: StoredWidget[],
+	cols: number,
+	registry: LayoutEngineOptions['registry'],
+	operation: string
+): void {
+	if (!import.meta.env.DEV) return
+	if (!validateLayout(layout, cols, registry)) {
+		console.error(
+			`[layout-engine] "${operation}" produced an invalid layout`,
+			layout
+		)
+	}
+}
 
 export function resolveLayoutChange(
 	options: LayoutEngineOptions
@@ -19,69 +60,55 @@ export function resolveLayoutChange(
 		registry,
 	} = options
 
-	const cloned: StoredWidget[] = layout.map((w) => ({
-		...w,
-		position: { ...w.position },
-		size: { ...w.size },
-	}))
-
 	switch (operation) {
 		case 'move': {
 			if (!instanceId || !targetPosition) return null
-			const index = cloned.findIndex((w) => w.instanceId === instanceId)
-			if (index === -1) return null
 
-			const widget = cloned[index]
+			const current = layout.find((w) => w.instanceId === instanceId)
+			if (!current) return null
+
 			const clampedCol = Math.max(
 				0,
-				Math.min(cols - widget.size.w, targetPosition.col)
+				Math.min(cols - current.size.w, targetPosition.col)
 			)
 			const clampedRow = Math.max(0, targetPosition.row)
 
-			widget.position = { col: clampedCol, row: clampedRow }
+			const patched = patchWidget(layout, instanceId, {
+				position: { col: clampedCol, row: clampedRow },
+			})
+			if (!patched) return null
 
-			if (!isWithinHorizontalBounds(widget, cols)) {
-				return null
-			}
+			const resolved = resolveCollisions(patched, new Set([instanceId]), cols)
+			assertValidInDev(resolved, cols, registry, 'move')
 
-			const resolved = resolveCollisions(cloned, new Set([instanceId]), cols)
-			if (!resolved) {
-				return null
-			}
-
-			if (!validateLayout(resolved, cols, registry)) {
-				return null
-			}
-
-			return resolved
+			return reconcileIdentity(layout, resolved)
 		}
 
 		case 'resize': {
 			if (!instanceId || !targetSize) return null
-			const index = cloned.findIndex((w) => w.instanceId === instanceId)
-			if (index === -1) return null
-
-			const widget = cloned[index]
 			if (targetSize.w > cols || targetSize.w <= 0 || targetSize.h <= 0) {
 				return null
 			}
 
-			widget.size = { ...targetSize }
+			const current = layout.find((w) => w.instanceId === instanceId)
+			if (!current) return null
 
-			if (!isWithinHorizontalBounds(widget, cols)) {
-				widget.position.col = Math.max(0, cols - widget.size.w)
-			}
+			const nextSize: WidgetSize = { ...targetSize }
+			const nextPosition: WidgetPosition =
+				current.position.col + nextSize.w > cols
+					? { col: Math.max(0, cols - nextSize.w), row: current.position.row }
+					: current.position
 
-			const resolved = resolveCollisions(cloned, new Set([instanceId]), cols)
-			if (!resolved) {
-				return null
-			}
+			const patched = patchWidget(layout, instanceId, {
+				position: nextPosition,
+				size: nextSize,
+			})
+			if (!patched) return null
 
-			if (!validateLayout(resolved, cols, registry)) {
-				return null
-			}
+			const resolved = resolveCollisions(patched, new Set([instanceId]), cols)
+			assertValidInDev(resolved, cols, registry, 'resize')
 
-			return resolved
+			return reconcileIdentity(layout, resolved)
 		}
 
 		case 'add': {
@@ -101,33 +128,29 @@ export function resolveLayoutChange(
 				targetPosition.row >= 0
 			) {
 				toAdd.position = { ...targetPosition }
-				cloned.push(toAdd)
-
 				const resolved = resolveCollisions(
-					cloned,
+					[...layout, toAdd],
 					new Set([toAdd.instanceId]),
 					cols
 				)
-				if (resolved && validateLayout(resolved, cols, registry)) {
+				if (validateLayout(resolved, cols, registry)) {
 					return resolved
 				}
-				cloned.pop()
 			}
 
-			const slot = findAvailableSlot(cloned, toAdd.size, cols)
-			toAdd.position = slot
-			cloned.push(toAdd)
+			toAdd.position = findAvailableSlot(layout, toAdd.size, cols)
+			const appended = [...layout, toAdd]
 
-			if (!validateLayout(cloned, cols, registry)) {
+			if (!validateLayout(appended, cols, registry)) {
 				return null
 			}
 
-			return cloned
+			return appended
 		}
 
 		case 'duplicate': {
 			if (!instanceId) return null
-			const original = cloned.find((w) => w.instanceId === instanceId)
+			const original = layout.find((w) => w.instanceId === instanceId)
 			if (!original) return null
 
 			const newInstanceId = `${original.id}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
@@ -135,23 +158,21 @@ export function resolveLayoutChange(
 				id: original.id,
 				instanceId: newInstanceId,
 				size: { ...original.size },
-				position: { ...original.position },
+				position: findAvailableSlot(layout, original.size, cols),
 			}
 
-			const slot = findAvailableSlot(cloned, duplicated.size, cols)
-			duplicated.position = slot
-			cloned.push(duplicated)
+			const appended = [...layout, duplicated]
 
-			if (!validateLayout(cloned, cols, registry)) {
+			if (!validateLayout(appended, cols, registry)) {
 				return null
 			}
 
-			return cloned
+			return appended
 		}
 
 		case 'remove': {
 			if (!instanceId) return null
-			const filtered = cloned.filter((w) => w.instanceId !== instanceId)
+			const filtered = layout.filter((w) => w.instanceId !== instanceId)
 			if (!validateLayout(filtered, cols, registry)) {
 				return null
 			}
@@ -159,7 +180,7 @@ export function resolveLayoutChange(
 		}
 
 		case 'responsive-reflow': {
-			const sorted = [...cloned].sort((a, b) => {
+			const sorted = [...layout].sort((a, b) => {
 				if (a.position.row !== b.position.row) {
 					return a.position.row - b.position.row
 				}
@@ -177,11 +198,15 @@ export function resolveLayoutChange(
 				)
 
 				const slot = findAvailableSlot(reflowed, adaptedSize, cols)
-				reflowed.push({
-					...widget,
-					size: adaptedSize,
-					position: slot,
-				})
+				const isSame =
+					adaptedSize.w === widget.size.w &&
+					adaptedSize.h === widget.size.h &&
+					slot.col === widget.position.col &&
+					slot.row === widget.position.row
+
+				reflowed.push(
+					isSame ? widget : { ...widget, size: adaptedSize, position: slot }
+				)
 			}
 
 			const compacted = compactLayout(reflowed, cols)
@@ -189,7 +214,7 @@ export function resolveLayoutChange(
 				return null
 			}
 
-			return compacted
+			return reconcileIdentity(layout, compacted)
 		}
 
 		default:

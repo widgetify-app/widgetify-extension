@@ -20,8 +20,8 @@ import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
-import { useOptionalFreeWidgets } from '@/context/free-widget.context'
-import { WidgetKeys, type WidgetSize } from '../widgets/layout-engine/types'
+import { usePrimaryBookmarkInstanceId } from '@/context/free-widget.context'
+import type { WidgetSize } from '../widgets/layout-engine/types'
 import { validate } from 'uuid'
 
 interface BookmarksListProps {
@@ -166,15 +166,12 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		setFolderModalPath([{ id: targetId, title: folder.title }])
 	}
 
-	const freeWidgetContext = useOptionalFreeWidgets()
+	const primaryBookmarkInstanceId = usePrimaryBookmarkInstanceId()
 	const isPrimary = (() => {
 		if (!instanceId || instanceId === 'bookmarks-default') return true
-		if (!freeWidgetContext) return true
-		const bookmarkWidgets = freeWidgetContext.runtimeLayout.filter(
-			(w) => w.id === WidgetKeys.bookmarks
-		)
-		if (bookmarkWidgets.length === 0) return true
-		return bookmarkWidgets[0].instanceId === instanceId
+		if (primaryBookmarkInstanceId === undefined) return true
+		if (primaryBookmarkInstanceId === null) return true
+		return primaryBookmarkInstanceId === instanceId
 	})()
 
 	const currentFolderItems = getCurrentFolderItems(

@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/context/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
@@ -9,6 +9,7 @@ import { AddWidgetModal, WidgetHelpModal } from '@/layouts/widgets-manager'
 import { CanvasContextMenu } from './canvas-context-menu'
 import { CanvasWidgetOuter } from './canvas-widget-outer'
 import { CanvasEditToolbar } from './canvas-edit-toolbar'
+import { GridOverlay } from './grid-overlay'
 
 export function FreeWidgetCanvas() {
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -24,9 +25,11 @@ export function FreeWidgetCanvas() {
 		isLoaded,
 		canvasMode,
 		setCanvasMode,
+		selectedInstanceId,
 		setSelectedInstanceId,
 		updateContainerWidth,
 		removeWidget,
+		setMaxRows,
 	} = useFreeWidgets()
 
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -115,6 +118,22 @@ export function FreeWidgetCanvas() {
 		getCanvasHeight(runtimeLayout, cellHeight, gap)
 	)
 
+	useEffect(() => {
+		setMaxRows(totalGridRows)
+	}, [totalGridRows, setMaxRows])
+
+	const wiggleVariants = useMemo(() => {
+		const variants = new Map<string, number>()
+		for (const widget of runtimeLayout) {
+			let hash = 0
+			for (let i = 0; i < widget.instanceId.length; i++) {
+				hash = (hash * 31 + widget.instanceId.charCodeAt(i)) | 0
+			}
+			variants.set(widget.instanceId, Math.abs(hash) % 3)
+		}
+		return variants
+	}, [runtimeLayout])
+
 	if (!isLoaded) {
 		return <div ref={containerRef} className="w-full min-h-[300px]" />
 	}
@@ -171,7 +190,7 @@ export function FreeWidgetCanvas() {
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
-				className="relative w-full transition-all duration-300 canvas-background rounded-3xl"
+				className="relative w-full transition-colors duration-300 canvas-background rounded-3xl"
 				style={{
 					minHeight: `${canvasPixelHeight}px`,
 					height: `${canvasPixelHeight}px`,
@@ -188,36 +207,13 @@ export function FreeWidgetCanvas() {
 				)}
 
 				{canvasMode === 'edit' && (
-					<div
-						className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl"
-						style={{
-							gap: `${gap}px`,
-						}}
-					>
-						{Array.from({ length: totalGridRows }).map((_, r) => (
-							<div
-								key={r}
-								className="absolute flex w-full"
-								style={{
-									top: `${r * (cellHeight + gap)}px`,
-									height: `${cellHeight}px`,
-									left: 0,
-									gap: `${gap}px`,
-								}}
-							>
-								{Array.from({ length: cols }).map((_, c) => (
-									<div
-										key={c}
-										style={{
-											width: `${cellWidth}px`,
-											height: `${cellHeight}px`,
-										}}
-										className="transition-all duration-200 border border-dashed rounded-widget border-base-content/15 bg-base-300/10"
-									/>
-								))}
-							</div>
-						))}
-					</div>
+					<GridOverlay
+						totalGridRows={totalGridRows}
+						cols={cols}
+						cellWidth={cellWidth}
+						cellHeight={cellHeight}
+						gap={gap}
+					/>
 				)}
 
 				{runtimeLayout.map((widget) => {
@@ -233,7 +229,9 @@ export function FreeWidgetCanvas() {
 							cellHeight={cellHeight}
 							gap={gap}
 							cols={cols}
-							maxRows={totalGridRows}
+							canvasMode={canvasMode}
+							isSelected={selectedInstanceId === widget.instanceId}
+							wiggleVariant={wiggleVariants.get(widget.instanceId) ?? 0}
 						/>
 					)
 				})}

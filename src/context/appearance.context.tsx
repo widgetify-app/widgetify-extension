@@ -1,5 +1,5 @@
 import type React from 'react'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
 import {
@@ -60,7 +60,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	const { mutateAsync: changeUIAsync } = useChangeUI()
 	const { isAuthenticated } = useAuth()
 
-	const toggleCanvasMode = () => {
+	const toggleCanvasMode = useCallback(() => {
 		setCanvasMode((prev) => {
 			const next = prev === 'normal' ? 'edit' : 'normal'
 			if (next === 'normal') {
@@ -68,7 +68,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			}
 			return next
 		})
-	}
+	}, [])
 
 	useEffect(() => {
 		async function loadSettings() {
@@ -175,25 +175,37 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		}
 	}, [isInitialized, settings.fontFamily])
 
+	const contextValue = useMemo<AppearanceContextContextType>(
+		() => ({
+			fontFamily: settings.fontFamily,
+			contentAlignment: settings.contentAlignment,
+			updateSetting,
+			setFontFamily,
+			canReOrderWidget,
+			ui: settings.ui,
+			setUI: (val) => setUI(val, isAuthenticated),
+			toggleCanReOrderWidget,
+			setContentAlignment,
+			canvasMode,
+			setCanvasMode,
+			selectedInstanceId,
+			setSelectedInstanceId,
+			toggleCanvasMode,
+		}),
+		[
+			settings.fontFamily,
+			settings.contentAlignment,
+			settings.ui,
+			canReOrderWidget,
+			canvasMode,
+			selectedInstanceId,
+			isAuthenticated,
+			toggleCanvasMode,
+		]
+	)
+
 	if (!isInitialized) {
 		return null
-	}
-
-	const contextValue: AppearanceContextContextType = {
-		fontFamily: settings.fontFamily,
-		contentAlignment: settings.contentAlignment,
-		updateSetting,
-		setFontFamily,
-		canReOrderWidget,
-		ui: settings.ui,
-		setUI: (val) => setUI(val, isAuthenticated),
-		toggleCanReOrderWidget,
-		setContentAlignment,
-		canvasMode,
-		setCanvasMode,
-		selectedInstanceId,
-		setSelectedInstanceId,
-		toggleCanvasMode,
 	}
 
 	return (
