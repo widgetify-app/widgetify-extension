@@ -24,6 +24,7 @@ import {
 	reconcileIdentity,
 	resolveLayoutChange,
 	validateLayout,
+	compactVerticalGaps,
 } from '@/layouts/widgets/layout-engine'
 import {
 	type StoredWidget,
@@ -205,20 +206,27 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		(baseLayout: StoredWidget[], targetCols: number) => {
 			const safeLayout = sanitizeLayout(baseLayout, targetCols)
 
-			if (targetCols >= DEFAULT_COLS) {
-				return safeLayout
+			let result = safeLayout
+			if (targetCols < DEFAULT_COLS) {
+				const reflowed = resolveLayoutChange({
+					layout: safeLayout,
+					operation: 'responsive-reflow',
+					cols: targetCols,
+					registry: WIDGET_DEFINITIONS,
+				})
+				result = reflowed || safeLayout
 			}
 
-			const reflowed = resolveLayoutChange({
-				layout: safeLayout,
-				operation: 'responsive-reflow',
-				cols: targetCols,
-				registry: WIDGET_DEFINITIONS,
-			})
+			if (typeof window !== 'undefined') {
+				const availableHeight = window.innerHeight - 80
+				const unitH = (cellHeight || DEFAULT_CELL_HEIGHT) + (gap || DEFAULT_GAP)
+				const viewportRows = Math.max(5, Math.floor(availableHeight / unitH))
+				result = compactVerticalGaps(result, viewportRows)
+			}
 
-			return reflowed || safeLayout
+			return result
 		},
-		[]
+		[cellHeight, gap]
 	)
 
 	const updateContainerWidth = useCallback(
@@ -263,6 +271,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		},
 		[reflowForColumns, applyRuntimeLayout]
 	)
+
+	useEffect(() => {
+		const handleWindowResize = () => {
+			if (containerWidthRef.current > 0) {
+				updateContainerWidth(containerWidthRef.current)
+			}
+		}
+		window.addEventListener('resize', handleWindowResize)
+		return () => window.removeEventListener('resize', handleWindowResize)
+	}, [updateContainerWidth])
 
 	const loadFromLocalStorage = useCallback(async () => {
 		try {

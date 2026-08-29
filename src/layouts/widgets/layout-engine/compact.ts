@@ -100,3 +100,54 @@ export function compactLayout(
 
 	return layout.map((w) => resolved.get(w.instanceId) ?? w)
 }
+
+export function compactVerticalGaps(
+	layout: StoredWidget[],
+	targetRows: number
+): StoredWidget[] {
+	if (layout.length === 0 || targetRows <= 0) return layout
+
+	const maxWidgetRow = Math.max(...layout.map((w) => w.position.row + w.size.h))
+	if (maxWidgetRow <= targetRows) {
+		return layout
+	}
+
+	const occupiedRows = new Set<number>()
+	for (const w of layout) {
+		for (let r = w.position.row; r < w.position.row + w.size.h; r++) {
+			occupiedRows.add(r)
+		}
+	}
+
+	const emptyRows: number[] = []
+	for (let r = 0; r < maxWidgetRow; r++) {
+		if (!occupiedRows.has(r)) {
+			emptyRows.push(r)
+		}
+	}
+
+	if (emptyRows.length === 0) {
+		return layout
+	}
+
+	const excessRows = maxWidgetRow - targetRows
+	const rowsToRemoveCount = Math.min(emptyRows.length, excessRows)
+	const rowsToRemove = new Set(emptyRows.slice(-rowsToRemoveCount))
+
+	return layout.map((w) => {
+		let shift = 0
+		for (const r of rowsToRemove) {
+			if (r < w.position.row) {
+				shift++
+			}
+		}
+		if (shift === 0) return w
+		return {
+			...w,
+			position: {
+				...w.position,
+				row: Math.max(0, w.position.row - shift),
+			},
+		}
+	})
+}
