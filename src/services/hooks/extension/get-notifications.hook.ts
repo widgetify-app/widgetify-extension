@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -90,7 +91,29 @@ export function useNotifyAsSeen() {
 			const client = getMainClient()
 			await client.put(`/notifications/${id}/seen`)
 		},
-		onSuccess: () => {
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({ queryKey: ['notifications'] })
+			const previous = queryClient.getQueryData<NotificationItemResponse>([
+				'notifications',
+			])
+			if (previous) {
+				const updated: NotificationItemResponse = {
+					...previous,
+					wigiPad: previous.wigiPad?.filter((item) => item.id !== id) || [],
+					widgetifyCard:
+						previous.widgetifyCard?.filter((item) => item.id !== id) || [],
+				}
+				queryClient.setQueryData(['notifications'], updated)
+				await setToStorage('notifications', updated)
+			}
+			return { previous }
+		},
+		onError: (_err, _id, context) => {
+			if (context?.previous) {
+				queryClient.setQueryData(['notifications'], context.previous)
+			}
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['notifications'],
 			})

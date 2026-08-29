@@ -1,7 +1,8 @@
+import { useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
 import { NotificationCardItem } from './components/notification-item'
 import { listenEvent } from '@/common/utils/call-event'
 import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
-import type { ReactNode } from 'react'
 import {
 	type NotificationItem,
 	useGetNotifications,
@@ -17,13 +18,19 @@ const localIds = ['notificationMood', 'update_profile']
 interface Prop {
 	hasBorder?: boolean
 }
+
 export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	const { user, isAuthenticated, isLoadingUser, profilePercentage } = useAuth()
-	const { data: fetchedNotifications, dataUpdatedAt } = useGetNotifications()
+	const { data: fetchedNotifications } = useGetNotifications()
 	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
 
-	const [notifications, setNotifications] = useState<NotificationItem[]>([])
+	const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
 	const [pushed, setPushed] = useState<{ id: string; node: ReactNode }[]>([])
+
+	const notifications = useMemo(() => {
+		const items = fetchedNotifications?.widgetifyCard || []
+		return items.filter((item) => item.id && !dismissedIds.has(item.id))
+	}, [fetchedNotifications?.widgetifyCard, dismissedIds])
 
 	const addToNodes = async (notif: { id: string; node: React.ReactNode }) => {
 		const notifFromStorage = await getWithExpiry(`removed_notification_${notif.id}`)
@@ -116,45 +123,25 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 		}
 	}, [])
 
-	useEffect(() => {
-		async function handle() {
-			const validNotifications: NotificationItem[] = []
-
-			for (const item of fetchedNotifications?.widgetifyCard || []) {
-				if (item.id) {
-					if (notifications.findIndex((f) => f.id === item.id) === -1)
-						validNotifications.push(item)
-				}
-			}
-			setNotifications([...validNotifications])
-		}
-
-		handle()
-	}, [dataUpdatedAt])
-
 	const onClose = async (e: any, id: string, ttl = 1200) => {
 		e.preventDefault()
-		const notif = notifications.find((f) => f.id === id)
-		if (notif) {
-			const filtered = notifications.filter((f) => f.id !== id)
-			setNotifications([...filtered])
+		setDismissedIds((prev) => new Set([...prev, id]))
+		Analytics.event('notifications_close')
 
-			Analytics.event('notifications_close')
-			if (!localIds.includes(id)) {
-				await safeAwait(notifyAsSeen(id))
-			} else {
-				await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
-			}
+		if (!localIds.includes(id)) {
+			await safeAwait(notifyAsSeen(id))
+		} else {
+			await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
 		}
 	}
 
 	return (
 		<div className="flex flex-col gap-1">
-			{notifications?.map((item, index) => (
+			{notifications.map((item, index) => (
 				<NotificationCardItem
 					notification={item}
 					className={`${hasBorder ? '' : 'border-none!'}`}
-					key={`no-${index}`}
+					key={item.id || `no-${index}`}
 					onClose={(e) => onClose(e, item.id || '', item.ttl)}
 				/>
 			))}
