@@ -489,28 +489,28 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 			const colX = gridRight - w * (cellSize + gap) - cellSize
 
 			week.days.forEach((day, d) => {
+				if (day.isFuture) {
+					return
+				}
+
 				const cellY = gridTop + d * (cellSize + gap)
 
 				let bg = '#24252a'
 
-				if (day.isFuture) {
-					bg = '#17181c'
-				} else {
-					if (day.level === 1) {
-						bg = rgba(accent, 0.22)
-					}
+				if (day.level === 1) {
+					bg = rgba(accent, 0.22)
+				}
 
-					if (day.level === 2) {
-						bg = rgba(accent, 0.43)
-					}
+				if (day.level === 2) {
+					bg = rgba(accent, 0.43)
+				}
 
-					if (day.level === 3) {
-						bg = rgba(accent, 0.7)
-					}
+				if (day.level === 3) {
+					bg = rgba(accent, 0.7)
+				}
 
-					if (day.level === 4) {
-						bg = accent
-					}
+				if (day.level === 4) {
+					bg = accent
 				}
 
 				ctx.fillStyle = bg
