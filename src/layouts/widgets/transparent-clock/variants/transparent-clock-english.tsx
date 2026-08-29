@@ -1,3 +1,5 @@
+import { useWallpaperClockTheme } from '../hooks/use-wallpaper-clock-theme'
+
 interface TransparentClockEnglishProps {
 	time: Date
 	hours: string
@@ -10,6 +12,7 @@ export function TransparentClockEnglish({
 	hours,
 	minutes,
 }: TransparentClockEnglishProps) {
+	const theme = useWallpaperClockTheme()
 	const weekday = time.toLocaleDateString('en-US', { weekday: 'long' })
 	const gregorianDate = time.toLocaleDateString('en-US', {
 		month: 'long',
@@ -20,15 +23,27 @@ export function TransparentClockEnglish({
 	return (
 		<div
 			dir="ltr"
-			className="flex flex-col items-center justify-center w-full h-full gap-1 px-3 text-center font-latin"
+			className="flex flex-col items-center justify-center w-full h-full gap-1 px-3 text-center transition-colors duration-500 font-latin"
 		>
-			<div className="text-6xl font-black leading-none tracking-tight text-white sm:text-9xl drop-shadow-lg">
+			<div
+				className="text-6xl font-black leading-none tracking-tight sm:text-9xl transition-all duration-500"
+				style={{
+					color: theme.primaryColor,
+					textShadow: theme.accentGlow,
+				}}
+			>
 				<span>{hours}</span>
 				<span className="inline-block mx-0.5">:</span>
 				<span>{minutes}</span>
 			</div>
 
-			<div className="flex items-center justify-center gap-1.5 text-sm font-medium sm:text-base text-white/95 drop-shadow-md">
+			<div
+				className="flex items-center justify-center gap-1.5 text-sm font-medium sm:text-base transition-all duration-500"
+				style={{
+					color: theme.secondaryColor,
+					textShadow: theme.accentGlow,
+				}}
+			>
 				<span>{weekday}</span>
 				<span className="opacity-60">•</span>
 				<span>{gregorianDate}</span>
