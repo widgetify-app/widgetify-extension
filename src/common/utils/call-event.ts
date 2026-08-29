@@ -83,6 +83,7 @@ export interface EventName {
 		| { instanceId?: string; widgetId?: string }
 		| null
 		| undefined
+	openPresetLayoutsModal: null
 	cancelWidgetDrag: null
 }
 

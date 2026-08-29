@@ -82,6 +82,7 @@ export interface FreeWidgetActions {
 	) => boolean
 	updateContainerWidth: (containerWidth: number) => void
 	setMaxRows: (maxRows: number) => void
+	applyPresetLayout: (presetWidgets: StoredWidget[]) => Promise<boolean>
 }
 
 export type FreeWidgetContextType = FreeWidgetLayoutState & FreeWidgetActions
@@ -931,6 +932,30 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		]
 	)
 
+	const applyPresetLayout = useCallback(
+		async (presetWidgets: StoredWidget[]): Promise<boolean> => {
+			if (!Array.isArray(presetWidgets) || presetWidgets.length === 0) return false
+
+			const sanitized = sanitizeLayout(presetWidgets, DEFAULT_COLS)
+			const reflowed = reflowForColumns(sanitized, colsRef.current)
+
+			hasLocalEditRef.current = true
+			setSavedLayout(sanitized)
+			savedLayoutRef.current = sanitized
+			setRuntimeLayout(reflowed)
+			runtimeLayoutRef.current = reflowed
+			persistLayout(sanitized)
+
+			if (isAuthenticated) {
+				triggerServerSync(sanitized)
+			}
+
+			playNativeToastSound('success')
+			return true
+		},
+		[isAuthenticated, persistLayout, reflowForColumns, triggerServerSync]
+	)
+
 	const primaryBookmarkInstanceId = useMemo(
 		() =>
 			runtimeLayout.find((w) => w.id === WidgetKeys.bookmarks)?.instanceId ?? null,
@@ -959,6 +984,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			updateWidgetSettings,
 			updateWidgetVariant,
 			updateContainerWidth,
+			applyPresetLayout,
 		}),
 		[
 			setCanvasMode,
@@ -976,6 +1002,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			updateWidgetSettings,
 			updateWidgetVariant,
 			updateContainerWidth,
+			applyPresetLayout,
 		]
 	)
 

@@ -1,12 +1,15 @@
 import { createPortal } from 'react-dom'
+import { Icon } from '@/src/icons'
 
 interface CanvasEditToolbarProps {
 	onAddWidget: () => void
+	onOpenPresets?: () => void
 	onExitEditMode: () => void
 }
 
 export function CanvasEditToolbar({
 	onAddWidget,
+	onOpenPresets,
 	onExitEditMode,
 }: CanvasEditToolbarProps) {
 	return createPortal(
@@ -30,6 +33,17 @@ export function CanvasEditToolbar({
 					<span>+</span>
 					<span>افزودن ویجت</span>
 				</button>
+
+				{onOpenPresets && (
+					<button
+						type="button"
+						onClick={onOpenPresets}
+						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-base-300 hover:bg-base-300/80 text-content active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+					>
+						<Icon name="squares2X2" size={13} />
+						<span>چیدمان‌های آماده</span>
+					</button>
+				)}
 
 				<button
 					type="button"

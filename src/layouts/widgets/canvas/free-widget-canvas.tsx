@@ -6,6 +6,7 @@ import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal, WidgetHelpModal } from '@/layouts/widgets-manager'
+import { PresetLayoutModal } from '../presets'
 import { CanvasContextMenu } from './canvas-context-menu'
 import { CanvasWidgetOuter } from './canvas-widget-outer'
 import { CanvasEditToolbar } from './canvas-edit-toolbar'
@@ -33,6 +34,7 @@ export function FreeWidgetCanvas() {
 	} = useFreeWidgets()
 
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+	const [isPresetModalOpen, setIsPresetModalOpen] = useState(false)
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
 	const [editTarget, setEditTarget] = useState<{
 		instanceId: string
@@ -62,7 +64,13 @@ export function FreeWidgetCanvas() {
 				setIsAddModalOpen(true)
 			}
 		)
-		return () => removeListener()
+		const removePresetListener = listenEvent('openPresetLayoutsModal', () => {
+			setIsPresetModalOpen(true)
+		})
+		return () => {
+			removeListener()
+			removePresetListener()
+		}
 	}, [])
 
 	useEffect(() => {
@@ -199,6 +207,7 @@ export function FreeWidgetCanvas() {
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
 						onAddWidget={() => setIsAddModalOpen(true)}
+						onOpenPresets={() => setIsPresetModalOpen(true)}
 						onExitEditMode={() => {
 							setCanvasMode('normal')
 							setSelectedInstanceId(null)
@@ -248,6 +257,7 @@ export function FreeWidgetCanvas() {
 						setSelectedInstanceId(null)
 					}}
 					onOpenAddWidget={() => setIsAddModalOpen(true)}
+					onOpenPresets={() => setIsPresetModalOpen(true)}
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
 					}
@@ -262,6 +272,11 @@ export function FreeWidgetCanvas() {
 					setIsAddModalOpen(false)
 					setEditTarget(null)
 				}}
+			/>
+
+			<PresetLayoutModal
+				isOpen={isPresetModalOpen}
+				onClose={() => setIsPresetModalOpen(false)}
 			/>
 
 			<WidgetHelpModal

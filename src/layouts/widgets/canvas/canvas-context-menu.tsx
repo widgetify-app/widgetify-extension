@@ -8,6 +8,7 @@ interface CanvasContextMenuProps {
 	onClose: () => void
 	onToggleEditMode: () => void
 	onOpenAddWidget: () => void
+	onOpenPresets?: () => void
 	onOpenAppearanceSettings: () => void
 	onOpenHelp?: () => void
 }
@@ -19,6 +20,7 @@ export function CanvasContextMenu({
 	onClose,
 	onToggleEditMode,
 	onOpenAddWidget,
+	onOpenPresets,
 	onOpenAppearanceSettings,
 	onOpenHelp,
 }: CanvasContextMenuProps) {
@@ -84,6 +86,20 @@ export function CanvasContextMenu({
 				<Icon name="plus" size={14} className="text-muted" />
 				<span>افزودن ویجت</span>
 			</button>
+
+			{onOpenPresets && (
+				<button
+					type="button"
+					onClick={() => {
+						onOpenPresets()
+						onClose()
+					}}
+					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
+				>
+					<Icon name="squares2X2" size={14} className="text-muted" />
+					<span>چیدمان‌های آماده</span>
+				</button>
+			)}
 
 			<button
 				type="button"

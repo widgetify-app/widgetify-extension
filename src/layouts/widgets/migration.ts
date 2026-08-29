@@ -24,6 +24,12 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 	let migratedLayout: StoredWidget[] = []
 
 	if (appearance?.ui === 'SIMPLE') {
+		const availableHeight =
+			typeof window !== 'undefined' ? window.innerHeight - 80 : 600
+		const unitH = 96 + 8
+		const totalRows = Math.max(6, Math.floor(availableHeight / unitH))
+		const bottomStartRow = Math.max(1, totalRows - 3)
+
 		migratedLayout = [
 			{
 				id: WidgetKeys.search,
@@ -32,41 +38,41 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 				size: { w: 4, h: 1 },
 			},
 			{
-				id: WidgetKeys.yadKar,
-				instanceId: 'yadkar-default',
-				position: { col: 0, row: 0 },
-				size: { w: 2, h: 3 },
-			},
-			{
 				id: WidgetKeys.clock,
 				instanceId: 'clock-default',
-				position: { col: 6, row: 0 },
+				position: { col: 0, row: bottomStartRow },
 				size: { w: 2, h: 1 },
 				meta: { variant: 'digital' },
 			},
 			{
-				id: WidgetKeys.bookmarks,
-				instanceId: 'bookmarks-default',
-				position: { col: 2, row: 1 },
-				size: { w: 4, h: 2 },
-			},
-			{
 				id: WidgetKeys.moodTracker,
 				instanceId: 'moodtracker-default',
-				position: { col: 6, row: 1 },
+				position: { col: 0, row: bottomStartRow + 1 },
 				size: { w: 1, h: 1 },
 			},
 			{
 				id: WidgetKeys.calendar,
 				instanceId: 'calendar-default',
-				position: { col: 7, row: 1 },
+				position: { col: 1, row: bottomStartRow + 1 },
 				size: { w: 1, h: 1 },
 			},
 			{
 				id: WidgetKeys.HabitTracker,
 				instanceId: 'habittracker-default',
-				position: { col: 6, row: 2 },
+				position: { col: 0, row: bottomStartRow + 2 },
 				size: { w: 2, h: 1 },
+			},
+			{
+				id: WidgetKeys.bookmarks,
+				instanceId: 'bookmarks-default',
+				position: { col: 2, row: bottomStartRow + 1 },
+				size: { w: 4, h: 2 },
+			},
+			{
+				id: WidgetKeys.yadKar,
+				instanceId: 'yadkar-default',
+				position: { col: 6, row: bottomStartRow },
+				size: { w: 2, h: 3 },
 			},
 		]
 	} else {
