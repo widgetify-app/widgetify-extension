@@ -1,9 +1,11 @@
 import type React from 'react'
 import {
 	createContext,
+	startTransition,
 	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useRef,
 	useState,
 } from 'react'
@@ -19,13 +21,15 @@ import {
 	getBestAllowedSizeForColumns,
 	GRID_BREAKPOINTS,
 	MIN_CELL_WIDTH,
+	reconcileIdentity,
 	resolveLayoutChange,
 	validateLayout,
 } from '@/layouts/widgets/layout-engine'
-import type {
-	StoredWidget,
-	WidgetPosition,
-	WidgetSize,
+import {
+	type StoredWidget,
+	WidgetKeys,
+	type WidgetPosition,
+	type WidgetSize,
 } from '@/layouts/widgets/layout-engine/types'
 import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
@@ -40,7 +44,7 @@ import { useAppearance } from './appearance.context'
 import { useAuth } from './auth.context'
 import { callEvent } from '@/common/utils/call-event'
 
-interface FreeWidgetContextType {
+export interface FreeWidgetLayoutState {
 	savedLayout: StoredWidget[]
 	runtimeLayout: StoredWidget[]
 	cols: number
@@ -51,8 +55,12 @@ interface FreeWidgetContextType {
 	isLoaded: boolean
 	canvasMode: 'normal' | 'edit'
 	selectedInstanceId: string | null
+}
+
+export interface FreeWidgetActions {
 	setCanvasMode: (mode: 'normal' | 'edit') => void
 	setSelectedInstanceId: (id: string | null) => void
+	getGridBounds: () => { cols: number; maxRows: number }
 	resizeWidget: (instanceId: string, newSize: WidgetSize) => boolean
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
 	startDragPreview: () => void
@@ -73,9 +81,22 @@ interface FreeWidgetContextType {
 		meta?: Record<string, any>
 	) => boolean
 	updateContainerWidth: (containerWidth: number) => void
+	setMaxRows: (maxRows: number) => void
 }
 
-export const FreeWidgetContext = createContext<FreeWidgetContextType | null>(null)
+export type FreeWidgetContextType = FreeWidgetLayoutState & FreeWidgetActions
+
+export const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(
+	null
+)
+export const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
+
+export interface FreeWidgetDerivedState {
+	primaryBookmarkInstanceId: string | null
+}
+
+export const FreeWidgetDerivedContext =
+	createContext<FreeWidgetDerivedState | null>(null)
 
 function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
 	let changed = false
@@ -140,15 +161,42 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const lastPersistedSignatureRef = useRef<string | null>(null)
 	const runtimeLayoutRef = useRef<StoredWidget[]>([])
 	const dragBaseLayoutRef = useRef<StoredWidget[] | null>(null)
+	const dragSequenceRef = useRef<number>(0)
 	const isVipRef = useRef<boolean>(isVip)
+	const selectedInstanceIdRef = useRef<string | null>(selectedInstanceId)
+	const maxRowsRef = useRef<number>(0)
 
 	useEffect(() => {
 		isVipRef.current = isVip
 	}, [isVip])
 
 	useEffect(() => {
+		selectedInstanceIdRef.current = selectedInstanceId
+	}, [selectedInstanceId])
+
+	useEffect(() => {
 		runtimeLayoutRef.current = runtimeLayout
 	}, [runtimeLayout])
+
+	const applyRuntimeLayout = useCallback(
+		(next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])) => {
+			setRuntimeLayout((prev) => {
+				const value = typeof next === 'function' ? next(prev) : next
+				runtimeLayoutRef.current = value
+				return value
+			})
+		},
+		[]
+	)
+
+	const setMaxRows = useCallback((maxRows: number) => {
+		maxRowsRef.current = maxRows
+	}, [])
+
+	const getGridBounds = useCallback(
+		() => ({ cols: colsRef.current, maxRows: maxRowsRef.current }),
+		[]
+	)
 
 	const persistLayout = useCallback((layoutToPersist: StoredWidget[]) => {
 		lastPersistedSignatureRef.current = JSON.stringify(layoutToPersist)
@@ -207,15 +255,15 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					return currentSaved
 				}
 				if (fallback) {
-					setRuntimeLayout(base)
+					applyRuntimeLayout(base)
 					return currentSaved
 				}
 				const nextRuntime = reflowForColumns(base, matched.cols)
-				setRuntimeLayout(nextRuntime)
+				applyRuntimeLayout(nextRuntime)
 				return currentSaved
 			})
 		},
-		[reflowForColumns]
+		[reflowForColumns, applyRuntimeLayout]
 	)
 
 	const loadFromLocalStorage = useCallback(async () => {
@@ -230,16 +278,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			savedLayoutRef.current = finalLayout
 			setSavedLayout(finalLayout)
 			const reflowed = reflowForColumns(finalLayout, colsRef.current)
-			setRuntimeLayout(reflowed)
+			applyRuntimeLayout(reflowed)
 		} catch (err) {
 			console.error('Failed to load local widget layout', err)
 			savedLayoutRef.current = DEFAULT_WIDGET_LAYOUT
 			setSavedLayout(DEFAULT_WIDGET_LAYOUT)
-			setRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
+			applyRuntimeLayout(DEFAULT_WIDGET_LAYOUT)
 		} finally {
 			setIsLoaded(true)
 		}
-	}, [reflowForColumns])
+	}, [reflowForColumns, applyRuntimeLayout])
 
 	useEffect(() => {
 		loadFromLocalStorage()
@@ -252,10 +300,10 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			savedLayoutRef.current = newValue
 			setSavedLayout(newValue)
-			setRuntimeLayout(reflowForColumns(newValue, colsRef.current))
+			applyRuntimeLayout(reflowForColumns(newValue, colsRef.current))
 		})
 		return () => unwatch()
-	}, [reflowForColumns])
+	}, [reflowForColumns, applyRuntimeLayout])
 
 	useEffect(() => {
 		if (prevTokenRef.current === undefined) {
@@ -307,7 +355,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					savedLayoutRef.current = fromSrv
 					setSavedLayout(fromSrv)
 					const reflowed = reflowForColumns(fromSrv, colsRef.current)
-					setRuntimeLayout(reflowed)
+					applyRuntimeLayout(reflowed)
 					persistLayout(fromSrv)
 				} else {
 					const localLayout = await migrateWidgetLayoutIfNeeded()
@@ -365,7 +413,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		}
 
 		fetchAndReconcileWithServer()
-	}, [isAuthenticated, reflowForColumns, persistLayout])
+	}, [isAuthenticated, reflowForColumns, persistLayout, applyRuntimeLayout])
 
 	const triggerServerSync = useCallback(
 		(currentLayout: StoredWidget[]) => {
@@ -432,24 +480,25 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 							persistLayout(updated)
 							return updated
 						})
-						setRuntimeLayout((prev) => applyIdMap(prev))
+						applyRuntimeLayout((prev) => applyIdMap(prev))
 					})
 					.catch(() => {})
 			}, 1000)
 		},
-		[isAuthenticated, persistLayout]
+		[isAuthenticated, persistLayout, applyRuntimeLayout]
 	)
 
 	const commitMutation = useCallback(
 		(operation: string, nextRuntime: StoredWidget[], targetInstanceId?: string) => {
-			if (!validateLayout(nextRuntime, cols, WIDGET_DEFINITIONS)) {
+			const currentCols = colsRef.current
+			if (!validateLayout(nextRuntime, currentCols, WIDGET_DEFINITIONS)) {
 				return false
 			}
 
 			hasLocalEditRef.current = true
-			setRuntimeLayout(nextRuntime)
+			applyRuntimeLayout(nextRuntime)
 
-			if (cols >= DEFAULT_COLS) {
+			if (currentCols >= DEFAULT_COLS) {
 				setSavedLayout(nextRuntime)
 				persistLayout(nextRuntime)
 				triggerServerSync(nextRuntime)
@@ -485,17 +534,17 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			})
 			return true
 		},
-		[cols, persistLayout, triggerServerSync]
+		[persistLayout, triggerServerSync, applyRuntimeLayout]
 	)
 
 	const resizeWidget = useCallback(
 		(instanceId: string, newSize: WidgetSize): boolean => {
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'resize',
 				instanceId,
 				targetSize: newSize,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -506,7 +555,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			return commitMutation('resize', result, instanceId)
 		},
-		[runtimeLayout, cols, commitMutation]
+		[commitMutation]
 	)
 
 	const updateWidgetVariant = useCallback(
@@ -515,7 +564,9 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			newSize: WidgetSize,
 			meta?: Record<string, any>
 		): boolean => {
-			const current = runtimeLayout.find((w) => w.instanceId === instanceId)
+			const current = runtimeLayoutRef.current.find(
+				(w) => w.instanceId === instanceId
+			)
 			if (!current) return false
 
 			const isSizeSame =
@@ -530,7 +581,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					triggerServerSync(updated)
 					return updated
 				})
-				setRuntimeLayout((prev) =>
+				applyRuntimeLayout((prev) =>
 					prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
 				)
 				showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
@@ -538,11 +589,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			}
 
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'resize',
 				instanceId,
 				targetSize: newSize,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -558,17 +609,17 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
 			return commitMutation('resize', layoutWithMeta, instanceId)
 		},
-		[runtimeLayout, cols, commitMutation, persistLayout, triggerServerSync]
+		[commitMutation, persistLayout, triggerServerSync, applyRuntimeLayout]
 	)
 
 	const moveWidget = useCallback(
 		(instanceId: string, targetPosition: WidgetPosition): boolean => {
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'move',
 				instanceId,
 				targetPosition,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -578,10 +629,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			return commitMutation('move', result, instanceId)
 		},
-		[runtimeLayout, cols, commitMutation]
+		[commitMutation]
 	)
 
 	const startDragPreview = useCallback(() => {
+		dragSequenceRef.current += 1
 		dragBaseLayoutRef.current = runtimeLayoutRef.current
 	}, [])
 
@@ -589,6 +641,8 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		(instanceId: string, targetPosition: WidgetPosition) => {
 			const base = dragBaseLayoutRef.current
 			if (!base) return
+
+			const sequence = dragSequenceRef.current
 
 			const result = resolveLayoutChange({
 				layout: base,
@@ -599,22 +653,31 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				registry: WIDGET_DEFINITIONS,
 			})
 
-			if (result) {
-				setRuntimeLayout(result)
-			}
+			if (!result) return
+
+			startTransition(() => {
+				if (
+					dragSequenceRef.current !== sequence ||
+					dragBaseLayoutRef.current === null
+				) {
+					return
+				}
+				applyRuntimeLayout((prev) => reconcileIdentity(prev, result))
+			})
 		},
-		[]
+		[applyRuntimeLayout]
 	)
 
 	const endDragPreview = useCallback(
 		(instanceId: string, targetPosition: WidgetPosition | null) => {
 			const base = dragBaseLayoutRef.current
 			dragBaseLayoutRef.current = null
+			dragSequenceRef.current += 1
 			if (!base) return
 
 			const restore = () => {
 				if (runtimeLayoutRef.current !== base) {
-					setRuntimeLayout(base)
+					applyRuntimeLayout(base)
 				}
 			}
 
@@ -643,7 +706,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				restore()
 			}
 		},
-		[commitMutation]
+		[commitMutation, applyRuntimeLayout]
 	)
 
 	const addWidget = useCallback(
@@ -656,14 +719,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 			if (!def) return false
 
-			const isAlreadyActive = runtimeLayout.some((w) => w.id === id)
+			const isAlreadyActive = runtimeLayoutRef.current.some((w) => w.id === id)
 			if (!def.canDuplicate && isAlreadyActive) {
 				showToast(translateError('WIDGET_ALREADY_EXISTS') as string, 'error')
 				return false
 			}
 
 			const chosenSize = initialSize || def.defaultSize
-			const isCurrentlyActive = runtimeLayout.some((w) => w.id === def.id)
+			const isCurrentlyActive = runtimeLayoutRef.current.some(
+				(w) => w.id === def.id
+			)
 			if (isCurrentlyActive && !isVipRef.current) {
 				callEvent('openSettings', 'vip')
 				return false
@@ -696,11 +761,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			}
 
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'add',
 				newWidget,
 				targetPosition,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -719,12 +784,14 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			playNativeToastSound('success')
 			return commitMutation('add', result, finalInstanceId)
 		},
-		[runtimeLayout, cols, commitMutation, isAuthenticated, isVip]
+		[commitMutation, isAuthenticated]
 	)
 
 	const duplicateWidget = useCallback(
 		async (instanceId: string): Promise<boolean> => {
-			const original = runtimeLayout.find((w) => w.instanceId === instanceId)
+			const original = runtimeLayoutRef.current.find(
+				(w) => w.instanceId === instanceId
+			)
 			if (!original) return false
 
 			const def = WIDGET_DEFINITIONS[original.id]
@@ -764,11 +831,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			}
 
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'duplicate',
 				instanceId,
 				newWidget,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -787,7 +854,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			playNativeToastSound('success')
 			return commitMutation('duplicate', result, newInstanceId)
 		},
-		[runtimeLayout, cols, commitMutation, isAuthenticated, isVip]
+		[commitMutation, isAuthenticated]
 	)
 
 	const updateWidgetSettings = useCallback(
@@ -799,7 +866,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				persistLayout(updated)
 				return updated
 			})
-			setRuntimeLayout((prev) =>
+			applyRuntimeLayout((prev) =>
 				prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
 			)
 
@@ -811,16 +878,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				updateUserWidgetApi(instanceId, { meta }).catch(() => {})
 			}
 		},
-		[isAuthenticated, persistLayout]
+		[isAuthenticated, persistLayout, applyRuntimeLayout]
 	)
 
 	const removeWidget = useCallback(
 		(instanceId: string): boolean => {
 			const result = resolveLayoutChange({
-				layout: runtimeLayout,
+				layout: runtimeLayoutRef.current,
 				operation: 'remove',
 				instanceId,
-				cols,
+				cols: colsRef.current,
 				registry: WIDGET_DEFINITIONS,
 			})
 
@@ -828,7 +895,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return false
 			}
 
-			if (selectedInstanceId === instanceId) {
+			if (selectedInstanceIdRef.current === instanceId) {
 				setSelectedInstanceId(null)
 			}
 
@@ -839,57 +906,128 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			playNativeToastSound('warning')
 			return commitMutation('remove', result, instanceId)
 		},
-		[
+		[setSelectedInstanceId, commitMutation, isAuthenticated]
+	)
+
+	const layoutValue = useMemo<FreeWidgetLayoutState>(
+		() => ({
+			savedLayout,
 			runtimeLayout,
 			cols,
+			cellWidth,
+			cellHeight,
+			gap,
+			isListFallback,
+			isLoaded,
+			canvasMode,
 			selectedInstanceId,
+		}),
+		[
+			savedLayout,
+			runtimeLayout,
+			cols,
+			cellWidth,
+			cellHeight,
+			gap,
+			isListFallback,
+			isLoaded,
+			canvasMode,
+			selectedInstanceId,
+		]
+	)
+
+	const primaryBookmarkInstanceId = useMemo(
+		() =>
+			runtimeLayout.find((w) => w.id === WidgetKeys.bookmarks)?.instanceId ?? null,
+		[runtimeLayout]
+	)
+
+	const derivedValue = useMemo<FreeWidgetDerivedState>(
+		() => ({ primaryBookmarkInstanceId }),
+		[primaryBookmarkInstanceId]
+	)
+
+	const actionsValue = useMemo<FreeWidgetActions>(
+		() => ({
+			setCanvasMode,
 			setSelectedInstanceId,
-			commitMutation,
-			isAuthenticated,
+			getGridBounds,
+			setMaxRows,
+			resizeWidget,
+			moveWidget,
+			startDragPreview,
+			updateDragPreview,
+			endDragPreview,
+			addWidget,
+			duplicateWidget,
+			removeWidget,
+			updateWidgetSettings,
+			updateWidgetVariant,
+			updateContainerWidth,
+		}),
+		[
+			setCanvasMode,
+			setSelectedInstanceId,
+			getGridBounds,
+			setMaxRows,
+			resizeWidget,
+			moveWidget,
+			startDragPreview,
+			updateDragPreview,
+			endDragPreview,
+			addWidget,
+			duplicateWidget,
+			removeWidget,
+			updateWidgetSettings,
+			updateWidgetVariant,
+			updateContainerWidth,
 		]
 	)
 
 	return (
-		<FreeWidgetContext.Provider
-			value={{
-				savedLayout,
-				runtimeLayout,
-				cols,
-				cellWidth,
-				cellHeight,
-				gap,
-				isListFallback,
-				isLoaded,
-				canvasMode,
-				selectedInstanceId,
-				setCanvasMode,
-				setSelectedInstanceId,
-				resizeWidget,
-				moveWidget,
-				startDragPreview,
-				updateDragPreview,
-				endDragPreview,
-				addWidget,
-				duplicateWidget,
-				removeWidget,
-				updateWidgetSettings,
-				updateWidgetVariant,
-				updateContainerWidth,
-			}}
-		>
-			{children}
-		</FreeWidgetContext.Provider>
+		<FreeWidgetActionsContext.Provider value={actionsValue}>
+			<FreeWidgetDerivedContext.Provider value={derivedValue}>
+				<FreeWidgetLayoutContext.Provider value={layoutValue}>
+					{children}
+				</FreeWidgetLayoutContext.Provider>
+			</FreeWidgetDerivedContext.Provider>
+		</FreeWidgetActionsContext.Provider>
 	)
 }
 
-export function useFreeWidgets() {
-	const context = useContext(FreeWidgetContext)
+export function usePrimaryBookmarkInstanceId(): string | null | undefined {
+	const context = useContext(FreeWidgetDerivedContext)
+	if (!context) return undefined
+	return context.primaryBookmarkInstanceId
+}
+
+export function useFreeWidgetActions(): FreeWidgetActions {
+	const context = useContext(FreeWidgetActionsContext)
 	if (!context) {
-		throw new Error('useFreeWidgets must be used within a FreeWidgetProvider')
+		throw new Error('useFreeWidgetActions must be used within a FreeWidgetProvider')
 	}
 	return context
 }
 
-export function useOptionalFreeWidgets() {
-	return useContext(FreeWidgetContext)
+export function useFreeWidgetLayout(): FreeWidgetLayoutState {
+	const context = useContext(FreeWidgetLayoutContext)
+	if (!context) {
+		throw new Error('useFreeWidgetLayout must be used within a FreeWidgetProvider')
+	}
+	return context
+}
+
+export function useFreeWidgets(): FreeWidgetContextType {
+	const layout = useFreeWidgetLayout()
+	const actions = useFreeWidgetActions()
+	return useMemo(() => ({ ...layout, ...actions }), [layout, actions])
+}
+
+export function useOptionalFreeWidgets(): FreeWidgetContextType | null {
+	const layout = useContext(FreeWidgetLayoutContext)
+	const actions = useContext(FreeWidgetActionsContext)
+	return useMemo(
+		() => (layout && actions ? { ...layout, ...actions } : null),
+		[layout, actions]
+	)
 }

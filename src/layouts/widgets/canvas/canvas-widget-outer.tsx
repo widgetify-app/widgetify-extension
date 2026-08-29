@@ -1,7 +1,7 @@
 import type React from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { useFreeWidgets } from '@/context/free-widget.context'
+import { useFreeWidgetActions } from '@/context/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
 import {
 	type StoredWidget,
@@ -16,6 +16,7 @@ import { Icon } from '@/src/icons'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
+import { WidgetSlot } from './widget-slot'
 
 interface CanvasWidgetOuterProps {
 	widget: StoredWidget
@@ -24,32 +25,41 @@ interface CanvasWidgetOuterProps {
 	cellHeight: number
 	gap: number
 	cols: number
-	maxRows: number
+	canvasMode: 'normal' | 'edit'
+	isSelected: boolean
+	wiggleVariant: number
 }
 
-export function CanvasWidgetOuter({
+const WIGGLE_CLASSES = [
+	'animate-widget-wiggle-a',
+	'animate-widget-wiggle-b',
+	'animate-widget-wiggle-c',
+]
+
+function CanvasWidgetOuterImpl({
 	widget,
 	definition,
 	cellWidth,
 	cellHeight,
 	gap,
 	cols,
-	maxRows,
+	canvasMode,
+	isSelected,
+	wiggleVariant,
 }: CanvasWidgetOuterProps) {
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly } = useWidgetVipResolver()
 	const {
-		canvasMode,
 		setCanvasMode,
-		selectedInstanceId,
 		setSelectedInstanceId,
+		getGridBounds,
 		resizeWidget,
 		startDragPreview,
 		updateDragPreview,
 		endDragPreview,
 		duplicateWidget,
 		removeWidget,
-	} = useFreeWidgets()
+	} = useFreeWidgetActions()
 
 	const isCurrentWidgetVipOnly = isWidgetVipOnly(widget.id)
 	const isCurrentVariantVipOnly = isVariantVipOnly(widget.id, widget.meta?.variant)
@@ -60,16 +70,18 @@ export function CanvasWidgetOuter({
 	const isCompactSize = widget.size.w === 1 && widget.size.h === 1
 
 	const [isDragging, setIsDragging] = useState(false)
-	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 	const [contextMenuPos, setContextMenuPos] = useState<{
 		x: number
 		y: number
 	} | null>(null)
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
-	const isWiggling = canvasMode === 'edit' && selectedInstanceId !== widget.instanceId
+	const isWiggling = canvasMode === 'edit' && !isSelected
 
+	const outerRef = useRef<HTMLDivElement>(null)
 	const pointerStartRef = useRef<{ x: number; y: number } | null>(null)
 	const dragStartPosRef = useRef<WidgetPosition>(widget.position)
+	const dragBaseRectRef = useRef<{ left: number; top: number }>({ left: 0, top: 0 })
 	const isDragActiveRef = useRef(false)
 	const activePointerIdRef = useRef<number | null>(null)
 	const rafRef = useRef<number | null>(null)
@@ -85,10 +97,17 @@ export function CanvasWidgetOuter({
 		gap
 	)
 
+	const baseTransform = `translate3d(${pixelRect.left}px, ${pixelRect.top}px, 0)`
+	const baseTransformRef = useRef(baseTransform)
+	baseTransformRef.current = baseTransform
+
 	const resetDragState = useCallback(() => {
 		if (rafRef.current !== null) {
 			cancelAnimationFrame(rafRef.current)
 			rafRef.current = null
+		}
+		if (outerRef.current) {
+			outerRef.current.style.transform = baseTransformRef.current
 		}
 		pointerStartRef.current = null
 		isDragActiveRef.current = false
@@ -96,7 +115,6 @@ export function CanvasWidgetOuter({
 		pendingOffsetRef.current = null
 		previewPosRef.current = null
 		setIsDragging(false)
-		setDragOffset({ x: 0, y: 0 })
 	}, [])
 
 	const finishDrag = useCallback(
@@ -155,6 +173,7 @@ export function CanvasWidgetOuter({
 
 		pointerStartRef.current = { x: e.clientX, y: e.clientY }
 		dragStartPosRef.current = { ...widget.position }
+		dragBaseRectRef.current = { left: pixelRect.left, top: pixelRect.top }
 		isDragActiveRef.current = false
 		activePointerIdRef.current = e.pointerId
 		setSelectedInstanceId(widget.instanceId)
@@ -167,6 +186,7 @@ export function CanvasWidgetOuter({
 		const deltaCol = unitW > 0 ? Math.round(offset.x / unitW) : 0
 		const deltaRow = unitH > 0 ? Math.round(offset.y / unitH) : 0
 
+		const { maxRows } = getGridBounds()
 		const rowLimit = Math.max(0, maxRows - widget.size.h)
 
 		return {
@@ -205,7 +225,10 @@ export function CanvasWidgetOuter({
 					const offset = pendingOffsetRef.current
 					if (!offset) return
 
-					setDragOffset(offset)
+					const base = dragBaseRectRef.current
+					if (outerRef.current) {
+						outerRef.current.style.transform = `translate3d(${base.left + offset.x}px, ${base.top + offset.y}px, 0)`
+					}
 
 					const target = getTargetPosition(offset)
 					const previous = previewPosRef.current
@@ -226,7 +249,7 @@ export function CanvasWidgetOuter({
 		if (e.pointerId !== activePointerIdRef.current) return
 
 		const dropTarget = isDragActiveRef.current
-			? getTargetPosition(pendingOffsetRef.current ?? dragOffset)
+			? getTargetPosition(pendingOffsetRef.current ?? { x: 0, y: 0 })
 			: null
 
 		try {
@@ -260,8 +283,6 @@ export function CanvasWidgetOuter({
 		duplicateWidget(widget.instanceId)
 	}
 
-	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-
 	const handleSettings = () => {
 		if (definition.settingsTab) {
 			callEvent('openWidgetsSettings', {
@@ -294,23 +315,21 @@ export function CanvasWidgetOuter({
 	return (
 		<>
 			<div
+				ref={outerRef}
 				className={cn(
-					'widget-outer absolute select-none',
+					'widget-outer absolute top-0 left-0 select-none',
 					isDragging
-						? 'z-50 shadow-2xl cursor-grabbing scale-[1.03]'
+						? 'z-50 shadow-2xl cursor-grabbing'
 						: 'z-10 cursor-default',
-					!isDragging && 'widget-canvas-item-transition',
-					isWiggling && 'animate-widget-wiggle'
+					!isDragging && 'widget-canvas-item-transition'
 				)}
 				style={{
-					left: `${pixelRect.left}px`,
-					top: `${pixelRect.top}px`,
 					width: `${pixelRect.width}px`,
 					height: `${pixelRect.height}px`,
 					touchAction: 'none',
-					transform: isDragging
-						? `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`
-						: undefined,
+					transform: baseTransform,
+					scale: isDragging ? '1.03' : undefined,
+					willChange: isDragging ? 'transform' : undefined,
 				}}
 				onPointerDown={handlePointerDown}
 				onPointerMove={handlePointerMove}
@@ -352,10 +371,16 @@ export function CanvasWidgetOuter({
 				<div
 					className={cn(
 						'w-full h-full relative',
-						canvasMode === 'edit' && 'pointer-events-none select-none'
+						canvasMode === 'edit' && 'pointer-events-none select-none',
+						isWiggling && WIGGLE_CLASSES[wiggleVariant]
 					)}
 				>
-					{definition.node(widget.instanceId, widget.size, widget.meta)}
+					<WidgetSlot
+						definition={definition}
+						instanceId={widget.instanceId}
+						size={widget.size}
+						meta={widget.meta}
+					/>
 					{isLocked && canvasMode === 'normal' && (
 						<div
 							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-indigo-500/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
@@ -415,3 +440,17 @@ export function CanvasWidgetOuter({
 		</>
 	)
 }
+
+export const CanvasWidgetOuter = memo(
+	CanvasWidgetOuterImpl,
+	(a, b) =>
+		a.widget === b.widget &&
+		a.definition === b.definition &&
+		a.cellWidth === b.cellWidth &&
+		a.cellHeight === b.cellHeight &&
+		a.gap === b.gap &&
+		a.cols === b.cols &&
+		a.canvasMode === b.canvasMode &&
+		a.isSelected === b.isSelected &&
+		a.wiggleVariant === b.wiggleVariant
+)

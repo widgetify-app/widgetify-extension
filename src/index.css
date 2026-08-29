@@ -283,23 +283,25 @@ img {
   }
 }
 
-.animate-widget-wiggle {
+.animate-widget-wiggle-a {
   animation: widget-wiggle 0.46s ease-in-out infinite alternate;
   transform-origin: 50% 10%;
 }
 
-.animate-widget-wiggle:nth-child(2n) {
+.animate-widget-wiggle-b {
   animation: widget-wiggle-alt 0.48s ease-in-out infinite alternate;
   animation-delay: -0.15s;
+  transform-origin: 50% 10%;
 }
 
-.animate-widget-wiggle:nth-child(3n) {
+.animate-widget-wiggle-c {
   animation: widget-wiggle 0.52s ease-in-out infinite alternate;
   animation-delay: -0.3s;
+  transform-origin: 50% 10%;
 }
 
 .widget-canvas-item-transition {
-  transition: left 200ms ease-out, top 200ms ease-out, width 200ms ease-out, height 200ms ease-out, transform 200ms ease-out;
+  transition: transform 200ms ease-out, width 200ms ease-out, height 200ms ease-out;
 }
 
 @keyframes bounce-slow {

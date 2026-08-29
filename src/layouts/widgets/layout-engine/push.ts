@@ -1,144 +1,130 @@
-import { doRectanglesOverlap, getCollisions } from './collision'
-import type { StoredWidget, WidgetPosition } from './types'
+import { doRectanglesOverlap } from './collision'
+import { compactLayout } from './compact'
+import type { StoredWidget, WidgetPosition, WidgetSize } from './types'
 
-export function getPushCost(original: WidgetPosition, candidate: WidgetPosition): number {
-	const dx = Math.abs(candidate.col - original.col)
-	const dy = Math.abs(candidate.row - original.row)
-	return dx + dy * 2 + candidate.row * 0.05 + candidate.col * 0.01
+export interface ResolveCollisionsOptions {
+	compact?: boolean
 }
 
-export function generatePushCandidates(
-	widget: StoredWidget,
-	blocker: StoredWidget,
-	layout: StoredWidget[],
-	cols: number,
-	fixedIds: Set<string>
-): WidgetPosition[] {
-	const candidates: WidgetPosition[] = []
-	const seen = new Set<string>()
+export interface PushDownwardResult {
+	layout: StoredWidget[]
+	displacedIds: Set<string>
+}
 
-	const addCandidate = (col: number, row: number) => {
-		if (col < 0 || col + widget.size.w > cols || row < 0) {
-			return
+function overlapsAny(
+	position: WidgetPosition,
+	size: WidgetSize,
+	placed: StoredWidget[]
+): boolean {
+	for (const other of placed) {
+		if (doRectanglesOverlap(position, size, other.position, other.size)) {
+			return true
 		}
-		const key = `${col},${row}`
-		if (seen.has(key)) return
-		seen.add(key)
+	}
+	return false
+}
 
-		if (
-			doRectanglesOverlap({ col, row }, widget.size, blocker.position, blocker.size)
-		) {
-			return
-		}
-
-		for (const other of layout) {
-			if (fixedIds.has(other.instanceId)) {
-				if (
-					doRectanglesOverlap(
-						{ col, row },
-						widget.size,
-						other.position,
-						other.size
-					)
-				) {
-					return
-				}
+function hasPinnedOverlap(pinned: StoredWidget[]): boolean {
+	for (let i = 0; i < pinned.length; i++) {
+		for (let j = i + 1; j < pinned.length; j++) {
+			if (
+				doRectanglesOverlap(
+					pinned[i].position,
+					pinned[i].size,
+					pinned[j].position,
+					pinned[j].size
+				)
+			) {
+				return true
 			}
 		}
-
-		candidates.push({ col, row })
 	}
+	return false
+}
 
-	addCandidate(blocker.position.col + blocker.size.w, widget.position.row)
-	addCandidate(blocker.position.col - widget.size.w, widget.position.row)
-	addCandidate(widget.position.col, blocker.position.row + blocker.size.h)
-	addCandidate(0, blocker.position.row + blocker.size.h)
+export function pushDownward(
+	layout: StoredWidget[],
+	fixedIds: Set<string>
+): PushDownwardResult {
+	const pinned: StoredWidget[] = []
+	const movable: StoredWidget[] = []
 
-	const maxScanRow = Math.max(
-		...layout.map((w) => w.position.row + w.size.h),
-		blocker.position.row + blocker.size.h + 4,
-		8
-	)
-
-	for (let r = 0; r <= maxScanRow; r++) {
-		for (let c = 0; c <= cols - widget.size.w; c++) {
-			addCandidate(c, r)
+	for (const widget of layout) {
+		if (fixedIds.has(widget.instanceId)) {
+			pinned.push(widget)
+		} else {
+			movable.push(widget)
 		}
 	}
 
-	candidates.sort((a, b) => {
-		const costA = getPushCost(widget.position, a)
-		const costB = getPushCost(widget.position, b)
-		return costA - costB
+	if (hasPinnedOverlap(pinned)) {
+		if (import.meta.env.DEV) {
+			console.error(
+				'[layout-engine] pushDownward received overlapping pinned widgets',
+				pinned.map((w) => w.instanceId)
+			)
+		}
+		return { layout, displacedIds: new Set() }
+	}
+
+	movable.sort((a, b) => {
+		if (a.position.row !== b.position.row) {
+			return a.position.row - b.position.row
+		}
+		if (a.position.col !== b.position.col) {
+			return a.position.col - b.position.col
+		}
+		return a.instanceId < b.instanceId ? -1 : a.instanceId > b.instanceId ? 1 : 0
 	})
 
-	return candidates
+	const placed: StoredWidget[] = [...pinned]
+	const resolved = new Map<string, StoredWidget>()
+	const displacedIds = new Set<string>()
+
+	for (const widget of pinned) {
+		resolved.set(widget.instanceId, widget)
+	}
+
+	for (const widget of movable) {
+		let row = widget.position.row
+
+		while (
+			overlapsAny({ col: widget.position.col, row }, widget.size, placed)
+		) {
+			row++
+		}
+
+		let next = widget
+		if (row !== widget.position.row) {
+			next = { ...widget, position: { col: widget.position.col, row } }
+			displacedIds.add(widget.instanceId)
+		}
+
+		placed.push(next)
+		resolved.set(widget.instanceId, next)
+	}
+
+	if (displacedIds.size === 0) {
+		return { layout, displacedIds }
+	}
+
+	return {
+		layout: layout.map((w) => resolved.get(w.instanceId) ?? w),
+		displacedIds,
+	}
 }
 
 export function resolveCollisions(
 	layout: StoredWidget[],
 	fixedIds: Set<string>,
 	cols: number,
-	maxDepth = 30
-): StoredWidget[] | null {
-	const findFirstCollision = (
-		currentLayout: StoredWidget[]
-	): { widget: StoredWidget; blocker: StoredWidget } | null => {
-		for (const w of currentLayout) {
-			const collisions = getCollisions(w, currentLayout)
-			if (collisions.length > 0) {
-				if (!fixedIds.has(w.instanceId)) {
-					return { widget: w, blocker: collisions[0] }
-				}
-				const movable = collisions.find((c) => !fixedIds.has(c.instanceId))
-				if (movable) {
-					return { widget: movable, blocker: w }
-				}
-				return null
-			}
-		}
-		return null
+	options?: ResolveCollisionsOptions
+): StoredWidget[] {
+	const { layout: pushed, displacedIds } = pushDownward(layout, fixedIds)
+
+	if (!options?.compact || displacedIds.size === 0) {
+		return pushed
 	}
 
-	const solve = (
-		currentLayout: StoredWidget[],
-		depth: number
-	): StoredWidget[] | null => {
-		if (depth > maxDepth) {
-			return null
-		}
-
-		const collision = findFirstCollision(currentLayout)
-		if (!collision) {
-			return currentLayout
-		}
-
-		const { widget, blocker } = collision
-		const candidates = generatePushCandidates(
-			widget,
-			blocker,
-			currentLayout,
-			cols,
-			fixedIds
-		)
-
-		const topCandidates = candidates.slice(0, 15)
-
-		for (const pos of topCandidates) {
-			const nextLayout = currentLayout.map((item) =>
-				item.instanceId === widget.instanceId
-					? { ...item, position: { ...pos } }
-					: item
-			)
-
-			const result = solve(nextLayout, depth + 1)
-			if (result) {
-				return result
-			}
-		}
-
-		return null
-	}
-
-	return solve(layout, 0)
+	return compactLayout(pushed, cols, { fixedIds, onlyIds: displacedIds })
 }
