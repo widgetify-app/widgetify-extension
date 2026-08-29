@@ -41,7 +41,7 @@ export function TourTooltip({
 
 				<button
 					type="button"
-					{...closeProps}
+					{...skipProps}
 					className="p-1 transition-colors rounded-lg cursor-pointer text-base-content/50 hover:text-base-content hover:bg-base-content/10"
 					title="بستن"
 				>
