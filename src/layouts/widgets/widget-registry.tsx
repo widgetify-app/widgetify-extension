@@ -23,8 +23,6 @@ import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { type WidgetDefinition, type WidgetItem, WidgetKeys } from './layout-engine/types'
-import { SimplifyWigipad } from '@/layouts/simplify/wigipad-simplify'
-import { SimpleTools } from '@/layouts/simplify/tools-simplify'
 
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -88,31 +86,19 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ویجی‌پد',
 		emoji: '⏰',
 		category: 'time',
-		allowedSizes: [
-			{ w: 2, h: 3 },
-			{ w: 2, h: 3 },
-		],
+		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiPad,
 		canDuplicate: false,
 		variants: [
 			{
 				id: 'standard',
-				label: 'ویجی‌پد پیشرفته',
+				label: 'ویجی‌پد',
 				size: { w: 2, h: 3 },
 				meta: { variant: 'standard' },
 			},
-			{
-				id: 'simplify',
-				label: 'ویجی‌پد ساده',
-				size: { w: 2, h: 3 },
-				meta: { variant: 'simplify' },
-			},
 		],
-		node: (_instanceId, _size, meta) => {
-			if (meta?.variant === 'simplify') {
-				return <SimplifyWigipad />
-			}
+		node: (_instanceId, _size) => {
 			return <WigiPadWidget />
 		},
 	},
@@ -241,14 +227,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
 
-		node: (_instanceId, size, meta) => {
-			if (meta?.variant === 'simplify') {
-				return (
-					<CurrencyProvider>
-						<SimpleTools />
-					</CurrencyProvider>
-				)
-			}
+		node: (_instanceId, size) => {
 			return <ToolsLayout size={size} />
 		},
 	},
