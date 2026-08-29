@@ -22,14 +22,6 @@ jobs:
       - name: Build & Zip for Firefox
         run: bun run zip:firefox
 
-      - name: Publish to Firefox Add-ons (AMO)
-        uses: browser-actions/release-firefox-addon@latest
-        with:
-          addon-id: ${{ secrets.FIREFOX_ADDON_ID }}
-          addon-path: .output/*-firefox.zip
-          auth-api-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
-          auth-api-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
-          source-file-path: .output/*-sources.zip
       - name: Submit to Firefox Add-ons (AMO)
         run: |
           bunx publish-extension \
