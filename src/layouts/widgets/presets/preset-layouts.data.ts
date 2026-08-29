@@ -62,7 +62,7 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'zen-breath',
-		title: 'آرامش ذن',
+		title: 'آرامش ذهن',
 		description: 'خلوت و مینیمال برای آرامش ذهن و کاهش بار شناختی',
 		isVip: false,
 		isFeatured: true,
