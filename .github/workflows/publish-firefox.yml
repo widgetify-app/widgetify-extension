@@ -23,9 +23,19 @@ jobs:
         run: bun run zip:firefox
 
       - name: Publish to Firefox Add-ons (AMO)
-        uses: wxt-dev/publish-extension@v1
+        uses: browser-actions/release-firefox-addon@latest
         with:
-          firefox-jwt-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
-          firefox-jwt-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
-          firefox-sources-zip: .output/*-sources.zip
-          firefox-zip: .output/*-firefox.zip
+          addon-id: ${{ secrets.FIREFOX_ADDON_ID }}
+          addon-path: .output/*-firefox.zip
+          auth-api-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          auth-api-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
+          source-file-path: .output/*-sources.zip
+      - name: Submit to Firefox Add-ons (AMO)
+        run: |
+          bunx publish-extension \
+            --firefox-zip .output/*-firefox.zip \
+            --firefox-sources-zip .output/*-sources.zip
+        env:
+          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
