@@ -3,8 +3,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import {
 	convertShamsiToHijri,
 	getCurrentDate,
+	getHijriEvents,
+	getShamsiEvents,
 	type WidgetifyDate,
 } from '@/layouts/widgets/calendar/utils'
+import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { useGeneralSetting } from './general-setting.context'
 
 interface DateContextType {
@@ -63,7 +66,13 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		return `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
 	}
 
-	const todayIsHoliday = activeDate.day() === 5
+	const { data: events } = useGetEvents()
+
+	const todayEvents = events
+		? [...getShamsiEvents(events, today), ...getHijriEvents(events, today)]
+		: []
+
+	const todayIsHoliday = today.day() === 5 || todayEvents.some((e) => e.isHoliday)
 
 	return (
 		<DateContext.Provider
