@@ -1,0 +1,33 @@
+name: Publish to Firefox Add-ons
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-firefox:
+    name: Build & Publish to Firefox Add-ons
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "latest"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build & Zip for Firefox
+        run: bun run zip:firefox
+
+      - name: Submit to Firefox Add-ons (AMO)
+        run: |
+          bunx publish-extension \
+            --firefox-zip .output/*-firefox.zip \
+            --firefox-sources-zip .output/*-sources.zip
+        env:
+          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
