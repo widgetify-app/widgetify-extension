@@ -45,7 +45,7 @@ export function NotificationNavbar() {
 					</div>
 				</div>
 
-				<div className="flex-1 overflow-y-auto max-h-48 scrollbar-none overscroll-contain">
+				<div className="flex-1 h-48 overflow-y-auto min-h-48 max-h-48 scrollbar-none overscroll-contain">
 					<NotificationCenter hasBorder={true} />
 
 					{!hasNotifications && (
