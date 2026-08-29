@@ -227,7 +227,10 @@ export function Dropdown({
 								visibility: isReady ? 'visible' : 'hidden',
 							}}
 						>
-							<div className="max-h-full overflow-y-auto">
+							<div
+								className="overflow-y-auto overscroll-contain scrollbar-none"
+								style={{ maxHeight }}
+							>
 								{dropdownContent}
 							</div>
 						</div>

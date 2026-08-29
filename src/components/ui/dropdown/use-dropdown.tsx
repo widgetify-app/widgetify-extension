@@ -33,19 +33,6 @@ export const useDropdown = () => {
 			}
 		}
 
-		const handleScroll = (event: Event) => {
-			if (
-				event.target &&
-				dropdownContentRef.current &&
-				(dropdownContentRef.current.contains(event.target as Node) ||
-					dropdownContentRef.current === event.target)
-			) {
-				return
-			}
-
-			close()
-		}
-
 		const handleResize = () => {
 			if (isOpen) {
 				close()
@@ -56,7 +43,6 @@ export const useDropdown = () => {
 			const timeoutId = setTimeout(() => {
 				document.addEventListener('mousedown', handleClickOutside)
 				document.addEventListener('keydown', handleEscape)
-				window.addEventListener('scroll', handleScroll, true)
 				window.addEventListener('resize', handleResize)
 			}, 100)
 
@@ -64,7 +50,6 @@ export const useDropdown = () => {
 				clearTimeout(timeoutId)
 				document.removeEventListener('mousedown', handleClickOutside)
 				document.removeEventListener('keydown', handleEscape)
-				window.removeEventListener('scroll', handleScroll, true)
 				window.removeEventListener('resize', handleResize)
 			}
 		}
