@@ -142,13 +142,13 @@ export function SearchCompactRow() {
 	}, [showHistoryPortal])
 
 	return (
-		<div className="flex items-center justify-center w-full h-full select-none">
+		<div className="flex items-center justify-center w-full h-full p-1 select-none">
 			<div
 				ref={searchRef}
-				className="relative flex flex-col justify-center w-full h-full p-0.5 bg-content bg-glass rounded-widget"
+				className="relative w-full p-0.5 bg-content bg-glass rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
-					<div className="relative flex items-center py-1.5 px-2 overflow-hidden shadow-xs transition-all duration-300 bg-content rounded-widget">
+					<div className="relative flex items-center py-1.5 px-2 overflow-hidden shadow-xs transition-all duration-300 bg-content rounded-2xl">
 						<EngineSelector onSelected={onEngineChange} />
 
 						<input
@@ -171,14 +171,14 @@ export function SearchCompactRow() {
 							<button
 								type="button"
 								onClick={handleClearSearch}
-								className="h-6 w-6 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-base-300 transition-colors"
+								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-base-300"
 							>
 								<Icon name="close" size={14} className="opacity-50" />
 							</button>
 						) : (
 							<button
 								type="submit"
-								className="h-6 w-6 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-base-300 transition-colors"
+								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-base-300"
 							>
 								<Icon name="search" size={14} className="opacity-50" />
 							</button>
