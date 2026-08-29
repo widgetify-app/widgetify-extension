@@ -59,7 +59,7 @@ export function AddWidgetOptions({
 								{isVipBadge && (
 									<VipBadge
 										size="xs"
-										variant={isCurrent ? 'white' : 'warning'}
+										variant={isCurrent ? 'white' : 'indigo-subtle'}
 									/>
 								)}
 							</button>
@@ -72,19 +72,15 @@ export function AddWidgetOptions({
 
 	return (
 		<div className="flex flex-col gap-1.5">
-			<span className="text-xs font-bold text-content">
-				انتخاب اندازه ویجت:
-			</span>
+			<span className="text-xs font-bold text-content">انتخاب اندازه ویجت:</span>
 			<div className="flex flex-wrap gap-1.5">
 				{definition.allowedSizes.map((sizeOption) => {
 					const isCurrentSize =
-						selectedSize.w === sizeOption.w &&
-						selectedSize.h === sizeOption.h
+						selectedSize.w === sizeOption.w && selectedSize.h === sizeOption.h
 					const isDefault =
 						definition.defaultSize.w === sizeOption.w &&
 						definition.defaultSize.h === sizeOption.h
-					const isVipBadge =
-						!isVip && isSizeVipOnly(definition.id, sizeOption)
+					const isVipBadge = !isVip && isSizeVipOnly(definition.id, sizeOption)
 
 					return (
 						<Chip
@@ -92,7 +88,7 @@ export function AddWidgetOptions({
 							key={`${sizeOption.w}x${sizeOption.h}`}
 							className={cn(
 								'py-1 flex items-center gap-1',
-								isVipBadge && !isCurrentSize && 'border-warning/30'
+								isVipBadge && !isCurrentSize && 'border-indigo-500/30'
 							)}
 							selected={isCurrentSize}
 						>
@@ -102,7 +98,7 @@ export function AddWidgetOptions({
 							{isVipBadge && (
 								<VipBadge
 									size="xs"
-									variant={isCurrentSize ? 'white' : 'warning'}
+									variant={isCurrentSize ? 'white' : 'indigo-subtle'}
 								/>
 							)}
 							{isDefault && !isCurrentSize && !isVipBadge && (

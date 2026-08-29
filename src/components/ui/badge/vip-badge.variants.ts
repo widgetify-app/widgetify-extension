@@ -8,11 +8,7 @@ export const vipBadgeVariants = cva(
 				indigo: 'bg-indigo-500 text-white shadow-sm shadow-indigo-500/20',
 				'indigo-subtle':
 					'bg-indigo-500/15 text-indigo-500 border border-indigo-500/20',
-				warning: 'bg-warning/15 text-warning border border-warning/20',
 				white: 'bg-white/20 text-white backdrop-blur-md border border-white/30 shadow-sm',
-				emerald:
-					'bg-emerald-500/15 text-emerald-500 border border-emerald-500/20',
-				rose: 'bg-rose-500/15 text-rose-500 border border-rose-500/20',
 			},
 			size: {
 				xs: 'text-[9px] px-2 py-0.5 gap-1',

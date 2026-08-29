@@ -21,7 +21,7 @@ function ProUpgradeButton({ label }: { label: string }) {
 		<Button
 			type="button"
 			onClick={() => callEvent('openSettings', 'vip')}
-			className="flex items-center justify-center w-full gap-2 font-bold border bg-warning/15 hover:bg-warning/25 text-warning border-warning/30"
+			className="flex items-center justify-center w-full gap-2 font-bold border bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-500 border-indigo-500/30"
 			rounded={'2xl'}
 			variant={'default'}
 		>

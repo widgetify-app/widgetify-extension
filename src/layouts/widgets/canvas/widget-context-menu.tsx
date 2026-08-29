@@ -114,7 +114,7 @@ export function WidgetContextMenu({
 									selected={isCurrent}
 									className={cn(
 										'py-0.5 flex items-center justify-center gap-0.5',
-										isSizeVip && !isCurrent && 'border-warning/30'
+										isSizeVip && !isCurrent && 'border-indigo-500/30'
 									)}
 								>
 									<span>
@@ -124,7 +124,9 @@ export function WidgetContextMenu({
 										<VipBadge
 											size="xs"
 											iconOnly
-											variant={isCurrent ? 'white' : 'warning'}
+											variant={
+												isCurrent ? 'white' : 'indigo-subtle'
+											}
 										/>
 									)}
 								</Chip>

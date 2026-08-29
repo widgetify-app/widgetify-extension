@@ -174,10 +174,7 @@ export function CanvasWidgetOuter({
 				0,
 				Math.min(cols - widget.size.w, dragStartPosRef.current.col + deltaCol)
 			),
-			row: Math.max(
-				0,
-				Math.min(rowLimit, dragStartPosRef.current.row + deltaRow)
-			),
+			row: Math.max(0, Math.min(rowLimit, dragStartPosRef.current.row + deltaRow)),
 		}
 	}
 
@@ -361,12 +358,12 @@ export function CanvasWidgetOuter({
 					{definition.node(widget.instanceId, widget.size, widget.meta)}
 					{isLocked && canvasMode === 'normal' && (
 						<div
-							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-warning/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
+							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-indigo-500/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
 							onClick={(e) => e.stopPropagation()}
 						>
 							<div
 								className={cn(
-									'rounded-full bg-warning/15 text-warning flex items-center justify-center shadow-2xs',
+									'rounded-full bg-indigo-500/15 text-indigo-500 flex items-center justify-center shadow-2xs',
 									isCompactSize ? 'w-6 h-6 mb-1' : 'w-8 h-8 mb-1.5'
 								)}
 							>
