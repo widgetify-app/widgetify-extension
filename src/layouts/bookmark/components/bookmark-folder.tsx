@@ -34,11 +34,11 @@ export function FolderBookmarkItem({
 
 		if (folderItems.length > 0) {
 			return (
-				<div className="grid grid-cols-3 gap-0.5 max-w-17.5">
+				<div className="grid grid-cols-3 gap-1.5 p-0.5 items-center justify-center">
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-5 h-5 overflow-hidden [&>div]:!w-5 [&>div]:!h-5 [&>div_img]:!w-5 [&>div_img]:!h-5 [&>div_div]:!text-[7px]"
+							className="flex items-center justify-center w-5.5 h-5.5 overflow-hidden rounded-md [&>div]:!w-5.5 [&>div]:!h-5.5 [&>div_img]:!w-5.5 [&>div_img]:!h-5.5 [&>div_img]:!rounded-md [&>div_div]:!text-[8px] [&>div_div]:!rounded-md"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>
@@ -89,9 +89,9 @@ export function FolderBookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
 				className={cn(
-					'relative flex group h-full w-full flex-col items-center justify-between px-1.5 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
+					'relative flex group h-full w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
 					!bookmark.customBackground
-						? 'bg-content bg-glass hover:bg-primary/20 text-content'
+						? 'bg-content bg-glass hover:bg-base-300 text-content'
 						: 'before:bg-inherit border-transparent'
 				)}
 			>
