@@ -21,6 +21,8 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
 import { usePrimaryBookmarkInstanceId } from '@/context/free-widget.context'
+import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 import type { WidgetSize } from '../widgets/layout-engine/types'
 import { validate } from 'uuid'
 
@@ -42,6 +44,8 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showImportBookmarksModal, setShowImportBookmarksModal] = useState(false)
 	const [folderModalPath, setFolderModalPath] = useState<FolderPathItem[]>([])
+	const shouldMountFolder = useDelayedUnmount(folderModalPath.length > 0, MODAL_EXIT_MS)
+	const shouldMountImport = useDelayedUnmount(showImportBookmarksModal, MODAL_EXIT_MS)
 	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
@@ -228,11 +232,11 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				</div>
 			</DndContext>
 
-			{folderModalPath.length > 0 && (
+			{shouldMountFolder && (
 				<BookmarkFolderModal
 					isOpen={folderModalPath.length > 0}
-					onClose={() => setFolderModalPath([])}
-					folderPath={folderModalPath}
+				onClose={() => setFolderModalPath([])}
+				folderPath={folderModalPath}
 					setFolderPath={setFolderModalPath}
 					instanceId={instanceId}
 					isPrimary={isPrimary}
@@ -262,7 +266,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 					/>
 				)
 			)}
-			{showImportBookmarksModal && (
+			{shouldMountImport && (
 				<ImportBrowserBookmarksModal
 					isOpen={showImportBookmarksModal}
 					onClose={() => setShowImportBookmarksModal(false)}

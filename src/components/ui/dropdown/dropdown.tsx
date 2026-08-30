@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Portal } from '../portal/portal'
 import { useDropdown } from './use-dropdown'
 import { useState, useLayoutEffect, useRef } from 'react'
+import { Motion, Presence } from '@/common/motion'
 
 export interface DropdownOption {
 	id: string
@@ -207,36 +208,46 @@ export function Dropdown({
 				{trigger}
 			</div>
 
-			{isOpen && !disabled && (
-				<Portal>
-					<div id={id} className="fixed inset-0 z-popover pointer-events-none">
+			<Portal>
+				<Presence>
+					{isOpen && !disabled && (
 						<div
-							ref={dropdownContentRef}
-							className={`fixed z-popover shadow-xl overflow-hidden rounded-2xl bg-transparent! transition-opacity duration-100 ${isReady ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} bg-glass ${dropdownClassName}`}
-							style={{
-								maxHeight,
-								width:
-									width === 'auto'
-										? 'auto'
-										: width === 'full'
-											? '100%'
-											: width,
-								minWidth: width === 'auto' ? '150px' : undefined,
-								top: dropdownPosition.top,
-								left: dropdownPosition.left,
-								visibility: isReady ? 'visible' : 'hidden',
-							}}
+							key="dropdown-layer"
+							id={id}
+							className="fixed inset-0 z-popover pointer-events-none"
 						>
-							<div
-								className="overflow-y-auto overscroll-contain scrollbar-none"
-								style={{ maxHeight }}
+							<Motion.div
+								ref={dropdownContentRef}
+								className={`fixed z-popover shadow-xl overflow-hidden rounded-2xl bg-transparent! ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} bg-glass ${dropdownClassName}`}
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: isReady ? 1 : 0, scale: isReady ? 1 : 0.95 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ duration: 0.15, ease: 'easeOut' }}
+								style={{
+									maxHeight,
+									width:
+										width === 'auto'
+											? 'auto'
+											: width === 'full'
+												? '100%'
+												: width,
+									minWidth: width === 'auto' ? '150px' : undefined,
+									top: dropdownPosition.top,
+									left: dropdownPosition.left,
+									visibility: isReady ? 'visible' : 'hidden',
+								}}
 							>
-								{dropdownContent}
-							</div>
+								<div
+									className="overflow-y-auto overscroll-contain scrollbar-none"
+									style={{ maxHeight }}
+								>
+									{dropdownContent}
+								</div>
+							</Motion.div>
 						</div>
-					</div>
-				</Portal>
-			)}
+					)}
+				</Presence>
+			</Portal>
 		</div>
 	)
 }

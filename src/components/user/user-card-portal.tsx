@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { Motion, Presence } from '@/common/motion'
+import { Portal } from '@/components/ui'
 import { UserCard } from './user-card'
 
 export interface UserCardUser {
@@ -62,21 +63,28 @@ export function UserCardPortal({
 		}
 	}, [isOpen, onClose, triggerRef])
 
-	if (!isOpen) return null
-
-	return createPortal(
-		<div
-			ref={cardRef}
-			className="fixed z-popover shadow-lg min-w-64 max-w-64"
-			style={{
-				top: `${position.top}px`,
-				left: `${position.left}px`,
-				transform: 'translateX(-50%)',
-			}}
-			dir="ltr"
-		>
-			<UserCard user={user} />
-		</div>,
-		document.body
+	return (
+		<Portal>
+			<Presence>
+				{isOpen && (
+					<Motion.div
+						key="user-card"
+						ref={cardRef}
+						className="fixed z-popover shadow-lg min-w-64 max-w-64"
+						initial={{ opacity: 0, scale: 0.95, x: '-50%' }}
+						animate={{ opacity: 1, scale: 1, x: '-50%' }}
+						exit={{ opacity: 0, scale: 0.95, x: '-50%' }}
+						transition={{ duration: 0.15, ease: 'easeOut' }}
+						style={{
+							top: `${position.top}px`,
+							left: `${position.left}px`,
+						}}
+						dir="ltr"
+					>
+						<UserCard user={user} />
+					</Motion.div>
+				)}
+			</Presence>
+		</Portal>
 	)
 }

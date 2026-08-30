@@ -146,10 +146,9 @@ export function MiniAppsLayout() {
 				</div>
 			</div>
 
-			{showInfo && (
-				<Modal
+			<Modal
 					title="برنامک ها"
-					isOpen
+					isOpen={showInfo}
 					onClose={() => setShowInfo(false)}
 					direction="rtl"
 				>
@@ -183,7 +182,6 @@ export function MiniAppsLayout() {
 						باشه
 					</Button>
 				</Modal>
-			)}
 		</div>
 	)
 }

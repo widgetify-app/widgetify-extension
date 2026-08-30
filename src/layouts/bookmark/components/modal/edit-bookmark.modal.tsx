@@ -1,3 +1,4 @@
+import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
@@ -12,7 +13,7 @@ interface EditBookmarkModalProps {
 	isOpen: boolean
 	onClose: () => void
 	onSave: (out: BookmarkUpdateFormFields) => void
-	bookmark: Bookmark
+	bookmark: Bookmark | null
 }
 
 export interface BookmarkUpdateFormFields {
@@ -144,7 +145,8 @@ export function EditBookmarkModal({
 		}
 	}, [bookmark])
 
-	if (!bookmark) return null
+	const safeBookmark = useLastDefined(bookmark)
+	if (!safeBookmark) return null
 
 	return (
 		<Modal
@@ -247,7 +249,7 @@ export function EditBookmarkModal({
 					customBackground: formData.customBackground,
 					customTextColor: formData.customTextColor,
 					sticker: formData.sticker,
-					type: bookmark.type,
+					type: safeBookmark.type,
 					title: formData.title,
 					url: formData.url,
 				}}
