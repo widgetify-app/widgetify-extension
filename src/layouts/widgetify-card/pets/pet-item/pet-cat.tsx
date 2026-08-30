@@ -36,6 +36,7 @@ export const CatComponent = ({ className }: { className?: string }) => {
 
 	const catDimensions: PetDimensions = {
 		size: 25,
+		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.NORMAL,
 		climbSpeed: PetSpeed.NORMAL,
@@ -88,7 +89,6 @@ export const CatComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CAT)}
-			hungryLevel={getPetHungryState(PetTypes.CAT)?.level}
 		/>
 	)
 }
