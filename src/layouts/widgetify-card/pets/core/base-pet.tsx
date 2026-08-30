@@ -2,6 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { PetTooltip } from '../components/pet-tooltip'
 import { cn } from '@/common/utils/cn'
 import {
+	clampToBounds,
+	directionTowardWall,
+	frameScale,
+	getMovementBounds,
+	isNearWall,
+	pickClimbWall,
+	stepWalk,
+} from './pet-movement'
+import {
 	type CollectibleItem,
 	type PetAnimations,
 	type PetAssets,
@@ -73,7 +82,6 @@ interface BasePetContainerProps {
 	dimensions: PetDimensions
 	assets: PetAssets
 	isHungry: boolean
-	hungryLevel: number | undefined
 	className?: string
 }
 
@@ -125,7 +133,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 					left: `${position.x}px`,
 					bottom: `${position.y}px`,
 					transform: `scaleX(${direction})`,
-					width: '50px',
+					width: `${dimensions.width}px`,
 					height: `${dimensions.size}px`,
 					zIndex: 10,
 				}}
@@ -136,12 +144,14 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 						content={isHungry ? 'غذاااا بدهه' : name}
 						emoji={isHungry ? '🍽️' : undefined}
 						isAnimation={isHungry}
+						placement={position.y > 0 ? 'bottom' : 'top'}
 					/>
 				)}
 				{loadedSrcs.map((src) => (
 					<img
 						key={src}
 						src={src}
+						alt={name}
 						className="absolute inset-0 object-contain w-full h-full pointer-events-none"
 						style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
 					/>
@@ -175,28 +185,61 @@ export function useBasePetLogic({
 	const [showName, setShowName] = useState(false)
 
 	const [collectibles, setCollectibles] = useState<CollectibleItem[]>([])
-	const [collectibleIdCounter, setCollectibleIdCounter] = useState(0)
 
-	const getMovementBounds = useCallback(() => {
-		const container = containerRef.current
-		const visibleHeight = container?.offsetHeight ?? dimensions.maxHeight
+	const positionRef = useRef<Position>({ x: 30, y: 0 })
+	const collectiblesRef = useRef<CollectibleItem[]>([])
+	const collectibleIdRef = useRef(0)
+	const climbWallXRef = useRef<number | null>(null)
+	const behaviorStateRef = useRef(behaviorState)
+	const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
+	const onCollectibleCollectionRef = useRef(onCollectibleCollection)
+	const onLevelDownHungryStateRef = useRef(onLevelDownHungryState)
 
-		return {
-			minX: 10,
-			maxX: (container?.offsetWidth || 300) - dimensions.size - 10,
-			minY: 0,
+	onCollectibleCollectionRef.current = onCollectibleCollection
+	onLevelDownHungryStateRef.current = onLevelDownHungryState
+	behaviorStateRef.current = behaviorState
 
-			maxY: Math.max(
-				0,
-				Math.min(dimensions.maxHeight, visibleHeight - dimensions.size)
-			),
+	const scheduleTimeout = useCallback((callback: () => void, delay: number) => {
+		const id = setTimeout(() => {
+			timeoutsRef.current.delete(id)
+			callback()
+		}, delay)
+		timeoutsRef.current.add(id)
+		return id
+	}, [])
+
+	useEffect(() => {
+		const timeouts = timeoutsRef.current
+		return () => {
+			for (const id of timeouts) {
+				clearTimeout(id)
+			}
+			timeouts.clear()
 		}
-	}, [dimensions.size, dimensions.maxHeight])
+	}, [])
 
-	const isNearWall = useCallback(() => {
-		const bounds = getMovementBounds()
-		return position.x <= bounds.minX + 5 || position.x >= bounds.maxX - 5
-	}, [getMovementBounds, position.x])
+	const applyCollectibles = useCallback((next: CollectibleItem[]) => {
+		collectiblesRef.current = next
+		setCollectibles(next)
+	}, [])
+
+	const applyPosition = useCallback((next: Position) => {
+		const prev = positionRef.current
+		if (prev.x === next.x && prev.y === next.y) return
+		positionRef.current = next
+		setPosition(next)
+	}, [])
+
+	const getBounds = useCallback(() => {
+		const container = containerRef.current
+		return getMovementBounds(
+			container?.offsetWidth || 0,
+			container?.offsetHeight || 0,
+			dimensions.width,
+			dimensions.size,
+			dimensions.maxHeight
+		)
+	}, [dimensions.width, dimensions.size, dimensions.maxHeight])
 
 	const getCurrentSpeed = useCallback(() => {
 		return action === 'run' ? dimensions.runSpeed : dimensions.walkSpeed
@@ -223,50 +266,54 @@ export function useBasePetLogic({
 	const handleClick = useCallback(
 		(e: MouseEvent) => {
 			const container = containerRef.current
-			if (container) {
-				if (collectibles.length > 2) {
-					setCollectibles([])
-					return
-				}
+			if (!container) return
 
-				const rect = container.getBoundingClientRect()
-				const clickX = e.clientX - rect.left
-				const bounds = getMovementBounds()
-				const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
+			if (collectiblesRef.current.length > 2) {
+				applyCollectibles([])
+				return
+			}
 
-				const newCollectible: CollectibleItem = {
-					id: collectibleIdCounter,
-					x: clampedX,
-					y: -assets.collectibleSize,
-					collected: false,
-					dropping: true,
-				}
+			const rect = container.getBoundingClientRect()
+			const clickX = e.clientX - rect.left
+			const bounds = getBounds()
+			const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
+			const spawnY = Math.max(
+				0,
+				(container.offsetHeight || 0) - assets.collectibleSize
+			)
 
-				setCollectibles((prev) => [...prev, newCollectible])
-				setCollectibleIdCounter((prev) => prev + 1)
+			const newCollectible: CollectibleItem = {
+				id: collectibleIdRef.current,
+				x: clampedX,
+				y: spawnY,
+				collected: false,
+				dropping: true,
+			}
+			collectibleIdRef.current += 1
 
-				if (position.y === 0) {
-					if (action === 'sit' || action === 'idle') {
-						updateAction('stand')
-						setTimeout(() => {
-							updateAction('run')
-							updateBehaviorState(PetBehavior.CHASING)
-						}, 300)
-					} else {
+			applyCollectibles([...collectiblesRef.current, newCollectible])
+
+			if (positionRef.current.y === 0) {
+				if (action === 'sit' || action === 'idle') {
+					updateAction('stand')
+					scheduleTimeout(() => {
 						updateAction('run')
 						updateBehaviorState(PetBehavior.CHASING)
-					}
+					}, 300)
+				} else {
+					updateAction('run')
+					updateBehaviorState(PetBehavior.CHASING)
 				}
 			}
 		},
 		[
-			collectibleIdCounter,
 			assets.collectibleSize,
 			action,
-			position.y,
-			getMovementBounds,
+			getBounds,
 			updateAction,
 			updateBehaviorState,
+			applyCollectibles,
+			scheduleTimeout,
 		]
 	)
 
@@ -278,11 +325,12 @@ export function useBasePetLogic({
 
 			if (availableCollectibles.length === 0) return null
 
+			const currentX = positionRef.current.x
 			let nearest = availableCollectibles[0]
-			let minDistance = Math.abs(position.x - nearest.x)
+			let minDistance = Math.abs(currentX - nearest.x)
 
 			for (let i = 1; i < availableCollectibles.length; i++) {
-				const distance = Math.abs(position.x - availableCollectibles[i].x)
+				const distance = Math.abs(currentX - availableCollectibles[i].x)
 				if (distance < minDistance) {
 					minDistance = distance
 					nearest = availableCollectibles[i]
@@ -290,81 +338,97 @@ export function useBasePetLogic({
 			}
 			return nearest
 		},
-		[position.x]
+		[]
 	)
 
 	const handleCollectibleCollection = useCallback(
 		(collectedItemId: number) => {
-			setCollectibles((prevCollectibles) =>
-				prevCollectibles.map((collectible) =>
-					collectible.id === collectedItemId
-						? { ...collectible, collected: true }
-						: collectible
-				)
-			)
 			updateAction('stand')
-			if (onCollectibleCollection) {
-				onCollectibleCollection(collectedItemId)
-			}
-			setTimeout(
+			onCollectibleCollectionRef.current?.(collectedItemId)
+			scheduleTimeout(
 				() =>
-					updateAction(behaviorState === PetBehavior.CHASING ? 'run' : 'walk'),
+					updateAction(
+						behaviorStateRef.current === PetBehavior.CHASING ? 'run' : 'walk'
+					),
 				500
 			)
 		},
-		[updateAction, behaviorState]
+		[updateAction, scheduleTimeout]
 	)
 
-	const updateCollectibles = useCallback(() => {
-		setCollectibles((prevCollectibles) => {
-			let collectiblesChanged = false
+	const updateCollectibles = useCallback(
+		(scale: number) => {
+			const prevCollectibles = collectiblesRef.current
+			if (prevCollectibles.length === 0) return
+
+			const fallStep = assets.collectibleFallSpeed * scale
+			const currentX = positionRef.current.x
+			const collectRadius = dimensions.size / 1.5
+
+			let changed = false
+			let collectedId: number | null = null
+
 			const updatedCollectibles = prevCollectibles.map((collectible) => {
 				if (collectible.collected) return collectible
 
 				if (collectible.dropping) {
-					const newY = collectible.y + assets.collectibleFallSpeed
-					if (newY >= 0) {
-						collectiblesChanged = true
+					changed = true
+					const newY = collectible.y - fallStep
+					if (newY <= 0) {
 						return { ...collectible, y: 0, dropping: false }
 					}
-					collectiblesChanged = true
 					return { ...collectible, y: newY }
 				}
 
-				const distance = Math.abs(collectible.x - position.x)
-				if (
-					!collectible.collected &&
-					!collectible.dropping &&
-					distance < dimensions.size / 1.5
-				) {
-					handleCollectibleCollection(collectible.id)
-
-					return collectible
+				if (collectedId === null) {
+					const distance = Math.abs(collectible.x - currentX)
+					if (distance < collectRadius) {
+						collectedId = collectible.id
+						changed = true
+						return { ...collectible, collected: true }
+					}
 				}
+
 				return collectible
 			})
 
-			if (collectiblesChanged) {
-				return updatedCollectibles
+			if (changed) {
+				applyCollectibles(updatedCollectibles)
 			}
-			return prevCollectibles
-		})
-	}, [
-		assets.collectibleFallSpeed,
-		position.x,
-		dimensions.size,
-		handleCollectibleCollection,
-	])
+
+			if (collectedId !== null) {
+				handleCollectibleCollection(collectedId)
+			}
+		},
+		[
+			assets.collectibleFallSpeed,
+			dimensions.size,
+			applyCollectibles,
+			handleCollectibleCollection,
+		]
+	)
 
 	useEffect(() => {
 		const collectedItems = collectibles.filter((c) => c.collected)
 		if (collectedItems.length > 0) {
 			const timer = setTimeout(() => {
-				setCollectibles((prev) => prev.filter((c) => !c.collected))
+				applyCollectibles(collectiblesRef.current.filter((c) => !c.collected))
 			}, 2000)
 			return () => clearTimeout(timer)
 		}
-	}, [collectibles])
+	}, [collectibles, applyCollectibles])
+
+	const startClimb = useCallback(() => {
+		const bounds = getBounds()
+		const wallX = pickClimbWall(positionRef.current.x, bounds)
+
+		climbWallXRef.current = wallX
+		setDirection(directionTowardWall(wallX, bounds))
+		setIsDescending(false)
+		updateBehaviorState(PetBehavior.CLIMBING)
+		updateAction('climb')
+		setActionTimer(randomDuration(durations.climb))
+	}, [getBounds, updateAction, updateBehaviorState, durations.climb])
 
 	const roamOrRest = useCallback(() => {
 		if (behaviorState === PetBehavior.CLIMBING) {
@@ -381,11 +445,9 @@ export function useBasePetLogic({
 
 		const random = Math.random()
 		if (behaviorState === PetBehavior.ROAMING) {
-			if (isNearWall() && random > 0.7 && animations.climb) {
-				setIsDescending(false)
-				updateBehaviorState(PetBehavior.CLIMBING)
-				updateAction('climb')
-				setActionTimer(randomDuration(durations.climb))
+			const bounds = getBounds()
+			if (isNearWall(positionRef.current.x, bounds) && random > 0.7 && animations.climb) {
+				startClimb()
 			} else {
 				updateBehaviorState(PetBehavior.RESTING)
 				const shouldSit = Math.random() > 0.5 && animations.sit
@@ -399,13 +461,12 @@ export function useBasePetLogic({
 			setActionTimer(randomDuration(shouldRun ? durations.run : durations.walk))
 		}
 
-		if (onLevelDownHungryState) {
-			onLevelDownHungryState()
-		}
+		onLevelDownHungryStateRef.current?.()
 	}, [
 		behaviorState,
 		isHungry,
-		isNearWall,
+		getBounds,
+		startClimb,
 		animations.climb,
 		animations.sit,
 		durations,
@@ -413,92 +474,91 @@ export function useBasePetLogic({
 		updateBehaviorState,
 	])
 
-	const updateBehavior = useCallback(() => {
-		const nearestCollectible = findNearestCollectible(collectibles)
+	const updateBehavior = useCallback(
+		(elapsed: number) => {
+			const nearestCollectible = findNearestCollectible(collectiblesRef.current)
 
-		if (nearestCollectible && position.y === 0) {
-			if (behaviorState !== PetBehavior.CHASING) {
-				updateBehaviorState(PetBehavior.CHASING)
-				updateAction('run')
+			if (nearestCollectible && positionRef.current.y === 0) {
+				if (behaviorState !== PetBehavior.CHASING) {
+					updateBehaviorState(PetBehavior.CHASING)
+					updateAction('run')
+				}
+				setTargetX(nearestCollectible.x)
+				setIsMovingToTarget(true)
+				return
 			}
-			setTargetX(nearestCollectible.x)
-			setIsMovingToTarget(true)
-			return
-		}
 
-		if (behaviorState === PetBehavior.CHASING) {
-			updateBehaviorState(PetBehavior.RESTING)
-			updateAction('idle')
-			setActionTimer(2000)
-			setIsMovingToTarget(false)
-			setTargetX(null)
-			return
-		}
+			if (behaviorState === PetBehavior.CHASING) {
+				updateBehaviorState(PetBehavior.RESTING)
+				updateAction('idle')
+				setActionTimer(2000)
+				setIsMovingToTarget(false)
+				setTargetX(null)
+				return
+			}
 
-		if (!isMovingToTarget && actionTimer <= 0) {
-			roamOrRest()
-		} else if (!isMovingToTarget) {
-			setActionTimer((prev) => prev - 16)
-		}
-	}, [
-		collectibles,
-		findNearestCollectible,
-		behaviorState,
-		isMovingToTarget,
-		actionTimer,
-		position.y,
-		updateAction,
-		updateBehaviorState,
-		roamOrRest,
-	])
+			if (!isMovingToTarget && actionTimer <= 0) {
+				roamOrRest()
+			} else if (!isMovingToTarget) {
+				setActionTimer((prev) => prev - elapsed)
+			}
+		},
+		[
+			findNearestCollectible,
+			behaviorState,
+			isMovingToTarget,
+			actionTimer,
+			updateAction,
+			updateBehaviorState,
+			roamOrRest,
+		]
+	)
 
 	const movePet = useCallback(
-		(currentPosition: Position, currentDirection: number) => {
-			const bounds = getMovementBounds()
-			let newX = currentPosition.x + currentDirection * getCurrentSpeed()
-			let newDirection = currentDirection
+		(currentPosition: Position, currentDirection: number, scale: number) => {
+			const bounds = getBounds()
+			const result = stepWalk(
+				currentPosition,
+				currentDirection,
+				getCurrentSpeed() * scale,
+				FALL_SPEED * scale,
+				bounds
+			)
 
-			if (newX >= bounds.maxX) {
-				newDirection = -1
-				newX = bounds.maxX
-			} else if (newX <= bounds.minX) {
-				newDirection = 1
-				newX = bounds.minX
+			if (result.direction !== currentDirection) {
+				setDirection(result.direction)
 			}
-			if (newDirection !== currentDirection) {
-				setDirection(newDirection)
-			}
-			const newY =
-				currentPosition.y > 0 ? Math.max(0, currentPosition.y - FALL_SPEED) : 0
-			return { x: newX, y: newY }
+
+			return result.position
 		},
-		[getMovementBounds, getCurrentSpeed]
+		[getBounds, getCurrentSpeed]
 	)
 
 	const moveToTarget = useCallback(
-		(currentPosition: Position) => {
+		(currentPosition: Position, scale: number) => {
 			if (targetX === null) return currentPosition
 
-			const bounds = getMovementBounds()
+			const bounds = getBounds()
 			const delta = targetX - currentPosition.x
 			const distance = Math.abs(delta)
-			const speed = action === 'run' ? dimensions.runSpeed : dimensions.walkSpeed
+			const speed =
+				(action === 'run' ? dimensions.runSpeed : dimensions.walkSpeed) * scale
 
 			if (distance <= speed) {
 				setIsMovingToTarget(false)
 				setTargetX(null)
 
 				if (behaviorState === PetBehavior.CHASING) {
-					const nextCollectible = findNearestCollectible(collectibles)
+					const nextCollectible = findNearestCollectible(collectiblesRef.current)
 					if (!nextCollectible) {
 						updateAction('idle')
 						updateBehaviorState(PetBehavior.RESTING)
-					} else {
 					}
 				} else {
 					updateAction('idle')
 				}
-				return { x: targetX, y: currentPosition.y }
+
+				return clampToBounds({ x: targetX, y: currentPosition.y }, bounds)
 			}
 
 			const newDirection = delta > 0 ? 1 : -1
@@ -518,9 +578,8 @@ export function useBasePetLogic({
 			dimensions.runSpeed,
 			dimensions.walkSpeed,
 			behaviorState,
-			collectibles,
 			direction,
-			getMovementBounds,
+			getBounds,
 			findNearestCollectible,
 			updateAction,
 			updateBehaviorState,
@@ -528,13 +587,16 @@ export function useBasePetLogic({
 	)
 
 	const climbWall = useCallback(
-		(currentPosition: Position, currentDirection: number) => {
-			const bounds = getMovementBounds()
-			const wallX = currentDirection === 1 ? bounds.maxX : bounds.minX
+		(currentPosition: Position, scale: number) => {
+			const bounds = getBounds()
+			const wallX =
+				climbWallXRef.current ?? pickClimbWall(currentPosition.x, bounds)
+			const climbStep = dimensions.climbSpeed * scale
 
 			if (isDescending) {
-				const newY = currentPosition.y - dimensions.climbSpeed
+				const newY = currentPosition.y - climbStep
 				if (newY <= 0) {
+					climbWallXRef.current = null
 					setIsDescending(false)
 					updateBehaviorState(PetBehavior.RESTING)
 					updateAction(animations.stand ? 'stand' : 'idle')
@@ -544,7 +606,7 @@ export function useBasePetLogic({
 				return { x: wallX, y: newY }
 			}
 
-			const newY = Math.min(currentPosition.y + dimensions.climbSpeed, bounds.maxY)
+			const newY = Math.min(currentPosition.y + climbStep, bounds.maxY)
 			return { x: wallX, y: newY }
 		},
 		[
@@ -552,55 +614,64 @@ export function useBasePetLogic({
 			dimensions.climbSpeed,
 			durations.rest,
 			animations.stand,
-			getMovementBounds,
+			getBounds,
 			updateBehaviorState,
 			updateAction,
 		]
 	)
 
 	/** Safety net for a pet ever left with y > 0 outside an active climb. */
-	const applyGravity = useCallback((currentPosition: Position) => {
+	const applyGravity = useCallback((currentPosition: Position, scale: number) => {
 		if (currentPosition.y > 0) {
-			return { ...currentPosition, y: Math.max(0, currentPosition.y - FALL_SPEED) }
+			return {
+				...currentPosition,
+				y: Math.max(0, currentPosition.y - FALL_SPEED * scale),
+			}
 		}
 		return currentPosition
 	}, [])
 
-	const physicsUpdate = useCallback(() => {
-		updateCollectibles()
-		updateBehavior()
+	const physicsUpdate = useCallback(
+		(elapsed: number) => {
+			const scale = frameScale(elapsed)
 
-		setPosition((prevPosition) => {
-			let newPosition = { ...prevPosition }
+			updateCollectibles(scale)
+			updateBehavior(elapsed)
+
+			const prevPosition = positionRef.current
+			let newPosition = prevPosition
 
 			if (isMovingToTarget && (action === 'walk' || action === 'run')) {
-				newPosition = moveToTarget(prevPosition)
+				newPosition = moveToTarget(prevPosition, scale)
 			} else if (action === 'walk' || action === 'run') {
-				newPosition = movePet(prevPosition, direction)
+				newPosition = movePet(prevPosition, direction, scale)
 			} else if (
 				action === 'climb' &&
 				behaviorState === PetBehavior.CLIMBING &&
 				animations.climb
 			) {
-				newPosition = climbWall(prevPosition, direction)
+				newPosition = climbWall(prevPosition, scale)
 			} else if (behaviorState !== PetBehavior.CLIMBING && prevPosition.y > 0) {
-				newPosition = applyGravity(prevPosition)
+				newPosition = applyGravity(prevPosition, scale)
 			}
-			return newPosition
-		})
-	}, [
-		updateCollectibles,
-		updateBehavior,
-		isMovingToTarget,
-		action,
-		moveToTarget,
-		movePet,
-		direction,
-		behaviorState,
-		animations.climb,
-		climbWall,
-		applyGravity,
-	])
+
+			applyPosition(newPosition)
+		},
+		[
+			updateCollectibles,
+			updateBehavior,
+			isMovingToTarget,
+			action,
+			moveToTarget,
+			movePet,
+			direction,
+			behaviorState,
+			animations.climb,
+			climbWall,
+			applyGravity,
+			applyPosition,
+		]
+	)
 
 	const physicsUpdateRef = useRef(physicsUpdate)
 	physicsUpdateRef.current = physicsUpdate
@@ -610,9 +681,10 @@ export function useBasePetLogic({
 		let lastTick = performance.now()
 
 		const loop = (now: number) => {
-			if (now - lastTick >= 16) {
+			const elapsed = now - lastTick
+			if (elapsed >= 16) {
 				lastTick = now
-				physicsUpdateRef.current()
+				physicsUpdateRef.current(elapsed)
 			}
 			frameId = requestAnimationFrame(loop)
 		}

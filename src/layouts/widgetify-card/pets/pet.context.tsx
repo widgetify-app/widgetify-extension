@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 
@@ -69,7 +77,7 @@ export const BASE_PET_OPTIONS: PetSettings = {
 		},
 		[PetTypes.CAT]: {
 			name: 'زردآلو',
-			emoji: '🐈',
+			emoji: '🐱',
 			type: 'cat',
 			hungryState: {
 				level: 100,
@@ -88,6 +96,8 @@ export const BASE_PET_OPTIONS: PetSettings = {
 	},
 }
 
+const HUNGER_GAIN_STEPS = [10, 15, 25]
+
 const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
 
 export function PetProvider({ children }: { children: React.ReactNode }) {
@@ -95,16 +105,27 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		...BASE_PET_OPTIONS,
 	})
 	const [isEnabled, setIsEnabled] = useState(false)
+	const pendingPersistRef = useRef<PetSettings | null>(null)
 
 	useEffect(() => {
+		const pending = pendingPersistRef.current
+		if (!pending) return
+		pendingPersistRef.current = null
+		setToStorage('pets', pending)
+	})
+
+	useEffect(() => {
+		let cancelled = false
+
 		async function load() {
-			// const storedPets = await getFromStorage('pets')
 			const [storedPets, petState] = await Promise.all([
 				getFromStorage('pets'),
 				getFromStorage('petState'),
 			])
+			if (cancelled) return
+
 			if (storedPets) {
-				if (!storedPets.petOptions['dog-akita'].hungryState) {
+				if (!storedPets.petOptions?.[PetTypes.DOG_AKITA]?.hungryState) {
 					setToStorage('pets', {
 						...BASE_PET_OPTIONS,
 					})
@@ -137,7 +158,13 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			}
 		}
 
-		load()
+		load().catch((err) => {
+			console.error('Failed to load pet settings', err)
+		})
+
+		return () => {
+			cancelled = true
+		}
 	}, [])
 
 	useEffect(() => {
@@ -182,91 +209,108 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		}
 	}, [])
 
-	const getCurrentPetName = (petType: PetTypes) => {
-		const CurrentPet = settings.petOptions[petType]
-		if (CurrentPet) {
-			return CurrentPet.name
-		}
-		return ''
-	}
+	const getCurrentPetName = useCallback(
+		(petType: PetTypes) => settings.petOptions[petType]?.name ?? '',
+		[settings]
+	)
 
-	const levelUpHungryState = (petType: PetTypes) => {
+	const levelUpHungryState = useCallback((petType: PetTypes) => {
 		setSettings((prevSettings) => {
-			const newSettings = { ...prevSettings }
+			const pet = prevSettings.petOptions[petType]
+			if (!pet?.hungryState) return prevSettings
 
-			const pet = newSettings.petOptions[petType]
+			const gain = HUNGER_GAIN_STEPS[Math.floor(Math.random() * HUNGER_GAIN_STEPS.length)]
+			const nextLevel = Math.min(100, pet.hungryState.level + gain)
+			if (nextLevel === pet.hungryState.level) return prevSettings
 
-			if (pet && pet.hungryState?.level < 100) {
-				pet.hungryState.level += [10, 15, 25][Math.floor(Math.random() * 2)]
+			const newSettings: PetSettings = {
+				...prevSettings,
+				petOptions: {
+					...prevSettings.petOptions,
+					[petType]: {
+						...pet,
+						hungryState: { ...pet.hungryState, level: nextLevel },
+					},
+				},
 			}
 
-			if (pet.hungryState?.level > 100) {
-				pet.hungryState.level = 100
-			}
-
-			setToStorage('pets', newSettings)
-
+			pendingPersistRef.current = newSettings
 			return newSettings
 		})
-	}
+	}, [])
 
-	const levelDownHungryState = (petType: PetTypes) => {
+	const levelDownHungryState = useCallback((petType: PetTypes) => {
 		setSettings((prevSettings) => {
-			const newSettings = { ...prevSettings }
-			if (!newSettings.petType) {
-				return prevSettings
-			}
+			if (!prevSettings.petType) return prevSettings
 
-			const pet = newSettings.petOptions[petType]
+			const pet = prevSettings.petOptions[petType]
+			if (!pet?.hungryState) return prevSettings
 
 			const PER_SEC = 40 * 1000
 
-			if (pet?.hungryState?.lastHungerTick) {
+			if (pet.hungryState.lastHungerTick) {
 				const timeDiff = Date.now() - pet.hungryState.lastHungerTick
 				if (timeDiff < PER_SEC) {
 					return prevSettings
 				}
 			}
 
-			if (pet && pet.hungryState?.level > 0) {
-				const hungerDecrease = 1
-				pet.hungryState.level -= hungerDecrease
-				pet.hungryState.lastHungerTick = Date.now()
+			if (pet.hungryState.level <= 0) return prevSettings
+
+			const newSettings: PetSettings = {
+				...prevSettings,
+				petOptions: {
+					...prevSettings.petOptions,
+					[petType]: {
+						...pet,
+						hungryState: {
+							...pet.hungryState,
+							level: pet.hungryState.level - 1,
+							lastHungerTick: Date.now(),
+						},
+					},
+				},
 			}
 
-			setToStorage('pets', newSettings)
-
+			pendingPersistRef.current = newSettings
 			return newSettings
 		})
-	}
+	}, [])
 
-	const getPetHungryState = (petType: PetTypes) => {
-		const pet = settings.petOptions[petType]
-		if (pet) {
-			return pet.hungryState
-		}
-		return null
-	}
+	const getPetHungryState = useCallback(
+		(petType: PetTypes) => settings.petOptions[petType]?.hungryState ?? null,
+		[settings]
+	)
 
-	const isPetHungry = (petType: PetTypes): boolean => {
-		const pet = settings.petOptions[petType]
-		if (pet.hungryState?.level > 0) {
-			return false
-		}
+	const isPetHungry = useCallback(
+		(petType: PetTypes): boolean => {
+			const pet = settings.petOptions[petType]
+			return !(pet?.hungryState?.level && pet.hungryState.level > 0)
+		},
+		[settings]
+	)
 
-		return true
-	}
-
-	const contextValue: PetSettingsContextType = {
-		...settings,
-		isEnabled,
-		getCurrentPetName,
-		levelUpHungryState,
-		isPetHungry,
-		levelDownHungryState,
-		getPetHungryState,
-		setIsEnabled,
-	}
+	const contextValue = useMemo<PetSettingsContextType>(
+		() => ({
+			...settings,
+			isEnabled,
+			getCurrentPetName,
+			levelUpHungryState,
+			isPetHungry,
+			levelDownHungryState,
+			getPetHungryState,
+			setIsEnabled,
+		}),
+		[
+			settings,
+			isEnabled,
+			getCurrentPetName,
+			levelUpHungryState,
+			isPetHungry,
+			levelDownHungryState,
+			getPetHungryState,
+		]
+	)
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>
 }
