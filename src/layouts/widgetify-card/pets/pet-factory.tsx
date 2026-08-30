@@ -41,7 +41,7 @@ export const PetFactory: React.FC<Prop> = ({ className }) => {
 		<Suspense fallback={<div></div>}>
 			<PetComponent className={className} />
 
-			<div className="absolute bottom-0 justify-center hidden left-2 md:flex">
+			<div className="absolute bottom-0 flex justify-center left-2">
 				<PetHud level={getPetHungryState(petType)?.level ?? 0} />
 			</div>
 		</Suspense>

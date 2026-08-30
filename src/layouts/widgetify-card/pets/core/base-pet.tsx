@@ -117,7 +117,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 		<div
 			ref={containerRef}
 			className={cn(
-				'absolute hidden w-full h-16 overflow-hidden -bottom-2 md:flex',
+				'absolute flex w-full h-16 overflow-hidden -bottom-2',
 				className
 			)}
 			style={{
@@ -688,6 +688,20 @@ export function useBasePetLogic({
 		frameId = requestAnimationFrame(loop)
 		return () => cancelAnimationFrame(frameId)
 	}, [])
+
+	useEffect(() => {
+		const container = containerRef.current
+		if (!container) return
+
+		const observer = new ResizeObserver(() => {
+			const bounds = getBounds()
+			if (bounds.maxX <= bounds.minX && bounds.maxY <= 0) return
+			applyPosition(clampToBounds(positionRef.current, bounds))
+		})
+
+		observer.observe(container)
+		return () => observer.disconnect()
+	}, [getBounds, applyPosition])
 
 	useEffect(() => {
 		const container = containerRef.current
