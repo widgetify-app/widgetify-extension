@@ -16,7 +16,7 @@ interface PresetLayoutModalProps {
 	onClose: () => void
 }
 
-type FilterType = 'featured' | 'all' | 'free' | 'vip'
+type FilterType = 'all' | 'free' | 'vip'
 
 export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 	isOpen,
@@ -25,12 +25,10 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 	const { isVip } = useAuth()
 	const { applyPresetLayout } = useFreeWidgets()
 
-	const [activeFilter, setActiveFilter] = useState<FilterType>('featured')
+	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
 
 	const filteredPresets = useMemo(() => {
 		switch (activeFilter) {
-			case 'featured':
-				return PRESET_LAYOUTS.filter((p) => p.isFeatured)
 			case 'free':
 				return PRESET_LAYOUTS.filter((p) => !p.isVip)
 			case 'vip':
@@ -65,19 +63,6 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 		>
 			<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
 				<div className="flex items-center gap-1.5 shrink-0 overflow-x-auto pb-1 no-scrollbar">
-					<button
-						type="button"
-						onClick={() => setActiveFilter('featured')}
-						className={cn(
-							'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
-							activeFilter === 'featured'
-								? 'bg-primary text-white shadow-xs'
-								: 'bg-base-200 hover:bg-base-300 text-muted'
-						)}
-					>
-						<span>برگزیده‌ها</span>
-					</button>
-
 					<button
 						type="button"
 						onClick={() => setActiveFilter('all')}

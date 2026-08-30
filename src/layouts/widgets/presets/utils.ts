@@ -16,11 +16,38 @@ export function resolvePresetWidgetsForViewport(
 	if (!preset.widgets || preset.widgets.length === 0) return []
 
 	const align = preset.verticalAlign || 'top'
+	const totalRows = targetRows ?? getViewportCanvasRows()
+
+	if (align === 'split-bottom') {
+		const topWidgets = preset.widgets.filter((w) => w.position.row === 0)
+		const bottomWidgets = preset.widgets.filter((w) => w.position.row > 0)
+
+		if (bottomWidgets.length === 0) {
+			return preset.widgets
+		}
+
+		const bottomMinRow = Math.min(...bottomWidgets.map((w) => w.position.row))
+		const bottomMaxRow = Math.max(
+			...bottomWidgets.map((w) => w.position.row + w.size.h)
+		)
+		const bottomHeight = bottomMaxRow - bottomMinRow
+		const targetStartRow = Math.max(1, totalRows - bottomHeight)
+
+		return [
+			...topWidgets,
+			...bottomWidgets.map((w) => ({
+				...w,
+				position: {
+					...w.position,
+					row: w.position.row - bottomMinRow + targetStartRow,
+				},
+			})),
+		]
+	}
+
 	const minRow = Math.min(...preset.widgets.map((w) => w.position.row))
 	const maxRow = Math.max(...preset.widgets.map((w) => w.position.row + w.size.h))
 	const presetHeight = maxRow - minRow
-
-	const totalRows = targetRows ?? getViewportCanvasRows()
 
 	let startRow = 0
 	if (align === 'center') {
