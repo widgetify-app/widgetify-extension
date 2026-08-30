@@ -1,43 +1,10 @@
 import type React from 'react'
 
-export enum PetType {
-	DOG = 'dog',
-	CHICKEN = 'chicken',
-}
-
-export enum PetColor {
-	WHITE = 'white',
-	BROWN = 'brown',
-	BLACK = 'black',
-	AKITA = 'akita',
-}
-
-export enum PetSize {
-	SMALL = 'small',
-	MEDIUM = 'medium',
-	LARGE = 'large',
-}
-
 export enum PetSpeed {
-	STILL = 0,
-	VERY_SLOW = 0.5,
 	SLOW = 1,
 	NORMAL = 1.8,
 	FAST = 2.5,
 	VERY_FAST = 3.5,
-}
-
-export enum PetState {
-	IDLE = 'idle',
-	WALK_LEFT = 'walk-left',
-	WALK_RIGHT = 'walk-right',
-	RUN_LEFT = 'run-left',
-	RUN_RIGHT = 'run-right',
-	SITTING = 'sit',
-	STANDING = 'stand',
-	CLIMBING = 'climb',
-	SWIPE = 'swipe',
-	CHASE = 'chase',
 }
 
 export enum PetBehavior {
@@ -72,6 +39,7 @@ export interface PetAnimations {
 
 export interface PetDimensions {
 	size: number
+	width: number
 	walkSpeed: number
 	runSpeed: number
 	climbSpeed: number

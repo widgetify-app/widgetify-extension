@@ -37,6 +37,7 @@ export const DogComponent = ({ className }: { className?: string }) => {
 
 	const dogDimensions: PetDimensions = {
 		size: 32,
+		width: 50,
 		walkSpeed: PetSpeed.NORMAL,
 		runSpeed: PetSpeed.VERY_FAST,
 		climbSpeed: 1.2,
@@ -90,7 +91,6 @@ export const DogComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.DOG_AKITA)}
-			hungryLevel={getPetHungryState(PetTypes.DOG_AKITA)?.level}
 		/>
 	)
 }

@@ -4,6 +4,7 @@ import running from '@/assets/animals/frog/ghoori_run_8fps.webp'
 import swipe from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import walking from '@/assets/animals/frog/ghoori_walk_8fps.webp'
 import walking_fast from '@/assets/animals/frog/ghoori_walk_fast_8fps.webp'
+import { useMemo } from 'react'
 import { LuBug } from 'react-icons/lu'
 import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
 import {
@@ -14,6 +15,19 @@ import {
 	PetSpeed,
 } from '../core/pet-types'
 import { PetTypes, usePetContext } from '../pet.context'
+
+const COLLECTIBLE_COLORS = [
+	'#f87171',
+	'#22c55e',
+	'#d8b4fe',
+	'#fef08a',
+	'#db2777',
+	'#2dd4bf',
+	'#06b6d4',
+	'#818cf8',
+	'#bef264',
+	'#3b82f6',
+]
 
 export const FrogComponent = ({ className }: { className?: string }) => {
 	const {
@@ -35,6 +49,7 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 
 	const frogDimensions: PetDimensions = {
 		size: 32,
+		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.NORMAL,
 		climbSpeed: PetSpeed.NORMAL,
@@ -48,26 +63,14 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		climb: { min: 3000, max: 6000 },
 	}
 
-	const collectibleColors = [
-		'red-400',
-		'green-500',
-		'purple-300',
-		'yellow-200',
-		'pink-600',
-		'teal-400',
-		'cyan-500',
-		'indigo-400',
-		'lime-300',
-		'blue-500',
-	]
+
+	const collectibleColor = useMemo(
+		() => COLLECTIBLE_COLORS[Math.floor(Math.random() * COLLECTIBLE_COLORS.length)],
+		[]
+	)
 
 	const frogAssets: PetAssets = {
-		collectibleIcon: (
-			<LuBug
-				className={`text-${collectibleColors[Math.floor(Math.random() * collectibleColors.length)]}`}
-				size={24}
-			/>
-		),
+		collectibleIcon: <LuBug style={{ color: collectibleColor }} size={24} />,
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}
@@ -106,7 +109,6 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 			getAnimationForCurrentAction={getAnimationForCurrentAction}
 			dimensions={dimensions}
 			assets={assets}
-			hungryLevel={getPetHungryState(PetTypes.FROG)?.level}
 			isHungry={isPetHungry(PetTypes.FROG)}
 		/>
 	)
