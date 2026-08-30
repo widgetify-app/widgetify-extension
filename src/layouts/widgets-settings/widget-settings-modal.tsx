@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import { Modal } from '@/components/ui'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
@@ -71,24 +72,25 @@ export function WidgetSettingsModal({
 			: null)
 
 	const activeSettingConfig = settingKey ? WIDGET_SETTING_MODALS[settingKey] : null
+	const lastSettingConfig = useLastDefined(activeSettingConfig)
 	const handleCloseSetting = onCloseSetting || onClose
 
 	return (
 		<>
-			{isManageOpen && <AddWidgetModal isOpen={isManageOpen} onClose={onClose} />}
+			<AddWidgetModal isOpen={isManageOpen} onClose={onClose} />
 
-			{activeSettingConfig && (
-				<Modal
-					isOpen={true}
-					onClose={handleCloseSetting}
-					title={activeSettingConfig.title}
-					size={activeSettingConfig.size}
-					direction="rtl"
-					closeOnBackdropClick
-				>
-					<activeSettingConfig.Component {...({ instanceId, size } as any)} />
-				</Modal>
-			)}
+			<Modal
+				isOpen={!!activeSettingConfig}
+				onClose={handleCloseSetting}
+				title={lastSettingConfig?.title}
+				size={lastSettingConfig?.size}
+				direction="rtl"
+				closeOnBackdropClick
+			>
+				{lastSettingConfig && (
+					<lastSettingConfig.Component {...({ instanceId, size } as any)} />
+				)}
+			</Modal>
 		</>
 	)
 }

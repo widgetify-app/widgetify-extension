@@ -245,16 +245,15 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 					/>
 				)}
 
-				{showHistoryPortal && !activePortal && (
-					<SearchHistoryPortal
-						portalRef={portalRef}
-						onClose={() => setShowHistoryPortal(false)}
-						onSearch={handleHistorySearch}
-						onEngineChange={onEngineChange}
-						searchQuery={searchQuery}
-						portalStyles={portalStyles}
-					/>
-				)}
+				<SearchHistoryPortal
+					isOpen={showHistoryPortal && !activePortal}
+					portalRef={portalRef}
+					onClose={() => setShowHistoryPortal(false)}
+					onSearch={handleHistorySearch}
+					onEngineChange={onEngineChange}
+					searchQuery={searchQuery}
+					portalStyles={portalStyles}
+				/>
 
 				<BrowserBookmark />
 			</div>

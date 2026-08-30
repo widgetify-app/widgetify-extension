@@ -186,16 +186,15 @@ export function SearchCompactRow() {
 					</div>
 				</form>
 
-				{showHistoryPortal && (
-					<SearchHistoryPortal
-						portalRef={portalRef}
-						onClose={() => setShowHistoryPortal(false)}
-						onSearch={handleHistorySearch}
-						onEngineChange={onEngineChange}
-						searchQuery={searchQuery}
-						portalStyles={portalStyles}
-					/>
-				)}
+				<SearchHistoryPortal
+					isOpen={showHistoryPortal}
+					portalRef={portalRef}
+					onClose={() => setShowHistoryPortal(false)}
+					onSearch={handleHistorySearch}
+					onEngineChange={onEngineChange}
+					searchQuery={searchQuery}
+					portalStyles={portalStyles}
+				/>
 			</div>
 		</div>
 	)

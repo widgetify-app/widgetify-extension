@@ -1,3 +1,4 @@
+import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import { Button, Modal } from '@/components/ui'
 import type { Platform } from './platform-config.js'
 
@@ -16,7 +17,8 @@ export function ConnectionModal({
 	onConfirm,
 	isLoading,
 }: ConnectionModalProps) {
-	if (!platform) return null
+	const safePlatform = useLastDefined(platform)
+	if (!safePlatform) return null
 
 	return (
 		<Modal
@@ -28,20 +30,20 @@ export function ConnectionModal({
 			<div className="p-4">
 				<div className="flex items-center gap-3 mb-4">
 					<div
-						className={`flex items-center justify-center w-10 h-10 ${platform.bgColor} rounded-lg`}
+						className={`flex items-center justify-center w-10 h-10 ${safePlatform.bgColor} rounded-lg`}
 					>
-						{platform.icon}
+						{safePlatform.icon}
 					</div>
 					<h2 className="text-xl font-semibold text-content">
-						{platform.connected ? 'قطع اتصال از' : 'اتصال به'} {platform.name}
+						{safePlatform.connected ? 'قطع اتصال از' : 'اتصال به'} {safePlatform.name}
 					</h2>
 				</div>
 
 				<div className="mb-6">
-					{platform.connected ? (
+					{safePlatform.connected ? (
 						<div className="space-y-2">
 							<p className="text-content">
-								آیا مطمئن هستید که می‌خواهید اتصال به {platform.name} را
+								آیا مطمئن هستید که می‌خواهید اتصال به {safePlatform.name} را
 								قطع کنید؟
 							</p>
 							<div className="p-3 text-sm rounded-2xl text-warning-content bg-warning/80">
@@ -51,14 +53,14 @@ export function ConnectionModal({
 						</div>
 					) : (
 						<div className="space-y-3">
-							<p className="text-content">{platform.description}</p>
-							{platform.features && platform.features.length > 0 && (
+							<p className="text-content">{safePlatform.description}</p>
+							{safePlatform.features && safePlatform.features.length > 0 && (
 								<div>
 									<p className="mb-2 text-sm font-medium text-content">
 										امکانات:
 									</p>
 									<ul className="space-y-1">
-										{platform.features.map(
+										{safePlatform.features.map(
 											(feature: string, index: number) => (
 												<li
 													key={index}
@@ -72,13 +74,13 @@ export function ConnectionModal({
 									</ul>
 								</div>
 							)}
-							{platform.permissions && platform.permissions.length > 0 && (
+							{safePlatform.permissions && safePlatform.permissions.length > 0 && (
 								<div>
 									<p className="mb-2 text-sm font-medium text-content">
 										مجوزهای مورد نیاز:
 									</p>
 									<ul className="space-y-1">
-										{platform.permissions.map(
+										{safePlatform.permissions.map(
 											(permission: string, index: number) => (
 												<li
 													key={index}
@@ -109,9 +111,9 @@ export function ConnectionModal({
 						}
 						className="flex-2 h-9 text-sm"
 						rounded={'2xl'}
-						variant={platform.connected ? 'danger' : 'primary'}
+						variant={safePlatform.connected ? 'danger' : 'primary'}
 					>
-						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
+						{safePlatform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
 					</Button>
 					<Button
 						size="sm"

@@ -139,13 +139,11 @@ export function HomePage() {
 				onEvent={onDoneTour}
 			/>
 
-			{showReleaseNotes && (
-				<UpdateReleaseNotesModal
-					isOpen={showReleaseNotes}
-					onClose={() => onCloseReleaseNotes()}
-					counterValue={2}
-				/>
-			)}
+			<UpdateReleaseNotesModal
+				isOpen={showReleaseNotes}
+				onClose={() => onCloseReleaseNotes()}
+				counterValue={2}
+			/>
 		</>
 	)
 }

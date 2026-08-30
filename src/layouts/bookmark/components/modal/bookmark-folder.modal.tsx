@@ -238,13 +238,11 @@ export function BookmarkFolderModal({
 				)
 			)}
 
-			{showImportModal && (
-				<ImportBrowserBookmarksModal
-					isOpen={showImportModal}
-					onClose={() => setShowImportModal(false)}
-					parentId={currentFolderId}
-				/>
-			)}
+			<ImportBrowserBookmarksModal
+				isOpen={showImportModal}
+				onClose={() => setShowImportModal(false)}
+				parentId={currentFolderId}
+			/>
 		</Modal>
 	)
 }

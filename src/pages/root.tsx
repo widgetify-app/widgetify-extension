@@ -133,12 +133,10 @@ function Main() {
 				</WidgetVisibilityProvider>
 			</FreeWidgetProvider>
 
-			{showAuthRequired && (
-				<AuthRequiredModal
-					isOpen={showAuthRequired}
-					onClose={() => setAuthRequired(false)}
-				/>
-			)}
+			<AuthRequiredModal
+				isOpen={showAuthRequired}
+				onClose={() => setAuthRequired(false)}
+			/>
 		</MotionConfig>
 	)
 }

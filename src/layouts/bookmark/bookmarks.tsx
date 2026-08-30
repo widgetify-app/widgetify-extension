@@ -228,16 +228,14 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				</div>
 			</DndContext>
 
-			{folderModalPath.length > 0 && (
-				<BookmarkFolderModal
-					isOpen={folderModalPath.length > 0}
-					onClose={() => setFolderModalPath([])}
-					folderPath={folderModalPath}
-					setFolderPath={setFolderModalPath}
-					instanceId={instanceId}
-					isPrimary={isPrimary}
-				/>
-			)}
+			<BookmarkFolderModal
+				isOpen={folderModalPath.length > 0}
+				onClose={() => setFolderModalPath([])}
+				folderPath={folderModalPath}
+				setFolderPath={setFolderModalPath}
+				instanceId={instanceId}
+				isPrimary={isPrimary}
+			/>
 			{showAddBookmarkModal && !isAuthenticated ? (
 				<AuthRequiredModal
 					isOpen={true}
@@ -262,13 +260,11 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 					/>
 				)
 			)}
-			{showImportBookmarksModal && (
-				<ImportBrowserBookmarksModal
-					isOpen={showImportBookmarksModal}
-					onClose={() => setShowImportBookmarksModal(false)}
-					parentId={currentFolderId}
-				/>
-			)}
+			<ImportBrowserBookmarksModal
+				isOpen={showImportBookmarksModal}
+				onClose={() => setShowImportBookmarksModal(false)}
+				parentId={currentFolderId}
+			/>
 		</>
 	)
 }

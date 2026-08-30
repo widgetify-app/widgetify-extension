@@ -8,8 +8,6 @@ export const modalBoxVariants = cva(
 		'p-3',
 		'md:p-4',
 		'elevation-lg',
-		'transition-all',
-		'duration-200',
 	],
 	{
 		variants: {
