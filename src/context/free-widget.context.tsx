@@ -31,6 +31,12 @@ import {
 	type WidgetPosition,
 	type WidgetSize,
 } from '@/layouts/widgets/layout-engine/types'
+import {
+	applyInstanceIdMap,
+	buildInstanceIdMap,
+	dedupeInstanceIds,
+	isServerInstanceId,
+} from '@/layouts/widgets/instance-id'
 import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
 import {
@@ -121,7 +127,7 @@ function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidge
 }
 
 function sanitizeLayout(layout: StoredWidget[], cols: number): StoredWidget[] {
-	const sized = normalizeWidgetSizes(layout, cols)
+	const sized = normalizeWidgetSizes(dedupeInstanceIds(layout), cols)
 
 	if (validateLayout(sized, cols)) {
 		return sized
@@ -378,25 +384,10 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 						if (synced && synced.length > 0) {
 							setSavedLayout((prev) => {
-								const updated = prev.map((w, index) => {
-									const matching =
-										synced.find(
-											(s) => s.instanceId === w.instanceId
-										) ||
-										synced.find((s) => s.widgetKey === w.id) ||
-										synced[index]
-									if (
-										matching?.instanceId &&
-										matching.instanceId !== w.instanceId
-									) {
-										return {
-											...w,
-											instanceId: matching.instanceId,
-											widgetId: matching.instanceId,
-										}
-									}
-									return w
-								})
+								const idMap = buildInstanceIdMap(prev, synced)
+								if (idMap.size === 0) return prev
+
+								const updated = applyInstanceIdMap(prev, idMap)
 								savedLayoutRef.current = updated
 								persistLayout(updated)
 								return updated
@@ -441,42 +432,16 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 					.then((synced) => {
 						if (!synced || synced.length === 0) return
 
-						const idMap = new Map<string, string>()
-						currentLayout.forEach((w, index) => {
-							const isValidId =
-								typeof w.instanceId === 'string' &&
-								/^[0-9a-fA-F]{24}$/.test(w.instanceId)
-							if (isValidId) return
-							const matching =
-								synced.find((s) => s.widgetKey === w.id) || synced[index]
-							if (
-								matching?.instanceId &&
-								matching.instanceId !== w.instanceId
-							) {
-								idMap.set(w.instanceId, matching.instanceId)
-							}
-						})
-
+						const idMap = buildInstanceIdMap(currentLayout, synced)
 						if (idMap.size === 0) return
 
-						const applyIdMap = (list: StoredWidget[]) =>
-							list.map((w) =>
-								idMap.has(w.instanceId)
-									? {
-											...w,
-											instanceId: idMap.get(w.instanceId) as string,
-											widgetId: idMap.get(w.instanceId) as string,
-										}
-									: w
-							)
-
 						setSavedLayout((prev) => {
-							const updated = applyIdMap(prev)
+							const updated = applyInstanceIdMap(prev, idMap)
 							savedLayoutRef.current = updated
 							persistLayout(updated)
 							return updated
 						})
-						applyRuntimeLayout((prev) => applyIdMap(prev))
+						applyRuntimeLayout((prev) => applyInstanceIdMap(prev, idMap))
 					})
 					.catch(() => {})
 			}, 1000)
@@ -895,7 +860,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				setSelectedInstanceId(null)
 			}
 
-			if (isAuthenticated && typeof instanceId === 'string' && instanceId.trim()) {
+			if (isAuthenticated && isServerInstanceId(instanceId)) {
 				deleteUserWidgetApi(instanceId).catch(() => {})
 			}
 
