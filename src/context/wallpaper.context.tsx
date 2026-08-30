@@ -12,6 +12,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { playAlarm } from '@/common/play-alarm'
 import { useAuth } from '@/context/auth.context'
 
+import { getRandomWallpaper } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
+
 interface WallpaperContextValue {
 	selectedBackground: Wallpaper | null
 	customWallpaper: Wallpaper | null
@@ -19,6 +21,7 @@ interface WallpaperContextValue {
 	allWallpapers: (fetchedWallpapers?: Wallpaper[]) => Wallpaper[]
 	handleSelectBackground: (wallpaper: Wallpaper) => Promise<void>
 	handleCustomWallpaperChange: (wallpaper: Wallpaper) => void
+	handleRemoveCustomWallpaper: () => Promise<void>
 	syncWithFetchedWallpapers: (wallpapers: Wallpaper[]) => void
 }
 
@@ -173,6 +176,32 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		handleSelectBackground(newWallpaper)
 	}
 
+	const handleRemoveCustomWallpaper = async () => {
+		setCustomWallpaper(null)
+		await setToStorage('customWallpaper', null as any)
+		if (selectedBackground?.id === 'custom-wallpaper') {
+			const [error, randomWallpaper] = await safeAwait<any, Wallpaper>(
+				getRandomWallpaper()
+			)
+			if (randomWallpaper) {
+				handleSelectBackground(randomWallpaper)
+			} else {
+				handleSelectBackground({
+					id: 'gradient-a1c4fd-c2e9fb',
+					name: 'گرادیان',
+					type: 'GRADIENT',
+					src: '',
+					previewSrc: '',
+					gradient: {
+						from: '#a1c4fd',
+						to: '#c2e9fb',
+						direction: 'to-r',
+					},
+				})
+			}
+		}
+	}
+
 	const allWallpapers = (fetchedWallpapers: Wallpaper[] = []) => {
 		if (customWallpaper) return [...fetchedWallpapers, customWallpaper]
 		return fetchedWallpapers
@@ -187,6 +216,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 				allWallpapers,
 				handleSelectBackground,
 				handleCustomWallpaperChange,
+				handleRemoveCustomWallpaper,
 				syncWithFetchedWallpapers,
 			}}
 		>

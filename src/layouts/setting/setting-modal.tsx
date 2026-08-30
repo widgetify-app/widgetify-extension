@@ -23,7 +23,6 @@ interface SettingModalProps {
 const tabs: TabItem[] = [
 	{
 		parentName: 'حساب کاربری',
-		needAuth: true,
 		children: [
 			{
 				label: 'پروفایل من',
@@ -40,18 +39,21 @@ const tabs: TabItem[] = [
 			{
 				label: 'پلتفرم‌ها',
 				value: 'platforms',
+				needAuth: true,
 				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
 			},
 			{
 				label: 'ماموریت‌ها و پاداش',
 				value: 'tasks',
+				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
 			},
 			{
 				label: 'دوستان',
 				value: 'friends',
+				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
 			},
