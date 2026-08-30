@@ -121,6 +121,25 @@ export function setupCaching() {
 
 		registerRoute(
 			({ url }) =>
+				(url.hostname === 'www.google.com' &&
+					url.pathname.startsWith('/s2/favicons')) ||
+				(url.hostname.endsWith('.gstatic.com') &&
+					url.pathname.startsWith('/faviconV2')),
+			new CacheFirst({
+				cacheName: CacheNames.favicons,
+				plugins: [
+					new CacheableResponsePlugin({ statuses: [0, 200] }),
+					new ExpirationPlugin({
+						maxEntries: 200,
+						maxAgeSeconds: 30 * DAY,
+						purgeOnQuotaError: true,
+					}),
+				],
+			})
+		)
+
+		registerRoute(
+			({ url }) =>
 				url.origin === CDN_ORIGIN &&
 				!CDN_NO_CACHE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix)),
 			new CacheFirst({

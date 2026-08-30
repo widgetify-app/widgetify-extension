@@ -18,6 +18,7 @@ export const CacheNames = {
 	fonts: ns('fonts'),
 	cdn: ns('cdn'),
 	cdnCss: ns('cdn-css'),
+	favicons: ns('favicons'),
 } as const
 
 export const EXPECTED_CACHES = new Set<string>(Object.values(CacheNames))
@@ -32,6 +33,9 @@ export const LEGACY_CACHES: string[] = [
 	'remote-fonts-css-cache',
 	'widgetify-public-api',
 	'critical-resources-v1',
+	'images-cache-v1',
+	'cross-origin-cache-v1',
+	'widgetify-api-cache-v1',
 ]
 
 export function resolveCacheName(logical: CacheName): string {
