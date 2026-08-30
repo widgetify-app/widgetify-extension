@@ -3,10 +3,10 @@ import React, { type ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
 import { modalBoxVariants, modalScrollVariants } from './modal.variants'
 
-export const MODAL_EXIT_MS = 360
+export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
 export type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean
