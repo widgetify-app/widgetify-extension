@@ -62,7 +62,7 @@ const errorTranslations: Record<string, string> = {
 	WIDGET_NOT_FOUND: 'ویجت پیدا نشد',
 	WIDGET_DELETED: 'ویجت حذف شد',
 	WIDGET_DUPLICATED: 'ویجت با موفقیت تکرار شد',
-	WIDGET_ALREADY_EXISTS: 'این ویجت قبلاً به صفحه اضافه شده',
+	WIDGET_ALREADY_EXISTS: 'این ویجت قبلا به صفحه اضافه شده',
 	INVALID_WIDGET_POSITION: 'موقعیت قرارگیری ویجت درست نیست',
 	MAX_WIDGETS_REACHED:
 		'به سقف تعداد ویجت‌ها رسیدی! یکی از قبلی‌ها رو حذف کن تا جا باز بشه',
