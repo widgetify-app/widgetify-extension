@@ -40,7 +40,6 @@ export enum PetTypes {
 
 ```tsx
 const DEFAULT_SETTINGS: PetSettings = {
-  enablePets: true,
   petType: null,
   petOptions: {
     [PetTypes.DOG_AKITA]: {
