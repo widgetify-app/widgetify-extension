@@ -178,9 +178,8 @@ export function NoteSticky() {
 	return (
 		<div
 			className={cn(
-				'h-full w-full flex flex-col justify-between p-3 rounded-2xl border transition-all duration-200 select-none overflow-hidden relative shadow-xs ',
+				'h-full w-full flex flex-col justify-between p-3 rounded-2xl transition-all duration-200 select-none overflow-hidden relative',
 				colorTheme.bg,
-				colorTheme.border,
 				colorTheme.text
 			)}
 		>
@@ -224,7 +223,7 @@ export function NoteSticky() {
 								variant="ghost"
 								rounded="md"
 								onClick={handlePrevNote}
-								className="h-4 w-4 p-0 hover:opacity-100 opacity-70 border-none shadow-none text-inherit"
+								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت قبلی"
 							>
 								<Icon name="chevronRight" size={11} />
@@ -234,7 +233,7 @@ export function NoteSticky() {
 								variant="ghost"
 								rounded="md"
 								onClick={handleNextNote}
-								className="h-4 w-4 p-0 hover:opacity-100 opacity-70 border-none shadow-none text-inherit"
+								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت بعدی"
 							>
 								<Icon name="chevronLeft" size={11} />
