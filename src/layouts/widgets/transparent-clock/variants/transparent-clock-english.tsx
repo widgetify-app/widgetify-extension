@@ -26,7 +26,7 @@ export function TransparentClockEnglish({
 			className="flex flex-col items-center justify-center w-full h-full gap-1 px-3 text-center transition-colors duration-500 font-latin"
 		>
 			<div
-				className="text-6xl font-black leading-none tracking-tight sm:text-9xl transition-all duration-500"
+				className="text-5xl font-black leading-none tracking-tight transition-all duration-500 sm:text-7xl"
 				style={{
 					color: theme.primaryColor,
 					textShadow: theme.accentGlow,
@@ -38,7 +38,7 @@ export function TransparentClockEnglish({
 			</div>
 
 			<div
-				className="flex items-center justify-center gap-1.5 text-sm font-medium sm:text-base transition-all duration-500"
+				className="flex items-center justify-center gap-1.5 text-xs font-medium sm:text-sm transition-all duration-500"
 				style={{
 					color: theme.secondaryColor,
 					textShadow: theme.accentGlow,
