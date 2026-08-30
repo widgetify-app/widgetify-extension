@@ -30,7 +30,36 @@ const GRADIENT_DIRECTION_MAP: Record<string, string> = {
 	'to-bl': 'to bottom left',
 }
 
+let currentlyAppliedWallpaper: StoredWallpaper | null = null
+
+function isSameWallpaper(a: StoredWallpaper | null, b: StoredWallpaper | null) {
+	if (!a || !b) return false
+	if (a.id !== b.id || a.type !== b.type || a.src !== b.src) return false
+	if (a.type === 'GRADIENT') {
+		return (
+			a.gradient?.from === b.gradient?.from &&
+			a.gradient?.to === b.gradient?.to &&
+			a.gradient?.direction === b.gradient?.direction
+		)
+	}
+	return true
+}
+
 function applyWallpaper(wallpaper: StoredWallpaper) {
+	if (isSameWallpaper(currentlyAppliedWallpaper, wallpaper)) {
+		if (wallpaper.type === 'VIDEO') {
+			const video = document.getElementById(
+				'background-video'
+			) as HTMLVideoElement | null
+			if (video && video.src === wallpaper.src) {
+				return
+			}
+		} else {
+			return
+		}
+	}
+
+	currentlyAppliedWallpaper = wallpaper
 	pinWallpaperForOffline(wallpaper)
 
 	const existingVideo = document.getElementById('background-video')

@@ -126,7 +126,10 @@ const errorTranslations: Record<string, string> = {
 	BULK_IMPORT_LIMIT_EXCEEDED: `تعداد آیتم درون‌ریزی بیش‌از حد هست`,
 	NO_VALID_ITEMS_TO_IMPORT: 'هیچ آیتم معتبری برای درون‌ریزی وجود نداره',
 	BIRTHDATE_CANNOT_BE_CHANGED: 'به تازگی تاریخ تولدت رو عوض کردی!',
-	VIP_REQUIRED: 'این قابلیت فقط برای کاربران پرو در دسترس است',
+	VIP_REQUIRED: 'این قابلیت فقط برای کاربران پرو در دسترسه',
+	UPLOAD_IN_PROGRESS: 'یه فایل در حال آپلوده، لطفا چند لحظه صبر کن',
+	CUSTOM_WALLPAPER_REMOVED: 'تصویر زمینه حذف شد',
+	UPLOAD_FAILED: 'خطا در آپلود فایل، لطفا دوباره تلاش کن',
 }
 
 const validationTranslations: Record<string, string> = {

@@ -54,8 +54,8 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 				onWallpaperChange(uploadedWallpaper)
 				showToast(
 					isVideo
-						? 'ویدیو ذخیره شد و با اکانتت همگام‌سازی می‌شه'
-						: 'عکس ذخیره شد و با اکانتت همگام‌سازی می‌شه',
+						? 'ویدیو ذخیره شد و با اکانتت همگام‌سازی شد'
+						: 'عکس ذخیره شد و با اکانتت همگام‌سازی شد',
 					'success'
 				)
 				Analytics.event('custom_wallpaper_selected')
@@ -82,10 +82,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 				)
 				callEvent('openSettings', 'vip')
 			} else {
-				showToast(
-					`حجم فایل نباید بیشتر از ${freeMaxSize} مگابایت باشه`,
-					'error'
-				)
+				showToast(`حجم فایل نباید بیشتر از ${freeMaxSize} مگابایت باشه`, 'error')
 			}
 			return
 		}
