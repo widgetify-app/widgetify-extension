@@ -1,9 +1,12 @@
 import type { VariantProps } from 'class-variance-authority'
-import React, { type ReactNode, useEffect, useRef } from 'react'
+import React, { type ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/src/icons'
+import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
 import { modalBoxVariants, modalScrollVariants } from './modal.variants'
+
+export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
 export type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean
@@ -71,26 +74,31 @@ export function Modal({
 	}, [isOpen])
 
 	const modalBoxClasses = cn(modalBoxVariants({ size }), className)
+	const shouldRenderContent = useDelayedUnmount(isOpen, MODAL_EXIT_MS)
+	const [isMounted, setIsMounted] = useState(false)
 
-	if (!isOpen) return null
+	useEffect(() => {
+		const frame = requestAnimationFrame(() => setIsMounted(true))
+		return () => cancelAnimationFrame(frame)
+	}, [])
 
 	return createPortal(
 		<dialog
-			open={isOpen}
+			open={isOpen && isMounted}
 			dir={direction}
 			aria-labelledby={typeof title === 'string' ? title : 'modal-title'}
 			aria-modal="true"
 			onClick={() => closeOnBackdropClick && onClose()}
 			onContextMenu={(e) => e.stopPropagation()}
-			className="flex items-center justify-center p-2 transition-opacity duration-200 opacity-100 modal modal-middle md:p-4"
+			className="flex items-center justify-center p-2 modal modal-middle md:p-4"
 		>
 			<div
 				ref={modalRef}
 				onClick={(e) => e.stopPropagation()}
 				onContextMenu={(e) => e.stopPropagation()}
-				className={cn(modalBoxClasses, 'animate-modal-in')}
+				className={modalBoxClasses}
 			>
-				{(title || showCloseButton) && (
+				{shouldRenderContent && (title || showCloseButton) && (
 					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
 						{title && (
 							<h3
@@ -117,7 +125,9 @@ export function Modal({
 						)}
 					</div>
 				)}
-				<div className={modalScrollVariants({ size })}>{children}</div>
+				<div className={modalScrollVariants({ size })}>
+					{shouldRenderContent && children}
+				</div>
 			</div>
 		</dialog>,
 		document.body

@@ -4,11 +4,13 @@ import { SuggestionSkeleton } from './suggestion/suggestion.skeleton'
 import { useAuth } from '@/context/auth.context'
 import { AutocompleteConsentModal } from './suggestion/autocomplete-consent.modal'
 import { Portal } from '@/components/ui'
+import { Motion, Presence } from '@/common/motion'
 import { useSearchHistory } from './hooks/use-search-history'
 import { Suggestions } from './suggestion/suggestions'
 import { Icon } from '@/src/icons'
 
 interface SearchHistoryPortalProps {
+	isOpen: boolean
 	onClose: () => void
 	onSearch: (query: string) => void
 	onEngineChange: any
@@ -18,6 +20,7 @@ interface SearchHistoryPortalProps {
 }
 
 export function SearchHistoryPortal({
+	isOpen,
 	onSearch,
 	searchQuery,
 	portalStyles,
@@ -77,10 +80,17 @@ export function SearchHistoryPortal({
 	return (
 		<>
 			<Portal>
-				<div
+				<Presence>
+					{isOpen && (
+				<Motion.div
+					key="search-history"
 					ref={portalRef}
 					style={portalStyles}
-					className="z-20 -mt-12 overflow-hidden duration-300 shadow-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md animate-in fade-in slide-in-from-top-2"
+					initial={{ opacity: 0, y: -8 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -8 }}
+					transition={{ duration: 0.18, ease: 'easeOut' }}
+					className="z-20 -mt-12 overflow-hidden shadow-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md"
 				>
 					{showSuggestions &&
 						hasQuery &&
@@ -144,15 +154,15 @@ export function SearchHistoryPortal({
 								</p>
 							</div>
 						)}
-				</div>
+				</Motion.div>
+					)}
+				</Presence>
 			</Portal>
 
-			{showConsentModal && (
-				<AutocompleteConsentModal
-					isOpen
-					onClose={() => setShowConsentModal(false)}
-				/>
-			)}
+			<AutocompleteConsentModal
+				isOpen={showConsentModal}
+				onClose={() => setShowConsentModal(false)}
+			/>
 		</>
 	)
 }

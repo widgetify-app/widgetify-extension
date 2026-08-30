@@ -195,10 +195,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		return allDefinitions.filter((def) => def.category === activeCategory)
 	}, [allDefinitions, activeCategory])
 
-	if (!isOpen) {
-		return null
-	}
-
 	const previewSize = selectedSize
 
 	return (

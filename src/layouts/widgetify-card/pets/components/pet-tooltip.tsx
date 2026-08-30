@@ -3,6 +3,7 @@ interface PetTooltipProps {
 	content: string | React.ReactNode
 	emoji?: string
 	isAnimation?: boolean
+	placement?: 'top' | 'bottom'
 }
 
 export const PetTooltip: React.FC<PetTooltipProps> = ({
@@ -10,15 +11,20 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 	content,
 	emoji,
 	isAnimation = false,
+	placement = 'top',
 }) => {
 	return (
 		<div
-			className="absolute -translate-x-1/2 -top-8 left-1/2"
+			className={`absolute left-1/2 ${placement === 'top' ? '-top-8' : '-bottom-8'}`}
 			style={{
-				transform: `scaleX(${direction})`,
-				animation: isAnimation ? 'fadeInUp 0.3s ease-out' : undefined,
+				transform: `translateX(-50%) scaleX(${direction})`,
 			}}
 		>
+			<div
+				style={{
+					animation: isAnimation ? 'fadeInUp 0.3s ease-out' : undefined,
+				}}
+			>
 			<div
 				className={
 					'relative bg-gradient-to-r  px-3 py-1.5 rounded-md text-xs whitespace-nowrap shadow-lg bg-content after:content-[""] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-l-[6px] after:border-r-[6px] after:border-t-[6px] after:border-l-transparent after:border-r-transparent after:border-t-base-300'
@@ -44,6 +50,7 @@ export const PetTooltip: React.FC<PetTooltipProps> = ({
 					)}
 					<span className={'font-medium text-content'}>{content}</span>
 				</div>
+			</div>
 			</div>
 
 			{isAnimation && (

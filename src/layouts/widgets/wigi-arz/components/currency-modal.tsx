@@ -27,21 +27,8 @@ export const CurrencyModalComponent = ({
 	currencyColorMode,
 }: CurrencyModalComponentProps) => {
 	const [showConverter, setShowConverter] = useState(false)
-	const [isVisible, setIsVisible] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
-
-	useEffect(() => {
-		let timerId: NodeJS.Timeout
-		if (isModalOpen) {
-			timerId = setTimeout(() => {
-				setIsVisible(true)
-			}, 50)
-		} else {
-			setIsVisible(false)
-		}
-		return () => clearTimeout(timerId)
-	}, [isModalOpen])
 
 	useEffect(() => {
 		if (isModalOpen && currency?.rialPrice) {
@@ -85,9 +72,7 @@ export const CurrencyModalComponent = ({
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
 			<div
-				className={`relative p-8 flex flex-col items-center justify-center space-y-2 transition-all duration-300 ease-out ${
-					isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-				}`}
+				className="relative flex flex-col items-center justify-center p-8 space-y-2"
 			>
 				<div className="relative transition-transform duration-200 ease-out">
 					<img

@@ -1,5 +1,6 @@
 import { Motion as motion } from "@/common/motion";
 import React, { Suspense, useEffect, useState } from 'react'
+import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useDate } from '@/context/date.context'
@@ -61,6 +62,7 @@ interface ToolsLayoutProps {
 export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } }) => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType | null>(null)
 	const [activeModalTool, setActiveModalTool] = useState<ToolsTabType | null>(null)
+	const lastModalTool = useLastDefined(activeModalTool)
 	const { selectedDate } = useDate()
 
 	const onTabClick = (tab: ToolsTabType) => {
@@ -97,14 +99,13 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 					<ToolsCompactRow onSelectTab={onCompactToolClick} />
 				</WidgetContainer>
 
-				{activeModalTool && (
-					<Modal
+				<Modal
 						isOpen={!!activeModalTool}
 						onClose={() => setActiveModalTool(null)}
 						title={
-							activeModalTool === 'pomodoro'
+							lastModalTool === 'pomodoro'
 								? 'تایمر پومودورو'
-								: activeModalTool === 'religious-time'
+								: lastModalTool === 'religious-time'
 									? 'اوقات شرعی'
 									: 'تبدیل ارز'
 						}
@@ -112,14 +113,13 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 						direction="rtl"
 					>
 						<Suspense>
-							{activeModalTool === 'religious-time' && (
+							{lastModalTool === 'religious-time' && (
 								<ReligiousTime currentDate={selectedDate} />
 							)}
-							{activeModalTool === 'pomodoro' && <PomodoroTimer />}
-							{activeModalTool === 'currency-converter' && <CurrencyConverter />}
+							{lastModalTool === 'pomodoro' && <PomodoroTimer />}
+							{lastModalTool === 'currency-converter' && <CurrencyConverter />}
 						</Suspense>
 					</Modal>
-				)}
 			</>
 		)
 	}

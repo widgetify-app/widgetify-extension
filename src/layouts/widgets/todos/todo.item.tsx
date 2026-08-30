@@ -260,8 +260,7 @@ export function TodoItem({
 				</div>
 			)}
 
-			{showConfirmation && (
-				<ConfirmationModal
+			<ConfirmationModal
 					isOpen={showConfirmation}
 					onClose={() => setShowConfirmation(false)}
 					onConfirm={onConfirmDelete}
@@ -270,7 +269,6 @@ export function TodoItem({
 					variant="danger"
 					title="حذف این تسک؟"
 				/>
-			)}
 		</div>
 	)
 }

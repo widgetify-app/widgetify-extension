@@ -35,6 +35,7 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 
 	const crabDimensions: PetDimensions = {
 		size: 32,
+		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.NORMAL,
 		climbSpeed: 0.8,
@@ -88,7 +89,6 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CRAB)}
-			hungryLevel={getPetHungryState(PetTypes.CRAB)?.level}
 		/>
 	)
 }

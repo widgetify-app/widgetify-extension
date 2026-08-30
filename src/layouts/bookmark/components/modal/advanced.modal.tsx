@@ -148,8 +148,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		})
 	}
 
-	if (!isOpen) return null
-
 	return (
 		<Modal
 			title={title}

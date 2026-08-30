@@ -95,6 +95,7 @@ export function NavbarLayout(): JSX.Element {
 	const { canvasMode } = useAppearance()
 	const isEditingCanvas = canvasMode === 'edit'
 	const showNavbar = isVisible && !isEditingCanvas
+	const showHandle = !isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
@@ -133,17 +134,21 @@ export function NavbarLayout(): JSX.Element {
 	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
-			{!isVisible && !isEditingCanvas && (
-				<button
-					onClick={() => onToggleNavbar()}
-					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08] cursor-pointer group"
-				>
-					<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
-				</button>
-			)}
+			<button
+				onClick={() => onToggleNavbar()}
+				aria-hidden={showHandle ? undefined : true}
+				tabIndex={showHandle ? 0 : -1}
+				className={`fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-white/[0.08] cursor-pointer group ${
+					showHandle
+						? 'translate-y-0 opacity-100'
+						: 'translate-y-full opacity-0 pointer-events-none'
+				}`}
+			>
+				<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
+			</button>
 
 			<div
-				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
+				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						showNavbar
 							? 'bottom-2 opacity-100 scale-100'
