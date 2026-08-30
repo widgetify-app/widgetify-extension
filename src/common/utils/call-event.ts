@@ -6,7 +6,7 @@ import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interfac
 import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import type { StoredWallpaper } from '../wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
@@ -28,6 +28,7 @@ export interface EventName {
 		| null
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
+	custom_wallpaper_sync: Wallpaper | null
 	openWidgetsSettings: {
 		tab: WidgetTabKeys | null
 		instanceId?: string

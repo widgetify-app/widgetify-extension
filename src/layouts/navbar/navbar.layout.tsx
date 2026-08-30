@@ -98,12 +98,8 @@ export function NavbarLayout(): JSX.Element {
 	const showHandle = !isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
-		if (showSettings) {
-			setTab(tabName)
-		} else {
-			setTab(tabName)
-			setShowSettings(true)
-		}
+		setTab(tabName)
+		setShowSettings(true)
 	}, [])
 
 	const onToggleNavbar = () => {
@@ -115,7 +111,10 @@ export function NavbarLayout(): JSX.Element {
 		Analytics.event(`navbar_${isVisible ? 'closed' : 'opened'}`)
 	}
 
-	const settingsModalCloseHandler = () => setShowSettings(false)
+	const settingsModalCloseHandler = () => {
+		setShowSettings(false)
+		setTab(null)
+	}
 
 	useEffect(() => {
 		const load = async () => {
@@ -207,6 +206,7 @@ export function NavbarLayout(): JSX.Element {
 				isOpen={showSettings}
 				onClose={settingsModalCloseHandler}
 				selectedTab={tab}
+				onTabChange={setTab}
 			/>
 		</>
 	)

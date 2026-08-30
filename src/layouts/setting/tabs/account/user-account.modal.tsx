@@ -1,18 +1,20 @@
+import { useEffect } from 'react'
 import { Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import AuthForm from './auth-form/auth-form'
-import { SettingModal } from '../../setting-modal'
 interface FriendSettingModalProps {
 	isOpen: boolean
 	onClose: () => void
 	selectedTab?: string | null
 }
-export const UserAccountModal = ({
-	isOpen,
-	onClose,
-	selectedTab,
-}: FriendSettingModalProps) => {
+export const UserAccountModal = ({ isOpen, onClose }: FriendSettingModalProps) => {
 	const { isAuthenticated } = useAuth()
+
+	useEffect(() => {
+		if (isAuthenticated && isOpen) {
+			onClose()
+		}
+	}, [isAuthenticated, isOpen, onClose])
 
 	if (!isAuthenticated)
 		return (
@@ -27,11 +29,5 @@ export const UserAccountModal = ({
 			</Modal>
 		)
 
-	return (
-		<SettingModal
-			isOpen={isOpen}
-			onClose={onClose}
-			selectedTab={selectedTab as any}
-		/>
-	)
+	return null
 }

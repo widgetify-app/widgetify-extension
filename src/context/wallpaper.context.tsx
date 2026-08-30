@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { safeAwait } from '@/services/api'
@@ -12,6 +12,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { playAlarm } from '@/common/play-alarm'
 import { useAuth } from '@/context/auth.context'
 
+import { getRandomWallpaper } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
+
 interface WallpaperContextValue {
 	selectedBackground: Wallpaper | null
 	customWallpaper: Wallpaper | null
@@ -19,6 +21,7 @@ interface WallpaperContextValue {
 	allWallpapers: (fetchedWallpapers?: Wallpaper[]) => Wallpaper[]
 	handleSelectBackground: (wallpaper: Wallpaper) => Promise<void>
 	handleCustomWallpaperChange: (wallpaper: Wallpaper) => void
+	handleRemoveCustomWallpaper: () => Promise<void>
 	syncWithFetchedWallpapers: (wallpapers: Wallpaper[]) => void
 }
 
@@ -36,17 +39,23 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		async function loadInitialWallpaper() {
+			const customWp: Wallpaper | null = await getFromStorage('customWallpaper')
+			if (customWp) {
+				setCustomWallpaper(customWp)
+			}
+
 			const wallpaper: StoredWallpaper | null = await getFromStorage('wallpaper')
 			if (!wallpaper) return
 
 			setCurrentStoredWallpaper(wallpaper)
 
-			if (wallpaper.id === 'custom-wallpaper') {
-				const customWp = await getFromStorage('customWallpaper')
-				if (customWp) {
-					setCustomWallpaper(customWp)
-					setSelectedBackground(customWp)
-				}
+			if (
+				wallpaper.id === 'custom-wallpaper' ||
+				(wallpaper as Wallpaper).isCustom
+			) {
+				const wp = customWp || (wallpaper as Wallpaper)
+				setCustomWallpaper(wp)
+				setSelectedBackground(wp)
 			} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 				setSelectedBackground({
 					id: wallpaper.id,
@@ -66,8 +75,18 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			if (wallpaper) callEvent('wallpaper_change', wallpaper)
 		})
 
+		const customSyncEvent = listenEvent('custom_wallpaper_sync', (wp) => {
+			if (wp) {
+				setCustomWallpaper(wp)
+				setSelectedBackground(wp)
+			} else {
+				setCustomWallpaper(null)
+			}
+		})
+
 		return () => {
 			event()
+			customSyncEvent()
 		}
 	}, [])
 
@@ -96,6 +115,8 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		setToStorage('wallpaper', wallpaperData)
 		if (selectedBackground.id === 'custom-wallpaper') {
 			setToStorage('customWallpaper', selectedBackground)
+		} else {
+			removeFromStorage('customWallpaper')
 		}
 
 		callEvent('wallpaper_change', wallpaperData)
@@ -106,8 +127,12 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			setSelectedBackground(wallpaper)
 			return
 		}
+
+		setCustomWallpaper(null)
+		removeFromStorage('customWallpaper')
+
 		if (wallpaper.coin && !isAuthenticated) {
-			showToast('برای انتخاب این تصویر زمینه باید وارد حساب کاربری شوید.', 'error')
+			showToast('برای انتخاب این تصویر زمینه باید وارد حساب کاربری شوید', 'error')
 			return
 		}
 
@@ -173,6 +198,32 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		handleSelectBackground(newWallpaper)
 	}
 
+	const handleRemoveCustomWallpaper = async () => {
+		setCustomWallpaper(null)
+		await setToStorage('customWallpaper', null as any)
+		if (selectedBackground?.id === 'custom-wallpaper') {
+			const [error, randomWallpaper] = await safeAwait<any, Wallpaper>(
+				getRandomWallpaper()
+			)
+			if (randomWallpaper) {
+				handleSelectBackground(randomWallpaper)
+			} else {
+				handleSelectBackground({
+					id: 'gradient-a1c4fd-c2e9fb',
+					name: 'گرادیان',
+					type: 'GRADIENT',
+					src: '',
+					previewSrc: '',
+					gradient: {
+						from: '#a1c4fd',
+						to: '#c2e9fb',
+						direction: 'to-r',
+					},
+				})
+			}
+		}
+	}
+
 	const allWallpapers = (fetchedWallpapers: Wallpaper[] = []) => {
 		if (customWallpaper) return [...fetchedWallpapers, customWallpaper]
 		return fetchedWallpapers
@@ -187,6 +238,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 				allWallpapers,
 				handleSelectBackground,
 				handleCustomWallpaperChange,
+				handleRemoveCustomWallpaper,
 				syncWithFetchedWallpapers,
 			}}
 		>

@@ -11,6 +11,7 @@ export interface TabItem {
 		icon: ReactNode
 		element: ReactNode
 		isNew?: boolean
+		needAuth?: boolean
 	}[]
 }
 
@@ -85,42 +86,51 @@ export const TabManager = ({
 					<div className="flex flex-row sm:flex-col sm:gap-4">
 						{tabs
 							.filter((f) => !f.needAuth || isAuthenticated)
-							.map((group, idx) => (
-								<div key={idx} className="flex flex-col gap-1">
-									{group.parentName && (
-										<div className="relative mx-4 my-2">
-											<div className="h-px bg-base-300" />
-											<span className="absolute right-0 px-2 text-xs font-medium -top-2 bg-base-100 text-muted">
-												{group.parentName}
-											</span>
-										</div>
-									)}
+							.map((group, idx) => {
+								const visibleChildren = group.children?.filter(
+									(child) => !child.needAuth || isAuthenticated
+								)
+								if (!visibleChildren?.length) return null
 
-									{group.children?.map(
-										({ label, value, icon, isNew }) => (
-											<button
-												key={value}
-												onClick={() => handleTabChange(value)}
-												className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
-													activeTab === value
-												)}`}
-											>
-												<span
-													className={`relative ${getTabIconStyle(
+								return (
+									<div key={idx} className="flex flex-col gap-1">
+										{group.parentName && (
+											<div className="relative mx-4 my-2">
+												<div className="h-px bg-base-300" />
+												<span className="absolute right-0 px-2 text-xs font-medium -top-2 bg-base-100 text-muted">
+													{group.parentName}
+												</span>
+											</div>
+										)}
+
+										{visibleChildren.map(
+											({ label, value, icon, isNew }) => (
+												<button
+													key={value}
+													onClick={() => handleTabChange(value)}
+													className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
 														activeTab === value
 													)}`}
 												>
-													{icon}
-													{isNew && (
-														<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-error animate-ping" />
-													)}
-												</span>
-												<span className="text-sm">{label}</span>
-											</button>
-										)
-									)}
-								</div>
-							))}
+													<span
+														className={`relative ${getTabIconStyle(
+															activeTab === value
+														)}`}
+													>
+														{icon}
+														{isNew && (
+															<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-error animate-ping" />
+														)}
+													</span>
+													<span className="text-sm">
+														{label}
+													</span>
+												</button>
+											)
+										)}
+									</div>
+								)
+							})}
 					</div>
 					{children}
 				</div>

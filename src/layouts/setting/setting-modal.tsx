@@ -19,11 +19,11 @@ interface SettingModalProps {
 	isOpen: boolean
 	onClose: () => void
 	selectedTab: string | null
+	onTabChange?: (tab: string) => void
 }
 const tabs: TabItem[] = [
 	{
 		parentName: 'حساب کاربری',
-		needAuth: true,
 		children: [
 			{
 				label: 'پروفایل من',
@@ -40,18 +40,21 @@ const tabs: TabItem[] = [
 			{
 				label: 'پلتفرم‌ها',
 				value: 'platforms',
+				needAuth: true,
 				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
 			},
 			{
 				label: 'ماموریت‌ها و پاداش',
 				value: 'tasks',
+				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
 			},
 			{
 				label: 'دوستان',
 				value: 'friends',
+				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
 			},
@@ -105,7 +108,12 @@ const tabs: TabItem[] = [
 		],
 	},
 ]
-export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
+export const SettingModal = ({
+	isOpen,
+	onClose,
+	selectedTab,
+	onTabChange,
+}: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
 
 	function openWidgetSettings() {
@@ -135,6 +143,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				tabs={tabs}
 				defaultTab="general"
 				selectedTab={selectedTab}
+				onTabChange={onTabChange}
 				direction="rtl"
 			>
 				<div className="flex flex-row gap-1 sm:flex-col">
