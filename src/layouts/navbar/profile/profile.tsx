@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { AvatarComponent } from '@/components/ui'
-import { Tooltip } from '@/components/ui'
+import { Tooltip, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { UserAccountModal } from '../../setting/tabs/account/user-account.modal'
+import AuthForm from '../../setting/tabs/account/auth-form/auth-form'
 import { WelcomeWizard } from '@/components/welcome-wizard'
 import { Icon } from '@/src/icons'
 
@@ -25,30 +25,42 @@ const getTooltipContent = (user: any) => {
 
 export function ProfileNav() {
 	const { user, isAuthenticated, profilePercentage } = useAuth()
-	const [showSettingsModal, setShowSettingsModal] = useState(false)
+	const [showAuthModal, setShowAuthModal] = useState(false)
 	const [openedWizard, setOpenedWizard] = useState(false)
-	const [activeTab, setActiveTab] = useState<string>()
 
 	const handleProfileClick = (active?: string) => {
-		setShowSettingsModal(true)
-		if (active) setActiveTab(active)
+		if (!isAuthenticated) {
+			setShowAuthModal(true)
+			return
+		}
+		callEvent('openSettings', (active as any) || 'profile')
 	}
 
-	const modalCloseHandler = () => setShowSettingsModal(false)
+	const authModalCloseHandler = () => setShowAuthModal(false)
 
 	const isAuth = user || isAuthenticated
 
 	useEffect(() => {
+		if (isAuthenticated && showAuthModal) {
+			setShowAuthModal(false)
+		}
+	}, [isAuthenticated, showAuthModal])
+
+	useEffect(() => {
 		const event = listenEvent('openProfile', (active) => {
-			handleProfileClick(active)
+			if (!isAuthenticated) {
+				setShowAuthModal(true)
+			} else {
+				callEvent('openSettings', (active as any) || 'profile')
+			}
 		})
 
 		const eventClose = listenEvent('close_all_modals', () => {
-			modalCloseHandler()
+			authModalCloseHandler()
 		})
 
 		const openWizardEvent = listenEvent('openWizardModal', () => {
-			modalCloseHandler()
+			authModalCloseHandler()
 			setOpenedWizard(true)
 		})
 
@@ -57,7 +69,7 @@ export function ProfileNav() {
 			eventClose()
 			openWizardEvent()
 		}
-	}, [])
+	}, [isAuthenticated])
 
 	return (
 		<>
@@ -102,11 +114,15 @@ export function ProfileNav() {
 				</Tooltip>
 			)}
 
-			<UserAccountModal
-				isOpen={showSettingsModal}
-				selectedTab={activeTab}
-				onClose={modalCloseHandler}
-			/>
+			<Modal
+				isOpen={showAuthModal}
+				onClose={authModalCloseHandler}
+				size="md"
+				title="ورود به حساب کاربری"
+				direction="rtl"
+			>
+				<AuthForm />
+			</Modal>
 
 			{openedWizard && (
 				<WelcomeWizard

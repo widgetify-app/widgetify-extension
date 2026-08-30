@@ -206,6 +206,7 @@ export function NavbarLayout(): JSX.Element {
 				isOpen={showSettings}
 				onClose={settingsModalCloseHandler}
 				selectedTab={tab}
+				onTabChange={setTab}
 			/>
 		</>
 	)

@@ -19,6 +19,7 @@ interface SettingModalProps {
 	isOpen: boolean
 	onClose: () => void
 	selectedTab: string | null
+	onTabChange?: (tab: string) => void
 }
 const tabs: TabItem[] = [
 	{
@@ -107,7 +108,12 @@ const tabs: TabItem[] = [
 		],
 	},
 ]
-export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
+export const SettingModal = ({
+	isOpen,
+	onClose,
+	selectedTab,
+	onTabChange,
+}: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
 
 	function openWidgetSettings() {
@@ -137,6 +143,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				tabs={tabs}
 				defaultTab="general"
 				selectedTab={selectedTab}
+				onTabChange={onTabChange}
 				direction="rtl"
 			>
 				<div className="flex flex-row gap-1 sm:flex-col">
