@@ -24,7 +24,7 @@ export function TransparentClockPersian({
 		<div className="flex flex-col items-center justify-center w-full h-full gap-1 px-3 text-center transition-colors duration-500">
 			<div
 				dir="ltr"
-				className="font-black leading-none tracking-tight text-8xl sm:text-8xl transition-all duration-500"
+				className="text-5xl font-black leading-none tracking-tight transition-all duration-500 sm:text-7xl"
 				style={{
 					color: theme.primaryColor,
 					textShadow: theme.accentGlow,
@@ -36,7 +36,7 @@ export function TransparentClockPersian({
 			</div>
 
 			<div
-				className="flex items-center justify-center gap-1.5 text-sm font-medium sm:text-base transition-all duration-500"
+				className="flex items-center justify-center gap-1.5 text-xs font-medium sm:text-sm transition-all duration-500"
 				style={{
 					color: theme.secondaryColor,
 					textShadow: theme.accentGlow,

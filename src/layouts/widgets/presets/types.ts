@@ -7,6 +7,6 @@ export interface PresetLayout {
 	isVip: boolean
 	isFeatured: boolean
 	category: 'featured' | 'minimal' | 'productivity' | 'lifestyle' | 'finance' | 'daily'
-	verticalAlign?: 'top' | 'center' | 'bottom'
+	verticalAlign?: 'top' | 'center' | 'bottom' | 'split-bottom'
 	widgets: StoredWidget[]
 }

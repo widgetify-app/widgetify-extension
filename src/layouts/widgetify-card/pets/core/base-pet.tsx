@@ -117,7 +117,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 		<div
 			ref={containerRef}
 			className={cn(
-				'absolute hidden w-full h-16 overflow-hidden -bottom-2 md:flex',
+				'absolute flex w-full h-16 overflow-hidden -bottom-2',
 				className
 			)}
 			style={{
@@ -277,15 +277,11 @@ export function useBasePetLogic({
 			const clickX = e.clientX - rect.left
 			const bounds = getBounds()
 			const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
-			const spawnY = Math.max(
-				0,
-				(container.offsetHeight || 0) - assets.collectibleSize
-			)
 
 			const newCollectible: CollectibleItem = {
 				id: collectibleIdRef.current,
 				x: clampedX,
-				y: spawnY,
+				y: -assets.collectibleSize,
 				collected: false,
 				dropping: true,
 			}
@@ -373,8 +369,8 @@ export function useBasePetLogic({
 
 				if (collectible.dropping) {
 					changed = true
-					const newY = collectible.y - fallStep
-					if (newY <= 0) {
+					const newY = collectible.y + fallStep
+					if (newY >= 0) {
 						return { ...collectible, y: 0, dropping: false }
 					}
 					return { ...collectible, y: newY }
@@ -692,6 +688,20 @@ export function useBasePetLogic({
 		frameId = requestAnimationFrame(loop)
 		return () => cancelAnimationFrame(frameId)
 	}, [])
+
+	useEffect(() => {
+		const container = containerRef.current
+		if (!container) return
+
+		const observer = new ResizeObserver(() => {
+			const bounds = getBounds()
+			if (bounds.maxX <= bounds.minX && bounds.maxY <= 0) return
+			applyPosition(clampToBounds(positionRef.current, bounds))
+		})
+
+		observer.observe(container)
+		return () => observer.disconnect()
+	}, [getBounds, applyPosition])
 
 	useEffect(() => {
 		const container = containerRef.current

@@ -111,6 +111,30 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			return
 		}
 
+		const previousWallpaper: Wallpaper =
+			selectedBackground ??
+			(currentStoredWallpaper
+				? {
+						id: currentStoredWallpaper.id,
+						name: '',
+						type: currentStoredWallpaper.type,
+						src: currentStoredWallpaper.src,
+						previewSrc: '',
+						gradient: currentStoredWallpaper.gradient,
+					}
+				: {
+						id: 'gradient-a1c4fd-c2e9fb',
+						name: 'گرادیان',
+						type: 'GRADIENT',
+						src: '',
+						previewSrc: '',
+						gradient: {
+							from: '#a1c4fd',
+							to: '#c2e9fb',
+							direction: 'to-r',
+						},
+					})
+
 		let isSet = false
 		if (!wallpaper.coin || wallpaper.isOwned) {
 			setSelectedBackground(wallpaper)
@@ -125,6 +149,9 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			)
 
 			if (error) {
+				if (isSet) {
+					setSelectedBackground(previousWallpaper)
+				}
 				showToast(translateError(error) as string, 'error')
 				return
 			}

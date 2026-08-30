@@ -1,7 +1,11 @@
 import jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
-import { drawRoundedRect, fitText, rgba } from '@/common/utils/canvas'
+import {
+	drawRoundedRect,
+	fitText,
+	rgba,
+} from '@/common/utils/canvas'
 import { formatHabitGoal } from '../utils'
 
 interface RenderHabitShareCanvasOptions {
@@ -108,7 +112,8 @@ export function renderHabitShareCanvas(
 
 			const isFuture = dayDate.isAfter(today, 'day')
 			const value = dayData.value
-			const isDone = dayData.isDone || (habit.target > 0 && value >= habit.target)
+			const isDone =
+				dayData.isDone || (habit.target > 0 && value >= habit.target)
 
 			let level = 0
 			if (value > 0) {
@@ -354,3 +359,4 @@ export function renderHabitShareCanvas(
 		legendX += 15
 	}
 }
+

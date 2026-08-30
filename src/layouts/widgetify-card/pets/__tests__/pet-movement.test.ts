@@ -155,6 +155,41 @@ describe('clampToBounds', () => {
 	})
 })
 
+describe('narrow containers', () => {
+	it('keeps a usable track when the container is barely wider than the sprite', () => {
+		const b = bounds(80, 64)
+		expect(b.maxX).toBeGreaterThanOrEqual(b.minX)
+		expect(clampToBounds({ x: 500, y: 0 }, b).x).toBe(b.maxX)
+	})
+
+	it('pulls a pet left behind by a shrinking container back into view', () => {
+		const wide = bounds(600, 64)
+		const narrow = bounds(160, 64)
+
+		const restingFarRight = { x: wide.maxX, y: 0 }
+		expect(restingFarRight.x).toBeGreaterThan(narrow.maxX)
+
+		const rescued = clampToBounds(restingFarRight, narrow)
+		expect(rescued.x).toBe(narrow.maxX)
+		expect(rescued.x + SPRITE_WIDTH).toBeLessThanOrEqual(160)
+	})
+
+	it('pulls a climbing pet down when the container gets shorter', () => {
+		const tall = bounds(600, 200)
+		const short = bounds(600, 40)
+
+		const midClimb = { x: 100, y: tall.maxY }
+		expect(clampToBounds(midClimb, short).y).toBe(short.maxY)
+	})
+
+	it('does not produce a position outside a zero sized container', () => {
+		const b = bounds(0, 0)
+		const clamped = clampToBounds({ x: 999, y: 999 }, b)
+		expect(clamped.x).toBe(b.minX)
+		expect(clamped.y).toBe(0)
+	})
+})
+
 describe('isNearWall', () => {
 	it('detects both walls', () => {
 		const b = bounds()

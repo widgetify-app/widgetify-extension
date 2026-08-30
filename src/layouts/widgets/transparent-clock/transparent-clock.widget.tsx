@@ -10,7 +10,10 @@ import { WidgetContainer } from '../widget-container'
 import { TransparentClockEnglish } from './variants/transparent-clock-english'
 import { TransparentClockPersian } from './variants/transparent-clock-persian'
 
+import type { WidgetSize } from '../layout-engine/types'
+
 interface TransparentClockWidgetProps {
+	size?: WidgetSize
 	meta?: {
 		variant?: string
 	}

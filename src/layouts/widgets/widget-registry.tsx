@@ -382,28 +382,30 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.transparentClock]: {
 		id: WidgetKeys.transparentClock,
-		label: 'ساعت یخی',
+		label: 'ساعت شفاف',
 		emoji: '🕒',
 		category: 'time',
-		allowedSizes: [{ w: 4, h: 2 }],
-		defaultSize: { w: 4, h: 2 },
+		allowedSizes: [{ w: 2, h: 1 }],
+		defaultSize: { w: 2, h: 1 },
 		variants: [
 			{
 				id: 'persian',
 				label: 'ساعت یخی فارسی',
-				size: { w: 4, h: 2 },
+				size: { w: 2, h: 1 },
 				meta: { variant: 'persian' },
 			},
 			{
 				id: 'english',
 				label: 'ساعت یخی انگلیسی',
-				size: { w: 4, h: 2 },
+				size: { w: 2, h: 1 },
 				meta: { variant: 'english' },
 			},
 		],
 		canDuplicate: false,
 		isVipOnly: true,
-		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
+		node: (_instanceId, size, meta) => (
+			<TransparentClockWidget size={size} meta={meta} />
+		),
 	},
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,

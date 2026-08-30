@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { useGetHabitDetail } from '@/services/hooks/habit/get-habit-detail.hook'
 import { HabitCalendar } from './habit-calendar-heatmap'
 import { HabitContributionChart } from './habit-contribution-chart'
-import { HabitShareModal } from './habit-share-modal'
 import { useAuth } from '@/context/auth.context'
 import { formatHabitGoal } from '../utils'
 import { Dropdown } from '@/components/ui'
@@ -11,6 +10,12 @@ import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/src/icons'
 import { cn } from '@/common/utils/cn'
+
+const HabitShareModal = lazy(() =>
+	import('./habit-share-modal').then((module) => ({
+		default: module.HabitShareModal,
+	}))
+)
 
 interface ModalProps {
 	isOpen: boolean
@@ -198,13 +203,15 @@ export function HabitDetailModal({
 				</Button>
 			</Modal>
 
-			{habit && (
-				<HabitShareModal
-					isOpen={isShareModalOpen}
-					onClose={() => setIsShareModalOpen(false)}
-					habit={habit}
-					color={color}
-				/>
+			{habit && isShareModalOpen && (
+				<Suspense fallback={null}>
+					<HabitShareModal
+						isOpen={isShareModalOpen}
+						onClose={() => setIsShareModalOpen(false)}
+						habit={habit}
+						color={color}
+					/>
+				</Suspense>
 			)}
 		</>
 	)

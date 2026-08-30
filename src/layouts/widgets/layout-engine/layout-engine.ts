@@ -153,12 +153,21 @@ export function resolveLayoutChange(
 			const original = layout.find((w) => w.instanceId === instanceId)
 			if (!original) return null
 
-			const newInstanceId = `${original.id}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
-			const duplicated: StoredWidget = {
-				id: original.id,
-				instanceId: newInstanceId,
-				size: { ...original.size },
-				position: findAvailableSlot(layout, original.size, cols),
+			const duplicated: StoredWidget = newWidget
+				? {
+						...newWidget,
+						size: { ...newWidget.size },
+						position: findAvailableSlot(layout, newWidget.size, cols),
+					}
+				: {
+						id: original.id,
+						instanceId: `${original.id}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+						size: { ...original.size },
+						position: findAvailableSlot(layout, original.size, cols),
+					}
+
+			if (layout.some((w) => w.instanceId === duplicated.instanceId)) {
+				return null
 			}
 
 			const appended = [...layout, duplicated]

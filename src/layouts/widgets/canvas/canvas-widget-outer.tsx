@@ -362,7 +362,6 @@ function CanvasWidgetOuterImpl({
 							handleDelete()
 						}}
 						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer -top-2 -right-2 bg-error hover:scale-110 active:scale-95"
-						title="حذف ویجت"
 					>
 						✕
 					</button>
@@ -384,6 +383,9 @@ function CanvasWidgetOuterImpl({
 					{isLocked && canvasMode === 'normal' && (
 						<div
 							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-indigo-500/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
+							style={{
+								zIndex: 1000,
+							}}
 							onClick={(e) => e.stopPropagation()}
 						>
 							<div
