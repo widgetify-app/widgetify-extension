@@ -1,4 +1,3 @@
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
@@ -22,7 +21,6 @@ import { AddWidgetPreview } from './preview'
 import { AddWidgetActions } from './actions'
 
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
-	const shouldRender = useDelayedUnmount(isOpen, 300)
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly, maxFreeWidgets } =
 		useWidgetVipResolver()
@@ -196,10 +194,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		if (activeCategory === 'all') return allDefinitions
 		return allDefinitions.filter((def) => def.category === activeCategory)
 	}, [allDefinitions, activeCategory])
-
-	if (!shouldRender) {
-		return null
-	}
 
 	const previewSize = selectedSize
 

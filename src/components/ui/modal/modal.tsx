@@ -6,7 +6,7 @@ import { Icon } from '@/src/icons'
 import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
 import { modalBoxVariants, modalScrollVariants } from './modal.variants'
 
-const MODAL_EXIT_MS = 300
+export const MODAL_EXIT_MS = 360
 
 export type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean

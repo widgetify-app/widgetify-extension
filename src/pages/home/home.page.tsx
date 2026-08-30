@@ -1,3 +1,5 @@
+import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 import { HomeContentCustom } from './ui/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
@@ -58,6 +60,7 @@ const steps: Step[] = [
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
+	const shouldMountReleaseNotes = useDelayedUnmount(showReleaseNotes, MODAL_EXIT_MS)
 	const [showTour, setShowTour] = useState(false)
 	const [appIsReady, setAppIsReady] = useState(false)
 
@@ -139,11 +142,13 @@ export function HomePage() {
 				onEvent={onDoneTour}
 			/>
 
-			<UpdateReleaseNotesModal
-				isOpen={showReleaseNotes}
-				onClose={() => onCloseReleaseNotes()}
-				counterValue={2}
-			/>
+			{shouldMountReleaseNotes && (
+				<UpdateReleaseNotesModal
+					isOpen={showReleaseNotes}
+					onClose={() => onCloseReleaseNotes()}
+					counterValue={2}
+				/>
+			)}
 		</>
 	)
 }
