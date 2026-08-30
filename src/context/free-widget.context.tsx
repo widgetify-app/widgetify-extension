@@ -273,12 +273,9 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const loadFromLocalStorage = useCallback(async () => {
 		try {
 			const localLayout = await migrateWidgetLayoutIfNeeded()
-			const finalLayout = sanitizeLayout(
-				localLayout && localLayout.length > 0
-					? localLayout
-					: DEFAULT_WIDGET_LAYOUT,
-				DEFAULT_COLS
-			)
+			const finalLayout = Array.isArray(localLayout)
+				? sanitizeLayout(localLayout, DEFAULT_COLS)
+				: DEFAULT_WIDGET_LAYOUT
 			savedLayoutRef.current = finalLayout
 			setSavedLayout(finalLayout)
 			const reflowed = reflowForColumns(finalLayout, colsRef.current)
@@ -299,7 +296,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 	useEffect(() => {
 		const unwatch = watchStorage('storedWidgets', (newValue) => {
-			if (!newValue || newValue.length === 0) return
+			if (!Array.isArray(newValue)) return
 			if (JSON.stringify(newValue) === lastPersistedSignatureRef.current) return
 
 			savedLayoutRef.current = newValue

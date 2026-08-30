@@ -12,7 +12,7 @@ const DEFAULT_BOTTOM_WIDGETS: WidgetKeys[] = [
 export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 	const existingStored = await getFromStorage('storedWidgets')
 
-	if (Array.isArray(existingStored) && existingStored.length > 0) {
+	if (Array.isArray(existingStored)) {
 		return existingStored
 	}
 
