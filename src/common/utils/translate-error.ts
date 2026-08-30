@@ -59,14 +59,15 @@ const errorTranslations: Record<string, string> = {
 	SUCCESS: 'عملیات با موفقیت انجام شد',
 
 	// Widget-related messages
-	WIDGET_NOT_FOUND: 'ویجت مورد نظر یافت نشد',
+	WIDGET_NOT_FOUND: 'ویجت پیدا نشد',
 	WIDGET_DELETED: 'ویجت حذف شد',
 	WIDGET_DUPLICATED: 'ویجت با موفقیت تکرار شد',
-	WIDGET_ALREADY_EXISTS: 'این ویجت قبلا اضافه شده است',
-	INVALID_WIDGET_POSITION: 'موقعیت ویجت نامعتبر است',
-	MAX_WIDGETS_REACHED: 'به حداکثر تعداد مجاز ویجت رسیده‌اید',
-	NO_SPACE_FOR_WIDGET: 'فضای کافی برای قرارگیری ویجت وجود ندارد',
-	NO_SPACE_FOR_DUPLICATE: 'فضای کافی برای تکرار ویجت وجود ندارد',
+	WIDGET_ALREADY_EXISTS: 'این ویجت قبلاً به صفحه اضافه شده',
+	INVALID_WIDGET_POSITION: 'موقعیت قرارگیری ویجت درست نیست',
+	MAX_WIDGETS_REACHED:
+		'به سقف تعداد ویجت‌ها رسیدی! یکی از قبلی‌ها رو حذف کن تا جا باز بشه',
+	NO_SPACE_FOR_WIDGET: 'روی صفحه جا نیست! چندتا ویجت رو جابه‌جا یا حذف کن تا جا باز بشه',
+	NO_SPACE_FOR_DUPLICATE: 'روی صفحه جا نیست! برای تکرار ویجت کمی فضا باز کن',
 
 	// Bookmark-related messages
 	BOOKMARK_DELETED: 'بوکمارک با موفقیت حذف شد',

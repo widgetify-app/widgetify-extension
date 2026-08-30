@@ -510,7 +510,10 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			})
 
 			if (!result) {
-				showToast('امکان تغییر اندازه ویجت به این سایز وجود ندارد', 'error')
+				showToast(
+					'برای این اندازه جا نیست! ویجت‌های کناری رو جابه‌جا کن تا جا باز بشه',
+					'error'
+				)
 				return false
 			}
 
@@ -545,7 +548,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				applyRuntimeLayout((prev) =>
 					prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
 				)
-				showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
+				playNativeToastSound('success')
 				return true
 			}
 
@@ -559,7 +562,10 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 			})
 
 			if (!result) {
-				showToast('فضای کافی برای این مدل ویجت وجود ندارد', 'error')
+				showToast(
+					'برای این مدل جا نیست! ویجت‌های کناری رو جابه‌جا کن یا مدل کوچک‌تری انتخاب کن',
+					'error'
+				)
 				return false
 			}
 
@@ -757,7 +763,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 
 			const def = WIDGET_DEFINITIONS[original.id]
 			if (!def?.canDuplicate) {
-				showToast('امکان تکرار این ویجت وجود ندارد', 'error')
+				showToast('امکان تکرار این ویجت وجود نداره', 'error')
 				return false
 			}
 
