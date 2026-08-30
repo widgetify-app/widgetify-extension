@@ -62,7 +62,7 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 			title="چیدمان‌های آماده"
 		>
 			<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
-				<div className="flex items-center gap-1.5 shrink-0 overflow-x-auto pb-1 no-scrollbar">
+				<div className="sticky top-0 z-10 flex items-center gap-1.5 shrink-0 overflow-x-auto pb-2 pt-0.5 bg-base-100/95 backdrop-blur-md no-scrollbar">
 					<button
 						type="button"
 						onClick={() => setActiveFilter('all')}
