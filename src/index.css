@@ -184,6 +184,13 @@ input[type="color"]::-moz-color-swatch {
   display: none;
 }
 
+html.optimal-mode *,
+html.optimal-mode *::before,
+html.optimal-mode *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
 html.modal-isActive {
   scrollbar-width: none !important;
 }

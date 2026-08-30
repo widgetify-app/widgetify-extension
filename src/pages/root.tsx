@@ -12,7 +12,8 @@ import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { Page, usePage } from '@/context/page.context'
-import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import { MotionConfig } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { MiniAppPage } from './mini-apps/mini-app.page'
 import { ExplorerPage } from './explorer/explorer.page'
@@ -100,7 +101,7 @@ function Main() {
 				<WidgetVisibilityProvider>
 					<NavbarLayout />
 
-					<AnimatePresence mode="wait">
+					<Presence mode="wait">
 						<motion.div
 							key={page}
 							initial={{ opacity: 0 }}
@@ -120,7 +121,7 @@ function Main() {
 								<MiniAppPage />
 							)}
 						</motion.div>
-					</AnimatePresence>
+					</Presence>
 					<WidgetSettingsModal
 						isOpen={showManageWidgets}
 						onClose={() => setShowManageWidgets(false)}

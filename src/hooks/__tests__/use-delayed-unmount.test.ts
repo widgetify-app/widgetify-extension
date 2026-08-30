@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'bun:test'
-import { EXIT_ANIMATION_MS } from '../use-delayed-unmount'
-
-function isDefined(value: unknown): boolean {
-	return value !== null && value !== undefined && value !== false
-}
+import {
+	EXIT_ANIMATION_MS,
+	isRetainableValue,
+} from '@/common/utils/animation-timing'
 
 describe('EXIT_ANIMATION_MS', () => {
 	it('outlasts the daisyUI modal transition of 300ms', () => {
@@ -11,17 +10,20 @@ describe('EXIT_ANIMATION_MS', () => {
 	})
 })
 
-describe('the retain predicate', () => {
-	it('treats real payloads as worth holding through the exit', () => {
-		expect(isDefined({ id: 1 })).toBe(true)
-		expect(isDefined('pomodoro')).toBe(true)
-		expect(isDefined(0)).toBe(true)
-		expect(isDefined('')).toBe(true)
+describe('isRetainableValue', () => {
+	it('holds real payloads through the exit animation', () => {
+		expect(isRetainableValue({ id: 1 })).toBe(true)
+		expect(isRetainableValue('pomodoro')).toBe(true)
 	})
 
-	it('treats the cleared states as released', () => {
-		expect(isDefined(null)).toBe(false)
-		expect(isDefined(undefined)).toBe(false)
-		expect(isDefined(false)).toBe(false)
+	it('holds falsy values that are still real content', () => {
+		expect(isRetainableValue(0)).toBe(true)
+		expect(isRetainableValue('')).toBe(true)
+	})
+
+	it('releases the cleared states', () => {
+		expect(isRetainableValue(null)).toBe(false)
+		expect(isRetainableValue(undefined)).toBe(false)
+		expect(isRetainableValue(false)).toBe(false)
 	})
 })
