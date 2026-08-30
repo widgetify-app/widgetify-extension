@@ -34,8 +34,6 @@ interface PetSettingsContextType extends PetSettings {
 		level: number
 		lastHungerTick: number | null
 	} | null
-	isEnabled: boolean
-	setIsEnabled: (value: boolean) => void
 }
 export const BASE_PET_OPTIONS: PetSettings = {
 	petType: PetTypes.DOG_AKITA,
@@ -94,15 +92,10 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<PetSettings>({
 		...BASE_PET_OPTIONS,
 	})
-	const [isEnabled, setIsEnabled] = useState(false)
-
 	useEffect(() => {
 		async function load() {
 			// const storedPets = await getFromStorage('pets')
-			const [storedPets, petState] = await Promise.all([
-				getFromStorage('pets'),
-				getFromStorage('petState'),
-			])
+			const storedPets = await getFromStorage('pets')
 			if (storedPets) {
 				if (!storedPets.petOptions['dog-akita'].hungryState) {
 					setToStorage('pets', {
@@ -128,12 +121,6 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 				}
 				setSettings(initialSettings)
 				await setToStorage('pets', initialSettings)
-			}
-
-			if (typeof petState === 'boolean') {
-				setIsEnabled(petState)
-			} else {
-				setIsEnabled(true)
 			}
 		}
 
@@ -171,14 +158,8 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			}
 		})
 
-		const event2 = listenEvent('updatedPetState', (data) => {
-			setIsEnabled(data)
-			setToStorage('petState', data)
-		})
-
 		return () => {
 			event()
-			event2()
 		}
 	}, [])
 
@@ -259,13 +240,11 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 
 	const contextValue: PetSettingsContextType = {
 		...settings,
-		isEnabled,
 		getCurrentPetName,
 		levelUpHungryState,
 		isPetHungry,
 		levelDownHungryState,
 		getPetHungryState,
-		setIsEnabled,
 	}
 
 	return <PetContext.Provider value={contextValue}>{children}</PetContext.Provider>

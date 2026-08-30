@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
+import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import {
 	GeneralSettingProvider,
@@ -24,6 +25,10 @@ import { IconProvider } from '../icons/icons.context'
 
 export function RootLayout() {
 	useWallpaperApply()
+
+	useEffect(() => {
+		purgeDeprecatedStorageKeys()
+	}, [])
 
 	return (
 		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">

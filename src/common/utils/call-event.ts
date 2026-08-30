@@ -38,7 +38,6 @@ export interface EventName {
 		petName?: string
 		petType: PetTypes
 	}
-	updatedPetState: boolean
 	theme_change: {
 		theme: string
 		sync: boolean

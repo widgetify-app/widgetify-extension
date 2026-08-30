@@ -3,7 +3,6 @@ import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
-import { ToggleSwitch } from '@/components/ui'
 import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
 const persianType: Record<string, string> = {
 	dog: 'سگ',
@@ -11,35 +10,21 @@ const persianType: Record<string, string> = {
 	crab: 'خرچنگ',
 }
 export function PetSettings() {
-	const [enablePets, setEnablePets] = useState(true)
 	const [petType, setPetType] = useState<PetTypes>(PetTypes.DOG_AKITA)
 	const [petName, setPetName] = useState<string>('')
 
 	useEffect(() => {
 		async function load() {
-			const [storedPets, petState] = await Promise.all([
-				getFromStorage('pets'),
-				getFromStorage('petState'),
-			])
+			const storedPets = await getFromStorage('pets')
 			if (storedPets?.petOptions) {
 				const type = storedPets.petType || PetTypes.DOG_AKITA
 				setPetType(type)
 				setPetName(storedPets.petOptions[type].name)
 			}
-			if (typeof petState === 'boolean') {
-				setEnablePets(petState)
-			} else {
-				setEnablePets(true)
-			}
 		}
 
 		load()
 	}, [])
-
-	async function onChangeEnablePets(value: boolean) {
-		callEvent('updatedPetState', value)
-		setEnablePets(value)
-	}
 
 	async function onChangePetName(value: string) {
 		callEvent('updatedPetSettings', {
@@ -70,21 +55,7 @@ export function PetSettings() {
 
 	return (
 		<div className="flex flex-col w-full max-w-xl mx-auto">
-			<div className="flex items-center justify-between flex-1 gap-3">
-				<div className="overflow-hidden">
-					<span className={`block truncate`}>نمایش حیوان خانگی</span>
-					<span className={'block text-sm font-light text-muted'}>
-						نمایش حیوان خانگی تعاملی روی صفحه اصلی
-					</span>
-				</div>
-				<ToggleSwitch
-					enabled={enablePets}
-					disabled={false}
-					onToggle={() => onChangeEnablePets(!enablePets)}
-				/>
-			</div>
-
-			<div className={'p-2 mt-4 rounded-lg border border-content'}>
+			<div className={'p-2 rounded-lg border border-content'}>
 				<p className={'mb-3 font-medium text-content'}>نوع حیوان خانگی</p>
 				<div className="grid grid-cols-3 gap-1 mb-2">
 					{availablePets.map((pet) => (

@@ -81,7 +81,6 @@ export interface StorageKV {
 		name: string
 	}
 	pendingOrders: any
-	petState: boolean
 	showNewBadgeForReOrderWidgets: boolean
 	navbarVisible: boolean
 	todoFilter: string
