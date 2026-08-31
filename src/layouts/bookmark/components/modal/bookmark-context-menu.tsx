@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Motion } from '@/common/motion'
 import { createPortal } from 'react-dom'
 import { Icon } from '@/src/icons'
 
@@ -61,15 +62,18 @@ export function BookmarkContextMenu({
 	)
 
 	return createPortal(
-		<div
+		<Motion.div
 			ref={menuRef}
+			initial={{ opacity: 0, scale: 0.95 }}
+			animate={{ opacity: 1, scale: 1 }}
+			transition={{ duration: 0.15, ease: 'easeOut' }}
 			style={{
 				position: 'fixed',
 				left: adjustedLeft,
 				top: adjustedTop,
 				zIndex: 99999,
 			}}
-			className="w-[148px] bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-1.5 text-right text-xs flex flex-col gap-1 select-none animate-in fade-in zoom-in-95 duration-150"
+			className="w-[148px] bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-1.5 text-right text-xs flex flex-col gap-1 select-none"
 			onClick={(e) => e.stopPropagation()}
 			onContextMenu={(e) => {
 				e.preventDefault()
@@ -115,7 +119,7 @@ export function BookmarkContextMenu({
 				<span className="font-medium">حذف</span>
 				<Icon name="trash" size={13} className="text-error" />
 			</button>
-		</div>,
+		</Motion.div>,
 		document.body
 	)
 }

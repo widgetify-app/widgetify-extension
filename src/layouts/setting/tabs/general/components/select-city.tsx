@@ -11,6 +11,7 @@ import { TextInput } from '@/components/text-input'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '@/src/icons'
+import { Motion } from '@/common/motion'
 
 interface SelectedCity {
 	city: string
@@ -103,14 +104,19 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-error/20 bg-error/10 backdrop-blur-sm animate-in fade-in-0">
+					<Motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.2, ease: 'easeOut' }}
+						className="p-3 text-sm text-right border rounded-lg border-error/20 bg-error/10 backdrop-blur-sm"
+					>
 						<div className="font-medium text-error">
 							خطا در دریافت اطلاعات
 						</div>
 						<div className="mt-1 text-error/80">
 							لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
 						</div>
-					</div>
+					</Motion.div>
 				)}
 			</div>
 			<AuthRequiredModal

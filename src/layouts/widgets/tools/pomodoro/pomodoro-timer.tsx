@@ -15,6 +15,7 @@ import { TopUsersTab } from './top-users/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/src/icons'
+import { Motion } from '@/common/motion'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void
@@ -282,7 +283,12 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	return (
-		<div className="relative overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
+		<Motion.div
+			initial={{ opacity: 0, y: 24 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3, ease: 'easeOut' }}
+			className="relative overflow-hidden rounded-xl"
+		>
 			<div className="relative flex items-center justify-between mb-1  py-0.5">
 				<div className={`flex items-center gap-x-0.5`}>
 					{currentTab === 'timer' ? (
@@ -406,6 +412,6 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 				showRequireNotificationModal={showRequireNotificationModal}
 				startPomodoro={handleStart}
 			/>
-		</div>
+		</Motion.div>
 	)
 }

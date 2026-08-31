@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useVoiceSearch } from './use-voice-search'
 import { Portal } from '@/components/ui'
+import { Motion } from '@/common/motion'
 import { Icon } from '@/src/icons'
 
 interface VoiceSearchPortalProps {
@@ -40,10 +41,13 @@ export function VoiceSearchPortal({
 
 	return (
 		<Portal>
-			<div
+			<Motion.div
 				ref={portalRef}
 				style={portalStyles}
-				className="z-20 p-5 overflow-hidden duration-300 shadow-2xl -mt-26 bg-content bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
+				initial={{ opacity: 0, y: -8 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.18, ease: 'easeOut' }}
+				className="z-20 p-5 overflow-hidden shadow-2xl -mt-26 bg-content bg-glass rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
@@ -127,7 +131,7 @@ export function VoiceSearchPortal({
 						</button>
 					</div>
 				</div>
-			</div>
+			</Motion.div>
 		</Portal>
 	)
 }

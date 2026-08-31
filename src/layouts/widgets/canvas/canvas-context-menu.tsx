@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Motion } from '@/common/motion'
 import { Icon } from '@/src/icons'
 
 interface CanvasContextMenuProps {
@@ -51,15 +52,18 @@ export function CanvasContextMenu({
 	const adjustedTop = Math.min(Math.max(10, y), window.innerHeight - 220)
 
 	return (
-		<div
+		<Motion.div
 			ref={menuRef}
+			initial={{ opacity: 0, scale: 0.95 }}
+			animate={{ opacity: 1, scale: 1 }}
+			transition={{ duration: 0.15, ease: 'easeOut' }}
 			style={{
 				position: 'fixed',
 				left: adjustedLeft,
 				top: adjustedTop,
 				zIndex: 9999,
 			}}
-			className="w-52 bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-2 text-right text-xs flex flex-col gap-1 animate-in fade-in zoom-in-95 duration-150"
+			className="w-52 bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-2 text-right text-xs flex flex-col gap-1"
 			onClick={(e) => e.stopPropagation()}
 			onContextMenu={(e) => e.preventDefault()}
 		>
@@ -126,6 +130,6 @@ export function CanvasContextMenu({
 					<span>راهنمای ویجت‌ها</span>
 				</button>
 			)}
-		</div>
+		</Motion.div>
 	)
 }

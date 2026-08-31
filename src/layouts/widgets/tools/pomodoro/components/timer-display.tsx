@@ -1,6 +1,7 @@
 import type React from 'react'
 import { modeFullLabels } from '../constants'
 import type { TimerMode } from '../types'
+import { Motion } from '@/common/motion'
 
 export const modeColors = {
 	work: 'stroke-primary',
@@ -25,7 +26,12 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 	}
 	return (
-		<div className="relative mx-auto mt-4 duration-300 w-36 h-36 animate-in zoom-in-95">
+		<Motion.div
+			initial={{ scale: 0.95 }}
+			animate={{ scale: 1 }}
+			transition={{ duration: 0.3, ease: 'easeOut' }}
+			className="relative mx-auto mt-4 w-36 h-36"
+		>
 			<svg className="w-full h-full" viewBox="0 0 100 100">
 				<circle
 					cx="50"
@@ -82,6 +88,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					{modeFullLabels[mode]}
 				</text>
 			</svg>{' '}
-		</div>
+		</Motion.div>
 	)
 }

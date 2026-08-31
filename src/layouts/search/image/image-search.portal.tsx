@@ -6,6 +6,7 @@ import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { Button, Portal } from '@/components/ui'
+import { Motion } from '@/common/motion'
 import { Icon } from '@/src/icons'
 
 interface ImageSearchPortalProps {
@@ -97,10 +98,13 @@ export function ImageSearchPortal({
 
 	return (
 		<Portal>
-			<div
+			<Motion.div
 				ref={portalRef}
 				style={portalStyles}
-				className="z-20 p-4 overflow-hidden duration-300 shadow-2xl bg-content bg-glass -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
+				initial={{ opacity: 0, y: -8 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.18, ease: 'easeOut' }}
+				className="z-20 p-4 overflow-hidden shadow-2xl bg-content bg-glass -mt-26 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
 					<span className="text-sm font-black text-base-content/80">
@@ -249,7 +253,7 @@ export function ImageSearchPortal({
 						e.target.files?.[0] && handleUpload(e.target.files[0])
 					}
 				/>
-			</div>
+			</Motion.div>
 		</Portal>
 	)
 }

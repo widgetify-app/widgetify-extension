@@ -2,6 +2,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import type React from 'react'
 import { type WidgetifyDate, getCurrentDate } from '../utils'
 import { Icon } from '@/src/icons'
+import { Motion } from '@/common/motion'
 
 interface CalendarHeaderProps {
 	currentDate: WidgetifyDate
@@ -49,14 +50,17 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 			</h3>{' '}
 			<div className="flex gap-0.5">
 				{showTodayButton && (
-					<button
+					<Motion.button
 						onClick={goToToday}
+						initial={{ opacity: 0, scale: 0.95 }}
+						animate={{ opacity: 0.7, scale: 1 }}
+						transition={{ duration: 0.2, ease: 'easeOut' }}
 						className={
-							'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted opacity-70 text-muted hover:bg-base-300 duration-300 hover:opacity-100 animate-in fade-in-0 zoom-in-95'
+							'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-muted text-muted hover:bg-base-300 duration-300 hover:opacity-100'
 						}
 					>
 						<Icon name="backRight" size={12} strokeWidth={1} />
-					</button>
+					</Motion.button>
 				)}
 
 				<button

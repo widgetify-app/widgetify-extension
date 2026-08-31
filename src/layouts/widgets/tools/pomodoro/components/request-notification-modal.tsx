@@ -43,7 +43,7 @@ export function RequestNotificationModal({
 			direction="rtl"
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				<article className="pb-4 border-b blog-post border-content animate-fade-in animate-slide-up">
+				<article className="pb-4 border-b blog-post border-content">
 					{/* Type badge and title */}
 					<div className="flex items-start justify-between mb-3">
 						<h3 className="text-xl font-bold text-content">
