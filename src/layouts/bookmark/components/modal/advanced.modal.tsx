@@ -156,7 +156,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			direction="rtl"
 		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
-				<div>
+				<div className="relative z-30">
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
 						رنگ پس زمینه (اختیاری)
 					</label>
@@ -188,7 +188,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</div>
 				</div>
 
-				<div>
+				<div className="relative z-20">
 					<label className={'block text-sm  font-medium mb-1.5 text-content'}>
 						رنگ متن (اختیاری)
 					</label>
@@ -220,7 +220,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					</div>
 				</div>
 
-				<div className="relative" ref={emojiPopoverRef}>
+				<div className="relative z-10" ref={emojiPopoverRef}>
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
 						انتخاب استیکر (اختیاری)
 					</label>

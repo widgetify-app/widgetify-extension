@@ -1,101 +1,70 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { RgbaStringColorPicker } from 'react-colorful'
-import { createPortal } from 'react-dom'
 
-interface PopoverColorPickerProps {
+export interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
+	className?: string
 }
 
-export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange }) => {
-	const triggerRef = useRef<HTMLDivElement>(null)
-	const popoverRef = useRef<HTMLDivElement>(null)
-	const [isOpen, setIsOpen] = useState<boolean>(false)
-	const [position, setPosition] = useState({ top: 0, left: 0 })
+export const ColorPicker: React.FC<ColorPickerProps> = ({
+	color,
+	onChange,
+	className = '',
+}) => {
+	const [isOpen, setIsOpen] = useState(false)
+	const containerRef = useRef<HTMLDivElement>(null)
 
-	const updatePosition = useCallback(() => {
-		if (!triggerRef.current) return
-		const rect = triggerRef.current.getBoundingClientRect()
-		const popoverWidth = 200
-		const popoverHeight = 220
-
-		let top = rect.bottom + 6
-		if (top + popoverHeight > window.innerHeight && rect.top > popoverHeight) {
-			top = rect.top - popoverHeight - 6
-		}
-
-		let left = rect.right - popoverWidth
-		if (left < 10) left = rect.left
-		if (left + popoverWidth > window.innerWidth - 10) {
-			left = window.innerWidth - popoverWidth - 10
-		}
-		if (left < 10) left = 10
-
-		setPosition({ top, left })
-	}, [])
-
-	useEffect(() => {
-		if (isOpen) {
-			updatePosition()
-		}
-	}, [isOpen, updatePosition])
+	const displayColor = color || '#000000'
 
 	useEffect(() => {
 		if (!isOpen) return
 
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				popoverRef.current &&
-				!popoverRef.current.contains(event.target as Node) &&
-				triggerRef.current &&
-				!triggerRef.current.contains(event.target as Node)
-			) {
+			const target = event.target as Node
+			if (containerRef.current && !containerRef.current.contains(target)) {
 				setIsOpen(false)
 			}
 		}
 
-		const handleReposition = () => {
-			updatePosition()
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				setIsOpen(false)
+			}
 		}
 
-		document.addEventListener('mousedown', handleClickOutside)
-		window.addEventListener('scroll', handleReposition, true)
-		window.addEventListener('resize', handleReposition)
+		const timer = setTimeout(() => {
+			document.addEventListener('mousedown', handleClickOutside)
+			document.addEventListener('keydown', handleKeyDown)
+		}, 0)
 
 		return () => {
+			clearTimeout(timer)
 			document.removeEventListener('mousedown', handleClickOutside)
-			window.removeEventListener('scroll', handleReposition, true)
-			window.removeEventListener('resize', handleReposition)
+			document.removeEventListener('keydown', handleKeyDown)
 		}
-	}, [isOpen, updatePosition])
-
-	const displayColor = color || '#000000'
+	}, [isOpen])
 
 	return (
-		<>
+		<div
+			ref={containerRef}
+			className={`relative inline-flex items-center ${isOpen ? 'z-50' : ''} ${className}`}
+		>
 			<div
-				ref={triggerRef}
-				className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1 shadow-xs hover:scale-105 active:scale-95 transition-transform"
+				onClick={() => setIsOpen((prev) => !prev)}
+				className="w-8 h-8 p-1 transition-transform border-0 rounded-md shadow-xs cursor-pointer hover:scale-105 active:scale-95"
 				style={{ backgroundColor: displayColor }}
-				onClick={() => setIsOpen(!isOpen)}
 			/>
 
-			{isOpen &&
-				createPortal(
-					<div
-						ref={popoverRef}
-						className="fixed flex p-2 border shadow-2xl rounded-xl bg-base-200 border-base-content/15 backdrop-blur-xl"
-						style={{
-							top: `${position.top}px`,
-							left: `${position.left}px`,
-							width: '200px',
-							zIndex: 99999,
-						}}
-					>
-						<RgbaStringColorPicker color={displayColor} onChange={onChange} />
-					</div>,
-					document.body
-				)}
-		</>
+			{isOpen && (
+				<div
+					className="absolute right-0 top-full mt-2 p-2.5 shadow-2xl rounded-2xl bg-base-200 border border-base-content/15 backdrop-blur-xl z-50"
+					style={{ width: '200px' }}
+				>
+					<RgbaStringColorPicker color={displayColor} onChange={onChange} />
+				</div>
+			)}
+		</div>
 	)
 }
