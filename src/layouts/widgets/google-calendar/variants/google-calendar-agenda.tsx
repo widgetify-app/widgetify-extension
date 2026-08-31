@@ -9,6 +9,7 @@ import {
 	type ClassifiedCalendarEvent,
 } from '../utils/google-calendar.types'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
+import { cn } from '@/common/utils/cn'
 
 interface GoogleCalendarAgendaProps {
 	rawEvents: GoogleCalendarEvent[] | undefined
@@ -61,7 +62,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 				const jDate = jalaliMoment(dateStr, 'YYYY-MM-DD')
 				const isTomorrow = jDate.isSame(today.clone().add(1, 'day'), 'day')
 
-				let dayLabel = jDate.format('dddd jD jMMMM')
+				let dayLabel = jDate.locale('fa').format('dddd jD jMMMM')
 				if (isTodayDay) {
 					dayLabel = `امروز (${today.format('jD jMMMM')})`
 				} else if (isTomorrow) {
@@ -79,7 +80,6 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 	return (
 		<div className="flex flex-col h-full p-3 overflow-hidden select-none">
-			{/* Header */}
 			<div className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-base-content/5">
 				<div className="flex items-center gap-1.5 min-w-0">
 					<Icon
@@ -94,7 +94,6 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 				<span className="text-[10px] text-muted">{today.format('jD jMMMM')}</span>
 			</div>
 
-			{/* Agenda Stream */}
 			<div className="flex-1 overflow-y-auto space-y-3.5 pr-0.5 min-h-0">
 				{isLoading && (
 					<div className="space-y-3">
@@ -119,7 +118,6 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 						({ dateStr, dayLabel, isToday: isGroupToday, items }) => {
 							return (
 								<div key={dateStr} className="space-y-1.5">
-									{/* Day Heading Badge */}
 									<div className="flex items-center gap-2">
 										<span
 											className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${
@@ -133,7 +131,6 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 										<div className="flex-1 h-px bg-base-content/5" />
 									</div>
 
-									{/* Events under this day */}
 									<div className="space-y-1">
 										{items.map((item) => {
 											const {
@@ -180,15 +177,15 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 													onClick={() =>
 														hasAction && onEventClick(event)
 													}
-													className={`flex items-center gap-2 p-2 rounded-xl bg-base-200/30 hover:bg-base-200/60 border border-base-content/5 transition-all ${
+													className={cn(
+														'flex items-center gap-2 p-2 rounded-xl bg-base-200/30 hover:bg-base-200/60 border border-base-content/5 transition-all',
 														hasAction
 															? 'cursor-pointer active:scale-[0.99]'
-															: ''
-													} ${
+															: '',
 														isNow
 															? 'ring-1 ring-primary/40 bg-primary/5'
 															: ''
-													}`}
+													)}
 												>
 													<div className="self-stretch w-1 rounded-full bg-primary shrink-0" />
 													<div className="flex flex-col flex-1 min-w-0">
