@@ -310,3 +310,24 @@ img {
 .animate-bounce-slow {
   animation: bounce-slow 2.8s ease-in-out infinite;
 }
+
+/* Flip clock leaf animations */
+@keyframes flip-fold-down {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flip-drop-down {
+  0% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}

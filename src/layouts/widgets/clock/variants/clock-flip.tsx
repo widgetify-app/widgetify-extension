@@ -1,14 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 
 const FLIP_DURATION = 400
 
+/** Half-card height; scales with the widget cell via container query units. */
+const flipSizeVars = {
+	'--flip-h': 'min(16cqw, 40cqh)',
+} as CSSProperties
+
 interface FlipUnitProps {
 	value: string
 }
 
-function FlipUnit({ value }: FlipUnitProps) {
+const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 	const [current, setCurrent] = useState(value)
 	const [previous, setPrevious] = useState(value)
 	const [flipping, setFlipping] = useState<'top' | 'bottom' | null>(null)
@@ -37,109 +43,213 @@ function FlipUnit({ value }: FlipUnitProps) {
 		return () => timeoutsRef.current.forEach(clearTimeout)
 	}, [value])
 
-	const CARD_H = 38
-	const GAP = 2
-
 	return (
 		<div
 			className="relative select-none"
 			style={{
-				width: 88,
-				height: CARD_H * 2 + GAP,
-				perspective: 400,
+				width: 'calc(var(--flip-h) * 2.3)',
+				height: 'calc(var(--flip-h) * 2 + 2px)',
+				perspective: 'calc(var(--flip-h) * 16)',
 			}}
 		>
-			{/* ── TOP CARD ── */}
 			<div
-				className="absolute inset-x-0 top-0 overflow-hidden flex items-end justify-center bg-content bg-glass rounded-t-xl border-b border-base-content/15"
-				style={{ height: CARD_H }}
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-base-content/15"
+				style={{
+					height: 'var(--flip-h)',
+					borderRadius:
+						'calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18) 0 0',
+				}}
 			>
-				<span className="translate-y-1/2 text-4xl font-black leading-none tracking-widest text-content">
+				<span
+					className="font-black leading-none text-content"
+					style={{
+						transform: 'translateY(50%)',
+						fontSize: 'calc(var(--flip-h) * 0.92)',
+					}}
+				>
 					{current}
 				</span>
-				<div className="absolute inset-0" />
 			</div>
 
 			<div
-				className="absolute inset-x-0 bottom-0 overflow-hidden flex items-start justify-center bg-content bg-glass rounded-b-xl"
-				style={{ height: CARD_H }}
+				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-content bg-glass"
+				style={{
+					height: 'var(--flip-h)',
+					borderRadius:
+						'0 0 calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18)',
+				}}
 			>
-				<span className="-translate-y-1/2 text-4xl font-black leading-none tracking-widest text-content">
-					{flipping === 'bottom' ? value : current}
+				<span
+					className="font-black leading-none text-content"
+					style={{
+						transform: 'translateY(-50%)',
+						fontSize: 'calc(var(--flip-h) * 0.92)',
+					}}
+				>
+					{flipping === 'bottom' ? previous : current}
 				</span>
-				<div className="absolute inset-0 " />
 			</div>
 
-			{flipping && (
+			{flipping === 'top' && (
 				<div
-					className="absolute inset-x-0 top-0 z-20 overflow-hidden origin-bottom rounded-t-xl"
+					className="absolute inset-x-0 top-0 z-20 overflow-hidden origin-bottom"
 					style={{
-						height: CARD_H,
+						height: 'var(--flip-h)',
 						transformStyle: 'preserve-3d',
-						animation:
-							flipping === 'top'
-								? `flip-leaf ${FLIP_DURATION / 2}ms ease-in forwards`
-								: undefined,
-						transform:
-							flipping === 'bottom' ? 'rotateX(-90deg)' : 'rotateX(0deg)',
+						willChange: 'transform',
+						borderRadius:
+							'calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18) 0 0',
+						animation: `flip-fold-down ${FLIP_DURATION / 2}ms ease-in forwards`,
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-end justify-center bg-content border-b border-base-content/15"
+						className="absolute inset-0 flex items-end justify-center border-b bg-content border-base-content/15"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
-						<span className="translate-y-1/2 text-4xl font-black leading-none tracking-widest text-content">
-							{flipping === 'top' ? previous : current}
+						<span
+							className="font-black leading-none text-content"
+							style={{
+								transform: 'translateY(50%)',
+								fontSize: 'calc(var(--flip-h) * 0.92)',
+							}}
+						>
+							{previous}
 						</span>
-						<div className="absolute inset-0 bg-base-content/5" />
+						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-base-content/20" />
+					</div>
+				</div>
+			)}
+
+			{flipping === 'bottom' && (
+				<div
+					className="absolute inset-x-0 bottom-0 z-20 overflow-hidden origin-top"
+					style={{
+						height: 'var(--flip-h)',
+						transformStyle: 'preserve-3d',
+						willChange: 'transform',
+						borderRadius:
+							'0 0 calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18)',
+						animation: `flip-drop-down ${FLIP_DURATION / 2}ms ease-out forwards`,
+					}}
+				>
+					<div
+						className="absolute inset-0 flex items-start justify-center bg-content"
+						style={{ backfaceVisibility: 'hidden' }}
+					>
+						<span
+							className="font-black leading-none text-content"
+							style={{
+								transform: 'translateY(-50%)',
+								fontSize: 'calc(var(--flip-h) * 0.92)',
+							}}
+						>
+							{value}
+						</span>
+						<div className="absolute inset-0 bg-gradient-to-b from-base-content/25 to-transparent" />
 					</div>
 				</div>
 			)}
 
 			<div
-				className="absolute -left-0.5 bg-base-300 border border-base-content/20 z-40 rounded-r-sm"
-				style={{ top: CARD_H - 5, height: GAP + 10, width: 6 }}
+				className="absolute inset-x-0 z-30 bg-base-content/10"
+				style={{ top: 'var(--flip-h)', height: 1, transform: 'translateY(-50%)' }}
 			/>
 			<div
-				className="absolute -right-0.5 bg-base-300 border border-base-content/20 z-40 rounded-l-sm"
-				style={{ top: CARD_H - 5, height: GAP + 10, width: 6 }}
+				className="absolute z-40 border bg-base-300 border-base-content/20"
+				style={{
+					top: 'var(--flip-h)',
+					left: 'calc(var(--flip-h) * -0.07)',
+					width: 'calc(var(--flip-h) * 0.15)',
+					height: 'calc(var(--flip-h) * 0.3)',
+					transform: 'translateY(-50%)',
+					borderRadius:
+						'0 calc(var(--flip-h) * 0.06) calc(var(--flip-h) * 0.06) 0',
+				}}
+			/>
+			<div
+				className="absolute z-40 border bg-base-300 border-base-content/20"
+				style={{
+					top: 'var(--flip-h)',
+					right: 'calc(var(--flip-h) * -0.07)',
+					width: 'calc(var(--flip-h) * 0.15)',
+					height: 'calc(var(--flip-h) * 0.3)',
+					transform: 'translateY(-50%)',
+					borderRadius:
+						'calc(var(--flip-h) * 0.06) 0 0 calc(var(--flip-h) * 0.06)',
+				}}
 			/>
 		</div>
 	)
-}
+})
 
 export function ClockFlip() {
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const [now, setNow] = useState(() => getCurrentDate(timezone.value).toDate())
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			setNow(getCurrentDate(timezone.value).toDate())
-		}, 1000)
-		return () => clearInterval(timer)
-	}, [timezone])
+		const updateTime = () => {
+			const next = getCurrentDate(timezone.value).toDate()
+			setNow((prev) =>
+				prev.getHours() === next.getHours() &&
+				prev.getMinutes() === next.getMinutes()
+					? prev
+					: next
+			)
+		}
 
-	const rawH = now.getHours().toString().padStart(2, '0')
-	const rawM = now.getMinutes().toString().padStart(2, '0')
+		updateTime()
+
+		let timer: ReturnType<typeof setTimeout>
+		const scheduleNextMinuteTick = () => {
+			// Tick shortly after each minute boundary so the flip only runs when
+			// the displayed value actually changes (a 1s interval re-rendered the
+			// whole widget 60x per minute for the same visual output).
+			const delay = 60_000 - (Date.now() % 60_000) + 100
+			timer = setTimeout(() => {
+				updateTime()
+				scheduleNextMinuteTick()
+			}, delay)
+		}
+		scheduleNextMinuteTick()
+
+		return () => clearTimeout(timer)
+	}, [timezone?.value])
+
+	const hours = now.getHours().toString().padStart(2, '0')
+	const minutes = now.getMinutes().toString().padStart(2, '0')
 
 	return (
-		<>
-			<style>{`
-				@keyframes flip-leaf {
-					0%   { transform: rotateX(0deg); }
-					100% { transform: rotateX(-90deg); }
-				}
-			`}</style>
-			<div className="w-full h-full flex items-center justify-center gap-2 p-2 select-none overflow-hidden">
-				<div dir="ltr" className="flex items-center gap-2">
-					<FlipUnit value={rawH} />
-					<div className="flex flex-col gap-2 opacity-60">
-						<div className="w-1.5 h-1.5 rounded-full bg-content" />
-						<div className="w-1.5 h-1.5 rounded-full bg-content" />
-					</div>
-					<FlipUnit value={rawM} />
+		<div
+			dir="ltr"
+			className="flex items-center justify-center w-full h-full overflow-hidden select-none"
+			style={flipSizeVars}
+		>
+			<div
+				className="flex items-center"
+				style={{ gap: 'calc(var(--flip-h) * 0.24)' }}
+			>
+				<FlipUnit value={hours} />
+				<div
+					className="flex flex-col opacity-60"
+					style={{ gap: 'calc(var(--flip-h) * 0.3)' }}
+				>
+					<span
+						className="rounded-full bg-content"
+						style={{
+							width: 'calc(var(--flip-h) * 0.13)',
+							height: 'calc(var(--flip-h) * 0.13)',
+						}}
+					/>
+					<span
+						className="rounded-full bg-content"
+						style={{
+							width: 'calc(var(--flip-h) * 0.13)',
+							height: 'calc(var(--flip-h) * 0.13)',
+						}}
+					/>
 				</div>
+				<FlipUnit value={minutes} />
 			</div>
-		</>
+		</div>
 	)
 }
