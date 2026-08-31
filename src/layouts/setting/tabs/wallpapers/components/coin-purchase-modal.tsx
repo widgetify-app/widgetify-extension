@@ -1,4 +1,3 @@
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button, Modal } from '@/components/ui'
@@ -22,8 +21,7 @@ export function CoinPurchaseModal({
 	isPurchasing = false,
 }: CoinPurchaseModalProps) {
 	const { isAuthenticated } = useAuth()
-	const safeWallpaper = useLastDefined(wallpaper)
-	if (!safeWallpaper) return null
+	if (!wallpaper) return null
 
 	const onLogin = () => {
 		onClose()
@@ -42,20 +40,20 @@ export function CoinPurchaseModal({
 		>
 			<div className="space-y-4">
 				<div className="relative overflow-hidden rounded-lg aspect-video">
-					{safeWallpaper.type === 'IMAGE' ? (
+					{wallpaper.type === 'IMAGE' ? (
 						<img
-							src={safeWallpaper.previewSrc}
-							alt={safeWallpaper.name || 'Wallpaper'}
+							src={wallpaper.previewSrc}
+							alt={wallpaper.name || 'Wallpaper'}
 							className="object-cover w-full h-full rounded"
 						/>
 					) : (
 						<HoverPlayVideo
 							videoSrc={
-								safeWallpaper.previewVideoSrc || //demo video
-								safeWallpaper.src ||
-								safeWallpaper.previewSrc
+								wallpaper.previewVideoSrc || //demo video
+								wallpaper.src ||
+								wallpaper.previewSrc
 							}
-							posterSrc={safeWallpaper.previewSrc} //previewSrc is poster
+							posterSrc={wallpaper.previewSrc} //previewSrc is poster
 							className="object-cover w-full h-full transition-opacity rounded-xl"
 							onClick={(e) => {
 								e.stopPropagation()
@@ -67,10 +65,10 @@ export function CoinPurchaseModal({
 				<div className="space-y-3">
 					<div className="flex items-center justify-between">
 						<h3 className="text-lg font-semibold text-content">
-							{safeWallpaper.name || 'تصویر تصویر زمینه'}
+							{wallpaper.name || 'تصویر تصویر زمینه'}
 						</h3>
 						<UserCoin
-							coins={safeWallpaper.coin || 0}
+							coins={wallpaper.coin || 0}
 							title="قیمت این تصویر زمینه"
 						/>
 					</div>

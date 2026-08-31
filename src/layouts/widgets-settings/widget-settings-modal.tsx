@@ -1,6 +1,5 @@
 import React from 'react'
-import { useDelayedUnmount, useLastDefined } from '@/hooks/use-delayed-unmount'
-import { MODAL_EXIT_MS, Modal } from '@/components/ui'
+import { Modal } from '@/components/ui'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
@@ -72,31 +71,24 @@ export function WidgetSettingsModal({
 			: null)
 
 	const activeSettingConfig = settingKey ? WIDGET_SETTING_MODALS[settingKey] : null
-	const lastSettingConfig = useLastDefined(activeSettingConfig)
-	const shouldMountManager = useDelayedUnmount(isManageOpen, MODAL_EXIT_MS)
-	const shouldMountSetting = useDelayedUnmount(!!activeSettingConfig, MODAL_EXIT_MS)
 	const handleCloseSetting = onCloseSetting || onClose
 
 	return (
 		<>
-			{shouldMountManager && (
-				<AddWidgetModal isOpen={isManageOpen} onClose={onClose} />
-			)}
+			<AddWidgetModal isOpen={isManageOpen} onClose={onClose} />
 
-			{shouldMountSetting && (
-				<Modal
+			<Modal
 				isOpen={!!activeSettingConfig}
 				onClose={handleCloseSetting}
-				title={lastSettingConfig?.title}
-				size={lastSettingConfig?.size}
+				title={activeSettingConfig?.title}
+				size={activeSettingConfig?.size}
 				direction="rtl"
 				closeOnBackdropClick
 			>
-				{lastSettingConfig && (
-					<lastSettingConfig.Component {...({ instanceId, size } as any)} />
+				{activeSettingConfig && (
+					<activeSettingConfig.Component {...({ instanceId, size } as any)} />
 				)}
 			</Modal>
-			)}
 		</>
 	)
 }

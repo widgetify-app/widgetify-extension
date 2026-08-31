@@ -1,4 +1,3 @@
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
@@ -145,8 +144,7 @@ export function EditBookmarkModal({
 		}
 	}, [bookmark])
 
-	const safeBookmark = useLastDefined(bookmark)
-	if (!safeBookmark) return null
+	if (!bookmark) return null
 
 	return (
 		<>
@@ -251,7 +249,7 @@ export function EditBookmarkModal({
 					customBackground: formData.customBackground,
 					customTextColor: formData.customTextColor,
 					sticker: formData.sticker,
-					type: safeBookmark.type,
+					type: bookmark.type,
 					title: formData.title,
 					url: formData.url,
 				}}

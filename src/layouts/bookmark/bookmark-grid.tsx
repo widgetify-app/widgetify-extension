@@ -1,8 +1,7 @@
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
-import { ConfirmationModal, MODAL_EXIT_MS } from '@/components/ui'
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { ConfirmationModal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
 import { openBookmarksOptimized } from './utils/tab-manager'
@@ -44,7 +43,6 @@ export function BookmarkGrid({
 	const { isAuthenticated } = useAuth()
 
 	const [showEditBookmarkModal, setShowEditBookmarkModal] = useState(false)
-	const shouldMountEdit = useDelayedUnmount(showEditBookmarkModal, MODAL_EXIT_MS)
 	const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false)
 	const [bookmarkToEdit, setBookmarkToEdit] = useState<Bookmark | null>(null)
 	const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null)
@@ -265,16 +263,14 @@ export function BookmarkGrid({
 					loginButtonText="ورود به حساب کاربری"
 				/>
 			) : (
-				shouldMountEdit && (
-					<EditBookmarkModal
-						isOpen={showEditBookmarkModal}
-						onClose={() => setShowEditBookmarkModal(false)}
-						onSave={(bookmark) =>
-							editBookmark(bookmark, () => setShowEditBookmarkModal(false))
-						}
-						bookmark={bookmarkToEdit}
-					/>
-				)
+				<EditBookmarkModal
+					isOpen={showEditBookmarkModal}
+					onClose={() => setShowEditBookmarkModal(false)}
+					onSave={(bookmark) =>
+						editBookmark(bookmark, () => setShowEditBookmarkModal(false))
+					}
+					bookmark={bookmarkToEdit}
+				/>
 			)}
 
 			<ConfirmationModal

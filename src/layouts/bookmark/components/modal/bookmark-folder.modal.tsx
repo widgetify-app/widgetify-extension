@@ -8,8 +8,7 @@ import {
 } from '@dnd-kit/core'
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { MODAL_EXIT_MS, Modal } from '@/components/ui'
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { Modal } from '@/components/ui'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
@@ -48,7 +47,6 @@ export function BookmarkFolderModal({
 
 	const [showAddModal, setShowAddModal] = useState(false)
 	const [showImportModal, setShowImportModal] = useState(false)
-	const shouldMountImport = useDelayedUnmount(showImportModal, MODAL_EXIT_MS)
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -240,13 +238,11 @@ export function BookmarkFolderModal({
 				)
 			)}
 
-			{shouldMountImport && (
-				<ImportBrowserBookmarksModal
-					isOpen={showImportModal}
-					onClose={() => setShowImportModal(false)}
-					parentId={currentFolderId}
-				/>
-			)}
+			<ImportBrowserBookmarksModal
+				isOpen={showImportModal}
+				onClose={() => setShowImportModal(false)}
+				parentId={currentFolderId}
+			/>
 		</Modal>
 	)
 }

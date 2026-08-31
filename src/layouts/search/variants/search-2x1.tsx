@@ -2,8 +2,6 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import Analytics from '@/analytics'
 import { EngineSelector } from '../select-engine/engine-selector'
 import { SearchHistoryPortal } from '../history.portal'
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
-import { MODAL_EXIT_MS } from '@/components/ui'
 import type { EngineMeta } from '@/services/hooks/trends/get-trends'
 import { useSearchHistory } from '../hooks/use-search-history'
 import { useAuth } from '@/context/auth.context'
@@ -20,7 +18,6 @@ export function SearchCompactRow() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
-	const shouldMountHistory = useDelayedUnmount(showHistoryPortal, MODAL_EXIT_MS)
 	const searchRef = useRef<HTMLDivElement>(null)
 	const portalRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -189,17 +186,15 @@ export function SearchCompactRow() {
 					</div>
 				</form>
 
-				{shouldMountHistory && (
-					<SearchHistoryPortal
-						isOpen={showHistoryPortal}
-						portalRef={portalRef}
-						onClose={() => setShowHistoryPortal(false)}
-						onSearch={handleHistorySearch}
-						onEngineChange={onEngineChange}
-						searchQuery={searchQuery}
-						portalStyles={portalStyles}
-					/>
-				)}
+				<SearchHistoryPortal
+					isOpen={showHistoryPortal}
+					portalRef={portalRef}
+					onClose={() => setShowHistoryPortal(false)}
+					onSearch={handleHistorySearch}
+					onEngineChange={onEngineChange}
+					searchQuery={searchQuery}
+					portalStyles={portalStyles}
+				/>
 			</div>
 		</div>
 	)

@@ -7,8 +7,6 @@ import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
-import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
-import { MODAL_EXIT_MS } from '@/components/ui'
 import { SearchCompactRow } from './variants/search-2x1'
 import type { EngineMeta } from '@/services/hooks/trends/get-trends'
 import { useSearchHistory } from './hooks/use-search-history'
@@ -39,7 +37,6 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
 	const isHistoryOpen = showHistoryPortal && !activePortal
-	const shouldMountHistory = useDelayedUnmount(isHistoryOpen, MODAL_EXIT_MS)
 	const [portalStyles, setPortalStyles] = useState<React.CSSProperties>({})
 	const { user } = useAuth()
 
@@ -249,17 +246,15 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 					/>
 				)}
 
-				{shouldMountHistory && (
-					<SearchHistoryPortal
-						isOpen={isHistoryOpen}
-						portalRef={portalRef}
-						onClose={() => setShowHistoryPortal(false)}
-						onSearch={handleHistorySearch}
-						onEngineChange={onEngineChange}
-						searchQuery={searchQuery}
-						portalStyles={portalStyles}
-					/>
-				)}
+				<SearchHistoryPortal
+					isOpen={isHistoryOpen}
+					portalRef={portalRef}
+					onClose={() => setShowHistoryPortal(false)}
+					onSearch={handleHistorySearch}
+					onEngineChange={onEngineChange}
+					searchQuery={searchQuery}
+					portalStyles={portalStyles}
+				/>
 
 				<BrowserBookmark />
 			</div>

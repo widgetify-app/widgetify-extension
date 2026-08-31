@@ -8,6 +8,15 @@ export const modalBoxVariants = cva(
 		'p-3',
 		'md:p-4',
 		'elevation-lg',
+		'transition-all',
+		'duration-[var(--modal-duration,300ms)]',
+		'transition-discrete',
+		'opacity-0',
+		'scale-95',
+		'group-open:opacity-100',
+		'group-open:scale-100',
+		'starting:group-open:opacity-0',
+		'starting:group-open:scale-95',
 	],
 	{
 		variants: {
@@ -34,10 +43,6 @@ export const modalBoxVariants = cva(
 
 export type ModalBoxVariant = typeof modalBoxVariants
 
-/**
- * The scrollable content area. This is what carries the per-size max-height —
- * `full` stretches to the box instead of capping.
- */
 export const modalScrollVariants = cva(
 	['overflow-y-auto', 'overflow-x-hidden', 'pr-0.5', 'md:pr-1'],
 	{
@@ -58,3 +63,19 @@ export const modalScrollVariants = cva(
 )
 
 export type ModalScrollVariant = typeof modalScrollVariants
+
+export const modalDialogVariants = cva([
+	'modal',
+	'modal-middle',
+	'group',
+	'p-2',
+	'md:p-4',
+	'transition-opacity',
+	'duration-[var(--modal-duration,300ms)]',
+	'transition-discrete',
+	'opacity-0',
+	'open:opacity-100',
+	'starting:open:opacity-0',
+])
+
+export type ModalDialogVariant = typeof modalDialogVariants

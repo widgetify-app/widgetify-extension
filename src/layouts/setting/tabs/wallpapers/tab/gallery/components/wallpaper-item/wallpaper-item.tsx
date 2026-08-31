@@ -39,7 +39,7 @@ function WallpaperItemFu({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary/80 ring-offset-blue-100'
-		: 'ring-1 ring-base-content/10 group-hover:ring-primary/70'
+		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {

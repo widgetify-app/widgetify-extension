@@ -2,9 +2,14 @@ import type { VariantProps } from 'class-variance-authority'
 import React, { type ReactNode, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/src/icons'
 import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
-import { modalBoxVariants, modalScrollVariants } from './modal.variants'
+import {
+	modalBoxVariants,
+	modalDialogVariants,
+	modalScrollVariants,
+} from './modal.variants'
 
 export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
@@ -31,6 +36,9 @@ export function Modal({
 	className,
 }: ModalProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const { isOptimalMode } = useGeneralSetting()
+
+	const modalDurationMs = isOptimalMode ? 0 : MODAL_EXIT_MS
 
 	useEffect(() => {
 		const dialog = dialogRef.current
@@ -67,7 +75,8 @@ export function Modal({
 				if (closeOnBackdropClick && e.target === dialogRef.current) onClose()
 			}}
 			onContextMenu={(e) => e.stopPropagation()}
-			className="flex items-center justify-center p-2 modal modal-middle md:p-4"
+			className={cn('flex items-center justify-center', modalDialogVariants())}
+			style={{ '--modal-duration': `${modalDurationMs}ms` } as React.CSSProperties}
 		>
 			<div
 				onClick={(e) => e.stopPropagation()}

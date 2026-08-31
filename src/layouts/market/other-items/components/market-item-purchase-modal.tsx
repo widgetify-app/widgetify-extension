@@ -1,4 +1,3 @@
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import Analytics from '@/analytics'
 import { ItemPrice } from '@/components/item-price/item-price'
 import { Button, Modal } from '@/components/ui'
@@ -26,24 +25,23 @@ export function MarketItemPurchaseModal({
 }: MarketItemPurchaseModalProps) {
 	const { mutate: purchaseItem, isPending } = usePurchaseMarketItem()
 
-	const safeItem = useLastDefined(item)
-	if (!safeItem) return null
+	if (!item) return null
 
-	const canAfford = userCoins >= safeItem.price
-	const remainingCoins = userCoins - safeItem.price
+	const canAfford = userCoins >= item.price
+	const remainingCoins = userCoins - item.price
 
 	const handlePurchase = () => {
 		if (!canAfford) return
 
 		purchaseItem(
-			{ itemId: safeItem.id },
+			{ itemId: item.id },
 			{
 				onSuccess: (_response) => {
-					showToast(`${safeItem.name} با موفقیت خریداری شد! 🎉`, 'success', {
+					showToast(`${item.name} با موفقیت خریداری شد! 🎉`, 'success', {
 						alarmSound: true,
 					})
 					Analytics.event('market_item_purchased')
-					onPurchaseSuccess(safeItem)
+					onPurchaseSuccess(item)
 				},
 				onError: (error) => {
 					showToast(
@@ -68,14 +66,14 @@ export function MarketItemPurchaseModal({
 		>
 			<div className="space-y-3">
 				<div className="overflow-hidden border rounded-2xl border-base-300/60 bg-base-100">
-					<RenderPreview item={safeItem} handlePreviewClick={() => {}} />
+					<RenderPreview item={item} handlePreviewClick={() => {}} />
 					<div className="px-3 py-2.5">
 						<h3 className="text-sm font-semibold text-content">
-							{safeItem.name}
+							{item.name}
 						</h3>
-						{safeItem.description && (
+						{item.description && (
 							<p className="mt-0.5 text-xs text-muted">
-								{safeItem.description}
+								{item.description}
 							</p>
 						)}
 					</div>
@@ -88,7 +86,7 @@ export function MarketItemPurchaseModal({
 					</div>
 					<div className="flex items-center justify-between px-3 py-2.5">
 						<span className="text-xs text-muted">قیمت آیتم</span>
-						<ItemPrice price={safeItem.price} />
+						<ItemPrice price={item.price} />
 					</div>
 					<div className="flex items-center justify-between px-3 py-2.5">
 						<span className="text-xs font-medium text-content">
@@ -111,7 +109,7 @@ export function MarketItemPurchaseModal({
 								موجودی ناکافی
 							</p>
 							<p className="text-[11px] text-error/75 mt-0.5">
-								برای خرید این آیتم به {safeItem.price - userCoins} ویج‌کوین
+								برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
 								بیشتر نیاز دارید
 							</p>
 						</div>

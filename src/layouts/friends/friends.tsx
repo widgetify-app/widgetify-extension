@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
-import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friend-service.hook'
+import {
+	type Friend,
+	useRemoveFriend,
+} from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
@@ -16,7 +18,6 @@ export const FriendsLayout = () => {
 	const [isAddFriendOpen, setIsAddFriendOpen] = useState(false)
 
 	const [selectedUser, setSelectedUser] = useState<Friend | null>()
-	const lastSelectedUser = useLastDefined(selectedUser)
 
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
 
@@ -90,8 +91,8 @@ export const FriendsLayout = () => {
 				direction="rtl"
 				isLoading={isRemoving}
 				onClose={() => setSelectedUser(null)}
-				onConfirm={() => handleRemoveFriend(lastSelectedUser?.id || null)}
-				message={`"${lastSelectedUser?.user.name}"، حذف بشه از لیست دوستات؟`}
+				onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}
+				message={`"${selectedUser?.user.name}"، حذف بشه از لیست دوستات؟`}
 			/>
 		</>
 	)

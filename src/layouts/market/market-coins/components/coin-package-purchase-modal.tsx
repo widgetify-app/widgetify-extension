@@ -1,4 +1,3 @@
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
@@ -27,12 +26,11 @@ export function CoinPackagePurchaseModal({
 }: CoinPackagePurchaseModalProps) {
 	const { mutate: purchasePackage, isPending } = usePurchaseCoinPackage()
 
-	const safePkg = useLastDefined(pkg)
-	if (!safePkg) return null
+	if (!pkg) return null
 
 	const handlePurchase = () => {
 		purchasePackage(
-			{ packageId: safePkg.id },
+			{ packageId: pkg.id },
 			{
 				onSuccess: (_response) => {
 					showToast('در حال انتقال ...', 'success')
@@ -71,7 +69,7 @@ export function CoinPackagePurchaseModal({
 							/>
 							<div className="flex items-baseline gap-1.5">
 								<span className="text-4xl font-bold text-primary tabular-nums">
-									{formatPrice(safePkg.coin)}
+									{formatPrice(pkg.coin)}
 								</span>
 								<span className="text-sm text-muted">ویج‌کوین</span>
 							</div>
@@ -79,10 +77,10 @@ export function CoinPackagePurchaseModal({
 					</div>
 					<div className="px-3 py-2.5">
 						<h3 className="text-sm font-semibold text-content">
-							{safePkg.title}
+							{pkg.title}
 						</h3>
-						{safePkg.description && (
-							<p className="mt-0.5 text-xs text-muted">{safePkg.description}</p>
+						{pkg.description && (
+							<p className="mt-0.5 text-xs text-muted">{pkg.description}</p>
 						)}
 					</div>
 				</div>
@@ -92,7 +90,7 @@ export function CoinPackagePurchaseModal({
 						<span className="text-xs text-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
 							<span className="text-lg font-bold text-content tabular-nums">
-								{formatPrice(safePkg.price)}
+								{formatPrice(pkg.price)}
 							</span>
 							<span className="text-xs text-muted">تومان</span>
 						</div>
