@@ -63,7 +63,7 @@ function hexToRgb(hex: string): [number, number, number] {
 					.join('')
 			: cleaned
 	const num = parseInt(full, 16)
-	if (isNaN(num)) return [128, 128, 128]
+	if (Number.isNaN(num)) return [128, 128, 128]
 	return [(num >> 16) & 255, (num >> 8) & 255, num & 255]
 }
 

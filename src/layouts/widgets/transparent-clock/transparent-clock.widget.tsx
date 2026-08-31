@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getFromStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import {
-	type ClockSettings,
-	ClockType,
-} from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
 import { WidgetContainer } from '../widget-container'
 import { TransparentClockEnglish } from './variants/transparent-clock-english'
 import { TransparentClockPersian } from './variants/transparent-clock-persian'
@@ -20,39 +14,7 @@ interface TransparentClockWidgetProps {
 }
 
 export function TransparentClockWidget({ meta }: TransparentClockWidgetProps) {
-	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)
-	const { selected_timezone: timezone, isOptimalMode } = useGeneralSetting()
-
-	useEffect(() => {
-		async function load() {
-			const clockFromStore = await getFromStorage('clock')
-			if (clockFromStore) {
-				setClockSettings(clockFromStore)
-			} else {
-				setClockSettings({
-					clockType: ClockType.Digital,
-					showSeconds: false,
-					showTimeZone: false,
-					useSelectedFont: true,
-				})
-			}
-		}
-
-		const event = listenEvent('wigiPadClockSettingsChanged', (data) => {
-			setClockSettings({
-				clockType: data.clockType,
-				showSeconds: data.showSeconds,
-				showTimeZone: data.showTimeZone,
-				useSelectedFont: data.useSelectedFont,
-			})
-		})
-
-		load()
-
-		return () => {
-			event()
-		}
-	}, [])
+	const { selected_timezone: timezone } = useGeneralSetting()
 
 	const [time, setTime] = useState(
 		() =>
@@ -62,8 +24,6 @@ export function TransparentClockWidget({ meta }: TransparentClockWidgetProps) {
 				})
 			)
 	)
-
-	const showSeconds = clockSettings?.showSeconds && !isOptimalMode
 
 	useEffect(() => {
 		const updateTime = () => {
@@ -77,11 +37,19 @@ export function TransparentClockWidget({ meta }: TransparentClockWidgetProps) {
 		}
 
 		updateTime()
-		const interval = showSeconds ? 1000 : 30_000
-		const timer = setInterval(updateTime, interval)
 
-		return () => clearInterval(timer)
-	}, [timezone?.value, showSeconds])
+		let timer: ReturnType<typeof setTimeout>
+		const scheduleNextMinuteTick = () => {
+			const delay = 60_000 - (Date.now() % 60_000) + 100
+			timer = setTimeout(() => {
+				updateTime()
+				scheduleNextMinuteTick()
+			}, delay)
+		}
+		scheduleNextMinuteTick()
+
+		return () => clearTimeout(timer)
+	}, [timezone?.value])
 
 	const hours = time.getHours().toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
@@ -92,20 +60,18 @@ export function TransparentClockWidget({ meta }: TransparentClockWidgetProps) {
 			padding={false}
 			className="w-full h-full select-none"
 		>
-			<div className="w-full h-full drop-shadow-lg">
+			<div className="w-full h-full">
 				{meta?.variant === 'english' ? (
 					<TransparentClockEnglish
 						time={time}
 						hours={hours}
 						minutes={minutes}
-						timezoneLabel={timezone.value}
 					/>
 				) : (
 					<TransparentClockPersian
 						time={time}
 						hours={hours}
 						minutes={minutes}
-						timezoneLabel={timezone.label}
 					/>
 				)}
 			</div>

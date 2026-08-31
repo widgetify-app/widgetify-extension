@@ -77,6 +77,7 @@ export interface WidgetDefinition {
 	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]
 	defaultSize: WidgetSize
+	canResize?: boolean // Allows manual resizing from the context menu even when the widget defines variants.
 	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
 	canDuplicate: boolean

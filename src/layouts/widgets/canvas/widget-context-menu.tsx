@@ -63,7 +63,8 @@ export function WidgetContextMenu({
 
 	const hasVariants = Boolean(definition.variants && definition.variants.length > 0)
 	const fittingSizes = definition.allowedSizes.filter((s) => s.w <= cols)
-	const showResize = !hasVariants && fittingSizes.length > 1
+	const showResize =
+		(!hasVariants || definition.canResize === true) && fittingSizes.length > 1
 
 	const adjustedLeft = Math.min(Math.max(10, x), window.innerWidth - 220)
 	const adjustedTop = Math.min(Math.max(10, y), window.innerHeight - 260)

@@ -385,24 +385,29 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		label: 'ساعت شفاف',
 		emoji: '🕒',
 		category: 'time',
-		allowedSizes: [{ w: 2, h: 1 }],
-		defaultSize: { w: 2, h: 1 },
+		allowedSizes: [
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+			{ w: 4, h: 2 },
+		],
+		defaultSize: { w: 2, h: 2 },
 		variants: [
 			{
 				id: 'persian',
 				label: 'ساعت یخی فارسی',
-				size: { w: 2, h: 1 },
+				size: { w: 2, h: 2 },
 				meta: { variant: 'persian' },
 			},
 			{
 				id: 'english',
 				label: 'ساعت یخی انگلیسی',
-				size: { w: 2, h: 1 },
+				size: { w: 2, h: 2 },
 				meta: { variant: 'english' },
 			},
 		],
 		canDuplicate: false,
 		isVipOnly: true,
+		canResize: true,
 		node: (_instanceId, size, meta) => (
 			<TransparentClockWidget size={size} meta={meta} />
 		),
