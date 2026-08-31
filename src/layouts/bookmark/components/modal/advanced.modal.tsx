@@ -301,7 +301,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							backgroundPosition: 'center',
 						}}
 					>
-						<div className="w-28">
+						<div className="w-22 h-22">
 							<BookmarkItem
 								bookmark={{
 									customBackground: background,
