@@ -18,6 +18,7 @@ import { ClockWidget } from './clock/clock.widget'
 import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
+import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
 import { WidgetContainer } from './widget-container'
@@ -161,6 +162,63 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		node: (_instanceId, size) => (
 			<DateProvider>
 				<CalendarLayout size={size} />
+			</DateProvider>
+		),
+	},
+	[WidgetKeys.googleCalendar]: {
+		id: WidgetKeys.googleCalendar,
+		label: 'گوگل‌کلندر',
+		emoji: '📆',
+		category: 'productivity',
+		order: 1,
+		canToggle: true,
+		popular: true,
+		isNew: true,
+		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
+			{ w: 2, h: 3 },
+		],
+		defaultSize: { w: 2, h: 3 },
+		variants: [
+			{
+				id: 'schedule',
+				label: 'تقویم هفتگی و روزانه',
+				size: { w: 2, h: 3 },
+				meta: { variant: 'schedule' },
+			},
+			{
+				id: 'timeline',
+				label: 'تایم‌لاین روزانه',
+				size: { w: 2, h: 3 },
+				meta: { variant: 'timeline' },
+			},
+			{
+				id: 'agenda',
+				label: 'برنامه‌های پیش‌رو',
+				size: { w: 2, h: 3 },
+				isVipOnly: true,
+				meta: { variant: 'agenda' },
+			},
+			{
+				id: 'compact-2x1',
+				label: 'نوار برنامه روزانه',
+				size: { w: 2, h: 1 },
+				isVipOnly: true,
+				meta: { variant: 'compact-2x1' },
+			},
+			{
+				id: 'compact-1x1',
+				label: 'خلاصه سریع رویداد',
+				size: { w: 1, h: 1 },
+				isVipOnly: true,
+				meta: { variant: 'compact-1x1' },
+			},
+		],
+		canDuplicate: false,
+		node: (_instanceId, size, meta) => (
+			<DateProvider>
+				<GoogleCalendarWidget size={size} meta={meta} />
 			</DateProvider>
 		),
 	},

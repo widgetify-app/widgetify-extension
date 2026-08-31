@@ -363,7 +363,7 @@ function CanvasWidgetOuterImpl({
 							e.stopPropagation()
 							handleDelete()
 						}}
-						className="widget-delete-btn absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer -top-2 -right-2 bg-error hover:scale-110 active:scale-95"
+						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer widget-delete-btn -top-2 -right-2 bg-error hover:scale-110 active:scale-95"
 					>
 						✕
 					</button>
