@@ -14,7 +14,6 @@ These are not preferences. Breaking them means the work gets rejected.
 | **Never mention the assistant** | Not in code, not in commit messages, not in PR titles or bodies. No `Co-Authored-By`, no "Generated with", no tool names. Commits are authored by the repo owner. |
 | **Never run the dev server** | No `npm run dev`, no `wxt`. Visual checks are the owner's job. Give them a checklist instead. |
 | **Never commit unprompted** | Implement, verify, then stop and report. Commit and open a PR only when explicitly told to. |
-| **No stacked PRs** | Always base directly on `feat/free-widget-canvas`. See the incident note below for why. |
 
 ---
 
@@ -78,18 +77,6 @@ Prefer a test that would fail loudly on regression over one that restates the im
 ---
 
 ## Git and PR workflow
-
-**Always verify the base before branching.** The base has moved mid session more than once:
-
-```
-git checkout feat/free-widget-canvas
-git pull --ff-only
-git rev-parse HEAD
-git rev-parse origin/feat/free-widget-canvas   # must match
-git checkout -b <type>/<short-description>
-```
-
-Then confirm the branch contains only your commits: `git log --oneline origin/feat/free-widget-canvas..HEAD`.
 
 **Commit messages** state the problem, the actual cause with the offending code, then the fix. Wrap at ~76 characters. No bullet soup without a lead in.
 
