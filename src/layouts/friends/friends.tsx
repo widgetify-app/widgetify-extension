@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useLastDefined } from '@/hooks/use-delayed-unmount'
+import { useDelayedUnmount, useLastDefined } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
@@ -17,6 +18,7 @@ export const FriendsLayout = () => {
 
 	const [selectedUser, setSelectedUser] = useState<Friend | null>()
 	const lastSelectedUser = useLastDefined(selectedUser)
+	const shouldMountAddFriend = useDelayedUnmount(isAddFriendOpen, MODAL_EXIT_MS)
 
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
 
@@ -81,8 +83,11 @@ export const FriendsLayout = () => {
 				</div>
 			</div>
 
-			{isAddFriendOpen && (
-				<AddFriendBottomSheet isOpen onClose={() => setIsAddFriendOpen(false)} />
+			{shouldMountAddFriend && (
+				<AddFriendBottomSheet
+					isOpen={isAddFriendOpen}
+					onClose={() => setIsAddFriendOpen(false)}
+				/>
 			)}
 
 			<ConfirmationModal

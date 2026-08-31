@@ -1,5 +1,7 @@
 import { FriendRequestsBottomSheet } from '../friend-requests.bottom-sheet'
 import { Icon } from '@/src/icons'
+import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 
 interface Prop {
 	size: 'small' | 'large'
@@ -7,6 +9,7 @@ interface Prop {
 }
 export function FriendRequestsButton({ size, pendingCount }: Prop) {
 	const [isRequestsOpen, setIsRequestsOpen] = useState(false)
+	const shouldMountRequests = useDelayedUnmount(isRequestsOpen, MODAL_EXIT_MS)
 
 	return (
 		<>
@@ -45,9 +48,9 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 				</button>
 			)}
 
-			{isRequestsOpen && (
+			{shouldMountRequests && (
 				<FriendRequestsBottomSheet
-					isOpen
+					isOpen={isRequestsOpen}
 					onClose={() => setIsRequestsOpen(false)}
 				/>
 			)}

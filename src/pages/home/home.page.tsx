@@ -59,6 +59,7 @@ const steps: Step[] = [
 
 export function HomePage() {
 	const [showWelcomeModal, setShowWelcomeModal] = useState(false)
+	const shouldMountWelcome = useDelayedUnmount(showWelcomeModal, MODAL_EXIT_MS)
 	const [showReleaseNotes, setShowReleaseNotes] = useState(false)
 	const shouldMountReleaseNotes = useDelayedUnmount(showReleaseNotes, MODAL_EXIT_MS)
 	const [showTour, setShowTour] = useState(false)
@@ -117,7 +118,7 @@ export function HomePage() {
 		<>
 			<HomeContentCustom />
 
-			{showWelcomeModal && (
+			{shouldMountWelcome && (
 				<ExtensionInstalledModal
 					show={showWelcomeModal}
 					onClose={() => handleGetStarted}

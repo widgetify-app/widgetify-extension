@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { Button, ConfirmationModal } from '@/components/ui'
+import { Button, ConfirmationModal, MODAL_EXIT_MS } from '@/components/ui'
+import { useDelayedUnmount, useLastDefined } from '@/hooks/use-delayed-unmount'
 import { Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -29,6 +30,8 @@ export function HabitsContent() {
 
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
 	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
+	const lastDetailHabitId = useLastDefined(detailHabitId)
+	const shouldMountDetail = useDelayedUnmount(!!detailHabitId, MODAL_EXIT_MS)
 	const [showForm, setShowForm] = useState(false)
 	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
 
@@ -175,10 +178,10 @@ export function HabitsContent() {
 				colors={data?.colors || []}
 			/>
 
-			{detailHabitId && (
+			{shouldMountDetail && (
 				<HabitDetailModal
 					isOpen={!!detailHabitId}
-					habitId={detailHabitId}
+					habitId={lastDetailHabitId}
 					onClose={() => onCloseDetailModal()}
 					onEdit={(habit) => handleEditHabit(habit)}
 					onArchive={() => setArchiveConfirm(detailHabitId)}
@@ -213,6 +216,8 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 	const [showForm, setShowForm] = useState(false)
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
 	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
+	const lastDetailHabitId = useLastDefined(detailHabitId)
+	const shouldMountDetail = useDelayedUnmount(!!detailHabitId, MODAL_EXIT_MS)
 	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
 
 	const handleAddHabit = () => {
@@ -311,10 +316,10 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 					icons={data?.icons || []}
 					colors={data?.colors || []}
 				/>
-				{detailHabitId && (
+				{shouldMountDetail && (
 					<HabitDetailModal
 						isOpen={!!detailHabitId}
-						habitId={detailHabitId}
+						habitId={lastDetailHabitId}
 						onClose={handleCloseDetailModal}
 						onEdit={handleEditHabit}
 						onArchive={() => setArchiveConfirm(detailHabitId)}

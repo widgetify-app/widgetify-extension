@@ -18,6 +18,8 @@ import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
 import { Icon } from '@/src/icons'
 import { useState } from 'react'
+import { useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE') return { label: 'آقا هستم' }
@@ -41,6 +43,7 @@ export const ProfileDisplay = () => {
 	const { refetchUser, user } = useAuth()
 	const [showModal, setShowModal] = useState(false)
 	const [showAvatar, setShowAvatar] = useState(false)
+	const shouldMountAvatar = useDelayedUnmount(showAvatar, MODAL_EXIT_MS)
 	const genderInfo = getGenderInfo(user?.gender)
 
 	const showEditBadge = (field: string) => {
@@ -204,8 +207,11 @@ export const ProfileDisplay = () => {
 					<OfflineIndicator mode="notification" />
 				</div>
 			)}
-			{showAvatar && (
-				<EditAvatarModal onClose={() => setShowAvatar(false)} show={true} />
+			{shouldMountAvatar && (
+				<EditAvatarModal
+					onClose={() => setShowAvatar(false)}
+					show={showAvatar}
+				/>
 			)}
 
 			<AddPhoneModal isOpen={showModal} onClose={() => onCloseModal()} />
@@ -239,6 +245,7 @@ const DisplayRow = ({
 	refetchDataFunc?: any
 }) => {
 	const [show, setShow] = useState(false)
+	const shouldMountEdit = useDelayedUnmount(show, MODAL_EXIT_MS)
 	const onClickEdit = () => {
 		setShow(true)
 	}
@@ -278,9 +285,9 @@ const DisplayRow = ({
 				)}
 			</div>
 
-			{editable && EditModal && show && (
+			{editable && EditModal && shouldMountEdit && (
 				<EditModal
-					show={true}
+					show={show}
 					onClose={(type: any) => onClose(type)}
 					currentValue={modalValue}
 				/>

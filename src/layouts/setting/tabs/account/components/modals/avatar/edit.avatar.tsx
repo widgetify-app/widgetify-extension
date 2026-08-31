@@ -9,6 +9,8 @@ import { useRef, useState } from 'react'
 import { FooterButtons } from '../footer-buttons'
 import { Icon } from '@/src/icons'
 import { AvatarCropModal } from './avatar-crop.modal'
+import { useDelayedUnmount, useLastDefined } from '@/hooks/use-delayed-unmount'
+import { MODAL_EXIT_MS } from '@/components/ui'
 
 interface Prop {
 	show: boolean
@@ -19,6 +21,8 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 	const [avatar, setAvatar] = useState<File | null>(null)
 	const [rawImage, setRawImage] = useState<string | null>(null)
 	const [showCropper, setShowCropper] = useState(false)
+	const lastRawImage = useLastDefined(rawImage)
+	const shouldMountCrop = useDelayedUnmount(showCropper, MODAL_EXIT_MS)
 	const avatarRef = useRef<HTMLInputElement | null>(null)
 	const updateProfileMutation = useUpdateUserProfile()
 
@@ -113,10 +117,10 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 				</div>
 			</Modal>
 
-			{rawImage && (
+			{shouldMountCrop && (
 				<AvatarCropModal
 					show={showCropper}
-					image={rawImage}
+					image={lastRawImage ?? ''}
 					onClose={onCropCancel}
 					onCropComplete={onCropComplete}
 				/>
