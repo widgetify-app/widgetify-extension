@@ -281,7 +281,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							className={
 								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-content'
 							}
-							style={{ zIndex: 1000 }}
+							style={{ zIndex: 99999 }}
 						>
 							{renderEmojiGrid()}
 						</div>

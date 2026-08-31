@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { RgbaStringColorPicker } from 'react-colorful'
 import { createPortal } from 'react-dom'
 
@@ -13,17 +13,36 @@ export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const [position, setPosition] = useState({ top: 0, left: 0 })
 
-	useEffect(() => {
-		if (isOpen && triggerRef.current) {
-			const rect = triggerRef.current.getBoundingClientRect()
-			setPosition({
-				top: rect.bottom + window.scrollY,
-				left: rect.right - 20 + window.scrollX,
-			})
+	const updatePosition = useCallback(() => {
+		if (!triggerRef.current) return
+		const rect = triggerRef.current.getBoundingClientRect()
+		const popoverWidth = 200
+		const popoverHeight = 220
+
+		let top = rect.bottom + 6
+		if (top + popoverHeight > window.innerHeight && rect.top > popoverHeight) {
+			top = rect.top - popoverHeight - 6
 		}
-	}, [isOpen])
+
+		let left = rect.right - popoverWidth
+		if (left < 10) left = rect.left
+		if (left + popoverWidth > window.innerWidth - 10) {
+			left = window.innerWidth - popoverWidth - 10
+		}
+		if (left < 10) left = 10
+
+		setPosition({ top, left })
+	}, [])
 
 	useEffect(() => {
+		if (isOpen) {
+			updatePosition()
+		}
+	}, [isOpen, updatePosition])
+
+	useEffect(() => {
+		if (!isOpen) return
+
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
 				popoverRef.current &&
@@ -35,26 +54,20 @@ export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 			}
 		}
 
-		const handleScroll = () => {
-			if (triggerRef.current && isOpen) {
-				const rect = triggerRef.current.getBoundingClientRect()
-				setPosition({
-					top: rect.bottom + window.scrollY,
-					left: rect.right - 200 + window.scrollX,
-				})
-			}
+		const handleReposition = () => {
+			updatePosition()
 		}
 
 		document.addEventListener('mousedown', handleClickOutside)
-		window.addEventListener('scroll', handleScroll)
-		window.addEventListener('resize', handleScroll)
+		window.addEventListener('scroll', handleReposition, true)
+		window.addEventListener('resize', handleReposition)
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
-			window.removeEventListener('scroll', handleScroll)
-			window.removeEventListener('resize', handleScroll)
+			window.removeEventListener('scroll', handleReposition, true)
+			window.removeEventListener('resize', handleReposition)
 		}
-	}, [isOpen])
+	}, [isOpen, updatePosition])
 
 	const displayColor = color || '#000000'
 
@@ -62,7 +75,7 @@ export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 		<>
 			<div
 				ref={triggerRef}
-				className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
+				className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1 shadow-xs hover:scale-105 active:scale-95 transition-transform"
 				style={{ backgroundColor: displayColor }}
 				onClick={() => setIsOpen(!isOpen)}
 			/>
@@ -71,12 +84,12 @@ export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange
 				createPortal(
 					<div
 						ref={popoverRef}
-						className="fixed  flex p-2 border rounded-md shadow-lg bg-content border-content"
+						className="fixed flex p-2 border shadow-2xl rounded-xl bg-base-200 border-base-content/15 backdrop-blur-xl"
 						style={{
 							top: `${position.top}px`,
 							left: `${position.left}px`,
 							width: '200px',
-							zIndex: 1000,
+							zIndex: 99999,
 						}}
 					>
 						<RgbaStringColorPicker color={displayColor} onChange={onChange} />

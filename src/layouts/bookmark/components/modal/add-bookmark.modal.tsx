@@ -86,7 +86,9 @@ export function AddBookmarkModal({
 		let hostName = ''
 		if (formData.title.trim() === '' && newUrl !== '') {
 			try {
-				hostName = new URL(newUrl.startsWith('http') ? newUrl : `https://${newUrl}`).hostname
+				hostName = new URL(
+					newUrl.startsWith('http') ? newUrl : `https://${newUrl}`
+				).hostname
 				if (hostName && hostName.split('.').length > 2) {
 					hostName = hostName.split('.')[1]
 				}
@@ -179,106 +181,110 @@ export function AddBookmarkModal({
 	}, [isOpen])
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={() => onCloseHandler()}
-			size="md"
-			title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
-			direction="rtl"
-			className="overflow-y-hidden!"
-			closeOnBackdropClick={false}
-		>
-			<form
-				onSubmit={handleAdd}
-				onContextMenu={(e) => e.stopPropagation()}
-				className="flex flex-col justify-between gap-2 overflow-y-auto h-96"
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={() => onCloseHandler()}
+				size="md"
+				title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
+				direction="rtl"
+				className="overflow-y-hidden!"
+				closeOnBackdropClick={false}
 			>
-				<div className="mt-1 overflow-hidden">
-					<TypeSelector type={type} setType={handleTypeChange} />
-					{onOpenImport && (
-						<button
-							type="button"
-							onClick={onOpenImport}
-							className="flex items-center justify-center w-fit mx-auto px-3 gap-1.5 mt-2 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary text-base-content/80 bg-base-200 hover:bg-primary/10"
-						>
-							<Icon name="download" size={12} />
-							درون‌ریزی از بوکمارک‌های مرورگر
-						</button>
-					)}
-					<div className="flex items-center gap-2 mt-2">
-						<TextInput
-							type="text"
-							name="title"
-							placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-							value={formData.title}
-							onChange={(v) => updateFormData('title', v)}
-							className="w-full px-4 py-3 text-right rounded-lg transition-all duration-200"
-						/>
-
-						<BookmarkIconPicker
-							onChange={(value) => updateFormData('icon', value)}
-							value={formData.icon}
-							url={formData.url}
-						/>
-					</div>
-
-					{type === 'BOOKMARK' && (
-						<div className="mt-2">
+				<form
+					onSubmit={handleAdd}
+					onContextMenu={(e) => e.stopPropagation()}
+					className="flex flex-col justify-between gap-2 overflow-y-auto h-96"
+				>
+					<div className="mt-1 overflow-hidden">
+						<TypeSelector type={type} setType={handleTypeChange} />
+						{onOpenImport && (
+							<button
+								type="button"
+								onClick={onOpenImport}
+								className="flex items-center justify-center w-fit mx-auto px-3 gap-1.5 mt-2 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary text-base-content/80 bg-base-200 hover:bg-primary/10"
+							>
+								<Icon name="download" size={12} />
+								درون‌ریزی از بوکمارک‌های مرورگر
+							</button>
+						)}
+						<div className="flex items-center gap-2 mt-2">
 							<TextInput
 								type="text"
-								name="url"
-								placeholder="آدرس لینک"
-								value={formData.url || ''}
-								onChange={(v) => handleUrlChange(v)}
-								className="w-full px-4 py-3 text-right rounded-lg transition-all duration-200"
+								name="title"
+								placeholder={
+									type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+								}
+								value={formData.title}
+								onChange={(v) => updateFormData('title', v)}
+								className="w-full px-4 py-3 text-right transition-all duration-200 rounded-lg"
+							/>
+
+							<BookmarkIconPicker
+								onChange={(value) => updateFormData('icon', value)}
+								value={formData.icon}
+								url={formData.url}
 							/>
 						</div>
-					)}
 
-					{type === 'BOOKMARK' && (
-						<BookmarkSuggestions onSelect={handleSuggestionSelect} />
-					)}
+						{type === 'BOOKMARK' && (
+							<div className="mt-2">
+								<TextInput
+									type="text"
+									name="url"
+									placeholder="آدرس لینک"
+									value={formData.url || ''}
+									onChange={(v) => handleUrlChange(v)}
+									className="w-full px-4 py-3 text-right transition-all duration-200 rounded-lg"
+								/>
+							</div>
+						)}
 
-					<AdvancedModal
-						bookmark={formData}
-						isOpen={showAdvanced}
-						onClose={handleAdvancedModalClose}
-						title="تنظیمات پیشرفته"
-					/>
-				</div>
-
-				<div className="flex justify-between h-10 gap-x-4">
-					<ShowAdvancedButton
-						showAdvanced={showAdvanced}
-						setShowAdvanced={setShowAdvanced}
-					/>
-
-					<div className="flex items-center gap-x-1">
-						<Button
-							type="button"
-							onClick={onCloseHandler}
-							size="md"
-							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
-						>
-							لغو
-						</Button>
-						<Button
-							type="submit"
-							disabled={
-								!formData.title?.trim() ||
-								(type === 'BOOKMARK' && !formData.url?.trim()) ||
-								isAdding
-							}
-							size="md"
-							loading={isAdding}
-							className="btn w-28 border-none shadow-none rounded-2xl transition-colors duration-300 ease-in-out"
-							variant="primary"
-						>
-							ذخیره
-						</Button>
+						{type === 'BOOKMARK' && (
+							<BookmarkSuggestions onSelect={handleSuggestionSelect} />
+						)}
 					</div>
-				</div>
-			</form>
-		</Modal>
+
+					<div className="flex justify-between h-10 gap-x-4">
+						<ShowAdvancedButton
+							showAdvanced={showAdvanced}
+							setShowAdvanced={setShowAdvanced}
+						/>
+
+						<div className="flex items-center gap-x-1">
+							<Button
+								type="button"
+								onClick={onCloseHandler}
+								size="md"
+								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+							>
+								لغو
+							</Button>
+							<Button
+								type="submit"
+								disabled={
+									!formData.title?.trim() ||
+									(type === 'BOOKMARK' && !formData.url?.trim()) ||
+									isAdding
+								}
+								size="md"
+								loading={isAdding}
+								className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28 rounded-2xl"
+								variant="primary"
+							>
+								ذخیره
+							</Button>
+						</div>
+					</div>
+				</form>
+			</Modal>
+
+			<AdvancedModal
+				bookmark={formData}
+				isOpen={showAdvanced}
+				onClose={handleAdvancedModalClose}
+				title="تنظیمات پیشرفته"
+			/>
+		</>
 	)
 }

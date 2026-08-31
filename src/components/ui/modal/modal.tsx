@@ -8,6 +8,9 @@ import { modalBoxVariants, modalScrollVariants } from './modal.variants'
 
 export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
+let activeModalCount = 0
+const BASE_Z_INDEX = 1000
+
 export type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean
 	onClose: () => void
@@ -31,19 +34,34 @@ export function Modal({
 	className,
 }: ModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null)
+	const [zIndex, setZIndex] = useState<number>(BASE_Z_INDEX)
 
-	// Lock body scroll when modal is open
+	// Lock body scroll and assign dynamic z-index stacking when modal is open
 	useEffect(() => {
 		if (isOpen) {
+			activeModalCount += 1
+			setZIndex(BASE_Z_INDEX + activeModalCount * 10)
 			document.documentElement.classList.add('modal-isActive')
 			document.body.style.overflow = 'hidden'
 		} else {
-			document.documentElement.classList.remove('modal-isActive')
-			document.body.style.overflow = ''
+			if (activeModalCount > 0) {
+				activeModalCount -= 1
+			}
+			if (activeModalCount === 0) {
+				document.documentElement.classList.remove('modal-isActive')
+				document.body.style.overflow = ''
+			}
 		}
 		return () => {
-			document.documentElement.classList.remove('modal-isActive')
-			document.body.style.overflow = ''
+			if (isOpen) {
+				if (activeModalCount > 0) {
+					activeModalCount -= 1
+				}
+				if (activeModalCount === 0) {
+					document.documentElement.classList.remove('modal-isActive')
+					document.body.style.overflow = ''
+				}
+			}
 		}
 	}, [isOpen])
 
@@ -91,6 +109,7 @@ export function Modal({
 			onClick={() => closeOnBackdropClick && onClose()}
 			onContextMenu={(e) => e.stopPropagation()}
 			className="flex items-center justify-center p-2 modal modal-middle md:p-4"
+			style={{ zIndex }}
 		>
 			<div
 				ref={modalRef}

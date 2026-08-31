@@ -149,97 +149,99 @@ export function EditBookmarkModal({
 	if (!safeBookmark) return null
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			size="md"
-			title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
-			direction="rtl"
-			className="overflow-y-hidden!"
-			closeOnBackdropClick={false}
-		>
-			<div className="flex flex-col justify-between gap-2 overflow-y-auto h-92">
-				<div className="flex flex-col gap-2">
-					<div className="flex flex-col items-center gap-2">
-						<div className="relative flex flex-col items-center">
-							<BookmarkIconPicker
-								onChange={(value) => updateFormData('icon', value)}
-								value={icon}
-								url={formData.url}
-							/>
-							{iconSource === 'upload' && Boolean(icon) && (
-								<Button
-									size="xs"
-									onClick={() => onRemoveIcon()}
-									className="mt-1 btn btn-ghost text-error hover:bg-error/10 rounded-xl"
-								>
-									حذف آیکون
-								</Button>
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				size="md"
+				title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
+				direction="rtl"
+				className="overflow-y-hidden!"
+				closeOnBackdropClick={false}
+			>
+				<div className="flex flex-col justify-between gap-2 overflow-y-auto h-92">
+					<div className="flex flex-col gap-2">
+						<div className="flex flex-col items-center gap-2">
+							<div className="relative flex flex-col items-center">
+								<BookmarkIconPicker
+									onChange={(value) => updateFormData('icon', value)}
+									value={icon}
+									url={formData.url}
+								/>
+								{iconSource === 'upload' && Boolean(icon) && (
+									<Button
+										size="xs"
+										onClick={() => onRemoveIcon()}
+										className="mt-1 btn btn-ghost text-error hover:bg-error/10 rounded-xl"
+									>
+										حذف آیکون
+									</Button>
+								)}
+							</div>
+						</div>
+
+						<TextInput
+							type="text"
+							name="title"
+							placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
+							value={formData.title}
+							onChange={(value) => updateFormData('title', value)}
+							className={
+								'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
+							}
+						/>
+
+						<div className="relative h-12.5">
+							{type === 'BOOKMARK' && (
+								<TextInput
+									name="url"
+									type="text"
+									placeholder="آدرس لینک"
+									value={formData.url || ''}
+									onChange={(value) => updateFormData('url', value)}
+									className={
+										'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+									}
+								/>
 							)}
 						</div>
 					</div>
 
-					<TextInput
-						type="text"
-						name="title"
-						placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-						value={formData.title}
-						onChange={(value) => updateFormData('title', value)}
-						className={
-							'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
-						}
-					/>
+					<div className="flex justify-between gap-x-4">
+						<ShowAdvancedButton
+							showAdvanced={showAdvanced}
+							setShowAdvanced={setShowAdvanced}
+						/>
 
-					<div className="relative h-12.5">
-						{type === 'BOOKMARK' && (
-							<TextInput
-								name="url"
-								type="text"
-								placeholder="آدرس لینک"
-								value={formData.url || ''}
-								onChange={(value) => updateFormData('url', value)}
-								className={
-									'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
+						<div className="flex items-center gap-x-2">
+							<Button
+								onClick={onClose}
+								size="md"
+								disabled={isUpdating}
+								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
+								rounded={'2xl'}
+							>
+								لغو
+							</Button>
+							<Button
+								onClick={handleSave}
+								disabled={
+									!formData.title?.trim() ||
+									(type === 'BOOKMARK' && !formData.url?.trim()) ||
+									isUpdating
 								}
-							/>
-						)}
+								size="md"
+								loading={isUpdating}
+								variant={'primary'}
+								rounded={'2xl'}
+								className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28"
+							>
+								ذخیره
+							</Button>
+						</div>
 					</div>
 				</div>
-
-				<div className="flex justify-between gap-x-4">
-					<ShowAdvancedButton
-						showAdvanced={showAdvanced}
-						setShowAdvanced={setShowAdvanced}
-					/>
-
-					<div className="flex items-center gap-x-2">
-						<Button
-							onClick={onClose}
-							size="md"
-							disabled={isUpdating}
-							className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
-							rounded={'2xl'}
-						>
-							لغو
-						</Button>
-						<Button
-							onClick={handleSave}
-							disabled={
-								!formData.title?.trim() ||
-								(type === 'BOOKMARK' && !formData.url?.trim()) ||
-								isUpdating
-							}
-							size="md"
-							loading={isUpdating}
-							variant={'primary'}
-							rounded={'2xl'}
-							className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28"
-						>
-							ذخیره
-						</Button>
-					</div>
-				</div>
-			</div>
+			</Modal>
 
 			<AdvancedModal
 				isOpen={showAdvanced}
@@ -255,6 +257,6 @@ export function EditBookmarkModal({
 				}}
 				title="گزینه‌های پیشرفته"
 			/>
-		</Modal>
+		</>
 	)
 }
