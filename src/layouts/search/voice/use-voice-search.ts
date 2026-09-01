@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 
@@ -24,6 +24,11 @@ export function useVoiceSearch(
 	const [isListening, setIsListening] = useState(false)
 	const [currentTranscript, setCurrentTranscript] = useState('')
 	const recognitionRef = useRef<any>(null)
+	const onResultRef = useRef(onResult)
+
+	useEffect(() => {
+		onResultRef.current = onResult
+	}, [onResult])
 
 	const initSpeechRecognition = () => {
 		const SpeechRecognition =
@@ -61,7 +66,7 @@ export function useVoiceSearch(
 			setCurrentTranscript(fullTranscript)
 
 			if (finalTranscript) {
-				onResult(finalTranscript)
+				onResultRef.current(finalTranscript)
 				Analytics.event('voice_search_transcribed')
 			}
 		}
@@ -74,6 +79,9 @@ export function useVoiceSearch(
 
 		recognition.onend = () => {
 			setIsListening(false)
+			if (recognitionRef.current === recognition) {
+				recognitionRef.current = null
+			}
 		}
 
 		return recognition
@@ -94,9 +102,22 @@ export function useVoiceSearch(
 	}
 
 	const stopVoiceSearch = () => {
-		if (recognitionRef.current && isListening) {
-			recognitionRef.current.stop()
+		const recognition = recognitionRef.current
+		if (!recognition) return
+
+		recognition.onstart = null
+		recognition.onresult = null
+		recognition.onerror = null
+		recognition.onend = null
+		recognitionRef.current = null
+
+		try {
+			recognition.abort()
+		} catch (error) {
+			console.error('Error stopping speech recognition:', error)
 		}
+
+		setIsListening(false)
 	}
 
 	const clearTranscript = () => {
