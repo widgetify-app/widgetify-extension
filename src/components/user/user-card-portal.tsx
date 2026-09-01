@@ -71,9 +71,9 @@ export function UserCardPortal({
 						key="user-card"
 						ref={cardRef}
 						className="fixed z-popover shadow-lg min-w-64 max-w-64"
-						initial={{ opacity: 0, scale: 0.95, x: '-50%' }}
-						animate={{ opacity: 1, scale: 1, x: '-50%' }}
-						exit={{ opacity: 0, scale: 0.95, x: '-50%' }}
+						initial={{ scale: 0.95, x: '-50%' }}
+						animate={{ scale: 1, x: '-50%' }}
+						exit={{ scale: 0.95, x: '-50%' }}
 						transition={{ duration: 0.15, ease: 'easeOut' }}
 						style={{
 							top: `${position.top}px`,
