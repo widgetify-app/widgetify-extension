@@ -1,16 +1,14 @@
-Widgetify Non-Commercial License
-
 Copyright (c) 2025 Widgetify
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
-"Software"), to use, copy, modify, and distribute the Software for
-NON-COMMERCIAL purposes only, subject to the following conditions:
+"Software"), to use and modify the Software solely for non-commercial
+purposes, subject to the following conditions:
 
 1. NON-COMMERCIAL USE
 
-The Software may be used, copied, modified, and distributed only for
-personal, educational, research, or other non-commercial purposes.
+The Software may be used and modified only for personal, educational,
+research, or other strictly non-commercial purposes.
 
 2. COMMERCIAL USE PROHIBITED
 
@@ -20,28 +18,54 @@ written permission from Widgetify.
 Commercial use includes, but is not limited to:
 
 - Using the Software as part of a commercial product or service;
-- Using the Software to provide a paid service;
-- Selling the Software or modified versions of the Software;
-- Including the Software in a product or service offered for profit;
+- Using the Software to provide a paid or monetized service;
+- Selling the Software or any part of it;
+- Including the Software in a commercial product or service;
 - Using the Software for commercial internal business operations;
 - Using the Software to generate revenue, directly or indirectly.
 
-3. MODIFICATIONS
+3. REDISTRIBUTION PROHIBITED
 
-You may modify the Software for non-commercial purposes.
+Redistribution of the Software, in its original or modified form,
+is strictly prohibited on any platform or through any distribution
+channel without prior written permission from Widgetify.
 
-4. DISTRIBUTION
+This prohibition applies to, but is not limited to:
 
-You may distribute original or modified versions of the Software
-for non-commercial purposes only, provided that this license and
-copyright notice are included.
+- Publishing the Software on GitHub, GitLab, Bitbucket, or similar
+  code-hosting platforms;
+- Publishing the Software on browser extension stores or marketplaces;
+- Publishing the Software on websites, application stores, package
+  registries, or download platforms;
+- Distributing the Software through repositories, mirrors, archives,
+  torrents, or any other public or private distribution mechanism.
 
-5. COMMERCIAL LICENSE
+4. MODIFIED VERSIONS
 
-For commercial use, a separate written license must be obtained
-from Widgetify.
+No modified, forked, derivative, or adapted version of the Software
+may be published, distributed, shared, or made available on any
+platform or through any channel, regardless of whether such use is
+commercial or non-commercial, without prior written permission from
+Widgetify.
 
-6. NO WARRANTY
+5. FORKING
+
+Creating a private fork or modified copy for personal, educational,
+or research purposes is permitted, provided that such copy is not
+published, redistributed, or otherwise made available to third parties.
+
+6. COMMERCIAL LICENSE
+
+Any commercial use, redistribution, publication, or distribution of
+the Software or any derivative work requires a separate written
+license from Widgetify.
+
+7. COPYRIGHT AND LICENSE NOTICE
+
+The original copyright notice and this license must be retained in
+any permitted copy of the Software.
+
+8. NO WARRANTY
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED. IN NO EVENT SHALL WIDGETIFY OR THE COPYRIGHT
