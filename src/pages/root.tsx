@@ -3,6 +3,8 @@ import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
+import { TOAST_TOP_LAYER_ID } from '@/common/toast'
+import { Portal } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
@@ -39,23 +41,25 @@ export function RootLayout() {
 						<Main></Main>
 					</WallpaperProvider>
 				</GeneralSettingProvider>
-				<Toaster
-					toastOptions={{
-						error: {
-							style: {
-								backgroundColor: 'var(--color-error)',
-								color: 'var(--color-error-content)',
+				<Portal topLayer id={TOAST_TOP_LAYER_ID} style={{ zIndex: 100000 }}>
+					<Toaster
+						toastOptions={{
+							error: {
+								style: {
+									backgroundColor: 'var(--color-error)',
+									color: 'var(--color-error-content)',
+								},
 							},
-						},
-						success: {
-							style: {
-								backgroundColor: 'var(--color-success)',
-								color: 'var(--color-success-content)',
+							success: {
+								style: {
+									backgroundColor: 'var(--color-success)',
+									color: 'var(--color-success-content)',
+								},
 							},
-						},
-						duration: 5000,
-					}}
-				/>
+							duration: 5000,
+						}}
+					/>
+				</Portal>
 			</IconProvider>
 		</div>
 	)

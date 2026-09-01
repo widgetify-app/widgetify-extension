@@ -208,51 +208,49 @@ export function Dropdown({
 				{trigger}
 			</div>
 
-			<Portal>
-				<Presence>
-					{isOpen && !disabled && (
-						<div
-							key="dropdown-layer"
-							id={id}
-							className="fixed inset-0 pointer-events-none"
-							style={{ zIndex: 99999 }}
+			<Presence>
+				{isOpen && !disabled && (
+					<Portal
+						topLayer
+						key="dropdown-layer"
+						id={id}
+						style={{ zIndex: 99999 }}
+					>
+						<Motion.div
+							ref={dropdownContentRef}
+							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-base-200 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							initial={{ opacity: 0, scale: 0.95 }}
+							animate={{
+								opacity: isReady ? 1 : 0,
+								scale: isReady ? 1 : 0.95,
+							}}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
+							style={{
+								maxHeight,
+								width:
+									width === 'auto'
+										? 'auto'
+										: width === 'full'
+											? '100%'
+											: width,
+								minWidth: width === 'auto' ? '150px' : undefined,
+								top: dropdownPosition.top,
+								left: dropdownPosition.left,
+								visibility: isReady ? 'visible' : 'hidden',
+								zIndex: 99999,
+							}}
 						>
-							<Motion.div
-								ref={dropdownContentRef}
-								className={`fixed shadow-xl overflow-hidden rounded-2xl bg-base-200 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
-								initial={{ opacity: 0, scale: 0.95 }}
-								animate={{
-									opacity: isReady ? 1 : 0,
-									scale: isReady ? 1 : 0.95,
-								}}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.15, ease: 'easeOut' }}
-								style={{
-									maxHeight,
-									width:
-										width === 'auto'
-											? 'auto'
-											: width === 'full'
-												? '100%'
-												: width,
-									minWidth: width === 'auto' ? '150px' : undefined,
-									top: dropdownPosition.top,
-									left: dropdownPosition.left,
-									visibility: isReady ? 'visible' : 'hidden',
-									zIndex: 99999,
-								}}
+							<div
+								className="overflow-y-auto overscroll-contain scrollbar-none"
+								style={{ maxHeight }}
 							>
-								<div
-									className="overflow-y-auto overscroll-contain scrollbar-none"
-									style={{ maxHeight }}
-								>
-									{dropdownContent}
-								</div>
-							</Motion.div>
-						</div>
-					)}
-				</Presence>
-			</Portal>
+								{dropdownContent}
+							</div>
+						</Motion.div>
+					</Portal>
+				)}
+			</Presence>
 		</div>
 	)
 }
