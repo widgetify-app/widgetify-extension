@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useVoiceSearch } from './use-voice-search'
-import { Portal } from '@/components/ui'
+import { Dropdown, Portal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface VoiceSearchPortalProps {
@@ -23,7 +23,6 @@ export function VoiceSearchPortal({
 	portalRef,
 }: VoiceSearchPortalProps) {
 	const [selectedLanguage, setSelectedLanguage] = useState<Language>('fa-IR')
-	const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
 
 	const { isListening, currentTranscript, startVoiceSearch, stopVoiceSearch } =
 		useVoiceSearch((result) => {
@@ -86,32 +85,27 @@ export function VoiceSearchPortal({
 					</div>
 
 					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-base-content/5">
-						<div className="relative">
-							<button
-								onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-								className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-base-200 rounded-xl transition-colors text-xs font-bold text-base-content/60"
-							>
-								<Icon name="settings" size={14} />
-								{languages.find((l) => l.code === selectedLanguage)?.name}
-							</button>
-
-							{isLanguageMenuOpen && (
-								<div className="absolute bottom-full mb-2 left-0 bg-base-100 border border-base-content/10 shadow-xl rounded-xl overflow-hidden min-w-[120px]">
-									{languages.map((lang) => (
-										<button
-											key={lang.code}
-											onClick={() => {
-												setSelectedLanguage(lang.code)
-												setIsLanguageMenuOpen(false)
-											}}
-											className="w-full cursor-pointer px-4 py-2.5 text-right text-xs font-bold hover:bg-base-200 transition-colors"
-										>
-											{lang.name}
-										</button>
-									))}
+						<Dropdown
+							position="top-right"
+							width="120px"
+							dropdownClassName="text-xs font-bold"
+							trigger={
+								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-base-200 rounded-xl transition-colors text-xs font-bold text-base-content/60">
+									<Icon name="settings" size={14} />
+									{
+										languages.find((l) => l.code === selectedLanguage)
+											?.name
+									}
 								</div>
-							)}
-						</div>
+							}
+							options={languages.map((lang) => ({
+								id: lang.code,
+								label: lang.name,
+							}))}
+							onOptionSelect={(option) =>
+								setSelectedLanguage(option.id as Language)
+							}
+						/>
 
 						<button
 							onClick={() =>
