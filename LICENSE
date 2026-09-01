@@ -1,21 +1,49 @@
-MIT License
+Widgetify Non-Commercial License
 
-Copyright (c) 2025 widgetify
+Copyright (c) 2025 Widgetify
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to use, copy, modify, and distribute the Software for
+NON-COMMERCIAL purposes only, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. NON-COMMERCIAL USE
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The Software may be used, copied, modified, and distributed only for
+personal, educational, research, or other non-commercial purposes.
+
+2. COMMERCIAL USE PROHIBITED
+
+Commercial use of the Software is strictly prohibited without prior
+written permission from Widgetify.
+
+Commercial use includes, but is not limited to:
+
+- Using the Software as part of a commercial product or service;
+- Using the Software to provide a paid service;
+- Selling the Software or modified versions of the Software;
+- Including the Software in a product or service offered for profit;
+- Using the Software for commercial internal business operations;
+- Using the Software to generate revenue, directly or indirectly.
+
+3. MODIFICATIONS
+
+You may modify the Software for non-commercial purposes.
+
+4. DISTRIBUTION
+
+You may distribute original or modified versions of the Software
+for non-commercial purposes only, provided that this license and
+copyright notice are included.
+
+5. COMMERCIAL LICENSE
+
+For commercial use, a separate written license must be obtained
+from Widgetify.
+
+6. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED. IN NO EVENT SHALL WIDGETIFY OR THE COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+FROM THE USE OF THE SOFTWARE.
