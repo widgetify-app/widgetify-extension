@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { listenEvent } from '@/common/utils/call-event'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
-import { NewsHeader } from './components/news-header'
 import type { WigiNewsSetting } from './rss.interface'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -66,15 +64,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 			className={'flex flex-col  overflow-y-auto scrollbar-none'}
 			style={{ scrollbarWidth: 'none' }}
 		>
-			<NewsHeader
-				title="اخبار"
-				onSettingsClick={() =>
-					callEvent('openWidgetsSettings', {
-						tab: WidgetTabKeys.news_settings,
-					})
-				}
-			/>
-
 			<NewsContainer
 				customFeeds={rssState.customFeeds}
 				useDefaultNews={rssState.useDefaultNews}

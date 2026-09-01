@@ -299,7 +299,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 3 },
-			{ w: 2, h: 2, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.wigiArz,
@@ -309,12 +308,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				label: 'لیست قیمت ارزها',
 				size: { w: 2, h: 3 },
 				meta: { variant: 'list' },
-			},
-			{
-				id: 'stacked',
-				label: 'خلاصه ۳ ارز',
-				size: { w: 2, h: 2 },
-				meta: { variant: 'stacked' },
 			},
 			{
 				id: 'compact',
