@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
@@ -192,7 +193,10 @@ export function FreeWidgetCanvas() {
 		<div
 			ref={containerRef}
 			id="widgets-canvas"
-			className="relative w-full select-none"
+			className={cn(
+				'relative w-full select-none',
+				canvasMode === 'edit' && 'canvas-editing'
+			)}
 			onPointerDown={handleCanvasPointerDown}
 			onClick={handleCanvasClick}
 			onContextMenu={handleCanvasContextMenu}
