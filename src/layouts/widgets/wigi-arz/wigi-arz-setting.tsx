@@ -6,7 +6,7 @@ import { ItemSelector, SectionPanel, SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
 import { useAuth } from '@/context/auth.context'
 import { CurrencyColorMode } from '@/context/currency.context'
-import { useFreeWidgets } from '@/context/free-widget.context'
+import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
 import { CurrenciesType, type SupportedCurrencies } from './wigi-arz-setting.interface'
@@ -125,7 +125,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 
 	return (
 		<WidgetSettingWrapper>
-			<div className="transition-all duration-300 ease-out flex flex-col gap-3">
+			<div className="flex flex-col gap-3 transition-all duration-300 ease-out">
 				<SectionPanel title="رنگ تغییر قیمت" size="xs">
 					<div className="flex flex-row gap-2">
 						<ItemSelector
@@ -168,15 +168,13 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 						/>
 					</div>
 
-					<div
-						className="px-2 pr-1 overflow-x-hidden overflow-y-auto min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent transition-opacity duration-300 ease-out"
-					>
+					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
 						{filteredGroups.map((group, groupIndex) => (
 							<div
 								key={groupIndex}
 								className="mb-6 transition-all duration-200 ease-out"
 							>
-								<h3 className="text-sm font-medium mb-3 currency-group-heading">
+								<h3 className="mb-3 text-sm font-medium currency-group-heading">
 									{group.label}
 								</h3>
 								<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -192,7 +190,9 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 														transition-all duration-200 ease-out active:scale-98 hover:scale-95
 														${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
 													  `}
-												onClick={() => toggleCurrency(option.value)}
+												onClick={() =>
+													toggleCurrency(option.value)
+												}
 											>
 												<div
 													className={`font-normal ${isSelected ? 'font-medium' : ''}`}

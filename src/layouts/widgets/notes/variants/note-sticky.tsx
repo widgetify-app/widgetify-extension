@@ -9,6 +9,7 @@ import {
 import { useNotes } from '@/context/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
@@ -50,19 +51,17 @@ const STICKY_COLOR_MAP: Record<
 	},
 }
 
-export function NoteSticky() {
+interface NoteStickyProps {
+	meta?: Record<string, any>
+	instanceId?: string
+}
+
+export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
-	const {
-		notes,
-		activeNoteId,
-		setActiveNoteId,
-		addNote,
-		updateNote,
-		deleteNote,
-		isSaving,
-		isCreatingNote,
-	} = useNotes()
+	const { notes, addNote, updateNote, deleteNote, isSaving, isCreatingNote } =
+		useNotes()
+	const { updateWidgetSettings } = useFreeWidgetActions()
 
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [localTitle, setLocalTitle] = useState('')
@@ -72,15 +71,17 @@ export function NoteSticky() {
 	>(undefined)
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
+	const targetNoteId = meta?.activeNoteId || meta?.noteId
+
 	const currentNote = useMemo(() => {
 		if (!notes.length) return null
-		if (activeNoteId) {
-			const found = notes.find((n) => n.id === activeNoteId)
+		if (targetNoteId) {
+			const found = notes.find((n) => n.id === targetNoteId)
 			if (found) return found
 		}
 		const validIndex = Math.min(Math.max(0, currentIndex), notes.length - 1)
 		return notes[validIndex] || notes[0]
-	}, [notes, activeNoteId, currentIndex])
+	}, [notes, targetNoteId, currentIndex])
 
 	useEffect(() => {
 		if (currentNote) {
@@ -90,6 +91,18 @@ export function NoteSticky() {
 			const foundIndex = notes.findIndex((n) => n.id === currentNote.id)
 			if (foundIndex !== -1 && foundIndex !== currentIndex) {
 				setCurrentIndex(foundIndex)
+			}
+			const targetResolved = !targetNoteId || currentNote.id === targetNoteId
+			if (
+				instanceId &&
+				currentNote.id &&
+				meta?.activeNoteId !== currentNote.id &&
+				targetResolved
+			) {
+				updateWidgetSettings(instanceId, {
+					...meta,
+					activeNoteId: currentNote.id,
+				})
 			}
 		} else {
 			setLocalTitle('')
@@ -136,7 +149,13 @@ export function NoteSticky() {
 		if (notes.length <= 1) return
 		const prev = (currentIndex - 1 + notes.length) % notes.length
 		setCurrentIndex(prev)
-		setActiveNoteId(notes[prev].id)
+		const target = notes[prev]
+		if (instanceId && target) {
+			updateWidgetSettings(instanceId, {
+				...meta,
+				activeNoteId: target.id,
+			})
+		}
 		Analytics.event('note_sticky_prev')
 	}
 
@@ -145,7 +164,13 @@ export function NoteSticky() {
 		if (notes.length <= 1) return
 		const next = (currentIndex + 1) % notes.length
 		setCurrentIndex(next)
-		setActiveNoteId(notes[next].id)
+		const target = notes[next]
+		if (instanceId && target) {
+			updateWidgetSettings(instanceId, {
+				...meta,
+				activeNoteId: target.id,
+			})
+		}
 		Analytics.event('note_sticky_next')
 	}
 
@@ -161,6 +186,12 @@ export function NoteSticky() {
 		})
 		if (created) {
 			setCurrentIndex(0)
+			if (instanceId) {
+				updateWidgetSettings(instanceId, {
+					...meta,
+					activeNoteId: created.id,
+				})
+			}
 		}
 	}
 
@@ -168,7 +199,15 @@ export function NoteSticky() {
 		setShowDeleteConfirm(false)
 		if (currentNote) {
 			await deleteNote(currentNote.id)
-			setCurrentIndex(0)
+			const remaining = notes.filter((n) => n.id !== currentNote.id)
+			const nextIdx = Math.min(currentIndex, Math.max(0, remaining.length - 1))
+			setCurrentIndex(nextIdx)
+			if (instanceId) {
+				updateWidgetSettings(instanceId, {
+					...meta,
+					activeNoteId: remaining[nextIdx]?.id,
+				})
+			}
 		}
 	}
 

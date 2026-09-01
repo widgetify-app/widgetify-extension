@@ -8,7 +8,7 @@ import {
 	useState,
 } from 'react'
 import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, setToStorage, watchStorage } from '@/common/storage'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
@@ -59,6 +59,11 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 		}
 
 		loadNotes()
+		return watchStorage('notes_data', (newVal) => {
+			if (newVal && Array.isArray(newVal)) {
+				setNotes(newVal)
+			}
+		})
 	}, [])
 
 	useEffect(() => {

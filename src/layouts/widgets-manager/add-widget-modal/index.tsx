@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { useOptionalFreeWidgets } from '@/context/free-widget.context'
+import { useOptionalFreeWidgets } from '@/context/free-widget/free-widget.context'
 import type {
 	WidgetCategory,
 	WidgetSize,

@@ -58,13 +58,17 @@ interface NotesLayoutProps {
 	instanceId?: string
 }
 
-export function NotesLayout({ size = { w: 2, h: 3 }, meta }: NotesLayoutProps = {}) {
+export function NotesLayout({
+	size = { w: 2, h: 3 },
+	meta,
+	instanceId,
+}: NotesLayoutProps = {}) {
 	const isSticky = meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
 
 	return (
 		<NotesProvider>
 			{isSticky ? (
-				<NoteSticky />
+				<NoteSticky meta={meta} instanceId={instanceId} />
 			) : (
 				<div className="flex flex-col h-full overflow-hidden">
 					<div className="flex-none">

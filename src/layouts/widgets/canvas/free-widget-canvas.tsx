@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { useFreeWidgets } from '@/context/free-widget.context'
+import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'

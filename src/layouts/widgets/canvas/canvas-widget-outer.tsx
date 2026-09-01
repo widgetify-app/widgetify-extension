@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { useFreeWidgetActions } from '@/context/free-widget.context'
+import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import { getWidgetPixelRect } from '../grid-geometry'
 import {
 	type StoredWidget,
