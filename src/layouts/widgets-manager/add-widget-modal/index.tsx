@@ -49,6 +49,13 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	)
 	const [activeCategory, setActiveCategory] = useState<WidgetCategory>('all')
 	const [isHelpOpen, setIsHelpOpen] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+
+	useEffect(() => {
+		if (!isOpen) {
+			setIsLoading(false)
+		}
+	}, [isOpen])
 
 	useEffect(() => {
 		if (editTarget) {
@@ -154,7 +161,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 	}
 
 	const handleSave = async () => {
-		if (!selectedDef) return
+		if (!selectedDef || isLoading) return
 
 		if (isVipRequired && !isVip) {
 			callEvent('openSettings', 'vip')
@@ -179,14 +186,20 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		}
 
 		if (!canAddCustom || !addWidget) return
-		const success = await addWidget(
-			selectedDef.id,
-			undefined,
-			selectedSize,
-			selectedVariant?.meta
-		)
-		if (success) {
-			onClose()
+
+		setIsLoading(true)
+		try {
+			const success = await addWidget(
+				selectedDef.id,
+				undefined,
+				selectedSize,
+				selectedVariant?.meta
+			)
+			if (success) {
+				onClose()
+			}
+		} finally {
+			setIsLoading(false)
 		}
 	}
 
@@ -304,6 +317,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										isCurrentlyActive={isCurrentlyActive}
 										isDuplicateRestricted={isDuplicateRestricted}
 										selectedSize={selectedSize}
+										isLoading={isLoading}
 										onSave={handleSave}
 										onRemove={handleRemove}
 									/>

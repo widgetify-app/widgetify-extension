@@ -12,6 +12,7 @@ interface AddWidgetActionsProps {
 	isCurrentlyActive: boolean
 	isDuplicateRestricted?: boolean
 	selectedSize: WidgetSize
+	isLoading?: boolean
 	onSave: () => void
 	onRemove: () => void
 }
@@ -54,6 +55,7 @@ export function AddWidgetActions({
 	isCurrentlyActive,
 	isDuplicateRestricted = false,
 	selectedSize,
+	isLoading = false,
 	onSave,
 	onRemove,
 }: AddWidgetActionsProps) {
@@ -77,6 +79,8 @@ export function AddWidgetActions({
 				className="w-full"
 				rounded={'2xl'}
 				variant={'primary'}
+				loading={isLoading}
+				disabled={isLoading}
 			>
 				<span>ذخیره تغییرات</span>
 			</Button>
@@ -110,6 +114,8 @@ export function AddWidgetActions({
 				className="w-full"
 				rounded={'2xl'}
 				variant={'primary'}
+				loading={isLoading}
+				disabled={isLoading}
 			>
 				<span>+</span>
 				<span>
@@ -130,6 +136,8 @@ export function AddWidgetActions({
 			className="w-full"
 			rounded={'2xl'}
 			variant={'primary'}
+			loading={isLoading}
+			disabled={isLoading}
 		>
 			<span>+</span>
 			<span>افزودن به صفحه</span>
