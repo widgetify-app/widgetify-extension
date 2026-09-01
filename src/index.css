@@ -275,18 +275,43 @@ img {
 .animate-widget-wiggle-a {
   animation: widget-wiggle 0.46s ease-in-out infinite alternate;
   transform-origin: 50% 10%;
+  will-change: transform;
 }
 
 .animate-widget-wiggle-b {
   animation: widget-wiggle-alt 0.48s ease-in-out infinite alternate;
   animation-delay: -0.15s;
   transform-origin: 50% 10%;
+  will-change: transform;
 }
 
 .animate-widget-wiggle-c {
   animation: widget-wiggle 0.52s ease-in-out infinite alternate;
   animation-delay: -0.3s;
   transform-origin: 50% 10%;
+  will-change: transform;
+}
+
+#widgets-canvas.canvas-editing .bg-glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.optimal-mode .animate-widget-wiggle-a,
+html.optimal-mode .animate-widget-wiggle-b,
+html.optimal-mode .animate-widget-wiggle-c {
+  animation: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-widget-wiggle-a,
+  .animate-widget-wiggle-b,
+  .animate-widget-wiggle-c {
+    animation: none;
+    will-change: auto;
+  }
 }
 
 .widget-canvas-item-transition {

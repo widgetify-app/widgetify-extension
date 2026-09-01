@@ -72,7 +72,7 @@ export function FolderBookmarkItem({
 	return (
 		<div
 			className={cn(
-				'relative flex w-full h-full overflow-hidden',
+				'relative flex w-full h-full overflow-hidden rounded-widget',
 				isDragging && 'opacity-50'
 			)}
 		>
