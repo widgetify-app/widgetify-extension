@@ -317,7 +317,7 @@ function CanvasWidgetOuterImpl({
 			<div
 				ref={outerRef}
 				className={cn(
-					'widget-outer absolute top-0 left-0 select-none',
+					'widget-outer absolute top-0 left-0 select-none rounded-widget',
 					isDragging
 						? 'z-50 shadow-2xl cursor-grabbing'
 						: 'z-10 cursor-default',
