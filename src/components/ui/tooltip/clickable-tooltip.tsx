@@ -1,7 +1,7 @@
 import { Motion as motion, Presence } from '@/common/motion'
 
 import { type ReactNode, useEffect, useRef, useState, type RefObject } from 'react'
-import ReactDOM from 'react-dom'
+import { Portal } from '../portal/portal'
 
 type Position =
 	| 'top'
@@ -208,12 +208,12 @@ const ClickableTooltip = ({
 
 	return (
 		<>
-			{ReactDOM.createPortal(
+			<Portal topLayer>
 				<Presence mode="wait">
 					{isOpen && (
 						<motion.div
 							ref={tooltipRef}
-							className={`fixed text-xs  max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
+							className={`fixed text-xs pointer-events-auto max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
 							style={{
 								left: tooltipCoords.x,
 								top: tooltipCoords.y,
@@ -228,9 +228,8 @@ const ClickableTooltip = ({
 							{content}
 						</motion.div>
 					)}
-				</Presence>,
-				document.body
-			)}
+				</Presence>
+			</Portal>
 		</>
 	)
 }
