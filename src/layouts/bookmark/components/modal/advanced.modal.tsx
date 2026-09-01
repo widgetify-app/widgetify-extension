@@ -328,7 +328,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						size="md"
 						onClick={() => onClose(null)}
 						rounded={'2xl'}
-						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 					>
 						لغو
 					</Button>
