@@ -5,6 +5,14 @@ import { playAlarm } from './play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
 import { cn } from '@/common/utils/cn'
+import { raiseToTopLayer } from '@/components/ui/portal/portal'
+
+export const TOAST_TOP_LAYER_ID = 'widgetify-toast-top-layer'
+
+function raiseToastLayer() {
+	if (typeof document === 'undefined') return
+	raiseToTopLayer(document.getElementById(TOAST_TOP_LAYER_ID))
+}
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning'
 
@@ -169,6 +177,8 @@ export function showToast(
 	type: ToastType = 'info',
 	options?: ToastOptions
 ) {
+	raiseToastLayer()
+
 	const theme = TOAST_THEMES[type] || TOAST_THEMES.info
 	const title = options?.title ?? theme.defaultTitle
 	const actionText = options?.actionText ?? theme.defaultActionText
@@ -239,6 +249,8 @@ export function showCustomToast(
 	message: React.ReactNode | string,
 	options?: ToastOptions
 ) {
+	raiseToastLayer()
+
 	if (options?.sound !== false) {
 		playNativeToastSound('info')
 	}
@@ -253,6 +265,8 @@ export function showCustomToast(
 }
 
 export function showPreviewToast(itemName: string, onCancel: () => void): string {
+	raiseToastLayer()
+
 	const id = `preview-${Date.now()}`
 
 	playNativeToastSound('info')

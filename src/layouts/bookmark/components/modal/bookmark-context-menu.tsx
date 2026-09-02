@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { createPortal } from 'react-dom'
+import { Portal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 
 interface BookmarkContextMenuProps {
@@ -60,62 +60,63 @@ export function BookmarkContextMenu({
 		Math.max(10, window.innerHeight - MENU_HEIGHT - 10)
 	)
 
-	return createPortal(
-		<div
-			ref={menuRef}
-			style={{
-				position: 'fixed',
-				left: adjustedLeft,
-				top: adjustedTop,
-				zIndex: 99999,
-			}}
-			className="w-[148px] bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-1.5 text-right text-xs flex flex-col gap-1 select-none animate-in fade-in zoom-in-95 duration-150"
-			onClick={(e) => e.stopPropagation()}
-			onContextMenu={(e) => {
-				e.preventDefault()
-				e.stopPropagation()
-			}}
-		>
-			{onOpenInNewTab && (
+	return (
+		<Portal topLayer>
+			<div
+				ref={menuRef}
+				style={{
+					position: 'fixed',
+					left: adjustedLeft,
+					top: adjustedTop,
+					zIndex: 99999,
+				}}
+				className="w-[148px] pointer-events-auto bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-1.5 text-right text-xs flex flex-col gap-1 select-none animate-in fade-in zoom-in-95 duration-150"
+				onClick={(e) => e.stopPropagation()}
+				onContextMenu={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
+				}}
+			>
+				{onOpenInNewTab && (
+					<button
+						type="button"
+						onClick={() => {
+							onOpenInNewTab()
+							onClose()
+						}}
+						className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-content hover:bg-base-300 text-xs"
+					>
+						<span className="font-medium">در تب جدید</span>
+						<Icon name="plus" size={13} className="text-muted" />
+					</button>
+				)}
+
 				<button
 					type="button"
 					onClick={() => {
-						onOpenInNewTab()
+						onEdit()
 						onClose()
 					}}
 					className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-content hover:bg-base-300 text-xs"
 				>
-					<span className="font-medium">در تب جدید</span>
-					<Icon name="plus" size={13} className="text-muted" />
+					<span className="font-medium">ویرایش</span>
+					<Icon name="pen" size={12} className="text-muted" />
 				</button>
-			)}
 
-			<button
-				type="button"
-				onClick={() => {
-					onEdit()
-					onClose()
-				}}
-				className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-content hover:bg-base-300 text-xs"
-			>
-				<span className="font-medium">ویرایش</span>
-				<Icon name="pen" size={12} className="text-muted" />
-			</button>
+				<div className="h-px bg-base-content/10 my-0.5" />
 
-			<div className="h-px bg-base-content/10 my-0.5" />
-
-			<button
-				type="button"
-				onClick={() => {
-					onDelete()
-					onClose()
-				}}
-				className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-error hover:bg-error/15 text-xs"
-			>
-				<span className="font-medium">حذف</span>
-				<Icon name="trash" size={13} className="text-error" />
-			</button>
-		</div>,
-		document.body
+				<button
+					type="button"
+					onClick={() => {
+						onDelete()
+						onClose()
+					}}
+					className="w-full px-2.5 py-1.5 flex items-center justify-between cursor-pointer rounded-xl transition-colors duration-150 text-error hover:bg-error/15 text-xs"
+				>
+					<span className="font-medium">حذف</span>
+					<Icon name="trash" size={13} className="text-error" />
+				</button>
+			</div>
+		</Portal>
 	)
 }

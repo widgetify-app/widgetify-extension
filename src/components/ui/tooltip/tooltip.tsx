@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { Motion as motion, Presence } from '@/common/motion'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
+import { Portal } from '../portal/portal'
 
 type Position =
 	| 'top'
@@ -217,12 +217,12 @@ export const Tooltip = ({
 				{children}
 			</div>
 
-			{(alwaysShow || isVisible) &&
-				ReactDOM.createPortal(
+			{(alwaysShow || isVisible) && (
+				<Portal topLayer>
 					<Presence>
 						<motion.div
 							ref={tooltipRef}
-							className={`tooltip fixed rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-popover  ${contentClassName}`}
+							className={`tooltip fixed pointer-events-auto rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-popover  ${contentClassName}`}
 							style={{
 								left: tooltipCoords.x,
 								top: tooltipCoords.y,
@@ -238,9 +238,9 @@ export const Tooltip = ({
 							{content}
 							<div className={getArrowClasses(calculatedPosition)} />
 						</motion.div>
-					</Presence>,
-					document.body
-				)}
+					</Presence>
+				</Portal>
+			)}
 		</>
 	)
 }
