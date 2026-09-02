@@ -67,15 +67,9 @@ export type ModalScrollVariant = typeof modalScrollVariants
 export const modalDialogVariants = cva([
 	'modal',
 	'modal-middle',
-	'group/modal',
+	'group',
 	'p-2',
 	'md:p-4',
-	'transition-opacity',
-	'duration-[var(--modal-duration,300ms)]',
-	'transition-discrete',
-	'opacity-0',
-	'open:opacity-100',
-	'starting:open:opacity-0',
 ])
 
 export type ModalDialogVariant = typeof modalDialogVariants
