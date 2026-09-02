@@ -216,7 +216,7 @@ export function EditBookmarkModal({
 								onClick={onClose}
 								size="md"
 								disabled={isUpdating}
-								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
+								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
 								rounded={'2xl'}
 							>
 								لغو
@@ -232,7 +232,7 @@ export function EditBookmarkModal({
 								loading={isUpdating}
 								variant={'primary'}
 								rounded={'2xl'}
-								className="transition-colors duration-300 ease-in-out border-none shadow-none btn w-28"
+								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28"
 							>
 								ذخیره
 							</Button>

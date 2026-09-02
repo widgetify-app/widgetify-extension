@@ -14,6 +14,7 @@ These are not preferences. Breaking them means the work gets rejected.
 | **Never mention the assistant** | Not in code, not in commit messages, not in PR titles or bodies. No `Co-Authored-By`, no "Generated with", no tool names. Commits are authored by the repo owner. |
 | **Never run the dev server** | No `npm run dev`, no `wxt`. Visual checks are the owner's job. Give them a checklist instead. |
 | **Never commit unprompted** | Implement, verify, then stop and report. Commit and open a PR only when explicitly told to. |
+| **New branch per fix/feature** | Before editing, create a new branch off the current one (whatever it is) named for the task. Make the changes there, uncommitted. Stop after verification and let the owner test visually themselves. Only commit and open a PR when explicitly told to, in that order. |
 
 ---
 
