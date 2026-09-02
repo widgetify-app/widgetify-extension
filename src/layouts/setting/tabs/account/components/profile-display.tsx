@@ -168,7 +168,7 @@ export const ProfileDisplay = () => {
 					label="علایق"
 					editable
 					value={
-						<div className="flex flex-wrap self-end justify-end flex-1 gap-1">
+						<div className="flex flex-wrap self-end justify-end flex-1 gap-1 overflow-y-auto w-42 sm:w-72">
 							{user?.interests?.map((i) => (
 								<Chip
 									onClick={() => {}}
