@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
+import { Icon } from '@/src/icons'
+import { ConfigKey } from '@/common/constant/config.key'
+import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
@@ -14,9 +17,11 @@ export const UpdateReleaseNotesModal = ({
 }: UpdateReleaseNotesModalProps) => {
 	const [counter, setCounter] = useState<number>(0)
 	const videoRef = useRef<HTMLVideoElement>(null)
+	const { setCanvasMode } = useFreeWidgets()
+
 	useEffect(() => {
 		if (isOpen && counterValue !== null) {
-			setCounter(counterValue === null ? 10 : counterValue)
+			setCounter(counterValue === null ? 5 : counterValue)
 			const interval = setInterval(() => {
 				setCounter((prev) => {
 					if (prev <= 1) {
@@ -27,10 +32,10 @@ export const UpdateReleaseNotesModal = ({
 				})
 			}, 1000)
 			return () => clearInterval(interval)
-		} else {
-			setCounter(0)
 		}
-	}, [isOpen])
+
+		setCounter(0)
+	}, [isOpen, counterValue])
 
 	useEffect(() => {
 		if (isOpen && videoRef.current) {
@@ -38,81 +43,103 @@ export const UpdateReleaseNotesModal = ({
 		}
 	}, [isOpen])
 
+	const handlePersonalize = () => {
+		onClose()
+		setCanvasMode('edit')
+	}
+
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'🌊 موج؛ آپدیت جدید ویجتیفای'}
+			title={`آپدیت ${ConfigKey.VERSION_NAME}؛ چیدمان آزاد و نامحدود`}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 		>
-			<div className="flex flex-col max-h-[80vh]">
-				<div className="pb-2 space-y-4 overflow-y-auto h-110">
-					<div className="relative w-full overflow-hidden border shadow-inner rounded-2xl bg-base-300/20 border-base-300">
-						<img
-							src={'https://cdn.widgetify.ir/extension/mooj_update.jpg'}
-							className="object-center w-full max-h-70 rounded-2xl"
+			<div className="flex flex-col gap-3 max-h-[80vh] select-none text-right">
+				<div className="flex flex-col gap-2.5 overflow-y-auto pb-1">
+					<div className="relative flex items-center justify-center w-full overflow-hidden border max-h-48 aspect-video rounded-2xl border-base-content/10 bg-base-300/30 shrink-0">
+						<video
+							ref={videoRef}
+							src="https://cdn.widgetify.ir/extension/WidgetDrag-b.mp4"
+							autoPlay
+							loop
+							muted
+							playsInline
+							className="object-cover w-full h-full"
 						/>
 					</div>
 
-					<div className="p-2 space-y-1.5 border rounded-2xl bg-base-300/20 border-base-300/10">
-						<div className="flex items-center gap-2">
-							<h3 className="text-sm font-black text-content">
-								موج، روان‌تر از همیشه! 🌊
-							</h3>
+					<div className="flex flex-col gap-2 p-2.5 rounded-2xl bg-base-200/60 border border-base-content/10">
+						<div className="flex items-start gap-2.5">
+							<div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5">
+								<Icon name="check" size={12} />
+							</div>
+							<p className="text-xs leading-relaxed text-content">
+								<span className="font-bold">خیالت راحت!</span> چیدمان و
+								ویجت‌های قبلی‌ت دقیقا سر جاشون حفظ شدن و چیزی پاک نشده
+							</p>
 						</div>
 
-						<p className="text-xs leading-6 text-muted">
-							این بار بیشتر از اضافه کردن قابلیت‌های جدید، تمرکزمان روی{' '}
-							<span className="font-bold text-content">
-								سریع‌تر، روان‌تر و لذت‌بخش‌تر شدن ویجتیفای
-							</span>{' '}
-							بوده تا تجربه بهتری از هر بار باز کردن تب جدید داشته باشی.
-						</p>
+						<div className="flex items-start gap-2.5">
+							<div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+								<Icon name="outlineDrag" size={12} />
+							</div>
+							<p className="text-xs leading-relaxed text-content">
+								با کلیک راست روی صفحه و انتخاب «ویرایش ویجت‌ها»، می‌تونی
+								ویجت‌ها رو جابه‌جا کنی یا با کلیک راست روی هر ویجت اندازه‌ش
+								رو عوض کنی
+							</p>
+						</div>
 
-						<p className="text-xs leading-6 text-muted">
-							از حالا می‌تونی{' '}
-							<span className="font-bold text-content">
-								بوکمارک‌های مرورگرت رو مستقیما هنگام ساخت بوکمارک درون‌ریزی
-								(import) کنی
-							</span>
-							؛ بدون اینکه لازم باشه دوباره همه چیز رو از اول اضافه کنی.
-						</p>
-						<p className="text-xs leading-6 text-muted">
-							همچنین قابلیت{' '}
-							<span className="font-bold text-content">حالت بهینه</span> هم
-							اضافه شده که می‌تونی از بخش{' '}
-							<span className="font-bold text-content">
-								تنظیمات ← عمومی
-							</span>{' '}
-							فعال یا غیرفعالش کنی. با فعال بودن این حالت، انیمیشن‌ها و
-							افکت‌ها کاهش پیدا می‌کنن تا ویجتیفای روان‌تر اجرا بشه.
-						</p>
-
-						<p className="text-xs leading-6 text-muted">
-							در کنار این‌ها،{' '}
-							<span className="font-bold text-content">
-								بهبودهای ظاهری و بهینه‌سازی‌های متعددی
-							</span>{' '}
-							انجام شده تا همه چیز مثل یک موج، نرم و بدون وقفه پیش بره 😅
-						</p>
+						<div className="flex items-start gap-2.5">
+							<div className="w-5 h-5 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0 mt-0.5">
+								<Icon name="squares2X2" size={12} />
+							</div>
+							<p className="text-xs leading-relaxed text-content">
+								اگه وقت چیدمان نداری، از بخش «چیدمان‌های آماده» با یک کلیک
+								صفحه رو بچین
+							</p>
+						</div>
 					</div>
-					<div className="flex items-center justify-center gap-2 py-1 text-muted">
-						💙<span className="text-xs">دمت گرم که همراه مایی</span>
+
+					<div className="flex items-center gap-2.5 p-3 rounded-2xl bg-base-200/40 border border-dashed border-base-content/15 text-xs text-muted">
+						<span className="text-base">📸</span>
+						<p className="leading-relaxed">
+							صفحه جدیدت رو بچین و اسکرین‌شاتش رو برامون بفرست
+						</p>
 					</div>
 				</div>
 
-				<div className="flex items-center justify-end w-full px-4 py-2 border border-t border-base-300/10 bg-base-200/40 rounded-3xl">
+				<div className="flex items-center justify-between gap-2 pt-2 border-t border-base-content/10">
 					<Button
+						type="button"
 						size="sm"
+						variant="ghost"
 						onClick={onClose}
 						disabled={counter > 0}
-						className="h-11 min-w-32.5 font-black"
-						variant={'primary'}
-						rounded={'2xl'}
+						className="px-3 text-xs font-bold text-muted hover:text-content"
+						rounded="xl"
 					>
-						{counter > 0 ? `یه چند لحظه صبر کن (${counter})` : 'فهمیدم'}
+						<span>ورود به ویجتیفای</span>
+					</Button>
+
+					<Button
+						type="button"
+						size="sm"
+						variant="primary"
+						onClick={handlePersonalize}
+						disabled={counter > 0}
+						className="h-10 px-4 text-xs font-bold flex items-center gap-1.5 shadow-sm"
+						rounded="xl"
+					>
+						<Icon name="outlineDrag" size={14} />
+						<span>
+							{counter > 0
+								? `یه چند لحظه صبر کن (${counter})`
+								: 'شخصی‌سازی صفحه‌ام'}
+						</span>
 					</Button>
 				</div>
 			</div>

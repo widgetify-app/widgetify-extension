@@ -1,4 +1,4 @@
 export enum ConfigKey {
-	VERSION_NAME = 'موج',
+	VERSION_NAME = 'کوروش',
 	WIG_COIN_ICON = 'https://cdn.widgetify.ir/extension/wig-icon.png',
 }
