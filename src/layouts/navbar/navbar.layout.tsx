@@ -151,8 +151,8 @@ export function NavbarLayout(): JSX.Element {
 				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						showNavbar
-							? 'bottom-2 opacity-100 scale-100'
-							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
+							? 'bottom-2 scale-100'
+							: '-bottom-32 scale-95 pointer-events-none'
 					}`}
 			>
 				<div

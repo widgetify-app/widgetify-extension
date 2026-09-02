@@ -109,12 +109,12 @@ function Main() {
 					<Presence mode="wait">
 						<motion.div
 							key={page}
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
+							initial={{ y: 10 }}
+							animate={{ y: 0 }}
+							exit={{ y: 10 }}
 							transition={{
-								duration: 0.15,
-								ease: 'linear',
+								duration: 0.2,
+								ease: [0.22, 1, 0.36, 1],
 							}}
 							className="flex w-full h-full"
 						>
