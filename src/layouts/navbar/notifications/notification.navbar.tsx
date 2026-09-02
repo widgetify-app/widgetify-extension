@@ -38,7 +38,7 @@ export function NotificationNavbar() {
 			}
 		>
 			<div className="flex flex-col p-3 w-80 bg-content bg-glass" dir="rtl">
-				<div className="sticky top-0 z-10 flex items-center justify-between pb-2 mb-2 border-b bg-content border-base-content/10 shrink-0">
+				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-base-content/10 shrink-0">
 					<div className="flex items-center gap-1.5 text-content">
 						<Icon name="notification" size={14} />
 						<span className="text-xs font-bold">اعلان‌ها</span>
