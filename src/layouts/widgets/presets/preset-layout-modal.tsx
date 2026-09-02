@@ -6,6 +6,7 @@ import { cn } from '@/common/utils/cn'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { PRESET_LAYOUTS } from './preset-layouts.data'
 import { PresetCanvasPreview } from './components/preset-canvas-preview'
 import { resolvePresetWidgetsForViewport } from './utils'
@@ -28,6 +29,7 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
 	const [selectedPresetToApply, setSelectedPresetToApply] =
 		useState<PresetLayout | null>(null)
+	const [isApplying, setIsApplying] = useState(false)
 
 	const filteredPresets = useMemo(() => {
 		switch (activeFilter) {
@@ -51,14 +53,18 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 	}
 
 	const handleConfirmApply = async () => {
-		if (!selectedPresetToApply) return
+		if (!selectedPresetToApply || isApplying) return
 
-		const preset = selectedPresetToApply
-		setSelectedPresetToApply(null)
-
-		const resolvedWidgets = resolvePresetWidgetsForViewport(preset)
-		await applyPresetLayout(resolvedWidgets)
-		onClose()
+		setIsApplying(true)
+		try {
+			const preset = selectedPresetToApply
+			const resolvedWidgets = resolvePresetWidgetsForViewport(preset)
+			await applyPresetLayout(resolvedWidgets)
+			setSelectedPresetToApply(null)
+			onClose()
+		} finally {
+			setIsApplying(false)
+		}
 	}
 
 	return (
@@ -118,6 +124,9 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 					<div className="grid flex-1 min-h-0 grid-cols-1 gap-3 p-1 overflow-y-auto sm:grid-cols-2">
 						{filteredPresets.map((preset) => {
 							const isVipRequired = preset.isVip && !isVip
+							const uniqueWidgetIds = Array.from(
+								new Set(preset.widgets.map((w) => w.id))
+							)
 
 							return (
 								<div
@@ -131,7 +140,7 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 											className="border-0 bg-base-300/40"
 										/>
 
-										<div className="flex flex-col gap-1">
+										<div className="flex flex-col gap-1.5">
 											<div className="flex items-center justify-between gap-1">
 												<span className="text-sm font-extrabold truncate text-content">
 													{preset.title}
@@ -148,6 +157,28 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 											<p className="text-[11px] text-muted line-clamp-2 leading-relaxed">
 												{preset.description}
 											</p>
+
+											<div className="flex flex-wrap items-center gap-1 pt-0.5">
+												{uniqueWidgetIds.map((widgetId) => {
+													const def =
+														WIDGET_DEFINITIONS[
+															widgetId as keyof typeof WIDGET_DEFINITIONS
+														]
+													if (!def) return null
+
+													return (
+														<span
+															key={widgetId}
+															className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-base-300/60 border border-base-content/5 text-[10px] font-medium text-muted"
+														>
+															<span className="text-[10px] leading-none">
+																{def.emoji}
+															</span>
+															<span>{def.label}</span>
+														</span>
+													)
+												})}
+											</div>
 										</div>
 									</div>
 
@@ -187,8 +218,11 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 
 			<ConfirmationModal
 				isOpen={Boolean(selectedPresetToApply)}
-				onClose={() => setSelectedPresetToApply(null)}
+				onClose={() => {
+					if (!isApplying) setSelectedPresetToApply(null)
+				}}
 				onConfirm={handleConfirmApply}
+				isLoading={isApplying}
 				title="اعمال چیدمان جدید"
 				message={
 					selectedPresetToApply
