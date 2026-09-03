@@ -41,7 +41,7 @@ export function RootLayout() {
 						<Main></Main>
 					</WallpaperProvider>
 				</GeneralSettingProvider>
-				<Portal topLayer id={TOAST_TOP_LAYER_ID} style={{ zIndex: 100000 }}>
+				<div id={TOAST_TOP_LAYER_ID} className="fixed inset-0 pointer-events-none z-[999999]">
 					<Toaster
 						toastOptions={{
 							error: {
@@ -59,7 +59,7 @@ export function RootLayout() {
 							duration: 5000,
 						}}
 					/>
-				</Portal>
+				</div>
 			</IconProvider>
 		</div>
 	)

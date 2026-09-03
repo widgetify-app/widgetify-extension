@@ -45,9 +45,9 @@ export function Modal({
 		if (!dialog) return
 
 		if (isOpen) {
-			if (!dialog.open) dialog.showModal()
-		} else if (dialog.open) {
-			dialog.close()
+			dialog.setAttribute('open', '')
+		} else {
+			dialog.removeAttribute('open')
 		}
 	}, [isOpen])
 

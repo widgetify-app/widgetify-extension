@@ -91,7 +91,6 @@ export const ProfileDisplay = () => {
 			formData.append('avatar', croppedFile)
 			await updateProfileMutation.mutateAsync(formData)
 			await refetchUser()
-			showToast('آواتار با موفقیت تغییر کرد', 'success')
 			Analytics.event('avatar_updated')
 		} catch {
 			showToast('خطا در بارگذاری تصویر', 'error')
@@ -112,7 +111,6 @@ export const ProfileDisplay = () => {
 			formData.append('avatarKey', asset.id)
 			await updateProfileMutation.mutateAsync(formData)
 			await refetchUser()
-			showToast('آواتار با موفقیت تغییر کرد', 'success')
 			Analytics.event('avatar_updated_from_gallery')
 		} catch {
 			showToast('خطا در تغییر آواتار', 'error')

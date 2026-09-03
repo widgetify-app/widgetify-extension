@@ -177,8 +177,6 @@ export function showToast(
 	type: ToastType = 'info',
 	options?: ToastOptions
 ) {
-	raiseToastLayer()
-
 	const theme = TOAST_THEMES[type] || TOAST_THEMES.info
 	const title = options?.title ?? theme.defaultTitle
 	const actionText = options?.actionText ?? theme.defaultActionText
@@ -200,9 +198,9 @@ export function showToast(
 				<div
 					dir="rtl"
 					className={cn(
-						'w-full max-w-[390px] min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200',
+						'w-full max-w-[390px] min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
 						theme.container,
-						t.visible ? 'animate-enter' : 'animate-leave'
+						t.visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95'
 					)}
 				>
 					<div className="flex items-center flex-1 min-w-0 gap-3">

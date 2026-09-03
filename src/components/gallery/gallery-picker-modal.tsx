@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { Modal, Chip, VipBadge } from '@/components/ui'
 import { Icon } from '@/src/icons'
-import { showToast } from '@/common/toast'
+import { playNativeToastSound, showToast } from '@/common/toast'
 import { useAuth } from '@/context/auth.context'
 import { callEvent } from '@/common/utils/call-event'
 import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
@@ -13,6 +13,7 @@ import {
 	type GalleryAssetType,
 } from '@/services/hooks/gallery/get-gallery-assets.hook'
 import { GalleryAssetPurchaseModal } from './gallery-asset-purchase-modal'
+import toast from 'react-hot-toast'
 
 interface GalleryPickerModalProps {
 	isOpen: boolean
@@ -52,6 +53,7 @@ export function GalleryPickerModal({
 		if (asset.isOwned || asset.price === 0) {
 			onSelect(asset)
 			onClose()
+			playNativeToastSound('success')
 			return
 		}
 
