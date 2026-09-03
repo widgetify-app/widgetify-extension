@@ -64,6 +64,8 @@ const errorTranslations: Record<string, string> = {
 	WIDGET_DUPLICATED: 'ویجت با موفقیت تکرار شد',
 	WIDGET_ALREADY_EXISTS: 'این ویجت قبلا به صفحه اضافه شده',
 	INVALID_WIDGET_POSITION: 'موقعیت قرارگیری ویجت درست نیست',
+	STORAGE_QUOTA_EXCEEDED: 'فضای مجاز ذخیره‌سازی عکس‌های ویجت پر شده',
+	WIDGET_LIMIT_EXCEEDED: 'تعداد ویجت‌های مجاز پر شده',
 	MAX_WIDGETS_REACHED:
 		'به سقف تعداد ویجت‌ها رسیدی! یکی از قبلی‌ها رو حذف کن تا جا باز بشه',
 	NO_SPACE_FOR_WIDGET: 'روی صفحه جا نیست! چندتا ویجت رو جابه‌جا یا حذف کن تا جا باز بشه',

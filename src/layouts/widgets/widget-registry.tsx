@@ -18,6 +18,7 @@ import { ClockWidget } from './clock/clock.widget'
 import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
+import { PhotoWidget } from './photo'
 import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos'
 import { NotesLayout } from './notes/notes.layout'
@@ -476,6 +477,23 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 1 },
 		canDuplicate: false,
 		node: (_instanceId, size) => <MoodTrackerWidget size={size} />,
+	},
+	[WidgetKeys.photo]: {
+		id: WidgetKeys.photo,
+		label: 'قاب عکس',
+		emoji: '🖼️',
+		category: 'lifestyle',
+		isVipOnly: true,
+		allowedSizes: [
+			{ w: 1, h: 1 },
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+		],
+		defaultSize: { w: 2, h: 2 },
+		canDuplicate: true,
+		node: (instanceId, size, meta) => (
+			<PhotoWidget size={size} meta={meta} instanceId={instanceId} />
+		),
 	},
 }
 
