@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Portal } from '@/components/ui/portal/portal'
 import { cn } from '@/common/utils/cn'
+import { popoverMenuVariants } from './popover-menu.variants'
 
 export interface PopoverMenuProps {
 	isOpen: boolean
@@ -131,75 +132,12 @@ export function PopoverMenu({
 					zIndex: 99999,
 					pointerEvents: 'auto',
 				}}
-				className={cn(
-					'bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-2 text-right text-xs flex flex-col gap-1 animate-in fade-in zoom-in-95 duration-150',
-					className
-				)}
+				className={cn(popoverMenuVariants(), className)}
 				onClick={(e) => e.stopPropagation()}
 				onContextMenu={(e) => e.preventDefault()}
 			>
 				{children}
 			</div>
 		</Portal>
-	)
-}
-
-export interface PopoverMenuItemProps {
-	icon?: React.ReactNode
-	label: string
-	badge?: React.ReactNode
-	onClick?: () => void
-	variant?: 'default' | 'danger' | 'primary'
-	disabled?: boolean
-	className?: string
-}
-const variantStyles = {
-	default: 'text-content hover:bg-base-content/10 active:bg-base-300',
-	danger: 'text-error hover:bg-error/10 active:bg-error/20',
-	primary: 'text-primary hover:bg-primary/10 active:bg-primary/20',
-}
-export function PopoverMenuItem({
-	icon,
-	label,
-	badge,
-	onClick,
-	variant = 'default',
-	disabled = false,
-	className,
-}: PopoverMenuItemProps) {
-	return (
-		<button
-			type="button"
-			disabled={disabled}
-			onClick={(e) => {
-				e.stopPropagation()
-				if (!disabled) {
-					onClick?.()
-				}
-			}}
-			className={cn(
-				'flex items-center justify-between w-full px-2.5 py-2 rounded-xl font-medium transition-colors text-right cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed',
-				variantStyles[variant],
-				className
-			)}
-		>
-			<div className="flex items-center gap-2">
-				{icon && <span className="text-sm shrink-0">{icon}</span>}
-				<span className="truncate">{label}</span>
-			</div>
-			{badge && <span className="shrink-0">{badge}</span>}
-		</button>
-	)
-}
-
-export function PopoverMenuDivider() {
-	return <div className="h-px my-1 bg-base-content/10" />
-}
-
-export function PopoverMenuHeader({ children }: { children: React.ReactNode }) {
-	return (
-		<div className="px-2.5 py-1 text-[11px] font-semibold text-muted flex items-center justify-between">
-			{children}
-		</div>
 	)
 }
