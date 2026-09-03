@@ -78,7 +78,6 @@ export function PhotoWidget({
 		}
 
 		updateWidgetSettings(instanceId, { imageSrc: res.url })
-		showToast('عکس با موفقیت ذخیره شد', 'success')
 		e.target.value = ''
 	}
 
@@ -113,7 +112,6 @@ export function PhotoWidget({
 	const handleGallerySelect = (asset: GalleryAsset) => {
 		if (instanceId) {
 			updateWidgetSettings(instanceId, { imageSrc: asset.url })
-			showToast('عکس با موفقیت تنظیم شد', 'success')
 		}
 	}
 
