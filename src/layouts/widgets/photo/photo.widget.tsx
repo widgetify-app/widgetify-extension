@@ -10,7 +10,16 @@ import { translateError } from '@/common/utils/translate-error'
 import { safeAwait } from '@/services/api'
 import { uploadWidgetMediaApi } from '@/services/hooks/widgets/widget-media.hook'
 import { callEvent } from '@/common/utils/call-event'
+import { GalleryPickerModal } from '@/components/gallery'
+import {
+	PopoverMenu,
+	PopoverMenuItem,
+	PopoverMenuDivider,
+	PopoverMenuHeader,
+	VipBadge,
+} from '@/components/ui'
 import type { AxiosError } from 'axios'
+import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize
@@ -18,12 +27,20 @@ interface PhotoWidgetProps {
 	instanceId?: string
 }
 
-export function PhotoWidget({ size = { w: 2, h: 2 }, meta, instanceId }: PhotoWidgetProps) {
+export function PhotoWidget({
+	size = { w: 2, h: 2 },
+	meta,
+	instanceId,
+}: PhotoWidgetProps) {
 	const { updateWidgetSettings } = useFreeWidgets()
 	const { canvasMode } = useAppearance()
 	const { isVip } = useAuth()
 	const inputRef = useRef<HTMLInputElement>(null)
+	const triggerRef = useRef<HTMLDivElement>(null)
+
 	const [isUploading, setIsUploading] = useState(false)
+	const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	const is1x1 = size.w === 1 && size.h === 1
 	const imageSrc = meta?.imageSrc
@@ -65,71 +82,140 @@ export function PhotoWidget({ size = { w: 2, h: 2 }, meta, instanceId }: PhotoWi
 		e.target.value = ''
 	}
 
-	const handleClick = () => {
-		if (canvasMode !== 'edit' && !isUploading) {
-			if (!isVip) {
-				callEvent('openSettings', 'vip')
-				return
-			}
-			inputRef.current?.click()
+	const handleOpenMenu = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		if (canvasMode === 'edit' || isUploading) return
+		setIsMenuOpen(true)
+	}
+
+	const handleSelectFromSystem = () => {
+		setIsMenuOpen(false)
+		if (!isVip) {
+			callEvent('openSettings', 'vip')
+			return
+		}
+		inputRef.current?.click()
+	}
+
+	const handleOpenGallery = () => {
+		setIsMenuOpen(false)
+		setIsGalleryOpen(true)
+	}
+
+	const handleRemovePhoto = () => {
+		setIsMenuOpen(false)
+		if (instanceId) {
+			updateWidgetSettings(instanceId, { imageSrc: undefined })
+			showToast('عکس با موفقیت حذف شد', 'success')
+		}
+	}
+
+	const handleGallerySelect = (asset: GalleryAsset) => {
+		if (instanceId) {
+			updateWidgetSettings(instanceId, { imageSrc: asset.url })
+			showToast('عکس با موفقیت تنظیم شد', 'success')
 		}
 	}
 
 	return (
-		<WidgetContainer padding={false} className="cursor-pointer">
-			<input
-				ref={inputRef}
-				type="file"
-				accept="image/*"
-				className="hidden"
-				onChange={handleUpload}
-			/>
+		<>
+			<WidgetContainer
+				background={false}
+				padding={false}
+				contentClassName="w-full h-full relative"
+				className="w-full h-full"
+			>
+				<div
+					ref={triggerRef}
+					onClick={handleOpenMenu}
+					className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden transition-all duration-200 cursor-pointer group rounded-widget"
+				>
+					{imageSrc ? (
+						<img
+							src={imageSrc}
+							className="object-cover w-full h-full rounded-widget"
+						/>
+					) : (
+						<div className="flex flex-col items-center justify-center w-full h-full gap-2 p-4 text-center rounded-widget bg-content bg-glass">
+							<div className="flex items-center justify-center w-10 h-10 transition-colors rounded-xl bg-base-300/60 text-muted group-hover:text-primary">
+								<Icon name="image" size={is1x1 ? 18 : 22} />
+							</div>
+							{!is1x1 && (
+								<div className="flex flex-col gap-0.5">
+									<span className="text-xs font-semibold text-content">
+										انتخاب تصویر
+									</span>
+									<span className="text-[11px] text-muted">
+										برای تغییر عکس کلیک کن
+									</span>
+								</div>
+							)}
+						</div>
+					)}
 
-			{imageSrc ? (
-				<div className="relative w-full h-full overflow-hidden">
-					<img
-						src={imageSrc}
-						alt="عکس"
-						onClick={handleClick}
-						className="w-full h-full object-cover"
-					/>
 					{isUploading && (
-						<div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-							<span className="loading loading-spinner text-content" />
+						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-base-100/70 backdrop-blur-xs rounded-widget">
+							<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+							<span className="text-xs font-medium text-content">
+								در حال بارگذاری...
+							</span>
 						</div>
 					)}
 				</div>
-			) : (
-				<button
-					type="button"
-					onClick={handleClick}
-					className="group relative w-full h-full flex flex-col items-center justify-center gap-2.5 p-3 text-content/70 hover:text-content transition-all cursor-pointer select-none"
-				>
-					{isUploading ? (
-						<span className="loading loading-spinner text-content" />
-					) : (
-						<>
-							<div className="w-10 h-10 rounded-full bg-base-300/60 group-hover:bg-base-300 flex items-center justify-center transition-colors duration-200">
-								<Icon
-									name="image"
-									size={is1x1 ? 16 : 18}
-									className="text-content/70 group-hover:text-content transition-colors"
-								/>
-							</div>
 
-							<span
-								className={`text-center font-medium transition-colors ${
-									is1x1
-										? 'text-[10px] text-content/60'
-										: 'text-xs text-content/75 group-hover:text-content'
-								}`}
-							>
-								{is1x1 ? 'افزودن عکس' : 'یه عکس بذار که حالت رو خوب کنه'}
-							</span>
-						</>
-					)}
-				</button>
-			)}
-		</WidgetContainer>
+				<input
+					ref={inputRef}
+					type="file"
+					accept="image/*"
+					className="hidden"
+					onChange={handleUpload}
+				/>
+			</WidgetContainer>
+
+			<PopoverMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+				triggerRef={triggerRef}
+				width={210}
+				placement="bottom-center"
+			>
+				<PopoverMenuHeader>
+					<span>مدیریت قاب عکس</span>
+				</PopoverMenuHeader>
+
+				<PopoverMenuItem
+					icon={<Icon name="uploadImage" size={14} />}
+					label="بارگذاری از دستگاه"
+					badge={!isVip ? <VipBadge size="xs" /> : undefined}
+					onClick={handleSelectFromSystem}
+				/>
+
+				<PopoverMenuItem
+					icon={<Icon name="image" size={14} />}
+					label="گالری ویجتیفای"
+					onClick={handleOpenGallery}
+				/>
+
+				{imageSrc && (
+					<>
+						<PopoverMenuDivider />
+						<PopoverMenuItem
+							icon={<Icon name="trash" size={14} />}
+							label="حذف عکس فعلی"
+							variant="danger"
+							onClick={handleRemovePhoto}
+						/>
+					</>
+				)}
+			</PopoverMenu>
+
+			<GalleryPickerModal
+				isOpen={isGalleryOpen}
+				onClose={() => setIsGalleryOpen(false)}
+				type="PHOTO_FRAME"
+				title="گالری تصاویر قاب عکس"
+				onSelect={handleGallerySelect}
+			/>
+		</>
 	)
 }

@@ -56,16 +56,17 @@ export async function getWidgetCatalogApi(): Promise<ServerWidgetCatalogResponse
 	return response.data || null
 }
 
-export const useGetWidgetCatalog = () => {
+export const useGetWidgetCatalog = (enabled = false) => {
 	return useQuery<ServerWidgetCatalogResponse | null>({
 		queryKey: ['widgetCatalog'],
 		queryFn: getWidgetCatalogApi,
 		staleTime: 1000 * 60 * 30,
+		enabled,
 	})
 }
 
-export function useWidgetVipResolver() {
-	const { data: serverCatalog } = useGetWidgetCatalog()
+export function useWidgetVipResolver(enabled = false) {
+	const { data: serverCatalog } = useGetWidgetCatalog(enabled)
 
 	const maxFreeWidgets =
 		serverCatalog?.config?.maxFreeWidgets ?? DEFAULT_MAX_FREE_WIDGETS
