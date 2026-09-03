@@ -319,6 +319,8 @@ export function useWidgetOperations({
 			if (original.id === WidgetKeys.notes) {
 				const { noteId } = await createNoteForDuplicatedWidget(isAuthenticated)
 				duplicatedMeta = { ...duplicatedMeta, activeNoteId: noteId }
+			} else if (original.id === WidgetKeys.photo) {
+				delete duplicatedMeta.imageSrc
 			}
 
 			let newInstanceId = `${original.id}-${Date.now().toString(36)}`

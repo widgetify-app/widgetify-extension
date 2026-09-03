@@ -19,6 +19,7 @@ export enum WidgetKeys {
 	transparentClock = 'transparentClock',
 	moodTracker = 'moodTracker',
 	googleCalendar = 'googleCalendar',
+	photo = 'photo',
 }
 
 export interface WidgetPosition {
