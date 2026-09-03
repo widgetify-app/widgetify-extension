@@ -28,7 +28,7 @@ export interface BookmarkCreateFormFields {
 	customBackground: string | null
 	customTextColor: string | null
 	sticker: string | null
-	icon: File | null
+	icon: File | string | null
 	widgetId?: string | null
 }
 
@@ -146,7 +146,7 @@ export function AddBookmarkModal({
 			...prev,
 			title: suggestion.title,
 			url: suggestion.url,
-			icon: null,
+			icon: suggestion.icon || null,
 		}))
 	}
 
@@ -194,48 +194,44 @@ export function AddBookmarkModal({
 				<form
 					onSubmit={handleAdd}
 					onContextMenu={(e) => e.stopPropagation()}
-					className="flex flex-col justify-between gap-2 overflow-y-auto h-96"
+					className="flex flex-col gap-4"
 				>
-					<div className="mt-1 overflow-hidden">
-						<TypeSelector type={type} setType={handleTypeChange} />
-						{onOpenImport && (
-							<button
-								type="button"
-								onClick={onOpenImport}
-								className="flex items-center justify-center w-fit mx-auto px-3 gap-1.5 mt-2 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary text-base-content/80 bg-base-200 hover:bg-primary/10"
-							>
-								<Icon name="download" size={12} />
-								درون‌ریزی از بوکمارک‌های مرورگر
-							</button>
-						)}
-						<div className="flex items-center gap-2 mt-2">
-							<TextInput
-								type="text"
-								name="title"
-								placeholder={
-									type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
-								}
-								value={formData.title}
-								onChange={(v) => updateFormData('title', v)}
-								className="w-full px-4 py-3 text-right transition-all duration-200 rounded-lg"
-							/>
+					<TypeSelector type={type} setType={handleTypeChange} />
 
+					<div className="flex flex-col gap-3">
+						<div className="flex items-center gap-3 pt-1">
 							<BookmarkIconPicker
-								onChange={(value) => updateFormData('icon', value)}
+								onChange={(value) => {
+									updateFormData('icon', value)
+								}}
 								value={formData.icon}
 								url={formData.url}
 							/>
+
+							<div className="flex-1">
+								<TextInput
+									type="text"
+									name="title"
+									placeholder={
+										type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+									}
+									value={formData.title}
+									onChange={(v) => updateFormData('title', v)}
+									className="w-full px-3.5 py-2.5 text-right transition-all duration-200 rounded-xl"
+								/>
+							</div>
 						</div>
 
 						{type === 'BOOKMARK' && (
-							<div className="mt-2">
+							<div>
 								<TextInput
 									type="text"
 									name="url"
-									placeholder="آدرس لینک"
+									direction="ltr"
+									placeholder="https://example.com"
 									value={formData.url || ''}
 									onChange={(v) => handleUrlChange(v)}
-									className="w-full px-4 py-3 text-right transition-all duration-200 rounded-lg"
+									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-all duration-200 rounded-xl"
 								/>
 							</div>
 						)}
@@ -245,13 +241,26 @@ export function AddBookmarkModal({
 						)}
 					</div>
 
-					<div className="flex justify-between h-10 gap-x-4">
+					{onOpenImport && (
+						<div className="flex justify-center pt-1">
+							<button
+								type="button"
+								onClick={onOpenImport}
+								className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-colors rounded-xl cursor-pointer hover:text-primary text-muted bg-base-200/60 hover:bg-primary/10"
+							>
+								<Icon name="download" size={13} />
+								<span>درون‌ریزی از بوکمارک‌های مرورگر</span>
+							</button>
+						</div>
+					)}
+
+					<div className="flex items-center justify-between pt-2 border-t border-base-content/10">
 						<ShowAdvancedButton
 							showAdvanced={showAdvanced}
 							setShowAdvanced={setShowAdvanced}
 						/>
 
-						<div className="flex items-center gap-x-1">
+						<div className="flex items-center gap-2">
 							<Button
 								type="button"
 								onClick={onCloseHandler}

@@ -57,9 +57,7 @@ export async function getGalleryAssets(
 	return data
 }
 
-export async function getGalleryCategories(
-	type?: GalleryAssetType
-): Promise<string[]> {
+export async function getGalleryCategories(type?: GalleryAssetType): Promise<string[]> {
 	const client = getMainClient()
 	const { data } = await client.get<{ data: { categories: string[] } }>(
 		'/gallery/categories',
@@ -72,9 +70,11 @@ export async function getGalleryCategories(
 
 export async function purchaseGalleryAsset(
 	assetId: string
-): Promise<{ data: { success: boolean; userItem: any; asset: GalleryAsset } }> {
+): Promise<{ data: { success: boolean; asset: GalleryAsset } }> {
 	const client = getMainClient()
-	const { data } = await client.post<{ data: { success: boolean; userItem: any; asset: GalleryAsset } }>(`/gallery/${assetId}/purchase`)
+	const { data } = await client.post<{
+		data: { success: boolean; asset: GalleryAsset }
+	}>(`/gallery/${assetId}/purchase`)
 	return data
 }
 

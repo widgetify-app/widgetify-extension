@@ -3,7 +3,7 @@ import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useEffect, useState } from 'react'
 import type { Bookmark } from '../../types/bookmark.types'
-import { type IconSourceType, ShowAdvancedButton } from '../shared'
+import { ShowAdvancedButton } from '../shared'
 import { AdvancedModal } from './advanced.modal'
 import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon.picker'
@@ -24,7 +24,7 @@ export interface BookmarkUpdateFormFields {
 	customBackground: string | null
 	customTextColor: string | null
 	sticker: string | null
-	icon: File | null
+	icon: File | string | null
 	isDeletedIcon: boolean
 }
 
@@ -57,7 +57,6 @@ export function EditBookmarkModal({
 
 	const isUpdating = useIsMutating({ mutationKey: ['updateBookmark'] }) > 0
 
-	const [iconSource, setIconSource] = useState<IconSourceType>('auto')
 	const [showAdvanced, setShowAdvanced] = useState(false)
 	const [icon, setIcon] = useState<string | null | File>(null)
 
@@ -86,14 +85,6 @@ export function EditBookmarkModal({
 			onlineId: bookmark.onlineId || undefined,
 			isDeletedIcon: formData.isDeletedIcon,
 		})
-		// onClose()
-	}
-
-	const onRemoveIcon = () => {
-		setIcon(null)
-		updateFormData('icon', null)
-		updateFormData('isDeletedIcon', true)
-		setIconSource('auto')
 	}
 
 	const handleAdvancedModalClose = (
@@ -134,8 +125,6 @@ export function EditBookmarkModal({
 				url: bookmark.url,
 				isDeletedIcon: false,
 			})
-			setIconSource(bookmark.icon ? 'upload' : 'auto')
-			console.log(bookmark)
 			if (bookmark.icon) {
 				setIcon(bookmark.icon)
 			} else if (bookmark.type === 'BOOKMARK' && bookmark.url) {
@@ -157,72 +146,78 @@ export function EditBookmarkModal({
 				className="overflow-y-hidden!"
 				closeOnBackdropClick={false}
 			>
-				<div className="flex flex-col justify-between gap-2 overflow-y-auto h-92">
-					<div className="flex flex-col gap-2">
-						<div className="flex flex-col items-center gap-2">
-							<div className="relative flex flex-col items-center">
-								<BookmarkIconPicker
-									onChange={(value) => updateFormData('icon', value)}
-									value={icon}
-									url={formData.url}
+				<form
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleSave()
+					}}
+					onContextMenu={(e) => e.stopPropagation()}
+					className="flex flex-col gap-4"
+				>
+					<div className="flex flex-col gap-3">
+						<div className="flex items-center gap-3 pt-1">
+							<BookmarkIconPicker
+								onChange={(value) => {
+									updateFormData('icon', value)
+									if (value) {
+										updateFormData('isDeletedIcon', false)
+										setIcon(value)
+									} else {
+										updateFormData('isDeletedIcon', true)
+										setIcon(null)
+									}
+								}}
+								value={icon}
+								url={formData.url}
+							/>
+
+							<div className="flex-1">
+								<TextInput
+									type="text"
+									name="title"
+									placeholder={
+										type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+									}
+									value={formData.title}
+									onChange={(value) => updateFormData('title', value)}
+									className="w-full px-3.5 py-2.5 text-right transition-all duration-200 rounded-xl"
 								/>
-								{iconSource === 'upload' && Boolean(icon) && (
-									<Button
-										size="xs"
-										onClick={() => onRemoveIcon()}
-										className="mt-1 btn btn-ghost text-error hover:bg-error/10 rounded-xl"
-									>
-										حذف آیکون
-									</Button>
-								)}
 							</div>
 						</div>
 
-						<TextInput
-							type="text"
-							name="title"
-							placeholder={type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'}
-							value={formData.title}
-							onChange={(value) => updateFormData('title', value)}
-							className={
-								'w-full px-4 py-3 text-right rounded-lg transition-all duration-200'
-							}
-						/>
-
-						<div className="relative h-12.5">
-							{type === 'BOOKMARK' && (
+						{type === 'BOOKMARK' && (
+							<div>
 								<TextInput
 									name="url"
 									type="text"
-									placeholder="آدرس لینک"
+									direction="ltr"
+									placeholder="https://example.com"
 									value={formData.url || ''}
 									onChange={(value) => updateFormData('url', value)}
-									className={
-										'w-full px-4 py-3 text-right absolute rounded-lg transition-all duration-300'
-									}
+									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-all duration-200 rounded-xl"
 								/>
-							)}
-						</div>
+							</div>
+						)}
 					</div>
 
-					<div className="flex justify-between gap-x-4">
+					<div className="flex items-center justify-between pt-2 border-t border-base-content/10">
 						<ShowAdvancedButton
 							showAdvanced={showAdvanced}
 							setShowAdvanced={setShowAdvanced}
 						/>
 
-						<div className="flex items-center gap-x-2">
+						<div className="flex items-center gap-2">
 							<Button
+								type="button"
 								onClick={onClose}
 								size="md"
 								disabled={isUpdating}
-								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error"
-								rounded={'2xl'}
+								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
 							>
 								لغو
 							</Button>
 							<Button
-								onClick={handleSave}
+								type="submit"
 								disabled={
 									!formData.title?.trim() ||
 									(type === 'BOOKMARK' && !formData.url?.trim()) ||
@@ -230,30 +225,24 @@ export function EditBookmarkModal({
 								}
 								size="md"
 								loading={isUpdating}
-								variant={'primary'}
-								rounded={'2xl'}
-								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28"
+								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
+								variant="primary"
 							>
 								ذخیره
 							</Button>
 						</div>
 					</div>
-				</div>
+				</form>
 			</Modal>
 
 			<AdvancedModal
+				bookmark={{
+					...formData,
+					type: type || 'BOOKMARK',
+				}}
 				isOpen={showAdvanced}
 				onClose={handleAdvancedModalClose}
-				bookmark={{
-					icon: icon,
-					customBackground: formData.customBackground,
-					customTextColor: formData.customTextColor,
-					sticker: formData.sticker,
-					type: bookmark.type,
-					title: formData.title,
-					url: formData.url,
-				}}
-				title="گزینه‌های پیشرفته"
+				title="تنظیمات پیشرفته"
 			/>
 		</>
 	)

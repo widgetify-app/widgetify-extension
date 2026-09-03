@@ -55,6 +55,7 @@ export function Modal({
 		const dialog = dialogRef.current
 		if (!dialog) return
 		const handleCancel = (e: Event) => {
+			if (e.target !== dialog) return
 			e.preventDefault() // keep it mounted so the exit animation can play
 			onClose()
 		}
