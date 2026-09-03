@@ -114,9 +114,9 @@ export function GalleryPickerModal({
 						</div>
 					)}
 
-					<div className="flex-1 overflow-y-auto pr-1">
+					<div className="flex-1 pr-1 overflow-y-auto">
 						{isLoading ? (
-							<div className="columns-2 sm:columns-3 md:columns-4 gap-3 space-y-3">
+							<div className="gap-3 space-y-3 columns-2 sm:columns-3 md:columns-4">
 								{[...Array(8)].map((_, idx) => (
 									<div
 										key={idx}
@@ -127,11 +127,15 @@ export function GalleryPickerModal({
 							</div>
 						) : assets.length === 0 ? (
 							<div className="flex flex-col items-center justify-center h-full py-20 text-muted">
-								<Icon name="image" size={40} className="mb-2 opacity-30" />
+								<Icon
+									name="image"
+									size={40}
+									className="mb-2 opacity-30"
+								/>
 								<p className="text-sm font-medium">هیچ تصویری پیدا نشد</p>
 							</div>
 						) : (
-							<div className="columns-2 sm:columns-3 md:columns-4 gap-3 space-y-3">
+							<div className="gap-3 space-y-3 columns-2 sm:columns-3 md:columns-4">
 								{assets.map((asset) => (
 									<GalleryPinterestItem
 										key={asset.id}
@@ -214,7 +218,7 @@ function GalleryPinterestItem({
 					setLoaded(true)
 					setError(true)
 				}}
-				className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-103"
+				className="object-cover w-full h-auto transition-transform duration-300 group-hover:scale-103"
 				style={{ opacity: loaded && !error ? 1 : 0 }}
 			/>
 

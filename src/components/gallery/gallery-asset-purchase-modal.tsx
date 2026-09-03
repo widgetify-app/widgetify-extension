@@ -36,9 +36,7 @@ export function GalleryAssetPurchaseModal({
 
 		purchase(asset.id, {
 			onSuccess: (response) => {
-				showToast(`${asset.title || 'آیتم'} برای همیشه خریداری شد`, 'success', {
-					alarmSound: true,
-				})
+				showToast(`${asset.title || 'آیتم'} برای همیشه خریداری شد`, 'success')
 				const updatedAsset = response?.data?.asset || {
 					...asset,
 					isOwned: true,
@@ -92,10 +90,7 @@ export function GalleryAssetPurchaseModal({
 							{asset.title || 'تصویر گالری'}
 						</h3>
 						{asset.price > 0 && (
-							<UserCoin
-								coins={asset.price}
-								title="قیمت خرید دائمی"
-							/>
+							<UserCoin coins={asset.price} title="قیمت خرید دائمی" />
 						)}
 					</div>
 					<p className="text-xs text-muted">
@@ -106,12 +101,15 @@ export function GalleryAssetPurchaseModal({
 				</div>
 
 				{!isVipUnlocked && !canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 rounded-xl bg-error/10 text-error text-xs">
-						<span>موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری داری)</span>
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+						<span>
+							موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
+							داری)
+						</span>
 						<button
 							type="button"
 							onClick={handleOpenCoins}
-							className="underline font-medium cursor-pointer"
+							className="font-medium underline cursor-pointer"
 						>
 							خرید ویج‌کوین
 						</button>

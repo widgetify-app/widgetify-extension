@@ -187,10 +187,6 @@ export function showToast(
 		playNativeToastSound(type)
 	}
 
-	if (options?.alarmSound) {
-		playAlarm('success')
-	}
-
 	return toast.custom(
 		(t) => {
 			const handleAction = () => {

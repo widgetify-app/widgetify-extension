@@ -120,7 +120,7 @@ export function PopoverMenu({
 	if (!isOpen || !coords) return null
 
 	return (
-		<Portal>
+		<Portal topLayer>
 			<div
 				ref={menuRef}
 				style={{
@@ -128,7 +128,8 @@ export function PopoverMenu({
 					top: coords.top,
 					left: coords.left,
 					width: typeof width === 'number' ? `${width}px` : width,
-					zIndex: 9999,
+					zIndex: 99999,
+					pointerEvents: 'auto',
 				}}
 				className={cn(
 					'bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-2 text-right text-xs flex flex-col gap-1 animate-in fade-in zoom-in-95 duration-150',
