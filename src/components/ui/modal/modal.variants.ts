@@ -8,15 +8,6 @@ export const modalBoxVariants = cva(
 		'p-3',
 		'md:p-4',
 		'elevation-lg',
-		'transition-all',
-		'duration-[var(--modal-duration,300ms)]',
-		'transition-discrete',
-		'opacity-0',
-		'scale-95',
-		'group-open:opacity-100',
-		'group-open:scale-100',
-		'starting:group-open:opacity-0',
-		'starting:group-open:scale-95',
 	],
 	{
 		variants: {
@@ -67,7 +58,6 @@ export type ModalScrollVariant = typeof modalScrollVariants
 export const modalDialogVariants = cva([
 	'modal',
 	'modal-middle',
-	'group',
 	'p-2',
 	'md:p-4',
 ])
