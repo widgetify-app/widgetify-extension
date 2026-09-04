@@ -20,6 +20,7 @@ import {
 } from '@/components/ui'
 import type { AxiosError } from 'axios'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import { PhotoEmptyState } from './photo-empty-state'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize
@@ -42,7 +43,6 @@ export function PhotoWidget({
 	const [isGalleryOpen, setIsGalleryOpen] = useState(false)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-	const is1x1 = size.w === 1 && size.h === 1
 	const imageSrc = meta?.imageSrc
 
 	const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,21 +134,7 @@ export function PhotoWidget({
 							className="object-cover w-full h-full rounded-widget"
 						/>
 					) : (
-						<div className="flex flex-col items-center justify-center w-full h-full gap-2 p-4 text-center rounded-widget bg-content bg-glass">
-							<div className="flex items-center justify-center w-10 h-10 transition-colors rounded-xl bg-base-300/60 text-muted group-hover:text-primary">
-								<Icon name="image" size={is1x1 ? 18 : 22} />
-							</div>
-							{!is1x1 && (
-								<div className="flex flex-col gap-0.5">
-									<span className="text-xs font-semibold text-content">
-										انتخاب تصویر
-									</span>
-									<span className="text-[11px] text-muted">
-										برای تغییر عکس کلیک کن
-									</span>
-								</div>
-							)}
-						</div>
+						<PhotoEmptyState size={size} />
 					)}
 
 					{isUploading && (

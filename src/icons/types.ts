@@ -33,6 +33,7 @@ export type IconName =
 	| 'menuOption'
 	| 'uploadImage'
 	| 'image'
+	| 'imagePlus'
 	| 'help'
 	| 'outlineBookmark'
 	| 'outlineFolder'
