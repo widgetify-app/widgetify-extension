@@ -120,7 +120,7 @@ export function EditBookmarkModal({
 				customBackground: bookmark.customBackground,
 				customImage: null,
 				customTextColor: bookmark.customTextColor,
-				icon: null,
+				icon: bookmark.icon || null,
 				sticker: bookmark.sticker,
 				url: bookmark.url,
 				isDeletedIcon: false,
@@ -129,9 +129,14 @@ export function EditBookmarkModal({
 				setIcon(bookmark.icon)
 			} else if (bookmark.type === 'BOOKMARK' && bookmark.url) {
 				setIcon(getFaviconFromUrl(bookmark.url))
+			} else {
+				setIcon(null)
 			}
+		} else {
+			setFormData(structuredClone(empty))
+			setIcon(null)
 		}
-	}, [bookmark])
+	}, [bookmark, isOpen])
 
 	if (!bookmark) return null
 

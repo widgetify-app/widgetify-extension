@@ -258,15 +258,24 @@ export function BookmarkGrid({
 			{showEditBookmarkModal && bookmarkToEdit && !isAuthenticated ? (
 				<AuthRequiredModal
 					isOpen={true}
-					onClose={() => setShowEditBookmarkModal(false)}
+					onClose={() => {
+						setShowEditBookmarkModal(false)
+						setBookmarkToEdit(null)
+					}}
 					message="برای ویرایش بوکمارک اول وارد حسابت شو"
 				/>
 			) : (
 				<EditBookmarkModal
 					isOpen={showEditBookmarkModal}
-					onClose={() => setShowEditBookmarkModal(false)}
+					onClose={() => {
+						setShowEditBookmarkModal(false)
+						setBookmarkToEdit(null)
+					}}
 					onSave={(bookmark) =>
-						editBookmark(bookmark, () => setShowEditBookmarkModal(false))
+						editBookmark(bookmark, () => {
+							setShowEditBookmarkModal(false)
+							setBookmarkToEdit(null)
+						})
 					}
 					bookmark={bookmarkToEdit}
 				/>
