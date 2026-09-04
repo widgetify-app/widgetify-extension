@@ -18,7 +18,6 @@ import { callEvent } from '@/common/utils/call-event'
 import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
 import { Icon } from '@/src/icons'
 import { HabitEmpty } from './components/habit-empty'
-import { HabitCompactSquare } from './variants/habit-1x1'
 import { HabitCompactWide } from './variants/habit-2x1'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -261,29 +260,6 @@ export function HabitsLayout({ size = { w: 2, h: 2 } }: HabitsLayoutProps = {}) 
 		setDetailHabitId(null)
 		refetch()
 		Analytics.event('habit_close_detail_model')
-	}
-
-	if (size.w === 1 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<HabitCompactSquare
-					habits={data?.items || []}
-					isLoading={isLoading}
-					onAddHabit={handleAddHabit}
-				/>
-				<HabitFormModal
-					isOpen={showForm}
-					habit={editingHabit}
-					onClose={handleCloseForm}
-					onSaved={() => {
-						handleCloseForm()
-						refetch()
-					}}
-					icons={data?.icons || []}
-					colors={data?.colors || []}
-				/>
-			</WidgetContainer>
-		)
 	}
 
 	if (size.w === 2 && size.h === 1) {

@@ -372,7 +372,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		isNew: true,
 		isBeta: false,
 		allowedSizes: [
-			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
 		],
