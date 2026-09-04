@@ -100,7 +100,7 @@ export function AddBookmarkModal({
 		setFormData((prev) => ({
 			...prev,
 			url: newUrl,
-			icon: null,
+			icon: prev.icon,
 			title: prev.title.trim() === '' && hostName ? hostName : prev.title,
 		}))
 	}
@@ -198,7 +198,7 @@ export function AddBookmarkModal({
 				>
 					<TypeSelector type={type} setType={handleTypeChange} />
 
-					<div className="flex flex-col gap-3">
+					<div className="flex flex-col gap-3 px-1">
 						<div className="flex items-center gap-3 pt-1">
 							<BookmarkIconPicker
 								onChange={(value) => {
