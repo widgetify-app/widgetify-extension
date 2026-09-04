@@ -76,30 +76,31 @@ export function NoteNavigation() {
 				</>
 			) : (
 				<>
-					<Button
-						onClick={onAdd}
-						size="xs"
-						disabled={isCreatingNote}
-						loading={isCreatingNote}
-						loadingText={<IconLoading title="درحال ساخت..." />}
-						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95`}
-						variant={'primary'}
-						rounded={'xl'}
-					>
-						<Icon name="pen" size={12} />
-						چیزی بنویس
-					</Button>
+					<Tooltip content="یادداشت جدید">
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={onAdd}
+							disabled={isCreatingNote}
+							loading={isCreatingNote}
+							loadingText={<IconLoading title="درحال ساخت..." />}
+							className="w-7 h-7 p-0! border-none! text-muted hover:text-primary hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
+						>
+							<Icon name="plus" size={16} />
+						</Button>
+					</Tooltip>
 					<div className="space-x-1">
-						<Tooltip content="بارگزاری مجدد">
+						<Tooltip content="بارگذاری مجدد">
 							<Button
+								variant="ghost"
 								size="sm"
-								className={`px-2 py-0! border-none! text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								className="w-7 h-7 p-0! border-none! text-muted hover:text-content hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={onRefresh}
-								rounded={'xl'}
 							>
 								<Icon
 									name="refresh"
-									className={`text-content opacity-50 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
+									size={15}
+									className={`opacity-60 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>

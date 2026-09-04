@@ -98,18 +98,16 @@ export function HabitsContent() {
 	return (
 		<div className="flex flex-col h-full">
 			<div className="flex-none">
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between pb-1">
 					<div className="flex items-center gap-1">
 						<Tooltip content="عادت جدید">
 							<Button
-								variant="primary"
-								rounded="xl"
+								variant="ghost"
 								size="sm"
-								className="h-7! gap-1 px-2.5! text-xs shrink-0"
+								className="w-7 h-7 p-0! border-none! text-muted hover:text-primary hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={handleAddHabit}
 							>
-								<Icon name="plus" className="w-3.5 h-3.5" />
-								<span>جدید</span>
+								<Icon name="plus" size={16} />
 							</Button>
 						</Tooltip>
 					</div>
@@ -117,13 +115,15 @@ export function HabitsContent() {
 					<div className="flex items-center gap-1">
 						<Tooltip content="بارگذاری مجدد">
 							<Button
+								variant="ghost"
 								size="sm"
-								className="px-2 py-0! border-none! group rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!"
+								className="w-7 h-7 p-0! border-none! text-muted hover:text-content hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={onRefresh}
 							>
 								<Icon
 									name="refresh"
-									className={`text-content opacity-50 group-hover:opacity-100 ${isWaiting ? 'animate-spin' : ''}`}
+									size={15}
+									className={`opacity-60 hover:opacity-100 ${isWaiting ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>

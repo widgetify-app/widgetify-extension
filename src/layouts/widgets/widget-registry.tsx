@@ -412,6 +412,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'list',
 				label: 'لیست یادداشت‌ها',
 				size: { w: 2, h: 3 },
+				meta: { variant: 'list' },
 			},
 			{
 				id: 'sticky',
@@ -422,7 +423,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		canDuplicate: true,
 		node: (instanceId, size, meta) => {
-			const isSticky = meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
+			const isSticky =
+				meta?.variant === 'sticky' ||
+				(!meta?.variant && size.w === 2 && size.h === 2)
 
 			return (
 				<WidgetContainer padding={!isSticky} background={!isSticky}>

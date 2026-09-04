@@ -43,7 +43,7 @@ function NoteList() {
 
 	return (
 		<div
-			className={`w-full overflow-y-auto scrollbar-none h-full flex flex-col gap-0.5 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`w-full overflow-y-auto scrollbar-none h-full flex flex-col pb-1 gap-0.5 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			{notes.map((note) => (
 				<NoteItem note={note} handleNoteClick={handleNoteClick} key={note.id} />
@@ -63,7 +63,9 @@ export function NotesLayout({
 	meta,
 	instanceId,
 }: NotesLayoutProps = {}) {
-	const isSticky = meta?.variant === 'sticky' || (size.w === 2 && size.h === 2)
+	const isSticky =
+		meta?.variant === 'sticky' ||
+		(!meta?.variant && size.w === 2 && size.h === 2)
 
 	return (
 		<NotesProvider>
@@ -72,7 +74,7 @@ export function NotesLayout({
 			) : (
 				<div className="flex flex-col h-full overflow-hidden">
 					<div className="flex-none">
-						<div className="w-full my-1">
+						<div className="w-full">
 							<NoteNavigation />
 						</div>
 					</div>
