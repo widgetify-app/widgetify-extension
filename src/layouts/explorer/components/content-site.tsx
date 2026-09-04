@@ -26,19 +26,19 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1 transition-all duration-500 group active:scale-95 ${pos} rounded-2xl hover:bg-base-300  group-hover:shadow-sm p-0.5 ${link.hasBorder ? 'border-r border-l border-b border-base-300 hover:border-none' : ''}`}
+			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-base-200/60 border border-transparent hover:border-base-300/40`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
 			}}
 		>
-			{link.isNew && <NewBadge className="top-2 right-1" />}
+			{link.isNew && <NewBadge className="top-1.5 right-1.5" />}
 
 			{badge && (
 				<span
-					className="absolute top-0 -left-1 rounded-r-lg text-center z-20 truncate px-1 rounded text-[10px] font-light max-w-20 border border-white/10 shadow-lg"
+					className="absolute top-1 -left-1 rounded-r-md text-center z-20 truncate px-1.5 py-0.2 text-[9px] font-medium max-w-20 border border-white/20 shadow-sm"
 					style={{
-						backgroundColor: link.badgeColor,
+						backgroundColor: link.badgeColor || 'var(--color-primary)',
 						color: '#fff',
 						animation: animate ? ANIMATES[animate] : 'none',
 					}}
@@ -46,15 +46,15 @@ export function RenderContentSite({ link }: SiteProp) {
 					{badge}
 				</span>
 			)}
-			<div className="flex items-center justify-center w-10 h-10 transition-all duration-500 rounded-xl group-hover:scale-105">
+			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-base-200/40 group-hover:scale-105 group-hover:bg-base-200/80">
 				<img
 					src={link.icon}
-					className="object-contain transition-all duration-500 rounded-md min-w-6 min-h-6 max-w-6 max-h-6"
+					className="object-contain transition-transform duration-200 rounded-lg w-6 h-6 max-w-6 max-h-6"
 					alt={link.name || link.url}
 				/>
 			</div>
 
-			<span className="text-[10px] font-medium tracking-tighter text-center truncate opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105">
+			<span className="text-[11px] font-medium text-center truncate max-w-full text-base-content/75 transition-colors duration-200 group-hover:text-base-content">
 				{link.name}
 			</span>
 		</a>

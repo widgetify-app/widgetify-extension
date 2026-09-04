@@ -40,16 +40,11 @@ export function ExplorerCategory({
 				}),
 			}}
 			className={twJoin(
-				'relative overflow-hidden  border scroll-mt-4  bg-content bg-glass border-base-300 rounded-2xl transition-all duration-300',
-				index === 0
-					? 'md:col-span-2'
-					: index === contentLength - 1 && contentLength % 2 === 0
-						? 'md:col-span-2'
-						: 'md:col-span-1',
+				'relative overflow-hidden border scroll-mt-20 bg-content bg-glass border-base-200/70 hover:border-base-300 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
 				category.id === activeCategory &&
-					'outline-1 outline-offset-2 outline-primary/80',
+					'ring-2 ring-primary/40 border-primary/50',
 				category.banner
-					? 'before:absolute before:inset-x-0 before:top-0 before:h-12 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
+					? 'before:absolute before:inset-x-0 before:top-0 before:h-16 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
 					: ''
 			)}
 		>
@@ -66,55 +61,57 @@ export function ExplorerCategory({
 			<div className="relative z-10 p-3">
 				{!category.hideName && (
 					<div className="flex items-center justify-between gap-4 mb-2">
-						<div className="flex items-center gap-2.5">
+						<div className="flex items-center gap-2">
 							{category.icon ? (
 								<img
 									src={category.icon}
-									className="w-4 h-4 opacity-70"
+									className="w-4 h-4 object-contain opacity-80"
 									alt=""
 								/>
 							) : (
-								<div className="w-1 h-3.5 rounded-full bg-primary" />
+								<div className="w-1.5 h-3.5 rounded-full bg-primary" />
 							)}
 							<h3
-								className={`text-xs font-semibold tracking-widest  ${category.banner ? 'text-base-content/90' : 'text-base-content/70'}`}
+								className={`text-xs font-semibold tracking-wide ${category.banner ? 'text-base-content/90' : 'text-base-content/80'}`}
 							>
 								{category.category}
 							</h3>
 						</div>
 
 						{category.badges?.length ? (
-							<div className="flex flex-row gap-1">
+							<div className="flex flex-row items-center gap-1">
 								{category.badges?.map((f, i) => (
 									<CategoryBadge badge={f} key={`badge-${i}`} />
 								))}
 							</div>
 						) : (
-							<div className="flex-1 h-px bg-linear-to-r from-base-content/5 to-transparent" />
+							<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
 						)}
 					</div>
 				)}
-
-				<HandleCatalogs category={category} colSpan={category.span?.col} />
 			</div>
+
+			<HandleCatalogs category={category} />
 		</div>
 	)
 }
 
 interface HandleCatalogsProp {
 	category: CategoryItem
-	colSpan?: number | null
 }
 
-function HandleCatalogs({ category, colSpan }: HandleCatalogsProp) {
-	const colSpanValue = !colSpan || colSpan < 2 ? 4 : 7
-	const maxH = category.lockHeight ? 'max-h-52 overflow-y-auto' : ''
+function HandleCatalogs({ category }: HandleCatalogsProp) {
+	const totalLinks = category.links?.length || 0
+	const gridColsClass =
+		category.span?.col && category.span.col >= 2
+			? 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8'
+			: totalLinks > 8
+				? 'grid-cols-4'
+				: 'grid-cols-4'
+
 	return (
 		<div
-			className={`grid grid-cols-3  gap-y-6 gap-x-2 ${maxH}`}
-			style={{
-				gridTemplateColumns: `repeat(${colSpanValue}, minmax(0, 1fr))`,
-			}}
+			className={`grid gap-x-2 gap-y-3 p-1 ${gridColsClass}`}
 		>
 			{category.links?.map((link) =>
 				link.type === 'REMOTE_IFRAME' ? (

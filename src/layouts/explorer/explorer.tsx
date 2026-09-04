@@ -34,6 +34,8 @@ export function ExplorerContent() {
 	const { data: catalogData, isLoading } = useGetContents()
 	const [activeCategory, setActiveCategory] = useState<string | null>(null)
 	const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
+	const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
+	const tabsContainerRef = useRef<HTMLDivElement>(null)
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -49,6 +51,11 @@ export function ExplorerContent() {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					setActiveCategory(entry.target.id)
+					tabRefs.current[entry.target.id]?.scrollIntoView({
+						behavior: 'smooth',
+						inline: 'center',
+						block: 'nearest',
+					})
 				}
 			})
 		}
@@ -65,6 +72,14 @@ export function ExplorerContent() {
 
 	const scrollToCategory = (id: string) => {
 		setActiveCategory(id)
+		const tabBtn = tabRefs.current[id]
+		if (tabBtn) {
+			tabBtn.scrollIntoView({
+				behavior: 'smooth',
+				inline: 'center',
+				block: 'nearest',
+			})
+		}
 		const element = categoryRefs.current[id]
 		if (element) {
 			element.scrollIntoView({
@@ -80,76 +95,75 @@ export function ExplorerContent() {
 
 	return (
 		<div className="flex flex-row w-full h-screen overflow-hidden ">
-			<div className="flex flex-col w-full h-full gap-1 px-1 py-2 overflow-hidden">
+			<div className="flex flex-col w-full h-full gap-2 px-2 py-3 overflow-hidden">
 				{isLoading ? (
-					<div className="sticky top-0 z-50 flex items-center w-[calc(100%-2rem)] mx-auto gap-2 p-1.5 overflow-x-auto bg-base-100/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg no-scrollbar flex-nowrap overflow-y-hidden">
-						{[1, 2, 3, 4].map((i) => (
+					<div className="sticky top-0 z-50 flex items-center w-full max-w-6xl mx-auto gap-2 p-1.5 overflow-x-auto bg-base-100/70 backdrop-blur-xl rounded-2xl border border-base-200/80 shadow-sm scrollbar-none flex-nowrap">
+						{[1, 2, 3, 4, 5, 6].map((i) => (
 							<div
 								key={i}
-								className="w-24 skeleton h-9 shrink-0 rounded-xl opacity-30"
+								className="w-24 skeleton h-8 shrink-0 rounded-xl opacity-30"
 							></div>
 						))}
 					</div>
 				) : (
-					<div className="sticky top-0 z-50 px-2 ">
-						<div className="flex items-center w-full gap-2 p-2 mx-auto overflow-x-auto border shadow-md bg-content backdrop-blur-xl rounded-2xl border-white/10 no-scrollbar flex-nowrap">
-							{categories.map((cat: CategoryItem) => {
-								const active = activeCategory === cat.id
+					<div className="sticky top-0 z-50 w-full max-w-6xl mx-auto px-1">
+						<div className="relative flex items-center">
+							<div className="flex items-center w-full gap-1 p-1 overflow-x-auto bg-base-100/80 backdrop-blur-2xl rounded-2xl border border-base-300/60 shadow-md scrollbar-none flex-nowrap">
+								{categories.map((cat: CategoryItem) => {
+									const active = activeCategory === cat.id
 
-								return (
-									<button
-										key={cat.id}
-										onClick={() => scrollToCategory(cat.id)}
-										className={`relative flex items-center gap-2 px-3 py-2 text-[11px] font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
-											active
-												? 'bg-primary text-white shadow-md scale-105'
-												: 'text-base-content/70 hover:text-primary hover:bg-primary/10'
-										}`}
-									>
-										{cat.icon && (
-											<img
-												src={cat.icon}
-												className={`w-4 h-4 transition-all`}
-												alt=""
-											/>
-										)}
+									return (
+										<button
+											key={cat.id}
+											ref={(el) => {
+												tabRefs.current[cat.id] = el
+											}}
+											onClick={() => scrollToCategory(cat.id)}
+											className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
+												active
+													? 'bg-base-200 text-content shadow-xs font-semibold'
+													: 'text-muted hover:text-content hover:bg-base-200/50'
+											}`}
+										>
+											{cat.icon && (
+												<img
+													src={cat.icon}
+													className="w-4 h-4 object-contain shrink-0"
+													alt=""
+												/>
+											)}
 
-										{cat.category}
-
-										{active && (
-											<span className="absolute w-1 h-1 -translate-x-1/2 rounded-full -bottom-1 left-1/2 bg-white/80" />
-										)}
-									</button>
-								)
-							})}
+											<span>{cat.category}</span>
+										</button>
+									)
+								})}
+							</div>
 						</div>
 					</div>
 				)}
-				<div className="grid w-full h-full grid-cols-1 gap-6 overflow-hidden lg:grid-cols-1">
-					<div className="flex flex-col h-full gap-4 overflow-hidden lg:col-span-1 ">
-						<div
-							ref={scrollContainerRef}
-							className="flex-1 px-1 pb-10 overflow-y-auto scrollbar-none scroll-smooth "
-						>
-							{isLoading ? (
-								<ExplorerSkeleton />
-							) : (
-								<div className="grid  grid-cols-1 gap-2 pb-[50vh] place-content-evenly md:grid-cols-3 py-2 px-2">
-									{contents.map(
-										(category: CategoryItem, index: number) => (
-											<ExplorerCategory
-												activeCategory={activeCategory || ''}
-												category={category}
-												categoryRefs={categoryRefs}
-												contentLength={contents.length}
-												index={index}
-												key={category.id}
-											/>
-										)
-									)}
-								</div>
-							)}
-						</div>
+				<div className="flex-1 w-full h-full overflow-hidden">
+					<div
+						ref={scrollContainerRef}
+						className="h-full px-2 pb-16 overflow-y-auto scrollbar-none scroll-smooth"
+					>
+						{isLoading ? (
+							<ExplorerSkeleton />
+						) : (
+							<div className="gap-3.5 columns-1 md:columns-2 lg:columns-3 max-w-6xl mx-auto py-2">
+								{contents.map(
+									(category: CategoryItem, index: number) => (
+										<ExplorerCategory
+											activeCategory={activeCategory || ''}
+											category={category}
+											categoryRefs={categoryRefs}
+											contentLength={contents.length}
+											index={index}
+											key={category.id}
+										/>
+									)
+								)}
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
