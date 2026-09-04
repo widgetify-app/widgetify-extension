@@ -259,8 +259,7 @@ export function BookmarkGrid({
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowEditBookmarkModal(false)}
-					message="برای ویرایش بوکمارک باید وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب کاربری"
+					message="برای ویرایش بوکمارک اول وارد حسابت شو"
 				/>
 			) : (
 				<EditBookmarkModal

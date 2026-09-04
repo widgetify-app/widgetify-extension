@@ -21,7 +21,6 @@ import { FolderPath } from '../folder-path'
 import { AddBookmarkModal } from './add-bookmark.modal'
 import { ImportBrowserBookmarksModal } from './import-browser-bookmarks.modal'
 import { validate } from 'uuid'
-import { BookmarkIcon } from '../bookmark/bookmark-icon'
 
 interface BookmarkFolderModalProps {
 	isOpen: boolean
@@ -217,8 +216,7 @@ export function BookmarkFolderModal({
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowAddModal(false)}
-					message="برای افزودن بوکمارک جدید باید وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب کاربری"
+					message="برای افزودن بوکمارک جدید اول وارد حسابت شو"
 				/>
 			) : (
 				showAddModal && (

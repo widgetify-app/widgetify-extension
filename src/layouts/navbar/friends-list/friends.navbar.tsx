@@ -91,9 +91,9 @@ export function FriendsListNavbar() {
 				isOpen={firstAuth}
 				onClose={handleAuthModalClose}
 				title="ورود به حساب کاربری"
-				message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
+				message="برای دسترسی به بخش مدیریت دوستان اول وارد حسابت شو"
 				loginButtonText="ورود به حساب"
-				cancelButtonText="بعدا"
+				cancelButtonText="فعلا نه"
 			/>
 		</>
 	)

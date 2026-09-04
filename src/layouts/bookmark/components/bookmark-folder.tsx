@@ -89,7 +89,7 @@ export function FolderBookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
 				className={cn(
-					'relative flex group h-full w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
+					'relative flex group h-20 md:h-[5.9rem] w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
 					!bookmark.customBackground
 						? 'bg-content bg-glass hover:bg-base-300 text-content'
 						: 'before:bg-inherit border-transparent'

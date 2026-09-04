@@ -16,9 +16,9 @@ export function AuthRequiredModal({
 	isOpen,
 	onClose,
 	title = 'ورود به حساب کاربری',
-	message = 'برای دسترسی به این بخش یا انجام این عملیات، ابتدا وارد حساب کاربری خود شوید.',
+	message = 'برای دسترسی به این بخش اول وارد حسابت شو',
 	loginButtonText = 'ورود به حساب',
-	cancelButtonText = 'بعدا',
+	cancelButtonText = 'فعلا نه',
 }: AuthRequiredModalProps) {
 	function triggerAccountTabDisplay() {
 		onClose()
@@ -31,29 +31,29 @@ export function AuthRequiredModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			direction="rtl"
-			title={'نیاز ورود به حساب کاربری'}
 			closeOnBackdropClick={true}
+			showCloseButton={true}
+			title=" "
 		>
-			<div className="flex flex-col items-center justify-between w-full text-center h-62">
-				<div className="relative flex items-center justify-center w-16 h-16 mt-8 rounded-full bg-primary/10">
-					<div
-						className="absolute inset-0 rounded-full bg-primary/5 animate-ping"
-						style={{ animationDuration: '2s' }}
-					/>
-					<Icon
-						name="lock"
-						className="relative text-2xl md:text-3xl text-primary"
-					/>
+			<div className="flex flex-col items-center justify-between w-full h-56 pt-2 text-center">
+				<div className="relative flex items-center justify-center w-16 h-16 border shadow-xs rounded-2xl bg-base-200 border-base-300/60">
+					<Icon name="lock" className="relative text-2xl text-primary" />
 				</div>
-				{title && <h3 className="text-lg font-semibold text-content">{title}</h3>}
-				<p className={'text-muted text-xs font-medium'}>{message}</p>
 
-				<div className="flex w-full gap-2 mt-1">
+				<div className="flex flex-col items-center gap-1.5 px-2">
+					<h3 className="text-base font-semibold text-content">{title}</h3>
+					<p className="text-xs leading-relaxed text-muted max-w-70">
+						{message}
+					</p>
+				</div>
+
+				<div className="flex w-full gap-2 mt-2">
 					<Button
 						onClick={triggerAccountTabDisplay}
 						size="md"
 						variant="primary"
-						className={`flex-1 border-none rounded-2xl text-xs w-full`}
+						className="flex-1 text-xs"
+						rounded={'2xl'}
 					>
 						{loginButtonText}
 					</Button>
@@ -61,7 +61,8 @@ export function AuthRequiredModal({
 						onClick={onClose}
 						size="md"
 						variant="outline"
-						className="w-32 rounded-2xl"
+						className="text-xs w-28"
+						rounded={'2xl'}
 					>
 						{cancelButtonText}
 					</Button>

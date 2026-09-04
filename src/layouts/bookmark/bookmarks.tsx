@@ -240,8 +240,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowAddBookmarkModal(false)}
-					message="برای افزودن بوکمارک جدید باید وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب کاربری"
+					message="برای افزودن بوکمارک جدید اول وارد حسابت شو"
 				/>
 			) : (
 				showAddBookmarkModal && (

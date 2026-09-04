@@ -46,7 +46,7 @@ export function BookmarkItem({
 				}}
 				style={customStyles}
 				className={cn(
-					'relative flex flex-col items-center justify-between px-2 py-1.5 h-full w-full duration-300 border border-content cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
+					'relative flex flex-col items-center justify-between px-2 py-1.5 h-20 md:h-[5.9rem] w-full duration-300 border border-content cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
 						? 'bg-content hover:bg-base-300 text-content bg-glass'
 						: ''
@@ -87,7 +87,7 @@ export function BookmarkItem({
 					/>
 				</div>
 
-				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-base-content/5 rounded-widget pointer-events-none" />
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-base-content/5 rounded-widget" />
 			</button>
 		</div>
 	)

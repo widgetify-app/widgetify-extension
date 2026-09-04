@@ -116,7 +116,7 @@ export function SelectCity({ size }: Prop) {
 			<AuthRequiredModal
 				isOpen={showAuthModal}
 				onClose={() => setShowAuthModal(!showAuthModal)}
-				message="برای انتخاب شهر، لطفا وارد حساب کاربری خود شوید."
+				message="برای انتخاب شهر اول وارد حسابت شو"
 			/>
 			<Modal
 				isOpen={isModalOpen}
