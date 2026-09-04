@@ -20,12 +20,24 @@ export function CoinPurchaseModal({
 	onPurchase,
 	isPurchasing = false,
 }: CoinPurchaseModalProps) {
-	const { isAuthenticated } = useAuth()
+	const { isAuthenticated, user } = useAuth()
 	if (!wallpaper) return null
+
+	const userCoins = user?.coins || 0
+	const wallpaperPrice = wallpaper.coin || 0
+	const canAfford = userCoins >= wallpaperPrice
 
 	const onLogin = () => {
 		onClose()
 		callEvent('openProfile')
+	}
+
+	const handleOpenCoins = () => {
+		onClose()
+		callEvent('openMarketModal')
+		setTimeout(() => {
+			callEvent('market_change_tab', 'coins')
+		}, 100)
 	}
 
 	return (
@@ -39,22 +51,22 @@ export function CoinPurchaseModal({
 			title=" "
 		>
 			<div className="space-y-4">
-				<div className="relative overflow-hidden rounded-lg aspect-video">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200/50 aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
 						<img
 							src={wallpaper.previewSrc}
 							alt={wallpaper.name || 'Wallpaper'}
-							className="object-cover w-full h-full rounded"
+							className="object-cover w-full h-full rounded-2xl"
 						/>
 					) : (
 						<HoverPlayVideo
 							videoSrc={
-								wallpaper.previewVideoSrc || //demo video
+								wallpaper.previewVideoSrc ||
 								wallpaper.src ||
 								wallpaper.previewSrc
 							}
-							posterSrc={wallpaper.previewSrc} //previewSrc is poster
-							className="object-cover w-full h-full transition-opacity rounded-xl"
+							posterSrc={wallpaper.previewSrc}
+							className="object-cover w-full h-full rounded-2xl"
 							onClick={(e) => {
 								e.stopPropagation()
 							}}
@@ -62,45 +74,67 @@ export function CoinPurchaseModal({
 					)}
 				</div>
 
-				<div className="space-y-3">
+				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-lg font-semibold text-content">
-							{wallpaper.name || 'تصویر تصویر زمینه'}
+						<h3 className="text-base font-semibold text-content">
+							{wallpaper.name || 'تصویر زمینه'}
 						</h3>
-						<UserCoin
-							coins={wallpaper.coin || 0}
-							title="قیمت این تصویر زمینه"
-						/>
+						{wallpaperPrice > 0 && (
+							<UserCoin coins={wallpaperPrice} title="قیمت خرید دائمی" />
+						)}
 					</div>
-					<p className="text-sm text-muted">
-						این تصویر زمینه زیبا را با ویج‌کوین باز کنید و برای همیشه استفاده
-						🎨 کنید
+					<p className="text-xs text-muted">
+						این تصویر زمینه را با ویج‌کوین باز کنید و برای همیشه از آن استفاده
+						کنید
 					</p>
 				</div>
 
-				<div className="flex gap-3 pt-4">
+				{isAuthenticated && !canAfford && wallpaperPrice > 0 && (
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+						<span>
+							موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین
+							کسری داری)
+						</span>
+						<button
+							type="button"
+							onClick={handleOpenCoins}
+							className="font-medium underline cursor-pointer"
+						>
+							خرید ویج‌کوین
+						</button>
+					</div>
+				)}
+
+				<div className="flex gap-2.5 pt-2">
 					{isAuthenticated ? (
 						<>
 							<Button
 								onClick={onPurchase}
 								size="md"
-								disabled={isPurchasing}
+								disabled={
+									isPurchasing || (!canAfford && wallpaperPrice > 0)
+								}
 								loading={isPurchasing}
-								loadingText="در حال باز کردن..."
-								className="flex-2"
-								rounded={'2xl'}
-								variant={'primary'}
+								loadingText="در حال خرید..."
+								className="flex-1"
+								rounded="2xl"
+								variant={
+									canAfford || wallpaperPrice === 0
+										? 'primary'
+										: 'default'
+								}
 							>
-								🔓 باز کردن
+								خرید دائمی
 							</Button>
 							<Button
 								onClick={onClose}
 								size="md"
 								className="flex-1"
-								variant={'default'}
-								rounded={'2xl'}
+								variant="default"
+								rounded="2xl"
+								disabled={isPurchasing}
 							>
-								لغو
+								انصراف
 							</Button>
 						</>
 					) : (
@@ -108,8 +142,8 @@ export function CoinPurchaseModal({
 							size="md"
 							onClick={onLogin}
 							className="w-full"
-							variant={'primary'}
-							rounded={'2xl'}
+							variant="primary"
+							rounded="2xl"
 						>
 							ورود به حساب کاربری
 						</Button>

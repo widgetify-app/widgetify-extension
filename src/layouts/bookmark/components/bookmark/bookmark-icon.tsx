@@ -69,7 +69,6 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 		? bookmark.customTextColor
 		: 'rgba(255, 255, 255, 1)'
 	const colorClass = hasCustomColors ? '' : getColorFromTitle(bookmark.title)
-
 	return (
 		<div className="relative flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8">
 			{typeof displayIcon === 'string' && !imageError ? (

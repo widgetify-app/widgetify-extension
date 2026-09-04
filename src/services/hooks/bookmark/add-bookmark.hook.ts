@@ -11,7 +11,7 @@ export interface BookmarkCreationPayload {
 	order: number | null
 	customTextColor: string | null
 	customBackground: string | null
-	icon: File | null
+	icon: File | string | null
 	widgetId?: string | null
 }
 

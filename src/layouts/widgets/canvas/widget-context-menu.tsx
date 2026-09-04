@@ -1,7 +1,12 @@
-import { useEffect, useRef } from 'react'
 import { Icon } from '@/src/icons'
 import type { StoredWidget, WidgetDefinition, WidgetSize } from '../layout-engine/types'
-import { Chip, VipBadge } from '@/components/ui'
+import {
+	Chip,
+	PopoverMenu,
+	PopoverMenuItem,
+	PopoverMenuDivider,
+	VipBadge,
+} from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { callEvent } from '@/common/utils/call-event'
@@ -36,51 +41,20 @@ export function WidgetContextMenu({
 	onEditVariant,
 	onDelete,
 }: WidgetContextMenuProps) {
-	const menuRef = useRef<HTMLDivElement>(null)
 	const { isVip } = useAuth()
 	const { isSizeVipOnly } = useWidgetVipResolver()
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-				onClose()
-			}
-		}
-
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onClose()
-			}
-		}
-
-		document.addEventListener('mousedown', handleClickOutside)
-		document.addEventListener('keydown', handleKeyDown)
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside)
-			document.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [onClose])
 
 	const hasVariants = Boolean(definition.variants && definition.variants.length > 0)
 	const fittingSizes = definition.allowedSizes.filter((s) => s.w <= cols)
 	const showResize =
 		(!hasVariants || definition.canResize === true) && fittingSizes.length > 1
 
-	const adjustedLeft = Math.min(Math.max(10, x), window.innerWidth - 220)
-	const adjustedTop = Math.min(Math.max(10, y), window.innerHeight - 260)
-
 	return (
-		<div
-			ref={menuRef}
-			style={{
-				position: 'fixed',
-				left: adjustedLeft,
-				top: adjustedTop,
-				zIndex: 9999,
-			}}
-			className="w-52 bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/10 p-2 text-right text-xs flex flex-col gap-1.5 animate-in fade-in zoom-in-95 duration-150"
-			onClick={(e) => e.stopPropagation()}
-			onContextMenu={(e) => e.preventDefault()}
+		<PopoverMenu
+			isOpen={true}
+			onClose={onClose}
+			position={{ x, y }}
+			width={208}
 		>
 			<div className="flex items-center justify-between px-2 py-1">
 				<span className="font-bold text-content flex items-center gap-1.5">
@@ -137,39 +111,35 @@ export function WidgetContextMenu({
 				</div>
 			)}
 
-			<div className="h-px bg-base-content/10 my-0.5" />
+			<PopoverMenuDivider />
 
 			{onMove && (
-				<button
-					type="button"
+				<PopoverMenuItem
+					icon={<Icon name="outlineDrag" size={14} />}
+					label="جابجایی"
 					onClick={() => {
 						onMove()
 						onClose()
 					}}
-					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
-				>
-					<Icon name="outlineDrag" size={14} className="text-muted" />
-					<span>جابجایی</span>
-				</button>
+				/>
 			)}
 
 			{onEditVariant && (
-				<button
-					type="button"
+				<PopoverMenuItem
+					icon={<Icon name="brush" size={14} />}
+					label="تغییر مدل و استایل"
 					onClick={() => {
 						onEditVariant()
 						onClose()
 					}}
-					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
-				>
-					<Icon name="brush" size={14} className="text-muted" />
-					<span>تغییر مدل و استایل</span>
-				</button>
+				/>
 			)}
 
 			{onDuplicate && definition.canDuplicate && (
-				<button
-					type="button"
+				<PopoverMenuItem
+					icon={<Icon name="copy" size={14} />}
+					label="تکرار ویجت"
+					badge={!isVip ? <VipBadge size="xs" /> : undefined}
 					onClick={() => {
 						if (!isVip) {
 							callEvent('openSettings', 'vip')
@@ -179,43 +149,31 @@ export function WidgetContextMenu({
 						onDuplicate()
 						onClose()
 					}}
-					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center justify-between cursor-pointer transition-colors"
-				>
-					<div className="flex items-center gap-2">
-						<Icon name="copy" size={14} className="text-muted" />
-						<span>تکرار ویجت</span>
-					</div>
-					{!isVip && <VipBadge size="xs" />}
-				</button>
+				/>
 			)}
 
 			{onSettings && (
-				<button
-					type="button"
+				<PopoverMenuItem
+					icon={<Icon name="settings" size={14} />}
+					label="تنظیمات"
 					onClick={() => {
 						onSettings()
 						onClose()
 					}}
-					className="w-full px-2 py-1.5 rounded-xl hover:bg-base-300 text-content text-right flex items-center gap-2 cursor-pointer transition-colors"
-				>
-					<Icon name="settings" size={14} className="text-muted" />
-					<span>تنظیمات</span>
-				</button>
+				/>
 			)}
 
-			<div className="h-px bg-base-content/10 my-0.5" />
+			<PopoverMenuDivider />
 
-			<button
-				type="button"
+			<PopoverMenuItem
+				icon={<Icon name="trash" size={14} />}
+				label="حذف ویجت"
+				variant="danger"
 				onClick={() => {
 					onDelete()
 					onClose()
 				}}
-				className="w-full px-2 py-1.5 rounded-xl hover:bg-error/15 text-error text-right flex items-center gap-2 cursor-pointer transition-colors"
-			>
-				<Icon name="trash" size={14} />
-				<span>حذف ویجت</span>
-			</button>
-		</div>
+			/>
+		</PopoverMenu>
 	)
 }

@@ -13,9 +13,13 @@ import { ChangeOccupationModal } from './modals/edit-occupation'
 import { ChangeInterestsModal } from './modals/edit-interests'
 import { ChangeNameModal } from './modals/edit-name'
 import { ChangeCityModal } from './modals/edit-city'
-import { EditAvatarModal } from './modals/avatar/edit.avatar'
 import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
+import { AvatarCropModal } from './modals/avatar/avatar-crop.modal'
+import { GalleryPickerModal } from '@/components/gallery/gallery-picker-modal'
+import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
+import { showToast } from '@/common/toast'
 import { Icon } from '@/src/icons'
 import { useState } from 'react'
 
@@ -40,7 +44,9 @@ const formatJalaliDate = (dateString: string | null | undefined): string => {
 export const ProfileDisplay = () => {
 	const { refetchUser, user } = useAuth()
 	const [showModal, setShowModal] = useState(false)
-	const [showAvatar, setShowAvatar] = useState(false)
+	const [showGallery, setShowGallery] = useState(false)
+	const [cropImage, setCropImage] = useState<string | null>(null)
+	const updateProfileMutation = useUpdateUserProfile()
 	const genderInfo = getGenderInfo(user?.gender)
 
 	const showEditBadge = (field: string) => {
@@ -61,14 +67,66 @@ export const ProfileDisplay = () => {
 		Analytics.event('open_add_phone_modal')
 	}
 
-	const onClickAvatar = () => {
-		setShowAvatar(true)
-		Analytics.event('edit_avatar_opened')
+	const handleUploadFile = (file: File) => {
+		if (file.size > 2 * 1024 * 1024) {
+			showToast('فایل بزرگتر از ۲ مگابایت است', 'error')
+			return
+		}
+		const validTypes = ['image/png', 'image/jpeg', 'image/webp']
+		if (!validTypes.includes(file.type)) {
+			showToast('فرمت فایل نامعتبر است', 'error')
+			return
+		}
+		setCropImage(URL.createObjectURL(file))
+		Analytics.event('edit_avatar_file_selected')
+	}
+
+	const handleCropComplete = async (croppedFile: File) => {
+		if (cropImage) {
+			URL.revokeObjectURL(cropImage)
+			setCropImage(null)
+		}
+		try {
+			const formData = new FormData()
+			formData.append('avatar', croppedFile)
+			await updateProfileMutation.mutateAsync(formData)
+			await refetchUser()
+			Analytics.event('avatar_updated')
+		} catch {
+			showToast('خطا در بارگذاری تصویر', 'error')
+		}
+	}
+
+	const handleCropCancel = () => {
+		if (cropImage) {
+			URL.revokeObjectURL(cropImage)
+			setCropImage(null)
+		}
+	}
+
+	const onSelectAvatarAsset = async (asset: GalleryAsset) => {
+		setShowGallery(false)
+		try {
+			const formData = new FormData()
+			formData.append('avatarKey', asset.id)
+			await updateProfileMutation.mutateAsync(formData)
+			await refetchUser()
+			Analytics.event('avatar_updated_from_gallery')
+		} catch {
+			showToast('خطا در تغییر آواتار', 'error')
+		}
 	}
 
 	return (
 		<div className="flex flex-col space-y-4">
-			<ProfileHeader onClickAvatar={onClickAvatar} showEditBadge={showEditBadge} />
+			<ProfileHeader
+				onUploadFile={handleUploadFile}
+				onSelectFromGallery={() => {
+					setShowGallery(true)
+					Analytics.event('gallery_avatar_opened')
+				}}
+				showEditBadge={showEditBadge}
+			/>
 
 			<div className="overflow-hidden border border-base-300/50 rounded-2xl bg-base-100/30">
 				<DisplayRow
@@ -204,9 +262,22 @@ export const ProfileDisplay = () => {
 					<OfflineIndicator mode="notification" />
 				</div>
 			)}
-			{showAvatar && (
-				<EditAvatarModal onClose={() => setShowAvatar(false)} show={true} />
+			{cropImage && (
+				<AvatarCropModal
+					show={true}
+					image={cropImage}
+					onClose={handleCropCancel}
+					onCropComplete={handleCropComplete}
+				/>
 			)}
+
+			<GalleryPickerModal
+				isOpen={showGallery}
+				onClose={() => setShowGallery(false)}
+				type="AVATAR"
+				title="گالری آواتارها"
+				onSelect={onSelectAvatarAsset}
+			/>
 
 			<AddPhoneModal isOpen={showModal} onClose={() => onCloseModal()} />
 		</div>

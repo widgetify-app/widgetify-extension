@@ -1,12 +1,11 @@
 import Analytics from '@/analytics'
-import { ItemPrice } from '@/components/item-price/item-price'
 import { Button, Modal } from '@/components/ui'
+import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchase-market-item.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './render-preview'
-import { Icon } from '@/src/icons'
 
 interface MarketItemPurchaseModalProps {
 	isOpen: boolean
@@ -28,7 +27,6 @@ export function MarketItemPurchaseModal({
 	if (!item) return null
 
 	const canAfford = userCoins >= item.price
-	const remainingCoins = userCoins - item.price
 
 	const handlePurchase = () => {
 		if (!canAfford) return
@@ -37,7 +35,7 @@ export function MarketItemPurchaseModal({
 			{ itemId: item.id },
 			{
 				onSuccess: (_response) => {
-					showToast(`${item.name} با موفقیت خریداری شد! 🎉`, 'success', {
+					showToast(`${item.name} برای همیشه خریداری شد`, 'success', {
 						alarmSound: true,
 					})
 					Analytics.event('market_item_purchased')
@@ -58,84 +56,69 @@ export function MarketItemPurchaseModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={() => onClose(false)}
-			title="تایید خرید"
+			title=" "
 			size="md"
 			direction="rtl"
 			closeOnBackdropClick={!isPending}
 			showCloseButton={!isPending}
 		>
-			<div className="space-y-3">
-				<div className="overflow-hidden border rounded-2xl border-base-300/60 bg-base-100">
+			<div className="space-y-4">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200/50 max-h-85">
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
-					<div className="px-3 py-2.5">
-						<h3 className="text-sm font-semibold text-content">
-							{item.name}
-						</h3>
-						{item.description && (
-							<p className="mt-0.5 text-xs text-muted">
-								{item.description}
-							</p>
-						)}
-					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-base-300/60 bg-base-100 divide-base-200/60">
-					<div className="flex items-center justify-between px-3 py-2.5">
-						<span className="text-xs text-muted">موجودی فعلی</span>
-						<ItemPrice price={userCoins} />
+				<div className="space-y-2">
+					<div className="flex items-center justify-between">
+						<h3 className="text-base font-semibold text-content">
+							{item.name}
+						</h3>
+						{item.price > 0 && (
+							<UserCoin coins={item.price} title="قیمت خرید دائمی" />
+						)}
 					</div>
-					<div className="flex items-center justify-between px-3 py-2.5">
-						<span className="text-xs text-muted">قیمت آیتم</span>
-						<ItemPrice price={item.price} />
-					</div>
-					<div className="flex items-center justify-between px-3 py-2.5">
-						<span className="text-xs font-medium text-content">
-							موجودی باقی‌مانده
-						</span>
-						<ItemPrice
-							price={canAfford ? Math.max(0, remainingCoins) : userCoins}
-						/>
-					</div>
+					<p className="text-xs text-muted">
+						{item.description ||
+							'این آیتم را با ویج‌کوین باز کنید و برای همیشه از آن استفاده کنید'}
+					</p>
 				</div>
 
 				{!canAfford && (
-					<div className="flex items-start gap-2.5 px-3 py-2.5 rounded-2xl border border-error/20 bg-error/5">
-						<Icon
-							name="alert"
-							className="w-4 h-4 mt-0.5 text-error shrink-0"
-						/>
-						<div>
-							<p className="text-xs font-medium text-error">
-								موجودی ناکافی
-							</p>
-							<p className="text-[11px] text-error/75 mt-0.5">
-								برای خرید این آیتم به {item.price - userCoins} ویج‌کوین
-								بیشتر نیاز دارید
-							</p>
-						</div>
-					</div>
-				)}
-
-				<div className="flex flex-col gap-2 pt-1">
-					{!canAfford && (
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+						<span>
+							موجودی ویج‌کوین ناکافیه ({item.price - userCoins} ویج‌کوین کسری
+							داری)
+						</span>
 						<button
-							className="w-full py-1 text-xs text-center transition-colors cursor-pointer text-muted hover:text-primary"
+							type="button"
 							onClick={() => onClose(true)}
+							className="font-medium underline cursor-pointer"
 						>
 							خرید ویج‌کوین
 						</button>
-					)}
+					</div>
+				)}
+
+				<div className="flex gap-2.5 pt-2">
 					<Button
 						onClick={handlePurchase}
 						size="md"
 						disabled={!canAfford || isPending}
 						loading={isPending}
 						loadingText="در حال خرید..."
-						rounded={'2xl'}
+						className="flex-1"
+						rounded="2xl"
 						variant={canAfford ? 'primary' : 'default'}
 					>
-						<Icon name="check" size={15} className="ml-1" />
-						تایید خرید
+						خرید دائمی
+					</Button>
+					<Button
+						onClick={() => onClose(false)}
+						size="md"
+						variant="default"
+						rounded="2xl"
+						disabled={isPending}
+					>
+						انصراف
 					</Button>
 				</div>
 			</div>

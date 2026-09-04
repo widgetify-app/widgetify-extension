@@ -43,6 +43,8 @@ export * from './offline-indicator/offline-indicator'
 
 export * from './pagination/pagination'
 
+export * from './popover-menu'
+
 export * from './portal/portal'
 
 export * from './section-panel/section-panel'

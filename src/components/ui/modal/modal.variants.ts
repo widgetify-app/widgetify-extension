@@ -60,6 +60,7 @@ export const modalDialogVariants = cva([
 	'modal-middle',
 	'p-2',
 	'md:p-4',
+	'z-[1000]',
 ])
 
 export type ModalDialogVariant = typeof modalDialogVariants

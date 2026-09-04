@@ -23,7 +23,7 @@ import { AddWidgetActions } from './actions'
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly, maxFreeWidgets } =
-		useWidgetVipResolver()
+		useWidgetVipResolver(isOpen)
 	const freeWidgets = useOptionalFreeWidgets()
 
 	const runtimeLayout = freeWidgets?.runtimeLayout || []

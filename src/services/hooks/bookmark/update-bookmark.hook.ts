@@ -9,7 +9,7 @@ export interface BookmarkUpdatePayload {
 	sticker: string | null
 	customTextColor: string | null
 	customBackground: string | null
-	icon: File | null
+	icon: File | string | null
 	isDeletedIcon: boolean
 }
 

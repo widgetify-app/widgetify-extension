@@ -40,23 +40,20 @@ export function raiseToTopLayer(host: HTMLElement | null) {
 
 	if (host.parentElement !== parent) {
 		parent.appendChild(host)
-
-		if (parent !== document.body) {
-			parent.addEventListener('close', () => raiseToTopLayer(host), {
-				once: true,
-			})
-		}
 	}
 
 	if (typeof host.showPopover !== 'function') return
 
 	try {
-		host.hidePopover()
-	} catch {}
-
-	try {
-		host.showPopover()
-	} catch {}
+		if (!host.matches(':popover-open')) {
+			host.showPopover()
+		}
+	} catch {
+		try {
+			host.hidePopover()
+			host.showPopover()
+		} catch {}
+	}
 }
 
 type TopLayerHostProps = Pick<PortalProps, 'children' | 'id' | 'className' | 'style'>

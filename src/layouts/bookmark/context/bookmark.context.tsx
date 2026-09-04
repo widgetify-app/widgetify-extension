@@ -21,7 +21,7 @@ import {
 	useGetBookmarks,
 } from '@/services/hooks/bookmark/get-bookmarks.hook'
 
-const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
+const MAX_ICON_SIZE = 250 * 1024 // 250 KB
 
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
@@ -197,9 +197,12 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 
 		try {
-			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
-				showToast(translateError('FILE_SIZE_EXCEEDED') as string, 'error')
-				cb()
+			if (
+				inputBookmark.icon &&
+				inputBookmark.icon instanceof File &&
+				inputBookmark.icon.size > MAX_ICON_SIZE
+			) {
+				showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
 				return
 			}
 
@@ -312,12 +315,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (!input.title?.trim() || !bookmarks) return
 
+		if (
+			input.icon &&
+			input.icon instanceof File &&
+			input.icon.size > MAX_ICON_SIZE
+		) {
+			showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
+			return
+		}
+
 		const foundedBookmark = bookmarks.find(
 			(b) =>
 				b.id === input.id ||
 				(typeof b.onlineId === 'string' && b.onlineId === input.onlineId)
 		)
-		if (!foundedBookmark) return showToast(translateError('ITEM_NOT_FOUND') as string, 'error')
+		if (!foundedBookmark)
+			return showToast(translateError('ITEM_NOT_FOUND') as string, 'error')
 
 		let bookmarkIdToEdit = input.id
 		if (validate(bookmarkIdToEdit)) {
