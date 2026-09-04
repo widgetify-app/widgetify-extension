@@ -35,7 +35,6 @@ export function ExplorerContent() {
 	const [activeCategory, setActiveCategory] = useState<string | null>(null)
 	const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 	const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
-	const tabsContainerRef = useRef<HTMLDivElement>(null)
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -101,14 +100,14 @@ export function ExplorerContent() {
 						{[1, 2, 3, 4, 5, 6].map((i) => (
 							<div
 								key={i}
-								className="w-24 skeleton h-8 shrink-0 rounded-xl opacity-30"
+								className="w-24 h-8 skeleton shrink-0 rounded-xl opacity-30"
 							></div>
 						))}
 					</div>
 				) : (
-					<div className="sticky top-0 z-50 w-full max-w-6xl mx-auto px-1">
+					<div className="sticky top-0 z-50 w-full max-w-6xl px-1 mx-auto">
 						<div className="relative flex items-center">
-							<div className="flex items-center w-full gap-1 p-1 overflow-x-auto bg-base-100/80 backdrop-blur-2xl rounded-2xl border border-base-300/60 shadow-md scrollbar-none flex-nowrap">
+							<div className="flex items-center w-full gap-1 p-1 overflow-x-auto border shadow-md bg-base-100/80 backdrop-blur-2xl rounded-2xl border-base-300/60 scrollbar-none flex-nowrap">
 								{categories.map((cat: CategoryItem) => {
 									const active = activeCategory === cat.id
 
@@ -128,7 +127,7 @@ export function ExplorerContent() {
 											{cat.icon && (
 												<img
 													src={cat.icon}
-													className="w-4 h-4 object-contain shrink-0"
+													className="object-contain w-4 h-4 shrink-0"
 													alt=""
 												/>
 											)}
@@ -150,18 +149,14 @@ export function ExplorerContent() {
 							<ExplorerSkeleton />
 						) : (
 							<div className="gap-3.5 columns-1 md:columns-2 lg:columns-3 max-w-6xl mx-auto py-2">
-								{contents.map(
-									(category: CategoryItem, index: number) => (
-										<ExplorerCategory
-											activeCategory={activeCategory || ''}
-											category={category}
-											categoryRefs={categoryRefs}
-											contentLength={contents.length}
-											index={index}
-											key={category.id}
-										/>
-									)
-								)}
+								{contents.map((category: CategoryItem) => (
+									<ExplorerCategory
+										activeCategory={activeCategory || ''}
+										category={category}
+										categoryRefs={categoryRefs}
+										key={category.id}
+									/>
+								))}
 							</div>
 						)}
 					</div>
