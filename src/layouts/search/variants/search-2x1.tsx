@@ -18,6 +18,11 @@ export function SearchCompactRow() {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
+	const [selectedIndex, setSelectedIndex] = useState(-1)
+	const [currentSuggestions, setCurrentSuggestions] = useState<
+		{ text: string; isRecent: boolean }[]
+	>([])
+	const originalQueryRef = useRef('')
 	const searchRef = useRef<HTMLDivElement>(null)
 	const portalRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -48,7 +53,11 @@ export function SearchCompactRow() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const query = searchQuery.trim()
+		const targetQuery =
+			selectedIndex >= 0 && currentSuggestions[selectedIndex]
+				? currentSuggestions[selectedIndex].text
+				: searchQuery
+		const query = targetQuery.trim()
 		if (query) {
 			if (user?.searchAutocompleteEnabled) addSearch(query)
 
@@ -62,8 +71,28 @@ export function SearchCompactRow() {
 		}
 	}
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (!showHistoryPortal || currentSuggestions.length === 0) return
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev < currentSuggestions.length - 1 ? prev + 1 : -1
+			)
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev > -1 ? prev - 1 : currentSuggestions.length - 1
+			)
+		} else if (e.key === 'Escape') {
+			setShowHistoryPortal(false)
+			setSelectedIndex(-1)
+		}
+	}
+
 	const handleClearSearch = () => {
 		setSearchQuery('')
+		setSelectedIndex(-1)
 		if (inputRef.current) {
 			inputRef.current.value = ''
 			inputRef.current.focus()
@@ -156,7 +185,12 @@ export function SearchCompactRow() {
 							type="text"
 							name="search"
 							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							onChange={(e) => {
+								setSearchQuery(e.target.value)
+								originalQueryRef.current = e.target.value
+								setSelectedIndex(-1)
+							}}
+							onKeyDown={handleKeyDown}
 							onFocus={() => {
 								setShowHistoryPortal(true)
 								updatePortalPosition()
@@ -194,6 +228,8 @@ export function SearchCompactRow() {
 					onEngineChange={onEngineChange}
 					searchQuery={searchQuery}
 					portalStyles={portalStyles}
+					selectedIndex={selectedIndex}
+					onSuggestionsChange={setCurrentSuggestions}
 				/>
 			</div>
 		</div>

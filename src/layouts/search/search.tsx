@@ -32,6 +32,10 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
+	const [selectedIndex, setSelectedIndex] = useState(-1)
+	const [currentSuggestions, setCurrentSuggestions] = useState<
+		{ text: string; isRecent: boolean }[]
+	>([])
 	const searchRef = useRef<HTMLDivElement>(null)
 	const portalRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -44,7 +48,11 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const query = searchQuery.trim()
+		const targetQuery =
+			selectedIndex >= 0 && currentSuggestions[selectedIndex]
+				? currentSuggestions[selectedIndex].text
+				: searchQuery
+		const query = targetQuery.trim()
 		if (query) {
 			if (user?.searchAutocompleteEnabled) addSearch(query)
 
@@ -60,6 +68,26 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 
 	const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value)
+		setSelectedIndex(-1)
+	}
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (!isHistoryOpen || currentSuggestions.length === 0) return
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev < currentSuggestions.length - 1 ? prev + 1 : -1
+			)
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev > -1 ? prev - 1 : currentSuggestions.length - 1
+			)
+		} else if (e.key === 'Escape') {
+			setShowHistoryPortal(false)
+			setSelectedIndex(-1)
+		}
 	}
 
 	const handleClearSearch = () => {
@@ -81,6 +109,7 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 
 	const handleHistorySearch = (query: string) => {
 		setSearchQuery(query)
+		setShowHistoryPortal(false)
 		SearchHandler({
 			content: query.trim(),
 			engine: selectedEngine,
@@ -187,7 +216,9 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 							ref={inputRef}
 							type="text"
 							name="search"
+							value={searchQuery}
 							onChange={handleSearchInputChange}
+							onKeyDown={handleKeyDown}
 							onFocus={() => onFocusInput()}
 							className={
 								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
@@ -254,6 +285,8 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 					onEngineChange={onEngineChange}
 					searchQuery={searchQuery}
 					portalStyles={portalStyles}
+					selectedIndex={selectedIndex}
+					onSuggestionsChange={setCurrentSuggestions}
 				/>
 
 				<BrowserBookmark />

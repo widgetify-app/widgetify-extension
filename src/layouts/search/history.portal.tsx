@@ -17,6 +17,8 @@ interface SearchHistoryPortalProps {
 	searchQuery: string
 	portalStyles?: React.CSSProperties
 	portalRef: React.RefObject<HTMLDivElement | null>
+	selectedIndex?: number
+	onSuggestionsChange?: (items: { text: string; isRecent: boolean }[]) => void
 }
 
 export function SearchHistoryPortal({
@@ -25,6 +27,8 @@ export function SearchHistoryPortal({
 	searchQuery,
 	portalStyles,
 	portalRef,
+	selectedIndex = -1,
+	onSuggestionsChange,
 }: SearchHistoryPortalProps) {
 	const { isAuthenticated, user } = useAuth()
 	const [showConsentModal, setShowConsentModal] = useState(false)
@@ -65,6 +69,19 @@ export function SearchHistoryPortal({
 		return combined
 	}, [suggestions, recentSearches, searchQuery, user?.searchAutocompleteEnabled])
 
+	const showLocalSearches =
+		user?.searchAutocompleteEnabled && recentSearches.length > 0 && !hasQuery
+
+	const currentList = hasQuery
+		? combinedSuggestions
+		: showLocalSearches
+			? recentSearches.map((f) => ({ isRecent: true, text: f.query }))
+			: []
+
+	useEffect(() => {
+		onSuggestionsChange?.(currentList)
+	}, [currentList, onSuggestionsChange])
+
 	const handleSearch = (query: string) => {
 		if (user?.searchAutocompleteEnabled) addSearch(query)
 		onSearch(query)
@@ -73,9 +90,6 @@ export function SearchHistoryPortal({
 	const onRemoveHistoryItem = (query: string) => {
 		removeHistoryItem(query)
 	}
-
-	const showLocalSearches =
-		user?.searchAutocompleteEnabled && recentSearches.length > 0 && !hasQuery
 
 	return (
 		<>
@@ -101,6 +115,7 @@ export function SearchHistoryPortal({
 								combinedSuggestions={combinedSuggestions}
 								handleSearch={handleSearch}
 								onRemove={onRemoveHistoryItem}
+								selectedIndex={selectedIndex}
 							/>
 						) : null)}
 
@@ -112,6 +127,7 @@ export function SearchHistoryPortal({
 							}))}
 							handleSearch={handleSearch}
 							onRemove={onRemoveHistoryItem}
+							selectedIndex={selectedIndex}
 						/>
 					)}
 

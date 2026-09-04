@@ -58,13 +58,16 @@ export function Dropdown({
 		}
 	}
 
+	const onCloseRef = useRef(onClose)
+	onCloseRef.current = onClose
+
 	useLayoutEffect(() => {
 		if (!isOpen) {
 			setIsReady(false)
 			positionCalculatedRef.current = false
-			onClose?.()
+			onCloseRef.current?.()
 		}
-	}, [isOpen, onClose])
+	}, [isOpen])
 
 	useLayoutEffect(() => {
 		if (!isOpen || !dropdownRef.current || !dropdownContentRef.current) {
@@ -185,13 +188,7 @@ export function Dropdown({
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}
-					className={`
-            w-full text-left px-3 py-2 text-sm transition-colors
-            hover:bg-primary/10 hover:text-primary
-            disabled:opacity-50 disabled:cursor-not-allowed
-            disabled:hover:bg-transparent disabled:hover:text-muted
-            focus:outline-none focus:bg-primary/10 focus:text-primary
-          `}
+					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-primary/10 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-primary/10 focus:text-primary"
 				>
 					{option.label}
 				</button>
