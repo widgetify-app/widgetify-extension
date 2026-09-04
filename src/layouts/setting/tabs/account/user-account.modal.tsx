@@ -18,13 +18,7 @@ export const UserAccountModal = ({ isOpen, onClose }: FriendSettingModalProps) =
 
 	if (!isAuthenticated)
 		return (
-			<Modal
-				isOpen={isOpen}
-				onClose={onClose}
-				size="md"
-				title="ورود به حساب کاربری"
-				direction="rtl"
-			>
+			<Modal isOpen={isOpen} onClose={onClose} size="sm" direction="rtl" title=" ">
 				<AuthForm />
 			</Modal>
 		)

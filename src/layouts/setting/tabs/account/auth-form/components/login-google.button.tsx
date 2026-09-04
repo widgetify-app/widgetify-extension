@@ -84,22 +84,22 @@ export default function LoginGoogleButton() {
 			type="button"
 			onClick={loginGoogle}
 			disabled={isLoading}
-			className="group px-4 md:px-8 py-2.5 md:py-3 rounded-2xl text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full flex items-center justify-center border-2 border-content bg-content hover:bg-base-200 transition-all duration-200 gap-1.5 md:gap-2 cursor-pointer active:scale-95 group"
+			className="w-full h-11 px-4 rounded-xl text-xs md:text-sm font-medium flex items-center justify-center border border-base-300/80 bg-base-100 hover:bg-base-200/80 active:scale-[0.99] transition-all duration-150 gap-2.5 cursor-pointer text-content shadow-xs"
 		>
-			<div className="relative flex items-center justify-center flex-shrink-0">
+			<div className="relative flex items-center justify-center shrink-0">
 				{isLoading ? (
-					<IconLoading className="!h-4 !w-4 md:!h-5 md:!w-5" />
+					<IconLoading className="!h-4 !w-4" />
 				) : (
 					<img
 						src="https://cdn.widgetify.ir/sites/google.png"
 						alt=""
 						aria-hidden="true"
-						className="w-4 h-4 transition-all duration-200 md:w-5 md:h-5 group-hover:scale-110 group-hover:rotate-3"
+						className="w-4 h-4"
 					/>
 				)}
 			</div>
-			<span className="transition-all duration-200 group-hover:scale-105 whitespace-nowrap text-base-content/80 group-hover:text-base-content">
-				{isLoading ? 'درحال پردازش...' : 'ورود با گوگل'}
+			<span>
+				{isLoading ? 'درحال ورود...' : 'ورود با حساب گوگل'}
 			</span>
 		</button>
 	)

@@ -117,9 +117,9 @@ export function ProfileNav() {
 			<Modal
 				isOpen={showAuthModal}
 				onClose={authModalCloseHandler}
-				size="md"
-				title="ورود به حساب کاربری"
+				size="sm"
 				direction="rtl"
+				title=" "
 			>
 				<AuthForm />
 			</Modal>
