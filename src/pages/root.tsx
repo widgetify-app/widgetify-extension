@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { TOAST_TOP_LAYER_ID } from '@/common/toast'
 import { Portal } from '@/components/ui'
 import {
@@ -41,7 +41,10 @@ export function RootLayout() {
 						<Main></Main>
 					</WallpaperProvider>
 				</GeneralSettingProvider>
-				<div id={TOAST_TOP_LAYER_ID} className="fixed inset-0 pointer-events-none z-[999999]">
+				<div
+					id={TOAST_TOP_LAYER_ID}
+					className="fixed inset-0 pointer-events-none z-[999999] [&>div]:pointer-events-auto"
+				>
 					<Toaster
 						toastOptions={{
 							error: {
@@ -66,7 +69,6 @@ export function RootLayout() {
 }
 
 function Main() {
-	const [showManageWidgets, setShowManageWidgets] = useState(false)
 	const [activeSettingPayload, setActiveSettingPayload] = useState<{
 		tab: WidgetTabKeys | null
 		instanceId?: string
@@ -85,7 +87,7 @@ function Main() {
 				size?: { w: number; h: number }
 			}) => {
 				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
-					setShowManageWidgets(true)
+					callEvent('openAddCustomWidgetModal')
 				} else {
 					setActiveSettingPayload(data)
 				}
@@ -132,8 +134,8 @@ function Main() {
 						</motion.div>
 					</Presence>
 					<WidgetSettingsModal
-						isOpen={showManageWidgets}
-						onClose={() => setShowManageWidgets(false)}
+						isOpen={!!activeSettingPayload}
+						onClose={() => setActiveSettingPayload(null)}
 						selectedTab={null}
 						activeSettingTab={activeSettingPayload?.tab}
 						instanceId={activeSettingPayload?.instanceId}

@@ -152,7 +152,7 @@ const TOAST_THEMES: Record<
 		container: 'bg-[#142618]/95 border-emerald-500/25 text-white',
 		icon: (
 			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
-				<Icon name="check" size={15} className="stroke-[3]" />
+				<Icon name="check" size={15} className="stroke-3" />
 			</div>
 		),
 		defaultTitle: 'موفقیت آمیز',
@@ -198,9 +198,11 @@ export function showToast(
 				<div
 					dir="rtl"
 					className={cn(
-						'w-full max-w-[390px] min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
+						'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
 						theme.container,
-						t.visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95'
+						t.visible
+							? 'opacity-100 translate-y-0 scale-100'
+							: 'opacity-0 -translate-y-2 scale-95'
 					)}
 				>
 					<div className="flex items-center flex-1 min-w-0 gap-3">
@@ -212,7 +214,7 @@ export function showToast(
 							{message && (
 								<p
 									className={cn(
-										'text-xs font-normal leading-relaxed m-0 mt-0.5 break-words line-clamp-2',
+										'text-xs font-normal leading-relaxed m-0 mt-0.5 wrap-break-word line-clamp-2',
 										theme.messageClass
 									)}
 								>
@@ -269,7 +271,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 		(t) => (
 			<div
 				className={cn(
-					' rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
 					t.visible ? 'animate-enter' : 'animate-leave'
 				)}
 			>
