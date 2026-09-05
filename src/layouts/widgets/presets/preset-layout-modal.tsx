@@ -1,11 +1,11 @@
 import type React from 'react'
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { Button, ConfirmationModal, Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import { cn } from '@/common/utils/cn'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { PRESET_LAYOUTS } from './preset-layouts.data'
 import { PresetCanvasPreview } from './components/preset-canvas-preview'
@@ -19,12 +19,12 @@ interface PresetLayoutModalProps {
 
 type FilterType = 'all' | 'free' | 'vip'
 
-export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
+const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 	isOpen,
 	onClose,
 }) => {
 	const { isVip } = useAuth()
-	const { applyPresetLayout } = useFreeWidgets()
+	const { applyPresetLayout } = useFreeWidgetActions()
 
 	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
 	const [selectedPresetToApply, setSelectedPresetToApply] =
@@ -216,23 +216,27 @@ export const PresetLayoutModal: React.FC<PresetLayoutModalProps> = ({
 				</div>
 			</Modal>
 
-			<ConfirmationModal
-				isOpen={Boolean(selectedPresetToApply)}
-				onClose={() => {
-					if (!isApplying) setSelectedPresetToApply(null)
-				}}
-				onConfirm={handleConfirmApply}
-				isLoading={isApplying}
-				title="اعمال چیدمان جدید"
-				message={
-					selectedPresetToApply
-						? `با اعمال چیدمان «${selectedPresetToApply.title}»، ویجت‌ها و چیدمان فعلی جایگزین می‌شن. مطمئنی؟`
-						: 'می‌خوای این چیدمان رو اعمال کنی؟'
-				}
-				confirmText="آره، اعمال کن"
-				cancelText="انصراف"
-				variant="warning"
-			/>
+			{selectedPresetToApply && (
+				<ConfirmationModal
+					isOpen={Boolean(selectedPresetToApply)}
+					onClose={() => {
+						if (!isApplying) setSelectedPresetToApply(null)
+					}}
+					onConfirm={handleConfirmApply}
+					isLoading={isApplying}
+					title="اعمال چیدمان جدید"
+					message={
+						selectedPresetToApply
+							? `با اعمال چیدمان «${selectedPresetToApply.title}»، ویجت‌ها و چیدمان فعلی جایگزین می‌شن. مطمئنی؟`
+							: 'می‌خوای این چیدمان رو اعمال کنی؟'
+					}
+					confirmText="آره، اعمال کن"
+					cancelText="انصراف"
+					variant="warning"
+				/>
+			)}
 		</>
 	)
 }
+
+export const PresetLayoutModal = memo(PresetLayoutModalComponent)

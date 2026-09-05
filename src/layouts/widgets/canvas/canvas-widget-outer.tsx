@@ -432,14 +432,16 @@ function CanvasWidgetOuterImpl({
 				/>
 			)}
 
-			<BookmarkDeleteModal
-				isOpen={showDeleteConfirm}
-				onClose={() => setShowDeleteConfirm(false)}
-				onConfirm={() => {
-					setShowDeleteConfirm(false)
-					removeWidget(widget.instanceId)
-				}}
-			/>
+			{widget.id === WidgetKeys.bookmarks && showDeleteConfirm && (
+				<BookmarkDeleteModal
+					isOpen={showDeleteConfirm}
+					onClose={() => setShowDeleteConfirm(false)}
+					onConfirm={() => {
+						setShowDeleteConfirm(false)
+						removeWidget(widget.instanceId)
+					}}
+				/>
+			)}
 		</>
 	)
 }

@@ -149,7 +149,7 @@ export const CurrencyBox = ({
 				</div>
 			</div>
 
-			{currency && !currency.url && (
+			{currency && !currency.url && isModalOpen && (
 				<CurrencyModalComponent
 					code={code}
 					currencyColorMode={currencyColorMode}

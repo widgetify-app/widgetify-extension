@@ -63,60 +63,79 @@ export function NetworkLayout({
 		setLoadingState(
 			isRefresh ? NetworkLoadingState.REFRESHING : NetworkLoadingState.INITIAL
 		)
-		try {
-			const client = getMainClient()
-			const response = await client.get('/extension/@me/ip')
-			const data = response.data
-			setNetworkInfo((prev) => ({
-				...prev,
-				ip: data.ip,
-				country: data.country,
-				countryIcon: data.countryIcon,
-				city: data.city,
-				isp: data.isp,
-			}))
-		} catch {
-			setNetworkInfo((prev) => ({
-				...prev,
-				ip: 'N/A',
-				country: null,
-				countryIcon: null,
-				city: null,
-				isp: null,
-			}))
-		}
 
-		try {
-			const client = getMainClient()
-			const start = Date.now()
-			const [err, _ok] = await safeAwait<AxiosError, any>(client.get('/'))
-			if (err) {
-				if (!err.status) {
-					throw err
+		const client = getMainClient()
+
+		const fetchIp = async () => {
+			try {
+				const response = await client.get('/extension/@me/ip')
+				const data = response.data
+				return {
+					ip: data.ip,
+					country: data.country,
+					countryIcon: data.countryIcon,
+					city: data.city,
+					isp: data.isp,
+				}
+			} catch {
+				return {
+					ip: 'N/A',
+					country: null,
+					countryIcon: null,
+					city: null,
+					isp: null,
 				}
 			}
-			const end = Date.now()
-			setNetworkInfo((prev) => ({ ...prev, ping: end - start }))
-		} catch {
-			setNetworkInfo((prev) => ({ ...prev, ping: null }))
 		}
+
+		const fetchPing = async () => {
+			try {
+				const start = Date.now()
+				const [err, _ok] = await safeAwait<AxiosError, any>(client.get('/'))
+				if (err && !err.status) {
+					throw err
+				}
+				const end = Date.now()
+				return end - start
+			} catch {
+				return null
+			}
+		}
+
+		const [ipData, pingResult] = await Promise.all([fetchIp(), fetchPing()])
+
+		setNetworkInfo((prev) => ({
+			...prev,
+			...ipData,
+			ping: pingResult,
+		}))
 		setLoadingState(NetworkLoadingState.IDLE)
 	}
 
 	useEffect(() => {
-		window.addEventListener('offline', () => {
+		const handleOffline = () => {
 			setNetworkInfo((prev) => ({
 				...prev,
 				status: 'offline',
 			}))
-		})
-		window.addEventListener('online', () => {
+		}
+		const handleOnline = () => {
 			setNetworkInfo((prev) => ({
 				...prev,
 				status: 'online',
 			}))
-		})
+		}
 
+		window.addEventListener('offline', handleOffline)
+		window.addEventListener('online', handleOnline)
+
+		return () => {
+			window.removeEventListener('offline', handleOffline)
+			window.removeEventListener('online', handleOnline)
+		}
+	}, [])
+
+	useEffect(() => {
 		if (isAuthenticated) {
 			fetchNetworkData()
 		}

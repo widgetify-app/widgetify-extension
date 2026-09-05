@@ -36,6 +36,14 @@ export function FreeWidgetCanvas() {
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 	const [isPresetModalOpen, setIsPresetModalOpen] = useState(false)
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
+
+	const handleClosePresetModal = useCallback(() => {
+		setIsPresetModalOpen(false)
+	}, [])
+
+	const handleCloseHelpModal = useCallback(() => {
+		setIsHelpModalOpen(false)
+	}, [])
 	const [editTarget, setEditTarget] = useState<{
 		instanceId: string
 		widgetId: string
@@ -276,13 +284,10 @@ export function FreeWidgetCanvas() {
 
 			<PresetLayoutModal
 				isOpen={isPresetModalOpen}
-				onClose={() => setIsPresetModalOpen(false)}
+				onClose={handleClosePresetModal}
 			/>
 
-			<WidgetHelpModal
-				isOpen={isHelpModalOpen}
-				onClose={() => setIsHelpModalOpen(false)}
-			/>
+			<WidgetHelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
 		</div>
 	)
 }

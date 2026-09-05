@@ -19,9 +19,9 @@ export const WidgetifyLayout: React.FC<WidgetifyLayoutProps> = () => {
 					</PetProvider>
 				}
 
-				<div className="relative z-10 flex flex-col items-center h-full gap-2 overflow-y-auto small-scrollbar">
+				<div className="relative z-10 flex flex-col items-center gap-2 overflow-y-auto h-62 small-scrollbar">
 					<div
-						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto scrollbar-none pb-2`}
+						className={`flex flex-col flex-1 w-full gap-1 overflow-y-auto  pb-2`}
 					>
 						<NotificationCenter hasBorder />
 					</div>
