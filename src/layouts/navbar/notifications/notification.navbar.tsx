@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Dropdown, NewBadge } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
-import { NotificationCenter } from '@/layouts/widgetify-card/notification-center/notification-center'
+import { NotificationCenter } from '@/layouts/navbar/notifications/notification-center/notification-center'
 import Analytics from '@/analytics'
 
 export function NotificationNavbar() {

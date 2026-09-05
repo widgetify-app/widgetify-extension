@@ -1,6 +1,6 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import type { PetTypes } from '@/layouts/widgets/pet/pet.context'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
 import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'

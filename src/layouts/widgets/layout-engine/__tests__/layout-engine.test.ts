@@ -149,10 +149,11 @@ describe('Layout Engine Tests', () => {
 		expect(slot).toEqual({ col: 0, row: 1 })
 	})
 
-	it('contains 8 widgets in the default layout matching the Advanced layout', () => {
-		expect(DEFAULT_WIDGET_LAYOUT.length).toBe(8)
+	it('contains 9 widgets in the default layout matching the Advanced layout', () => {
+		expect(DEFAULT_WIDGET_LAYOUT.length).toBe(9)
 		const widgetIds = DEFAULT_WIDGET_LAYOUT.map((w) => w.id)
-		expect(widgetIds).toContain(WidgetKeys.widgetify)
+		expect(widgetIds).toContain(WidgetKeys.photo)
+		expect(widgetIds).toContain(WidgetKeys.pet)
 		expect(widgetIds).toContain(WidgetKeys.search)
 		expect(widgetIds).toContain(WidgetKeys.bookmarks)
 		expect(widgetIds).toContain(WidgetKeys.wigiPad)

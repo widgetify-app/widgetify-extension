@@ -10,8 +10,8 @@ import {
 } from '@/services/hooks/extension/get-notifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
-import { DailyMoodNotification } from '../daily-mood'
-import { ProfileProgressNotification } from '../profile-progress'
+import { DailyMoodNotification } from './daily-mood'
+import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
 
 const localIds = ['notificationMood', 'update_profile']

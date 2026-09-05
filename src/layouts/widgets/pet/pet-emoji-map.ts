@@ -1,4 +1,4 @@
-import { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import { PetTypes } from './pet.context'
 
 export const PetEmojiMap: Record<PetTypes, string> = {
 	[PetTypes.DOG_AKITA]: '🐶',

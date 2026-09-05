@@ -1,7 +1,6 @@
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
-import { WidgetifyLayout } from '@/layouts/widgetify-card/widgetify.layout'
 import CalendarLayout from '@/layouts/widgets/calendar/calendar'
 import { ComboWidget } from '@/layouts/widgets/combo-widget/combo-widget.layout'
 import { NetworkLayout } from '@/layouts/widgets/network/network.layout'
@@ -70,7 +69,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.Pet,
 		canDuplicate: false,
-		node: (_instanceId, size) => <WidgetifyLayout size={size} />,
+		node: (_instanceId) => <PetWidget />,
 	},
 	[WidgetKeys.pet]: {
 		id: WidgetKeys.pet,
@@ -125,8 +124,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'flip',
 				label: 'ساعت فیلیپ (ورقه‌ای)',
 				size: { w: 2, h: 1 },
-				isVipOnly: true,
 				meta: { variant: 'flip' },
+				isVipOnly: true,
 			},
 			{
 				id: 'digital-vertical',
@@ -138,8 +137,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'analog',
 				label: 'ساعت آنالوگ',
 				size: { w: 1, h: 1 },
-				isVipOnly: true,
 				meta: { variant: 'analog' },
+				isVipOnly: true,
 			},
 		],
 		canDuplicate: false,

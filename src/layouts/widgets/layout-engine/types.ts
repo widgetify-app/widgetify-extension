@@ -13,13 +13,13 @@ export enum WidgetKeys {
 	HabitTracker = 'HabitTracker',
 	search = 'search',
 	bookmarks = 'bookmarks',
-	widgetify = 'widgetify',
-	clock = 'clock',
+	widgetify = 'widgetify', // @deprecated, will be removed in future versions
 	pet = 'pet',
 	transparentClock = 'transparentClock',
 	moodTracker = 'moodTracker',
 	googleCalendar = 'googleCalendar',
 	photo = 'photo',
+	clock = 'clock',
 }
 
 export interface WidgetPosition {

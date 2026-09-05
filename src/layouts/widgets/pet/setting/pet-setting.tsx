@@ -3,7 +3,7 @@ import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
 import { TextInput } from '@/components/text-input'
-import { BASE_PET_OPTIONS, PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import { BASE_PET_OPTIONS, PetTypes } from '../pet.context'
 const persianType: Record<string, string> = {
 	dog: 'سگ',
 	chicken: 'مرغ',

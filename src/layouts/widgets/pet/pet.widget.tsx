@@ -1,5 +1,5 @@
-import { PetProvider } from '@/layouts/widgetify-card/pets/pet.context'
-import { PetFactory } from '@/layouts/widgetify-card/pets/pet-factory'
+import { PetProvider } from './pet.context'
+import { PetFactory } from './pet-factory'
 import { WidgetContainer } from '../widget-container'
 
 export function PetWidget() {

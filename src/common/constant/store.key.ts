@@ -1,7 +1,7 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetSettings } from '@/layouts/widgetify-card/pets/pet.context'
+import type { PetSettings } from '@/layouts/widgets/pet/pet.context'
 import type { ComboTabType } from '@/layouts/widgets/combo-widget/combo-widget.layout'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type {
