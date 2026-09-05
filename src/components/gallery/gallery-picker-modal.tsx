@@ -11,7 +11,7 @@ import {
 	type GalleryAssetType,
 } from '@/services/hooks/gallery/get-gallery-assets.hook'
 import { GalleryAssetPurchaseModal } from './gallery-asset-purchase-modal'
-import { GalleryPinterestItem } from './gallery-pinterest-item'
+import { GalleryPhotoItem } from './gallery-photo-item'
 import { GalleryBookmarkIconItem } from './gallery-bookmark-icon-item'
 
 interface GalleryPickerModalProps {
@@ -93,7 +93,7 @@ export function GalleryPickerModal({
 				direction="rtl"
 				closeOnBackdropClick={true}
 			>
-				<div className="flex flex-col w-full gap-4 p-1">
+				<div className="flex flex-col w-full gap-4 p-1 h-[70vh]">
 					{categories.length > 0 && (
 						<div className="flex items-center gap-1.5 overflow-y-hidden h-12 overflow-x-auto no-scrollbar">
 							<Chip
@@ -116,14 +116,14 @@ export function GalleryPickerModal({
 						</div>
 					)}
 
-					<div className="flex-1 pr-1 overflow-y-auto">
+					<div className="flex-1 pr-1">
 						{isLoading ? (
-							type === 'BOOKMARK_ICON' ? (
+							type === 'BOOKMARK_ICON' || type === 'AVATAR' ? (
 								<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
-									{[...Array(10)].map((_, idx) => (
+									{[...Array(15)].map((_, idx) => (
 										<div
 											key={idx}
-											className="w-full aspect-square rounded-2xl bg-base-300 animate-pulse"
+											className="w-full aspect-square rounded-2xl skeleton"
 										/>
 									))}
 								</div>
@@ -132,9 +132,9 @@ export function GalleryPickerModal({
 									{[...Array(8)].map((_, idx) => (
 										<div
 											key={idx}
-											className="w-full rounded-2xl bg-base-300 animate-pulse break-inside-avoid"
+											className="w-full rounded-2xl skeleton break-inside-avoid"
 											style={{
-												height: `${(idx % 3) * 60 + 160}px`,
+												height: `${(idx % 3) * 35 + 110}px`,
 											}}
 										/>
 									))}
@@ -149,7 +149,7 @@ export function GalleryPickerModal({
 								/>
 								<p className="text-sm font-medium">هیچ تصویری پیدا نشد</p>
 							</div>
-						) : type === 'BOOKMARK_ICON' ? (
+						) : type === 'BOOKMARK_ICON' || type === 'AVATAR' ? (
 							<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
 								{assets.map((asset) => (
 									<GalleryBookmarkIconItem
@@ -163,7 +163,7 @@ export function GalleryPickerModal({
 						) : (
 							<div className="gap-3 space-y-3 columns-2 sm:columns-3 md:columns-4">
 								{assets.map((asset) => (
-									<GalleryPinterestItem
+									<GalleryPhotoItem
 										key={asset.id}
 										asset={asset}
 										isSelected={selectedAssetId === asset.id}
