@@ -195,34 +195,18 @@ export function BookmarkGrid({
 
 	const isAutoRows = isModal || !rowsCount
 
-	const gridColsClass =
-		colsCount === 1 ? 'grid-cols-1' : colsCount === 2 ? 'grid-cols-2' : 'grid-cols-5'
-
-	const gridRowsClass =
-		rowsCount === 1
-			? 'grid-rows-1'
-			: rowsCount === 2
-				? 'grid-rows-2'
-				: rowsCount === 3
-					? 'grid-rows-3'
-					: ''
-
 	return (
 		<div
-			style={
-				isAutoRows
-					? {
-							gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
-						}
-					: {
-							gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
-							gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
-						}
-			}
+			style={{
+				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+				...(!isAutoRows && {
+					gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
+				}),
+			}}
 			className={
 				isAutoRows
-					? `grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] ${gridColsClass} gap-2 p-0.5 transition-all duration-300 rounded-2xl`
-					: `grid w-full h-full grid-flow-row ${gridColsClass} ${gridRowsClass} gap-1.5 transition-all duration-300 rounded-2xl`
+					? 'grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] gap-2 p-0.5 transition-all duration-300 rounded-2xl'
+					: 'grid w-full h-full grid-flow-row gap-1.5 transition-all duration-300 rounded-2xl'
 			}
 		>
 			<SortableContext

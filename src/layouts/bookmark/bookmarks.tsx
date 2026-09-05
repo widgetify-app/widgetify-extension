@@ -52,36 +52,8 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		})
 	)
 
-	let colsCount = 5
-	let rowsCount = 2
-
-	if (size) {
-		if (size.w === 1 && size.h === 1) {
-			colsCount = 1
-			rowsCount = 1
-		} else if (size.w === 1) {
-			colsCount = 1
-			rowsCount = size.h
-		} else if (size.w === 2 && size.h === 1) {
-			colsCount = 2
-			rowsCount = 1
-		} else if (size.w === 2 && size.h === 2) {
-			colsCount = 2
-			rowsCount = 2
-		} else if (size.w === 2 && size.h >= 3) {
-			colsCount = 2
-			rowsCount = 5
-		} else if (size.w === 2) {
-			colsCount = 2
-			rowsCount = size.h
-		} else if (size.w === 4 && size.h === 1) {
-			colsCount = 5
-			rowsCount = 1
-		} else if (size.w === 4) {
-			colsCount = 5
-			rowsCount = size.h
-		}
-	}
+	const colsCount = size ? (size.w === 4 ? 5 : size.w) : 5
+	const rowsCount = size ? size.h : 2
 
 	const TOTAL_BOOKMARKS = colsCount * rowsCount
 

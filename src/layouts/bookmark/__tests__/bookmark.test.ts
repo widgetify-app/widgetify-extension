@@ -60,36 +60,8 @@ function computeBookmarkGridDimensions(size?: WidgetSize): {
 	rowsCount: number
 	totalBookmarks: number
 } {
-	let colsCount = 5
-	let rowsCount = 2
-
-	if (size) {
-		if (size.w === 1 && size.h === 1) {
-			colsCount = 1
-			rowsCount = 1
-		} else if (size.w === 1) {
-			colsCount = 1
-			rowsCount = size.h
-		} else if (size.w === 2 && size.h === 1) {
-			colsCount = 2
-			rowsCount = 1
-		} else if (size.w === 2 && size.h === 2) {
-			colsCount = 2
-			rowsCount = 2
-		} else if (size.w === 2 && size.h >= 3) {
-			colsCount = 2
-			rowsCount = 5
-		} else if (size.w === 2) {
-			colsCount = 2
-			rowsCount = size.h
-		} else if (size.w === 4 && size.h === 1) {
-			colsCount = 5
-			rowsCount = 1
-		} else if (size.w === 4) {
-			colsCount = 5
-			rowsCount = size.h
-		}
-	}
+	const colsCount = size ? (size.w === 4 ? 5 : size.w) : 5
+	const rowsCount = size ? size.h : 2
 
 	return {
 		colsCount,
@@ -293,11 +265,11 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(dim.totalBookmarks).toBe(4)
 	})
 
-	it('computes vertical size (2x4) as 10 bookmark slots in 5 rows of 2', () => {
+	it('computes vertical size (2x4) as 8 bookmark slots in 4 rows of 2', () => {
 		const dim = computeBookmarkGridDimensions({ w: 2, h: 4 })
 		expect(dim.colsCount).toBe(2)
-		expect(dim.rowsCount).toBe(5)
-		expect(dim.totalBookmarks).toBe(10)
+		expect(dim.rowsCount).toBe(4)
+		expect(dim.totalBookmarks).toBe(8)
 	})
 
 	it('pads bookmarks array with null empty slots up to total count', () => {
@@ -378,10 +350,7 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 			},
 		]
 
-		const filterForWidget = (
-			widgetId?: string | null,
-			isPrimary?: boolean
-		) => {
+		const filterForWidget = (widgetId?: string | null, isPrimary?: boolean) => {
 			return mixedBookmarks.filter((b) => {
 				if (b.parentId !== null) return false
 				const shouldIncludeLegacy =
@@ -403,10 +372,7 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		// Primary / Default widget receives legacy bookmarks + its own
 		const primaryItems = filterForWidget('bookmarks-default', true)
 		expect(primaryItems).toHaveLength(2)
-		expect(primaryItems.map((b) => b.id)).toEqual([
-			'legacy-bm',
-			'default-widget-bm',
-		])
+		expect(primaryItems.map((b) => b.id)).toEqual(['legacy-bm', 'default-widget-bm'])
 
 		// Primary widget with a dynamic MongoDB ObjectId (e.g. 6a8624e1...) ALSO receives legacy bookmarks + default
 		const mongoPrimaryItems = filterForWidget('6a8624e18ad0a538d22483dd', true)
@@ -419,10 +385,7 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		// Generic / Simplify / Advanced view without instanceId also receives legacy bookmarks
 		const genericItems = filterForWidget(null, true)
 		expect(genericItems).toHaveLength(2)
-		expect(genericItems.map((b) => b.id)).toEqual([
-			'legacy-bm',
-			'default-widget-bm',
-		])
+		expect(genericItems.map((b) => b.id)).toEqual(['legacy-bm', 'default-widget-bm'])
 
 		// Duplicated / New separate instance receives ONLY its own bookmarks and starts clean
 		const duplicatedItems = filterForWidget('bookmarks-duplicated-123', false)
