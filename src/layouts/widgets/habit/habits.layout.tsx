@@ -12,7 +12,7 @@ import { useGetHabits } from '@/services/hooks/habit/get-habits.hook'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { WidgetContainer } from '../widget-container'
 import { HabitDetailModal } from './components/habit-detail.modal'
-import { HabitFormModal } from './components/habit-form.modal'
+import { HabitFormModal } from './components/habit-form-modal'
 import { HabitItem } from './components/item/habit.item'
 import { callEvent } from '@/common/utils/call-event'
 import { HabitItemSkeleton } from './components/item/habit-item.skeleton'
@@ -131,7 +131,7 @@ export function HabitsContent() {
 				</div>
 			</div>
 
-			<div className="mt-1 grow overflow-hidden">
+			<div className="mt-1 overflow-hidden grow">
 				<div className="space-y-1.5 overflow-y-auto scrollbar-none h-full">
 					{isLoading ? (
 						<div className="flex flex-col gap-1.5">

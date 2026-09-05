@@ -63,11 +63,11 @@ export function BrowserBookmark() {
 
 	return (
 		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-0.5">
-			<div className="flex flex-row items-center w-full gap-1 py-0.5 overflow-x-auto no-scrollbar scroll-smooth">
+			<div className="flex flex-row items-center w-full gap-1 py-0.5 overflow-x-auto scrollbar-none scroll-smooth">
 				<div className="flex items-center shrink-0">
 					<button
 						type="button"
-						className="flex items-center cursor-pointer group border-none bg-transparent p-0"
+						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={() => onClickToExplorer()}
 					>
 						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
@@ -87,7 +87,7 @@ export function BrowserBookmark() {
 				<div ref={iconRef} className="flex items-center justify-center shrink-0">
 					<button
 						type="button"
-						className="flex items-center cursor-pointer group border-none bg-transparent p-0"
+						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={handleTogglePopover}
 					>
 						<div

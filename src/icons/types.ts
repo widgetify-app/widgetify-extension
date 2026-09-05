@@ -141,4 +141,5 @@ export type IconName =
 	| 'wifiOff'
 	| 'infinity'
 	| 'ticket'
+	| 'minus'
 export type IconMap = Record<IconName, IconType>
