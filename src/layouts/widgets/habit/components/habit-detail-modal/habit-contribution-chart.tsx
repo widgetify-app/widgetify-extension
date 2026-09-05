@@ -7,8 +7,7 @@ import { safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
-import { Icon } from '@/src/icons'
-import { getHabitUnitLabel } from '../utils'
+import { getHabitUnitLabel } from '../../utils'
 import { cn } from '@/common/utils/cn'
 
 interface HabitContributionChartProps {
@@ -224,67 +223,6 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				<div className="flex flex-col p-2.5 rounded-2xl bg-base-200/80 border border-base-300">
-					<div className="flex items-center gap-1.5 text-xs text-muted mb-1">
-						<span className="text-warning">
-							<Icon name="strike" size={14} />
-						</span>
-						<span>استریک فعلی</span>
-					</div>
-					<div className="flex items-baseline gap-1">
-						<span className="text-lg font-bold text-content">
-							{stats.currentStreak}
-						</span>
-						<span className="text-[11px] text-muted">روز</span>
-					</div>
-				</div>
-
-				<div className="flex flex-col p-2.5 rounded-2xl bg-base-200/80 border border-base-300">
-					<div className="flex items-center gap-1.5 text-xs text-muted mb-1">
-						<span className="text-amber-400">
-							<Icon name="cup" size={14} />
-						</span>
-						<span>بهترین رکورد</span>
-					</div>
-					<div className="flex items-baseline gap-1">
-						<span className="text-lg font-bold text-content">
-							{stats.longestStreak}
-						</span>
-						<span className="text-[11px] text-muted">روز</span>
-					</div>
-				</div>
-
-				<div className="flex flex-col p-2.5 rounded-2xl bg-base-200/80 border border-base-300">
-					<div className="flex items-center gap-1.5 text-xs text-muted mb-1">
-						<span className="text-primary">
-							<Icon name="target" size={14} />
-						</span>
-						<span>روزهای موفق</span>
-					</div>
-					<div className="flex items-baseline gap-1">
-						<span className="text-lg font-bold text-content">
-							{stats.totalCompleted}
-						</span>
-						<span className="text-[11px] text-muted">روز</span>
-					</div>
-				</div>
-
-				<div className="flex flex-col p-2.5 rounded-2xl bg-base-200/80 border border-base-300">
-					<div className="flex items-center gap-1.5 text-xs text-muted mb-1">
-						<span className="text-success">
-							<Icon name="check" size={14} />
-						</span>
-						<span>نرخ موفقیت</span>
-					</div>
-					<div className="flex items-baseline gap-1">
-						<span className="text-lg font-bold text-content">
-							{stats.completionRate}٪
-						</span>
-					</div>
-				</div>
-			</div>
-
 			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-base-200/50 border-base-300/80">
 				<div className="pb-1 pl-1 overflow-x-auto scrollbar-thin">
 					<div className="inline-flex flex-col min-w-full gap-1">
