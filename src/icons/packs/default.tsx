@@ -133,6 +133,19 @@ import { BsFilterLeft, BsGenderAmbiguous } from 'react-icons/bs'
 import { IoPricetagOutline } from 'react-icons/io5'
 import { VscColorMode, VscMegaphone, VscPlay, VscRecordKeys } from 'react-icons/vsc'
 
+function ProDiamondIcon(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em" {...props}>
+			<path d="M4.9 6.2C4.9 7.4 4.3 8.3 3.1 8.4C4.3 8.5 4.9 9.4 4.9 10.6C5.0 9.4 5.6 8.5 6.8 8.4C5.6 8.3 5.0 7.4 4.9 6.2Z" />
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M8.2 5.3C8.6 4.9 9.3 4.8 9.8 5.1L20.4 11.2C21.0 11.6 21.2 12.3 20.9 12.9L11.7 18.7C11.2 19.0 10.6 19.0 10.1 18.6L5.4 11.8C5.0 11.2 5.1 10.4 5.7 9.9L8.2 5.3ZM11.8 7.3L14.6 8.1C14.8 8.2 15.0 8.4 14.9 8.7L14.3 10.1C14.2 10.3 14.0 10.4 13.7 10.4L11.2 9.8C10.9 9.7 10.8 9.4 10.9 9.1L11.3 7.6C11.4 7.4 11.6 7.2 11.8 7.3ZM16.3 8.6L18.5 9.9C18.7 10.0 18.8 10.3 18.6 10.5L17.6 11.0C17.4 11.1 17.2 11.0 17.0 10.9L15.6 9.8C15.4 9.6 15.4 9.3 15.6 9.1L15.9 8.7C16.0 8.6 16.2 8.5 16.3 8.6ZM10.9 11.3C11.1 11.2 11.4 11.3 11.5 11.5L13.6 12.3C13.8 12.4 13.9 12.6 13.8 12.8L12.2 16.0C12.0 16.3 11.6 16.3 11.4 16.1L10.7 12.0C10.6 11.7 10.7 11.4 10.9 11.3ZM14.6 12.3C14.8 12.2 15.1 12.2 15.3 12.3L18.1 12.7C18.4 12.7 18.5 13.0 18.3 13.2L13.8 15.7C13.5 15.8 13.3 15.6 13.4 15.3L14.3 12.6C14.4 12.4 14.5 12.3 14.6 12.3Z"
+			/>
+		</svg>
+	)
+}
+
 export const defaultIcons = {
 	home: HiHome,
 	calendar: BiCalendar,
@@ -237,6 +250,7 @@ export const defaultIcons = {
 	outlineFilterList: MdOutlineFilterList,
 	crown: FaCrown,
 	outlineCrown: AiOutlineCrown,
+	diamond: ProDiamondIcon,
 	filterLeft: BsFilterLeft,
 	upDown: TbArrowsUpDown,
 	coffee: FiCoffee,

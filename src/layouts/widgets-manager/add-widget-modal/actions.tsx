@@ -22,11 +22,11 @@ function ProUpgradeButton({ label }: { label: string }) {
 		<Button
 			type="button"
 			onClick={() => callEvent('openSettings', 'vip')}
-			className="flex items-center justify-center w-full gap-2 font-bold border bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-500 border-indigo-500/30"
+			className="flex items-center justify-center w-full gap-2 font-bold text-indigo-500 border bg-indigo-500/15 hover:bg-indigo-500/25 border-indigo-500/30"
 			rounded={'2xl'}
 			variant={'default'}
 		>
-			<Icon name="crown" size={14} />
+			<Icon name="diamond" size={14} />
 			<span>{label}</span>
 		</Button>
 	)

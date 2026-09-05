@@ -105,6 +105,7 @@ export type IconName =
 	| 'outlineFilterListOff'
 	| 'crown'
 	| 'outlineCrown'
+	| 'diamond'
 	| 'filterLeft'
 	| 'upDown'
 	| 'coffee'

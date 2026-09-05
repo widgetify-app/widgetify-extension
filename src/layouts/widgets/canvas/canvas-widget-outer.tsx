@@ -13,6 +13,7 @@ import {
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/src/icons'
+import { ProBadge } from '@/components/ui/badge/vip-badge'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
@@ -376,36 +377,34 @@ function CanvasWidgetOuterImpl({
 						isWiggling && WIGGLE_CLASSES[wiggleVariant]
 					)}
 				>
-					<WidgetSlot
-						definition={definition}
-						instanceId={widget.instanceId}
-						size={widget.size}
-						meta={widget.meta}
-					/>
+					{(!isLocked || canvasMode === 'edit') && (
+						<WidgetSlot
+							definition={definition}
+							instanceId={widget.instanceId}
+							size={widget.size}
+							meta={widget.meta}
+						/>
+					)}
 					{isLocked && canvasMode === 'normal' && (
 						<div
-							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-indigo-500/25 flex flex-col items-center justify-center p-1.5 text-center select-none cursor-default overflow-hidden"
-							style={{
-								zIndex: 1000,
+							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-[#0327aa]/20 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-[#0327aa]/40"
+							onClick={(e) => {
+								e.stopPropagation()
+								callEvent('openSettings', 'vip')
 							}}
-							onClick={(e) => e.stopPropagation()}
 						>
-							<div
-								className={cn(
-									'rounded-full bg-indigo-500/15 text-indigo-500 flex items-center justify-center shadow-2xs',
-									isCompactSize ? 'w-6 h-6 mb-1' : 'w-8 h-8 mb-1.5'
+							<div className="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:scale-105">
+								<ProBadge
+									size={isCompactSize ? 'xs' : 'sm'}
+									variant="indigo"
+									rounded="full"
+								/>
+								{!isCompactSize && (
+									<span className="text-[11px] font-medium text-muted transition-colors duration-200 group-hover:text-content">
+										ارتقا به اشتراک پرو
+									</span>
 								)}
-							>
-								<Icon name="crown" size={isCompactSize ? 12 : 15} />
 							</div>
-							<span
-								className={cn(
-									'font-bold text-content leading-tight',
-									isCompactSize ? 'text-[10px]' : 'text-xs'
-								)}
-							>
-								{isCompactSize ? 'مخصوص پرو' : 'مخصوص کاربران پرو'}
-							</span>
 						</div>
 					)}
 					{canvasMode === 'edit' && (

@@ -40,7 +40,7 @@ export function VipBannerCard({
 		>
 			<div className="flex items-center min-w-0 gap-3">
 				<div className="flex items-center justify-center text-indigo-500 transition-transform duration-200 w-11 h-11 rounded-2xl shrink-0 group-hover:scale-105">
-					<Icon name="crown" size={22} />
+					<Icon name="diamond" size={22} />
 				</div>
 
 				<div className="flex flex-col min-w-0 text-right">
