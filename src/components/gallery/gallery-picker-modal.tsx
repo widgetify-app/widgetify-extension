@@ -95,7 +95,7 @@ export function GalleryPickerModal({
 			>
 				<div className="flex flex-col w-full gap-4 p-1 h-[70vh]">
 					{categories.length > 0 && (
-						<div className="flex items-center gap-1.5 overflow-y-hidden h-12 overflow-x-auto no-scrollbar">
+						<div className="flex items-center gap-1.5 overflow-y-hidden h-12 overflow-x-auto scrollbar-none">
 							<Chip
 								selected={selectedCategory === 'ALL'}
 								onClick={() => setSelectedCategory('ALL')}

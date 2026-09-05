@@ -3,8 +3,9 @@ import { Button, Modal } from '@/components/ui'
 import { useGetHabitDetail } from '@/services/hooks/habit/get-habit-detail.hook'
 import { HabitCalendar } from './habit-calendar-heatmap'
 import { HabitContributionChart } from './habit-contribution-chart'
+import { HabitStatsCards } from './habit-stats-cards'
 import { useAuth } from '@/context/auth.context'
-import { formatHabitGoal } from '../utils'
+import { formatHabitGoal } from '../../utils'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
@@ -12,7 +13,7 @@ import { Icon } from '@/src/icons'
 import { cn } from '@/common/utils/cn'
 
 const HabitShareModal = lazy(() =>
-	import('./habit-share-modal').then((module) => ({
+	import('../habit-share-modal').then((module) => ({
 		default: module.HabitShareModal,
 	}))
 )
@@ -153,54 +154,71 @@ export function HabitDetailModal({
 					</div>
 				) : (
 					<div className="flex flex-col gap-3 p-2">
-						<div className="flex items-center justify-between gap-2">
-							<div className="flex items-center p-1 border bg-base-300/40 rounded-2xl border-base-content/5">
-								<button
-									type="button"
-									onClick={() => setActiveView('contribution')}
-									className={cn(
-										'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
-										activeView === 'contribution'
-											? 'bg-base-200 text-content shadow-sm'
-											: 'text-muted hover:text-content'
-									)}
-								>
-									<Icon name="squares2X2" size={13} />
-									<span>نمودار فعالیت</span>
-								</button>
-								<button
-									type="button"
-									onClick={() => setActiveView('calendar')}
-									className={cn(
-										'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
-										activeView === 'calendar'
-											? 'bg-base-200 text-content shadow-sm'
-											: 'text-muted hover:text-content'
-									)}
-								>
-									<Icon name="calendar" size={13} />
-									<span>تقویم ماهانه</span>
-								</button>
-							</div>
-						</div>
+						<HabitStatsCards habit={habit} />
 
-						{activeView === 'contribution' ? (
-							<HabitContributionChart habit={habit} color={color} />
-						) : (
-							<HabitCalendar habit={habit} color={color} />
-						)}
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-base-200/50 border-base-300/80">
+							<div className="flex items-center justify-between gap-2">
+								<div className="flex items-center p-1 border bg-base-300/40 rounded-2xl border-base-content/5">
+									<button
+										type="button"
+										onClick={() => setActiveView('contribution')}
+										className={cn(
+											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+											activeView === 'contribution'
+												? 'bg-base-200 text-content shadow-sm'
+												: 'text-muted hover:text-content'
+										)}
+									>
+										<Icon name="squares2X2" size={13} />
+										<span>نمودار فعالیت</span>
+									</button>
+									<button
+										type="button"
+										onClick={() => setActiveView('calendar')}
+										className={cn(
+											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+											activeView === 'calendar'
+												? 'bg-base-200 text-content shadow-sm'
+												: 'text-muted hover:text-content'
+										)}
+									>
+										<Icon name="calendar" size={13} />
+										<span>تقویم ماهانه</span>
+									</button>
+								</div>
+							</div>
+
+							{activeView === 'contribution' ? (
+								<HabitContributionChart habit={habit} color={color} />
+							) : (
+								<HabitCalendar habit={habit} color={color} />
+							)}
+						</div>
 					</div>
 				)}
-				<Button
-					size="md"
-					variant="primary"
-					className="w-full text-xs border-none"
-					rounded="xl"
-					onClick={() => setIsShareModalOpen(true)}
-				>
-					<Icon name="cameraPlus" size={15} />
-					اشتراک گذاری
-				</Button>
+
+				<div className="flex flex-row w-full gap-2 px-2">
+					<Button
+						size="md"
+						variant="default"
+						className="flex-1 text-xs"
+						rounded="xl"
+						onClick={() => setIsShareModalOpen(true)}
+					>
+						<Icon name="cameraPlus" size={15} />
+						اشتراک گذاری
+					</Button>
+					<Button
+						className="flex-1 text-xs"
+						size="md"
+						variant="default"
+						rounded="xl"
+						onClick={onClickEdit}
+					>
+						<Icon name="pen" size={14} />
+						ویرایش
+					</Button>
+				</div>
 			</Modal>
 
 			{habit && isShareModalOpen && (

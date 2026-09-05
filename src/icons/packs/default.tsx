@@ -42,6 +42,7 @@ import {
 	LuHistory,
 	LuLayers,
 	LuLayoutTemplate,
+	LuMinus,
 	LuPen,
 	LuPlus,
 	LuTicket,
@@ -286,4 +287,5 @@ export const defaultIcons = {
 	wifiOff: BiWifiOff,
 	infinity: TbInfinity,
 	ticket: LuTicket,
+	minus: LuMinus,
 } satisfies IconMap
