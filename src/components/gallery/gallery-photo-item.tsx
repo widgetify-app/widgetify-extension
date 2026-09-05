@@ -5,17 +5,13 @@ import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
 import { useLazyLoad } from '@/layouts/setting/tabs/wallpapers/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 
-interface GalleryPinterestItemProps {
+interface GalleryPhotoItemProps {
 	asset: GalleryAsset
 	isSelected: boolean
 	onClick: () => void
 }
 
-export function GalleryPinterestItem({
-	asset,
-	isSelected,
-	onClick,
-}: GalleryPinterestItemProps) {
+export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoItemProps) {
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
 	const imgRef = useRef<HTMLImageElement>(null)
@@ -39,13 +35,13 @@ export function GalleryPinterestItem({
 			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-base-200/50 ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 		>
 			{!loaded && (
-				<div className="flex items-center justify-center w-full min-h-40 bg-base-300">
+				<div className="flex items-center justify-center w-full min-h-28 bg-base-300/30">
 					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
 				</div>
 			)}
 
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full min-h-35 bg-error/10">
+				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-error/10">
 					<Icon name="alert" className="text-error" />
 					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
 				</div>
