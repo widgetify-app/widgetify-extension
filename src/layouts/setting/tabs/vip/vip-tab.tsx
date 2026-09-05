@@ -12,7 +12,6 @@ import {
 	usePurchaseVipPlan,
 } from '@/services/hooks/market/market-vip.hook'
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
-import { formatVipExpiryDate, formatVipRemaining } from '@/common/utils/vip-expiry'
 import { cn } from '@/common/utils/cn'
 import vipPreviewImg from '@/assets/images/pro-preview.jpg'
 
@@ -163,7 +162,7 @@ export function VipTab() {
 					<div className="space-y-1">
 						<div className="flex items-center gap-2">
 							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-primary/10 text-primary">
-								<Icon name="crown" size={18} />
+								<Icon name="diamond" size={18} />
 							</div>
 							<h2 className="text-xl font-black tracking-tight sm:text-2xl text-content">
 								ویجتیفای{' '}
@@ -390,7 +389,7 @@ export function VipTab() {
 							onClick={handlePurchase}
 							className="font-bold text-white bg-indigo-500 transition-all flex items-center justify-center gap-1.5 px-6 h-10 shadow-xs cursor-pointer hover:bg-indigo-500/80!"
 						>
-							<Icon name="crown" size={14} />
+							<Icon name="diamond" size={14} />
 							<span>فعال‌سازی {VIP_LABEL}</span>
 						</Button>
 					</div>

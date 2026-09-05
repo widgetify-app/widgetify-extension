@@ -48,7 +48,7 @@ export function VipBadge({
 			)}
 			{...props}
 		>
-			<Icon name="crown" size={iconSize} />
+			<Icon name="diamond" size={iconSize} />
 			{!iconOnly && <span>{text}</span>}
 		</span>
 	)
