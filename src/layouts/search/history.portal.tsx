@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useSearchSuggestions } from '@/services/hooks/search/get-suggest-search.hook'
 import { SuggestionSkeleton } from './suggestion/suggestion.skeleton'
 import { useAuth } from '@/context/auth.context'
@@ -72,15 +72,29 @@ export function SearchHistoryPortal({
 	const showLocalSearches =
 		user?.searchAutocompleteEnabled && recentSearches.length > 0 && !hasQuery
 
-	const currentList = hasQuery
-		? combinedSuggestions
-		: showLocalSearches
-			? recentSearches.map((f) => ({ isRecent: true, text: f.query }))
-			: []
+	const currentList = useMemo(() => {
+		return hasQuery
+			? combinedSuggestions
+			: showLocalSearches
+				? recentSearches.map((f) => ({ isRecent: true, text: f.query }))
+				: []
+	}, [hasQuery, combinedSuggestions, showLocalSearches, recentSearches])
 
+	const onSuggestionsChangeRef = useRef(onSuggestionsChange)
+	onSuggestionsChangeRef.current = onSuggestionsChange
+
+	const prevListRef = useRef(currentList)
 	useEffect(() => {
-		onSuggestionsChange?.(currentList)
-	}, [currentList, onSuggestionsChange])
+		const prev = prevListRef.current
+		const hasChanged =
+			prev.length !== currentList.length ||
+			prev.some((item, i) => item.text !== currentList[i]?.text || item.isRecent !== currentList[i]?.isRecent)
+
+		if (hasChanged) {
+			prevListRef.current = currentList
+			onSuggestionsChangeRef.current?.(currentList)
+		}
+	}, [currentList])
 
 	const handleSearch = (query: string) => {
 		if (user?.searchAutocompleteEnabled) addSearch(query)
