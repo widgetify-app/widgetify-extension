@@ -1,5 +1,5 @@
 import type { VariantProps } from 'class-variance-authority'
-import React, { type ReactNode, useEffect, useRef } from 'react'
+import React, { type ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -22,7 +22,11 @@ export type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
 	className?: string
+	zIndex?: number
 }
+
+let globalModalCounter = 0
+const BASE_MODAL_Z_INDEX = 1000
 
 export function Modal({
 	isOpen,
@@ -34,8 +38,18 @@ export function Modal({
 	direction = 'ltr',
 	showCloseButton = true,
 	className,
+	zIndex: customZIndex,
 }: ModalProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const [assignedZIndex, setAssignedZIndex] = useState<number>(() => {
+		if (isOpen) {
+			globalModalCounter += 1
+			return customZIndex !== undefined
+				? customZIndex
+				: BASE_MODAL_Z_INDEX + globalModalCounter * 20
+		}
+		return customZIndex !== undefined ? customZIndex : BASE_MODAL_Z_INDEX
+	})
 	const { isOptimalMode } = useGeneralSetting()
 
 	const modalDurationMs = isOptimalMode ? 0 : MODAL_EXIT_MS
@@ -45,11 +59,17 @@ export function Modal({
 		if (!dialog) return
 
 		if (isOpen) {
+			globalModalCounter += 1
+			const computedZ =
+				customZIndex !== undefined
+					? customZIndex
+					: BASE_MODAL_Z_INDEX + globalModalCounter * 20
+			setAssignedZIndex(computedZ)
 			dialog.setAttribute('open', '')
 		} else {
 			dialog.removeAttribute('open')
 		}
-	}, [isOpen])
+	}, [isOpen, customZIndex])
 
 	useEffect(() => {
 		const dialog = dialogRef.current
@@ -77,7 +97,12 @@ export function Modal({
 			}}
 			onContextMenu={(e) => e.stopPropagation()}
 			className={cn('flex items-center justify-center', modalDialogVariants())}
-			style={{ '--modal-duration': `${modalDurationMs}ms` } as React.CSSProperties}
+			style={
+				{
+					'--modal-duration': `${modalDurationMs}ms`,
+					zIndex: assignedZIndex ?? (customZIndex !== undefined ? customZIndex : BASE_MODAL_Z_INDEX),
+				} as React.CSSProperties
+			}
 		>
 			<div
 				onClick={(e) => e.stopPropagation()}

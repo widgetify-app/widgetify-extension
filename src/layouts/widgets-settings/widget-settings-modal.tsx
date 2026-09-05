@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 import { Modal } from '@/components/ui'
 import { PetSettings } from '../widgetify-card/pets/setting/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
@@ -6,7 +6,6 @@ import { WeatherSetting } from '../widgets/weather/weather-setting'
 import { WigiArzSetting } from '../widgets/wigi-arz/wigi-arz-setting'
 import { WigiPadSetting } from '../widgets/wigi-pad/wigi-pad-setting'
 import { WidgetTabKeys } from './constant/tab-keys'
-import { AddWidgetModal } from '../widgets-manager'
 
 interface WidgetSettingModalConfig {
 	title: string
@@ -61,9 +60,6 @@ export function WidgetSettingsModal({
 	size,
 	onCloseSetting,
 }: WidgetSettingsModalProps) {
-	const isManageOpen =
-		isOpen && (!selectedTab || selectedTab === WidgetTabKeys.widget_management)
-
 	const settingKey =
 		activeSettingTab ||
 		(selectedTab && selectedTab !== WidgetTabKeys.widget_management
@@ -74,21 +70,17 @@ export function WidgetSettingsModal({
 	const handleCloseSetting = onCloseSetting || onClose
 
 	return (
-		<>
-			<AddWidgetModal isOpen={isManageOpen} onClose={onClose} />
-
-			<Modal
-				isOpen={!!activeSettingConfig}
-				onClose={handleCloseSetting}
-				title={activeSettingConfig?.title}
-				size={activeSettingConfig?.size}
-				direction="rtl"
-				closeOnBackdropClick
-			>
-				{activeSettingConfig && (
-					<activeSettingConfig.Component {...({ instanceId, size } as any)} />
-				)}
-			</Modal>
-		</>
+		<Modal
+			isOpen={!!activeSettingConfig}
+			onClose={handleCloseSetting}
+			title={activeSettingConfig?.title}
+			size={activeSettingConfig?.size}
+			direction="rtl"
+			closeOnBackdropClick
+		>
+			{activeSettingConfig && (
+				<activeSettingConfig.Component {...({ instanceId, size } as any)} />
+			)}
+		</Modal>
 	)
 }

@@ -89,12 +89,13 @@ export function GalleryPickerModal({
 				onClose={onClose}
 				title={title}
 				size="xl"
+				className=""
 				direction="rtl"
 				closeOnBackdropClick={true}
 			>
-				<div className="flex flex-col gap-4 w-full p-1 min-h-120 max-h-[75vh]">
+				<div className="flex flex-col w-full gap-4 p-1">
 					{categories.length > 0 && (
-						<div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+						<div className="flex items-center gap-1.5 overflow-y-hidden h-12 overflow-x-auto no-scrollbar">
 							<Chip
 								selected={selectedCategory === 'ALL'}
 								onClick={() => setSelectedCategory('ALL')}
