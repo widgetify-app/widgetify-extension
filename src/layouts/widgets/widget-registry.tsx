@@ -364,7 +364,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.HabitTracker]: {
 		id: WidgetKeys.HabitTracker,
-		label: 'عادات',
+		label: 'عادت‌ها',
 		emoji: '🎯',
 		category: 'productivity',
 		order: 8,
