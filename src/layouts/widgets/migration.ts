@@ -9,11 +9,86 @@ const DEFAULT_BOTTOM_WIDGETS: WidgetKeys[] = [
 	WidgetKeys.calendar,
 ]
 
+const topWidgets: StoredWidget[] = [
+	{
+		id: WidgetKeys.wigiPad,
+		instanceId: 'wigipad-default',
+		position: { col: 0, row: 0 },
+		size: { w: 2, h: 3 },
+	},
+	{
+		id: WidgetKeys.search,
+		instanceId: 'search-default',
+		position: { col: 2, row: 0 },
+		size: { w: 4, h: 1 },
+	},
+	{
+		id: WidgetKeys.bookmarks,
+		instanceId: 'bookmarks-default',
+		position: { col: 2, row: 1 },
+		size: { w: 4, h: 2 },
+	},
+	{
+		id: WidgetKeys.photo,
+		instanceId: 'photo-default',
+		position: { col: 6, row: 0 },
+		size: { w: 2, h: 2 },
+		widgetId: 'photo-default',
+	},
+	{
+		id: WidgetKeys.pet,
+		instanceId: 'pet-default',
+		position: { col: 6, row: 2 },
+		size: { w: 2, h: 1 },
+		widgetId: 'pet-default',
+	},
+]
+
+export function replaceWidgetifyWithPetAndPhoto(widgets: StoredWidget[]): {
+	layout: StoredWidget[]
+	hasChanged: boolean
+} {
+	let hasChanged = false
+	const result: StoredWidget[] = []
+
+	for (const widget of widgets) {
+		if (widget.id === WidgetKeys.widgetify) {
+			hasChanged = true
+			const col = widget.position?.col ?? 6
+			const baseRow = widget.position?.row ?? 0
+
+			result.push({
+				id: WidgetKeys.photo,
+				instanceId: 'photo-default',
+				position: { col, row: baseRow },
+				size: { w: 2, h: 2 },
+				widgetId: 'photo-default',
+			})
+
+			result.push({
+				id: WidgetKeys.pet,
+				instanceId: 'pet-default',
+				position: { col, row: baseRow + 2 },
+				size: { w: 2, h: 1 },
+				widgetId: 'pet-default',
+			})
+		} else {
+			result.push(widget)
+		}
+	}
+
+	return { layout: result, hasChanged }
+}
+
 export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 	const existingStored = await getFromStorage('storedWidgets')
 
 	if (Array.isArray(existingStored)) {
-		return existingStored
+		const { layout, hasChanged } = replaceWidgetifyWithPetAndPhoto(existingStored)
+		if (hasChanged) {
+			await setToStorage('storedWidgets', layout)
+		}
+		return layout
 	}
 
 	const { appearance, activeWidgets } = await getMultipleFromStorage([
@@ -76,33 +151,6 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 			},
 		]
 	} else {
-		const topWidgets: StoredWidget[] = [
-			{
-				id: WidgetKeys.wigiPad,
-				instanceId: 'wigipad-default',
-				position: { col: 0, row: 0 },
-				size: { w: 2, h: 3 },
-			},
-			{
-				id: WidgetKeys.search,
-				instanceId: 'search-default',
-				position: { col: 2, row: 0 },
-				size: { w: 4, h: 1 },
-			},
-			{
-				id: WidgetKeys.bookmarks,
-				instanceId: 'bookmarks-default',
-				position: { col: 2, row: 1 },
-				size: { w: 4, h: 2 },
-			},
-			{
-				id: WidgetKeys.widgetify,
-				instanceId: 'widgetify-default',
-				position: { col: 6, row: 0 },
-				size: { w: 2, h: 3 },
-			},
-		]
-
 		let bottomKeys: WidgetKeys[] = DEFAULT_BOTTOM_WIDGETS
 
 		if (Array.isArray(activeWidgets) && activeWidgets.length > 0) {

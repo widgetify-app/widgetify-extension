@@ -56,10 +56,16 @@ export const DEFAULT_WIDGET_LAYOUT: StoredWidget[] = [
 		size: { w: 4, h: 2 },
 	},
 	{
-		id: WidgetKeys.widgetify,
-		instanceId: 'widgetify-default',
+		id: WidgetKeys.photo,
+		instanceId: 'photo-default',
 		position: { col: 6, row: 0 },
-		size: { w: 2, h: 3 },
+		size: { w: 2, h: 2 },
+	},
+	{
+		id: WidgetKeys.pet,
+		instanceId: 'pet-default',
+		position: { col: 6, row: 2 },
+		size: { w: 2, h: 1 },
 	},
 	{
 		id: WidgetKeys.comboWidget,

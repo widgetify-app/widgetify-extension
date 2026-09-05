@@ -4,7 +4,10 @@ import { setToStorage, watchStorage } from '@/common/storage'
 import { DEFAULT_COLS, DEFAULT_WIDGET_LAYOUT } from '@/layouts/widgets/layout-engine'
 import type { StoredWidget } from '@/layouts/widgets/layout-engine/types'
 import { applyInstanceIdMap, buildInstanceIdMap } from '@/layouts/widgets/instance-id'
-import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
+import {
+	migrateWidgetLayoutIfNeeded,
+	replaceWidgetifyWithPetAndPhoto,
+} from '@/layouts/widgets/migration'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
@@ -151,16 +154,21 @@ export function useWidgetSync({
 				if (serverWidgets.length > 0) {
 					if (hasLocalEditRef.current) return
 
+					const rawWidgets: StoredWidget[] = serverWidgets.map((sw) => ({
+						id: sw.widgetKey as any,
+						instanceId: sw.instanceId,
+						widgetId: sw.instanceId,
+						position: { col: sw.col, row: sw.row },
+						size: { w: sw.width, h: sw.height },
+						meta: sw.meta,
+						disabled: sw.disabled,
+					}))
+
+					const { layout: replacedWidgets, hasChanged: wasReplaced } =
+						replaceWidgetifyWithPetAndPhoto(rawWidgets)
+
 					const fromSrv: StoredWidget[] = sanitizeLayout(
-						serverWidgets.map((sw) => ({
-							id: sw.widgetKey as any,
-							instanceId: sw.instanceId,
-							widgetId: sw.instanceId,
-							position: { col: sw.col, row: sw.row },
-							size: { w: sw.width, h: sw.height },
-							meta: sw.meta,
-							disabled: sw.disabled,
-						})),
+						replacedWidgets,
 						DEFAULT_COLS
 					)
 
@@ -168,6 +176,10 @@ export function useWidgetSync({
 					setSavedLayout(fromSrv)
 					applyRuntimeLayout(reflowForColumns(fromSrv, colsRef.current))
 					persistLayout(fromSrv)
+
+					if (wasReplaced) {
+						triggerServerSync(fromSrv)
+					}
 				} else {
 					const localLayout = await migrateWidgetLayoutIfNeeded()
 					if (localLayout && localLayout.length > 0) {
