@@ -5,13 +5,13 @@ import { playAlarm } from './play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
 import { cn } from '@/common/utils/cn'
-import { raiseToTopLayer } from '@/components/ui/portal/portal'
-
-export const TOAST_TOP_LAYER_ID = 'widgetify-toast-top-layer'
 
 function raiseToastLayer() {
 	if (typeof document === 'undefined') return
-	raiseToTopLayer(document.getElementById(TOAST_TOP_LAYER_ID))
+	const toaster = document.querySelector('[data-rht-toaster]') as HTMLElement | null
+	if (toaster) {
+		toaster.style.zIndex = '99999999'
+	}
 }
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning'

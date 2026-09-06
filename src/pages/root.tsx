@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { TOAST_TOP_LAYER_ID } from '@/common/toast'
 import { Portal } from '@/components/ui'
 import {
 	GeneralSettingProvider,
@@ -34,37 +33,35 @@ export function RootLayout() {
 	}, [])
 
 	return (
-		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
-			<IconProvider defaultTheme="default">
+		<IconProvider defaultTheme="default">
+			<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 				<GeneralSettingProvider>
 					<WallpaperProvider>
 						<Main></Main>
 					</WallpaperProvider>
 				</GeneralSettingProvider>
-				<div
-					id={TOAST_TOP_LAYER_ID}
-					className="fixed inset-0 pointer-events-none z-[999999] [&>div]:pointer-events-auto"
-				>
-					<Toaster
-						toastOptions={{
-							error: {
-								style: {
-									backgroundColor: 'var(--color-error)',
-									color: 'var(--color-error-content)',
-								},
-							},
-							success: {
-								style: {
-									backgroundColor: 'var(--color-success)',
-									color: 'var(--color-success-content)',
-								},
-							},
-							duration: 5000,
-						}}
-					/>
-				</div>
-			</IconProvider>
-		</div>
+			</div>
+			<Toaster
+				containerStyle={{
+					zIndex: 99999999,
+				}}
+				toastOptions={{
+					error: {
+						style: {
+							backgroundColor: 'var(--color-error)',
+							color: 'var(--color-error-content)',
+						},
+					},
+					success: {
+						style: {
+							backgroundColor: 'var(--color-success)',
+							color: 'var(--color-success-content)',
+						},
+					},
+					duration: 5000,
+				}}
+			/>
+		</IconProvider>
 	)
 }
 
