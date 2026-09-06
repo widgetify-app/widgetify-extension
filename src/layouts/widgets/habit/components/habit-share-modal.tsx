@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/src/icons'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
-import {
-	copyCanvasToClipboard,
-	downloadCanvasAsImage,
-} from '@/common/utils/canvas'
+import { copyCanvasToClipboard, downloadCanvasAsImage } from '@/common/utils/canvas'
 import { renderHabitShareCanvas } from '../utils/render-habit-share-canvas'
 
 interface HabitShareModalProps {
@@ -15,12 +12,7 @@ interface HabitShareModalProps {
 	color: string
 }
 
-export function HabitShareModal({
-	isOpen,
-	onClose,
-	habit,
-	color,
-}: HabitShareModalProps) {
+export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareModalProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null)
 	const [isGenerating, setIsGenerating] = useState(false)
 
@@ -36,10 +28,7 @@ export function HabitShareModal({
 	}
 
 	const handleDownloadImage = () => {
-		downloadCanvasAsImage(
-			canvasRef.current,
-			`عادت-${habit.title || 'habit'}`
-		)
+		downloadCanvasAsImage(canvasRef.current, `عادت-${habit.title || 'habit'}`)
 	}
 
 	return (
@@ -71,7 +60,7 @@ export function HabitShareModal({
 						<Button
 							variant="outline"
 							size="md"
-							rounded="xl"
+							rounded="2xl"
 							onClick={handleCopyImage}
 							disabled={isGenerating}
 							icon={<Icon name="copy" size={14} />}
@@ -83,7 +72,7 @@ export function HabitShareModal({
 							variant="primary"
 							size="md"
 							className="w-32"
-							rounded="xl"
+							rounded="2xl"
 							onClick={handleDownloadImage}
 							icon={<Icon name="download" size={14} />}
 						>

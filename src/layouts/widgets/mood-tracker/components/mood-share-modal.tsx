@@ -75,7 +75,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						<Button
 							variant="outline"
 							size="md"
-							rounded="xl"
+							rounded="2xl"
 							onClick={handleCopyImage}
 							disabled={isGenerating || isLoading}
 							icon={<Icon name="copy" size={14} />}
@@ -86,7 +86,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						<Button
 							variant="primary"
 							size="md"
-							rounded="xl"
+							rounded="2xl"
 							onClick={handleDownloadImage}
 							disabled={isLoading}
 							icon={<Icon name="download" size={14} />}
