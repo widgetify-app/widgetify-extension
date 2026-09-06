@@ -329,7 +329,10 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			</Modal>
 
 			{isHelpOpen && (
-				<WidgetHelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+				<WidgetHelpModal
+					isOpen={isHelpOpen}
+					onClose={() => setIsHelpOpen(false)}
+				/>
 			)}
 		</>
 	)

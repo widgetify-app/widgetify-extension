@@ -7,7 +7,7 @@ import App from './app'
 
 if (import.meta.env.DEV) {
 	scan({
-		enabled: true,
+		enabled: false,
 		log: true,
 	})
 }

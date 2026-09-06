@@ -52,7 +52,7 @@ export function replaceWidgetifyWithPetAndPhoto(widgets: StoredWidget[]): {
 	const result: StoredWidget[] = []
 
 	for (const widget of widgets) {
-		if (widget.id === WidgetKeys.widgetify) {
+		if (widget.id === ('widgetify' as any)) {
 			hasChanged = true
 			const col = widget.position?.col ?? 6
 			const baseRow = widget.position?.row ?? 0

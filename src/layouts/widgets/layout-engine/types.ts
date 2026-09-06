@@ -13,7 +13,6 @@ export enum WidgetKeys {
 	HabitTracker = 'HabitTracker',
 	search = 'search',
 	bookmarks = 'bookmarks',
-	widgetify = 'widgetify', // @deprecated, will be removed in future versions
 	pet = 'pet',
 	transparentClock = 'transparentClock',
 	moodTracker = 'moodTracker',
