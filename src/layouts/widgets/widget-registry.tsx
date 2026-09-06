@@ -478,6 +478,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 4 },
 		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,
