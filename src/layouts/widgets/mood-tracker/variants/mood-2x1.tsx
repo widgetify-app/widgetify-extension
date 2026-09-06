@@ -2,20 +2,40 @@ import { moodOptions } from '@/common/constant/moods'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import type { MoodType } from '@/services/hooks/mood-log/upsert-mood-log.hook'
 import { cn } from '@/common/utils/cn'
+import { Icon } from '@/src/icons'
 
 interface Mood2x1Props {
 	todayMood?: MoodEntry
 	onSelectMood: (mood: MoodType) => void
 	isSaving?: boolean
+	onOpenMenu?: (e: React.MouseEvent) => void
+	menuTriggerRef?: React.RefObject<HTMLButtonElement | null>
 }
 
-export function Mood2x1({ todayMood, onSelectMood, isSaving }: Mood2x1Props) {
+export function Mood2x1({
+	todayMood,
+	onSelectMood,
+	isSaving,
+	onOpenMenu,
+	menuTriggerRef,
+}: Mood2x1Props) {
 	return (
-		<div className="w-full h-full flex flex-col justify-between p-2.5 select-none overflow-hidden text-right">
+		<div className="w-full h-full flex flex-col justify-between p-2.5 select-none overflow-hidden text-right group">
 			<div className="flex items-center justify-between px-0.5">
 				<span className="text-[11px] font-bold text-content leading-none">
 					امروز چه حسی داری؟
 				</span>
+
+				{onOpenMenu && (
+					<button
+						ref={menuTriggerRef}
+						type="button"
+						onClick={onOpenMenu}
+						className="p-1 leading-none transition-all rounded-lg opacity-0 cursor-pointer text-base-content/40 hover:text-base-content hover:bg-base-200 group-hover:opacity-100"
+					>
+						<Icon name="menuOption" size={13} />
+					</button>
+				)}
 			</div>
 
 			<div className="grid grid-cols-4 gap-1.5 w-full my-3">

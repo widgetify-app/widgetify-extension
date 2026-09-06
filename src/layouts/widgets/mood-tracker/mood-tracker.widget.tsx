@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
 import { useAuth } from '@/context/auth.context'
@@ -14,6 +14,9 @@ import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
 import { Mood1x1 } from './variants/mood-1x1'
 import { Mood2x1 } from './variants/mood-2x1'
+import { MoodShareModal } from './components/mood-share-modal'
+import { PopoverMenu, PopoverMenuItem, PopoverMenuHeader } from '@/components/ui'
+import { Icon } from '@/src/icons'
 import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
 
@@ -28,6 +31,9 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog, isPending } = useUpsertMoodLog()
 	const [optimisticMood, setOptimisticMood] = useState<string | null>(null)
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
+	const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+	const menuTriggerRef = useRef<HTMLButtonElement | null>(null)
 
 	const startStr = useMemo(() => {
 		return today.clone().subtract(6, 'days').doAsGregorian().format('YYYY-MM-DD')
@@ -104,25 +110,60 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 		queryClient.invalidateQueries({ queryKey: ['get-calendar-data'] })
 	}
 
-	if (size.w === 1 && size.h === 1) {
-		return (
-			<WidgetContainer padding={false} className="h-full">
-				<Mood1x1
-					todayMood={todayMood}
-					onSelectMood={handleSelectMood}
-					isSaving={isPending}
-				/>
-			</WidgetContainer>
-		)
+	const handleOpenMenu = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		setIsMenuOpen((prev) => !prev)
+	}
+
+	const handleOpenShare = () => {
+		setIsMenuOpen(false)
+		setIsShareModalOpen(true)
+		Analytics.event('mood_share_modal_opened')
 	}
 
 	return (
-		<WidgetContainer padding={false} className="h-full">
-			<Mood2x1
-				todayMood={todayMood}
-				onSelectMood={handleSelectMood}
-				isSaving={isPending}
+		<>
+			<WidgetContainer padding={false} className="h-full">
+				{size.w === 1 && size.h === 1 ? (
+					<Mood1x1
+						todayMood={todayMood}
+						onSelectMood={handleSelectMood}
+						isSaving={isPending}
+						onOpenMenu={handleOpenMenu}
+						menuTriggerRef={menuTriggerRef}
+					/>
+				) : (
+					<Mood2x1
+						todayMood={todayMood}
+						onSelectMood={handleSelectMood}
+						isSaving={isPending}
+						onOpenMenu={handleOpenMenu}
+						menuTriggerRef={menuTriggerRef}
+					/>
+				)}
+			</WidgetContainer>
+
+			<PopoverMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+				triggerRef={menuTriggerRef}
+				width={180}
+				placement="bottom-end"
+			>
+				<PopoverMenuHeader>
+					<span>حال روزانه</span>
+				</PopoverMenuHeader>
+				<PopoverMenuItem
+					icon={<Icon name="cameraPlus" size={14} />}
+					label="اشتراک‌گذاری ماه"
+					onClick={handleOpenShare}
+				/>
+			</PopoverMenu>
+
+			<MoodShareModal
+				isOpen={isShareModalOpen}
+				onClose={() => setIsShareModalOpen(false)}
 			/>
-		</WidgetContainer>
+		</>
 	)
 }
