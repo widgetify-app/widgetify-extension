@@ -56,13 +56,6 @@ export function ShortcutsTab() {
 			description: 'تغییر تم',
 			category: 'ظاهری',
 		},
-		{
-			id: 'toggle_theme',
-			windowsKey: 'CTRL + ALT + Y',
-			macKey: '⌘ + ALT + Y',
-			description: 'تغییر رابط کاربری',
-			category: 'ظاهری',
-		},
 	]
 
 	const categories = shortcuts.reduce(
