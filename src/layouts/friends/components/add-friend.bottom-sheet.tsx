@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'

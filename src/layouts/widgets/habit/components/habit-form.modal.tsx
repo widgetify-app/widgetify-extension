@@ -10,7 +10,7 @@ import {
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
 import { SelectBox } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { safeAwait } from '@/services/api'
 import { useAddHabit } from '@/services/hooks/habit/add-habit.hook'
 import {

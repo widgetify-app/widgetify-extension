@@ -1,6 +1,6 @@
 import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import { Button, IconLoading } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'

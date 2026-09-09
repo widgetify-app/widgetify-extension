@@ -1,7 +1,7 @@
 import { Motion as motion, Presence } from '@/common/motion'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { Button, Dropdown, IconLoading } from '@/components/ui'
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
