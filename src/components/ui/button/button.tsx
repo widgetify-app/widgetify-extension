@@ -9,8 +9,6 @@ export interface ButtonProps
 	loading?: boolean
 	loadingText?: React.ReactNode
 	icon?: React.ReactNode
-	/** @deprecated Use `variant="primary"` instead. */
-	isPrimary?: boolean
 }
 
 export function Button({
@@ -19,7 +17,6 @@ export function Button({
 	size,
 	rounded,
 	fullWidth,
-	isPrimary,
 	loading,
 	loadingText,
 	icon,
@@ -27,13 +24,11 @@ export function Button({
 	children,
 	...rest
 }: ButtonProps) {
-	const resolvedVariant = variant ?? (isPrimary ? 'primary' : 'default')
-
 	return (
 		<button
 			type={type}
 			className={cn(
-				buttonVariants({ variant: resolvedVariant, size, rounded, fullWidth }),
+				buttonVariants({ variant, size, rounded, fullWidth }),
 				className
 			)}
 			{...rest}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import {
 	useGetAuthStatus,
 	useRequestOtp,

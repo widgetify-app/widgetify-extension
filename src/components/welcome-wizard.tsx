@@ -4,7 +4,7 @@ import {
 	useGetOccupations,
 	useGetInterests,
 } from '@/services/hooks/profile/get-profile-meta.hook'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { sleep } from '@/common/utils/timeout'
 import { Chip } from '@/components/ui'
 import { ItemSelector } from '@/components/ui'
