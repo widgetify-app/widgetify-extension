@@ -1,7 +1,6 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils/combine-events'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
-import { HolidayBadge } from '../components/holiday.badge'
 import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils/date-events'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import { InlineWeather } from '../../weather/simple-weather'
@@ -31,7 +30,13 @@ export function JalaliDate() {
 
 	return (
 		<>
-			{isHoliday && <HolidayBadge />}
+			{isHoliday && (
+				<div className="absolute px-1 py-0.5 text-xs transform rotate-45 shadow-xl text-white -right-10 w-28 top-1 bg-error/80">
+					<div className="relative z-10 font-normal text-[10px] tracking-wide">
+						تعطیل
+					</div>
+				</div>
+			)}
 			<div className="relative flex flex-col items-center justify-center gap-3.5 mt-0.5">
 				<span className={`text-base !leading-none ${textColor} mb-4`}>
 					{today.locale('fa').format('dddd')}
