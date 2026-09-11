@@ -5,16 +5,16 @@ import running from '@/assets/animals/cat/zardaloo_run_8fps.webp'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.webp'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.webp'
 
-import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
-import { PetFood } from '../core/pet-food'
+import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { PetFood } from '../pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
 	type PetDurations,
 	PetSpeed,
-} from '../core/types'
-import { PetTypes, usePetContext } from '../pet.context'
+} from '../../types'
+import { PetTypes, usePetContext } from '../../pet.context'
 
 export const CatComponent = ({ className }: { className?: string }) => {
 	const {

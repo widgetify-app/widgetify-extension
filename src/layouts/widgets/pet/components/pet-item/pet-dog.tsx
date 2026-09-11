@@ -4,17 +4,17 @@ import running from '@/assets/animals/dog/akita_run_8fps.webp'
 import swipe from '@/assets/animals/dog/akita_swipe_8fps.webp'
 import walking from '@/assets/animals/dog/akita_walk_fast_8fps.webp'
 import dogFood from '@/assets/animals/dog/dog-food.png'
-import { PetFood } from '../core/pet-food'
+import { PetFood } from '../pet-food'
 
-import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { BasePetContainer, useBasePetLogic } from '../base-pet'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
 	type PetDurations,
 	PetSpeed,
-} from '../core/types'
-import { PetTypes, usePetContext } from '../pet.context'
+} from '../../types'
+import { PetTypes, usePetContext } from '../../pet.context'
 
 export const DogComponent = ({ className }: { className?: string }) => {
 	const {

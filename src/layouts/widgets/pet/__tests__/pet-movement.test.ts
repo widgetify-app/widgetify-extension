@@ -7,7 +7,7 @@ import {
 	isNearWall,
 	pickClimbWall,
 	stepWalk,
-} from '../core/pet-movement'
+} from '../utils/pet-movement'
 
 const SPRITE_WIDTH = 50
 const SPRITE_HEIGHT = 32

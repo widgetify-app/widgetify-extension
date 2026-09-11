@@ -6,15 +6,15 @@ import walking from '@/assets/animals/frog/ghoori_walk_8fps.webp'
 import walking_fast from '@/assets/animals/frog/ghoori_walk_fast_8fps.webp'
 import { useMemo } from 'react'
 import { LuBug } from 'react-icons/lu'
-import { BasePetContainer, useBasePetLogic } from '../core/base-pet'
+import { BasePetContainer, useBasePetLogic } from '../base-pet'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
 	type PetDurations,
 	PetSpeed,
-} from '../core/types'
-import { PetTypes, usePetContext } from '../pet.context'
+} from '../../types'
+import { PetTypes, usePetContext } from '../../pet.context'
 
 const COLLECTIBLE_COLORS = [
 	'#f87171',

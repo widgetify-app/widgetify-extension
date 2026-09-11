@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { PetTooltip } from '../components/pet-tooltip'
+import { PetTooltip } from './pet-tooltip'
 import { cn } from '@/common/utils/cn'
 import {
 	clampToBounds,
@@ -9,7 +9,7 @@ import {
 	isNearWall,
 	pickClimbWall,
 	stepWalk,
-} from './pet-movement'
+} from '../utils/pet-movement'
 import {
 	type CollectibleItem,
 	type PetAnimations,
@@ -18,7 +18,7 @@ import {
 	type PetDimensions,
 	type PetDurations,
 	type Position,
-} from './types'
+} from '../types'
 
 /** How fast a pet still airborne (e.g. mid-climb) settles back to the ground. */
 const FALL_SPEED = 1.5

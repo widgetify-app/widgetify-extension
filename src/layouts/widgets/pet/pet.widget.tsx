@@ -1,5 +1,5 @@
 import { PetProvider } from './pet.context'
-import { PetFactory } from './pet-factory'
+import { PetFactory } from './components/pet-factory'
 import { WidgetContainer } from '../widget-container'
 
 export function PetWidget() {
