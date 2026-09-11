@@ -9,7 +9,7 @@ import { formatHabitGoal } from '../../utils'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
 const HabitShareModal = lazy(() =>

@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useAuth } from '@/context/auth.context'
 
 interface VipBannerCardProps {

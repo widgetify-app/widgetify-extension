@@ -1,5 +1,5 @@
 import { Button, SectionPanel } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AccountVerificationStatusProps {
 	sendVerificationMutation: {

@@ -16,7 +16,7 @@ import { Mood1x1 } from './variants/mood-1x1'
 import { Mood2x1 } from './variants/mood-2x1'
 import { MoodShareModal } from './components/mood-share-modal'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuHeader } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
 

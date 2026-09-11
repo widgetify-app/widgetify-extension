@@ -1,6 +1,6 @@
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { MediaPreview } from '../media-preview.component'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button, Tooltip, VipBadge } from '@/components/ui'
 
 interface UploadActiveProps {

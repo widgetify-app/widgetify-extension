@@ -5,7 +5,7 @@ import { SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useGetCurrencyByCode } from '@/services/hooks/currency/get-currency-by-code.hook'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export const CurrencyConverter: React.FC = () => {
 	const [fromCurrency, setFromCurrency] = useState<string>('EUR')

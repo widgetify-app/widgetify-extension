@@ -11,7 +11,7 @@ import { SearchCompactRow } from './variants/search-2x1'
 import type { EngineMeta } from '@/services/hooks/trends/get-trends'
 import { useSearchHistory } from './hooks/use-search-history'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',

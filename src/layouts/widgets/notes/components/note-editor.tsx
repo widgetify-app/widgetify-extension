@@ -4,7 +4,7 @@ import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useEffect, useRef, useState } from 'react'
 
 interface NoteEditorProps {

@@ -1,6 +1,6 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { type ButtonVariantProps, buttonVariants } from './button.variants'
 
 export interface ButtonProps

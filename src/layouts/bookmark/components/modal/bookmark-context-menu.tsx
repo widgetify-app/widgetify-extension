@@ -3,7 +3,7 @@ import {
 	PopoverMenuItem,
 	PopoverMenuDivider,
 } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }

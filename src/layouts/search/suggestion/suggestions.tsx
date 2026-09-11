@@ -1,5 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	combinedSuggestions: { text: string; isRecent: boolean }[]

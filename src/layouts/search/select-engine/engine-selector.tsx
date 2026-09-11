@@ -4,7 +4,7 @@ import { Dropdown } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useChangeSearchEngine } from '@/services/hooks/extension/update-setting.hook'
 import { type EngineMeta, useGetSearchboxData } from '@/services/hooks/trends/get-trends'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { ReactNode } from 'react'
 import { useState, useEffect, useMemo } from 'react'
 

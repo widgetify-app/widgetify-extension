@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { ClassifiedCalendarEvent } from '../utils/google-calendar.types'
 
 interface GoogleCalendarEventCardProps {

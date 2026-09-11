@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
-import { useLazyLoad } from '../../../../hooks/use-lazy-load'
+import { useLazyLoad } from '@/hooks/use-lazy-load'
 import { HoverPlayVideo } from '../hover-play-video'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper

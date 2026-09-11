@@ -20,7 +20,7 @@ import { GalleryPickerModal } from '@/components/gallery/gallery-picker-modal'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useState } from 'react'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {

@@ -1,5 +1,5 @@
 import { Button, Modal } from '@/components/ui'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import { callEvent } from '@/common/utils/call-event'
 import { showToast } from '@/common/toast'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'

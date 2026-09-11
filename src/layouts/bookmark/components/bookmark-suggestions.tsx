@@ -3,7 +3,7 @@ import {
 	type BookmarkSuggestion,
 	useGetSuggestedBookmarks,
 } from '@/services/hooks/bookmark/get-bookmarks.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface BookmarkSuggestionsProps {
 	onSelect: (suggestion: BookmarkSuggestion) => void

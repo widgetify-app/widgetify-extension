@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import jalaliMoment from 'jalali-moment'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetifyDate } from '../../calendar/utils'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import {

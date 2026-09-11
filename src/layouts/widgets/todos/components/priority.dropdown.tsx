@@ -1,6 +1,6 @@
 import { Button, Dropdown } from '@/components/ui'
 import { TodoPriority } from '@/services/hooks/todo/todo.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const priorityOptions = [
 	{

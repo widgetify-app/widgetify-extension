@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { copyCanvasToClipboard, downloadCanvasAsImage } from '@/common/utils/canvas'
 import { renderHabitShareCanvas } from '../utils/render-habit-share-canvas'

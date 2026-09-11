@@ -4,7 +4,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { AvatarComponent, Button } from '@/components/ui'
 import type { UserCardUser } from './user-card-portal'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface UserCardProps {
 	user: UserCardUser

@@ -5,8 +5,8 @@ import { useAuth } from '@/context/auth.context'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
-import type { IconName } from '@/src/icons/types'
+import { Icon } from '@/icons'
+import type { IconName } from '@/icons/types'
 import {
 	useGetVipPlans,
 	usePurchaseVipPlan,

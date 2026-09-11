@@ -4,14 +4,14 @@ import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
-import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
+import { renderBrowserTitlePreview } from '@/components/browser-title-preview'
 import { SectionPanel } from '@/components/ui'
 import { safeAwait } from '@/services/api'
 import { useChangeBrowserTitle } from '@/services/hooks/extension/update-setting.hook'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface BrowserTitle {
 	id: string

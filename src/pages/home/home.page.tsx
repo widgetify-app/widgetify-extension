@@ -1,12 +1,12 @@
 import { HomeContentCustom } from './ui/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constant/config.key'
-import { ExtensionInstalledModal } from '@/components/extension-installed-modal'
+import { ExtensionInstalledModal } from './components/extension-installed-modal'
 import { Joyride, type Step } from 'react-joyride'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import Analytics from '@/analytics'
 import { DialogChecker } from './dialog/dialog'
-import { TourTooltip } from '@/components/tour/tour-tooltip'
+import { TourTooltip } from './components/tour-tooltip'
 import { useEffect, useState } from 'react'
 
 const steps: Step[] = [

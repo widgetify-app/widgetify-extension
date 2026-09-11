@@ -11,7 +11,7 @@ import { WidgetContainer } from '../widget-container'
 import { NetworkIPCard, NetworkPingCard } from './components'
 import { NetworkCompactSquare } from './variants/network-1x1'
 import { NetworkCompactRow } from './variants/network-2x1'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../layout-engine/types'
 
 interface NetworkInfo {

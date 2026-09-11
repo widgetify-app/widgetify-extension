@@ -6,7 +6,7 @@ import type {
 	WidgetDefinition,
 } from '@/layouts/widgets/layout-engine/types'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { CATEGORIES } from './types'
 
 interface AddWidgetSidebarProps {

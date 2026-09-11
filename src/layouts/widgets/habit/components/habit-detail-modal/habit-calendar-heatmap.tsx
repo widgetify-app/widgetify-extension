@@ -8,7 +8,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
 import { IconLoading } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface HabitCalendarProps {
 	habit: Habit

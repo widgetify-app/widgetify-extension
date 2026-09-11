@@ -2,7 +2,7 @@ import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface TodoCompactRowProps {
 	todos: Todo[]

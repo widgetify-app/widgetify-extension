@@ -10,7 +10,7 @@ import { useSetCity } from '@/services/hooks/user/user-service.hook'
 import { TextInput } from '@/components/ui'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface SelectedCity {
 	city: string

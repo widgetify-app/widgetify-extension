@@ -1,5 +1,5 @@
 import type { TooltipRenderProps } from 'react-joyride'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function TourTooltip({
 	index,

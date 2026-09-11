@@ -7,7 +7,7 @@ import { WidgetContainer } from '../widget-container'
 import { HabitsContent } from '../habit/habits.layout'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { useEffect } from 'react'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 type Tab = 'todos' | 'notes' | 'rabbit'
 

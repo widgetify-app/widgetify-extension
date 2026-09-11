@@ -1,7 +1,7 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 import { unitsFlag } from '../unit-symbols'
 import { cleanCityName } from '../utils/clean-city-name'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface WeatherCompactRowProps {
 	fetchedWeather: FetchedWeather | null

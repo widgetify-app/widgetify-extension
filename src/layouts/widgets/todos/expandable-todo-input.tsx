@@ -19,7 +19,7 @@ import type { Friend } from '@/services/hooks/friends/friend-service.hook'
 import { TodoSelectFriends } from './components/select-friends.todo'
 import { callEvent } from '@/common/utils/call-event'
 import { twMerge } from 'tailwind-merge'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 interface ExpandableTodoInputProps {
 	editTodo?: FetchedTodo
 	onClose: any

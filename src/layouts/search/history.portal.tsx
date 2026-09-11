@@ -7,7 +7,7 @@ import { Portal } from '@/components/ui'
 import { Motion, Presence } from '@/common/motion'
 import { useSearchHistory } from './hooks/use-search-history'
 import { Suggestions } from './suggestion/suggestions'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface SearchHistoryPortalProps {
 	isOpen: boolean

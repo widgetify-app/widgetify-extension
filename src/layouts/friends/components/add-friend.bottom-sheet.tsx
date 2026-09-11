@@ -5,7 +5,7 @@ import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.ho
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AddFriendBottomSheetProps {
 	isOpen: boolean

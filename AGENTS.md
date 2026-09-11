@@ -187,7 +187,9 @@ keeps those in sync and they go stale without anyone noticing.
 
 **Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed in the same file.
 
-**Icons** come from `Icon` in `@/src/icons`.
+**Icons** come from `Icon` in `@/icons`.
+
+**Path aliases are declared one per folder** in `wxt.config.ts`, and `@` on its own resolves to the repo root, not to `src`. A folder with no alias there can only be reached as `@/src/<folder>` through WXT's generic `@/*` fallback. That spelling is a missing alias, not a convention — add the folder to the alias map instead of writing it.
 
 **Analytics** via `@/analytics`.
 

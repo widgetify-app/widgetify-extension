@@ -3,9 +3,9 @@ import { SectionPanel } from '@/components/ui'
 import { useGetReferrals } from '@/services/hooks/user/referrals-service.hook'
 import { ReferralCodeSection } from './components/referral-code-section'
 import { RewardTasks } from './components/tasks'
-import { RequireVerification } from '@/components/auth/require-verification'
+import { RequireVerification } from './components/require-verification'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export const RewardsTab = () => {
 	const { user } = useAuth()

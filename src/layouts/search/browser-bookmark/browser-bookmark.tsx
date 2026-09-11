@@ -6,7 +6,7 @@ import { BookmarkPopover } from './bookmark-popover'
 import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
 import { NewBadge } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })

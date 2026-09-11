@@ -13,7 +13,7 @@ import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
 import moment from 'jalali-moment'
 

@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/hooks/market/purchase-market-item.hook'
 import { translateError } from '@/common/utils/translate-error'

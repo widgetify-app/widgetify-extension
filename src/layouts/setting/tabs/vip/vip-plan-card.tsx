@@ -1,5 +1,5 @@
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
 
 interface VipPlanCardProps {

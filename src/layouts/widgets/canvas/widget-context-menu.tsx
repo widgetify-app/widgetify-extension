@@ -1,4 +1,4 @@
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { StoredWidget, WidgetDefinition, WidgetSize } from '../layout-engine/types'
 import {
 	Chip,

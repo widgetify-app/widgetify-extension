@@ -2,7 +2,7 @@ import { callEvent } from '@/common/utils/call-event'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import { HoverPlayVideo } from '../tab/gallery/components/hover-play-video'
 
 interface CoinPurchaseModalProps {

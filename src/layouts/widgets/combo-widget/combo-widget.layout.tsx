@@ -7,7 +7,7 @@ import { NewsLayout } from '../news/news.layout'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigi-arz/wigi_arz.layout'
 import { Button, TabNavigation } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export type ComboTabType = 'news' | 'currency'
 

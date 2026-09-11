@@ -3,7 +3,7 @@ import React, { type ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
 import {
 	modalBoxVariants,

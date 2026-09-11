@@ -1,4 +1,4 @@
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	template: string

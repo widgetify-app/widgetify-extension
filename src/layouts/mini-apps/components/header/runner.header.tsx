@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps-interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	onClickToBack: any

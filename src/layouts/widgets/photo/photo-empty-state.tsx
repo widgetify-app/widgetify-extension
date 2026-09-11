@@ -1,4 +1,4 @@
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../layout-engine/types'
 
 interface PhotoEmptyStateProps {

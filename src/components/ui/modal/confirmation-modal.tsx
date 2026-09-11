@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Button } from '../button/button'
 import { Modal } from './modal'
 import { IconLoading } from '../loading/loading'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import {
 	confirmationConfirmButtonVariants,

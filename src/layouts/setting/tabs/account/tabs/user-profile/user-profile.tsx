@@ -12,8 +12,8 @@ import { ReferralCodeSection } from '../rewards/components/referral-code-section
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { ConfirmationModal } from '@/components/ui'
-import { VipBannerCard } from '@/components/vip'
-import { Icon } from '@/src/icons'
+import { VipBannerCard } from './vip-banner-card'
+import { Icon } from '@/icons'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()

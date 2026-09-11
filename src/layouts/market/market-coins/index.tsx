@@ -7,7 +7,7 @@ import { CoinPackagePurchaseModal } from './components/coin-package-purchase-mod
 import { showToast } from '@/common/toast'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
 import { useGetCoinPackages } from '@/services/hooks/market/market-coints.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function MarketCoins() {
 	const { isAuthenticated, refetchUser } = useAuth()

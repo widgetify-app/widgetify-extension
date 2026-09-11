@@ -5,7 +5,7 @@ import {
 	HABIT_UNIT_OPTIONS,
 } from '@/common/constant/habit-options'
 import { type HabitFrequency, HabitUnit } from '@/services/hooks/habit/habit.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface HabitLivePreviewProps {
 	title: string

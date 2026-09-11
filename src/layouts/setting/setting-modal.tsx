@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
-import { type TabItem, TabManager } from '@/components/tab-manager'
+import { type TabItem, TabManager } from './tab-manager'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
@@ -13,7 +13,7 @@ import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
 import { VipTab } from './tabs/vip/vip-tab'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface SettingModalProps {
 	isOpen: boolean

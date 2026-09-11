@@ -1,7 +1,7 @@
 import type React from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../../layout-engine/types'
 
 interface GoogleCalendarAuthProps {

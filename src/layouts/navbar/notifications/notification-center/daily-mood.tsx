@@ -11,7 +11,7 @@ import {
 	type MoodType,
 	useUpsertMoodLog,
 } from '@/services/hooks/mood-log/upsert-mood-log.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 

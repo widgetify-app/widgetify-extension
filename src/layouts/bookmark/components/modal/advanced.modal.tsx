@@ -6,7 +6,7 @@ import { TextInput } from '@/components/ui'
 import { getEmojiList } from '@/services/emoji/emoji-api'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '../../types/bookmark.types'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AdvancedModalProps {
 	title: string

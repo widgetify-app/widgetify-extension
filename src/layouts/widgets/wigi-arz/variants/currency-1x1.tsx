@@ -7,7 +7,7 @@ import {
 } from '@/services/hooks/currency/get-currency-by-code.hook'
 import { GetPrice } from '../utils/get-price'
 import { CurrencyModalComponent } from '../components/currency-modal'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'

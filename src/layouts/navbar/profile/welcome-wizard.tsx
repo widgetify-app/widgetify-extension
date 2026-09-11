@@ -12,7 +12,7 @@ import { useSetupWizard } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'
-import { Icon } from '../icons'
+import { Icon } from '@/icons'
 
 export enum ReferralSource {
 	Social = 'social',

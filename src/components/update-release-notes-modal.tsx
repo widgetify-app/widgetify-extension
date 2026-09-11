@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { ConfigKey } from '@/common/constant/config.key'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 

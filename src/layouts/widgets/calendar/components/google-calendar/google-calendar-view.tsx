@@ -8,7 +8,7 @@ import { useAuth } from '@/context/auth.context'
 import { callEvent } from '@/common/utils/call-event'
 import type { WidgetifyDate } from '../../utils'
 import { GoogleEventItemSkeleton } from './google-event.item-skeleton'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 export const GoogleCalendarView: React.FC = () => {

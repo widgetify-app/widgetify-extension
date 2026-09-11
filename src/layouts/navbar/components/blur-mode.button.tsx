@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Tooltip } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { ConfirmationModal } from '@/components/ui'
 import Analytics from '@/analytics'
 

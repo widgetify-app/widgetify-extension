@@ -7,7 +7,7 @@ import { GoogleCalendarView } from './components/google-calendar/google-calendar
 import { Calendar2x1Row } from './variants/calendar-2x1'
 import { Calendar1x1 } from './variants/calendar-1x1'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../layout-engine/types'
 
 interface CalendarTabSelectorProps {

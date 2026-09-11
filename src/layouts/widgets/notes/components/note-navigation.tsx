@@ -5,7 +5,7 @@ import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()

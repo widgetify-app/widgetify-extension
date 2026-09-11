@@ -8,7 +8,7 @@ import {
 	getBrowserBookmarks,
 } from '@/layouts/bookmark/utils/browser-bookmarks.util'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 interface BookmarkPopoverProps {

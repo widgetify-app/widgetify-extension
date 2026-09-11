@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Button } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface RequireVerificationProps {
 	children: ReactNode

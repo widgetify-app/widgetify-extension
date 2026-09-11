@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Modal, Chip } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { playNativeToastSound, showToast } from '@/common/toast'
 import { useAuth } from '@/context/auth.context'
 import { callEvent } from '@/common/utils/call-event'

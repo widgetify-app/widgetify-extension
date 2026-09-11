@@ -12,7 +12,7 @@ import {
 } from '../layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { ProBadge } from '@/components/ui/badge/vip-badge'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { WidgetContextMenu } from './widget-context-menu'

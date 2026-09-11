@@ -1,6 +1,6 @@
 import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'

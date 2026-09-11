@@ -2,7 +2,7 @@ import { moodOptions } from '@/common/constant/moods'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import type { MoodType } from '@/services/hooks/mood-log/upsert-mood-log.hook'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Mood1x1Props {
 	todayMood?: MoodEntry

@@ -1,6 +1,6 @@
 import type React from 'react'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { WidgetifyDate } from '../../calendar/utils'
 import type { ClassifiedCalendarEvent } from '../utils/google-calendar.types'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'

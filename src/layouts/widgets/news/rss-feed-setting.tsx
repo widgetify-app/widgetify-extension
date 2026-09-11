@@ -8,7 +8,7 @@ import { TextInput } from '@/components/ui'
 import { ToggleSwitch } from '@/components/ui'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import type { WigiNewsSetting } from './rss.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const SUGGESTED_FEEDS = [
 	{

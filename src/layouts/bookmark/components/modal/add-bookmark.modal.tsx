@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { BookmarkType } from '../../types/bookmark.types'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import { ShowAdvancedButton, TypeSelector } from '../shared'

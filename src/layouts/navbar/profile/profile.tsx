@@ -4,8 +4,8 @@ import { AvatarComponent } from '@/components/ui'
 import { Tooltip, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import AuthForm from '../../setting/tabs/account/auth-form/auth-form'
-import { WelcomeWizard } from '@/components/welcome-wizard'
-import { Icon } from '@/src/icons'
+import { WelcomeWizard } from './welcome-wizard'
+import { Icon } from '@/icons'
 
 const renderUserAvatar = (user: any) => {
 	if (user?.avatar) {

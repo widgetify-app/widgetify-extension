@@ -1,4 +1,4 @@
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type { FolderPathItem } from '../types/bookmark.types'
 
 type FolderPathProps = {

@@ -11,7 +11,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { formatHabitGoal } from '../../utils'
 import { SegmentedProgressRing } from './button.progress-ring'
 import { SimpleProgressRing } from './button.simple-progress-ring'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { IconLoading } from '@/components/ui'
 
 interface HabitItemProps {

@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface CanvasEditToolbarProps {
 	onAddWidget: () => void

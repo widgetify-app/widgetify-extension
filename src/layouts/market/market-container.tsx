@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/auth.context'
 import { MarketWallpaper } from './market-wallpaper'
 import { MarketOtherItems } from './other-items'
-import { UserCoin } from '../setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import Analytics from '@/analytics'
 import { TabNavigation } from '@/components/ui'
 import { MarketCoins } from './market-coins'
 import { listenEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const tabs = [
 	{

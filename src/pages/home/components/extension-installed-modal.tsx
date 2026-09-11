@@ -1,8 +1,8 @@
 import keepItImage from '@/assets/images/keep-it.png'
-import { Button } from './ui'
+import { Button } from '@/components/ui'
 import { Checkbox } from '@/components/ui'
 import { Modal } from '@/components/ui'
-import { Icon } from '../icons'
+import { Icon } from '@/icons'
 
 interface ExtensionInstalledModalProps {
 	show: boolean

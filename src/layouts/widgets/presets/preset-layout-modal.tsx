@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo, useMemo, useState } from 'react'
 import { Button, ConfirmationModal, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'

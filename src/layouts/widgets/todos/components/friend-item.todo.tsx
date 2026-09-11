@@ -1,6 +1,6 @@
 import { AvatarComponent } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface UserItemProp {
 	avatar: string

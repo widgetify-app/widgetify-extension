@@ -20,7 +20,7 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constant/moods'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
