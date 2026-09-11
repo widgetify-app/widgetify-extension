@@ -2,13 +2,13 @@ import type { CurrencyColorMode } from '@/context/currency.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@/layouts/widgets/pet/pet.context'
-import type { ComboTabType } from '@/layouts/widgets/combo-widget/combo-widget.layout'
+import type { ComboTabType } from '@/layouts/widgets/combo-widget/combo-widget.widget'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
 } from '@/layouts/widgets/tools/pomodoro/types'
-import type { ToolsTabType } from '@/layouts/widgets/tools/tools.layout'
+import type { ToolsTabType } from '@/layouts/widgets/tools/tools.widget'
 import type {
 	FetchedForecast,
 	FetchedWeather,
