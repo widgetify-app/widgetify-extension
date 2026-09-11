@@ -1,6 +1,6 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type React from 'react'
-import { type WidgetifyDate, getCurrentDate } from '../utils'
+import { type WidgetifyDate, getCurrentDate } from '../utils/date-events'
 import { Icon } from '@/icons'
 
 interface CalendarHeaderProps {

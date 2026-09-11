@@ -1,7 +1,7 @@
 import type React from 'react'
 import { Icon } from '@/icons'
-import type { WidgetifyDate } from '../../calendar/utils'
-import type { ClassifiedCalendarEvent } from '../utils/google-calendar.types'
+import type { WidgetifyDate } from '../../calendar/utils/date-events'
+import type { ClassifiedCalendarEvent } from '../types'
 
 interface GoogleCalendar1x1Props {
 	today: WidgetifyDate

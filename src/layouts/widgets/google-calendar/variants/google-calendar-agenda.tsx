@@ -2,12 +2,12 @@ import type React from 'react'
 import { useMemo } from 'react'
 import jalaliMoment from 'jalali-moment'
 import { Icon } from '@/icons'
-import type { WidgetifyDate } from '../../calendar/utils'
+import type { WidgetifyDate } from '../../calendar/utils/date-events'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import {
 	classifyEvent,
 	type ClassifiedCalendarEvent,
-} from '../utils/google-calendar.types'
+} from '../types'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { cn } from '@/common/utils/cn'
 

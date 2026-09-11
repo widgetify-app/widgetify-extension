@@ -9,13 +9,13 @@ import { useDate } from '@/context/date.context'
 import { useAuth } from '@/context/auth.context'
 import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
-import type { WidgetifyDate } from '../calendar/utils'
+import type { WidgetifyDate } from '../calendar/utils/date-events'
 import {
 	classifyEvent,
 	getWeekDays,
 	toIsoDateKey,
 	type ClassifiedCalendarEvent,
-} from './utils/google-calendar.types'
+} from './types'
 import { GoogleCalendarAuth } from './components/google-calendar-auth'
 import { GoogleCalendarSchedule } from './variants/google-calendar-schedule'
 import { GoogleCalendarTimeline } from './variants/google-calendar-timeline'

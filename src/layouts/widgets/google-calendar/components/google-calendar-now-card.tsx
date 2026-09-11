@@ -1,6 +1,6 @@
 import type React from 'react'
 import { Icon } from '@/icons'
-import type { ClassifiedCalendarEvent } from '../utils/google-calendar.types'
+import type { ClassifiedCalendarEvent } from '../types'
 
 interface GoogleCalendarNowCardProps {
 	classified: ClassifiedCalendarEvent

@@ -5,7 +5,7 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	hijriMonthNames,
-} from '../../utils'
+} from '../../utils/date-events'
 import { useDate } from '@/context/date.context'
 import type React from 'react'
 import { useAuth } from '@/context/auth.context'

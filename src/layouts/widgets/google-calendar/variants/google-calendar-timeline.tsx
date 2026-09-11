@@ -1,8 +1,8 @@
 import type React from 'react'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
-import type { WidgetifyDate } from '../../calendar/utils'
-import type { ClassifiedCalendarEvent } from '../utils/google-calendar.types'
+import type { WidgetifyDate } from '../../calendar/utils/date-events'
+import type { ClassifiedCalendarEvent } from '../types'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 
 interface GoogleCalendarTimelineProps {

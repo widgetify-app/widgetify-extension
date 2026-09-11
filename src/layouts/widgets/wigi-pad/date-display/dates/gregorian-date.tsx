@@ -1,5 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
 
 export function GregorianDate() {
 	const { selected_timezone: timezone } = useGeneralSetting()

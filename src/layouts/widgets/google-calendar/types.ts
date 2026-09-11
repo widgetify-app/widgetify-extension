@@ -1,5 +1,5 @@
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
+import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils/date-events'
 
 export interface ClassifiedCalendarEvent {
 	event: GoogleCalendarEvent

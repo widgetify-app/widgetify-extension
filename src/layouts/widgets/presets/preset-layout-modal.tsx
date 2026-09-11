@@ -9,7 +9,7 @@ import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { PRESET_LAYOUTS } from './preset-layouts'
 import { PresetCanvasPreview } from './components/preset-canvas-preview'
-import { resolvePresetWidgetsForViewport } from './utils'
+import { resolvePresetWidgetsForViewport } from './utils/viewport'
 import type { PresetLayout } from './types'
 
 interface PresetLayoutModalProps {

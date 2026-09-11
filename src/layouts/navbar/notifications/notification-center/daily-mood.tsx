@@ -5,7 +5,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { GetUserFirstName } from '@/common/utils/get-firstname'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
 import { safeAwait } from '@/services/api'
 import {
 	type MoodType,

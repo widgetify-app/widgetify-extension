@@ -1,6 +1,6 @@
-import { DEFAULT_CELL_HEIGHT, DEFAULT_GAP } from '../layout-engine/constants'
-import type { StoredWidget } from '../layout-engine/types'
-import type { PresetLayout } from './types'
+import { DEFAULT_CELL_HEIGHT, DEFAULT_GAP } from '../../layout-engine/constants'
+import type { StoredWidget } from '../../layout-engine/types'
+import type { PresetLayout } from '../types'
 
 export function getViewportCanvasRows(): number {
 	if (typeof window === 'undefined') return 6

@@ -10,7 +10,7 @@ import {
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
-} from '../../utils'
+} from '../../utils/date-events'
 import { moodOptions } from '@/common/constants/moods'
 
 interface DayItemProps {

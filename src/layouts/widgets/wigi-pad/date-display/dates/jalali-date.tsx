@@ -1,8 +1,8 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils'
+import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils/combine-events'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { HolidayBadge } from '../components/holiday.badge'
-import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils'
+import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils/date-events'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import { InlineWeather } from '../../weather/simple-weather'
 

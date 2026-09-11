@@ -1,6 +1,6 @@
 import type React from 'react'
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils'
-import { toIsoDateKey } from '../utils/google-calendar.types'
+import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils/date-events'
+import { toIsoDateKey } from '../types'
 
 interface GoogleCalendarWeekStripProps {
 	weekDays: WidgetifyDate[]

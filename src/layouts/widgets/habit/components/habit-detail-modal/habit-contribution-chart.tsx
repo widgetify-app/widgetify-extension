@@ -7,7 +7,7 @@ import { safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
-import { getHabitUnitLabel } from '../../utils'
+import { getHabitUnitLabel } from '../../utils/habit-goal'
 import { cn } from '@/common/utils/cn'
 
 interface HabitContributionChartProps {
