@@ -12,8 +12,8 @@ import { safeAwait } from '@/services/api'
 import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { Icon } from '@/icons'
-import { SegmentedProgressRing } from '../components/item/button.progress-ring'
-import { SimpleProgressRing } from '../components/item/button.simple-progress-ring'
+import { SegmentedProgressRing } from '../components/item/button-progress-ring'
+import { SimpleProgressRing } from '../components/item/button-simple-progress-ring'
 
 interface HabitCompactWideProps {
 	habits: Habit[]

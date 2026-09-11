@@ -1,8 +1,8 @@
 import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { type WigiPadDateSetting, WigiPadDateType } from './date-setting.interface'
-import { GregorianDate } from './dates/gregorian.date'
-import { JalaliDate } from './dates/jalali.date'
+import { GregorianDate } from './dates/gregorian-date'
+import { JalaliDate } from './dates/jalali-date'
 
 export function DateDisplay() {
 	const [wigiPadDateSettings, setWigiPadDateSettings] =

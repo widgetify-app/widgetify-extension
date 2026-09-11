@@ -9,8 +9,8 @@ import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interf
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { formatHabitGoal } from '../../utils'
-import { SegmentedProgressRing } from './button.progress-ring'
-import { SimpleProgressRing } from './button.simple-progress-ring'
+import { SegmentedProgressRing } from './button-progress-ring'
+import { SimpleProgressRing } from './button-simple-progress-ring'
 import { Icon } from '@/icons'
 import { IconLoading } from '@/components/ui'
 

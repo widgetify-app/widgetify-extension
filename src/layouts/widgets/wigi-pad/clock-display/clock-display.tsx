@@ -3,8 +3,8 @@ import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { type ClockSettings, ClockType } from './clock-setting.interface'
-import { AnalogClock } from './clocks/analog.clock'
-import { DigitalClock } from './clocks/digital.clock'
+import { AnalogClock } from './clocks/analog-clock'
+import { DigitalClock } from './clocks/digital-clock'
 
 export function ClockDisplay() {
 	const [clockSettings, setClockSettings] = useState<ClockSettings | null>(null)

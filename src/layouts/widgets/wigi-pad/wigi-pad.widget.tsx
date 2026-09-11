@@ -1,6 +1,6 @@
 import { WidgetContainer } from '../widget-container'
 import { ClockDisplay } from './clock-display/clock-display'
-import { DateDisplay } from './date-display/date.display'
+import { DateDisplay } from './date-display/date-display'
 import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 import { RenderWigiPadItem } from './info-panel/components/ann-item'
 
