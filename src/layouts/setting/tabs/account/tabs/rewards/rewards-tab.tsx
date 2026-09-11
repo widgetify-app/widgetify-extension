@@ -1,4 +1,4 @@
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import { SectionPanel } from '@/components/ui'
 import { useGetReferrals } from '@/services/hooks/user/referrals-service.hook'
 import { ReferralCodeSection } from './components/referral-code-section'

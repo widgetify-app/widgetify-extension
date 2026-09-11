@@ -2,7 +2,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import type { MiniAppScopeEnum } from '@/services/hooks/mini-apps/mini-apps-interface'
+import type { MiniAppScopeEnum } from '@/services/hooks/mini-apps/mini-apps.interface'
 import { Icon } from '@/icons'
 
 interface Prop {

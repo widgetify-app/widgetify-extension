@@ -1,6 +1,6 @@
 import { HomeContentCustom } from './ui/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import { ExtensionInstalledModal } from './components/extension-installed-modal'
 import { Joyride, type Step } from 'react-joyride'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'

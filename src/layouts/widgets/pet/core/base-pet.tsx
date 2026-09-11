@@ -18,7 +18,7 @@ import {
 	type PetDimensions,
 	type PetDurations,
 	type Position,
-} from './pet-types'
+} from './types'
 
 /** How fast a pet still airborne (e.g. mid-climb) settles back to the ground. */
 const FALL_SPEED = 1.5

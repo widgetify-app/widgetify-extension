@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useGetSearchboxData } from '@/services/hooks/trends/get-trends'
+import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Tooltip } from '@/components/ui'
 import { BookmarkPopover } from './bookmark-popover'

@@ -1,4 +1,4 @@
-import { UserItem } from './friend-item.todo'
+import { UserItem } from './friend-item'
 
 interface Prop {
 	owner: {

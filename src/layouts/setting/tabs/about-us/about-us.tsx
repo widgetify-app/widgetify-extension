@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/ui'
-import { ConfigKey } from '../../../../common/constant/config.key'
+import { ConfigKey } from '../../../../common/constants/config.key'
 import { Icon } from '@/icons'
 
 export function AboutUsTab() {

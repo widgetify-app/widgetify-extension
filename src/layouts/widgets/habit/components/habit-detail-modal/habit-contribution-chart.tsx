@@ -5,7 +5,7 @@ import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interf
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
+import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
 import { getHabitUnitLabel } from '../../utils'
 import { cn } from '@/common/utils/cn'

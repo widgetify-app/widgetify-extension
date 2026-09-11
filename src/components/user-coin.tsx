@@ -1,4 +1,4 @@
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import { Tooltip } from '@/components/ui'
 
 interface Prop {

@@ -3,7 +3,7 @@ import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { HolidayBadge } from '../components/holiday.badge'
 import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon'
+import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import { InlineWeather } from '../../weather/simple-weather'
 
 export function JalaliDate() {

@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { moodOptions } from '@/common/constant/moods'
+import { moodOptions } from '@/common/constants/moods'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { GetUserFirstName } from '@/common/utils/get-firstname'

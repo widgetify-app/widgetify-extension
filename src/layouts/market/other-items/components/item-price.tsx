@@ -1,4 +1,4 @@
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 
 interface ItemPriceProps {
 	price: number

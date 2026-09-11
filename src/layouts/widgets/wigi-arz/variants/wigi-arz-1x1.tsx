@@ -10,7 +10,7 @@ import { CurrencyModalComponent } from '../components/currency-modal'
 import { Icon } from '@/icons'
 import { Button, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 
 interface CurrencyCompactSquareProps {
 	defaultCode?: string

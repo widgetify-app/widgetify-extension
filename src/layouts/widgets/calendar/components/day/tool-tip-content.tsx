@@ -19,7 +19,7 @@ import { useIsMutating } from '@tanstack/react-query'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import Analytics from '@/analytics'
-import { moodOptions } from '@/common/constant/moods'
+import { moodOptions } from '@/common/constants/moods'
 import { Icon } from '@/icons'
 
 interface CalendarDayDetailsProps {

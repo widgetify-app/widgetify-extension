@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getContrastingTextColor } from '@/common/color'
-import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
+import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { playAlarm } from '@/common/play-alarm'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'

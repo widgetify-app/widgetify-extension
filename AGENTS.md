@@ -183,7 +183,7 @@ keeps those in sync and they go stale without anyone noticing.
 
 **Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
 
-**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constant/store.key.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
+**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constants/store.key.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
 
 **Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed in the same file.
 

@@ -6,12 +6,12 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { Button, Modal } from '@/components/ui'
 import { useBookmarkStore } from '../../context/bookmark.context'
-import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants/browser-import.constant'
+import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants'
 import type { BrowserImportNode } from '../../types/bookmark.types'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '../../utils/browser-bookmarks.util'
+} from '../../utils/browser-bookmarks'
 
 interface ImportBrowserBookmarksModalProps {
 	isOpen: boolean

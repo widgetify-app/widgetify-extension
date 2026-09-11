@@ -1,4 +1,4 @@
-import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constants/priority-options'
 import { Button, IconLoading } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'

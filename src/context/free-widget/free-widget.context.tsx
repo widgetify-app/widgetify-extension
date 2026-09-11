@@ -19,9 +19,9 @@ import { type StoredWidget, WidgetKeys } from '@/layouts/widgets/layout-engine/t
 import { useAppearance } from '../appearance.context'
 import { useAuth } from '../auth.context'
 import { reflowForColumns } from './widget-layout-helpers'
-import { useWidgetSync } from './use-widget-sync.hook'
-import { useWidgetOperations } from './use-widget-operations.hook'
-import { useWidgetDrag } from './use-widget-drag.hook'
+import { useWidgetSync } from './use-widget-sync'
+import { useWidgetOperations } from './use-widget-operations'
+import { useWidgetDrag } from './use-widget-drag'
 import type {
 	FreeWidgetActions,
 	FreeWidgetContextType,

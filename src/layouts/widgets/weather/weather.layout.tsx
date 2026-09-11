@@ -9,7 +9,7 @@ import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'
 import { WeatherWideBanner } from './variants/weather-4x1'
 import { WeatherWideFull } from './variants/weather-4x2'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon'
+import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import type { WidgetSize } from '../layout-engine/types'
 
 interface WeatherLayoutProps {

@@ -14,10 +14,10 @@ import {
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { useCurrencyStore } from '@/context/currency.context'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetContainer } from '../widget-container'
 import { SortableCurrencyBox } from './components/sortable-currency-box'
-import { CurrencyCompactSquare } from './variants/currency-1x1'
+import { CurrencyCompactSquare } from './variants/wigi-arz-1x1'
 import { Button } from '@/components/ui'
 
 import type { WidgetSize } from '../layout-engine/types'

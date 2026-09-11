@@ -6,7 +6,7 @@ import { CoinPackageCard } from './components/coin-package-card'
 import { CoinPackagePurchaseModal } from './components/coin-package-purchase-modal'
 import { showToast } from '@/common/toast'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
-import { useGetCoinPackages } from '@/services/hooks/market/market-coints.hook'
+import { useGetCoinPackages } from '@/services/hooks/market/market-coins.hook'
 import { Icon } from '@/icons'
 
 export function MarketCoins() {

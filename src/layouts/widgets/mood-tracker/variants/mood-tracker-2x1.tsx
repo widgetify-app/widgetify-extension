@@ -1,4 +1,4 @@
-import { moodOptions } from '@/common/constant/moods'
+import { moodOptions } from '@/common/constants/moods'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import type { MoodType } from '@/services/hooks/mood-log/upsert-mood-log.hook'
 import { cn } from '@/common/utils/cn'

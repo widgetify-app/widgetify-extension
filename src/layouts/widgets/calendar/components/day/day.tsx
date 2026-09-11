@@ -11,7 +11,7 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 } from '../../utils'
-import { moodOptions } from '@/common/constant/moods'
+import { moodOptions } from '@/common/constants/moods'
 
 interface DayItemProps {
 	day: number

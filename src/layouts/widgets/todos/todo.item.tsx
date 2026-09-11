@@ -15,7 +15,7 @@ import { parseTodoDate } from './tools/parse-date'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { playAlarm } from '@/common/play-alarm'
 import { Tooltip } from '@/components/ui'
-import { TodoFriends } from './components/friends.todo'
+import { TodoFriends } from './components/friends'
 import { Icon } from '@/icons'
 
 interface Prop {

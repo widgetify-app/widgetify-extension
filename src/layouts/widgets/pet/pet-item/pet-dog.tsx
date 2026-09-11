@@ -13,7 +13,7 @@ import {
 	type PetDimensions,
 	type PetDurations,
 	PetSpeed,
-} from '../core/pet-types'
+} from '../core/types'
 import { PetTypes, usePetContext } from '../pet.context'
 
 export const DogComponent = ({ className }: { className?: string }) => {

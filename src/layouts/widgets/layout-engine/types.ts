@@ -59,7 +59,7 @@ export interface GridBreakpoint {
 	gap: number
 }
 
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 
 export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
 

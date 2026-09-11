@@ -14,7 +14,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import { PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_OPTIONS } from '@/common/constants/priority-options'
 import moment from 'jalali-moment'
 
 const STICKY_COLOR_MAP: Record<
