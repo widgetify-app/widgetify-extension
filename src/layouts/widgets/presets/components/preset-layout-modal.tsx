@@ -6,11 +6,11 @@ import { cn } from '@/common/utils/cn'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
-import { WIDGET_DEFINITIONS } from '../widget-registry'
-import { PRESET_LAYOUTS } from './preset-layouts'
-import { PresetCanvasPreview } from './components/preset-canvas-preview'
-import { resolvePresetWidgetsForViewport } from './utils/viewport'
-import type { PresetLayout } from './types'
+import { WIDGET_DEFINITIONS } from '../../widget-registry'
+import { PRESET_LAYOUTS } from '../preset-layouts'
+import { PresetCanvasPreview } from './preset-canvas-preview'
+import { resolvePresetWidgetsForViewport } from '../utils/viewport'
+import type { PresetLayout } from '../types'
 
 interface PresetLayoutModalProps {
 	isOpen: boolean

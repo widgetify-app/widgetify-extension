@@ -5,8 +5,8 @@ import { useHorizontalWheelScroll } from '@/hooks/use-horizontal-wheel-scroll'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { Icon } from '@/icons'
 import { TodosEmpty } from '../components/todo-empty'
-import { ExpandableTodoInput } from '../expandable-todo-input'
-import { TodoItem } from '../todo.item'
+import { ExpandableTodoInput } from '../components/expandable-todo-input'
+import { TodoItem } from '../components/todo-item'
 
 interface TodoBoardProps {
 	todos: Todo[]

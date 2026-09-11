@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
-import { useGetRss } from '../../../services/hooks/news/get-news.hook'
-import { NewsItem } from './components/news-item'
+import { useGetRss } from '../../../../services/hooks/news/get-news.hook'
+import { NewsItem } from './news-item'
 
 interface Prop {
 	url: string

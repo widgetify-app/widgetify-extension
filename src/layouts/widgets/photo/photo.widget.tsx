@@ -20,7 +20,7 @@ import {
 } from '@/components/ui'
 import type { AxiosError } from 'axios'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
-import { PhotoEmptyState } from './photo-empty-state'
+import { PhotoEmptyState } from './components/photo-empty-state'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize

@@ -11,11 +11,11 @@ import { translateError } from '@/common/utils/translate-error'
 import { validate } from 'uuid'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'
-import { parseTodoDate } from './utils/parse-date'
+import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { playAlarm } from '@/common/play-alarm'
 import { Tooltip } from '@/components/ui'
-import { TodoFriends } from './components/friends'
+import { TodoFriends } from './friends'
 import { Icon } from '@/icons'
 
 interface Prop {

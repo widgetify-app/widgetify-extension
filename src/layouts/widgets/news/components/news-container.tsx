@@ -1,5 +1,5 @@
 import type { RssFeed } from '../rss.interface'
-import { RssFeedComponent } from '../rss-feed'
+import { RssFeedComponent } from './rss-feed'
 
 interface NewsContainerProps {
 	customFeeds: RssFeed[]

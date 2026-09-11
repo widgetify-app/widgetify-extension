@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import type { WidgetDefinition, WidgetSize } from '../layout-engine/types'
+import type { WidgetDefinition, WidgetSize } from '../../layout-engine/types'
 
 interface WidgetSlotProps {
 	definition: WidgetDefinition

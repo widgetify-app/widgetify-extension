@@ -7,10 +7,10 @@ import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
 import { AddWidgetModal, WidgetHelpModal } from '@/layouts/widgets-manager'
 import { PresetLayoutModal } from '../presets'
-import { CanvasContextMenu } from './canvas-context-menu'
-import { CanvasWidgetOuter } from './canvas-widget-outer'
-import { CanvasEditToolbar } from './canvas-edit-toolbar'
-import { GridOverlay } from './grid-overlay'
+import { CanvasContextMenu } from './components/canvas-context-menu'
+import { CanvasWidgetOuter } from './components/canvas-widget-outer'
+import { CanvasEditToolbar } from './components/canvas-edit-toolbar'
+import { GridOverlay } from './components/grid-overlay'
 
 export function FreeWidgetCanvas() {
 	const containerRef = useRef<HTMLDivElement>(null)

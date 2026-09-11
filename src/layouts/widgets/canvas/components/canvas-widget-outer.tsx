@@ -2,14 +2,14 @@ import type React from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
-import { getWidgetPixelRect } from '../grid-geometry'
+import { getWidgetPixelRect } from '../../grid-geometry'
 import {
 	type StoredWidget,
 	type WidgetDefinition,
 	WidgetKeys,
 	type WidgetPosition,
 	type WidgetSize,
-} from '../layout-engine/types'
+} from '../../layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'

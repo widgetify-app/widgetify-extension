@@ -1,5 +1,5 @@
 import { Icon } from '@/icons'
-import type { WidgetSize } from '../layout-engine/types'
+import type { WidgetSize } from '../../layout-engine/types'
 
 interface PhotoEmptyStateProps {
 	size?: WidgetSize
