@@ -202,6 +202,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					type="BOOKMARK_ICON"
 					title="گالری آیکون بوکمارک"
 					onSelect={handleGallerySelect}
+					selectedAssetUrl={typeof value === 'string' ? value : undefined}
 				/>
 			)}
 		</>

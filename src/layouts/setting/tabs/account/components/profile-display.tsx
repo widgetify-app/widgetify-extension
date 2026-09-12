@@ -277,6 +277,7 @@ export const ProfileDisplay = () => {
 				type="AVATAR"
 				title="گالری آواتارها"
 				onSelect={onSelectAvatarAsset}
+				selectedAssetUrl={user?.avatar}
 			/>
 
 			<AddPhoneModal isOpen={showModal} onClose={() => onCloseModal()} />
