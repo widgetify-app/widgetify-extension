@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PetTooltip } from './pet-tooltip'
+import { MAX_ACTIVE_PET_FOOD } from '../constants'
 import { cn } from '@/common/utils/cn'
 import {
 	clampToBounds,
@@ -56,10 +57,10 @@ export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 					!item.collected && (
 						<div
 							key={item.id}
-							className="absolute"
+							className="absolute bottom-0 left-0"
 							style={{
-								left: `${item.x}px`,
-								bottom: `${item.y}px`,
+								transform: `translate3d(${item.x}px, ${-item.y}px, 0)`,
+								willChange: 'transform',
 							}}
 						>
 							{CollectibleIcon}
@@ -128,34 +129,38 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 
 			<div
 				ref={petRef}
-				className="absolute transition-transform duration-300 cursor-pointer"
+				className="absolute bottom-0 left-0 cursor-pointer"
 				style={{
-					left: `${position.x}px`,
-					bottom: `${position.y}px`,
-					transform: `scaleX(${direction})`,
+					transform: `translate3d(${position.x}px, ${-position.y}px, 0)`,
 					width: `${dimensions.width}px`,
 					height: `${dimensions.size}px`,
 					zIndex: 10,
+					willChange: 'transform',
 				}}
 			>
-				{showToolTip && (
-					<PetTooltip
-						direction={direction}
-						content={isHungry ? 'غذاااا بدهه' : name}
-						emoji={isHungry ? '🍽️' : undefined}
-						isAnimation={isHungry}
-						placement={position.y > 0 ? 'bottom' : 'top'}
-					/>
-				)}
-				{loadedSrcs.map((src) => (
-					<img
-						key={src}
-						src={src}
-						alt={name}
-						className="absolute inset-0 object-contain w-full h-full pointer-events-none"
-						style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
-					/>
-				))}
+				<div
+					className="relative w-full h-full transition-transform duration-300"
+					style={{ transform: `scaleX(${direction})` }}
+				>
+					{showToolTip && (
+						<PetTooltip
+							direction={direction}
+							content={isHungry ? 'غذاااا بدهه' : name}
+							emoji={isHungry ? '🍽️' : undefined}
+							isAnimation={isHungry}
+							placement={position.y > 0 ? 'bottom' : 'top'}
+						/>
+					)}
+					{loadedSrcs.map((src) => (
+						<img
+							key={src}
+							src={src}
+							alt={name}
+							className="absolute inset-0 object-contain w-full h-full pointer-events-none"
+							style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	)
@@ -268,19 +273,22 @@ export function useBasePetLogic({
 			const container = containerRef.current
 			if (!container) return
 
-			if (collectiblesRef.current.length > 2) {
-				applyCollectibles([])
-				return
-			}
+			const uneatenFood = collectiblesRef.current.filter(
+				(item) => !item.collected
+			)
+			if (uneatenFood.length >= MAX_ACTIVE_PET_FOOD) return
 
 			const rect = container.getBoundingClientRect()
 			const clickX = e.clientX - rect.left
-			const bounds = getBounds()
-			const clampedX = Math.max(bounds.minX, Math.min(bounds.maxX, clickX))
+			const maxFoodX = Math.max(0, rect.width - assets.collectibleSize)
+			const foodX = Math.max(
+				0,
+				Math.min(maxFoodX, clickX - assets.collectibleSize / 2)
+			)
 
 			const newCollectible: CollectibleItem = {
 				id: collectibleIdRef.current,
-				x: clampedX,
+				x: foodX,
 				y: -assets.collectibleSize,
 				collected: false,
 				dropping: true,
@@ -305,7 +313,6 @@ export function useBasePetLogic({
 		[
 			assets.collectibleSize,
 			action,
-			getBounds,
 			updateAction,
 			updateBehaviorState,
 			applyCollectibles,
@@ -321,12 +328,15 @@ export function useBasePetLogic({
 
 			if (availableCollectibles.length === 0) return null
 
-			const currentX = positionRef.current.x
+			const petCenter = positionRef.current.x + dimensions.width / 2
+			const centerOf = (item: CollectibleItem) =>
+				item.x + assets.collectibleSize / 2
+
 			let nearest = availableCollectibles[0]
-			let minDistance = Math.abs(currentX - nearest.x)
+			let minDistance = Math.abs(petCenter - centerOf(nearest))
 
 			for (let i = 1; i < availableCollectibles.length; i++) {
-				const distance = Math.abs(currentX - availableCollectibles[i].x)
+				const distance = Math.abs(petCenter - centerOf(availableCollectibles[i]))
 				if (distance < minDistance) {
 					minDistance = distance
 					nearest = availableCollectibles[i]
@@ -334,7 +344,7 @@ export function useBasePetLogic({
 			}
 			return nearest
 		},
-		[]
+		[dimensions.width, assets.collectibleSize]
 	)
 
 	const handleCollectibleCollection = useCallback(
@@ -358,8 +368,8 @@ export function useBasePetLogic({
 			if (prevCollectibles.length === 0) return
 
 			const fallStep = assets.collectibleFallSpeed * scale
-			const currentX = positionRef.current.x
-			const collectRadius = dimensions.size / 1.5
+			const petCenter = positionRef.current.x + dimensions.width / 2
+			const collectRadius = dimensions.width / 2
 
 			let changed = false
 			let collectedId: number | null = null
@@ -377,7 +387,9 @@ export function useBasePetLogic({
 				}
 
 				if (collectedId === null) {
-					const distance = Math.abs(collectible.x - currentX)
+					const distance = Math.abs(
+						collectible.x + assets.collectibleSize / 2 - petCenter
+					)
 					if (distance < collectRadius) {
 						collectedId = collectible.id
 						changed = true
@@ -398,7 +410,8 @@ export function useBasePetLogic({
 		},
 		[
 			assets.collectibleFallSpeed,
-			dimensions.size,
+			assets.collectibleSize,
+			dimensions.width,
 			applyCollectibles,
 			handleCollectibleCollection,
 		]
@@ -479,7 +492,15 @@ export function useBasePetLogic({
 					updateBehaviorState(PetBehavior.CHASING)
 					updateAction('run')
 				}
-				setTargetX(nearestCollectible.x)
+				const bounds = getBounds()
+				const foodCenter =
+					nearestCollectible.x + assets.collectibleSize / 2
+				setTargetX(
+					Math.max(
+						bounds.minX,
+						Math.min(bounds.maxX, foodCenter - dimensions.width / 2)
+					)
+				)
 				setIsMovingToTarget(true)
 				return
 			}
@@ -507,6 +528,9 @@ export function useBasePetLogic({
 			updateAction,
 			updateBehaviorState,
 			roamOrRest,
+			getBounds,
+			assets.collectibleSize,
+			dimensions.width,
 		]
 	)
 

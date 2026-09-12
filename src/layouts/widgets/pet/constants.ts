@@ -69,6 +69,8 @@ export const PET_BACKGROUND_LIST = Object.values(PET_BACKGROUNDS)
 
 export const HUNGER_GAIN_STEPS = [5, 10, 20]
 
+export const MAX_ACTIVE_PET_FOOD = 3
+
 export const BASE_PET_OPTIONS: PetSettings = {
 	petType: PetTypes.DOG,
 	background: DEFAULT_PET_BACKGROUND,
