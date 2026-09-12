@@ -1,5 +1,41 @@
 import type React from 'react'
 
+export enum PetTypes {
+	DOG = 'dog',
+	CHICKEN = 'chicken',
+	CRAB = 'crab',
+	FROG = 'frog',
+	CAT = 'cat',
+}
+
+export type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
+
+export type PetBackgroundId = 'forest' | 'autumn' | 'beach'
+
+export interface PetBackground {
+	id: PetBackgroundId
+	label: string
+	image: string
+	groundOffsetPx: number
+}
+
+export interface PetHungerState {
+	level: number
+	lastHungerTick: number | null
+}
+
+export interface PetOption {
+	name: string
+	type: PetSpecies
+	hungryState: PetHungerState
+}
+
+export interface PetSettings {
+	petType: PetTypes | null
+	background: PetBackgroundId
+	petOptions: Record<PetTypes, PetOption>
+}
+
 export enum PetSpeed {
 	SLOW = 1,
 	NORMAL = 1.8,

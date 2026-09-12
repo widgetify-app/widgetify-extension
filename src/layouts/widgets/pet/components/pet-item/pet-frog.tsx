@@ -14,7 +14,8 @@ import {
 	type PetDurations,
 	PetSpeed,
 } from '../../types'
-import { PetTypes, usePetContext } from '../../pet.context'
+import { usePetContext } from '../../pet.context'
+import { PetTypes } from '../../types'
 
 const COLLECTIBLE_COLORS = [
 	'#f87171',
