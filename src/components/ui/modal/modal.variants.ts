@@ -4,6 +4,8 @@ export const modalBoxVariants = cva(
 	[
 		'modal-box',
 		'overflow-hidden',
+		'max-h-[calc(100dvh-1rem)]',
+		'md:max-h-[calc(100dvh-2rem)]',
 		'rounded-widget',
 		'p-3',
 		'md:p-4',
@@ -35,15 +37,30 @@ export const modalBoxVariants = cva(
 export type ModalBoxVariant = typeof modalBoxVariants
 
 export const modalScrollVariants = cva(
-	['overflow-y-auto', 'overflow-x-hidden', 'pr-0.5', 'md:pr-1'],
+	['overflow-y-auto', 'overflow-x-hidden', 'px-0.5', 'md:px-1'],
 	{
 		variants: {
 			size: {
-				sm: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[560px]'],
-				md: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[640px]'],
-				lg: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[720px]'],
-				xl: ['max-h-[calc(100vh-4rem)]', 'md:max-h-[800px]'],
-				'2xl': ['max-h-[calc(100vh-4rem)]', 'md:max-h-[850px]'],
+				sm: [
+					'max-h-[calc(100dvh-6rem)]',
+					'md:max-h-[min(560px,calc(100dvh-8rem))]',
+				],
+				md: [
+					'max-h-[calc(100dvh-6rem)]',
+					'md:max-h-[min(640px,calc(100dvh-8rem))]',
+				],
+				lg: [
+					'max-h-[calc(100dvh-6rem)]',
+					'md:max-h-[min(720px,calc(100dvh-8rem))]',
+				],
+				xl: [
+					'max-h-[calc(100dvh-6rem)]',
+					'md:max-h-[min(800px,calc(100dvh-8rem))]',
+				],
+				'2xl': [
+					'max-h-[calc(100dvh-6rem)]',
+					'md:max-h-[min(850px,calc(100dvh-8rem))]',
+				],
 				full: ['h-full'],
 			},
 		},
