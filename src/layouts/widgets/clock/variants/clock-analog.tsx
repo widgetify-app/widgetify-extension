@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
 
 interface ClockAnalogProps {
 	size?: number

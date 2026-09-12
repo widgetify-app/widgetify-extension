@@ -1,11 +1,11 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetTypes } from '@/layouts/widgets/pet/pet.context'
+import type { PetBackgroundId, PetTypes } from '@/layouts/widgets/pet/types'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
 import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
 import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { Page } from '@/context/page.context'
@@ -38,6 +38,7 @@ export interface EventName {
 	updatedPetSettings: {
 		petName?: string
 		petType: PetTypes
+		background?: PetBackgroundId
 	}
 	theme_change: {
 		theme: string

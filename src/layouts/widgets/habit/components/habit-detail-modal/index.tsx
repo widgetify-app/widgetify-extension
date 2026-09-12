@@ -5,11 +5,11 @@ import { HabitCalendar } from './habit-calendar-heatmap'
 import { HabitContributionChart } from './habit-contribution-chart'
 import { HabitStatsCards } from './habit-stats-cards'
 import { useAuth } from '@/context/auth.context'
-import { formatHabitGoal } from '../../utils'
+import { formatHabitGoal } from '../../utils/habit-goal'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
 const HabitShareModal = lazy(() =>

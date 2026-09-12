@@ -1,5 +1,5 @@
 import { AvatarComponent } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface EmptyActivityCardProps {
 	avatar: string

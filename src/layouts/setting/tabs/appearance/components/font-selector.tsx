@@ -5,7 +5,7 @@ import { ItemSelector } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface FontItem {
 	label: string

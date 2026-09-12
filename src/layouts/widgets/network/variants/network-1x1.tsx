@@ -1,5 +1,5 @@
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 
 interface NetworkCompactSquareProps {

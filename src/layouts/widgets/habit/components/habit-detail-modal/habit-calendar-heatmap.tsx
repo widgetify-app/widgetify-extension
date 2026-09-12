@@ -5,10 +5,10 @@ import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interf
 import { safeAwait } from '@/services/api'
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { HABIT_UNIT_STEP } from '@/common/constant/habit-options'
+import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { useQueryClient } from '@tanstack/react-query'
 import { IconLoading } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface HabitCalendarProps {
 	habit: Habit

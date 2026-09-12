@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { ColorPicker } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
-import { getEmojiList } from '@/services/emoji/emoji-api'
+import { TextInput } from '@/components/ui'
+import { getEmojiList } from '@/services/emoji/emoji.api'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '../../types/bookmark.types'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AdvancedModalProps {
 	title: string

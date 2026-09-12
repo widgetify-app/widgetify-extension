@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button, ClickableTooltip, Dropdown } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useRef, useState, useEffect } from 'react'
 
 const PERSIAN_MONTHS = [

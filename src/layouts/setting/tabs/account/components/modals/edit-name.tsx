@@ -1,6 +1,6 @@
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useState } from 'react'
 import { FooterButtons } from './footer-buttons'

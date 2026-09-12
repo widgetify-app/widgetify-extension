@@ -5,7 +5,7 @@ import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
 export function FolderBookmarkItem({

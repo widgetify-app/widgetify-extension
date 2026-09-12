@@ -4,7 +4,7 @@ import type { WidgetSize } from '../layout-engine/types'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { safeAwait } from '@/services/api'
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui'
 import type { AxiosError } from 'axios'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
-import { PhotoEmptyState } from './photo-empty-state'
+import { PhotoEmptyState } from './components/photo-empty-state'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize

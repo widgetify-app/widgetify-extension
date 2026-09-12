@@ -6,9 +6,9 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '@/layouts/bookmark/utils/browser-bookmarks.util'
+} from '@/layouts/bookmark/utils/browser-bookmarks'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 interface BookmarkPopoverProps {

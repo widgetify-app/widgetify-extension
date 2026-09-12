@@ -1,10 +1,10 @@
 import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/common/utils/icon'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
-import { GalleryPickerModal } from '@/components/gallery/gallery-picker-modal'
+import { GalleryPickerModal } from '@/components/gallery'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 
 type Props = {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { Modal } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { CurrencyColorMode } from '@/context/currency.context'
 import { GetPrice } from '../utils/get-price'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface CurrencyModalComponentProps {
 	code: string

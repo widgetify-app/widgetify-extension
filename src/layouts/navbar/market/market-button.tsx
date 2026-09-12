@@ -3,7 +3,7 @@ import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { MarketContainer } from '@/layouts/market/market-container'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function MarketButton() {
 	const [showMarket, setShowMarket] = useState(false)

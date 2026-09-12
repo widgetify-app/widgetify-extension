@@ -1,5 +1,5 @@
 import React from 'react'
-import type { HabitPresetItem } from './habit-form.constants'
+import type { HabitPresetItem } from './constants'
 import { Chip } from '@/components/ui'
 
 interface HabitFormPresetsProps {

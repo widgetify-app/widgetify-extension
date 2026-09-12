@@ -1,6 +1,6 @@
 import { getContrastingTextColor } from '@/common/color'
 import { NewBadge } from '@/components/ui'
-import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps-interface'
+import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps.interface'
 
 interface MiniAppCardProps {
 	app: MiniApp

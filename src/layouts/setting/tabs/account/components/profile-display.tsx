@@ -16,11 +16,11 @@ import { ChangeCityModal } from './modals/edit-city'
 import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
 import { AvatarCropModal } from './modals/avatar/avatar-crop.modal'
-import { GalleryPickerModal } from '@/components/gallery/gallery-picker-modal'
+import { GalleryPickerModal } from '@/components/gallery'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useState } from 'react'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {

@@ -1,7 +1,7 @@
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import type { Bookmark } from '../../types/bookmark.types'
 import { useState } from 'react'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 const colors = [
 	'bg-blue-500/60',
 	'bg-purple-500/60',

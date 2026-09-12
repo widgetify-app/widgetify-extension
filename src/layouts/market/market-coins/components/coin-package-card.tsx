@@ -1,7 +1,7 @@
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import { Button } from '@/components/ui'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface CoinPackageCardProps {
 	package: CoinPackage

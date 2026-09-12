@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
 import { Modal, Button, Chip } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
 interface WidgetHelpModalProps {

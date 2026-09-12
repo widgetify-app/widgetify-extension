@@ -3,14 +3,14 @@ import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
-import { useGetCitiesList } from '@/services/hooks/cities/get-cities-list'
+import { useGetCitiesList } from '@/services/hooks/cities/get-cities-list.hook'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { useSetCity } from '@/services/hooks/user/user-service.hook'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface SelectedCity {
 	city: string

@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '../button/button'
 
 export interface PaginationProps {

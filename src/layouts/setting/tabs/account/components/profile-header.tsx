@@ -7,8 +7,8 @@ import {
 	PopoverMenuItem,
 	Tooltip,
 } from '@/components/ui'
-import { UserCoin } from './user-coin'
-import { Icon } from '@/src/icons'
+import { UserCoin } from '@/components/user-coin'
+import { Icon } from '@/icons'
 import { useAuth } from '@/context/auth.context'
 import { formatVipExpiryDate, formatVipRemaining } from '@/common/utils/vip-expiry'
 import { callEvent } from '@/common/utils/call-event'

@@ -10,8 +10,8 @@ import type {
 	WidgetVariantOption,
 } from '@/layouts/widgets/layout-engine/types'
 import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
-import { Icon } from '@/src/icons'
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { Icon } from '@/icons'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetHelpModal } from '../widget-help.modal'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import type { AddWidgetModalProps } from './types'

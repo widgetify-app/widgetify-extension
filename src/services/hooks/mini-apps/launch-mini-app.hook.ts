@@ -1,6 +1,6 @@
 import { getMainClient } from '@/services/api'
 import { useMutation } from '@tanstack/react-query'
-import type { MiniAppLaunchResponse } from './mini-apps-interface'
+import type { MiniAppLaunchResponse } from './mini-apps.interface'
 
 export const useLaunchMiniApp = () => {
 	return useMutation<MiniAppLaunchResponse, Error, { appId: string }>({

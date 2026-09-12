@@ -8,10 +8,10 @@ import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
 import { SearchCompactRow } from './variants/search-2x1'
-import type { EngineMeta } from '@/services/hooks/trends/get-trends'
+import type { EngineMeta } from '@/services/hooks/trends/get-trends.hook'
 import { useSearchHistory } from './hooks/use-search-history'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',

@@ -9,92 +9,16 @@ import {
 } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-
-export enum PetTypes {
-	DOG_AKITA = 'dog-akita',
-	CHICKEN = 'chicken',
-	CRAB = 'crab',
-	FROG = 'frog',
-	CAT = 'cat',
-}
-export interface PetSettings {
-	petType: PetTypes | null
-	petOptions: Record<
-		PetTypes,
-		{
-			name: string
-			emoji: string
-			type: 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
-			hungryState: {
-				level: number // e.g., 0-100
-				lastHungerTick: number | null //timestamp
-			}
-		}
-	>
-}
+import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS } from './constants'
+import { type PetHungerState, type PetSettings, PetTypes } from './types'
 
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: (petType: PetTypes) => string
 	levelUpHungryState: (petType: PetTypes) => void
 	levelDownHungryState: (petType: PetTypes) => void
 	isPetHungry: (petType: PetTypes) => boolean
-	getPetHungryState: (petType: PetTypes) => {
-		level: number
-		lastHungerTick: number | null
-	} | null
+	getPetHungryState: (petType: PetTypes) => PetHungerState | null
 }
-export const BASE_PET_OPTIONS: PetSettings = {
-	petType: PetTypes.DOG_AKITA,
-	petOptions: {
-		[PetTypes.DOG_AKITA]: {
-			name: 'آکیتا',
-			emoji: '🐶',
-			type: 'dog',
-			hungryState: {
-				level: 100,
-				lastHungerTick: null,
-			},
-		},
-		[PetTypes.CHICKEN]: {
-			name: 'قدقدپور',
-			emoji: '🐔',
-			type: 'chicken',
-			hungryState: {
-				level: 100,
-				lastHungerTick: null,
-			},
-		},
-		[PetTypes.CRAB]: {
-			name: 'چنگولی',
-			emoji: '🦀',
-			type: 'crab',
-			hungryState: {
-				level: 100,
-				lastHungerTick: null,
-			},
-		},
-		[PetTypes.CAT]: {
-			name: 'زردآلو',
-			emoji: '🐱',
-			type: 'cat',
-			hungryState: {
-				level: 100,
-				lastHungerTick: null,
-			},
-		},
-		[PetTypes.FROG]: {
-			name: 'قوری',
-			emoji: '🐸',
-			type: 'frog',
-			hungryState: {
-				level: 100,
-				lastHungerTick: null,
-			},
-		},
-	},
-}
-
-const HUNGER_GAIN_STEPS = [10, 15, 25]
 
 const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
 
@@ -119,7 +43,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			if (cancelled) return
 
 			if (storedPets) {
-				if (!storedPets.petOptions?.[PetTypes.DOG_AKITA]?.hungryState) {
+				if (!storedPets.petOptions?.[PetTypes.DOG]?.hungryState) {
 					setToStorage('pets', {
 						...BASE_PET_OPTIONS,
 					})
@@ -139,7 +63,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			} else {
 				const initialSettings = {
 					...BASE_PET_OPTIONS,
-					petType: PetTypes.DOG_AKITA,
+					petType: PetTypes.DOG,
 				}
 				setSettings(initialSettings)
 				await setToStorage('pets', initialSettings)
@@ -177,6 +101,10 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 							data.petType !== undefined
 								? data.petType
 								: newSettings.petType,
+						background:
+							data.background !== undefined
+								? data.background
+								: newSettings.background,
 					}
 
 					setToStorage('pets', updatedSettings)
@@ -201,7 +129,8 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 			const pet = prevSettings.petOptions[petType]
 			if (!pet?.hungryState) return prevSettings
 
-			const gain = HUNGER_GAIN_STEPS[Math.floor(Math.random() * HUNGER_GAIN_STEPS.length)]
+			const gain =
+				HUNGER_GAIN_STEPS[Math.floor(Math.random() * HUNGER_GAIN_STEPS.length)]
 			const nextLevel = Math.min(100, pet.hungryState.level + gain)
 			if (nextLevel === pet.hungryState.level) return prevSettings
 

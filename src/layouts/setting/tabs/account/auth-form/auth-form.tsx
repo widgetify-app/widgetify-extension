@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import {
 	useGetAuthStatus,
 	useRequestOtp,
@@ -13,7 +13,7 @@ import InputTextError from './components/input-text-error'
 import OtpInput from './components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 import LoginGoogleButton from './components/login-google.button'
 import Analytics from '@/analytics'

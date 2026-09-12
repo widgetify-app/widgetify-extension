@@ -14,7 +14,7 @@ import { TimerDisplay } from './components/timer-display'
 import { TopUsersTab } from './top-users/top-users'
 import type { PomodoroSettings, TimerMode } from './types'
 import { TabNavigation } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface PomodoroTimerProps {
 	onComplete?: () => void

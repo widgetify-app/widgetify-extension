@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { cn } from '@/common/utils/cn'
 import { WIDGET_DEFINITIONS } from '../../widget-registry'
 import type { PresetLayout } from '../types'
-import { resolvePresetWidgetsForViewport } from '../utils'
+import { resolvePresetWidgetsForViewport } from '../utils/viewport'
 
 interface PresetCanvasPreviewProps {
 	preset: PresetLayout

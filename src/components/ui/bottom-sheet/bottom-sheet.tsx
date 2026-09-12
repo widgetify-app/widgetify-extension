@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Presence, Motion as motion } from '@/common/motion'
 import { Portal } from '../portal/portal'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 type SheetSize = 'small' | 'medium' | 'large' | 'full' | 'screen'
 

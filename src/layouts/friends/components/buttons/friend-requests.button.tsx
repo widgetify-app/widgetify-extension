@@ -1,5 +1,5 @@
 import { FriendRequestsBottomSheet } from '../friend-requests.bottom-sheet'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	size: 'small' | 'large'

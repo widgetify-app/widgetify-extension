@@ -13,7 +13,7 @@ export const ControlButton: React.FC<ControlButtonProps> = ({ icon, onClick, mod
 		<Button
 			onClick={onClick}
 			size="md"
-			isPrimary={isPrimary}
+			variant={isPrimary ? 'primary' : 'default'}
 			className={`rounded-full p-0! w-10 text-center  border-none shadow-none transition-colors duration-300 ease-in-out`}
 		>
 			{icon}

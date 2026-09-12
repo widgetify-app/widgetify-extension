@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { OccupationSelector } from '../occupation-selector'
 import { useGetOccupations } from '@/services/hooks/profile/get-profile-meta.hook'
 import { SectionPanel } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { FooterButtons } from './footer-buttons'
 
 interface Prop {

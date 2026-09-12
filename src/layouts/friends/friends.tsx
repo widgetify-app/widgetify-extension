@@ -11,7 +11,7 @@ import { AddFriendBottomSheet } from './components/add-friend.bottom-sheet'
 import { ConfirmationModal } from '@/components/ui'
 import { FriendRequestsButton } from './components/buttons/friend-requests.button'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export const FriendsLayout = () => {
 	const { user } = useAuth()

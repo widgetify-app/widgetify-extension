@@ -6,7 +6,7 @@ import {
 	fitText,
 	rgba,
 } from '@/common/utils/canvas'
-import { formatHabitGoal } from '../utils'
+import { formatHabitGoal } from './habit-goal'
 
 interface RenderHabitShareCanvasOptions {
 	habit: Habit

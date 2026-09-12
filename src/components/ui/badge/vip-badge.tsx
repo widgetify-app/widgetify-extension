@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { vipBadgeVariants, type VipBadgeVariantProps } from './vip-badge.variants'
 

@@ -10,7 +10,7 @@ import {
 import { GetPrice } from '../utils/get-price'
 import { CurrencyModalComponent } from './currency-modal'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface CurrencyBoxProps {
 	code: string

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { showToast } from '@/common/toast'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/components/auth/require-auth'
 import { getMainClient } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { Button, Portal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface ImageSearchPortalProps {
 	onClose: () => void

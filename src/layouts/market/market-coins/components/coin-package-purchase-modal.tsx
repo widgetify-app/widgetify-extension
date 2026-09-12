@@ -2,10 +2,10 @@ import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
-import { usePurchaseCoinPackage } from '@/services/hooks/market/market-coints.hook'
-import { Icon } from '@/src/icons'
+import { usePurchaseCoinPackage } from '@/services/hooks/market/market-coins.hook'
+import { Icon } from '@/icons'
 
 interface CoinPackagePurchaseModalProps {
 	isOpen: boolean

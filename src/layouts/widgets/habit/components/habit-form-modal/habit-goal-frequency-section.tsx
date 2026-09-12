@@ -8,9 +8,9 @@ import {
 	HABIT_COMPARISON_OPTIONS,
 	HABIT_FREQUENCY_OPTIONS,
 	HABIT_UNIT_OPTIONS,
-} from '@/common/constant/habit-options'
+} from '@/common/constants/habit-options'
 import { Chip, Dropdown, type DropdownOption, TextInput } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface HabitGoalFrequencySectionProps {
 	target: number

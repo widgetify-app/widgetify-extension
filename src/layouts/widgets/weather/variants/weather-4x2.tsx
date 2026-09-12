@@ -1,7 +1,7 @@
 import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
 import { unitsFlag } from '../unit-symbols'
-import { CurrentWeatherBox } from '../current/current-box.weather'
-import { Forecast } from '../forecast/forecast'
+import { CurrentWeatherBox } from '../components/current-weather-box'
+import { Forecast } from '../components/forecast'
 
 interface WeatherWideFullProps {
 	fetchedWeather: FetchedWeather | null

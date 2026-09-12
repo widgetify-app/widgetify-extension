@@ -1,2 +1,2 @@
 export * from './photo.widget'
-export * from './photo-empty-state'
+export * from './components/photo-empty-state'

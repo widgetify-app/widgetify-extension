@@ -7,7 +7,7 @@ import { RemoveFriendButton } from './remove-button'
 import { FriendsList } from './friends-list'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	isOpen: boolean

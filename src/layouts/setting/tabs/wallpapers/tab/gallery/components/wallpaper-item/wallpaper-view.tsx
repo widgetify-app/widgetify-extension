@@ -8,7 +8,7 @@ import { WallpaperItem } from './wallpaper-item'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
 import { MarketItemType } from '@/services/hooks/market/market.interface'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface WallpaperViewProps {
 	selectedCategoryId: string | null

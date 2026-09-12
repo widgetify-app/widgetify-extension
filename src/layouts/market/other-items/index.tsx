@@ -12,7 +12,7 @@ import { showToast } from '@/common/toast'
 import { Chip } from '@/components/ui'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const FILTER_OPTIONS = [
 	{ id: 'all', label: 'همه' },

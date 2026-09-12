@@ -1,6 +1,6 @@
 import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
-import type { SingleMiniApp } from './mini-apps-interface'
+import type { SingleMiniApp } from './mini-apps.interface'
 
 interface GetMiniAppResponse {
 	data: SingleMiniApp

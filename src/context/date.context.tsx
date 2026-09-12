@@ -6,7 +6,7 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	type WidgetifyDate,
-} from '@/layouts/widgets/calendar/utils'
+} from '@/layouts/widgets/calendar/utils/date-events'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { useGeneralSetting } from './general-setting.context'
 

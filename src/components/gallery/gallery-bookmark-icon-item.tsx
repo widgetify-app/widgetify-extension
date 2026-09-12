@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { VipBadge } from '@/components/ui'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
-import { useLazyLoad } from '@/layouts/setting/tabs/wallpapers/hooks/use-lazy-load'
+import { UserCoin } from '@/components/user-coin'
+import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 
 interface GalleryBookmarkIconItemProps {

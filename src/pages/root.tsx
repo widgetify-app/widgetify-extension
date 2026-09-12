@@ -11,7 +11,7 @@ import {
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { Page, usePage } from '@/context/page.context'
 import { MotionConfig } from 'framer-motion'

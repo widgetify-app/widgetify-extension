@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useGetSearchboxData } from '@/services/hooks/trends/get-trends'
+import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Tooltip } from '@/components/ui'
 import { BookmarkPopover } from './bookmark-popover'
 import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
 import { NewBadge } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })

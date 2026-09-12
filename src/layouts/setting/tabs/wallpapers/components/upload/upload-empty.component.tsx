@@ -1,4 +1,4 @@
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button, IconLoading, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'

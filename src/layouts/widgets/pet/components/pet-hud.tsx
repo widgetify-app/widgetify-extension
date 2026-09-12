@@ -5,7 +5,7 @@ interface Prop {
 }
 export const PetHud: React.FC<Prop> = ({ level }) => {
 	return (
-		<div className="absolute left-0 z-10 bottom-5 opacity-90">
+		<div className="z-10 drop-shadow-[0_1px_1px_rgba(0,0,0,0.55)]">
 			<div className="flex items-center gap-1">
 				<div className="flex items-center gap-0.5">
 					{[...Array(5)].map((_, i) => (
@@ -14,8 +14,8 @@ export const PetHud: React.FC<Prop> = ({ level }) => {
 							size={8}
 							className={`${
 								i < Math.ceil(level / 20)
-									? 'text-red-500'
-									: 'text-gray-400'
+									? 'text-error'
+									: 'text-neutral-content/60'
 							} transition-colors duration-300`}
 						/>
 					))}

@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { Button } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useVoiceSearch } from './use-voice-search'
 import { Dropdown, Portal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface VoiceSearchPortalProps {
 	onClose: () => void

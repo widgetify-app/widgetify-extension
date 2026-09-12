@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Dropdown } from '@/components/ui'
 
 export const SettingsDropdown = () => {

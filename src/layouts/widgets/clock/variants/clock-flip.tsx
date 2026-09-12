@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils'
+import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
 
 const FLIP_DURATION = 400
 

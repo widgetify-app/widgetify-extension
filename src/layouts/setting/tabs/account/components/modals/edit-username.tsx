@@ -1,7 +1,7 @@
 import { showToast } from '@/common/toast'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { safeAwait } from '@/services/api'
 import { useUpdateUsername } from '@/services/hooks/auth/auth-service.hook'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'

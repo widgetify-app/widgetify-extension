@@ -6,7 +6,7 @@ import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { useGetCalendarData } from '@/services/hooks/calendar/get-calendar-data.hook'
 import { ClickableTooltip } from '@/components/ui'
 import { CalendarDayDetails } from '../components/day/tool-tip-content'
-import { getHijriEvents, getShamsiEvents } from '../utils'
+import { getHijriEvents, getShamsiEvents } from '../utils/date-events'
 import Analytics from '@/analytics'
 
 const dayNames = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
