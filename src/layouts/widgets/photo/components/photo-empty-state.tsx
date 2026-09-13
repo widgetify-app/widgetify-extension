@@ -8,6 +8,7 @@ interface PhotoEmptyStateProps {
 export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 	const is1x1 = size?.w === 1 && size?.h === 1
 	const is2x2 = size?.w === 2 && size?.h === 2
+	const is2x4 = size?.w === 2 && size?.h === 4
 
 	if (is1x1) {
 		return (
@@ -21,7 +22,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 		)
 	}
 
-	if (is2x2) {
+	if (is2x2 || is2x4) {
 		return (
 			<div className="relative flex flex-col items-center justify-between w-full h-full p-3.5 text-center overflow-hidden rounded-widget bg-content bg-glass select-none">
 				<div className="relative flex items-center justify-center flex-1 w-full min-h-0 overflow-hidden rounded-xl bg-base-300/20">

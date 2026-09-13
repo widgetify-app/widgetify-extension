@@ -17,7 +17,6 @@ export function TransparentClockEnglish({
 	const gregorianDate = time.toLocaleDateString('en-US', {
 		month: 'long',
 		day: 'numeric',
-		year: 'numeric',
 	})
 
 	return (
@@ -43,7 +42,6 @@ export function TransparentClockEnglish({
 				</span>
 				{renderDigitSlots(minutes)}
 			</div>
-
 			<div
 				className="flex items-center justify-center font-medium transition-all duration-500"
 				style={{

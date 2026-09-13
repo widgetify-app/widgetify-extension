@@ -3,51 +3,32 @@ import { cn } from '@/common/utils/cn'
 
 export function Calendar1x1() {
 	const { today, todayIsHoliday } = useDate()
-
 	const weekDayName = today.format('dddd')
 	const dayNumber = today.jDate()
 	const monthName = today.format('jMMMM')
+	const dayDigits = String(dayNumber).split('')
 
 	return (
-		<div className="flex flex-col w-full h-full overflow-hidden text-center select-none">
+		<div className="relative flex flex-col items-center justify-between w-full h-full px-2 py-2 overflow-hidden select-none">
+			<span className="text-[10px] font-semibold leading-none text-muted">
+				{monthName}
+			</span>
+
 			<div
+				dir="ltr"
 				className={cn(
-					'w-full py-1.5 px-3 flex items-center justify-between transition-colors',
-					todayIsHoliday
-						? 'bg-error text-error-content'
-						: 'bg-primary text-white'
+					'flex items-center justify-center flex-1 gap-x-[0.06em] text-5xl font-black leading-none sm:text-6xl',
+					todayIsHoliday ? 'text-error' : 'text-content'
 				)}
 			>
-				<div className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/60" />
-				<span className="text-xs font-black leading-none tracking-tight">
-					{monthName}
-				</span>
-				<div className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/60" />
+				{dayDigits.map((digit, index) => (
+					<span key={index}>{digit}</span>
+				))}
 			</div>
 
-			<div className="w-full border-b border-dashed border-base-content/15" />
-
-			<div className="flex flex-col items-center justify-center flex-1 px-2 py-1">
-				<span
-					className={cn(
-						'text-3xl sm:text-4xl font-black leading-none tracking-[-0.04em] tabular-nums',
-						todayIsHoliday ? 'text-error' : 'text-content'
-					)}
-				>
-					{dayNumber}
-				</span>
-
-				<div className="mt-1.5">
-					<span
-						className={cn(
-							'px-2.5 py-0.5 rounded-full bg-base-200/80 text-[10px] font-bold',
-							todayIsHoliday ? 'text-error' : 'text-muted'
-						)}
-					>
-						{weekDayName}
-					</span>
-				</div>
-			</div>
+			<span className="text-[10px] font-medium leading-none text-muted">
+				{weekDayName}
+			</span>
 		</div>
 	)
 }

@@ -60,17 +60,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			</BookmarkProvider>
 		),
 	},
-	[WidgetKeys.widgetify]: {
-		id: WidgetKeys.widgetify,
-		label: 'ویجتیفای',
-		emoji: '✨',
-		category: 'lifestyle',
-		allowedSizes: [{ w: 2, h: 3 }],
-		defaultSize: { w: 2, h: 3 },
-		settingsTab: WidgetTabKeys.Pet,
-		canDuplicate: false,
-		node: (_instanceId) => <PetWidget />,
-	},
 	[WidgetKeys.pet]: {
 		id: WidgetKeys.pet,
 		label: 'پت (حیوان خانگی)',
@@ -489,6 +478,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 1 },
 			{ w: 2, h: 2 },
+			{ w: 2, h: 4 },
 		],
 		defaultSize: { w: 2, h: 2 },
 		canDuplicate: true,

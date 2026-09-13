@@ -182,6 +182,7 @@ export function NetworkLayout({
 						ping={networkInfo.ping}
 						isLoading={isLoading}
 						blurMode={blurMode}
+						onRefresh={handleRefresh}
 					/>
 				</WidgetContainer>
 			)
@@ -205,7 +206,7 @@ export function NetworkLayout({
 								<Button
 									onClick={handleRefresh}
 									size="xs"
-									className="h-6 w-6 p-0 flex items-center justify-center rounded-full !border-none !shadow-none"
+									className="h-6 w-6 p-0 flex items-center justify-center rounded-full border-none! shadow-none!"
 								>
 									<Icon
 										name="refresh"
@@ -219,7 +220,7 @@ export function NetworkLayout({
 
 					<div className="flex-1 space-y-2">
 						<div className="relative overflow-hidden border border-content rounded-2xl">
-							<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+							<div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent"></div>
 							<div className="relative p-2 space-y-3 max-h-32 min-h-32">
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
@@ -255,12 +256,12 @@ export function NetworkLayout({
 								{(networkInfo.city || networkInfo.country) && (
 									<div className="flex items-center justify-center gap-2 text-xs flex-warp">
 										{networkInfo.city && (
-											<span className="px-2 py-1 font-medium text-primary rounded-full bg-primary/10">
+											<span className="px-2 py-1 font-medium rounded-full text-primary bg-primary/10">
 												{networkInfo.city}
 											</span>
 										)}
 										{networkInfo.country && (
-											<span className="px-2 py-1 font-medium text-secondary rounded-full bg-secondary/10">
+											<span className="px-2 py-1 font-medium rounded-full text-secondary bg-secondary/10">
 												{networkInfo.country}
 											</span>
 										)}
