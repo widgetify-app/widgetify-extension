@@ -69,7 +69,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 1 },
 		settingsTab: WidgetTabKeys.Pet,
 		canDuplicate: true,
-		node: (_instanceId) => <PetWidget />,
+		node: (instanceId, _size, meta) => (
+			<PetWidget instanceId={instanceId} meta={meta} />
+		),
 	},
 	[WidgetKeys.wigiPad]: {
 		id: WidgetKeys.wigiPad,

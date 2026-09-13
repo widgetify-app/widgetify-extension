@@ -42,9 +42,15 @@ export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
 	[PetTypes.CAT]: 'گربه',
 }
 
-export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'forest'
+export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
 
 export const PET_BACKGROUNDS: Record<PetBackgroundId, PetBackground> = {
+	none: {
+		id: 'none',
+		label: 'بدون محیط',
+		image: null,
+		groundOffsetPx: 0,
+	},
 	forest: {
 		id: 'forest',
 		label: 'جنگل شب',

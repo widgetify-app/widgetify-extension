@@ -10,12 +10,18 @@ export enum PetTypes {
 
 export type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
 
-export type PetBackgroundId = 'forest' | 'autumn' | 'beach'
+export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach'
+
+export interface PetMeta {
+	petType?: PetTypes
+	petName?: string
+	background?: PetBackgroundId
+}
 
 export interface PetBackground {
 	id: PetBackgroundId
 	label: string
-	image: string
+	image: string | null
 	groundOffsetPx: number
 }
 

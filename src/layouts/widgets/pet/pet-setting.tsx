@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput } from '@/components/ui'
+import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { PetOptionTile } from './components/pet-option-tile'
 import {
 	BASE_PET_OPTIONS,
@@ -11,7 +12,7 @@ import {
 	PET_PREVIEW,
 	PET_SPECIES_LABEL,
 } from './constants'
-import { type PetBackgroundId, PetTypes } from './types'
+import { type PetBackgroundId, type PetMeta, PetTypes } from './types'
 import { getPetBackground } from './utils/get-pet-background'
 
 const PET_LIST = Object.keys(BASE_PET_OPTIONS.petOptions) as PetTypes[]
@@ -21,13 +22,34 @@ const TIPS = [
 	'برای غذا دادن، در محیط اطراف آن کلیک کنید',
 ]
 
-export function PetSettings() {
-	const [petType, setPetType] = useState<PetTypes>(PetTypes.DOG)
-	const [petName, setPetName] = useState('')
-	const [background, setBackground] = useState<PetBackgroundId>(DEFAULT_PET_BACKGROUND)
+interface PetSettingsProps {
+	instanceId?: string
+	size?: { w: number; h: number }
+}
+
+export function PetSettings({ instanceId }: PetSettingsProps = {}) {
+	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
+	const targetWidget = instanceId
+		? runtimeLayout.find((w) => w.instanceId === instanceId)
+		: null
+	const targetMeta = targetWidget?.meta as PetMeta | undefined
+
+	const [petType, setPetType] = useState<PetTypes>(targetMeta?.petType || PetTypes.DOG)
+	const [petName, setPetName] = useState(targetMeta?.petName || '')
+	const [background, setBackground] = useState<PetBackgroundId>(
+		targetMeta?.background || DEFAULT_PET_BACKGROUND
+	)
 
 	useEffect(() => {
 		async function load() {
+			if (instanceId && targetMeta) {
+				const type = targetMeta.petType || PetTypes.DOG
+				setPetType(type)
+				setPetName(targetMeta.petName || BASE_PET_OPTIONS.petOptions[type].name)
+				setBackground(targetMeta.background || DEFAULT_PET_BACKGROUND)
+				return
+			}
+
 			const stored = await getFromStorage('pets')
 			if (!stored?.petOptions) return
 
@@ -38,26 +60,60 @@ export function PetSettings() {
 		}
 
 		load()
-	}, [])
+	}, [instanceId, targetMeta])
 
 	function onChangePetName(value: string) {
 		setPetName(value)
-		callEvent('updatedPetSettings', { petName: value, petType })
+		if (instanceId) {
+			updateWidgetSettings(instanceId, {
+				...targetMeta,
+				petType,
+				petName: value,
+				background,
+			})
+		}
+		callEvent('updatedPetSettings', { instanceId, petName: value, petType })
 	}
 
 	async function onChangePetType(value: PetTypes) {
 		const stored = await getFromStorage('pets')
 
-		setPetType(value)
-		setPetName(
+		const fallbackName =
 			stored?.petOptions[value]?.name ?? BASE_PET_OPTIONS.petOptions[value].name
-		)
-		callEvent('updatedPetSettings', { petType: value })
+
+		setPetType(value)
+		setPetName(fallbackName)
+
+		if (instanceId) {
+			updateWidgetSettings(instanceId, {
+				...targetMeta,
+				petType: value,
+				petName: fallbackName,
+				background,
+			})
+		}
+		callEvent('updatedPetSettings', {
+			instanceId,
+			petType: value,
+			petName: fallbackName,
+		})
 	}
 
 	function onChangeBackground(value: PetBackgroundId) {
 		setBackground(value)
-		callEvent('updatedPetSettings', { petType, background: value })
+		if (instanceId) {
+			updateWidgetSettings(instanceId, {
+				...targetMeta,
+				petType,
+				petName,
+				background: value,
+			})
+		}
+		callEvent('updatedPetSettings', {
+			instanceId,
+			petType,
+			background: value,
+		})
 	}
 
 	const displayName = petName.trim() || BASE_PET_OPTIONS.petOptions[petType].name
@@ -69,7 +125,7 @@ export function PetSettings() {
 				<div
 					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content"
 					style={{
-						backgroundImage: `url(${scene.image})`,
+						backgroundImage: scene.image ? `url(${scene.image})` : undefined,
 						backgroundSize: 'cover',
 						backgroundPosition: 'bottom center',
 					}}
@@ -96,11 +152,7 @@ export function PetSettings() {
 				<h4 id="pet-type-label" className="text-sm font-medium text-content">
 					حیوان خانگی
 				</h4>
-				<div
-					role="group"
-					aria-labelledby="pet-type-label"
-					className="grid grid-cols-5 gap-2"
-				>
+				<div aria-labelledby="pet-type-label" className="grid grid-cols-5 gap-2">
 					{PET_LIST.map((type) => (
 						<PetOptionTile
 							key={type}
@@ -126,9 +178,8 @@ export function PetSettings() {
 					محیط
 				</h4>
 				<div
-					role="group"
 					aria-labelledby="pet-background-label"
-					className="grid grid-cols-3 gap-2"
+					className="grid grid-cols-4 gap-2"
 				>
 					{PET_BACKGROUND_LIST.map((item) => (
 						<PetOptionTile
@@ -138,13 +189,17 @@ export function PetSettings() {
 							onSelect={() => onChangeBackground(item.id)}
 						>
 							<div
-								className="w-full h-12"
-								style={{
-									backgroundImage: `url(${item.image})`,
-									backgroundSize: 'cover',
-									backgroundPosition: 'bottom center',
-								}}
-							/>
+								className="w-full h-12 flex items-center justify-center bg-base-300/40"
+								style={
+									item.image
+										? {
+												backgroundImage: `url(${item.image})`,
+												backgroundSize: 'cover',
+												backgroundPosition: 'bottom center',
+											}
+										: undefined
+								}
+							></div>
 						</PetOptionTile>
 					))}
 				</div>

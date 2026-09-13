@@ -2,6 +2,7 @@ import { getPetBackground } from './utils/get-pet-background'
 import { PetProvider, usePetContext } from './pet.context'
 import { PetFactory } from './components/pet-factory'
 import { WidgetContainer } from '../widget-container'
+import type { PetMeta } from './types'
 
 function PetScene() {
 	const { background } = usePetContext()
@@ -12,7 +13,7 @@ function PetScene() {
 			className="relative w-full h-24 overflow-hidden"
 			style={
 				{
-					backgroundImage: `url(${scene.image})`,
+					backgroundImage: scene.image ? `url(${scene.image})` : undefined,
 					backgroundSize: 'auto 100%',
 					backgroundPosition: 'bottom center',
 					'--pet-ground': `${scene.groundOffsetPx}px`,
@@ -24,9 +25,14 @@ function PetScene() {
 	)
 }
 
-export function PetWidget() {
+interface PetWidgetProps {
+	meta?: PetMeta
+	instanceId?: string
+}
+
+export function PetWidget({ meta, instanceId }: PetWidgetProps = {}) {
 	return (
-		<PetProvider>
+		<PetProvider meta={meta} instanceId={instanceId}>
 			<WidgetContainer padding={false}>
 				<PetScene />
 			</WidgetContainer>
