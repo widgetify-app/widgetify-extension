@@ -241,8 +241,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		popular: true,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
+		settingsTab: WidgetTabKeys.combo_settings,
 		canDuplicate: false,
-		node: (_instanceId, size) => (
+		node: (_instanceId, _size) => (
 			<CurrencyProvider>
 				<ComboWidget />
 			</CurrencyProvider>

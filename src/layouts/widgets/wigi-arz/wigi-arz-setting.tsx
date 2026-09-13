@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { ItemSelector, SectionPanel, SelectBox } from '@/components/ui'
+import { SectionPanel, SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { CurrencyColorMode } from '@/context/currency.context'
@@ -93,20 +93,6 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 		setToStorage('currencies', modifiedCurrencySelection)
 	}
 
-	const toggleCurrencyColorMode = (mode: CurrencyColorMode) => {
-		Analytics.event('currency_color_mode_changed', {
-			mode,
-		})
-
-		callEvent('currencies_updated', {
-			currencies: selectedCurrencies,
-			colorMode: mode,
-		})
-
-		setCurrencyColorMode(mode)
-		setToStorage('currencyColorMode', mode)
-	}
-
 	const currencyGroups = getCurrencyOptions(
 		supportCurrencies.filter((currency) =>
 			currencyType !== 'all' ? currency.type === currencyType : true
@@ -126,25 +112,6 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	return (
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3 transition-all duration-300 ease-out">
-				<SectionPanel title="رنگ تغییر قیمت" size="xs">
-					<div className="flex flex-row gap-2">
-						<ItemSelector
-							label="عادی"
-							isActive={currencyColorMode === CurrencyColorMode.NORMAL}
-							className="w-full"
-							onClick={() =>
-								toggleCurrencyColorMode(CurrencyColorMode.NORMAL)
-							}
-						/>
-						<ItemSelector
-							label="معکوس"
-							isActive={currencyColorMode === CurrencyColorMode.X}
-							className="w-full"
-							onClick={() => toggleCurrencyColorMode(CurrencyColorMode.X)}
-						/>
-					</div>
-				</SectionPanel>
-
 				<SectionPanel
 					title={isCompact ? 'انتخاب ارز برای ویجت' : 'انتخاب ارزها'}
 					size="xs"

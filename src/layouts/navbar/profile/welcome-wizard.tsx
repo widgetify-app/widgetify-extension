@@ -37,11 +37,6 @@ const StepImage = ({ src }: { src: string; alt: string }) => {
 				className="absolute inset-0 transition-opacity duration-700 bg-center bg-cover"
 				style={{
 					backgroundImage: `url(${src})`,
-
-					maskImage:
-						'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)',
-					WebkitMaskImage:
-						'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)',
 				}}
 			/>
 		</div>
