@@ -1,4 +1,5 @@
 import { cn } from '@/common/utils/cn'
+import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 
@@ -64,14 +65,15 @@ export function NetworkCompactSquare({
 			: 'text-content'
 
 	return (
-		<div className="relative flex flex-col justify-between h-full w-full select-none text-center">
+		<div className="relative group flex flex-col justify-between h-full w-full select-none text-center">
 			<div className="flex items-center justify-between w-full min-w-0">
 				{onRefresh && (
-					<button
-						type="button"
+					<Button
+						variant="ghost"
+						size="xs"
 						onClick={onRefresh}
 						disabled={isRefreshing}
-						className="flex items-center justify-center p-1 rounded-md text-muted hover:text-content hover:bg-base-content/10 transition-all cursor-pointer"
+						className="flex items-center justify-center w-5 h-5 p-0 border-none rounded-md text-muted hover:text-content hover:bg-base-content/10 transition-all cursor-pointer opacity-0 group-hover:opacity-100"
 						aria-label="بارگذاری مجدد"
 					>
 						<Icon
@@ -82,7 +84,7 @@ export function NetworkCompactSquare({
 								isRefreshing && 'animate-spin'
 							)}
 						/>
-					</button>
+					</Button>
 				)}
 				<div className="flex items-center gap-1 min-w-0 ms-auto">
 					<span className="text-[10px] font-bold text-content truncate max-w-11.25">
