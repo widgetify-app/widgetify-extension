@@ -44,51 +44,11 @@ const topWidgets: StoredWidget[] = [
 	},
 ]
 
-export function replaceWidgetifyWithPetAndPhoto(widgets: StoredWidget[]): {
-	layout: StoredWidget[]
-	hasChanged: boolean
-} {
-	let hasChanged = false
-	const result: StoredWidget[] = []
-
-	for (const widget of widgets) {
-		if (widget.id === ('widgetify' as any)) {
-			hasChanged = true
-			const col = widget.position?.col ?? 6
-			const baseRow = widget.position?.row ?? 0
-
-			result.push({
-				id: WidgetKeys.photo,
-				instanceId: 'photo-default',
-				position: { col, row: baseRow },
-				size: { w: 2, h: 2 },
-				widgetId: 'photo-default',
-			})
-
-			result.push({
-				id: WidgetKeys.pet,
-				instanceId: 'pet-default',
-				position: { col, row: baseRow + 2 },
-				size: { w: 2, h: 1 },
-				widgetId: 'pet-default',
-			})
-		} else {
-			result.push(widget)
-		}
-	}
-
-	return { layout: result, hasChanged }
-}
-
 export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 	const existingStored = await getFromStorage('storedWidgets')
 
 	if (Array.isArray(existingStored)) {
-		const { layout, hasChanged } = replaceWidgetifyWithPetAndPhoto(existingStored)
-		if (hasChanged) {
-			await setToStorage('storedWidgets', layout)
-		}
-		return layout
+		return existingStored
 	}
 
 	const { appearance, activeWidgets } = await getMultipleFromStorage([

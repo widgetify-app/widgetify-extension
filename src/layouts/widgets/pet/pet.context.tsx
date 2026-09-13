@@ -10,7 +10,7 @@ import {
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS } from './constants'
-import { type PetHungerState, type PetSettings, PetTypes } from './types'
+import { type PetHungerState, type PetMeta, type PetSettings, PetTypes } from './types'
 
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: (petType: PetTypes) => string
@@ -22,11 +22,54 @@ interface PetSettingsContextType extends PetSettings {
 
 const PetContext = createContext<PetSettingsContextType | undefined>(undefined)
 
-export function PetProvider({ children }: { children: React.ReactNode }) {
+interface PetProviderProps {
+	children: React.ReactNode
+	meta?: PetMeta
+	instanceId?: string
+}
+
+export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
 	const [settings, setSettings] = useState<PetSettings>({
 		...BASE_PET_OPTIONS,
+		petType: meta?.petType || BASE_PET_OPTIONS.petType,
+		background: meta?.background || BASE_PET_OPTIONS.background,
+		petOptions: {
+			...BASE_PET_OPTIONS.petOptions,
+			...(meta?.petType && meta?.petName
+				? {
+						[meta.petType]: {
+							...BASE_PET_OPTIONS.petOptions[meta.petType],
+							name: meta.petName,
+						},
+					}
+				: {}),
+		},
 	})
 	const pendingPersistRef = useRef<PetSettings | null>(null)
+
+	useEffect(() => {
+		if (meta) {
+			setSettings((prev) => {
+				const activeType = meta.petType || prev.petType || PetTypes.DOG
+				return {
+					...prev,
+					petType: activeType,
+					background: meta.background ?? prev.background,
+					petOptions: {
+						...prev.petOptions,
+						...(meta.petName
+							? {
+									[activeType]: {
+										...prev.petOptions[activeType],
+										name: meta.petName,
+									},
+								}
+							: {}),
+					},
+				}
+			})
+		}
+	}, [meta])
 
 	useEffect(() => {
 		const pending = pendingPersistRef.current
@@ -47,23 +90,56 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 					setToStorage('pets', {
 						...BASE_PET_OPTIONS,
 					})
-					setSettings({
+					setSettings(() => ({
 						...BASE_PET_OPTIONS,
-					})
-				} else {
-					setSettings({
-						...BASE_PET_OPTIONS,
-						...storedPets,
+						petType: meta?.petType || BASE_PET_OPTIONS.petType,
+						background: meta?.background || BASE_PET_OPTIONS.background,
 						petOptions: {
 							...BASE_PET_OPTIONS.petOptions,
-							...(storedPets.petOptions || {}),
+							...(meta?.petType && meta?.petName
+								? {
+										[meta.petType]: {
+											...BASE_PET_OPTIONS.petOptions[meta.petType],
+											name: meta.petName,
+										},
+									}
+								: {}),
 						},
+					}))
+				} else {
+					setSettings((prev) => {
+						const mergedOptions = {
+							...BASE_PET_OPTIONS.petOptions,
+							...(storedPets.petOptions || {}),
+						}
+						const resolvedType =
+							meta?.petType ||
+							storedPets.petType ||
+							prev.petType ||
+							PetTypes.DOG
+						if (meta?.petName) {
+							mergedOptions[resolvedType] = {
+								...mergedOptions[resolvedType],
+								name: meta.petName,
+							}
+						}
+						return {
+							...BASE_PET_OPTIONS,
+							...storedPets,
+							petType: meta?.petType || storedPets.petType || prev.petType,
+							background:
+								meta?.background ||
+								storedPets.background ||
+								prev.background,
+							petOptions: mergedOptions,
+						}
 					})
 				}
 			} else {
 				const initialSettings = {
 					...BASE_PET_OPTIONS,
-					petType: PetTypes.DOG,
+					petType: meta?.petType || PetTypes.DOG,
+					background: meta?.background || BASE_PET_OPTIONS.background,
 				}
 				setSettings(initialSettings)
 				await setToStorage('pets', initialSettings)
@@ -77,11 +153,15 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		return () => {
 			cancelled = true
 		}
-	}, [])
+	}, [meta])
 
 	useEffect(() => {
 		const event = listenEvent('updatedPetSettings', (data) => {
 			if (data) {
+				if (data.instanceId && instanceId && data.instanceId !== instanceId) {
+					return
+				}
+
 				setSettings((prevSettings) => {
 					const newSettings = { ...prevSettings }
 
@@ -107,7 +187,9 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 								: newSettings.background,
 					}
 
-					setToStorage('pets', updatedSettings)
+					if (!data.instanceId) {
+						setToStorage('pets', updatedSettings)
+					}
 
 					return updatedSettings
 				})
@@ -117,7 +199,7 @@ export function PetProvider({ children }: { children: React.ReactNode }) {
 		return () => {
 			event()
 		}
-	}, [])
+	}, [instanceId])
 
 	const getCurrentPetName = useCallback(
 		(petType: PetTypes) => settings.petOptions[petType]?.name ?? '',

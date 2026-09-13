@@ -36,6 +36,7 @@ export interface EventName {
 	}
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
+		instanceId?: string
 		petName?: string
 		petType: PetTypes
 		background?: PetBackgroundId

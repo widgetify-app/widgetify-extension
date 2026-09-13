@@ -4,10 +4,7 @@ import { setToStorage, watchStorage } from '@/common/storage'
 import { DEFAULT_COLS, DEFAULT_WIDGET_LAYOUT } from '@/layouts/widgets/layout-engine'
 import type { StoredWidget } from '@/layouts/widgets/layout-engine/types'
 import { applyInstanceIdMap, buildInstanceIdMap } from '@/layouts/widgets/instance-id'
-import {
-	migrateWidgetLayoutIfNeeded,
-	replaceWidgetifyWithPetAndPhoto,
-} from '@/layouts/widgets/migration'
+import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
@@ -164,11 +161,8 @@ export function useWidgetSync({
 						disabled: sw.disabled,
 					}))
 
-					const { layout: replacedWidgets, hasChanged: wasReplaced } =
-						replaceWidgetifyWithPetAndPhoto(rawWidgets)
-
 					const fromSrv: StoredWidget[] = sanitizeLayout(
-						replacedWidgets,
+						rawWidgets,
 						DEFAULT_COLS
 					)
 
@@ -176,10 +170,6 @@ export function useWidgetSync({
 					setSavedLayout(fromSrv)
 					applyRuntimeLayout(reflowForColumns(fromSrv, colsRef.current))
 					persistLayout(fromSrv)
-
-					if (wasReplaced) {
-						triggerServerSync(fromSrv)
-					}
 				} else {
 					const localLayout = await migrateWidgetLayoutIfNeeded()
 					if (localLayout && localLayout.length > 0) {
