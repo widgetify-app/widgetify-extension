@@ -88,7 +88,11 @@ export function SearchHistoryPortal({
 		const prev = prevListRef.current
 		const hasChanged =
 			prev.length !== currentList.length ||
-			prev.some((item, i) => item.text !== currentList[i]?.text || item.isRecent !== currentList[i]?.isRecent)
+			prev.some(
+				(item, i) =>
+					item.text !== currentList[i]?.text ||
+					item.isRecent !== currentList[i]?.isRecent
+			)
 
 		if (hasChanged) {
 			prevListRef.current = currentList
@@ -110,81 +114,82 @@ export function SearchHistoryPortal({
 			<Portal>
 				<Presence>
 					{isOpen && (
-				<Motion.div
-					key="search-history"
-					ref={portalRef}
-					style={portalStyles}
-					initial={{ opacity: 0, y: -8 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -8 }}
-					transition={{ duration: 0.18, ease: 'easeOut' }}
-					className="z-20 -mt-12 overflow-hidden shadow-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md"
-				>
-					{showSuggestions &&
-						hasQuery &&
-						(isFetching ? (
-							<SuggestionSkeleton />
-						) : combinedSuggestions.length > 0 ? (
-							<Suggestions
-								combinedSuggestions={combinedSuggestions}
-								handleSearch={handleSearch}
-								onRemove={onRemoveHistoryItem}
-								selectedIndex={selectedIndex}
-							/>
-						) : null)}
+						<Motion.div
+							key="search-history"
+							ref={portalRef}
+							style={portalStyles}
+							initial={{ opacity: 0, y: -8 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -8 }}
+							transition={{ duration: 0.18, ease: 'easeOut' }}
+							className="z-20 -mt-10 overflow-hidden shadow-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md"
+						>
+							{showSuggestions &&
+								hasQuery &&
+								(isFetching ? (
+									<SuggestionSkeleton />
+								) : combinedSuggestions.length > 0 ? (
+									<Suggestions
+										combinedSuggestions={combinedSuggestions}
+										handleSearch={handleSearch}
+										onRemove={onRemoveHistoryItem}
+										selectedIndex={selectedIndex}
+									/>
+								) : null)}
 
-					{!hasQuery && showLocalSearches && (
-						<Suggestions
-							combinedSuggestions={recentSearches.map((f) => ({
-								isRecent: true,
-								text: f.query,
-							}))}
-							handleSearch={handleSearch}
-							onRemove={onRemoveHistoryItem}
-							selectedIndex={selectedIndex}
-						/>
-					)}
-
-					{showEnableButton && (
-						<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
-							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-content/5">
-								<Icon
-									name="search"
-									size={15}
-									className="text-base-content/40"
+							{!hasQuery && showLocalSearches && (
+								<Suggestions
+									combinedSuggestions={recentSearches.map((f) => ({
+										isRecent: true,
+										text: f.query,
+									}))}
+									handleSearch={handleSearch}
+									onRemove={onRemoveHistoryItem}
+									selectedIndex={selectedIndex}
 								/>
-							</div>
-							<div className="space-y-1">
-								<p className="text-xs font-medium text-base-content/70">
-									پیشنهادهای جستجو
-								</p>
-								<p className="text-[11px] text-base-content/40 leading-relaxed">
-									با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی داده میشه!
-								</p>
-							</div>
-							<button
-								onMouseDown={(e) => {
-									e.preventDefault()
-									setShowConsentModal(true)
-								}}
-								className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer transition-all bg-base-content/5 text-base-content/60 hover:text-primary hover:bg-primary/8 searchbox-item"
-							>
-								فعال‌سازی
-							</button>
-						</div>
-					)}
+							)}
 
-					{!showSuggestions &&
-						!showEnableButton &&
-						!showLocalSearches &&
-						hasQuery && (
-							<div className="flex items-center justify-center h-full">
-								<p className="text-xs text-base-content/40">
-									نتیجه‌ای برای نمایش وجود ندارد
-								</p>
-							</div>
-						)}
-				</Motion.div>
+							{showEnableButton && (
+								<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
+									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-content/5">
+										<Icon
+											name="search"
+											size={15}
+											className="text-base-content/40"
+										/>
+									</div>
+									<div className="space-y-1">
+										<p className="text-xs font-medium text-base-content/70">
+											پیشنهادهای جستجو
+										</p>
+										<p className="text-[11px] text-base-content/40 leading-relaxed">
+											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
+											داده میشه!
+										</p>
+									</div>
+									<button
+										onMouseDown={(e) => {
+											e.preventDefault()
+											setShowConsentModal(true)
+										}}
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer transition-all bg-base-content/5 text-base-content/60 hover:text-primary hover:bg-primary/8 searchbox-item"
+									>
+										فعال‌سازی
+									</button>
+								</div>
+							)}
+
+							{!showSuggestions &&
+								!showEnableButton &&
+								!showLocalSearches &&
+								hasQuery && (
+									<div className="flex items-center justify-center h-full">
+										<p className="text-xs text-base-content/40">
+											نتیجه‌ای برای نمایش وجود ندارد
+										</p>
+									</div>
+								)}
+						</Motion.div>
 					)}
 				</Presence>
 			</Portal>

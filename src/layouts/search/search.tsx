@@ -202,12 +202,12 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 		>
 			<div
 				ref={searchRef}
-				className="relative w-full p-1 bg-content bg-glass rounded-3xl"
+				className="relative w-full p-1 bg-content bg-glass rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center py-2 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group rounded-3xl'
+							'relative flex items-center py-1.5 px-3 rounded-2xl overflow-hidden shadow-xs transition-all duration-300 bg-content group'
 						}
 					>
 						<EngineSelector onSelected={onEngineChange} />
