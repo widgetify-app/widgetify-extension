@@ -50,7 +50,7 @@ export function NotificationNavbar() {
 
 					{!hasNotifications && (
 						<div className="flex flex-col items-center justify-center py-8 text-center text-muted">
-							<div className="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-base-300 text-muted">
+							<div className="flex items-center justify-center w-10 h-10 mb-2 text-muted">
 								<Icon name="notification" size={18} />
 							</div>
 							<span className="text-xs font-bold text-content">
