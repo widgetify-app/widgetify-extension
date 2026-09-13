@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { addOpacityToColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
@@ -8,7 +8,7 @@ import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
-export function FolderBookmarkItem({
+export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 	bookmark,
 	onClick,
 	isDragging = false,
@@ -19,13 +19,17 @@ export function FolderBookmarkItem({
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }) {
-	const { getCurrentFolderItems } = useBookmarkStore()
+	const { bookmarks, getCurrentFolderItems } = useBookmarkStore()
 
 	const [isHovered, setIsHovered] = useState(false)
 
-	const folderItems = getCurrentFolderItems(bookmark.id)
-		.filter((item) => item.type === 'BOOKMARK')
-		.slice(0, 6)
+	const folderItems = useMemo(
+		() =>
+			getCurrentFolderItems(bookmark.id)
+				.filter((item) => item.type === 'BOOKMARK')
+				.slice(0, 6),
+		[bookmarks, bookmark.id]
+	)
 
 	const renderFolderIcons = () => {
 		if (bookmark.icon) {
@@ -123,4 +127,4 @@ export function FolderBookmarkItem({
 			</button>
 		</div>
 	)
-}
+})

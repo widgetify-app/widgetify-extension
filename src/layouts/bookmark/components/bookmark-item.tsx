@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { addOpacityToColor, getContrastingTextColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
@@ -14,7 +15,7 @@ interface BookmarkItemProps {
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
-export function BookmarkItem({
+export const BookmarkItem = memo(function BookmarkItem({
 	bookmark,
 	onClick,
 	isDragging = false,
@@ -91,4 +92,4 @@ export function BookmarkItem({
 			</button>
 		</div>
 	)
-}
+})
