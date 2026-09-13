@@ -1,9 +1,5 @@
 import { Icon } from '@/icons'
-import {
-	PopoverMenu,
-	PopoverMenuItem,
-	PopoverMenuDivider,
-} from '@/components/ui'
+import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
 
 interface CanvasContextMenuProps {
 	x: number
@@ -14,6 +10,7 @@ interface CanvasContextMenuProps {
 	onOpenAddWidget: () => void
 	onOpenPresets?: () => void
 	onOpenAppearanceSettings: () => void
+	onOpenWallpaperSettings: () => void
 	onOpenHelp?: () => void
 }
 
@@ -26,15 +23,11 @@ export function CanvasContextMenu({
 	onOpenAddWidget,
 	onOpenPresets,
 	onOpenAppearanceSettings,
+	onOpenWallpaperSettings,
 	onOpenHelp,
 }: CanvasContextMenuProps) {
 	return (
-		<PopoverMenu
-			isOpen={true}
-			onClose={onClose}
-			position={{ x, y }}
-			width={208}
-		>
+		<PopoverMenu isOpen={true} onClose={onClose} position={{ x, y }} width={208}>
 			<PopoverMenuItem
 				icon={<Icon name="edit" size={14} />}
 				label={canvasMode === 'edit' ? 'پایان ویرایش' : 'ویرایش ویجت‌ها'}
@@ -69,6 +62,15 @@ export function CanvasContextMenu({
 				label="تنظیمات ظاهری"
 				onClick={() => {
 					onOpenAppearanceSettings()
+					onClose()
+				}}
+			/>
+
+			<PopoverMenuItem
+				icon={<Icon name="wallpapers" size={14} />}
+				label="تصویر‌ زمینه‌ها"
+				onClick={() => {
+					onOpenWallpaperSettings()
 					onClose()
 				}}
 			/>

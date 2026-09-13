@@ -269,6 +269,9 @@ export function FreeWidgetCanvas() {
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
 					}
+					onOpenWallpaperSettings={() =>
+						callEvent('openSettings', 'wallpapers')
+					}
 					onOpenHelp={() => setIsHelpModalOpen(true)}
 				/>
 			)}

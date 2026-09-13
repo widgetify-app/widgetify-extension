@@ -22,7 +22,7 @@ export function ProfileDropdownMenu({
 	onRequestLogout,
 }: ProfileDropdownMenuProps) {
 	return (
-		<div className="bg-content py-2 bg-glass min-w-52" dir="rtl">
+		<div className="bg-content py-2 bg-glass min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<div
 					onClick={onProfileClick}

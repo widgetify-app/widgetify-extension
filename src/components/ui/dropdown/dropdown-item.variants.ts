@@ -13,7 +13,7 @@ export const dropdownItemVariants = cva(
 		'transition-colors',
 		'cursor-pointer',
 		'group',
-		'rounded-none',
+		'rounded-xl',
 		'select-none',
 		'disabled:opacity-50',
 		'disabled:pointer-events-none',
