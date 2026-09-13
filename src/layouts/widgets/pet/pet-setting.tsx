@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { TextInput } from '@/components/ui'
+import { TextInput, Tooltip } from '@/components/ui'
+import { Icon } from '@/icons'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { PetOptionTile } from './components/pet-option-tile'
 import {
@@ -18,8 +19,8 @@ import { getPetBackground } from './utils/get-pet-background'
 const PET_LIST = Object.keys(BASE_PET_OPTIONS.petOptions) as PetTypes[]
 
 const TIPS = [
-	'برای بازی با حیوان خانگی، روی آن کلیک کنید',
-	'برای غذا دادن، در محیط اطراف آن کلیک کنید',
+	'واسه بازی با حیوان خانگی، روش کلیک کن',
+	'واسه غذا دادن، تو محیط اطرافش کلیک کن',
 ]
 
 interface PetSettingsProps {
@@ -138,13 +139,41 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 					/>
 				</div>
 
-				<div className="flex items-center min-w-0 gap-2">
-					<h3 className="text-base font-semibold truncate text-content">
-						{displayName}
-					</h3>
-					<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-base-300">
-						{PET_SPECIES_LABEL[petType]}
-					</span>
+				<div className="flex items-center justify-between min-w-0 flex-1">
+					<div className="flex items-center gap-2 min-w-0">
+						<h3 className="text-base font-semibold truncate text-content">
+							{displayName}
+						</h3>
+						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-base-300">
+							{PET_SPECIES_LABEL[petType]}
+						</span>
+					</div>
+
+					<Tooltip
+						content={
+							<ul
+								className="flex flex-col gap-1.5 p-1 text-right"
+								dir="rtl"
+							>
+								{TIPS.map((tip) => (
+									<li key={tip} className="flex items-center gap-2">
+										<span className="w-1.5 h-1.5 rounded-full shrink-0 bg-primary" />
+										<span className="text-xs leading-relaxed text-content">
+											{tip}
+										</span>
+									</li>
+								))}
+							</ul>
+						}
+					>
+						<button
+							type="button"
+							aria-label="راهنمای تعامل با حیوان خانگی"
+							className="flex items-center justify-center w-7 h-7 rounded-full text-muted hover:text-content hover:bg-base-200 transition-colors"
+						>
+							<Icon name="info" className="w-4 h-4" />
+						</button>
+					</Tooltip>
 				</div>
 			</section>
 
@@ -218,17 +247,6 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 					placeholder="اسم دلخواه..."
 				/>
 			</section>
-
-			<ul className="flex flex-col gap-1.5 p-3 border rounded-xl border-primary/20 bg-primary/10">
-				{TIPS.map((tip) => (
-					<li key={tip} className="flex items-center gap-2">
-						<span className="w-1 h-1 rounded-full shrink-0 bg-primary/70" />
-						<span className="text-[11px] leading-[1.7] text-content">
-							{tip}
-						</span>
-					</li>
-				))}
-			</ul>
 		</div>
 	)
 }
