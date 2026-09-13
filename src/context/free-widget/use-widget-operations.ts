@@ -208,7 +208,7 @@ export function useWidgetOperations({
 				w.instanceId === instanceId ? { ...w, meta } : w
 			)
 
-			showToast('مدل ویجت با موفقیت تغییر کرد', 'success')
+			playNativeToastSound('success')
 			return commitMutation('resize', layoutWithMeta, instanceId)
 		},
 		[

@@ -9,7 +9,6 @@ import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { useQueryClient } from '@tanstack/react-query'
-import { playAlarm } from '@/common/play-alarm'
 import { useAuth } from '@/context/auth.context'
 
 import { getRandomWallpaper } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
@@ -184,7 +183,6 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			if (wallpaper.coin && !wallpaper.isOwned) {
 				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
 				queryClient.invalidateQueries({ queryKey: ['userProfile'] })
-				playAlarm('market')
 			}
 
 			if (!isSet) setSelectedBackground(responseWallpaper)

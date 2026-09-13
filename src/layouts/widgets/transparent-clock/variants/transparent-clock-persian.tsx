@@ -17,7 +17,6 @@ export function TransparentClockPersian({
 	const jalaliDate = time.toLocaleDateString('fa-IR', {
 		day: 'numeric',
 		month: 'long',
-		year: 'numeric',
 	})
 
 	return (
@@ -49,7 +48,7 @@ export function TransparentClockPersian({
 				style={{
 					gap: '0.5em',
 					fontSize: 'clamp(0.65rem, min(6cqw, 12cqh), 1.75rem)',
-					color: theme.secondaryColor,
+					color: theme.primaryColor,
 					textShadow: theme.accentGlow,
 				}}
 			>

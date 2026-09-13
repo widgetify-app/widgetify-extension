@@ -93,7 +93,7 @@ function WallpaperItemFu({
 					</div>
 				)}
 				{error && (
-					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10">
+					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10 rounded-xl">
 						<Icon name="outlineHeart" className="text-error" />
 						<p className="mt-2 text-xs text-muted">خطا در بارگذاری</p>
 					</div>
