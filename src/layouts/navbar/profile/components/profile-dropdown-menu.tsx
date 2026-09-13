@@ -28,15 +28,11 @@ export function ProfileDropdownMenu({
 					onClick={onProfileClick}
 					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-base-content/10 transition-colors hover:bg-base-200/50"
 				>
-					<div className="shrink-0 flex items-center justify-center p-0.5">
-						<AvatarComponent
-							url={user?.avatar}
-							className="w-8! h-8!"
-							// isPro={isVip}
-						/>
+					<div className="shrink-0 flex items-center justify-center">
+						<AvatarComponent url={user?.avatar} size="sm" isPro={isVip} />
 					</div>
-					<div className="flex flex-col min-w-0 flex-1">
-						<div className="flex items-center gap-1.5">
+					<div className="flex flex-col min-w-0 flex-1 justify-center">
+						<div className="flex items-center gap-1.5 leading-tight">
 							<span className="text-xs font-bold text-content truncate">
 								{user?.name || user?.username || 'کاربر ویجتیفای'}
 							</span>
@@ -44,7 +40,7 @@ export function ProfileDropdownMenu({
 								<VipBadge size="xs" variant="indigo-subtle" iconOnly />
 							)}
 						</div>
-						<span className="text-[11px] text-muted truncate mt-1">
+						<span className="text-[11px] text-muted truncate leading-normal">
 							مشاهده پروفایل
 						</span>
 					</div>

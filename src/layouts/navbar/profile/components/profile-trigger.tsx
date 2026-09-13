@@ -51,7 +51,11 @@ export function ProfileTrigger({
 					/>
 				) : null}
 				<div className="relative flex items-center justify-center">
-					<AvatarComponent url={user?.avatar} className="w-8! h-8!" />
+					<AvatarComponent
+						url={user?.avatar}
+						size="sm"
+						isPro={!profilePercentage && Boolean(user?.isVip)}
+					/>
 				</div>
 			</div>
 		</div>
