@@ -7,8 +7,7 @@ import { Forecast } from './components/forecast'
 import { CurrentWeatherBox } from './components/current-weather-box'
 import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'
-import { WeatherWideBanner } from './variants/weather-4x1'
-import { WeatherWideFull } from './variants/weather-4x2'
+import { Weather2x2 } from './variants/weather-2x2'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import type { WidgetSize } from '../layout-engine/types'
 
@@ -71,24 +70,10 @@ export function WeatherLayout({ size = { w: 2, h: 2 } }: WeatherLayoutProps = {}
 		)
 	}
 
-	if (size.w >= 4 && size.h === 1) {
+	if (size.w === 2 && size.h === 2) {
 		return (
-			<WidgetContainer>
-				<WeatherWideBanner
-					fetchedWeather={data || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
-				/>
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w >= 4 && size.h >= 2) {
-		return (
-			<WidgetContainer>
-				<WeatherWideFull
-					fetchedWeather={data || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
-				/>
+			<WidgetContainer background={false}>
+				<Weather2x2 fetchedWeather={data || null} />
 			</WidgetContainer>
 		)
 	}

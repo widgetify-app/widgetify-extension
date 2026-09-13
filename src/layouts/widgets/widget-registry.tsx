@@ -223,13 +223,12 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 1, isVipOnly: true },
+			{ w: 2, h: 2, isVipOnly: true },
 			{ w: 2, h: 3 },
-			{ w: 4, h: 1, isVipOnly: true },
-			{ w: 4, h: 2, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.weather_settings,
-		canDuplicate: true,
+		canDuplicate: false,
 		node: (_instanceId, size) => <WeatherLayout size={size} />,
 	},
 	[WidgetKeys.comboWidget]: {
