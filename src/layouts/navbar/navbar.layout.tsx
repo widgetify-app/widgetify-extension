@@ -12,7 +12,7 @@ import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
-import { NewBadge, Tooltip } from '@/components/ui'
+import { NewBadge } from '@/components/ui'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils/date-events'
 import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
@@ -192,14 +192,12 @@ export function NavbarLayout(): JSX.Element {
 					</div>
 
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
-						<Tooltip content="بستن نوار">
-							<button
-								onClick={() => onToggleNavbar()}
-								className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-							>
-								<Icon name="chevronDown" size={15} />
-							</button>
-						</Tooltip>
+						<button
+							onClick={() => onToggleNavbar()}
+							className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+						>
+							<Icon name="chevronDown" size={15} />
+						</button>
 						<NotificationNavbar />
 						<BlurModeButton />
 						<FriendsListNavbar />
