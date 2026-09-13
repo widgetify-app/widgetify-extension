@@ -227,7 +227,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 							size="xs"
 							rounded="xl"
 							onClick={() => setIsHelpOpen(true)}
-							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 font-normal"
+							variant="ghost"
+							className="gap-1 text-xs px-2.5 py-1 border-base-content/10 font-normal"
 							title="راهنمای مدیریت ویجت‌ها"
 						>
 							<Icon name="help" size={13} />
@@ -279,7 +280,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												size="xs"
 												rounded="xl"
 												onClick={handleOpenSelectedSettings}
-												className="flex items-center gap-1.5 text-xs text-muted hover:text-primary px-3 py-1.5"
+												variant="ghost"
+												className="gap-1.5 text-xs px-3 py-1.5 hover:text-primary"
 											>
 												<Icon name="settings" size={12} />
 												<span>تنظیمات ویجت</span>

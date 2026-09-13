@@ -16,7 +16,8 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					type="button"
 					size="sm"
 					rounded={'xl'}
-					className="p-2 border text-[10px]  text-muted shrink-0 active:scale-95"
+					variant="ghost"
+					className="p-2 border-content text-[10px] shrink-0 active:scale-95"
 				>
 					{selectedFriends.length > 0 ? (
 						<div className="flex gap-0.5 text-base-content/40">
