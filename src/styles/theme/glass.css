@@ -51,6 +51,11 @@
     backdrop-filter: blur(16px) saturate(150%);
 }
 
+[data-theme="glass"] .widget-outer .bg-glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
 [data-theme="glass"] .modal-box {
     -webkit-backdrop-filter: blur(200px) saturate(200%);
     backdrop-filter: blur(40px) saturate(10%);
