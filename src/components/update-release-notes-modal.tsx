@@ -7,7 +7,7 @@ import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
 	onClose: () => void
-	counterValue: number | null
+	counterValue?: number | null
 }
 
 export const UpdateReleaseNotesModal = ({
@@ -20,8 +20,8 @@ export const UpdateReleaseNotesModal = ({
 	const { setCanvasMode } = useFreeWidgets()
 
 	useEffect(() => {
-		if (isOpen && counterValue !== null) {
-			setCounter(counterValue === null ? 5 : counterValue)
+		if (isOpen && counterValue) {
+			setCounter(counterValue)
 			const interval = setInterval(() => {
 				setCounter((prev) => {
 					if (prev <= 1) {
@@ -52,64 +52,76 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={`آپدیت ${ConfigKey.VERSION_NAME}؛ چیدمان آزاد و نامحدود`}
+			title={`آپدیت جدید ${ConfigKey.VERSION_NAME}`}
 			size="lg"
 			direction="rtl"
 			closeOnBackdropClick={false}
 		>
-			<div className="flex flex-col gap-3 max-h-[80vh] select-none text-right">
-				<div className="flex flex-col gap-2.5 overflow-y-auto pb-1">
-					<div className="relative flex items-center justify-center w-full overflow-hidden border max-h-48 aspect-video rounded-2xl border-base-content/10 bg-base-300/30 shrink-0">
-						<video
-							ref={videoRef}
-							src="https://cdn.widgetify.ir/extension/WidgetDrag-b.mp4"
-							autoPlay
-							loop
-							muted
-							playsInline
-							className="object-cover w-full h-full"
-						/>
-					</div>
+			<div className="flex flex-col gap-4 select-none text-right">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-48 sm:max-h-52 rounded-2xl border-base-content/10 bg-base-300/30 shrink-0">
+					<video
+						ref={videoRef}
+						src="https://cdn.widgetify.ir/extension/WidgetDrag-b.mp4"
+						autoPlay
+						loop
+						muted
+						playsInline
+						className="object-cover w-full h-full"
+					/>
+				</div>
 
-					<div className="flex flex-col gap-2 p-2.5 rounded-2xl bg-base-200/60 border border-base-content/10">
-						<div className="flex items-start gap-2.5">
-							<div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5">
-								<Icon name="check" size={12} />
-							</div>
-							<p className="text-xs leading-relaxed text-content">
-								<span className="font-bold">خیالت راحت!</span> چیدمان و
-								ویجت‌های قبلی‌ت دقیقا سر جاشون حفظ شدن و چیزی پاک نشده
-							</p>
+				<div className="flex flex-col gap-2">
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+							<Icon name="outlineDrag" size={16} />
 						</div>
-
-						<div className="flex items-start gap-2.5">
-							<div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
-								<Icon name="outlineDrag" size={12} />
-							</div>
-							<p className="text-xs leading-relaxed text-content">
-								با کلیک راست روی صفحه و انتخاب «ویرایش ویجت‌ها»، می‌تونی
-								ویجت‌ها رو جابه‌جا کنی یا با کلیک راست روی هر ویجت اندازه‌ش
-								رو عوض کنی
-							</p>
-						</div>
-
-						<div className="flex items-start gap-2.5">
-							<div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
-								<Icon name="squares2X2" size={12} />
-							</div>
-							<p className="text-xs leading-relaxed text-content">
-								اگه وقت چیدمان نداری، از بخش «چیدمان‌های آماده» با یک کلیک
-								صفحه رو بچین
-							</p>
+						<div className="flex flex-col gap-0.5">
+							<span className="text-xs font-bold text-content">
+								جابجایی آزاد در صفحه
+							</span>
+							<span className="text-[11px] leading-relaxed text-muted">
+								ویجت‌ها رو با درگ و دراپ به هر جای صفحه ببر و چیدمان
+								دلخواهت رو بساز
+							</span>
 						</div>
 					</div>
 
-					<div className="flex items-center gap-2.5 p-3 rounded-2xl bg-base-200/40 border border-dashed border-base-content/15 text-xs text-muted">
-						<span className="text-base">📸</span>
-						<p className="leading-relaxed">
-							صفحه جدیدت رو بچین و اسکرین‌شاتش رو برامون بفرست
-						</p>
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+							<Icon name="viewGridAdd" size={16} />
+						</div>
+						<div className="flex flex-col gap-0.5">
+							<span className="text-xs font-bold text-content">
+								تنوع اندازه ویجت‌ها
+							</span>
+							<span className="text-[11px] leading-relaxed text-muted">
+								با کلیک‌راست روی هر ویجت اندازه‌ش رو تغییر بده و از مدل‌های
+								مختلف استفاده کن
+							</span>
+						</div>
 					</div>
+
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+							<Icon name="squares2X2" size={16} />
+						</div>
+						<div className="flex flex-col gap-0.5">
+							<span className="text-xs font-bold text-content">
+								چیدمان‌های آماده با ۱ کلیک
+							</span>
+							<span className="text-[11px] leading-relaxed text-muted">
+								اگه دوست داری سریع شروع کنی، از قالب‌ها و چیدمان‌های آماده
+								استفاده کن
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-success/20 border border-success/20 text-success-content text-[11px]">
+					<Icon name="check" size={14} className="shrink-0" />
+					<span className="font-medium">
+						خیالت راحت باشه، همه ویجت‌ها و اطلاعات قبلی‌ت دست‌نخورده حفظ شدن
+					</span>
 				</div>
 
 				<div className="flex items-center justify-between gap-2 pt-2 border-t border-base-content/10">
@@ -118,11 +130,10 @@ export const UpdateReleaseNotesModal = ({
 						size="sm"
 						variant="ghost"
 						onClick={onClose}
-						disabled={counter > 0}
-						className="px-3 text-xs font-bold"
+						className="px-3 text-xs font-medium text-muted hover:text-content"
 						rounded="xl"
 					>
-						<span>ورود به ویجتیفای</span>
+						<span>بعدا</span>
 					</Button>
 
 					<Button
@@ -131,14 +142,14 @@ export const UpdateReleaseNotesModal = ({
 						color="primary"
 						onClick={handlePersonalize}
 						disabled={counter > 0}
-						className="h-10 px-4 text-xs font-bold flex items-center gap-1.5 shadow-sm"
+						className="h-10 px-5 text-xs font-bold flex items-center gap-2 shadow-sm"
 						rounded="xl"
 					>
-						<Icon name="outlineDrag" size={14} />
+						<Icon name="outlineDrag" size={15} />
 						<span>
 							{counter > 0
-								? `یه چند لحظه صبر کن (${counter})`
-								: 'شخصی‌سازی صفحه‌ام'}
+								? `یه لحظه صبر کن (${counter})`
+								: 'شخصی‌سازی صفحه'}
 						</span>
 					</Button>
 				</div>
