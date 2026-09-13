@@ -86,14 +86,6 @@ export function ProfileDropdownMenu({
 				/>
 
 				<DropdownItem
-					icon={<Icon name="appsPlus" size={14} />}
-					label="مدیریت ویجت‌ها"
-					onClick={() =>
-						handleAction(() => callEvent('openAddCustomWidgetModal'))
-					}
-				/>
-
-				<DropdownItem
 					icon={<Icon name="outlineShoppingBag" size={14} />}
 					label="فروشگاه"
 					onClick={() => handleAction(() => callEvent('openMarketModal'))}

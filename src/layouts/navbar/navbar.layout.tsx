@@ -3,6 +3,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
+import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
 import { NotificationNavbar } from './notifications/notification.navbar'
 import { MarketModalListener } from './market/market-modal-listener'
@@ -201,6 +202,7 @@ export function NavbarLayout(): JSX.Element {
 						<NotificationNavbar />
 						<BlurModeButton />
 						<FriendsListNavbar />
+						<LayoutDropdown />
 						<ProfileNav />
 					</div>
 				</nav>
