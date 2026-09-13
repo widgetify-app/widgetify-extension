@@ -22,6 +22,12 @@ import { AddBookmarkModal } from './add-bookmark.modal'
 import { ImportBrowserBookmarksModal } from './import-browser-bookmarks.modal'
 import { validate } from 'uuid'
 
+const POINTER_SENSOR_OPTIONS = {
+	activationConstraint: {
+		distance: 5,
+	},
+}
+
 interface BookmarkFolderModalProps {
 	isOpen: boolean
 	onClose: () => void
@@ -47,13 +53,7 @@ export function BookmarkFolderModal({
 	const [showAddModal, setShowAddModal] = useState(false)
 	const [showImportModal, setShowImportModal] = useState(false)
 
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5,
-			},
-		})
-	)
+	const sensors = useSensors(useSensor(PointerSensor, POINTER_SENSOR_OPTIONS))
 
 	const currentFolder = folderPath[folderPath.length - 1]
 	const currentFolderId = currentFolder

@@ -195,6 +195,11 @@ export function BookmarkGrid({
 
 	const isAutoRows = isModal || !rowsCount
 
+	const sortableIds = useMemo(
+		() => displayedBookmarks.filter(Boolean).map((bookmark) => bookmark?.id || ''),
+		[displayedBookmarks]
+	)
+
 	return (
 		<div
 			style={{
@@ -210,16 +215,14 @@ export function BookmarkGrid({
 			}
 		>
 			<SortableContext
-				items={displayedBookmarks
-					.filter(Boolean)
-					.map((bookmark) => bookmark?.id || '')}
+				items={sortableIds}
 				strategy={rectSortingStrategy}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div
 							key={bookmark.id + '-' + i}
-							className="w-full h-full transition-transform duration-200"
+							className="w-full h-full"
 						>
 							<SortableBookmarkItem
 								bookmark={bookmark}

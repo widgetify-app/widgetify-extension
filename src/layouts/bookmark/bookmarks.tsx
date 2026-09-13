@@ -23,6 +23,12 @@ import { usePrimaryBookmarkInstanceId } from '@/context/free-widget/free-widget.
 import type { WidgetSize } from '../widgets/layout-engine/types'
 import { validate } from 'uuid'
 
+const POINTER_SENSOR_OPTIONS = {
+	activationConstraint: {
+		distance: 5,
+	},
+}
+
 interface BookmarksListProps {
 	size?: WidgetSize
 	instanceId?: string
@@ -44,18 +50,20 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5,
-			},
-		})
-	)
+	const sensors = useSensors(useSensor(PointerSensor, POINTER_SENSOR_OPTIONS))
 
 	const colsCount = size ? (size.w === 4 ? 5 : size.w) : 5
 	const rowsCount = size ? size.h : 2
 
 	const TOTAL_BOOKMARKS = colsCount * rowsCount
+
+	const primaryBookmarkInstanceId = usePrimaryBookmarkInstanceId()
+	const isPrimary = (() => {
+		if (!instanceId || instanceId === 'bookmarks-default') return true
+		if (primaryBookmarkInstanceId === undefined) return true
+		if (primaryBookmarkInstanceId === null) return true
+		return primaryBookmarkInstanceId === instanceId
+	})()
 
 	const handleDragEnd = async (event: DragEndEvent) => {
 		if (!isAuthenticated)
@@ -64,7 +72,11 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		const { active, over } = event
 		if (!over || active.id === over.id) return
 
-		const currentItems = getCurrentFolderItems(currentFolderId, instanceId)
+		const currentItems = getCurrentFolderItems(
+			currentFolderId,
+			instanceId,
+			isPrimary
+		)
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id
@@ -136,14 +148,6 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		const targetId = isValidUuid ? folder.id : folder.onlineId || folder.id
 		setFolderModalPath([{ id: targetId, title: folder.title }])
 	}
-
-	const primaryBookmarkInstanceId = usePrimaryBookmarkInstanceId()
-	const isPrimary = (() => {
-		if (!instanceId || instanceId === 'bookmarks-default') return true
-		if (primaryBookmarkInstanceId === undefined) return true
-		if (primaryBookmarkInstanceId === null) return true
-		return primaryBookmarkInstanceId === instanceId
-	})()
 
 	const currentFolderItems = getCurrentFolderItems(
 		currentFolderId,
