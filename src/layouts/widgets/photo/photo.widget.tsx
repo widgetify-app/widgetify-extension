@@ -199,6 +199,7 @@ export function PhotoWidget({
 				type="PHOTO_FRAME"
 				title="گالری تصاویر قاب عکس"
 				onSelect={handleGallerySelect}
+				selectedAssetUrl={imageSrc}
 			/>
 		</>
 	)

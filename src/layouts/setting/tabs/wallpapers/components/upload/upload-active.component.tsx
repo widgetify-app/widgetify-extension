@@ -28,7 +28,7 @@ export function UploadActive({
 						<MediaPreview customWallpaper={customWallpaper} />
 						<div className="absolute inset-0 bg-black/20" />
 
-						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold text-white rounded-md bg-primary/90 backdrop-blur-xs shadow-xs">
+						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold text-primary-content rounded-md bg-primary/90 backdrop-blur-xs shadow-xs">
 							{customWallpaper.type === 'IMAGE' ? 'عکس' : 'ویدیو'}
 						</span>
 
@@ -82,7 +82,7 @@ export function UploadActive({
 						size="sm"
 						rounded="xl"
 						variant="ghost"
-						className="text-error hover:bg-error/10"
+						color="danger"
 						loading={isRemoving}
 						title="حذف پس‌زمینه"
 					>

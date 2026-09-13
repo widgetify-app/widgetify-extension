@@ -138,7 +138,7 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 									<div
 										className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all mt-1.5 ${
 											isNow
-												? 'bg-primary text-white shadow-xs ring-4 ring-primary/20'
+												? 'bg-primary text-primary-content shadow-xs ring-4 ring-primary/20'
 												: isPast
 													? 'bg-base-content/20 text-transparent'
 													: 'bg-primary/20 text-primary border border-primary/40'
@@ -175,7 +175,7 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 											{event.summary || 'بدون عنوان'}
 										</p>
 										{isNow && (
-											<span className="px-1.5 py-0.5 rounded-md bg-primary text-white text-[9px] font-bold shrink-0">
+											<span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-content text-[9px] font-bold shrink-0">
 												الان
 											</span>
 										)}

@@ -10,15 +10,8 @@ interface VipPlanCardProps {
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
-export function VipPlanCard({
-	plan,
-	isSelected,
-	onSelect,
-}: VipPlanCardProps) {
-	const badgeText =
-		plan.meta?.badge === 'popular'
-			? 'محبوب'
-			: plan.meta?.badge
+export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
+	const badgeText = plan.meta?.badge === 'popular' ? 'محبوب' : plan.meta?.badge
 
 	return (
 		<div
@@ -36,7 +29,7 @@ export function VipPlanCard({
 						className={cn(
 							'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 							isSelected
-								? 'border-primary bg-primary text-white'
+								? 'border-primary bg-primary text-primary-content'
 								: 'border-base-content/25 bg-base-300/50 group-hover:border-primary/50'
 						)}
 					>
@@ -53,7 +46,7 @@ export function VipPlanCard({
 						className={cn(
 							'px-2 py-0.5 text-[10px] font-bold rounded-md transition-colors shrink-0',
 							isSelected
-								? 'bg-primary text-white'
+								? 'bg-primary text-primary-content'
 								: 'bg-primary/15 text-primary'
 						)}
 					>
@@ -69,9 +62,7 @@ export function VipPlanCard({
 					</span>
 					<span className="text-xs text-muted">تومان</span>
 				</div>
-				<p className="text-[11px] text-muted">
-					{fmt(plan.days)} روز اعتبار
-				</p>
+				<p className="text-[11px] text-muted">{fmt(plan.days)} روز اعتبار</p>
 			</div>
 		</div>
 	)

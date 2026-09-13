@@ -118,11 +118,7 @@ export function CoinPurchaseModal({
 								loadingText="در حال خرید..."
 								className="flex-1"
 								rounded="2xl"
-								variant={
-									canAfford || wallpaperPrice === 0
-										? 'primary'
-										: 'default'
-								}
+								color={ canAfford || wallpaperPrice === 0 ? 'primary' : 'base' }
 							>
 								خرید دائمی
 							</Button>
@@ -130,7 +126,6 @@ export function CoinPurchaseModal({
 								onClick={onClose}
 								size="md"
 								className="flex-1"
-								variant="default"
 								rounded="2xl"
 								disabled={isPurchasing}
 							>
@@ -142,7 +137,7 @@ export function CoinPurchaseModal({
 							size="md"
 							onClick={onLogin}
 							className="w-full"
-							variant="primary"
+							color="primary"
 							rounded="2xl"
 						>
 							ورود به حساب کاربری

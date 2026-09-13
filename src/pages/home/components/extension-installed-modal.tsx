@@ -71,7 +71,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				size="md"
 				onClick={onGetStarted}
 				className="w-full text-base font-light shadow-sm rounded-2xl shadow-primary outline-none!"
-				variant="primary"
+				color="primary"
 			>
 				شروع کنید
 			</Button>
@@ -157,7 +157,7 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 				<Button
 					onClick={handleDecline}
 					size="md"
-					variant="danger"
+					color="danger"
 					className="flex items-center justify-center w-40 rounded-xl"
 				>
 					🚫 حذف افزونه
@@ -165,7 +165,7 @@ const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) => {
 				<Button
 					onClick={handleConfirm}
 					size="md"
-					variant="success"
+					color="success"
 					className="w-40 rounded-xl"
 				>
 					✅ تأیید و ادامه

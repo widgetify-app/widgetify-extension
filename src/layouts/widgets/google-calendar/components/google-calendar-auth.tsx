@@ -48,7 +48,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 						e.stopPropagation()
 						handleAction()
 					}}
-					className="w-full py-1 rounded-lg bg-primary text-white text-[9px] font-bold hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0"
+					className="w-full py-1 rounded-lg bg-primary text-primary-content text-[9px] font-bold hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0"
 				>
 					{isAuthenticated ? 'اتصال' : 'ورود'}
 				</button>

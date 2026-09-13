@@ -14,6 +14,7 @@ export interface ButtonProps
 export function Button({
 	className,
 	variant,
+	color,
 	size,
 	rounded,
 	fullWidth,
@@ -28,7 +29,7 @@ export function Button({
 		<button
 			type={type}
 			className={cn(
-				buttonVariants({ variant, size, rounded, fullWidth }),
+				buttonVariants({ variant, color, size, rounded, fullWidth }),
 				className
 			)}
 			{...rest}

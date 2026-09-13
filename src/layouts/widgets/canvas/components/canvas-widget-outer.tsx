@@ -387,7 +387,7 @@ function CanvasWidgetOuterImpl({
 					)}
 					{isLocked && canvasMode === 'normal' && (
 						<div
-							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-[#0327aa]/20 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-[#0327aa]/40"
+							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-vip/20 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-vip/40"
 							onClick={(e) => {
 								e.stopPropagation()
 								callEvent('openSettings', 'vip')

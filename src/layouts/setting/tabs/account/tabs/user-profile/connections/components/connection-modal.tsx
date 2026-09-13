@@ -109,7 +109,7 @@ export function ConnectionModal({
 						}
 						className="flex-2 h-9 text-sm"
 						rounded={'2xl'}
-						variant={platform.connected ? 'danger' : 'primary'}
+						color={platform.connected ? 'danger' : 'primary'}
 					>
 						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
 					</Button>
@@ -117,7 +117,6 @@ export function ConnectionModal({
 						size="sm"
 						onClick={onClose}
 						disabled={isLoading}
-						variant={'default'}
 						rounded={'2xl'}
 						className="flex-1 h-9"
 					>

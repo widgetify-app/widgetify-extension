@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import moment from 'jalali-moment'
 import {
 	AvatarComponent,
+	Button,
 	FloatingBadge,
 	PopoverMenu,
 	PopoverMenuItem,
@@ -69,27 +70,39 @@ export const ProfileHeader = ({
 
 			{user?.vipExpiresAt ? (
 				<div className="absolute z-10 top-4 right-4">
-					<Tooltip content={vipExpiryDate ? `اعتبار تا ${vipExpiryDate}` : 'اشتراک پرو'}>
-						<button
+					<Tooltip
+						content={
+							vipExpiryDate ? `اعتبار تا ${vipExpiryDate}` : 'اشتراک پرو'
+						}
+					>
+						<Button
 							type="button"
 							onClick={() => callEvent('openSettings', 'vip')}
-							className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all cursor-pointer select-none"
+							variant="outline"
+							color="vip"
+							size="sm"
+							rounded="2xl"
+							className="px-2.5 font-bold"
 						>
 							<Icon name="crown" size={13} />
 							<span>اعتبار پرو: {vipRemaining}</span>
-						</button>
+						</Button>
 					</Tooltip>
 				</div>
 			) : user?.isVip ? (
 				<div className="absolute z-10 top-4 right-4">
-					<button
+					<Button
 						type="button"
 						onClick={() => callEvent('openSettings', 'vip')}
-						className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all cursor-pointer select-none"
+						variant="outline"
+						color="vip"
+						size="sm"
+						rounded="2xl"
+						className="px-2.5 font-bold"
 					>
 						<Icon name="crown" size={13} />
 						<span>اشتراک پرو</span>
-					</button>
+					</Button>
 				</div>
 			) : null}
 
@@ -116,7 +129,7 @@ export const ProfileHeader = ({
 						<button
 							type="button"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="absolute z-30 p-1 text-white transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-primary hover:scale-110 active:scale-95"
+							className="absolute z-30 p-1 text-primary-content transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-primary hover:scale-110 active:scale-95"
 						>
 							<Icon name="cameraPlus" size={12} />
 						</button>

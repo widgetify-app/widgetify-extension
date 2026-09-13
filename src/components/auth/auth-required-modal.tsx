@@ -51,7 +51,7 @@ export function AuthRequiredModal({
 					<Button
 						onClick={triggerAccountTabDisplay}
 						size="md"
-						variant="primary"
+						color="primary"
 						className="flex-1 text-xs"
 						rounded={'2xl'}
 					>

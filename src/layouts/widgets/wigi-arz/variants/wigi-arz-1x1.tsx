@@ -126,7 +126,7 @@ export function CurrencyCompactSquare({
 							variant="ghost"
 							rounded="full"
 							onClick={handleOpenSettings}
-							className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 hover:bg-base-300 text-muted transition-opacity"
+							className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
 						>
 							<Icon name="settings" size={11} />
 						</Button>

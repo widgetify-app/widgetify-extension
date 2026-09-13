@@ -165,8 +165,7 @@ export function VipTab() {
 								<Icon name="diamond" size={18} />
 							</div>
 							<h2 className="text-xl font-black tracking-tight sm:text-2xl text-content">
-								ویجتیفای{' '}
-								<span className="text-indigo-500">{VIP_LABEL}</span>
+								ویجتیفای <span className="text-vip">{VIP_LABEL}</span>
 							</h2>
 						</div>
 
@@ -202,7 +201,7 @@ export function VipTab() {
 									key={idx}
 									className="flex items-center gap-2 text-xs font-medium text-content/90"
 								>
-									<div className="flex items-center justify-center w-3 h-3 text-white rounded-full bg-primary shrink-0">
+									<div className="flex items-center justify-center w-3 h-3 text-primary-content rounded-full bg-primary shrink-0">
 										<Icon name="check" size={8} />
 									</div>
 									<span>{bullet}</span>
@@ -257,7 +256,7 @@ export function VipTab() {
 					/>
 					<div className="absolute inset-0 transition-opacity pointer-events-none bg-black/10 group-hover:bg-black/5" />
 
-					<div className="absolute flex items-center justify-center w-12 h-12 transition-transform border rounded-full shadow-lg cursor-pointer bg-white/90 dark:bg-black/70 backdrop-blur-md border-white/40 text-primary group-hover:scale-110">
+					<div className="absolute flex items-center justify-center w-12 h-12 transition-transform border rounded-full shadow-lg cursor-pointer bg-white/90 backdrop-blur-md border-white/40 text-primary group-hover:scale-110">
 						<Icon name="play" size={18} className="translate-x-[-1px]" />
 					</div>
 				</div>
@@ -300,7 +299,7 @@ export function VipTab() {
 									)}
 								>
 									{isPopular && (
-										<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+										<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-content text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
 											محبوب‌ترین
 										</div>
 									)}
@@ -319,7 +318,7 @@ export function VipTab() {
 											className={cn(
 												'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 												isSelected
-													? 'border-primary bg-primary text-white'
+													? 'border-primary bg-primary text-primary-content'
 													: 'border-base-content/25 bg-base-300/50 group-hover:border-primary/50'
 											)}
 										>
@@ -381,13 +380,13 @@ export function VipTab() {
 					<div className="flex flex-col items-center gap-1">
 						<Button
 							size="md"
-							variant="default"
 							rounded="2xl"
 							disabled={!selectedPlan || isPending}
 							loading={isPending}
 							loadingText="در حال انتقال..."
 							onClick={handlePurchase}
-							className="font-bold text-white bg-indigo-500 transition-all flex items-center justify-center gap-1.5 px-6 h-10 shadow-xs cursor-pointer hover:bg-indigo-500/80!"
+							className="font-bold transition-all px-6 h-10 shadow-xs"
+							color="vip"
 						>
 							<Icon name="diamond" size={14} />
 							<span>فعال‌سازی {VIP_LABEL}</span>

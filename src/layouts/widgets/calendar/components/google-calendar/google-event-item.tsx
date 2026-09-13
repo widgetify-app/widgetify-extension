@@ -56,7 +56,7 @@ export const CalendarEvent = ({
 									e.stopPropagation()
 									onEventClick(event)
 								}}
-								className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-primary text-white text-[9px]  cursor-pointer transition-all hover:brightness-110 active:scale-95 shrink-0 font-medium"
+								className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-primary text-primary-content text-[9px]  cursor-pointer transition-all hover:brightness-110 active:scale-95 shrink-0 font-medium"
 							>
 								<Icon name="videoCamera" size={9} />
 								ورود به جلسه

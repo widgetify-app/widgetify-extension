@@ -265,7 +265,7 @@ export function AddBookmarkModal({
 								type="button"
 								onClick={onCloseHandler}
 								size="md"
-								className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+								className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 							>
 								لغو
 							</Button>
@@ -279,7 +279,7 @@ export function AddBookmarkModal({
 								size="md"
 								loading={isAdding}
 								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
-								variant="primary"
+								color="primary"
 							>
 								ذخیره
 							</Button>

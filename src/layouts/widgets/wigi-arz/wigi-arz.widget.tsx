@@ -110,7 +110,7 @@ export function WigiArzLayout({
 						<Button
 							rounded="xl"
 							size="sm"
-							variant={'primary'}
+							color={'primary'}
 							onClick={onSettingClick}
 						>
 							افزودن ارز
@@ -172,7 +172,7 @@ export function WigiArzLayout({
 					<Button
 						rounded="xl"
 						size="sm"
-						variant={'primary'}
+						color={'primary'}
 						onClick={onSettingClick}
 						className="mt-1"
 					>

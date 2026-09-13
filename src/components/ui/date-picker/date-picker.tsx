@@ -117,7 +117,7 @@ export function DatePicker({
 
 		const getDayTextStyle = () => {
 			if (isDaySelected) {
-				return 'bg-primary text-white font-medium'
+				return 'bg-primary text-primary-content font-medium'
 			}
 
 			if (isFriday) {

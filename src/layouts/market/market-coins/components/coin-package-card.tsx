@@ -60,7 +60,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 					<Button
 						size="xs"
 						onClick={onPurchase}
-						variant={'primary'}
+						color={'primary'}
 						rounded={'lg'}
 						className="px-2.5"
 					>

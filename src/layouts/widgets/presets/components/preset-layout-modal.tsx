@@ -86,7 +86,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 							className={cn(
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
 								activeFilter === 'all'
-									? 'bg-primary text-white shadow-xs'
+									? 'bg-primary text-primary-content shadow-xs'
 									: 'bg-base-200 hover:bg-base-300 text-muted'
 							)}
 						>
@@ -99,7 +99,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 							className={cn(
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
 								activeFilter === 'free'
-									? 'bg-primary text-white shadow-xs'
+									? 'bg-primary text-primary-content shadow-xs'
 									: 'bg-base-200 hover:bg-base-300 text-muted'
 							)}
 						>
@@ -112,11 +112,11 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 							className={cn(
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1',
 								activeFilter === 'vip'
-									? 'bg-primary text-white shadow-xs'
+									? 'bg-primary text-primary-content shadow-xs'
 									: 'bg-base-200 hover:bg-base-300 text-muted'
 							)}
 						>
-							<Icon name="crown" size={13} className="text-indigo-500" />
+							<Icon name="crown" size={13} className="text-vip" />
 							<span>ویژه پرو</span>
 						</button>
 					</div>
@@ -147,7 +147,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												</span>
 
 												{preset.isVip ? (
-													<span className="flex items-center gap-0.5 text-[10px] font-bold text-indigo-500 bg-indigo-500/10 border border-indigo-500/20 px-1.5 py-0.5 rounded-full shrink-0">
+													<span className="flex items-center gap-0.5 text-[10px] font-bold text-vip bg-vip/10 border border-vip/20 px-1.5 py-0.5 rounded-full shrink-0">
 														<Icon name="crown" size={11} />
 														<span>پرو</span>
 													</span>
@@ -192,9 +192,10 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													callEvent('openSettings', 'vip')
 													onClose()
 												}}
-												className="w-full flex items-center justify-center gap-1 bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-500 border border-indigo-500/30 text-xs font-bold py-1.5"
+												className="w-full gap-1 text-xs font-bold py-1.5"
 												rounded="xl"
-												variant="default"
+												variant="outline"
+												color="vip"
 											>
 												<Icon name="crown" size={13} />
 												<span>ارتقا به پرو</span>
@@ -205,7 +206,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												onClick={() => handleRequestApply(preset)}
 												className="w-full text-xs font-bold py-1.5"
 												rounded="xl"
-												variant="primary"
+												color="primary"
 											>
 												<span>اعمال چیدمان</span>
 											</Button>

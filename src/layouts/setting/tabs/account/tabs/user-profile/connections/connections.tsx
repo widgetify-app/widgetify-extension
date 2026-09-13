@@ -141,7 +141,7 @@ export function Connections() {
                     ${
 						platform.connected
 							? 'bg-error/10 text-error'
-							: 'bg-primary text-white'
+							: 'bg-primary text-primary-content'
 					} ${!platform.isActive && !platform.connected ? 'bg-base-300! text-muted' : ''}`}
 							>
 								{platform.isLoading ? (

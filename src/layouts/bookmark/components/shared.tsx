@@ -59,8 +59,7 @@ export function ShowAdvancedButton({
 			onClick={() => setShowAdvanced(!showAdvanced)}
 			size="md"
 			rounded="2xl"
-			variant="default"
-			className="text-muted"
+			variant="ghost"
 		>
 			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
 			<Icon

@@ -20,7 +20,7 @@ interface GalleryPickerModalProps {
 	type: GalleryAssetType
 	title?: string
 	onSelect: (asset: GalleryAsset) => void
-	selectedAssetId?: string
+	selectedAssetUrl?: string
 }
 
 export function GalleryPickerModal({
@@ -29,7 +29,7 @@ export function GalleryPickerModal({
 	type,
 	title = 'گالری تصاویر',
 	onSelect,
-	selectedAssetId,
+	selectedAssetUrl,
 }: GalleryPickerModalProps) {
 	const [selectedCategory, setSelectedCategory] = useState<string>('ALL')
 	const [purchasingAsset, setPurchasingAsset] = useState<GalleryAsset | null>(null)
@@ -155,7 +155,7 @@ export function GalleryPickerModal({
 									<GalleryBookmarkIconItem
 										key={asset.id}
 										asset={asset}
-										isSelected={selectedAssetId === asset.id}
+										isSelected={selectedAssetUrl === asset.url}
 										onClick={() => handleItemClick(asset)}
 									/>
 								))}
@@ -166,7 +166,7 @@ export function GalleryPickerModal({
 									<GalleryPhotoItem
 										key={asset.id}
 										asset={asset}
-										isSelected={selectedAssetId === asset.id}
+										isSelected={selectedAssetUrl === asset.url}
 										onClick={() => handleItemClick(asset)}
 									/>
 								))}

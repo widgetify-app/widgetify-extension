@@ -200,7 +200,6 @@ export function HabitDetailModal({
 				<div className="flex flex-row w-full gap-2 px-2">
 					<Button
 						size="md"
-						variant="default"
 						className="flex-1 text-xs"
 						rounded="xl"
 						onClick={() => setIsShareModalOpen(true)}
@@ -211,7 +210,6 @@ export function HabitDetailModal({
 					<Button
 						className="flex-1 text-xs"
 						size="md"
-						variant="default"
 						rounded="xl"
 						onClick={onClickEdit}
 					>

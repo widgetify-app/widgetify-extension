@@ -61,7 +61,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 						onEventClick(event)
 					}}
 					title="ورود به جلسه"
-					className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-white shrink-0"
+					className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-primary-content shrink-0"
 				>
 					<Icon name="videoCamera" size={12} />
 				</button>

@@ -231,7 +231,7 @@ export function ImageSearchPortal({
 						<Button
 							onClick={handleUrlSearch}
 							size="sm"
-							variant={'primary'}
+							color={'primary'}
 							rounded={'2xl'}
 							className="w-20"
 						>

@@ -124,7 +124,7 @@ export function GalleryAssetPurchaseModal({
 								size="md"
 								className="flex-1"
 								rounded="2xl"
-								variant="primary"
+								color="primary"
 							>
 								استفاده رایگان با پرو
 							</Button>
@@ -137,7 +137,6 @@ export function GalleryAssetPurchaseModal({
 									loadingText="در حال خرید..."
 									className="flex-1"
 									rounded="2xl"
-									variant="default"
 								>
 									خرید دائمی
 								</Button>
@@ -153,14 +152,13 @@ export function GalleryAssetPurchaseModal({
 								loadingText="در حال خرید..."
 								className="flex-1"
 								rounded="2xl"
-								variant={canAfford ? 'primary' : 'default'}
+								color={canAfford ? 'primary' : 'base'}
 							>
 								خرید دائمی
 							</Button>
 							<Button
 								onClick={onClose}
 								size="md"
-								variant="default"
 								rounded="2xl"
 								disabled={isPending}
 							>

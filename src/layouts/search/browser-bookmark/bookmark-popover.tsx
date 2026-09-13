@@ -104,7 +104,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 						size="sm"
 						onClick={() => handlePermission()}
 						className="w-full"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 					>
 						فعال‌سازی دسترسی
@@ -118,7 +118,6 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 							<Button
 								size="sm"
 								onClick={handleGoBack}
-								variant={'default'}
 								rounded={'xl'}
 								className="text-[10px] flex items-center gap-1!"
 							>

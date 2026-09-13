@@ -49,7 +49,7 @@ export function AutocompleteConsentModal({
 						onClick={() => onUpdateStatus()}
 						disabled={isPending}
 						size="md"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						loading={isPending}
 						className="px-8"

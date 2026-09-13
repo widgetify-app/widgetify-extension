@@ -29,7 +29,7 @@ const EmojiItem = React.memo<EmojiItemProps>(({ emoji, isSelected, onSelect }) =
 			className={cn(
 				'w-7.5 h-7.5 flex items-center justify-center rounded-xl text-base transition-colors cursor-pointer select-none',
 				isSelected
-					? 'bg-primary text-white shadow-xs'
+					? 'bg-primary text-primary-content shadow-xs'
 					: 'bg-transparent text-content hover:bg-base-200/60'
 			)}
 		>
@@ -128,9 +128,9 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 						))}
 					</div>
 				</div>
-				</div>
-			)
-		},
-	)
+			</div>
+		)
+	}
+)
 
 HabitIconColorPicker.displayName = 'HabitIconColorPicker'

@@ -42,7 +42,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 							className={cn(
 								'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 								activeTab === tab.id
-									? 'bg-primary text-white font-bold shadow-xs'
+									? 'bg-primary text-primary-content font-bold shadow-xs'
 									: 'bg-base-200/80 hover:bg-base-300 text-muted'
 							)}
 						>
@@ -218,7 +218,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 					<Button
 						type="button"
 						onClick={onClose}
-						variant="primary"
+						color="primary"
 						size="sm"
 						rounded="xl"
 						className="px-6 text-xs"

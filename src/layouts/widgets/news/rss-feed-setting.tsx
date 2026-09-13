@@ -221,7 +221,7 @@ export const RssFeedSetting = () => {
 						size="md"
 						rounded={'2xl'}
 						onClick={addNewFeed}
-						variant={'primary'}
+						color={'primary'}
 					>
 						<Icon name="plus" size={16} />
 						<span>افزودن فید جدید</span>
@@ -348,7 +348,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 			</div>
 			<Button
 				size="sm"
-				variant={'danger'}
+				color={'danger'}
 				rounded={'full'}
 				onClick={onRemove}
 				disabled={disabled}

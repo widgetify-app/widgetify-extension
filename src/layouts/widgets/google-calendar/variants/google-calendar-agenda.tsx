@@ -4,10 +4,7 @@ import jalaliMoment from 'jalali-moment'
 import { Icon } from '@/icons'
 import type { WidgetifyDate } from '../../calendar/utils/date-events'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import {
-	classifyEvent,
-	type ClassifiedCalendarEvent,
-} from '../types'
+import { classifyEvent, type ClassifiedCalendarEvent } from '../types'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { cn } from '@/common/utils/cn'
 
@@ -122,7 +119,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 										<span
 											className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${
 												isGroupToday
-													? 'bg-primary text-white'
+													? 'bg-primary text-primary-content'
 													: 'bg-base-200 text-base-content/70'
 											}`}
 										>
@@ -218,7 +215,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 																onEventClick(event)
 															}}
 															title="ورود به جلسه"
-															className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-white shrink-0"
+															className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-primary-content shrink-0"
 														>
 															<Icon
 																name="videoCamera"

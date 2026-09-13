@@ -57,6 +57,21 @@ body {
   @apply border-base-300;
 }
 
+@utility transition-ui {
+  transition-property: color, background-color, border-color, outline-color, box-shadow, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@utility focus-ring {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@utility rounded-card {
+  border-radius: 0.75rem;
+}
+
 .font-latin {
   font-family: "Inter", "Segoe UI", system-ui, sans-serif;
   -moz-font-feature-settings: normal;
@@ -167,12 +182,12 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb {
-  background: hsl(var(--bc) / 0.2);
+  background: color-mix(in oklab, var(--color-base-content) 20%, transparent);
   border-radius: 2px;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--bc) / 0.3);
+  background: color-mix(in oklab, var(--color-base-content) 30%, transparent);
 }
 
 .scrollbar-none {

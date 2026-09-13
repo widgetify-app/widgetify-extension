@@ -64,7 +64,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 												size="xs"
 												rounded="md"
 												className="flex items-center !text-[10px]"
-												variant="primary"
+												color="primary"
 												loading={isSending}
 												loadingText="در حال ارسال..."
 												onClick={() => onAddClick()}

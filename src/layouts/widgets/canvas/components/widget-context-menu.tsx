@@ -1,5 +1,9 @@
 import { Icon } from '@/icons'
-import type { StoredWidget, WidgetDefinition, WidgetSize } from '../../layout-engine/types'
+import type {
+	StoredWidget,
+	WidgetDefinition,
+	WidgetSize,
+} from '../../layout-engine/types'
 import {
 	Chip,
 	PopoverMenu,
@@ -50,12 +54,7 @@ export function WidgetContextMenu({
 		(!hasVariants || definition.canResize === true) && fittingSizes.length > 1
 
 	return (
-		<PopoverMenu
-			isOpen={true}
-			onClose={onClose}
-			position={{ x, y }}
-			width={208}
-		>
+		<PopoverMenu isOpen={true} onClose={onClose} position={{ x, y }} width={208}>
 			<div className="flex items-center justify-between px-2 py-1">
 				<span className="font-bold text-content flex items-center gap-1.5">
 					<span>{definition.emoji}</span>
@@ -89,7 +88,7 @@ export function WidgetContextMenu({
 									selected={isCurrent}
 									className={cn(
 										'py-0.5 flex items-center justify-center gap-0.5',
-										isSizeVip && !isCurrent && 'border-indigo-500/30'
+										isSizeVip && !isCurrent && 'border-vip/30'
 									)}
 								>
 									<span>

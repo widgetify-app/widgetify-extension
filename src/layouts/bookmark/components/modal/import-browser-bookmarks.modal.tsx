@@ -299,7 +299,7 @@ export function ImportBrowserBookmarksModal({
 						size="sm"
 						onClick={handlePermission}
 						rounded={'2xl'}
-						variant={'primary'}
+						color={'primary'}
 					>
 						فعال‌سازی دسترسی
 					</Button>
@@ -347,14 +347,14 @@ export function ImportBrowserBookmarksModal({
 							onClick={onClose}
 							size="md"
 							disabled={isImporting}
-							className="w-20 transition-colors duration-300 ease-in-out bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+							className="w-20 transition-colors duration-300 ease-in-out rounded-2xl"
 						>
 							انصراف
 						</Button>
 						<Button
 							onClick={handleImport}
 							size="md"
-							variant={'primary'}
+							color={'primary'}
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={

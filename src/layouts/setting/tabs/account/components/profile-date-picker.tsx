@@ -148,7 +148,7 @@ export default function JalaliDatePicker({
 						onClick={handleConfirm}
 						size="sm"
 						rounded={'2xl'}
-						variant={'primary'}
+						color={'primary'}
 						className="flex-1"
 					>
 						<Icon name="check" size={16} className="ml-1" />
@@ -158,7 +158,6 @@ export default function JalaliDatePicker({
 						onClick={handleCancel}
 						size="sm"
 						rounded={'2xl'}
-						variant={'default'}
 						className="w-20"
 					>
 						لغو
