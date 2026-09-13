@@ -117,13 +117,6 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-success/20 border border-success/20 text-success-content text-[11px]">
-					<Icon name="check" size={14} className="shrink-0" />
-					<span className="font-medium">
-						خیالت راحت باشه، همه ویجت‌ها و اطلاعات قبلی‌ت دست‌نخورده حفظ شدن
-					</span>
-				</div>
-
 				<div className="flex items-center justify-between gap-2 pt-2 border-t border-base-content/10">
 					<Button
 						type="button"

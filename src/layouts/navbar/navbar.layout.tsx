@@ -1,8 +1,7 @@
-import { type JSX, useCallback, useEffect, useState } from 'react'
+import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
-import { SettingsDropdown } from './components/settings-dropdown'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
 import { ProfileNav } from './profile/profile'
 import { NotificationNavbar } from './notifications/notification.navbar'
@@ -203,7 +202,6 @@ export function NavbarLayout(): JSX.Element {
 						</Tooltip>
 						<NotificationNavbar />
 						<BlurModeButton />
-						<SettingsDropdown />
 						<FriendsListNavbar />
 						<MarketButton />
 						<ProfileNav />

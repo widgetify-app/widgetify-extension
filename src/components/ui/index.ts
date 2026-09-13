@@ -24,6 +24,8 @@ export * from './context-menu/context-menu'
 export * from './date-picker/date-picker'
 
 export * from './dropdown/dropdown'
+export * from './dropdown/dropdown-item'
+export * from './dropdown/dropdown-item.variants'
 
 export * from './filter-tooltip/filter-tooltip'
 
