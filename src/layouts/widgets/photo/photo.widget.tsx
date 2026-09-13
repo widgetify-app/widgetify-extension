@@ -4,6 +4,7 @@ import type { WidgetSize } from '../layout-engine/types'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
@@ -24,7 +25,7 @@ import { PhotoEmptyState } from './components/photo-empty-state'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize
-	meta?: { imageSrc?: string }
+	meta?: { imageSrc?: string; isCustom?: boolean }
 	instanceId?: string
 }
 
@@ -36,6 +37,7 @@ export function PhotoWidget({
 	const { updateWidgetSettings } = useFreeWidgets()
 	const { canvasMode } = useAppearance()
 	const { isVip } = useAuth()
+	const { blurMode } = useGeneralSetting()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const triggerRef = useRef<HTMLDivElement>(null)
 
@@ -44,6 +46,7 @@ export function PhotoWidget({
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	const imageSrc = meta?.imageSrc
+	const isCustom = meta?.isCustom
 
 	const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -77,7 +80,7 @@ export function PhotoWidget({
 			return
 		}
 
-		updateWidgetSettings(instanceId, { imageSrc: res.url })
+		updateWidgetSettings(instanceId, { imageSrc: res.url, isCustom: true })
 		e.target.value = ''
 	}
 
@@ -104,14 +107,20 @@ export function PhotoWidget({
 	const handleRemovePhoto = () => {
 		setIsMenuOpen(false)
 		if (instanceId) {
-			updateWidgetSettings(instanceId, { imageSrc: undefined })
+			updateWidgetSettings(instanceId, {
+				imageSrc: undefined,
+				isCustom: undefined,
+			})
 			showToast('عکس با موفقیت حذف شد', 'success')
 		}
 	}
 
 	const handleGallerySelect = (asset: GalleryAsset) => {
 		if (instanceId) {
-			updateWidgetSettings(instanceId, { imageSrc: asset.url })
+			updateWidgetSettings(instanceId, {
+				imageSrc: asset.url,
+				isCustom: false,
+			})
 		}
 	}
 
@@ -131,7 +140,11 @@ export function PhotoWidget({
 					{imageSrc ? (
 						<img
 							src={imageSrc}
-							className="object-cover w-full h-full rounded-widget"
+							className={`object-cover w-full h-full rounded-widget ${
+								isCustom && blurMode
+									? 'blur-mode blur-xl!'
+									: 'disabled-blur-mode'
+							}`}
 						/>
 					) : (
 						<PhotoEmptyState size={size} />
