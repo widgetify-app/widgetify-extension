@@ -229,7 +229,7 @@ behind it. The one exception is a file inside that same folder importing a sibli
 its own barrel would be a circular import. A deep path from outside is drift; a deep path
 from inside the barrel's own folder is deliberate, so leave it.
 
-**Responsiveness matters.** Every UI change should hold up across screen sizes, not just the one it was eyeballed at. Use the project's UI/UX skills, if available, to guide this.
+**Responsiveness matters, down to 500px wide.** This is a desktop browser extension: it renders in a new tab on a computer, never on a phone. 500px is the narrowest width worth supporting, so a layout that holds from 500px up is done — do not spend effort on narrower breakpoints or phone specific behaviour.
 
 **Semantic HTML and accessibility are not optional.** Use semantic tags (`button`, `nav`, `header`, `label`, etc.) instead of generic `div`/`span` where one fits, and take `aria-*` attributes, roles, and keyboard/focus behaviour seriously — not just for interactive elements borrowed from `src/components/ui`, but for anything new you build.
 
@@ -248,6 +248,77 @@ from inside the barrel's own folder is deliberate, so leave it.
 **Path aliases are declared one per folder** in `wxt.config.ts`, and `@` on its own resolves to the repo root, not to `src`. A folder with no alias there can only be reached as `@/src/<folder>` through WXT's generic `@/*` fallback. That spelling is a missing alias, not a convention — add the folder to the alias map instead of writing it.
 
 **Analytics** via `@/analytics`.
+
+---
+
+## Colour and theming
+
+Themes are chosen by a `data-theme` attribute on `<html>`, never by OS preference, and a theme can also be fetched at runtime from a CDN. **The set of themes is open ended, so no code may assume what a token contains** — not its lightness, not its hue, not whether it is opaque.
+
+That single constraint produces every rule below. They apply to any colour decision anywhere in the app, not just to the themes that happen to ship today.
+
+### Colour belongs to a token, unless it depicts something
+
+Before writing any colour, decide which of two kinds it is.
+
+**Chrome** is the interface: surfaces, text, borders, states, emphasis. Chrome must come from a token, because it has to survive a theme nobody has written yet. A literal colour in chrome is a bug even when it looks right today.
+
+**Content** is a colour that carries its own meaning and would be wrong to re-theme: a thing being depicted (artwork, an illustrated object), a palette the user picks a value out of, a colour derived from an image, or a fill handed to an API that cannot take a class. Content is correctly hardcoded, and converting it to a token breaks it.
+
+When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in the theme layer and point every site at that name.
+
+### Tokens come in pairs, and the pair is the unit
+
+Every surface token has a matching content token that is the only safe foreground on it. Use them together. Writing a literal foreground on a token background works until the token moves, and then it fails silently, because nothing in the build checks contrast.
+
+**When you add or edit a theme, check every pair.** Convert both sides to relative luminance and compute the WCAG ratio: nothing below **3:1**, and anything under 4.5:1 needs a reason. Two things will mislead you when you do:
+
+- **A token carrying alpha cannot be scored on its own.** It composites over whatever is behind it, so a naive reading pairs two near-identical values and reports a failure that does not exist. Score opaque pairs; judge translucent ones by eye.
+- **A low ratio can be the brand rather than a defect.** If fixing it means changing the brand colour, it is not yours to fix — record it instead.
+
+### Never put an opacity modifier on a surface token
+
+Tailwind compiles `/N` to a `color-mix` against transparent, which **multiplies** whatever alpha the token already has. A theme is free to define its surfaces as translucent, and some do. The same class then lands anywhere between its nominal value and near zero depending on the theme, so an element styled this way disappears in exactly the themes where it mattered.
+
+To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones.
+
+### Anything drawn over an image is its own context
+
+The app renders over a user supplied wallpaper, and individual surfaces may carry their own artwork. Chrome floating on unknown pixels cannot borrow lightness from the theme, because the theme says nothing about what is behind it. Use a token pair that is dark-surface-plus-light-foreground in every theme, and rely on it rather than on the surface tokens, which may be transparent or may invert.
+
+### Never use the OS-keyed variants
+
+`dark:` and `light:` key off `prefers-color-scheme`, which is unrelated to `data-theme`. They fire for a user whose OS disagrees with the theme they chose. Grep for them rather than assuming one is load bearing: none belong in `src`, so every hit is something to remove.
+
+### Prefer the project's semantic class over the raw utility
+
+`src/index.css` defines short names for the combinations this app actually uses — its surfaces, its body and muted text, its border, its widget radius. Use those rather than the underlying utility. They are the single place a decision like "what is a muted foreground" can be changed, and a raw utility at a call site opts that site out of any future change. When a combination you need has no name yet, add one there rather than inventing a new opacity step inline.
+
+### Verifying
+
+A theme is an attribute and a class is text, so both claims are checkable and neither should be asserted from memory:
+
+```
+npm run build
+grep -o '<the-class>[^{]*{[^}]*}' .output/chrome-mv3/assets/newtab-*.css
+```
+
+No output means the class compiled to nothing. Note that the compiler merges selectors that share a declaration, so match loosely — an exact `.class{` anchor can miss a rule that is present. To read what a token actually resolves to, pull the theme's block out of the same file.
+
+### Known debt
+
+Four shapes of debt exist in bulk. Do not treat them as fixed; do not sweep them inside an unrelated task; never add to them. Counts move every time work lands, so measure rather than quote a number from here:
+
+```
+grep -rnoE '(bg|text|border|shadow|ring|from|to|via)-[a-z-]+/[0-9]+' src | wc -l
+```
+
+That is a starting point, not an answer: it counts every opacity modifier, and the ones on content tokens are the prescribed way to tint. Narrow it to the token you are actually chasing before reporting a figure.
+
+- **Opacity modifiers on surface tokens.** Not swept because a theme that defines a surface translucent *means* it to be faint, so most sites read as thin rather than broken, and a blanket rewrite would change every theme to repair the handful that break. Fix them when you are already in the file.
+- **Hardcoded colours**, in five shapes: `white`/`black` classes, numbered palette classes, raw hex literals, `rgb()`/`rgba()` literals, and arbitrary-value classes. Counting only classes in `.tsx` misses more than half of it — scan `.ts` and raw literals too. A meaningful share of them are content by the test above and must stay as they are; the rest are chrome.
+- **Theme stylesheets carrying rules for class names that no longer exist.** A theme file outlives the markup it was written against, so a selector living there is not evidence the class is still used. Grep `src` before trusting one.
+- **The semantic class and its raw equivalent both in wide use for the same thing.** New code uses the semantic one.
 
 ---
 
@@ -311,6 +382,8 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 Intentional behaviour. Not bugs, do not "fix" them.
 
 **Widget canvas collision is push down only, with no compaction.** Gaps between widgets are deliberate and must survive a move. The previous backtracking solver froze the extension for 112 seconds on a single drag; do not reintroduce one. Compaction exists behind an option and is off.
+
+**Toasts are deliberately always dark**, in every theme. They are a transient layer over the page rather than part of it, so they do not follow the theme tokens and their colours are written literally. The literals sit inside Tailwind arbitrary-value classes, which the class scanner only sees as static text, so they cannot be lifted into constants. Leave them.
 
 **Pet food rises from below the floor** rather than dropping from above. This was changed once and reverted on request.
 
