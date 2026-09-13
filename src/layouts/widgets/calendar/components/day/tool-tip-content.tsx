@@ -127,7 +127,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	return (
 		<div className="flex flex-col overflow-hidden border w-60 bg-base-200 border-base-300 rounded-2xl">
-			<div className={`px-3 py-2  bg-primary/90   text-white`}>
+			<div className={`px-3 py-2  bg-primary/90   text-primary-content`}>
 				<div className="flex items-center justify-between text-sm">
 					<span className="font-medium">{jalaliDay}</span>
 					<span className="opacity-90">{jalali}</span>

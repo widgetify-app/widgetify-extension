@@ -104,7 +104,7 @@ export function HabitsContent() {
 							<Button
 								variant="ghost"
 								size="sm"
-								className="w-7 h-7 p-0! border-none! text-muted hover:text-primary hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
+								className="w-7 h-7 p-0! border-none! hover:text-primary rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={handleAddHabit}
 							>
 								<Icon name="plus" size={16} />
@@ -117,7 +117,7 @@ export function HabitsContent() {
 							<Button
 								variant="ghost"
 								size="sm"
-								className="w-7 h-7 p-0! border-none! text-muted hover:text-content hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
+								className="w-7 h-7 p-0! border-none! rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={onRefresh}
 							>
 								<Icon

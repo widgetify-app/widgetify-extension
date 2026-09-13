@@ -57,7 +57,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							onClick={onClick}
 							size="sm"
 							rounded="xl"
-							variant={'primary'}
+							color={'primary'}
 							className="w-full text-sm font-medium border-none"
 						>
 							تایید و ادامه
@@ -79,7 +79,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							onClick={() => callEvent('openProfile')}
 							size="sm"
 							rounded="xl"
-							variant={'primary'}
+							color={'primary'}
 							className="w-full text-sm font-medium border-none"
 						>
 							باشه، ورود به حساب

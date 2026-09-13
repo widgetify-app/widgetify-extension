@@ -51,7 +51,7 @@ export function AddWidgetOptions({
 								className={cn(
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
 									isCurrent
-										? 'bg-primary text-white font-bold shadow-xs'
+										? 'bg-primary text-primary-content font-bold shadow-xs'
 										: 'bg-base-200/80 hover:bg-base-300 text-content border border-base-content/10'
 								)}
 							>
@@ -88,7 +88,7 @@ export function AddWidgetOptions({
 							key={`${sizeOption.w}x${sizeOption.h}`}
 							className={cn(
 								'py-1 flex items-center gap-1',
-								isVipBadge && !isCurrentSize && 'border-indigo-500/30'
+								isVipBadge && !isCurrentSize && 'border-vip/30'
 							)}
 							selected={isCurrentSize}
 						>

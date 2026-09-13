@@ -224,11 +224,10 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						</span>
 						<Button
 							type="button"
-							variant="default"
 							size="xs"
 							rounded="xl"
 							onClick={() => setIsHelpOpen(true)}
-							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 shadow-none font-normal"
+							className="flex items-center gap-1 text-xs text-muted hover:text-content px-2.5 py-1 border border-base-content/10 font-normal"
 							title="راهنمای مدیریت ویجت‌ها"
 						>
 							<Icon name="help" size={13} />
@@ -277,7 +276,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 
 										{selectedDef.settingsTab && (
 											<Button
-												variant="default"
 												size="xs"
 												rounded="xl"
 												onClick={handleOpenSelectedSettings}
@@ -329,7 +327,10 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 			</Modal>
 
 			{isHelpOpen && (
-				<WidgetHelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+				<WidgetHelpModal
+					isOpen={isHelpOpen}
+					onClose={() => setIsHelpOpen(false)}
+				/>
 			)}
 		</>
 	)

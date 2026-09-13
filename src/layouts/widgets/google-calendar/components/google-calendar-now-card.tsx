@@ -49,7 +49,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 							e.stopPropagation()
 							onEventClick(event)
 						}}
-						className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-primary text-white text-[9px] font-bold shrink-0 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+						className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-primary text-primary-content text-[9px] font-bold shrink-0 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
 					>
 						<Icon name="videoCamera" size={10} />
 						<span>ورود به جلسه</span>

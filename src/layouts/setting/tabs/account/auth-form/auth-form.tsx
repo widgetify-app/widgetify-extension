@@ -275,7 +275,7 @@ const AuthForm = () => {
 
 						<Button
 							type="submit"
-							variant="primary"
+							color="primary"
 							size="md"
 							rounded="xl"
 							loading={isOtpSending}
@@ -354,7 +354,7 @@ const AuthForm = () => {
 							type="submit"
 							disabled={isSigningIn || !password}
 							loading={isSigningIn}
-							variant="primary"
+							color="primary"
 							size="md"
 							rounded="xl"
 							className="w-full text-sm font-semibold transition-all shadow-xs h-11 hover:brightness-105"
@@ -467,7 +467,7 @@ const AuthForm = () => {
 
 						<Button
 							type="submit"
-							variant="primary"
+							color="primary"
 							size="md"
 							rounded="xl"
 							loading={isOtpVerifying}

@@ -138,7 +138,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					<InputTextError message={error.otp} className="justify-center" />
 					<Button
 						type="submit"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						size="md"
 						loading={isPending}

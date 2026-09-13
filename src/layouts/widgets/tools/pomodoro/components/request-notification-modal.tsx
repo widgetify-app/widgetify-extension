@@ -77,7 +77,7 @@ export function RequestNotificationModal({
 
 				<div className="flex gap-3 mt-2">
 					<Button
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						size="md"
 						onClick={onRequestPermission}
@@ -92,7 +92,6 @@ export function RequestNotificationModal({
 						className="flex-1 px-4 py-2 text-sm"
 						size="md"
 						rounded={'2xl'}
-						variant={'default'}
 					>
 						فعلا نه
 					</Button>

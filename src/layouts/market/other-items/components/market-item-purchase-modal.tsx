@@ -107,14 +107,13 @@ export function MarketItemPurchaseModal({
 						loadingText="در حال خرید..."
 						className="flex-1"
 						rounded="2xl"
-						variant={canAfford ? 'primary' : 'default'}
+						color={canAfford ? 'primary' : 'base'}
 					>
 						خرید دائمی
 					</Button>
 					<Button
 						onClick={() => onClose(false)}
 						size="md"
-						variant="default"
 						rounded="2xl"
 						disabled={isPending}
 					>

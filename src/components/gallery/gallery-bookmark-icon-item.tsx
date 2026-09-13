@@ -46,20 +46,17 @@ export function GalleryBookmarkIconItem({
 					backgroundSize: '12px 12px',
 				}}
 			/>
-
 			{!loaded && (
 				<div className="flex items-center justify-center w-full h-full">
 					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
 				</div>
 			)}
-
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full h-full text-error/80">
 					<Icon name="alert" size={20} />
 					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
 				</div>
 			)}
-
 			<div className="relative z-10 flex items-center justify-center w-full h-full p-2">
 				<img
 					ref={imgRef}
@@ -76,7 +73,6 @@ export function GalleryBookmarkIconItem({
 					style={{ opacity: loaded && !error ? 1 : 0 }}
 				/>
 			</div>
-
 			{loaded && !error && (
 				<>
 					{asset.title && (
@@ -86,7 +82,6 @@ export function GalleryBookmarkIconItem({
 							</span>
 						</div>
 					)}
-
 					{asset.price > 0 && !asset.isOwned && (
 						<div className="absolute bottom-2 right-2 z-20 origin-bottom-right scale-75">
 							<UserCoin coins={asset.price} title="قیمت خرید" />
@@ -94,17 +89,15 @@ export function GalleryBookmarkIconItem({
 					)}
 
 					{isSelected && (
-						<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary z-20">
+						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary z-20">
 							<Icon name="check" size={12} />
 						</div>
 					)}
-
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
 							<VipBadge size="xs" variant="indigo" />
 						</div>
 					)}
-
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-md bg-success text-success-content shadow-xs items-center top-0 left-0 text-[10px] h-4 z-20">
 							<Icon name="shoppingBag" size={9} />

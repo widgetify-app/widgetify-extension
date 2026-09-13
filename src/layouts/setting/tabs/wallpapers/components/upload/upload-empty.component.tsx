@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-500 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-xl hover:bg-indigo-500/20 active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip/10 border border-vip/20 px-2.5 py-0.5 rounded-xl hover:bg-vip/20 active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="crown" size={11} />
 											<span>ارتقا به پرو</span>

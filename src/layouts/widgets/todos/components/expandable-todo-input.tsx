@@ -263,7 +263,7 @@ export function ExpandableTodoInput({
 							loading={isPending}
 							loadingText={<IconLoading />}
 							size="sm"
-							variant={'primary'}
+							color={'primary'}
 							rounded={'full'}
 							className="px-0! w-8"
 						>
@@ -357,7 +357,7 @@ export function ExpandableTodoInput({
 													/>
 													<Button
 														size="xs"
-														variant={'primary'}
+														color={'primary'}
 														rounded={'full'}
 														className="p-0! w-6 h-6"
 														onClick={() =>

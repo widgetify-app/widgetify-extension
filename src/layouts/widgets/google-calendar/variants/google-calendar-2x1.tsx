@@ -109,7 +109,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 												e.stopPropagation()
 												onEventClick(event)
 											}}
-											className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-primary text-white text-[8px] font-bold shrink-0 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+											className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-primary text-primary-content text-[8px] font-bold shrink-0 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="videoCamera" size={9} />
 											<span>ورود</span>

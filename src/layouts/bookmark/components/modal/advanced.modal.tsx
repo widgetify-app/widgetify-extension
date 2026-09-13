@@ -181,7 +181,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							className="p-3!"
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -213,7 +212,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							className="p-3!"
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
@@ -232,7 +230,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							onClick={toggleEmojiPopover}
 							className={'btn !w-fit px-8'}
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							{sticker ? (
 								<>
@@ -328,7 +325,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						size="md"
 						onClick={() => onClose(null)}
 						rounded={'2xl'}
-						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+						className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 					>
 						لغو
 					</Button>
@@ -336,7 +333,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						type="submit"
 						onClick={() => handleClose()}
 						size="md"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						className={'w-fit px-8  border-none'}
 					>

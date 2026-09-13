@@ -132,7 +132,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 					<Button
 						size="md"
 						onClick={handleSaveAndClose}
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						className="w-full"
 					>

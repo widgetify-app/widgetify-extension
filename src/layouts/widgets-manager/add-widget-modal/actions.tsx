@@ -22,9 +22,10 @@ function ProUpgradeButton({ label }: { label: string }) {
 		<Button
 			type="button"
 			onClick={() => callEvent('openSettings', 'vip')}
-			className="flex items-center justify-center w-full gap-2 font-bold text-indigo-500 border bg-indigo-500/15 hover:bg-indigo-500/25 border-indigo-500/30"
+			className="w-full gap-2 font-bold"
 			rounded={'2xl'}
-			variant={'default'}
+			variant={'outline'}
+			color={'vip'}
 		>
 			<Icon name="diamond" size={14} />
 			<span>{label}</span>
@@ -37,9 +38,10 @@ function RemoveFromPageButton({ onRemove }: { onRemove: () => void }) {
 		<Button
 			type="button"
 			onClick={onRemove}
-			className="w-full text-error hover:bg-error/10 border-error/20"
+			className="w-full"
 			rounded={'2xl'}
-			variant={'default'}
+			variant={'outline'}
+			color={'danger'}
 		>
 			<span>حذف از صفحه</span>
 		</Button>
@@ -78,7 +80,7 @@ export function AddWidgetActions({
 				onClick={onSave}
 				className="w-full"
 				rounded={'2xl'}
-				variant={'primary'}
+				color={'primary'}
 				loading={isLoading}
 				disabled={isLoading}
 			>
@@ -113,7 +115,7 @@ export function AddWidgetActions({
 				onClick={onSave}
 				className="w-full"
 				rounded={'2xl'}
-				variant={'primary'}
+				color={'primary'}
 				loading={isLoading}
 				disabled={isLoading}
 			>
@@ -135,7 +137,7 @@ export function AddWidgetActions({
 			onClick={onSave}
 			className="w-full"
 			rounded={'2xl'}
-			variant={'primary'}
+			color={'primary'}
 			loading={isLoading}
 			disabled={isLoading}
 		>

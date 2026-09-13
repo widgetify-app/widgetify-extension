@@ -94,7 +94,7 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 
 						<div className="flex items-start gap-2.5">
-							<div className="w-5 h-5 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0 mt-0.5">
+							<div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
 								<Icon name="squares2X2" size={12} />
 							</div>
 							<p className="text-xs leading-relaxed text-content">
@@ -119,7 +119,7 @@ export const UpdateReleaseNotesModal = ({
 						variant="ghost"
 						onClick={onClose}
 						disabled={counter > 0}
-						className="px-3 text-xs font-bold text-muted hover:text-content"
+						className="px-3 text-xs font-bold"
 						rounded="xl"
 					>
 						<span>ورود به ویجتیفای</span>
@@ -128,7 +128,7 @@ export const UpdateReleaseNotesModal = ({
 					<Button
 						type="button"
 						size="sm"
-						variant="primary"
+						color="primary"
 						onClick={handlePersonalize}
 						disabled={counter > 0}
 						className="h-10 px-4 text-xs font-bold flex items-center gap-1.5 shadow-sm"

@@ -69,7 +69,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 						</Button>
 
 						<Button
-							variant="primary"
+							color="primary"
 							size="md"
 							className="w-32"
 							rounded="2xl"

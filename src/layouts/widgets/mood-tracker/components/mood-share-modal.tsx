@@ -84,7 +84,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						</Button>
 
 						<Button
-							variant="primary"
+							color="primary"
 							size="md"
 							rounded="2xl"
 							onClick={handleDownloadImage}

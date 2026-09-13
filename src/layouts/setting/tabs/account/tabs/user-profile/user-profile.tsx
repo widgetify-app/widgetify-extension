@@ -71,7 +71,7 @@ export const UserProfile = () => {
 				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
 				<Button
 					onClick={() => onClickLogout()}
-					variant={'danger'}
+					color={'danger'}
 					rounded={'2xl'}
 					size="md"
 				>
@@ -108,7 +108,7 @@ export const UserProfile = () => {
 					<Button
 						onClick={() => setShowConfirm(true)}
 						size="md"
-						variant={'danger'}
+						color={'danger'}
 						rounded={'2xl'}
 					>
 						<Icon name="logOut" size={16} />

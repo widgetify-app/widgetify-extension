@@ -43,7 +43,7 @@ export function AddWidgetSidebar({
 						className={cn(
 							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 							activeCategory === cat.id
-								? 'bg-primary text-white font-bold shadow-xs'
+								? 'bg-primary text-primary-content font-bold shadow-xs'
 								: 'bg-base-200/60 hover:bg-base-200 text-muted'
 						)}
 					>

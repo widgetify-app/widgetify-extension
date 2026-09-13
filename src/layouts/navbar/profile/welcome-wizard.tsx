@@ -131,7 +131,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								size="sm"
 								onClick={nextStep}
 								className="w-full h-12 text-base font-bold shadow-lg"
-								variant={'primary'}
+								color={'primary'}
 								rounded={'2xl'}
 							>
 								بزن بریم
@@ -187,7 +187,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									onClick={nextStep}
 									disabled={!selectedOccupation}
 									className="flex-1 h-12 font-bold"
-									variant={'primary'}
+									color={'primary'}
 									rounded={'2xl'}
 								>
 									تایید و ادامه
@@ -255,7 +255,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									onClick={nextStep}
 									disabled={selectedInterests.length === 0}
 									className="flex-1 h-12 font-bold"
-									variant={'primary'}
+									color={'primary'}
 									rounded={'2xl'}
 								>
 									ادامه
@@ -332,7 +332,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								disabled={!selectedReferralSource || isPending}
 								loading={isPending}
 								className="h-12 font-bold mt-4 w-full"
-								variant={'primary'}
+								color={'primary'}
 								rounded={'2xl'}
 							>
 								ادامه
@@ -362,7 +362,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								size="sm"
 								onClick={onClose}
 								className="h-12 font-bold w-full"
-								variant={'primary'}
+								color={'primary'}
 								rounded={'2xl'}
 							>
 								شروع استفاده

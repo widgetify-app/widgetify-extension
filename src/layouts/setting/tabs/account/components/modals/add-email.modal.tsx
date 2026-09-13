@@ -140,7 +140,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					<InputTextError message={error.otp} className="justify-center" />
 					<Button
 						type="submit"
-						variant={'primary'}
+						color={'primary'}
 						size="md"
 						rounded={'2xl'}
 						loading={isPending}

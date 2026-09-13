@@ -276,7 +276,6 @@ export function NetworkLayout({
 							type="button"
 							className="w-full h-fit py-2.5"
 							rounded={'2xl'}
-							variant={'default'}
 							onClick={handleRefresh}
 							disabled={isLoading}
 						>

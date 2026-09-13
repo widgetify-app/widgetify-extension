@@ -139,7 +139,9 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						disabled={!canSendRequest || isSending || !username}
 						size="lg"
 						rounded="xl"
-						className={`w-full h-12 enabled:hover:opacity-75 disabled:bg-success/70 bg-success text-success-content shadow-sm shadow-success/20  border-none`}
+						color="success"
+						fullWidth
+						className="h-12 shadow-sm shadow-success/20"
 					>
 						ارسال درخواست
 					</Button>

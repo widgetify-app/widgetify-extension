@@ -36,10 +36,10 @@ export function VipBannerCard({
 	return (
 		<div
 			onClick={handleClick}
-			className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-indigo-500/30 bg-base-200/70 hover:bg-base-200 hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-xs group ${className}`}
+			className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-vip/30 bg-base-200/70 hover:bg-base-200 hover:border-vip/50 transition-all duration-200 cursor-pointer shadow-xs group ${className}`}
 		>
 			<div className="flex items-center min-w-0 gap-3">
-				<div className="flex items-center justify-center text-indigo-500 transition-transform duration-200 w-11 h-11 rounded-2xl shrink-0 group-hover:scale-105">
+				<div className="flex items-center justify-center text-vip transition-transform duration-200 w-11 h-11 rounded-2xl shrink-0 group-hover:scale-105">
 					<Icon name="diamond" size={22} />
 				</div>
 
@@ -59,9 +59,10 @@ export function VipBannerCard({
 			<div className="flex items-center gap-2 mr-2 shrink-0">
 				<Button
 					size="xs"
-					variant="default"
+					variant="outline"
+					color="vip"
 					rounded="xl"
-					className="px-3 py-1.5 font-bold gap-1 bg-indigo-500/15 text-indigo-500 hover:bg-indigo-500/10!"
+					className="px-3 py-1.5 font-bold gap-1"
 					onClick={(e) => {
 						e.stopPropagation()
 						handleClick()

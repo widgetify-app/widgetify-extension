@@ -15,7 +15,7 @@ export function Calendar1x1() {
 					'w-full py-1.5 px-3 flex items-center justify-between transition-colors',
 					todayIsHoliday
 						? 'bg-error text-error-content'
-						: 'bg-primary text-white'
+						: 'bg-primary text-primary-content'
 				)}
 			>
 				<div className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/60" />

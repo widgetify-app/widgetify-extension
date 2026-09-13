@@ -68,7 +68,7 @@ export function Mood1x1({
 							className={cn(
 								'w-6 h-6 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer leading-none',
 								isSelected
-									? 'bg-primary text-white scale-110 shadow-xs'
+									? 'bg-primary text-primary-content scale-110 shadow-xs'
 									: 'hover:bg-base-300 hover:scale-105 opacity-70 hover:opacity-100'
 							)}
 						>

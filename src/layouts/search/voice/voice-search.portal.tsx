@@ -111,7 +111,7 @@ export function VoiceSearchPortal({
 							onClick={() =>
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
-							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-all ${isListening ? 'bg-error text-white shadow-lg shadow-error/20' : 'bg-primary text-white shadow-lg shadow-primary/20'}`}
+							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-all ${isListening ? 'bg-error text-primary-content shadow-lg shadow-error/20' : 'bg-primary text-primary-content shadow-lg shadow-primary/20'}`}
 						>
 							<Icon
 								name="mic"

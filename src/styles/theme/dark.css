@@ -6,13 +6,13 @@
     --color-base-content: #f9fafb;
     --color-primary: var(--brand-primary);
     --color-primary-focus: #4f46e5;
-    --color-primary-content: rgba(var(--brand-primary-rgb), 0.9);
+    --color-primary-content: #ffffff;
     --color-secondary: var(--brand-secondary);
     --color-secondary-focus: #7c3aed;
-    --color-secondary-content: #ffffff;
+    --color-secondary-content: #171717;
     --color-accent: #f59e0b;
     --color-accent-focus: #d97706;
-    --color-accent-content: #ffffff;
+    --color-accent-content: #271b06;
     --color-error: #f7374f;
     --color-success: #34d399;
     --color-warning: #fbbf24;

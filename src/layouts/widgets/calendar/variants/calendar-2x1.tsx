@@ -70,7 +70,7 @@ export function Calendar2x1Row() {
 							isSelected &&
 								(isHoliday
 									? 'bg-error text-error-content'
-									: 'bg-primary text-white'),
+									: 'bg-primary text-primary-content'),
 
 							!isSelected && isToday && 'font-bold ring-1',
 							!isSelected &&

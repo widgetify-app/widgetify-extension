@@ -35,7 +35,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 					type="button"
 					className="w-full"
 					rounded={'2xl'}
-					variant={'primary'}
+					color={'primary'}
 					onClick={handleReload}
 				>
 					تلاش مجدد
@@ -44,7 +44,6 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 					type="button"
 					size="sm"
 					// className=""
-					variant={'default'}
 					rounded={'2xl'}
 					onClick={() => onClickToBack()}
 				>

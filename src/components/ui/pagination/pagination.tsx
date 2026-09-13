@@ -34,8 +34,8 @@ export function Pagination({
 				onClick={onPrevPage}
 				disabled={currentPage === 1 || isLoading}
 				size="xs"
-				className="btn-soft rounded-2xl"
-				variant={currentPage !== 1 ? 'primary' : 'default'}
+				rounded="2xl"
+				color={currentPage !== 1 ? 'primary' : 'base'}
 			>
 				<Icon name="chevronRight" size={18} />
 			</Button>
@@ -47,8 +47,8 @@ export function Pagination({
 			<Button
 				onClick={onNextPage}
 				disabled={currentPage === totalPages || isLoading}
-				className="btn-soft rounded-2xl"
-				variant={'primary'}
+				rounded="2xl"
+				color={'primary'}
 				size="xs"
 			>
 				<Icon name="chevronLeft" size={18} />

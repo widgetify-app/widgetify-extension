@@ -60,7 +60,9 @@ export function NoteNavigation() {
 					<Button
 						size="xs"
 						onClick={() => setShowDeleteConfirm(true)}
-						className="h-7 w-7 p-0 text-muted bg-transparent! hover:bg-error/20! hover:text-error! border-none disabled:opacity-75 transition-all duration-300 shadow-none"
+						className="h-7 w-7 p-0 disabled:opacity-75 transition-all duration-300 shadow-none"
+						variant="ghost"
+						color="danger"
 						rounded={'full'}
 					>
 						<Icon name="trash" size={14} />
@@ -84,7 +86,7 @@ export function NoteNavigation() {
 							disabled={isCreatingNote}
 							loading={isCreatingNote}
 							loadingText={<IconLoading title="درحال ساخت..." />}
-							className="w-7 h-7 p-0! border-none! text-muted hover:text-primary hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
+							className="w-7 h-7 p-0! border-none! hover:text-primary rounded-xl shrink-0 active:scale-95 transition-colors"
 						>
 							<Icon name="plus" size={16} />
 						</Button>
@@ -94,7 +96,7 @@ export function NoteNavigation() {
 							<Button
 								variant="ghost"
 								size="sm"
-								className="w-7 h-7 p-0! border-none! text-muted hover:text-content hover:bg-base-300/50 rounded-xl shrink-0 active:scale-95 transition-colors"
+								className="w-7 h-7 p-0! border-none! rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={onRefresh}
 							>
 								<Icon

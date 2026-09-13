@@ -93,7 +93,7 @@ export function BrowserBookmark() {
 						<div
 							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
 								isOpen
-									? 'bg-primary text-white shadow-lg'
+									? 'bg-primary text-primary-content shadow-lg'
 									: 'bg-base-300  text-base-content/60'
 							}`}
 						>

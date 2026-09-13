@@ -77,7 +77,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					</div>
 
 					{isSelected && (
-						<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary">
+						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary">
 							<Icon name="check" size={12} />
 						</div>
 					)}

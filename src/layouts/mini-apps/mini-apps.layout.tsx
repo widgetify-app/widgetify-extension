@@ -174,10 +174,11 @@ export function MiniAppsLayout() {
 					<Button
 						size="sm"
 						type="button"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						onClick={() => setShowInfo(false)}
-						className="h-12 mt-2 text-base font-bold shadow-sm btn-block"
+						fullWidth
+						className="h-12 mt-2 text-base font-bold shadow-sm"
 					>
 						باشه
 					</Button>

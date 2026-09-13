@@ -126,7 +126,7 @@ export function CoinPackagePurchaseModal({
 						loading={isPending}
 						loadingText="در حال انتقال..."
 						className="flex-1"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 					>
 						<Icon name="check" size={15} className="ml-1" />
