@@ -13,12 +13,13 @@ import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
-import { Tooltip } from '@/components/ui'
+import { NewBadge, Tooltip } from '@/components/ui'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils/date-events'
 import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
 import { GetUserFirstName } from '@/common/utils/get-firstname'
+import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -102,6 +103,13 @@ export function NavbarLayout(): JSX.Element {
 		setShowSettings(true)
 	}, [])
 
+	const { data: notificationsData } = useGetNotifications()
+
+	const hasCloseableNotifications = useMemo(() => {
+		const cardItems = notificationsData?.widgetifyCard || []
+		return cardItems.some((item) => item.closeable)
+	}, [notificationsData])
+
 	const onToggleNavbar = () => {
 		if (isVisible) {
 			callEvent('close_friends_bottomSheet')
@@ -145,6 +153,7 @@ export function NavbarLayout(): JSX.Element {
 				}`}
 			>
 				<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
+				{hasCloseableNotifications && <NewBadge className="-top-1 left-3" />}
 			</button>
 
 			<div
