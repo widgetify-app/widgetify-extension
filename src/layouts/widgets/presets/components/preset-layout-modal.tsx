@@ -73,7 +73,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				isOpen={isOpen}
 				onClose={onClose}
 				size="lg"
-				className="w-[calc(100vw-2rem)] max-w-2xl h-[580px] flex flex-col"
+				className="w-[calc(100vw-2rem)] max-w-2xl h-145 flex flex-col"
 				direction="rtl"
 				showCloseButton={true}
 				title="چیدمان‌های آماده"
@@ -158,7 +158,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{preset.description}
 											</p>
 
-											<div className="flex flex-wrap items-center gap-1 pt-0.5">
+											<div className="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1">
 												{uniqueWidgetIds.map((widgetId) => {
 													const def =
 														WIDGET_DEFINITIONS[
@@ -169,12 +169,14 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<span
 															key={widgetId}
-															className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-base-300/60 border border-base-content/5 text-[10px] font-medium text-muted"
+															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-300/50 border border-base-content/5 shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
 														>
-															<span className="text-[10px] leading-none">
+															<span className="text-xs leading-none">
 																{def.emoji}
 															</span>
-															<span>{def.label}</span>
+															<span className="truncate max-w-20">
+																{def.label}
+															</span>
 														</span>
 													)
 												})}
