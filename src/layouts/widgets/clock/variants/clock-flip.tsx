@@ -57,7 +57,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
-						'calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18) 0 0',
+						'calc(var(--flip-h) * 0.42) calc(var(--flip-h) * 0.42) 0 0',
 				}}
 			>
 				<span
@@ -70,13 +70,12 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					{current}
 				</span>
 			</div>
-
 			<div
 				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-content bg-glass"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
-						'0 0 calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18)',
+						'0 0 calc(var(--flip-h) * 0.42) calc(var(--flip-h) * 0.42)',
 				}}
 			>
 				<span
@@ -98,7 +97,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						transformStyle: 'preserve-3d',
 						willChange: 'transform',
 						borderRadius:
-							'calc(var(--flip-h) * 0.18) calc(var(--flip-h) * 0.18) 0 0',
+							'calc(var(--flip-h) * 0.42) calc(var(--flip-h) * 0.42) 0 0',
 						animation: `flip-fold-down ${FLIP_DURATION / 2}ms ease-in forwards`,
 					}}
 				>
@@ -119,7 +118,6 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					</div>
 				</div>
 			)}
-
 			{flipping === 'bottom' && (
 				<div
 					className="absolute inset-x-0 bottom-0 z-20 overflow-hidden origin-top"
@@ -149,7 +147,6 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					</div>
 				</div>
 			)}
-
 			<div
 				className="absolute inset-x-0 z-30 bg-base-content/10"
 				style={{ top: 'var(--flip-h)', height: 1, transform: 'translateY(-50%)' }}
