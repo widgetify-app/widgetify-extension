@@ -1,27 +1,16 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { callEvent } from '@/common/utils/call-event'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { NewsLayout } from '../news/news.widget'
 import { WidgetContainer } from '../widget-container'
 import { WigiArzLayout } from '../wigi-arz/wigi-arz.widget'
-import { Button, TabNavigation } from '@/components/ui'
+import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/icons'
 
 export type ComboTabType = 'news' | 'currency'
 
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
-	const handleSettingsClick = () => {
-		if (activeTab === 'currency') {
-			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.wigiArz })
-		} else {
-			callEvent('openWidgetsSettings', { tab: WidgetTabKeys.news_settings })
-		}
-
-		Analytics.event(`combo_${activeTab}_settings_opened`)
-	}
 
 	const onTabClick = (tab: ComboTabType) => {
 		if (tab === activeTab) return
@@ -78,15 +67,6 @@ export function ComboWidget() {
 					)}
 				</div>
 			</div>
-
-			<Button
-				size="sm"
-				onClick={handleSettingsClick}
-				rounded={'xl'}
-				className={`px-2 py-0! border-none! text-base-content/40 shrink-0 active:scale-95 h-7!`}
-			>
-				<Icon name="menuOption" className="w-4 h-4" />
-			</Button>
 		</WidgetContainer>
 	)
 }
