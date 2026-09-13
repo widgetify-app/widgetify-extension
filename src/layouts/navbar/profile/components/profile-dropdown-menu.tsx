@@ -1,3 +1,4 @@
+import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent, DropdownDivider, DropdownItem, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
@@ -6,9 +7,7 @@ interface ProfileDropdownMenuProps {
 	user: UserProfile | null
 	isAuthenticated: boolean
 	isVip: boolean
-	onProfileClick: () => void
-	onOpenSettingTab: (tab: string) => void
-	onAddWidget: () => void
+	onRequestAuth: () => void
 	onRequestLogout: () => void
 }
 
@@ -16,16 +15,29 @@ export function ProfileDropdownMenu({
 	user,
 	isAuthenticated,
 	isVip,
-	onProfileClick,
-	onOpenSettingTab,
-	onAddWidget,
+	onRequestAuth,
 	onRequestLogout,
 }: ProfileDropdownMenuProps) {
+	const handleAction = (action: () => void) => {
+		callEvent('closeAllDropdowns')
+		action()
+	}
+
+	const handleProfileClick = () => {
+		handleAction(() => {
+			if (!isAuthenticated) {
+				onRequestAuth()
+			} else {
+				callEvent('openSettings', 'profile')
+			}
+		})
+	}
+
 	return (
 		<div className="bg-content py-2 bg-glass min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<div
-					onClick={onProfileClick}
+					onClick={handleProfileClick}
 					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-base-content/10 transition-colors hover:bg-base-200/50"
 				>
 					<div className="shrink-0 flex items-center justify-center">
@@ -47,7 +59,7 @@ export function ProfileDropdownMenu({
 				</div>
 			) : (
 				<div
-					onClick={onProfileClick}
+					onClick={handleProfileClick}
 					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-base-content/10 transition-colors hover:bg-base-200/50"
 				>
 					<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -68,20 +80,30 @@ export function ProfileDropdownMenu({
 				<DropdownItem
 					icon={<Icon name="settings" size={14} />}
 					label="تنظیمات"
-					onClick={() => onOpenSettingTab('general')}
+					onClick={() =>
+						handleAction(() => callEvent('openSettings', 'general'))
+					}
 				/>
 
 				<DropdownItem
 					icon={<Icon name="appsPlus" size={14} />}
 					label="مدیریت ویجت‌ها"
-					onClick={onAddWidget}
+					onClick={() =>
+						handleAction(() => callEvent('openAddCustomWidgetModal'))
+					}
+				/>
+
+				<DropdownItem
+					icon={<Icon name="outlineShoppingBag" size={14} />}
+					label="فروشگاه"
+					onClick={() => handleAction(() => callEvent('openMarketModal'))}
 				/>
 
 				<DropdownItem
 					icon={<Icon name="outlineCrown" size={14} />}
 					label="ویجتیفای پرو"
 					badge={!isVip ? <VipBadge size="xs" /> : undefined}
-					onClick={() => onOpenSettingTab('vip')}
+					onClick={() => handleAction(() => callEvent('openSettings', 'vip'))}
 				/>
 			</div>
 
@@ -92,7 +114,7 @@ export function ProfileDropdownMenu({
 						variant="danger"
 						icon={<Icon name="logOut" size={14} />}
 						label="خروج از حساب"
-						onClick={onRequestLogout}
+						onClick={() => handleAction(onRequestLogout)}
 					/>
 				</>
 			)}

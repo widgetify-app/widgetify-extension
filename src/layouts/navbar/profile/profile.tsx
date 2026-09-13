@@ -13,30 +13,6 @@ export function ProfileNav() {
 	const [showLogoutModal, setShowLogoutModal] = useState(false)
 	const [openedWizard, setOpenedWizard] = useState(false)
 
-	const handleProfileClick = () => {
-		callEvent('closeAllDropdowns')
-		if (!isAuthenticated) {
-			setShowAuthModal(true)
-			return
-		}
-		callEvent('openSettings', 'profile')
-	}
-
-	const handleOpenSettingTab = (tab: string) => {
-		callEvent('closeAllDropdowns')
-		callEvent('openSettings', tab as any)
-	}
-
-	const handleAddWidget = () => {
-		callEvent('closeAllDropdowns')
-		callEvent('openAddCustomWidgetModal')
-	}
-
-	const handleRequestLogout = () => {
-		callEvent('closeAllDropdowns')
-		setShowLogoutModal(true)
-	}
-
 	const handleConfirmLogout = () => {
 		logout()
 		setShowLogoutModal(false)
@@ -90,10 +66,8 @@ export function ProfileNav() {
 					user={user}
 					isAuthenticated={isAuthenticated}
 					isVip={Boolean(isVip)}
-					onProfileClick={handleProfileClick}
-					onOpenSettingTab={handleOpenSettingTab}
-					onAddWidget={handleAddWidget}
-					onRequestLogout={handleRequestLogout}
+					onRequestAuth={() => setShowAuthModal(true)}
+					onRequestLogout={() => setShowLogoutModal(true)}
 				/>
 			</Dropdown>
 

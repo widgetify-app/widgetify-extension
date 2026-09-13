@@ -5,7 +5,7 @@ import { SettingModal } from '../setting/setting-modal'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
 import { ProfileNav } from './profile/profile'
 import { NotificationNavbar } from './notifications/notification.navbar'
-import { MarketButton } from './market/market-button'
+import { MarketModalListener } from './market/market-modal-listener'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
@@ -201,11 +201,12 @@ export function NavbarLayout(): JSX.Element {
 						<NotificationNavbar />
 						<BlurModeButton />
 						<FriendsListNavbar />
-						<MarketButton />
 						<ProfileNav />
 					</div>
 				</nav>
 			</div>
+
+			<MarketModalListener />
 
 			<SettingModal
 				isOpen={showSettings}
