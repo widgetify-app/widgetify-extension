@@ -1,21 +1,22 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetSettings } from '@/layouts/widgets/pet/types'
-import type { ComboTabType } from '@/layouts/widgets/combo-widget/combo-widget.widget'
-import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
+import type { PetSettings } from '@widget/pet/types'
+import type { ComboTabType } from '@widget/combo-widget/types'
+import type { YadkarTab } from '@widget/yadkar/types'
+import type { WigiNewsSetting } from '@widget/news/rss.interface'
 import type {
 	PomodoroSession,
 	PomodoroSettings,
-} from '@/layouts/widgets/tools/pomodoro/types'
-import type { ToolsTabType } from '@/layouts/widgets/tools/tools.widget'
+} from '@widget/tools/pomodoro/types'
+import type { ToolsTabType } from '@widget/tools/tools.widget'
 import type {
 	FetchedForecast,
 	FetchedWeather,
 	WeatherSettings,
-} from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
+} from '@widget/weather/weather.interface'
+import type { ClockSettings } from '@widget/wigi-pad/clock-display/clock-setting.interface'
+import type { WigiPadDateSetting } from '@widget/wigi-pad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.api'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
@@ -36,7 +37,6 @@ export interface StorageKV {
 	bookmarks: Bookmark[]
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
-	compact_currencies: any
 	weatherSettings: WeatherSettings
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency
@@ -48,7 +48,7 @@ export interface StorageKV {
 	refresh_token: string | null
 	profile: UserProfile
 	activeWidgets: WidgetItem[]
-	storedWidgets: import('@/layouts/widgets/layout-engine/types').StoredWidget[]
+	storedWidgets: import('@widget/layout-engine/types').StoredWidget[]
 	widgetLayoutMigrationVersion: number
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
@@ -61,7 +61,6 @@ export interface StorageKV {
 		title: string
 		updatedAt: number
 	}[]
-	calendarDrawerState: boolean
 	recent_searches: any
 	pets: PetSettings
 	clock: ClockSettings
@@ -88,6 +87,6 @@ export interface StorageKV {
 	[key: `removed_notification_${string}`]: string
 	selected_engine: string | null
 	widget_tab: string
-	yadkar_tab: string
+	yadkar_tab: YadkarTab
 	notifications: any
 }
