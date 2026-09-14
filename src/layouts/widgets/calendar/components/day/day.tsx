@@ -1,8 +1,8 @@
-import jalaliMoment from 'jalali-moment'
+import type jalaliMoment from 'jalali-moment'
 import { useRef } from 'react'
-import Analytics from '@/analytics'
+import { moodOptions } from '@/common/constants/moods'
+import { cn } from '@/common/utils/cn'
 import type { FetchedAllEvents } from '@/services/hooks/date/get-events.hook'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import {
 	formatDateStr,
@@ -11,18 +11,16 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 } from '../../utils/date-events'
-import { moodOptions } from '@/common/constants/moods'
+import { isSameJalaliDay, toIsoDateKey } from '../../utils/jalali-date'
 
 interface DayItemProps {
 	day: number
 	currentDate: jalaliMoment.Moment
 	events: FetchedAllEvents
 	selectedDateStr: string
-	setSelectedDate: (date: jalaliMoment.Moment) => void
-	googleEvents: GoogleCalendarEvent[]
 	timezone: string
 	moods: MoodEntry[]
-	onClick?: (element: HTMLDivElement) => void
+	onClick: (date: jalaliMoment.Moment, element: HTMLButtonElement) => void
 }
 
 export function DayItem({
@@ -30,143 +28,107 @@ export function DayItem({
 	currentDate,
 	events,
 	selectedDateStr,
-	setSelectedDate,
 	timezone,
 	moods,
 	onClick,
 }: DayItemProps) {
-	const dayRef = useRef<HTMLDivElement>(null)
+	const dayRef = useRef<HTMLButtonElement>(null)
 	const cellDate = currentDate.clone().jDate(day)
 	const dateStr = formatDateStr(cellDate)
-	const todayShamsiEvents = getShamsiEvents(events, cellDate)
-	const todayHijriEvents = getHijriEvents(events, cellDate)
-	const todayGregorianEvents = getGregorianEvents(events, cellDate)
+	const isoDate = toIsoDateKey(cellDate)
 
-	const hasEvent = todayShamsiEvents.length
-	const eventIcons = [
-		...todayGregorianEvents.filter((event) => event.icon).map((event) => event.icon),
-		...todayShamsiEvents.filter((event) => event.icon).map((event) => event.icon),
-		...todayHijriEvents.filter((event) => event.icon).map((event) => event.icon),
-	].filter(Boolean) as string[]
+	const shamsiEvents = getShamsiEvents(events, cellDate)
+	const hijriEvents = getHijriEvents(events, cellDate)
+	const gregorianEvents = getGregorianEvents(events, cellDate)
+
+	const eventIcon = [...gregorianEvents, ...shamsiEvents, ...hijriEvents].find(
+		(event) => event.icon
+	)?.icon
 
 	const isSelected = selectedDateStr === dateStr
 	const isCurrentDay = isToday(cellDate, timezone)
 
-	const isHoliday =
-		cellDate.day() === 5 ||
-		todayShamsiEvents.some((event) => event.isHoliday) ||
-		todayHijriEvents.some((event) => event.isHoliday)
-
 	const isHolidayEvent =
-		todayShamsiEvents.some((event) => event.isHoliday) ||
-		todayHijriEvents.some((event) => event.isHoliday)
+		shamsiEvents.some((event) => event.isHoliday) ||
+		hijriEvents.some((event) => event.isHoliday)
 
-	const moodForDay = moods.find(
-		(mood) => mood.date === cellDate.doAsGregorian().format('YYYY-MM-DD')
-	)
-	const hasMood = !!moodForDay
-	const dayMood = moodOptions.find((m) => m.value === moodForDay?.mood)
+	const isHoliday = cellDate.day() === 5 || isHolidayEvent
 
-	const getMoodRingStyle = () => {
-		if (!hasMood || !dayMood?.value) return ''
-		return `border-2 ${dayMood.borderClass}`
-	}
+	const moodForDay = moods.find((mood) => mood.date === isoDate)
+	const dayMood = moodOptions.find((option) => option.value === moodForDay?.mood)
 
-	const getDayTextStyle = () => {
-		if (isHoliday) {
-			return 'text-error bg-error/10'
-		}
-
-		return 'text-content'
-	}
-
-	const getSelectedDayStyle = () => {
-		if (isHoliday) {
-			return 'bg-error/10'
-		}
-
-		return 'bg-primary/20'
-	}
-
-	const getHoverStyle = () => {
-		if (isHoliday) {
-			return 'hover:bg-error/10'
-		}
-
-		return 'hover:bg-primary/10'
-	}
-
-	const getTodayRingStyle = () => {
-		if (hasMood) return ''
-
-		if (isHoliday) {
-			return 'border border-dashed border-error/80'
-		}
-
-		return 'border border-dashed border-primary/80'
-	}
+	const label = [
+		cellDate.format('dddd jD jMMMM jYYYY'),
+		isHoliday && 'تعطیل',
+		shamsiEvents.length > 0 && `${shamsiEvents.length} مناسبت`,
+		dayMood && `حال روز: ${dayMood.label}`,
+	]
+		.filter(Boolean)
+		.join('، ')
 
 	function onClickHandler() {
-		Analytics.event('calendar_day_click')
-		setSelectedDate(cellDate)
-		if (onClick && dayRef.current) {
-			onClick(dayRef.current)
+		if (dayRef.current) {
+			onClick(cellDate, dayRef.current)
 		}
-	}
-
-	const renderIndicators = () => {
-		if (eventIcons.length > 0) {
-			return (
-				<img
-					src={eventIcons[0]}
-					alt="مناسبت"
-					className="object-contain w-6 h-6 transition-all rounded-full"
-					loading="lazy"
-				/>
-			)
-		}
-
-		if (!hasEvent) return null
-
-		return (
-			<div className="flex items-center">
-				{hasEvent && (
-					<span
-						className={`w-0.5 h-0.5 rounded-full ${isHolidayEvent ? 'bg-error' : 'bg-primary/80'} shadow-sm`}
-					/>
-				)}
-			</div>
-		)
 	}
 
 	return (
-		<div
-			onClick={onClickHandler}
+		<button
+			type="button"
 			ref={dayRef}
-			className={`
-				relative p-0 rounded-2xl text-xs transition-all cursor-pointer
-				h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
-				${getDayTextStyle()}
-				${isSelected ? getSelectedDayStyle() : getHoverStyle()}
-				${isCurrentDay && `${getTodayRingStyle()} scale-110 shadow-lg`}
-				${getMoodRingStyle()}
-			`}
+			onClick={onClickHandler}
+			aria-label={label}
+			aria-pressed={isSelected}
+			aria-current={isCurrentDay ? 'date' : undefined}
+			className={cn(
+				'relative flex items-center justify-center mx-auto',
+				'w-[8cqh] h-[8cqh] max-w-6 max-h-6 text-[4cqh]',
+				'transition-ui rounded-2xl cursor-pointer hover:scale-110 hover:shadow',
+				'focus-visible:focus-ring',
+				isHoliday ? 'text-error bg-error/10' : 'text-content',
+				isSelected
+					? isHoliday
+						? 'bg-error/10'
+						: 'bg-primary/20'
+					: isHoliday
+						? 'hover:bg-error/10'
+						: 'hover:bg-primary/10',
+				isCurrentDay && 'scale-110 shadow-lg',
+				isCurrentDay &&
+					!dayMood &&
+					(isHoliday
+						? 'border border-dashed border-error/80'
+						: 'border border-dashed border-primary/80'),
+				dayMood && `border-2 ${dayMood.borderClass}`
+			)}
 		>
-			{day}
-			{
-				<div className="absolute flex flex-wrap items-center justify-center w-full gap-0.5 -translate-x-1/2 bottom-0.5 left-1/2">
-					{renderIndicators()}
-				</div>
-			}
-		</div>
+			<time dateTime={isoDate} aria-hidden="true">
+				{day}
+			</time>
+
+			<span
+				aria-hidden="true"
+				className="absolute flex items-center justify-center w-full -translate-x-1/2 bottom-0.5 left-1/2"
+			>
+				{eventIcon ? (
+					<img
+						src={eventIcon}
+						alt=""
+						className="object-contain w-6 h-6 transition-all rounded-full"
+						loading="lazy"
+					/>
+				) : shamsiEvents.length > 0 ? (
+					<span
+						className={cn(
+							'w-0.5 h-0.5 rounded-full shadow-sm',
+							isHolidayEvent ? 'bg-error' : 'bg-primary/80'
+						)}
+					/>
+				) : null}
+			</span>
+		</button>
 	)
 }
 
-const isToday = (date: jalaliMoment.Moment, timezone: string) => {
-	const today = getCurrentDate(timezone)
-	return (
-		date.jDate() === today.jDate() &&
-		date.jMonth() === today.jMonth() &&
-		date.jYear() === today.jYear()
-	)
-}
+const isToday = (date: jalaliMoment.Moment, timezone: string) =>
+	isSameJalaliDay(date, getCurrentDate(timezone))

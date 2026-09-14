@@ -1,8 +1,12 @@
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 import momentTz from 'moment-timezone'
-import type { FetchedAllEvents, FetchedEvent } from '@/services/hooks/date/get-events.hook'
+import type {
+	FetchedAllEvents,
+	FetchedEvent,
+} from '@/services/hooks/date/get-events.hook'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import { toIsoDateKey } from './jalali-date'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
@@ -22,7 +26,7 @@ export const hijriMonthNames = [
 ]
 export type WidgetifyDate = jalaliMoment.Moment
 
-export const iranianHijriMonthDays: {
+const iranianHijriMonthDays: {
 	[key: number]: { [key: number]: number }
 } = {
 	1445: {
@@ -178,10 +182,10 @@ export function filterGoogleEventsByDate(
 	events: GoogleCalendarEvent[],
 	currentDate: WidgetifyDate
 ): GoogleCalendarEvent[] {
-	const dateStr = currentDate.clone().locale('en').format('YYYY-MM-DD')
+	const dateStr = toIsoDateKey(currentDate)
 
 	return events.filter((event) => {
-		if (!event || !event.start || !event.start.dateTime) {
+		if (!event?.start?.dateTime) {
 			return false
 		}
 
