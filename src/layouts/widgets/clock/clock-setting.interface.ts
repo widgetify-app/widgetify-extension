@@ -4,6 +4,7 @@ export interface ClockSettings {
 	showTimeZone: boolean
 	useSelectedFont: boolean
 }
+
 export enum ClockType {
 	Analog = 'analog',
 	Digital = 'digital',

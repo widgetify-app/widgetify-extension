@@ -14,8 +14,7 @@ import type {
 	FetchedWeather,
 	WeatherSettings,
 } from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
+import type { ClockSettings } from '@/layouts/widgets/clock/clock-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.api'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
@@ -65,7 +64,6 @@ export interface StorageKV {
 	recent_searches: any
 	pets: PetSettings
 	clock: ClockSettings
-	wigiPadDate: WigiPadDateSetting
 	configData: ExtensionConfigResponse
 	toolsTab: ToolsTabType
 	comboTabs: ComboTabType

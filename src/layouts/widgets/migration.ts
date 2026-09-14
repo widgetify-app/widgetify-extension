@@ -11,10 +11,23 @@ const DEFAULT_BOTTOM_WIDGETS: WidgetKeys[] = [
 
 const topWidgets: StoredWidget[] = [
 	{
-		id: WidgetKeys.wigiPad,
-		instanceId: 'wigipad-default',
+		id: WidgetKeys.clock,
+		instanceId: 'clock-default',
 		position: { col: 0, row: 0 },
-		size: { w: 2, h: 3 },
+		size: { w: 2, h: 1 },
+		meta: { variant: 'digital' },
+	},
+	{
+		id: WidgetKeys.moodTracker,
+		instanceId: 'moodtracker-default',
+		position: { col: 0, row: 1 },
+		size: { w: 2, h: 1 },
+	},
+	{
+		id: WidgetKeys.weather,
+		instanceId: 'weather-default',
+		position: { col: 0, row: 2 },
+		size: { w: 2, h: 1 },
 	},
 	{
 		id: WidgetKeys.search,
@@ -127,7 +140,7 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 
 		const bottomWidgets: StoredWidget[] = bottomKeys.map((key, index) => ({
 			id: key,
-			instanceId: `${key}-default`,
+			instanceId: `${key}-bottom-${index}`,
 			position: {
 				col: (index % 4) * 2,
 				row: 3 + Math.floor(index / 4) * 3,

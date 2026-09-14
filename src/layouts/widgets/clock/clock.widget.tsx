@@ -6,7 +6,7 @@ import type { FetchedTimezone } from '@/services/hooks/timezone/get-timezones.ho
 import {
 	type ClockSettings,
 	ClockType,
-} from '../wigi-pad/clock-display/clock-setting.interface'
+} from './clock-setting.interface'
 import { WidgetContainer } from '../widget-container'
 import type { WidgetSize } from '../layout-engine/types'
 import { Clock1x1 } from './variants/clock-1x1'
@@ -41,7 +41,7 @@ export function ClockWidget({ size = { w: 2, h: 1 }, meta }: ClockWidgetProps) {
 			}
 		}
 
-		const event = listenEvent('wigiPadClockSettingsChanged', (data) => {
+		const event = listenEvent('clockSettingsChanged', (data) => {
 			setClockSettings({
 				clockType: data.clockType,
 				showSeconds: data.showSeconds,

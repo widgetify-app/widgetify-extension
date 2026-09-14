@@ -4,7 +4,6 @@ import { PetSettings } from '../widgets/pet/pet-setting'
 import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
 import { WeatherSetting } from '../widgets/weather/weather-setting'
 import { WigiArzSetting } from '../widgets/wigi-arz/wigi-arz-setting'
-import { WigiPadSetting } from '../widgets/wigi-pad/wigi-pad-setting'
 import { ComboSetting } from '../widgets/combo-widget/combo-setting'
 import { WidgetTabKeys } from './tab-keys'
 
@@ -34,11 +33,6 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 		title: 'تنظیمات ویجی نیوز',
 		size: 'lg',
 		Component: RssFeedSetting,
-	},
-	[WidgetTabKeys.wigiPad]: {
-		title: 'تنظیمات ویجی پد',
-		size: 'lg',
-		Component: WigiPadSetting,
 	},
 	[WidgetTabKeys.combo_settings]: {
 		title: 'تنظیمات ویجت ترکیبی',

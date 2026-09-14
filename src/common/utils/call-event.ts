@@ -3,8 +3,7 @@ import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetBackgroundId, PetTypes } from '@/layouts/widgets/pet/types'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
+import type { ClockSettings } from '@/layouts/widgets/clock/clock-setting.interface'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
@@ -54,8 +53,7 @@ export interface EventName {
 	}
 
 	// setting keys
-	wigiPadDateSettingsChanged: WigiPadDateSetting
-	wigiPadClockSettingsChanged: ClockSettings
+	clockSettingsChanged: ClockSettings
 	currencies_updated: {
 		currencies: string[]
 		colorMode: CurrencyColorMode
