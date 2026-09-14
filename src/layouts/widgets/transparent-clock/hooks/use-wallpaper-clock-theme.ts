@@ -85,7 +85,7 @@ function hexToRgb(hex: string): [number, number, number] {
 function relativeLuminance(r: number, g: number, b: number): number {
 	const toLinear = (c: number) => {
 		const cs = c / 255
-		return cs <= 0.03928 ? cs / 12.92 : Math.pow((cs + 0.055) / 1.055, 2.4)
+		return cs <= 0.03928 ? cs / 12.92 : ((cs + 0.055) / 1.055) ** 2.4
 	}
 	const rl = toLinear(r)
 	const gl = toLinear(g)
