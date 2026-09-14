@@ -1,19 +1,28 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import jalaliMoment from 'jalali-moment'
-import { Icon } from '@/icons'
-import type { WidgetifyDate } from '../../calendar/utils/date-events'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import { classifyEvent, type ClassifiedCalendarEvent } from '../types'
-import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { cn } from '@/common/utils/cn'
+import { Icon } from '@/icons'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
+import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
+import type { ClassifiedCalendarEvent } from '../types'
+import { classifyEvent, toDateTimeAttr } from '../utils/classify-event'
+import { toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 
 interface GoogleCalendarAgendaProps {
 	rawEvents: GoogleCalendarEvent[] | undefined
 	isLoading: boolean
 	today: WidgetifyDate
 	currentTime: Date
-	onEventClick: (event: any) => void
+	onEventClick: (event: GoogleCalendarEvent) => void
+}
+
+interface AgendaGroup {
+	dateStr: string
+	dayLabel: string
+	isToday: boolean
+	items: ClassifiedCalendarEvent[]
 }
 
 export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
@@ -23,7 +32,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 	currentTime,
 	onEventClick,
 }) => {
-	const groupedEvents = useMemo(() => {
+	const groupedEvents = useMemo<AgendaGroup[]>(() => {
 		if (!rawEvents || rawEvents.length === 0) return []
 
 		const sorted = [...rawEvents].sort(
@@ -33,18 +42,21 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 		)
 
 		const map = new Map<string, ClassifiedCalendarEvent[]>()
-		const todayIso = today.clone().locale('en').format('YYYY-MM-DD')
+		const todayIso = toIsoDateKey(today)
 
-		for (const ev of sorted) {
-			const dateStr = (ev.start?.dateTime || ev.start?.date || '').slice(0, 10)
+		for (const event of sorted) {
+			const dateStr = (event.start?.dateTime || event.start?.date || '').slice(
+				0,
+				10
+			)
 			if (!dateStr) continue
 
-			const isDayToday = dateStr === todayIso
-			const isDayPast = dateStr < todayIso
-
-			const classified = classifyEvent(ev, currentTime, isDayToday, isDayPast)
-
-			// Exclude past events in upcoming agenda view
+			const classified = classifyEvent(
+				event,
+				currentTime,
+				dateStr === todayIso,
+				dateStr < todayIso
+			)
 			if (classified.isPast) continue
 
 			const list = map.get(dateStr) || []
@@ -53,47 +65,43 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 		}
 
 		return Array.from(map.entries())
-			.filter(([_, items]) => items.length > 0)
+			.filter(([, items]) => items.length > 0)
 			.map(([dateStr, items]) => {
-				const isTodayDay = dateStr === todayIso
+				const isTodayGroup = dateStr === todayIso
 				const jDate = jalaliMoment(dateStr, 'YYYY-MM-DD')
 				const isTomorrow = jDate.isSame(today.clone().add(1, 'day'), 'day')
 
 				let dayLabel = jDate.locale('fa').format('dddd jD jMMMM')
-				if (isTodayDay) {
+				if (isTodayGroup) {
 					dayLabel = `امروز (${today.format('jD jMMMM')})`
 				} else if (isTomorrow) {
 					dayLabel = `فردا (${jDate.format('jD jMMMM')})`
 				}
 
-				return {
-					dateStr,
-					dayLabel,
-					isToday: isTodayDay,
-					items,
-				}
+				return { dateStr, dayLabel, isToday: isTodayGroup, items }
 			})
 	}, [rawEvents, today, currentTime])
 
 	return (
-		<div className="flex flex-col h-full p-3 overflow-hidden select-none">
-			<div className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-base-content/5">
-				<div className="flex items-center gap-1.5 min-w-0">
+		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
+			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-base-content/5">
+				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-content">
 					<Icon
 						name="googleCalendar"
 						size={16}
 						className="text-primary shrink-0"
+						aria-hidden="true"
 					/>
-					<span className="text-xs font-bold text-content">
-						برنامه‌های پیش‌رو
-					</span>
-				</div>
-				<span className="text-[10px] text-muted">{today.format('jD jMMMM')}</span>
-			</div>
+					<span>برنامه‌های پیش‌رو</span>
+				</h3>
+				<time dateTime={toIsoDateKey(today)} className="text-[10px] text-muted">
+					{today.format('jD jMMMM')}
+				</time>
+			</header>
 
-			<div className="flex-1 overflow-y-auto space-y-3.5 pr-0.5 min-h-0">
+			<div aria-busy={isLoading} className="flex-1 overflow-y-auto pr-0.5 min-h-0">
 				{isLoading && (
-					<div className="space-y-3">
+					<div aria-hidden="true" className="space-y-3">
 						{Array.from({ length: 3 }).map((_, i) => (
 							<div
 								key={`agenda-skeleton-${i}`}
@@ -110,128 +118,139 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 					<GoogleCalendarEmpty message="برنامه پیش‌رویی در تقویم نیست" />
 				)}
 
-				{!isLoading &&
-					groupedEvents.map(
-						({ dateStr, dayLabel, isToday: isGroupToday, items }) => {
-							return (
-								<div key={dateStr} className="space-y-1.5">
-									<div className="flex items-center gap-2">
-										<span
-											className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${
-												isGroupToday
-													? 'bg-primary text-primary-content'
-													: 'bg-base-200 text-base-content/70'
-											}`}
-										>
-											{dayLabel}
-										</span>
-										<div className="flex-1 h-px bg-base-content/5" />
-									</div>
+				{!isLoading && groupedEvents.length > 0 && (
+					<ul className="space-y-3.5">
+						{groupedEvents.map(({ dateStr, dayLabel, isToday, items }) => (
+							<li key={dateStr} className="space-y-1.5">
+								<h4 className="flex items-center gap-2">
+									<time
+										dateTime={dateStr}
+										className={cn(
+											'text-[10px] font-bold px-2 py-0.5 rounded-lg',
+											isToday
+												? 'bg-primary text-primary-content'
+												: 'bg-base-200 text-muted'
+										)}
+									>
+										{dayLabel}
+									</time>
+									<span
+										aria-hidden="true"
+										className="flex-1 h-px bg-base-content/5"
+									/>
+								</h4>
 
-									<div className="space-y-1">
-										{items.map((item) => {
-											const {
-												event,
-												isNow,
-												isAllDay,
-												startTimeStr,
-												endTimeStr,
-												durationLabel,
-											} = item
-											const hasAction = !!(
-												event.hangoutLink || event.location
-											)
-
-											if (isAllDay) {
-												return (
-													<div
-														key={event.id}
-														onClick={() =>
-															hasAction &&
-															onEventClick(event)
-														}
-														className={`flex items-center gap-2 p-2 rounded-xl bg-primary/10 border border-primary/20 text-primary transition-all ${
-															hasAction
-																? 'cursor-pointer hover:bg-primary/15'
-																: ''
-														}`}
-													>
-														<span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-														<span className="flex-1 text-xs font-bold truncate">
-															{event.summary ||
-																'رویداد همه‌روز'}
-														</span>
-														<span className="text-[10px] font-medium opacity-75 shrink-0">
-															تمام روز
-														</span>
-													</div>
-												)
-											}
-
-											return (
-												<div
-													key={event.id}
-													onClick={() =>
-														hasAction && onEventClick(event)
-													}
-													className={cn(
-														'flex items-center gap-2 p-2 rounded-xl bg-base-200/30 hover:bg-base-200/60 border border-base-content/5 transition-all',
-														hasAction
-															? 'cursor-pointer active:scale-[0.99]'
-															: '',
-														isNow
-															? 'ring-1 ring-primary/40 bg-primary/5'
-															: ''
-													)}
-												>
-													<div className="self-stretch w-1 rounded-full bg-primary shrink-0" />
-													<div className="flex flex-col flex-1 min-w-0">
-														<div className="flex items-center justify-between gap-1.5">
-															<span className="text-xs font-bold truncate text-content">
-																{event.summary ||
-																	'بدون عنوان'}
-															</span>
-															{isNow && (
-																<span className="text-[9px] font-bold text-primary shrink-0">
-																	در حال برگزاری
-																</span>
-															)}
-														</div>
-														<div className="flex items-center gap-2 text-[10px] text-muted mt-0.5">
-															<span className="tabular-nums">
-																{startTimeStr} -{' '}
-																{endTimeStr}
-															</span>
-															<span>·</span>
-															<span>{durationLabel}</span>
-														</div>
-													</div>
-
-													{event.hangoutLink && (
-														<button
-															type="button"
-															onClick={(e) => {
-																e.stopPropagation()
-																onEventClick(event)
-															}}
-															title="ورود به جلسه"
-															className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-primary-content shrink-0"
-														>
-															<Icon
-																name="videoCamera"
-																size={11}
-															/>
-														</button>
-													)}
-												</div>
-											)
-										})}
-									</div>
-								</div>
-							)
-						}
-					)}
+								<ul className="space-y-1">
+									{items.map((item) => (
+										<li key={item.event.id}>
+											<AgendaItem
+												classified={item}
+												onEventClick={onEventClick}
+											/>
+										</li>
+									))}
+								</ul>
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
-		</div>
+		</section>
+	)
+}
+
+interface AgendaItemProps {
+	classified: ClassifiedCalendarEvent
+	onEventClick: (event: GoogleCalendarEvent) => void
+}
+
+const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => {
+	const {
+		event,
+		isNow,
+		isAllDay,
+		start,
+		end,
+		startTimeStr,
+		endTimeStr,
+		durationLabel,
+	} = classified
+	const hasAction = !!(event.hangoutLink || event.location)
+
+	if (isAllDay) {
+		const title = event.summary || 'رویداد همه‌روز'
+
+		return (
+			<button
+				type="button"
+				aria-disabled={!hasAction}
+				onClick={() => hasAction && onEventClick(event)}
+				aria-label={`${title}، تمام روز`}
+				className={cn(
+					'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
+					'bg-primary/10 border border-primary/20 text-primary focus-visible:focus-ring',
+					hasAction && 'cursor-pointer hover:bg-primary/15'
+				)}
+			>
+				<span
+					aria-hidden="true"
+					className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"
+				/>
+				<span className="flex-1 text-xs font-bold truncate">{title}</span>
+				<span className="text-[10px] font-medium opacity-75 shrink-0">
+					تمام روز
+				</span>
+			</button>
+		)
+	}
+
+	const title = event.summary || 'بدون عنوان'
+
+	return (
+		<button
+			type="button"
+			aria-disabled={!hasAction}
+			onClick={() => hasAction && onEventClick(event)}
+			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
+			className={cn(
+				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
+				'bg-base-200/30 hover:bg-base-200/60 border border-base-content/5',
+				'focus-visible:focus-ring',
+				hasAction && 'cursor-pointer active:scale-[0.99]',
+				isNow && 'ring-1 ring-primary/40 bg-primary/5'
+			)}
+		>
+			<span
+				aria-hidden="true"
+				className="self-stretch w-1 rounded-full bg-primary shrink-0"
+			/>
+
+			<span className="flex flex-col flex-1 min-w-0">
+				<span className="flex items-center justify-between gap-1.5">
+					<span className="text-xs font-bold truncate text-content">
+						{title}
+					</span>
+					{isNow && (
+						<span className="text-[9px] font-bold text-primary shrink-0">
+							در حال برگزاری
+						</span>
+					)}
+				</span>
+				<span className="flex items-center gap-2 text-[10px] text-muted mt-0.5">
+					<span className="tabular-nums">
+						<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
+						<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>
+					</span>
+					<span aria-hidden="true">·</span>
+					<span>{durationLabel}</span>
+				</span>
+			</span>
+
+			{event.hangoutLink && (
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-primary/10 text-primary shrink-0">
+					<Icon name="videoCamera" size={11} aria-hidden="true" />
+				</span>
+			)}
+		</button>
 	)
 }

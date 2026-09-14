@@ -1,71 +1,94 @@
 import type React from 'react'
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
+import { toDateTimeAttr } from '../utils/classify-event'
 
 interface GoogleCalendarEventCardProps {
 	classified: ClassifiedCalendarEvent
-	onEventClick: (event: any) => void
+	onEventClick: (event: GoogleCalendarEvent) => void
 }
 
 export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = ({
 	classified,
 	onEventClick,
 }) => {
-	const { event, isPast, isAllDay, startTimeStr, endTimeStr, durationLabel } =
-		classified
+	const {
+		event,
+		isPast,
+		isAllDay,
+		start,
+		end,
+		startTimeStr,
+		endTimeStr,
+		durationLabel,
+	} = classified
 	const hasAction = !!(event.hangoutLink || event.location)
+	const title = event.summary || 'بدون عنوان'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-disabled={!hasAction}
 			onClick={() => hasAction && onEventClick(event)}
-			className={`flex items-center gap-2.5 p-2 rounded-xl bg-base-200/30 hover:bg-base-200/70 border border-base-content/5 transition-all ${
-				hasAction ? 'cursor-pointer active:scale-[0.99]' : ''
-			} ${isPast ? 'opacity-40' : ''}`}
+			aria-label={
+				isAllDay
+					? `${title}، تمام روز`
+					: `${title}، ${startTimeStr} تا ${endTimeStr}`
+			}
+			className={cn(
+				'flex items-center w-full gap-2.5 p-2 text-start rounded-xl',
+				'bg-base-200/30 hover:bg-base-200/70 border border-base-content/5 transition-all',
+				'focus-visible:focus-ring',
+				hasAction && 'cursor-pointer active:scale-[0.99]',
+				isPast && 'opacity-40'
+			)}
 		>
 			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-base-content/10">
 				{isAllDay ? (
 					<span className="text-[10px] font-bold text-primary">همه‌روز</span>
 				) : (
 					<>
-						<span className="text-[11px] font-bold text-content tabular-nums leading-tight">
+						<time
+							dateTime={toDateTimeAttr(start)}
+							className="text-[11px] font-bold text-content tabular-nums leading-tight"
+						>
 							{startTimeStr}
-						</span>
-						<span className="text-[9px] text-muted tabular-nums leading-tight">
+						</time>
+						<time
+							dateTime={toDateTimeAttr(end)}
+							className="text-[9px] text-muted tabular-nums leading-tight"
+						>
 							{endTimeStr}
-						</span>
+						</time>
 					</>
 				)}
 			</div>
 
-			{/* Info */}
 			<div className="flex-1 min-w-0">
-				<p className="text-xs font-bold truncate text-content">
-					{event.summary || 'بدون عنوان'}
-				</p>
+				<p className="text-xs font-bold truncate text-content">{title}</p>
 				<div className="flex items-center gap-2 text-[10px] text-muted mt-0.5">
 					<span className="tabular-nums">{durationLabel}</span>
 					{event.location && (
-						<span className="truncate max-w-22.5 text-muted/80">
-							📍 {event.location}
+						<span className="truncate max-w-22.5">
+							<Icon
+								name="location"
+								size={9}
+								className="inline align-[-1px]"
+								aria-hidden="true"
+							/>{' '}
+							{event.location}
 						</span>
 					)}
 				</div>
 			</div>
 
-			{/* Action button */}
 			{event.hangoutLink && !isPast && (
-				<button
-					type="button"
-					onClick={(e) => {
-						e.stopPropagation()
-						onEventClick(event)
-					}}
-					title="ورود به جلسه"
-					className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer bg-primary/10 text-primary hover:bg-primary hover:text-primary-content shrink-0"
-				>
-					<Icon name="videoCamera" size={12} />
-				</button>
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-primary/10 text-primary shrink-0">
+					<Icon name="videoCamera" size={12} aria-hidden="true" />
+				</span>
 			)}
-		</div>
+		</button>
 	)
 }

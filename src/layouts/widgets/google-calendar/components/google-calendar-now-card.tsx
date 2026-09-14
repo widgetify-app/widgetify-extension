@@ -1,10 +1,13 @@
 import type React from 'react'
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
+import { toDateTimeAttr } from '../utils/classify-event'
 
 interface GoogleCalendarNowCardProps {
 	classified: ClassifiedCalendarEvent
-	onEventClick: (event: any) => void
+	onEventClick: (event: GoogleCalendarEvent) => void
 }
 
 export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
@@ -13,6 +16,8 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 }) => {
 	const {
 		event,
+		start,
+		end,
 		startTimeStr,
 		endTimeStr,
 		durationLabel,
@@ -20,17 +25,24 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 		elapsedPercent,
 	} = classified
 	const hasAction = !!(event.hangoutLink || event.location)
+	const title = event.summary || 'بدون عنوان'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-disabled={!hasAction}
 			onClick={() => hasAction && onEventClick(event)}
-			className={`relative overflow-hidden flex flex-col gap-1.5 p-2.5 rounded-2xl bg-primary/10 border border-primary/20 transition-all ${
-				hasAction ? 'cursor-pointer hover:bg-primary/15' : ''
-			}`}
+			aria-label={`در حال برگزاری: ${title}، ${minsRemaining} دقیقه مانده`}
+			className={cn(
+				'relative overflow-hidden flex flex-col w-full gap-1.5 p-2.5 text-start',
+				'rounded-2xl bg-primary/10 border border-primary/20 transition-all',
+				'focus-visible:focus-ring',
+				hasAction && 'cursor-pointer hover:bg-primary/15'
+			)}
 		>
-			<div className="flex items-center justify-between gap-2 min-w-0">
+			<div className="flex items-center justify-between min-w-0 gap-2">
 				<div className="flex items-center gap-1.5 min-w-0">
-					<span className="relative flex w-2 h-2 shrink-0">
+					<span aria-hidden="true" className="relative flex w-2 h-2 shrink-0">
 						<span className="absolute inline-flex w-full h-full rounded-full opacity-70 animate-ping bg-primary" />
 						<span className="relative inline-flex w-2 h-2 rounded-full bg-primary" />
 					</span>
@@ -43,38 +55,32 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 				</div>
 
 				{event.hangoutLink && (
-					<button
-						type="button"
-						onClick={(e) => {
-							e.stopPropagation()
-							onEventClick(event)
-						}}
-						className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-primary text-primary-content text-[9px] font-bold shrink-0 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
-					>
-						<Icon name="videoCamera" size={10} />
+					<span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-primary text-primary-content text-[9px] font-bold shrink-0">
+						<Icon name="videoCamera" size={10} aria-hidden="true" />
 						<span>ورود به جلسه</span>
-					</button>
+					</span>
 				)}
 			</div>
 
-			<p className="text-xs font-bold text-content truncate">
-				{event.summary || 'بدون عنوان'}
-			</p>
+			<p className="text-xs font-bold truncate text-content">{title}</p>
 
 			<div className="flex items-center justify-between text-[10px] text-muted tabular-nums">
 				<span>
-					{startTimeStr} - {endTimeStr}
+					<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
+					<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>
 				</span>
 				<span>{durationLabel}</span>
 			</div>
 
-			{/* Live progress indicator bar */}
-			<div className="w-full h-1 rounded-full bg-primary/20 overflow-hidden mt-0.5">
+			<div
+				aria-hidden="true"
+				className="w-full h-1 rounded-full bg-primary/20 overflow-hidden mt-0.5"
+			>
 				<div
-					className="h-full bg-primary transition-all duration-1000 rounded-full"
+					className="h-full transition-all duration-1000 rounded-full bg-primary"
 					style={{ width: `${elapsedPercent}%` }}
 				/>
 			</div>
-		</div>
+		</button>
 	)
 }
