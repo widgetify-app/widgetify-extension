@@ -95,11 +95,11 @@ export const TabManager = ({
 								return (
 									<div key={idx} className="flex flex-col gap-1">
 										{group.parentName && (
-											<div className="relative mx-4 my-2">
-												<div className="h-px bg-base-300" />
-												<span className="absolute right-0 px-2 text-xs font-medium -top-2 bg-base-100 text-muted">
+											<div className="flex items-center gap-2 mx-4 my-2">
+												<span className="text-xs font-medium text-muted shrink-0">
 													{group.parentName}
 												</span>
+												<div className="h-px bg-base-300 flex-1" />
 											</div>
 										)}
 
