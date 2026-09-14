@@ -73,7 +73,7 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 	it('migrates classic layout using activeWidgets with custom order', async () => {
 		storageMockData.appearance = { ui: 'CLASSIC' }
 		storageMockData.activeWidgets = [
-			{ id: WidgetKeys.weather, order: 2 },
+			{ id: WidgetKeys.todos, order: 2 },
 			{ id: WidgetKeys.calendar, order: 1 },
 			{ id: 'unknown-widget', order: 0 },
 		]
@@ -83,7 +83,9 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 		expect(validateLayout(result, 8)).toBe(true)
 
 		const topWidgetKeys = [
-			WidgetKeys.wigiPad,
+			WidgetKeys.clock,
+			WidgetKeys.moodTracker,
+			WidgetKeys.weather,
 			WidgetKeys.search,
 			WidgetKeys.bookmarks,
 			WidgetKeys.photo,
@@ -96,7 +98,7 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 		const bottomWidgets = result.filter((w) => !topWidgetKeys.includes(w.id))
 		expect(bottomWidgets.map((w) => w.id)).toEqual([
 			WidgetKeys.calendar,
-			WidgetKeys.weather,
+			WidgetKeys.todos,
 		])
 
 		expect(storageMockData.appearance.ui).toBe('CUSTOM')
