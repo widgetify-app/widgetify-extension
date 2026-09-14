@@ -1,59 +1,40 @@
-import { useEffect, useState } from 'react'
-import { getFromStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
-import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
+import type { WidgetSize } from '../layout-engine/types'
 import { WidgetContainer } from '../widget-container'
-import { Forecast } from './components/forecast'
-import { CurrentWeatherBox } from './components/current-weather-box'
+import { useWeatherSettings } from './hooks/use-weather-settings'
+import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
+import { WeatherError } from './components/weather-error'
 import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'
 import { Weather2x2 } from './variants/weather-2x2'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
-import type { WidgetSize } from '../layout-engine/types'
+import { Weather2x3 } from './variants/weather-2x3'
 
 interface WeatherLayoutProps {
 	size?: WidgetSize
 }
 
-export function WeatherLayout({ size = { w: 2, h: 2 } }: WeatherLayoutProps = {}) {
-	const [weatherSettings, setWeatherSettings] = useState<WeatherSettings | null>(null)
-	const { data } = useGetWeatherByLatLon(true)
+export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}) {
+	const settings = useWeatherSettings()
+	const { data, isError, refetch } = useGetWeatherByLatLon(true)
 
-	useEffect(() => {
-		async function load() {
-			const weatherSettingFromStorage = await getFromStorage('weatherSettings')
+	const fetchedWeather = data || null
 
-			if (weatherSettingFromStorage) {
-				setWeatherSettings(weatherSettingFromStorage)
-			} else {
-				setWeatherSettings({
-					useAI: true,
-					forecastCount: 4,
-					temperatureUnit: 'metric',
-					enableShowName: true,
-				})
-			}
-		}
-
-		const event = listenEvent('weatherSettingsChanged', (data) => {
-			setWeatherSettings(data)
-		})
-
-		load()
-
-		return () => {
-			event()
-		}
-	}, [])
-
-	if (!weatherSettings) return null
+	if (isError && !fetchedWeather) {
+		return (
+			<WidgetContainer>
+				<WeatherError
+					compact={size.w === 1 && size.h === 1}
+					onRetry={() => refetch()}
+				/>
+			</WidgetContainer>
+		)
+	}
 
 	if (size.w === 1 && size.h === 1) {
 		return (
 			<WidgetContainer>
 				<WeatherCompactSquare
-					fetchedWeather={data || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
 				/>
 			</WidgetContainer>
 		)
@@ -63,8 +44,8 @@ export function WeatherLayout({ size = { w: 2, h: 2 } }: WeatherLayoutProps = {}
 		return (
 			<WidgetContainer>
 				<WeatherCompactRow
-					fetchedWeather={data || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
 				/>
 			</WidgetContainer>
 		)
@@ -73,26 +54,17 @@ export function WeatherLayout({ size = { w: 2, h: 2 } }: WeatherLayoutProps = {}
 	if (size.w === 2 && size.h === 2) {
 		return (
 			<WidgetContainer background={false}>
-				<Weather2x2 fetchedWeather={data || null} />
+				<Weather2x2
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
+				/>
 			</WidgetContainer>
 		)
 	}
 
 	return (
 		<WidgetContainer>
-			<div className="flex flex-col w-full h-full gap-2 py-1">
-				<CurrentWeatherBox
-					fetchedWeather={data || null}
-					temperatureUnit={weatherSettings.temperatureUnit}
-				/>
-
-				<div className="flex justify-between gap-0.5 px-1 rounded-2xl bg-base-200/40">
-					<Forecast
-						temperatureUnit={weatherSettings.temperatureUnit}
-						forecast={data?.forecast || []}
-					/>
-				</div>
-			</div>
+			<Weather2x3 fetchedWeather={fetchedWeather} settings={settings} />
 		</WidgetContainer>
 	)
 }

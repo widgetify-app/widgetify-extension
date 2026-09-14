@@ -1,110 +1,140 @@
-import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
-import { cleanCityName } from '../utils/clean-city-name'
-import { Icon } from '@/icons'
 import moment from 'jalali-moment'
+import type React from 'react'
+import { Icon } from '@/icons'
+import { cleanCityName } from '../utils/clean-city-name'
+import { formatTemperature } from '../utils/format-temperature'
+import type { FetchedWeather, TemperatureUnit } from '../weather.interface'
+
+const FORECAST_SLOTS = 4
 
 interface Weather2x2Props {
 	fetchedWeather: FetchedWeather | null
+	temperatureUnit: TemperatureUnit
 }
 
-export function Weather2x2({ fetchedWeather }: Weather2x2Props) {
-	const cityName = cleanCityName(fetchedWeather?.city?.fa || '')
-	const temp = Math.round(fetchedWeather?.weather?.temperature?.temp || 0)
+export const Weather2x2: React.FC<Weather2x2Props> = ({
+	fetchedWeather,
+	temperatureUnit,
+}) => {
+	const cityName = cleanCityName(fetchedWeather?.city?.fa)
+	const temp = formatTemperature(
+		fetchedWeather?.weather?.temperature?.temp,
+		temperatureUnit
+	)
 	const description = fetchedWeather?.weather?.description?.text || ''
 	const humidity = fetchedWeather?.weather?.temperature?.humidity || 0
 	const windSpeed = Math.round(fetchedWeather?.weather?.temperature?.wind_speed || 0)
 	const heroIconUrl = fetchedWeather?.weather?.icon?.url
 
-	const forecastList = fetchedWeather?.forecast?.slice(0, 4) || []
+	const forecastList = fetchedWeather?.forecast?.slice(0, FORECAST_SLOTS) || []
 
 	return (
-		<div className="flex flex-col justify-between w-full h-42 my-auto p-3.5 select-none overflow-hidden text-right bg-content rounded-widget bg-glass">
-			<div className="flex items-center justify-between w-full gap-2">
-				<div className="shrink-0 flex items-center justify-center">
+		<section
+			aria-label="آب و هوا"
+			aria-busy={!fetchedWeather}
+			className="flex flex-col justify-between w-full h-full my-auto p-3.5 select-none overflow-hidden text-right bg-content rounded-widget bg-glass"
+		>
+			<header className="flex items-center justify-between w-full gap-2">
+				<div className="flex items-center justify-center shrink-0">
 					{heroIconUrl ? (
 						<img
 							src={heroIconUrl}
-							alt={description}
-							className="w-16 h-16 object-contain drop-shadow-md"
+							alt=""
+							className="object-contain w-16 h-16 drop-shadow-md"
 						/>
 					) : (
-						<div className="w-14 h-14 rounded-full bg-base-300/40 animate-pulse" />
+						<div
+							aria-hidden="true"
+							className="rounded-full w-14 h-14 bg-base-content/10 animate-pulse"
+						/>
 					)}
 				</div>
 
-				<div className="flex flex-col gap-1 min-w-0 items-end">
-					<div className="flex items-center self-end gap-1 text-muted text-xs">
-						<span className="font-medium truncate max-w-30">
-							{cityName || 'تهران'}
-						</span>
-					</div>
+				<div className="flex flex-col items-end min-w-0 gap-1">
+					<span className="max-w-30 text-xs font-medium truncate text-muted">
+						{cityName || 'تهران'}
+					</span>
 
 					<div className="flex items-center gap-2.5 mt-0.5">
-						<div className="flex flex-col gap-0.5 items-end">
-							<span className="text-xs font-semibold text-content truncate max-w-32.5 leading-tight">
+						<div className="flex flex-col items-end gap-0.5">
+							<span className="text-xs font-semibold leading-tight truncate text-content max-w-32.5">
 								{description || 'صاف'}
 							</span>
 
-							<div className="flex items-center gap-2 text-[10px] font-medium text-muted">
-								<span className="flex items-center gap-0.5">
-									<Icon
-										name="humidity"
-										className="w-3 h-3 text-muted"
-									/>
-									<span>{humidity}%</span>
+							<dl className="flex items-center gap-2 text-[10px] font-medium text-muted">
+								<div className="flex items-center gap-0.5">
+									<dt className="flex items-center">
+										<Icon
+											name="humidity"
+											className="w-3 h-3"
+											aria-hidden="true"
+										/>
+										<span className="sr-only">رطوبت</span>
+									</dt>
+									<dd>{humidity}%</dd>
+								</div>
+								<span aria-hidden="true" className="opacity-40">
+									•
 								</span>
-								<span className="text-muted/40">•</span>
-								<span className="flex items-center gap-0.5">
-									<Icon name="wind" className="w-3 h-3 text-muted" />
-									<span>{windSpeed} m/s</span>
-								</span>
-							</div>
+								<div className="flex items-center gap-0.5">
+									<dt className="flex items-center">
+										<Icon
+											name="wind"
+											className="w-3 h-3"
+											aria-hidden="true"
+										/>
+										<span className="sr-only">باد</span>
+									</dt>
+									<dd>{windSpeed} m/s</dd>
+								</div>
+							</dl>
 						</div>
 
-						<span className="text-4xl font-black text-content tracking-tight leading-none">
-							{temp}°
+						<span className="text-4xl font-black leading-none tracking-tight text-content">
+							<data value={temp.value}>{temp.value}</data>
+							<span className="text-lg font-medium">{temp.symbol}</span>
 						</span>
 					</div>
 				</div>
-			</div>
+			</header>
 
-			<div className="w-full pt-2">
-				<div className="grid grid-cols-4 gap-4 w-full text-center">
-					{forecastList.map((item, index) => {
-						const hourText = item.date
-							? moment(item.date).locale('fa').format('HH:mm')
-							: index === 0
-								? 'الان'
-								: `${index * 3}:۰۰`
-						const itemTemp = Math.round(item.temp)
+			<ul className="grid w-full grid-cols-4 gap-4 pt-2 text-center">
+				{forecastList.map((item) => {
+					const at = moment(item.date).locale('fa')
+					const itemTemp = formatTemperature(item.temp, temperatureUnit)
 
-						return (
-							<div
-								key={item.date || index}
-								className="flex flex-col items-center justify-between gap-1 min-w-0"
+					return (
+						<li
+							key={item.date}
+							className="flex flex-col items-center justify-between min-w-0 gap-1"
+						>
+							<time
+								dateTime={at.clone().locale('en').format()}
+								className="text-[11px] font-medium text-muted w-full"
 							>
-								<span className="text-[11px] font-medium text-muted w-full">
-									{hourText}
-								</span>
+								{at.format('HH:mm')}
+							</time>
 
-								{item.icon ? (
-									<img
-										src={item.icon}
-										alt="forecast"
-										className="w-6 h-6 object-contain drop-shadow-xs"
-									/>
-								) : (
-									<div className="w-5 h-5 rounded-full bg-base-300/30 animate-pulse" />
-								)}
+							{item.icon ? (
+								<img
+									src={item.icon}
+									alt=""
+									className="object-contain w-6 h-6 drop-shadow-xs"
+								/>
+							) : (
+								<div
+									aria-hidden="true"
+									className="w-5 h-5 rounded-full bg-base-content/10 animate-pulse"
+								/>
+							)}
 
-								<span className="text-xs font-bold text-content leading-none">
-									{itemTemp}°
-								</span>
-							</div>
-						)
-					})}
-				</div>
-			</div>
-		</div>
+							<span className="text-xs font-bold leading-none text-content">
+								<data value={itemTemp.value}>{itemTemp.value}</data>°
+							</span>
+						</li>
+					)
+				})}
+			</ul>
+		</section>
 	)
 }
