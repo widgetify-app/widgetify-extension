@@ -56,7 +56,7 @@ export function CanvasContextMenu({
 					}}
 				/>
 			)}
-
+			<PopoverMenuDivider />
 			<PopoverMenuItem
 				icon={<Icon name="brush" size={14} />}
 				label="تنظیمات ظاهری"
