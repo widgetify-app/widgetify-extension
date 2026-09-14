@@ -16,6 +16,9 @@ export function ProfileNav() {
 	const handleConfirmLogout = () => {
 		logout()
 		setShowLogoutModal(false)
+		setTimeout(() => {
+			location.reload()
+		}, 1000)
 	}
 
 	const authModalCloseHandler = () => setShowAuthModal(false)
