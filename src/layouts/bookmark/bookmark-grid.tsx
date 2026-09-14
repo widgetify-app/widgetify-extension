@@ -14,13 +14,17 @@ import { validate } from 'uuid'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
-import { Icon } from '@/src/icons'
+import { translateError } from '@/common/utils/translate-error'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
 	openAddBookmarkModal: () => void
 	folderPath: FolderPathItem[]
 	setFolderPath: (path: FolderPathItem[]) => void
+	colsCount?: number
+	rowsCount?: number
+	onOpenFolder?: (folder: Bookmark) => void
+	isModal?: boolean
 }
 
 export function BookmarkGrid({
@@ -28,6 +32,10 @@ export function BookmarkGrid({
 	openAddBookmarkModal,
 	setFolderPath,
 	folderPath,
+	colsCount = 5,
+	rowsCount = 2,
+	onOpenFolder,
+	isModal = false,
 }: BookmarkGridProps) {
 	const { getCurrentFolderItems, editBookmark, deleteBookmark, setCurrentFolderId } =
 		useBookmarkStore()
@@ -61,6 +69,8 @@ export function BookmarkGrid({
 		if (bookmark.type === 'FOLDER') {
 			if (e?.ctrlKey || e?.metaKey) {
 				openBookmarks(bookmark)
+			} else if (onOpenFolder) {
+				onOpenFolder(bookmark)
 			} else {
 				const isValidUUid = validate(bookmark.id)
 				setCurrentFolderId(isValidUUid ? bookmark.id : bookmark.onlineId)
@@ -83,12 +93,24 @@ export function BookmarkGrid({
 
 	const handleMenuClick = (e: React.MouseEvent<HTMLElement>, bookmark: Bookmark) => {
 		e.preventDefault()
+		e.stopPropagation()
 		setSelectedBookmark(bookmark)
-		const button = e.currentTarget
-		if (button) {
-			const rect = button.getBoundingClientRect()
-			setContextMenuPos({ x: rect.left - 110, y: rect.bottom + 5 })
+
+		const isContextMenu = e.type === 'contextmenu'
+		let x: number
+		let y: number
+
+		if (isContextMenu && e.clientX && e.clientY) {
+			x = e.clientX
+			y = e.clientY
+		} else {
+			const target = e.currentTarget
+			const rect = target.getBoundingClientRect()
+			x = rect.left + rect.width / 2 - 74
+			y = rect.bottom + 4
 		}
+
+		setContextMenuPos({ x, y })
 	}
 
 	const openBookmarks = (bookmark: Bookmark) => {
@@ -118,7 +140,7 @@ export function BookmarkGrid({
 
 	const handleDeleteBookmark = (bookmark: Bookmark) => {
 		if (!isAuthenticated) {
-			return showToast('برای حذف بوکمارک باید وارد حساب کاربری خود شوید.', 'error')
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 		}
 
 		setBookmarkToDelete(bookmark)
@@ -171,21 +193,36 @@ export function BookmarkGrid({
 		}
 	}, [])
 
+	const isAutoRows = isModal || !rowsCount
+
+	const sortableIds = useMemo(
+		() => displayedBookmarks.filter(Boolean).map((bookmark) => bookmark?.id || ''),
+		[displayedBookmarks]
+	)
+
 	return (
 		<div
-			className={`grid w-full grid-cols-5 gap-x-1 gap-y-2 md:gap-4 transition-all duration-300 rounded-2xl lg:gap-2`}
+			style={{
+				gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+				...(!isAutoRows && {
+					gridTemplateRows: `repeat(${rowsCount}, minmax(0, 1fr))`,
+				}),
+			}}
+			className={
+				isAutoRows
+					? 'grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] gap-2 p-0.5 transition-all duration-300 rounded-2xl'
+					: 'grid w-full h-full grid-flow-row gap-1.5 transition-all duration-300 rounded-2xl'
+			}
 		>
 			<SortableContext
-				items={displayedBookmarks
-					.filter(Boolean)
-					.map((bookmark) => bookmark?.id || '')}
+				items={sortableIds}
 				strategy={rectSortingStrategy}
 			>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
 						<div
 							key={bookmark.id + '-' + i}
-							className="transition-transform duration-200"
+							className="w-full h-full"
 						>
 							<SortableBookmarkItem
 								bookmark={bookmark}
@@ -195,11 +232,12 @@ export function BookmarkGrid({
 							/>
 						</div>
 					) : (
-						<EmptyBookmarkSlot
-							key={i}
-							canAdd={true}
-							onClick={openAddBookmarkModal}
-						/>
+						<div key={i} className="w-full h-full">
+							<EmptyBookmarkSlot
+								canAdd={true}
+								onClick={openAddBookmarkModal}
+							/>
+						</div>
 					)
 				)}
 			</SortableContext>
@@ -207,22 +245,27 @@ export function BookmarkGrid({
 			{showEditBookmarkModal && bookmarkToEdit && !isAuthenticated ? (
 				<AuthRequiredModal
 					isOpen={true}
-					onClose={() => setShowEditBookmarkModal(false)}
-					message="برای ویرایش بوکمارک باید وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب کاربری"
+					onClose={() => {
+						setShowEditBookmarkModal(false)
+						setBookmarkToEdit(null)
+					}}
+					message="برای ویرایش بوکمارک اول وارد حسابت شو"
 				/>
 			) : (
-				showEditBookmarkModal &&
-				bookmarkToEdit && (
-					<EditBookmarkModal
-						isOpen={showEditBookmarkModal}
-						onClose={() => setShowEditBookmarkModal(false)}
-						onSave={(bookmark) =>
-							editBookmark(bookmark, () => setShowEditBookmarkModal(false))
-						}
-						bookmark={bookmarkToEdit}
-					/>
-				)
+				<EditBookmarkModal
+					isOpen={showEditBookmarkModal}
+					onClose={() => {
+						setShowEditBookmarkModal(false)
+						setBookmarkToEdit(null)
+					}}
+					onSave={(bookmark) =>
+						editBookmark(bookmark, () => {
+							setShowEditBookmarkModal(false)
+							setBookmarkToEdit(null)
+						})
+					}
+					bookmark={bookmarkToEdit}
+				/>
 			)}
 
 			<ConfirmationModal
@@ -256,7 +299,12 @@ export function BookmarkGrid({
 					position={contextMenuPos}
 					onDelete={() => handleDeleteBookmark(selectedBookmark)}
 					onEdit={() => handleEditBookmark(selectedBookmark)}
-					onOpenInNewTab={() => onOpenInNewTab(selectedBookmark)}
+					onOpenInNewTab={
+						selectedBookmark.type === 'BOOKMARK'
+							? () => onOpenInNewTab(selectedBookmark)
+							: undefined
+					}
+					onClose={() => setSelectedBookmark(null)}
 				/>
 			)}
 		</div>

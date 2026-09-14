@@ -5,7 +5,7 @@ import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function NoteNavigation() {
 	const { isAuthenticated } = useAuth()
@@ -60,7 +60,9 @@ export function NoteNavigation() {
 					<Button
 						size="xs"
 						onClick={() => setShowDeleteConfirm(true)}
-						className="h-7 w-7 p-0 text-muted bg-transparent! hover:bg-error/20! hover:text-error! border-none disabled:opacity-75 transition-all duration-300 shadow-none"
+						className="h-7 w-7 p-0 disabled:opacity-75 transition-all duration-300 shadow-none"
+						variant="ghost"
+						color="danger"
 						rounded={'full'}
 					>
 						<Icon name="trash" size={14} />
@@ -76,30 +78,31 @@ export function NoteNavigation() {
 				</>
 			) : (
 				<>
-					<Button
-						onClick={onAdd}
-						size="xs"
-						disabled={isCreatingNote}
-						loading={isCreatingNote}
-						loadingText={<IconLoading title="درحال ساخت..." />}
-						className={`h-6 w-fit px-2! text-xs font-medium  hover:scale-95`}
-						variant={'primary'}
-						rounded={'xl'}
-					>
-						<Icon name="pen" size={12} />
-						چیزی بنویس
-					</Button>
+					<Tooltip content="یادداشت جدید">
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={onAdd}
+							disabled={isCreatingNote}
+							loading={isCreatingNote}
+							loadingText={<IconLoading title="درحال ساخت..." />}
+							className="w-7 h-7 p-0! border-none! hover:text-primary rounded-xl shrink-0 active:scale-95 transition-colors"
+						>
+							<Icon name="plus" size={16} />
+						</Button>
+					</Tooltip>
 					<div className="space-x-1">
-						<Tooltip content="بارگزاری مجدد">
+						<Tooltip content="بارگذاری مجدد">
 							<Button
+								variant="ghost"
 								size="sm"
-								className={`px-2 py-0! border-none! text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								className="w-7 h-7 p-0! border-none! rounded-xl shrink-0 active:scale-95 transition-colors"
 								onClick={onRefresh}
-								rounded={'xl'}
 							>
 								<Icon
 									name="refresh"
-									className={`text-content opacity-50 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
+									size={15}
+									className={`opacity-60 hover:opacity-100 ${isRefetching ? 'animate-spin' : ''}`}
 								/>
 							</Button>
 						</Tooltip>

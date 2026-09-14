@@ -1,0 +1,376 @@
+import { useState, useRef, useEffect } from 'react'
+import { ExpandableTodoInput } from './components/expandable-todo-input'
+import { useAuth } from '@/context/auth.context'
+import Analytics from '@/analytics'
+import { Button, IconLoading } from '@/components/ui'
+import { FilterTooltip } from '@/components/ui'
+import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
+import type { Todo } from '@/services/hooks/todo/todo.interface'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { Tooltip } from '@/components/ui'
+import { useGetTodos } from '@/services/hooks/todo/get-todos.hook'
+import { TodoItem } from './components/todo-item'
+import { Icon } from '@/icons'
+import { TodosEmpty } from './components/todo-empty'
+import { TodoCompactRow } from './variants/todo-2x1'
+import { TodoBoard } from './variants/todo-4x3'
+import type { WidgetSize } from '../layout-engine/types'
+
+const filterOptions = [
+	{ value: 'all', label: 'همه' },
+	{ value: 'today', label: 'امروز' },
+	{ value: 'this_month', label: 'این ماه' },
+	{ value: 'done', label: 'تکمیل‌شده' },
+	{ value: 'pending', label: 'در انتظار' },
+]
+
+const legacyDateFilters: Record<string, string> = {
+	thisMonth: 'this_month',
+}
+
+const sortOptions = [
+	{ value: 'def', label: 'پیشفرض' },
+	{ value: 'high', label: 'مهم' },
+	{ value: 'medium', label: 'متوسط' },
+	{ value: 'low', label: 'کم اهمیت' },
+]
+const TagList = ['', '-all-']
+
+interface TodosLayoutProps {
+	size?: WidgetSize
+}
+
+export function TodosLayout({ size = { w: 2, h: 2 } }: TodosLayoutProps = {}) {
+	const { isAuthenticated } = useAuth()
+	const { blurMode } = useGeneralSetting()
+	const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
+	const [dateFilter, setDateFilter] = useState<string>('all')
+	const [sort, setSort] = useState<string>('def')
+	const [tagFilter, setTagFilter] = useState<string>('')
+
+	const observerRef = useRef<IntersectionObserver | null>(null)
+	const loadMoreRef = useRef<HTMLDivElement | null>(null)
+
+	const isBoard = size.w === 4 && size.h === 3
+
+	const getServerFilters = () => {
+		const filters: any = {
+			limit: isBoard ? 10 : 5,
+		}
+
+		if (dateFilter === 'today') {
+			filters.dateFilter = 'today'
+		} else if (dateFilter === 'this_month') {
+			filters.dateFilter = 'this_month'
+		} else if (dateFilter === 'done') {
+			filters.isCompleted = true
+		} else if (dateFilter === 'pending') {
+			filters.isCompleted = false
+		}
+
+		if (tagFilter && tagFilter !== '-all-') {
+			filters.category = tagFilter
+		}
+
+		return filters
+	}
+
+	const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+		useGetTodos(isAuthenticated, getServerFilters())
+	const { data: fetchedTags } = useGetTags(isAuthenticated)
+
+	const allTodos = data?.pages.flatMap((page) => page.todos) || []
+
+	const sortedTodos = [...allTodos].sort((a, b) => {
+		switch (sort) {
+			case 'def':
+				return a.order - b.order
+			case 'pending-first':
+				if (a.completed === b.completed) return a.order - b.order
+				return a.completed ? 1 : -1
+			case 'done-first':
+				if (a.completed === b.completed) return a.order - b.order
+				return a.completed ? -1 : 1
+			case 'high':
+				return b.priority === 'high' ? 1 : a.priority === 'high' ? -1 : 0
+			case 'medium':
+				return b.priority === 'medium' ? 1 : a.priority === 'medium' ? -1 : 0
+			case 'low':
+				return b.priority === 'low' ? 1 : a.priority === 'low' ? -1 : 0
+			default:
+				return a.order - b.order
+		}
+	})
+
+	useEffect(() => {
+		if (observerRef.current) {
+			observerRef.current.disconnect()
+		}
+
+		observerRef.current = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+					fetchNextPage()
+				}
+			},
+			{ threshold: 0.1 }
+		)
+
+		if (loadMoreRef.current) {
+			observerRef.current.observe(loadMoreRef.current)
+		}
+
+		return () => {
+			if (observerRef.current) {
+				observerRef.current.disconnect()
+			}
+		}
+	}, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
+	const handleCloseTodoEditor = () => {
+		setEditingTodo(null)
+		Analytics.event('todo_edit_close')
+	}
+
+	const onDateFilterChange = (value: string) => {
+		setDateFilter(value)
+		Analytics.event(`todo_select_date_${value}_filter`)
+		setToStorage('todoFilter', value)
+	}
+
+	const onSortChange = (value: string) => {
+		setSort(value)
+		Analytics.event(`todo_select_sort_${value}`)
+		setToStorage('todoSort', value)
+	}
+
+	const onTagFilterChange = (value: string) => {
+		setTagFilter(value)
+		Analytics.event(`todo_tag_change`)
+	}
+
+	useEffect(() => {
+		async function load() {
+			const [todoFilter, todoSort] = await Promise.all([
+				getFromStorage('todoFilter'),
+				getFromStorage('todoSort'),
+			])
+			if (todoFilter) {
+				const normalized = legacyDateFilters[todoFilter] || todoFilter
+				setDateFilter(normalized)
+				if (normalized !== todoFilter) {
+					setToStorage('todoFilter', normalized)
+				}
+			}
+			if (todoSort) setSort(todoSort)
+		}
+
+		load()
+	}, [])
+
+	const tagFilterOptions =
+		fetchedTags
+			?.filter((t) => t)
+			?.map((t) => ({
+				label: t,
+				value: t,
+			})) || []
+	if (tagFilterOptions.length) {
+		tagFilterOptions.unshift({
+			label: 'همه',
+			value: '-all-',
+		})
+	}
+
+	const openEditTodo = (todo: Todo) => {
+		setEditingTodo(todo)
+		Analytics.event('todo_edit_open')
+	}
+
+	const onRefresh = () => {
+		refetch()
+		Analytics.event(`todo_refetch`)
+	}
+
+	if (size.w === 2 && size.h === 1) {
+		return (
+			<TodoCompactRow
+				todos={sortedTodos}
+				isLoading={isLoading}
+				onRefresh={onRefresh}
+			/>
+		)
+	}
+
+	if (isBoard) {
+		return (
+			<TodoBoard
+				todos={sortedTodos}
+				isLoading={isLoading}
+				isFetchingNextPage={isFetchingNextPage}
+				hasNextPage={!!hasNextPage}
+				loadMoreRef={loadMoreRef}
+				blurMode={blurMode}
+				filterOptions={filterOptions}
+				sortOptions={sortOptions}
+				tagFilterOptions={tagFilterOptions}
+				dateFilter={dateFilter}
+				sort={sort}
+				tagFilter={tagFilter}
+				editingTodo={editingTodo}
+				onDateFilterChange={onDateFilterChange}
+				onSortChange={onSortChange}
+				onTagFilterChange={onTagFilterChange}
+				onRefresh={onRefresh}
+				onEdit={openEditTodo}
+				onUpdated={refetch}
+				onCloseEditor={handleCloseTodoEditor}
+			/>
+		)
+	}
+
+	return (
+		<>
+			<div className="flex-none">
+				<div className="flex justify-between my-1">
+					<div className="flex gap-0.5">
+						<div className="flex flex-row items-center gap-1">
+							<FilterTooltip
+								options={filterOptions}
+								value={dateFilter}
+								icon={
+									dateFilter !== 'all' ? (
+										<Icon
+											name="outlineFilterList"
+											size={10}
+											className="text-primary"
+										/>
+									) : (
+										<Icon
+											name="outlineFilterListOff"
+											size={10}
+											className="text-muted"
+										/>
+									)
+								}
+								onChange={onDateFilterChange}
+								placeholder="فیلتر"
+								buttonClassName={`truncate gap-1.5`}
+							/>
+							<FilterTooltip
+								icon={
+									<Icon
+										name="tags"
+										size={10}
+										className={
+											TagList.includes(tagFilter)
+												? 'text-muted'
+												: 'text-primary!'
+										}
+									/>
+								}
+								options={tagFilterOptions}
+								value={tagFilter || '-all-'}
+								onChange={onTagFilterChange}
+								placeholder="دسته‌بندی"
+							/>
+							<FilterTooltip
+								icon={
+									<Icon
+										name="sortDown"
+										size={10}
+										className={
+											sort !== 'def'
+												? 'text-primary!'
+												: 'text-muted'
+										}
+									/>
+								}
+								options={sortOptions}
+								value={sort}
+								onChange={onSortChange}
+								placeholder="ترتیب"
+								buttonClassName="truncate gap-2"
+							/>
+						</div>
+					</div>
+					<div className="flex items-center gap-1">
+						{isLoading ? <IconLoading /> : null}
+						<Tooltip content="بارگزاری مجدد">
+							<Button
+								size="sm"
+								className={`px-2 py-0! border-none! group rounded-xl text-base-content/40 shrink-0 active:scale-95 h-7!`}
+								onClick={onRefresh}
+							>
+								<Icon
+									name="refresh"
+									className={`text-content opacity-50 group-hover:opacity-100 ${isLoading ? 'animate-spin' : ''}`}
+								/>
+							</Button>
+						</Tooltip>
+					</div>
+				</div>
+			</div>
+			<div className="mt-0.5 grow overflow-hidden">
+				<div className={`space-y-1.5 overflow-y-auto scrollbar-none h-full`}>
+					{isLoading ? (
+						<div className="flex flex-col gap-1">
+							{[...Array(5)].map((_, i) => (
+								<TodoSkeleton key={i} />
+							))}
+						</div>
+					) : sortedTodos.length === 0 ? (
+						<TodosEmpty />
+					) : (
+						<div
+							className={`flex flex-col gap-0 ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+						>
+							{sortedTodos.map((todo) => (
+								<TodoItem
+									blurMode={blurMode}
+									key={todo.id}
+									todo={todo}
+									onUpdated={() => refetch()}
+									onEdit={(t: any) => openEditTodo(t)}
+								/>
+							))}
+
+							{hasNextPage && (
+								<div ref={loadMoreRef} className="">
+									{isFetchingNextPage && (
+										<div className="flex flex-col gap-1">
+											{[...Array(3)].map((_, i) => (
+												<TodoSkeleton key={i} />
+											))}
+										</div>
+									)}
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			</div>
+			{
+				<ExpandableTodoInput
+					editTodo={editingTodo as any}
+					onClose={() => handleCloseTodoEditor()}
+					isEdit={!!editingTodo}
+					onUpdated={refetch}
+				/>
+			}
+		</>
+	)
+}
+
+export function TodoSkeleton() {
+	return (
+		<div className="flex flex-row justify-between gap-1 p-1 overflow-hidden border rounded-lg shadow-sm border-content bg-glass bg-base-300/30">
+			<div className="flex items-center gap-1">
+				<div className="w-5 h-5 rounded-md skeleton shrink-0"></div>
+				<div className="w-32 h-5 skeleton"></div>
+			</div>
+			<div className="w-5 h-5 rounded-md skeleton shrink-0"></div>
+		</div>
+	)
+}

@@ -1,7 +1,7 @@
 @plugin "daisyui/theme" {
     name: "esteghlal";
     default: false;
-    prefersdark: true;
+    prefersdark: false;
     color-scheme: "dark";
     --color-base-100: oklch(28% 0.091 267.935);
     --color-base-200: oklch(35% 0.12 265.522);
@@ -16,7 +16,7 @@
     --color-neutral: oklch(20% 0.06 267.935);
     --color-neutral-content: oklch(90% 0.02 267.935);
     --color-info: oklch(70% 0.16 245);
-    --color-info-content: oklch(100% 0 0);
+    --color-info-content: oklch(20% 0.05 245);
     --color-success: oklch(75% 0.18 150);
     --color-success-content: oklch(20% 0.1 150);
     --color-warning: oklch(82% 0.18 90);

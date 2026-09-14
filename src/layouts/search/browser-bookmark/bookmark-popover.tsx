@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { Motion, Presence } from '@/common/motion'
+import { Portal } from '@/components/ui'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '@/layouts/bookmark/utils/browser-bookmarks.util'
+} from '@/layouts/bookmark/utils/browser-bookmarks'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 interface BookmarkPopoverProps {
@@ -43,8 +44,6 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 		return () => document.removeEventListener('mousedown', handleClickOutside)
 	}, [isOpen, onClose])
 
-	if (!isOpen) return null
-
 	const displayItems = fetchedBookmarks.filter((b) => {
 		if (currentFolderId) return b.parentId === currentFolderId
 		return b.parentId === '0' || b.parentId === 'root' || !b.parentId
@@ -74,9 +73,17 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 	const c =
 		fetchedBookmarks.find((b) => b.id === currentFolderId)?.title || 'بوکمارک‌های من'
 
-	return createPortal(
-		<div
-			className="bookmark-popover fixed z-popover w-72  border border-base-content/10 shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in duration-200 origin-top-left bg-content bg-glass"
+	return (
+		<Portal>
+			<Presence>
+				{isOpen && (
+		<Motion.div
+			key="bookmark-popover"
+			className="bookmark-popover fixed z-popover w-72  border border-base-content/10 shadow-2xl rounded-2xl overflow-hidden origin-top-left bg-content bg-glass"
+			initial={{ opacity: 0, scale: 0.95 }}
+			animate={{ opacity: 1, scale: 1 }}
+			exit={{ opacity: 0, scale: 0.95 }}
+			transition={{ duration: 0.15, ease: 'easeOut' }}
 			style={{
 				top: coords.top,
 				left: coords.left,
@@ -97,7 +104,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 						size="sm"
 						onClick={() => handlePermission()}
 						className="w-full"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 					>
 						فعال‌سازی دسترسی
@@ -111,7 +118,6 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 							<Button
 								size="sm"
 								onClick={handleGoBack}
-								variant={'default'}
 								rounded={'xl'}
 								className="text-[10px] flex items-center gap-1!"
 							>
@@ -168,7 +174,9 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 					</div>
 				</div>
 			)}
-		</div>,
-		document.body
+		</Motion.div>
+				)}
+			</Presence>
+		</Portal>
 	)
 }

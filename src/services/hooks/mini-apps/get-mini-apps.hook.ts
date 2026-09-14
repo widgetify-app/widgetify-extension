@@ -1,6 +1,6 @@
 import { getMainClient } from '@/services/api'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import type { MiniAppsListResponse } from './mini-apps-interface'
+import type { MiniAppsListResponse } from './mini-apps.interface'
 
 interface GetMiniAppsParams {
 	page?: number

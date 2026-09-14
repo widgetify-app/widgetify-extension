@@ -19,12 +19,14 @@ export interface GoogleCalendarEvent {
 		self: boolean
 	}
 	start: {
-		dateTime: string
-		timeZone: string
+		dateTime?: string
+		date?: string
+		timeZone?: string
 	}
 	end: {
-		dateTime: string
-		timeZone: string
+		dateTime?: string
+		date?: string
+		timeZone?: string
 	}
 	iCalUID: string
 	sequence: number

@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '../button/button'
 
 export interface PaginationProps {
@@ -34,14 +34,10 @@ export function Pagination({
 				onClick={onPrevPage}
 				disabled={currentPage === 1 || isLoading}
 				size="xs"
-				className="btn-soft rounded-2xl"
-				isPrimary={currentPage !== 1}
+				rounded="2xl"
+				color={currentPage !== 1 ? 'primary' : 'base'}
 			>
-				<Icon
-					name="chevronRight"
-					size={18}
-					className={`${currentPage === 1 ? 'text-muted' : 'text-primary'}`}
-				/>
+				<Icon name="chevronRight" size={18} />
 			</Button>
 
 			<span className="mx-2 text-sm text-muted">
@@ -51,11 +47,11 @@ export function Pagination({
 			<Button
 				onClick={onNextPage}
 				disabled={currentPage === totalPages || isLoading}
-				className="btn-soft rounded-2xl"
-				isPrimary={true}
+				rounded="2xl"
+				color={'primary'}
 				size="xs"
 			>
-				<Icon name="chevronLeft" size={18} className="text-primary" />
+				<Icon name="chevronLeft" size={18} />
 			</Button>
 		</div>
 	)

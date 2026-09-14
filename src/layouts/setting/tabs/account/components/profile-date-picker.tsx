@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button, ClickableTooltip, Dropdown } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useRef, useState, useEffect } from 'react'
 
 const PERSIAN_MONTHS = [
@@ -148,7 +148,7 @@ export default function JalaliDatePicker({
 						onClick={handleConfirm}
 						size="sm"
 						rounded={'2xl'}
-						variant={'primary'}
+						color={'primary'}
 						className="flex-1"
 					>
 						<Icon name="check" size={16} className="ml-1" />
@@ -158,7 +158,6 @@ export default function JalaliDatePicker({
 						onClick={handleCancel}
 						size="sm"
 						rounded={'2xl'}
-						variant={'default'}
 						className="w-20"
 					>
 						لغو

@@ -7,6 +7,7 @@ export interface ChipProps extends VariantProps<typeof chipVariants> {
 	children: React.ReactNode
 	className?: string
 	dir?: string
+	disabled?: boolean
 }
 
 export const Chip: React.FC<ChipProps> = ({
@@ -15,12 +16,14 @@ export const Chip: React.FC<ChipProps> = ({
 	children,
 	className,
 	dir,
+	disabled,
 }) => {
 	return (
 		<button
-			onClick={onClick}
+			onClick={disabled ? undefined : onClick}
 			className={cn(chipVariants({ selected }), className)}
 			dir={dir}
+			disabled={disabled}
 		>
 			{children}
 		</button>

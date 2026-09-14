@@ -1,7 +1,14 @@
 import { cva } from 'class-variance-authority'
 
 export const avatarVariants = cva(
-	['rounded-full', 'overflow-hidden', 'flex', 'items-center', 'justify-center'],
+	[
+		'rounded-full',
+		'overflow-hidden',
+		'flex',
+		'items-center',
+		'justify-center',
+		'shrink-0',
+	],
 	{
 		variants: {
 			size: {
@@ -11,9 +18,14 @@ export const avatarVariants = cva(
 				lg: ['w-12', 'h-12', 'text-lg'],
 				xl: ['w-16', 'h-16', 'text-xl'],
 			},
+			isPro: {
+				true: 'ring-2 ring-vip ring-offset-2 ring-offset-base-100',
+				false: '',
+			},
 		},
 		defaultVariants: {
 			size: 'md',
+			isPro: false,
 		},
 	}
 )

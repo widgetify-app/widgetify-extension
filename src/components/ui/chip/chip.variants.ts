@@ -11,6 +11,8 @@ export const chipVariants = cva(
 		'border-2',
 		'transition-all',
 		'active:scale-95',
+		'disabled:cursor-not-allowed',
+		'disabled:active:scale-none!',
 	],
 	{
 		variants: {
@@ -18,9 +20,11 @@ export const chipVariants = cva(
 				true: ['bg-primary', 'border-primary', 'text-white'],
 				false: [
 					'bg-base-100',
+					'bg-glass',
 					'border-base-300/30',
 					'text-base-content/80',
-					'hover:border-primary/30',
+					'enabled:hover:border-primary/30',
+					'disabled:opacity-80',
 				],
 			},
 		},

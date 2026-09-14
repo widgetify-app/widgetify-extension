@@ -33,3 +33,5 @@ diff.txt
 
 docs/*
 .claude
+.agents
+graphify-out

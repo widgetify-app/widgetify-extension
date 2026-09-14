@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Category } from '@/common/wallpaper.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { NewBadge, TabNavigation } from '@/components/ui'
 
 type FilterType = 'all' | 'image' | 'video'
@@ -52,7 +52,7 @@ export function WallpaperSidebar({
 						</div>
 						{totalCount !== undefined && totalCount > 0 && (
 							<span
-								className={`text-[10px] px-1.5 py-0.5 rounded-md font-mono ${
+								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
 										? 'bg-white/20 text-white'
 										: 'bg-base-content/10 text-muted'

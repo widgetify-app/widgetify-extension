@@ -5,7 +5,7 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	hijriMonthNames,
-} from '../../utils'
+} from '../../utils/date-events'
 import { useDate } from '@/context/date.context'
 import type React from 'react'
 import { useAuth } from '@/context/auth.context'
@@ -19,8 +19,8 @@ import { useIsMutating } from '@tanstack/react-query'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
 import Analytics from '@/analytics'
-import { moodOptions } from '@/common/constant/moods'
-import { Icon } from '@/src/icons'
+import { moodOptions } from '@/common/constants/moods'
+import { Icon } from '@/icons'
 
 interface CalendarDayDetailsProps {
 	events: FetchedAllEvents
@@ -127,7 +127,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	return (
 		<div className="flex flex-col overflow-hidden border w-60 bg-base-200 border-base-300 rounded-2xl">
-			<div className={`px-3 py-2  bg-primary/90   text-white`}>
+			<div className={`px-3 py-2  bg-primary/90   text-primary-content`}>
 				<div className="flex items-center justify-between text-sm">
 					<span className="font-medium">{jalaliDay}</span>
 					<span className="opacity-90">{jalali}</span>

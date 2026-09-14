@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { type Friend, useRemoveFriend } from '@/services/hooks/friends/friend-service.hook'
+import {
+	type Friend,
+	useRemoveFriend,
+} from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
@@ -8,7 +11,7 @@ import { AddFriendBottomSheet } from './components/add-friend.bottom-sheet'
 import { ConfirmationModal } from '@/components/ui'
 import { FriendRequestsButton } from './components/buttons/friend-requests.button'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export const FriendsLayout = () => {
 	const { user } = useAuth()
@@ -56,7 +59,7 @@ export const FriendsLayout = () => {
 
 						<button
 							onClick={() => setIsAddFriendOpen(true)}
-							className="flex items-center gap-2 px-3 py-1.5 transition-all border shadow-sm cursor-pointer rounded-xl bg-primary border-primary/90 text-white/80 border-content active:scale-95"
+							className="flex items-center gap-2 px-3 py-1.5 transition-all border shadow-sm cursor-pointer rounded-xl bg-primary border-primary/90 text-primary-content/80 border-content active:scale-95"
 							aria-label="افزودن دوست جدید"
 							type="button"
 						>
@@ -83,16 +86,14 @@ export const FriendsLayout = () => {
 				<AddFriendBottomSheet isOpen onClose={() => setIsAddFriendOpen(false)} />
 			)}
 
-			{selectedUser && (
-				<ConfirmationModal
-					isOpen
-					direction="rtl"
-					isLoading={isRemoving}
-					onClose={() => setSelectedUser(null)}
-					onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}
-					message={`"${selectedUser?.user.name}"، حذف بشه از لیست دوستات؟`}
-				/>
-			)}
+			<ConfirmationModal
+				isOpen={!!selectedUser}
+				direction="rtl"
+				isLoading={isRemoving}
+				onClose={() => setSelectedUser(null)}
+				onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}
+				message={`"${selectedUser?.user.name}"، حذف بشه از لیست دوستات؟`}
+			/>
 		</>
 	)
 }

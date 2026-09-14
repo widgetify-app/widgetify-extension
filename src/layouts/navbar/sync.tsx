@@ -59,6 +59,22 @@ async function processWallpaper(
 ) {
 	try {
 		if (!wallpaper) return
+
+		if (wallpaper.id === 'custom-wallpaper' || wallpaper.isCustom) {
+			const isSame =
+				wallpaperStore?.id === 'custom-wallpaper' &&
+				wallpaperStore?.src === wallpaper.src &&
+				wallpaperStore?.type === wallpaper.type
+
+			if (!isSame) {
+				await setToStorage('customWallpaper', wallpaper)
+				await setToStorage('wallpaper', wallpaper)
+				callEvent('custom_wallpaper_sync', wallpaper)
+				callEvent('wallpaper_change', wallpaper)
+			}
+			return
+		}
+
 		if (
 			(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
 			wallpaper?.src !== wallpaperStore?.src

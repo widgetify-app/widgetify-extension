@@ -1,0 +1,97 @@
+import idle from '@/assets/animals/dog/akita_idle_8fps.webp'
+import lie from '@/assets/animals/dog/akita_lie_8fps.webp'
+import running from '@/assets/animals/dog/akita_run_8fps.webp'
+import swipe from '@/assets/animals/dog/akita_swipe_8fps.webp'
+import walking from '@/assets/animals/dog/akita_walk_fast_8fps.webp'
+import dogFood from '@/assets/animals/dog/dog-food.png'
+import { PetFood } from '../pet-food'
+
+import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import {
+	type PetAnimations,
+	type PetAssets,
+	type PetDimensions,
+	type PetDurations,
+	PetSpeed,
+} from '../../types'
+import { usePetContext } from '../../pet.context'
+import { PetTypes } from '../../types'
+
+export const DogComponent = ({ className }: { className?: string }) => {
+	const {
+		getCurrentPetName,
+		isPetHungry,
+		levelUpHungryState,
+		levelDownHungryState,
+		getPetHungryState,
+	} = usePetContext()
+
+	const dogAnimations: PetAnimations = {
+		idle,
+		walk: walking,
+		run: running,
+		swipe,
+		stand: swipe,
+		sit: lie,
+		climb: walking,
+	}
+
+	const dogDimensions: PetDimensions = {
+		size: 32,
+		width: 50,
+		walkSpeed: PetSpeed.NORMAL,
+		runSpeed: PetSpeed.VERY_FAST,
+		climbSpeed: 1.2,
+		maxHeight: 100,
+	}
+
+	const dogDurations: PetDurations = {
+		walk: { min: 3000, max: 8000 },
+		run: { min: 1500, max: 4000 },
+		rest: { min: 5000, max: 10000 },
+		climb: { min: 2000, max: 5000 },
+	}
+	const dogAssets: PetAssets = {
+		collectibleIcon: <PetFood src={dogFood} />,
+		collectibleSize: 24,
+		collectibleFallSpeed: 2,
+	}
+
+	const {
+		containerRef,
+		petRef,
+		position,
+		direction,
+		showName,
+		collectibles,
+		getAnimationForCurrentAction,
+		dimensions,
+		assets,
+	} = useBasePetLogic({
+		name: getCurrentPetName(PetTypes.DOG),
+		animations: dogAnimations,
+		dimensions: dogDimensions,
+		durations: dogDurations,
+		assets: dogAssets,
+		isHungry: isPetHungry(PetTypes.DOG),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.DOG),
+	})
+
+	return (
+		<BasePetContainer
+			className={className}
+			name={getCurrentPetName(PetTypes.DOG)}
+			containerRef={containerRef}
+			petRef={petRef}
+			position={position}
+			direction={direction}
+			showName={showName}
+			collectibles={collectibles}
+			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			dimensions={dimensions}
+			assets={assets}
+			isHungry={isPetHungry(PetTypes.DOG)}
+		/>
+	)
+}

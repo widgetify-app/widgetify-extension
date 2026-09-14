@@ -1,5 +1,5 @@
 import { storage } from 'wxt/utils/storage'
-import type { StorageKV } from './constant/store.key'
+import type { StorageKV } from './constants/store.key'
 
 export async function setToStorage<K extends keyof StorageKV>(
 	key: K,
@@ -56,6 +56,21 @@ export async function clearStorage() {
 
 export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
+}
+
+export const DEPRECATED_STORAGE_KEYS = ['petState'] as const
+
+export async function purgeDeprecatedStorageKeys() {
+	await Promise.all(
+		DEPRECATED_STORAGE_KEYS.map((key) => storage.removeItem(`local:${key}`))
+	)
+}
+
+export function watchStorage<K extends keyof StorageKV>(
+	key: K,
+	callback: (newValue: StorageKV[K] | null, oldValue: StorageKV[K] | null) => void
+) {
+	return storage.watch<StorageKV[K]>(`local:${key}`, callback)
 }
 
 export async function setWithExpiry<K extends keyof StorageKV>(

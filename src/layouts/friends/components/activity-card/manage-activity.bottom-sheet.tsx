@@ -18,7 +18,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Chip } from '@/components/ui'
 import { SelectBox } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface ManageActivityBottomSheetProps {
 	isOpen: boolean
@@ -104,7 +104,9 @@ export function ManageActivityBottomSheet({
 							onClick={handleDelete}
 							disabled={isRemoving}
 							size="xs"
-							className="border shadow rounded-xl left-1 group btn btn-error shadow-error/20"
+							color="danger"
+							rounded="xl"
+							className="shadow left-1 group shadow-error/20"
 							loading={isRemoving}
 						>
 							<div className="flex items-center justify-center gap-1 text-error-content leading-1">
@@ -251,7 +253,7 @@ export function ManageActivityBottomSheet({
 						disabled={isSubmitting || !activity.trim()}
 						size="sm"
 						className="w-full mt-1"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						loading={isSubmitting}
 					>
@@ -287,7 +289,9 @@ export function ManageActivityBottomSheet({
 				<Button
 					size="sm"
 					type="button"
-					className="h-12 mt-5 text-base font-bold shadow-sm btn-block rounded-2xl"
+					fullWidth
+					rounded="2xl"
+					className="h-12 mt-5 text-base font-bold shadow-sm"
 					onClick={() => setShowModal(false)}
 				>
 					متوجه شدم

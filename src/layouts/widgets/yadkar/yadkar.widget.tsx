@@ -1,0 +1,82 @@
+import { useState } from 'react'
+import Analytics from '@/analytics'
+import { NotesLayout } from '../notes/notes.widget'
+import { TodosLayout } from '../todos/todos.widget'
+import { TabNavigation } from '@/components/ui'
+import { WidgetContainer } from '../widget-container'
+import { HabitsContent } from '../habit/habit.widget'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { useEffect } from 'react'
+import { Icon } from '@/icons'
+
+type Tab = 'todos' | 'notes' | 'rabbit'
+
+import type { WidgetSize } from '../layout-engine/types'
+
+interface YadkarWidgetProps {
+	size?: WidgetSize
+}
+
+export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
+	const [tab, setTab] = useState<Tab>('todos')
+
+	const onChangeTab = (newTab: Tab) => {
+		setTab(newTab)
+		Analytics.event('yadkar_change_tab')
+		setToStorage('yadkar_tab', newTab)
+	}
+
+	useEffect(() => {
+		const load = async () => {
+			const currentTab = await getFromStorage('yadkar_tab')
+			if (currentTab) {
+				setTab(currentTab as Tab)
+			}
+		}
+
+		load()
+	}, [])
+
+	return (
+		<WidgetContainer>
+			<div className="flex flex-col h-full">
+				<div className="flex-none">
+					<div className="flex flex-col">
+						<TabNavigation
+							tabMode="advanced"
+							activeTab={tab}
+							onTabClick={onChangeTab}
+							tabs={[
+								{
+									id: 'todos',
+									label: 'تسک‌ها',
+									icon: <Icon name="taskList" size={14} />,
+								},
+								{
+									id: 'notes',
+									label: 'یادداشت',
+									icon: <Icon name="notebook" size={14} />,
+								},
+								{
+									id: 'rabbit',
+									label: 'عادت‌ها (بتا)',
+									icon: <Icon name="strike" size={14} />,
+								},
+							]}
+							size="small"
+							className="w-full border-none"
+						/>
+					</div>
+				</div>
+
+				{tab === 'todos' ? (
+					<TodosLayout size={size} />
+				) : tab === 'notes' ? (
+					<NotesLayout size={size} />
+				) : (
+					<HabitsContent />
+				)}
+			</div>
+		</WidgetContainer>
+	)
+}

@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { addOpacityToColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../context/bookmark.context'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
+import { cn } from '@/common/utils/cn'
 
-export function FolderBookmarkItem({
+export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 	bookmark,
 	onClick,
 	isDragging = false,
@@ -18,13 +19,17 @@ export function FolderBookmarkItem({
 	isDragging?: boolean
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }) {
-	const { getCurrentFolderItems } = useBookmarkStore()
+	const { bookmarks, getCurrentFolderItems } = useBookmarkStore()
 
 	const [isHovered, setIsHovered] = useState(false)
 
-	const folderItems = getCurrentFolderItems(bookmark.id)
-		.filter((item) => item.type === 'BOOKMARK')
-		.slice(0, 6)
+	const folderItems = useMemo(
+		() =>
+			getCurrentFolderItems(bookmark.id)
+				.filter((item) => item.type === 'BOOKMARK')
+				.slice(0, 6),
+		[bookmarks, bookmark.id]
+	)
 
 	const renderFolderIcons = () => {
 		if (bookmark.icon) {
@@ -33,11 +38,11 @@ export function FolderBookmarkItem({
 
 		if (folderItems.length > 0) {
 			return (
-				<div className="grid grid-cols-3">
+				<div className="grid grid-cols-3 gap-1.5 p-0.5 items-center justify-center">
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-8 h-8 scale-60"
+							className="flex items-center justify-center w-5.5 h-5.5 overflow-hidden rounded-md [&>div]:!w-5.5 [&>div]:!h-5.5 [&>div_img]:!w-5.5 [&>div_img]:!h-5.5 [&>div_img]:!rounded-md [&>div_div]:!text-[8px] [&>div_div]:!rounded-md"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>
@@ -70,27 +75,33 @@ export function FolderBookmarkItem({
 
 	return (
 		<div
-			className={`relative ${isDragging ? 'opacity-50' : ''} flex overflow-hidden`}
+			className={cn(
+				'relative flex w-full h-full overflow-hidden',
+				isDragging && 'opacity-50'
+			)}
 		>
 			<button
 				onClick={onClick}
 				onAuxClick={onClick}
 				onMouseDown={handleMouseDown}
+				onContextMenu={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
+					onMenuClick?.(e)
+				}}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
-				className={`relative self-end flex group h-20 md:h-[5.5rem]  flex-col items-center justify-center px-2 py-0.5  transition-all duration-300 cursor-pointer group rounded-2xl shadow-sm w-full ease-in-out 
-					${
-						!bookmark.customBackground
-							? `bg-content bg-glass hover:bg-primary/20 bg-content text-content  bg-glass`
-							: `before:bg-inherit border-transparent`
-					}
-					transition-all ease-in-out duration-300
-				`}
+				className={cn(
+					'relative flex group h-20 md:h-[5.9rem] border border-content w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
+					!bookmark.customBackground
+						? 'bg-content bg-glass hover:bg-base-300 text-content'
+						: 'before:bg-inherit '
+				)}
 			>
 				{RenderStickerPattern(bookmark)}
-				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-center flex-1">
+				<div className="flex flex-col items-center justify-between w-full h-full min-h-0">
+					<div className="flex items-center justify-center flex-1 min-h-0">
 						{renderFolderIcons()}
 					</div>
 
@@ -107,7 +118,7 @@ export function FolderBookmarkItem({
 							onMenuClick(e)
 						}}
 						className={
-							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />
@@ -116,4 +127,4 @@ export function FolderBookmarkItem({
 			</button>
 		</div>
 	)
-}
+})

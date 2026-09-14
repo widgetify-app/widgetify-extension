@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { UserCoin } from '@/layouts/setting/tabs/account/components/user-coin'
+import { UserCoin } from '@/components/user-coin'
 import { CoinPurchaseModal } from '@/layouts/setting/tabs/wallpapers/components/coin-purchase-modal'
-import { useLazyLoad } from '../../../../hooks/use-lazy-load'
-import { Tooltip } from '@/components/ui'
+import { useLazyLoad } from '@/hooks/use-lazy-load'
 import { HoverPlayVideo } from '../hover-play-video'
-import { Icon } from '@/src/icons'
-import { UI } from '@/context/appearance.context'
+import { Icon } from '@/icons'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -41,7 +39,7 @@ function WallpaperItemFu({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary/80 ring-offset-blue-100'
-		: 'ring-1 ring-base-content/10 group-hover:ring-primary/70'
+		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -95,7 +93,7 @@ function WallpaperItemFu({
 					</div>
 				)}
 				{error && (
-					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10">
+					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10 rounded-xl">
 						<Icon name="outlineHeart" className="text-error" />
 						<p className="mt-2 text-xs text-muted">خطا در بارگذاری</p>
 					</div>
@@ -154,34 +152,9 @@ function WallpaperItemFu({
 								) : null}
 							</div>
 						</div>
-						{wallpaper.extensionUI ? (
-							<div className="absolute top-0  h-5 py-0.5 px-3 rounded rounded-bl-xl rounded-r-none rounded-tr-xl w-fit bg-black/5 backdrop-blur-lg">
-								<Tooltip
-									content={
-										wallpaper.extensionUI === 'ADVANCED'
-											? ' مناسب حالت ظاهری پیشفرض'
-											: 'مناسب حالت ظاهری ساده'
-									}
-								>
-									{wallpaper.extensionUI === UI.SIMPLE ? (
-										<Icon
-											name="simple_ui"
-											size={14}
-											className="text-white/80"
-										/>
-									) : (
-										<Icon
-											name="advanced_ui"
-											size={14}
-											className="text-white/80"
-										/>
-									)}
-								</Tooltip>
-							</div>
-						) : null}
 
 						{isSelected && (
-							<div className="absolute p-1 text-white rounded-full shadow-sm top-2 left-2 bg-primary/80">
+							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary/80">
 								<Icon name="check" size={12} />
 							</div>
 						)}

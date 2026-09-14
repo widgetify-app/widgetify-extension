@@ -2,6 +2,9 @@ export * from './avatar/avatar'
 export * from './avatar/avatar.variants'
 
 export * from './badge/badge'
+export * from './badge/vip-badge'
+export * from './badge/vip-badge.variants'
+export * from './badge/floating-badge'
 
 export * from './bottom-sheet/bottom-sheet'
 
@@ -21,6 +24,8 @@ export * from './context-menu/context-menu'
 export * from './date-picker/date-picker'
 
 export * from './dropdown/dropdown'
+export * from './dropdown/dropdown-item'
+export * from './dropdown/dropdown-item.variants'
 
 export * from './filter-tooltip/filter-tooltip'
 
@@ -39,6 +44,8 @@ export * from './modal/modal.variants'
 export * from './offline-indicator/offline-indicator'
 
 export * from './pagination/pagination'
+
+export * from './popover-menu'
 
 export * from './portal/portal'
 

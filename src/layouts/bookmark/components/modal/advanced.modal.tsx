@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { ColorPicker } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
-import { getEmojiList } from '@/services/emoji/emoji-api'
+import { TextInput } from '@/components/ui'
+import { getEmojiList } from '@/services/emoji/emoji.api'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '../../types/bookmark.types'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AdvancedModalProps {
 	title: string
@@ -148,8 +148,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		})
 	}
 
-	if (!isOpen) return null
-
 	return (
 		<Modal
 			title={title}
@@ -158,7 +156,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			direction="rtl"
 		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
-				<div>
+				<div className="relative z-30">
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
 						رنگ پس زمینه (اختیاری)
 					</label>
@@ -183,14 +181,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							className="p-3!"
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>
 
-				<div>
+				<div className="relative z-20">
 					<label className={'block text-sm  font-medium mb-1.5 text-content'}>
 						رنگ متن (اختیاری)
 					</label>
@@ -215,14 +212,13 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							className="p-3!"
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							<Icon name="reload" className="w-4 h-4" />
 						</Button>
 					</div>
 				</div>
 
-				<div className="relative" ref={emojiPopoverRef}>
+				<div className="relative z-10" ref={emojiPopoverRef}>
 					<label className={'block text-sm font-medium mb-1.5 text-content'}>
 						انتخاب استیکر (اختیاری)
 					</label>
@@ -234,7 +230,6 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							onClick={toggleEmojiPopover}
 							className={'btn !w-fit px-8'}
 							rounded={'2xl'}
-							variant={'default'}
 						>
 							{sticker ? (
 								<>
@@ -283,7 +278,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							className={
 								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-content'
 							}
-							style={{ zIndex: 1000 }}
+							style={{ zIndex: 99999 }}
 						>
 							{renderEmojiGrid()}
 						</div>
@@ -303,7 +298,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							backgroundPosition: 'center',
 						}}
 					>
-						<div className="w-28">
+						<div className="w-22 h-22">
 							<BookmarkItem
 								bookmark={{
 									customBackground: background,
@@ -330,7 +325,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						size="md"
 						onClick={() => onClose(null)}
 						rounded={'2xl'}
-						className="w-20 transition-colors duration-300 ease-in-out border-none shadow-none btn bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+						className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 					>
 						لغو
 					</Button>
@@ -338,7 +333,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						type="submit"
 						onClick={() => handleClose()}
 						size="md"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						className={'w-fit px-8  border-none'}
 					>

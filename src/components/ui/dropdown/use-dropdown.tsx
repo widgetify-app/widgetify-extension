@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { listenEvent } from '@/common/utils/call-event'
 
-/**
- * Hook for managing dropdown state with click outside functionality
- */
 export const useDropdown = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
@@ -14,6 +11,8 @@ export const useDropdown = () => {
 	const open = useCallback(() => setIsOpen(true), [])
 
 	useEffect(() => {
+		if (!isOpen) return
+
 		const handleClickOutside = (event: MouseEvent) => {
 			const target = event.target as Node
 
@@ -33,40 +32,15 @@ export const useDropdown = () => {
 			}
 		}
 
-		const handleScroll = (event: Event) => {
-			if (
-				event.target &&
-				dropdownContentRef.current &&
-				(dropdownContentRef.current.contains(event.target as Node) ||
-					dropdownContentRef.current === event.target)
-			) {
-				return
-			}
+		const timeoutId = setTimeout(() => {
+			document.addEventListener('mousedown', handleClickOutside)
+			document.addEventListener('keydown', handleEscape)
+		}, 0)
 
-			close()
-		}
-
-		const handleResize = () => {
-			if (isOpen) {
-				close()
-			}
-		}
-
-		if (isOpen) {
-			const timeoutId = setTimeout(() => {
-				document.addEventListener('mousedown', handleClickOutside)
-				document.addEventListener('keydown', handleEscape)
-				window.addEventListener('scroll', handleScroll, true)
-				window.addEventListener('resize', handleResize)
-			}, 100)
-
-			return () => {
-				clearTimeout(timeoutId)
-				document.removeEventListener('mousedown', handleClickOutside)
-				document.removeEventListener('keydown', handleEscape)
-				window.removeEventListener('scroll', handleScroll, true)
-				window.removeEventListener('resize', handleResize)
-			}
+		return () => {
+			clearTimeout(timeoutId)
+			document.removeEventListener('mousedown', handleClickOutside)
+			document.removeEventListener('keydown', handleEscape)
 		}
 	}, [isOpen, close])
 
@@ -78,7 +52,7 @@ export const useDropdown = () => {
 		return () => {
 			ev()
 		}
-	}, [])
+	}, [close])
 
 	return {
 		isOpen,

@@ -12,10 +12,10 @@ export function GalleryTab() {
 	const { data: categories } = useGetWallpaperCategories()
 
 	return (
-		<div className="flex flex-col h-full w-full gap-1 overflow-hidden">
+		<div className="flex flex-col w-full h-full gap-1 overflow-hidden">
 			<WallpaperHeader />
 
-			<div className="flex flex-row gap-3 flex-1 min-h-0 overflow-hidden">
+			<div className="flex flex-row flex-1 min-h-0 gap-3 overflow-hidden">
 				<WallpaperSidebar
 					categories={categories.categories}
 					selectedCategoryId={selectedCategoryId}
@@ -26,7 +26,7 @@ export function GalleryTab() {
 					onAccessFilterChange={setAccessFilter}
 				/>
 
-				<div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+				<div className="flex flex-col flex-1 min-h-0 overflow-hidden">
 					<WallpaperView
 						selectedCategoryId={selectedCategoryId}
 						typeFilter={typeFilter}

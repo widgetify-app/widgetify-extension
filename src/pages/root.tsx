@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
-import { listenEvent } from '@/common/utils/call-event'
+import { purgeDeprecatedStorageKeys } from '@/common/storage'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { Portal } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
 } from '@/context/general-setting.context'
 import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
+import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
 import { Page, usePage } from '@/context/page.context'
-import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
+import { MotionConfig } from 'framer-motion'
+import { Motion as motion, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { MiniAppPage } from './mini-apps/mini-app.page'
 import { ExplorerPage } from './explorer/explorer.page'
@@ -24,50 +28,66 @@ import { IconProvider } from '../icons/icons.context'
 export function RootLayout() {
 	useWallpaperApply()
 
+	useEffect(() => {
+		purgeDeprecatedStorageKeys()
+	}, [])
+
 	return (
-		<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
-			<IconProvider defaultTheme="default">
+		<IconProvider defaultTheme="default">
+			<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 				<GeneralSettingProvider>
 					<WallpaperProvider>
 						<Main></Main>
 					</WallpaperProvider>
 				</GeneralSettingProvider>
-				<Toaster
-					toastOptions={{
-						error: {
-							style: {
-								backgroundColor: 'var(--color-error)',
-								color: 'var(--color-error-content)',
-							},
+			</div>
+			<Toaster
+				containerStyle={{
+					zIndex: 99999999,
+				}}
+				toastOptions={{
+					error: {
+						style: {
+							backgroundColor: 'var(--color-error)',
+							color: 'var(--color-error-content)',
 						},
-						success: {
-							style: {
-								backgroundColor: 'var(--color-success)',
-								color: 'var(--color-success-content)',
-							},
+					},
+					success: {
+						style: {
+							backgroundColor: 'var(--color-success)',
+							color: 'var(--color-success-content)',
 						},
-						duration: 5000,
-					}}
-				/>
-				{/* <UpdateChecker /> */}
-			</IconProvider>
-		</div>
+					},
+					duration: 5000,
+				}}
+			/>
+		</IconProvider>
 	)
 }
 
 function Main() {
-	const [showWidgetSettings, setShowWidgetSettings] = useState(false)
+	const [activeSettingPayload, setActiveSettingPayload] = useState<{
+		tab: WidgetTabKeys | null
+		instanceId?: string
+		size?: { w: number; h: number }
+	} | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
-	const [tab, setTab] = useState<string | null>(null)
 	const { page } = usePage()
 	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
 		const openWidgetsSettingsEvent = listenEvent(
 			'openWidgetsSettings',
-			(data: { tab: WidgetTabKeys | null }) => {
-				setShowWidgetSettings(true)
-				if (data.tab) setTab(data.tab)
+			(data: {
+				tab: WidgetTabKeys | null
+				instanceId?: string
+				size?: { w: number; h: number }
+			}) => {
+				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
+					callEvent('openAddCustomWidgetModal')
+				} else {
+					setActiveSettingPayload(data)
+				}
 			}
 		)
 
@@ -85,46 +105,47 @@ function Main() {
 
 	return (
 		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
-			<WidgetVisibilityProvider>
-				<NavbarLayout />
+			<FreeWidgetProvider>
+				<WidgetVisibilityProvider>
+					<NavbarLayout />
 
-				<AnimatePresence mode="wait">
-					<motion.div
-						key={page}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{
-							duration: 0.15,
-							ease: 'linear',
-						}}
-						className="flex w-full h-full"
-					>
-						{page === Page.Home ? (
-							<HomePage />
-						) : page === Page.Explorer ? (
-							<ExplorerPage />
-						) : (
-							<MiniAppPage />
-						)}
-					</motion.div>
-				</AnimatePresence>
-				<WidgetSettingsModal
-					isOpen={showWidgetSettings}
-					onClose={() => {
-						setShowWidgetSettings(false)
-						setTab(null)
-					}}
-					selectedTab={tab}
-				/>
-			</WidgetVisibilityProvider>
+					<Presence mode="wait">
+						<motion.div
+							key={page}
+							initial={{ y: 10 }}
+							animate={{ y: 0 }}
+							exit={{ y: 10 }}
+							transition={{
+								duration: 0.2,
+								ease: [0.22, 1, 0.36, 1],
+							}}
+							className="flex w-full h-full"
+						>
+							{page === Page.Home ? (
+								<HomePage />
+							) : page === Page.Explorer ? (
+								<ExplorerPage />
+							) : (
+								<MiniAppPage />
+							)}
+						</motion.div>
+					</Presence>
+					<WidgetSettingsModal
+						isOpen={!!activeSettingPayload}
+						onClose={() => setActiveSettingPayload(null)}
+						selectedTab={null}
+						activeSettingTab={activeSettingPayload?.tab}
+						instanceId={activeSettingPayload?.instanceId}
+						size={activeSettingPayload?.size}
+						onCloseSetting={() => setActiveSettingPayload(null)}
+					/>
+				</WidgetVisibilityProvider>
+			</FreeWidgetProvider>
 
-			{showAuthRequired && (
-				<AuthRequiredModal
-					isOpen={showAuthRequired}
-					onClose={() => setAuthRequired(false)}
-				/>
-			)}
+			<AuthRequiredModal
+				isOpen={showAuthRequired}
+				onClose={() => setAuthRequired(false)}
+			/>
 		</MotionConfig>
 	)
 }

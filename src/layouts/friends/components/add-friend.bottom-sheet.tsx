@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/hooks/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AddFriendBottomSheetProps {
 	isOpen: boolean
@@ -139,7 +139,9 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						disabled={!canSendRequest || isSending || !username}
 						size="lg"
 						rounded="xl"
-						className={`w-full h-12 enabled:hover:opacity-75 disabled:bg-success/70 bg-success text-success-content shadow-sm shadow-success/20  border-none`}
+						color="success"
+						fullWidth
+						className="h-12 shadow-sm shadow-success/20"
 					>
 						ارسال درخواست
 					</Button>

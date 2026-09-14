@@ -1,10 +1,10 @@
-import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constant/priority_options'
+import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constants/priority-options'
 import { Button, IconLoading } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { useEffect, useRef, useState } from 'react'
 
 interface NoteEditorProps {
@@ -91,7 +91,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						loading={isSaving}
 						disabled={isSaving}
 						loadingText={<IconLoading />}
-						variant={'primary'}
+						color={'primary'}
 						rounded={'xl'}
 						className="w-24 h-6"
 					>

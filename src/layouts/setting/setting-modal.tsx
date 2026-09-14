@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
-import { type TabItem, TabManager } from '@/components/tab-manager'
+import { type TabItem, TabManager } from './tab-manager'
 import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
 import { AboutUsTab } from './tabs/about-us/about-us'
 import { AppearanceSettingTab } from './tabs/appearance/appearance'
@@ -12,17 +12,18 @@ import { WallpaperSetting } from './tabs/wallpapers/wallpapers'
 import { AccountTab } from './tabs/account/account'
 import { AllFriendsTab, RewardsTab } from './tabs/account/tabs'
 import { ConnectionPlatformsTab } from './tabs/account/tabs/connection/connections-tab'
-import { Icon } from '@/src/icons'
+import { VipTab } from './tabs/vip/vip-tab'
+import { Icon } from '@/icons'
 
 interface SettingModalProps {
 	isOpen: boolean
 	onClose: () => void
 	selectedTab: string | null
+	onTabChange?: (tab: string) => void
 }
 const tabs: TabItem[] = [
 	{
 		parentName: 'حساب کاربری',
-		needAuth: true,
 		children: [
 			{
 				label: 'پروفایل من',
@@ -31,20 +32,29 @@ const tabs: TabItem[] = [
 				element: <AccountTab />,
 			},
 			{
+				label: 'ویجتیفای پرو',
+				value: 'vip',
+				icon: <Icon name="outlineCrown" size={20} />,
+				element: <VipTab />,
+			},
+			{
 				label: 'پلتفرم‌ها',
 				value: 'platforms',
+				needAuth: true,
 				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
 			},
 			{
 				label: 'ماموریت‌ها و پاداش',
 				value: 'tasks',
+				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
 			},
 			{
 				label: 'دوستان',
 				value: 'friends',
+				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
 			},
@@ -98,13 +108,18 @@ const tabs: TabItem[] = [
 		],
 	},
 ]
-export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps) => {
+export const SettingModal = ({
+	isOpen,
+	onClose,
+	selectedTab,
+	onTabChange,
+}: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
 
 	function openWidgetSettings() {
-		onClose()
+		callEvent('openWidgetsSettings', { tab: null })
 		Analytics.event('open_widgets_settings_from_settings_modal')
-		callEvent('openWidgetsSettings')
+		onClose()
 	}
 
 	useEffect(() => {
@@ -119,7 +134,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size="xl"
+			size="2xl"
 			title="تنظیمات"
 			direction="rtl"
 		>
@@ -128,6 +143,7 @@ export const SettingModal = ({ isOpen, onClose, selectedTab }: SettingModalProps
 				tabs={tabs}
 				defaultTab="general"
 				selectedTab={selectedTab}
+				onTabChange={onTabChange}
 				direction="rtl"
 			>
 				<div className="flex flex-row gap-1 sm:flex-col">

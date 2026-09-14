@@ -21,12 +21,16 @@ import {
 	useGetBookmarks,
 } from '@/services/hooks/bookmark/get-bookmarks.hook'
 
-const MAX_ICON_SIZE = 1 * 1024 * 1024 // 1 MB
+const MAX_ICON_SIZE = 250 * 1024 // 250 KB
 
 export interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
 	setBookmarks: (bookmarks: Bookmark[]) => void
-	getCurrentFolderItems: (parentId: string | null) => Bookmark[]
+	getCurrentFolderItems: (
+		parentId: string | null,
+		widgetId?: string | null,
+		isPrimary?: boolean
+	) => Bookmark[]
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	importBrowserBookmarks: (
 		nodes: BrowserImportNode[],
@@ -125,6 +129,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				customTextColor: bookmark.customTextColor ?? null,
 				customBackground: bookmark.customBackground ?? null,
 				order: bookmark.order || 0,
+				widgetId: bookmark.widgetId || null,
 			}))
 
 			return mappedFetched
@@ -135,7 +140,11 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		callEvent('bookmarksChanged', mappedFetched)
 	}, [data, dataUpdatedAt])
 
-	const getCurrentFolderItems = (parentId: string | null) => {
+	const getCurrentFolderItems = (
+		parentId: string | null,
+		widgetId?: string | null,
+		isPrimary?: boolean
+	) => {
 		if (!bookmarks) return []
 		const parentBookmark = bookmarks.find(
 			(b) => b.id === parentId || b.onlineId === parentId
@@ -148,12 +157,30 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					(typeof bookmark.parentId === 'string' &&
 						bookmark.parentId === parentId) ||
 					(typeof bookmark.parentId === 'string' &&
-						bookmark.parentId === parentBookmark?.onlineId)
+						parentBookmark?.id &&
+						bookmark.parentId === parentBookmark.id) ||
+					(typeof bookmark.parentId === 'string' &&
+						parentBookmark?.onlineId &&
+						bookmark.parentId === parentBookmark.onlineId)
 			)
 		} else {
-			currentFolderBookmarks = bookmarks.filter(
-				(bookmark) => bookmark.parentId === null
-			)
+			const shouldIncludeLegacy =
+				isPrimary !== undefined
+					? isPrimary
+					: !widgetId || widgetId === 'bookmarks-default'
+
+			currentFolderBookmarks = bookmarks.filter((bookmark) => {
+				const isRoot = bookmark.parentId === null
+				if (!isRoot) return false
+				if (shouldIncludeLegacy) {
+					return (
+						!bookmark.widgetId ||
+						bookmark.widgetId === 'bookmarks-default' ||
+						(widgetId ? bookmark.widgetId === widgetId : false)
+					)
+				}
+				return bookmark.widgetId === widgetId
+			})
 		}
 
 		const sortedBookmarks = [...currentFolderBookmarks].sort((a, b) => {
@@ -167,19 +194,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		cb: () => void
 	) => {
 		if (!isAuthenticated)
-			return showToast('برای افزودن بوکمارک باید وارد شوید.', 'error')
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 
 		try {
-			if (inputBookmark.icon && inputBookmark.icon.size > MAX_ICON_SIZE) {
-				showToast(
-					`تصویر انتخاب شده (${(inputBookmark.icon.size / (1024 * 1024)).toFixed(1)} مگابایت) بزرگتر از حداکثر مجاز است.`,
-					'error'
-				)
-				cb()
+			if (
+				inputBookmark.icon &&
+				inputBookmark.icon instanceof File &&
+				inputBookmark.icon.size > MAX_ICON_SIZE
+			) {
+				showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
 				return
 			}
 
-			const currentFolderItems = getCurrentFolderItems(inputBookmark.parentId)
+			const currentFolderItems = getCurrentFolderItems(
+				inputBookmark.parentId,
+				inputBookmark.widgetId
+			)
 			const maxOrder = currentFolderItems.reduce(
 				(max, item) => Math.max(max, item.order || 0),
 				-1
@@ -207,6 +237,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					type: inputBookmark.type,
 					url: inputBookmark.url,
 					icon: inputBookmark.icon || null,
+					widgetId: inputBookmark.widgetId || null,
 				})
 			)
 			if (err) {
@@ -284,12 +315,22 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (!input.title?.trim() || !bookmarks) return
 
+		if (
+			input.icon &&
+			input.icon instanceof File &&
+			input.icon.size > MAX_ICON_SIZE
+		) {
+			showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
+			return
+		}
+
 		const foundedBookmark = bookmarks.find(
 			(b) =>
 				b.id === input.id ||
 				(typeof b.onlineId === 'string' && b.onlineId === input.onlineId)
 		)
-		if (!foundedBookmark) return showToast('بوکمارک یافت نشد!', 'error')
+		if (!foundedBookmark)
+			return showToast(translateError('ITEM_NOT_FOUND') as string, 'error')
 
 		let bookmarkIdToEdit = input.id
 		if (validate(bookmarkIdToEdit)) {

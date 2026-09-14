@@ -1,26 +1,45 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetTypes } from '@/layouts/widgetify-card/pets/pet.context'
+import type { PetBackgroundId, PetTypes } from '@/layouts/widgets/pet/types'
 import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
 import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/constant/tab-keys'
-import type { StoredWallpaper } from '../wallpaper.interface'
+import type { ClockSettings } from '@/layouts/widgets/clock/clock-setting.interface'
+import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
+import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
 export interface EventName {
-	openSettings: 'account' | 'profile' | 'wallpapers' | 'general' | null
+	openSettings:
+		| 'account'
+		| 'profile'
+		| 'platforms'
+		| 'vip'
+		| 'pro'
+		| 'tasks'
+		| 'friends'
+		| 'general'
+		| 'access'
+		| 'appearance'
+		| 'wallpapers'
+		| 'shortcuts'
+		| 'about'
+		| null
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
-	openWidgetsSettings: { tab: WidgetTabKeys | null }
+	custom_wallpaper_sync: Wallpaper | null
+	openWidgetsSettings: {
+		tab: WidgetTabKeys | null
+		instanceId?: string
+		size?: { w: number; h: number }
+	}
 	bookmarksChanged: Bookmark[]
 	updatedPetSettings: {
+		instanceId?: string
 		petName?: string
 		petType: PetTypes
+		background?: PetBackgroundId
 	}
-	updatedPetState: boolean
 	theme_change: {
 		theme: string
 		sync: boolean
@@ -34,16 +53,16 @@ export interface EventName {
 	}
 
 	// setting keys
-	wigiPadDateSettingsChanged: WigiPadDateSetting
-	wigiPadClockSettingsChanged: ClockSettings
+	clockSettingsChanged: ClockSettings
 	currencies_updated: {
 		currencies: string[]
 		colorMode: CurrencyColorMode
+		compactCurrencies?: Record<string, string>
 	}
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings
 	closeAllDropdowns: null
-	openProfile?: 'friends' | 'platforms'
+	openProfile?: 'friends' | 'platforms' | 'vip' | 'pro'
 	openMarketModal: null
 	font_change: {
 		font: string
@@ -60,6 +79,12 @@ export interface EventName {
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
 	resetWallpaper: null
+	openAddCustomWidgetModal:
+		| { instanceId?: string; widgetId?: string }
+		| null
+		| undefined
+	openPresetLayoutsModal: null
+	cancelWidgetDrag: null
 }
 
 export function callEvent<K extends keyof EventName>(eventName: K, data?: EventName[K]) {

@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Presence, Motion as motion } from '@/common/motion'
 import { Portal } from '../portal/portal'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 type SheetSize = 'small' | 'medium' | 'large' | 'full' | 'screen'
 
@@ -13,7 +13,6 @@ interface BottomSheetProps {
 	showBack?: boolean
 	onClickBack?: () => void
 	children: ReactNode
-	showCloseButton?: boolean
 	closeOnBackdrop?: boolean
 	dragThreshold?: number
 }
@@ -24,7 +23,6 @@ export function BottomSheet({
 	size = 'medium',
 	title,
 	children,
-	showCloseButton = true,
 	closeOnBackdrop = true,
 	dragThreshold = 100,
 	onClickBack,
@@ -52,86 +50,87 @@ export function BottomSheet({
 		<Portal>
 			<Presence>
 				{isOpen && (
-					<>
-						<motion.div
-							className={`fixed inset-0 z-50 ${isDragging ? '' : 'bg-black'}`}
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 0.5 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.3, ease: 'easeOut' }}
-							onClick={closeOnBackdrop ? onClose : undefined}
-						/>
+					<motion.div
+						key="bottom-sheet-backdrop"
+						className={`fixed inset-0 z-50 ${isDragging ? '' : 'bg-black/50'}`}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.25, ease: 'easeOut' }}
+						onClick={closeOnBackdrop ? onClose : undefined}
+					/>
+				)}
 
-						<motion.div
-							className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-50'} bottom-16 min-w-2xl bg-base-200 bg-glass rounded-t-3xl`}
-							style={{
-								height: sizes[size],
-								maxWidth: '390px',
-								margin: '0 auto',
-								touchAction: 'none',
-							}}
-							initial={{ y: '100%' }}
-							animate={{ y: 0 }}
-							exit={{ y: '100%' }}
-							transition={{
-								type: 'spring',
-								damping: 30,
-								stiffness: 300,
-								mass: 0.8,
-							}}
-							drag="y"
-							dragConstraints={{ top: 0, bottom: 0 }}
-							dragElastic={{ top: 0, bottom: 0.5 }}
-							onDragStart={() => setIsDragging(true)}
-							onDragEnd={handleDragEnd}
-							dragMomentum={false}
-						>
-							<div className="flex justify-center pt-4 pb-1 cursor-grab active:cursor-grabbing">
-								<motion.div
-									className="rounded-full bg-base-content/10"
-									animate={{
-										width: isDragging ? 16 : 28,
-										scaleY: isDragging ? 0.7 : 1,
-									}}
-									transition={{ duration: 0.2 }}
-									style={{ height: '3px' }}
-								/>
-							</div>
-
-							{title && (
-								<div className="relative flex items-center justify-center px-6 py-2">
-									{showBack && (
-										<button
-											onClick={onClickBack}
-											className="absolute p-2 transition-all duration-200 rounded-full right-6 active:scale-95"
-											aria-label="بستن"
-										>
-											<Icon
-												name="chevronRight"
-												size={20}
-												className="text-base-content/60"
-											/>
-										</button>
-									)}
-									<h2 className="text-sm font-bold text-content">
-										{title}
-									</h2>
-								</div>
-							)}
-
-							<div
-								className="px-2 py-1 mt-1 overflow-y-auto scrollbar-none"
-								style={{
-									height: title
-										? `calc(${sizes[size]} - 40px)`
-										: `calc(${sizes[size]} - 30px)`,
-									WebkitOverflowScrolling: 'touch',
+				{isOpen && (
+					<motion.div
+						key="bottom-sheet-panel"
+						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-50'} bottom-16 min-w-2xl bg-base-200 bg-glass rounded-t-3xl`}
+						style={{
+							height: sizes[size],
+							maxWidth: '390px',
+							margin: '0 auto',
+							touchAction: 'none',
+							willChange: 'transform',
+						}}
+						initial={{ y: '100%' }}
+						animate={{ y: 0 }}
+						exit={{ y: '100%', transition: { duration: 0.25, ease: 'easeIn' } }}
+						transition={{
+							type: 'spring',
+							damping: 30,
+							stiffness: 300,
+							mass: 0.8,
+						}}
+						drag="y"
+						dragConstraints={{ top: 0, bottom: 0 }}
+						dragElastic={{ top: 0, bottom: 0.5 }}
+						onDragStart={() => setIsDragging(true)}
+						onDragEnd={handleDragEnd}
+						dragMomentum={false}
+					>
+						<div className="flex justify-center pt-4 pb-1 cursor-grab active:cursor-grabbing">
+							<motion.div
+								className="rounded-full bg-base-content/10"
+								animate={{
+									scaleX: isDragging ? 0.57 : 1,
+									scaleY: isDragging ? 0.7 : 1,
 								}}
-							>
-								{children}
+								transition={{ duration: 0.2 }}
+								style={{ height: '3px', width: '28px' }}
+							/>
+						</div>
+
+						{title && (
+							<div className="relative flex items-center justify-center px-6 py-2">
+								{showBack && (
+									<button
+										onClick={onClickBack}
+										className="absolute p-2 transition-all duration-200 rounded-full right-6 active:scale-95"
+										aria-label="بستن"
+									>
+										<Icon
+											name="chevronRight"
+											size={20}
+											className="text-base-content/60"
+										/>
+									</button>
+								)}
+								<h2 className="text-sm font-bold text-content">{title}</h2>
 							</div>
-						</motion.div>
-					</>
+						)}
+
+						<div
+							className="px-4 pt-2 pb-4 mt-1 overflow-y-auto scrollbar-none"
+							style={{
+								height: title
+									? `calc(${sizes[size]} - 44px)`
+									: `calc(${sizes[size]} - 30px)`,
+								WebkitOverflowScrolling: 'touch',
+							}}
+						>
+							{children}
+						</div>
+					</motion.div>
 				)}
 			</Presence>
 		</Portal>

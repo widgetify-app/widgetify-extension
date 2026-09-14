@@ -1,0 +1,219 @@
+import { useRef, useState } from 'react'
+import { WidgetContainer } from '../widget-container'
+import type { WidgetSize } from '../layout-engine/types'
+import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useAppearance } from '@/context/appearance.context'
+import { useAuth } from '@/context/auth.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { Icon } from '@/icons'
+import { showToast } from '@/common/toast'
+import { translateError } from '@/common/utils/translate-error'
+import { safeAwait } from '@/services/api'
+import { uploadWidgetMediaApi } from '@/services/hooks/widgets/widget-media.hook'
+import { callEvent } from '@/common/utils/call-event'
+import { GalleryPickerModal } from '@/components/gallery'
+import {
+	PopoverMenu,
+	PopoverMenuItem,
+	PopoverMenuDivider,
+	PopoverMenuHeader,
+	VipBadge,
+} from '@/components/ui'
+import type { AxiosError } from 'axios'
+import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import { PhotoEmptyState } from './components/photo-empty-state'
+
+interface PhotoWidgetProps {
+	size?: WidgetSize
+	meta?: { imageSrc?: string; isCustom?: boolean }
+	instanceId?: string
+}
+
+export function PhotoWidget({
+	size = { w: 2, h: 2 },
+	meta,
+	instanceId,
+}: PhotoWidgetProps) {
+	const { updateWidgetSettings } = useFreeWidgets()
+	const { canvasMode } = useAppearance()
+	const { isVip } = useAuth()
+	const { blurMode } = useGeneralSetting()
+	const inputRef = useRef<HTMLInputElement>(null)
+	const triggerRef = useRef<HTMLDivElement>(null)
+
+	const [isUploading, setIsUploading] = useState(false)
+	const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+	const imageSrc = meta?.imageSrc
+	const isCustom = meta?.isCustom
+
+	const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (!file) return
+
+		if (!isVip) {
+			callEvent('openSettings', 'vip')
+			return
+		}
+
+		if (!file.type.startsWith('image/')) {
+			showToast('لطفا یک فایل تصویری انتخاب کن', 'error')
+			return
+		}
+
+		if (file.size > 1024 * 1024) {
+			showToast('حجم عکس نباید بیشتر از ۱ مگابایت باشه', 'error')
+			return
+		}
+
+		if (!instanceId) return
+
+		setIsUploading(true)
+		const [err, res] = await safeAwait<AxiosError, { url: string }>(
+			uploadWidgetMediaApi(instanceId, file)
+		)
+		setIsUploading(false)
+
+		if (err || !res?.url) {
+			showToast(translateError(err) as string, 'error')
+			return
+		}
+
+		updateWidgetSettings(instanceId, { imageSrc: res.url, isCustom: true })
+		e.target.value = ''
+	}
+
+	const handleOpenMenu = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		if (canvasMode === 'edit' || isUploading) return
+		setIsMenuOpen(true)
+	}
+
+	const handleSelectFromSystem = () => {
+		setIsMenuOpen(false)
+		if (!isVip) {
+			callEvent('openSettings', 'vip')
+			return
+		}
+		inputRef.current?.click()
+	}
+
+	const handleOpenGallery = () => {
+		setIsMenuOpen(false)
+		setIsGalleryOpen(true)
+	}
+
+	const handleRemovePhoto = () => {
+		setIsMenuOpen(false)
+		if (instanceId) {
+			updateWidgetSettings(instanceId, {
+				imageSrc: undefined,
+				isCustom: undefined,
+			})
+			showToast('عکس با موفقیت حذف شد', 'success')
+		}
+	}
+
+	const handleGallerySelect = (asset: GalleryAsset) => {
+		if (instanceId) {
+			updateWidgetSettings(instanceId, {
+				imageSrc: asset.url,
+				isCustom: false,
+			})
+		}
+	}
+
+	return (
+		<>
+			<WidgetContainer
+				background={false}
+				padding={false}
+				contentClassName="w-full h-full relative"
+				className="w-full h-full"
+			>
+				<div
+					ref={triggerRef}
+					onClick={handleOpenMenu}
+					className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden transition-all duration-200 cursor-pointer group rounded-widget"
+				>
+					{imageSrc ? (
+						<img
+							src={imageSrc}
+							className={`object-cover w-full h-full rounded-widget ${
+								isCustom && blurMode
+									? 'blur-mode blur-xl!'
+									: 'disabled-blur-mode'
+							}`}
+						/>
+					) : (
+						<PhotoEmptyState size={size} />
+					)}
+
+					{isUploading && (
+						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-base-100/70 backdrop-blur-xs rounded-widget">
+							<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+							<span className="text-xs font-medium text-content">
+								در حال بارگذاری...
+							</span>
+						</div>
+					)}
+				</div>
+
+				<input
+					ref={inputRef}
+					type="file"
+					accept="image/*"
+					className="hidden"
+					onChange={handleUpload}
+				/>
+			</WidgetContainer>
+
+			<PopoverMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+				triggerRef={triggerRef}
+				width={210}
+				placement="bottom-center"
+			>
+				<PopoverMenuHeader>
+					<span>مدیریت قاب عکس</span>
+				</PopoverMenuHeader>
+
+				<PopoverMenuItem
+					icon={<Icon name="uploadImage" size={14} />}
+					label="بارگذاری از دستگاه"
+					badge={!isVip ? <VipBadge size="xs" /> : undefined}
+					onClick={handleSelectFromSystem}
+				/>
+
+				<PopoverMenuItem
+					icon={<Icon name="image" size={14} />}
+					label="گالری ویجتیفای"
+					onClick={handleOpenGallery}
+				/>
+
+				{imageSrc && (
+					<>
+						<PopoverMenuDivider />
+						<PopoverMenuItem
+							icon={<Icon name="trash" size={14} />}
+							label="حذف عکس فعلی"
+							variant="danger"
+							onClick={handleRemovePhoto}
+						/>
+					</>
+				)}
+			</PopoverMenu>
+
+			<GalleryPickerModal
+				isOpen={isGalleryOpen}
+				onClose={() => setIsGalleryOpen(false)}
+				type="PHOTO_FRAME"
+				title="گالری تصاویر قاب عکس"
+				onSelect={handleGallerySelect}
+				selectedAssetUrl={imageSrc}
+			/>
+		</>
+	)
+}

@@ -1,11 +1,16 @@
-import { ContextMenu } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import {
+	PopoverMenu,
+	PopoverMenuItem,
+	PopoverMenuDivider,
+} from '@/components/ui'
+import { Icon } from '@/icons'
 
 interface BookmarkContextMenuProps {
 	position: { x: number; y: number }
 	onDelete: () => void
 	onEdit: () => void
 	onOpenInNewTab?: () => void
+	onClose: () => void
 	isFolder?: boolean
 }
 
@@ -14,42 +19,46 @@ export function BookmarkContextMenu({
 	onDelete,
 	onEdit,
 	onOpenInNewTab,
+	onClose,
 }: BookmarkContextMenuProps) {
-	const getMenuItemStyle = (isDelete = false) => {
-		if (isDelete) {
-			return 'text-error hover:text-error/90 hover:!bg-error/10'
-		}
-
-		return 'text-content hover:text-content/90 hover:!bg-base-300/70'
-	}
-
 	return (
-		<ContextMenu position={position} className="gap-y-1">
+		<PopoverMenu
+			isOpen={true}
+			onClose={onClose}
+			position={position}
+			width={160}
+		>
 			{onOpenInNewTab && (
-				<button
-					onClick={onOpenInNewTab}
-					className={`w-full px-3 py-1 flex items-center gap-x-1.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
-				>
-					<Icon name="plus" size={15} />
-					<span className="font-medium">در تب جدید</span>
-				</button>
+				<PopoverMenuItem
+					icon={<Icon name="plus" size={13} />}
+					label="در تب جدید"
+					onClick={() => {
+						onOpenInNewTab()
+						onClose()
+					}}
+				/>
 			)}
 
-			<button
-				onClick={onEdit}
-				className={`w-full px-3 py-1 flex items-center gap-x-[9px] cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle()}`}
-			>
-				<Icon name="pen" size={13} />
-				<span className="font-medium">ویرایش</span>
-			</button>
+			<PopoverMenuItem
+				icon={<Icon name="pen" size={13} />}
+				label="ویرایش"
+				onClick={() => {
+					onEdit()
+					onClose()
+				}}
+			/>
 
-			<button
-				onClick={onDelete}
-				className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 ${getMenuItemStyle(true)}`}
-			>
-				<Icon name="trash" size={14} />
-				<span className="font-medium">حذف</span>
-			</button>
-		</ContextMenu>
+			<PopoverMenuDivider />
+
+			<PopoverMenuItem
+				icon={<Icon name="trash" size={13} />}
+				label="حذف"
+				variant="danger"
+				onClick={() => {
+					onDelete()
+					onClose()
+				}}
+			/>
+		</PopoverMenu>
 	)
 }

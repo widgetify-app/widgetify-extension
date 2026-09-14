@@ -11,6 +11,7 @@ interface AuthContextType {
 	isAuthenticated: boolean
 	token: string | null
 	user: UserProfile | null
+	isVip: boolean
 	isLoadingUser: boolean
 	profilePercentage: number
 	isSuccessFetchingUser: boolean
@@ -23,6 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [token, setToken] = useState<string | null>(null)
+	const [cachedUser, setCachedUser] = useState<UserProfile | null>(null)
 	const queryClient = useQueryClient()
 	const [initialLoading, setInitialLoading] = useState(true)
 
@@ -35,22 +37,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		enabled: !!token,
 	})
 
+	const activeUser = userProfile || cachedUser
+
 	const logout = async () => {
 		await clearStorage()
 		setToken(null)
+		setCachedUser(null)
 		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 	}
 
 	useEffect(() => {
-		async function loadToken() {
-			const savedToken = await getFromStorage('auth_token')
+		async function loadAuth() {
+			const [savedToken, savedProfile] = await Promise.all([
+				getFromStorage('auth_token'),
+				getFromStorage('profile'),
+			])
 			if (savedToken) {
 				setToken(savedToken)
+			}
+			if (savedProfile) {
+				setCachedUser(savedProfile)
 			}
 			setInitialLoading(false)
 		}
 
-		loadToken()
+		loadAuth()
 
 		const logoutEvent = listenEvent('auth_logout', async () => {
 			logout()
@@ -83,12 +94,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			value={{
 				isAuthenticated: !!token,
 				token,
-				user: userProfile || null,
-				isLoadingUser: initialLoading || (!!token && isLoading),
+				user: activeUser || null,
+				isVip: Boolean(activeUser?.isVip ?? false),
+				isLoadingUser: initialLoading || (!!token && isLoading && !cachedUser),
 				login,
 				logout,
 				profilePercentage:
-					calculateProgressPercentage(userProfile?.progressbar || []) || 0,
+					calculateProgressPercentage(activeUser?.progressbar || []) || 0,
 				refetchUser,
 				isSuccessFetchingUser: isSuccess,
 			}}

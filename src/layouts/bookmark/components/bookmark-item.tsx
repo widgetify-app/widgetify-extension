@@ -1,9 +1,11 @@
+import { memo } from 'react'
 import { addOpacityToColor, getContrastingTextColor } from '@/common/color'
 import type { Bookmark } from '../types/bookmark.types'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
+import { cn } from '@/common/utils/cn'
 
 interface BookmarkItemProps {
 	bookmark: Bookmark
@@ -13,7 +15,7 @@ interface BookmarkItemProps {
 	onMenuClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
-export function BookmarkItem({
+export const BookmarkItem = memo(function BookmarkItem({
 	bookmark,
 	onClick,
 	isDragging = false,
@@ -33,13 +35,23 @@ export function BookmarkItem({
 	}
 
 	return (
-		<div className={`relative ${isDragging ? 'opacity-50' : ''}`}>
+		<div className={cn('relative w-full h-full', isDragging && 'opacity-50')}>
 			<button
 				onClick={onClick}
 				onAuxClick={onClick}
 				onMouseDown={handleMouseDown}
+				onContextMenu={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
+					onMenuClick?.(e)
+				}}
 				style={customStyles}
-				className={`relative  flex flex-col items-center justify-center px-2 py-0.5 transition-all duration-300 border border-content cursor-pointer group rounded-2xl shadow-sm w-full h-20 md:h-[5.5rem] ${!bookmark.customBackground ? `bg-content hover:bg-base-300 text-content backdrop-blur-sm bg-glass` : 'border'} transition-transform ease-in-out group-hover:scale-102`}
+				className={cn(
+					'relative flex flex-col items-center justify-between px-2 py-1.5 h-20 md:h-[5.9rem] w-full duration-300 border border-content cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
+					!bookmark.customBackground
+						? 'bg-content hover:bg-base-300 text-content bg-glass'
+						: ''
+				)}
 			>
 				{onMenuClick && bookmark && (
 					<div
@@ -57,7 +69,7 @@ export function BookmarkItem({
 								: undefined,
 						}}
 						className={
-							'absolute cursor-pointer top-0.5 right-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />
@@ -65,8 +77,8 @@ export function BookmarkItem({
 				)}
 				{RenderStickerPattern(bookmark)}
 
-				<div className="flex flex-col h-full">
-					<div className="flex items-center justify-center flex-1">
+				<div className="flex flex-col items-center justify-between w-full h-full min-h-0">
+					<div className="flex items-center justify-center flex-1 min-h-0">
 						<BookmarkIcon bookmark={bookmark} />
 					</div>
 
@@ -76,12 +88,8 @@ export function BookmarkItem({
 					/>
 				</div>
 
-				<div
-					className={
-						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
-					}
-				/>
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-base-content/5 rounded-widget" />
 			</button>
 		</div>
 	)
-}
+})

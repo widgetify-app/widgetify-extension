@@ -1,9 +1,9 @@
-import { ItemPrice } from '@/components/item-price/item-price'
-import { getItemTypeEmoji } from '@/components/market/get-item-type-emoji'
+import { ItemPrice } from './item-price'
+import { getItemTypeEmoji } from './get-item-type-emoji'
 import { type MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './render-preview'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 interface MarketItemCardProps {
@@ -91,7 +91,7 @@ export function MarketItemCard({
 							size="xs"
 							onClick={handleBuy}
 							rounded={'lg'}
-							variant={'primary'}
+							color={'primary'}
 							className="h-6 px-2.5 rounded-lg text-[11px] active:scale-95 transition-all"
 						>
 							<div className="flex items-center gap-1">

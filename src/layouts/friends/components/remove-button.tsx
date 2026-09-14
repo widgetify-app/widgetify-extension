@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui'
 import type { Friend } from '@/services/hooks/friends/friend-service.hook'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 type Props = {
 	friend: Friend
@@ -16,14 +16,15 @@ export function RemoveFriendButton({ friend, onClick, disabled, label }: Props) 
 			onClick={() => onClick(friend.id)}
 			disabled={disabled}
 			size="sm"
+			variant="outline"
+			color="danger"
+			rounded="lg"
 			className="
-				flex items-center justify-center gap-1
+				gap-1
 				h-9 px-3
-				text-error bg-error/10 border border-error/20
-				rounded-lg transition-all
-				hover:bg-error/20 hover:scale-[1.03]
+				hover:scale-[1.03]
 				active:scale-[0.97]
-				disabled:opacity-50 disabled:cursor-not-allowed
+				disabled:cursor-not-allowed
 			"
 		>
 			<Icon name="userX" size={16} />

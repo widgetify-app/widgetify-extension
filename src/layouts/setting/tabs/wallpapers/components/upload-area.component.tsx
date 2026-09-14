@@ -1,27 +1,37 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
-import { MediaPreview } from './media-preview.component'
-import { Icon } from '@/src/icons'
-import { Button } from '@/components/ui'
-
-const MAX_SIZE = 2
-const MAX_FILE_SIZE = MAX_SIZE * 1024 * 1024
+import { useRemoveCustomWallpaper } from '@/services/hooks/wallpapers/upload-custom-wallpaper.hook'
+import { safeAwait } from '@/services/api'
+import { showToast } from '@/common/toast'
+import { translateError } from '@/common/utils/translate-error'
+import { UploadLoading } from './upload/upload-loading.component'
+import { UploadEmpty } from './upload/upload-empty.component'
+import { UploadActive } from './upload/upload-active.component'
 
 interface UploadAreaProps {
 	customWallpaper: Wallpaper | null
 	onWallpaperChange: (newWallpaper: Wallpaper) => void
+	onWallpaperRemove?: () => void | Promise<void>
 }
 
-export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaProps) {
+export function UploadArea({
+	customWallpaper,
+	onWallpaperChange,
+	onWallpaperRemove,
+}: UploadAreaProps) {
+	const [isDragging, setIsDragging] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	const { processFile } = useWallpaperUpload({
-		onWallpaperChange,
-		max_size: MAX_SIZE,
-		max_file_size: MAX_FILE_SIZE,
-	})
+	const { mutateAsync: removeCustomWallpaper, isPending: isRemoving } =
+		useRemoveCustomWallpaper()
+
+	const { processFile, isUploading, isLoadingConfig, isVip, vipMaxSize, freeMaxSize } =
+		useWallpaperUpload({
+			onWallpaperChange,
+		})
 
 	const handleFileSelect = () => {
+		if (isUploading || isRemoving || isLoadingConfig) return
 		if (fileInputRef.current) {
 			fileInputRef.current.click()
 		}
@@ -35,73 +45,76 @@ export function UploadArea({ customWallpaper, onWallpaperChange }: UploadAreaPro
 		}
 	}
 
-	if (!customWallpaper) {
-		return (
-			<div
-				className={
-					'relative w-full rounded-2xl border border-dashed border-base-content/20 overflow-hidden bg-content hover:opacity-100 transition-all duration-300 text-base-content/80 hover:text-base-content hover:border-base-content/40'
-				}
-			>
-				<button
-					className="flex flex-col items-center justify-center w-full gap-2 p-2 cursor-pointer"
-					onClick={handleFileSelect}
-				>
-					<div className="flex items-center gap-2">
-						<Icon name="uploadImage" size={18} />
-						<p className={'text-sm font-medium'}>آپلود از سیستم</p>
-					</div>
-					<span className="text-xs text-muted">
-						(حداکثر حجم فایل : {MAX_SIZE} مگابایت)
-					</span>
-				</button>
-				<input
-					type="file"
-					ref={fileInputRef}
-					className="hidden"
-					accept="image/*"
-					onChange={handleFileChange}
-				/>
-			</div>
-		)
+	const handleDragOver = (e: React.DragEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		if (!isDragging) setIsDragging(true)
+	}
+
+	const handleDragLeave = (e: React.DragEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsDragging(false)
+	}
+
+	const handleDrop = (e: React.DragEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsDragging(false)
+		const file = e.dataTransfer.files?.[0]
+		if (file) {
+			processFile(file)
+		}
+	}
+
+	const handleRemove = async () => {
+		if (isUploading || isRemoving) return
+		if (isVip && customWallpaper?.src?.startsWith('http')) {
+			const [error] = await safeAwait(removeCustomWallpaper())
+			if (error) {
+				showToast(translateError(error) as string, 'error')
+				return
+			}
+		}
+		if (onWallpaperRemove) {
+			await onWallpaperRemove()
+		}
+		showToast('تصویر زمینه حذف شد', 'info')
 	}
 
 	return (
-		<div
-			className={
-				'relative overflow-hidden  rounded-2xl backdrop-blur-sm shadow-sm border border-content bg-content'
-			}
-		>
-			<div className="flex items-center p-2.5">
-				<div className="relative w-16 h-12 overflow-hidden rounded-md shadow-sm shrink-0">
-					<MediaPreview customWallpaper={customWallpaper} />
-					<div className="absolute inset-0 bg-linear-to-r from-transparent to-black/30"></div>
+		<>
+			{isLoadingConfig ? (
+				<UploadLoading />
+			) : !customWallpaper ? (
+				<UploadEmpty
+					isDragging={isDragging}
+					isUploading={isUploading}
+					isVip={isVip}
+					vipMaxSize={vipMaxSize}
+					freeMaxSize={freeMaxSize}
+					onFileSelect={handleFileSelect}
+					onDragOver={handleDragOver}
+					onDragLeave={handleDragLeave}
+					onDrop={handleDrop}
+				/>
+			) : (
+				<UploadActive
+					customWallpaper={customWallpaper}
+					isUploading={isUploading}
+					isRemoving={isRemoving}
+					onFileSelect={handleFileSelect}
+					onRemove={handleRemove}
+				/>
+			)}
 
-					<div className="absolute top-1 right-1 px-1.5 py-0.5 text-[10px] font-medium text-white rounded-sm backdrop-blur-md bg-primary/80">
-						{customWallpaper.type === 'IMAGE' ? 'تصویر' : 'ویدیو'}
-					</div>
-				</div>
-
-				<div className="flex-1 mx-3">
-					<p className={'text-sm font-medium text-content'}>تصویر زمینه فعال</p>
-					<p className={'text-xs text-muted truncate max-w-50'}>
-						{customWallpaper.name || 'بدون نام'}
-					</p>
-				</div>
-
-				<div className="flex gap-2">
-					<Button onClick={() => handleFileSelect()} size="sm" rounded={'2xl'}>
-						<Icon name="edit" size={14} />
-						<span>تغییر</span>
-					</Button>
-				</div>
-			</div>
 			<input
 				type="file"
 				ref={fileInputRef}
 				className="hidden"
-				accept="image/*"
+				accept={isVip ? 'image/*,video/mp4,video/webm' : 'image/*'}
 				onChange={handleFileChange}
 			/>
-		</div>
+		</>
 	)
 }

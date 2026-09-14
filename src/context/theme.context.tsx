@@ -53,15 +53,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (
-				event.altKey &&
-				event.key.toLowerCase() === 't' &&
-				(event.ctrlKey || event.metaKey)
-			) {
+			const isT = event.key?.toLowerCase() === 't' || event.code === 'KeyT'
+
+			if (event.altKey && isT && (event.ctrlKey || event.metaKey)) {
+				const target = event.target as HTMLElement | null
+				if (
+					target &&
+					(target.tagName === 'INPUT' ||
+						target.tagName === 'TEXTAREA' ||
+						target.isContentEditable)
+				) {
+					return
+				}
+
 				event.preventDefault()
 
 				const currentIndex = freeThemes.indexOf(theme as Theme)
-				const nextIndex = (currentIndex + 1) % freeThemes.length
+				const nextIndex =
+					currentIndex === -1 ? 0 : (currentIndex + 1) % freeThemes.length
 				const nextTheme = freeThemes[nextIndex]
 				setThemeCallback(nextTheme)
 			}

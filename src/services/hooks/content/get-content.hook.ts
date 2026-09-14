@@ -32,7 +32,7 @@ export interface FetchedContent {
 		badgeAnimate?: 'bounce' | 'pulse'
 		miniAppAuthRequired?: boolean
 	}[]
-	lockHeight: boolean
+	lockHeight?: boolean
 	badges: ExplorerCategoryBadge[]
 	span?: {
 		col?: number | null

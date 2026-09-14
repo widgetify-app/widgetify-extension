@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Portal } from '../portal/portal'
 import { useDropdown } from './use-dropdown'
 import { useState, useLayoutEffect, useRef } from 'react'
+import { Motion, Presence } from '@/common/motion'
 
 export interface DropdownOption {
 	id: string
@@ -57,13 +58,16 @@ export function Dropdown({
 		}
 	}
 
+	const onCloseRef = useRef(onClose)
+	onCloseRef.current = onClose
+
 	useLayoutEffect(() => {
 		if (!isOpen) {
 			setIsReady(false)
 			positionCalculatedRef.current = false
-			onClose?.()
+			onCloseRef.current?.()
 		}
-	}, [isOpen, onClose])
+	}, [isOpen])
 
 	useLayoutEffect(() => {
 		if (!isOpen || !dropdownRef.current || !dropdownContentRef.current) {
@@ -184,13 +188,7 @@ export function Dropdown({
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}
-					className={`
-            w-full text-left px-3 py-2 text-sm transition-colors
-            hover:bg-primary/10 hover:text-primary
-            disabled:opacity-50 disabled:cursor-not-allowed
-            disabled:hover:bg-transparent disabled:hover:text-muted
-            focus:outline-none focus:bg-primary/10 focus:text-primary
-          `}
+					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-primary/10 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-primary/10 focus:text-primary"
 				>
 					{option.label}
 				</button>
@@ -207,12 +205,24 @@ export function Dropdown({
 				{trigger}
 			</div>
 
-			{isOpen && !disabled && (
-				<Portal>
-					<div id={id} className="fixed inset-0 z-popover pointer-events-none">
-						<div
+			<Presence>
+				{isOpen && !disabled && (
+					<Portal
+						topLayer
+						key="dropdown-layer"
+						id={id}
+						style={{ zIndex: 99999 }}
+					>
+						<Motion.div
 							ref={dropdownContentRef}
-							className={`fixed z-popover shadow-xl overflow-hidden rounded-2xl bg-transparent! transition-opacity duration-100 ${isReady ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} bg-glass ${dropdownClassName}`}
+							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-base-200 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							initial={{ opacity: 0, scale: 0.95 }}
+							animate={{
+								opacity: isReady ? 1 : 0,
+								scale: isReady ? 1 : 0.95,
+							}}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
 							style={{
 								maxHeight,
 								width:
@@ -225,15 +235,19 @@ export function Dropdown({
 								top: dropdownPosition.top,
 								left: dropdownPosition.left,
 								visibility: isReady ? 'visible' : 'hidden',
+								zIndex: 99999,
 							}}
 						>
-							<div className="max-h-full overflow-y-auto">
+							<div
+								className="overflow-y-auto overscroll-contain scrollbar-none"
+								style={{ maxHeight }}
+							>
 								{dropdownContent}
 							</div>
-						</div>
-					</div>
-				</Portal>
-			)}
+						</Motion.div>
+					</Portal>
+				)}
+			</Presence>
 		</div>
 	)
 }

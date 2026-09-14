@@ -3,15 +3,15 @@ import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { Button, Modal } from '@/components/ui'
 import { useBookmarkStore } from '../../context/bookmark.context'
-import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants/browser-import.constant'
+import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants'
 import type { BrowserImportNode } from '../../types/bookmark.types'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '../../utils/browser-bookmarks.util'
+} from '../../utils/browser-bookmarks'
 
 interface ImportBrowserBookmarksModalProps {
 	isOpen: boolean
@@ -299,7 +299,7 @@ export function ImportBrowserBookmarksModal({
 						size="sm"
 						onClick={handlePermission}
 						rounded={'2xl'}
-						variant={'primary'}
+						color={'primary'}
 					>
 						فعال‌سازی دسترسی
 					</Button>
@@ -347,14 +347,14 @@ export function ImportBrowserBookmarksModal({
 							onClick={onClose}
 							size="md"
 							disabled={isImporting}
-							className="w-20 transition-colors duration-300 ease-in-out bg-base-300 hover:bg-error/10 text-base-content/80 hover:text-error rounded-2xl"
+							className="w-20 transition-colors duration-300 ease-in-out rounded-2xl"
 						>
 							انصراف
 						</Button>
 						<Button
 							onClick={handleImport}
 							size="md"
-							variant={'primary'}
+							color={'primary'}
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={

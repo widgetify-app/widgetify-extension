@@ -6,7 +6,7 @@ import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
 import Analytics from '@/analytics'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const renderPendingNotification = (pendingCount: number) => (
 	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-white bg-error rounded-full top-1 right-1 p-0.5 text-center">
@@ -87,16 +87,14 @@ export function FriendsListNavbar() {
 					<ActiveFriendsHorizontal />
 				</div>
 			</BottomSheet>
-			{firstAuth && (
-				<AuthRequiredModal
-					isOpen={firstAuth}
-					onClose={handleAuthModalClose}
-					title="ورود به حساب کاربری"
-					message="برای دسترسی به بخش مدیریت دوستان، ابتدا وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب"
-					cancelButtonText="بعدا"
-				/>
-			)}
+			<AuthRequiredModal
+				isOpen={firstAuth}
+				onClose={handleAuthModalClose}
+				title="ورود به حساب کاربری"
+				message="برای دسترسی به بخش مدیریت دوستان اول وارد حسابت شو"
+				loginButtonText="ورود به حساب"
+				cancelButtonText="فعلا نه"
+			/>
 		</>
 	)
 }

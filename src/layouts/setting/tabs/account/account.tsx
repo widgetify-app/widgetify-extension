@@ -8,7 +8,7 @@ export const AccountTab = () => {
 
 	return (
 		<div className="w-full h-full max-w-xl mx-auto">
-			<Presence mode="wait">
+			<Presence mode="wait" initial={false}>
 				{isAuthenticated ? (
 					<motion.div
 						key="profile"

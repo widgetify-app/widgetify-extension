@@ -1,23 +1,25 @@
-import { type JSX, useCallback, useEffect, useState } from 'react'
+import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { SettingModal } from '../setting/setting-modal'
-import { SettingsDropdown } from './components/settings-dropdown'
 import { FriendsListNavbar } from './friends-list/friends.navbar'
+import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
-import { useAppearanceSetting } from '@/context/appearance.context'
-import { MarketButton } from './market/market-button'
+import { NotificationNavbar } from './notifications/notification.navbar'
+import { MarketModalListener } from './market/market-modal-listener'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
-import { BlurModeButton } from '@/components/blur-mode/blur-mode.button'
+import { useAppearance } from '@/context/appearance.context'
+import { BlurModeButton } from './components/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
-import { Tooltip } from '@/components/ui'
+import { NewBadge } from '@/components/ui'
 import { SyncAccount } from './sync'
-import { getCurrentDate } from '../widgets/calendar/utils'
+import { getCurrentDate } from '../widgets/calendar/utils/date-events'
 import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { GetUserFirstName } from '@/common/utils/get-firstname'
+import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -88,15 +90,25 @@ export function NavbarTabs() {
 }
 
 export function NavbarLayout(): JSX.Element {
-	const { canReOrderWidget, toggleCanReOrderWidget } = useAppearanceSetting()
 	const [showSettings, setShowSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
+	const { canvasMode } = useAppearance()
+	const isEditingCanvas = canvasMode === 'edit'
+	const showNavbar = isVisible && !isEditingCanvas
+	const showHandle = !isVisible && !isEditingCanvas
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
 		setShowSettings(true)
 	}, [])
+
+	const { data: notificationsData } = useGetNotifications()
+
+	const hasCloseableNotifications = useMemo(() => {
+		const cardItems = notificationsData?.widgetifyCard || []
+		return cardItems.some((item) => item.closeable)
+	}, [notificationsData])
 
 	const onToggleNavbar = () => {
 		if (isVisible) {
@@ -107,7 +119,10 @@ export function NavbarLayout(): JSX.Element {
 		Analytics.event(`navbar_${isVisible ? 'closed' : 'opened'}`)
 	}
 
-	const settingsModalCloseHandler = () => setShowSettings(false)
+	const settingsModalCloseHandler = () => {
+		setShowSettings(false)
+		setTab(null)
+	}
 
 	useEffect(() => {
 		const load = async () => {
@@ -127,42 +142,26 @@ export function NavbarLayout(): JSX.Element {
 	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
-			{canReOrderWidget && (
-				<div className="fixed transform -translate-x-1/2 z-100 top-4 left-1/2 w-max">
-					<div className="px-4 py-2 border shadow-2xl shadow-warning bg-warning border-warning rounded-2xl">
-						<div className="flex items-center gap-3 text-xs font-bold text-warning-content">
-							<Icon
-								name="outlineDrag"
-								size={16}
-								className="animate-bounce text-warning"
-							/>
-							<span>حالت جابجایی فعال، ویجت هارو جابجا کنید</span>
-							<button
-								onClick={() => toggleCanReOrderWidget()}
-								className="transition-colors hover:text-error"
-							>
-								<Icon name="close" size={16} />
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
-			{!isVisible && (
-				<button
-					onClick={() => onToggleNavbar()}
-					className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-white/[0.08] cursor-pointer group"
-				>
-					<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
-				</button>
-			)}
+			<button
+				onClick={() => onToggleNavbar()}
+				aria-hidden={showHandle ? undefined : true}
+				tabIndex={showHandle ? 0 : -1}
+				className={`fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-content bg-glass border-t border-x border-white/10 rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-white/[0.08] cursor-pointer group ${
+					showHandle
+						? 'translate-y-0 opacity-100'
+						: 'translate-y-full opacity-0 pointer-events-none'
+				}`}
+			>
+				<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-base-content/50 group-hover:w-12" />
+				{hasCloseableNotifications && <NewBadge className="-top-1 left-3" />}
+			</button>
 
 			<div
-				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all ease-[cubic-bezier(0.23,1,0.32,1)] 
+				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
-						isVisible
-							? 'bottom-2 opacity-100 scale-100'
-							: '-bottom-32 opacity-0 scale-95 pointer-events-none'
+						showNavbar
+							? 'bottom-2 scale-100'
+							: '-bottom-32 scale-95 pointer-events-none'
 					}`}
 			>
 				<div
@@ -194,27 +193,28 @@ export function NavbarLayout(): JSX.Element {
 					</div>
 
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
-						<Tooltip content="بستن نوار">
-							<button
-								onClick={() => onToggleNavbar()}
-								className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-							>
-								<Icon name="chevronDown" size={15} />
-							</button>
-						</Tooltip>
+						<button
+							onClick={() => onToggleNavbar()}
+							className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+						>
+							<Icon name="chevronDown" size={15} />
+						</button>
+						<NotificationNavbar />
 						<BlurModeButton />
-						<SettingsDropdown />
 						<FriendsListNavbar />
-						<MarketButton />
+						<LayoutDropdown />
 						<ProfileNav />
 					</div>
 				</nav>
 			</div>
 
+			<MarketModalListener />
+
 			<SettingModal
 				isOpen={showSettings}
 				onClose={settingsModalCloseHandler}
 				selectedTab={tab}
+				onTabChange={setTab}
 			/>
 		</>
 	)

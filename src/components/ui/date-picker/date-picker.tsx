@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
 
@@ -117,7 +117,7 @@ export function DatePicker({
 
 		const getDayTextStyle = () => {
 			if (isDaySelected) {
-				return 'bg-primary text-white font-medium'
+				return 'bg-primary text-primary-content font-medium'
 			}
 
 			if (isFriday) {

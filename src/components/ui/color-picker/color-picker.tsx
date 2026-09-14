@@ -1,88 +1,128 @@
+import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { RgbaStringColorPicker } from 'react-colorful'
-import { createPortal } from 'react-dom'
+import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful'
+import { Portal } from '../portal/portal'
 
-interface PopoverColorPickerProps {
+export interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
+	className?: string
+	mode?: 'hex' | 'rgba'
 }
 
-export const ColorPicker: React.FC<PopoverColorPickerProps> = ({ color, onChange }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({
+	color,
+	onChange,
+	className = '',
+	mode = 'hex',
+}) => {
+	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
-	const popoverRef = useRef<HTMLDivElement>(null)
-	const [isOpen, setIsOpen] = useState<boolean>(false)
-	const [position, setPosition] = useState({ top: 0, left: 0 })
+	const popupRef = useRef<HTMLDivElement>(null)
+	const [coords, setCoords] = useState<{ top: number; left: number }>({
+		top: 0,
+		left: 0,
+	})
 
-	useEffect(() => {
-		if (isOpen && triggerRef.current) {
-			const rect = triggerRef.current.getBoundingClientRect()
-			setPosition({
-				top: rect.bottom + window.scrollY,
-				left: rect.right - 20 + window.scrollX,
-			})
+	const displayColor = color || '#000000'
+
+	const updatePosition = () => {
+		if (!triggerRef.current) return
+		const rect = triggerRef.current.getBoundingClientRect()
+		const popupWidth = 220
+		const popupHeight = 220
+
+		let left = rect.left
+		if (left + popupWidth > window.innerWidth - 16) {
+			left = window.innerWidth - popupWidth - 16
 		}
-	}, [isOpen])
+		if (left < 16) {
+			left = 16
+		}
+
+		let top = rect.bottom + 8
+		if (top + popupHeight > window.innerHeight - 16) {
+			top = rect.top - popupHeight - 8
+		}
+
+		setCoords({ top, left })
+	}
 
 	useEffect(() => {
+		if (!isOpen) return
+
+		updatePosition()
+
 		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node
 			if (
-				popoverRef.current &&
-				!popoverRef.current.contains(event.target as Node) &&
 				triggerRef.current &&
-				!triggerRef.current.contains(event.target as Node)
+				!triggerRef.current.contains(target) &&
+				popupRef.current &&
+				!popupRef.current.contains(target)
 			) {
 				setIsOpen(false)
 			}
 		}
 
-		const handleScroll = () => {
-			if (triggerRef.current && isOpen) {
-				const rect = triggerRef.current.getBoundingClientRect()
-				setPosition({
-					top: rect.bottom + window.scrollY,
-					left: rect.right - 200 + window.scrollX,
-				})
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				setIsOpen(false)
 			}
 		}
 
-		document.addEventListener('mousedown', handleClickOutside)
-		window.addEventListener('scroll', handleScroll)
-		window.addEventListener('resize', handleScroll)
+		const handleScroll = () => {
+			updatePosition()
+		}
+
+		const timer = setTimeout(() => {
+			document.addEventListener('mousedown', handleClickOutside)
+			document.addEventListener('keydown', handleKeyDown)
+			window.addEventListener('scroll', handleScroll, true)
+			window.addEventListener('resize', handleScroll)
+		}, 0)
 
 		return () => {
+			clearTimeout(timer)
 			document.removeEventListener('mousedown', handleClickOutside)
-			window.removeEventListener('scroll', handleScroll)
+			document.removeEventListener('keydown', handleKeyDown)
+			window.removeEventListener('scroll', handleScroll, true)
 			window.removeEventListener('resize', handleScroll)
 		}
 	}, [isOpen])
 
-	const displayColor = color || '#000000'
-
 	return (
-		<>
+		<div className={`relative inline-flex items-center ${className}`}>
 			<div
 				ref={triggerRef}
-				className="!w-8 !h-8 cursor-pointer !rounded-md border-0 !p-1"
+				onClick={() => setIsOpen((prev) => !prev)}
+				className="w-8 h-8 p-1 transition-transform border-0 shadow-xs cursor-pointer rounded-xl hover:scale-105 active:scale-95"
 				style={{ backgroundColor: displayColor }}
-				onClick={() => setIsOpen(!isOpen)}
 			/>
 
-			{isOpen &&
-				createPortal(
+			{isOpen && (
+				<Portal topLayer>
 					<div
-						ref={popoverRef}
-						className="fixed  flex p-2 border rounded-md shadow-lg bg-content border-content"
+						ref={popupRef}
+						dir="ltr"
+						className="fixed p-2.5 shadow-2xl rounded-2xl bg-base-200 border border-base-content/15 backdrop-blur-xl z-[99999] pointer-events-auto"
 						style={{
-							top: `${position.top}px`,
-							left: `${position.left}px`,
-							width: '200px',
-							zIndex: 1000,
+							top: `${coords.top}px`,
+							left: `${coords.left}px`,
+							width: '220px',
 						}}
 					>
-						<RgbaStringColorPicker color={displayColor} onChange={onChange} />
-					</div>,
-					document.body
-				)}
-		</>
+						{mode === 'hex' ? (
+							<HexColorPicker color={displayColor} onChange={onChange} />
+						) : (
+							<RgbaStringColorPicker
+								color={displayColor}
+								onChange={onChange}
+							/>
+						)}
+					</div>
+				</Portal>
+			)}
+		</div>
 	)
 }

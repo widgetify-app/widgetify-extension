@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/get-google-calendar-events.hook'
 import { useDate } from '@/context/date.context'
-import { CalendarEvent } from './google-event.item'
+import { CalendarEvent } from './google-event-item'
 import { useAuth } from '@/context/auth.context'
 import { callEvent } from '@/common/utils/call-event'
-import type { WidgetifyDate } from '../../utils'
-import { GoogleEventItemSkeleton } from './google-event.item-skeleton'
-import { Icon } from '@/src/icons'
+import type { WidgetifyDate } from '../../utils/date-events'
+import { GoogleEventItemSkeleton } from './google-event-item-skeleton'
+import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
 
 export const GoogleCalendarView: React.FC = () => {
@@ -60,12 +60,12 @@ export const GoogleCalendarView: React.FC = () => {
 	const classified = [...(events ?? [])]
 		.sort(
 			(a, b) =>
-				new Date(a.start.dateTime).getTime() -
-				new Date(b.start.dateTime).getTime()
+				new Date(a.start?.dateTime || a.start?.date || 0).getTime() -
+				new Date(b.start?.dateTime || b.start?.date || 0).getTime()
 		)
 		.map((event) => {
-			const start = new Date(event.start.dateTime)
-			const end = new Date(event.end.dateTime)
+			const start = new Date(event.start?.dateTime || event.start?.date || 0)
+			const end = new Date(event.end?.dateTime || event.end?.date || 0)
 
 			const isNow = todayFlag && now >= start && now <= end
 

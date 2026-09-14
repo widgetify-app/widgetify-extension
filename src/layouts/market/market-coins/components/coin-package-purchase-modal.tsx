@@ -2,10 +2,10 @@ import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { ConfigKey } from '@/common/constant/config.key'
+import { ConfigKey } from '@/common/constants/config.key'
 import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
-import { usePurchaseCoinPackage } from '@/services/hooks/market/market-coints.hook'
-import { Icon } from '@/src/icons'
+import { usePurchaseCoinPackage } from '@/services/hooks/market/market-coins.hook'
+import { Icon } from '@/icons'
 
 interface CoinPackagePurchaseModalProps {
 	isOpen: boolean
@@ -126,7 +126,7 @@ export function CoinPackagePurchaseModal({
 						loading={isPending}
 						loadingText="در حال انتقال..."
 						className="flex-1"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 					>
 						<Icon name="check" size={15} className="ml-1" />

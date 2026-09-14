@@ -2,12 +2,9 @@ import type { ReactNode } from 'react'
 import { Button } from '../button/button'
 import { Modal } from './modal'
 import { IconLoading } from '../loading/loading'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
-import {
-	confirmationConfirmButtonVariants,
-	confirmationIconVariants,
-} from './confirmation-modal.variants'
+import { confirmationIconVariants } from './confirmation-modal.variants'
 
 interface ConfirmationModalProps {
 	isOpen: boolean
@@ -22,6 +19,13 @@ interface ConfirmationModalProps {
 	icon?: ReactNode
 	direction?: 'rtl' | 'ltr'
 }
+
+const confirmButtonColor = {
+	danger: 'danger',
+	warning: 'warning',
+	info: 'info',
+	primary: 'primary',
+} as const
 
 const variantIcon = {
 	danger: <Icon name="trash" size={18} />,
@@ -93,7 +97,8 @@ export function ConfirmationModal({
 						onClick={handleCancel}
 						size="md"
 						disabled={isLoading}
-						className="bg-transparent border-none text-muted hover:text-content hover:bg-base-300/40 rounded-2xl"
+						variant="ghost"
+						rounded="2xl"
 					>
 						{cancelText}
 					</Button>
@@ -104,14 +109,13 @@ export function ConfirmationModal({
 						loading={isLoading}
 						loadingText={
 							<div className="flex items-center gap-1">
-								<IconLoading className="mx-0! text-white!" />
+								<IconLoading className="mx-0! text-current!" />
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}
-						className={cn(
-							confirmationConfirmButtonVariants({ variant }),
-							'w-fit px-8 border-none rounded-2xl'
-						)}
+						color={confirmButtonColor[variant]}
+						rounded="2xl"
+						className="w-fit px-8"
 					>
 						{confirmText}
 					</Button>

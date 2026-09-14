@@ -1,7 +1,7 @@
 import moment from 'jalali-moment'
-import { AvatarComponent, Button } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { OfflineIndicator } from '@/components/ui'
-import { UserCoin } from './user-coin'
+import { ProfileHeader } from './profile-header'
 import type React from 'react'
 import { Chip } from '@/components/ui'
 import { AddPhoneModal } from './modals/add-phone.modal'
@@ -13,10 +13,15 @@ import { ChangeOccupationModal } from './modals/edit-occupation'
 import { ChangeInterestsModal } from './modals/edit-interests'
 import { ChangeNameModal } from './modals/edit-name'
 import { ChangeCityModal } from './modals/edit-city'
-import { EditAvatarModal } from './modals/avatar/edit.avatar'
 import { AddEmailModal } from './modals/add-email.modal'
 import { ChangeUsernameModal } from './modals/edit-username'
-import { Icon } from '@/src/icons'
+import { AvatarCropModal } from './modals/avatar/avatar-crop.modal'
+import { GalleryPickerModal } from '@/components/gallery'
+import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
+import { showToast } from '@/common/toast'
+import { Icon } from '@/icons'
+import { useState } from 'react'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
 	if (gender === 'MALE') return { label: 'آقا هستم' }
@@ -39,7 +44,9 @@ const formatJalaliDate = (dateString: string | null | undefined): string => {
 export const ProfileDisplay = () => {
 	const { refetchUser, user } = useAuth()
 	const [showModal, setShowModal] = useState(false)
-	const [showAvatar, setShowAvatar] = useState(false)
+	const [showGallery, setShowGallery] = useState(false)
+	const [cropImage, setCropImage] = useState<string | null>(null)
+	const updateProfileMutation = useUpdateUserProfile()
 	const genderInfo = getGenderInfo(user?.gender)
 
 	const showEditBadge = (field: string) => {
@@ -60,57 +67,66 @@ export const ProfileDisplay = () => {
 		Analytics.event('open_add_phone_modal')
 	}
 
-	const onClick = () => {
-		setShowAvatar(true)
-		Analytics.event('edit_avatar_opened')
+	const handleUploadFile = (file: File) => {
+		if (file.size > 2 * 1024 * 1024) {
+			showToast('فایل بزرگتر از ۲ مگابایت است', 'error')
+			return
+		}
+		const validTypes = ['image/png', 'image/jpeg', 'image/webp']
+		if (!validTypes.includes(file.type)) {
+			showToast('فرمت فایل نامعتبر است', 'error')
+			return
+		}
+		setCropImage(URL.createObjectURL(file))
+		Analytics.event('edit_avatar_file_selected')
+	}
+
+	const handleCropComplete = async (croppedFile: File) => {
+		if (cropImage) {
+			URL.revokeObjectURL(cropImage)
+			setCropImage(null)
+		}
+		try {
+			const formData = new FormData()
+			formData.append('avatar', croppedFile)
+			await updateProfileMutation.mutateAsync(formData)
+			await refetchUser()
+			Analytics.event('avatar_updated')
+		} catch {
+			showToast('خطا در بارگذاری تصویر', 'error')
+		}
+	}
+
+	const handleCropCancel = () => {
+		if (cropImage) {
+			URL.revokeObjectURL(cropImage)
+			setCropImage(null)
+		}
+	}
+
+	const onSelectAvatarAsset = async (asset: GalleryAsset) => {
+		setShowGallery(false)
+		try {
+			const formData = new FormData()
+			formData.append('avatarKey', asset.id)
+			await updateProfileMutation.mutateAsync(formData)
+			await refetchUser()
+			Analytics.event('avatar_updated_from_gallery')
+		} catch {
+			showToast('خطا در تغییر آواتار', 'error')
+		}
 	}
 
 	return (
 		<div className="flex flex-col space-y-4">
-			<div className="relative flex flex-row items-center justify-between p-2 overflow-hidden border bg-base-100/50 border-content rounded-3xl">
-				<div className="flex items-center">
-					<div className="relative group">
-						<div className="rounded-full shadow-lg">
-							<AvatarComponent
-								url={user?.avatar || ''}
-								placeholder={user?.name || 'کاربر'}
-								size="xl"
-								onClick={() => onClick()}
-								className="transition-all cursor-pointer ring-4 ring-primary/20"
-							/>
-						</div>
-						<button
-							type="button"
-							onClick={() => onClick()}
-							className="absolute p-0.5 cursor-pointer text-white transition-all rounded-full shadow-xl -bottom-1 right-1 bg-primary hover:scale-110 active:scale-95"
-						>
-							<Icon name="cameraPlus" size={12} />
-						</button>
-						{showEditBadge('avatar') && (
-							<span className="absolute w-2 h-2 rounded-full right-4 -bottom-0.5 bg-error animate-pulse"></span>
-						)}
-					</div>
-					<div className="flex flex-col gap-2 mr-2">
-						<h2 className="text-xl font-bold text-content">
-							{user?.name || 'کاربر'}
-						</h2>
-						<p className="text-sm opacity-60" dir="ltr">
-							@{user?.username || '-'}
-						</p>
-					</div>
-				</div>
-				<div className="flex flex-col items-end gap-2">
-					<div className="mt-1 itece">
-						<UserCoin coins={user?.coins || 0} />
-					</div>
-					<div className="text-xs font-medium opacity-70 mb-0.5">
-						<span>
-							شروعِ ماجرا از{' '}
-							{moment(user?.joinedAt).locale('fa').format('jMMMM jYYYY')}
-						</span>
-					</div>
-				</div>
-			</div>
+			<ProfileHeader
+				onUploadFile={handleUploadFile}
+				onSelectFromGallery={() => {
+					setShowGallery(true)
+					Analytics.event('gallery_avatar_opened')
+				}}
+				showEditBadge={showEditBadge}
+			/>
 
 			<div className="overflow-hidden border border-base-300/50 rounded-2xl bg-base-100/30">
 				<DisplayRow
@@ -210,7 +226,7 @@ export const ProfileDisplay = () => {
 					label="علایق"
 					editable
 					value={
-						<div className="flex flex-wrap self-end justify-end flex-1 gap-1">
+						<div className="flex flex-wrap self-end justify-end flex-1 gap-1 overflow-y-auto max-w-42 sm:max-w-72">
 							{user?.interests?.map((i) => (
 								<Chip
 									onClick={() => {}}
@@ -246,9 +262,23 @@ export const ProfileDisplay = () => {
 					<OfflineIndicator mode="notification" />
 				</div>
 			)}
-			{showAvatar && (
-				<EditAvatarModal onClose={() => setShowAvatar(false)} show={true} />
+			{cropImage && (
+				<AvatarCropModal
+					show={true}
+					image={cropImage}
+					onClose={handleCropCancel}
+					onCropComplete={handleCropComplete}
+				/>
 			)}
+
+			<GalleryPickerModal
+				isOpen={showGallery}
+				onClose={() => setShowGallery(false)}
+				type="AVATAR"
+				title="گالری آواتارها"
+				onSelect={onSelectAvatarAsset}
+				selectedAssetUrl={user?.avatar}
+			/>
 
 			<AddPhoneModal isOpen={showModal} onClose={() => onCloseModal()} />
 		</div>

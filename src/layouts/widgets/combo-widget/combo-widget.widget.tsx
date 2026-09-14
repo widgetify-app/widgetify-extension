@@ -1,0 +1,72 @@
+import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { NewsLayout } from '../news/news.widget'
+import { WidgetContainer } from '../widget-container'
+import { WigiArzLayout } from '../wigi-arz/wigi-arz.widget'
+import { TabNavigation } from '@/components/ui'
+import { Icon } from '@/icons'
+
+export type ComboTabType = 'news' | 'currency'
+
+export function ComboWidget() {
+	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
+
+	const onTabClick = (tab: ComboTabType) => {
+		if (tab === activeTab) return
+		setActiveTab(tab)
+		setToStorage('comboTabs', tab)
+		Analytics.event('combo_tab_changed', { tab })
+	}
+
+	useEffect(() => {
+		async function load() {
+			const tabFromStorage = await getFromStorage('comboTabs')
+			if (!tabFromStorage) {
+				setActiveTab('currency')
+			} else {
+				setActiveTab(tabFromStorage)
+			}
+		}
+
+		load()
+	}, [])
+
+	if (!activeTab) return null
+
+	return (
+		<WidgetContainer className={'flex flex-col'}>
+			<div className="flex-none">
+				<TabNavigation
+					tabMode="advanced"
+					activeTab={activeTab}
+					onTabClick={onTabClick}
+					tabs={[
+						{
+							id: 'currency',
+							label: 'ارزها',
+							icon: <Icon name="currency" size={14} />,
+						},
+						{
+							id: 'news',
+							label: 'اخبار',
+							icon: <Icon name="outlineNewspaper" size={14} />,
+						},
+					]}
+					size="small"
+					className="w-full border-none"
+				/>
+			</div>
+
+			<div className="flex-1 overflow-hidden">
+				<div className="h-full overflow-y-auto hide-scrollbar  [&::-webkit-scrollbar]:w-0.1">
+					{activeTab === 'currency' ? (
+						<WigiArzLayout inComboWidget={true} enableBackground={false} />
+					) : (
+						<NewsLayout inComboWidget={true} enableBackground={false} />
+					)}
+				</div>
+			</div>
+		</WidgetContainer>
+	)
+}

@@ -10,7 +10,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 	const handleCopyCode = async () => {
 		try {
 			await navigator.clipboard.writeText(code)
-			showToast('کد دعوت کپی شد!', 'success')
+			showToast('کد دعوت کپی شد', 'success')
 		} catch (error) {
 			console.error('Failed to copy code:', error)
 			showToast('خطا در کپی کردن کد', 'error')
@@ -33,7 +33,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 					<div>
 						<p className="mb-1 text-sm text-muted">کد دعوت</p>
 						<p
-							className="font-mono text-lg font-semibold cursor-pointer text-content hover:underline"
+							className="text-lg font-semibold cursor-pointer text-content hover:underline"
 							onClick={handleCopyCode}
 						>
 							{code}
@@ -43,14 +43,13 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 						onClick={handleCopyCode}
 						size="sm"
 						rounded={'xl'}
-						variant={'primary'}
+						color={'primary'}
 					>
 						کپی کد
 					</Button>
 				</div>
 				<p className="flex text-sm text-muted gap-0.5 items-center">
-					از این کد برای دعوت دوستان خود استفاده کنید و هر دو ویج‌کوین دریافت
-					کنید!{' '}
+					با فرستادن این کد برای دوستات، هم خودت و هم دوستت ویج‌کوین می‌گیرید
 				</p>
 			</div>
 		</SectionPanel>

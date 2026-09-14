@@ -6,7 +6,7 @@ import { MiniAppRunner } from './mini-app-runner'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
@@ -146,10 +146,9 @@ export function MiniAppsLayout() {
 				</div>
 			</div>
 
-			{showInfo && (
-				<Modal
+			<Modal
 					title="برنامک ها"
-					isOpen
+					isOpen={showInfo}
 					onClose={() => setShowInfo(false)}
 					direction="rtl"
 				>
@@ -175,15 +174,15 @@ export function MiniAppsLayout() {
 					<Button
 						size="sm"
 						type="button"
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						onClick={() => setShowInfo(false)}
-						className="h-12 mt-2 text-base font-bold shadow-sm btn-block"
+						fullWidth
+						className="h-12 mt-2 text-base font-bold shadow-sm"
 					>
 						باشه
 					</Button>
 				</Modal>
-			)}
 		</div>
 	)
 }

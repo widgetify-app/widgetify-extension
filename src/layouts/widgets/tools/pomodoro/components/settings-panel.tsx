@@ -1,7 +1,7 @@
 import type React from 'react'
 import { Button, Checkbox } from '@/components/ui'
 import { Modal } from '@/components/ui'
-import { TextInput } from '@/components/text-input'
+import { TextInput } from '@/components/ui'
 import type { PomodoroSettings } from '../types'
 
 interface SettingInputProps {
@@ -132,7 +132,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 					<Button
 						size="md"
 						onClick={handleSaveAndClose}
-						variant={'primary'}
+						color={'primary'}
 						rounded={'2xl'}
 						className="w-full"
 					>

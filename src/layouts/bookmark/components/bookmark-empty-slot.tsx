@@ -1,4 +1,5 @@
-import { Icon } from '@/src/icons'
+import { cn } from '@/common/utils/cn'
+import { Icon } from '@/icons'
 
 export function EmptyBookmarkSlot({
 	onClick,
@@ -8,39 +9,25 @@ export function EmptyBookmarkSlot({
 	theme?: string
 	canAdd: boolean
 }) {
-	const getBookmarkStyle = () => {
-		return 'bg-content hover:!bg-base-300 text-content backdrop-blur-sm border-content bg-glass'
-	}
-
-	const getEmptySlotStyle = () => {
-		if (!canAdd) {
-			return `opacity-30 bg-content ${getBookmarkStyle()} cursor-default`
-		}
-
-		return getBookmarkStyle()
-	}
-
 	return (
 		<button
 			onClick={canAdd ? onClick : undefined}
-			className={`relative flex flex-col items-center shadow-sm justify-center p-4 transition-all duration-300 border cursor-pointer group rounded-2xl w-full h-20 md:h-[5.5rem] ${getEmptySlotStyle()} ${canAdd ? 'transition-transform ease-in-out group-hover:scale-102' : ''}`}
+			className={cn(
+				'relative flex flex-col items-center shadow-xs h-20 md:h-[5.9rem] w-full justify-center p-2 duration-300 border cursor-pointer border-content bg-content bg-glass group rounded-widget transition-transform ease-in-out group-hover:scale-102'
+			)}
 		>
-			<div className="relative flex items-center justify-center w-14 h-14">
+			<div className="relative flex items-center justify-center w-full h-full">
 				{canAdd ? (
-					<div className="flex items-center justify-center ">
-						<Icon name="bookmarkPlus" size={38} className="opacity-50" />
+					<div className="flex items-center justify-center">
+						<Icon name="bookmarkPlus" size={32} className="opacity-50" />
 					</div>
 				) : (
-					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20"></div>
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20" />
 				)}
 			</div>
 
 			{canAdd && (
-				<div
-					className={
-						'absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black/5 to-transparent rounded-xl'
-					}
-				/>
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-base-content/5 rounded-widget" />
 			)}
 		</button>
 	)

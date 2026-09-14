@@ -1,6 +1,6 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { type ButtonVariantProps, buttonVariants } from './button.variants'
 
 export interface ButtonProps
@@ -9,17 +9,15 @@ export interface ButtonProps
 	loading?: boolean
 	loadingText?: React.ReactNode
 	icon?: React.ReactNode
-	/** @deprecated Use `variant="primary"` instead. */
-	isPrimary?: boolean
 }
 
 export function Button({
 	className,
 	variant,
+	color,
 	size,
 	rounded,
 	fullWidth,
-	isPrimary,
 	loading,
 	loadingText,
 	icon,
@@ -27,13 +25,11 @@ export function Button({
 	children,
 	...rest
 }: ButtonProps) {
-	const resolvedVariant = variant ?? (isPrimary ? 'primary' : 'default')
-
 	return (
 		<button
 			type={type}
 			className={cn(
-				buttonVariants({ variant: resolvedVariant, size, rounded, fullWidth }),
+				buttonVariants({ variant, color, size, rounded, fullWidth }),
 				className
 			)}
 			{...rest}

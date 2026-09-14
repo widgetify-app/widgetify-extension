@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { useGetSearchboxData } from '@/services/hooks/trends/get-trends'
+import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
 import { getFaviconFromUrl } from '@/common/utils/icon'
 import { Tooltip } from '@/components/ui'
 import { BookmarkPopover } from './bookmark-popover'
 import { Page, usePage } from '@/context/page.context'
 import Analytics from '@/analytics'
 import { NewBadge } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 export function BrowserBookmark() {
 	const { data } = useGetSearchboxData({ enabled: true })
@@ -62,11 +62,12 @@ export function BrowserBookmark() {
 	}
 
 	return (
-		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-1">
-			<div className="flex flex-row items-center w-full gap-1 py-1 overflow-x-auto no-scrollbar scroll-smooth">
+		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-0.5">
+			<div className="flex flex-row items-center w-full gap-1 py-0.5 overflow-x-auto scrollbar-none scroll-smooth">
 				<div className="flex items-center shrink-0">
-					<div
-						className="flex items-center cursor-pointer group "
+					<button
+						type="button"
+						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={() => onClickToExplorer()}
 					>
 						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
@@ -80,25 +81,26 @@ export function BrowserBookmark() {
 								<NewBadge className="top-0 left-0" />
 							)}
 						</div>
-					</div>
+					</button>
 				</div>
 
 				<div ref={iconRef} className="flex items-center justify-center shrink-0">
-					<div
-						className="flex items-center cursor-pointer group"
+					<button
+						type="button"
+						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={handleTogglePopover}
 					>
 						<div
 							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
 								isOpen
-									? 'bg-primary text-white shadow-lg'
+									? 'bg-primary text-primary-content shadow-lg'
 									: 'bg-base-300  text-base-content/60'
 							}`}
 						>
 							<Icon name="folderSpecial" size={14} />
 							<p className="font-medium">بوکمارک مرورگر</p>
 						</div>
-					</div>
+					</button>
 				</div>
 
 				<div className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0" />
@@ -110,9 +112,11 @@ export function BrowserBookmark() {
 							className="flex items-center justify-center shrink-0"
 						>
 							<Tooltip content={item.name || item.title || ''}>
-								<div
+								<a
+									href={item.url || '#'}
+									target="_blank"
+									rel="noreferrer"
 									className="flex items-center cursor-pointer group"
-									onClick={() => window.open(item.url || '', '_blank')}
 								>
 									<img
 										src={
@@ -121,7 +125,7 @@ export function BrowserBookmark() {
 										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-base-300 "
 										alt={item.name}
 									/>
-								</div>
+								</a>
 							</Tooltip>
 						</div>
 					))}

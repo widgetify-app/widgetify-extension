@@ -9,6 +9,7 @@ export interface AvatarProps extends VariantProps<typeof avatarVariants> {
 	placeholder?: string
 	className?: string
 	onClick?: () => void
+	isPro?: boolean
 }
 
 export function AvatarComponent({
@@ -18,6 +19,7 @@ export function AvatarComponent({
 	size,
 	className,
 	onClick,
+	isPro,
 }: AvatarProps) {
 	const [imageError, setImageError] = useState(false)
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -48,7 +50,7 @@ export function AvatarComponent({
 	const shouldShowImage = displayUrl && !imageError
 
 	return (
-		<div className={cn(avatarVariants({ size }), className)} onClick={onClick}>
+		<div className={cn(avatarVariants({ size, isPro }), className)} onClick={onClick}>
 			{shouldShowImage ? (
 				<img
 					src={displayUrl}

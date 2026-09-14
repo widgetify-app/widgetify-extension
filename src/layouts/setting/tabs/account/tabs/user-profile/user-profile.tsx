@@ -12,7 +12,8 @@ import { ReferralCodeSection } from '../rewards/components/referral-code-section
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { ConfirmationModal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { VipBannerCard } from './vip-banner-card'
+import { Icon } from '@/icons'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -70,7 +71,7 @@ export const UserProfile = () => {
 				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
 				<Button
 					onClick={() => onClickLogout()}
-					variant={'danger'}
+					color={'danger'}
 					rounded={'2xl'}
 					size="md"
 				>
@@ -82,7 +83,8 @@ export const UserProfile = () => {
 	}
 
 	return (
-		<div className="w-full max-w-xl px-4 mx-auto">
+		<div className="w-full max-w-xl px-4 mx-auto space-y-4">
+			<VipBannerCard />
 			<ProfileDisplay />
 			{profile?.email && !profile?.verified && (
 				<AccountVerificationStatus
@@ -106,7 +108,7 @@ export const UserProfile = () => {
 					<Button
 						onClick={() => setShowConfirm(true)}
 						size="md"
-						variant={'danger'}
+						color={'danger'}
 						rounded={'2xl'}
 					>
 						<Icon name="logOut" size={16} />

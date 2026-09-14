@@ -8,7 +8,7 @@ import {
 } from '@dnd-kit/core'
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { FolderHeader } from './components/folder-header'
+import { BookmarkFolderModal } from './components/modal/bookmark-folder.modal'
 import { AddBookmarkModal } from './components/modal/add-bookmark.modal'
 import { ImportBrowserBookmarksModal } from './components/modal/import-browser-bookmarks.modal'
 import type { Bookmark, FolderPathItem } from './types/bookmark.types'
@@ -17,14 +17,28 @@ import { useBookmarkStore } from './context/bookmark.context'
 import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
+import { translateError } from '@/common/utils/translate-error'
 import { useUpdateBookmarkOrder } from '@/services/hooks/bookmark/update-bookmark-order.hook'
+import { usePrimaryBookmarkInstanceId } from '@/context/free-widget/free-widget.context'
+import type { WidgetSize } from '../widgets/layout-engine/types'
+import { validate } from 'uuid'
 
-export function BookmarksList() {
+const POINTER_SENSOR_OPTIONS = {
+	activationConstraint: {
+		distance: 5,
+	},
+}
+
+interface BookmarksListProps {
+	size?: WidgetSize
+	instanceId?: string
+}
+
+export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 	const {
 		bookmarks,
 		getCurrentFolderItems,
 		currentFolderId,
-		setCurrentFolderId,
 		addBookmark,
 		setBookmarks,
 	} = useBookmarkStore()
@@ -32,30 +46,37 @@ export function BookmarksList() {
 
 	const [showAddBookmarkModal, setShowAddBookmarkModal] = useState(false)
 	const [showImportBookmarksModal, setShowImportBookmarksModal] = useState(false)
+	const [folderModalPath, setFolderModalPath] = useState<FolderPathItem[]>([])
 	const { mutateAsync: updateOrder } = useUpdateBookmarkOrder()
 	const [folderPath, setFolderPath] = useState<FolderPathItem[]>([])
 
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: {
-				distance: 5,
-			},
-		})
-	)
-	const BOOKMARKS_PER_ROW = 5
-	const TOTAL_BOOKMARKS = BOOKMARKS_PER_ROW * 2
+	const sensors = useSensors(useSensor(PointerSensor, POINTER_SENSOR_OPTIONS))
+
+	const colsCount = size ? (size.w === 4 ? 5 : size.w) : 5
+	const rowsCount = size ? size.h : 2
+
+	const TOTAL_BOOKMARKS = colsCount * rowsCount
+
+	const primaryBookmarkInstanceId = usePrimaryBookmarkInstanceId()
+	const isPrimary = (() => {
+		if (!instanceId || instanceId === 'bookmarks-default') return true
+		if (primaryBookmarkInstanceId === undefined) return true
+		if (primaryBookmarkInstanceId === null) return true
+		return primaryBookmarkInstanceId === instanceId
+	})()
 
 	const handleDragEnd = async (event: DragEndEvent) => {
 		if (!isAuthenticated)
-			return showToast(
-				'برای مرتب‌سازی بوکمارک‌ها باید وارد حساب کاربری خود شوید.',
-				'error'
-			)
+			return showToast(translateError('UNAUTHORIZED') as string, 'error')
 
 		const { active, over } = event
 		if (!over || active.id === over.id) return
 
-		const currentItems = getCurrentFolderItems(currentFolderId)
+		const currentItems = getCurrentFolderItems(
+			currentFolderId,
+			instanceId,
+			isPrimary
+		)
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id
@@ -122,18 +143,17 @@ export function BookmarksList() {
 		Analytics.event('bookmark_reorder')
 	}
 
-	const handleNavigate = (folderId: string | null, depth: number) => {
-		if (depth === -1) {
-			setFolderPath([])
-			setCurrentFolderId(null)
-			return
-		}
-		const newPath = folderPath.slice(0, depth + 1)
-		setFolderPath(newPath)
-		setCurrentFolderId(folderId)
+	const handleOpenFolderInModal = (folder: Bookmark) => {
+		const isValidUuid = validate(folder.id)
+		const targetId = isValidUuid ? folder.id : folder.onlineId || folder.id
+		setFolderModalPath([{ id: targetId, title: folder.title }])
 	}
 
-	const currentFolderItems = getCurrentFolderItems(currentFolderId)
+	const currentFolderItems = getCurrentFolderItems(
+		currentFolderId,
+		instanceId,
+		isPrimary
+	)
 
 	const getDisplayedBookmarks = (): Bookmark[] => {
 		if (!currentFolderId) {
@@ -166,38 +186,37 @@ export function BookmarksList() {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex flex-col transition-all duration-300 ${
-						currentFolderId
-							? 'bg-content  rounded-2xl shadow-2xl overflow-hidden p-1'
-							: ''
-					}`}
-					id="bookmarks"
+					className={`flex bookmarks  flex-col h-full w-full transition-all duration-300`}
 				>
-					{currentFolderId && (
-						<FolderHeader
-							folderPath={folderPath}
-							onNavigate={handleNavigate}
-						/>
-					)}
-
-					<div
-						className={currentFolderId ? 'max-h-60 overflow-y-auto py-1' : ''}
-					>
+					<div className={'h-full w-full'}>
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}
 							folderPath={folderPath}
 							setFolderPath={(path) => setFolderPath(path)}
 							openAddBookmarkModal={() => setShowAddBookmarkModal(true)}
+							onOpenFolder={handleOpenFolderInModal}
+							colsCount={colsCount}
+							rowsCount={rowsCount}
+							isModal={Boolean(currentFolderId)}
 						/>
 					</div>
 				</div>
 			</DndContext>
+
+			<BookmarkFolderModal
+				isOpen={folderModalPath.length > 0}
+				onClose={() => setFolderModalPath([])}
+				folderPath={folderModalPath}
+				setFolderPath={setFolderModalPath}
+				instanceId={instanceId}
+				isPrimary={isPrimary}
+			/>
+
 			{showAddBookmarkModal && !isAuthenticated ? (
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowAddBookmarkModal(false)}
-					message="برای افزودن بوکمارک جدید باید وارد حساب کاربری خود شوید."
-					loginButtonText="ورود به حساب کاربری"
+					message="برای افزودن بوکمارک جدید اول وارد حسابت شو"
 				/>
 			) : (
 				showAddBookmarkModal && (
@@ -208,6 +227,7 @@ export function BookmarksList() {
 							addBookmark(bookmark, () => setShowAddBookmarkModal(false))
 						}
 						parentId={currentFolderId}
+						widgetId={instanceId}
 						onOpenImport={() => {
 							setShowAddBookmarkModal(false)
 							setShowImportBookmarksModal(true)
@@ -215,13 +235,12 @@ export function BookmarksList() {
 					/>
 				)
 			)}
-			{showImportBookmarksModal && (
-				<ImportBrowserBookmarksModal
-					isOpen={showImportBookmarksModal}
-					onClose={() => setShowImportBookmarksModal(false)}
-					parentId={currentFolderId}
-				/>
-			)}
+
+			<ImportBrowserBookmarksModal
+				isOpen={showImportBookmarksModal}
+				onClose={() => setShowImportBookmarksModal(false)}
+				parentId={currentFolderId}
+			/>
 		</>
 	)
 }

@@ -1,5 +1,5 @@
-import { getItemTypeEmoji } from '@/components/market/get-item-type-emoji'
-import { renderBrowserTitlePreview } from '@/components/market/title/title-render-preview'
+import { getItemTypeEmoji } from './get-item-type-emoji'
+import { renderBrowserTitlePreview } from '@/components/browser-title-preview'
 import type { MarketItem } from '@/services/hooks/market/market.interface'
 
 interface RenderPreviewProps {

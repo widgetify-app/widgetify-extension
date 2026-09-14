@@ -7,10 +7,11 @@ import { VoiceSearchPortal } from './voice/voice-search.portal'
 import { ImageSearchButton } from './image/image-search.button'
 import { EngineSelector } from './select-engine/engine-selector'
 import { SearchHistoryPortal } from './history.portal'
-import type { EngineMeta } from '@/services/hooks/trends/get-trends'
+import { SearchCompactRow } from './variants/search-2x1'
+import type { EngineMeta } from '@/services/hooks/trends/get-trends.hook'
 import { useSearchHistory } from './hooks/use-search-history'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',
@@ -19,15 +20,27 @@ const DEFAULT_ENGINE: EngineMeta = {
 	icon: '',
 }
 
-export function SearchLayout() {
+import type { WidgetSize } from '../widgets/layout-engine/types'
+
+interface SearchLayoutProps {
+	size?: WidgetSize
+}
+
+function SearchFullContent({ size }: SearchLayoutProps) {
+	const isCompact = Boolean(size && size.w <= 2)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [isInputFocused, setIsInputFocused] = useState(false)
 	const [selectedEngine, setSelectedEngine] = useState<EngineMeta>(DEFAULT_ENGINE)
 	const [showHistoryPortal, setShowHistoryPortal] = useState(false)
+	const [selectedIndex, setSelectedIndex] = useState(-1)
+	const [currentSuggestions, setCurrentSuggestions] = useState<
+		{ text: string; isRecent: boolean }[]
+	>([])
 	const searchRef = useRef<HTMLDivElement>(null)
 	const portalRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [activePortal, setActivePortal] = useState<'voice' | 'image' | null>(null)
+	const isHistoryOpen = showHistoryPortal && !activePortal
 	const [portalStyles, setPortalStyles] = useState<React.CSSProperties>({})
 	const { user } = useAuth()
 
@@ -35,7 +48,11 @@ export function SearchLayout() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const query = searchQuery.trim()
+		const targetQuery =
+			selectedIndex >= 0 && currentSuggestions[selectedIndex]
+				? currentSuggestions[selectedIndex].text
+				: searchQuery
+		const query = targetQuery.trim()
 		if (query) {
 			if (user?.searchAutocompleteEnabled) addSearch(query)
 
@@ -51,6 +68,26 @@ export function SearchLayout() {
 
 	const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value)
+		setSelectedIndex(-1)
+	}
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (!isHistoryOpen || currentSuggestions.length === 0) return
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev < currentSuggestions.length - 1 ? prev + 1 : -1
+			)
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault()
+			setSelectedIndex((prev) =>
+				prev > -1 ? prev - 1 : currentSuggestions.length - 1
+			)
+		} else if (e.key === 'Escape') {
+			setShowHistoryPortal(false)
+			setSelectedIndex(-1)
+		}
 	}
 
 	const handleClearSearch = () => {
@@ -72,6 +109,7 @@ export function SearchLayout() {
 
 	const handleHistorySearch = (query: string) => {
 		setSearchQuery(query)
+		setShowHistoryPortal(false)
 		SearchHandler({
 			content: query.trim(),
 			engine: selectedEngine,
@@ -100,12 +138,15 @@ export function SearchLayout() {
 			const target = event.target as HTMLElement
 			if (!target) return
 
-			const parentNode = target.parentNode as HTMLElement | null
 			if (
-				target.classList.contains('searchbox-item') ||
-				parentNode?.classList?.contains('searchbox-item')
-			)
+				target.closest('.modal') ||
+				target.closest('[role="dialog"]') ||
+				target.closest('.modal-backdrop') ||
+				target.closest('.searchbox-item') ||
+				target.classList.contains('searchbox-item')
+			) {
 				return
+			}
 
 			if (portalRef?.current?.contains(event.target as Node)) {
 				return
@@ -156,15 +197,17 @@ export function SearchLayout() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-start h-24 max-h-24">
+		<div
+			className={`flex flex-col items-center justify-center w-full ${size ? 'h-full' : 'h-auto'}`}
+		>
 			<div
 				ref={searchRef}
-				className="relative w-full p-0.5 bg-content bg-glass rounded-2xl"
+				className="relative w-full p-1 bg-content bg-glass rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
 					<div
 						className={
-							'relative flex items-center py-2 px-3 overflow-hidden shadow-xs transition-all duration-300 bg-content group rounded-2xl'
+							'relative flex items-center py-1.5 px-3 rounded-2xl overflow-hidden shadow-xs transition-all duration-300 bg-content group'
 						}
 					>
 						<EngineSelector onSelected={onEngineChange} />
@@ -173,7 +216,9 @@ export function SearchLayout() {
 							ref={inputRef}
 							type="text"
 							name="search"
+							value={searchQuery}
 							onChange={handleSearchInputChange}
+							onKeyDown={handleKeyDown}
 							onFocus={() => onFocusInput()}
 							className={
 								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
@@ -188,18 +233,25 @@ export function SearchLayout() {
 						>
 							<Icon name="close" size={20} className="opacity-50" />
 						</button>
-						<div
-							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
-						>
-							<ImageSearchButton onClick={() => setActivePortal('image')} />
-							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
-						</div>
-						<div
-							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer  hover:bg-base-300`}
+						{!isCompact && (
+							<div
+								className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300 `}
+							>
+								<ImageSearchButton
+									onClick={() => setActivePortal('image')}
+								/>
+								<VoiceSearchButton
+									onClick={() => setActivePortal('voice')}
+								/>
+							</div>
+						)}
+						<button
+							type="button"
+							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-base-300 border-none bg-transparent p-0`}
 							onClick={() => onSearchButtonClick()}
 						>
 							<Icon name="search" size={20} className="opacity-50" />
-						</div>
+						</button>
 						<div
 							className={
 								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
@@ -225,21 +277,29 @@ export function SearchLayout() {
 					/>
 				)}
 
-				{showHistoryPortal && !activePortal && (
-					<SearchHistoryPortal
-						portalRef={portalRef}
-						onClose={() => setShowHistoryPortal(false)}
-						onSearch={handleHistorySearch}
-						onEngineChange={onEngineChange}
-						searchQuery={searchQuery}
-						portalStyles={portalStyles}
-					/>
-				)}
+				<SearchHistoryPortal
+					isOpen={isHistoryOpen}
+					portalRef={portalRef}
+					onClose={() => setShowHistoryPortal(false)}
+					onSearch={handleHistorySearch}
+					onEngineChange={onEngineChange}
+					searchQuery={searchQuery}
+					portalStyles={portalStyles}
+					selectedIndex={selectedIndex}
+					onSuggestionsChange={setCurrentSuggestions}
+				/>
 
 				<BrowserBookmark />
 			</div>
 		</div>
 	)
+}
+
+export function SearchLayout({ size }: SearchLayoutProps = {}) {
+	if (size && size.w <= 2 && size.h <= 1) {
+		return <SearchCompactRow />
+	}
+	return <SearchFullContent size={size} />
 }
 
 function SearchHandler({ content, engine }: { content: string; engine: EngineMeta }) {

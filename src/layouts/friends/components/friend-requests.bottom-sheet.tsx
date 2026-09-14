@@ -7,7 +7,7 @@ import { RemoveFriendButton } from './remove-button'
 import { FriendsList } from './friends-list'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface Prop {
 	isOpen: boolean
@@ -45,7 +45,9 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 						size="sm"
 						onClick={() => acceptFriend(friend.id)}
 						disabled={isProcessing}
-						className="flex items-center justify-center gap-1 h-9 px-3 text-success bg-success/10 border border-success/20 rounded-lg transition-all active:scale-[0.97]"
+						className="gap-1 h-9 px-3 rounded-lg transition-all active:scale-[0.97]"
+						variant="outline"
+						color="success"
 					>
 						<Icon name="userCheck" size={18} />
 						<span className="text-xs font-medium">دوست شیم</span>

@@ -77,6 +77,12 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	}, [])
 
 	useEffect(() => {
+		const root = document.documentElement
+		root.classList.toggle('optimal-mode', Boolean(settings.isOptimalMode))
+		return () => root.classList.remove('optimal-mode')
+	}, [settings.isOptimalMode])
+
+	useEffect(() => {
 		async function getTimeZone() {
 			if (user?.timeZone && user.timeZone !== settings?.selected_timezone?.value) {
 				const timezones = await getTimezones()

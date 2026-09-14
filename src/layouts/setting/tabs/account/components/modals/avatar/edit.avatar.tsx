@@ -7,7 +7,7 @@ import { useAuth } from '@/context/auth.context'
 import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
 import { useRef, useState } from 'react'
 import { FooterButtons } from '../footer-buttons'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 import { AvatarCropModal } from './avatar-crop.modal'
 
 interface Prop {

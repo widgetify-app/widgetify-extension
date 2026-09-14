@@ -57,6 +57,28 @@ body {
   @apply border-base-300;
 }
 
+@utility transition-ui {
+  transition-property: color, background-color, border-color, outline-color, box-shadow, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@utility focus-ring {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@utility rounded-card {
+  border-radius: 0.75rem;
+}
+
+.font-latin {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  -moz-font-feature-settings: normal;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -160,12 +182,12 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb {
-  background: hsl(var(--bc) / 0.2);
+  background: color-mix(in oklab, var(--color-base-content) 20%, transparent);
   border-radius: 2px;
 }
 
 .scrollbar-thumb-base-300::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--bc) / 0.3);
+  background: color-mix(in oklab, var(--color-base-content) 30%, transparent);
 }
 
 .scrollbar-none {
@@ -175,6 +197,13 @@ input[type="color"]::-moz-color-swatch {
 
 .scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+html.optimal-mode *,
+html.optimal-mode *::before,
+html.optimal-mode *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
 }
 
 html.modal-isActive {
@@ -205,24 +234,6 @@ img {
   -o-user-select: none;
 }
 
-/* Modal animations */
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.animate-modal-in {
-  animation: modal-in 0.2s ease-out;
-}
-
-
 /* updater */
 
 /* Vertical Writing Mode */
@@ -249,9 +260,89 @@ img {
 }
 
 .rounded-widget {
-  @apply rounded-2xl
+  @apply rounded-3xl
 }
 
 .z-popover {
   z-index: 9999 !important;
+}
+
+@keyframes widget-wiggle {
+  0% {
+    transform: rotate(-0.35deg);
+  }
+
+  100% {
+    transform: rotate(0.35deg);
+  }
+}
+
+@keyframes widget-wiggle-alt {
+  0% {
+    transform: rotate(0.3deg);
+  }
+
+  100% {
+    transform: rotate(-0.3deg);
+  }
+}
+
+.animate-widget-wiggle-a {
+  animation: widget-wiggle 0.46s ease-in-out infinite alternate;
+  transform-origin: 50% 10%;
+}
+
+.animate-widget-wiggle-b {
+  animation: widget-wiggle-alt 0.48s ease-in-out infinite alternate;
+  animation-delay: -0.15s;
+  transform-origin: 50% 10%;
+}
+
+.animate-widget-wiggle-c {
+  animation: widget-wiggle 0.52s ease-in-out infinite alternate;
+  animation-delay: -0.3s;
+  transform-origin: 50% 10%;
+}
+
+.widget-canvas-item-transition {
+  transition: transform 200ms ease-out, width 200ms ease-out, height 200ms ease-out;
+}
+
+@keyframes bounce-slow {
+
+  0%,
+  100% {
+    transform: translateY(-10%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.8s ease-in-out infinite;
+}
+
+/* Flip clock leaf animations */
+@keyframes flip-fold-down {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flip-drop-down {
+  0% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
 }

@@ -1,8 +1,11 @@
 import type React from 'react'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
-import { useChangeFont, useChangeUI } from '@/services/hooks/extension/update-setting.hook'
+import {
+	useChangeFont,
+	useChangeUI,
+} from '@/services/hooks/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
@@ -10,8 +13,10 @@ import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
 export enum UI {
-	SIMPLE = 'SIMPLE',
+	DEFAULT = 'CUSTOM',
 	ADVANCED = 'ADVANCED',
+	SIMPLE = 'SIMPLE',
+	CUSTOM = 'CUSTOM',
 }
 export interface AppearanceData {
 	fontFamily: string
@@ -30,11 +35,16 @@ interface AppearanceContextContextType extends AppearanceData {
 	toggleCanReOrderWidget: () => void
 	ui: UI
 	setContentAlignment: (value: 'center' | 'top') => void
+	canvasMode: 'normal' | 'edit'
+	setCanvasMode: (mode: 'normal' | 'edit') => void
+	selectedInstanceId: string | null
+	setSelectedInstanceId: (id: string | null) => void
+	toggleCanvasMode: () => void
 }
 
 const DEFAULT_SETTINGS: AppearanceData = {
 	fontFamily: 'Vazir',
-	ui: UI.ADVANCED,
+	ui: UI.CUSTOM,
 	contentAlignment: 'top',
 }
 
@@ -44,9 +54,21 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
 	const [canReOrderWidget, setCanReOrderWidget] = useState(false)
+	const [canvasMode, setCanvasMode] = useState<'normal' | 'edit'>('normal')
+	const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null)
 	const { mutateAsync: changeFontAsync } = useChangeFont()
 	const { mutateAsync: changeUIAsync } = useChangeUI()
 	const { isAuthenticated } = useAuth()
+
+	const toggleCanvasMode = useCallback(() => {
+		setCanvasMode((prev) => {
+			const next = prev === 'normal' ? 'edit' : 'normal'
+			if (next === 'normal') {
+				setSelectedInstanceId(null)
+			}
+			return next
+		})
+	}, [])
 
 	useEffect(() => {
 		async function loadSettings() {
@@ -58,6 +80,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 				setSettings({
 					...DEFAULT_SETTINGS,
 					...appearance,
+					ui: UI.CUSTOM,
 				})
 				if (browserTitle) document.title = browserTitle.template
 			}
@@ -90,27 +113,6 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 			eventForTitle()
 		}
 	}, [])
-
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (
-				event.altKey &&
-				event.key.toLowerCase() === 'y' &&
-				(event.ctrlKey || event.metaKey)
-			) {
-				event.preventDefault()
-				setUI(
-					settings.ui === UI.ADVANCED ? UI.SIMPLE : UI.ADVANCED,
-					isAuthenticated
-				)
-			}
-		}
-
-		window.addEventListener('keydown', handleKeyDown)
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [isAuthenticated, settings])
 
 	const updateSetting = <K extends keyof AppearanceData>(
 		key: K,
@@ -173,20 +175,37 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		}
 	}, [isInitialized, settings.fontFamily])
 
+	const contextValue = useMemo<AppearanceContextContextType>(
+		() => ({
+			fontFamily: settings.fontFamily,
+			contentAlignment: settings.contentAlignment,
+			updateSetting,
+			setFontFamily,
+			canReOrderWidget,
+			ui: settings.ui,
+			setUI: (val) => setUI(val, isAuthenticated),
+			toggleCanReOrderWidget,
+			setContentAlignment,
+			canvasMode,
+			setCanvasMode,
+			selectedInstanceId,
+			setSelectedInstanceId,
+			toggleCanvasMode,
+		}),
+		[
+			settings.fontFamily,
+			settings.contentAlignment,
+			settings.ui,
+			canReOrderWidget,
+			canvasMode,
+			selectedInstanceId,
+			isAuthenticated,
+			toggleCanvasMode,
+		]
+	)
+
 	if (!isInitialized) {
 		return null
-	}
-
-	const contextValue: AppearanceContextContextType = {
-		fontFamily: settings.fontFamily,
-		contentAlignment: settings.contentAlignment,
-		updateSetting,
-		setFontFamily,
-		canReOrderWidget,
-		ui: settings.ui,
-		setUI: (val) => setUI(val, isAuthenticated),
-		toggleCanReOrderWidget,
-		setContentAlignment,
 	}
 
 	return (
@@ -205,3 +224,5 @@ export function useAppearanceSetting() {
 
 	return context
 }
+
+export const useAppearance = useAppearanceSetting

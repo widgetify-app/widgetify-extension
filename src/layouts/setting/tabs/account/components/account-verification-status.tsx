@@ -1,5 +1,5 @@
 import { Button, SectionPanel } from '@/components/ui'
-import { Icon } from '@/src/icons'
+import { Icon } from '@/icons'
 
 interface AccountVerificationStatusProps {
 	sendVerificationMutation: {
@@ -29,7 +29,8 @@ export const AccountVerificationStatus = ({
 				<Button
 					onClick={onSendVerificationEmail}
 					disabled={sendVerificationMutation.isPending}
-					className="px-3 py-2 text-xs transition-colors rounded-2xl text-warning-content bg-warning/80 hover:bg-warning/50"
+					className="px-3 py-2 text-xs transition-colors rounded-2xl"
+					color="warning"
 					size="sm"
 				>
 					{sendVerificationMutation.isPending ? (
