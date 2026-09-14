@@ -5,7 +5,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { GetUserFirstName } from '@/common/utils/get-firstname'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
+import { getCurrentDate } from '@widget/calendar/utils/date-events'
 import { safeAwait } from '@/services/api'
 import {
 	type MoodType,
@@ -66,7 +66,7 @@ export function DailyMoodNotification({ className }: Prop) {
 
 		setTimeout(() => {
 			queryClient.invalidateQueries({
-				queryKey: ['get-calendar-data'],
+				queryKey: ['get-moods'],
 			})
 			callEvent('remove_from_notifications', {
 				id: 'notificationMood',

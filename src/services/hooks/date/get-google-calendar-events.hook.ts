@@ -62,29 +62,18 @@ export interface GoogleCalendarResponse {
 	events: GoogleCalendarEvent[]
 }
 
-const cache: Map<string, GoogleCalendarEvent[]> = new Map()
+const STALE_TIME_MS = 5 * 60 * 1000
 
 export const useGetGoogleCalendarEvents = (
 	enabled: boolean,
 	startDate: string,
 	endDate?: string
 ) => {
-	const startParam = startDate
-	const endParam = endDate
-	const cacheKey = `${startParam}-${endParam}`
-
 	return useQuery<GoogleCalendarEvent[]>({
-		queryKey: ['google-calendar-events', cacheKey],
-		queryFn: async () => {
-			if (cache.has(cacheKey)) {
-				return cache.get(cacheKey) || []
-			}
-
-			const events = await getGoogleCalendarEvents(startParam, endParam)
-			cache.set(cacheKey, events)
-			return events
-		},
+		queryKey: ['google-calendar-events', startDate, endDate],
+		queryFn: async () => getGoogleCalendarEvents(startDate, endDate),
 		retry: 1,
+		staleTime: STALE_TIME_MS,
 		enabled: enabled,
 	})
 }
@@ -93,14 +82,9 @@ async function getGoogleCalendarEvents(
 	startDate: string,
 	endDate?: string
 ): Promise<GoogleCalendarEvent[]> {
-	try {
-		const client = getMainClient()
-		const { data } = await client.get<GoogleCalendarResponse>(
-			`/google/events?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate ?? '')}`
-		)
-		return data.events || []
-	} catch (error) {
-		console.error('Error fetching Google Calendar events:', error)
-		return []
-	}
+	const client = getMainClient()
+	const { data } = await client.get<GoogleCalendarResponse>(
+		`/google/events?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate ?? '')}`
+	)
+	return data.events || []
 }

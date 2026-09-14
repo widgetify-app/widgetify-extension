@@ -4,7 +4,7 @@ import GoogleCalendar from '@/assets/images/google-calendar.png'
 export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 	{
 		id: 'google',
-		name: 'گوگل کلندر',
+		name: 'تقویم گوگل',
 		description: 'اتصال به خدمات گوگل برای دسترسی به تقویم و جلسات گوگل میت',
 		bgColor: '',
 		isActive: true,
@@ -19,7 +19,7 @@ export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 			'دسترسی مستقیم به تقویم گوگل',
 			'نمایش و یادآوری هوشمند رویدادها و جلسات آینده',
 		],
-		permissions: ['مشاهده تقویم (سرویس گوگل کلندر)'],
+		permissions: ['مشاهده تقویم (سرویس تقویم گوگل)'],
 		isOptionalPermissions: true,
 	},
 ]

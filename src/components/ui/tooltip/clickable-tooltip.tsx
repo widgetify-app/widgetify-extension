@@ -2,6 +2,11 @@ import { Motion as motion, Presence } from '@/common/motion'
 
 import { type ReactNode, useEffect, useRef, useState, type RefObject } from 'react'
 import { Portal } from '../portal/portal'
+import {
+	type AnchoredPlacement,
+	isAnchorInViewport,
+	resolveAnchoredPlacement,
+} from '../utils/anchored-position'
 
 type Position =
 	| 'top'
@@ -22,6 +27,7 @@ interface ClickableTooltipProps {
 	className?: string
 	contentClassName?: string
 	closeOnClickOutside?: boolean
+	boundaryRef?: RefObject<HTMLElement | null>
 	triggerRef: RefObject<HTMLElement | null>
 	isOpen: boolean
 	setIsOpen: (isOpen: boolean) => void
@@ -34,83 +40,42 @@ const ClickableTooltip = ({
 	disableAutoPosition = false,
 	contentClassName = '',
 	closeOnClickOutside = true,
+	boundaryRef,
 	triggerRef,
 	isOpen,
 	setIsOpen,
 }: ClickableTooltipProps) => {
-	const [calculatedPosition, setCalculatedPosition] = useState<Position>(position)
-	const [tooltipCoords, setTooltipCoords] = useState({ x: 0, y: 0 })
+	const [placement, setPlacement] = useState<AnchoredPlacement | null>(null)
 
 	const tooltipRef = useRef<HTMLDivElement>(null)
+	const anchorElement = triggerRef.current
+	const isPlacedOnAnchor = placement?.anchor === anchorElement
 
 	const calculatePosition = () => {
 		if (!triggerRef.current || !tooltipRef.current) return
 
-		const triggerRect = triggerRef.current.getBoundingClientRect()
-		const tooltipRect = tooltipRef.current.getBoundingClientRect()
-		const viewportWidth = window.innerWidth
-		const viewportHeight = window.innerHeight
+		const anchor = triggerRef.current.getBoundingClientRect()
+		const viewport = { width: window.innerWidth, height: window.innerHeight }
 
-		let newPosition = position
-		let x = 0
-		let y = 0
-
-		switch (position) {
-			case 'top':
-				x = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2
-				y = triggerRect.top - tooltipRect.height - offset
-				break
-			case 'right':
-				x = triggerRect.right + offset
-				y = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2
-				break
-			case 'bottom':
-				x = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2
-				y = triggerRect.bottom + offset
-				break
-			case 'left':
-				x = triggerRect.left - tooltipRect.width - offset
-				y = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2
-				break
-			case 'bottom-right':
-				x = triggerRect.right
-				y = triggerRect.bottom + offset
-				break
-			case 'bottom-left':
-				x = triggerRect.left - tooltipRect.width
-				y = triggerRect.bottom + offset
-				break
-			case 'top-right':
-				x = triggerRect.right
-				y = triggerRect.top - tooltipRect.height - offset
-				break
-			case 'top-left':
-				x = triggerRect.left - tooltipRect.width
-				y = triggerRect.top - tooltipRect.height - offset
-				break
+		if (!isAnchorInViewport(anchor, viewport)) {
+			setIsOpen(false)
+			return
 		}
 
-		if (!disableAutoPosition) {
-			if (position === 'top' && y < 0) {
-				y = triggerRect.bottom + offset
-				newPosition = 'bottom'
-			} else if (position === 'bottom' && y + tooltipRect.height > viewportHeight) {
-				y = triggerRect.top - tooltipRect.height - offset
-				newPosition = 'top'
-			} else if (position === 'left' && x < 0) {
-				x = triggerRect.right + offset
-				newPosition = 'right'
-			} else if (position === 'right' && x + tooltipRect.width > viewportWidth) {
-				x = triggerRect.left - tooltipRect.width - offset
-				newPosition = 'left'
-			}
-		}
-
-		x = Math.max(10, Math.min(x, viewportWidth - tooltipRect.width - 10))
-		y = Math.max(10, Math.min(y, viewportHeight - tooltipRect.height - 10))
-
-		setCalculatedPosition(newPosition)
-		setTooltipCoords({ x, y })
+		setPlacement({
+			anchor: triggerRef.current,
+			...resolveAnchoredPlacement(
+				anchor,
+				{
+					width: tooltipRef.current.offsetWidth,
+					height: tooltipRef.current.offsetHeight,
+				},
+				viewport,
+				position,
+				offset,
+				!disableAutoPosition
+			),
+		})
 	}
 
 	const toggleTooltip = () => {
@@ -121,29 +86,48 @@ const ClickableTooltip = ({
 		if (isOpen) {
 			calculatePosition()
 
-			const handleResize = () => calculatePosition()
-			window.addEventListener('resize', handleResize)
-			window.addEventListener('scroll', handleResize, true)
+			const handleReposition = () => calculatePosition()
+			window.addEventListener('resize', handleReposition)
+			window.addEventListener('scroll', handleReposition, true)
 
 			return () => {
-				window.removeEventListener('resize', handleResize)
-				window.removeEventListener('scroll', handleResize, true)
+				window.removeEventListener('resize', handleReposition)
+				window.removeEventListener('scroll', handleReposition, true)
 			}
 		}
+	}, [isOpen, anchorElement])
+
+	useEffect(() => {
+		if (!isOpen) return
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.stopPropagation()
+				setIsOpen(false)
+				triggerRef.current?.focus()
+			}
+		}
+
+		document.addEventListener('keydown', handleKeyDown)
+		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [isOpen])
 
 	useEffect(() => {
 		if (!closeOnClickOutside || !isOpen) return
 
 		const handleClickOutside = (e: MouseEvent) => {
+			if (!triggerRef.current || !tooltipRef.current) return
+
+			const target = e.target as Node
 			if (
-				triggerRef.current &&
-				tooltipRef.current &&
-				!triggerRef.current.contains(e.target as Node) &&
-				!tooltipRef.current.contains(e.target as Node)
+				triggerRef.current.contains(target) ||
+				tooltipRef.current.contains(target) ||
+				boundaryRef?.current?.contains(target)
 			) {
-				setIsOpen(false)
+				return
 			}
+
+			setIsOpen(false)
 		}
 
 		document.addEventListener('mousedown', handleClickOutside)
@@ -207,30 +191,29 @@ const ClickableTooltip = ({
 	}
 
 	return (
-		<>
-			<Portal topLayer>
-				<Presence mode="wait">
-					{isOpen && (
-						<motion.div
-							ref={tooltipRef}
-							className={`fixed text-xs pointer-events-auto max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
-							style={{
-								left: tooltipCoords.x,
-								top: tooltipCoords.y,
-								zIndex: 9999,
-							}}
-							initial="hidden"
-							animate="visible"
-							exit="hidden"
-							variants={variants[calculatedPosition]}
-							transition={{ duration: 0.15, ease: 'easeOut' }}
-						>
-							{content}
-						</motion.div>
-					)}
-				</Presence>
-			</Portal>
-		</>
+		<Portal topLayer>
+			<Presence mode="wait">
+				{isOpen && (
+					<motion.div
+						ref={tooltipRef}
+						className={`fixed text-xs pointer-events-auto max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
+						style={{
+							left: placement?.x ?? 0,
+							top: placement?.y ?? 0,
+							visibility: isPlacedOnAnchor ? 'visible' : 'hidden',
+							zIndex: 9999,
+						}}
+						initial="hidden"
+						animate="visible"
+						exit="hidden"
+						variants={variants[placement?.side ?? position]}
+						transition={{ duration: 0.15, ease: 'easeOut' }}
+					>
+						{content}
+					</motion.div>
+				)}
+			</Presence>
+		</Portal>
 	)
 }
 

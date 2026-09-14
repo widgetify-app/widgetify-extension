@@ -2,7 +2,7 @@ import type {
 	WidgetDefinition,
 	WidgetSize,
 	WidgetVariantOption,
-} from '@/layouts/widgets/layout-engine/types'
+} from '@widget/layout-engine/types'
 
 interface AddWidgetPreviewProps {
 	definition: WidgetDefinition
@@ -50,7 +50,7 @@ export function AddWidgetPreview({
 
 			<div
 				style={getPreviewDimensions(previewSize)}
-				className="flex items-center justify-center overflow-hidden pointer-events-none select-none transition-all duration-200"
+				className="flex items-center justify-center overflow-hidden pointer-events-none select-none"
 			>
 				<div className="w-full h-full flex items-center justify-center">
 					{definition.node(

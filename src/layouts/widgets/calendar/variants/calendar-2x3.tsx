@@ -212,7 +212,7 @@ export function Calendar2x3() {
 					'flex flex-col flex-1 min-h-0 overflow-hidden',
 					activeTab === 'calendar' && 'p-2 pb-0'
 				)}
-				aria-label={activeTab === 'calendar' ? 'تقویم شمسی' : 'گوگل‌کلندر'}
+				aria-label={activeTab === 'calendar' ? 'تقویم شمسی' : 'تقویم گوگل'}
 			>
 				{activeTab === 'calendar' ? (
 					<>
@@ -236,7 +236,7 @@ export function Calendar2x3() {
 					},
 					{
 						id: 'google',
-						label: 'گوگل‌کلندر',
+						label: 'تقویم گوگل',
 						icon: <Icon name="googleCalendar" size={12} />,
 					},
 				]}

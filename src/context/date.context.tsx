@@ -6,7 +6,8 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	type WidgetifyDate,
-} from '@/layouts/widgets/calendar/utils/date-events'
+} from '@widget/calendar/utils/date-events'
+import { isSameJalaliDay } from '@widget/calendar/utils/jalali-date'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { useGeneralSetting } from './general-setting.context'
 
@@ -53,13 +54,7 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		setSelectedDate(newToday.clone())
 	}
 
-	const isToday = (date: WidgetifyDate): boolean => {
-		return (
-			date.jDate() === today.jDate() &&
-			date.jMonth() === today.jMonth() &&
-			date.jYear() === today.jYear()
-		)
-	}
+	const isToday = (date: WidgetifyDate): boolean => isSameJalaliDay(date, today)
 
 	const getHijriDate = (date: WidgetifyDate): string => {
 		const hijriDate = convertShamsiToHijri(date)
@@ -108,13 +103,7 @@ export const useDate = (): DateContextType => {
 			setCurrentDate: () => {},
 			setSelectedDate: () => {},
 			goToToday: () => {},
-			isToday: (date: WidgetifyDate) => {
-				return (
-					date.jDate() === activeDate.jDate() &&
-					date.jMonth() === activeDate.jMonth() &&
-					date.jYear() === activeDate.jYear()
-				)
-			},
+			isToday: (date: WidgetifyDate) => isSameJalaliDay(date, activeDate),
 			getHijriDate: (date: WidgetifyDate) => {
 				const hijriDate = convertShamsiToHijri(date)
 				return `${hijriDate.iYear()}/${hijriDate.iMonth() + 1}/${hijriDate.iDate()}`
