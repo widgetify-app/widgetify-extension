@@ -2,9 +2,9 @@ import infoEffect from '@/assets/sound-effects/alarm_info.mp3'
 type infoAlarmType = 'success' | 'done_todo' | 'reaction' | 'market' | 'info'
 let alarms: Record<infoAlarmType, string> = {
 	success: 'https://cdn.widgetify.ir/effects/alarm-success.mp3',
-	done_todo: 'https://cdn.widgetfiy.ir/effects/alarm_success_todo.mp3',
-	reaction: 'https://cdn.widgetfiy.ir/effects/alarm_reaction.mp3',
-	market: 'https://cdn.widgetfiy.ir/effects/alarm_market.mp3',
+	done_todo: 'https://cdn.widgetify.ir/effects/alarm_success_todo.mp3',
+	reaction: 'https://cdn.widgetify.ir/effects/alarm_reaction.mp3',
+	market: 'https://cdn.widgetify.ir/effects/alarm_market.mp3',
 	info: '',
 }
 
