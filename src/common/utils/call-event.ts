@@ -1,10 +1,10 @@
 import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetBackgroundId, PetTypes } from '@/layouts/widgets/pet/types'
-import type { WigiNewsSetting } from '@/layouts/widgets/news/rss.interface'
-import type { WeatherSettings } from '@/layouts/widgets/weather/weather.interface'
-import type { ClockSettings } from '@/layouts/widgets/wigi-pad/clock-display/clock-setting.interface'
-import type { WigiPadDateSetting } from '@/layouts/widgets/wigi-pad/date-display/date-setting.interface'
+import type { PetBackgroundId, PetTypes } from '@widget/pet/types'
+import type { WigiNewsSetting } from '@widget/news/rss.interface'
+import type { WeatherSettings } from '@widget/weather/weather.interface'
+import type { ClockSettings } from '@widget/wigi-pad/clock-display/clock-setting.interface'
+import type { WigiPadDateSetting } from '@widget/wigi-pad/date-display/date-setting.interface'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
@@ -59,7 +59,6 @@ export interface EventName {
 	currencies_updated: {
 		currencies: string[]
 		colorMode: CurrencyColorMode
-		compactCurrencies?: Record<string, string>
 	}
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings

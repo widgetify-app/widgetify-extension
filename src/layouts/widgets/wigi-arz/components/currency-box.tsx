@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { CurrencyColorMode } from '@/context/currency.context'
-import {
-	type FetchedCurrency,
-	useGetCurrencyByCode,
-} from '@/services/hooks/currency/get-currency-by-code.hook'
-import { GetPrice } from '../utils/get-price'
-import { CurrencyModalComponent } from './currency-modal'
 import { showToast } from '@/common/toast'
+import { cn } from '@/common/utils/cn'
+import { CurrencyColorMode } from '@/context/currency.context'
 import { Icon } from '@/icons'
+import { useCurrencyPrice } from '../hooks/use-currency-price'
+import { getPrice } from '../utils/get-price'
+import { CurrencyModalComponent } from './currency-modal'
+
+const PARTNER_REDIRECT_DELAY_MS = 1000
 
 interface CurrencyBoxProps {
 	code: string
 	currencyColorMode: CurrencyColorMode | null
-	dragHandle?: React.HTMLAttributes<HTMLDivElement>
+	dragHandle?: React.HTMLAttributes<HTMLElement>
 }
 
 export const CurrencyBox = ({
@@ -23,47 +23,8 @@ export const CurrencyBox = ({
 	currencyColorMode,
 	dragHandle,
 }: CurrencyBoxProps) => {
-	const { data, dataUpdatedAt } = useGetCurrencyByCode(code, {
-		refetchInterval: null,
-	})
-
-	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
-	const [priceChange, setPriceChange] = useState(0)
+	const { currency, priceChange, hasFailed } = useCurrencyPrice(code)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-
-	const prevPriceRef = useRef<number | null>(null)
-
-	useEffect(() => {
-		async function load() {
-			const cached = await getFromStorage(`currency:${code}`)
-			if (cached) {
-				setCurrency(cached)
-			}
-		}
-		load()
-	}, [code])
-
-	useEffect(() => {
-		if (data) {
-			setCurrency(data)
-			setToStorage(`currency:${code}`, data)
-		}
-		const event = new Event('fetched-data')
-		window.dispatchEvent(event)
-	}, [dataUpdatedAt, code, data])
-
-	useEffect(() => {
-		if (currency?.price) {
-			if (prevPriceRef.current !== currency.price) {
-				prevPriceRef.current = currency.price
-				if (currency.changePercentage) {
-					const changeAmount =
-						(currency.changePercentage / 100) * currency.rialPrice
-					setPriceChange(changeAmount)
-				}
-			}
-		}
-	}, [currency?.price, currency?.changePercentage, currency?.rialPrice])
 
 	function toggleCurrencyModal() {
 		if (currency?.url && currency?.isPartnerShip) {
@@ -75,90 +36,113 @@ export const CurrencyBox = ({
 					url: currency.url,
 				})
 
-				if (currency.url) window.open(currency.url, '_blank')
-			}, 1000)
+				if (currency.url) {
+					window.open(currency.url, '_blank', 'noopener,noreferrer')
+				}
+			}, PARTNER_REDIRECT_DELAY_MS)
 		} else {
 			setIsModalOpen(!isModalOpen)
 		}
 	}
 
+	const isPositive = priceChange > 0
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
-			? `${priceChange > 0 ? 'text-error' : 'text-success'}`
-			: `${priceChange > 0 ? 'text-success' : 'text-error'}`
+			? isPositive
+				? 'text-error'
+				: 'text-success'
+			: isPositive
+				? 'text-success'
+				: 'text-error'
+
+	const price = currency ? getPrice(code, currency) : null
 
 	return (
 		<>
 			<div
-				className="group flex items-center justify-between gap-2 px-2.5 py-3 rounded-2xl cursor-pointer bg-base-300/70 hover:bg-base-300/40 border border-base-300/70 transition-all duration-200 active:scale-[0.98]"
-				onClick={toggleCurrencyModal}
 				dir="ltr"
+				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl bg-base-content/5 hover:bg-base-content/10 border border-base-content/10 transition-ui active:scale-[0.98]"
 			>
-				<div className="flex items-center min-w-0 gap-2">
-					{dragHandle && (
-						<div
-							{...dragHandle}
-							className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-muted opacity-40 group-hover:opacity-90 shrink-0"
-						>
-							<Icon name="dragIndicator" size={14} />
-						</div>
-					)}
+				{dragHandle && (
+					<span
+						{...dragHandle}
+						aria-label={`جابه‌جایی ${code}`}
+						className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-muted opacity-40 group-hover:opacity-90 shrink-0"
+					>
+						<Icon name="dragIndicator" size={14} aria-hidden="true" />
+					</span>
+				)}
 
-					<div className="relative shrink-0">
-						{currency?.icon ? (
-							<img
-								src={currency.icon}
-								alt={currency?.name?.en || code}
-								className="object-cover w-5 h-5 rounded-lg bg-base-200"
-							/>
-						) : (
-							<div className="w-5 h-5 rounded-full bg-base-content/10 animate-pulse" />
-						)}
+				<button
+					type="button"
+					onClick={toggleCurrencyModal}
+					aria-label={`${currency?.name?.fa || code}${price ? `، ${price.formatted}` : ''}`}
+					className="flex items-center justify-between flex-1 min-w-0 gap-2 cursor-pointer focus-visible:focus-ring"
+				>
+					<span className="flex items-center min-w-0 gap-2">
+						<span className="relative shrink-0">
+							{currency?.icon ? (
+								<img
+									src={currency.icon}
+									alt=""
+									className="object-cover w-5 h-5 rounded-lg bg-base-200"
+								/>
+							) : (
+								<span
+									aria-hidden="true"
+									className="block w-5 h-5 rounded-full bg-base-content/10 animate-pulse"
+								/>
+							)}
 
-						{currency?.partnershipLogo && (
-							<img
-								className="absolute right-0 z-50 w-3 h-3 -bottom-0.5"
-								src={currency.partnershipLogo}
-								alt="partnership"
-							/>
-						)}
-					</div>
+							{currency?.partnershipLogo && (
+								<img
+									className="absolute right-0 w-3 h-3 -bottom-0.5"
+									src={currency.partnershipLogo}
+									alt="نماد همکار"
+								/>
+							)}
+						</span>
 
-					<div className="flex items-center min-w-0">
 						<span className="text-xs font-bold uppercase truncate text-content">
 							{code}
 						</span>
-					</div>
-				</div>
+					</span>
 
-				<div className="flex items-center gap-2 shrink-0">
-					<div className="flex items-baseline gap-1.5">
+					<span className="flex items-baseline gap-1.5 shrink-0">
 						<span className="text-xs font-bold tracking-tight text-content">
-							{currency ? GetPrice(code, currency).label : '-'}
+							{price ? (
+								<data value={price.value}>
+									{price.isDollar && '💲'}
+									{price.formatted}
+								</data>
+							) : hasFailed ? (
+								<span className="text-muted">دریافت نشد</span>
+							) : (
+								'-'
+							)}
 						</span>
 						{priceChange !== 0 && (
-							<span className={`text-xs ${priceChangeColor}`}>
-								{priceChange > 0 ? (
-									<Icon name="upLong" className="inline" />
-								) : (
-									<Icon name="downLong" className="inline" />
-								)}
+							<span className={cn('text-xs', priceChangeColor)}>
+								<Icon
+									name={isPositive ? 'upLong' : 'downLong'}
+									className="inline"
+									aria-hidden="true"
+								/>
 							</span>
 						)}
-					</div>
-				</div>
+					</span>
+				</button>
 			</div>
 
 			{currency && !currency.url && isModalOpen && (
 				<CurrencyModalComponent
+					key={code}
 					code={code}
 					currencyColorMode={currencyColorMode}
 					currency={currency}
 					priceChange={priceChange}
-					imgMainColor={''}
 					isModalOpen={isModalOpen}
 					toggleCurrencyModal={toggleCurrencyModal}
-					key={code}
 				/>
 			)}
 		</>

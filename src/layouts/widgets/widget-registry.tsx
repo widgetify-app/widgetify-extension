@@ -302,7 +302,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 			{
 				id: 'compact',
-				label: 'تک ارز (قابل تکرار)',
+				label: 'تک ارز',
 				size: { w: 1, h: 1 },
 				meta: { currencyCode: 'USD', variant: 'compact' },
 				isVipOnly: true,

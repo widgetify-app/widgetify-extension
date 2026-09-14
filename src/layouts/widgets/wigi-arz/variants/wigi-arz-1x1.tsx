@@ -1,160 +1,115 @@
-import { useEffect, useRef, useState } from 'react'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { useState } from 'react'
 import { useCurrencyStore } from '@/context/currency.context'
-import {
-	type FetchedCurrency,
-	useGetCurrencyByCode,
-} from '@/services/hooks/currency/get-currency-by-code.hook'
-import { GetPrice } from '../utils/get-price'
-import { CurrencyModalComponent } from '../components/currency-modal'
 import { Icon } from '@/icons'
-import { Button, Tooltip } from '@/components/ui'
-import { callEvent } from '@/common/utils/call-event'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
+import { CurrencyModalComponent } from '../components/currency-modal'
+import { useCurrencyPrice } from '../hooks/use-currency-price'
+import type { WigiArzMeta } from '../types'
+import { getPrice } from '../utils/get-price'
 
 interface CurrencyCompactSquareProps {
 	defaultCode?: string
-	instanceId?: string
-	meta?: {
-		currencyCode?: string
-		[key: string]: any
-	}
+	meta?: WigiArzMeta
 }
 
 export function CurrencyCompactSquare({
 	defaultCode = 'USD',
-	instanceId,
 	meta,
 }: CurrencyCompactSquareProps) {
 	const { currencyColorMode } = useCurrencyStore()
 
 	const activeCode = meta?.currencyCode || defaultCode || 'USD'
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
-	const [priceChange, setPriceChange] = useState(0)
-	const prevPriceRef = useRef<number | null>(null)
+	const { currency, priceChange, hasFailed, refetch } = useCurrencyPrice(activeCode)
 
-	const { data, dataUpdatedAt } = useGetCurrencyByCode(activeCode, {
-		refetchInterval: null,
-	})
+	const toggleModal = () => setIsModalOpen((prev) => !prev)
 
-	useEffect(() => {
-		async function loadCache() {
-			if (!activeCode) return
-			const cached = await getFromStorage(`currency:${activeCode}`)
-			if (cached) {
-				setCurrency(cached)
-			}
-		}
-		loadCache()
-	}, [activeCode])
-
-	useEffect(() => {
-		if (data && activeCode) {
-			setCurrency(data)
-			setToStorage(`currency:${activeCode}`, data)
-		}
-	}, [dataUpdatedAt, activeCode, data])
-
-	useEffect(() => {
-		if (currency?.price) {
-			if (prevPriceRef.current !== currency.price) {
-				prevPriceRef.current = currency.price
-				if (currency.changePercentage) {
-					const changeAmount =
-						(currency.changePercentage / 100) * currency.rialPrice
-					setPriceChange(changeAmount)
-				}
-			}
-		}
-	}, [currency?.price, currency?.changePercentage, currency?.rialPrice])
-
-	const handleOpenSettings = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		callEvent('openWidgetsSettings', {
-			tab: WidgetTabKeys.wigiArz,
-			instanceId,
-			size: { w: 1, h: 1 },
-		})
-	}
-
-	const toggleModal = () => {
-		setIsModalOpen((prev) => !prev)
+	if (hasFailed) {
+		return (
+			<div className="flex flex-col items-center justify-center w-full h-full gap-[4.2cqh] p-[10.4cqh] text-center select-none">
+				<Icon
+					name="alert"
+					size={16}
+					className="text-muted"
+					aria-hidden="true"
+				/>
+				<p className="text-[9.4cqh] leading-tight text-muted">
+					قیمت {activeCode} دریافت نشد
+				</p>
+				<button
+					type="button"
+					onClick={() => refetch()}
+					className="px-[8.3cqh] py-[4.2cqh] rounded-lg bg-base-content/10 text-[9.4cqh] font-bold text-content cursor-pointer transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+				>
+					تلاش دوباره
+				</button>
+			</div>
+		)
 	}
 
 	if (!currency) {
 		return (
-			<div className="flex flex-col items-center justify-between h-full w-full p-2.5 select-none">
-				<div className="flex items-center gap-1.5 w-full justify-between">
+			<div
+				aria-hidden="true"
+				className="flex flex-col items-center justify-between w-full h-full p-[10.4cqh] select-none"
+			>
+				<div className="flex items-center justify-between w-full gap-1.5">
 					<div className="w-5 h-5 rounded-full skeleton" />
-					<div className="w-14 h-3.5 rounded skeleton" />
+					<div className="h-3.5 w-14 rounded skeleton" />
 				</div>
-				<div className="w-20 h-6 rounded skeleton my-auto" />
+				<div className="w-20 h-6 my-auto rounded skeleton" />
 				<div className="w-12 h-4 rounded skeleton" />
 			</div>
 		)
 	}
 
-	const priceResult = GetPrice(activeCode, currency)
+	const price = getPrice(activeCode, currency)
 
 	return (
-		<>
-			<div
+		<div className="relative w-full h-full">
+			<button
+				type="button"
 				onClick={toggleModal}
-				className="relative flex flex-col justify-between h-full w-full p-2.5 text-center select-none cursor-pointer group hover:bg-base-content/5 transition-all duration-200"
+				aria-label={`${currency.name?.fa || activeCode}، ${price.formatted}`}
+				className="flex flex-col justify-between w-full h-full p-[10.4cqh] text-center cursor-pointer select-none transition-ui hover:bg-base-content/5 focus-visible:focus-ring"
 			>
-				<div className="flex items-center justify-between gap-1 w-full">
-					<div className="flex items-center gap-1.5 min-w-0">
+				<span className="flex items-center justify-between w-full gap-1">
+					<span className="flex items-center gap-1.5 min-w-0">
 						<img
 							src={currency.icon}
-							alt={currency.name?.en || activeCode}
-							className="w-4.5 h-4.5 rounded-md object-cover shrink-0"
+							alt=""
+							className="object-cover rounded-md w-4.5 h-4.5 shrink-0"
 						/>
-						<div className="flex flex-col items-start min-w-0 text-right">
-							<span className="text-[11px] font-bold text-content truncate leading-tight">
+						<span className="flex flex-col items-start min-w-0 text-right">
+							<span className="text-[11.5cqh] font-bold text-content truncate leading-tight">
 								{currency.name?.fa || activeCode}
 							</span>
-							<span className="text-[9px] text-muted font-mono uppercase leading-tight">
+							<span className="text-[9.4cqh] text-muted font-mono uppercase leading-tight">
 								{activeCode}
 							</span>
-						</div>
-					</div>
-
-					<Tooltip content="تنظیمات">
-						<Button
-							size="xs"
-							variant="ghost"
-							rounded="full"
-							onClick={handleOpenSettings}
-							className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-						>
-							<Icon name="settings" size={11} />
-						</Button>
-					</Tooltip>
-				</div>
-
-				<div className="flex flex-col items-center justify-center gap-0.5 my-auto px-1 py-0.5">
-					<span
-						className="text-base sm:text-lg font-black text-content leading-tight tracking-tight"
-						dir="ltr"
-					>
-						{priceResult.label}
+						</span>
 					</span>
-				</div>
-			</div>
+				</span>
 
-			{currency && (
-				<CurrencyModalComponent
-					imgMainColor=""
-					code={activeCode}
-					currencyColorMode={currencyColorMode}
-					currency={currency}
-					priceChange={priceChange}
-					isModalOpen={isModalOpen}
-					toggleCurrencyModal={toggleModal}
-					key={activeCode}
-				/>
-			)}
-		</>
+				<span
+					dir="ltr"
+					className="block my-auto text-[18.8cqh] font-black leading-tight tracking-tight text-content"
+				>
+					<data value={price.value}>
+						{price.isDollar && '💲'}
+						{price.formatted}
+					</data>
+				</span>
+			</button>
+
+			<CurrencyModalComponent
+				key={activeCode}
+				code={activeCode}
+				currencyColorMode={currencyColorMode}
+				currency={currency}
+				priceChange={priceChange}
+				isModalOpen={isModalOpen}
+				toggleCurrencyModal={toggleModal}
+			/>
+		</div>
 	)
 }
