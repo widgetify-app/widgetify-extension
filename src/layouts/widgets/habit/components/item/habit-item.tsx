@@ -1,14 +1,13 @@
 import Analytics from '@/analytics'
-import { getContrastingTextColor } from '@/common/color'
-import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { playAlarm } from '@/common/play-alarm'
 import { showToast } from '@/common/toast'
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
 import { safeAwait } from '@/services/api'
-import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
+import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { formatHabitGoal } from '../../utils/habit-goal'
+import { resolveHabitStep } from '../../utils/habit-step'
 import { SegmentedProgressRing } from './button-progress-ring'
 import { SimpleProgressRing } from './button-simple-progress-ring'
 import { Icon } from '@/icons'
@@ -28,19 +27,21 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	const target = habit.target || 1
 	const value = habit.today.value
 	const isSimpleHabit = target === 1
+	const isDone = habit.today.isDone || value >= target
 
 	const handleQuickLog = async (e: React.MouseEvent) => {
 		e.stopPropagation()
 		if (isPending) return
-		const date = today.clone().doAsGregorian().format('YYYY-MM-DD')
-		let step = HABIT_UNIT_STEP[habit.unit] || 1
-		if (habit.comparison === HabitComparison.EXACT && value + step > target) step = 0
-		if (habit.comparison === HabitComparison.AT_MOST && value + step > target) {
-			return showToast(`مقدار فعلی به حداکثر هدف (${target}) رسیده است.`, 'error')
+
+		const { amount, blockedMessage } = resolveHabitStep(habit, value)
+		if (blockedMessage) {
+			showToast(blockedMessage, 'error')
+			return
 		}
 
+		const date = today.clone().doAsGregorian().format('YYYY-MM-DD')
 		const [error] = await safeAwait(
-			logProgress({ id: habit.id, input: { date, amount: step } })
+			logProgress({ id: habit.id, input: { date, amount } })
 		)
 		if (error) {
 			showToast(translateError(error) as string, 'error')
@@ -52,43 +53,42 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	}
 
 	return (
-		<div
-			onClick={onViewDetails}
-			className="w-full p-2 transition-all border rounded-2xl border-base-300/40 bg-base-300/30 hover:border-base-300/70 hover:bg-base-300/50 text-right active:scale-[0.99]"
-		>
-			<div className="flex items-center gap-2 cursor-pointer">
-				<div
-					className="flex items-center justify-center w-8 h-8 text-sm rounded-lg shrink-0"
-					style={{
-						backgroundColor: `${color}22`,
-						color: getContrastingTextColor(color),
-					}}
+		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-base-content/10 bg-base-content/5 hover:border-base-content/20 hover:bg-base-content/10">
+			<div className="flex items-center gap-2">
+				<button
+					type="button"
+					onClick={onViewDetails}
+					aria-label={`جزئیات ${habit.title}`}
+					className="flex items-center flex-1 min-w-0 gap-2 cursor-pointer text-start active:scale-[0.99] focus-visible:focus-ring"
 				>
-					{isPending ? (
-						<IconLoading className="text-base-content/80" />
-					) : (
-						habit.emoji || '🎯'
-					)}
-				</div>
+					<span
+						className="flex items-center justify-center w-8 h-8 text-sm rounded-lg shrink-0"
+						style={{ backgroundColor: `${color}22`, color }}
+					>
+						{isPending ? (
+							<IconLoading className="text-base-content/80" />
+						) : (
+							habit.emoji || '🎯'
+						)}
+					</span>
 
-				<div className="flex-1 min-w-0 ">
-					<p className="text-xs font-bold truncate text-content">
-						{habit.title}
-					</p>
-					<p className="mt-0.5 text-[9px] truncate text-muted">
-						{formatHabitGoal(habit)}
-					</p>
-				</div>
+					<span className="flex-1 min-w-0">
+						<span className="block text-xs font-bold truncate text-content">
+							{habit.title}
+						</span>
+						<span className="mt-0.5 block text-[9px] truncate text-muted">
+							{formatHabitGoal(habit)}
+						</span>
+					</span>
+				</button>
 
 				<button
 					type="button"
 					onClick={handleQuickLog}
 					disabled={isPending}
-					className="relative flex items-center justify-center w-8 h-8 transition-all duration-200 rounded-lg cursor-pointer bg-base-300 active:scale-95 disabled:opacity-70"
-					style={{
-						backgroundColor: `${color}22`,
-						color: color,
-					}}
+					aria-label={`ثبت پیشرفت ${habit.title}`}
+					className="relative flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer transition-ui active:scale-95 disabled:opacity-70 focus-visible:focus-ring"
+					style={{ backgroundColor: `${color}22`, color }}
 				>
 					{!isSimpleHabit && (
 						<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -114,24 +114,35 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					)}
 
 					<div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full">
-						{habit.today.isDone ? (
-							<Icon name="check" size={12} strokeWidth={2.5} />
-						) : isSimpleHabit ? (
-							<Icon name="check" size={12} strokeWidth={2.5} />
+						{isDone || isSimpleHabit ? (
+							<Icon
+								name="check"
+								size={12}
+								strokeWidth={2.5}
+								aria-hidden="true"
+							/>
 						) : (
-							<Icon name="plus" size={12} strokeWidth={3} />
+							<Icon
+								name="plus"
+								size={12}
+								strokeWidth={3}
+								aria-hidden="true"
+							/>
 						)}
 					</div>
 				</button>
 			</div>
 
-			<div className="flex gap-1 mt-2">
+			<ul
+				aria-label={`تاریخچه ${habit.history.length} روز گذشته`}
+				className="flex gap-1 mt-2"
+			>
 				{habit.history.map((day) => {
 					const dayProgress = Math.min(day.value / target, 1)
 					return (
-						<div
+						<li
 							key={day.date}
-							className="flex-1 h-1.5 rounded-full bg-base-300 overflow-hidden"
+							className="flex-1 h-1.5 rounded-full bg-base-content/10 overflow-hidden"
 						>
 							<div
 								className="w-full h-full rounded-full"
@@ -141,10 +152,10 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 										dayProgress === 0 ? 0 : 0.25 + dayProgress * 0.75,
 								}}
 							/>
-						</div>
+						</li>
 					)
 				})}
-			</div>
-		</div>
+			</ul>
+		</article>
 	)
 }

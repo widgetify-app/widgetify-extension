@@ -1,18 +1,20 @@
 import { useMemo, useState } from 'react'
-import jalaliMoment from 'jalali-moment'
+import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
-import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
-import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
-import { safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
-import { useQueryClient } from '@tanstack/react-query'
-import { getHabitUnitLabel } from '../../utils/habit-goal'
 import { cn } from '@/common/utils/cn'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
+import { useQueryClient } from '@tanstack/react-query'
+import { safeAwait } from '@/services/api'
+import type { Habit } from '@/services/hooks/habit/habit.interface'
+import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
+import { getHabitUnitLabel } from '../../utils/habit-goal'
+import { resolveHabitStep } from '../../utils/habit-step'
 
 interface HabitContributionChartProps {
 	habit: Habit
 	color: string
+	today: WidgetifyDate
 }
 
 interface DayCell {
@@ -34,12 +36,14 @@ interface WeekColumn {
 const DISPLAY_WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 const NUM_WEEKS = 26
 
-export function HabitContributionChart({ habit, color }: HabitContributionChartProps) {
+export function HabitContributionChart({
+	habit,
+	color,
+	today,
+}: HabitContributionChartProps) {
 	const queryClient = useQueryClient()
 	const { mutateAsync: logProgress, isPending: isUpdating } = useLogHabitProgress()
 	const [hoveredDay, setHoveredDay] = useState<DayCell | null>(null)
-
-	const today = useMemo(() => jalaliMoment().locale('fa').startOf('day'), [])
 
 	const getHabitData = (gregorianDate: string) => {
 		const [year, month] = gregorianDate.split('-')
@@ -48,21 +52,16 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 		return monthData[gregorianDate] || { value: 0, isDone: false }
 	}
 
-	const { weeks, stats } = useMemo(() => {
+	const weeks = useMemo(() => {
 		const start = today
 			.clone()
+			.locale('fa')
+			.startOf('day')
 			.subtract(NUM_WEEKS - 1, 'weeks')
 			.startOf('week')
 		const current = start.clone()
 		const weeksList: WeekColumn[] = []
 
-		let currentStreak = 0
-		let longestStreak = 0
-		let tempStreak = 0
-		let totalCompleted = 0
-		let totalTrackedDays = 0
-
-		const allDaysChronological: DayCell[] = []
 		let lastMonthName = ''
 
 		for (let w = 0; w < NUM_WEEKS; w++) {
@@ -93,7 +92,7 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 					}
 				}
 
-				const cell: DayCell = {
+				weekDays.push({
 					gregorianDate,
 					jalaliDate: dayDate,
 					value,
@@ -101,15 +100,7 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 					level,
 					isFuture,
 					isToday: isDayToday,
-				}
-
-				weekDays.push(cell)
-
-				if (!isFuture) {
-					allDaysChronological.push(cell)
-					totalTrackedDays++
-					if (isDone) totalCompleted++
-				}
+				})
 
 				const monthName = dayDate.format('jMMMM')
 				if (d === 0 && monthName !== lastMonthName) {
@@ -127,72 +118,22 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 			})
 		}
 
-		for (const day of allDaysChronological) {
-			if (day.isDone) {
-				tempStreak++
-				if (tempStreak > longestStreak) longestStreak = tempStreak
-			} else {
-				tempStreak = 0
-			}
-		}
-
-		const lastIdx = allDaysChronological.length - 1
-		if (lastIdx >= 0) {
-			let checkIdx = lastIdx
-			if (
-				!allDaysChronological[checkIdx].isDone &&
-				checkIdx > 0 &&
-				allDaysChronological[checkIdx - 1].isDone
-			) {
-				checkIdx--
-			}
-			while (checkIdx >= 0 && allDaysChronological[checkIdx].isDone) {
-				currentStreak++
-				checkIdx--
-			}
-		}
-
-		const completionRate =
-			totalTrackedDays > 0
-				? Math.round((totalCompleted / totalTrackedDays) * 100)
-				: 0
-
-		return {
-			weeks: weeksList,
-			stats: {
-				currentStreak,
-				longestStreak,
-				totalCompleted,
-				completionRate,
-			},
-		}
-	}, [habit, color, today])
+		return weeksList
+	}, [habit, today])
 
 	const handleDayClick = async (cell: DayCell) => {
 		if (cell.isFuture || isUpdating) return
 
-		let step = HABIT_UNIT_STEP[habit.unit] || 1
-		const currentVal = cell.value
-
-		if (
-			habit.comparison === HabitComparison.EXACT &&
-			currentVal + step > habit.target
-		) {
-			step = 0
-		}
-
-		if (
-			habit.comparison === HabitComparison.AT_MOST &&
-			currentVal + step > habit.target
-		) {
-			showToast(`مقدار فعلی به حداکثر هدف شما (${habit.target}) رسیده`, 'error')
+		const { amount, blockedMessage } = resolveHabitStep(habit, cell.value)
+		if (blockedMessage) {
+			showToast(blockedMessage, 'error')
 			return
 		}
 
 		const [error] = await safeAwait(
 			logProgress({
 				id: habit.id,
-				input: { date: cell.gregorianDate, amount: step },
+				input: { date: cell.gregorianDate, amount },
 			})
 		)
 
@@ -223,25 +164,30 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-base-200/50 border-base-300/80">
+			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-base-content/5 border-base-content/10">
 				<div className="pb-1 pl-1 overflow-x-auto scrollbar-thin">
 					<div className="inline-flex flex-col min-w-full gap-1">
 						<div className="flex items-center gap-1 pr-6 h-4 mb-0.5">
 							{weeks.map((week) => (
 								<div
 									key={week.weekNumber}
-									className="w-3.5 md:w-4 text-[9px] text-muted/80 font-medium truncate shrink-0 text-center"
+									className="relative w-3.5 md:w-4 shrink-0"
 								>
-									{week.monthLabel || ''}
+									{week.monthLabel && (
+										<span className="absolute top-0 right-0 text-[9px] font-medium leading-4 whitespace-nowrap text-muted">
+											{week.monthLabel}
+										</span>
+									)}
 								</div>
 							))}
 						</div>
 
 						<div className="flex gap-1.5 items-start">
-							<div className="flex flex-col gap-1 shrink-0 text-[10px] text-muted/70 font-medium">
-								{DISPLAY_WEEKDAYS.map((dayName, idx) => (
+							<div className="flex flex-col gap-1 shrink-0 text-[10px] text-muted font-medium">
+								{DISPLAY_WEEKDAYS.map((dayName) => (
 									<div
-										key={idx}
+										key={dayName}
+										aria-hidden="true"
 										className="w-4 h-3.5 md:h-4 flex items-center justify-center"
 									>
 										{dayName}
@@ -257,12 +203,22 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 									>
 										{week.days.map((day) => {
 											const cellBg = getCellColor(day.level)
+											const dayLabel = `${day.jalaliDate.format('jD jMMMM')}: ${
+												day.value > 0
+													? `${day.value} ${unitLabel}`.trim()
+													: 'بدون ثبت'
+											}`
+
 											return (
 												<button
 													key={day.gregorianDate}
 													type="button"
 													disabled={day.isFuture}
+													aria-label={dayLabel}
+													title={dayLabel}
 													onClick={() => handleDayClick(day)}
+													onFocus={() => setHoveredDay(day)}
+													onBlur={() => setHoveredDay(null)}
 													onMouseEnter={() =>
 														setHoveredDay(day)
 													}
@@ -270,15 +226,16 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 														setHoveredDay(null)
 													}
 													className={cn(
-														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-[4px] transition-all cursor-pointer select-none',
+														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-[4px] transition-ui cursor-pointer select-none',
+														'focus-visible:focus-ring',
 														day.isFuture
-															? 'opacity-20 cursor-not-allowed bg-base-300/30'
+															? 'opacity-20 cursor-not-allowed bg-base-content/5'
 															: 'hover:scale-125 hover:z-10',
 														day.isToday &&
-															'ring-2  ring-base-content/10',
+															'ring-2 ring-base-content/30',
 														!cellBg &&
 															!day.isFuture &&
-															'bg-base-300/50'
+															'bg-base-content/10'
 													)}
 													style={{
 														backgroundColor: cellBg,
@@ -293,7 +250,7 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 					</div>
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-base-300/60 text-xs">
+				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-base-content/10 text-xs">
 					<div className="min-h-5 flex items-center gap-1.5 text-muted text-[11px]">
 						{hoveredDay ? (
 							<>
@@ -319,7 +276,7 @@ export function HabitContributionChart({ habit, color }: HabitContributionChartP
 
 					<div className="flex items-center gap-1 text-[10px] text-muted shrink-0">
 						<span>کمتر</span>
-						<div className="w-2.5 h-2.5 rounded-[2px] bg-base-300/50" />
+						<div className="w-2.5 h-2.5 rounded-[2px] bg-base-content/10" />
 						<div
 							className="w-2.5 h-2.5 rounded-[2px]"
 							style={{ backgroundColor: `${color}33` }}

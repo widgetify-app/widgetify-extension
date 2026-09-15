@@ -47,7 +47,7 @@ const StepperCounter = React.memo<StepperCounterProps>(
 				<button
 					type="button"
 					onClick={onDecrease}
-					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-content"
+					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-base-content"
 				>
 					<Icon name="minus" size={12} />
 				</button>
@@ -57,7 +57,7 @@ const StepperCounter = React.memo<StepperCounterProps>(
 				<button
 					type="button"
 					onClick={onIncrease}
-					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-content"
+					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-base-content"
 				>
 					<Icon name="plus" size={12} />
 				</button>
@@ -201,7 +201,7 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 
 				<Dropdown
 					trigger={
-						<div className="flex items-center gap-1 text-xs cursor-pointer text-muted hover:text-content">
+						<div className="flex items-center gap-1 text-xs cursor-pointer text-muted hover:text-base-content">
 							<span className="text-xs">{currentComparisonLabel}</span>
 							<Icon name="chevronDown" size={14} />
 						</div>
@@ -241,7 +241,7 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 			}, [target, onChangeTarget])
 
 			return (
-				<div className="flex flex-col p-3 border divide-y rounded-2xl border-base-content/15 bg-base-200/30 divide-base-content/10 gap-y-3">
+				<div className="flex flex-col p-3 border divide-y rounded-2xl border-base-content/15 bg-base-content/5 divide-base-content/10 gap-y-3">
 					<div className="flex items-center justify-between gap-2 pb-1">
 						<div className="flex items-center gap-2.5 shrink-0">
 							<span className="text-xs font-bold text-content whitespace-nowrap">

@@ -1,44 +1,39 @@
 import { useState } from 'react'
-import jalaliMoment from 'jalali-moment'
+import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
-import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
-import { safeAwait } from '@/services/api'
-import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
-import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
-import { useQueryClient } from '@tanstack/react-query'
+import { cn } from '@/common/utils/cn'
 import { IconLoading } from '@/components/ui'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
+import { useQueryClient } from '@tanstack/react-query'
 import { Icon } from '@/icons'
+import { safeAwait } from '@/services/api'
+import type { Habit } from '@/services/hooks/habit/habit.interface'
+import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
+import { resolveHabitStep } from '../../utils/habit-step'
 
 interface HabitCalendarProps {
 	habit: Habit
 	color: string
+	today: WidgetifyDate
 }
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+const TOTAL_CELLS = 42
 
-const isToday = (today: jalaliMoment.Moment, date: jalaliMoment.Moment) => {
-	return (
-		date.jDate() === today.jDate() &&
-		date.jMonth() === today.jMonth() &&
-		date.jYear() === today.jYear()
-	)
-}
+const isSameJalaliDay = (a: jalaliMoment.Moment, b: jalaliMoment.Moment) =>
+	a.jDate() === b.jDate() && a.jMonth() === b.jMonth() && a.jYear() === b.jYear()
 
-export function HabitCalendar({ habit, color }: HabitCalendarProps) {
-	const today = jalaliMoment()
+export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 	const queryClient = useQueryClient()
-
 	const { mutateAsync: logProgress, isPending: isUpdating } = useLogHabitProgress()
 
 	const [currentDate, setCurrentDate] = useState<jalaliMoment.Moment>(
 		today.clone().locale('fa')
 	)
 
-	const toGregorian = (date: jalaliMoment.Moment): string => {
-		const d = date.toDate()
-		return moment(d).format('YYYY-MM-DD')
-	}
+	const toGregorian = (date: jalaliMoment.Moment): string =>
+		moment(date.toDate()).format('YYYY-MM-DD')
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
 	const daysInMonth = currentDate.clone().endOf('jMonth').jDate()
@@ -47,8 +42,6 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 	const prevMonth = currentDate.clone().subtract(1, 'jMonth')
 	const daysInPrevMonth = prevMonth.clone().endOf('jMonth').jDate()
 	const prevMonthStartDay = daysInPrevMonth - emptyDays + 1
-
-	const totalCells = 42
 
 	const getHabitData = (gregorianDate: string) => {
 		const [year, month] = gregorianDate.split('-')
@@ -62,50 +55,37 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 	}
 
 	const goToToday = () => {
-		const todayClone = today.clone().locale('fa')
-		setCurrentDate(todayClone)
+		setCurrentDate(today.clone().locale('fa'))
 	}
 
-	const handleDateClick = async (
+	const cellDateFor = (
 		day: number,
-		isCurrentMonth: boolean = true,
-		isPrevMonth: boolean = false
-	) => {
+		isCurrentMonth: boolean,
+		isPrevMonth: boolean
+	): jalaliMoment.Moment => {
+		if (isCurrentMonth) return currentDate.clone().jDate(day)
+		if (isPrevMonth) return currentDate.clone().subtract(1, 'jMonth').jDate(day)
+		return currentDate.clone().add(1, 'jMonth').jDate(day)
+	}
+
+	const handleDateClick = async (cellDate: jalaliMoment.Moment) => {
 		if (isUpdating) return
 
-		let targetDate: jalaliMoment.Moment
-		if (isCurrentMonth) {
-			targetDate = currentDate.clone().jDate(day)
-		} else if (isPrevMonth) {
-			targetDate = currentDate.clone().subtract(1, 'jMonth').jDate(day)
-		} else {
-			targetDate = currentDate.clone().add(1, 'jMonth').jDate(day)
-		}
-		const gregorianDate = toGregorian(targetDate)
+		const gregorianDate = toGregorian(cellDate)
+		const { amount, blockedMessage } = resolveHabitStep(
+			habit,
+			getHabitData(gregorianDate).value
+		)
 
-		let step = HABIT_UNIT_STEP[habit.unit] || 1
-		const habitData = getHabitData(gregorianDate)
-		if (
-			habit.comparison === HabitComparison.EXACT &&
-			habitData.value + step > habit.target
-		) {
-			step = 0
-		}
-
-		if (
-			habit.comparison === HabitComparison.AT_MOST &&
-			habitData.value + step > habit.target
-		) {
-			return showToast(
-				`مقدار فعلی به حداکثرِ هدفِ شما (یعنی ${habit.target}) رسیده.`,
-				'error'
-			)
+		if (blockedMessage) {
+			showToast(blockedMessage, 'error')
+			return
 		}
 
 		const [error] = await safeAwait(
 			logProgress({
 				id: habit.id,
-				input: { date: gregorianDate, amount: step },
+				input: { date: gregorianDate, amount },
 			})
 		)
 		if (error) {
@@ -121,77 +101,65 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		isCurrentMonth: boolean = true,
 		isPrevMonth: boolean = false
 	) => {
-		let cellDate: jalaliMoment.Moment
-		if (isCurrentMonth) {
-			cellDate = currentDate.clone().jDate(day)
-		} else if (isPrevMonth) {
-			cellDate = currentDate.clone().subtract(1, 'jMonth').jDate(day)
-		} else {
-			cellDate = currentDate.clone().add(1, 'jMonth').jDate(day)
-		}
-
+		const cellDate = cellDateFor(day, isCurrentMonth, isPrevMonth)
 		const gregorianDate = toGregorian(cellDate)
-		const habitData = getHabitData(gregorianDate)
-		const value = habitData.value
-		const isDayToday = isToday(today, cellDate)
+		const value = getHabitData(gregorianDate).value
+		const isDayToday = isSameJalaliDay(today, cellDate)
 
-		const bgColor = value > 0 ? `${color}22` : ''
-		let Opacity = isCurrentMonth ? 'opacity-100' : ''
-		let clickable = true
-		if (cellDate.isAfter() && !value) {
-			Opacity = 'opacity-50'
-			clickable = false
-		}
-
-		if (cellDate.isBefore() && !isCurrentMonth && !value) {
-			Opacity = 'opacity-50'
-			clickable = false
-		}
+		const isFuture = cellDate.isAfter() && !value
+		const isFadedNeighbour = cellDate.isBefore() && !isCurrentMonth && !value
+		const clickable = !isFuture && !isFadedNeighbour
 
 		let indicator = null
 		if (value > 0 && value < 4) {
 			indicator = (
-				<div className="absolute inset-x-0 bottom-0 flex items-center justify-center w-full h-4 gap-x-0.5 translate-x-0">
-					{Array.from({ length: value }).map((i) => {
-						return (
-							<div
-								key={`${habit.id}-${i}`}
-								className="w-1 h-1 rounded-full"
-								style={{ backgroundColor: color }}
-							/>
-						)
-					})}
-				</div>
+				<span className="absolute inset-x-0 bottom-0 flex items-center justify-center w-full h-4 gap-x-0.5">
+					{Array.from({ length: value }, (_, dot) => (
+						<span
+							key={`${gregorianDate}-${dot}`}
+							className="w-1 h-1 rounded-full"
+							style={{ backgroundColor: color }}
+						/>
+					))}
+				</span>
 			)
 		} else if (value >= 4) {
 			indicator = (
-				<div className="flex items-center justify-center gap-0.5 absolute right-2 -bottom-0.5 w-6 h-3 rounded-t-sm  font-bold text-muted  bg-content">
-					<p className="text-[8px] mt-0.5">{value}</p>
-					<div
+				<span className="flex items-center justify-center gap-0.5 absolute right-2 -bottom-0.5 w-6 h-3 rounded-t-sm font-bold text-muted bg-content">
+					<span className="text-[8px] mt-0.5">{value}</span>
+					<span
 						className="w-1 h-1 rounded-full"
 						style={{ background: color }}
-					></div>
-				</div>
+					/>
+				</span>
 			)
 		}
 
 		return (
-			<div
-				key={`${isCurrentMonth ? 'c' : isPrevMonth ? 'p' : 'n'}-${day}`}
-				onClick={() =>
-					clickable
-						? handleDateClick(day, isCurrentMonth, isPrevMonth)
-						: undefined
-				}
-				className={`relative rounded-xl transition-all  h-10 w-10 mx-auto flex flex-col items-center justify-center ${Opacity} ${clickable ? 'hover:scale-110 cursor-pointer' : 'cursor-not-allowed'} ${isDayToday ? 'border-b scale-110 font-extrabold' : ''}`}
+			<button
+				key={gregorianDate}
+				type="button"
+				disabled={!clickable}
+				aria-current={isDayToday ? 'date' : undefined}
+				aria-label={`${cellDate.format('jD jMMMM')}: ${value > 0 ? value : 'بدون ثبت'}`}
+				onClick={() => handleDateClick(cellDate)}
+				className={cn(
+					'relative h-10 w-10 mx-auto flex flex-col items-center justify-center rounded-xl transition-ui',
+					'focus-visible:focus-ring',
+					clickable ? 'hover:scale-110 cursor-pointer' : 'cursor-not-allowed',
+					!isCurrentMonth && 'opacity-50',
+					(isFuture || isFadedNeighbour) && 'opacity-50',
+					isDayToday && 'font-extrabold'
+				)}
 				style={{
-					backgroundColor: bgColor,
-					borderColor: color + '50',
+					backgroundColor: value > 0 ? `${color}22` : undefined,
+					outline: isDayToday ? `2px solid ${color}` : undefined,
+					outlineOffset: isDayToday ? '-2px' : undefined,
 				}}
 			>
 				<span className="text-xs font-medium">{day}</span>
-				{indicator ? indicator : null}
-			</div>
+				{indicator}
+			</button>
 		)
 	}
 
@@ -203,7 +171,7 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		for (let day = 1; day <= daysInMonth; day++) {
 			cells.push(renderDay(day, true))
 		}
-		const remainingCells = totalCells - cells.length
+		const remainingCells = TOTAL_CELLS - cells.length
 		for (let day = 1; day <= remainingCells; day++) {
 			cells.push(renderDay(day, false, false))
 		}
@@ -218,29 +186,35 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 		<div className="w-full rounded-xl">
 			<div className="flex items-center justify-between mb-2">
 				<h3 className="text-xs font-medium text-content">
-					{currentDate.format('dddd، jD jMMMM jYYYY')}{' '}
+					{currentDate.format('jMMMM jYYYY')}
 				</h3>
 				<div className="flex gap-0.5 items-center">
 					{isUpdating ? <IconLoading /> : null}
 					{showTodayButton && (
 						<button
+							type="button"
 							onClick={goToToday}
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+							aria-label="برو به ماه جاری"
+							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
 						>
-							<Icon name="backRight" size={12} />
+							<Icon name="backRight" size={12} aria-hidden="true" />
 						</button>
 					)}
 					<button
+						type="button"
 						onClick={() => changeMonth(-1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+						aria-label="ماه قبل"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
 					>
-						<Icon name="chevronRight" size={12} />
+						<Icon name="chevronRight" size={12} aria-hidden="true" />
 					</button>
 					<button
+						type="button"
 						onClick={() => changeMonth(1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+						aria-label="ماه بعد"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
 					>
-						<Icon name="chevronLeft" size={12} />
+						<Icon name="chevronLeft" size={12} aria-hidden="true" />
 					</button>
 				</div>
 			</div>
@@ -249,6 +223,7 @@ export function HabitCalendar({ habit, color }: HabitCalendarProps) {
 				{WEEKDAYS.map((weekday) => (
 					<div
 						key={weekday}
+						aria-hidden="true"
 						className="flex items-center justify-center h-6 text-xs font-medium text-muted"
 					>
 						{weekday}
