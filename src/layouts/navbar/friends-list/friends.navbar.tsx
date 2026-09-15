@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { useAuth } from '@/context/auth.context'
 import { BottomSheet } from '@/components/ui'
-import { ActiveFriendsHorizontal } from '@/layouts/friends/components/activities'
+import { FriendsDirectView } from '@/layouts/friends/components/friends-direct-view'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
 import Analytics from '@/analytics'
@@ -20,14 +20,6 @@ export function FriendsListNavbar() {
 	const [isOpen, setIsOpen] = useState(false)
 
 	const handleAuthModalClose = () => setFirstAuth(false)
-
-	const handleOpenSettings = () => {
-		if (!isAuthenticated) {
-			setFirstAuth(true)
-			return
-		}
-		callEvent('openProfile', 'friends')
-	}
 
 	const clickToOpenSheet = () => {
 		if (isOpen === false) {
@@ -62,29 +54,9 @@ export function FriendsListNavbar() {
 					renderPendingNotification(user?.friendshipStats?.pending || 0)}
 			</div>
 
-			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="small">
-				<div className="absolute flex items-center gap-1 w-fit left-4 top-2">
-					<button
-						onClick={(e) => {
-							e.stopPropagation()
-							handleOpenSettings()
-							setIsOpen(false)
-						}}
-						className="flex items-center gap-1 px-2 py-1.5 transition-all border cursor-pointer rounded-xl bg-content text-content border-content active:scale-95 group group-hover:opacity-85"
-					>
-						<Icon
-							name="usersPlus"
-							size={14}
-							className="text-base-content/90 group-hover:text-base-content/70"
-						/>
-					</button>
-					<FriendRequestsButton
-						size="small"
-						pendingCount={user?.friendshipStats?.pending || 0}
-					/>
-				</div>
-				<div className="mt-4">
-					<ActiveFriendsHorizontal />
+			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="medium">
+				<div className="pt-2 h-[calc(50vh-2rem)]">
+					<FriendsDirectView />
 				</div>
 			</BottomSheet>
 			<AuthRequiredModal

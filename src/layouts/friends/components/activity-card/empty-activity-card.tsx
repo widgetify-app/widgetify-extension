@@ -21,7 +21,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 							className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-content shadow-md text-base-content/80
+							bg-base-200 border border-base-content/10 shadow-xs text-base-content/80
 							group-hover:scale-95 cursor-pointer z-10
 						`}
 						>

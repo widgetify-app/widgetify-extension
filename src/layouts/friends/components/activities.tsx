@@ -35,7 +35,7 @@ export const ActiveFriendsHorizontal = () => {
 
 	return (
 		<div className="space-y-1">
-			<div className="flex h-40 gap-3 px-1 pb-2 mt-1 overflow-x-auto">
+			<div className="flex h-34 gap-2.5 px-1 pb-1 overflow-x-auto scrollbar-none">
 				{user &&
 					(currentUserActivity ? (
 						<Dropdown

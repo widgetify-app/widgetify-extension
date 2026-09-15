@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FriendRequestsBottomSheet } from '../friend-requests.bottom-sheet'
 import { Icon } from '@/icons'
 
@@ -13,35 +14,32 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 			{size === 'large' ? (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex items-center relative gap-2 px-3 py-1.5 transition-all border cursor-pointer rounded-xl bg-content text-content border-content active:scale-95"
+					className="flex items-center relative gap-1.5 px-2.5 py-1 text-xs font-medium transition-all rounded-lg text-content hover:bg-base-content/10 active:scale-95 cursor-pointer"
 					aria-label="درخواست‌های دوستی"
 				>
-					<Icon name="inbox" className="w-4 h-4" />
-					<span className="text-sm font-medium">درخواست‌ها</span>
+					<Icon name="inbox" size={14} />
+					<span>درخواست‌ها</span>
 					{pendingCount ? (
-						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-error rounded-full -top-1 -right-1 p-0.5 text-center ">
+						<div className="flex items-center justify-center min-w-4 h-4 px-1 text-[10px] font-bold text-white bg-error rounded-full text-center">
 							{pendingCount}
 						</div>
-					) : (
-						''
-					)}
+					) : null}
 				</button>
 			) : (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex relative items-center gap-1 px-2 py-1.5 transition-all border cursor-pointer rounded-xl bg-content text-content border-content active:scale-95 group group-hover:opacity-85"
+					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-base-content/5 hover:bg-base-content/10 active:scale-90 cursor-pointer border border-base-content/10 text-base-content/80 hover:text-base-content"
+					aria-label="درخواست‌های دوستی"
+					title="درخواست‌های دوستی"
 				>
 					<Icon
 						name="outlineInbox"
-						className="w-4 h-4 text-base-content/90 group-hover:text-base-content/70"
+						size={15}
+						className="text-base-content/80 hover:text-base-content"
 					/>
 					{pendingCount ? (
-						<div className="absolute flex items-center justify-center w-3 h-3 text-[.5rem] z-20 font-bold text-white bg-error rounded-full -top-1 -right-1 p-0.5 text-center ">
-							{pendingCount}
-						</div>
-					) : (
-						''
-					)}
+						<div className="absolute flex items-center justify-center w-2 h-2 z-20 font-bold text-white bg-error rounded-full top-1 right-1" />
+					) : null}
 				</button>
 			)}
 
