@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
-import type { WidgetSize } from '@/layouts/widgets/layout-engine/types'
+import type { WidgetSize } from '@widget/layout-engine/types'
 import { Icon } from '@/icons'
 
 interface AddWidgetActionsProps {

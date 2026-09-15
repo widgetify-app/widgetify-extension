@@ -1,10 +1,10 @@
 import type React from 'react'
 import { Modal } from '@/components/ui'
-import { PetSettings } from '../widgets/pet/pet-setting'
-import { RssFeedSetting } from '../widgets/news/rss-feed-setting'
-import { WeatherSetting } from '../widgets/weather/weather-setting'
-import { WigiArzSetting } from '../widgets/wigi-arz/wigi-arz-setting'
-import { WigiPadSetting } from '../widgets/wigi-pad/wigi-pad-setting'
+import { PetSettings } from '@widget/pet/pet-setting'
+import { RssFeedSetting } from '@widget/news/rss-feed-setting'
+import { WeatherSetting } from '@widget/weather/weather-setting'
+import { WigiArzSetting } from '@widget/wigi-arz/wigi-arz-setting'
+import { WigiPadSetting } from '@widget/wigi-pad/wigi-pad-setting'
 import { WidgetTabKeys } from './tab-keys'
 
 interface WidgetSettingModalConfig {

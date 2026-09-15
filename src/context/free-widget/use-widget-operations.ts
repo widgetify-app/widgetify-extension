@@ -8,15 +8,15 @@ import {
 	DEFAULT_COLS,
 	resolveLayoutChange,
 	validateLayout,
-} from '@/layouts/widgets/layout-engine'
+} from '@widget/layout-engine'
 import {
 	type StoredWidget,
 	WidgetKeys,
 	type WidgetPosition,
 	type WidgetSize,
-} from '@/layouts/widgets/layout-engine/types'
-import { isServerInstanceId } from '@/layouts/widgets/instance-id'
-import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
+} from '@widget/layout-engine/types'
+import { isServerInstanceId } from '@widget/instance-id'
+import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
 import {
 	createUserWidgetApi,
 	deleteUserWidgetApi,

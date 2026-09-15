@@ -4,7 +4,7 @@ import type {
 	WidgetDefinition,
 	WidgetSize,
 	WidgetVariantOption,
-} from '@/layouts/widgets/layout-engine/types'
+} from '@widget/layout-engine/types'
 
 interface AddWidgetOptionsProps {
 	definition: WidgetDefinition

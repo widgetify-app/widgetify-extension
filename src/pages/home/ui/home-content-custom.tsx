@@ -1,4 +1,4 @@
-import { FreeWidgetCanvas } from '@/layouts/widgets/canvas/canvas.layout'
+import { FreeWidgetCanvas } from '@widget/canvas/canvas.layout'
 
 export function HomeContentCustom() {
 	return (

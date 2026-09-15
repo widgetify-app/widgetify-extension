@@ -2,7 +2,7 @@ import type {
 	StoredWidget,
 	WidgetPosition,
 	WidgetSize,
-} from '@/layouts/widgets/layout-engine/types'
+} from '@widget/layout-engine/types'
 
 export interface FreeWidgetLayoutState {
 	savedLayout: StoredWidget[]

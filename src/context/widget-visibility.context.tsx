@@ -14,8 +14,8 @@ import {
 	syncUserWidgetsApi,
 } from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
-import { type WidgetItem, WidgetKeys } from '@/layouts/widgets/layout-engine/types'
-import { widgetItems } from '@/layouts/widgets/widget-registry'
+import { type WidgetItem, WidgetKeys } from '@widget/layout-engine/types'
+import { widgetItems } from '@widget/widget-registry'
 
 export { WidgetKeys, type WidgetItem, widgetItems }
 
