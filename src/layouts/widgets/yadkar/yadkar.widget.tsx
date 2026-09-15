@@ -1,81 +1,80 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { getFromStorage, setToStorage } from '@/common/storage'
+import { TabNavigation } from '@/components/ui'
+import { Icon } from '@/icons'
+import { HabitsContent } from '../habit/habit.widget'
+import type { WidgetSize } from '../layout-engine/types'
 import { NotesLayout } from '../notes/notes.widget'
 import { TodosLayout } from '../todos/todos.widget'
-import { TabNavigation } from '@/components/ui'
 import { WidgetContainer } from '../widget-container'
-import { HabitsContent } from '../habit/habit.widget'
-import { getFromStorage, setToStorage } from '@/common/storage'
-import { useEffect } from 'react'
-import { Icon } from '@/icons'
-
-type Tab = 'todos' | 'notes' | 'rabbit'
-
-import type { WidgetSize } from '../layout-engine/types'
+import { DEFAULT_YADKAR_TAB, YADKAR_TAB_LABELS } from './constants'
+import type { YadkarTab } from './types'
+import { normalizeYadkarTab } from './utils/normalize-yadkar-tab'
 
 interface YadkarWidgetProps {
 	size?: WidgetSize
 }
 
 export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
-	const [tab, setTab] = useState<Tab>('todos')
-
-	const onChangeTab = (newTab: Tab) => {
-		setTab(newTab)
-		Analytics.event('yadkar_change_tab')
-		setToStorage('yadkar_tab', newTab)
-	}
+	const [tab, setTab] = useState<YadkarTab>(DEFAULT_YADKAR_TAB)
 
 	useEffect(() => {
-		const load = async () => {
-			const currentTab = await getFromStorage('yadkar_tab')
-			if (currentTab) {
-				setTab(currentTab as Tab)
-			}
+		async function load() {
+			const storedTab = await getFromStorage('yadkar_tab')
+			setTab(normalizeYadkarTab(storedTab))
 		}
 
 		load()
 	}, [])
 
+	const onChangeTab = (newTab: YadkarTab) => {
+		if (newTab === tab) return
+		setTab(newTab)
+		setToStorage('yadkar_tab', newTab)
+		Analytics.event('yadkar_change_tab', { tab: newTab })
+	}
+
 	return (
 		<WidgetContainer>
 			<div className="flex flex-col h-full">
-				<div className="flex-none">
-					<div className="flex flex-col">
-						<TabNavigation
-							tabMode="advanced"
-							activeTab={tab}
-							onTabClick={onChangeTab}
-							tabs={[
-								{
-									id: 'todos',
-									label: 'تسک‌ها',
-									icon: <Icon name="taskList" size={14} />,
-								},
-								{
-									id: 'notes',
-									label: 'یادداشت',
-									icon: <Icon name="notebook" size={14} />,
-								},
-								{
-									id: 'rabbit',
-									label: 'عادت‌ها (بتا)',
-									icon: <Icon name="strike" size={14} />,
-								},
-							]}
-							size="small"
-							className="w-full border-none"
-						/>
-					</div>
-				</div>
+				<TabNavigation
+					tabMode="advanced"
+					activeTab={tab}
+					onTabClick={onChangeTab}
+					tabs={[
+						{
+							id: 'todos',
+							label: YADKAR_TAB_LABELS.todos,
+							icon: <Icon name="taskList" size={14} aria-hidden="true" />,
+						},
+						{
+							id: 'notes',
+							label: YADKAR_TAB_LABELS.notes,
+							icon: <Icon name="notebook" size={14} aria-hidden="true" />,
+						},
+						{
+							id: 'habits',
+							label: YADKAR_TAB_LABELS.habits,
+							icon: <Icon name="strike" size={14} aria-hidden="true" />,
+						},
+					]}
+					size="small"
+					className="flex-none w-full border-none"
+				/>
 
-				{tab === 'todos' ? (
-					<TodosLayout size={size} />
-				) : tab === 'notes' ? (
-					<NotesLayout size={size} />
-				) : (
-					<HabitsContent />
-				)}
+				<section
+					aria-label={YADKAR_TAB_LABELS[tab]}
+					className="flex flex-col flex-1 min-h-0"
+				>
+					{tab === 'todos' ? (
+						<TodosLayout size={size} />
+					) : tab === 'notes' ? (
+						<NotesLayout size={size} />
+					) : (
+						<HabitsContent />
+					)}
+				</section>
 			</div>
 		</WidgetContainer>
 	)
