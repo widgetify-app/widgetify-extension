@@ -61,10 +61,7 @@ function ClockContent({ size, variant }: ClockContentProps) {
 		return <ClockAnalog size={size.w === 1 && size.h === 1 ? 76 : 96} time={time} />
 	}
 
-	if (
-		VERTICAL_VARIANTS.includes(variant || '') ||
-		(size.w === 1 && size.h === 1)
-	) {
+	if (VERTICAL_VARIANTS.includes(variant || '') || (size.w === 1 && size.h === 1)) {
 		return <Clock1x1 hours={hours} minutes={minutes} />
 	}
 
