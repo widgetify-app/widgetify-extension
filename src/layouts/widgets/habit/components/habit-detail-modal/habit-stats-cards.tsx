@@ -34,8 +34,7 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 
 				days.push({
 					hasRecord: value > 0,
-					isDone:
-						record?.isDone || (habit.target > 0 && value >= habit.target),
+					isDone: record?.isDone || (habit.target > 0 && value >= habit.target),
 				})
 			}
 
@@ -45,7 +44,11 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 		return (
 			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
 				<StatCard label="استریک فعلی" value={stats.currentStreak} suffix="روز" />
-				<StatCard label="بهترین استریک" value={stats.longestStreak} suffix="روز" />
+				<StatCard
+					label="بهترین استریک"
+					value={stats.longestStreak}
+					suffix="روز"
+				/>
 				<StatCard label="روزهای موفق" value={stats.totalCompleted} suffix="روز" />
 				<StatCard
 					label="نرخ موفقیت"

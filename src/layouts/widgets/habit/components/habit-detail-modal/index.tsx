@@ -96,7 +96,11 @@ export function HabitDetailModal({
 									rounded={'xl'}
 									className="w-7 h-7 p-0! text-muted hover:text-base-content border-base-content/15"
 								>
-									<Icon name="menuOption" size={15} aria-hidden="true" />
+									<Icon
+										name="menuOption"
+										size={15}
+										aria-hidden="true"
+									/>
 								</Button>
 							}
 						>
@@ -193,12 +197,16 @@ export function HabitDetailModal({
 
 							{activeView === 'contribution' ? (
 								<HabitContributionChart
-										habit={habit}
-										color={color}
-										today={today}
-									/>
+									habit={habit}
+									color={color}
+									today={today}
+								/>
 							) : (
-								<HabitCalendar habit={habit} color={color} today={today} />
+								<HabitCalendar
+									habit={habit}
+									color={color}
+									today={today}
+								/>
 							)}
 						</div>
 					</div>

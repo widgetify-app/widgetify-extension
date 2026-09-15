@@ -12,7 +12,7 @@ import { toZonedDayEnd, toZonedDayStart } from '../utils/day-range'
 import { getWeekDays } from '../utils/week-days'
 import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 
-const REFRESH_INTERVAL_MS = 30_000
+const REFRESH_INTERVAL_MS = 30_000 // 30 seconds
 
 export function useGoogleCalendarSchedule() {
 	const { user, isAuthenticated } = useAuth()

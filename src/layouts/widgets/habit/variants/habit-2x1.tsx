@@ -243,7 +243,9 @@ export function HabitCompactWide({
 									? getContrastingTextColor(habitColor)
 									: habitColor,
 								opacity: habitDone ? 1 : 0.45 + habitProgress * 0.55,
-								boxShadow: isSelected ? `0 0 0 2px ${habitColor}` : 'none',
+								boxShadow: isSelected
+									? `0 0 0 2px ${habitColor}`
+									: 'none',
 							}}
 						>
 							{habit.emoji || '🎯'}

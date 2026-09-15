@@ -66,7 +66,7 @@ export function useHabitActions() {
 
 		setArchiveConfirm(null)
 		setDetailHabitId(null)
-		showToast('عادت حذف شد.', 'success')
+		showToast('عادت بایگانی شد.', 'success')
 		Analytics.event('habit_archived')
 		refetch()
 	}

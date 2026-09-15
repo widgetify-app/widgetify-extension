@@ -280,7 +280,7 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 					/>
 				</div>
 			)
-		},
+		}
 	)
 
 HabitGoalFrequencySection.displayName = 'HabitGoalFrequencySection'
