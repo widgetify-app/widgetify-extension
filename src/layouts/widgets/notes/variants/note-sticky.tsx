@@ -380,9 +380,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<Tooltip key={opt.value} content={opt.ariaLabel}>
 								<button
 									type="button"
-									onClick={() =>
-										handlePriorityChange(opt.value)
-									}
+									onClick={() => handlePriorityChange(opt.value)}
 									aria-label={opt.ariaLabel}
 									aria-pressed={isSelected}
 									className={cn(
