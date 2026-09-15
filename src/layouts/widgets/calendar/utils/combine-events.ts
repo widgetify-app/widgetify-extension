@@ -6,7 +6,7 @@ import {
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
-} from '../../../calendar/utils/date-events'
+} from './date-events'
 
 export interface CombinedEvent {
 	title: string

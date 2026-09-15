@@ -47,7 +47,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					strokeDasharray="283"
 					strokeDashoffset={283 - (283 * progress) / 100}
 					transform="rotate(-90 50 50)"
-					className={`transition-all duration-1000 ease-out ${modeColors[mode]}`}
+					className={`transition-[stroke-dashoffset] duration-1000 ease-out ${modeColors[mode]}`}
 					strokeLinecap="round"
 				/>
 				<circle

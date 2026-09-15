@@ -51,7 +51,7 @@ export const CurrencyConverter: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 select-none">
-			<div className="relative flex flex-col gap-6 p-5 border bg-base-200/40 border-base-300/40 rounded-2xl">
+			<div className="relative flex flex-col gap-6 p-5 border bg-base-content/5 border-base-content/10 rounded-2xl">
 				<div className="flex items-center justify-between gap-3">
 					<TextInput
 						type="number"
@@ -72,11 +72,13 @@ export const CurrencyConverter: React.FC = () => {
 
 				<div className="absolute z-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
 					<button
+						type="button"
 						onClick={handleSwap}
-						className="flex items-center justify-center transition-all border rounded-full shadow-lg cursor-pointer bg-base-300 w-11 h-11 border-primary/10 text-content hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md"
+						aria-label="جابه‌جایی دو ارز"
+						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-content w-11 h-11 border-primary/10 text-content transition-ui hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
-							<Icon name="upDown" size={20} />
+							<Icon name="upDown" size={20} aria-hidden="true" />
 						</motion.div>
 					</button>
 				</div>
@@ -131,8 +133,8 @@ export const CurrencyConverter: React.FC = () => {
 							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-background/50 px-2 py-1 rounded-lg">
-						<Icon name="info" size={14} className="opacity-40" />۱ ={' '}
+					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-base-content/5 px-2 py-1 rounded-lg">
+						<Icon name="info" size={14} className="opacity-40" aria-hidden="true" />۱ ={' '}
 						{fromCurrencyData && toCurrencyData
 							? formatNumber(
 									fromCurrencyData.rialPrice / toCurrencyData.rialPrice

@@ -1,7 +1,7 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { combineAndSortEvents } from '@/layouts/widgets/tools/events/utils/combine-events'
+import { combineAndSortEvents } from '@widget/calendar/utils/combine-events'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
-import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@/layouts/widgets/calendar/utils/date-events'
+import { convertShamsiToHijri, getCurrentDate, hijriMonthNames } from '@widget/calendar/utils/date-events'
 import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
 import { InlineWeather } from '../../weather/simple-weather'
 

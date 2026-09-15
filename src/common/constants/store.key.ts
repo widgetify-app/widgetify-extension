@@ -9,7 +9,7 @@ import type {
 	PomodoroSession,
 	PomodoroSettings,
 } from '@widget/tools/pomodoro/types'
-import type { ToolsTabType } from '@widget/tools/tools.widget'
+import type { ToolsTabType } from '@widget/tools/types'
 import type {
 	FetchedForecast,
 	FetchedWeather,

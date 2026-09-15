@@ -26,7 +26,8 @@ export function RequestNotificationModal({
 				startPomodoro()
 				Analytics.event('grant_notification_permission')
 			} else {
-				showToast('برای شروع باید اعلان‌ها را فعال کنید.', 'error')
+				showToast('باشه، بدون اعلان ادامه می‌دیم.', 'info')
+				setShowRequireNotificationModal(false)
 				Analytics.event('deny_notification_permission')
 			}
 		} catch {
