@@ -150,7 +150,6 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 					aria-busy={isLoading}
 					className="h-full overflow-y-auto space-y-1.5 scrollbar-none"
 				>
-					<RequireAuth>
 						{isLoading ? (
 							<div className="flex flex-col gap-1">
 								{[...Array(5)].map((_, i) => (
@@ -196,7 +195,6 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 								)}
 							</>
 						)}
-					</RequireAuth>
 				</div>
 			</div>
 

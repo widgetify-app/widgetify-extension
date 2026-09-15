@@ -153,7 +153,7 @@ export function TodoBoard({
 					aria-busy={isLoading}
 					className="flex-1 min-w-0 overflow-y-auto scrollbar-none"
 				>
-					<RequireAuth>
+					 
 						{isLoading ? (
 							<div className="flex flex-col gap-1.5">
 								{[...Array(4)].map((_, i) => (
@@ -202,7 +202,6 @@ export function TodoBoard({
 								)}
 							</div>
 						)}
-					</RequireAuth>
 				</div>
 
 				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-base-content/10 scrollbar-none">
