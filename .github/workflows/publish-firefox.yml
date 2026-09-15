@@ -48,15 +48,14 @@ jobs:
           path: .output/*-sources.zip
           retention-days: 1
 
-      - name: Commit and push zip to main (Temporary)
+      - name: Commit and push zip to temp branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git checkout main
+          git checkout -B temp-firefox-release
           mkdir -p releases
           cp .output/*-firefox.zip releases/
           cp .output/*-sources.zip releases/
-          git add releases/
+          git add -f releases/
           git commit -m "chore(release): temporary firefox zip files"
-          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" main
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" temp-firefox-release
