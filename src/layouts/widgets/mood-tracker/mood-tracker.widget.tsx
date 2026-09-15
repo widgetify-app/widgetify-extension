@@ -19,6 +19,7 @@ import { PopoverMenu, PopoverMenuItem, PopoverMenuHeader } from '@/components/ui
 import { Icon } from '@/icons'
 import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
+import { callEvent } from '@/common/utils/call-event'
 
 interface MoodTrackerWidgetProps {
 	size?: WidgetSize
@@ -65,6 +66,10 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	}, [optimisticMood, moodsData?.moods, todayDateStr])
 
 	const handleSelectMood = async (moodValue: MoodType, targetDateStr?: string) => {
+		if (!isAuthenticated) {
+			callEvent('open_require_auth_modal')
+			return
+		}
 		if (isPending) return
 		Analytics.event('mood_widget_clicked')
 
