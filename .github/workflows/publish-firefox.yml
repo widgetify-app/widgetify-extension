@@ -30,12 +30,29 @@ jobs:
           FIREFOX_EXTENSION_VERSION: ${{ github.event.inputs.version }}
           FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
 
-      - name: Submit to Firefox Add-ons (AMO)
+      - name: Upload Artifacts (Download from GitHub Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-builds
+          path: .output/*-firefox.zip
+          retention-days: 1
+
+      - name: Upload Source Code Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-sources
+          path: .output/*-sources.zip
+          retention-days: 1
+
+      - name: Commit and push zip to main (Temporary)
         run: |
-          bunx publish-extension \
-            --firefox-zip .output/*-firefox.zip \
-            --firefox-sources-zip .output/*-sources.zip
-        env:
-          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
-          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
-          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout main
+          mkdir -p releases
+          cp .output/*-firefox.zip releases/
+          cp .output/*-sources.zip releases/
+          git add releases/
+          git commit -m "chore(release): temporary firefox zip files"
+          git push origin main
