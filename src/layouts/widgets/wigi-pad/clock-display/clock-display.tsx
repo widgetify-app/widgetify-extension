@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { type ClockSettings, ClockType } from './clock-setting.interface'
+import { type ClockSettings, ClockType } from '@widget/clock/clock-setting.interface'
 import { AnalogClock } from './clocks/analog-clock'
 import { DigitalClock } from './clocks/digital-clock'
 

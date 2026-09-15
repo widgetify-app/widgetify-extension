@@ -4,7 +4,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { CheckBoxWithDescription } from '@/components/ui'
 import { ItemSelector } from '@/components/ui'
-import { type ClockSettings, ClockType } from './clock-setting.interface'
+import { type ClockSettings, ClockType } from '@widget/clock/clock-setting.interface'
 
 const CLOCK_OPTIONS = [
 	{

@@ -15,7 +15,7 @@ import type {
 	FetchedWeather,
 	WeatherSettings,
 } from '@widget/weather/weather.interface'
-import type { ClockSettings } from '@widget/wigi-pad/clock-display/clock-setting.interface'
+import type { ClockSettings } from '@widget/clock/clock-setting.interface'
 import type { WigiPadDateSetting } from '@widget/wigi-pad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.api'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'

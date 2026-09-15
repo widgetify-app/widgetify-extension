@@ -1,5 +1,5 @@
 import type { FetchedTimezone } from '@/services/hooks/timezone/get-timezones.hook'
-import type { ClockSettings } from '../clock-setting.interface'
+import type { ClockSettings } from '@widget/clock/clock-setting.interface'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getTimeZoneLabel } from '@/common/utils/get-timezone-label'
 
