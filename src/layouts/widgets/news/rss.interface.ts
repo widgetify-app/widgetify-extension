@@ -1,5 +1,3 @@
-import type { FetchedRssItem } from '@/services/hooks/news/get-news.hook'
-
 export interface RssFeed {
 	id: string
 	name: string
@@ -10,5 +8,4 @@ export interface RssFeed {
 export interface WigiNewsSetting {
 	customFeeds: RssFeed[]
 	useDefaultNews: boolean
-	lastFetchedItems: Record<string, FetchedRssItem[]>
 }

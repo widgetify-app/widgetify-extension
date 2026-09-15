@@ -331,7 +331,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
 		canDuplicate: false,
-		node: (_instanceId, size) => <NewsLayout inComboWidget={false} size={size} />,
+		node: () => <NewsLayout inComboWidget={false} />,
 	},
 	[WidgetKeys.network]: {
 		id: WidgetKeys.network,
