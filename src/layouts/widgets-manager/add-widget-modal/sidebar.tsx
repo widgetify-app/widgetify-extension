@@ -4,7 +4,7 @@ import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
 	WidgetDefinition,
-} from '@/layouts/widgets/layout-engine/types'
+} from '@widget/layout-engine/types'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { Icon } from '@/icons'
 import { CATEGORIES } from './types'

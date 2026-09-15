@@ -1,4 +1,4 @@
-import type { WidgetCategory } from '@/layouts/widgets/layout-engine/types'
+import type { WidgetCategory } from '@widget/layout-engine/types'
 
 export interface AddWidgetModalProps {
 	isOpen: boolean

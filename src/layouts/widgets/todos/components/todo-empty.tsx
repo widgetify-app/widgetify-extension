@@ -1,10 +1,10 @@
 export function TodosEmpty() {
 	return (
-		<div className={'flex-1 flex flex-col items-center justify-start gap-y-1.5 px-5'}>
+		<div className="flex flex-col items-center justify-start flex-1 px-5 gap-y-1.5">
 			<div className="flex items-center justify-center w-12 h-12">
 				<img
 					src="https://cdn.widgetify.ir/system/no-items.png"
-					alt="بدون تسک"
+					alt=""
 					className="object-contain w-48 h-auto select-none"
 				/>
 			</div>

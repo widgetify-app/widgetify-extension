@@ -1,6 +1,6 @@
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useId, useMemo } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
+import { useZonedClock } from '@/hooks/use-zoned-clock'
 
 interface ClockAnalogProps {
 	size?: number
@@ -16,17 +16,7 @@ const SECOND_HAND_COLOR = '#F7A600'
 
 export function ClockAnalog({ size = 76, time: propTime }: ClockAnalogProps) {
 	const { selected_timezone: timezone } = useGeneralSetting()
-	const [internalTime, setInternalTime] = useState<Date>(() =>
-		getCurrentDate(timezone.value).toDate()
-	)
-
-	useEffect(() => {
-		if (propTime) return
-		const timer = setInterval(() => {
-			setInternalTime(new Date())
-		}, 1000)
-		return () => clearInterval(timer)
-	}, [propTime])
+	const internalTime = useZonedClock(timezone?.value, true)
 
 	const time = propTime || internalTime
 

@@ -45,10 +45,8 @@ export interface DialogNotificationItem {
 }
 
 export interface NotificationItemResponse {
-	wigiPad: Array<NotificationItem>
 	widgetifyCard: Array<NotificationItem>
 	dialog: DialogNotificationItem | null
-	wigipadBanner: string | null
 }
 
 async function fetchNotifications(): Promise<NotificationItemResponse> {
@@ -99,7 +97,6 @@ export function useNotifyAsSeen() {
 			if (previous) {
 				const updated: NotificationItemResponse = {
 					...previous,
-					wigiPad: previous.wigiPad?.filter((item) => item.id !== id) || [],
 					widgetifyCard:
 						previous.widgetifyCard?.filter((item) => item.id !== id) || [],
 				}

@@ -8,8 +8,8 @@ import type {
 	WidgetCategory,
 	WidgetSize,
 	WidgetVariantOption,
-} from '@/layouts/widgets/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
+} from '@widget/layout-engine/types'
+import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
 import { Icon } from '@/icons'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetHelpModal } from '../widget-help.modal'

@@ -14,7 +14,7 @@ These are not preferences. Breaking them means the work gets rejected.
 | **Never mention the assistant** | Not in code, not in commit messages, not in PR titles or bodies. No `Co-Authored-By`, no "Generated with", no tool names. Commits are authored by the repo owner. |
 | **Never run the dev server** | No `npm run dev`, no `wxt`. Visual checks are the owner's job. Give them a checklist instead. |
 | **Never commit unprompted** | Implement, verify, then stop and report. Commit and open a PR only when explicitly told to. |
-| **New branch per fix/feature** | Before editing, create a new branch off the current one (whatever it is) named for the task. Make the changes there, uncommitted. Stop after verification and let the owner test visually themselves. Only commit and open a PR when explicitly told to, in that order. |
+| **The owner picks the branch** | Default to a new branch off the current one, named for the task. If the owner says to stay on the branch you are on, stay there for the rest of the session and do not ask again. Either way: make the changes, stop after verification, and let the owner test visually. Commit and open a PR only when told to, in that order. |
 | **Fix root causes, not symptoms** | Trace a bug to where it actually originates before writing anything. A patch that suppresses the visible symptom while the real bug stays in place gets rejected, even if it looks fixed. |
 | **No opportunistic changes** | Touch only what the task requires. Do not refactor, rename, reformat, or "improve" code that isn't part of the task, even if it's adjacent to what you're editing. |
 
@@ -40,6 +40,28 @@ npm run build        # wxt build, catches CSS and asset issues tsc cannot
 ```
 
 Checking the built CSS at `.output/chrome-mv3/assets/newtab-*.css` is often the fastest way to prove a styling claim. Use it — several bugs in this repo were classes that compile to nothing.
+
+### A commit has to compile on its own
+
+The four commands above check your *working tree*. They say nothing about the tree you are
+about to commit. Committing one folder at a time, which is the normal rhythm here, makes it
+easy to ship a file whose dependency is still uncommitted: the working tree stays green and
+the committed tree does not build. That has happened twice, and both times the next commit
+hid it.
+
+Before committing, check the commit, not the desk:
+
+```
+git worktree add --detach /tmp/headcheck HEAD
+```
+
+Give it `node_modules` and `.wxt` (a junction on Windows: `cmd /c mklink /J`), run
+`./node_modules/.bin/tsc --noEmit` there, then remove it with `cmd /c rd /s /q` — **never**
+`rm -rf`, which follows a junction and deletes the real folder behind it.
+
+`tsc` will not catch everything: a CSS class or an icon name that only exists in an
+uncommitted file compiles fine and simply renders wrong. When a commit reaches for a class,
+an animation or an icon, check that its definition is in the same commit.
 
 **A green build is not proof that nothing changed.** To show a refactor left behaviour alone, record the byte size and content hash of `.output/chrome-mv3/background.js` and the chunks under `.output/chrome-mv3/chunks/` before the change, then rebuild and compare. The hash is derived from the content, so an unchanged hash means the emitted code is identical. A deliberate change should move those numbers by an amount you can explain — inlining one nine line component moved a chunk by exactly 38 bytes.
 
@@ -294,6 +316,24 @@ The app renders over a user supplied wallpaper, and individual surfaces may carr
 
 `src/index.css` defines short names for the combinations this app actually uses — its surfaces, its body and muted text, its border, its widget radius. Use those rather than the underlying utility. They are the single place a decision like "what is a muted foreground" can be changed, and a raw utility at a call site opts that site out of any future change. When a combination you need has no name yet, add one there rather than inventing a new opacity step inline.
 
+### A variant on a shortcut class compiles to nothing
+
+`src/index.css` defines its shortcuts two different ways, and only one of them takes
+variants. `@utility transition-ui { ... }` registers a real utility, so `hover:transition-ui`
+works. A plain rule like `.text-content { @apply ... }` does not, so **`hover:text-content`,
+`focus:bg-content` and the like generate no CSS at all** — the hover simply never happens,
+silently, with no warning from tsc, biome or the build.
+
+Use the token the shortcut wraps for the variant (`hover:text-base-content`), or promote the
+shortcut to `@utility`. The same trap catches any class name that does not exist:
+`bg-background` is used in three places in `src` and has never been defined.
+
+Grep the built CSS rather than trusting the markup:
+
+```
+grep -o 'hover\:text-content' .output/chrome-mv3/assets/newtab-*.css
+```
+
 ### Verifying
 
 A theme is an attribute and a class is text, so both claims are checkable and neither should be asserted from memory:
@@ -322,6 +362,77 @@ That is a starting point, not an answer: it counts every opacity modifier, and t
 
 ---
 
+## Widgets
+
+Every widget in this repo is a small app with its own data, its own settings and its own
+sizes. The same five defects turned up in nearly all of them, so check for these by name
+before looking for anything cleverer.
+
+### Never animate a container-query sized element
+
+Widgets size themselves against their container: `w-[22cqh]`, `text-[13cqh]`,
+`py-[4cqh]`, `clamp(2rem, 24cqw, 10rem)`. Put `transition-all` on one of those and every
+resize of the widget starts a transition on width, height, padding and font size at once,
+so the browser re-lays out that subtree on every frame while the user drags. With a grid of
+cells — thirty day cells, a hundred and eighty heatmap squares — the widget visibly stalls.
+
+`transition-ui` exists for this. It covers colour, background, border, shadow, opacity and
+transform, and deliberately excludes everything that causes layout. Use it, or name the
+single property you actually animate (`transition-[stroke-dashoffset]`).
+
+This was the most common bug in the repo: it was found in the calendar, google calendar,
+currency, mood, todos, habits, network, notes, tools, news and transparent clock widgets.
+`transition-all` on a fixed size element is harmless debt; on a `cq*` sized one it is a
+performance bug.
+
+### The four states, and they have to be distinguishable
+
+A widget that fetches anything needs **loading**, **error**, **empty** and, if it needs an
+account, **signed out** — and a user must be able to tell them apart. The recurring failure
+is not a missing state, it is two states that render identically:
+
+- a failed request drawing the empty state, so a network problem reads as "you have no
+  tasks" (todos, habits, news, network, religious times)
+- a disabled query leaving the widget in its loading state forever, so a signed out user
+  watches a skeleton that never resolves (network, weather)
+- an action firing while signed out and surfacing a raw server error (mood, todos)
+
+Prefer per-source errors where a widget has several: one dead RSS feed should not blank the
+other two. And never show an error over data you already have — a slightly stale price or
+temperature beats an error message.
+
+### Anything read back from storage is untrusted input
+
+Stored values outlive the code that wrote them. A tab id, a display model, a filter — all
+of them can hold something an older version wrote and this one has never heard of, and the
+usual shape of the bug is a bare equality check that silently falls into the wrong branch
+rather than the default.
+
+Put a `normalize-*` helper in the feature's `utils/`, give it a test, and route every read
+through it. `yadkar`, `tools`, `combo-widget` and `transparent-clock` all have one; copy
+the nearest.
+
+### A setting nothing writes, or writes and never reads
+
+Both halves have to exist. The repo has collected several of each: four weather settings
+that are read and honoured but that no screen can change, a pomodoro long break that is
+stored and never applied, a notes cache written as an empty object on every open and read
+by nobody, storage keys left behind by a feature that moved to the server.
+
+When you find one, say so and ask — wiring it up and deleting it are both product
+decisions, and guessing is how a half-built feature becomes a shipped one.
+
+### Premium gating has two independent paths
+
+`allowedSizes[].isVipOnly` is what locks a widget already on the canvas. The add/edit modal
+checks the **variant's** flag instead, and skips the size check entirely for any widget that
+declares variants. A widget with both variants and a premium size therefore needs
+`isVipOnly` in **both** places — the currency widget has it, and notes did not, so its
+premium model could be selected for free and then rendered locked. They are not duplicates;
+do not merge them.
+
+---
+
 ## Testing
 
 `bun test` only runs on **pure modules**. There is no React testing setup, so a hook or component cannot be rendered in a test.
@@ -345,6 +456,11 @@ Prefer a test that would fail loudly on regression over one that restates the im
 **PR bodies** follow: Problem → Root cause with the real snippet → Changes → anything deliberately left out → Testing. Include measurements when you have them.
 
 **gh CLI** lives at `C:\Program Files\GitHub CLI\gh.exe` and is not on PATH — this is where it's installed for the user `Shak`. Call it by full path, from PowerShell for anything with a multiline body.
+
+**Names that are data, not code.** Storage keys, analytics event names and widget ids are
+written into places you do not control — a user's browser, a dashboard's history, a stored
+layout. Renaming one orphans everything already recorded under the old name, and nothing in
+the build complains. Rename the constant freely; leave the string alone.
 
 **Conflicts are resolved by blending, never by taking one side.** Every conflict in this session needed both halves. "Accept incoming" would have silently reverted merged work.
 
@@ -373,7 +489,7 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 
 **`voice-search.portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
 
-**`containerType: 'size'`** on widget containers looks like dead config. There are no `@container` queries anywhere, so it is inert, not a hot spot. Removing it can change intrinsic sizing. Leave it unless you verify visually.
+**`containerType: 'size'`** on widget containers is load bearing. Widgets size themselves in `cqh` and `cqw` units, which resolve against that container, so removing it collapses their type and spacing. It also makes those widgets a real hot spot — see "Never animate a container-query sized element".
 
 ---
 
@@ -394,3 +510,36 @@ Intentional behaviour. Not bugs, do not "fix" them.
 Lead with the cause, not the fix. Show the offending code. When a claim can be measured or grepped, do that instead of asserting it.
 
 Say plainly when a bug predates the current work, when something was left out and why, and when an earlier statement turns out to be wrong. Several fixes in this session were only correct because a wrong first answer got corrected rather than defended.
+
+**Measure before naming a cause.** "This is slow because X" is a claim, and the obvious
+suspect is often innocent. A laggy calendar was blamed on a preview component and then on
+the date maths; the date maths turned out to take about 2ms for the whole grid, and the
+real cause was a CSS transition. One measurement would have replaced two wrong answers.
+The same applies to "this class does nothing" and "nothing uses this" — grep the built CSS,
+grep `src`, then say it.
+
+**Separate what you proved from what you suspect.** If you cannot run the thing, say which
+part is confirmed from the code and which part still needs a look. A fix reported as
+certain, that turns out to be one of two possible causes, costs more than an honest "this
+was definitely wrong, and it may or may not be the whole of what you saw".
+
+**End with a short visual checklist.** The owner does the visual pass, so name the few
+screens and states worth opening — including the ones that are hard to reach, like a signed
+out view or a light theme with no wallpaper.
+
+---
+
+## Per widget documentation
+
+The owner keeps one plain-language document per widget, for the whole team rather than for
+developers. When you finish a widget, rewrite its document from the code you just read.
+
+- Plain Persian, no file names, no class names, no code.
+- Describe what the widget does, its sizes, its data and privacy, its states, its keyboard
+  and screen reader behaviour, its settings and its place in the paid tiers.
+- End with three sections, in this order: **what is left** (open bugs and improvements, each
+  one marked "needs a decision" when it is the owner's call rather than yours), **what was
+  fixed** (say what the user actually experienced before, not what the patch was), and
+  **correct as it is** (things that look like bugs and must not be "fixed").
+- Correct the old document where the code disagrees with it, and say so. Several documents
+  described behaviour that had already changed.

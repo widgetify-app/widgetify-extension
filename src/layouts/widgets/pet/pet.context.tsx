@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS } from './constants'
+import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS, HUNGER_TICK_MS } from './constants'
 import { type PetHungerState, type PetMeta, type PetSettings, PetTypes } from './types'
 
 interface PetSettingsContextType extends PetSettings {
@@ -239,11 +239,9 @@ export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
 			const pet = prevSettings.petOptions[petType]
 			if (!pet?.hungryState) return prevSettings
 
-			const PER_SEC = 40 * 1000
-
 			if (pet.hungryState.lastHungerTick) {
-				const timeDiff = Date.now() - pet.hungryState.lastHungerTick
-				if (timeDiff < PER_SEC) {
+				const sinceLastTick = Date.now() - pet.hungryState.lastHungerTick
+				if (sinceLastTick < HUNGER_TICK_MS) {
 					return prevSettings
 				}
 			}

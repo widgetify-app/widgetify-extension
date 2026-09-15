@@ -29,7 +29,7 @@ export function SortableCurrencyBox({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`transition-transform duration-200 ${isDragging ? 'z-10 opacity-50' : ''}`}
+			className={isDragging ? 'opacity-50' : undefined}
 		>
 			<CurrencyBox
 				code={code}

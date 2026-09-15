@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
+import { getCurrentDate } from '@widget/calendar/utils/date-events'
+import { toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 import { useAuth } from '@/context/auth.context'
 import { useGetMoods } from '@/services/hooks/mood-log/get-moods.hook'
 import {
@@ -21,6 +22,8 @@ import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
 import { callEvent } from '@/common/utils/call-event'
 
+const MOOD_HISTORY_DAYS = 7
+
 interface MoodTrackerWidgetProps {
 	size?: WidgetSize
 }
@@ -31,38 +34,25 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog, isPending } = useUpsertMoodLog()
-	const [optimisticMood, setOptimisticMood] = useState<string | null>(null)
+	const [optimisticMood, setOptimisticMood] = useState<MoodType | null>(null)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 	const menuTriggerRef = useRef<HTMLButtonElement | null>(null)
 
-	const startStr = useMemo(() => {
-		return today.clone().subtract(6, 'days').doAsGregorian().format('YYYY-MM-DD')
-	}, [today])
+	const todayDateStr = toIsoDateKey(today)
+	const startStr = toIsoDateKey(today.clone().subtract(MOOD_HISTORY_DAYS - 1, 'days'))
 
-	const endStr = useMemo(() => {
-		return today.clone().doAsGregorian().format('YYYY-MM-DD')
-	}, [today])
-
-	const { data: moodsData } = useGetMoods(Boolean(isAuthenticated), startStr, endStr)
-
-	const todayDateStr = useMemo(() => {
-		return today.clone().doAsGregorian().format('YYYY-MM-DD')
-	}, [today])
+	const { data: moodsData } = useGetMoods(
+		Boolean(isAuthenticated),
+		startStr,
+		todayDateStr
+	)
 
 	const todayMood = useMemo(() => {
 		if (optimisticMood) {
-			return {
-				date: todayDateStr,
-				mood: optimisticMood as any,
-			}
+			return { date: todayDateStr, mood: optimisticMood }
 		}
-		return moodsData?.moods?.find(
-			(m) =>
-				m.date === todayDateStr ||
-				m.date?.startsWith(todayDateStr) ||
-				m.date?.split('T')[0] === todayDateStr
-		)
+		return moodsData?.moods?.find((m) => m.date?.startsWith(todayDateStr))
 	}, [optimisticMood, moodsData?.moods, todayDateStr])
 
 	const handleSelectMood = async (moodValue: MoodType, targetDateStr?: string) => {
@@ -159,7 +149,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 					<span>حال روزانه</span>
 				</PopoverMenuHeader>
 				<PopoverMenuItem
-					icon={<Icon name="cameraPlus" size={14} />}
+					icon={<Icon name="cameraPlus" size={14} aria-hidden="true" />}
 					label="اشتراک‌گذاری ماه"
 					onClick={handleOpenShare}
 				/>

@@ -4,6 +4,7 @@ export const moodOptions = [
 		emoji: '😔',
 		label: 'ناراحتم',
 		colorClass: 'error',
+		activeClass: 'bg-error text-error-content',
 		borderClass: 'border-error/50',
 	},
 	{
@@ -11,6 +12,7 @@ export const moodOptions = [
 		emoji: '😴',
 		label: 'خستم',
 		colorClass: 'warning',
+		activeClass: 'bg-warning text-warning-content',
 		borderClass: 'border-yellow-400/50',
 	},
 	{
@@ -18,6 +20,7 @@ export const moodOptions = [
 		emoji: '🙂',
 		label: 'اوکی‌ام',
 		colorClass: 'secondary',
+		activeClass: 'bg-secondary text-secondary-content',
 		borderClass: 'border-secondary/50',
 	},
 	{
@@ -25,6 +28,7 @@ export const moodOptions = [
 		emoji: '😄',
 		label: 'سرحالم',
 		colorClass: 'success',
+		activeClass: 'bg-success text-success-content',
 		borderClass: 'border-green-400/50',
 	},
 ]

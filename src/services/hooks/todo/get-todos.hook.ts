@@ -33,19 +33,22 @@ export const useGetTodos = (enabled: boolean, params?: Omit<GetTodosParams, 'pag
 
 export async function getTodos(params?: GetTodosParams): Promise<GetTodosResponse> {
 	const client = getMainClient()
-	const queryParams = new URLSearchParams()
 
-	if (params?.page) queryParams.append('page', params.page.toString())
-	if (params?.limit) queryParams.append('limit', params.limit.toString())
-	if (params?.isCompleted !== undefined)
-		queryParams.append('isCompleted', params.isCompleted.toString())
-	if (params?.dateFilter && params.dateFilter !== 'all')
-		queryParams.append('dateFilter', params.dateFilter)
-	if (params?.category && params.category !== '-all-')
-		queryParams.append('category', params.category)
-
-	const { data } = await client.get<GetTodosResponse>(`/todos/v2/@me`, {
-		params,
+	const { data } = await client.get<GetTodosResponse>('/todos/v2/@me', {
+		params: {
+			page: params?.page,
+			limit: params?.limit,
+			isCompleted: params?.isCompleted,
+			dateFilter:
+				params?.dateFilter && params.dateFilter !== 'all'
+					? params.dateFilter
+					: undefined,
+			category:
+				params?.category && params.category !== '-all-'
+					? params.category
+					: undefined,
+		},
 	})
+
 	return data
 }

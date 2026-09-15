@@ -1,52 +1,33 @@
-import { Motion as motion } from '@/common/motion'
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { Motion as motion } from '@/common/motion'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { useDate } from '@/context/date.context'
-import { WidgetContainer } from '../widget-container'
 import { Modal, TabNavigation } from '@/components/ui'
-import {
-	MdOutlineCurrencyExchange,
-	MdOutlineMosque,
-	MdOutlineTimer,
-} from 'react-icons/md'
-import { ToolsCompactRow } from './variants/tools-2x1'
+import { useDate } from '@/context/date.context'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../layout-engine/types'
-import { ReligiousTime } from './religious/religious-time'
-import { PomodoroTimer } from './pomodoro/pomodoro-timer'
+import { WidgetContainer } from '../widget-container'
+import { DEFAULT_TOOLS_TAB, TOOLS_TAB_TITLES, TOOLS_TABS } from './constants'
 import { CurrencyConverter } from './currency/currency-converter'
+import { PomodoroTimer } from './pomodoro/pomodoro-timer'
+import { ReligiousTime } from './religious/religious-time'
+import type { ToolsTabType } from './types'
+import { normalizeToolsTab } from './utils/normalize-tools-tab'
+import { ToolsCompactRow } from './variants/tools-2x1'
 
-const tabs = [
-	{
-		id: 'pomodoro' as ToolsTabType,
-		label: 'پومودورو',
-		icon: <MdOutlineTimer size={14} />,
-	},
-	{
-		id: 'religious-time' as ToolsTabType,
-		label: 'اوقات شرعی',
-		icon: <MdOutlineMosque size={14} />,
-	},
-	{
-		id: 'currency-converter' as ToolsTabType,
-		label: 'تبدیل',
-		icon: <MdOutlineCurrencyExchange size={14} />,
-	},
-]
-
-export enum ToolsTab {
-	pomodoro = 'pomodoro',
-	'religious-time' = 'religious-time',
-	'currency-converter' = 'currency-converter',
-}
-export type ToolsTabType = keyof typeof ToolsTab
+const navigationTabs = TOOLS_TABS.map((tab) => ({
+	id: tab.id,
+	label: tab.label,
+	icon: <Icon name={tab.icon} size={14} aria-hidden="true" />,
+}))
 
 interface ToolsLayoutProps {
 	size?: WidgetSize
 }
 
 export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } }) => {
-	const [activeTab, setActiveTab] = useState<ToolsTabType>('pomodoro')
+	const [activeTab, setActiveTab] = useState<ToolsTabType>(DEFAULT_TOOLS_TAB)
 	const [activeModalTool, setActiveModalTool] = useState<ToolsTabType | null>(null)
 	const { selectedDate } = useDate()
 
@@ -65,13 +46,22 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 	useEffect(() => {
 		async function load() {
 			const tabFromStorage = await getFromStorage('toolsTab')
-			if (tabFromStorage && ToolsTab[tabFromStorage]) {
-				setActiveTab(tabFromStorage)
-			}
+			setActiveTab(normalizeToolsTab(tabFromStorage))
 		}
 
 		load()
 	}, [])
+
+	const renderTool = (tab: ToolsTabType) => {
+		switch (tab) {
+			case 'religious-time':
+				return <ReligiousTime currentDate={selectedDate} />
+			case 'pomodoro':
+				return <PomodoroTimer />
+			case 'currency-converter':
+				return <CurrencyConverter />
+		}
+	}
 
 	if (size.w === 2 && size.h === 1) {
 		return (
@@ -83,21 +73,11 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 				<Modal
 					isOpen={!!activeModalTool}
 					onClose={() => setActiveModalTool(null)}
-					title={
-						activeModalTool === 'pomodoro'
-							? 'تایمر پومودورو'
-							: activeModalTool === 'religious-time'
-								? 'اوقات شرعی'
-								: 'تبدیل ارز'
-					}
+					title={activeModalTool ? TOOLS_TAB_TITLES[activeModalTool] : ''}
 					size="md"
 					direction="rtl"
 				>
-					{activeModalTool === 'religious-time' && (
-						<ReligiousTime currentDate={selectedDate} />
-					)}
-					{activeModalTool === 'pomodoro' && <PomodoroTimer />}
-					{activeModalTool === 'currency-converter' && <CurrencyConverter />}
+					{activeModalTool && renderTool(activeModalTool)}
 				</Modal>
 			</>
 		)
@@ -105,47 +85,25 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 
 	return (
 		<WidgetContainer>
-			<TabNavigation
-				tabMode="advanced"
-				activeTab={activeTab}
-				onTabClick={onTabClick}
-				tabs={tabs}
-				size="small"
-				className="w-full border-none"
-			/>
+			<section aria-label="ابزارها" className="flex flex-col h-full">
+				<TabNavigation
+					tabMode="advanced"
+					activeTab={activeTab}
+					onTabClick={onTabClick}
+					tabs={navigationTabs}
+					size="small"
+					className="flex-none w-full border-none"
+				/>
 
-			{activeTab === 'religious-time' && (
 				<motion.div
-					key="religious-time-view"
+					key={activeTab}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
+					className="min-h-0 grow"
 				>
-					<ReligiousTime currentDate={selectedDate} />
+					{renderTool(activeTab)}
 				</motion.div>
-			)}
-
-			{activeTab === 'pomodoro' && (
-				<motion.div
-					key="pomodoro-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<PomodoroTimer />
-				</motion.div>
-			)}
-
-			{activeTab === 'currency-converter' && (
-				<motion.div
-					key="currency-converter-view"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CurrencyConverter />
-				</motion.div>
-			)}
+			</section>
 		</WidgetContainer>
 	)
 }

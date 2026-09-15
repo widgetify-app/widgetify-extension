@@ -14,8 +14,8 @@ import {
 	DEFAULT_GAP,
 	GRID_BREAKPOINTS,
 	MIN_CELL_WIDTH,
-} from '@/layouts/widgets/layout-engine'
-import { type StoredWidget, WidgetKeys } from '@/layouts/widgets/layout-engine/types'
+} from '@widget/layout-engine'
+import { type StoredWidget, WidgetKeys } from '@widget/layout-engine/types'
 import { useAppearance } from '../appearance.context'
 import { useAuth } from '../auth.context'
 import { reflowForColumns } from './widget-layout-helpers'

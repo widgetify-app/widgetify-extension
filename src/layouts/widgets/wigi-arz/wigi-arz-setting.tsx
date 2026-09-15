@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 import { SectionPanel, SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -9,18 +10,20 @@ import { CurrencyColorMode } from '@/context/currency.context'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
-import { CurrenciesType, type SupportedCurrencies } from './wigi-arz-setting.interface'
+import type { WidgetSize } from '../layout-engine/types'
+import { CurrenciesType, type WigiArzMeta } from './types'
+import { filterCurrencyGroups, getCurrencyOptions } from './utils/get-currency-options'
 
 interface WigiArzSettingProps {
 	instanceId?: string
-	size?: { w: number; h: number }
+	size?: WidgetSize
 }
 
 export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	const { data: supportCurrencies } = useGetSupportCurrencies()
 	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
 
-	const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([])
+	const [sharedCurrencies, setSharedCurrencies] = useState<string[]>([])
 	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode>(
 		CurrencyColorMode.NORMAL
 	)
@@ -38,6 +41,10 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 			? targetWidget.size.w === 1 && targetWidget.size.h === 1
 			: false
 
+	const targetMeta = targetWidget?.meta as WigiArzMeta | undefined
+	const ownsList = Boolean(!isCompact && instanceId && targetWidget)
+	const selectedCurrencies = (ownsList && targetMeta?.currencies) || sharedCurrencies
+
 	useEffect(() => {
 		async function load() {
 			const [color, currencies] = await Promise.all([
@@ -49,7 +56,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 				setCurrencyColorMode(color)
 			}
 			if (currencies) {
-				setSelectedCurrencies(currencies)
+				setSharedCurrencies(currencies)
 			}
 		}
 
@@ -59,7 +66,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	const toggleCurrency = (currencyKey: string) => {
 		if (isCompact && instanceId) {
 			updateWidgetSettings(instanceId, {
-				...targetWidget?.meta,
+				...targetMeta,
 				currencyCode: currencyKey,
 			})
 			Analytics.event('currency_compact_setting_change', {
@@ -85,11 +92,19 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 			return
 		}
 
+		if (ownsList && instanceId) {
+			updateWidgetSettings(instanceId, {
+				...targetMeta,
+				currencies: modifiedCurrencySelection,
+			})
+			return
+		}
+
 		callEvent('currencies_updated', {
 			currencies: modifiedCurrencySelection,
 			colorMode: currencyColorMode,
 		})
-		setSelectedCurrencies(modifiedCurrencySelection)
+		setSharedCurrencies(modifiedCurrencySelection)
 		setToStorage('currencies', modifiedCurrencySelection)
 	}
 
@@ -98,16 +113,9 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 			currencyType !== 'all' ? currency.type === currencyType : true
 		)
 	)
-	const filteredGroups = currencyGroups
-		.map((group) => ({
-			...group,
-			options: group.options.filter((option) =>
-				option.label.toLowerCase().includes(searchQuery.toLowerCase())
-			),
-		}))
-		.filter((group) => group.options.length > 0)
+	const filteredGroups = filterCurrencyGroups(currencyGroups, searchQuery)
 
-	const activeCompactCode = targetWidget?.meta?.currencyCode || 'USD'
+	const activeCompactCode = targetMeta?.currencyCode || 'USD'
 
 	return (
 		<WidgetSettingWrapper>
@@ -130,103 +138,73 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 								{ value: CurrenciesType.CURRENCY, label: 'ارزها' },
 								{ value: CurrenciesType.COIN, label: 'طلا و سکه' },
 							]}
-							value={currencyType as any}
+							value={currencyType}
 							onChange={(value) => setCurrencyType(value)}
 						/>
 					</div>
 
-					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-						{filteredGroups.map((group, groupIndex) => (
-							<div
-								key={groupIndex}
-								className="mb-6 transition-all duration-200 ease-out"
+					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64 scrollbar-thin scrollbar-thumb-base-300">
+						{filteredGroups.map((group) => (
+							<section
+								key={group.label}
+								className="mb-6"
 							>
-								<h3 className="mb-3 text-sm font-medium currency-group-heading">
+								<h3 className="mb-3 text-sm font-medium text-content">
 									{group.label}
 								</h3>
-								<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+								<ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
 									{group.options.map((option) => {
 										const isSelected = isCompact
 											? activeCompactCode === option.value
 											: selectedCurrencies.includes(option.value)
 
 										return (
-											<div
-												key={option.value}
-												className={`flex shadow-xs flex-col items-center justify-center gap-1 p-3 border cursor-pointer rounded-2xl 
-														transition-all duration-200 ease-out active:scale-98 hover:scale-95
-														${isSelected ? 'currency-box-selected border-primary/30 bg-primary/15 text-content' : 'border-base-300/40 bg-content hover:!bg-primary/15'}
-													  `}
-												onClick={() =>
-													toggleCurrency(option.value)
-												}
-											>
-												<div
-													className={`font-normal ${isSelected ? 'font-medium' : ''}`}
+											<li key={option.value}>
+												<button
+													type="button"
+													aria-pressed={isSelected}
+													onClick={() =>
+														toggleCurrency(option.value)
+													}
+													className={cn(
+														'flex flex-col items-center justify-center w-full gap-1 p-3',
+														'border shadow-xs cursor-pointer rounded-2xl',
+														'transition-ui active:scale-98 hover:scale-95',
+														'focus-visible:focus-ring',
+														isSelected
+															? 'border-primary/30 bg-primary/15 text-content'
+															: 'border-content bg-content hover:!bg-primary/15'
+													)}
 												>
-													{option.label}
-												</div>
-												<div
-													className={`text-xs font-light opacity-70 ${isSelected ? 'opacity-90' : ''}`}
-												>
-													{option.value}
-												</div>
-											</div>
+													<span
+														className={
+															isSelected
+																? 'font-medium'
+																: 'font-normal'
+														}
+													>
+														{option.label}
+													</span>
+													<span
+														className={cn(
+															'text-xs font-light',
+															isSelected
+																? 'opacity-90'
+																: 'opacity-70'
+														)}
+													>
+														{option.value}
+													</span>
+												</button>
+											</li>
 										)
 									})}
-								</div>
-							</div>
+								</ul>
+							</section>
 						))}
 					</div>
 				</SectionPanel>
 			</div>
 		</WidgetSettingWrapper>
 	)
-}
-
-interface Option {
-	label: string
-	options: {
-		value: string
-		label: string
-	}[]
-}
-function getCurrencyOptions(supported: SupportedCurrencies): Option[] {
-	const keys = Object.keys(supported)
-
-	const isCrypto = keys
-		.map((key) => Number(key))
-		.filter((index) => supported[index].type === 'crypto')
-
-	const isCurrency = keys
-		.map((key) => Number(key))
-		.filter((index) => supported[index].type === 'currency')
-
-	const supportedCoins = keys
-		.map((key) => Number(key))
-		.filter((index) => supported[index].type === 'coin')
-
-	return [
-		{
-			label: '🪙 ارزهای دیجیتال',
-			options: isCrypto.map((index) => ({
-				value: supported[index].key,
-				label: supported[index].label.fa,
-			})),
-		},
-		{
-			label: '💵 ارزها',
-			options: isCurrency.map((index) => ({
-				value: supported[index].key,
-				label: supported[index].label.fa,
-			})),
-		},
-		{
-			label: '🥇 طلا و سکه',
-			options: supportedCoins.map((index) => ({
-				value: supported[index].key,
-				label: supported[index].label.fa,
-			})),
-		},
-	]
 }

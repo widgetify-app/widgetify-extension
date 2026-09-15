@@ -1,78 +1,103 @@
 import type React from 'react'
-import type { WidgetifyDate } from '@/layouts/widgets/calendar/utils/date-events'
-import { toIsoDateKey } from '../types'
+import { PERSIAN_WEEKDAYS } from '@/common/constants/weekdays'
+import { cn } from '@/common/utils/cn'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 
 interface GoogleCalendarWeekStripProps {
 	weekDays: WidgetifyDate[]
 	selectedDay: WidgetifyDate
+	today: WidgetifyDate
 	onSelectDay: (day: WidgetifyDate) => void
-	isToday: (day: WidgetifyDate) => boolean
-	eventsByDate: Map<string, any[]>
+	eventsByDate: Map<string, GoogleCalendarEvent[]>
 }
-
-const PERSIAN_DAY_LETTERS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
 
 export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = ({
 	weekDays,
 	selectedDay,
+	today,
 	onSelectDay,
-	isToday,
 	eventsByDate,
 }) => {
 	return (
-		<div className="grid grid-cols-7 gap-1 p-1 rounded-2xl bg-base-200/40 shrink-0 mb-2.5 select-none">
+		<ul className="grid grid-cols-7 gap-1 p-1 rounded-2xl bg-base-200/40 shrink-0 mb-2.5 select-none">
 			{weekDays.map((day, idx) => {
 				const dayIsoKey = toIsoDateKey(day)
-				const isDaySelected =
-					day.jDate() === selectedDay.jDate() &&
-					day.jMonth() === selectedDay.jMonth() &&
-					day.jYear() === selectedDay.jYear()
-				const isDayToday = isToday(day)
-				const hasEvents = (eventsByDate.get(dayIsoKey)?.length ?? 0) > 0
+				const isDaySelected = isSameJalaliDay(day, selectedDay)
+				const isDayToday = isSameJalaliDay(day, today)
+				const eventCount = eventsByDate.get(dayIsoKey)?.length ?? 0
+
+				const label = [
+					day.format('dddd jD jMMMM jYYYY'),
+					eventCount > 0 && `${eventCount} برنامه`,
+				]
+					.filter(Boolean)
+					.join('، ')
 
 				return (
-					<button
-						key={dayIsoKey}
-						type="button"
-						onClick={() => onSelectDay(day)}
-						className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all cursor-pointer relative ${
-							isDaySelected
-								? 'bg-primary text-primary-content shadow-xs font-bold'
-								: isDayToday
-									? 'bg-primary/10 text-primary font-bold hover:bg-primary/20'
-									: 'text-base-content/70 hover:bg-base-200 hover:text-base-content font-medium'
-						}`}
-					>
-						<span
-							className={`text-[9px] leading-none mb-1 ${
-								isDaySelected
-									? 'text-white/80'
-									: isDayToday
-										? 'text-primary/80'
-										: 'text-base-content/40'
-							}`}
+					<li key={dayIsoKey}>
+						<button
+							type="button"
+							onClick={() => onSelectDay(day)}
+							aria-label={label}
+							aria-pressed={isDaySelected}
+							aria-current={isDayToday ? 'date' : undefined}
+							className={cn(
+								'relative flex flex-col items-center justify-center w-full py-1.5',
+								'rounded-xl transition-all cursor-pointer focus-visible:focus-ring',
+								isDaySelected &&
+									'bg-primary text-primary-content shadow-xs font-bold',
+								!isDaySelected &&
+									isDayToday &&
+									'bg-primary/10 text-primary font-bold hover:bg-primary/20',
+								!isDaySelected &&
+									!isDayToday &&
+									'text-muted hover:bg-base-200 hover:text-base-content font-medium'
+							)}
 						>
-							{PERSIAN_DAY_LETTERS[idx]}
-						</span>
-						<span className="text-xs leading-none tabular-nums">
-							{day.jDate()}
-						</span>
-
-						{/* Event indicator dot */}
-						{hasEvents && (
 							<span
-								className={`w-1 h-1 rounded-full mt-1 ${
+								aria-hidden="true"
+								className={cn(
+									'text-[9px] leading-none mb-1',
 									isDaySelected
-										? 'bg-white'
+										? 'opacity-80'
 										: isDayToday
-											? 'bg-primary'
-											: 'bg-primary/60'
-								}`}
-							/>
-						)}
-					</button>
+											? 'text-primary/80'
+											: 'opacity-60'
+								)}
+							>
+								{PERSIAN_WEEKDAYS[idx].short}
+							</span>
+							<time
+								dateTime={dayIsoKey}
+								aria-hidden="true"
+								className="text-xs leading-none tabular-nums"
+							>
+								{day.jDate()}
+							</time>
+
+							<span
+								aria-hidden="true"
+								className="flex items-center justify-center h-1 mt-1"
+							>
+								{eventCount > 0 && (
+									<span
+										className={cn(
+											'w-1 h-1 rounded-full',
+											isDaySelected
+												? 'bg-current'
+												: isDayToday
+													? 'bg-primary'
+													: 'bg-primary/60'
+										)}
+									/>
+								)}
+							</span>
+						</button>
+					</li>
 				)
 			})}
-		</div>
+		</ul>
 	)
 }

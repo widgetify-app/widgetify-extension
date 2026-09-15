@@ -8,6 +8,7 @@ export interface WallpaperClockTheme {
 	secondaryColor: string
 	accentGlow: string
 	isDark: boolean
+	isDerivedFromWallpaper: boolean
 }
 
 export const CLOCK_SHADOW_SETTINGS = {
@@ -21,6 +22,15 @@ const DEFAULT_THEME: WallpaperClockTheme = {
 	secondaryColor: 'rgba(241, 245, 249, 0.85)',
 	accentGlow: CLOCK_SHADOW_SETTINGS.defaultShadow,
 	isDark: true,
+	isDerivedFromWallpaper: true,
+}
+
+const THEME_FALLBACK: WallpaperClockTheme = {
+	primaryColor: 'currentColor',
+	secondaryColor: 'currentColor',
+	accentGlow: 'none',
+	isDark: true,
+	isDerivedFromWallpaper: false,
 }
 
 const MIN_CONTRAST_RATIO = 4.5
@@ -85,7 +95,7 @@ function hexToRgb(hex: string): [number, number, number] {
 function relativeLuminance(r: number, g: number, b: number): number {
 	const toLinear = (c: number) => {
 		const cs = c / 255
-		return cs <= 0.03928 ? cs / 12.92 : Math.pow((cs + 0.055) / 1.055, 2.4)
+		return cs <= 0.03928 ? cs / 12.92 : ((cs + 0.055) / 1.055) ** 2.4
 	}
 	const rl = toLinear(r)
 	const gl = toLinear(g)
@@ -255,12 +265,14 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 					secondaryColor: 'rgba(241, 245, 249, 0.85)',
 					accentGlow: shadow,
 					isDark: true,
+					isDerivedFromWallpaper: true,
 				}
 			: {
 					primaryColor: '#1e293b',
 					secondaryColor: 'rgba(30, 41, 59, 0.85)',
 					accentGlow: shadow,
 					isDark: false,
+					isDerivedFromWallpaper: true,
 				}
 	}
 
@@ -293,7 +305,13 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 		secondaryColor = `hsla(${primary.hue}, ${secS}%, ${secL}%, 0.88)`
 	}
 
-	return { primaryColor, secondaryColor, accentGlow: shadow, isDark }
+	return {
+		primaryColor,
+		secondaryColor,
+		accentGlow: shadow,
+		isDark,
+		isDerivedFromWallpaper: true,
+	}
 }
 
 function extractThemeFromGradient(gradient: {
@@ -368,14 +386,17 @@ async function extractThemeFromImage(src: string): Promise<WallpaperClockTheme> 
 }
 
 export function useWallpaperClockTheme(): WallpaperClockTheme {
-	const [theme, setTheme] = useState<WallpaperClockTheme>(DEFAULT_THEME)
+	const [theme, setTheme] = useState<WallpaperClockTheme>(THEME_FALLBACK)
 	const requestIdRef = useRef(0)
 
 	useEffect(() => {
 		let isMounted = true
 
 		async function updateFromWallpaper(wallpaper: StoredWallpaper | null) {
-			if (!wallpaper) return
+			if (!wallpaper) {
+				if (isMounted) setTheme(THEME_FALLBACK)
+				return
+			}
 
 			const requestId = ++requestIdRef.current
 

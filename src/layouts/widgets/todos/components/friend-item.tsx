@@ -21,7 +21,6 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 						<AvatarComponent
 							url={avatar}
 							placeholder={name}
-							// size="xs"
 							className="object-cover w-full h-full"
 						/>
 					</div>

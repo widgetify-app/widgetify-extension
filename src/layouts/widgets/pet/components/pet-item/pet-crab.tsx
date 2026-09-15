@@ -17,13 +17,8 @@ import { usePetContext } from '../../pet.context'
 import { PetTypes } from '../../types'
 
 export const CrabComponent = ({ className }: { className?: string }) => {
-	const {
-		getCurrentPetName,
-		isPetHungry,
-		levelUpHungryState,
-		levelDownHungryState,
-		getPetHungryState,
-	} = usePetContext()
+	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
+		usePetContext()
 
 	const crabAnimations: PetAnimations = {
 		idle,
@@ -65,6 +60,7 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
+		onFeed,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CRAB),
 		animations: crabAnimations,
@@ -90,6 +86,7 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CRAB)}
+			onFeed={onFeed}
 		/>
 	)
 }

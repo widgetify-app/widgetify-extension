@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 import type React from 'react'
 import { setToStorage, watchStorage } from '@/common/storage'
-import { DEFAULT_COLS, DEFAULT_WIDGET_LAYOUT } from '@/layouts/widgets/layout-engine'
-import type { StoredWidget } from '@/layouts/widgets/layout-engine/types'
-import { applyInstanceIdMap, buildInstanceIdMap } from '@/layouts/widgets/instance-id'
-import { migrateWidgetLayoutIfNeeded } from '@/layouts/widgets/migration'
+import { DEFAULT_COLS, DEFAULT_WIDGET_LAYOUT } from '@widget/layout-engine'
+import type { StoredWidget } from '@widget/layout-engine/types'
+import { applyInstanceIdMap, buildInstanceIdMap } from '@widget/instance-id'
+import { migrateWidgetLayoutIfNeeded } from '@widget/migration'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,

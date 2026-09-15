@@ -1,36 +1,45 @@
-import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
-
-import { unitsFlag } from '../unit-symbols'
 import moment from 'jalali-moment'
+import type React from 'react'
+import type { FetchedWeather, TemperatureUnit } from '../weather.interface'
+import { formatTemperature } from '../utils/format-temperature'
 
-interface WeatherLayoutProps {
+interface ForecastProps {
 	forecast?: FetchedWeather['forecast'] | null
-	temperatureUnit: keyof typeof unitsFlag
+	temperatureUnit: TemperatureUnit
 }
-export function Forecast({ forecast, temperatureUnit }: WeatherLayoutProps) {
+
+export const Forecast: React.FC<ForecastProps> = ({ forecast, temperatureUnit }) => {
+	if (!forecast?.length) return null
+
 	return (
-		<>
-			{forecast?.map((forecast) => {
+		<ul className="flex justify-between w-full gap-0.5">
+			{forecast.map((item) => {
+				const at = moment(item.date).locale('fa')
+				const temp = formatTemperature(item.temp, temperatureUnit)
+
 				return (
-					<div
-						key={forecast.date}
-						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-all duration-200 border rounded-2xl bg-base-200/40 border-content hover:bg-base-100/50"
+					<li
+						key={item.date}
+						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-ui border rounded-2xl bg-base-content/5 border-content hover:bg-base-content/10"
 					>
-						<span className="text-[10px] font-medium text-muted">
-							{moment(forecast.date).locale('fa').format('HH:mm')}
-						</span>
+						<time
+							dateTime={at.clone().locale('en').format()}
+							className="text-[10px] font-medium text-muted"
+						>
+							{at.format('HH:mm')}
+						</time>
 
-						<img src={forecast.icon} className="w-9 h-9" alt="weather icon" />
+						<img src={item.icon} className="w-9 h-9" alt="" />
 
-						<span className="text-sm font-bold text-base-content">
-							{Math.round(forecast.temp)}
+						<span className="text-sm font-bold text-content">
+							<data value={temp.value}>{temp.value}</data>
 							<span className="text-[10px] font-medium text-muted">
-								{unitsFlag[temperatureUnit || 'metric']}
+								{temp.symbol}
 							</span>
 						</span>
-					</div>
+					</li>
 				)
 			})}
-		</>
+		</ul>
 	)
 }

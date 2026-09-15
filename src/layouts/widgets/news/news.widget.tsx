@@ -4,12 +4,10 @@ import { listenEvent } from '@/common/utils/call-event'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
 import type { WigiNewsSetting } from './rss.interface'
-import type { WidgetSize } from '../layout-engine/types'
 
 interface NewsLayoutProps {
 	inComboWidget: boolean
 	enableBackground?: boolean
-	size?: WidgetSize
 }
 
 export const NewsLayout: React.FC<NewsLayoutProps> = ({
@@ -19,7 +17,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
 		useDefaultNews: true,
-		lastFetchedItems: {},
 	})
 
 	useEffect(() => {
@@ -29,7 +26,6 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 				setRssState({
 					customFeeds: data.customFeeds,
 					useDefaultNews: data.useDefaultNews,
-					lastFetchedItems: {},
 				})
 			}
 		}
@@ -61,13 +57,15 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	return (
 		<WidgetContainer
 			background={enableBackground}
-			className={'flex flex-col  overflow-y-auto scrollbar-none'}
+			className="flex flex-col overflow-y-auto scrollbar-none"
 			style={{ scrollbarWidth: 'none' }}
 		>
-			<NewsContainer
-				customFeeds={rssState.customFeeds}
-				useDefaultNews={rssState.useDefaultNews}
-			/>
+			<section aria-label="اخبار" className="flex flex-col h-full">
+				<NewsContainer
+					customFeeds={rssState.customFeeds}
+					useDefaultNews={rssState.useDefaultNews}
+				/>
+			</section>
 		</WidgetContainer>
 	)
 }

@@ -1,108 +1,125 @@
-import type { FetchedWeather } from '@/layouts/widgets/weather/weather.interface'
-import { unitsFlag } from '../unit-symbols'
+import type React from 'react'
 import { Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
+import { cleanCityName } from '../utils/clean-city-name'
+import { formatTemperature } from '../utils/format-temperature'
+import type { FetchedWeather, TemperatureUnit } from '../weather.interface'
+
+const BANNER_MASK =
+	'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)'
 
 interface CurrentWeatherBoxProps {
 	fetchedWeather: FetchedWeather | null
-	temperatureUnit: keyof typeof unitsFlag
+	temperatureUnit: TemperatureUnit
 }
 
-export function CurrentWeatherBox({
+export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 	fetchedWeather,
 	temperatureUnit,
-}: CurrentWeatherBoxProps) {
+}) => {
+	const weather = fetchedWeather?.weather
+	const banner = weather?.statusBanner
+	const temp = formatTemperature(weather?.temperature?.temp, temperatureUnit)
+	const cityName = cleanCityName(fetchedWeather?.city?.fa)
+
+	const metrics = [
+		{
+			id: 'wind',
+			label: 'باد',
+			icon: 'wind',
+			value: `${Math.round(weather?.temperature?.wind_speed || 0)} m/s`,
+		},
+		{
+			id: 'humidity',
+			label: 'رطوبت',
+			icon: 'humidity',
+			value: `${weather?.temperature?.humidity || 0}%`,
+		},
+		{
+			id: 'clouds',
+			label: 'پوشش ابری',
+			icon: 'cloudy',
+			value: `${weather?.temperature?.clouds || 0}%`,
+		},
+	] as const
+
 	return (
 		<>
-			<div
-				className={`relative p-2 overflow-hidden border ${fetchedWeather?.weather?.statusBanner && 'border-r-0'} rounded-2xl border-content min-h-28 max-h-28`}
+			<header
+				className={`relative p-2 overflow-hidden bg-base-content/5 border ${banner ? 'border-r-0' : ''} rounded-2xl border-content min-h-28 max-h-28`}
 			>
-				{fetchedWeather?.weather?.statusBanner && (
+				{banner ? (
 					<div
+						aria-hidden="true"
 						className="absolute inset-0 transition-opacity duration-500 bg-center bg-cover"
 						style={{
-							backgroundImage: `url(${fetchedWeather.weather.statusBanner})`,
-							maskImage:
-								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
-							WebkitMaskImage:
-								'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 85%)',
+							backgroundImage: `url(${banner})`,
+							maskImage: BANNER_MASK,
+							WebkitMaskImage: BANNER_MASK,
 						}}
 					/>
-				)}
-
-				{!fetchedWeather?.weather?.statusBanner && (
-					<div className="absolute inset-0 bg-gradient-to-br from-base-200/80 to-base-200/60"></div>
+				) : (
+					<div
+						aria-hidden="true"
+						className="absolute inset-0 bg-gradient-to-br from-base-200/80 to-base-200/60"
+					/>
 				)}
 
 				<div className="relative z-10 flex items-center justify-between py-1">
 					<div className="flex flex-col gap-1.5">
 						<span className="text-xs font-medium text-muted drop-shadow-lg">
-							{cleanCityName(fetchedWeather?.city?.fa || '')}
+							{cityName}
 						</span>
 
-						<span className="flex items-baseline gap-1.5 text-4xl font-bold leading-none text-base-content drop-shadow-lg">
-							{Math.round(fetchedWeather?.weather?.temperature?.temp || 0)}
-							<span className="text-xl font-medium text-base-content/90 drop-shadow-lg">
-								{unitsFlag[temperatureUnit || 'metric']}
+						<span className="flex items-baseline gap-1.5 text-4xl font-bold leading-none text-content drop-shadow-lg">
+							<data value={temp.value}>{temp.value}</data>
+							<span className="text-xl font-medium text-content drop-shadow-lg">
+								{temp.symbol}
 							</span>
 						</span>
 
 						<span className="text-xs leading-tight text-muted drop-shadow-lg">
-							{fetchedWeather?.weather?.description?.text} •{' '}
-							{fetchedWeather?.weather?.temperature?.temp_description}
+							{weather?.description?.text} •{' '}
+							{weather?.temperature?.temp_description}
 						</span>
 					</div>
 
-					{fetchedWeather?.weather?.icon?.url ? (
+					{weather?.icon?.url ? (
 						<img
-							src={fetchedWeather?.weather?.icon?.url}
+							src={weather.icon.url}
 							className="w-20 h-20 drop-shadow"
-							alt={fetchedWeather?.weather?.description?.text}
+							alt={weather.description?.text || ''}
 						/>
 					) : (
-						<div className="w-20 h-20 rounded-lg animate-pulse bg-base-300/50" />
+						<div
+							aria-hidden="true"
+							className="w-20 h-20 rounded-lg animate-pulse bg-base-content/10"
+						/>
 					)}
 				</div>
-			</div>
+			</header>
 
-			<div className="p-2 border rounded-2xl bg-base-200/40 border-content">
-				<div className="grid grid-cols-3 gap-1.5">
-					<Tooltip content={'باد'}>
-						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<Icon name="wind" className="w-4 h-4 text-muted" />
-							<span className="text-xs font-medium text-muted">
-								{Math.round(
-									fetchedWeather?.weather?.temperature?.wind_speed || 0
-								)}{' '}
-								m/s
-							</span>
-						</div>
-					</Tooltip>
-
-					<Tooltip content={'رطوبت'}>
-						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<Icon name="humidity" className="w-4 h-4 text-muted" />
-							<span className="text-xs font-medium text-muted">
-								{fetchedWeather?.weather?.temperature?.humidity || 0}%
-							</span>
-						</div>
-					</Tooltip>
-
-					<Tooltip content="پوشش ابری">
-						<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
-							<Icon name="cloudy" className="w-4 h-4 text-muted" />
-							<span className="text-xs font-medium text-muted">
-								{fetchedWeather?.weather?.temperature?.clouds || 0}%
-							</span>
-						</div>
-					</Tooltip>
-				</div>
+			<div className="p-2 border rounded-2xl bg-base-content/5 border-content">
+				<dl className="grid grid-cols-3 gap-1.5">
+					{metrics.map((metric) => (
+						<Tooltip key={metric.id} content={metric.label}>
+							<div className="flex items-center justify-center gap-1.5 py-2 transition-colors border rounded-xl border-content">
+								<dt className="flex items-center">
+									<Icon
+										name={metric.icon}
+										className="w-4 h-4 text-muted"
+										aria-hidden="true"
+									/>
+									<span className="sr-only">{metric.label}</span>
+								</dt>
+								<dd className="text-xs font-medium text-muted">
+									{metric.value}
+								</dd>
+							</div>
+						</Tooltip>
+					))}
+				</dl>
 			</div>
 		</>
 	)
-}
-
-function cleanCityName(name: string) {
-	const regex = /\s*شهرستان\s*/g
-	return name.replace(regex, ' ').trim()
 }

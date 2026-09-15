@@ -2,6 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import type { ReactNode } from 'react'
 import { Portal } from '../portal/portal'
 import { useDropdown } from './use-dropdown'
+import { isAnchorInViewport } from '../utils/anchored-position'
 import { useState, useLayoutEffect, useRef } from 'react'
 import { Motion, Presence } from '@/common/motion'
 
@@ -85,6 +86,16 @@ export function Dropdown({
 			const contentRect = contentEl.getBoundingClientRect()
 			const viewportWidth = window.innerWidth
 			const viewportHeight = window.innerHeight
+
+			if (
+				!isAnchorInViewport(triggerRect, {
+					width: viewportWidth,
+					height: viewportHeight,
+				})
+			) {
+				close()
+				return
+			}
 
 			let dropdownWidth =
 				width === 'auto'

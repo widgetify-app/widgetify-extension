@@ -1,99 +1,88 @@
-import { useState } from 'react'
-import { useDate } from '@/context/date.context'
-import { useAuth } from '@/context/auth.context'
+import { useRef } from 'react'
 import { cn } from '@/common/utils/cn'
-import { useGetEvents } from '@/services/hooks/date/get-events.hook'
-import { useGetCalendarData } from '@/services/hooks/calendar/get-calendar-data.hook'
 import { ClickableTooltip } from '@/components/ui'
-import { CalendarDayDetails } from '../components/day/tool-tip-content'
+import { useAuth } from '@/context/auth.context'
+import { useDate } from '@/context/date.context'
+import { useGetMoods } from '@/services/hooks/mood-log/get-moods.hook'
+import { useGetEvents } from '@/services/hooks/date/get-events.hook'
+import { CalendarDayDetails } from '../components/day/day-details'
+import { PERSIAN_WEEKDAYS } from '@/common/constants/weekdays'
+import { EMPTY_EVENTS } from '../constants'
+import { useDayDetailsPopup } from '../hooks/use-day-details-popup'
+import { toIsoDateKey } from '../utils/jalali-date'
 import { getHijriEvents, getShamsiEvents } from '../utils/date-events'
-import Analytics from '@/analytics'
 
-const dayNames = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
-
-export function Calendar2x1Row() {
-	const { today, selectedDate, setSelectedDate } = useDate()
+export function Calendar2x1() {
+	const { today, selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { data: events } = useGetEvents()
-	const [isOpenTooltip, setIsOpenTooltip] = useState<boolean>(false)
-	const [clickedElement, setClickedElement] = useState<HTMLButtonElement | null>(null)
+	const { anchor, popupDate, isOpen, openFor, setOpen } = useDayDetailsPopup()
+	const weekRef = useRef<HTMLUListElement>(null)
 
 	const startOfWeek = today.clone().startOf('week')
 	const weekDays = Array.from({ length: 7 }, (_, i) =>
 		startOfWeek.clone().add(i, 'days')
 	)
 
-	const { data: calendarData, refetch } = useGetCalendarData(
+	const { data: moodsData, refetch } = useGetMoods(
 		isAuthenticated,
-		startOfWeek.clone().doAsGregorian().format('YYYY-MM-DD'),
-		startOfWeek.clone().add(6, 'days').doAsGregorian().format('YYYY-MM-DD')
+		toIsoDateKey(startOfWeek),
+		toIsoDateKey(startOfWeek.clone().add(6, 'days'))
 	)
 
-	const eventsForCalendar = events || {
-		gregorianEvents: [],
-		hijriEvents: [],
-		shamsiEvents: [],
-	}
-
-	const handleDayClick = (
-		day: (typeof weekDays)[number],
-		element: HTMLButtonElement
-	) => {
-		Analytics.event('calendar_day_click')
-		setSelectedDate(day)
-		setClickedElement(element)
-		setIsOpenTooltip(true)
-	}
+	const eventsForCalendar = events || EMPTY_EVENTS
 
 	return (
 		<>
-			<div className="flex items-center justify-between h-full w-full px-1.5 py-1.5 select-none">
-				<div className="grid w-full h-full grid-cols-7 gap-1">
-					{weekDays.map((day, idx) => {
-						const isToday = day.isSame(today, 'day')
-						const isSelected = selectedDate && day.isSame(selectedDate, 'day')
+			<ul
+				ref={weekRef}
+				className="grid w-full h-full grid-cols-7 gap-1 p-1.5 select-none"
+			>
+				{weekDays.map((day, idx) => {
+					const isToday = day.isSame(today, 'day')
+					const isSelected = selectedDate && day.isSame(selectedDate, 'day')
 
-						const dayEvents = events
-							? [
-									...getShamsiEvents(events, day),
-									...getHijriEvents(events, day),
-								]
-							: []
-						const isHoliday =
-							day.day() === 5 || dayEvents.some((e) => e.isHoliday)
+					const dayEvents = events
+						? [
+								...getShamsiEvents(events, day),
+								...getHijriEvents(events, day),
+							]
+						: []
+					const isHoliday =
+						day.day() === 5 || dayEvents.some((e) => e.isHoliday)
+					const dayLabel = day.format('dddd jD jMMMM jYYYY')
 
-						const dayStateClass = cn(
-							'group relative flex flex-col items-center justify-center gap-0.5 rounded-xl',
-							'cursor-pointer transition-all duration-150 active:scale-95 h-full',
-
-							isSelected && 'font-bold shadow-sm',
-							isSelected &&
-								(isHoliday
-									? 'bg-error text-error-content'
-									: 'bg-primary text-primary-content'),
-
-							!isSelected && isToday && 'font-bold ring-1',
-							!isSelected &&
-								isToday &&
-								(isHoliday
-									? 'bg-error/10 text-error ring-error/30'
-									: 'bg-primary/10 text-primary ring-primary/30'),
-
-							!isSelected &&
-								!isToday &&
-								'bg-base-200/40 hover:bg-base-200/80',
-							!isSelected &&
-								!isToday &&
-								(isHoliday ? 'text-error' : 'text-content')
-						)
-
-						return (
+					return (
+						<li key={idx} className="h-full">
 							<button
-								key={idx}
 								type="button"
-								title={day.format('dddd jD jMMMM')}
-								onClick={(e) => handleDayClick(day, e.currentTarget)}
-								className={dayStateClass}
+								title={dayLabel}
+								aria-label={dayLabel}
+								aria-pressed={isSelected}
+								aria-current={isToday ? 'date' : undefined}
+								onClick={(e) => openFor(day, e.currentTarget)}
+								className={cn(
+									'flex flex-col items-center justify-center gap-0.5',
+									'w-full h-full rounded-xl cursor-pointer transition-ui active:scale-95',
+									'focus-visible:focus-ring',
+									isSelected && 'font-bold shadow-sm',
+									isSelected &&
+										(isHoliday
+											? 'bg-error text-error-content'
+											: 'bg-primary text-primary-content'),
+									!isSelected && isToday && 'font-bold ring-1',
+									!isSelected &&
+										isToday &&
+										(isHoliday
+											? 'bg-error/10 text-error ring-error/30'
+											: 'bg-primary/10 text-primary ring-primary/30'),
+									!isSelected &&
+										!isToday &&
+										'bg-base-200/40 hover:bg-base-200/80',
+									!isSelected &&
+										!isToday &&
+										(isHoliday ? 'text-error' : 'text-content')
+								)}
 							>
 								<span
 									className={cn(
@@ -101,49 +90,60 @@ export function Calendar2x1Row() {
 										isSelected
 											? 'opacity-90'
 											: isHoliday
-												? 'text-error/70'
-												: 'text-base-content/50'
+												? 'text-error'
+												: 'text-muted'
 									)}
 								>
-									{dayNames[idx]}
+									{PERSIAN_WEEKDAYS[idx].short}
 								</span>
 
-								<span className="text-xs font-extrabold leading-none sm:text-sm tabular-nums">
+								<time
+									dateTime={day
+										.clone()
+										.doAsGregorian()
+										.format('YYYY-MM-DD')}
+									className="text-sm font-extrabold leading-none tabular-nums"
+								>
 									{day.jDate()}
-								</span>
+								</time>
 
-								<div className="flex items-center justify-center h-1">
-									{isToday ? (
+								<span
+									className="flex items-center justify-center h-1"
+									aria-hidden="true"
+								>
+									{isToday && (
 										<span
 											className={cn(
 												'w-1 h-1 rounded-full',
 												isSelected
-													? 'bg-white'
+													? 'bg-current'
 													: isHoliday
 														? 'bg-error'
 														: 'bg-primary'
 											)}
 										/>
-									) : null}
-								</div>
+									)}
+								</span>
 							</button>
-						)
-					})}
-				</div>
-			</div>
+						</li>
+					)
+				})}
+			</ul>
 
-			{clickedElement && (
+			{anchor && popupDate && (
 				<ClickableTooltip
-					triggerRef={{ current: clickedElement }}
+					triggerRef={{ current: anchor }}
+					boundaryRef={weekRef}
 					content={
 						<CalendarDayDetails
+							date={popupDate}
 							events={eventsForCalendar}
-							moods={calendarData?.moods ?? []}
+							moods={moodsData?.moods ?? []}
 							onMoodChange={() => refetch()}
 						/>
 					}
-					isOpen={isOpenTooltip}
-					setIsOpen={setIsOpenTooltip}
+					isOpen={isOpen}
+					setIsOpen={setOpen}
 				/>
 			)}
 		</>

@@ -43,7 +43,8 @@ export function findAvailableSlot(
 export function getBestAllowedSizeForColumns(
 	allowedSizes: WidgetSize[],
 	currentSize: WidgetSize,
-	cols: number
+	cols: number,
+	preferredSize?: WidgetSize
 ): WidgetSize {
 	if (currentSize.w <= cols) {
 		const isCurrentAllowed = allowedSizes.some(
@@ -51,6 +52,15 @@ export function getBestAllowedSizeForColumns(
 		)
 		if (isCurrentAllowed) {
 			return currentSize
+		}
+	}
+
+	if (preferredSize && preferredSize.w <= cols) {
+		const isPreferredAllowed = allowedSizes.some(
+			(s) => s.w === preferredSize.w && s.h === preferredSize.h
+		)
+		if (isPreferredAllowed) {
+			return preferredSize
 		}
 	}
 

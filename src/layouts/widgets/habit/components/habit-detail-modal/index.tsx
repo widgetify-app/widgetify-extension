@@ -5,6 +5,8 @@ import { HabitCalendar } from './habit-calendar-heatmap'
 import { HabitContributionChart } from './habit-contribution-chart'
 import { HabitStatsCards } from './habit-stats-cards'
 import { useAuth } from '@/context/auth.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
+import { getCurrentDate } from '@widget/calendar/utils/date-events'
 import { formatHabitGoal } from '../../utils/habit-goal'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
@@ -34,6 +36,8 @@ export function HabitDetailModal({
 	onEdit,
 }: ModalProps) {
 	const { isAuthenticated } = useAuth()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 	const [activeView, setActiveView] = useState<'contribution' | 'calendar'>(
 		'contribution'
 	)
@@ -88,32 +92,35 @@ export function HabitDetailModal({
 							trigger={
 								<Button
 									size="xs"
-									className="text-xs border-none py-1!"
+									aria-label="گزینه‌های عادت"
 									rounded={'xl'}
+									className="w-7 h-7 p-0! text-muted hover:text-base-content border-base-content/15"
 								>
 									<Icon
 										name="menuOption"
 										size={15}
-										strokeWidth={0.35}
+										aria-hidden="true"
 									/>
 								</Button>
 							}
 						>
-							<div className="flex flex-col p-2 border bg-base-200 border-base-300 rounded-2xl">
+							<div className="flex flex-col p-2 border bg-content bg-glass border-base-content/10 rounded-2xl">
 								<button
-									className={`w-full px-3 py-1 flex items-center gap-x-2.25 cursor-pointer rounded-lg transition-colors duration-200 text-content hover:text-content/90 hover:bg-base-300/70!`}
+									type="button"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-base-content/10 focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
-									<Icon name="pen" size={13} />
+									<Icon name="pen" size={13} aria-hidden="true" />
 									<span className="font-medium">ویرایش</span>
 								</button>
 
 								<button
-									className={`w-full px-3 py-1 flex items-center gap-x-2.5 cursor-pointer rounded-lg transition-colors duration-200 text-error hover:text-error/90 hover:bg-error/10!`}
+									type="button"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-error hover:bg-error/10 focus-visible:focus-ring"
 									onClick={onClickArchive}
 								>
-									<Icon name="archive" size={14} />
-									<span className="font-medium">بایگانی</span>
+									<Icon name="trash" size={14} aria-hidden="true" />
+									<span className="font-medium">حذف عادت</span>
 								</button>
 							</div>
 						</Dropdown>
@@ -154,19 +161,19 @@ export function HabitDetailModal({
 					</div>
 				) : (
 					<div className="flex flex-col gap-3 p-2">
-						<HabitStatsCards habit={habit} />
+						<HabitStatsCards habit={habit} today={today} />
 
-						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-base-200/50 border-base-300/80">
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-base-content/5 border-base-content/10">
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center p-1 border bg-base-300/40 rounded-2xl border-base-content/5">
+								<div className="flex items-center p-1 border bg-base-content/5 rounded-2xl border-base-content/10">
 									<button
 										type="button"
 										onClick={() => setActiveView('contribution')}
 										className={cn(
-											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'contribution'
-												? 'bg-base-200 text-content shadow-sm'
-												: 'text-muted hover:text-content'
+												? 'bg-base-content/10 text-content shadow-sm'
+												: 'text-muted hover:text-base-content'
 										)}
 									>
 										<Icon name="squares2X2" size={13} />
@@ -176,10 +183,10 @@ export function HabitDetailModal({
 										type="button"
 										onClick={() => setActiveView('calendar')}
 										className={cn(
-											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-all cursor-pointer select-none',
+											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'calendar'
-												? 'bg-base-200 text-content shadow-sm'
-												: 'text-muted hover:text-content'
+												? 'bg-base-content/10 text-content shadow-sm'
+												: 'text-muted hover:text-base-content'
 										)}
 									>
 										<Icon name="calendar" size={13} />
@@ -189,9 +196,17 @@ export function HabitDetailModal({
 							</div>
 
 							{activeView === 'contribution' ? (
-								<HabitContributionChart habit={habit} color={color} />
+								<HabitContributionChart
+									habit={habit}
+									color={color}
+									today={today}
+								/>
 							) : (
-								<HabitCalendar habit={habit} color={color} />
+								<HabitCalendar
+									habit={habit}
+									color={color}
+									today={today}
+								/>
 							)}
 						</div>
 					</div>

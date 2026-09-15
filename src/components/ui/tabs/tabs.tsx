@@ -35,26 +35,31 @@ export const TabNavigation = <T,>({
 
 	return (
 		<div
+			role="group"
 			className={cn(
-				'flex items-center p-1 bg-base-300/40 rounded-2xl border border-base-content/5 relative',
+				'flex items-center p-1 bg-base-content/5 rounded-2xl border border-base-content/5 relative',
 				className
 			)}
 		>
 			{tabs.map((tab) => {
 				const isActive = activeTab === tab.id
+				const isLabelVisible = tabMode === 'simple' || isActive
 
 				return (
 					<button
 						key={tab.id as any}
 						onClick={() => onTabClick(tab.id)}
+						aria-pressed={isActive}
+						aria-label={isLabelVisible ? undefined : tab.label}
 						className={cn(
 							tabTriggerVariants({ size, tabMode, active: isActive }),
+							'focus-visible:focus-ring',
 							isActive && activeTextClass
 						)}
 						type="button"
 					>
-						{tab.icon && <span>{tab.icon}</span>}
-						{(tabMode === 'simple' || isActive) && (
+						{tab.icon && <span aria-hidden="true">{tab.icon}</span>}
+						{isLabelVisible && (
 							<span className="font-medium truncate">{tab.label}</span>
 						)}
 
@@ -62,7 +67,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0 shadow-md bg-base-200 rounded-xl -z-10',
+									'absolute inset-0 shadow-md bg-base-content/10 rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{

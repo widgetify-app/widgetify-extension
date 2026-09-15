@@ -1,55 +1,53 @@
-import type { JSX } from 'react'
-import {
-	MdOutlineSignalCellularAlt,
-	MdOutlineSignalCellularAlt1Bar,
-	MdOutlineSignalCellularAlt2Bar,
-	MdRouter,
-} from 'react-icons/md'
+import type React from 'react'
 import { Tooltip } from '@/components/ui'
+import { Icon } from '@/icons'
+import type { IconName } from '@/icons/types'
+import {
+	getPingFeedback,
+	getPingQuality,
+	getPingTextClass,
+	type PingQuality,
+} from '../utils/ping-quality'
+
+const QUALITY_ICON: Record<PingQuality, IconName> = {
+	unknown: 'signalLow',
+	good: 'signalHigh',
+	fair: 'signalMedium',
+	poor: 'signalLow',
+}
 
 interface NetworkPingCardProps {
 	ping: number | null
 }
 
-export function NetworkPingCard({ ping }: NetworkPingCardProps) {
-	const feedbackText =
-		ping !== null
-			? ping < 150
-				? 'پینگ شما عالی هست.'
-				: ping < 300
-					? 'پینگ شما متوسط است.'
-					: 'پینگ شما ضعیف است.'
-			: 'N/A'
+export const NetworkPingCard: React.FC<NetworkPingCardProps> = ({ ping }) => {
 	return (
-		<div className="grid grid-cols-1 gap-2">
-			<div className="relative p-3 border rounded-2xl border-content">
-				<div className="flex items-center gap-2 mb-1">
-					<MdRouter className={`w-4 h-4 text-muted`} />
-					<span className="text-xs font-medium text-muted">
-						پینگ - زمان پاسخگویی
-					</span>
-				</div>
-				<Tooltip content={feedbackText}>
-					<div className="flex items-center text-sm font-bold gap-0.5">
-						{getPingIcon(ping !== null ? ping : -1)}
-						{ping ? `${ping}ms` : 'N/A'}
-					</div>
+		<div className="relative p-3 overflow-hidden border rounded-2xl border-content">
+			<div
+				aria-hidden="true"
+				className="absolute inset-0 bg-linear-to-br from-base-content/5 to-transparent"
+			/>
+
+			<dl className="relative">
+				<dt className="flex items-center gap-2 mb-1 text-xs font-medium text-muted">
+					<Icon name="router" className="w-4 h-4" aria-hidden="true" />
+					پینگ - زمان پاسخگویی
+				</dt>
+				<Tooltip content={getPingFeedback(ping)}>
+					<dd className="flex items-center text-sm font-bold gap-0.5">
+						<Icon
+							name={QUALITY_ICON[getPingQuality(ping)]}
+							className={getPingTextClass(ping)}
+							aria-hidden="true"
+						/>
+						{ping === null ? (
+							<span className="text-muted">اندازه‌گیری نشد</span>
+						) : (
+							<data value={ping}>{ping}ms</data>
+						)}
+					</dd>
 				</Tooltip>
-				<div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
-			</div>
+			</dl>
 		</div>
 	)
-}
-
-function getPingIcon(ping: number): JSX.Element {
-	switch (true) {
-		case ping === -1:
-			return <MdOutlineSignalCellularAlt1Bar className={' text-error'} />
-		case ping <= 100:
-			return <MdOutlineSignalCellularAlt className={' text-success'} />
-		case ping <= 180:
-			return <MdOutlineSignalCellularAlt2Bar className={' text-warning'} />
-		default:
-			return <MdOutlineSignalCellularAlt1Bar className={' text-error'} />
-	}
 }

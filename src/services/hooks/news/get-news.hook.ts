@@ -1,11 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface NewsSource {
-	name: string
-	url: string
-}
-
 export interface FetchedRssItem {
 	title: string
 	description: string
@@ -18,33 +13,20 @@ export interface FetchedRssItem {
 	}
 }
 
-export const useGetNews = (enabled: boolean) => {
-	return useQuery({
-		queryKey: ['getNews'],
-		queryFn: async () => getNews(),
-		retry: 1,
-		enabled: enabled,
-		initialData: [],
-	})
-}
-
 export const useGetRss = (url: string, sourceName: string) => {
 	return useQuery<FetchedRssItem[]>({
 		queryKey: ['getRss', url, sourceName],
 		queryFn: () => getRss(url, sourceName),
+		retry: 1,
 		enabled: !!url && !!sourceName,
 	})
 }
+
 export async function getRss(url: string, sourceName: string): Promise<FetchedRssItem[]> {
 	const client = getMainClient()
-	const { data } = await client.get<FetchedRssItem[]>(
-		`/news/rss?url=${encodeURIComponent(url)}&sourceName=${encodeURIComponent(sourceName)}`
-	)
-	return data || []
-}
+	const { data } = await client.get<FetchedRssItem[]>('/news/rss', {
+		params: { url, sourceName },
+	})
 
-export async function getNews() {
-	const client = getMainClient()
-	const { data } = await client.get('/news')
-	return data
+	return data || []
 }

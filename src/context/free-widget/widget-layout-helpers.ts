@@ -3,10 +3,10 @@ import {
 	DEFAULT_COLS,
 	resolveLayoutChange,
 	validateLayout,
-} from '@/layouts/widgets/layout-engine'
-import type { StoredWidget } from '@/layouts/widgets/layout-engine/types'
-import { dedupeInstanceIds, isServerInstanceId } from '@/layouts/widgets/instance-id'
-import { WIDGET_DEFINITIONS } from '@/layouts/widgets/widget-registry'
+} from '@widget/layout-engine'
+import type { StoredWidget } from '@widget/layout-engine/types'
+import { dedupeInstanceIds, isServerInstanceId } from '@widget/instance-id'
+import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
 
 export function normalizeWidgetSizes(
 	layout: StoredWidget[],
@@ -26,7 +26,8 @@ export function normalizeWidgetSizes(
 		const size = getBestAllowedSizeForColumns(
 			definition.allowedSizes,
 			widget.size,
-			cols
+			cols,
+			definition.defaultSize
 		)
 		changed = true
 		return { ...widget, size }

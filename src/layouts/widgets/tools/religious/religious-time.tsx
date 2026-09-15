@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
-import { FiClock, FiMoon, FiSun, FiSunrise, FiSunset } from 'react-icons/fi'
-import { useReligiousTime } from '@/services/hooks/date/get-religious-time.hook'
 import { useAuth } from '@/context/auth.context'
+import { Icon } from '@/icons'
+import type { IconName } from '@/icons/types'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
+import { useReligiousTime } from '@/services/hooks/date/get-religious-time.hook'
 
 const DAILY_LIST = [
 	{ day: 'شنبه', zikr: 'یا رَبَّ الْعَالَمِینَ', meaning: 'ای پروردگار جهانیان' },
@@ -25,7 +27,11 @@ const DAILY_LIST = [
 	},
 ]
 
-export function ReligiousTime({ currentDate }: { currentDate: any }) {
+interface ReligiousTimeProps {
+	currentDate: WidgetifyDate
+}
+
+export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 	const { isAuthenticated, user } = useAuth()
 	const day = currentDate.jDate()
 	const month = currentDate.jMonth() + 1
@@ -34,6 +40,7 @@ export function ReligiousTime({ currentDate }: { currentDate: any }) {
 	const {
 		data: religiousTimeData,
 		isLoading: loading,
+		isError,
 		refetch,
 	} = useReligiousTime(
 		{
@@ -53,36 +60,55 @@ export function ReligiousTime({ currentDate }: { currentDate: any }) {
 
 	const dailyZikr = DAILY_LIST.find((item) => item.day === weekDay)
 
-	const prayerTimeBoxes = [
-		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: FiClock },
-		{ title: 'طلوع', value: religiousTimeData?.tolu_aftab, icon: FiSunrise },
-		{ title: 'اذان ظهر', value: religiousTimeData?.azan_zohr, icon: FiSun },
-		{ title: 'غروب', value: religiousTimeData?.ghorub_aftab, icon: FiSunset },
-		{ title: 'اذان مغرب', value: religiousTimeData?.azan_maghreb, icon: FiClock },
-		{ title: 'نیمه شب', value: religiousTimeData?.nimeshab, icon: FiMoon },
+	const prayerTimeBoxes: { title: string; value?: string; icon: IconName }[] = [
+		{ title: 'اذان صبح', value: religiousTimeData?.azan_sobh, icon: 'clock' },
+		{ title: 'طلوع', value: religiousTimeData?.tolu_aftab, icon: 'sunrise' },
+		{ title: 'اذان ظهر', value: religiousTimeData?.azan_zohr, icon: 'sun' },
+		{ title: 'غروب', value: religiousTimeData?.ghorub_aftab, icon: 'sunset' },
+		{ title: 'اذان مغرب', value: religiousTimeData?.azan_maghreb, icon: 'clock' },
+		{ title: 'نیمه شب', value: religiousTimeData?.nimeshab, icon: 'moon' },
 	]
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 overflow-hidden select-none">
 			{loading ? (
-				<div className="grid grid-cols-3 gap-2">
-					{[...Array(6)].map((_, i) => (
+				<div aria-hidden="true" className="grid grid-cols-3 gap-2">
+					{prayerTimeBoxes.map((box) => (
 						<div
-							key={i}
-							className="h-20 bg-base-200/50 rounded-[1.5rem] animate-pulse"
+							key={box.title}
+							className="h-20 skeleton rounded-[1.5rem]"
 						/>
 					))}
+				</div>
+			) : isError ? (
+				<div className="flex flex-col items-center justify-center h-32 gap-2 text-center select-none">
+					<Icon
+						name="alert"
+						size={16}
+						className="text-muted"
+						aria-hidden="true"
+					/>
+					<p className="text-[11px] leading-tight text-muted">
+						اوقات شرعی دریافت نشد
+					</p>
+					<button
+						type="button"
+						onClick={() => refetch()}
+						className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-base-content/10 transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+					>
+						تلاش دوباره
+					</button>
 				</div>
 			) : (
 				<>
 					<div className="grid grid-cols-3 gap-2">
-						{prayerTimeBoxes.map((box, index) => (
+						{prayerTimeBoxes.map((box) => (
 							<div
-								key={index}
+								key={box.title}
 								className="flex flex-col items-center justify-center p-3 border rounded-2xl bg-content border-content"
 							>
 								<div className="mb-1 text-primary/70">
-									<box.icon size={18} />
+									<Icon name={box.icon} size={18} aria-hidden="true" />
 								</div>
 								<span className="text-[8px] font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
 									{box.title}
@@ -98,7 +124,7 @@ export function ReligiousTime({ currentDate }: { currentDate: any }) {
 						<div className="flex flex-col items-center gap-1 p-2 border bg-content border-content rounded-2xl">
 							<div className="flex items-center gap-1.5 mb-0.5">
 								<div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
-								<span className="text-[9px] font-black text-white">
+								<span className="text-[9px] font-black text-content">
 									ذکر روز {weekDay}
 								</span>
 							</div>

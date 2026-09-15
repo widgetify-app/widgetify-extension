@@ -22,6 +22,7 @@ import {
 import type { AxiosError } from 'axios'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
 import { PhotoEmptyState } from './components/photo-empty-state'
+import { getPhotoFileError } from './utils/get-photo-file-error'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize
@@ -39,17 +40,20 @@ export function PhotoWidget({
 	const { isVip } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const inputRef = useRef<HTMLInputElement>(null)
-	const triggerRef = useRef<HTMLDivElement>(null)
+	const triggerRef = useRef<HTMLButtonElement>(null)
 
 	const [isUploading, setIsUploading] = useState(false)
 	const [isGalleryOpen, setIsGalleryOpen] = useState(false)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
+	const [failedSrc, setFailedSrc] = useState<string | null>(null)
 
 	const imageSrc = meta?.imageSrc
 	const isCustom = meta?.isCustom
+	const hasFailed = Boolean(imageSrc) && failedSrc === imageSrc
 
 	const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
+		e.target.value = ''
 		if (!file) return
 
 		if (!isVip) {
@@ -57,13 +61,9 @@ export function PhotoWidget({
 			return
 		}
 
-		if (!file.type.startsWith('image/')) {
-			showToast('لطفا یک فایل تصویری انتخاب کن', 'error')
-			return
-		}
-
-		if (file.size > 1024 * 1024) {
-			showToast('حجم عکس نباید بیشتر از ۱ مگابایت باشه', 'error')
+		const fileError = getPhotoFileError(file)
+		if (fileError) {
+			showToast(fileError, 'error')
 			return
 		}
 
@@ -81,13 +81,12 @@ export function PhotoWidget({
 		}
 
 		updateWidgetSettings(instanceId, { imageSrc: res.url, isCustom: true })
-		e.target.value = ''
 	}
 
 	const handleOpenMenu = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		if (canvasMode === 'edit' || isUploading) return
-		setIsMenuOpen(true)
+		setIsMenuOpen((isOpen) => !isOpen)
 	}
 
 	const handleSelectFromSystem = () => {
@@ -132,33 +131,61 @@ export function PhotoWidget({
 				contentClassName="w-full h-full relative"
 				className="w-full h-full"
 			>
-				<div
+				<button
 					ref={triggerRef}
+					type="button"
 					onClick={handleOpenMenu}
-					className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden transition-all duration-200 cursor-pointer group rounded-widget"
+					aria-haspopup="menu"
+					aria-expanded={isMenuOpen}
+					aria-label={
+						imageSrc ? 'تغییر عکس قاب عکس' : 'انتخاب عکس برای قاب عکس'
+					}
+					className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden cursor-pointer group rounded-widget focus-visible:focus-ring"
 				>
-					{imageSrc ? (
+					{imageSrc && !hasFailed && (
 						<img
 							src={imageSrc}
+							alt=""
+							onError={() => setFailedSrc(imageSrc)}
 							className={`object-cover w-full h-full rounded-widget ${
 								isCustom && blurMode
 									? 'blur-mode blur-xl!'
 									: 'disabled-blur-mode'
 							}`}
 						/>
-					) : (
-						<PhotoEmptyState size={size} />
 					)}
 
-					{isUploading && (
-						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-base-100/70 backdrop-blur-xs rounded-widget">
-							<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
-							<span className="text-xs font-medium text-content">
-								در حال بارگذاری...
+					{hasFailed && (
+						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-content bg-glass">
+							<Icon
+								name="alert"
+								size={18}
+								className="text-muted"
+								aria-hidden="true"
+							/>
+							<span className="text-[11px] leading-tight text-muted">
+								عکس بارگذاری نشد، یکی دیگه انتخاب کن
 							</span>
-						</div>
+						</span>
 					)}
-				</div>
+
+					{!imageSrc && <PhotoEmptyState size={size} />}
+				</button>
+
+				{isUploading && (
+					<div
+						role="status"
+						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-content bg-glass rounded-widget"
+					>
+						<span
+							aria-hidden="true"
+							className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin"
+						/>
+						<span className="text-xs font-medium text-content">
+							در حال بارگذاری...
+						</span>
+					</div>
+				)}
 
 				<input
 					ref={inputRef}

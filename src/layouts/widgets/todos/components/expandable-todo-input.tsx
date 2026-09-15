@@ -10,7 +10,7 @@ import { useGetTags } from '@/services/hooks/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
 import { DatePicker } from '@/components/ui'
 import { PriorityDropdown } from './priority-dropdown'
-import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
+import type { Todo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 import { type TodoCreationPayload, useAddTodo } from '@/services/hooks/todo/add-todo.hook'
 import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
 import { translateError } from '@/common/utils/translate-error'
@@ -20,9 +20,10 @@ import { TodoSelectFriends } from './select-friends'
 import { callEvent } from '@/common/utils/call-event'
 import { twMerge } from 'tailwind-merge'
 import { Icon } from '@/icons'
+import { toTodoDueDate } from '../utils/todo-due-date'
 interface ExpandableTodoInputProps {
-	editTodo?: FetchedTodo
-	onClose: any
+	editTodo?: Todo | null
+	onClose: () => void
 	isEdit: boolean
 	onUpdated?: () => void
 	className?: string
@@ -88,16 +89,19 @@ export function ExpandableTodoInput({
 				}
 			}
 			if (editTodo.friends && editTodo.friends.length > 0) {
-				// Load friends if editing
-				const friends: any[] = editTodo.friends.map((f) => ({
-					user: {
-						name: f.name,
-						avatar: f.avatar,
-						userId: null,
-					},
-					status: 'ACCEPTED' as const,
-				}))
-				setSelectedFriends(friends)
+				setSelectedFriends(
+					editTodo.friends.map(
+						(f) =>
+							({
+								user: {
+									name: f.name,
+									avatar: f.avatar,
+									userId: null,
+								},
+								status: 'ACCEPTED',
+							}) as unknown as Friend
+					)
+				)
 			}
 
 			setIsExpanded(true)
@@ -178,8 +182,8 @@ export function ExpandableTodoInput({
 					category: category.trim() || undefined,
 					description: notesRef.current?.value.trim(),
 					priority: priority,
-					date: selectedDate.add(3.5, 'hours').toISOString(),
-					friendIds: selectedFriends.map((f) => f.id), // Add friend IDs
+					date: toTodoDueDate(selectedDate),
+					friendIds: selectedFriends.map((f) => f.id),
 				}
 
 				if (isEdit && editTodo?.id) {
@@ -294,7 +298,7 @@ export function ExpandableTodoInput({
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
 											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-all outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60',
+												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60',
 												`${transparentInput ? 'bg-transparent!' : 'bg-base-200! focus:ring-primary'} border-none! shadow-none!`
 											)}
 										/>

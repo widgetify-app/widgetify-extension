@@ -2,6 +2,7 @@ import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful'
 import { Portal } from '../portal/portal'
+import { isAnchorInViewport } from '../utils/anchored-position'
 
 export interface ColorPickerProps {
 	color: string
@@ -19,16 +20,24 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
 	const popupRef = useRef<HTMLDivElement>(null)
-	const [coords, setCoords] = useState<{ top: number; left: number }>({
-		top: 0,
-		left: 0,
-	})
+	const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
 
 	const displayColor = color || '#000000'
 
 	const updatePosition = () => {
 		if (!triggerRef.current) return
 		const rect = triggerRef.current.getBoundingClientRect()
+
+		if (
+			!isAnchorInViewport(rect, {
+				width: window.innerWidth,
+				height: window.innerHeight,
+			})
+		) {
+			setIsOpen(false)
+			return
+		}
+
 		const popupWidth = 220
 		const popupHeight = 220
 
@@ -49,7 +58,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 	}
 
 	useEffect(() => {
-		if (!isOpen) return
+		if (!isOpen) {
+			setCoords(null)
+			return
+		}
 
 		updatePosition()
 
@@ -100,7 +112,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 				style={{ backgroundColor: displayColor }}
 			/>
 
-			{isOpen && (
+			{isOpen && coords && (
 				<Portal topLayer>
 					<div
 						ref={popupRef}

@@ -1,23 +1,27 @@
 import type React from 'react'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
-import type { WidgetifyDate } from '../../calendar/utils/date-events'
-import type { ClassifiedCalendarEvent } from '../types'
-import { GoogleCalendarWeekStrip } from '../components/google-calendar-week-strip'
-import { GoogleCalendarNowCard } from '../components/google-calendar-now-card'
-import { GoogleCalendarEventCard } from '../components/google-calendar-event-card'
+import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { WidgetifyDate } from '@widget/calendar/utils/date-events'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
+import { GoogleCalendarEventCard } from '../components/google-calendar-event-card'
+import { GoogleCalendarNowCard } from '../components/google-calendar-now-card'
+import { GoogleCalendarWeekStrip } from '../components/google-calendar-week-strip'
+import type { ClassifiedCalendarEvent } from '../types'
+import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-date'
+
+const navButtonClass =
+	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-muted opacity-70 hover:opacity-100 hover:bg-base-200/60 focus-visible:focus-ring'
 
 interface GoogleCalendarScheduleProps {
 	selectedDay: WidgetifyDate
 	setSelectedDay: (day: WidgetifyDate) => void
 	weekDays: WidgetifyDate[]
-	eventsByDate: Map<string, any[]>
+	eventsByDate: Map<string, GoogleCalendarEvent[]>
 	classifiedEvents: ClassifiedCalendarEvent[]
 	isLoading: boolean
-	isToday: (day: WidgetifyDate) => boolean
 	today: WidgetifyDate
-	onEventClick: (event: any) => void
+	onEventClick: (event: GoogleCalendarEvent) => void
 }
 
 export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
@@ -27,21 +31,15 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 	eventsByDate,
 	classifiedEvents,
 	isLoading,
-	isToday,
 	today,
 	onEventClick,
 }) => {
-	const isCurrentWeek = weekDays.some((d) => isToday(d))
-	const isSelectedToday = isToday(selectedDay)
+	const isCurrentWeek = weekDays.some((day) => isSameJalaliDay(day, today))
+	const isSelectedToday = isSameJalaliDay(selectedDay, today)
 
-	const handlePrevWeek = () => {
-		setSelectedDay(selectedDay.clone().subtract(7, 'days'))
-		Analytics.event('google_calendar_prev_week')
-	}
-
-	const handleNextWeek = () => {
-		setSelectedDay(selectedDay.clone().add(7, 'days'))
-		Analytics.event('google_calendar_next_week')
+	const goToWeek = (deltaDays: number, analyticsEvent: string) => {
+		setSelectedDay(selectedDay.clone().add(deltaDays, 'days'))
+		Analytics.event(analyticsEvent)
 	}
 
 	const handleResetToday = () => {
@@ -50,65 +48,69 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 	}
 
 	return (
-		<div className="flex flex-col h-full p-3 overflow-hidden select-none">
-			{/* Top Header */}
-			<div className="flex items-center justify-between mb-2 shrink-0">
-				<div className="flex items-center gap-1.5 min-w-0">
+		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
+			<header className="flex items-center justify-between mb-2 shrink-0">
+				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-content">
 					<Icon
 						name="googleCalendar"
 						size={16}
 						className="text-primary shrink-0"
+						aria-hidden="true"
 					/>
-					<span className="text-xs font-bold truncate text-content">
-						{selectedDay.format('jMMMM jYYYY')}
-					</span>
-				</div>
+					<span className="truncate">{selectedDay.format('jMMMM jYYYY')}</span>
+				</h3>
 
-				<div className="flex items-center gap-0.5 shrink-0">
+				<nav
+					className="flex items-center gap-0.5 shrink-0"
+					aria-label="پیمایش هفته"
+				>
 					{(!isSelectedToday || !isCurrentWeek) && (
 						<button
 							type="button"
 							onClick={handleResetToday}
-							className="px-2 py-0.5 text-[10px] font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors cursor-pointer ml-1"
+							className="px-2 py-0.5 text-[10px] font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
 						>
 							امروز
 						</button>
 					)}
 					<button
 						type="button"
-						onClick={handlePrevWeek}
+						onClick={() => goToWeek(-7, 'google_calendar_prev_week')}
 						title="هفته قبل"
-						className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer text-base-content/40 hover:text-base-content hover:bg-base-200/60"
+						aria-label="هفته قبل"
+						className={navButtonClass}
 					>
-						<Icon name="chevronRight" size={14} />
+						<Icon name="chevronRight" size={14} aria-hidden="true" />
 					</button>
 					<button
 						type="button"
-						onClick={handleNextWeek}
+						onClick={() => goToWeek(7, 'google_calendar_next_week')}
 						title="هفته بعد"
-						className="flex items-center justify-center w-6 h-6 transition-colors rounded-lg cursor-pointer text-base-content/40 hover:text-base-content hover:bg-base-200/60"
+						aria-label="هفته بعد"
+						className={navButtonClass}
 					>
-						<Icon name="chevronLeft" size={14} />
+						<Icon name="chevronLeft" size={14} aria-hidden="true" />
 					</button>
-				</div>
-			</div>
+				</nav>
+			</header>
 
-			{/* 7-Day Mini Week Strip */}
 			<GoogleCalendarWeekStrip
 				weekDays={weekDays}
 				selectedDay={selectedDay}
+				today={today}
 				onSelectDay={setSelectedDay}
-				isToday={isToday}
 				eventsByDate={eventsByDate}
 			/>
 
-			{/* Day Sub-header */}
 			<div className="flex items-center justify-between px-1 pb-1.5 shrink-0">
-				<span className="text-[11px] font-bold text-content">
+				<time
+					dateTime={toIsoDateKey(selectedDay)}
+					className="text-[11px] font-bold text-content"
+				>
 					{isSelectedToday
 						? `امروز، ${selectedDay.format('dddd')}`
 						: selectedDay.format('dddd jD jMMMM')}
-				</span>
+				</time>
 				<span className="text-[10px] text-muted tabular-nums">
 					{classifiedEvents.length > 0
 						? `${classifiedEvents.length} برنامه`
@@ -116,10 +118,9 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 				</span>
 			</div>
 
-			{/* Events Stream */}
-			<div className="flex-1 overflow-y-auto space-y-1.5 pr-0.5 min-h-0">
+			<div aria-busy={isLoading} className="flex-1 overflow-y-auto pr-0.5 min-h-0">
 				{isLoading && (
-					<div className="space-y-1.5">
+					<div aria-hidden="true" className="space-y-1.5">
 						{Array.from({ length: 3 }).map((_, i) => (
 							<div
 								key={`loading-item-${i}`}
@@ -139,27 +140,26 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 					<GoogleCalendarEmpty message="برای این روز برنامه‌ای نداری" />
 				)}
 
-				{!isLoading &&
-					classifiedEvents.map((classified) => {
-						if (classified.isNow) {
-							return (
-								<GoogleCalendarNowCard
-									key={classified.event.id}
-									classified={classified}
-									onEventClick={onEventClick}
-								/>
-							)
-						}
-
-						return (
-							<GoogleCalendarEventCard
-								key={classified.event.id}
-								classified={classified}
-								onEventClick={onEventClick}
-							/>
-						)
-					})}
+				{!isLoading && classifiedEvents.length > 0 && (
+					<ul className="space-y-1.5">
+						{classifiedEvents.map((classified) => (
+							<li key={classified.event.id}>
+								{classified.isNow ? (
+									<GoogleCalendarNowCard
+										classified={classified}
+										onEventClick={onEventClick}
+									/>
+								) : (
+									<GoogleCalendarEventCard
+										classified={classified}
+										onEventClick={onEventClick}
+									/>
+								)}
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
-		</div>
+		</section>
 	)
 }

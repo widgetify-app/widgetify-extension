@@ -12,6 +12,7 @@ import { RequestNotificationModal } from './components/request-notification-moda
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { TopUsersTab } from './top-users/top-users'
+import { ALARM_SOUND_URL } from './constants'
 import type { PomodoroSettings, TimerMode } from './types'
 import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -107,18 +108,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	const handleTimerComplete = () => {
 		if (onComplete) onComplete()
 
+		if (settings.alarmEnabled && mode === 'work' && !import.meta.env.FIREFOX) {
+			const audio = new Audio(ALARM_SOUND_URL)
+			audio.autoplay = true
+			audio.play().catch(() => {})
+		}
+
 		if (Notification.permission === 'granted') {
-			if (settings.alarmEnabled && mode === 'work') {
-				if (import.meta.env.FIREFOX) {
-					//todo: implement Firefox specific audio playback
-				} else {
-					const audio = new Audio(
-						'https://cdn.widgetify.ir/effects/alarm_1.mp3'
-					)
-					audio.autoplay = true
-					audio.play()
-				}
-			}
 			const textList: Record<TimerMode, string> = {
 				work: 'تایمر کار تمام شد! حالا وقت یه استراحت کوتاهه.',
 				'short-break': 'استراحت کوتاه تموم شد! آماده‌اید به کار ادامه بدید؟',
@@ -181,8 +177,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			Notification.permission !== 'denied'
 		) {
 			setShowRequireNotificationModal(true)
-			return
 		}
+
 		setIsRunning(true)
 
 		const sessionData = {

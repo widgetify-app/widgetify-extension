@@ -83,6 +83,7 @@ interface BasePetContainerProps {
 	dimensions: PetDimensions
 	assets: PetAssets
 	isHungry: boolean
+	onFeed: () => void
 	className?: string
 }
 
@@ -98,6 +99,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	dimensions,
 	assets,
 	isHungry,
+	onFeed,
 	className,
 }) => {
 	const showToolTip = showName || isHungry
@@ -117,8 +119,16 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	return (
 		<div
 			ref={containerRef}
+			role="button"
+			tabIndex={0}
+			aria-label={`غذا دادن به ${name}`}
+			onKeyDown={(event) => {
+				if (event.key !== 'Enter' && event.key !== ' ') return
+				event.preventDefault()
+				onFeed()
+			}}
 			className={cn(
-				'absolute flex w-full h-16 overflow-hidden -bottom-2',
+				'absolute flex w-full h-16 overflow-hidden -bottom-2 focus-visible:focus-ring',
 				className
 			)}
 			style={{
@@ -155,7 +165,8 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 						<img
 							key={src}
 							src={src}
-							alt={name}
+							alt=""
+							aria-hidden="true"
 							className="absolute inset-0 object-contain w-full h-full pointer-events-none"
 							style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
 						/>
@@ -268,8 +279,8 @@ export function useBasePetLogic({
 		})
 	}, [])
 
-	const handleClick = useCallback(
-		(e: MouseEvent) => {
+	const dropFood = useCallback(
+		(dropAtX: number) => {
 			const container = containerRef.current
 			if (!container) return
 
@@ -279,11 +290,10 @@ export function useBasePetLogic({
 			if (uneatenFood.length >= MAX_ACTIVE_PET_FOOD) return
 
 			const rect = container.getBoundingClientRect()
-			const clickX = e.clientX - rect.left
 			const maxFoodX = Math.max(0, rect.width - assets.collectibleSize)
 			const foodX = Math.max(
 				0,
-				Math.min(maxFoodX, clickX - assets.collectibleSize / 2)
+				Math.min(maxFoodX, dropAtX - assets.collectibleSize / 2)
 			)
 
 			const newCollectible: CollectibleItem = {
@@ -319,6 +329,24 @@ export function useBasePetLogic({
 			scheduleTimeout,
 		]
 	)
+
+	const handleClick = useCallback(
+		(e: MouseEvent) => {
+			const container = containerRef.current
+			if (!container) return
+
+			dropFood(e.clientX - container.getBoundingClientRect().left)
+		},
+		[dropFood]
+	)
+
+	const feedFromKeyboard = useCallback(() => {
+		const bounds = getBounds()
+		const petCenter = positionRef.current.x + dimensions.width / 2
+		const offset = bounds.maxX > bounds.minX ? dimensions.width : 0
+
+		dropFood(petCenter + offset)
+	}, [dropFood, getBounds, dimensions.width])
 
 	const findNearestCollectible = useCallback(
 		(currentCollectibles: CollectibleItem[]) => {
@@ -777,5 +805,6 @@ export function useBasePetLogic({
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
+		onFeed: feedFromKeyboard,
 	}
 }

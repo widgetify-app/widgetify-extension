@@ -13,7 +13,7 @@ interface SettingInputProps {
 
 const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max }) => {
 	return (
-		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-base-200/30">
+		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-base-content/5">
 			<label className="flex-1 text-sm font-medium text-base-content">
 				{label}
 			</label>

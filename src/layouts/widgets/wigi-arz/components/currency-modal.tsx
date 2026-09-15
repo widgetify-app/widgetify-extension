@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { Modal } from '@/components/ui'
-import { TextInput } from '@/components/ui'
+import { cn } from '@/common/utils/cn'
+import { Modal, TextInput } from '@/components/ui'
 import { CurrencyColorMode } from '@/context/currency.context'
-import { GetPrice } from '../utils/get-price'
 import { Icon } from '@/icons'
+import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+import { getPrice } from '../utils/get-price'
 
 interface CurrencyModalComponentProps {
 	code: string
-	currency: any
-
-	imgMainColor: string | undefined
+	currency: FetchedCurrency
 	isModalOpen: boolean
 	priceChange: number
 	currencyColorMode: CurrencyColorMode | null
@@ -21,7 +20,6 @@ export const CurrencyModalComponent = ({
 	code,
 	currency,
 	priceChange,
-	imgMainColor,
 	isModalOpen,
 	toggleCurrencyModal,
 	currencyColorMode,
@@ -51,89 +49,89 @@ export const CurrencyModalComponent = ({
 		}
 	}
 
-	const formatNumberWithCommas = (num: number) => {
-		return num?.toLocaleString('en-US')
-	}
+	const formatNumberWithCommas = (num: number) => num?.toLocaleString('en-US')
 
-	const parseFormattedNumber = (str: string) => {
-		return parseFloat(str.replace(/,/g, '')) || 0
-	}
+	const parseFormattedNumber = (str: string) =>
+		Number.parseFloat(str.replace(/,/g, '')) || 0
 
 	const onClickConverter = () => {
 		setShowConverter(!showConverter)
 		Analytics.event('toggle_currency_converter_on_modal')
 	}
 
+	const isPositive = priceChange > 0
 	const priceChangeColor =
 		currencyColorMode === CurrencyColorMode.NORMAL
-			? `${priceChange > 0 ? 'text-error' : 'text-success'}`
-			: `${priceChange > 0 ? 'text-success' : 'text-error'}`
+			? isPositive
+				? 'text-error'
+				: 'text-success'
+			: isPositive
+				? 'text-success'
+				: 'text-error'
+
+	const price = getPrice(code, currency)
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
-			<div
-				className="relative flex flex-col items-center justify-center p-8 space-y-2"
-			>
-				<div className="relative transition-transform duration-200 ease-out">
-					<img
-						src={currency?.icon}
-						alt={currency?.name?.en}
-						className="z-50 object-cover rounded-full shadow w-14 h-14"
-					/>
-					<div
-						className="absolute top-0 z-10 w-14 h-14 blur-xl opacity-30"
-						style={{ backgroundColor: imgMainColor }}
-					/>
-				</div>
+			<section className="relative flex flex-col items-center justify-center p-8 space-y-2">
+				<img
+					src={currency?.icon}
+					alt=""
+					className="object-cover rounded-full shadow w-14 h-14"
+				/>
 
-				<div className="mt-2 space-y-1 text-center">
-					<p className={'text-xl font-bold text-base-content'}>
-						{currency?.name.en}
-					</p>
-					<div
-						className={
-							'text-sm font-medium text-base-content opacity-60 flex items-center justify-center gap-1'
-						}
-					>
-						<p>{code.toUpperCase()}</p>
-						<div
-							className="cursor-pointer hover:text-primary"
-							onClick={() => onClickConverter()}
+				<header className="mt-2 space-y-1 text-center">
+					<h2 className="text-xl font-bold text-base-content">
+						{currency?.name?.en}
+					</h2>
+					<div className="flex items-center justify-center gap-1 text-sm font-medium text-muted">
+						<span>{code.toUpperCase()}</span>
+						<button
+							type="button"
+							onClick={onClickConverter}
+							aria-label="تبدیل ارز"
+							aria-expanded={showConverter}
+							className="cursor-pointer hover:text-primary focus-visible:focus-ring"
 						>
-							<Icon name="arrowRightLeft" />
+							<Icon name="arrowRightLeft" aria-hidden="true" />
+						</button>
+					</div>
+				</header>
+
+				<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
+					<p className="text-xl font-bold text-base-content opacity-95">
+						<data value={price.value}>
+							{price.isDollar && '💲'}
+							{price.formatted}
+						</data>
+					</p>
+
+					{priceChange !== 0 && (
+						<div
+							className={cn(
+								'flex items-center text-sm transition-ui',
+								priceChangeColor
+							)}
+						>
+							<Icon
+								name={isPositive ? 'upLong' : 'downLong'}
+								className="mr-1"
+								aria-hidden="true"
+							/>
+							<span>
+								{Math.abs(Number(priceChange.toFixed())).toLocaleString()}
+							</span>
 						</div>
-					</div>
+					)}
 				</div>
 
-				<div className="w-full space-y-0">
-					<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-						<p className={'text-xl font-bold text-base-content opacity-95'}>
-							{GetPrice(code, currency).label}
-						</p>
-
-						{priceChange > 0 && (
-							<div
-								className={`flex items-center text-sm transition-all duration-300 ease-out ${priceChangeColor}`}
-							>
-								{priceChange > 0 ? (
-									<Icon name="upLong" className="mr-1" />
-								) : (
-									<Icon name="downLong" className="mr-1" />
-								)}
-
-								<span>
-									{Math.abs(
-										Number(priceChange.toFixed())
-									).toLocaleString()}
-								</span>
-							</div>
-						)}
-					</div>
-				</div>
-
-				{/* Calculator Section */}
 				<div
-					className={`flex flex-col gap-0.5 transition-all duration-300 ease-out ${showConverter ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}
+					className={cn(
+						'flex flex-col gap-0.5 transition-[opacity,max-height] duration-300 ease-out',
+						showConverter
+							? 'opacity-100 max-h-96'
+							: 'opacity-0 max-h-0 overflow-hidden'
+					)}
 				>
 					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
 						<span className="text-sm font-medium text-base-content min-w-fit">
@@ -145,7 +143,7 @@ export const CurrencyModalComponent = ({
 							onChange={(e) =>
 								handleCurrencyAmountChange(parseFormattedNumber(e))
 							}
-							className=" !rounded-2xl !px-4 border-content"
+							className="!rounded-2xl !px-4 border-content"
 							placeholder="مبلغ"
 						/>
 					</div>
@@ -160,12 +158,12 @@ export const CurrencyModalComponent = ({
 							onChange={(value) =>
 								handleTomanAmountChange(parseFormattedNumber(value))
 							}
-							className=" !rounded-2xl !px-4 border-content"
+							className="!rounded-2xl !px-4 border-content"
 							placeholder="مبلغ"
 						/>
 					</div>
 				</div>
-			</div>
+			</section>
 		</Modal>
 	)
 }

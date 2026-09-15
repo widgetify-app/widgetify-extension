@@ -1,31 +1,65 @@
 import Analytics from '@/analytics'
-import { useGetRss } from '../../../../services/hooks/news/get-news.hook'
+import { Icon } from '@/icons'
+import { useGetRss } from '@/services/hooks/news/get-news.hook'
 import { NewsItem } from './news-item'
+import { NewsSkeleton } from './news-skeleton'
+
+const SKELETON_COUNT = 3
 
 interface Prop {
 	url: string
 	sourceName: string
+	label: string
 }
 
-const openNewsLink = (url: string) => {
-	window.open(url, '_blank', 'noopener,noreferrer')
+const openNewsLink = () => {
 	Analytics.event('rss_link_opened')
 }
 
-export function RssFeedComponent({ url, sourceName }: Prop) {
-	const { data } = useGetRss(url, sourceName)
+export function RssFeedComponent({ url, sourceName, label }: Prop) {
+	const { data, isLoading, isError, refetch } = useGetRss(url, sourceName)
 
-	return data?.map((rss, index) => (
-		<NewsItem
-			key={`rssfeed-${index}`}
-			title={rss.title}
-			description={rss.description}
-			image_url={rss.image_url}
-			source={rss.source}
-			publishedAt={rss.publishedAt}
-			link={'link' in rss ? (rss.link as string) : undefined}
-			index={index}
-			onClick={openNewsLink}
-		/>
-	))
+	if (isLoading) {
+		return (
+			<>
+				{Array.from({ length: SKELETON_COUNT }, (_, i) => (
+					<NewsSkeleton key={`news-skeleton-${sourceName}-${i}`} />
+				))}
+			</>
+		)
+	}
+
+	if (isError) {
+		return (
+			<div className="flex items-center justify-between gap-2 p-2 border rounded-2xl border-base-content/10 bg-base-content/5">
+				<span className="flex items-center gap-1.5 min-w-0 text-[11px] text-muted">
+					<Icon name="alert" size={13} aria-hidden="true" />
+					<span className="truncate">{label} دریافت نشد</span>
+				</span>
+				<button
+					type="button"
+					onClick={() => refetch()}
+					className="px-2 py-0.5 text-[10px] font-bold rounded-lg cursor-pointer shrink-0 text-content bg-base-content/10 transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+				>
+					تلاش دوباره
+				</button>
+			</div>
+		)
+	}
+
+	return (
+		<>
+			{data?.map((rss) => (
+				<NewsItem
+					key={rss.link || `${rss.source.name}-${rss.publishedAt}-${rss.title}`}
+					title={rss.title}
+					image_url={rss.image_url}
+					source={rss.source}
+					publishedAt={rss.publishedAt}
+					link={rss.link}
+					onOpen={openNewsLink}
+				/>
+			))}
+		</>
+	)
 }

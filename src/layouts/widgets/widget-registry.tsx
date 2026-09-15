@@ -1,25 +1,26 @@
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
 import { SearchLayout } from '@/layouts/search/search'
-import CalendarLayout from '@/layouts/widgets/calendar/calendar.widget'
-import { ComboWidget } from '@/layouts/widgets/combo-widget/combo-widget.widget'
-import { NetworkLayout } from '@/layouts/widgets/network/network.widget'
-import { NewsLayout } from '@/layouts/widgets/news/news.widget'
-import { ToolsLayout } from '@/layouts/widgets/tools/tools.widget'
-import { WeatherLayout } from '@/layouts/widgets/weather/weather.widget'
-import { WigiArzLayout } from '@/layouts/widgets/wigi-arz/wigi-arz.widget'
-import { YadkarWidget } from '@/layouts/widgets/yadkar/yadkar.widget'
-import { HabitsLayout } from '@/layouts/widgets/habit/habit.widget'
+import CalendarLayout from '@widget/calendar/calendar.widget'
+import { ComboWidget } from '@widget/combo-widget/combo-widget.widget'
+import { NetworkLayout } from '@widget/network/network.widget'
+import { NewsLayout } from '@widget/news/news.widget'
+import { ToolsLayout } from '@widget/tools/tools.widget'
+import { WeatherLayout } from '@widget/weather/weather.widget'
+import { WigiArzLayout } from '@widget/wigi-arz/wigi-arz.widget'
+import { YadkarWidget } from '@widget/yadkar/yadkar.widget'
+import { HabitsLayout } from '@widget/habit/habit.widget'
 import { CurrencyProvider } from '@/context/currency.context'
 import { DateProvider } from '@/context/date.context'
 import { ClockWidget } from './clock/clock.widget'
 import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
-import { PhotoWidget } from './photo'
+import { PhotoWidget } from './photo/photo.widget'
 import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos.widget'
 import { NotesLayout } from './notes/notes.widget'
+import { isStickyVariant } from '@widget/notes/utils/is-sticky-variant'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { type WidgetDefinition, type WidgetItem, WidgetKeys } from './layout-engine/types'
@@ -136,7 +137,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.googleCalendar]: {
 		id: WidgetKeys.googleCalendar,
-		label: 'گوگل‌کلندر',
+		label: 'تقویم گوگل',
 		emoji: '📆',
 		category: 'productivity',
 		order: 1,
@@ -221,7 +222,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.combo_settings,
 		canDuplicate: false,
-		node: (_instanceId, _size) => (
+		node: () => (
 			<CurrencyProvider>
 				<ComboWidget />
 			</CurrencyProvider>
@@ -280,7 +281,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 			{
 				id: 'compact',
-				label: 'تک ارز (قابل تکرار)',
+				label: 'تک ارز',
 				size: { w: 1, h: 1 },
 				meta: { currencyCode: 'USD', variant: 'compact' },
 				isVipOnly: true,
@@ -309,7 +310,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
 		canDuplicate: false,
-		node: (_instanceId, size) => <NewsLayout inComboWidget={false} size={size} />,
+		node: () => <NewsLayout inComboWidget={false} />,
 	},
 	[WidgetKeys.network]: {
 		id: WidgetKeys.network,
@@ -327,7 +328,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
 		node: (_instanceId, size) => (
-			<NetworkLayout inComboWidget={false} enableBackground={true} size={size} />
+			<NetworkLayout size={size} />
 		),
 	},
 	[WidgetKeys.HabitTracker]: {
@@ -386,14 +387,13 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'sticky',
 				label: 'استیک نوت',
 				size: { w: 2, h: 2 },
+				isVipOnly: true,
 				meta: { variant: 'sticky' },
 			},
 		],
 		canDuplicate: true,
 		node: (instanceId, size, meta) => {
-			const isSticky =
-				meta?.variant === 'sticky' ||
-				(!meta?.variant && size.w === 2 && size.h === 2)
+			const isSticky = isStickyVariant(size, meta)
 
 			return (
 				<WidgetContainer padding={!isSticky} background={!isSticky}>
@@ -430,9 +430,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: false,
 		isVipOnly: true,
 		canResize: true,
-		node: (_instanceId, size, meta) => (
-			<TransparentClockWidget size={size} meta={meta} />
-		),
+		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
 	},
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,

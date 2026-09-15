@@ -1,5 +1,6 @@
 import type React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { cn } from '@/common/utils/cn'
 import { Checkbox } from '@/components/ui'
 import type { FetchedTodo, Todo } from '@/services/hooks/todo/todo.interface'
 import { ConfirmationModal } from '@/components/ui'
@@ -8,7 +9,6 @@ import { showToast } from '@/common/toast'
 import { useRemoveTodo } from '@/services/hooks/todo/remove-todo.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
-import { validate } from 'uuid'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'
 import { parseTodoDate } from '../utils/parse-date'
@@ -17,19 +17,20 @@ import { playAlarm } from '@/common/play-alarm'
 import { Tooltip } from '@/components/ui'
 import { TodoFriends } from './friends'
 import { Icon } from '@/icons'
+import {
+	PRIORITY_BADGE_CLASS,
+	PRIORITY_BORDER_CLASS,
+	PRIORITY_CHECKED_CLASS,
+	PRIORITY_LABELS,
+	priorityClass,
+} from '../constants'
 
 interface Prop {
 	todo: Todo
 	blurMode?: boolean
 	comfortable?: boolean
-	onEdit: any
+	onEdit: (todo: Todo) => void
 	onUpdated?: () => void
-}
-
-const translatedPriority = {
-	low: 'کم',
-	medium: 'متوسط',
-	high: 'مهم',
 }
 
 export function TodoItem({
@@ -48,7 +49,7 @@ export function TodoItem({
 		currentTodo?.id
 	)
 	const isTemp = currentTodo.id.startsWith('temp-')
-	const [isDone, setIsDone] = useState<boolean>(false)
+	const [isDone, setIsDone] = useState<boolean>(() => resolveIsDone(todo))
 
 	const isPending = isUpdating || isRemoving
 	const handleDelete = (e: React.MouseEvent) => {
@@ -68,13 +69,11 @@ export function TodoItem({
 
 	const onConfirmDelete = async () => {
 		if (isPending) return
-		const onlineId = currentTodo.id
-		if (validate(onlineId)) return showToast('خطا در شناسه تسک', 'error')
 
 		const [err] = await safeAwait(mutateAsync())
 		setShowConfirmation(false)
 		if (err) {
-			showToast(translateError(err) as any, 'error')
+			showToast(translateError(err) as string, 'error')
 			return
 		}
 		onUpdated?.()
@@ -107,21 +106,15 @@ export function TodoItem({
 	}, [todo])
 
 	useEffect(() => {
-		if (currentTodo.owner?.isSelf) {
-			setIsDone(currentTodo.completed)
-		} else {
-			const shareItem = currentTodo.friends.find((f) => f.isSelf)
-			if (shareItem) {
-				setIsDone(shareItem.completed)
-			}
-		}
+		setIsDone(resolveIsDone(currentTodo))
 	}, [currentTodo])
 
+	const isoDate = parseTodoDate(currentTodo.date).format('YYYY-MM-DD')
 	const isOwner = currentTodo?.owner?.isSelf
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border border-base-300/40 bg-base-300/30 transition-all hover:border-base-300/70 hover:bg-base-300/50 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border border-base-content/10 bg-base-content/5 transition-ui hover:border-base-content/20 hover:bg-base-content/10 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
@@ -130,93 +123,112 @@ export function TodoItem({
 					<Checkbox
 						checked={isDone}
 						disabled={isUpdating}
-						className={`${comfortable ? 'h-4.5! w-4.5!' : 'h-4! w-4!'} border! transition-transform active:scale-90 ${getBorderStyle(currentTodo.priority)}`}
-						unCheckedCheckBoxClassName={getUnCheckedCheckboxStyle(
+						className={`${comfortable ? 'h-4.5! w-4.5!' : 'h-4! w-4!'} border! transition-transform active:scale-90 ${priorityClass(PRIORITY_BORDER_CLASS, currentTodo.priority)}`}
+						unCheckedCheckBoxClassName={priorityClass(
+							PRIORITY_BORDER_CLASS,
 							currentTodo.priority
 						)}
-						checkedCheckBoxClassName={getCheckedCheckboxStyle(
+						checkedCheckBoxClassName={priorityClass(
+							PRIORITY_CHECKED_CLASS,
 							currentTodo.priority
 						)}
 						onClick={handleToggleComplete}
 					/>
 				</div>
 
-				<div
-					className="flex-1 min-w-0 py-1 overflow-hidden cursor-pointer"
+				<button
+					type="button"
 					onClick={() => setExpanded(!expanded)}
+					aria-expanded={expanded}
+					className="flex-1 min-w-0 py-1 overflow-hidden text-start cursor-pointer focus-visible:focus-ring"
 				>
 					<p
-						className={`truncate text-shadow-2xs font-medium transition-all ${
+						className={`truncate text-shadow-2xs font-medium transition-ui ${
 							comfortable ? 'text-[11.5px]' : 'text-[10px]'
 						} ${
 							isDone
-								? 'text-base-content/40 line-through font-normal'
-								: 'text-base-content/90'
+								? 'text-muted opacity-60 line-through font-normal'
+								: 'text-content'
 						}`}
 					>
 						{currentTodo.text}
 					</p>
 
 					{comfortable && !expanded && (
-						<div className="flex items-center gap-1.5 mt-1 text-[9px] text-muted">
+						<span className="flex items-center gap-1.5 mt-1 text-[9px] text-muted">
 							<span className="flex items-center gap-1 shrink-0">
-								<Icon name="calendar" size={10} />
-								{parseTodoDate(currentTodo.date)
-									.locale('fa')
-									.format('jD jMMMM')}
+								<Icon name="calendar" size={10} aria-hidden="true" />
+								<time dateTime={isoDate}>
+									{parseTodoDate(currentTodo.date)
+										.locale('fa')
+										.format('jD jMMMM')}
+								</time>
 							</span>
 							{currentTodo.category && (
 								<span className="flex items-center gap-1 min-w-0">
-									<Icon name="tags" size={10} />
+									<Icon name="tags" size={10} aria-hidden="true" />
 									<span className="truncate">
 										{currentTodo.category}
 									</span>
 								</span>
 							)}
-						</div>
+						</span>
 					)}
-				</div>
+				</button>
 
 				<div className="flex relative items-center gap-0.5 shrink-0">
 					{isPending && <IconLoading />}
 					{hasFriends && (
 						<Tooltip content="مشترک">
-							<Icon name="users" size={12} className="text-muted" />
+							<Icon
+								name="users"
+								size={12}
+								className="text-muted"
+								aria-hidden="true"
+							/>
 						</Tooltip>
 					)}
-					<div className="hidden transition-all duration-150 group-hover:flex">
+					<div className="hidden group-hover:flex">
 						<div className="flex items-center">
 							{isOwner && (
 								<button
+									type="button"
 									onClick={handleEdit}
-									className="p-1 rounded-lg cursor-pointer text-primary/60 hover:bg-primary/10 hover:text-primary"
+									aria-label="ویرایش تسک"
+									className="p-1 rounded-lg cursor-pointer text-primary/60 hover:bg-primary/10 hover:text-primary focus-visible:focus-ring"
 								>
-									<Icon name="edit" size={13} />
+									<Icon name="edit" size={13} aria-hidden="true" />
 								</button>
 							)}
 							<button
+								type="button"
 								onClick={handleDelete}
-								className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error"
+								aria-label="حذف تسک"
+								className="p-1 rounded-lg cursor-pointer text-error/60 hover:bg-error/10 hover:text-error focus-visible:focus-ring"
 							>
-								<Icon name="trash" size={13} />
+								<Icon name="trash" size={13} aria-hidden="true" />
 							</button>
 						</div>
 					</div>
 
 					<button
+						type="button"
 						onClick={() => setExpanded(!expanded)}
-						className={`rounded p-0.5 text-muted/50 cursor-pointer transition-transform duration-300 ${
-							expanded ? 'rotate-180' : ''
-						} hover:scale-110`}
+						aria-expanded={expanded}
+						aria-label={expanded ? 'بستن جزئیات' : 'نمایش جزئیات'}
+						className={cn(
+							'rounded p-0.5 text-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
+							expanded && 'rotate-180'
+						)}
 					>
-						<Icon name="chevronDown" size={15} />
+						<Icon name="chevronDown" size={15} aria-hidden="true" />
 					</button>
 				</div>
 			</div>
 
 			{expanded && (
 				<div className="border-t border-base-content/5 bg-base-content/1 px-2.5 py-2">
-					<p className="mb-0 text-[11px] leading-snug text-base-content/70 whitespace-pre-wrap">
+					<p className="mb-0 text-[11px] leading-snug text-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
 					{hasFriends && (
@@ -231,29 +243,31 @@ export function TodoItem({
 					<div className="flex items-center gap-2 text-[10px]">
 						{currentTodo.category && (
 							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-base-content/20 px-1.5 text-muted">
-								<Icon name="tags" size={9} />
+								<Icon name="tags" size={9} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
 						)}
 
 						{currentTodo.priority && (
 							<span
-								className={`rounded-lg px-1.5 py-0.5 font-bold ${getPriorityColor(currentTodo.priority)}`}
+								className={`rounded-lg px-1.5 py-0.5 font-bold ${priorityClass(PRIORITY_BADGE_CLASS, currentTodo.priority)}`}
 							>
-								{translatedPriority[currentTodo.priority]}
+								{PRIORITY_LABELS[currentTodo.priority]}
 							</span>
 						)}
 
-						<span className="flex items-center gap-1 mr-auto text-base-content/60">
-							<Icon name="calendar" size={12} />
-							{parseTodoDate(currentTodo.date)
-								.locale('fa')
-								.format('jD jMMMM')}
+						<span className="flex items-center gap-1 mr-auto text-muted">
+							<Icon name="calendar" size={12} aria-hidden="true" />
+							<time dateTime={isoDate}>
+								{parseTodoDate(currentTodo.date)
+									.locale('fa')
+									.format('jD jMMMM')}
+							</time>
 						</span>
 					</div>
 
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-base-content/5 bg-base-100/30 p-1.5 text-[11px] font-black">
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-base-content/5 bg-base-content/5 p-1.5 text-[11px] font-black">
 							<NoteLinkRenderer note={currentTodo.description} />
 						</div>
 					)}
@@ -261,16 +275,22 @@ export function TodoItem({
 			)}
 
 			<ConfirmationModal
-					isOpen={showConfirmation}
-					onClose={() => setShowConfirmation(false)}
-					onConfirm={onConfirmDelete}
-					confirmText={isPending ? <IconLoading /> : 'حذف'}
-					message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
-					variant="danger"
-					title="حذف این تسک؟"
-				/>
+				isOpen={showConfirmation}
+				onClose={() => setShowConfirmation(false)}
+				onConfirm={onConfirmDelete}
+				confirmText={isPending ? <IconLoading /> : 'حذف'}
+				message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
+				variant="danger"
+				title="حذف این تسک؟"
+			/>
 		</div>
 	)
+}
+
+function resolveIsDone(todo: Todo): boolean {
+	if (todo.owner?.isSelf) return todo.completed
+
+	return todo.friends?.find((f) => f.isSelf)?.completed ?? todo.completed
 }
 
 function NoteLinkRenderer({ note }: { note: string }) {
@@ -289,45 +309,4 @@ function NoteLinkRenderer({ note }: { note: string }) {
 		)
 	}
 	return <p className="font-light opacity-70">{note}</p>
-}
-
-const getBorderStyle = (priority: string) => {
-	switch (priority) {
-		case 'high':
-			return '!border-error'
-		case 'medium':
-			return '!border-warning'
-		case 'low':
-			return '!border-success'
-		default:
-			return '!border-primary'
-	}
-}
-
-const getCheckedCheckboxStyle = (priority: string) => {
-	switch (priority) {
-		case 'high':
-			return '!border-error !bg-error'
-		case 'medium':
-			return '!border-warning !bg-warning'
-		case 'low':
-			return '!border-success !bg-success'
-		default:
-			return '!border-primary !bg-primary'
-	}
-}
-
-const getUnCheckedCheckboxStyle = (priority: string) => getBorderStyle(priority)
-
-const getPriorityColor = (priority: string) => {
-	switch (priority) {
-		case 'high':
-			return 'bg-error/10 text-error'
-		case 'medium':
-			return 'bg-warning/10 text-warning'
-		case 'low':
-			return 'bg-success/10 text-success'
-		default:
-			return 'bg-primary/10 text-primary'
-	}
 }

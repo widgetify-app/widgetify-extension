@@ -1,5 +1,4 @@
 interface Clock1x1Props {
-	time: Date
 	hours: string
 	minutes: string
 }

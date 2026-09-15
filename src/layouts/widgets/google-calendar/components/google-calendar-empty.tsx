@@ -10,7 +10,13 @@ export const GoogleCalendarEmpty: React.FC<GoogleCalendarEmptyProps> = ({
 }) => {
 	return (
 		<div className="flex flex-col items-center justify-center h-full py-8 text-center select-none opacity-40">
-			<Icon name="calendar" size={24} strokeWidth={1.5} className="mb-2" />
+			<Icon
+				name="calendar"
+				size={24}
+				strokeWidth={1.5}
+				className="mb-2"
+				aria-hidden="true"
+			/>
 			<p className="text-[11px] font-medium text-content">{message}</p>
 		</div>
 	)

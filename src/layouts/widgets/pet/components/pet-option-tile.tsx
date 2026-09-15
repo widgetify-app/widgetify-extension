@@ -22,10 +22,10 @@ export function PetOptionTile({
 			onClick={onSelect}
 			aria-pressed={selected}
 			className={cn(
-				'flex flex-col items-center overflow-hidden transition-all border cursor-pointer rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
+				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
 				selected
 					? 'border-primary/50 bg-primary/15'
-					: 'border-content bg-base-300/25 hover:bg-primary/5 hover:border-primary/25',
+					: 'border-content bg-base-content/5 hover:bg-primary/5 hover:border-primary/25',
 				className
 			)}
 		>

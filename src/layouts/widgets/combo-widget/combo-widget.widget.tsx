@@ -1,16 +1,32 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { NewsLayout } from '../news/news.widget'
-import { WidgetContainer } from '../widget-container'
-import { WigiArzLayout } from '../wigi-arz/wigi-arz.widget'
 import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/icons'
+import { NewsLayout } from '@widget/news/news.widget'
+import { WigiArzLayout } from '@widget/wigi-arz/wigi-arz.widget'
+import { WidgetContainer } from '../widget-container'
+import { COMBO_TAB_LABELS, COMBO_TAB_LIST, DEFAULT_COMBO_TAB } from './constants'
+import type { ComboTabType } from './types'
+import { normalizeComboTab } from './utils/normalize-combo-tab'
 
-export type ComboTabType = 'news' | 'currency'
+const navigationTabs = COMBO_TAB_LIST.map((tab) => ({
+	id: tab.id,
+	label: tab.label,
+	icon: <Icon name={tab.icon} size={14} />,
+}))
 
 export function ComboWidget() {
-	const [activeTab, setActiveTab] = useState<ComboTabType | null>(null)
+	const [activeTab, setActiveTab] = useState<ComboTabType>(DEFAULT_COMBO_TAB)
+
+	useEffect(() => {
+		async function load() {
+			const storedTab = await getFromStorage('comboTabs')
+			setActiveTab(normalizeComboTab(storedTab))
+		}
+
+		load()
+	}, [])
 
 	const onTabClick = (tab: ComboTabType) => {
 		if (tab === activeTab) return
@@ -19,54 +35,27 @@ export function ComboWidget() {
 		Analytics.event('combo_tab_changed', { tab })
 	}
 
-	useEffect(() => {
-		async function load() {
-			const tabFromStorage = await getFromStorage('comboTabs')
-			if (!tabFromStorage) {
-				setActiveTab('currency')
-			} else {
-				setActiveTab(tabFromStorage)
-			}
-		}
-
-		load()
-	}, [])
-
-	if (!activeTab) return null
-
 	return (
-		<WidgetContainer className={'flex flex-col'}>
-			<div className="flex-none">
-				<TabNavigation
-					tabMode="advanced"
-					activeTab={activeTab}
-					onTabClick={onTabClick}
-					tabs={[
-						{
-							id: 'currency',
-							label: 'ارزها',
-							icon: <Icon name="currency" size={14} />,
-						},
-						{
-							id: 'news',
-							label: 'اخبار',
-							icon: <Icon name="outlineNewspaper" size={14} />,
-						},
-					]}
-					size="small"
-					className="w-full border-none"
-				/>
-			</div>
+		<WidgetContainer className="flex flex-col">
+			<TabNavigation
+				tabMode="advanced"
+				activeTab={activeTab}
+				onTabClick={onTabClick}
+				tabs={navigationTabs}
+				size="small"
+				className="flex-none w-full border-none"
+			/>
 
-			<div className="flex-1 overflow-hidden">
-				<div className="h-full overflow-y-auto hide-scrollbar  [&::-webkit-scrollbar]:w-0.1">
-					{activeTab === 'currency' ? (
-						<WigiArzLayout inComboWidget={true} enableBackground={false} />
-					) : (
-						<NewsLayout inComboWidget={true} enableBackground={false} />
-					)}
-				</div>
-			</div>
+			<section
+				aria-label={COMBO_TAB_LABELS[activeTab]}
+				className="flex-1 min-h-0 overflow-y-auto hide-scrollbar"
+			>
+				{activeTab === 'currency' ? (
+					<WigiArzLayout inComboWidget enableBackground={false} />
+				) : (
+					<NewsLayout inComboWidget enableBackground={false} />
+				)}
+			</section>
 		</WidgetContainer>
 	)
 }

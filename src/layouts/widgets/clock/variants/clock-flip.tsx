@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/layouts/widgets/calendar/utils/date-events'
+import { useZonedClock } from '@/hooks/use-zoned-clock'
 
 const FLIP_DURATION = 400
 
@@ -181,36 +181,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 
 export function ClockFlip() {
 	const { selected_timezone: timezone } = useGeneralSetting()
-	const [now, setNow] = useState(() => getCurrentDate(timezone.value).toDate())
-
-	useEffect(() => {
-		const updateTime = () => {
-			const next = getCurrentDate(timezone.value).toDate()
-			setNow((prev) =>
-				prev.getHours() === next.getHours() &&
-				prev.getMinutes() === next.getMinutes()
-					? prev
-					: next
-			)
-		}
-
-		updateTime()
-
-		let timer: ReturnType<typeof setTimeout>
-		const scheduleNextMinuteTick = () => {
-			// Tick shortly after each minute boundary so the flip only runs when
-			// the displayed value actually changes (a 1s interval re-rendered the
-			// whole widget 60x per minute for the same visual output).
-			const delay = 60_000 - (Date.now() % 60_000) + 100
-			timer = setTimeout(() => {
-				updateTime()
-				scheduleNextMinuteTick()
-			}, delay)
-		}
-		scheduleNextMinuteTick()
-
-		return () => clearTimeout(timer)
-	}, [timezone?.value])
+	const now = useZonedClock(timezone?.value)
 
 	const hours = now.getHours().toString().padStart(2, '0')
 	const minutes = now.getMinutes().toString().padStart(2, '0')

@@ -34,7 +34,6 @@ export const RssFeedSetting = () => {
 	const [rssState, setRssState] = useState<WigiNewsSetting>({
 		customFeeds: [],
 		useDefaultNews: false,
-		lastFetchedItems: {},
 	})
 	const isInitialLoad = useRef(true)
 
@@ -161,13 +160,11 @@ export const RssFeedSetting = () => {
 				setRssState({
 					customFeeds: settingFromStorage.customFeeds || [],
 					useDefaultNews: settingFromStorage.useDefaultNews ?? true,
-					lastFetchedItems: {},
 				})
 			} else {
 				setRssState({
 					customFeeds: [],
 					useDefaultNews: true,
-					lastFetchedItems: {},
 				})
 			}
 			isInitialLoad.current = false
@@ -236,7 +233,7 @@ export const RssFeedSetting = () => {
 							<div
 								key={feed.url}
 								className={
-									'flex items-center justify-center transition-all duration-200 p-2 border rounded-xl cursor-pointer bg-content border-content hover:opacity-75'
+									'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-content border-content transition-ui hover:opacity-75'
 								}
 								onClick={() => addSuggestedFeed(feed)}
 							>

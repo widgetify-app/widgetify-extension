@@ -1,5 +1,6 @@
+import { cn } from '@/common/utils/cn'
 import { Tooltip } from '@/components/ui'
-import { showToast } from '@/common/toast'
+import { copyIpToClipboard } from '../utils/copy-ip'
 
 interface NetworkIPCardProps {
 	ip: string | null
@@ -7,23 +8,27 @@ interface NetworkIPCardProps {
 }
 
 export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
-	function copyToClipboard() {
-		if (ip && navigator?.clipboard) {
-			navigator.clipboard?.writeText(ip).then(() => {
-				showToast('آدرس IP کپی شد!', 'success')
-			})
-		}
-	}
 	return (
 		<div className="py-2 text-center">
 			<div className="mb-1 text-xs text-muted">آدرس IP</div>
-			<Tooltip content={ip ? 'کپی به کلیپ بورد' : 'در حال بارگذاری...'}>
-				<div
-					className={`text-lg font-bold text-content bg-base-200/50 px-3 py-1.5 rounded-xl backdrop-blur-sm ${blurMode ? 'blur-mode' : 'disabled-blur-mode'} cursor-pointer`}
-					onClick={copyToClipboard}
+			<Tooltip content={ip ? 'کپی به کلیپ بورد' : 'آدرس IP در دسترس نیست'}>
+				<button
+					type="button"
+					disabled={!ip}
+					aria-label={ip ? `کپی آدرس ${ip}` : 'آدرس IP در دسترس نیست'}
+					onClick={() => copyIpToClipboard(ip)}
+					className={cn(
+						'text-lg font-bold text-content bg-base-content/5 px-3 py-1.5 rounded-xl',
+						'transition-ui focus-visible:focus-ring',
+						ip
+							? 'cursor-pointer hover:bg-base-content/10'
+							: 'cursor-default opacity-70',
+						blurMode ? 'blur-mode' : 'disabled-blur-mode'
+					)}
+					dir="ltr"
 				>
-					{ip || '.........'}
-				</div>
+					{ip || '—'}
+				</button>
 			</Tooltip>
 		</div>
 	)

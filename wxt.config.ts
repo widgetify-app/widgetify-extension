@@ -57,6 +57,7 @@ export default defineConfig({
 		'@/icons': './src/icons',
 		'@/styles': './src/styles',
 		'@/layouts': './src/layouts',
+		'@widget': './src/layouts/widgets',
 		'@/pages': './src/pages',
 		'@/assets': './src/assets',
 	},

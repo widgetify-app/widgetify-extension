@@ -5,7 +5,7 @@ import swipe from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import walking from '@/assets/animals/frog/ghoori_walk_8fps.webp'
 import walking_fast from '@/assets/animals/frog/ghoori_walk_fast_8fps.webp'
 import { useMemo } from 'react'
-import { LuBug } from 'react-icons/lu'
+import { Icon } from '@/icons'
 import { BasePetContainer, useBasePetLogic } from '../base-pet'
 import {
 	type PetAnimations,
@@ -31,13 +31,8 @@ const COLLECTIBLE_COLORS = [
 ]
 
 export const FrogComponent = ({ className }: { className?: string }) => {
-	const {
-		getCurrentPetName,
-		isPetHungry,
-		levelUpHungryState,
-		levelDownHungryState,
-		getPetHungryState,
-	} = usePetContext()
+	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
+		usePetContext()
 	const frogAnimations: PetAnimations = {
 		idle,
 		walk: walking,
@@ -64,14 +59,15 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		climb: { min: 3000, max: 6000 },
 	}
 
-
 	const collectibleColor = useMemo(
 		() => COLLECTIBLE_COLORS[Math.floor(Math.random() * COLLECTIBLE_COLORS.length)],
 		[]
 	)
 
 	const frogAssets: PetAssets = {
-		collectibleIcon: <LuBug style={{ color: collectibleColor }} size={24} />,
+		collectibleIcon: (
+			<Icon name="bug" style={{ color: collectibleColor }} size={24} />
+		),
 		collectibleSize: 24,
 		collectibleFallSpeed: 2,
 	}
@@ -86,6 +82,7 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
+		onFeed,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.FROG),
 		animations: frogAnimations,
@@ -111,6 +108,7 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.FROG)}
+			onFeed={onFeed}
 		/>
 	)
 }
