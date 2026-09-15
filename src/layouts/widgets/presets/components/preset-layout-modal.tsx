@@ -116,7 +116,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 									: 'bg-base-200 hover:bg-base-300 text-muted'
 							)}
 						>
-							<Icon name="crown" size={13} className="text-vip" />
+							<Icon name="diamond" size={13} className="text-vip" />
 							<span>ویژه پرو</span>
 						</button>
 					</div>
@@ -148,7 +148,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 
 												{preset.isVip ? (
 													<span className="flex items-center gap-0.5 text-[10px] font-bold text-vip bg-vip/10 border border-vip/20 px-1.5 py-0.5 rounded-full shrink-0">
-														<Icon name="crown" size={11} />
+														<Icon name="diamond" size={11} />
 														<span>پرو</span>
 													</span>
 												) : null}
@@ -197,7 +197,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												variant="outline"
 												color="vip"
 											>
-												<Icon name="crown" size={13} />
+												<Icon name="diamond" size={13} />
 												<span>ارتقا به پرو</span>
 											</Button>
 										) : (

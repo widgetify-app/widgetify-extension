@@ -92,7 +92,7 @@ export function ProfileDropdownMenu({
 				/>
 
 				<DropdownItem
-					icon={<Icon name="outlineCrown" size={14} />}
+					icon={<Icon name="diamond" size={14} />}
 					label="ویجتیفای پرو"
 					badge={!isVip ? <VipBadge size="xs" /> : undefined}
 					onClick={() => handleAction(() => callEvent('openSettings', 'vip'))}

@@ -34,7 +34,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'ویجتیفای پرو',
 				value: 'vip',
-				icon: <Icon name="outlineCrown" size={20} />,
+				icon: <Icon name="diamond" size={20} />,
 				element: <VipTab />,
 			},
 			{
