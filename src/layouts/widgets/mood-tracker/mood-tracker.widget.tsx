@@ -39,9 +39,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	const menuTriggerRef = useRef<HTMLButtonElement | null>(null)
 
 	const todayDateStr = toIsoDateKey(today)
-	const startStr = toIsoDateKey(
-		today.clone().subtract(MOOD_HISTORY_DAYS - 1, 'days')
-	)
+	const startStr = toIsoDateKey(today.clone().subtract(MOOD_HISTORY_DAYS - 1, 'days'))
 
 	const { data: moodsData } = useGetMoods(
 		Boolean(isAuthenticated),
