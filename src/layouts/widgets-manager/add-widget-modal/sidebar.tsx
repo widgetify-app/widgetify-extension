@@ -112,7 +112,7 @@ export function AddWidgetSidebar({
 										)}
 									>
 										<span>
-											{isActive ? `${count} فعال` : 'تکرار'}
+											{isActive ? `${count}` : 'قابل تکرار'}
 										</span>
 									</span>
 								) : isActive ? (
