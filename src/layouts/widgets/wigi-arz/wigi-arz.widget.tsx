@@ -25,7 +25,7 @@ export function WigiArzLayout({
 	instanceId,
 	meta,
 }: WigiArzLayoutProps) {
-	const { selectedCurrencies, currencyColorMode, reorderCurrencies } =
+	const { selectedCurrencies, reorderCurrencies } =
 		useCurrencyStore()
 	const freeWidgets = useOptionalFreeWidgets()
 
@@ -54,7 +54,6 @@ export function WigiArzLayout({
 				) : (
 					<CurrencyList
 						currencies={selectedCurrencies}
-						currencyColorMode={currencyColorMode}
 						onReorder={reorderCurrencies}
 						className={`flex flex-col w-full gap-1 overflow-x-hidden scrollbar-none ${comboClassName ?? ''}`}
 					/>
@@ -88,7 +87,6 @@ export function WigiArzLayout({
 		>
 			<WigiArz2x3
 				currencies={currencies}
-				currencyColorMode={currencyColorMode}
 				onReorder={handleReorder}
 				instanceId={ownsList ? instanceId : undefined}
 			/>

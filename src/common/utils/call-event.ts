@@ -1,4 +1,3 @@
-import type { CurrencyColorMode } from '@/context/currency.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetBackgroundId, PetTypes } from '@widget/pet/types'
 import type { WigiNewsSetting } from '@widget/news/rss.interface'
@@ -56,7 +55,6 @@ export interface EventName {
 	clockSettingsChanged: ClockSettings
 	currencies_updated: {
 		currencies: string[]
-		colorMode: CurrencyColorMode
 	}
 	wigiNewsSettingsChanged: WigiNewsSetting
 	weatherSettingsChanged: WeatherSettings

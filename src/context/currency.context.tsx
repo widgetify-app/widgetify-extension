@@ -5,21 +5,12 @@ import { listenEvent } from '@/common/utils/call-event'
 export interface StoreContext {
 	selectedCurrencies: Array<string>
 	setSelectedCurrencies: (currencies: Array<string>) => void
-	currencyColorMode: CurrencyColorMode | null
-	setCurrencyColorMode: (mode: CurrencyColorMode) => void
 	reorderCurrencies: (currencies: Array<string>) => void
-}
-
-export enum CurrencyColorMode {
-	NORMAL = 'NORMAL',
-	X = 'X',
 }
 
 export const currencyContext = createContext<StoreContext>({
 	selectedCurrencies: [],
 	setSelectedCurrencies: () => {},
-	currencyColorMode: null,
-	setCurrencyColorMode: () => {},
 	reorderCurrencies: () => {},
 })
 
@@ -27,26 +18,16 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [selectedCurrencies, setSelectedCurrencies] = useState<string[] | null>(null)
-	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode | null>(
-		null
-	)
+
 	useEffect(() => {
 		async function load() {
-			const [storedCurrencies, storedColorMode] = await Promise.all([
-				getFromStorage('currencies'),
-				getFromStorage('currencyColorMode'),
-			])
+			const storedCurrencies = await getFromStorage('currencies')
 			setSelectedCurrencies(storedCurrencies ?? ['USD', 'EUR', 'GRAM'])
-			setCurrencyColorMode(storedColorMode || CurrencyColorMode.NORMAL)
 		}
 
-		const listen = listenEvent(
-			'currencies_updated',
-			(data: { currencies: string[]; colorMode: CurrencyColorMode }) => {
-				if (data.currencies) setSelectedCurrencies(data.currencies)
-				if (data.colorMode) setCurrencyColorMode(data.colorMode)
-			}
-		)
+		const listen = listenEvent('currencies_updated', (data) => {
+			if (data.currencies) setSelectedCurrencies(data.currencies)
+		})
 
 		load()
 		return () => {
@@ -61,16 +42,6 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (Array.isArray(selectedCurrencies)) save()
 	}, [selectedCurrencies])
 
-	useEffect(() => {
-		async function save() {
-			if (currencyColorMode) {
-				await setToStorage('currencyColorMode', currencyColorMode)
-			}
-		}
-
-		save()
-	}, [currencyColorMode])
-
 	const reorderCurrencies = (currencies: Array<string>) => {
 		setSelectedCurrencies(currencies)
 	}
@@ -80,8 +51,6 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
 			value={{
 				selectedCurrencies: selectedCurrencies ?? [],
 				setSelectedCurrencies,
-				setCurrencyColorMode,
-				currencyColorMode,
 				reorderCurrencies,
 			}}
 		>

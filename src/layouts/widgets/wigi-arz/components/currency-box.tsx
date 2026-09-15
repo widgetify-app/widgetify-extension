@@ -4,7 +4,6 @@ import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
-import { CurrencyColorMode } from '@/context/currency.context'
 import { Icon } from '@/icons'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import { getPrice } from '../utils/get-price'
@@ -14,13 +13,11 @@ const PARTNER_REDIRECT_DELAY_MS = 1000
 
 interface CurrencyBoxProps {
 	code: string
-	currencyColorMode: CurrencyColorMode | null
 	dragHandle?: React.HTMLAttributes<HTMLElement>
 }
 
 export const CurrencyBox = ({
 	code,
-	currencyColorMode,
 	dragHandle,
 }: CurrencyBoxProps) => {
 	const { currency, priceChange, hasFailed } = useCurrencyPrice(code)
@@ -44,16 +41,6 @@ export const CurrencyBox = ({
 			setIsModalOpen(!isModalOpen)
 		}
 	}
-
-	const isPositive = priceChange > 0
-	const priceChangeColor =
-		currencyColorMode === CurrencyColorMode.NORMAL
-			? isPositive
-				? 'text-error'
-				: 'text-success'
-			: isPositive
-				? 'text-success'
-				: 'text-error'
 
 	const price = currency ? getPrice(code, currency) : null
 
@@ -121,15 +108,6 @@ export const CurrencyBox = ({
 								'-'
 							)}
 						</span>
-						{priceChange !== 0 && (
-							<span className={cn('text-xs', priceChangeColor)}>
-								<Icon
-									name={isPositive ? 'upLong' : 'downLong'}
-									className="inline"
-									aria-hidden="true"
-								/>
-							</span>
-						)}
 					</span>
 				</button>
 			</div>
@@ -138,7 +116,6 @@ export const CurrencyBox = ({
 				<CurrencyModalComponent
 					key={code}
 					code={code}
-					currencyColorMode={currencyColorMode}
 					currency={currency}
 					priceChange={priceChange}
 					isModalOpen={isModalOpen}

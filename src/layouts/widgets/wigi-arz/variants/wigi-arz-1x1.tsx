@@ -15,7 +15,6 @@ export function CurrencyCompactSquare({
 	defaultCode = 'USD',
 	meta,
 }: CurrencyCompactSquareProps) {
-	const { currencyColorMode } = useCurrencyStore()
 
 	const activeCode = meta?.currencyCode || defaultCode || 'USD'
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -104,7 +103,6 @@ export function CurrencyCompactSquare({
 			<CurrencyModalComponent
 				key={activeCode}
 				code={activeCode}
-				currencyColorMode={currencyColorMode}
 				currency={currency}
 				priceChange={priceChange}
 				isModalOpen={isModalOpen}

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import { Modal, TextInput } from '@/components/ui'
-import { CurrencyColorMode } from '@/context/currency.context'
 import { Icon } from '@/icons'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 import { getPrice } from '../utils/get-price'
@@ -12,7 +11,6 @@ interface CurrencyModalComponentProps {
 	currency: FetchedCurrency
 	isModalOpen: boolean
 	priceChange: number
-	currencyColorMode: CurrencyColorMode | null
 	toggleCurrencyModal: () => void
 }
 
@@ -22,7 +20,6 @@ export const CurrencyModalComponent = ({
 	priceChange,
 	isModalOpen,
 	toggleCurrencyModal,
-	currencyColorMode,
 }: CurrencyModalComponentProps) => {
 	const [showConverter, setShowConverter] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
@@ -60,14 +57,7 @@ export const CurrencyModalComponent = ({
 	}
 
 	const isPositive = priceChange > 0
-	const priceChangeColor =
-		currencyColorMode === CurrencyColorMode.NORMAL
-			? isPositive
-				? 'text-error'
-				: 'text-success'
-			: isPositive
-				? 'text-success'
-				: 'text-error'
+	const priceChangeColor = isPositive ? 'text-error' : 'text-success'
 
 	const price = getPrice(code, currency)
 

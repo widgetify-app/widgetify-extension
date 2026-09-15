@@ -1,4 +1,3 @@
-import type { CurrencyColorMode } from '@/context/currency.context'
 import type { WidgetItem } from '@/context/widget-visibility.context'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@widget/pet/types'
@@ -24,7 +23,6 @@ import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {
 	currencies: string[]
-	currencyColorMode: CurrencyColorMode
 	hasShownPwaModal: boolean
 	currentWeather: FetchedWeather
 	wallpaper: StoredWallpaper

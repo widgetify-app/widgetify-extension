@@ -6,7 +6,6 @@ import { cn } from '@/common/utils/cn'
 import { SectionPanel, SelectBox } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { CurrencyColorMode } from '@/context/currency.context'
 import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { WidgetSettingWrapper } from '@/layouts/widgets-settings/widget-settings-wrapper'
 import { useGetSupportCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
@@ -24,9 +23,6 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
 
 	const [sharedCurrencies, setSharedCurrencies] = useState<string[]>([])
-	const [currencyColorMode, setCurrencyColorMode] = useState<CurrencyColorMode>(
-		CurrencyColorMode.NORMAL
-	)
 	const [currencyType, setCurrencyType] = useState<string>('all')
 	const [searchQuery, setSearchQuery] = useState('')
 	const { isAuthenticated } = useAuth()
@@ -47,14 +43,8 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 
 	useEffect(() => {
 		async function load() {
-			const [color, currencies] = await Promise.all([
-				getFromStorage('currencyColorMode'),
-				getFromStorage('currencies'),
-			])
+			const currencies = await getFromStorage('currencies')
 
-			if (color) {
-				setCurrencyColorMode(color)
-			}
 			if (currencies) {
 				setSharedCurrencies(currencies)
 			}
@@ -102,7 +92,6 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 
 		callEvent('currencies_updated', {
 			currencies: modifiedCurrencySelection,
-			colorMode: currencyColorMode,
 		})
 		setSharedCurrencies(modifiedCurrencySelection)
 		setToStorage('currencies', modifiedCurrencySelection)

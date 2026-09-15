@@ -13,21 +13,18 @@ import {
 } from '@dnd-kit/sortable'
 import type React from 'react'
 import Analytics from '@/analytics'
-import type { CurrencyColorMode } from '@/context/currency.context'
 import { SortableCurrencyBox } from './sortable-currency-box'
 
 const DRAG_ACTIVATION_DISTANCE = 5
 
 interface CurrencyListProps {
 	currencies: string[]
-	currencyColorMode: CurrencyColorMode | null
 	onReorder: (currencies: string[]) => void
 	className?: string
 }
 
 export const CurrencyList: React.FC<CurrencyListProps> = ({
 	currencies,
-	currencyColorMode,
 	onReorder,
 	className,
 }) => {
@@ -62,7 +59,6 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 							<SortableCurrencyBox
 								id={currency}
 								code={currency}
-								currencyColorMode={currencyColorMode}
 							/>
 						</li>
 					))}

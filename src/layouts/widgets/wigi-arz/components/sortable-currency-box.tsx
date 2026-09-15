@@ -1,17 +1,14 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { CurrencyColorMode } from '@/context/currency.context'
 import { CurrencyBox } from './currency-box'
 
 interface SortableCurrencyBoxProps {
 	code: string
-	currencyColorMode: CurrencyColorMode | null
 	id: string
 }
 
 export function SortableCurrencyBox({
 	code,
-	currencyColorMode,
 	id,
 }: SortableCurrencyBoxProps) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -33,7 +30,6 @@ export function SortableCurrencyBox({
 		>
 			<CurrencyBox
 				code={code}
-				currencyColorMode={currencyColorMode}
 				dragHandle={{ ...attributes, ...listeners }}
 			/>
 		</div>
