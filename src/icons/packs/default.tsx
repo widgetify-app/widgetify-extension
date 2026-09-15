@@ -31,6 +31,7 @@ import type { IconMap } from '../types'
 import { TfiAlert, TfiBackRight, TfiCheck, TfiCup } from 'react-icons/tfi'
 import {
 	LuBriefcase,
+	LuBug,
 	LuCalendarDays,
 	LuChevronDown,
 	LuChevronLeft,
@@ -92,6 +93,10 @@ import {
 	MdOutlineWallpaper,
 	MdPets,
 	MdSearch,
+	MdOutlineSignalCellularAlt,
+	MdOutlineSignalCellularAlt1Bar,
+	MdOutlineSignalCellularAlt2Bar,
+	MdRouter,
 } from 'react-icons/md'
 import {
 	HiBookmark,
@@ -120,6 +125,7 @@ import {
 	FaArrowDownLong,
 	FaArrowUpLong,
 	FaExclamation,
+	FaHeart,
 	FaPhotoFilm,
 	FaTreeCity,
 } from 'react-icons/fa6'
@@ -233,6 +239,8 @@ export const defaultIcons = {
 	phone: FiPhone,
 	atSign: FiAtSign,
 	outlineHeart: LuHeart,
+	heart: FaHeart,
+	bug: LuBug,
 	outlineAddCircle: IoMdAddCircle,
 	treeCity: FaTreeCity,
 	edit: TbEdit,
@@ -274,6 +282,10 @@ export const defaultIcons = {
 	shortcuts: VscRecordKeys,
 	theme: VscColorMode,
 	network: MdOutlineNetworkWifi,
+	router: MdRouter,
+	signalHigh: MdOutlineSignalCellularAlt,
+	signalMedium: MdOutlineSignalCellularAlt2Bar,
+	signalLow: MdOutlineSignalCellularAlt1Bar,
 	videoCamera: HiOutlineVideoCamera,
 	advanced_ui: LuLayers,
 	simple_ui: LuLayoutTemplate,
