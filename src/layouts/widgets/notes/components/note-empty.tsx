@@ -4,7 +4,7 @@ export function NoteEmpty() {
 			<div className="flex items-center justify-center w-12 h-12">
 				<img
 					src="https://cdn.widgetify.ir/system/no-items.png"
-					alt="بدون یادداشت"
+					alt=""
 					className="object-contain w-48 h-auto select-none"
 				/>
 			</div>

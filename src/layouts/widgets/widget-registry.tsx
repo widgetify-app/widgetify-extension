@@ -408,6 +408,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				id: 'sticky',
 				label: 'استیک نوت',
 				size: { w: 2, h: 2 },
+				isVipOnly: true,
 				meta: { variant: 'sticky' },
 			},
 		],

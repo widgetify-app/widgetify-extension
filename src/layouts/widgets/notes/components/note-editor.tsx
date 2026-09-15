@@ -1,9 +1,11 @@
-import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '@/common/constants/priority-options'
+import { cn } from '@/common/utils/cn'
 import { Button, IconLoading } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
+import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '../constants'
+import type { NotePriority } from '../types'
 import { Icon } from '@/icons'
 import { useEffect, useRef, useState } from 'react'
 
@@ -29,46 +31,34 @@ export function NoteEditor({ note }: NoteEditorProps) {
 		}
 	}, [note.id, note.title, note.body])
 
-	const handleInputChange = (field: 'title' | 'body', value: string) => {
-		if (field === 'title') {
-			setCurrentTitle(value)
-			note.title = value
-		} else {
-			setCurrentBody(value)
-			note.body = value
-		}
-	}
-
 	const onSave = () => {
 		updateNote(note.id, {
-			priority: priority,
-			body: note.body,
-			title: note.title,
+			priority,
+			body: currentBody,
+			title: currentTitle,
 		})
 	}
 
-	const onPriority = (value: string) => {
-		setPriority(value as any)
-	}
-
-	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : ' bg-base-300/70'
+	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : 'bg-base-content/5'
 	return (
 		<div className="flex flex-col h-full overflow-hidden">
 			<TextInput
 				ref={titleRef}
 				type="text"
 				className={`w-full h-12 font-bold! border-0 rounded-b-none! ${bgColor}`}
+				aria-label="عنوان یادداشت"
 				placeholder="عنوان یادداشت..."
 				value={currentTitle}
-				onChange={(val) => handleInputChange('title', val)}
+				onChange={setCurrentTitle}
 			/>
 
 			<textarea
 				ref={bodyRef}
 				className={`w-full h-full px-2 pt-1 pb-4 text-sm grow resize-none text-shadow-2xs rounded-b-2xl  outline-none font-light ${bgColor}`}
+				aria-label="متن یادداشت"
 				placeholder="متن یادداشت..."
 				value={currentBody}
-				onChange={(e) => handleInputChange('body', e.target.value)}
+				onChange={(e) => setCurrentBody(e.target.value)}
 				rows={3}
 				dir="rtl"
 			/>
@@ -77,9 +67,11 @@ export function NoteEditor({ note }: NoteEditorProps) {
 				<div className="flex items-center gap-1">
 					{PRIORITY_OPTIONS.map((p) => (
 						<PriorityButton
-							key={p.ariaLabel}
+							key={p.value}
 							isSelected={priority === p.value}
-							onClick={() => onPriority(p.value)}
+							onClick={() =>
+								setPriority(priority === p.value ? undefined : p.value)
+							}
 							option={p}
 						/>
 					))}
@@ -116,14 +108,15 @@ const PriorityButton = ({
 		<button
 			type="button"
 			onClick={onClick}
-			className={`
-				flex items-center justify-center w-4 h-4 rounded-full
-				transition-all duration-150 cursor-pointer 
-				${option.bgColor} ${option.hoverBgColor}
-				${isSelected ? 'ring-2 ring-offset-0 ring-primary' : ''}
-			`}
+			aria-label={option.ariaLabel}
+			aria-pressed={isSelected}
+			className={cn(
+				'flex items-center justify-center w-4 h-4 rounded-full cursor-pointer transition-ui focus-visible:focus-ring',
+				option.bgColor,
+				isSelected ? 'ring-2 ring-offset-0 ring-primary' : 'opacity-70 hover:opacity-100'
+			)}
 		>
-			{isSelected && <Icon name="check" size={8} className="text-white" />}
+			{isSelected && <Icon name="check" size={8} aria-hidden="true" />}
 		</button>
 	</Tooltip>
 )

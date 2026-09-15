@@ -14,61 +14,38 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import { PRIORITY_OPTIONS } from '@/common/constants/priority-options'
+import { NoteError } from '../components/note-error'
+import { PRIORITY_OPTIONS, STICKY_COLOR_MAP } from '../constants'
+import type { NotePriority, NotesMeta } from '../types'
 import moment from 'jalali-moment'
 
-const STICKY_COLOR_MAP: Record<
-	string,
-	{ bg: string; border: string; text: string; headerBg: string; divider: string }
-> = {
-	default: {
-		bg: 'bg-base-200 bg-glass',
-		border: 'border-base-content/10',
-		text: 'text-content',
-		headerBg: 'bg-base-300/40',
-		divider: 'border-base-content/10',
-	},
-	low: {
-		bg: 'bg-success',
-		border: 'border-success-content/20',
-		text: 'text-success-content',
-		headerBg: 'bg-black/10',
-		divider: 'border-success-content/20',
-	},
-	medium: {
-		bg: 'bg-warning',
-		border: 'border-warning-content/20',
-		text: 'text-warning-content',
-		headerBg: 'bg-black/10',
-		divider: 'border-warning-content/20',
-	},
-	high: {
-		bg: 'bg-error',
-		border: 'border-error-content/20',
-		text: 'text-error-content',
-		headerBg: 'bg-black/10',
-		divider: 'border-error-content/20',
-	},
-}
-
 interface NoteStickyProps {
-	meta?: Record<string, any>
+	meta?: NotesMeta
 	instanceId?: string
 }
 
 export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
-	const { notes, addNote, updateNote, deleteNote, isSaving, isCreatingNote } =
-		useNotes()
+	const {
+		notes,
+		addNote,
+		updateNote,
+		deleteNote,
+		isSaving,
+		isCreatingNote,
+		isLoading,
+		isError,
+		refetch,
+	} = useNotes()
 	const { updateWidgetSettings } = useFreeWidgetActions()
 
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [localTitle, setLocalTitle] = useState('')
 	const [localBody, setLocalBody] = useState('')
-	const [localPriority, setLocalPriority] = useState<
-		'low' | 'medium' | 'high' | undefined
-	>(undefined)
+	const [localPriority, setLocalPriority] = useState<NotePriority | undefined>(
+		undefined
+	)
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
 	const targetNoteId = meta?.activeNoteId || meta?.noteId
@@ -133,7 +110,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 		}
 	}
 
-	const handlePriorityChange = (priorityKey?: 'low' | 'medium' | 'high') => {
+	const handlePriorityChange = (priorityKey?: NotePriority) => {
 		if (!currentNote) return
 		const nextPriority = localPriority === priorityKey ? undefined : priorityKey
 		setLocalPriority(nextPriority)
@@ -214,10 +191,34 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	const currentPriorityKey = localPriority || 'default'
 	const colorTheme = STICKY_COLOR_MAP[currentPriorityKey] || STICKY_COLOR_MAP.default
 
+	if (isLoading && !notes.length) {
+		return (
+			<div
+				aria-hidden="true"
+				className={cn(
+					'flex flex-col h-full w-full gap-2 p-3 rounded-2xl',
+					colorTheme.bg
+				)}
+			>
+				<div className="w-1/2 h-3 rounded skeleton" />
+				<div className="flex-1 rounded-xl skeleton" />
+				<div className="w-1/3 h-3 rounded skeleton" />
+			</div>
+		)
+	}
+
+	if (isError && !notes.length) {
+		return (
+			<div className={cn('h-full w-full rounded-2xl', colorTheme.bg)}>
+				<NoteError onRetry={refetch} />
+			</div>
+		)
+	}
+
 	return (
 		<div
 			className={cn(
-				'h-full w-full flex flex-col justify-between p-3 rounded-2xl transition-all duration-200 select-none overflow-hidden relative',
+				'h-full w-full flex flex-col justify-between p-3 rounded-2xl transition-ui select-none overflow-hidden relative',
 				colorTheme.bg,
 				colorTheme.text
 			)}
@@ -265,7 +266,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت قبلی"
 							>
-								<Icon name="chevronRight" size={11} />
+								<Icon name="chevronRight" size={11} aria-hidden="true" />
 							</Button>
 							<Button
 								size="xs"
@@ -275,7 +276,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت بعدی"
 							>
-								<Icon name="chevronLeft" size={11} />
+								<Icon name="chevronLeft" size={11} aria-hidden="true" />
 							</Button>
 						</div>
 					)}
@@ -288,11 +289,11 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							onClick={handleCreateNote}
 							disabled={isCreatingNote}
 							className={cn(
-								'h-6 w-6 p-0 transition-all hover:scale-105 border-none shadow-none text-inherit',
+								'h-6 w-6 p-0 transition-ui hover:scale-105 border-none shadow-none text-inherit',
 								colorTheme.headerBg
 							)}
 						>
-							<Icon name="plus" size={12} />
+							<Icon name="plus" size={12} aria-hidden="true" />
 						</Button>
 					</Tooltip>
 
@@ -304,11 +305,11 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								rounded="full"
 								onClick={() => setShowDeleteConfirm(true)}
 								className={cn(
-									'h-6 w-6 p-0 transition-all hover:scale-105 hover:bg-error/30 hover:text-error-content border-none shadow-none text-inherit',
+									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-error/30 hover:text-error-content border-none shadow-none text-inherit',
 									colorTheme.headerBg
 								)}
 							>
-								<Icon name="trash" size={12} />
+								<Icon name="trash" size={12} aria-hidden="true" />
 							</Button>
 						</Tooltip>
 					)}
@@ -329,26 +330,32 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 						dir="rtl"
 					/>
 				) : (
-					<div
+					<button
+						type="button"
 						onClick={handleCreateNote}
 						className={cn(
-							'w-full h-full flex flex-col items-center justify-center text-center cursor-pointer transition-colors p-4 rounded-xl border border-dashed hover:opacity-100 opacity-80',
+							'w-full h-full flex flex-col items-center justify-center text-center cursor-pointer transition-colors p-4 rounded-xl border border-dashed hover:opacity-100 opacity-80 focus-visible:focus-ring',
 							colorTheme.border,
 							colorTheme.headerBg
 						)}
 					>
-						<Icon name="pen" size={18} className="mb-1 opacity-60" />
+						<Icon
+							name="pen"
+							size={18}
+							aria-hidden="true"
+							className="mb-1 opacity-60"
+						/>
 						<span className="text-xs font-bold">ایجاد اولین یادداشت</span>
 						<span className="text-[10px] opacity-70 mt-0.5">
 							برای شروع اینجا کلیک کن
 						</span>
-					</div>
+					</button>
 				)}
 			</div>
 
-			<div
+			<footer
 				className={cn(
-					'flex items-center justify-between pt-1.5 text-[10px]',
+					'flex items-center justify-between pt-1.5 border-t text-[10px]',
 					colorTheme.divider
 				)}
 			>
@@ -357,8 +364,10 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 						<button
 							type="button"
 							onClick={() => handlePriorityChange(undefined)}
+							aria-label="رنگ پیش‌فرض"
+							aria-pressed={!localPriority}
 							className={cn(
-								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-base-300 border border-base-content/20',
+								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-base-content/10 border border-base-content/20 focus-visible:focus-ring',
 								!localPriority
 									? 'ring-2 ring-primary ring-offset-1 scale-110'
 									: 'opacity-60 hover:opacity-100'
@@ -371,9 +380,13 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<Tooltip key={opt.value} content={opt.ariaLabel}>
 								<button
 									type="button"
-									onClick={() => handlePriorityChange(opt.value as any)}
+									onClick={() =>
+										handlePriorityChange(opt.value)
+									}
+									aria-label={opt.ariaLabel}
+									aria-pressed={isSelected}
 									className={cn(
-										'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer',
+										'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer focus-visible:focus-ring',
 										opt.bgColor,
 										isSelected
 											? 'ring-2 ring-primary ring-offset-1 scale-110'
@@ -392,14 +405,19 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<span className="text-[9px]">درحال ذخیره</span>
 						</div>
 					) : currentNote ? (
-						<span className="opacity-80">
+						<time
+							dateTime={moment(
+								currentNote.updatedAt || currentNote.createdAt
+							).format('YYYY-MM-DD')}
+							className="opacity-80"
+						>
 							{moment(currentNote.updatedAt || currentNote.createdAt)
 								.locale('fa')
 								.format('jD jMMM')}
-						</span>
+						</time>
 					) : null}
 				</div>
-			</div>
+			</footer>
 
 			<ConfirmationModal
 				isOpen={showDeleteConfirm}
