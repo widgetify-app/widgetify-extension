@@ -12,9 +12,13 @@ jobs:
   publish-firefox:
     name: Build & Publish to Firefox Add-ons
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -55,4 +59,4 @@ jobs:
           cp .output/*-sources.zip releases/
           git add releases/
           git commit -m "chore(release): temporary firefox zip files"
-          git push origin main
+          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" main
