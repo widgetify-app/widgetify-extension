@@ -75,6 +75,10 @@ export const PET_BACKGROUND_LIST = Object.values(PET_BACKGROUNDS)
 
 export const HUNGER_GAIN_STEPS = [5, 10, 20]
 
+export const HUNGER_TICK_MS = 40 * 1000
+
+export const PET_NAME_SAVE_DEBOUNCE_MS = 500
+
 export const MAX_ACTIVE_PET_FOOD = 3
 
 export const BASE_PET_OPTIONS: PetSettings = {

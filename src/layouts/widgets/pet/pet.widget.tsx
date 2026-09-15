@@ -9,8 +9,9 @@ function PetScene() {
 	const scene = getPetBackground(background)
 
 	return (
-		<div
-			className="relative w-full h-24 overflow-hidden"
+		<section
+			aria-label="حیوان خانگی"
+			className="relative w-full h-full overflow-hidden"
 			style={
 				{
 					backgroundImage: scene.image ? `url(${scene.image})` : undefined,
@@ -21,7 +22,7 @@ function PetScene() {
 			}
 		>
 			<PetFactory className="bottom-(--pet-ground)" />
-		</div>
+		</section>
 	)
 }
 

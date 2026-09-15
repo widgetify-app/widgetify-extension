@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput, Tooltip } from '@/components/ui'
@@ -10,6 +10,7 @@ import {
 	DEFAULT_PET_BACKGROUND,
 	PET_BACKGROUND_LIST,
 	PET_ICON,
+	PET_NAME_SAVE_DEBOUNCE_MS,
 	PET_PREVIEW,
 	PET_SPECIES_LABEL,
 } from './constants'
@@ -19,8 +20,9 @@ import { getPetBackground } from './utils/get-pet-background'
 const PET_LIST = Object.keys(BASE_PET_OPTIONS.petOptions) as PetTypes[]
 
 const TIPS = [
-	'واسه بازی با حیوان خانگی، روش کلیک کن',
-	'واسه غذا دادن، تو محیط اطرافش کلیک کن',
+	'واسه غذا دادن، هر جای محیطش کلیک کن',
+	'اسمش رو ببینی؟ موس رو ببر روش',
+	'همزمان بیشتر از سه تا غذا نمی‌شه گذاشت',
 ]
 
 interface PetSettingsProps {
@@ -63,18 +65,34 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 		load()
 	}, [instanceId, targetMeta])
 
-	function onChangePetName(value: string) {
-		setPetName(value)
-		if (instanceId) {
-			updateWidgetSettings(instanceId, {
-				...targetMeta,
-				petType,
-				petName: value,
-				background,
-			})
+	const saveNameTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+	useEffect(() => {
+		return () => {
+			if (saveNameTimerRef.current) clearTimeout(saveNameTimerRef.current)
 		}
-		callEvent('updatedPetSettings', { instanceId, petName: value, petType })
-	}
+	}, [])
+
+	const onChangePetName = useCallback(
+		(value: string) => {
+			setPetName(value)
+			callEvent('updatedPetSettings', { instanceId, petName: value, petType })
+
+			if (!instanceId) return
+
+			if (saveNameTimerRef.current) clearTimeout(saveNameTimerRef.current)
+			saveNameTimerRef.current = setTimeout(() => {
+				saveNameTimerRef.current = null
+				updateWidgetSettings(instanceId, {
+					...targetMeta,
+					petType,
+					petName: value,
+					background,
+				})
+			}, PET_NAME_SAVE_DEBOUNCE_MS)
+		},
+		[instanceId, petType, background, targetMeta, updateWidgetSettings]
+	)
 
 	async function onChangePetType(value: PetTypes) {
 		const stored = await getFromStorage('pets')
@@ -122,7 +140,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-base-300/25">
+			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-base-content/5">
 				<div
 					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content"
 					style={{
@@ -144,7 +162,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<h3 className="text-base font-semibold truncate text-content">
 							{displayName}
 						</h3>
-						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-base-300">
+						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-base-content/10">
 							{PET_SPECIES_LABEL[petType]}
 						</span>
 					</div>
@@ -169,9 +187,9 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<button
 							type="button"
 							aria-label="راهنمای تعامل با حیوان خانگی"
-							className="flex items-center justify-center w-7 h-7 rounded-full text-muted hover:text-content hover:bg-base-200 transition-colors"
+							className="flex items-center justify-center rounded-full w-7 h-7 text-muted opacity-70 transition-ui hover:opacity-100 hover:bg-base-content/10 focus-visible:focus-ring"
 						>
-							<Icon name="info" className="w-4 h-4" />
+							<Icon name="info" className="w-4 h-4" aria-hidden="true" />
 						</button>
 					</Tooltip>
 				</div>
@@ -218,7 +236,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							onSelect={() => onChangeBackground(item.id)}
 						>
 							<div
-								className="w-full h-12 flex items-center justify-center bg-base-300/40"
+								className="flex items-center justify-center w-full h-12 bg-base-content/10"
 								style={
 									item.image
 										? {

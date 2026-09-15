@@ -10,7 +10,7 @@ export const PetFood = (props: PetFoodProps) => {
 	return (
 		<img
 			src={src}
-			alt="Pet Food"
+			alt=""
 			style={{
 				width: size ? `${size}px` : '100%',
 				height: size ? `${size}px` : '100%',
