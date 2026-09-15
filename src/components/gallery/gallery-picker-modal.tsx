@@ -118,7 +118,7 @@ export function GalleryPickerModal({
 
 					<div className="flex-1 pr-1 overflow-y-auto">
 						{isLoading ? (
-							type === 'BOOKMARK_ICON' || type === 'AVATAR' ? (
+							type === 'BOOKMARK_ICON' ? (
 								<div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6">
 									{[...Array(18)].map((_, idx) => (
 										<div
@@ -149,7 +149,7 @@ export function GalleryPickerModal({
 								/>
 								<p className="text-sm font-medium">هیچ تصویری پیدا نشد</p>
 							</div>
-						) : type === 'BOOKMARK_ICON' || type === 'AVATAR' ? (
+						) : type === 'BOOKMARK_ICON' ? (
 							<div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6">
 								{assets.map((asset) => (
 									<GalleryBookmarkIconItem
