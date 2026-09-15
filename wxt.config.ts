@@ -1,33 +1,52 @@
-import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'wxt'
+import tailwindcss from '@tailwindcss/vite'
+import type { Plugin } from 'vite'
+
+function amoSanitizeReactDomInnerHtml(): Plugin {
+	return {
+		name: 'amo-sanitize-react-dom-innerhtml',
+		enforce: 'post',
+		generateBundle(_options, bundle) {
+			for (const fileName of Object.keys(bundle)) {
+				const chunk = bundle[fileName]
+				if (chunk.type === 'chunk' && chunk.code.includes('.innerHTML')) {
+					chunk.code = chunk.code.replace(
+						/([a-zA-Z0-9_$]+)\.innerHTML\s*=/g,
+						"$1['innerHTML']="
+					)
+				}
+			}
+		},
+	}
+}
 
 export default defineConfig({
-	vite: () =>
-		({
-			plugins: [tailwindcss()],
-			build: {
-				minify: 'terser',
-				terserOptions: {
-					compress: {
-						drop_console: true,
-						drop_debugger: true,
-						pure_funcs: ['console.log', 'console.info', 'console.debug'],
-					},
-					format: {
-						comments: false,
-					},
+	vite: (configEnv) => ({
+		plugins: [
+			tailwindcss(),
+			...(configEnv.browser === 'firefox' ? [amoSanitizeReactDomInnerHtml()] : []),
+		],
+
+		build: {
+			minify: 'terser',
+			terserOptions: {
+				compress: {
+					drop_console: true,
+					drop_debugger: true,
+					pure_funcs: ['console.log', 'console.info', 'console.debug'],
 				},
-				rollupOptions: {
-					treeshake: {
-						propertyReadSideEffects: false,
-					},
-				},
-				chunkSizeWarningLimit: 1000,
-				sourcemap: false,
-				cssCodeSplit: true,
-				assetsInlineLimit: 4096,
+				format: { comments: false },
 			},
-		}) as any,
+			rollupOptions: {
+				treeshake: { propertyReadSideEffects: false },
+			},
+			chunkSizeWarningLimit: 1000,
+			sourcemap: false,
+			cssCodeSplit: true,
+			assetsInlineLimit: 4096,
+		},
+	}),
+
 	alias: {
 		'@/common': './src/common',
 		'@/analytics': './src/analytics',
@@ -41,45 +60,71 @@ export default defineConfig({
 		'@/pages': './src/pages',
 		'@/assets': './src/assets',
 	},
+
 	modules: [
 		'@wxt-dev/webextension-polyfill',
 		'@wxt-dev/auto-icons',
 		'@wxt-dev/module-react',
 	],
-	manifest: {
-		version: '1.1.21',
-		name: 'Widgetify beta',
-		description:
-			'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
-		permissions: ['storage', 'search'],
-		optional_permissions: ['tabs', 'tabGroups', 'bookmarks', 'identity'],
-		browser_specific_settings: {
-			gecko: {
-				id: 'widgetify-beta@widgetify-app.github.io',
+
+	manifest: ({ browser }) => {
+		const isFirefox = browser === 'firefox'
+		const version = process.env.FIREFOX_EXTENSION_VERSION?.trim() || '1.1.3'
+		const geckoId =
+			process.env.FIREFOX_EXTENSION_ID?.trim() ||
+			'widgetify_ir@addons.mozilla.org'
+
+		return {
+			version,
+			name: 'Widgetify',
+			description:
+				'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
+
+			permissions: ['storage', 'search', ...(isFirefox ? ['identity'] : [])],
+
+			optional_permissions: [
+				'tabs',
+				'tabGroups',
+				'bookmarks',
+				...(!isFirefox ? ['identity'] : []),
+			],
+
+			browser_specific_settings: {
+				gecko: {
+					id: geckoId,
+					strict_min_version: '142.0',
+					data_collection_permissions: {
+						required: ['none'],
+						optional: ['technicalAndInteraction', 'websiteActivity'],
+					},
+				},
 			},
-		},
-		action: {
-			default_title: 'Open Widgetify Dashboard',
-			default_icon: {
+
+			action: {
+				default_title: 'Open Widgetify Dashboard',
+				default_icon: {
+					16: 'icons/icon16.png',
+					32: 'icons/icon32.png',
+					48: 'icons/icon48.png',
+					128: 'icons/icon128.png',
+				},
+			},
+
+			host_permissions: [
+				'https://github.com/*',
+				'https://raw.githubusercontent.com/*',
+				'https://api.github.com/*',
+				'https://api.widgetify.ir/*',
+				'https://www.google-analytics.com/collect*',
+				'https://storage.c2.liara.space/*',
+			],
+
+			icons: {
 				16: 'icons/icon16.png',
 				32: 'icons/icon32.png',
 				48: 'icons/icon48.png',
 				128: 'icons/icon128.png',
 			},
-		},
-		host_permissions: [
-			'https://github.com/*',
-			'https://raw.githubusercontent.com/*',
-			'https://api.github.com/*',
-			'https://api.widgetify.ir/*',
-			'https://www.google-analytics.com/collect*',
-			'https://storage.c2.liara.space/*',
-		],
-		icons: {
-			16: 'icons/icon16.png',
-			32: 'icons/icon32.png',
-			48: 'icons/icon48.png',
-			128: 'icons/icon128.png',
-		},
+		}
 	},
 })

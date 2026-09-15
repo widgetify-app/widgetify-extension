@@ -145,7 +145,7 @@ const TOAST_THEMES: Record<
 			</div>
 		),
 		defaultTitle: 'خطا',
-		defaultActionText: 'تلاش مجدد',
+		defaultActionText: 'باشه',
 		messageClass: 'text-red-200/85',
 	},
 	success: {

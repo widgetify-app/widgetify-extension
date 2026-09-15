@@ -9,6 +9,7 @@ import {
 	resolveLayoutChange,
 	validateLayout,
 } from '../index'
+import { PRESET_LAYOUTS } from '../../presets/preset-layouts'
 import type { StoredWidget } from '../types'
 
 describe('Layout Engine Tests', () => {
@@ -194,5 +195,12 @@ describe('Layout Engine Tests', () => {
 			},
 		]
 		expect(validateLayout(simpleLayout, 8)).toBe(true)
+	})
+
+	it('validates all PRESET_LAYOUTS including free and pro presets', () => {
+		for (const preset of PRESET_LAYOUTS) {
+			const isValid = validateLayout(preset.widgets, 8)
+			expect(isValid).toBe(true)
+		}
 	})
 })

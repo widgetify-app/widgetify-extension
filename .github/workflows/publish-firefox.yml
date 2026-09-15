@@ -2,6 +2,11 @@ name: Publish to Firefox Add-ons
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Extension Version (e.g. 1.1.4)"
+        required: false
+        default: ""
 
 jobs:
   publish-firefox:
@@ -21,6 +26,9 @@ jobs:
 
       - name: Build & Zip for Firefox
         run: bun run zip:firefox
+        env:
+          FIREFOX_EXTENSION_VERSION: ${{ github.event.inputs.version }}
+          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
 
       - name: Submit to Firefox Add-ons (AMO)
         run: |

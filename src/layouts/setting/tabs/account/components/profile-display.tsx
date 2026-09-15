@@ -226,18 +226,27 @@ export const ProfileDisplay = () => {
 					label="علایق"
 					editable
 					value={
-						<div className="flex flex-wrap self-end justify-end flex-1 gap-1 overflow-y-auto max-w-42 sm:max-w-72">
-							{user?.interests?.map((i) => (
-								<Chip
-									onClick={() => {}}
-									selected={true}
-									key={i.id}
-									className="p-0! px-0.5! h-6"
-								>
-									{i.label}
-								</Chip>
-							))}
-						</div>
+						user?.interests && user.interests.length > 0 ? (
+							<div className="flex flex-wrap items-center justify-end flex-1 gap-1">
+								{user.interests.slice(0, 2).map((i) => (
+									<Chip
+										onClick={() => {}}
+										selected={true}
+										key={i.id}
+										className="p-0! px-1.5! h-6 text-[10px]"
+									>
+										{i.label}
+									</Chip>
+								))}
+								{user.interests.length > 2 && (
+									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-base-300 text-muted">
+										+{user.interests.length - 2}
+									</span>
+								)}
+							</div>
+						) : (
+							'-'
+						)
 					}
 					EditModal={ChangeInterestsModal}
 					modalValue={user?.interests || []}
