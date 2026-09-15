@@ -1,5 +1,5 @@
-import { SectionPanel } from '@/components/ui'
-import { ToggleSwitch } from '@/components/ui'
+import { useState } from 'react'
+import { SectionPanel, ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete.switch'
 
@@ -13,39 +13,73 @@ export function PrivacySettings() {
 		setBrowserTabsEnabled,
 	} = useGeneralSetting()
 
+	const [allowFavicon, setAllowFaviconState] = useState(() => {
+		return localStorage.getItem('wxt_local:allowFaviconService') === 'true'
+	})
+
+	const handleToggleAnalytics = () => {
+		setAnalyticsEnabled(!analyticsEnabled)
+	}
+
+	const handleToggleFavicon = () => {
+		const nextValue = !allowFavicon
+		setAllowFaviconState(nextValue)
+		localStorage.setItem('wxt_local:allowFaviconService', String(nextValue))
+	}
+
 	return (
-		<div className="w-full max-w-xl mx-auto">
-			<SectionPanel title="حریم خصوصی" delay={0.1}>
-				<div className="space-y-4">
-					<div className="flex items-center justify-between">
-						<div className="flex-1 space-y-2">
-							<h3 className="font-medium text-content">
-								ردیابی استفاده از افزونه (Analytics)
+		<div className="w-full max-w-xl mx-auto space-y-4">
+			<SectionPanel title="حریم خصوصی و دسترسی‌ها" delay={0.1}>
+				<div className="space-y-1">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+						<div className="flex-1 space-y-1">
+							<h3 className="text-sm font-medium text-content">
+								آمار و عملکرد افزونه (Analytics)
 							</h3>
-							<p className="text-sm font-light leading-relaxed text-muted">
-								با فعال کردن این گزینه، آمار استفاده از افزونه برای بهبود
-								عملکرد جمع‌آوری می‌شود. هیچ اطلاعات شخصی ارسال نخواهد شد
+							<p className="text-xs font-normal leading-relaxed text-muted">
+								جمع‌آوری آمار فنی و گزارش خطاهای ناشناس برای بهبود عملکرد
+								افزونه بدون ارسال هیچ‌گونه اطلاعات شخصی یا یادداشت‌ها
 							</p>
 						</div>
-						<div className="flex-shrink-0 ml-4">
+						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
 								enabled={analyticsEnabled}
-								onToggle={() => setAnalyticsEnabled(!analyticsEnabled)}
+								onToggle={handleToggleAnalytics}
 							/>
 						</div>
 					</div>
-					<div className="flex items-center justify-between">
-						<div className="flex-1 space-y-2">
-							<h3 className="font-medium text-content">
-								دسترسی به بوکمارک های مرورگر
+
+					{import.meta.env.FIREFOX && (
+						<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+							<div className="flex-1 space-y-1">
+								<h3 className="text-sm font-medium text-content">
+									نمایش آیکون‌های بوکمارک‌ها
+								</h3>
+								<p className="text-xs font-normal leading-relaxed text-muted">
+									دریافت فاوآیکون بوکمارک‌ها از سرویس امن گوگل با ارسال
+									دامنه سایت‌ها برای نمایش بصری بهتر
+								</p>
+							</div>
+							<div className="shrink-0 pt-0.5">
+								<ToggleSwitch
+									enabled={allowFavicon}
+									onToggle={handleToggleFavicon}
+								/>
+							</div>
+						</div>
+					)}
+
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+						<div className="flex-1 space-y-1">
+							<h3 className="text-sm font-medium text-content">
+								دسترسی به بوکمارک‌های مرورگر
 							</h3>
-							<p className="text-sm font-light leading-relaxed text-muted">
-								با فعال‌سازی این گزینه، افزونه فقط برای نمایش بوکمارک‌های
-								مرورگر شما دسترسی خواهد داشت. هیچ اطلاعاتی ذخیره یا ارسال
-								نمی‌شود و بوکمارک‌ها صرفا در محیط افزونه نمایش داده می‌شوند.
+							<p className="text-xs font-normal leading-relaxed text-muted">
+								نمایش بوکمارک‌های ذخیره‌شده مرورگر در ویجت سرچ‌باکس، ذخیره یا
+								ارسال نمیشن
 							</p>
 						</div>
-						<div className="flex-shrink-0 ml-4">
+						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
 								enabled={browserBookmarksEnabled}
 								onToggle={() =>
@@ -54,16 +88,18 @@ export function PrivacySettings() {
 							/>
 						</div>
 					</div>
-					<div className="flex items-center justify-between">
-						<div className="flex-1 space-y-2">
-							<h3 className="font-medium text-content">دسترسی به تب‌ها</h3>
-							<p className="text-sm font-light leading-relaxed text-muted">
-								با فعال کردن این گزینه، افزونه می‌تواند بوکمارک‌های داخل
-								پوشه‌ها را به صورت گروهی باز و مدیریت کند. هیچ اطلاعات شخصی
-								ذخیره یا ارسال نمی‌شود.
+
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+						<div className="flex-1 space-y-1">
+							<h3 className="text-sm font-medium text-content">
+								دسترسی به تب‌ها
+							</h3>
+							<p className="text-xs font-normal leading-relaxed text-muted">
+								امکان باز کردن و مدیریت گروهی بوکمارک‌های داخل پوشه‌ها در
+								تب‌های مرورگر
 							</p>
 						</div>
-						<div className="flex-shrink-0 ml-4">
+						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
 								enabled={browserTabsEnabled}
 								onToggle={() =>

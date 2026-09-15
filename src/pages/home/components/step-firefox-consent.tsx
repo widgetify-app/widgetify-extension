@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Button } from '@/components/ui'
-import { ItemSelector } from '@/components/ui'
+import { Button, ItemSelector } from '@/components/ui'
 import { Icon } from '@/icons'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 interface StepFirefoxConsentProps {
 	onGetStarted: () => void
@@ -22,8 +22,12 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 		}
 	}
 
-	const handleConfirm = () => {
-		localStorage.setItem('wxt_local:allowAnalytics', String(allowAnalytics))
+	const handleConfirm = async () => {
+		const current = (await getFromStorage('generalSettings')) || {}
+		await setToStorage('generalSettings', {
+			...current,
+			analyticsEnabled: allowAnalytics,
+		})
 		localStorage.setItem('wxt_local:allowFaviconService', String(allowIcon))
 
 		onGetStarted()
@@ -48,7 +52,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 					isActive={allowIcon}
 					onClick={() => setAllowIcon(!allowIcon)}
 					label="دریافت آیکون سایت‌ها (Google Favicon)"
-					description="ارسال دامنه سایت به سرویس رسمی گوگل برای نمایش آیکون نشانک‌ها"
+					description="ارسال دامنه سایت به سرویس رسمی گوگل برای نمایش آیکون بوکمارک‌ها"
 				/>
 
 				<ItemSelector

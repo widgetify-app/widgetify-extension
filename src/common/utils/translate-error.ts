@@ -73,9 +73,9 @@ const errorTranslations: Record<string, string> = {
 	NO_SPACE_FOR_DUPLICATE: 'روی صفحه جا نیست، برای تکرار ویجت کمی فضا باز کن',
 
 	// Bookmark-related messages
-	BOOKMARK_DELETED: 'نشانک حذف شد',
-	BOOKMARK_ADDED: 'نشانک اضافه شد',
-	BOOKMARK_UPDATED: 'نشانک ویرایش شد',
+	BOOKMARK_DELETED: 'بوکمارک حذف شد',
+	BOOKMARK_ADDED: 'بوکمارک اضافه شد',
+	BOOKMARK_UPDATED: 'بوکمارک ویرایش شد',
 	BOOKMARK_PARENT_NOT_FOUND: 'پوشه پیدا نشد',
 	FILE_SIZE_EXCEEDED: 'حجم فایل بیشتر از حد مجازه',
 

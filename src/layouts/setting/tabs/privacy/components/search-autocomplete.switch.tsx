@@ -1,4 +1,4 @@
-import { autoFormatErrorToast } from '@/common/toast'
+import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { ToggleSwitch } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { safeAwait } from '@/services/api'
@@ -9,7 +9,12 @@ export function SearchAutocompleteSwitch() {
 	const { mutateAsync, isPending } = useUpdateSearchAutocomplete()
 
 	const onToggle = async () => {
-		const [er, _] = await safeAwait(
+		if (!isAuthenticated) {
+			showToast('نیازمند ورود به حساب کاربری', 'error')
+			return
+		}
+
+		const [er] = await safeAwait(
 			mutateAsync({ isActive: !user?.searchAutocompleteEnabled })
 		)
 		if (er) {
@@ -18,20 +23,19 @@ export function SearchAutocompleteSwitch() {
 	}
 
 	return (
-		<div className="flex items-center justify-between">
-			<div className="flex-1 space-y-2">
-				<h3 className="font-medium text-content">پیشنهادهای جستجو</h3>
-				<p className="text-sm font-light leading-relaxed text-muted">
-					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما
-					گوگل دریافت می‌شوند و تاریخچه جستجو در دستگاه شما ذخیره میشوند. هیچ
-					اطلاعاتی به سرور ارسال نمی‌شود.
+		<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+			<div className="flex-1 space-y-1">
+				<h3 className="text-sm font-medium text-content">پیشنهادهای جستجو</h3>
+				<p className="text-xs font-normal leading-relaxed text-muted">
+					هنگام تایپ در نوار جستجو، پیشنهادها مستقیما از گوگل دریافت و تاریخچه
+					در دستگاه خودت ذخیره می‌شه و به سرور افزونه ارسال نمی‌شن
 				</p>
 			</div>
-			<div className="flex-shrink-0 ml-4">
+			<div className="shrink-0 pt-0.5">
 				<ToggleSwitch
 					enabled={user?.searchAutocompleteEnabled || false}
 					onToggle={onToggle}
-					disabled={!isAuthenticated || isPending}
+					disabled={isPending}
 					loading={isPending}
 				/>
 			</div>
