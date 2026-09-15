@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@widget/calendar/utils/date-events'
+import { toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 import { useAuth } from '@/context/auth.context'
 import { useGetMoods } from '@/services/hooks/mood-log/get-moods.hook'
 import {
@@ -37,12 +38,10 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 	const menuTriggerRef = useRef<HTMLButtonElement | null>(null)
 
-	const todayDateStr = today.clone().doAsGregorian().format('YYYY-MM-DD')
-	const startStr = today
-		.clone()
-		.subtract(MOOD_HISTORY_DAYS - 1, 'days')
-		.doAsGregorian()
-		.format('YYYY-MM-DD')
+	const todayDateStr = toIsoDateKey(today)
+	const startStr = toIsoDateKey(
+		today.clone().subtract(MOOD_HISTORY_DAYS - 1, 'days')
+	)
 
 	const { data: moodsData } = useGetMoods(
 		Boolean(isAuthenticated),
@@ -59,6 +58,12 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 
 	const handleSelectMood = async (moodValue: MoodType) => {
 		if (isPending) return
+
+		if (!isAuthenticated) {
+			showToast('برای ثبت حال روزانه باید وارد حساب کاربری خود شوید.', 'error')
+			return
+		}
+
 		Analytics.event('mood_widget_clicked')
 
 		setOptimisticMood(moodValue)

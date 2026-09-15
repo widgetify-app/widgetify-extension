@@ -52,12 +52,23 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			}
 		>
 			<div className="flex flex-col gap-4 p-2">
-				{isLoading ? (
+				{!isAuthenticated && (
+					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-muted">
+						<Icon name="alert" size={20} aria-hidden="true" />
+						<span className="text-xs leading-relaxed">
+							برای ساختن گزارش ماهانه باید وارد حساب کاربریت بشی
+						</span>
+					</div>
+				)}
+
+				{isAuthenticated && isLoading && (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-muted">
 						<span className="loading loading-spinner loading-md text-primary" />
 						<span className="text-xs">در حال آماده‌سازی تصویر...</span>
 					</div>
-				) : (
+				)}
+
+				{isAuthenticated && !isLoading && (
 					<div className="flex items-center justify-center overflow-hidden">
 						<canvas
 							ref={canvasRef}
@@ -77,7 +88,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 							size="md"
 							rounded="2xl"
 							onClick={handleCopyImage}
-							disabled={isGenerating || isLoading}
+							disabled={!isAuthenticated || isGenerating || isLoading}
 							icon={<Icon name="copy" size={14} />}
 						>
 							کپی تصویر
@@ -88,7 +99,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 							size="md"
 							rounded="2xl"
 							onClick={handleDownloadImage}
-							disabled={isLoading}
+							disabled={!isAuthenticated || isLoading}
 							icon={<Icon name="download" size={14} />}
 						>
 							دانلود تصویر
