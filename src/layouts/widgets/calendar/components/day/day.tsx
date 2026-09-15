@@ -83,7 +83,7 @@ export function DayItem({
 			className={cn(
 				'relative flex items-center justify-center mx-auto',
 				'w-[8cqh] h-[8cqh] max-w-6 max-h-6 text-[4cqh]',
-				'transition-ui rounded-2xl cursor-pointer hover:scale-110 hover:shadow',
+				'transition-ui rounded-lg cursor-pointer hover:scale-110 hover:shadow',
 				'focus-visible:focus-ring',
 				isHoliday ? 'text-error bg-error/10' : 'text-content',
 				isSelected
