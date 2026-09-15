@@ -84,16 +84,16 @@ function WallpaperItemFu({
 		<>
 			<div
 				ref={elementRef}
-				className={`relative rounded-xl cursor-pointer group aspect-video h-full  ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+				className={`relative w-full aspect-video rounded-xl overflow-hidden cursor-pointer group ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="flex items-center justify-center w-full h-full bg-neutral/60 rounded-2xl">
+					<div className="absolute inset-0 flex items-center justify-center bg-neutral/60 rounded-xl">
 						<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin"></div>
 					</div>
 				)}
 				{error && (
-					<div className="flex flex-col items-center justify-center w-full h-full bg-error/10 rounded-xl">
+					<div className="absolute inset-0 flex flex-col items-center justify-center bg-error/10 rounded-xl">
 						<Icon name="outlineHeart" className="text-error" />
 						<p className="mt-2 text-xs text-muted">خطا در بارگذاری</p>
 					</div>
@@ -102,7 +102,7 @@ function WallpaperItemFu({
 				{wallpaper.type === 'IMAGE' ? (
 					<img
 						ref={imgRef}
-						className="object-cover w-full h-full transition-opacity rounded-xl"
+						className="absolute inset-0 object-cover w-full h-full transition-opacity rounded-xl"
 						style={{ opacity: loaded && !error ? 1 : 0 }}
 						alt={wallpaper.name || 'Wallpaper'}
 						onLoad={handleLoad}
@@ -116,7 +116,7 @@ function WallpaperItemFu({
 							wallpaper.previewSrc
 						}
 						posterSrc={wallpaper.previewSrc} //previewSrc is poster
-						className="object-cover w-full h-full transition-opacity rounded-xl"
+						className="absolute inset-0 object-cover w-full h-full transition-opacity rounded-xl"
 						style={{ opacity: loaded && !error ? 1 : 0 }}
 						onLoadedData={handleLoad}
 						onError={handleError}

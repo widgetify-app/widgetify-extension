@@ -132,7 +132,7 @@ export function WallpaperView({
 				<div className="flex flex-col gap-4">
 					<div className="grid grid-cols-3 gap-3">
 						{filteredWallpapers.map((wallpaper) => (
-							<div key={wallpaper.id} className="transform-gpu">
+							<div key={wallpaper.id} className="w-full">
 								<WallpaperItem
 									wallpaper={wallpaper}
 									selectedBackground={selectedBackground}
