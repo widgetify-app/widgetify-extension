@@ -1,7 +1,9 @@
 import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
-import { showToast } from '@/common/toast'
+import { NetworkError } from '../components'
+import { copyIpToClipboard } from '../utils/copy-ip'
+import { getPingTextClass } from '../utils/ping-quality'
 
 interface NetworkCompactRowProps {
 	status: 'online' | 'offline'
@@ -10,16 +12,11 @@ interface NetworkCompactRowProps {
 	city: string | null
 	isp: string | null
 	ping: number | null
+	isAuthenticated: boolean
 	isLoading: boolean
+	hasError?: boolean
 	blurMode: boolean
 	onRefresh?: () => void
-}
-
-function getPingQuality(ping: number | null) {
-	if (ping === null) return 'unknown'
-	if (ping < 80) return 'great'
-	if (ping < 160) return 'ok'
-	return 'poor'
 }
 
 function cleanIspName(isp: string | null): string {
@@ -40,25 +37,25 @@ export function NetworkCompactRow({
 	city,
 	isp,
 	ping,
+	isAuthenticated,
 	isLoading,
+	hasError,
 	blurMode,
 	onRefresh,
 }: NetworkCompactRowProps) {
 	const isOnline = status === 'online'
-	const pingQuality = getPingQuality(ping)
 
 	const handleCopyIp = (e: React.MouseEvent) => {
 		e.stopPropagation()
-		if (ip && navigator?.clipboard) {
-			navigator.clipboard.writeText(ip).then(() => {
-				showToast('آدرس IP کپی شد', 'success')
-			})
-		}
+		copyIpToClipboard(ip)
 	}
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-between h-full w-full px-3.5 py-2 select-none">
+			<div
+				aria-hidden="true"
+				className="flex items-center justify-between h-full w-full px-3.5 py-2 select-none"
+			>
 				<div className="flex flex-col flex-1 gap-2">
 					<div className="flex items-center gap-2">
 						<div className="w-4 h-4 rounded skeleton" />
@@ -73,6 +70,21 @@ export function NetworkCompactRow({
 				<div className="w-8 h-8 rounded-full skeleton shrink-0" />
 			</div>
 		)
+	}
+
+	if (!isAuthenticated) {
+		return (
+			<div className="flex items-center justify-center w-full h-full gap-2 px-3 text-center select-none">
+				<Icon name="network" size={14} className="text-muted" aria-hidden="true" />
+				<span className="text-xs text-muted">
+					برای دیدن وضعیت شبکه وارد حسابت شو
+				</span>
+			</div>
+		)
+	}
+
+	if (hasError && onRefresh) {
+		return <NetworkError compact onRetry={onRefresh} />
 	}
 
 	const displayIsp = cleanIspName(isp)
@@ -90,20 +102,29 @@ export function NetworkCompactRow({
 						<div
 							className={cn(
 								'flex items-center gap-1 text-[11px] font-bold shrink-0',
-								pingQuality === 'great' && 'text-success',
-								pingQuality === 'ok' && 'text-warning',
-								pingQuality === 'poor' && 'text-error',
-								pingQuality === 'unknown' && 'text-muted'
+								getPingTextClass(ping)
 							)}
 							dir="ltr"
 						>
-							<Icon name="wifi" size={13} className="shrink-0" />
-							<span>{ping !== null ? ping : '--'}</span>
+							<Icon
+								name="wifi"
+								size={13}
+								aria-hidden="true"
+								className="shrink-0"
+							/>
+							<span>
+								{ping !== null ? <data value={ping}>{ping}</data> : '--'}
+							</span>
 							<span className="text-[9px] font-medium opacity-70">ms</span>
 						</div>
 					) : (
 						<div className="flex items-center gap-1 text-[11px] font-bold text-error shrink-0">
-							<Icon name="wifiOff" size={13} className="shrink-0" />
+							<Icon
+								name="wifiOff"
+								size={13}
+								aria-hidden="true"
+								className="shrink-0"
+							/>
 							<span>قطع</span>
 						</div>
 					)}
@@ -115,9 +136,14 @@ export function NetworkCompactRow({
 					<button
 						type="button"
 						onClick={handleCopyIp}
+						disabled={!ip}
 						title="کپی آدرس IP"
+						aria-label={ip ? `کپی آدرس ${ip}` : undefined}
 						className={cn(
-							'flex items-center gap-1 font-mono text-xs font-semibold tracking-tight text-content hover:text-primary transition-colors truncate cursor-pointer',
+							'flex items-center gap-1 font-mono text-xs font-semibold tracking-tight text-content transition-ui truncate',
+							ip
+								? 'cursor-pointer hover:text-primary focus-visible:focus-ring'
+								: 'cursor-default',
 							blurMode ? 'blur-mode' : 'disabled-blur-mode'
 						)}
 						dir="ltr"
@@ -153,11 +179,14 @@ export function NetworkCompactRow({
 					{countryIcon ? (
 						<img
 							src={countryIcon}
-							alt="پرچم کشور"
+							alt=""
 							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-base-content/10"
 						/>
 					) : (
-						<div className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-base-300/60 border-base-content/10">
+						<div
+							aria-hidden="true"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-base-content/10 border-base-content/10"
+						>
 							🌐
 						</div>
 					)}
@@ -178,10 +207,10 @@ export function NetworkCompactRow({
 							onRefresh()
 						}}
 						aria-label="بارگذاری مجدد"
-						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 transition-all rounded-full shadow-xs opacity-0 cursor-pointer group-hover:opacity-100 -top-1 -left-1 bg-content"
+						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 rounded-full shadow-xs cursor-pointer transition-ui opacity-0 group-hover:opacity-100 -top-1 -left-1 bg-content focus-visible:focus-ring"
 						variant={'ghost'}
 					>
-						<Icon name="refresh" size={10} />
+						<Icon name="refresh" size={10} aria-hidden="true" />
 					</Button>
 				)}
 			</div>

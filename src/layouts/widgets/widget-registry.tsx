@@ -349,7 +349,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
 		node: (_instanceId, size) => (
-			<NetworkLayout inComboWidget={false} enableBackground={true} size={size} />
+			<NetworkLayout size={size} />
 		),
 	},
 	[WidgetKeys.HabitTracker]: {
