@@ -32,6 +32,7 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 	metaStyle,
 }) => {
 	const theme = useWallpaperClockTheme()
+	const usesWallpaperColors = theme.isDerivedFromWallpaper
 
 	return (
 		<div
@@ -47,11 +48,14 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 				<span
 					dir="ltr"
 					aria-hidden="true"
-					className="flex items-baseline justify-center font-black leading-none transition-[color,text-shadow] duration-500"
+					className={cn(
+						'flex items-baseline justify-center font-black leading-none transition-[color,text-shadow] duration-500',
+						!usesWallpaperColors && 'text-content'
+					)}
 					style={{
 						fontSize: CLOCK_FONT_SIZE,
-						color: theme.primaryColor,
-						textShadow: theme.accentGlow,
+						color: usesWallpaperColors ? theme.primaryColor : undefined,
+						textShadow: usesWallpaperColors ? theme.accentGlow : undefined,
 					}}
 				>
 					<ClockDigits value={hours} />
@@ -66,15 +70,19 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 
 				<span
 					aria-hidden="true"
-					className="flex items-center justify-center font-medium transition-[color,text-shadow] duration-500"
+					className={cn(
+						'flex items-center justify-center font-medium transition-[color,text-shadow] duration-500',
+						!usesWallpaperColors && 'text-muted'
+					)}
 					style={{
 						gap: '0.5em',
 						fontSize: META_FONT_SIZE,
-						color:
-							dateColor === 'primary'
+						color: usesWallpaperColors
+							? dateColor === 'primary'
 								? theme.primaryColor
-								: theme.secondaryColor,
-						textShadow: theme.accentGlow,
+								: theme.secondaryColor
+							: undefined,
+						textShadow: usesWallpaperColors ? theme.accentGlow : undefined,
 						...metaStyle,
 					}}
 				>
