@@ -22,14 +22,12 @@ import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
 
 export interface StorageKV {
 	currencies: string[]
 	currencyColorMode: CurrencyColorMode
 	hasShownPwaModal: boolean
 	currentWeather: FetchedWeather
-	todos: Todo[]
 	wallpaper: StoredWallpaper
 	customWallpaper: Wallpaper
 	generalSettings: Record<string, any>
@@ -52,7 +50,6 @@ export interface StorageKV {
 	widgetLayoutMigrationVersion: number
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
-	deletedTodos: Todo[]
 	analyticsSession: any
 	notes_data: {
 		body: string
@@ -71,7 +68,6 @@ export interface StorageKV {
 	pomodoro_session: PomodoroSession | null
 	pomodoro_settings: PomodoroSettings | null
 	seenWidgetSettings_1: boolean
-	seenTodoNewViewMode: boolean
 	hasSeenFooterDisableHint: boolean
 	rssOptions: WigiNewsSetting
 	browserTitle: {

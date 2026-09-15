@@ -62,6 +62,9 @@ export const DEPRECATED_STORAGE_KEYS = [
 	'petState',
 	'calendarDrawerState',
 	'compact_currencies',
+	'todos',
+	'deletedTodos',
+	'seenTodoNewViewMode',
 ] as const
 
 export async function purgeDeprecatedStorageKeys() {

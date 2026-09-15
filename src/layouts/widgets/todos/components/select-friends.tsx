@@ -6,7 +6,7 @@ import { Icon } from '@/icons'
 
 interface Prop {
 	selectedFriends: Friend[]
-	setSelectedFriends: any
+	setSelectedFriends: (friends: Friend[]) => void
 }
 export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop) {
 	return (
@@ -45,7 +45,7 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					<SelectFriendLayout
 						onChange={(f) => setSelectedFriends([...f])}
 						title="افزودن دوست به تسک"
-						selectedFriendIds={selectedFriends?.map((f: any) => f.id) || []}
+						selectedFriendIds={selectedFriends?.map((f) => f.id) || []}
 					/>
 				</div>
 				<Button
