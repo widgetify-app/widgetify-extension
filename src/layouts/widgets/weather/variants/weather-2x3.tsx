@@ -18,7 +18,7 @@ export const Weather2x3: React.FC<Weather2x3Props> = ({ fetchedWeather, settings
 				temperatureUnit={settings.temperatureUnit}
 			/>
 
-			<div className="px-1 rounded-2xl bg-base-content/5">
+			<div className="px-1 rounded-2xl py-0.5">
 				<Forecast
 					temperatureUnit={settings.temperatureUnit}
 					forecast={forecast}
