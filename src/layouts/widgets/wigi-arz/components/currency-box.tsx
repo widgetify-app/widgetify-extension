@@ -116,7 +116,7 @@ export const CurrencyBox = ({
 									{price.formatted}
 								</data>
 							) : hasFailed ? (
-								<span className="text-muted">دریافت نشد</span>
+								<span className="text-muted">-</span>
 							) : (
 								'-'
 							)}
