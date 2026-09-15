@@ -10,7 +10,13 @@ import {
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS, HUNGER_TICK_MS } from './constants'
-import { type PetHungerState, type PetMeta, type PetSettings, PetTypes } from './types'
+import {
+	type PetBackgroundId,
+	type PetHungerState,
+	type PetMeta,
+	type PetSettings,
+	PetTypes,
+} from './types'
 
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: (petType: PetTypes) => string
@@ -75,7 +81,28 @@ export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
 		const pending = pendingPersistRef.current
 		if (!pending) return
 		pendingPersistRef.current = null
-		setToStorage('pets', pending)
+
+		if (instanceId) {
+			getFromStorage('pets').then((storedPets) => {
+				const mergedPetOptions = {
+					...(storedPets?.petOptions || BASE_PET_OPTIONS.petOptions),
+				}
+				for (const type of Object.values(PetTypes)) {
+					if (pending.petOptions[type]?.hungryState) {
+						mergedPetOptions[type] = {
+							...(mergedPetOptions[type] || BASE_PET_OPTIONS.petOptions[type]),
+							hungryState: pending.petOptions[type].hungryState,
+						}
+					}
+				}
+				setToStorage('pets', {
+					...(storedPets || BASE_PET_OPTIONS),
+					petOptions: mergedPetOptions,
+				})
+			})
+		} else {
+			setToStorage('pets', pending)
+		}
 	})
 
 	useEffect(() => {
@@ -112,25 +139,34 @@ export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
 							...BASE_PET_OPTIONS.petOptions,
 							...(storedPets.petOptions || {}),
 						}
-						const resolvedType =
-							meta?.petType ||
-							storedPets.petType ||
-							prev.petType ||
-							PetTypes.DOG
-						if (meta?.petName) {
+						// If running as an instance, isolate petType, background, and petName in meta
+						const resolvedType: PetTypes = (instanceId
+							? meta?.petType || BASE_PET_OPTIONS.petType
+							: meta?.petType || storedPets.petType || prev.petType || PetTypes.DOG) || PetTypes.DOG
+
+						const resolvedBackground: PetBackgroundId = (instanceId
+							? meta?.background || BASE_PET_OPTIONS.background
+							: meta?.background || storedPets.background || prev.background) || BASE_PET_OPTIONS.background
+
+						if (instanceId) {
+							if (meta?.petName) {
+								mergedOptions[resolvedType] = {
+									...mergedOptions[resolvedType],
+									name: meta.petName,
+								}
+							}
+						} else if (meta?.petName) {
 							mergedOptions[resolvedType] = {
 								...mergedOptions[resolvedType],
 								name: meta.petName,
 							}
 						}
+
 						return {
 							...BASE_PET_OPTIONS,
-							...storedPets,
-							petType: meta?.petType || storedPets.petType || prev.petType,
-							background:
-								meta?.background ||
-								storedPets.background ||
-								prev.background,
+							...(instanceId ? {} : storedPets),
+							petType: resolvedType,
+							background: resolvedBackground,
 							petOptions: mergedOptions,
 						}
 					})

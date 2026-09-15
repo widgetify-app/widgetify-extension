@@ -314,14 +314,18 @@ export function useWidgetOperations({
 				return false
 			}
 
-			let duplicatedMeta = original.meta ? { ...original.meta } : {}
+			let duplicatedMeta: Record<string, any> = {}
+
+			if (original.meta?.variant) {
+				duplicatedMeta.variant = original.meta.variant
+			}
 
 			if (original.id === WidgetKeys.notes) {
 				const { noteId } = await createNoteForDuplicatedWidget(isAuthenticated)
-				duplicatedMeta = { ...duplicatedMeta, activeNoteId: noteId }
-			} else if (original.id === WidgetKeys.photo) {
-				delete duplicatedMeta.imageSrc
-			}
+				duplicatedMeta.activeNoteId = noteId
+			} else if (original.id === WidgetKeys.arzLive) {
+				duplicatedMeta.currencies = []
+			} 
 
 			let newInstanceId = `${original.id}-${Date.now().toString(36)}`
 

@@ -29,12 +29,23 @@ export function WigiArzLayout({
 		useCurrencyStore()
 	const freeWidgets = useOptionalFreeWidgets()
 
-	const ownsList = Boolean(
-		instanceId && freeWidgets?.runtimeLayout.some((w) => w.instanceId === instanceId)
-	)
-	const currencies = (ownsList && meta?.currencies) || selectedCurrencies
+	const targetWidget = instanceId
+		? freeWidgets?.runtimeLayout.find((w) => w.instanceId === instanceId)
+		: null
+	const isListVariant = targetWidget
+		? targetWidget.size.w === 2 && targetWidget.size.h === 3
+		: size.w === 2 && size.h === 3
+	const ownsList = Boolean(isListVariant && instanceId && targetWidget)
 
-	const handleReorder = (reordered: string[]) => {
+	const effectiveCurrencies = ownsList
+		? Array.isArray(meta?.currencies)
+			? meta.currencies
+			: Array.isArray(targetWidget?.meta?.currencies)
+				? targetWidget.meta.currencies
+				: []
+		: selectedCurrencies
+
+		const handleReorder = (reordered: string[]) => {
 		if (ownsList && instanceId) {
 			freeWidgets?.updateWidgetSettings(instanceId, {
 				...meta,
@@ -72,8 +83,9 @@ export function WigiArzLayout({
 				<CurrencyCompactSquare
 					defaultCode={
 						meta?.currencyCode ||
-						(!instanceId ? selectedCurrencies[0] || 'USD' : undefined)
+						(!instanceId ? selectedCurrencies[0] : undefined)
 					}
+					instanceId={instanceId}
 					meta={meta}
 				/>
 			</WidgetContainer>
@@ -86,7 +98,7 @@ export function WigiArzLayout({
 			className="flex flex-col w-full h-full overflow-y-auto scrollbar-none"
 		>
 			<WigiArz2x3
-				currencies={currencies}
+				currencies={effectiveCurrencies}
 				onReorder={handleReorder}
 				instanceId={ownsList ? instanceId : undefined}
 			/>

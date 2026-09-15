@@ -45,11 +45,11 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	useEffect(() => {
 		async function load() {
-			if (instanceId && targetMeta) {
-				const type = targetMeta.petType || PetTypes.DOG
+			if (instanceId) {
+				const type = targetMeta?.petType || PetTypes.DOG
 				setPetType(type)
-				setPetName(targetMeta.petName || BASE_PET_OPTIONS.petOptions[type].name)
-				setBackground(targetMeta.background || DEFAULT_PET_BACKGROUND)
+				setPetName(targetMeta?.petName || BASE_PET_OPTIONS.petOptions[type].name)
+				setBackground(targetMeta?.background || DEFAULT_PET_BACKGROUND)
 				return
 			}
 

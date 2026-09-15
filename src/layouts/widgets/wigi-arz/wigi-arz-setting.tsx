@@ -38,8 +38,15 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 			: false
 
 	const targetMeta = targetWidget?.meta as WigiArzMeta | undefined
-	const ownsList = Boolean(!isCompact && instanceId && targetWidget)
-	const selectedCurrencies = (ownsList && targetMeta?.currencies) || sharedCurrencies
+	const isListVariant = targetWidget
+		? targetWidget.size.w === 2 && targetWidget.size.h === 3
+		: !isCompact
+	const ownsList = Boolean(isListVariant && instanceId && targetWidget)
+	const selectedCurrencies = ownsList
+		? Array.isArray(targetMeta?.currencies)
+			? targetMeta.currencies
+			: []
+		: sharedCurrencies
 
 	useEffect(() => {
 		async function load() {
@@ -104,7 +111,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	)
 	const filteredGroups = filterCurrencyGroups(currencyGroups, searchQuery)
 
-	const activeCompactCode = targetMeta?.currencyCode || 'USD'
+	const activeCompactCode = targetMeta?.currencyCode || ''
 
 	return (
 		<WidgetSettingWrapper>

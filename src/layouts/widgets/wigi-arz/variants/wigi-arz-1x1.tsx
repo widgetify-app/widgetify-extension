@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { callEvent } from '@/common/utils/call-event'
 import { useCurrencyStore } from '@/context/currency.context'
 import { Icon } from '@/icons'
+import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { CurrencyModalComponent } from '../components/currency-modal'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import type { WigiArzMeta } from '../types'
@@ -8,19 +10,52 @@ import { getPrice } from '../utils/get-price'
 
 interface CurrencyCompactSquareProps {
 	defaultCode?: string
+	instanceId?: string
 	meta?: WigiArzMeta
 }
 
 export function CurrencyCompactSquare({
-	defaultCode = 'USD',
+	defaultCode,
+	instanceId,
 	meta,
 }: CurrencyCompactSquareProps) {
 
-	const activeCode = meta?.currencyCode || defaultCode || 'USD'
+	const activeCode = meta?.currencyCode || defaultCode
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const { currency, priceChange, hasFailed, refetch } = useCurrencyPrice(activeCode)
+	const { currency, priceChange, hasFailed, refetch } = useCurrencyPrice(activeCode || '')
 
 	const toggleModal = () => setIsModalOpen((prev) => !prev)
+
+	if (!activeCode) {
+		return (
+			<button
+				type="button"
+				onClick={() => {
+					callEvent('openWidgetsSettings', {
+						tab: WidgetTabKeys.wigiArz,
+						instanceId,
+						size: { w: 1, h: 1 },
+					})
+				}}
+				className="group flex flex-col items-center justify-center w-full h-full p-2 text-center cursor-pointer select-none transition-ui hover:bg-base-content/5 focus-visible:focus-ring"
+			>
+				<span className="relative flex items-center justify-center w-12 h-12 transition-transform duration-200 group-hover:scale-105">
+					<img
+						src="https://cdn.widgetify.ir/extension/wigi-arz-empty.jpg"
+						alt=""
+						className="object-contain w-full h-full pointer-events-none select-none drop-shadow-sm"
+						draggable={false}
+					/>
+				</span>
+				<span className="mt-1.5 text-[11px] font-bold text-content leading-tight transition-colors duration-200 group-hover:text-primary">
+					انتخاب ارز
+				</span>
+				<span className="mt-0.5 text-[9px] text-muted leading-tight font-medium">
+					کلیک کن
+				</span>
+			</button>
+		)
+	}
 
 	if (hasFailed) {
 		return (
