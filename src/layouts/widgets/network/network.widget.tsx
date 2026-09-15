@@ -247,7 +247,10 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 										)}
 									</div>
 
-									<NetworkIPCard blurMode={blurMode} ip={networkInfo.ip} />
+									<NetworkIPCard
+										blurMode={blurMode}
+										ip={networkInfo.ip}
+									/>
 
 									{(networkInfo.city || networkInfo.country) && (
 										<div className="flex flex-wrap items-center justify-center gap-2 text-xs">

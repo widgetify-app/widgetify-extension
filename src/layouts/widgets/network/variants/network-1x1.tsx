@@ -58,7 +58,12 @@ export function NetworkCompactSquare({
 	if (!isAuthenticated) {
 		return (
 			<div className="flex flex-col items-center justify-center w-full h-full gap-1 p-2 text-center select-none">
-				<Icon name="network" size={16} className="text-muted" aria-hidden="true" />
+				<Icon
+					name="network"
+					size={16}
+					className="text-muted"
+					aria-hidden="true"
+				/>
 				<span className="text-[10px] leading-tight text-muted">
 					برای دیدن وضعیت شبکه وارد حسابت شو
 				</span>

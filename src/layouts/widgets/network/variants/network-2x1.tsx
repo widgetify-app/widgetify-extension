@@ -75,7 +75,12 @@ export function NetworkCompactRow({
 	if (!isAuthenticated) {
 		return (
 			<div className="flex items-center justify-center w-full h-full gap-2 px-3 text-center select-none">
-				<Icon name="network" size={14} className="text-muted" aria-hidden="true" />
+				<Icon
+					name="network"
+					size={14}
+					className="text-muted"
+					aria-hidden="true"
+				/>
 				<span className="text-xs text-muted">
 					برای دیدن وضعیت شبکه وارد حسابت شو
 				</span>
