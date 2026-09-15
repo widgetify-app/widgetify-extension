@@ -52,7 +52,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout temp-firefox-release
+          git checkout -B temp-firefox-release
           mkdir -p releases
           cp .output/*-firefox.zip releases/
           cp .output/*-sources.zip releases/
