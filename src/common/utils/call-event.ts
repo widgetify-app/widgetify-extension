@@ -4,7 +4,6 @@ import type { PetBackgroundId, PetTypes } from '@widget/pet/types'
 import type { WigiNewsSetting } from '@widget/news/rss.interface'
 import type { WeatherSettings } from '@widget/weather/weather.interface'
 import type { ClockSettings } from '@widget/clock/clock-setting.interface'
-import type { WigiPadDateSetting } from '@widget/wigi-pad/date-display/date-setting.interface'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
@@ -54,8 +53,7 @@ export interface EventName {
 	}
 
 	// setting keys
-	wigiPadDateSettingsChanged: WigiPadDateSetting
-	wigiPadClockSettingsChanged: ClockSettings
+	clockSettingsChanged: ClockSettings
 	currencies_updated: {
 		currencies: string[]
 		colorMode: CurrencyColorMode

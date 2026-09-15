@@ -16,7 +16,6 @@ import type {
 	WeatherSettings,
 } from '@widget/weather/weather.interface'
 import type { ClockSettings } from '@widget/clock/clock-setting.interface'
-import type { WigiPadDateSetting } from '@widget/wigi-pad/date-display/date-setting.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.api'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
@@ -61,7 +60,6 @@ export interface StorageKV {
 	recent_searches: any
 	pets: PetSettings
 	clock: ClockSettings
-	wigiPadDate: WigiPadDateSetting
 	configData: ExtensionConfigResponse
 	toolsTab: ToolsTabType
 	comboTabs: ComboTabType

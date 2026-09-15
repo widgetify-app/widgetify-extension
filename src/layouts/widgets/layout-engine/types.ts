@@ -7,7 +7,6 @@ export enum WidgetKeys {
 	todos = 'todos',
 	tools = 'tools',
 	notes = 'notes',
-	wigiPad = 'wigiPad',
 	network = 'network',
 	yadKar = 'yadKar',
 	HabitTracker = 'HabitTracker',

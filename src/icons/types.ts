@@ -118,7 +118,6 @@ export type IconName =
 	| 'upLong'
 	| 'downLong'
 	| 'pets'
-	| 'wigiPad'
 	| 'appsPlus'
 	| 'taskList'
 	| 'strike'

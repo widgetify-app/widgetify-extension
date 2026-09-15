@@ -92,8 +92,8 @@ describe('Layout Engine Tests', () => {
 				size: { w: 4, h: 2 },
 			},
 			{
-				id: WidgetKeys.wigiPad,
-				instanceId: 'wigipad',
+				id: WidgetKeys.clock,
+				instanceId: 'clock',
 				position: { col: 0, row: 3 },
 				size: { w: 2, h: 2 },
 			},
@@ -102,7 +102,7 @@ describe('Layout Engine Tests', () => {
 		const result = resolveLayoutChange({
 			layout: initial,
 			operation: 'move',
-			instanceId: 'wigipad',
+			instanceId: 'clock',
 			targetPosition: { col: 0, row: 0 },
 			cols: 8,
 		})
@@ -110,8 +110,8 @@ describe('Layout Engine Tests', () => {
 		expect(result).not.toBeNull()
 		expect(validateLayout(result!, 8)).toBe(true)
 
-		const wigipad = result!.find((w) => w.instanceId === 'wigipad')!
-		expect(wigipad.position).toEqual({ col: 0, row: 0 })
+		const clock = result!.find((w) => w.instanceId === 'clock')!
+		expect(clock.position).toEqual({ col: 0, row: 0 })
 	})
 
 	it('compacts layout removing vertical gaps', () => {
@@ -149,14 +149,16 @@ describe('Layout Engine Tests', () => {
 		expect(slot).toEqual({ col: 0, row: 1 })
 	})
 
-	it('contains 9 widgets in the default layout matching the Advanced layout', () => {
-		expect(DEFAULT_WIDGET_LAYOUT.length).toBe(9)
+	it('contains 11 widgets in the default layout matching the Advanced layout', () => {
+		expect(DEFAULT_WIDGET_LAYOUT.length).toBe(11)
 		const widgetIds = DEFAULT_WIDGET_LAYOUT.map((w) => w.id)
 		expect(widgetIds).toContain(WidgetKeys.photo)
 		expect(widgetIds).toContain(WidgetKeys.pet)
 		expect(widgetIds).toContain(WidgetKeys.search)
 		expect(widgetIds).toContain(WidgetKeys.bookmarks)
-		expect(widgetIds).toContain(WidgetKeys.wigiPad)
+		expect(widgetIds).toContain(WidgetKeys.clock)
+		expect(widgetIds).toContain(WidgetKeys.moodTracker)
+		expect(widgetIds).toContain(WidgetKeys.weather)
 		expect(widgetIds).toContain(WidgetKeys.calendar)
 		expect(widgetIds).toContain(WidgetKeys.yadKar)
 		expect(widgetIds).toContain(WidgetKeys.tools)
@@ -172,11 +174,10 @@ describe('Layout Engine Tests', () => {
 				size: { w: 4, h: 1 },
 			},
 			{
-				id: WidgetKeys.wigiPad,
-				instanceId: 'wigipad-default',
+				id: WidgetKeys.clock,
+				instanceId: 'clock-default',
 				position: { col: 0, row: 3 },
-				size: { w: 2, h: 4 },
-				meta: { variant: 'simplify' },
+				size: { w: 2, h: 2 },
 			},
 			{
 				id: WidgetKeys.bookmarks,

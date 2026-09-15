@@ -8,7 +8,6 @@ import { NewsLayout } from '@widget/news/news.widget'
 import { ToolsLayout } from '@widget/tools/tools.widget'
 import { WeatherLayout } from '@widget/weather/weather.widget'
 import { WigiArzLayout } from '@widget/wigi-arz/wigi-arz.widget'
-import { WigiPadWidget } from '@widget/wigi-pad/wigi-pad.widget'
 import { YadkarWidget } from '@widget/yadkar/yadkar.widget'
 import { HabitsLayout } from '@widget/habit/habit.widget'
 import { CurrencyProvider } from '@/context/currency.context'
@@ -73,27 +72,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		node: (instanceId, _size, meta) => (
 			<PetWidget instanceId={instanceId} meta={meta} />
 		),
-	},
-	[WidgetKeys.wigiPad]: {
-		id: WidgetKeys.wigiPad,
-		label: 'ویجی‌پد',
-		emoji: '⏰',
-		category: 'time',
-		allowedSizes: [{ w: 2, h: 3 }],
-		defaultSize: { w: 2, h: 3 },
-		settingsTab: WidgetTabKeys.wigiPad,
-		canDuplicate: false,
-		variants: [
-			{
-				id: 'standard',
-				label: 'ویجی‌پد',
-				size: { w: 2, h: 3 },
-				meta: { variant: 'standard' },
-			},
-		],
-		node: (_instanceId, _size) => {
-			return <WigiPadWidget />
-		},
 	},
 	[WidgetKeys.clock]: {
 		id: WidgetKeys.clock,

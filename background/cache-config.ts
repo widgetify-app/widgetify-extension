@@ -1,6 +1,5 @@
 // Network-first: try the network, fall back to cache when offline/slow.
 export const NETWORK_FIRST_API_PATHS = [
-	'/extension/wigi-pad-data',
 	'/date/events',
 	'/news/rss',
 	'/contents',

@@ -11,10 +11,23 @@ const DEFAULT_BOTTOM_WIDGETS: WidgetKeys[] = [
 
 const topWidgets: StoredWidget[] = [
 	{
-		id: WidgetKeys.wigiPad,
-		instanceId: 'wigipad-default',
+		id: WidgetKeys.clock,
+		instanceId: 'clock-default',
 		position: { col: 0, row: 0 },
-		size: { w: 2, h: 3 },
+		size: { w: 2, h: 1 },
+		meta: { variant: 'digital' },
+	},
+	{
+		id: WidgetKeys.moodTracker,
+		instanceId: 'moodtracker-default',
+		position: { col: 0, row: 1 },
+		size: { w: 2, h: 1 },
+	},
+	{
+		id: WidgetKeys.weather,
+		instanceId: 'weather-default',
+		position: { col: 0, row: 2 },
+		size: { w: 2, h: 1 },
 	},
 	{
 		id: WidgetKeys.search,
