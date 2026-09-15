@@ -8,9 +8,15 @@ import type { WidgetSize } from '../layout-engine/types'
 import { NotesLayout } from '../notes/notes.widget'
 import { TodosLayout } from '../todos/todos.widget'
 import { WidgetContainer } from '../widget-container'
-import { DEFAULT_YADKAR_TAB, YADKAR_TAB_LABELS } from './constants'
+import { DEFAULT_YADKAR_TAB, YADKAR_TAB_LABELS, YADKAR_TAB_LIST } from './constants'
 import type { YadkarTab } from './types'
 import { normalizeYadkarTab } from './utils/normalize-yadkar-tab'
+
+const navigationTabs = YADKAR_TAB_LIST.map((tab) => ({
+	id: tab.id,
+	label: tab.label,
+	icon: <Icon name={tab.icon} size={14} />,
+}))
 
 interface YadkarWidgetProps {
 	size?: WidgetSize
@@ -42,23 +48,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 					tabMode="advanced"
 					activeTab={tab}
 					onTabClick={onChangeTab}
-					tabs={[
-						{
-							id: 'todos',
-							label: YADKAR_TAB_LABELS.todos,
-							icon: <Icon name="taskList" size={14} aria-hidden="true" />,
-						},
-						{
-							id: 'notes',
-							label: YADKAR_TAB_LABELS.notes,
-							icon: <Icon name="notebook" size={14} aria-hidden="true" />,
-						},
-						{
-							id: 'habits',
-							label: YADKAR_TAB_LABELS.habits,
-							icon: <Icon name="strike" size={14} aria-hidden="true" />,
-						},
-					]}
+					tabs={navigationTabs}
 					size="small"
 					className="flex-none w-full border-none"
 				/>
