@@ -28,7 +28,7 @@ const HELP_TABS: HelpTabItem[] = [
 		id: 'move',
 		label: 'جابه‌جایی آزاد',
 		icon: 'outlineDrag',
-		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.mp4`,
+		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
 		badge: 'چیدمان آزاد',
 		title: 'جابجایی و درگ آزاد ویجت‌ها',
 		description:
@@ -43,7 +43,7 @@ const HELP_TABS: HelpTabItem[] = [
 		id: 'styles',
 		label: 'سایز و استایل',
 		icon: 'viewGridAdd',
-		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.mp4`,
+		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.webm`,
 		badge: 'شخصی‌سازی',
 		title: 'تغییر ابعاد و استایل ظاهری',
 		description:
@@ -58,7 +58,7 @@ const HELP_TABS: HelpTabItem[] = [
 		id: 'add',
 		label: 'افزودن و تکرار',
 		icon: 'plus',
-		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.mp4`,
+		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.webm`,
 		badge: 'تنوع بی‌نهایت',
 		title: 'افزودن ویجت یا ساخت چند نسخه',
 		description:
@@ -73,7 +73,7 @@ const HELP_TABS: HelpTabItem[] = [
 		id: 'presets',
 		label: 'چیدمان‌های آماده',
 		icon: 'squares2X2',
-		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.mp4`,
+		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.webm`,
 		badge: 'یک کلیک',
 		title: 'قالب‌ها و چیدمان‌های آماده',
 		description:

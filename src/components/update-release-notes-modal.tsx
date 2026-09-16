@@ -28,7 +28,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		badge: 'مرحله ۱ از ۴',
 		description:
 			'ویجت‌ها رو با درگ و دراپ به هر جای صفحه ببر و چیدمان دلخواهت رو بساز',
-		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.mp4`,
+		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
 		icon: 'outlineDrag',
 	},
 	{
@@ -37,7 +37,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		badge: 'مرحله ۲ از ۴',
 		description:
 			'با کلیک‌راست روی هر ویجت اندازه‌ش رو تغییر بده و از مدل‌های مختلف استفاده کن',
-		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.mp4`,
+		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.webm`,
 		icon: 'viewGridAdd',
 	},
 	{
@@ -46,7 +46,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		badge: 'مرحله ۳ از ۴',
 		description:
 			'از منوی افزودن ویجت، ویجت‌های دلخواهت رو به صفحه اضافه کن و حتی از یکی چند نسخه بساز',
-		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.mp4`,
+		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.webm`,
 		icon: 'plus',
 	},
 	{
@@ -55,7 +55,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		badge: 'مرحله ۴ از ۴',
 		description:
 			'اگه دوست داری سریع شروع کنی، از قالب‌ها و چیدمان‌های آماده استفاده کن',
-		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.mp4`,
+		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.webm`,
 		icon: 'squares2X2',
 	},
 ]

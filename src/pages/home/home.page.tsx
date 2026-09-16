@@ -46,7 +46,7 @@ const steps: Step[] = [
 			<div className="flex flex-col gap-2.5">
 				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-base-content/10 bg-base-300/40">
 					<video
-						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.mp4"
+						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
 						autoPlay
 						loop
 						muted
