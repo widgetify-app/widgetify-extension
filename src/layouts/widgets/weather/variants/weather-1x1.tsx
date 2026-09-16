@@ -39,7 +39,7 @@ export const WeatherCompactSquare: React.FC<WeatherCompactSquareProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="w-[25cqh] h-[25cqh] rounded-full bg-base-content/10 animate-pulse"
+						className="w-[25cqh] h-[25cqh] rounded-full bg-muted animate-pulse"
 					/>
 				)}
 			</div>

@@ -93,7 +93,7 @@ export function DayItem({
 					: isHoliday
 						? 'hover:bg-error/10'
 						: 'hover:bg-primary/10',
-				isCurrentDay && 'scale-110 shadow-lg',
+				isCurrentDay && 'scale-110 elevation-lg',
 				isCurrentDay &&
 					!dayMood &&
 					(isHoliday
@@ -120,7 +120,7 @@ export function DayItem({
 				) : shamsiEvents.length > 0 ? (
 					<span
 						className={cn(
-							'w-0.5 h-0.5 rounded-full shadow-sm',
+							'w-0.5 h-0.5 rounded-full elevation-sm',
 							isHolidayEvent ? 'bg-error' : 'bg-primary/80'
 						)}
 					/>

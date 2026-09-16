@@ -4,11 +4,11 @@ export const NOTE_PREVIEW_CHARACTER_LIMIT = 120
 
 export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	default: {
-		bg: 'bg-base-200 bg-glass',
-		border: 'border-base-content/10',
+		bg: 'bg-content bg-glass',
+		border: 'border-subtle',
 		text: 'text-content',
-		headerBg: 'bg-base-content/10',
-		divider: 'border-base-content/10',
+		headerBg: 'bg-muted',
+		divider: 'border-subtle',
 	},
 	low: {
 		bg: 'bg-success',

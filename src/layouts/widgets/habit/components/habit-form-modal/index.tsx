@@ -26,6 +26,7 @@ import { HabitFormPresets } from './habit-form-presets'
 import { HabitGoalFrequencySection } from './habit-goal-frequency-section'
 import { HabitIconColorPicker } from './habit-icon-color-picker'
 import { HabitLivePreview } from './habit-live-preview'
+import { DEFAULT_HABIT_COLOR } from '../../constants'
 
 export interface HabitFormModalProps {
 	isOpen: boolean
@@ -46,7 +47,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 	const [title, setTitle] = useState('')
 	const [emoji, setEmoji] = useState(HABIT_EMOJI_PRESETS[0] || '💧')
-	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0] || DEFAULT_HABIT_COLOR)
 	const [comparison, setComparison] = useState<HabitComparison>(
 		HabitComparison.AT_LEAST
 	)
@@ -78,7 +79,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 		} else {
 			setTitle('')
 			setEmoji(HABIT_EMOJI_PRESETS[0] || '💧')
-			setColor(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+			setColor(HABIT_COLOR_PRESETS[0] || DEFAULT_HABIT_COLOR)
 			setComparison(HabitComparison.AT_LEAST)
 			setUnit(HabitUnit.TIMES)
 			setCustomUnit('')
@@ -93,7 +94,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 		setActivePresetId(preset.id)
 		setTitle(preset.values.title)
 		setEmoji(preset.values.emoji || '💧')
-		setColor(preset.values.color || '#3b82f6')
+		setColor(preset.values.color || DEFAULT_HABIT_COLOR)
 		setComparison(preset.values.comparison || HabitComparison.AT_LEAST)
 		setUnit(preset.values.unit || HabitUnit.GLASSES)
 		setCustomUnit(preset.values.customUnit || '')
@@ -192,7 +193,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 				<div className="flex flex-col gap-1.5">
 					<label className="text-xs text-muted">عنوان</label>
-					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-base-content/15 bg-base-content/5 focus-within:border-primary">
+					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-subtle bg-subtle focus-within:border-primary">
 						<div
 							className="flex items-center justify-center w-8 h-8 text-lg transition-transform rounded-xl shrink-0"
 							style={{
@@ -210,7 +211,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 								setActivePresetId(null)
 							}}
 							placeholder="عنوان عادت (مثلا: نوشیدن آب)"
-							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-content placeholder:text-base-content/40 focus:outline-none focus:ring-0"
+							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-content placeholder:text-faint focus:outline-none focus:ring-0"
 						/>
 					</div>
 				</div>

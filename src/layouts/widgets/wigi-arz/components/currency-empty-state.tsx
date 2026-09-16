@@ -21,7 +21,7 @@ export const CurrencyEmptyState: React.FC<CurrencyEmptyStateProps> = ({
 			<div className="flex flex-col items-center justify-center flex-1 px-5 py-16 gap-y-1.5">
 				<span
 					aria-hidden="true"
-					className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-base-content/10"
+					className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-muted"
 				>
 					💲
 				</span>

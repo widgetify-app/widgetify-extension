@@ -87,7 +87,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
 								activeFilter === 'all'
 									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
+									: 'bg-content hover:bg-raised text-muted'
 							)}
 						>
 							<span>همه چیدمان‌ها</span>
@@ -100,7 +100,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
 								activeFilter === 'free'
 									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
+									: 'bg-content hover:bg-raised text-muted'
 							)}
 						>
 							<span>رایگان</span>
@@ -113,7 +113,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1',
 								activeFilter === 'vip'
 									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
+									: 'bg-content hover:bg-raised text-muted'
 							)}
 						>
 							<Icon name="diamond" size={13} className="text-vip" />
@@ -131,13 +131,13 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 							return (
 								<div
 									key={preset.id}
-									className="flex flex-col justify-between gap-2.5 p-3 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-content/10 transition-all text-right group"
+									className="flex flex-col justify-between gap-2.5 p-3 rounded-2xl bg-subtle hover:bg-content border border-subtle transition-all text-right group"
 								>
 									<div className="flex flex-col gap-2">
 										<PresetCanvasPreview
 											preset={preset}
 											isCompact={true}
-											className="border-0 bg-base-300/40"
+											className="border-0 bg-muted"
 										/>
 
 										<div className="flex flex-col gap-1.5">
@@ -169,7 +169,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<span
 															key={widgetId}
-															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-300/50 border border-base-content/5 shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
+															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-muted border border-faint shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
 														>
 															<span className="text-xs leading-none">
 																{def.emoji}

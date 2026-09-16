@@ -12,6 +12,7 @@ import { SegmentedProgressRing } from './button-progress-ring'
 import { SimpleProgressRing } from './button-simple-progress-ring'
 import { Icon } from '@/icons'
 import { IconLoading } from '@/components/ui'
+import { DEFAULT_HABIT_COLOR } from '../../constants'
 
 interface HabitItemProps {
 	habit: Habit
@@ -23,7 +24,7 @@ interface HabitItemProps {
 export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
 	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 
-	const color = habit.color || '#536dfe'
+	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
 	const value = habit.today.value
 	const isSimpleHabit = target === 1
@@ -53,7 +54,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	}
 
 	return (
-		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-base-content/10 bg-base-content/5 hover:border-base-content/20 hover:bg-base-content/10">
+		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-subtle bg-subtle hover:border-strong hover:bg-muted">
 			<div className="flex items-center gap-2">
 				<button
 					type="button"
@@ -66,7 +67,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						style={{ backgroundColor: `${color}22`, color }}
 					>
 						{isPending ? (
-							<IconLoading className="text-base-content/80" />
+							<IconLoading className="text-content" />
 						) : (
 							habit.emoji || '🎯'
 						)}
@@ -87,7 +88,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					onClick={handleQuickLog}
 					disabled={isPending}
 					aria-label={`ثبت پیشرفت ${habit.title}`}
-					className="relative flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer transition-ui active:scale-95 disabled:opacity-70 focus-visible:focus-ring"
+					className="relative flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer transition-ui active:scale-95 disabled:opacity-(--disabled-opacity) focus-visible:focus-ring"
 					style={{ backgroundColor: `${color}22`, color }}
 				>
 					{!isSimpleHabit && (
@@ -142,7 +143,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					return (
 						<li
 							key={day.date}
-							className="flex-1 h-1.5 rounded-full bg-base-content/10 overflow-hidden"
+							className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden"
 						>
 							<div
 								className="w-full h-full rounded-full"

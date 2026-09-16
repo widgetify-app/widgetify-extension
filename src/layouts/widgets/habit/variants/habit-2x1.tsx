@@ -15,8 +15,7 @@ import { HabitError } from '../components/habit-error'
 import { SegmentedProgressRing } from '../components/item/button-progress-ring'
 import { SimpleProgressRing } from '../components/item/button-simple-progress-ring'
 import { resolveHabitStep } from '../utils/habit-step'
-
-const DEFAULT_HABIT_COLOR = '#536dfe'
+import { DEFAULT_HABIT_COLOR } from '../constants'
 
 interface HabitCompactWideProps {
 	habits: Habit[]
@@ -141,7 +140,7 @@ export function HabitCompactWide({
 					onClick={handleQuickLog}
 					disabled={isPending}
 					aria-label={`ثبت پیشرفت ${selectedHabit.title}`}
-					className="relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-ui shrink-0 active:scale-95 disabled:opacity-70 focus-visible:focus-ring"
+					className="relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-ui shrink-0 active:scale-95 disabled:opacity-(--disabled-opacity) focus-visible:focus-ring"
 					style={{ backgroundColor: `${color}22`, color }}
 				>
 					{!isSimpleHabit && (
@@ -210,7 +209,7 @@ export function HabitCompactWide({
 				</span>
 			</div>
 
-			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-base-content/10">
+			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-subtle">
 				{habits.map((habit) => {
 					const habitTarget = habit.target || 1
 					const habitProgress = Math.min(habit.today.value / habitTarget, 1)
@@ -259,7 +258,7 @@ export function HabitCompactWide({
 						onClick={onAddHabit}
 						aria-label="عادت جدید"
 						title="عادت جدید"
-						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-muted bg-base-content/10 transition-ui hover:text-base-content hover:bg-base-content/20 focus-visible:focus-ring"
+						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-muted bg-muted transition-ui hover:text-strong hover:bg-strong focus-visible:focus-ring"
 					>
 						<Icon name="plus" size={11} aria-hidden="true" />
 					</button>

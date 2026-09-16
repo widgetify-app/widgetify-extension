@@ -18,9 +18,9 @@ export function TopUserItem({
 	const containerRef = useRef<HTMLDivElement>(null)
 	const isActive = activeProfileId === user.id
 	const crownColors: Record<number, string> = {
-		1: 'text-yellow-400',
-		2: 'text-gray-400',
-		3: 'text-amber-600',
+		1: 'text-medal-gold',
+		2: 'text-medal-silver',
+		3: 'text-medal-bronze',
 	}
 
 	const style = rank <= 3 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'
@@ -37,14 +37,14 @@ export function TopUserItem({
 	return (
 		<>
 			<div
-				className={`relative flex items-center gap-2 p-2 cursor-pointer rounded-2xl bg-content transition-ui hover:scale-95 shadow-md hover:shadow-none`}
+				className={`relative flex items-center gap-2 p-2 cursor-pointer rounded-2xl bg-content transition-ui hover:scale-95 elevation-md hover:shadow-none`}
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
 				{rank <= 3 && (
 					<Icon
 						name="crown"
-						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} shadow-md`}
+						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} elevation-md`}
 					/>
 				)}
 				<AvatarComponent

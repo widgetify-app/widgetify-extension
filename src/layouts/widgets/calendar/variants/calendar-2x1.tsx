@@ -65,7 +65,7 @@ export function Calendar2x1() {
 									'flex flex-col items-center justify-center gap-0.5',
 									'w-full h-full rounded-xl cursor-pointer transition-ui active:scale-95',
 									'focus-visible:focus-ring',
-									isSelected && 'font-bold shadow-sm',
+									isSelected && 'font-bold elevation-sm',
 									isSelected &&
 										(isHoliday
 											? 'bg-error text-error-content'
@@ -78,7 +78,7 @@ export function Calendar2x1() {
 											: 'bg-primary/10 text-primary ring-primary/30'),
 									!isSelected &&
 										!isToday &&
-										'bg-base-200/40 hover:bg-base-200/80',
+										'bg-subtle hover:bg-content',
 									!isSelected &&
 										!isToday &&
 										(isHoliday ? 'text-error' : 'text-content')

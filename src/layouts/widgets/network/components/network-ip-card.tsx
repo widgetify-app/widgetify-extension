@@ -18,10 +18,10 @@ export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
 					aria-label={ip ? `کپی آدرس ${ip}` : 'آدرس IP در دسترس نیست'}
 					onClick={() => copyIpToClipboard(ip)}
 					className={cn(
-						'text-lg font-bold text-content bg-base-content/5 px-3 py-1.5 rounded-xl',
+						'text-lg font-bold text-content bg-subtle px-3 py-1.5 rounded-xl',
 						'transition-ui focus-visible:focus-ring',
 						ip
-							? 'cursor-pointer hover:bg-base-content/10'
+							? 'cursor-pointer hover:bg-muted'
 							: 'cursor-default opacity-70',
 						blurMode ? 'blur-mode' : 'disabled-blur-mode'
 					)}

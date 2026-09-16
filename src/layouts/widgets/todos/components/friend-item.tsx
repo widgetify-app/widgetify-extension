@@ -15,7 +15,7 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 				<div className="relative w-5 h-5 overflow-visible ">
 					<div
 						className={`w-full h-full rounded-full overflow-hidden ${
-							isOwner ? 'ring-2 ring-warning' : 'ring-2 ring-base-200'
+							isOwner ? 'ring-2 ring-warning' : 'ring-2 ring-(--surface-content)'
 						}`}
 					>
 						<AvatarComponent
@@ -32,7 +32,7 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 					)}
 
 					{isOwner && (
-						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-warning-content ring-2 ring-base-100">
+						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full elevation-md left-1/2 -bottom-1.5 bg-warning text-warning-content ring-2 ring-(--surface-widget)">
 							<Icon name="crown" size={6} />
 						</div>
 					)}

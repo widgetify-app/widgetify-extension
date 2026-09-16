@@ -13,7 +13,7 @@ export const moodOptions = [
 		label: 'خستم',
 		colorClass: 'warning',
 		activeClass: 'bg-warning text-warning-content',
-		borderClass: 'border-yellow-400/50',
+		borderClass: 'border-warning/50',
 	},
 	{
 		value: 'happy',
@@ -29,6 +29,6 @@ export const moodOptions = [
 		label: 'سرحالم',
 		colorClass: 'success',
 		activeClass: 'bg-success text-success-content',
-		borderClass: 'border-green-400/50',
+		borderClass: 'border-success/50',
 	},
 ]

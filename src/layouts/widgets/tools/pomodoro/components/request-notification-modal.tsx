@@ -53,7 +53,7 @@ export function RequestNotificationModal({
 					</div>
 
 					<div className="media-container">
-						<div className="my-2 overflow-hidden rounded-lg shadow-md">
+						<div className="my-2 overflow-hidden rounded-lg elevation-md">
 							<img
 								src={
 									'https://cdn.widgetify.ir/extension/pomodoroTimer-notification.png'

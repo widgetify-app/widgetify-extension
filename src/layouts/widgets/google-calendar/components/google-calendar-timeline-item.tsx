@@ -40,7 +40,7 @@ export const GoogleCalendarTimelineItem = ({
 		? 'bg-primary'
 		: isNext
 			? 'bg-warning'
-			: 'bg-base-content/10'
+			: 'bg-muted'
 
 	const timeLabel = isAllDay ? durationLabel : `${startTimeStr} تا ${endTimeStr}`
 
@@ -56,7 +56,7 @@ export const GoogleCalendarTimelineItem = ({
 				isNow ? 'py-1' : 'py-1.5',
 				isPast && 'opacity-35',
 				hasAction && !isPast
-					? 'cursor-pointer hover:bg-base-content/5 active:scale-[0.98]'
+					? 'cursor-pointer hover:bg-subtle active:scale-[0.98]'
 					: 'cursor-default'
 			)}
 		>
@@ -168,7 +168,7 @@ export const GoogleCalendarTimelineItem = ({
 											content={attendee.email}
 											position="top"
 										>
-											<span className="w-3.5 h-3.5 rounded-full bg-base-300 border border-base-content/10 flex items-center justify-center text-[5px] font-bold text-muted">
+											<span className="w-3.5 h-3.5 rounded-full bg-raised border border-subtle flex items-center justify-center text-[5px] font-bold text-muted">
 												{getInitials(attendee.email)}
 											</span>
 										</Tooltip>

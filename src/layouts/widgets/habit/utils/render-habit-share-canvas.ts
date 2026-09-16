@@ -3,6 +3,7 @@ import moment from 'moment'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { drawRoundedRect, fitText, rgba } from '@/common/utils/canvas'
 import { formatHabitGoal } from './habit-goal'
+import { DEFAULT_HABIT_COLOR } from '../constants'
 
 interface RenderHabitShareCanvasOptions {
 	habit: Habit
@@ -31,7 +32,7 @@ export function renderHabitShareCanvas(
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 	ctx.clearRect(0, 0, width, height)
 
-	const accent = color || '#536dfe'
+	const accent = color || DEFAULT_HABIT_COLOR
 	const background = '#0f1014'
 	const primary = '#f7f7f8'
 	const secondary = '#a7a7b0'

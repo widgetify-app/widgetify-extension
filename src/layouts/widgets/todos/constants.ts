@@ -48,6 +48,13 @@ export const PRIORITY_BADGE_CLASS: Record<string, string> = {
 	default: 'bg-primary/10 text-primary',
 }
 
+export const PRIORITY_SOFT_CLASS: Record<string, { color: string; bg: string; border: string }> = {
+	high: { color: 'text-error', bg: 'bg-error/10', border: 'border-error/20' },
+	medium: { color: 'text-warning', bg: 'bg-warning/10', border: 'border-warning/20' },
+	low: { color: 'text-success', bg: 'bg-success/10', border: 'border-success/20' },
+	default: { color: 'text-primary', bg: 'bg-primary/10', border: 'border-primary/20' },
+}
+
 export function priorityClass(map: Record<string, string>, priority?: string): string {
 	return map[priority ?? ''] ?? map.default
 }

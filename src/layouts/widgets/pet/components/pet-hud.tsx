@@ -15,7 +15,7 @@ export const PetHud: React.FC<PetHudProps> = ({ level }) => {
 		<div
 			role="img"
 			aria-label={`سیری: ${filled} از ${HEART_COUNT}`}
-			className="z-10 flex items-center gap-0.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.55)]"
+			className="z-10 flex items-center gap-0.5 drop-shadow-(--over-image-shadow)"
 		>
 			{Array.from({ length: HEART_COUNT }, (_, i) => (
 				<Icon

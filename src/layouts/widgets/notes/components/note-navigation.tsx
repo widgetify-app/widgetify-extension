@@ -61,7 +61,7 @@ export function NoteNavigation() {
 						size="xs"
 						onClick={() => setShowDeleteConfirm(true)}
 						aria-label="حذف یادداشت"
-						className="h-7 w-7 p-0 disabled:opacity-75 transition-ui shadow-none"
+						className="h-7 w-7 p-0 disabled:opacity-(--disabled-opacity) transition-ui shadow-none"
 						variant="ghost"
 						color="danger"
 						rounded={'full'}
@@ -73,7 +73,7 @@ export function NoteNavigation() {
 							type="button"
 							onClick={onBackToList}
 							aria-label="بازگشت به لیست یادداشت‌ها"
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
+							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-muted hover:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon
 								name="chevronLeft"

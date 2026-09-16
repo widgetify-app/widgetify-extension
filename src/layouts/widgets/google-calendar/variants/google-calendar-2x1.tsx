@@ -32,13 +32,13 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 				className="flex items-center justify-between w-full h-full gap-3 p-3 select-none animate-pulse"
 			>
 				<div className="w-1/3 space-y-1.5">
-					<div className="w-3/4 h-3 rounded bg-base-200/80" />
-					<div className="w-1/2 h-4 rounded bg-base-200/60" />
+					<div className="w-3/4 h-3 rounded bg-content" />
+					<div className="w-1/2 h-4 rounded bg-muted" />
 				</div>
-				<div className="w-px h-8 bg-base-content/10 shrink-0" />
+				<div className="w-px h-8 bg-muted shrink-0" />
 				<div className="flex-1 space-y-1.5">
-					<div className="w-2/3 h-3 rounded bg-base-200/80" />
-					<div className="w-1/3 h-2 rounded bg-base-200/60" />
+					<div className="w-2/3 h-3 rounded bg-content" />
+					<div className="w-1/3 h-2 rounded bg-muted" />
 				</div>
 			</div>
 		)
@@ -73,7 +73,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 
 			<div
 				aria-hidden="true"
-				className="w-px self-stretch bg-base-content/10 shrink-0 my-0.5"
+				className="w-px self-stretch bg-muted shrink-0 my-0.5"
 			/>
 
 			<div className="flex flex-col justify-center flex-1 min-w-0">
@@ -136,7 +136,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 			className={cn(
 				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-all',
 				'focus-visible:focus-ring',
-				hasAction && 'cursor-pointer hover:bg-base-200/40 active:scale-[0.99]',
+				hasAction && 'cursor-pointer hover:bg-subtle active:scale-[0.99]',
 				isNow && 'bg-primary/10 border border-primary/20'
 			)}
 		>

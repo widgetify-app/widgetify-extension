@@ -212,7 +212,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 							<div className="relative overflow-hidden border border-content rounded-2xl">
 								<div
 									aria-hidden="true"
-									className="absolute inset-0 bg-linear-to-br from-base-content/5 to-transparent"
+									className="absolute inset-0 bg-linear-to-br from-(--surface-subtle) to-transparent"
 								/>
 								<div className="relative p-2 space-y-3 max-h-32 min-h-32">
 									<div className="flex items-center justify-between">
@@ -240,7 +240,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 												<AvatarComponent
 													url={networkInfo.countryIcon}
 													placeholder="flag"
-													className="rounded-sm shadow-sm"
+													className="rounded-sm elevation-sm"
 													size="xs"
 												/>
 											</Tooltip>

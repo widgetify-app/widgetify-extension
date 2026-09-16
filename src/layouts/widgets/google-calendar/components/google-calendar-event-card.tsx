@@ -39,13 +39,13 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			}
 			className={cn(
 				'flex items-center w-full gap-2.5 p-2 text-start rounded-xl',
-				'bg-base-200/30 hover:bg-base-200/70 border border-base-content/5 transition-all',
+				'bg-subtle hover:bg-muted border border-faint transition-all',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
 				isPast && 'opacity-40'
 			)}
 		>
-			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-base-content/10">
+			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-subtle">
 				{isAllDay ? (
 					<span className="text-[10px] font-bold text-primary">همه‌روز</span>
 				) : (

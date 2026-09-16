@@ -31,7 +31,7 @@ export function RssFeedComponent({ url, sourceName, label }: Prop) {
 
 	if (isError) {
 		return (
-			<div className="flex items-center justify-between gap-2 p-2 border rounded-2xl border-base-content/10 bg-base-content/5">
+			<div className="flex items-center justify-between gap-2 p-2 border rounded-2xl border-subtle bg-subtle">
 				<span className="flex items-center gap-1.5 min-w-0 text-[11px] text-muted">
 					<Icon name="alert" size={13} aria-hidden="true" />
 					<span className="truncate">{label} دریافت نشد</span>
@@ -39,7 +39,7 @@ export function RssFeedComponent({ url, sourceName, label }: Prop) {
 				<button
 					type="button"
 					onClick={() => refetch()}
-					className="px-2 py-0.5 text-[10px] font-bold rounded-lg cursor-pointer shrink-0 text-content bg-base-content/10 transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+					className="px-2 py-0.5 text-[10px] font-bold rounded-lg cursor-pointer shrink-0 text-content bg-muted transition-ui hover:bg-strong focus-visible:focus-ring"
 				>
 					تلاش دوباره
 				</button>

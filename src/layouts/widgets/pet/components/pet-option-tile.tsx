@@ -25,7 +25,7 @@ export function PetOptionTile({
 				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
 				selected
 					? 'border-primary/50 bg-primary/15'
-					: 'border-content bg-base-content/5 hover:bg-primary/5 hover:border-primary/25',
+					: 'border-content bg-subtle hover:bg-primary/5 hover:border-primary/25',
 				className
 			)}
 		>

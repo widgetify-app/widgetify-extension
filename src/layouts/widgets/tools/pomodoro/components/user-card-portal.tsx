@@ -70,7 +70,7 @@ export function UserCardPortal({
 					<Motion.div
 						key="user-card"
 						ref={cardRef}
-						className="fixed z-popover shadow-lg min-w-64 max-w-64"
+						className="fixed z-popover elevation-lg min-w-64 max-w-64"
 						initial={{ scale: 0.95, x: '-50%' }}
 						animate={{ scale: 1, x: '-50%' }}
 						exit={{ scale: 0.95, x: '-50%' }}

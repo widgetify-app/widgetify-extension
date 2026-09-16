@@ -32,7 +32,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 		<div
 			dir="ltr"
 			className={cn(
-				'relative w-full rounded-2xl bg-base-300/30 border border-base-content/10 p-2 select-none overflow-hidden transition-all',
+				'relative w-full rounded-2xl bg-subtle border border-subtle p-2 select-none overflow-hidden transition-all',
 				isCompact ? 'h-32' : 'h-56 sm:h-64',
 				className
 			)}
@@ -63,7 +63,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 								gridRowEnd: widget.position.row + widget.size.h + 1,
 							}}
 							className={cn(
-								'flex flex-col items-center justify-center rounded-xl bg-base-100/70 border border-base-content/15 shadow-xs overflow-hidden transition-all',
+								'flex flex-col items-center justify-center rounded-xl bg-subtle border border-subtle shadow-xs overflow-hidden transition-all',
 								isCompact ? 'p-0.5' : 'p-1.5'
 							)}
 						>

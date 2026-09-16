@@ -37,7 +37,7 @@ export function CurrencyCompactSquare({
 						size: { w: 1, h: 1 },
 					})
 				}}
-				className="group flex flex-col items-center justify-center w-full h-full p-2 text-center cursor-pointer select-none transition-ui hover:bg-base-content/5 focus-visible:focus-ring"
+				className="group flex flex-col items-center justify-center w-full h-full p-2 text-center cursor-pointer select-none transition-ui hover:bg-subtle focus-visible:focus-ring"
 			>
 				<span className="relative flex items-center justify-center w-12 h-12 transition-transform duration-200 group-hover:scale-105">
 					<img
@@ -72,7 +72,7 @@ export function CurrencyCompactSquare({
 				<button
 					type="button"
 					onClick={() => refetch()}
-					className="px-[8.3cqh] py-[4.2cqh] rounded-lg bg-base-content/10 text-[9.4cqh] font-bold text-content cursor-pointer transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+					className="px-[8.3cqh] py-[4.2cqh] rounded-lg bg-muted text-[9.4cqh] font-bold text-content cursor-pointer transition-ui hover:bg-strong focus-visible:focus-ring"
 				>
 					تلاش دوباره
 				</button>
@@ -104,7 +104,7 @@ export function CurrencyCompactSquare({
 				type="button"
 				onClick={toggleModal}
 				aria-label={`${currency.name?.fa || activeCode}، ${price.formatted}`}
-				className="flex flex-col justify-between w-full h-full p-[10.4cqh] text-center cursor-pointer select-none transition-ui hover:bg-base-content/5 focus-visible:focus-ring"
+				className="flex flex-col justify-between w-full h-full p-[10.4cqh] text-center cursor-pointer select-none transition-ui hover:bg-subtle focus-visible:focus-ring"
 			>
 				<span className="flex items-center justify-between w-full gap-1">
 					<span className="flex items-center gap-1.5 min-w-0">
