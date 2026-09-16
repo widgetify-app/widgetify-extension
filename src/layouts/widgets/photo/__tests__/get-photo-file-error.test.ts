@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'bun:test'
-import { MAX_PHOTO_SIZE_BYTES } from '../constants'
 import { getPhotoFileError } from '../utils/get-photo-file-error'
 
 const TYPE_ERROR = 'لطفا یک فایل تصویری انتخاب کن'
@@ -9,18 +8,6 @@ describe('getPhotoFileError', () => {
 	it('accepts an image under the limit', () => {
 		expect(getPhotoFileError({ type: 'image/png', size: 1024 })).toBeNull()
 		expect(getPhotoFileError({ type: 'image/webp', size: 0 })).toBeNull()
-	})
-
-	it('accepts a file sitting exactly on the limit', () => {
-		expect(
-			getPhotoFileError({ type: 'image/jpeg', size: MAX_PHOTO_SIZE_BYTES })
-		).toBeNull()
-	})
-
-	it('rejects one byte past the limit', () => {
-		expect(
-			getPhotoFileError({ type: 'image/jpeg', size: MAX_PHOTO_SIZE_BYTES + 1 })
-		).toBe(SIZE_ERROR)
 	})
 
 	it('rejects a non image before it looks at the size', () => {

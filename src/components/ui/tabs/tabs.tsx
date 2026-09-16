@@ -67,7 +67,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0 shadow-md bg-base-content/10 rounded-xl -z-10',
+									'absolute inset-0 shadow-xs bg-base-content/10 rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{

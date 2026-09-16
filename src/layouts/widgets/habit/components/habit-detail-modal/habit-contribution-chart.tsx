@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
@@ -44,6 +44,8 @@ export function HabitContributionChart({
 	const queryClient = useQueryClient()
 	const { mutateAsync: logProgress, isPending: isUpdating } = useLogHabitProgress()
 	const [hoveredDay, setHoveredDay] = useState<DayCell | null>(null)
+	const scrollContainerRef = useRef<HTMLDivElement>(null)
+	const todayCellRef = useRef<HTMLButtonElement>(null)
 
 	const getHabitData = (gregorianDate: string) => {
 		const [year, month] = gregorianDate.split('-')
@@ -162,10 +164,37 @@ export function HabitContributionChart({
 
 	const unitLabel = getHabitUnitLabel(habit)
 
+	useEffect(() => {
+		const container = scrollContainerRef.current
+		const cell = todayCellRef.current
+		if (!container) return
+
+		const timeoutId = setTimeout(() => {
+			if (cell) {
+				cell.scrollIntoView({
+					behavior: 'smooth',
+					inline: 'center',
+					block: 'nearest',
+				})
+			} else {
+				const isRtl = getComputedStyle(container).direction === 'rtl'
+				container.scrollTo({
+					left: isRtl ? -container.scrollWidth : container.scrollWidth,
+					behavior: 'smooth',
+				})
+			}
+		}, 60)
+
+		return () => clearTimeout(timeoutId)
+	}, [weeks])
+
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
 			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-base-content/5 border-base-content/10">
-				<div className="pb-1 pl-1 overflow-x-auto scrollbar-thin">
+				<div
+					ref={scrollContainerRef}
+					className="pb-1 pl-1 overflow-x-auto scrollbar-thin"
+				>
 					<div className="inline-flex flex-col min-w-full gap-1">
 						<div className="flex items-center gap-1 pr-6 h-4 mb-0.5">
 							{weeks.map((week) => (
@@ -212,6 +241,11 @@ export function HabitContributionChart({
 											return (
 												<button
 													key={day.gregorianDate}
+													ref={
+														day.isToday
+															? todayCellRef
+															: undefined
+													}
 													type="button"
 													disabled={day.isFuture}
 													aria-label={dayLabel}
