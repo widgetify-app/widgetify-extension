@@ -93,7 +93,6 @@ export function SearchCompactRow() {
 
 	const onEngineSelected = (engine: EngineMeta) => {
 		setSelectedEngine(engine)
-		inputRef.current?.focus()
 	}
 
 	useEffect(() => {

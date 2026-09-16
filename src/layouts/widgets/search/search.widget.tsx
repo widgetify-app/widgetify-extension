@@ -110,7 +110,6 @@ function SearchFullContent() {
 
 	const onEngineSelected = (engine: EngineMeta) => {
 		setSelectedEngine(engine)
-		inputRef.current?.focus()
 	}
 
 	useEffect(() => {
