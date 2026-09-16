@@ -99,7 +99,7 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 					key={activeTab}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					className="min-h-0 grow"
+					className="min-h-0 grow overflow-y-auto hide-scrollbar"
 				>
 					{renderTool(activeTab)}
 				</motion.div>

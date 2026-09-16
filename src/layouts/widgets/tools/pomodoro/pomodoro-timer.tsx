@@ -278,8 +278,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	return (
-		<div className="relative overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
-			<div className="relative flex items-center justify-between mb-1  py-0.5">
+		<div className="relative flex flex-col h-full min-h-0 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
+			<div className="relative flex items-center justify-between flex-none mb-1 py-0.5">
 				<div className={`flex items-center gap-x-0.5`}>
 					{currentTab === 'timer' ? (
 						<TabNavigation
@@ -345,10 +345,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 			</div>
 
 			{currentTab === 'timer' ? (
-				<div className="relative flex flex-col justify-around mt-2 gap-y-4">
-					<TimerDisplay timeLeft={timeLeft} progress={progress} mode={mode} />
+				<div className="relative flex flex-col flex-1 min-h-0 gap-y-2">
+					<div className="flex items-center justify-center flex-1 min-h-0">
+						<TimerDisplay
+							timeLeft={timeLeft}
+							progress={progress}
+							mode={mode}
+						/>
+					</div>
 
-					<div className="flex justify-center gap-x-4">
+					<div className="flex justify-center flex-none gap-x-4">
 						<ControlButton
 							mode={'reset'}
 							icon={<Icon name="reload" size={16} strokeWidth={1} />}
