@@ -55,7 +55,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		badge: 'مرحله ۴ از ۴',
 		description:
 			'اگه دوست داری سریع شروع کنی، از قالب‌ها و چیدمان‌های آماده استفاده کن',
-		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.webm`,
+		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS-2.webm`,
 		icon: 'squares2X2',
 	},
 ]

@@ -73,7 +73,7 @@ const HELP_TABS: HelpTabItem[] = [
 		id: 'presets',
 		label: 'چیدمان‌های آماده',
 		icon: 'squares2X2',
-		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS.webm`,
+		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS-2.webm`,
 		badge: 'یک کلیک',
 		title: 'قالب‌ها و چیدمان‌های آماده',
 		description:
