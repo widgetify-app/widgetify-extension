@@ -95,7 +95,10 @@ export function GalleryBookmarkIconItem({
 					)}
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
-							<VipBadge size="xs" variant="indigo" />
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip/90 backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-white/20">
+								<Icon name="diamond" size={9} />
+								<span>رایگان با پرو</span>
+							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (

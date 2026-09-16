@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
-import { VipBadge } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
@@ -83,8 +82,18 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.accessVip && !asset.isOwned && (
-						<div className="absolute top-1.5 left-1.5 z-10">
-							<VipBadge size="xs" variant="indigo" />
+						<div
+							className="absolute top-1.5 left-1.5 z-10"
+							title={
+								asset.price > 0
+									? 'رایگان برای کاربران پرو یا قابل خرید با کوین'
+									: 'رایگان برای کاربران پرو'
+							}
+						>
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip/90 backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-white/20">
+								<Icon name="diamond" size={10} />
+								<span>رایگان با پرو</span>
+							</span>
 						</div>
 					)}
 
