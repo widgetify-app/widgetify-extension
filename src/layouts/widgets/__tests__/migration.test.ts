@@ -156,9 +156,9 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 		expect(arzLiveWidget).toBeDefined()
 		expect(newsWidget).toBeDefined()
 		expect(arzLiveWidget?.position.row).toBe(6)
-		expect(arzLiveWidget?.position.col).toBe(0)
+		expect(arzLiveWidget?.position.col).toBe(6)
 		expect(newsWidget?.position.row).toBe(6)
-		expect(newsWidget?.position.col).toBe(2)
+		expect(newsWidget?.position.col).toBe(4)
 	})
 
 	it('handles corrupt or empty storage gracefully falling back to default layout', async () => {
@@ -207,10 +207,10 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 
 		expect(calendarWidget).toBeDefined()
 		expect(notesWidget).toBeDefined()
-		// calendar is index 0 in bottomWidgets -> col 0, row 3
-		expect(calendarWidget?.position).toEqual({ col: 0, row: 3 })
-		// notes is index 1 in bottomWidgets -> col 2, row 3
-		expect(notesWidget?.position).toEqual({ col: 2, row: 3 })
+		// In RTL: index 0 (calendar) -> col 6, row 3
+		expect(calendarWidget?.position).toEqual({ col: 6, row: 3 })
+		// In RTL: index 1 (notes) -> col 4, row 3
+		expect(notesWidget?.position).toEqual({ col: 4, row: 3 })
 	})
 
 	it('preserves top widgets (search, clock, moodTracker, photo, pet) alongside migrated active widgets', async () => {
@@ -249,7 +249,8 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 		const notes = result.find(
 			(w) => w.id === WidgetKeys.notes && w.position.row === 3
 		)
-		expect(weather?.position).toEqual({ col: 0, row: 3 })
-		expect(notes?.position).toEqual({ col: 2, row: 3 })
+		// In RTL: index 0 (weather) -> col 6, index 1 (notes) -> col 4
+		expect(weather?.position).toEqual({ col: 6, row: 3 })
+		expect(notes?.position).toEqual({ col: 4, row: 3 })
 	})
 })

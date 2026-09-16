@@ -138,15 +138,22 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 			}
 		}
 
-		const bottomWidgets: StoredWidget[] = bottomKeys.map((key, index) => ({
-			id: key,
-			instanceId: `${key}-bottom-${index}`,
-			position: {
-				col: (index % 4) * 2,
-				row: 3 + Math.floor(index / 4) * 3,
-			},
-			size: { w: 2, h: 3 },
-		}))
+		const bottomWidgets: StoredWidget[] = bottomKeys.map((key, index) => {
+			const colIndex = index % 4
+			const rowIndex = Math.floor(index / 4)
+			// RTL-to-LTR coordinate mapping: in Persian RTL layout, the visual sequence
+			// 1, 2, 3, 4 flows from right to left (col 6, 4, 2, 0).
+			// Mapping index 0..3 to col 6, 4, 2, 0 preserves the exact visual order.
+			const col = (3 - colIndex) * 2
+			const row = 3 + rowIndex * 3
+
+			return {
+				id: key,
+				instanceId: `${key}-bottom-${index}`,
+				position: { col, row },
+				size: { w: 2, h: 3 },
+			}
+		})
 
 		migratedLayout = [...topWidgets, ...bottomWidgets]
 	}
