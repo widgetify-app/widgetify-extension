@@ -37,7 +37,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	}
 
 	return (
-		<div className="h-56 px-1 pb-1 space-y-1 overflow-y-auto">
+		<div className="flex-1 min-h-0 px-1 pb-1 space-y-1 overflow-y-auto">
 			{data.tops.map((user, index) => (
 				<TopUserItem
 					user={user}

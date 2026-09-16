@@ -25,7 +25,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 	}
 	return (
-		<div className="relative mx-auto mt-4 duration-300 w-36 h-36 animate-in zoom-in-95">
+		<div className="h-full duration-300 aspect-square max-h-36 animate-in zoom-in-95">
 			<svg className="w-full h-full" viewBox="0 0 100 100">
 				<circle
 					cx="50"
