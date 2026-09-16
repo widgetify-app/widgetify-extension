@@ -8,6 +8,7 @@ export interface VipPlan {
 	order?: number | null
 	meta?: {
 		badge?: string
+		badgeColor?: string
 		description?: string
 		[key: string]: any
 	} | null

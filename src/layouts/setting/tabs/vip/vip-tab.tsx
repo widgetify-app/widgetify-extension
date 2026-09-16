@@ -34,9 +34,7 @@ export function VipTab() {
 
 	useEffect(() => {
 		if (plans?.length && !selectedPlan) {
-			const popular =
-				plans.find((p) => p.meta?.isPopular || p.meta?.badge === 'popular') ||
-				plans[0]
+			const popular = plans.find((p) => Boolean(p.meta?.badge)) || plans[0]
 			setSelectedPlan(popular)
 		}
 	}, [plans, selectedPlan])

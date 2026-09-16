@@ -1,3 +1,4 @@
+import { getContrastingTextColor } from '@/common/color'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
@@ -11,7 +12,8 @@ interface VipPlanCardProps {
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
-	const isPopular = plan.meta?.isPopular || plan.meta?.badge === 'popular'
+	const badge = plan.meta?.badge
+	const badgeColor = plan.meta?.badgeColor
 	const isClaimed = Boolean(plan.isClaimed)
 
 	return (
@@ -26,9 +28,22 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 						: 'border-base-content/10 bg-base-300/20 hover:border-primary/40 hover:bg-base-300/40 cursor-pointer'
 			)}
 		>
-			{isPopular && !isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-content text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
-					محبوب‌ترین
+			{badge && !isClaimed && (
+				<div
+					style={
+						badgeColor
+							? {
+									backgroundColor: badgeColor,
+									color: getContrastingTextColor(badgeColor),
+								}
+							: undefined
+					}
+					className={cn(
+						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs',
+						!badgeColor && 'bg-primary text-white'
+					)}
+				>
+					{badge}
 				</div>
 			)}
 
