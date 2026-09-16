@@ -312,21 +312,108 @@ The app renders over a user supplied wallpaper, and individual surfaces may carr
 
 `dark:` and `light:` key off `prefers-color-scheme`, which is unrelated to `data-theme`. They fire for a user whose OS disagrees with the theme they chose. Grep for them rather than assuming one is load bearing: none belong in `src`, so every hit is something to remove.
 
-### Prefer the project's semantic class over the raw utility
+### Where the stylesheets live
 
-`src/index.css` defines short names for the combinations this app actually uses — its surfaces, its body and muted text, its border, its widget radius. Use those rather than the underlying utility. They are the single place a decision like "what is a muted foreground" can be changed, and a raw utility at a call site opts that site out of any future change. When a combination you need has no name yet, add one there rather than inventing a new opacity step inline.
+`src/index.css` is the entry and contains nothing but imports, in the order they must load:
+
+```
+src/index.css              @import "tailwindcss", @plugin "daisyui", then the files below
+src/styles/
+  fonts.css                @font-face only; url() paths are relative to this file
+  theme/index.css          barrel for main.css + the six themes
+  theme/*.css              primitives: brand values and each theme's daisyUI variables
+  tokens/index.css         barrel for the semantic layer
+  tokens/*.css             one file per category, :root plus per-theme overrides
+  base.css                 element defaults: html, body, @layer base, img, input resets
+  typography.css           .font-latin, .writing-mode-vertical
+  utilities.css            every @utility, plus .rounded-widget and .z-popover
+  scrollbar.css            scrollbar chrome and the .hide-scrollbar / .scrollbar-* helpers
+  modes.css                html.optimal-mode, html.modal-isActive, .blur-mode
+  animations.css           every @keyframes and its .animate-* class
+```
+
+A new rule goes in the file for its role. If it does not fit one, that is a sign the rule
+is doing two things, not that the structure needs a tenth file.
+
+Two rules in `utilities.css` are still plain classes rather than `@utility`:
+`.rounded-widget`, and `.z-popover`, whose `!important` and unlayered position are what let
+portalled tooltips and context menus outrank everything. Variants on either compile to
+nothing — see below.
+
+### Two layers: primitives, then semantics
+
+Colour is declared in two places and nowhere else.
+
+**Primitives** are the raw values. They live in `src/styles/theme/main.css` (`--brand-primary`, `--color-vip`, `--color-medal-*`) and in the six theme files under `src/styles/theme/`, which set daisyUI's `--color-base-*`, `--color-primary`, `--color-error` and so on. A primitive is a value; it says nothing about where it is used.
+
+**Semantics** are the roles, in `src/styles/tokens/`, one file per category — `surface`, `border`, `text`, `state`, `over-image`, `radius`, `elevation`, `z-index`, plus an `index.css` barrel. A semantic token says what something is for, and **derives from a daisyUI token rather than hardcoding a value**:
+
+```css
+--surface-subtle: color-mix(in oklab, var(--color-base-content) 5%, transparent);
+--border-content: var(--color-base-300);
+```
+
+That derivation is the load-bearing part. `theme.context.tsx` fetches themes at runtime from `https://cdn.widgetify.ir/themes/<name>.css`, and those files are not in this repo, so they can only ever set the daisyUI variables. Because every semantic token is expressed in terms of those, a theme nobody here has seen still gets the whole system. Declare a semantic token as a literal and you have broken every remote theme at once.
+
+Each token is exposed as one `@utility` in `src/styles/utilities.css`, and those class names are the vocabulary:
+
+| role | classes, faintest first |
+|---|---|
+| surface | `bg-widget` `bg-content` `bg-raised` — the three theme steps |
+| tint over a surface | `bg-subtle` `bg-muted` `bg-strong` `bg-bold` |
+| border | `border-faint` `border-subtle` `border-content` `border-strong` `border-bold` |
+| ring | `ring-faint` `ring-subtle` `ring-content` `ring-strong` |
+| text | `text-strong` `text-content` `text-muted` `text-subtle` `text-faint` `text-ghost` |
+| depth | `elevation-sm` `elevation-md` `elevation-lg` `elevation-xl` `elevation-2xl` |
+| radius | `rounded-card` `rounded-widget` |
+| stacking | `z-base` `z-raised` `z-sticky` `z-drag` `z-nav` `z-backdrop` `z-sheet` `z-modal` `z-popover` `z-toast` `z-pet` |
+| one-offs | `bg-overlay` (scrim) · `bg-knob` (toggle knob) · `focus-ring` · `disabled:opacity-(--disabled-opacity)` |
+
+`elevation-*` is a drop-in for Tailwind's `shadow-*`: it sets `--tw-shadow` and the same composed `box-shadow`, so it still stacks with a ring and still honours a `shadow-<colour>` modifier. Replacing it with a bare `box-shadow` would silently break both.
+
+**Anything drawn over the wallpaper** uses `--over-image-*` instead, because the theme says nothing about what is behind it. Ten tokens, referenced through the arbitrary-property form — `text-(--over-image-text)`, `bg-(--over-image-scrim)`, `border-(--over-image-border-soft)` — covering text, muted text, two surface weights, two border weights, three scrim weights and a shadow. These are the only semantic tokens that do **not** derive from a daisyUI variable, and the test knows that.
+
+**Prefixes with no named utility** — `stroke-`, `divide-`, `outline-`, `placeholder-`, `from-`/`to-`/`via-` — reference the token directly: `stroke-(--surface-muted)`, `from-(--surface-content)`. Same tokens, no second vocabulary.
+
+**The list is closed.** Reach for a name from it rather than a raw daisyUI class; a raw utility at a call site opts that site out of every future change, and a new opacity step invented inline is how the seven-step muted-text mess started. If a role genuinely has no name, add the token and its utility — do not inline a literal.
+
+`cn.ts` mirrors this vocabulary as tailwind-merge class groups. A name added there without a matching `@utility` compiles to nothing.
+
+### Two files may still write colour literally
+
+Everywhere else in `src` is token-driven, and a test enforces it. The exceptions:
+
+- `src/common/toast.tsx` — toasts are deliberately always dark in every theme, so their colours are literal. See "Design decisions".
+- `src/layouts/bookmark/components/bookmark/bookmark-icon.tsx` — the per-bookmark letter-avatar palette, which is content.
+
+Colour that depicts something stays literal wherever it lives: the analog clock's Apple-Watch palette, the pet's collectible colours, the habit colour the user picks, the two share-card canvas renderers, the wallpaper-derived clock theme, and Google's four logo colours in image search. `BRAND_PRIMARY` in `src/common/constants/brand.ts` is the one hex TypeScript needs (contrast maths cannot read a CSS variable); a test asserts it still matches `--brand-primary`.
+
+### The stylesheets have tests
+
+`src/styles/__tests__/stylesheets.test.ts` runs in `bun test` and is why the traps above stay fixed. It asserts that every class name `cn.ts` declares exists in a stylesheet; that the six themes declare an identical variable set; that none carry a daisyUI 4 `-focus` token or omit `color-scheme`; that every semantic token is read; that only `--over-image-*` and two named tokens hardcode a colour; that `BRAND_PRIMARY` matches its CSS variable; that **every opaque surface/content pair in every theme clears 3:1**; and — four separate checks — that `src` contains no raw daisyUI base class, no raw Tailwind palette colour, no raw `shadow-*` size and no raw `disabled:opacity-N`.
+
+Add a token, a utility or a theme and the tests tell you what you forgot. Prefer extending them over writing a rule down here and hoping.
+
+### Every theme declares the same variables
+
+All six theme files declare an identical set of 29: daisyUI's 20 colour variables, the eight radius/size/border/depth/noise values, and `color-scheme`. This is not tidiness. daisyUI emits its built-in light theme for `:where(:root)` as well as `[data-theme="light"]`, so **a variable a theme omits silently resolves to light's value** — which is how `glass` and `icy` ended up with a light `--color-neutral` on a dark background. Omission is invisible; there is no warning anywhere.
+
+Two consequences. A new theme copies the full set, not a subset — `HOW_TO_ADD_THEME.md` has the template. And parity is checkable, so check it rather than trusting the diff: parse the six files and assert the declared key sets are equal.
+
+`--color-primary-focus`, `--color-secondary-focus` and `--color-accent-focus` are **daisyUI 4** names. daisyUI 5 has no such tokens and nothing reads them. Do not reintroduce them.
 
 ### A variant on a shortcut class compiles to nothing
 
-`src/index.css` defines its shortcuts two different ways, and only one of them takes
+`src/styles/utilities.css` defines its shortcuts two different ways, and only one of them takes
 variants. `@utility transition-ui { ... }` registers a real utility, so `hover:transition-ui`
 works. A plain rule like `.text-content { @apply ... }` does not, so **`hover:text-content`,
 `focus:bg-content` and the like generate no CSS at all** — the hover simply never happens,
 silently, with no warning from tsc, biome or the build.
 
-Use the token the shortcut wraps for the variant (`hover:text-base-content`), or promote the
-shortcut to `@utility`. The same trap catches any class name that does not exist:
-`bg-background` is used in three places in `src` and has never been defined.
+Every colour shortcut in `src/styles/utilities.css` is now an `@utility`, so `hover:text-content` and
+`placeholder:text-subtle` work. Keep it that way: a new shortcut added as a plain `.class`
+rule will silently refuse every variant. The same trap catches any class name that does not
+exist at all — `bg-background` is used in two places in `src` and has never been defined.
 
 Grep the built CSS rather than trusting the markup:
 
@@ -485,7 +572,7 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 - The dialog must stay mounted and only toggle `open`. Unmounting it kills the exit.
 - `@starting-style` covers `.modal` but **not** `.modal-box`. A dialog that mounts already open skips the slide up, which is why `Modal` renders closed for one frame via `open={isOpen && isMounted}`. That line looks pointless. It is not.
 
-**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `index.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
+**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `src/styles/modes.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
 
 **`voice-search.portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
 
