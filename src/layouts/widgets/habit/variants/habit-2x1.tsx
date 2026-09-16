@@ -203,8 +203,9 @@ export function HabitCompactWide({
 				</button>
 
 				<span
+					onClick={() => onViewDetails?.(selectedHabit.id)}
 					aria-hidden="true"
-					className="flex items-center justify-center w-6 h-6 rounded-lg text-muted shrink-0"
+					className="flex items-center justify-center cursor-pointer w-6 h-6 rounded-lg text-muted shrink-0"
 				>
 					<Icon name="chevronLeft" size={13} />
 				</span>
