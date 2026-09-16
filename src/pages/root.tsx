@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Toaster } from 'react-hot-toast'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { Portal } from '@/components/ui'
+import { Portal, StackedToaster } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
@@ -41,26 +40,7 @@ export function RootLayout() {
 					</WallpaperProvider>
 				</GeneralSettingProvider>
 			</div>
-			<Toaster
-				containerStyle={{
-					zIndex: 99999999,
-				}}
-				toastOptions={{
-					error: {
-						style: {
-							backgroundColor: 'var(--color-error)',
-							color: 'var(--color-error-content)',
-						},
-					},
-					success: {
-						style: {
-							backgroundColor: 'var(--color-success)',
-							color: 'var(--color-success-content)',
-						},
-					},
-					duration: 5000,
-				}}
-			/>
+			<StackedToaster />
 		</IconProvider>
 	)
 }

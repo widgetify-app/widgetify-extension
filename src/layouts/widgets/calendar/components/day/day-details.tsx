@@ -96,9 +96,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			)
 		} else {
 			setMood(value)
-			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success', {
-				alarmSound: true,
-			})
+			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success')
 		}
 
 		Analytics.event('calendar_mood_clicked')

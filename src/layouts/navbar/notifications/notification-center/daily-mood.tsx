@@ -59,9 +59,7 @@ export function DailyMoodNotification({ className }: Prop) {
 			)
 		} else {
 			setMood(value as MoodType)
-			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success', {
-				alarmSound: true,
-			})
+			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success')
 		}
 
 		setTimeout(() => {
