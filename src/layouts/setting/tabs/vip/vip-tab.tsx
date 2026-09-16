@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
+import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { showToast } from '@/common/toast'
@@ -18,6 +19,13 @@ import { VipHeroBanner } from './vip-hero-banner'
 const VIP_LABEL = 'پرو'
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
+
+const VIP_GRID_LAYOUTS: Record<number, string> = {
+	1: 'grid-cols-1 max-w-sm mx-auto',
+	2: 'grid-cols-1 sm:grid-cols-2',
+	3: 'grid-cols-1 sm:grid-cols-3',
+	4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+}
 
 export function VipTab() {
 	const { isAuthenticated, refetchUser } = useAuth()
@@ -94,11 +102,11 @@ export function VipTab() {
 				</h4>
 
 				{isLoading ? (
-					<div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-						{Array.from({ length: 3 }).map((_, i) => (
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+						{Array.from({ length: 2 }).map((_, i) => (
 							<div
 								key={i}
-								className="border rounded-2xl border-base-content/10 bg-base-300/20 p-4 space-y-2.5 min-h-[110px]"
+								className="border rounded-2xl border-base-content/10 bg-base-300/20 p-4 space-y-2.5 min-h-27.5"
 							>
 								<div className="w-2/3 h-4 rounded-md skeleton opacity-40" />
 								<div className="w-full h-5 mt-3 rounded-md skeleton opacity-20" />
@@ -107,7 +115,13 @@ export function VipTab() {
 						))}
 					</div>
 				) : plans?.length ? (
-					<div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+					<div
+						className={cn(
+							'grid gap-3',
+							VIP_GRID_LAYOUTS[plans.length] ||
+								'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+						)}
+					>
 						{plans.map((plan) => (
 							<VipPlanCard
 								key={plan.id}
