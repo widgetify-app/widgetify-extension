@@ -1,0 +1,25 @@
+html.optimal-mode *,
+html.optimal-mode *::before,
+html.optimal-mode *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+html.modal-isActive {
+  scrollbar-width: none !important;
+}
+
+html.modal-isActive::-webkit-scrollbar {
+  display: none !important;
+}
+
+.disabled-blur-mode {
+  filter: blur(0px);
+  transition: filter 300ms ease-in-out;
+}
+
+.blur-mode {
+  filter: blur(8px);
+  pointer-events: none;
+  transition: filter 300ms ease-in;
+}

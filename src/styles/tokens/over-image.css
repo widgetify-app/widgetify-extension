@@ -1,0 +1,12 @@
+:root {
+    --over-image-text: rgb(255 255 255 / 1);
+    --over-image-text-muted: rgb(255 255 255 / 0.8);
+    --over-image-surface: rgb(255 255 255 / 0.2);
+    --over-image-surface-soft: rgb(255 255 255 / 0.08);
+    --over-image-border: rgb(255 255 255 / 0.3);
+    --over-image-border-soft: rgb(255 255 255 / 0.1);
+    --over-image-scrim-soft: rgb(0 0 0 / 0.2);
+    --over-image-scrim: rgb(0 0 0 / 0.6);
+    --over-image-scrim-strong: rgb(0 0 0 / 0.8);
+    --over-image-shadow: 0 1px 1px rgb(0 0 0 / 0.55);
+}

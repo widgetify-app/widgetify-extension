@@ -1,0 +1,183 @@
+@utility bg-widget {
+  background-color: var(--surface-widget);
+}
+
+@utility bg-content {
+  background-color: var(--surface-content);
+}
+
+@utility bg-raised {
+  background-color: var(--surface-raised);
+}
+
+@utility bg-subtle {
+  background-color: var(--surface-subtle);
+}
+
+@utility bg-muted {
+  background-color: var(--surface-muted);
+}
+
+@utility bg-strong {
+  background-color: var(--surface-strong);
+}
+
+@utility bg-bold {
+  background-color: var(--surface-bold);
+}
+
+@utility bg-overlay {
+  background-color: var(--surface-overlay);
+}
+
+@utility bg-knob {
+  background-color: var(--control-knob);
+}
+
+@utility text-strong {
+  color: var(--text-strong);
+}
+
+@utility text-content {
+  color: var(--text-content);
+}
+
+@utility text-muted {
+  color: var(--text-muted);
+}
+
+@utility text-subtle {
+  color: var(--text-subtle);
+}
+
+@utility text-faint {
+  color: var(--text-faint);
+}
+
+@utility text-ghost {
+  color: var(--text-ghost);
+}
+
+@utility border-faint {
+  border-color: var(--border-faint);
+}
+
+@utility border-subtle {
+  border-color: var(--border-subtle);
+}
+
+@utility border-content {
+  border-color: var(--border-content);
+}
+
+@utility border-strong {
+  border-color: var(--border-strong);
+}
+
+@utility border-bold {
+  border-color: var(--border-bold);
+}
+
+@utility ring-faint {
+  --tw-ring-color: var(--border-faint);
+}
+
+@utility ring-subtle {
+  --tw-ring-color: var(--border-subtle);
+}
+
+@utility ring-content {
+  --tw-ring-color: var(--border-content);
+}
+
+@utility ring-strong {
+  --tw-ring-color: var(--border-strong);
+}
+
+@utility elevation-sm {
+  --tw-shadow: var(--elevation-sm);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility elevation-md {
+  --tw-shadow: var(--elevation-md);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility elevation-lg {
+  --tw-shadow: var(--elevation-lg);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility elevation-xl {
+  --tw-shadow: var(--elevation-xl);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility elevation-2xl {
+  --tw-shadow: var(--elevation-2xl);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility transition-ui {
+  transition-property: color, background-color, border-color, outline-color, box-shadow, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@utility focus-ring {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@utility rounded-card {
+  border-radius: var(--radius-card);
+}
+
+@utility rounded-widget {
+  border-radius: var(--radius-widget);
+}
+
+@utility z-base {
+  z-index: var(--z-base);
+}
+
+@utility z-raised {
+  z-index: var(--z-raised);
+}
+
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+
+@utility z-drag {
+  z-index: var(--z-drag);
+}
+
+@utility z-nav {
+  z-index: var(--z-nav);
+}
+
+@utility z-backdrop {
+  z-index: var(--z-backdrop);
+}
+
+@utility z-sheet {
+  z-index: var(--z-sheet);
+}
+
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+
+.z-popover {
+  z-index: var(--z-popover) !important;
+}
+
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+
+@utility z-pet {
+  z-index: var(--z-pet);
+}

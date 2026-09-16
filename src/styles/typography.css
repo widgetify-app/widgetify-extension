@@ -1,0 +1,12 @@
+.font-latin {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  -moz-font-feature-settings: normal;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+}
+
+/* Vertical Writing Mode */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

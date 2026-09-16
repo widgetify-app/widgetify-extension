@@ -1,0 +1,8 @@
+:root {
+    --text-strong: var(--color-base-content);
+    --text-content: color-mix(in oklab, var(--color-base-content) 90%, transparent);
+    --text-muted: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+    --text-subtle: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+    --text-faint: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+    --text-ghost: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+}

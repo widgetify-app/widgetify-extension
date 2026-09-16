@@ -1,0 +1,5 @@
+:root {
+    --focus-ring: var(--color-primary);
+    --disabled-opacity: 0.5;
+    --control-knob: #ffffff;
+}

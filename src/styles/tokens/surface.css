@@ -1,0 +1,10 @@
+:root {
+    --surface-widget: var(--color-base-100);
+    --surface-content: var(--color-base-200);
+    --surface-raised: var(--color-base-300);
+    --surface-subtle: color-mix(in oklab, var(--color-base-content) 5%, transparent);
+    --surface-muted: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+    --surface-strong: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    --surface-bold: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+    --surface-overlay: rgb(0 0 0 / 0.5);
+}

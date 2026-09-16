@@ -1,0 +1,148 @@
+/* Slide in animation from right */
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+@keyframes widget-wiggle {
+  0% {
+    transform: rotate(-0.35deg);
+  }
+
+  100% {
+    transform: rotate(0.35deg);
+  }
+}
+
+@keyframes widget-wiggle-alt {
+  0% {
+    transform: rotate(0.3deg);
+  }
+
+  100% {
+    transform: rotate(-0.3deg);
+  }
+}
+
+.animate-widget-wiggle-a {
+  animation: widget-wiggle 0.46s ease-in-out infinite alternate;
+  transform-origin: 50% 10%;
+}
+
+.animate-widget-wiggle-b {
+  animation: widget-wiggle-alt 0.48s ease-in-out infinite alternate;
+  animation-delay: -0.15s;
+  transform-origin: 50% 10%;
+}
+
+.animate-widget-wiggle-c {
+  animation: widget-wiggle 0.52s ease-in-out infinite alternate;
+  animation-delay: -0.3s;
+  transform-origin: 50% 10%;
+}
+
+.widget-canvas-item-transition {
+  transition: transform 200ms ease-out, width 200ms ease-out, height 200ms ease-out;
+}
+
+@keyframes bounce-slow {
+
+  0%,
+  100% {
+    transform: translateY(-10%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.8s ease-in-out infinite;
+}
+
+/* Flip clock leaf animations */
+@keyframes flip-fold-down {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flip-drop-down {
+  0% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes pet-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pet-tooltip-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pet-tooltip-wiggle {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(10deg);
+  }
+
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+.animate-pet-tooltip-in {
+  animation: pet-tooltip-in 0.3s ease-out;
+}
+
+.animate-pet-tooltip-pulse {
+  animation: pet-tooltip-pulse 2s ease-in-out infinite;
+}
+
+.animate-pet-tooltip-wiggle {
+  animation: pet-tooltip-wiggle 1.5s ease-in-out infinite;
+}

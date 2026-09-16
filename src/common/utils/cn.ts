@@ -6,12 +6,42 @@ const twMerge = extendTailwindMerge<'wg-backdrop'>({
 		classGroups: {
 			'wg-backdrop': ['bg-glass'],
 
-			'bg-color': ['bg-widget', 'bg-content', 'bg-raised'],
-			'text-color': ['text-strong', 'text-content', 'text-muted', 'text-subtle'],
-			'border-color': ['border-content', 'border-strong'],
+			'bg-color': [
+				'bg-widget',
+				'bg-content',
+				'bg-raised',
+				'bg-subtle',
+				'bg-muted',
+				'bg-strong',
+				'bg-bold',
+				'bg-overlay',
+				'bg-knob',
+			],
+			'text-color': [
+				'text-strong',
+				'text-content',
+				'text-muted',
+				'text-subtle',
+				'text-faint',
+				'text-ghost',
+			],
+			'border-color': [
+				'border-faint',
+				'border-subtle',
+				'border-content',
+				'border-strong',
+				'border-bold',
+			],
+			'ring-color': ['ring-faint', 'ring-subtle', 'ring-content', 'ring-strong'],
 
 			rounded: ['rounded-widget', 'rounded-card'],
-			shadow: ['elevation-sm', 'elevation', 'elevation-lg'],
+			shadow: [
+				'elevation-sm',
+				'elevation-md',
+				'elevation-lg',
+				'elevation-xl',
+				'elevation-2xl',
+			],
 			transition: ['transition-ui'],
 			'outline-style': ['focus-ring'],
 			z: [

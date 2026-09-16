@@ -3,6 +3,9 @@
     --color-vip-content: #ffffff;
     --color-brand: var(--brand-primary);
     --color-brand-content: #ffffff;
+    --color-medal-gold: oklch(85.2% 0.199 91.936);
+    --color-medal-silver: oklch(70.7% 0.022 261.325);
+    --color-medal-bronze: oklch(66.6% 0.179 58.318);
 }
 
 :root {
@@ -10,16 +13,4 @@
     --brand-primary-rgb: 83, 109, 254;
     --brand-secondary: #7c8df0;
     --brand-secondary-rgb: 124, 141, 240;
-}
-
-[data-theme="light"] {
-    .nav-btn {
-        @apply text-gray-500 hover:text-gray-700;
-    }
-}
-
-[data-theme="icy"] {
-    .text-icy {
-        @apply text-white/70;
-    }
 }
