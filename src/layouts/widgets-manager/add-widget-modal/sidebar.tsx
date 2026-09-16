@@ -67,7 +67,16 @@ export function AddWidgetSidebar({
 							)}
 						>
 							<div className="flex items-center min-w-0 gap-2">
-								<span className="text-xl shrink-0">{def.emoji}</span>
+								<span
+									className={cn(
+										'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
+										isSelected
+											? 'bg-primary/15 text-primary'
+											: 'bg-base-content/5 text-muted'
+									)}
+								>
+									<Icon name={def.icon} size={15} />
+								</span>
 								<span
 									className={cn(
 										'text-xs truncate',

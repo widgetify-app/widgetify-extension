@@ -1,57 +1,63 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import { cn } from '@/common/utils/cn'
+import { Icon } from '@/icons'
 import { WIDGET_DEFINITIONS } from '../../widget-registry'
 import type { PresetLayout } from '../types'
 import { resolvePresetWidgetsForViewport } from '../utils/viewport'
 
+const PREVIEW_ROWS = 6
+const PREVIEW_COLS = 8
+
+function getIconSize(cellCount: number): number {
+	if (cellCount >= 6) return 20
+	if (cellCount >= 4) return 17
+	if (cellCount >= 2) return 14
+	return 12
+}
+
 interface PresetCanvasPreviewProps {
 	preset: PresetLayout
 	className?: string
-	isCompact?: boolean
 }
 
 export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 	preset,
 	className,
-	isCompact = false,
 }) => {
-	const PREVIEW_ROWS = 6
-	const resolvedWidgets = useMemo(() => {
-		return resolvePresetWidgetsForViewport(preset, PREVIEW_ROWS)
-	}, [preset])
+	const resolvedWidgets = useMemo(
+		() => resolvePresetWidgetsForViewport(preset, PREVIEW_ROWS),
+		[preset]
+	)
 
-	const maxRow = useMemo(() => {
-		const rows = resolvedWidgets.map((w) => w.position.row + w.size.h)
-		return Math.max(...rows, PREVIEW_ROWS)
-	}, [resolvedWidgets])
-
-	const cols = 8
+	const rows = useMemo(
+		() =>
+			Math.max(
+				PREVIEW_ROWS,
+				...resolvedWidgets.map((widget) => widget.position.row + widget.size.h)
+			),
+		[resolvedWidgets]
+	)
 
 	return (
 		<div
 			dir="ltr"
+			aria-hidden="true"
 			className={cn(
-				'relative w-full rounded-2xl bg-base-300/30 border border-base-content/10 p-2 select-none overflow-hidden transition-all',
-				isCompact ? 'h-32' : 'h-56 sm:h-64',
+				'w-full h-36 p-2 overflow-hidden select-none rounded-xl bg-base-content/5 border border-base-content/10 transition-ui',
 				className
 			)}
 		>
 			<div
-				className="relative w-full h-full"
+				className="grid w-full h-full gap-[3px]"
 				style={{
-					direction: 'ltr',
-					display: 'grid',
-					gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-					gridTemplateRows: `repeat(${maxRow}, minmax(0, 1fr))`,
-					gap: isCompact ? '3px' : '6px',
+					gridTemplateColumns: `repeat(${PREVIEW_COLS}, minmax(0, 1fr))`,
+					gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
 				}}
 			>
 				{resolvedWidgets.map((widget) => {
-					const def =
-						WIDGET_DEFINITIONS[widget.id as keyof typeof WIDGET_DEFINITIONS]
-					const emoji = def?.emoji || '📦'
-					const label = def?.label || widget.id
+					const definition = WIDGET_DEFINITIONS[widget.id]
+					if (!definition) return null
 
 					return (
 						<div
@@ -62,26 +68,12 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 								gridRowStart: widget.position.row + 1,
 								gridRowEnd: widget.position.row + widget.size.h + 1,
 							}}
-							className={cn(
-								'flex flex-col items-center justify-center rounded-xl bg-base-100/90 border border-base-content/10 shadow-xs overflow-hidden transition-all group-hover:border-primary/30',
-								isCompact ? 'p-0.5' : 'p-1.5'
-							)}
+							className="flex items-center justify-center overflow-hidden rounded-md bg-base-content/10 text-muted group-hover:bg-primary/10 group-hover:text-primary transition-ui"
 						>
-							<span
-								className={cn(
-									'leading-none transition-transform group-hover:scale-110 duration-200',
-									isCompact
-										? 'text-[13px]'
-										: 'text-base sm:text-lg mb-0.5'
-								)}
-							>
-								{emoji}
-							</span>
-							{!isCompact && (
-								<span className="text-[10px] sm:text-[11px] font-bold text-content text-center truncate max-w-full px-1">
-									{label}
-								</span>
-							)}
+							<Icon
+								name={definition.icon}
+								size={getIconSize(widget.size.w * widget.size.h)}
+							/>
 						</div>
 					)
 				})}

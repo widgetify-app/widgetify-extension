@@ -1,9 +1,9 @@
 import type React from 'react'
-import { memo, useMemo, useState } from 'react'
-import { Button, ConfirmationModal, Modal } from '@/components/ui'
+import { memo, useState } from 'react'
+import { Button, ConfirmationModal, Modal, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
-import { cn } from '@/common/utils/cn'
 import { callEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
 import { WIDGET_DEFINITIONS } from '../../widget-registry'
@@ -17,7 +17,7 @@ interface PresetLayoutModalProps {
 	onClose: () => void
 }
 
-type FilterType = 'all' | 'free' | 'vip'
+const MAX_VISIBLE_WIDGETS = 5
 
 const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 	isOpen,
@@ -30,10 +30,14 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 		useState<PresetLayout | null>(null)
 	const [isApplying, setIsApplying] = useState(false)
 
+	const handleOpenVipSettings = () => {
+		callEvent('openSettings', 'vip')
+		onClose()
+	}
+
 	const handleRequestApply = (preset: PresetLayout) => {
 		if (preset.isVip && !isVip) {
-			callEvent('openSettings', 'vip')
-			onClose()
+			handleOpenVipSettings()
 			return
 		}
 
@@ -65,121 +69,139 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				direction="rtl"
 				showCloseButton={true}
 				title={
-					<div className="flex items-center gap-2">
-						<span>چیدمان‌های آماده</span>
-						<span className="text-xs font-normal text-muted bg-base-200 px-2 py-0.5 rounded-lg">
-							قالب‌های طراحی‌شده و استاندارد
+					<span className="flex items-center gap-2">
+						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-primary/10 text-primary shrink-0">
+							<Icon name="viewGridAdd" size={16} />
 						</span>
-					</div>
+						<span>چیدمان‌های آماده</span>
+					</span>
 				}
 			>
 				<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
-					<div className="grid flex-1 min-h-0 grid-cols-1 gap-3 p-1 overflow-y-auto sm:grid-cols-2">
+					<p className="text-[11px] leading-relaxed text-muted shrink-0">
+						یکی از این قالب‌ها رو انتخاب کن تا ویجت‌های صفحه‌ی اصلی با همون
+						چیدمان جایگزین بشن.
+					</p>
+
+					<ul className="grid flex-1 min-h-0 grid-cols-1 gap-3 p-1 overflow-y-auto sm:grid-cols-2">
 						{PRESET_LAYOUTS.map((preset) => {
-							const isVipRequired = preset.isVip && !isVip
-							const uniqueWidgetIds = Array.from(
-								new Set(preset.widgets.map((w) => w.id))
+							const isLocked = preset.isVip && !isVip
+							const widgetIds = Array.from(
+								new Set(preset.widgets.map((widget) => widget.id))
 							)
+							const visibleWidgetIds = widgetIds.slice(
+								0,
+								MAX_VISIBLE_WIDGETS
+							)
+							const hiddenWidgetCount =
+								widgetIds.length - visibleWidgetIds.length
 
 							return (
-								<div
-									key={preset.id}
-									className={cn(
-										'flex flex-col justify-between gap-3 p-3.5 rounded-2xl bg-base-200/40 hover:bg-base-200/80 border transition-all text-right group shadow-2xs hover:shadow-xs',
-										preset.isVip
-											? 'border-vip/20 hover:border-vip/40'
-											: 'border-base-content/10 hover:border-base-content/20'
-									)}
-								>
-									<div className="flex flex-col gap-2.5">
-										<div className="relative overflow-hidden rounded-xl">
-											<PresetCanvasPreview
-												preset={preset}
-												isCompact={true}
-												className="border-0 bg-base-300/40 group-hover:scale-[1.01] transition-transform duration-300"
-											/>
-										</div>
+								<li key={preset.id} className="flex">
+									<article
+										className={cn(
+											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-base-content/5 shadow-2xs transition-ui hover:shadow-md',
+											preset.isVip
+												? 'border-vip/25 hover:border-vip/50'
+												: 'border-base-content/10 hover:border-primary/40'
+										)}
+									>
+										<PresetCanvasPreview preset={preset} />
 
-										<div className="flex flex-col gap-1.5">
-											<div className="flex items-center justify-between gap-1">
-												<span className="text-sm font-extrabold truncate text-content">
+										<div className="flex flex-col gap-2">
+											<div className="flex items-start justify-between gap-2">
+												<h4 className="text-sm font-bold leading-6 truncate text-content">
 													{preset.title}
-												</span>
+												</h4>
 
 												{preset.isVip ? (
-													<span className="flex items-center gap-1 text-[10px] font-bold text-vip bg-vip/10 border border-vip/20 px-2 py-0.5 rounded-full shrink-0">
-														<Icon name="diamond" size={11} />
-														<span>پرو</span>
-													</span>
+													<VipBadge
+														size="xs"
+														variant="indigo-subtle"
+														className="mt-0.5"
+													/>
 												) : (
-													<span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
+													<span className="mt-0.5 shrink-0 rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-[9px] font-bold text-success">
 														رایگان
 													</span>
 												)}
 											</div>
 
-											<p className="text-[11px] text-muted line-clamp-2 leading-relaxed h-8">
+											<p className="text-[11px] leading-relaxed text-muted line-clamp-2 min-h-8">
 												{preset.description}
 											</p>
 
-											<div className="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1 scrollbar-none">
-												{uniqueWidgetIds.map((widgetId) => {
-													const def =
-														WIDGET_DEFINITIONS[
-															widgetId as keyof typeof WIDGET_DEFINITIONS
-														]
-													if (!def) return null
+											<ul className="flex flex-wrap items-center gap-1">
+												{visibleWidgetIds.map((widgetId) => {
+													const definition =
+														WIDGET_DEFINITIONS[widgetId]
+													if (!definition) return null
 
 													return (
-														<span
+														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-300/60 border border-base-content/5 shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
+															className="inline-flex items-center gap-1 rounded-lg border border-base-content/10 bg-base-content/5 px-1.5 py-0.5 text-[10px] font-medium text-muted"
 														>
-															<span className="text-xs leading-none">
-																{def.emoji}
-															</span>
+															<Icon
+																name={definition.icon}
+																size={11}
+															/>
 															<span className="truncate max-w-20">
-																{def.label}
+																{definition.label}
 															</span>
-														</span>
+														</li>
 													)
 												})}
-											</div>
-										</div>
-									</div>
 
-									<div className="pt-1 border-t border-base-content/5">
-										{isVipRequired ? (
-											<Button
-												type="button"
-												onClick={() => {
-													callEvent('openSettings', 'vip')
-													onClose()
-												}}
-												className="w-full gap-1.5 text-xs font-bold py-2"
-												rounded="xl"
-												variant="outline"
-												color="vip"
-											>
-												<Icon name="diamond" size={13} />
-												<span>ارتقا به پرو برای این چیدمان</span>
-											</Button>
-										) : (
-											<Button
-												type="button"
-												onClick={() => handleRequestApply(preset)}
-												className="w-full text-xs font-bold py-2 shadow-xs"
-												rounded="xl"
-												color="primary"
-											>
-												<span>اعمال چیدمان</span>
-											</Button>
-										)}
-									</div>
-								</div>
+												{hiddenWidgetCount > 0 && (
+													<li
+														dir="ltr"
+														className="rounded-lg border border-base-content/10 px-1.5 py-0.5 text-[10px] font-medium text-muted"
+													>
+														{`+${hiddenWidgetCount.toLocaleString('fa-IR')}`}
+													</li>
+												)}
+											</ul>
+										</div>
+
+										<div className="pt-3 mt-auto border-t border-base-content/10">
+											{isLocked ? (
+												<Button
+													onClick={handleOpenVipSettings}
+													fullWidth
+													size="sm"
+													rounded="xl"
+													variant="outline"
+													color="vip"
+													className="font-bold"
+													icon={
+														<Icon name="diamond" size={13} />
+													}
+													aria-label={`ارتقا به پرو برای چیدمان ${preset.title}`}
+												>
+													<span>ارتقا به پرو</span>
+												</Button>
+											) : (
+												<Button
+													onClick={() =>
+														handleRequestApply(preset)
+													}
+													fullWidth
+													size="sm"
+													rounded="xl"
+													color="primary"
+													className="font-bold shadow-xs"
+													aria-label={`اعمال چیدمان ${preset.title}`}
+												>
+													<span>اعمال چیدمان</span>
+												</Button>
+											)}
+										</div>
+									</article>
+								</li>
 							)
 						})}
-					</div>
+					</ul>
 				</div>
 			</Modal>
 
@@ -192,11 +214,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 					onConfirm={handleConfirmApply}
 					isLoading={isApplying}
 					title="اعمال چیدمان جدید"
-					message={
-						selectedPresetToApply
-							? `با اعمال چیدمان «${selectedPresetToApply.title}»، ویجت‌ها و چیدمان فعلی جایگزین می‌شن. مطمئنی؟`
-							: 'می‌خوای این چیدمان رو اعمال کنی؟'
-					}
+					message={`با اعمال چیدمان «${selectedPresetToApply.title}»، ویجت‌ها و چیدمان فعلی جایگزین می‌شن. مطمئنی؟`}
 					confirmText="آره، اعمال کن"
 					cancelText="انصراف"
 					variant="warning"

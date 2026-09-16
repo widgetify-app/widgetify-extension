@@ -152,4 +152,9 @@ export type IconName =
 	| 'infinity'
 	| 'ticket'
 	| 'minus'
+	| 'mood'
+	| 'paw'
+	| 'photo'
+	| 'coins'
+	| 'cloudSun'
 export type IconMap = Record<IconName, IconType>

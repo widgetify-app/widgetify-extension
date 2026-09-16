@@ -49,6 +49,8 @@ import {
 	LuMinus,
 	LuPen,
 	LuPlus,
+	LuCloudSun,
+	LuCoins,
 	LuTicket,
 	LuX,
 } from 'react-icons/lu'
@@ -81,6 +83,9 @@ import {
 	TbArrowsRightLeft,
 	TbCloudUpload,
 	TbInfinity,
+	TbMoodSmile,
+	TbPaw,
+	TbPhoto,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -313,4 +318,9 @@ export const defaultIcons = {
 	infinity: TbInfinity,
 	ticket: LuTicket,
 	minus: LuMinus,
+	mood: TbMoodSmile,
+	paw: TbPaw,
+	photo: TbPhoto,
+	coins: LuCoins,
+	cloudSun: LuCloudSun,
 } satisfies IconMap

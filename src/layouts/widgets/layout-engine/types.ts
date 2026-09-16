@@ -58,6 +58,7 @@ export interface GridBreakpoint {
 }
 
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
+import type { IconName } from '@/icons/types'
 
 export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
 
@@ -73,6 +74,7 @@ export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
 	emoji: string
+	icon: IconName
 	category?: WidgetCategory
 	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]

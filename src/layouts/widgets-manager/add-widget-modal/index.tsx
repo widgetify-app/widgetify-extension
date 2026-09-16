@@ -260,8 +260,8 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:min-h-0 md:overflow-y-auto">
 									<div className="flex items-center justify-between pb-2 border-b border-base-content/10">
 										<div className="flex items-center gap-2">
-											<span className="text-2xl">
-												{selectedDef.emoji}
+											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-primary/10 text-primary">
+												<Icon name={selectedDef.icon} size={19} />
 											</span>
 											<div>
 												<h3 className="text-sm font-bold text-content">
