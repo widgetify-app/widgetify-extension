@@ -1,35 +1,13 @@
-import type React from 'react'
 import type { ReactNode } from 'react'
 import toast from 'react-hot-toast'
-import { playAlarm } from './play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
 import { cn } from '@/common/utils/cn'
-
-function raiseToastLayer() {
-	if (typeof document === 'undefined') return
-	const toaster = document.querySelector('[data-rht-toaster]') as HTMLElement | null
-	if (toaster) {
-		toaster.style.zIndex = '99999999'
-	}
-}
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning'
 
 export interface ToastOptions {
 	duration?: number
-	position?:
-		| 'top-left'
-		| 'top-center'
-		| 'top-right'
-		| 'bottom-left'
-		| 'bottom-center'
-		| 'bottom-right'
-	alarmSound?: boolean
-	sound?: boolean
-	title?: string
-	actionText?: string
-	onAction?: () => void
 }
 
 let audioCtx: AudioContext | null = null
@@ -54,7 +32,7 @@ function getAudioContext(): AudioContext | null {
 	}
 }
 
-export const TOAST_SOUND_VOLUME = 0.55
+const TOAST_SOUND_VOLUME = 0.55
 
 function playTone(
 	ctx: AudioContext,
@@ -121,8 +99,8 @@ const TOAST_THEMES: Record<
 	{
 		container: string
 		icon: ReactNode
-		defaultTitle: string
-		defaultActionText: string
+		title: string
+		actionText: string
 		messageClass: string
 	}
 > = {
@@ -133,8 +111,8 @@ const TOAST_THEMES: Record<
 				<Icon name="atSign" size={15} />
 			</div>
 		),
-		defaultTitle: 'نکته',
-		defaultActionText: 'متوجه شدم',
+		title: 'نکته',
+		actionText: 'متوجه شدم',
 		messageClass: 'text-neutral-300',
 	},
 	error: {
@@ -144,8 +122,8 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
-		defaultTitle: 'خطا',
-		defaultActionText: 'باشه',
+		title: 'خطا',
+		actionText: 'باشه',
 		messageClass: 'text-red-200/85',
 	},
 	success: {
@@ -155,8 +133,8 @@ const TOAST_THEMES: Record<
 				<Icon name="check" size={15} className="stroke-3" />
 			</div>
 		),
-		defaultTitle: 'موفقیت آمیز',
-		defaultActionText: 'تایید',
+		title: 'موفقیت آمیز',
+		actionText: 'تایید',
 		messageClass: 'text-emerald-200/85',
 	},
 	warning: {
@@ -166,8 +144,8 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
-		defaultTitle: 'هشدار',
-		defaultActionText: 'متوجه شدم',
+		title: 'هشدار',
+		actionText: 'متوجه شدم',
 		messageClass: 'text-amber-200/85',
 	},
 }
@@ -178,91 +156,57 @@ export function showToast(
 	options?: ToastOptions
 ) {
 	const theme = TOAST_THEMES[type] || TOAST_THEMES.info
-	const title = options?.title ?? theme.defaultTitle
-	const actionText = options?.actionText ?? theme.defaultActionText
 
-	if (options?.sound !== false) {
-		playNativeToastSound(type)
-	}
+	playNativeToastSound(type)
 
 	return toast.custom(
-		(t) => {
-			const handleAction = () => {
-				toast.remove(t.id, t.toasterId)
-				if (options?.onAction) {
-					options.onAction()
-				}
-			}
-
-			return (
-				<div
-					dir="rtl"
-					className={cn(
-						'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
-						theme.container,
-						t.visible
-							? 'opacity-100 translate-y-0 scale-100'
-							: 'opacity-0 -translate-y-2 scale-95'
-					)}
-				>
-					<div className="flex items-center flex-1 min-w-0 gap-3">
-						{theme.icon}
-						<div className="flex-1 min-w-0">
-							<p className="m-0 text-sm font-bold leading-tight text-white truncate">
-								{title}
+		(t) => (
+			<div
+				dir="rtl"
+				className={cn(
+					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
+					theme.container,
+					t.visible
+						? 'opacity-100 translate-y-0 scale-100'
+						: 'opacity-0 -translate-y-2 scale-95'
+				)}
+			>
+				<div className="flex items-center flex-1 min-w-0 gap-3">
+					{theme.icon}
+					<div className="flex-1 min-w-0">
+						<p className="m-0 text-sm font-bold leading-tight text-white truncate">
+							{theme.title}
+						</p>
+						{message && (
+							<p
+								className={cn(
+									'text-xs font-normal leading-relaxed m-0 mt-0.5 wrap-break-word line-clamp-2',
+									theme.messageClass
+								)}
+							>
+								{message}
 							</p>
-							{message && (
-								<p
-									className={cn(
-										'text-xs font-normal leading-relaxed m-0 mt-0.5 wrap-break-word line-clamp-2',
-										theme.messageClass
-									)}
-								>
-									{message}
-								</p>
-							)}
-						</div>
+						)}
 					</div>
-
-					<button
-						type="button"
-						onClick={handleAction}
-						className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
-					>
-						{actionText}
-					</button>
 				</div>
-			)
-		},
+
+				<button
+					type="button"
+					onClick={() => toast.remove(t.id, t.toasterId)}
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+				>
+					{theme.actionText}
+				</button>
+			</div>
+		),
 		{
 			duration: options?.duration ?? 5000,
-			position: options?.position ?? 'top-center',
+			position: 'top-center',
 		}
 	)
 }
 
-export function showCustomToast(
-	message: React.ReactNode | string,
-	options?: ToastOptions
-) {
-	raiseToastLayer()
-
-	if (options?.sound !== false) {
-		playNativeToastSound('info')
-	}
-	if (options?.alarmSound) {
-		playAlarm('success')
-	}
-
-	return toast.custom(() => <>{message}</>, {
-		duration: options?.duration ?? 5000,
-		position: options?.position ?? 'top-center',
-	})
-}
-
 export function showPreviewToast(itemName: string, onCancel: () => void): string {
-	raiseToastLayer()
-
 	const id = `preview-${Date.now()}`
 
 	playNativeToastSound('info')
@@ -272,7 +216,9 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 			<div
 				className={cn(
 					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
-					t.visible ? 'animate-enter' : 'animate-leave'
+					t.visible
+						? 'opacity-100 translate-y-0 scale-100'
+						: 'opacity-0 -translate-y-2 scale-95'
 				)}
 			>
 				<div className="flex items-center flex-1 min-w-0 gap-3">

@@ -23,7 +23,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 				friendId,
 				state: 'accepted',
 			})
-			showToast('دوست شدید!', 'success', { alarmSound: true })
+			showToast('دوست شدید!', 'success')
 		} catch {
 			showToast('خطا در پردازش', 'error')
 		}

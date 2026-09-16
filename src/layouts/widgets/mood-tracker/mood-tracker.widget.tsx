@@ -96,9 +96,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 			if (dateToLog === todayDateStr) {
 				setOptimisticMood(moodValue)
 			}
-			showToast('حال روزانه شما ثبت شد.', 'success', {
-				alarmSound: true,
-			})
+			showToast('حال روزانه شما ثبت شد.', 'success')
 		}
 
 		queryClient.invalidateQueries({ queryKey: ['get-moods'] })

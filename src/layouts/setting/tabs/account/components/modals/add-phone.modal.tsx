@@ -74,9 +74,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('شماره موبایل با موفقیت اضافه شد', 'success', {
-					alarmSound: true,
-				})
+				showToast('شماره موبایل با موفقیت اضافه شد', 'success')
 				prop.onClose()
 			}
 		}

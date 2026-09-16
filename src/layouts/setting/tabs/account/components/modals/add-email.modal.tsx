@@ -75,9 +75,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('ایمیل با موفقیت اضافه شد', 'success', {
-					alarmSound: true,
-				})
+				showToast('ایمیل با موفقیت اضافه شد', 'success')
 				prop.onClose('success')
 			}
 		}

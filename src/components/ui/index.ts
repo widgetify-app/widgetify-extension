@@ -57,6 +57,8 @@ export * from './select/select'
 export * from './tabs/tabs'
 export * from './tabs/tabs.variants'
 
+export * from './toast/stacked-toaster'
+
 export * from './toggle/toggle'
 export * from './toggle/toggle.variants'
 
