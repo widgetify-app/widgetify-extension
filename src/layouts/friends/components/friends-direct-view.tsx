@@ -76,11 +76,6 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					<span className="text-xs font-medium text-base-content/80">
 						دوستان
 					</span>
-					{allFriends.length > 0 && (
-						<span className="px-1.5 py-0.2 text-[10px] rounded-full bg-base-300 text-base-content/60 font-mono">
-							{allFriends.length}
-						</span>
-					)}
 				</div>
 
 				<div className="flex items-center gap-1.5">
