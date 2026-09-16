@@ -6,13 +6,11 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/icons'
-import type { IconName } from '@/icons/types'
 import {
 	useGetVipPlans,
 	usePurchaseVipPlan,
 } from '@/services/hooks/market/market-vip.hook'
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
-import { cn } from '@/common/utils/cn'
 import { FreeVipSuccessModal } from './free-vip-success-modal'
 import { VipPlanCard } from './vip-plan-card'
 import { VipHeroBanner } from './vip-hero-banner'
@@ -133,7 +131,7 @@ export function VipTab() {
 			<div className="p-3.5 rounded-2xl border border-base-content/10 bg-base-300/20 flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
 					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-primary shrink-0">
-						<Icon name="ticket" size={19} />
+						<Icon name="shoppingBag" size={19} />
 					</div>
 					<div className="flex flex-col">
 						<span className="text-xs font-bold text-content">
