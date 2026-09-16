@@ -6,17 +6,20 @@ export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 		Analytics.event('searchbox_open_voice_search')
 		onClick()
 	}
+
 	return (
 		<Tooltip content="جستجوی گفتاری">
 			<button
 				type="button"
-				onClick={() => onClickHandle()}
-				className="flex items-center justify-center transition-all duration-300 rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-base-300 group border-none bg-transparent p-0"
+				onClick={onClickHandle}
+				aria-label="جستجوی گفتاری"
+				className="flex items-center justify-center p-0 transition-all duration-300 bg-transparent border-none rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-base-300 group"
 			>
 				<svg
 					className="w-6 h-6 transition-colors text-base-content/50"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
+					aria-hidden="true"
 				>
 					<path
 						fill="currentColor"

@@ -100,6 +100,8 @@ export function ImageSearchPortal({
 			<div
 				ref={portalRef}
 				style={portalStyles}
+				role="dialog"
+				aria-label="جستجوی تصویر با گوگل"
 				className="z-20 p-4 overflow-hidden duration-300 shadow-2xl bg-content bg-glass -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
@@ -109,34 +111,37 @@ export function ImageSearchPortal({
 					<div className="flex flex-row items-center gap-1">
 						<a
 							href="https://widgetify.ir/privacy?target=search"
-							className="p-1 transition-colors rounded-full cursor-pointer hover:bg-base-200 text-base-content/50"
+							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-base-content/10 text-base-content/50 focus-visible:focus-ring"
 							target="_blank"
 							rel="noreferrer"
 						>
 							<Icon name="outlinePrivacyTip" size={18} />
 						</a>
 						<button
+							type="button"
 							onClick={onClose}
-							className="p-1 transition-colors rounded-full cursor-pointer hover:bg-base-200 text-base-content/50"
+							aria-label="بستن جستجوی تصویر"
+							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-base-content/10 text-base-content/50 focus-visible:focus-ring"
 						>
-							<Icon name="close" size={22} />
+							<Icon name="close" size={22} aria-hidden="true" />
 						</button>
 					</div>
 				</div>
 
 				<div className="flex flex-col gap-4">
 					<RequireAuth mode="preview">
-						<div
+						<button
+							type="button"
 							onDragOver={(e) => e.preventDefault()}
 							onDrop={(e) => {
 								e.preventDefault()
 								const file = e.dataTransfer.files[0]
 								if (file) handleUpload(file)
 							}}
-							className="relative flex flex-col items-center justify-center py-6 transition-all border-2 border-dashed cursor-pointer group border-base-content/10 rounded-2xl hover:border-primary/40 hover:bg-primary/5"
+							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-base-content/10 rounded-2xl transition-ui hover:border-primary/40 hover:bg-primary/5 focus-visible:focus-ring"
 							onClick={() => fileInputRef.current?.click()}
 						>
-							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-colors rounded-full bg-base-200 group-hover:text-primary">
+							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-base-content/5 group-hover:text-primary">
 								<svg
 									width="36"
 									height="36"
@@ -206,16 +211,16 @@ export function ImageSearchPortal({
 
 										<div className="w-full h-1 overflow-hidden rounded-full bg-base-content/10">
 											<div
-												className="h-full transition-all duration-300 bg-primary"
+												className="h-full duration-300 transition-[width] bg-primary"
 												style={{ width: `${uploadProgress}%` }}
 											></div>
 										</div>
 									</div>
 								</div>
 							)}
-						</div>
+						</button>
 					</RequireAuth>
-					<div className="flex items-center gap-2 p-1 border bg-base-200 rounded-xl border-base-content/5">
+					<div className="flex items-center gap-2 p-1 border bg-base-content/5 rounded-xl border-base-content/10">
 						<div className="pl-3 text-base-content/30">
 							<Icon name="link" size={20} />
 						</div>

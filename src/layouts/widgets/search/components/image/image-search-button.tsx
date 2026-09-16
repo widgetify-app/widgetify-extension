@@ -11,13 +11,15 @@ export function ImageSearchButton({ onClick }: { onClick: () => void }) {
 		<Tooltip content="جستجوی با تصویر">
 			<button
 				type="button"
-				onClick={() => onClickHandle()}
-				className="relative flex items-center justify-center transition-colors rounded-full cursor-pointer h-9 w-9 hover:bg-base-300 shrink-0"
+				onClick={onClickHandle}
+				aria-label="جستجوی با تصویر"
+				className="relative flex items-center justify-center p-0 transition-colors bg-transparent border-none rounded-full cursor-pointer h-9 w-9 hover:bg-base-300 shrink-0"
 			>
 				<svg
 					className="w-6 h-6 transition-colors text-base-content/50"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
+					aria-hidden="true"
 				>
 					<path
 						fill="currentColor"
