@@ -46,12 +46,12 @@ export function VipBannerCard({
 				<div className="flex flex-col min-w-0 text-right">
 					<div className="flex items-center gap-2">
 						<h3 className="text-sm font-black truncate sm:text-base text-content">
-							{title || 'پرو شو و پرواز کن'}
+							{title || 'فراتر از یک تب ساده؛ با نسخه پرو'}
 						</h3>
 					</div>
 					<p className="text-[11px] text-muted truncate mt-0.5 max-w-xs sm:max-w-md">
 						{description ||
-							'دسترسی نامحدود به ویجت‌ها، چیدمان‌های اختصاصی، همگام‌سازی ابری و امکانات پریمیوم'}
+							'والپیپرهای ویدیویی، ابعاد و مدل‌های اختصاصی ویجت‌ها و امکانات ویژه گالری'}
 					</p>
 				</div>
 			</div>

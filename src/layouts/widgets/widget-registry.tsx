@@ -327,9 +327,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
-		node: (_instanceId, size) => (
-			<NetworkLayout size={size} />
-		),
+		node: (_instanceId, size) => <NetworkLayout size={size} />,
 	},
 	[WidgetKeys.HabitTracker]: {
 		id: WidgetKeys.HabitTracker,
@@ -416,13 +414,13 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'persian',
-				label: 'ساعت یخی فارسی',
+				label: 'ساعت شفاف فارسی',
 				size: { w: 2, h: 2 },
 				meta: { variant: 'persian' },
 			},
 			{
 				id: 'english',
-				label: 'ساعت یخی انگلیسی',
+				label: 'ساعت شفاف انگلیسی',
 				size: { w: 2, h: 2 },
 				meta: { variant: 'english' },
 			},
