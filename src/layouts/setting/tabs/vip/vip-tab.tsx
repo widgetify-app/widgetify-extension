@@ -396,7 +396,7 @@ export function VipTab() {
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">
 									{selectedPlan.isClaimed
-										? 'قبلاً دریافت شده'
+										? 'قبلا دریافت شده'
 										: 'رایگان'}
 								</span>
 							) : (
