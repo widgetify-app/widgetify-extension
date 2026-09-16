@@ -5,9 +5,9 @@ export const vipBadgeVariants = cva(
 	{
 		variants: {
 			variant: {
-				indigo: 'bg-vip text-vip-content shadow-sm shadow-vip/25',
+				indigo: 'bg-vip text-vip-content elevation-sm shadow-vip/25',
 				'indigo-subtle': 'bg-vip/15 text-vip border border-vip/20',
-				white: 'bg-white/20 text-white backdrop-blur-md border border-white/30 shadow-sm',
+				white: 'bg-(--over-image-surface) text-(--over-image-text) backdrop-blur-md border border-(--over-image-border) elevation-sm',
 			},
 			size: {
 				xs: 'text-[9px] px-2 py-0.5 gap-1',

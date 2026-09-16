@@ -10,7 +10,7 @@ export const textInputVariants = cva(
 		'placeholder:text-subtle',
 		'outline-none focus:outline-none',
 		'focus:border-primary focus:ring-1 focus:ring-primary/20',
-		'disabled:cursor-not-allowed disabled:opacity-50',
+		'disabled:cursor-not-allowed disabled:opacity-(--disabled-opacity)',
 	],
 	{
 		variants: {

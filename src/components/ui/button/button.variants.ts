@@ -7,14 +7,14 @@ export const buttonVariants = cva(
 		'border font-semibold',
 		'transition-ui',
 		'focus-visible:focus-ring',
-		'disabled:pointer-events-none disabled:opacity-50',
+		'disabled:pointer-events-none disabled:opacity-(--disabled-opacity)',
 	],
 	{
 		variants: {
 			variant: {
 				solid: 'border-transparent',
-				outline: 'bg-transparent hover:bg-base-content/10',
-				ghost: 'bg-transparent border-transparent hover:bg-base-content/10',
+				outline: 'bg-transparent hover:bg-muted',
+				ghost: 'bg-transparent border-transparent hover:bg-muted',
 				text: 'bg-transparent border-transparent hover:underline underline-offset-4',
 			},
 			color: {
@@ -53,7 +53,7 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-content border-content hover:bg-base-content/5!',
+				class: 'bg-content border-content hover:bg-subtle!',
 			},
 			{
 				variant: 'solid',

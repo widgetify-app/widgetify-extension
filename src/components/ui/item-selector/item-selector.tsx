@@ -22,7 +22,7 @@ export function ItemSelector({
 			return 'border-primary bg-primary'
 		}
 
-		return 'border-content bg-base-300/60'
+		return 'border-content bg-subtle'
 	}
 
 	return (
@@ -30,17 +30,17 @@ export function ItemSelector({
 			type="button"
 			onClick={onClick}
 			className={cn(
-				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
+				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none focus-visible:focus-ring',
 				className,
 				isActive
 					? 'border-primary/25 bg-primary/20'
-					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
+					: 'bg-subtle border-content hover:!border-primary/15 hover:!bg-primary/5'
 			)}
 			style={style}
 		>
 			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
-					className={`w-4 h-4 rounded-full text-white border flex items-center justify-center ${getRadioBorderStyle(isActive)}`}
+					className={`w-4 h-4 rounded-full text-primary-content border flex items-center justify-center ${getRadioBorderStyle(isActive)}`}
 				>
 					{isActive && (
 						<svg

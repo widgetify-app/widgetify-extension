@@ -199,7 +199,7 @@ export function Dropdown({
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}
-					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-primary/10 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-primary/10 focus:text-primary"
+					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-primary/10 hover:text-primary disabled:opacity-(--disabled-opacity) disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-primary/10 focus:text-primary"
 				>
 					{option.label}
 				</button>
@@ -211,7 +211,7 @@ export function Dropdown({
 		<div ref={dropdownRef} className={twMerge('relative inline-block', className)}>
 			<div
 				onClick={disabled ? undefined : toggle}
-				className={disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+				className={disabled ? 'cursor-not-allowed opacity-(--disabled-opacity)' : 'cursor-pointer'}
 			>
 				{trigger}
 			</div>
@@ -226,7 +226,7 @@ export function Dropdown({
 					>
 						<Motion.div
 							ref={dropdownContentRef}
-							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-base-200 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							className={`fixed elevation-xl overflow-hidden rounded-2xl bg-content backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{
 								opacity: isReady ? 1 : 0,

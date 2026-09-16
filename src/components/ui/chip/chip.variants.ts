@@ -13,18 +13,19 @@ export const chipVariants = cva(
 		'active:scale-95',
 		'disabled:cursor-not-allowed',
 		'disabled:active:scale-none!',
+		'focus-visible:focus-ring',
 	],
 	{
 		variants: {
 			selected: {
-				true: ['bg-primary', 'border-primary', 'text-white'],
+				true: ['bg-primary', 'border-primary', 'text-primary-content'],
 				false: [
-					'bg-base-100',
+					'bg-widget',
 					'bg-glass',
-					'border-base-300/30',
-					'text-base-content/80',
+					'border-faint',
+					'text-content',
 					'enabled:hover:border-primary/30',
-					'disabled:opacity-80',
+					'disabled:opacity-(--disabled-opacity)',
 				],
 			},
 		},

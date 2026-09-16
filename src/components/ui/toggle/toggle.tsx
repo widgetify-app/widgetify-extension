@@ -19,11 +19,15 @@ export const ToggleSwitch = ({
 	const interactive = !disabled && !loading
 
 	return (
-		<div
+		<button
+			type="button"
+			role="switch"
+			aria-checked={enabled}
+			disabled={!interactive}
 			className={cn(toggleTrackVariants({ enabled, interactive }), className)}
-			onClick={interactive ? onToggle : undefined}
+			onClick={onToggle}
 		>
 			<span className={toggleThumbVariants({ enabled, loading })} />
-		</div>
+		</button>
 	)
 }

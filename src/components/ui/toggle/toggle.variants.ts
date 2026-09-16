@@ -1,16 +1,24 @@
 import { cva } from 'class-variance-authority'
 
 export const toggleTrackVariants = cva(
-	['w-10', 'h-6', 'relative', 'rounded-full', 'transition-colors', 'duration-200'],
+	[
+		'w-10',
+		'h-6',
+		'relative',
+		'rounded-full',
+		'transition-colors',
+		'duration-200',
+		'focus-visible:focus-ring',
+	],
 	{
 		variants: {
 			enabled: {
 				true: ['bg-primary'],
-				false: ['bg-base-300'],
+				false: ['bg-raised'],
 			},
 			interactive: {
 				true: ['cursor-pointer', 'active:scale-95'],
-				false: ['cursor-not-allowed', 'opacity-70'],
+				false: ['cursor-not-allowed', 'opacity-(--disabled-opacity)'],
 			},
 		},
 		defaultVariants: {
@@ -28,8 +36,8 @@ export const toggleThumbVariants = cva(
 		'top-1',
 		'left-1',
 		'rounded-full',
-		'bg-white',
-		'shadow-sm',
+		'bg-knob',
+		'elevation-sm',
 		'transition-transform',
 		'duration-300',
 		'ease-out',

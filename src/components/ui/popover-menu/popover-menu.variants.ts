@@ -4,9 +4,9 @@ export const popoverMenuVariants = cva([
 	'bg-content',
 	'bg-glass',
 	'rounded-3xl',
-	'shadow-2xl',
+	'elevation-2xl',
 	'border',
-	'border-base-content/10',
+	'border-subtle',
 	'p-2',
 	'text-right',
 	'text-xs',
@@ -32,13 +32,14 @@ export const popoverMenuItemVariants = cva(
 		'transition-colors',
 		'text-right',
 		'cursor-pointer',
-		'disabled:opacity-40',
+		'focus-visible:focus-ring',
+		'disabled:opacity-(--disabled-opacity)',
 		'disabled:cursor-not-allowed',
 	],
 	{
 		variants: {
 			variant: {
-				default: 'text-content hover:bg-base-content/10 active:bg-base-300',
+				default: 'text-content hover:bg-muted active:bg-raised',
 				danger: 'text-error hover:bg-error/10 active:bg-error/20',
 				primary: 'text-primary hover:bg-primary/10 active:bg-primary/20',
 			},

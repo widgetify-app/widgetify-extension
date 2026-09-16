@@ -1,17 +1,5 @@
 import { cva } from 'class-variance-authority'
 
-export const confirmationAccentBarVariants = cva(['h-1', 'w-full'], {
-	variants: {
-		variant: {
-			danger: ['bg-error'],
-			warning: ['bg-warning'],
-			info: ['bg-info'],
-			primary: ['bg-primary'],
-		},
-	},
-	defaultVariants: { variant: 'danger' },
-})
-
 export const confirmationIconVariants = cva(
 	['flex', 'items-center', 'justify-center', 'rounded-full'],
 	{
@@ -27,4 +15,4 @@ export const confirmationIconVariants = cva(
 	}
 )
 
-export type ConfirmationVariant = typeof confirmationAccentBarVariants
+export type ConfirmationVariant = typeof confirmationIconVariants

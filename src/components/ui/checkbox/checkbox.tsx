@@ -26,7 +26,7 @@ const CheckboxBase = ({
 	const getCheckboxStyle = () => {
 		if (checked) {
 			if (checkedCheckBoxClassName) return checkedCheckBoxClassName
-			return 'bg-primary border-primary'
+			return 'bg-primary border-primary text-primary-content'
 		}
 
 		if (unCheckedCheckBoxClassName) return unCheckedCheckBoxClassName
@@ -52,14 +52,14 @@ const CheckboxBase = ({
 			<div className="relative">
 				<input
 					type="checkbox"
-					className={'sr-only'}
+					className={'sr-only peer'}
 					checked={checked}
 					onChange={onChangeEvent}
 					disabled={disabled}
 					onClick={onClickEvent}
 				/>
 				<div
-					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
+					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 peer-focus-visible:focus-ring ${getCheckboxStyle()} ${className}`}
 				>
 					<svg
 						className={`transition-all duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
@@ -71,7 +71,7 @@ const CheckboxBase = ({
 						<path
 							className={`transition-all duration-200 ${checked ? 'stroke-dashoffset-0' : 'stroke-dashoffset-full'}`}
 							d="M2.5 6L5 8.5L9.5 4"
-							stroke="white"
+							stroke="currentColor"
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"

@@ -10,15 +10,15 @@ interface OfflineIndicatorProps {
 export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 	if (mode === 'badge') {
 		return (
-			<div className="absolute flex items-center justify-center w-5 h-5 border-2 rounded-full -top-2 -right-2 offline-indicator-badge">
-				<Icon name="offline" className="text-xs text-white" />
+			<div className="absolute flex items-center justify-center w-5 h-5 border-2 rounded-full -top-2 -right-2 bg-error border-error">
+				<Icon name="offline" className="text-xs text-error-content" />
 			</div>
 		)
 	}
 
 	if (mode === 'status') {
 		return (
-			<div className="text-xs mt-1 py-0.5 px-2 rounded border offline-indicator-status inline-flex items-center gap-1">
+			<div className="text-xs mt-1 py-0.5 px-2 rounded border bg-error/20 text-error border-error/20 inline-flex items-center gap-1">
 				<Icon name="offline" className="text-xs" />
 				<span className="font-light">{message || 'حالت آفلاین'}</span>
 			</div>

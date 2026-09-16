@@ -128,7 +128,7 @@ export function DatePicker({
 				return 'text-muted opacity-50'
 			}
 
-			return 'text-content hover:bg-base-300'
+			return 'text-content hover:bg-raised'
 		}
 
 		const getHoverStyle = () => {
@@ -152,19 +152,21 @@ export function DatePicker({
 		}
 
 		return (
-			<div
+			<button
+				type="button"
 				key={`${isCurrentMonth ? 'current' : isPrevMonth ? 'prev' : 'next'}-${day}`}
 				onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth)}
 				className={`
 					relative p-0 rounded-2xl text-xs transition-all cursor-pointer
 					h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
+					focus-visible:focus-ring
 					${getDayTextStyle()}
 					${getHoverStyle()}
-					${isDayToday ? `${getTodayRingStyle()} scale-110 shadow-lg` : ''}
+					${isDayToday ? `${getTodayRingStyle()} scale-110 elevation-lg` : ''}
 				`}
 			>
 				{day}
-			</div>
+			</button>
 		)
 	}
 
@@ -191,7 +193,7 @@ export function DatePicker({
 		<div
 			data-date-picker
 			className={twMerge(
-				'bg-base-100 border border-base-300 rounded-xl p-3 w-64',
+				'bg-widget border border-content rounded-xl p-3 w-64',
 				className
 			)}
 		>
@@ -203,20 +205,20 @@ export function DatePicker({
 					{showTodayButton && (
 						<button
 							onClick={goToToday}
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-raised hover:opacity-100"
 						>
 							<Icon name="backRight" size={12} />
 						</button>
 					)}
 					<button
 						onClick={() => changeMonth(-1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-raised hover:opacity-100"
 					>
 						<Icon name="chevronRight" size={12} />
 					</button>
 					<button
 						onClick={() => changeMonth(1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-300 hover:opacity-100"
+						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-raised hover:opacity-100"
 					>
 						<Icon name="chevronLeft" size={12} />
 					</button>
