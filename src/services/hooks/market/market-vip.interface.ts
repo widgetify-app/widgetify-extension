@@ -24,4 +24,7 @@ export interface PurchaseVipPlanInput {
 
 export interface PurchaseVipPlanResponse {
 	url?: string
+	isFree?: boolean
+	activated?: boolean
+	days?: number
 }

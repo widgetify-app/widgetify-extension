@@ -137,18 +137,26 @@ export function VipTab() {
 		purchasePlan(
 			{ packageId: selectedPlan.id },
 			{
-				onSuccess: () => {
-					showToast('در حال انتقال به درگاه پرداخت...', 'success')
+				onSuccess: (res) => {
+					if (res?.isFree || res?.activated) {
+						showToast(`اشتراک رایگان ${selectedPlan.days} روزه ${VIP_LABEL} با موفقیت فعال شد`, 'success')
+					} else {
+						showToast('در حال انتقال به درگاه پرداخت...', 'success')
+					}
 					Analytics.event('vip_plan_purchased')
 					refetchUser()
 					refetch()
 				},
 				onError: (error) => {
-					showToast(
-						(translateError(error) as string) ||
-							`خطا در خرید اشتراک ${VIP_LABEL}`,
-						'error'
-					)
+					const errorMsg = translateError(error) as string
+					if (errorMsg === 'FREE_PLAN_ALREADY_CLAIMED' || (error as any)?.response?.data?.message === 'FREE_PLAN_ALREADY_CLAIMED') {
+						showToast('شما قبلاً این اشتراک رایگان را دریافت کرده‌اید', 'error')
+					} else {
+						showToast(
+							errorMsg || `خطا در خرید اشتراک ${VIP_LABEL}`,
+							'error'
+						)
+					}
 					Analytics.event('vip_plan_purchase_failed')
 				},
 			}
@@ -330,12 +338,20 @@ export function VipTab() {
 
 									<div className="mt-2.5 space-y-1">
 										<div className="flex items-baseline gap-1">
-											<span className="text-base font-black text-content tabular-nums">
-												{fmt(plan.price)}
-											</span>
-											<span className="text-[11px] text-muted">
-												تومان
-											</span>
+											{plan.price === 0 ? (
+												<span className="text-base font-black text-success">
+													رایگان
+												</span>
+											) : (
+												<>
+													<span className="text-base font-black text-content tabular-nums">
+														{fmt(plan.price)}
+													</span>
+													<span className="text-[11px] text-muted">
+														تومان
+													</span>
+												</>
+											)}
 										</div>
 									</div>
 								</div>
@@ -370,10 +386,18 @@ export function VipTab() {
 					<div className="flex flex-col items-start sm:items-end">
 						<span className="text-[11px] text-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
-							<span className="text-base font-black sm:text-lg text-content tabular-nums">
-								{selectedPlan ? fmt(selectedPlan.price) : '۰'}
-							</span>
-							<span className="text-xs text-muted">تومان</span>
+							{selectedPlan?.price === 0 ? (
+								<span className="text-base font-black sm:text-lg text-success">
+									رایگان
+								</span>
+							) : (
+								<>
+									<span className="text-base font-black sm:text-lg text-content tabular-nums">
+										{selectedPlan ? fmt(selectedPlan.price) : '۰'}
+									</span>
+									<span className="text-xs text-muted">تومان</span>
+								</>
+							)}
 						</div>
 					</div>
 

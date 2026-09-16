@@ -28,14 +28,15 @@ const purchaseVipPlan = async (
 ): Promise<PurchaseVipPlanResponse> => {
 	const api = getMainClient()
 	const response = await api.post('/market/packages/vip/purchase', data)
+	const result = response.data?.data || response.data
 
-	const paymentUrl = response.data?.data?.url || response.data?.url
+	const paymentUrl = result?.url
 
 	if (paymentUrl) {
 		window.location.href = paymentUrl
 	}
 
-	return response.data?.data || response.data
+	return result
 }
 
 export const usePurchaseVipPlan = () => {
