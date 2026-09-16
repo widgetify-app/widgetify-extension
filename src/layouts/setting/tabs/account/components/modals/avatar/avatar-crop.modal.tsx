@@ -1,63 +1,28 @@
 import { useCallback, useState } from 'react'
-import Cropper, { Area, Point } from 'react-easy-crop'
+import Cropper, { type Area, type Point } from 'react-easy-crop'
 import { Modal } from '@/components/ui'
 import { FooterButtons } from '../footer-buttons'
+import { getCroppedImageFile } from './avatar-crop.utils'
 
 interface Prop {
 	show: boolean
 	image: string
 	onClose: () => void
-	onCropComplete: (file: File) => void
+	onCropComplete: (file: File) => Promise<void> | void
+	isUploading?: boolean
 }
 
-// از روی عکس اصلی و مختصات کراپ‌شده، یک فایل جدید (کراپ‌شده) می‌سازه
-async function getCroppedImageFile(
-	imageSrc: string,
-	cropArea: Area,
-	fileName: string
-): Promise<File> {
-	const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-		const img = new Image()
-		img.crossOrigin = 'anonymous'
-		img.onload = () => resolve(img)
-		img.onerror = reject
-		img.src = imageSrc
-	})
-
-	const canvas = document.createElement('canvas')
-	canvas.width = cropArea.width
-	canvas.height = cropArea.height
-	const ctx = canvas.getContext('2d')
-	if (!ctx) throw new Error('Canvas context not available')
-
-	ctx.drawImage(
-		image,
-		cropArea.x,
-		cropArea.y,
-		cropArea.width,
-		cropArea.height,
-		0,
-		0,
-		cropArea.width,
-		cropArea.height
-	)
-
-	return new Promise((resolve, reject) => {
-		canvas.toBlob((blob) => {
-			if (!blob) {
-				reject(new Error('Canvas is empty'))
-				return
-			}
-			resolve(new File([blob], fileName, { type: blob.type || 'image/png' }))
-		}, 'image/png')
-	})
-}
-
-export function AvatarCropModal({ show, image, onClose, onCropComplete }: Prop) {
+export function AvatarCropModal({
+	show,
+	image,
+	onClose,
+	onCropComplete,
+	isUploading = false,
+}: Prop) {
 	const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState(1)
 	const [croppedArea, setCroppedArea] = useState<Area | null>(null)
-	const [isSaving, setIsSaving] = useState(false)
+	const [isProcessing, setIsProcessing] = useState(false)
 
 	const handleCropComplete = useCallback(
 		(_croppedAreaPercent: Area, croppedAreaPixels: Area) => {
@@ -68,22 +33,24 @@ export function AvatarCropModal({ show, image, onClose, onCropComplete }: Prop) 
 
 	const handleConfirm = async () => {
 		if (!croppedArea) return
-		setIsSaving(true)
+		setIsProcessing(true)
 		try {
 			const file = await getCroppedImageFile(image, croppedArea, 'avatar.png')
-			onCropComplete(file)
+			await onCropComplete(file)
 		} finally {
-			setIsSaving(false)
+			setIsProcessing(false)
 		}
 	}
+
+	const isPending = isProcessing || isUploading
 
 	return (
 		<Modal
 			isOpen={show}
-			onClose={() => onClose()}
+			onClose={() => !isPending && onClose()}
 			title="برش تصویر"
 			direction="rtl"
-			showCloseButton
+			showCloseButton={!isPending}
 		>
 			<div className="flex flex-col w-full h-96">
 				<div className="relative flex-1 overflow-hidden rounded-lg bg-base-300">
@@ -117,7 +84,7 @@ export function AvatarCropModal({ show, image, onClose, onCropComplete }: Prop) 
 					<FooterButtons
 						handleConfirm={handleConfirm}
 						handleCancel={onClose}
-						isPending={isSaving}
+						isPending={isPending}
 					/>
 				</div>
 			</div>

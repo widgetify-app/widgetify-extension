@@ -82,16 +82,16 @@ export const ProfileDisplay = () => {
 	}
 
 	const handleCropComplete = async (croppedFile: File) => {
-		if (cropImage) {
-			URL.revokeObjectURL(cropImage)
-			setCropImage(null)
-		}
 		try {
 			const formData = new FormData()
 			formData.append('avatar', croppedFile)
 			await updateProfileMutation.mutateAsync(formData)
 			await refetchUser()
 			Analytics.event('avatar_updated')
+			if (cropImage) {
+				URL.revokeObjectURL(cropImage)
+				setCropImage(null)
+			}
 		} catch {
 			showToast('خطا در بارگذاری تصویر', 'error')
 		}
@@ -277,6 +277,7 @@ export const ProfileDisplay = () => {
 					image={cropImage}
 					onClose={handleCropCancel}
 					onCropComplete={handleCropComplete}
+					isUploading={updateProfileMutation.isPending}
 				/>
 			)}
 
