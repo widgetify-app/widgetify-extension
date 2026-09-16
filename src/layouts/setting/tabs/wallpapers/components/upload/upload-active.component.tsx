@@ -24,9 +24,9 @@ export function UploadActive({
 		<div className="relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-content bg-content">
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex items-center min-w-0 gap-3">
-					<div className="relative w-24 h-16 overflow-hidden shadow-xs rounded-xl shrink-0 bg-base-200">
+					<div className="relative w-24 h-16 overflow-hidden shadow-xs rounded-xl shrink-0 bg-content">
 						<MediaPreview customWallpaper={customWallpaper} />
-						<div className="absolute inset-0 bg-black/20" />
+						<div className="absolute inset-0 bg-(--over-image-scrim-soft)" />
 
 						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold text-primary-content rounded-md bg-primary/90 backdrop-blur-xs shadow-xs">
 							{customWallpaper.type === 'IMAGE' ? 'عکس' : 'ویدیو'}
@@ -47,7 +47,7 @@ export function UploadActive({
 						</p>
 						<div className="flex items-center gap-1.5 flex-wrap">
 							{isCloudWallpaper ? (
-								<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-base-content/5 px-2 py-0.5 rounded-xl cursor-default">
+								<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 									<Icon name="save" size={11} />
 									<span>همگام‌سازی شده با سرور</span>
 								</span>
@@ -56,7 +56,7 @@ export function UploadActive({
 									content="فقط روی همین مرورگر ذخیره شده و با اکانتت همگام‌سازی نمی‌شه"
 									position="top"
 								>
-									<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-base-content/5 px-2 py-0.5 rounded-xl cursor-default">
+									<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 										ذخیره محلی
 									</span>
 								</Tooltip>

@@ -39,7 +39,7 @@ function WallpaperItemFu({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary/80 ring-offset-blue-100'
-		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
+		: 'ring-1 ring-subtle hover:ring-primary/70'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -130,10 +130,10 @@ function WallpaperItemFu({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-black/80 to-black/0 items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-(--over-image-scrim-strong) to-transparent items-center`}
 						>
 							{wallpaper.name ? (
-								<div className="flex-1 text-[10px] font-medium text-white">
+								<div className="flex-1 text-[10px] font-medium text-(--over-image-text)">
 									{wallpaper.name}
 								</div>
 							) : null}
@@ -154,26 +154,26 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary/80">
+							<div className="absolute p-1 text-primary-content rounded-full elevation-sm top-2 left-2 bg-primary/80">
 								<Icon name="check" size={12} />
 							</div>
 						)}
 
 						{!isSelected && wallpaper.isOwned && (
-							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-success-content shadow-sm  items-center top-0 left-0 w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-success-content elevation-sm  items-center top-0 left-0 w-max h-4">
 								<Icon name="shoppingBag" size={10} />
 								<span className="text-[10px]! font-normal">باز شده</span>
 							</div>
 						)}
 
 						{isAnimated && (
-							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-info-content shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-info-content elevation-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
 								<Icon name="play" size={12} />
 								<span className="text-[10px]! font-normal">متحرک</span>
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 rounded-2xl"></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-(--over-image-scrim-soft) rounded-2xl"></div>
 
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/60 border border-white/10 text-white/80 hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-(--over-image-scrim) border border-(--over-image-border-soft) text-(--over-image-text-muted) hover:text-(--over-image-text) transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

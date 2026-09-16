@@ -29,14 +29,14 @@ export function GalleryBookmarkIconItem({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100 border-primary'
-		: 'border-base-content/10 hover:border-primary/50 hover:bg-base-300/40'
+		? 'ring-2 ring-primary ring-offset-2 ring-offset-(--surface-widget) border-primary'
+		: 'border-subtle hover:border-primary/50 hover:bg-muted'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-base-300/20 border ${itemOutlineStyle}`}
+			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-subtle border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -76,7 +76,7 @@ export function GalleryBookmarkIconItem({
 			{loaded && !error && (
 				<>
 					{asset.title && (
-						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-base-100/90 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-base-content/10">
+						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-widget text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-subtle">
 							<span className="text-[10px] font-medium text-content truncate block">
 								{asset.title}
 							</span>
@@ -89,7 +89,7 @@ export function GalleryBookmarkIconItem({
 					)}
 
 					{isSelected && (
-						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary z-20">
+						<div className="absolute p-1 text-primary-content rounded-full elevation-sm top-2 left-2 bg-primary z-20">
 							<Icon name="check" size={12} />
 						</div>
 					)}

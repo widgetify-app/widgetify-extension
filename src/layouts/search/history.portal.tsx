@@ -122,7 +122,7 @@ export function SearchHistoryPortal({
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
 							transition={{ duration: 0.18, ease: 'easeOut' }}
-							className="z-20 -mt-10 overflow-hidden shadow-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md"
+							className="z-20 -mt-10 overflow-hidden elevation-2xl bg-content bg-glass h-60 rounded-b-2xl rounded-t-md"
 						>
 							{showSuggestions &&
 								hasQuery &&
@@ -151,18 +151,18 @@ export function SearchHistoryPortal({
 
 							{showEnableButton && (
 								<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
-									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-content/5">
+									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-subtle">
 										<Icon
 											name="search"
 											size={15}
-											className="text-base-content/40"
+											className="text-faint"
 										/>
 									</div>
 									<div className="space-y-1">
-										<p className="text-xs font-medium text-base-content/70">
+										<p className="text-xs font-medium text-muted">
 											پیشنهادهای جستجو
 										</p>
-										<p className="text-[11px] text-base-content/40 leading-relaxed">
+										<p className="text-[11px] text-faint leading-relaxed">
 											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
 											داده میشه!
 										</p>
@@ -172,7 +172,7 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer transition-all bg-base-content/5 text-base-content/60 hover:text-primary hover:bg-primary/8 searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer transition-all bg-subtle text-muted hover:text-primary hover:bg-primary/8 searchbox-item"
 									>
 										فعال‌سازی
 									</button>
@@ -184,7 +184,7 @@ export function SearchHistoryPortal({
 								!showLocalSearches &&
 								hasQuery && (
 									<div className="flex items-center justify-center h-full">
-										<p className="text-xs text-base-content/40">
+										<p className="text-xs text-faint">
 											نتیجه‌ای برای نمایش وجود ندارد
 										</p>
 									</div>

@@ -117,7 +117,7 @@ export default function JalaliDatePicker({
 			}
 			className="w-full"
 		>
-			<div className="p-2 border min-w-52 bg-base-200 rounded-2xl border-base-300">
+			<div className="p-2 border min-w-52 bg-content rounded-2xl border-content">
 				<div className="flex gap-3 mb-5">
 					<ScrollWheel
 						label="روز"
@@ -246,7 +246,7 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 	}
 
 	return (
-		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-base-200/30">
+		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-subtle">
 			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-primary/30 bg-primary/5" />
 
 			<div
@@ -286,8 +286,8 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 				<div style={{ height: `${ITEM_HEIGHT * 2}px` }} />
 			</div>
 
-			<div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-linear-to-b from-base-200 to-transparent" />
-			<div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none bg-linear-to-t from-base-200 to-transparent" />
+			<div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-linear-to-b from-(--surface-content) to-transparent" />
+			<div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none bg-linear-to-t from-(--surface-content) to-transparent" />
 		</div>
 	)
 }

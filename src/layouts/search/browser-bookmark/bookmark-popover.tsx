@@ -79,7 +79,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 		<Motion.div
 			key="bookmark-popover"
-			className="bookmark-popover fixed z-popover w-72  border border-base-content/10 shadow-2xl rounded-2xl overflow-hidden origin-top-left bg-content bg-glass"
+			className="bookmark-popover fixed z-popover w-72  border border-subtle elevation-2xl rounded-2xl overflow-hidden origin-top-left bg-content bg-glass"
 			initial={{ opacity: 0, scale: 0.95 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.95 }}
@@ -112,7 +112,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				</div>
 			) : (
 				<div className="flex flex-col max-h-105">
-					<div className="flex items-center justify-between p-3 border-b border-base-content/5 bg-base-200/30">
+					<div className="flex items-center justify-between p-3 border-b border-faint bg-subtle">
 						<span className="text-xs font-bold text-content">{c}</span>
 						{currentFolderId && (
 							<Button

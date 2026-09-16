@@ -33,17 +33,17 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-base-content/5 bg-base-200/20 hover:bg-base-200/50 hover:border-primary/20"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-subtle hover:bg-subtle hover:border-primary/20"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-primary/10 text-primary group-hover:scale-110">
 								<Icon name="globe" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-base-content">
+								<h3 className="text-xs font-bold text-strong">
 									وب‌سایت رسمی
 								</h3>
-								<p className="text-[10px] text-base-content/40 mt-0.5">
+								<p className="text-[10px] text-faint mt-0.5">
 									widgetify.ir
 								</p>
 							</div>
@@ -51,7 +51,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-base-content/20 group-hover:text-primary"
+							className="transition-colors text-ghost group-hover:text-primary"
 						/>
 					</a>
 
@@ -59,17 +59,17 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-base-content/5 bg-base-200/20 hover:bg-base-200/50 hover:border-secondary/20"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-subtle hover:bg-subtle hover:border-secondary/20"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary/10 text-secondary group-hover:scale-110">
 								<Icon name="externalLink" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-base-content">
+								<h3 className="text-xs font-bold text-strong">
 									وبلاگ رسمی
 								</h3>
-								<p className="text-[10px] text-base-content/40 mt-0.5">
+								<p className="text-[10px] text-faint mt-0.5">
 									blog.widgetify.ir
 								</p>
 							</div>
@@ -77,7 +77,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-base-content/20 group-hover:text-secondary"
+							className="transition-colors text-ghost group-hover:text-secondary"
 						/>
 					</a>
 
@@ -85,17 +85,17 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-base-content/5 bg-base-200/20 hover:bg-base-200/50 hover:border-info/20"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-subtle hover:bg-subtle hover:border-info/20"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info/10 text-info group-hover:scale-110">
 								<Icon name="telegramLogo" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-base-content">
+								<h3 className="text-xs font-bold text-strong">
 									کانال تلگرام
 								</h3>
-								<p className="text-[10px] text-base-content/40 mt-0.5">
+								<p className="text-[10px] text-faint mt-0.5">
 									t.me/widgetify
 								</p>
 							</div>
@@ -103,7 +103,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-base-content/20 group-hover:text-info"
+							className="transition-colors text-ghost group-hover:text-info"
 						/>
 					</a>
 
@@ -111,7 +111,7 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-base-content/5 bg-base-200/20 hover:bg-base-200/50 hover:border-success/20"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-subtle hover:bg-subtle hover:border-success/20"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success/10 text-success group-hover:scale-110">
@@ -129,10 +129,10 @@ export function AboutUsTab() {
 								</svg>
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-base-content">
+								<h3 className="text-xs font-bold text-strong">
 									پیام‌رسان بله
 								</h3>
-								<p className="text-[10px] text-base-content/40 mt-0.5">
+								<p className="text-[10px] text-faint mt-0.5">
 									ble.ir/widgetify
 								</p>
 							</div>
@@ -140,7 +140,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-base-content/20 group-hover:text-success"
+							className="transition-colors text-ghost group-hover:text-success"
 						/>
 					</a>
 				</div>

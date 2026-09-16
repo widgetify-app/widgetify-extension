@@ -59,7 +59,7 @@ export const FriendsLayout = () => {
 
 						<button
 							onClick={() => setIsAddFriendOpen(true)}
-							className="flex items-center gap-2 px-3 py-1.5 transition-all border shadow-sm cursor-pointer rounded-xl bg-primary border-primary/90 text-primary-content/80 border-content active:scale-95"
+							className="flex items-center gap-2 px-3 py-1.5 transition-all border elevation-sm cursor-pointer rounded-xl bg-primary border-primary/90 text-primary-content/80 border-content active:scale-95"
 							aria-label="افزودن دوست جدید"
 							type="button"
 						>

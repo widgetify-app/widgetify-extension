@@ -86,7 +86,7 @@ export function SelectCity({ size }: Prop) {
 				<button
 					onClick={onModalOpen}
 					disabled={isSettingCity}
-					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-base-100 border-base-300 hover:bg-base-200 disabled:opacity-50 disabled:cursor-not-allowed"
+					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-widget border-content hover:bg-content disabled:opacity-(--disabled-opacity) disabled:cursor-not-allowed"
 				>
 					{isLoadingUser ? (
 						<IconLoading className="mx-auto text-center" />
@@ -139,7 +139,7 @@ export function SelectCity({ size }: Prop) {
 						/>
 						<Icon
 							name="location"
-							className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-base-content/40"
+							className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-faint"
 						/>
 					</div>
 
@@ -154,7 +154,7 @@ export function SelectCity({ size }: Prop) {
 								<div
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
-									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-base-200/30 last:border-b-0 group rounded-2xl hover:bg-primary/20 hover:text-primary"
+									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-subtle last:border-b-0 group rounded-2xl hover:bg-primary/20 hover:text-primary"
 								>
 									<Icon
 										name="location"
@@ -166,22 +166,22 @@ export function SelectCity({ size }: Prop) {
 								</div>
 							))
 						) : searchTerm ? (
-							<div className="p-4 text-center text-base-content/60">
+							<div className="p-4 text-center text-muted">
 								نتیجه‌ای یافت نشد
 							</div>
 						) : cities && cities.length === 0 ? (
-							<div className="p-4 text-center text-base-content/60">
+							<div className="p-4 text-center text-muted">
 								هیچ شهری موجود نیست
 							</div>
 						) : (
-							<div className="p-4 text-center text-base-content/60">
+							<div className="p-4 text-center text-muted">
 								شهر مورد نظر خود را جستجو کنید
 							</div>
 						)}
 					</div>
 
-					<div className="pt-2 border-t border-base-300">
-						<p className="text-sm text-center text-base-content/60">
+					<div className="pt-2 border-t border-content">
+						<p className="text-sm text-center text-muted">
 							اگه شهر شما تو لیست نبود، لطفا اطلاع بدید تا اضافه بشه🤝
 						</p>
 					</div>

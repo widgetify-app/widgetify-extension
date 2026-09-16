@@ -27,8 +27,8 @@ export function Suggestions({
 						}}
 						className={`relative flex items-center w-full gap-2 px-3 py-2 text-right transition-colors cursor-pointer rounded-xl ${
 							isSelected
-								? 'bg-base-content/10 text-primary'
-								: 'hover:bg-base-content/5'
+								? 'bg-muted text-primary'
+								: 'hover:bg-subtle'
 						} ${item.isRecent && blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 					>
 						{item.isRecent ? (
@@ -36,10 +36,10 @@ export function Suggestions({
 								<Icon
 									name="history"
 									size={15}
-									className={`shrink-0 ${isSelected ? 'text-primary' : 'text-base-content/30'}`}
+									className={`shrink-0 ${isSelected ? 'text-primary' : 'text-ghost'}`}
 								/>
 								<div
-									className="absolute top-2.5 left-2 text-base-content/80 hover:text-base-content/70"
+									className="absolute top-2.5 left-2 text-content hover:text-muted"
 									onMouseDown={(e) => {
 										e.stopPropagation()
 										e.preventDefault()
@@ -57,12 +57,12 @@ export function Suggestions({
 							<Icon
 								name="search"
 								size={15}
-								className={`shrink-0 ${isSelected ? 'text-primary' : 'text-base-content/30'}`}
+								className={`shrink-0 ${isSelected ? 'text-primary' : 'text-ghost'}`}
 							/>
 						)}
 						<span
 							className={`text-sm font-medium truncate ${
-								isSelected ? 'text-content font-bold' : 'text-base-content/80'
+								isSelected ? 'text-content font-bold' : 'text-content'
 							}`}
 						>
 							{item.text}

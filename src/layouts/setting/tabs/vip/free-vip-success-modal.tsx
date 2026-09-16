@@ -78,7 +78,7 @@ export function FreeVipSuccessModal({
 						size="md"
 						rounded="xl"
 						onClick={handleReload}
-						className="flex-1 text-xs font-bold gap-1.5 shadow-sm"
+						className="flex-1 text-xs font-bold gap-1.5 elevation-sm"
 					>
 						<Icon name="refresh" size={14} />
 						<span>بارگذاری صفحه</span>

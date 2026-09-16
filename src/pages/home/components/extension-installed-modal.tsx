@@ -50,7 +50,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 					<img
 						src={keepItImage}
 						alt="نحوه فعالسازی افزونه"
-						className="h-auto max-w-full rounded-lg shadow-xl"
+						className="h-auto max-w-full rounded-lg elevation-xl"
 						style={{ maxHeight: '220px' }}
 					/>
 				</div>
@@ -69,7 +69,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 			<Button
 				size="md"
 				onClick={onGetStarted}
-				className="w-full text-base font-light shadow-sm rounded-2xl shadow-primary outline-none!"
+				className="w-full text-base font-light elevation-sm rounded-2xl shadow-primary outline-none!"
 				color="primary"
 			>
 				شروع کنید

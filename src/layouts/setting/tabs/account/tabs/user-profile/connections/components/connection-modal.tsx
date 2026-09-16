@@ -103,7 +103,7 @@ export function ConnectionModal({
 						loading={isLoading}
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
-								<div className="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin" />
+								<div className="w-4 h-4 border-2 rounded-full border-(--over-image-border) border-t-(--over-image-text) animate-spin" />
 								در حال پردازش
 							</span>
 						}

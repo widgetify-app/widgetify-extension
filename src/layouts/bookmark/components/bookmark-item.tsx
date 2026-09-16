@@ -49,7 +49,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 				className={cn(
 					'relative flex flex-col items-center justify-between px-2 py-1.5 h-20 md:h-[5.9rem] w-full duration-300 border border-content cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
-						? 'bg-content hover:bg-base-300 text-content bg-glass'
+						? 'bg-content hover:bg-raised text-content bg-glass'
 						: ''
 				)}
 			>
@@ -69,7 +69,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 								: undefined,
 						}}
 						className={
-							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-base-content/10 z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-muted z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />
@@ -88,7 +88,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 					/>
 				</div>
 
-				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-base-content/5 rounded-widget" />
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-subtle rounded-widget" />
 			</button>
 		</div>
 	)

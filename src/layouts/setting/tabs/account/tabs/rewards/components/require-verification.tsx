@@ -40,7 +40,7 @@ export const RequireVerification = ({
 					</div>
 					<div
 						className={
-							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
+							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-subtle backdrop-blur-xs rounded-xl'
 						}
 					>
 						<Icon name="verifyUser" size={20} className="text-success/80" />

@@ -18,22 +18,22 @@ const steps: Step[] = [
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-5 text-base-content/80 font-medium">
+				<p className="text-[12px] leading-5 text-content font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}
 					<span className="font-black text-error">راست‌کلیک</span> کنی و این
 					گزینه رو بزنی:
 				</p>
 
-				<div className="relative overflow-hidden border rounded-xl border-base-content/10">
+				<div className="relative overflow-hidden border rounded-xl border-subtle">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 						alt="نحوه مخفی کردن نوار پایین مرورگر"
-						className="object-cover w-full shadow-md rounded-xl"
+						className="object-cover w-full elevation-md rounded-xl"
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-base-300/40 border-base-content/15">
-					<code className="text-[11px] font-bold text-base-content/70">
+				<div className="p-1.5 border border-dashed rounded-lg bg-muted border-subtle">
+					<code className="text-[11px] font-bold text-muted">
 						"Hide footer on New Tab page"
 					</code>
 				</div>

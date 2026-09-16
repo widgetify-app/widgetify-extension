@@ -123,27 +123,27 @@ export function MarketOtherItems() {
 
 			{error ? (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-muted">
 						<Icon
 							name="shoppingBag"
 							size={20}
-							className="text-base-content/20"
+							className="text-ghost"
 						/>
 					</div>
-					<p className="text-xs text-base-content/40">خطا در بارگذاری آیتم‌ها</p>
+					<p className="text-xs text-faint">خطا در بارگذاری آیتم‌ها</p>
 				</div>
 			) : isLoading ? (
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 					{Array.from({ length: 8 }).map((_, i) => (
 						<div
 							key={i}
-							className="overflow-hidden border rounded-2xl border-base-300/40 bg-base-100/60"
+							className="overflow-hidden border rounded-2xl border-subtle bg-subtle"
 						>
 							<div className="w-full h-24 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
 								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
 								<div className="w-2/5 h-2.5 skeleton rounded-lg opacity-20" />
-								<div className="flex items-center justify-between pt-2 mt-1 border-t border-base-content/5">
+								<div className="flex items-center justify-between pt-2 mt-1 border-t border-faint">
 									<div className="w-10 h-2.5 skeleton rounded-lg opacity-20" />
 									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
 								</div>
@@ -165,14 +165,14 @@ export function MarketOtherItems() {
 				</div>
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-muted">
 						<Icon
 							name="shoppingBag"
 							size={20}
-							className="text-base-content/20"
+							className="text-ghost"
 						/>
 					</div>
-					<p className="text-xs text-base-content/40">
+					<p className="text-xs text-faint">
 						آیتمی در این دسته‌بندی وجود ندارد
 					</p>
 				</div>

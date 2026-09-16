@@ -55,7 +55,7 @@ export const ProfileHeader = ({
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-center border bg-base-100/50 border-base-300 rounded-3xl">
+		<div className="relative flex flex-col items-center justify-center border bg-subtle border-content rounded-3xl">
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -117,7 +117,7 @@ export const ProfileHeader = ({
 				<div className="relative flex items-center justify-center w-52 h-42">
 					<div
 						ref={avatarAnchorRef}
-						className="relative mb-8 rounded-full shadow-lg"
+						className="relative mb-8 rounded-full elevation-lg"
 					>
 						<AvatarComponent
 							url={user?.avatar || ''}
@@ -129,7 +129,7 @@ export const ProfileHeader = ({
 						<button
 							type="button"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="absolute z-30 p-1 text-primary-content transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-primary hover:scale-110 active:scale-95"
+							className="absolute z-30 p-1 text-primary-content transition-all -translate-x-3 translate-y-3 rounded-full elevation-xl cursor-pointer bottom-2 -right-3 bg-primary hover:scale-110 active:scale-95"
 						>
 							<Icon name="cameraPlus" size={12} />
 						</button>

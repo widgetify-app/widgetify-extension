@@ -79,7 +79,7 @@ export function DialogChecker() {
 						<Button
 							size="md"
 							onClick={() => onButtonClick()}
-							className="flex items-center justify-center gap-2 text-lg shadow-md"
+							className="flex items-center justify-center gap-2 text-lg elevation-md"
 							rounded="xl"
 							style={{
 								backgroundColor: dialog.buttonColor || undefined,

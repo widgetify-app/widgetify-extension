@@ -221,7 +221,7 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 							onKeyDown={handleKeyDown}
 							onFocus={() => onFocusInput()}
 							className={
-								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
+								'w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent'
 							}
 							placeholder={`جستجو در ${selectedEngine.label}`}
 							autoComplete="off"
@@ -229,7 +229,7 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 						<button
 							type="button"
 							onClick={handleClearSearch}
-							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-base-300' : 'opacity-0 pointer-events-none'}`}
+							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-raised' : 'opacity-0 pointer-events-none'}`}
 						>
 							<Icon name="close" size={20} className="opacity-50" />
 						</button>
@@ -247,14 +247,14 @@ function SearchFullContent({ size }: SearchLayoutProps) {
 						)}
 						<button
 							type="button"
-							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-base-300 border-none bg-transparent p-0`}
+							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-raised border-none bg-transparent p-0`}
 							onClick={() => onSearchButtonClick()}
 						>
 							<Icon name="search" size={20} className="opacity-50" />
 						</button>
 						<div
 							className={
-								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-base-content/5'
+								'absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-faint'
 							}
 						/>
 					</div>

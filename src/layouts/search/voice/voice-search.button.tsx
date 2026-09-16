@@ -11,10 +11,10 @@ export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 			<button
 				type="button"
 				onClick={() => onClickHandle()}
-				className="flex items-center justify-center transition-all duration-300 rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-base-300 group border-none bg-transparent p-0"
+				className="flex items-center justify-center transition-all duration-300 rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-raised group border-none bg-transparent p-0"
 			>
 				<svg
-					className="w-6 h-6 transition-colors text-base-content/50"
+					className="w-6 h-6 transition-colors text-subtle"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
 				>

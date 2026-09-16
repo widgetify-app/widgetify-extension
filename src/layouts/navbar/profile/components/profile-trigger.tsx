@@ -19,7 +19,7 @@ export function ProfileTrigger({
 				id="profile-button"
 				className="relative flex items-center justify-center cursor-pointer select-none"
 			>
-				<div className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90">
+				<div className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-strong active:scale-90">
 					<Icon name="user" size={15} />
 				</div>
 			</div>

@@ -42,11 +42,11 @@ export function VoiceSearchPortal({
 			<div
 				ref={portalRef}
 				style={portalStyles}
-				className="z-20 p-5 overflow-hidden duration-300 shadow-2xl -mt-26 bg-content bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-5 overflow-hidden duration-300 elevation-2xl -mt-26 bg-content bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
-						<span className="text-[15px] font-medium text-base-content/90">
+						<span className="text-[15px] font-medium text-content">
 							جستجوی صوتی
 						</span>
 						<div className="flex items-end h-3 gap-1 mb-1">
@@ -66,7 +66,7 @@ export function VoiceSearchPortal({
 					</div>
 					<button
 						onClick={onClose}
-						className="p-2 transition-colors rounded-full cursor-pointer hover:bg-base-200 text-base-content/60"
+						className="p-2 transition-colors rounded-full cursor-pointer hover:bg-content text-muted"
 					>
 						<Icon name="close" size={22} />
 					</button>
@@ -75,7 +75,7 @@ export function VoiceSearchPortal({
 				<div className="flex flex-col items-center gap-6 py-2">
 					<div className="w-full min-h-[60px] flex items-center justify-center px-4">
 						<p
-							className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-base-content font-bold' : 'text-base-content/30 font-medium'}`}
+							className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-strong font-bold' : 'text-ghost font-medium'}`}
 						>
 							{currentTranscript ||
 								(selectedLanguage === 'fa-IR'
@@ -84,13 +84,13 @@ export function VoiceSearchPortal({
 						</p>
 					</div>
 
-					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-base-content/5">
+					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-faint">
 						<Dropdown
 							position="top-right"
 							width="120px"
 							dropdownClassName="text-xs font-bold"
 							trigger={
-								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-base-200 rounded-xl transition-colors text-xs font-bold text-base-content/60">
+								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-content rounded-xl transition-colors text-xs font-bold text-muted">
 									<Icon name="settings" size={14} />
 									{
 										languages.find((l) => l.code === selectedLanguage)
@@ -111,7 +111,7 @@ export function VoiceSearchPortal({
 							onClick={() =>
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
-							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-all ${isListening ? 'bg-error text-primary-content shadow-lg shadow-error/20' : 'bg-primary text-primary-content shadow-lg shadow-primary/20'}`}
+							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-all ${isListening ? 'bg-error text-primary-content elevation-lg shadow-error/20' : 'bg-primary text-primary-content elevation-lg shadow-primary/20'}`}
 						>
 							<Icon
 								name="mic"

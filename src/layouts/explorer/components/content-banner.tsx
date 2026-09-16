@@ -28,7 +28,7 @@ export function RenderContentBanner({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded hover:shadow-sm hover:scale-98`}
+			className={`relative flex flex-col items-center gap-1 transition-all duration-500  group active:scale-95 ${pos} rounded hover:elevation-sm hover:scale-98`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
@@ -37,10 +37,10 @@ export function RenderContentBanner({ link }: SiteProp) {
 		>
 			{badge && (
 				<span
-					className="absolute -top-3 left-2 text-center z-20 truncate px-1 rounded-t-xl text-[10px] font-light max-w-20 border border-white/10 shadow-sm"
+					className="absolute -top-3 left-2 text-center z-20 truncate px-1 rounded-t-xl text-[10px] font-light max-w-20 border border-(--over-image-border-soft) elevation-sm"
 					style={{
 						backgroundColor: link.badgeColor,
-						color: '#fff',
+						color: 'var(--over-image-text)',
 					}}
 				>
 					{badge}

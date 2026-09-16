@@ -112,15 +112,15 @@ export function Connections() {
 							(platform.isActive || platform.connected) &&
 							handleConnectionClick(platform.id)
 						}
-						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-base-200 border-base-300
+						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-content border-content
                 ${
-					platform.connected ? '' : ' hover:bg-base-200/40'
+					platform.connected ? '' : ' hover:bg-subtle'
 				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
 					>
 						<div className="flex items-center justify-between gap-3">
 							<div className="flex items-center gap-2.5 overflow-hidden">
 								<div
-									className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-lg ${platform.bgColor} text-white`}
+									className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-lg ${platform.bgColor} text-(--over-image-text)`}
 								>
 									{platform.icon}
 								</div>
@@ -142,7 +142,7 @@ export function Connections() {
 						platform.connected
 							? 'bg-error/10 text-error'
 							: 'bg-primary text-primary-content'
-					} ${!platform.isActive && !platform.connected ? 'bg-base-300! text-muted' : ''}`}
+					} ${!platform.isActive && !platform.connected ? 'bg-raised! text-muted' : ''}`}
 							>
 								{platform.isLoading ? (
 									<div className="w-3 h-3 border-2 border-current rounded-full animate-spin border-t-transparent" />

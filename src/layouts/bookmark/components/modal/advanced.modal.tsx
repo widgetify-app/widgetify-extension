@@ -114,7 +114,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							${
 								sticker === url
 									? 'bg-primary/25 border-2 border-primary transform scale-110'
-									: 'border border-transparent hover:bg-base-content/10 active:bg-base-content/20'
+									: 'border border-transparent hover:bg-muted active:bg-strong'
 							}`}
 					>
 						<img

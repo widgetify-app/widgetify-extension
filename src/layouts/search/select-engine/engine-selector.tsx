@@ -86,7 +86,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 					<button
 						onClick={() => setClicked(!clicked)}
 						type="button"
-						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-all duration-300  cursor-pointer h-7 shrink-0 bg-base-300 opacity-70 hover:opacity-100 rounded-xl"
+						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-all duration-300  cursor-pointer h-7 shrink-0 bg-raised opacity-70 hover:opacity-100 rounded-xl"
 					>
 						<EngineIcon
 							engineId={currentEngine.id}
@@ -103,8 +103,8 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 			onClose={() => setClicked(false)}
 			dropdownClassName="engine-selector"
 		>
-			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-base-200 border-base-300">
-				<p className="px-2 mb-1 text-xs font-medium text-base-content/60">
+			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-content border-content">
+				<p className="px-2 mb-1 text-xs font-medium text-muted">
 					انتخاب موتور جستجو
 				</p>
 
@@ -115,8 +115,8 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 						disabled={changeEngineMutation.isPending}
 						className={`flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl transition-all duration-200 ${
 							currentEngine?.id === engine.id
-								? 'bg-base-content/10'
-								: 'hover:bg-base-content/5'
+								? 'bg-muted'
+								: 'hover:bg-subtle'
 						}`}
 					>
 						<div className="flex items-center justify-center w-5 h-5">

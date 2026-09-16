@@ -58,7 +58,7 @@ export const UpdateReleaseNotesModal = ({
 			closeOnBackdropClick={false}
 		>
 			<div className="flex flex-col gap-4 select-none text-right">
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-48 sm:max-h-52 rounded-2xl border-base-content/10 bg-base-300/30 shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border elevation-sm aspect-video max-h-48 sm:max-h-52 rounded-2xl border-subtle bg-subtle shrink-0">
 					<video
 						ref={videoRef}
 						src="https://cdn.widgetify.ir/extension/WidgetDrag-b.mp4"
@@ -71,7 +71,7 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-subtle border border-subtle">
 						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
 							<Icon name="outlineDrag" size={16} />
 						</div>
@@ -86,7 +86,7 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 					</div>
 
-					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-subtle border border-subtle">
 						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
 							<Icon name="viewGridAdd" size={16} />
 						</div>
@@ -101,7 +101,7 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 					</div>
 
-					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-base-200/50 border border-base-content/10">
+					<div className="flex items-start gap-3 p-2.5 rounded-2xl bg-subtle border border-subtle">
 						<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
 							<Icon name="squares2X2" size={16} />
 						</div>
@@ -117,7 +117,7 @@ export const UpdateReleaseNotesModal = ({
 					</div>
 				</div>
 
-				<div className="flex items-center justify-between gap-2 pt-2 border-t border-base-content/10">
+				<div className="flex items-center justify-between gap-2 pt-2 border-t border-subtle">
 					<Button
 						type="button"
 						size="sm"
@@ -135,7 +135,7 @@ export const UpdateReleaseNotesModal = ({
 						color="primary"
 						onClick={handlePersonalize}
 						disabled={counter > 0}
-						className="h-10 px-5 text-xs font-bold flex items-center gap-2 shadow-sm"
+						className="h-10 px-5 text-xs font-bold flex items-center gap-2 elevation-sm"
 						rounded="xl"
 					>
 						<Icon name="outlineDrag" size={15} />

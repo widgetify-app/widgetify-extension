@@ -196,7 +196,7 @@ export function SearchCompactRow() {
 								updatePortalPosition()
 								Analytics.event('search_input_focused_2x1')
 							}}
-							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium bg-transparent"
+							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium bg-transparent"
 							placeholder="جستجو..."
 							autoComplete="off"
 						/>
@@ -205,14 +205,14 @@ export function SearchCompactRow() {
 							<button
 								type="button"
 								onClick={handleClearSearch}
-								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-base-300"
+								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-raised"
 							>
 								<Icon name="close" size={14} className="opacity-50" />
 							</button>
 						) : (
 							<button
 								type="submit"
-								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-base-300"
+								className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-raised"
 							>
 								<Icon name="search" size={14} className="opacity-50" />
 							</button>

@@ -9,7 +9,7 @@ import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 
 const renderPendingNotification = (pendingCount: number) => (
-	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-white bg-error rounded-full top-1 right-1 p-0.5 text-center">
+	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-error-content bg-error rounded-full top-1 right-1 p-0.5 text-center">
 		{pendingCount}
 	</div>
 )
@@ -46,7 +46,7 @@ export function FriendsListNavbar() {
 	return (
 		<>
 			<div
-				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+				className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-strong active:scale-90"
 				onClick={() => clickToOpenSheet()}
 			>
 				<Icon name="friends" size={15} />

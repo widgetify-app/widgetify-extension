@@ -25,17 +25,17 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100'
-		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
+		? 'ring-2 ring-primary ring-offset-2 ring-offset-(--surface-widget)'
+		: 'ring-1 ring-subtle hover:ring-primary/70'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-base-200/50 ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-subtle ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 		>
 			{!loaded && (
-				<div className="flex items-center justify-center w-full min-h-28 bg-base-300/30">
+				<div className="flex items-center justify-center w-full min-h-28 bg-subtle">
 					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
 				</div>
 			)}
@@ -64,8 +64,8 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 			{loaded && !error && (
 				<>
-					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-black/80 via-black/40 to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-						<span className="text-[11px] font-medium text-white truncate max-w-[60%]">
+					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-(--over-image-scrim-strong) via-(--over-image-scrim-soft) to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+						<span className="text-[11px] font-medium text-(--over-image-text) truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>
 
@@ -77,7 +77,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					</div>
 
 					{isSelected && (
-						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary">
+						<div className="absolute p-1 text-primary-content rounded-full elevation-sm top-2 left-2 bg-primary">
 							<Icon name="check" size={12} />
 						</div>
 					)}
@@ -89,7 +89,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-success-content shadow-sm items-center top-0 left-0 text-[10px] h-4.5">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-success-content elevation-sm items-center top-0 left-0 text-[10px] h-4.5">
 							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>

@@ -77,7 +77,7 @@ export function MiniAppsLayout() {
 						<p className="text-lg font-bold"> برنامک ها</p>
 						<div
 							onClick={() => onClickToShowInfo()}
-							className="p-1 text-lg font-bold cursor-pointer text-base-content/80 hover:text-base-content active:scale-95"
+							className="p-1 text-lg font-bold cursor-pointer text-content hover:text-strong active:scale-95"
 						>
 							<Icon name="info" className="m-auto text-center" />
 						</div>
@@ -178,7 +178,7 @@ export function MiniAppsLayout() {
 						rounded={'2xl'}
 						onClick={() => setShowInfo(false)}
 						fullWidth
-						className="h-12 mt-2 text-base font-bold shadow-sm"
+						className="h-12 mt-2 text-base font-bold elevation-sm"
 					>
 						باشه
 					</Button>

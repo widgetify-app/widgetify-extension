@@ -48,7 +48,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			displayIcon = bookmark.icon
 		}
 	} else {
-		displayIcon = <Icon name="folder" className="w-6 h-6 text-blue-400" />
+		displayIcon = <Icon name="folder" className="w-6 h-6 text-primary" />
 	}
 
 	if (displayIcon === '') {
@@ -67,7 +67,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 	const backgroundColor = hasCustomColors ? bookmark.customBackground : ''
 	const textColor = hasCustomColors
 		? bookmark.customTextColor
-		: 'rgba(255, 255, 255, 1)'
+		: 'var(--over-image-text)'
 	const colorClass = hasCustomColors ? '' : getColorFromTitle(bookmark.title)
 	return (
 		<div className="relative flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8">

@@ -33,7 +33,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 			closeOnBackdropClick
 		>
 			<div className="flex flex-col gap-4 p-1 select-none" dir="rtl">
-				<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 border-b border-base-content/10">
+				<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 border-b border-subtle">
 					{TABS.map((tab) => (
 						<button
 							key={tab.id}
@@ -43,7 +43,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 								'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 								activeTab === tab.id
 									? 'bg-primary text-primary-content font-bold shadow-xs'
-									: 'bg-base-200/80 hover:bg-base-300 text-muted'
+									: 'bg-content hover:bg-raised text-muted'
 							)}
 						>
 							<Icon name={tab.icon} size={14} />
@@ -54,7 +54,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 
 				{activeTab === 'move' && (
 					<div className="flex flex-col gap-3">
-						<div className="flex items-center justify-center w-full overflow-hidden border aspect-video rounded-2xl border-base-content/10 bg-base-300/30">
+						<div className="flex items-center justify-center w-full overflow-hidden border aspect-video rounded-2xl border-subtle bg-subtle">
 							<video
 								src={
 									'https://cdn.widgetify.ir/extension/WidgetDrag-b.mp4'
@@ -67,7 +67,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 							/>
 						</div>
 
-						<div className="flex flex-col gap-2 p-3 border bg-base-200/50 rounded-2xl border-base-content/10">
+						<div className="flex flex-col gap-2 p-3 border bg-subtle rounded-2xl border-subtle">
 							<div className="flex items-start gap-2.5">
 								<span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
 									۱
@@ -103,13 +103,13 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 
 				{activeTab === 'resize' && (
 					<div className="flex flex-col gap-3">
-						<div className="flex flex-col items-center justify-center w-full gap-3 px-4 py-6 border rounded-2xl border-base-content/10 bg-base-200/50">
-							<div className="w-52 p-2 rounded-2xl bg-base-100 border border-base-content/15 shadow-md flex flex-col gap-1.5">
+						<div className="flex flex-col items-center justify-center w-full gap-3 px-4 py-6 border rounded-2xl border-subtle bg-subtle">
+							<div className="w-52 p-2 rounded-2xl bg-widget border border-subtle elevation-md flex flex-col gap-1.5">
 								<div className="flex items-center gap-1.5 px-2 py-0.5 text-xs font-bold text-content">
 									<span>📆</span>
 									<span>تقویم</span>
 								</div>
-								<div className="h-px bg-base-content/10" />
+								<div className="h-px bg-muted" />
 								<span className="text-[10px] text-muted font-medium px-1">
 									تغییر اندازه
 								</span>
@@ -137,7 +137,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 							</div>
 						</div>
 
-						<div className="flex flex-col gap-2 p-3 border bg-base-200/50 rounded-2xl border-base-content/10">
+						<div className="flex flex-col gap-2 p-3 border bg-subtle rounded-2xl border-subtle">
 							<div className="flex items-start gap-2.5">
 								<span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
 									۱
@@ -162,25 +162,25 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 
 				{activeTab === 'advanced' && (
 					<div className="flex flex-col gap-3">
-						<div className="flex flex-col items-center justify-center w-full gap-3 px-4 py-6 border rounded-2xl border-base-content/10 bg-base-200/50">
-							<div className="flex flex-col w-56 gap-1 p-2 text-xs border shadow-md rounded-2xl bg-base-100 border-base-content/15">
+						<div className="flex flex-col items-center justify-center w-full gap-3 px-4 py-6 border rounded-2xl border-subtle bg-subtle">
+							<div className="flex flex-col w-56 gap-1 p-2 text-xs border elevation-md rounded-2xl bg-widget border-subtle">
 								<div className="flex items-center gap-1.5 px-2 py-0.5 font-bold text-content">
 									<span>📝</span>
 									<span>یادداشت</span>
 								</div>
-								<div className="h-px bg-base-content/10" />
+								<div className="h-px bg-muted" />
 								<div className="flex items-center gap-2 px-2 py-1 font-medium rounded-xl bg-primary/10 text-primary">
 									<Icon name="brush" size={13} />
 									<span>تغییر مدل و استایل</span>
 								</div>
-								<div className="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-base-200 text-muted">
+								<div className="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-content text-muted">
 									<Icon name="settings" size={13} />
 									<span>تنظیمات</span>
 								</div>
 							</div>
 						</div>
 
-						<div className="flex flex-col gap-2 p-3 border bg-base-200/50 rounded-2xl border-base-content/10">
+						<div className="flex flex-col gap-2 p-3 border bg-subtle rounded-2xl border-subtle">
 							<div className="flex items-start gap-2.5">
 								<span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
 									۱
@@ -214,7 +214,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 					</div>
 				)}
 
-				<div className="flex justify-end pt-2 border-t border-base-content/10">
+				<div className="flex justify-end pt-2 border-t border-subtle">
 					<Button
 						type="button"
 						onClick={onClose}

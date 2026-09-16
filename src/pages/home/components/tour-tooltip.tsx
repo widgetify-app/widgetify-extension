@@ -16,9 +16,9 @@ export function TourTooltip({
 		<div
 			{...tooltipProps}
 			dir="rtl"
-			className="w-[340px] max-w-[calc(100vw-32px)] bg-base-200/95 backdrop-blur-md rounded-2xl shadow-2xl border border-base-content/15 p-4 flex flex-col gap-3.5 text-right select-none"
+			className="w-[340px] max-w-[calc(100vw-32px)] bg-content backdrop-blur-md rounded-2xl elevation-2xl border border-subtle p-4 flex flex-col gap-3.5 text-right select-none"
 		>
-			<div className="flex items-center justify-between gap-2 border-b border-base-content/10 pb-2.5">
+			<div className="flex items-center justify-between gap-2 border-b border-subtle pb-2.5">
 				<div className="flex items-center gap-2">
 					<div className="flex items-center gap-1">
 						{Array.from({ length: size }).map((_, i) => (
@@ -29,12 +29,12 @@ export function TourTooltip({
 										? 'w-5 bg-primary'
 										: i < index
 											? 'w-1.5 bg-primary/40'
-											: 'w-1.5 bg-base-content/20'
+											: 'w-1.5 bg-strong'
 								}`}
 							/>
 						))}
 					</div>
-					<span className="text-[11px] font-bold text-base-content/60">
+					<span className="text-[11px] font-bold text-muted">
 						{index + 1} از {size}
 					</span>
 				</div>
@@ -42,24 +42,24 @@ export function TourTooltip({
 				<button
 					type="button"
 					{...skipProps}
-					className="p-1 transition-colors rounded-lg cursor-pointer text-base-content/50 hover:text-base-content hover:bg-base-content/10"
+					className="p-1 transition-colors rounded-lg cursor-pointer text-subtle hover:text-strong hover:bg-muted"
 					title="بستن"
 				>
 					<Icon name="close" size={14} />
 				</button>
 			</div>
 
-			<div className="text-xs leading-relaxed text-base-content/90 font-medium py-0.5">
+			<div className="text-xs leading-relaxed text-content font-medium py-0.5">
 				{step.content}
 			</div>
 
-			<div className="flex items-center justify-between pt-1 border-t border-base-content/10">
+			<div className="flex items-center justify-between pt-1 border-t border-subtle">
 				<div>
 					{index + 1 > 2 && (
 						<button
 							type="button"
 							{...skipProps}
-							className="text-[11px] font-bold text-base-content/50 hover:text-base-content px-2 py-1.5 rounded-lg hover:bg-base-content/10 transition-colors cursor-pointer"
+							className="text-[11px] font-bold text-subtle hover:text-strong px-2 py-1.5 rounded-lg hover:bg-muted transition-colors cursor-pointer"
 						>
 							رد کردن
 						</button>
@@ -71,7 +71,7 @@ export function TourTooltip({
 						<button
 							type="button"
 							{...backProps}
-							className="text-xs font-bold text-base-content/70 hover:text-base-content px-3 py-1.5 rounded-xl hover:bg-base-300 transition-colors cursor-pointer"
+							className="text-xs font-bold text-muted hover:text-strong px-3 py-1.5 rounded-xl hover:bg-raised transition-colors cursor-pointer"
 						>
 							قبلی
 						</button>
@@ -80,7 +80,7 @@ export function TourTooltip({
 					<button
 						type="button"
 						{...primaryProps}
-						className="px-4 py-1.5 rounded-xl bg-primary text-primary-content ring-0! outline-0! font-bold text-xs hover:bg-primary/90 transition-all shadow-md active:scale-95 cursor-pointer"
+						className="px-4 py-1.5 rounded-xl bg-primary text-primary-content ring-0! outline-0! font-bold text-xs hover:bg-primary/90 transition-all elevation-md active:scale-95 cursor-pointer"
 					>
 						{isLastStep ? 'پایان' : 'بعدی'}
 					</button>

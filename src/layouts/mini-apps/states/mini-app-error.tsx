@@ -26,7 +26,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 			</div>
 
 			<p className="text-lg font-bold text-content">خطا در اجرای برنامک</p>
-			<p className="max-w-xs text-sm text-base-content/80">
+			<p className="max-w-xs text-sm text-content">
 				عاممم یه مشکلی رخ داد، دوباره تلاش کنید.
 			</p>
 			<div className="flex flex-col gap-2 mt-4 w-80">

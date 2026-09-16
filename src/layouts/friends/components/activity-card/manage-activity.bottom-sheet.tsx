@@ -93,10 +93,10 @@ export function ManageActivityBottomSheet({
 
 	if (currentActivity) {
 		return (
-			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-base-200 border-base-300 rounded-2xl">
+			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-content border-content rounded-2xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex flex-row items-center justify-between">
-						<p className="text-sm font-bold text-base-content/70">
+						<p className="text-sm font-bold text-muted">
 							نوشته فعلی شما
 						</p>
 						<Button
@@ -127,7 +127,7 @@ export function ManageActivityBottomSheet({
 				</div>
 
 				<div className="flex flex-col">
-					<p className="mb-2 text-sm font-bold text-base-content/70">
+					<p className="mb-2 text-sm font-bold text-muted">
 						واکنش ها ({fetchedReactions?.reactions?.length || 0})
 					</p>
 					{isPending ? (
@@ -141,7 +141,7 @@ export function ManageActivityBottomSheet({
 									className="flex items-center h-10 gap-1.5 px-2 border rounded-full w-fit bg-content border-content"
 									key={i}
 								>
-									<div className="overflow-hidden rounded-full ring-2 ring-base-300">
+									<div className="overflow-hidden rounded-full ring-2 ring-content">
 										<AvatarComponent
 											url={r.avatar}
 											placeholder={r.name}
@@ -153,7 +153,7 @@ export function ManageActivityBottomSheet({
 										<div className="text-xs font-medium truncate text-content">
 											{r.name}
 										</div>
-										<div className="text-xs truncate text-base-content/60">
+										<div className="text-xs truncate text-muted">
 											{r.username}@
 										</div>
 									</div>
@@ -183,7 +183,7 @@ export function ManageActivityBottomSheet({
 
 	return (
 		<>
-			<div className="flex flex-col gap-2 p-2 border min-w-96 max-w-96 bg-base-200 border-base-300 rounded-2xl">
+			<div className="flex flex-col gap-2 p-2 border min-w-96 max-w-96 bg-content border-content rounded-2xl">
 				<div className="space-y-1">
 					<div className="space-y-1">
 						<div className="flex justify-between">
@@ -224,7 +224,7 @@ export function ManageActivityBottomSheet({
 								setActivity(e.target.value.slice(0, MAX_ACTIVITY_LENGTH))
 							}
 							placeholder="یه چیزی بگو..."
-							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-all border-none outline-none resize-none max-h-16 bg-content text-muted rounded-2xl placeholder:font-light focus:placeholder-base-content/10"
+							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-all border-none outline-none resize-none max-h-16 bg-content text-muted rounded-2xl placeholder:font-light focus:placeholder-(--text-ghost)"
 							rows={4}
 							dir={!activity ? 'rtl' : 'auto'}
 							maxLength={MAX_ACTIVITY_LENGTH}
@@ -291,7 +291,7 @@ export function ManageActivityBottomSheet({
 					type="button"
 					fullWidth
 					rounded="2xl"
-					className="h-12 mt-5 text-base font-bold shadow-sm"
+					className="h-12 mt-5 text-base font-bold elevation-sm"
 					onClick={() => setShowModal(false)}
 				>
 					متوجه شدم

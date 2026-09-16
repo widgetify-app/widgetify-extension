@@ -46,7 +46,7 @@ export const ActivityCard = ({
 						className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-base-200 border border-base-content/10 shadow-xs text-base-content/80
+							bg-content border border-subtle shadow-xs text-content
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
 						`}
 					>
@@ -58,9 +58,9 @@ export const ActivityCard = ({
 						</div>
 					</div>
 
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-base-300/40  z-10" />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-base-300/40 shadow-md  z-10" />
-					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-base-300 -bottom-6 left-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-muted  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-muted elevation-md  z-10" />
+					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full elevation-md bg-raised -bottom-6 left-10" />
 					{isSelf ? null : (
 						<ActivityReactionSelector
 							reactions={reactions}
@@ -73,7 +73,7 @@ export const ActivityCard = ({
 				<div className="-mt-1">
 					<div
 						className={`
-							rounded-full transition-all ring-2 ring-base-300
+							rounded-full transition-all ring-2 ring-content
 							${onClick ? '' : ''}
 						`}
 					>
@@ -132,7 +132,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 		<Dropdown
 			trigger={
 				<div
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-base-300/40 ${reacted ? 'opacity-85' : 'opacity-50'}`}
+					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full elevation-sm active:scale-95 bg-muted ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
 					{reacted
@@ -147,7 +147,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 			}
 			className="absolute! top-0! left-0!"
 		>
-			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg bg-base-300">
+			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto elevation-lg bg-raised">
 				{isPending
 					? Array.from({ length: 5 }).map((_, i) => (
 							<div

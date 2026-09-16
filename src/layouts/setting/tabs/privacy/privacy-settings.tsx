@@ -31,7 +31,7 @@ export function PrivacySettings() {
 		<div className="w-full max-w-xl mx-auto space-y-4">
 			<SectionPanel title="حریم خصوصی و دسترسی‌ها" delay={0.1}>
 				<div className="space-y-1">
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-subtle">
 						<div className="flex-1 space-y-1">
 							<h3 className="text-sm font-medium text-content">
 								آمار و عملکرد افزونه (Analytics)
@@ -50,7 +50,7 @@ export function PrivacySettings() {
 					</div>
 
 					{import.meta.env.FIREFOX && (
-						<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+						<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-subtle">
 							<div className="flex-1 space-y-1">
 								<h3 className="text-sm font-medium text-content">
 									نمایش آیکون‌های بوکمارک‌ها
@@ -69,7 +69,7 @@ export function PrivacySettings() {
 						</div>
 					)}
 
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-subtle">
 						<div className="flex-1 space-y-1">
 							<h3 className="text-sm font-medium text-content">
 								دسترسی به بوکمارک‌های مرورگر
@@ -89,7 +89,7 @@ export function PrivacySettings() {
 						</div>
 					</div>
 
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-subtle">
 						<div className="flex-1 space-y-1">
 							<h3 className="text-sm font-medium text-content">
 								دسترسی به تب‌ها

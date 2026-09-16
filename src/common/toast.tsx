@@ -140,7 +140,7 @@ const TOAST_THEMES: Record<
 	error: {
 		container: 'bg-[#2a1317]/95 border-red-500/25 text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full shadow-sm select-none shrink-0">
+			<div className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full elevation-sm select-none shrink-0">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
@@ -151,7 +151,7 @@ const TOAST_THEMES: Record<
 	success: {
 		container: 'bg-[#142618]/95 border-emerald-500/25 text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black elevation-sm select-none">
 				<Icon name="check" size={15} className="stroke-3" />
 			</div>
 		),
@@ -162,7 +162,7 @@ const TOAST_THEMES: Record<
 	warning: {
 		container: 'bg-[#2b2210]/95 border-amber-500/25 text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-amber-500">
+			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full elevation-sm select-none shrink-0 bg-amber-500">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
@@ -198,7 +198,7 @@ export function showToast(
 				<div
 					dir="rtl"
 					className={cn(
-						'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
+						'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 elevation-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
 						theme.container,
 						t.visible
 							? 'opacity-100 translate-y-0 scale-100'
@@ -271,7 +271,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 		(t) => (
 			<div
 				className={cn(
-					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 elevation-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
 					t.visible ? 'animate-enter' : 'animate-leave'
 				)}
 			>

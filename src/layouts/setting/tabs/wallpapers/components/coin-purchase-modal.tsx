@@ -51,7 +51,7 @@ export function CoinPurchaseModal({
 			title=" "
 		>
 			<div className="space-y-4">
-				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200/50 aspect-video">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-subtle aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
 						<img
 							src={wallpaper.previewSrc}

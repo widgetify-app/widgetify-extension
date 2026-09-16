@@ -1,6 +1,7 @@
 import { getContrastingTextColor } from '@/common/color'
 import { NewBadge } from '@/components/ui'
 import type { MiniApp } from '@/services/hooks/mini-apps/mini-apps.interface'
+import { BRAND_PRIMARY } from '@/common/constants/brand'
 
 interface MiniAppCardProps {
 	app: MiniApp
@@ -17,8 +18,8 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
-						? `border-primary/30 bg-linear-to-t from-primary/10 via-primary/5 to-transparent shadow-md shadow-primary/10`
-						: `border-base-content/5 bg-content bg-glass! hover:bg-primary/5 hover:border-primary/10`
+						? `border-primary/30 bg-linear-to-t from-primary/10 via-primary/5 to-transparent elevation-md shadow-primary/10`
+						: `border-faint bg-content bg-glass! hover:bg-primary/5 hover:border-primary/10`
 				}
             `}
 		>
@@ -52,14 +53,14 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<p
 					className={`
                         text-sm font-semibold truncate transition-colors
-                        ${isSelected ? 'text-primary' : 'text-base-content'}
+                        ${isSelected ? 'text-primary' : 'text-strong'}
                     `}
 				>
 					{app.name}
 				</p>
 
 				{app.description && (
-					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-base-content/70 ">
+					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-muted ">
 						{app.description}
 					</p>
 				)}
@@ -69,13 +70,13 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<div
 					className={`
                         absolute px-2 py-0.5 text-xs left-0 w-32 text-center top-0 rounded-br-2xl
-                        transform transition-all duration-200 shadow-xl
+                        transform transition-all duration-200 elevation-xl
                         ${app.badgeAnimate ? 'animate-bounce' : ''}
                         ${isSelected ? 'opacity-100' : 'opacity-90'}
                     `}
 					style={{
-						backgroundColor: app.badgeColor || '#536dfe',
-						color: getContrastingTextColor(app.badgeColor || '#536dfe'),
+						backgroundColor: app.badgeColor || BRAND_PRIMARY,
+						color: getContrastingTextColor(app.badgeColor || BRAND_PRIMARY),
 					}}
 				>
 					<div className="relative z-10 font-normal tracking-wide">

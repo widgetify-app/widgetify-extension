@@ -31,7 +31,7 @@ export const InterestsSelector = ({
 	}
 
 	const content = (
-		<div className="p-2 border w-82 bg-base-200  rounded-2xl border-base-300">
+		<div className="p-2 border w-82 bg-content  rounded-2xl border-content">
 			{isLoading ? (
 				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-muted">
 					صبر کنید...

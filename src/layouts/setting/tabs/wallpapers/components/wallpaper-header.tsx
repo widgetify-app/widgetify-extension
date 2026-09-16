@@ -9,7 +9,7 @@ export function WallpaperHeader() {
 	} = useWallpaperContext()
 
 	return (
-		<header className="flex flex-col gap-3 pb-3 border-b border-base-content/10 select-none">
+		<header className="flex flex-col gap-3 pb-3 border-b border-subtle select-none">
 			<div className="flex flex-col gap-0.5">
 				<h2 className="text-lg font-bold text-content tracking-tight">
 					تصویر سفارشی

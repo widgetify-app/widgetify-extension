@@ -25,7 +25,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
 									taskItem.isDone
 										? 'bg-gradient-to-r from-success/5 to-success/10 border border-success/20'
-										: 'bg-gradient-to-r from-base-100 to-base-200 border border-base-300'
+										: 'bg-gradient-to-r from-(--surface-widget) to-(--surface-content) border border-content'
 								}`}
 							>
 								<div className="relative flex items-center justify-between gap-3 p-3">
@@ -33,22 +33,22 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										<div
 											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
 												taskItem.isDone
-													? 'bg-gradient-to-br from-success to-success/80 shadow-md shadow-success/20'
-													: 'bg-gradient-to-br from-primary to-primary/80 shadow-sm shadow-primary/20'
+													? 'bg-gradient-to-br from-success to-success/80 elevation-md shadow-success/20'
+													: 'bg-gradient-to-br from-primary to-primary/80 elevation-sm shadow-primary/20'
 											}`}
 										>
 											{taskItem.isDone ? (
 												<div className="relative">
 													<Icon
 														name="check"
-														className="w-5 h-5 text-white drop-shadow-lg"
+														className="w-5 h-5 text-(--over-image-text) drop-shadow-lg"
 													/>
-													<div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
+													<div className="absolute inset-0 rounded-full bg-(--over-image-surface) animate-ping"></div>
 												</div>
 											) : (
 												<Icon
 													name="target"
-													className="w-5 h-5 text-white"
+													className="w-5 h-5 text-(--over-image-text)"
 												/>
 											)}
 										</div>
@@ -57,7 +57,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 												className={`text-sm font-medium transition-all duration-200 ${
 													taskItem.isDone
 														? 'text-success/80 line-through'
-														: 'text-base-content'
+														: 'text-strong'
 												}`}
 											>
 												{taskItem.task}
@@ -110,9 +110,9 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					})
 				) : (
 					<div className="py-12 text-center">
-						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-base-200 to-base-300">
+						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-(--surface-content) to-(--surface-raised)">
 							<Icon name="check" className="w-8 h-8 text-muted" />
-							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-white/5"></div>
+							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-(--over-image-surface-soft)"></div>
 						</div>
 						<p className="text-sm font-medium text-muted">
 							هیچ ماموریتی یافت نشد

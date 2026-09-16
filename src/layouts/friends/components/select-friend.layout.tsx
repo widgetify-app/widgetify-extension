@@ -62,12 +62,12 @@ export function SelectFriendLayout({
 									${
 										isSelected
 											? 'bg-primary/10 border-primary'
-											: 'hover:bg-base-content/5 border-base-content/10 hover:border-base-content/20 active:scale-95'
+											: 'hover:bg-subtle border-subtle hover:border-strong active:scale-95'
 									}
 								`}
 							>
 								<div className="shrink-0">
-									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-base-300">
+									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-content">
 										<AvatarComponent
 											url={friend.user.avatar}
 											placeholder={friend.user.name}

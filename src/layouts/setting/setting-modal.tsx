@@ -148,14 +148,14 @@ export const SettingModal = ({
 			>
 				<div className="flex flex-row gap-1 sm:flex-col">
 					<button
-						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-raised w-42`}
 						onClick={() => openWidgetSettings()}
 					>
 						<Icon name="appsPlus" size={20} className="text-muted" />
 						<span className="text-sm font-light">مدیریت ویجت ها</span>
 					</button>
 					<button
-						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-base-300 w-42`}
+						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-all duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-muted hover:bg-raised w-42`}
 						onClick={() => setUpdateModalOpen(true)}
 					>
 						<Icon name="lastUpdate" size={20} />

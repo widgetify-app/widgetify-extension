@@ -128,11 +128,11 @@ function TreeNode({
 							? 'bg-primary border-primary'
 							: isIndeterminate
 								? 'bg-primary/30 border-primary'
-								: 'border-base-content/20'
+								: 'border-strong'
 					}`}
 				>
 					{(isChecked || isIndeterminate) && (
-						<Icon name="check" size={9} className="text-white" />
+						<Icon name="check" size={9} className="text-(--over-image-text)" />
 					)}
 				</span>
 
@@ -314,7 +314,7 @@ export function ImportBrowserBookmarksModal({
 						</span>
 					</div>
 
-					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-base-content/5 custom-scrollbar">
+					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-faint custom-scrollbar">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
 								<Icon
