@@ -11,6 +11,7 @@ import { sortTodos } from './utils/sort-todos'
 import { TodoCompactRow } from './variants/todo-2x1'
 import { Todo2x3 } from './variants/todo-2x3'
 import { TodoBoard } from './variants/todo-4x3'
+import { callEvent } from '@/common/utils/call-event'
 
 const BOARD_PAGE_SIZE = 10
 const LIST_PAGE_SIZE = 5
@@ -91,6 +92,10 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 	}
 
 	const onRefresh = () => {
+		if (!isAuthenticated) {
+			callEvent('openProfile')
+			return
+		}
 		refetch()
 		Analytics.event('todo_refetch')
 	}
