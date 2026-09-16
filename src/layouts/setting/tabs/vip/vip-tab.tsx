@@ -14,6 +14,7 @@ import {
 import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
 import { cn } from '@/common/utils/cn'
 import vipPreviewImg from '@/assets/images/pro-preview.jpg'
+import { FreeVipSuccessModal } from './free-vip-success-modal'
 
 interface VipFeatureSlide {
 	id: string
@@ -92,6 +93,8 @@ export function VipTab() {
 	const { isAuthenticated, refetchUser } = useAuth()
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 	const [selectedPlan, setSelectedPlan] = useState<VipPlan | null>(null)
+	const [showSuccessModal, setShowSuccessModal] = useState(false)
+	const [claimedDays, setClaimedDays] = useState<number>(5)
 
 	const { data: plans, isLoading, refetch } = useGetVipPlans()
 	const { mutate: purchasePlan, isPending } = usePurchaseVipPlan()
@@ -139,7 +142,8 @@ export function VipTab() {
 			{
 				onSuccess: (res) => {
 					if (res?.isFree || res?.activated) {
-						showToast(`اشتراک رایگان ${selectedPlan.days} روزه ${VIP_LABEL} با موفقیت فعال شد`, 'success')
+						setClaimedDays(res?.days || selectedPlan.days || 5)
+						setShowSuccessModal(true)
 					} else {
 						showToast('در حال انتقال به درگاه پرداخت...', 'success')
 					}
@@ -149,13 +153,14 @@ export function VipTab() {
 				},
 				onError: (error) => {
 					const errorMsg = translateError(error) as string
-					if (errorMsg === 'FREE_PLAN_ALREADY_CLAIMED' || (error as any)?.response?.data?.message === 'FREE_PLAN_ALREADY_CLAIMED') {
-						showToast('شما قبلاً این اشتراک رایگان را دریافت کرده‌اید', 'error')
+					if (
+						errorMsg === 'FREE_PLAN_ALREADY_CLAIMED' ||
+						(error as any)?.response?.data?.message ===
+							'FREE_PLAN_ALREADY_CLAIMED'
+					) {
+						showToast('شما قبلا این اشتراک رایگان را دریافت کرده‌اید', 'error')
 					} else {
-						showToast(
-							errorMsg || `خطا در خرید اشتراک ${VIP_LABEL}`,
-							'error'
-						)
+						showToast(errorMsg || `خطا در خرید اشتراک ${VIP_LABEL}`, 'error')
 					}
 					Analytics.event('vip_plan_purchase_failed')
 				},
@@ -340,7 +345,9 @@ export function VipTab() {
 										<div className="flex items-baseline gap-1">
 											{plan.price === 0 ? (
 												<span className="text-base font-black text-success">
-													{plan.isClaimed ? 'دریافت شده' : 'رایگان'}
+													{plan.isClaimed
+														? 'دریافت شده'
+														: 'رایگان'}
 												</span>
 											) : (
 												<>
@@ -388,7 +395,9 @@ export function VipTab() {
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">
-									{selectedPlan.isClaimed ? 'قبلاً دریافت شده' : 'رایگان'}
+									{selectedPlan.isClaimed
+										? 'قبلاً دریافت شده'
+										: 'رایگان'}
 								</span>
 							) : (
 								<>
@@ -405,7 +414,11 @@ export function VipTab() {
 						<Button
 							size="md"
 							rounded="2xl"
-							disabled={!selectedPlan || isPending || Boolean(selectedPlan?.isClaimed)}
+							disabled={
+								!selectedPlan ||
+								isPending ||
+								Boolean(selectedPlan?.isClaimed)
+							}
 							loading={isPending}
 							loadingText="در حال انتقال..."
 							onClick={handlePurchase}
@@ -414,12 +427,20 @@ export function VipTab() {
 						>
 							<Icon name="diamond" size={14} />
 							<span>
-								{selectedPlan?.isClaimed ? 'دریافت شده' : `فعال‌سازی ${VIP_LABEL}`}
+								{selectedPlan?.isClaimed
+									? 'دریافت شده'
+									: `فعال‌سازی ${VIP_LABEL}`}
 							</span>
 						</Button>
 					</div>
 				</div>
 			</div>
+
+			<FreeVipSuccessModal
+				isOpen={showSuccessModal}
+				onClose={() => setShowSuccessModal(false)}
+				days={claimedDays}
+			/>
 		</div>
 	)
 }
