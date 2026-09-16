@@ -20,7 +20,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			className={cn(
 				'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all text-right min-h-24 group',
 				isClaimed
-					? 'opacity-65 border-dashed border-base-content/20 bg-base-300/10 cursor-not-allowed saturate-50'
+					? 'opacity-65  border-base-content/20 bg-base-300/10 cursor-not-allowed saturate-50'
 					: isSelected
 						? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs cursor-pointer'
 						: 'border-base-content/10 bg-base-300/20 hover:border-primary/40 hover:bg-base-300/40 cursor-pointer'
@@ -33,8 +33,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-base-content/20 text-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-					<Icon name="check" size={10} />
+				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-base-100 text-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
 					<span>استفاده شده</span>
 				</div>
 			)}
@@ -81,7 +80,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 								isClaimed ? 'text-muted' : 'text-success'
 							)}
 						>
-							{isClaimed ? 'قبلاً دریافت شده' : 'رایگان'}
+							{isClaimed ? 'قبلا دریافت شده' : 'رایگان'}
 						</span>
 					) : (
 						<>
