@@ -2,6 +2,7 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { shouldReduceMotion } from '@/common/utils/reduced-motion'
 import { useUpdateExtensionSettings } from '@/services/hooks/extension/update-setting.hook'
 import {
 	type FetchedTimezone,
@@ -44,8 +45,31 @@ export const GeneralSettingContext = createContext<GeneralSettingContextType | n
 export function GeneralSettingProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<GeneralData>(DEFAULT_SETTINGS)
 	const [isInitialized, setIsInitialized] = useState(false)
+	const [systemPrefersReducedMotion, setSystemPrefersReducedMotion] = useState(
+		() =>
+			typeof window !== 'undefined' &&
+			window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+	)
 	const { isAuthenticated, user } = useAuth()
 	const { mutateAsync } = useUpdateExtensionSettings()
+
+	useEffect(() => {
+		if (typeof window === 'undefined' || !window.matchMedia) return
+
+		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+		const handler = (e: MediaQueryListEvent) => {
+			setSystemPrefersReducedMotion(e.matches)
+		}
+
+		setSystemPrefersReducedMotion(mediaQuery.matches)
+		mediaQuery.addEventListener('change', handler)
+		return () => mediaQuery.removeEventListener('change', handler)
+	}, [])
+
+	const isOptimalModeActive = shouldReduceMotion(
+		settings.isOptimalMode,
+		systemPrefersReducedMotion
+	)
 
 	useEffect(() => {
 		async function loadGeneralSettings() {
@@ -78,9 +102,9 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 
 	useEffect(() => {
 		const root = document.documentElement
-		root.classList.toggle('optimal-mode', Boolean(settings.isOptimalMode))
+		root.classList.toggle('optimal-mode', isOptimalModeActive)
 		return () => root.classList.remove('optimal-mode')
-	}, [settings.isOptimalMode])
+	}, [isOptimalModeActive])
 
 	useEffect(() => {
 		async function getTimeZone() {
@@ -231,7 +255,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 		setBrowserBookmarksEnabled,
 		browserTabsEnabled: settings.browserTabsEnabled,
 		setBrowserTabsEnabled,
-		isOptimalMode: settings.isOptimalMode,
+		isOptimalMode: isOptimalModeActive,
 	}
 
 	return (
