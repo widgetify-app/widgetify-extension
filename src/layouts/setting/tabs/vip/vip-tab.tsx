@@ -340,7 +340,7 @@ export function VipTab() {
 										<div className="flex items-baseline gap-1">
 											{plan.price === 0 ? (
 												<span className="text-base font-black text-success">
-													رایگان
+													{plan.isClaimed ? 'دریافت شده' : 'رایگان'}
 												</span>
 											) : (
 												<>
@@ -388,7 +388,7 @@ export function VipTab() {
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">
-									رایگان
+									{selectedPlan.isClaimed ? 'قبلاً دریافت شده' : 'رایگان'}
 								</span>
 							) : (
 								<>
@@ -405,7 +405,7 @@ export function VipTab() {
 						<Button
 							size="md"
 							rounded="2xl"
-							disabled={!selectedPlan || isPending}
+							disabled={!selectedPlan || isPending || Boolean(selectedPlan?.isClaimed)}
 							loading={isPending}
 							loadingText="در حال انتقال..."
 							onClick={handlePurchase}
@@ -413,7 +413,9 @@ export function VipTab() {
 							color="vip"
 						>
 							<Icon name="diamond" size={14} />
-							<span>فعال‌سازی {VIP_LABEL}</span>
+							<span>
+								{selectedPlan?.isClaimed ? 'دریافت شده' : `فعال‌سازی ${VIP_LABEL}`}
+							</span>
 						</Button>
 					</div>
 				</div>

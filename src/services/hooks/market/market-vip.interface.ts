@@ -4,6 +4,7 @@ export interface VipPlan {
 	price: number
 	days: number
 	isActive: boolean
+	isClaimed?: boolean
 	order?: number | null
 	meta?: {
 		badge?: string
