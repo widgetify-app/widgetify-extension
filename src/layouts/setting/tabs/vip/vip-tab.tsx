@@ -15,6 +15,7 @@ import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
 import { cn } from '@/common/utils/cn'
 import vipPreviewImg from '@/assets/images/pro-preview.jpg'
 import { FreeVipSuccessModal } from './free-vip-success-modal'
+import { VipPlanCard } from './vip-plan-card'
 
 interface VipFeatureSlide {
 	id: string
@@ -295,75 +296,14 @@ export function VipTab() {
 					</div>
 				) : plans?.length ? (
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-						{plans.map((plan) => {
-							const isSelected = selectedPlan?.id === plan.id
-							const isPopular =
-								plan.meta?.isPopular || plan.meta?.badge === 'popular'
-
-							return (
-								<div
-									key={plan.id}
-									onClick={() => setSelectedPlan(plan)}
-									className={cn(
-										'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all cursor-pointer text-right min-h-24 group',
-										isSelected
-											? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs'
-											: 'border-base-content/10 bg-base-300/20 hover:border-primary/40 hover:bg-base-300/40'
-									)}
-								>
-									{isPopular && (
-										<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-content text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
-											محبوب‌ترین
-										</div>
-									)}
-
-									<div className="flex items-start justify-between gap-2">
-										<div className="flex items-center gap-2">
-											<h5 className="text-xs font-bold text-content">
-												{plan.title}
-											</h5>
-											<span className="text-[10px] text-muted">
-												{fmt(plan.days)} روز اعتبار
-											</span>
-										</div>
-
-										<div
-											className={cn(
-												'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
-												isSelected
-													? 'border-primary bg-primary text-primary-content'
-													: 'border-base-content/25 bg-base-300/50 group-hover:border-primary/50'
-											)}
-										>
-											{isSelected && (
-												<Icon name="check" size={10} />
-											)}
-										</div>
-									</div>
-
-									<div className="mt-2.5 space-y-1">
-										<div className="flex items-baseline gap-1">
-											{plan.price === 0 ? (
-												<span className="text-base font-black text-success">
-													{plan.isClaimed
-														? 'دریافت شده'
-														: 'رایگان'}
-												</span>
-											) : (
-												<>
-													<span className="text-base font-black text-content tabular-nums">
-														{fmt(plan.price)}
-													</span>
-													<span className="text-[11px] text-muted">
-														تومان
-													</span>
-												</>
-											)}
-										</div>
-									</div>
-								</div>
-							)
-						})}
+						{plans.map((plan) => (
+							<VipPlanCard
+								key={plan.id}
+								plan={plan}
+								isSelected={selectedPlan?.id === plan.id}
+								onSelect={(p) => setSelectedPlan(p)}
+							/>
+						))}
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-base-content/10 bg-base-300/20">
