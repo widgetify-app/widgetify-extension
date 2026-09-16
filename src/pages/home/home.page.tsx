@@ -42,8 +42,24 @@ const steps: Step[] = [
 	},
 	{
 		target: '.widget-outer',
-		content:
-			'برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه',
+		content: (
+			<div className="flex flex-col gap-2.5">
+				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-base-content/10 bg-base-300/40">
+					<video
+						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.mp4"
+						autoPlay
+						loop
+						muted
+						playsInline
+						className="object-cover w-full h-full"
+					/>
+				</div>
+				<p className="text-[12px] leading-relaxed text-base-content/85 font-medium">
+					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
+					کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه
+				</p>
+			</div>
+		),
 	},
 	{
 		target: '#layout-menu-button',
