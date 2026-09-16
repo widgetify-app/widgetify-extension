@@ -64,15 +64,18 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 	return (
 		<div className="flex flex-col h-full overflow-hidden text-right" dir="rtl">
-			{/* Top: Notes / Activities horizontal row */}
-			<section aria-label="وضعیت‌ها" className="shrink-0 pb-2 border-b border-base-content/10">
+			<section
+				aria-label="وضعیت‌ها"
+				className="shrink-0 pb-2 border-b border-base-content/10"
+			>
 				<ActiveFriendsHorizontal />
 			</section>
 
-			{/* Middle: Direct Friends section title & add button */}
 			<div className="flex items-center justify-between px-2 pt-2.5 pb-1.5 shrink-0">
 				<div className="flex items-center gap-1.5">
-					<span className="text-xs font-medium text-base-content/80">دوستان</span>
+					<span className="text-xs font-medium text-base-content/80">
+						دوستان
+					</span>
 					{allFriends.length > 0 && (
 						<span className="px-1.5 py-0.2 text-[10px] rounded-full bg-base-300 text-base-content/60 font-mono">
 							{allFriends.length}
@@ -97,7 +100,6 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 				</div>
 			</div>
 
-			{/* Bottom: Friends Direct vertical list */}
 			<div
 				ref={containerRef}
 				className="flex-1 px-1 pb-2 overflow-y-auto space-y-1 scrollbar-none"
@@ -159,7 +161,10 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 										<div className="text-xs font-medium truncate text-base-content">
 											{friend.user.name}
 										</div>
-										<div className="text-[10px] truncate text-base-content/50" dir="ltr">
+										<div
+											className="text-[10px] truncate text-base-content/50"
+											dir="ltr"
+										>
 											@{friend.user.username}
 										</div>
 									</div>

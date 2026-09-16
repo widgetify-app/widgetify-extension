@@ -25,16 +25,15 @@ export const NewsContainer = ({ customFeeds, useDefaultNews }: NewsContainerProp
 	return (
 		<ul
 			aria-label="اخبار"
-			className="flex flex-col gap-1.5 overflow-y-auto scrollbar-none"
+			className="flex flex-col gap-1 overflow-y-auto scrollbar-none h-full pr-0.5"
 		>
 			{feeds.map((feed) => (
-				<li key={feed.id}>
-					<RssFeedComponent
-						url={feed.url}
-						sourceName={feed.name}
-						label={feed.id === 'default' ? 'اخبار پیش‌فرض' : feed.name}
-					/>
-				</li>
+				<RssFeedComponent
+					key={feed.id}
+					url={feed.url}
+					sourceName={feed.name}
+					label={feed.id === 'default' ? 'اخبار پیش‌فرض' : feed.name}
+				/>
 			))}
 		</ul>
 	)

@@ -43,35 +43,26 @@ export const NewsItem = ({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={() => onOpen(url)}
-			className="flex items-center gap-2.5 p-2 border rounded-2xl cursor-pointer bg-base-content/5 border-base-content/10 transition-ui hover:bg-base-content/10 active:scale-[0.98] focus-visible:focus-ring"
+			className="group flex items-center gap-2 p-1.5 rounded-xl cursor-pointer bg-base-content/[0.03] hover:bg-base-content/[0.08] transition-all border border-transparent hover:border-base-content/10 active:scale-[0.99] focus-visible:focus-ring shrink-0"
 		>
-			{hasImage ? (
+			{hasImage && (
 				<img
 					src={image_url}
 					alt=""
-					className="object-cover w-14 h-14 rounded-xl shrink-0 bg-base-content/10"
+					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-base-content/10"
 					loading="lazy"
 					onError={() => setImageError(true)}
 				/>
-			) : (
-				<span className="flex items-center justify-center w-14 h-14 rounded-xl shrink-0 bg-base-content/10 text-muted">
-					<Icon
-						name="outlineNewspaper"
-						size={20}
-						className="opacity-60"
-						aria-hidden="true"
-					/>
-				</span>
 			)}
 
-			<span className="flex flex-col justify-between flex-1 min-w-0 h-full py-0.5">
-				<span className="text-xs font-medium leading-snug text-content line-clamp-2">
+			<span className="flex flex-col justify-center flex-1 min-w-0 py-0.5">
+				<span className="text-[11.5px] font-medium leading-[1.4] text-content group-hover:text-primary transition-colors line-clamp-2">
 					{title}
 				</span>
-				<span className="flex items-center gap-1.5 mt-1.5 text-[11px] text-muted opacity-70">
-					<span className="truncate max-w-[120px]">{source.name}</span>
-					<span aria-hidden="true">·</span>
-					<time dateTime={publishedAt} className="shrink-0">
+				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-muted">
+					<span className="truncate max-w-[100px]">{source.name}</span>
+					<span aria-hidden="true" className="opacity-50">·</span>
+					<time dateTime={publishedAt} className="shrink-0 opacity-80">
 						{formatRelativeTime(publishedAt)}
 					</time>
 				</span>
