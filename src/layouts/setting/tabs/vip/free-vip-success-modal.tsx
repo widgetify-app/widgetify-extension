@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti'
 import { Modal } from '@/components/ui/modal/modal'
 import { Button } from '@/components/ui/button/button'
 import { Icon } from '@/icons'
+import { playNativeToastSound } from '@/common/toast'
 
 interface FreeVipSuccessModalProps {
 	isOpen: boolean
@@ -19,10 +20,12 @@ export function FreeVipSuccessModal({
 		if (!isOpen) return
 
 		try {
+			playNativeToastSound('success')
 			confetti({
 				particleCount: 100,
 				spread: 70,
 				origin: { y: 0.6 },
+				zIndex: 999999,
 			})
 		} catch {}
 	}, [isOpen])
@@ -78,7 +81,7 @@ export function FreeVipSuccessModal({
 						className="flex-1 text-xs font-bold gap-1.5 shadow-sm"
 					>
 						<Icon name="refresh" size={14} />
-						<span>بارگذاری مجدد</span>
+						<span>بارگذاری صفحه</span>
 					</Button>
 				</div>
 			</div>
