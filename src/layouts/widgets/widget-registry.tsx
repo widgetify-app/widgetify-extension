@@ -1,6 +1,6 @@
 import { BookmarkProvider } from '@/layouts/bookmark/context/bookmark.context'
 import { BookmarksList } from '@/layouts/bookmark/bookmarks'
-import { SearchLayout } from '@/layouts/search/search'
+import { SearchLayout } from '@widget/search/search.widget'
 import CalendarLayout from '@widget/calendar/calendar.widget'
 import { ComboWidget } from '@widget/combo-widget/combo-widget.widget'
 import { NetworkLayout } from '@widget/network/network.widget'

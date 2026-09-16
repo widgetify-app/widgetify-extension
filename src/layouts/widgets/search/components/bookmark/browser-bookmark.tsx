@@ -1,52 +1,45 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
-import { getFaviconFromUrl } from '@/common/utils/icon'
-import { Tooltip } from '@/components/ui'
-import { BookmarkPopover } from './bookmark-popover'
-import { Page, usePage } from '@/context/page.context'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { NewBadge } from '@/components/ui'
+import { getFaviconFromUrl } from '@/common/utils/icon'
+import { NewBadge, Tooltip } from '@/components/ui'
+import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'
+import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
+import { BookmarkPopover } from './bookmark-popover'
+
+const POPOVER_WIDTH = 288
 
 export function BrowserBookmark() {
-	const { data } = useGetSearchboxData({ enabled: true })
+	const { data: searchboxData } = useGetSearchboxData({ enabled: true })
 	const { setPage } = usePage()
-	const { data: fetchedSearchbox } = useGetSearchboxData({})
 
 	const [isOpen, setIsOpen] = useState(false)
 	const [popoverCoords, setPopoverCoords] = useState({ top: 0, left: 0 })
 	const iconRef = useRef<HTMLDivElement>(null)
 
 	const updateCoords = useCallback(() => {
-		if (iconRef.current) {
-			const rect = iconRef.current.getBoundingClientRect()
-			const popoverWidth = 280
-			const padding = 10
+		if (!iconRef.current) return
 
-			let left = rect.left
-			if (left + popoverWidth > window.innerWidth) {
-				left = window.innerWidth - popoverWidth - padding
-			}
+		const rect = iconRef.current.getBoundingClientRect()
+		const padding = 10
+		const left = Math.max(
+			padding,
+			Math.min(rect.left, window.innerWidth - POPOVER_WIDTH - padding)
+		)
 
-			left = Math.max(padding, left)
-
-			setPopoverCoords({
-				top: rect.bottom + window.scrollY + 8,
-				left: left,
-			})
-		}
+		setPopoverCoords({ top: rect.bottom + 8, left })
 	}, [])
 
 	useEffect(() => {
-		if (isOpen) {
-			updateCoords()
-			const handleUpdate = () => requestAnimationFrame(updateCoords)
-			window.addEventListener('resize', handleUpdate)
-			window.addEventListener('scroll', handleUpdate)
-			return () => {
-				window.removeEventListener('resize', handleUpdate)
-				window.removeEventListener('scroll', handleUpdate)
-			}
+		if (!isOpen) return
+
+		updateCoords()
+		const handleUpdate = () => requestAnimationFrame(updateCoords)
+		window.addEventListener('resize', handleUpdate)
+		window.addEventListener('scroll', handleUpdate, true)
+		return () => {
+			window.removeEventListener('resize', handleUpdate)
+			window.removeEventListener('scroll', handleUpdate, true)
 		}
 	}, [isOpen, updateCoords])
 
@@ -68,16 +61,17 @@ export function BrowserBookmark() {
 					<button
 						type="button"
 						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
-						onClick={() => onClickToExplorer()}
+						onClick={onClickToExplorer}
 					>
 						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
 							<Icon
 								name="globe"
 								size={14}
 								className="text-base-content/60"
+								aria-hidden="true"
 							/>
 							<p className="font-medium text-base-content/60">کاوش</p>
-							{fetchedSearchbox?.explorer?.newBadge && (
+							{searchboxData?.explorer?.newBadge && (
 								<NewBadge className="top-0 left-0" />
 							)}
 						</div>
@@ -89,24 +83,28 @@ export function BrowserBookmark() {
 						type="button"
 						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={handleTogglePopover}
+						aria-expanded={isOpen}
 					>
 						<div
-							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform ${
+							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl group-hover:scale-95 transition-transform ${
 								isOpen
 									? 'bg-primary text-primary-content shadow-lg'
-									: 'bg-base-300  text-base-content/60'
+									: 'bg-base-300 text-base-content/60'
 							}`}
 						>
-							<Icon name="folderSpecial" size={14} />
+							<Icon name="folderSpecial" size={14} aria-hidden="true" />
 							<p className="font-medium">بوکمارک مرورگر</p>
 						</div>
 					</button>
 				</div>
 
-				<div className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0" />
+				<div
+					aria-hidden="true"
+					className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0"
+				/>
 
 				<div className="flex flex-row items-center gap-1 flex-nowrap">
-					{data?.recommendedSites?.map((item) => (
+					{searchboxData?.recommendedSites?.map((item) => (
 						<div
 							key={item.url}
 							className="flex items-center justify-center shrink-0"
@@ -122,8 +120,9 @@ export function BrowserBookmark() {
 										src={
 											item.icon || getFaviconFromUrl(item.url || '')
 										}
-										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-base-300 "
-										alt={item.name}
+										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-base-300"
+										alt={item.name || item.title || ''}
+										loading="lazy"
 									/>
 								</a>
 							</Tooltip>

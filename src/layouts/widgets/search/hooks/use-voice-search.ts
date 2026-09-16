@@ -9,13 +9,17 @@ declare global {
 	}
 }
 
+export type VoiceSearchError = 'permission-denied' | 'unsupported' | 'failed' | null
+
 export interface UseVoiceSearchReturn {
 	isListening: boolean
 	currentTranscript: string
+	error: VoiceSearchError
 	startVoiceSearch: () => void
 	stopVoiceSearch: () => void
-	clearTranscript: () => void
 }
+
+const PERMISSION_ERRORS = ['not-allowed', 'service-not-allowed', 'audio-capture']
 
 export function useVoiceSearch(
 	onResult: (transcript: string) => void,
@@ -23,12 +27,14 @@ export function useVoiceSearch(
 ): UseVoiceSearchReturn {
 	const [isListening, setIsListening] = useState(false)
 	const [currentTranscript, setCurrentTranscript] = useState('')
+	const [error, setError] = useState<VoiceSearchError>(null)
 	const recognitionRef = useRef<any>(null)
 
 	const initSpeechRecognition = () => {
 		const SpeechRecognition =
 			window.SpeechRecognition || window.webkitSpeechRecognition
 		if (!SpeechRecognition) {
+			setError('unsupported')
 			showToast('مرورگر شما از جستجوی صوتی پشتیبانی نمی‌کند.', 'error')
 			return null
 		}
@@ -41,6 +47,7 @@ export function useVoiceSearch(
 		recognition.onstart = () => {
 			setIsListening(true)
 			setCurrentTranscript('')
+			setError(null)
 			Analytics.event('voice_search_started')
 		}
 
@@ -67,9 +74,14 @@ export function useVoiceSearch(
 		}
 
 		recognition.onerror = (event: any) => {
-			console.error('Speech recognition error:', event.error)
 			setIsListening(false)
 			Analytics.event('voice_search_error', { error: event.error })
+
+			if (event.error === 'aborted' || event.error === 'no-speech') return
+
+			setError(
+				PERMISSION_ERRORS.includes(event.error) ? 'permission-denied' : 'failed'
+			)
 		}
 
 		recognition.onend = () => {
@@ -87,8 +99,8 @@ export function useVoiceSearch(
 		if (recognitionRef.current) {
 			try {
 				recognitionRef.current.start()
-			} catch (error) {
-				console.error('Error starting speech recognition:', error)
+			} catch {
+				setError('failed')
 			}
 		}
 	}
@@ -99,15 +111,11 @@ export function useVoiceSearch(
 		}
 	}
 
-	const clearTranscript = () => {
-		setCurrentTranscript('')
-	}
-
 	return {
 		isListening,
 		currentTranscript,
+		error,
 		startVoiceSearch,
 		stopVoiceSearch,
-		clearTranscript,
 	}
 }
