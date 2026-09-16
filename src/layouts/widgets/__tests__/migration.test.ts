@@ -134,4 +134,122 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 			expect(widget.position.row).toBeGreaterThanOrEqual(0)
 		}
 	})
+
+	it('migrates classic layout with more than 4 active widgets across multiple rows', async () => {
+		storageMockData.appearance = { ui: 'CLASSIC' }
+		storageMockData.activeWidgets = [
+			{ id: WidgetKeys.calendar, order: 0 },
+			{ id: WidgetKeys.yadKar, order: 1 },
+			{ id: WidgetKeys.tools, order: 2 },
+			{ id: WidgetKeys.comboWidget, order: 3 },
+			{ id: WidgetKeys.arzLive, order: 4 },
+			{ id: WidgetKeys.news, order: 5 },
+		]
+
+		const result = await migrateWidgetLayoutIfNeeded()
+
+		expect(validateLayout(result, 8)).toBe(true)
+
+		const arzLiveWidget = result.find((w) => w.id === WidgetKeys.arzLive)
+		const newsWidget = result.find((w) => w.id === WidgetKeys.news)
+
+		expect(arzLiveWidget).toBeDefined()
+		expect(newsWidget).toBeDefined()
+		expect(arzLiveWidget?.position.row).toBe(6)
+		expect(arzLiveWidget?.position.col).toBe(0)
+		expect(newsWidget?.position.row).toBe(6)
+		expect(newsWidget?.position.col).toBe(2)
+	})
+
+	it('handles corrupt or empty storage gracefully falling back to default layout', async () => {
+		storageMockData.storedWidgets = null
+		storageMockData.appearance = null
+		storageMockData.activeWidgets = null
+
+		const result = await migrateWidgetLayoutIfNeeded()
+
+		expect(result.length).toBeGreaterThan(0)
+		expect(validateLayout(result, 8)).toBe(true)
+		expect(storageMockData.storedWidgets).toEqual(result)
+	})
+
+	it('persists migrated layout and marks appearance as CUSTOM', async () => {
+		storageMockData.appearance = { ui: 'CLASSIC', otherSetting: 123 }
+		storageMockData.activeWidgets = [{ id: WidgetKeys.calendar, order: 0 }]
+
+		await migrateWidgetLayoutIfNeeded()
+
+		expect(storageMockData.appearance.ui).toBe('CUSTOM')
+		expect(storageMockData.appearance.otherSetting).toBe(123)
+		expect(Array.isArray(storageMockData.storedWidgets)).toBe(true)
+	})
+
+	it('filters out invalid or deprecated widget keys in activeWidgets during migration', async () => {
+		storageMockData.appearance = { ui: 'CLASSIC' }
+		storageMockData.activeWidgets = [
+			{ id: 'non_existent_widget_key_xyz', order: 0 },
+			{ id: WidgetKeys.calendar, order: 2 },
+			{ id: null, order: 3 },
+			{ order: 4 },
+			{ id: WidgetKeys.notes, order: 5 },
+		]
+
+		const result = await migrateWidgetLayoutIfNeeded()
+
+		expect(validateLayout(result, 8)).toBe(true)
+		const invalidWidget = result.find(
+			(w) => w.id === ('non_existent_widget_key_xyz' as any)
+		)
+		expect(invalidWidget).toBeUndefined()
+
+		const calendarWidget = result.find((w) => w.id === WidgetKeys.calendar)
+		const notesWidget = result.find((w) => w.id === WidgetKeys.notes)
+
+		expect(calendarWidget).toBeDefined()
+		expect(notesWidget).toBeDefined()
+		// calendar is index 0 in bottomWidgets -> col 0, row 3
+		expect(calendarWidget?.position).toEqual({ col: 0, row: 3 })
+		// notes is index 1 in bottomWidgets -> col 2, row 3
+		expect(notesWidget?.position).toEqual({ col: 2, row: 3 })
+	})
+
+	it('preserves top widgets (search, clock, moodTracker, photo, pet) alongside migrated active widgets', async () => {
+		storageMockData.appearance = { ui: 'CLASSIC' }
+		storageMockData.activeWidgets = [
+			{ id: WidgetKeys.weather, order: 0 },
+			{ id: WidgetKeys.notes, order: 1 },
+		]
+
+		const result = await migrateWidgetLayoutIfNeeded()
+
+		const search = result.find((w) => w.id === WidgetKeys.search)
+		const clock = result.find(
+			(w) => w.id === WidgetKeys.clock && w.position.row === 0
+		)
+		const mood = result.find((w) => w.id === WidgetKeys.moodTracker)
+		const photo = result.find((w) => w.id === WidgetKeys.photo)
+		const pet = result.find((w) => w.id === WidgetKeys.pet)
+
+		expect(search).toBeDefined()
+		expect(clock).toBeDefined()
+		expect(mood).toBeDefined()
+		expect(photo).toBeDefined()
+		expect(pet).toBeDefined()
+
+		expect(search?.position).toEqual({ col: 2, row: 0 })
+		expect(search?.size).toEqual({ w: 4, h: 1 })
+		expect(clock?.position).toEqual({ col: 0, row: 0 })
+		expect(mood?.position).toEqual({ col: 0, row: 1 })
+		expect(photo?.position).toEqual({ col: 6, row: 0 })
+		expect(pet?.position).toEqual({ col: 6, row: 2 })
+
+		const weather = result.find(
+			(w) => w.id === WidgetKeys.weather && w.position.row === 3
+		)
+		const notes = result.find(
+			(w) => w.id === WidgetKeys.notes && w.position.row === 3
+		)
+		expect(weather?.position).toEqual({ col: 0, row: 3 })
+		expect(notes?.position).toEqual({ col: 2, row: 3 })
+	})
 })

@@ -63,14 +63,16 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 								gridRowEnd: widget.position.row + widget.size.h + 1,
 							}}
 							className={cn(
-								'flex flex-col items-center justify-center rounded-xl bg-base-100/70 border border-base-content/15 shadow-xs overflow-hidden transition-all',
+								'flex flex-col items-center justify-center rounded-xl bg-base-100/90 border border-base-content/10 shadow-xs overflow-hidden transition-all group-hover:border-primary/30',
 								isCompact ? 'p-0.5' : 'p-1.5'
 							)}
 						>
 							<span
 								className={cn(
-									'leading-none',
-									isCompact ? 'text-xs' : 'text-base sm:text-lg mb-0.5'
+									'leading-none transition-transform group-hover:scale-110 duration-200',
+									isCompact
+										? 'text-[13px]'
+										: 'text-base sm:text-lg mb-0.5'
 								)}
 							>
 								{emoji}

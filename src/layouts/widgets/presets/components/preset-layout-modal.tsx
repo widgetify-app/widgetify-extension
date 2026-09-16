@@ -26,21 +26,9 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 	const { isVip } = useAuth()
 	const { applyPresetLayout } = useFreeWidgetActions()
 
-	const [activeFilter, setActiveFilter] = useState<FilterType>('all')
 	const [selectedPresetToApply, setSelectedPresetToApply] =
 		useState<PresetLayout | null>(null)
 	const [isApplying, setIsApplying] = useState(false)
-
-	const filteredPresets = useMemo(() => {
-		switch (activeFilter) {
-			case 'free':
-				return PRESET_LAYOUTS.filter((p) => !p.isVip)
-			case 'vip':
-				return PRESET_LAYOUTS.filter((p) => p.isVip)
-			default:
-				return PRESET_LAYOUTS
-		}
-	}, [activeFilter])
 
 	const handleRequestApply = (preset: PresetLayout) => {
 		if (preset.isVip && !isVip) {
@@ -72,57 +60,22 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 			<Modal
 				isOpen={isOpen}
 				onClose={onClose}
-				size="lg"
-				className="w-[calc(100vw-2rem)] max-w-2xl h-145 flex flex-col"
+				size="xl"
+				className="w-[calc(100vw-2rem)] max-w-4xl h-[min(650px,calc(100dvh-4rem))] flex flex-col p-4 md:p-5"
 				direction="rtl"
 				showCloseButton={true}
-				title="چیدمان‌های آماده"
+				title={
+					<div className="flex items-center gap-2">
+						<span>چیدمان‌های آماده</span>
+						<span className="text-xs font-normal text-muted bg-base-200 px-2 py-0.5 rounded-lg">
+							قالب‌های طراحی‌شده و استاندارد
+						</span>
+					</div>
+				}
 			>
 				<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
-					<div className="sticky top-0 z-10 flex items-center gap-1.5 shrink-0 overflow-x-auto pb-2 pt-0.5 scrollbar-none">
-						<button
-							type="button"
-							onClick={() => setActiveFilter('all')}
-							className={cn(
-								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
-								activeFilter === 'all'
-									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
-							)}
-						>
-							<span>همه چیدمان‌ها</span>
-						</button>
-
-						<button
-							type="button"
-							onClick={() => setActiveFilter('free')}
-							className={cn(
-								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
-								activeFilter === 'free'
-									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
-							)}
-						>
-							<span>رایگان</span>
-						</button>
-
-						<button
-							type="button"
-							onClick={() => setActiveFilter('vip')}
-							className={cn(
-								'px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1',
-								activeFilter === 'vip'
-									? 'bg-primary text-primary-content shadow-xs'
-									: 'bg-base-200 hover:bg-base-300 text-muted'
-							)}
-						>
-							<Icon name="diamond" size={13} className="text-vip" />
-							<span>ویژه پرو</span>
-						</button>
-					</div>
-
 					<div className="grid flex-1 min-h-0 grid-cols-1 gap-3 p-1 overflow-y-auto sm:grid-cols-2">
-						{filteredPresets.map((preset) => {
+						{PRESET_LAYOUTS.map((preset) => {
 							const isVipRequired = preset.isVip && !isVip
 							const uniqueWidgetIds = Array.from(
 								new Set(preset.widgets.map((w) => w.id))
@@ -131,14 +84,21 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 							return (
 								<div
 									key={preset.id}
-									className="flex flex-col justify-between gap-2.5 p-3 rounded-2xl bg-base-200/50 hover:bg-base-200 border border-base-content/10 transition-all text-right group"
+									className={cn(
+										'flex flex-col justify-between gap-3 p-3.5 rounded-2xl bg-base-200/40 hover:bg-base-200/80 border transition-all text-right group shadow-2xs hover:shadow-xs',
+										preset.isVip
+											? 'border-vip/20 hover:border-vip/40'
+											: 'border-base-content/10 hover:border-base-content/20'
+									)}
 								>
-									<div className="flex flex-col gap-2">
-										<PresetCanvasPreview
-											preset={preset}
-											isCompact={true}
-											className="border-0 bg-base-300/40"
-										/>
+									<div className="flex flex-col gap-2.5">
+										<div className="relative overflow-hidden rounded-xl">
+											<PresetCanvasPreview
+												preset={preset}
+												isCompact={true}
+												className="border-0 bg-base-300/40 group-hover:scale-[1.01] transition-transform duration-300"
+											/>
+										</div>
 
 										<div className="flex flex-col gap-1.5">
 											<div className="flex items-center justify-between gap-1">
@@ -147,18 +107,22 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												</span>
 
 												{preset.isVip ? (
-													<span className="flex items-center gap-0.5 text-[10px] font-bold text-vip bg-vip/10 border border-vip/20 px-1.5 py-0.5 rounded-full shrink-0">
+													<span className="flex items-center gap-1 text-[10px] font-bold text-vip bg-vip/10 border border-vip/20 px-2 py-0.5 rounded-full shrink-0">
 														<Icon name="diamond" size={11} />
 														<span>پرو</span>
 													</span>
-												) : null}
+												) : (
+													<span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
+														رایگان
+													</span>
+												)}
 											</div>
 
-											<p className="text-[11px] text-muted line-clamp-2 leading-relaxed">
+											<p className="text-[11px] text-muted line-clamp-2 leading-relaxed h-8">
 												{preset.description}
 											</p>
 
-											<div className="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1">
+											<div className="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1 scrollbar-none">
 												{uniqueWidgetIds.map((widgetId) => {
 													const def =
 														WIDGET_DEFINITIONS[
@@ -169,7 +133,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<span
 															key={widgetId}
-															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-300/50 border border-base-content/5 shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
+															className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-base-300/60 border border-base-content/5 shrink-0 text-[10px] font-medium text-muted hover:text-content transition-colors"
 														>
 															<span className="text-xs leading-none">
 																{def.emoji}
@@ -184,7 +148,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 										</div>
 									</div>
 
-									<div className="pt-0.5">
+									<div className="pt-1 border-t border-base-content/5">
 										{isVipRequired ? (
 											<Button
 												type="button"
@@ -192,19 +156,19 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													callEvent('openSettings', 'vip')
 													onClose()
 												}}
-												className="w-full gap-1 text-xs font-bold py-1.5"
+												className="w-full gap-1.5 text-xs font-bold py-2"
 												rounded="xl"
 												variant="outline"
 												color="vip"
 											>
 												<Icon name="diamond" size={13} />
-												<span>ارتقا به پرو</span>
+												<span>ارتقا به پرو برای این چیدمان</span>
 											</Button>
 										) : (
 											<Button
 												type="button"
 												onClick={() => handleRequestApply(preset)}
-												className="w-full text-xs font-bold py-1.5"
+												className="w-full text-xs font-bold py-2 shadow-xs"
 												rounded="xl"
 												color="primary"
 											>

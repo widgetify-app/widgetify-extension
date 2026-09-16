@@ -1,18 +1,6 @@
-import {
-	createContext,
-	type ReactNode,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react'
-import Analytics from '@/analytics'
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
-import {
-	getUserWidgetsApi,
-	syncUserWidgetsApi,
-} from '@/services/hooks/widgets/widget-sync.hook'
 import { useAuth } from './auth.context'
 import { type WidgetItem, WidgetKeys } from '@widget/layout-engine/types'
 import { widgetItems } from '@widget/widget-registry'
@@ -49,8 +37,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 	const [visibility, setVisibility] = useState<WidgetKeys[]>(defaultVisibility)
 	const [widgetOrders, setWidgetOrders] =
 		useState<Record<WidgetKeys, number>>(getDefaultWidgetOrders)
-	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
-	const hasFetchedServerRef = useRef<boolean>(false)
 	const { isAuthenticated } = useAuth()
 
 	const saveActiveWidgets = (
@@ -64,45 +50,22 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				order: currentOrders[item.id] ?? item.order,
 			}))
 		setToStorage('activeWidgets', activeWidgets)
-
-		if (isAuthenticated) {
-			if (syncTimerRef.current) {
-				clearTimeout(syncTimerRef.current)
-			}
-			syncTimerRef.current = setTimeout(() => {
-				syncUserWidgetsApi({
-					workspace: 'HOME',
-					widgets: activeWidgets.map((w, index) => ({
-						widgetKey: w.id,
-						order: w.order ?? index,
-						col: 0,
-						row: 0,
-						width: 2,
-						height: 3,
-					})),
-				}).catch(() => {})
-			}, 1000)
-		}
 	}
 
 	useEffect(() => {
 		async function initActiveWidgets() {
 			try {
 				const storedVisibility = await getFromStorage('activeWidgets')
-				if (
-					storedVisibility &&
-					Array.isArray(storedVisibility) &&
-					storedVisibility.length > 0
-				) {
+				if (Array.isArray(storedVisibility) && storedVisibility.length > 0) {
 					let visibilityIds = storedVisibility
-						.filter((item) => widgetItems.some((w) => w.id === item.id))
-						.map((item: any) => item.id as WidgetKeys)
+						.map((w: any) => (w?.id ? w.id : w))
+						.filter((id) => widgetItems.some((w) => w.id === id))
 
-					if (
+					const hadOldNotesOrTodos =
 						visibilityIds.includes(WidgetKeys.todos) ||
 						visibilityIds.includes(WidgetKeys.notes)
-					) {
-						Analytics.event('yadkar_merged')
+
+					if (hadOldNotesOrTodos) {
 						visibilityIds = visibilityIds.filter(
 							(id) => id !== WidgetKeys.todos && id !== WidgetKeys.notes
 						)
@@ -112,9 +75,10 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 					}
 
 					const orders: Record<WidgetKeys, number> = getDefaultWidgetOrders()
-					for (const item of storedVisibility) {
-						orders[item.id as WidgetKeys] =
-							item.order ?? getDefaultWidgetOrders()[item.id as WidgetKeys]
+					for (const w of storedVisibility) {
+						if (w?.id && typeof w.order === 'number') {
+							orders[w.id as WidgetKeys] = w.order
+						}
 					}
 
 					if (visibilityIds.length > 0) {
@@ -129,53 +93,6 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 		initActiveWidgets()
 	}, [])
-
-	useEffect(() => {
-		if (!isAuthenticated || hasFetchedServerRef.current) return
-		hasFetchedServerRef.current = true
-
-		let isCancelled = false
-
-		async function fetchAndReconcileVisibility() {
-			try {
-				const res = await getUserWidgetsApi('HOME')
-
-				if (isCancelled || !res) return
-
-				const serverWidgets = res.widgets || []
-				if (serverWidgets && serverWidgets.length > 0) {
-					const visibilityIds = serverWidgets
-						.map((sw) => sw.widgetKey as WidgetKeys)
-						.filter((k) => widgetItems.some((w) => w.id === k))
-
-					const orders: Record<WidgetKeys, number> = getDefaultWidgetOrders()
-					for (const sw of serverWidgets) {
-						orders[sw.widgetKey as WidgetKeys] = sw.order ?? 0
-					}
-
-					if (visibilityIds.length > 0) {
-						setVisibility(visibilityIds)
-						setWidgetOrders(orders)
-						const activeWidgets = widgetItems
-							.filter((item) => visibilityIds.includes(item.id))
-							.map((item) => ({
-								...item,
-								order: orders[item.id] ?? item.order,
-							}))
-						setToStorage('activeWidgets', activeWidgets)
-					}
-				}
-			} catch (err) {
-				console.error('Background visibility fetch error', err)
-			}
-		}
-
-		fetchAndReconcileVisibility()
-
-		return () => {
-			isCancelled = true
-		}
-	}, [isAuthenticated])
 
 	const toggleWidget = (widgetId: WidgetKeys) => {
 		setVisibility((prev) => {
@@ -195,13 +112,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 				? prev.filter((id) => id !== widgetId)
 				: [...prev, widgetId]
 
-			if (isCurrentlyVisible) {
-				Analytics.event(`widget_remove_${widgetId}`)
-			} else {
-				Analytics.event(`widget_add_${widgetId}`)
-			}
-
-			saveActiveWidgets(newVisibility, widgetOrders)
+			saveActiveWidgets(newVisibility)
 			return newVisibility
 		})
 	}
@@ -209,12 +120,13 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 	const getSortedWidgets = (): WidgetItem[] => {
 		return widgetItems
 			.filter((item) => visibility.includes(item.id))
-			.map((item) => ({
-				...item,
-				order: widgetOrders[item.id] ?? item.order,
-			}))
-			.sort((a, b) => a.order - b.order)
+			.sort((a, b) => {
+				const orderA = widgetOrders[a.id] ?? a.order
+				const orderB = widgetOrders[b.id] ?? b.order
+				return orderA - orderB
+			})
 	}
+
 	return (
 		<WidgetVisibilityContext.Provider
 			value={{
@@ -230,7 +142,7 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 export const useWidgetVisibility = () => {
 	const context = useContext(WidgetVisibilityContext)
-	if (context === undefined) {
+	if (!context) {
 		throw new Error(
 			'useWidgetVisibility must be used within a WidgetVisibilityProvider'
 		)
