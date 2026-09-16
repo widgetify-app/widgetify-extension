@@ -428,7 +428,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 		],
 		canDuplicate: false,
-		isVipOnly: true,
+		isVipOnly: false,
 		canResize: true,
 		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
 	},

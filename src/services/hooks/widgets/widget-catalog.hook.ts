@@ -65,7 +65,7 @@ export const useGetWidgetCatalog = (enabled = false) => {
 	})
 }
 
-export function useWidgetVipResolver(enabled = false) {
+export function useWidgetVipResolver(enabled = true) {
 	const { data: serverCatalog } = useGetWidgetCatalog(enabled)
 
 	const maxFreeWidgets =

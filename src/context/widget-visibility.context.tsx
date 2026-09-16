@@ -138,10 +138,11 @@ export function WidgetVisibilityProvider({ children }: { children: ReactNode }) 
 
 		async function fetchAndReconcileVisibility() {
 			try {
-				const serverWidgets = await getUserWidgetsApi('HOME')
+				const res = await getUserWidgetsApi('HOME')
 
-				if (isCancelled) return
+				if (isCancelled || !res) return
 
+				const serverWidgets = res.widgets || []
 				if (serverWidgets && serverWidgets.length > 0) {
 					const visibilityIds = serverWidgets
 						.map((sw) => sw.widgetKey as WidgetKeys)

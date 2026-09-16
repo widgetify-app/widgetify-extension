@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient, safeAwait } from '@/services/api'
 import type { AxiosError, AxiosResponse } from 'axios'
+import type { ServerWidgetCatalogResponse } from './widget-catalog.hook'
 
 export interface ServerUserWidget {
 	instanceId: string
@@ -58,15 +59,20 @@ export interface SyncUserWidgetsPayload {
 	widgets: SyncWidgetItemPayload[]
 }
 
+export interface GetUserWidgetsApiResponse {
+	widgets: ServerUserWidget[]
+	catalog?: ServerWidgetCatalogResponse
+}
+
 export async function getUserWidgetsApi(
 	workspace: string = 'HOME'
-): Promise<ServerUserWidget[] | null> {
+): Promise<GetUserWidgetsApiResponse | null> {
 	const client = getMainClient()
 	const [err, response] = await safeAwait<
 		AxiosError,
-		AxiosResponse<{ widgets: ServerUserWidget[] }>
+		AxiosResponse<GetUserWidgetsApiResponse>
 	>(
-		client.get<{ widgets: ServerUserWidget[] }>('/user-widgets', {
+		client.get<GetUserWidgetsApiResponse>('/user-widgets', {
 			params: { workspace },
 		})
 	)
@@ -75,7 +81,7 @@ export async function getUserWidgetsApi(
 		return null
 	}
 
-	return response.data?.widgets || []
+	return response.data || null
 }
 
 export async function createUserWidgetApi(
@@ -146,10 +152,10 @@ export async function syncUserWidgetsApi(
 }
 
 export const useGetUserWidgets = (
-	workspace: 'HOME' = 'HOME',
+	workspace: string = 'HOME',
 	enabled: boolean = true
 ) => {
-	return useQuery<ServerUserWidget[] | null>({
+	return useQuery<GetUserWidgetsApiResponse | null>({
 		queryKey: ['getUserWidgets', workspace],
 		queryFn: () => getUserWidgetsApi(workspace),
 		enabled,

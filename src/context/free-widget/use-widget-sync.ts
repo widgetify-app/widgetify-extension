@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef } from 'react'
 import type React from 'react'
 import { setToStorage, watchStorage } from '@/common/storage'
@@ -36,6 +37,7 @@ export function useWidgetSync({
 	applyRuntimeLayout,
 	setIsLoaded,
 }: UseWidgetSyncParams) {
+	const queryClient = useQueryClient()
 	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
 	const hasFetchedServerRef = useRef<boolean>(false)
 	const hasLocalEditRef = useRef<boolean>(false)
@@ -145,9 +147,14 @@ export function useWidgetSync({
 
 		async function fetchAndReconcileWithServer() {
 			try {
-				const serverWidgets = await getUserWidgetsApi('HOME')
-				if (serverWidgets === null) return
+				const res = await getUserWidgetsApi('HOME')
+				if (res === null) return
 
+				if (res.catalog) {
+					queryClient.setQueryData(['widgetCatalog'], res.catalog)
+				}
+
+				const serverWidgets = res.widgets || []
 				if (serverWidgets.length > 0) {
 					if (hasLocalEditRef.current) return
 
