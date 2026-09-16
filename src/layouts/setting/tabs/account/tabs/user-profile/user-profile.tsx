@@ -32,11 +32,9 @@ export const UserProfile = () => {
 		refetch()
 	}, [])
 
-	const onClickLogout = () => {
-		logout()
-		setTimeout(() => {
-			location.reload()
-		}, 1000)
+	const onClickLogout = async () => {
+		await logout()
+		location.reload()
 	}
 
 	const handleSendVerificationEmail = async () => {

@@ -13,12 +13,10 @@ export function ProfileNav() {
 	const [showLogoutModal, setShowLogoutModal] = useState(false)
 	const [openedWizard, setOpenedWizard] = useState(false)
 
-	const handleConfirmLogout = () => {
-		logout()
+	const handleConfirmLogout = async () => {
 		setShowLogoutModal(false)
-		setTimeout(() => {
-			location.reload()
-		}, 1000)
+		await logout()
+		location.reload()
 	}
 
 	const authModalCloseHandler = () => setShowAuthModal(false)

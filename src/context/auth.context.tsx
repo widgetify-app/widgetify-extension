@@ -16,7 +16,7 @@ interface AuthContextType {
 	profilePercentage: number
 	isSuccessFetchingUser: boolean
 	login: (token: string) => void
-	logout: () => void
+	logout: () => Promise<void>
 	refetchUser: () => Promise<UserProfile | null>
 }
 
@@ -40,10 +40,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const activeUser = userProfile || cachedUser
 
 	const logout = async () => {
-		await clearStorage()
+		try {
+			await clearStorage()
+		} catch (err) {
+			console.error('Failed to clear storage:', err)
+		}
+		try {
+			localStorage.clear()
+		} catch {}
+		queryClient.clear()
 		setToken(null)
 		setCachedUser(null)
-		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
 	}
 
 	useEffect(() => {
