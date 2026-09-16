@@ -179,10 +179,10 @@ export const UpdateReleaseNotesModal = ({
 				<div className="flex flex-col justify-center min-h-[128px]">
 					{activeStepIndex === 0 ? (
 						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-primary border border-primary/20">
+							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-primary">
 								<span className="text-sm">💣</span>
-								<span className="text-xs font-bold leading-normal">
-									بزرگ‌ترین تحول ویجتیفای: چیدمان کاملا آزاد و بی‌نهایت
+								<span className="text-lg font-bold leading-normal">
+									بزرگ‌ترین تحول: چیدمان کاملا آزاد و بی‌نهایت
 								</span>
 							</div>
 

@@ -343,7 +343,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 		],
 		defaultSize: { w: 2, h: 3 },
-		canDuplicate: true,
+		canDuplicate: false,
 		node: (_instanceId, size) => <HabitsLayout size={size} />,
 	},
 	[WidgetKeys.todos]: {
