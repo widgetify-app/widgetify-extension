@@ -91,6 +91,7 @@ export function AddWidgetOptions({
 								isVipBadge && !isCurrentSize && 'border-vip/30'
 							)}
 							selected={isCurrentSize}
+							dir="ltr"
 						>
 							<span>
 								{sizeOption.w} × {sizeOption.h}

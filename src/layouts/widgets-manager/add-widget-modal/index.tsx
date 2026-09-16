@@ -280,7 +280,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												size="xs"
 												rounded="xl"
 												onClick={handleOpenSelectedSettings}
-												variant="ghost"
+												variant="outline"
 												className="gap-1.5 text-xs px-3 py-1.5 hover:text-primary"
 											>
 												<Icon name="settings" size={12} />

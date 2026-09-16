@@ -1,10 +1,7 @@
 import type React from 'react'
 import { Button, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
-import type {
-	WidgetCategory,
-	WidgetDefinition,
-} from '@widget/layout-engine/types'
+import type { WidgetCategory, WidgetDefinition } from '@widget/layout-engine/types'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { Icon } from '@/icons'
 import { CATEGORIES } from './types'
