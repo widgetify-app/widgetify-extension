@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import type { Bookmark } from '../types/bookmark.types'
 import type { FetchedBookmark } from '@/services/hooks/bookmark/get-bookmarks.hook'
 import type { WidgetSize } from '../../widgets/layout-engine/types'
+import { validate } from 'uuid'
 
 function mapBookmarks(fetchedBookmarks: FetchedBookmark[]): Bookmark[] {
 	return fetchedBookmarks.map((bookmark) => ({
@@ -24,7 +25,9 @@ function mapBookmarks(fetchedBookmarks: FetchedBookmark[]): Bookmark[] {
 
 function getFolderItems(
 	bookmarks: Bookmark[] | null,
-	parentId: string | null
+	parentId: string | null,
+	widgetId?: string | null,
+	isPrimary?: boolean
 ): Bookmark[] {
 	if (!bookmarks) return []
 	const parentBookmark = bookmarks.find(
@@ -45,9 +48,23 @@ function getFolderItems(
 					bookmark.parentId === parentBookmark.onlineId)
 		)
 	} else {
-		currentFolderBookmarks = bookmarks.filter(
-			(bookmark) => bookmark.parentId === null
-		)
+		const shouldIncludeLegacy =
+			isPrimary !== undefined
+				? isPrimary
+				: !widgetId || widgetId === 'bookmarks-default'
+
+		currentFolderBookmarks = bookmarks.filter((bookmark) => {
+			const isRoot = bookmark.parentId === null
+			if (!isRoot) return false
+			if (shouldIncludeLegacy) {
+				return (
+					!bookmark.widgetId ||
+					bookmark.widgetId === 'bookmarks-default' ||
+					(widgetId ? bookmark.widgetId === widgetId : false)
+				)
+			}
+			return bookmark.widgetId === widgetId
+		})
 	}
 
 	return [...currentFolderBookmarks].sort((a, b) => {
@@ -79,6 +96,31 @@ function mergeBookmarksWithEmptySlots(
 		filled.push(null)
 	}
 	return filled
+}
+
+function getDisplayedBookmarksForGrid(
+	currentFolderItems: Bookmark[],
+	currentFolderId: string | null,
+	totalBookmarks: number
+): Bookmark[] {
+	if (!currentFolderId) {
+		const baseItems = currentFolderItems.slice(0, totalBookmarks)
+		const fillersCount = Math.max(0, totalBookmarks - currentFolderItems.length)
+		const fillers = new Array(fillersCount).fill(null)
+		const addButton = currentFolderItems.length < totalBookmarks ? [null] : []
+		return [...baseItems, ...fillers, ...addButton].slice(0, totalBookmarks)
+	}
+
+	const bookmarkCount = currentFolderItems.length
+	const maxBookmarks = 10
+	const needsFillers = bookmarkCount < maxBookmarks
+	const fillersCount = needsFillers ? maxBookmarks - bookmarkCount : 0
+	const folderItems = [...currentFolderItems, ...new Array(fillersCount).fill(null)]
+
+	if (bookmarkCount >= maxBookmarks) {
+		folderItems.push(null)
+	}
+	return folderItems
 }
 
 describe('Bookmark Legacy Compatibility & Layout Tests', () => {
@@ -374,7 +416,7 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		expect(primaryItems).toHaveLength(2)
 		expect(primaryItems.map((b) => b.id)).toEqual(['legacy-bm', 'default-widget-bm'])
 
-		// Primary widget with a dynamic MongoDB ObjectId (e.g. 6a8624e1...) ALSO receives legacy bookmarks + default
+		// Primary widget with a dynamic MongoDB ObjectId ALSO receives legacy bookmarks + default
 		const mongoPrimaryItems = filterForWidget('6a8624e18ad0a538d22483dd', true)
 		expect(mongoPrimaryItems).toHaveLength(2)
 		expect(mongoPrimaryItems.map((b) => b.id)).toEqual([
@@ -395,5 +437,235 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 		// A brand new duplicated instance without any bookmarks yet has length 0
 		const emptyNewInstance = filterForWidget('bookmarks-brand-new-999', false)
 		expect(emptyNewInstance).toHaveLength(0)
+	})
+
+	describe('Mock Dataset & Edge Case Scenarios', () => {
+		const mockDataset: FetchedBookmark[] = [
+			{
+				id: 'srv-item-1',
+				offlineId: 'uuid-item-1',
+				title: 'آیتم یک',
+				url: 'https://example.com/api',
+				type: 'BOOKMARK',
+				parentId: 'uuid-parent-external',
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 1,
+			},
+			{
+				id: 'srv-folder-personal',
+				offlineId: 'uuid-folder-personal',
+				title: 'پوشه شخصی',
+				url: '',
+				type: 'FOLDER',
+				parentId: null as any,
+				icon: 'https://example.com/icons/folder.png',
+				isManageable: true,
+				iconIsS3Hosted: true,
+				children: [],
+				order: 1,
+			},
+			{
+				id: 'srv-child-offline',
+				offlineId: 'uuid-child-offline',
+				title: 'سرویس اینترنت',
+				url: 'https://example.com/isp',
+				type: 'BOOKMARK',
+				parentId: 'uuid-folder-personal',
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 0,
+			},
+			{
+				id: 'srv-folder-ai',
+				offlineId: 'uuid-folder-ai',
+				title: 'پوشه هوش مصنوعی',
+				url: '',
+				type: 'FOLDER',
+				parentId: null as any,
+				icon: 'https://example.com/icons/ai.png',
+				isManageable: true,
+				iconIsS3Hosted: true,
+				children: [],
+				order: 2,
+			},
+			{
+				id: 'srv-child-online-parent',
+				offlineId: 'uuid-child-online-parent',
+				title: 'چت هوشمند',
+				url: 'https://example.com/chat',
+				type: 'BOOKMARK',
+				parentId: 'srv-folder-ai',
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 16,
+			},
+			{
+				id: 'srv-child-no-offline',
+				offlineId: null,
+				title: 'سایت مدل‌ها',
+				url: 'https://example.com/models',
+				type: 'BOOKMARK',
+				parentId: 'srv-folder-ai',
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 5,
+			},
+			{
+				id: 'srv-folder-work',
+				offlineId: null,
+				title: 'پوشه کاری',
+				url: '',
+				type: 'FOLDER',
+				parentId: null as any,
+				icon: 'https://example.com/icons/work.png',
+				isManageable: true,
+				iconIsS3Hosted: true,
+				children: [],
+				order: 0,
+			},
+			{
+				id: 'srv-child-work',
+				offlineId: null,
+				title: 'داشبورد اداری',
+				url: 'https://example.com/office',
+				type: 'BOOKMARK',
+				parentId: 'srv-folder-work',
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 0,
+			},
+			{
+				id: 'srv-root-bookmark',
+				offlineId: null,
+				title: 'ایمیل مستقیم',
+				url: 'https://example.com/mail',
+				type: 'BOOKMARK',
+				parentId: null as any,
+				icon: '',
+				isManageable: true,
+				iconIsS3Hosted: false,
+				children: [],
+				order: 9,
+			},
+		]
+
+		it('maps mock dataset and resolves mixed offlineId / serverId folder parent relationships', () => {
+			const mapped = mapBookmarks(mockDataset)
+
+			// Folder 'پوشه شخصی' has offlineId 'uuid-folder-personal' so its id becomes the offlineId
+			const personalFolder = mapped.find((b) => b.title === 'پوشه شخصی')
+			expect(personalFolder?.id).toBe('uuid-folder-personal')
+			expect(personalFolder?.onlineId).toBe('srv-folder-personal')
+
+			// Child has parentId matching personalFolder's offlineId
+			const childBookmark = mapped.find((b) => b.title === 'سرویس اینترنت')
+			expect(childBookmark?.parentId).toBe(personalFolder?.id)
+
+			// getFolderItems should correctly find child by folder's id or onlineId
+			const childrenById = getFolderItems(mapped, personalFolder!.id)
+			expect(childrenById).toHaveLength(1)
+			expect(childrenById[0].title).toBe('سرویس اینترنت')
+
+			const childrenByOnline = getFolderItems(mapped, personalFolder!.onlineId!)
+			expect(childrenByOnline).toHaveLength(1)
+			expect(childrenByOnline[0].title).toBe('سرویس اینترنت')
+		})
+
+		it('correctly resolves folder items when parentId points to server onlineId instead of offlineId', () => {
+			const mapped = mapBookmarks(mockDataset)
+
+			// Folder 'پوشه هوش مصنوعی' has offlineId 'uuid-folder-ai' but child has parentId 'srv-folder-ai' (onlineId)
+			const aiFolder = mapped.find((b) => b.title === 'پوشه هوش مصنوعی')
+			expect(aiFolder?.id).toBe('uuid-folder-ai')
+			expect(aiFolder?.onlineId).toBe('srv-folder-ai')
+
+			// Child has parentId matching onlineId
+			const aiChildrenByUuid = getFolderItems(mapped, aiFolder!.id)
+			expect(aiChildrenByUuid).toHaveLength(2)
+			expect(aiChildrenByUuid.map((b) => b.title)).toContain('چت هوشمند')
+			expect(aiChildrenByUuid.map((b) => b.title)).toContain('سایت مدل‌ها')
+
+			const aiChildrenByOnlineId = getFolderItems(mapped, aiFolder!.onlineId!)
+			expect(aiChildrenByOnlineId).toHaveLength(2)
+		})
+
+		it('reproduces scenario where 1x1 widget size only renders the top 1 bookmark with lowest order', () => {
+			const mapped = mapBookmarks(mockDataset)
+			const rootItems = getFolderItems(mapped, null, undefined, true)
+
+			// 'پوشه کاری' is order: 0, 'پوشه شخصی' is order: 1, 'پوشه هوش مصنوعی' is order: 2
+			expect(rootItems[0].title).toBe('پوشه کاری')
+			expect(rootItems[1].title).toBe('پوشه شخصی')
+
+			// In 1x1 widget, total slots = 1
+			const dim1x1 = computeBookmarkGridDimensions({ w: 1, h: 1 })
+			const displayed = getDisplayedBookmarksForGrid(rootItems, null, dim1x1.totalBookmarks)
+
+			// Only 1 item is displayed and it is strictly the lowest order item (پوشه کاری)
+			expect(displayed).toHaveLength(1)
+			expect(displayed[0]?.title).toBe('پوشه کاری')
+		})
+
+		it('reproduces scenario where non-primary widget with widgetId filters out all legacy bookmarks', () => {
+			const mapped = mapBookmarks(mockDataset)
+
+			// In a duplicated or non-primary widget (isPrimary: false, widgetId: 'bookmarks-copy-1')
+			const nonPrimaryItems = getFolderItems(mapped, null, 'bookmarks-copy-1', false)
+
+			// All bookmarks have widgetId: null, so non-primary items count is 0
+			expect(nonPrimaryItems).toHaveLength(0)
+		})
+
+		it('verifies folder items in modal navigation with uuid validation', () => {
+			const folder: Bookmark = {
+				id: '7f086612-7bd4-4e88-90c2-73f59afe43cf',
+				title: 'پوشه با شناسه محلی',
+				type: 'FOLDER',
+				parentId: null,
+				isLocal: true,
+				onlineId: 'srv-folder-legacy',
+				url: null,
+				icon: null,
+				customBackground: null,
+				customTextColor: null,
+				sticker: null,
+				order: 2,
+			}
+
+			// Navigation targetId logic in BookmarkFolderModal
+			const isValidUuid = validate(folder.id)
+			const targetId = isValidUuid ? folder.id : folder.onlineId || folder.id
+			expect(targetId).toBe('7f086612-7bd4-4e88-90c2-73f59afe43cf')
+
+			const nonUuidFolder: Bookmark = {
+				id: '6a9a2caafc0a15baf5d51b29',
+				title: 'پوشه با شناسه سرور',
+				type: 'FOLDER',
+				parentId: null,
+				isLocal: true,
+				onlineId: '6a9a2caafc0a15baf5d51b29',
+				url: null,
+				icon: null,
+				customBackground: null,
+				customTextColor: null,
+				sticker: null,
+				order: 0,
+			}
+
+			const isNonUuidValid = validate(nonUuidFolder.id)
+			const targetIdNonUuid = isNonUuidValid ? nonUuidFolder.id : nonUuidFolder.onlineId || nonUuidFolder.id
+			expect(targetIdNonUuid).toBe('6a9a2caafc0a15baf5d51b29')
+		})
 	})
 })
