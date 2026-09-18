@@ -3,16 +3,16 @@ import type { Bookmark } from '../../types/bookmark.types'
 import { useState } from 'react'
 import { Icon } from '@/icons'
 const colors = [
-	'bg-blue-500/60',
-	'bg-purple-500/60',
-	'bg-pink-500/60',
-	'bg-red-500/60',
-	'bg-orange-500/60',
-	'bg-yellow-500/60',
-	'bg-green-500/60',
-	'bg-teal-500/60',
-	'bg-cyan-500/60',
-	'bg-indigo-500/60',
+	'bg-avatar-1',
+	'bg-avatar-2',
+	'bg-avatar-3',
+	'bg-avatar-4',
+	'bg-avatar-5',
+	'bg-avatar-6',
+	'bg-avatar-7',
+	'bg-avatar-8',
+	'bg-avatar-9',
+	'bg-avatar-10',
 ]
 const DEF = 'https://cdn.widgetify.ir/system/bookmark.png'
 
@@ -48,7 +48,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			displayIcon = bookmark.icon
 		}
 	} else {
-		displayIcon = <Icon name="folder" className="w-6 h-6 text-blue-400" />
+		displayIcon = <Icon name="folder" className="w-6 h-6 text-brand" />
 	}
 
 	if (displayIcon === '') {

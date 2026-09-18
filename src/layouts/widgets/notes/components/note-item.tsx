@@ -15,9 +15,7 @@ interface NoteItemProps {
 export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 	const [isExpanded, setIsExpanded] = useState(false)
 
-	const priorityBg = note.priority
-		? PRIORITY_BG_COLORS[note.priority]
-		: 'bg-base-content/5'
+	const priorityBg = note.priority ? PRIORITY_BG_COLORS[note.priority] : 'bg-raised'
 	const shouldShowReadMore =
 		!!note.body && note.body.length > NOTE_PREVIEW_CHARACTER_LIMIT
 
@@ -70,7 +68,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 					onClick={toggleExpand}
 					aria-expanded={isExpanded}
 					aria-label={isExpanded ? 'بستن متن یادداشت' : 'نمایش کامل یادداشت'}
-					className="flex items-center gap-1 mx-2.5 mb-2 text-xs font-medium cursor-pointer text-muted hover:bg-base-content/10 p-0.5 rounded-full w-fit focus-visible:focus-ring"
+					className="flex items-center gap-1 mx-2.5 mb-2 text-xs font-medium cursor-pointer text-muted hover:bg-raised p-0.5 rounded-full w-fit focus-visible:focus-ring"
 				>
 					<Icon
 						name="chevronDown"

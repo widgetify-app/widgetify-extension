@@ -128,7 +128,7 @@ export const ProfileDisplay = () => {
 				showEditBadge={showEditBadge}
 			/>
 
-			<div className="overflow-hidden border border-base-300/50 rounded-2xl bg-base-100/30">
+			<div className="overflow-hidden border border-content rounded-2xl bg-widget">
 				<DisplayRow
 					icon={<Icon name="user" className="text-primary" />}
 					label="نام و نام خانوادگی"
@@ -140,7 +140,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="atSign" className="text-primary/60" />}
+					icon={<Icon name="atSign" className="text-brand" />}
 					label="نام کاربری (یوزرنیم)"
 					value={user?.username}
 					editable
@@ -239,7 +239,7 @@ export const ProfileDisplay = () => {
 									</Chip>
 								))}
 								{user.interests.length > 2 && (
-									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-base-300 text-muted">
+									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-raised text-muted">
 										+{user.interests.length - 2}
 									</span>
 								)}
@@ -255,7 +255,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="treeCity" className="text-primary/50" />}
+					icon={<Icon name="treeCity" className="text-brand" />}
 					label="شهر"
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}
@@ -334,9 +334,9 @@ const DisplayRow = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-base-300/30 hover:bg-base-200/20">
+		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-content hover:bg-content">
 			<div className="flex items-center gap-3">
-				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-base-200/50">
+				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-content">
 					{icon}
 					{showBadge && (
 						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-error animate-pulse"></span>

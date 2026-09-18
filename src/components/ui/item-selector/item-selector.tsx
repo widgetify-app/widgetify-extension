@@ -22,7 +22,7 @@ export function ItemSelector({
 			return 'border-primary bg-primary'
 		}
 
-		return 'border-content bg-base-300/60'
+		return 'border-content bg-raised'
 	}
 
 	return (
@@ -33,8 +33,8 @@ export function ItemSelector({
 				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
 				className,
 				isActive
-					? 'border-primary/25 bg-primary/20'
-					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
+					? 'border-brand-subtle bg-brand-subtle'
+					: 'bg-raised border-content hover:!border-brand-subtle hover:!bg-brand-subtle'
 			)}
 			style={style}
 		>

@@ -26,7 +26,7 @@ export function SimpleProgressRing({
 				cy={center}
 				r={radius}
 				fill="none"
-				className={'stroke-base-200'}
+				className={'text-content'}
 				strokeWidth={strokeWidth}
 				opacity={0.3}
 			/>

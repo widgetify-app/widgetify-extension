@@ -89,7 +89,7 @@ export function HabitCompactWide({
 				onClick={onAddHabit}
 				className="flex items-center w-full h-full gap-2.5 text-right transition-transform cursor-pointer select-none active:scale-[0.98] focus-visible:focus-ring"
 			>
-				<span className="flex items-center justify-center w-10 h-10 text-xl rounded-full shrink-0 bg-primary/10">
+				<span className="flex items-center justify-center w-10 h-10 text-xl rounded-full shrink-0 bg-brand-subtle">
 					🌱
 				</span>
 				<span className="flex-1 min-w-0">
@@ -211,7 +211,7 @@ export function HabitCompactWide({
 				</span>
 			</div>
 
-			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-base-content/10">
+			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-subtle">
 				{habits.map((habit) => {
 					const habitTarget = habit.target || 1
 					const habitProgress = Math.min(habit.today.value / habitTarget, 1)
@@ -260,7 +260,7 @@ export function HabitCompactWide({
 						onClick={onAddHabit}
 						aria-label="عادت جدید"
 						title="عادت جدید"
-						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-muted bg-base-content/10 transition-ui hover:text-base-content hover:bg-base-content/20 focus-visible:focus-ring"
+						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-muted bg-raised transition-ui hover:text-content hover:bg-hovered focus-visible:focus-ring"
 					>
 						<Icon name="plus" size={11} aria-hidden="true" />
 					</button>

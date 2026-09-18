@@ -31,10 +31,10 @@ export function WallpaperSidebar({
 
 	return (
 		<aside className="w-42 shrink-0 flex flex-col gap-3 h-full overflow-hidden select-none">
-			<div className="flex flex-col flex-1 min-h-0 bg-base-300/40 border border-base-content/10 rounded-2xl p-2.5 overflow-hidden">
+			<div className="flex flex-col flex-1 min-h-0 bg-raised border border-subtle rounded-2xl p-2.5 overflow-hidden">
 				<div className="flex items-center justify-between px-2 py-1.5 mb-1">
 					<span className="text-xs font-semibold text-muted">پوشه ها</span>
-					<div className="w-8 h-0.5 bg-base-content/10 rounded-full" />
+					<div className="w-8 h-0.5 bg-raised rounded-full" />
 				</div>
 
 				<div className="flex-1 overflow-y-auto space-y-1 pr-0.5">
@@ -44,7 +44,7 @@ export function WallpaperSidebar({
 						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 							selectedCategoryId === null
 								? 'bg-[#536DFE] text-white shadow-sm'
-								: 'text-content hover:bg-base-content/5'
+								: 'text-content hover:bg-raised'
 						}`}
 					>
 						<div className="flex items-center gap-2">
@@ -54,8 +54,8 @@ export function WallpaperSidebar({
 							<span
 								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
-										? 'bg-white/20 text-white'
-										: 'bg-base-content/10 text-muted'
+										? 'bg-over-image text-white'
+										: 'bg-raised text-muted'
 								}`}
 							>
 								{totalCount.toLocaleString('fa-IR')}
@@ -74,7 +74,7 @@ export function WallpaperSidebar({
 								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 									isSelected
 										? 'bg-[#536DFE] text-white shadow-sm'
-										: 'text-content hover:bg-base-content/5'
+										: 'text-content hover:bg-raised'
 								}`}
 							>
 								<div className="flex items-center gap-2 truncate">
@@ -90,7 +90,7 @@ export function WallpaperSidebar({
 				</div>
 			</div>
 
-			<div className="bg-base-300/40 border border-base-content/10 rounded-2xl p-2.5 shrink-0 flex flex-col gap-2">
+			<div className="bg-raised border border-subtle rounded-2xl p-2.5 shrink-0 flex flex-col gap-2">
 				<button
 					type="button"
 					onClick={() => setIsFilterOpen((prev) => !prev)}

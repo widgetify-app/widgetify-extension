@@ -21,7 +21,7 @@ export function LayoutDropdown() {
 		<Dropdown
 			trigger={
 				<div
-					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+					className="relative p-2 transition-all cursor-pointer nav-btn text-subtle hover:text-content active:scale-90"
 					id="layout-menu-button"
 				>
 					<Icon name="appsPlus" size={15} />

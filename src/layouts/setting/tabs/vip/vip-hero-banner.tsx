@@ -38,12 +38,12 @@ const VIP_FEATURES: VipFeatureItem[] = [
 
 export function VipHeroBanner() {
 	return (
-		<div className="relative overflow-hidden rounded-3xl border border-vip/10 bg-gradient-to-br from-vip/5 via-base-300/40 to-base-300/10 p-5 sm:p-6 shadow-sm">
-			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip/20 blur-3xl pointer-events-none" />
-			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip/15 blur-3xl pointer-events-none" />
+		<div className="relative overflow-hidden rounded-3xl border border-vip-subtle bg-gradient-to-br from-vip-subtle via-raised to-raised p-5 sm:p-6 shadow-sm">
+			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip-subtle blur-3xl pointer-events-none" />
+			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip-subtle blur-3xl pointer-events-none" />
 
 			<div className="relative z-10 flex flex-col gap-5">
-				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-base-content/10 pb-4">
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-4">
 					<div className="flex items-center gap-3">
 						<div className="flex items-center justify-center w-11 h-11 rounded-2xl  text-vip  shrink-0">
 							<Icon name="diamond" size={32} />
@@ -65,9 +65,9 @@ export function VipHeroBanner() {
 					{VIP_FEATURES.map((feature) => (
 						<div
 							key={feature.id}
-							className="flex items-start gap-3 p-3.5 rounded-2xl bg-base-100/50 border border-base-content/5 backdrop-blur-xs hover:bg-base-100/75 hover:border-vip/25 transition-all duration-200 shadow-2xs"
+							className="flex items-start gap-3 p-3.5 rounded-2xl bg-widget border border-subtle backdrop-blur-xs hover:bg-widget hover:border-vip-subtle transition-all duration-200 shadow-2xs"
 						>
-							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-vip/10 text-vip shrink-0 mt-0.5">
+							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-vip-subtle text-vip shrink-0 mt-0.5">
 								<Icon name={feature.icon} size={16} />
 							</div>
 							<div className="flex flex-col gap-1 min-w-0">

@@ -26,7 +26,7 @@ export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 	}
 
 	return (
-		<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-lg bg-error/20 text-error border-error/20">
+		<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-lg bg-danger-subtle text-error border-danger-subtle">
 			<Icon name="offline" className="text-lg shrink-0" />
 			<p>
 				{message ||

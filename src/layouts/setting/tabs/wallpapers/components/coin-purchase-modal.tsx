@@ -51,7 +51,7 @@ export function CoinPurchaseModal({
 			title=" "
 		>
 			<div className="space-y-4">
-				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200/50 aspect-video">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-content aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
 						<img
 							src={wallpaper.previewSrc}
@@ -90,7 +90,7 @@ export function CoinPurchaseModal({
 				</div>
 
 				{isAuthenticated && !canAfford && wallpaperPrice > 0 && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-subtle text-error">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین
 							کسری داری)
@@ -118,7 +118,9 @@ export function CoinPurchaseModal({
 								loadingText="در حال خرید..."
 								className="flex-1"
 								rounded="2xl"
-								color={ canAfford || wallpaperPrice === 0 ? 'primary' : 'base' }
+								color={
+									canAfford || wallpaperPrice === 0 ? 'primary' : 'base'
+								}
 							>
 								خرید دائمی
 							</Button>

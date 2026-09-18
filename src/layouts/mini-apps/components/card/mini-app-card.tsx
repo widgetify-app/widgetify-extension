@@ -17,8 +17,8 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
-						? `border-primary/30 bg-linear-to-t from-primary/10 via-primary/5 to-transparent shadow-md shadow-primary/10`
-						: `border-base-content/5 bg-content bg-glass! hover:bg-primary/5 hover:border-primary/10`
+						? `border-brand-subtle bg-linear-to-t from-brand-subtle via-brand-subtle to-transparent shadow-md shadow-brand`
+						: `border-subtle bg-content bg-glass! hover:bg-brand-subtle hover:border-brand-subtle`
 				}
             `}
 		>
@@ -52,14 +52,14 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<p
 					className={`
                         text-sm font-semibold truncate transition-colors
-                        ${isSelected ? 'text-primary' : 'text-base-content'}
+                        ${isSelected ? 'text-primary' : 'text-content'}
                     `}
 				>
 					{app.name}
 				</p>
 
 				{app.description && (
-					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-base-content/70 ">
+					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-muted ">
 						{app.description}
 					</p>
 				)}

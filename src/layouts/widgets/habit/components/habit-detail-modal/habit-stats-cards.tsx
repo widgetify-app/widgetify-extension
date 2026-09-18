@@ -75,7 +75,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, suffix, hint }: StatCardProps) {
 	return (
-		<div className="flex flex-col p-2.5 border rounded-2xl bg-base-content/5 border-base-content/10">
+		<div className="flex flex-col p-2.5 border rounded-2xl bg-raised border-subtle">
 			<div className="mb-1 text-xs font-medium text-muted">{label}</div>
 			<div className="flex items-baseline gap-1">
 				<span className="text-lg font-bold text-content">{value}</span>

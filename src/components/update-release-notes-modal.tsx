@@ -149,8 +149,8 @@ export const UpdateReleaseNotesModal = ({
 									isCurrent
 										? 'bg-primary'
 										: isCompleted
-											? 'bg-primary/40'
-											: 'bg-base-content/10 hover:bg-base-content/20'
+											? 'bg-brand-muted'
+											: 'bg-raised hover:bg-hovered'
 								}`}
 								aria-label={step.title}
 							/>
@@ -159,7 +159,7 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				{/* Video Preview Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-base-content/10 bg-base-300/40 shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-subtle bg-raised shrink-0">
 					<video
 						key={currentStep.videoUrl}
 						ref={videoRef}
@@ -170,7 +170,7 @@ export const UpdateReleaseNotesModal = ({
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-base-100/80 backdrop-blur-md border border-base-content/10 text-[11px] font-bold text-content shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget backdrop-blur-md border border-subtle text-[11px] font-bold text-content shadow-xs">
 						{currentStep.badge}
 					</div>
 				</div>
@@ -186,8 +186,8 @@ export const UpdateReleaseNotesModal = ({
 								</span>
 							</div>
 
-							<div className="flex items-start gap-3 p-3 rounded-2xl bg-base-200/50 border border-base-content/10 transition-all">
-								<div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+							<div className="flex items-start gap-3 p-3 rounded-2xl bg-content border border-subtle transition-all">
+								<div className="w-8 h-8 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={16} />
 								</div>
 								<div className="flex flex-col gap-0.5">
@@ -209,8 +209,8 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 					) : (
 						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-base-200/50 border border-base-content/10 transition-all">
-								<div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-content border border-subtle transition-all">
+								<div className="w-9 h-9 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={18} />
 								</div>
 								<div className="flex flex-col gap-1 justify-center">
@@ -226,7 +226,7 @@ export const UpdateReleaseNotesModal = ({
 							</div>
 
 							{isLastStep ? (
-								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-content">
+								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-brand-subtle border border-brand-subtle text-content">
 									<div className="flex items-center gap-2">
 										<span className="text-base">📸</span>
 										<span className="text-xs font-bold text-primary">
@@ -251,7 +251,7 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				{/* Footer Controls & Actions */}
-				<div className="flex items-center justify-between gap-2 pt-2 border-t border-base-content/10">
+				<div className="flex items-center justify-between gap-2 pt-2 border-t border-subtle">
 					<div className="flex items-center gap-1.5">
 						<Button
 							type="button"

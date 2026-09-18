@@ -32,9 +32,9 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 				}),
 			}}
 			className={twJoin(
-				'relative overflow-hidden border scroll-mt-20 bg-content bg-glass border-base-200/70 hover:border-base-300 rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
+				'relative overflow-hidden border scroll-mt-20 bg-content bg-glass border-content hover:border-content rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
 				category.id === activeCategory &&
-					'ring-2 ring-primary/40 border-primary/50',
+					'ring-2 ring-brand-subtle border-brand-subtle',
 				category.banner
 					? 'before:absolute before:inset-x-0 before:top-0 before:h-16 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
 					: ''
@@ -63,7 +63,7 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 							<div className="w-1.5 h-3.5 rounded-full bg-primary" />
 						)}
 						<h3
-							className={`text-xs font-semibold tracking-wide ${category.banner ? 'text-base-content/90' : 'text-base-content/80'}`}
+							className={`text-xs font-semibold tracking-wide ${category.banner ? 'text-content' : 'text-muted'}`}
 						>
 							{category.category}
 						</h3>
@@ -76,7 +76,7 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 							))}
 						</div>
 					) : (
-						<div className="flex-1 h-px bg-linear-to-r from-base-content/10 to-transparent" />
+						<div className="flex-1 h-px bg-linear-to-r from-raised to-transparent" />
 					)}
 				</div>
 			</div>

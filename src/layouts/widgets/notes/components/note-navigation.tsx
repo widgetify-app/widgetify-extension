@@ -73,7 +73,7 @@ export function NoteNavigation() {
 							type="button"
 							onClick={onBackToList}
 							aria-label="بازگشت به لیست یادداشت‌ها"
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
+							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-raised hover:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon
 								name="chevronLeft"

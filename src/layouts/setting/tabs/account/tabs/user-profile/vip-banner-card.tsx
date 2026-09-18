@@ -36,7 +36,7 @@ export function VipBannerCard({
 	return (
 		<div
 			onClick={handleClick}
-			className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-vip/30 bg-base-200/70 hover:bg-base-200 hover:border-vip/50 transition-all duration-200 cursor-pointer shadow-xs group ${className}`}
+			className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-vip-subtle bg-content hover:bg-content hover:border-vip-subtle transition-all duration-200 cursor-pointer shadow-xs group ${className}`}
 		>
 			<div className="flex items-center min-w-0 gap-3">
 				<div className="flex items-center justify-center text-vip transition-transform duration-200 w-11 h-11 rounded-2xl shrink-0 group-hover:scale-105">

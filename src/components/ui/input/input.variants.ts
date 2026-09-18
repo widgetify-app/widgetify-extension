@@ -9,7 +9,7 @@ export const textInputVariants = cva(
 		'transition-ui',
 		'placeholder:text-subtle',
 		'outline-none focus:outline-none',
-		'focus:border-primary focus:ring-1 focus:ring-primary/20',
+		'focus:border-primary focus:ring-1 focus:ring-brand-subtle',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 	],
 	{
@@ -22,7 +22,7 @@ export const textInputVariants = cva(
 				xl: 'h-14 px-4 text-[1.375rem]',
 			},
 			invalid: {
-				true: 'border-error focus:border-error focus:ring-error/20',
+				true: 'border-error focus:border-error focus:ring-danger-subtle',
 				false: '',
 			},
 		},

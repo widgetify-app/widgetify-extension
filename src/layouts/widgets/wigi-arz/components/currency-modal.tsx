@@ -71,7 +71,7 @@ export const CurrencyModalComponent = ({
 				/>
 
 				<header className="mt-2 space-y-1 text-center">
-					<h2 className="text-xl font-bold text-base-content">
+					<h2 className="text-xl font-bold text-content">
 						{currency?.name?.en}
 					</h2>
 					<div className="flex items-center justify-center gap-1 text-sm font-medium text-muted">
@@ -89,7 +89,7 @@ export const CurrencyModalComponent = ({
 				</header>
 
 				<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-					<p className="text-xl font-bold text-base-content opacity-95">
+					<p className="text-xl font-bold text-content opacity-95">
 						<data value={price.value}>
 							{price.isDollar && '💲'}
 							{price.formatted}
@@ -123,8 +123,8 @@ export const CurrencyModalComponent = ({
 							: 'opacity-0 max-h-0 overflow-hidden'
 					)}
 				>
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
-						<span className="text-sm font-medium text-base-content min-w-fit">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
+						<span className="text-sm font-medium text-content min-w-fit">
 							{code.toUpperCase()}
 						</span>
 						<TextInput
@@ -138,8 +138,8 @@ export const CurrencyModalComponent = ({
 						/>
 					</div>
 
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-base-200 hover:border-base-300">
-						<span className="text-sm font-medium text-base-content min-w-fit">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
+						<span className="text-sm font-medium text-content min-w-fit">
 							تومان
 						</span>
 						<TextInput

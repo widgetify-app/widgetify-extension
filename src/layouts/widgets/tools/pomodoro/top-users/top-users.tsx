@@ -22,7 +22,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 
 	if (error) {
 		return (
-			<div className="p-4 font-bold text-center text-error bg-error/20 rounded-2xl">
+			<div className="p-4 font-bold text-center text-error bg-danger-subtle rounded-2xl">
 				خطا در بارگذاری داده‌ها
 			</div>
 		)
@@ -30,7 +30,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 
 	if (!data?.tops || data.tops.length === 0) {
 		return (
-			<div className="p-4 font-bold text-center text-primary bg-primary/20 rounded-2xl">
+			<div className="p-4 font-bold text-center text-primary bg-brand-subtle rounded-2xl">
 				لیست کاربران خالی است
 			</div>
 		)

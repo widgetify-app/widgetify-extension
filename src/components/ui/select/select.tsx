@@ -13,10 +13,10 @@ const PANEL_OFFSET = 6
 const TYPE_AHEAD_RESET_MS = 600
 
 const triggerClass =
-	'flex items-center justify-between gap-2 w-fit min-w-[5.5rem] max-w-full px-2.5 py-1.5 rounded-xl cursor-pointer select-none text-[10px] text-content bg-base-300 border border-base-content/10 transition-ui hover:bg-base-content/10 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-50'
+	'flex items-center justify-between gap-2 w-fit min-w-[5.5rem] max-w-full px-2.5 py-1.5 rounded-xl cursor-pointer select-none text-[10px] text-content bg-raised border border-subtle transition-ui hover:bg-raised focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-50'
 
 const panelClass =
-	'fixed z-[9999] flex flex-col gap-0.5 p-1.5 overflow-y-auto rounded-2xl shadow-2xl bg-content bg-glass border border-base-content/10 scrollbar-thin scrollbar-thumb-base-300'
+	'fixed z-[9999] flex flex-col gap-0.5 p-1.5 overflow-y-auto rounded-2xl shadow-2xl bg-content bg-glass border border-subtle scrollbar-thin scrollbar-thumb'
 
 const optionClass =
 	'flex items-center justify-between w-full gap-2 px-2.5 py-1.5 text-[11px] text-right rounded-xl cursor-pointer transition-ui text-content disabled:cursor-not-allowed disabled:opacity-40'
@@ -266,8 +266,7 @@ export function SelectBox({
 										onClick={() => pick(index)}
 										className={cn(
 											optionClass,
-											index === activeIndex &&
-												'bg-base-content/10',
+											index === activeIndex && 'bg-raised',
 											isSelected && 'font-bold text-primary',
 											optionClassName
 										)}

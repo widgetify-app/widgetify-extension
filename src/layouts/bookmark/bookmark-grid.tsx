@@ -214,16 +214,10 @@ export function BookmarkGrid({
 					: 'grid w-full h-full grid-flow-row gap-1.5 transition-all duration-300 rounded-2xl'
 			}
 		>
-			<SortableContext
-				items={sortableIds}
-				strategy={rectSortingStrategy}
-			>
+			<SortableContext items={sortableIds} strategy={rectSortingStrategy}>
 				{displayedBookmarks.map((bookmark, i) =>
 					bookmark ? (
-						<div
-							key={bookmark.id + '-' + i}
-							className="w-full h-full"
-						>
+						<div key={bookmark.id + '-' + i} className="w-full h-full">
 							<SortableBookmarkItem
 								bookmark={bookmark}
 								onClick={(e) => handleBookmarkClick(bookmark, e)}
@@ -277,7 +271,7 @@ export function BookmarkGrid({
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
 							<p>آیا از حذف پوشه "{bookmarkToDelete.title}" مطمئن هستی؟</p>
-							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-error/20 text-error">
+							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-danger-subtle text-error">
 								با حذف این پوشه، تمام بوکمارک‌های داخلش هم برای همیشه حذف
 								میشن و این عمل قابل بازگشت نیست!
 							</p>

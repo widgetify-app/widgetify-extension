@@ -29,14 +29,14 @@ export function GalleryBookmarkIconItem({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100 border-primary'
-		: 'border-base-content/10 hover:border-primary/50 hover:bg-base-300/40'
+		? 'ring-2 ring-primary ring-offset-2 ring-offset-widget border-primary'
+		: 'border-subtle hover:border-brand-subtle hover:bg-raised'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-base-300/20 border ${itemOutlineStyle}`}
+			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-raised border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -48,11 +48,11 @@ export function GalleryBookmarkIconItem({
 			/>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full h-full">
-					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+					<div className="w-5 h-5 border-2 rounded-full border-brand-subtle border-t-primary animate-spin" />
 				</div>
 			)}
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full h-full text-error/80">
+				<div className="flex flex-col items-center justify-center w-full h-full text-danger">
 					<Icon name="alert" size={20} />
 					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
 				</div>
@@ -76,7 +76,7 @@ export function GalleryBookmarkIconItem({
 			{loaded && !error && (
 				<>
 					{asset.title && (
-						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-base-100/90 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-base-content/10">
+						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-widget text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-subtle">
 							<span className="text-[10px] font-medium text-content truncate block">
 								{asset.title}
 							</span>
@@ -95,7 +95,7 @@ export function GalleryBookmarkIconItem({
 					)}
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip/90 backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-white/20">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-solid backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-over-image">
 								<Icon name="diamond" size={9} />
 								<span>رایگان با پرو</span>
 							</span>

@@ -140,7 +140,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-base-content/5">
+			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-raised">
 				<div
 					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content"
 					style={{
@@ -162,7 +162,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<h3 className="text-base font-semibold truncate text-content">
 							{displayName}
 						</h3>
-						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-base-content/10">
+						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-raised">
 							{PET_SPECIES_LABEL[petType]}
 						</span>
 					</div>
@@ -187,7 +187,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<button
 							type="button"
 							aria-label="راهنمای تعامل با حیوان خانگی"
-							className="flex items-center justify-center rounded-full w-7 h-7 text-muted opacity-70 transition-ui hover:opacity-100 hover:bg-base-content/10 focus-visible:focus-ring"
+							className="flex items-center justify-center rounded-full w-7 h-7 text-muted opacity-70 transition-ui hover:opacity-100 hover:bg-raised focus-visible:focus-ring"
 						>
 							<Icon name="info" className="w-4 h-4" aria-hidden="true" />
 						</button>
@@ -236,7 +236,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							onSelect={() => onChangeBackground(item.id)}
 						>
 							<div
-								className="flex items-center justify-center w-full h-12 bg-base-content/10"
+								className="flex items-center justify-center w-full h-12 bg-raised"
 								style={
 									item.image
 										? {

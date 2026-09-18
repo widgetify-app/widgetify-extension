@@ -31,7 +31,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 				aria-label={`تقویم گوگل، ${buttonText}`}
 				className="flex flex-col items-center justify-between w-full h-full p-[8.3cqh] text-center cursor-pointer select-none group focus-visible:focus-ring"
 			>
-				<span className="flex items-center justify-center w-[29.2cqh] h-[29.2cqh] rounded-xl bg-primary/10 text-primary group-hover:scale-105 transition-transform">
+				<span className="flex items-center justify-center w-[29.2cqh] h-[29.2cqh] rounded-xl bg-brand-subtle text-primary group-hover:scale-105 transition-transform">
 					<Icon name="googleCalendar" size={16} aria-hidden="true" />
 				</span>
 
@@ -55,7 +55,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 		return (
 			<div className="flex items-center justify-between w-full h-full gap-2 p-3 select-none">
 				<div className="flex items-center gap-2.5 min-w-0">
-					<span className="flex items-center justify-center w-9 h-9 rounded-2xl bg-primary/10 text-primary shrink-0">
+					<span className="flex items-center justify-center w-9 h-9 rounded-2xl bg-brand-subtle text-primary shrink-0">
 						<Icon name="googleCalendar" size={18} aria-hidden="true" />
 					</span>
 					<div className="flex flex-col min-w-0">
@@ -83,7 +83,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 
 	return (
 		<div className="flex flex-col items-center justify-center h-full p-4 text-center select-none">
-			<span className="flex items-center justify-center w-12 h-12 mb-3 rounded-2xl bg-primary/10 text-primary">
+			<span className="flex items-center justify-center w-12 h-12 mb-3 rounded-2xl bg-brand-subtle text-primary">
 				<Icon name="googleCalendar" size={26} aria-hidden="true" />
 			</span>
 			<p className="mb-1 text-xs font-bold text-content">تقویم گوگل</p>

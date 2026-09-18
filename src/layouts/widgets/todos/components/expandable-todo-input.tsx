@@ -233,7 +233,7 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-base-200 border-base-content/5">
+				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-content border-subtle">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
@@ -298,8 +298,8 @@ export function ExpandableTodoInput({
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
 											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-base-content/20 text-base-content/60',
-												`${transparentInput ? 'bg-transparent!' : 'bg-base-200! focus:ring-primary'} border-none! shadow-none!`
+												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-faint text-muted',
+												`${transparentInput ? 'bg-transparent!' : 'bg-content! focus:ring-primary'} border-none! shadow-none!`
 											)}
 										/>
 									</div>
@@ -314,7 +314,7 @@ export function ExpandableTodoInput({
 												<Button
 													size="sm"
 													rounded={'xl'}
-													className={`p-2 border text-base-content/40 shrink-0 active:scale-95`}
+													className={`p-2 border text-subtle shrink-0 active:scale-95`}
 												>
 													<Icon name="calendarDays" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -340,7 +340,7 @@ export function ExpandableTodoInput({
 											trigger={
 												<Button
 													size="sm"
-													className={`p-2 border rounded-xl  text-[10px]  text-base-content/40 shrink-0 active:scale-95`}
+													className={`p-2 border rounded-xl  text-[10px]  text-subtle shrink-0 active:scale-95`}
 												>
 													<Icon name="tags" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -349,8 +349,8 @@ export function ExpandableTodoInput({
 												</Button>
 											}
 										>
-											<div className="flex flex-col gap-2 p-2 border w-62 bg-base-200 rounded-2xl border-base-300">
-												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-base-200">
+											<div className="flex flex-col gap-2 p-2 border w-62 bg-content rounded-2xl border-content">
+												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-content">
 													<TextInput
 														value={category}
 														onChange={(val) =>
@@ -371,7 +371,7 @@ export function ExpandableTodoInput({
 														<Icon name="plus" size={18} />
 													</Button>
 												</div>
-												<div className="w-full h-0.5  rounded-full bg-base-300" />
+												<div className="w-full h-0.5  rounded-full bg-raised" />
 												<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
 													{fetchedTags
 														?.filter((tag) => tag.trim())
@@ -387,7 +387,7 @@ export function ExpandableTodoInput({
 																<Icon
 																	name="tags"
 																	size={16}
-																	className="text-base-content/40"
+																	className="text-subtle"
 																/>
 																{tag}
 															</Chip>

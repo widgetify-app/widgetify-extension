@@ -151,7 +151,7 @@ export function SearchCompactRow() {
 								updatePosition()
 								Analytics.event('search_input_focused_2x1')
 							}}
-							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-content placeholder:text-base-content/60 placeholder:font-medium bg-transparent"
+							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium bg-transparent"
 							placeholder="جستجو..."
 							aria-label="جستجو"
 							autoComplete="off"
@@ -163,7 +163,7 @@ export function SearchCompactRow() {
 								hasQuery ? handleClearSearch : handleSearchButtonClick
 							}
 							aria-label={hasQuery ? 'پاک کردن عبارت جستجو' : 'جستجو'}
-							className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-base-300"
+							className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-raised"
 						>
 							<Icon
 								name={hasQuery ? 'close' : 'search'}

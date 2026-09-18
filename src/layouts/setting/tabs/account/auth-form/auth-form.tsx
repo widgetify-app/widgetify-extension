@@ -233,7 +233,7 @@ const AuthForm = () => {
 	return (
 		<div className="flex flex-col w-full px-1 py-1">
 			{authStatus?.content && step === 'identifier' && (
-				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning/10">
+				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-subtle">
 					<Icon name="alert" className="w-4 h-4 shrink-0" />
 					<span>{authStatus.content}</span>
 				</div>
@@ -289,10 +289,10 @@ const AuthForm = () => {
 					<div className="relative my-4">
 						<span
 							aria-hidden="true"
-							className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-base-300/80"
+							className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-content"
 						/>
 						<div className="relative z-10 flex justify-center">
-							<span className="px-3 py-0.5 text-xs font-medium text-muted bg-base-100 rounded-full">
+							<span className="px-3 py-0.5 text-xs font-medium text-muted bg-widget rounded-full">
 								یا
 							</span>
 						</div>
@@ -327,7 +327,7 @@ const AuthForm = () => {
 					</div>
 
 					{error.api && (
-						<div className="px-3 py-2 mb-3 text-xs border bg-error/10 text-error border-error/20 rounded-xl">
+						<div className="px-3 py-2 mb-3 text-xs border bg-danger-subtle text-error border-danger-subtle rounded-xl">
 							{error.api}
 						</div>
 					)}
@@ -366,7 +366,7 @@ const AuthForm = () => {
 							type="button"
 							onClick={() => handleSendOtp()}
 							disabled={isOtpSending}
-							className="w-full mt-1 h-10 px-3 rounded-xl border border-base-300/80 bg-base-100 hover:bg-base-200/80 text-xs font-medium text-content flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
+							className="w-full mt-1 h-10 px-3 rounded-xl border border-content bg-widget hover:bg-content text-xs font-medium text-content flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
 						>
 							<Icon name="mail" className="w-4 h-4 text-muted" />
 							<span>

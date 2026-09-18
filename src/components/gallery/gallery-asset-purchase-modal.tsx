@@ -76,7 +76,7 @@ export function GalleryAssetPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="relative overflow-hidden rounded-2xl bg-base-200/50 max-h-[340px] flex items-center justify-center">
+				<div className="relative overflow-hidden rounded-2xl bg-content max-h-[340px] flex items-center justify-center">
 					<img
 						src={asset.previewUrl || asset.url}
 						alt={asset.title || 'Asset'}
@@ -101,7 +101,7 @@ export function GalleryAssetPurchaseModal({
 				</div>
 
 				{!isVipUnlocked && !canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-subtle text-error">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
 							داری)

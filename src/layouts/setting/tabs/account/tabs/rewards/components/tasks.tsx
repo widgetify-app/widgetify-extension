@@ -14,7 +14,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">
-						<div className="w-8 h-8 mx-auto border-4 rounded-full border-primary/30 border-t-primary animate-spin"></div>
+						<div className="w-8 h-8 mx-auto border-4 rounded-full border-brand-subtle border-t-primary animate-spin"></div>
 						<p className="mt-4 text-sm text-muted">در حال بارگذاری...</p>
 					</div>
 				) : tasks.length > 0 ? (
@@ -24,8 +24,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								key={index}
 								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
 									taskItem.isDone
-										? 'bg-gradient-to-r from-success/5 to-success/10 border border-success/20'
-										: 'bg-gradient-to-r from-base-100 to-base-200 border border-base-300'
+										? 'bg-gradient-to-r from-success-subtle to-success-subtle border border-success-subtle'
+										: 'bg-gradient-to-r from-widget to-content border border-content'
 								}`}
 							>
 								<div className="relative flex items-center justify-between gap-3 p-3">
@@ -33,8 +33,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										<div
 											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
 												taskItem.isDone
-													? 'bg-gradient-to-br from-success to-success/80 shadow-md shadow-success/20'
-													: 'bg-gradient-to-br from-primary to-primary/80 shadow-sm shadow-primary/20'
+													? 'bg-gradient-to-br from-success to-success-subtle shadow-md shadow-success'
+													: 'bg-gradient-to-br from-primary to-brand-subtle shadow-sm shadow-brand'
 											}`}
 										>
 											{taskItem.isDone ? (
@@ -43,7 +43,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 														name="check"
 														className="w-5 h-5 text-white drop-shadow-lg"
 													/>
-													<div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
+													<div className="absolute inset-0 rounded-full bg-over-image animate-ping"></div>
 												</div>
 											) : (
 												<Icon
@@ -56,8 +56,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 											<p
 												className={`text-sm font-medium transition-all duration-200 ${
 													taskItem.isDone
-														? 'text-success/80 line-through'
-														: 'text-base-content'
+														? 'text-success line-through'
+														: 'text-content'
 												}`}
 											>
 												{taskItem.task}
@@ -69,7 +69,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 															href={taskItem.button.url}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-primary/10 text-primary hover:bg-primary/20"
+															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-brand-subtle text-primary hover:bg-brand-subtle"
 														>
 															<Icon
 																name="externalLink"
@@ -85,8 +85,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 									<div
 										className={`flex items-center flex-shrink-0 gap-1.5 px-2.5 py-1 rounded-lg ${
 											taskItem.isDone
-												? 'bg-success/10'
-												: 'bg-primary/10'
+												? 'bg-success-subtle'
+												: 'bg-brand-subtle'
 										}`}
 									>
 										<span
@@ -110,14 +110,14 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					})
 				) : (
 					<div className="py-12 text-center">
-						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-base-200 to-base-300">
+						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-content to-raised">
 							<Icon name="check" className="w-8 h-8 text-muted" />
-							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-white/5"></div>
+							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-over-image-sheen"></div>
 						</div>
 						<p className="text-sm font-medium text-muted">
 							هیچ ماموریتی یافت نشد
 						</p>
-						<p className="mt-1 text-xs text-muted/60">
+						<p className="mt-1 text-xs text-subtle">
 							ماموریت‌های جدید به زودی اضافه می‌شوند
 						</p>
 					</div>

@@ -21,7 +21,7 @@ import { toIsoDateKey } from '../utils/jalali-date'
 import { buildMonthGrid } from '../utils/month-grid'
 
 const navButtonClass =
-	'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-ui text-muted opacity-70 hover:bg-base-300 hover:opacity-100 focus-visible:focus-ring'
+	'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-ui text-muted opacity-70 hover:bg-raised hover:opacity-100 focus-visible:focus-ring'
 
 const MonthHeader: React.FC = () => {
 	const { currentDate, today, setCurrentDate, goToToday } = useDate()

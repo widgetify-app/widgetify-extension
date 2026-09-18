@@ -13,8 +13,8 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				solid: 'border-transparent',
-				outline: 'bg-transparent hover:bg-base-content/10',
-				ghost: 'bg-transparent border-transparent hover:bg-base-content/10',
+				outline: 'bg-transparent hover:bg-raised',
+				ghost: 'bg-transparent border-transparent hover:bg-raised',
 				text: 'bg-transparent border-transparent hover:underline underline-offset-4',
 			},
 			color: {
@@ -53,47 +53,47 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-content border-content hover:bg-base-content/5!',
+				class: 'bg-content border-content hover:bg-raised!',
 			},
 			{
 				variant: 'solid',
 				color: 'brand',
-				class: 'bg-brand text-brand-content hover:bg-brand/90',
+				class: 'bg-brand text-brand-content hover:bg-brand-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'primary',
-				class: 'bg-primary text-primary-content hover:bg-primary/90',
+				class: 'bg-primary text-primary-content hover:bg-brand-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'secondary',
-				class: 'bg-secondary text-secondary-content hover:bg-secondary/90',
+				class: 'bg-secondary text-secondary-content hover:bg-brand-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'danger',
-				class: 'bg-error text-error-content hover:bg-error/90',
+				class: 'bg-error text-error-content hover:bg-danger-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'success',
-				class: 'bg-success text-success-content hover:bg-success/90',
+				class: 'bg-success text-success-content hover:bg-success-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'info',
-				class: 'bg-info text-info-content hover:bg-info/90',
+				class: 'bg-info text-info-content hover:bg-info-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'warning',
-				class: 'bg-warning text-warning-content hover:bg-warning/90',
+				class: 'bg-warning text-warning-content hover:bg-warning-solid',
 			},
 			{
 				variant: 'solid',
 				color: 'vip',
-				class: 'bg-vip text-vip-content hover:bg-vip/90',
+				class: 'bg-vip text-vip-content hover:bg-vip-solid',
 			},
 			{
 				variant: 'ghost',
@@ -101,14 +101,14 @@ export const buttonVariants = cva(
 				class: 'text-muted hover:text-content',
 			},
 			{ variant: 'outline', color: 'base', class: 'border-content' },
-			{ variant: 'outline', color: 'brand', class: 'border-brand' },
+			{ variant: 'outline', color: 'brand', class: 'border-brand-subtle' },
 			{ variant: 'outline', color: 'primary', class: 'border-primary' },
 			{ variant: 'outline', color: 'secondary', class: 'border-secondary' },
 			{ variant: 'outline', color: 'danger', class: 'border-error' },
-			{ variant: 'outline', color: 'success', class: 'border-success' },
-			{ variant: 'outline', color: 'info', class: 'border-info' },
-			{ variant: 'outline', color: 'warning', class: 'border-warning' },
-			{ variant: 'outline', color: 'vip', class: 'border-vip' },
+			{ variant: 'outline', color: 'success', class: 'border-success-subtle' },
+			{ variant: 'outline', color: 'info', class: 'border-info-subtle' },
+			{ variant: 'outline', color: 'warning', class: 'border-warning-subtle' },
+			{ variant: 'outline', color: 'vip', class: 'border-vip-subtle' },
 		],
 		defaultVariants: {
 			variant: 'solid',

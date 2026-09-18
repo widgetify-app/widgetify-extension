@@ -63,14 +63,14 @@ export function BrowserBookmark() {
 						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
 						onClick={onClickToExplorer}
 					>
-						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-base-300 group-hover:scale-95 transition-transform">
+						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-raised group-hover:scale-95 transition-transform">
 							<Icon
 								name="globe"
 								size={14}
-								className="text-base-content/60"
+								className="text-muted"
 								aria-hidden="true"
 							/>
-							<p className="font-medium text-base-content/60">کاوش</p>
+							<p className="font-medium text-muted">کاوش</p>
 							{searchboxData?.explorer?.newBadge && (
 								<NewBadge className="top-0 left-0" />
 							)}
@@ -89,7 +89,7 @@ export function BrowserBookmark() {
 							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl group-hover:scale-95 transition-transform ${
 								isOpen
 									? 'bg-primary text-primary-content shadow-lg'
-									: 'bg-base-300 text-base-content/60'
+									: 'bg-raised text-muted'
 							}`}
 						>
 							<Icon name="folderSpecial" size={14} aria-hidden="true" />
@@ -100,7 +100,7 @@ export function BrowserBookmark() {
 
 				<div
 					aria-hidden="true"
-					className="self-center w-px h-4 mx-1 bg-base-content/10 shrink-0"
+					className="self-center w-px h-4 mx-1 bg-raised shrink-0"
 				/>
 
 				<div className="flex flex-row items-center gap-1 flex-nowrap">
@@ -120,7 +120,7 @@ export function BrowserBookmark() {
 										src={
 											item.icon || getFaviconFromUrl(item.url || '')
 										}
-										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-base-300"
+										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-raised"
 										alt={item.name || item.title || ''}
 										loading="lazy"
 									/>

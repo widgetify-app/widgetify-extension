@@ -183,7 +183,7 @@ export const RssFeedSetting = () => {
 		<WidgetSettingWrapper>
 			{/* error section */}
 			{error && (
-				<div className="p-3 mb-3 text-sm rounded-lg bg-error/20 text-error">
+				<div className="p-3 mb-3 text-sm rounded-lg bg-danger-subtle text-error">
 					{error}
 				</div>
 			)}

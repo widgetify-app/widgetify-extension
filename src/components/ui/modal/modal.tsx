@@ -125,7 +125,7 @@ export function Modal({
 							<button
 								type="button"
 								onClick={onClose}
-								className="flex items-center justify-center transition-all cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-base-300 text-muted hover:bg-base-content/10 hover:scale-105 active:scale-95 shrink-0 outline-0! border-0! rounded-xl"
+								className="flex items-center justify-center transition-all cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-raised text-muted hover:bg-raised hover:scale-105 active:scale-95 shrink-0 outline-0! border-0! rounded-xl"
 								aria-label="Close modal"
 							>
 								<Icon name="close" size={16} className="md:hidden" />

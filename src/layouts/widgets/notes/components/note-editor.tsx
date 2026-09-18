@@ -39,7 +39,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 		})
 	}
 
-	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : 'bg-base-content/5'
+	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : 'bg-raised'
 	return (
 		<div className="flex flex-col h-full overflow-hidden">
 			<TextInput
@@ -113,7 +113,9 @@ const PriorityButton = ({
 			className={cn(
 				'flex items-center justify-center w-4 h-4 rounded-full cursor-pointer transition-ui focus-visible:focus-ring',
 				option.bgColor,
-				isSelected ? 'ring-2 ring-offset-0 ring-primary' : 'opacity-70 hover:opacity-100'
+				isSelected
+					? 'ring-2 ring-offset-0 ring-primary'
+					: 'opacity-70 hover:opacity-100'
 			)}
 		>
 			{isSelected && <Icon name="check" size={8} aria-hidden="true" />}

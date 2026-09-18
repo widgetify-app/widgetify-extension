@@ -29,7 +29,7 @@ export const HabitLivePreview: React.FC<HabitLivePreviewProps> = React.memo(
 		return (
 			<div className="flex flex-col gap-1.5">
 				<span className="text-xs font-bold text-muted">پیش‌نمایش</span>
-				<div className="flex items-center justify-between p-3 border rounded-2xl border-base-content/15 bg-base-content/5">
+				<div className="flex items-center justify-between p-3 border rounded-2xl border-content bg-raised">
 					<div className="flex items-center min-w-0 gap-3">
 						<div
 							className="flex items-center justify-center w-10 h-10 text-xl rounded-xl shrink-0"

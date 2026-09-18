@@ -99,7 +99,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-primary/30 animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-brand-subtle animate-spin"></div>
 				</div>
 			)
 		}
@@ -113,8 +113,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-primary/25 border-2 border-primary transform scale-110'
-									: 'border border-transparent hover:bg-base-content/10 active:bg-base-content/20'
+									? 'bg-brand-subtle border-2 border-primary transform scale-110'
+									: 'border border-transparent hover:bg-raised active:bg-hovered'
 							}`}
 					>
 						<img
@@ -264,7 +264,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
 								className={
-									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-error hover:bg-error/10'
+									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-error hover:bg-danger-subtle'
 								}
 							>
 								حذف

@@ -32,7 +32,7 @@ const StepWrapper = ({ children }: { children: React.ReactNode }) => {
 
 const StepImage = ({ src }: { src: string; alt: string }) => {
 	return (
-		<div className="relative flex items-center justify-center w-full overflow-hidden bg-base-200/50 md:w-1/2 min-h-80 rounded-2xl group">
+		<div className="relative flex items-center justify-center w-full overflow-hidden bg-content md:w-1/2 min-h-80 rounded-2xl group">
 			<div
 				className="absolute inset-0 transition-opacity duration-700 bg-center bg-cover"
 				style={{
@@ -374,11 +374,11 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" direction="rtl" title=" ">
-			<div className="relative overflow-hidden rounded bg-base-100">
+			<div className="relative overflow-hidden rounded bg-widget">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button
 						onClick={prevStep}
-						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-base-200/50 text-content hover:bg-base-300"
+						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-content text-content hover:bg-raised"
 					>
 						<Icon name="chevronLeft" size={20} />
 					</button>

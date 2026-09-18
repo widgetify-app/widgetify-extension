@@ -25,7 +25,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 
 	if (item.type === 'BROWSER_TITLE') {
 		return (
-			<div className={`${base} bg-base-200/40 px-2`}>
+			<div className={`${base} bg-content px-2`}>
 				{renderBrowserTitlePreview({
 					template: item.meta?.template || item.name,
 					className: '!w-96 !max-w-96',
@@ -36,7 +36,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 
 	if (item.type === 'FONT') {
 		return (
-			<div className={`${base} bg-base-200/40`}>
+			<div className={`${base} bg-content`}>
 				<div className="text-center px-2">
 					<p
 						className="text-base font-medium text-content"
@@ -56,7 +56,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 	}
 
 	return (
-		<div className={`${base} bg-base-200/30`}>
+		<div className={`${base} bg-content`}>
 			<span className="text-3xl opacity-20">{getItemTypeEmoji(item.type)}</span>
 		</div>
 	)

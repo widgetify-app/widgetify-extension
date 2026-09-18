@@ -66,16 +66,14 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 		<div className="flex flex-col h-full overflow-hidden text-right" dir="rtl">
 			<section
 				aria-label="وضعیت‌ها"
-				className="shrink-0 pb-2 border-b border-base-content/10"
+				className="shrink-0 pb-2 border-b border-subtle"
 			>
 				<ActiveFriendsHorizontal />
 			</section>
 
 			<div className="flex items-center justify-between px-2 pt-2.5 pb-1.5 shrink-0">
 				<div className="flex items-center gap-1.5">
-					<span className="text-xs font-medium text-base-content/80">
-						دوستان
-					</span>
+					<span className="text-xs font-medium text-muted">دوستان</span>
 				</div>
 
 				<div className="flex items-center gap-1.5">
@@ -86,7 +84,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					<button
 						type="button"
 						onClick={() => setIsAddFriendOpen(true)}
-						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-base-content/5 hover:bg-base-content/10 active:scale-90 cursor-pointer border border-base-content/10 text-base-content/80 hover:text-base-content"
+						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-raised active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
 						title="افزودن دوست"
 						aria-label="افزودن دوست"
 					>
@@ -104,7 +102,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						{Array.from({ length: 4 }).map((_, i) => (
 							<div
 								key={i}
-								className="flex items-center justify-between p-2 rounded-xl border border-base-content/5 bg-base-200/40 animate-pulse"
+								className="flex items-center justify-between p-2 rounded-xl border border-subtle bg-content animate-pulse"
 							>
 								<div className="flex items-center gap-2.5">
 									<div className="w-8 h-8 rounded-full skeleton" />
@@ -117,13 +115,11 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						))}
 					</div>
 				) : allFriends.length === 0 ? (
-					<div className="flex flex-col items-center justify-center py-6 text-center text-base-content/50">
-						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-base-200 text-base-content/40">
+					<div className="flex flex-col items-center justify-center py-6 text-center text-subtle">
+						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-content text-subtle">
 							<Icon name="users" size={18} />
 						</div>
-						<p className="text-xs font-normal text-base-content/70">
-							هنوز دوستی نداری
-						</p>
+						<p className="text-xs font-normal text-muted">هنوز دوستی نداری</p>
 						<button
 							type="button"
 							onClick={() => setIsAddFriendOpen(true)}
@@ -138,11 +134,11 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 							<div
 								key={`friend-direct-${friend.id}`}
 								onClick={() => onSelectFriend?.(friend)}
-								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-base-200/60 border border-transparent hover:border-base-content/5 cursor-pointer"
+								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content border border-transparent hover:border-subtle cursor-pointer"
 							>
 								<div className="flex items-center gap-2.5 min-w-0 flex-1">
 									<div className="relative shrink-0">
-										<div className="w-8 h-8 overflow-hidden rounded-full ring-1 ring-base-content/10">
+										<div className="w-8 h-8 overflow-hidden rounded-full ring-1 ring-subtle">
 											<AvatarComponent
 												url={friend.user.avatar}
 												placeholder={friend.user.name}
@@ -153,11 +149,11 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 									</div>
 
 									<div className="min-w-0 flex-1">
-										<div className="text-xs font-medium truncate text-base-content">
+										<div className="text-xs font-medium truncate text-content">
 											{friend.user.name}
 										</div>
 										<div
-											className="text-[10px] truncate text-base-content/50"
+											className="text-[10px] truncate text-subtle"
 											dir="ltr"
 										>
 											@{friend.user.username}
@@ -172,7 +168,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											e.stopPropagation()
 											setSelectedUserToDelete(friend)
 										}}
-										className="p-1 text-base-content/40 hover:text-error hover:bg-error/10 rounded-lg transition-colors cursor-pointer"
+										className="p-1 text-subtle hover:text-error hover:bg-danger-subtle rounded-lg transition-colors cursor-pointer"
 										title="حذف دوست"
 									>
 										<Icon name="trash" size={13} />
@@ -185,7 +181,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 						{isFetchingNextPage && (
 							<div className="flex justify-center py-1.5">
-								<div className="w-4 h-4 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+								<div className="w-4 h-4 border-2 rounded-full border-brand-subtle border-t-primary animate-spin" />
 							</div>
 						)}
 					</>

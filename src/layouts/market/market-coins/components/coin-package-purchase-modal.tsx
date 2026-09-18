@@ -59,8 +59,8 @@ export function CoinPackagePurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-3">
-				<div className="overflow-hidden border rounded-2xl border-base-300/60 bg-base-100">
-					<div className="flex items-center justify-center py-8 bg-base-200/40">
+				<div className="overflow-hidden border rounded-2xl border-content bg-widget">
+					<div className="flex items-center justify-center py-8 bg-content">
 						<div className="flex flex-col items-center gap-2">
 							<img
 								src={ConfigKey.WIG_COIN_ICON}
@@ -85,7 +85,7 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-base-300/60 bg-base-100 divide-base-200/60">
+				<div className="border divide-y rounded-2xl border-content bg-widget border-content">
 					<div className="flex items-center justify-between px-3 py-3">
 						<span className="text-xs text-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
@@ -102,8 +102,8 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="px-3 py-2.5 rounded-2xl border border-info/20 bg-info/5">
-					<p className="text-[11px] text-info/85">
+				<div className="px-3 py-2.5 rounded-2xl border border-info-subtle bg-info-subtle">
+					<p className="text-[11px] text-info">
 						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
 						می‌شوند.
 					</p>

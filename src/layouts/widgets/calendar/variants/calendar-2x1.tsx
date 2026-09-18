@@ -74,11 +74,11 @@ export function Calendar2x1() {
 									!isSelected &&
 										isToday &&
 										(isHoliday
-											? 'bg-error/10 text-error ring-error/30'
-											: 'bg-primary/10 text-primary ring-primary/30'),
+											? 'bg-danger-subtle text-error ring-danger-subtle'
+											: 'bg-brand-subtle text-primary ring-brand-subtle'),
 									!isSelected &&
 										!isToday &&
-										'bg-base-200/40 hover:bg-base-200/80',
+										'bg-content hover:bg-content',
 									!isSelected &&
 										!isToday &&
 										(isHoliday ? 'text-error' : 'text-content')

@@ -48,12 +48,12 @@ export function MarketCoins() {
 					{Array.from({ length: 8 }).map((_, i) => (
 						<div
 							key={i}
-							className="overflow-hidden border rounded-2xl border-base-content/8 bg-base-100/60"
+							className="overflow-hidden border rounded-2xl border-subtle bg-widget"
 						>
 							<div className="h-28 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
 								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
-								<div className="flex items-center justify-between pt-2 border-t border-base-content/5">
+								<div className="flex items-center justify-between pt-2 border-t border-subtle">
 									<div className="w-12 h-3 rounded-lg skeleton opacity-20" />
 									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
 								</div>
@@ -74,12 +74,10 @@ export function MarketCoins() {
 				</div>
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-base-200/60">
-						<Icon name="coin" size={20} className="text-base-content/20" />
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
+						<Icon name="coin" size={20} className="text-faint" />
 					</div>
-					<p className="text-xs text-base-content/40">
-						فعلا چیزی برای خرید نیست
-					</p>
+					<p className="text-xs text-subtle">فعلا چیزی برای خرید نیست</p>
 				</div>
 			)}
 

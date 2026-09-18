@@ -134,9 +134,7 @@ export function NetworkCompactRow({
 						</div>
 					)}
 
-					<span className="text-xs select-none text-base-content/20 shrink-0">
-						•
-					</span>
+					<span className="text-xs select-none text-faint shrink-0">•</span>
 
 					<button
 						type="button"
@@ -185,12 +183,12 @@ export function NetworkCompactRow({
 						<img
 							src={countryIcon}
 							alt=""
-							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-base-content/10"
+							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-subtle"
 						/>
 					) : (
 						<div
 							aria-hidden="true"
-							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-base-content/10 border-base-content/10"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-raised border-subtle"
 						>
 							🌐
 						</div>
@@ -198,7 +196,7 @@ export function NetworkCompactRow({
 
 					<span
 						className={cn(
-							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-base-100 shadow-xs',
+							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-content shadow-xs',
 							isOnline ? 'bg-success' : 'bg-error'
 						)}
 					/>

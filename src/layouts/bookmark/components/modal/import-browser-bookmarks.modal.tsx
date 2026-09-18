@@ -97,7 +97,7 @@ function TreeNode({
 	return (
 		<div>
 			<div
-				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-primary/5 cursor-pointer transition-colors"
+				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-brand-subtle cursor-pointer transition-colors"
 				style={{ paddingRight: depth * 16 }}
 				onClick={() => onToggleSelect(node)}
 			>
@@ -127,8 +127,8 @@ function TreeNode({
 						isChecked
 							? 'bg-primary border-primary'
 							: isIndeterminate
-								? 'bg-primary/30 border-primary'
-								: 'border-base-content/20'
+								? 'bg-brand-muted border-primary'
+								: 'border-content'
 					}`}
 				>
 					{(isChecked || isIndeterminate) && (
@@ -137,7 +137,7 @@ function TreeNode({
 				</span>
 
 				{isFolder ? (
-					<Icon name="folder" size={15} className="text-primary/80 shrink-0" />
+					<Icon name="folder" size={15} className="text-brand shrink-0" />
 				) : (
 					<img
 						src={getFaviconFromUrl(node.url || '')}
@@ -288,7 +288,7 @@ export function ImportBrowserBookmarksModal({
 		>
 			{!browserBookmarksEnabled ? (
 				<div className="flex flex-col items-center justify-center h-64 px-4 text-center">
-					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-primary/10">
+					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-brand-subtle">
 						<Icon name="lock" className="text-primary" size={20} />
 					</div>
 					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
@@ -314,7 +314,7 @@ export function ImportBrowserBookmarksModal({
 						</span>
 					</div>
 
-					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-base-content/5 custom-scrollbar">
+					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-subtle custom-scrollbar">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
 								<Icon

@@ -105,9 +105,9 @@ const TOAST_THEMES: Record<
 	}
 > = {
 	info: {
-		container: 'bg-[#18181b]/95 border-white/10 text-white',
+		container: 'bg-[#18181b]/95 border-over-image text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-white rounded-full select-none shrink-0 bg-white/10">
+			<div className="flex items-center justify-center w-8 h-8 text-white rounded-full select-none shrink-0 bg-over-image">
 				<Icon name="atSign" size={15} />
 			</div>
 		),
@@ -116,37 +116,37 @@ const TOAST_THEMES: Record<
 		messageClass: 'text-neutral-300',
 	},
 	error: {
-		container: 'bg-[#2a1317]/95 border-red-500/25 text-white',
+		container: 'bg-[#2a1317]/95 border-danger-800 text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full shadow-sm select-none shrink-0">
+			<div className="flex items-center justify-center w-8 h-8 text-white bg-danger-500 rounded-full shadow-sm select-none shrink-0">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
 		title: 'خطا',
 		actionText: 'باشه',
-		messageClass: 'text-red-200/85',
+		messageClass: 'text-danger-200',
 	},
 	success: {
-		container: 'bg-[#142618]/95 border-emerald-500/25 text-white',
+		container: 'bg-[#142618]/95 border-success-800 text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-success-500 text-black shadow-sm select-none">
 				<Icon name="check" size={15} className="stroke-3" />
 			</div>
 		),
 		title: 'موفقیت آمیز',
 		actionText: 'تایید',
-		messageClass: 'text-emerald-200/85',
+		messageClass: 'text-success-200',
 	},
 	warning: {
-		container: 'bg-[#2b2210]/95 border-amber-500/25 text-white',
+		container: 'bg-[#2b2210]/95 border-warning-800 text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-amber-500">
+			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-warning-400">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
 		title: 'هشدار',
 		actionText: 'متوجه شدم',
-		messageClass: 'text-amber-200/85',
+		messageClass: 'text-warning-200',
 	},
 }
 
@@ -193,7 +193,7 @@ export function showToast(
 				<button
 					type="button"
 					onClick={() => toast.remove(t.id, t.toasterId)}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-over-image active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
 				>
 					{theme.actionText}
 				</button>
@@ -215,18 +215,18 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 		(t) => (
 			<div
 				className={cn(
-					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-white/15 bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-over-image bg-[#18181b]/95 text-white select-none transition-all duration-200',
 					t.visible
 						? 'opacity-100 translate-y-0 scale-100'
 						: 'opacity-0 -translate-y-2 scale-95'
 				)}
 			>
 				<div className="flex items-center flex-1 min-w-0 gap-3">
-					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-primary/20 text-primary">
+					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-brand-subtle text-primary">
 						<Icon name="info" size={16} />
 					</div>
 					<div className="flex-1 min-w-0">
-						<p className="text-[10px] text-white/50 leading-none m-0 mb-0.5">
+						<p className="text-[10px] text-over-image-muted leading-none m-0 mb-0.5">
 							حالت پیش‌نمایش
 						</p>
 						<p className="m-0 text-sm font-bold text-white truncate">
@@ -241,7 +241,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 						toast.remove(id)
 						onCancel()
 					}}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-red-500/20 hover:text-red-300 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-danger-900 hover:text-danger-300 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
 				>
 					<Icon name="close" size={11} />
 					<span>بازگشت</span>

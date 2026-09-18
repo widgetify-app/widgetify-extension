@@ -36,11 +36,7 @@ export const GoogleCalendarTimelineItem = ({
 
 	const hasAction = !!(event.hangoutLink || event.location)
 
-	const accentClass = isNow
-		? 'bg-primary'
-		: isNext
-			? 'bg-warning'
-			: 'bg-base-content/10'
+	const accentClass = isNow ? 'bg-primary' : isNext ? 'bg-warning' : 'bg-raised'
 
 	const timeLabel = isAllDay ? durationLabel : `${startTimeStr} تا ${endTimeStr}`
 
@@ -56,7 +52,7 @@ export const GoogleCalendarTimelineItem = ({
 				isNow ? 'py-1' : 'py-1.5',
 				isPast && 'opacity-35',
 				hasAction && !isPast
-					? 'cursor-pointer hover:bg-base-content/5 active:scale-[0.98]'
+					? 'cursor-pointer hover:bg-raised active:scale-[0.98]'
 					: 'cursor-default'
 			)}
 		>
@@ -84,7 +80,7 @@ export const GoogleCalendarTimelineItem = ({
 							dateTime={isoTime(end)}
 							className={cn(
 								'text-[9px] leading-none tabular-nums',
-								isNow ? 'text-primary/50' : 'text-muted'
+								isNow ? 'text-brand' : 'text-muted'
 							)}
 						>
 							{endTimeStr}
@@ -168,7 +164,7 @@ export const GoogleCalendarTimelineItem = ({
 											content={attendee.email}
 											position="top"
 										>
-											<span className="w-3.5 h-3.5 rounded-full bg-base-300 border border-base-content/10 flex items-center justify-center text-[5px] font-bold text-muted">
+											<span className="w-3.5 h-3.5 rounded-full bg-raised border border-subtle flex items-center justify-center text-[5px] font-bold text-muted">
 												{getInitials(attendee.email)}
 											</span>
 										</Tooltip>
@@ -186,9 +182,9 @@ export const GoogleCalendarTimelineItem = ({
 			</div>
 
 			{isNow && (
-				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-primary/15">
+				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-brand-subtle">
 					<div
-						className="h-full transition-all duration-1000 bg-primary/50"
+						className="h-full transition-all duration-1000 bg-brand-muted"
 						style={{ width: `${elapsedPercent}%` }}
 					/>
 				</div>

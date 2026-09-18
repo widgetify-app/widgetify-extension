@@ -53,7 +53,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	}
 
 	return (
-		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-base-content/10 bg-base-content/5 hover:border-base-content/20 hover:bg-base-content/10">
+		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-subtle bg-raised hover:border-content hover:bg-raised">
 			<div className="flex items-center gap-2">
 				<button
 					type="button"
@@ -66,7 +66,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						style={{ backgroundColor: `${color}22`, color }}
 					>
 						{isPending ? (
-							<IconLoading className="text-base-content/80" />
+							<IconLoading className="text-muted" />
 						) : (
 							habit.emoji || '🎯'
 						)}
@@ -142,7 +142,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					return (
 						<li
 							key={day.date}
-							className="flex-1 h-1.5 rounded-full bg-base-content/10 overflow-hidden"
+							className="flex-1 h-1.5 rounded-full bg-raised overflow-hidden"
 						>
 							<div
 								className="w-full h-full rounded-full"

@@ -30,8 +30,8 @@ export function AddWidgetSidebar({
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
-		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
-			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-base-content/10">
+		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-subtle md:pl-3 md:pb-0">
+			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-subtle">
 				{CATEGORIES.map((cat) => (
 					<button
 						key={cat.id}
@@ -41,7 +41,7 @@ export function AddWidgetSidebar({
 							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 							activeCategory === cat.id
 								? 'bg-primary text-primary-content font-bold shadow-xs'
-								: 'bg-base-200/60 hover:bg-base-200 text-muted'
+								: 'bg-content hover:bg-content text-muted'
 						)}
 					>
 						{cat.label}
@@ -62,8 +62,8 @@ export function AddWidgetSidebar({
 							className={cn(
 								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
 								isSelected
-									? 'bg-primary/10 border-primary shadow-xs'
-									: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
+									? 'bg-brand-subtle border-primary shadow-xs'
+									: 'bg-content hover:bg-content border-subtle'
 							)}
 						>
 							<div className="flex items-center min-w-0 gap-2">
@@ -71,8 +71,8 @@ export function AddWidgetSidebar({
 									className={cn(
 										'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
 										isSelected
-											? 'bg-primary/15 text-primary'
-											: 'bg-base-content/5 text-muted'
+											? 'bg-brand-subtle text-primary'
+											: 'bg-raised text-muted'
 									)}
 								>
 									<Icon name={def.icon} size={15} />
@@ -113,8 +113,8 @@ export function AddWidgetSidebar({
 										className={cn(
 											'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
 											isActive
-												? 'bg-primary/15 text-primary'
-												: 'bg-base-300 text-muted'
+												? 'bg-brand-subtle text-primary'
+												: 'bg-raised text-muted'
 										)}
 									>
 										<span>
@@ -122,7 +122,7 @@ export function AddWidgetSidebar({
 										</span>
 									</span>
 								) : isActive ? (
-									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-base-300 text-muted font-medium">
+									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-raised text-muted font-medium">
 										فعال
 									</span>
 								) : null}
