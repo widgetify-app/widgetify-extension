@@ -1,0 +1,187 @@
+/* ============================================
+   PRIMITIVES
+
+   The only place a raw colour may be written. Everything else in the
+   project refers to a step on one of these ramps, never to a literal
+   and never to an opacity modifier.
+
+   Every value is hex on purpose: oklch() and color-mix() both landed in
+   Chrome 111, and Chrome 109 is the last version Windows 7/8.1 can run.
+   A colour those browsers cannot parse is dropped at computed-value time,
+   which is why text lost its colour there.
+   ============================================ */
+@theme {
+	/* --------------------------------------------
+     RESTRICTION - removes Tailwind's stock palette so text-red-500,
+     bg-slate-200 and friends generate no CSS at all. Using one is a
+     build error, not a review comment. daisyUI's own semantic names
+     (base-100, primary, error ...) are declared by its plugin and are
+     deliberately left alone.
+     -------------------------------------------- */
+	--color-red-*: initial;
+	--color-orange-*: initial;
+	--color-amber-*: initial;
+	--color-yellow-*: initial;
+	--color-lime-*: initial;
+	--color-green-*: initial;
+	--color-emerald-*: initial;
+	--color-teal-*: initial;
+	--color-cyan-*: initial;
+	--color-sky-*: initial;
+	--color-blue-*: initial;
+	--color-indigo-*: initial;
+	--color-violet-*: initial;
+	--color-purple-*: initial;
+	--color-fuchsia-*: initial;
+	--color-pink-*: initial;
+	--color-rose-*: initial;
+	--color-slate-*: initial;
+	--color-gray-*: initial;
+	--color-zinc-*: initial;
+	--color-stone-*: initial;
+
+	--font-sans: "Vazir", ui-sans-serif, system-ui, sans-serif;
+	--font-latin: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+
+	/* --------------------------------------------
+     RADIUS
+     -------------------------------------------- */
+	--radius-card: 1rem;
+	--radius-widget: 1.5rem;
+
+	/* --------------------------------------------
+     MOTION
+     -------------------------------------------- */
+	--duration-fast: 150ms;
+	--duration-base: 200ms;
+	--duration-slow: 300ms;
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+	/* --------------------------------------------
+     SURFACE - Neutral grey. 800 is main's light base-content; 950 is its dark base-100.
+     -------------------------------------------- */
+	--color-surface-0: #ffffff;
+	--color-surface-50: #f7f7f7;
+	--color-surface-100: #ededed;
+	--color-surface-200: #d9d9da;
+	--color-surface-300: #c0c0c0;
+	--color-surface-400: #a2a2a3;
+	--color-surface-500: #8b8b8c;
+	--color-surface-600: #717172;
+	--color-surface-700: #585859;
+	--color-surface-800: #464647;
+	--color-surface-900: #2d2d2e;
+	--color-surface-950: #1a1a1a;
+
+	/* --------------------------------------------
+     BRAND - Matches --brand-primary exactly at step 500.
+     -------------------------------------------- */
+	--color-brand-50: #dff5ff;
+	--color-brand-100: #d2eaff;
+	--color-brand-200: #bbd5ff;
+	--color-brand-300: #9cbaff;
+	--color-brand-400: #7a98ff;
+	--color-brand-500: #536dfe;
+	--color-brand-600: #4960e4;
+	--color-brand-700: #374ab7;
+	--color-brand-800: #27368e;
+	--color-brand-900: #192368;
+	--color-brand-950: #0c1244;
+
+	/* --------------------------------------------
+     DANGER - Matches main's dark --color-error exactly at step 500.
+     -------------------------------------------- */
+	--color-danger-50: #ffd9d8;
+	--color-danger-100: #ffcbca;
+	--color-danger-200: #ffb1b2;
+	--color-danger-300: #ff8f92;
+	--color-danger-400: #ff626c;
+	--color-danger-500: #f7374f;
+	--color-danger-600: #ca2a3e;
+	--color-danger-700: #a01d2f;
+	--color-danger-800: #7a1221;
+	--color-danger-900: #580814;
+	--color-danger-950: #370208;
+
+	/* --------------------------------------------
+     SUCCESS - Matches main's dark --color-success exactly at step 300.
+     -------------------------------------------- */
+	--color-success-50: #b2ffe3;
+	--color-success-100: #a1ffd7;
+	--color-success-200: #82f4c2;
+	--color-success-300: #34d399;
+	--color-success-400: #31bd8a;
+	--color-success-500: #2da276;
+	--color-success-600: #288460;
+	--color-success-700: #22674b;
+	--color-success-800: #1c4c38;
+	--color-success-900: #153427;
+	--color-success-950: #0d1e16;
+
+	/* --------------------------------------------
+     WARNING - Matches main's dark --color-warning exactly at step 300.
+     -------------------------------------------- */
+	--color-warning-50: #fff18c;
+	--color-warning-100: #ffe579;
+	--color-warning-200: #ffd052;
+	--color-warning-300: #fbbf24;
+	--color-warning-400: #ca9b28;
+	--color-warning-500: #ac8529;
+	--color-warning-600: #8b6c27;
+	--color-warning-700: #6c5524;
+	--color-warning-800: #4f401f;
+	--color-warning-900: #352c1a;
+	--color-warning-950: #1c1913;
+
+	/* --------------------------------------------
+     INFO - Matches main's dark --color-info exactly at step 400.
+     -------------------------------------------- */
+	--color-info-50: #d0fbff;
+	--color-info-100: #c2f1ff;
+	--color-info-200: #a9ddff;
+	--color-info-300: #88c4ff;
+	--color-info-400: #60a5fa;
+	--color-info-500: #528dd6;
+	--color-info-600: #4273af;
+	--color-info-700: #335a8a;
+	--color-info-800: #264367;
+	--color-info-900: #192e48;
+	--color-info-950: #0d1a2b;
+
+	/* --------------------------------------------
+     VIP - The paid-feature accent. Matches --color-vip exactly.
+     -------------------------------------------- */
+	--color-vip-50: #e8f3ff;
+	--color-vip-100: #dce8ff;
+	--color-vip-200: #c6d3ff;
+	--color-vip-300: #aab7ff;
+	--color-vip-400: #8a96ff;
+	--color-vip-500: #727afa;
+	--color-vip-600: #6366f1;
+	--color-vip-700: #4647b3;
+	--color-vip-800: #33338a;
+	--color-vip-900: #222166;
+	--color-vip-950: #121043;
+
+	/* --------------------------------------------
+     CONTENT COLOURS - not chrome. These depict something or are a set a
+     user picks from, so they are deliberately multi-hue and do not follow
+     the theme. Defined here because this is the only file allowed to hold
+     a literal, not because they are part of the ramp system.
+     -------------------------------------------- */
+	--color-medal-gold: #fdc700;
+	--color-medal-silver: #99a1af;
+	--color-medal-bronze: #e17100;
+
+	--color-avatar-1: #2b7fff;
+	--color-avatar-2: #ad46ff;
+	--color-avatar-3: #f6339a;
+	--color-avatar-4: #fb2c36;
+	--color-avatar-5: #ff6900;
+	--color-avatar-6: #f0b100;
+	--color-avatar-7: #00c950;
+	--color-avatar-8: #00bba7;
+	--color-avatar-9: #00b8db;
+	--color-avatar-10: #615fff;
+}

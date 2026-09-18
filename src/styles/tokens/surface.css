@@ -1,0 +1,39 @@
+/* ============================================
+   SURFACE & BORDER
+   Backgrounds and borders not tied to one component.
+   ============================================ */
+:root {
+	--surface-widget: var(--color-surface-50);
+	--surface-card: var(--color-surface-0);
+	--surface-elevated: var(--color-surface-0);
+	--surface-raised: var(--color-surface-100);
+	--surface-hover: var(--color-surface-100);
+	--surface-active: var(--color-surface-200);
+	--surface-overlay: rgba(0, 0, 0, 0.4);
+	--surface-brand-subtle: var(--color-brand-50);
+
+	--border-default: var(--color-surface-200);
+	--border-subtle: var(--color-surface-100);
+	--border-strong: var(--color-surface-400);
+	--border-brand: var(--color-brand-500);
+}
+
+[data-theme="dark"],
+[data-theme="glass"],
+[data-theme="icy"],
+[data-theme="zarna"],
+[data-theme="esteghlal"] {
+	--surface-widget: var(--color-surface-950);
+	--surface-card: var(--color-surface-900);
+	--surface-elevated: var(--color-surface-800);
+	--surface-raised: var(--color-surface-800);
+	--surface-hover: var(--color-surface-800);
+	--surface-active: var(--color-surface-700);
+	--surface-overlay: rgba(0, 0, 0, 0.6);
+	--surface-brand-subtle: var(--color-brand-900);
+
+	--border-default: var(--color-surface-700);
+	--border-subtle: var(--color-surface-800);
+	--border-strong: var(--color-surface-500);
+	--border-brand: var(--color-brand-400);
+}

@@ -1,0 +1,20 @@
+/* ============================================
+   LEGACY BROWSER FALLBACKS
+
+   Chrome 109 is the last version Windows 7, 8 and 8.1 can run, and both
+   oklch() and color-mix() landed in Chrome 111. A colour those browsers
+   cannot parse is invalid at computed-value time, so the declaration is
+   dropped and the element falls back to an inherited colour.
+
+   Every token in styles/theme and styles/tokens is written in a syntax
+   those browsers understand, so the only gap left is what daisyUI writes
+   in oklch itself. The modal scrim is the one that matters: without it a
+   dialog opens with no dimming at all. Restated here in rgb, same colour.
+   ============================================ */
+
+.modal.modal-open,
+.modal[open],
+.modal:target,
+.modal-toggle:checked + .modal {
+	background-color: var(--surface-overlay);
+}

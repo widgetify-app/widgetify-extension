@@ -1,0 +1,88 @@
+/* ============================================
+   STATUS - danger / success / warning / info / brand / vip
+   Badges, alerts, toasts, chips, inline messages.
+
+   These replace every bg-error/10 style tint in the project. A tint is a
+   ramp step now, not an alpha, so it renders identically on every browser
+   and there is exactly one of each strength. A dark theme flips to the far
+   end of the same ramp rather than reusing a light value at low opacity.
+   ============================================ */
+:root {
+	--status-danger-bg: var(--color-danger-50);
+	--status-danger-text: var(--color-danger-700);
+	--status-danger-border: var(--color-danger-200);
+	--status-danger-border-strong: var(--color-danger-400);
+	--status-danger-bg-hover: var(--color-danger-100);
+
+	--status-success-bg: var(--color-success-50);
+	--status-success-text: var(--color-success-700);
+	--status-success-border: var(--color-success-200);
+	--status-success-border-strong: var(--color-success-400);
+	--status-success-bg-hover: var(--color-success-100);
+
+	--status-warning-bg: var(--color-warning-50);
+	--status-warning-text: var(--color-warning-700);
+	--status-warning-border: var(--color-warning-200);
+	--status-warning-border-strong: var(--color-warning-400);
+	--status-warning-bg-hover: var(--color-warning-100);
+
+	--status-info-bg: var(--color-info-50);
+	--status-info-text: var(--color-info-700);
+	--status-info-border: var(--color-info-200);
+	--status-info-border-strong: var(--color-info-400);
+	--status-info-bg-hover: var(--color-info-100);
+
+	--status-brand-bg: var(--color-brand-50);
+	--status-brand-text: var(--color-brand-700);
+	--status-brand-border: var(--color-brand-200);
+	--status-brand-border-strong: var(--color-brand-400);
+	--status-brand-bg-hover: var(--color-brand-100);
+
+	--status-vip-bg: var(--color-vip-50);
+	--status-vip-text: var(--color-vip-700);
+	--status-vip-border: var(--color-vip-200);
+	--status-vip-border-strong: var(--color-vip-400);
+	--status-vip-bg-hover: var(--color-vip-100);
+}
+
+[data-theme="dark"],
+[data-theme="glass"],
+[data-theme="icy"],
+[data-theme="zarna"],
+[data-theme="esteghlal"] {
+	--status-danger-bg: var(--color-danger-950);
+	--status-danger-text: var(--color-danger-200);
+	--status-danger-border: var(--color-danger-800);
+	--status-danger-border-strong: var(--color-danger-600);
+	--status-danger-bg-hover: var(--color-danger-900);
+
+	--status-success-bg: var(--color-success-950);
+	--status-success-text: var(--color-success-200);
+	--status-success-border: var(--color-success-800);
+	--status-success-border-strong: var(--color-success-600);
+	--status-success-bg-hover: var(--color-success-900);
+
+	--status-warning-bg: var(--color-warning-950);
+	--status-warning-text: var(--color-warning-200);
+	--status-warning-border: var(--color-warning-800);
+	--status-warning-border-strong: var(--color-warning-600);
+	--status-warning-bg-hover: var(--color-warning-900);
+
+	--status-info-bg: var(--color-info-950);
+	--status-info-text: var(--color-info-200);
+	--status-info-border: var(--color-info-800);
+	--status-info-border-strong: var(--color-info-600);
+	--status-info-bg-hover: var(--color-info-900);
+
+	--status-brand-bg: var(--color-brand-950);
+	--status-brand-text: var(--color-brand-200);
+	--status-brand-border: var(--color-brand-800);
+	--status-brand-border-strong: var(--color-brand-600);
+	--status-brand-bg-hover: var(--color-brand-900);
+
+	--status-vip-bg: var(--color-vip-950);
+	--status-vip-text: var(--color-vip-200);
+	--status-vip-border: var(--color-vip-800);
+	--status-vip-border-strong: var(--color-vip-600);
+	--status-vip-bg-hover: var(--color-vip-900);
+}

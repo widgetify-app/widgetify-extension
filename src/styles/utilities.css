@@ -1,0 +1,928 @@
+/* ============================================
+   UTILITIES - the only vocabulary components are allowed to use.
+
+   Every class here reads a semantic token. Nothing here writes a colour
+   and nothing here takes an opacity modifier, so a strength is chosen by
+   picking a name, not by inventing a number at the call site.
+   ============================================ */
+
+/* --------------------------------------------
+   TEXT
+   -------------------------------------------- */
+@utility text-content {
+	color: var(--text-primary);
+}
+
+@utility text-muted {
+	color: var(--text-secondary);
+}
+
+@utility text-subtle {
+	color: var(--text-muted);
+}
+
+@utility text-faint {
+	color: var(--text-faint);
+}
+
+@utility text-brand {
+	color: var(--text-brand);
+}
+
+@utility text-danger {
+	color: var(--text-danger);
+}
+
+@utility text-success {
+	color: var(--text-success);
+}
+
+@utility text-warning {
+	color: var(--text-warning);
+}
+
+@utility text-info {
+	color: var(--text-info);
+}
+
+@utility text-vip {
+	color: var(--text-vip);
+}
+
+@utility text-on-brand {
+	color: var(--text-on-brand);
+}
+
+@utility text-on-danger {
+	color: var(--text-on-danger);
+}
+
+@utility text-on-vip {
+	color: var(--text-on-vip);
+}
+
+/* --------------------------------------------
+   SURFACE
+   -------------------------------------------- */
+@utility bg-widget {
+	background-color: var(--surface-widget);
+}
+
+@utility bg-content {
+	background-color: var(--surface-card);
+}
+
+@utility bg-elevated {
+	background-color: var(--surface-elevated);
+}
+
+@utility bg-raised {
+	background-color: var(--surface-raised);
+}
+
+@utility bg-hovered {
+	background-color: var(--surface-hover);
+}
+
+@utility bg-overlay {
+	background-color: var(--surface-overlay);
+}
+
+@utility bg-brand-subtle {
+	background-color: var(--surface-brand-subtle);
+}
+
+/* --------------------------------------------
+   BORDER
+   -------------------------------------------- */
+@utility border-content {
+	border-color: var(--border-default);
+}
+
+@utility border-subtle {
+	border-color: var(--border-subtle);
+}
+
+@utility border-strong {
+	border-color: var(--border-strong);
+}
+
+@utility border-brand-subtle {
+	border-color: var(--status-brand-border);
+}
+
+@utility border-brand-solid {
+	border-color: var(--border-brand);
+}
+
+@utility border-danger-subtle {
+	border-color: var(--status-danger-border);
+}
+
+@utility border-success-subtle {
+	border-color: var(--status-success-border);
+}
+
+@utility border-warning-subtle {
+	border-color: var(--status-warning-border);
+}
+
+@utility border-info-subtle {
+	border-color: var(--status-info-border);
+}
+
+@utility border-vip-subtle {
+	border-color: var(--status-vip-border);
+}
+
+/* --------------------------------------------
+   STATUS SURFACES - three strengths per kind, and nothing between them.
+   subtle = a tinted panel, muted = its hover, solid = a filled control.
+   -------------------------------------------- */
+
+@utility ring-offset-widget {
+	--tw-ring-offset-color: var(--surface-widget);
+}
+
+@utility placeholder-muted {
+	&::placeholder {
+		color: var(--text-muted);
+	}
+}
+
+@utility bg-strong {
+	background-color: var(--surface-active);
+}
+
+@utility ring-subtle {
+	--tw-ring-color: var(--border-subtle);
+}
+
+@utility from-widget {
+	--tw-gradient-from: var(--surface-widget);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility from-content {
+	--tw-gradient-from: var(--surface-card);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility from-raised {
+	--tw-gradient-from: var(--surface-raised);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-widget {
+	--tw-gradient-to: var(--surface-widget);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-content {
+	--tw-gradient-to: var(--surface-card);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-raised {
+	--tw-gradient-to: var(--surface-raised);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-raised {
+	--tw-gradient-via: var(--surface-raised);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility bg-danger-subtle {
+	background-color: var(--status-danger-bg);
+}
+
+@utility bg-danger-muted {
+	background-color: var(--status-danger-bg-hover);
+}
+
+@utility bg-danger-solid {
+	background-color: var(--control-danger-bg);
+	color: #ffffff;
+}
+
+@utility bg-danger-solid-hover {
+	background-color: var(--control-danger-bg-hover);
+}
+
+@utility border-danger-strong {
+	border-color: var(--status-danger-border-strong);
+}
+
+@utility ring-danger-subtle {
+	--tw-ring-color: var(--status-danger-border);
+}
+
+@utility outline-danger-subtle {
+	outline-color: var(--status-danger-border);
+}
+
+@utility from-danger-subtle {
+	--tw-gradient-from: var(--status-danger-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-danger-subtle {
+	--tw-gradient-to: var(--status-danger-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-danger-subtle {
+	--tw-gradient-via: var(--status-danger-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-danger {
+	--tw-shadow-color: var(--status-danger-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility bg-success-subtle {
+	background-color: var(--status-success-bg);
+}
+
+@utility bg-success-muted {
+	background-color: var(--status-success-bg-hover);
+}
+
+@utility bg-success-solid {
+	background-color: var(--control-success-bg);
+	color: #ffffff;
+}
+
+@utility bg-success-solid-hover {
+	background-color: var(--control-success-bg-hover);
+}
+
+@utility border-success-strong {
+	border-color: var(--status-success-border-strong);
+}
+
+@utility ring-success-subtle {
+	--tw-ring-color: var(--status-success-border);
+}
+
+@utility outline-success-subtle {
+	outline-color: var(--status-success-border);
+}
+
+@utility from-success-subtle {
+	--tw-gradient-from: var(--status-success-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-success-subtle {
+	--tw-gradient-to: var(--status-success-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-success-subtle {
+	--tw-gradient-via: var(--status-success-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-success {
+	--tw-shadow-color: var(--status-success-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility bg-warning-subtle {
+	background-color: var(--status-warning-bg);
+}
+
+@utility bg-warning-muted {
+	background-color: var(--status-warning-bg-hover);
+}
+
+@utility bg-warning-solid {
+	background-color: var(--control-warning-bg);
+	color: #ffffff;
+}
+
+@utility bg-warning-solid-hover {
+	background-color: var(--control-warning-bg-hover);
+}
+
+@utility border-warning-strong {
+	border-color: var(--status-warning-border-strong);
+}
+
+@utility ring-warning-subtle {
+	--tw-ring-color: var(--status-warning-border);
+}
+
+@utility outline-warning-subtle {
+	outline-color: var(--status-warning-border);
+}
+
+@utility from-warning-subtle {
+	--tw-gradient-from: var(--status-warning-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-warning-subtle {
+	--tw-gradient-to: var(--status-warning-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-warning-subtle {
+	--tw-gradient-via: var(--status-warning-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-warning {
+	--tw-shadow-color: var(--status-warning-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility bg-info-subtle {
+	background-color: var(--status-info-bg);
+}
+
+@utility bg-info-muted {
+	background-color: var(--status-info-bg-hover);
+}
+
+@utility bg-info-solid {
+	background-color: var(--control-info-bg);
+	color: #ffffff;
+}
+
+@utility bg-info-solid-hover {
+	background-color: var(--control-info-bg-hover);
+}
+
+@utility border-info-strong {
+	border-color: var(--status-info-border-strong);
+}
+
+@utility ring-info-subtle {
+	--tw-ring-color: var(--status-info-border);
+}
+
+@utility outline-info-subtle {
+	outline-color: var(--status-info-border);
+}
+
+@utility from-info-subtle {
+	--tw-gradient-from: var(--status-info-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-info-subtle {
+	--tw-gradient-to: var(--status-info-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-info-subtle {
+	--tw-gradient-via: var(--status-info-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-info {
+	--tw-shadow-color: var(--status-info-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility bg-brand-subtle {
+	background-color: var(--status-brand-bg);
+}
+
+@utility bg-brand-muted {
+	background-color: var(--status-brand-bg-hover);
+}
+
+@utility bg-brand-solid {
+	background-color: var(--control-brand-bg);
+	color: #ffffff;
+}
+
+@utility bg-brand-solid-hover {
+	background-color: var(--control-brand-bg-hover);
+}
+
+@utility border-brand-strong {
+	border-color: var(--status-brand-border-strong);
+}
+
+@utility ring-brand-subtle {
+	--tw-ring-color: var(--status-brand-border);
+}
+
+@utility outline-brand-subtle {
+	outline-color: var(--status-brand-border);
+}
+
+@utility from-brand-subtle {
+	--tw-gradient-from: var(--status-brand-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-brand-subtle {
+	--tw-gradient-to: var(--status-brand-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-brand-subtle {
+	--tw-gradient-via: var(--status-brand-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-brand {
+	--tw-shadow-color: var(--status-brand-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility bg-vip-subtle {
+	background-color: var(--status-vip-bg);
+}
+
+@utility bg-vip-muted {
+	background-color: var(--status-vip-bg-hover);
+}
+
+@utility bg-vip-solid {
+	background-color: var(--control-vip-bg);
+	color: #ffffff;
+}
+
+@utility bg-vip-solid-hover {
+	background-color: var(--control-vip-bg-hover);
+}
+
+@utility border-vip-strong {
+	border-color: var(--status-vip-border-strong);
+}
+
+@utility ring-vip-subtle {
+	--tw-ring-color: var(--status-vip-border);
+}
+
+@utility outline-vip-subtle {
+	outline-color: var(--status-vip-border);
+}
+
+@utility from-vip-subtle {
+	--tw-gradient-from: var(--status-vip-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-vip-subtle {
+	--tw-gradient-to: var(--status-vip-bg);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-vip-subtle {
+	--tw-gradient-via: var(--status-vip-bg);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility shadow-vip {
+	--tw-shadow-color: var(--status-vip-border-strong);
+	box-shadow:
+		var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+		var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+/* --------------------------------------------
+   NEUTRAL SURFACES - the same three strengths, drawn from the surface ramp.
+   -------------------------------------------- */
+@utility bg-neutral-subtle {
+	background-color: var(--surface-raised);
+}
+
+@utility bg-neutral-muted {
+	background-color: var(--surface-hover);
+}
+
+@utility ring-content {
+	--tw-ring-color: var(--border-default);
+}
+
+@utility ring-strong {
+	--tw-ring-color: var(--border-strong);
+}
+
+@utility outline-content {
+	outline-color: var(--border-default);
+}
+
+/* --------------------------------------------
+   STATUS - one bg / text / border set per kind, plus its hover.
+   -------------------------------------------- */
+@utility status-danger {
+	background-color: var(--status-danger-bg);
+	color: var(--status-danger-text);
+	border-color: var(--status-danger-border);
+}
+
+@utility status-danger-hover {
+	background-color: var(--status-danger-bg-hover);
+}
+
+@utility status-success {
+	background-color: var(--status-success-bg);
+	color: var(--status-success-text);
+	border-color: var(--status-success-border);
+}
+
+@utility status-success-hover {
+	background-color: var(--status-success-bg-hover);
+}
+
+@utility status-warning {
+	background-color: var(--status-warning-bg);
+	color: var(--status-warning-text);
+	border-color: var(--status-warning-border);
+}
+
+@utility status-warning-hover {
+	background-color: var(--status-warning-bg-hover);
+}
+
+@utility status-info {
+	background-color: var(--status-info-bg);
+	color: var(--status-info-text);
+	border-color: var(--status-info-border);
+}
+
+@utility status-info-hover {
+	background-color: var(--status-info-bg-hover);
+}
+
+@utility status-brand {
+	background-color: var(--status-brand-bg);
+	color: var(--status-brand-text);
+	border-color: var(--status-brand-border);
+}
+
+@utility status-brand-hover {
+	background-color: var(--status-brand-bg-hover);
+}
+
+@utility status-vip {
+	background-color: var(--status-vip-bg);
+	color: var(--status-vip-text);
+	border-color: var(--status-vip-border);
+}
+
+@utility status-vip-hover {
+	background-color: var(--status-vip-bg-hover);
+}
+
+/* --------------------------------------------
+   CONTROL - filled interactive surfaces.
+   -------------------------------------------- */
+@utility control-brand {
+	background-color: var(--control-brand-bg);
+	color: var(--text-on-brand);
+}
+
+@utility control-brand-hover {
+	background-color: var(--control-brand-bg-hover);
+}
+
+@utility control-danger {
+	background-color: var(--control-danger-bg);
+	color: var(--text-on-danger);
+}
+
+@utility control-danger-hover {
+	background-color: var(--control-danger-bg-hover);
+}
+
+@utility control-vip {
+	background-color: var(--control-vip-bg);
+	color: var(--text-on-vip);
+}
+
+@utility control-vip-hover {
+	background-color: var(--control-vip-bg-hover);
+}
+
+@utility bg-knob {
+	background-color: var(--control-knob);
+}
+
+@utility bg-track {
+	background-color: var(--control-track);
+}
+
+/* --------------------------------------------
+   OVER-IMAGE
+   -------------------------------------------- */
+@utility text-over-image {
+	color: var(--over-image-text);
+}
+
+@utility text-over-image-muted {
+	color: var(--over-image-text-muted);
+}
+
+@utility bg-over-image {
+	background-color: var(--over-image-surface);
+}
+
+@utility from-over-image-scrim-strong {
+	--tw-gradient-from: var(--over-image-scrim-strong);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-over-image-scrim-none {
+	--tw-gradient-to: var(--over-image-scrim-none);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility to-over-image-sheen {
+	--tw-gradient-to: var(--over-image-sheen);
+	--tw-gradient-stops: var(
+		--tw-gradient-via-stops,
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position)
+	);
+}
+
+@utility via-over-image-scrim-mid {
+	--tw-gradient-via: var(--over-image-scrim-mid);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility bg-over-image-scrim-soft {
+	background-color: var(--over-image-scrim-soft);
+}
+
+@utility bg-over-image-scrim {
+	background-color: var(--over-image-scrim);
+}
+
+@utility border-over-image {
+	border-color: var(--over-image-border);
+}
+
+@utility shadow-over-image {
+	filter: drop-shadow(var(--over-image-shadow));
+}
+
+/* --------------------------------------------
+   ELEVATION
+   -------------------------------------------- */
+@utility elevation-sm {
+	box-shadow: var(--elevation-sm);
+}
+
+@utility elevation-md {
+	box-shadow: var(--elevation-md);
+}
+
+@utility elevation-lg {
+	box-shadow: var(--elevation-lg);
+}
+
+@utility elevation-xl {
+	box-shadow: var(--elevation-xl);
+}
+
+/* --------------------------------------------
+   SHAPE, MOTION, STATE
+   -------------------------------------------- */
+@utility rounded-card {
+	border-radius: var(--radius-card);
+}
+
+@utility rounded-widget {
+	border-radius: var(--radius-widget);
+}
+
+@utility transition-ui {
+	transition-property:
+		color, background-color, border-color, outline-color, box-shadow, opacity,
+		transform;
+	transition-timing-function: var(--ease-standard);
+	transition-duration: var(--duration-fast);
+}
+
+@utility focus-ring {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
+@utility is-disabled {
+	opacity: var(--disabled-opacity);
+	pointer-events: none;
+}
+
+/* --------------------------------------------
+   Z-INDEX
+   -------------------------------------------- */
+@utility z-raised {
+	z-index: var(--z-raised);
+}
+
+@utility z-sticky {
+	z-index: var(--z-sticky);
+}
+
+@utility z-drag {
+	z-index: var(--z-drag);
+}
+
+@utility z-nav {
+	z-index: var(--z-nav);
+}
+
+@utility z-backdrop {
+	z-index: var(--z-backdrop);
+}
+
+@utility z-sheet {
+	z-index: var(--z-sheet);
+}
+
+@utility z-modal {
+	z-index: var(--z-modal);
+}
+
+@utility z-toast {
+	z-index: var(--z-toast);
+}
+
+.z-popover {
+	z-index: var(--z-popover) !important;
+}
+
+/* --------------------------------------------
+   SOLID ACCENT FILLS - the bare name means full strength.
+   -------------------------------------------- */
+@utility bg-brand {
+	background-color: var(--control-brand-bg);
+	color: var(--text-on-brand);
+}
+
+@utility bg-vip {
+	background-color: var(--control-vip-bg);
+	color: var(--text-on-vip);
+}
+
+@utility text-brand-content {
+	color: var(--text-on-brand);
+}
+
+@utility text-vip-content {
+	color: var(--text-on-vip);
+}

@@ -1,0 +1,15 @@
+/* ============================================
+   Z-INDEX - one ladder, so stacking is decided here and nowhere else.
+   ============================================ */
+:root {
+	--z-base: 0;
+	--z-raised: 10;
+	--z-sticky: 20;
+	--z-drag: 30;
+	--z-nav: 40;
+	--z-backdrop: 50;
+	--z-sheet: 60;
+	--z-modal: 70;
+	--z-popover: 80;
+	--z-toast: 90;
+}

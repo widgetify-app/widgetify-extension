@@ -1,0 +1,42 @@
+/* ============================================
+   TEXT
+   ============================================ */
+:root {
+	--text-primary: var(--color-surface-800);
+	--text-secondary: var(--color-surface-600);
+	--text-muted: var(--color-surface-500);
+	--text-faint: var(--color-surface-400);
+
+	--text-brand: var(--color-brand-600);
+	--text-danger: var(--color-danger-600);
+	--text-success: var(--color-success-600);
+	--text-warning: var(--color-warning-600);
+	--text-info: var(--color-info-600);
+	--text-vip: var(--color-vip-600);
+
+	--text-on-brand: var(--color-surface-0);
+	--text-on-danger: var(--color-surface-0);
+	--text-on-vip: var(--color-surface-0);
+}
+
+[data-theme="dark"],
+[data-theme="glass"],
+[data-theme="icy"],
+[data-theme="zarna"],
+[data-theme="esteghlal"] {
+	--text-primary: var(--color-surface-50);
+	--text-secondary: var(--color-surface-300);
+	--text-muted: var(--color-surface-400);
+	--text-faint: var(--color-surface-500);
+
+	--text-brand: var(--color-brand-300);
+	--text-danger: var(--color-danger-300);
+	--text-success: var(--color-success-300);
+	--text-warning: var(--color-warning-300);
+	--text-info: var(--color-info-300);
+	--text-vip: var(--color-vip-300);
+
+	--text-on-brand: var(--color-surface-0);
+	--text-on-danger: var(--color-surface-0);
+	--text-on-vip: var(--color-surface-0);
+}

@@ -1,0 +1,6 @@
+/* ============================================
+   DISABLED - one opacity for the whole project.
+   ============================================ */
+:root {
+	--disabled-opacity: 0.5;
+}

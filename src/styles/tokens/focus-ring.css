@@ -1,0 +1,16 @@
+/* ============================================
+   FOCUS RING
+   ============================================ */
+:root {
+	--focus-ring-color: var(--color-brand-500);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 2px;
+}
+
+[data-theme="dark"],
+[data-theme="glass"],
+[data-theme="icy"],
+[data-theme="zarna"],
+[data-theme="esteghlal"] {
+	--focus-ring-color: var(--color-brand-400);
+}

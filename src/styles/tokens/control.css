@@ -1,0 +1,34 @@
+/* ============================================
+   CONTROL - filled interactive surfaces (buttons, toggles, knobs).
+   A solid fill, as opposed to the tinted surfaces in status.css.
+   ============================================ */
+:root {
+	--control-danger-bg: var(--color-danger-500);
+	--control-danger-bg-hover: var(--color-danger-600);
+	--control-success-bg: var(--color-success-500);
+	--control-success-bg-hover: var(--color-success-600);
+	--control-warning-bg: var(--color-warning-500);
+	--control-warning-bg-hover: var(--color-warning-600);
+	--control-info-bg: var(--color-info-500);
+	--control-info-bg-hover: var(--color-info-600);
+	--control-brand-bg: var(--color-brand-500);
+	--control-brand-bg-hover: var(--color-brand-600);
+	--control-vip-bg: var(--color-vip-500);
+	--control-vip-bg-hover: var(--color-vip-600);
+	--control-knob: var(--color-surface-0);
+	--control-track: var(--color-surface-200);
+}
+
+[data-theme="dark"],
+[data-theme="glass"],
+[data-theme="icy"],
+[data-theme="zarna"],
+[data-theme="esteghlal"] {
+	--control-danger-bg-hover: var(--color-danger-400);
+	--control-success-bg-hover: var(--color-success-400);
+	--control-warning-bg-hover: var(--color-warning-400);
+	--control-info-bg-hover: var(--color-info-400);
+	--control-brand-bg-hover: var(--color-brand-400);
+	--control-vip-bg-hover: var(--color-vip-400);
+	--control-track: var(--color-surface-700);
+}
