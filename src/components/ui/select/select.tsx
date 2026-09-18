@@ -266,8 +266,7 @@ export function SelectBox({
 										onClick={() => pick(index)}
 										className={cn(
 											optionClass,
-											index === activeIndex &&
-												'bg-base-content/10',
+											index === activeIndex && 'bg-base-content/10',
 											isSelected && 'font-bold text-primary',
 											optionClassName
 										)}
