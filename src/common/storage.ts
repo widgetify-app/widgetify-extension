@@ -1,17 +1,76 @@
 import { storage } from 'wxt/utils/storage'
 import type { StorageKV } from './constants/store.key'
 
+export function sanitizeFirefoxStorageValue<T>(key: string, value: any): T {
+	if (typeof value === 'boolean' || typeof value === 'number') {
+		return value as T
+	}
+	if (!value) return value as T
+
+	let parsed = value
+	if (typeof parsed === 'string') {
+		const trimmed = parsed.trim()
+		if (
+			(trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+			(trimmed.startsWith('[') && trimmed.endsWith(']')) ||
+			(trimmed.startsWith('"') && trimmed.endsWith('"'))
+		) {
+			try {
+				parsed = JSON.parse(trimmed)
+				if (typeof parsed === 'string') {
+					const innerTrimmed = parsed.trim()
+					if (
+						(innerTrimmed.startsWith('{') && innerTrimmed.endsWith('}')) ||
+						(innerTrimmed.startsWith('[') && innerTrimmed.endsWith(']'))
+					) {
+						try {
+							parsed = JSON.parse(innerTrimmed)
+						} catch {}
+					}
+				}
+			} catch {}
+		}
+	}
+
+	if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+		const keys = Object.keys(parsed)
+		if (keys.some((k) => /^\d+$/.test(k))) {
+			const clean: Record<string, any> = {}
+			for (const [k, v] of Object.entries(parsed)) {
+				if (!/^\d+$/.test(k)) {
+					clean[k] = v
+				}
+			}
+			storage.setItem(`local:${key}`, clean).catch(() => {})
+			return clean as T
+		}
+	}
+
+	return parsed as T
+}
+
 export async function setToStorage<K extends keyof StorageKV>(
 	key: K,
 	value: StorageKV[K]
 ) {
 	if (import.meta.env.FIREFOX) {
-		try {
-			await storage.setItem(`local:${key}`, JSON.stringify(value))
-		} catch {
-			await storage.setItem(`local:${key}`, value)
+		let cleanValue = value
+		if (value && typeof value === 'object' && !Array.isArray(value)) {
+			const keys = Object.keys(value)
+			if (keys.some((k) => /^\d+$/.test(k))) {
+				const clean: Record<string, any> = {}
+				for (const [k, v] of Object.entries(value)) {
+					if (!/^\d+$/.test(k)) {
+						clean[k] = v
+					}
+				}
+				cleanValue = clean as StorageKV[K]
+			}
 		}
-	} else await storage.setItem(`local:${key}`, value)
+		await storage.setItem(`local:${key}`, cleanValue)
+	} else {
+		await storage.setItem(`local:${key}`, value)
+	}
 }
 
 export async function getFromStorage<K extends keyof StorageKV>(
@@ -22,11 +81,7 @@ export async function getFromStorage<K extends keyof StorageKV>(
 	if (!value) return null
 
 	if (import.meta.env.FIREFOX) {
-		try {
-			return JSON.parse(value as StorageKV[K])
-		} catch {
-			return value as StorageKV[K]
-		}
+		return sanitizeFirefoxStorageValue<StorageKV[K]>(key, value)
 	}
 
 	return value as StorageKV[K]
@@ -41,7 +96,11 @@ export async function getMultipleFromStorage<K extends keyof StorageKV>(
 		const output: Partial<Pick<StorageKV, K>> = {}
 		for (const item of result) {
 			const key = item.key.replace('local:', '') as K
-			output[key] = item.value
+			if (import.meta.env.FIREFOX) {
+				output[key] = sanitizeFirefoxStorageValue<StorageKV[K]>(key, item.value)
+			} else {
+				output[key] = item.value
+			}
 		}
 
 		return output
@@ -77,6 +136,15 @@ export function watchStorage<K extends keyof StorageKV>(
 	key: K,
 	callback: (newValue: StorageKV[K] | null, oldValue: StorageKV[K] | null) => void
 ) {
+	if (import.meta.env.FIREFOX) {
+		return storage.watch<any>(`local:${key}`, (newValue, oldValue) => {
+			callback(
+				sanitizeFirefoxStorageValue<StorageKV[K]>(key, newValue),
+				sanitizeFirefoxStorageValue<StorageKV[K]>(key, oldValue)
+			)
+		})
+	}
+
 	return storage.watch<StorageKV[K]>(`local:${key}`, callback)
 }
 
@@ -95,16 +163,14 @@ export async function setWithExpiry<K extends keyof StorageKV>(
 export async function getWithExpiry<K extends keyof StorageKV>(
 	key: K
 ): Promise<StorageKV[K] | null> {
-	const data = (await getFromStorage(key)) as any
+	const data = await getFromStorage(key as any)
+	if (!data) return null
 
-	if (!data || typeof data !== 'object' || !('expiry' in data)) {
-		return data
-	}
-
-	if (Date.now() > data.expiry) {
+	const { value, expiry } = data as any
+	if (Date.now() > expiry) {
 		await removeFromStorage(key)
 		return null
 	}
 
-	return data.value as StorageKV[K]
+	return value as StorageKV[K]
 }
