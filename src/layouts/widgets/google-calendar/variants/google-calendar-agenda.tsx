@@ -214,7 +214,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
 				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-				'bg-content hover:bg-content border border-subtle',
+				'bg-content hover:bg-raised border border-subtle',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
 				isNow && 'ring-1 ring-brand-muted bg-brand-subtle'

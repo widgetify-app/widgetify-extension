@@ -39,7 +39,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			}
 			className={cn(
 				'flex items-center w-full gap-2.5 p-2 text-start rounded-xl',
-				'bg-content hover:bg-content border border-subtle transition-all',
+				'bg-content hover:bg-raised border border-subtle transition-all',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
 				isPast && 'opacity-40'

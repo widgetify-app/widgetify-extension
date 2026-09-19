@@ -60,7 +60,7 @@ export function Mood2x1({
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
 									? 'bg-brand-subtle border-primary shadow-xs font-black'
-									: 'bg-raised hover:bg-raised border-transparent'
+									: 'bg-raised hover:bg-hovered border-transparent'
 							)}
 						>
 							<span

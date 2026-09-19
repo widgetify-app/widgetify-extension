@@ -68,7 +68,7 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						<button
 							type="button"
 							onClick={handleResetToday}
-							className="px-2 py-0.5 text-[10px] font-bold text-primary bg-brand-subtle hover:bg-brand-subtle rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
+							className="px-2 py-0.5 text-[10px] font-bold text-primary bg-brand-subtle hover:bg-brand-muted rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
 						>
 							امروز
 						</button>

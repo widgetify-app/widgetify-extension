@@ -123,7 +123,7 @@ export const CurrencyModalComponent = ({
 							: 'opacity-0 max-h-0 overflow-hidden'
 					)}
 				>
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-raised hover:border-content">
 						<span className="text-sm font-medium text-content min-w-fit">
 							{code.toUpperCase()}
 						</span>
@@ -138,7 +138,7 @@ export const CurrencyModalComponent = ({
 						/>
 					</div>
 
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-raised hover:border-content">
 						<span className="text-sm font-medium text-content min-w-fit">
 							تومان
 						</span>

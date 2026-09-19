@@ -28,7 +28,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 			) : (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-raised active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
+					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
 					aria-label="درخواست‌های دوستی"
 					title="درخواست‌های دوستی"
 				>

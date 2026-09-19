@@ -53,47 +53,47 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-content border-content hover:bg-raised!',
+				class: 'bg-content border-content hover:bg-hovered!',
 			},
 			{
 				variant: 'solid',
 				color: 'brand',
-				class: 'bg-brand text-brand-content hover:bg-brand',
+				class: 'bg-brand text-brand-content hover:bg-brand-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'primary',
-				class: 'bg-primary text-primary-content hover:bg-brand',
+				class: 'bg-primary text-primary-content hover:bg-primary-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'secondary',
-				class: 'bg-secondary text-secondary-content hover:bg-brand',
+				class: 'bg-secondary text-secondary-content hover:bg-secondary-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'danger',
-				class: 'bg-error text-error-content hover:bg-danger',
+				class: 'bg-error text-error-content hover:bg-danger-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'success',
-				class: 'bg-success text-success-content hover:bg-success',
+				class: 'bg-success text-success-content hover:bg-success-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'info',
-				class: 'bg-info text-info-content hover:bg-info',
+				class: 'bg-info text-info-content hover:bg-info-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'warning',
-				class: 'bg-warning text-warning-content hover:bg-warning',
+				class: 'bg-warning text-warning-content hover:bg-warning-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'vip',
-				class: 'bg-vip text-vip-content hover:bg-vip',
+				class: 'bg-vip text-vip-content hover:bg-vip-hover',
 			},
 			{
 				variant: 'ghost',

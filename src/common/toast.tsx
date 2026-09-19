@@ -193,7 +193,7 @@ export function showToast(
 				<button
 					type="button"
 					onClick={() => toast.remove(t.id, t.toasterId)}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-over-image active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-over-image-strong active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
 				>
 					{theme.actionText}
 				</button>

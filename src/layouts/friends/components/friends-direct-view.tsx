@@ -84,7 +84,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					<button
 						type="button"
 						onClick={() => setIsAddFriendOpen(true)}
-						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-raised active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
+						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
 						title="افزودن دوست"
 						aria-label="افزودن دوست"
 					>

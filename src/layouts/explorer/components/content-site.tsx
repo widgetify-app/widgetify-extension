@@ -46,7 +46,7 @@ export function RenderContentSite({ link }: SiteProp) {
 					{badge}
 				</span>
 			)}
-			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-content group-hover:scale-105 group-hover:bg-content">
+			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-content group-hover:scale-105 group-hover:bg-raised">
 				<img
 					src={link.icon}
 					className="object-contain transition-transform duration-200 rounded-lg w-6 h-6 max-w-6 max-h-6"

@@ -50,7 +50,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 									'bg-primary text-primary-content shadow-xs font-bold',
 								!isDaySelected &&
 									isDayToday &&
-									'bg-brand-subtle text-primary font-bold hover:bg-brand-subtle',
+									'bg-brand-subtle text-primary font-bold hover:bg-brand-muted',
 								!isDaySelected &&
 									!isDayToday &&
 									'text-muted hover:bg-content hover:text-content font-medium'

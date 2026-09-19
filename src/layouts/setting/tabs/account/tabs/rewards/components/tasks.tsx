@@ -69,7 +69,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 															href={taskItem.button.url}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-brand-subtle text-primary hover:bg-brand-subtle"
+															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-brand-subtle text-primary hover:bg-brand-muted"
 														>
 															<Icon
 																name="externalLink"

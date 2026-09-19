@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-subtle border border-vip-muted px-2.5 py-0.5 rounded-xl hover:bg-vip-subtle active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-subtle border border-vip-muted px-2.5 py-0.5 rounded-xl hover:bg-vip-muted active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>
