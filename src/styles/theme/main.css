@@ -9,11 +9,11 @@
 
 [data-theme="light"] {
 	.nav-btn {
-		color: var(--text-secondary);
+		color: rgba(var(--color-base-content-rgb), 0.7);
 	}
 
 	.nav-btn:hover {
-		color: var(--text-primary);
+		color: rgba(var(--color-base-content-rgb), 0.9);
 	}
 }
 

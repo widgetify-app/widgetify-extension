@@ -165,6 +165,57 @@
 	--color-vip-950: #121043;
 
 	/* --------------------------------------------
+	   ACCENTS
+
+	   One line per colour. Tailwind generates the whole family from each
+	   - bg-, text-, border-, ring-, outline-, from-, to-, via-, divide- -
+	   so adding an accent means adding four lines here and nothing else.
+
+	   The tint scale is subtle / muted / strong and nothing in between.
+	   To restyle every danger panel in the app, change one number below.
+	   -------------------------------------------- */
+	--color-brand: var(--color-primary);
+	--color-brand-content: var(--color-primary-content);
+	--color-primary-hover: rgba(var(--color-primary-rgb), 0.9);
+	--color-secondary-hover: rgba(var(--color-secondary-rgb), 0.9);
+	--color-brand-hover: rgba(var(--color-primary-rgb), 0.9);
+	--color-brand-subtle: rgba(var(--color-primary-rgb), 0.1);
+	--color-brand-muted: rgba(var(--color-primary-rgb), 0.2);
+	--color-brand-strong: rgba(var(--color-primary-rgb), 0.5);
+
+	--color-danger: var(--color-error);
+	--color-danger-hover: rgba(var(--color-error-rgb), 0.9);
+	--color-danger-subtle: rgba(var(--color-error-rgb), 0.1);
+	--color-danger-muted: rgba(var(--color-error-rgb), 0.2);
+	--color-danger-strong: rgba(var(--color-error-rgb), 0.5);
+
+	--color-success: var(--color-success);
+	--color-success-hover: rgba(var(--color-success-rgb), 0.9);
+	--color-success-subtle: rgba(var(--color-success-rgb), 0.1);
+	--color-success-muted: rgba(var(--color-success-rgb), 0.2);
+	--color-success-strong: rgba(var(--color-success-rgb), 0.5);
+
+	--color-warning: var(--color-warning);
+	--color-warning-hover: rgba(var(--color-warning-rgb), 0.9);
+	--color-warning-subtle: rgba(var(--color-warning-rgb), 0.1);
+	--color-warning-muted: rgba(var(--color-warning-rgb), 0.2);
+	--color-warning-strong: rgba(var(--color-warning-rgb), 0.5);
+
+	--color-info: var(--color-info);
+	--color-info-hover: rgba(var(--color-info-rgb), 0.9);
+	--color-info-subtle: rgba(var(--color-info-rgb), 0.1);
+	--color-info-muted: rgba(var(--color-info-rgb), 0.2);
+	--color-info-strong: rgba(var(--color-info-rgb), 0.5);
+
+	--color-vip: #6366f1;
+	--color-vip-rgb: 99, 102, 241;
+	--color-vip-content: #ffffff;
+	--color-vip-hover: rgba(var(--color-vip-rgb), 0.9);
+	--color-vip-subtle: rgba(var(--color-vip-rgb), 0.1);
+	--color-vip-muted: rgba(var(--color-vip-rgb), 0.2);
+	--color-vip-strong: rgba(var(--color-vip-rgb), 0.5);
+
+	/* --------------------------------------------
      CONTENT COLOURS - not chrome. These depict something or are a set a
      user picks from, so they are deliberately multi-hue and do not follow
      the theme. Defined here because this is the only file allowed to hold
