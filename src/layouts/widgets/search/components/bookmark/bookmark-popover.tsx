@@ -84,7 +84,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 					<Motion.div
 						key="bookmark-popover"
-						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-base-content/10 rounded-2xl origin-top-left bg-content bg-glass"
+						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-subtle rounded-2xl origin-top-left bg-content bg-glass"
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
@@ -93,7 +93,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 					>
 						{!browserBookmarksEnabled ? (
 							<div className="p-5 text-center">
-								<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-primary/10">
+								<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-brand-subtle">
 									<Icon
 										name="lock"
 										className="text-primary"
@@ -120,7 +120,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 							</div>
 						) : (
 							<div className="flex flex-col max-h-105">
-								<div className="flex items-center justify-between p-3 border-b border-base-content/5">
+								<div className="flex items-center justify-between p-3 border-b border-faint">
 									<span className="text-xs font-bold text-content">
 										{currentFolderTitle}
 									</span>
@@ -147,12 +147,12 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 												<button
 													type="button"
 													onClick={() => handleClickItem(item)}
-													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-primary/5 hover:text-primary/80 focus-visible:focus-ring"
+													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-brand-subtle hover:text-brand-bold focus-visible:focus-ring"
 												>
 													{item.type === 'FOLDER' ? (
 														<Icon
 															name="folder"
-															className="text-primary/80 shrink-0"
+															className="text-brand-bold shrink-0"
 															size={18}
 															aria-hidden="true"
 														/>

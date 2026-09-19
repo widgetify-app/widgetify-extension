@@ -13,8 +13,8 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				solid: 'border-transparent',
-				outline: 'bg-transparent hover:bg-base-content/10',
-				ghost: 'bg-transparent border-transparent hover:bg-base-content/10',
+				outline: 'bg-transparent hover:bg-hovered',
+				ghost: 'bg-transparent border-transparent hover:bg-hovered',
 				text: 'bg-transparent border-transparent hover:underline underline-offset-4',
 			},
 			color: {
@@ -53,47 +53,47 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-content border-content hover:bg-base-content/5!',
+				class: 'bg-content border-content hover:bg-subtle!',
 			},
 			{
 				variant: 'solid',
 				color: 'brand',
-				class: 'bg-brand text-brand-content hover:bg-brand/90',
+				class: 'bg-brand text-brand-content hover:bg-brand-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'primary',
-				class: 'bg-primary text-primary-content hover:bg-primary/90',
+				class: 'bg-primary text-primary-content hover:bg-primary-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'secondary',
-				class: 'bg-secondary text-secondary-content hover:bg-secondary/90',
+				class: 'bg-secondary text-secondary-content hover:bg-secondary-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'danger',
-				class: 'bg-error text-error-content hover:bg-error/90',
+				class: 'bg-error text-error-content hover:bg-danger-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'success',
-				class: 'bg-success text-success-content hover:bg-success/90',
+				class: 'bg-success text-success-content hover:bg-success-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'info',
-				class: 'bg-info text-info-content hover:bg-info/90',
+				class: 'bg-info text-info-content hover:bg-info-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'warning',
-				class: 'bg-warning text-warning-content hover:bg-warning/90',
+				class: 'bg-warning text-warning-content hover:bg-warning-hover',
 			},
 			{
 				variant: 'solid',
 				color: 'vip',
-				class: 'bg-vip text-vip-content hover:bg-vip/90',
+				class: 'bg-vip text-vip-content hover:bg-vip-hover',
 			},
 			{
 				variant: 'ghost',

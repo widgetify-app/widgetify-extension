@@ -53,7 +53,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 			}}
 		>
 			<div
-				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-base-content/15"
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-muted"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -102,7 +102,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-end justify-center border-b bg-content border-base-content/15"
+						className="absolute inset-0 flex items-end justify-center border-b bg-content border-muted"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						<span
@@ -114,7 +114,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{previous}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-base-content/20" />
+						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-strong" />
 					</div>
 				</div>
 			)}
@@ -143,16 +143,16 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{value}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-base-content/25 to-transparent" />
+						<div className="absolute inset-0 bg-gradient-to-b from-strong to-transparent" />
 					</div>
 				</div>
 			)}
 			<div
-				className="absolute inset-x-0 z-30 bg-base-content/10"
+				className="absolute inset-x-0 z-30 bg-hovered"
 				style={{ top: 'var(--flip-h)', height: 1, transform: 'translateY(-50%)' }}
 			/>
 			<div
-				className="absolute z-40 border bg-base-300 border-base-content/20"
+				className="absolute z-40 border bg-raised border-strong"
 				style={{
 					top: 'var(--flip-h)',
 					left: 'calc(var(--flip-h) * -0.07)',
@@ -164,7 +164,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				}}
 			/>
 			<div
-				className="absolute z-40 border bg-base-300 border-base-content/20"
+				className="absolute z-40 border bg-raised border-strong"
 				style={{
 					top: 'var(--flip-h)',
 					right: 'calc(var(--flip-h) * -0.07)',

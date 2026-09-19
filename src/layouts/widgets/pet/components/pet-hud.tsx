@@ -25,7 +25,7 @@ export const PetHud: React.FC<PetHudProps> = ({ level }) => {
 					aria-hidden="true"
 					className={cn(
 						'transition-colors duration-300',
-						i < filled ? 'text-error' : 'text-neutral-content/60'
+						i < filled ? 'text-error' : 'text-subtle'
 					)}
 				/>
 			))}

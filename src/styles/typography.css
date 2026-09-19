@@ -1,0 +1,67 @@
+/* ============================================
+   TYPOGRAPHY
+
+   The line height below is not a taste decision, it is a compatibility fix.
+
+   Vazirmatn ships two disagreeing vertical metric tables:
+
+       sTypo / hhea   ascent 2100, descent -1100  ->  1.5625em line box
+       usWin          ascent 2200, descent  1300  ->  1.709em  line box
+
+   and it sets the USE_TYPO_METRICS flag. Chrome on Windows honours that flag
+   and lays text out on the 1.5625em box. Firefox on Windows uses the usWin
+   numbers instead, so with `line-height: normal` every line of text there is
+   about 9% taller - which is why the UI reads as slightly larger in Firefox
+   even though the glyphs are identical.
+
+   Stating the line height explicitly takes the font's tables out of the
+   decision, so both browsers agree. The value is Vazirmatn's own sTypo box,
+   so Chrome renders exactly as it did before and Firefox comes into line.
+   ============================================ */
+:root {
+	--line-height-base: 1.5625;
+	--line-height-tight: 1.25;
+	--line-height-snug: 1.4;
+	--line-height-relaxed: 1.75;
+}
+
+html {
+	font-size: 16px;
+	line-height: var(--line-height-base);
+	/* stop mobile-style text inflation from ever applying */
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	font-family: var(--font-sans);
+	line-height: var(--line-height-base);
+}
+
+/* Headings and controls inherit `normal` from the UA otherwise, which is the
+   exact case where the two metric tables disagree. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea {
+	line-height: var(--line-height-snug);
+}
+
+.leading-tight {
+	line-height: var(--line-height-tight);
+}
+
+.leading-relaxed {
+	line-height: var(--line-height-relaxed);
+}
+
+.font-latin {
+	font-family: var(--font-latin);
+	font-feature-settings: normal;
+}

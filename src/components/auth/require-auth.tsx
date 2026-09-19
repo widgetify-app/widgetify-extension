@@ -37,7 +37,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					</div>
 					<div
 						className={
-							'absolute inset-0 p-4 flex flex-col items-center justify-center gap-y-2 bg-base-300/5 backdrop-blur-xs rounded-xl'
+							'absolute inset-0 p-4 flex flex-col items-center justify-center gap-y-2 bg-raised-faint backdrop-blur-xs rounded-xl'
 						}
 					>
 						<h3 className="text-lg font-semibold">

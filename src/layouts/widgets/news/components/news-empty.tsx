@@ -23,7 +23,7 @@ export function NewsEmpty() {
 				onClick={() =>
 					callEvent('openWidgetsSettings', { tab: WidgetTabKeys.news_settings })
 				}
-				className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-base-content/10 transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+				className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-hovered transition-ui hover:bg-strong focus-visible:focus-ring"
 			>
 				تنظیمات اخبار
 			</button>

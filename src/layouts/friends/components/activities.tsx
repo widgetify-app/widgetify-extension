@@ -23,9 +23,9 @@ export const ActiveFriendsHorizontal = () => {
 							key={`skeleton-${i}`}
 							className="flex flex-col items-center shrink-0"
 						>
-							<div className="z-10 w-24 h-12 bg-content/10 rounded-xl skeleton" />
-							<div className="w-12 h-12 -mt-2 rounded-full bg-content/10 skeleton" />
-							<div className="w-20 h-3 mt-2 rounded bg-content/10 skeleton" />
+							<div className="z-10 w-24 h-12 bg-raised rounded-xl skeleton" />
+							<div className="w-12 h-12 -mt-2 rounded-full bg-raised skeleton" />
+							<div className="w-20 h-3 mt-2 rounded bg-raised skeleton" />
 						</div>
 					))}
 				</div>

@@ -20,20 +20,20 @@ export function ProfileProgressNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-base-300/70 hover:scale-[0.99] active:scale-[0.99] ${className}`}
+			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-content-subtle hover:scale-[0.99] active:scale-[0.99] ${className}`}
 			id="update_profile"
 			onClick={() => onClick()}
 		>
 			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
-				<p className="text-[11px] w-fit font-normal text-base-content/60">
+				<p className="text-[11px] w-fit font-normal text-muted">
 					پروفایلت رو کامل کن و پاداش بگیر!
 				</p>
 			</div>
 			<div className="flex items-start justify-between">
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-base-content/5 text-base-content/40 hover:bg-error/10 hover:text-error"
+					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-subtle text-faint hover:bg-danger-subtle hover:text-error"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
@@ -74,7 +74,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					r={radius}
 					fill="none"
 					// className="stroke-primary"
-					className="stroke-base-content/10"
+					className="stroke-subtle"
 					strokeWidth={strokeWidth}
 				/>
 				{/* Progress Circle */}
@@ -83,7 +83,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					className="transition-all duration-500 ease-out stroke-base-content/40"
+					className="transition-all duration-500 ease-out stroke-bold"
 					strokeWidth={strokeWidth}
 					strokeDasharray={circumference}
 					strokeDashoffset={offset}
@@ -91,7 +91,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 				/>
 			</svg>
 			{/* Small Percentage Text */}
-			<span className="absolute text-xs font-bold text-base-content/50">
+			<span className="absolute text-xs font-bold text-subtle">
 				{safePercentage}%
 			</span>
 		</div>

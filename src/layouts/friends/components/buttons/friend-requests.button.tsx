@@ -14,7 +14,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 			{size === 'large' ? (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex items-center relative gap-1.5 px-2.5 py-1 text-xs font-medium transition-all rounded-lg text-content hover:bg-base-content/10 active:scale-95 cursor-pointer"
+					className="flex items-center relative gap-1.5 px-2.5 py-1 text-xs font-medium transition-all rounded-lg text-content hover:bg-hovered active:scale-95 cursor-pointer"
 					aria-label="درخواست‌های دوستی"
 				>
 					<Icon name="inbox" size={14} />
@@ -28,14 +28,14 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 			) : (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-base-content/5 hover:bg-base-content/10 active:scale-90 cursor-pointer border border-base-content/10 text-base-content/80 hover:text-base-content"
+					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-strong"
 					aria-label="درخواست‌های دوستی"
 					title="درخواست‌های دوستی"
 				>
 					<Icon
 						name="outlineInbox"
 						size={15}
-						className="text-base-content/80 hover:text-base-content"
+						className="text-muted hover:text-strong"
 					/>
 					{pendingCount ? (
 						<div className="absolute flex items-center justify-center w-2 h-2 z-20 font-bold text-white bg-error rounded-full top-1 right-1" />

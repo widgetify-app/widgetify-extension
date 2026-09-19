@@ -1,68 +1,106 @@
 @plugin "daisyui/theme" {
-  name: "glass";
-  --color-base-100: #171717b3;
-  --color-base-200: rgba(23, 23, 23, 0.1);
-  --color-base-300: rgba(255, 255, 255, 0.05);
-  --color-base-content: rgba(255, 255, 255, 0.95);
-  --color-primary: rgba(var(--brand-primary-rgb), 0.9);
-  --color-primary-focus: rgba(var(--brand-primary-rgb), 1);
-  --color-primary-content: #ffffff;
-  --color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
-  --color-secondary-focus: rgba(var(--brand-secondary-rgb), 0.9);
-  --color-secondary-content: rgba(255, 255, 255, 1);
-  --color-accent: rgba(34, 197, 94, 0.8);
-  --color-accent-focus: rgba(22, 163, 74, 0.9);
-  --color-accent-content: rgba(255, 255, 255, 1);
-  --color-error: rgba(239, 68, 68, 0.8);
-  --color-success: rgba(34, 197, 94, 0.8);
-  --color-warning: rgba(245, 158, 11, 0.8);
-  --color-warning-content: #271b06;
-  --color-info: rgba(59, 130, 246, 0.8);
-  --glass: true;
-  --glass-opacity: 25%;
-  --glass-border-opacity: 15%;
-  --glass-reflex-degree: 120%;
-  --glass-reflex-opacity: 8%;
-  --glass-blur: 32px;
+	name: "glass";
+	color-scheme: "dark";
+	--color-base-100: #171717b3;
+	--color-base-200: rgba(23, 23, 23, 0.1);
+	--color-base-300: rgba(255, 255, 255, 0.05);
+	--color-base-content: rgba(255, 255, 255, 0.95);
+	--color-primary: rgba(var(--brand-primary-rgb), 0.9);
+	--color-primary-content: #ffffff;
+	--color-secondary: rgba(var(--brand-secondary-rgb), 0.8);
+	--color-secondary-content: rgba(255, 255, 255, 1);
+	--color-accent: rgba(34, 197, 94, 0.8);
+	--color-accent-content: rgba(255, 255, 255, 1);
+	--color-neutral: #09090b;
+	--color-neutral-content: #e4e4e7;
+	--color-info: rgba(59, 130, 246, 0.8);
+	--color-info-content: #042e49;
+	--color-success: rgba(34, 197, 94, 0.8);
+	--color-success-content: #004c39;
+	--color-warning: rgba(245, 158, 11, 0.8);
+	--color-warning-content: #271b06;
+	--color-error: rgba(239, 68, 68, 0.8);
+	--color-error-content: #4d0218;
+	--glass: true;
+	--glass-opacity: 25%;
+	--glass-border-opacity: 15%;
+	--glass-reflex-degree: 120%;
+	--glass-reflex-opacity: 8%;
+	--glass-blur: 32px;
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
 }
+
+/* The channel triples live out here on purpose. daisyUI parses the
+   @plugin block and drops any value with a comma in it, so a
+   `--color-...-rgb: 1, 2, 3` written inside it never reaches the
+   stylesheet - and every rgba() built on it is invalid at
+   computed-value time, which makes the declaration vanish and the
+   element fall back to an inherited colour (a border with no
+   border-color falls back to currentColor, at full strength). */
+[data-theme="glass"] {
+	--color-base-100-a: 0.7;
+	--color-base-200-a: 0.1;
+	--color-base-300-a: 0.05;
+	--color-success-content-rgb: 0, 76, 57;
+	--color-warning-content-rgb: 39, 27, 6;
+	--color-error-content-rgb: 77, 2, 24;
+	--color-base-100-rgb: 23, 23, 23;
+	--color-base-200-rgb: 23, 23, 23;
+	--color-base-300-rgb: 255, 255, 255;
+	--color-base-content-rgb: 255, 255, 255;
+	--color-primary-rgb: 83, 109, 254;
+	--color-secondary-rgb: 124, 141, 240;
+	--color-error-rgb: 239, 68, 68;
+	--color-success-rgb: 34, 197, 94;
+	--color-warning-rgb: 245, 158, 11;
+	--color-info-rgb: 59, 130, 246;
+}
+
 
 [data-theme="glass"] .menu,
 [data-theme="glass"] .navbar,
 [data-theme="glass"] .modal-box,
 [data-theme="glass"] .drawer-side,
 [data-theme="glass"] .collapse {
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  backdrop-filter: blur(16px) saturate(180%);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	backdrop-filter: blur(16px) saturate(180%);
 }
 
 [data-theme="glass"] .search-box {
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
-  backdrop-filter: blur(10px) saturate(180%);
+	-webkit-backdrop-filter: blur(10px) saturate(180%);
+	backdrop-filter: blur(10px) saturate(180%);
 }
 
 [data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .bg-glass,
 [data-theme="glass"] .tooltip {
-  background-color: #171717b3;
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
+	background-color: #171717b3;
+	-webkit-backdrop-filter: blur(16px) saturate(150%);
+	backdrop-filter: blur(16px) saturate(150%);
 }
 
 [data-theme="glass"] .widget-outer {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 }
 
 [data-theme="glass"] .modal-box {
-  -webkit-backdrop-filter: blur(200px) saturate(200%);
-  backdrop-filter: blur(40px) saturate(10%);
-  background-color: #171717b3;
+	-webkit-backdrop-filter: blur(200px) saturate(200%);
+	backdrop-filter: blur(40px) saturate(10%);
+	background-color: #171717b3;
 }
 
 [data-theme="glass"] .portal {
-  background-color: #171717fa;
+	background-color: #171717fa;
 }
 
 [data-theme="glass"] select:open {
-  background-color: #171717b3;
+	background-color: #171717b3;
 }

@@ -1,34 +1,58 @@
 @plugin "daisyui/theme" {
-    name: "esteghlal";
-    default: false;
-    prefersdark: false;
-    color-scheme: "dark";
-    --color-base-100: oklch(28% 0.091 267.935);
-    --color-base-200: oklch(35% 0.12 265.522);
-    --color-base-300: oklch(40% 0.15 265.638);
-    --color-base-content: oklch(95% 0.02 260);
-    --color-primary: oklch(65% 0.22 260);
-    --color-primary-content: oklch(100% 0 0);
-    --color-secondary: oklch(75% 0.15 251.813);
-    --color-secondary-content: oklch(20% 0.08 267.935);
-    --color-accent: oklch(80% 0.12 210);
-    --color-accent-content: oklch(20% 0.08 267.935);
-    --color-neutral: oklch(20% 0.06 267.935);
-    --color-neutral-content: oklch(90% 0.02 267.935);
-    --color-info: oklch(70% 0.16 245);
-    --color-info-content: oklch(20% 0.05 245);
-    --color-success: oklch(75% 0.18 150);
-    --color-success-content: oklch(20% 0.1 150);
-    --color-warning: oklch(82% 0.18 90);
-    --color-warning-content: oklch(20% 0.1 90);
-    --color-error: oklch(65% 0.22 25);
-    --color-error-content: oklch(100% 0 0);
-    --radius-selector: 0.5rem;
-    --radius-field: 0.25rem;
-    --radius-box: 0.5rem;
-    --size-selector: 0.25rem;
-    --size-field: 0.25rem;
-    --border: 1px;
-    --depth: 1;
-    --noise: 0;
+	name: "esteghlal";
+	color-scheme: "dark";
+	--color-base-100: #162455;
+	--color-base-200: #1c3478;
+	--color-base-300: #203e97;
+	--color-base-content: #e7effc;
+	--color-primary: #3287ff;
+	--color-primary-content: #ffffff;
+	--color-secondary: #60b2ff;
+	--color-secondary-content: #07113a;
+	--color-accent: #47d2e8;
+	--color-accent-content: #07113a;
+	--color-neutral: #0a1331;
+	--color-neutral-content: #d8deec;
+	--color-info: #2da6fa;
+	--color-info-content: #00182b;
+	--color-success: #40cc6d;
+	--color-success-content: #002100;
+	--color-warning: #f1bd00;
+	--color-warning-content: #271000;
+	--color-error: #f94144;
+	--color-error-content: #ffffff;
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+}
+
+/* The channel triples live out here on purpose. daisyUI parses the
+   @plugin block and drops any value with a comma in it, so a
+   `--color-...-rgb: 1, 2, 3` written inside it never reaches the
+   stylesheet - and every rgba() built on it is invalid at
+   computed-value time, which makes the declaration vanish and the
+   element fall back to an inherited colour (a border with no
+   border-color falls back to currentColor, at full strength). */
+[data-theme="esteghlal"] {
+	--color-base-100-a: 1;
+	--color-base-200-a: 1;
+	--color-base-300-a: 1;
+	--color-success-content-rgb: 0, 33, 0;
+	--color-warning-content-rgb: 39, 16, 0;
+	--color-error-content-rgb: 255, 255, 255;
+	--color-base-100-rgb: 22, 36, 85;
+	--color-base-200-rgb: 28, 52, 120;
+	--color-base-300-rgb: 32, 62, 151;
+	--color-base-content-rgb: 231, 239, 252;
+	--color-primary-rgb: 50, 135, 255;
+	--color-secondary-rgb: 96, 178, 255;
+	--color-error-rgb: 249, 65, 68;
+	--color-success-rgb: 64, 204, 109;
+	--color-warning-rgb: 241, 189, 0;
+	--color-info-rgb: 45, 166, 250;
 }

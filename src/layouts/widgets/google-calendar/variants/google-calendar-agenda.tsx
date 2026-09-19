@@ -84,7 +84,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 	return (
 		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
-			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-base-content/5">
+			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-faint">
 				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-content">
 					<Icon
 						name="googleCalendar"
@@ -107,8 +107,8 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 								key={`agenda-skeleton-${i}`}
 								className="space-y-1.5 animate-pulse"
 							>
-								<div className="w-24 h-3 rounded bg-base-200/80" />
-								<div className="h-12 rounded-2xl bg-base-200/60" />
+								<div className="w-24 h-3 rounded bg-content-strong" />
+								<div className="h-12 rounded-2xl bg-content-muted" />
 							</div>
 						))}
 					</div>
@@ -129,14 +129,14 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 											'text-[10px] font-bold px-2 py-0.5 rounded-lg',
 											isToday
 												? 'bg-primary text-primary-content'
-												: 'bg-base-200 text-muted'
+												: 'bg-content text-muted'
 										)}
 									>
 										{dayLabel}
 									</time>
 									<span
 										aria-hidden="true"
-										className="flex-1 h-px bg-base-content/5"
+										className="flex-1 h-px bg-subtle"
 									/>
 								</h4>
 
@@ -188,8 +188,8 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 				aria-label={`${title}، تمام روز`}
 				className={cn(
 					'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-					'bg-primary/10 border border-primary/20 text-primary focus-visible:focus-ring',
-					hasAction && 'cursor-pointer hover:bg-primary/15'
+					'bg-brand-subtle border border-brand-muted text-primary focus-visible:focus-ring',
+					hasAction && 'cursor-pointer hover:bg-brand-subtle'
 				)}
 			>
 				<span
@@ -214,10 +214,10 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
 				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-				'bg-base-200/30 hover:bg-base-200/60 border border-base-content/5',
+				'bg-content-subtle hover:bg-content-muted border border-faint',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
-				isNow && 'ring-1 ring-primary/40 bg-primary/5'
+				isNow && 'ring-1 ring-brand-strong bg-brand-subtle'
 			)}
 		>
 			<span
@@ -247,7 +247,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			</span>
 
 			{event.hangoutLink && (
-				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-primary/10 text-primary shrink-0">
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-brand-subtle text-primary shrink-0">
 					<Icon name="videoCamera" size={11} aria-hidden="true" />
 				</span>
 			)}

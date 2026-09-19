@@ -84,7 +84,7 @@ export default function LoginGoogleButton() {
 			type="button"
 			onClick={loginGoogle}
 			disabled={isLoading}
-			className="w-full h-11 px-4 rounded-xl text-xs md:text-sm font-medium flex items-center justify-center border border-base-300/80 bg-base-100 hover:bg-base-200/80 active:scale-[0.99] transition-all duration-150 gap-2.5 cursor-pointer text-content shadow-xs"
+			className="w-full h-11 px-4 rounded-xl text-xs md:text-sm font-medium flex items-center justify-center border border-content bg-widget hover:bg-content-strong active:scale-[0.99] transition-all duration-150 gap-2.5 cursor-pointer text-content shadow-xs"
 		>
 			<div className="relative flex items-center justify-center shrink-0">
 				{isLoading ? (
@@ -98,9 +98,7 @@ export default function LoginGoogleButton() {
 					/>
 				)}
 			</div>
-			<span>
-				{isLoading ? 'درحال ورود...' : 'ورود با حساب گوگل'}
-			</span>
+			<span>{isLoading ? 'درحال ورود...' : 'ورود با حساب گوگل'}</span>
 		</button>
 	)
 }

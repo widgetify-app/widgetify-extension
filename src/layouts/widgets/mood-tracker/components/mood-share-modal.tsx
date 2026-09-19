@@ -72,12 +72,12 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 					<div className="flex items-center justify-center overflow-hidden">
 						<canvas
 							ref={canvasRef}
-							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-base-content/10"
+							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-subtle"
 						/>
 					</div>
 				)}
 
-				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-base-300">
+				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-content">
 					<Button variant="ghost" size="sm" rounded="xl" onClick={onClose}>
 						بستن
 					</Button>

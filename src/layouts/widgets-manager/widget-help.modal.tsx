@@ -101,7 +101,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 		>
 			<div className="flex flex-col gap-4 p-1 select-none text-right" dir="rtl">
 				{/* Tab Selector */}
-				<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 border-b border-base-content/10">
+				<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 border-b border-subtle">
 					{HELP_TABS.map((tab) => {
 						const isCurrent = tab.id === activeTabId
 						return (
@@ -113,7 +113,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 									isCurrent
 										? 'bg-primary text-primary-content font-bold shadow-xs'
-										: 'bg-base-200/80 hover:bg-base-300 text-muted'
+										: 'bg-content-strong hover:bg-raised text-muted'
 								)}
 							>
 								<Icon name={tab.icon} size={14} />
@@ -124,7 +124,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Video Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-base-content/10 bg-base-300/40 shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-subtle bg-raised-subtle shrink-0">
 					<video
 						key={activeTab.videoUrl}
 						src={activeTab.videoUrl}
@@ -134,14 +134,14 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-base-100/80 backdrop-blur-md border border-base-content/10 text-[11px] font-bold text-content shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget-strong backdrop-blur-md border border-subtle text-[11px] font-bold text-content shadow-xs">
 						{activeTab.badge}
 					</div>
 				</div>
 
 				{/* Tab Detail Info */}
-				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-base-200/50 border border-base-content/10 transition-all">
-					<div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-content-muted border border-subtle transition-all">
+					<div className="w-9 h-9 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={18} />
 					</div>
 					<div className="flex flex-col gap-1 justify-center">
@@ -155,10 +155,10 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Tips List */}
-				<div className="flex flex-col gap-2 p-3 border bg-base-200/40 rounded-2xl border-base-content/10">
+				<div className="flex flex-col gap-2 p-3 border bg-content-subtle rounded-2xl border-subtle">
 					{activeTab.tips.map((tip, idx) => (
 						<div key={tip} className="flex items-start gap-2.5">
-							<span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+							<span className="w-5 h-5 rounded-full bg-brand-subtle text-primary flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
 								{idx + 1}
 							</span>
 							<p className="text-xs leading-relaxed text-content">{tip}</p>
@@ -167,7 +167,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Footer Action */}
-				<div className="flex justify-end pt-2 border-t border-base-content/10">
+				<div className="flex justify-end pt-2 border-t border-subtle">
 					<Button
 						type="button"
 						onClick={onClose}

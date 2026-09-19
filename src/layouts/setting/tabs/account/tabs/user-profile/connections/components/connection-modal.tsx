@@ -44,7 +44,7 @@ export function ConnectionModal({
 								آیا مطمئن هستید که می‌خواهید اتصال به {platform.name} را
 								قطع کنید؟
 							</p>
-							<div className="p-3 text-sm rounded-2xl text-warning-content bg-warning/80">
+							<div className="p-3 text-sm rounded-2xl text-warning-content bg-warning-bold">
 								⚠️ با قطع اتصال، دسترسی به داده‌ها و ویژگی‌های مربوط به این
 								پلتفرم از دست خواهد رفت.
 							</div>
@@ -103,7 +103,7 @@ export function ConnectionModal({
 						loading={isLoading}
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
-								<div className="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin" />
+								<div className="w-4 h-4 border-2 rounded-full border-over-image border-t-white animate-spin" />
 								در حال پردازش
 							</span>
 						}

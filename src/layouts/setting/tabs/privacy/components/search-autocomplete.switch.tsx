@@ -23,7 +23,7 @@ export function SearchAutocompleteSwitch() {
 	}
 
 	return (
-		<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-base-200/40">
+		<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-content-subtle">
 			<div className="flex-1 space-y-1">
 				<h3 className="text-sm font-medium text-content">پیشنهادهای جستجو</h3>
 				<p className="text-xs font-normal leading-relaxed text-muted">

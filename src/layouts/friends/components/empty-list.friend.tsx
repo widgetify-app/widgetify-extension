@@ -14,12 +14,12 @@ export function FriendEmptyList({ emptyMessage }: Prop) {
 			</div>
 
 			{emptyMessage ? (
-				<p className="text-sm font-medium text-base-content/70">{emptyMessage}</p>
+				<p className="text-sm font-medium text-muted">{emptyMessage}</p>
 			) : (
 				''
 			)}
 
-			<p className="mt-1 text-xs text-base-content/40">لیست خالیه!</p>
+			<p className="mt-1 text-xs text-faint">لیست خالیه!</p>
 		</div>
 	)
 }

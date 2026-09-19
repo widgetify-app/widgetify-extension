@@ -61,13 +61,13 @@ export function SelectFriendLayout({
 									border cursor-pointer
 									${
 										isSelected
-											? 'bg-primary/10 border-primary'
-											: 'hover:bg-base-content/5 border-base-content/10 hover:border-base-content/20 active:scale-95'
+											? 'bg-brand-subtle border-primary'
+											: 'hover:bg-subtle border-subtle hover:border-strong active:scale-95'
 									}
 								`}
 							>
 								<div className="shrink-0">
-									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-base-300">
+									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-content">
 										<AvatarComponent
 											url={friend.user.avatar}
 											placeholder={friend.user.name}
@@ -87,9 +87,7 @@ export function SelectFriendLayout({
 									</div>
 									<div
 										className={`text-sm truncate ${
-											isSelected
-												? 'text-primary/70'
-												: 'text-content'
+											isSelected ? 'text-brand' : 'text-content'
 										}`}
 										dir="ltr"
 									>

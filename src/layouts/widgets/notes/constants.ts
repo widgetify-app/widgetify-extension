@@ -4,32 +4,32 @@ export const NOTE_PREVIEW_CHARACTER_LIMIT = 120
 
 export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	default: {
-		bg: 'bg-base-200 bg-glass',
-		border: 'border-base-content/10',
+		bg: 'bg-content bg-glass',
+		border: 'border-subtle',
 		text: 'text-content',
-		headerBg: 'bg-base-content/10',
-		divider: 'border-base-content/10',
+		headerBg: 'bg-hovered',
+		divider: 'border-subtle',
 	},
 	low: {
 		bg: 'bg-success',
-		border: 'border-success-content/20',
+		border: 'border-success-content-muted',
 		text: 'text-success-content',
-		headerBg: 'bg-success-content/10',
-		divider: 'border-success-content/20',
+		headerBg: 'bg-success-content-subtle',
+		divider: 'border-success-content-muted',
 	},
 	medium: {
 		bg: 'bg-warning',
-		border: 'border-warning-content/20',
+		border: 'border-warning-content-muted',
 		text: 'text-warning-content',
-		headerBg: 'bg-warning-content/10',
-		divider: 'border-warning-content/20',
+		headerBg: 'bg-warning-content-subtle',
+		divider: 'border-warning-content-muted',
 	},
 	high: {
 		bg: 'bg-error',
-		border: 'border-error-content/20',
+		border: 'border-danger-content-muted',
 		text: 'text-error-content',
-		headerBg: 'bg-error-content/10',
-		divider: 'border-error-content/20',
+		headerBg: 'bg-danger-content-subtle',
+		divider: 'border-danger-content-muted',
 	},
 }
 

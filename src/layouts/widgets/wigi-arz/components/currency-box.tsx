@@ -16,10 +16,7 @@ interface CurrencyBoxProps {
 	dragHandle?: React.HTMLAttributes<HTMLElement>
 }
 
-export const CurrencyBox = ({
-	code,
-	dragHandle,
-}: CurrencyBoxProps) => {
+export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 	const { currency, priceChange, hasFailed } = useCurrencyPrice(code)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -48,7 +45,7 @@ export const CurrencyBox = ({
 		<>
 			<div
 				dir="ltr"
-				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl bg-base-content/5 hover:bg-base-content/10 border border-base-content/10 transition-ui active:scale-[0.98]"
+				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl bg-subtle hover:bg-hovered border border-subtle transition-ui active:scale-[0.98]"
 			>
 				{dragHandle && (
 					<span
@@ -72,12 +69,12 @@ export const CurrencyBox = ({
 								<img
 									src={currency.icon}
 									alt=""
-									className="object-cover w-5 h-5 rounded-lg bg-base-200"
+									className="object-cover w-5 h-5 rounded-lg bg-content"
 								/>
 							) : (
 								<span
 									aria-hidden="true"
-									className="block w-5 h-5 rounded-full bg-base-content/10 animate-pulse"
+									className="block w-5 h-5 rounded-full bg-hovered animate-pulse"
 								/>
 							)}
 

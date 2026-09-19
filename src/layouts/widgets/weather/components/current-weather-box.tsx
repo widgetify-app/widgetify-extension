@@ -46,7 +46,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 	return (
 		<>
 			<header
-				className={`relative p-2 overflow-hidden bg-base-content/5 border ${banner ? 'border-r-0' : ''} rounded-2xl border-content min-h-28 max-h-28`}
+				className={`relative p-2 overflow-hidden bg-subtle border ${banner ? 'border-r-0' : ''} rounded-2xl border-content min-h-28 max-h-28`}
 			>
 				{banner ? (
 					<div
@@ -61,7 +61,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="absolute inset-0 bg-gradient-to-br from-base-200/80 to-base-200/60"
+						className="absolute inset-0 bg-gradient-to-br from-content to-content-muted"
 					/>
 				)}
 
@@ -93,13 +93,13 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 					) : (
 						<div
 							aria-hidden="true"
-							className="w-20 h-20 rounded-lg animate-pulse bg-base-content/10"
+							className="w-20 h-20 rounded-lg animate-pulse bg-hovered"
 						/>
 					)}
 				</div>
 			</header>
 
-			<div className="p-2 border rounded-2xl bg-base-content/5 border-content">
+			<div className="p-2 border rounded-2xl bg-subtle border-content">
 				<dl className="grid grid-cols-3 gap-1.5">
 					{metrics.map((metric) => (
 						<Tooltip key={metric.id} content={metric.label}>

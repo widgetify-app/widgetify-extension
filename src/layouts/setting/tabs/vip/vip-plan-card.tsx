@@ -22,10 +22,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			className={cn(
 				'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all text-right min-h-24 group',
 				isClaimed
-					? 'opacity-65  border-base-content/20 bg-base-300/10 cursor-not-allowed saturate-50'
+					? 'opacity-65  border-strong bg-raised-faint cursor-not-allowed saturate-50'
 					: isSelected
-						? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs cursor-pointer'
-						: 'border-base-content/10 bg-base-300/20 hover:border-primary/40 hover:bg-base-300/40 cursor-pointer'
+						? 'border-primary bg-brand-subtle ring-1 ring-primary shadow-xs cursor-pointer'
+						: 'border-subtle bg-raised-faint hover:border-brand-strong hover:bg-raised-subtle cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
@@ -48,7 +48,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-base-100 text-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-widget text-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
 					<span>استفاده شده</span>
 				</div>
 			)}
@@ -72,10 +72,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					className={cn(
 						'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 						isClaimed
-							? 'border-base-content/20 bg-base-300/30 text-muted'
+							? 'border-strong bg-raised-subtle text-muted'
 							: isSelected
 								? 'border-primary bg-primary text-primary-content'
-								: 'border-base-content/25 bg-base-300/50 group-hover:border-primary/50'
+								: 'border-strong bg-raised-muted group-hover:border-brand-strong'
 					)}
 				>
 					{isClaimed ? (

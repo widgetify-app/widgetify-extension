@@ -119,7 +119,9 @@ export function TodoBoard({
 								name="sortDown"
 								size={13}
 								aria-hidden="true"
-								className={sort !== 'def' ? 'text-primary!' : 'text-muted'}
+								className={
+									sort !== 'def' ? 'text-primary!' : 'text-muted'
+								}
 							/>
 						}
 						options={SORT_OPTIONS}
@@ -153,58 +155,57 @@ export function TodoBoard({
 					aria-busy={isLoading}
 					className="flex-1 min-w-0 overflow-y-auto scrollbar-none"
 				>
-					 
-						{isLoading ? (
-							<div className="flex flex-col gap-1.5">
-								{[...Array(4)].map((_, i) => (
-									<BoardTodoSkeleton key={`board-skeleton-${i}`} />
+					{isLoading ? (
+						<div className="flex flex-col gap-1.5">
+							{[...Array(4)].map((_, i) => (
+								<BoardTodoSkeleton key={`board-skeleton-${i}`} />
+							))}
+						</div>
+					) : isError ? (
+						<TodosError onRetry={onRefresh} />
+					) : total === 0 ? (
+						<div className="flex h-full">
+							<TodosEmpty />
+						</div>
+					) : (
+						<div
+							className={cn(
+								'flex flex-col',
+								blurMode ? 'blur-mode' : 'disabled-blur-mode'
+							)}
+						>
+							<ul className="flex flex-col">
+								{todos.map((todo) => (
+									<li key={todo.id}>
+										<TodoItem
+											todo={todo}
+											blurMode={blurMode}
+											comfortable
+											onUpdated={onUpdated}
+											onEdit={onEdit}
+										/>
+									</li>
 								))}
-							</div>
-						) : isError ? (
-							<TodosError onRetry={onRefresh} />
-						) : total === 0 ? (
-							<div className="flex h-full">
-								<TodosEmpty />
-							</div>
-						) : (
-							<div
-								className={cn(
-									'flex flex-col',
-									blurMode ? 'blur-mode' : 'disabled-blur-mode'
-								)}
-							>
-								<ul className="flex flex-col">
-									{todos.map((todo) => (
-										<li key={todo.id}>
-											<TodoItem
-												todo={todo}
-												blurMode={blurMode}
-												comfortable
-												onUpdated={onUpdated}
-												onEdit={onEdit}
-											/>
-										</li>
-									))}
-								</ul>
+							</ul>
 
-								{hasNextPage && (
-									<div ref={loadMoreRef}>
-										{isFetchingNextPage && (
-											<div className="flex flex-col gap-1.5">
-												{[...Array(2)].map((_, i) => (
-													<BoardTodoSkeleton
-														key={`board-next-skeleton-${i}`}
-													/>
-												))}
-											</div>
-										)}
-									</div>
-								)}
-							</div>
-						)}
+							{hasNextPage && (
+								<div ref={loadMoreRef}>
+									{isFetchingNextPage && (
+										<div className="flex flex-col gap-1.5">
+											{[...Array(2)].map((_, i) => (
+												<BoardTodoSkeleton
+													key={`board-next-skeleton-${i}`}
+												/>
+											))}
+										</div>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 
-				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-base-content/10 scrollbar-none">
+				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-subtle scrollbar-none">
 					<div
 						role="img"
 						aria-label={`${percent} درصد تسک‌ها انجام شده`}
@@ -216,7 +217,7 @@ export function TodoBoard({
 							viewBox="0 0 36 36"
 						>
 							<path
-								className="text-base-content/15"
+								className="text-ghost"
 								stroke="currentColor"
 								strokeWidth="3.5"
 								fill="none"
@@ -253,7 +254,11 @@ export function TodoBoard({
 							value={completed}
 							className="text-success"
 						/>
-						<StatRow label="در انتظار" value={pending} className="text-content" />
+						<StatRow
+							label="در انتظار"
+							value={pending}
+							className="text-content"
+						/>
 						<StatRow label="مهم" value={important} className="text-error" />
 					</dl>
 				</aside>
@@ -274,7 +279,7 @@ function BoardTodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-base-content/10 bg-base-content/5"
+			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-subtle"
 		>
 			<div className="flex items-center flex-1 min-w-0 gap-2.5">
 				<div className="rounded-md size-4.5 skeleton shrink-0" />
@@ -296,7 +301,7 @@ interface StatRowProps {
 
 function StatRow({ label, value, className }: StatRowProps) {
 	return (
-		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-base-content/5">
+		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-subtle">
 			<dt className="text-[10px] font-medium truncate text-muted">{label}</dt>
 			<dd className={cn('text-[11px] font-black tabular-nums', className)}>
 				<data value={value}>{value}</data>

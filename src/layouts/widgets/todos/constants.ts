@@ -42,10 +42,10 @@ export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
 }
 
 export const PRIORITY_BADGE_CLASS: Record<string, string> = {
-	high: 'bg-error/10 text-error',
-	medium: 'bg-warning/10 text-warning',
-	low: 'bg-success/10 text-success',
-	default: 'bg-primary/10 text-primary',
+	high: 'bg-danger-subtle text-error',
+	medium: 'bg-warning-subtle text-warning',
+	low: 'bg-success-subtle text-success',
+	default: 'bg-brand-subtle text-primary',
 }
 
 export function priorityClass(map: Record<string, string>, priority?: string): string {

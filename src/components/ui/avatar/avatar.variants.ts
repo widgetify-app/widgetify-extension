@@ -19,7 +19,7 @@ export const avatarVariants = cva(
 				xl: ['w-16', 'h-16', 'text-xl'],
 			},
 			isPro: {
-				true: 'ring-2 ring-vip ring-offset-2 ring-offset-base-100',
+				true: 'ring-2 ring-vip ring-offset-2 ring-offset-widget',
 				false: '',
 			},
 		},

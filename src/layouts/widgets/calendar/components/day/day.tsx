@@ -85,20 +85,20 @@ export function DayItem({
 				'w-[8cqh] h-[8cqh] max-w-6 max-h-6 text-[4cqh]',
 				'transition-ui rounded-lg cursor-pointer hover:scale-110 hover:shadow',
 				'focus-visible:focus-ring',
-				isHoliday ? 'text-error bg-error/10' : 'text-content',
+				isHoliday ? 'text-error bg-danger-subtle' : 'text-content',
 				isSelected
 					? isHoliday
-						? 'bg-error/10'
-						: 'bg-primary/20'
+						? 'bg-danger-subtle'
+						: 'bg-brand-muted'
 					: isHoliday
-						? 'hover:bg-error/10'
-						: 'hover:bg-primary/10',
+						? 'hover:bg-danger-subtle'
+						: 'hover:bg-brand-subtle',
 				isCurrentDay && 'scale-110 shadow-lg',
 				isCurrentDay &&
 					!dayMood &&
 					(isHoliday
-						? 'border border-dashed border-error/80'
-						: 'border border-dashed border-primary/80'),
+						? 'border border-dashed border-danger-bold'
+						: 'border border-dashed border-brand-bold'),
 				dayMood && `border-2 ${dayMood.borderClass}`
 			)}
 		>
@@ -121,7 +121,7 @@ export function DayItem({
 					<span
 						className={cn(
 							'w-0.5 h-0.5 rounded-full shadow-sm',
-							isHolidayEvent ? 'bg-error' : 'bg-primary/80'
+							isHolidayEvent ? 'bg-error' : 'bg-brand-bold'
 						)}
 					/>
 				) : null}

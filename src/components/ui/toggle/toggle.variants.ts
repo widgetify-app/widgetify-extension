@@ -6,7 +6,7 @@ export const toggleTrackVariants = cva(
 		variants: {
 			enabled: {
 				true: ['bg-primary'],
-				false: ['bg-base-300'],
+				false: ['bg-raised'],
 			},
 			interactive: {
 				true: ['cursor-pointer', 'active:scale-95'],

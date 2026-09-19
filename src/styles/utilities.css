@@ -1,0 +1,492 @@
+/* ============================================
+   UTILITIES
+
+   Colours are NOT here - they live in theme.css, where one declaration
+   makes Tailwind generate bg-/text-/border-/ring-/from-/to- for free.
+
+   What stays here is the short list @theme cannot express:
+
+     - names whose meaning changes with the prefix. bg-content is a
+       surface (base-200) while text-content is a foreground
+       (base-content/90), so they cannot be one variable.
+     - anything that is not a colour: radius, elevation, z-index, motion.
+   ============================================ */
+
+/* --------------------------------------------
+   SURFACE - what a thing sits on.
+   -------------------------------------------- */
+@utility bg-widget {
+	background-color: var(--color-base-100);
+}
+
+@utility bg-content {
+	background-color: var(--color-base-200);
+}
+
+@utility bg-raised {
+	background-color: var(--color-base-300);
+}
+
+@utility bg-subtle {
+	background-color: rgba(var(--color-base-content-rgb), 0.02);
+}
+
+@utility bg-hovered {
+	background-color: rgba(var(--color-base-content-rgb), 0.06);
+}
+
+@utility bg-strong {
+	background-color: rgba(var(--color-base-content-rgb), 0.2);
+}
+
+
+/* --------------------------------------------
+   SURFACE VEILS - the same three surfaces, let through. A widget over a
+   wallpaper is not the same colour as a widget over a panel, and the
+   difference is how much of the wallpaper it lets past.
+
+   The alpha multiplies the surface's own, so the glass and icy themes -
+   whose base surfaces are already translucent - thin out from where
+   they start instead of jumping to opaque.
+   -------------------------------------------- */
+@utility bg-widget-strong {
+	background-color: rgba(var(--color-base-100-rgb), calc(var(--color-base-100-a) * 0.8));
+}
+
+@utility bg-widget-muted {
+	background-color: rgba(var(--color-base-100-rgb), calc(var(--color-base-100-a) * 0.6));
+}
+
+@utility bg-widget-subtle {
+	background-color: rgba(var(--color-base-100-rgb), calc(var(--color-base-100-a) * 0.4));
+}
+
+@utility bg-widget-faint {
+	background-color: rgba(var(--color-base-100-rgb), calc(var(--color-base-100-a) * 0.2));
+}
+
+@utility bg-content-strong {
+	background-color: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.8));
+}
+
+@utility bg-content-muted {
+	background-color: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.6));
+}
+
+@utility bg-content-subtle {
+	background-color: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.4));
+}
+
+@utility bg-content-faint {
+	background-color: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.2));
+}
+
+@utility bg-raised-strong {
+	background-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.8));
+}
+
+@utility bg-raised-muted {
+	background-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.6));
+}
+
+@utility bg-raised-subtle {
+	background-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.4));
+}
+
+@utility bg-raised-faint {
+	background-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.2));
+}
+
+@utility border-content-subtle {
+	border-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.6));
+}
+
+@utility border-content-faint {
+	border-color: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.3));
+}
+
+@utility to-content-muted {
+	--tw-gradient-to: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.8));
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-raised-faint {
+	--tw-gradient-to: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.2));
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility via-raised-subtle {
+	--tw-gradient-via: rgba(var(--color-base-300-rgb), calc(var(--color-base-300-a) * 0.4));
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+/* --------------------------------------------
+   TEXT - one ladder, from loudest to quietest.
+   -------------------------------------------- */
+@utility text-strong {
+	color: var(--color-base-content);
+}
+
+@utility text-content {
+	color: rgba(var(--color-base-content-rgb), 0.9);
+}
+
+@utility text-muted {
+	color: rgba(var(--color-base-content-rgb), 0.7);
+}
+
+@utility text-subtle {
+	color: rgba(var(--color-base-content-rgb), 0.5);
+}
+
+@utility text-faint {
+	color: rgba(var(--color-base-content-rgb), 0.4);
+}
+
+/* --------------------------------------------
+   BORDER
+   -------------------------------------------- */
+@utility text-ghost {
+	color: rgba(var(--color-base-content-rgb), 0.2);
+}
+
+@utility border-content {
+	border-color: var(--color-base-300);
+}
+
+@utility border-faint {
+	border-color: rgba(var(--color-base-content-rgb), 0.05);
+}
+
+@utility border-subtle {
+	border-color: rgba(var(--color-base-content-rgb), 0.1);
+}
+
+@utility border-muted {
+	border-color: rgba(var(--color-base-content-rgb), 0.15);
+}
+
+@utility border-strong {
+	border-color: rgba(var(--color-base-content-rgb), 0.2);
+}
+
+@utility ring-widget {
+	--tw-ring-color: var(--color-base-100);
+}
+
+@utility ring-content {
+	--tw-ring-color: var(--color-base-300);
+}
+
+@utility ring-subtle {
+	--tw-ring-color: rgba(var(--color-base-content-rgb), 0.1);
+}
+
+@utility ring-strong {
+	--tw-ring-color: rgba(var(--color-base-content-rgb), 0.2);
+}
+
+@utility outline-content {
+	outline-color: var(--color-base-300);
+}
+
+@utility ring-offset-widget {
+	--tw-ring-offset-color: var(--color-base-100);
+}
+
+/* --------------------------------------------
+   STROKE - an SVG line is not text. Setting `color` on a <circle> that
+   has no stroke attribute paints nothing at all, so these exist.
+   Two hairline steps for a ring's track, one for the arc drawn on it.
+   -------------------------------------------- */
+@utility stroke-content {
+	stroke: var(--color-base-200);
+}
+
+@utility stroke-faint {
+	stroke: rgba(var(--color-base-content-rgb), 0.05);
+}
+
+@utility stroke-subtle {
+	stroke: rgba(var(--color-base-content-rgb), 0.1);
+}
+
+@utility stroke-bold {
+	stroke: rgba(var(--color-base-content-rgb), 0.4);
+}
+
+/* --------------------------------------------
+   DIVIDE - the rule between rows in a list.
+   -------------------------------------------- */
+@utility divide-subtle {
+	:where(& > :not(:last-child)) {
+		border-color: rgba(var(--color-base-content-rgb), 0.1);
+	}
+}
+
+@utility divide-content {
+	:where(& > :not(:last-child)) {
+		border-color: rgba(var(--color-base-200-rgb), calc(var(--color-base-200-a) * 0.6));
+	}
+}
+
+/* --------------------------------------------
+   GRADIENT STOPS ON THE FOREGROUND - same ladder as the bg- tints.
+   -------------------------------------------- */
+@utility from-subtle {
+	--tw-gradient-from: rgba(var(--color-base-content-rgb), 0.05);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility from-hovered {
+	--tw-gradient-from: rgba(var(--color-base-content-rgb), 0.1);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility from-strong {
+	--tw-gradient-from: rgba(var(--color-base-content-rgb), 0.2);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-strong {
+	--tw-gradient-to: rgba(var(--color-base-content-rgb), 0.2);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+/* --------------------------------------------
+   OVER-IMAGE - drawn on a wallpaper, so it follows no theme.
+   -------------------------------------------- */
+@utility text-over-image {
+	color: rgba(255, 255, 255, 1);
+}
+
+@utility text-over-image-muted {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+@utility bg-over-image {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+@utility bg-over-image-strong {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+@utility border-over-image {
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+@utility border-over-image-subtle {
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+@utility bg-over-image-subtle {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+@utility text-over-image-subtle {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+@utility bg-over-image-scrim {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+@utility bg-over-image-scrim-soft {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+@utility from-over-image-scrim-strong {
+	--tw-gradient-from: rgba(0, 0, 0, 0.8);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility via-over-image-scrim-mid {
+	--tw-gradient-via: rgba(0, 0, 0, 0.4);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+@utility to-over-image-scrim-none {
+	--tw-gradient-to: rgba(0, 0, 0, 0);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-over-image-sheen {
+	--tw-gradient-to: rgba(255, 255, 255, 0.05);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+/* --------------------------------------------
+   SURFACE GRADIENT STOPS - the surface names again, for gradients.
+   -------------------------------------------- */
+
+@utility from-widget {
+	--tw-gradient-from: var(--color-base-100);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility from-content {
+	--tw-gradient-from: var(--color-base-200);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility from-raised {
+	--tw-gradient-from: var(--color-base-300);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-widget {
+	--tw-gradient-to: var(--color-base-100);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-content {
+	--tw-gradient-to: var(--color-base-200);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility to-raised {
+	--tw-gradient-to: var(--color-base-300);
+	--tw-gradient-stops: var(--tw-gradient-via-stops,
+			var(--tw-gradient-position),
+			var(--tw-gradient-from) var(--tw-gradient-from-position),
+			var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+@utility via-raised {
+	--tw-gradient-via: var(--color-base-300);
+	--tw-gradient-via-stops:
+		var(--tw-gradient-position),
+		var(--tw-gradient-from) var(--tw-gradient-from-position),
+		var(--tw-gradient-via) var(--tw-gradient-via-position),
+		var(--tw-gradient-to) var(--tw-gradient-to-position);
+	--tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+
+/* --------------------------------------------
+   NOT COLOURS
+   -------------------------------------------- */
+@utility elevation-sm {
+	box-shadow: var(--elevation-sm);
+}
+
+@utility elevation-md {
+	box-shadow: var(--elevation-md);
+}
+
+@utility elevation-lg {
+	box-shadow: var(--elevation-lg);
+}
+
+@utility elevation-xl {
+	box-shadow: var(--elevation-xl);
+}
+
+@utility rounded-card {
+	border-radius: var(--radius-card);
+}
+
+@utility rounded-widget {
+	border-radius: var(--radius-widget);
+}
+
+@utility transition-ui {
+	transition-property:
+		color, background-color, border-color, outline-color, box-shadow, opacity,
+		transform;
+	transition-timing-function: var(--ease-standard);
+	transition-duration: var(--duration-fast);
+}
+
+@utility focus-ring {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+@utility z-raised {
+	z-index: var(--z-raised);
+}
+
+@utility z-sticky {
+	z-index: var(--z-sticky);
+}
+
+@utility z-drag {
+	z-index: var(--z-drag);
+}
+
+@utility z-nav {
+	z-index: var(--z-nav);
+}
+
+@utility z-backdrop {
+	z-index: var(--z-backdrop);
+}
+
+@utility z-sheet {
+	z-index: var(--z-sheet);
+}
+
+@utility z-modal {
+	z-index: var(--z-modal);
+}
+
+@utility z-toast {
+	z-index: var(--z-toast);
+}
+
+.z-popover {
+	z-index: var(--z-popover) !important;
+}

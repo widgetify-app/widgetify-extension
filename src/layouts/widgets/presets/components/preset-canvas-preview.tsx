@@ -44,7 +44,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 			dir="ltr"
 			aria-hidden="true"
 			className={cn(
-				'w-full h-36 p-2 overflow-hidden select-none rounded-xl bg-base-content/5 border border-base-content/10 transition-ui',
+				'w-full h-36 p-2 overflow-hidden select-none rounded-xl bg-subtle border border-subtle transition-ui',
 				className
 			)}
 		>
@@ -68,7 +68,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 								gridRowStart: widget.position.row + 1,
 								gridRowEnd: widget.position.row + widget.size.h + 1,
 							}}
-							className="flex items-center justify-center overflow-hidden rounded-md bg-base-content/10 text-muted group-hover:bg-primary/10 group-hover:text-primary transition-ui"
+							className="flex items-center justify-center overflow-hidden rounded-md bg-hovered text-muted group-hover:bg-brand-subtle group-hover:text-primary transition-ui"
 						>
 							<Icon
 								name={definition.icon}

@@ -24,23 +24,23 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100'
-		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
+		? 'ring-2 ring-primary ring-offset-2 ring-offset-widget'
+		: 'ring-1 ring-subtle hover:ring-brand-bold'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-base-200/50 ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-content-muted ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 		>
 			{!loaded && (
-				<div className="flex items-center justify-center w-full min-h-28 bg-base-300/30">
-					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+				<div className="flex items-center justify-center w-full min-h-28 bg-raised-subtle">
+					<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin" />
 				</div>
 			)}
 
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-error/10">
+				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-danger-subtle">
 					<Icon name="alert" className="text-error" />
 					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
 				</div>
@@ -63,7 +63,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 			{loaded && !error && (
 				<>
-					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-black/80 via-black/40 to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-over-image-scrim-strong via-over-image-scrim-mid to-over-image-scrim-none flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
 						<span className="text-[11px] font-medium text-white truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>
@@ -90,7 +90,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 									: 'رایگان برای کاربران پرو'
 							}
 						>
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip/90 backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-white/20">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-over-image">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>

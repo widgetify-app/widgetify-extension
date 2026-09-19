@@ -34,7 +34,7 @@ export const RewardsTab = () => {
 					}
 					size="xs"
 				>
-					<div className="p-2 border rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+					<div className="p-2 border rounded-2xl bg-gradient-to-br from-brand-subtle to-secondary-subtle border-brand-muted">
 						<div className="flex items-start gap-3">
 							<Icon
 								name="info"

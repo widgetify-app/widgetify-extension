@@ -29,7 +29,7 @@ export function NotificationNavbar() {
 			trigger={
 				<div
 					onClick={handleOpen}
-					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+					className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-strong active:scale-90"
 					id="notifications-button"
 				>
 					<Icon name="notification" size={15} />
@@ -38,7 +38,7 @@ export function NotificationNavbar() {
 			}
 		>
 			<div className="flex flex-col p-3 w-80 bg-content bg-glass" dir="rtl">
-				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-base-content/10 shrink-0">
+				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-subtle shrink-0">
 					<div className="flex items-center gap-1.5 text-content">
 						<Icon name="notification" size={14} />
 						<span className="text-xs font-bold">اعلان‌ها</span>

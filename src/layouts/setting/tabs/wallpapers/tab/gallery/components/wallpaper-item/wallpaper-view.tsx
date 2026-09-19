@@ -149,7 +149,7 @@ export function WallpaperView({
 						</div>
 					)}
 
-					<div className="flex items-center justify-between py-2 text-xs border-t text-muted border-base-content/10">
+					<div className="flex items-center justify-between py-2 text-xs border-t text-muted border-subtle">
 						<span>
 							نمایش {filteredWallpapers.length.toLocaleString('fa-IR')}{' '}
 							تصویر زمینه
@@ -165,7 +165,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, idx) => (
 		<div
 			key={`loading-${idx}`}
-			className="w-full border aspect-video rounded-xl skeleton bg-base-300 border-base-content/5"
+			className="w-full border aspect-video rounded-xl skeleton bg-raised border-faint"
 		/>
 	))
 }
