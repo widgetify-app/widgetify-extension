@@ -39,6 +39,15 @@
    element fall back to an inherited colour (a border with no
    border-color falls back to currentColor, at full strength). */
 [data-theme="zarna"] {
+	--color-base-100-a: 1;
+	--color-base-200-a: 1;
+	--color-base-300-a: 1;
+	--color-success-content-rgb: 6, 16, 1;
+	--color-warning-content-rgb: 18, 16, 3;
+	--color-error-content-rgb: 22, 4, 4;
+	--color-base-100-rgb: 9, 9, 11;
+	--color-base-200-rgb: 23, 22, 24;
+	--color-base-300-rgb: 30, 29, 31;
 	--color-base-content-rgb: 220, 165, 77;
 	--color-primary-rgb: 208, 135, 0;
 	--color-secondary-rgb: 21, 39, 71;

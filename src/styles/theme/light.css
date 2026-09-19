@@ -39,6 +39,15 @@
    element fall back to an inherited colour (a border with no
    border-color falls back to currentColor, at full strength). */
 [data-theme="light"] {
+	--color-base-100-a: 1;
+	--color-base-200-a: 1;
+	--color-base-300-a: 1;
+	--color-success-content-rgb: 0, 76, 57;
+	--color-warning-content-rgb: 121, 50, 5;
+	--color-error-content-rgb: 77, 2, 24;
+	--color-base-100-rgb: 255, 255, 255;
+	--color-base-200-rgb: 248, 250, 252;
+	--color-base-300-rgb: 241, 245, 249;
 	--color-base-content-rgb: 70, 70, 71;
 	--color-primary-rgb: 83, 109, 254;
 	--color-secondary-rgb: 124, 141, 240;

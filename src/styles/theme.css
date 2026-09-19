@@ -178,34 +178,49 @@
 	--color-brand-content: var(--color-primary-content);
 	--color-primary-hover: rgba(var(--color-primary-rgb), 0.9);
 	--color-secondary-hover: rgba(var(--color-secondary-rgb), 0.9);
+	--color-secondary-bold: rgba(var(--color-secondary-rgb), 0.8);
+	--color-secondary-strong: rgba(var(--color-secondary-rgb), 0.5);
+	--color-secondary-muted: rgba(var(--color-secondary-rgb), 0.2);
+	--color-secondary-subtle: rgba(var(--color-secondary-rgb), 0.1);
 	--color-brand-hover: rgba(var(--color-primary-rgb), 0.9);
 	--color-brand-subtle: rgba(var(--color-primary-rgb), 0.1);
 	--color-brand-muted: rgba(var(--color-primary-rgb), 0.2);
 	--color-brand-strong: rgba(var(--color-primary-rgb), 0.5);
+	--color-brand-bold: rgba(var(--color-primary-rgb), 0.8);
 
 	--color-danger: var(--color-error);
 	--color-danger-hover: rgba(var(--color-error-rgb), 0.9);
 	--color-danger-subtle: rgba(var(--color-error-rgb), 0.1);
 	--color-danger-muted: rgba(var(--color-error-rgb), 0.2);
 	--color-danger-strong: rgba(var(--color-error-rgb), 0.5);
+	--color-danger-bold: rgba(var(--color-error-rgb), 0.8);
+	--color-danger-content-subtle: rgba(var(--color-error-content-rgb), 0.1);
+	--color-danger-content-muted: rgba(var(--color-error-content-rgb), 0.2);
 
 	--color-success: var(--color-success);
 	--color-success-hover: rgba(var(--color-success-rgb), 0.9);
 	--color-success-subtle: rgba(var(--color-success-rgb), 0.1);
 	--color-success-muted: rgba(var(--color-success-rgb), 0.2);
 	--color-success-strong: rgba(var(--color-success-rgb), 0.5);
+	--color-success-bold: rgba(var(--color-success-rgb), 0.8);
+	--color-success-content-subtle: rgba(var(--color-success-content-rgb), 0.1);
+	--color-success-content-muted: rgba(var(--color-success-content-rgb), 0.2);
 
 	--color-warning: var(--color-warning);
 	--color-warning-hover: rgba(var(--color-warning-rgb), 0.9);
 	--color-warning-subtle: rgba(var(--color-warning-rgb), 0.1);
 	--color-warning-muted: rgba(var(--color-warning-rgb), 0.2);
 	--color-warning-strong: rgba(var(--color-warning-rgb), 0.5);
+	--color-warning-bold: rgba(var(--color-warning-rgb), 0.8);
+	--color-warning-content-subtle: rgba(var(--color-warning-content-rgb), 0.1);
+	--color-warning-content-muted: rgba(var(--color-warning-content-rgb), 0.2);
 
 	--color-info: var(--color-info);
 	--color-info-hover: rgba(var(--color-info-rgb), 0.9);
 	--color-info-subtle: rgba(var(--color-info-rgb), 0.1);
 	--color-info-muted: rgba(var(--color-info-rgb), 0.2);
 	--color-info-strong: rgba(var(--color-info-rgb), 0.5);
+	--color-info-bold: rgba(var(--color-info-rgb), 0.8);
 
 	--color-vip: #6366f1;
 	--color-vip-rgb: 99, 102, 241;
@@ -214,6 +229,7 @@
 	--color-vip-subtle: rgba(var(--color-vip-rgb), 0.1);
 	--color-vip-muted: rgba(var(--color-vip-rgb), 0.2);
 	--color-vip-strong: rgba(var(--color-vip-rgb), 0.5);
+	--color-vip-bold: rgba(var(--color-vip-rgb), 0.8);
 
 	/* --------------------------------------------
      CONTENT COLOURS - not chrome. These depict something or are a set a
@@ -225,14 +241,16 @@
 	--color-medal-silver: #99a1af;
 	--color-medal-bronze: #e17100;
 
-	--color-avatar-1: #2b7fff;
-	--color-avatar-2: #ad46ff;
-	--color-avatar-3: #f6339a;
-	--color-avatar-4: #fb2c36;
-	--color-avatar-5: #ff6900;
-	--color-avatar-6: #f0b100;
-	--color-avatar-7: #00c950;
-	--color-avatar-8: #00bba7;
-	--color-avatar-9: #00b8db;
-	--color-avatar-10: #615fff;
+	/* Drawn as a bookmark tile over the wallpaper, never flat, so the
+	   60% is part of the colour rather than something a caller adds. */
+	--color-avatar-1: #2b7fff99;
+	--color-avatar-2: #ad46ff99;
+	--color-avatar-3: #f6339a99;
+	--color-avatar-4: #fb2c3699;
+	--color-avatar-5: #ff690099;
+	--color-avatar-6: #f0b10099;
+	--color-avatar-7: #00c95099;
+	--color-avatar-8: #00bba799;
+	--color-avatar-9: #00b8db99;
+	--color-avatar-10: #615fff99;
 }
