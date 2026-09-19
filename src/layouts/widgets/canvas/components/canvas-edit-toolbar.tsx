@@ -37,7 +37,7 @@ export function CanvasEditToolbar({
 					<button
 						type="button"
 						onClick={onOpenPresets}
-						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-raised hover:bg-hovered text-content active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-raised hover:bg-raised text-content active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
 					>
 						<Icon name="squares2X2" size={13} />
 						<span>چیدمان‌های آماده</span>
@@ -47,7 +47,7 @@ export function CanvasEditToolbar({
 				<button
 					type="button"
 					onClick={onExitEditMode}
-					className="px-3 py-1.5 text-xs font-medium rounded-xl bg-raised hover:bg-hovered text-content active:scale-95 transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+					className="px-3 py-1.5 text-xs font-medium rounded-xl bg-raised hover:bg-raised text-content active:scale-95 transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
 				>
 					<span>✓</span>
 					<span>پایان</span>

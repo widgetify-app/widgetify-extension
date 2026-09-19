@@ -210,7 +210,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 								setActivePresetId(null)
 							}}
 							placeholder="عنوان عادت (مثلا: نوشیدن آب)"
-							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-faint placeholder:text-subtle focus:outline-none focus:ring-0"
+							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-content placeholder:text-faint focus:outline-none focus:ring-0"
 						/>
 					</div>
 				</div>

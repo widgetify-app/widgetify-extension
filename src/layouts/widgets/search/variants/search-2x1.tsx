@@ -151,7 +151,7 @@ export function SearchCompactRow() {
 								updatePosition()
 								Analytics.event('search_input_focused_2x1')
 							}}
-							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-muted placeholder:text-muted placeholder:font-medium bg-transparent"
+							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium bg-transparent"
 							placeholder="جستجو..."
 							aria-label="جستجو"
 							autoComplete="off"

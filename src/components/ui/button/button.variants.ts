@@ -53,7 +53,7 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-subtle border-content hover:bg-hovered!',
+				class: 'bg-content border-content hover:bg-subtle!',
 			},
 			{
 				variant: 'solid',
@@ -101,14 +101,14 @@ export const buttonVariants = cva(
 				class: 'text-muted hover:text-content',
 			},
 			{ variant: 'outline', color: 'base', class: 'border-content' },
-			{ variant: 'outline', color: 'brand', class: 'border-brand-muted' },
+			{ variant: 'outline', color: 'brand', class: 'border-brand' },
 			{ variant: 'outline', color: 'primary', class: 'border-primary' },
 			{ variant: 'outline', color: 'secondary', class: 'border-secondary' },
 			{ variant: 'outline', color: 'danger', class: 'border-error' },
-			{ variant: 'outline', color: 'success', class: 'border-success-muted' },
-			{ variant: 'outline', color: 'info', class: 'border-info-muted' },
-			{ variant: 'outline', color: 'warning', class: 'border-warning-muted' },
-			{ variant: 'outline', color: 'vip', class: 'border-vip-muted' },
+			{ variant: 'outline', color: 'success', class: 'border-success' },
+			{ variant: 'outline', color: 'info', class: 'border-info' },
+			{ variant: 'outline', color: 'warning', class: 'border-warning' },
+			{ variant: 'outline', color: 'vip', class: 'border-vip' },
 		],
 		defaultVariants: {
 			variant: 'solid',

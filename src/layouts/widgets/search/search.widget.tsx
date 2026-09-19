@@ -173,7 +173,7 @@ function SearchFullContent() {
 								Analytics.event('search_input_focused')
 								updateHistoryPosition()
 							}}
-							className="w-full py-1.5 text-base font-light text-right focus:outline-none text-muted placeholder:text-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent"
+							className="w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent"
 							placeholder={`جستجو در ${selectedEngine.label}`}
 							aria-label={`جستجو در ${selectedEngine.label}`}
 							autoComplete="off"
