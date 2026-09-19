@@ -28,11 +28,11 @@
 }
 
 @utility bg-subtle {
-	background-color: rgba(var(--color-base-content-rgb), 0.02);
+	background-color: rgba(var(--color-base-content-rgb), 0.05);
 }
 
 @utility bg-hovered {
-	background-color: rgba(var(--color-base-content-rgb), 0.06);
+	background-color: rgba(var(--color-base-content-rgb), 0.1);
 }
 
 @utility bg-strong {

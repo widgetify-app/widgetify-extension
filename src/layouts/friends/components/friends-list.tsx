@@ -76,7 +76,7 @@ export const FriendsList = ({
 			{allFriends.map((friend) => (
 				<div
 					key={`f-${friend.id}`}
-					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-xl border-content hover:shadow-sm"
+					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-2xl border-content hover:shadow-sm"
 				>
 					<div className="flex items-center flex-1 min-w-0 gap-1.5">
 						<div className="relative shrink-0">

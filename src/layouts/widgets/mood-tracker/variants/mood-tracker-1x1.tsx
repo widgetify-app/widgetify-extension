@@ -31,7 +31,7 @@ export function Mood1x1({
 				<span
 					className={cn(
 						'px-2 py-0.5 rounded-full text-[10.4cqh] font-bold leading-none transition-colors truncate',
-						currentOption ? 'text-primary' : 'bg-hovered text-muted'
+						currentOption ? 'text-primary' : 'bg-content text-muted'
 					)}
 				>
 					{currentOption ? currentOption.label : 'حس امروزت؟'}
@@ -57,7 +57,7 @@ export function Mood1x1({
 				{currentOption ? currentOption.emoji : '🤍'}
 			</span>
 
-			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-subtle">
+			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-content">
 				{moodOptions.map((opt) => {
 					const isSelected = todayMood?.mood === opt.value
 

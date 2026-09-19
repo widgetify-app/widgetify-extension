@@ -16,10 +16,10 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 			onClick={onSelect}
 			aria-pressed={selected}
 			className={cn(
-				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
+				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-2xl transition-ui focus-visible:focus-ring',
 				selected
 					? 'border-brand-strong bg-brand-subtle'
-					: 'border-content bg-subtle hover:bg-brand-subtle hover:border-brand-muted',
+					: 'border-content bg-content hover:bg-brand-subtle hover:border-brand-muted',
 				className
 			)}
 		>

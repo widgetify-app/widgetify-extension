@@ -140,9 +140,9 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-subtle">
+			<section className="flex items-center gap-3 p-3 border rounded-2xl border-content bg-content">
 				<div
-					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content"
+					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content-subtle"
 					style={{
 						backgroundImage: scene.image ? `url(${scene.image})` : undefined,
 						backgroundSize: 'cover',
@@ -162,7 +162,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<h3 className="text-base font-semibold truncate text-content">
 							{displayName}
 						</h3>
-						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-hovered">
+						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-content border-content bg-content">
 							{PET_SPECIES_LABEL[petType]}
 						</span>
 					</div>

@@ -102,7 +102,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 						{prayerTimeBoxes.map((box) => (
 							<div
 								key={box.title}
-								className="flex flex-col items-center justify-center p-3 border rounded-2xl bg-content border-content"
+								className="flex flex-col items-center justify-center p-3 bg-content hover:bg-hovered border-content border rounded-2xl"
 							>
 								<div className="mb-1 text-brand-bold">
 									<Icon name={box.icon} size={18} aria-hidden="true" />
@@ -118,7 +118,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 					</div>
 
 					{dailyZikr && (
-						<div className="flex flex-col items-center gap-1 p-2 border bg-content border-content rounded-2xl">
+						<div className="flex flex-col items-center gap-1 p-1 bg-content hover:bg-hovered border border-content  rounded-2xl">
 							<div className="flex items-center gap-1.5 mb-0.5">
 								<div className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
 								<span className="text-[9px] font-black text-content">

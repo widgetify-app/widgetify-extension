@@ -15,7 +15,9 @@ interface NoteItemProps {
 export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 	const [isExpanded, setIsExpanded] = useState(false)
 
-	const priorityBg = note.priority ? PRIORITY_BG_COLORS[note.priority] : 'bg-raised'
+	const priorityBg = note.priority
+		? PRIORITY_BG_COLORS[note.priority]
+		: 'bg-content border border-content'
 	const shouldShowReadMore =
 		!!note.body && note.body.length > NOTE_PREVIEW_CHARACTER_LIMIT
 

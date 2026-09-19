@@ -114,7 +114,7 @@ export function TodoItem({
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border border-subtle bg-subtle transition-ui hover:border-strong hover:bg-hovered ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border  border-content bg-content transition-ui hover:border-strong hover:bg-hovered ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-xl'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
@@ -143,7 +143,7 @@ export function TodoItem({
 					className="flex-1 min-w-0 py-1 overflow-hidden text-start cursor-pointer focus-visible:focus-ring"
 				>
 					<p
-						className={`truncate text-shadow-2xs font-medium transition-ui ${
+						className={`truncate font-medium transition-ui ${
 							comfortable ? 'text-[11.5px]' : 'text-[10px]'
 						} ${
 							isDone
