@@ -1,34 +1,44 @@
 /* ============================================
-   CONTROL - filled interactive surfaces (buttons, toggles, knobs).
-   A solid fill, as opposed to the tinted surfaces in status.css.
+   CONTROL
+
+   Pinned to what main renders. Every value is either a daisyUI theme token
+   or that token at the exact alpha main used, so the six themes look the
+   same as they did before the token layer existed.
+
+   The alpha is written as rgb(... / calc(...)) rather than a /N modifier:
+   identical colour, but no color-mix(), which Chrome 109 cannot parse.
+   Because the daisyUI token already changes per theme, one definition
+   covers all six - there is no light/dark split to keep in sync.
    ============================================ */
 :root {
-	--control-danger-bg: var(--color-danger-500);
-	--control-danger-bg-hover: var(--color-danger-600);
-	--control-success-bg: var(--color-success-500);
-	--control-success-bg-hover: var(--color-success-600);
-	--control-warning-bg: var(--color-warning-500);
-	--control-warning-bg-hover: var(--color-warning-600);
-	--control-info-bg: var(--color-info-500);
-	--control-info-bg-hover: var(--color-info-600);
-	--control-brand-bg: var(--color-brand-500);
-	--control-brand-bg-hover: var(--color-brand-600);
-	--control-vip-bg: var(--color-vip-500);
-	--control-vip-bg-hover: var(--color-vip-600);
-	--control-knob: var(--color-surface-0);
-	--control-track: var(--color-surface-200);
-}
+	--control-brand-bg: var(--color-primary);
+	--control-brand-bg-hover: rgb(
+		var(--color-primary-rgb) /
+		calc(var(--color-primary-a) * 0.9)
+	);
+	--control-danger-bg: var(--color-error);
+	--control-danger-bg-hover: rgb(
+		var(--color-error-rgb) /
+		calc(var(--color-error-a) * 0.9)
+	);
+	--control-success-bg: var(--color-success);
+	--control-success-bg-hover: rgb(
+		var(--color-success-rgb) /
+		calc(var(--color-success-a) * 0.9)
+	);
+	--control-warning-bg: var(--color-warning);
+	--control-warning-bg-hover: rgb(
+		var(--color-warning-rgb) /
+		calc(var(--color-warning-a) * 0.9)
+	);
+	--control-info-bg: var(--color-info);
+	--control-info-bg-hover: rgb(var(--color-info-rgb) / calc(var(--color-info-a) * 0.9));
+	--control-vip-bg: var(--color-vip-600);
+	--control-vip-bg-hover: rgb(var(--color-vip-rgb) / calc(var(--color-vip-a) * 0.9));
 
-[data-theme="dark"],
-[data-theme="glass"],
-[data-theme="icy"],
-[data-theme="zarna"],
-[data-theme="esteghlal"] {
-	--control-danger-bg-hover: var(--color-danger-400);
-	--control-success-bg-hover: var(--color-success-400);
-	--control-warning-bg-hover: var(--color-warning-400);
-	--control-info-bg-hover: var(--color-info-400);
-	--control-brand-bg-hover: var(--color-brand-400);
-	--control-vip-bg-hover: var(--color-vip-400);
-	--control-track: var(--color-surface-700);
+	--control-knob: var(--color-base-100);
+	--control-track: rgb(
+		var(--color-base-content-rgb) /
+		calc(var(--color-base-content-a) * 0.2)
+	);
 }

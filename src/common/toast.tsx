@@ -116,37 +116,37 @@ const TOAST_THEMES: Record<
 		messageClass: 'text-neutral-300',
 	},
 	error: {
-		container: 'bg-[#2a1317]/95 border-danger-800 text-white',
+		container: 'bg-[#2a1317]/95 border-[#fb2c3640] text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-white bg-danger-500 rounded-full shadow-sm select-none shrink-0">
+			<div className="flex items-center justify-center w-8 h-8 text-white bg-[#fb2c36] rounded-full shadow-sm select-none shrink-0">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
 		title: 'خطا',
 		actionText: 'باشه',
-		messageClass: 'text-danger-200',
+		messageClass: 'text-[#ffc9c9d9]',
 	},
 	success: {
-		container: 'bg-[#142618]/95 border-success-800 text-white',
+		container: 'bg-[#142618]/95 border-[#00bc7d40] text-white',
 		icon: (
-			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-success-500 text-black shadow-sm select-none">
+			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
 				<Icon name="check" size={15} className="stroke-3" />
 			</div>
 		),
 		title: 'موفقیت آمیز',
 		actionText: 'تایید',
-		messageClass: 'text-success-200',
+		messageClass: 'text-[#a4f4cfd9]',
 	},
 	warning: {
-		container: 'bg-[#2b2210]/95 border-warning-800 text-white',
+		container: 'bg-[#2b2210]/95 border-[#fe9a0040] text-white',
 		icon: (
-			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-warning-400">
+			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-[#fe9a00]">
 				<Icon name="exclamation" size={13} />
 			</div>
 		),
 		title: 'هشدار',
 		actionText: 'متوجه شدم',
-		messageClass: 'text-warning-200',
+		messageClass: 'text-[#fee685d9]',
 	},
 }
 
@@ -241,7 +241,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 						toast.remove(id)
 						onCancel()
 					}}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-danger-900 hover:text-danger-300 active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-over-image hover:bg-[#fb2c3633] hover:text-[#ffa2a2] active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
 				>
 					<Icon name="close" size={11} />
 					<span>بازگشت</span>

@@ -88,10 +88,6 @@
 	background-color: var(--surface-overlay);
 }
 
-@utility bg-brand-subtle {
-	background-color: var(--surface-brand-subtle);
-}
-
 /* --------------------------------------------
    BORDER
    -------------------------------------------- */

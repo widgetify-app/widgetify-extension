@@ -21,6 +21,18 @@
 	--color-warning-content: #793205;
 	--color-error: #ff627d;
 	--color-error-content: #4d0218;
+	--color-base-content-rgb: 70 70 71;
+	--color-base-content-a: 1;
+	--color-primary-rgb: 83 109 254;
+	--color-primary-a: 1;
+	--color-error-rgb: 255 98 125;
+	--color-error-a: 1;
+	--color-success-rgb: 0 211 144;
+	--color-success-a: 1;
+	--color-warning-rgb: 252 183 0;
+	--color-warning-a: 1;
+	--color-info-rgb: 0 186 254;
+	--color-info-a: 1;
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
