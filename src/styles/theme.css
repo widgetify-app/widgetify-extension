@@ -59,6 +59,24 @@
 	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
 
 	/* --------------------------------------------
+     LAYERS - the stacking order, named.
+
+     The first five are the plain z-10/20/30/60 the app already writes by
+     hand; naming them changes no stacking, it just says what the number
+     meant. Popover is pinned at 9999 because several portals hard-code
+     9999 or 99999 inline and reordering them is not a rename.
+     -------------------------------------------- */
+	--z-raised: 10;
+	--z-sticky: 20;
+	--z-drag: 30;
+	--z-nav: 60;
+	--z-backdrop: 100;
+	--z-sheet: 200;
+	--z-modal: 300;
+	--z-popover: 9999;
+	--z-toast: 10000;
+
+	/* --------------------------------------------
      SURFACE - Neutral grey. 800 is main's light base-content; 950 is its dark base-100.
      -------------------------------------------- */
 	--color-surface-0: #ffffff;
