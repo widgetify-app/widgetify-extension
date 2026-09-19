@@ -21,13 +21,6 @@
 	--color-warning-content: #793205;
 	--color-error: #ff627d;
 	--color-error-content: #4d0218;
-	--color-base-content-rgb: 70, 70, 71;
-	--color-primary-rgb: 83, 109, 254;
-	--color-secondary-rgb: 124, 141, 240;
-	--color-error-rgb: 255, 98, 125;
-	--color-success-rgb: 0, 211, 144;
-	--color-warning-rgb: 252, 183, 0;
-	--color-info-rgb: 0, 186, 254;
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
@@ -36,4 +29,21 @@
 	--border: 1px;
 	--depth: 1;
 	--noise: 0;
+}
+
+/* The channel triples live out here on purpose. daisyUI parses the
+   @plugin block and drops any value with a comma in it, so a
+   `--color-...-rgb: 1, 2, 3` written inside it never reaches the
+   stylesheet - and every rgba() built on it is invalid at
+   computed-value time, which makes the declaration vanish and the
+   element fall back to an inherited colour (a border with no
+   border-color falls back to currentColor, at full strength). */
+[data-theme="light"] {
+	--color-base-content-rgb: 70, 70, 71;
+	--color-primary-rgb: 83, 109, 254;
+	--color-secondary-rgb: 124, 141, 240;
+	--color-error-rgb: 255, 98, 125;
+	--color-success-rgb: 0, 211, 144;
+	--color-warning-rgb: 252, 183, 0;
+	--color-info-rgb: 0, 186, 254;
 }
