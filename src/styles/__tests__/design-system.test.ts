@@ -3,7 +3,6 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, sep } from 'node:path'
 
 const STYLES = 'src/styles'
-const TOKENS = join(STYLES, 'tokens')
 const THEMES = join(STYLES, 'theme')
 
 function walk(dir: string, ext: string): string[] {
@@ -80,45 +79,43 @@ describe('stylesheets stay parseable on Chrome 109', () => {
 	})
 })
 
-describe('token layer', () => {
-	const tokenFiles = walk(TOKENS, '.css').filter((p) => !p.endsWith('index.css'))
+describe('colour lives in one place', () => {
+	const theme = readFileSync(join(STYLES, 'theme.css'), 'utf8')
 
-	it('declares every token as a ramp step or an explicit exception', () => {
-		// Allowed to hold a literal: over-image chrome, which is theme independent
-		// by definition, and elevation, where the value is a geometry plus a
-		// shadow colour rather than a ramp step.
-		const allowLiteral =
-			/^--(over-image-|elevation-|control-knob|surface-overlay|disabled-|focus-ring-(width|offset)|z-|line-height-)/
+	it('declares accents as a ramp step or a plain rgba of a theme token', () => {
+		const accents = theme.slice(
+			theme.indexOf('ACCENTS'),
+			theme.indexOf('CONTENT COLOURS')
+		)
 		const bad: string[] = []
-		for (const path of tokenFiles) {
-			for (const m of readFileSync(path, 'utf8').matchAll(
-				/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/gm
-			)) {
-				const [, name, value] = m
-				const isColour = /#|rgba?\(/.test(value)
-				if (
-					isColour &&
-					!allowLiteral.test(name) &&
-					!value.includes('var(--color-')
-				) {
-					bad.push(`${path} ${name}: ${value}`)
-				}
-			}
+		for (const m of accents.matchAll(/^\s*(--color-[a-z0-9-]+)\s*:\s*([^;]+);/gm)) {
+			const [, name, value] = m
+			// -rgb holds channels, not a colour
+			if (name.endsWith('-rgb')) continue
+			const ok =
+				value.startsWith('rgba(var(--color-') ||
+				value.startsWith('var(--color-') ||
+				/^#[0-9a-f]{6}$/i.test(value.trim())
+			if (!ok) bad.push(`${name}: ${value}`)
 		}
 		expect(bad).toEqual([])
 	})
 
-	it('has every token read by a utility or a stylesheet', () => {
-		const declared = tokenFiles.flatMap((p) => [
-			...readFileSync(p, 'utf8').matchAll(/^\s*(--[a-z0-9-]+)\s*:/gm),
-		])
-		const all = [...walk(STYLES, '.css'), 'src/index.css']
-			.map((p) => readFileSync(p, 'utf8'))
-			.join('\n')
-		const unread = declared
-			.map((m) => m[1])
-			.filter((token) => all.split(`var(${token})`).length - 1 < 1)
-		expect(unread).toEqual([])
+	it('keeps utilities.css to names, not colour literals', () => {
+		// Two exceptions: over-image chrome follows no theme, and the modal
+		// scrim is a fixed black. Everything else must read a token.
+		const css = readFileSync(join(STYLES, 'utilities.css'), 'utf8')
+		const bad: string[] = []
+		for (const block of css.split('@utility').slice(1)) {
+			const name = block.trim().split(/\s/)[0]
+			// over-image follows no theme; bg-overlay is a fixed scrim
+			if (name.includes('over-image') || name === 'bg-overlay') continue
+			for (const m of block.matchAll(/:\s*(#[0-9a-f]{3,8}|rgba?\([\d\s,.]+\))/gi)) {
+				if (m[1].startsWith('rgba(var')) continue
+				bad.push(`${name}: ${m[1]}`)
+			}
+		}
+		expect(bad).toEqual([])
 	})
 })
 
