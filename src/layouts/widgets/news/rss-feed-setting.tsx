@@ -237,7 +237,7 @@ export const RssFeedSetting = () => {
 								}
 								onClick={() => addSuggestedFeed(feed)}
 							>
-								<span className={'font-medium text-light text-center'}>
+								<span className={'font-medium text-center'}>
 									{feed.name}
 								</span>
 							</div>

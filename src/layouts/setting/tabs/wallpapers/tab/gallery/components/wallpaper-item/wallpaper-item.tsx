@@ -38,8 +38,8 @@ function WallpaperItemFu({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-brand-subtle ring-offset-blue-100'
-		: 'ring-1 ring-subtle hover:ring-brand-subtle'
+		? 'ring-2 ring-brand-muted ring-offset-widget'
+		: 'ring-1 ring-subtle hover:ring-brand-muted'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -88,8 +88,8 @@ function WallpaperItemFu({
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="absolute inset-0 flex items-center justify-center bg-neutral-subtle rounded-xl">
-						<div className="w-5 h-5 border-2 rounded-full border-brand-subtle border-t-primary animate-spin"></div>
+					<div className="absolute inset-0 flex items-center justify-center bg-raised rounded-xl">
+						<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin"></div>
 					</div>
 				)}
 				{error && (
@@ -154,7 +154,7 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-brand-solid">
+							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-brand">
 								<Icon name="check" size={12} />
 							</div>
 						)}
