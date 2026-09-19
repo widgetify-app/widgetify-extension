@@ -99,7 +99,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-brand-subtle animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-primary border-brand-muted animate-spin"></div>
 				</div>
 			)
 		}

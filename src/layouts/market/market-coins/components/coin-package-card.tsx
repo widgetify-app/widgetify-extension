@@ -13,7 +13,7 @@ const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardProps) {
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget rounded-2xl border-subtle hover:border-brand-subtle hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget rounded-2xl border-subtle hover:border-brand-muted hover:shadow-sm group">
 			{/* Coin visual area */}
 			<div className="flex items-center justify-center py-6 bg-content">
 				<div className="flex flex-col items-center gap-2">

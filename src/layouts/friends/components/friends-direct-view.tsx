@@ -181,7 +181,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 						{isFetchingNextPage && (
 							<div className="flex justify-center py-1.5">
-								<div className="w-4 h-4 border-2 rounded-full border-brand-subtle border-t-primary animate-spin" />
+								<div className="w-4 h-4 border-2 rounded-full border-brand-muted border-t-primary animate-spin" />
 							</div>
 						)}
 					</>

@@ -88,7 +88,7 @@ export function AddWidgetOptions({
 							key={`${sizeOption.w}x${sizeOption.h}`}
 							className={cn(
 								'py-1 flex items-center gap-1',
-								isVipBadge && !isCurrentSize && 'border-vip-subtle'
+								isVipBadge && !isCurrentSize && 'border-vip-muted'
 							)}
 							selected={isCurrentSize}
 							dir="ltr"

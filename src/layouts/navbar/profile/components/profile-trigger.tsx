@@ -34,7 +34,7 @@ export function ProfileTrigger({
 			<div className="relative flex items-center justify-center cursor-pointer group">
 				{profilePercentage ? (
 					<div
-						className="absolute z-10 outline-2 outline-brand-subtle radial-progress text-brand pointer-events-none"
+						className="absolute z-10 outline-2 outline-brand-muted radial-progress text-brand pointer-events-none"
 						style={{
 							// @ts-expect-error
 							'--value': profilePercentage,

@@ -23,7 +23,7 @@ export const chipVariants = cva(
 					'bg-glass',
 					'border-content',
 					'text-muted',
-					'enabled:hover:border-brand-subtle',
+					'enabled:hover:border-brand-muted',
 					'disabled:opacity-80',
 				],
 			},

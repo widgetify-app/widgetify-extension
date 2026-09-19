@@ -62,7 +62,7 @@ export function FilterTooltip({
 								onClick={() => handleFilterSelect(option.value)}
 								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-lg transition-colors ${
 									value === option.value
-										? 'bg-brand-subtle text-primary border border-brand-subtle'
+										? 'bg-brand-subtle text-primary border border-brand-muted'
 										: 'hover:bg-raised text-content'
 								}`}
 							>

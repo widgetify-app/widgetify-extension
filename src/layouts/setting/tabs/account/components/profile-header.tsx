@@ -124,7 +124,7 @@ export const ProfileHeader = ({
 							placeholder={user?.name || 'کاربر'}
 							size="xl"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-brand-subtle"
+							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-brand-muted"
 						/>
 						<button
 							type="button"

@@ -16,5 +16,5 @@
 .modal[open],
 .modal:target,
 .modal-toggle:checked + .modal {
-	background-color: var(--surface-overlay);
+	background-color: rgba(0, 0, 0, 0.4);
 }

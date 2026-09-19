@@ -5,7 +5,7 @@ export const moodOptions = [
 		label: 'ناراحتم',
 		colorClass: 'error',
 		activeClass: 'bg-error text-error-content',
-		borderClass: 'border-danger-subtle',
+		borderClass: 'border-danger-muted',
 	},
 	{
 		value: 'normal',
@@ -13,7 +13,7 @@ export const moodOptions = [
 		label: 'خستم',
 		colorClass: 'warning',
 		activeClass: 'bg-warning text-warning-content',
-		borderClass: 'border-warning-subtle',
+		borderClass: 'border-warning-muted',
 	},
 	{
 		value: 'happy',
@@ -21,7 +21,7 @@ export const moodOptions = [
 		label: 'اوکی‌ام',
 		colorClass: 'secondary',
 		activeClass: 'bg-secondary text-secondary-content',
-		borderClass: 'border-brand-subtle',
+		borderClass: 'border-brand-muted',
 	},
 	{
 		value: 'excited',
@@ -29,6 +29,6 @@ export const moodOptions = [
 		label: 'سرحالم',
 		colorClass: 'success',
 		activeClass: 'bg-success text-success-content',
-		borderClass: 'border-success-subtle',
+		borderClass: 'border-success-muted',
 	},
 ]

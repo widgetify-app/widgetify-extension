@@ -25,7 +25,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					? 'opacity-65  border-content bg-raised cursor-not-allowed saturate-50'
 					: isSelected
 						? 'border-primary bg-brand-subtle ring-1 ring-primary shadow-xs cursor-pointer'
-						: 'border-subtle bg-raised hover:border-brand-subtle hover:bg-raised cursor-pointer'
+						: 'border-subtle bg-raised hover:border-brand-muted hover:bg-raised cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
@@ -75,7 +75,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 							? 'border-content bg-raised text-muted'
 							: isSelected
 								? 'border-primary bg-primary text-primary-content'
-								: 'border-content bg-raised group-hover:border-brand-subtle'
+								: 'border-content bg-raised group-hover:border-brand-muted'
 					)}
 				>
 					{isClaimed ? (

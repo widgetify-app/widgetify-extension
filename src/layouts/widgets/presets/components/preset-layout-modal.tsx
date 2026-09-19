@@ -102,8 +102,8 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 										className={cn(
 											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-raised shadow-2xs transition-ui hover:shadow-md',
 											preset.isVip
-												? 'border-vip-subtle hover:border-vip-subtle'
-												: 'border-subtle hover:border-brand-subtle'
+												? 'border-vip-muted hover:border-vip-muted'
+												: 'border-subtle hover:border-brand-muted'
 										)}
 									>
 										<PresetCanvasPreview preset={preset} />
@@ -121,7 +121,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														className="mt-0.5"
 													/>
 												) : (
-													<span className="mt-0.5 shrink-0 rounded-full border border-success-subtle bg-success-subtle px-2 py-0.5 text-[9px] font-bold text-success">
+													<span className="mt-0.5 shrink-0 rounded-full border border-success-muted bg-success-subtle px-2 py-0.5 text-[9px] font-bold text-success">
 														رایگان
 													</span>
 												)}

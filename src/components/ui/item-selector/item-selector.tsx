@@ -33,8 +33,8 @@ export function ItemSelector({
 				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
 				className,
 				isActive
-					? 'border-brand-subtle bg-brand-subtle'
-					: 'bg-raised border-content hover:!border-brand-subtle hover:!bg-brand-subtle'
+					? 'border-brand-muted bg-brand-subtle'
+					: 'bg-raised border-content hover:!border-brand-muted hover:!bg-brand-subtle'
 			)}
 			style={style}
 		>

@@ -88,7 +88,7 @@ export function WidgetContextMenu({
 									selected={isCurrent}
 									className={cn(
 										'py-0.5 flex items-center justify-center gap-0.5',
-										isSizeVip && !isCurrent && 'border-vip-subtle'
+										isSizeVip && !isCurrent && 'border-vip-muted'
 									)}
 								>
 									<span>

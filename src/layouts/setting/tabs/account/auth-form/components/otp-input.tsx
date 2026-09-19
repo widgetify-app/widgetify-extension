@@ -109,7 +109,7 @@ const OtpInput: React.FC<OtpInputProps> = ({ otp, setOtp, isError }) => {
 						isError
 							? 'border-danger-strong bg-danger-muted text-error'
 							: 'border-content bg-content'
-					} rounded-lg md:rounded-xl text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-brand-subtle transition-all duration-200 hover:border-brand-subtle active:scale-95`}
+					} rounded-lg md:rounded-xl text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-brand-muted transition-all duration-200 hover:border-brand-muted active:scale-95`}
 				/>
 			))}
 		</div>

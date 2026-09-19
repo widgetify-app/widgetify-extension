@@ -14,7 +14,7 @@ export const AccountVerificationStatus = ({
 }: AccountVerificationStatusProps) => {
 	return (
 		<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
-			<div className="flex items-center justify-between p-3 border rounded-2xl bg-warning-subtle border-warning-subtle">
+			<div className="flex items-center justify-between p-3 border rounded-2xl bg-warning-subtle border-warning-muted">
 				<div className="flex items-center gap-3">
 					<Icon name="mail" className="text-warning" size={24} />
 					<div>

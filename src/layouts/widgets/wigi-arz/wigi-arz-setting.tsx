@@ -165,7 +165,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 														'transition-ui active:scale-98 hover:scale-95',
 														'focus-visible:focus-ring',
 														isSelected
-															? 'border-brand-subtle bg-brand-subtle text-content'
+															? 'border-brand-muted bg-brand-subtle text-content'
 															: 'border-content bg-content hover:!bg-brand-subtle'
 													)}
 												>

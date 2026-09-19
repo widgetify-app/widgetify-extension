@@ -99,7 +99,7 @@ export default function JalaliDatePicker({
 					className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-content"
 				>
 					<div
-						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-content rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-brand-subtle! cursor-pointer'}`}
+						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-content rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-brand-muted! cursor-pointer'}`}
 					>
 						<div className="flex items-center gap-3">
 							<Icon
@@ -247,7 +247,7 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 
 	return (
 		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-content">
-			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-brand-subtle bg-brand-subtle" />
+			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-brand-muted bg-brand-subtle" />
 
 			<div
 				ref={containerRef}

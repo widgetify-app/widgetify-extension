@@ -103,7 +103,7 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-danger-subtle bg-danger-subtle backdrop-blur-sm animate-in fade-in-0">
+					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-danger-muted bg-danger-subtle backdrop-blur-sm animate-in fade-in-0">
 						<div className="font-medium text-error">
 							خطا در دریافت اطلاعات
 						</div>

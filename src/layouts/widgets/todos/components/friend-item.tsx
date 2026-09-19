@@ -15,7 +15,7 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 				<div className="relative w-5 h-5 overflow-visible ">
 					<div
 						className={`w-full h-full rounded-full overflow-hidden ${
-							isOwner ? 'ring-2 ring-warning-subtle' : 'ring-2 ring-content'
+							isOwner ? 'ring-2 ring-warning-muted' : 'ring-2 ring-content'
 						}`}
 					>
 						<AvatarComponent

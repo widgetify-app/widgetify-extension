@@ -30,7 +30,7 @@ export function GalleryBookmarkIconItem({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary ring-offset-2 ring-offset-widget border-primary'
-		: 'border-subtle hover:border-brand-subtle hover:bg-raised'
+		: 'border-subtle hover:border-brand-muted hover:bg-raised'
 
 	return (
 		<div
@@ -48,7 +48,7 @@ export function GalleryBookmarkIconItem({
 			/>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full h-full">
-					<div className="w-5 h-5 border-2 rounded-full border-brand-subtle border-t-primary animate-spin" />
+					<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin" />
 				</div>
 			)}
 			{error && (
@@ -95,7 +95,7 @@ export function GalleryBookmarkIconItem({
 					)}
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-solid backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-over-image">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-over-image">
 								<Icon name="diamond" size={9} />
 								<span>رایگان با پرو</span>
 							</span>

@@ -80,7 +80,7 @@ export function TourTooltip({
 					<button
 						type="button"
 						{...primaryProps}
-						className="px-4 py-1.5 rounded-xl bg-primary text-primary-content ring-0! outline-0! font-bold text-xs hover:bg-brand-solid transition-all shadow-md active:scale-95 cursor-pointer"
+						className="px-4 py-1.5 rounded-xl bg-primary text-primary-content ring-0! outline-0! font-bold text-xs hover:bg-brand transition-all shadow-md active:scale-95 cursor-pointer"
 					>
 						{isLastStep ? 'پایان' : 'بعدی'}
 					</button>

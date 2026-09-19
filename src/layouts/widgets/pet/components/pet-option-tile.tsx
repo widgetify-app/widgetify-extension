@@ -18,8 +18,8 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 			className={cn(
 				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
 				selected
-					? 'border-brand-subtle bg-brand-subtle'
-					: 'border-content bg-raised hover:bg-brand-subtle hover:border-brand-subtle',
+					? 'border-brand-muted bg-brand-subtle'
+					: 'border-content bg-raised hover:bg-brand-subtle hover:border-brand-muted',
 				className
 			)}
 		>

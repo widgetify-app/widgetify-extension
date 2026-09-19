@@ -121,7 +121,7 @@ export function DayItem({
 					<span
 						className={cn(
 							'w-0.5 h-0.5 rounded-full shadow-sm',
-							isHolidayEvent ? 'bg-error' : 'bg-brand-solid'
+							isHolidayEvent ? 'bg-error' : 'bg-brand'
 						)}
 					/>
 				) : null}

@@ -233,7 +233,7 @@ const AuthForm = () => {
 	return (
 		<div className="flex flex-col w-full px-1 py-1">
 			{authStatus?.content && step === 'identifier' && (
-				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-subtle">
+				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-muted">
 					<Icon name="alert" className="w-4 h-4 shrink-0" />
 					<span>{authStatus.content}</span>
 				</div>
@@ -327,7 +327,7 @@ const AuthForm = () => {
 					</div>
 
 					{error.api && (
-						<div className="px-3 py-2 mb-3 text-xs border bg-danger-subtle text-error border-danger-subtle rounded-xl">
+						<div className="px-3 py-2 mb-3 text-xs border bg-danger-subtle text-error border-danger-muted rounded-xl">
 							{error.api}
 						</div>
 					)}

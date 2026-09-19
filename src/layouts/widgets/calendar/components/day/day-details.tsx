@@ -211,7 +211,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								className={cn(
 									'flex items-center w-full gap-1 px-2 outline rounded-xl min-h-8',
 									event.isHoliday
-										? 'bg-danger-subtle text-error outline-danger-subtle'
+										? 'bg-danger-subtle text-error outline-danger-muted'
 										: 'text-content outline-content'
 								)}
 							>

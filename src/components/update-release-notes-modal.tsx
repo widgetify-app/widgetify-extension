@@ -226,7 +226,7 @@ export const UpdateReleaseNotesModal = ({
 							</div>
 
 							{isLastStep ? (
-								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-brand-subtle border border-brand-subtle text-content">
+								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-brand-subtle border border-brand-muted text-content">
 									<div className="flex items-center gap-2">
 										<span className="text-base">📸</span>
 										<span className="text-xs font-bold text-primary">

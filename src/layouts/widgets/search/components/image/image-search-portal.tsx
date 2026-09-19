@@ -138,7 +138,7 @@ export function ImageSearchPortal({
 								const file = e.dataTransfer.files[0]
 								if (file) handleUpload(file)
 							}}
-							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-subtle rounded-2xl transition-ui hover:border-brand-subtle hover:bg-brand-subtle focus-visible:focus-ring"
+							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-subtle rounded-2xl transition-ui hover:border-brand-muted hover:bg-brand-subtle focus-visible:focus-ring"
 							onClick={() => fileInputRef.current?.click()}
 						>
 							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-raised group-hover:text-primary">

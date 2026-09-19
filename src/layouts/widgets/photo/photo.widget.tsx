@@ -179,7 +179,7 @@ export function PhotoWidget({
 					>
 						<span
 							aria-hidden="true"
-							className="w-5 h-5 border-2 rounded-full border-brand-subtle border-t-primary animate-spin"
+							className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin"
 						/>
 						<span className="text-xs font-medium text-content">
 							در حال بارگذاری...

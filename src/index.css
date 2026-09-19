@@ -2,7 +2,7 @@
 @plugin "daisyui";
 @import "./styles/theme.css";
 @import "./styles/theme-colors.css";
-@import "./styles/tokens/index.css";
+@import "./styles/elevation.css";
 @import "./styles/utilities.css";
 @import "./styles/typography.css";
 @import "./styles/legacy.css";
@@ -150,12 +150,12 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .scrollbar-thumb::-webkit-scrollbar-thumb {
-	background: var(--border-strong);
+	background: rgba(var(--color-base-content-rgb), 0.2);
 	border-radius: 2px;
 }
 
 .scrollbar-thumb::-webkit-scrollbar-thumb:hover {
-	background: var(--text-faint);
+	background: rgba(var(--color-base-content-rgb), 0.4);
 }
 
 .scrollbar-none {

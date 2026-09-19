@@ -74,8 +74,8 @@ export function Calendar2x1() {
 									!isSelected &&
 										isToday &&
 										(isHoliday
-											? 'bg-danger-subtle text-error ring-danger-subtle'
-											: 'bg-brand-subtle text-primary ring-brand-subtle'),
+											? 'bg-danger-subtle text-error ring-danger-muted'
+											: 'bg-brand-subtle text-primary ring-brand-muted'),
 									!isSelected &&
 										!isToday &&
 										'bg-content hover:bg-content',

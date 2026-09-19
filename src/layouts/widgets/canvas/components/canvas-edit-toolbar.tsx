@@ -27,7 +27,7 @@ export function CanvasEditToolbar({
 				<button
 					type="button"
 					onClick={onAddWidget}
-					className="px-3 py-1.5 text-xs font-bold rounded-xl bg-primary text-primary-content hover:bg-brand-solid active:scale-95 transition-all flex items-center gap-1 cursor-pointer shadow-sm whitespace-nowrap"
+					className="px-3 py-1.5 text-xs font-bold rounded-xl bg-primary text-primary-content hover:bg-brand active:scale-95 transition-all flex items-center gap-1 cursor-pointer shadow-sm whitespace-nowrap"
 				>
 					<span>+</span>
 					<span>افزودن ویجت</span>

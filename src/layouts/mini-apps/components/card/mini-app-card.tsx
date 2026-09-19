@@ -17,8 +17,8 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
-						? `border-brand-subtle bg-linear-to-t from-brand-subtle via-brand-subtle to-transparent shadow-md shadow-brand`
-						: `border-subtle bg-content bg-glass! hover:bg-brand-subtle hover:border-brand-subtle`
+						? `border-brand-muted bg-linear-to-t from-brand-subtle via-brand-subtle to-transparent shadow-md shadow-brand`
+						: `border-subtle bg-content bg-glass! hover:bg-brand-subtle hover:border-brand-muted`
 				}
             `}
 		>

@@ -51,7 +51,7 @@ export function TopUserItem({
 				<AvatarComponent
 					url={user.avatar}
 					size="sm"
-					className="outline-2 outline-offset-0 outline-brand-subtle"
+					className="outline-2 outline-offset-0 outline-brand-muted"
 				/>
 				<div className="relative flex-1 min-w-0">
 					<p className="text-sm font-medium truncate text-content">

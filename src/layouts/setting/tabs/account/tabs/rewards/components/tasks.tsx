@@ -14,7 +14,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">
-						<div className="w-8 h-8 mx-auto border-4 rounded-full border-brand-subtle border-t-primary animate-spin"></div>
+						<div className="w-8 h-8 mx-auto border-4 rounded-full border-brand-muted border-t-primary animate-spin"></div>
 						<p className="mt-4 text-sm text-muted">در حال بارگذاری...</p>
 					</div>
 				) : tasks.length > 0 ? (
@@ -24,7 +24,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								key={index}
 								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
 									taskItem.isDone
-										? 'bg-gradient-to-r from-success-subtle to-success-subtle border border-success-subtle'
+										? 'bg-gradient-to-r from-success-subtle to-success-subtle border border-success-muted'
 										: 'bg-gradient-to-r from-widget to-content border border-content'
 								}`}
 							>

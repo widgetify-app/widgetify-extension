@@ -8,21 +8,21 @@ const priorityOptions = [
 		label: 'کم اهمیت',
 		color: 'text-success',
 		bg: 'bg-success-subtle',
-		border: 'border-success-subtle',
+		border: 'border-success-muted',
 	},
 	{
 		value: TodoPriority.Medium,
 		label: 'متوسط',
 		color: 'text-warning',
 		bg: 'bg-warning-subtle',
-		border: 'border-warning-subtle',
+		border: 'border-warning-muted',
 	},
 	{
 		value: TodoPriority.High,
 		label: 'مهم',
 		color: 'text-error',
 		bg: 'bg-danger-subtle',
-		border: 'border-danger-subtle',
+		border: 'border-danger-muted',
 	},
 ]
 

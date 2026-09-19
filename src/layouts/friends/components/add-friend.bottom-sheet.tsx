@@ -92,7 +92,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				</div>
 
 				{!canSendRequest && (
-					<div className="flex items-start gap-3 p-4 border rounded-xl bg-warning-subtle border-warning-subtle">
+					<div className="flex items-start gap-3 p-4 border rounded-xl bg-warning-subtle border-warning-muted">
 						<Icon
 							name="alert"
 							className="w-5 h-5 text-warning flex-shrink-0 mt-0.5"

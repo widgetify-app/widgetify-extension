@@ -137,7 +137,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-all',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer hover:bg-content active:scale-[0.99]',
-				isNow && 'bg-brand-subtle border border-brand-subtle'
+				isNow && 'bg-brand-subtle border border-brand-muted'
 			)}
 		>
 			<span className="flex items-center justify-between gap-1.5">

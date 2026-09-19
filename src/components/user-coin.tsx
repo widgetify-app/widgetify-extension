@@ -8,7 +8,7 @@ interface Prop {
 export function UserCoin({ coins, title }: Prop) {
 	return (
 		<Tooltip content={title || 'ویج‌کوین'}>
-			<div className="relative overflow-hidden transition-all duration-300 transform border bg-gradient-to-r from-warning-subtle via-warning-subtle to-warning-subtle border-warning-subtle rounded-2xl">
+			<div className="relative overflow-hidden transition-all duration-300 transform border bg-gradient-to-r from-warning-subtle via-warning-subtle to-warning-subtle border-warning-muted rounded-2xl">
 				<div className="absolute inset-0 opacity-50 bg-gradient-to-r from-warning-subtle to-transparent"></div>
 
 				<div className="relative flex items-center gap-2 px-2 py-0.5">

@@ -46,7 +46,7 @@ export function UploadEmpty({
 							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-content',
 							isDragging
 								? 'border-primary bg-brand-subtle text-primary'
-								: 'border-content hover:border-brand-subtle text-muted hover:text-content'
+								: 'border-content hover:border-brand-muted text-muted hover:text-content'
 						)}
 					>
 						{isUploading ? (
@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-subtle border border-vip-subtle px-2.5 py-0.5 rounded-xl hover:bg-vip-subtle active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-subtle border border-vip-muted px-2.5 py-0.5 rounded-xl hover:bg-vip-subtle active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>

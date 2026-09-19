@@ -102,7 +102,7 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="px-3 py-2.5 rounded-2xl border border-info-subtle bg-info-subtle">
+				<div className="px-3 py-2.5 rounded-2xl border border-info-muted bg-info-subtle">
 					<p className="text-[11px] text-info">
 						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
 						می‌شوند.

@@ -25,7 +25,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-primary ring-offset-2 ring-offset-widget'
-		: 'ring-1 ring-subtle hover:ring-brand-subtle'
+		: 'ring-1 ring-subtle hover:ring-brand-muted'
 
 	return (
 		<div
@@ -35,7 +35,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full min-h-28 bg-raised">
-					<div className="w-5 h-5 border-2 rounded-full border-brand-subtle border-t-primary animate-spin" />
+					<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin" />
 				</div>
 			)}
 
@@ -90,7 +90,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 									: 'رایگان برای کاربران پرو'
 							}
 						>
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-solid backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-over-image">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-over-image">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>

@@ -188,7 +188,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 				aria-label={`${title}، تمام روز`}
 				className={cn(
 					'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-					'bg-brand-subtle border border-brand-subtle text-primary focus-visible:focus-ring',
+					'bg-brand-subtle border border-brand-muted text-primary focus-visible:focus-ring',
 					hasAction && 'cursor-pointer hover:bg-brand-subtle'
 				)}
 			>
@@ -217,7 +217,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 				'bg-content hover:bg-content border border-subtle',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
-				isNow && 'ring-1 ring-brand-subtle bg-brand-subtle'
+				isNow && 'ring-1 ring-brand-muted bg-brand-subtle'
 			)}
 		>
 			<span

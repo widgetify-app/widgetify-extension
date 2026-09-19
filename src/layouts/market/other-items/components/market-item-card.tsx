@@ -43,7 +43,7 @@ export function MarketItemCard({
 	}
 
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget rounded-2xl border-subtle hover:border-brand-subtle hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget rounded-2xl border-subtle hover:border-brand-muted hover:shadow-sm group">
 			{/* Preview area */}
 			<div className="relative overflow-hidden bg-content flex-shrink-0 min-h-[80px]">
 				<RenderPreview

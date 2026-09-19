@@ -29,15 +29,15 @@ export const PRIORITY_LABELS: Record<string, string> = {
 
 export const PRIORITY_BORDER_CLASS: Record<string, string> = {
 	high: 'border-error!',
-	medium: 'border-warning-subtle!',
-	low: 'border-success-subtle!',
+	medium: 'border-warning-muted!',
+	low: 'border-success-muted!',
 	default: 'border-primary!',
 }
 
 export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
 	high: 'border-error! bg-error!',
-	medium: 'border-warning-subtle! bg-warning!',
-	low: 'border-success-subtle! bg-success!',
+	medium: 'border-warning-muted! bg-warning!',
+	low: 'border-success-muted! bg-success!',
 	default: 'border-primary! bg-primary!',
 }
 
