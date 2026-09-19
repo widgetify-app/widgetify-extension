@@ -100,7 +100,7 @@ export function BrowserBookmark() {
 
 				<div
 					aria-hidden="true"
-					className="self-center w-px h-4 mx-1 bg-raised shrink-0"
+					className="self-center w-px h-4 mx-1 bg-hovered shrink-0"
 				/>
 
 				<div className="flex flex-row items-center gap-1 flex-nowrap">

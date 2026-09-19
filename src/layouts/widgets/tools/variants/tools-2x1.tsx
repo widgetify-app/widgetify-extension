@@ -18,7 +18,7 @@ export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 					key={tab.id}
 					type="button"
 					onClick={() => onSelectTab(tab.id)}
-					className="flex flex-col items-center justify-center gap-1 p-1.5 border rounded-xl cursor-pointer bg-raised border-subtle transition-ui hover:bg-hovered focus-visible:focus-ring"
+					className="flex flex-col items-center justify-center gap-1 p-1.5 border rounded-xl cursor-pointer bg-subtle border-subtle transition-ui hover:bg-hovered focus-visible:focus-ring"
 				>
 					<Icon
 						name={tab.icon}

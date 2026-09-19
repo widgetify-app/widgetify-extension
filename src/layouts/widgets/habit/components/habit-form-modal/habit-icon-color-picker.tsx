@@ -30,7 +30,7 @@ const EmojiItem = React.memo<EmojiItemProps>(({ emoji, isSelected, onSelect }) =
 				'w-7.5 h-7.5 flex items-center justify-center rounded-xl text-base transition-colors cursor-pointer select-none',
 				isSelected
 					? 'bg-primary text-primary-content shadow-xs'
-					: 'bg-transparent text-content hover:bg-raised'
+					: 'bg-transparent text-content hover:bg-hovered'
 			)}
 		>
 			{emoji}
@@ -78,7 +78,7 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 
 		return (
 			<div className="grid items-stretch grid-cols-12 gap-3">
-				<div className="flex flex-col col-span-8 p-3 overflow-hidden border rounded-2xl border-content bg-raised">
+				<div className="flex flex-col col-span-8 p-3 overflow-hidden border rounded-2xl border-strong bg-subtle">
 					<div className="flex items-center justify-between mb-2">
 						<span className="text-xs font-bold text-content">شکلک</span>
 						<div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
@@ -107,7 +107,7 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 					</div>
 				</div>
 
-				<div className="flex flex-col justify-between col-span-4 p-3 border rounded-2xl border-content bg-raised">
+				<div className="flex flex-col justify-between col-span-4 p-3 border rounded-2xl border-strong bg-subtle">
 					<div className="flex items-center justify-between mb-2">
 						<span className="text-xs font-bold text-content">رنگ</span>
 						<div className="flex items-center">

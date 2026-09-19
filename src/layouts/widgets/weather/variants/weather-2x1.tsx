@@ -35,7 +35,7 @@ export const WeatherCompactRow: React.FC<WeatherCompactRowProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="rounded-full w-11 h-11 animate-pulse bg-raised"
+						className="rounded-full w-11 h-11 animate-pulse bg-hovered"
 					/>
 				)}
 

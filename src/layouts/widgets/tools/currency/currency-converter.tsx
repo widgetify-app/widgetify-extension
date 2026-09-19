@@ -51,7 +51,7 @@ export const CurrencyConverter: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 select-none">
-			<div className="relative flex flex-col gap-6 p-5 border bg-raised border-subtle rounded-2xl">
+			<div className="relative flex flex-col gap-6 p-5 border bg-subtle border-subtle rounded-2xl">
 				<div className="flex items-center justify-between gap-3">
 					<TextInput
 						type="number"

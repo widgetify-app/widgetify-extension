@@ -100,7 +100,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								<li key={preset.id} className="flex">
 									<article
 										className={cn(
-											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-raised shadow-2xs transition-ui hover:shadow-md',
+											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-subtle shadow-2xs transition-ui hover:shadow-md',
 											preset.isVip
 												? 'border-vip-muted hover:border-vip-muted'
 												: 'border-subtle hover:border-brand-muted'
@@ -140,7 +140,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 rounded-lg border border-subtle bg-raised px-1.5 py-0.5 text-[10px] font-medium text-muted"
+															className="inline-flex items-center gap-1 rounded-lg border border-subtle bg-subtle px-1.5 py-0.5 text-[10px] font-medium text-muted"
 														>
 															<Icon
 																name={definition.icon}

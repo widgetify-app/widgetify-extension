@@ -94,7 +94,7 @@ export function HabitDetailModal({
 									size="xs"
 									aria-label="گزینه‌های عادت"
 									rounded={'xl'}
-									className="w-7 h-7 p-0! text-muted hover:text-content border-content"
+									className="w-7 h-7 p-0! text-muted hover:text-content border-strong"
 								>
 									<Icon
 										name="menuOption"
@@ -107,7 +107,7 @@ export function HabitDetailModal({
 							<div className="flex flex-col p-2 border bg-content bg-glass border-subtle rounded-2xl">
 								<button
 									type="button"
-									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-raised focus-visible:focus-ring"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-hovered focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
 									<Icon name="pen" size={13} aria-hidden="true" />
@@ -163,16 +163,16 @@ export function HabitDetailModal({
 					<div className="flex flex-col gap-3 p-2">
 						<HabitStatsCards habit={habit} today={today} />
 
-						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-raised border-subtle">
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-subtle border-subtle">
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center p-1 border bg-raised rounded-2xl border-subtle">
+								<div className="flex items-center p-1 border bg-subtle rounded-2xl border-subtle">
 									<button
 										type="button"
 										onClick={() => setActiveView('contribution')}
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'contribution'
-												? 'bg-raised text-content shadow-sm'
+												? 'bg-hovered text-content shadow-sm'
 												: 'text-muted hover:text-content'
 										)}
 									>
@@ -185,7 +185,7 @@ export function HabitDetailModal({
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'calendar'
-												? 'bg-raised text-content shadow-sm'
+												? 'bg-hovered text-content shadow-sm'
 												: 'text-muted hover:text-content'
 										)}
 									>

@@ -46,7 +46,7 @@ export function UploadEmpty({
 							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-content',
 							isDragging
 								? 'border-primary bg-brand-subtle text-primary'
-								: 'border-content hover:border-brand-muted text-muted hover:text-content'
+								: 'border-strong hover:border-brand-muted text-muted hover:text-content'
 						)}
 					>
 						{isUploading ? (
@@ -80,7 +80,7 @@ export function UploadEmpty({
 										content={`عکس، گیف و ویدیو تا سقف ${vipMaxSize} مگابایت`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-raised px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											<span>تا {vipMaxSize} مگابایت</span>
 										</span>
 									</Tooltip>
@@ -88,7 +88,7 @@ export function UploadEmpty({
 										content="روی سرور ذخیره می‌شه و روی اکانتت ذخیره می‌مونه"
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-raised px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											<span>همگام سازی با اکانت</span>
 										</span>
 									</Tooltip>
@@ -99,7 +99,7 @@ export function UploadEmpty({
 										content={`عکس تا ${freeMaxSize} مگابایت روی همین مرورگرت ذخیره می‌شه`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-raised px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											فقط عکس (تا {freeMaxSize} مگابایت)
 										</span>
 									</Tooltip>

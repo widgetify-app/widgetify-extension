@@ -367,7 +367,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							aria-label="رنگ پیش‌فرض"
 							aria-pressed={!localPriority}
 							className={cn(
-								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-raised border border-content focus-visible:focus-ring',
+								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-hovered border border-strong focus-visible:focus-ring',
 								!localPriority
 									? 'ring-2 ring-primary ring-offset-1 scale-110'
 									: 'opacity-60 hover:opacity-100'

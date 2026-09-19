@@ -53,7 +53,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 			}}
 		>
 			<div
-				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-content"
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-strong"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -102,7 +102,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-end justify-center border-b bg-content border-content"
+						className="absolute inset-0 flex items-end justify-center border-b bg-content border-strong"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						<span
@@ -148,11 +148,11 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				</div>
 			)}
 			<div
-				className="absolute inset-x-0 z-30 bg-raised"
+				className="absolute inset-x-0 z-30 bg-hovered"
 				style={{ top: 'var(--flip-h)', height: 1, transform: 'translateY(-50%)' }}
 			/>
 			<div
-				className="absolute z-40 border bg-raised border-content"
+				className="absolute z-40 border bg-raised border-strong"
 				style={{
 					top: 'var(--flip-h)',
 					left: 'calc(var(--flip-h) * -0.07)',
@@ -164,7 +164,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				}}
 			/>
 			<div
-				className="absolute z-40 border bg-raised border-content"
+				className="absolute z-40 border bg-raised border-strong"
 				style={{
 					top: 'var(--flip-h)',
 					right: 'calc(var(--flip-h) * -0.07)',

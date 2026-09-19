@@ -217,7 +217,7 @@ export function TodoBoard({
 							viewBox="0 0 36 36"
 						>
 							<path
-								className="text-faint"
+								className="text-ghost"
 								stroke="currentColor"
 								strokeWidth="3.5"
 								fill="none"
@@ -279,7 +279,7 @@ function BoardTodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-raised"
+			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-subtle"
 		>
 			<div className="flex items-center flex-1 min-w-0 gap-2.5">
 				<div className="rounded-md size-4.5 skeleton shrink-0" />
@@ -301,7 +301,7 @@ interface StatRowProps {
 
 function StatRow({ label, value, className }: StatRowProps) {
 	return (
-		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-raised">
+		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-subtle">
 			<dt className="text-[10px] font-medium truncate text-muted">{label}</dt>
 			<dd className={cn('text-[11px] font-black tabular-nums', className)}>
 				<data value={value}>{value}</data>

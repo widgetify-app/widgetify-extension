@@ -43,7 +43,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					className={`p-2 border shrink-0 active:scale-95 transition-colors ${
 						selected
 							? `${selected.bg} ${selected.color} ${selected.border}`
-							: 'text-subtle hover:text-brand'
+							: 'text-faint hover:text-brand'
 					}`}
 				>
 					<Icon name="filterLeft" size={18} />
@@ -57,7 +57,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 						priority === undefined
 							? 'bg-brand-subtle text-primary font-medium'
-							: 'text-muted hover:bg-raised'
+							: 'text-muted hover:bg-subtle'
 					}`}
 				>
 					بدون اولویت
@@ -70,7 +70,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 						className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 							priority === option.value
 								? `${option.bg} ${option.color} font-medium`
-								: 'text-muted hover:bg-raised'
+								: 'text-muted hover:bg-subtle'
 						}`}
 					>
 						{option.label}

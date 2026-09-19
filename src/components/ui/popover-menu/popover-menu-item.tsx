@@ -42,7 +42,7 @@ export function PopoverMenuItem({
 }
 
 export function PopoverMenuDivider() {
-	return <div className="h-px my-1 bg-raised" />
+	return <div className="h-px my-1 bg-hovered" />
 }
 
 export function PopoverMenuHeader({ children }: { children: React.ReactNode }) {

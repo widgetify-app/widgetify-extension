@@ -22,7 +22,7 @@ export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props)
 			</div>
 
 			<div className="flex flex-col items-end justify-center text-left pl-1">
-				<div className="px-2 py-0.5 rounded-lg bg-raised text-[11px] text-content font-bold">
+				<div className="px-2 py-0.5 rounded-lg bg-hovered text-[11px] text-content font-bold">
 					{timezoneLabel}
 				</div>
 				<span className="text-[10px] text-muted mt-1">

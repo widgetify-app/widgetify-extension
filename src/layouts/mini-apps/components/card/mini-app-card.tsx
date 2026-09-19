@@ -18,7 +18,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 border ${
 					isSelected
 						? `border-brand-muted bg-linear-to-t from-brand-subtle via-brand-subtle to-transparent shadow-md shadow-brand`
-						: `border-subtle bg-content bg-glass! hover:bg-brand-subtle hover:border-brand-muted`
+						: `border-faint bg-content bg-glass! hover:bg-brand-subtle hover:border-brand-muted`
 				}
             `}
 		>

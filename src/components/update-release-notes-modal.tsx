@@ -150,7 +150,7 @@ export const UpdateReleaseNotesModal = ({
 										? 'bg-primary'
 										: isCompleted
 											? 'bg-brand-muted'
-											: 'bg-raised hover:bg-hovered'
+											: 'bg-hovered hover:bg-strong'
 								}`}
 								aria-label={step.title}
 							/>

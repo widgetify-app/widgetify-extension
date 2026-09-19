@@ -126,7 +126,7 @@ export function MarketOtherItems() {
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
 						<Icon name="shoppingBag" size={20} className="text-faint" />
 					</div>
-					<p className="text-xs text-subtle">خطا در بارگذاری آیتم‌ها</p>
+					<p className="text-xs text-faint">خطا در بارگذاری آیتم‌ها</p>
 				</div>
 			) : isLoading ? (
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -139,7 +139,7 @@ export function MarketOtherItems() {
 							<div className="p-3 space-y-2">
 								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
 								<div className="w-2/5 h-2.5 skeleton rounded-lg opacity-20" />
-								<div className="flex items-center justify-between pt-2 mt-1 border-t border-subtle">
+								<div className="flex items-center justify-between pt-2 mt-1 border-t border-faint">
 									<div className="w-10 h-2.5 skeleton rounded-lg opacity-20" />
 									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
 								</div>
@@ -164,9 +164,7 @@ export function MarketOtherItems() {
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
 						<Icon name="shoppingBag" size={20} className="text-faint" />
 					</div>
-					<p className="text-xs text-subtle">
-						آیتمی در این دسته‌بندی وجود ندارد
-					</p>
+					<p className="text-xs text-faint">آیتمی در این دسته‌بندی وجود ندارد</p>
 				</div>
 			)}
 

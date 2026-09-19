@@ -25,7 +25,7 @@ export function Suggestions({
 					<li
 						key={item.text}
 						className={`relative flex items-center rounded-xl transition-ui ${
-							isSelected ? 'bg-raised' : 'hover:bg-raised'
+							isSelected ? 'bg-hovered' : 'hover:bg-subtle'
 						}`}
 					>
 						<button
@@ -64,7 +64,7 @@ export function Suggestions({
 									e.stopPropagation()
 									onRemove(item.text)
 								}}
-								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-subtle transition-ui hover:bg-raised hover:text-content focus-visible:focus-ring"
+								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-faint transition-ui hover:bg-hovered hover:text-content focus-visible:focus-ring"
 							>
 								<Icon name="close" size={14} aria-hidden="true" />
 							</button>

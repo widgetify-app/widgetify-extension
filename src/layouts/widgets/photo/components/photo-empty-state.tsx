@@ -27,7 +27,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 	if (is2x2 || is2x4) {
 		return (
 			<span className="relative flex flex-col items-center justify-between w-full h-full p-3.5 text-center overflow-hidden rounded-widget bg-content bg-glass select-none">
-				<span className="relative flex items-center justify-center flex-1 w-full min-h-0 overflow-hidden rounded-xl bg-raised">
+				<span className="relative flex items-center justify-center flex-1 w-full min-h-0 overflow-hidden rounded-xl bg-subtle">
 					<img
 						src={PHOTO_PLACEHOLDER_SRC}
 						alt=""
@@ -45,7 +45,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 
 	return (
 		<span className="flex flex-col items-center justify-center w-full h-full gap-1 p-2 overflow-hidden text-center select-none rounded-widget bg-content bg-glass">
-			<span className="relative flex items-center justify-center overflow-hidden shrink-0 aspect-square h-[46cqh] rounded-xl bg-raised">
+			<span className="relative flex items-center justify-center overflow-hidden shrink-0 aspect-square h-[46cqh] rounded-xl bg-subtle">
 				<img
 					src={PHOTO_PLACEHOLDER_SRC}
 					alt=""

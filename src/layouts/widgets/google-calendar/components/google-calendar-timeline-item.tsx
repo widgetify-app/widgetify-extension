@@ -52,7 +52,7 @@ export const GoogleCalendarTimelineItem = ({
 				isNow ? 'py-1' : 'py-1.5',
 				isPast && 'opacity-35',
 				hasAction && !isPast
-					? 'cursor-pointer hover:bg-raised active:scale-[0.98]'
+					? 'cursor-pointer hover:bg-subtle active:scale-[0.98]'
 					: 'cursor-default'
 			)}
 		>

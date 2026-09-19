@@ -45,7 +45,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 					) : (
 						<div
 							aria-hidden="true"
-							className="rounded-full w-14 h-14 bg-raised animate-pulse"
+							className="rounded-full w-14 h-14 bg-hovered animate-pulse"
 						/>
 					)}
 				</div>
@@ -124,7 +124,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 							) : (
 								<div
 									aria-hidden="true"
-									className="w-5 h-5 rounded-full bg-raised animate-pulse"
+									className="w-5 h-5 rounded-full bg-hovered animate-pulse"
 								/>
 							)}
 

@@ -62,7 +62,7 @@ export function SelectFriendLayout({
 									${
 										isSelected
 											? 'bg-brand-subtle border-primary'
-											: 'hover:bg-raised border-subtle hover:border-content active:scale-95'
+											: 'hover:bg-subtle border-subtle hover:border-strong active:scale-95'
 									}
 								`}
 							>

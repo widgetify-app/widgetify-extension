@@ -13,8 +13,8 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				solid: 'border-transparent',
-				outline: 'bg-transparent hover:bg-raised',
-				ghost: 'bg-transparent border-transparent hover:bg-raised',
+				outline: 'bg-transparent hover:bg-hovered',
+				ghost: 'bg-transparent border-transparent hover:bg-hovered',
 				text: 'bg-transparent border-transparent hover:underline underline-offset-4',
 			},
 			color: {
@@ -53,7 +53,7 @@ export const buttonVariants = cva(
 			{
 				variant: 'solid',
 				color: 'base',
-				class: 'bg-content border-content hover:bg-hovered!',
+				class: 'bg-subtle border-content hover:bg-hovered!',
 			},
 			{
 				variant: 'solid',

@@ -43,7 +43,7 @@ export function FilterTooltip({
 				<Button
 					size="sm"
 					ref={filterButtonRef}
-					className={`px-2 border h-7! border-none! rounded-xl text-subtle shrink-0 active:scale-95 ${buttonClassName || ''}`}
+					className={`px-2 border h-7! border-none! rounded-xl text-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
 				</Button>
@@ -63,7 +63,7 @@ export function FilterTooltip({
 								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-lg transition-colors ${
 									value === option.value
 										? 'bg-brand-subtle text-primary border border-brand-muted'
-										: 'hover:bg-raised text-content'
+										: 'hover:bg-hovered text-content'
 								}`}
 							>
 								{option.label}

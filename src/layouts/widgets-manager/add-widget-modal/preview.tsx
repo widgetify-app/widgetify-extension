@@ -42,7 +42,7 @@ export function AddWidgetPreview({
 					'radial-gradient(circle, currentColor 1px, transparent 1px)',
 				backgroundSize: '16px 16px',
 			}}
-			className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-raised text-faint border border-subtle overflow-hidden relative min-h-47.5"
+			className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-raised text-ghost border border-subtle overflow-hidden relative min-h-47.5"
 		>
 			<div className="text-[10px] text-muted absolute top-2 right-2 font-medium bg-content px-2 py-0.5 rounded-lg border border-subtle z-10">
 				پیش‌نمایش در اندازه {previewSize.w}×{previewSize.h}

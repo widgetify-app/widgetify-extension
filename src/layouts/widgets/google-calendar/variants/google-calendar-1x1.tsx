@@ -153,7 +153,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 				</span>
 			</span>
 
-			<span className="flex items-center justify-between pt-0.5 shrink-0 border-t border-subtle">
+			<span className="flex items-center justify-between pt-0.5 shrink-0 border-t border-faint">
 				<span className="text-[8.3cqh] text-muted truncate max-w-[50px]">
 					{today.format('dddd')}
 				</span>

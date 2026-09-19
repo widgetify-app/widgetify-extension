@@ -39,7 +39,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 		})
 	}
 
-	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : 'bg-raised'
+	const bgColor = priority ? PRIORITY_BG_COLORS[priority] : 'bg-subtle'
 	return (
 		<div className="flex flex-col h-full overflow-hidden">
 			<TextInput

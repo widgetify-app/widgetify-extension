@@ -114,7 +114,7 @@ export function TodoItem({
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border border-subtle bg-raised transition-ui hover:border-content hover:bg-hovered ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border border-subtle bg-subtle transition-ui hover:border-strong hover:bg-hovered ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-lg'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
@@ -227,7 +227,7 @@ export function TodoItem({
 			</div>
 
 			{expanded && (
-				<div className="border-t border-subtle bg-raised px-2.5 py-2">
+				<div className="border-t border-faint bg-subtle px-2.5 py-2">
 					<p className="mb-0 text-[11px] leading-snug text-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
@@ -242,7 +242,7 @@ export function TodoItem({
 					)}
 					<div className="flex items-center gap-2 text-[10px]">
 						{currentTodo.category && (
-							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-content px-1.5 text-muted">
+							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-strong px-1.5 text-muted">
 								<Icon name="tags" size={9} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
@@ -267,7 +267,7 @@ export function TodoItem({
 					</div>
 
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-subtle bg-raised p-1.5 text-[11px] font-black">
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-faint bg-subtle p-1.5 text-[11px] font-black">
 							<NoteLinkRenderer note={currentTodo.description} />
 						</div>
 					)}

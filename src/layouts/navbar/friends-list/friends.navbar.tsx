@@ -46,7 +46,7 @@ export function FriendsListNavbar() {
 	return (
 		<>
 			<div
-				className="relative p-2 transition-all cursor-pointer nav-btn text-subtle hover:text-content active:scale-90"
+				className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-content active:scale-90"
 				onClick={() => clickToOpenSheet()}
 			>
 				<Icon name="friends" size={15} />

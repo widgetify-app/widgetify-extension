@@ -19,7 +19,7 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
 				selected
 					? 'border-brand-muted bg-brand-subtle'
-					: 'border-content bg-raised hover:bg-brand-subtle hover:border-brand-muted',
+					: 'border-content bg-subtle hover:bg-brand-subtle hover:border-brand-muted',
 				className
 			)}
 		>

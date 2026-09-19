@@ -73,7 +73,7 @@ export function VoiceSearchPortal({
 						type="button"
 						onClick={onClose}
 						aria-label="بستن جستجوی صوتی"
-						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-raised text-muted focus-visible:focus-ring"
+						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-hovered text-muted focus-visible:focus-ring"
 					>
 						<Icon name="close" size={22} aria-hidden="true" />
 					</button>
@@ -97,7 +97,7 @@ export function VoiceSearchPortal({
 						) : (
 							<p
 								aria-live="polite"
-								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-content font-bold' : 'text-faint font-medium'}`}
+								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-faint font-bold' : 'text-faint font-medium'}`}
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
@@ -107,13 +107,13 @@ export function VoiceSearchPortal({
 						)}
 					</div>
 
-					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-subtle">
+					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-faint">
 						<Dropdown
 							position="top-right"
 							width="120px"
 							dropdownClassName="text-xs font-bold searchbox-item"
 							trigger={
-								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-raised rounded-xl transition-ui text-xs font-bold text-muted">
+								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-hovered rounded-xl transition-ui text-xs font-bold text-muted">
 									<Icon name="settings" size={14} aria-hidden="true" />
 									{
 										languages.find((l) => l.code === selectedLanguage)

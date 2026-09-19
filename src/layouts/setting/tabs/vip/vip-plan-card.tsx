@@ -22,10 +22,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			className={cn(
 				'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all text-right min-h-24 group',
 				isClaimed
-					? 'opacity-65  border-content bg-raised cursor-not-allowed saturate-50'
+					? 'opacity-65  border-strong bg-raised cursor-not-allowed saturate-50'
 					: isSelected
 						? 'border-primary bg-brand-subtle ring-1 ring-primary shadow-xs cursor-pointer'
-						: 'border-subtle bg-raised hover:border-brand-muted hover:bg-hovered cursor-pointer'
+						: 'border-subtle bg-raised hover:border-brand-muted hover:bg-raised cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
@@ -72,10 +72,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					className={cn(
 						'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 						isClaimed
-							? 'border-content bg-raised text-muted'
+							? 'border-strong bg-raised text-muted'
 							: isSelected
 								? 'border-primary bg-primary text-primary-content'
-								: 'border-content bg-raised group-hover:border-brand-muted'
+								: 'border-strong bg-raised group-hover:border-brand-muted'
 					)}
 				>
 					{isClaimed ? (

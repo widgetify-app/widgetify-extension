@@ -21,7 +21,7 @@ export const HabitFormHeader: React.FC<HabitFormHeaderProps> = React.memo(
 				<button
 					type="button"
 					onClick={onClose}
-					className="flex items-center justify-center w-8 h-8 transition-ui cursor-pointer rounded-xl bg-raised hover:bg-hovered text-muted hover:text-content"
+					className="flex items-center justify-center w-8 h-8 transition-ui cursor-pointer rounded-xl bg-subtle hover:bg-hovered text-muted hover:text-content"
 					aria-label="بستن"
 				>
 					✕

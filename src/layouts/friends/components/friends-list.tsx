@@ -119,7 +119,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, catIdx) => (
 		<div
 			key={`loading-${catIdx}`}
-			className="w-full border h-14 rounded-xl skeleton bg-raised border-content"
+			className="w-full border h-14 rounded-xl skeleton bg-subtle border-content"
 		></div>
 	))
 }

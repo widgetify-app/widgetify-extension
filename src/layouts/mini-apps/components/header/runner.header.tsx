@@ -25,11 +25,11 @@ export function MiniAppRunnerHeader({
 		callEvent('toggle_miniApp_fullScreen', newState)
 	}
 	return (
-		<div className="sticky top-0 z-10 w-full border-b border-subtle">
+		<div className="sticky top-0 z-10 w-full border-b border-faint">
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-subtle"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
@@ -49,12 +49,12 @@ export function MiniAppRunnerHeader({
 							/>
 						)}
 						{isLoadingApp && (
-							<div className="rounded-lg w-7 h-7 skeleton bg-raised shrink-0" />
+							<div className="rounded-lg w-7 h-7 skeleton bg-hovered shrink-0" />
 						)}
 
 						<div>
 							{isLoadingApp ? (
-								<div className="w-24 h-3.5 rounded-full skeleton bg-raised" />
+								<div className="w-24 h-3.5 rounded-full skeleton bg-hovered" />
 							) : (
 								<h2 className="text-base font-bold leading-tight text-content">
 									{app?.name ?? ''}
@@ -73,7 +73,7 @@ export function MiniAppRunnerHeader({
 					<button
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-subtle disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
@@ -92,7 +92,7 @@ export function MiniAppRunnerHeader({
 
 					<button
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-subtle disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"

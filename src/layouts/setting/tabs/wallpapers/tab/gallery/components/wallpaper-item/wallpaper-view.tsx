@@ -165,7 +165,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, idx) => (
 		<div
 			key={`loading-${idx}`}
-			className="w-full border aspect-video rounded-xl skeleton bg-raised border-subtle"
+			className="w-full border aspect-video rounded-xl skeleton bg-raised border-faint"
 		/>
 	))
 }

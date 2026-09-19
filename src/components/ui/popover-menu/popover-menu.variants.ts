@@ -38,7 +38,7 @@ export const popoverMenuItemVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'text-content hover:bg-raised active:bg-raised',
+				default: 'text-content hover:bg-hovered active:bg-raised',
 				danger: 'text-error hover:bg-danger-subtle active:bg-danger-subtle',
 				primary: 'text-primary hover:bg-brand-subtle active:bg-brand-subtle',
 			},

@@ -85,7 +85,7 @@ export function TodoCompactRow({
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								nextPending.completed
 									? 'bg-success-subtle border-success-muted text-success'
-									: 'border-content hover:border-primary'
+									: 'border-strong hover:border-primary'
 							)}
 						>
 							{nextPending.completed && (
@@ -121,7 +121,7 @@ export function TodoCompactRow({
 
 			{isAuthenticated && (
 				<div className="flex items-center gap-2 text-xs shrink-0">
-					<div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-raised text-content border border-subtle text-[11px]">
+					<div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-subtle text-content border border-subtle text-[11px]">
 						<span className="font-bold text-success">{completedCount}</span>
 						<span>/</span>
 						<span>{totalCount}</span>

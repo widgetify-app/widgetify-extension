@@ -44,7 +44,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 								{scopes.map((s) => (
 									<li
 										key={s}
-										className="px-3 py-2 rounded-lg bg-raised text-muted"
+										className="px-3 py-2 rounded-lg bg-subtle text-muted"
 									>
 										{SCOPES_LABEL[s] || s}
 									</li>

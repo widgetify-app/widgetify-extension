@@ -36,7 +36,7 @@ export function Mood2x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-content hover:bg-raised group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-content hover:bg-hovered group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={13} aria-hidden="true" />
 					</button>
@@ -60,7 +60,7 @@ export function Mood2x1({
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
 									? 'bg-brand-subtle border-primary shadow-xs font-black'
-									: 'bg-raised hover:bg-hovered border-transparent'
+									: 'bg-subtle hover:bg-hovered border-transparent'
 							)}
 						>
 							<span

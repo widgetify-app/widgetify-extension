@@ -188,7 +188,7 @@ export function NetworkCompactRow({
 					) : (
 						<div
 							aria-hidden="true"
-							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-raised border-subtle"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-hovered border-subtle"
 						>
 							🌐
 						</div>

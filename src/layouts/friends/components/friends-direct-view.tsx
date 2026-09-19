@@ -84,7 +84,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					<button
 						type="button"
 						onClick={() => setIsAddFriendOpen(true)}
-						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-raised hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
+						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
 						title="افزودن دوست"
 						aria-label="افزودن دوست"
 					>
@@ -102,7 +102,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						{Array.from({ length: 4 }).map((_, i) => (
 							<div
 								key={i}
-								className="flex items-center justify-between p-2 rounded-xl border border-subtle bg-content animate-pulse"
+								className="flex items-center justify-between p-2 rounded-xl border border-faint bg-content animate-pulse"
 							>
 								<div className="flex items-center gap-2.5">
 									<div className="w-8 h-8 rounded-full skeleton" />
@@ -116,7 +116,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					</div>
 				) : allFriends.length === 0 ? (
 					<div className="flex flex-col items-center justify-center py-6 text-center text-subtle">
-						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-content text-subtle">
+						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-content text-faint">
 							<Icon name="users" size={18} />
 						</div>
 						<p className="text-xs font-normal text-muted">هنوز دوستی نداری</p>
@@ -134,7 +134,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 							<div
 								key={`friend-direct-${friend.id}`}
 								onClick={() => onSelectFriend?.(friend)}
-								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content border border-transparent hover:border-subtle cursor-pointer"
+								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content border border-transparent hover:border-faint cursor-pointer"
 							>
 								<div className="flex items-center gap-2.5 min-w-0 flex-1">
 									<div className="relative shrink-0">
@@ -168,7 +168,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											e.stopPropagation()
 											setSelectedUserToDelete(friend)
 										}}
-										className="p-1 text-subtle hover:text-error hover:bg-danger-subtle rounded-lg transition-colors cursor-pointer"
+										className="p-1 text-faint hover:text-error hover:bg-danger-subtle rounded-lg transition-colors cursor-pointer"
 										title="حذف دوست"
 									>
 										<Icon name="trash" size={13} />

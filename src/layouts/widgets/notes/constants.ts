@@ -7,7 +7,7 @@ export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 		bg: 'bg-content bg-glass',
 		border: 'border-subtle',
 		text: 'text-content',
-		headerBg: 'bg-raised',
+		headerBg: 'bg-hovered',
 		divider: 'border-subtle',
 	},
 	low: {

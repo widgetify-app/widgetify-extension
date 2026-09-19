@@ -72,7 +72,7 @@ export function AddWidgetSidebar({
 										'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
 										isSelected
 											? 'bg-brand-subtle text-primary'
-											: 'bg-raised text-muted'
+											: 'bg-subtle text-muted'
 									)}
 								>
 									<Icon name={def.icon} size={15} />

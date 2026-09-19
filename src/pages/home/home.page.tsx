@@ -32,7 +32,7 @@ const steps: Step[] = [
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-raised border-content">
+				<div className="p-1.5 border border-dashed rounded-lg bg-raised border-strong">
 					<code className="text-[11px] font-bold text-muted">
 						"Hide footer on New Tab page"
 					</code>

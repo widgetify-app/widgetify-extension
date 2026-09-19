@@ -120,7 +120,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 							</div>
 						) : (
 							<div className="flex flex-col max-h-105">
-								<div className="flex items-center justify-between p-3 border-b border-subtle">
+								<div className="flex items-center justify-between p-3 border-b border-faint">
 									<span className="text-xs font-bold text-content">
 										{currentFolderTitle}
 									</span>

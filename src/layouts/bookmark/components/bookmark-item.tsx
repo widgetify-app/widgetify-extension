@@ -69,7 +69,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 								: undefined,
 						}}
 						className={
-							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-raised z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-hovered z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />
@@ -88,7 +88,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 					/>
 				</div>
 
-				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-raised rounded-widget" />
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-subtle rounded-widget" />
 			</button>
 		</div>
 	)

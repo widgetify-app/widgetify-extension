@@ -233,7 +233,7 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-content border-subtle">
+				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-content border-faint">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
@@ -298,7 +298,7 @@ export function ExpandableTodoInput({
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
 											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-faint text-muted',
+												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-ghost text-muted',
 												`${transparentInput ? 'bg-transparent!' : 'bg-content! focus:ring-primary'} border-none! shadow-none!`
 											)}
 										/>
@@ -314,7 +314,7 @@ export function ExpandableTodoInput({
 												<Button
 													size="sm"
 													rounded={'xl'}
-													className={`p-2 border text-subtle shrink-0 active:scale-95`}
+													className={`p-2 border text-faint shrink-0 active:scale-95`}
 												>
 													<Icon name="calendarDays" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -340,7 +340,7 @@ export function ExpandableTodoInput({
 											trigger={
 												<Button
 													size="sm"
-													className={`p-2 border rounded-xl  text-[10px]  text-subtle shrink-0 active:scale-95`}
+													className={`p-2 border rounded-xl  text-[10px]  text-faint shrink-0 active:scale-95`}
 												>
 													<Icon name="tags" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -387,7 +387,7 @@ export function ExpandableTodoInput({
 																<Icon
 																	name="tags"
 																	size={16}
-																	className="text-subtle"
+																	className="text-faint"
 																/>
 																{tag}
 															</Chip>

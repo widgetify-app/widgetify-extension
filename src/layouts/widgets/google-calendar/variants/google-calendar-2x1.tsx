@@ -35,7 +35,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 					<div className="w-3/4 h-3 rounded bg-content" />
 					<div className="w-1/2 h-4 rounded bg-content" />
 				</div>
-				<div className="w-px h-8 bg-raised shrink-0" />
+				<div className="w-px h-8 bg-hovered shrink-0" />
 				<div className="flex-1 space-y-1.5">
 					<div className="w-2/3 h-3 rounded bg-content" />
 					<div className="w-1/3 h-2 rounded bg-content" />
@@ -73,7 +73,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 
 			<div
 				aria-hidden="true"
-				className="w-px self-stretch bg-raised shrink-0 my-0.5"
+				className="w-px self-stretch bg-hovered shrink-0 my-0.5"
 			/>
 
 			<div className="flex flex-col justify-center flex-1 min-w-0">

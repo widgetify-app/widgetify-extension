@@ -2,7 +2,7 @@ export function NoteSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex flex-col gap-1.5 px-2.5 py-2 overflow-hidden rounded-2xl bg-raised"
+			className="flex flex-col gap-1.5 px-2.5 py-2 overflow-hidden rounded-2xl bg-subtle"
 		>
 			<div className="flex items-center justify-between gap-2">
 				<div className="w-24 h-3 rounded skeleton" />

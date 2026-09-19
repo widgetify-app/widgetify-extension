@@ -49,7 +49,7 @@ export const NewsItem = ({
 				<img
 					src={image_url}
 					alt=""
-					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-raised"
+					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-hovered"
 					loading="lazy"
 					onError={() => setImageError(true)}
 				/>

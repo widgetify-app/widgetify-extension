@@ -78,7 +78,7 @@ export function MarketItemCard({
 					{item.name}
 				</p>
 
-				<div className="flex items-center justify-between pt-2 mt-auto border-t border-subtle">
+				<div className="flex items-center justify-between pt-2 mt-auto border-t border-faint">
 					<ItemPrice price={item.price} />
 
 					{isOwned ? (

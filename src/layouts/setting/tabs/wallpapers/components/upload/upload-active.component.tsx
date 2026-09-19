@@ -47,7 +47,7 @@ export function UploadActive({
 						</p>
 						<div className="flex items-center gap-1.5 flex-wrap">
 							{isCloudWallpaper ? (
-								<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-raised px-2 py-0.5 rounded-xl cursor-default">
+								<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 									<Icon name="save" size={11} />
 									<span>همگام‌سازی شده با سرور</span>
 								</span>
@@ -56,7 +56,7 @@ export function UploadActive({
 									content="فقط روی همین مرورگر ذخیره شده و با اکانتت همگام‌سازی نمی‌شه"
 									position="top"
 								>
-									<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-raised px-2 py-0.5 rounded-xl cursor-default">
+									<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 										ذخیره محلی
 									</span>
 								</Tooltip>

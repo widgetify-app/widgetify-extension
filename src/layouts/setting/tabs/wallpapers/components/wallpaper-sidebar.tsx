@@ -34,7 +34,7 @@ export function WallpaperSidebar({
 			<div className="flex flex-col flex-1 min-h-0 bg-raised border border-subtle rounded-2xl p-2.5 overflow-hidden">
 				<div className="flex items-center justify-between px-2 py-1.5 mb-1">
 					<span className="text-xs font-semibold text-muted">پوشه ها</span>
-					<div className="w-8 h-0.5 bg-raised rounded-full" />
+					<div className="w-8 h-0.5 bg-hovered rounded-full" />
 				</div>
 
 				<div className="flex-1 overflow-y-auto space-y-1 pr-0.5">
@@ -44,7 +44,7 @@ export function WallpaperSidebar({
 						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 							selectedCategoryId === null
 								? 'bg-[#536DFE] text-white shadow-sm'
-								: 'text-content hover:bg-raised'
+								: 'text-content hover:bg-subtle'
 						}`}
 					>
 						<div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export function WallpaperSidebar({
 								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
 										? 'bg-over-image text-white'
-										: 'bg-raised text-muted'
+										: 'bg-hovered text-muted'
 								}`}
 							>
 								{totalCount.toLocaleString('fa-IR')}
@@ -74,7 +74,7 @@ export function WallpaperSidebar({
 								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 									isSelected
 										? 'bg-[#536DFE] text-white shadow-sm'
-										: 'text-content hover:bg-raised'
+										: 'text-content hover:bg-subtle'
 								}`}
 							>
 								<div className="flex items-center gap-2 truncate">

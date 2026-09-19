@@ -33,13 +33,13 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 			</div>
 
 			{/* Info */}
-			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-subtle">
+			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-faint">
 				<div>
 					<p className="text-[12px] font-semibold text-content leading-snug truncate">
 						{pkg.title}
 					</p>
 					{pkg.description && (
-						<p className="text-[10px] text-subtle mt-0.5 line-clamp-1">
+						<p className="text-[10px] text-faint mt-0.5 line-clamp-1">
 							{pkg.description}
 						</p>
 					)}

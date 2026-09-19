@@ -19,7 +19,7 @@ export const HabitError: React.FC<HabitErrorProps> = ({ compact, onRetry }) => {
 				<button
 					type="button"
 					onClick={onRetry}
-					className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-raised transition-ui hover:bg-hovered focus-visible:focus-ring"
+					className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-hovered transition-ui hover:bg-strong focus-visible:focus-ring"
 				>
 					تلاش دوباره
 				</button>

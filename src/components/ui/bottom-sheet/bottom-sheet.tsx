@@ -93,7 +93,7 @@ export function BottomSheet({
 					>
 						<div className="flex justify-center pt-4 pb-1 cursor-grab active:cursor-grabbing">
 							<motion.div
-								className="rounded-full bg-raised"
+								className="rounded-full bg-hovered"
 								animate={{
 									scaleX: isDragging ? 0.57 : 1,
 									scaleY: isDragging ? 0.7 : 1,

@@ -53,7 +53,7 @@ export function MarketCoins() {
 							<div className="h-28 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
 								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
-								<div className="flex items-center justify-between pt-2 border-t border-subtle">
+								<div className="flex items-center justify-between pt-2 border-t border-faint">
 									<div className="w-12 h-3 rounded-lg skeleton opacity-20" />
 									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
 								</div>
@@ -75,7 +75,7 @@ export function MarketCoins() {
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
-						<Icon name="coin" size={20} className="text-faint" />
+						<Icon name="coin" size={20} className="text-ghost" />
 					</div>
 					<p className="text-xs text-subtle">فعلا چیزی برای خرید نیست</p>
 				</div>

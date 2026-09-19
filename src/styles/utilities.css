@@ -27,6 +27,10 @@
 	background-color: var(--color-base-300);
 }
 
+@utility bg-subtle {
+	background-color: rgba(var(--color-base-content-rgb), 0.05);
+}
+
 @utility bg-hovered {
 	background-color: rgba(var(--color-base-content-rgb), 0.1);
 }
@@ -61,8 +65,16 @@
 /* --------------------------------------------
    BORDER
    -------------------------------------------- */
+@utility text-ghost {
+	color: rgba(var(--color-base-content-rgb), 0.2);
+}
+
 @utility border-content {
 	border-color: var(--color-base-300);
+}
+
+@utility border-faint {
+	border-color: rgba(var(--color-base-content-rgb), 0.05);
 }
 
 @utility border-subtle {
@@ -79,6 +91,10 @@
 
 @utility ring-subtle {
 	--tw-ring-color: rgba(var(--color-base-content-rgb), 0.1);
+}
+
+@utility ring-strong {
+	--tw-ring-color: rgba(var(--color-base-content-rgb), 0.2);
 }
 
 @utility outline-content {

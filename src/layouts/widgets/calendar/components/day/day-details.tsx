@@ -165,7 +165,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				</dl>
 
 				{!isFuture && isWithinMoodBacklog && (
-					<fieldset className="p-1.5 rounded-2xl bg-raised">
+					<fieldset className="p-1.5 rounded-2xl bg-subtle">
 						<legend className="sr-only">{moodTitle}</legend>
 						<span
 							aria-hidden="true"

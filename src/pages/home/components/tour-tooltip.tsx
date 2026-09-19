@@ -16,7 +16,7 @@ export function TourTooltip({
 		<div
 			{...tooltipProps}
 			dir="rtl"
-			className="w-[340px] max-w-[calc(100vw-32px)] bg-content backdrop-blur-md rounded-2xl shadow-2xl border border-content p-4 flex flex-col gap-3.5 text-right select-none"
+			className="w-[340px] max-w-[calc(100vw-32px)] bg-content backdrop-blur-md rounded-2xl shadow-2xl border border-strong p-4 flex flex-col gap-3.5 text-right select-none"
 		>
 			<div className="flex items-center justify-between gap-2 border-b border-subtle pb-2.5">
 				<div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export function TourTooltip({
 										? 'w-5 bg-primary'
 										: i < index
 											? 'w-1.5 bg-brand-muted'
-											: 'w-1.5 bg-hovered'
+											: 'w-1.5 bg-strong'
 								}`}
 							/>
 						))}
@@ -42,7 +42,7 @@ export function TourTooltip({
 				<button
 					type="button"
 					{...skipProps}
-					className="p-1 transition-colors rounded-lg cursor-pointer text-subtle hover:text-content hover:bg-raised"
+					className="p-1 transition-colors rounded-lg cursor-pointer text-subtle hover:text-content hover:bg-hovered"
 					title="بستن"
 				>
 					<Icon name="close" size={14} />
@@ -59,7 +59,7 @@ export function TourTooltip({
 						<button
 							type="button"
 							{...skipProps}
-							className="text-[11px] font-bold text-subtle hover:text-content px-2 py-1.5 rounded-lg hover:bg-raised transition-colors cursor-pointer"
+							className="text-[11px] font-bold text-subtle hover:text-content px-2 py-1.5 rounded-lg hover:bg-hovered transition-colors cursor-pointer"
 						>
 							رد کردن
 						</button>

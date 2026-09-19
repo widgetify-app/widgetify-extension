@@ -108,7 +108,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">
-					<div className="p-1 rounded-lg bg-raised">
+					<div className="p-1 rounded-lg bg-subtle">
 						{icon.startsWith('http') ? (
 							<img
 								src={icon}
@@ -143,7 +143,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						{shouldShowReadMore && (
 							<button
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 border border-subtle rounded-xl px-1 hover:border-subtle text-[10px] font-light text-muted hover:underline cursor-pointer"
+								className="mt-1 flex items-center gap-1 border border-faint rounded-xl px-1 hover:border-subtle text-[10px] font-light text-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<Icon
@@ -158,7 +158,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 				{formattedJalaliDate && (
 					<div className="flex justify-start mt-0.5">
-						<span className="text-[10px] font-light text-subtle">
+						<span className="text-[10px] font-light text-faint">
 							{formattedJalaliDate}
 						</span>
 					</div>
@@ -168,7 +168,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-raised text-subtle hover:bg-danger-subtle hover:text-error"
+					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-subtle text-faint hover:bg-danger-subtle hover:text-error"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
