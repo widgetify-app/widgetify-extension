@@ -43,7 +43,7 @@ export function WallpaperSidebar({
 						onClick={() => onSelectCategory(null)}
 						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 							selectedCategoryId === null
-								? 'bg-[#536DFE] text-white shadow-sm'
+								? 'bg-brand text-white shadow-sm'
 								: 'text-content hover:bg-subtle'
 						}`}
 					>
@@ -73,7 +73,7 @@ export function WallpaperSidebar({
 								onClick={() => onSelectCategory(cat.id)}
 								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 									isSelected
-										? 'bg-[#536DFE] text-white shadow-sm'
+										? 'bg-brand text-white shadow-sm'
 										: 'text-content hover:bg-subtle'
 								}`}
 							>
@@ -97,7 +97,7 @@ export function WallpaperSidebar({
 					className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-content cursor-pointer"
 				>
 					<div className="flex items-center gap-1.5">
-						<Icon name="filter" size={13} className="text-[#536DFE]" />
+						<Icon name="filter" size={13} className="text-brand" />
 						<span>فیلتر</span>
 					</div>
 					<Icon

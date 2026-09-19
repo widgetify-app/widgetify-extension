@@ -57,6 +57,38 @@ describe('one vocabulary', () => {
 	it('never uses the OS-keyed dark:/light: variants', () => {
 		expect(offenders(/["'`\s](dark|light):[a-z]/)).toEqual([])
 	})
+
+	it('never writes a colour literal into a class', () => {
+		// toast.tsx is the one surface that deliberately follows no theme: it
+		// is drawn over whatever is on screen and has to read the same on all
+		// six. Its palette is fixed on purpose.
+		const pattern =
+			/(?<![\w-])(bg|text|border|ring|from|to|via|fill|stroke|outline|divide)-\[#[0-9a-fA-F]{3,8}\]/
+		const bad = offenders(pattern).filter(
+			(o) => !o.startsWith('src/common/toast.tsx')
+		)
+		expect(bad).toEqual([])
+	})
+})
+
+describe('elevation', () => {
+	// Tailwind's stock shadows are black at roughly 10%, tuned for a white
+	// page. On the #171717 dark surfaces they are invisible, which is why
+	// elevation.css carries a heavier ladder per theme.
+	//
+	// Migrating the existing 148 would visibly change dark-theme rendering, so
+	// this is a ratchet rather than a ban: it holds the line for new code and
+	// the number walks down as call sites move over. It only ever goes down.
+	const BASELINE = 148
+
+	it('does not add new raw Tailwind shadows', () => {
+		const pattern = /(?<![\w-])shadow-(xs|sm|md|lg|xl|2xl|inner)(?![\w-])/g
+		const total = sourceFiles().reduce(
+			(n, p) => n + (readFileSync(p, 'utf8').match(pattern)?.length ?? 0),
+			0
+		)
+		expect(total).toBeLessThanOrEqual(BASELINE)
+	})
 })
 
 describe('stylesheets stay parseable on Chrome 109', () => {
@@ -102,14 +134,13 @@ describe('colour lives in one place', () => {
 	})
 
 	it('keeps utilities.css to names, not colour literals', () => {
-		// Two exceptions: over-image chrome follows no theme, and the modal
-		// scrim is a fixed black. Everything else must read a token.
+		// One exception: over-image chrome is drawn on a wallpaper, so it
+		// follows no theme. Everything else must read a token.
 		const css = readFileSync(join(STYLES, 'utilities.css'), 'utf8')
 		const bad: string[] = []
 		for (const block of css.split('@utility').slice(1)) {
 			const name = block.trim().split(/\s/)[0]
-			// over-image follows no theme; bg-overlay is a fixed scrim
-			if (name.includes('over-image') || name === 'bg-overlay') continue
+			if (name.includes('over-image')) continue
 			for (const m of block.matchAll(/:\s*(#[0-9a-f]{3,8}|rgba?\([\d\s,.]+\))/gi)) {
 				if (m[1].startsWith('rgba(var')) continue
 				bad.push(`${name}: ${m[1]}`)
@@ -132,9 +163,12 @@ describe('themes', () => {
 	}
 
 	it('all declare the same variables', () => {
+		// The whole file, not just the @plugin block: the channel triples live
+		// in a [data-theme] rule after it, and they are the half that breaks
+		// silently when a theme forgets them.
 		const sets = themeFiles.map((t) => ({
 			name: t.name,
-			vars: [...pluginBlock(t.css).matchAll(/--([a-z0-9-]+)\s*:/g)]
+			vars: [...t.css.matchAll(/--([a-z0-9-]+)\s*:/g)]
 				.map((m) => m[1])
 				.filter((v) => !v.startsWith('glass'))
 				.sort(),
@@ -142,6 +176,48 @@ describe('themes', () => {
 		for (const theme of sets) {
 			expect([theme.name, theme.vars]).toEqual([theme.name, sets[0].vars])
 		}
+	})
+
+	// Every rgba() token in the system reads one of these. daisyUI drops any
+	// value containing a comma from its @plugin block, so they have to be
+	// declared outside it - and a theme that omits one ships a colour that is
+	// invalid at computed-value time, which renders as an inherited colour
+	// rather than as nothing. Name them explicitly so the failure says which.
+	const CHANNELS = [
+		...['base-100', 'base-200', 'base-300'].flatMap((s) => [
+			`--color-${s}-rgb`,
+			`--color-${s}-a`,
+		]),
+		...[
+			'base-content',
+			'primary',
+			'secondary',
+			'error',
+			'success',
+			'warning',
+			'info',
+			'success-content',
+			'warning-content',
+			'error-content',
+		].map((c) => `--color-${c}-rgb`),
+	]
+
+	it('all declare the channel variables the rgba() tokens read', () => {
+		const missing = themeFiles.flatMap((t) =>
+			CHANNELS.filter((v) => !t.css.includes(`${v}:`)).map(
+				(v) => `${t.name}: ${v}`
+			)
+		)
+		expect(missing).toEqual([])
+	})
+
+	it('declares the channels outside the @plugin block, where daisyUI keeps them', () => {
+		const swallowed = themeFiles.flatMap((t) =>
+			CHANNELS.filter((v) => pluginBlock(t.css).includes(`${v}:`)).map(
+				(v) => `${t.name}: ${v}`
+			)
+		)
+		expect(swallowed).toEqual([])
 	})
 
 	it('all declare a color-scheme so native controls follow the theme', () => {
