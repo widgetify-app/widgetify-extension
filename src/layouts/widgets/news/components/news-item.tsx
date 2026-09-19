@@ -43,7 +43,7 @@ export const NewsItem = ({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={() => onOpen(url)}
-			className="group flex items-center gap-2 p-1.5 rounded-xl cursor-pointer bg-raised hover:bg-hovered transition-all border border-transparent hover:border-subtle active:scale-[0.99] focus-visible:focus-ring shrink-0"
+			className="group flex items-center gap-2 p-1.5 rounded-xl cursor-pointer bg-subtle hover:bg-hovered transition-all border border-transparent hover:border-subtle active:scale-[0.99] focus-visible:focus-ring shrink-0"
 		>
 			{hasImage && (
 				<img

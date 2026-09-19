@@ -145,10 +145,10 @@ export function DatePicker({
 			if (isDaySelected) return ''
 
 			if (isFriday) {
-				return 'border border-dashed border-danger-strong'
+				return 'border border-dashed border-danger-bold'
 			}
 
-			return 'border border-dashed border-brand-strong'
+			return 'border border-dashed border-brand-bold'
 		}
 
 		return (

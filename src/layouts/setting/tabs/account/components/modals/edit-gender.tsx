@@ -66,7 +66,7 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 									className={`flex-1 py-2 px-1 flex flex-col  items-center gap-1 text-[10px] font-bold rounded-xl transition-all duration-300 cursor-pointer ${
 										isActive
 											? 'text-primary shadow-sm ring-1 ring-brand-muted scale-[1.02]'
-											: 'text-muted hover:text-brand hover:ring-1 hover:ring-brand-muted active:scale-95'
+											: 'text-muted hover:text-brand-bold hover:ring-1 hover:ring-brand-subtle active:scale-95'
 									}`}
 								>
 									<span

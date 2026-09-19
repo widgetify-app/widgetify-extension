@@ -44,7 +44,7 @@ export function ConnectionModal({
 								آیا مطمئن هستید که می‌خواهید اتصال به {platform.name} را
 								قطع کنید؟
 							</p>
-							<div className="p-3 text-sm rounded-2xl text-warning-content bg-warning">
+							<div className="p-3 text-sm rounded-2xl text-warning-content bg-warning-bold">
 								⚠️ با قطع اتصال، دسترسی به داده‌ها و ویژگی‌های مربوط به این
 								پلتفرم از دست خواهد رفت.
 							</div>

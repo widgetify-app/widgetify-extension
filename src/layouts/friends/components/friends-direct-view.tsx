@@ -84,7 +84,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 					<button
 						type="button"
 						onClick={() => setIsAddFriendOpen(true)}
-						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
+						className="flex items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-strong"
 						title="افزودن دوست"
 						aria-label="افزودن دوست"
 					>
@@ -102,7 +102,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						{Array.from({ length: 4 }).map((_, i) => (
 							<div
 								key={i}
-								className="flex items-center justify-between p-2 rounded-xl border border-faint bg-content animate-pulse"
+								className="flex items-center justify-between p-2 rounded-xl border border-faint bg-content-subtle animate-pulse"
 							>
 								<div className="flex items-center gap-2.5">
 									<div className="w-8 h-8 rounded-full skeleton" />
@@ -134,7 +134,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 							<div
 								key={`friend-direct-${friend.id}`}
 								onClick={() => onSelectFriend?.(friend)}
-								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content border border-transparent hover:border-faint cursor-pointer"
+								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content-muted border border-transparent hover:border-faint cursor-pointer"
 							>
 								<div className="flex items-center gap-2.5 min-w-0 flex-1">
 									<div className="relative shrink-0">
@@ -149,7 +149,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 									</div>
 
 									<div className="min-w-0 flex-1">
-										<div className="text-xs font-medium truncate text-content">
+										<div className="text-xs font-medium truncate text-strong">
 											{friend.user.name}
 										</div>
 										<div

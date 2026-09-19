@@ -134,7 +134,7 @@ export function NetworkCompactRow({
 						</div>
 					)}
 
-					<span className="text-xs select-none text-faint shrink-0">•</span>
+					<span className="text-xs select-none text-ghost shrink-0">•</span>
 
 					<button
 						type="button"
@@ -196,7 +196,7 @@ export function NetworkCompactRow({
 
 					<span
 						className={cn(
-							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-content shadow-xs',
+							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-widget shadow-xs',
 							isOnline ? 'bg-success' : 'bg-error'
 						)}
 					/>

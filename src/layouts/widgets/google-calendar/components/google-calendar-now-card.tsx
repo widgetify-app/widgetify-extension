@@ -74,7 +74,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 
 			<div
 				aria-hidden="true"
-				className="w-full h-1 rounded-full bg-brand-subtle overflow-hidden mt-0.5"
+				className="w-full h-1 rounded-full bg-brand-muted overflow-hidden mt-0.5"
 			>
 				<div
 					className="h-full transition-all duration-1000 rounded-full bg-primary"

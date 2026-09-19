@@ -195,7 +195,7 @@ export function TodoItem({
 									type="button"
 									onClick={handleEdit}
 									aria-label="ویرایش تسک"
-									className="p-1 rounded-lg cursor-pointer text-brand hover:bg-brand-subtle hover:text-primary focus-visible:focus-ring"
+									className="p-1 rounded-lg cursor-pointer text-brand-strong hover:bg-brand-subtle hover:text-primary focus-visible:focus-ring"
 								>
 									<Icon name="edit" size={13} aria-hidden="true" />
 								</button>
@@ -204,7 +204,7 @@ export function TodoItem({
 								type="button"
 								onClick={handleDelete}
 								aria-label="حذف تسک"
-								className="p-1 rounded-lg cursor-pointer text-danger hover:bg-danger-subtle hover:text-error focus-visible:focus-ring"
+								className="p-1 rounded-lg cursor-pointer text-danger-strong hover:bg-danger-subtle hover:text-error focus-visible:focus-ring"
 							>
 								<Icon name="trash" size={13} aria-hidden="true" />
 							</button>

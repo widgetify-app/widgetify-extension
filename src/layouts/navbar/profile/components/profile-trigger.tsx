@@ -19,7 +19,7 @@ export function ProfileTrigger({
 				id="profile-button"
 				className="relative flex items-center justify-center cursor-pointer select-none"
 			>
-				<div className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-content active:scale-90">
+				<div className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-strong active:scale-90">
 					<Icon name="user" size={15} />
 				</div>
 			</div>
@@ -34,7 +34,7 @@ export function ProfileTrigger({
 			<div className="relative flex items-center justify-center cursor-pointer group">
 				{profilePercentage ? (
 					<div
-						className="absolute z-10 outline-2 outline-brand-muted radial-progress text-brand pointer-events-none"
+						className="absolute z-10 outline-2 outline-brand-strong radial-progress text-brand-bold pointer-events-none"
 						style={{
 							// @ts-expect-error
 							'--value': profilePercentage,

@@ -26,13 +26,13 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 					</div>
 
 					{completed && (
-						<div className="absolute inset-0 flex items-center justify-center rounded-full bg-success-subtle">
+						<div className="absolute inset-0 flex items-center justify-center rounded-full bg-success-muted">
 							<Icon name="check" className="text-success text-[8px]" />
 						</div>
 					)}
 
 					{isOwner && (
-						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-warning-content ring-2 ring-content">
+						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-warning-content ring-2 ring-widget">
 							<Icon name="crown" size={6} />
 						</div>
 					)}

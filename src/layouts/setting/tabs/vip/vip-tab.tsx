@@ -106,7 +106,7 @@ export function VipTab() {
 						{Array.from({ length: 2 }).map((_, i) => (
 							<div
 								key={i}
-								className="border rounded-2xl border-subtle bg-raised p-4 space-y-2.5 min-h-27.5"
+								className="border rounded-2xl border-subtle bg-raised-faint p-4 space-y-2.5 min-h-27.5"
 							>
 								<div className="w-2/3 h-4 rounded-md skeleton opacity-40" />
 								<div className="w-full h-5 mt-3 rounded-md skeleton opacity-20" />
@@ -132,7 +132,7 @@ export function VipTab() {
 						))}
 					</div>
 				) : (
-					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-subtle bg-raised">
+					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-subtle bg-raised-faint">
 						<p className="text-xs text-muted">
 							در حال حاضر پلن فعالی موجود نیست
 						</p>
@@ -140,7 +140,7 @@ export function VipTab() {
 				)}
 			</div>
 
-			<div className="p-3.5 rounded-2xl border border-subtle bg-raised flex flex-col sm:flex-row items-center justify-between gap-3">
+			<div className="p-3.5 rounded-2xl border border-subtle bg-raised-faint flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
 					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-primary shrink-0">
 						<Icon name="shoppingBag" size={19} />

@@ -29,14 +29,14 @@ export function MiniAppRunnerHeader({
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
 						<Icon
 							name="chevronRight"
 							size={20}
-							className="transition-colors duration-200 text-muted group-hover:text-content"
+							className="transition-colors duration-200 text-muted group-hover:text-strong"
 						/>
 					</button>
 
@@ -73,31 +73,31 @@ export function MiniAppRunnerHeader({
 					<button
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
 								name="minimize"
 								size={18}
-								className={`transition-colors duration-200 text-muted group-hover:text-content`}
+								className={`transition-colors duration-200 text-muted group-hover:text-strong`}
 							/>
 						) : (
 							<Icon
 								name="maximize"
 								size={18}
-								className={`transition-colors duration-200 text-muted group-hover:text-content`}
+								className={`transition-colors duration-200 text-muted group-hover:text-strong`}
 							/>
 						)}
 					</button>
 
 					<button
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content active:scale-95 group border-faint disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"
 							size={18}
-							className={`transition-colors duration-200 text-muted group-hover:text-content ${isLoading || isConnecting ? 'animate-spin' : ''}`}
+							className={`transition-colors duration-200 text-muted group-hover:text-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
 						/>
 					</button>
 				</div>

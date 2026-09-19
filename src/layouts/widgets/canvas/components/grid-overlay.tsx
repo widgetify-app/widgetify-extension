@@ -42,7 +42,7 @@ function GridOverlayImpl({
 								width: `${cellWidth}px`,
 								height: `${cellHeight}px`,
 							}}
-							className="border border-dashed rounded-widget border-strong bg-raised"
+							className="border border-dashed rounded-widget border-strong bg-raised-faint"
 						/>
 					))}
 				</div>

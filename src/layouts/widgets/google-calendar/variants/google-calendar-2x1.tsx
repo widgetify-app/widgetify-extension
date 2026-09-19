@@ -32,13 +32,13 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 				className="flex items-center justify-between w-full h-full gap-3 p-3 select-none animate-pulse"
 			>
 				<div className="w-1/3 space-y-1.5">
-					<div className="w-3/4 h-3 rounded bg-content" />
-					<div className="w-1/2 h-4 rounded bg-content" />
+					<div className="w-3/4 h-3 rounded bg-content-strong" />
+					<div className="w-1/2 h-4 rounded bg-content-muted" />
 				</div>
 				<div className="w-px h-8 bg-hovered shrink-0" />
 				<div className="flex-1 space-y-1.5">
-					<div className="w-2/3 h-3 rounded bg-content" />
-					<div className="w-1/3 h-2 rounded bg-content" />
+					<div className="w-2/3 h-3 rounded bg-content-strong" />
+					<div className="w-1/3 h-2 rounded bg-content-muted" />
 				</div>
 			</div>
 		)
@@ -136,7 +136,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 			className={cn(
 				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-all',
 				'focus-visible:focus-ring',
-				hasAction && 'cursor-pointer hover:bg-content active:scale-[0.99]',
+				hasAction && 'cursor-pointer hover:bg-content-subtle active:scale-[0.99]',
 				isNow && 'bg-brand-subtle border border-brand-muted'
 			)}
 		>

@@ -40,10 +40,10 @@ export const RequireVerification = ({
 					</div>
 					<div
 						className={
-							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-raised backdrop-blur-xs rounded-xl'
+							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-raised-faint backdrop-blur-xs rounded-xl'
 						}
 					>
-						<Icon name="verifyUser" size={20} className="text-success" />
+						<Icon name="verifyUser" size={20} className="text-success-bold" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
 						<p className={'text-xs text-content text-center'}>
 							برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.

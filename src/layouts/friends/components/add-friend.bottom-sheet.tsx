@@ -108,7 +108,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 					<div className="space-y-2">
 						<label
 							htmlFor="friend-username"
-							className="block text-sm font-medium text-content"
+							className="block text-sm font-medium text-strong"
 						>
 							نام کاربری
 						</label>
@@ -141,7 +141,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						rounded="xl"
 						color="success"
 						fullWidth
-						className="h-12 shadow-sm shadow-success"
+						className="h-12 shadow-sm shadow-success-muted"
 					>
 						ارسال درخواست
 					</Button>

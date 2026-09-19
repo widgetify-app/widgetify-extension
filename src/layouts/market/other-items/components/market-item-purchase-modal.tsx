@@ -61,7 +61,7 @@ export function MarketItemPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-content max-h-85">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-content-muted max-h-85">
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
 				</div>
 

@@ -61,7 +61,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 				<text
 					x="50"
 					y="50"
-					className={'text-content'}
+					className={'text-strong'}
 					textAnchor="middle"
 					dominantBaseline="middle"
 					fontSize="16"

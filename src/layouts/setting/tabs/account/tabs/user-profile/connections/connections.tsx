@@ -114,7 +114,7 @@ export function Connections() {
 						}
 						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-content border-content
                 ${
-					platform.connected ? '' : ' hover:bg-content'
+					platform.connected ? '' : ' hover:bg-content-subtle'
 				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
 					>
 						<div className="flex items-center justify-between gap-3">

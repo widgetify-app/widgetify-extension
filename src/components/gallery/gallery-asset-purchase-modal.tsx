@@ -76,7 +76,7 @@ export function GalleryAssetPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="relative overflow-hidden rounded-2xl bg-content max-h-[340px] flex items-center justify-center">
+				<div className="relative overflow-hidden rounded-2xl bg-content-muted max-h-[340px] flex items-center justify-center">
 					<img
 						src={asset.previewUrl || asset.url}
 						alt={asset.title || 'Asset'}

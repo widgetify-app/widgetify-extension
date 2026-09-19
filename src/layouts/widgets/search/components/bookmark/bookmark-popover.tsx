@@ -147,12 +147,12 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 												<button
 													type="button"
 													onClick={() => handleClickItem(item)}
-													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-brand-subtle hover:text-brand focus-visible:focus-ring"
+													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-brand-subtle hover:text-brand-bold focus-visible:focus-ring"
 												>
 													{item.type === 'FOLDER' ? (
 														<Icon
 															name="folder"
-															className="text-brand shrink-0"
+															className="text-brand-bold shrink-0"
 															size={18}
 															aria-hidden="true"
 														/>

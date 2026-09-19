@@ -58,8 +58,8 @@ export const ActivityCard = ({
 						</div>
 					</div>
 
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised  z-10" />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised shadow-md  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised-subtle  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised-subtle shadow-md  z-10" />
 					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-raised -bottom-6 left-10" />
 					{isSelf ? null : (
 						<ActivityReactionSelector
@@ -132,7 +132,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 		<Dropdown
 			trigger={
 				<div
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-raised ${reacted ? 'opacity-85' : 'opacity-50'}`}
+					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-raised-subtle ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
 					{reacted
@@ -162,7 +162,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 								key={index}
 								disabled={isUpdating}
 								onClick={() => handleReaction(reaction.id)}
-								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-muted' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-subtle`}
+								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-muted' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-muted`}
 							>
 								<p
 									className={` leading-6.5 ${selectedReaction === reaction.id && 'scale-85'}`}

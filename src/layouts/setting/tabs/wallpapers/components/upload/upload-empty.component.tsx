@@ -46,7 +46,7 @@ export function UploadEmpty({
 							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-content',
 							isDragging
 								? 'border-primary bg-brand-subtle text-primary'
-								: 'border-strong hover:border-brand-muted text-muted hover:text-content'
+								: 'border-strong hover:border-brand-strong text-muted hover:text-content'
 						)}
 					>
 						{isUploading ? (

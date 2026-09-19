@@ -38,7 +38,7 @@ export function ProfileDropdownMenu({
 			{isAuthenticated ? (
 				<div
 					onClick={handleProfileClick}
-					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-subtle transition-colors hover:bg-content"
+					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-subtle transition-colors hover:bg-content-muted"
 				>
 					<div className="shrink-0 flex items-center justify-center">
 						<AvatarComponent url={user?.avatar} size="sm" isPro={isVip} />
@@ -60,7 +60,7 @@ export function ProfileDropdownMenu({
 			) : (
 				<div
 					onClick={handleProfileClick}
-					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-subtle transition-colors hover:bg-content"
+					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-subtle transition-colors hover:bg-content-muted"
 				>
 					<div className="w-8 h-8 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0">
 						<Icon name="user" size={15} />

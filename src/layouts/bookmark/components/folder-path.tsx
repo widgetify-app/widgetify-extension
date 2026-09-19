@@ -34,7 +34,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 						<button
 							onClick={() => onNavigate(item.id, index)}
 							className={
-								'cursor-pointer transition-colors text-primary hover:text-brand'
+								'cursor-pointer transition-colors text-primary hover:text-brand-bold'
 							}
 							aria-label={`Go to ${item.title} folder`}
 						>

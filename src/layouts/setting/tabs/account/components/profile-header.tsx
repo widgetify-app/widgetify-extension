@@ -55,7 +55,7 @@ export const ProfileHeader = ({
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-center border bg-widget border-content rounded-3xl">
+		<div className="relative flex flex-col items-center justify-center border bg-widget-muted border-content rounded-3xl">
 			<input
 				ref={fileInputRef}
 				type="file"

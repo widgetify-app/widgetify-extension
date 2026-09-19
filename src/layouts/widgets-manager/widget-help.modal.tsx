@@ -113,7 +113,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 									isCurrent
 										? 'bg-primary text-primary-content font-bold shadow-xs'
-										: 'bg-content hover:bg-raised text-muted'
+										: 'bg-content-strong hover:bg-raised text-muted'
 								)}
 							>
 								<Icon name={tab.icon} size={14} />
@@ -124,7 +124,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Video Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-subtle bg-raised shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-subtle bg-raised-subtle shrink-0">
 					<video
 						key={activeTab.videoUrl}
 						src={activeTab.videoUrl}
@@ -134,13 +134,13 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget backdrop-blur-md border border-subtle text-[11px] font-bold text-content shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget-strong backdrop-blur-md border border-subtle text-[11px] font-bold text-content shadow-xs">
 						{activeTab.badge}
 					</div>
 				</div>
 
 				{/* Tab Detail Info */}
-				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-content border border-subtle transition-all">
+				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-content-muted border border-subtle transition-all">
 					<div className="w-9 h-9 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={18} />
 					</div>
@@ -155,7 +155,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Tips List */}
-				<div className="flex flex-col gap-2 p-3 border bg-content rounded-2xl border-subtle">
+				<div className="flex flex-col gap-2 p-3 border bg-content-subtle rounded-2xl border-subtle">
 					{activeTab.tips.map((tip, idx) => (
 						<div key={tip} className="flex items-start gap-2.5">
 							<span className="w-5 h-5 rounded-full bg-brand-subtle text-primary flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">

@@ -11,7 +11,7 @@ import type { ClassifiedCalendarEvent } from '../types'
 import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 
 const navButtonClass =
-	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-muted opacity-70 hover:opacity-100 hover:bg-content focus-visible:focus-ring'
+	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-muted opacity-70 hover:opacity-100 hover:bg-content-muted focus-visible:focus-ring'
 
 interface GoogleCalendarScheduleProps {
 	selectedDay: WidgetifyDate
@@ -124,12 +124,12 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						{Array.from({ length: 3 }).map((_, i) => (
 							<div
 								key={`loading-item-${i}`}
-								className="flex items-center gap-2 p-2 rounded-xl bg-content animate-pulse"
+								className="flex items-center gap-2 p-2 rounded-xl bg-content-subtle animate-pulse"
 							>
-								<div className="w-10 h-8 rounded-lg bg-content shrink-0" />
+								<div className="w-10 h-8 rounded-lg bg-content-strong shrink-0" />
 								<div className="flex-1 space-y-1">
-									<div className="w-3/4 h-3 rounded bg-content" />
-									<div className="w-1/2 h-2 rounded bg-content" />
+									<div className="w-3/4 h-3 rounded bg-content-strong" />
+									<div className="w-1/2 h-2 rounded bg-content-muted" />
 								</div>
 							</div>
 						))}

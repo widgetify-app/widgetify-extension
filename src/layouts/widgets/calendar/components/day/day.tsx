@@ -89,7 +89,7 @@ export function DayItem({
 				isSelected
 					? isHoliday
 						? 'bg-danger-subtle'
-						: 'bg-brand-subtle'
+						: 'bg-brand-muted'
 					: isHoliday
 						? 'hover:bg-danger-subtle'
 						: 'hover:bg-brand-subtle',
@@ -97,8 +97,8 @@ export function DayItem({
 				isCurrentDay &&
 					!dayMood &&
 					(isHoliday
-						? 'border border-dashed border-danger-strong'
-						: 'border border-dashed border-brand-strong'),
+						? 'border border-dashed border-danger-bold'
+						: 'border border-dashed border-brand-bold'),
 				dayMood && `border-2 ${dayMood.borderClass}`
 			)}
 		>
@@ -121,7 +121,7 @@ export function DayItem({
 					<span
 						className={cn(
 							'w-0.5 h-0.5 rounded-full shadow-sm',
-							isHolidayEvent ? 'bg-error' : 'bg-brand'
+							isHolidayEvent ? 'bg-error' : 'bg-brand-bold'
 						)}
 					/>
 				) : null}

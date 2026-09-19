@@ -30,12 +30,12 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 							</div>
 						</div>
 
-						<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised  z-10" />
-						<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised shadow-md  z-10" />
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised-subtle  z-10" />
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised-subtle shadow-md  z-10" />
 						<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-raised -bottom-6 left-10" />
 					</div>
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised " />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised shadow-md " />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised-subtle " />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised-subtle shadow-md " />
 					<div className="absolute w-2 h-2 -translate-x-3 rounded-full shadow-md bg-raised -bottom-6 left-10" />
 				</div>
 

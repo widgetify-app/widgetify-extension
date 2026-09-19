@@ -38,8 +38,8 @@ function WallpaperItemFu({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-brand-muted ring-offset-widget'
-		: 'ring-1 ring-subtle hover:ring-brand-muted'
+		? 'ring-2 ring-brand-bold ring-offset-widget'
+		: 'ring-1 ring-subtle hover:ring-brand-bold'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -154,7 +154,7 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-brand">
+							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-brand-bold">
 								<Icon name="check" size={12} />
 							</div>
 						)}
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-over-image-scrim border border-over-image text-over-image-muted hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-over-image-scrim border border-over-image-subtle text-over-image-muted hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

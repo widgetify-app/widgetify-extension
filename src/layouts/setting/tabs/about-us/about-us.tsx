@@ -15,7 +15,7 @@ export function AboutUsTab() {
 				</h1>
 				<div
 					className={
-						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-brand'
+						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-brand-bold'
 					}
 				>
 					<span>نسخه "{ConfigKey.VERSION_NAME}"</span>
@@ -33,14 +33,14 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content hover:bg-content hover:border-brand-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-brand-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-brand-subtle text-primary group-hover:scale-110">
 								<Icon name="globe" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-content">
+								<h3 className="text-xs font-bold text-strong">
 									وب‌سایت رسمی
 								</h3>
 								<p className="text-[10px] text-faint mt-0.5">
@@ -59,14 +59,14 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content hover:bg-content hover:border-brand-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-secondary-muted"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-brand-subtle text-secondary group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-subtle text-secondary group-hover:scale-110">
 								<Icon name="externalLink" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-content">
+								<h3 className="text-xs font-bold text-strong">
 									وبلاگ رسمی
 								</h3>
 								<p className="text-[10px] text-faint mt-0.5">
@@ -85,14 +85,14 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content hover:bg-content hover:border-info-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-info-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info-subtle text-info group-hover:scale-110">
 								<Icon name="telegramLogo" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-content">
+								<h3 className="text-xs font-bold text-strong">
 									کانال تلگرام
 								</h3>
 								<p className="text-[10px] text-faint mt-0.5">
@@ -111,7 +111,7 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content hover:bg-content hover:border-success-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-success-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success-subtle text-success group-hover:scale-110">
@@ -129,7 +129,7 @@ export function AboutUsTab() {
 								</svg>
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-content">
+								<h3 className="text-xs font-bold text-strong">
 									پیام‌رسان بله
 								</h3>
 								<p className="text-[10px] text-faint mt-0.5">

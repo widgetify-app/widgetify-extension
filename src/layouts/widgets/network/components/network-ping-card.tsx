@@ -25,7 +25,7 @@ export const NetworkPingCard: React.FC<NetworkPingCardProps> = ({ ping }) => {
 		<div className="relative p-3 overflow-hidden border rounded-2xl border-content">
 			<div
 				aria-hidden="true"
-				className="absolute inset-0 bg-linear-to-br from-raised to-transparent"
+				className="absolute inset-0 bg-linear-to-br from-subtle to-transparent"
 			/>
 
 			<dl className="relative">

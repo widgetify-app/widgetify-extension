@@ -37,7 +37,7 @@ export function RenderContentBanner({ link }: SiteProp) {
 		>
 			{badge && (
 				<span
-					className="absolute -top-3 left-2 text-center z-20 truncate px-1 rounded-t-xl text-[10px] font-light max-w-20 border border-over-image shadow-sm"
+					className="absolute -top-3 left-2 text-center z-20 truncate px-1 rounded-t-xl text-[10px] font-light max-w-20 border border-over-image-subtle shadow-sm"
 					style={{
 						backgroundColor: link.badgeColor,
 						color: '#fff',

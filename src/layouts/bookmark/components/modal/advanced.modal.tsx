@@ -113,7 +113,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-brand-subtle border-2 border-primary transform scale-110'
+									? 'bg-brand-muted border-2 border-primary transform scale-110'
 									: 'border border-transparent hover:bg-hovered active:bg-strong'
 							}`}
 					>

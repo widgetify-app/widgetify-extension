@@ -38,7 +38,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
 					<h3 className="text-xl font-bold text-content">حریم خصوصی</h3>
-					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-raised text-muted">
+					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-raised-muted text-muted">
 						Privacy Notice
 					</span>
 				</div>

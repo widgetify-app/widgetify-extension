@@ -94,7 +94,7 @@ export function HabitDetailModal({
 									size="xs"
 									aria-label="گزینه‌های عادت"
 									rounded={'xl'}
-									className="w-7 h-7 p-0! text-muted hover:text-content border-strong"
+									className="w-7 h-7 p-0! text-muted hover:text-strong border-muted"
 								>
 									<Icon
 										name="menuOption"
@@ -173,7 +173,7 @@ export function HabitDetailModal({
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'contribution'
 												? 'bg-hovered text-content shadow-sm'
-												: 'text-muted hover:text-content'
+												: 'text-muted hover:text-strong'
 										)}
 									>
 										<Icon name="squares2X2" size={13} />
@@ -186,7 +186,7 @@ export function HabitDetailModal({
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'calendar'
 												? 'bg-hovered text-content shadow-sm'
-												: 'text-muted hover:text-content'
+												: 'text-muted hover:text-strong'
 										)}
 									>
 										<Icon name="calendar" size={13} />

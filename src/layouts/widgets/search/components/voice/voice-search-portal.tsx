@@ -97,7 +97,7 @@ export function VoiceSearchPortal({
 						) : (
 							<p
 								aria-live="polite"
-								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-faint font-bold' : 'text-faint font-medium'}`}
+								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-strong font-bold' : 'text-strong font-medium'}`}
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
@@ -136,7 +136,7 @@ export function VoiceSearchPortal({
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
 							aria-label={isListening ? 'توقف ضبط صدا' : 'شروع ضبط صدا'}
-							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-error text-error-content shadow-lg shadow-danger' : 'bg-primary text-primary-content shadow-lg shadow-brand'}`}
+							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-error text-error-content shadow-lg shadow-danger-muted' : 'bg-primary text-primary-content shadow-lg shadow-brand-muted'}`}
 						>
 							<Icon
 								name="mic"

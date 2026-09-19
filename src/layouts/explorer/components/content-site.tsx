@@ -26,7 +26,7 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-content border border-transparent hover:border-content`}
+			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-content-muted border border-transparent hover:border-content-faint`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
@@ -46,7 +46,7 @@ export function RenderContentSite({ link }: SiteProp) {
 					{badge}
 				</span>
 			)}
-			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-content group-hover:scale-105 group-hover:bg-content">
+			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-content-subtle group-hover:scale-105 group-hover:bg-content-strong">
 				<img
 					src={link.icon}
 					className="object-contain transition-transform duration-200 rounded-lg w-6 h-6 max-w-6 max-h-6"
@@ -54,7 +54,7 @@ export function RenderContentSite({ link }: SiteProp) {
 				/>
 			</div>
 
-			<span className="text-[11px] font-medium text-center truncate max-w-full text-muted transition-colors duration-200 group-hover:text-content">
+			<span className="text-[11px] font-medium text-center truncate max-w-full text-muted transition-colors duration-200 group-hover:text-strong">
 				{link.name}
 			</span>
 		</a>

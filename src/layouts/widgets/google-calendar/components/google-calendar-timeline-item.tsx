@@ -80,7 +80,7 @@ export const GoogleCalendarTimelineItem = ({
 							dateTime={isoTime(end)}
 							className={cn(
 								'text-[9px] leading-none tabular-nums',
-								isNow ? 'text-brand' : 'text-muted'
+								isNow ? 'text-brand-strong' : 'text-muted'
 							)}
 						>
 							{endTimeStr}
@@ -184,7 +184,7 @@ export const GoogleCalendarTimelineItem = ({
 			{isNow && (
 				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-brand-subtle">
 					<div
-						className="h-full transition-all duration-1000 bg-brand-muted"
+						className="h-full transition-all duration-1000 bg-brand-strong"
 						style={{ width: `${elapsedPercent}%` }}
 					/>
 				</div>

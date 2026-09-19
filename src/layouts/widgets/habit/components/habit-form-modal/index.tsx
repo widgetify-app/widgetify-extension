@@ -192,7 +192,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 				<div className="flex flex-col gap-1.5">
 					<label className="text-xs text-muted">عنوان</label>
-					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-strong bg-subtle focus-within:border-primary">
+					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-muted bg-subtle focus-within:border-primary">
 						<div
 							className="flex items-center justify-center w-8 h-8 text-lg transition-transform rounded-xl shrink-0"
 							style={{

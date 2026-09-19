@@ -43,7 +43,7 @@ export function Mood1x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-content hover:bg-hovered group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-strong hover:bg-hovered group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={12} aria-hidden="true" />
 					</button>

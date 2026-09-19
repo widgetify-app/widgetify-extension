@@ -123,7 +123,7 @@ export function MarketOtherItems() {
 
 			{error ? (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content-muted">
 						<Icon name="shoppingBag" size={20} className="text-faint" />
 					</div>
 					<p className="text-xs text-faint">خطا در بارگذاری آیتم‌ها</p>
@@ -133,7 +133,7 @@ export function MarketOtherItems() {
 					{Array.from({ length: 8 }).map((_, i) => (
 						<div
 							key={i}
-							className="overflow-hidden border rounded-2xl border-content bg-widget"
+							className="overflow-hidden border rounded-2xl border-content-faint bg-widget-muted"
 						>
 							<div className="w-full h-24 skeleton opacity-40" />
 							<div className="p-3 space-y-2">
@@ -161,7 +161,7 @@ export function MarketOtherItems() {
 				</div>
 			) : (
 				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content">
+					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-content-muted">
 						<Icon name="shoppingBag" size={20} className="text-faint" />
 					</div>
 					<p className="text-xs text-faint">آیتمی در این دسته‌بندی وجود ندارد</p>

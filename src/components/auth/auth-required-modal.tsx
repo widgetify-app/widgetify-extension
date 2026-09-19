@@ -36,7 +36,7 @@ export function AuthRequiredModal({
 			title=" "
 		>
 			<div className="flex flex-col items-center justify-between w-full h-56 pt-2 text-center">
-				<div className="relative flex items-center justify-center w-16 h-16 border shadow-xs rounded-2xl bg-content border-content">
+				<div className="relative flex items-center justify-center w-16 h-16 border shadow-xs rounded-2xl bg-content border-content-subtle">
 					<Icon name="lock" className="relative text-2xl text-primary" />
 				</div>
 

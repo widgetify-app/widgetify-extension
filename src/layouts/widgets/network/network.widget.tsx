@@ -212,7 +212,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 							<div className="relative overflow-hidden border border-content rounded-2xl">
 								<div
 									aria-hidden="true"
-									className="absolute inset-0 bg-linear-to-br from-raised to-transparent"
+									className="absolute inset-0 bg-linear-to-br from-subtle to-transparent"
 								/>
 								<div className="relative p-2 space-y-3 max-h-32 min-h-32">
 									<div className="flex items-center justify-between">
@@ -260,7 +260,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 												</span>
 											)}
 											{networkInfo.country && (
-												<span className="px-2 py-1 font-medium rounded-full text-secondary bg-brand-subtle">
+												<span className="px-2 py-1 font-medium rounded-full text-secondary bg-secondary-subtle">
 													{networkInfo.country}
 												</span>
 											)}

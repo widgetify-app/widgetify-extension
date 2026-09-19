@@ -89,7 +89,7 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 								<AvatarComponent
 									file={avatar}
 									size="lg"
-									className="transition-all cursor-pointer ring-4 ring-brand-muted"
+									className="transition-all cursor-pointer ring-4 ring-brand-subtle"
 								/>
 							) : (
 								<Icon name="cameraPlus" />

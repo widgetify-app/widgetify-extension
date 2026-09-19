@@ -28,14 +28,14 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 			) : (
 				<button
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-content"
+					className="flex relative items-center justify-center w-8 h-8 transition-all rounded-xl bg-subtle hover:bg-hovered active:scale-90 cursor-pointer border border-subtle text-muted hover:text-strong"
 					aria-label="درخواست‌های دوستی"
 					title="درخواست‌های دوستی"
 				>
 					<Icon
 						name="outlineInbox"
 						size={15}
-						className="text-muted hover:text-content"
+						className="text-muted hover:text-strong"
 					/>
 					{pendingCount ? (
 						<div className="absolute flex items-center justify-center w-2 h-2 z-20 font-bold text-white bg-error rounded-full top-1 right-1" />

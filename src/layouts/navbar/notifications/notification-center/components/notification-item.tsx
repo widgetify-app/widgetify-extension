@@ -104,7 +104,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-raised  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-content group relative ${prop.className || ''}`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-raised  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-content-subtle group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">

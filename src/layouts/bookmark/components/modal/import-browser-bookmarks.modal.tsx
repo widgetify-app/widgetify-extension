@@ -137,7 +137,7 @@ function TreeNode({
 				</span>
 
 				{isFolder ? (
-					<Icon name="folder" size={15} className="text-brand shrink-0" />
+					<Icon name="folder" size={15} className="text-brand-bold shrink-0" />
 				) : (
 					<img
 						src={getFaviconFromUrl(node.url || '')}

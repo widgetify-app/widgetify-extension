@@ -104,7 +104,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-all duration-200 ${containerSizeClasses} ${
 						isDragging
 							? 'border-primary bg-brand-subtle shadow-lg'
-							: 'border-strong hover:border-brand-muted bg-content hover:bg-raised'
+							: 'border-muted hover:border-brand-strong bg-content-strong hover:bg-content'
 					}`}
 					title="انتخاب یا تغییر آیکون"
 				>
@@ -126,7 +126,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					)}
 
 					<div
-						className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-raised ${
+						className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-raised-strong ${
 							isLarge ? 'rounded-2xl' : 'rounded-xl'
 						}`}
 					>

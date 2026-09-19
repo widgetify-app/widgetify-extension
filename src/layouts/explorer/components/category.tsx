@@ -34,7 +34,7 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 			className={twJoin(
 				'relative overflow-hidden border scroll-mt-20 bg-content bg-glass border-content hover:border-content rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
 				category.id === activeCategory &&
-					'ring-2 ring-brand-muted border-brand-muted',
+					'ring-2 ring-brand-strong border-brand-strong',
 				category.banner
 					? 'before:absolute before:inset-x-0 before:top-0 before:h-16 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
 					: ''
@@ -76,7 +76,7 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 							))}
 						</div>
 					) : (
-						<div className="flex-1 h-px bg-linear-to-r from-raised to-transparent" />
+						<div className="flex-1 h-px bg-linear-to-r from-hovered to-transparent" />
 					)}
 				</div>
 			</div>

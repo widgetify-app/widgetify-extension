@@ -43,7 +43,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					className={`p-2 border shrink-0 active:scale-95 transition-colors ${
 						selected
 							? `${selected.bg} ${selected.color} ${selected.border}`
-							: 'text-faint hover:text-brand'
+							: 'text-faint hover:text-brand-strong'
 					}`}
 				>
 					<Icon name="filterLeft" size={18} />

@@ -43,9 +43,9 @@ export function MarketItemCard({
 	}
 
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget rounded-2xl border-subtle hover:border-brand-muted hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget-strong rounded-2xl border-subtle hover:border-brand-muted hover:shadow-sm group">
 			{/* Preview area */}
-			<div className="relative overflow-hidden bg-content flex-shrink-0 min-h-[80px]">
+			<div className="relative overflow-hidden bg-content-subtle flex-shrink-0 min-h-[80px]">
 				<RenderPreview
 					item={item}
 					handlePreviewClick={() => {
@@ -55,7 +55,7 @@ export function MarketItemCard({
 
 				{/* Type badge */}
 				<div className="absolute top-2 right-2">
-					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-widget backdrop-blur-sm border border-subtle text-[9px] text-subtle font-medium">
+					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-widget-strong backdrop-blur-sm border border-subtle text-[9px] text-subtle font-medium">
 						{getItemTypeEmoji(item.type)}{' '}
 						{TYPE_LABELS[item.type] || item.type}
 					</span>
@@ -64,7 +64,7 @@ export function MarketItemCard({
 				{!canPreview && (
 					<button
 						onClick={handlePreview}
-						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-widget border border-subtle text-muted hover:text-primary transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-widget-strong border border-subtle text-muted hover:text-primary transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 					>
 						<Icon name="outlineEye" size={10} />
 						<span>پیش‌نمایش</span>
@@ -74,7 +74,7 @@ export function MarketItemCard({
 
 			{/* Card body */}
 			<div className="flex flex-col flex-1 px-3 py-2.5 gap-2">
-				<p className="text-[12px] font-semibold text-content leading-snug truncate">
+				<p className="text-[12px] font-semibold text-strong leading-snug truncate">
 					{item.name}
 				</p>
 

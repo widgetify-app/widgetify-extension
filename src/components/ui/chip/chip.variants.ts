@@ -21,7 +21,7 @@ export const chipVariants = cva(
 				false: [
 					'bg-widget',
 					'bg-glass',
-					'border-content',
+					'border-content-faint',
 					'text-muted',
 					'enabled:hover:border-brand-muted',
 					'disabled:opacity-80',

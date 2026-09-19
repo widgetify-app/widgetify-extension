@@ -33,8 +33,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										<div
 											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
 												taskItem.isDone
-													? 'bg-gradient-to-br from-success to-success-subtle shadow-md shadow-success'
-													: 'bg-gradient-to-br from-primary to-brand-subtle shadow-sm shadow-brand'
+													? 'bg-gradient-to-br from-success to-success-bold shadow-md shadow-success-muted'
+													: 'bg-gradient-to-br from-primary to-brand-bold shadow-sm shadow-brand-muted'
 											}`}
 										>
 											{taskItem.isDone ? (
@@ -56,8 +56,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 											<p
 												className={`text-sm font-medium transition-all duration-200 ${
 													taskItem.isDone
-														? 'text-success line-through'
-														: 'text-content'
+														? 'text-success-bold line-through'
+														: 'text-strong'
 												}`}
 											>
 												{taskItem.task}

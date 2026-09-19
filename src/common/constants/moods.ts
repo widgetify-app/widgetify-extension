@@ -5,7 +5,7 @@ export const moodOptions = [
 		label: 'ناراحتم',
 		colorClass: 'error',
 		activeClass: 'bg-error text-error-content',
-		borderClass: 'border-danger-muted',
+		borderClass: 'border-danger-strong',
 	},
 	{
 		value: 'normal',
@@ -21,7 +21,7 @@ export const moodOptions = [
 		label: 'اوکی‌ام',
 		colorClass: 'secondary',
 		activeClass: 'bg-secondary text-secondary-content',
-		borderClass: 'border-brand-muted',
+		borderClass: 'border-secondary-strong',
 	},
 	{
 		value: 'excited',

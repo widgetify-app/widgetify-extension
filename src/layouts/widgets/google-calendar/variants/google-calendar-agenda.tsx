@@ -107,8 +107,8 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 								key={`agenda-skeleton-${i}`}
 								className="space-y-1.5 animate-pulse"
 							>
-								<div className="w-24 h-3 rounded bg-content" />
-								<div className="h-12 rounded-2xl bg-content" />
+								<div className="w-24 h-3 rounded bg-content-strong" />
+								<div className="h-12 rounded-2xl bg-content-muted" />
 							</div>
 						))}
 					</div>
@@ -214,10 +214,10 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
 				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-				'bg-content hover:bg-content border border-faint',
+				'bg-content-subtle hover:bg-content-muted border border-faint',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
-				isNow && 'ring-1 ring-brand-muted bg-brand-subtle'
+				isNow && 'ring-1 ring-brand-strong bg-brand-subtle'
 			)}
 		>
 			<span

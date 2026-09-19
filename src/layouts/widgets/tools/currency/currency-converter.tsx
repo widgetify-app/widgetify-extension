@@ -75,7 +75,7 @@ export const CurrencyConverter: React.FC = () => {
 						type="button"
 						onClick={handleSwap}
 						aria-label="جابه‌جایی دو ارز"
-						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-content w-11 h-11 border-brand-muted text-content transition-ui hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
+						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-content w-11 h-11 border-brand-subtle text-content transition-ui hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
 							<Icon name="upDown" size={20} aria-hidden="true" />
@@ -133,7 +133,7 @@ export const CurrencyConverter: React.FC = () => {
 							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-raised px-2 py-1 rounded-lg">
+					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-subtle px-2 py-1 rounded-lg">
 						<Icon
 							name="info"
 							size={14}

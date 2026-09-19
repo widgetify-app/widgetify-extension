@@ -23,8 +23,8 @@ export const dropdownItemVariants = cva(
 		variants: {
 			variant: {
 				default:
-					'text-content hover:bg-brand-subtle hover:text-primary! active:bg-brand-subtle!',
-				danger: 'text-error hover:bg-danger-subtle active:bg-danger-subtle',
+					'text-content hover:bg-brand-subtle hover:text-primary! active:bg-brand-muted!',
+				danger: 'text-error hover:bg-danger-subtle active:bg-danger-muted',
 				primary: 'text-primary bg-brand-subtle hover:bg-brand-muted',
 			},
 		},

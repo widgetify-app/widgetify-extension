@@ -77,7 +77,7 @@ export function MiniAppsLayout() {
 						<p className="text-lg font-bold"> برنامک ها</p>
 						<div
 							onClick={() => onClickToShowInfo()}
-							className="p-1 text-lg font-bold cursor-pointer text-muted hover:text-content active:scale-95"
+							className="p-1 text-lg font-bold cursor-pointer text-muted hover:text-strong active:scale-95"
 						>
 							<Icon name="info" className="m-auto text-center" />
 						</div>

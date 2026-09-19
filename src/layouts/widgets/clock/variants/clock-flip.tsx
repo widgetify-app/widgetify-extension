@@ -53,7 +53,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 			}}
 		>
 			<div
-				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-strong"
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-muted"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -102,7 +102,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-end justify-center border-b bg-content border-strong"
+						className="absolute inset-0 flex items-end justify-center border-b bg-content border-muted"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						<span
@@ -114,7 +114,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{previous}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-raised" />
+						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-strong" />
 					</div>
 				</div>
 			)}
@@ -143,7 +143,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{value}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-raised to-transparent" />
+						<div className="absolute inset-0 bg-gradient-to-b from-strong to-transparent" />
 					</div>
 				</div>
 			)}

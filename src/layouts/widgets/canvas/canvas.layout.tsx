@@ -171,7 +171,7 @@ export function FreeWidgetCanvas() {
 					return (
 						<div
 							key={widget.instanceId}
-							className="relative w-full p-2 border rounded-2xl bg-content border-subtle"
+							className="relative w-full p-2 border rounded-2xl bg-content-strong border-subtle"
 						>
 							<div className="flex items-center justify-between pb-1 mb-2 border-b border-subtle">
 								<div className="flex items-center gap-1.5 font-bold text-xs text-content">

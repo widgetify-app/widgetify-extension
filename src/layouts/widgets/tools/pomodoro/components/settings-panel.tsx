@@ -13,8 +13,8 @@ interface SettingInputProps {
 
 const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max }) => {
 	return (
-		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-raised">
-			<label className="flex-1 text-sm font-medium text-content">{label}</label>
+		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-subtle">
+			<label className="flex-1 text-sm font-medium text-strong">{label}</label>
 			<div className="relative w-20">
 				<TextInput
 					type="number"
@@ -73,7 +73,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 			<div className={'rounded-xl'}>
 				<h4
 					className={
-						'pb-2 text-sm font-medium text-content border-b border-content'
+						'pb-2 text-sm font-medium text-strong border-b border-content'
 					}
 				>
 					تنظیمات زمان (دقیقه)

@@ -20,7 +20,7 @@ export function ProfileProgressNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-content hover:scale-[0.99] active:scale-[0.99] ${className}`}
+			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-content-subtle hover:scale-[0.99] active:scale-[0.99] ${className}`}
 			id="update_profile"
 			onClick={() => onClick()}
 		>
