@@ -241,7 +241,7 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 			}, [target, onChangeTarget])
 
 			return (
-				<div className="flex flex-col p-3 border divide-y rounded-2xl border-muted bg-subtle border-subtle gap-y-3">
+				<div className="flex flex-col p-3 border divide-y rounded-2xl border-muted bg-subtle divide-subtle gap-y-3">
 					<div className="flex items-center justify-between gap-2 pb-1">
 						<div className="flex items-center gap-2.5 shrink-0">
 							<span className="text-xs font-bold text-content whitespace-nowrap">

@@ -85,7 +85,7 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-content-subtle bg-widget border-content-subtle">
+				<div className="border divide-y rounded-2xl border-content-subtle bg-widget divide-content">
 					<div className="flex items-center justify-between px-3 py-3">
 						<span className="text-xs text-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">

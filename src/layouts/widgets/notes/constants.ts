@@ -12,24 +12,24 @@ export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	},
 	low: {
 		bg: 'bg-success',
-		border: 'border-success-muted',
+		border: 'border-success-content-muted',
 		text: 'text-success-content',
-		headerBg: 'bg-success-subtle',
-		divider: 'border-success-muted',
+		headerBg: 'bg-success-content-subtle',
+		divider: 'border-success-content-muted',
 	},
 	medium: {
 		bg: 'bg-warning',
-		border: 'border-warning-muted',
+		border: 'border-warning-content-muted',
 		text: 'text-warning-content',
-		headerBg: 'bg-warning-subtle',
-		divider: 'border-warning-muted',
+		headerBg: 'bg-warning-content-subtle',
+		divider: 'border-warning-content-muted',
 	},
 	high: {
 		bg: 'bg-error',
-		border: 'border-danger-muted',
+		border: 'border-danger-content-muted',
 		text: 'text-error-content',
-		headerBg: 'bg-danger-subtle',
-		divider: 'border-danger-muted',
+		headerBg: 'bg-danger-content-subtle',
+		divider: 'border-danger-content-muted',
 	},
 }
 

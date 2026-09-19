@@ -32,7 +32,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					cy="50"
 					r="45"
 					fill="none"
-					className="text-faint"
+					className="stroke-subtle"
 					strokeWidth="5"
 					filter="url(#shadow)"
 				/>
@@ -55,7 +55,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					cy="50"
 					r="40"
 					fill="none"
-					className="text-content/[0.06]"
+					className="stroke-faint"
 					strokeWidth="1"
 				/>
 				<text

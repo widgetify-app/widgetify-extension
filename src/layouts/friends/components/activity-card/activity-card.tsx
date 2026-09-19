@@ -162,7 +162,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 								key={index}
 								disabled={isUpdating}
 								onClick={() => handleReaction(reaction.id)}
-								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-muted' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-muted`}
+								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-muted' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-subtle`}
 							>
 								<p
 									className={` leading-6.5 ${selectedReaction === reaction.id && 'scale-85'}`}

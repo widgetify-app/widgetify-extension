@@ -74,7 +74,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					r={radius}
 					fill="none"
 					// className="stroke-primary"
-					className="text-faint"
+					className="stroke-subtle"
 					strokeWidth={strokeWidth}
 				/>
 				{/* Progress Circle */}
@@ -83,7 +83,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					className="transition-all duration-500 ease-out text-subtle"
+					className="transition-all duration-500 ease-out stroke-bold"
 					strokeWidth={strokeWidth}
 					strokeDasharray={circumference}
 					strokeDashoffset={offset}

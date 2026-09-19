@@ -115,7 +115,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 							disabled={changeEngineMutation.isPending}
 							aria-pressed={isCurrent}
 							className={`flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl transition-ui focus-visible:focus-ring ${
-								isCurrent ? 'bg-raised' : 'hover:bg-raised'
+								isCurrent ? 'bg-hovered' : 'hover:bg-subtle'
 							}`}
 						>
 							<span className="flex items-center justify-center w-5 h-5 shrink-0">

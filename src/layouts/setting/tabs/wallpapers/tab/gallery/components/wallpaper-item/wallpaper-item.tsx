@@ -88,7 +88,7 @@ function WallpaperItemFu({
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="absolute inset-0 flex items-center justify-center bg-raised rounded-xl">
+					<div className="absolute inset-0 flex items-center justify-center bg-over-image-scrim rounded-xl">
 						<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin"></div>
 					</div>
 				)}
