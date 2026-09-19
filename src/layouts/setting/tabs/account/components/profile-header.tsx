@@ -55,7 +55,7 @@ export const ProfileHeader = ({
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-center border bg-base-100/50 border-base-300 rounded-3xl">
+		<div className="relative flex flex-col items-center justify-center border bg-widget-muted border-content rounded-3xl">
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -124,7 +124,7 @@ export const ProfileHeader = ({
 							placeholder={user?.name || 'کاربر'}
 							size="xl"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-primary/20"
+							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-brand-muted"
 						/>
 						<button
 							type="button"

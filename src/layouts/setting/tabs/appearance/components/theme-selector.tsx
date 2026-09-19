@@ -94,7 +94,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 						/>
 					))}
 					<div
-						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-content border-muted   text-muted hover:text-primary! cursor-pointer hover:border-primary! transition-all duration-200 rounded-xl"
+						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-content   text-muted hover:text-primary! cursor-pointer hover:border-primary! transition-all duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />

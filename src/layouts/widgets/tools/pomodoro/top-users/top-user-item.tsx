@@ -18,12 +18,13 @@ export function TopUserItem({
 	const containerRef = useRef<HTMLDivElement>(null)
 	const isActive = activeProfileId === user.id
 	const crownColors: Record<number, string> = {
-		1: 'text-yellow-400',
-		2: 'text-gray-400',
-		3: 'text-amber-600',
+		1: 'text-medal-gold',
+		2: 'text-medal-silver',
+		3: 'text-medal-bronze',
 	}
 
-	const style = rank <= 3 ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'
+	const style =
+		rank <= 3 ? 'bg-success-subtle text-success' : 'bg-brand-subtle text-primary'
 
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)
@@ -50,7 +51,7 @@ export function TopUserItem({
 				<AvatarComponent
 					url={user.avatar}
 					size="sm"
-					className="outline-2 outline-offset-0 outline-primary/30"
+					className="outline-2 outline-offset-0 outline-brand-muted"
 				/>
 				<div className="relative flex-1 min-w-0">
 					<p className="text-sm font-medium truncate text-content">

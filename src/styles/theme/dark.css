@@ -1,21 +1,58 @@
 @plugin "daisyui/theme" {
-    name: "dark";
-    --color-base-100: #171717;
-    --color-base-200: #1a1a1a;
-    --color-base-300: #232323;
-    --color-base-content: #f9fafb;
-    --color-primary: var(--brand-primary);
-    --color-primary-focus: #4f46e5;
-    --color-primary-content: #ffffff;
-    --color-secondary: var(--brand-secondary);
-    --color-secondary-focus: #7c3aed;
-    --color-secondary-content: #171717;
-    --color-accent: #f59e0b;
-    --color-accent-focus: #d97706;
-    --color-accent-content: #271b06;
-    --color-error: #f7374f;
-    --color-success: #34d399;
-    --color-warning: #fbbf24;
-    --color-warning-content: #271b06;
-    --color-info: #60a5fa;
+	name: "dark";
+	color-scheme: "dark";
+	--color-base-100: #171717;
+	--color-base-200: #1a1a1a;
+	--color-base-300: #232323;
+	--color-base-content: #f9fafb;
+	--color-primary: var(--brand-primary);
+	--color-primary-content: #fff;
+	--color-secondary: var(--brand-secondary);
+	--color-secondary-content: #171717;
+	--color-accent: #f59e0b;
+	--color-accent-content: #271b06;
+	--color-neutral: #09090b;
+	--color-neutral-content: #e4e4e7;
+	--color-info: #60a5fa;
+	--color-info-content: #042e49;
+	--color-success: #34d399;
+	--color-success-content: #004c39;
+	--color-warning: #fbbf24;
+	--color-warning-content: #271b06;
+	--color-error: #f7374f;
+	--color-error-content: #4d0218;
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+}
+
+/* The channel triples live out here on purpose. daisyUI parses the
+   @plugin block and drops any value with a comma in it, so a
+   `--color-...-rgb: 1, 2, 3` written inside it never reaches the
+   stylesheet - and every rgba() built on it is invalid at
+   computed-value time, which makes the declaration vanish and the
+   element fall back to an inherited colour (a border with no
+   border-color falls back to currentColor, at full strength). */
+[data-theme="dark"] {
+	--color-base-100-a: 1;
+	--color-base-200-a: 1;
+	--color-base-300-a: 1;
+	--color-success-content-rgb: 0, 76, 57;
+	--color-warning-content-rgb: 39, 27, 6;
+	--color-error-content-rgb: 77, 2, 24;
+	--color-base-100-rgb: 23, 23, 23;
+	--color-base-200-rgb: 26, 26, 26;
+	--color-base-300-rgb: 35, 35, 35;
+	--color-base-content-rgb: 249, 250, 251;
+	--color-primary-rgb: 83, 109, 254;
+	--color-secondary-rgb: 124, 141, 240;
+	--color-error-rgb: 247, 55, 79;
+	--color-success-rgb: 52, 211, 153;
+	--color-warning-rgb: 251, 191, 36;
+	--color-info-rgb: 96, 165, 250;
 }

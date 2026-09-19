@@ -190,7 +190,7 @@ export function HabitContributionChart({
 
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-base-content/5 border-base-content/10">
+			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-subtle border-subtle">
 				<div
 					ref={scrollContainerRef}
 					className="pb-1 pl-1 overflow-x-auto scrollbar-thin"
@@ -263,13 +263,13 @@ export function HabitContributionChart({
 														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-[4px] transition-ui cursor-pointer select-none',
 														'focus-visible:focus-ring',
 														day.isFuture
-															? 'opacity-20 cursor-not-allowed bg-base-content/5'
+															? 'opacity-20 cursor-not-allowed bg-subtle'
 															: 'hover:scale-125 hover:z-10',
 														day.isToday &&
-															'ring-2 ring-base-content/30',
+															'ring-2 ring-strong',
 														!cellBg &&
 															!day.isFuture &&
-															'bg-base-content/10'
+															'bg-hovered'
 													)}
 													style={{
 														backgroundColor: cellBg,
@@ -284,7 +284,7 @@ export function HabitContributionChart({
 					</div>
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-base-content/10 text-xs">
+				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-subtle text-xs">
 					<div className="min-h-5 flex items-center gap-1.5 text-muted text-[11px]">
 						{hoveredDay ? (
 							<>
@@ -310,7 +310,7 @@ export function HabitContributionChart({
 
 					<div className="flex items-center gap-1 text-[10px] text-muted shrink-0">
 						<span>کمتر</span>
-						<div className="w-2.5 h-2.5 rounded-[2px] bg-base-content/10" />
+						<div className="w-2.5 h-2.5 rounded-[2px] bg-hovered" />
 						<div
 							className="w-2.5 h-2.5 rounded-[2px]"
 							style={{ backgroundColor: `${color}33` }}

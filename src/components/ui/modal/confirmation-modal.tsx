@@ -90,7 +90,7 @@ export function ConfirmationModal({
 					{typeof message === 'string' ? <p>{message}</p> : message}
 				</div>
 
-				<div className="mt-4 border-t border-base-content/10" />
+				<div className="mt-4 border-t border-subtle" />
 
 				<div className="flex items-center justify-end gap-2 pt-3">
 					<Button

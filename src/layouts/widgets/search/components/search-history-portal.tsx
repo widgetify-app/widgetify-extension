@@ -137,18 +137,18 @@ export function SearchHistoryPortal({
 								/>
 							) : showEnableButton ? (
 								<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
-									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-base-content/5">
+									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-subtle">
 										<Icon
 											name="search"
 											size={15}
-											className="text-base-content/40"
+											className="text-faint"
 										/>
 									</div>
 									<div className="space-y-1">
 										<p className="text-xs font-medium text-muted">
 											پیشنهادهای جستجو
 										</p>
-										<p className="text-[11px] text-base-content/40 leading-relaxed">
+										<p className="text-[11px] text-faint leading-relaxed">
 											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
 											داده میشه!
 										</p>
@@ -159,13 +159,13 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-base-content/5 text-muted transition-ui hover:text-primary hover:bg-primary/10 focus-visible:focus-ring searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-subtle text-muted transition-ui hover:text-primary hover:bg-brand-subtle focus-visible:focus-ring searchbox-item"
 									>
 										فعال‌سازی
 									</button>
 								</div>
 							) : (
-								<p className="px-4 py-6 text-xs text-center text-base-content/40">
+								<p className="px-4 py-6 text-xs text-center text-faint">
 									نتیجه‌ای برای نمایش وجود ندارد
 								</p>
 							)}

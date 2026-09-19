@@ -70,7 +70,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				showCloseButton={true}
 				title={
 					<span className="flex items-center gap-2">
-						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-primary/10 text-primary shrink-0">
+						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-brand-subtle text-primary shrink-0">
 							<Icon name="viewGridAdd" size={16} />
 						</span>
 						<span>چیدمان‌های آماده</span>
@@ -100,10 +100,10 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								<li key={preset.id} className="flex">
 									<article
 										className={cn(
-											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-base-content/5 shadow-2xs transition-ui hover:shadow-md',
+											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-subtle shadow-2xs transition-ui hover:shadow-md',
 											preset.isVip
-												? 'border-vip/25 hover:border-vip/50'
-												: 'border-base-content/10 hover:border-primary/40'
+												? 'border-vip-muted hover:border-vip-strong'
+												: 'border-subtle hover:border-brand-strong'
 										)}
 									>
 										<PresetCanvasPreview preset={preset} />
@@ -121,7 +121,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														className="mt-0.5"
 													/>
 												) : (
-													<span className="mt-0.5 shrink-0 rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-[9px] font-bold text-success">
+													<span className="mt-0.5 shrink-0 rounded-full border border-success-muted bg-success-subtle px-2 py-0.5 text-[9px] font-bold text-success">
 														رایگان
 													</span>
 												)}
@@ -140,7 +140,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 rounded-lg border border-base-content/10 bg-base-content/5 px-1.5 py-0.5 text-[10px] font-medium text-muted"
+															className="inline-flex items-center gap-1 rounded-lg border border-subtle bg-subtle px-1.5 py-0.5 text-[10px] font-medium text-muted"
 														>
 															<Icon
 																name={definition.icon}
@@ -156,7 +156,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{hiddenWidgetCount > 0 && (
 													<li
 														dir="ltr"
-														className="rounded-lg border border-base-content/10 px-1.5 py-0.5 text-[10px] font-medium text-muted"
+														className="rounded-lg border border-subtle px-1.5 py-0.5 text-[10px] font-medium text-muted"
 													>
 														{`+${hiddenWidgetCount.toLocaleString('fa-IR')}`}
 													</li>
@@ -164,7 +164,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 											</ul>
 										</div>
 
-										<div className="pt-3 mt-auto border-t border-base-content/10">
+										<div className="pt-3 mt-auto border-t border-subtle">
 											{isLocked ? (
 												<Button
 													onClick={handleOpenVipSettings}

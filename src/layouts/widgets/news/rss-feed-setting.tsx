@@ -183,7 +183,7 @@ export const RssFeedSetting = () => {
 		<WidgetSettingWrapper>
 			{/* error section */}
 			{error && (
-				<div className="p-3 mb-3 text-sm rounded-lg bg-error/20 text-error">
+				<div className="p-3 mb-3 text-sm rounded-lg bg-danger-muted text-error">
 					{error}
 				</div>
 			)}
@@ -237,7 +237,7 @@ export const RssFeedSetting = () => {
 								}
 								onClick={() => addSuggestedFeed(feed)}
 							>
-								<span className={'font-medium text-light text-center'}>
+								<span className={'font-medium text-center'}>
 									{feed.name}
 								</span>
 							</div>

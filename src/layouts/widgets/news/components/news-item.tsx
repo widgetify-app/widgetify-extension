@@ -43,13 +43,13 @@ export const NewsItem = ({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={() => onOpen(url)}
-			className="group flex items-center gap-2 p-1.5 rounded-xl cursor-pointer bg-base-content/[0.03] hover:bg-base-content/[0.08] transition-all border border-transparent hover:border-base-content/10 active:scale-[0.99] focus-visible:focus-ring shrink-0"
+			className="group flex items-center gap-2 p-1.5 rounded-2xl cursor-pointer bg-content hover:bg-hovered transition-all border border-content hover:border-subtle active:scale-[0.99] focus-visible:focus-ring shrink-0"
 		>
 			{hasImage && (
 				<img
 					src={image_url}
 					alt=""
-					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-base-content/10"
+					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-hovered"
 					loading="lazy"
 					onError={() => setImageError(true)}
 				/>
@@ -61,7 +61,9 @@ export const NewsItem = ({
 				</span>
 				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-muted">
 					<span className="truncate max-w-[100px]">{source.name}</span>
-					<span aria-hidden="true" className="opacity-50">·</span>
+					<span aria-hidden="true" className="opacity-50">
+						·
+					</span>
 					<time dateTime={publishedAt} className="shrink-0 opacity-80">
 						{formatRelativeTime(publishedAt)}
 					</time>

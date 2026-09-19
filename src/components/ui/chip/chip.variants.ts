@@ -19,11 +19,11 @@ export const chipVariants = cva(
 			selected: {
 				true: ['bg-primary', 'border-primary', 'text-white'],
 				false: [
-					'bg-base-100',
+					'bg-widget',
 					'bg-glass',
-					'border-base-300/30',
-					'text-base-content/80',
-					'enabled:hover:border-primary/30',
+					'border-content-faint',
+					'text-muted',
+					'enabled:hover:border-brand-muted',
 					'disabled:opacity-80',
 				],
 			},

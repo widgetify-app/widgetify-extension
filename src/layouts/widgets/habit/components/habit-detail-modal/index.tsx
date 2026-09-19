@@ -94,7 +94,7 @@ export function HabitDetailModal({
 									size="xs"
 									aria-label="گزینه‌های عادت"
 									rounded={'xl'}
-									className="w-7 h-7 p-0! text-muted hover:text-base-content border-base-content/15"
+									className="w-7 h-7 p-0! text-muted hover:text-strong border-muted"
 								>
 									<Icon
 										name="menuOption"
@@ -104,10 +104,10 @@ export function HabitDetailModal({
 								</Button>
 							}
 						>
-							<div className="flex flex-col p-2 border bg-content bg-glass border-base-content/10 rounded-2xl">
+							<div className="flex flex-col p-2 border bg-content bg-glass border-subtle rounded-2xl">
 								<button
 									type="button"
-									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-base-content/10 focus-visible:focus-ring"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-hovered focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
 									<Icon name="pen" size={13} aria-hidden="true" />
@@ -116,7 +116,7 @@ export function HabitDetailModal({
 
 								<button
 									type="button"
-									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-error hover:bg-error/10 focus-visible:focus-ring"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-error hover:bg-danger-subtle focus-visible:focus-ring"
 									onClick={onClickArchive}
 								>
 									<Icon name="trash" size={14} aria-hidden="true" />
@@ -163,17 +163,17 @@ export function HabitDetailModal({
 					<div className="flex flex-col gap-3 p-2">
 						<HabitStatsCards habit={habit} today={today} />
 
-						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-base-content/5 border-base-content/10">
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-subtle border-subtle">
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center p-1 border bg-base-content/5 rounded-2xl border-base-content/10">
+								<div className="flex items-center p-1 border bg-subtle rounded-2xl border-subtle">
 									<button
 										type="button"
 										onClick={() => setActiveView('contribution')}
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'contribution'
-												? 'bg-base-content/10 text-content shadow-sm'
-												: 'text-muted hover:text-base-content'
+												? 'bg-hovered text-content shadow-sm'
+												: 'text-muted hover:text-strong'
 										)}
 									>
 										<Icon name="squares2X2" size={13} />
@@ -185,8 +185,8 @@ export function HabitDetailModal({
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'calendar'
-												? 'bg-base-content/10 text-content shadow-sm'
-												: 'text-muted hover:text-base-content'
+												? 'bg-hovered text-content shadow-sm'
+												: 'text-muted hover:text-strong'
 										)}
 									>
 										<Icon name="calendar" size={13} />

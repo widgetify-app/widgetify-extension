@@ -1,0 +1,165 @@
+/* ============================================
+   PRIMITIVES
+
+   The only place a raw colour may be written. Everything else in the
+   project refers to a step on one of these ramps, never to a literal
+   and never to an opacity modifier.
+
+   Every value is hex on purpose: oklch() and color-mix() both landed in
+   Chrome 111, and Chrome 109 is the last version Windows 7/8.1 can run.
+   A colour those browsers cannot parse is dropped at computed-value time,
+   which is why text lost its colour there.
+   ============================================ */
+@theme {
+	/* --------------------------------------------
+     RESTRICTION - removes Tailwind's stock palette so text-red-500,
+     bg-slate-200 and friends generate no CSS at all. Using one is a
+     build error, not a review comment. daisyUI's own semantic names
+     (base-100, primary, error ...) are declared by its plugin and are
+     deliberately left alone.
+     -------------------------------------------- */
+	--color-red-*: initial;
+	--color-orange-*: initial;
+	--color-amber-*: initial;
+	--color-yellow-*: initial;
+	--color-lime-*: initial;
+	--color-green-*: initial;
+	--color-emerald-*: initial;
+	--color-teal-*: initial;
+	--color-cyan-*: initial;
+	--color-sky-*: initial;
+	--color-blue-*: initial;
+	--color-indigo-*: initial;
+	--color-violet-*: initial;
+	--color-purple-*: initial;
+	--color-fuchsia-*: initial;
+	--color-pink-*: initial;
+	--color-rose-*: initial;
+	--color-slate-*: initial;
+	--color-gray-*: initial;
+	--color-zinc-*: initial;
+	--color-stone-*: initial;
+
+	--font-sans: "Vazir", ui-sans-serif, system-ui, sans-serif;
+	--font-latin: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+
+	/* --------------------------------------------
+     RADIUS
+     -------------------------------------------- */
+	--radius-card: 1rem;
+	--radius-widget: 1.5rem;
+
+	/* --------------------------------------------
+     MOTION
+     -------------------------------------------- */
+	--duration-fast: 150ms;
+	--duration-base: 200ms;
+	--duration-slow: 300ms;
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+	/* --------------------------------------------
+     LAYERS - the stacking order, named.
+
+     The first five are the plain z-10/20/30/60 the app already writes by
+     hand; naming them changes no stacking, it just says what the number
+     meant. Popover is pinned at 9999 because several portals hard-code
+     9999 or 99999 inline and reordering them is not a rename.
+     -------------------------------------------- */
+	--z-raised: 10;
+	--z-sticky: 20;
+	--z-drag: 30;
+	--z-nav: 60;
+	--z-backdrop: 100;
+	--z-sheet: 200;
+	--z-modal: 300;
+	--z-popover: 9999;
+	--z-toast: 10000;
+
+	/* --------------------------------------------
+	   ACCENTS
+
+	   One line per colour. Tailwind generates the whole family from each
+	   - bg-, text-, border-, ring-, outline-, from-, to-, via-, divide- -
+	   so adding an accent means adding four lines here and nothing else.
+
+	   The tint scale is subtle / muted / strong and nothing in between.
+	   To restyle every danger panel in the app, change one number below.
+	   -------------------------------------------- */
+	--color-brand: var(--color-primary);
+	--color-brand-content: var(--color-primary-content);
+	--color-primary-hover: rgba(var(--color-primary-rgb), 0.9);
+	--color-secondary-hover: rgba(var(--color-secondary-rgb), 0.9);
+	--color-secondary-bold: rgba(var(--color-secondary-rgb), 0.8);
+	--color-secondary-strong: rgba(var(--color-secondary-rgb), 0.5);
+	--color-secondary-muted: rgba(var(--color-secondary-rgb), 0.2);
+	--color-secondary-subtle: rgba(var(--color-secondary-rgb), 0.1);
+	--color-brand-hover: rgba(var(--color-primary-rgb), 0.9);
+	--color-brand-subtle: rgba(var(--color-primary-rgb), 0.1);
+	--color-brand-muted: rgba(var(--color-primary-rgb), 0.2);
+	--color-brand-strong: rgba(var(--color-primary-rgb), 0.5);
+	--color-brand-bold: rgba(var(--color-primary-rgb), 0.8);
+
+	--color-danger: var(--color-error);
+	--color-danger-hover: rgba(var(--color-error-rgb), 0.9);
+	--color-danger-subtle: rgba(var(--color-error-rgb), 0.1);
+	--color-danger-muted: rgba(var(--color-error-rgb), 0.2);
+	--color-danger-strong: rgba(var(--color-error-rgb), 0.5);
+	--color-danger-bold: rgba(var(--color-error-rgb), 0.8);
+	--color-danger-content-subtle: rgba(var(--color-error-content-rgb), 0.1);
+	--color-danger-content-muted: rgba(var(--color-error-content-rgb), 0.2);
+
+	--color-success-hover: rgba(var(--color-success-rgb), 0.9);
+	--color-success-subtle: rgba(var(--color-success-rgb), 0.1);
+	--color-success-muted: rgba(var(--color-success-rgb), 0.2);
+	--color-success-strong: rgba(var(--color-success-rgb), 0.5);
+	--color-success-bold: rgba(var(--color-success-rgb), 0.8);
+	--color-success-content-subtle: rgba(var(--color-success-content-rgb), 0.1);
+	--color-success-content-muted: rgba(var(--color-success-content-rgb), 0.2);
+
+	--color-warning-hover: rgba(var(--color-warning-rgb), 0.9);
+	--color-warning-subtle: rgba(var(--color-warning-rgb), 0.1);
+	--color-warning-muted: rgba(var(--color-warning-rgb), 0.2);
+	--color-warning-strong: rgba(var(--color-warning-rgb), 0.5);
+	--color-warning-bold: rgba(var(--color-warning-rgb), 0.8);
+	--color-warning-content-subtle: rgba(var(--color-warning-content-rgb), 0.1);
+	--color-warning-content-muted: rgba(var(--color-warning-content-rgb), 0.2);
+
+	--color-info-hover: rgba(var(--color-info-rgb), 0.9);
+	--color-info-subtle: rgba(var(--color-info-rgb), 0.1);
+	--color-info-muted: rgba(var(--color-info-rgb), 0.2);
+	--color-info-strong: rgba(var(--color-info-rgb), 0.5);
+	--color-info-bold: rgba(var(--color-info-rgb), 0.8);
+
+	--color-vip: #6366f1;
+	--color-vip-rgb: 99, 102, 241;
+	--color-vip-content: #ffffff;
+	--color-vip-hover: rgba(var(--color-vip-rgb), 0.9);
+	--color-vip-subtle: rgba(var(--color-vip-rgb), 0.1);
+	--color-vip-muted: rgba(var(--color-vip-rgb), 0.2);
+	--color-vip-strong: rgba(var(--color-vip-rgb), 0.5);
+	--color-vip-bold: rgba(var(--color-vip-rgb), 0.8);
+
+	/* --------------------------------------------
+     CONTENT COLOURS - not chrome. These depict something or are a set a
+     user picks from, so they are deliberately multi-hue and do not follow
+     the theme. Defined here because this is the only file allowed to hold
+     a literal, not because they are part of the ramp system.
+     -------------------------------------------- */
+	--color-medal-gold: #fdc700;
+	--color-medal-silver: #99a1af;
+	--color-medal-bronze: #e17100;
+
+	/* Drawn as a bookmark tile over the wallpaper, never flat, so the
+	   60% is part of the colour rather than something a caller adds. */
+	--color-avatar-1: #2b7fff99;
+	--color-avatar-2: #ad46ff99;
+	--color-avatar-3: #f6339a99;
+	--color-avatar-4: #fb2c3699;
+	--color-avatar-5: #ff690099;
+	--color-avatar-6: #f0b10099;
+	--color-avatar-7: #00c95099;
+	--color-avatar-8: #00bba799;
+	--color-avatar-9: #00b8db99;
+	--color-avatar-10: #615fff99;
+}

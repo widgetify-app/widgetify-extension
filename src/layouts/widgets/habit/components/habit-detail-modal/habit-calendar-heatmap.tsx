@@ -195,7 +195,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 							type="button"
 							onClick={goToToday}
 							aria-label="برو به ماه جاری"
-							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
+							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon name="backRight" size={12} aria-hidden="true" />
 						</button>
@@ -204,7 +204,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 						type="button"
 						onClick={() => changeMonth(-1)}
 						aria-label="ماه قبل"
-						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="chevronRight" size={12} aria-hidden="true" />
 					</button>
@@ -212,7 +212,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 						type="button"
 						onClick={() => changeMonth(1)}
 						aria-label="ماه بعد"
-						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-base-content/10 hover:opacity-100 focus-visible:focus-ring"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="chevronLeft" size={12} aria-hidden="true" />
 					</button>

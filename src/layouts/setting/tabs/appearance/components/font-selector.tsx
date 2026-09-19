@@ -85,7 +85,7 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 						/>
 					))}
 					<div
-						className="flex items-center justify-center w-full h-20 text-xs border border-content border-muted gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
+						className="flex items-center justify-center w-full h-20 text-xs border border-content gap-0.5 text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />

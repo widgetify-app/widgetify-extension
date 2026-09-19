@@ -38,8 +38,8 @@ function WallpaperItemFu({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary/80 ring-offset-blue-100'
-		: 'ring-1 ring-base-content/10 hover:ring-primary/70'
+		? 'ring-2 ring-brand-bold ring-offset-widget'
+		: 'ring-1 ring-subtle hover:ring-brand-bold'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -88,12 +88,12 @@ function WallpaperItemFu({
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="absolute inset-0 flex items-center justify-center bg-neutral/60 rounded-xl">
-						<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin"></div>
+					<div className="absolute inset-0 flex items-center justify-center bg-over-image-scrim rounded-xl">
+						<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin"></div>
 					</div>
 				)}
 				{error && (
-					<div className="absolute inset-0 flex flex-col items-center justify-center bg-error/10 rounded-xl">
+					<div className="absolute inset-0 flex flex-col items-center justify-center bg-danger-subtle rounded-xl">
 						<Icon name="outlineHeart" className="text-error" />
 						<p className="mt-2 text-xs text-muted">خطا در بارگذاری</p>
 					</div>
@@ -130,7 +130,7 @@ function WallpaperItemFu({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-black/80 to-black/0 items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-over-image-scrim-strong to-over-image-scrim-none items-center`}
 						>
 							{wallpaper.name ? (
 								<div className="flex-1 text-[10px] font-medium text-white">
@@ -154,7 +154,7 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary/80">
+							<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-brand-bold">
 								<Icon name="check" size={12} />
 							</div>
 						)}
@@ -173,7 +173,7 @@ function WallpaperItemFu({
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10 rounded-2xl"></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-over-image-scrim-soft rounded-2xl"></div>
 
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/60 border border-white/10 text-white/80 hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-over-image-scrim border border-over-image-subtle text-over-image-muted hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

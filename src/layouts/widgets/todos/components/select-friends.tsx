@@ -20,17 +20,13 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					className="p-2 border-content text-[10px] shrink-0 active:scale-95"
 				>
 					{selectedFriends.length > 0 ? (
-						<div className="flex gap-0.5 text-base-content/40">
+						<div className="flex gap-0.5 text-faint">
 							{selectedFriends.length}
 							<p>دوست</p>
 						</div>
 					) : (
-						<div className="flex gap-0.5 text-base-content/40">
-							<Icon
-								name="friends"
-								size={16}
-								className="text-base-content/40"
-							/>
+						<div className="flex gap-0.5 text-faint">
+							<Icon name="friends" size={16} className="text-subtle" />
 							دوستان
 						</div>
 					)}
@@ -39,7 +35,7 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 			dropdownClassName="select-friends"
 			position="top-right"
 		>
-			<div className="p-2 border min-w-xs min-h-80 max-h-80 bg-base-200 border-base-300 rounded-2xl">
+			<div className="p-2 border min-w-xs min-h-80 max-h-80 bg-content border-content rounded-2xl">
 				<p className="pr-1 mb-1 text-sm font-bold">افزودن دوست به تسک</p>
 				<div className="h-56 max-h-56">
 					<SelectFriendLayout

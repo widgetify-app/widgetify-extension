@@ -305,7 +305,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								rounded="full"
 								onClick={() => setShowDeleteConfirm(true)}
 								className={cn(
-									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-error/30 hover:text-error-content border-none shadow-none text-inherit',
+									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-danger-muted hover:text-error-content border-none shadow-none text-inherit',
 									colorTheme.headerBg
 								)}
 							>
@@ -367,7 +367,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							aria-label="رنگ پیش‌فرض"
 							aria-pressed={!localPriority}
 							className={cn(
-								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-base-content/10 border border-base-content/20 focus-visible:focus-ring',
+								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-hovered border border-strong focus-visible:focus-ring',
 								!localPriority
 									? 'ring-2 ring-primary ring-offset-1 scale-110'
 									: 'opacity-60 hover:opacity-100'

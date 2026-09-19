@@ -28,7 +28,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 		>
 			<div className="space-y-2">
 				<div
-					className={`flex items-center justify-between p-4 bg-base-200 rounded-2xl ${className}`}
+					className={`flex items-center justify-between p-4 bg-content rounded-2xl ${className}`}
 				>
 					<div>
 						<p className="mb-1 text-sm text-muted">کد دعوت</p>

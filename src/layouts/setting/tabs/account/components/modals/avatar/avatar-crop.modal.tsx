@@ -53,7 +53,7 @@ export function AvatarCropModal({
 			showCloseButton={!isPending}
 		>
 			<div className="flex flex-col w-full h-96">
-				<div className="relative flex-1 overflow-hidden rounded-lg bg-base-300">
+				<div className="relative flex-1 overflow-hidden rounded-lg bg-raised">
 					<Cropper
 						image={image}
 						crop={crop}

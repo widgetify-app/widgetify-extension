@@ -17,10 +17,10 @@ export const confirmationIconVariants = cva(
 	{
 		variants: {
 			variant: {
-				danger: ['bg-error/10', 'text-error'],
-				warning: ['bg-warning/10', 'text-warning'],
-				info: ['bg-info/10', 'text-info'],
-				primary: ['bg-primary/10', 'text-primary'],
+				danger: ['bg-danger-subtle', 'text-error'],
+				warning: ['bg-warning-subtle', 'text-warning'],
+				info: ['bg-info-subtle', 'text-info'],
+				primary: ['bg-brand-subtle', 'text-primary'],
 			},
 		},
 		defaultVariants: { variant: 'danger' },

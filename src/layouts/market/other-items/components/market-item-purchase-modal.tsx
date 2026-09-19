@@ -61,7 +61,7 @@ export function MarketItemPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200/50 max-h-85">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-content-muted max-h-85">
 					<RenderPreview item={item} handlePreviewClick={() => {}} />
 				</div>
 
@@ -81,7 +81,7 @@ export function MarketItemPurchaseModal({
 				</div>
 
 				{!canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-error/10 text-error">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-subtle text-error">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({item.price - userCoins} ویج‌کوین کسری
 							داری)

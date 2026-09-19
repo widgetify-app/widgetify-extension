@@ -22,12 +22,12 @@ export function EmptyBookmarkSlot({
 						<Icon name="bookmarkPlus" size={32} className="opacity-50" />
 					</div>
 				) : (
-					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-base-content/20" />
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-strong" />
 				)}
 			</div>
 
 			{canAdd && (
-				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-base-content/5 rounded-widget" />
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-subtle rounded-widget" />
 			)}
 		</button>
 	)

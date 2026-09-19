@@ -74,10 +74,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 			{loading ? (
 				<div aria-hidden="true" className="grid grid-cols-3 gap-2">
 					{prayerTimeBoxes.map((box) => (
-						<div
-							key={box.title}
-							className="h-20 skeleton rounded-[1.5rem]"
-						/>
+						<div key={box.title} className="h-20 skeleton rounded-[1.5rem]" />
 					))}
 				</div>
 			) : isError ? (
@@ -94,7 +91,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 					<button
 						type="button"
 						onClick={() => refetch()}
-						className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-base-content/10 transition-ui hover:bg-base-content/20 focus-visible:focus-ring"
+						className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-content bg-hovered transition-ui hover:bg-strong focus-visible:focus-ring"
 					>
 						تلاش دوباره
 					</button>
@@ -105,9 +102,9 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 						{prayerTimeBoxes.map((box) => (
 							<div
 								key={box.title}
-								className="flex flex-col items-center justify-center p-3 border rounded-2xl bg-content border-content"
+								className="flex flex-col items-center justify-center p-3 bg-content hover:bg-hovered border-content border rounded-2xl"
 							>
-								<div className="mb-1 text-primary/70">
+								<div className="mb-1 text-brand-bold">
 									<Icon name={box.icon} size={18} aria-hidden="true" />
 								</div>
 								<span className="text-[8px] font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
@@ -121,9 +118,9 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 					</div>
 
 					{dailyZikr && (
-						<div className="flex flex-col items-center gap-1 p-2 border bg-content border-content rounded-2xl">
+						<div className="flex flex-col items-center gap-1 p-1 bg-content hover:bg-hovered border border-content  rounded-2xl">
 							<div className="flex items-center gap-1.5 mb-0.5">
-								<div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+								<div className="w-1.5 h-1.5 rounded-full bg-brand-muted" />
 								<span className="text-[9px] font-black text-content">
 									ذکر روز {weekDay}
 								</span>

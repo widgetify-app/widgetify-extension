@@ -25,7 +25,7 @@ export function WidgetContainer({
 			className={`widget-outer relative h-full w-full overflow-hidden ${className}`}
 		>
 			<div
-				className={`h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-content bg-glass ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}
+				className={`h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-widget bg-glass ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}
 				inert={canvasMode === 'edit' ? true : undefined}
 				style={{
 					containerType: 'size',

@@ -76,11 +76,11 @@ export const FriendsList = ({
 			{allFriends.map((friend) => (
 				<div
 					key={`f-${friend.id}`}
-					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-xl border-content hover:shadow-sm"
+					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-2xl border-content hover:shadow-sm"
 				>
 					<div className="flex items-center flex-1 min-w-0 gap-1.5">
 						<div className="relative shrink-0">
-							<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-base-300">
+							<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-content">
 								<AvatarComponent
 									url={friend.user.avatar}
 									placeholder={friend.user.name}
@@ -94,7 +94,7 @@ export const FriendsList = ({
 							<div className="text-sm font-medium truncate text-content">
 								{friend.user.name}
 							</div>
-							<div className="text-xs truncate text-base-content/60">
+							<div className="text-xs truncate text-muted">
 								{friend.user.username}@
 							</div>
 						</div>
@@ -119,7 +119,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, catIdx) => (
 		<div
 			key={`loading-${catIdx}`}
-			className="w-full border h-14 rounded-xl skeleton bg-base-content/5 border-content"
+			className="w-full border h-14 rounded-xl skeleton bg-subtle border-content"
 		></div>
 	))
 }

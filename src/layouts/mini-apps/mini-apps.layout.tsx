@@ -77,7 +77,7 @@ export function MiniAppsLayout() {
 						<p className="text-lg font-bold"> برنامک ها</p>
 						<div
 							onClick={() => onClickToShowInfo()}
-							className="p-1 text-lg font-bold cursor-pointer text-base-content/80 hover:text-base-content active:scale-95"
+							className="p-1 text-lg font-bold cursor-pointer text-muted hover:text-strong active:scale-95"
 						>
 							<Icon name="info" className="m-auto text-center" />
 						</div>
@@ -147,42 +147,42 @@ export function MiniAppsLayout() {
 			</div>
 
 			<Modal
-					title="برنامک ها"
-					isOpen={showInfo}
-					onClose={() => setShowInfo(false)}
-					direction="rtl"
+				title="برنامک ها"
+				isOpen={showInfo}
+				onClose={() => setShowInfo(false)}
+				direction="rtl"
+			>
+				<div className="space-y-3 text-sm">
+					<p className="font-semibold">
+						برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
+						می‌تونی ازشون استفاده کنی، بدون اینکه مجبور باشی از اپ اصلی بری
+						بیرون.
+					</p>
+
+					<p>
+						خیالت راحت! این برنامک‌ها به طور پیش‌فرض به هیچ اطلاعاتی ازت دسترسی
+						ندارن و فقط و فقط با اجازه خودت می‌تونن به اطلاعاتت دسترسی پیدا
+						کنن.
+					</p>
+
+					<p>
+						اگر علاقه‌مند به همکاری با ما در این حوزه هستید، راه‌های ارتباطی در
+						دسترس شماست.
+					</p>
+				</div>
+
+				<Button
+					size="sm"
+					type="button"
+					color={'primary'}
+					rounded={'2xl'}
+					onClick={() => setShowInfo(false)}
+					fullWidth
+					className="h-12 mt-2 text-base font-bold shadow-sm"
 				>
-					<div className="space-y-3 text-sm">
-						<p className="font-semibold">
-							برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
-							می‌تونی ازشون استفاده کنی، بدون اینکه مجبور باشی از اپ اصلی بری
-							بیرون.
-						</p>
-
-						<p>
-							خیالت راحت! این برنامک‌ها به طور پیش‌فرض به هیچ اطلاعاتی ازت
-							دسترسی ندارن و فقط و فقط با اجازه خودت می‌تونن به اطلاعاتت
-							دسترسی پیدا کنن.
-						</p>
-
-						<p>
-							اگر علاقه‌مند به همکاری با ما در این حوزه هستید، راه‌های ارتباطی
-							در دسترس شماست.
-						</p>
-					</div>
-
-					<Button
-						size="sm"
-						type="button"
-						color={'primary'}
-						rounded={'2xl'}
-						onClick={() => setShowInfo(false)}
-						fullWidth
-						className="h-12 mt-2 text-base font-bold shadow-sm"
-					>
-						باشه
-					</Button>
-				</Modal>
+					باشه
+				</Button>
+			</Modal>
 		</div>
 	)
 }

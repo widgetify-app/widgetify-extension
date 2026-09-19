@@ -61,7 +61,7 @@ export function RequestNotificationModal({
 								alt={'نمونه اعلان'}
 								className="object-cover w-full h-auto"
 							/>
-							<p className="p-2 text-xs text-center text-muted bg-content/30">
+							<p className="p-2 text-xs text-center text-muted bg-hovered">
 								نمونه اعلان که دریافت خواهید کرد
 							</p>
 						</div>

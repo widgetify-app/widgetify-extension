@@ -188,7 +188,7 @@ export function BookmarkFolderModal({
 		>
 			<div className="flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">
 				{folderPath.length > 1 && (
-					<div className="pb-2 border-b border-base-content/10 shrink-0">
+					<div className="pb-2 border-b border-subtle shrink-0">
 						<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 					</div>
 				)}

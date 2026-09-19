@@ -8,7 +8,7 @@ import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-list'
 import { AddFriendBottomSheet } from './components/add-friend.bottom-sheet'
-import { ConfirmationModal } from '@/components/ui'
+import { Button, ConfirmationModal } from '@/components/ui'
 import { FriendRequestsButton } from './components/buttons/friend-requests.button'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
@@ -57,17 +57,18 @@ export const FriendsLayout = () => {
 							pendingCount={user?.friendshipStats?.pending}
 						/>
 
-						<button
+						<Button
 							onClick={() => setIsAddFriendOpen(true)}
-							className="flex items-center gap-2 px-3 py-1.5 transition-all border shadow-sm cursor-pointer rounded-xl bg-primary border-primary/90 text-primary-content/80 border-content active:scale-95"
-							aria-label="افزودن دوست جدید"
 							type="button"
+							variant={'solid'}
+							color={'brand'}
+							size={'sm'}
 						>
 							<Icon name="usersPlus" className="w-4 h-4" />
 							<span className="hidden text-sm font-medium sm:inline">
 								افزودن دوست
 							</span>
-						</button>
+						</Button>
 					</div>
 				</div>
 

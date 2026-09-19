@@ -31,7 +31,7 @@ export const OccupationSelector = ({
 	}
 
 	const content = (
-		<div className="w-64 p-2 border bg-base-200 rounded-2xl border-base-300">
+		<div className="w-64 p-2 border bg-content rounded-2xl border-content">
 			{isLoading ? (
 				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					درحال بارگذاری...

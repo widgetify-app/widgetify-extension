@@ -1,4 +1,4 @@
-import { Motion as motion } from "@/common/motion";
+import { Motion as motion } from '@/common/motion'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { SelectBox } from '@/components/ui'
@@ -51,7 +51,7 @@ export const CurrencyConverter: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 select-none">
-			<div className="relative flex flex-col gap-6 p-5 border bg-base-content/5 border-base-content/10 rounded-2xl">
+			<div className="relative flex flex-col gap-6 p-5 border bg-subtle border-subtle rounded-2xl">
 				<div className="flex items-center justify-between gap-3">
 					<TextInput
 						type="number"
@@ -66,7 +66,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={fromCurrency}
 						onChange={setFromCurrency}
-						className="!w-24 !h-11 rounded-2xl! !bg-base-100 border border-base-300 shadow-sm font-bold text-xs"
+						className="!w-24 !h-11 rounded-2xl! !bg-widget border border-content shadow-sm font-bold text-xs"
 					/>
 				</div>
 
@@ -75,7 +75,7 @@ export const CurrencyConverter: React.FC = () => {
 						type="button"
 						onClick={handleSwap}
 						aria-label="جابه‌جایی دو ارز"
-						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-content w-11 h-11 border-primary/10 text-content transition-ui hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
+						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-content w-11 h-11 border-brand-subtle text-content transition-ui hover:text-primary active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
 							<Icon name="upDown" size={20} aria-hidden="true" />
@@ -94,7 +94,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={toCurrency}
 						onChange={setToCurrency}
-						className="!w-24 !h-11 !rounded-2xl  border border-primary/20 shadow-sm font-bold text-xs"
+						className="!w-24 !h-11 !rounded-2xl  border border-brand-muted shadow-sm font-bold text-xs"
 					/>
 				</div>
 			</div>
@@ -133,8 +133,14 @@ export const CurrencyConverter: React.FC = () => {
 							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-base-content/5 px-2 py-1 rounded-lg">
-						<Icon name="info" size={14} className="opacity-40" aria-hidden="true" />۱ ={' '}
+					<div className="flex items-center gap-1.5 text-[11px] font-black text-primary bg-subtle px-2 py-1 rounded-lg">
+						<Icon
+							name="info"
+							size={14}
+							className="opacity-40"
+							aria-hidden="true"
+						/>
+						۱ ={' '}
 						{fromCurrencyData && toCurrencyData
 							? formatNumber(
 									fromCurrencyData.rialPrice / toCurrencyData.rialPrice

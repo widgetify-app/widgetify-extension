@@ -9,23 +9,17 @@ interface Prop {
 	className?: string
 }
 
-export function PetOptionTile({
-	label,
-	selected,
-	onSelect,
-	children,
-	className,
-}: Prop) {
+export function PetOptionTile({ label, selected, onSelect, children, className }: Prop) {
 	return (
 		<button
 			type="button"
 			onClick={onSelect}
 			aria-pressed={selected}
 			className={cn(
-				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-xl transition-ui focus-visible:focus-ring',
+				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-2xl transition-ui focus-visible:focus-ring',
 				selected
-					? 'border-primary/50 bg-primary/15'
-					: 'border-content bg-base-content/5 hover:bg-primary/5 hover:border-primary/25',
+					? 'border-brand-strong bg-brand-subtle'
+					: 'border-content bg-content hover:bg-brand-subtle hover:border-brand-muted',
 				className
 			)}
 		>

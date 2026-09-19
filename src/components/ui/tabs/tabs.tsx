@@ -37,7 +37,7 @@ export const TabNavigation = <T,>({
 		<div
 			role="group"
 			className={cn(
-				'flex items-center p-1 bg-base-content/5 rounded-2xl border border-base-content/5 relative',
+				'flex items-center p-1 bg-content rounded-2xl border border-faint relative',
 				className
 			)}
 		>
@@ -67,7 +67,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0 shadow-xs bg-base-content/10 rounded-xl -z-10',
+									'absolute inset-0 shadow-xs bg-subtle rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{

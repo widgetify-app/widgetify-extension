@@ -117,7 +117,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 					<div
 						ref={popupRef}
 						dir="ltr"
-						className="fixed p-2.5 shadow-2xl rounded-2xl bg-base-200 border border-base-content/15 backdrop-blur-xl z-[99999] pointer-events-auto"
+						className="fixed p-2.5 shadow-2xl rounded-2xl bg-content border border-muted backdrop-blur-xl z-[99999] pointer-events-auto"
 						style={{
 							top: `${coords.top}px`,
 							left: `${coords.left}px`,

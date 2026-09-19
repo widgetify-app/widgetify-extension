@@ -13,10 +13,10 @@ export function ImageSearchButton({ onClick }: { onClick: () => void }) {
 				type="button"
 				onClick={onClickHandle}
 				aria-label="جستجوی با تصویر"
-				className="relative flex items-center justify-center p-0 transition-colors bg-transparent border-none rounded-full cursor-pointer h-9 w-9 hover:bg-base-300 shrink-0"
+				className="relative flex items-center justify-center p-0 transition-colors bg-transparent border-none rounded-full cursor-pointer h-9 w-9 hover:bg-raised shrink-0"
 			>
 				<svg
-					className="w-6 h-6 transition-colors text-base-content/50"
+					className="w-6 h-6 transition-colors text-subtle"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
 					aria-hidden="true"

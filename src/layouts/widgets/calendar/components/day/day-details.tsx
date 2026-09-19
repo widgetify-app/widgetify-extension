@@ -165,7 +165,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				</dl>
 
 				{!isFuture && isWithinMoodBacklog && (
-					<fieldset className="p-1.5 rounded-2xl bg-base-content/5">
+					<fieldset className="p-1.5 rounded-2xl bg-subtle">
 						<legend className="sr-only">{moodTitle}</legend>
 						<span
 							aria-hidden="true"
@@ -188,7 +188,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 										'disabled:cursor-not-allowed disabled:opacity-60',
 										mood === option.value
 											? option.activeClass
-											: 'bg-base-300 opacity-80 hover:opacity-100'
+											: 'bg-raised opacity-80 hover:opacity-100'
 									)}
 								>
 									<span className="block text-lg leading-none mb-0.5">
@@ -204,15 +204,15 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				)}
 
 				{dayEvents.length > 0 && (
-					<ul className="flex flex-col p-1 space-y-1 overflow-y-auto max-h-28 scrollbar-thin scrollbar-thumb-base-300">
+					<ul className="flex flex-col p-1 space-y-1 overflow-y-auto max-h-28 scrollbar-thin scrollbar-thumb">
 						{dayEvents.map((event, idx) => (
 							<li
 								key={`e-${idx}`}
 								className={cn(
 									'flex items-center w-full gap-1 px-2 outline rounded-xl min-h-8',
 									event.isHoliday
-										? 'bg-error/20 text-error outline-error/30'
-										: 'text-content outline-base-300'
+										? 'bg-danger-muted text-error outline-danger-muted'
+										: 'text-content outline-content bg-subtle'
 								)}
 							>
 								<span className="flex-1 min-w-0 text-[11px]">

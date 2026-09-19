@@ -73,7 +73,7 @@ export function VoiceSearchPortal({
 						type="button"
 						onClick={onClose}
 						aria-label="بستن جستجوی صوتی"
-						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-base-content/10 text-muted focus-visible:focus-ring"
+						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-hovered text-muted focus-visible:focus-ring"
 					>
 						<Icon name="close" size={22} aria-hidden="true" />
 					</button>
@@ -97,7 +97,7 @@ export function VoiceSearchPortal({
 						) : (
 							<p
 								aria-live="polite"
-								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-base-content font-bold' : 'text-base-content/30 font-medium'}`}
+								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-strong font-bold' : 'text-strong font-medium'}`}
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
@@ -107,13 +107,13 @@ export function VoiceSearchPortal({
 						)}
 					</div>
 
-					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-base-content/5">
+					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-faint">
 						<Dropdown
 							position="top-right"
 							width="120px"
 							dropdownClassName="text-xs font-bold searchbox-item"
 							trigger={
-								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-base-content/10 rounded-xl transition-ui text-xs font-bold text-muted">
+								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-hovered rounded-xl transition-ui text-xs font-bold text-muted">
 									<Icon name="settings" size={14} aria-hidden="true" />
 									{
 										languages.find((l) => l.code === selectedLanguage)
@@ -136,7 +136,7 @@ export function VoiceSearchPortal({
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
 							aria-label={isListening ? 'توقف ضبط صدا' : 'شروع ضبط صدا'}
-							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-error text-error-content shadow-lg shadow-error/20' : 'bg-primary text-primary-content shadow-lg shadow-primary/20'}`}
+							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-error text-error-content shadow-lg shadow-danger-muted' : 'bg-primary text-primary-content shadow-lg shadow-brand-muted'}`}
 						>
 							<Icon
 								name="mic"

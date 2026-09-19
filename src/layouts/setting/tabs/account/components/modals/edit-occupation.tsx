@@ -51,7 +51,7 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 						onSelect={(id) => setOccupations(id || '')}
 						isLoading={occupationsLoading}
 						triggerElement={
-							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-content rounded-xl hover:border-primary/50!">
+							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-content rounded-xl hover:border-brand-strong!">
 								<div className="flex items-center gap-3">
 									<Icon
 										name="briefcase"

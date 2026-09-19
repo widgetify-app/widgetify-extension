@@ -62,7 +62,7 @@ export const TabManager = ({
 	}
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary bg-primary/15' : 'text-muted hover:bg-base-300'
+		return isActive ? 'text-primary bg-brand-subtle' : 'text-muted hover:bg-raised'
 	}
 
 	const getTabIconStyle = (isActive: boolean) => {
@@ -99,7 +99,7 @@ export const TabManager = ({
 												<span className="text-xs font-medium text-muted shrink-0">
 													{group.parentName}
 												</span>
-												<div className="h-px bg-base-300 flex-1" />
+												<div className="h-px bg-raised flex-1" />
 											</div>
 										)}
 

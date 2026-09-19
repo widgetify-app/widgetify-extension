@@ -21,7 +21,7 @@ export function GeneralSettingTab() {
 				title={
 					<div className="flex items-center">
 						<p>حالت بهینه</p>
-						<span className="mr-2 text-white badge badge-error badge-xs outline-2 outline-error/20">
+						<span className="mr-2 text-white badge badge-error badge-xs outline-2 outline-danger-muted">
 							جدید
 						</span>
 					</div>

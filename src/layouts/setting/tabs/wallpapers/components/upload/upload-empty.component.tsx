@@ -35,7 +35,7 @@ export function UploadEmpty({
 			onDrop={onDrop}
 			className={cn(
 				'relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-content bg-content',
-				isDragging && 'border-primary bg-primary/5'
+				isDragging && 'border-primary bg-brand-subtle'
 			)}
 		>
 			<div className="flex items-center justify-between gap-3">
@@ -43,10 +43,10 @@ export function UploadEmpty({
 					<div
 						onClick={onFileSelect}
 						className={cn(
-							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-base-200',
+							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-content',
 							isDragging
-								? 'border-primary bg-primary/10 text-primary'
-								: 'border-base-content/20 hover:border-primary/50 text-muted hover:text-content'
+								? 'border-primary bg-brand-subtle text-primary'
+								: 'border-strong hover:border-brand-strong text-muted hover:text-content'
 						)}
 					>
 						{isUploading ? (
@@ -80,7 +80,7 @@ export function UploadEmpty({
 										content={`عکس، گیف و ویدیو تا سقف ${vipMaxSize} مگابایت`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-base-content/5 px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											<span>تا {vipMaxSize} مگابایت</span>
 										</span>
 									</Tooltip>
@@ -88,7 +88,7 @@ export function UploadEmpty({
 										content="روی سرور ذخیره می‌شه و روی اکانتت ذخیره می‌مونه"
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-base-content/5 px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											<span>همگام سازی با اکانت</span>
 										</span>
 									</Tooltip>
@@ -99,7 +99,7 @@ export function UploadEmpty({
 										content={`عکس تا ${freeMaxSize} مگابایت روی همین مرورگرت ذخیره می‌شه`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-base-content/5 px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted bg-subtle px-2 py-0.5 rounded-xl cursor-default">
 											فقط عکس (تا {freeMaxSize} مگابایت)
 										</span>
 									</Tooltip>
@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip/10 border border-vip/20 px-2.5 py-0.5 rounded-xl hover:bg-vip/20 active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-subtle border border-vip-muted px-2.5 py-0.5 rounded-xl hover:bg-vip-muted active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>
