@@ -39,10 +39,6 @@
 	background-color: rgba(var(--color-base-content-rgb), 0.2);
 }
 
-@utility bg-overlay {
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
 
 /* --------------------------------------------
    SURFACE VEILS - the same three surfaces, let through. A widget over a
@@ -213,12 +209,6 @@
 	--tw-ring-offset-color: var(--color-base-100);
 }
 
-@utility placeholder-muted {
-	&::placeholder {
-		color: rgba(var(--color-base-content-rgb), 0.7);
-	}
-}
-
 /* --------------------------------------------
    STROKE - an SVG line is not text. Setting `color` on a <circle> that
    has no stroke attribute paints nothing at all, so these exist.
@@ -381,10 +371,6 @@
 	);
 }
 
-@utility shadow-over-image {
-	filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
-}
-
 /* --------------------------------------------
    SURFACE GRADIENT STOPS - the surface names again, for gradients.
    -------------------------------------------- */
@@ -466,8 +452,16 @@
 	box-shadow: var(--elevation-sm);
 }
 
+@utility elevation-md {
+	box-shadow: var(--elevation-md);
+}
+
 @utility elevation-lg {
 	box-shadow: var(--elevation-lg);
+}
+
+@utility elevation-xl {
+	box-shadow: var(--elevation-xl);
 }
 
 @utility rounded-card {
