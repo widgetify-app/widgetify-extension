@@ -5,6 +5,7 @@ import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheNames } from './cache-names'
 import {
+	CACHE_FIRST_API_PATHS,
 	CDN_NO_CACHE_PREFIXES,
 	NETWORK_FIRST_API_PATHS,
 	NEVER_CACHE_API_PATHS,
@@ -54,6 +55,14 @@ export function setupCaching() {
 				purgeOnQuotaError: true,
 			}),
 		]
+
+		registerRoute(
+			({ url, request }) => matchesApiPaths(url, request, CACHE_FIRST_API_PATHS),
+			new CacheFirst({
+				cacheName: CacheNames.api,
+				plugins: apiCachePlugins(),
+			})
+		)
 
 		registerRoute(
 			({ url, request }) => matchesApiPaths(url, request, SWR_API_PATHS),
