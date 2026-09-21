@@ -8,10 +8,39 @@ export interface ExplorerCategoryBadge {
 	textColor?: string
 	url?: string
 }
+export interface CatalogItemPromo {
+	title?: string
+	code?: string
+	discount?: string
+	badge?: string
+	expiresText?: string
+	targetUrl?: string
+	highlights?: string[]
+}
+
+export interface CatalogItemMenuItem {
+	id?: string
+	title: string
+	url: string
+	badge?: string
+	icon?: string
+	isExternal?: boolean
+}
+
+export interface CatalogItemMeta {
+	type?: 'POPOVER_MENU'
+	action?: 'OPEN_MODAL' | 'OPEN_POPOVER' | 'DIRECT_URL'
+	title?: string
+	description?: string
+	badge?: string
+	gallery?: string[]
+	promo?: CatalogItemPromo
+	menuItems?: CatalogItemMenuItem[]
+}
+
 export interface FetchedContent {
 	id: string
 	category: string
-	hideName?: boolean
 	icon?: string
 	banner?: string
 	links: {
@@ -24,16 +53,16 @@ export interface FetchedContent {
 			row?: number | null
 		}
 		height?: number
-		hasBorder: boolean
 		isNew: boolean
 		badge?: string
 		badgeColor?: string
+		description?: string
 		backgroundSrc?: string
-		badgeAnimate?: 'bounce' | 'pulse'
 		miniAppAuthRequired?: boolean
+		meta?: CatalogItemMeta
 	}[]
 	lockHeight?: boolean
-	badges: ExplorerCategoryBadge[]
+
 	span?: {
 		col?: number | null
 		row?: number | null
