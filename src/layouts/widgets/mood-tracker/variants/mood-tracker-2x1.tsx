@@ -59,8 +59,8 @@ export function Mood2x1({
 								'flex flex-col items-center justify-center py-[4cqh] px-0.5 rounded-xl border transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
-									? 'bg-primary/15 border-primary shadow-xs font-black'
-									: 'bg-base-content/5 hover:bg-base-content/10 border-transparent'
+									? cn(opt.activeClass, opt.borderClass, 'shadow-xs font-black')
+									: 'bg-base-content/3 hover:bg-base-content/10 border-transparent'
 							)}
 						>
 							<span
@@ -73,7 +73,7 @@ export function Mood2x1({
 								aria-hidden="true"
 								className={cn(
 									'text-[9.4cqh] mt-0.5 truncate leading-none',
-									isSelected ? 'font-bold text-primary' : 'text-muted'
+									isSelected ? 'font-bold' : 'text-muted'
 								)}
 							>
 								{opt.label}

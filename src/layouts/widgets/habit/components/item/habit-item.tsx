@@ -53,7 +53,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	}
 
 	return (
-		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-base-content/10 bg-base-content/5 hover:border-base-content/20 hover:bg-base-content/10">
+		<article className="w-full p-2 text-right transition-ui border rounded-2xl bg-base-content/2 border-base-content/5 hover:border-base-content/10 hover:bg-base-content/10">
 			<div className="flex items-center gap-2">
 				<button
 					type="button"

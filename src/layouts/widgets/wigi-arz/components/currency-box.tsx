@@ -16,10 +16,7 @@ interface CurrencyBoxProps {
 	dragHandle?: React.HTMLAttributes<HTMLElement>
 }
 
-export const CurrencyBox = ({
-	code,
-	dragHandle,
-}: CurrencyBoxProps) => {
+export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 	const { currency, priceChange, hasFailed } = useCurrencyPrice(code)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -48,7 +45,7 @@ export const CurrencyBox = ({
 		<>
 			<div
 				dir="ltr"
-				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl bg-base-content/5 hover:bg-base-content/10 border border-base-content/10 transition-ui active:scale-[0.98]"
+				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl hover:bg-base-content/10 border bg-base-content/2 border-base-content/5 transition-ui active:scale-[0.98]"
 			>
 				{dragHandle && (
 					<span

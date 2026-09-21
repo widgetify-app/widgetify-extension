@@ -17,7 +17,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 
 	const priorityBg = note.priority
 		? PRIORITY_BG_COLORS[note.priority]
-		: 'bg-base-content/5'
+		: 'bg-base-content/3'
 	const shouldShowReadMore =
 		!!note.body && note.body.length > NOTE_PREVIEW_CHARACTER_LIMIT
 

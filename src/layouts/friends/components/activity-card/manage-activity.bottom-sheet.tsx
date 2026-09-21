@@ -40,7 +40,7 @@ export function ManageActivityBottomSheet({
 	templates,
 }: ManageActivityBottomSheetProps) {
 	const [activity, setActivity] = useState('')
-	const [time, setTime] = useState<24 | 4 | 3>(24)
+	const [time, setTime] = useState<24 | 4 | 1>(24)
 	const [showModal, setShowModal] = useState(false)
 	const { mutateAsync, isPending: isSubmitting } = useSetActivity()
 	const { mutateAsync: removeAsync, isPending: isRemoving } = useRemoveActivity()
@@ -212,9 +212,13 @@ export function ManageActivityBottomSheet({
 									},
 								]}
 								optionalText="نمایش"
+								value={String(time)}
 								className="w-32! border-none"
-								onChange={(val) => setTime((Number(val) as any) || 24)}
+								onChange={(val) =>
+									setTime((Number(val) as 24 | 4 | 1) || 24)
+								}
 							></SelectBox>
+						
 						</div>
 						<textarea
 							id="activity-text"
