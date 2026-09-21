@@ -143,7 +143,7 @@ export function TodoItem({
 					className="flex-1 min-w-0 py-1 overflow-hidden text-start cursor-pointer focus-visible:focus-ring"
 				>
 					<p
-						className={`truncate  font-medium transition-ui ${
+						className={`truncate font-medium transition-ui ${
 							comfortable ? 'text-[11.5px]' : 'text-[10px]'
 						} ${
 							isDone
