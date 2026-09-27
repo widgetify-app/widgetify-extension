@@ -66,7 +66,7 @@ export function NavbarTabs() {
 					<span
 						className={`
             relative z-10 transition-all duration-300 block
-            ${page === tab.id ? 'text-ds-brand scale-110' : 'nav-btn text-ghost hover:text-faint'}
+            ${page === tab.id ? 'text-ds-brand scale-110' : 'nav-btn text-ghost hover:text-ds-fg-faint'}
         `}
 					>
 						{page === tab.id && tab.activeIcon ? (
@@ -195,7 +195,7 @@ export function NavbarLayout(): JSX.Element {
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
 						<button
 							onClick={() => onToggleNavbar()}
-							className="p-2 transition-all cursor-pointer nav-btn text-faint hover:text-ds-fg-strong active:scale-90"
+							className="p-2 transition-all cursor-pointer nav-btn text-ds-fg-faint hover:text-ds-fg-strong active:scale-90"
 						>
 							<Icon name="chevronDown" size={15} />
 						</button>

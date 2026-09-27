@@ -30,8 +30,8 @@ export function AddWidgetSidebar({
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
-		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-subtle md:pl-3 md:pb-0">
-			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-subtle">
+		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-ds-line md:pl-3 md:pb-0">
+			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-ds-line">
 				{CATEGORIES.map((cat) => (
 					<button
 						key={cat.id}
@@ -63,7 +63,7 @@ export function AddWidgetSidebar({
 								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
 								isSelected
 									? 'bg-ds-brand-fill border-ds-brand shadow-xs'
-									: 'bg-content-muted hover:bg-ds-surface-2 border-subtle'
+									: 'bg-content-muted hover:bg-ds-surface-2 border-ds-line'
 							)}
 						>
 							<div className="flex items-center min-w-0 gap-2">

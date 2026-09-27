@@ -82,7 +82,7 @@ export function EditAvatarModal({ show, onClose }: Prop) {
 				<div className="flex flex-col justify-between w-full h-52">
 					<SectionPanel title="تغییر آواتار" size="xs">
 						<div
-							className="flex items-center justify-center mx-auto mt-8 transition-all duration-200 ease-out border border-dashed rounded-full cursor-pointer active:scale-95 text-ds-fg-muted h-14 w-14 border-strong hover:scale-95"
+							className="flex items-center justify-center mx-auto mt-8 transition-all duration-200 ease-out border border-dashed rounded-full cursor-pointer active:scale-95 text-ds-fg-muted h-14 w-14 border-ds-line hover:scale-95"
 							onClick={() => avatarRef.current?.click()}
 						>
 							{avatar ? (

@@ -107,7 +107,7 @@ export function VoiceSearchPortal({
 						)}
 					</div>
 
-					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-faint">
+					<div className="flex items-center justify-between w-full pt-4 mt-4 border-t border-ds-line">
 						<Dropdown
 							position="top-right"
 							width="120px"

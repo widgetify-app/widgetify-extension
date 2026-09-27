@@ -254,7 +254,7 @@ export function AddBookmarkModal({
 						</div>
 					)}
 
-					<div className="flex items-center justify-between pt-2 border-t border-subtle">
+					<div className="flex items-center justify-between pt-2 border-t border-ds-line">
 						<ShowAdvancedButton
 							showAdvanced={showAdvanced}
 							setShowAdvanced={setShowAdvanced}

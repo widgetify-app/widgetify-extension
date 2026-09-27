@@ -104,7 +104,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-all duration-200 ${containerSizeClasses} ${
 						isDragging
 							? 'border-ds-brand bg-ds-brand-fill shadow-lg'
-							: 'border-ds-line hover:border-brand-strong bg-content-strong hover:bg-ds-surface-2'
+							: 'border-ds-line hover:border-brand-strong bg-ds-fill-2 hover:bg-ds-surface-2'
 					}`}
 					title="انتخاب یا تغییر آیکون"
 				>

@@ -18,7 +18,7 @@ export function TourTooltip({
 			dir="rtl"
 			className="w-[340px] max-w-[calc(100vw-32px)] bg-ds-surface-2 backdrop-blur-md rounded-2xl shadow-2xl border border-ds-line p-4 flex flex-col gap-3.5 text-right select-none"
 		>
-			<div className="flex items-center justify-between gap-2 border-b border-subtle pb-2.5">
+			<div className="flex items-center justify-between gap-2 border-b border-ds-line pb-2.5">
 				<div className="flex items-center gap-2">
 					<div className="flex items-center gap-1">
 						{Array.from({ length: size }).map((_, i) => (
@@ -53,7 +53,7 @@ export function TourTooltip({
 				{step.content}
 			</div>
 
-			<div className="flex items-center justify-between pt-1 border-t border-subtle">
+			<div className="flex items-center justify-between pt-1 border-t border-ds-line">
 				<div>
 					{index + 1 > 2 && (
 						<button

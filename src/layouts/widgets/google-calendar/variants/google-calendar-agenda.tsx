@@ -84,7 +84,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 	return (
 		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
-			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-faint">
+			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-ds-line">
 				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-ds-fg">
 					<Icon
 						name="googleCalendar"
@@ -107,7 +107,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 								key={`agenda-skeleton-${i}`}
 								className="space-y-1.5 animate-pulse"
 							>
-								<div className="w-24 h-3 rounded bg-content-strong" />
+								<div className="w-24 h-3 rounded bg-ds-fill-2" />
 								<div className="h-12 rounded-2xl bg-content-muted" />
 							</div>
 						))}
@@ -214,7 +214,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
 				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-				'bg-content-subtle hover:bg-content-muted border border-faint',
+				'bg-ds-fill hover:bg-content-muted border border-ds-line',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
 				isNow && 'ring-1 ring-brand-strong bg-ds-brand-fill'

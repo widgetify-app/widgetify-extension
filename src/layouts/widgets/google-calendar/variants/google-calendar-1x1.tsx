@@ -32,14 +32,14 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 				className="flex flex-col justify-between w-full h-full p-[10.4cqh] animate-pulse select-none"
 			>
 				<div className="flex items-center justify-between">
-					<div className="w-5 h-5 rounded-lg bg-content-strong" />
+					<div className="w-5 h-5 rounded-lg bg-ds-fill-2" />
 					<div className="w-10 h-3 rounded bg-content-muted" />
 				</div>
 				<div className="my-auto space-y-1">
-					<div className="w-3/4 h-3 rounded bg-content-strong" />
+					<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
 					<div className="w-1/2 h-2 rounded bg-content-muted" />
 				</div>
-				<div className="w-full h-2 rounded bg-content-subtle" />
+				<div className="w-full h-2 rounded bg-ds-fill" />
 			</div>
 		)
 	}
@@ -153,7 +153,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 				</span>
 			</span>
 
-			<span className="flex items-center justify-between pt-0.5 shrink-0 border-t border-faint">
+			<span className="flex items-center justify-between pt-0.5 shrink-0 border-t border-ds-line">
 				<span className="text-[8.3cqh] text-ds-fg-muted truncate max-w-[50px]">
 					{today.format('dddd')}
 				</span>

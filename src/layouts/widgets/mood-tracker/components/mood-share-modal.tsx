@@ -72,7 +72,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 					<div className="flex items-center justify-center overflow-hidden">
 						<canvas
 							ref={canvasRef}
-							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-subtle"
+							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-ds-line"
 						/>
 					</div>
 				)}

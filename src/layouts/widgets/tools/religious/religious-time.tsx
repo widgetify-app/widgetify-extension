@@ -104,7 +104,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 								key={box.title}
 								className="flex flex-col items-center justify-center p-3 bg-ds-surface-2 hover:bg-ds-fill-2 border-ds-surface-3 border rounded-2xl"
 							>
-								<div className="mb-1 text-brand-bold">
+								<div className="mb-1 text-ds-brand">
 									<Icon name={box.icon} size={18} aria-hidden="true" />
 								</div>
 								<span className="text-[8px] font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">

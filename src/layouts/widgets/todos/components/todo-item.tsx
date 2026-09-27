@@ -114,7 +114,7 @@ export function TodoItem({
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border  border-ds-surface-3 bg-ds-surface-2 transition-ui hover:border-strong hover:bg-ds-fill-2 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-xl'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border  border-ds-surface-3 bg-ds-surface-2 transition-ui hover:border-ds-line hover:bg-ds-fill-2 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-xl'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
@@ -227,7 +227,7 @@ export function TodoItem({
 			</div>
 
 			{expanded && (
-				<div className="border-t border-faint bg-ds-fill px-2.5 py-2">
+				<div className="border-t border-ds-line bg-ds-fill px-2.5 py-2">
 					<p className="mb-0 text-[11px] leading-snug text-ds-fg-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
@@ -242,7 +242,7 @@ export function TodoItem({
 					)}
 					<div className="flex items-center gap-2 text-[10px]">
 						{currentTodo.category && (
-							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-strong px-1.5 text-ds-fg-muted">
+							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-ds-line px-1.5 text-ds-fg-muted">
 								<Icon name="tags" size={9} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
@@ -267,7 +267,7 @@ export function TodoItem({
 					</div>
 
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-faint bg-ds-fill p-1.5 text-[11px] font-black">
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-ds-line bg-ds-fill p-1.5 text-[11px] font-black">
 							<NoteLinkRenderer note={currentTodo.description} />
 						</div>
 					)}

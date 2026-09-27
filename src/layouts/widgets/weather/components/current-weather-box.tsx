@@ -46,7 +46,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 	return (
 		<>
 			<header
-				className={`relative p-2 overflow-hidden bg-ds-fill hover:bg-ds-fill-2 border border-content-subtle ${banner ? 'border-r-0' : ''} rounded-2xl border-ds-surface-3 min-h-28 max-h-28`}
+				className={`relative p-2 overflow-hidden bg-ds-fill hover:bg-ds-fill-2 border border-ds-surface-3 ${banner ? 'border-r-0' : ''} rounded-2xl border-ds-surface-3 min-h-28 max-h-28`}
 			>
 				{banner ? (
 					<div

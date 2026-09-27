@@ -128,7 +128,7 @@ function TreeNode({
 							? 'bg-ds-brand border-ds-brand'
 							: isIndeterminate
 								? 'bg-ds-brand-fill-2 border-ds-brand'
-								: 'border-strong'
+								: 'border-ds-line'
 					}`}
 				>
 					{(isChecked || isIndeterminate) && (
@@ -137,7 +137,7 @@ function TreeNode({
 				</span>
 
 				{isFolder ? (
-					<Icon name="folder" size={15} className="text-brand-bold shrink-0" />
+					<Icon name="folder" size={15} className="text-ds-brand shrink-0" />
 				) : (
 					<img
 						src={getFaviconFromUrl(node.url || '')}
@@ -314,7 +314,7 @@ export function ImportBrowserBookmarksModal({
 						</span>
 					</div>
 
-					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-faint custom-scrollbar">
+					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-ds-line custom-scrollbar">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
 								<Icon

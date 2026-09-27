@@ -366,7 +366,7 @@ const AuthForm = () => {
 							type="button"
 							onClick={() => handleSendOtp()}
 							disabled={isOtpSending}
-							className="w-full mt-1 h-10 px-3 rounded-xl border border-ds-surface-3 bg-ds-surface hover:bg-content-strong text-xs font-medium text-ds-fg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
+							className="w-full mt-1 h-10 px-3 rounded-xl border border-ds-surface-3 bg-ds-surface hover:bg-ds-fill-2 text-xs font-medium text-ds-fg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
 						>
 							<Icon name="mail" className="w-4 h-4 text-ds-fg-muted" />
 							<span>

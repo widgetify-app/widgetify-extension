@@ -26,7 +26,7 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-content-muted border border-transparent hover:border-content-faint`}
+			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-content-muted border border-transparent hover:border-ds-surface-3`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,
@@ -46,7 +46,7 @@ export function RenderContentSite({ link }: SiteProp) {
 					{badge}
 				</span>
 			)}
-			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-content-subtle group-hover:scale-105 group-hover:bg-content-strong">
+			<div className="flex items-center justify-center w-10 h-10 transition-transform duration-200 rounded-xl bg-ds-fill group-hover:scale-105 group-hover:bg-ds-fill-2">
 				<img
 					src={link.icon}
 					className="object-contain transition-transform duration-200 rounded-lg w-6 h-6 max-w-6 max-h-6"

@@ -107,7 +107,7 @@ export function SelectCity({ size }: Prop) {
 						<div className="font-medium text-ds-danger">
 							خطا در دریافت اطلاعات
 						</div>
-						<div className="mt-1 text-danger-bold">
+						<div className="mt-1 text-ds-danger">
 							لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
 						</div>
 					</div>
@@ -139,7 +139,7 @@ export function SelectCity({ size }: Prop) {
 						/>
 						<Icon
 							name="location"
-							className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-faint"
+							className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-ds-fg-faint"
 						/>
 					</div>
 
@@ -154,7 +154,7 @@ export function SelectCity({ size }: Prop) {
 								<div
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
-									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-content-faint last:border-b-0 group rounded-2xl hover:bg-ds-brand-fill-2 hover:text-ds-brand"
+									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-ds-surface-3 last:border-b-0 group rounded-2xl hover:bg-ds-brand-fill-2 hover:text-ds-brand"
 								>
 									<Icon
 										name="location"

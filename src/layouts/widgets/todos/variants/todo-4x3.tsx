@@ -205,7 +205,7 @@ export function TodoBoard({
 					)}
 				</div>
 
-				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-subtle scrollbar-none">
+				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-ds-line scrollbar-none">
 					<div
 						role="img"
 						aria-label={`${percent} درصد تسک‌ها انجام شده`}
@@ -279,7 +279,7 @@ function BoardTodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-ds-fill"
+			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-ds-line bg-ds-fill"
 		>
 			<div className="flex items-center flex-1 min-w-0 gap-2.5">
 				<div className="rounded-md size-4.5 skeleton shrink-0" />

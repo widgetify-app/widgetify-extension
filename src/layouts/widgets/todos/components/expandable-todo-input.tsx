@@ -233,7 +233,7 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-ds-surface-2 border-faint">
+				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-ds-surface-2 border-ds-line">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
@@ -314,7 +314,7 @@ export function ExpandableTodoInput({
 												<Button
 													size="sm"
 													rounded={'xl'}
-													className={`p-2 border text-faint shrink-0 active:scale-95`}
+													className={`p-2 border text-ds-fg-faint shrink-0 active:scale-95`}
 												>
 													<Icon name="calendarDays" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -340,7 +340,7 @@ export function ExpandableTodoInput({
 											trigger={
 												<Button
 													size="sm"
-													className={`p-2 border rounded-xl  text-[10px]  text-faint shrink-0 active:scale-95`}
+													className={`p-2 border rounded-xl  text-[10px]  text-ds-fg-faint shrink-0 active:scale-95`}
 												>
 													<Icon name="tags" size={16} />
 													<p className="truncate max-w-14 min-w-5">
@@ -387,7 +387,7 @@ export function ExpandableTodoInput({
 																<Icon
 																	name="tags"
 																	size={16}
-																	className="text-faint"
+																	className="text-ds-fg-faint"
 																/>
 																{tag}
 															</Chip>

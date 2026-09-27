@@ -63,7 +63,7 @@ export function WidgetContextMenu({
 			</div>
 
 			{showResize && (
-				<div className="px-2 py-1 flex flex-col gap-1.5 border-t border-subtle">
+				<div className="px-2 py-1 flex flex-col gap-1.5 border-t border-ds-line">
 					<span className="text-[11px] text-ds-fg-muted font-medium">
 						تغییر اندازه
 					</span>

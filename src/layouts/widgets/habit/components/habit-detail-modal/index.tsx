@@ -104,7 +104,7 @@ export function HabitDetailModal({
 								</Button>
 							}
 						>
-							<div className="flex flex-col p-2 border bg-ds-surface-2 bg-glass border-subtle rounded-2xl">
+							<div className="flex flex-col p-2 border bg-ds-surface-2 bg-glass border-ds-line rounded-2xl">
 								<button
 									type="button"
 									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-ds-fg hover:bg-ds-fill-2 focus-visible:focus-ring"
@@ -163,9 +163,9 @@ export function HabitDetailModal({
 					<div className="flex flex-col gap-3 p-2">
 						<HabitStatsCards habit={habit} today={today} />
 
-						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-ds-fill border-subtle">
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-ds-fill border-ds-line">
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center p-1 border bg-ds-fill rounded-2xl border-subtle">
+								<div className="flex items-center p-1 border bg-ds-fill rounded-2xl border-ds-line">
 									<button
 										type="button"
 										onClick={() => setActiveView('contribution')}

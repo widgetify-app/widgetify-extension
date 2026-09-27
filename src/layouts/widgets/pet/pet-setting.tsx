@@ -142,7 +142,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 		<div className="flex flex-col gap-4">
 			<section className="flex items-center gap-3 p-3 border rounded-2xl border-ds-surface-3 bg-ds-surface-2">
 				<div
-					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-content-subtle"
+					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-ds-surface-3"
 					style={{
 						backgroundImage: scene.image ? `url(${scene.image})` : undefined,
 						backgroundSize: 'cover',

@@ -18,7 +18,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 border ${
 					isSelected
 						? `border-ds-brand-fill-2 bg-linear-to-t from-ds-brand-fill via-ds-brand-fill to-transparent shadow-md shadow-ds-brand-fill`
-						: `border-faint bg-ds-surface-2 bg-glass! hover:bg-ds-brand-fill hover:border-ds-brand-fill`
+						: `border-ds-line bg-ds-surface-2 bg-glass! hover:bg-ds-brand-fill hover:border-ds-brand-fill`
 				}
             `}
 		>

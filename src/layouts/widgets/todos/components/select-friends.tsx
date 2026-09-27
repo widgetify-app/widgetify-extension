@@ -20,12 +20,12 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					className="p-2 border-ds-surface-3 text-[10px] shrink-0 active:scale-95"
 				>
 					{selectedFriends.length > 0 ? (
-						<div className="flex gap-0.5 text-faint">
+						<div className="flex gap-0.5 text-ds-fg-faint">
 							{selectedFriends.length}
 							<p>دوست</p>
 						</div>
 					) : (
-						<div className="flex gap-0.5 text-faint">
+						<div className="flex gap-0.5 text-ds-fg-faint">
 							<Icon name="friends" size={16} className="text-ds-fg-faint" />
 							دوستان
 						</div>

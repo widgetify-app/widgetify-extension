@@ -12,7 +12,7 @@ export function UserCoin({ coins, title }: Prop) {
 				<div className="absolute inset-0 opacity-50 bg-gradient-to-r from-ds-warning-fill to-transparent"></div>
 
 				<div className="relative flex items-center gap-2 px-2 py-0.5">
-					<span className="text-sm font-semibold text-ds-warning bg-gradient-to-r from-ds-warning to-warning-bold bg-clip-text">
+					<span className="text-sm font-semibold text-ds-warning bg-gradient-to-r from-ds-warning to-ds-warning bg-clip-text">
 						{coins?.toLocaleString() || '۰'}
 					</span>
 					<div className="relative">

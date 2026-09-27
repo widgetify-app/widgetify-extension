@@ -30,13 +30,13 @@ export function GalleryBookmarkIconItem({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-ds-brand ring-offset-2 ring-offset-ds-surface border-ds-brand'
-		: 'border-subtle hover:border-brand-strong hover:bg-raised-subtle'
+		: 'border-ds-line hover:border-brand-strong hover:bg-raised-subtle'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-raised-faint border ${itemOutlineStyle}`}
+			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-ds-fill border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -52,7 +52,7 @@ export function GalleryBookmarkIconItem({
 				</div>
 			)}
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full h-full text-danger-bold">
+				<div className="flex flex-col items-center justify-center w-full h-full text-ds-danger">
 					<Icon name="alert" size={20} />
 					<p className="mt-1 text-[10px] text-ds-fg-muted">خطا در بارگذاری</p>
 				</div>
@@ -76,7 +76,7 @@ export function GalleryBookmarkIconItem({
 			{loaded && !error && (
 				<>
 					{asset.title && (
-						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-ds-surface text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-subtle">
+						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-ds-surface text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-ds-line">
 							<span className="text-[10px] font-medium text-ds-fg truncate block">
 								{asset.title}
 							</span>

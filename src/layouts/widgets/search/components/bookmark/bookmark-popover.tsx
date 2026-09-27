@@ -84,7 +84,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 					<Motion.div
 						key="bookmark-popover"
-						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-subtle rounded-2xl origin-top-left bg-ds-surface-2 bg-glass"
+						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-ds-line rounded-2xl origin-top-left bg-ds-surface-2 bg-glass"
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
@@ -120,7 +120,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 							</div>
 						) : (
 							<div className="flex flex-col max-h-105">
-								<div className="flex items-center justify-between p-3 border-b border-faint">
+								<div className="flex items-center justify-between p-3 border-b border-ds-line">
 									<span className="text-xs font-bold text-ds-fg">
 										{currentFolderTitle}
 									</span>
@@ -147,12 +147,12 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 												<button
 													type="button"
 													onClick={() => handleClickItem(item)}
-													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-ds-brand-fill hover:text-brand-bold focus-visible:focus-ring"
+													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-ds-brand-fill hover:text-ds-brand focus-visible:focus-ring"
 												>
 													{item.type === 'FOLDER' ? (
 														<Icon
 															name="folder"
-															className="text-brand-bold shrink-0"
+															className="text-ds-brand shrink-0"
 															size={18}
 															aria-hidden="true"
 														/>

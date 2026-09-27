@@ -183,12 +183,12 @@ export function NetworkCompactRow({
 						<img
 							src={countryIcon}
 							alt=""
-							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-subtle"
+							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-ds-line"
 						/>
 					) : (
 						<div
 							aria-hidden="true"
-							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-ds-fill-2 border-subtle"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-ds-fill-2 border-ds-line"
 						>
 							🌐
 						</div>

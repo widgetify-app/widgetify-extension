@@ -128,7 +128,7 @@ export const ProfileDisplay = () => {
 				showEditBadge={showEditBadge}
 			/>
 
-			<div className="overflow-hidden border border-content-subtle rounded-2xl bg-widget-subtle">
+			<div className="overflow-hidden border border-ds-surface-3 rounded-2xl bg-widget-subtle">
 				<DisplayRow
 					icon={<Icon name="user" className="text-ds-brand" />}
 					label="نام و نام خانوادگی"
@@ -334,7 +334,7 @@ const DisplayRow = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-content-faint hover:bg-content-faint">
+		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-ds-surface-3 hover:bg-content-faint">
 			<div className="flex items-center gap-3">
 				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-content-muted">
 					{icon}

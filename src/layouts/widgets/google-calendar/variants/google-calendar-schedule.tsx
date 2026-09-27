@@ -124,11 +124,11 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						{Array.from({ length: 3 }).map((_, i) => (
 							<div
 								key={`loading-item-${i}`}
-								className="flex items-center gap-2 p-2 rounded-xl bg-content-subtle animate-pulse"
+								className="flex items-center gap-2 p-2 rounded-xl bg-ds-fill animate-pulse"
 							>
-								<div className="w-10 h-8 rounded-lg bg-content-strong shrink-0" />
+								<div className="w-10 h-8 rounded-lg bg-ds-fill-2 shrink-0" />
 								<div className="flex-1 space-y-1">
-									<div className="w-3/4 h-3 rounded bg-content-strong" />
+									<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
 									<div className="w-1/2 h-2 rounded bg-content-muted" />
 								</div>
 							</div>

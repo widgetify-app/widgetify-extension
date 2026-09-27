@@ -246,7 +246,7 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 	}
 
 	return (
-		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-content-subtle">
+		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-ds-fill">
 			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-ds-brand-fill-2 bg-ds-brand-fill" />
 
 			<div

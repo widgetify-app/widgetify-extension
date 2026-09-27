@@ -38,8 +38,8 @@ function WallpaperItemFu({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-brand-bold ring-offset-ds-surface'
-		: 'ring-1 ring-subtle hover:ring-brand-bold'
+		? 'ring-2 ring-ds-brand ring-offset-ds-surface'
+		: 'ring-1 ring-ds-line hover:ring-ds-brand'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -154,7 +154,7 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-ds-on-brand rounded-full shadow-sm top-2 left-2 bg-brand-bold">
+							<div className="absolute p-1 text-ds-on-brand rounded-full shadow-sm top-2 left-2 bg-ds-brand">
 								<Icon name="check" size={12} />
 							</div>
 						)}

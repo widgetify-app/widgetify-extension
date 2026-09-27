@@ -20,7 +20,7 @@ export const Forecast: React.FC<ForecastProps> = ({ forecast, temperatureUnit })
 				return (
 					<li
 						key={item.date}
-						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-ui border rounded-2xl bg-ds-surface-2 border-content-subtle hover:bg-ds-fill-2"
+						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-ui border rounded-2xl bg-ds-surface-2 border-ds-surface-3 hover:bg-ds-fill-2"
 					>
 						<time
 							dateTime={at.clone().locale('en').format()}

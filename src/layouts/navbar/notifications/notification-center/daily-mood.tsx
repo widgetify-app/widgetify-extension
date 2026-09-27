@@ -76,7 +76,7 @@ export function DailyMoodNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-content-subtle ${className}`}
+			className={`flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-ds-surface-3 ${className}`}
 			id="notificationMood "
 		>
 			<div className="flex-1 min-w-0 ">
@@ -86,7 +86,7 @@ export function DailyMoodNotification({ className }: Prop) {
 					</h4>
 					<button
 						type="button"
-						className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-faint hover:bg-ds-danger-fill hover:text-ds-danger"
+						className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-ds-fg-faint hover:bg-ds-danger-fill hover:text-ds-danger"
 						onClick={(e) => {
 							e.preventDefault()
 							e.stopPropagation()

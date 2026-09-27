@@ -104,7 +104,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-ds-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-content-subtle group relative ${prop.className || ''}`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-ds-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-ds-surface-3 group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">
@@ -158,7 +158,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 				{formattedJalaliDate && (
 					<div className="flex justify-start mt-0.5">
-						<span className="text-[10px] font-light text-faint">
+						<span className="text-[10px] font-light text-ds-fg-faint">
 							{formattedJalaliDate}
 						</span>
 					</div>
@@ -168,7 +168,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-faint hover:bg-ds-danger-fill hover:text-ds-danger"
+					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-ds-fg-faint hover:bg-ds-danger-fill hover:text-ds-danger"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()

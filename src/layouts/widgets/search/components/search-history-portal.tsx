@@ -141,14 +141,14 @@ export function SearchHistoryPortal({
 										<Icon
 											name="search"
 											size={15}
-											className="text-faint"
+											className="text-ds-fg-faint"
 										/>
 									</div>
 									<div className="space-y-1">
 										<p className="text-xs font-medium text-ds-fg-muted">
 											پیشنهادهای جستجو
 										</p>
-										<p className="text-[11px] text-faint leading-relaxed">
+										<p className="text-[11px] text-ds-fg-faint leading-relaxed">
 											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
 											داده میشه!
 										</p>
@@ -165,7 +165,7 @@ export function SearchHistoryPortal({
 									</button>
 								</div>
 							) : (
-								<p className="px-4 py-6 text-xs text-center text-faint">
+								<p className="px-4 py-6 text-xs text-center text-ds-fg-faint">
 									نتیجه‌ای برای نمایش وجود ندارد
 								</p>
 							)}

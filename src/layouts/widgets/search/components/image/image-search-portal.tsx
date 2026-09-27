@@ -138,7 +138,7 @@ export function ImageSearchPortal({
 								const file = e.dataTransfer.files[0]
 								if (file) handleUpload(file)
 							}}
-							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-subtle rounded-2xl transition-ui hover:border-brand-strong hover:bg-ds-brand-fill focus-visible:focus-ring"
+							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-ds-line rounded-2xl transition-ui hover:border-brand-strong hover:bg-ds-brand-fill focus-visible:focus-ring"
 							onClick={() => fileInputRef.current?.click()}
 						>
 							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-ds-fill group-hover:text-ds-brand">
@@ -204,7 +204,7 @@ export function ImageSearchPortal({
 													? 'در حال ارسال تصویر...'
 													: 'در حال جستجو در گوگل...'}
 											</span>
-											<span className="text-[10px] font-bold text-faint tracking-widest">
+											<span className="text-[10px] font-bold text-ds-fg-faint tracking-widest">
 												{uploadProgress}%
 											</span>
 										</div>
@@ -220,8 +220,8 @@ export function ImageSearchPortal({
 							)}
 						</button>
 					</RequireAuth>
-					<div className="flex items-center gap-2 p-1 border bg-ds-fill rounded-xl border-subtle">
-						<div className="pl-3 text-faint">
+					<div className="flex items-center gap-2 p-1 border bg-ds-fill rounded-xl border-ds-line">
+						<div className="pl-3 text-ds-fg-faint">
 							<Icon name="link" size={20} />
 						</div>
 						<TextInput

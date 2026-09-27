@@ -59,8 +59,8 @@ export function CoinPackagePurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-3">
-				<div className="overflow-hidden border rounded-2xl border-content-subtle bg-ds-surface">
-					<div className="flex items-center justify-center py-8 bg-content-subtle">
+				<div className="overflow-hidden border rounded-2xl border-ds-surface-3 bg-ds-surface">
+					<div className="flex items-center justify-center py-8 bg-ds-fill">
 						<div className="flex flex-col items-center gap-2">
 							<img
 								src={ConfigKey.WIG_COIN_ICON}
@@ -85,7 +85,7 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-content-subtle bg-ds-surface divide-content">
+				<div className="border divide-y rounded-2xl border-ds-surface-3 bg-ds-surface divide-content">
 					<div className="flex items-center justify-between px-3 py-3">
 						<span className="text-xs text-ds-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">

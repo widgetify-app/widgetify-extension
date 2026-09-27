@@ -25,7 +25,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-ds-brand ring-offset-2 ring-offset-ds-surface'
-		: 'ring-1 ring-subtle hover:ring-brand-bold'
+		: 'ring-1 ring-ds-line hover:ring-ds-brand'
 
 	return (
 		<div

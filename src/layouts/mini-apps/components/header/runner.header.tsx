@@ -25,11 +25,11 @@ export function MiniAppRunnerHeader({
 		callEvent('toggle_miniApp_fullScreen', newState)
 	}
 	return (
-		<div className="sticky top-0 z-10 w-full border-b border-faint">
+		<div className="sticky top-0 z-10 w-full border-b border-ds-line">
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-ds-line"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
@@ -73,7 +73,7 @@ export function MiniAppRunnerHeader({
 					<button
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-ds-line disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
@@ -92,7 +92,7 @@ export function MiniAppRunnerHeader({
 
 					<button
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-faint disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-content-muted active:scale-95 group border-ds-line disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"

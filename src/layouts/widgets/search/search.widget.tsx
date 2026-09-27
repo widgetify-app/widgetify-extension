@@ -214,7 +214,7 @@ function SearchFullContent() {
 							/>
 						</button>
 
-						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-faint" />
+						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-ds-line" />
 					</div>
 				</form>
 

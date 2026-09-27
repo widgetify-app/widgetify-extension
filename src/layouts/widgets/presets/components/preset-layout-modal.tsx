@@ -103,7 +103,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-ds-fill shadow-2xs transition-ui hover:shadow-md',
 											preset.isVip
 												? 'border-ds-vip-fill-2 hover:border-vip-strong'
-												: 'border-subtle hover:border-brand-strong'
+												: 'border-ds-line hover:border-brand-strong'
 										)}
 									>
 										<PresetCanvasPreview preset={preset} />
@@ -140,7 +140,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 rounded-lg border border-subtle bg-ds-fill px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
+															className="inline-flex items-center gap-1 rounded-lg border border-ds-line bg-ds-fill px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
 														>
 															<Icon
 																name={definition.icon}
@@ -156,7 +156,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{hiddenWidgetCount > 0 && (
 													<li
 														dir="ltr"
-														className="rounded-lg border border-subtle px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
+														className="rounded-lg border border-ds-line px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
 													>
 														{`+${hiddenWidgetCount.toLocaleString('fa-IR')}`}
 													</li>
@@ -164,7 +164,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 											</ul>
 										</div>
 
-										<div className="pt-3 mt-auto border-t border-subtle">
+										<div className="pt-3 mt-auto border-t border-ds-line">
 											{isLocked ? (
 												<Button
 													onClick={handleOpenVipSettings}

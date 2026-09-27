@@ -24,7 +24,7 @@ const steps: Step[] = [
 					گزینه رو بزنی:
 				</p>
 
-				<div className="relative overflow-hidden border rounded-xl border-subtle">
+				<div className="relative overflow-hidden border rounded-xl border-ds-line">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 						alt="نحوه مخفی کردن نوار پایین مرورگر"
@@ -44,7 +44,7 @@ const steps: Step[] = [
 		target: '.widget-outer',
 		content: (
 			<div className="flex flex-col gap-2.5">
-				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-subtle bg-raised-subtle">
+				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-ds-line bg-raised-subtle">
 					<video
 						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
 						autoPlay

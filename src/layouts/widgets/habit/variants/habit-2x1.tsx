@@ -211,7 +211,7 @@ export function HabitCompactWide({
 				</span>
 			</div>
 
-			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-subtle">
+			<div className="flex flex-col items-center justify-center-safe gap-2 py-2 pl-2 pr-2 overflow-y-auto border-r shrink-0 scrollbar-none border-ds-line">
 				{habits.map((habit) => {
 					const habitTarget = habit.target || 1
 					const habitProgress = Math.min(habit.today.value / habitTarget, 1)

@@ -15,7 +15,7 @@ export function AboutUsTab() {
 				</h1>
 				<div
 					className={
-						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-brand-bold'
+						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-ds-brand'
 					}
 				>
 					<span>نسخه "{ConfigKey.VERSION_NAME}"</span>
@@ -33,7 +33,7 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-ds-brand-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-ds-brand-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-brand-fill text-ds-brand group-hover:scale-110">
@@ -43,7 +43,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-ds-fg-strong">
 									وب‌سایت رسمی
 								</h3>
-								<p className="text-[10px] text-faint mt-0.5">
+								<p className="text-[10px] text-ds-fg-faint mt-0.5">
 									widgetify.ir
 								</p>
 							</div>
@@ -59,7 +59,7 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-secondary-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-secondary-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-subtle text-ds-secondary group-hover:scale-110">
@@ -69,7 +69,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-ds-fg-strong">
 									وبلاگ رسمی
 								</h3>
-								<p className="text-[10px] text-faint mt-0.5">
+								<p className="text-[10px] text-ds-fg-faint mt-0.5">
 									blog.widgetify.ir
 								</p>
 							</div>
@@ -85,7 +85,7 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-info-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-info-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-info-fill text-ds-info group-hover:scale-110">
@@ -95,7 +95,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-ds-fg-strong">
 									کانال تلگرام
 								</h3>
-								<p className="text-[10px] text-faint mt-0.5">
+								<p className="text-[10px] text-ds-fg-faint mt-0.5">
 									t.me/widgetify
 								</p>
 							</div>
@@ -111,7 +111,7 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-faint bg-content-faint hover:bg-content-muted hover:border-success-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-success-muted"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success-subtle text-ds-success group-hover:scale-110">
@@ -132,7 +132,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-ds-fg-strong">
 									پیام‌رسان بله
 								</h3>
-								<p className="text-[10px] text-faint mt-0.5">
+								<p className="text-[10px] text-ds-fg-faint mt-0.5">
 									ble.ir/widgetify
 								</p>
 							</div>

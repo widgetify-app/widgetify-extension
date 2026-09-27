@@ -38,7 +38,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
 					<h3 className="text-xl font-bold text-ds-fg">حریم خصوصی</h3>
-					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-raised-muted text-ds-fg-muted">
+					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-ds-fill-2 text-ds-fg-muted">
 						Privacy Notice
 					</span>
 				</div>
@@ -76,7 +76,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				</a>
 			</div>
 
-			<div className="flex items-center gap-2 pt-2 border-t border-subtle">
+			<div className="flex items-center gap-2 pt-2 border-t border-ds-line">
 				<Button
 					onClick={handleDecline}
 					size="md"

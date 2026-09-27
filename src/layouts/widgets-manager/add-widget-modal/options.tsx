@@ -52,7 +52,7 @@ export function AddWidgetOptions({
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
 									isCurrent
 										? 'bg-ds-brand text-ds-on-brand font-bold shadow-xs'
-										: 'bg-content-strong hover:bg-ds-surface-3 text-ds-fg border border-subtle'
+										: 'bg-ds-fill-2 hover:bg-ds-surface-3 text-ds-fg border border-ds-line'
 								)}
 							>
 								<span>{variant.label}</span>

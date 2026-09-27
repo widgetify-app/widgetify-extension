@@ -190,7 +190,7 @@ export function HabitContributionChart({
 
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-ds-fill border-subtle">
+			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-ds-fill border-ds-line">
 				<div
 					ref={scrollContainerRef}
 					className="pb-1 pl-1 overflow-x-auto scrollbar-thin"
@@ -266,7 +266,7 @@ export function HabitContributionChart({
 															? 'opacity-20 cursor-not-allowed bg-ds-fill'
 															: 'hover:scale-125 hover:z-10',
 														day.isToday &&
-															'ring-2 ring-strong',
+															'ring-2 ring-ds-line',
 														!cellBg &&
 															!day.isFuture &&
 															'bg-ds-fill-2'
@@ -284,7 +284,7 @@ export function HabitContributionChart({
 					</div>
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-subtle text-xs">
+				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-ds-line text-xs">
 					<div className="min-h-5 flex items-center gap-1.5 text-ds-fg-muted text-[11px]">
 						{hoveredDay ? (
 							<>

@@ -44,7 +44,7 @@ export function Suggestions({
 								name={item.isRecent ? 'history' : 'search'}
 								size={15}
 								aria-hidden="true"
-								className={`shrink-0 ${isSelected ? 'text-ds-brand' : 'text-faint'}`}
+								className={`shrink-0 ${isSelected ? 'text-ds-brand' : 'text-ds-fg-faint'}`}
 							/>
 							<span
 								className={`text-sm font-medium truncate ${
@@ -64,7 +64,7 @@ export function Suggestions({
 									e.stopPropagation()
 									onRemove(item.text)
 								}}
-								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-faint transition-ui hover:bg-ds-fill-2 hover:text-ds-fg focus-visible:focus-ring"
+								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-ds-fg-faint transition-ui hover:bg-ds-fill-2 hover:text-ds-fg focus-visible:focus-ring"
 							>
 								<Icon name="close" size={14} aria-hidden="true" />
 							</button>

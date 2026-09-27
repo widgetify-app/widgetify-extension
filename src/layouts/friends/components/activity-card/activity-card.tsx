@@ -46,7 +46,7 @@ export const ActivityCard = ({
 						className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-ds-surface-2 border border-subtle shadow-xs text-ds-fg-muted
+							bg-ds-surface-2 border border-ds-line shadow-xs text-ds-fg-muted
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
 						`}
 					>

@@ -21,7 +21,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 	eventsByDate,
 }) => {
 	return (
-		<ul className="grid grid-cols-7 gap-1 p-1 rounded-2xl bg-content-subtle shrink-0 mb-2.5 select-none">
+		<ul className="grid grid-cols-7 gap-1 p-1 rounded-2xl bg-ds-fill shrink-0 mb-2.5 select-none">
 			{weekDays.map((day, idx) => {
 				const dayIsoKey = toIsoDateKey(day)
 				const isDaySelected = isSameJalaliDay(day, selectedDay)
@@ -63,7 +63,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 									isDaySelected
 										? 'opacity-80'
 										: isDayToday
-											? 'text-brand-bold'
+											? 'text-ds-brand'
 											: 'opacity-60'
 								)}
 							>

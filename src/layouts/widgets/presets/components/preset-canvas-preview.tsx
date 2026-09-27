@@ -44,7 +44,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 			dir="ltr"
 			aria-hidden="true"
 			className={cn(
-				'w-full h-36 p-2 overflow-hidden select-none rounded-xl bg-ds-fill border border-subtle transition-ui',
+				'w-full h-36 p-2 overflow-hidden select-none rounded-xl bg-ds-fill border border-ds-line transition-ui',
 				className
 			)}
 		>
